@@ -34,8 +34,10 @@ class RoomItem extends React.PureComponent {
 }
 
 export class RoomsView extends React.Component {
-	_onPressItem(id) {
+	_onPressItem = (id) => {
+		const { navigate } = this.props.navigation;
 		console.log('pressed', id);
+		navigate('Room', {sid: id});
 	}
 
 	renderItem = ({item}) => (

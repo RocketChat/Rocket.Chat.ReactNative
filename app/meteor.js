@@ -35,11 +35,8 @@ export function connect(cb) {
 }
 
 export function loginWithPassword(selector, password, cb) {
-	console.log(0);
 	Meteor.loginWithPassword(selector, password, function() {
-		console.log(1);
 		Meteor.call('subscriptions/get', function(err, data) {
-			console.log(2, err);
 			if (err) {
 				console.error(err);
 			}
@@ -57,5 +54,20 @@ export function loginWithPassword(selector, password, cb) {
 			});
 		});
 		cb();
+	});
+}
+
+export function loadMessagesForRoom(rid) {
+	Meteor.call('loadHistory', rid, null, 50, function(err, data) {
+		if (err) {
+			console.error(err);
+		}
+		console.log(data);
+
+		realm.write(() => {
+			data.messages.forEach(message => {
+				realm.create('messages', message, true);
+			});
+		});
 	});
 }
