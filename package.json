@@ -1,12 +1,16 @@
 {
-  "name": "RocketChatRN",
+  "name": "rocket-chat-rn",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint .",
+    "ios": "react-native run-ios",
+    "android": "react-native run-android"
   },
   "dependencies": {
+    "prop-types": "^15.5.10",
     "react": "16.0.0-alpha.12",
     "react-native": "0.47.1",
     "react-native-meteor": "^1.1.0",
@@ -16,6 +20,10 @@
   "devDependencies": {
     "babel-jest": "20.0.3",
     "babel-preset-react-native": "2.1.0",
+    "eslint": "^4.4.0",
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.1.0",
     "jest": "20.0.4",
     "react-test-renderer": "16.0.0-alpha.12"

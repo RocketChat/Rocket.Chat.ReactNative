@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View, TextInput, StyleSheet } from 'react-native';
 import realm from './realm';
 import { connect } from './meteor';
@@ -23,7 +24,11 @@ const styles = StyleSheet.create({
 
 const defaultServer = 'http://localhost:3000';
 
-export class NewServerView extends React.Component {
+export default class NewServerView extends React.Component {
+	static propTypes = {
+		navigation: PropTypes.object.isRequired
+	}
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -41,8 +46,8 @@ export class NewServerView extends React.Component {
 			// TODO: validate URL
 
 			realm.write(() => {
-				realm.objects('servers').filtered('current = true').forEach(item => item.current = false);
-				realm.create('servers', {id: url, current: true}, true);
+				realm.objects('servers').filtered('current = true').forEach(item => (item.current = false));
+				realm.create('servers', { id: url, current: true }, true);
 			});
 
 			connect(() => {
@@ -57,14 +62,15 @@ export class NewServerView extends React.Component {
 			<View style={styles.view}>
 				<TextInput
 					style={styles.input}
-					onChangeText={(text) => this.setState({text})}
+					onChangeText={text => this.setState({ text })}
 					keyboardType='url'
 					autoCorrect={false}
 					returnKeyType='done'
 					autoCapitalize='none'
-					autoFocus={true}
+					autoFocus
 					onSubmitEditing={this.submit}
-					placeholder={defaultServer} />
+					placeholder={defaultServer}
+				/>
 			</View>
 		);
 	}

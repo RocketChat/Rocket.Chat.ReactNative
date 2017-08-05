@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import realm from './realm';
 
@@ -22,54 +23,58 @@ const styles = StyleSheet.create({
 });
 
 class RoomItem extends React.PureComponent {
+	static propTypes = {
+		onPressItem: PropTypes.func.isRequired,
+		title: PropTypes.string.isRequired,
+		id: PropTypes.string.isRequired
+	}
+
 	_onPress = () => {
 		this.props.onPressItem(this.props.id);
 	};
 
 	render() {
 		return (
-			<Text onPress={this._onPress} style={styles.roomItem}>{this.props.title}</Text>
+			<Text onPress={this._onPress} style={styles.roomItem}>{ this.props.title }</Text>
 		);
 	}
 }
 
-export class RoomsView extends React.Component {
-	_onPressItem = (id) => {
-		const { navigate } = this.props.navigation;
-		console.log('pressed', id);
-		navigate('Room', {sid: id});
+export default class RoomsView extends React.Component {
+	static propTypes = {
+		navigation: PropTypes.object.isRequired
 	}
-
-	renderItem = ({item}) => (
-		<RoomItem
-			id={item._id}
-			onPressItem={this._onPressItem}
-			selected={true}
-			title={item.name}
-		/>
-	);
 
 	constructor(props) {
 		super(props);
 
-		const getState = () => {
-			return {
-				selected: new Map(),
-				dataSource: realm.objects('subscriptions')
-			};
-		};
+		const getState = () => ({
+			selected: new Map(),
+			dataSource: realm.objects('subscriptions')
+		});
 
 		realm.addListener('change', () => this.setState(getState()));
 
 		this.state = getState();
 	}
 
-	renderSeparator = () => {
-		return (
-			<View style={styles.separator} />
-		);
-	};
+	_onPressItem = (id) => {
+		const { navigate } = this.props.navigation;
+		console.log('pressed', id);
+		navigate('Room', { sid: id });
+	}
 
+	renderItem = ({ item }) => (
+		<RoomItem
+			id={item._id}
+			onPressItem={this._onPressItem}
+			title={item.name}
+		/>
+	);
+
+	renderSeparator = () => (
+		<View style={styles.separator} />
+	);
 
 	render() {
 		return (

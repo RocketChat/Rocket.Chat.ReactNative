@@ -1,5 +1,5 @@
-import realm from './realm';
 import Meteor from 'react-native-meteor';
+import realm from './realm';
 
 export function connect(cb) {
 	const currentServer = realm.objects('servers').filtered('current = true')[0];
@@ -9,16 +9,16 @@ export function connect(cb) {
 
 	Meteor.connect(url);
 
-	Meteor.ddp.on('connected', function() {
+	Meteor.ddp.on('connected', () => {
 		console.log('connected');
 
-		Meteor.call('public-settings/get', function(err, data) {
+		Meteor.call('public-settings/get', (err, data) => {
 			if (err) {
 				console.error(err);
 			}
 
 			realm.write(() => {
-				data.forEach(item => {
+				data.forEach((item) => {
 					const setting = {
 						_id: item._id
 					};
@@ -35,14 +35,14 @@ export function connect(cb) {
 }
 
 export function loginWithPassword(selector, password, cb) {
-	Meteor.loginWithPassword(selector, password, function() {
-		Meteor.call('subscriptions/get', function(err, data) {
+	Meteor.loginWithPassword(selector, password, () => {
+		Meteor.call('subscriptions/get', (err, data) => {
 			if (err) {
 				console.error(err);
 			}
 
 			realm.write(() => {
-				data.forEach(subscription => {
+				data.forEach((subscription) => {
 					// const subscription = {
 					// 	_id: item._id
 					// };
@@ -58,14 +58,14 @@ export function loginWithPassword(selector, password, cb) {
 }
 
 export function loadMessagesForRoom(rid) {
-	Meteor.call('loadHistory', rid, null, 50, function(err, data) {
+	Meteor.call('loadHistory', rid, null, 50, (err, data) => {
 		if (err) {
 			console.error(err);
 		}
 		console.log(data);
 
 		realm.write(() => {
-			data.messages.forEach(message => {
+			data.messages.forEach((message) => {
 				realm.create('messages', message, true);
 			});
 		});
