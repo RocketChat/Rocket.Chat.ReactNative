@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, FlatList, StyleSheet, Image } from 'react-native';
+// import Markdown from 'react-native-simple-markdown';
 import realm from './realm';
 import { loadMessagesForRoom } from './meteor';
-import Markdown from 'react-native-simple-markdown';
 
 
 const styles = StyleSheet.create({
@@ -34,46 +35,38 @@ const styles = StyleSheet.create({
 });
 
 class RoomItem extends React.PureComponent {
-	_onPress = () => {
-		this.props.onPressItem(this.props.id);
-	};
+	static propTypes = {
+		item: PropTypes.object.isRequired
+	}
 
 	render() {
 		return (
 			<View style={styles.roomItem}>
-				<Image style={styles.avatar} source={{uri: `http://localhost:3000/avatar/${ this.props.item.u.username }`}}>
-				</Image>
+				<Image style={styles.avatar} source={{ uri: `http://localhost:3000/avatar/${ this.props.item.u.username }` }} />
 				<View>
 					<Text onPress={this._onPress} style={styles.username}>
 						{this.props.item.u.username}
 					</Text>
-					<Markdown whitelist={['link', 'url']}>
+					<Text>
 						{this.props.item.msg}
-					</Markdown>
+					</Text>
+					{/* <Markdown whitelist={['link', 'url']}>
+						{this.props.item.msg}
+					</Markdown> */}
 				</View>
 			</View>
 		);
 	}
 }
 
-export class RoomView extends React.Component {
-	static navigationOptions = ({ navigation }) => ({
-		title: realm.objectForPrimaryKey('subscriptions', navigation.state.params.sid).name
-		// title: navigation.state.params.rid
-	});
-
-	_onPressItem(id) {
-		console.log('pressed', id);
+export default class RoomView extends React.Component {
+	static propTypes = {
+		navigation: PropTypes.object.isRequired
 	}
 
-	renderItem = ({item}) => (
-		<RoomItem
-			id={item._id}
-			onPressItem={this._onPressItem}
-			selected={true}
-			item={item}
-		/>
-	);
+	static navigationOptions = ({ navigation }) => ({
+		title: realm.objectForPrimaryKey('subscriptions', navigation.state.params.sid).name
+	});
 
 	constructor(props) {
 		super(props);
@@ -82,24 +75,26 @@ export class RoomView extends React.Component {
 
 		loadMessagesForRoom(this.rid);
 
-		const getState = () => {
-			return {
-				selected: new Map(),
-				dataSource: realm.objects('messages').filtered('rid = $0', this.rid)
-			};
-		};
+		const getState = () => ({
+			selected: new Map(),
+			dataSource: realm.objects('messages').filtered('rid = $0', this.rid)
+		});
 
 		realm.addListener('change', () => this.setState(getState()));
 
 		this.state = getState();
 	}
 
-	renderSeparator = () => {
-		return (
-			<View style={styles.separator} />
-		);
-	};
+	renderItem = ({ item }) => (
+		<RoomItem
+			id={item._id}
+			item={item}
+		/>
+	);
 
+	renderSeparator = () => (
+		<View style={styles.separator} />
+	);
 
 	render() {
 		return (

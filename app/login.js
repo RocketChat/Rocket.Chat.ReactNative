@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View, TextInput, StyleSheet } from 'react-native';
 import realm from './realm';
-import {loginWithPassword} from './meteor';
+import { loginWithPassword } from './meteor';
 
 
 const styles = StyleSheet.create({
@@ -24,7 +25,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-export class LoginView extends React.Component {
+export default class LoginView extends React.Component {
+	static propTypes = {
+		navigation: PropTypes.object.isRequired
+	}
+
 	static navigationOptions = () => ({
 		title: realm.objectForPrimaryKey('settings', 'Site_Name').value
 	});
@@ -40,10 +45,10 @@ export class LoginView extends React.Component {
 		const { navigate } = this.props.navigation;
 
 		this.submit = () => {
-			loginWithPassword({username: this.state.username}, this.state.password, function() {
-				console.log(arguments);
+			loginWithPassword({ username: this.state.username }, this.state.password, () => {
 				navigate('Rooms');
 			});
+
 			// let url = this.state.text.trim();
 			// if (!url) {
 			// 	url = defaultServer;
@@ -65,29 +70,29 @@ export class LoginView extends React.Component {
 			<View style={styles.view}>
 				<TextInput
 					style={styles.input}
-					onChangeText={(username) => this.setState({username})}
+					onChangeText={username => this.setState({ username })}
 					keyboardType='email-address'
 					autoCorrect={false}
 					returnKeyType='done'
 					autoCapitalize='none'
-					autoFocus={true}
+					autoFocus
 					onSubmitEditing={this.submit}
-					placeholder='Email or username' />
+					placeholder='Email or username'
+				/>
 				<TextInput
 					style={styles.input}
-					onChangeText={(password) => this.setState({password})}
-					secureTextEntry={true}
+					onChangeText={password => this.setState({ password })}
+					secureTextEntry
 					autoCorrect={false}
 					returnKeyType='done'
 					autoCapitalize='none'
 					onSubmitEditing={this.submit}
-					placeholder='Password' />
+					placeholder='Password'
+				/>
 			</View>
 		);
 	}
 }
-
-
 
 // export class LoginView extends React.Component {
 // 	renderRow(setting) {

@@ -1,8 +1,8 @@
 import { StackNavigator } from 'react-navigation';
-import { LoginView } from './login';
-import { NewServerView } from './new-server';
-import { RoomsView } from './rooms';
-import { RoomView } from './room';
+import LoginView from './login';
+import NewServerView from './new-server';
+import RoomsView from './rooms';
+import RoomView from './room';
 
 
 export default new StackNavigator({
