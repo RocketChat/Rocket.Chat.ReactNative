@@ -48,14 +48,13 @@ export default class RoomsView extends React.Component {
 	constructor(props) {
 		super(props);
 
-		const getState = () => ({
-			selected: new Map(),
+		this.state = {
 			dataSource: realm.objects('subscriptions').sorted('name')
-		});
+		};
+	}
 
+	componentWillMount() {
 		realm.addListener('change', () => this.setState(getState()));
-
-		this.state = getState();
 	}
 
 	_onPressItem = (id) => {

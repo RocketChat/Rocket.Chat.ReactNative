@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import { View, TextInput, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import realm from './realm';
 import { loginWithPassword, loadSubscriptions, Accounts } from './meteor';
 
@@ -56,7 +56,7 @@ export default class LoginView extends React.Component {
 
 	render() {
 		return (
-			<KeyboardAvoidingView style={styles.view}>
+			<KeyboardAvoidingView style={styles.view} behavior={Platform.OS === 'ios' && 'padding'}>
 				<TextInput
 					style={styles.input}
 					onChangeText={username => this.setState({ username })}
