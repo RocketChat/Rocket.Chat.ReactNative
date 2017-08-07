@@ -147,7 +147,7 @@ export default class RoomView extends React.Component {
 
 	render() {
 		return (
-			<KeyboardAvoidingView style={styles.container} behavior='padding' keyboardVerticalOffset={64}>
+			<KeyboardAvoidingView style={styles.container}>
 				<FlatList
 					ref={ref => this.listView = ref}
 					style={styles.list}

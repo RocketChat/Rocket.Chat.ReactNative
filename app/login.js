@@ -56,7 +56,7 @@ export default class LoginView extends React.Component {
 
 	render() {
 		return (
-			<KeyboardAvoidingView style={styles.view} behavior='padding'>
+			<KeyboardAvoidingView style={styles.view}>
 				<TextInput
 					style={styles.input}
 					onChangeText={username => this.setState({ username })}
