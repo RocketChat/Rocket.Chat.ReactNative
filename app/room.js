@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, KeyboardAvoidingView, Text, TextInput, FlatList, StyleSheet, Image } from 'react-native';
+import { View, KeyboardAvoidingView, Text, TextInput, FlatList, StyleSheet, Image, Platform } from 'react-native';
 // import Markdown from 'react-native-simple-markdown';
 import realm from './realm';
 import { loadMessagesForRoom, sendMessage } from './meteor';
@@ -67,7 +67,7 @@ class RoomItem extends React.PureComponent {
 
 		return (
 			<View style={[styles.roomItem, extraStyle]}>
-				<Image style={styles.avatar} source={{ uri: `http://localhost:3000/avatar/${ this.props.item.u.username }` }} />
+				<Image style={styles.avatar} source={{ uri: `${ this.props.baseUrl }/avatar/${ this.props.item.u.username }` }} />
 				<View style={styles.texts}>
 					<Text onPress={this._onPress} style={styles.username}>
 						{this.props.item.u.username}
@@ -98,21 +98,26 @@ export default class RoomView extends React.Component {
 		this.rid = realm.objectForPrimaryKey('subscriptions', props.navigation.state.params.sid).rid;
 		// this.rid = 'GENERAL';
 
-		this.state = this.getState();
+		this.state = {
+			text: '',
+			dataSource: this.getMessages()
+		};
 
-		loadMessagesForRoom(this.rid);
-
-		this.state = this.getState();
+		this.url = realm.objectForPrimaryKey('settings', 'Site_Url').value;
 	}
 
-	getState = () => ({
-		...this.state,
-		dataSource: realm.objects('messages').filtered('rid = $0', this.rid).sorted('ts', true)
-	});
+	getMessages = () => {
+		return realm.objects('messages').filtered('rid = $0', this.rid).sorted('ts', true);
+	}
 
-	updateState = () => (this.setState(this.getState()))
+	updateState = () => {
+		this.setState({
+			dataSource: this.getMessages()
+		});
+	};
 
-	componentDidMount() {
+	componentWillMount() {
+		loadMessagesForRoom(this.rid);
 		realm.addListener('change', this.updateState);
 	}
 
@@ -124,6 +129,7 @@ export default class RoomView extends React.Component {
 		<RoomItem
 			id={item._id}
 			item={item}
+			baseUrl={this.url}
 		/>
 	);
 
@@ -147,7 +153,7 @@ export default class RoomView extends React.Component {
 
 	render() {
 		return (
-			<KeyboardAvoidingView style={styles.container}>
+			<KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' && 'padding'} keyboardVerticalOffset={64}>
 				<FlatList
 					ref={ref => this.listView = ref}
 					style={styles.list}

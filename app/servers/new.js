@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Zeroconf from 'react-native-zeroconf';
-import { View, Text, TextInput, Button, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { NavigationActions } from 'react-navigation'
 
 import realm from '../realm';
@@ -76,7 +76,7 @@ export default class NewServerView extends React.Component {
 
 	render() {
 		return (
-			<KeyboardAvoidingView style={styles.view} behavior='padding'>
+			<KeyboardAvoidingView style={styles.view} behavior={Platform.OS === 'ios' && 'padding'}>
 				<TextInput
 					style={styles.input}
 					onChangeText={text => this.setState({ text })}
