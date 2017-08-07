@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import realm from './realm';
-import { loginWithPassword } from './meteor';
+import { loginWithPassword, loadSubscriptions, Accounts } from './meteor';
 
 
 const styles = StyleSheet.create({
@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		height: 40,
-		// flex: 1,
 		borderColor: '#aaa',
 		marginLeft: 20,
 		marginRight: 20,
@@ -38,36 +37,26 @@ export default class LoginView extends React.Component {
 		super(props);
 
 		this.state = {
-			username: 'rodrigo',
-			password: 'rodrigo'
+			username: '',
+			password: ''
 		};
 
 		const { navigate } = this.props.navigation;
 
-		this.submit = () => {
-			loginWithPassword({ username: this.state.username }, this.state.password, () => {
+		Accounts.onLogin(() => {
+			loadSubscriptions(() => {
 				navigate('Rooms');
 			});
+		});
 
-			// let url = this.state.text.trim();
-			// if (!url) {
-			// 	url = defaultServer;
-			// }
-
-			// // TODO: validate URL
-
-			// realm.write(() => {
-			// 	realm.objects('servers').filtered('current = true').forEach(item => item.current = false);
-			// 	realm.create('servers', {id: url, current: true}, true);
-			// });
-
-			// navigate('Login');
+		this.submit = () => {
+			loginWithPassword({ username: this.state.username }, this.state.password);
 		};
 	}
 
 	render() {
 		return (
-			<View style={styles.view}>
+			<KeyboardAvoidingView style={styles.view} behavior='padding'>
 				<TextInput
 					style={styles.input}
 					onChangeText={username => this.setState({ username })}
@@ -89,43 +78,7 @@ export default class LoginView extends React.Component {
 					onSubmitEditing={this.submit}
 					placeholder='Password'
 				/>
-			</View>
+			</KeyboardAvoidingView>
 		);
 	}
 }
-
-// export class LoginView extends React.Component {
-// 	renderRow(setting) {
-// 		return (
-// 			<Text>{setting._id}</Text>
-// 		);
-// 	}
-
-// 	constructor(props) {
-// 		super(props);
-// 		connect();
-// 		const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-
-// 		const getState = () => {
-// 			return {
-// 				dataSource: ds.cloneWithRows(realm.objects('settings'))
-// 			};
-// 		};
-
-// 		realm.addListener('change', () => this.setState(getState()));
-
-// 		this.state = getState();
-// 	}
-
-// 	render() {
-// 		return (
-// 			<View>
-// 				<Text>Title</Text>
-// 				<ListView
-// 					dataSource={this.state.dataSource}
-// 					renderRow={this.renderRow}
-// 				/>
-// 			</View>
-// 		);
-// 	}
-// }

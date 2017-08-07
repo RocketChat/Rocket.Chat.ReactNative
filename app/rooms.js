@@ -50,7 +50,7 @@ export default class RoomsView extends React.Component {
 
 		const getState = () => ({
 			selected: new Map(),
-			dataSource: realm.objects('subscriptions')
+			dataSource: realm.objects('subscriptions').sorted('name')
 		});
 
 		realm.addListener('change', () => this.setState(getState()));
