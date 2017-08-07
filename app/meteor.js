@@ -8,8 +8,6 @@ export function connect(cb) {
 	const currentServer = realm.objects('servers').filtered('current = true')[0];
 	const url = `${ currentServer.id }/websocket`;
 
-	console.log('CONNECTING TO', url);
-
 	Meteor.connect(url);
 
 	Meteor.ddp.on('connected', () => {
