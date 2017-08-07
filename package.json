@@ -16,7 +16,8 @@
     "react-native-meteor": "^1.1.0",
     "react-native-zeroconf": "^0.7.1",
     "react-navigation": "^1.0.0-beta.11",
-    "realm": "^1.10.1"
+    "realm": "^1.10.1",
+    "strip-ansi": "^4.0.0"
   },
   "devDependencies": {
     "babel-jest": "20.0.3",
