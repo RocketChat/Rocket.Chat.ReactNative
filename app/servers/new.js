@@ -1,37 +1,48 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, StyleSheet } from 'react-native';
-import realm from './realm';
-import { connect } from './meteor';
+import Zeroconf from 'react-native-zeroconf';
+import { View, Text, TextInput, Button, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import { NavigationActions } from 'react-navigation'
+
+import realm from '../realm';
+import { connect } from '../meteor';
 
 const styles = StyleSheet.create({
 	view: {
 		flex: 1,
-		flexDirection: 'row',
+		flexDirection: 'column',
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'stretch'
 	},
 	input: {
 		height: 40,
-		flex: 1,
 		borderColor: '#aaa',
 		margin: 20,
 		padding: 5,
 		borderWidth: 0,
 		backgroundColor: '#f8f8f8'
+	},
+	text: {
+		textAlign: 'center',
+		color: '#888'
 	}
 });
 
-const defaultServer = 'http://localhost:3000';
+const zeroconf = new Zeroconf();
 
 export default class NewServerView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired
 	}
 
+	static navigationOptions = ({navigation}) => ({
+		title: 'New Server Connection'
+	});
+
 	constructor(props) {
 		super(props);
 		this.state = {
+			defaultServer: 'https://demo.rocket.chat',
 			text: ''
 		};
 
@@ -40,10 +51,17 @@ export default class NewServerView extends React.Component {
 		this.submit = () => {
 			let url = this.state.text.trim();
 			if (!url) {
-				url = defaultServer;
+				url = this.state.defaultServer;
 			}
 
 			// TODO: validate URL
+			if (url.indexOf('.') === -1) {
+				url = `https://${ url }.rocket.chat`;
+			}
+
+			if (/^https?:\/\//.test(url) === false) {
+				url = `https://${ url }`;
+			}
 
 			realm.write(() => {
 				realm.objects('servers').filtered('current = true').forEach(item => (item.current = false));
@@ -51,15 +69,14 @@ export default class NewServerView extends React.Component {
 			});
 
 			connect(() => {
-				console.log('Site_Name', realm.objectForPrimaryKey('settings', 'Site_Name'));
-				navigate('Login');
+				navigate('ListServer', {newServer: url});
 			});
 		};
 	}
 
 	render() {
 		return (
-			<View style={styles.view}>
+			<KeyboardAvoidingView style={styles.view} behavior='padding'>
 				<TextInput
 					style={styles.input}
 					onChangeText={text => this.setState({ text })}
@@ -69,10 +86,9 @@ export default class NewServerView extends React.Component {
 					autoCapitalize='none'
 					autoFocus
 					onSubmitEditing={this.submit}
-					placeholder={defaultServer}
+					placeholder={this.state.defaultServer}
 				/>
-			</View>
+			</KeyboardAvoidingView>
 		);
 	}
 }
-

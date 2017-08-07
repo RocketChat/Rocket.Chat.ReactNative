@@ -24,16 +24,16 @@ const subscriptionSchema = {
 	properties: {
 		_id: 'string',
 		t: 'string',
-		ts: 'date',
-		ls: 'date',
+		ts: { type: 'date', optional: true },
+		ls: { type: 'date', optional: true },
 		name: 'string',
 		fname: { type: 'string', optional: true },
 		rid: 'string',
 		// u: { _id: 'hKCY2XGzHYk89SAaM', username: 'rodrigo', name: null },
-		open: 'bool',
-		alert: 'bool',
+		open: { type: 'bool', optional: true },
+		alert: { type: 'bool', optional: true },
 		// roles: [ 'owner' ],
-		unread: 'int'
+		unread: { type: 'int', optional: true }
 		// userMentions: 0,
 		// groupMentions: 0,
 		// _updatedAt: Fri Jul 28 2017 18:31:35 GMT-0300 (-03),
@@ -61,9 +61,11 @@ const messagesSchema = {
 		u: 'users',
 		// mentions: [],
 		// channels: [],
-		_updatedAt: 'date'
+		_updatedAt: 'date',
+		temp: { type: 'bool', optional: true }
 	}
 };
+
 
 // Realm.clearTestState();
 

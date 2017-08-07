@@ -1,16 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, FlatList, StyleSheet, Image } from 'react-native';
+import { View, KeyboardAvoidingView, Text, TextInput, FlatList, StyleSheet, Image } from 'react-native';
 // import Markdown from 'react-native-simple-markdown';
 import realm from './realm';
-import { loadMessagesForRoom } from './meteor';
+import { loadMessagesForRoom, sendMessage } from './meteor';
 
 
 const styles = StyleSheet.create({
 	roomItem: {
 		borderColor: '#aaa',
 		padding: 14,
-		flexDirection: 'row'
+		flexDirection: 'row',
+		transform: [{ scaleY: -1 }]
 	},
 	avatar: {
 		backgroundColor: '#ccc',
@@ -23,14 +24,33 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		marginBottom: 5
 	},
+	texts: {
+		flex: 1
+	},
+	msg: {
+		flex: 1
+	},
 	container: {
 		flex: 1
+	},
+	list: {
+		flex: 1,
+		transform: [{ scaleY: -1 }]
 	},
 	separator: {
 		height: 1,
 		// width: "86%",
 		backgroundColor: '#CED0CE'
 		// marginLeft: "14%"
+	},
+	textBox: {
+		paddingTop: 1,
+		backgroundColor: '#ccc'
+	},
+	textBoxInput: {
+		height: 40,
+		backgroundColor: '#fff',
+		paddingLeft: 15
 	}
 });
 
@@ -40,14 +60,19 @@ class RoomItem extends React.PureComponent {
 	}
 
 	render() {
+		const extraStyle = {};
+		if (this.props.item.temp) {
+			extraStyle.opacity = .3;
+		}
+
 		return (
-			<View style={styles.roomItem}>
+			<View style={[styles.roomItem, extraStyle]}>
 				<Image style={styles.avatar} source={{ uri: `http://localhost:3000/avatar/${ this.props.item.u.username }` }} />
-				<View>
+				<View style={styles.texts}>
 					<Text onPress={this._onPress} style={styles.username}>
 						{this.props.item.u.username}
 					</Text>
-					<Text>
+					<Text style={styles.msg}>
 						{this.props.item.msg}
 					</Text>
 					{/* <Markdown whitelist={['link', 'url']}>
@@ -73,16 +98,26 @@ export default class RoomView extends React.Component {
 		this.rid = realm.objectForPrimaryKey('subscriptions', props.navigation.state.params.sid).rid;
 		// this.rid = 'GENERAL';
 
+		this.state = this.getState();
+
 		loadMessagesForRoom(this.rid);
 
-		const getState = () => ({
-			selected: new Map(),
-			dataSource: realm.objects('messages').filtered('rid = $0', this.rid)
-		});
+		this.state = this.getState();
+	}
 
-		realm.addListener('change', () => this.setState(getState()));
+	getState = () => ({
+		...this.state,
+		dataSource: realm.objects('messages').filtered('rid = $0', this.rid).sorted('ts', true)
+	});
 
-		this.state = getState();
+	updateState = () => (this.setState(this.getState()))
+
+	componentDidMount() {
+		realm.addListener('change', this.updateState);
+	}
+
+	componentWillUnmount() {
+		realm.removeListener('change', this.updateState);
 	}
 
 	renderItem = ({ item }) => (
@@ -96,17 +131,44 @@ export default class RoomView extends React.Component {
 		<View style={styles.separator} />
 	);
 
+	submit = () => {
+		console.log(this.state.text);
+		if (this.state.text.trim() === '') {
+			return;
+		}
+
+		sendMessage(this.rid, this.state.text);
+
+		this.setState({
+			...this.state,
+			text: ''
+		});
+	}
+
 	render() {
 		return (
-			<View style={styles.container}>
+			<KeyboardAvoidingView style={styles.container} behavior='padding' keyboardVerticalOffset={64}>
 				<FlatList
+					ref={ref => this.listView = ref}
 					style={styles.list}
 					data={this.state.dataSource}
+					extraData={this.state}
 					renderItem={this.renderItem}
 					keyExtractor={item => item._id}
 					ItemSeparatorComponent={this.renderSeparator}
 				/>
-			</View>
+				<View style={styles.textBox}>
+					<TextInput
+						style={styles.textBoxInput}
+						value={this.state.text}
+						onChangeText={text => this.setState({ text })}
+						returnKeyType='send'
+						onSubmitEditing={this.submit}
+						autoFocus
+						placeholder='New message'
+					></TextInput>
+				</View>
+			</KeyboardAvoidingView>
 		);
 	}
 }

@@ -14,6 +14,7 @@
     "react": "16.0.0-alpha.12",
     "react-native": "0.46.1",
     "react-native-meteor": "^1.1.0",
+    "react-native-zeroconf": "^0.7.1",
     "react-navigation": "^1.0.0-beta.11",
     "realm": "^1.10.1"
   },
