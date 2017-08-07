@@ -81,7 +81,6 @@ export function loadMessagesForRoom(rid) {
 		if (err) {
 			console.error(err);
 		}
-		console.log(data);
 
 		realm.write(() => {
 			data.messages.forEach((message) => {
