@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'react-native';
+import { Button, Platform } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import LoginView from './views/login';
 import NewServerView from './views/serverNew';
@@ -8,11 +8,13 @@ import RoomsListView from './views/roomsList';
 import RoomView from './views/room';
 
 
+const position = Platform.OS === 'ios' ? 'headerLeft' : 'headerRight';
+
 const MainCardNavigator = StackNavigator({
 	Rooms: {
 		screen: RoomsListView,
 		navigationOptions: ({ navigation }) => ({
-			headerLeft: <Button title='Servers' onPress={() => navigation.navigate('ListServerModal')} />
+			[position]: <Button title='Servers' onPress={() => navigation.navigate('ListServerModal')} />
 		})
 	},
 	Room: {
@@ -38,19 +40,19 @@ export default new StackNavigator({
 	Login: {
 		screen: LoginView,
 		navigationOptions: ({ navigation }) => ({
-			headerLeft: <Button title='Cancel' onPress={() => navigation.dispatch({ type: 'Navigation/BACK' })} />
+			headerLeft: Platform.OS === 'ios' && (<Button title='Cancel' onPress={() => navigation.dispatch({ type: 'Navigation/BACK' })} />)
 		})
 	},
 	ListServerModal: {
 		screen: ListServerView,
 		navigationOptions: ({ navigation }) => ({
-			headerLeft: <Button title='Close' onPress={() => navigation.dispatch({ type: 'Navigation/BACK' })} />
+			headerLeft: Platform.OS === 'ios' && (<Button title='Close' onPress={() => navigation.dispatch({ type: 'Navigation/BACK' })} />)
 		})
 	},
 	NewServerModal: {
 		screen: NewServerView,
 		navigationOptions: ({ navigation }) => ({
-			headerLeft: <Button title='Close' onPress={() => navigation.dispatch({ type: 'Navigation/BACK' })} />
+			headerLeft: Platform.OS === 'ios' && (<Button title='Close' onPress={() => navigation.dispatch({ type: 'Navigation/BACK' })} />)
 		})
 	}
 }, {
