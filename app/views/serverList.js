@@ -58,7 +58,7 @@ export default class ListServerView extends React.Component {
 		headerRight: (
 			<Button
 				title='Add'
-				onPress={() => navigation.navigate('NewServer')}
+				onPress={() => navigation.navigate('NewServerModal')}
 			/>
 		)
 	});
@@ -70,69 +70,60 @@ export default class ListServerView extends React.Component {
 		};
 	}
 
-	componentDidMount() {
-		const getState = () => {
-			const sections = [{
-				title: 'My servers',
-				data: realm.objects('servers')
-			}];
+	componentWillMount() {
+		realm.addListener('change', this.updateState);
+		zeroconf.on('update', this.updateState);
 
-			if (this.state.nearBy) {
-				const nearBy = Object.keys(this.state.nearBy)
-					.filter(key => this.state.nearBy[key].addresses);
-				if (nearBy.length) {
-					sections.push({
-						title: 'Nearby',
-						data: nearBy.map((key) => {
-							const server = this.state.nearBy[key];
-							const address = `http://${ server.addresses[0] }:${ server.port }`;
-							return {
-								id: address
-							};
-						})
-					});
-				}
-			}
-
-			return {
-				...this.state,
-				sections
-			};
-		};
-
-		const { navigation } = this.props;
-
-		if (navigation && navigation.state.params && navigation.state.params.newServer) {
-			return navigation.navigate('Login');
-		}
-
-		const currentServer = realm.objects('servers').filtered('current = true')[0];
-		if (currentServer) {
-			connect(() => {
-				navigation.navigate('Login');
-			});
-		}
-
-		zeroconf.on('update', () => {
-			this.state.nearBy = zeroconf.getServices();
-			this.setState(getState());
-		});
 		zeroconf.scan('http', 'tcp', 'local.');
 
-		realm.addListener('change', () => this.setState(getState()));
+		this.state = this.getState();
+	}
 
-		this.state = getState();
-
-		return null;
+	componentWillUnmount() {
+		zeroconf.stop();
+		realm.removeListener('change', this.updateState);
+		zeroconf.removeListener('update', this.updateState);
 	}
 
 	onPressItem(item) {
-		const { navigate } = this.props.navigation;
 		RocketChat.currentServer = item.id;
 
-		connect(() => {
-			navigate('Login');
-		});
+		connect(() => {});
+		this.props.navigation.dispatch({ type: 'Navigation/BACK' });
+	}
+
+	getState = () => {
+		const sections = [{
+			title: 'My servers',
+			data: realm.objects('servers')
+		}];
+
+		this.state.nearBy = zeroconf.getServices();
+		if (this.state.nearBy) {
+			const nearBy = Object.keys(this.state.nearBy)
+				.filter(key => this.state.nearBy[key].addresses);
+			if (nearBy.length) {
+				sections.push({
+					title: 'Nearby',
+					data: nearBy.map((key) => {
+						const server = this.state.nearBy[key];
+						const address = `http://${ server.addresses[0] }:${ server.port }`;
+						return {
+							id: address
+						};
+					})
+				});
+			}
+		}
+
+		return {
+			...this.state,
+			sections
+		};
+	};
+
+	updateState = () => {
+		this.setState(this.getState());
 	}
 
 	renderItem = ({ item }) => (
