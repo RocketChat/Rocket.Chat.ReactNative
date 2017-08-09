@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TextInput, StyleSheet } from 'react-native';
-import { loginWithPassword } from '../lib/meteor';
+import RocketChat from '../lib/rocketchat';
 
 import KeyboardView from '../components/KeyboardView';
 
@@ -42,7 +42,7 @@ export default class LoginView extends React.Component {
 		};
 
 		this.submit = () => {
-			loginWithPassword({ username: this.state.username }, this.state.password, () => {
+			RocketChat.loginWithPassword({ username: this.state.username }, this.state.password, () => {
 				this.props.navigation.dispatch({ type: 'Navigation/BACK' });
 			});
 		};

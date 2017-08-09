@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TextInput, StyleSheet } from 'react-native';
 
-import RocketChat from '../lib/meteor';
+import RocketChat from '../lib/rocketchat';
 
 import KeyboardView from '../components/KeyboardView';
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Text, View, FlatList, StyleSheet } from 'react-native';
 import Meteor from 'react-native-meteor';
 import realm from '../lib/realm';
-import RocketChat, { connect } from '../lib/meteor';
+import RocketChat from '../lib/rocketchat';
 
 import RoomItem from '../components/RoomItem';
 
@@ -75,9 +75,7 @@ export default class RoomsListView extends React.Component {
 		navigation = this.props.navigation;
 
 		if (RocketChat.currentServer) {
-			connect(() => {
-				// navigation.navigate('Login');
-			});
+			RocketChat.connect();
 		} else {
 			navigation.navigate('ListServerModal');
 		}
@@ -127,7 +125,7 @@ export default class RoomsListView extends React.Component {
 				<View style={[styles.bannerContainer, { backgroundColor: 'orange' }]}>
 					<Text style={[styles.bannerText, { color: '#a00' }]}>Authenticating...</Text>
 				</View>
-			)
+			);
 		}
 	}
 
