@@ -133,6 +133,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-fetch-blob')
     compile project(':react-native-zeroconf')
     compile project(':realm')
     compile fileTree(dir: "libs", include: ["*.jar"])
