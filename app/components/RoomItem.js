@@ -20,8 +20,6 @@ const styles = StyleSheet.create({
 	},
 	roomItem: {
 		lineHeight: 18,
-		borderTopWidth: 2,
-		borderColor: '#aaa',
 		padding: 14,
 		flexGrow: 1
 	}
