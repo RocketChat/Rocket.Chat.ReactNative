@@ -4,7 +4,7 @@ import Zeroconf from 'react-native-zeroconf';
 import { View, Text, SectionList, Button, StyleSheet } from 'react-native';
 
 import realm from '../lib/realm';
-import { connect } from '../lib/meteor';
+import RocketChat, { connect } from '../lib/meteor';
 
 const styles = StyleSheet.create({
 	view: {
@@ -128,10 +128,7 @@ export default class ListServerView extends React.Component {
 
 	onPressItem(item) {
 		const { navigate } = this.props.navigation;
-		realm.write(() => {
-			realm.objects('servers').filtered('current = true').forEach(server => (server.current = false));
-			realm.create('servers', { id: item.id, current: true }, true);
-		});
+		RocketChat.currentServer = item.id;
 
 		connect(() => {
 			navigate('Login');

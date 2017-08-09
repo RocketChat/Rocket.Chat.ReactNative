@@ -23,6 +23,12 @@ const styles = StyleSheet.create({
 	}
 });
 
+Accounts.onLogin(() => {
+	loadSubscriptions(() => {
+		navigate('Rooms');
+	});
+});
+
 export default class LoginView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired
@@ -40,13 +46,7 @@ export default class LoginView extends React.Component {
 			password: ''
 		};
 
-		const { navigate } = this.props.navigation;
-
-		Accounts.onLogin(() => {
-			loadSubscriptions(() => {
-				navigate('Rooms');
-			});
-		});
+		navigate = this.props.navigation.navigate;
 
 		this.submit = () => {
 			loginWithPassword({ username: this.state.username }, this.state.password);

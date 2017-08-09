@@ -4,9 +4,24 @@ import realm from './realm';
 
 export { Accounts } from 'react-native-meteor';
 
+const RocketChat = {
+	get currentServer() {
+		const current = realm.objects('servers').filtered('current = true')[0];
+		return current && current.id;
+	},
+
+	set currentServer(server) {
+		realm.write(() => {
+			realm.objects('servers').filtered('current = true').forEach(server => (server.current = false));
+			realm.create('servers', { id: server, current: true }, true);
+		});
+	}
+}
+
+export default RocketChat;
+
 export function connect(cb) {
-	const currentServer = realm.objects('servers').filtered('current = true')[0];
-	const url = `${ currentServer.id }/websocket`;
+	const url = `${ RocketChat.currentServer }/websocket`;
 
 	Meteor.connect(url);
 
@@ -23,6 +38,7 @@ export function connect(cb) {
 					const setting = {
 						_id: item._id
 					};
+					setting._server = {id: RocketChat.currentServer};
 					if (typeof item.value === 'string') {
 						setting.value = item.value;
 					}
@@ -40,6 +56,7 @@ export function connect(cb) {
 					realm.write(() => {
 						const message = ddbMessage.fields.args[0];
 						message.temp = false;
+						message._server = {id: RocketChat.currentServer};
 						realm.create('messages', message, true);
 					});
 				}, 1000);
@@ -66,6 +83,7 @@ export function loadSubscriptions(cb) {
 				// if (typeof item.value === 'string') {
 				// 	subscription.value = item.value;
 				// }
+				subscription._server = {id: RocketChat.currentServer};
 				realm.create('subscriptions', subscription, true);
 			});
 		});
@@ -83,6 +101,7 @@ export function loadMessagesForRoom(rid) {
 		realm.write(() => {
 			data.messages.forEach((message) => {
 				message.temp = false;
+				message._server = {id: RocketChat.currentServer};
 				realm.create('messages', message, true);
 			});
 		});
@@ -103,6 +122,7 @@ export function sendMessage(rid, msg, cb) {
 			ts: new Date(),
 			_updatedAt: new Date(),
 			temp: true,
+			_server: {id: RocketChat.currentServer},
 			u: {
 				_id: user._id,
 				username: user.username
