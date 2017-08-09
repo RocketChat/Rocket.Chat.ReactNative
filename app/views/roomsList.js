@@ -62,8 +62,7 @@ export default class RoomsListView extends React.Component {
 
 		navigation = this.props.navigation;
 
-		const currentServer = realm.objects('servers').filtered('current = true')[0];
-		if (currentServer) {
+		if (RocketChat.currentServer) {
 			connect(() => {
 				// navigation.navigate('Login');
 			});
@@ -77,7 +76,18 @@ export default class RoomsListView extends React.Component {
 	}
 
 	getState = () => ({
-		dataSource: realm.objects('subscriptions').filtered('_server.id = $0', RocketChat.currentServer).sorted('name')
+		dataSource: realm.objects('subscriptions').filtered('_server.id = $0', RocketChat.currentServer).sorted('name').slice()
+			.sort((a, b) => {
+				if (a.unread < b.unread) {
+					return 1;
+				}
+
+				if (a.unread > b.unread) {
+					return -1;
+				}
+
+				return 0;
+			})
 	})
 
 	updateState = () => {
@@ -93,7 +103,7 @@ export default class RoomsListView extends React.Component {
 		<RoomItem
 			id={item._id}
 			onPressItem={this._onPressItem}
-			title={item.name}
+			item={item}
 		/>
 	);
 
