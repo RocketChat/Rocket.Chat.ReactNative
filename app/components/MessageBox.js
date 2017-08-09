@@ -50,7 +50,6 @@ export default class MessageBox extends React.PureComponent {
 					returnKeyType='send'
 					onSubmitEditing={this.submit}
 					blurOnSubmit={false}
-					autoFocus
 					placeholder='New message'
 				/>
 			</View>
