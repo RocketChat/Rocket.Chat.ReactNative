@@ -65,7 +65,7 @@ const messagesSchema = {
 		u: 'users',
 		// mentions: [],
 		// channels: [],
-		_updatedAt: 'date',
+		_updatedAt: { type: 'date', optional: true },
 		temp: { type: 'bool', optional: true }
 	}
 };
