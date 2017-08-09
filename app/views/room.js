@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Text, View, FlatList, StyleSheet } from 'react-native';
 // import Markdown from 'react-native-simple-markdown';
 import realm from '../lib/realm';
-import RocketChat, { loadMessagesForRoom, sendMessage } from '../lib/meteor';
+import RocketChat from '../lib/rocketchat';
 
 import Message from '../components/Message';
 import MessageBox from '../components/MessageBox';
@@ -54,7 +54,7 @@ export default class RoomView extends React.Component {
 	}
 
 	componentWillMount() {
-		loadMessagesForRoom(this.rid, () => {
+		RocketChat.loadMessagesForRoom(this.rid, () => {
 			this.setState({
 				...this.state,
 				loaded: true
@@ -76,7 +76,7 @@ export default class RoomView extends React.Component {
 		});
 	};
 
-	sendMessage = message => sendMessage(this.rid, message);
+	sendMessage = message => RocketChat.sendMessage(this.rid, message);
 
 	renderSeparator = () => (
 		<View style={styles.separator} />
