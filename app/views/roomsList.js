@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet, TextInput } from 'react-native';
 import realm from '../lib/realm';
 import RocketChat from '../lib/meteor';
 
@@ -51,6 +51,15 @@ export default class RoomsListView extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
+				<View>
+					<TextInput
+						style={styles.searchBox}
+						value={this.state.text}
+						onChangeText={text => this.setState({ text })}
+						returnKeyType='search'
+						placeholder='Search'
+					/>
+				</View>
 				<FlatList
 					style={styles.list}
 					data={this.state.dataSource}
