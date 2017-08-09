@@ -33,25 +33,23 @@ export function connect(cb) {
 			cb();
 		});
 
-		Meteor.ddp.on("changed", ddbMessage => {
+		Meteor.ddp.on('changed', (ddbMessage) => {
 			console.log('changed', ddbMessage);
 			if (ddbMessage.collection === 'stream-room-messages') {
-				setTimeout(function() {
+				setTimeout(() => {
 					realm.write(() => {
 						const message = ddbMessage.fields.args[0];
 						message.temp = false;
 						realm.create('messages', message, true);
 					});
-				}, 1000)
+				}, 1000);
 			}
 		});
 	});
 }
 
 export function loginWithPassword(selector, password, cb) {
-	Meteor.loginWithPassword(selector, password, (err, data) => {
-		cb && cb();
-	});
+	Meteor.loginWithPassword(selector, password, () => cb && cb());
 }
 
 export function loadSubscriptions(cb) {
@@ -72,7 +70,7 @@ export function loadSubscriptions(cb) {
 			});
 		});
 
-		cb && cb();
+		return cb && cb();
 	});
 }
 
@@ -102,8 +100,8 @@ export function sendMessage(rid, msg, cb) {
 			_id,
 			rid,
 			msg,
-			ts: new Date,
-			_updatedAt: new Date,
+			ts: new Date(),
+			_updatedAt: new Date(),
 			temp: true,
 			u: {
 				_id: user._id,
@@ -112,7 +110,5 @@ export function sendMessage(rid, msg, cb) {
 		}, true);
 	});
 
-	Meteor.call('sendMessage', {_id, rid, msg}, (err, data) => {
-		cb && cb();
-	});
+	Meteor.call('sendMessage', { _id, rid, msg }, () => cb && cb());
 }
