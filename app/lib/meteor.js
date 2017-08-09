@@ -20,6 +20,27 @@ const RocketChat = {
 
 export default RocketChat;
 
+Meteor.Accounts.onLogin(() => {
+	Meteor.call('subscriptions/get', (err, data) => {
+		if (err) {
+			console.error(err);
+		}
+
+		realm.write(() => {
+			data.forEach((subscription) => {
+				// const subscription = {
+				// 	_id: item._id
+				// };
+				// if (typeof item.value === 'string') {
+				// 	subscription.value = item.value;
+				// }
+				subscription._server = { id: RocketChat.currentServer };
+				realm.create('subscriptions', subscription, true);
+			});
+		});
+	});
+});
+
 export function connect(cb) {
 	const url = `${ RocketChat.currentServer }/websocket`;
 
@@ -52,14 +73,12 @@ export function connect(cb) {
 		Meteor.ddp.on('changed', (ddbMessage) => {
 			console.log('changed', ddbMessage);
 			if (ddbMessage.collection === 'stream-room-messages') {
-				setTimeout(() => {
-					realm.write(() => {
-						const message = ddbMessage.fields.args[0];
-						message.temp = false;
-						message._server = { id: RocketChat.currentServer };
-						realm.create('messages', message, true);
-					});
-				}, 1000);
+				realm.write(() => {
+					const message = ddbMessage.fields.args[0];
+					message.temp = false;
+					message._server = { id: RocketChat.currentServer };
+					realm.create('messages', message, true);
+				});
 			}
 		});
 	});

@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TextInput, StyleSheet } from 'react-native';
-import realm from '../lib/realm';
-import { loginWithPassword, loadSubscriptions, Accounts } from '../lib/meteor';
+import { loginWithPassword } from '../lib/meteor';
 
 import KeyboardView from '../components/KeyboardView';
 
@@ -25,19 +24,13 @@ const styles = StyleSheet.create({
 	}
 });
 
-Accounts.onLogin(() => {
-	loadSubscriptions(() => {
-		navigate('Rooms');
-	});
-});
-
 export default class LoginView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired
 	}
 
 	static navigationOptions = () => ({
-		title: realm.objectForPrimaryKey('settings', 'Site_Name').value
+		title: 'Login'
 	});
 
 	constructor(props) {
@@ -48,10 +41,10 @@ export default class LoginView extends React.Component {
 			password: ''
 		};
 
-		navigate = this.props.navigation.navigate;
-
 		this.submit = () => {
-			loginWithPassword({ username: this.state.username }, this.state.password);
+			loginWithPassword({ username: this.state.username }, this.state.password, () => {
+				this.props.navigation.dispatch({ type: 'Navigation/BACK' });
+			});
 		};
 	}
 
