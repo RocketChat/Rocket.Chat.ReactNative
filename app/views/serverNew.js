@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TextInput, StyleSheet } from 'react-native';
 
-import realm from '../lib/realm';
-import { connect } from '../lib/meteor';
+import RocketChat from '../lib/meteor';
 
 import KeyboardView from '../components/KeyboardView';
 
@@ -44,8 +43,6 @@ export default class NewServerView extends React.Component {
 			text: ''
 		};
 
-		const { navigate } = this.props.navigation;
-
 		this.submit = () => {
 			let url = this.state.text.trim();
 			if (!url) {
@@ -61,14 +58,8 @@ export default class NewServerView extends React.Component {
 				url = `https://${ url }`;
 			}
 
-			realm.write(() => {
-				realm.objects('servers').filtered('current = true').forEach(item => (item.current = false));
-				realm.create('servers', { id: url, current: true }, true);
-			});
-
-			connect(() => {
-				navigate('ListServer', { newServer: url });
-			});
+			RocketChat.currentServer = url;
+			this.props.navigation.dispatch({ type: 'Navigation/BACK' });
 		};
 	}
 
