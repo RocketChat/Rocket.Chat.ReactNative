@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, FlatList, StyleSheet } from 'react-native';
 import realm from '../lib/realm';
+import RocketChat from '../lib/meteor';
 
 import RoomItem from '../components/RoomItem';
 
@@ -26,13 +27,12 @@ export default class RoomsListView extends React.Component {
 		super(props);
 
 		this.state = {
-			dataSource: realm.objects('subscriptions').sorted('name')
+			dataSource: realm.objects('subscriptions').filtered('_server.id = $0', RocketChat.currentServer).sorted('name')
 		};
 	}
 
 	_onPressItem = (id) => {
 		const { navigate } = this.props.navigation;
-		console.log('pressed', id);
 		navigate('Room', { sid: id });
 	}
 
