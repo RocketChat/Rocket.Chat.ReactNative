@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Zeroconf from 'react-native-zeroconf';
-import { View, Text, TextInput, Button, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
-import { NavigationActions } from 'react-navigation'
+import { TextInput, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 
-import realm from '../realm';
-import { connect } from '../meteor';
+import realm from '../lib/realm';
+import { connect } from '../lib/meteor';
 
 const styles = StyleSheet.create({
 	view: {
@@ -28,14 +26,12 @@ const styles = StyleSheet.create({
 	}
 });
 
-const zeroconf = new Zeroconf();
-
 export default class NewServerView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired
 	}
 
-	static navigationOptions = ({navigation}) => ({
+	static navigationOptions = () => ({
 		title: 'New Server Connection'
 	});
 
@@ -69,7 +65,7 @@ export default class NewServerView extends React.Component {
 			});
 
 			connect(() => {
-				navigate('ListServer', {newServer: url});
+				navigate('ListServer', { newServer: url });
 			});
 		};
 	}

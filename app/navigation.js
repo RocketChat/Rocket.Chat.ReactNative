@@ -1,9 +1,9 @@
 import { StackNavigator } from 'react-navigation';
-import LoginView from './login';
-import NewServerView from './servers/new';
-import ListServerView from './servers/list';
-import RoomsView from './rooms';
-import RoomView from './room';
+import LoginView from './views/login';
+import NewServerView from './views/serverNew';
+import ListServerView from './views/serverList';
+import RoomsListView from './views/roomsList';
+import RoomView from './views/room';
 
 const navigationOptions = {
 	// headerStyle: {
@@ -24,7 +24,7 @@ export default new StackNavigator({
 		navigationOptions
 	},
 	Login: { screen: LoginView },
-	Rooms: { screen: RoomsView },
+	Rooms: { screen: RoomsListView },
 	Room: {
 		screen: RoomView
 		// navigationOptions: {
