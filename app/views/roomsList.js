@@ -10,7 +10,7 @@ import RoomItem from '../components/RoomItem';
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		alignItems: 'center',
+		alignItems: 'stretch',
 		justifyContent: 'center'
 	},
 	separator: {
@@ -24,6 +24,13 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		fontSize: 18,
 		color: '#ccc'
+	},
+	bannerContainer: {
+		backgroundColor: '#ddd'
+	},
+	bannerText: {
+		lineHeight: 28,
+		textAlign: 'center'
 	}
 });
 
@@ -99,6 +106,24 @@ export default class RoomsListView extends React.Component {
 		navigate('Room', { sid: id });
 	}
 
+	renderBanner = () => {
+		if (Meteor.getData().ddp.status !== 'connected') {
+			return (
+				<View style={styles.bannerContainer}>
+					<Text style={styles.bannerText}>Connecting...</Text>
+				</View>
+			);
+		}
+
+		if (Meteor._isLoggingIn) {
+			return (
+				<View style={styles.bannerContainer}>
+					<Text style={styles.bannerText}>Loggining...</Text>
+				</View>
+			)
+		}
+	}
+
 	renderItem = ({ item }) => (
 		<RoomItem
 			id={item._id}
@@ -132,6 +157,7 @@ export default class RoomsListView extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
+				{this.renderBanner()}
 				{this.renderList()}
 			</View>
 		);
