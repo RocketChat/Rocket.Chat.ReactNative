@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Zeroconf from 'react-native-zeroconf';
-import { H1, View, TouchableOpacity, Text, TextInput, SectionList, Button, StyleSheet } from 'react-native';
+import { View, Text, SectionList, Button, StyleSheet } from 'react-native';
 
-import realm from '../realm';
-import { connect } from '../meteor';
+import realm from '../lib/realm';
+import { connect } from '../lib/meteor';
 
 const styles = StyleSheet.create({
 	view: {
@@ -53,12 +53,12 @@ export default class ListServerView extends React.Component {
 		navigation: PropTypes.object.isRequired
 	}
 
-	static navigationOptions = ({navigation}) => ({
+	static navigationOptions = ({ navigation }) => ({
 		title: 'Servers',
 		headerRight: (
 			<Button
-				title = "Add"
-				onPress = {() => navigation.navigate('NewServer')}
+				title='Add'
+				onPress={() => navigation.navigate('NewServer')}
 			/>
 		)
 	});
@@ -78,16 +78,17 @@ export default class ListServerView extends React.Component {
 			}];
 
 			if (this.state.nearBy) {
-				const nearBy = Object.keys(this.state.nearBy).filter(key => this.state.nearBy[key].addresses);
+				const nearBy = Object.keys(this.state.nearBy)
+					.filter(key => this.state.nearBy[key].addresses);
 				if (nearBy.length) {
 					sections.push({
 						title: 'Nearby',
 						data: nearBy.map((key) => {
 							const server = this.state.nearBy[key];
-							const address = `http://${ server.addresses[0] }:${ server.port }`
+							const address = `http://${ server.addresses[0] }:${ server.port }`;
 							return {
 								id: address
-							}
+							};
 						})
 					});
 				}
@@ -108,7 +109,7 @@ export default class ListServerView extends React.Component {
 		const currentServer = realm.objects('servers').filtered('current = true')[0];
 		if (currentServer) {
 			connect(() => {
-				navigation.navigate('Login')
+				navigation.navigate('Login');
 			});
 		}
 
@@ -121,12 +122,14 @@ export default class ListServerView extends React.Component {
 		realm.addListener('change', () => this.setState(getState()));
 
 		this.state = getState();
+
+		return null;
 	}
 
 	onPressItem(item) {
 		const { navigate } = this.props.navigation;
 		realm.write(() => {
-			realm.objects('servers').filtered('current = true').forEach(item => (item.current = false));
+			realm.objects('servers').filtered('current = true').forEach(server => (server.current = false));
 			realm.create('servers', { id: item.id, current: true }, true);
 		});
 
@@ -138,7 +141,7 @@ export default class ListServerView extends React.Component {
 	renderItem = ({ item }) => (
 		<Text
 			style={styles.listItem}
-			onPress={() => {this.onPressItem(item)}}
+			onPress={() => { this.onPressItem(item); }}
 		>
 			{item.id}
 		</Text>
@@ -160,11 +163,10 @@ export default class ListServerView extends React.Component {
 					sections={this.state.sections}
 					renderItem={this.renderItem}
 					renderSectionHeader={this.renderSectionHeader}
-					keyExtractor={(item) => item.id}
+					keyExtractor={item => item.id}
 					ItemSeparatorComponent={this.renderSeparator}
 				/>
 			</View>
 		);
 	}
 }
-

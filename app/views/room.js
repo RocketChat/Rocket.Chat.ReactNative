@@ -1,18 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, KeyboardAvoidingView, Text, TextInput, FlatList, StyleSheet, Image, Platform } from 'react-native';
+import { View, KeyboardAvoidingView, TextInput, FlatList, StyleSheet, Platform } from 'react-native';
 // import Markdown from 'react-native-simple-markdown';
-import realm from './realm';
-import { loadMessagesForRoom, sendMessage } from './meteor';
+import realm from '../lib/realm';
+import { loadMessagesForRoom, sendMessage } from '../lib/meteor';
 
+import Message from '../components/Message';
 
 const styles = StyleSheet.create({
-	roomItem: {
-		borderColor: '#aaa',
-		padding: 14,
-		flexDirection: 'row',
-		transform: [{ scaleY: -1 }]
-	},
 	avatar: {
 		backgroundColor: '#ccc',
 		width: 40,
@@ -54,36 +49,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-class RoomItem extends React.PureComponent {
-	static propTypes = {
-		item: PropTypes.object.isRequired
-	}
-
-	render() {
-		const extraStyle = {};
-		if (this.props.item.temp) {
-			extraStyle.opacity = .3;
-		}
-
-		return (
-			<View style={[styles.roomItem, extraStyle]}>
-				<Image style={styles.avatar} source={{ uri: `${ this.props.baseUrl }/avatar/${ this.props.item.u.username }` }} />
-				<View style={styles.texts}>
-					<Text onPress={this._onPress} style={styles.username}>
-						{this.props.item.u.username}
-					</Text>
-					<Text style={styles.msg}>
-						{this.props.item.msg}
-					</Text>
-					{/* <Markdown whitelist={['link', 'url']}>
-						{this.props.item.msg}
-					</Markdown> */}
-				</View>
-			</View>
-		);
-	}
-}
-
 export default class RoomView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired
@@ -106,16 +71,6 @@ export default class RoomView extends React.Component {
 		this.url = realm.objectForPrimaryKey('settings', 'Site_Url').value;
 	}
 
-	getMessages = () => {
-		return realm.objects('messages').filtered('rid = $0', this.rid).sorted('ts', true);
-	}
-
-	updateState = () => {
-		this.setState({
-			dataSource: this.getMessages()
-		});
-	};
-
 	componentWillMount() {
 		loadMessagesForRoom(this.rid);
 		realm.addListener('change', this.updateState);
@@ -125,17 +80,13 @@ export default class RoomView extends React.Component {
 		realm.removeListener('change', this.updateState);
 	}
 
-	renderItem = ({ item }) => (
-		<RoomItem
-			id={item._id}
-			item={item}
-			baseUrl={this.url}
-		/>
-	);
+	getMessages = () => realm.objects('messages').filtered('rid = $0', this.rid).sorted('ts', true)
 
-	renderSeparator = () => (
-		<View style={styles.separator} />
-	);
+	updateState = () => {
+		this.setState({
+			dataSource: this.getMessages()
+		});
+	};
 
 	submit = () => {
 		console.log(this.state.text);
@@ -149,7 +100,19 @@ export default class RoomView extends React.Component {
 			...this.state,
 			text: ''
 		});
-	}
+	};
+
+	renderSeparator = () => (
+		<View style={styles.separator} />
+	);
+
+	renderItem = ({ item }) => (
+		<Message
+			id={item._id}
+			item={item}
+			baseUrl={this.url}
+		/>
+	);
 
 	render() {
 		return (
@@ -172,7 +135,7 @@ export default class RoomView extends React.Component {
 						onSubmitEditing={this.submit}
 						autoFocus
 						placeholder='New message'
-					></TextInput>
+					/>
 				</View>
 			</KeyboardAvoidingView>
 		);

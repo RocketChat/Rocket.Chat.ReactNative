@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
-import realm from './realm';
-import { loginWithPassword, loadSubscriptions, Accounts } from './meteor';
-
+import { TextInput, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import realm from '../lib/realm';
+import { loginWithPassword, loadSubscriptions, Accounts } from '../lib/meteor';
 
 const styles = StyleSheet.create({
 	view: {
