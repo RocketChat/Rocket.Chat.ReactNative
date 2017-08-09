@@ -14,6 +14,7 @@ const settingsSchema = {
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
+		_server: 'servers',
 		value: { type: 'string', optional: true }
 	}
 };
@@ -23,6 +24,7 @@ const subscriptionSchema = {
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
+		_server: 'servers',
 		t: 'string',
 		ts: { type: 'date', optional: true },
 		ls: { type: 'date', optional: true },
@@ -45,6 +47,7 @@ const usersSchema = {
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
+		_server: 'servers',
 		username: 'string',
 		name: { type: 'string', optional: true }
 	}
@@ -55,6 +58,7 @@ const messagesSchema = {
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
+		_server: 'servers',
 		msg: { type: 'string', optional: true },
 		rid: 'string',
 		ts: 'date',
@@ -79,7 +83,7 @@ export default realm;
 realm.write(() => {
 	const allSettins = realm.objects('settings');
 	realm.delete(allSettins);
+
+	// realm.create('servers', {id: 'https://demo.rocket.chat', current: false}, true);
+	// realm.create('servers', {id: 'http://localhost:3000', current: false}, true);
 });
-
-
-console.log(realm.objects('servers'));

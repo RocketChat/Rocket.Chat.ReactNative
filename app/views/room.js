@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, KeyboardAvoidingView, TextInput, FlatList, StyleSheet, Platform } from 'react-native';
 // import Markdown from 'react-native-simple-markdown';
 import realm from '../lib/realm';
-import { loadMessagesForRoom, sendMessage } from '../lib/meteor';
+import RocketChat, { loadMessagesForRoom, sendMessage } from '../lib/meteor';
 
 import Message from '../components/Message';
 
@@ -80,7 +80,7 @@ export default class RoomView extends React.Component {
 		realm.removeListener('change', this.updateState);
 	}
 
-	getMessages = () => realm.objects('messages').filtered('rid = $0', this.rid).sorted('ts', true)
+	getMessages = () => realm.objects('messages').filtered('_server.id = $0 AND rid = $1', RocketChat.currentServer, this.rid).sorted('ts', true)
 
 	updateState = () => {
 		this.setState({
