@@ -6,7 +6,10 @@ export default class KeyboardView extends React.PureComponent {
 	static propTypes = {
 		style: KeyboardAvoidingView.propTypes.style,
 		keyboardVerticalOffset: PropTypes.number,
-		children: PropTypes.array.isRequired
+		children: PropTypes.oneOfType([
+			PropTypes.arrayOf(PropTypes.node),
+			PropTypes.node
+		])
 	}
 
 	render() {

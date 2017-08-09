@@ -84,6 +84,6 @@ realm.write(() => {
 	const allSettins = realm.objects('settings');
 	realm.delete(allSettins);
 
-	// realm.create('servers', {id: 'https://demo.rocket.chat', current: false}, true);
-	// realm.create('servers', {id: 'http://localhost:3000', current: false}, true);
+	// realm.create('servers', { id: 'https://demo.rocket.chat', current: false }, true);
+	// realm.create('servers', { id: 'http://localhost:3000', current: false }, true);
 });
