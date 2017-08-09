@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { Text, View, FlatList, StyleSheet, Button } from 'react-native';
 // import Markdown from 'react-native-simple-markdown';
 import realm from '../lib/realm';
-import RocketChat, { loadMessagesForRoom, sendMessage } from '../lib/meteor';
+import RocketChat from '../lib/rocketchat';
 
 import Message from '../components/Message';
 import MessageBox from '../components/MessageBox';
@@ -19,9 +19,15 @@ const styles = StyleSheet.create({
 	},
 	separator: {
 		height: 1,
-		// width: "86%",
 		backgroundColor: '#CED0CE'
-		// marginLeft: "14%"
+	},
+	bannerContainer: {
+		backgroundColor: 'orange'
+	},
+	bannerText: {
+		margin: 5,
+		textAlign: 'center',
+		color: '#a00'
 	}
 });
 
@@ -31,23 +37,30 @@ export default class RoomView extends React.Component {
 	}
 
 	static navigationOptions = ({ navigation }) => ({
-		title: realm.objectForPrimaryKey('subscriptions', navigation.state.params.sid).name
+		title: navigation.state.params.name || realm.objectForPrimaryKey('subscriptions', navigation.state.params.sid).name
 	});
 
 	constructor(props) {
 		super(props);
-		this.rid = realm.objectForPrimaryKey('subscriptions', props.navigation.state.params.sid).rid;
+		this.rid = props.navigation.state.params.rid || realm.objectForPrimaryKey('subscriptions', props.navigation.state.params.sid).rid;
 		// this.rid = 'GENERAL';
 
 		this.state = {
-			dataSource: this.getMessages()
+			dataSource: this.getMessages(),
+			loaded: false,
+			joined: typeof props.navigation.state.params.rid === 'undefined'
 		};
 
 		this.url = realm.objectForPrimaryKey('settings', 'Site_Url').value;
 	}
 
 	componentWillMount() {
-		loadMessagesForRoom(this.rid);
+		RocketChat.loadMessagesForRoom(this.rid, () => {
+			this.setState({
+				...this.state,
+				loaded: true
+			});
+		});
 		realm.addListener('change', this.updateState);
 	}
 
@@ -59,15 +72,31 @@ export default class RoomView extends React.Component {
 
 	updateState = () => {
 		this.setState({
+			...this.state,
 			dataSource: this.getMessages()
 		});
 	};
 
-	sendMessage = message => sendMessage(this.rid, message);
+	sendMessage = message => RocketChat.sendMessage(this.rid, message);
 
-	renderSeparator = () => (
-		<View style={styles.separator} />
-	);
+	joinRoom = () => {
+		RocketChat.joinRoom(this.props.navigation.state.params.rid)
+			.then(() => {
+				this.setState({
+					joined: true
+				});
+			});
+	};
+
+	renderBanner = () => {
+		if (this.state.loaded === false) {
+			return (
+				<View style={styles.bannerContainer}>
+					<Text style={styles.bannerText}>Loading new messages...</Text>
+				</View>
+			);
+		}
+	};
 
 	renderItem = ({ item }) => (
 		<Message
@@ -77,9 +106,30 @@ export default class RoomView extends React.Component {
 		/>
 	);
 
+	renderSeparator = () => (
+		<View style={styles.separator} />
+	);
+
+	renderFooter = () => {
+		if (!this.state.joined) {
+			return (
+				<View>
+					<Text>You are in preview mode.</Text>
+					<Button title='Join' onPress={this.joinRoom} />
+				</View>
+			);
+		}
+		return (
+			<MessageBox
+				onSubmit={this.sendMessage}
+			/>
+		);
+	}
+
 	render() {
 		return (
 			<KeyboardView style={styles.container} keyboardVerticalOffset={64}>
+				{this.renderBanner()}
 				<FlatList
 					ref={ref => this.listView = ref}
 					style={styles.list}
@@ -89,9 +139,7 @@ export default class RoomView extends React.Component {
 					keyExtractor={item => item._id}
 					ItemSeparatorComponent={this.renderSeparator}
 				/>
-				<MessageBox
-					onSubmit={this.sendMessage}
-				/>
+				{this.renderFooter()}
 			</KeyboardView>
 		);
 	}

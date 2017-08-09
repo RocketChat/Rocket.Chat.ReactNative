@@ -111,7 +111,8 @@
 		"quotes": [2, "single"],
 		"semi": [2, "always"],
 		"prefer-const": 2,
-		"object-shorthand": 2
+		"object-shorthand": 2,
+		"consistent-return": 0
 	},
 	"globals": {}
 }

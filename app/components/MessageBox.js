@@ -32,12 +32,8 @@ export default class MessageBox extends React.PureComponent {
 			return;
 		}
 
-		this.props.onSubmit(this.state.text)
-			.then(() => {
-				this.setState({
-					text: ''
-				});
-			});
+		this.props.onSubmit(this.state.text);
+		this.setState({ text: '' });
 	};
 
 	render() {
@@ -50,7 +46,6 @@ export default class MessageBox extends React.PureComponent {
 					returnKeyType='send'
 					onSubmitEditing={this.submit}
 					blurOnSubmit={false}
-					autoFocus
 					placeholder='New message'
 				/>
 			</View>

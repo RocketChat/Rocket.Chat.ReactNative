@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import { CachedImage } from 'react-native-img-cache';
 
 const styles = StyleSheet.create({
 	message: {
@@ -9,11 +10,16 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		transform: [{ scaleY: -1 }]
 	},
-	avatar: {
+	avatarContainer: {
 		backgroundColor: '#ccc',
 		width: 40,
 		height: 40,
 		marginRight: 10,
+		borderRadius: 5
+	},
+	avatar: {
+		width: 40,
+		height: 40,
 		borderRadius: 5
 	},
 	texts: {
@@ -42,7 +48,9 @@ export default class Message extends React.PureComponent {
 
 		return (
 			<View style={[styles.message, extraStyle]}>
-				<Image style={styles.avatar} source={{ uri: `${ this.props.baseUrl }/avatar/${ this.props.item.u.username }` }} />
+				<View style={styles.avatarContainer}>
+					<CachedImage style={styles.avatar} source={{ uri: `${ this.props.baseUrl }/avatar/${ this.props.item.u.username }` }} />
+				</View>
 				<View style={styles.texts}>
 					<Text onPress={this._onPress} style={styles.username}>
 						{this.props.item.u.username}
