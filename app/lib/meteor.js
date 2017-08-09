@@ -12,11 +12,11 @@ const RocketChat = {
 
 	set currentServer(server) {
 		realm.write(() => {
-			realm.objects('servers').filtered('current = true').forEach(server => (server.current = false));
+			realm.objects('servers').filtered('current = true').forEach(item => (item.current = false));
 			realm.create('servers', { id: server, current: true }, true);
 		});
 	}
-}
+};
 
 export default RocketChat;
 
@@ -38,7 +38,7 @@ export function connect(cb) {
 					const setting = {
 						_id: item._id
 					};
-					setting._server = {id: RocketChat.currentServer};
+					setting._server = { id: RocketChat.currentServer };
 					if (typeof item.value === 'string') {
 						setting.value = item.value;
 					}
@@ -56,7 +56,7 @@ export function connect(cb) {
 					realm.write(() => {
 						const message = ddbMessage.fields.args[0];
 						message.temp = false;
-						message._server = {id: RocketChat.currentServer};
+						message._server = { id: RocketChat.currentServer };
 						realm.create('messages', message, true);
 					});
 				}, 1000);
@@ -83,7 +83,7 @@ export function loadSubscriptions(cb) {
 				// if (typeof item.value === 'string') {
 				// 	subscription.value = item.value;
 				// }
-				subscription._server = {id: RocketChat.currentServer};
+				subscription._server = { id: RocketChat.currentServer };
 				realm.create('subscriptions', subscription, true);
 			});
 		});
@@ -101,7 +101,7 @@ export function loadMessagesForRoom(rid) {
 		realm.write(() => {
 			data.messages.forEach((message) => {
 				message.temp = false;
-				message._server = {id: RocketChat.currentServer};
+				message._server = { id: RocketChat.currentServer };
 				realm.create('messages', message, true);
 			});
 		});
@@ -110,7 +110,7 @@ export function loadMessagesForRoom(rid) {
 	Meteor.subscribe('stream-room-messages', rid, false);
 }
 
-export function sendMessage(rid, msg, cb) {
+export function sendMessage(rid, msg) {
 	const _id = Random.id();
 	const user = Meteor.user();
 
@@ -122,7 +122,7 @@ export function sendMessage(rid, msg, cb) {
 			ts: new Date(),
 			_updatedAt: new Date(),
 			temp: true,
-			_server: {id: RocketChat.currentServer},
+			_server: { id: RocketChat.currentServer },
 			u: {
 				_id: user._id,
 				username: user.username
@@ -130,5 +130,12 @@ export function sendMessage(rid, msg, cb) {
 		}, true);
 	});
 
-	Meteor.call('sendMessage', { _id, rid, msg }, () => cb && cb());
+	return new Promise((resolve, reject) => {
+		Meteor.call('sendMessage', { _id, rid, msg }, (error, result) => {
+			if (error) {
+				return reject(error);
+			}
+			return resolve(result);
+		});
+	});
 }

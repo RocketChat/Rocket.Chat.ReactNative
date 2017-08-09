@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, KeyboardAvoidingView, TextInput, FlatList, StyleSheet, Platform } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 // import Markdown from 'react-native-simple-markdown';
 import realm from '../lib/realm';
 import RocketChat, { loadMessagesForRoom, sendMessage } from '../lib/meteor';
 
 import Message from '../components/Message';
+import MessageBox from '../components/MessageBox';
+import KeyboardView from '../components/KeyboardView';
 
 const styles = StyleSheet.create({
 	container: {
@@ -20,15 +22,6 @@ const styles = StyleSheet.create({
 		// width: "86%",
 		backgroundColor: '#CED0CE'
 		// marginLeft: "14%"
-	},
-	textBox: {
-		paddingTop: 1,
-		backgroundColor: '#ccc'
-	},
-	textBoxInput: {
-		height: 40,
-		backgroundColor: '#fff',
-		paddingLeft: 15
 	}
 });
 
@@ -47,7 +40,6 @@ export default class RoomView extends React.Component {
 		// this.rid = 'GENERAL';
 
 		this.state = {
-			text: '',
 			dataSource: this.getMessages()
 		};
 
@@ -71,19 +63,7 @@ export default class RoomView extends React.Component {
 		});
 	};
 
-	submit = () => {
-		console.log(this.state.text);
-		if (this.state.text.trim() === '') {
-			return;
-		}
-
-		sendMessage(this.rid, this.state.text);
-
-		this.setState({
-			...this.state,
-			text: ''
-		});
-	};
+	sendMessage = message => sendMessage(this.rid, message);
 
 	renderSeparator = () => (
 		<View style={styles.separator} />
@@ -99,7 +79,7 @@ export default class RoomView extends React.Component {
 
 	render() {
 		return (
-			<KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' && 'padding'} keyboardVerticalOffset={64}>
+			<KeyboardView style={styles.container} keyboardVerticalOffset={64}>
 				<FlatList
 					ref={ref => this.listView = ref}
 					style={styles.list}
@@ -109,18 +89,10 @@ export default class RoomView extends React.Component {
 					keyExtractor={item => item._id}
 					ItemSeparatorComponent={this.renderSeparator}
 				/>
-				<View style={styles.textBox}>
-					<TextInput
-						style={styles.textBoxInput}
-						value={this.state.text}
-						onChangeText={text => this.setState({ text })}
-						returnKeyType='send'
-						onSubmitEditing={this.submit}
-						autoFocus
-						placeholder='New message'
-					/>
-				</View>
-			</KeyboardAvoidingView>
+				<MessageBox
+					onSubmit={this.sendMessage}
+				/>
+			</KeyboardView>
 		);
 	}
 }

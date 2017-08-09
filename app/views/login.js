@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TextInput, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import { TextInput, StyleSheet } from 'react-native';
 import realm from '../lib/realm';
 import { loginWithPassword, loadSubscriptions, Accounts } from '../lib/meteor';
+
+import KeyboardView from '../components/KeyboardView';
 
 const styles = StyleSheet.create({
 	view: {
@@ -55,7 +57,7 @@ export default class LoginView extends React.Component {
 
 	render() {
 		return (
-			<KeyboardAvoidingView style={styles.view} behavior={Platform.OS === 'ios' && 'padding'}>
+			<KeyboardView style={styles.view}>
 				<TextInput
 					style={styles.input}
 					onChangeText={username => this.setState({ username })}
@@ -77,7 +79,7 @@ export default class LoginView extends React.Component {
 					onSubmitEditing={this.submit}
 					placeholder='Password'
 				/>
-			</KeyboardAvoidingView>
+			</KeyboardView>
 		);
 	}
 }

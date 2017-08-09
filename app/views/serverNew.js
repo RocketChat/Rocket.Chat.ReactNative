@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TextInput, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import { TextInput, StyleSheet } from 'react-native';
 
 import realm from '../lib/realm';
 import { connect } from '../lib/meteor';
+
+import KeyboardView from '../components/KeyboardView';
 
 const styles = StyleSheet.create({
 	view: {
@@ -72,7 +74,7 @@ export default class NewServerView extends React.Component {
 
 	render() {
 		return (
-			<KeyboardAvoidingView style={styles.view} behavior={Platform.OS === 'ios' && 'padding'}>
+			<KeyboardView style={styles.view}>
 				<TextInput
 					style={styles.input}
 					onChangeText={text => this.setState({ text })}
@@ -84,7 +86,7 @@ export default class NewServerView extends React.Component {
 					onSubmitEditing={this.submit}
 					placeholder={this.state.defaultServer}
 				/>
-			</KeyboardAvoidingView>
+			</KeyboardView>
 		);
 	}
 }
