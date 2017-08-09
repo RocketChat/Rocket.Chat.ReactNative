@@ -38,6 +38,7 @@ Meteor.Accounts.onLogin(() => {
 				realm.create('subscriptions', subscription, true);
 			});
 		});
+		Meteor.subscribe('stream-notify-user', `${ Meteor.userId() }/subscriptions-changed`, false);
 	});
 });
 
@@ -78,6 +79,14 @@ export function connect(cb) {
 					message.temp = false;
 					message._server = { id: RocketChat.currentServer };
 					realm.create('messages', message, true);
+				});
+			}
+
+			if (ddbMessage.collection === 'stream-notify-user') {
+				realm.write(() => {
+					const data = ddbMessage.fields.args[1];
+					data._server = { id: RocketChat.currentServer };
+					realm.create('subscriptions', data, true);
 				});
 			}
 		});
