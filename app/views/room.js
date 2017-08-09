@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { Text, View, FlatList, StyleSheet } from 'react-native';
 // import Markdown from 'react-native-simple-markdown';
 import realm from '../lib/realm';
 import RocketChat, { loadMessagesForRoom, sendMessage } from '../lib/meteor';
@@ -19,9 +19,15 @@ const styles = StyleSheet.create({
 	},
 	separator: {
 		height: 1,
-		// width: "86%",
 		backgroundColor: '#CED0CE'
-		// marginLeft: "14%"
+	},
+	bannerContainer: {
+		backgroundColor: 'orange'
+	},
+	bannerText: {
+		margin: 5,
+		textAlign: 'center',
+		color: '#a00'
 	}
 });
 
@@ -40,14 +46,20 @@ export default class RoomView extends React.Component {
 		// this.rid = 'GENERAL';
 
 		this.state = {
-			dataSource: this.getMessages()
+			dataSource: this.getMessages(),
+			loaded: false
 		};
 
 		this.url = realm.objectForPrimaryKey('settings', 'Site_Url').value;
 	}
 
 	componentWillMount() {
-		loadMessagesForRoom(this.rid);
+		loadMessagesForRoom(this.rid, () => {
+			this.setState({
+				...this.state,
+				loaded: true
+			});
+		});
 		realm.addListener('change', this.updateState);
 	}
 
@@ -59,6 +71,7 @@ export default class RoomView extends React.Component {
 
 	updateState = () => {
 		this.setState({
+			...this.state,
 			dataSource: this.getMessages()
 		});
 	};
@@ -77,9 +90,20 @@ export default class RoomView extends React.Component {
 		/>
 	);
 
+	renderBanner = () => {
+		if (this.state.loaded === false) {
+			return (
+				<View style={styles.bannerContainer}>
+					<Text style={styles.bannerText}>Loading new messages...</Text>
+				</View>
+			);
+		}
+	}
+
 	render() {
 		return (
 			<KeyboardView style={styles.container} keyboardVerticalOffset={64}>
+				{this.renderBanner()}
 				<FlatList
 					ref={ref => this.listView = ref}
 					style={styles.list}

@@ -120,7 +120,7 @@ export function loadSubscriptions(cb) {
 	});
 }
 
-export function loadMessagesForRoom(rid) {
+export function loadMessagesForRoom(rid, cb) {
 	Meteor.call('loadHistory', rid, null, 50, (err, data) => {
 		if (err) {
 			console.error(err);
@@ -133,6 +133,10 @@ export function loadMessagesForRoom(rid) {
 				realm.create('messages', message, true);
 			});
 		});
+
+		if (cb) {
+			cb();
+		}
 	});
 
 	Meteor.subscribe('stream-room-messages', rid, false);
