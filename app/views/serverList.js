@@ -4,7 +4,7 @@ import Zeroconf from 'react-native-zeroconf';
 import { View, Text, SectionList, Button, StyleSheet } from 'react-native';
 
 import realm from '../lib/realm';
-import RocketChat, { connect } from '../lib/meteor';
+import RocketChat from '../lib/rocketchat';
 
 const styles = StyleSheet.create({
 	view: {
@@ -88,7 +88,7 @@ export default class ListServerView extends React.Component {
 	onPressItem(item) {
 		RocketChat.currentServer = item.id;
 
-		connect(() => {});
+		RocketChat.connect();
 		this.props.navigation.dispatch({ type: 'Navigation/BACK' });
 	}
 
