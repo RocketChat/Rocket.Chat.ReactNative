@@ -20,6 +20,11 @@ const styles = StyleSheet.create({
 	list: {
 		width: '100%'
 	},
+	emptyView: {
+		flexGrow: 1,
+		alignItems: 'stretch',
+		justifyContent: 'center'
+	},
 	emptyText: {
 		textAlign: 'center',
 		fontSize: 18,
@@ -29,8 +34,8 @@ const styles = StyleSheet.create({
 		backgroundColor: '#ddd'
 	},
 	bannerText: {
-		lineHeight: 28,
-		textAlign: 'center'
+		textAlign: 'center',
+		margin: 5
 	}
 });
 
@@ -107,18 +112,20 @@ export default class RoomsListView extends React.Component {
 	}
 
 	renderBanner = () => {
-		if (Meteor.getData().ddp.status !== 'connected') {
+		const status = Meteor.getData() && Meteor.getData().ddp && Meteor.getData().ddp.status;
+
+		if (status === 'disconnected') {
 			return (
-				<View style={styles.bannerContainer}>
-					<Text style={styles.bannerText}>Connecting...</Text>
+				<View style={[styles.bannerContainer, { backgroundColor: '#0d0' }]}>
+					<Text style={[styles.bannerText, { color: '#fff' }]}>Connecting...</Text>
 				</View>
 			);
 		}
 
-		if (Meteor._isLoggingIn) {
+		if (status === 'connected' && Meteor._isLoggingIn) {
 			return (
-				<View style={styles.bannerContainer}>
-					<Text style={styles.bannerText}>Loggining...</Text>
+				<View style={[styles.bannerContainer, { backgroundColor: 'orange' }]}>
+					<Text style={[styles.bannerText, { color: '#a00' }]}>Authenticating...</Text>
 				</View>
 			)
 		}
@@ -150,7 +157,9 @@ export default class RoomsListView extends React.Component {
 		}
 
 		return (
-			<Text style={styles.emptyText}>No rooms</Text>
+			<View style={styles.emptyView}>
+				<Text style={styles.emptyText}>No rooms</Text>
+			</View>
 		);
 	}
 

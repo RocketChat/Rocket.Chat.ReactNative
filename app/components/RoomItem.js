@@ -9,10 +9,11 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	number: {
-		width: 20,
-		lineHeight: 20,
+		minWidth: 20,
+		fontSize: 14,
+		padding: 2,
 		borderRadius: 5,
-		backgroundColor: 'green',
+		backgroundColor: '#aaa',
 		color: '#fff',
 		textAlign: 'center',
 		overflow: 'hidden',
@@ -47,9 +48,15 @@ export default class RoomItem extends React.PureComponent {
 	}
 
 	render() {
+		let name = this.props.item.name;
+		if (this.props.item.t === 'd') {
+			name = `@ ${ name }`;
+		} else {
+			name = `# ${ name }`;
+		}
 		return (
 			<View style={styles.container}>
-				<Text onPress={this._onPress} style={styles.roomItem}>{ this.props.item.name }</Text>
+				<Text onPress={this._onPress} style={styles.roomItem}>{ name }</Text>
 				{this.renderNumber(this.props.item)}
 			</View>
 		);
