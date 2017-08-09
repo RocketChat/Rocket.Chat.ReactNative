@@ -20,6 +20,7 @@
     "strip-ansi": "^4.0.0"
   },
   "devDependencies": {
+    "babel-eslint": "^7.2.3",
     "babel-jest": "20.0.3",
     "babel-preset-react-native": "2.1.0",
     "eslint": "^4.4.0",
@@ -27,6 +28,7 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.1.0",
+    "eslint-plugin-react-native": "^3.0.1",
     "jest": "20.0.4",
     "react-test-renderer": "16.0.0-alpha.12"
   },
