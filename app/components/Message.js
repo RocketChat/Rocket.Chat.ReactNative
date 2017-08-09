@@ -8,6 +8,23 @@ const styles = StyleSheet.create({
 		padding: 14,
 		flexDirection: 'row',
 		transform: [{ scaleY: -1 }]
+	},
+	avatar: {
+		backgroundColor: '#ccc',
+		width: 40,
+		height: 40,
+		marginRight: 10,
+		borderRadius: 5
+	},
+	texts: {
+		flex: 1
+	},
+	msg: {
+		flex: 1
+	},
+	username: {
+		fontWeight: 'bold',
+		marginBottom: 5
 	}
 });
 

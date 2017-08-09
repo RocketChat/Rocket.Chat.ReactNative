@@ -8,23 +8,6 @@ import { loadMessagesForRoom, sendMessage } from '../lib/meteor';
 import Message from '../components/Message';
 
 const styles = StyleSheet.create({
-	avatar: {
-		backgroundColor: '#ccc',
-		width: 40,
-		height: 40,
-		marginRight: 10,
-		borderRadius: 5
-	},
-	username: {
-		fontWeight: 'bold',
-		marginBottom: 5
-	},
-	texts: {
-		flex: 1
-	},
-	msg: {
-		flex: 1
-	},
 	container: {
 		flex: 1
 	},
