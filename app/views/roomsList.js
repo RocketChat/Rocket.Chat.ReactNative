@@ -2,7 +2,7 @@ import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, FlatList, StyleSheet, TouchableOpacity, Platform, TextInput } from 'react-native';
 import Meteor from 'react-native-meteor';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
@@ -80,8 +80,13 @@ export default class RoomsListView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this._listViewOffset = 0;
-		this.state = this.getState();
+
+		this.state = {
+			dataSource: this.getSubscriptions(),
+			searching: false,
+			searchDataSource: [],
+			searchText: ''
+		};
 	}
 
 	componentWillMount() {
@@ -100,28 +105,97 @@ export default class RoomsListView extends React.Component {
 		realm.removeListener('change', this.updateState);
 	}
 
-	getState = () => ({
-		dataSource: realm.objects('subscriptions').filtered('_server.id = $0', RocketChat.currentServer).sorted('name').slice()
-			.sort((a, b) => {
-				if (a.unread < b.unread) {
-					return 1;
+	onSearchChangeText = (text) => {
+		const searchText = text.trim();
+		this.setState({
+			searchText: text,
+			searching: searchText !== ''
+		});
+
+		if (searchText !== '') {
+			const dataSource = [];
+			const usernames = [];
+			realm.objects('subscriptions').filtered('_server.id = $0 AND name CONTAINS[c] $1', RocketChat.currentServer, searchText).forEach((sub) => {
+				dataSource.push(sub);
+
+				if (sub.t === 'd') {
+					usernames.push(sub.name);
 				}
+			});
 
-				if (a.unread > b.unread) {
-					return -1;
-				}
+			if (dataSource.length < 5) {
+				RocketChat.spotlight(searchText, usernames)
+					.then((results) => {
+						results.users.forEach((user) => {
+							dataSource.push({
+								...user,
+								name: user.username,
+								t: 'd',
+								search: true
+							});
+						});
 
-				return 0;
-			})
-	})
+						results.rooms.forEach((room) => {
+							dataSource.push({
+								...room,
+								search: true
+							});
+						});
 
-	updateState = () => {
-		this.setState(this.getState());
+						this.setState({
+							searchDataSource: dataSource
+						});
+					});
+			}
+		}
 	}
 
-	_onPressItem = (id) => {
+	getSubscriptions = () => realm.objects('subscriptions').filtered('_server.id = $0', RocketChat.currentServer).sorted('name').slice()
+		.sort((a, b) => {
+			if (a.unread < b.unread) {
+				return 1;
+			}
+
+			if (a.unread > b.unread) {
+				return -1;
+			}
+
+			return 0;
+		});
+
+	updateState = () => {
+		this.setState({
+			dataSource: this.getSubscriptions()
+		});
+	}
+
+	_onPressItem = (id, item) => {
 		const { navigate } = this.props.navigation;
+
+		const clearSearch = () => {
+			this.setState({
+				searchText: '',
+				searching: false,
+				searchDataSource: []
+			});
+		};
+
+		// if user is using the search we need first to join/create room
+		if (item.search) {
+			if (item.t === 'd') {
+				RocketChat.createDirectMessage(item.username)
+					.then(room => realm.objects('subscriptions').filtered('_server.id = $0 AND rid = $1', RocketChat.currentServer, room.rid))
+					.then(subs => navigate('Room', { sid: subs[0]._id }))
+					.then(() => clearSearch());
+			} else {
+				navigate('Room', { rid: item._id, name: item.name });
+				clearSearch();
+			}
+			return;
+		}
+
 		navigate('Room', { sid: id });
+		clearSearch();
 	}
 	_createChannel = () => {
 		const { navigate } = this.props.navigation;
@@ -160,23 +234,33 @@ export default class RoomsListView extends React.Component {
 		<View style={styles.separator} />
 	);
 
+	renderSearchBar = () => (
+		<TextInput
+			style={styles.searchBox}
+			value={this.state.searchText}
+			onChangeText={this.onSearchChangeText}
+			returnKeyType='search'
+			placeholder='Search'
+		/>
+	);
+
 	renderList = () => {
-		if (this.state.dataSource.length) {
+		if (!this.state.searching && !this.state.dataSource.length) {
 			return (
-				<FlatList
-					style={styles.list}
-					data={this.state.dataSource}
-					renderItem={this.renderItem}
-					keyExtractor={item => item._id}
-					ItemSeparatorComponent={this.renderSeparator}
-				/>
+				<View style={styles.emptyView}>
+					<Text style={styles.emptyText}>No rooms</Text>
+				</View>
 			);
 		}
 
 		return (
-			<View style={styles.emptyView}>
-				<Text style={styles.emptyText}>No rooms</Text>
-			</View>
+			<FlatList
+				style={styles.list}
+				data={this.state.searching ? this.state.searchDataSource : this.state.dataSource}
+				renderItem={this.renderItem}
+				keyExtractor={item => item._id}
+				ItemSeparatorComponent={this.renderSeparator}
+			/>
 		);
 	}
 	renderCreateButtons() {
@@ -191,6 +275,7 @@ export default class RoomsListView extends React.Component {
 		return (
 			<View style={styles.container}>
 				{this.renderBanner()}
+				{this.renderSearchBar()}
 				{this.renderList()}
 				{this.renderCreateButtons()}
 			</View>
