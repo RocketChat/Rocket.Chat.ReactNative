@@ -133,6 +133,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-vector-icons')
     compile project(':react-native-fetch-blob')
     compile project(':react-native-zeroconf')
     compile project(':realm')
@@ -147,3 +148,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"

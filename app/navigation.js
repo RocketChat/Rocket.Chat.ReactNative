@@ -6,7 +6,7 @@ import NewServerView from './views/serverNew';
 import ListServerView from './views/serverList';
 import RoomsListView from './views/roomsList';
 import RoomView from './views/room';
-
+import CreateChannel from './views/CreateChannel';
 
 const position = Platform.OS === 'ios' ? 'headerLeft' : 'headerRight';
 
@@ -53,6 +53,12 @@ export default new StackNavigator({
 		screen: NewServerView,
 		navigationOptions: ({ navigation }) => ({
 			headerLeft: Platform.OS === 'ios' && (<Button title='Close' onPress={() => navigation.dispatch({ type: 'Navigation/BACK' })} />)
+		})
+	},
+	CreateChannel: {
+		screen: CreateChannel,
+		navigationOptions: ({ navigation }) => ({
+			headerLeft: Platform.OS === 'ios' && (<Button title='Cancel' onPress={() => navigation.dispatch({ type: 'Navigation/BACK' })} />)
 		})
 	}
 }, {
