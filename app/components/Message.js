@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 import { CachedImage } from 'react-native-img-cache';
-import Markdown from 'react-native-easy-markdown';
 import { emojify } from 'react-emojione';
+import Markdown from 'react-native-easy-markdown';
 
 const styles = StyleSheet.create({
 	message: {

@@ -5,6 +5,12 @@ import realm from './realm';
 export { Accounts } from 'react-native-meteor';
 
 const RocketChat = {
+
+	createChannel({ name, users, type }) {
+		return new Promise((resolve, reject) => {
+			Meteor.call(type ? 'createChannel' : 'createPrivateGroup', name, users, type, (err, res) => (err ? reject(err) : resolve(res)));
+		});
+	},
 	get currentServer() {
 		const current = realm.objects('servers').filtered('current = true')[0];
 		return current && current.id;
@@ -60,6 +66,7 @@ const RocketChat = {
 				}
 
 				if (ddbMessage.collection === 'stream-notify-user') {
+					console.log(ddbMessage);
 					realm.write(() => {
 						const data = ddbMessage.fields.args[1];
 						data._server = { id: RocketChat.currentServer };

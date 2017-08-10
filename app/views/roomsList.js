@@ -1,10 +1,11 @@
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/Ionicons';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, FlatList, StyleSheet, Platform } from 'react-native';
+import { Text, View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import Meteor from 'react-native-meteor';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
-
 import RoomItem from '../components/RoomItem';
 
 const styles = StyleSheet.create({
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
 	},
 	separator: {
 		height: 1,
-		backgroundColor: '#CED0CE'
+		backgroundColor: '#E7E7E7'
 	},
 	list: {
 		width: '100%'
@@ -36,6 +37,11 @@ const styles = StyleSheet.create({
 	bannerText: {
 		textAlign: 'center',
 		margin: 5
+	},
+	actionButtonIcon: {
+		fontSize: 20,
+		height: 22,
+		color: 'white'
 	}
 });
 
@@ -74,7 +80,7 @@ export default class RoomsListView extends React.Component {
 
 	constructor(props) {
 		super(props);
-
+		this._listViewOffset = 0;
 		this.state = this.getState();
 	}
 
@@ -117,7 +123,10 @@ export default class RoomsListView extends React.Component {
 		const { navigate } = this.props.navigation;
 		navigate('Room', { sid: id });
 	}
-
+	_createChannel = () => {
+		const { navigate } = this.props.navigation;
+		navigate('CreateChannel');
+	}
 	renderBanner = () => {
 		const status = Meteor.getData() && Meteor.getData().ddp && Meteor.getData().ddp.status;
 
@@ -139,11 +148,12 @@ export default class RoomsListView extends React.Component {
 	}
 
 	renderItem = ({ item }) => (
-		<RoomItem
-			id={item._id}
-			onPressItem={this._onPressItem}
-			item={item}
-		/>
+		<TouchableOpacity onPress={() => this._onPressItem(item._id)}>
+			<RoomItem
+				id={item._id}
+				item={item}
+			/>
+		</TouchableOpacity>
 	);
 
 	renderSeparator = () => (
@@ -169,12 +179,20 @@ export default class RoomsListView extends React.Component {
 			</View>
 		);
 	}
-
+	renderCreateButtons() {
+		return (
+			<ActionButton buttonColor='rgba(231,76,60,1)'>
+				<ActionButton.Item buttonColor='#9b59b6' title='Create Channel' onPress={() => { this._createChannel(); }} >
+					<Icon name='md-chatbubbles' style={styles.actionButtonIcon} />
+				</ActionButton.Item>
+			</ActionButton>);
+	}
 	render() {
 		return (
 			<View style={styles.container}>
 				{this.renderBanner()}
 				{this.renderList()}
+				{this.renderCreateButtons()}
 			</View>
 		);
 	}

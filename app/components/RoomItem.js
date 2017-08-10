@@ -1,4 +1,7 @@
 import React from 'react';
+
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 
@@ -6,37 +9,46 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		flexDirection: 'row',
+		padding: 24,
 		alignItems: 'center'
 	},
 	number: {
 		minWidth: 20,
-		fontSize: 14,
 		padding: 2,
 		borderRadius: 5,
 		backgroundColor: '#aaa',
 		color: '#fff',
 		textAlign: 'center',
 		overflow: 'hidden',
-		marginRight: 15
+		marginRight: 15,
+		fontSize: 14
 	},
 	roomItem: {
-		lineHeight: 18,
-		padding: 14,
-		flexGrow: 1
+		flexGrow: 1,
+		fontSize: 20
+	},
+	icon: {
+		fontSize: 20,
+		height: 22,
+		width: 22
 	}
 });
 
 export default class RoomItem extends React.PureComponent {
 	static propTypes = {
-		onPressItem: PropTypes.func.isRequired,
-		item: PropTypes.object.isRequired,
-		id: PropTypes.string.isRequired
+		item: PropTypes.object.isRequired
 	}
-
-	_onPress = () => {
-		this.props.onPressItem(this.props.id);
-	};
-
+	get icon() {
+		const icon = {
+			d: 'at',
+			c: 'hashtag',
+			p: 'md-lock'
+		}[this.props.item.t];
+		if (!icon) {
+			return null;
+		}
+		return ['p'].includes(this.props.item.t) ? <Ionicons name={icon} style={styles.icon} /> : <FontAwesome name={icon} style={styles.icon} />;
+	}
 	renderNumber = (item) => {
 		if (item.unread) {
 			return (
@@ -48,15 +60,11 @@ export default class RoomItem extends React.PureComponent {
 	}
 
 	render() {
-		let name = this.props.item.name;
-		if (this.props.item.t === 'd') {
-			name = `@ ${ name }`;
-		} else {
-			name = `# ${ name }`;
-		}
+		const name = this.props.item.name;
 		return (
 			<View style={styles.container}>
-				<Text onPress={this._onPress} style={styles.roomItem}>{ name }</Text>
+				{this.icon}
+				<Text style={styles.roomItem}>{ name }</Text>
 				{this.renderNumber(this.props.item)}
 			</View>
 		);
