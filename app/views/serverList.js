@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
 	},
 	listItem: {
 		lineHeight: 18,
-		borderTopWidth: 2,
 		color: '#666',
 		padding: 14
 	},

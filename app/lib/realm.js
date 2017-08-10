@@ -86,4 +86,5 @@ realm.write(() => {
 
 	// realm.create('servers', { id: 'https://demo.rocket.chat', current: false }, true);
 	// realm.create('servers', { id: 'http://localhost:3000', current: false }, true);
+	// realm.create('servers', { id: 'http://10.0.2.2:3000', current: false }, true);
 });
