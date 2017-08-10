@@ -104,10 +104,14 @@ const RocketChat = {
 		});
 	},
 
-	loadMessagesForRoom(rid, cb) {
-		Meteor.call('loadHistory', rid, null, 50, (err, data) => {
+	loadMessagesForRoom(rid, end, cb) {
+		Meteor.call('loadHistory', rid, end, 20, (err, data) => {
 			if (err) {
 				console.error(err);
+				if (cb) {
+					cb({ end: true });
+				}
+				return;
 			}
 
 			realm.write(() => {
@@ -119,7 +123,11 @@ const RocketChat = {
 			});
 
 			if (cb) {
-				cb();
+				if (data.messages.length < 20) {
+					cb({ end: true });
+				} else {
+					cb({ end: false });
+				}
 			}
 		});
 

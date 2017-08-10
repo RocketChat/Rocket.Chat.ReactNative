@@ -27,6 +27,12 @@ const styles = StyleSheet.create({
 		margin: 5,
 		textAlign: 'center',
 		color: '#a00'
+	},
+	header: {
+		transform: [{ scaleY: -1 }],
+		textAlign: 'center',
+		padding: 5,
+		color: '#ccc'
 	}
 });
 
@@ -57,7 +63,7 @@ export default class RoomView extends React.Component {
 		const late = setTimeout(() => this.setState({
 			loaded: false
 		}), 1000);
-		RocketChat.loadMessagesForRoom(this.rid, () => {
+		RocketChat.loadMessagesForRoom(this.rid, null, () => {
 			clearTimeout(late);
 			this.setState({
 				loaded: true
@@ -68,6 +74,22 @@ export default class RoomView extends React.Component {
 
 	componentWillUnmount() {
 		realm.removeListener('change', this.updateState);
+	}
+
+	onEndReached = () => {
+		if (this.state.dataSource.length && this.state.loaded && this.state.loadingMore !== true && this.state.end !== true) {
+			this.setState({
+				...this.state,
+				loadingMore: true
+			});
+			RocketChat.loadMessagesForRoom(this.rid, this.state.dataSource[this.state.dataSource.length - 1].ts, ({ end }) => {
+				this.setState({
+					...this.state,
+					loadingMore: false,
+					end
+				});
+			});
+		}
 	}
 
 	getMessages = () => realm.objects('messages').filtered('_server.id = $0 AND rid = $1', RocketChat.currentServer, this.rid).sorted('ts', true)
@@ -129,6 +151,16 @@ export default class RoomView extends React.Component {
 		);
 	}
 
+	renderHeader = () => {
+		if (this.state.loadingMore) {
+			return <Text style={styles.header}>Loading more messages...</Text>;
+		}
+
+		if (this.state.end) {
+			return <Text style={styles.header}>Start of conversation</Text>;
+		}
+	}
+
 	render() {
 		return (
 			<KeyboardView style={styles.container} keyboardVerticalOffset={64}>
@@ -140,6 +172,9 @@ export default class RoomView extends React.Component {
 					extraData={this.state}
 					renderItem={this.renderItem}
 					keyExtractor={item => item._id}
+					onEndReached={this.onEndReached}
+					onEndReachedThreshold={0.1}
+					ListFooterComponent={this.renderHeader()}
 				/>
 				{this.renderFooter()}
 			</KeyboardView>
