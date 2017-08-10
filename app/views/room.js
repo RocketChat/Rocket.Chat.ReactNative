@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, FlatList, StyleSheet } from 'react-native';
+import { Text, View, FlatList, StyleSheet, Button } from 'react-native';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 
@@ -36,17 +36,18 @@ export default class RoomView extends React.Component {
 	}
 
 	static navigationOptions = ({ navigation }) => ({
-		title: realm.objectForPrimaryKey('subscriptions', navigation.state.params.sid).name
+		title: navigation.state.params.name || realm.objectForPrimaryKey('subscriptions', navigation.state.params.sid).name
 	});
 
 	constructor(props) {
 		super(props);
-		this.rid = realm.objectForPrimaryKey('subscriptions', props.navigation.state.params.sid).rid;
+		this.rid = props.navigation.state.params.rid || realm.objectForPrimaryKey('subscriptions', props.navigation.state.params.sid).rid;
 		// this.rid = 'GENERAL';
 
 		this.state = {
 			dataSource: this.getMessages(),
-			loaded: false
+			loaded: false,
+			joined: typeof props.navigation.state.params.rid === 'undefined'
 		};
 
 		this.url = realm.objectForPrimaryKey('settings', 'Site_Url').value;
@@ -77,13 +78,14 @@ export default class RoomView extends React.Component {
 
 	sendMessage = message => RocketChat.sendMessage(this.rid, message);
 
-	renderItem = ({ item }) => (
-		<Message
-			id={item._id}
-			item={item}
-			baseUrl={this.url}
-		/>
-	);
+	joinRoom = () => {
+		RocketChat.joinRoom(this.props.navigation.state.params.rid)
+			.then(() => {
+				this.setState({
+					joined: true
+				});
+			});
+	};
 
 	renderBanner = () => {
 		if (this.state.loaded === false) {
@@ -93,6 +95,34 @@ export default class RoomView extends React.Component {
 				</View>
 			);
 		}
+	};
+
+	renderItem = ({ item }) => (
+		<Message
+			id={item._id}
+			item={item}
+			baseUrl={this.url}
+		/>
+	);
+
+	renderSeparator = () => (
+		<View style={styles.separator} />
+	);
+
+	renderFooter = () => {
+		if (!this.state.joined) {
+			return (
+				<View>
+					<Text>You are in preview mode.</Text>
+					<Button title='Join' onPress={this.joinRoom} />
+				</View>
+			);
+		}
+		return (
+			<MessageBox
+				onSubmit={this.sendMessage}
+			/>
+		);
 	}
 
 	render() {
@@ -107,9 +137,7 @@ export default class RoomView extends React.Component {
 					renderItem={this.renderItem}
 					keyExtractor={item => item._id}
 				/>
-				<MessageBox
-					onSubmit={this.sendMessage}
-				/>
+				{this.renderFooter()}
 			</KeyboardView>
 		);
 	}
