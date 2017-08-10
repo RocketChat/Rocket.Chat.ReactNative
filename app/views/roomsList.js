@@ -59,9 +59,15 @@ export default class RoomsListView extends React.Component {
 		navigation: PropTypes.object.isRequired
 	}
 
-	static navigationOptions = () => ({
-		title: 'Rooms'
-	});
+	static navigationOptions = () => {
+		const server = RocketChat.currentServer ? RocketChat.currentServer.replace(/^https?:\/\//, '') : '';
+		return {
+			title: <View style={{ height: 10, width: 200, top: -20 }}>
+				<Text style={{ textAlign: 'center', fontSize: 16, fontWeight: '600', top: -5 }}>Channels</Text>
+				<Text style={{ textAlign: 'center', fontSize: 10, top: -5 }}>{server}</Text>
+			</View>
+		};
+	}
 
 	constructor(props) {
 		super(props);
