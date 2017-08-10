@@ -18,6 +18,7 @@
     "react-native-action-button": "^2.7.2",
     "react-native-easy-markdown": "git+https://github.com/lappalj4/react-native-easy-markdown.git",
     "react-native-fetch-blob": "^0.10.8",
+    "react-native-image-picker": "^0.26.3",
     "react-native-form-generator": "^0.9.9",
     "react-native-img-cache": "^1.4.0",
     "react-native-meteor": "^1.1.0",

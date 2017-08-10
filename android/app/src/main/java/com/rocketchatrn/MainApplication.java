@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.horcrux.svg.SvgPackage;
+import com.imagepicker.ImagePickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.balthazargronon.RCTZeroconf.ZeroconfReactPackage;
@@ -29,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new SvgPackage(),
+            new ImagePickerPackage(),
             new VectorIconsPackage(),
             new RNFetchBlobPackage(),
             new ZeroconfReactPackage(),
