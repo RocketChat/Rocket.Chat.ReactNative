@@ -255,6 +255,8 @@ export default class RoomsListView extends React.Component {
 				onChangeText={this.onSearchChangeText}
 				returnKeyType='search'
 				placeholder='Search'
+				clearButtonMode='while-editing'
+				blurOnSubmit
 			/>
 		</View>
 	);
