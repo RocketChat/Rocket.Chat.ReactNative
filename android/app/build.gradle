@@ -134,6 +134,7 @@ android {
 
 dependencies {
     compile project(':react-native-svg')
+    compile project(':react-native-image-picker')
     compile project(':react-native-vector-icons')
     compile project(':react-native-fetch-blob')
     compile project(':react-native-zeroconf')

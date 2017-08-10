@@ -124,6 +124,7 @@ export default class RoomView extends React.Component {
 		return (
 			<MessageBox
 				onSubmit={this.sendMessage}
+				rid={this.rid}
 			/>
 		);
 	}
