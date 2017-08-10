@@ -7,13 +7,14 @@ import { emojify } from 'react-emojione';
 
 const styles = StyleSheet.create({
 	message: {
-		borderColor: '#aaa',
-		padding: 14,
+		padding: 12,
+		paddingTop: 6,
+		paddingBottom: 6,
 		flexDirection: 'row',
 		transform: [{ scaleY: -1 }]
 	},
 	avatarContainer: {
-		backgroundColor: '#ccc',
+		backgroundColor: '#eee',
 		width: 40,
 		height: 40,
 		marginRight: 10,
