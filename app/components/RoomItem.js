@@ -1,7 +1,6 @@
 import React from 'react';
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 
@@ -25,12 +24,14 @@ const styles = StyleSheet.create({
 	},
 	roomItem: {
 		flexGrow: 1,
-		fontSize: 20
+		fontSize: 20,
+		color: '#444'
 	},
 	icon: {
-		fontSize: 20,
-		height: 22,
-		width: 22
+		fontSize: 18,
+		marginTop: 5,
+		marginRight: 5,
+		color: '#aaa'
 	}
 });
 
@@ -41,13 +42,14 @@ export default class RoomItem extends React.PureComponent {
 	get icon() {
 		const icon = {
 			d: 'at',
-			c: 'hashtag',
-			p: 'md-lock'
+			c: 'pound',
+			p: 'lock',
+			l: 'account'
 		}[this.props.item.t];
 		if (!icon) {
 			return null;
 		}
-		return ['p'].includes(this.props.item.t) ? <Ionicons name={icon} style={styles.icon} /> : <FontAwesome name={icon} style={styles.icon} />;
+		return <MaterialCommunityIcons name={icon} style={styles.icon} />;
 	}
 	renderNumber = (item) => {
 		if (item.unread) {
