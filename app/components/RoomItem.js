@@ -34,7 +34,7 @@ export default class RoomItem extends React.PureComponent {
 	}
 
 	_onPress = () => {
-		this.props.onPressItem(this.props.id);
+		this.props.onPressItem(this.props.id, this.props.item);
 	};
 
 	renderNumber = (item) => {
