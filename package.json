@@ -13,7 +13,9 @@
   "dependencies": {
     "prop-types": "^15.5.10",
     "react": "16.0.0-alpha.12",
+    "react-emojione": "^3.1.10",
     "react-native": "0.46.1",
+    "react-native-easy-markdown": "git+https://github.com/lappalj4/react-native-easy-markdown.git",
     "react-native-fetch-blob": "^0.10.8",
     "react-native-img-cache": "^1.4.0",
     "react-native-meteor": "^1.1.0",

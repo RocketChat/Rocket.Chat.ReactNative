@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, FlatList, StyleSheet, Button } from 'react-native';
-// import Markdown from 'react-native-simple-markdown';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 
@@ -137,7 +136,6 @@ export default class RoomView extends React.Component {
 					extraData={this.state}
 					renderItem={this.renderItem}
 					keyExtractor={item => item._id}
-					ItemSeparatorComponent={this.renderSeparator}
 				/>
 				{this.renderFooter()}
 			</KeyboardView>

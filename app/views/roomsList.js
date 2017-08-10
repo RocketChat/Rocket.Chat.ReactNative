@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, FlatList, StyleSheet, TextInput } from 'react-native';
+import { Text, View, FlatList, StyleSheet, Platform, TextInput } from 'react-native';
 import Meteor from 'react-native-meteor';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
@@ -59,9 +59,18 @@ export default class RoomsListView extends React.Component {
 		navigation: PropTypes.object.isRequired
 	}
 
-	static navigationOptions = () => ({
-		title: 'Rooms'
-	});
+	static navigationOptions = () => {
+		const server = RocketChat.currentServer ? RocketChat.currentServer.replace(/^https?:\/\//, '') : '';
+		const textAlign = Platform.OS === 'ios' ? 'center' : 'left';
+		const marginLeft = Platform.OS === 'ios' ? 0 : 20;
+		return {
+			headerTitle: <View style={{ height: 10, width: 200, top: -10, marginLeft }}>
+				<Text style={{ textAlign, fontSize: 16, fontWeight: '600' }}>Channels</Text>
+				<Text style={{ textAlign, fontSize: 10 }}>{server}</Text>
+			</View>,
+			title: 'Channels'
+		};
+	}
 
 	constructor(props) {
 		super(props);
