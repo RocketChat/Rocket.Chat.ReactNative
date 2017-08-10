@@ -42,6 +42,19 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		height: 22,
 		color: 'white'
+	},
+	searchBoxView: {
+		// borderBottomWidth: 1,
+		// borderBottomColor:
+		backgroundColor: '#eee',
+	},
+	searchBox: {
+		backgroundColor: '#fff',
+		margin: 5,
+		borderRadius: 5,
+		padding: 5,
+		paddingLeft: 10,
+		color: '#aaa'
 	}
 });
 
@@ -235,13 +248,15 @@ export default class RoomsListView extends React.Component {
 	);
 
 	renderSearchBar = () => (
-		<TextInput
-			style={styles.searchBox}
-			value={this.state.searchText}
-			onChangeText={this.onSearchChangeText}
-			returnKeyType='search'
-			placeholder='Search'
-		/>
+		<View style={styles.searchBoxView}>
+			<TextInput
+				style={styles.searchBox}
+				value={this.state.searchText}
+				onChangeText={this.onSearchChangeText}
+				returnKeyType='search'
+				placeholder='Search'
+			/>
+		</View>
 	);
 
 	renderList = () => {
