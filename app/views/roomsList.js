@@ -44,9 +44,7 @@ const styles = StyleSheet.create({
 		color: 'white'
 	},
 	searchBoxView: {
-		// borderBottomWidth: 1,
-		// borderBottomColor:
-		backgroundColor: '#eee',
+		backgroundColor: '#eee'
 	},
 	searchBox: {
 		backgroundColor: '#fff',
