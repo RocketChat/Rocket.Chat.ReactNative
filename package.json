@@ -15,6 +15,7 @@
     "react": "16.0.0-alpha.12",
     "react-emojione": "^3.1.10",
     "react-native": "0.46.1",
+    "react-native-action-button": "^2.7.2",
     "react-native-easy-markdown": "git+https://github.com/lappalj4/react-native-easy-markdown.git",
     "react-native-fetch-blob": "^0.10.8",
     "react-native-form-generator": "^0.9.9",
