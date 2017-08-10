@@ -59,7 +59,7 @@ export default class Message extends React.PureComponent {
 			extraStyle.opacity = 0.3;
 		}
 
-		const msg = emojify(this.props.item.msg || 'asd', { output: 'unicode' });
+		const msg = emojify(this.props.item.msg, { output: 'unicode' });
 
 		let username = this.props.item.u.username;
 		const position = username.length % colors.length;

@@ -55,7 +55,7 @@ const RocketChat = {
 			});
 
 			Meteor.ddp.on('changed', (ddbMessage) => {
-				console.log('changed', ddbMessage);
+				// console.log('changed', ddbMessage);
 				if (ddbMessage.collection === 'stream-room-messages') {
 					realm.write(() => {
 						const message = ddbMessage.fields.args[0];
@@ -181,6 +181,59 @@ const RocketChat = {
 	joinRoom(rid) {
 		return new Promise((resolve, reject) => {
 			Meteor.call('joinRoom', rid, (error, result) => {
+				if (error) {
+					return reject(error);
+				}
+				return resolve(result);
+			});
+		});
+	},
+
+
+	/*
+		"name":"yXfExLErmNR5eNPx7.png"
+		"size":961
+		"type":"image/png"
+		"rid":"GENERAL"
+		"description":""
+		"store":"fileSystem"
+	*/
+	ufsCreate(fileInfo) {
+		return new Promise((resolve, reject) => {
+			Meteor.call('ufsCreate', fileInfo, (error, result) => {
+				if (error) {
+					return reject(error);
+				}
+				return resolve(result);
+			});
+		});
+	},
+
+	// ["ZTE8CKHJt7LATv7Me","fileSystem","e8E96b2819"
+	ufsComplete(fileId, store, token) {
+		return new Promise((resolve, reject) => {
+			Meteor.call('ufsComplete', fileId, store, token, (error, result) => {
+				if (error) {
+					return reject(error);
+				}
+				return resolve(result);
+			});
+		});
+	},
+
+	/*
+		- "GENERAL"
+		- {
+			"type":"image/png",
+			"size":961,
+			"name":"yXfExLErmNR5eNPx7.png",
+			"description":"",
+			"url":"/ufs/fileSystem/ZTE8CKHJt7LATv7Me/yXfExLErmNR5eNPx7.png"
+		}
+	*/
+	sendFileMessage(rid, message) {
+		return new Promise((resolve, reject) => {
+			Meteor.call('sendFileMessage', rid, null, message, (error, result) => {
 				if (error) {
 					return reject(error);
 				}
