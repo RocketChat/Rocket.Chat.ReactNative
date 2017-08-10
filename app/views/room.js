@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, FlatList, StyleSheet } from 'react-native';
-// import Markdown from 'react-native-simple-markdown';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 

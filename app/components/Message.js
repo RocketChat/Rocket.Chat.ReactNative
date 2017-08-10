@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 import { CachedImage } from 'react-native-img-cache';
+import Markdown from 'react-native-easy-markdown';
+import { emojify } from 'react-emojione';
 
 const styles = StyleSheet.create({
 	message: {
@@ -46,6 +48,8 @@ export default class Message extends React.PureComponent {
 			extraStyle.opacity = 0.3;
 		}
 
+		const msg = emojify(this.props.item.msg || 'asd', { output: 'unicode' });
+
 		return (
 			<View style={[styles.message, extraStyle]}>
 				<View style={styles.avatarContainer}>
@@ -55,12 +59,9 @@ export default class Message extends React.PureComponent {
 					<Text onPress={this._onPress} style={styles.username}>
 						{this.props.item.u.username}
 					</Text>
-					<Text style={styles.msg}>
-						{this.props.item.msg}
-					</Text>
-					{/* <Markdown whitelist={['link', 'url']}>
-						{this.props.item.msg}
-					</Markdown> */}
+					<Markdown>
+						{msg}
+					</Markdown>
 				</View>
 			</View>
 		);
