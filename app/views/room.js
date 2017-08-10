@@ -77,10 +77,6 @@ export default class RoomView extends React.Component {
 
 	sendMessage = message => RocketChat.sendMessage(this.rid, message);
 
-	renderSeparator = () => (
-		<View style={styles.separator} />
-	);
-
 	renderItem = ({ item }) => (
 		<Message
 			id={item._id}
@@ -110,7 +106,6 @@ export default class RoomView extends React.Component {
 					extraData={this.state}
 					renderItem={this.renderItem}
 					keyExtractor={item => item._id}
-					ItemSeparatorComponent={this.renderSeparator}
 				/>
 				<MessageBox
 					onSubmit={this.sendMessage}
