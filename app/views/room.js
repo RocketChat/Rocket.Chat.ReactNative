@@ -46,7 +46,7 @@ export default class RoomView extends React.Component {
 
 		this.state = {
 			dataSource: this.getMessages(),
-			loaded: false,
+			loaded: true,
 			joined: typeof props.navigation.state.params.rid === 'undefined'
 		};
 
@@ -54,9 +54,12 @@ export default class RoomView extends React.Component {
 	}
 
 	componentWillMount() {
+		const late = setTimeout(() => this.setState({
+			loaded: false
+		}), 1000);
 		RocketChat.loadMessagesForRoom(this.rid, () => {
+			clearTimeout(late);
 			this.setState({
-				...this.state,
 				loaded: true
 			});
 		});

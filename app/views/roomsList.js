@@ -169,7 +169,7 @@ export default class RoomsListView extends React.Component {
 		});
 	}
 
-	_onPressItem = (id, item) => {
+	_onPressItem = (id, item = {}) => {
 		const { navigate } = this.props.navigation;
 
 		const clearSearch = () => {
@@ -222,7 +222,7 @@ export default class RoomsListView extends React.Component {
 	}
 
 	renderItem = ({ item }) => (
-		<TouchableOpacity onPress={() => this._onPressItem(item._id)}>
+		<TouchableOpacity onPress={() => this._onPressItem(item._id, item)}>
 			<RoomItem
 				id={item._id}
 				item={item}
