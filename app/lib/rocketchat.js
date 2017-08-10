@@ -147,6 +147,39 @@ const RocketChat = {
 				return resolve(result);
 			});
 		});
+	},
+
+	spotlight(search, usernames) {
+		return new Promise((resolve, reject) => {
+			Meteor.call('spotlight', search, usernames, (error, result) => {
+				if (error) {
+					return reject(error);
+				}
+				return resolve(result);
+			});
+		});
+	},
+
+	createDirectMessage(username) {
+		return new Promise((resolve, reject) => {
+			Meteor.call('createDirectMessage', username, (error, result) => {
+				if (error) {
+					return reject(error);
+				}
+				return resolve(result);
+			});
+		});
+	},
+
+	joinRoom(rid) {
+		return new Promise((resolve, reject) => {
+			Meteor.call('joinRoom', rid, (error, result) => {
+				if (error) {
+					return reject(error);
+				}
+				return resolve(result);
+			});
+		});
 	}
 };
 
