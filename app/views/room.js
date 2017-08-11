@@ -178,6 +178,7 @@ export default class RoomView extends React.Component {
 			<View style={styles.container}>
 				{this.renderBanner()}
 				<ListView
+					enableEmptySections
 					style={styles.list}
 					onEndReachedThreshold={0.1}
 					ListFooterComponent={this.renderHeader()}
