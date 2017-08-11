@@ -2,7 +2,7 @@ import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, FlatList, StyleSheet, TouchableOpacity, Platform, TextInput } from 'react-native';
+import { Button, Text, View, FlatList, StyleSheet, TouchableOpacity, Platform, TextInput } from 'react-native';
 import Meteor from 'react-native-meteor';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
 });
 
 let navigation;
+let setInitialData;
 
 Meteor.getData().on('loggingIn', () => {
 	setTimeout(() => {
@@ -76,16 +77,19 @@ export default class RoomsListView extends React.Component {
 		navigation: PropTypes.object.isRequired
 	}
 
-	static navigationOptions = () => {
+	static navigationOptions = (props) => {
 		const server = RocketChat.currentServer ? RocketChat.currentServer.replace(/^https?:\/\//, '') : '';
 		const textAlign = Platform.OS === 'ios' ? 'center' : 'left';
 		const marginLeft = Platform.OS === 'ios' ? 0 : 20;
+		const position = Platform.OS === 'ios' ? 'headerLeft' : 'headerRight';
+
 		return {
 			headerTitle: <View style={{ height: 10, width: 200, top: -10, marginLeft }}>
 				<Text style={{ textAlign, fontSize: 16, fontWeight: '600' }}>Channels</Text>
 				<Text style={{ textAlign, fontSize: 10 }}>{server}</Text>
 			</View>,
-			title: 'Channels'
+			title: 'Channels',
+			[position]: <Button title='Servers' onPress={() => props.navigation.navigate('ListServerModal', { onSelect: setInitialData })} />
 		};
 	}
 
@@ -93,7 +97,7 @@ export default class RoomsListView extends React.Component {
 		super(props);
 
 		this.state = {
-			dataSource: this.getSubscriptions(),
+			dataSource: [],
 			searching: false,
 			searchDataSource: [],
 			searchText: ''
@@ -101,19 +105,23 @@ export default class RoomsListView extends React.Component {
 	}
 
 	componentWillMount() {
-		realm.addListener('change', this.updateState);
+		setInitialData = this.setInitialData;
 
 		navigation = this.props.navigation;
 
 		if (RocketChat.currentServer) {
+			this.setInitialData();
+
 			RocketChat.connect();
 		} else {
-			navigation.navigate('ListServerModal');
+			navigation.navigate('ListServerModal', {
+				onSelect: this.setInitialData
+			});
 		}
 	}
 
 	componentWillUnmount() {
-		realm.removeListener('change', this.updateState);
+		this.data.removeListener(this.updateState);
 	}
 
 	onSearchChangeText = (text) => {
@@ -161,8 +169,22 @@ export default class RoomsListView extends React.Component {
 		}
 	}
 
-	getSubscriptions = () => realm.objects('subscriptions').filtered('_server.id = $0', RocketChat.currentServer).sorted('name').slice()
-		.sort((a, b) => {
+	setInitialData = () => {
+		if (this.data) {
+			this.data.removeListener(this.updateState);
+		}
+
+		this.data = realm.objects('subscriptions').filtered('_server.id = $0', RocketChat.currentServer).sorted('name');
+
+		this.data.addListener(this.updateState);
+
+		this.setState({
+			dataSource: this.sort(this.data)
+		});
+	}
+
+	sort = (data) => {
+		return data.slice().sort((a, b) => {
 			if (a.unread < b.unread) {
 				return 1;
 			}
@@ -173,10 +195,11 @@ export default class RoomsListView extends React.Component {
 
 			return 0;
 		});
+	}
 
-	updateState = () => {
+	updateState = (data) => {
 		this.setState({
-			dataSource: this.getSubscriptions()
+			dataSource: this.sort(data)
 		});
 	}
 
