@@ -40,7 +40,7 @@ const RocketChat = {
 		});
 	},
 	get currentServer() {
-		const current = realm.objects('servers').filtered('current = true')[0];
+		const current = realm.objects('servers').filtered('current = true').slice(0, 1)[0];
 		return current && current.id;
 	},
 
@@ -327,6 +327,8 @@ Meteor.Accounts.onLogin(() => {
 			subscription._updatedAt = rooms[index]._updatedAt;
 			return subscription;
 		});
+		Meteor.subscribe('stream-notify-user', `${ Meteor.userId() }/subscriptions-changed`, false);
+		Meteor.subscribe('stream-notify-user', `${ Meteor.userId() }/rooms-changed`, false);
 		realm.write(() => {
 			data.forEach((subscription) => {
 			// const subscription = {
@@ -341,8 +343,6 @@ Meteor.Accounts.onLogin(() => {
 			});
 		});
 	}).then(() => {
-		Meteor.subscribe('stream-notify-user', `${ Meteor.userId() }/subscriptions-changed`, false);
-		Meteor.subscribe('stream-notify-user', `${ Meteor.userId() }/rooms-changed`, false);
 		console.log('subscriptions done.');
 	});
 });
