@@ -113,7 +113,7 @@ export default class RoomsListView extends React.Component {
 				<Text style={{ textAlign, fontSize: 10 }}>{server}</Text>
 			</View>,
 			title: 'Channels',
-			[position]: <Button title='Servers' onPress={() => props.navigation.navigate('ListServerModal', { onSelect: setInitialData })} />
+			[position]: <Button title='Servers' onPress={() => props.navigation.navigate('ListServerModal')} />
 		};
 	}
 
@@ -126,6 +126,7 @@ export default class RoomsListView extends React.Component {
 			searchDataSource: [],
 			searchText: ''
 		};
+		this.data.addListener(this.updateState);
 	}
 
 	componentWillMount() {
@@ -133,9 +134,8 @@ export default class RoomsListView extends React.Component {
 
 		navigation = this.props.navigation;
 
+		// this.setInitialData();
 		if (RocketChat.currentServer) {
-			this.setInitialData();
-
 			RocketChat.connect();
 		} else {
 			navigation.navigate('ListServerModal', {
@@ -196,7 +196,7 @@ export default class RoomsListView extends React.Component {
 		if (this.data) {
 			this.data.removeListener(this.updateState);
 		}
-
+		this.data = realm.objects('subscriptions').filtered('_server.id = $0', RocketChat.currentServer).sorted('_updatedAt', true);
 		this.data.addListener(this.updateState);
 
 		this.updateState();
@@ -206,7 +206,7 @@ export default class RoomsListView extends React.Component {
 
 	updateState = debounce(() => {
 		this.setState({
-			dataSource: ds.cloneWithRows(this.data)
+			dataSource: ds.cloneWithRows(this.data.filtered('_server.id = $0', RocketChat.currentServer))
 		});
 	}, 500);
 
