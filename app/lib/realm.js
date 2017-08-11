@@ -35,10 +35,10 @@ const subscriptionSchema = {
 		open: { type: 'bool', optional: true },
 		alert: { type: 'bool', optional: true },
 		// roles: [ 'owner' ],
-		unread: { type: 'int', optional: true }
+		unread: { type: 'int', optional: true },
 		// userMentions: 0,
 		// groupMentions: 0,
-		// _updatedAt: Fri Jul 28 2017 18:31:35 GMT-0300 (-03),
+		_updatedAt: { type: 'date', optional: true }
 	}
 };
 
@@ -80,11 +80,10 @@ const realm = new Realm({
 export default realm;
 
 // Clear settings
-realm.write(() => {
-	// const allSettins = realm.objects('settings');
-	// realm.delete(allSettins);
-
-	// realm.create('servers', { id: 'https://demo.rocket.chat', current: false }, true);
-	// realm.create('servers', { id: 'http://localhost:3000', current: false }, true);
-	// realm.create('servers', { id: 'http://10.0.2.2:3000', current: false }, true);
-});
+// realm.write(() => {
+// 	// const allSettins = realm.objects('settings');
+// 	// realm.delete(allSettins);
+//
+// 	// realm.create('servers', { id: 'https://demo.rocket.chat', current: false }, true);
+// 	// realm.create('servers', { id: 'http://localhost:3000', current: false }, true);
+// });

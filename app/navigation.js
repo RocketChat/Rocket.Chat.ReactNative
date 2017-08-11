@@ -61,6 +61,6 @@ export default new StackNavigator({
 	initialRouteName: 'Main',
 	cardStyle: {
 		backgroundColor: '#fff'
-	},
-	mode: 'modal'
+	}
+	// mode: 'modal'
 });

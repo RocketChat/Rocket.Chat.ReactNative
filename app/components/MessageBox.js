@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
 	},
 	textBoxInput: {
 		height: 40,
+		alignSelf: 'stretch',
 		backgroundColor: '#fff',
 		flexGrow: 1
 	},
@@ -44,14 +45,15 @@ export default class MessageBox extends React.PureComponent {
 		};
 	}
 
-	submit = () => {
-		if (this.state.text.trim() === '') {
+	submit(message) {
+		// console.log(this.state);
+		const text = message;
+		this.setState({ text: '' });
+		if (text.trim() === '') {
 			return;
 		}
-
-		this.props.onSubmit(this.state.text);
-		this.setState({ text: '' });
-	};
+		this.props.onSubmit(text);
+	}
 
 	addFile = () => {
 		const options = {
@@ -106,13 +108,15 @@ export default class MessageBox extends React.PureComponent {
 			<View style={styles.textBox}>
 				<Icon style={styles.fileButton} name='add-circle-outline' onPress={this.addFile} />
 				<TextInput
+					ref={component => this.component = component}
 					style={styles.textBoxInput}
 					value={this.state.text}
 					onChangeText={text => this.setState({ text })}
 					returnKeyType='send'
-					onSubmitEditing={this.submit}
+					onSubmitEditing={event => this.submit(event.nativeEvent.text)}
 					blurOnSubmit={false}
 					placeholder='New message'
+					underlineColorAndroid='transparent'
 				/>
 			</View>
 		);
