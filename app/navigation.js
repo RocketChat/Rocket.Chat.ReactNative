@@ -4,23 +4,31 @@ import { StackNavigator } from 'react-navigation';
 import LoginView from './views/login';
 import NewServerView from './views/serverNew';
 import ListServerView from './views/serverList';
+import Main from './views/Main';
 import RoomsListView from './views/roomsList';
 import RoomView from './views/room';
 import CreateChannel from './views/CreateChannel';
 
 
 const MainCardNavigator = StackNavigator({
+	Main: {
+		screen: Main
+	},
 	Rooms: {
 		screen: RoomsListView
 	},
 	Room: {
 		screen: RoomView
-		// navigationOptions: {
-		// 	header: null
-		// }
+	},
+	ListServerModal: {
+		screen: ListServerView,
+		navigationOptions: ({ navigation }) =>
+			(Platform.OS === 'ios' ? ({
+				headerLeft: Platform.OS === 'ios' && (<Button title='Close' onPress={() => navigation.dispatch({ type: 'Navigation/BACK' })} />)
+			}) : {})
 	}
 }, {
-	initialRouteName: 'Rooms',
+	initialRouteName: 'Main',
 	cardStyle: {
 		backgroundColor: '#fff'
 	}
@@ -37,12 +45,6 @@ export default new StackNavigator({
 		screen: LoginView,
 		navigationOptions: ({ navigation }) => ({
 			headerLeft: Platform.OS === 'ios' && (<Button title='Cancel' onPress={() => navigation.dispatch({ type: 'Navigation/BACK' })} />)
-		})
-	},
-	ListServerModal: {
-		screen: ListServerView,
-		navigationOptions: ({ navigation }) => ({
-			headerLeft: Platform.OS === 'ios' && (<Button title='Close' onPress={() => navigation.dispatch({ type: 'Navigation/BACK' })} />)
 		})
 	},
 	NewServerModal: {
