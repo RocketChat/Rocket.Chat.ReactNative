@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TextInput, StyleSheet } from 'react-native';
+import { Text, TextInput, View, StyleSheet } from 'react-native';
+import _ from 'underscore';
 
 import RocketChat from '../lib/rocketchat';
 
@@ -10,7 +11,6 @@ const styles = StyleSheet.create({
 	view: {
 		flex: 1,
 		flexDirection: 'column',
-		justifyContent: 'center',
 		alignItems: 'stretch'
 	},
 	input: {
@@ -24,6 +24,26 @@ const styles = StyleSheet.create({
 	text: {
 		textAlign: 'center',
 		color: '#888'
+	},
+	validateText: {
+		position: 'absolute',
+		color: 'green',
+		textAlign: 'center',
+		paddingLeft: 50,
+		paddingRight: 50,
+		width: '100%'
+	},
+	validText: {
+		color: 'green'
+	},
+	invalidText: {
+		color: 'red'
+	},
+	validatingText: {
+		color: '#aaa'
+	},
+	spaceView: {
+		flexGrow: 1
 	}
 });
 
@@ -40,6 +60,7 @@ export default class NewServerView extends React.Component {
 		super(props);
 		this.state = {
 			defaultServer: 'https://demo.rocket.chat',
+			editable: true,
 			text: ''
 		};
 
@@ -47,36 +68,160 @@ export default class NewServerView extends React.Component {
 			let url = this.state.text.trim();
 			if (!url) {
 				url = this.state.defaultServer;
+			} else {
+				url = this.completeUrl(this.state.text);
 			}
 
-			// TODO: validate URL
-			if (url.indexOf('.') === -1) {
-				url = `https://${ url }.rocket.chat`;
-			}
+			this.setState({
+				editable: false
+			});
 
-			if (/^https?:\/\//.test(url) === false) {
+			this.inputElement.blur();
+			this.validateServer(url).then(() => {
+				RocketChat.currentServer = url;
+				this.props.navigation.dispatch({ type: 'Navigation/BACK' });
+			}).catch(() => {
+				this.setState({
+					editable: true
+				});
+				this.inputElement.focus();
+			});
+		};
+	}
+
+	componentDidMount() {
+		this._mounted = true;
+	}
+
+	componentWillUnmount() {
+		this._mounted = false;
+	}
+
+	onChangeText = (text) => {
+		this.setState({ text });
+
+		this.validateServerDebounced(text);
+	}
+
+	validateServer = url => new Promise((resolve, reject) => {
+		url = this.completeUrl(url);
+
+		this.setState({
+			validating: false,
+			url
+		});
+
+		if (/^(https?:\/\/)?(((\w|[0-9])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
+			this.setState({
+				validating: true
+			});
+
+			const a = fetch(url, { method: 'HEAD' })
+				.then((response) => {
+					if (!this._mounted) {
+						return;
+					}
+					if (response.status === 200 && response.headers.get('x-instance-id') != null && response.headers.get('x-instance-id').length) {
+						this.setState({
+							validInstance: true,
+							validating: false
+						});
+						resolve(url);
+					} else {
+						this.setState({
+							validInstance: false,
+							validating: false
+						});
+						reject(url);
+					}
+				})
+				.catch(() => {
+					if (!this._mounted) {
+						return;
+					}
+					this.setState({
+						validInstance: false,
+						validating: false
+					});
+					reject(url);
+				});
+			console.log(a.stop);
+		} else {
+			this.setState({
+				validInstance: undefined
+			});
+			reject(url);
+		}
+	})
+
+	validateServerDebounced = _.debounce(this.validateServer, 1000)
+
+	completeUrl = (url) => {
+		url = url.trim();
+
+		if (/^(\w|[0-9-_]){3,}$/.test(url) && /^(htt(ps?)?)|(loca((l)?|(lh)?|(lho)?|(lhos)?|(lhost:?\d*)?)$)/.test(url) === false) {
+			url = `${ url }.rocket.chat`;
+		}
+
+		if (/^(https?:\/\/)?(((\w|[0-9])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
+			if (/^localhost(:\d+)?/.test(url)) {
+				url = `http://${ url }`;
+			} else if (/^https?:\/\//.test(url) === false) {
 				url = `https://${ url }`;
 			}
+		}
 
-			RocketChat.currentServer = url;
-			this.props.navigation.dispatch({ type: 'Navigation/BACK' });
-		};
+		url = url.replace(/\/+$/, '');
+
+		return url;
+	}
+
+	renderValidation = () => {
+		if (this.state.validating) {
+			return (
+				<Text style={[styles.validateText, styles.validatingText]}>
+					Validating {this.state.url} ...
+				</Text>
+			);
+		}
+
+		if (this.state.validInstance) {
+			return (
+				<Text style={[styles.validateText, styles.validText]}>
+					{this.state.url} is a valid Rocket.Chat instance
+				</Text>
+			);
+		}
+
+		if (this.state.validInstance === false) {
+			return (
+				<Text style={[styles.validateText, styles.invalidText]}>
+					{this.state.url} is not a valid Rocket.Chat instance
+				</Text>
+			);
+		}
 	}
 
 	render() {
 		return (
-			<KeyboardView style={styles.view}>
+			<KeyboardView style={styles.view} keyboardVerticalOffset={64}>
+				<View style={styles.spaceView} />
 				<TextInput
+					ref={ref => this.inputElement = ref}
 					style={styles.input}
-					onChangeText={text => this.setState({ text })}
+					onChangeText={this.onChangeText}
 					keyboardType='url'
 					autoCorrect={false}
 					returnKeyType='done'
 					autoCapitalize='none'
 					autoFocus
+					editable={this.state.editable}
 					onSubmitEditing={this.submit}
 					placeholder={this.state.defaultServer}
 				/>
+				<View style={styles.spaceView}>
+					{this.renderValidation()}
+				</View>
 			</KeyboardView>
 		);
 	}
