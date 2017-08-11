@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, FlatList, StyleSheet, Button } from 'react-native';
+import { Text, View, StyleSheet, Button } from 'react-native';
+import { ListView } from 'realm/react-native';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
-
+import debounce from '../utils/throttle';
 import Message from '../components/Message';
 import MessageBox from '../components/MessageBox';
-import KeyboardView from '../components/KeyboardView';
-
+// import KeyboardView from '../components/KeyboardView';
+const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 const styles = StyleSheet.create({
 	container: {
 		flex: 1
@@ -45,17 +46,18 @@ export default class RoomView extends React.Component {
 		title: navigation.state.params.name || realm.objectForPrimaryKey('subscriptions', navigation.state.params.sid).name
 	});
 
+
 	constructor(props) {
 		super(props);
 		this.rid = props.navigation.state.params.rid || realm.objectForPrimaryKey('subscriptions', props.navigation.state.params.sid).rid;
 		// this.rid = 'GENERAL';
-
+		this.data = realm.objects('messages').filtered('_server.id = $0 AND rid = $1', RocketChat.currentServer, this.rid).sorted('ts', true);
 		this.state = {
-			dataSource: [],
+			dataSource: ds.cloneWithRows(this.data.slice(0, 10)),
 			loaded: true,
 			joined: typeof props.navigation.state.params.rid === 'undefined'
 		};
-
+		// console.log(this.messages);
 		this.url = realm.objectForPrimaryKey('settings', 'Site_Url').value;
 	}
 
@@ -68,16 +70,13 @@ export default class RoomView extends React.Component {
 			this.setState({
 				loaded: true
 			});
+			this.data.addListener(this.updateState);
 		});
-
-		this.data = realm.objects('messages').filtered('_server.id = $0 AND rid = $1', RocketChat.currentServer, this.rid).sorted('ts', true);
-
-		this.setState({
-			dataSource: this.data
-		});
-		this.data.addListener(this.updateState);
+		this.updateState();
 	}
-
+	componentDidMount() {
+		return RocketChat.readMessages(this.rid);
+	}
 	componentWillUnmount() {
 		this.data.removeListener(this.updateState);
 	}
@@ -85,12 +84,12 @@ export default class RoomView extends React.Component {
 	onEndReached = () => {
 		if (this.state.dataSource.length && this.state.loaded && this.state.loadingMore !== true && this.state.end !== true) {
 			this.setState({
-				...this.state,
+				// ...this.state,
 				loadingMore: true
 			});
 			RocketChat.loadMessagesForRoom(this.rid, this.state.dataSource[this.state.dataSource.length - 1].ts, ({ end }) => {
 				this.setState({
-					...this.state,
+					// ...this.state,
 					loadingMore: false,
 					end
 				});
@@ -98,11 +97,15 @@ export default class RoomView extends React.Component {
 		}
 	}
 
-	updateState = (data) => {
+	updateState = debounce(() => {
 		this.setState({
-			dataSource: data
+			dataSource: ds.cloneWithRows(this.data)
 		});
-	};
+		// RocketChat.readMessages(this.rid);
+		// this.setState({
+		// 	messages: this.messages
+		// });
+	}, 100);
 
 	sendMessage = message => RocketChat.sendMessage(this.rid, message);
 
@@ -148,6 +151,7 @@ export default class RoomView extends React.Component {
 		}
 		return (
 			<MessageBox
+				ref={box => this.box = box}
 				onSubmit={this.sendMessage}
 				rid={this.rid}
 			/>
@@ -165,22 +169,24 @@ export default class RoomView extends React.Component {
 	}
 
 	render() {
+		// data={this.state.dataSource}
+		// extraData={this.state}
+		// renderItem={this.renderItem}
+		// keyExtractor={item => item._id}
+		//
 		return (
-			<KeyboardView style={styles.container} keyboardVerticalOffset={64}>
+			<View style={styles.container}>
 				{this.renderBanner()}
-				<FlatList
-					ref={ref => this.listView = ref}
+				<ListView
 					style={styles.list}
-					data={this.state.dataSource}
-					extraData={this.state}
-					renderItem={this.renderItem}
-					keyExtractor={item => item._id}
-					onEndReached={this.onEndReached}
 					onEndReachedThreshold={0.1}
 					ListFooterComponent={this.renderHeader()}
+					onEndReached={this.onEndReached}
+					dataSource={this.state.dataSource}
+					renderRow={item => this.renderItem({ item })}
 				/>
 				{this.renderFooter()}
-			</KeyboardView>
+			</View>
 		);
 	}
 }

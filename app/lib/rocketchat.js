@@ -1,9 +1,37 @@
 import Meteor from 'react-native-meteor';
 import Random from 'react-native-meteor/lib/Random';
 import realm from './realm';
+import debounce from '../utils/debounce';
 
 export { Accounts } from 'react-native-meteor';
 
+const call = (method, ...params) => new Promise((resolve, reject) => {
+	Meteor.call(method, ...params, (err, data) => {
+		if (err) {
+			reject(err);
+		}
+		resolve(data);
+	});
+});
+
+const write = (() => {
+	const cache = [];
+	const run = debounce(() => {
+		if (!cache.length) {
+			return;
+		}
+		realm.write(() => {
+			cache.forEach(([name, obj]) => {
+				realm.create(name, obj, true);
+			});
+		});
+		// cache = [];
+	}, 1000);
+	return (name, obj) => {
+		cache.push([name, obj]);
+		run();
+	};
+})();
 const RocketChat = {
 
 	createChannel({ name, users, type }) {
@@ -45,6 +73,7 @@ const RocketChat = {
 						if (typeof item.value === 'string') {
 							setting.value = item.value;
 						}
+						// write('settings', setting);
 						realm.create('settings', setting, true);
 					});
 				});
@@ -61,17 +90,36 @@ const RocketChat = {
 						const message = ddbMessage.fields.args[0];
 						message.temp = false;
 						message._server = { id: RocketChat.currentServer };
+						// write('messages', message);
 						realm.create('messages', message, true);
 					});
 				}
-
+				this.subCache = this.subCache || {};
+				this.roomCache = this.roomCache || {};
+				this.cache = {};
 				if (ddbMessage.collection === 'stream-notify-user') {
-					console.log(ddbMessage);
-					realm.write(() => {
-						const data = ddbMessage.fields.args[1];
-						data._server = { id: RocketChat.currentServer };
-						realm.create('subscriptions', data, true);
-					});
+					const data = ddbMessage.fields.args[1];
+					let key;
+					if (ddbMessage.fields.eventName && ddbMessage.fields.eventName.indexOf('rooms-changed') > -1) {
+						this.roomCache[data._id] = data;
+						key = data._id;
+					} else {
+						this.subCache[data.rid] = data;
+						key = data.rid;
+						delete this.subCache[key]._updatedAt;
+					}
+					this.cache[key] = this.cache[key] ||
+					setTimeout(() => {
+						this.subCache[key] = this.subCache[key] || realm.objects('subscriptions').filtered('rid = $0', key).slice(0, 1)[0];
+						if (this.roomCache[key]) {
+							this.subCache[key]._updatedAt = this.roomCache[key]._updatedAt;
+						}
+
+						write('subscriptions', this.subCache[key]);
+						delete this.subCache[key];
+						delete this.roomCache[key];
+						delete this.cache[key];
+					}, 550);
 				}
 			});
 		});
@@ -86,19 +134,21 @@ const RocketChat = {
 			if (err) {
 				console.error(err);
 			}
-
-			realm.write(() => {
-				data.forEach((subscription) => {
-					// const subscription = {
-					// 	_id: item._id
-					// };
-					// if (typeof item.value === 'string') {
-					// 	subscription.value = item.value;
-					// }
-					subscription._server = { id: RocketChat.currentServer };
-					realm.create('subscriptions', subscription, true);
+			if (data.length) {
+				realm.write(() => {
+					data.forEach((subscription) => {
+						// const subscription = {
+						// 	_id: item._id
+						// };
+						// if (typeof item.value === 'string') {
+						// 	subscription.value = item.value;
+						// }
+						subscription._server = { id: RocketChat.currentServer };
+						write('subscriptions', subscription);
+						realm.create('subscriptions', subscription, true);
+					});
 				});
-			});
+			}
 
 			return cb && cb();
 		});
@@ -113,14 +163,16 @@ const RocketChat = {
 				}
 				return;
 			}
-
-			realm.write(() => {
-				data.messages.forEach((message) => {
-					message.temp = false;
-					message._server = { id: RocketChat.currentServer };
-					realm.create('messages', message, true);
+			if (data.messages.length) {
+				realm.write(() => {
+					data.messages.forEach((message) => {
+						message.temp = false;
+						message._server = { id: RocketChat.currentServer };
+						// write('messages', message);
+						realm.create('messages', message, true);
+					});
 				});
-			});
+			}
 
 			if (cb) {
 				if (data.messages.length < 20) {
@@ -139,6 +191,19 @@ const RocketChat = {
 		const user = Meteor.user();
 
 		realm.write(() => {
+		// write('messages', {
+		// 	_id,
+		// 	rid,
+		// 	msg,
+		// 	ts: new Date(),
+		// 	_updatedAt: new Date(),
+		// 	temp: true,
+		// 	_server: { id: RocketChat.currentServer },
+		// 	u: {
+		// 		_id: user._id,
+		// 		username: user.username
+		// 	}
+		// });
 			realm.create('messages', {
 				_id,
 				rid,
@@ -185,7 +250,9 @@ const RocketChat = {
 			});
 		});
 	},
-
+	readMessages(rid) {
+		return call('readMessages', rid);
+	},
 	joinRoom(rid) {
 		return new Promise((resolve, reject) => {
 			Meteor.call('joinRoom', rid, (error, result) => {
@@ -252,25 +319,30 @@ const RocketChat = {
 };
 
 export default RocketChat;
-
 Meteor.Accounts.onLogin(() => {
-	Meteor.call('subscriptions/get', (err, data) => {
-		if (err) {
-			console.error(err);
-		}
-
+	Promise.all([call('subscriptions/get'), call('rooms/get')]).then(([subscriptions, rooms]) => {
+		subscriptions = subscriptions.sort((s1, s2) => (s1.rid > s2.rid ? 1 : -1));
+		rooms = rooms.sort((s1, s2) => (s1._id > s2._id ? 1 : -1));
+		const data = subscriptions.map((subscription, index) => {
+			subscription._updatedAt = rooms[index]._updatedAt;
+			return subscription;
+		});
 		realm.write(() => {
 			data.forEach((subscription) => {
-				// const subscription = {
-				// 	_id: item._id
-				// };
-				// if (typeof item.value === 'string') {
-				// 	subscription.value = item.value;
-				// }
+			// const subscription = {
+			// 	_id: item._id
+			// };
+			// if (typeof item.value === 'string') {
+			// 	subscription.value = item.value;
+			// }
 				subscription._server = { id: RocketChat.currentServer };
+				// write('subscriptions', subscription);
 				realm.create('subscriptions', subscription, true);
 			});
 		});
+	}).then(() => {
 		Meteor.subscribe('stream-notify-user', `${ Meteor.userId() }/subscriptions-changed`, false);
+		Meteor.subscribe('stream-notify-user', `${ Meteor.userId() }/rooms-changed`, false);
+		console.log('subscriptions done.');
 	});
 });
