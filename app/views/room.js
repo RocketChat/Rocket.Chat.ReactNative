@@ -51,7 +51,7 @@ export default class RoomView extends React.Component {
 		// this.rid = 'GENERAL';
 
 		this.state = {
-			dataSource: this.getMessages(),
+			dataSource: [],
 			loaded: true,
 			joined: typeof props.navigation.state.params.rid === 'undefined'
 		};
@@ -69,11 +69,17 @@ export default class RoomView extends React.Component {
 				loaded: true
 			});
 		});
-		realm.addListener('change', this.updateState);
+
+		this.data = realm.objects('messages').filtered('_server.id = $0 AND rid = $1', RocketChat.currentServer, this.rid).sorted('ts', true);
+
+		this.setState({
+			dataSource: this.data
+		});
+		this.data.addListener(this.updateState);
 	}
 
 	componentWillUnmount() {
-		realm.removeListener('change', this.updateState);
+		this.data.removeListener(this.updateState);
 	}
 
 	onEndReached = () => {
@@ -92,12 +98,9 @@ export default class RoomView extends React.Component {
 		}
 	}
 
-	getMessages = () => realm.objects('messages').filtered('_server.id = $0 AND rid = $1', RocketChat.currentServer, this.rid).sorted('ts', true)
-
-	updateState = () => {
+	updateState = (data) => {
 		this.setState({
-			...this.state,
-			dataSource: this.getMessages()
+			dataSource: data
 		});
 	};
 
