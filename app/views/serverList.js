@@ -88,6 +88,7 @@ export default class ListServerView extends React.Component {
 		RocketChat.currentServer = item.id;
 
 		RocketChat.connect();
+		this.props.navigation.state.params.onSelect();
 		this.props.navigation.dispatch({ type: 'Navigation/BACK' });
 	}
 

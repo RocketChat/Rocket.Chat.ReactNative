@@ -8,14 +8,10 @@ import RoomsListView from './views/roomsList';
 import RoomView from './views/room';
 import CreateChannel from './views/CreateChannel';
 
-const position = Platform.OS === 'ios' ? 'headerLeft' : 'headerRight';
 
 const MainCardNavigator = StackNavigator({
 	Rooms: {
-		screen: RoomsListView,
-		navigationOptions: ({ navigation }) => ({
-			[position]: <Button title='Servers' onPress={() => navigation.navigate('ListServerModal')} />
-		})
+		screen: RoomsListView
 	},
 	Room: {
 		screen: RoomView
