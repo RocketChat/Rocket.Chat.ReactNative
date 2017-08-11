@@ -1,12 +1,14 @@
 import ActionButton from 'react-native-action-button';
+import { ListView } from 'realm/react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Text, View, FlatList, StyleSheet, TouchableOpacity, Platform, TextInput } from 'react-native';
+import { Button, Text, View, StyleSheet, TouchableOpacity, Platform, TextInput } from 'react-native';
 import Meteor from 'react-native-meteor';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import RoomItem from '../components/RoomItem';
+import debounce from '../utils/debounce';
 
 const styles = StyleSheet.create({
 	container: {
@@ -72,6 +74,28 @@ Meteor.Accounts.onLogin(() => {
 	console.log('onLogin');
 });
 
+const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+class RoomsListItem extends React.PureComponent {
+	static propTypes = {
+		item: PropTypes.object.isRequired,
+		onPress: PropTypes.func.isRequired
+	}
+	_onPress = (...args) => {
+		this.props.onPress(...args);
+	};
+
+	render() {
+		const { item } = this.props;
+		return (
+			<TouchableOpacity key={item._id} onPress={() => this.props.onPress(item._id, item)}>
+				<RoomItem
+					id={item._id}
+					item={item}
+				/>
+			</TouchableOpacity>
+		);
+	}
+}
 export default class RoomsListView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired
@@ -95,9 +119,9 @@ export default class RoomsListView extends React.Component {
 
 	constructor(props) {
 		super(props);
-
+		this.data = realm.objects('subscriptions').filtered('_server.id = $0', RocketChat.currentServer).sorted('_updatedAt', true);
 		this.state = {
-			dataSource: [],
+			dataSource: ds.cloneWithRows(this.data.sorted('_updatedAt', true).slice(0, 10)),
 			searching: false,
 			searchDataSource: [],
 			searchText: ''
@@ -168,40 +192,23 @@ export default class RoomsListView extends React.Component {
 			}
 		}
 	}
-
 	setInitialData = () => {
 		if (this.data) {
 			this.data.removeListener(this.updateState);
 		}
 
-		this.data = realm.objects('subscriptions').filtered('_server.id = $0', RocketChat.currentServer).sorted('name');
-
 		this.data.addListener(this.updateState);
 
+		this.updateState();
+	}
+
+	getSubscriptions = () => this.data.sorted('_updatedAt', true)
+
+	updateState = debounce(() => {
 		this.setState({
-			dataSource: this.sort(this.data)
+			dataSource: ds.cloneWithRows(this.data)
 		});
-	}
-
-	sort = (data) => {
-		return data.slice().sort((a, b) => {
-			if (a.unread < b.unread) {
-				return 1;
-			}
-
-			if (a.unread > b.unread) {
-				return -1;
-			}
-
-			return 0;
-		});
-	}
-
-	updateState = (data) => {
-		this.setState({
-			dataSource: this.sort(data)
-		});
-	}
+	}, 500);
 
 	_onPressItem = (id, item = {}) => {
 		const { navigate } = this.props.navigation;
@@ -222,8 +229,8 @@ export default class RoomsListView extends React.Component {
 					.then(subs => navigate('Room', { sid: subs[0]._id }))
 					.then(() => clearSearch());
 			} else {
-				navigate('Room', { rid: item._id, name: item.name });
 				clearSearch();
+				navigate('Room', { rid: item._id, name: item.name });
 			}
 			return;
 		}
@@ -256,12 +263,7 @@ export default class RoomsListView extends React.Component {
 	}
 
 	renderItem = ({ item }) => (
-		<TouchableOpacity onPress={() => this._onPressItem(item._id, item)}>
-			<RoomItem
-				id={item._id}
-				item={item}
-			/>
-		</TouchableOpacity>
+		<RoomsListItem item={item} onPress={() => this._onPressItem(item._id, item)} />
 	);
 
 	renderSeparator = () => (
@@ -282,25 +284,25 @@ export default class RoomsListView extends React.Component {
 		</View>
 	);
 
-	renderList = () => {
-		if (!this.state.searching && !this.state.dataSource.length) {
-			return (
-				<View style={styles.emptyView}>
-					<Text style={styles.emptyText}>No rooms</Text>
-				</View>
-			);
-		}
+	// if (!this.state.searching && !this.state.dataSource.length) {
+	// 	return (
+	// 		<View style={styles.emptyView}>
+	// 			<Text style={styles.emptyText}>No rooms</Text>
+	// 		</View>
+	// 	);
+	// }
+	renderList = () => (
+		// data={this.state.searching ? this.state.searchDataSource : this.state.dataSource}
+		// keyExtractor={item => item._id}
+		// ItemSeparatorComponent={this.renderSeparator}
+		// renderItem={this.renderItem}
+		<ListView
+			dataSource={this.state.dataSource}
+			style={styles.list}
+			renderRow={item => this.renderItem({ item })}
+		/>
+	)
 
-		return (
-			<FlatList
-				style={styles.list}
-				data={this.state.searching ? this.state.searchDataSource : this.state.dataSource}
-				renderItem={this.renderItem}
-				keyExtractor={item => item._id}
-				ItemSeparatorComponent={this.renderSeparator}
-			/>
-		);
-	}
 	renderCreateButtons() {
 		return (
 			<ActionButton buttonColor='rgba(231,76,60,1)'>

@@ -71,7 +71,6 @@ export default class Message extends React.PureComponent {
 
 		let initials = usernameParts.length > 1 ? usernameParts[0][0] + usernameParts[usernameParts.length - 1][0] : username.replace(/[^A-Za-z0-9]/g, '').substr(0, 2);
 		initials = initials.toUpperCase();
-
 		return (
 			<View style={[styles.message, extraStyle]}>
 				<View style={[styles.avatarContainer, { backgroundColor: color }]}>
