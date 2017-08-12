@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Navigation } from 'react-native-navigation';
 import { Text, TextInput, View, StyleSheet } from 'react-native';
 import _ from 'underscore';
 
@@ -11,7 +12,8 @@ const styles = StyleSheet.create({
 	view: {
 		flex: 1,
 		flexDirection: 'column',
-		alignItems: 'stretch'
+		alignItems: 'stretch',
+		backgroundColor: '#fff'
 	},
 	input: {
 		height: 40,
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
 
 export default class NewServerView extends React.Component {
 	static propTypes = {
-		navigation: PropTypes.object.isRequired
+		navigator: PropTypes.object.isRequired
 	}
 
 	static navigationOptions = () => ({
@@ -79,7 +81,9 @@ export default class NewServerView extends React.Component {
 			this.inputElement.blur();
 			this.validateServer(url).then(() => {
 				RocketChat.currentServer = url;
-				this.props.navigation.dispatch({ type: 'Navigation/BACK' });
+				Navigation.dismissModal({
+					animationType: 'slide-down'
+				});
 			}).catch(() => {
 				this.setState({
 					editable: true
@@ -91,10 +95,34 @@ export default class NewServerView extends React.Component {
 
 	componentDidMount() {
 		this._mounted = true;
+
+		this.props.navigator.setTitle({
+			title: 'New server'
+		});
+
+		this.props.navigator.setButtons({
+			rightButtons: [{
+				id: 'close',
+				title: 'Cancel'
+			}],
+			animated: true
+		});
+
+		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
 
 	componentWillUnmount() {
 		this._mounted = false;
+	}
+
+	onNavigatorEvent = (event) => {
+		if (event.type === 'NavBarButtonPress') {
+			if (event.id === 'close') {
+				Navigation.dismissModal({
+					animationType: 'slide-down'
+				});
+			}
+		}
 	}
 
 	onChangeText = (text) => {

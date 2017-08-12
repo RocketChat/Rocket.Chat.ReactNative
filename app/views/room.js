@@ -39,26 +39,29 @@ const styles = StyleSheet.create({
 
 export default class RoomView extends React.Component {
 	static propTypes = {
-		navigation: PropTypes.object.isRequired
+		navigator: PropTypes.object.isRequired,
+		rid: PropTypes.string,
+		sid: PropTypes.string,
+		name: PropTypes.string
 	}
-
-	static navigationOptions = ({ navigation }) => ({
-		title: navigation.state.params.name || realm.objectForPrimaryKey('subscriptions', navigation.state.params.sid).name
-	});
-
 
 	constructor(props) {
 		super(props);
-		this.rid = props.navigation.state.params.rid || realm.objectForPrimaryKey('subscriptions', props.navigation.state.params.sid).rid;
+		this.rid = props.rid || realm.objectForPrimaryKey('subscriptions', props.sid).rid;
 		// this.rid = 'GENERAL';
+
 		this.data = realm.objects('messages').filtered('_server.id = $0 AND rid = $1', RocketChat.currentServer, this.rid).sorted('ts', true);
 		this.state = {
 			dataSource: ds.cloneWithRows(this.data.slice(0, 10)),
 			loaded: true,
-			joined: typeof props.navigation.state.params.rid === 'undefined'
+			joined: typeof props.rid === 'undefined'
 		};
 		// console.log(this.messages);
 		this.url = realm.objectForPrimaryKey('settings', 'Site_Url').value;
+
+		this.props.navigator.setTitle({
+			title: this.props.name || realm.objectForPrimaryKey('subscriptions', this.props.sid).name
+		});
 	}
 
 	componentWillMount() {
@@ -74,9 +77,11 @@ export default class RoomView extends React.Component {
 		});
 		this.updateState();
 	}
+
 	componentDidMount() {
 		return RocketChat.readMessages(this.rid);
 	}
+
 	componentWillUnmount() {
 		this.data.removeListener(this.updateState);
 	}
@@ -110,7 +115,7 @@ export default class RoomView extends React.Component {
 	sendMessage = message => RocketChat.sendMessage(this.rid, message);
 
 	joinRoom = () => {
-		RocketChat.joinRoom(this.props.navigation.state.params.rid)
+		RocketChat.joinRoom(this.props.rid)
 			.then(() => {
 				this.setState({
 					joined: true
