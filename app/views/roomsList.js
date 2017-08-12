@@ -1,4 +1,5 @@
 import ActionButton from 'react-native-action-button';
+import { Navigation } from 'react-native-navigation';
 import { ListView } from 'realm/react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import React from 'react';
@@ -58,14 +59,16 @@ const styles = StyleSheet.create({
 	}
 });
 
-let navigation;
 let setInitialData;
 
 Meteor.getData().on('loggingIn', () => {
 	setTimeout(() => {
 		if (Meteor._isLoggingIn === false && Meteor.userId() == null) {
 			console.log('loggingIn', Meteor.userId());
-			navigation.navigate('Login');
+			Navigation.showModal({
+				screen: 'Login',
+				animationType: 'slide-up'
+			});
 		}
 	}, 100);
 });
@@ -98,7 +101,7 @@ class RoomsListItem extends React.PureComponent {
 }
 export default class RoomsListView extends React.Component {
 	static propTypes = {
-		navigation: PropTypes.object.isRequired
+		navigator: PropTypes.object.isRequired
 	}
 
 	static navigationOptions = (props) => {
@@ -127,25 +130,58 @@ export default class RoomsListView extends React.Component {
 			searchText: ''
 		};
 		this.data.addListener(this.updateState);
+		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
 
 	componentWillMount() {
 		setInitialData = this.setInitialData;
 
-		navigation = this.props.navigation;
+		if (RocketChat.currentServer) {
+			this.props.navigator.setSubTitle({
+				subtitle: RocketChat.currentServer
+			});
+		}
+
+		this.props.navigator.setButtons({
+			leftButtons: [{
+				id: 'servers',
+				title: 'Servers'
+			}],
+			// rightButtons: [], // see "Adding buttons to the navigator" below for format (optional)
+			animated: true
+		});
 
 		// this.setInitialData();
 		if (RocketChat.currentServer) {
 			RocketChat.connect();
 		} else {
-			navigation.navigate('ListServerModal', {
-				onSelect: this.setInitialData
+			Navigation.showModal({
+				screen: 'ListServer',
+				passProps: {},
+				navigatorStyle: {},
+				navigatorButtons: {},
+				animationType: 'none'
 			});
 		}
 	}
 
 	componentWillUnmount() {
 		this.data.removeListener(this.updateState);
+	}
+
+	onNavigatorEvent = (event) => {
+		if (event.type === 'NavBarButtonPress') {
+			if (event.id === 'servers') {
+				Navigation.showModal({
+					screen: 'ListServer',
+					passProps: {},
+					navigatorStyle: {},
+					navigatorButtons: {},
+					animationType: 'slide-up'
+					// animationType: 'none'
+				});
+			}
+		}
 	}
 
 	onSearchChangeText = (text) => {
@@ -211,7 +247,12 @@ export default class RoomsListView extends React.Component {
 	}, 500);
 
 	_onPressItem = (id, item = {}) => {
-		const { navigate } = this.props.navigation;
+		const navigateToRoom = (room) => {
+			this.props.navigator.push({
+				screen: 'Room',
+				passProps: room
+			});
+		};
 
 		const clearSearch = () => {
 			this.setState({
@@ -226,22 +267,25 @@ export default class RoomsListView extends React.Component {
 			if (item.t === 'd') {
 				RocketChat.createDirectMessage(item.username)
 					.then(room => realm.objects('subscriptions').filtered('_server.id = $0 AND rid = $1', RocketChat.currentServer, room.rid))
-					.then(subs => navigate('Room', { sid: subs[0]._id }))
+					.then(subs => navigateToRoom({ sid: subs[0]._id }))
 					.then(() => clearSearch());
 			} else {
 				clearSearch();
-				navigate('Room', { rid: item._id, name: item.name });
+				navigateToRoom({ rid: item._id, name: item.name });
 			}
 			return;
 		}
 
-		navigate('Room', { sid: id });
+		navigateToRoom({ sid: id });
 		clearSearch();
 	}
+
 	_createChannel = () => {
-		const { navigate } = this.props.navigation;
-		navigate('CreateChannel');
+		this.props.navigator.showModal({
+			screen: 'CreateChannel'
+		});
 	}
+
 	renderBanner = () => {
 		const status = Meteor.getData() && Meteor.getData().ddp && Meteor.getData().ddp.status;
 
@@ -300,6 +344,7 @@ export default class RoomsListView extends React.Component {
 			dataSource={this.state.dataSource}
 			style={styles.list}
 			renderRow={item => this.renderItem({ item })}
+			enableEmptySections
 		/>
 	)
 

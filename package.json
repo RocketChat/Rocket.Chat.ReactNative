@@ -26,6 +26,7 @@
     "react-native-image-picker": "^0.26.3",
     "react-native-img-cache": "^1.4.0",
     "react-native-meteor": "^1.1.0",
+    "react-native-navigation": "^1.1.193",
     "react-native-optimized-flatlist": "^1.0.1",
     "react-native-svg": "^5.4.1",
     "react-native-svg-image": "^1.1.4",
