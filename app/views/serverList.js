@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Navigation } from 'react-native-navigation';
 import Zeroconf from 'react-native-zeroconf';
-import { View, Text, SectionList, Button, StyleSheet } from 'react-native';
+import { View, Text, SectionList, StyleSheet } from 'react-native';
 
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
@@ -11,7 +12,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'column',
 		justifyContent: 'center',
-		alignItems: 'stretch'
+		alignItems: 'stretch',
+		backgroundColor: '#fff'
 	},
 	input: {
 		height: 40,
@@ -49,18 +51,8 @@ const zeroconf = new Zeroconf();
 
 export default class ListServerView extends React.Component {
 	static propTypes = {
-		navigation: PropTypes.object.isRequired
+		navigator: PropTypes.object.isRequired
 	}
-
-	static navigationOptions = ({ navigation }) => ({
-		title: 'Servers',
-		headerRight: (
-			<Button
-				title='Add'
-				onPress={() => navigation.navigate('NewServerModal')}
-			/>
-		)
-	});
 
 	constructor(props) {
 		super(props);
@@ -76,6 +68,20 @@ export default class ListServerView extends React.Component {
 		zeroconf.scan('http', 'tcp', 'local.');
 
 		this.state = this.getState();
+
+		this.props.navigator.setTitle({
+			title: 'Servers'
+		});
+
+		this.props.navigator.setButtons({
+			rightButtons: [{
+				id: 'add',
+				title: 'Add'
+			}],
+			animated: true
+		});
+
+		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
 
 	componentWillUnmount() {
@@ -84,12 +90,33 @@ export default class ListServerView extends React.Component {
 		zeroconf.removeListener('update', this.updateState);
 	}
 
-	onPressItem(item) {
+	onNavigatorEvent = (event) => {
+		if (event.type === 'NavBarButtonPress') {
+			if (event.id === 'add') {
+				Navigation.showModal({
+					screen: 'NewServer',
+					animationType: 'slide-up'
+					// animationType: 'none'
+				});
+			}
+			if (event.id === 'close') {
+				Navigation.dismissModal({
+					animationType: 'slide-down'
+				});
+			}
+		}
+	}
+
+	onPressItem = (item) => {
 		RocketChat.currentServer = item.id;
 
 		RocketChat.connect();
-		this.props.navigation.state.params.onSelect();
-		this.props.navigation.dispatch({ type: 'Navigation/BACK' });
+
+		Navigation.dismissModal({
+			animationType: 'slide-down'
+		});
+		// this.props.navigation.state.params.onSelect();
+		// this.props.navigation.dispatch({ type: 'Navigation/BACK' });
 	}
 
 	getState = () => {

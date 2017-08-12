@@ -10,7 +10,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'column',
 		justifyContent: 'center',
-		alignItems: 'stretch'
+		alignItems: 'stretch',
+		backgroundColor: '#fff'
 	},
 	input: {
 		height: 40,
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
 
 export default class LoginView extends React.Component {
 	static propTypes = {
-		navigation: PropTypes.object.isRequired
+		navigator: PropTypes.object.isRequired
 	}
 
 	static navigationOptions = () => ({
@@ -41,11 +42,19 @@ export default class LoginView extends React.Component {
 			password: ''
 		};
 
-		this.submit = () => {
-			RocketChat.loginWithPassword({ username: this.state.username }, this.state.password, () => {
-				this.props.navigation.dispatch({ type: 'Navigation/BACK' });
-			});
-		};
+		this.props.navigator.setTitle({
+			title: 'Login'
+		});
+
+		this.props.navigator.setSubTitle({
+			subtitle: RocketChat.currentServer
+		});
+	}
+
+	submit = () => {
+		RocketChat.loginWithPassword({ username: this.state.username }, this.state.password, () => {
+			this.props.navigator.dismissModal();
+		});
 	}
 
 	render() {

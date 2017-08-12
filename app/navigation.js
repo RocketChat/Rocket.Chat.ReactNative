@@ -1,68 +1,22 @@
-import React from 'react';
-import { Button, Platform } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { Navigation } from 'react-native-navigation';
 import LoginView from './views/login';
 import NewServerView from './views/serverNew';
 import ListServerView from './views/serverList';
-import Main from './views/Main';
 import RoomsListView from './views/roomsList';
 import RoomView from './views/room';
 import CreateChannel from './views/CreateChannel';
 
 
-const MainCardNavigator = StackNavigator({
-	Main: {
-		screen: Main
-	},
-	Rooms: {
-		screen: RoomsListView
-	},
-	Room: {
-		screen: RoomView
-	},
-	ListServerModal: {
-		screen: ListServerView,
-		navigationOptions: ({ navigation }) =>
-			(Platform.OS === 'ios' ? ({
-				headerLeft: Platform.OS === 'ios' && (<Button title='Close' onPress={() => navigation.dispatch({ type: 'Navigation/BACK' })} />)
-			}) : {})
-	}
-}, {
-	initialRouteName: 'Main',
-	cardStyle: {
-		backgroundColor: '#fff'
-	}
-});
+Navigation.registerComponent('Rooms', () => RoomsListView);
+Navigation.registerComponent('Room', () => RoomView);
+Navigation.registerComponent('ListServer', () => ListServerView);
+Navigation.registerComponent('Login', () => LoginView);
+Navigation.registerComponent('NewServer', () => NewServerView);
+Navigation.registerComponent('CreateChannel', () => CreateChannel);
 
-export default new StackNavigator({
-	Main: {
-		screen: MainCardNavigator,
-		navigationOptions: {
-			header: null
-		}
-	},
-	Login: {
-		screen: LoginView,
-		navigationOptions: ({ navigation }) => ({
-			headerLeft: Platform.OS === 'ios' && (<Button title='Cancel' onPress={() => navigation.dispatch({ type: 'Navigation/BACK' })} />)
-		})
-	},
-	NewServerModal: {
-		screen: NewServerView,
-		navigationOptions: ({ navigation }) => ({
-			headerLeft: Platform.OS === 'ios' && (<Button title='Close' onPress={() => navigation.dispatch({ type: 'Navigation/BACK' })} />)
-		})
-	},
-	CreateChannel: {
-		screen: CreateChannel,
-		navigationOptions: ({ navigation }) => ({
-			headerLeft: Platform.OS === 'ios' && (<Button title='Cancel' onPress={() => navigation.dispatch({ type: 'Navigation/BACK' })} />)
-		})
+Navigation.startSingleScreenApp({
+	screen: {
+		screen: 'Rooms',
+		title: 'Channels'
 	}
-}, {
-	initialRouteName: 'Main',
-	cardStyle: {
-		backgroundColor: '#fff'
-	}
-	// mode: 'modal'
 });
