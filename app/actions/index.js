@@ -7,9 +7,13 @@ export function setCurrentServer(server) {
 	};
 }
 
-export function preventESLintError() {
-	return {};
+export function setAllSettings(settings) {
+	return {
+		type: types.SET_ALL_SETTINGS,
+		payload: settings
+	};
 }
+
 // // GENRES
 // export function retrieveMoviesGenresSuccess(res) {
 // 	return {

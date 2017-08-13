@@ -7,9 +7,7 @@ import ListServerView from './views/serverList';
 import RoomsListView from './views/roomsList';
 import RoomView from './views/room';
 import CreateChannel from './views/CreateChannel';
-import configureStore from './lib/createStore';
-
-const store = configureStore();
+import store from './lib/createStore';
 
 Navigation.registerComponent('Rooms', () => RoomsListView, store, Provider);
 Navigation.registerComponent('Room', () => RoomView, store, Provider);

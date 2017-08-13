@@ -1,7 +1,7 @@
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { TextInput, StyleSheet, View, Text, Switch } from 'react-native';
 import RocketChat from '../lib/rocketchat';
 
@@ -45,9 +45,9 @@ const styles = StyleSheet.create({
 });
 const mainIcon = <Icon name='md-checkmark' style={styles.actionButtonIcon} />;
 export default class CreateChannelView extends React.Component {
-	static propTypes = {
-		navigation: PropTypes.object.isRequired
-	}
+	// static propTypes = {
+	// 	navigation: PropTypes.object.isRequired
+	// }
 
 	static navigationOptions = () => ({
 		title: 'Create Channel'

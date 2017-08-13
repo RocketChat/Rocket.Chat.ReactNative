@@ -100,23 +100,22 @@ class RoomsListItem extends React.PureComponent {
 }
 
 @connect(state => ({
-	server: state.server
+	server: state.server,
+	Site_Url: state.settings.Site_Url
 }), dispatch => ({
 	actions: bindActionCreators(actions, dispatch)
 }))
 export default class RoomsListView extends React.Component {
 	static propTypes = {
 		navigator: PropTypes.object.isRequired,
-		server: PropTypes.string
+		server: PropTypes.string,
+		Site_Url: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
+
 		this.data = realm.objects('subscriptions').filtered('_server.id = $0', this.props.server);
-		const siteUrl = realm.objectForPrimaryKey('settings', 'Site_Url');
-		if (siteUrl) {
-			this.url = siteUrl.value;
-		}
 		this.state = {
 			dataSource: ds.cloneWithRows([]),
 			searching: false,
@@ -249,7 +248,6 @@ export default class RoomsListView extends React.Component {
 	getSubscriptions = () => this.data.sorted('_updatedAt', true)
 
 	updateState = debounce(() => {
-		this.url = realm.objectForPrimaryKey('settings', 'Site_Url').value;
 		this.setState({
 			dataSource: ds.cloneWithRows(this.data.filtered('_server.id = $0', this.props.server).sorted('ls', true))
 		});
@@ -319,7 +317,7 @@ export default class RoomsListView extends React.Component {
 		<RoomsListItem
 			item={item}
 			onPress={() => this._onPressItem(item._id, item)}
-			baseUrl={this.url}
+			baseUrl={this.props.Site_Url}
 		/>
 	);
 
