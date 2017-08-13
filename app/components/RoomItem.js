@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
 export default class RoomItem extends React.PureComponent {
 	static propTypes = {
 		item: PropTypes.object.isRequired,
-		baseUrl: PropTypes.string.isRequired
+		baseUrl: PropTypes.string
 	}
 	get icon() {
 		const icon = {
