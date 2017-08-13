@@ -4,8 +4,6 @@ import { Navigation } from 'react-native-navigation';
 import { Text, TextInput, View, StyleSheet } from 'react-native';
 import _ from 'underscore';
 
-import RocketChat from '../lib/rocketchat';
-
 import KeyboardView from '../components/KeyboardView';
 
 const styles = StyleSheet.create({
@@ -49,6 +47,7 @@ const styles = StyleSheet.create({
 	}
 });
 
+
 export default class NewServerView extends React.Component {
 	static propTypes = {
 		navigator: PropTypes.object.isRequired
@@ -80,7 +79,6 @@ export default class NewServerView extends React.Component {
 
 			this.inputElement.blur();
 			this.validateServer(url).then(() => {
-				RocketChat.currentServer = url;
 				Navigation.dismissModal({
 					animationType: 'slide-down'
 				});

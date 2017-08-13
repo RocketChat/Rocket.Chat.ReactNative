@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TextInput, StyleSheet } from 'react-native';
-import RocketChat from '../lib/rocketchat';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
+import * as actions from '../actions';
+import RocketChat from '../lib/rocketchat';
 import KeyboardView from '../components/KeyboardView';
 
 const styles = StyleSheet.create({
@@ -25,9 +28,15 @@ const styles = StyleSheet.create({
 	}
 });
 
+@connect(state => ({
+	server: state.server
+}), dispatch => ({
+	actions: bindActionCreators(actions, dispatch)
+}))
 export default class LoginView extends React.Component {
 	static propTypes = {
-		navigator: PropTypes.object.isRequired
+		navigator: PropTypes.object.isRequired,
+		server: PropTypes.string.isRequired
 	}
 
 	static navigationOptions = () => ({
@@ -45,9 +54,11 @@ export default class LoginView extends React.Component {
 		this.props.navigator.setTitle({
 			title: 'Login'
 		});
+	}
 
+	componentWillReceiveProps(nextProps) {
 		this.props.navigator.setSubTitle({
-			subtitle: RocketChat.currentServer
+			subtitle: nextProps.server
 		});
 	}
 

@@ -4,8 +4,12 @@ import { ListView } from 'realm/react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Text, View, StyleSheet, TouchableOpacity, Platform, TextInput } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Platform, TextInput } from 'react-native';
 import Meteor from 'react-native-meteor';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import * as actions from '../actions';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import RoomItem from '../components/RoomItem';
@@ -59,22 +63,15 @@ const styles = StyleSheet.create({
 	}
 });
 
-let setInitialData;
-
-Meteor.getData().on('loggingIn', () => {
-	setTimeout(() => {
-		if (Meteor._isLoggingIn === false && Meteor.userId() == null) {
-			console.log('loggingIn', Meteor.userId());
-			Navigation.showModal({
-				screen: 'Login',
-				animationType: 'slide-up'
-			});
-		}
-	}, 100);
-});
-
 Meteor.Accounts.onLogin(() => {
 	console.log('onLogin');
+});
+
+Meteor.Accounts.onLoginFailure(() => {
+	Navigation.showModal({
+		screen: 'Login',
+		animationType: 'slide-up'
+	});
 });
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
@@ -99,30 +96,21 @@ class RoomsListItem extends React.PureComponent {
 		);
 	}
 }
+
+@connect(state => ({
+	server: state.server
+}), dispatch => ({
+	actions: bindActionCreators(actions, dispatch)
+}))
 export default class RoomsListView extends React.Component {
 	static propTypes = {
-		navigator: PropTypes.object.isRequired
-	}
-
-	static navigationOptions = (props) => {
-		const server = RocketChat.currentServer ? RocketChat.currentServer.replace(/^https?:\/\//, '') : '';
-		const textAlign = Platform.OS === 'ios' ? 'center' : 'left';
-		const marginLeft = Platform.OS === 'ios' ? 0 : 20;
-		const position = Platform.OS === 'ios' ? 'headerLeft' : 'headerRight';
-
-		return {
-			headerTitle: <View style={{ height: 10, width: 200, top: -10, marginLeft }}>
-				<Text style={{ textAlign, fontSize: 16, fontWeight: '600' }}>Channels</Text>
-				<Text style={{ textAlign, fontSize: 10 }}>{server}</Text>
-			</View>,
-			title: 'Channels',
-			[position]: <Button title='Servers' onPress={() => props.navigation.navigate('ListServerModal')} />
-		};
+		navigator: PropTypes.object.isRequired,
+		server: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
-		this.data = realm.objects('subscriptions').filtered('_server.id = $0', RocketChat.currentServer).sorted('_updatedAt', true);
+		this.data = realm.objects('subscriptions').filtered('_server.id = $0', this.props.server).sorted('_updatedAt', true);
 		this.state = {
 			dataSource: ds.cloneWithRows(this.data.sorted('_updatedAt', true).slice(0, 10)),
 			searching: false,
@@ -134,26 +122,17 @@ export default class RoomsListView extends React.Component {
 	}
 
 	componentWillMount() {
-		setInitialData = this.setInitialData;
-
-		if (RocketChat.currentServer) {
-			this.props.navigator.setSubTitle({
-				subtitle: RocketChat.currentServer
-			});
-		}
-
+		const button = Platform.OS === 'ios' ? 'leftButtons' : 'rightButtons';
 		this.props.navigator.setButtons({
-			leftButtons: [{
+			[button]: [{
 				id: 'servers',
 				title: 'Servers'
 			}],
-			// rightButtons: [], // see "Adding buttons to the navigator" below for format (optional)
 			animated: true
 		});
 
-		// this.setInitialData();
-		if (RocketChat.currentServer) {
-			RocketChat.connect();
+		if (this.props.server) {
+			this.setInitialData();
 		} else {
 			Navigation.showModal({
 				screen: 'ListServer',
@@ -164,6 +143,14 @@ export default class RoomsListView extends React.Component {
 			});
 		}
 	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.server !== this.props.server) {
+			this.setInitialData(nextProps);
+		}
+	}
+
+	componentWillUpdate
 
 	componentWillUnmount() {
 		this.data.removeListener(this.updateState);
@@ -194,7 +181,7 @@ export default class RoomsListView extends React.Component {
 		if (searchText !== '') {
 			const dataSource = [];
 			const usernames = [];
-			realm.objects('subscriptions').filtered('_server.id = $0 AND name CONTAINS[c] $1', RocketChat.currentServer, searchText).forEach((sub) => {
+			realm.objects('subscriptions').filtered('_server.id = $0 AND name CONTAINS[c] $1', this.props.server, searchText).forEach((sub) => {
 				dataSource.push(sub);
 
 				if (sub.t === 'd') {
@@ -228,21 +215,36 @@ export default class RoomsListView extends React.Component {
 			}
 		}
 	}
-	setInitialData = () => {
-		if (this.data) {
-			this.data.removeListener(this.updateState);
-		}
-		this.data = realm.objects('subscriptions').filtered('_server.id = $0', RocketChat.currentServer).sorted('_updatedAt', true);
-		this.data.addListener(this.updateState);
 
-		this.updateState();
+	setInitialData = (props = this.props) => {
+		props.navigator.setSubTitle({
+			subtitle: props.server
+		});
+
+		RocketChat.getUserToken().then((token) => {
+			if (!token) {
+				Navigation.showModal({
+					screen: 'Login',
+					animationType: 'slide-up'
+				});
+			}
+			RocketChat.connect();
+
+			if (this.data) {
+				this.data.removeListener(this.updateState);
+			}
+			this.data = realm.objects('subscriptions').filtered('_server.id = $0', props.server).sorted('_updatedAt', true);
+			this.data.addListener(this.updateState);
+
+			this.updateState();
+		});
 	}
 
 	getSubscriptions = () => this.data.sorted('_updatedAt', true)
 
 	updateState = debounce(() => {
 		this.setState({
-			dataSource: ds.cloneWithRows(this.data.filtered('_server.id = $0', RocketChat.currentServer))
+			dataSource: ds.cloneWithRows(this.data.filtered('_server.id = $0', this.props.server))
 		});
 	}, 500);
 
@@ -266,7 +268,7 @@ export default class RoomsListView extends React.Component {
 		if (item.search) {
 			if (item.t === 'd') {
 				RocketChat.createDirectMessage(item.username)
-					.then(room => realm.objects('subscriptions').filtered('_server.id = $0 AND rid = $1', RocketChat.currentServer, room.rid))
+					.then(room => realm.objects('subscriptions').filtered('_server.id = $0 AND rid = $1', this.props.server, room.rid))
 					.then(subs => navigateToRoom({ sid: subs[0]._id }))
 					.then(() => clearSearch());
 			} else {
