@@ -22,5 +22,6 @@ Navigation.startSingleScreenApp({
 	screen: {
 		screen: 'Rooms',
 		title: 'Channels'
-	}
+	},
+	animationType: 'none'
 });
