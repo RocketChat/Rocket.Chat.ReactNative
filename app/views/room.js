@@ -15,7 +15,8 @@ import MessageBox from '../components/MessageBox';
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 const styles = StyleSheet.create({
 	container: {
-		flex: 1
+		flex: 1,
+		backgroundColor: '#fff'
 	},
 	list: {
 		flex: 1,
