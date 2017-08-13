@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
 
 
 @connect(state => ({
-	server: state.server
+	server: state.server,
+	Site_Url: state.settings.Site_Url
 }), dispatch => ({
 	actions: bindActionCreators(actions, dispatch)
 }))
@@ -54,7 +55,8 @@ export default class RoomView extends React.Component {
 		rid: PropTypes.string,
 		sid: PropTypes.string,
 		name: PropTypes.string,
-		server: PropTypes.string
+		server: PropTypes.string,
+		Site_Url: PropTypes.string
 	}
 
 	constructor(props) {
@@ -68,8 +70,6 @@ export default class RoomView extends React.Component {
 			loaded: true,
 			joined: typeof props.rid === 'undefined'
 		};
-		// console.log(this.messages);
-		this.url = realm.objectForPrimaryKey('settings', 'Site_Url').value;
 
 		this.props.navigator.setTitle({
 			title: this.props.name || realm.objectForPrimaryKey('subscriptions', this.props.sid).name
@@ -152,7 +152,7 @@ export default class RoomView extends React.Component {
 		<Message
 			id={item._id}
 			item={item}
-			baseUrl={this.url}
+			baseUrl={this.props.Site_Url}
 		/>
 	);
 
