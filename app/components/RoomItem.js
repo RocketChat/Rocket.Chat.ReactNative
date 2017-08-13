@@ -42,14 +42,8 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	icon: {
-		height: 40,
-		width: 40,
-		borderRadius: 20,
-		lineHeight: 30,
 		fontSize: 20,
-		color: '#fff',
-		overflow: 'hidden',
-		textAlign: 'center'
+		color: '#fff'
 	},
 	avatar: {
 		width: 40,
@@ -95,8 +89,8 @@ export default class RoomItem extends React.PureComponent {
 		const { color } = avatarInitialsAndColor(name);
 
 		return (
-			<View style={styles.iconContainer}>
-				<MaterialCommunityIcons name={icon} style={[styles.icon, { backgroundColor: color }]} />
+			<View style={[styles.iconContainer, { backgroundColor: color }]}>
+				<MaterialCommunityIcons name={icon} style={styles.icon} />
 			</View>
 		);
 	}
