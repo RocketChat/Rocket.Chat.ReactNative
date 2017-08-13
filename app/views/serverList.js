@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Navigation } from 'react-native-navigation';
+import { bindActionCreators } from 'redux';
 import Zeroconf from 'react-native-zeroconf';
-import { View, Text, SectionList, StyleSheet } from 'react-native';
+import { View, Text, SectionList, Platform, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
 
+import * as actions from '../actions';
 import realm from '../lib/realm';
-import RocketChat from '../lib/rocketchat';
 
 const styles = StyleSheet.create({
 	view: {
@@ -49,9 +51,17 @@ const styles = StyleSheet.create({
 
 const zeroconf = new Zeroconf();
 
+
+@connect(state => ({
+	server: state.server
+}), dispatch => ({
+	actions: bindActionCreators(actions, dispatch)
+}))
 export default class ListServerView extends React.Component {
 	static propTypes = {
-		navigator: PropTypes.object.isRequired
+		navigator: PropTypes.object.isRequired,
+		actions: PropTypes.object,
+		server: PropTypes.string
 	}
 
 	constructor(props) {
@@ -59,15 +69,6 @@ export default class ListServerView extends React.Component {
 		this.state = {
 			sections: []
 		};
-	}
-
-	componentWillMount() {
-		realm.addListener('change', this.updateState);
-		zeroconf.on('update', this.updateState);
-
-		zeroconf.scan('http', 'tcp', 'local.');
-
-		this.state = this.getState();
 
 		this.props.navigator.setTitle({
 			title: 'Servers'
@@ -78,8 +79,25 @@ export default class ListServerView extends React.Component {
 				id: 'add',
 				title: 'Add'
 			}],
+			leftButtons: props.server && Platform.select({
+				ios: [{
+					id: 'close',
+					title: 'Close'
+				}]
+			}),
 			animated: true
 		});
+
+		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+	}
+
+	componentWillMount() {
+		realm.addListener('change', this.updateState);
+		zeroconf.on('update', this.updateState);
+
+		zeroconf.scan('http', 'tcp', 'local.');
+
+		this.state = this.getState();
 
 		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
@@ -105,18 +123,20 @@ export default class ListServerView extends React.Component {
 				});
 			}
 		}
+
+		if (event.id === 'didDisappear' && this.state.server) {
+			this.props.actions.setCurrentServer(this.state.server);
+		}
 	}
 
 	onPressItem = (item) => {
-		RocketChat.currentServer = item.id;
-
-		RocketChat.connect();
-
 		Navigation.dismissModal({
 			animationType: 'slide-down'
 		});
-		// this.props.navigation.state.params.onSelect();
-		// this.props.navigation.dispatch({ type: 'Navigation/BACK' });
+
+		this.setState({
+			server: item.id
+		});
 	}
 
 	getState = () => {

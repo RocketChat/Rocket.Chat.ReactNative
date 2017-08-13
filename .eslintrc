@@ -115,5 +115,7 @@
 		"object-shorthand": 2,
 		"consistent-return": 0
 	},
-	"globals": {}
+	"globals": {
+		"__DEV__": true
+	}
 }

@@ -1,5 +1,7 @@
 import Meteor from 'react-native-meteor';
 import Random from 'react-native-meteor/lib/Random';
+import { AsyncStorage } from 'react-native';
+
 import realm from './realm';
 import debounce from '../utils/debounce';
 
@@ -32,13 +34,14 @@ const write = (() => {
 		run();
 	};
 })();
-const RocketChat = {
 
+const RocketChat = {
 	createChannel({ name, users, type }) {
 		return new Promise((resolve, reject) => {
 			Meteor.call(type ? 'createChannel' : 'createPrivateGroup', name, users, type, (err, res) => (err ? reject(err) : resolve(res)));
 		});
 	},
+
 	get currentServer() {
 		const current = realm.objects('servers').filtered('current = true').slice(0, 1)[0];
 		return current && current.id;
@@ -49,6 +52,15 @@ const RocketChat = {
 			realm.objects('servers').filtered('current = true').forEach(item => (item.current = false));
 			realm.create('servers', { id: server, current: true }, true);
 		});
+	},
+
+	async getUserToken() {
+		const TOKEN_KEY = 'reactnativemeteor_usertoken';
+		try {
+			return await AsyncStorage.getItem(TOKEN_KEY);
+		} catch (error) {
+			console.warn(`AsyncStorage error: ${ error.message }`);
+		}
 	},
 
 	connect(cb) {
@@ -94,6 +106,7 @@ const RocketChat = {
 						realm.create('messages', message, true);
 					});
 				}
+
 				this.subCache = this.subCache || {};
 				this.roomCache = this.roomCache || {};
 				this.cache = {};
@@ -319,6 +332,7 @@ const RocketChat = {
 };
 
 export default RocketChat;
+
 Meteor.Accounts.onLogin(() => {
 	Promise.all([call('subscriptions/get'), call('rooms/get')]).then(([subscriptions, rooms]) => {
 		subscriptions = subscriptions.sort((s1, s2) => (s1.rid > s2.rid ? 1 : -1));
