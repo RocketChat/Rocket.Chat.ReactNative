@@ -110,9 +110,9 @@ export default class RoomsListView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.data = realm.objects('subscriptions').filtered('_server.id = $0', this.props.server).sorted('_updatedAt', true);
+		this.data = realm.objects('subscriptions').filtered('_server.id = $0', this.props.server);
 		this.state = {
-			dataSource: ds.cloneWithRows(this.data.sorted('_updatedAt', true).slice(0, 10)),
+			dataSource: ds.cloneWithRows([]),
 			searching: false,
 			searchDataSource: [],
 			searchText: ''
@@ -244,7 +244,7 @@ export default class RoomsListView extends React.Component {
 
 	updateState = debounce(() => {
 		this.setState({
-			dataSource: ds.cloneWithRows(this.data.filtered('_server.id = $0', this.props.server))
+			dataSource: ds.cloneWithRows(this.data.filtered('_server.id = $0', this.props.server).sorted('ls', true))
 		});
 	}, 500);
 
