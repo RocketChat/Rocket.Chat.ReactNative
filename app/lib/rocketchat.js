@@ -1,9 +1,13 @@
 import Meteor from 'react-native-meteor';
 import Random from 'react-native-meteor/lib/Random';
 import { AsyncStorage } from 'react-native';
+import { hashPassword } from 'react-native-meteor/lib/utils';
 
+import reduxStore from '../lib/createStore';
+import settingsType from '../constants/settings';
 import realm from './realm';
 import debounce from '../utils/debounce';
+import * as actions from '../actions';
 
 export { Accounts } from 'react-native-meteor';
 
@@ -76,19 +80,22 @@ const RocketChat = {
 					console.error(err);
 				}
 
+				const settings = {};
 				realm.write(() => {
 					data.forEach((item) => {
 						const setting = {
 							_id: item._id
 						};
 						setting._server = { id: RocketChat.currentServer };
-						if (typeof item.value === 'string') {
-							setting.value = item.value;
+						if (settingsType[item.type]) {
+							setting[settingsType[item.type]] = item.value;
+							realm.create('settings', setting, true);
 						}
-						// write('settings', setting);
-						realm.create('settings', setting, true);
+
+						settings[item._id] = item.value;
 					});
 				});
+				reduxStore.dispatch(actions.setAllSettings(settings));
 
 				if (cb) {
 					cb();
@@ -138,8 +145,53 @@ const RocketChat = {
 		});
 	},
 
-	loginWithPassword(selector, password, cb) {
-		Meteor.loginWithPassword(selector, password, () => cb && cb());
+	login(params, callback) {
+		Meteor._startLoggingIn();
+		Meteor.call('login', params, (err, result) => {
+			Meteor._endLoggingIn();
+
+			Meteor._handleLoginCallback(err, result);
+
+			if (typeof callback === 'function') {
+				callback(err);
+			}
+		});
+	},
+
+	loginWithPassword(username, password, callback) {
+		let params = {};
+		const state = reduxStore.getState();
+
+		if (state.settings.LDAP_Enable) {
+			params = {
+				ldap: true,
+				username,
+				ldapPass: password,
+				ldapOptions: {}
+			};
+		} else if (state.settings.CROWD_Enable) {
+			params = {
+				crowd: true,
+				username,
+				crowdPassword: password
+			};
+		} else {
+			params = {
+				password: hashPassword(password),
+				user: {
+					username
+				}
+			};
+
+			if (typeof username === 'string') {
+				if (username.indexOf('@') !== -1) {
+					params.user = { email: username };
+				}
+			}
+		}
+
+		console.log({ params });
+		this.login(params, callback);
 	},
 
 	loadSubscriptions(cb) {
@@ -332,6 +384,10 @@ const RocketChat = {
 };
 
 export default RocketChat;
+
+if (RocketChat.currentServer) {
+	reduxStore.dispatch(actions.setCurrentServer(RocketChat.currentServer));
+}
 
 Meteor.Accounts.onLogin(() => {
 	Promise.all([call('subscriptions/get'), call('rooms/get')]).then(([subscriptions, rooms]) => {

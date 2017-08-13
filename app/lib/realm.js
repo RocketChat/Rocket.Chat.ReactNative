@@ -15,7 +15,9 @@ const settingsSchema = {
 	properties: {
 		_id: 'string',
 		_server: 'servers',
-		value: { type: 'string', optional: true }
+		valueAsString: { type: 'string', optional: true },
+		valueAsBoolean: { type: 'bool', optional: true },
+		valueAsNumber: { type: 'int', optional: true }
 	}
 };
 
@@ -70,13 +72,14 @@ const messagesSchema = {
 	}
 };
 
+// Realm.clearTestState();
+
 const realm = new Realm({
 	schema: [settingsSchema, serversSchema, subscriptionSchema, messagesSchema, usersSchema]
 });
 
 export default realm;
 
-// Realm.clearTestState();
 // realm.write(() => {
 // 	realm.create('servers', { id: 'https://demo.rocket.chat', current: false }, true);
 // 	realm.create('servers', { id: 'http://localhost:3000', current: false }, true);
