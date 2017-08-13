@@ -2,6 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import { ListView } from 'realm/react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import * as actions from '../actions';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import debounce from '../utils/throttle';
@@ -37,12 +41,19 @@ const styles = StyleSheet.create({
 	}
 });
 
+
+@connect(state => ({
+	server: state.server
+}), dispatch => ({
+	actions: bindActionCreators(actions, dispatch)
+}))
 export default class RoomView extends React.Component {
 	static propTypes = {
 		navigator: PropTypes.object.isRequired,
 		rid: PropTypes.string,
 		sid: PropTypes.string,
-		name: PropTypes.string
+		name: PropTypes.string,
+		server: PropTypes.string
 	}
 
 	constructor(props) {
@@ -50,7 +61,7 @@ export default class RoomView extends React.Component {
 		this.rid = props.rid || realm.objectForPrimaryKey('subscriptions', props.sid).rid;
 		// this.rid = 'GENERAL';
 
-		this.data = realm.objects('messages').filtered('_server.id = $0 AND rid = $1', RocketChat.currentServer, this.rid).sorted('ts', true);
+		this.data = realm.objects('messages').filtered('_server.id = $0 AND rid = $1', this.props.server, this.rid).sorted('ts', true);
 		this.state = {
 			dataSource: ds.cloneWithRows(this.data.slice(0, 10)),
 			loaded: true,

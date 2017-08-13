@@ -1,18 +1,22 @@
 import { Navigation } from 'react-native-navigation';
+import { Provider } from 'react-redux';
+
 import LoginView from './views/login';
 import NewServerView from './views/serverNew';
 import ListServerView from './views/serverList';
 import RoomsListView from './views/roomsList';
 import RoomView from './views/room';
 import CreateChannel from './views/CreateChannel';
+import configureStore from './lib/createStore';
 
+const store = configureStore();
 
-Navigation.registerComponent('Rooms', () => RoomsListView);
-Navigation.registerComponent('Room', () => RoomView);
-Navigation.registerComponent('ListServer', () => ListServerView);
-Navigation.registerComponent('Login', () => LoginView);
-Navigation.registerComponent('NewServer', () => NewServerView);
-Navigation.registerComponent('CreateChannel', () => CreateChannel);
+Navigation.registerComponent('Rooms', () => RoomsListView, store, Provider);
+Navigation.registerComponent('Room', () => RoomView, store, Provider);
+Navigation.registerComponent('ListServer', () => ListServerView, store, Provider);
+Navigation.registerComponent('Login', () => LoginView, store, Provider);
+Navigation.registerComponent('NewServer', () => NewServerView, store, Provider);
+Navigation.registerComponent('CreateChannel', () => CreateChannel, store, Provider);
 
 Navigation.startSingleScreenApp({
 	screen: {
