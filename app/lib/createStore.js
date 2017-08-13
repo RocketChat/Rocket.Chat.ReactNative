@@ -13,10 +13,8 @@ if (__DEV__) {
 	middleware = [...middleware];
 }
 
-export default function configureStore(initialState) {
-	return createStore(
-		rootReducer,
-		initialState,
-		applyMiddleware(...middleware)
-	);
-}
+export default createStore(
+	rootReducer,
+	undefined,
+	applyMiddleware(...middleware)
+);
