@@ -67,9 +67,70 @@ const messagesSchema = {
 		u: 'users',
 		// mentions: [],
 		// channels: [],
+		alias: { type: 'string', optional: true },
+		parseUrls: { type: 'bool', optional: true },
+		groupable: { type: 'bool', optional: true },
+		avatar: { type: 'string', optional: true },
 		_updatedAt: { type: 'date', optional: true },
 		temp: { type: 'bool', optional: true }
 	}
+
+	// a: {
+	// 	attachments: [
+	// 		{
+	// 			color: 'danger',
+	// 			fields: [
+	// 				{
+	// 					title: 'Bounce Type',
+	// 					value: 'Permanent'
+	// 				},
+	// 				{
+	// 					title: 'Bounce Sub Type',
+	// 					value: 'General'
+	// 				},
+	// 				{
+	// 					title: 'Reporting MTA',
+	// 					value: 'dsn; a8-82.smtp-out.amazonses.com'
+	// 				},
+	// 				{
+	// 					title: 'Timestamp',
+	// 					value: 'Tue Apr 19 2016 14:11:08 GMT-0400 (EDT)'
+	// 				}
+	// 			]
+	// 		},
+	// 		{
+	// 			fields: [
+	// 				{
+	// 					title: 'Email Address',
+	// 					value: 'aaa@asd.at'
+	// 				},
+	// 				{
+	// 					title: 'Status',
+	// 					value: '5.1.1'
+	// 				},
+	// 				{
+	// 					title: 'Action',
+	// 					value: 'failed'
+	// 				},
+	// 				{
+	// 					title: 'Diagnostic Code',
+	// 					value: 'smtp; 550 5.1.1 <aaa@asd.at>: Recipient address rejected: User unknown in virtual mailbox table'
+	// 				}
+	// 			]
+	// 		}
+	// 	],
+	// 	bot: {
+	// 		i: 'EMQ3S3GGNJrrgJa4Z'
+	// 	},
+	// 	u: {
+	// 		_id: 'rocket.cat',
+	// 		username: 'rocket.cat'
+	// 	},
+	// 	roles: [
+	// 		'bot',
+	// 		null
+	// 	]
+	// }
 };
 
 // Realm.clearTestState();

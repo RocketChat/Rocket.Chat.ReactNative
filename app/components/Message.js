@@ -60,17 +60,25 @@ export default class Message extends React.PureComponent {
 
 		const msg = emojify(this.props.item.msg, { output: 'unicode' });
 
-		const { initials, color } = avatarInitialsAndColor(this.props.item.u.username);
+		const username = this.props.item.alias || this.props.item.u.username;
+
+		let { initials, color } = avatarInitialsAndColor(username);
+
+		const avatar = this.props.item.avatar || `${ this.props.baseUrl }/avatar/${ this.props.item.u.username }`;
+		if (this.props.item.avatar) {
+			initials = '';
+			color = 'transparent';
+		}
 
 		return (
 			<View style={[styles.message, extraStyle]}>
 				<View style={[styles.avatarContainer, { backgroundColor: color }]}>
 					<Text style={styles.avatarInitials}>{initials}</Text>
-					<CachedImage style={styles.avatar} source={{ uri: `${ this.props.baseUrl }/avatar/${ this.props.item.u.username }` }} />
+					<CachedImage style={styles.avatar} source={{ uri: avatar }} />
 				</View>
 				<View style={styles.texts}>
 					<Text onPress={this._onPress} style={styles.username}>
-						{this.props.item.u.username}
+						{username}
 					</Text>
 					<Markdown>
 						{msg}

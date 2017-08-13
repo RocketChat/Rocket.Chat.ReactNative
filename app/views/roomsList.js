@@ -79,7 +79,7 @@ class RoomsListItem extends React.PureComponent {
 	static propTypes = {
 		item: PropTypes.object.isRequired,
 		onPress: PropTypes.func.isRequired,
-		baseUrl: PropTypes.string.isRequired
+		baseUrl: PropTypes.string
 	}
 	_onPress = (...args) => {
 		this.props.onPress(...args);
