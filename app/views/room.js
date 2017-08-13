@@ -98,12 +98,15 @@ export default class RoomView extends React.Component {
 	}
 
 	onEndReached = () => {
-		if (this.state.dataSource.length && this.state.loaded && this.state.loadingMore !== true && this.state.end !== true) {
+		const rowCount = this.state.dataSource.getRowCount();
+		if (rowCount && this.state.loaded && this.state.loadingMore !== true && this.state.end !== true) {
 			this.setState({
 				// ...this.state,
 				loadingMore: true
 			});
-			RocketChat.loadMessagesForRoom(this.rid, this.state.dataSource[this.state.dataSource.length - 1].ts, ({ end }) => {
+
+			const lastRowData = this.data[rowCount - 1];
+			RocketChat.loadMessagesForRoom(this.rid, lastRowData.ts, ({ end }) => {
 				this.setState({
 					// ...this.state,
 					loadingMore: false,
@@ -196,8 +199,8 @@ export default class RoomView extends React.Component {
 				<ListView
 					enableEmptySections
 					style={styles.list}
-					onEndReachedThreshold={0.1}
-					ListFooterComponent={this.renderHeader()}
+					onEndReachedThreshold={10}
+					renderFooter={this.renderHeader}
 					onEndReached={this.onEndReached}
 					dataSource={this.state.dataSource}
 					renderRow={item => this.renderItem({ item })}
