@@ -10,30 +10,30 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		flexDirection: 'row',
-		padding: 10,
-		paddingLeft: 14,
+		paddingLeft: 16,
+		paddingRight: 56,
+		height: 56,
 		alignItems: 'center'
 	},
 	number: {
 		minWidth: 20,
-		padding: 2,
 		borderRadius: 5,
-		backgroundColor: '#aaa',
+		backgroundColor: '#1d74f5',
 		color: '#fff',
 		textAlign: 'center',
 		overflow: 'hidden',
-		marginRight: 15,
-		fontSize: 14
+		fontSize: 14,
+		right: 16,
+		marginLeft: 16,
+		position: 'absolute'
 	},
-	roomItem: {
+	roomName: {
 		flexGrow: 1,
-		fontSize: 20,
-		color: '#444'
+		fontSize: 16,
+		color: '#444',
+		marginLeft: 16
 	},
 	iconContainer: {
-		marginTop: 5,
-		marginRight: 10,
-		backgroundColor: '#ccc',
 		height: 40,
 		width: 40,
 		borderRadius: 20,
@@ -42,20 +42,20 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	icon: {
+		height: 40,
+		width: 40,
+		borderRadius: 20,
+		lineHeight: 30,
 		fontSize: 20,
 		color: '#fff',
-		backgroundColor: '#ccc',
-		height: 36,
-		width: 36,
-		borderRadius: 18,
 		overflow: 'hidden',
-		textAlign: 'center',
-		lineHeight: 36
+		textAlign: 'center'
 	},
 	avatar: {
 		width: 40,
 		height: 40,
-		position: 'absolute'
+		position: 'absolute',
+		borderRadius: 20
 	},
 	avatarInitials: {
 		fontSize: 22,
@@ -80,8 +80,9 @@ export default class RoomItem extends React.PureComponent {
 			return null;
 		}
 
+		const { name } = this.props.item;
+
 		if (this.props.item.t === 'd') {
-			const { name } = this.props.item;
 			const { initials, color } = avatarInitialsAndColor(name);
 			return (
 				<View style={[styles.iconContainer, { backgroundColor: color }]}>
@@ -91,9 +92,11 @@ export default class RoomItem extends React.PureComponent {
 			);
 		}
 
+		const { color } = avatarInitialsAndColor(name);
+
 		return (
 			<View style={styles.iconContainer}>
-				<MaterialCommunityIcons name={icon} style={styles.icon} />
+				<MaterialCommunityIcons name={icon} style={[styles.icon, { backgroundColor: color }]} />
 			</View>
 		);
 	}
@@ -109,11 +112,14 @@ export default class RoomItem extends React.PureComponent {
 	}
 
 	render() {
-		const { name } = this.props.item;
+		let extraSpace = {};
+		if (this.props.item.unread) {
+			extraSpace = { paddingRight: 92 };
+		}
 		return (
-			<View style={styles.container}>
+			<View style={[styles.container, extraSpace]}>
 				{this.icon}
-				<Text style={styles.roomItem}>{ name }</Text>
+				<Text style={styles.roomName} ellipsizeMode='tail' numberOfLines={1}>{ this.props.item.name }</Text>
 				{this.renderNumber(this.props.item)}
 			</View>
 		);
