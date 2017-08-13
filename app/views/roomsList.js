@@ -78,7 +78,8 @@ const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 class RoomsListItem extends React.PureComponent {
 	static propTypes = {
 		item: PropTypes.object.isRequired,
-		onPress: PropTypes.func.isRequired
+		onPress: PropTypes.func.isRequired,
+		baseUrl: PropTypes.string.isRequired
 	}
 	_onPress = (...args) => {
 		this.props.onPress(...args);
@@ -91,6 +92,7 @@ class RoomsListItem extends React.PureComponent {
 				<RoomItem
 					id={item._id}
 					item={item}
+					baseUrl={this.props.baseUrl}
 				/>
 			</TouchableOpacity>
 		);
@@ -111,6 +113,10 @@ export default class RoomsListView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.data = realm.objects('subscriptions').filtered('_server.id = $0', this.props.server);
+		const siteUrl = realm.objectForPrimaryKey('settings', 'Site_Url');
+		if (siteUrl) {
+			this.url = siteUrl.value;
+		}
 		this.state = {
 			dataSource: ds.cloneWithRows([]),
 			searching: false,
@@ -243,6 +249,7 @@ export default class RoomsListView extends React.Component {
 	getSubscriptions = () => this.data.sorted('_updatedAt', true)
 
 	updateState = debounce(() => {
+		this.url = realm.objectForPrimaryKey('settings', 'Site_Url').value;
 		this.setState({
 			dataSource: ds.cloneWithRows(this.data.filtered('_server.id = $0', this.props.server).sorted('ls', true))
 		});
@@ -309,7 +316,11 @@ export default class RoomsListView extends React.Component {
 	}
 
 	renderItem = ({ item }) => (
-		<RoomsListItem item={item} onPress={() => this._onPressItem(item._id, item)} />
+		<RoomsListItem
+			item={item}
+			onPress={() => this._onPressItem(item._id, item)}
+			baseUrl={this.url}
+		/>
 	);
 
 	renderSeparator = () => (
@@ -346,6 +357,7 @@ export default class RoomsListView extends React.Component {
 			dataSource={this.state.dataSource}
 			style={styles.list}
 			renderRow={item => this.renderItem({ item })}
+			renderHeader={this.renderSearchBar}
 			enableEmptySections
 		/>
 	)
@@ -362,7 +374,6 @@ export default class RoomsListView extends React.Component {
 		return (
 			<View style={styles.container}>
 				{this.renderBanner()}
-				{this.renderSearchBar()}
 				{this.renderList()}
 				{this.renderCreateButtons()}
 			</View>
