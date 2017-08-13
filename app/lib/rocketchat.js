@@ -190,7 +190,6 @@ const RocketChat = {
 			}
 		}
 
-		console.log({ params });
 		this.login(params, callback);
 	},
 

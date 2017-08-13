@@ -29,14 +29,18 @@ const styles = StyleSheet.create({
 });
 
 @connect(state => ({
-	server: state.server
+	server: state.server,
+	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
+	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder
 }), dispatch => ({
 	actions: bindActionCreators(actions, dispatch)
 }))
 export default class LoginView extends React.Component {
 	static propTypes = {
 		navigator: PropTypes.object.isRequired,
-		server: PropTypes.string.isRequired
+		server: PropTypes.string.isRequired,
+		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
+		Accounts_PasswordPlaceholder: PropTypes.string
 	}
 
 	static navigationOptions = () => ({
@@ -63,7 +67,7 @@ export default class LoginView extends React.Component {
 	}
 
 	submit = () => {
-		RocketChat.loginWithPassword({ username: this.state.username }, this.state.password, () => {
+		RocketChat.loginWithPassword(this.state.username, this.state.password, () => {
 			this.props.navigator.dismissModal();
 		});
 	}
@@ -80,7 +84,7 @@ export default class LoginView extends React.Component {
 					autoCapitalize='none'
 					autoFocus
 					onSubmitEditing={this.submit}
-					placeholder='Email or username'
+					placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email or username'}
 				/>
 				<TextInput
 					style={styles.input}
@@ -90,7 +94,7 @@ export default class LoginView extends React.Component {
 					returnKeyType='done'
 					autoCapitalize='none'
 					onSubmitEditing={this.submit}
-					placeholder='Password'
+					placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
 				/>
 			</KeyboardView>
 		);
