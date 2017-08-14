@@ -45,7 +45,8 @@ const styles = StyleSheet.create({
 
 @connect(state => ({
 	server: state.server,
-	Site_Url: state.settings.Site_Url
+	Site_Url: state.settings.Site_Url,
+	Message_TimeFormat: state.settings.Message_TimeFormat
 }), dispatch => ({
 	actions: bindActionCreators(actions, dispatch)
 }))
@@ -56,7 +57,8 @@ export default class RoomView extends React.Component {
 		sid: PropTypes.string,
 		name: PropTypes.string,
 		server: PropTypes.string,
-		Site_Url: PropTypes.string
+		Site_Url: PropTypes.string,
+		Message_TimeFormat: PropTypes.string
 	}
 
 	constructor(props) {
@@ -153,6 +155,7 @@ export default class RoomView extends React.Component {
 			id={item._id}
 			item={item}
 			baseUrl={this.props.Site_Url}
+			Message_TimeFormat={this.props.Message_TimeFormat}
 		/>
 	);
 
