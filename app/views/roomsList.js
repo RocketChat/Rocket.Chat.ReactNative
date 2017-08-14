@@ -349,6 +349,7 @@ export default class RoomsListView extends React.Component {
 			style={styles.list}
 			renderRow={item => this.renderItem({ item })}
 			renderHeader={this.renderSearchBar}
+			contentOffset={{ x: 0, y: 20 }}
 			enableEmptySections
 		/>
 	)
