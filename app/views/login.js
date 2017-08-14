@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TextInput, StyleSheet } from 'react-native';
+import { Text, TextInput, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -25,6 +25,11 @@ const styles = StyleSheet.create({
 		padding: 5,
 		borderWidth: 0,
 		backgroundColor: '#f6f6f6'
+	},
+	error: {
+		textAlign: 'center',
+		color: 'red',
+		paddingTop: 5
 	}
 });
 
@@ -67,9 +72,48 @@ export default class LoginView extends React.Component {
 	}
 
 	submit = () => {
-		RocketChat.loginWithPassword(this.state.username, this.state.password, () => {
-			this.props.navigator.dismissModal();
+		this.setState({
+			error: undefined
 		});
+
+		const credentials = {
+			username: this.state.username,
+			password: this.state.password,
+			code: this.state.code
+		}
+
+		RocketChat.loginWithPassword(credentials, (error) => {
+			if (error) {
+				if (error.error === 'totp-required') {
+					this.setState({ totp: true });
+					this.codeInput.focus();
+				} else {
+					this.setState({
+						error: error.reason
+					});
+				}
+			} else {
+				this.props.navigator.dismissModal();
+			}
+		});
+	}
+
+	renderTOTP = () => {
+		if (this.state.totp) {
+			return (
+				<TextInput
+					ref={ref => this.codeInput = ref}
+					style={styles.input}
+					onChangeText={code => this.setState({ code })}
+					keyboardType='numeric'
+					autoCorrect={false}
+					returnKeyType='done'
+					autoCapitalize='none'
+					onSubmitEditing={this.submit}
+					placeholder='Code'
+				/>
+			);
+		}
 	}
 
 	render() {
@@ -96,6 +140,8 @@ export default class LoginView extends React.Component {
 					onSubmitEditing={this.submit}
 					placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
 				/>
+				{this.renderTOTP()}
+				<Text style={styles.error}>{this.state.error}</Text>
 			</KeyboardView>
 		);
 	}
