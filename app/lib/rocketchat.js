@@ -388,6 +388,10 @@ const RocketChat = {
 				return resolve(result);
 			});
 		});
+	},
+
+	logout() {
+		return AsyncStorage.clear();
 	}
 };
 
