@@ -6,7 +6,6 @@ import { hashPassword } from 'react-native-meteor/lib/utils';
 import reduxStore from '../lib/createStore';
 import settingsType from '../constants/settings';
 import realm from './realm';
-import debounce from '../utils/debounce';
 import * as actions from '../actions';
 
 export { Accounts } from 'react-native-meteor';
@@ -19,25 +18,6 @@ const call = (method, ...params) => new Promise((resolve, reject) => {
 		resolve(data);
 	});
 });
-
-const write = (() => {
-	const cache = [];
-	const run = debounce(() => {
-		if (!cache.length) {
-			return;
-		}
-		realm.write(() => {
-			cache.forEach(([name, obj]) => {
-				realm.create(name, obj, true);
-			});
-		});
-		// cache = [];
-	}, 1000);
-	return (name, obj) => {
-		cache.push([name, obj]);
-		run();
-	};
-})();
 
 const RocketChat = {
 	createChannel({ name, users, type }) {
@@ -114,32 +94,13 @@ const RocketChat = {
 					});
 				}
 
-				this.subCache = this.subCache || {};
-				this.roomCache = this.roomCache || {};
-				this.cache = {};
 				if (ddbMessage.collection === 'stream-notify-user') {
-					const data = ddbMessage.fields.args[1];
-					let key;
-					if (ddbMessage.fields.eventName && ddbMessage.fields.eventName.indexOf('rooms-changed') > -1) {
-						this.roomCache[data._id] = data;
-						key = data._id;
-					} else {
-						this.subCache[data.rid] = data;
-						key = data.rid;
-						delete this.subCache[key]._updatedAt;
-					}
-					this.cache[key] = this.cache[key] ||
-					setTimeout(() => {
-						this.subCache[key] = this.subCache[key] || realm.objects('subscriptions').filtered('rid = $0', key).slice(0, 1)[0];
-						if (this.roomCache[key]) {
-							this.subCache[key]._updatedAt = this.roomCache[key]._updatedAt;
-						}
-
-						write('subscriptions', this.subCache[key]);
-						delete this.subCache[key];
-						delete this.roomCache[key];
-						delete this.cache[key];
-					}, 550);
+					// console.log(ddbMessage);
+					realm.write(() => {
+						const data = ddbMessage.fields.args[1];
+						data._server = { id: RocketChat.currentServer };
+						realm.create('subscriptions', data, true);
+					});
 				}
 			});
 		});
@@ -217,7 +178,7 @@ const RocketChat = {
 						// 	subscription.value = item.value;
 						// }
 						subscription._server = { id: RocketChat.currentServer };
-						write('subscriptions', subscription);
+						// write('subscriptions', subscription);
 						realm.create('subscriptions', subscription, true);
 					});
 				});
@@ -410,7 +371,7 @@ Meteor.Accounts.onLogin(() => {
 			return subscription;
 		});
 		Meteor.subscribe('stream-notify-user', `${ Meteor.userId() }/subscriptions-changed`, false);
-		Meteor.subscribe('stream-notify-user', `${ Meteor.userId() }/rooms-changed`, false);
+		// Meteor.subscribe('stream-notify-user', `${ Meteor.userId() }/rooms-changed`, false);
 		realm.write(() => {
 			data.forEach((subscription) => {
 			// const subscription = {
