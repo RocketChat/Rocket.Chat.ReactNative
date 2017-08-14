@@ -80,7 +80,7 @@ export default class LoginView extends React.Component {
 			username: this.state.username,
 			password: this.state.password,
 			code: this.state.code
-		}
+		};
 
 		RocketChat.loginWithPassword(credentials, (error) => {
 			if (error) {

@@ -174,7 +174,6 @@ export default class NewServerView extends React.Component {
 					});
 					reject(url);
 				});
-
 		} else {
 			this.setState({
 				validInstance: undefined

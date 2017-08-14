@@ -11,7 +11,8 @@ import RocketChat from '../lib/rocketchat';
 import debounce from '../utils/throttle';
 import Message from '../components/Message';
 import MessageBox from '../components/MessageBox';
-// import KeyboardView from '../components/KeyboardView';
+import KeyboardView from '../components/KeyboardView';
+
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 const styles = StyleSheet.create({
 	container: {
@@ -198,7 +199,7 @@ export default class RoomView extends React.Component {
 		// keyExtractor={item => item._id}
 		//
 		return (
-			<View style={styles.container}>
+			<KeyboardView style={styles.container} keyboardVerticalOffset={64}>
 				{this.renderBanner()}
 				<ListView
 					enableEmptySections
@@ -210,7 +211,7 @@ export default class RoomView extends React.Component {
 					renderRow={item => this.renderItem({ item })}
 				/>
 				{this.renderFooter()}
-			</View>
+			</KeyboardView>
 		);
 	}
 }
