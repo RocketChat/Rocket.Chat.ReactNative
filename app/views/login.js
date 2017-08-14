@@ -118,7 +118,7 @@ export default class LoginView extends React.Component {
 
 	render() {
 		return (
-			<KeyboardView style={styles.view}>
+			<KeyboardView style={styles.view} keyboardVerticalOffset={64}>
 				<TextInput
 					style={styles.input}
 					onChangeText={username => this.setState({ username })}
