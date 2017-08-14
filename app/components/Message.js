@@ -4,6 +4,8 @@ import { View, Text, StyleSheet } from 'react-native';
 import { CachedImage } from 'react-native-img-cache';
 import { emojify } from 'react-emojione';
 import Markdown from 'react-native-easy-markdown';
+import moment from 'moment';
+
 import avatarInitialsAndColor from '../utils/avatarInitialsAndColor';
 
 const styles = StyleSheet.create({
@@ -41,34 +43,58 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	username: {
-		fontWeight: 'bold',
-		marginBottom: 5
+		fontWeight: 'bold'
+	},
+	usernameView: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		marginBottom: 2
+	},
+	alias: {
+		fontSize: 10,
+		color: '#888',
+		paddingLeft: 5
+	},
+	time: {
+		fontSize: 10,
+		color: '#888',
+		paddingLeft: 5
 	}
 });
 
 export default class Message extends React.PureComponent {
 	static propTypes = {
 		item: PropTypes.object.isRequired,
-		baseUrl: PropTypes.string.isRequired
+		baseUrl: PropTypes.string.isRequired,
+		Message_TimeFormat: PropTypes.string.isRequired
 	}
 
 	render() {
+		const { item } = this.props;
+
 		const extraStyle = {};
-		if (this.props.item.temp) {
+		if (item.temp) {
 			extraStyle.opacity = 0.3;
 		}
 
-		const msg = emojify(this.props.item.msg, { output: 'unicode' });
+		const msg = emojify(item.msg, { output: 'unicode' });
 
-		const username = this.props.item.alias || this.props.item.u.username;
+		const username = item.alias || item.u.username;
 
 		let { initials, color } = avatarInitialsAndColor(username);
 
-		const avatar = this.props.item.avatar || `${ this.props.baseUrl }/avatar/${ this.props.item.u.username }`;
-		if (this.props.item.avatar) {
+		const avatar = item.avatar || `${ this.props.baseUrl }/avatar/${ item.u.username }`;
+		if (item.avatar) {
 			initials = '';
 			color = 'transparent';
 		}
+
+		let aliasUsername;
+		if (item.alias) {
+			aliasUsername = <Text style={styles.alias}>@{item.u.username}</Text>;
+		}
+
+		const time = moment(item.ts).format(this.props.Message_TimeFormat);
 
 		return (
 			<View style={[styles.message, extraStyle]}>
@@ -77,9 +103,12 @@ export default class Message extends React.PureComponent {
 					<CachedImage style={styles.avatar} source={{ uri: avatar }} />
 				</View>
 				<View style={styles.texts}>
-					<Text onPress={this._onPress} style={styles.username}>
-						{username}
-					</Text>
+					<View style={styles.usernameView}>
+						<Text onPress={this._onPress} style={styles.username}>
+							{username}
+						</Text>
+						{aliasUsername}<Text style={styles.time}>{time}</Text>
+					</View>
 					<Markdown>
 						{msg}
 					</Markdown>
