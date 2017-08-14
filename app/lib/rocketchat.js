@@ -158,7 +158,7 @@ const RocketChat = {
 		});
 	},
 
-	loginWithPassword(username, password, callback) {
+	loginWithPassword({username, password, code}, callback) {
 		let params = {};
 		const state = reduxStore.getState();
 
@@ -188,6 +188,15 @@ const RocketChat = {
 					params.user = { email: username };
 				}
 			}
+		}
+
+		if (code) {
+			params = {
+				totp: {
+					login: params,
+					code
+				}
+			};
 		}
 
 		this.login(params, callback);
@@ -415,3 +424,6 @@ Meteor.Accounts.onLogin(() => {
 		console.log('subscriptions done.');
 	});
 });
+
+// Use for logout
+// AsyncStorage.clear();

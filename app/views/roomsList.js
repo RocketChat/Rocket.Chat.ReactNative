@@ -67,13 +67,6 @@ Meteor.Accounts.onLogin(() => {
 	console.log('onLogin');
 });
 
-Meteor.Accounts.onLoginFailure(() => {
-	Navigation.showModal({
-		screen: 'Login',
-		animationType: 'slide-up'
-	});
-});
-
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 class RoomsListItem extends React.PureComponent {
 	static propTypes = {
