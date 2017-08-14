@@ -158,7 +158,7 @@ const RocketChat = {
 		});
 	},
 
-	loginWithPassword({username, password, code}, callback) {
+	loginWithPassword({ username, password, code }, callback) {
 		let params = {};
 		const state = reduxStore.getState();
 
