@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 
 import * as actions from '../actions';
 import realm from '../lib/realm';
+import RocketChat from '../lib/rocketchat';
 
 const styles = StyleSheet.create({
 	view: {
@@ -130,6 +131,7 @@ export default class ListServerView extends React.Component {
 	}
 
 	onPressItem = (item) => {
+		RocketChat.logout();
 		Navigation.dismissModal({
 			animationType: 'slide-down'
 		});
