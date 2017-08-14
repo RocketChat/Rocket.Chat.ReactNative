@@ -98,6 +98,7 @@ class RoomsListItem extends React.PureComponent {
 }), dispatch => ({
 	actions: bindActionCreators(actions, dispatch)
 }))
+
 export default class RoomsListView extends React.Component {
 	static propTypes = {
 		navigator: PropTypes.object.isRequired,
@@ -108,14 +109,14 @@ export default class RoomsListView extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.data = realm.objects('subscriptions').filtered('_server.id = $0', this.props.server);
+		// this.data = realm.objects('subscriptions').filtered('_server.id = $0', this.props.server);
 		this.state = {
 			dataSource: ds.cloneWithRows([]),
 			searching: false,
 			searchDataSource: [],
 			searchText: ''
 		};
-		this.data.addListener(this.updateState);
+
 		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
 
@@ -148,10 +149,8 @@ export default class RoomsListView extends React.Component {
 		}
 	}
 
-	componentWillUpdate
-
 	componentWillUnmount() {
-		this.data.removeListener(this.updateState);
+		this.state.data.removeListener(this.updateState);
 	}
 
 	onNavigatorEvent = (event) => {
@@ -177,9 +176,11 @@ export default class RoomsListView extends React.Component {
 		});
 
 		if (searchText !== '') {
+			const data = this.state.data.filtered('name CONTAINS[c] $0', searchText).slice();
+
 			const dataSource = [];
 			const usernames = [];
-			realm.objects('subscriptions').filtered('_server.id = $0 AND name CONTAINS[c] $1', this.props.server, searchText).forEach((sub) => {
+			data.forEach((sub) => {
 				dataSource.push(sub);
 
 				if (sub.t === 'd') {
@@ -187,7 +188,7 @@ export default class RoomsListView extends React.Component {
 				}
 			});
 
-			if (dataSource.length < 5) {
+			if (dataSource.length < 7) {
 				RocketChat.spotlight(searchText, usernames)
 					.then((results) => {
 						results.users.forEach((user) => {
@@ -207,10 +208,18 @@ export default class RoomsListView extends React.Component {
 						});
 
 						this.setState({
-							searchDataSource: dataSource
+							dataSource: ds.cloneWithRows(dataSource)
 						});
 					});
+			} else {
+				this.setState({
+					dataSource: ds.cloneWithRows(dataSource)
+				});
 			}
+		} else {
+			this.setState({
+				dataSource: ds.cloneWithRows(this.state.data)
+			});
 		}
 	}
 
@@ -228,21 +237,20 @@ export default class RoomsListView extends React.Component {
 			}
 			RocketChat.connect();
 
-			if (this.data) {
-				this.data.removeListener(this.updateState);
-			}
-			this.data = realm.objects('subscriptions').filtered('_server.id = $0', props.server).sorted('_updatedAt', true);
-			this.data.addListener(this.updateState);
+			const data = realm.objects('subscriptions').filtered('_server.id = $0', props.server).sorted('_updatedAt', true);
 
-			this.updateState();
+			this.setState({
+				dataSource: ds.cloneWithRows(data),
+				data
+			});
+
+			data.addListener(this.updateState);
 		});
 	}
 
-	getSubscriptions = () => this.data.sorted('_updatedAt', true)
-
 	updateState = debounce(() => {
 		this.setState({
-			dataSource: ds.cloneWithRows(this.data.filtered('_server.id = $0', this.props.server).sorted('ls', true))
+			dataSource: ds.cloneWithRows(this.state.data)
 		});
 	}, 500);
 
@@ -266,8 +274,21 @@ export default class RoomsListView extends React.Component {
 		if (item.search) {
 			if (item.t === 'd') {
 				RocketChat.createDirectMessage(item.username)
-					.then(room => realm.objects('subscriptions').filtered('_server.id = $0 AND rid = $1', this.props.server, room.rid))
-					.then(subs => navigateToRoom({ sid: subs[0]._id }))
+					.then(room => new Promise((resolve) => {
+						const data = realm.objects('subscriptions').filtered('_server.id = $0 AND rid = $1', this.props.server, room.rid);
+
+						if (data.length) {
+							return resolve(data[0]);
+						}
+
+						data.addListener(() => {
+							if (data.length) {
+								resolve(data[0]);
+								data.removeAllListeners();
+							}
+						});
+					}))
+					.then(sub => navigateToRoom({ sid: sub._id }))
 					.then(() => clearSearch());
 			} else {
 				clearSearch();
@@ -351,6 +372,7 @@ export default class RoomsListView extends React.Component {
 			renderHeader={this.renderSearchBar}
 			contentOffset={{ x: 0, y: 20 }}
 			enableEmptySections
+			keyboardShouldPersistTaps='always'
 		/>
 	)
 
