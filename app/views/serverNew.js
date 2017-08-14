@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Navigation } from 'react-native-navigation';
 import { Text, TextInput, View, StyleSheet } from 'react-native';
 import _ from 'underscore';
+import realm from '../lib/realm';
 
 import KeyboardView from '../components/KeyboardView';
 
@@ -47,7 +48,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-
 export default class NewServerView extends React.Component {
 	static propTypes = {
 		navigator: PropTypes.object.isRequired
@@ -79,6 +79,9 @@ export default class NewServerView extends React.Component {
 
 			this.inputElement.blur();
 			this.validateServer(url).then(() => {
+				realm.write(() => {
+					realm.create('servers', { id: url, current: false }, true);
+				});
 				Navigation.dismissModal({
 					animationType: 'slide-down'
 				});
@@ -142,7 +145,7 @@ export default class NewServerView extends React.Component {
 				validating: true
 			});
 
-			const a = fetch(url, { method: 'HEAD' })
+			fetch(url, { method: 'HEAD' })
 				.then((response) => {
 					if (!this._mounted) {
 						return;
@@ -171,7 +174,7 @@ export default class NewServerView extends React.Component {
 					});
 					reject(url);
 				});
-			console.log(a.stop);
+
 		} else {
 			this.setState({
 				validInstance: undefined
