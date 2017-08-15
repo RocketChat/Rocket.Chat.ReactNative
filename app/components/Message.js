@@ -7,8 +7,12 @@ import Markdown from 'react-native-easy-markdown';
 import moment from 'moment';
 
 import avatarInitialsAndColor from '../utils/avatarInitialsAndColor';
+import Card from './message/card';
 
 const styles = StyleSheet.create({
+	content: {
+		flexGrow: 1
+	},
 	message: {
 		padding: 12,
 		paddingTop: 6,
@@ -68,7 +72,9 @@ export default class Message extends React.PureComponent {
 		baseUrl: PropTypes.string.isRequired,
 		Message_TimeFormat: PropTypes.string.isRequired
 	}
-
+	attachments() {
+		return this.props.item.attachments.length ? <Card data={this.props.item.attachments[0]} /> : null;
+	}
 	render() {
 		const { item } = this.props;
 
@@ -102,13 +108,14 @@ export default class Message extends React.PureComponent {
 					<Text style={styles.avatarInitials}>{initials}</Text>
 					<CachedImage style={styles.avatar} source={{ uri: avatar }} />
 				</View>
-				<View style={styles.texts}>
+				<View style={[styles.content]}>
 					<View style={styles.usernameView}>
 						<Text onPress={this._onPress} style={styles.username}>
 							{username}
 						</Text>
 						{aliasUsername}<Text style={styles.time}>{time}</Text>
 					</View>
+					{this.attachments()}
 					<Markdown>
 						{msg}
 					</Markdown>

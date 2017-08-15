@@ -209,6 +209,7 @@ export default class RoomView extends React.Component {
 					onEndReached={this.onEndReached}
 					dataSource={this.state.dataSource}
 					renderRow={item => this.renderItem({ item })}
+					initialListSize={10}
 				/>
 				{this.renderFooter()}
 			</KeyboardView>

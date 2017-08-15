@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { View, TextInput, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
-import RNFetchBlob from 'react-native-fetch-blob';
 import RocketChat from '../lib/rocketchat';
 
 const styles = StyleSheet.create({
@@ -63,7 +62,7 @@ export default class MessageBox extends React.PureComponent {
 		};
 
 		ImagePicker.showImagePicker(options, (response) => {
-			console.log('Response = ', response);
+			// console.log('Response = ', response);
 
 			if (response.didCancel) {
 				console.log('User cancelled image picker');
@@ -76,29 +75,10 @@ export default class MessageBox extends React.PureComponent {
 					name: response.fileName,
 					size: response.fileSize,
 					type: response.type || 'image/jpeg',
-					rid: this.props.rid,
 					// description: '',
 					store: 'Uploads'
 				};
-
-				RocketChat.ufsCreate(fileInfo).then((result) => {
-					RNFetchBlob.fetch('POST', result.url, {
-						'Content-Type': 'application/octet-stream'
-					}, response.data).then(() => {
-						RocketChat.ufsComplete(result.fileId, fileInfo.store, result.token)
-							.then((completeRresult) => {
-								RocketChat.sendFileMessage(completeRresult.rid, {
-									_id: completeRresult._id,
-									type: completeRresult.type,
-									size: completeRresult.size,
-									name: completeRresult.name,
-									url: completeRresult.path
-								});
-							});
-					}).catch((err) => {
-						console.log({ err });
-					});
-				});
+				RocketChat.sendFileMessage(this.props.rid, fileInfo, response.data);
 			}
 		});
 	}
