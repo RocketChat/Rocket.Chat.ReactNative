@@ -21,6 +21,7 @@
     "react-native-auto-grow-textinput": "^1.2.0",
     "react-native-autogrow-input": "^0.2.1",
     "react-native-autogrow-textinput": "^4.1.0",
+    "react-native-card-view": "0.0.3",
     "react-native-console-time-polyfill": "0.0.6",
     "react-native-easy-markdown": "git+https://github.com/lappalj4/react-native-easy-markdown.git",
     "react-native-fetch-blob": "^0.10.8",
