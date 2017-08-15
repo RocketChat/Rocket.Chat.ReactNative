@@ -3,10 +3,12 @@ import Random from 'react-native-meteor/lib/Random';
 import { AsyncStorage } from 'react-native';
 import { hashPassword } from 'react-native-meteor/lib/utils';
 
+import RNFetchBlob from 'react-native-fetch-blob';
 import reduxStore from '../lib/createStore';
 import settingsType from '../constants/settings';
 import realm from './realm';
 import * as actions from '../actions';
+
 
 export { Accounts } from 'react-native-meteor';
 
@@ -220,47 +222,32 @@ const RocketChat = {
 		Meteor.subscribe('stream-room-messages', rid, false);
 	},
 
-	sendMessage(rid, msg) {
+	getMessage(rid, msg = {}) {
 		const _id = Random.id();
 		const user = Meteor.user();
+		const message = {
+			_id,
+			rid,
+			msg,
+			ts: new Date(),
+			_updatedAt: new Date(),
+			temp: true,
+			_server: { id: RocketChat.currentServer },
+			u: {
+				_id: user._id,
+				username: user.username
+			}
+		};
 
 		realm.write(() => {
-		// write('messages', {
-		// 	_id,
-		// 	rid,
-		// 	msg,
-		// 	ts: new Date(),
-		// 	_updatedAt: new Date(),
-		// 	temp: true,
-		// 	_server: { id: RocketChat.currentServer },
-		// 	u: {
-		// 		_id: user._id,
-		// 		username: user.username
-		// 	}
-		// });
-			realm.create('messages', {
-				_id,
-				rid,
-				msg,
-				ts: new Date(),
-				_updatedAt: new Date(),
-				temp: true,
-				_server: { id: RocketChat.currentServer },
-				u: {
-					_id: user._id,
-					username: user.username
-				}
-			}, true);
+			realm.create('messages', message, true);
+			// write('messages', message, true);
 		});
-
-		return new Promise((resolve, reject) => {
-			Meteor.call('sendMessage', { _id, rid, msg }, (error, result) => {
-				if (error) {
-					return reject(error);
-				}
-				return resolve(result);
-			});
-		});
+		return message;
+	},
+	sendMessage(rid, msg) {
+		const tempMessage = this.getMessage(rid, msg);
+		return call('sendMessage', { _id: tempMessage._id, rid, msg });
 	},
 
 	spotlight(search, usernames) {
@@ -307,7 +294,8 @@ const RocketChat = {
 		"description":""
 		"store":"fileSystem"
 	*/
-	ufsCreate(fileInfo) {
+	_ufsCreate(fileInfo) {
+		// return call('ufsCreate', fileInfo);
 		return new Promise((resolve, reject) => {
 			Meteor.call('ufsCreate', fileInfo, (error, result) => {
 				if (error) {
@@ -319,7 +307,7 @@ const RocketChat = {
 	},
 
 	// ["ZTE8CKHJt7LATv7Me","fileSystem","e8E96b2819"
-	ufsComplete(fileId, store, token) {
+	_ufsComplete(fileId, store, token) {
 		return new Promise((resolve, reject) => {
 			Meteor.call('ufsComplete', fileId, store, token, (error, result) => {
 				if (error) {
@@ -340,15 +328,42 @@ const RocketChat = {
 			"url":"/ufs/fileSystem/ZTE8CKHJt7LATv7Me/yXfExLErmNR5eNPx7.png"
 		}
 	*/
-	sendFileMessage(rid, message) {
+	_sendFileMessage(rid, data, msg = {}) {
 		return new Promise((resolve, reject) => {
-			Meteor.call('sendFileMessage', rid, null, message, (error, result) => {
+			Meteor.call('sendFileMessage', rid, null, data, msg, (error, result) => {
 				if (error) {
 					return reject(error);
 				}
 				return resolve(result);
 			});
 		});
+	},
+	async sendFileMessage(rid, fileInfo, data) {
+		const placeholder = RocketChat.getMessage(rid, 'Sending an image');
+		try {
+			const result = await RocketChat._ufsCreate({ ...fileInfo, rid });
+
+			await RNFetchBlob.fetch('POST', result.url, {
+				'Content-Type': 'application/octet-stream'
+			}, data);
+
+			const completeRresult = await RocketChat._ufsComplete(result.fileId, fileInfo.store, result.token);
+
+			return await RocketChat._sendFileMessage(completeRresult.rid, {
+				_id: completeRresult._id,
+				type: completeRresult.type,
+				size: completeRresult.size,
+				name: completeRresult.name,
+				url: completeRresult.path
+			});
+		} catch (e) {
+			return e;
+		} finally {
+			realm.write(() => {
+				const msg = realm.objects('messages').filtered('_id = $0', placeholder._id);
+				realm.delete(msg);
+			});
+		}
 	},
 
 	logout() {

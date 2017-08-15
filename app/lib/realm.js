@@ -55,6 +55,26 @@ const usersSchema = {
 	}
 };
 
+const attachment = {
+	name: 'attachment',
+	properties: {
+		description: { type: 'string', optional: true },
+
+		image_size: { type: 'int', optional: true },
+
+		image_type: { type: 'string', optional: true },
+
+		image_url: { type: 'string', optional: true },
+		title: { type: 'string', optional: true },
+
+		title_link: { type: 'string', optional: true },
+		title_link_download: { type: 'bool', optional: true },
+		type: { type: 'string', optional: true }
+	}
+
+
+};
+
 const messagesSchema = {
 	name: 'messages',
 	primaryKey: '_id',
@@ -71,6 +91,7 @@ const messagesSchema = {
 		parseUrls: { type: 'bool', optional: true },
 		groupable: { type: 'bool', optional: true },
 		avatar: { type: 'string', optional: true },
+		attachments: { type: 'list', objectType: 'attachment' },
 		_updatedAt: { type: 'date', optional: true },
 		temp: { type: 'bool', optional: true }
 	}
@@ -136,9 +157,8 @@ const messagesSchema = {
 // Realm.clearTestState();
 
 const realm = new Realm({
-	schema: [settingsSchema, serversSchema, subscriptionSchema, messagesSchema, usersSchema]
+	schema: [settingsSchema, serversSchema, subscriptionSchema, messagesSchema, usersSchema, attachment]
 });
-
 export default realm;
 
 // realm.write(() => {
