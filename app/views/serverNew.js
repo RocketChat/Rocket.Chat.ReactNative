@@ -199,9 +199,7 @@ export default class NewServerView extends React.Component {
 			}
 		}
 
-		url = url.replace(/\/+$/, '');
-
-		return url;
+		return url.replace(/\/+$/, '');
 	}
 
 	renderValidation = () => {

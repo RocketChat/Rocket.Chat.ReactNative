@@ -174,53 +174,56 @@ export default class RoomsListView extends React.Component {
 			searchText: text,
 			searching: searchText !== ''
 		});
-
-		if (searchText !== '') {
-			const data = this.state.data.filtered('name CONTAINS[c] $0', searchText).slice();
-
-			const dataSource = [];
-			const usernames = [];
-			data.forEach((sub) => {
-				dataSource.push(sub);
-
-				if (sub.t === 'd') {
-					usernames.push(sub.name);
-				}
-			});
-
-			if (dataSource.length < 7) {
-				RocketChat.spotlight(searchText, usernames)
-					.then((results) => {
-						results.users.forEach((user) => {
-							dataSource.push({
-								...user,
-								name: user.username,
-								t: 'd',
-								search: true
-							});
-						});
-
-						results.rooms.forEach((room) => {
-							dataSource.push({
-								...room,
-								search: true
-							});
-						});
-
-						this.setState({
-							dataSource: ds.cloneWithRows(dataSource)
-						});
-					});
-			} else {
-				this.setState({
-					dataSource: ds.cloneWithRows(dataSource)
-				});
-			}
-		} else {
-			this.setState({
+		if (searchText === '') {
+			return this.setState({
 				dataSource: ds.cloneWithRows(this.state.data)
 			});
 		}
+
+		const data = this.state.data.filtered('name CONTAINS[c] $0', searchText).slice();
+
+		const usernames = [];
+		const dataSource = data.map((sub) => {
+			if (sub.t === 'd') {
+				usernames.push(sub.name);
+			}
+			return sub;
+		});
+
+		if (dataSource.length < 7) {
+			if (this.oldPromise) {
+				this.oldPromise();
+			}
+			Promise.race([
+				RocketChat.spotlight(searchText, usernames),
+				new Promise((resolve, reject) => this.oldPromise = reject)
+			])
+				.then((results) => {
+					results.users.forEach((user) => {
+						dataSource.push({
+							...user,
+							name: user.username,
+							t: 'd',
+							search: true
+						});
+					});
+
+					results.rooms.forEach((room) => {
+						dataSource.push({
+							...room,
+							search: true
+						});
+					});
+
+					this.setState({
+						dataSource: ds.cloneWithRows(dataSource)
+					});
+				}, () => console.log('spotlight stopped'))
+				.then(() => delete this.oldPromise);
+		}
+		this.setState({
+			dataSource: ds.cloneWithRows(dataSource)
+		});
 	}
 
 	setInitialData = (props = this.props) => {

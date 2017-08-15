@@ -6,11 +6,13 @@ import NewServerView from './views/serverNew';
 import ListServerView from './views/serverList';
 import RoomsListView from './views/roomsList';
 import RoomView from './views/room';
+import PhotoView from './views/Photo';
 import CreateChannel from './views/CreateChannel';
 import store from './lib/createStore';
 
 Navigation.registerComponent('Rooms', () => RoomsListView, store, Provider);
 Navigation.registerComponent('Room', () => RoomView, store, Provider);
+Navigation.registerComponent('Photo', () => PhotoView, store, Provider);
 Navigation.registerComponent('ListServer', () => ListServerView, store, Provider);
 Navigation.registerComponent('Login', () => LoginView, store, Provider);
 Navigation.registerComponent('NewServer', () => NewServerView, store, Provider);
