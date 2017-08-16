@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
 }), dispatch => ({
 	actions: bindActionCreators(actions, dispatch)
 }))
+
 export default class LoginView extends React.Component {
 	static propTypes = {
 		navigator: PropTypes.object.isRequired,

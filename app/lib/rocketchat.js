@@ -109,15 +109,16 @@ const RocketChat = {
 	},
 
 	login(params, callback) {
-		Meteor._startLoggingIn();
-		Meteor.call('login', params, (err, result) => {
-			Meteor._endLoggingIn();
-
-			Meteor._handleLoginCallback(err, result);
-
-			if (typeof callback === 'function') {
-				callback(err);
-			}
+		return new Promise((resolve, reject) => {
+			Meteor._startLoggingIn();
+			Meteor.call('login', params, (err, result) => {
+				Meteor._endLoggingIn();
+				Meteor._handleLoginCallback(err, result);
+				err ? reject(err) : resolve(result);
+				if (typeof callback === 'function') {
+					callback(err, result);
+				}
+			});
 		});
 	},
 
@@ -162,7 +163,7 @@ const RocketChat = {
 			};
 		}
 
-		this.login(params, callback);
+		return this.login(params, callback);
 	},
 
 	loadSubscriptions(cb) {
