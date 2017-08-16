@@ -8,7 +8,6 @@ import { Text, View, StyleSheet, TouchableOpacity, Platform, TextInput } from 'r
 import Meteor from 'react-native-meteor';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
 import * as actions from '../actions';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
@@ -96,7 +95,8 @@ class RoomsListItem extends React.PureComponent {
 	server: state.server,
 	Site_Url: state.settings.Site_Url
 }), dispatch => ({
-	actions: bindActionCreators(actions, dispatch)
+	actions: bindActionCreators(actions, dispatch),
+	login: () => dispatch(actions.login())
 }))
 
 export default class RoomsListView extends React.Component {
@@ -382,7 +382,7 @@ export default class RoomsListView extends React.Component {
 	renderCreateButtons() {
 		return (
 			<ActionButton buttonColor='rgba(231,76,60,1)'>
-				<ActionButton.Item buttonColor='#9b59b6' title='Create Channel' onPress={() => { this._createChannel(); }} >
+				<ActionButton.Item buttonColor='#9b59b6' title='Create Channel' onPress={() => { this.props.login(); }} >
 					<Icon name='md-chatbubbles' style={styles.actionButtonIcon} />
 				</ActionButton.Item>
 			</ActionButton>);

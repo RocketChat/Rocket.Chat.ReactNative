@@ -4,8 +4,8 @@ import 'regenerator-runtime/runtime';
 
 
 const foreverAlone = function* foreverAlone() {
-	yield take('cagado');
-	console.log('foi cagado');
+	yield take('FOI');
+	console.log('FOIIIIIII');
 	yield take('voa');
 	console.log('o');
 };
