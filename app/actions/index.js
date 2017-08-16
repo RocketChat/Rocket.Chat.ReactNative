@@ -13,6 +13,12 @@ export function setAllSettings(settings) {
 		payload: settings
 	};
 }
+export function login() {
+	return {
+		type: 'LOGIN'
+	};
+}
+
 
 // // GENRES
 // export function retrieveMoviesGenresSuccess(res) {
