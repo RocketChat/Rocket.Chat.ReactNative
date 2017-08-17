@@ -3,7 +3,7 @@ import * as types from './actionsTypes';
 export function loginRequest(credentials) {
 	return {
 		type: types.LOGIN.REQUEST,
-		credentials
+		...credentials
 	};
 }
 

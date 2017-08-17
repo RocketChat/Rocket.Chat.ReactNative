@@ -4,17 +4,20 @@ import * as types from '../actions/actionsTypes';
 import { loginSuccess, loginFailure } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 
-function loginCall(...args) {
-	return RocketChat.loginWithPassword(...args);
+function loginCall(args) {
+	console.log(args);
+	return RocketChat.loginWithPassword(args);
 }
 
 const watchLoginRequest = function* watchLoginRequest() {
 	while (true) {
 		yield take(types.METEOR.SUCCESS);
+		console.log('\n\n[LOGIN METEOR CONNECTED]\n\n');
 		const payload = yield take(types.LOGIN.REQUEST);
 		try {
 			const response = yield call(loginCall, payload);
 			yield put(loginSuccess(response));
+			console.log('\n\n[LOGIN SUCCESS]\n\n');
 		} catch (err) {
 			yield put(loginFailure(err.status));
 		}

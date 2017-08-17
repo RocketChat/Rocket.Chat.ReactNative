@@ -66,7 +66,6 @@ class LoginView extends React.Component {
 	submit = () => {
 		const {	username, password, code } = this.state;
 		this.props.loginRequest({	username, password, code });
-		console.log(this.props.loginRequest.toString());
 		//
 		//
 		// this.setState({
@@ -111,7 +110,7 @@ class LoginView extends React.Component {
 	render() {
 		return (
 			<KeyboardView style={styles.view} keyboardVerticalOffset={64}>
-				{this.props.login.isFetching && <Text> INDO</Text>}
+				{this.props.login.isFetching && <Text> LOGANDO</Text>}
 				<TextInput
 					style={styles.input}
 					onChangeText={username => this.setState({ username })}

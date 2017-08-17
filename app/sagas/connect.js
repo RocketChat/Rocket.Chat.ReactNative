@@ -11,6 +11,7 @@ function connect(...args) {
 const watchConnect = function* watchConnect() {
 	while (true) {
 		yield take(METEOR.REQUEST);
+		console.log('\n\n[METEOR CONNECTED]\n\n');
 		try {
 			const response = yield call(connect);
 			yield put(connectSuccess(response));
