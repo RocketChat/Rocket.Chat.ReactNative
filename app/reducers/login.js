@@ -19,6 +19,7 @@ export default function login(state = initialState, action) {
 			return { ...state,
 				isFetching: false,
 				isAuthenticated: true,
+				user: action.user,
 				// token: action.token,
 				failure: false
 				// user: action.user
@@ -32,7 +33,10 @@ export default function login(state = initialState, action) {
 			};
 		case types.LOGOUT:
 			console.log('LOGOUT');
-			return initialState;
+			return { ...state,
+				isFetching: false,
+				isAuthenticated: false
+			};
 		default:
 			return state;
 	}

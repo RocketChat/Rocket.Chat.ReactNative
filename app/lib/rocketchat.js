@@ -61,10 +61,12 @@ const RocketChat = {
 				reduxStore.dispatch(disconnect());
 			});
 			Meteor.ddp.on('connected', (err) => {
-				!err && reduxStore.dispatch(connectSuccess());
-				!err && resolve();
+				console.log('connected');
+				reduxStore.dispatch(connectSuccess());
+				resolve();
 			});
 			Meteor.ddp.on('loggin', () => {
+				console.log('Meteor.ddp.on(\'loggin\',');
 				reduxStore.dispatch(loginSuccess({}));
 			});
 			Meteor.ddp.on('connected', () => {
@@ -212,7 +214,7 @@ const RocketChat = {
 					}
 					return reject(err);
 				}
-				if (data.messages.length) {
+				if (data && data.messages.length) {
 					realm.write(() => {
 						data.messages.forEach((message) => {
 							message.temp = false;
@@ -224,7 +226,7 @@ const RocketChat = {
 				}
 
 				if (cb) {
-					if (data.messages.length < 20) {
+					if (data && data.messages.length < 20) {
 						cb({ end: true });
 					} else {
 						cb({ end: false });

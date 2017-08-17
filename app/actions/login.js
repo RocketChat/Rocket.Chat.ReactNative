@@ -7,11 +7,10 @@ export function loginRequest(credentials) {
 	};
 }
 
-export function loginSuccess({ token = {} }) {
-	console.log('loginSuccess', token);
+export function loginSuccess(user) {
 	return {
 		type: types.LOGIN.SUCCESS,
-		token
+		user
 	};
 }
 
