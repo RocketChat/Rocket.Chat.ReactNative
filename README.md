@@ -18,7 +18,7 @@ Follow the [React Native Getting Started Guide](https://facebook.github.io/react
       $ brew install watchman
       $ brew install yarn
       ```
-	  
+
 - Clone repository and configure:
     ```bash
     $ git clone git@github.com:RocketChat/Rocket.Chat.ReactNative.git
@@ -69,3 +69,24 @@ Follow the [React Native Getting Started Guide](https://facebook.github.io/react
   - Start emulator
   - Start react packager: `$ react-native start`
   - Run in emulator: `$ react-native run-android`
+
+# Storybook
+- General requirements
+    - Install storybook
+        ```bash
+        $ npm i -g @storybook/cli
+        ```
+
+- Running storybook
+    - Run storybook application
+        ```bash
+        $ npm run storybook
+        ```
+    - Run application in other shell
+        ```bash
+        $ react-native run-ios
+        ```
+    - Running storybook on browser to help stories navigation
+        ```
+        open http://localhost:7007/
+        ```
