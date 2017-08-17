@@ -31,6 +31,7 @@ export default function login(state = initialState, action) {
 				errorMessage: action.err
 			};
 		case types.LOGOUT:
+			console.log('LOGOUT');
 			return initialState;
 		default:
 			return state;
