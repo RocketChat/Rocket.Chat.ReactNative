@@ -10,7 +10,7 @@ function loginCall(...args) {
 
 const watchLoginRequest = function* watchLoginRequest() {
 	while (true) {
-		// yield take('METEOR_CONNECTED');
+		yield take(types.METEOR.SUCCESS);
 		const payload = yield take(types.LOGIN.REQUEST);
 		try {
 			const response = yield call(loginCall, payload);

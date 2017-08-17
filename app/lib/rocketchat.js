@@ -55,8 +55,6 @@ const RocketChat = {
 		Meteor.connect(url);
 
 		Meteor.ddp.on('connected', () => {
-			console.log('connected');
-
 			Meteor.call('public-settings/get', (err, data) => {
 				if (err) {
 					console.error(err);
@@ -79,7 +77,7 @@ const RocketChat = {
 				});
 				reduxStore.dispatch(actions.setAllSettings(settings));
 
-				if (cb) {
+				if (typeof cb === 'function') {
 					cb();
 				}
 			});
