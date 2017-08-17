@@ -65,7 +65,9 @@ class LoginView extends React.Component {
 	}
 	submit = () => {
 		const {	username, password, code } = this.state;
+		console.log({	username, password, code });
 		this.props.loginRequest({	username, password, code });
+		this.props.navigator.dismissModal();
 		//
 		//
 		// this.setState({
@@ -107,10 +109,10 @@ class LoginView extends React.Component {
 		}
 	}
 
+	// {this.props.login.isFetching && <Text> LOGANDO</Text>}
 	render() {
 		return (
 			<KeyboardView style={styles.view} keyboardVerticalOffset={64}>
-				{this.props.login.isFetching && <Text> LOGANDO</Text>}
 				<TextInput
 					style={styles.input}
 					onChangeText={username => this.setState({ username })}
@@ -140,11 +142,12 @@ class LoginView extends React.Component {
 }
 
 function mapStateToProps(state) {
+	// console.log(Object.keys(state));
 	return {
 		server: state.server,
 		Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
 		Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
-		login: state.default
+		login: state.login || state.default
 	};
 }
 

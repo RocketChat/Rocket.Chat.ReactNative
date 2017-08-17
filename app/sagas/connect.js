@@ -1,4 +1,4 @@
-import { take, put, call, fork } from 'redux-saga/effects';
+import { take, put, call } from 'redux-saga/effects';
 import { METEOR } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 
@@ -20,8 +20,4 @@ const watchConnect = function* watchConnect() {
 		}
 	}
 };
-
-const root = function* root() {
-	yield fork(watchConnect);
-};
-export default root;
+export default watchConnect;

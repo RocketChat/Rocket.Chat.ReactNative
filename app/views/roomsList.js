@@ -13,7 +13,8 @@ import * as meteor from '../actions/connect';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import RoomItem from '../components/RoomItem';
-import debounce from '../utils/debounce';
+import Banner from '../components/banner';
+// import debounce from '../utils/debounce';
 
 const styles = StyleSheet.create({
 	container: {
@@ -37,13 +38,6 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		fontSize: 18,
 		color: '#ccc'
-	},
-	bannerContainer: {
-		backgroundColor: '#ddd'
-	},
-	bannerText: {
-		textAlign: 'center',
-		margin: 5
 	},
 	actionButtonIcon: {
 		fontSize: 20,
@@ -254,11 +248,11 @@ export default class RoomsListView extends React.Component {
 		});
 	}
 
-	updateState = debounce(() => {
+	updateState = () => {
 		this.setState({
 			dataSource: ds.cloneWithRows(this.state.data)
 		});
-	}, 500);
+	};
 
 	_onPressItem = (id, item = {}) => {
 		const navigateToRoom = (room) => {
@@ -312,27 +306,6 @@ export default class RoomsListView extends React.Component {
 			screen: 'CreateChannel'
 		});
 	}
-
-	renderBanner = () => {
-		const status = Meteor.getData() && Meteor.getData().ddp && Meteor.getData().ddp.status;
-
-		if (status === 'disconnected') {
-			return (
-				<View style={[styles.bannerContainer, { backgroundColor: '#0d0' }]}>
-					<Text style={[styles.bannerText, { color: '#fff' }]}>Connecting...</Text>
-				</View>
-			);
-		}
-
-		if (status === 'connected' && Meteor._isLoggingIn) {
-			return (
-				<View style={[styles.bannerContainer, { backgroundColor: 'orange' }]}>
-					<Text style={[styles.bannerText, { color: '#a00' }]}>Authenticating...</Text>
-				</View>
-			);
-		}
-	}
-
 	renderItem = ({ item }) => (
 		<RoomsListItem
 			item={item}
@@ -393,7 +366,7 @@ export default class RoomsListView extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				{this.renderBanner()}
+				<Banner />
 				{this.renderList()}
 				{this.renderCreateButtons()}
 			</View>

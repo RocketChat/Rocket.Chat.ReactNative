@@ -1,5 +1,5 @@
 import React from 'react';
-import { take, put, call, fork } from 'redux-saga/effects';
+import { take, put, call, takeLast } from 'redux-saga/effects';
 import * as types from '../actions/actionsTypes';
 import { loginSuccess, loginFailure } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
@@ -23,8 +23,4 @@ const watchLoginRequest = function* watchLoginRequest() {
 		}
 	}
 };
-
-const root = function* root() {
-	yield fork(watchLoginRequest);
-};
-export default root;
+export default watchLoginRequest;

@@ -13,7 +13,7 @@ export function server(state = initialState.server, action) {
 
 export function settings(state = initialState.settings, action) {
 	if (action.type === types.SET_ALL_SETTINGS) {
-		return {
+		return { ...state,
 			...action.payload
 		};
 	}
