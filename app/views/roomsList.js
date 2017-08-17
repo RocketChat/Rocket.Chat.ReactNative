@@ -9,6 +9,7 @@ import Meteor from 'react-native-meteor';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+import * as meteor from '../actions/connect';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import RoomItem from '../components/RoomItem';
@@ -96,7 +97,8 @@ class RoomsListItem extends React.PureComponent {
 	Site_Url: state.settings.Site_Url
 }), dispatch => ({
 	actions: bindActionCreators(actions, dispatch),
-	login: () => dispatch(actions.login())
+	login: () => dispatch(actions.login()),
+	connect: () => dispatch(meteor.connectRequest())
 }))
 
 export default class RoomsListView extends React.Component {
@@ -231,6 +233,7 @@ export default class RoomsListView extends React.Component {
 			subtitle: props.server
 		});
 
+		this.props.connect();
 		RocketChat.getUserToken().then((token) => {
 			if (!token) {
 				Navigation.showModal({
@@ -238,7 +241,8 @@ export default class RoomsListView extends React.Component {
 					animationType: 'slide-up'
 				});
 			}
-			RocketChat.connect();
+
+			// this.props.actions.connect();
 
 			const data = realm.objects('subscriptions').filtered('_server.id = $0', props.server).sorted('_updatedAt', true);
 
