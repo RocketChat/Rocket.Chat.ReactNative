@@ -189,35 +189,36 @@ const RocketChat = {
 	},
 
 	loadMessagesForRoom(rid, end, cb) {
-		Meteor.call('loadHistory', rid, end, 20, (err, data) => {
-			if (err) {
-				console.error(err);
-				if (cb) {
-					cb({ end: true });
+		return new Promise((resolve, reject) => {
+			Meteor.call('loadHistory', rid, end, 20, (err, data) => {
+				if (err) {
+					if (cb) {
+						cb({ end: true });
+					}
+					return reject(err);
 				}
-				return;
-			}
-			if (data.messages.length) {
-				realm.write(() => {
-					data.messages.forEach((message) => {
-						message.temp = false;
-						message._server = { id: RocketChat.currentServer };
-						// write('messages', message);
-						realm.create('messages', message, true);
+				if (data.messages.length) {
+					realm.write(() => {
+						data.messages.forEach((message) => {
+							message.temp = false;
+							message._server = { id: RocketChat.currentServer };
+							// write('messages', message);
+							realm.create('messages', message, true);
+						});
 					});
-				});
-			}
-
-			if (cb) {
-				if (data.messages.length < 20) {
-					cb({ end: true });
-				} else {
-					cb({ end: false });
 				}
-			}
-		});
 
-		Meteor.subscribe('stream-room-messages', rid, false);
+				if (cb) {
+					if (data.messages.length < 20) {
+						cb({ end: true });
+					} else {
+						cb({ end: false });
+					}
+				}
+				resolve();
+				Meteor.subscribe('stream-room-messages', rid, false);
+			});
+		});
 	},
 
 	getMessage(rid, msg = {}) {

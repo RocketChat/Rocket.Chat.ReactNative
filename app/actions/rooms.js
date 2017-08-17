@@ -1,6 +1,6 @@
 import * as types from './actionsTypes';
 
-export function roomsSuccessRequest() {
+export function roomsRequest() {
 	return {
 		type: types.ROOMS.REQUEST
 	};
@@ -12,7 +12,7 @@ export function roomsSuccess() {
 	};
 }
 
-export function roomsSuccessFailure(err) {
+export function roomsFailure(err) {
 	return {
 		type: types.ROOMS.FAILURE,
 		err
