@@ -7,11 +7,11 @@ export function loginRequest(credentials) {
 	};
 }
 
-export function loginSuccess({ token, user }) {
+export function loginSuccess(/* { token, user } */) {
 	return {
-		type: types.LOGIN.SUCCESS,
-		token,
-		user
+		type: types.LOGIN.SUCCESS
+		// token,
+		// user
 	};
 }
 

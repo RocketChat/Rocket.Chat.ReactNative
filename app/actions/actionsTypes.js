@@ -11,6 +11,7 @@ function createRequestTypes(base, types = defaultTypes) {
 
 // Login events
 export const LOGIN = createRequestTypes('LOGIN');
+export const ROOMS = createRequestTypes('ROOMS');
 export const METEOR = createRequestTypes('METEOR_CONNECT');
 export const LOGOUT = 'LOGOUT'; // logout is always success
 
