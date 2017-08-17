@@ -84,7 +84,9 @@ class RoomsListItem extends React.PureComponent {
 			<TouchableOpacity key={item._id} onPress={() => this.props.onPress(item._id, item)}>
 				<RoomItem
 					id={item._id}
-					item={item}
+					type={item.t}
+					name={item.name}
+					unread={item.unread}
 					baseUrl={this.props.baseUrl}
 				/>
 			</TouchableOpacity>
