@@ -38,19 +38,16 @@ export default class MessageBox extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			text: ''
-		};
+		// this._textInput.setNativeProps({ text: '' });
 	}
 
 	submit(message) {
 		// console.log(this.state);
 		const text = message;
-		this.setState({ text: '' });
 		if (text.trim() === '') {
 			return;
 		}
+		this.component && this.component.setNativeProps({ text: '' });
 		this.props.onSubmit(text);
 	}
 
@@ -90,13 +87,14 @@ export default class MessageBox extends React.PureComponent {
 				<TextInput
 					ref={component => this.component = component}
 					style={styles.textBoxInput}
-					value={this.state.text}
-					onChangeText={text => this.setState({ text })}
+					// value={this.state.text}
+					// onChangeText={text => this.setState({ text })}
 					returnKeyType='send'
 					onSubmitEditing={event => this.submit(event.nativeEvent.text)}
 					blurOnSubmit={false}
 					placeholder='New message'
 					underlineColorAndroid='transparent'
+					defaultValue={''}
 				/>
 			</View>
 		);

@@ -13,7 +13,7 @@ function createRequestTypes(base, types = defaultTypes) {
 export const LOGIN = createRequestTypes('LOGIN');
 export const ROOMS = createRequestTypes('ROOMS');
 export const MESSAGES = createRequestTypes('MESSAGES');
-export const METEOR = createRequestTypes('METEOR_CONNECT');
+export const METEOR = createRequestTypes('METEOR_CONNECT', [...defaultTypes, 'DISCONNECT']);
 export const LOGOUT = 'LOGOUT'; // logout is always success
 
 export const INCREMENT = 'INCREMENT';
