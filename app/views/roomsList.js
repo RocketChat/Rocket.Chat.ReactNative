@@ -229,11 +229,11 @@ export default class RoomsListView extends React.Component {
 	}
 
 	setInitialData = (props = this.props) => {
+		// console.log(this.props);
+		this.props.connect();
 		props.navigator.setSubTitle({
 			subtitle: props.server
 		});
-
-		this.props.connect();
 		RocketChat.getUserToken().then((token) => {
 			if (!token) {
 				Navigation.showModal({
@@ -242,7 +242,6 @@ export default class RoomsListView extends React.Component {
 				});
 			}
 
-			// this.props.actions.connect();
 
 			const data = realm.objects('subscriptions').filtered('_server.id = $0', props.server).sorted('_updatedAt', true);
 

@@ -154,7 +154,7 @@ const messagesSchema = {
 	// }
 };
 
-Realm.clearTestState();
+// Realm.clearTestState();
 
 const realm = new Realm({
 	schema: [settingsSchema, serversSchema, subscriptionSchema, messagesSchema, usersSchema, attachment]
