@@ -1,37 +1,28 @@
 import * as types from '../actions/actionsTypes';
 
 const initialState = {
-	isAuthenticated: false,
 	isFetching: false,
-	token: '',
-	user: {},
-	errorMessage: ''
+	failure: false
 };
 
 export default function login(state = initialState, action) {
 	switch (action.type) {
-		case types.LOGIN.REQUEST:
+		case types.ROOMS.REQUEST:
 			return { ...state,
-				isFetching: true,
-				isAuthenticated: false
+				isFetching: true
 			};
-		case types.LOGIN.SUCCESS:
+		case types.ROOMS.SUCCESS:
 			return { ...state,
-				isFetching: false,
-				isAuthenticated: true,
-				// token: action.token,
-				failure: false
-				// user: action.user
+				isFetching: false
 			};
 		case types.LOGIN.FAILURE:
 			return { ...state,
 				isFetching: false,
-				isAuthenticated: false,
 				failure: true,
 				errorMessage: action.err
 			};
-		case types.LOGOUT:
-			return initialState;
+		// case types.LOGOUT:
+		// 	return initialState;
 		default:
 			return state;
 	}
