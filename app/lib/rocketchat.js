@@ -8,7 +8,8 @@ import reduxStore from '../lib/createStore';
 import settingsType from '../constants/settings';
 import realm from './realm';
 import * as actions from '../actions';
-
+import { disconnect, connectSuccess } from '../actions/connect';
+import { logout, loginSuccess } from '../actions/login';
 
 export { Accounts } from 'react-native-meteor';
 
@@ -50,69 +51,83 @@ const RocketChat = {
 	},
 
 	connect(cb) {
-		const url = `${ RocketChat.currentServer }/websocket`;
+		return new Promise((resolve, reject) => {
+			const url = `${ RocketChat.currentServer }/websocket`;
 
-		Meteor.connect(url);
-
-		Meteor.ddp.on('connected', () => {
-			Meteor.call('public-settings/get', (err, data) => {
-				if (err) {
-					console.error(err);
-				}
-
-				const settings = {};
-				realm.write(() => {
-					data.forEach((item) => {
-						const setting = {
-							_id: item._id
-						};
-						setting._server = { id: RocketChat.currentServer };
-						if (settingsType[item.type]) {
-							setting[settingsType[item.type]] = item.value;
-							realm.create('settings', setting, true);
-						}
-
-						settings[item._id] = item.value;
-					});
-				});
-				reduxStore.dispatch(actions.setAllSettings(settings));
-
-				if (typeof cb === 'function') {
-					cb();
-				}
+			Meteor.connect(url, { autoConnect: true, autoReconnect: true });
+			// , { autoConnect: false, autoReconnect: false }
+			Meteor.ddp.on('disconnected', () => {
+				console.log('disconnected');
+				reduxStore.dispatch(disconnect());
 			});
+			Meteor.ddp.on('connected', (err) => {
+				!err && reduxStore.dispatch(connectSuccess());
+				!err && resolve();
+			});
+			Meteor.ddp.on('loggin', () => {
+				reduxStore.dispatch(loginSuccess({}));
+			});
+			Meteor.ddp.on('connected', () => {
+				Meteor.call('public-settings/get', (err, data) => {
+					if (err) {
+						console.error(err);
+					}
 
-			Meteor.ddp.on('changed', (ddbMessage) => {
-				// console.log('changed', ddbMessage);
-				if (ddbMessage.collection === 'stream-room-messages') {
+					const settings = {};
 					realm.write(() => {
-						const message = ddbMessage.fields.args[0];
-						message.temp = false;
-						message._server = { id: RocketChat.currentServer };
-						// write('messages', message);
-						realm.create('messages', message, true);
-					});
-				}
+						data.forEach((item) => {
+							const setting = {
+								_id: item._id
+							};
+							setting._server = { id: RocketChat.currentServer };
+							if (settingsType[item.type]) {
+								setting[settingsType[item.type]] = item.value;
+								realm.create('settings', setting, true);
+							}
 
-				if (ddbMessage.collection === 'stream-notify-user') {
-					// console.log(ddbMessage);
-					realm.write(() => {
-						const data = ddbMessage.fields.args[1];
-						data._server = { id: RocketChat.currentServer };
-						realm.create('subscriptions', data, true);
+							settings[item._id] = item.value;
+						});
 					});
-				}
+					reduxStore.dispatch(actions.setAllSettings(settings));
+
+					if (typeof cb === 'function') {
+						cb();
+					}
+				});
+
+				Meteor.ddp.on('changed', (ddbMessage) => {
+					// console.log('changed', ddbMessage);
+					if (ddbMessage.collection === 'stream-room-messages') {
+						realm.write(() => {
+							const message = ddbMessage.fields.args[0];
+							message.temp = false;
+							message._server = { id: RocketChat.currentServer };
+							// write('messages', message);
+							realm.create('messages', message, true);
+						});
+					}
+
+					if (ddbMessage.collection === 'stream-notify-user') {
+						// console.log(ddbMessage);
+						realm.write(() => {
+							const data = ddbMessage.fields.args[1];
+							data._server = { id: RocketChat.currentServer };
+							realm.create('subscriptions', data, true);
+						});
+					}
+				});
 			});
 		});
 	},
 
-	async login(params, callback) {
-		await new Promise((resolve, reject) => {
+	login(params, callback) {
+		return new Promise((resolve, reject) => {
 			Meteor._startLoggingIn();
 			console.log('meteor login', params);
 			return Meteor.call('login', params, (err, result) => {
 				Meteor._endLoggingIn();
 				Meteor._handleLoginCallback(err, result);
+				console.log(result);
 				err ? reject(err) : resolve(result);
 				if (typeof callback === 'function') {
 					callback(err, result);

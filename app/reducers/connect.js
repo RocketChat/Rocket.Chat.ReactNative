@@ -26,6 +26,8 @@ export default function connect(state = initialState, action) {
 				failure: true,
 				errorMessage: action.err
 			};
+		case METEOR.DISCONNECT:
+			return initialState;
 		default:
 			return state;
 	}

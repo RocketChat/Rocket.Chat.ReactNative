@@ -57,10 +57,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-Meteor.Accounts.onLogin(() => {
-	console.log('onLogin');
-});
-
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 class RoomsListItem extends React.PureComponent {
 	static propTypes = {
