@@ -363,7 +363,37 @@ const RocketChat = {
 			});
 		}
 	},
-
+	getRooms() {
+		// Meteor.Accounts.onLogin(() => {
+		return Promise.all([call('subscriptions/get'), call('rooms/get')]).then(([subscriptions, rooms]) => {
+			subscriptions = subscriptions.sort((s1, s2) => (s1.rid > s2.rid ? 1 : -1));
+			rooms = rooms.sort((s1, s2) => (s1._id > s2._id ? 1 : -1));
+			const data = subscriptions.map((subscription, index) => {
+				subscription._updatedAt = rooms[index]._updatedAt;
+				return subscription;
+			});
+			Meteor.subscribe('stream-notify-user', `${ Meteor.userId() }/subscriptions-changed`, false);
+			// Meteor.subscribe('stream-notify-user', `${ Meteor.userId() }/rooms-changed`, false);
+			realm.write(() => {
+				data.forEach((subscription) => {
+					// const subscription = {
+					// 	_id: item._id
+					// };
+					// if (typeof item.value === 'string') {
+					// 	subscription.value = item.value;
+					// }
+					subscription._server = { id: RocketChat.currentServer };
+					// write('subscriptions', subscription);
+					realm.create('subscriptions', subscription, true);
+				});
+			});
+			return data;
+		}).then((data) => {
+			console.log('subscriptions done.');
+			return data;
+		});
+		// });
+	},
 	logout() {
 		return AsyncStorage.clear();
 	}
@@ -374,34 +404,5 @@ export default RocketChat;
 if (RocketChat.currentServer) {
 	reduxStore.dispatch(actions.setCurrentServer(RocketChat.currentServer));
 }
-
-Meteor.Accounts.onLogin(() => {
-	Promise.all([call('subscriptions/get'), call('rooms/get')]).then(([subscriptions, rooms]) => {
-		subscriptions = subscriptions.sort((s1, s2) => (s1.rid > s2.rid ? 1 : -1));
-		rooms = rooms.sort((s1, s2) => (s1._id > s2._id ? 1 : -1));
-		const data = subscriptions.map((subscription, index) => {
-			subscription._updatedAt = rooms[index]._updatedAt;
-			return subscription;
-		});
-		Meteor.subscribe('stream-notify-user', `${ Meteor.userId() }/subscriptions-changed`, false);
-		// Meteor.subscribe('stream-notify-user', `${ Meteor.userId() }/rooms-changed`, false);
-		realm.write(() => {
-			data.forEach((subscription) => {
-			// const subscription = {
-			// 	_id: item._id
-			// };
-			// if (typeof item.value === 'string') {
-			// 	subscription.value = item.value;
-			// }
-				subscription._server = { id: RocketChat.currentServer };
-				// write('subscriptions', subscription);
-				realm.create('subscriptions', subscription, true);
-			});
-		});
-	}).then(() => {
-		console.log('subscriptions done.');
-	});
-});
-
 // Use for logout
 // AsyncStorage.clear();

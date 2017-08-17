@@ -5,7 +5,6 @@ import { loginSuccess, loginFailure } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 
 function loginCall(args) {
-	console.log(args);
 	return RocketChat.loginWithPassword(args);
 }
 
@@ -19,6 +18,7 @@ const watchLoginRequest = function* watchLoginRequest() {
 			yield put(loginSuccess(response));
 			console.log('\n\n[LOGIN SUCCESS]\n\n');
 		} catch (err) {
+			console.log('\n\n[LOGIN FAILURE]\n\n', err);
 			yield put(loginFailure(err.status));
 		}
 	}
