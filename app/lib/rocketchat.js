@@ -123,6 +123,7 @@ const RocketChat = {
 	},
 
 	loginWithPassword({ username, password, code }, callback) {
+		console.log('AQQQQQ');
 		let params = {};
 		const state = reduxStore.getState();
 

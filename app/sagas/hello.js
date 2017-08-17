@@ -1,7 +1,4 @@
 import { take, fork } from 'redux-saga/effects';
-import 'babel-polyfill';
-import 'regenerator-runtime/runtime';
-
 
 const foreverAlone = function* foreverAlone() {
 	yield take('FOI');

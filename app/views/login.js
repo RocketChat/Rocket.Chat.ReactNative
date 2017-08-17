@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import { Text, TextInput, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
-import * as actions from '../actions';
-import RocketChat from '../lib/rocketchat';
+// import * as actions from '../actions';
+import * as loginActions from '../actions/login';
 import KeyboardView from '../components/KeyboardView';
 
 const styles = StyleSheet.create({
@@ -33,17 +32,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(state => ({
-	server: state.server,
-	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
-	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder
-}), dispatch => ({
-	actions: bindActionCreators(actions, dispatch)
-}))
-
-export default class LoginView extends React.Component {
+class LoginView extends React.Component {
 	static propTypes = {
 		navigator: PropTypes.object.isRequired,
+		loginRequest: PropTypes.func.isRequired,
 		server: PropTypes.string.isRequired,
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
 		Accounts_PasswordPlaceholder: PropTypes.string
@@ -71,32 +63,31 @@ export default class LoginView extends React.Component {
 			subtitle: nextProps.server
 		});
 	}
-
 	submit = () => {
-		this.setState({
-			error: undefined
-		});
-
-		const credentials = {
-			username: this.state.username,
-			password: this.state.password,
-			code: this.state.code
-		};
-
-		RocketChat.loginWithPassword(credentials, (error) => {
-			if (error) {
-				if (error.error === 'totp-required') {
-					this.setState({ totp: true });
-					this.codeInput.focus();
-				} else {
-					this.setState({
-						error: error.reason
-					});
-				}
-			} else {
-				this.props.navigator.dismissModal();
-			}
-		});
+		const {	username, password, code } = this.state;
+		this.props.loginRequest({	username, password, code });
+		console.log(this.props.loginRequest.toString());
+		//
+		//
+		// this.setState({
+		// 	error: undefined
+		// });
+		//
+		//
+		// RocketChat.loginWithPassword(credentials, (error) => {
+		// 	if (error) {
+		// 		if (error.error === 'totp-required') {
+		// 			this.setState({ totp: true });
+		// 			this.codeInput.focus();
+		// 		} else {
+		// 			this.setState({
+		// 				error: error.reason
+		// 			});
+		// 		}
+		// 	} else {
+		// 		this.props.navigator.dismissModal();
+		// 	}
+		// });
 	}
 
 	renderTOTP = () => {
@@ -120,6 +111,7 @@ export default class LoginView extends React.Component {
 	render() {
 		return (
 			<KeyboardView style={styles.view} keyboardVerticalOffset={64}>
+				{this.props.login.isFetching && <Text> INDO</Text>}
 				<TextInput
 					style={styles.input}
 					onChangeText={username => this.setState({ username })}
@@ -147,3 +139,18 @@ export default class LoginView extends React.Component {
 		);
 	}
 }
+
+function mapStateToProps(state) {
+	return {
+		server: state.server,
+		Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
+		Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
+		login: state.default
+	};
+}
+
+function mapDispatchToProps(dispatch) {
+	return bindActionCreators(loginActions, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginView);

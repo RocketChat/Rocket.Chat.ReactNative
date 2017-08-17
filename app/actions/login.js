@@ -1,10 +1,9 @@
 import * as types from './actionsTypes';
 
-export function loginRequest(email, password) {
+export function loginRequest(credentials) {
 	return {
 		type: types.LOGIN.REQUEST,
-		email,
-		password
+		credentials
 	};
 }
 
