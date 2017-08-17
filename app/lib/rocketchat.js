@@ -106,10 +106,11 @@ const RocketChat = {
 		});
 	},
 
-	login(params, callback) {
-		return new Promise((resolve, reject) => {
+	async login(params, callback) {
+		await new Promise((resolve, reject) => {
 			Meteor._startLoggingIn();
-			Meteor.call('login', params, (err, result) => {
+			console.log('meteor login', params);
+			return Meteor.call('login', params, (err, result) => {
 				Meteor._endLoggingIn();
 				Meteor._handleLoginCallback(err, result);
 				err ? reject(err) : resolve(result);
@@ -121,7 +122,6 @@ const RocketChat = {
 	},
 
 	loginWithPassword({ username, password, code }, callback) {
-		console.log('AQQQQQ');
 		let params = {};
 		const state = reduxStore.getState();
 
@@ -146,10 +146,8 @@ const RocketChat = {
 				}
 			};
 
-			if (typeof username === 'string') {
-				if (username.indexOf('@') !== -1) {
-					params.user = { email: username };
-				}
+			if (typeof username === 'string' && username.indexOf('@') !== -1) {
+				params.user = { email: username };
 			}
 		}
 
