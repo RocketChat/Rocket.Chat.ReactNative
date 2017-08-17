@@ -4,7 +4,7 @@ import 'regenerator-runtime/runtime';
 import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import logger from 'redux-logger';
-import rootReducer from '../reducers/rootReducer';
+import reducers from '../reducers';
 import sagas from '../sagas';
 
 const sagaMiddleware = createSagaMiddleware();
@@ -19,7 +19,7 @@ if (__DEV__) {
 }
 
 export default createStore(
-	rootReducer,
+	reducers,
 	applyMiddleware(sagaMiddleware)
 );
 sagaMiddleware.run(sagas);

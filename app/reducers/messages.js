@@ -5,17 +5,17 @@ const initialState = {
 	failure: false
 };
 
-export default function login(state = initialState, action) {
+export default function messages(state = initialState, action) {
 	switch (action.type) {
-		case types.ROOMS.REQUEST:
+		case types.MESSAGES.REQUEST:
 			return { ...state,
 				isFetching: true
 			};
-		case types.ROOMS.SUCCESS:
+		case types.MESSAGES.SUCCESS:
 			return { ...state,
 				isFetching: false
 			};
-		case types.ROOMS.FAILURE:
+		case types.LOGIN.FAILURE:
 			return { ...state,
 				isFetching: false,
 				failure: true,

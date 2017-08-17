@@ -25,7 +25,4 @@ const watchRoomsRequest = function* watchRoomsRequest() {
 	}
 };
 
-const root = function* root() {
-	yield fork(watchRoomsRequest);
-};
-export default root;
+export default watchRoomsRequest;
