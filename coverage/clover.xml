@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1503070854493" clover="3.2.0">
+  <project timestamp="1503070854494" name="All files">
+    <metrics statements="26" coveredstatements="20" conditionals="13" coveredconditionals="5" methods="4" coveredmethods="4" elements="43" coveredelements="29" complexity="0" loc="26" ncloc="26" packages="3" files="3" classes="3">
+      <package name="components">
+        <metrics statements="17" coveredstatements="11" conditionals="10" coveredconditionals="4" methods="3" coveredmethods="3"/>
+        <file name="RoomItem.js" path="/Users/rodrigonascimento/Projects/Rocket.Chat.ReactNative/app/components/RoomItem.js">
+          <metrics statements="17" coveredstatements="11" conditionals="10" coveredconditionals="4" methods="3" coveredmethods="3"/>
+          <line num="9" count="1" type="stmt"/>
+          <line num="69" count="1" type="stmt"/>
+          <line num="71" count="1" type="stmt"/>
+          <line num="78" count="1" type="cond" truecount="1" falsecount="1"/>
+          <line num="79" count="0" type="stmt"/>
+          <line num="82" count="1" type="cond" truecount="1" falsecount="1"/>
+          <line num="83" count="1" type="stmt"/>
+          <line num="84" count="1" type="stmt"/>
+          <line num="92" count="0" type="stmt"/>
+          <line num="94" count="0" type="stmt"/>
+          <line num="102" count="1" type="cond" truecount="2" falsecount="2"/>
+          <line num="103" count="1" type="stmt"/>
+          <line num="106" count="0" type="cond" truecount="0" falsecount="2"/>
+          <line num="107" count="0" type="stmt"/>
+          <line num="110" count="0" type="stmt"/>
+          <line num="118" count="1" type="stmt"/>
+          <line num="120" count="1" type="stmt"/>
+        </file>
+      </package>
+      <package name="constants">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <file name="colors.js" path="/Users/rodrigonascimento/Projects/Rocket.Chat.ReactNative/app/constants/colors.js">
+          <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+          <line num="1" count="1" type="stmt"/>
+          <line num="2" count="1" type="stmt"/>
+        </file>
+      </package>
+      <package name="utils">
+        <metrics statements="7" coveredstatements="7" conditionals="3" coveredconditionals="1" methods="1" coveredmethods="1"/>
+        <file name="avatarInitialsAndColor.js" path="/Users/rodrigonascimento/Projects/Rocket.Chat.ReactNative/app/utils/avatarInitialsAndColor.js">
+          <metrics statements="7" coveredstatements="7" conditionals="3" coveredconditionals="1" methods="1" coveredmethods="1"/>
+          <line num="4" count="1" type="stmt"/>
+          <line num="6" count="1" type="stmt"/>
+          <line num="7" count="1" type="stmt"/>
+          <line num="9" count="1" type="stmt"/>
+          <line num="11" count="1" type="cond" truecount="1" falsecount="1"/>
+          <line num="12" count="1" type="stmt"/>
+          <line num="14" count="1" type="stmt"/>
+        </file>
+      </package>
+    </metrics>
+  </project>
+</coverage>
