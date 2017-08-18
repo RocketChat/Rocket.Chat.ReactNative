@@ -6,6 +6,7 @@
 [![codecov](https://codecov.io/gh/RocketChat/Rocket.Chat.ReactNative/branch/master/graph/badge.svg)](https://codecov.io/gh/RocketChat/Rocket.Chat.ReactNative)
 [![CodeFactor](https://www.codefactor.io/repository/github/rocketchat/rocket.chat.reactnative/badge)](https://www.codefactor.io/repository/github/rocketchat/rocket.chat.reactnative)
 [![Known Vulnerabilities](https://snyk.io/test/github/rocketchat/rocket.chat.reactnative/badge.svg)](https://snyk.io/test/github/rocketchat/rocket.chat.reactnative)
+[![BCH compliance](https://bettercodehub.com/edge/badge/RocketChat/Rocket.Chat.ReactNative?branch=master)](https://bettercodehub.com/)
 
 **Supported Server Versions:** 0.58.0+ (We are working to support earlier versions)
 
