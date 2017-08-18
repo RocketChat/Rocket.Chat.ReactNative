@@ -63,6 +63,8 @@
     "react-dom": "16.0.0-alpha.12"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true
   }
 }
