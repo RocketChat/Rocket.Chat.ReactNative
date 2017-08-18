@@ -9,7 +9,7 @@ import settingsType from '../constants/settings';
 import realm from './realm';
 import * as actions from '../actions';
 import { disconnect, connectSuccess } from '../actions/connect';
-import { logout, loginSuccess } from '../actions/login';
+import { loginSuccess } from '../actions/login';
 
 export { Accounts } from 'react-native-meteor';
 
@@ -29,18 +29,6 @@ const RocketChat = {
 		});
 	},
 
-	get currentServer() {
-		const current = realm.objects('servers').filtered('current = true').slice(0, 1)[0];
-		return current && current.id;
-	},
-
-	set currentServer(server) {
-		realm.write(() => {
-			realm.objects('servers').filtered('current = true').forEach(item => (item.current = false));
-			realm.create('servers', { id: server, current: true }, true);
-		});
-	},
-
 	async getUserToken() {
 		const TOKEN_KEY = 'reactnativemeteor_usertoken';
 		try {
@@ -50,23 +38,20 @@ const RocketChat = {
 		}
 	},
 
-	connect(cb) {
-		return new Promise((resolve, reject) => {
-			const url = `${ RocketChat.currentServer }/websocket`;
+	connect(_url) {
+		return new Promise((resolve) => {
+			const url = `${ _url }/websocket`;
 
 			Meteor.connect(url, { autoConnect: true, autoReconnect: true });
 			// , { autoConnect: false, autoReconnect: false }
 			Meteor.ddp.on('disconnected', () => {
-				console.log('disconnected');
 				reduxStore.dispatch(disconnect());
 			});
-			Meteor.ddp.on('connected', (err) => {
-				console.log('connected');
+			Meteor.ddp.on('connected', () => {
 				reduxStore.dispatch(connectSuccess());
 				resolve();
 			});
 			Meteor.ddp.on('loggin', () => {
-				console.log('Meteor.ddp.on(\'loggin\',');
 				reduxStore.dispatch(loginSuccess({}));
 			});
 			Meteor.ddp.on('connected', () => {
@@ -81,7 +66,7 @@ const RocketChat = {
 							const setting = {
 								_id: item._id
 							};
-							setting._server = { id: RocketChat.currentServer };
+							setting._server = { id: reduxStore.getState().server };
 							if (settingsType[item.type]) {
 								setting[settingsType[item.type]] = item.value;
 								realm.create('settings', setting, true);
@@ -91,10 +76,6 @@ const RocketChat = {
 						});
 					});
 					reduxStore.dispatch(actions.setAllSettings(settings));
-
-					if (typeof cb === 'function') {
-						cb();
-					}
 				});
 
 				Meteor.ddp.on('changed', (ddbMessage) => {
@@ -103,7 +84,7 @@ const RocketChat = {
 						realm.write(() => {
 							const message = ddbMessage.fields.args[0];
 							message.temp = false;
-							message._server = { id: RocketChat.currentServer };
+							message._server = { id: reduxStore.getState().server };
 							// write('messages', message);
 							realm.create('messages', message, true);
 						});
@@ -113,24 +94,27 @@ const RocketChat = {
 						// console.log(ddbMessage);
 						realm.write(() => {
 							const data = ddbMessage.fields.args[1];
-							data._server = { id: RocketChat.currentServer };
+							data._server = { id: reduxStore.getState().server };
 							realm.create('subscriptions', data, true);
 						});
 					}
 				});
 			});
-		});
+		})
+			.catch(e => console.error(e));
 	},
 
 	login(params, callback) {
 		return new Promise((resolve, reject) => {
 			Meteor._startLoggingIn();
-			console.log('meteor login', params);
 			return Meteor.call('login', params, (err, result) => {
 				Meteor._endLoggingIn();
 				Meteor._handleLoginCallback(err, result);
-				console.log(result);
-				err ? reject(err) : resolve(result);
+				if (err) {
+					reject(err);
+				} else {
+					resolve(result);
+				}
 				if (typeof callback === 'function') {
 					callback(err, result);
 				}
@@ -194,7 +178,7 @@ const RocketChat = {
 						// if (typeof item.value === 'string') {
 						// 	subscription.value = item.value;
 						// }
-						subscription._server = { id: RocketChat.currentServer };
+						subscription._server = { id: reduxStore.getState().server };
 						// write('subscriptions', subscription);
 						realm.create('subscriptions', subscription, true);
 					});
@@ -218,7 +202,7 @@ const RocketChat = {
 					realm.write(() => {
 						data.messages.forEach((message) => {
 							message.temp = false;
-							message._server = { id: RocketChat.currentServer };
+							message._server = { id: reduxStore.getState().server };
 							// write('messages', message);
 							realm.create('messages', message, true);
 						});
@@ -240,7 +224,6 @@ const RocketChat = {
 
 	getMessage(rid, msg = {}) {
 		const _id = Random.id();
-		const user = Meteor.user();
 		const message = {
 			_id,
 			rid,
@@ -248,10 +231,10 @@ const RocketChat = {
 			ts: new Date(),
 			_updatedAt: new Date(),
 			temp: true,
-			_server: { id: RocketChat.currentServer },
+			_server: { id: reduxStore.getState().server },
 			u: {
-				_id: user._id,
-				username: user.username
+				_id: reduxStore.getState()._id,
+				username: reduxStore.getState()._id
 			}
 		};
 
@@ -400,16 +383,13 @@ const RocketChat = {
 					// if (typeof item.value === 'string') {
 					// 	subscription.value = item.value;
 					// }
-					subscription._server = { id: RocketChat.currentServer };
+					subscription._server = { id: reduxStore.getState().server };
 					// write('subscriptions', subscription);
 					realm.create('subscriptions', subscription, true);
 				});
 			});
 			return data;
-		}).then((data) => {
-			console.log('subscriptions done.');
-			return data;
-		});
+		}).then(data => data);
 		// });
 	},
 	logout() {
@@ -418,9 +398,3 @@ const RocketChat = {
 };
 
 export default RocketChat;
-
-if (RocketChat.currentServer) {
-	reduxStore.dispatch(actions.setCurrentServer(RocketChat.currentServer));
-}
-// Use for logout
-// AsyncStorage.clear();

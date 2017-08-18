@@ -1,20 +1,16 @@
 import ActionButton from 'react-native-action-button';
-import { Navigation } from 'react-native-navigation';
+// import { Navigation } from 'react-native-navigation';
 import { ListView } from 'realm/react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, StyleSheet, TouchableOpacity, Platform, TextInput } from 'react-native';
-import Meteor from 'react-native-meteor';
-import { bindActionCreators } from 'redux';
+import { View, StyleSheet, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
-import * as meteor from '../actions/connect';
+import * as server from '../actions/connect';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import RoomItem from '../components/RoomItem';
 import Banner from '../components/banner';
-// import debounce from '../utils/debounce';
 
 const styles = StyleSheet.create({
 	container: {
@@ -58,106 +54,37 @@ const styles = StyleSheet.create({
 });
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-class RoomsListItem extends React.PureComponent {
-	static propTypes = {
-		item: PropTypes.object.isRequired,
-		onPress: PropTypes.func.isRequired,
-		baseUrl: PropTypes.string
-	}
-	_onPress = (...args) => {
-		this.props.onPress(...args);
-	};
-
-	render() {
-		const { item } = this.props;
-		return (
-			<TouchableOpacity key={item._id} onPress={() => this.props.onPress(item._id, item)}>
-				<RoomItem
-					id={item._id}
-					item={item}
-					baseUrl={this.props.baseUrl}
-				/>
-			</TouchableOpacity>
-		);
-	}
-}
 
 @connect(state => ({
 	server: state.server,
-	Site_Url: state.settings.Site_Url
+	login: state.login,
+	Site_Url: state.settings.Site_Url,
+	canShowList: state.login.token.length || state.login.user.token
 }), dispatch => ({
-	actions: bindActionCreators(actions, dispatch),
 	login: () => dispatch(actions.login()),
-	connect: () => dispatch(meteor.connectRequest())
+	connect: () => dispatch(server.connectRequest())
 }))
 
 export default class RoomsListView extends React.Component {
 	static propTypes = {
-		navigator: PropTypes.object.isRequired,
-		server: PropTypes.string,
-		Site_Url: PropTypes.string
+		// navigator: PropTypes.object.isRequired,
+		server: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
-
-		// this.data = realm.objects('subscriptions').filtered('_server.id = $0', this.props.server);
+		this.data = realm.objects('subscriptions').filtered('_server.id = $0', this.props.server);
 		this.state = {
-			dataSource: ds.cloneWithRows([]),
+			dataSource: ds.cloneWithRows(this.data),
 			searching: false,
 			searchDataSource: [],
-			searchText: ''
+			searchText: '',
+			login: false
 		};
-
-		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
-	}
-
-	componentWillMount() {
-		const button = Platform.OS === 'ios' ? 'leftButtons' : 'rightButtons';
-		this.props.navigator.setButtons({
-			[button]: [{
-				id: 'servers',
-				title: 'Servers'
-			}],
-			animated: true
-		});
-
-		if (this.props.server) {
-			this.setInitialData();
-		} else {
-			Navigation.showModal({
-				screen: 'ListServer',
-				passProps: {},
-				navigatorStyle: {},
-				navigatorButtons: {},
-				animationType: 'none'
-			});
-		}
-	}
-
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.server !== this.props.server) {
-			this.setInitialData(nextProps);
-		}
 	}
 
 	componentWillUnmount() {
-		this.state.data.removeListener(this.updateState);
-	}
-
-	onNavigatorEvent = (event) => {
-		if (event.type === 'NavBarButtonPress') {
-			if (event.id === 'servers') {
-				Navigation.showModal({
-					screen: 'ListServer',
-					passProps: {},
-					navigatorStyle: {},
-					navigatorButtons: {},
-					animationType: 'slide-up'
-					// animationType: 'none'
-				});
-			}
-		}
+		this.data.removeListener(this.updateState);
 	}
 
 	onSearchChangeText = (text) => {
@@ -168,11 +95,11 @@ export default class RoomsListView extends React.Component {
 		});
 		if (searchText === '') {
 			return this.setState({
-				dataSource: ds.cloneWithRows(this.state.data)
+				dataSource: ds.cloneWithRows(this.data)
 			});
 		}
 
-		const data = this.state.data.filtered('name CONTAINS[c] $0', searchText).slice();
+		const data = this.data.filtered('name CONTAINS[c] $0', searchText).slice();
 
 		const usernames = [];
 		const dataSource = data.map((sub) => {
@@ -218,31 +145,6 @@ export default class RoomsListView extends React.Component {
 		});
 	}
 
-	setInitialData = (props = this.props) => {
-		// console.log(this.props);
-		this.props.connect();
-		props.navigator.setSubTitle({
-			subtitle: props.server
-		});
-		RocketChat.getUserToken().then((token) => {
-			if (!token) {
-				Navigation.showModal({
-					screen: 'Login',
-					animationType: 'slide-up'
-				});
-			}
-
-
-			const data = realm.objects('subscriptions').filtered('_server.id = $0', props.server).sorted('_updatedAt', true);
-
-			this.setState({
-				dataSource: ds.cloneWithRows(data),
-				data
-			});
-
-			data.addListener(this.updateState);
-		});
-	}
 
 	updateState = () => {
 		this.setState({
@@ -252,10 +154,10 @@ export default class RoomsListView extends React.Component {
 
 	_onPressItem = (id, item = {}) => {
 		const navigateToRoom = (room) => {
-			this.props.navigator.push({
-				screen: 'Room',
-				passProps: room
-			});
+			// this.props.navigator.push({
+			// 	screen: 'Room',
+			// 	passProps: room
+			// });
 		};
 
 		const clearSearch = () => {
@@ -297,26 +199,10 @@ export default class RoomsListView extends React.Component {
 		clearSearch();
 	}
 
-	_createChannel = () => {
-		this.props.navigator.showModal({
-			screen: 'CreateChannel'
-		});
-	}
-	renderItem = ({ item }) => (
-		<RoomsListItem
-			item={item}
-			onPress={() => this._onPressItem(item._id, item)}
-			baseUrl={this.props.Site_Url}
-		/>
-	);
-
-	renderSeparator = () => (
-		<View style={styles.separator} />
-	);
-
 	renderSearchBar = () => (
 		<View style={styles.searchBoxView}>
 			<TextInput
+				underlineColorAndroid='transparent'
 				style={styles.searchBox}
 				value={this.state.searchText}
 				onChangeText={this.onSearchChangeText}
@@ -328,44 +214,35 @@ export default class RoomsListView extends React.Component {
 		</View>
 	);
 
-	// if (!this.state.searching && !this.state.dataSource.length) {
-	// 	return (
-	// 		<View style={styles.emptyView}>
-	// 			<Text style={styles.emptyText}>No rooms</Text>
-	// 		</View>
-	// 	);
-	// }
+	renderItem = item => (
+		<RoomItem
+			id={item._id}
+			item={item}
+			onPress={() => this._onPressItem(item._id, item)}
+		/>
+	)
 	renderList = () => (
-		// data={this.state.searching ? this.state.searchDataSource : this.state.dataSource}
-		// keyExtractor={item => item._id}
-		// ItemSeparatorComponent={this.renderSeparator}
-		// renderItem={this.renderItem}
 		<ListView
 			dataSource={this.state.dataSource}
 			style={styles.list}
-			renderRow={item => this.renderItem({ item })}
+			renderRow={this.renderItem}
 			renderHeader={this.renderSearchBar}
 			contentOffset={{ x: 0, y: 20 }}
 			enableEmptySections
 			keyboardShouldPersistTaps='always'
 		/>
 	)
-
-	renderCreateButtons() {
-		return (
-			<ActionButton buttonColor='rgba(231,76,60,1)'>
-				<ActionButton.Item buttonColor='#9b59b6' title='Create Channel' onPress={() => { this.props.login(); }} >
-					<Icon name='md-chatbubbles' style={styles.actionButtonIcon} />
-				</ActionButton.Item>
-			</ActionButton>);
-	}
-	render() {
-		return (
-			<View style={styles.container}>
-				<Banner />
-				{this.renderList()}
-				{this.renderCreateButtons()}
-			</View>
-		);
+	renderCreateButtons = () => (
+		<ActionButton buttonColor='rgba(231,76,60,1)' />);
+	render= () => {
+		if (this.props.canShowList) {
+			return (
+				<View style={styles.container}>
+					<Banner />
+					{this.renderList()}
+					{this.renderCreateButtons()}
+				</View>);
+		}
+		return null;
 	}
 }

@@ -1,14 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Navigation } from 'react-native-navigation';
-import { bindActionCreators } from 'redux';
 import Zeroconf from 'react-native-zeroconf';
 import { View, Text, SectionList, Platform, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-
-import * as actions from '../actions';
+import { setServer } from '../actions/server';
 import realm from '../lib/realm';
-import RocketChat from '../lib/rocketchat';
 
 const styles = StyleSheet.create({
 	view: {
@@ -56,7 +53,7 @@ const zeroconf = new Zeroconf();
 @connect(state => ({
 	server: state.server
 }), dispatch => ({
-	actions: bindActionCreators(actions, dispatch)
+	selectServer: server => dispatch(setServer(server))
 }))
 export default class ListServerView extends React.Component {
 	static propTypes = {
@@ -131,14 +128,7 @@ export default class ListServerView extends React.Component {
 	}
 
 	onPressItem = (item) => {
-		RocketChat.logout();
-		Navigation.dismissModal({
-			animationType: 'slide-down'
-		});
-
-		this.setState({
-			server: item.id
-		});
+		this.props.selectServer(item.id);
 	}
 
 	getState = () => {
@@ -177,7 +167,7 @@ export default class ListServerView extends React.Component {
 
 	renderItem = ({ item }) => (
 		<Text
-			style={styles.listItem}
+			style={[styles.listItem, this.props.server === item.id ? { backgroundColor: 'red' } : {}]}
 			onPress={() => { this.onPressItem(item); }}
 		>
 			{item.id}

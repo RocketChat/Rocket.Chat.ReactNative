@@ -68,27 +68,6 @@ class LoginView extends React.Component {
 		console.log({	username, password, code });
 		this.props.loginRequest({	username, password, code });
 		this.props.navigator.dismissModal();
-		//
-		//
-		// this.setState({
-		// 	error: undefined
-		// });
-		//
-		//
-		// RocketChat.loginWithPassword(credentials, (error) => {
-		// 	if (error) {
-		// 		if (error.error === 'totp-required') {
-		// 			this.setState({ totp: true });
-		// 			this.codeInput.focus();
-		// 		} else {
-		// 			this.setState({
-		// 				error: error.reason
-		// 			});
-		// 		}
-		// 	} else {
-		// 		this.props.navigator.dismissModal();
-		// 	}
-		// });
 	}
 
 	renderTOTP = () => {
@@ -147,7 +126,7 @@ function mapStateToProps(state) {
 		server: state.server,
 		Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
 		Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
-		login: state.login || state.default
+		login: state.login
 	};
 }
 

@@ -20,8 +20,8 @@ Navigation.registerComponent('CreateChannel', () => CreateChannel, store, Provid
 
 Navigation.startSingleScreenApp({
 	screen: {
-		screen: 'Rooms',
-		title: 'Channels'
+		screen: 'ListServer',
+		title: 'ListServer'
 	},
 	animationType: 'none'
 });

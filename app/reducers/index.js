@@ -3,10 +3,9 @@ import * as reducers from './reducers';
 import login from './login';
 import meteor from './connect';
 import messages from './messages';
+import server from './server';
 
-console.log(Object.keys({
-	...reducers, login, meteor, messages
-}));
+
 export default combineReducers({
-	...reducers, login, meteor, messages
+	...reducers, login, meteor, messages, server
 });

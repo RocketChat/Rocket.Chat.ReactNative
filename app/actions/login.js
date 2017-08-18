@@ -10,7 +10,8 @@ export function loginRequest(credentials) {
 export function loginSuccess(user) {
 	return {
 		type: types.LOGIN.SUCCESS,
-		user
+		user,
+		token: user.token
 	};
 }
 
@@ -21,8 +22,14 @@ export function loginFailure(err) {
 	};
 }
 
+export function setToken(token) {
+	return {
+		type: types.LOGIN.SET_TOKEN,
+		token
+	};
+}
+
 export function logout() {
-	console.log('LOGOUT');
 	return {
 		type: types.LOGOUT
 	};

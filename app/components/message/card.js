@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Meteor from 'react-native-meteor';
+import { connect } from 'react-redux';
 import { CachedImage } from 'react-native-img-cache';
 import { Text, TouchableOpacity } from 'react-native';
 import { Navigation } from 'react-native-navigation';
@@ -24,6 +25,11 @@ const CustomButton = ({ text }) => (
 );
 
 Navigation.registerComponent('CustomButton', () => CustomButton);
+@connect(state => ({
+	base: state.settings.Site_Url,
+	canShowList: state.login.token.length || state.login.user.token
+}))
+
 export default class Cards extends React.PureComponent {
 	static propTypes = {
 		data: PropTypes.object.isRequired
@@ -33,7 +39,7 @@ export default class Cards extends React.PureComponent {
 		const user = Meteor.user();
 		this.state = {};
 		RocketChat.getUserToken().then((token) => {
-			this.setState({ img: `${ RocketChat.currentServer }${ this.props.data.image_url }?rc_uid=${ user._id }&rc_token=${ token }` });
+			this.setState({ img: `${ this.props.base }${ this.props.data.image_url }?rc_uid=${ user._id }&rc_token=${ token }` });
 		});
 	}
 	_onPressButton() {
