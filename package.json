@@ -1,11 +1,12 @@
 {
-  "name": "rocket-chat-rn",
+  "name": "rocket-chat-reactnative",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
     "lint": "eslint .",
+    "ci": "eslint .",
     "ios": "react-native run-ios",
     "log-android": "react-native log-android",
     "android": "react-native run-android",
