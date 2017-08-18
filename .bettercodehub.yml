@@ -1,0 +1,14 @@
+component_depth: 2
+languages:
+- javascript
+
+- name: javascript
+  production:
+    exclude:
+      - .*\.test\.js
+      - .*\/__test__\/.*\.js
+      - .*\/__mock__\/.*\.js
+  test:
+    include:
+      - .*\.test\.js
+      - .*\/__test__\/.*\.js
