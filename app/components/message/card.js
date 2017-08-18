@@ -23,7 +23,12 @@ const CustomButton = ({ text }) => (
 	</TouchableOpacity>
 );
 
+CustomButton.propTypes = {
+	text: PropTypes.string
+};
+
 Navigation.registerComponent('CustomButton', () => CustomButton);
+
 export default class Cards extends React.PureComponent {
 	static propTypes = {
 		data: PropTypes.object.isRequired
