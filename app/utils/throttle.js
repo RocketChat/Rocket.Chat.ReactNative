@@ -1,11 +1,12 @@
 export default function throttle(fn, threshhold = 250, scope) {
-	let last,
-		deferTimer;
-	return function() {
+	let last;
+	let deferTimer;
+
+	return (...args) => {
 		const context = scope || this;
 
-		let now = +new Date(),
-			args = arguments;
+		const now = +new Date();
+
 		if (last && now < last + threshhold) {
 			// hold on to it
 			clearTimeout(deferTimer);
