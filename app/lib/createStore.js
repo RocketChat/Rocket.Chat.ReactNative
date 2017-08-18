@@ -20,6 +20,6 @@ if (__DEV__) {
 
 export default createStore(
 	reducers,
-	applyMiddleware(sagaMiddleware)
+	applyMiddleware(...middleware)
 );
 sagaMiddleware.run(sagas);

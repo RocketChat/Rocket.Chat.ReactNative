@@ -14,8 +14,8 @@ const styles = StyleSheet.create({
 });
 
 @connect(state => ({
-	connecting: state.meteor && state.meteor.connecting,
-	authenticating: state.login && state.login.isFetching,
+	connecting: state.meteor.connecting,
+	authenticating: state.login.isFetching,
 	offline: !state.meteor.connected
 }))
 
