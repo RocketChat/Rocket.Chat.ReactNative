@@ -15,6 +15,7 @@ matrix:
       - nvm install 8
       - node --version
     install:
+      - npm install -g codecov
       - npm install
     android:
       components:
