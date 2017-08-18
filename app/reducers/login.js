@@ -32,10 +32,13 @@ export default function login(state = initialState, action) {
 				errorMessage: action.err
 			};
 		case types.LOGOUT:
-			console.log('LOGOUT');
 			return { ...state,
 				isFetching: false,
 				isAuthenticated: false
+			};
+		case types.LOGIN.SET_TOKEN:
+			return { ...state,
+				token: action.token
 			};
 		default:
 			return state;

@@ -2,7 +2,7 @@ import React from 'react';
 import { CachedImage } from 'react-native-img-cache';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 import avatarInitialsAndColor from '../utils/avatarInitialsAndColor';
 
@@ -106,16 +106,17 @@ export default class RoomItem extends React.PureComponent {
 	}
 
 	render() {
+		const { item } = this.props;
 		let extraSpace = {};
-		if (this.props.item.unread) {
+		if (item.unread) {
 			extraSpace = { paddingRight: 92 };
 		}
 		return (
-			<View style={[styles.container, extraSpace]}>
+			<TouchableOpacity key={item._id} onPress={() => this.props.onPress(item._id, item)} style={[styles.container, extraSpace]}>
 				{this.icon}
 				<Text style={styles.roomName} ellipsizeMode='tail' numberOfLines={1}>{ this.props.item.name }</Text>
 				{this.renderNumber(this.props.item)}
-			</View>
+			</TouchableOpacity>
 		);
 	}
 }
