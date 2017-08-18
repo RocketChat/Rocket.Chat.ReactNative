@@ -1,0 +1,52 @@
+# language: node_js
+# node_js: 7
+# cache:
+#   yarn: true
+#   directories:
+#     - node_modules
+
+matrix:
+  include:
+  - os: linux
+    dist: trusty
+    sudo: false
+    language: android
+    before_install:
+      - nvm install 8
+      - node --version
+    install:
+      - npm install
+    android:
+      components:
+        - build-tools-23.0.1
+        - android-23
+        - extra-android-m2repository
+        - extra-google-google_play_services
+        - extra-google-m2repository
+        - addon-google_apis-google-16
+    script:
+      - npm run ci
+      - cd android && ./gradlew assembleRelease
+
+  - os: osx
+    osx_image: xcode8.3
+    language: node_js
+    node_js: 8
+    script:
+      - npm run ci
+
+# install:
+#   - yarn
+# script:
+#   - if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then export CSC_IDENTITY_AUTO_DISCOVERY=false; fi
+#   - yarn release -- --x64 --ia32
+
+# branches:
+#   only:
+#     - master
+#     - develop
+
+# notifications:
+#   email:
+#     on_success: never
+#     on_failure: change
