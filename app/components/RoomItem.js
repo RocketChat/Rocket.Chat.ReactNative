@@ -8,10 +8,10 @@ import avatarInitialsAndColor from '../utils/avatarInitialsAndColor';
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
+		// flex: 1,
 		flexDirection: 'row',
 		paddingLeft: 16,
-		paddingRight: 56,
+		paddingRight: 16,
 		height: 56,
 		alignItems: 'center'
 	},
@@ -23,15 +23,15 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		overflow: 'hidden',
 		fontSize: 14,
-		right: 16,
-		marginLeft: 16,
-		position: 'absolute'
+		paddingLeft: 5,
+		paddingRight: 5
 	},
 	roomName: {
-		flexGrow: 1,
+		flex: 1,
 		fontSize: 16,
 		color: '#444',
-		marginLeft: 16
+		marginLeft: 16,
+		marginRight: 4
 	},
 	iconContainer: {
 		height: 40,
@@ -52,36 +52,39 @@ const styles = StyleSheet.create({
 		borderRadius: 20
 	},
 	avatarInitials: {
-		fontSize: 22,
+		fontSize: 20,
 		color: '#ffffff'
 	}
 });
 
 export default class RoomItem extends React.PureComponent {
 	static propTypes = {
-		item: PropTypes.object.isRequired,
+		type: PropTypes.string.isRequired,
+		name: PropTypes.string.isRequired,
+		unread: PropTypes.number,
 		baseUrl: PropTypes.string
 	}
+
 	get icon() {
+		const { type, name, baseUrl } = this.props;
+
 		const icon = {
 			d: 'at',
 			c: 'pound',
 			p: 'lock',
 			l: 'account'
-		}[this.props.item.t];
+		}[type];
 
 		if (!icon) {
 			return null;
 		}
 
-		const { name } = this.props.item;
-
-		if (this.props.item.t === 'd') {
+		if (type === 'd') {
 			const { initials, color } = avatarInitialsAndColor(name);
 			return (
 				<View style={[styles.iconContainer, { backgroundColor: color }]}>
 					<Text style={styles.avatarInitials}>{initials}</Text>
-					<CachedImage style={styles.avatar} source={{ uri: `${ this.props.baseUrl }/avatar/${ name }` }} />
+					<CachedImage style={styles.avatar} source={{ uri: `${ baseUrl }/avatar/${ name }` }} />
 				</View>
 			);
 		}
@@ -95,27 +98,29 @@ export default class RoomItem extends React.PureComponent {
 		);
 	}
 
-	renderNumber = (item) => {
-		if (item.unread) {
-			return (
-				<Text style={styles.number}>
-					{ item.unread }
-				</Text>
-			);
+	renderNumber = (unread) => {
+		if (!unread || unread <= 0) {
+			return;
 		}
+
+		if (unread >= 1000) {
+			unread = '999+';
+		}
+
+		return (
+			<Text style={styles.number}>
+				{ unread }
+			</Text>
+		);
 	}
 
 	render() {
-		const { item } = this.props;
-		let extraSpace = {};
-		if (item.unread) {
-			extraSpace = { paddingRight: 92 };
-		}
+		const { unread, name, _id } = this.props;
 		return (
-			<TouchableOpacity key={item._id} onPress={() => this.props.onPress(item._id, item)} style={[styles.container, extraSpace]}>
+			<TouchableOpacity key={_id} onPress={this.props.onPress} style={styles.container}>
 				{this.icon}
-				<Text style={styles.roomName} ellipsizeMode='tail' numberOfLines={1}>{ this.props.item.name }</Text>
-				{this.renderNumber(this.props.item)}
+				<Text style={styles.roomName} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
+				{this.renderNumber(unread)}
 			</TouchableOpacity>
 		);
 	}

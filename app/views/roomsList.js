@@ -54,7 +54,6 @@ const styles = StyleSheet.create({
 });
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-
 @connect(state => ({
 	server: state.server,
 	login: state.login,
@@ -237,8 +236,9 @@ export default class RoomsListView extends React.Component {
 
 	renderItem = item => (
 		<RoomItem
-			id={item._id}
-			item={item}
+			_id={item._id}
+			name={item.name}
+			type={item.t}
 			baseUrl={this.props.Site_Url}
 			onPress={() => this._onPressItem(item._id, item)}
 		/>
