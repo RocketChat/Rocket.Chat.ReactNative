@@ -10,9 +10,10 @@ function createRequestTypes(base, types = defaultTypes) {
 }
 
 // Login events
-export const LOGIN = createRequestTypes('LOGIN', [...defaultTypes, 'SET_TOKEN']);
+export const LOGIN = createRequestTypes('LOGIN', [...defaultTypes, 'SET_TOKEN', 'SUBMIT']);
 export const ROOMS = createRequestTypes('ROOMS');
 export const MESSAGES = createRequestTypes('MESSAGES');
+export const NAVIGATION = createRequestTypes('NAVIGATION', ['SET']);
 export const SERVER = createRequestTypes('SERVER', ['SELECT', 'CHANGED']);
 export const METEOR = createRequestTypes('METEOR_CONNECT', [...defaultTypes, 'DISCONNECT']);
 export const LOGOUT = 'LOGOUT'; // logout is always success

@@ -1,9 +1,15 @@
 import * as types from './actionsTypes';
 
+export function loginSubmit(credentials) {
+	return {
+		type: types.LOGIN.SUBMIT,
+		credentials
+	};
+}
 export function loginRequest(credentials) {
 	return {
 		type: types.LOGIN.REQUEST,
-		...credentials
+		credentials
 	};
 }
 
@@ -22,10 +28,11 @@ export function loginFailure(err) {
 	};
 }
 
-export function setToken(token) {
+export function setToken(user) {
 	return {
 		type: types.LOGIN.SET_TOKEN,
-		token
+		token: user.token,
+		user
 	};
 }
 

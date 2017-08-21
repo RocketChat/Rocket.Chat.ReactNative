@@ -1,9 +1,9 @@
 import ActionButton from 'react-native-action-button';
-// import { Navigation } from 'react-native-navigation';
+import { Navigation } from 'react-native-navigation';
 import { ListView } from 'realm/react-native';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, TextInput } from 'react-native';
+import { View, StyleSheet, TextInput, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import * as server from '../actions/connect';
@@ -67,7 +67,7 @@ const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
 export default class RoomsListView extends React.Component {
 	static propTypes = {
-		// navigator: PropTypes.object.isRequired,
+		navigator: PropTypes.object.isRequired,
 		server: PropTypes.string
 	}
 
@@ -81,8 +81,29 @@ export default class RoomsListView extends React.Component {
 			searchText: '',
 			login: false
 		};
+		this.data.addListener(this.updateState);
+		this.props.navigator.setOnNavigatorEvent(event => event.type === 'NavBarButtonPress' && event.id === 'servers' &&
+				Navigation.showModal({
+					screen: 'ListServer',
+					passProps: {},
+					navigatorStyle: {},
+					navigatorButtons: {},
+					animationType: 'slide-up'
+				}));
+		this.props.navigator.setSubTitle({
+			subtitle: this.props.server
+		});
 	}
-
+	componentWillMount() {
+		const button = Platform.OS === 'ios' ? 'leftButtons' : 'rightButtons';
+		this.props.navigator.setButtons({
+			[button]: [{
+				id: 'servers',
+				title: 'Servers'
+			}],
+			animated: true
+		});
+	}
 	componentWillUnmount() {
 		this.data.removeListener(this.updateState);
 	}
@@ -148,16 +169,16 @@ export default class RoomsListView extends React.Component {
 
 	updateState = () => {
 		this.setState({
-			dataSource: ds.cloneWithRows(this.state.data)
+			dataSource: ds.cloneWithRows(this.data)
 		});
 	};
 
 	_onPressItem = (id, item = {}) => {
 		const navigateToRoom = (room) => {
-			// this.props.navigator.push({
-			// 	screen: 'Room',
-			// 	passProps: room
-			// });
+			this.props.navigator.push({
+				screen: 'Room',
+				passProps: room
+			});
 		};
 
 		const clearSearch = () => {
@@ -218,6 +239,7 @@ export default class RoomsListView extends React.Component {
 		<RoomItem
 			id={item._id}
 			item={item}
+			baseUrl={this.props.Site_Url}
 			onPress={() => this._onPressItem(item._id, item)}
 		/>
 	)
@@ -234,15 +256,10 @@ export default class RoomsListView extends React.Component {
 	)
 	renderCreateButtons = () => (
 		<ActionButton buttonColor='rgba(231,76,60,1)' />);
-	render= () => {
-		if (this.props.canShowList) {
-			return (
-				<View style={styles.container}>
-					<Banner />
-					{this.renderList()}
-					{this.renderCreateButtons()}
-				</View>);
-		}
-		return null;
-	}
+	render= () => (
+		<View style={styles.container}>
+			<Banner />
+			{this.renderList()}
+			{this.renderCreateButtons()}
+		</View>)
 }
