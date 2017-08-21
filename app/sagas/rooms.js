@@ -9,6 +9,7 @@ const getRooms = function* getRooms() {
 
 const watchRoomsRequest = function* watchRoomsRequest() {
 	try {
+		console.log('getRooms');
 		yield call(getRooms);
 		yield put(roomsSuccess());
 	} catch (err) {

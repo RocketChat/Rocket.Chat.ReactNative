@@ -13,7 +13,7 @@ let middleware;
 if (__DEV__) {
 	/* eslint-disable global-require */
 	const reduxImmutableStateInvariant = require('redux-immutable-state-invariant').default();
-	middleware = [sagaMiddleware, reduxImmutableStateInvariant, logger];
+	middleware = [sagaMiddleware, reduxImmutableStateInvariant];
 } else {
 	middleware = [sagaMiddleware];
 }
