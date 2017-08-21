@@ -24,7 +24,12 @@ const CustomButton = ({ text }) => (
 	</TouchableOpacity>
 );
 
+CustomButton.propTypes = {
+	text: PropTypes.string
+};
+
 Navigation.registerComponent('CustomButton', () => CustomButton);
+
 @connect(state => ({
 	base: state.settings.Site_Url,
 	canShowList: state.login.token.length || state.login.user.token
