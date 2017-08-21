@@ -5,7 +5,11 @@ import { connect } from 'react-redux';
 
 const styles = StyleSheet.create({
 	bannerContainer: {
-		backgroundColor: '#ddd'
+		backgroundColor: '#ddd',
+		position: 'absolute',
+		top: '0%',
+		zIndex: 10,
+		width: '100%'
 	},
 	bannerText: {
 		textAlign: 'center',

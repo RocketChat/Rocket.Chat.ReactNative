@@ -9,8 +9,13 @@ import RoomView from './views/room';
 import PhotoView from './views/Photo';
 import CreateChannel from './views/CreateChannel';
 import store from './lib/createStore';
+import { PrivateScreen, HomeScreen, authenticated } from './index';
 
-Navigation.registerComponent('Rooms', () => RoomsListView, store, Provider);
+// console.log('fisateile/', PublicRoute(PublicScreen));
+Navigation.registerComponent('home', () => HomeScreen, store, Provider);
+Navigation.registerComponent('private', () => PrivateScreen, store, Provider);
+Navigation.registerComponent('public', () => ListServerView, store, Provider);
+Navigation.registerComponent('Rooms', () => authenticated(RoomsListView), store, Provider);
 Navigation.registerComponent('Room', () => RoomView, store, Provider);
 Navigation.registerComponent('Photo', () => PhotoView, store, Provider);
 Navigation.registerComponent('ListServer', () => ListServerView, store, Provider);
@@ -20,8 +25,8 @@ Navigation.registerComponent('CreateChannel', () => CreateChannel, store, Provid
 
 Navigation.startSingleScreenApp({
 	screen: {
-		screen: 'ListServer',
-		title: 'ListServer'
+		screen: 'home',
+		title: 'private'
 	},
-	animationType: 'none'
+	animationType: 'slide-up'
 });

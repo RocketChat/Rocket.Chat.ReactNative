@@ -51,9 +51,9 @@ const RocketChat = {
 				reduxStore.dispatch(connectSuccess());
 				resolve();
 			});
-			Meteor.ddp.on('loggin', () => {
-				reduxStore.dispatch(loginSuccess({}));
-			});
+			// Meteor.ddp.on('loggin', () => {
+			// 	reduxStore.dispatch(loginSuccess({}));
+			// });
 			Meteor.ddp.on('connected', () => {
 				Meteor.call('public-settings/get', (err, data) => {
 					if (err) {
@@ -105,11 +105,13 @@ const RocketChat = {
 	},
 
 	login(params, callback) {
+		console.log('login(params, callback)');
 		return new Promise((resolve, reject) => {
 			Meteor._startLoggingIn();
 			return Meteor.call('login', params, (err, result) => {
 				Meteor._endLoggingIn();
 				Meteor._handleLoginCallback(err, result);
+				console.log('login(params, callback)asdas', err, result);
 				if (err) {
 					reject(err);
 				} else {
@@ -224,6 +226,7 @@ const RocketChat = {
 
 	getMessage(rid, msg = {}) {
 		const _id = Random.id();
+		// console.log('reduxStore.getState().login.id ', reduxStore.getState().login);
 		const message = {
 			_id,
 			rid,
@@ -233,8 +236,8 @@ const RocketChat = {
 			temp: true,
 			_server: { id: reduxStore.getState().server },
 			u: {
-				_id: reduxStore.getState()._id,
-				username: reduxStore.getState()._id
+				_id: reduxStore.getState().login.user.id || '1',
+				username: reduxStore.getState().login.user.id
 			}
 		};
 
@@ -367,14 +370,15 @@ const RocketChat = {
 	getRooms() {
 		// Meteor.Accounts.onLogin(() => {
 		return Promise.all([call('subscriptions/get'), call('rooms/get')]).then(([subscriptions, rooms]) => {
+			// console.log('getRooms resolved', reduxStore.getState().server, subscriptions);
 			subscriptions = subscriptions.sort((s1, s2) => (s1.rid > s2.rid ? 1 : -1));
 			rooms = rooms.sort((s1, s2) => (s1._id > s2._id ? 1 : -1));
 			const data = subscriptions.map((subscription, index) => {
 				subscription._updatedAt = rooms[index]._updatedAt;
 				return subscription;
 			});
-			Meteor.subscribe('stream-notify-user', `${ Meteor.userId() }/subscriptions-changed`, false);
 			// Meteor.subscribe('stream-notify-user', `${ Meteor.userId() }/rooms-changed`, false);
+			console.log('getRooms resolved', reduxStore.getState().server, data);
 			realm.write(() => {
 				data.forEach((subscription) => {
 					// const subscription = {
@@ -388,6 +392,7 @@ const RocketChat = {
 					realm.create('subscriptions', subscription, true);
 				});
 			});
+			Meteor.subscribe('stream-notify-user', `${ reduxStore.getState().user.id }/subscriptions-changed`, false);
 			return data;
 		}).then(data => data);
 		// });

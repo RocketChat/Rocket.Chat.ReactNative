@@ -1,41 +1,78 @@
 import React from 'react';
+
+import Spinner from 'react-native-loading-spinner-overlay';
+
 import PropTypes from 'prop-types';
-import { Text, TextInput, StyleSheet } from 'react-native';
+import { Keyboard, Text, TextInput, StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import * as actions from '../actions';
 import * as loginActions from '../actions/login';
 import KeyboardView from '../components/KeyboardView';
+// import { Keyboard } from 'react-native'
 
 const styles = StyleSheet.create({
 	view: {
 		flex: 1,
 		flexDirection: 'column',
 		justifyContent: 'center',
+		padding: 20,
 		alignItems: 'stretch',
-		backgroundColor: '#fff'
+		backgroundColor: '#2f343d'
+	},
+	logoContainer: {
+		flex: 1,
+		alignItems: 'center',
+		flexGrow: 1,
+		justifyContent: 'center'
+	},
+	logo: {
+		width: 150,
+		// backgroundColor: 'red'
+		// height: 150,
+		resizeMode: 'contain'
+	},
+	formContainer: {
+		// marginBottom: 20
 	},
 	input: {
 		height: 40,
-		borderColor: '#aaa',
-		marginLeft: 20,
-		marginRight: 20,
-		marginTop: 10,
-		padding: 5,
+		marginBottom: 20,
+		borderRadius: 2,
+		paddingHorizontal: 10,
 		borderWidth: 0,
-		backgroundColor: '#f6f6f6'
+		backgroundColor: 'rgba(255,255,255,.2)',
+		color: 'white'
+	},
+	buttonContainer: {
+		paddingVertical: 15,
+		backgroundColor: '#414852',
+		marginBottom: 20
+	},
+	button: {
+		textAlign: 'center',
+		color: 'white',
+		borderRadius: 2,
+		fontWeight: '700'
 	},
 	error: {
 		textAlign: 'center',
 		color: 'red',
 		paddingTop: 5
+	},
+	loading: {
+		flex: 1,
+		position: 'absolute',
+		backgroundColor: 'rgba(255,255,255,.2)',
+		left: 0,
+		top: 0
 	}
 });
 
 class LoginView extends React.Component {
 	static propTypes = {
 		navigator: PropTypes.object.isRequired,
-		loginRequest: PropTypes.func.isRequired,
+		loginSubmit: PropTypes.func.isRequired,
 		server: PropTypes.string.isRequired,
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
 		Accounts_PasswordPlaceholder: PropTypes.string
@@ -65,9 +102,8 @@ class LoginView extends React.Component {
 	}
 	submit = () => {
 		const {	username, password, code } = this.state;
-		console.log({	username, password, code });
-		this.props.loginRequest({	username, password, code });
-		this.props.navigator.dismissModal();
+		this.props.loginSubmit({	username, password, code });
+		Keyboard.dismiss();
 	}
 
 	renderTOTP = () => {
@@ -92,29 +128,45 @@ class LoginView extends React.Component {
 	render() {
 		return (
 			<KeyboardView style={styles.view} keyboardVerticalOffset={64}>
-				<TextInput
-					style={styles.input}
-					onChangeText={username => this.setState({ username })}
-					keyboardType='email-address'
-					autoCorrect={false}
-					returnKeyType='done'
-					autoCapitalize='none'
-					autoFocus
-					onSubmitEditing={this.submit}
-					placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email or username'}
-				/>
-				<TextInput
-					style={styles.input}
-					onChangeText={password => this.setState({ password })}
-					secureTextEntry
-					autoCorrect={false}
-					returnKeyType='done'
-					autoCapitalize='none'
-					onSubmitEditing={this.submit}
-					placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
-				/>
-				{this.renderTOTP()}
-				<Text style={styles.error}>{this.state.error}</Text>
+				<View style={styles.logoContainer}>
+					<Image style={styles.logo} source={require('../images/logo.png')} />
+				</View>
+				<View style={styles.formContainer}>
+					<TextInput
+						placeholderTextColor={'rgba(255,255,255,.2)'}
+						style={styles.input}
+						onChangeText={username => this.setState({ username })}
+						keyboardType='email-address'
+						autoCorrect={false}
+						returnKeyType='done'
+						autoCapitalize='none'
+						autoFocus
+
+						underlineColorAndroid='transparent'
+						onSubmitEditing={this.submit}
+						placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email or username'}
+					/>
+					<TextInput
+						placeholderTextColor={'rgba(255,255,255,.2)'}
+						style={styles.input}
+						onChangeText={password => this.setState({ password })}
+						secureTextEntry
+						autoCorrect={false}
+						returnKeyType='done'
+						autoCapitalize='none'
+
+						underlineColorAndroid='transparent'
+						onSubmitEditing={this.submit}
+						placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
+					/>
+					{this.renderTOTP()}
+					<TouchableOpacity style={styles.buttonContainer}>
+						<Text style={styles.button} onPress={this.submit}>LOGIN</Text>
+					</TouchableOpacity>
+					{this.props.login.error && <Text style={styles.error}>{this.props.login.error}</Text>}
+				</View>
+				<Spinner visible={this.props.login.isFetching} textContent={'Loading...'} textStyle={{ color: '#FFF' }} />
+
 			</KeyboardView>
 		);
 	}
