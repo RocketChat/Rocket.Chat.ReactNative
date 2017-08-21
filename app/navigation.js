@@ -10,6 +10,8 @@ import PhotoView from './views/Photo';
 import CreateChannel from './views/CreateChannel';
 import store from './lib/createStore';
 
+import './lib/pushNotification';
+
 Navigation.registerComponent('Rooms', () => RoomsListView, store, Provider);
 Navigation.registerComponent('Room', () => RoomView, store, Provider);
 Navigation.registerComponent('Photo', () => PhotoView, store, Provider);

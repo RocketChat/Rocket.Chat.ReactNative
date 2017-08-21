@@ -366,6 +366,23 @@ const RocketChat = {
 		}
 	},
 
+	registerPushToken(pushId, token) {
+		console.log('registerPushToken ->', pushId, token);
+
+		const data = {
+			id: pushId,
+			token,
+			appName: 'main',
+			userId: null,
+			metadata: {}
+		};
+		return call('raix:push-update', data);
+	},
+
+	updatePushToken(pushId) {
+		return call('raix:push-setuser', pushId);
+	},
+
 	logout() {
 		return AsyncStorage.clear();
 	}
@@ -378,6 +395,13 @@ if (RocketChat.currentServer) {
 }
 
 Meteor.Accounts.onLogin(() => {
+	AsyncStorage.getItem('pushId')
+		.then((pushId) => {
+			console.log('update -> ', pushId);
+			RocketChat.updatePushToken(pushId)
+				.catch(error => console.log('lero ->', error));
+		});
+
 	Promise.all([call('subscriptions/get'), call('rooms/get')]).then(([subscriptions, rooms]) => {
 		subscriptions = subscriptions.sort((s1, s2) => (s1.rid > s2.rid ? 1 : -1));
 		rooms = rooms.sort((s1, s2) => (s1._id > s2._id ? 1 : -1));
