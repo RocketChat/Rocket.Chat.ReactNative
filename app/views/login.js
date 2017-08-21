@@ -107,7 +107,7 @@ class LoginView extends React.Component {
 	}
 
 	renderTOTP = () => {
-		if (this.state.totp) {
+		if (this.props.login.errorMessage && this.props.login.errorMessage.error === 'totp-required') {
 			return (
 				<TextInput
 					ref={ref => this.codeInput = ref}
@@ -166,7 +166,6 @@ class LoginView extends React.Component {
 					{this.props.login.error && <Text style={styles.error}>{this.props.login.error}</Text>}
 				</View>
 				<Spinner visible={this.props.login.isFetching} textContent={'Loading...'} textStyle={{ color: '#FFF' }} />
-
 			</KeyboardView>
 		);
 	}
