@@ -1,5 +1,11 @@
 import * as types from '../constants/types';
+import { APP } from './actionsTypes';
 
+export function appReady() {
+	return {
+		type: APP.READY
+	};
+}
 export function setCurrentServer(server) {
 	return {
 		type: types.SET_CURRENT_SERVER,
