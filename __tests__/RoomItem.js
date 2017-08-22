@@ -18,3 +18,15 @@ it('render unread', () => {
 it('render unread +999', () => {
 	expect(renderer.create(<RoomItem type="d" name="name" unread={1000} />).toJSON()).toMatchSnapshot();
 });
+
+it('render no icon', () => {
+	expect(renderer.create(<RoomItem type="X" name="name" />).toJSON()).toMatchSnapshot();
+});
+
+it('render private group', () => {
+	expect(renderer.create(<RoomItem type="g" name="private-group" /> ).toJSON()).toMatchSnapshot();
+});
+
+it('render channel', () => {
+	expect(renderer.create(<RoomItem type="c" name="general" />).toJSON()).toMatchSnapshot();
+});
