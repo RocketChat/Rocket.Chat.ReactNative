@@ -62,7 +62,8 @@ export default class RoomItem extends React.PureComponent {
 		type: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
 		unread: PropTypes.number,
-		baseUrl: PropTypes.string
+		baseUrl: PropTypes.string,
+		onPress: PropTypes.func
 	}
 
 	get icon() {
@@ -115,9 +116,9 @@ export default class RoomItem extends React.PureComponent {
 	}
 
 	render() {
-		const { unread, name, _id } = this.props;
+		const { unread, name } = this.props;
 		return (
-			<TouchableOpacity key={_id} onPress={this.props.onPress} style={styles.container}>
+			<TouchableOpacity onPress={this.props.onPress} style={styles.container}>
 				{this.icon}
 				<Text style={styles.roomName} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
 				{this.renderNumber(unread)}

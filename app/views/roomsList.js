@@ -67,6 +67,7 @@ const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 export default class RoomsListView extends React.Component {
 	static propTypes = {
 		navigator: PropTypes.object.isRequired,
+		Site_Url: PropTypes.string.isRequired,
 		server: PropTypes.string
 	}
 
@@ -236,7 +237,7 @@ export default class RoomsListView extends React.Component {
 
 	renderItem = item => (
 		<RoomItem
-			_id={item._id}
+			key={item._id}
 			name={item.name}
 			type={item.t}
 			baseUrl={this.props.Site_Url}
