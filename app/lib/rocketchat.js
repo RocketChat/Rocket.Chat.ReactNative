@@ -42,7 +42,6 @@ const RocketChat = {
 			const url = `${ _url }/websocket`;
 
 			Meteor.connect(url, { autoConnect: true, autoReconnect: true });
-			// , { autoConnect: false, autoReconnect: false }
 			Meteor.ddp.on('disconnected', () => {
 				reduxStore.dispatch(disconnect());
 			});
@@ -50,9 +49,6 @@ const RocketChat = {
 				reduxStore.dispatch(connectSuccess());
 				resolve();
 			});
-			// Meteor.ddp.on('loggin', () => {
-			// 	reduxStore.dispatch(loginSuccess({}));
-			// });
 			Meteor.ddp.on('connected', () => {
 				Meteor.call('public-settings/get', (err, data) => {
 					if (err) {
@@ -78,19 +74,16 @@ const RocketChat = {
 				});
 
 				Meteor.ddp.on('changed', (ddbMessage) => {
-					// console.log('changed', ddbMessage);
 					if (ddbMessage.collection === 'stream-room-messages') {
 						realm.write(() => {
 							const message = ddbMessage.fields.args[0];
 							message.temp = false;
 							message._server = { id: reduxStore.getState().server };
-							// write('messages', message);
 							realm.create('messages', message, true);
 						});
 					}
 
 					if (ddbMessage.collection === 'stream-notify-user') {
-						// console.log(ddbMessage);
 						realm.write(() => {
 							const data = ddbMessage.fields.args[1];
 							data._server = { id: reduxStore.getState().server };
