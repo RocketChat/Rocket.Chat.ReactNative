@@ -70,7 +70,7 @@ export class PrivateScreen extends React.PureComponent {
 }))
 export const HomeScreen = class extends React.PureComponent {
 	static propTypes = {
-		setNavigator: PropTypes.fun.isRequired,
+		setNavigator: PropTypes.func.isRequired,
 		navigator: PropTypes.object.isRequired
 	}
 

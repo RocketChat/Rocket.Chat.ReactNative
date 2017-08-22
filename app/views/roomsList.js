@@ -67,7 +67,7 @@ const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 export default class RoomsListView extends React.Component {
 	static propTypes = {
 		navigator: PropTypes.object.isRequired,
-		Site_Url: PropTypes.string.isRequired,
+		Site_Url: PropTypes.string,
 		server: PropTypes.string
 	}
 
