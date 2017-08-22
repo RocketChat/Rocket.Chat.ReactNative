@@ -75,7 +75,8 @@ class LoginView extends React.Component {
 		loginSubmit: PropTypes.func.isRequired,
 		server: PropTypes.string.isRequired,
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
-		Accounts_PasswordPlaceholder: PropTypes.string
+		Accounts_PasswordPlaceholder: PropTypes.string,
+		login: PropTypes.object
 	}
 
 	static navigationOptions = () => ({

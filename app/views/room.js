@@ -57,12 +57,14 @@ const styles = StyleSheet.create({
 export default class RoomView extends React.Component {
 	static propTypes = {
 		navigator: PropTypes.object.isRequired,
+		getMessages: PropTypes.func.isRequired,
 		rid: PropTypes.string,
 		sid: PropTypes.string,
 		name: PropTypes.string,
 		server: PropTypes.string,
 		Site_Url: PropTypes.string,
-		Message_TimeFormat: PropTypes.string
+		Message_TimeFormat: PropTypes.string,
+		loading: PropTypes.bool
 	}
 
 	constructor(props) {

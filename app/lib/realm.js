@@ -1,5 +1,4 @@
 import Realm from 'realm';
-import { AsyncStorage } from 'react-native';
 
 const serversSchema = {
 	name: 'servers',

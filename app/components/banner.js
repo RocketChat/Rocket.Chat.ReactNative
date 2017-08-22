@@ -1,4 +1,5 @@
 import { StyleSheet, View, Text } from 'react-native';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import { connect } from 'react-redux';
@@ -24,6 +25,12 @@ const styles = StyleSheet.create({
 }))
 
 export default class Banner extends React.PureComponent {
+	static propTypes = {
+		connecting: PropTypes.bool,
+		authenticating: PropTypes.bool,
+		offline: PropTypes.bool
+	}
+
 	render() {
 		const { connecting, authenticating, offline } = this.props;
 		if (connecting) {

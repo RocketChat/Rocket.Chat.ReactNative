@@ -72,6 +72,7 @@ const zeroconf = new Zeroconf();
 export default class ListServerView extends React.Component {
 	static propTypes = {
 		navigator: PropTypes.object.isRequired,
+		selectServer: PropTypes.func.isRequired,
 		actions: PropTypes.object,
 		server: PropTypes.string
 	}
