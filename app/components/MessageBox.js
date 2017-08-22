@@ -37,7 +37,6 @@ export default class MessageBox extends React.PureComponent {
 	}
 
 	submit(message) {
-		// console.log(this.state);
 		const text = message;
 		if (text.trim() === '') {
 			return;
@@ -56,8 +55,6 @@ export default class MessageBox extends React.PureComponent {
 		};
 
 		ImagePicker.showImagePicker(options, (response) => {
-			// console.log('Response = ', response);
-
 			if (response.didCancel) {
 				console.log('User cancelled image picker');
 			} else if (response.error) {
@@ -84,8 +81,6 @@ export default class MessageBox extends React.PureComponent {
 				<TextInput
 					ref={component => this.component = component}
 					style={styles.textBoxInput}
-					// value={this.state.text}
-					// onChangeText={text => this.setState({ text })}
 					returnKeyType='send'
 					onSubmitEditing={event => this.submit(event.nativeEvent.text)}
 					blurOnSubmit={false}
