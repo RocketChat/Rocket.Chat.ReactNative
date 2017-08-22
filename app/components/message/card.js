@@ -37,7 +37,8 @@ Navigation.registerComponent('CustomButton', () => CustomButton);
 
 export default class Cards extends React.PureComponent {
 	static propTypes = {
-		data: PropTypes.object.isRequired
+		data: PropTypes.object.isRequired,
+		base: PropTypes.string
 	}
 	constructor() {
 		super();

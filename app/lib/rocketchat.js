@@ -9,7 +9,6 @@ import settingsType from '../constants/settings';
 import realm from './realm';
 import * as actions from '../actions';
 import { disconnect, connectSuccess } from '../actions/connect';
-import { loginSuccess } from '../actions/login';
 
 export { Accounts } from 'react-native-meteor';
 

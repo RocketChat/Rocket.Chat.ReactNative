@@ -1,4 +1,4 @@
-import { takeEvery, takeLatest, select, take, put } from 'redux-saga/effects';
+import { takeLatest, select, take, put } from 'redux-saga/effects';
 import { MESSAGES, LOGIN } from '../actions/actionsTypes';
 import { messagesSuccess, messagesFailure } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';

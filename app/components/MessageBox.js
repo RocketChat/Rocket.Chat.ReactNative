@@ -36,18 +36,15 @@ export default class MessageBox extends React.PureComponent {
 		rid: PropTypes.string.isRequired
 	}
 
-	constructor(props) {
-		super(props);
-		// this._textInput.setNativeProps({ text: '' });
-	}
-
 	submit(message) {
 		// console.log(this.state);
 		const text = message;
 		if (text.trim() === '') {
 			return;
 		}
-		this.component && this.component.setNativeProps({ text: '' });
+		if (this.component) {
+			this.component.setNativeProps({ text: '' });
+		}
 		this.props.onSubmit(text);
 	}
 

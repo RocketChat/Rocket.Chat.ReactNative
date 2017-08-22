@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Text } from 'react-native';
@@ -61,13 +62,18 @@ export class PrivateScreen extends React.PureComponent {
 		return (<LoginView {...this.props} />);
 	}
 }
-@connect(state => ({
+@connect(() => ({
 	// logged: state.login.isAuthenticated
 }), dispatch => ({
 	// navigate: routeName => dispatch(NavigationActions.navigate({ routeName })),
 	setNavigator: navigator => dispatch(setNavigator(navigator))
 }))
 export const HomeScreen = class extends React.PureComponent {
+	static propTypes = {
+		setNavigator: PropTypes.fun.isRequired,
+		navigator: PropTypes.object.isRequired
+	}
+
 	componentWillMount() {
 		this.props.setNavigator(this.props.navigator);
 		this.props.navigator.resetTo({

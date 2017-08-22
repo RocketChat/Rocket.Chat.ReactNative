@@ -1,7 +1,14 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Animated, Text } from 'react-native';
 
 export default class Fade extends React.Component {
+	static propTypes = {
+		visible: PropTypes.bool.isRequired,
+		style: PropTypes.object,
+		children: PropTypes.object
+	}
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -26,7 +33,7 @@ export default class Fade extends React.Component {
 	}
 
 	render() {
-		const { visible, style, children, ...rest } = this.props;
+		const { style, children, ...rest } = this.props;
 
 		const containerStyle = {
 			opacity: this._visibility.interpolate({

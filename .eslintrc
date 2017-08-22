@@ -113,7 +113,8 @@
 		"semi": [2, "always"],
 		"prefer-const": 2,
 		"object-shorthand": 2,
-		"consistent-return": 0
+		"consistent-return": 0,
+		"global-require": "off"
 	},
 	"globals": {
 		"__DEV__": true
