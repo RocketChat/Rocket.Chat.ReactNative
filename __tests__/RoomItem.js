@@ -20,3 +20,55 @@ it('renders correctly', () => {
 	).toJSON();
 	expect(tree).toMatchSnapshot();
 });
+
+it('render unread', () => {
+	const tree = renderer.create(
+		<RoomItem
+			type="d"
+			name="name"
+			unread={1}
+		/>
+	).toJSON();
+	expect(tree).toMatchSnapshot();
+});
+
+it('render unread +999', () => {
+	const tree = renderer.create(
+		<RoomItem
+			type="d"
+			name="name"
+			unread={1000}
+		/>
+	).toJSON();
+	expect(tree).toMatchSnapshot();
+});
+
+it('render no icon', () => {
+	const tree = renderer.create(
+		<RoomItem
+			type="X"
+			name="name"
+		/>
+	).toJSON();
+	expect(tree).toMatchSnapshot();
+});
+
+it('render private group', () => {
+	const tree = renderer.create(
+		<RoomItem
+			type="g"
+			name="private-group"
+		/>
+	).toJSON();
+	expect(tree).toMatchSnapshot();
+});
+
+it('render channel', () => {
+	const tree = renderer.create(
+		<RoomItem
+			type="c"
+			name="general"
+		/>
+	).toJSON();
+	expect(tree).toMatchSnapshot();
+});

@@ -5,8 +5,11 @@ import { Animated, Text } from 'react-native';
 export default class Fade extends React.Component {
 	static propTypes = {
 		visible: PropTypes.bool.isRequired,
-		style: PropTypes.object,
-		children: PropTypes.object
+		style: Animated.View.propTypes.style,
+		children: PropTypes.oneOfType([
+			PropTypes.arrayOf(PropTypes.node),
+			PropTypes.node
+		])
 	}
 
 	constructor(props) {
