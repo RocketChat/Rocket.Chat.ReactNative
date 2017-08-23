@@ -14,6 +14,7 @@ export const LOGIN = createRequestTypes('LOGIN', [...defaultTypes, 'SET_TOKEN', 
 export const ROOMS = createRequestTypes('ROOMS');
 export const APP = createRequestTypes('APP', ['READY']);
 export const MESSAGES = createRequestTypes('MESSAGES');
+export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL');
 export const NAVIGATION = createRequestTypes('NAVIGATION', ['SET']);
 export const SERVER = createRequestTypes('SERVER', ['SELECT', 'CHANGED']);
 export const METEOR = createRequestTypes('METEOR_CONNECT', [...defaultTypes, 'DISCONNECT']);

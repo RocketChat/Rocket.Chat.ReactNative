@@ -23,8 +23,12 @@ const call = (method, ...params) => new Promise((resolve, reject) => {
 
 const RocketChat = {
 	createChannel({ name, users, type }) {
+		console.log('FISTALEU', { name, users, type });
 		return new Promise((resolve, reject) => {
-			Meteor.call(type ? 'createChannel' : 'createPrivateGroup', name, users, type, (err, res) => (err ? reject(err) : resolve(res)));
+			Meteor.call(type ? 'createChannel' : 'createPrivateGroup', name, users, type, (err, res) => {
+				console.log(err, res);
+				return (err ? reject(err) : resolve(res));
+			});
 		});
 	},
 
