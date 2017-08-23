@@ -1,6 +1,4 @@
-module.exports = {
-	Navigation: {
-		registerComponent: () => {},
-		startSingleScreenApp: () => {}
-	}
+export const Navigation = {
+	registerComponent: () => {},
+	startSingleScreenApp: () => {}
 };

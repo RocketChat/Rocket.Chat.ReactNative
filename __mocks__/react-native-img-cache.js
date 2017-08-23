@@ -1,3 +1,1 @@
-module.exports = {
-	CachedImage: 'CachedImage'
-};
+export const CachedImage = 'CachedImage';

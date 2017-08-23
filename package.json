@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
+    "updateSnapshot": "jest --updateSnapshot",
     "lint": "eslint .",
     "ci": "eslint . && jest && codecov",
     "ios": "react-native run-ios",
@@ -53,6 +54,7 @@
     "babel-eslint": "^7.2.3",
     "babel-jest": "20.0.3",
     "babel-preset-react-native": "2.1.0",
+    "codecov": "^2.3.0",
     "eslint": "^4.4.0",
     "eslint-config-airbnb": "^15.1.0",
     "eslint-plugin-import": "^2.7.0",
