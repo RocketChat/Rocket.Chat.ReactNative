@@ -1,6 +1,7 @@
 branches:
   only:
   - develop
+  - master
   - "/^\\d+\\.\\d+\\.\\d+(-rc\\.\\d+)?$/"
 
 matrix:
