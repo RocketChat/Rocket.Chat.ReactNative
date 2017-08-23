@@ -1,3 +1,8 @@
+branches:
+  only:
+  - develop
+  - "/^\\d+\\.\\d+\\.\\d+(-rc\\.\\d+)?$/"
+
 matrix:
   include:
   - os: linux
