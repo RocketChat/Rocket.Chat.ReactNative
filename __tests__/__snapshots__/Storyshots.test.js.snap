@@ -4,15 +4,33 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
 <RCTScrollView>
   <View>
     <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
+      collapsable={undefined}
+      hitSlop={undefined}
+      isTVSelectable={true}
+      nativeID={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Object {
           "alignItems": "center",
           "flexDirection": "row",
           "height": 56,
+          "opacity": 1,
           "paddingLeft": 16,
           "paddingRight": 16,
         }
       }
+      testID={undefined}
+      tvParallaxProperties={undefined}
     >
       <View
         style={
@@ -81,15 +99,33 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       </Text>
     </View>
     <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
+      collapsable={undefined}
+      hitSlop={undefined}
+      isTVSelectable={true}
+      nativeID={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Object {
           "alignItems": "center",
           "flexDirection": "row",
           "height": 56,
+          "opacity": 1,
           "paddingLeft": 16,
           "paddingRight": 16,
         }
       }
+      testID={undefined}
+      tvParallaxProperties={undefined}
     >
       <View
         style={
@@ -158,15 +194,33 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       </Text>
     </View>
     <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
+      collapsable={undefined}
+      hitSlop={undefined}
+      isTVSelectable={true}
+      nativeID={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Object {
           "alignItems": "center",
           "flexDirection": "row",
           "height": 56,
+          "opacity": 1,
           "paddingLeft": 16,
           "paddingRight": 16,
         }
       }
+      testID={undefined}
+      tvParallaxProperties={undefined}
     >
       <View
         style={
@@ -256,15 +310,33 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       </Text>
     </View>
     <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
+      collapsable={undefined}
+      hitSlop={undefined}
+      isTVSelectable={true}
+      nativeID={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Object {
           "alignItems": "center",
           "flexDirection": "row",
           "height": 56,
+          "opacity": 1,
           "paddingLeft": 16,
           "paddingRight": 16,
         }
       }
+      testID={undefined}
+      tvParallaxProperties={undefined}
     >
       <View
         style={
@@ -354,15 +426,33 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       </Text>
     </View>
     <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
+      collapsable={undefined}
+      hitSlop={undefined}
+      isTVSelectable={true}
+      nativeID={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Object {
           "alignItems": "center",
           "flexDirection": "row",
           "height": 56,
+          "opacity": 1,
           "paddingLeft": 16,
           "paddingRight": 16,
         }
       }
+      testID={undefined}
+      tvParallaxProperties={undefined}
     >
       <View
         style={
@@ -452,15 +542,33 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       </Text>
     </View>
     <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
+      collapsable={undefined}
+      hitSlop={undefined}
+      isTVSelectable={true}
+      nativeID={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Object {
           "alignItems": "center",
           "flexDirection": "row",
           "height": 56,
+          "opacity": 1,
           "paddingLeft": 16,
           "paddingRight": 16,
         }
       }
+      testID={undefined}
+      tvParallaxProperties={undefined}
     >
       <View
         style={
@@ -550,15 +658,33 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       </Text>
     </View>
     <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
+      collapsable={undefined}
+      hitSlop={undefined}
+      isTVSelectable={true}
+      nativeID={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Object {
           "alignItems": "center",
           "flexDirection": "row",
           "height": 56,
+          "opacity": 1,
           "paddingLeft": 16,
           "paddingRight": 16,
         }
       }
+      testID={undefined}
+      tvParallaxProperties={undefined}
     >
       <View
         style={
@@ -648,15 +774,33 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       </Text>
     </View>
     <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
+      collapsable={undefined}
+      hitSlop={undefined}
+      isTVSelectable={true}
+      nativeID={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Object {
           "alignItems": "center",
           "flexDirection": "row",
           "height": 56,
+          "opacity": 1,
           "paddingLeft": 16,
           "paddingRight": 16,
         }
       }
+      testID={undefined}
+      tvParallaxProperties={undefined}
     >
       <View
         style={
@@ -725,15 +869,33 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       </Text>
     </View>
     <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
+      collapsable={undefined}
+      hitSlop={undefined}
+      isTVSelectable={true}
+      nativeID={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Object {
           "alignItems": "center",
           "flexDirection": "row",
           "height": 56,
+          "opacity": 1,
           "paddingLeft": 16,
           "paddingRight": 16,
         }
       }
+      testID={undefined}
+      tvParallaxProperties={undefined}
     >
       <View
         style={
@@ -802,15 +964,33 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       </Text>
     </View>
     <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
+      collapsable={undefined}
+      hitSlop={undefined}
+      isTVSelectable={true}
+      nativeID={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Object {
           "alignItems": "center",
           "flexDirection": "row",
           "height": 56,
+          "opacity": 1,
           "paddingLeft": 16,
           "paddingRight": 16,
         }
       }
+      testID={undefined}
+      tvParallaxProperties={undefined}
     >
       <View
         style={
