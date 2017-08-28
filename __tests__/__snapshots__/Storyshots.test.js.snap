@@ -1,0 +1,883 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Channel Cell Direct Messages 1`] = `
+<RCTScrollView>
+  <View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "height": 56,
+          "paddingLeft": 16,
+          "paddingRight": 16,
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderRadius": 20,
+              "height": 40,
+              "justifyContent": "center",
+              "overflow": "hidden",
+              "width": 40,
+            },
+            Object {
+              "backgroundColor": "#8BC34A",
+            },
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Object {
+              "color": "#ffffff",
+              "fontSize": 20,
+            }
+          }
+        >
+          RC
+        </Text>
+        <CachedImage
+          source={
+            Object {
+              "uri": "https://demo.rocket.chat/avatar/rocket.cat",
+            }
+          }
+          style={
+            Object {
+              "borderRadius": 20,
+              "height": 40,
+              "position": "absolute",
+              "width": 40,
+            }
+          }
+        />
+      </View>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Object {
+            "color": "#444",
+            "flex": 1,
+            "fontSize": 16,
+            "marginLeft": 16,
+            "marginRight": 4,
+          }
+        }
+      >
+        rocket.cat
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "height": 56,
+          "paddingLeft": 16,
+          "paddingRight": 16,
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderRadius": 20,
+              "height": 40,
+              "justifyContent": "center",
+              "overflow": "hidden",
+              "width": 40,
+            },
+            Object {
+              "backgroundColor": "#8BC34A",
+            },
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Object {
+              "color": "#ffffff",
+              "fontSize": 20,
+            }
+          }
+        >
+          RC
+        </Text>
+        <CachedImage
+          source={
+            Object {
+              "uri": "https://demo.rocket.chat/avatar/rocket.cat",
+            }
+          }
+          style={
+            Object {
+              "borderRadius": 20,
+              "height": 40,
+              "position": "absolute",
+              "width": 40,
+            }
+          }
+        />
+      </View>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Object {
+            "color": "#444",
+            "flex": 1,
+            "fontSize": 16,
+            "marginLeft": 16,
+            "marginRight": 4,
+          }
+        }
+      >
+        rocket.cat
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "height": 56,
+          "paddingLeft": 16,
+          "paddingRight": 16,
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderRadius": 20,
+              "height": 40,
+              "justifyContent": "center",
+              "overflow": "hidden",
+              "width": 40,
+            },
+            Object {
+              "backgroundColor": "#8BC34A",
+            },
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Object {
+              "color": "#ffffff",
+              "fontSize": 20,
+            }
+          }
+        >
+          RC
+        </Text>
+        <CachedImage
+          source={
+            Object {
+              "uri": "https://demo.rocket.chat/avatar/rocket.cat",
+            }
+          }
+          style={
+            Object {
+              "borderRadius": 20,
+              "height": 40,
+              "position": "absolute",
+              "width": 40,
+            }
+          }
+        />
+      </View>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Object {
+            "color": "#444",
+            "flex": 1,
+            "fontSize": 16,
+            "marginLeft": 16,
+            "marginRight": 4,
+          }
+        }
+      >
+        rocket.cat
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Object {
+            "backgroundColor": "#1d74f5",
+            "borderRadius": 5,
+            "color": "#fff",
+            "fontSize": 14,
+            "minWidth": 20,
+            "overflow": "hidden",
+            "paddingLeft": 5,
+            "paddingRight": 5,
+            "textAlign": "center",
+          }
+        }
+      >
+        1
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "height": 56,
+          "paddingLeft": 16,
+          "paddingRight": 16,
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderRadius": 20,
+              "height": 40,
+              "justifyContent": "center",
+              "overflow": "hidden",
+              "width": 40,
+            },
+            Object {
+              "backgroundColor": "#795548",
+            },
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Object {
+              "color": "#ffffff",
+              "fontSize": 20,
+            }
+          }
+        >
+          LC
+        </Text>
+        <CachedImage
+          source={
+            Object {
+              "uri": "https://demo.rocket.chat/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+            }
+          }
+          style={
+            Object {
+              "borderRadius": 20,
+              "height": 40,
+              "position": "absolute",
+              "width": 40,
+            }
+          }
+        />
+      </View>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Object {
+            "color": "#444",
+            "flex": 1,
+            "fontSize": 16,
+            "marginLeft": 16,
+            "marginRight": 4,
+          }
+        }
+      >
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Object {
+            "backgroundColor": "#1d74f5",
+            "borderRadius": 5,
+            "color": "#fff",
+            "fontSize": 14,
+            "minWidth": 20,
+            "overflow": "hidden",
+            "paddingLeft": 5,
+            "paddingRight": 5,
+            "textAlign": "center",
+          }
+        }
+      >
+        9
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "height": 56,
+          "paddingLeft": 16,
+          "paddingRight": 16,
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderRadius": 20,
+              "height": 40,
+              "justifyContent": "center",
+              "overflow": "hidden",
+              "width": 40,
+            },
+            Object {
+              "backgroundColor": "#795548",
+            },
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Object {
+              "color": "#ffffff",
+              "fontSize": 20,
+            }
+          }
+        >
+          LC
+        </Text>
+        <CachedImage
+          source={
+            Object {
+              "uri": "https://demo.rocket.chat/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+            }
+          }
+          style={
+            Object {
+              "borderRadius": 20,
+              "height": 40,
+              "position": "absolute",
+              "width": 40,
+            }
+          }
+        />
+      </View>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Object {
+            "color": "#444",
+            "flex": 1,
+            "fontSize": 16,
+            "marginLeft": 16,
+            "marginRight": 4,
+          }
+        }
+      >
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Object {
+            "backgroundColor": "#1d74f5",
+            "borderRadius": 5,
+            "color": "#fff",
+            "fontSize": 14,
+            "minWidth": 20,
+            "overflow": "hidden",
+            "paddingLeft": 5,
+            "paddingRight": 5,
+            "textAlign": "center",
+          }
+        }
+      >
+        99
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "height": 56,
+          "paddingLeft": 16,
+          "paddingRight": 16,
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderRadius": 20,
+              "height": 40,
+              "justifyContent": "center",
+              "overflow": "hidden",
+              "width": 40,
+            },
+            Object {
+              "backgroundColor": "#795548",
+            },
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Object {
+              "color": "#ffffff",
+              "fontSize": 20,
+            }
+          }
+        >
+          LC
+        </Text>
+        <CachedImage
+          source={
+            Object {
+              "uri": "https://demo.rocket.chat/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+            }
+          }
+          style={
+            Object {
+              "borderRadius": 20,
+              "height": 40,
+              "position": "absolute",
+              "width": 40,
+            }
+          }
+        />
+      </View>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Object {
+            "color": "#444",
+            "flex": 1,
+            "fontSize": 16,
+            "marginLeft": 16,
+            "marginRight": 4,
+          }
+        }
+      >
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Object {
+            "backgroundColor": "#1d74f5",
+            "borderRadius": 5,
+            "color": "#fff",
+            "fontSize": 14,
+            "minWidth": 20,
+            "overflow": "hidden",
+            "paddingLeft": 5,
+            "paddingRight": 5,
+            "textAlign": "center",
+          }
+        }
+      >
+        100
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "height": 56,
+          "paddingLeft": 16,
+          "paddingRight": 16,
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderRadius": 20,
+              "height": 40,
+              "justifyContent": "center",
+              "overflow": "hidden",
+              "width": 40,
+            },
+            Object {
+              "backgroundColor": "#795548",
+            },
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Object {
+              "color": "#ffffff",
+              "fontSize": 20,
+            }
+          }
+        >
+          LC
+        </Text>
+        <CachedImage
+          source={
+            Object {
+              "uri": "https://demo.rocket.chat/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+            }
+          }
+          style={
+            Object {
+              "borderRadius": 20,
+              "height": 40,
+              "position": "absolute",
+              "width": 40,
+            }
+          }
+        />
+      </View>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Object {
+            "color": "#444",
+            "flex": 1,
+            "fontSize": 16,
+            "marginLeft": 16,
+            "marginRight": 4,
+          }
+        }
+      >
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Object {
+            "backgroundColor": "#1d74f5",
+            "borderRadius": 5,
+            "color": "#fff",
+            "fontSize": 14,
+            "minWidth": 20,
+            "overflow": "hidden",
+            "paddingLeft": 5,
+            "paddingRight": 5,
+            "textAlign": "center",
+          }
+        }
+      >
+        999+
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "height": 56,
+          "paddingLeft": 16,
+          "paddingRight": 16,
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderRadius": 20,
+              "height": 40,
+              "justifyContent": "center",
+              "overflow": "hidden",
+              "width": 40,
+            },
+            Object {
+              "backgroundColor": "#E91E63",
+            },
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Object {
+              "color": "#ffffff",
+              "fontSize": 20,
+            }
+          }
+        >
+          W
+        </Text>
+        <CachedImage
+          source={
+            Object {
+              "uri": "undefined/avatar/W",
+            }
+          }
+          style={
+            Object {
+              "borderRadius": 20,
+              "height": 40,
+              "position": "absolute",
+              "width": 40,
+            }
+          }
+        />
+      </View>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Object {
+            "color": "#444",
+            "flex": 1,
+            "fontSize": 16,
+            "marginLeft": 16,
+            "marginRight": 4,
+          }
+        }
+      >
+        W
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "height": 56,
+          "paddingLeft": 16,
+          "paddingRight": 16,
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderRadius": 20,
+              "height": 40,
+              "justifyContent": "center",
+              "overflow": "hidden",
+              "width": 40,
+            },
+            Object {
+              "backgroundColor": "#9C27B0",
+            },
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Object {
+              "color": "#ffffff",
+              "fontSize": 20,
+            }
+          }
+        >
+          WW
+        </Text>
+        <CachedImage
+          source={
+            Object {
+              "uri": "undefined/avatar/WW",
+            }
+          }
+          style={
+            Object {
+              "borderRadius": 20,
+              "height": 40,
+              "position": "absolute",
+              "width": 40,
+            }
+          }
+        />
+      </View>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Object {
+            "color": "#444",
+            "flex": 1,
+            "fontSize": 16,
+            "marginLeft": 16,
+            "marginRight": 4,
+          }
+        }
+      >
+        WW
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "height": 56,
+          "paddingLeft": 16,
+          "paddingRight": 16,
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderRadius": 20,
+              "height": 40,
+              "justifyContent": "center",
+              "overflow": "hidden",
+              "width": 40,
+            },
+            Object {
+              "backgroundColor": "#F44336",
+            },
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Object {
+              "color": "#ffffff",
+              "fontSize": 20,
+            }
+          }
+        >
+          
+        </Text>
+        <CachedImage
+          source={
+            Object {
+              "uri": "undefined/avatar/",
+            }
+          }
+          style={
+            Object {
+              "borderRadius": 20,
+              "height": 40,
+              "position": "absolute",
+              "width": 40,
+            }
+          }
+        />
+      </View>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Object {
+            "color": "#444",
+            "flex": 1,
+            "fontSize": 16,
+            "marginLeft": 16,
+            "marginRight": 4,
+          }
+        }
+      >
+        
+      </Text>
+    </View>
+  </View>
+</RCTScrollView>
+`;
