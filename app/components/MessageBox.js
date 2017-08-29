@@ -36,20 +36,13 @@ export default class MessageBox extends React.PureComponent {
 		rid: PropTypes.string.isRequired
 	}
 
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			text: ''
-		};
-	}
-
 	submit(message) {
-		// console.log(this.state);
 		const text = message;
-		this.setState({ text: '' });
 		if (text.trim() === '') {
 			return;
+		}
+		if (this.component) {
+			this.component.setNativeProps({ text: '' });
 		}
 		this.props.onSubmit(text);
 	}
@@ -62,8 +55,6 @@ export default class MessageBox extends React.PureComponent {
 		};
 
 		ImagePicker.showImagePicker(options, (response) => {
-			// console.log('Response = ', response);
-
 			if (response.didCancel) {
 				console.log('User cancelled image picker');
 			} else if (response.error) {
@@ -90,13 +81,12 @@ export default class MessageBox extends React.PureComponent {
 				<TextInput
 					ref={component => this.component = component}
 					style={styles.textBoxInput}
-					value={this.state.text}
-					onChangeText={text => this.setState({ text })}
 					returnKeyType='send'
 					onSubmitEditing={event => this.submit(event.nativeEvent.text)}
 					blurOnSubmit={false}
 					placeholder='New message'
 					underlineColorAndroid='transparent'
+					defaultValue={''}
 				/>
 			</View>
 		);
