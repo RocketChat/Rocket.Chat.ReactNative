@@ -1,20 +1,24 @@
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import logger from 'redux-logger';
-import rootReducer from '../reducers/rootReducer';
+import 'babel-polyfill';
+import 'regenerator-runtime/runtime';
 
-let middleware = [thunk];
+import { createStore, applyMiddleware } from 'redux';
+import createSagaMiddleware from 'redux-saga';
+import reducers from '../reducers';
+import sagas from '../sagas';
+
+const sagaMiddleware = createSagaMiddleware();
+let middleware;
 
 if (__DEV__) {
 	/* eslint-disable global-require */
 	const reduxImmutableStateInvariant = require('redux-immutable-state-invariant').default();
-	middleware = [...middleware, reduxImmutableStateInvariant, logger];
+	middleware = [sagaMiddleware, reduxImmutableStateInvariant];
 } else {
-	middleware = [...middleware];
+	middleware = [sagaMiddleware];
 }
 
 export default createStore(
-	rootReducer,
-	undefined,
+	reducers,
 	applyMiddleware(...middleware)
 );
+sagaMiddleware.run(sagas);
