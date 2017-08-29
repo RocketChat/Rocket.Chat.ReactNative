@@ -1,1 +1,1 @@
-import './app/navigation';
+import './index.ios';

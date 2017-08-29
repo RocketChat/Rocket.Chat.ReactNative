@@ -2,7 +2,7 @@ import React from 'react';
 import { CachedImage } from 'react-native-img-cache';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 import avatarInitialsAndColor from '../utils/avatarInitialsAndColor';
 
@@ -62,7 +62,8 @@ export default class RoomItem extends React.PureComponent {
 		type: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
 		unread: PropTypes.number,
-		baseUrl: PropTypes.string
+		baseUrl: PropTypes.string,
+		onPress: PropTypes.func
 	}
 
 	get icon() {
@@ -116,13 +117,12 @@ export default class RoomItem extends React.PureComponent {
 
 	render() {
 		const { unread, name } = this.props;
-
 		return (
-			<View style={styles.container}>
+			<TouchableOpacity onPress={this.props.onPress} style={styles.container}>
 				{this.icon}
 				<Text style={styles.roomName} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
 				{this.renderNumber(unread)}
-			</View>
+			</TouchableOpacity>
 		);
 	}
 }

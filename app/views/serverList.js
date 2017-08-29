@@ -1,14 +1,15 @@
 import React from 'react';
+
+import Icon from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
 import { Navigation } from 'react-native-navigation';
-import { bindActionCreators } from 'redux';
 import Zeroconf from 'react-native-zeroconf';
 import { View, Text, SectionList, Platform, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-
-import * as actions from '../actions';
+import { setServer } from '../actions/server';
 import realm from '../lib/realm';
-import RocketChat from '../lib/rocketchat';
+import Fade from '../animations/fade';
+import Banner from '../components/banner';
 
 const styles = StyleSheet.create({
 	view: {
@@ -30,11 +31,6 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		color: '#888'
 	},
-	listItem: {
-		lineHeight: 18,
-		color: '#666',
-		padding: 14
-	},
 	container: {
 		flex: 1
 	},
@@ -47,6 +43,21 @@ const styles = StyleSheet.create({
 		lineHeight: 24,
 		paddingLeft: 14,
 		color: '#888'
+	},
+	serverItem: {
+		flex: 1,
+		flexDirection: 'row',
+		// justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#fff',
+		padding: 14
+	},
+
+	listItem: {
+		color: '#666', flexGrow: 1, lineHeight: 30
+	},
+	serverChecked: {
+		flexGrow: 0
 	}
 });
 
@@ -56,11 +67,12 @@ const zeroconf = new Zeroconf();
 @connect(state => ({
 	server: state.server
 }), dispatch => ({
-	actions: bindActionCreators(actions, dispatch)
+	selectServer: server => dispatch(setServer(server))
 }))
 export default class ListServerView extends React.Component {
 	static propTypes = {
 		navigator: PropTypes.object.isRequired,
+		selectServer: PropTypes.func.isRequired,
 		actions: PropTypes.object,
 		server: PropTypes.string
 	}
@@ -131,14 +143,7 @@ export default class ListServerView extends React.Component {
 	}
 
 	onPressItem = (item) => {
-		RocketChat.logout();
-		Navigation.dismissModal({
-			animationType: 'slide-down'
-		});
-
-		this.setState({
-			server: item.id
-		});
+		this.props.selectServer(item.id);
 	}
 
 	getState = () => {
@@ -176,12 +181,16 @@ export default class ListServerView extends React.Component {
 	}
 
 	renderItem = ({ item }) => (
-		<Text
-			style={styles.listItem}
-			onPress={() => { this.onPressItem(item); }}
-		>
-			{item.id}
-		</Text>
+
+		<View style={styles.serverItem}>
+			<Text
+				style={[styles.listItem]}
+				onPress={() => { this.onPressItem(item); }}
+			>
+				{item.id}
+			</Text>
+			<Fade visible={this.props.server === item.id}><Icon iconSize={24} size={24} style={styles.serverChecked} name='ios-checkmark-circle-outline' /> </Fade>
+		</View>
 	);
 
 	renderSectionHeader = ({ section }) => (
@@ -195,6 +204,7 @@ export default class ListServerView extends React.Component {
 	render() {
 		return (
 			<View style={styles.view}>
+				<Banner />
 				<SectionList
 					style={styles.list}
 					sections={this.state.sections}
