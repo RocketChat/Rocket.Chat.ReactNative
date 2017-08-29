@@ -33,7 +33,6 @@ const subscriptionSchema = {
 		name: 'string',
 		fname: { type: 'string', optional: true },
 		rid: 'string',
-		// u: { _id: 'hKCY2XGzHYk89SAaM', username: 'rodrigo', name: null },
 		open: { type: 'bool', optional: true },
 		alert: { type: 'bool', optional: true },
 		// roles: [ 'owner' ],
@@ -153,9 +152,9 @@ const messagesSchema = {
 	// 	]
 	// }
 };
-
+//
 // Realm.clearTestState();
-
+// AsyncStorage.clear();
 const realm = new Realm({
 	schema: [settingsSchema, serversSchema, subscriptionSchema, messagesSchema, usersSchema, attachment]
 });

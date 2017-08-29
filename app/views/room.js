@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as actions from '../actions';
+import { messagesRequest } from '../actions/messages';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import debounce from '../utils/throttle';
@@ -47,19 +48,23 @@ const styles = StyleSheet.create({
 @connect(state => ({
 	server: state.server,
 	Site_Url: state.settings.Site_Url,
-	Message_TimeFormat: state.settings.Message_TimeFormat
+	Message_TimeFormat: state.settings.Message_TimeFormat,
+	loading: state.messages.isFetching
 }), dispatch => ({
-	actions: bindActionCreators(actions, dispatch)
+	actions: bindActionCreators(actions, dispatch),
+	getMessages: rid => dispatch(messagesRequest({ rid }))
 }))
 export default class RoomView extends React.Component {
 	static propTypes = {
 		navigator: PropTypes.object.isRequired,
+		getMessages: PropTypes.func.isRequired,
 		rid: PropTypes.string,
 		sid: PropTypes.string,
 		name: PropTypes.string,
 		server: PropTypes.string,
 		Site_Url: PropTypes.string,
-		Message_TimeFormat: PropTypes.string
+		Message_TimeFormat: PropTypes.string,
+		loading: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -69,7 +74,7 @@ export default class RoomView extends React.Component {
 
 		this.data = realm.objects('messages').filtered('_server.id = $0 AND rid = $1', this.props.server, this.rid).sorted('ts', true);
 		this.state = {
-			dataSource: ds.cloneWithRows(this.data.slice(0, 10)),
+			dataSource: ds.cloneWithRows(this.data),
 			loaded: true,
 			joined: typeof props.rid === 'undefined'
 		};
@@ -80,17 +85,18 @@ export default class RoomView extends React.Component {
 	}
 
 	componentWillMount() {
-		const late = setTimeout(() => this.setState({
-			loaded: false
-		}), 1000);
-		RocketChat.loadMessagesForRoom(this.rid, null, () => {
-			clearTimeout(late);
-			this.setState({
-				loaded: true
-			});
-			this.data.addListener(this.updateState);
-		});
-		this.updateState();
+		this.props.getMessages(this.rid);
+		// const late = setTimeout(() => this.setState({
+		// 	loaded: false
+		// }), 1000);
+		// RocketChat.loadMessagesForRoom(this.rid, null, () => {
+		// 	clearTimeout(late);
+		// 	this.setState({
+		// 		loaded: true
+		// 	});
+		this.data.addListener(this.updateState);
+		// });
+		// this.updateState();
 	}
 
 	componentDidMount() {
@@ -141,15 +147,13 @@ export default class RoomView extends React.Component {
 			});
 	};
 
-	renderBanner = () => {
-		if (this.state.loaded === false) {
-			return (
-				<View style={styles.bannerContainer}>
-					<Text style={styles.bannerText}>Loading new messages...</Text>
-				</View>
-			);
-		}
-	};
+	renderBanner = () => (this.props.loading ?
+		(
+			<View style={styles.bannerContainer}>
+				<Text style={styles.bannerText}>Loading new messages...</Text>
+			</View>
+		) : null)
+
 
 	renderItem = ({ item }) => (
 		<Message
@@ -193,11 +197,6 @@ export default class RoomView extends React.Component {
 	}
 
 	render() {
-		// data={this.state.dataSource}
-		// extraData={this.state}
-		// renderItem={this.renderItem}
-		// keyExtractor={item => item._id}
-		//
 		return (
 			<KeyboardView style={styles.container} keyboardVerticalOffset={64}>
 				{this.renderBanner()}
