@@ -20,3 +20,32 @@ export function createChannelFailure(err) {
 		err
 	};
 }
+
+
+export function createChannelRequestUsers(data) {
+	return {
+		type: types.CREATE_CHANNEL.REQUEST_USERS,
+		data
+	};
+}
+
+export function createChannelSetUsers(data) {
+	return {
+		type: types.CREATE_CHANNEL.SET_USERS,
+		data
+	};
+}
+
+export function createChannelSuccessUsers(data) {
+	return {
+		type: types.CREATE_CHANNEL.SUCCESS_USERS,
+		data
+	};
+}
+
+export function createChannelFailureUsers(err) {
+	return {
+		type: types.CREATE_CHANNEL.FAILURE_USERS,
+		err
+	};
+}

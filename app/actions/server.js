@@ -6,6 +6,37 @@ export function setServer(server) {
 		server
 	};
 }
+export function serverRequest(server) {
+	console.log(server);
+	return {
+		type: SERVER.REQUEST,
+		server
+	};
+}
+
+export function addServer(server) {
+	console.log(server);
+	return {
+		type: SERVER.ADD,
+		server
+	};
+}
+
+
+export function serverSuccess() {
+	return {
+		type: SERVER.SUCCESS
+	};
+}
+
+export function serverFailure(err) {
+	return {
+		type: SERVER.FAILURE,
+		err
+	};
+}
+
+
 export function changedServer(server) {
 	return {
 		type: SERVER.CHANGED,

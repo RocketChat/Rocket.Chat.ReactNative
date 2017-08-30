@@ -119,7 +119,7 @@ class LoginView extends React.Component {
 function mapStateToProps(state) {
 	// console.log(Object.keys(state));
 	return {
-		server: state.server,
+		server: state.server.server,
 		Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
 		Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
 		login: state.login

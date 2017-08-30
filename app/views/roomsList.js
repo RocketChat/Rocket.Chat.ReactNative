@@ -56,10 +56,10 @@ const styles = StyleSheet.create({
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 @connect(state => ({
-	server: state.server,
+	server: state.server.server,
 	login: state.login,
 	Site_Url: state.settings.Site_Url,
-	canShowList: state.login.token.length || state.login.user.token
+	canShowList: state.login.token || state.login.user.token
 }), dispatch => ({
 	login: () => dispatch(actions.login()),
 	connect: () => dispatch(server.connectRequest())

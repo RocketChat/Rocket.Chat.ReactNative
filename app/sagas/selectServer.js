@@ -7,7 +7,6 @@ import { changedServer } from '../actions/server';
 const selectServer = function* selectServer({ server }) {
 	yield put(disconnect());
 	yield put(changedServer(server));
-	yield console.log('SERVER->', server);
 	yield call([AsyncStorage, 'setItem'], 'currentServer', server);
 	yield put(connectRequest(server));
 };

@@ -74,8 +74,8 @@ const styles = StyleSheet.create({
 
 const renderTag = (item, index) => (<Item key={item} label={item} onPress={() => this.props.onPress(item, index)} />);
 
-const renderItemResult = ({ item = '' }) => (
-	<View style={styles.result_item}>
+const renderItemResult = ({ item = '', onPress }) => (
+	<View style={styles.result_item} onPress={onPress}>
 		<Avatar	text={item}	width={40}	height={40} fontSize={20} style={{ marginRight: 5 }}	/>
 		<Text>@{item}</Text>
 	</View>);
@@ -102,11 +102,11 @@ export default class tags extends React.PureComponent {
 						onChangeText={this.props.onChangeText}
 					/>
 				</View>
-				{this.props.result ? <FlatList
+				{this.props.result && this.props.result.length ? <FlatList
 					keyExtractor={item => item}
 					style={styles.result}
 					data={this.props.result || []}
-					renderItem={this.props.renderItemResult || renderItemResult}
+					renderItem={e => (this.props.renderItemResult || renderItemResult)(e, this.props.onSelect)}
 				/> : null}
 			</View>);
 	}

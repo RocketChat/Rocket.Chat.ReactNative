@@ -4,49 +4,48 @@ import { StyleSheet, Text, View } from 'react-native';
 import { CachedImage } from 'react-native-img-cache';
 import avatarInitialsAndColor from '../utils/avatarInitialsAndColor';
 
+const styles = StyleSheet.create({
+	iconContainer: {
+		overflow: 'hidden',
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	avatar: {
+		position: 'absolute'
+	},
+	avatarInitials: {
+		color: '#ffffff'
+	} });
 
-const styles = StyleSheet.create({ iconContainer: {
-	height: 40,
-	width: 40,
-	borderRadius: 20,
-	overflow: 'hidden',
-	justifyContent: 'center',
-	alignItems: 'center'
-},
-icon: {
-	fontSize: 20,
-	color: '#fff'
-},
-avatar: {
-	width: 40,
-	height: 40,
-	position: 'absolute'
-},
-avatarInitials: {
-	fontSize: 20,
-	color: '#ffffff'
-} });
+class Avatar extends React.PureComponent {
+	render() {
+		const { text = '', size = 25, baseUrl = this.props.baseUrl,
+			borderRadius = 5, style, avatar } = this.props;
+		const { initials, color } = avatarInitialsAndColor(`${ text }`);
+		return (
+			<View style={[styles.iconContainer, {
+				backgroundColor: color,
+				width: size,
+				height: size,
+				borderRadius
+			}, style]}
+			>
+				<Text style={[styles.avatarInitials, { fontSize: size / 2 }]}>{initials}</Text>
+				{ (avatar || baseUrl) && <CachedImage
+					style={[styles.avatar, { width: size,
+						height: size }]}
+					source={{ uri: avatar || `${ baseUrl }/avatar/${ text }` }}
+				/>}
+			</View>);
+	}
+}
 
-
-const avatar = ({ text = '', width = 25, height = 25, fontSize = 12, baseUrl,
-	borderRadius = 2, style }) => {
-	const { initials, color } = avatarInitialsAndColor(`${ text }`);
-	return (
-		<View style={[styles.iconContainer, { backgroundColor: color }, { width,
-			height,
-			borderRadius }, style]}
-		>
-			<Text style={[styles.avatarInitials, { fontSize }]}>{initials}</Text>
-			{ baseUrl ? <CachedImage style={styles.avatar} source={{ uri: `${ baseUrl }/avatar/${ name }` }} /> : null}
-		</View>);
-};
-
-avatar.propTypes = {
+Avatar.propTypes = {
+	style: PropTypes.object,
 	baseUrl: PropTypes.string,
 	text: PropTypes.string.isRequired,
-	width: PropTypes.number,
-	fontSize: PropTypes.number,
-	height: PropTypes.number,
+	avatar: PropTypes.string,
+	size: PropTypes.number,
 	borderRadius: PropTypes.number
 };
-export default avatar;
+export default Avatar;

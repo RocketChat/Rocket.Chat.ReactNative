@@ -6,6 +6,12 @@ export function appReady() {
 		type: APP.READY
 	};
 }
+
+export function appInit() {
+	return {
+		type: APP.INIT
+	};
+}
 export function setCurrentServer(server) {
 	return {
 		type: types.SET_CURRENT_SERVER,

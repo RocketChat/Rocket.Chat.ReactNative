@@ -1,10 +1,15 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Text } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 import setNavigator from './actions/navigator';
+import { appInit } from './actions';
 import LoginView from './views/login';
 import ListServerView from './views/serverList';
+
+import { Keyboard, Text, TextInput, View, Image, TouchableOpacity } from 'react-native';
+
+import styles from './views/Styles';
 
 import store from './lib/createStore';
 
@@ -22,16 +27,16 @@ export const authenticated = WrappedComponent => class _p extends React.PureComp
 	constructor() {
 		super();
 		this.login = store.getState().login;
-		console.log('this.login.token', this.login.token);
 		if (!this.login.token || this.login.failure) {
 			return store.getState().navigator.resetTo({
-				screen: 'Login'
+				screen: 'Login',
+				animationType: 'none'
 			});
 		}
 	}
 	render() {
 		// Wraps the input component in a container, without mutating it. Good!
-		return <WrappedComponent {...this.props} />;
+		return ((this.login.isAuthenticated || this.login.user) && <WrappedComponent {...this.props} />);
 	}
 };
 //
@@ -43,7 +48,7 @@ export class PublicScreen extends React.PureComponent {
 	// 	}
 	// }
 	render() {
-		return !this.login.isAuthenticated || !this.login.user ? null : (<ListServerView {...this.props} />);
+		return ((this.login.isAuthenticated || this.login.user) && <ListServerView {...this.props} />);
 	}
 }
 
@@ -66,21 +71,29 @@ export class PrivateScreen extends React.PureComponent {
 	// logged: state.login.isAuthenticated
 }), dispatch => ({
 	// navigate: routeName => dispatch(NavigationActions.navigate({ routeName })),
-	setNavigator: navigator => dispatch(setNavigator(navigator))
+	setNavigator: navigator => dispatch(setNavigator(navigator)),
+	appInit: () => dispatch(appInit())
 }))
 export const HomeScreen = class extends React.PureComponent {
 	static propTypes = {
 		setNavigator: PropTypes.func.isRequired,
 		navigator: PropTypes.object.isRequired
 	}
-
+	static navigatorStyle = {
+		navBarHidden: true
+	};
 	componentWillMount() {
 		this.props.setNavigator(this.props.navigator);
-		this.props.navigator.resetTo({
-			screen: 'public'
-		});
+		this.props.appInit();
+		//
+		// this.props.navigator.setDrawerEnabled({
+		// 	side: 'left', // the side of the drawer since you can have two, 'left' / 'right'
+		// 	enabled: false // should the drawer be enabled or disabled (locked closed)
+		// });
 	}
 	render() {
-		return (<Text>oieee</Text>);
+		return (<View style={styles.logoContainer}><Animatable.Text animation='pulse' easing='ease-out' iterationCount='infinite' style={{ textAlign: 'center' }}>
+			<Image style={styles.logo} source={require('./images/logo.png')} />
+		</Animatable.Text></View>);
 	}
 };

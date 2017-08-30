@@ -65,7 +65,7 @@ const zeroconf = new Zeroconf();
 
 
 @connect(state => ({
-	server: state.server
+	server: state.server.server
 }), dispatch => ({
 	selectServer: server => dispatch(setServer(server))
 }))

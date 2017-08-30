@@ -8,6 +8,9 @@ import { storiesOf } from '@storybook/react-native';
 
 import DirectMessage from './Channels/DirectMessage';
 import TagInput from './TagInput';
+import Avatar from './Avatar';
+
+storiesOf('Avatar', module).add('avatar', () => Avatar);
 
 storiesOf('Tag Input', module).add('Tag Input', () => TagInput);
 storiesOf('Channel Cell', module).add('Direct Messages', () => DirectMessage);
