@@ -13,16 +13,6 @@ import styles from './views/Styles';
 
 import store from './lib/createStore';
 
-//
-// export const authenticated = (view) => {
-// 	if (!store.getState().login.authenticated) {
-// 		return store.getState().navigator.resetTo({
-// 			screen: 'Login'
-// 		});
-// 	}
-// 	return view;
-// };
-
 export const authenticated = WrappedComponent => class _p extends React.PureComponent {
 	constructor() {
 		super();
@@ -41,12 +31,6 @@ export const authenticated = WrappedComponent => class _p extends React.PureComp
 };
 //
 export class PublicScreen extends React.PureComponent {
-	// componentWillMount() {
-	// 	this.props.setNavigator(this.props.navigator);
-	// 	if (this.props.currentServer) {
-	// 		return this.props.navigator.navigate('private');
-	// 	}
-	// }
 	render() {
 		return ((this.login.isAuthenticated || this.login.user) && <ListServerView {...this.props} />);
 	}
@@ -57,20 +41,13 @@ export class PublicScreen extends React.PureComponent {
 	setNavigator: navigator => dispatch(setNavigator(navigator))
 }))
 export class PrivateScreen extends React.PureComponent {
-	componentWillMount() {
-		// this.props.setNavigator(this.props.navigator);
-	}
 	render() {
-		// if (this.props.logged) {
-		// 	return (<Text>oi</Text>);
-		// }
 		return (<LoginView {...this.props} />);
 	}
 }
 @connect(() => ({
 	// logged: state.login.isAuthenticated
 }), dispatch => ({
-	// navigate: routeName => dispatch(NavigationActions.navigate({ routeName })),
 	setNavigator: navigator => dispatch(setNavigator(navigator)),
 	appInit: () => dispatch(appInit())
 }))

@@ -7,7 +7,6 @@ export function setServer(server) {
 	};
 }
 export function serverRequest(server) {
-	console.log(server);
 	return {
 		type: SERVER.REQUEST,
 		server
@@ -15,7 +14,6 @@ export function serverRequest(server) {
 }
 
 export function addServer(server) {
-	console.log(server);
 	return {
 		type: SERVER.ADD,
 		server

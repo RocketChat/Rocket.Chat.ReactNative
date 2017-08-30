@@ -33,7 +33,6 @@ const subscriptionSchema = {
 		name: 'string',
 		fname: { type: 'string', optional: true },
 		rid: 'string',
-		// u: { _id: 'hKCY2XGzHYk89SAaM', username: 'rodrigo', name: null },
 		open: { type: 'bool', optional: true },
 		alert: { type: 'bool', optional: true },
 		// roles: [ 'owner' ],
