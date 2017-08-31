@@ -7,7 +7,6 @@ import { createChannelRequest } from '../actions/createChannel';
 import styles from './Styles';
 import KeyboardView from '../components/KeyboardView';
 import Banner from '../components/banner';
-import TagInput from '../components/tags';
 
 @connect(state => ({
 	result: state.createChannel,
@@ -75,13 +74,6 @@ export default class CreateChannelView extends React.Component {
 							<Text style={[styles.label_white, { flexGrow: 1, paddingHorizontal: 10 }]}>{this.state.type ? 'Public' : 'Private'}</Text>
 						</View>
 						<Text style={[styles.label_white, { color: '#9ea2a8', flexGrow: 1, paddingHorizontal: 0, marginBottom: 20 }]}>{this.state.type ? 'Everyone can access this channel' : 'Just invited people can access this channel'}</Text>
-
-
-						<View style={[styles.view_white, { padding: 0 }]}>
-							<TagInput result={this.props.findUsers} onPress={(item, index) => values.splice(index, 1)} values={this.props.selectedUsers} onChangeText={e => console.log(e)} placeholder={'@username'} />
-						</View>
-
-
 						<TouchableOpacity onPress={() => this.submit()} style={[styles.buttonContainer_white, { backgroundColor: (this.state.channelName.length == 0 || this.props.result.isFetching) ? '#e1e5e8' : '#1d74f5' }]}>
 							<Text style={styles.button_white}> { this.props.result.isFetching ? 'LOADING' : 'CREATE' }!</Text>
 						</TouchableOpacity>
