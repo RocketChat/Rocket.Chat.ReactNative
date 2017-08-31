@@ -34,33 +34,20 @@ class LoginView extends React.Component {
 			username: '',
 			password: ''
 		};
-		this.props.navigator.setSubTitle({
-			subtitle: this.props.server
-		});
-		this.props.navigator.setTitle({
-			title: 'Login'
-		});
-		this.props.navigator.setButtons({
-			rightButtons: [{
-				id: 'close',
-				title: 'Cancel'
-			}],
-			animated: true
-		});
 	}
 	componentWillReceiveProps() {
-		this.props.navigator.setSubTitle({
-			subtitle: this.props.server
-		});
-		this.props.navigator.setTitle({
+		const { navigator } = this.props;
+		navigator.setTitle({
 			title: 'Login'
 		});
-		this.props.navigator.setButtons({
+		navigator.setSubTitle({
+			subtitle: this.props.server
+		});
+		navigator.setButtons({
 			rightButtons: [{
 				id: 'close',
 				title: 'Cancel'
-			}],
-			animated: true
+			}]
 		});
 		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}

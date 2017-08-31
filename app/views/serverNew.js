@@ -56,7 +56,10 @@ const styles = StyleSheet.create({
 export default class NewServerView extends React.Component {
 	static propTypes = {
 		navigator: PropTypes.object.isRequired,
-		validateServer: PropTypes.func.isRequired
+		validateServer: PropTypes.func.isRequired,
+		addServer: PropTypes.func.isRequired,
+		validating: PropTypes.bool.isRequired,
+		validInstance: PropTypes.bool.isRequired
 	}
 
 	static navigationOptions = () => ({
@@ -142,14 +145,11 @@ export default class NewServerView extends React.Component {
 				</Text>
 			);
 		}
-
-		if (!this.state.validInstance) {
-			return (
-				<Text style={[styles.validateText, styles.invalidText]}>
-					{this.state.url} is not a valid Rocket.Chat instance
-				</Text>
-			);
-		}
+		return (
+			<Text style={[styles.validateText, styles.invalidText]}>
+				{this.state.url} is not a valid Rocket.Chat instance
+			</Text>
+		);
 	}
 
 	render() {

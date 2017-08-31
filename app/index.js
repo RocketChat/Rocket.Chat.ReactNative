@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { View, Image } from 'react-native';
 import { connect } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
 import setNavigator from './actions/navigator';
@@ -7,7 +8,6 @@ import { appInit } from './actions';
 import LoginView from './views/login';
 import ListServerView from './views/serverList';
 
-import { Keyboard, Text, TextInput, View, Image, TouchableOpacity } from 'react-native';
 
 import styles from './views/Styles';
 
@@ -53,6 +53,7 @@ export class PrivateScreen extends React.PureComponent {
 }))
 export const HomeScreen = class extends React.PureComponent {
 	static propTypes = {
+		appInit: PropTypes.func.isRequired,
 		setNavigator: PropTypes.func.isRequired,
 		navigator: PropTypes.object.isRequired
 	}

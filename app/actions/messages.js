@@ -1,7 +1,6 @@
 import * as types from './actionsTypes';
 
 export function messagesRequest({ rid }) {
-	console.log(types.MESSAGES.REQUEST, rid);
 	return {
 		type: types.MESSAGES.REQUEST,
 		rid
