@@ -20,7 +20,7 @@ export const authenticated = WrappedComponent => class _p extends React.PureComp
 		if (!this.login.token || this.login.failure) {
 			return store.getState().navigator.resetTo({
 				screen: 'Login',
-				animationType: 'none'
+				animated: false
 			});
 		}
 	}
@@ -57,7 +57,12 @@ export const HomeScreen = class extends React.PureComponent {
 		navigator: PropTypes.object.isRequired
 	}
 	static navigatorStyle = {
-		navBarHidden: true
+		navBarHidden: true,
+
+		rightButtons: [{
+			id: 'close',
+			title: 'Cancel'
+		}]
 	};
 	componentWillMount() {
 		this.props.setNavigator(this.props.navigator);

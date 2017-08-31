@@ -14,7 +14,8 @@ const restore = function* restore() {
 			yield put(setServer(currentServer));
 		} else {
 			navigator.resetTo({
-				screen: 'ListServer'
+				screen: 'ListServer',
+				animated: false
 			});
 		}
 	} catch (e) {

@@ -65,7 +65,8 @@ const zeroconf = new Zeroconf();
 
 
 @connect(state => ({
-	server: state.server.server
+	server: state.server.server,
+	login: state.login
 }), dispatch => ({
 	selectServer: server => dispatch(setServer(server))
 }))
@@ -92,7 +93,7 @@ export default class ListServerView extends React.Component {
 				id: 'add',
 				title: 'Add'
 			}],
-			leftButtons: props.server && Platform.select({
+			leftButtons: props.login.isAuthenticated && props.server && Platform.select({
 				ios: [{
 					id: 'close',
 					title: 'Close'
