@@ -5,7 +5,7 @@ import { Text, TextInput, View, StyleSheet } from 'react-native';
 import _ from 'underscore';
 import realm from '../lib/realm';
 
-import KeyboardView from '../components/KeyboardView';
+import KeyboardView from '../presentation/KeyboardView';
 
 const styles = StyleSheet.create({
 	view: {

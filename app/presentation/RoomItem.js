@@ -80,8 +80,9 @@ export default class RoomItem extends React.PureComponent {
 			return null;
 		}
 
+		const { initials, color } = avatarInitialsAndColor(name);
+
 		if (type === 'd') {
-			const { initials, color } = avatarInitialsAndColor(name);
 			return (
 				<View style={[styles.iconContainer, { backgroundColor: color }]}>
 					<Text style={styles.avatarInitials}>{initials}</Text>
@@ -89,8 +90,6 @@ export default class RoomItem extends React.PureComponent {
 				</View>
 			);
 		}
-
-		const { color } = avatarInitialsAndColor(name);
 
 		return (
 			<View style={[styles.iconContainer, { backgroundColor: color }]}>
