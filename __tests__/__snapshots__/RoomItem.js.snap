@@ -231,15 +231,16 @@ exports[`render unread +999 1`] = `
       Array [
         Object {
           "alignItems": "center",
-          "borderRadius": 20,
-          "height": 40,
           "justifyContent": "center",
           "overflow": "hidden",
-          "width": 40,
         },
         Object {
           "backgroundColor": "#3F51B5",
+          "borderRadius": 20,
+          "height": 40,
+          "width": 40,
         },
+        undefined,
       ]
     }
   >
@@ -249,29 +250,18 @@ exports[`render unread +999 1`] = `
       disabled={false}
       ellipsizeMode="tail"
       style={
-        Object {
-          "color": "#ffffff",
-          "fontSize": 20,
-        }
+        Array [
+          Object {
+            "color": "#ffffff",
+          },
+          Object {
+            "fontSize": 20,
+          },
+        ]
       }
     >
       NA
     </Text>
-    <View
-      source={
-        Object {
-          "uri": "undefined/avatar/name",
-        }
-      }
-      style={
-        Object {
-          "borderRadius": 20,
-          "height": 40,
-          "position": "absolute",
-          "width": 40,
-        }
-      }
-    />
   </View>
   <Text
     accessible={true}
@@ -350,15 +340,16 @@ exports[`render unread 1`] = `
       Array [
         Object {
           "alignItems": "center",
-          "borderRadius": 20,
-          "height": 40,
           "justifyContent": "center",
           "overflow": "hidden",
-          "width": 40,
         },
         Object {
           "backgroundColor": "#3F51B5",
+          "borderRadius": 20,
+          "height": 40,
+          "width": 40,
         },
+        undefined,
       ]
     }
   >
@@ -368,29 +359,18 @@ exports[`render unread 1`] = `
       disabled={false}
       ellipsizeMode="tail"
       style={
-        Object {
-          "color": "#ffffff",
-          "fontSize": 20,
-        }
+        Array [
+          Object {
+            "color": "#ffffff",
+          },
+          Object {
+            "fontSize": 20,
+          },
+        ]
       }
     >
       NA
     </Text>
-    <View
-      source={
-        Object {
-          "uri": "undefined/avatar/name",
-        }
-      }
-      style={
-        Object {
-          "borderRadius": 20,
-          "height": 40,
-          "position": "absolute",
-          "width": 40,
-        }
-      }
-    />
   </View>
   <Text
     accessible={true}
@@ -469,15 +449,16 @@ exports[`renders correctly 1`] = `
       Array [
         Object {
           "alignItems": "center",
-          "borderRadius": 20,
-          "height": 40,
           "justifyContent": "center",
           "overflow": "hidden",
-          "width": 40,
         },
         Object {
           "backgroundColor": "#3F51B5",
+          "borderRadius": 20,
+          "height": 40,
+          "width": 40,
         },
+        undefined,
       ]
     }
   >
@@ -487,29 +468,18 @@ exports[`renders correctly 1`] = `
       disabled={false}
       ellipsizeMode="tail"
       style={
-        Object {
-          "color": "#ffffff",
-          "fontSize": 20,
-        }
+        Array [
+          Object {
+            "color": "#ffffff",
+          },
+          Object {
+            "fontSize": 20,
+          },
+        ]
       }
     >
       NA
     </Text>
-    <View
-      source={
-        Object {
-          "uri": "undefined/avatar/name",
-        }
-      }
-      style={
-        Object {
-          "borderRadius": 20,
-          "height": 40,
-          "position": "absolute",
-          "width": 40,
-        }
-      }
-    />
   </View>
   <Text
     accessible={true}

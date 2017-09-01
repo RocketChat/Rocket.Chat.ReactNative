@@ -12,10 +12,11 @@ function createRequestTypes(base, types = defaultTypes) {
 // Login events
 export const LOGIN = createRequestTypes('LOGIN', [...defaultTypes, 'SET_TOKEN', 'SUBMIT']);
 export const ROOMS = createRequestTypes('ROOMS');
-export const APP = createRequestTypes('APP', ['READY']);
+export const APP = createRequestTypes('APP', ['READY', 'INIT']);
 export const MESSAGES = createRequestTypes('MESSAGES');
+export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [...defaultTypes, 'REQUEST_USERS', 'SUCCESS_USERS', 'FAILURE_USERS', 'SET_USERS']);
 export const NAVIGATION = createRequestTypes('NAVIGATION', ['SET']);
-export const SERVER = createRequestTypes('SERVER', ['SELECT', 'CHANGED']);
+export const SERVER = createRequestTypes('SERVER', [...defaultTypes, 'SELECT', 'CHANGED', 'ADD']);
 export const METEOR = createRequestTypes('METEOR_CONNECT', [...defaultTypes, 'DISCONNECT']);
 export const LOGOUT = 'LOGOUT'; // logout is always success
 
