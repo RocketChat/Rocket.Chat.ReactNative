@@ -5,7 +5,7 @@ import { emojify } from 'react-emojione';
 import Markdown from 'react-native-easy-markdown';
 
 import Card from './message/Card';
-import Avatar from './message/Avatar';
+import Avatar from './Avatar';
 import User from './message/User';
 
 const styles = StyleSheet.create({
