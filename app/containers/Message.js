@@ -18,50 +18,6 @@ const styles = StyleSheet.create({
 		paddingBottom: 6,
 		flexDirection: 'row',
 		transform: [{ scaleY: -1 }]
-	},
-	avatarContainer: {
-		backgroundColor: '#eee',
-		width: 40,
-		height: 40,
-		marginRight: 10,
-		borderRadius: 5
-	},
-	avatar: {
-		width: 40,
-		height: 40,
-		borderRadius: 5,
-		position: 'absolute'
-	},
-	avatarInitials: {
-		margin: 2,
-		textAlign: 'center',
-		lineHeight: 36,
-		fontSize: 22,
-		color: '#ffffff'
-	},
-	texts: {
-		flex: 1
-	},
-	msg: {
-		flex: 1
-	},
-	username: {
-		fontWeight: 'bold'
-	},
-	usernameView: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		marginBottom: 2
-	},
-	alias: {
-		fontSize: 10,
-		color: '#888',
-		paddingLeft: 5
-	},
-	time: {
-		fontSize: 10,
-		color: '#888',
-		paddingLeft: 5
 	}
 });
 
