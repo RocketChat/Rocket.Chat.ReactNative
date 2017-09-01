@@ -40,7 +40,6 @@ class Avatar extends React.PureComponent {
 		};
 
 		const uri = avatar || `${ baseUrl }/avatar/${ text }`;
-
 		const image = (avatar || baseUrl) && (
 			<CachedImage
 				style={[styles.avatar, avatarStyle]}
