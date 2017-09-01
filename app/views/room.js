@@ -10,9 +10,9 @@ import { messagesRequest } from '../actions/messages';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import debounce from '../utils/throttle';
-import Message from '../components/Message';
-import MessageBox from '../components/MessageBox';
-import KeyboardView from '../components/KeyboardView';
+import Message from '../containers/Message';
+import MessageBox from '../containers/MessageBox';
+import KeyboardView from '../presentation/KeyboardView';
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 const styles = StyleSheet.create({

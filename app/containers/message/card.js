@@ -40,6 +40,7 @@ export default class Cards extends React.PureComponent {
 		data: PropTypes.object.isRequired,
 		base: PropTypes.string
 	}
+
 	constructor() {
 		super();
 		const user = Meteor.user();
@@ -48,6 +49,32 @@ export default class Cards extends React.PureComponent {
 			this.setState({ img: `${ this.props.base }${ this.props.data.image_url }?rc_uid=${ user._id }&rc_token=${ token }` });
 		});
 	}
+
+	getImage() {
+		return (
+			<TouchableOpacity onPress={() => this._onPressButton()}>
+				<Card>
+					<CardImage style={{ width: 256, height: 256 }}>
+						<CachedImage
+							style={{ width: 256, height: 256 }}
+							source={{ uri: encodeURI(this.state.img) }}
+						/>
+					</CardImage>
+					<CardContent>
+						<Text style={[{ fontSize: 12, alignSelf: 'center', fontStyle: 'italic' }]}>{this.props.data.title}</Text>
+						<Text style={{ alignSelf: 'center', fontWeight: 'bold' }}>{this.props.data.description}</Text>
+					</CardContent>
+				</Card>
+			</TouchableOpacity>
+		);
+	}
+
+	getOther() {
+		return (
+			<Text style={[{ fontSize: 12, alignSelf: 'center', fontStyle: 'italic' }]}>{this.props.data.title}</Text>
+		);
+	}
+
 	_onPressButton() {
 		Navigation.showModal({
 			screen: 'Photo',
@@ -66,23 +93,8 @@ export default class Cards extends React.PureComponent {
 			animationType: 'slide-up' // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
 		});
 	}
+
 	render() {
-		return this.state.img ? (
-			<TouchableOpacity onPress={() => this._onPressButton()}>
-				<Card>
-					<CardImage style={{ width: 256, height: 256 }}>
-						<CachedImage
-							style={{ width: 256, height: 256 }}
-							source={{ uri: encodeURI(this.state.img) }}
-						/>
-					</CardImage>
-					<CardContent>
-						<Text style={[{ fontSize: 12, alignSelf: 'center', fontStyle: 'italic' }]}>{this.props.data.title}</Text>
-						<Text style={{ alignSelf: 'center', fontWeight: 'bold' }}>{this.props.data.description}</Text>
-					</CardContent>
-				</Card>
-			</TouchableOpacity>
-		) :
-			<Text style={[{ fontSize: 12, alignSelf: 'center', fontStyle: 'italic' }]}>{this.props.data.title}</Text>;
+		return this.state.img ? this.getImage() : this.getOther();
 	}
 }
