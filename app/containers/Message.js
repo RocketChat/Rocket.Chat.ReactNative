@@ -4,7 +4,7 @@ import { View, StyleSheet } from 'react-native';
 import { emojify } from 'react-emojione';
 import Markdown from 'react-native-easy-markdown';
 
-import Card from './message/card';
+import Card from './message/Card';
 import Avatar from './message/Avatar';
 import User from './message/User';
 
@@ -41,10 +41,17 @@ export default class Message extends React.PureComponent {
 		}
 
 		const msg = emojify(item.msg, { output: 'unicode' });
+		const username = item.alias || item.u.username;
 
 		return (
 			<View style={[styles.message, extraStyle]}>
-				<Avatar item={item} baseUrl={this.props.baseUrl} />
+				<Avatar
+					style={{ marginRight: 10 }}
+					text={item.avatar ? '' : username}
+					size={40}
+					baseUrl={this.props.baseUrl}
+					avatar={item.avatar}
+				/>
 				<View style={[styles.content]}>
 					<User
 						onPress={this._onPress}

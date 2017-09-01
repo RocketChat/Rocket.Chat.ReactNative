@@ -7,7 +7,9 @@ import { storiesOf } from '@storybook/react-native';
 // import { linkTo } from '@storybook/addon-links';
 
 import DirectMessage from './Channels/DirectMessage';
+import Avatar from './Avatar';
 
+storiesOf('Avatar', module).add('avatar', () => Avatar);
 storiesOf('Channel Cell', module).add('Direct Messages', () => DirectMessage);
 
 // storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />);

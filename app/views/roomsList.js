@@ -3,6 +3,7 @@ import { Navigation } from 'react-native-navigation';
 import { ListView } from 'realm/react-native';
 import React from 'react';
 import PropTypes from 'prop-types';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { View, StyleSheet, TextInput, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
@@ -55,10 +56,10 @@ const styles = StyleSheet.create({
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 @connect(state => ({
-	server: state.server,
+	server: state.server.server,
 	login: state.login,
 	Site_Url: state.settings.Site_Url,
-	canShowList: state.login.token.length || state.login.user.token
+	canShowList: state.login.token || state.login.user.token
 }), dispatch => ({
 	login: () => dispatch(actions.login()),
 	connect: () => dispatch(server.connectRequest())
@@ -219,7 +220,16 @@ export default class RoomsListView extends React.Component {
 		navigateToRoom({ sid: id });
 		clearSearch();
 	}
-
+	_createChannel = () => {
+		Navigation.showModal({
+			screen: 'CreateChannel',
+			title: 'Create a New Channel',
+			passProps: {},
+			navigatorStyle: {},
+			navigatorButtons: {},
+			animationType: 'slide-up'
+		});
+	}
 	renderSearchBar = () => (
 		<View style={styles.searchBoxView}>
 			<TextInput
@@ -256,7 +266,11 @@ export default class RoomsListView extends React.Component {
 		/>
 	)
 	renderCreateButtons = () => (
-		<ActionButton buttonColor='rgba(231,76,60,1)' />);
+		<ActionButton buttonColor='rgba(231,76,60,1)'>
+			<ActionButton.Item buttonColor='#9b59b6' title='Create Channel' onPress={() => { this._createChannel(); }} >
+				<Icon name='md-chatbubbles' style={styles.actionButtonIcon} />
+			</ActionButton.Item>
+		</ActionButton>);
 	render= () => (
 		<View style={styles.container}>
 			<Banner />
