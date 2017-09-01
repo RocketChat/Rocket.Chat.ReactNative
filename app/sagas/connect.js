@@ -1,10 +1,10 @@
-import { take, put, call, fork, takeLatest, select } from 'redux-saga/effects';
+import { put, call, takeLatest, select } from 'redux-saga/effects';
 import { METEOR } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 
 import { connectSuccess, connectFailure } from '../actions/connect';
 
-const getServer = ({ server }) => server;
+const getServer = ({ server }) => server.server;
 
 
 const connect = url => RocketChat.connect(url);
@@ -17,14 +17,11 @@ const test = function* test() {
 		yield put(connectFailure(err.status));
 	}
 };
-const watchConnect = function* watchConnect() {
-	yield takeLatest(METEOR.REQUEST, test);
-	while (true) {
-		yield take(METEOR.DISCONNECT);
-	}
-};
+// const watchConnect = function* watchConnect() {
+// };
 const root = function* root() {
-	yield fork(watchConnect);
+	yield takeLatest(METEOR.REQUEST, test);
+	// yield fork(watchConnect);
 	// yield fork(auto);
 };
 export default root;

@@ -2,9 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Navigation } from 'react-native-navigation';
 import { Text, TextInput, View, StyleSheet } from 'react-native';
-import _ from 'underscore';
-import realm from '../lib/realm';
-
+import { connect } from 'react-redux';
+import { serverRequest, addServer } from '../actions/server';
 import KeyboardView from '../components/KeyboardView';
 
 const styles = StyleSheet.create({
@@ -47,10 +46,20 @@ const styles = StyleSheet.create({
 		flexGrow: 1
 	}
 });
-
+@connect(state => ({
+	validInstance: !state.server.failure,
+	validating: state.server.connecting
+}), dispatch => ({
+	validateServer: url => dispatch(serverRequest(url)),
+	addServer: url => dispatch(addServer(url))
+}))
 export default class NewServerView extends React.Component {
 	static propTypes = {
-		navigator: PropTypes.object.isRequired
+		navigator: PropTypes.object.isRequired,
+		validateServer: PropTypes.func.isRequired,
+		addServer: PropTypes.func.isRequired,
+		validating: PropTypes.bool.isRequired,
+		validInstance: PropTypes.bool.isRequired
 	}
 
 	static navigationOptions = () => ({
@@ -66,37 +75,11 @@ export default class NewServerView extends React.Component {
 		};
 
 		this.submit = () => {
-			let url = this.state.text.trim();
-			if (!url) {
-				url = this.state.defaultServer;
-			} else {
-				url = this.completeUrl(this.state.text);
-			}
-
-			this.setState({
-				editable: false
-			});
-
-			this.inputElement.blur();
-			this.validateServer(url).then(() => {
-				realm.write(() => {
-					realm.create('servers', { id: url, current: false }, true);
-				});
-				Navigation.dismissModal({
-					animationType: 'slide-down'
-				});
-			}).catch(() => {
-				this.setState({
-					editable: true
-				});
-				this.inputElement.focus();
-			});
+			this.props.addServer(this.completeUrl(this.state.text.trim() || this.state.defaultServer));
 		};
 	}
 
 	componentDidMount() {
-		this._mounted = true;
-
 		this.props.navigator.setTitle({
 			title: 'New server'
 		});
@@ -111,11 +94,6 @@ export default class NewServerView extends React.Component {
 
 		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
-
-	componentWillUnmount() {
-		this._mounted = false;
-	}
-
 	onNavigatorEvent = (event) => {
 		if (event.type === 'NavBarButtonPress') {
 			if (event.id === 'close') {
@@ -128,62 +106,8 @@ export default class NewServerView extends React.Component {
 
 	onChangeText = (text) => {
 		this.setState({ text });
-
-		this.validateServerDebounced(text);
+		this.props.validateServer(this.completeUrl(text));
 	}
-
-	validateServer = url => new Promise((resolve, reject) => {
-		url = this.completeUrl(url);
-
-		this.setState({
-			validating: false,
-			url
-		});
-
-		if (/^(https?:\/\/)?(((\w|[0-9])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
-			this.setState({
-				validating: true
-			});
-
-			fetch(url, { method: 'HEAD' })
-				.then((response) => {
-					if (!this._mounted) {
-						return;
-					}
-					if (response.status === 200 && response.headers.get('x-instance-id') != null && response.headers.get('x-instance-id').length) {
-						this.setState({
-							validInstance: true,
-							validating: false
-						});
-						resolve(url);
-					} else {
-						this.setState({
-							validInstance: false,
-							validating: false
-						});
-						reject(url);
-					}
-				})
-				.catch(() => {
-					if (!this._mounted) {
-						return;
-					}
-					this.setState({
-						validInstance: false,
-						validating: false
-					});
-					reject(url);
-				});
-		} else {
-			this.setState({
-				validInstance: undefined
-			});
-			reject(url);
-		}
-	})
-
-	validateServerDebounced = _.debounce(this.validateServer, 1000)
-
 	completeUrl = (url) => {
 		url = url.trim();
 
@@ -203,7 +127,10 @@ export default class NewServerView extends React.Component {
 	}
 
 	renderValidation = () => {
-		if (this.state.validating) {
+		if (!this.state.text.trim()) {
+			return null;
+		}
+		if (this.props.validating) {
 			return (
 				<Text style={[styles.validateText, styles.validatingText]}>
 					Validating {this.state.url} ...
@@ -211,21 +138,18 @@ export default class NewServerView extends React.Component {
 			);
 		}
 
-		if (this.state.validInstance) {
+		if (this.props.validInstance) {
 			return (
 				<Text style={[styles.validateText, styles.validText]}>
 					{this.state.url} is a valid Rocket.Chat instance
 				</Text>
 			);
 		}
-
-		if (this.state.validInstance === false) {
-			return (
-				<Text style={[styles.validateText, styles.invalidText]}>
-					{this.state.url} is not a valid Rocket.Chat instance
-				</Text>
-			);
-		}
+		return (
+			<Text style={[styles.validateText, styles.invalidText]}>
+				{this.state.url} is not a valid Rocket.Chat instance
+			</Text>
+		);
 	}
 
 	render() {
