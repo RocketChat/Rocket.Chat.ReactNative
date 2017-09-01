@@ -1,5 +1,160 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Storyshots Avatar avatar 1`] = `
+<RCTScrollView>
+  <View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "overflow": "hidden",
+          },
+          Object {
+            "backgroundColor": "#3F51B5",
+            "borderRadius": 5,
+            "height": 25,
+            "width": 25,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "#ffffff",
+            },
+            Object {
+              "fontSize": 12.5,
+            },
+          ]
+        }
+      >
+        TE
+      </Text>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "overflow": "hidden",
+          },
+          Object {
+            "backgroundColor": "#9C27B0",
+            "borderRadius": 5,
+            "height": 40,
+            "width": 40,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "#ffffff",
+            },
+            Object {
+              "fontSize": 20,
+            },
+          ]
+        }
+      >
+        AA
+      </Text>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "overflow": "hidden",
+          },
+          Object {
+            "backgroundColor": "#9C27B0",
+            "borderRadius": 5,
+            "height": 30,
+            "width": 30,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "#ffffff",
+            },
+            Object {
+              "fontSize": 15,
+            },
+          ]
+        }
+      >
+        BB
+      </Text>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "overflow": "hidden",
+          },
+          Object {
+            "backgroundColor": "#3F51B5",
+            "borderRadius": 2,
+            "height": 25,
+            "width": 25,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "#ffffff",
+            },
+            Object {
+              "fontSize": 12.5,
+            },
+          ]
+        }
+      >
+        TE
+      </Text>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
 exports[`Storyshots Channel Cell Direct Messages 1`] = `
 <RCTScrollView>
   <View>
@@ -37,15 +192,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           Array [
             Object {
               "alignItems": "center",
-              "borderRadius": 20,
-              "height": 40,
               "justifyContent": "center",
               "overflow": "hidden",
-              "width": 40,
             },
             Object {
               "backgroundColor": "#8BC34A",
+              "borderRadius": 20,
+              "height": 40,
+              "width": 40,
             },
+            undefined,
           ]
         }
       >
@@ -55,10 +211,14 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           disabled={false}
           ellipsizeMode="tail"
           style={
-            Object {
-              "color": "#ffffff",
-              "fontSize": 20,
-            }
+            Array [
+              Object {
+                "color": "#ffffff",
+              },
+              Object {
+                "fontSize": 20,
+              },
+            ]
           }
         >
           RC
@@ -70,12 +230,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             }
           }
           style={
-            Object {
-              "borderRadius": 20,
-              "height": 40,
-              "position": "absolute",
-              "width": 40,
-            }
+            Array [
+              Object {
+                "position": "absolute",
+              },
+              Object {
+                "height": 40,
+                "width": 40,
+              },
+            ]
           }
         />
       </View>
@@ -132,15 +295,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           Array [
             Object {
               "alignItems": "center",
-              "borderRadius": 20,
-              "height": 40,
               "justifyContent": "center",
               "overflow": "hidden",
-              "width": 40,
             },
             Object {
               "backgroundColor": "#8BC34A",
+              "borderRadius": 20,
+              "height": 40,
+              "width": 40,
             },
+            undefined,
           ]
         }
       >
@@ -150,10 +314,14 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           disabled={false}
           ellipsizeMode="tail"
           style={
-            Object {
-              "color": "#ffffff",
-              "fontSize": 20,
-            }
+            Array [
+              Object {
+                "color": "#ffffff",
+              },
+              Object {
+                "fontSize": 20,
+              },
+            ]
           }
         >
           RC
@@ -165,12 +333,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             }
           }
           style={
-            Object {
-              "borderRadius": 20,
-              "height": 40,
-              "position": "absolute",
-              "width": 40,
-            }
+            Array [
+              Object {
+                "position": "absolute",
+              },
+              Object {
+                "height": 40,
+                "width": 40,
+              },
+            ]
           }
         />
       </View>
@@ -227,15 +398,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           Array [
             Object {
               "alignItems": "center",
-              "borderRadius": 20,
-              "height": 40,
               "justifyContent": "center",
               "overflow": "hidden",
-              "width": 40,
             },
             Object {
               "backgroundColor": "#8BC34A",
+              "borderRadius": 20,
+              "height": 40,
+              "width": 40,
             },
+            undefined,
           ]
         }
       >
@@ -245,10 +417,14 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           disabled={false}
           ellipsizeMode="tail"
           style={
-            Object {
-              "color": "#ffffff",
-              "fontSize": 20,
-            }
+            Array [
+              Object {
+                "color": "#ffffff",
+              },
+              Object {
+                "fontSize": 20,
+              },
+            ]
           }
         >
           RC
@@ -260,12 +436,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             }
           }
           style={
-            Object {
-              "borderRadius": 20,
-              "height": 40,
-              "position": "absolute",
-              "width": 40,
-            }
+            Array [
+              Object {
+                "position": "absolute",
+              },
+              Object {
+                "height": 40,
+                "width": 40,
+              },
+            ]
           }
         />
       </View>
@@ -343,15 +522,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           Array [
             Object {
               "alignItems": "center",
-              "borderRadius": 20,
-              "height": 40,
               "justifyContent": "center",
               "overflow": "hidden",
-              "width": 40,
             },
             Object {
               "backgroundColor": "#795548",
+              "borderRadius": 20,
+              "height": 40,
+              "width": 40,
             },
+            undefined,
           ]
         }
       >
@@ -361,10 +541,14 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           disabled={false}
           ellipsizeMode="tail"
           style={
-            Object {
-              "color": "#ffffff",
-              "fontSize": 20,
-            }
+            Array [
+              Object {
+                "color": "#ffffff",
+              },
+              Object {
+                "fontSize": 20,
+              },
+            ]
           }
         >
           LC
@@ -376,12 +560,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             }
           }
           style={
-            Object {
-              "borderRadius": 20,
-              "height": 40,
-              "position": "absolute",
-              "width": 40,
-            }
+            Array [
+              Object {
+                "position": "absolute",
+              },
+              Object {
+                "height": 40,
+                "width": 40,
+              },
+            ]
           }
         />
       </View>
@@ -459,15 +646,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           Array [
             Object {
               "alignItems": "center",
-              "borderRadius": 20,
-              "height": 40,
               "justifyContent": "center",
               "overflow": "hidden",
-              "width": 40,
             },
             Object {
               "backgroundColor": "#795548",
+              "borderRadius": 20,
+              "height": 40,
+              "width": 40,
             },
+            undefined,
           ]
         }
       >
@@ -477,10 +665,14 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           disabled={false}
           ellipsizeMode="tail"
           style={
-            Object {
-              "color": "#ffffff",
-              "fontSize": 20,
-            }
+            Array [
+              Object {
+                "color": "#ffffff",
+              },
+              Object {
+                "fontSize": 20,
+              },
+            ]
           }
         >
           LC
@@ -492,12 +684,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             }
           }
           style={
-            Object {
-              "borderRadius": 20,
-              "height": 40,
-              "position": "absolute",
-              "width": 40,
-            }
+            Array [
+              Object {
+                "position": "absolute",
+              },
+              Object {
+                "height": 40,
+                "width": 40,
+              },
+            ]
           }
         />
       </View>
@@ -575,15 +770,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           Array [
             Object {
               "alignItems": "center",
-              "borderRadius": 20,
-              "height": 40,
               "justifyContent": "center",
               "overflow": "hidden",
-              "width": 40,
             },
             Object {
               "backgroundColor": "#795548",
+              "borderRadius": 20,
+              "height": 40,
+              "width": 40,
             },
+            undefined,
           ]
         }
       >
@@ -593,10 +789,14 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           disabled={false}
           ellipsizeMode="tail"
           style={
-            Object {
-              "color": "#ffffff",
-              "fontSize": 20,
-            }
+            Array [
+              Object {
+                "color": "#ffffff",
+              },
+              Object {
+                "fontSize": 20,
+              },
+            ]
           }
         >
           LC
@@ -608,12 +808,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             }
           }
           style={
-            Object {
-              "borderRadius": 20,
-              "height": 40,
-              "position": "absolute",
-              "width": 40,
-            }
+            Array [
+              Object {
+                "position": "absolute",
+              },
+              Object {
+                "height": 40,
+                "width": 40,
+              },
+            ]
           }
         />
       </View>
@@ -691,15 +894,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           Array [
             Object {
               "alignItems": "center",
-              "borderRadius": 20,
-              "height": 40,
               "justifyContent": "center",
               "overflow": "hidden",
-              "width": 40,
             },
             Object {
               "backgroundColor": "#795548",
+              "borderRadius": 20,
+              "height": 40,
+              "width": 40,
             },
+            undefined,
           ]
         }
       >
@@ -709,10 +913,14 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           disabled={false}
           ellipsizeMode="tail"
           style={
-            Object {
-              "color": "#ffffff",
-              "fontSize": 20,
-            }
+            Array [
+              Object {
+                "color": "#ffffff",
+              },
+              Object {
+                "fontSize": 20,
+              },
+            ]
           }
         >
           LC
@@ -724,12 +932,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             }
           }
           style={
-            Object {
-              "borderRadius": 20,
-              "height": 40,
-              "position": "absolute",
-              "width": 40,
-            }
+            Array [
+              Object {
+                "position": "absolute",
+              },
+              Object {
+                "height": 40,
+                "width": 40,
+              },
+            ]
           }
         />
       </View>
@@ -807,15 +1018,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           Array [
             Object {
               "alignItems": "center",
-              "borderRadius": 20,
-              "height": 40,
               "justifyContent": "center",
               "overflow": "hidden",
-              "width": 40,
             },
             Object {
               "backgroundColor": "#E91E63",
+              "borderRadius": 20,
+              "height": 40,
+              "width": 40,
             },
+            undefined,
           ]
         }
       >
@@ -825,29 +1037,18 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           disabled={false}
           ellipsizeMode="tail"
           style={
-            Object {
-              "color": "#ffffff",
-              "fontSize": 20,
-            }
+            Array [
+              Object {
+                "color": "#ffffff",
+              },
+              Object {
+                "fontSize": 20,
+              },
+            ]
           }
         >
           W
         </Text>
-        <CachedImage
-          source={
-            Object {
-              "uri": "undefined/avatar/W",
-            }
-          }
-          style={
-            Object {
-              "borderRadius": 20,
-              "height": 40,
-              "position": "absolute",
-              "width": 40,
-            }
-          }
-        />
       </View>
       <Text
         accessible={true}
@@ -902,15 +1103,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           Array [
             Object {
               "alignItems": "center",
-              "borderRadius": 20,
-              "height": 40,
               "justifyContent": "center",
               "overflow": "hidden",
-              "width": 40,
             },
             Object {
               "backgroundColor": "#9C27B0",
+              "borderRadius": 20,
+              "height": 40,
+              "width": 40,
             },
+            undefined,
           ]
         }
       >
@@ -920,29 +1122,18 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           disabled={false}
           ellipsizeMode="tail"
           style={
-            Object {
-              "color": "#ffffff",
-              "fontSize": 20,
-            }
+            Array [
+              Object {
+                "color": "#ffffff",
+              },
+              Object {
+                "fontSize": 20,
+              },
+            ]
           }
         >
           WW
         </Text>
-        <CachedImage
-          source={
-            Object {
-              "uri": "undefined/avatar/WW",
-            }
-          }
-          style={
-            Object {
-              "borderRadius": 20,
-              "height": 40,
-              "position": "absolute",
-              "width": 40,
-            }
-          }
-        />
       </View>
       <Text
         accessible={true}
@@ -997,15 +1188,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           Array [
             Object {
               "alignItems": "center",
-              "borderRadius": 20,
-              "height": 40,
               "justifyContent": "center",
               "overflow": "hidden",
-              "width": 40,
             },
             Object {
-              "backgroundColor": "#F44336",
+              "backgroundColor": undefined,
+              "borderRadius": 20,
+              "height": 40,
+              "width": 40,
             },
+            undefined,
           ]
         }
       >
@@ -1015,29 +1207,18 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           disabled={false}
           ellipsizeMode="tail"
           style={
-            Object {
-              "color": "#ffffff",
-              "fontSize": 20,
-            }
+            Array [
+              Object {
+                "color": "#ffffff",
+              },
+              Object {
+                "fontSize": 20,
+              },
+            ]
           }
         >
           
         </Text>
-        <CachedImage
-          source={
-            Object {
-              "uri": "undefined/avatar/",
-            }
-          }
-          style={
-            Object {
-              "borderRadius": 20,
-              "height": 40,
-              "position": "absolute",
-              "width": 40,
-            }
-          }
-        />
       </View>
       <Text
         accessible={true}
