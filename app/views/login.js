@@ -3,7 +3,7 @@ import React from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import PropTypes from 'prop-types';
-import { Keyboard, Text, TextInput, StyleSheet, View, Image, TouchableOpacity } from 'react-native';
+import { Keyboard, Text, TextInput, View, Image, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import * as actions from '../actions';
@@ -11,63 +11,7 @@ import * as loginActions from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
 // import { Keyboard } from 'react-native'
 
-const styles = StyleSheet.create({
-	view: {
-		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'center',
-		padding: 20,
-		alignItems: 'stretch',
-		backgroundColor: '#2f343d'
-	},
-	logoContainer: {
-		flex: 1,
-		alignItems: 'center',
-		flexGrow: 1,
-		justifyContent: 'center'
-	},
-	logo: {
-		width: 150,
-		// backgroundColor: 'red'
-		// height: 150,
-		resizeMode: 'contain'
-	},
-	formContainer: {
-		// marginBottom: 20
-	},
-	input: {
-		height: 40,
-		marginBottom: 20,
-		borderRadius: 2,
-		paddingHorizontal: 10,
-		borderWidth: 0,
-		backgroundColor: 'rgba(255,255,255,.2)',
-		color: 'white'
-	},
-	buttonContainer: {
-		paddingVertical: 15,
-		backgroundColor: '#414852',
-		marginBottom: 20
-	},
-	button: {
-		textAlign: 'center',
-		color: 'white',
-		borderRadius: 2,
-		fontWeight: '700'
-	},
-	error: {
-		textAlign: 'center',
-		color: 'red',
-		paddingTop: 5
-	},
-	loading: {
-		flex: 1,
-		position: 'absolute',
-		backgroundColor: 'rgba(255,255,255,.2)',
-		left: 0,
-		top: 0
-	}
-});
+import styles from './Styles';
 
 class LoginView extends React.Component {
 	static propTypes = {
@@ -90,16 +34,33 @@ class LoginView extends React.Component {
 			username: '',
 			password: ''
 		};
-
-		this.props.navigator.setTitle({
+	}
+	componentWillReceiveProps() {
+		const { navigator } = this.props;
+		navigator.setTitle({
 			title: 'Login'
 		});
-	}
-
-	componentWillReceiveProps(nextProps) {
-		this.props.navigator.setSubTitle({
-			subtitle: nextProps.server
+		navigator.setSubTitle({
+			subtitle: this.props.server
 		});
+		navigator.setButtons({
+			rightButtons: [{
+				id: 'close',
+				title: 'Cancel'
+			}]
+		});
+		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+	}
+	onNavigatorEvent = (event) => {
+		if (event.type === 'NavBarButtonPress') {
+			if (event.id === 'close') {
+				this.props.navigator.resetTo({
+					screen: 'ListServer',
+					animated: false
+
+				});
+			}
+		}
 	}
 	submit = () => {
 		const {	username, password, code } = this.state;
@@ -175,7 +136,7 @@ class LoginView extends React.Component {
 function mapStateToProps(state) {
 	// console.log(Object.keys(state));
 	return {
-		server: state.server,
+		server: state.server.server,
 		Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
 		Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
 		login: state.login

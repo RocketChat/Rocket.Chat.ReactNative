@@ -1,9 +1,8 @@
 import React from 'react';
-import { CachedImage } from 'react-native-img-cache';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-
+import Avatar from './avatar';
 import avatarInitialsAndColor from '../utils/avatarInitialsAndColor';
 
 const styles = StyleSheet.create({
@@ -84,10 +83,7 @@ export default class RoomItem extends React.PureComponent {
 
 		if (type === 'd') {
 			return (
-				<View style={[styles.iconContainer, { backgroundColor: color }]}>
-					<Text style={styles.avatarInitials}>{initials}</Text>
-					<CachedImage style={styles.avatar} source={{ uri: `${ baseUrl }/avatar/${ name }` }} />
-				</View>
+				<Avatar text={name} baseUrl={baseUrl} size={40} borderRadius={20} />
 			);
 		}
 
