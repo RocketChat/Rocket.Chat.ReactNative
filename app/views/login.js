@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import * as actions from '../actions';
 import * as loginActions from '../actions/login';
-import KeyboardView from '../components/KeyboardView';
+import KeyboardView from '../presentation/KeyboardView';
 // import { Keyboard } from 'react-native'
 
 const styles = StyleSheet.create({
