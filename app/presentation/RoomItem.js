@@ -2,7 +2,7 @@ import React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import Avatar from './avatar';
+import Avatar from '../containers/Avatar';
 import avatarInitialsAndColor from '../utils/avatarInitialsAndColor';
 
 const styles = StyleSheet.create({
@@ -79,7 +79,7 @@ export default class RoomItem extends React.PureComponent {
 			return null;
 		}
 
-		const { initials, color } = avatarInitialsAndColor(name);
+		const { color } = avatarInitialsAndColor(name);
 
 		if (type === 'd') {
 			return (
