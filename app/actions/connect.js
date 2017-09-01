@@ -20,7 +20,6 @@ export function connectFailure(err) {
 }
 
 export function disconnect(err) {
-	console.log('types.METEOR.DISCONNECT');
 	return {
 		type: types.METEOR.DISCONNECT,
 		err

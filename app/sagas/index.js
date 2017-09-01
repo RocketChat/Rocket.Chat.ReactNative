@@ -6,11 +6,13 @@ import connect from './connect';
 import rooms from './rooms';
 import messages from './messages';
 import selectServer from './selectServer';
+import createChannel from './createChannel';
 import init from './init';
 
 const root = function* root() {
 	yield fork(init);
 	yield take(types.APP.READY);
+	yield fork(createChannel);
 	yield fork(hello);
 	yield fork(rooms);
 	yield fork(login);

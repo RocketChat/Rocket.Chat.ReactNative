@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
 
 
 @connect(state => ({
-	server: state.server,
+	server: state.server.server,
 	Site_Url: state.settings.Site_Url,
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	loading: state.messages.isFetching
