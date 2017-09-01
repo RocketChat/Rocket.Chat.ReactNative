@@ -1,12 +1,12 @@
 import { AsyncStorage } from 'react-native';
 import { take, put, call, takeEvery, fork, select, all, race } from 'redux-saga/effects';
 import * as types from '../actions/actionsTypes';
-import { loginRequest, loginSuccess, loginFailure, setToken } from '../actions/login';
+import { loginRequest, loginSuccess, loginFailure, setToken, logout } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const getUser = state => state.login;
-const getServer = state => state.server;
+const getServer = state => state.server.server;
 const loginCall = args => (args.resume ? RocketChat.login(args) : RocketChat.loginWithPassword(args));
 
 const getToken = function* getToken() {
@@ -20,6 +20,8 @@ const getToken = function* getToken() {
 		} catch (e) {
 			console.log('getTokenerr', e);
 		}
+	} else {
+		yield put(setToken());
 	}
 };
 
@@ -27,10 +29,9 @@ const handleLoginWhenServerChanges = function* handleLoginWhenServerChanges() {
 	// do {
 	try {
 		yield take(types.METEOR.SUCCESS);
+		yield call(getToken);
 		const { navigator } = yield select(state => state);
-		navigator.resetTo({
-			screen: 'Rooms'
-		});
+
 		const user = yield select(getUser);
 		if (user.token) {
 			yield put(loginRequest({ resume: user.token }));
@@ -47,6 +48,9 @@ const handleLoginWhenServerChanges = function* handleLoginWhenServerChanges() {
 			// 	});
 			// }
 		}
+		navigator.resetTo({
+			screen: 'Rooms'
+		});
 	} catch (e) {
 		console.log(e);
 	}
@@ -66,8 +70,11 @@ const handleLoginRequest = function* handleLoginRequest() {
 			const response = yield call(loginCall, credentials);
 			yield put(loginSuccess(response));
 		} catch (err) {
-			// console.log('login failed');
-			yield put(loginFailure(err));
+			if (err.error === 403) {
+				yield put(logout());
+			} else {
+				yield put(loginFailure(err));
+			}
 		}
 	}
 };
@@ -93,7 +100,6 @@ const handleLoginSubmit = function* handleLoginSubmit() {
 };
 
 const root = function* root() {
-	yield takeEvery(types.SERVER.CHANGED, getToken);
 	yield takeEvery(types.SERVER.CHANGED, handleLoginWhenServerChanges);
 	yield fork(handleLoginRequest);
 	yield takeEvery(types.LOGIN.SUCCESS, saveToken);

@@ -36,7 +36,15 @@ const RocketChat = {
 			console.warn(`AsyncStorage error: ${ error.message }`);
 		}
 	},
-
+	async testServer(url) {
+		if (/^(https?:\/\/)?(((\w|[0-9])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
+			const response = await fetch(url, { method: 'HEAD' });
+			if (response.status === 200 && response.headers.get('x-instance-id') != null && response.headers.get('x-instance-id').length) {
+				return url;
+			}
+		}
+		throw new Error({ error: 'invalid server' });
+	},
 	connect(_url) {
 		return new Promise((resolve) => {
 			const url = `${ _url }/websocket`;
@@ -61,7 +69,7 @@ const RocketChat = {
 							const setting = {
 								_id: item._id
 							};
-							setting._server = { id: reduxStore.getState().server };
+							setting._server = { id: reduxStore.getState().server.server };
 							if (settingsType[item.type]) {
 								setting[settingsType[item.type]] = item.value;
 								realm.create('settings', setting, true);
@@ -78,7 +86,7 @@ const RocketChat = {
 						realm.write(() => {
 							const message = ddbMessage.fields.args[0];
 							message.temp = false;
-							message._server = { id: reduxStore.getState().server };
+							message._server = { id: reduxStore.getState().server.server };
 							realm.create('messages', message, true);
 						});
 					}
@@ -86,7 +94,7 @@ const RocketChat = {
 					if (ddbMessage.collection === 'stream-notify-user') {
 						realm.write(() => {
 							const data = ddbMessage.fields.args[1];
-							data._server = { id: reduxStore.getState().server };
+							data._server = { id: reduxStore.getState().server.server };
 							realm.create('subscriptions', data, true);
 						});
 					}
@@ -97,13 +105,11 @@ const RocketChat = {
 	},
 
 	login(params, callback) {
-		console.log('login(params, callback)');
 		return new Promise((resolve, reject) => {
 			Meteor._startLoggingIn();
 			return Meteor.call('login', params, (err, result) => {
 				Meteor._endLoggingIn();
 				Meteor._handleLoginCallback(err, result);
-				console.log('login(params, callback)asdas', err, result);
 				if (err) {
 					reject(err);
 				} else {
@@ -172,7 +178,7 @@ const RocketChat = {
 						// if (typeof item.value === 'string') {
 						// 	subscription.value = item.value;
 						// }
-						subscription._server = { id: reduxStore.getState().server };
+						subscription._server = { id: reduxStore.getState().server.server };
 						// write('subscriptions', subscription);
 						realm.create('subscriptions', subscription, true);
 					});
@@ -196,7 +202,7 @@ const RocketChat = {
 					realm.write(() => {
 						data.messages.forEach((message) => {
 							message.temp = false;
-							message._server = { id: reduxStore.getState().server };
+							message._server = { id: reduxStore.getState().server.server };
 							// write('messages', message);
 							realm.create('messages', message, true);
 						});
@@ -226,7 +232,7 @@ const RocketChat = {
 			ts: new Date(),
 			_updatedAt: new Date(),
 			temp: true,
-			_server: { id: reduxStore.getState().server },
+			_server: { id: reduxStore.getState().server.server },
 			u: {
 				_id: reduxStore.getState().login.user.id || '1',
 				username: reduxStore.getState().login.user.id
@@ -370,7 +376,6 @@ const RocketChat = {
 				return subscription;
 			});
 			// Meteor.subscribe('stream-notify-user', `${ Meteor.userId() }/rooms-changed`, false);
-			console.log('getRooms resolved', reduxStore.getState().server, data);
 			realm.write(() => {
 				data.forEach((subscription) => {
 					// const subscription = {
@@ -379,7 +384,7 @@ const RocketChat = {
 					// if (typeof item.value === 'string') {
 					// 	subscription.value = item.value;
 					// }
-					subscription._server = { id: reduxStore.getState().server };
+					subscription._server = { id: reduxStore.getState().server.server };
 					// write('subscriptions', subscription);
 					realm.create('subscriptions', subscription, true);
 				});

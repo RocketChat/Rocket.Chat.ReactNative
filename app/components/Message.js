@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
-import { CachedImage } from 'react-native-img-cache';
 import { emojify } from 'react-emojione';
 import Markdown from 'react-native-easy-markdown';
 import moment from 'moment';
-
-import avatarInitialsAndColor from '../utils/avatarInitialsAndColor';
+import Avatar from './avatar';
 import Card from './message/card';
 
 const styles = StyleSheet.create({
@@ -19,26 +17,6 @@ const styles = StyleSheet.create({
 		paddingBottom: 6,
 		flexDirection: 'row',
 		transform: [{ scaleY: -1 }]
-	},
-	avatarContainer: {
-		backgroundColor: '#eee',
-		width: 40,
-		height: 40,
-		marginRight: 10,
-		borderRadius: 5
-	},
-	avatar: {
-		width: 40,
-		height: 40,
-		borderRadius: 5,
-		position: 'absolute'
-	},
-	avatarInitials: {
-		margin: 2,
-		textAlign: 'center',
-		lineHeight: 36,
-		fontSize: 22,
-		color: '#ffffff'
 	},
 	texts: {
 		flex: 1
@@ -87,33 +65,17 @@ export default class Message extends React.PureComponent {
 
 		const username = item.alias || item.u.username;
 
-		let { initials, color } = avatarInitialsAndColor(username);
-
-		const avatar = item.avatar || `${ this.props.baseUrl }/avatar/${ item.u.username }`;
-		if (item.avatar) {
-			initials = '';
-			color = 'transparent';
-		}
-
-		let aliasUsername;
-		if (item.alias) {
-			aliasUsername = <Text style={styles.alias}>@{item.u.username}</Text>;
-		}
-
 		const time = moment(item.ts).format(this.props.Message_TimeFormat);
 
 		return (
 			<View style={[styles.message, extraStyle]}>
-				<View style={[styles.avatarContainer, { backgroundColor: color }]}>
-					<Text style={styles.avatarInitials}>{initials}</Text>
-					<CachedImage style={styles.avatar} source={{ uri: avatar }} />
-				</View>
+				<Avatar style={{ marginRight: 10 }} text={item.avatar ? '' : username} size={40} baseUrl={this.props.baseUrl} avatar={item.avatar} />
 				<View style={[styles.content]}>
 					<View style={styles.usernameView}>
 						<Text onPress={this._onPress} style={styles.username}>
 							{username}
 						</Text>
-						{aliasUsername}<Text style={styles.time}>{time}</Text>
+						{item.alias && <Text style={styles.alias}>@{item.u.username}</Text>}<Text style={styles.time}>{time}</Text>
 					</View>
 					{this.attachments()}
 					<Markdown>
