@@ -10,8 +10,8 @@ import * as actions from '../actions';
 import * as server from '../actions/connect';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
-import RoomItem from '../components/RoomItem';
-import Banner from '../components/banner';
+import RoomItem from '../presentation/RoomItem';
+import Banner from '../containers/Banner';
 
 const styles = StyleSheet.create({
 	container: {

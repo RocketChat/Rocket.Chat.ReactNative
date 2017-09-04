@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 
-import Avatar from '../../app/components/avatar';
+import Avatar from '../../app/containers/Avatar';
 
 export default (
 	<ScrollView>

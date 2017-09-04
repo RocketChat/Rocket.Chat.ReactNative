@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 
-import RoomItem from '../../../app/components/RoomItem';
+import RoomItem from '../../../app/presentation/RoomItem';
 
 export default (
 	<ScrollView>
