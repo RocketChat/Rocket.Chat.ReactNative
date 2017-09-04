@@ -15,27 +15,42 @@ const styles = StyleSheet.create({
 	},
 	avatarInitials: {
 		color: '#ffffff'
-	} });
+	}
+});
 
 class Avatar extends React.PureComponent {
 	render() {
-		const { text = '', size = 25, baseUrl = this.props.baseUrl,
-			borderRadius = 5, style, avatar } = this.props;
+		const { text = '', size = 25, baseUrl, borderRadius = 5, style, avatar } = this.props;
 		const { initials, color } = avatarInitialsAndColor(`${ text }`);
+
+		const iconContainerStyle = {
+			backgroundColor: color,
+			width: size,
+			height: size,
+			borderRadius
+		};
+
+		const avatarInitialsStyle = {
+			fontSize: size / 2
+		};
+
+		const avatarStyle = {
+			width: size,
+			height: size
+		};
+
+		const uri = avatar || `${ baseUrl }/avatar/${ text }`;
+		const image = (avatar || baseUrl) && (
+			<CachedImage
+				style={[styles.avatar, avatarStyle]}
+				source={{ uri }}
+			/>
+		);
+
 		return (
-			<View style={[styles.iconContainer, {
-				backgroundColor: color,
-				width: size,
-				height: size,
-				borderRadius
-			}, style]}
-			>
-				<Text style={[styles.avatarInitials, { fontSize: size / 2 }]}>{initials}</Text>
-				{ (avatar || baseUrl) && <CachedImage
-					style={[styles.avatar, { width: size,
-						height: size }]}
-					source={{ uri: avatar || `${ baseUrl }/avatar/${ text }` }}
-				/>}
+			<View style={[styles.iconContainer, iconContainerStyle, style]}>
+				<Text style={[styles.avatarInitials, avatarInitialsStyle]}>{initials}</Text>
+				{image}
 			</View>);
 	}
 }

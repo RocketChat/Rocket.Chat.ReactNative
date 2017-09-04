@@ -4,7 +4,7 @@ import { Navigation } from 'react-native-navigation';
 import { Text, TextInput, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { serverRequest, addServer } from '../actions/server';
-import KeyboardView from '../components/KeyboardView';
+import KeyboardView from '../presentation/KeyboardView';
 
 const styles = StyleSheet.create({
 	view: {

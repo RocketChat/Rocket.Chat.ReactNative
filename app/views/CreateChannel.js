@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { TextInput, View, Text, Switch, TouchableOpacity, ScrollView } from 'react-native';
 import { createChannelRequest } from '../actions/createChannel';
 import styles from './Styles';
-import KeyboardView from '../components/KeyboardView';
+import KeyboardView from '../presentation/KeyboardView';
 
 @connect(state => ({
 	result: state.createChannel
