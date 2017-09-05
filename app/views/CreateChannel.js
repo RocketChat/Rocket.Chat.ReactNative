@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { TextInput, View, Text, Switch, TouchableOpacity, ScrollView } from 'react-native';
+import { TextInput, View, Text, Switch, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import { createChannelRequest } from '../actions/createChannel';
 import styles from './Styles';
 import KeyboardView from '../presentation/KeyboardView';
@@ -36,7 +36,23 @@ export default class CreateChannelView extends React.Component {
 		// this.props.navigator.setSubTitle({
 		// 	subtitle: 'Channels are where your team communicate.'
 		// });
+		const button = Platform.OS === 'ios' ? 'leftButtons' : 'rightButtons';
+		this.props.navigator.setButtons({
+			[button]: [{
+				id: 'back',
+				title: 'Back'
+			}],
+			animated: true
+		});
+		this.props.navigator.setOnNavigatorEvent((event) => {
+			if (event.type === 'NavBarButtonPress' && event.id === 'back') {
+				this.props.navigator.dismissModal({
+					animationType: 'slide-down'
+				});
+			}
+		});
 	}
+
 	submit() {
 		if (!this.state.channelName.trim() || this.props.result.isFetching) {
 			return;

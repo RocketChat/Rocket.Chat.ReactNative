@@ -55,54 +55,60 @@ const styles = StyleSheet.create({
 });
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-@connect(state => ({
-	server: state.server.server,
-	login: state.login,
-	Site_Url: state.settings.Site_Url,
-	canShowList: state.login.token || state.login.user.token
-}), dispatch => ({
-	login: () => dispatch(actions.login()),
-	connect: () => dispatch(server.connectRequest())
-}))
-
+@connect(
+	state => ({
+		server: state.server.server,
+		login: state.login,
+		Site_Url: state.settings.Site_Url,
+		canShowList: state.login.token || state.login.user.token
+	}),
+	dispatch => ({
+		login: () => dispatch(actions.login()),
+		connect: () => dispatch(server.connectRequest())
+	})
+)
 export default class RoomsListView extends React.Component {
 	static propTypes = {
 		navigator: PropTypes.object.isRequired,
 		Site_Url: PropTypes.string,
 		server: PropTypes.string
-	}
+	};
 
 	constructor(props) {
 		super(props);
-		this.data = realm.objects('subscriptions').filtered('_server.id = $0', this.props.server);
+		this.data = realm
+			.objects('subscriptions')
+			.filtered('_server.id = $0 AND t = $1', this.props.server, 'd');
 		this.state = {
 			dataSource: ds.cloneWithRows(this.data),
+			selectedUsers: [],
 			searching: false,
 			searchDataSource: [],
 			searchText: '',
 			login: false
 		};
 		this.data.addListener(this.updateState);
-		this.props.navigator.setOnNavigatorEvent(event => event.type === 'NavBarButtonPress' && event.id === 'servers' &&
-				Navigation.showModal({
-					screen: 'ListServer',
-					passProps: {},
-					navigatorStyle: {},
-					navigatorButtons: {},
-					animationType: 'slide-up'
-				}));
-		this.props.navigator.setSubTitle({
-			subtitle: this.props.server
-		});
 	}
 	componentWillMount() {
+		// add back button
 		const button = Platform.OS === 'ios' ? 'leftButtons' : 'rightButtons';
 		this.props.navigator.setButtons({
-			[button]: [{
-				id: 'servers',
-				title: 'Servers'
-			}],
+			[button]: [
+				{
+					id: 'back',
+					title: 'Back'
+				}
+			],
 			animated: true
+		});
+
+		// on navigator event
+		this.props.navigator.setOnNavigatorEvent((event) => {
+			if (event.type === 'NavBarButtonPress' && event.id === 'back') {
+				this.props.navigator.dismissModal({
+					animationType: 'slide-down'
+				});
+			}
 		});
 	}
 	componentWillUnmount() {
@@ -137,36 +143,31 @@ export default class RoomsListView extends React.Component {
 			}
 			Promise.race([
 				RocketChat.spotlight(searchText, usernames),
-				new Promise((resolve, reject) => this.oldPromise = reject)
+				new Promise((resolve, reject) => (this.oldPromise = reject))
 			])
-				.then((results) => {
-					results.users.forEach((user) => {
-						dataSource.push({
-							...user,
-							name: user.username,
-							t: 'd',
-							search: true
+				.then(
+					(results) => {
+						results.users.forEach((user) => {
+							dataSource.push({
+								...user,
+								name: user.username,
+								t: 'd',
+								search: true
+							});
 						});
-					});
 
-					results.rooms.forEach((room) => {
-						dataSource.push({
-							...room,
-							search: true
+						this.setState({
+							dataSource: ds.cloneWithRows(dataSource)
 						});
-					});
-
-					this.setState({
-						dataSource: ds.cloneWithRows(dataSource)
-					});
-				}, () => console.log('spotlight stopped'))
+					},
+					() => console.log('spotlight stopped')
+				)
 				.then(() => delete this.oldPromise);
 		}
 		this.setState({
 			dataSource: ds.cloneWithRows(dataSource)
 		});
-	}
-
+	};
 
 	updateState = () => {
 		this.setState({
@@ -174,63 +175,38 @@ export default class RoomsListView extends React.Component {
 		});
 	};
 
-	_onPressItem = (id, item = {}) => {
-		const navigateToRoom = (room) => {
-			this.props.navigator.push({
-				screen: 'Room',
-				passProps: room
-			});
-		};
-
-		const clearSearch = () => {
-			this.setState({
-				searchText: '',
-				searching: false,
-				searchDataSource: []
-			});
-		};
-
-		// if user is using the search we need first to join/create room
-		if (item.search) {
-			if (item.t === 'd') {
-				RocketChat.createDirectMessage(item.username)
-					.then(room => new Promise((resolve) => {
-						const data = realm.objects('subscriptions').filtered('_server.id = $0 AND rid = $1', this.props.server, room.rid);
-
-						if (data.length) {
-							return resolve(data[0]);
-						}
-
-						data.addListener(() => {
-							if (data.length) {
-								resolve(data[0]);
-								data.removeAllListeners();
-							}
-						});
-					}))
-					.then(sub => navigateToRoom({ sid: sub._id }))
-					.then(() => clearSearch());
-			} else {
-				clearSearch();
-				navigateToRoom({ rid: item._id, name: item.name });
-			}
-			return;
-		}
-
-		navigateToRoom({ sid: id });
-		clearSearch();
+	userIsSelected(username) {
+		return this.state.selectedUsers.indexOf(username) !== -1;
 	}
+
+	_onPressItem = (id, item = {}) => {
+		const selectUser = (username) => {
+			const selectedUsers = this.state.selectedUsers;
+			const index = selectedUsers.indexOf(username);
+			if (index === -1) {
+				selectedUsers.push(username);
+			} else {
+				selectedUsers.splice(index, 1);
+			}
+			this.setState({ selectedUsers });
+		};
+
+		if (item.search) {
+			selectUser(item.username);
+		} else {
+			selectUser(item.name);
+		}
+	};
 	_createChannel = () => {
 		Navigation.showModal({
-			screen: 'SelectUsers',
+			screen: 'CreateChannel',
 			title: 'Create a New Channel',
-			subtitle: 'Select Users',
 			passProps: {},
 			navigatorStyle: {},
 			navigatorButtons: {},
 			animationType: 'slide-up'
 		});
-	}
+	};
 	renderSearchBar = () => (
 		<View style={styles.searchBoxView}>
 			<TextInput
@@ -245,7 +221,6 @@ export default class RoomsListView extends React.Component {
 			/>
 		</View>
 	);
-
 	renderItem = item => (
 		<RoomItem
 			key={item._id}
@@ -253,8 +228,9 @@ export default class RoomsListView extends React.Component {
 			type={item.t}
 			baseUrl={this.props.Site_Url}
 			onPress={() => this._onPressItem(item._id, item)}
+			unread={this.userIsSelected(item.name) ? 10 : null}
 		/>
-	)
+	);
 	renderList = () => (
 		<ListView
 			dataSource={this.state.dataSource}
@@ -265,17 +241,25 @@ export default class RoomsListView extends React.Component {
 			enableEmptySections
 			keyboardShouldPersistTaps='always'
 		/>
-	)
+	);
 	renderCreateButtons = () => (
 		<ActionButton buttonColor='rgba(231,76,60,1)'>
-			<ActionButton.Item buttonColor='#9b59b6' title='Create Channel' onPress={() => { this._createChannel(); }} >
+			<ActionButton.Item
+				buttonColor='#9b59b6'
+				title='Create Channel'
+				onPress={() => {
+					this._createChannel();
+				}}
+			>
 				<Icon name='md-chatbubbles' style={styles.actionButtonIcon} />
 			</ActionButton.Item>
-		</ActionButton>);
-	render= () => (
+		</ActionButton>
+	);
+	render = () => (
 		<View style={styles.container}>
 			<Banner />
 			{this.renderList()}
 			{this.renderCreateButtons()}
-		</View>)
+		</View>
+	);
 }
