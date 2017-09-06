@@ -144,7 +144,6 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-navigation')
     compile project(':react-native-svg')
     compile project(':react-native-image-picker')
     compile project(':react-native-vector-icons')

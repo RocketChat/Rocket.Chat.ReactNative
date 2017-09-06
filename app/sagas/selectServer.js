@@ -1,7 +1,7 @@
 import { put, takeEvery, call, takeLatest, race, take } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { AsyncStorage } from 'react-native';
-import { Navigation } from 'react-native-navigation';
+// import { Navigation } from 'react-native-navigation';
 import { SERVER } from '../actions/actionsTypes';
 import { connectRequest, disconnect } from '../actions/connect';
 import { changedServer, serverSuccess, serverFailure, serverRequest } from '../actions/server';
@@ -17,9 +17,9 @@ const selectServer = function* selectServer({ server }) {
 	yield put(changedServer(server));
 	yield call([AsyncStorage, 'setItem'], 'currentServer', server);
 	yield put(connectRequest(server));
-	yield Navigation.dismissModal({
-		animationType: 'slide-down'
-	});
+	// yield Navigation.dismissModal({
+	// 	animationType: 'slide-down'
+	// });
 };
 
 
@@ -45,9 +45,9 @@ const addServer = function* addServer({ server }) {
 		realm.write(() => {
 			realm.create('servers', { id: server, current: false }, true);
 		});
-		Navigation.dismissModal({
-			animationType: 'slide-down'
-		});
+		// Navigation.dismissModal({
+		// 	animationType: 'slide-down'
+		// });
 	}
 };
 

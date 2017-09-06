@@ -29,7 +29,11 @@ export default class Message extends React.PureComponent {
 	}
 
 	attachments() {
-		return this.props.item.attachments.length ? <Card data={this.props.item.attachments[0]} /> : null;
+		return this.props.item.attachments.length ? (
+			<Card
+				data={this.props.item.attachments[0]}
+			/>
+		) : null;
 	}
 
 	render() {

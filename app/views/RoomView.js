@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 }))
 export default class RoomView extends React.Component {
 	static propTypes = {
-		navigator: PropTypes.object.isRequired,
+		navigation: PropTypes.object.isRequired,
 		getMessages: PropTypes.func.isRequired,
 		rid: PropTypes.string,
 		sid: PropTypes.string,
@@ -69,7 +69,9 @@ export default class RoomView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.rid = props.rid || realm.objectForPrimaryKey('subscriptions', props.sid).rid;
+
+		this.sid = props.navigation.state.params.room.sid;
+		this.rid = props.rid || realm.objectForPrimaryKey('subscriptions', this.sid).rid;
 		// this.rid = 'GENERAL';
 
 		this.data = realm.objects('messages').filtered('_server.id = $0 AND rid = $1', this.props.server, this.rid).sorted('ts', true);
@@ -78,13 +80,13 @@ export default class RoomView extends React.Component {
 			loaded: true,
 			joined: typeof props.rid === 'undefined'
 		};
-
-		this.props.navigator.setTitle({
-			title: this.props.name || realm.objectForPrimaryKey('subscriptions', this.props.sid).name
-		});
 	}
 
 	componentWillMount() {
+		this.props.navigation.setParams({
+			title: this.props.name || realm.objectForPrimaryKey('subscriptions', this.sid).name
+		});
+
 		this.props.getMessages(this.rid);
 		// const late = setTimeout(() => this.setState({
 		// 	loaded: false

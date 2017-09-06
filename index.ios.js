@@ -1,7 +1,11 @@
-import 'babel-polyfill';
-import 'regenerator-runtime/runtime';
-import './app/navigation';
+// import 'babel-polyfill';
+// import 'regenerator-runtime/runtime';
+import { AppRegistry } from 'react-native';
+
+
+import RocketChat from './app/index';
 // import { AppRegistry } from 'react-native';
 // import Routes from './app/routes';
 //
-// AppRegistry.registerComponent('RocketChatRN', () => Routes);
+AppRegistry.registerComponent('RocketChatRN', () => RocketChat);
+

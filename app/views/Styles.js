@@ -46,6 +46,12 @@ export default StyleSheet.create({
 		marginBottom: 5,
 		color: '#2f343d'
 	},
+	label_error: {
+		color: 'red',
+		flexGrow: 1,
+		paddingHorizontal: 0,
+		marginBottom: 20
+	},
 	input: {
 		height: 45,
 		marginBottom: 20,
@@ -101,5 +107,21 @@ export default StyleSheet.create({
 		backgroundColor: 'rgba(255,255,255,.2)',
 		left: 0,
 		top: 0
+	},
+	switchContainer: {
+		flexDirection: 'row',
+		justifyContent: 'flex-start',
+		alignItems: 'center',
+		paddingHorizontal: 0
+	},
+	switchLabel: {
+		flexGrow: 1,
+		paddingHorizontal: 10
+	},
+	disabledButton: {
+		backgroundColor: '#e1e5e8'
+	},
+	enabledButton: {
+		backgroundColor: '#1d74f5'
 	}
 });

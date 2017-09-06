@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Navigation } from 'react-native-navigation';
+// import { Navigation } from 'react-native-navigation';
 import { Text, TextInput, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { serverRequest, addServer } from '../actions/server';
@@ -55,11 +55,11 @@ const styles = StyleSheet.create({
 }))
 export default class NewServerView extends React.Component {
 	static propTypes = {
-		navigator: PropTypes.object.isRequired,
 		validateServer: PropTypes.func.isRequired,
 		addServer: PropTypes.func.isRequired,
 		validating: PropTypes.bool.isRequired,
-		validInstance: PropTypes.bool.isRequired
+		validInstance: PropTypes.bool.isRequired,
+		navigation: PropTypes.object.isRequired
 	}
 
 	static navigationOptions = () => ({
@@ -73,41 +73,18 @@ export default class NewServerView extends React.Component {
 			editable: true,
 			text: ''
 		};
-
-		this.submit = () => {
-			this.props.addServer(this.completeUrl(this.state.text.trim() || this.state.defaultServer));
-		};
-	}
-
-	componentDidMount() {
-		this.props.navigator.setTitle({
-			title: 'New server'
-		});
-
-		this.props.navigator.setButtons({
-			rightButtons: [{
-				id: 'close',
-				title: 'Cancel'
-			}],
-			animated: true
-		});
-
-		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
-	}
-	onNavigatorEvent = (event) => {
-		if (event.type === 'NavBarButtonPress') {
-			if (event.id === 'close') {
-				Navigation.dismissModal({
-					animationType: 'slide-down'
-				});
-			}
-		}
 	}
 
 	onChangeText = (text) => {
 		this.setState({ text });
 		this.props.validateServer(this.completeUrl(text));
 	}
+
+	submit = () => {
+		this.props.addServer(this.completeUrl(this.state.text.trim() || this.state.defaultServer));
+		this.props.navigation.goBack();
+	}
+
 	completeUrl = (url) => {
 		url = url.trim();
 

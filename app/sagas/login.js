@@ -30,7 +30,7 @@ const handleLoginWhenServerChanges = function* handleLoginWhenServerChanges() {
 	try {
 		yield take(types.METEOR.SUCCESS);
 		yield call(getToken);
-		const { navigator } = yield select(state => state);
+		// const { navigator } = yield select(state => state);
 
 		const user = yield select(getUser);
 		if (user.token) {
@@ -48,9 +48,9 @@ const handleLoginWhenServerChanges = function* handleLoginWhenServerChanges() {
 			// 	});
 			// }
 		}
-		navigator.resetTo({
-			screen: 'Rooms'
-		});
+		// navigator.resetTo({
+		// 	screen: 'Rooms'
+		// });
 	} catch (e) {
 		console.log(e);
 	}
@@ -91,10 +91,10 @@ const handleLoginSubmit = function* handleLoginSubmit() {
 		});
 
 		if (!error) {
-			const { navigator } = yield select(state => state);
-			navigator.resetTo({
-				screen: 'Rooms'
-			});
+			// const { navigator } = yield select(state => state);
+			// navigator.resetTo({
+			// 	screen: 'Rooms'
+			// });
 		}
 	}
 };

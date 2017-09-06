@@ -15,9 +15,7 @@ import styles from './Styles';
 
 class LoginView extends React.Component {
 	static propTypes = {
-		navigator: PropTypes.object.isRequired,
 		loginSubmit: PropTypes.func.isRequired,
-		server: PropTypes.string.isRequired,
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
 		Accounts_PasswordPlaceholder: PropTypes.string,
 		login: PropTypes.object
@@ -35,33 +33,7 @@ class LoginView extends React.Component {
 			password: ''
 		};
 	}
-	componentWillReceiveProps() {
-		const { navigator } = this.props;
-		navigator.setTitle({
-			title: 'Login'
-		});
-		navigator.setSubTitle({
-			subtitle: this.props.server
-		});
-		navigator.setButtons({
-			rightButtons: [{
-				id: 'close',
-				title: 'Cancel'
-			}]
-		});
-		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
-	}
-	onNavigatorEvent = (event) => {
-		if (event.type === 'NavBarButtonPress') {
-			if (event.id === 'close') {
-				this.props.navigator.resetTo({
-					screen: 'ListServer',
-					animated: false
 
-				});
-			}
-		}
-	}
 	submit = () => {
 		const {	username, password, code } = this.state;
 		this.props.loginSubmit({	username, password, code });

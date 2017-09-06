@@ -1,10 +1,9 @@
 import ActionButton from 'react-native-action-button';
-import { Navigation } from 'react-native-navigation';
 import { ListView } from 'realm/react-native';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { View, StyleSheet, TextInput, Platform } from 'react-native';
+import { View, StyleSheet, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import * as server from '../actions/connect';
@@ -67,7 +66,7 @@ const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
 export default class RoomsListView extends React.Component {
 	static propTypes = {
-		navigator: PropTypes.object.isRequired,
+		navigation: PropTypes.object.isRequired,
 		Site_Url: PropTypes.string,
 		server: PropTypes.string
 	}
@@ -83,28 +82,8 @@ export default class RoomsListView extends React.Component {
 			login: false
 		};
 		this.data.addListener(this.updateState);
-		this.props.navigator.setOnNavigatorEvent(event => event.type === 'NavBarButtonPress' && event.id === 'servers' &&
-				Navigation.showModal({
-					screen: 'ListServer',
-					passProps: {},
-					navigatorStyle: {},
-					navigatorButtons: {},
-					animationType: 'slide-up'
-				}));
-		this.props.navigator.setSubTitle({
-			subtitle: this.props.server
-		});
 	}
-	componentWillMount() {
-		const button = Platform.OS === 'ios' ? 'leftButtons' : 'rightButtons';
-		this.props.navigator.setButtons({
-			[button]: [{
-				id: 'servers',
-				title: 'Servers'
-			}],
-			animated: true
-		});
-	}
+
 	componentWillUnmount() {
 		this.data.removeListener(this.updateState);
 	}
@@ -176,10 +155,7 @@ export default class RoomsListView extends React.Component {
 
 	_onPressItem = (id, item = {}) => {
 		const navigateToRoom = (room) => {
-			this.props.navigator.push({
-				screen: 'Room',
-				passProps: room
-			});
+			this.props.navigation.navigate('Room', { room });
 		};
 
 		const clearSearch = () => {
@@ -220,15 +196,8 @@ export default class RoomsListView extends React.Component {
 		navigateToRoom({ sid: id });
 		clearSearch();
 	}
-	_createChannel = () => {
-		Navigation.showModal({
-			screen: 'CreateChannel',
-			title: 'Create a New Channel',
-			passProps: {},
-			navigatorStyle: {},
-			navigatorButtons: {},
-			animationType: 'slide-up'
-		});
+	_createChannel() {
+		this.props.navigation.navigate('CreateChannel');
 	}
 	renderSearchBar = () => (
 		<View style={styles.searchBoxView}>

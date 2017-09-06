@@ -48,6 +48,7 @@ export default class Banner extends React.PureComponent {
 				</View>
 			);
 		}
+
 		if (offline) {
 			return (
 				<View style={[styles.bannerContainer, { backgroundColor: 'red' }]}>
