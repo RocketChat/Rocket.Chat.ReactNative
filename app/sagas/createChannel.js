@@ -1,9 +1,9 @@
 import { delay } from 'redux-saga';
+import { Navigation } from 'react-native-navigation';
 import { select, put, call, fork, take } from 'redux-saga/effects';
 import { CREATE_CHANNEL, LOGIN } from '../actions/actionsTypes';
 import { createChannelSuccess, createChannelFailure } from '../actions/createChannel';
 import RocketChat from '../lib/rocketchat';
-
 
 const create = function* create(data) {
 	return yield RocketChat.createChannel(data);
@@ -19,7 +19,7 @@ const get = function* get() {
 			}
 			const result = yield call(create, data);
 			yield put(createChannelSuccess(result));
-			select(({ navigator }) => navigator).dismissModal({
+			yield Navigation.dismissModal({
 				animationType: 'slide-down'
 			});
 		} catch (err) {

@@ -1,10 +1,9 @@
 import ActionButton from 'react-native-action-button';
-import { Navigation } from 'react-native-navigation';
 import { ListView } from 'realm/react-native';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { View, StyleSheet, TextInput, Platform } from 'react-native';
+import { View, StyleSheet, TextInput, Platform, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import * as server from '../actions/connect';
@@ -12,6 +11,7 @@ import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import RoomItem from '../presentation/RoomItem';
 import Banner from '../containers/Banner';
+import Avatar from '../containers/Avatar';
 
 const styles = StyleSheet.create({
 	container: {
@@ -51,6 +51,14 @@ const styles = StyleSheet.create({
 		padding: 5,
 		paddingLeft: 10,
 		color: '#aaa'
+	},
+	selectItemView: {
+		width: 80,
+		height: 80,
+		padding: 8,
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center'
 	}
 });
 
@@ -82,6 +90,10 @@ export default class RoomsListView extends React.Component {
 		this.state = {
 			dataSource: ds.cloneWithRows(this.data),
 			selectedUsers: [],
+			selectedUsersDS: ds.cloneWithRows([
+				{ _id: 1, name: 'Diego', t: 'd' },
+				{ _id: 2, name: 'Diego 2', t: 'd' }
+			]),
 			searching: false,
 			searchDataSource: [],
 			searchText: '',
@@ -101,7 +113,6 @@ export default class RoomsListView extends React.Component {
 			],
 			animated: true
 		});
-
 		// on navigator event
 		this.props.navigator.setOnNavigatorEvent((event) => {
 			if (event.type === 'NavBarButtonPress' && event.id === 'back') {
@@ -155,7 +166,6 @@ export default class RoomsListView extends React.Component {
 								search: true
 							});
 						});
-
 						this.setState({
 							dataSource: ds.cloneWithRows(dataSource)
 						});
@@ -164,6 +174,7 @@ export default class RoomsListView extends React.Component {
 				)
 				.then(() => delete this.oldPromise);
 		}
+
 		this.setState({
 			dataSource: ds.cloneWithRows(dataSource)
 		});
@@ -175,38 +186,49 @@ export default class RoomsListView extends React.Component {
 		});
 	};
 
-	userIsSelected(username) {
-		return this.state.selectedUsers.indexOf(username) !== -1;
-	}
+	toggleUser = (user) => {
+		const selectedUsers = this.state.selectedUsers;
+		const index = selectedUsers.findIndex(el => el.name === user.name);
+		if (index === -1) {
+			selectedUsers.push(user);
+		} else {
+			selectedUsers.splice(index, 1);
+		}
+		this.setState({ selectedUsers, selectedUsersDS: ds.cloneWithRows(selectedUsers) });
+	};
 
 	_onPressItem = (id, item = {}) => {
-		const selectUser = (username) => {
-			const selectedUsers = this.state.selectedUsers;
-			const index = selectedUsers.indexOf(username);
-			if (index === -1) {
-				selectedUsers.push(username);
-			} else {
-				selectedUsers.splice(index, 1);
-			}
-			this.setState({ selectedUsers });
-		};
-
 		if (item.search) {
-			selectUser(item.username);
+			this.toggleUser({ _id: item._id, name: item.username });
 		} else {
-			selectUser(item.name);
+			this.toggleUser({ _id: item._id, name: item.name });
 		}
 	};
+
+	_onPressSelectedItem = item => (
+		this.toggleUser(item)
+	);
+
 	_createChannel = () => {
-		Navigation.showModal({
+		this.props.navigator.push({
 			screen: 'CreateChannel',
 			title: 'Create a New Channel',
-			passProps: {},
+			passProps: {
+				users: this.state.selectedUsers
+			},
 			navigatorStyle: {},
 			navigatorButtons: {},
 			animationType: 'slide-up'
 		});
 	};
+
+	renderHeader = () => (
+		<View style={styles.container}>
+			{this.renderSearchBar()}
+			{this.renderSelected()}
+		</View>
+	);
+
 	renderSearchBar = () => (
 		<View style={styles.searchBoxView}>
 			<TextInput
@@ -221,6 +243,29 @@ export default class RoomsListView extends React.Component {
 			/>
 		</View>
 	);
+	renderSelected = () => {
+		if (this.state.selectedUsers.length === 0) {
+			return null;
+		}
+		return (
+			<ListView
+				dataSource={this.state.selectedUsersDS}
+				style={styles.list}
+				renderRow={this.renderSelectedItem}
+				enableEmptySections
+				keyboardShouldPersistTaps='always'
+				horizontal
+			/>
+		);
+	};
+	renderSelectedItem = item => (
+		<TouchableOpacity style={styles.selectItemView} onPress={() => this._onPressSelectedItem(item)}>
+			<Avatar text={item.name} baseUrl={item.baseUrl} size={40} borderRadius={20} />
+			<Text ellipsizeMode='tail' numberOfLines={1} style={{ fontSize: 10 }}>
+				{item.name}
+			</Text>
+		</TouchableOpacity>
+	);
 	renderItem = item => (
 		<RoomItem
 			key={item._id}
@@ -228,7 +273,6 @@ export default class RoomsListView extends React.Component {
 			type={item.t}
 			baseUrl={this.props.Site_Url}
 			onPress={() => this._onPressItem(item._id, item)}
-			unread={this.userIsSelected(item.name) ? 10 : null}
 		/>
 	);
 	renderList = () => (
@@ -236,30 +280,29 @@ export default class RoomsListView extends React.Component {
 			dataSource={this.state.dataSource}
 			style={styles.list}
 			renderRow={this.renderItem}
-			renderHeader={this.renderSearchBar}
+			renderHeader={this.renderHeader}
 			contentOffset={{ x: 0, y: 20 }}
 			enableEmptySections
 			keyboardShouldPersistTaps='always'
 		/>
 	);
-	renderCreateButtons = () => (
-		<ActionButton buttonColor='rgba(231,76,60,1)'>
-			<ActionButton.Item
-				buttonColor='#9b59b6'
-				title='Create Channel'
-				onPress={() => {
-					this._createChannel();
-				}}
-			>
-				<Icon name='md-chatbubbles' style={styles.actionButtonIcon} />
-			</ActionButton.Item>
-		</ActionButton>
-	);
+	renderCreateButton = () => {
+		if (this.state.selectedUsers.length === 0) {
+			return null;
+		}
+		return (
+			<ActionButton
+				buttonColor='rgba(67, 165, 71, 1)'
+				onPress={() => this._createChannel()}
+				icon={<Icon name='md-arrow-forward' style={styles.actionButtonIcon} />}
+			/>
+		);
+	};
 	render = () => (
 		<View style={styles.container}>
 			<Banner />
 			{this.renderList()}
-			{this.renderCreateButtons()}
+			{this.renderCreateButton()}
 		</View>
 	);
 }

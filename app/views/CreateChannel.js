@@ -20,7 +20,8 @@ export default class CreateChannelView extends React.Component {
 	static propTypes = {
 		createChannel: PropTypes.func.isRequired,
 		result: PropTypes.object.isRequired,
-		navigator: PropTypes.object.isRequired
+		navigator: PropTypes.object.isRequired,
+		users: PropTypes.array.isRequired
 	}
 
 	constructor(props) {
@@ -46,9 +47,7 @@ export default class CreateChannelView extends React.Component {
 		});
 		this.props.navigator.setOnNavigatorEvent((event) => {
 			if (event.type === 'NavBarButtonPress' && event.id === 'back') {
-				this.props.navigator.dismissModal({
-					animationType: 'slide-down'
-				});
+				this.props.navigator.pop();
 			}
 		});
 	}
@@ -57,7 +56,13 @@ export default class CreateChannelView extends React.Component {
 		if (!this.state.channelName.trim() || this.props.result.isFetching) {
 			return;
 		}
-		const { channelName, users = [], type = true } = this.state;
+		const { channelName, type = true } = this.state;
+		let { users } = this.props;
+
+		// transform users object into array of usernames
+		users = users.map(user => user.name);
+
+		// create channel
 		this.props.createChannel({ name: channelName, users, type });
 	}
 
