@@ -8,7 +8,8 @@ import styles from './Styles';
 import KeyboardView from '../presentation/KeyboardView';
 
 @connect(state => ({
-	result: state.createChannel
+	result: state.createChannel,
+	users: state.createChannel.users
 }), dispatch => ({
 	createChannel: data => dispatch(createChannelRequest(data))
 }))

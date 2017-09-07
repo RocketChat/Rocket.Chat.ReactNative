@@ -7,6 +7,7 @@ import { View, StyleSheet, TextInput, Platform, Text, TouchableOpacity } from 'r
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import * as server from '../actions/connect';
+import * as createChannelActions from '../actions/createChannel';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import RoomItem from '../presentation/RoomItem';
@@ -19,22 +20,8 @@ const styles = StyleSheet.create({
 		alignItems: 'stretch',
 		justifyContent: 'center'
 	},
-	separator: {
-		height: 1,
-		backgroundColor: '#E7E7E7'
-	},
 	list: {
 		width: '100%'
-	},
-	emptyView: {
-		flexGrow: 1,
-		alignItems: 'stretch',
-		justifyContent: 'center'
-	},
-	emptyText: {
-		textAlign: 'center',
-		fontSize: 18,
-		color: '#ccc'
 	},
 	actionButtonIcon: {
 		fontSize: 20,
@@ -68,18 +55,25 @@ const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 		server: state.server.server,
 		login: state.login,
 		Site_Url: state.settings.Site_Url,
-		canShowList: state.login.token || state.login.user.token
+		users: state.createChannel.users
 	}),
 	dispatch => ({
 		login: () => dispatch(actions.login()),
-		connect: () => dispatch(server.connectRequest())
+		connect: () => dispatch(server.connectRequest()),
+		addUser: user => dispatch(createChannelActions.addUser(user)),
+		removeUser: user => dispatch(createChannelActions.removeUser(user)),
+		resetCreateChannel: () => dispatch(createChannelActions.reset())
 	})
 )
 export default class RoomsListView extends React.Component {
 	static propTypes = {
 		navigator: PropTypes.object.isRequired,
 		Site_Url: PropTypes.string,
-		server: PropTypes.string
+		server: PropTypes.string,
+		addUser: PropTypes.func.isRequired,
+		removeUser: PropTypes.func.isRequired,
+		resetCreateChannel: PropTypes.func.isRequired,
+		users: PropTypes.array
 	};
 
 	constructor(props) {
@@ -89,8 +83,6 @@ export default class RoomsListView extends React.Component {
 			.filtered('_server.id = $0 AND t = $1', this.props.server, 'd');
 		this.state = {
 			dataSource: ds.cloneWithRows(this.data),
-			selectedUsers: [],
-			selectedUsersDS: ds.cloneWithRows([]),
 			searching: false,
 			searchDataSource: [],
 			searchText: '',
@@ -113,6 +105,7 @@ export default class RoomsListView extends React.Component {
 		// on navigator event
 		this.props.navigator.setOnNavigatorEvent((event) => {
 			if (event.type === 'NavBarButtonPress' && event.id === 'back') {
+				this.props.resetCreateChannel();
 				this.props.navigator.dismissModal({
 					animationType: 'slide-down'
 				});
@@ -184,14 +177,12 @@ export default class RoomsListView extends React.Component {
 	};
 
 	toggleUser = (user) => {
-		const selectedUsers = this.state.selectedUsers;
-		const index = selectedUsers.findIndex(el => el.name === user.name);
+		const index = this.props.users.findIndex(el => el.name === user.name);
 		if (index === -1) {
-			selectedUsers.push(user);
+			this.props.addUser(user);
 		} else {
-			selectedUsers.splice(index, 1);
+			this.props.removeUser(user);
 		}
-		this.setState({ selectedUsers, selectedUsersDS: ds.cloneWithRows(selectedUsers) });
 	};
 
 	_onPressItem = (id, item = {}) => {
@@ -210,9 +201,6 @@ export default class RoomsListView extends React.Component {
 		this.props.navigator.push({
 			screen: 'CreateChannel',
 			title: 'Create a New Channel',
-			passProps: {
-				users: this.state.selectedUsers
-			},
 			navigatorStyle: {},
 			navigatorButtons: {},
 			animationType: 'slide-up'
@@ -241,12 +229,13 @@ export default class RoomsListView extends React.Component {
 		</View>
 	);
 	renderSelected = () => {
-		if (this.state.selectedUsers.length === 0) {
+		if (this.props.users.length === 0) {
 			return null;
 		}
+		const usersDataSource = ds.cloneWithRows(this.props.users);
 		return (
 			<ListView
-				dataSource={this.state.selectedUsersDS}
+				dataSource={usersDataSource}
 				style={styles.list}
 				renderRow={this.renderSelectedItem}
 				enableEmptySections
@@ -288,7 +277,7 @@ export default class RoomsListView extends React.Component {
 		/>
 	);
 	renderCreateButton = () => {
-		if (this.state.selectedUsers.length === 0) {
+		if (this.props.users.length === 0) {
 			return null;
 		}
 		return (

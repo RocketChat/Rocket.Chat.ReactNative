@@ -3,6 +3,7 @@ import 'regenerator-runtime/runtime';
 
 import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
+import logger from 'redux-logger';
 import reducers from '../reducers';
 import sagas from '../sagas';
 
@@ -12,13 +13,10 @@ let middleware;
 if (__DEV__) {
 	/* eslint-disable global-require */
 	const reduxImmutableStateInvariant = require('redux-immutable-state-invariant').default();
-	middleware = [sagaMiddleware, reduxImmutableStateInvariant];
+	middleware = [sagaMiddleware, reduxImmutableStateInvariant, logger];
 } else {
 	middleware = [sagaMiddleware];
 }
 
-export default createStore(
-	reducers,
-	applyMiddleware(...middleware)
-);
+export default createStore(reducers, applyMiddleware(...middleware));
 sagaMiddleware.run(sagas);
