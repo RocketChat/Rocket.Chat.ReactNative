@@ -90,10 +90,7 @@ export default class RoomsListView extends React.Component {
 		this.state = {
 			dataSource: ds.cloneWithRows(this.data),
 			selectedUsers: [],
-			selectedUsersDS: ds.cloneWithRows([
-				{ _id: 1, name: 'Diego', t: 'd' },
-				{ _id: 2, name: 'Diego 2', t: 'd' }
-			]),
+			selectedUsersDS: ds.cloneWithRows([]),
 			searching: false,
 			searchDataSource: [],
 			searchText: '',
@@ -259,8 +256,12 @@ export default class RoomsListView extends React.Component {
 		);
 	};
 	renderSelectedItem = item => (
-		<TouchableOpacity style={styles.selectItemView} onPress={() => this._onPressSelectedItem(item)}>
-			<Avatar text={item.name} baseUrl={item.baseUrl} size={40} borderRadius={20} />
+		<TouchableOpacity
+			key={item._id}
+			style={styles.selectItemView}
+			onPress={() => this._onPressSelectedItem(item)}
+		>
+			<Avatar text={item.name} baseUrl={this.props.Site_Url} size={40} borderRadius={20} />
 			<Text ellipsizeMode='tail' numberOfLines={1} style={{ fontSize: 10 }}>
 				{item.name}
 			</Text>
