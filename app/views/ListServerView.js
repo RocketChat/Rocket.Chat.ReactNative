@@ -84,6 +84,7 @@ export default class ListServerView extends React.Component {
 		this.state = {
 			sections: []
 		};
+		this.redirected = false;
 	}
 
 	componentWillMount() {
@@ -95,10 +96,15 @@ export default class ListServerView extends React.Component {
 		this.state = this.getState();
 	}
 
-	componentDidUpdate(prevProps) {
-		if (this.props.connected && !prevProps.connected &&
-				this.props.server && !this.props.login.token) {
+	componentDidUpdate() {
+		if (this.props.connected &&
+			this.props.server &&
+			!this.props.login.token &&
+			!this.redirected) {
+			this.redirected = true;
 			this.props.navigation.navigate('Login');
+		} else if (!this.props.connected) {
+			this.redirected = false;
 		}
 	}
 

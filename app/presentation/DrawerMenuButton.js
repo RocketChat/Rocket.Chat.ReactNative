@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const DrawerMenuButton = ({ navigation }) => (
 	<TouchableOpacity
 		onPress={() => navigation.navigate('DrawerOpen')}
 	>
-		<Icon name='menu' style={{ color: '#ffffff' }} />
+		<Icon name='bars' style={{ padding: 10, marginLeft: 10 }} size={20} color='black' />
 	</TouchableOpacity>
 );
 
