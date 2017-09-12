@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { Navigation } from 'react-native-navigation';
 import { Text, TextInput, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { serverRequest, addServer } from '../actions/server';
@@ -73,6 +72,22 @@ export default class NewServerView extends React.Component {
 			editable: true,
 			text: ''
 		};
+		this.adding = false;
+		this.props.validateServer(this.state.defaultServer); // Need to call because in case of submit with empty field
+	}
+
+	componentDidUpdate() {
+		if (this.adding) {
+			if (!this.props.validInstance) {
+				/* eslint-disable react/no-did-update-set-state */
+				this.setState({ editable: true });
+				this.adding = false;
+			}
+			if (this.props.validInstance && !this.props.validating) {
+				this.props.navigation.goBack();
+				this.adding = false;
+			}
+		}
 	}
 
 	onChangeText = (text) => {
@@ -81,14 +96,16 @@ export default class NewServerView extends React.Component {
 	}
 
 	submit = () => {
+		this.setState({ editable: false });
+		this.adding = true;
 		this.props.addServer(this.completeUrl(this.state.text.trim() || this.state.defaultServer));
-		this.props.navigation.goBack();
 	}
 
 	completeUrl = (url) => {
 		url = url.trim();
 
-		if (/^(\w|[0-9-_]){3,}$/.test(url) && /^(htt(ps?)?)|(loca((l)?|(lh)?|(lho)?|(lhos)?|(lhost:?\d*)?)$)/.test(url) === false) {
+		if (/^(\w|[0-9-_]){3,}$/.test(url) &&
+				/^(htt(ps?)?)|(loca((l)?|(lh)?|(lho)?|(lhos)?|(lhost:?\d*)?)$)/.test(url) === false) {
 			url = `${ url }.rocket.chat`;
 		}
 

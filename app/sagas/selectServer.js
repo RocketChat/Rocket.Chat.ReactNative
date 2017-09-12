@@ -17,9 +17,6 @@ const selectServer = function* selectServer({ server }) {
 	yield put(changedServer(server));
 	yield call([AsyncStorage, 'setItem'], 'currentServer', server);
 	yield put(connectRequest(server));
-	// yield Navigation.dismissModal({
-	// 	animationType: 'slide-down'
-	// });
 };
 
 
@@ -45,9 +42,6 @@ const addServer = function* addServer({ server }) {
 		realm.write(() => {
 			realm.create('servers', { id: server, current: false }, true);
 		});
-		// Navigation.dismissModal({
-		// 	animationType: 'slide-down'
-		// });
 	}
 };
 

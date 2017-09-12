@@ -4,7 +4,6 @@ import Meteor from 'react-native-meteor';
 import { connect } from 'react-redux';
 import { CachedImage } from 'react-native-img-cache';
 import { Text, TouchableOpacity, View } from 'react-native';
-// import { Navigation } from 'react-native-navigation';
 import {
 	Card,
 	CardImage,
@@ -16,23 +15,6 @@ import RocketChat from '../../lib/rocketchat';
 
 import PhotoModal from './PhotoModal';
 
-// const close = () => Navigation.dismissModal({
-// 	animationType: 'slide-down'
-// });
-
-const close = () => { };
-
-const CustomButton = ({ text }) => (
-	<TouchableOpacity onPress={close}>
-		<Text style={{ color: 'blue' }}>{text}</Text>
-	</TouchableOpacity>
-);
-
-CustomButton.propTypes = {
-	text: PropTypes.string
-};
-
-// Navigation.registerComponent('CustomButton', () => CustomButton);
 
 @connect(state => ({
 	base: state.settings.Site_Url,

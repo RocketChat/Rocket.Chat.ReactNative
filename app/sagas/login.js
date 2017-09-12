@@ -63,46 +63,33 @@ const saveToken = function* saveToken() {
 	yield AsyncStorage.setItem(`${ TOKEN_KEY }-${ server }`, JSON.stringify(user));
 };
 
-const handleLoginRequest = function* handleLoginRequest() {
-	while (true) {
-		const { credentials } = yield take(types.LOGIN.REQUEST);
-		try {
-			const response = yield call(loginCall, credentials);
-			yield put(loginSuccess(response));
-		} catch (err) {
-			if (err.error === 403) {
-				yield put(logout());
-			} else {
-				yield put(loginFailure(err));
-			}
+const handleLoginRequest = function* handleLoginRequest({ credentials }) {
+	try {
+		const response = yield call(loginCall, credentials);
+		yield put(loginSuccess(response));
+	} catch (err) {
+		if (err.error === 403) {
+			yield put(logout());
+		} else {
+			yield put(loginFailure(err));
 		}
 	}
 };
 
-const handleLoginSubmit = function* handleLoginSubmit() {
-	while (true) {
-		const { credentials } = yield take(types.LOGIN.SUBMIT);
-		// put a login request
-		yield put(loginRequest(credentials));
-		// wait for a response
-		const { error } = yield race({
-			success: take(types.LOGIN.SUCCESS),
-			error: take(types.LOGIN.FAILURE)
-		});
-
-		if (!error) {
-			// const { navigator } = yield select(state => state);
-			// navigator.resetTo({
-			// 	screen: 'Rooms'
-			// });
-		}
-	}
+const handleLoginSubmit = function* handleLoginSubmit({ credentials }) {
+	// put a login request
+	yield put(loginRequest(credentials));
+	// wait for a response
+	yield race({
+		success: take(types.LOGIN.SUCCESS),
+		error: take(types.LOGIN.FAILURE)
+	});
 };
 
 const root = function* root() {
 	yield takeEvery(types.SERVER.CHANGED, handleLoginWhenServerChanges);
-	yield fork(handleLoginRequest);
+	yield takeEvery(types.LOGIN.REQUEST, handleLoginRequest);
 	yield takeEvery(types.LOGIN.SUCCESS, saveToken);
-	yield fork(handleLoginSubmit);
+	yield takeEvery(types.LOGIN.SUBMIT, handleLoginSubmit);
 };
 export default root;

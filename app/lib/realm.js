@@ -1,4 +1,5 @@
 import Realm from 'realm';
+import { AsyncStorage } from 'react-native';
 
 const serversSchema = {
 	name: 'servers',
@@ -153,8 +154,8 @@ const messagesSchema = {
 	// }
 };
 //
-// Realm.clearTestState();
-// AsyncStorage.clear();
+Realm.clearTestState();
+AsyncStorage.clear();
 const realm = new Realm({
 	schema: [settingsSchema, serversSchema, subscriptionSchema, messagesSchema, usersSchema, attachment]
 });

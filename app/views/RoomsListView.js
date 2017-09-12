@@ -73,19 +73,27 @@ export default class RoomsListView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.data = realm.objects('subscriptions').filtered('_server.id = $0', this.props.server);
+
 		this.state = {
-			dataSource: ds.cloneWithRows(this.data),
+			dataSource: [],
 			searching: false,
 			searchDataSource: [],
 			searchText: '',
 			login: false
 		};
-		this.data.addListener(this.updateState);
+	}
+
+	componentWillMount() {
+		realm.addListener('change', this.updateState);
+
+		this.state = {
+			...this.state,
+			dataSource: ds.cloneWithRows(this.getData())
+		};
 	}
 
 	componentWillUnmount() {
-		this.data.removeListener(this.updateState);
+		realm.removeListener('change', this.updateState);
 	}
 
 	onSearchChangeText = (text) => {
@@ -146,10 +154,13 @@ export default class RoomsListView extends React.Component {
 		});
 	}
 
+	getData() {
+		return realm.objects('subscriptions').filtered('_server.id = $0', this.props.server);
+	}
 
 	updateState = () => {
 		this.setState({
-			dataSource: ds.cloneWithRows(this.data)
+			dataSource: ds.cloneWithRows(this.getData())
 		});
 	};
 
@@ -196,9 +207,11 @@ export default class RoomsListView extends React.Component {
 		navigateToRoom({ sid: id });
 		clearSearch();
 	}
+
 	_createChannel() {
 		this.props.navigation.navigate('CreateChannel');
 	}
+
 	renderSearchBar = () => (
 		<View style={styles.searchBoxView}>
 			<TextInput
@@ -223,6 +236,7 @@ export default class RoomsListView extends React.Component {
 			onPress={() => this._onPressItem(item._id, item)}
 		/>
 	)
+
 	renderList = () => (
 		<ListView
 			dataSource={this.state.dataSource}
@@ -234,13 +248,16 @@ export default class RoomsListView extends React.Component {
 			keyboardShouldPersistTaps='always'
 		/>
 	)
+
 	renderCreateButtons = () => (
 		<ActionButton buttonColor='rgba(231,76,60,1)'>
 			<ActionButton.Item buttonColor='#9b59b6' title='Create Channel' onPress={() => { this._createChannel(); }} >
 				<Icon name='md-chatbubbles' style={styles.actionButtonIcon} />
 			</ActionButton.Item>
-		</ActionButton>);
-	render= () => (
+		</ActionButton>
+	);
+
+	render = () => (
 		<View style={styles.container}>
 			<Banner />
 			{this.renderList()}
