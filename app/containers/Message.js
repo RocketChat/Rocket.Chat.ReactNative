@@ -10,7 +10,8 @@ import User from './message/User';
 
 const styles = StyleSheet.create({
 	content: {
-		flexGrow: 1
+		flexGrow: 1,
+		flexShrink: 1
 	},
 	message: {
 		padding: 12,

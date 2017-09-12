@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native';
-import { take, put, call, takeEvery, fork, select, all, race } from 'redux-saga/effects';
+import { take, put, call, takeEvery, select, all, race } from 'redux-saga/effects';
 import * as types from '../actions/actionsTypes';
 import { loginRequest, loginSuccess, loginFailure, setToken, logout } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
