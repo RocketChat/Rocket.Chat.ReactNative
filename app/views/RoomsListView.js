@@ -23,7 +23,8 @@ const styles = StyleSheet.create({
 		backgroundColor: '#E7E7E7'
 	},
 	list: {
-		width: '100%'
+		width: '100%',
+		backgroundColor: '#FFFFFF'
 	},
 	emptyView: {
 		flexGrow: 1,
@@ -81,19 +82,20 @@ export default class RoomsListView extends React.Component {
 			searchText: '',
 			login: false
 		};
+		this.data = realm.objects('subscriptions').filtered('_server.id = $0', this.props.server).sorted('_updatedAt', true);
 	}
 
 	componentWillMount() {
-		realm.addListener('change', this.updateState);
+		this.data.addListener(this.updateState);
 
 		this.state = {
 			...this.state,
-			dataSource: ds.cloneWithRows(this.getData())
+			dataSource: ds.cloneWithRows(this.data)
 		};
 	}
 
 	componentWillUnmount() {
-		realm.removeListener('change', this.updateState);
+		this.data.removeAllListeners();
 	}
 
 	onSearchChangeText = (text) => {
@@ -154,13 +156,9 @@ export default class RoomsListView extends React.Component {
 		});
 	}
 
-	getData() {
-		return realm.objects('subscriptions').filtered('_server.id = $0', this.props.server);
-	}
-
 	updateState = () => {
 		this.setState({
-			dataSource: ds.cloneWithRows(this.getData())
+			dataSource: ds.cloneWithRows(this.data)
 		});
 	};
 
@@ -229,8 +227,8 @@ export default class RoomsListView extends React.Component {
 
 	renderItem = item => (
 		<RoomItem
+			{...item}
 			key={item._id}
-			name={item.name}
 			type={item.t}
 			baseUrl={this.props.Site_Url}
 			onPress={() => this._onPressItem(item._id, item)}

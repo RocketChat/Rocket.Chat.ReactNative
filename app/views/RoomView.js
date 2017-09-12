@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import { Text, View, StyleSheet, Button, InteractionManager } from 'react-native';
 import { ListView } from 'realm/react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -9,12 +9,11 @@ import * as actions from '../actions';
 import { messagesRequest } from '../actions/messages';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
-import debounce from '../utils/throttle';
 import Message from '../containers/Message';
 import MessageBox from '../containers/MessageBox';
 import KeyboardView from '../presentation/KeyboardView';
 
-const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id });
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -72,10 +71,10 @@ export default class RoomView extends React.Component {
 
 		this.sid = props.navigation.state.params.room.sid;
 		this.rid = props.rid || realm.objectForPrimaryKey('subscriptions', this.sid).rid;
-		// this.rid = 'GENERAL';
 
 		this.data = realm.objects('messages').filtered('_server.id = $0 AND rid = $1', this.props.server, this.rid).sorted('ts', true);
 		this.state = {
+			slow: false,
 			dataSource: [],
 			loaded: true,
 			joined: typeof props.rid === 'undefined'
@@ -86,31 +85,20 @@ export default class RoomView extends React.Component {
 		this.props.navigation.setParams({
 			title: this.props.name || realm.objectForPrimaryKey('subscriptions', this.sid).name
 		});
-
+		this.timer = setTimeout(() => this.setState({ slow: true }), 5000);
 		this.props.getMessages(this.rid);
-		// const late = setTimeout(() => this.setState({
-		// 	loaded: false
-		// }), 1000);
-		// RocketChat.loadMessagesForRoom(this.rid, null, () => {
-		// 	clearTimeout(late);
-		// 	this.setState({
-		// 		loaded: true
-		// 	});
-		realm.addListener('change', this.updateState);
-		// });
-		// this.updateState();
-		this.state = {
-			...this.state,
-			dataSource: ds.cloneWithRows(this.getData())
-		};
+		this.data.addListener(this.updateState);
+		this.state.dataSource = ds.cloneWithRows(this.data);
 	}
-
 	componentDidMount() {
-		return RocketChat.readMessages(this.rid);
+		InteractionManager.runAfterInteractions(() => RocketChat.readMessages(this.rid));
 	}
-
+	componentDidUpdate() {
+		return !this.props.loading && clearTimeout(this.timer);
+	}
 	componentWillUnmount() {
-		realm.removeListener('change', this.updateState);
+		clearTimeout(this.timer);
+		this.data.removeAllListeners();
 	}
 
 	onEndReached = () => {
@@ -132,35 +120,22 @@ export default class RoomView extends React.Component {
 		}
 	}
 
-	getData() {
-		return realm
-			.objects('messages')
-			.filtered('_server.id = $0 AND rid = $1', this.props.server, this.rid)
-			.sorted('ts', true);
-	}
-
-	updateState = debounce(() => {
+	updateState = () => {
 		this.setState({
-			dataSource: ds.cloneWithRows(this.getData())
+			dataSource: ds.cloneWithRows(this.data)
 		});
-		// RocketChat.readMessages(this.rid);
-		// this.setState({
-		// 	messages: this.messages
-		// });
-	}, 100);
+	};
 
 	sendMessage = message => RocketChat.sendMessage(this.rid, message);
 
-	joinRoom = () => {
-		RocketChat.joinRoom(this.props.rid)
-			.then(() => {
-				this.setState({
-					joined: true
-				});
-			});
+	joinRoom = async() => {
+		await RocketChat.joinRoom(this.props.rid);
+		this.setState({
+			joined: true
+		});
 	};
 
-	renderBanner = () => (this.props.loading ?
+	renderBanner = () => (this.state.slow && this.props.loading ?
 		(
 			<View style={styles.bannerContainer}>
 				<Text style={styles.bannerText}>Loading new messages...</Text>
