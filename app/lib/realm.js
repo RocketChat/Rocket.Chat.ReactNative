@@ -154,8 +154,8 @@ const messagesSchema = {
 	// }
 };
 //
-Realm.clearTestState();
-AsyncStorage.clear();
+// Realm.clearTestState();
+// AsyncStorage.clear();
 const realm = new Realm({
 	schema: [settingsSchema, serversSchema, subscriptionSchema, messagesSchema, usersSchema, attachment]
 });
