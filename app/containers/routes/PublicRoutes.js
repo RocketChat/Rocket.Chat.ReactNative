@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import { StackNavigator } from 'react-navigation';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import ListServerView from '../../views/ListServerView';
 import NewServerView from '../../views/NewServerView';
@@ -14,10 +15,12 @@ const PublicRoutes = StackNavigator(
 				return {
 					title: 'Servers',
 					headerRight: (
-						<Button
-							title='Add'
+						<TouchableOpacity
 							onPress={() => navigation.navigate('AddServer')}
-						/>
+							style={{ width: 50, alignItems: 'center' }}
+						>
+							<Icon name='plus' size={16} />
+						</TouchableOpacity>
 					)
 				};
 			}

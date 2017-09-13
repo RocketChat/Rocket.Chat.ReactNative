@@ -1,6 +1,16 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: '#2f343d',
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'stretch'
+	},
+	loginView: {
+		padding: 20
+	},
 	view: {
 		flex: 1,
 		flexDirection: 'column',
@@ -24,7 +34,6 @@ export default StyleSheet.create({
 		justifyContent: 'center'
 	},
 	logo: {
-		// width: 80,
 		borderRadius: 5,
 		resizeMode: 'contain'
 	},

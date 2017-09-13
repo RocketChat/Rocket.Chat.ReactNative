@@ -61,45 +61,52 @@ class LoginView extends React.Component {
 	// {this.props.login.isFetching && <Text> LOGANDO</Text>}
 	render() {
 		return (
-			<KeyboardView style={styles.view} keyboardVerticalOffset={64}>
-				<View style={styles.logoContainer}>
-					<Image style={styles.logo} source={require('../images/logo.png')} />
+			<KeyboardView style={styles.container} keyboardVerticalOffset={64}>
+				<View>
+					<Text style={{ textAlign: 'center' }}>
+						<Image
+							style={styles.logo}
+							source={require('../images/logo.png')}
+						/>
+					</Text>
 				</View>
-				<View style={styles.formContainer}>
-					<TextInput
-						placeholderTextColor={'rgba(255,255,255,.2)'}
-						style={styles.input}
-						onChangeText={username => this.setState({ username })}
-						keyboardType='email-address'
-						autoCorrect={false}
-						returnKeyType='done'
-						autoCapitalize='none'
-						autoFocus
+				<View style={styles.loginView}>
+					<View style={styles.formContainer}>
+						<TextInput
+							placeholderTextColor={'rgba(255,255,255,.2)'}
+							style={styles.input}
+							onChangeText={username => this.setState({ username })}
+							keyboardType='email-address'
+							autoCorrect={false}
+							returnKeyType='done'
+							autoCapitalize='none'
+							autoFocus
 
-						underlineColorAndroid='transparent'
-						onSubmitEditing={this.submit}
-						placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email or username'}
-					/>
-					<TextInput
-						placeholderTextColor={'rgba(255,255,255,.2)'}
-						style={styles.input}
-						onChangeText={password => this.setState({ password })}
-						secureTextEntry
-						autoCorrect={false}
-						returnKeyType='done'
-						autoCapitalize='none'
+							underlineColorAndroid='transparent'
+							onSubmitEditing={this.submit}
+							placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email or username'}
+						/>
+						<TextInput
+							placeholderTextColor={'rgba(255,255,255,.2)'}
+							style={styles.input}
+							onChangeText={password => this.setState({ password })}
+							secureTextEntry
+							autoCorrect={false}
+							returnKeyType='done'
+							autoCapitalize='none'
 
-						underlineColorAndroid='transparent'
-						onSubmitEditing={this.submit}
-						placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
-					/>
-					{this.renderTOTP()}
-					<TouchableOpacity style={styles.buttonContainer}>
-						<Text style={styles.button} onPress={this.submit}>LOGIN</Text>
-					</TouchableOpacity>
-					{this.props.login.error && <Text style={styles.error}>{this.props.login.error}</Text>}
+							underlineColorAndroid='transparent'
+							onSubmitEditing={this.submit}
+							placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
+						/>
+						{this.renderTOTP()}
+						<TouchableOpacity style={styles.buttonContainer}>
+							<Text style={styles.button} onPress={this.submit}>LOGIN</Text>
+						</TouchableOpacity>
+						{this.props.login.error && <Text style={styles.error}>{this.props.login.error}</Text>}
+					</View>
+					<Spinner visible={this.props.login.isFetching} textContent={'Loading...'} textStyle={{ color: '#FFF' }} />
 				</View>
-				<Spinner visible={this.props.login.isFetching} textContent={'Loading...'} textStyle={{ color: '#FFF' }} />
 			</KeyboardView>
 		);
 	}

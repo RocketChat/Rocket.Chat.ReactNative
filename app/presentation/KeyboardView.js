@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { KeyboardAvoidingView, Platform } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native';
 
 export default class KeyboardView extends React.PureComponent {
 	static propTypes = {
@@ -14,7 +14,7 @@ export default class KeyboardView extends React.PureComponent {
 
 	render() {
 		return (
-			<KeyboardAvoidingView style={this.props.style} behavior={Platform.OS === 'ios' ? 'padding' : null} keyboardVerticalOffset={this.props.keyboardVerticalOffset}>
+			<KeyboardAvoidingView style={this.props.style} behavior='padding' keyboardVerticalOffset={this.props.keyboardVerticalOffset}>
 				{this.props.children}
 			</KeyboardAvoidingView>
 		);

@@ -38,7 +38,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Upload images from camera</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Upload images from library</string>
 	<key>UIAppFonts</key>
