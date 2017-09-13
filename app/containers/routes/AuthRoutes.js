@@ -1,6 +1,6 @@
 import React from 'react';
 import { StackNavigator, DrawerNavigator } from 'react-navigation';
-import { Platform } from 'react-native';
+// import { Platform } from 'react-native';
 
 import Sidebar from '../../containers/Sidebar';
 import DrawerMenuButton from '../../presentation/DrawerMenuButton';
@@ -9,8 +9,8 @@ import RoomsListView from '../../views/RoomsListView';
 import RoomView from '../../views/RoomView';
 import CreateChannelView from '../../views/CreateChannelView';
 
-const drawerPosition = Platform.OS === 'ios' ? 'right' : 'left';
-const drawerIconPosition = Platform.OS === 'ios' ? 'headerRight' : 'headerLeft';
+const drawerPosition = 'left';
+const drawerIconPosition = 'headerLeft';
 
 
 const AuthRoutes = StackNavigator(
@@ -28,8 +28,8 @@ const AuthRoutes = StackNavigator(
 			screen: RoomView,
 			navigationOptions({ navigation }) {
 				return {
-					title: navigation.state.params.title || 'Room',
-					[drawerIconPosition]: (<DrawerMenuButton navigation={navigation} />)
+					title: navigation.state.params.title || 'Room'
+					// [drawerIconPosition]: (<DrawerMenuButton navigation={navigation} />)÷
 				};
 			}
 		},

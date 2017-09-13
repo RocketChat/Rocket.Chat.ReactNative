@@ -24,9 +24,8 @@ export default StyleSheet.create({
 		justifyContent: 'center'
 	},
 	logo: {
-		width: 150,
-		// backgroundColor: 'red'
-		// height: 150,
+		// width: 80,
+		borderRadius: 5,
 		resizeMode: 'contain'
 	},
 	formContainer: {

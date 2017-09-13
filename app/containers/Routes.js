@@ -42,7 +42,7 @@ export default class Routes extends React.Component {
 						iterationCount='infinite'
 						style={{ textAlign: 'center' }}
 					>
-						<Image style={styles.logo} source={require('../images/logo.png')} />
+						<Image style={styles.logo} source={require('../images/logo.png')} resizeMode={Image.resizeMode.center} />
 					</Animatable.Text>
 				</View>
 			);

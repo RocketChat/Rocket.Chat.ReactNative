@@ -227,7 +227,8 @@ export default class RoomsListView extends React.Component {
 
 	renderItem = item => (
 		<RoomItem
-			{...item}
+			unread={item.unread}
+			name={item.name}
 			key={item._id}
 			type={item.t}
 			baseUrl={this.props.Site_Url}
