@@ -26,6 +26,6 @@ const get = function* get({ data }) {
 	}
 };
 const getData = function* getData() {
-	yield takeEvery(get, CREATE_CHANNEL.REQUEST);
+	yield takeEvery(CREATE_CHANNEL.REQUEST, get);
 };
 export default getData;

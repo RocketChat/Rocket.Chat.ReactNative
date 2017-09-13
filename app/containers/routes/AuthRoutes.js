@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StackNavigator, DrawerNavigator } from 'react-navigation';
 import { Platform } from 'react-native';
 
