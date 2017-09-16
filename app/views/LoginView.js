@@ -3,7 +3,7 @@ import React from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import PropTypes from 'prop-types';
-import { Keyboard, Text, TextInput, View, Image, TouchableOpacity } from 'react-native';
+import { Keyboard, Text, TextInput, View, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import * as actions from '../actions';
@@ -36,6 +36,10 @@ class LoginView extends React.Component {
 
 	submit = () => {
 		const {	username, password, code } = this.state;
+		if (username.trim() === '' || password.trim() === '') {
+			return;
+		}
+
 		this.props.loginSubmit({	username, password, code });
 		Keyboard.dismiss();
 	}
@@ -61,14 +65,12 @@ class LoginView extends React.Component {
 	// {this.props.login.isFetching && <Text> LOGANDO</Text>}
 	render() {
 		return (
-			<KeyboardView style={styles.container} keyboardVerticalOffset={64}>
-				<View>
-					<Text style={{ textAlign: 'center' }}>
-						<Image
-							style={styles.logo}
-							source={require('../images/logo.png')}
-						/>
-					</Text>
+			<KeyboardView style={styles.container} keyboardVerticalOffset={128}>
+				<View style={{ alignItems: 'center' }}>
+					<Image
+						style={styles.logo}
+						source={require('../images/logo.png')}
+					/>
 				</View>
 				<View style={styles.loginView}>
 					<View style={styles.formContainer}>
@@ -78,15 +80,16 @@ class LoginView extends React.Component {
 							onChangeText={username => this.setState({ username })}
 							keyboardType='email-address'
 							autoCorrect={false}
-							returnKeyType='done'
+							returnKeyType='next'
 							autoCapitalize='none'
 							autoFocus
 
 							underlineColorAndroid='transparent'
-							onSubmitEditing={this.submit}
+							onSubmitEditing={() => { this.password.focus(); }}
 							placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email or username'}
 						/>
 						<TextInput
+							ref={(e) => { this.password = e; }}
 							placeholderTextColor={'rgba(255,255,255,.2)'}
 							style={styles.input}
 							onChangeText={password => this.setState({ password })}

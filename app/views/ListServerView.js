@@ -85,10 +85,10 @@ export default class ListServerView extends React.Component {
 			sections: []
 		};
 		this.redirected = false;
+		realm.addListener('change', this.updateState);
 	}
 
 	componentWillMount() {
-		realm.addListener('change', this.updateState);
 		zeroconf.on('update', this.updateState);
 
 		zeroconf.scan('http', 'tcp', 'local.');
