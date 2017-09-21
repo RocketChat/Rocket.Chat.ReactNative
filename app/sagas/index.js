@@ -1,5 +1,4 @@
-import { fork, take } from 'redux-saga/effects';
-import * as types from '../actions/actionsTypes';
+import { all } from 'redux-saga/effects';
 import hello from './hello';
 import login from './login';
 import connect from './connect';
@@ -10,15 +9,16 @@ import createChannel from './createChannel';
 import init from './init';
 
 const root = function* root() {
-	yield fork(init);
-	yield take(types.APP.READY);
-	yield fork(createChannel);
-	yield fork(hello);
-	yield fork(rooms);
-	yield fork(login);
-	yield fork(connect);
-	yield fork(messages);
-	yield fork(selectServer);
+	yield all([
+		init(),
+		createChannel(),
+		hello(),
+		rooms(),
+		login(),
+		connect(),
+		messages(),
+		selectServer()
+	]);
 };
 // Consider using takeEvery
 export default root;

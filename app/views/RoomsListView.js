@@ -1,10 +1,9 @@
 import ActionButton from 'react-native-action-button';
-import { Navigation } from 'react-native-navigation';
 import { ListView } from 'realm/react-native';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { View, StyleSheet, TextInput, Platform } from 'react-native';
+import { View, StyleSheet, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import * as server from '../actions/connect';
@@ -24,7 +23,8 @@ const styles = StyleSheet.create({
 		backgroundColor: '#E7E7E7'
 	},
 	list: {
-		width: '100%'
+		width: '100%',
+		backgroundColor: '#FFFFFF'
 	},
 	emptyView: {
 		flexGrow: 1,
@@ -67,46 +67,35 @@ const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
 export default class RoomsListView extends React.Component {
 	static propTypes = {
-		navigator: PropTypes.object.isRequired,
+		navigation: PropTypes.object.isRequired,
 		Site_Url: PropTypes.string,
 		server: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
-		this.data = realm.objects('subscriptions').filtered('_server.id = $0', this.props.server);
+
 		this.state = {
-			dataSource: ds.cloneWithRows(this.data),
+			dataSource: [],
 			searching: false,
 			searchDataSource: [],
 			searchText: '',
 			login: false
 		};
-		this.data.addListener(this.updateState);
-		this.props.navigator.setOnNavigatorEvent(event => event.type === 'NavBarButtonPress' && event.id === 'servers' &&
-				Navigation.showModal({
-					screen: 'ListServer',
-					passProps: {},
-					navigatorStyle: {},
-					navigatorButtons: {},
-					animationType: 'slide-up'
-				}));
-		this.props.navigator.setSubTitle({
-			subtitle: this.props.server
-		});
+		this.data = realm.objects('subscriptions').filtered('_server.id = $0', this.props.server).sorted('_updatedAt', true);
 	}
+
 	componentWillMount() {
-		const button = Platform.OS === 'ios' ? 'leftButtons' : 'rightButtons';
-		this.props.navigator.setButtons({
-			[button]: [{
-				id: 'servers',
-				title: 'Servers'
-			}],
-			animated: true
-		});
+		this.data.addListener(this.updateState);
+
+		this.state = {
+			...this.state,
+			dataSource: ds.cloneWithRows(this.data)
+		};
 	}
+
 	componentWillUnmount() {
-		this.data.removeListener(this.updateState);
+		this.data.removeAllListeners();
 	}
 
 	onSearchChangeText = (text) => {
@@ -167,7 +156,6 @@ export default class RoomsListView extends React.Component {
 		});
 	}
 
-
 	updateState = () => {
 		this.setState({
 			dataSource: ds.cloneWithRows(this.data)
@@ -176,10 +164,7 @@ export default class RoomsListView extends React.Component {
 
 	_onPressItem = (id, item = {}) => {
 		const navigateToRoom = (room) => {
-			this.props.navigator.push({
-				screen: 'Room',
-				passProps: room
-			});
+			this.props.navigation.navigate('Room', { room });
 		};
 
 		const clearSearch = () => {
@@ -220,16 +205,11 @@ export default class RoomsListView extends React.Component {
 		navigateToRoom({ sid: id });
 		clearSearch();
 	}
-	_createChannel = () => {
-		Navigation.showModal({
-			screen: 'CreateChannel',
-			title: 'Create a New Channel',
-			passProps: {},
-			navigatorStyle: {},
-			navigatorButtons: {},
-			animationType: 'slide-up'
-		});
+
+	_createChannel() {
+		this.props.navigation.navigate('CreateChannel');
 	}
+
 	renderSearchBar = () => (
 		<View style={styles.searchBoxView}>
 			<TextInput
@@ -247,13 +227,15 @@ export default class RoomsListView extends React.Component {
 
 	renderItem = item => (
 		<RoomItem
-			key={item._id}
+			unread={item.unread}
 			name={item.name}
+			key={item._id}
 			type={item.t}
 			baseUrl={this.props.Site_Url}
 			onPress={() => this._onPressItem(item._id, item)}
 		/>
 	)
+
 	renderList = () => (
 		<ListView
 			dataSource={this.state.dataSource}
@@ -265,13 +247,16 @@ export default class RoomsListView extends React.Component {
 			keyboardShouldPersistTaps='always'
 		/>
 	)
+
 	renderCreateButtons = () => (
 		<ActionButton buttonColor='rgba(231,76,60,1)'>
 			<ActionButton.Item buttonColor='#9b59b6' title='Create Channel' onPress={() => { this._createChannel(); }} >
 				<Icon name='md-chatbubbles' style={styles.actionButtonIcon} />
 			</ActionButton.Item>
-		</ActionButton>);
-	render= () => (
+		</ActionButton>
+	);
+
+	render = () => (
 		<View style={styles.container}>
 			<Banner />
 			{this.renderList()}

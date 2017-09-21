@@ -5,7 +5,6 @@ import RocketChat from '../lib/rocketchat';
 
 const get = function* get({ rid }) {
 	const auth = yield select(state => state.login.isAuthenticated);
-	console.log('hey now', yield select(state => state.login));
 	if (!auth) {
 		yield take(LOGIN.SUCCESS);
 	}
