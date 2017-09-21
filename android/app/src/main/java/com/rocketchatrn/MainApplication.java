@@ -3,7 +3,6 @@ package com.rocketchatrn;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-// import com.reactnativenavigation.NavigationReactPackage;
 import com.horcrux.svg.SvgPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -14,31 +13,40 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.reactnativenavigation.NavigationApplication;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class MainApplication extends NavigationApplication {
+public class MainApplication extends Application implements ReactApplication {
+
+  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
-    public boolean isDebug() {
-      // Make sure you are using BuildConfig from your own application
+    public boolean getUseDeveloperSupport() {
       return BuildConfig.DEBUG;
     }
 
+    @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-            new SvgPackage(),
-            new ImagePickerPackage(),
-            new VectorIconsPackage(),
-            new RNFetchBlobPackage(),
-            new ZeroconfReactPackage(),
-            new RealmReactPackage()
+			  new MainReactPackage(),
+        new SvgPackage(),
+        new ImagePickerPackage(),
+        new VectorIconsPackage(),
+        new RNFetchBlobPackage(),
+        new ZeroconfReactPackage(),
+        new RealmReactPackage()
       );
     }
+  };
 
-    @Override
-    public List<ReactPackage> createAdditionalReactPackages() {
-      return getPackages();
-    }
+  @Override
+  public ReactNativeHost getReactNativeHost() {
+      return mReactNativeHost;
+  }
+
+	@Override
+ 	public void onCreate() {
+   	super.onCreate();
+   	SoLoader.init(this, /* native exopackage */ false);
+ 	}
 }

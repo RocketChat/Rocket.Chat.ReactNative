@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -19,8 +18,7 @@ export default class CreateChannelView extends React.Component {
 	});
 	static propTypes = {
 		createChannel: PropTypes.func.isRequired,
-		result: PropTypes.object.isRequired,
-		navigator: PropTypes.object.isRequired
+		result: PropTypes.object.isRequired
 	}
 
 	constructor(props) {
@@ -30,12 +28,6 @@ export default class CreateChannelView extends React.Component {
 			type: true
 		};
 		this.state = this.default;
-		this.props.navigator.setTitle({
-			title: 'Create Channel'
-		});
-		// this.props.navigator.setSubTitle({
-		// 	subtitle: 'Channels are where your team communicate.'
-		// });
 	}
 	submit() {
 		if (!this.state.channelName.trim() || this.props.result.isFetching) {
@@ -45,9 +37,36 @@ export default class CreateChannelView extends React.Component {
 		this.props.createChannel({ name: channelName, users, type });
 	}
 
+	renderChannelNameError() {
+		if (!this.props.result.failure || this.props.result.error.error !== 'error-duplicate-channel-name') {
+			return null;
+		}
+
+		return (
+			<Text style={[styles.label_white, styles.label_error]}>
+				{this.props.result.error.reason}
+			</Text>
+		);
+	}
+
+	renderTypeSwitch() {
+		return (
+			<View style={[styles.view_white, styles.switchContainer]}>
+				<Switch
+					style={[{ flexGrow: 0, flexShrink: 1 }]}
+					value={this.state.type}
+					onValueChange={type => this.setState({ type })}
+				/>
+				<Text style={[styles.label_white, styles.switchLabel]}>
+					{this.state.type ? 'Public' : 'Private'}
+				</Text>
+			</View>
+		);
+	}
+
 	render() {
 		return (
-			<KeyboardView style={[styles.view_white, { flex: 0, justifyContent: 'flex-start' }]}>
+			<KeyboardView style={[styles.view_white, { flex: 1, justifyContent: 'flex-start' }]}>
 				<ScrollView>
 					<View style={styles.formContainer}>
 						<Text style={styles.label_white}>Channel Name</Text>
@@ -62,18 +81,33 @@ export default class CreateChannelView extends React.Component {
 							// onSubmitEditing={() => this.textInput.focus()}
 							placeholder='Type the channel name here'
 						/>
-						{(this.props.result.failure && this.props.result.error.error === 'error-duplicate-channel-name') ? <Text style={[styles.label_white, { color: 'red', flexGrow: 1, paddingHorizontal: 0, marginBottom: 20 }]}>{this.props.result.error.reason}</Text> : null}
-						<View style={[styles.view_white, { flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', paddingHorizontal: 0 }]}>
-							<Switch
-								style={[{ flexGrow: 0, flexShrink: 1 }]}
-								value={this.state.type}
-								onValueChange={type => this.setState({ type })}
-							/>
-							<Text style={[styles.label_white, { flexGrow: 1, paddingHorizontal: 10 }]}>{this.state.type ? 'Public' : 'Private'}</Text>
-						</View>
-						<Text style={[styles.label_white, { color: '#9ea2a8', flexGrow: 1, paddingHorizontal: 0, marginBottom: 20 }]}>{this.state.type ? 'Everyone can access this channel' : 'Just invited people can access this channel'}</Text>
-						<TouchableOpacity onPress={() => this.submit()} style={[styles.buttonContainer_white, { backgroundColor: (this.state.channelName.length === 0 || this.props.result.isFetching) ? '#e1e5e8' : '#1d74f5' }]}>
-							<Text style={styles.button_white}> { this.props.result.isFetching ? 'LOADING' : 'CREATE' }!</Text>
+						{this.renderChannelNameError()}
+						{this.renderTypeSwitch()}
+						<Text
+							style={[
+								styles.label_white,
+								{
+									color: '#9ea2a8',
+									flexGrow: 1,
+									paddingHorizontal: 0,
+									marginBottom: 20
+								}]}
+						>
+							{this.state.type ?
+								'Everyone can access this channel' :
+								'Just invited people can access this channel'}
+						</Text>
+						<TouchableOpacity
+							onPress={() => this.submit()}
+							style={[
+								styles.buttonContainer_white,
+								(this.state.channelName.length === 0 || this.props.result.isFetching) ?
+									styles.disabledButton : styles.enabledButton
+							]}
+						>
+							<Text style={styles.button_white}>
+								{this.props.result.isFetching ? 'LOADING' : 'CREATE'}!
+							</Text>
 						</TouchableOpacity>
 					</View>
 				</ScrollView>

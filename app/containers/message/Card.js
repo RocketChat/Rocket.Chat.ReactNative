@@ -3,8 +3,7 @@ import React from 'react';
 import Meteor from 'react-native-meteor';
 import { connect } from 'react-redux';
 import { CachedImage } from 'react-native-img-cache';
-import { Text, TouchableOpacity } from 'react-native';
-import { Navigation } from 'react-native-navigation';
+import { Text, TouchableOpacity, View } from 'react-native';
 import {
 	Card,
 	CardImage,
@@ -14,27 +13,13 @@ import {
 } from 'react-native-card-view';
 import RocketChat from '../../lib/rocketchat';
 
-const close = () => Navigation.dismissModal({
-	animationType: 'slide-down'
-});
+import PhotoModal from './PhotoModal';
 
-const CustomButton = ({ text }) => (
-	<TouchableOpacity onPress={close}>
-		<Text style={{ color: 'blue' }}>{text}</Text>
-	</TouchableOpacity>
-);
-
-CustomButton.propTypes = {
-	text: PropTypes.string
-};
-
-Navigation.registerComponent('CustomButton', () => CustomButton);
 
 @connect(state => ({
 	base: state.settings.Site_Url,
 	canShowList: state.login.token.length || state.login.user.token
 }))
-
 export default class Cards extends React.PureComponent {
 	static propTypes = {
 		data: PropTypes.object.isRequired,
@@ -44,7 +29,9 @@ export default class Cards extends React.PureComponent {
 	constructor() {
 		super();
 		const user = Meteor.user();
-		this.state = {};
+		this.state = {
+			modalVisible: false
+		};
 		RocketChat.getUserToken().then((token) => {
 			this.setState({ img: `${ this.props.base }${ this.props.data.image_url }?rc_uid=${ user._id }&rc_token=${ token }` });
 		});
@@ -52,20 +39,28 @@ export default class Cards extends React.PureComponent {
 
 	getImage() {
 		return (
-			<TouchableOpacity onPress={() => this._onPressButton()}>
-				<Card>
-					<CardImage style={{ width: 256, height: 256 }}>
-						<CachedImage
-							style={{ width: 256, height: 256 }}
-							source={{ uri: encodeURI(this.state.img) }}
-						/>
-					</CardImage>
-					<CardContent>
-						<Text style={[{ fontSize: 12, alignSelf: 'center', fontStyle: 'italic' }]}>{this.props.data.title}</Text>
-						<Text style={{ alignSelf: 'center', fontWeight: 'bold' }}>{this.props.data.description}</Text>
-					</CardContent>
-				</Card>
-			</TouchableOpacity>
+			<View>
+				<TouchableOpacity onPress={() => this._onPressButton()}>
+					<Card>
+						<CardImage style={{ width: 256, height: 256 }}>
+							<CachedImage
+								style={{ width: 256, height: 256 }}
+								source={{ uri: encodeURI(this.state.img) }}
+							/>
+						</CardImage>
+						<CardContent>
+							<Text style={[{ fontSize: 12, alignSelf: 'center', fontStyle: 'italic' }]}>{this.props.data.title}</Text>
+							<Text style={{ alignSelf: 'center', fontWeight: 'bold' }}>{this.props.data.description}</Text>
+						</CardContent>
+					</Card>
+				</TouchableOpacity>
+				<PhotoModal
+					title={this.props.data.title}
+					image={this.state.img}
+					isVisible={this.state.modalVisible}
+					onClose={() => this.setState({ modalVisible: false })}
+				/>
+			</View>
 		);
 	}
 
@@ -76,21 +71,8 @@ export default class Cards extends React.PureComponent {
 	}
 
 	_onPressButton() {
-		Navigation.showModal({
-			screen: 'Photo',
-			title: this.props.data.title, // title of the screen as appears in the nav bar (optional)
-			passProps: { image: this.state.img },
-			// navigatorStyle: {}, // override the navigator style for the screen, see "Styling the navigator" below (optional)
-			navigatorButtons: {
-				leftButtons: [{
-					id: 'custom-button',
-					component: 'CustomButton',
-					passProps: {
-						text: 'close'
-					}
-				}]
-			}, // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
-			animationType: 'slide-up' // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
+		this.setState({
+			modalVisible: true
 		});
 	}
 
