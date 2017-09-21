@@ -36,7 +36,8 @@ class Avatar extends React.PureComponent {
 
 		const avatarStyle = {
 			width: size,
-			height: size
+			height: size,
+			borderRadius
 		};
 
 		const uri = avatar || `${ baseUrl }/avatar/${ text }`;

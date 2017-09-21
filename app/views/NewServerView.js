@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Navigation } from 'react-native-navigation';
 import { Text, TextInput, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { serverRequest, addServer } from '../actions/server';
@@ -55,11 +54,11 @@ const styles = StyleSheet.create({
 }))
 export default class NewServerView extends React.Component {
 	static propTypes = {
-		navigator: PropTypes.object.isRequired,
 		validateServer: PropTypes.func.isRequired,
 		addServer: PropTypes.func.isRequired,
 		validating: PropTypes.bool.isRequired,
-		validInstance: PropTypes.bool.isRequired
+		validInstance: PropTypes.bool.isRequired,
+		navigation: PropTypes.object.isRequired
 	}
 
 	static navigationOptions = () => ({
@@ -73,33 +72,20 @@ export default class NewServerView extends React.Component {
 			editable: true,
 			text: ''
 		};
-
-		this.submit = () => {
-			this.props.addServer(this.completeUrl(this.state.text.trim() || this.state.defaultServer));
-		};
+		this.adding = false;
+		this.props.validateServer(this.state.defaultServer); // Need to call because in case of submit with empty field
 	}
 
-	componentDidMount() {
-		this.props.navigator.setTitle({
-			title: 'New server'
-		});
-
-		this.props.navigator.setButtons({
-			rightButtons: [{
-				id: 'close',
-				title: 'Cancel'
-			}],
-			animated: true
-		});
-
-		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
-	}
-	onNavigatorEvent = (event) => {
-		if (event.type === 'NavBarButtonPress') {
-			if (event.id === 'close') {
-				Navigation.dismissModal({
-					animationType: 'slide-down'
-				});
+	componentDidUpdate() {
+		if (this.adding) {
+			if (!this.props.validInstance) {
+				/* eslint-disable react/no-did-update-set-state */
+				this.setState({ editable: true });
+				this.adding = false;
+			}
+			if (this.props.validInstance && !this.props.validating) {
+				this.props.navigation.goBack();
+				this.adding = false;
 			}
 		}
 	}
@@ -108,10 +94,18 @@ export default class NewServerView extends React.Component {
 		this.setState({ text });
 		this.props.validateServer(this.completeUrl(text));
 	}
+
+	submit = () => {
+		this.setState({ editable: false });
+		this.adding = true;
+		this.props.addServer(this.completeUrl(this.state.text.trim() || this.state.defaultServer));
+	}
+
 	completeUrl = (url) => {
 		url = url.trim();
 
-		if (/^(\w|[0-9-_]){3,}$/.test(url) && /^(htt(ps?)?)|(loca((l)?|(lh)?|(lho)?|(lhos)?|(lhost:?\d*)?)$)/.test(url) === false) {
+		if (/^(\w|[0-9-_]){3,}$/.test(url) &&
+				/^(htt(ps?)?)|(loca((l)?|(lh)?|(lho)?|(lhos)?|(lhost:?\d*)?)$)/.test(url) === false) {
 			url = `${ url }.rocket.chat`;
 		}
 

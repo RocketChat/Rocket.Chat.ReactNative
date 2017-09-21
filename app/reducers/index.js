@@ -6,8 +6,9 @@ import messages from './messages';
 import server from './server';
 import navigator from './navigator';
 import createChannel from './createChannel';
+import app from './app';
 
 
 export default combineReducers({
-	settings, login, meteor, messages, server, navigator, createChannel
+	settings, login, meteor, messages, server, navigator, createChannel, app
 });

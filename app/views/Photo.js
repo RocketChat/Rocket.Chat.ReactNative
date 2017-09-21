@@ -16,10 +16,10 @@ const styles = {
 
 export default class extends React.PureComponent {
 	static propTypes = {
-		image: PropTypes.string.isRequired
+		navigation: PropTypes.object.isRequired
 	}
 	render() {
-		const { image } = this.props;
+		const { image } = this.props.navigation.state.params;
 		return (
 			<View style={styles.imageWrapper}>
 				<ScrollView contentContainerStyle={styles.imageWrapper} maximumZoomScale={1.5}>

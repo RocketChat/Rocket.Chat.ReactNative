@@ -30,9 +30,29 @@ export default class Banner extends React.PureComponent {
 		authenticating: PropTypes.bool,
 		offline: PropTypes.bool
 	}
-
+	componentWillMount() {
+		this.state = {
+			slow: false
+		};
+		this.timer = setTimeout(() => this.setState({ slow: true }), 5000);
+	}
+	componentWillUnmount() {
+		clearTimeout(this.timer);
+	}
 	render() {
 		const { connecting, authenticating, offline } = this.props;
+
+		if (!this.state.slow) {
+			return null;
+		}
+
+		if (offline) {
+			return (
+				<View style={[styles.bannerContainer, { backgroundColor: 'red' }]}>
+					<Text style={[styles.bannerText, { color: '#a00' }]}>offline...</Text>
+				</View>
+			);
+		}
 		if (connecting) {
 			return (
 				<View style={[styles.bannerContainer, { backgroundColor: '#0d0' }]}>
@@ -48,13 +68,7 @@ export default class Banner extends React.PureComponent {
 				</View>
 			);
 		}
-		if (offline) {
-			return (
-				<View style={[styles.bannerContainer, { backgroundColor: 'red' }]}>
-					<Text style={[styles.bannerText, { color: '#a00' }]}>offline...</Text>
-				</View>
-			);
-		}
+
 		return null;
 	}
 }
