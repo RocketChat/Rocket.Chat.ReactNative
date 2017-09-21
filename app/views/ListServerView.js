@@ -2,9 +2,8 @@ import React from 'react';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
-import { Navigation } from 'react-native-navigation';
 import Zeroconf from 'react-native-zeroconf';
-import { View, Text, SectionList, Platform, StyleSheet } from 'react-native';
+import { View, Text, SectionList, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { setServer } from '../actions/server';
 import realm from '../lib/realm';
@@ -66,16 +65,17 @@ const zeroconf = new Zeroconf();
 
 @connect(state => ({
 	server: state.server.server,
-	login: state.login
+	login: state.login,
+	connected: state.meteor.connected
 }), dispatch => ({
 	selectServer: server => dispatch(setServer(server))
 }))
 export default class ListServerView extends React.Component {
 	static propTypes = {
-		navigator: PropTypes.object.isRequired,
+		navigation: PropTypes.object.isRequired,
 		login: PropTypes.object.isRequired,
 		selectServer: PropTypes.func.isRequired,
-		actions: PropTypes.object,
+		connected: PropTypes.bool.isRequired,
 		server: PropTypes.string
 	}
 
@@ -84,64 +84,34 @@ export default class ListServerView extends React.Component {
 		this.state = {
 			sections: []
 		};
-
-		this.props.navigator.setTitle({
-			title: 'Servers'
-		});
-
-		this.props.navigator.setButtons({
-			rightButtons: [{
-				id: 'add',
-				title: 'Add'
-			}],
-			leftButtons: props.login.isAuthenticated && props.server && Platform.select({
-				ios: [{
-					id: 'close',
-					title: 'Close'
-				}]
-			}),
-			animated: true
-		});
-
-		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+		this.redirected = false;
+		realm.addListener('change', this.updateState);
 	}
 
 	componentWillMount() {
-		realm.addListener('change', this.updateState);
 		zeroconf.on('update', this.updateState);
 
 		zeroconf.scan('http', 'tcp', 'local.');
 
 		this.state = this.getState();
+	}
 
-		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+	componentDidUpdate() {
+		if (this.props.connected &&
+			this.props.server &&
+			!this.props.login.token &&
+			!this.redirected) {
+			this.redirected = true;
+			this.props.navigation.navigate('Login');
+		} else if (!this.props.connected) {
+			this.redirected = false;
+		}
 	}
 
 	componentWillUnmount() {
 		zeroconf.stop();
 		realm.removeListener('change', this.updateState);
 		zeroconf.removeListener('update', this.updateState);
-	}
-
-	onNavigatorEvent = (event) => {
-		if (event.type === 'NavBarButtonPress') {
-			if (event.id === 'add') {
-				Navigation.showModal({
-					screen: 'NewServer',
-					animationType: 'slide-up'
-					// animationType: 'none'
-				});
-			}
-			if (event.id === 'close') {
-				Navigation.dismissModal({
-					animationType: 'slide-down'
-				});
-			}
-		}
-
-		if (event.id === 'didDisappear' && this.state.server) {
-			this.props.actions.setCurrentServer(this.state.server);
-		}
 	}
 
 	onPressItem = (item) => {
@@ -191,7 +161,14 @@ export default class ListServerView extends React.Component {
 			>
 				{item.id}
 			</Text>
-			<Fade visible={this.props.server === item.id}><Icon iconSize={24} size={24} style={styles.serverChecked} name='ios-checkmark-circle-outline' /> </Fade>
+			<Fade visible={this.props.server === item.id}>
+				<Icon
+					iconSize={24}
+					size={24}
+					style={styles.serverChecked}
+					name='ios-checkmark-circle-outline'
+				/>
+			</Fade>
 		</View>
 	);
 

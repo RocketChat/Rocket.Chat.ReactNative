@@ -4,7 +4,7 @@ import { AsyncStorage } from 'react-native';
 import { hashPassword } from 'react-native-meteor/lib/utils';
 
 import RNFetchBlob from 'react-native-fetch-blob';
-import reduxStore from '../lib/createStore';
+import reduxStore from './createStore';
 import settingsType from '../constants/settings';
 import realm from './realm';
 import * as actions from '../actions';
@@ -366,33 +366,25 @@ const RocketChat = {
 		}
 	},
 	getRooms() {
-		// Meteor.Accounts.onLogin(() => {
 		return Promise.all([call('subscriptions/get'), call('rooms/get')]).then(([subscriptions, rooms]) => {
-			// console.log('getRooms resolved', reduxStore.getState().server, subscriptions);
 			subscriptions = subscriptions.sort((s1, s2) => (s1.rid > s2.rid ? 1 : -1));
 			rooms = rooms.sort((s1, s2) => (s1._id > s2._id ? 1 : -1));
+
+			const { server, login } = reduxStore.getState();
 			const data = subscriptions.map((subscription, index) => {
 				subscription._updatedAt = rooms[index]._updatedAt;
+				subscription._server = { id: server.server };
 				return subscription;
 			});
-			// Meteor.subscribe('stream-notify-user', `${ Meteor.userId() }/rooms-changed`, false);
+
 			realm.write(() => {
 				data.forEach((subscription) => {
-					// const subscription = {
-					// 	_id: item._id
-					// };
-					// if (typeof item.value === 'string') {
-					// 	subscription.value = item.value;
-					// }
-					subscription._server = { id: reduxStore.getState().server.server };
-					// write('subscriptions', subscription);
 					realm.create('subscriptions', subscription, true);
 				});
 			});
-			Meteor.subscribe('stream-notify-user', `${ reduxStore.getState().user.id }/subscriptions-changed`, false);
+			Meteor.subscribe('stream-notify-user', `${ login.user.id }/subscriptions-changed`, false);
 			return data;
-		}).then(data => data);
-		// });
+		});
 	},
 	logout() {
 		return AsyncStorage.clear();

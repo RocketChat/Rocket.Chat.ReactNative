@@ -1,6 +1,16 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
 export default StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: '#2f343d',
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'stretch'
+	},
+	loginView: {
+		padding: 20
+	},
 	view: {
 		flex: 1,
 		flexDirection: 'column',
@@ -24,9 +34,9 @@ export default StyleSheet.create({
 		justifyContent: 'center'
 	},
 	logo: {
-		width: 150,
-		// backgroundColor: 'red'
-		// height: 150,
+		width: Dimensions.get('window').width - 30,
+		height: Dimensions.get('window').width - 30,
+		borderRadius: 5,
 		resizeMode: 'contain'
 	},
 	formContainer: {
@@ -45,6 +55,12 @@ export default StyleSheet.create({
 		fontSize: 16,
 		marginBottom: 5,
 		color: '#2f343d'
+	},
+	label_error: {
+		color: 'red',
+		flexGrow: 1,
+		paddingHorizontal: 0,
+		marginBottom: 20
 	},
 	input: {
 		height: 45,
@@ -101,5 +117,21 @@ export default StyleSheet.create({
 		backgroundColor: 'rgba(255,255,255,.2)',
 		left: 0,
 		top: 0
+	},
+	switchContainer: {
+		flexDirection: 'row',
+		justifyContent: 'flex-start',
+		alignItems: 'center',
+		paddingHorizontal: 0
+	},
+	switchLabel: {
+		flexGrow: 1,
+		paddingHorizontal: 10
+	},
+	disabledButton: {
+		backgroundColor: '#e1e5e8'
+	},
+	enabledButton: {
+		backgroundColor: '#1d74f5'
 	}
 });

@@ -235,6 +235,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "position": "absolute",
               },
               Object {
+                "borderRadius": 20,
                 "height": 40,
                 "width": 40,
               },
@@ -338,6 +339,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "position": "absolute",
               },
               Object {
+                "borderRadius": 20,
                 "height": 40,
                 "width": 40,
               },
@@ -441,6 +443,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "position": "absolute",
               },
               Object {
+                "borderRadius": 20,
                 "height": 40,
                 "width": 40,
               },
@@ -565,6 +568,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "position": "absolute",
               },
               Object {
+                "borderRadius": 20,
                 "height": 40,
                 "width": 40,
               },
@@ -689,6 +693,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "position": "absolute",
               },
               Object {
+                "borderRadius": 20,
                 "height": 40,
                 "width": 40,
               },
@@ -813,6 +818,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "position": "absolute",
               },
               Object {
+                "borderRadius": 20,
                 "height": 40,
                 "width": 40,
               },
@@ -937,6 +943,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "position": "absolute",
               },
               Object {
+                "borderRadius": 20,
                 "height": 40,
                 "width": 40,
               },

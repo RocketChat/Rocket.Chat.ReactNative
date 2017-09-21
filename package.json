@@ -30,7 +30,7 @@
     "react-native-img-cache": "^1.4.0",
     "react-native-loading-spinner-overlay": "^0.5.2",
     "react-native-meteor": "^1.1.0",
-    "react-native-navigation": "^1.1.193",
+    "react-native-modal": "^3.1.0",
     "react-native-optimized-flatlist": "^1.0.1",
     "react-native-svg": "^5.4.1",
     "react-native-svg-image": "^1.1.4",
@@ -44,8 +44,8 @@
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.15.6",
     "regenerator-runtime": "^0.11.0",
-    "strip-ansi": "^4.0.0",
-    "underscore": "^1.8.3"
+    "remote-redux-devtools": "^0.5.12",
+    "strip-ansi": "^4.0.0"
   },
   "devDependencies": {
     "@storybook/addon-storyshots": "^3.2.6",
