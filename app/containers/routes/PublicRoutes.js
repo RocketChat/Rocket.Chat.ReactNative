@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import ListServerView from '../../views/ListServerView';
 import NewServerView from '../../views/NewServerView';
 import LoginView from '../../views/LoginView';
+import RegisterView from '../../views/RegisterView';
 
 const PublicRoutes = StackNavigator(
 	{
@@ -35,6 +36,12 @@ const PublicRoutes = StackNavigator(
 			screen: LoginView,
 			navigationOptions: {
 				title: 'Login'
+			}
+		},
+		Register: {
+			screen: RegisterView,
+			navigationOptions: {
+				title: 'Register'
 			}
 		}
 	},

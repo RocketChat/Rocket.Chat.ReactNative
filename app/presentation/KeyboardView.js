@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { KeyboardAvoidingView } from 'react-native';
+import { ViewPropTypes } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default class KeyboardView extends React.PureComponent {
 	static propTypes = {
-		style: KeyboardAvoidingView.propTypes.style,
+		style: ViewPropTypes.style,
 		keyboardVerticalOffset: PropTypes.number,
 		children: PropTypes.oneOfType([
 			PropTypes.arrayOf(PropTypes.node),
@@ -14,9 +15,15 @@ export default class KeyboardView extends React.PureComponent {
 
 	render() {
 		return (
-			<KeyboardAvoidingView style={this.props.style} behavior='padding' keyboardVerticalOffset={this.props.keyboardVerticalOffset}>
+			<KeyboardAwareScrollView
+				contentContainerStyle={this.props.style}
+				behavior='position'
+				extraHeight={this.props.keyboardVerticalOffset}
+				keyboardDismissMode='interactive'
+				keyboardShouldPersistTaps='always'
+			>
 				{this.props.children}
-			</KeyboardAvoidingView>
+			</KeyboardAwareScrollView>
 		);
 	}
 }

@@ -39,6 +39,12 @@ export default StyleSheet.create({
 		borderRadius: 5,
 		resizeMode: 'contain'
 	},
+	loginLogo: {
+		width: Dimensions.get('window').width - 80,
+		height: Dimensions.get('window').width - 80,
+		borderRadius: 5,
+		resizeMode: 'contain'
+	},
 	formContainer: {
 		// marginBottom: 20
 	},

@@ -13,6 +13,25 @@ export function loginRequest(credentials) {
 	};
 }
 
+
+export function registerSubmit(credentials) {
+	return {
+		type: types.LOGIN.REGISTER_SUBMIT,
+		credentials
+	};
+}
+export function registerRequest(credentials) {
+	return {
+		type: types.LOGIN.REGISTER_REQUEST,
+		credentials
+	};
+}
+export function registerSuccess() {
+	return {
+		type: types.LOGIN.REGISTER_SUCCESS
+	};
+}
+
 export function loginSuccess(user) {
 	return {
 		type: types.LOGIN.SUCCESS,

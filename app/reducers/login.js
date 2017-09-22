@@ -40,6 +40,20 @@ export default function login(state = initialState, action) {
 				token: action.token,
 				user: action.user
 			};
+		case types.LOGIN.REGISTER_SUBMIT:
+			return {
+				...state,
+				isFetching: true,
+				isAuthenticated: false,
+				failure: false
+			};
+		case types.LOGIN.REGISTER_SUCCESS:
+			return {
+				...state,
+				isFetching: false,
+				isAuthenticated: false,
+				failure: false
+			};
 		default:
 			return state;
 	}

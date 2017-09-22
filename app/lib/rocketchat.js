@@ -122,6 +122,21 @@ const RocketChat = {
 		});
 	},
 
+	register(params, callback) {
+		return new Promise((resolve, reject) => {
+			return Meteor.call('registerUser', params, (err, result) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(result);
+				}
+				if (typeof callback === 'function') {
+					callback(err, result);
+				}
+			});
+		});
+	},
+
 	loginWithPassword({ username, password, code }, callback) {
 		let params = {};
 		const state = reduxStore.getState();
