@@ -6,13 +6,15 @@ import { createChannelRequest } from '../actions/createChannel';
 import styles from './Styles';
 import KeyboardView from '../presentation/KeyboardView';
 
-@connect(state => ({
-	result: state.createChannel,
-	users: state.createChannel.users
-}), dispatch => ({
-	createChannel: data => dispatch(createChannelRequest(data))
-}))
-
+@connect(
+	state => ({
+		result: state.createChannel,
+		users: state.createChannel.users
+	}),
+	dispatch => ({
+		createChannel: data => dispatch(createChannelRequest(data))
+	})
+)
 export default class CreateChannelView extends React.Component {
 	static navigationOptions = () => ({
 		title: 'Create a New Channel'
@@ -22,7 +24,7 @@ export default class CreateChannelView extends React.Component {
 		result: PropTypes.object.isRequired,
 		users: PropTypes.array.isRequired,
 		navigation: PropTypes.object.isRequired
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -38,7 +40,7 @@ export default class CreateChannelView extends React.Component {
 			return;
 		}
 		if (this.props.result.result && !this.props.result.failure) {
-			this.props.navigation.goBack();
+			this.props.navigation.navigate('Room', { room: this.props.result.result });
 			this.adding = false;
 		}
 	}
@@ -59,14 +61,15 @@ export default class CreateChannelView extends React.Component {
 	}
 
 	renderChannelNameError() {
-		if (!this.props.result.failure || this.props.result.error.error !== 'error-duplicate-channel-name') {
+		if (
+			!this.props.result.failure ||
+			this.props.result.error.error !== 'error-duplicate-channel-name'
+		) {
 			return null;
 		}
 
 		return (
-			<Text style={[styles.label_white, styles.label_error]}>
-				{this.props.result.error.reason}
-			</Text>
+			<Text style={[styles.label_white, styles.label_error]}>{this.props.result.error.reason}</Text>
 		);
 	}
 
@@ -112,18 +115,22 @@ export default class CreateChannelView extends React.Component {
 									flexGrow: 1,
 									paddingHorizontal: 0,
 									marginBottom: 20
-								}]}
+								}
+							]}
 						>
-							{this.state.type ?
-								'Everyone can access this channel' :
-								'Just invited people can access this channel'}
+							{this.state.type ? (
+								'Everyone can access this channel'
+							) : (
+								'Just invited people can access this channel'
+							)}
 						</Text>
 						<TouchableOpacity
 							onPress={() => this.submit()}
 							style={[
 								styles.buttonContainer_white,
-								(this.state.channelName.length === 0 || this.props.result.isFetching) ?
-									styles.disabledButton : styles.enabledButton
+								this.state.channelName.length === 0 || this.props.result.isFetching
+									? styles.disabledButton
+									: styles.enabledButton
 							]}
 						>
 							<Text style={styles.button_white}>

@@ -3,7 +3,7 @@ import { ListView } from 'realm/react-native';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { View, StyleSheet, TextInput, Platform, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TextInput, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import * as server from '../actions/connect';
@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	list: {
-		width: '100%'
+		width: '100%',
+		backgroundColor: '#FFFFFF'
 	},
 	actionButtonIcon: {
 		fontSize: 20,
@@ -67,7 +68,7 @@ const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 )
 export default class RoomsListView extends React.Component {
 	static propTypes = {
-		navigator: PropTypes.object.isRequired,
+		navigation: PropTypes.object.isRequired,
 		Site_Url: PropTypes.string,
 		server: PropTypes.string,
 		addUser: PropTypes.func.isRequired,
@@ -90,30 +91,10 @@ export default class RoomsListView extends React.Component {
 		};
 		this.data.addListener(this.updateState);
 	}
-	componentWillMount() {
-		// add back button
-		const button = Platform.OS === 'ios' ? 'leftButtons' : 'rightButtons';
-		this.props.navigator.setButtons({
-			[button]: [
-				{
-					id: 'back',
-					title: 'Back'
-				}
-			],
-			animated: true
-		});
-		// on navigator event
-		this.props.navigator.setOnNavigatorEvent((event) => {
-			if (event.type === 'NavBarButtonPress' && event.id === 'back') {
-				this.props.resetCreateChannel();
-				this.props.navigator.dismissModal({
-					animationType: 'slide-down'
-				});
-			}
-		});
-	}
+
 	componentWillUnmount() {
 		this.data.removeListener(this.updateState);
+		this.props.resetCreateChannel();
 	}
 
 	onSearchChangeText = (text) => {
@@ -193,18 +174,10 @@ export default class RoomsListView extends React.Component {
 		}
 	};
 
-	_onPressSelectedItem = item => (
-		this.toggleUser(item)
-	);
+	_onPressSelectedItem = item => this.toggleUser(item);
 
 	_createChannel = () => {
-		this.props.navigator.push({
-			screen: 'CreateChannel',
-			title: 'Create a New Channel',
-			navigatorStyle: {},
-			navigatorButtons: {},
-			animationType: 'slide-up'
-		});
+		this.props.navigation.navigate('CreateChannel');
 	};
 
 	renderHeader = () => (
@@ -271,7 +244,7 @@ export default class RoomsListView extends React.Component {
 			style={styles.list}
 			renderRow={this.renderItem}
 			renderHeader={this.renderHeader}
-			contentOffset={{ x: 0, y: 20 }}
+			contentOffset={{ x: 0, y: this.props.users.length > 0 ? 40 : 20 }}
 			enableEmptySections
 			keyboardShouldPersistTaps='always'
 		/>
