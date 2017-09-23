@@ -43,7 +43,7 @@ class RegisterView extends React.Component {
 	submit = () => {
 		const {	name, email, password, confirmPassword, code } = this.state;
 		if (name.trim() === '' || email.trim() === '' ||
-			password.trim() === '' || confirmPassword.trim() === '') {
+			password.trim() === '' || confirmPassword.trim() === '' || password !== confirmPassword) {
 			return;
 		}
 
