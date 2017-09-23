@@ -3,13 +3,11 @@ import React from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import PropTypes from 'prop-types';
-import { Keyboard, Text, TextInput, View, Image, TouchableOpacity } from 'react-native';
+import { Keyboard, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// import * as actions from '../actions';
 import * as loginActions from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
-// import { Keyboard } from 'react-native'
 
 import styles from './Styles';
 
@@ -19,7 +17,6 @@ class RegisterView extends React.Component {
 		Accounts_NamePlaceholder: PropTypes.string,
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
 		Accounts_PasswordPlaceholder: PropTypes.string,
-		Accounts_UsernamePlaceholder: PropTypes.string,
 		Accounts_RepeatPasswordPlaceholder: PropTypes.string,
 		login: PropTypes.object,
 		navigation: PropTypes.object.isRequired
@@ -30,7 +27,6 @@ class RegisterView extends React.Component {
 
 		this.state = {
 			name: '',
-			username: '',
 			email: '',
 			password: '',
 			confirmPassword: ''
@@ -45,35 +41,16 @@ class RegisterView extends React.Component {
 	}
 
 	submit = () => {
-		const {	name, username, email, password, confirmPassword, code } = this.state;
-		if (name.trim() === '' || email.trim() === '' || username.trim() === '' ||
+		const {	name, email, password, confirmPassword, code } = this.state;
+		if (name.trim() === '' || email.trim() === '' ||
 			password.trim() === '' || confirmPassword.trim() === '') {
 			return;
 		}
 
-		this.props.registerSubmit({ name, username, email, pass: password, code });
+		this.props.registerSubmit({ name, email, pass: password, code });
 		Keyboard.dismiss();
 	}
 
-	renderTOTP = () => {
-		if (this.props.login.errorMessage && this.props.login.errorMessage.error === 'totp-required') {
-			return (
-				<TextInput
-					ref={ref => this.codeInput = ref}
-					style={styles.input}
-					onChangeText={code => this.setState({ code })}
-					keyboardType='numeric'
-					autoCorrect={false}
-					returnKeyType='done'
-					autoCapitalize='none'
-					onSubmitEditing={this.submit}
-					placeholder='Code'
-				/>
-			);
-		}
-	}
-
-	// {this.props.login.isFetching && <Text> LOGANDO</Text>}
 	render() {
 		return (
 			<KeyboardView style={styles.container} keyboardVerticalOffset={150}>
@@ -89,22 +66,8 @@ class RegisterView extends React.Component {
 							autoCapitalize='words'
 
 							underlineColorAndroid='transparent'
-							onSubmitEditing={() => { this.username.focus(); }}
-							placeholder={this.props.Accounts_NamePlaceholder || 'Name'}
-						/>
-
-						<TextInput
-							ref={(e) => { this.username = e; }}
-							placeholderTextColor={'rgba(255,255,255,.2)'}
-							style={styles.input}
-							onChangeText={username => this.setState({ username })}
-							autoCorrect={false}
-							returnKeyType='next'
-							autoCapitalize='none'
-
-							underlineColorAndroid='transparent'
 							onSubmitEditing={() => { this.email.focus(); }}
-							placeholder={this.props.Accounts_UsernamePlaceholder || 'Username'}
+							placeholder={this.props.Accounts_NamePlaceholder || 'Name'}
 						/>
 
 						<TextInput
@@ -150,8 +113,6 @@ class RegisterView extends React.Component {
 							placeholder={this.props.Accounts_RepeatPasswordPlaceholder || 'Repeat Password'}
 						/>
 
-						{this.renderTOTP()}
-
 						<TouchableOpacity style={styles.buttonContainer}>
 							<Text style={styles.button} onPress={this.submit}>REGISTER</Text>
 						</TouchableOpacity>
@@ -169,7 +130,7 @@ function mapStateToProps(state) {
 	// console.log(Object.keys(state));
 	return {
 		server: state.server.server,
-		Accounts_UsernamePlaceholder: state.settings.Accounts_UsernamePlaceholder,
+		Accounts_NamePlaceholder: state.settings.Accounts_NamePlaceholder,
 		Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
 		Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
 		Accounts_RepeatPasswordPlaceholder: state.settings.Accounts_RepeatPasswordPlaceholder,
