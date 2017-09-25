@@ -11,6 +11,8 @@ import KeyboardView from '../presentation/KeyboardView';
 
 import styles from './Styles';
 
+const placeholderTextColor = 'rgba(255,255,255,.2)';
+
 class RegisterView extends React.Component {
 	static propTypes = {
 		registerSubmit: PropTypes.func.isRequired,
@@ -39,11 +41,17 @@ class RegisterView extends React.Component {
 			this.props.navigation.goBack();
 		}
 	}
-
+	_valid() {
+		const {	name, email, password, confirmPassword } = this.state;
+		return name.trim() && email.trim() &&
+			password && confirmPassword && password === confirmPassword;
+	}
+	_invalidEmail() {
+		return this.props.login.failure && /Email/.test(this.props.login.error.reason);
+	}
 	submit = () => {
-		const {	name, email, password, confirmPassword, code } = this.state;
-		if (name.trim() === '' || email.trim() === '' ||
-			password.trim() === '' || confirmPassword.trim() === '' || password !== confirmPassword) {
+		const {	name, email, password, code } = this.state;
+		if (!this._valid()) {
 			return;
 		}
 
@@ -58,12 +66,12 @@ class RegisterView extends React.Component {
 					<View style={styles.formContainer}>
 						<TextInput
 							ref={(e) => { this.name = e; }}
-							placeholderTextColor={'rgba(255,255,255,.2)'}
+							placeholderTextColor={placeholderTextColor}
 							style={styles.input}
 							onChangeText={name => this.setState({ name })}
 							autoCorrect={false}
 							returnKeyType='next'
-							autoCapitalize='words'
+							autoCapitalize='none'
 
 							underlineColorAndroid='transparent'
 							onSubmitEditing={() => { this.email.focus(); }}
@@ -72,8 +80,8 @@ class RegisterView extends React.Component {
 
 						<TextInput
 							ref={(e) => { this.email = e; }}
-							placeholderTextColor={'rgba(255,255,255,.2)'}
-							style={styles.input}
+							placeholderTextColor={placeholderTextColor}
+							style={[styles.input, this._invalidEmail() ? { borderColor: 'red' } : {}]}
 							onChangeText={email => this.setState({ email })}
 							keyboardType='email-address'
 							autoCorrect={false}
@@ -86,7 +94,7 @@ class RegisterView extends React.Component {
 						/>
 						<TextInput
 							ref={(e) => { this.password = e; }}
-							placeholderTextColor={'rgba(255,255,255,.2)'}
+							placeholderTextColor={placeholderTextColor}
 							style={styles.input}
 							onChangeText={password => this.setState({ password })}
 							secureTextEntry
@@ -100,8 +108,8 @@ class RegisterView extends React.Component {
 						/>
 						<TextInput
 							ref={(e) => { this.confirmPassword = e; }}
-							placeholderTextColor={'rgba(255,255,255,.2)'}
-							style={styles.input}
+							placeholderTextColor={placeholderTextColor}
+							style={[styles.input, this.state.password && this.state.confirmPassword && this.state.confirmPassword !== this.state.password ? { borderColor: 'red' } : {}]}
 							onChangeText={confirmPassword => this.setState({ confirmPassword })}
 							secureTextEntry
 							autoCorrect={false}
@@ -114,10 +122,15 @@ class RegisterView extends React.Component {
 						/>
 
 						<TouchableOpacity style={styles.buttonContainer}>
-							<Text style={styles.button} onPress={this.submit}>REGISTER</Text>
+							<Text
+								style={[styles.button, this._valid() ? {}
+									: { color: placeholderTextColor }
+								]}
+								onPress={this.submit}
+							>REGISTER</Text>
 						</TouchableOpacity>
 
-						{this.props.login.error && <Text style={styles.error}>{this.props.login.error}</Text>}
+						{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
 					</View>
 					<Spinner visible={this.props.login.isFetching} textContent={'Loading...'} textStyle={{ color: '#FFF' }} />
 				</View>

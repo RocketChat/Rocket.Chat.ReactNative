@@ -117,7 +117,7 @@ class LoginView extends React.Component {
 							<Text style={styles.button} onPress={this.register}>REGISTER</Text>
 						</TouchableOpacity>
 
-						{this.props.login.error && <Text style={styles.error}>{this.props.login.error}</Text>}
+						{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
 					</View>
 					<Spinner visible={this.props.login.isFetching} textContent={'Loading...'} textStyle={{ color: '#FFF' }} />
 				</View>

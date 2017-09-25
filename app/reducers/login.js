@@ -5,17 +5,17 @@ const initialState = {
 	isFetching: false,
 	token: '',
 	user: {},
-	errorMessage: ''
+	error: ''
 };
 
 export default function login(state = initialState, action) {
 	switch (action.type) {
 		case types.LOGIN.REQUEST:
-			console.log('types.LOGIN.REQUEST', action);
 			return { ...state,
 				isFetching: true,
 				isAuthenticated: false,
-				failure: false
+				failure: false,
+				error: ''
 			};
 		case types.LOGIN.SUCCESS:
 			return { ...state,
@@ -23,15 +23,15 @@ export default function login(state = initialState, action) {
 				isAuthenticated: true,
 				user: action.user,
 				token: action.user.token,
-				failure: false
-				// user: action.user
+				failure: false,
+				error: ''
 			};
 		case types.LOGIN.FAILURE:
 			return { ...state,
 				isFetching: false,
 				isAuthenticated: false,
 				failure: true,
-				errorMessage: action.err
+				error: action.err
 			};
 		case types.LOGOUT:
 			return initialState;
@@ -45,14 +45,16 @@ export default function login(state = initialState, action) {
 				...state,
 				isFetching: true,
 				isAuthenticated: false,
-				failure: false
+				failure: false,
+				error: ''
 			};
 		case types.LOGIN.REGISTER_SUCCESS:
 			return {
 				...state,
 				isFetching: false,
 				isAuthenticated: false,
-				failure: false
+				failure: false,
+				error: ''
 			};
 		default:
 			return state;
