@@ -21,7 +21,6 @@ export function createChannelFailure(err) {
 	};
 }
 
-
 export function createChannelRequestUsers(data) {
 	return {
 		type: types.CREATE_CHANNEL.REQUEST_USERS,
@@ -47,5 +46,25 @@ export function createChannelFailureUsers(err) {
 	return {
 		type: types.CREATE_CHANNEL.FAILURE_USERS,
 		err
+	};
+}
+
+export function addUser(user) {
+	return {
+		type: types.CREATE_CHANNEL.ADD_USER,
+		user
+	};
+}
+
+export function removeUser(user) {
+	return {
+		type: types.CREATE_CHANNEL.REMOVE_USER,
+		user
+	};
+}
+
+export function reset() {
+	return {
+		type: types.CREATE_CHANNEL.RESET
 	};
 }

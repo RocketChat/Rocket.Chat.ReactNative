@@ -43,16 +43,18 @@ const styles = StyleSheet.create({
 	}
 });
 
-
-@connect(state => ({
-	server: state.server.server,
-	Site_Url: state.settings.Site_Url,
-	Message_TimeFormat: state.settings.Message_TimeFormat,
-	loading: state.messages.isFetching
-}), dispatch => ({
-	actions: bindActionCreators(actions, dispatch),
-	getMessages: rid => dispatch(messagesRequest({ rid }))
-}))
+@connect(
+	state => ({
+		server: state.server.server,
+		Site_Url: state.settings.Site_Url,
+		Message_TimeFormat: state.settings.Message_TimeFormat,
+		loading: state.messages.isFetching
+	}),
+	dispatch => ({
+		actions: bindActionCreators(actions, dispatch),
+		getMessages: rid => dispatch(messagesRequest({ rid }))
+	})
+)
 export default class RoomView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
@@ -64,15 +66,21 @@ export default class RoomView extends React.Component {
 		Site_Url: PropTypes.string,
 		Message_TimeFormat: PropTypes.string,
 		loading: PropTypes.bool
-	}
+	};
 
 	constructor(props) {
 		super(props);
 
 		this.sid = props.navigation.state.params.room.sid;
-		this.rid = props.rid || realm.objectForPrimaryKey('subscriptions', this.sid).rid;
+		this.rid =
+			props.rid ||
+			props.navigation.state.params.room.rid ||
+			realm.objectForPrimaryKey('subscriptions', this.sid).rid;
 
-		this.data = realm.objects('messages').filtered('_server.id = $0 AND rid = $1', this.props.server, this.rid).sorted('ts', true);
+		this.data = realm
+			.objects('messages')
+			.filtered('_server.id = $0 AND rid = $1', this.props.server, this.rid)
+			.sorted('ts', true);
 		this.state = {
 			slow: false,
 			dataSource: [],
@@ -83,7 +91,10 @@ export default class RoomView extends React.Component {
 
 	componentWillMount() {
 		this.props.navigation.setParams({
-			title: this.props.name || realm.objectForPrimaryKey('subscriptions', this.sid).name
+			title:
+				this.props.name ||
+				this.props.navigation.state.params.room.name ||
+				realm.objectForPrimaryKey('subscriptions', this.sid).name
 		});
 		this.timer = setTimeout(() => this.setState({ slow: true }), 5000);
 		this.props.getMessages(this.rid);
@@ -103,7 +114,12 @@ export default class RoomView extends React.Component {
 
 	onEndReached = () => {
 		const rowCount = this.state.dataSource.getRowCount();
-		if (rowCount && this.state.loaded && this.state.loadingMore !== true && this.state.end !== true) {
+		if (
+			rowCount &&
+			this.state.loaded &&
+			this.state.loadingMore !== true &&
+			this.state.end !== true
+		) {
 			this.setState({
 				// ...this.state,
 				loadingMore: true
@@ -118,7 +134,7 @@ export default class RoomView extends React.Component {
 				});
 			});
 		}
-	}
+	};
 
 	updateState = () => {
 		this.setState({
@@ -135,13 +151,12 @@ export default class RoomView extends React.Component {
 		});
 	};
 
-	renderBanner = () => (this.state.slow && this.props.loading ?
-		(
+	renderBanner = () =>
+		(this.state.slow && this.props.loading ? (
 			<View style={styles.bannerContainer}>
 				<Text style={styles.bannerText}>Loading new messages...</Text>
 			</View>
-		) : null)
-
+		) : null);
 
 	renderItem = ({ item }) => (
 		<Message
@@ -152,9 +167,7 @@ export default class RoomView extends React.Component {
 		/>
 	);
 
-	renderSeparator = () => (
-		<View style={styles.separator} />
-	);
+	renderSeparator = () => <View style={styles.separator} />;
 
 	renderFooter = () => {
 		if (!this.state.joined) {
@@ -165,14 +178,8 @@ export default class RoomView extends React.Component {
 				</View>
 			);
 		}
-		return (
-			<MessageBox
-				ref={box => this.box = box}
-				onSubmit={this.sendMessage}
-				rid={this.rid}
-			/>
-		);
-	}
+		return <MessageBox ref={box => (this.box = box)} onSubmit={this.sendMessage} rid={this.rid} />;
+	};
 
 	renderHeader = () => {
 		if (this.state.loadingMore) {
@@ -182,7 +189,7 @@ export default class RoomView extends React.Component {
 		if (this.state.end) {
 			return <Text style={styles.header}>Start of conversation</Text>;
 		}
-	}
+	};
 
 	render() {
 		return (
