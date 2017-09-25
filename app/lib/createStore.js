@@ -3,6 +3,7 @@ import 'regenerator-runtime/runtime';
 
 import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
+import logger from 'redux-logger';
 import { composeWithDevTools } from 'remote-redux-devtools';
 import reducers from '../reducers';
 import sagas from '../sagas';
@@ -13,9 +14,11 @@ let enhacers;
 if (__DEV__) {
 	/* eslint-disable global-require */
 	const reduxImmutableStateInvariant = require('redux-immutable-state-invariant').default();
+
 	enhacers = composeWithDevTools(
 		applyMiddleware(reduxImmutableStateInvariant),
-		applyMiddleware(sagaMiddleware)
+		applyMiddleware(sagaMiddleware),
+		applyMiddleware(logger)
 	);
 } else {
 	enhacers = composeWithDevTools(
