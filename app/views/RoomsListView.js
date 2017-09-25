@@ -207,7 +207,7 @@ export default class RoomsListView extends React.Component {
 	}
 
 	_createChannel() {
-		this.props.navigation.navigate('CreateChannel');
+		this.props.navigation.navigate('SelectUsers');
 	}
 
 	renderSearchBar = () => (
