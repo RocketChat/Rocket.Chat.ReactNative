@@ -122,18 +122,13 @@ const RocketChat = {
 		});
 	},
 
-	register(params, callback) {
-		return new Promise((resolve, reject) => {
-			return Meteor.call('registerUser', params, (err, result) => {
-				if (err) {
-					reject(err);
-				} else {
-					resolve(result);
-				}
-				if (typeof callback === 'function') {
-					callback(err, result);
-				}
-			});
+	register({ server, credentials }) {
+		return fetch(`${ server }/api/v1/users.register`, {
+			method: 'post',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(credentials)
 		});
 	},
 

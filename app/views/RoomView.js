@@ -193,7 +193,7 @@ export default class RoomView extends React.Component {
 
 	render() {
 		return (
-			<KeyboardView style={styles.container} keyboardVerticalOffset={64}>
+			<KeyboardView contentContainerStyle={styles.container} keyboardVerticalOffset={64}>
 				{this.renderBanner()}
 				<ListView
 					enableEmptySections

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, TextInput, View, StyleSheet } from 'react-native';
+import { Text, TextInput, View, StyleSheet, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { serverRequest, addServer } from '../actions/server';
 import KeyboardView from '../presentation/KeyboardView';
@@ -148,7 +148,11 @@ export default class NewServerView extends React.Component {
 
 	render() {
 		return (
-			<KeyboardView style={styles.view} keyboardVerticalOffset={64}>
+			<KeyboardView
+				scrollEnabled={false}
+				contentContainerStyle={[styles.view, { height: Dimensions.get('window').height }]}
+				keyboardVerticalOffset={128}
+			>
 				<View style={styles.spaceView} />
 				<TextInput
 					ref={ref => this.inputElement = ref}

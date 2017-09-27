@@ -2,11 +2,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 export default StyleSheet.create({
 	container: {
-		flex: 1,
-		backgroundColor: '#2f343d',
-		flexDirection: 'column',
-		justifyContent: 'center',
-		alignItems: 'stretch'
+		backgroundColor: '#2f343d'
 	},
 	loginView: {
 		padding: 20
@@ -19,30 +15,27 @@ export default StyleSheet.create({
 		alignItems: 'stretch',
 		backgroundColor: '#2f343d'
 	},
-	view_white: {
-		flex: 1,
+	defaultView: {
 		flexDirection: 'column',
 		justifyContent: 'center',
 		padding: 20,
-		alignItems: 'stretch',
+		alignItems: 'stretch'
+	},
+	defaultViewBackground: {
 		backgroundColor: '#fff'
 	},
 	logoContainer: {
-		flex: 1,
 		alignItems: 'center',
-		flexGrow: 1,
 		justifyContent: 'center'
 	},
-	logo: {
-		width: Dimensions.get('window').width - 30,
-		height: Dimensions.get('window').width - 30,
-		borderRadius: 5,
+	loginLogo: {
+		width: Dimensions.get('window').width - 150,
+		height: Dimensions.get('window').width - 150,
 		resizeMode: 'contain'
 	},
-	loginLogo: {
-		width: Dimensions.get('window').width - 80,
-		height: Dimensions.get('window').width - 80,
-		borderRadius: 5,
+	registerLogo: {
+		width: Dimensions.get('window').width - 40,
+		height: 100,
 		resizeMode: 'contain'
 	},
 	formContainer: {

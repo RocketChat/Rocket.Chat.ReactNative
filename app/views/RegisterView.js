@@ -3,7 +3,7 @@ import React from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import PropTypes from 'prop-types';
-import { Keyboard, Text, TextInput, View, TouchableOpacity } from 'react-native';
+import { Keyboard, Text, TextInput, View, TouchableOpacity, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as loginActions from '../actions/login';
@@ -16,6 +16,7 @@ const placeholderTextColor = 'rgba(255,255,255,.2)';
 class RegisterView extends React.Component {
 	static propTypes = {
 		registerSubmit: PropTypes.func.isRequired,
+		Accounts_UsernamePlaceholder: PropTypes.string,
 		Accounts_NamePlaceholder: PropTypes.string,
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
 		Accounts_PasswordPlaceholder: PropTypes.string,
@@ -29,6 +30,7 @@ class RegisterView extends React.Component {
 
 		this.state = {
 			name: '',
+			username: '',
 			email: '',
 			password: '',
 			confirmPassword: ''
@@ -42,26 +44,32 @@ class RegisterView extends React.Component {
 		}
 	}
 	_valid() {
-		const {	name, email, password, confirmPassword } = this.state;
-		return name.trim() && email.trim() &&
+		const { name, username, email, password, confirmPassword } = this.state;
+		return name.trim() && username.trim() && email.trim() &&
 			password && confirmPassword && password === confirmPassword;
 	}
 	_invalidEmail() {
 		return this.props.login.failure && /Email/.test(this.props.login.error.reason);
 	}
 	submit = () => {
-		const {	name, email, password, code } = this.state;
+		const { name, username, email, password, code } = this.state;
 		if (!this._valid()) {
 			return;
 		}
 
-		this.props.registerSubmit({ name, email, pass: password, code });
+		this.props.registerSubmit({ name, username, email, pass: password, code });
 		Keyboard.dismiss();
 	}
 
 	render() {
 		return (
-			<KeyboardView style={styles.container} keyboardVerticalOffset={150}>
+			<KeyboardView contentContainerStyle={styles.container} keyboardVerticalOffset={150}>
+				<View style={styles.logoContainer}>
+					<Image
+						style={styles.registerLogo}
+						source={require('../images/logo_with_text.png')}
+					/>
+				</View>
 				<View style={styles.loginView}>
 					<View style={styles.formContainer}>
 						<TextInput
@@ -70,12 +78,27 @@ class RegisterView extends React.Component {
 							style={styles.input}
 							onChangeText={name => this.setState({ name })}
 							autoCorrect={false}
+							autoFocus
+							returnKeyType='next'
+							autoCapitalize='none'
+
+							underlineColorAndroid='transparent'
+							onSubmitEditing={() => { this.username.focus(); }}
+							placeholder={this.props.Accounts_NamePlaceholder || 'Name'}
+						/>
+
+						<TextInput
+							ref={(e) => { this.username = e; }}
+							placeholderTextColor={'rgba(255,255,255,.2)'}
+							style={styles.input}
+							onChangeText={username => this.setState({ username })}
+							autoCorrect={false}
 							returnKeyType='next'
 							autoCapitalize='none'
 
 							underlineColorAndroid='transparent'
 							onSubmitEditing={() => { this.email.focus(); }}
-							placeholder={this.props.Accounts_NamePlaceholder || 'Name'}
+							placeholder={this.props.Accounts_UsernamePlaceholder || 'Username'}
 						/>
 
 						<TextInput
@@ -143,6 +166,7 @@ function mapStateToProps(state) {
 	// console.log(Object.keys(state));
 	return {
 		server: state.server.server,
+		Accounts_UsernamePlaceholder: state.settings.Accounts_UsernamePlaceholder,
 		Accounts_NamePlaceholder: state.settings.Accounts_NamePlaceholder,
 		Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
 		Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,

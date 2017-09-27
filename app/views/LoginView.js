@@ -70,8 +70,12 @@ class LoginView extends React.Component {
 	// {this.props.login.isFetching && <Text> LOGANDO</Text>}
 	render() {
 		return (
-			<KeyboardView style={styles.container} keyboardVerticalOffset={128}>
-				<View style={{ alignItems: 'center' }}>
+			<KeyboardView
+				style={{ flex: 1 }}
+				contentContainerStyle={styles.container}
+				keyboardVerticalOffset={128}
+			>
+				<View style={styles.logoContainer}>
 					<Image
 						style={styles.loginLogo}
 						source={require('../images/logo.png')}
