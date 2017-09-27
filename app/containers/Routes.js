@@ -1,12 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { View, Image } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as Animatable from 'react-native-animatable';
 import { appInit } from '../actions';
-
-import styles from '../views/Styles';
 
 import AuthRoutes from './routes/AuthRoutes';
 import PublicRoutes from './routes/PublicRoutes';
