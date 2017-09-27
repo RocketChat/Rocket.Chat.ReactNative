@@ -1,7 +1,5 @@
 import React from 'react';
-import { Button } from 'react-native';
 import { StackNavigator, DrawerNavigator, NavigationActions, HeaderBackButton } from 'react-navigation';
-// import { Platform } from 'react-native';
 
 import Sidebar from '../../containers/Sidebar';
 import DrawerMenuButton from '../../presentation/DrawerMenuButton';
