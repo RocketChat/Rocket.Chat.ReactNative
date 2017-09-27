@@ -1,7 +1,7 @@
 import { AsyncStorage } from 'react-native';
 import { take, put, call, takeEvery, select, all, race } from 'redux-saga/effects';
 import * as types from '../actions/actionsTypes';
-import { loginRequest, loginSubmit, registerRequest, loginSuccess, registerSuccess, loginFailure, setToken, logout } from '../actions/login';
+import { loginRequest, loginSubmit, registerRequest, loginSuccess, loginFailure, setToken, logout } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
