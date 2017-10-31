@@ -19,6 +19,7 @@ dependencies:
       fi
   override:
     # The Android Gradle build will need the Android signing keystore keys setup
+    - echo y | android update sdk --no-ui --all --filter tools,platform-tools,build-tools-23.0.3,android-23,extra-google-m2repository,extra-google-google_play_services,extra-android-m2repository
     - mkdir -p ~/.gradle
     # Install node modules
     - yarn
@@ -34,3 +35,6 @@ dependencies:
     - vendor/bundle
     - node_modules
     - ~/Library/Caches/CocoaPods
+    - /usr/local/android-sdk-linux/platforms/android-25
+    - /usr/local/android-sdk-linux/build-tools/25.0.0
+    - /usr/local/android-sdk-linux/extras/android/m2repository
