@@ -1,0 +1,36 @@
+machine:
+  xcode:
+    version: '8.0'
+  environment:
+    YARN_VERSION: 0.18.1
+    # Needed for Android SDK installation bash script (see below)
+    ANDROID_HOME: "/usr/local/Cellar/android-sdk"
+    PATH: "${PATH}:${HOME}/.yarn/bin:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
+    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
+
+dependencies:
+  pre:
+    # Install YARN
+    - |
+      if [[ ! -e ~/.yarn/bin/yarn || $(yarn --version) != "${YARN_VERSION}" ]]; then
+        curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $YARN_VERSION
+      fi
+  override:
+    # The Android Gradle build will need the Android signing keystore keys setup
+    - mkdir -p ~/.gradle
+    # Install Gems (fastlane, etc)
+    - bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3 --without development
+    # Install node modules
+    - yarn install
+  cache_directories:
+    # Let's speed up the next build by cacheing installed dependencies
+    - ~/.yarn
+    - ~/.cache/yarn
+    - vendor/bundle
+    - node_modules
+    - ~/Library/Caches/CocoaPods
+deployment:
+  beta:
+    branch: qa
+    commands:
+      - yarn && ./node_modules/.bin/react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
