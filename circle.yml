@@ -18,8 +18,6 @@ dependencies:
   override:
     # The Android Gradle build will need the Android signing keystore keys setup
     - mkdir -p ~/.gradle
-    # Install Gems (fastlane, etc)
-    - bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3 --without development
     # Install node modules
     - yarn install
   cache_directories:
@@ -33,4 +31,6 @@ deployment:
   beta:
     branch: qa
     commands:
-      - yarn && ./node_modules/.bin/react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
+      - yarn
+      - ./node_modules/.bin/react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
+      - cd android && ./gradlew assembleRelease
