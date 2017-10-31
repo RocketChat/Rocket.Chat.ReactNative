@@ -6,7 +6,6 @@ machine:
   environment:
     YARN_VERSION: 0.18.1
     # Needed for Android SDK installation bash script (see below)
-    ANDROID_HOME: "/usr/local/Cellar/android-sdk"
     PATH: "${PATH}:${HOME}/.yarn/bin:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
     GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
 
@@ -26,6 +25,8 @@ dependencies:
     - ./node_modules/.bin/react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
     - cd android && ./gradlew assembleRelease
     - mv ./android/app/build/outputs/ $CIRCLE_ARTIFACTS
+    - cp -r android/app/build/outputs $CIRCLE_ARTIFACTS
+
   cache_directories:
     # Let's speed up the next build by cacheing installed dependencies
     - ~/.yarn
