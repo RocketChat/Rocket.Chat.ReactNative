@@ -30,6 +30,7 @@ dependencies:
     - vendor/bundle
     - node_modules
     - ~/Library/Caches/CocoaPods
+
 deployment:
   beta:
     branch: qa
@@ -37,3 +38,4 @@ deployment:
       - yarn
       - ./node_modules/.bin/react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
       - cd android && ./gradlew assembleRelease
+      - mv ./android/app/build/outputs/ $CIRCLE_ARTIFACTS
