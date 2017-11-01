@@ -2,7 +2,6 @@ machine:
   xcode:
     version: '9.0'
   environment:
-    YARN_VERSION: 0.18.1
     # Needed for Android SDK installation bash script (see below)
     PATH: "${PATH}:${HOME}/.yarn/bin:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
     GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
@@ -15,10 +14,6 @@ dependencies:
     # Install YARN
     - node -v
     - echo $KEYSTORE_BASE64 | base64 --decode | tee -a "android/$KEYSTORE"
-    - |
-      if [[ ! -e ~/.yarn/bin/yarn || $(yarn --version) != "${YARN_VERSION}" ]]; then
-        curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $YARN_VERSION
-      fi
 
   override:
     # The Android Gradle build will need the Android signing keystore keys setup
