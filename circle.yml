@@ -6,9 +6,8 @@ machine:
     # Needed for Android SDK installation bash script (see below)
     PATH: "${PATH}:${HOME}/.yarn/bin:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
     GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
-    XCODE_WORKSPACE: "${XCODE_PROJECT}/project.xcworkspace"
     XCODE_PROJECT: "${HOME}/${CIRCLE_PROJECT_REPONAME}/ios/RocketChatRN.xcodeproj"
-    XCODE_SCHEME: "${XCODE_PROJECT}/xcshareddata/xcschemes/RocketChatRN.xcschemeRocketChatRN"
+    XCODE_SCHEME: "${HOME}/${CIRCLE_PROJECT_REPONAME}/ios/RocketChatRN.xcodeproj/xcshareddata/xcschemes/RocketChatRN.xcscheme"
 
 dependencies:
   pre:
