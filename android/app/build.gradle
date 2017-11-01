@@ -105,12 +105,10 @@ android {
     }
     signingConfigs {
         release {
-            if (project.hasProperty('ROCKETCHAT_RN_RELEASE_STORE_FILE')) {
-                storeFile file(ROCKETCHAT_RN_RELEASE_STORE_FILE)
-                storePassword ROCKETCHAT_RN_RELEASE_STORE_PASSWORD
-                keyAlias ROCKETCHAT_RN_RELEASE_KEY_ALIAS
-                keyPassword ROCKETCHAT_RN_RELEASE_KEY_PASSWORD
-            }
+            storeFile file(System.getenv("KEYSTORE"))
+            storePassword System.getenv("KEYSTORE_PASSWORD")
+            keyAlias System.getenv("KEY_ALIAS")
+            keyPassword System.getenv("KEY_PASSWORD")
         }
     }
     splits {
@@ -140,15 +138,6 @@ android {
                         versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
             }
         }
-    }
-}
-
-signingConfigs {
-    release {
-        storeFile file(System.getenv("KEYSTORE"))
-        storePassword System.getenv("KEYSTORE_PASSWORD")
-        keyAlias System.getenv("KEY_ALIAS")
-        keyPassword System.getenv("KEY_PASSWORD")
     }
 }
 
