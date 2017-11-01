@@ -1,6 +1,6 @@
 machine:
-  xcode:
-    version: '8.3'
+  node:
+    version: 8
   environment:
     YARN_VERSION: 0.18.1
     # Needed for Android SDK installation bash script (see below)
@@ -10,7 +10,6 @@ machine:
 dependencies:
   pre:
     # Install YARN
-    - brew install node
     - node -v
     - echo $KEYSTORE_BASE64 | base64 --decode | tee -a "android/$KEYSTORE"
     - |
