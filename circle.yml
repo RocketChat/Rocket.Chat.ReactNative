@@ -2,12 +2,13 @@ machine:
   xcode:
     version: '9.0'
   environment:
+    YARN_VERSION: 0.18.1
     # Needed for Android SDK installation bash script (see below)
     PATH: "${PATH}:${HOME}/.yarn/bin:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
     GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
-    XCODE_SCHEME: "RocketChatRN"
-    XCODE_WORKSPACE: "platforms/ios"
-    XCODE_PROJECT: "RocketChatRN.xcodeproj"
+    XCODE_WORKSPACE: "${XCODE_PROJECT}/project.xcworkspace"
+    XCODE_PROJECT: "${HOME}/${CIRCLE_PROJECT_REPONAME}/ios/RocketChatRN.xcodeproj"
+    XCODE_SCHEME: "${XCODE_PROJECT}/xcshareddata/xcschemes/RocketChatRN.xcschemeRocketChatRN"
 
 dependencies:
   pre:
@@ -23,6 +24,9 @@ dependencies:
     - mkdir -p ~/.gradle
     # Install node modules
     - yarn
+    - ./node_modules/.bin/react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
+    - cd android && ./gradlew assembleRelease
+    - mv ./android/app/build/outputs/ $CIRCLE_ARTIFACTS
 
   cache_directories:
     # Let's speed up the next build by cacheing installed dependencies
@@ -34,12 +38,6 @@ dependencies:
     - /usr/local/android-sdk-linux/platforms/android-25
     - /usr/local/android-sdk-linux/build-tools/25.0.0
     - /usr/local/android-sdk-linux/extras/android/m2repository
-test:
-  override:
-    - ./node_modules/.bin/react-native bundle --platform android --dev true --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
-    - cd android && ./gradlew assembleRelease
-    - mv ./android/app/build/outputs/ $CIRCLE_ARTIFACTS
-
 deployment:
   production: # just a label; label names are completely up to you
     branch: master
