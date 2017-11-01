@@ -1,6 +1,4 @@
 machine:
-  node:
-    version: 8
   xcode:
     version: '8.3'
   environment:
