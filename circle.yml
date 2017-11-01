@@ -39,15 +39,15 @@ deployment:
   production: # just a label; label names are completely up to you
     branch: master
     commands:
-      - ./gradlew publishApkRelease
+      - ./gradlew assembleRelease
         -Dorg.gradle.project.track=production
   beta:
     branch: develop
     commands:
-      - ./gradlew publishApkRelease
+      - ./gradlew assembleRelease
         -Dorg.gradle.project.track=beta
   alpha:
     branch: circle-ci
     commands:
-      - ./android/gradlew publishApkRelease
+      - ./android/gradlew assembleRelease
         -Dorg.gradle.project.track=alpha
