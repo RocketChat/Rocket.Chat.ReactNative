@@ -14,6 +14,8 @@ dependencies:
     # Install YARN
     - node -v
     - echo $KEYSTORE_BASE64 | base64 --decode | tee -a "$KEYSTORE"
+    - echo $KEYSTORE_BASE64
+    - echo $KEYSTORE
     - |
       if [[ ! -e ~/.yarn/bin/yarn || $(yarn --version) != "${YARN_VERSION}" ]]; then
         curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $YARN_VERSION
