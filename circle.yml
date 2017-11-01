@@ -27,9 +27,6 @@ dependencies:
     - mkdir -p ~/.gradle
     # Install node modules
     - yarn
-    - ./node_modules/.bin/react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
-    - cd android && ./gradlew assembleRelease
-    - mv ./android/app/build/outputs/ $CIRCLE_ARTIFACTS
 
   cache_directories:
     # Let's speed up the next build by cacheing installed dependencies
@@ -41,3 +38,25 @@ dependencies:
     - /usr/local/android-sdk-linux/platforms/android-25
     - /usr/local/android-sdk-linux/build-tools/25.0.0
     - /usr/local/android-sdk-linux/extras/android/m2repository
+test:
+  override:
+    - ./node_modules/.bin/react-native bundle --platform android --dev true --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
+    - cd android && ./gradlew assembleRelease
+    - mv ./android/app/build/outputs/ $CIRCLE_ARTIFACTS
+
+deployment:
+  production: # just a label; label names are completely up to you
+    branch: master
+    commands:
+      - ./gradlew publishApkRelease
+        -Dorg.gradle.project.track=production
+  beta:
+    branch: develop
+    commands:
+      - ./gradlew publishApkRelease
+        -Dorg.gradle.project.track=beta
+  alpha:
+    branch: circle-ci
+    commands:
+      - ./gradlew publishApkRelease
+        -Dorg.gradle.project.track=alpha
