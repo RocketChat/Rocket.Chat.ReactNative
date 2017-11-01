@@ -71,7 +71,6 @@ class LoginView extends React.Component {
 	render() {
 		return (
 			<KeyboardView
-				style={{ flex: 1 }}
 				contentContainerStyle={styles.container}
 				keyboardVerticalOffset={128}
 			>
@@ -117,7 +116,7 @@ class LoginView extends React.Component {
 							<Text style={styles.button} onPress={this.submit}>LOGIN</Text>
 						</TouchableOpacity>
 
-						<TouchableOpacity style={styles.buttonContainer}>
+						<TouchableOpacity style={[styles.buttonContainer, styles.registerContainer]}>
 							<Text style={styles.button} onPress={this.register}>REGISTER</Text>
 						</TouchableOpacity>
 

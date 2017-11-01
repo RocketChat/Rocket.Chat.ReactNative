@@ -2,10 +2,12 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 export default StyleSheet.create({
 	container: {
-		backgroundColor: '#2f343d'
+		backgroundColor: '#2f343d',
+		flex: 1
 	},
 	loginView: {
-		padding: 20
+		padding: 20,
+		justifyContent: 'flex-end'
 	},
 	view: {
 		flex: 1,
@@ -26,7 +28,8 @@ export default StyleSheet.create({
 	},
 	logoContainer: {
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		flex: 1
 	},
 	loginLogo: {
 		width: Dimensions.get('window').width - 150,
@@ -38,9 +41,7 @@ export default StyleSheet.create({
 		height: 100,
 		resizeMode: 'contain'
 	},
-	formContainer: {
-		// marginBottom: 20
-	},
+	formContainer: {},
 	label: {
 		lineHeight: 40,
 		height: 40,
@@ -92,6 +93,9 @@ export default StyleSheet.create({
 		paddingVertical: 15,
 		backgroundColor: '#1d74f5',
 		marginBottom: 20
+	},
+	registerContainer: {
+		marginBottom: 0
 	},
 	button: {
 		textAlign: 'center',

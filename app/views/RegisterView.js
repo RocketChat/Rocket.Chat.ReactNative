@@ -144,7 +144,7 @@ class RegisterView extends React.Component {
 							placeholder={this.props.Accounts_RepeatPasswordPlaceholder || 'Repeat Password'}
 						/>
 
-						<TouchableOpacity style={styles.buttonContainer}>
+						<TouchableOpacity style={[styles.buttonContainer, styles.registerContainer]}>
 							<Text
 								style={[styles.button, this._valid() ? {}
 									: { color: placeholderTextColor }
