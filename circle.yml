@@ -34,6 +34,7 @@ dependencies:
     - /usr/local/android-sdk-linux/platforms/android-25
     - /usr/local/android-sdk-linux/build-tools/25.0.0
     - /usr/local/android-sdk-linux/extras/android/m2repository
+
 deployment:
   production: # just a label; label names are completely up to you
     branch: master
@@ -48,5 +49,5 @@ deployment:
   alpha:
     branch: circle-ci
     commands:
-      - ./gradlew publishApkRelease
+      - ./android/gradlew publishApkRelease
         -Dorg.gradle.project.track=alpha
