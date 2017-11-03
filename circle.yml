@@ -21,7 +21,6 @@ dependencies:
     - echo y | android update sdk --no-ui --all --filter tools,platform-tools,build-tools-23.0.3,build-tools-25.0.2,build-tools-26.0.1,android-23,extra-google-m2repository,extra-google-google_play_services,extra-android-m2repository
     - echo y | $ANDROID_HOME/tools/bin/sdkmanager --update
     - echo y | $ANDROID_HOME/tools/bin/sdkmanager --licenses
-    - mkdir -p ~/.gradle
     # Install node modules
     - yarn
     - ./node_modules/.bin/react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
