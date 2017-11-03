@@ -24,8 +24,8 @@ dependencies:
     # Install node modules
     - yarn
     # - ./node_modules/.bin/react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
-    - cd android && ./gradlew assembleRelease
-    - mv ./android/app/build/outputs/ $CIRCLE_ARTIFACTS
+    # - cd android && ./gradlew assembleRelease
+    # - mv ./android/app/build/outputs/ $CIRCLE_ARTIFACTS
 
   cache_directories:
     # Let's speed up the next build by cacheing installed dependencies
@@ -53,4 +53,5 @@ deployment:
     branch: circle-ci
     commands:
       - cd android && ./gradlew assembleRelease
-        -Dorg.gradle.project.track=alpha
+      - mv ./android/app/build/outputs/ $CIRCLE_ARTIFACTS
+        # -Dorg.gradle.project.track=alpha
