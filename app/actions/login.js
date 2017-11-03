@@ -26,9 +26,10 @@ export function registerRequest(credentials) {
 		credentials
 	};
 }
-export function registerSuccess() {
+export function registerSuccess(credentials) {
 	return {
-		type: types.LOGIN.REGISTER_SUCCESS
+		type: types.LOGIN.REGISTER_SUCCESS,
+		credentials
 	};
 }
 

@@ -1,7 +1,7 @@
 import { AsyncStorage } from 'react-native';
 import { take, put, call, takeEvery, select, all, race } from 'redux-saga/effects';
 import * as types from '../actions/actionsTypes';
-import { loginRequest, loginSubmit, registerRequest, loginSuccess, loginFailure, setToken, logout } from '../actions/login';
+import { loginRequest, loginSubmit, registerRequest, loginSuccess, loginFailure, setToken, logout, registerSuccess } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
@@ -91,8 +91,7 @@ const handleRegisterRequest = function* handleRegisterRequest({ credentials }) {
 	try {
 		const server = yield select(getServer);
 		yield call(registerCall, { server, credentials });
-		yield put(loginSubmit(credentials));
-		// yield put(registerSuccess());
+		yield put(registerSuccess(credentials));
 	} catch (err) {
 		yield put(loginFailure(err));
 	}
@@ -103,9 +102,16 @@ const handleRegisterSubmit = function* handleRegisterSubmit({ credentials }) {
 	yield put(registerRequest(credentials));
 	// wait for a response
 	yield race({
-		success: take(types.LOGIN.SUCCESS),
+		success: take(types.LOGIN.REGISTER_SUCCESS),
 		error: take(types.LOGIN.FAILURE)
 	});
+};
+
+const handleRegisterSuccess = function* handleRegisterSuccess({ credentials }) {
+	yield put(loginSubmit({
+		username: credentials.username,
+		password: credentials.pass
+	}));
 };
 
 const root = function* root() {
@@ -115,5 +121,6 @@ const root = function* root() {
 	yield takeEvery(types.LOGIN.SUBMIT, handleLoginSubmit);
 	yield takeEvery(types.LOGIN.REGISTER_REQUEST, handleRegisterRequest);
 	yield takeEvery(types.LOGIN.REGISTER_SUBMIT, handleRegisterSubmit);
+	yield takeEvery(types.LOGIN.REGISTER_SUCCESS, handleRegisterSuccess);
 };
 export default root;
