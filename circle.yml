@@ -10,7 +10,11 @@ dependencies:
   pre:
     # Install YARN
     - node -v
-    - echo $KEYSTORE_BASE64 | base64 --decode | tee -a "android/app/$KEYSTORE"
+    - echo $KEYSTORE_BASE64 | base64 --decode | tee -a "./android/app/$KEYSTORE"
+    - echo -e "KEYSTORE=$KEYSTORE" > ./android/gradle.properties
+    - echo -e "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> ./android/gradle.properties
+    - echo -e "KEY_ALIAS=$KEY_ALIAS" >> ./android/gradle.properties
+    - echo -e "KEY_PASSWORD=$KEYSTORE_PASSWORD" >> ./android/gradle.properties
 
   override:
     # The Android Gradle build will need the Android signing keystore keys setup
