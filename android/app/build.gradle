@@ -94,7 +94,7 @@ android {
     buildToolsVersion "25.0.1"
 
     defaultConfig {
-        applicationId "com.rocketchatrn"
+        applicationId "chat.rocket.reactnative"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
@@ -105,13 +105,13 @@ android {
     }
     signingConfigs {
         release {
-            if (project.hasProperty('ROCKETCHAT_RN_RELEASE_STORE_FILE')) {
-                storeFile file(ROCKETCHAT_RN_RELEASE_STORE_FILE)
-                storePassword ROCKETCHAT_RN_RELEASE_STORE_PASSWORD
-                keyAlias ROCKETCHAT_RN_RELEASE_KEY_ALIAS
-                keyPassword ROCKETCHAT_RN_RELEASE_KEY_PASSWORD
-            }
-        }
+					if (project.hasProperty('KEYSTORE')) {
+	            storeFile file(KEYSTORE)
+	            storePassword KEYSTORE_PASSWORD
+	            keyAlias KEY_ALIAS
+	            keyPassword KEY_PASSWORD
+	        }
+				}
     }
     splits {
         abi {
