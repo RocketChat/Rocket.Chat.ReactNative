@@ -53,8 +53,5 @@ deployment:
   alpha:
     branch: circle-ci
     commands:
-      - ls
-      - cd ${HOME}/${CIRCLE_PROJECT_REPONAME}
-      - ls
-      - ./android/gradlew assembleRelease
+      - cd android && ./gradlew assembleRelease
         -Dorg.gradle.project.track=alpha
