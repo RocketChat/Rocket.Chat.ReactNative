@@ -24,16 +24,27 @@ jobs:
             nvm install 8
             npm install
 
+      - restore_cache:
+          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "package.json" }}
+
       - run:
           name: Install NPM modules
           command: |
             npm install
 
+      - restore_cache:
+          key: android-{{ checksum ".circleci/config.yml" }}-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+
+      - run:
+          name: Install Android Depedencies
+          command: |
+            cd android
+            ./gradlew androidDependencies
+
       - run:
           name: Build Android App
           command: |
             cd android
-            # ./gradlew androidDependencies
 
             echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
             echo -e "KEYSTORE=$KEYSTORE" > ./gradle.properties
@@ -45,22 +56,20 @@ jobs:
 
             mkdir -p /tmp/build
 
-            mv app/build /tmp/
+            mv app/build/outputs /tmp/build/
 
       - store_artifacts:
-          path: /tmp/build
+          path: /tmp/build/outputs
 
       - save_cache:
-          key: node-modules-cache-{{ checksum ".circleci/config.yml" }}-{{ checksum "package.json" }}
+          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "package.json" }}
           paths:
             - ./node_modules
 
       - save_cache:
-          key: meteor-{{ checksum ".circleci/config.yml" }}-{{ checksum ".meteor/release" }}
+          key: android-{{ checksum ".circleci/config.yml" }}-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
           paths:
-            - /usr/local/android-sdk-linux/platforms/android-25
-            - /usr/local/android-sdk-linux/build-tools/25.0.0
-            - /usr/local/android-sdk-linux/extras/android/m2repository
+            - ~/.gradle
 
 workflows:
   version: 2
