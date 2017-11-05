@@ -1,0 +1,78 @@
+defaults: &defaults
+  working_directory: ~/repo
+
+version: 2
+jobs:
+  build:
+    <<: *defaults
+    docker:
+      - image: circleci/android:api-26-alpha
+
+    environment:
+      GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"
+      JVM_OPTS: -Xmx2048m
+      TERM: dumb
+      BASH_ENV: "~/.nvm/nvm.sh"
+    steps:
+      - checkout
+
+      - run:
+          name: Install Node 8
+          command: |
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+            source ~/.nvm/nvm.sh
+            nvm install 8
+            npm install
+
+      - restore_cache:
+          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "package.json" }}
+
+      - run:
+          name: Install NPM modules
+          command: |
+            npm install
+
+      - restore_cache:
+          key: android-{{ checksum ".circleci/config.yml" }}-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+
+      - run:
+          name: Install Android Depedencies
+          command: |
+            cd android
+            ./gradlew androidDependencies
+
+      - run:
+          name: Build Android App
+          command: |
+            cd android
+
+            echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
+            echo -e "KEYSTORE=$KEYSTORE" > ./gradle.properties
+            echo -e "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+            echo -e "KEY_ALIAS=$KEY_ALIAS" >> ./gradle.properties
+            echo -e "KEY_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+
+            ./gradlew assembleRelease
+
+            mkdir -p /tmp/build
+
+            mv app/build/outputs /tmp/build/
+
+      - store_artifacts:
+          path: /tmp/build/outputs
+
+      - save_cache:
+          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+
+      - save_cache:
+          key: android-{{ checksum ".circleci/config.yml" }}-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+          paths:
+            - ~/.gradle
+
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - build
