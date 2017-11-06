@@ -58,9 +58,15 @@ export default function login(state = initialState, action) {
 				failure: false,
 				error: ''
 			};
+		case types.LOGIN.SET_USERNAME_SUBMIT:
+			return {
+				...state,
+				isFetching: true
+			};
 		case types.LOGIN.SET_USERNAME_SUCCESS:
 			return {
 				...state,
+				isFetching: false,
 				isRegistering: false
 			};
 		default:
