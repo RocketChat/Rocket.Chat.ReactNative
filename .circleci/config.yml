@@ -3,6 +3,38 @@ defaults: &defaults
 
 version: 2
 jobs:
+  test:
+    <<: *defaults
+    docker:
+      - image: circleci/node:8
+
+    environment:
+      CODECOV_TOKEN: caa771ab-3d45-4756-8e2a-e1f25996fef6
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install NPM modules
+          command: |
+            npm install
+            npm install codecov
+
+      - run:
+          name: Lint
+          command: |
+            npm run lint
+
+      - run:
+          name: Test
+          command: |
+            npm test
+
+      - run:
+          name: Codecov
+          command: |
+            npx codecov
+
   build:
     <<: *defaults
     docker:
@@ -75,4 +107,7 @@ workflows:
   version: 2
   build-and-test:
     jobs:
-      - build
+      - test
+      - build:
+          requires:
+            - test
