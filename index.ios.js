@@ -1,5 +1,5 @@
-// import 'babel-polyfill';
-// import 'regenerator-runtime/runtime';
+import 'babel-polyfill';
+import 'regenerator-runtime/runtime';
 import { AppRegistry } from 'react-native';
 
 
