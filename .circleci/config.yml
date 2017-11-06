@@ -3,7 +3,7 @@ defaults: &defaults
 
 version: 2
 jobs:
-  test:
+  lint-testunit:
     <<: *defaults
     docker:
       - image: circleci/node:8
@@ -35,7 +35,7 @@ jobs:
           command: |
             npx codecov
 
-  build:
+  android-build:
     <<: *defaults
     docker:
       - image: circleci/android:api-26-alpha
@@ -45,6 +45,7 @@ jobs:
       JVM_OPTS: -Xmx2048m
       TERM: dumb
       BASH_ENV: "~/.nvm/nvm.sh"
+
     steps:
       - checkout
 
@@ -54,7 +55,6 @@ jobs:
             curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
             source ~/.nvm/nvm.sh
             nvm install 8
-            npm install
 
       - restore_cache:
           key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "package.json" }}
@@ -103,11 +103,101 @@ jobs:
           paths:
             - ~/.gradle
 
+  ios-build:
+    macos:
+      xcode: "8.3.3"
+
+    environment:
+      BASH_ENV: "~/.nvm/nvm.sh"
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install Node 8
+          command: |
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+            source ~/.nvm/nvm.sh
+            # https://github.com/creationix/nvm/issues/1394
+            set +e
+            nvm install 8
+
+      - run:
+          name: Update Fastlane
+          command: |
+            brew update
+            brew install ruby
+            sudo gem install fastlane
+
+      - run:
+          name: Install NPM modules
+          command: |
+            npm install
+            npm install react-native
+
+      - run:
+          name: Fix known build error
+          command: |
+            # Fix error https://github.com/facebook/react-native/issues/14382
+            cd node_modules/react-native/scripts/
+            curl https://raw.githubusercontent.com/facebook/react-native/5c53f89dd86160301feee024bce4ce0c89e8c187/scripts/ios-configure-glog.sh > ios-configure-glog.sh
+            chmod +x ios-configure-glog.sh
+
+      - run:
+          name: Fastlane Build
+          no_output_timeout: 1200
+          command: |
+            cd ios
+            fastlane ios build
+
+      - store_artifacts:
+          path: ios/RocketChatRN.ipa
+
+      - persist_to_workspace:
+          root: ios
+          paths:
+            - RocketChatRN.ipa
+
+  ios-testflight:
+    macos:
+      xcode: "8.3.3"
+
+    steps:
+      - checkout
+
+      - attach_workspace:
+          at: ios
+
+      - run:
+          name: Update Fastlane
+          command: |
+            brew update
+            brew install ruby
+            sudo gem install fastlane
+
+      - run:
+          name: Fastlane Tesflight Upload
+          command: |
+            cd ios
+            fastlane pilot upload
+
 workflows:
   version: 2
   build-and-test:
     jobs:
-      - test
-      - build:
+      - lint-testunit
+
+      - ios-build:
           requires:
-            - test
+            - lint-testunit
+      - ios-hold-testflight:
+          type: approval
+          requires:
+            - ios-build
+      - ios-testflight:
+          requires:
+            - ios-hold-testflight
+
+      - android-build:
+          requires:
+            - lint-testunit
