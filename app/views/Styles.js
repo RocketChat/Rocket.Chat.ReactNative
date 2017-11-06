@@ -7,7 +7,8 @@ export default StyleSheet.create({
 	},
 	loginView: {
 		padding: 20,
-		justifyContent: 'flex-end'
+		justifyContent: 'flex-end',
+		flex: 1
 	},
 	view: {
 		flex: 1,
