@@ -33,6 +33,26 @@ export function registerSuccess(credentials) {
 	};
 }
 
+export function setUsernameSubmit(credentials) {
+	return {
+		type: types.LOGIN.SET_USERNAME_SUBMIT,
+		credentials
+	};
+}
+
+export function setUsernameRequest(credentials) {
+	return {
+		type: types.LOGIN.SET_USERNAME_REQUEST,
+		credentials
+	};
+}
+
+export function setUsernameSuccess() {
+	return {
+		type: types.LOGIN.SET_USERNAME_SUCCESS
+	};
+}
+
 export function loginSuccess(user) {
 	return {
 		type: types.LOGIN.SUCCESS,

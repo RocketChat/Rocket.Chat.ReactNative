@@ -3,6 +3,7 @@ import * as types from '../actions/actionsTypes';
 const initialState = {
 	isAuthenticated: false,
 	isFetching: false,
+	isRegistering: false,
 	token: '',
 	user: {},
 	error: ''
@@ -45,6 +46,7 @@ export default function login(state = initialState, action) {
 				...state,
 				isFetching: true,
 				isAuthenticated: false,
+				isRegistering: true,
 				failure: false,
 				error: ''
 			};
@@ -55,6 +57,11 @@ export default function login(state = initialState, action) {
 				isAuthenticated: false,
 				failure: false,
 				error: ''
+			};
+		case types.LOGIN.SET_USERNAME_SUCCESS:
+			return {
+				...state,
+				isRegistering: false
 			};
 		default:
 			return state;

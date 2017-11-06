@@ -34,7 +34,7 @@ export default class Routes extends React.Component {
 			return (<Loading />);
 		}
 
-		if ((login.token && !login.failure) || app.ready) {
+		if ((login.token && !login.failure && !login.isRegistering) || app.ready) {
 			return (<AuthRoutes />);
 		}
 
