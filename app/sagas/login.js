@@ -15,8 +15,6 @@ import {
 } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 
-AsyncStorage.clear()
-
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const getUser = state => state.login;
 const getServer = state => state.server.server;
