@@ -1,13 +1,26 @@
 import { AsyncStorage } from 'react-native';
-import { take, put, call, takeEvery, select, all, race } from 'redux-saga/effects';
+import { take, put, call, takeEvery, takeLatest, select, all } from 'redux-saga/effects';
 import * as types from '../actions/actionsTypes';
-import { loginRequest, loginSuccess, loginFailure, setToken, logout } from '../actions/login';
+import {
+	loginRequest,
+	loginSubmit,
+	registerRequest,
+	loginSuccess,
+	loginFailure,
+	setToken,
+	logout,
+	registerSuccess,
+	setUsernameRequest,
+	setUsernameSuccess
+} from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const getUser = state => state.login;
 const getServer = state => state.server.server;
 const loginCall = args => (args.resume ? RocketChat.login(args) : RocketChat.loginWithPassword(args));
+const registerCall = args => RocketChat.register(args);
+const setUsernameCall = args => RocketChat.setUsername(args);
 
 const getToken = function* getToken() {
 	const currentServer = yield select(getServer);
@@ -77,19 +90,57 @@ const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 };
 
 const handleLoginSubmit = function* handleLoginSubmit({ credentials }) {
-	// put a login request
 	yield put(loginRequest(credentials));
+};
+
+const handleRegisterSubmit = function* handleRegisterSubmit({ credentials }) {
+	// put a login request
+	yield put(registerRequest(credentials));
 	// wait for a response
-	yield race({
-		success: take(types.LOGIN.SUCCESS),
-		error: take(types.LOGIN.FAILURE)
-	});
+	// yield race({
+	// 	success: take(types.LOGIN.REGISTER_SUCCESS),
+	// 	error: take(types.LOGIN.FAILURE)
+	// });
+};
+
+const handleRegisterRequest = function* handleRegisterRequest({ credentials }) {
+	try {
+		yield call(registerCall, { credentials });
+		yield put(registerSuccess(credentials));
+	} catch (err) {
+		yield put(loginFailure(err));
+	}
+};
+
+const handleRegisterSuccess = function* handleRegisterSuccess({ credentials }) {
+	yield put(loginSubmit({
+		username: credentials.email,
+		password: credentials.pass
+	}));
+};
+
+const handleSetUsernameSubmit = function* handleSetUsernameSubmit({ credentials }) {
+	yield put(setUsernameRequest(credentials));
+};
+
+const handleSetUsernameRequest = function* handleSetUsernameRequest({ credentials }) {
+	try {
+		yield call(setUsernameCall, { credentials });
+		yield put(setUsernameSuccess());
+	} catch (err) {
+		yield put(loginFailure(err));
+	}
 };
 
 const root = function* root() {
 	yield takeEvery(types.SERVER.CHANGED, handleLoginWhenServerChanges);
-	yield takeEvery(types.LOGIN.REQUEST, handleLoginRequest);
-	yield takeEvery(types.LOGIN.SUCCESS, saveToken);
-	yield takeEvery(types.LOGIN.SUBMIT, handleLoginSubmit);
+	yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
+	yield takeLatest(types.LOGIN.SUCCESS, saveToken);
+	yield takeLatest(types.LOGIN.SUBMIT, handleLoginSubmit);
+	yield takeLatest(types.LOGIN.REGISTER_REQUEST, handleRegisterRequest);
+	yield takeLatest(types.LOGIN.REGISTER_SUBMIT, handleRegisterSubmit);
+	yield takeLatest(types.LOGIN.REGISTER_SUCCESS, handleRegisterSuccess);
+	yield takeLatest(types.LOGIN.SET_USERNAME_SUBMIT, handleSetUsernameSubmit);
+	yield takeLatest(types.LOGIN.SET_USERNAME_REQUEST, handleSetUsernameRequest);
 };
 export default root;

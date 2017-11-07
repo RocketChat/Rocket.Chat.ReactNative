@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { TextInput, View, Text, Switch, TouchableOpacity, ScrollView } from 'react-native';
+import { TextInput, View, Text, Switch, TouchableOpacity } from 'react-native';
 import { createChannelRequest } from '../actions/createChannel';
 import styles from './Styles';
 import KeyboardView from '../presentation/KeyboardView';
@@ -90,55 +90,56 @@ export default class CreateChannelView extends React.Component {
 
 	render() {
 		return (
-			<KeyboardView style={[styles.view_white, { flex: 1, justifyContent: 'flex-start' }]}>
-				<ScrollView>
-					<View style={styles.formContainer}>
-						<Text style={styles.label_white}>Channel Name</Text>
-						<TextInput
-							value={this.state.channelName}
-							style={styles.input_white}
-							onChangeText={channelName => this.setState({ channelName })}
-							autoCorrect={false}
-							returnKeyType='done'
-							autoCapitalize='none'
-							autoFocus
-							// onSubmitEditing={() => this.textInput.focus()}
-							placeholder='Type the channel name here'
-						/>
-						{this.renderChannelNameError()}
-						{this.renderTypeSwitch()}
-						<Text
-							style={[
-								styles.label_white,
-								{
-									color: '#9ea2a8',
-									flexGrow: 1,
-									paddingHorizontal: 0,
-									marginBottom: 20
-								}
-							]}
-						>
-							{this.state.type ? (
-								'Everyone can access this channel'
-							) : (
-								'Just invited people can access this channel'
-							)}
+			<KeyboardView
+				style={[styles.defaultViewBackground, { flex: 1 }]}
+				contentContainerStyle={styles.defaultView}
+			>
+				<View style={styles.formContainer}>
+					<Text style={styles.label_white}>Channel Name</Text>
+					<TextInput
+						value={this.state.channelName}
+						style={styles.input_white}
+						onChangeText={channelName => this.setState({ channelName })}
+						autoCorrect={false}
+						returnKeyType='done'
+						autoCapitalize='none'
+						autoFocus
+						// onSubmitEditing={() => this.textInput.focus()}
+						placeholder='Type the channel name here'
+					/>
+					{this.renderChannelNameError()}
+					{this.renderTypeSwitch()}
+					<Text
+						style={[
+							styles.label_white,
+							{
+								color: '#9ea2a8',
+								flexGrow: 1,
+								paddingHorizontal: 0,
+								marginBottom: 20
+							}
+						]}
+					>
+						{this.state.type ? (
+							'Everyone can access this channel'
+						) : (
+							'Just invited people can access this channel'
+						)}
+					</Text>
+					<TouchableOpacity
+						onPress={() => this.submit()}
+						style={[
+							styles.buttonContainer_white,
+							this.state.channelName.length === 0 || this.props.result.isFetching
+								? styles.disabledButton
+								: styles.enabledButton
+						]}
+					>
+						<Text style={styles.button_white}>
+							{this.props.result.isFetching ? 'LOADING' : 'CREATE'}!
 						</Text>
-						<TouchableOpacity
-							onPress={() => this.submit()}
-							style={[
-								styles.buttonContainer_white,
-								this.state.channelName.length === 0 || this.props.result.isFetching
-									? styles.disabledButton
-									: styles.enabledButton
-							]}
-						>
-							<Text style={styles.button_white}>
-								{this.props.result.isFetching ? 'LOADING' : 'CREATE'}!
-							</Text>
-						</TouchableOpacity>
-					</View>
-				</ScrollView>
+					</TouchableOpacity>
+				</View>
 			</KeyboardView>
 		);
 	}

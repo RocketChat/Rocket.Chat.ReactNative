@@ -9,7 +9,17 @@ function createRequestTypes(base, types = defaultTypes) {
 }
 
 // Login events
-export const LOGIN = createRequestTypes('LOGIN', [...defaultTypes, 'SET_TOKEN', 'SUBMIT']);
+export const LOGIN = createRequestTypes('LOGIN', [
+	...defaultTypes,
+	'SET_TOKEN',
+	'SUBMIT',
+	'REGISTER_SUBMIT',
+	'REGISTER_REQUEST',
+	'REGISTER_SUCCESS',
+	'SET_USERNAME_SUBMIT',
+	'SET_USERNAME_REQUEST',
+	'SET_USERNAME_SUCCESS'
+]);
 export const ROOMS = createRequestTypes('ROOMS');
 export const APP = createRequestTypes('APP', ['READY', 'INIT']);
 export const MESSAGES = createRequestTypes('MESSAGES');

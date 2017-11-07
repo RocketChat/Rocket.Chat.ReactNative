@@ -2,11 +2,8 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 export default StyleSheet.create({
 	container: {
-		flex: 1,
-		backgroundColor: '#2f343d',
-		flexDirection: 'column',
-		justifyContent: 'center',
-		alignItems: 'stretch'
+		backgroundColor: 'white',
+		flex: 1
 	},
 	loginView: {
 		padding: 20
@@ -19,29 +16,31 @@ export default StyleSheet.create({
 		alignItems: 'stretch',
 		backgroundColor: '#2f343d'
 	},
-	view_white: {
-		flex: 1,
+	defaultView: {
 		flexDirection: 'column',
 		justifyContent: 'center',
 		padding: 20,
-		alignItems: 'stretch',
+		alignItems: 'stretch'
+	},
+	defaultViewBackground: {
 		backgroundColor: '#fff'
 	},
 	logoContainer: {
-		flex: 1,
 		alignItems: 'center',
-		flexGrow: 1,
-		justifyContent: 'center'
+		justifyContent: 'center',
+		flex: 1
 	},
-	logo: {
-		width: Dimensions.get('window').width - 30,
-		height: Dimensions.get('window').width - 30,
-		borderRadius: 5,
+	loginLogo: {
+		width: Dimensions.get('window').width - 150,
+		height: Dimensions.get('window').width - 150,
 		resizeMode: 'contain'
 	},
-	formContainer: {
-		// marginBottom: 20
+	registerLogo: {
+		width: Dimensions.get('window').width - 40,
+		height: 100,
+		resizeMode: 'contain'
 	},
+	formContainer: {},
 	label: {
 		lineHeight: 40,
 		height: 40,
@@ -93,6 +92,9 @@ export default StyleSheet.create({
 		paddingVertical: 15,
 		backgroundColor: '#1d74f5',
 		marginBottom: 20
+	},
+	registerContainer: {
+		marginBottom: 0
 	},
 	button: {
 		textAlign: 'center',

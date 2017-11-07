@@ -1,7 +1,5 @@
 import React from 'react';
-import { Button } from 'react-native';
-import { StackNavigator, DrawerNavigator, NavigationActions } from 'react-navigation';
-// import { Platform } from 'react-native';
+import { StackNavigator, DrawerNavigator, NavigationActions, HeaderBackButton } from 'react-navigation';
 
 import Sidebar from '../../containers/Sidebar';
 import DrawerMenuButton from '../../presentation/DrawerMenuButton';
@@ -39,7 +37,10 @@ const AuthRoutes = StackNavigator(
 				return {
 					title: navigation.state.params.title || 'Room',
 					headerLeft: (
-						<Button title={'Back'} onPress={() => backToScreen(navigation, 'RoomsList')} />
+						<HeaderBackButton
+							title={'Back'}
+							onPress={() => backToScreen(navigation, 'RoomsList')}
+						/>
 					)
 					// [drawerIconPosition]: (<DrawerMenuButton navigation={navigation} />)÷
 				};
