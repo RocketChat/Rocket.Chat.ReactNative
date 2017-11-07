@@ -68,13 +68,7 @@ jobs:
           key: android-{{ checksum ".circleci/config.yml" }}-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
 
       - run:
-          name: Install Android Depedencies
-          command: |
-            cd android
-            ./gradlew androidDependencies
-
-      - run:
-          name: Build Android App
+          name: Configure Gradle
           command: |
             cd android
 
@@ -85,6 +79,16 @@ jobs:
             echo -e "KEY_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
 
+      - run:
+          name: Install Android Depedencies
+          command: |
+            cd android
+            ./gradlew androidDependencies
+
+      - run:
+          name: Build Android App
+          command: |
+            cd android
             ./gradlew assembleRelease
 
             mkdir -p /tmp/build
