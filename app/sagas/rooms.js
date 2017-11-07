@@ -13,6 +13,7 @@ const watchRoomsRequest = function* watchRoomsRequest() {
 		yield call(getRooms);
 		yield put(roomsSuccess());
 	} catch (err) {
+		console.log(err);
 		yield put(roomsFailure(err.status));
 	}
 };
