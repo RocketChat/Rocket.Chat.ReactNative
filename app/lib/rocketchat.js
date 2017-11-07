@@ -124,7 +124,7 @@ const RocketChat = {
 
 	register({ credentials }) {
 		return new Promise((resolve, reject) => {
-			return Meteor.call('registerUser', credentials, (err, userId) => {
+			Meteor.call('registerUser', credentials, (err, userId) => {
 				if (err) {
 					reject(err);
 				}
@@ -135,7 +135,7 @@ const RocketChat = {
 
 	setUsername({ credentials }) {
 		return new Promise((resolve, reject) => {
-			return Meteor.call('setUsername', credentials.username, (err, result) => {
+			Meteor.call('setUsername', credentials.username, (err, result) => {
 				if (err) {
 					reject(err);
 				}

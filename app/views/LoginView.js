@@ -3,7 +3,7 @@ import React from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import PropTypes from 'prop-types';
-import { Keyboard, Text, TextInput, View, Image, TouchableOpacity } from 'react-native';
+import { Keyboard, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import * as actions from '../actions';
