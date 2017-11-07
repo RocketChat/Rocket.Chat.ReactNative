@@ -18,6 +18,6 @@ const watchRoomsRequest = function* watchRoomsRequest() {
 	}
 };
 const root = function* root() {
-	yield takeEvery(types.ROOMS.REQUEST, watchRoomsRequest);
+	yield takeEvery(types.LOGIN.SUCCESS, watchRoomsRequest);
 };
 export default root;

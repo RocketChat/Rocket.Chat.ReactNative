@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native';
-import { take, put, call, takeEvery, select, all, race } from 'redux-saga/effects';
+import { take, put, call, takeEvery, takeLatest, select, all } from 'redux-saga/effects';
 import * as types from '../actions/actionsTypes';
 import {
 	loginRequest,
@@ -134,13 +134,13 @@ const handleSetUsernameRequest = function* handleSetUsernameRequest({ credential
 
 const root = function* root() {
 	yield takeEvery(types.SERVER.CHANGED, handleLoginWhenServerChanges);
-	yield takeEvery(types.LOGIN.REQUEST, handleLoginRequest);
-	yield takeEvery(types.LOGIN.SUCCESS, saveToken);
-	yield takeEvery(types.LOGIN.SUBMIT, handleLoginSubmit);
-	yield takeEvery(types.LOGIN.REGISTER_REQUEST, handleRegisterRequest);
-	yield takeEvery(types.LOGIN.REGISTER_SUBMIT, handleRegisterSubmit);
-	yield takeEvery(types.LOGIN.REGISTER_SUCCESS, handleRegisterSuccess);
-	yield takeEvery(types.LOGIN.SET_USERNAME_SUBMIT, handleSetUsernameSubmit);
-	yield takeEvery(types.LOGIN.SET_USERNAME_REQUEST, handleSetUsernameRequest);
+	yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
+	yield takeLatest(types.LOGIN.SUCCESS, saveToken);
+	yield takeLatest(types.LOGIN.SUBMIT, handleLoginSubmit);
+	yield takeLatest(types.LOGIN.REGISTER_REQUEST, handleRegisterRequest);
+	yield takeLatest(types.LOGIN.REGISTER_SUBMIT, handleRegisterSubmit);
+	yield takeLatest(types.LOGIN.REGISTER_SUCCESS, handleRegisterSuccess);
+	yield takeLatest(types.LOGIN.SET_USERNAME_SUBMIT, handleSetUsernameSubmit);
+	yield takeLatest(types.LOGIN.SET_USERNAME_REQUEST, handleSetUsernameRequest);
 };
 export default root;
