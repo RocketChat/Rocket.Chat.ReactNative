@@ -3,7 +3,7 @@ import React from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import PropTypes from 'prop-types';
-import { Keyboard, Text, TextInput, View, Image, TouchableOpacity } from 'react-native';
+import { Keyboard, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import * as actions from '../actions';
@@ -18,7 +18,8 @@ class LoginView extends React.Component {
 		loginSubmit: PropTypes.func.isRequired,
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
 		Accounts_PasswordPlaceholder: PropTypes.string,
-		login: PropTypes.object
+		login: PropTypes.object,
+		navigation: PropTypes.object.isRequired
 	}
 
 	static navigationOptions = () => ({
@@ -44,6 +45,10 @@ class LoginView extends React.Component {
 		Keyboard.dismiss();
 	}
 
+	register = () => {
+		this.props.navigation.navigate('Register');
+	}
+
 	renderTOTP = () => {
 		if (this.props.login.errorMessage && this.props.login.errorMessage.error === 'totp-required') {
 			return (
@@ -65,48 +70,47 @@ class LoginView extends React.Component {
 	// {this.props.login.isFetching && <Text> LOGANDO</Text>}
 	render() {
 		return (
-			<KeyboardView style={styles.container} keyboardVerticalOffset={128}>
-				<View style={{ alignItems: 'center' }}>
-					<Image
-						style={styles.logo}
-						source={require('../images/logo.png')}
-					/>
-				</View>
+			<KeyboardView
+				contentContainerStyle={styles.container}
+				keyboardVerticalOffset={128}
+			>
 				<View style={styles.loginView}>
 					<View style={styles.formContainer}>
 						<TextInput
-							placeholderTextColor={'rgba(255,255,255,.2)'}
-							style={styles.input}
+							style={styles.input_white}
 							onChangeText={username => this.setState({ username })}
 							keyboardType='email-address'
 							autoCorrect={false}
 							returnKeyType='next'
 							autoCapitalize='none'
-							autoFocus
-
 							underlineColorAndroid='transparent'
 							onSubmitEditing={() => { this.password.focus(); }}
 							placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email or username'}
 						/>
 						<TextInput
 							ref={(e) => { this.password = e; }}
-							placeholderTextColor={'rgba(255,255,255,.2)'}
-							style={styles.input}
+							style={styles.input_white}
 							onChangeText={password => this.setState({ password })}
 							secureTextEntry
 							autoCorrect={false}
 							returnKeyType='done'
 							autoCapitalize='none'
-
 							underlineColorAndroid='transparent'
 							onSubmitEditing={this.submit}
 							placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
 						/>
+
 						{this.renderTOTP()}
+
 						<TouchableOpacity style={styles.buttonContainer}>
 							<Text style={styles.button} onPress={this.submit}>LOGIN</Text>
 						</TouchableOpacity>
-						{this.props.login.error && <Text style={styles.error}>{this.props.login.error}</Text>}
+
+						<TouchableOpacity style={[styles.buttonContainer, styles.registerContainer]}>
+							<Text style={styles.button} onPress={this.register}>REGISTER</Text>
+						</TouchableOpacity>
+
+						{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
 					</View>
 					<Spinner visible={this.props.login.isFetching} textContent={'Loading...'} textStyle={{ color: '#FFF' }} />
 				</View>

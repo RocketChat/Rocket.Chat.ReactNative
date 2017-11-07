@@ -1,15 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { View, Image } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as Animatable from 'react-native-animatable';
 import { appInit } from '../actions';
-
-import styles from '../views/Styles';
 
 import AuthRoutes from './routes/AuthRoutes';
 import PublicRoutes from './routes/PublicRoutes';
+import Loading from '../presentation/Loading';
 
 @connect(
 	state => ({
@@ -34,21 +31,10 @@ export default class Routes extends React.Component {
 		const { login, app } = this.props;
 
 		if (app.starting) {
-			return (
-				<View style={styles.logoContainer}>
-					<Animatable.Text
-						animation='pulse'
-						easing='ease-out'
-						iterationCount='infinite'
-						style={{ textAlign: 'center' }}
-					>
-						<Image style={styles.logo} source={require('../images/logo.png')} />
-					</Animatable.Text>
-				</View>
-			);
+			return (<Loading />);
 		}
 
-		if ((login.token && !login.failure) || app.ready) {
+		if ((login.token && !login.failure && !login.isRegistering) || app.ready) {
 			return (<AuthRoutes />);
 		}
 

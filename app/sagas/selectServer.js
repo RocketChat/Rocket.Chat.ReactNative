@@ -32,7 +32,7 @@ const validateServer = function* validateServer({ server }) {
 };
 
 const addServer = function* addServer({ server }) {
-	yield call(serverRequest, server);
+	yield put(serverRequest(server));
 
 	const { error } = yield race({
 		error: take(SERVER.FAILURE),
