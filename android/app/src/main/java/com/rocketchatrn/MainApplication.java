@@ -1,4 +1,4 @@
-package com.rocketchatrn;
+package chat.rocket.reactnative;
 
 import android.app.Application;
 

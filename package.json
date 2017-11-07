@@ -73,5 +73,10 @@
     "coverageDirectory": "./coverage/",
     "collectCoverage": true
   },
-  "snyk": true
+  "snyk": true,
+  "engines": {
+    "node": ">=8.x",
+    "npm": ">=4.x",
+    "yarn": ">=0.21.3"
+  }
 }
