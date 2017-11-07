@@ -94,6 +94,14 @@ export default class RoomsListView extends React.Component {
 		};
 	}
 
+	componentWillReceiveProps(props) {
+		if (this.props.server !== props.server) {
+			this.data.removeListener(this.updateState);
+			this.data = realm.objects('subscriptions').filtered('_server.id = $0', props.server).sorted('_updatedAt', true);
+			this.data.addListener(this.updateState);
+		}
+	}
+
 	componentWillUnmount() {
 		this.data.removeAllListeners();
 	}
