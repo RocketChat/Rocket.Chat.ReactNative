@@ -68,7 +68,7 @@ export default class NewServerView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			defaultServer: 'https://demo.rocket.chat',
+			defaultServer: 'https://open.rocket.chat',
 			editable: true,
 			text: ''
 		};

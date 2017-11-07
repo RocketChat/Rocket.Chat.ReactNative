@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 
 import realm from '../lib/realm';
 import { setServer } from '../actions/server';
+import { logout } from '../actions/login';
 
 const styles = StyleSheet.create({
 	scrollView: {
@@ -39,13 +40,15 @@ const styles = StyleSheet.create({
 @connect(state => ({
 	server: state.server.server
 }), dispatch => ({
-	selectServer: server => dispatch(setServer(server))
+	selectServer: server => dispatch(setServer(server)),
+	logout: () => dispatch(logout())
 }))
 export default class Sidebar extends Component {
 	static propTypes = {
 		server: PropTypes.string.isRequired,
 		selectServer: PropTypes.func.isRequired,
-		navigation: PropTypes.object.isRequired
+		navigation: PropTypes.object.isRequired,
+		logout: PropTypes.func.isRequired
 	}
 
 	componentWillMount() {
@@ -100,13 +103,20 @@ export default class Sidebar extends Component {
 						{...this.props}
 						onItemPress={this.onItemPress}
 					/>
-
-					<Text style={styles.serverTitle}>SERVERS</Text>
 					<FlatList
 						data={this.state.servers}
 						renderItem={this.renderItem}
 						keyExtractor={item => item.id}
 					/>
+					<TouchableHighlight
+						onPress={() => { this.props.logout(); }}
+					>
+						<View style={styles.serverItem}>
+							<Text>
+								Logout
+							</Text>
+						</View>
+					</TouchableHighlight>
 				</View>
 			</ScrollView>
 		);
