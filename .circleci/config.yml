@@ -83,6 +83,7 @@ jobs:
             echo -e "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
             echo -e "KEY_ALIAS=$KEY_ALIAS" >> ./gradle.properties
             echo -e "KEY_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+            echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
 
             ./gradlew assembleRelease
 
@@ -148,6 +149,7 @@ jobs:
           no_output_timeout: 1200
           command: |
             cd ios
+            agvtool new-version -all $CIRCLE_BUILD_NUM
             fastlane ios build
 
       - store_artifacts:
