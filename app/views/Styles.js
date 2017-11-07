@@ -2,13 +2,11 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 export default StyleSheet.create({
 	container: {
-		backgroundColor: '#2f343d',
+		backgroundColor: 'white',
 		flex: 1
 	},
 	loginView: {
-		padding: 20,
-		justifyContent: 'flex-end',
-		flex: 1
+		padding: 20
 	},
 	view: {
 		flex: 1,

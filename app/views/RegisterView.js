@@ -71,14 +71,12 @@ class RegisterView extends React.Component {
 			<View style={styles.formContainer}>
 				<TextInput
 					ref={(e) => { this.name = e; }}
-					placeholderTextColor={placeholderTextColor}
-					style={styles.input}
+					style={styles.input_white}
 					onChangeText={name => this.setState({ name })}
 					autoCorrect={false}
 					autoFocus
 					returnKeyType='next'
 					autoCapitalize='none'
-
 					underlineColorAndroid='transparent'
 					onSubmitEditing={() => { this.email.focus(); }}
 					placeholder={this.props.Accounts_NamePlaceholder || 'Name'}
@@ -86,42 +84,36 @@ class RegisterView extends React.Component {
 
 				<TextInput
 					ref={(e) => { this.email = e; }}
-					placeholderTextColor={placeholderTextColor}
-					style={[styles.input, this._invalidEmail() ? { borderColor: 'red' } : {}]}
+					style={[styles.input_white, this._invalidEmail() ? { borderColor: 'red' } : {}]}
 					onChangeText={email => this.setState({ email })}
 					keyboardType='email-address'
 					autoCorrect={false}
 					returnKeyType='next'
 					autoCapitalize='none'
-
 					underlineColorAndroid='transparent'
 					onSubmitEditing={() => { this.password.focus(); }}
 					placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email'}
 				/>
 				<TextInput
 					ref={(e) => { this.password = e; }}
-					placeholderTextColor={placeholderTextColor}
-					style={styles.input}
+					style={styles.input_white}
 					onChangeText={password => this.setState({ password })}
 					secureTextEntry
 					autoCorrect={false}
 					returnKeyType='next'
 					autoCapitalize='none'
-
 					underlineColorAndroid='transparent'
 					onSubmitEditing={() => { this.confirmPassword.focus(); }}
 					placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
 				/>
 				<TextInput
 					ref={(e) => { this.confirmPassword = e; }}
-					placeholderTextColor={placeholderTextColor}
-					style={[styles.input, this.state.password && this.state.confirmPassword && this.state.confirmPassword !== this.state.password ? { borderColor: 'red' } : {}]}
+					style={[styles.input_white, this.state.password && this.state.confirmPassword && this.state.confirmPassword !== this.state.password ? { borderColor: 'red' } : {}]}
 					onChangeText={confirmPassword => this.setState({ confirmPassword })}
 					secureTextEntry
 					autoCorrect={false}
 					returnKeyType='done'
 					autoCapitalize='none'
-
 					underlineColorAndroid='transparent'
 					onSubmitEditing={this.submit}
 					placeholder={this.props.Accounts_RepeatPasswordPlaceholder || 'Repeat Password'}
@@ -149,8 +141,7 @@ class RegisterView extends React.Component {
 			<View style={styles.formContainer}>
 				<TextInput
 					ref={(e) => { this.username = e; }}
-					placeholderTextColor={'rgba(255,255,255,.2)'}
-					style={styles.input}
+					style={styles.input_white}
 					onChangeText={username => this.setState({ username })}
 					autoCorrect={false}
 					returnKeyType='next'
@@ -174,13 +165,7 @@ class RegisterView extends React.Component {
 
 	render() {
 		return (
-			<KeyboardView contentContainerStyle={styles.container} keyboardVerticalOffset={150}>
-				<View style={styles.logoContainer}>
-					<Image
-						style={styles.registerLogo}
-						source={require('../images/logo_with_text.png')}
-					/>
-				</View>
+			<KeyboardView contentContainerStyle={styles.container}>
 				<View style={styles.loginView}>
 					{this._renderRegister()}
 					{this._renderUsername()}

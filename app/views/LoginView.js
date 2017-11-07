@@ -74,37 +74,27 @@ class LoginView extends React.Component {
 				contentContainerStyle={styles.container}
 				keyboardVerticalOffset={128}
 			>
-				<View style={styles.logoContainer}>
-					<Image
-						style={styles.loginLogo}
-						source={require('../images/logo.png')}
-					/>
-				</View>
 				<View style={styles.loginView}>
 					<View style={styles.formContainer}>
 						<TextInput
-							placeholderTextColor={'rgba(255,255,255,.2)'}
-							style={styles.input}
+							style={styles.input_white}
 							onChangeText={username => this.setState({ username })}
 							keyboardType='email-address'
 							autoCorrect={false}
 							returnKeyType='next'
 							autoCapitalize='none'
-
 							underlineColorAndroid='transparent'
 							onSubmitEditing={() => { this.password.focus(); }}
 							placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email or username'}
 						/>
 						<TextInput
 							ref={(e) => { this.password = e; }}
-							placeholderTextColor={'rgba(255,255,255,.2)'}
-							style={styles.input}
+							style={styles.input_white}
 							onChangeText={password => this.setState({ password })}
 							secureTextEntry
 							autoCorrect={false}
 							returnKeyType='done'
 							autoCapitalize='none'
-
 							underlineColorAndroid='transparent'
 							onSubmitEditing={this.submit}
 							placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
