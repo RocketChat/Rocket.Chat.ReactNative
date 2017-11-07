@@ -21,6 +21,7 @@ const getServer = state => state.server.server;
 const loginCall = args => (args.resume ? RocketChat.login(args) : RocketChat.loginWithPassword(args));
 const registerCall = args => RocketChat.register(args);
 const setUsernameCall = args => RocketChat.setUsername(args);
+const logoutCall = args => RocketChat.logout(args);
 
 const getToken = function* getToken() {
 	const currentServer = yield select(getServer);
@@ -132,6 +133,11 @@ const handleSetUsernameRequest = function* handleSetUsernameRequest({ credential
 	}
 };
 
+const handleLogout = function* handleLogout() {
+	const server = yield select(getServer);
+	yield call(logoutCall, { server });
+};
+
 const root = function* root() {
 	yield takeEvery(types.SERVER.CHANGED, handleLoginWhenServerChanges);
 	yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
@@ -142,5 +148,6 @@ const root = function* root() {
 	yield takeLatest(types.LOGIN.REGISTER_SUCCESS, handleRegisterSuccess);
 	yield takeLatest(types.LOGIN.SET_USERNAME_SUBMIT, handleSetUsernameSubmit);
 	yield takeLatest(types.LOGIN.SET_USERNAME_REQUEST, handleSetUsernameRequest);
+	yield takeLatest(types.LOGOUT, handleLogout);
 };
 export default root;
