@@ -97,7 +97,7 @@ android {
         applicationId "chat.rocket.reactnative"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 2
+        versionCode VERSIONCODE as Integer
         versionName "1.1"
         ndk {
             abiFilters "armeabi-v7a", "x86"
