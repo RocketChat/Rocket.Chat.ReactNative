@@ -76,7 +76,7 @@ export default class RoomItem extends React.PureComponent {
 		unread: PropTypes.number,
 		baseUrl: PropTypes.string,
 		onPress: PropTypes.func,
-		Message_DateFormat: PropTypes.string.isRequired
+		dateFormat: PropTypes.string.isRequired
 	}
 
 	get icon() {
@@ -131,7 +131,7 @@ export default class RoomItem extends React.PureComponent {
 				{this.icon}
 				<View style={styles.roomNameView}>
 					<Text style={styles.roomName} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
-					<Text style={styles.update} ellipsizeMode='tail' numberOfLines={1}>{ moment(_updatedAt).format(this.props.Message_DateFormat) }</Text>
+					<Text style={styles.update} ellipsizeMode='tail' numberOfLines={1}>{ moment(_updatedAt).format(this.props.dateFormat) }</Text>
 				</View>
 				{this.renderNumber(unread)}
 			</TouchableOpacity>
