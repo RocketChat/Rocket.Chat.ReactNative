@@ -186,6 +186,26 @@ const RocketChat = {
 		return this.login(params, callback);
 	},
 
+	// loadRooms(cb) {
+	// 	console.warn('a');
+	// 	Meteor.call('rooms/get', (err, data) => {
+	// 		if (err) {
+	// 			console.error(err);
+	// 		}
+	// 		console.warn(`rooms ${ data.length }`);
+	// 		if (data.length) {
+	// 			realm.write(() => {
+	// 				data.forEach((room) => {
+	// 					room._server = { id: reduxStore.getState().server.server };
+	// 					realm.create('rooms', room, true);
+	// 				});
+	// 			});
+	// 		}
+
+	// 		return cb && cb();
+	// 	});
+	// },
+
 	loadSubscriptions(cb) {
 		Meteor.call('subscriptions/get', (err, data) => {
 			if (err) {
@@ -389,12 +409,9 @@ const RocketChat = {
 	},
 	getRooms() {
 		return Promise.all([call('subscriptions/get'), call('rooms/get')]).then(([subscriptions, rooms]) => {
-			subscriptions = subscriptions.sort((s1, s2) => (s1.rid > s2.rid ? 1 : -1));
-			rooms = rooms.sort((s1, s2) => (s1._id > s2._id ? 1 : -1));
-
 			const { server, login } = reduxStore.getState();
-			const data = subscriptions.map((subscription, index) => {
-				subscription._updatedAt = rooms[index]._updatedAt;
+			const data = subscriptions.map((subscription) => {
+				subscription._updatedAt = (rooms.find(room => room._id === subscription.rid) || {})._updatedAt;
 				subscription._server = { id: server.server };
 				return subscription;
 			});
