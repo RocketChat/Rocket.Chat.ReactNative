@@ -243,24 +243,51 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           }
         />
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        numberOfLines={1}
+      <View
         style={
           Object {
-            "color": "#444",
             "flex": 1,
-            "fontSize": 16,
             "marginLeft": 16,
             "marginRight": 4,
           }
         }
       >
-        rocket.cat
-      </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#444",
+              "flex": 1,
+              "fontSize": 16,
+              "height": 16,
+              "paddingTop": 10,
+            }
+          }
+        >
+          rocket.cat
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#888",
+              "flex": 1,
+              "fontSize": 10,
+              "height": 10,
+            }
+          }
+        >
+          2017-11-10T10:00:00-02:00
+        </Text>
+      </View>
     </View>
     <View
       accessibilityComponentType={undefined}
@@ -347,24 +374,51 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           }
         />
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        numberOfLines={1}
+      <View
         style={
           Object {
-            "color": "#444",
             "flex": 1,
-            "fontSize": 16,
             "marginLeft": 16,
             "marginRight": 4,
           }
         }
       >
-        rocket.cat
-      </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#444",
+              "flex": 1,
+              "fontSize": 16,
+              "height": 16,
+              "paddingTop": 10,
+            }
+          }
+        >
+          rocket.cat
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#888",
+              "flex": 1,
+              "fontSize": 10,
+              "height": 10,
+            }
+          }
+        >
+          2017-11-10T10:00:00-02:00
+        </Text>
+      </View>
     </View>
     <View
       accessibilityComponentType={undefined}
@@ -451,24 +505,51 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           }
         />
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        numberOfLines={1}
+      <View
         style={
           Object {
-            "color": "#444",
             "flex": 1,
-            "fontSize": 16,
             "marginLeft": 16,
             "marginRight": 4,
           }
         }
       >
-        rocket.cat
-      </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#444",
+              "flex": 1,
+              "fontSize": 16,
+              "height": 16,
+              "paddingTop": 10,
+            }
+          }
+        >
+          rocket.cat
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#888",
+              "flex": 1,
+              "fontSize": 10,
+              "height": 10,
+            }
+          }
+        >
+          2017-11-10T10:00:00-02:00
+        </Text>
+      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -576,24 +657,51 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           }
         />
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        numberOfLines={1}
+      <View
         style={
           Object {
-            "color": "#444",
             "flex": 1,
-            "fontSize": 16,
             "marginLeft": 16,
             "marginRight": 4,
           }
         }
       >
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-      </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#444",
+              "flex": 1,
+              "fontSize": 16,
+              "height": 16,
+              "paddingTop": 10,
+            }
+          }
+        >
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#888",
+              "flex": 1,
+              "fontSize": 10,
+              "height": 10,
+            }
+          }
+        >
+          2017-11-10T10:00:00-02:00
+        </Text>
+      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -701,24 +809,51 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           }
         />
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        numberOfLines={1}
+      <View
         style={
           Object {
-            "color": "#444",
             "flex": 1,
-            "fontSize": 16,
             "marginLeft": 16,
             "marginRight": 4,
           }
         }
       >
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-      </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#444",
+              "flex": 1,
+              "fontSize": 16,
+              "height": 16,
+              "paddingTop": 10,
+            }
+          }
+        >
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#888",
+              "flex": 1,
+              "fontSize": 10,
+              "height": 10,
+            }
+          }
+        >
+          2017-11-10T10:00:00-02:00
+        </Text>
+      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -826,24 +961,51 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           }
         />
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        numberOfLines={1}
+      <View
         style={
           Object {
-            "color": "#444",
             "flex": 1,
-            "fontSize": 16,
             "marginLeft": 16,
             "marginRight": 4,
           }
         }
       >
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-      </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#444",
+              "flex": 1,
+              "fontSize": 16,
+              "height": 16,
+              "paddingTop": 10,
+            }
+          }
+        >
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#888",
+              "flex": 1,
+              "fontSize": 10,
+              "height": 10,
+            }
+          }
+        >
+          2017-11-10T10:00:00-02:00
+        </Text>
+      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -951,24 +1113,51 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           }
         />
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        numberOfLines={1}
+      <View
         style={
           Object {
-            "color": "#444",
             "flex": 1,
-            "fontSize": 16,
             "marginLeft": 16,
             "marginRight": 4,
           }
         }
       >
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-      </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#444",
+              "flex": 1,
+              "fontSize": 16,
+              "height": 16,
+              "paddingTop": 10,
+            }
+          }
+        >
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#888",
+              "flex": 1,
+              "fontSize": 10,
+              "height": 10,
+            }
+          }
+        >
+          2017-11-10T10:00:00-02:00
+        </Text>
+      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -1057,24 +1246,51 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           W
         </Text>
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        numberOfLines={1}
+      <View
         style={
           Object {
-            "color": "#444",
             "flex": 1,
-            "fontSize": 16,
             "marginLeft": 16,
             "marginRight": 4,
           }
         }
       >
-        W
-      </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#444",
+              "flex": 1,
+              "fontSize": 16,
+              "height": 16,
+              "paddingTop": 10,
+            }
+          }
+        >
+          W
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#888",
+              "flex": 1,
+              "fontSize": 10,
+              "height": 10,
+            }
+          }
+        >
+          2017-11-10T10:00:00-02:00
+        </Text>
+      </View>
     </View>
     <View
       accessibilityComponentType={undefined}
@@ -1142,24 +1358,51 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           WW
         </Text>
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        numberOfLines={1}
+      <View
         style={
           Object {
-            "color": "#444",
             "flex": 1,
-            "fontSize": 16,
             "marginLeft": 16,
             "marginRight": 4,
           }
         }
       >
-        WW
-      </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#444",
+              "flex": 1,
+              "fontSize": 16,
+              "height": 16,
+              "paddingTop": 10,
+            }
+          }
+        >
+          WW
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#888",
+              "flex": 1,
+              "fontSize": 10,
+              "height": 10,
+            }
+          }
+        >
+          2017-11-10T10:00:00-02:00
+        </Text>
+      </View>
     </View>
     <View
       accessibilityComponentType={undefined}
@@ -1227,24 +1470,51 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           
         </Text>
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        numberOfLines={1}
+      <View
         style={
           Object {
-            "color": "#444",
             "flex": 1,
-            "fontSize": 16,
             "marginLeft": 16,
             "marginRight": 4,
           }
         }
       >
-        
-      </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#444",
+              "flex": 1,
+              "fontSize": 16,
+              "height": 16,
+              "paddingTop": 10,
+            }
+          }
+        >
+          
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#888",
+              "flex": 1,
+              "fontSize": 10,
+              "height": 10,
+            }
+          }
+        >
+          2017-11-10T10:00:00-02:00
+        </Text>
+      </View>
     </View>
   </View>
 </RCTScrollView>

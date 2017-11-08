@@ -73,24 +73,51 @@ exports[`render channel 1`] = `
       
     </Text>
   </View>
-  <Text
-    accessible={true}
-    allowFontScaling={true}
-    disabled={false}
-    ellipsizeMode="tail"
-    numberOfLines={1}
+  <View
     style={
       Object {
-        "color": "#444",
         "flex": 1,
-        "fontSize": 16,
         "marginLeft": 16,
         "marginRight": 4,
       }
     }
   >
-    general
-  </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      numberOfLines={1}
+      style={
+        Object {
+          "color": "#444",
+          "flex": 1,
+          "fontSize": 16,
+          "height": 16,
+          "paddingTop": 10,
+        }
+      }
+    >
+      general
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      numberOfLines={1}
+      style={
+        Object {
+          "color": "#888",
+          "flex": 1,
+          "fontSize": 10,
+          "height": 10,
+        }
+      }
+    >
+      2017-11-10T10:00:00-02:00
+    </Text>
+  </View>
 </View>
 `;
 
@@ -124,24 +151,51 @@ exports[`render no icon 1`] = `
   testID={undefined}
   tvParallaxProperties={undefined}
 >
-  <Text
-    accessible={true}
-    allowFontScaling={true}
-    disabled={false}
-    ellipsizeMode="tail"
-    numberOfLines={1}
+  <View
     style={
       Object {
-        "color": "#444",
         "flex": 1,
-        "fontSize": 16,
         "marginLeft": 16,
         "marginRight": 4,
       }
     }
   >
-    name
-  </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      numberOfLines={1}
+      style={
+        Object {
+          "color": "#444",
+          "flex": 1,
+          "fontSize": 16,
+          "height": 16,
+          "paddingTop": 10,
+        }
+      }
+    >
+      name
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      numberOfLines={1}
+      style={
+        Object {
+          "color": "#888",
+          "flex": 1,
+          "fontSize": 10,
+          "height": 10,
+        }
+      }
+    >
+      2017-11-10T10:00:00-02:00
+    </Text>
+  </View>
 </View>
 `;
 
@@ -175,24 +229,51 @@ exports[`render private group 1`] = `
   testID={undefined}
   tvParallaxProperties={undefined}
 >
-  <Text
-    accessible={true}
-    allowFontScaling={true}
-    disabled={false}
-    ellipsizeMode="tail"
-    numberOfLines={1}
+  <View
     style={
       Object {
-        "color": "#444",
         "flex": 1,
-        "fontSize": 16,
         "marginLeft": 16,
         "marginRight": 4,
       }
     }
   >
-    private-group
-  </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      numberOfLines={1}
+      style={
+        Object {
+          "color": "#444",
+          "flex": 1,
+          "fontSize": 16,
+          "height": 16,
+          "paddingTop": 10,
+        }
+      }
+    >
+      private-group
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      numberOfLines={1}
+      style={
+        Object {
+          "color": "#888",
+          "flex": 1,
+          "fontSize": 10,
+          "height": 10,
+        }
+      }
+    >
+      2017-11-10T10:00:00-02:00
+    </Text>
+  </View>
 </View>
 `;
 
@@ -263,24 +344,51 @@ exports[`render unread +999 1`] = `
       NA
     </Text>
   </View>
-  <Text
-    accessible={true}
-    allowFontScaling={true}
-    disabled={false}
-    ellipsizeMode="tail"
-    numberOfLines={1}
+  <View
     style={
       Object {
-        "color": "#444",
         "flex": 1,
-        "fontSize": 16,
         "marginLeft": 16,
         "marginRight": 4,
       }
     }
   >
-    name
-  </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      numberOfLines={1}
+      style={
+        Object {
+          "color": "#444",
+          "flex": 1,
+          "fontSize": 16,
+          "height": 16,
+          "paddingTop": 10,
+        }
+      }
+    >
+      name
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      numberOfLines={1}
+      style={
+        Object {
+          "color": "#888",
+          "flex": 1,
+          "fontSize": 10,
+          "height": 10,
+        }
+      }
+    >
+      2017-11-10T10:00:00-02:00
+    </Text>
+  </View>
   <Text
     accessible={true}
     allowFontScaling={true}
@@ -372,24 +480,51 @@ exports[`render unread 1`] = `
       NA
     </Text>
   </View>
-  <Text
-    accessible={true}
-    allowFontScaling={true}
-    disabled={false}
-    ellipsizeMode="tail"
-    numberOfLines={1}
+  <View
     style={
       Object {
-        "color": "#444",
         "flex": 1,
-        "fontSize": 16,
         "marginLeft": 16,
         "marginRight": 4,
       }
     }
   >
-    name
-  </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      numberOfLines={1}
+      style={
+        Object {
+          "color": "#444",
+          "flex": 1,
+          "fontSize": 16,
+          "height": 16,
+          "paddingTop": 10,
+        }
+      }
+    >
+      name
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      numberOfLines={1}
+      style={
+        Object {
+          "color": "#888",
+          "flex": 1,
+          "fontSize": 10,
+          "height": 10,
+        }
+      }
+    >
+      2017-11-10T10:00:00-02:00
+    </Text>
+  </View>
   <Text
     accessible={true}
     allowFontScaling={true}
@@ -481,23 +616,50 @@ exports[`renders correctly 1`] = `
       NA
     </Text>
   </View>
-  <Text
-    accessible={true}
-    allowFontScaling={true}
-    disabled={false}
-    ellipsizeMode="tail"
-    numberOfLines={1}
+  <View
     style={
       Object {
-        "color": "#444",
         "flex": 1,
-        "fontSize": 16,
         "marginLeft": 16,
         "marginRight": 4,
       }
     }
   >
-    name
-  </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      numberOfLines={1}
+      style={
+        Object {
+          "color": "#444",
+          "flex": 1,
+          "fontSize": 16,
+          "height": 16,
+          "paddingTop": 10,
+        }
+      }
+    >
+      name
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      numberOfLines={1}
+      style={
+        Object {
+          "color": "#888",
+          "flex": 1,
+          "fontSize": 10,
+          "height": 10,
+        }
+      }
+    >
+      2017-11-10T10:00:00-02:00
+    </Text>
+  </View>
 </View>
 `;
