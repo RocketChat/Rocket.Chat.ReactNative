@@ -102,12 +102,18 @@ class LoginView extends React.Component {
 
 						{this.renderTOTP()}
 
-						<TouchableOpacity style={styles.buttonContainer}>
-							<Text style={styles.button} onPress={this.submit}>LOGIN</Text>
+						<TouchableOpacity
+							style={styles.buttonContainer}
+							onPress={this.submit}
+						>
+							<Text style={styles.button}>LOGIN</Text>
 						</TouchableOpacity>
 
-						<TouchableOpacity style={[styles.buttonContainer, styles.registerContainer]}>
-							<Text style={styles.button} onPress={this.register}>REGISTER</Text>
+						<TouchableOpacity
+							style={[styles.buttonContainer, styles.registerContainer]}
+							onPress={this.register}
+						>
+							<Text style={styles.button}>REGISTER</Text>
 						</TouchableOpacity>
 
 						{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
