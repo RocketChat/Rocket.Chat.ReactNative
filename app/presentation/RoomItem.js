@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
@@ -25,12 +26,23 @@ const styles = StyleSheet.create({
 		paddingLeft: 5,
 		paddingRight: 5
 	},
-	roomName: {
+	roomNameView: {
 		flex: 1,
-		fontSize: 16,
-		color: '#444',
 		marginLeft: 16,
 		marginRight: 4
+	},
+	roomName: {
+		paddingTop: 10,
+		flex: 1,
+		fontSize: 16,
+		height: 16,
+		color: '#444'
+	},
+	update: {
+		flex: 1,
+		fontSize: 10,
+		height: 10,
+		color: '#888'
 	},
 	iconContainer: {
 		height: 40,
@@ -60,9 +72,11 @@ export default class RoomItem extends React.PureComponent {
 	static propTypes = {
 		type: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
+		_updatedAt: PropTypes.date,
 		unread: PropTypes.number,
 		baseUrl: PropTypes.string,
-		onPress: PropTypes.func
+		onPress: PropTypes.func,
+		Message_DateFormat: PropTypes.string.isRequired
 	}
 
 	get icon() {
@@ -111,11 +125,14 @@ export default class RoomItem extends React.PureComponent {
 	}
 
 	render() {
-		const { unread, name } = this.props;
+		const { unread, name, _updatedAt } = this.props;
 		return (
 			<TouchableOpacity onPress={this.props.onPress} style={styles.container}>
 				{this.icon}
-				<Text style={styles.roomName} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
+				<View style={styles.roomNameView}>
+					<Text style={styles.roomName} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
+					<Text style={styles.update} ellipsizeMode='tail' numberOfLines={1}>{ moment(_updatedAt).format(this.props.Message_DateFormat) }</Text>
+				</View>
 				{this.renderNumber(unread)}
 			</TouchableOpacity>
 		);
