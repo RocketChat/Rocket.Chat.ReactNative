@@ -81,3 +81,9 @@ export function logout() {
 		type: types.LOGOUT
 	};
 }
+
+export function loginClear() {
+	return {
+		type: types.LOGIN.CLEAR
+	};
+}

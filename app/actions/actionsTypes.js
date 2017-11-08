@@ -18,7 +18,8 @@ export const LOGIN = createRequestTypes('LOGIN', [
 	'REGISTER_SUCCESS',
 	'SET_USERNAME_SUBMIT',
 	'SET_USERNAME_REQUEST',
-	'SET_USERNAME_SUCCESS'
+	'SET_USERNAME_SUCCESS',
+	'CLEAR'
 ]);
 export const ROOMS = createRequestTypes('ROOMS');
 export const APP = createRequestTypes('APP', ['READY', 'INIT']);
@@ -34,7 +35,13 @@ export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [
 	'RESET'
 ]);
 export const NAVIGATION = createRequestTypes('NAVIGATION', ['SET']);
-export const SERVER = createRequestTypes('SERVER', [...defaultTypes, 'SELECT', 'CHANGED', 'ADD']);
+export const SERVER = createRequestTypes('SERVER', [
+	...defaultTypes,
+	'SELECT',
+	'CHANGED',
+	'ADD',
+	'GOTO_ADD'
+]);
 export const METEOR = createRequestTypes('METEOR_CONNECT', [...defaultTypes, 'DISCONNECT']);
 export const LOGOUT = 'LOGOUT'; // logout is always success
 

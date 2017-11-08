@@ -15,7 +15,6 @@ import {
 } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 
-const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const getUser = state => state.login;
 const getServer = state => state.server.server;
 const loginCall = args => (args.resume ? RocketChat.login(args) : RocketChat.loginWithPassword(args));
@@ -25,11 +24,11 @@ const logoutCall = args => RocketChat.logout(args);
 
 const getToken = function* getToken() {
 	const currentServer = yield select(getServer);
-	const user = yield call([AsyncStorage, 'getItem'], `${ TOKEN_KEY }-${ currentServer }`);
+	const user = yield call([AsyncStorage, 'getItem'], `${ RocketChat.TOKEN_KEY }-${ currentServer }`);
 	if (user) {
 		try {
 			yield put(setToken(JSON.parse(user)));
-			yield call([AsyncStorage, 'setItem'], TOKEN_KEY, JSON.parse(user).token || '');
+			yield call([AsyncStorage, 'setItem'], RocketChat.TOKEN_KEY, JSON.parse(user).token || '');
 			return JSON.parse(user);
 		} catch (e) {
 			console.log('getTokenerr', e);
@@ -40,41 +39,23 @@ const getToken = function* getToken() {
 };
 
 const handleLoginWhenServerChanges = function* handleLoginWhenServerChanges() {
-	// do {
 	try {
 		yield take(types.METEOR.SUCCESS);
 		yield call(getToken);
-		// const { navigator } = yield select(state => state);
 
 		const user = yield select(getUser);
 		if (user.token) {
 			yield put(loginRequest({ resume: user.token }));
-			// console.log('AEEEEEEEEOOOOO');
-			// // wait for a response
-			// const { error } = yield race({
-			// 	success: take(types.LOGIN.SUCCESS),
-			// 	error: take(types.LOGIN.FAILURE)
-			// });
-			// console.log('AEEEEEEEEOOOOO', error);
-			// if (!error) {
-			// 	navigator.resetTo({
-			// 		screen: 'Rooms'
-			// 	});
-			// }
 		}
-		// navigator.resetTo({
-		// 	screen: 'Rooms'
-		// });
 	} catch (e) {
 		console.log(e);
 	}
-	// } while (true);
 };
 
 const saveToken = function* saveToken() {
 	const [server, user] = yield all([select(getServer), select(getUser)]);
-	yield AsyncStorage.setItem(TOKEN_KEY, user.token);
-	yield AsyncStorage.setItem(`${ TOKEN_KEY }-${ server }`, JSON.stringify(user));
+	yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
+	yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
 };
 
 const handleLoginRequest = function* handleLoginRequest({ credentials }) {
@@ -97,11 +78,6 @@ const handleLoginSubmit = function* handleLoginSubmit({ credentials }) {
 const handleRegisterSubmit = function* handleRegisterSubmit({ credentials }) {
 	// put a login request
 	yield put(registerRequest(credentials));
-	// wait for a response
-	// yield race({
-	// 	success: take(types.LOGIN.REGISTER_SUCCESS),
-	// 	error: take(types.LOGIN.FAILURE)
-	// });
 };
 
 const handleRegisterRequest = function* handleRegisterRequest({ credentials }) {

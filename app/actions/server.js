@@ -41,3 +41,9 @@ export function changedServer(server) {
 		server
 	};
 }
+
+export function gotoAddServer() {
+	return {
+		type: SERVER.GOTO_ADD
+	};
+}
