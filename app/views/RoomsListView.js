@@ -243,7 +243,7 @@ export default class RoomsListView extends React.Component {
 			key={item._id}
 			type={item.t}
 			baseUrl={this.props.Site_Url}
-			Message_DateFormat={'MM-DD-YYYY HH:mm:ss'}
+			dateFormat={'MM-DD-YYYY HH:mm:ss'}
 			onPress={() => this._onPressItem(item._id, item)}
 		/>
 	)
