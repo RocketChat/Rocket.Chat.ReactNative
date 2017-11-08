@@ -60,6 +60,7 @@ const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 	login: state.login,
 	Site_Url: state.settings.Site_Url,
 	canShowList: state.login.token || state.login.user.token
+	// Message_DateFormat: state.settings.Message_DateFormat
 }), dispatch => ({
 	login: () => dispatch(actions.login()),
 	connect: () => dispatch(server.connectRequest())
@@ -69,6 +70,7 @@ export default class RoomsListView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
 		Site_Url: PropTypes.string,
+		// Message_DateFormat: PropTypes.string,
 		server: PropTypes.string
 	}
 
@@ -237,9 +239,11 @@ export default class RoomsListView extends React.Component {
 		<RoomItem
 			unread={item.unread}
 			name={item.name}
+			_updatedAt={item._updatedAt}
 			key={item._id}
 			type={item.t}
 			baseUrl={this.props.Site_Url}
+			Message_DateFormat={'MM-DD-YYYY HH:mm:ss'}
 			onPress={() => this._onPressItem(item._id, item)}
 		/>
 	)
