@@ -21,7 +21,8 @@ class LoginView extends React.Component {
 		super(props);
 
 		this.state = {
-			email: ''
+			email: '',
+			invalidEmail: false
 		};
 	}
 
@@ -44,7 +45,20 @@ class LoginView extends React.Component {
 		}
 	}
 
+	validate = (email) => {
+		/* eslint-disable no-useless-escape */
+		const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		if (!reg.test(email)) {
+			this.setState({ invalidEmail: true });
+			return;
+		}
+		this.setState({ email, invalidEmail: false });
+	}
+
 	resetPassword = () => {
+		if (this.state.invalidEmail) {
+			return;
+		}
 		this.props.forgotPasswordRequest(this.state.email);
 	}
 
@@ -61,8 +75,8 @@ class LoginView extends React.Component {
 				<View style={styles.loginView}>
 					<View style={styles.formContainer}>
 						<TextInput
-							style={styles.input_white}
-							onChangeText={email => this.setState({ email })}
+							style={[styles.input_white, this.state.invalidEmail ? { borderColor: 'red' } : {}]}
+							onChangeText={email => this.validate(email)}
 							keyboardType='email-address'
 							autoCorrect={false}
 							returnKeyType='next'
