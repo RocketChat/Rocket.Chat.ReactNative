@@ -69,6 +69,28 @@ export default function login(state = initialState, action) {
 				isFetching: false,
 				isRegistering: false
 			};
+		case types.FORGOT_PASSWORD.INIT:
+			return initialState;
+		case types.FORGOT_PASSWORD.REQUEST:
+			return {
+				...state,
+				isFetching: true,
+				failure: false,
+				success: false
+			};
+		case types.FORGOT_PASSWORD.SUCCESS:
+			return {
+				...state,
+				isFetching: false,
+				success: true
+			};
+		case types.FORGOT_PASSWORD.FAILURE:
+			return {
+				...state,
+				isFetching: false,
+				failure: true,
+				error: action.err
+			};
 		default:
 			return state;
 	}
