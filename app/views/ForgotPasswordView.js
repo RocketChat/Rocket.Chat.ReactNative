@@ -9,7 +9,7 @@ import KeyboardView from '../presentation/KeyboardView';
 
 import styles from './Styles';
 
-class LoginView extends React.Component {
+class ForgotPasswordView extends React.Component {
 	static propTypes = {
 		forgotPasswordInit: PropTypes.func.isRequired,
 		forgotPasswordRequest: PropTypes.func.isRequired,
@@ -113,4 +113,4 @@ function mapDispatchToProps(dispatch) {
 	return bindActionCreators(loginActions, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginView);
+export default connect(mapStateToProps, mapDispatchToProps)(ForgotPasswordView);
