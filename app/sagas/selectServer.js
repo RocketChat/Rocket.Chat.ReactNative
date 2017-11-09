@@ -3,8 +3,8 @@ import { delay } from 'redux-saga';
 import { AsyncStorage } from 'react-native';
 import { SERVER } from '../actions/actionsTypes';
 import { connectRequest, disconnect } from '../actions/connect';
-import { changedServer, serverSuccess, serverFailure, serverRequest } from '../actions/server';
-import { loginClear } from '../actions/login';
+import { changedServer, serverSuccess, serverFailure, serverRequest, setServer } from '../actions/server';
+import { logout } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import realm from '../lib/realm';
 import * as NavigationService from '../containers/routes/NavigationService';
@@ -43,11 +43,12 @@ const addServer = function* addServer({ server }) {
 		realm.write(() => {
 			realm.create('servers', { id: server, current: false }, true);
 		});
+		yield put(setServer(server));
 	}
 };
 
 const handleGotoAddServer = function* handleGotoAddServer() {
-	yield put(loginClear());
+	yield put(logout());
 	yield call(AsyncStorage.removeItem, RocketChat.TOKEN_KEY);
 	yield delay(1000);
 	yield call(NavigationService.navigate, 'AddServer');

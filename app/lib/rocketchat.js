@@ -412,6 +412,7 @@ const RocketChat = {
 	},
 	logout({ server }) {
 		Meteor.logout();
+		Meteor.disconnect();
 		AsyncStorage.removeItem(TOKEN_KEY);
 		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
 	}

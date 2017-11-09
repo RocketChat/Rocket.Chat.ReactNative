@@ -18,8 +18,7 @@ export const LOGIN = createRequestTypes('LOGIN', [
 	'REGISTER_SUCCESS',
 	'SET_USERNAME_SUBMIT',
 	'SET_USERNAME_REQUEST',
-	'SET_USERNAME_SUCCESS',
-	'CLEAR'
+	'SET_USERNAME_SUCCESS'
 ]);
 export const ROOMS = createRequestTypes('ROOMS');
 export const APP = createRequestTypes('APP', ['READY', 'INIT']);

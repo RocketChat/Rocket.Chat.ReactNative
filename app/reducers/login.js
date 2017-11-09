@@ -36,8 +36,6 @@ export default function login(state = initialState, action) {
 			};
 		case types.LOGOUT:
 			return initialState;
-		case types.LOGIN.CLEAR:
-			return initialState;
 		case types.LOGIN.SET_TOKEN:
 			return { ...state,
 				token: action.token,
