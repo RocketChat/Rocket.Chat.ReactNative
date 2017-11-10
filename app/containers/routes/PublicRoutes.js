@@ -64,7 +64,6 @@ const PublicRoutes = StackNavigator(
 			screen: ForgotPasswordView,
 			navigationOptions: {
 				title: 'Forgot my password'
-        develop
 			}
 		}
 	},
