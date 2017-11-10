@@ -7,6 +7,7 @@ import ListServerView from '../../views/ListServerView';
 import NewServerView from '../../views/NewServerView';
 import LoginView from '../../views/LoginView';
 import RegisterView from '../../views/RegisterView';
+import ForgotPasswordView from '../../views/ForgotPasswordView';
 
 const PublicRoutes = StackNavigator(
 	{
@@ -42,6 +43,12 @@ const PublicRoutes = StackNavigator(
 			screen: RegisterView,
 			navigationOptions: {
 				title: 'Register'
+			}
+		},
+		ForgotPassword: {
+			screen: ForgotPasswordView,
+			navigationOptions: {
+				title: 'Forgot my password'
 			}
 		}
 	},

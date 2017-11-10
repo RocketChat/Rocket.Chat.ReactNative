@@ -93,9 +93,6 @@ export default StyleSheet.create({
 		backgroundColor: '#1d74f5',
 		marginBottom: 20
 	},
-	registerContainer: {
-		marginBottom: 0
-	},
 	button: {
 		textAlign: 'center',
 		color: 'white',

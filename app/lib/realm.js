@@ -22,6 +22,17 @@ const settingsSchema = {
 	}
 };
 
+const roomsSchema = {
+	name: 'rooms',
+	primaryKey: '_id',
+	properties: {
+		_id: 'string',
+		_server: 'servers',
+		t: 'string',
+		_updatedAt: { type: 'date', optional: true }
+	}
+};
+
 const subscriptionSchema = {
 	name: 'subscriptions',
 	primaryKey: '_id',
@@ -71,8 +82,6 @@ const attachment = {
 		title_link_download: { type: 'bool', optional: true },
 		type: { type: 'string', optional: true }
 	}
-
-
 };
 
 const messagesSchema = {
@@ -100,7 +109,7 @@ const messagesSchema = {
 // Realm.clearTestState();
 // AsyncStorage.clear();
 const realm = new Realm({
-	schema: [settingsSchema, serversSchema, subscriptionSchema, messagesSchema, usersSchema, attachment]
+	schema: [settingsSchema, serversSchema, subscriptionSchema, messagesSchema, usersSchema, roomsSchema, attachment]
 });
 export default realm;
 
