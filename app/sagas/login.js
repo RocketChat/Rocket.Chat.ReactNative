@@ -12,7 +12,9 @@ import {
 	logout,
 	registerSuccess,
 	setUsernameRequest,
-	setUsernameSuccess
+	setUsernameSuccess,
+	forgotPasswordSuccess,
+	forgotPasswordFailure
 } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import * as NavigationService from '../containers/routes/NavigationService';
@@ -25,6 +27,7 @@ const registerCall = args => RocketChat.register(args);
 const setUsernameCall = args => RocketChat.setUsername(args);
 const logoutCall = args => RocketChat.logout(args);
 const meCall = args => RocketChat.me(args);
+const forgotPasswordCall = args => RocketChat.forgotPassword(args);
 
 const getToken = function* getToken() {
 	const currentServer = yield select(getServer);
@@ -132,6 +135,15 @@ const handleLogout = function* handleLogout() {
 const handleRegisterIncomplete = function* handleRegisterIncomplete() {
 	yield call(NavigationService.navigate, 'Register');
 };
+ 
+const handleForgotPasswordRequest = function* handleForgotPasswordRequest({ email }) {
+	try {
+		yield call(forgotPasswordCall, email);
+		yield put(forgotPasswordSuccess());
+	} catch (err) {
+		yield put(forgotPasswordFailure(err));
+	}
+};
 
 const root = function* root() {
 	yield takeEvery(types.SERVER.CHANGED, handleLoginWhenServerChanges);
@@ -145,5 +157,6 @@ const root = function* root() {
 	yield takeLatest(types.LOGIN.SET_USERNAME_SUBMIT, handleSetUsernameSubmit);
 	yield takeLatest(types.LOGIN.SET_USERNAME_REQUEST, handleSetUsernameRequest);
 	yield takeLatest(types.LOGOUT, handleLogout);
+	yield takeLatest(types.FORGOT_PASSWORD.REQUEST, handleForgotPasswordRequest);
 };
 export default root;
