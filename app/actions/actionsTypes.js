@@ -20,6 +20,10 @@ export const LOGIN = createRequestTypes('LOGIN', [
 	'SET_USERNAME_REQUEST',
 	'SET_USERNAME_SUCCESS'
 ]);
+export const FORGOT_PASSWORD = createRequestTypes('FORGOT_PASSWORD', [
+	...defaultTypes,
+	'INIT'
+]);
 export const ROOMS = createRequestTypes('ROOMS');
 export const APP = createRequestTypes('APP', ['READY', 'INIT']);
 export const MESSAGES = createRequestTypes('MESSAGES');

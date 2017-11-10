@@ -7,8 +7,10 @@ import ListServerView from '../../views/ListServerView';
 import NewServerView from '../../views/NewServerView';
 import LoginView from '../../views/LoginView';
 import RegisterView from '../../views/RegisterView';
+
 import TermsServiceView from '../../views/TermsServiceView';
 import PrivacyPolicyView from '../../views/PrivacyPolicyView';
+import ForgotPasswordView from '../../views/ForgotPasswordView';
 
 const PublicRoutes = StackNavigator(
 	{
@@ -56,6 +58,13 @@ const PublicRoutes = StackNavigator(
 			screen: PrivacyPolicyView,
 			navigationOptions: {
 				title: 'Privacy policy'
+			}
+		},
+		ForgotPassword: {
+			screen: ForgotPasswordView,
+			navigationOptions: {
+				title: 'Forgot my password'
+        develop
 			}
 		}
 	},

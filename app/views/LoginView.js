@@ -48,13 +48,17 @@ class LoginView extends React.Component {
 	register = () => {
 		this.props.navigation.navigate('Register');
 	}
-
+  
 	termsService = () => {
 		this.props.navigation.navigate('TermsService');
 	}
 
 	privacyPolicy = () => {
-		this.props.navigation.navigate('PrivacyPolicy');
+		this.props.navigation.navigate('PrivacyPolicy');  
+  }
+  
+	forgotPassword = () => {
+		this.props.navigation.navigate('ForgotPassword');
 	}
 
 	renderTOTP = () => {
@@ -124,6 +128,9 @@ class LoginView extends React.Component {
 
 						<TouchableOpacity style={styles.buttonContainer} onPress={this.privacyPolicy}>
 							<Text style={styles.button}>PRIVACY POLICY</Text>
+						</TouchableOpacity>
+						<TouchableOpacity style={styles.buttonContainer} onPress={this.forgotPassword}>
+							<Text style={styles.button}>FORGOT MY PASSWORD</Text>
 						</TouchableOpacity>
 
 						{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
