@@ -48,15 +48,15 @@ class LoginView extends React.Component {
 	register = () => {
 		this.props.navigation.navigate('Register');
 	}
-  
+
 	termsService = () => {
 		this.props.navigation.navigate('TermsService');
 	}
 
 	privacyPolicy = () => {
-		this.props.navigation.navigate('PrivacyPolicy');  
-  }
-  
+		this.props.navigation.navigate('PrivacyPolicy');
+	}
+
 	forgotPassword = () => {
 		this.props.navigation.navigate('ForgotPassword');
 	}
