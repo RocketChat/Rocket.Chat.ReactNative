@@ -69,6 +69,11 @@ export default function login(state = initialState, action) {
 				isFetching: false,
 				isRegistering: false
 			};
+		case types.LOGIN.REGISTER_INCOMPLETE:
+			return {
+				...state,
+				isRegistering: true
+			};
 		default:
 			return state;
 	}

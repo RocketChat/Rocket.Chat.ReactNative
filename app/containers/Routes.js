@@ -7,6 +7,7 @@ import { appInit } from '../actions';
 import AuthRoutes from './routes/AuthRoutes';
 import PublicRoutes from './routes/PublicRoutes';
 import Loading from '../presentation/Loading';
+import * as NavigationService from './routes/NavigationService';
 
 @connect(
 	state => ({
@@ -27,6 +28,10 @@ export default class Routes extends React.Component {
 	componentWillMount() {
 		this.props.appInit();
 	}
+
+	componentDidUpdate() {
+		NavigationService.setNavigator(this.navigator);
+	}
 	render() {
 		const { login, app } = this.props;
 
@@ -35,9 +40,9 @@ export default class Routes extends React.Component {
 		}
 
 		if ((login.token && !login.failure && !login.isRegistering) || app.ready) {
-			return (<AuthRoutes />);
+			return (<AuthRoutes ref={nav => this.navigator = nav} />);
 		}
 
-		return (<PublicRoutes />);
+		return (<PublicRoutes ref={nav => this.navigator = nav} />);
 	}
 }

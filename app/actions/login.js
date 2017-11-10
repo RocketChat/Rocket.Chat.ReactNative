@@ -32,6 +32,11 @@ export function registerSuccess(credentials) {
 		credentials
 	};
 }
+export function registerIncomplete() {
+	return {
+		type: types.LOGIN.REGISTER_INCOMPLETE
+	};
+}
 
 export function setUsernameSubmit(credentials) {
 	return {

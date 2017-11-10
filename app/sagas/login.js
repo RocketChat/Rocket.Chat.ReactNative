@@ -5,6 +5,7 @@ import {
 	loginRequest,
 	loginSubmit,
 	registerRequest,
+	registerIncomplete,
 	loginSuccess,
 	loginFailure,
 	setToken,
@@ -14,6 +15,7 @@ import {
 	setUsernameSuccess
 } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
+import * as NavigationService from '../containers/routes/NavigationService';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const getUser = state => state.login;
@@ -63,21 +65,18 @@ const saveToken = function* saveToken() {
 const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 	try {
 		const server = yield select(getServer);
-		let user = yield call(loginCall, credentials);
+		const user = yield call(loginCall, credentials);
 
 		// GET /me from REST API
 		const me = yield call(meCall, { server, token: user.token, userId: user.id });
+
 		// if user has username
 		if (me.username) {
 			user.username = me.username;
 		} else {
-			// otherwise register needs to be finished
-			user = {
-				...user,
-				isRegistering: true,
-				token: ''
-			};
+			yield put(registerIncomplete());
 		}
+
 		yield put(loginSuccess(user));
 	} catch (err) {
 		if (err.error === 403) {
@@ -130,6 +129,10 @@ const handleLogout = function* handleLogout() {
 	yield call(logoutCall, { server });
 };
 
+const handleRegisterIncomplete = function* handleRegisterIncomplete() {
+	yield call(NavigationService.navigate, 'Register');
+};
+
 const root = function* root() {
 	yield takeEvery(types.SERVER.CHANGED, handleLoginWhenServerChanges);
 	yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
@@ -138,6 +141,7 @@ const root = function* root() {
 	yield takeLatest(types.LOGIN.REGISTER_REQUEST, handleRegisterRequest);
 	yield takeLatest(types.LOGIN.REGISTER_SUBMIT, handleRegisterSubmit);
 	yield takeLatest(types.LOGIN.REGISTER_SUCCESS, handleRegisterSuccess);
+	yield takeLatest(types.LOGIN.REGISTER_INCOMPLETE, handleRegisterIncomplete);
 	yield takeLatest(types.LOGIN.SET_USERNAME_SUBMIT, handleSetUsernameSubmit);
 	yield takeLatest(types.LOGIN.SET_USERNAME_REQUEST, handleSetUsernameRequest);
 	yield takeLatest(types.LOGOUT, handleLogout);
