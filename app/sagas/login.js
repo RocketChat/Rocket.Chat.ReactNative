@@ -22,6 +22,7 @@ const loginCall = args => (args.resume ? RocketChat.login(args) : RocketChat.log
 const registerCall = args => RocketChat.register(args);
 const setUsernameCall = args => RocketChat.setUsername(args);
 const logoutCall = args => RocketChat.logout(args);
+const meCall = args => RocketChat.me(args);
 
 const getToken = function* getToken() {
 	const currentServer = yield select(getServer);
@@ -79,8 +80,14 @@ const saveToken = function* saveToken() {
 
 const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 	try {
-		const response = yield call(loginCall, credentials);
-		yield put(loginSuccess(response));
+		const server = yield select(getServer);
+		const user = yield call(loginCall, credentials);
+
+		// GET /me from REST API
+		const me = yield call(meCall, { server, token: user.token, userId: user.id });
+		// append username
+		user.username = me.username;
+		yield put(loginSuccess(user));
 	} catch (err) {
 		if (err.error === 403) {
 			yield put(logout());

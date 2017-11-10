@@ -122,6 +122,17 @@ const RocketChat = {
 		});
 	},
 
+	me({ server, token, userId }) {
+		return fetch(`${ server }/api/v1/me`, {
+			method: 'get',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-Auth-Token': token,
+				'X-User-Id': userId
+			}
+		}).then(response => response.json());
+	},
+
 	register({ credentials }) {
 		return new Promise((resolve, reject) => {
 			Meteor.call('registerUser', credentials, (err, userId) => {
