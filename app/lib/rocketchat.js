@@ -144,6 +144,17 @@ const RocketChat = {
 		});
 	},
 
+	forgotPassword(email) {
+		return new Promise((resolve, reject) => {
+			Meteor.call('sendForgotPasswordEmail', email, (err, result) => {
+				if (err) {
+					reject(err);
+				}
+				resolve(result);
+			});
+		});
+	},
+
 	loginWithPassword({ username, password, code }, callback) {
 		let params = {};
 		const state = reduxStore.getState();
