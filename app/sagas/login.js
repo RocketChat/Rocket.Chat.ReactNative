@@ -41,35 +41,17 @@ const getToken = function* getToken() {
 };
 
 const handleLoginWhenServerChanges = function* handleLoginWhenServerChanges() {
-	// do {
 	try {
 		yield take(types.METEOR.SUCCESS);
 		yield call(getToken);
-		// const { navigator } = yield select(state => state);
 
 		const user = yield select(getUser);
 		if (user.token) {
 			yield put(loginRequest({ resume: user.token }));
-			// console.log('AEEEEEEEEOOOOO');
-			// // wait for a response
-			// const { error } = yield race({
-			// 	success: take(types.LOGIN.SUCCESS),
-			// 	error: take(types.LOGIN.FAILURE)
-			// });
-			// console.log('AEEEEEEEEOOOOO', error);
-			// if (!error) {
-			// 	navigator.resetTo({
-			// 		screen: 'Rooms'
-			// 	});
-			// }
 		}
-		// navigator.resetTo({
-		// 	screen: 'Rooms'
-		// });
 	} catch (e) {
 		console.log(e);
 	}
-	// } while (true);
 };
 
 const saveToken = function* saveToken() {
@@ -102,13 +84,7 @@ const handleLoginSubmit = function* handleLoginSubmit({ credentials }) {
 };
 
 const handleRegisterSubmit = function* handleRegisterSubmit({ credentials }) {
-	// put a login request
 	yield put(registerRequest(credentials));
-	// wait for a response
-	// yield race({
-	// 	success: take(types.LOGIN.REGISTER_SUCCESS),
-	// 	error: take(types.LOGIN.FAILURE)
-	// });
 };
 
 const handleRegisterRequest = function* handleRegisterRequest({ credentials }) {
