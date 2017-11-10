@@ -49,6 +49,10 @@ class LoginView extends React.Component {
 		this.props.navigation.navigate('Register');
 	}
 
+	forgotPassword = () => {
+		this.props.navigation.navigate('ForgotPassword');
+	}
+
 	renderTOTP = () => {
 		if (this.props.login.errorMessage && this.props.login.errorMessage.error === 'totp-required') {
 			return (
@@ -106,8 +110,12 @@ class LoginView extends React.Component {
 							<Text style={styles.button} onPress={this.submit}>LOGIN</Text>
 						</TouchableOpacity>
 
-						<TouchableOpacity style={[styles.buttonContainer, styles.registerContainer]}>
+						<TouchableOpacity style={styles.buttonContainer}>
 							<Text style={styles.button} onPress={this.register}>REGISTER</Text>
+						</TouchableOpacity>
+
+						<TouchableOpacity style={styles.buttonContainer} onPress={this.forgotPassword}>
+							<Text style={styles.button}>FORGOT MY PASSWORD</Text>
 						</TouchableOpacity>
 
 						{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
