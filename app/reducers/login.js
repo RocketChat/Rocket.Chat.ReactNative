@@ -73,7 +73,7 @@ export default function login(state = initialState, action) {
 			return {
 				...state,
 				isRegistering: true
-      		};
+			};
 		case types.FORGOT_PASSWORD.INIT:
 			return initialState;
 		case types.FORGOT_PASSWORD.REQUEST:
