@@ -63,12 +63,21 @@ const saveToken = function* saveToken() {
 const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 	try {
 		const server = yield select(getServer);
-		const user = yield call(loginCall, credentials);
+		let user = yield call(loginCall, credentials);
 
 		// GET /me from REST API
 		const me = yield call(meCall, { server, token: user.token, userId: user.id });
-		// append username
-		user.username = me.username;
+		// if user has username
+		if (me.username) {
+			user.username = me.username;
+		} else {
+			// otherwise register needs to be finished
+			user = {
+				...user,
+				isRegistering: true,
+				token: ''
+			};
+		}
 		yield put(loginSuccess(user));
 	} catch (err) {
 		if (err.error === 403) {
