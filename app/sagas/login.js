@@ -135,7 +135,7 @@ const handleLogout = function* handleLogout() {
 const handleRegisterIncomplete = function* handleRegisterIncomplete() {
 	yield call(NavigationService.navigate, 'Register');
 };
- 
+
 const handleForgotPasswordRequest = function* handleForgotPasswordRequest({ email }) {
 	try {
 		yield call(forgotPasswordCall, email);
