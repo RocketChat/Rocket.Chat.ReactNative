@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Spinner from 'react-native-loading-spinner-overlay';
+// import Spinner from 'react-native-loading-spinner-overlay';
 
 import PropTypes from 'prop-types';
-import { Keyboard, Text, TextInput, View, TouchableOpacity } from 'react-native';
+import { Keyboard, Text, TextInput, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import * as actions from '../actions';
@@ -87,58 +87,59 @@ class LoginView extends React.Component {
 				keyboardVerticalOffset={128}
 			>
 				<View style={styles.loginView}>
-					<View style={styles.formContainer}>
-						<TextInput
-							style={styles.input_white}
-							onChangeText={username => this.setState({ username })}
-							keyboardType='email-address'
-							autoCorrect={false}
-							returnKeyType='next'
-							autoCapitalize='none'
-							underlineColorAndroid='transparent'
-							onSubmitEditing={() => { this.password.focus(); }}
-							placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email or username'}
-						/>
-						<TextInput
-							ref={(e) => { this.password = e; }}
-							style={styles.input_white}
-							onChangeText={password => this.setState({ password })}
-							secureTextEntry
-							autoCorrect={false}
-							returnKeyType='done'
-							autoCapitalize='none'
-							underlineColorAndroid='transparent'
-							onSubmitEditing={this.submit}
-							placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
-						/>
+					<SafeAreaView>
+						<View style={styles.formContainer}>
+							<TextInput
+								style={styles.input_white}
+								onChangeText={username => this.setState({ username })}
+								keyboardType='email-address'
+								autoCorrect={false}
+								returnKeyType='next'
+								autoCapitalize='none'
+								underlineColorAndroid='transparent'
+								onSubmitEditing={() => { this.password.focus(); }}
+								placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email or username'}
+							/>
+							<TextInput
+								ref={(e) => { this.password = e; }}
+								style={styles.input_white}
+								onChangeText={password => this.setState({ password })}
+								secureTextEntry
+								autoCorrect={false}
+								returnKeyType='done'
+								autoCapitalize='none'
+								underlineColorAndroid='transparent'
+								onSubmitEditing={this.submit}
+								placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
+							/>
 
-						{this.renderTOTP()}
+							{this.renderTOTP()}
 
-						<TouchableOpacity
-							style={styles.buttonContainer}
-							onPress={this.submit}
-						>
-							<Text style={styles.button}>LOGIN</Text>
-						</TouchableOpacity>
+							<TouchableOpacity
+								style={styles.buttonContainer}
+								onPress={this.submit}
+							>
+								<Text style={styles.button}>LOGIN</Text>
+							</TouchableOpacity>
 
-						<TouchableOpacity style={styles.buttonContainer} onPress={this.register}>
-							<Text style={styles.button}>REGISTER</Text>
-						</TouchableOpacity>
+							<TouchableOpacity style={styles.buttonContainer} onPress={this.register}>
+								<Text style={styles.button}>REGISTER</Text>
+							</TouchableOpacity>
 
-						<TouchableOpacity style={styles.buttonContainer} onPress={this.termsService}>
-							<Text style={styles.button}>TERMS OF SERVICE</Text>
-						</TouchableOpacity>
+							<TouchableOpacity style={styles.buttonContainer} onPress={this.termsService}>
+								<Text style={styles.button}>TERMS OF SERVICE</Text>
+							</TouchableOpacity>
 
-						<TouchableOpacity style={styles.buttonContainer} onPress={this.privacyPolicy}>
-							<Text style={styles.button}>PRIVACY POLICY</Text>
-						</TouchableOpacity>
-						<TouchableOpacity style={styles.buttonContainer} onPress={this.forgotPassword}>
-							<Text style={styles.button}>FORGOT MY PASSWORD</Text>
-						</TouchableOpacity>
+							<TouchableOpacity style={styles.buttonContainer} onPress={this.privacyPolicy}>
+								<Text style={styles.button}>PRIVACY POLICY</Text>
+							</TouchableOpacity>
+							<TouchableOpacity style={styles.buttonContainer} onPress={this.forgotPassword}>
+								<Text style={styles.button}>FORGOT MY PASSWORD</Text>
+							</TouchableOpacity>
 
-						{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
-					</View>
-					<Spinner visible={this.props.login.isFetching} textContent={'Loading...'} textStyle={{ color: '#FFF' }} />
+							{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
+						</View>
+					</SafeAreaView>
 				</View>
 			</KeyboardView>
 		);

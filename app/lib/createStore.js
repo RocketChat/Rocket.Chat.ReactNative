@@ -18,9 +18,7 @@ if (__DEV__) {
 		applyMiddleware(logger)
 	);
 } else {
-	enhacers = composeWithDevTools(
-		applyMiddleware(sagaMiddleware)
-	);
+	enhacers = composeWithDevTools(applyMiddleware(sagaMiddleware));
 }
 
 const store = enhacers(createStore)(reducers);

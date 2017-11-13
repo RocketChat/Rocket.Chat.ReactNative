@@ -76,7 +76,7 @@ export default class RoomItem extends React.PureComponent {
 		unread: PropTypes.number,
 		baseUrl: PropTypes.string,
 		onPress: PropTypes.func,
-		dateFormat: PropTypes.string.isRequired
+		dateFormat: PropTypes.string
 	}
 
 	get icon() {
@@ -126,12 +126,24 @@ export default class RoomItem extends React.PureComponent {
 
 	render() {
 		const { unread, name, _updatedAt } = this.props;
+		if (_updatedAt) {
+			return (
+				<TouchableOpacity onPress={this.props.onPress} style={styles.container}>
+					{this.icon}
+					<View style={styles.roomNameView}>
+						<Text style={styles.roomName} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
+						<Text style={styles.update} ellipsizeMode='tail' numberOfLines={1}>{ moment(_updatedAt).format(this.props.dateFormat) }</Text>
+					</View>
+					{this.renderNumber(unread)}
+				</TouchableOpacity>
+			);
+		}
+
 		return (
 			<TouchableOpacity onPress={this.props.onPress} style={styles.container}>
 				{this.icon}
 				<View style={styles.roomNameView}>
 					<Text style={styles.roomName} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
-					<Text style={styles.update} ellipsizeMode='tail' numberOfLines={1}>{ moment(_updatedAt).format(this.props.dateFormat) }</Text>
 				</View>
 				{this.renderNumber(unread)}
 			</TouchableOpacity>

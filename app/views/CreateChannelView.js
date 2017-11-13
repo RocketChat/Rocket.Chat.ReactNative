@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { TextInput, View, Text, Switch, TouchableOpacity } from 'react-native';
+import { TextInput, View, Text, Switch, TouchableOpacity, SafeAreaView } from 'react-native';
 import { createChannelRequest } from '../actions/createChannel';
 import styles from './Styles';
 import KeyboardView from '../presentation/KeyboardView';
@@ -94,7 +94,7 @@ export default class CreateChannelView extends React.Component {
 				style={[styles.defaultViewBackground, { flex: 1 }]}
 				contentContainerStyle={styles.defaultView}
 			>
-				<View style={styles.formContainer}>
+				<SafeAreaView style={styles.formContainer}>
 					<Text style={styles.label_white}>Channel Name</Text>
 					<TextInput
 						value={this.state.channelName}
@@ -139,7 +139,7 @@ export default class CreateChannelView extends React.Component {
 							{this.props.result.isFetching ? 'LOADING' : 'CREATE'}!
 						</Text>
 					</TouchableOpacity>
-				</View>
+				</SafeAreaView>
 			</KeyboardView>
 		);
 	}
