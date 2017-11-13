@@ -62,21 +62,22 @@ class LoginView extends React.Component {
 	}
 
 	renderTOTP = () => {
-		if (this.props.login.errorMessage && this.props.login.errorMessage.error === 'totp-required') {
-			return (
-				<TextInput
-					ref={ref => this.codeInput = ref}
-					style={styles.input}
-					onChangeText={code => this.setState({ code })}
-					keyboardType='numeric'
-					autoCorrect={false}
-					returnKeyType='done'
-					autoCapitalize='none'
-					onSubmitEditing={this.submit}
-					placeholder='Code'
-				/>
-			);
+		if (!this.props.login.failure || this.props.login.error.error !== 'totp-required') {
+			return null;
 		}
+		return (
+			<TextInput
+				ref={ref => this.codeInput = ref}
+				style={styles.input_white}
+				onChangeText={code => this.setState({ code })}
+				keyboardType='numeric'
+				autoCorrect={false}
+				returnKeyType='done'
+				autoCapitalize='none'
+				onSubmitEditing={this.submit}
+				placeholder='Code'
+			/>
+		);
 	}
 
 	// {this.props.login.isFetching && <Text> LOGANDO</Text>}
@@ -140,7 +141,6 @@ class LoginView extends React.Component {
 									<Text style={styles.link} onPress={this.privacyPolicy}> Privacy Policy</Text>
 								</Text>
 							</TouchableOpacity>
-
 							{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
 						</View>
 					</SafeAreaView>
