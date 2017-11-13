@@ -23,6 +23,8 @@ const call = (method, ...params) => new Promise((resolve, reject) => {
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 
 const RocketChat = {
+	TOKEN_KEY,
+
 	createChannel({ name, users, type }) {
 		return new Promise((resolve, reject) => {
 			Meteor.call(type ? 'createChannel' : 'createPrivateGroup', name, users, type, (err, res) => (err ? reject(err) : resolve(res)));
@@ -120,6 +122,17 @@ const RocketChat = {
 				}
 			});
 		});
+	},
+
+	me({ server, token, userId }) {
+		return fetch(`${ server }/api/v1/me`, {
+			method: 'get',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-Auth-Token': token,
+				'X-User-Id': userId
+			}
+		}).then(response => response.json());
 	},
 
 	register({ credentials }) {
@@ -438,6 +451,7 @@ const RocketChat = {
 	},
 	logout({ server }) {
 		Meteor.logout();
+		Meteor.disconnect();
 		AsyncStorage.removeItem(TOKEN_KEY);
 		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
 	}

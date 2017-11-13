@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Spinner from 'react-native-loading-spinner-overlay';
+// import Spinner from 'react-native-loading-spinner-overlay';
 
 import PropTypes from 'prop-types';
 import { Keyboard, Text, TextInput, View, TouchableOpacity, SafeAreaView } from 'react-native';
@@ -49,6 +49,14 @@ class LoginView extends React.Component {
 		this.props.navigation.navigate('Register');
 	}
 
+	termsService = () => {
+		this.props.navigation.navigate('TermsService');
+	}
+
+	privacyPolicy = () => {
+		this.props.navigation.navigate('PrivacyPolicy');
+	}
+
 	forgotPassword = () => {
 		this.props.navigation.navigate('ForgotPassword');
 	}
@@ -78,8 +86,8 @@ class LoginView extends React.Component {
 				contentContainerStyle={styles.container}
 				keyboardVerticalOffset={128}
 			>
-				<SafeAreaView>
-					<View style={styles.loginView}>
+				<View style={styles.loginView}>
+					<SafeAreaView>
 						<View style={styles.formContainer}>
 							<TextInput
 								style={styles.input_white}
@@ -107,23 +115,32 @@ class LoginView extends React.Component {
 
 							{this.renderTOTP()}
 
-							<TouchableOpacity style={styles.buttonContainer}>
-								<Text style={styles.button} onPress={this.submit}>LOGIN</Text>
+							<TouchableOpacity
+								style={styles.buttonContainer}
+								onPress={this.submit}
+							>
+								<Text style={styles.button}>LOGIN</Text>
 							</TouchableOpacity>
 
-							<TouchableOpacity style={styles.buttonContainer}>
-								<Text style={styles.button} onPress={this.register}>REGISTER</Text>
+							<TouchableOpacity style={styles.buttonContainer} onPress={this.register}>
+								<Text style={styles.button}>REGISTER</Text>
 							</TouchableOpacity>
 
+							<TouchableOpacity style={styles.buttonContainer} onPress={this.termsService}>
+								<Text style={styles.button}>TERMS OF SERVICE</Text>
+							</TouchableOpacity>
+
+							<TouchableOpacity style={styles.buttonContainer} onPress={this.privacyPolicy}>
+								<Text style={styles.button}>PRIVACY POLICY</Text>
+							</TouchableOpacity>
 							<TouchableOpacity style={styles.buttonContainer} onPress={this.forgotPassword}>
 								<Text style={styles.button}>FORGOT MY PASSWORD</Text>
 							</TouchableOpacity>
 
 							{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
 						</View>
-						<Spinner visible={this.props.login.isFetching} textContent='Loading...' textStyle={{ color: '#FFF' }} />
-					</View>
-				</SafeAreaView>
+					</SafeAreaView>
+				</View>
 			</KeyboardView>
 		);
 	}
