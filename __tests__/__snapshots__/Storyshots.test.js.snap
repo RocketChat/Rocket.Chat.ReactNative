@@ -13,7 +13,7 @@ exports[`Storyshots Avatar avatar 1`] = `
           },
           Object {
             "backgroundColor": "#3F51B5",
-            "borderRadius": 5,
+            "borderRadius": 4,
             "height": 25,
             "width": 25,
           },
@@ -49,7 +49,7 @@ exports[`Storyshots Avatar avatar 1`] = `
           },
           Object {
             "backgroundColor": "#9C27B0",
-            "borderRadius": 5,
+            "borderRadius": 4,
             "height": 40,
             "width": 40,
           },
@@ -85,7 +85,7 @@ exports[`Storyshots Avatar avatar 1`] = `
           },
           Object {
             "backgroundColor": "#9C27B0",
-            "borderRadius": 5,
+            "borderRadius": 4,
             "height": 30,
             "width": 30,
           },
@@ -193,7 +193,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             },
             Object {
               "backgroundColor": "#8BC34A",
-              "borderRadius": 20,
+              "borderRadius": 4,
               "height": 40,
               "width": 40,
             },
@@ -230,7 +230,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "position": "absolute",
               },
               Object {
-                "borderRadius": 20,
+                "borderRadius": 4,
                 "height": 40,
                 "width": 40,
               },
@@ -321,7 +321,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             },
             Object {
               "backgroundColor": "#8BC34A",
-              "borderRadius": 20,
+              "borderRadius": 4,
               "height": 40,
               "width": 40,
             },
@@ -358,7 +358,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "position": "absolute",
               },
               Object {
-                "borderRadius": 20,
+                "borderRadius": 4,
                 "height": 40,
                 "width": 40,
               },
@@ -449,7 +449,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             },
             Object {
               "backgroundColor": "#8BC34A",
-              "borderRadius": 20,
+              "borderRadius": 4,
               "height": 40,
               "width": 40,
             },
@@ -486,7 +486,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "position": "absolute",
               },
               Object {
-                "borderRadius": 20,
+                "borderRadius": 4,
                 "height": 40,
                 "width": 40,
               },
@@ -597,7 +597,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             },
             Object {
               "backgroundColor": "#795548",
-              "borderRadius": 20,
+              "borderRadius": 4,
               "height": 40,
               "width": 40,
             },
@@ -634,7 +634,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "position": "absolute",
               },
               Object {
-                "borderRadius": 20,
+                "borderRadius": 4,
                 "height": 40,
                 "width": 40,
               },
@@ -745,7 +745,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             },
             Object {
               "backgroundColor": "#795548",
-              "borderRadius": 20,
+              "borderRadius": 4,
               "height": 40,
               "width": 40,
             },
@@ -782,7 +782,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "position": "absolute",
               },
               Object {
-                "borderRadius": 20,
+                "borderRadius": 4,
                 "height": 40,
                 "width": 40,
               },
@@ -893,7 +893,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             },
             Object {
               "backgroundColor": "#795548",
-              "borderRadius": 20,
+              "borderRadius": 4,
               "height": 40,
               "width": 40,
             },
@@ -930,7 +930,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "position": "absolute",
               },
               Object {
-                "borderRadius": 20,
+                "borderRadius": 4,
                 "height": 40,
                 "width": 40,
               },
@@ -1041,7 +1041,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             },
             Object {
               "backgroundColor": "#795548",
-              "borderRadius": 20,
+              "borderRadius": 4,
               "height": 40,
               "width": 40,
             },
@@ -1078,7 +1078,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "position": "absolute",
               },
               Object {
-                "borderRadius": 20,
+                "borderRadius": 4,
                 "height": 40,
                 "width": 40,
               },
@@ -1189,7 +1189,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             },
             Object {
               "backgroundColor": "#E91E63",
-              "borderRadius": 20,
+              "borderRadius": 4,
               "height": 40,
               "width": 40,
             },
@@ -1298,7 +1298,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             },
             Object {
               "backgroundColor": "#9C27B0",
-              "borderRadius": 20,
+              "borderRadius": 4,
               "height": 40,
               "width": 40,
             },
@@ -1407,7 +1407,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             },
             Object {
               "backgroundColor": undefined,
-              "borderRadius": 20,
+              "borderRadius": 4,
               "height": 40,
               "width": 40,
             },
