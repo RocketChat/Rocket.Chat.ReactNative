@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	safeAreaView: {
+		flex: 1,
 		backgroundColor: '#FFFFFF'
 	},
 	list: {
