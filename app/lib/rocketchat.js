@@ -301,7 +301,7 @@ const RocketChat = {
 			_server: { id: reduxStore.getState().server.server },
 			u: {
 				_id: reduxStore.getState().login.user.id || '1',
-				username: reduxStore.getState().login.user.id
+				username: reduxStore.getState().login.user.username
 			}
 		};
 
