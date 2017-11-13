@@ -3,7 +3,7 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
 import Zeroconf from 'react-native-zeroconf';
-import { View, Text, SectionList, StyleSheet } from 'react-native';
+import { View, Text, SectionList, StyleSheet, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import { setServer } from '../actions/server';
 import realm from '../lib/realm';
@@ -93,7 +93,7 @@ export default class ListServerView extends React.Component {
 
 		zeroconf.scan('http', 'tcp', 'local.');
 
-		this.state = this.getState();
+		this.setState(this.getState());
 	}
 
 	componentDidUpdate() {
@@ -184,14 +184,16 @@ export default class ListServerView extends React.Component {
 		return (
 			<View style={styles.view}>
 				<Banner />
-				<SectionList
-					style={styles.list}
-					sections={this.state.sections}
-					renderItem={this.renderItem}
-					renderSectionHeader={this.renderSectionHeader}
-					keyExtractor={item => item.id}
-					ItemSeparatorComponent={this.renderSeparator}
-				/>
+				<SafeAreaView style={styles.view}>
+					<SectionList
+						style={styles.list}
+						sections={this.state.sections}
+						renderItem={this.renderItem}
+						renderSectionHeader={this.renderSectionHeader}
+						keyExtractor={item => item.id}
+						ItemSeparatorComponent={this.renderSeparator}
+					/>
+				</SafeAreaView>
 			</View>
 		);
 	}

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import RocketChat from '../lib/rocketchat';
@@ -10,7 +10,9 @@ const styles = StyleSheet.create({
 		paddingTop: 1,
 		borderTopWidth: 1,
 		borderTopColor: '#ccc',
-		backgroundColor: '#fff',
+		backgroundColor: '#fff'
+	},
+	safeAreaView: {
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
@@ -77,17 +79,19 @@ export default class MessageBox extends React.PureComponent {
 	render() {
 		return (
 			<View style={styles.textBox}>
-				<Icon style={styles.fileButton} name='add-circle-outline' onPress={this.addFile} />
-				<TextInput
-					ref={component => this.component = component}
-					style={styles.textBoxInput}
-					returnKeyType='send'
-					onSubmitEditing={event => this.submit(event.nativeEvent.text)}
-					blurOnSubmit={false}
-					placeholder='New message'
-					underlineColorAndroid='transparent'
-					defaultValue={''}
-				/>
+				<SafeAreaView style={styles.safeAreaView}>
+					<Icon style={styles.fileButton} name='add-circle-outline' onPress={this.addFile} />
+					<TextInput
+						ref={component => this.component = component}
+						style={styles.textBoxInput}
+						returnKeyType='send'
+						onSubmitEditing={event => this.submit(event.nativeEvent.text)}
+						blurOnSubmit={false}
+						placeholder='New message'
+						underlineColorAndroid='transparent'
+						defaultValue=''
+					/>
+				</SafeAreaView>
 			</View>
 		);
 	}

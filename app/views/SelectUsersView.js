@@ -3,7 +3,7 @@ import { ListView } from 'realm/react-native';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { View, StyleSheet, TextInput, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TextInput, Text, TouchableOpacity, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import * as server from '../actions/connect';
@@ -19,6 +19,10 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'stretch',
 		justifyContent: 'center'
+	},
+	safeAreaView: {
+		flex: 1,
+		backgroundColor: '#FFFFFF'
 	},
 	list: {
 		width: '100%',
@@ -84,10 +88,10 @@ export default class RoomsListView extends React.Component {
 			.filtered('_server.id = $0 AND t = $1', this.props.server, 'd');
 		this.state = {
 			dataSource: ds.cloneWithRows(this.data),
-			searching: false,
-			searchDataSource: [],
-			searchText: '',
-			login: false
+			// searching: false,
+			// searchDataSource: [],
+			searchText: ''
+			// login: false
 		};
 		this.data.addListener(this.updateState);
 	}
@@ -100,8 +104,8 @@ export default class RoomsListView extends React.Component {
 	onSearchChangeText = (text) => {
 		const searchText = text.trim();
 		this.setState({
-			searchText: text,
-			searching: searchText !== ''
+			searchText: text
+			// searching: searchText !== ''
 		});
 		if (searchText === '') {
 			return this.setState({
@@ -264,8 +268,10 @@ export default class RoomsListView extends React.Component {
 	render = () => (
 		<View style={styles.container}>
 			<Banner />
-			{this.renderList()}
-			{this.renderCreateButton()}
+			<SafeAreaView style={styles.safeAreaView}>
+				{this.renderList()}
+				{this.renderCreateButton()}
+			</SafeAreaView>
 		</View>
 	);
 }
