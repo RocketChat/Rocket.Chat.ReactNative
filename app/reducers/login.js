@@ -12,14 +12,16 @@ const initialState = {
 export default function login(state = initialState, action) {
 	switch (action.type) {
 		case types.LOGIN.REQUEST:
-			return { ...state,
+			return {
+				...state,
 				isFetching: true,
 				isAuthenticated: false,
 				failure: false,
 				error: ''
 			};
 		case types.LOGIN.SUCCESS:
-			return { ...state,
+			return {
+				...state,
 				isFetching: false,
 				isAuthenticated: true,
 				user: action.user,
@@ -28,7 +30,8 @@ export default function login(state = initialState, action) {
 				error: ''
 			};
 		case types.LOGIN.FAILURE:
-			return { ...state,
+			return {
+				...state,
 				isFetching: false,
 				isAuthenticated: false,
 				failure: true,
@@ -37,7 +40,8 @@ export default function login(state = initialState, action) {
 		case types.LOGOUT:
 			return initialState;
 		case types.LOGIN.SET_TOKEN:
-			return { ...state,
+			return {
+				...state,
 				token: action.token,
 				user: action.user
 			};
