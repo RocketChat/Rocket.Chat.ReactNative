@@ -5,6 +5,7 @@ import {
 	loginRequest,
 	loginSubmit,
 	registerRequest,
+	registerIncomplete,
 	loginSuccess,
 	loginFailure,
 	setToken,
@@ -16,6 +17,7 @@ import {
 	forgotPasswordFailure
 } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
+import * as NavigationService from '../containers/routes/NavigationService';
 
 const getUser = state => state.login;
 const getServer = state => state.server.server;
@@ -23,6 +25,7 @@ const loginCall = args => (args.resume ? RocketChat.login(args) : RocketChat.log
 const registerCall = args => RocketChat.register(args);
 const setUsernameCall = args => RocketChat.setUsername(args);
 const logoutCall = args => RocketChat.logout(args);
+const meCall = args => RocketChat.me(args);
 const forgotPasswordCall = args => RocketChat.forgotPassword(args);
 
 const getToken = function* getToken() {
@@ -63,8 +66,20 @@ const saveToken = function* saveToken() {
 
 const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 	try {
-		const response = yield call(loginCall, credentials);
-		yield put(loginSuccess(response));
+		const server = yield select(getServer);
+		const user = yield call(loginCall, credentials);
+
+		// GET /me from REST API
+		const me = yield call(meCall, { server, token: user.token, userId: user.id });
+
+		// if user has username
+		if (me.username) {
+			user.username = me.username;
+		} else {
+			yield put(registerIncomplete());
+		}
+
+		yield put(loginSuccess(user));
 	} catch (err) {
 		if (err.error === 403) {
 			yield put(logout());
@@ -79,7 +94,6 @@ const handleLoginSubmit = function* handleLoginSubmit({ credentials }) {
 };
 
 const handleRegisterSubmit = function* handleRegisterSubmit({ credentials }) {
-	// put a login request
 	yield put(registerRequest(credentials));
 };
 
@@ -117,6 +131,10 @@ const handleLogout = function* handleLogout() {
 	yield call(logoutCall, { server });
 };
 
+const handleRegisterIncomplete = function* handleRegisterIncomplete() {
+	yield call(NavigationService.navigate, 'Register');
+};
+
 const handleForgotPasswordRequest = function* handleForgotPasswordRequest({ email }) {
 	try {
 		yield call(forgotPasswordCall, email);
@@ -134,6 +152,7 @@ const root = function* root() {
 	yield takeLatest(types.LOGIN.REGISTER_REQUEST, handleRegisterRequest);
 	yield takeLatest(types.LOGIN.REGISTER_SUBMIT, handleRegisterSubmit);
 	yield takeLatest(types.LOGIN.REGISTER_SUCCESS, handleRegisterSuccess);
+	yield takeLatest(types.LOGIN.REGISTER_INCOMPLETE, handleRegisterIncomplete);
 	yield takeLatest(types.LOGIN.SET_USERNAME_SUBMIT, handleSetUsernameSubmit);
 	yield takeLatest(types.LOGIN.SET_USERNAME_REQUEST, handleSetUsernameRequest);
 	yield takeLatest(types.LOGOUT, handleLogout);

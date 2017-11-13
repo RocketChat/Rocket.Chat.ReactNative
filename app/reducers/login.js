@@ -41,6 +41,11 @@ export default function login(state = initialState, action) {
 				token: action.token,
 				user: action.user
 			};
+		case types.LOGIN.RESTORE_TOKEN:
+			return {
+				...state,
+				token: action.token
+			};
 		case types.LOGIN.REGISTER_SUBMIT:
 			return {
 				...state,
@@ -68,6 +73,11 @@ export default function login(state = initialState, action) {
 				...state,
 				isFetching: false,
 				isRegistering: false
+			};
+		case types.LOGIN.REGISTER_INCOMPLETE:
+			return {
+				...state,
+				isRegistering: true
 			};
 		case types.FORGOT_PASSWORD.INIT:
 			return initialState;
