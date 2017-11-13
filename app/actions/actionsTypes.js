@@ -12,6 +12,7 @@ function createRequestTypes(base, types = defaultTypes) {
 export const LOGIN = createRequestTypes('LOGIN', [
 	...defaultTypes,
 	'SET_TOKEN',
+	'RESTORE_TOKEN',
 	'SUBMIT',
 	'REGISTER_SUBMIT',
 	'REGISTER_REQUEST',

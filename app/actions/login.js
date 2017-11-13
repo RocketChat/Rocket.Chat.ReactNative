@@ -76,6 +76,13 @@ export function setToken(user = {}) {
 	};
 }
 
+export function restoreToken(token) {
+	return {
+		type: types.LOGIN.RESTORE_TOKEN,
+		token
+	};
+}
+
 export function logout() {
 	return {
 		type: types.LOGOUT
