@@ -20,7 +20,9 @@ const styles = StyleSheet.create({
 
 class Avatar extends React.PureComponent {
 	render() {
-		const { text = '', size = 25, baseUrl, borderRadius = 5, style, avatar } = this.props;
+		const {
+			text = '', size = 25, baseUrl, borderRadius = 5, style, avatar
+		} = this.props;
 		const { initials, color } = avatarInitialsAndColor(`${ text }`);
 
 		const iconContainerStyle = {

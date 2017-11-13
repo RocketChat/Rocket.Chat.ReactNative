@@ -97,7 +97,7 @@ class ForgotPasswordView extends React.Component {
 
 							{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
 						</View>
-						<Spinner visible={this.props.login.isFetching} textContent="Loading..." textStyle={{ color: '#FFF' }} />
+						<Spinner visible={this.props.login.isFetching} textContent='Loading...' textStyle={{ color: '#FFF' }} />
 					</View>
 				</SafeAreaView>
 			</KeyboardView>
