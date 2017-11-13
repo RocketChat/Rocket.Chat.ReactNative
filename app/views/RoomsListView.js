@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
 		color: '#aaa'
 	},
 	safeAreaView: {
+		flex: 1,
 		backgroundColor: '#fff'
 	}
 });
