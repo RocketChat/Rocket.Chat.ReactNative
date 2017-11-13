@@ -35,7 +35,7 @@ exports[`render channel 1`] = `
       Array [
         Object {
           "alignItems": "center",
-          "borderRadius": 20,
+          "borderRadius": 4,
           "height": 40,
           "justifyContent": "center",
           "overflow": "hidden",
@@ -310,7 +310,7 @@ exports[`render unread +999 1`] = `
         },
         Object {
           "backgroundColor": "#3F51B5",
-          "borderRadius": 20,
+          "borderRadius": 4,
           "height": 40,
           "width": 40,
         },
@@ -442,7 +442,7 @@ exports[`render unread 1`] = `
         },
         Object {
           "backgroundColor": "#3F51B5",
-          "borderRadius": 20,
+          "borderRadius": 4,
           "height": 40,
           "width": 40,
         },
@@ -574,7 +574,7 @@ exports[`renders correctly 1`] = `
         },
         Object {
           "backgroundColor": "#3F51B5",
-          "borderRadius": 20,
+          "borderRadius": 4,
           "height": 40,
           "width": 40,
         },

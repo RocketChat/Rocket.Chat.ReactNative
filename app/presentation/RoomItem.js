@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
 	iconContainer: {
 		height: 40,
 		width: 40,
-		borderRadius: 20,
+		borderRadius: 4,
 		overflow: 'hidden',
 		justifyContent: 'center',
 		alignItems: 'center'
@@ -55,12 +55,6 @@ const styles = StyleSheet.create({
 	icon: {
 		fontSize: 20,
 		color: '#fff'
-	},
-	avatar: {
-		width: 40,
-		height: 40,
-		position: 'absolute',
-		borderRadius: 20
 	},
 	avatarInitials: {
 		fontSize: 20,
@@ -97,7 +91,7 @@ export default class RoomItem extends React.PureComponent {
 
 		if (type === 'd') {
 			return (
-				<Avatar text={name} baseUrl={baseUrl} size={40} borderRadius={20} />
+				<Avatar text={name} baseUrl={baseUrl} size={40} />
 			);
 		}
 
