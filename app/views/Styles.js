@@ -93,6 +93,10 @@ export default StyleSheet.create({
 		backgroundColor: '#1d74f5',
 		marginBottom: 20
 	},
+	buttonContainer_inverted: {
+		paddingVertical: 15,
+		marginBottom: 0
+	},
 	button: {
 		textAlign: 'center',
 		color: 'white',
@@ -104,6 +108,12 @@ export default StyleSheet.create({
 		color: 'white',
 		borderRadius: 2,
 		fontWeight: '700'
+	},
+	button_inverted: {
+		textAlign: 'center',
+		color: '#414852',
+		fontWeight: '700',
+		flexGrow: 1
 	},
 	error: {
 		textAlign: 'center',
@@ -132,5 +142,19 @@ export default StyleSheet.create({
 	},
 	enabledButton: {
 		backgroundColor: '#1d74f5'
+	},
+	link: {
+		fontWeight: 'bold'
+	},
+	loginTermsText: {
+		marginTop: 10,
+		textAlign: 'center',
+		color: '#414852',
+		fontSize: 16
+	},
+	loginSecondaryButtons: {
+		flexDirection: 'row',
+		justifyContent: 'space-around',
+		alignItems: 'center'
 	}
 });
