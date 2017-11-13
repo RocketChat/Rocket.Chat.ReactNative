@@ -12,18 +12,21 @@ const initialState = {
 export default function server(state = initialState, action) {
 	switch (action.type) {
 		case SERVER.REQUEST:
-			return { ...state,
+			return {
+				...state,
 				connecting: true,
 				failure: false
 			};
 		case SERVER.SUCCESS:
-			return { ...state,
+			return {
+				...state,
 				connecting: false,
 				connected: true,
 				failure: false
 			};
 		case SERVER.FAILURE:
-			return { ...state,
+			return {
+				...state,
 				connecting: false,
 				connected: false,
 				failure: true,

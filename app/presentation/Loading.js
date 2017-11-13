@@ -45,14 +45,16 @@ export default class Loading extends Component {
 					toValue: 0.8,
 					duration: 1000,
 					useNativeDriver: true
-				}),
+				}
+			),
 			Animated.timing(
 				this.scale,
 				{
 					toValue: 1,
 					duration: 1000,
 					useNativeDriver: true
-				})
+				}
+			)
 		]).start(() => {
 			this.animate();
 		});
