@@ -5,7 +5,7 @@ import { DrawerItems } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import realm from '../lib/realm';
-import { setServer } from '../actions/server';
+import { setServer, gotoAddServer } from '../actions/server';
 import { logout } from '../actions/login';
 
 const styles = StyleSheet.create({
@@ -41,14 +41,16 @@ const styles = StyleSheet.create({
 	server: state.server.server
 }), dispatch => ({
 	selectServer: server => dispatch(setServer(server)),
-	logout: () => dispatch(logout())
+	logout: () => dispatch(logout()),
+	gotoAddServer: () => dispatch(gotoAddServer())
 }))
 export default class Sidebar extends Component {
 	static propTypes = {
 		server: PropTypes.string.isRequired,
 		selectServer: PropTypes.func.isRequired,
 		navigation: PropTypes.object.isRequired,
-		logout: PropTypes.func.isRequired
+		logout: PropTypes.func.isRequired,
+		gotoAddServer: PropTypes.func.isRequired
 	}
 
 	componentWillMount() {
@@ -114,6 +116,15 @@ export default class Sidebar extends Component {
 						<View style={styles.serverItem}>
 							<Text>
 								Logout
+							</Text>
+						</View>
+					</TouchableHighlight>
+					<TouchableHighlight
+						onPress={() => { this.props.gotoAddServer(); }}
+					>
+						<View style={styles.serverItem}>
+							<Text>
+								Add Server
 							</Text>
 						</View>
 					</TouchableHighlight>
