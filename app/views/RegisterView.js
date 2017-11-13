@@ -3,7 +3,7 @@ import React from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import PropTypes from 'prop-types';
-import { Keyboard, Text, TextInput, View, TouchableOpacity } from 'react-native';
+import { Keyboard, Text, TextInput, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as loginActions from '../actions/login';
@@ -37,7 +37,9 @@ class RegisterView extends React.Component {
 	}
 
 	_valid() {
-		const { name, email, password, confirmPassword } = this.state;
+		const {
+			name, email, password, confirmPassword
+		} = this.state;
 		return name.trim() && email.trim() &&
 			password && confirmPassword && password === confirmPassword;
 	}
@@ -45,12 +47,16 @@ class RegisterView extends React.Component {
 		return this.props.login.failure && /Email/.test(this.props.login.error.reason);
 	}
 	submit = () => {
-		const { name, email, password, code } = this.state;
+		const {
+			name, email, password, code
+		} = this.state;
 		if (!this._valid()) {
 			return;
 		}
 
-		this.props.registerSubmit({ name, email, pass: password, code });
+		this.props.registerSubmit({
+			name, email, pass: password, code
+		});
 		Keyboard.dismiss();
 	}
 	usernameSubmit = () => {
@@ -125,7 +131,8 @@ class RegisterView extends React.Component {
 							: { color: placeholderTextColor }
 						]}
 						onPress={this.submit}
-					>REGISTER</Text>
+					>REGISTER
+					</Text>
 				</TouchableOpacity>
 
 				{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
@@ -155,7 +162,8 @@ class RegisterView extends React.Component {
 					<Text
 						style={styles.button}
 						onPress={this.usernameSubmit}
-					>REGISTER</Text>
+					>REGISTER
+					</Text>
 				</TouchableOpacity>
 
 				{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
@@ -166,11 +174,13 @@ class RegisterView extends React.Component {
 	render() {
 		return (
 			<KeyboardView contentContainerStyle={styles.container}>
-				<View style={styles.loginView}>
-					{this._renderRegister()}
-					{this._renderUsername()}
-					<Spinner visible={this.props.login.isFetching} textContent={'Loading...'} textStyle={{ color: '#FFF' }} />
-				</View>
+				<SafeAreaView>
+					<View style={styles.loginView}>
+						{this._renderRegister()}
+						{this._renderUsername()}
+						<Spinner visible={this.props.login.isFetching} textContent='Loading...' textStyle={{ color: '#FFF' }} />
+					</View>
+				</SafeAreaView>
 			</KeyboardView>
 		);
 	}
