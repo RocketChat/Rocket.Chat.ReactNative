@@ -12,10 +12,12 @@ function createRequestTypes(base, types = defaultTypes) {
 export const LOGIN = createRequestTypes('LOGIN', [
 	...defaultTypes,
 	'SET_TOKEN',
+	'RESTORE_TOKEN',
 	'SUBMIT',
 	'REGISTER_SUBMIT',
 	'REGISTER_REQUEST',
 	'REGISTER_SUCCESS',
+	'REGISTER_INCOMPLETE',
 	'SET_USERNAME_SUBMIT',
 	'SET_USERNAME_REQUEST',
 	'SET_USERNAME_SUCCESS'
@@ -38,7 +40,13 @@ export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [
 	'RESET'
 ]);
 export const NAVIGATION = createRequestTypes('NAVIGATION', ['SET']);
-export const SERVER = createRequestTypes('SERVER', [...defaultTypes, 'SELECT', 'CHANGED', 'ADD']);
+export const SERVER = createRequestTypes('SERVER', [
+	...defaultTypes,
+	'SELECT',
+	'CHANGED',
+	'ADD',
+	'GOTO_ADD'
+]);
 export const METEOR = createRequestTypes('METEOR_CONNECT', [...defaultTypes, 'DISCONNECT']);
 export const LOGOUT = 'LOGOUT'; // logout is always success
 

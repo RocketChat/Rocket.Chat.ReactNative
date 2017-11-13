@@ -125,12 +125,14 @@ class RegisterView extends React.Component {
 					placeholder={this.props.Accounts_RepeatPasswordPlaceholder || 'Repeat Password'}
 				/>
 
-				<TouchableOpacity style={[styles.buttonContainer, styles.registerContainer]}>
+				<TouchableOpacity
+					style={[styles.buttonContainer, styles.registerContainer]}
+					onPress={this.submit}
+				>
 					<Text
 						style={[styles.button, this._valid() ? {}
 							: { color: placeholderTextColor }
 						]}
-						onPress={this.submit}
 					>REGISTER
 					</Text>
 				</TouchableOpacity>
@@ -158,12 +160,11 @@ class RegisterView extends React.Component {
 					placeholder={this.props.Accounts_UsernamePlaceholder || 'Username'}
 				/>
 
-				<TouchableOpacity style={[styles.buttonContainer, styles.registerContainer]}>
-					<Text
-						style={styles.button}
-						onPress={this.usernameSubmit}
-					>REGISTER
-					</Text>
+				<TouchableOpacity
+					style={[styles.buttonContainer, styles.registerContainer]}
+					onPress={this.usernameSubmit}
+				>
+					<Text style={styles.button}>REGISTER</Text>
 				</TouchableOpacity>
 
 				{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}

@@ -32,6 +32,11 @@ export function registerSuccess(credentials) {
 		credentials
 	};
 }
+export function registerIncomplete() {
+	return {
+		type: types.LOGIN.REGISTER_INCOMPLETE
+	};
+}
 
 export function setUsernameSubmit(credentials) {
 	return {
@@ -73,6 +78,13 @@ export function setToken(user = {}) {
 		type: types.LOGIN.SET_TOKEN,
 		token: user.token,
 		user
+	};
+}
+
+export function restoreToken(token) {
+	return {
+		type: types.LOGIN.RESTORE_TOKEN,
+		token
 	};
 }
 
