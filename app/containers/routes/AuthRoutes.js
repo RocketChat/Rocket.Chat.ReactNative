@@ -38,7 +38,7 @@ const AuthRoutes = StackNavigator(
 					title: navigation.state.params.title || 'Room',
 					headerLeft: (
 						<HeaderBackButton
-							title={'Back'}
+							title='Back'
 							onPress={() => backToScreen(navigation, 'RoomsList')}
 						/>
 					)

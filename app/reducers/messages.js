@@ -8,15 +8,18 @@ const initialState = {
 export default function messages(state = initialState, action) {
 	switch (action.type) {
 		case types.MESSAGES.REQUEST:
-			return { ...state,
+			return {
+				...state,
 				isFetching: true
 			};
 		case types.MESSAGES.SUCCESS:
-			return { ...state,
+			return {
+				...state,
 				isFetching: false
 			};
 		case types.LOGIN.FAILURE:
-			return { ...state,
+			return {
+				...state,
 				isFetching: false,
 				failure: true,
 				errorMessage: action.err
