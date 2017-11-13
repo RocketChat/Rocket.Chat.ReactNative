@@ -53,7 +53,7 @@ export default class Sidebar extends Component {
 
 	componentWillMount() {
 		realm.addListener('change', this.updateState);
-		this.state = this.getState();
+		this.setState(this.getState());
 	}
 
 	componentWillUnmount() {

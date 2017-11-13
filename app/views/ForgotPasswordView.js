@@ -1,7 +1,7 @@
 import React from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import PropTypes from 'prop-types';
-import { Text, TextInput, View, TouchableOpacity, Alert } from 'react-native';
+import { Text, TextInput, View, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as loginActions from '../actions/login';
@@ -72,32 +72,34 @@ class ForgotPasswordView extends React.Component {
 				contentContainerStyle={styles.container}
 				keyboardVerticalOffset={128}
 			>
-				<View style={styles.loginView}>
-					<View style={styles.formContainer}>
-						<TextInput
-							style={[styles.input_white, this.state.invalidEmail ? { borderColor: 'red' } : {}]}
-							onChangeText={email => this.validate(email)}
-							keyboardType='email-address'
-							autoCorrect={false}
-							returnKeyType='next'
-							autoCapitalize='none'
-							underlineColorAndroid='transparent'
-							onSubmitEditing={() => this.resetPassword()}
-							placeholder='Email'
-						/>
+				<SafeAreaView>
+					<View style={styles.loginView}>
+						<View style={styles.formContainer}>
+							<TextInput
+								style={[styles.input_white, this.state.invalidEmail ? { borderColor: 'red' } : {}]}
+								onChangeText={email => this.validate(email)}
+								keyboardType='email-address'
+								autoCorrect={false}
+								returnKeyType='next'
+								autoCapitalize='none'
+								underlineColorAndroid='transparent'
+								onSubmitEditing={() => this.resetPassword()}
+								placeholder='Email'
+							/>
 
-						<TouchableOpacity style={styles.buttonContainer} onPress={this.resetPassword}>
-							<Text style={styles.button}>RESET PASSWORD</Text>
-						</TouchableOpacity>
+							<TouchableOpacity style={styles.buttonContainer} onPress={this.resetPassword}>
+								<Text style={styles.button}>RESET PASSWORD</Text>
+							</TouchableOpacity>
 
-						<TouchableOpacity style={styles.buttonContainer} onPress={this.backLogin}>
-							<Text style={styles.button}>BACK TO LOGIN</Text>
-						</TouchableOpacity>
+							<TouchableOpacity style={styles.buttonContainer} onPress={this.backLogin}>
+								<Text style={styles.button}>BACK TO LOGIN</Text>
+							</TouchableOpacity>
 
-						{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
+							{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
+						</View>
+						<Spinner visible={this.props.login.isFetching} textContent="Loading..." textStyle={{ color: '#FFF' }} />
 					</View>
-					<Spinner visible={this.props.login.isFetching} textContent={'Loading...'} textStyle={{ color: '#FFF' }} />
-				</View>
+				</SafeAreaView>
 			</KeyboardView>
 		);
 	}

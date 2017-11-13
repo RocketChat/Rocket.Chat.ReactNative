@@ -3,7 +3,7 @@ import { ListView } from 'realm/react-native';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { View, StyleSheet, TextInput } from 'react-native';
+import { View, StyleSheet, TextInput, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import * as server from '../actions/connect';
@@ -51,6 +51,9 @@ const styles = StyleSheet.create({
 		padding: 5,
 		paddingLeft: 10,
 		color: '#aaa'
+	},
+	safeAreaView: {
+		backgroundColor: '#fff'
 	}
 });
 
@@ -90,10 +93,10 @@ export default class RoomsListView extends React.Component {
 	componentWillMount() {
 		this.data.addListener(this.updateState);
 
-		this.state = {
+		this.setState({
 			...this.state,
 			dataSource: ds.cloneWithRows(this.data)
-		};
+		});
 	}
 
 	componentWillReceiveProps(props) {
@@ -243,7 +246,7 @@ export default class RoomsListView extends React.Component {
 			key={item._id}
 			type={item.t}
 			baseUrl={this.props.Site_Url}
-			dateFormat={'MM-DD-YYYY HH:mm:ss'}
+			dateFormat='MM-DD-YYYY HH:mm:ss'
 			onPress={() => this._onPressItem(item._id, item)}
 		/>
 	)
@@ -271,7 +274,9 @@ export default class RoomsListView extends React.Component {
 	render = () => (
 		<View style={styles.container}>
 			<Banner />
-			{this.renderList()}
-			{this.renderCreateButtons()}
+			<SafeAreaView style={styles.safeAreaView}>
+				{this.renderList()}
+				{this.renderCreateButtons()}
+			</SafeAreaView>
 		</View>)
 }
