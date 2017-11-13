@@ -122,19 +122,23 @@ class LoginView extends React.Component {
 								<Text style={styles.button}>LOGIN</Text>
 							</TouchableOpacity>
 
-							<TouchableOpacity style={styles.buttonContainer} onPress={this.register}>
-								<Text style={styles.button}>REGISTER</Text>
-							</TouchableOpacity>
+							<View style={styles.loginSecondaryButtons}>
+								<TouchableOpacity style={styles.buttonContainer_inverted} onPress={this.register}>
+									<Text style={styles.button_inverted}>REGISTER</Text>
+								</TouchableOpacity>
 
-							<TouchableOpacity style={styles.buttonContainer} onPress={this.termsService}>
-								<Text style={styles.button}>TERMS OF SERVICE</Text>
-							</TouchableOpacity>
+								<TouchableOpacity style={styles.buttonContainer_inverted} onPress={this.forgotPassword}>
+									<Text style={styles.button_inverted}>FORGOT MY PASSWORD</Text>
+								</TouchableOpacity>
+							</View>
 
-							<TouchableOpacity style={styles.buttonContainer} onPress={this.privacyPolicy}>
-								<Text style={styles.button}>PRIVACY POLICY</Text>
-							</TouchableOpacity>
-							<TouchableOpacity style={styles.buttonContainer} onPress={this.forgotPassword}>
-								<Text style={styles.button}>FORGOT MY PASSWORD</Text>
+							<TouchableOpacity>
+								<Text style={styles.loginTermsText}>
+									By proceeding you are agreeing to our
+									<Text style={styles.link} onPress={this.termsService}> Terms of Service </Text>
+									and
+									<Text style={styles.link} onPress={this.privacyPolicy}> Privacy Policy</Text>
+								</Text>
 							</TouchableOpacity>
 
 							{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
