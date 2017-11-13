@@ -5,6 +5,7 @@ import {
 	loginRequest,
 	loginSubmit,
 	registerRequest,
+	registerIncomplete,
 	loginSuccess,
 	loginFailure,
 	setToken,
@@ -16,23 +17,24 @@ import {
 	forgotPasswordFailure
 } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
+import * as NavigationService from '../containers/routes/NavigationService';
 
-const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const getUser = state => state.login;
 const getServer = state => state.server.server;
 const loginCall = args => (args.resume ? RocketChat.login(args) : RocketChat.loginWithPassword(args));
 const registerCall = args => RocketChat.register(args);
 const setUsernameCall = args => RocketChat.setUsername(args);
 const logoutCall = args => RocketChat.logout(args);
+const meCall = args => RocketChat.me(args);
 const forgotPasswordCall = args => RocketChat.forgotPassword(args);
 
 const getToken = function* getToken() {
 	const currentServer = yield select(getServer);
-	const user = yield call([AsyncStorage, 'getItem'], `${ TOKEN_KEY }-${ currentServer }`);
+	const user = yield call([AsyncStorage, 'getItem'], `${ RocketChat.TOKEN_KEY }-${ currentServer }`);
 	if (user) {
 		try {
 			yield put(setToken(JSON.parse(user)));
-			yield call([AsyncStorage, 'setItem'], TOKEN_KEY, JSON.parse(user).token || '');
+			yield call([AsyncStorage, 'setItem'], RocketChat.TOKEN_KEY, JSON.parse(user).token || '');
 			return JSON.parse(user);
 		} catch (e) {
 			console.log('getTokenerr', e);
@@ -43,47 +45,41 @@ const getToken = function* getToken() {
 };
 
 const handleLoginWhenServerChanges = function* handleLoginWhenServerChanges() {
-	// do {
 	try {
 		yield take(types.METEOR.SUCCESS);
 		yield call(getToken);
-		// const { navigator } = yield select(state => state);
 
 		const user = yield select(getUser);
 		if (user.token) {
 			yield put(loginRequest({ resume: user.token }));
-			// console.log('AEEEEEEEEOOOOO');
-			// // wait for a response
-			// const { error } = yield race({
-			// 	success: take(types.LOGIN.SUCCESS),
-			// 	error: take(types.LOGIN.FAILURE)
-			// });
-			// console.log('AEEEEEEEEOOOOO', error);
-			// if (!error) {
-			// 	navigator.resetTo({
-			// 		screen: 'Rooms'
-			// 	});
-			// }
 		}
-		// navigator.resetTo({
-		// 	screen: 'Rooms'
-		// });
 	} catch (e) {
 		console.log(e);
 	}
-	// } while (true);
 };
 
 const saveToken = function* saveToken() {
 	const [server, user] = yield all([select(getServer), select(getUser)]);
-	yield AsyncStorage.setItem(TOKEN_KEY, user.token);
-	yield AsyncStorage.setItem(`${ TOKEN_KEY }-${ server }`, JSON.stringify(user));
+	yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
+	yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
 };
 
 const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 	try {
-		const response = yield call(loginCall, credentials);
-		yield put(loginSuccess(response));
+		const server = yield select(getServer);
+		const user = yield call(loginCall, credentials);
+
+		// GET /me from REST API
+		const me = yield call(meCall, { server, token: user.token, userId: user.id });
+
+		// if user has username
+		if (me.username) {
+			user.username = me.username;
+		} else {
+			yield put(registerIncomplete());
+		}
+
+		yield put(loginSuccess(user));
 	} catch (err) {
 		if (err.error === 403) {
 			yield put(logout());
@@ -98,13 +94,7 @@ const handleLoginSubmit = function* handleLoginSubmit({ credentials }) {
 };
 
 const handleRegisterSubmit = function* handleRegisterSubmit({ credentials }) {
-	// put a login request
 	yield put(registerRequest(credentials));
-	// wait for a response
-	// yield race({
-	// 	success: take(types.LOGIN.REGISTER_SUCCESS),
-	// 	error: take(types.LOGIN.FAILURE)
-	// });
 };
 
 const handleRegisterRequest = function* handleRegisterRequest({ credentials }) {
@@ -141,6 +131,10 @@ const handleLogout = function* handleLogout() {
 	yield call(logoutCall, { server });
 };
 
+const handleRegisterIncomplete = function* handleRegisterIncomplete() {
+	yield call(NavigationService.navigate, 'Register');
+};
+
 const handleForgotPasswordRequest = function* handleForgotPasswordRequest({ email }) {
 	try {
 		yield call(forgotPasswordCall, email);
@@ -158,6 +152,7 @@ const root = function* root() {
 	yield takeLatest(types.LOGIN.REGISTER_REQUEST, handleRegisterRequest);
 	yield takeLatest(types.LOGIN.REGISTER_SUBMIT, handleRegisterSubmit);
 	yield takeLatest(types.LOGIN.REGISTER_SUCCESS, handleRegisterSuccess);
+	yield takeLatest(types.LOGIN.REGISTER_INCOMPLETE, handleRegisterIncomplete);
 	yield takeLatest(types.LOGIN.SET_USERNAME_SUBMIT, handleSetUsernameSubmit);
 	yield takeLatest(types.LOGIN.SET_USERNAME_REQUEST, handleSetUsernameRequest);
 	yield takeLatest(types.LOGOUT, handleLogout);
