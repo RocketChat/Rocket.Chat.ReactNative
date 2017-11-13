@@ -34,7 +34,9 @@ export default class extends React.PureComponent {
 		onClose: PropTypes.func.isRequired
 	}
 	render() {
-		const { image, isVisible, onClose, title } = this.props;
+		const {
+			image, isVisible, onClose, title
+		} = this.props;
 		return (
 			<Modal
 				isVisible={isVisible}
@@ -50,7 +52,7 @@ export default class extends React.PureComponent {
 							style={styles.image}
 							source={{ uri: encodeURI(image) }}
 							mutable
-							resizeMode={'contain'}
+							resizeMode='contain'
 						/>
 					</ScrollView>
 				</View>

@@ -27,7 +27,7 @@ export default class extends React.PureComponent {
 						style={{ ...styles.image }}
 						source={{ uri: encodeURI(image) }}
 						mutable
-						resizeMode={'contain'}
+						resizeMode='contain'
 					/>
 				</ScrollView>
 			</View>

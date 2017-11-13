@@ -87,10 +87,10 @@ export default class RoomsListView extends React.Component {
 			.filtered('_server.id = $0 AND t = $1', this.props.server, 'd');
 		this.state = {
 			dataSource: ds.cloneWithRows(this.data),
-			searching: false,
-			searchDataSource: [],
-			searchText: '',
-			login: false
+			// searching: false,
+			// searchDataSource: [],
+			searchText: ''
+			// login: false
 		};
 		this.data.addListener(this.updateState);
 	}
@@ -103,8 +103,8 @@ export default class RoomsListView extends React.Component {
 	onSearchChangeText = (text) => {
 		const searchText = text.trim();
 		this.setState({
-			searchText: text,
-			searching: searchText !== ''
+			searchText: text
+			// searching: searchText !== ''
 		});
 		if (searchText === '') {
 			return this.setState({
