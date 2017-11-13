@@ -32,6 +32,7 @@ export default class Routes extends React.Component {
 	componentDidUpdate() {
 		NavigationService.setNavigator(this.navigator);
 	}
+
 	render() {
 		const { login, app } = this.props;
 

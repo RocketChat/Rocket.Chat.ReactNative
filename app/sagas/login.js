@@ -19,7 +19,6 @@ import {
 import RocketChat from '../lib/rocketchat';
 import * as NavigationService from '../containers/routes/NavigationService';
 
-const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const getUser = state => state.login;
 const getServer = state => state.server.server;
 const loginCall = args => (args.resume ? RocketChat.login(args) : RocketChat.loginWithPassword(args));
@@ -31,11 +30,11 @@ const forgotPasswordCall = args => RocketChat.forgotPassword(args);
 
 const getToken = function* getToken() {
 	const currentServer = yield select(getServer);
-	const user = yield call([AsyncStorage, 'getItem'], `${ TOKEN_KEY }-${ currentServer }`);
+	const user = yield call([AsyncStorage, 'getItem'], `${ RocketChat.TOKEN_KEY }-${ currentServer }`);
 	if (user) {
 		try {
 			yield put(setToken(JSON.parse(user)));
-			yield call([AsyncStorage, 'setItem'], TOKEN_KEY, JSON.parse(user).token || '');
+			yield call([AsyncStorage, 'setItem'], RocketChat.TOKEN_KEY, JSON.parse(user).token || '');
 			return JSON.parse(user);
 		} catch (e) {
 			console.log('getTokenerr', e);
@@ -61,8 +60,8 @@ const handleLoginWhenServerChanges = function* handleLoginWhenServerChanges() {
 
 const saveToken = function* saveToken() {
 	const [server, user] = yield all([select(getServer), select(getUser)]);
-	yield AsyncStorage.setItem(TOKEN_KEY, user.token);
-	yield AsyncStorage.setItem(`${ TOKEN_KEY }-${ server }`, JSON.stringify(user));
+	yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
+	yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
 };
 
 const handleLoginRequest = function* handleLoginRequest({ credentials }) {

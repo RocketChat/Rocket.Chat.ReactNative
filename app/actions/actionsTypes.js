@@ -40,7 +40,13 @@ export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [
 	'RESET'
 ]);
 export const NAVIGATION = createRequestTypes('NAVIGATION', ['SET']);
-export const SERVER = createRequestTypes('SERVER', [...defaultTypes, 'SELECT', 'CHANGED', 'ADD']);
+export const SERVER = createRequestTypes('SERVER', [
+	...defaultTypes,
+	'SELECT',
+	'CHANGED',
+	'ADD',
+	'GOTO_ADD'
+]);
 export const METEOR = createRequestTypes('METEOR_CONNECT', [...defaultTypes, 'DISCONNECT']);
 export const LOGOUT = 'LOGOUT'; // logout is always success
 

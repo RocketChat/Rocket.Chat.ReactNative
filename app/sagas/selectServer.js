@@ -1,12 +1,13 @@
 import { put, takeEvery, call, takeLatest, race, take } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { AsyncStorage } from 'react-native';
-// import { Navigation } from 'react-native-navigation';
 import { SERVER } from '../actions/actionsTypes';
 import { connectRequest, disconnect } from '../actions/connect';
-import { changedServer, serverSuccess, serverFailure, serverRequest } from '../actions/server';
+import { changedServer, serverSuccess, serverFailure, serverRequest, setServer } from '../actions/server';
+import { logout } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import realm from '../lib/realm';
+import * as NavigationService from '../containers/routes/NavigationService';
 
 const validate = function* validate(server) {
 	return yield RocketChat.testServer(server);
@@ -42,13 +43,21 @@ const addServer = function* addServer({ server }) {
 		realm.write(() => {
 			realm.create('servers', { id: server, current: false }, true);
 		});
+		yield put(setServer(server));
 	}
 };
 
+const handleGotoAddServer = function* handleGotoAddServer() {
+	yield put(logout());
+	yield call(AsyncStorage.removeItem, RocketChat.TOKEN_KEY);
+	yield delay(1000);
+	yield call(NavigationService.navigate, 'AddServer');
+};
 
 const root = function* root() {
 	yield takeLatest(SERVER.REQUEST, validateServer);
 	yield takeEvery(SERVER.SELECT, selectServer);
 	yield takeEvery(SERVER.ADD, addServer);
+	yield takeEvery(SERVER.GOTO_ADD, handleGotoAddServer);
 };
 export default root;
