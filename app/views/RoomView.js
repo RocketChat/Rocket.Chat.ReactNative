@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, StyleSheet, Button, InteractionManager, SafeAreaView } from 'react-native';
+import { Text, View, StyleSheet, Button } from 'react-native';
 import { ListView } from 'realm/react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -18,9 +18,6 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: '#fff'
-	},
-	safeAreaView: {
-		flex: 1
 	},
 	list: {
 		flex: 1,
@@ -196,20 +193,18 @@ export default class RoomView extends React.Component {
 
 	render() {
 		return (
-			<KeyboardView contentContainerStyle={styles.container} keyboardVerticalOffset={64}>
+			<KeyboardView style={styles.container} keyboardVerticalOffset={64}>
 				{this.renderBanner()}
-				<SafeAreaView style={styles.safeAreaView}>
-					<ListView
-						enableEmptySections
-						style={styles.list}
-						onEndReachedThreshold={10}
-						renderFooter={this.renderHeader}
-						onEndReached={this.onEndReached}
-						dataSource={this.state.dataSource}
-						renderRow={item => this.renderItem({ item })}
-						initialListSize={10}
-					/>
-				</SafeAreaView>
+				<ListView
+					enableEmptySections
+					style={styles.list}
+					onEndReachedThreshold={10}
+					renderFooter={this.renderHeader}
+					onEndReached={this.onEndReached}
+					dataSource={this.state.dataSource}
+					renderRow={item => this.renderItem({ item })}
+					initialListSize={10}
+				/>
 				{this.renderFooter()}
 			</KeyboardView>
 		);
