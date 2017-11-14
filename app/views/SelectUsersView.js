@@ -248,7 +248,7 @@ export default class RoomsListView extends React.Component {
 			style={styles.list}
 			renderRow={this.renderItem}
 			renderHeader={this.renderHeader}
-			contentOffset={{ x: 0, y: this.props.users.length > 0 ? 40 : 20 }}
+			contentOffset={{ x: 0, y: this.props.users.length > 0 ? 38 : 0 }}
 			enableEmptySections
 			keyboardShouldPersistTaps='always'
 		/>
