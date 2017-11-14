@@ -105,7 +105,7 @@ export default class RoomView extends React.Component {
 		this.state.dataSource = ds.cloneWithRows(this.data);
 	}
 	componentDidMount() {
-		InteractionManager.runAfterInteractions(() => RocketChat.readMessages(this.rid));
+
 	}
 	componentDidUpdate() {
 		return !this.props.loading && clearTimeout(this.timer);
