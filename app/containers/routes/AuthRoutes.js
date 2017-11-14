@@ -1,4 +1,5 @@
 import React from 'react';
+import { Platform } from 'react-native';
 import { StackNavigator, DrawerNavigator, NavigationActions, HeaderBackButton } from 'react-navigation';
 
 import Sidebar from '../../containers/Sidebar';
@@ -76,7 +77,10 @@ const Routes = DrawerNavigator(
 	},
 	{
 		contentComponent: Sidebar,
-		drawerPosition
+		drawerPosition,
+		navigationOptions: {
+			drawerLockMode: Platform.OS === 'ios' ? 'locked-closed' : 'unlocked'
+		}
 	}
 );
 
