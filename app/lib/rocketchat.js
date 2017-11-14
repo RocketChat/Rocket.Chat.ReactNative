@@ -454,6 +454,9 @@ const RocketChat = {
 		Meteor.disconnect();
 		AsyncStorage.removeItem(TOKEN_KEY);
 		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
+	},
+	deleteMessage(message) {
+		return call('deleteMessage', { _id: message._id });
 	}
 };
 
