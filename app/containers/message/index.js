@@ -5,9 +5,9 @@ import { emojify } from 'react-emojione';
 import Markdown from 'react-native-easy-markdown';
 import ActionSheet from 'react-native-actionsheet';
 
-import Card from './message/Card';
-import Avatar from './Avatar';
-import User from './message/User';
+import Card from './Card';
+import User from './User';
+import Avatar from '../Avatar';
 
 const title = 'Message actions';
 const options = ['Cancel', 'Reply', 'Edit', 'Permalink', 'Copy', 'Quote', 'Star Message', 'Delete'];
