@@ -4,7 +4,8 @@ const initialState = {
 	isFetching: false,
 	failure: false,
 	message: {},
-	editing: false
+	editing: false,
+	permalink: ''
 };
 
 export default function messages(state = initialState, action) {
@@ -37,6 +38,11 @@ export default function messages(state = initialState, action) {
 				...state,
 				message: {},
 				editing: false
+			};
+		case types.MESSAGES.PERMALINK_SUCCESS:
+			return {
+				...state,
+				permalink: action.permalink
 			};
 		default:
 			return state;

@@ -464,6 +464,32 @@ const RocketChat = {
 	},
 	starMessage(message) {
 		return call('starMessage', message);
+	},
+	getPermalink(message) {
+		return new Promise((resolve, reject) => {
+			const result = realm.objects('subscriptions').filtered('rid = $0', message.rid);
+
+			if (result.length === 0) {
+				return reject(new Error('Room not found'));
+			}
+
+			const room = result[0];
+			let roomType;
+			switch (room.t) {
+				case 'p':
+					roomType = 'group';
+					break;
+				case 'c':
+					roomType = 'channel';
+					break;
+				case 'd':
+					roomType = 'direct';
+					break;
+				default:
+					break;
+			}
+			return resolve(`${ room._server.id }/${ roomType }/${ room.name }?msg=${ message._id }`);
+		});
 	}
 };
 

@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import Card from './Card';
 import User from './User';
 import Avatar from '../Avatar';
-import { deleteRequest, editInit, starRequest } from '../../actions/messages';
+import { deleteRequest, editInit, starRequest, permalinkRequest } from '../../actions/messages';
 
 const title = 'Message actions';
 const options = ['Cancel', 'Reply', 'Edit', 'Permalink', 'Copy', 'Quote', 'Star Message', 'Delete'];
@@ -38,11 +38,13 @@ const styles = StyleSheet.create({
 });
 
 @connect(state => ({
-	message: state.messages.message
+	message: state.messages.message,
+	permalink: state.messages.permalink
 }), dispatch => ({
 	deleteRequest: message => dispatch(deleteRequest(message)),
 	editInit: message => dispatch(editInit(message)),
-	starRequest: message => dispatch(starRequest(message))
+	starRequest: message => dispatch(starRequest(message)),
+	permalinkRequest: message => dispatch(permalinkRequest(message))
 }))
 export default class Message extends React.Component {
 	static propTypes = {
@@ -52,13 +54,26 @@ export default class Message extends React.Component {
 		deleteRequest: PropTypes.func.isRequired,
 		editInit: PropTypes.func.isRequired,
 		starRequest: PropTypes.func.isRequired,
-		message: PropTypes.object
+		permalinkRequest: PropTypes.func.isRequired,
+		message: PropTypes.object,
+		permalink: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
+		this.state = { copyPermalink: false };
 		this.handleActionPress = this.handleActionPress.bind(this);
 		this.showActions = this.showActions.bind(this);
+	}
+
+	async componentWillReceiveProps(props) {
+		if (props.permalink) {
+			if (this.state.copyPermalink) {
+				this.setState({ copyPermalink: false });
+				await Clipboard.setString(props.permalink);
+				Alert.alert('Permalink copied to clipboard!');
+			}
+		}
 	}
 
 	isDeleted() {
@@ -103,11 +118,16 @@ export default class Message extends React.Component {
 
 	handleCopy = async() => {
 		await Clipboard.setString(this.props.item.msg);
-		Alert.alert('Copied to Clipboard!');
+		Alert.alert('Copied to clipboard!');
 	}
 
 	handleStar() {
 		this.props.starRequest(this.props.item);
+	}
+
+	handlePermalink() {
+		this.setState({ copyPermalink: true });
+		this.props.permalinkRequest(this.props.item);
 	}
 
 	handleActionPress = (actionIndex) => {
@@ -115,6 +135,8 @@ export default class Message extends React.Component {
 			this.handleDelete();
 		} else if (actionIndex === 2) {
 			this.handleEdit();
+		} else if (actionIndex === 3) {
+			this.handlePermalink();
 		} else if (actionIndex === 4) {
 			this.handleCopy();
 		} else if (actionIndex === 6) {

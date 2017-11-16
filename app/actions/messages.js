@@ -84,3 +84,24 @@ export function starFailure() {
 		type: types.MESSAGES.STAR_FAILURE
 	};
 }
+
+export function permalinkRequest(message) {
+	return {
+		type: types.MESSAGES.PERMALINK_REQUEST,
+		message
+	};
+}
+
+export function permalinkSuccess(permalink) {
+	return {
+		type: types.MESSAGES.PERMALINK_SUCCESS,
+		permalink
+	};
+}
+
+export function permalinkFailure(err) {
+	return {
+		type: types.MESSAGES.PERMALINK_FAILURE,
+		err
+	};
+}

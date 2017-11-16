@@ -8,13 +8,16 @@ import {
 	editSuccess,
 	editFailure,
 	starSuccess,
-	starFailure
+	starFailure,
+	permalinkSuccess,
+	permalinkFailure
 } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
 
 const deleteMessage = message => RocketChat.deleteMessage(message);
 const editMessage = message => RocketChat.editMessage(message);
 const starMessage = message => RocketChat.starMessage(message);
+const getPermalink = message => RocketChat.getPermalink(message);
 
 const get = function* get({ rid }) {
 	const auth = yield select(state => state.login.isAuthenticated);
@@ -58,10 +61,20 @@ const handleStarRequest = function* handleStarRequest({ message }) {
 	}
 };
 
+const handlePermalinkRequest = function* handlePermalinkRequest({ message }) {
+	try {
+		const permalink = yield call(getPermalink, message);
+		yield put(permalinkSuccess(permalink));
+	} catch (error) {
+		yield put(permalinkFailure(error));
+	}
+};
+
 const root = function* root() {
 	yield takeLatest(MESSAGES.REQUEST, get);
 	yield takeLatest(MESSAGES.DELETE_REQUEST, handleDeleteRequest);
 	yield takeLatest(MESSAGES.EDIT_REQUEST, handleEditRequest);
 	yield takeLatest(MESSAGES.STAR_REQUEST, handleStarRequest);
+	yield takeLatest(MESSAGES.PERMALINK_REQUEST, handlePermalinkRequest);
 };
 export default root;

@@ -39,7 +39,10 @@ export const MESSAGES = createRequestTypes('MESSAGES', [
 	'EDIT_FAILURE',
 	'STAR_REQUEST',
 	'STAR_SUCCESS',
-	'STAR_FAILURE'
+	'STAR_FAILURE',
+	'PERMALINK_REQUEST',
+	'PERMALINK_SUCCESS',
+	'PERMALINK_FAILURE'
 ]);
 export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [
 	...defaultTypes,
