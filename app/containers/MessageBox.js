@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
 	textBoxInput: {
 		height: 40,
 		alignSelf: 'stretch',
-		// backgroundColor: '#fff',
 		flexGrow: 1
 	},
 	fileButton: {

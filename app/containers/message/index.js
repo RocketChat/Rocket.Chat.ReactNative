@@ -153,6 +153,7 @@ export default class Message extends React.Component {
 							onPress={this._onPress}
 							item={item}
 							Message_TimeFormat={this.props.Message_TimeFormat}
+							baseUrl={this.props.baseUrl}
 						/>
 						{this.attachments()}
 						{this.renderMessageContent(item)}
