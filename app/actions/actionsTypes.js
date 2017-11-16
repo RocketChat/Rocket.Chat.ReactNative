@@ -30,10 +30,16 @@ export const ROOMS = createRequestTypes('ROOMS');
 export const APP = createRequestTypes('APP', ['READY', 'INIT']);
 export const MESSAGES = createRequestTypes('MESSAGES', [
 	...defaultTypes,
+	'DELETE_REQUEST',
+	'DELETE_SUCCESS',
+	'DELETE_FAILURE',
 	'EDIT_INIT',
 	'EDIT_REQUEST',
 	'EDIT_SUCCESS',
-	'EDIT_FAILURE'
+	'EDIT_FAILURE',
+	'STAR_REQUEST',
+	'STAR_SUCCESS',
+	'STAR_FAILURE'
 ]);
 export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [
 	...defaultTypes,

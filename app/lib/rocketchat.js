@@ -461,6 +461,9 @@ const RocketChat = {
 	editMessage(message) {
 		const { _id, msg, rid } = message;
 		return call('updateMessage', { _id, msg, rid });
+	},
+	starMessage(message) {
+		return call('starMessage', message);
 	}
 };
 

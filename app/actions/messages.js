@@ -20,6 +20,26 @@ export function messagesFailure(err) {
 	};
 }
 
+export function deleteRequest(message) {
+	return {
+		type: types.MESSAGES.DELETE_REQUEST,
+		message
+	};
+}
+
+export function deleteSuccess() {
+	return {
+		type: types.MESSAGES.DELETE_SUCCESS
+	};
+}
+
+export function deleteFailure() {
+	return {
+		type: types.MESSAGES.DELETE_FAILURE
+	};
+}
+
+
 export function editInit(message) {
 	return {
 		type: types.MESSAGES.EDIT_INIT,
@@ -43,5 +63,24 @@ export function editSuccess() {
 export function editFailure() {
 	return {
 		type: types.MESSAGES.EDIT_FAILURE
+	};
+}
+
+export function starRequest(message) {
+	return {
+		type: types.MESSAGES.STAR_REQUEST,
+		message
+	};
+}
+
+export function starSuccess() {
+	return {
+		type: types.MESSAGES.STAR_SUCCESS
+	};
+}
+
+export function starFailure() {
+	return {
+		type: types.MESSAGES.STAR_FAILURE
 	};
 }

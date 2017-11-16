@@ -9,8 +9,7 @@ import { connect } from 'react-redux';
 import Card from './Card';
 import User from './User';
 import Avatar from '../Avatar';
-import RocketChat from '../../lib/rocketchat';
-import { editInit } from '../../actions/messages';
+import { deleteRequest, editInit, starRequest } from '../../actions/messages';
 
 const title = 'Message actions';
 const options = ['Cancel', 'Reply', 'Edit', 'Permalink', 'Copy', 'Quote', 'Star Message', 'Delete'];
@@ -41,14 +40,18 @@ const styles = StyleSheet.create({
 @connect(state => ({
 	message: state.messages.message
 }), dispatch => ({
-	editInit: message => dispatch(editInit(message))
+	deleteRequest: message => dispatch(deleteRequest(message)),
+	editInit: message => dispatch(editInit(message)),
+	starRequest: message => dispatch(starRequest(message))
 }))
 export default class Message extends React.Component {
 	static propTypes = {
 		item: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
 		Message_TimeFormat: PropTypes.string.isRequired,
+		deleteRequest: PropTypes.func.isRequired,
 		editInit: PropTypes.func.isRequired,
+		starRequest: PropTypes.func.isRequired,
 		message: PropTypes.object
 	}
 
@@ -86,7 +89,7 @@ export default class Message extends React.Component {
 				{
 					text: 'Yes, delete it!',
 					style: 'destructive',
-					onPress: () => this.deleteMessage(this.props.item)
+					onPress: () => this.props.deleteRequest(this.props.item)
 				}
 			],
 			{ cancelable: false }
@@ -103,6 +106,10 @@ export default class Message extends React.Component {
 		Alert.alert('Copied to Clipboard!');
 	}
 
+	handleStar() {
+		this.props.starRequest(this.props.item);
+	}
+
 	handleActionPress = (actionIndex) => {
 		if (actionIndex === 7) {
 			this.handleDelete();
@@ -110,12 +117,12 @@ export default class Message extends React.Component {
 			this.handleEdit();
 		} else if (actionIndex === 4) {
 			this.handleCopy();
+		} else if (actionIndex === 6) {
+			this.handleStar();
 		} else {
 			console.log(actionIndex, this.props.item);
 		}
 	}
-
-	deleteMessage = message => RocketChat.deleteMessage(message);
 
 	renderMessageContent() {
 		if (this.isDeleted()) {
