@@ -465,15 +465,25 @@ const RocketChat = {
 	starMessage(message) {
 		return call('starMessage', message);
 	},
-	getPermalink(message) {
+	getRoom(rid) {
 		return new Promise((resolve, reject) => {
-			const result = realm.objects('subscriptions').filtered('rid = $0', message.rid);
+			const result = realm.objects('subscriptions').filtered('rid = $0', rid);
 
 			if (result.length === 0) {
 				return reject(new Error('Room not found'));
 			}
+			return resolve(result[0]);
+		});
+	},
+	async getPermalink(message) {
+		return new Promise(async(resolve, reject) => {
+			let room;
+			try {
+				room = await RocketChat.getRoom(message.rid);
+			} catch (error) {
+				return reject(error);
+			}
 
-			const room = result[0];
 			let roomType;
 			switch (room.t) {
 				case 'p':

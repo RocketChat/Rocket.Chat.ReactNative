@@ -44,6 +44,11 @@ export default function messages(state = initialState, action) {
 				...state,
 				permalink: action.permalink
 			};
+		case types.MESSAGES.SET_INPUT:
+			return {
+				...state,
+				message: action.message
+			};
 		default:
 			return state;
 	}

@@ -105,3 +105,10 @@ export function permalinkFailure(err) {
 		err
 	};
 }
+
+export function setInput(message) {
+	return {
+		type: types.MESSAGES.SET_INPUT,
+		message
+	};
+}

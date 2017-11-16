@@ -9,7 +9,8 @@ import { connect } from 'react-redux';
 import Card from './Card';
 import User from './User';
 import Avatar from '../Avatar';
-import { deleteRequest, editInit, starRequest, permalinkRequest } from '../../actions/messages';
+import { deleteRequest, editInit, starRequest, permalinkRequest, setInput } from '../../actions/messages';
+import RocketChat from '../../lib/rocketchat';
 
 const title = 'Message actions';
 const options = ['Cancel', 'Reply', 'Edit', 'Permalink', 'Copy', 'Quote', 'Star Message', 'Delete'];
@@ -39,12 +40,14 @@ const styles = StyleSheet.create({
 
 @connect(state => ({
 	message: state.messages.message,
-	permalink: state.messages.permalink
+	permalink: state.messages.permalink,
+	user: state.login.user
 }), dispatch => ({
 	deleteRequest: message => dispatch(deleteRequest(message)),
 	editInit: message => dispatch(editInit(message)),
 	starRequest: message => dispatch(starRequest(message)),
-	permalinkRequest: message => dispatch(permalinkRequest(message))
+	permalinkRequest: message => dispatch(permalinkRequest(message)),
+	setInput: message => dispatch(setInput(message))
 }))
 export default class Message extends React.Component {
 	static propTypes = {
@@ -55,23 +58,48 @@ export default class Message extends React.Component {
 		editInit: PropTypes.func.isRequired,
 		starRequest: PropTypes.func.isRequired,
 		permalinkRequest: PropTypes.func.isRequired,
+		setInput: PropTypes.func.isRequired,
+		user: PropTypes.object.isRequired,
 		message: PropTypes.object,
 		permalink: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
-		this.state = { copyPermalink: false };
+		this.state = {
+			copyPermalink: false,
+			reply: false,
+			quote: false
+		};
 		this.handleActionPress = this.handleActionPress.bind(this);
 		this.showActions = this.showActions.bind(this);
 	}
 
-	async componentWillReceiveProps(props) {
-		if (props.permalink) {
+	async componentWillReceiveProps(nextProps) {
+		if (this.props.permalink !== nextProps.permalink) {
+			// copy permalink
 			if (this.state.copyPermalink) {
 				this.setState({ copyPermalink: false });
-				await Clipboard.setString(props.permalink);
+				await Clipboard.setString(nextProps.permalink);
 				Alert.alert('Permalink copied to clipboard!');
+
+			// quote
+			} else if (this.state.quote) {
+				this.setState({ quote: false });
+				const msg = `[ ](${ nextProps.permalink }) `;
+				this.props.setInput({ msg });
+
+			// reply
+			} else if (this.state.reply) {
+				this.setState({ reply: false });
+				let msg = `[ ](${ nextProps.permalink }) `;
+				const room = await RocketChat.getRoom(this.props.item.rid);
+
+				// if original message wasn't sent by current user and neither from a direct room
+				if (this.props.user.username !== this.props.item.u.username && room.t !== 'd') {
+					msg += `@${ this.props.item.u.username } `;
+				}
+				this.props.setInput({ msg });
 			}
 		}
 	}
@@ -130,17 +158,39 @@ export default class Message extends React.Component {
 		this.props.permalinkRequest(this.props.item);
 	}
 
+	handleReply() {
+		this.setState({ reply: true });
+		this.props.permalinkRequest(this.props.item);
+	}
+
+	handleQuote() {
+		this.setState({ quote: true });
+		this.props.permalinkRequest(this.props.item);
+	}
+
 	handleActionPress = (actionIndex) => {
-		if (actionIndex === 7) {
-			this.handleDelete();
+		// reply
+		if (actionIndex === 1) {
+			this.handleReply();
+		// edit
 		} else if (actionIndex === 2) {
 			this.handleEdit();
+		// permalink
 		} else if (actionIndex === 3) {
 			this.handlePermalink();
+		// copy
 		} else if (actionIndex === 4) {
 			this.handleCopy();
+		// quote
+		} else if (actionIndex === 5) {
+			this.handleQuote();
+		// star
 		} else if (actionIndex === 6) {
 			this.handleStar();
+		// delete
+		} else if (actionIndex === 7) {
+			this.handleDelete();
+		// reply
 		} else {
 			console.log(actionIndex, this.props.item);
 		}
