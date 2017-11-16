@@ -457,6 +457,10 @@ const RocketChat = {
 	},
 	deleteMessage(message) {
 		return call('deleteMessage', { _id: message._id });
+	},
+	editMessage(message) {
+		const { _id, msg, rid } = message;
+		return call('updateMessage', { _id, msg, rid });
 	}
 };
 

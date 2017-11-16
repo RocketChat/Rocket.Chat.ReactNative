@@ -1,7 +1,9 @@
-import { takeLatest, select, take, put } from 'redux-saga/effects';
+import { takeLatest, select, take, put, call } from 'redux-saga/effects';
 import { MESSAGES, LOGIN } from '../actions/actionsTypes';
-import { messagesSuccess, messagesFailure } from '../actions/messages';
+import { messagesSuccess, messagesFailure, editSuccess, editFailure } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
+
+const editMessage = message => RocketChat.editMessage(message);
 
 const get = function* get({ rid }) {
 	const auth = yield select(state => state.login.isAuthenticated);
@@ -17,7 +19,18 @@ const get = function* get({ rid }) {
 		yield put(messagesFailure(err.status));
 	}
 };
-const getData = function* getData() {
-	yield takeLatest(MESSAGES.REQUEST, get);
+
+const handleEditRequest = function* handleEditRequest({ message }) {
+	try {
+		yield call(editMessage, message);
+		yield put(editSuccess());
+	} catch (error) {
+		yield put(editFailure());
+	}
 };
-export default getData;
+
+const root = function* root() {
+	yield takeLatest(MESSAGES.REQUEST, get);
+	yield takeLatest(MESSAGES.EDIT_REQUEST, handleEditRequest);
+};
+export default root;

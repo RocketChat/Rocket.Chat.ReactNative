@@ -4,11 +4,13 @@ import { View, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
 import { emojify } from 'react-emojione';
 import Markdown from 'react-native-easy-markdown';
 import ActionSheet from 'react-native-actionsheet';
+import { connect } from 'react-redux';
 
 import Card from './Card';
 import User from './User';
 import Avatar from '../Avatar';
 import RocketChat from '../../lib/rocketchat';
+import { editInit } from '../../actions/messages';
 
 const title = 'Message actions';
 const options = ['Cancel', 'Reply', 'Edit', 'Permalink', 'Copy', 'Quote', 'Star Message', 'Delete'];
@@ -30,14 +32,24 @@ const styles = StyleSheet.create({
 	textInfo: {
 		fontStyle: 'italic',
 		color: '#a0a0a0'
+	},
+	editing: {
+		backgroundColor: '#fff5df'
 	}
 });
 
-export default class Message extends React.PureComponent {
+@connect(state => ({
+	message: state.messages.message
+}), dispatch => ({
+	editInit: message => dispatch(editInit(message))
+}))
+export default class Message extends React.Component {
 	static propTypes = {
 		item: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
-		Message_TimeFormat: PropTypes.string.isRequired
+		Message_TimeFormat: PropTypes.string.isRequired,
+		editInit: PropTypes.func.isRequired,
+		message: PropTypes.object
 	}
 
 	constructor(props) {
@@ -81,9 +93,16 @@ export default class Message extends React.PureComponent {
 		);
 	}
 
+	handleEdit() {
+		const { _id, msg, rid } = this.props.item;
+		this.props.editInit({ _id, msg, rid });
+	}
+
 	handleActionPress = (actionIndex) => {
 		if (actionIndex === 7) {
 			this.handleDelete();
+		} else if (actionIndex === 2) {
+			this.handleEdit();
 		} else {
 			console.log(actionIndex, this.props.item);
 		}
@@ -113,11 +132,13 @@ export default class Message extends React.PureComponent {
 		}
 
 		const username = item.alias || item.u.username;
+		const isEditing = this.props.message._id === item._id;
 
 		return (
 			<TouchableOpacity
 				onLongPress={() => this.showActions()}
 				disabled={this.isDeleted()}
+				style={isEditing ? styles.editing : null}
 			>
 				<View style={[styles.message, extraStyle]}>
 					<Avatar

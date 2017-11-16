@@ -19,3 +19,29 @@ export function messagesFailure(err) {
 		err
 	};
 }
+
+export function editInit(message) {
+	return {
+		type: types.MESSAGES.EDIT_INIT,
+		message
+	};
+}
+
+export function editRequest(message) {
+	return {
+		type: types.MESSAGES.EDIT_REQUEST,
+		message
+	};
+}
+
+export function editSuccess() {
+	return {
+		type: types.MESSAGES.EDIT_SUCCESS
+	};
+}
+
+export function editFailure() {
+	return {
+		type: types.MESSAGES.EDIT_FAILURE
+	};
+}

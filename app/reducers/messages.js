@@ -2,7 +2,9 @@ import * as types from '../actions/actionsTypes';
 
 const initialState = {
 	isFetching: false,
-	failure: false
+	failure: false,
+	message: {},
+	editing: false
 };
 
 export default function messages(state = initialState, action) {
@@ -24,8 +26,18 @@ export default function messages(state = initialState, action) {
 				failure: true,
 				errorMessage: action.err
 			};
-		// case types.LOGOUT:
-		// 	return initialState;
+		case types.MESSAGES.EDIT_INIT:
+			return {
+				...state,
+				message: action.message,
+				editing: true
+			};
+		case types.MESSAGES.EDIT_SUCCESS:
+			return {
+				...state,
+				message: {},
+				editing: false
+			};
 		default:
 			return state;
 	}

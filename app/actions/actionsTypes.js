@@ -28,7 +28,13 @@ export const FORGOT_PASSWORD = createRequestTypes('FORGOT_PASSWORD', [
 ]);
 export const ROOMS = createRequestTypes('ROOMS');
 export const APP = createRequestTypes('APP', ['READY', 'INIT']);
-export const MESSAGES = createRequestTypes('MESSAGES');
+export const MESSAGES = createRequestTypes('MESSAGES', [
+	...defaultTypes,
+	'EDIT_INIT',
+	'EDIT_REQUEST',
+	'EDIT_SUCCESS',
+	'EDIT_FAILURE'
+]);
 export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [
 	...defaultTypes,
 	'REQUEST_USERS',
