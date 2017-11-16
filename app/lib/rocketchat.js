@@ -463,7 +463,7 @@ const RocketChat = {
 		return call('updateMessage', { _id, msg, rid });
 	},
 	starMessage(message) {
-		return call('starMessage', message);
+		return call('starMessage', { _id: message._id, rid: message.rid, starred: true });
 	},
 	getRoom(rid) {
 		return new Promise((resolve, reject) => {
