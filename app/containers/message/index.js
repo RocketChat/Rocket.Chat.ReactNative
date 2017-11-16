@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, Alert, Clipboard } from 'react-native';
 import { emojify } from 'react-emojione';
 import Markdown from 'react-native-easy-markdown';
 import ActionSheet from 'react-native-actionsheet';
@@ -98,11 +98,18 @@ export default class Message extends React.Component {
 		this.props.editInit({ _id, msg, rid });
 	}
 
+	handleCopy = async() => {
+		await Clipboard.setString(this.props.item.msg);
+		Alert.alert('Copied to Clipboard!');
+	}
+
 	handleActionPress = (actionIndex) => {
 		if (actionIndex === 7) {
 			this.handleDelete();
 		} else if (actionIndex === 2) {
 			this.handleEdit();
+		} else if (actionIndex === 4) {
+			this.handleCopy();
 		} else {
 			console.log(actionIndex, this.props.item);
 		}
