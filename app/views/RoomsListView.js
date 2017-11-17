@@ -91,8 +91,7 @@ export default class RoomsListView extends React.Component {
 				size={26}
 				backgroundColor='transparent'
 				onPress={params.createChannel}
-			/>
-		);
+			/>);
 
 		return { headerRight };
 	};
@@ -102,10 +101,7 @@ export default class RoomsListView extends React.Component {
 
 		this.state = {
 			dataSource: [],
-			searching: false,
-			searchDataSource: [],
-			searchText: '',
-			login: false
+			searchText: ''
 		};
 		this.data = realm.objects('subscriptions').filtered('_server.id = $0', this.props.server).sorted('_updatedAt', true);
 	}
@@ -118,7 +114,6 @@ export default class RoomsListView extends React.Component {
 		});
 
 		this.setState({
-			...this.state,
 			dataSource: ds.cloneWithRows(this.data)
 		});
 	}
@@ -138,8 +133,7 @@ export default class RoomsListView extends React.Component {
 	onSearchChangeText = (text) => {
 		const searchText = text.trim();
 		this.setState({
-			searchText: text,
-			searching: searchText !== ''
+			searchText: text
 		});
 		if (searchText === '') {
 			return this.setState({
@@ -206,9 +200,7 @@ export default class RoomsListView extends React.Component {
 
 		const clearSearch = () => {
 			this.setState({
-				searchText: '',
-				searching: false,
-				searchDataSource: []
+				searchText: ''
 			});
 		};
 
