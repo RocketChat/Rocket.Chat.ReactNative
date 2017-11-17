@@ -106,6 +106,26 @@ export function permalinkFailure(err) {
 	};
 }
 
+export function togglePinRequest(message) {
+	return {
+		type: types.MESSAGES.TOGGLE_PIN_REQUEST,
+		message
+	};
+}
+
+export function togglePinSuccess() {
+	return {
+		type: types.MESSAGES.TOGGLE_PIN_SUCCESS
+	};
+}
+
+export function togglePinFailure(err) {
+	return {
+		type: types.MESSAGES.TOGGLE_PIN_FAILURE,
+		err
+	};
+}
+
 export function setInput(message) {
 	return {
 		type: types.MESSAGES.SET_INPUT,

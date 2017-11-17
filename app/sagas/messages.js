@@ -10,7 +10,9 @@ import {
 	starSuccess,
 	starFailure,
 	permalinkSuccess,
-	permalinkFailure
+	permalinkFailure,
+	togglePinSuccess,
+	togglePinFailure
 } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
 
@@ -18,6 +20,7 @@ const deleteMessage = message => RocketChat.deleteMessage(message);
 const editMessage = message => RocketChat.editMessage(message);
 const starMessage = message => RocketChat.starMessage(message);
 const getPermalink = message => RocketChat.getPermalink(message);
+const togglePinMessage = message => RocketChat.togglePinMessage(message);
 
 const get = function* get({ rid }) {
 	const auth = yield select(state => state.login.isAuthenticated);
@@ -70,11 +73,21 @@ const handlePermalinkRequest = function* handlePermalinkRequest({ message }) {
 	}
 };
 
+const handleTogglePinRequest = function* handleTogglePinRequest({ message }) {
+	try {
+		yield call(togglePinMessage, message);
+		yield put(togglePinSuccess());
+	} catch (error) {
+		yield put(togglePinFailure(error));
+	}
+};
+
 const root = function* root() {
 	yield takeLatest(MESSAGES.REQUEST, get);
 	yield takeLatest(MESSAGES.DELETE_REQUEST, handleDeleteRequest);
 	yield takeLatest(MESSAGES.EDIT_REQUEST, handleEditRequest);
 	yield takeLatest(MESSAGES.STAR_REQUEST, handleStarRequest);
 	yield takeLatest(MESSAGES.PERMALINK_REQUEST, handlePermalinkRequest);
+	yield takeLatest(MESSAGES.TOGGLE_PIN_REQUEST, handleTogglePinRequest);
 };
 export default root;

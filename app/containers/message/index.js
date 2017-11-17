@@ -2,20 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, TouchableOpacity, Text, Alert, Clipboard } from 'react-native';
 import { emojify } from 'react-emojione';
-import Markdown from 'react-native-easy-markdown';
+import Markdown from 'react-native-easy-markdown'; // eslint-disable-line
 import ActionSheet from 'react-native-actionsheet';
 import { connect } from 'react-redux';
 
 import Card from './Card';
 import User from './User';
 import Avatar from '../Avatar';
-import { deleteRequest, editInit, starRequest, permalinkRequest, setInput } from '../../actions/messages';
+import {
+	deleteRequest,
+	editInit,
+	starRequest,
+	permalinkRequest,
+	togglePinRequest,
+	setInput
+} from '../../actions/messages';
 import RocketChat from '../../lib/rocketchat';
 
 const title = 'Message actions';
-const options = ['Cancel', 'Reply', 'Edit', 'Permalink', 'Copy', 'Quote', 'Star Message', 'Delete'];
+const options = ['Cancel', 'Reply', 'Edit', 'Permalink', 'Copy', 'Quote', 'Star Message', 'Pin Message', 'Delete'];
 const CANCEL_INDEX = 0;
-const DESTRUCTIVE_INDEX = 7;
+const DESTRUCTIVE_INDEX = 8;
 
 const styles = StyleSheet.create({
 	content: {
@@ -47,6 +54,7 @@ const styles = StyleSheet.create({
 	editInit: message => dispatch(editInit(message)),
 	starRequest: message => dispatch(starRequest(message)),
 	permalinkRequest: message => dispatch(permalinkRequest(message)),
+	togglePinRequest: message => dispatch(togglePinRequest(message)),
 	setInput: message => dispatch(setInput(message))
 }))
 export default class Message extends React.Component {
@@ -58,6 +66,7 @@ export default class Message extends React.Component {
 		editInit: PropTypes.func.isRequired,
 		starRequest: PropTypes.func.isRequired,
 		permalinkRequest: PropTypes.func.isRequired,
+		togglePinRequest: PropTypes.func.isRequired,
 		setInput: PropTypes.func.isRequired,
 		user: PropTypes.object.isRequired,
 		message: PropTypes.object,
@@ -158,6 +167,10 @@ export default class Message extends React.Component {
 		this.props.permalinkRequest(this.props.item);
 	}
 
+	handleTogglePin() {
+		this.props.togglePinRequest(this.props.item);
+	}
+
 	handleReply() {
 		this.setState({ reply: true });
 		this.props.permalinkRequest(this.props.item);
@@ -187,8 +200,11 @@ export default class Message extends React.Component {
 		// star
 		} else if (actionIndex === 6) {
 			this.handleStar();
-		// delete
+		// toggle pin
 		} else if (actionIndex === 7) {
+			this.handleTogglePin();
+		// delete
+		} else if (actionIndex === 8) {
 			this.handleDelete();
 		// reply
 		} else {

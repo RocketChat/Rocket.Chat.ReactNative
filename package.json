@@ -25,7 +25,7 @@
     "react-native-actionsheet": "^2.3.0",
     "react-native-animatable": "^1.2.4",
     "react-native-card-view": "0.0.3",
-    "react-native-easy-markdown": "^1.1.8",
+    "react-native-easy-markdown": "git+https://github.com/lappalj4/react-native-easy-markdown.git",
     "react-native-fetch-blob": "^0.10.8",
     "react-native-image-picker": "^0.26.7",
     "react-native-img-cache": "^1.5.0",

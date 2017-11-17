@@ -89,6 +89,7 @@ const RocketChat = {
 							const message = ddbMessage.fields.args[0];
 							message.temp = false;
 							message._server = { id: reduxStore.getState().server.server };
+							message.starred = message.starred.length > 0;
 							realm.create('messages', message, true);
 						});
 					}
@@ -270,6 +271,7 @@ const RocketChat = {
 							message.temp = false;
 							message._server = { id: reduxStore.getState().server.server };
 							// write('messages', message);
+							message.starred = !!message.starred;
 							realm.create('messages', message, true);
 						});
 					});
@@ -463,7 +465,13 @@ const RocketChat = {
 		return call('updateMessage', { _id, msg, rid });
 	},
 	starMessage(message) {
-		return call('starMessage', { _id: message._id, rid: message.rid, starred: true });
+		return call('starMessage', { _id: message._id, rid: message.rid, starred: !message.starred });
+	},
+	togglePinMessage(message) {
+		if (message.pinned) {
+			return call('unpinMessage', message);
+		}
+		return call('pinMessage', message);
 	},
 	getRoom(rid) {
 		return new Promise((resolve, reject) => {
