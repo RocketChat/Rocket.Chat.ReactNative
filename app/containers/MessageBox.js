@@ -58,7 +58,6 @@ export default class MessageBox extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (this.props.message !== nextProps.message) {
-			console.log(nextProps.message);
 			this.setState({ message: nextProps.message.msg });
 			this.component.focus();
 		}

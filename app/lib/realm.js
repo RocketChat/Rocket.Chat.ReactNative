@@ -84,6 +84,14 @@ const attachment = {
 	}
 };
 
+const messagesEditedBySchema = {
+	name: 'messagesEditedBy',
+	properties: {
+		_id: { type: 'string', optional: true },
+		username: { type: 'string', optional: true }
+	}
+};
+
 const messagesSchema = {
 	name: 'messages',
 	primaryKey: '_id',
@@ -104,7 +112,8 @@ const messagesSchema = {
 		_updatedAt: { type: 'date', optional: true },
 		temp: { type: 'bool', optional: true },
 		pinned: { type: 'bool', optional: true },
-		starred: { type: 'bool', optional: true }
+		starred: { type: 'bool', optional: true },
+		editedBy: 'messagesEditedBy'
 	}
 };
 //
@@ -118,7 +127,8 @@ const realm = new Realm({
 		messagesSchema,
 		usersSchema,
 		roomsSchema,
-		attachment
+		attachment,
+		messagesEditedBySchema
 	]
 });
 export default realm;

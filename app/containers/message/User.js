@@ -39,8 +39,8 @@ export default class Message extends React.PureComponent {
 		baseUrl: PropTypes.string
 	}
 
-	renderEdited(username, item) {
-		if (!item._updatedAt) {
+	renderEdited(item) {
+		if (!item.editedBy) {
 			return null;
 		}
 		return (
@@ -48,7 +48,7 @@ export default class Message extends React.PureComponent {
 				<Icon name='pencil-square-o' color='#888' size={10} />
 				<Avatar
 					style={{ marginLeft: 5 }}
-					text={username}
+					text={item.editedBy.username}
 					size={20}
 					baseUrl={this.props.baseUrl}
 					avatar={item.avatar}
@@ -76,7 +76,7 @@ export default class Message extends React.PureComponent {
 				</Text>
 				{aliasUsername}
 				<Text style={styles.time}>{time}</Text>
-				{this.renderEdited(username, item)}
+				{this.renderEdited(item)}
 			</View>
 		);
 	}

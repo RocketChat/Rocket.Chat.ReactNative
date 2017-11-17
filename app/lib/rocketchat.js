@@ -89,7 +89,7 @@ const RocketChat = {
 							const message = ddbMessage.fields.args[0];
 							message.temp = false;
 							message._server = { id: reduxStore.getState().server.server };
-							message.starred = message.starred.length > 0;
+							message.starred = !!message.starred;
 							realm.create('messages', message, true);
 						});
 					}
