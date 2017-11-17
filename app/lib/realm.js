@@ -104,7 +104,7 @@ const messagesSchema = {
 		_updatedAt: { type: 'date', optional: true },
 		temp: { type: 'bool', optional: true },
 		pinned: { type: 'bool', optional: true },
-		starred: { type: 'bool', optional: true },
+		starred: { type: 'bool', optional: true }
 	}
 };
 //
