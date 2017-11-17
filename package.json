@@ -33,6 +33,7 @@
     "react-native-meteor": "^1.1.0",
     "react-native-navigation": "^1.1.193",
     "react-native-optimized-flatlist": "^1.0.1",
+    "react-native-push-notification": "^3.0.0",
     "react-native-svg": "^5.4.1",
     "react-native-svg-image": "^1.1.4",
     "react-native-vector-icons": "^4.3.0",

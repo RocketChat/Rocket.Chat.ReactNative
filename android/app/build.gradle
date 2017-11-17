@@ -144,6 +144,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-push-notification')
     compile project(':react-native-navigation')
     compile project(':react-native-svg')
     compile project(':react-native-image-picker')

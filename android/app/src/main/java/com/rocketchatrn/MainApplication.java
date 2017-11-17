@@ -3,6 +3,7 @@ package com.rocketchatrn;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 // import com.reactnativenavigation.NavigationReactPackage;
 import com.horcrux.svg.SvgPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -33,7 +34,8 @@ public class MainApplication extends NavigationApplication {
             new VectorIconsPackage(),
             new RNFetchBlobPackage(),
             new ZeroconfReactPackage(),
-            new RealmReactPackage()
+            new RealmReactPackage(),
+            new ReactNativePushNotificationPackage()
       );
     }
 
