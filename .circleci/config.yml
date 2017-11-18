@@ -1,3 +1,5 @@
+# Clear CI cache
+
 defaults: &defaults
   working_directory: ~/repo
 
