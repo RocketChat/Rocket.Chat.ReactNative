@@ -17,7 +17,6 @@ const restore = function* restore() {
 		if (currentServer) {
 			yield put(setServer(currentServer));
 		}
-
 		yield put(actions.appReady({}));
 	} catch (e) {
 		console.log(e);
