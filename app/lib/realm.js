@@ -102,14 +102,24 @@ const messagesSchema = {
 		avatar: { type: 'string', optional: true },
 		attachments: { type: 'list', objectType: 'attachment' },
 		_updatedAt: { type: 'date', optional: true },
-		temp: { type: 'bool', optional: true }
+		temp: { type: 'bool', optional: true },
+		pinned: { type: 'bool', optional: true },
+		starred: { type: 'bool', optional: true }
 	}
 };
 //
 // Realm.clearTestState();
 // AsyncStorage.clear();
 const realm = new Realm({
-	schema: [settingsSchema, serversSchema, subscriptionSchema, messagesSchema, usersSchema, roomsSchema, attachment]
+	schema: [
+		settingsSchema,
+		serversSchema,
+		subscriptionSchema,
+		messagesSchema,
+		usersSchema,
+		roomsSchema,
+		attachment
+	]
 });
 export default realm;
 
