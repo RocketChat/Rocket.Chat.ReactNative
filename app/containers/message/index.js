@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, TouchableOpacity, Text, Alert, Clipboard } from 'react-native';
 import { emojify } from 'react-emojione';
-import Markdown from 'react-native-easy-markdown'; // eslint-disable-line
+import Markdown from 'react-native-easy-markdown';
 import ActionSheet from 'react-native-actionsheet';
 import { connect } from 'react-redux';
 
