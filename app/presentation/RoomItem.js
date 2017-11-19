@@ -66,7 +66,7 @@ export default class RoomItem extends React.PureComponent {
 	static propTypes = {
 		type: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
-		_updatedAt: PropTypes.date,
+		_updatedAt: PropTypes.instanceOf(Date),
 		unread: PropTypes.number,
 		baseUrl: PropTypes.string,
 		onPress: PropTypes.func,

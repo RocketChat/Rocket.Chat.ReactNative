@@ -21,7 +21,6 @@ const restore = function* restore() {
 			const tmp = realm.objects('settings');
 			yield put(actions.setAllSettings(RocketChat.parseSettings(tmp.slice(0, tmp.length))));
 		}
-
 		yield put(actions.appReady({}));
 	} catch (e) {
 		console.log(e);
