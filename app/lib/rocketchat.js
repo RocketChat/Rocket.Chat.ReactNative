@@ -1,6 +1,6 @@
 import Meteor from 'react-native-meteor';
 import Random from 'react-native-meteor/lib/Random';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, Platform } from 'react-native';
 import { hashPassword } from 'react-native-meteor/lib/utils';
 
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -212,6 +212,21 @@ const RocketChat = {
 			return cb && cb();
 		});
 	},
+	registerPushToken(id, token) {
+		const key = Platform.OS === 'ios' ? 'apn' : 'gcm';
+		const data = {
+			id: `RocketChatRN${ id }`,
+			token: { [key]: token },
+			appName: 'main',
+			userId: id,
+			metadata: {}
+		};
+		return call('raix:push-update', data);
+	},
+
+	updatePushToken(pushId) {
+		return call('raix:push-setuser', pushId);
+	},
 
 	loadMessagesForRoom(rid, end, cb) {
 		return new Promise((resolve, reject) => {
@@ -383,17 +398,23 @@ const RocketChat = {
 		const temp = realm.objects('settings').sorted('_updatedAt', true)[0];
 		const result = await (!temp ? call('public-settings/get') : call('public-settings/get', new Date(temp._updatedAt)));
 		const settings = temp ? result.update : result;
-		const filteredSettings = RocketChat._filterSettings(settings);
+		const filteredSettings = RocketChat._prepareSettings(RocketChat._filterSettings(settings));
 		realm.write(() => {
 			filteredSettings.forEach(setting => realm.create('settings', setting, true));
 		});
 		reduxStore.dispatch(actions.setAllSettings(RocketChat.parseSettings(filteredSettings)));
 	},
 	parseSettings: settings => settings.reduce((ret, item) => {
-		ret[item._id] = item[settingsType[item.type]] || item.valueAsString;
+		ret[item._id] = item[settingsType[item.type]] || item.valueAsString || item.value;
 		return ret;
 	}, {}),
-	_filterSettings: settings => settings.filter(setting => settingsType[setting.type])
+	_prepareSettings(settings) {
+		return settings.map((setting) => {
+			setting[settingsType[setting.type]] = setting.value;
+			return setting;
+		});
+	},
+	_filterSettings: settings => settings.filter(setting => settingsType[setting.type] && setting.value)
 };
 
 export default RocketChat;
