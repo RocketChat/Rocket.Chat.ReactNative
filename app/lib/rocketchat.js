@@ -50,37 +50,17 @@ const RocketChat = {
 			const url = `${ _url }/websocket`;
 
 			Meteor.connect(url, { autoConnect: true, autoReconnect: true });
+
 			Meteor.ddp.on('disconnected', () => {
 				reduxStore.dispatch(disconnect());
 			});
+
 			Meteor.ddp.on('connected', () => {
 				reduxStore.dispatch(connectSuccess());
 				resolve();
 			});
-			Meteor.ddp.on('connected', () => {
-				Meteor.call('public-settings/get', (err, data) => {
-					if (err) {
-						console.error(err);
-					}
 
-					const settings = {};
-					realm.write(() => {
-						data.forEach((item) => {
-							const setting = {
-								_id: item._id
-							};
-							setting._server = { id: reduxStore.getState().server.server };
-							if (settingsType[item.type]) {
-								setting[settingsType[item.type]] = item.value;
-								realm.create('settings', setting, true);
-							}
-
-							settings[item._id] = item.value;
-						});
-					});
-					reduxStore.dispatch(actions.setAllSettings(settings));
-				});
-
+			Meteor.ddp.on('connected', async() => {
 				Meteor.ddp.on('changed', (ddbMessage) => {
 					if (ddbMessage.collection === 'stream-room-messages') {
 						realm.write(() => {
@@ -99,11 +79,12 @@ const RocketChat = {
 						});
 					}
 				});
+
+				RocketChat.getSettings();
 			});
 		})
 			.catch(e => console.error(e));
 	},
-
 	login(params, callback) {
 		return new Promise((resolve, reject) => {
 			Meteor._startLoggingIn();
@@ -389,7 +370,22 @@ const RocketChat = {
 		Meteor.disconnect();
 		AsyncStorage.removeItem(TOKEN_KEY);
 		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
-	}
+	},
+	async getSettings() {
+		const temp = realm.objects('settings').sorted('_updatedAt', true)[0];
+		const result = await (!temp ? call('public-settings/get') : call('public-settings/get', new Date(temp._updatedAt)));
+		const settings = temp ? result.update : result;
+		const filteredSettings = RocketChat._filterSettings(settings);
+		realm.write(() => {
+			filteredSettings.forEach(setting => realm.create('settings', setting, true));
+		});
+		reduxStore.dispatch(actions.setAllSettings(RocketChat.parseSettings(filteredSettings)));
+	},
+	parseSettings: settings => settings.reduce((ret, item) => {
+		ret[item._id] = item[settingsType[item.type]] || item.valueAsString;
+		return ret;
+	}, {}),
+	_filterSettings: settings => settings.filter(setting => settingsType[setting.type])
 };
 
 export default RocketChat;
