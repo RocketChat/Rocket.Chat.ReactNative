@@ -239,7 +239,7 @@ export default class RoomsListView extends React.Component {
 			return;
 		}
 
-		navigateToRoom({ sid: id });
+		navigateToRoom({ sid: id, ...item });
 		clearSearch();
 	}
 
