@@ -26,9 +26,7 @@ const RocketChat = {
 	TOKEN_KEY,
 
 	createChannel({ name, users, type }) {
-		return new Promise((resolve, reject) => {
-			Meteor.call(type ? 'createChannel' : 'createPrivateGroup', name, users, type, (err, res) => (err ? reject(err) : resolve(res)));
-		});
+		return call(type ? 'createChannel' : 'createPrivateGroup', name, users, type);
 	},
 
 	async getUserToken() {
@@ -136,36 +134,15 @@ const RocketChat = {
 	},
 
 	register({ credentials }) {
-		return new Promise((resolve, reject) => {
-			Meteor.call('registerUser', credentials, (err, userId) => {
-				if (err) {
-					reject(err);
-				}
-				resolve(userId);
-			});
-		});
+		return call('registerUser', credentials);
 	},
 
 	setUsername({ credentials }) {
-		return new Promise((resolve, reject) => {
-			Meteor.call('setUsername', credentials.username, (err, result) => {
-				if (err) {
-					reject(err);
-				}
-				resolve(result);
-			});
-		});
+		return call('setUsername', credentials.username);
 	},
 
 	forgotPassword(email) {
-		return new Promise((resolve, reject) => {
-			Meteor.call('sendForgotPasswordEmail', email, (err, result) => {
-				if (err) {
-					reject(err);
-				}
-				resolve(result);
-			});
-		});
+		return call('sendForgotPasswordEmail', email);
 	},
 
 	loginWithPassword({ username, password, code }, callback) {
@@ -317,38 +294,17 @@ const RocketChat = {
 	},
 
 	spotlight(search, usernames) {
-		return new Promise((resolve, reject) => {
-			Meteor.call('spotlight', search, usernames, (error, result) => {
-				if (error) {
-					return reject(error);
-				}
-				return resolve(result);
-			});
-		});
+		return call('spotlight', search, usernames);
 	},
 
 	createDirectMessage(username) {
-		return new Promise((resolve, reject) => {
-			Meteor.call('createDirectMessage', username, (error, result) => {
-				if (error) {
-					return reject(error);
-				}
-				return resolve(result);
-			});
-		});
+		return call('createDirectMessage', username);
 	},
 	readMessages(rid) {
 		return call('readMessages', rid);
 	},
 	joinRoom(rid) {
-		return new Promise((resolve, reject) => {
-			Meteor.call('joinRoom', rid, (error, result) => {
-				if (error) {
-					return reject(error);
-				}
-				return resolve(result);
-			});
-		});
+		return call('joinRoom', rid);
 	},
 
 
@@ -362,26 +318,12 @@ const RocketChat = {
 	*/
 	_ufsCreate(fileInfo) {
 		// return call('ufsCreate', fileInfo);
-		return new Promise((resolve, reject) => {
-			Meteor.call('ufsCreate', fileInfo, (error, result) => {
-				if (error) {
-					return reject(error);
-				}
-				return resolve(result);
-			});
-		});
+		return call('ufsCreate', fileInfo);
 	},
 
 	// ["ZTE8CKHJt7LATv7Me","fileSystem","e8E96b2819"
 	_ufsComplete(fileId, store, token) {
-		return new Promise((resolve, reject) => {
-			Meteor.call('ufsComplete', fileId, store, token, (error, result) => {
-				if (error) {
-					return reject(error);
-				}
-				return resolve(result);
-			});
-		});
+		return call('ufsComplete', fileId, store, token);
 	},
 
 	/*
@@ -395,14 +337,7 @@ const RocketChat = {
 		}
 	*/
 	_sendFileMessage(rid, data, msg = {}) {
-		return new Promise((resolve, reject) => {
-			Meteor.call('sendFileMessage', rid, null, data, msg, (error, result) => {
-				if (error) {
-					return reject(error);
-				}
-				return resolve(result);
-			});
-		});
+		return call('sendFileMessage', rid, null, data, msg);
 	},
 	async sendFileMessage(rid, fileInfo, data) {
 		const placeholder = RocketChat.getMessage(rid, 'Sending an image');
