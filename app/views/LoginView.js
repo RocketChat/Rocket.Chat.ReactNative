@@ -1,6 +1,6 @@
 import React from 'react';
 
-// import Spinner from 'react-native-loading-spinner-overlay';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import PropTypes from 'prop-types';
 import { Keyboard, Text, TextInput, View, TouchableOpacity, SafeAreaView } from 'react-native';
@@ -143,6 +143,7 @@ class LoginView extends React.Component {
 							</TouchableOpacity>
 							{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
 						</View>
+						<Spinner visible={this.props.login.isFetching} textContent='Loading...' textStyle={{ color: '#FFF' }} />
 					</SafeAreaView>
 				</View>
 			</KeyboardView>
