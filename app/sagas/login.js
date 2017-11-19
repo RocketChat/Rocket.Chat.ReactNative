@@ -145,7 +145,7 @@ const handleForgotPasswordRequest = function* handleForgotPasswordRequest({ emai
 };
 
 const root = function* root() {
-	yield takeEvery(types.SERVER.CHANGED, handleLoginWhenServerChanges);
+	yield takeLatest(types.SERVER.CHANGED, handleLoginWhenServerChanges);
 	yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
 	yield takeLatest(types.LOGIN.SUCCESS, saveToken);
 	yield takeLatest(types.LOGIN.SUBMIT, handleLoginSubmit);

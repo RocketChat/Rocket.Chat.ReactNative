@@ -18,7 +18,9 @@ const settingsSchema = {
 		_server: 'servers',
 		valueAsString: { type: 'string', optional: true },
 		valueAsBoolean: { type: 'bool', optional: true },
-		valueAsNumber: { type: 'int', optional: true }
+		valueAsNumber: { type: 'int', optional: true },
+
+		_updatedAt: { type: 'date', optional: true }
 	}
 };
 
