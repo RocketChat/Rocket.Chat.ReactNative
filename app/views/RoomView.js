@@ -86,7 +86,7 @@ export default class RoomView extends React.Component {
 			.sorted('ts', true);
 		this.state = {
 			slow: false,
-			dataSource: ds.cloneWithRows(this.data),
+			dataSource: ds.cloneWithRows([]),
 			loaded: true,
 			joined: typeof props.rid === 'undefined'
 		};
@@ -102,10 +102,9 @@ export default class RoomView extends React.Component {
 		this.timer = setTimeout(() => this.setState({ slow: true }), 5000);
 		this.props.getMessages(this.rid);
 		this.data.addListener(this.updateState);
-		this.state.dataSource = ds.cloneWithRows(this.data);
 	}
 	componentDidMount() {
-
+		this.updateState();
 	}
 	componentDidUpdate() {
 		return !this.props.loading && clearTimeout(this.timer);
