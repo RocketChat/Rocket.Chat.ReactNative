@@ -347,23 +347,31 @@ const RocketChat = {
 			});
 		}
 	},
-	getRooms() {
-		return Promise.all([call('subscriptions/get'), call('rooms/get')]).then(([subscriptions, rooms]) => {
-			const { server, login } = reduxStore.getState();
-			const data = subscriptions.map((subscription) => {
-				subscription._updatedAt = (rooms.find(room => room._id === subscription.rid) || {})._updatedAt;
-				subscription._server = { id: server.server };
-				return subscription;
-			});
+	async getRooms() {
+		const { server, login } = reduxStore.getState();
+		let lastMessage = realm
+			.objects('subscriptions')
+			.filtered('_server.id = $0', server.server)
+			.sorted('_updatedAt', true)[0];
+		lastMessage = lastMessage && new Date(lastMessage._updatedAt);
+		let [subscriptions, rooms] = await Promise.all([call('subscriptions/get', lastMessage), call('rooms/get', lastMessage)]);
 
-			realm.write(() => {
-				data.forEach((subscription) => {
-					realm.create('subscriptions', subscription, true);
-				});
-			});
-			Meteor.subscribe('stream-notify-user', `${ login.user.id }/subscriptions-changed`, false);
-			return data;
+		if (lastMessage) {
+			subscriptions = subscriptions.update;
+			rooms = rooms.update;
+		}
+		const data = subscriptions.map((subscription) => {
+			subscription._updatedAt = (rooms.find(room => room._id === subscription.rid) || subscription)._updatedAt;
+			subscription._server = { id: server.server };
+			return subscription;
 		});
+
+		realm.write(() => {
+			data.forEach(subscription =>
+				realm.create('subscriptions', subscription, true));
+		});
+		Meteor.subscribe('stream-notify-user', `${ login.user.id }/subscriptions-changed`, false);
+		return data;
 	},
 	logout({ server }) {
 		Meteor.logout();
