@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		color: '#a00'
 	},
-	header: {
+	loadingMore: {
 		transform: [{ scaleY: -1 }],
 		textAlign: 'center',
 		padding: 5,
@@ -86,7 +86,7 @@ export default class RoomView extends React.Component {
 			.sorted('ts', true);
 		this.state = {
 			slow: false,
-			dataSource: [],
+			dataSource: ds.cloneWithRows(this.data),
 			loaded: true,
 			joined: typeof props.rid === 'undefined'
 		};
@@ -124,14 +124,12 @@ export default class RoomView extends React.Component {
 			this.state.end !== true
 		) {
 			this.setState({
-				// ...this.state,
 				loadingMore: true
 			});
 
 			const lastRowData = this.data[rowCount - 1];
 			RocketChat.loadMessagesForRoom(this.rid, lastRowData.ts, ({ end }) => {
 				this.setState({
-					// ...this.state,
 					loadingMore: false,
 					end
 				});
@@ -186,11 +184,11 @@ export default class RoomView extends React.Component {
 
 	renderHeader = () => {
 		if (this.state.loadingMore) {
-			return <Text style={styles.header}>Loading more messages...</Text>;
+			return <Text style={styles.loadingMore}>Loading more messages...</Text>;
 		}
 
 		if (this.state.end) {
-			return <Text style={styles.header}>Start of conversation</Text>;
+			return <Text style={styles.loadingMore}>Start of conversation</Text>;
 		}
 	};
 
@@ -202,7 +200,7 @@ export default class RoomView extends React.Component {
 					<ListView
 						enableEmptySections
 						style={styles.list}
-						onEndReachedThreshold={10}
+						onEndReachedThreshold={350}
 						renderFooter={this.renderHeader}
 						onEndReached={this.onEndReached}
 						dataSource={this.state.dataSource}
