@@ -87,13 +87,12 @@ export default class RoomItem extends React.PureComponent {
 			return null;
 		}
 
-		const { color } = avatarInitialsAndColor(name);
-
 		if (type === 'd') {
 			return (
 				<Avatar text={name} baseUrl={baseUrl} size={40} />
 			);
 		}
+		const { color } = avatarInitialsAndColor(name);
 
 		return (
 			<View style={[styles.iconContainer, { backgroundColor: color }]}>
