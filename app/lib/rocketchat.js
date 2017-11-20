@@ -83,6 +83,29 @@ const RocketChat = {
 					reduxStore.dispatch(actions.setAllSettings(settings));
 				});
 
+				Meteor.call('permissions/get', (err, data) => {
+					if (err) {
+						console.error(err);
+					}
+
+					const permissions = {};
+					realm.write(() => {
+						data.forEach((item) => {
+							const permission = {
+								_id: item._id,
+								roles: []
+							};
+							permission._server = { id: reduxStore.getState().server.server };
+							item.roles.forEach((role) => {
+								permission.roles.push({ value: role });
+							});
+							realm.create('permissions', permission, true);
+							permissions[item._id] = permission;
+						});
+					});
+					reduxStore.dispatch(actions.setAllPermissions(permissions));
+				});
+
 				Meteor.ddp.on('changed', (ddbMessage) => {
 					if (ddbMessage.collection === 'stream-room-messages') {
 						realm.write(() => {
@@ -482,6 +505,9 @@ const RocketChat = {
 			}
 			return resolve(result[0]);
 		});
+	},
+	getRoomRoles(rid) {
+		return call('getRoomRoles', { rid });
 	},
 	async getPermalink(message) {
 		return new Promise(async(resolve, reject) => {
