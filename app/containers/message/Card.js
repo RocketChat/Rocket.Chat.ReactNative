@@ -55,7 +55,7 @@ export default class Cards extends React.PureComponent {
 					</Card>
 				</TouchableOpacity>
 				<PhotoModal
-					title={this.props.data.title}
+					title={this.props.data.title || 'test'}
 					image={this.state.img}
 					isVisible={this.state.modalVisible}
 					onClose={() => this.setState({ modalVisible: false })}

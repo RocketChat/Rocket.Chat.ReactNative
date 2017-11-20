@@ -89,6 +89,7 @@ const RocketChat = {
 							const message = ddbMessage.fields.args[0];
 							message.temp = false;
 							message._server = { id: reduxStore.getState().server.server };
+							message.starred = !!message.starred;
 							realm.create('messages', message, true);
 						});
 					}
@@ -285,6 +286,7 @@ const RocketChat = {
 							message.temp = false;
 							message._server = { id: reduxStore.getState().server.server };
 							// write('messages', message);
+							message.starred = !!message.starred;
 							realm.create('messages', message, true);
 						});
 					});
@@ -469,6 +471,58 @@ const RocketChat = {
 		Meteor.disconnect();
 		AsyncStorage.removeItem(TOKEN_KEY);
 		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
+	},
+	deleteMessage(message) {
+		return call('deleteMessage', { _id: message._id });
+	},
+	editMessage(message) {
+		const { _id, msg, rid } = message;
+		return call('updateMessage', { _id, msg, rid });
+	},
+	starMessage(message) {
+		return call('starMessage', { _id: message._id, rid: message.rid, starred: !message.starred });
+	},
+	togglePinMessage(message) {
+		if (message.pinned) {
+			return call('unpinMessage', message);
+		}
+		return call('pinMessage', message);
+	},
+	getRoom(rid) {
+		return new Promise((resolve, reject) => {
+			const result = realm.objects('subscriptions').filtered('rid = $0', rid);
+
+			if (result.length === 0) {
+				return reject(new Error('Room not found'));
+			}
+			return resolve(result[0]);
+		});
+	},
+	async getPermalink(message) {
+		return new Promise(async(resolve, reject) => {
+			let room;
+			try {
+				room = await RocketChat.getRoom(message.rid);
+			} catch (error) {
+				return reject(error);
+			}
+
+			let roomType;
+			switch (room.t) {
+				case 'p':
+					roomType = 'group';
+					break;
+				case 'c':
+					roomType = 'channel';
+					break;
+				case 'd':
+					roomType = 'direct';
+					break;
+				default:
+					break;
+			}
+			return resolve(`${ room._server.id }/${ roomType }/${ room.name }?msg=${ message._id }`);
+		});
 	}
 };
 
