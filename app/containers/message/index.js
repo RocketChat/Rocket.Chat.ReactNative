@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet, TouchableOpacity, Text, Alert, Clipboard } from 'react-native';
 import { emojify } from 'react-emojione';
 import Markdown from 'react-native-easy-markdown'; // eslint-disable-line
-import ActionSheet from 'react-native-actionsheet';
+// import ActionSheet from 'react-native-actionsheet';
 import { connect } from 'react-redux';
 
 import Card from './Card';
@@ -19,10 +19,10 @@ import {
 } from '../../actions/messages';
 import RocketChat from '../../lib/rocketchat';
 
-const title = 'Message actions';
-const options = ['Cancel', 'Reply', 'Edit', 'Permalink', 'Copy', 'Quote', 'Star Message', 'Pin Message', 'Delete'];
-const CANCEL_INDEX = 0;
-const DESTRUCTIVE_INDEX = 8;
+// const title = 'Message actions';
+// const options = ['Cancel', 'Reply', 'Edit', 'Permalink', 'Copy', 'Quote', 'Star Message', 'Pin Message', 'Delete'];
+// const CANCEL_INDEX = 0;
+// const DESTRUCTIVE_INDEX = 8;
 
 const styles = StyleSheet.create({
 	content: {
@@ -125,8 +125,9 @@ export default class Message extends React.Component {
 		) : null;
 	}
 
-	showActions() {
-		this.ActionSheet.show();
+	showActions = () => {
+		// this.ActionSheet.show();
+		console.log('temp');
 	}
 
 	handleDelete() {
@@ -260,14 +261,14 @@ export default class Message extends React.Component {
 						{this.attachments()}
 						{this.renderMessageContent(item)}
 					</View>
-					<ActionSheet
+					{/* <ActionSheet
 						ref={o => this.ActionSheet = o}
 						title={title}
 						options={options}
 						cancelButtonIndex={CANCEL_INDEX}
 						destructiveButtonIndex={DESTRUCTIVE_INDEX}
 						onPress={this.handleActionPress}
-					/>
+					/> */}
 				</View>
 			</TouchableOpacity>
 		);
