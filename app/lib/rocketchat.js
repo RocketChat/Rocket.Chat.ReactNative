@@ -103,7 +103,7 @@ const RocketChat = {
 							permissions[item._id] = permission;
 						});
 					});
-					// reduxStore.dispatch(actions.setAllPermissions(permissions));
+					reduxStore.dispatch(actions.setAllPermissions(permissions));
 				});
 
 				Meteor.ddp.on('changed', (ddbMessage) => {
