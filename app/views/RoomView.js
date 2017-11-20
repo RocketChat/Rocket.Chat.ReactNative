@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as actions from '../actions';
-import { messagesRequest } from '../actions/messages';
+import { openRoom } from '../actions/rooms';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import Message from '../containers/Message';
@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
 
 @connect(
 	state => ({
+		usersTyping: state.room.usersTyping,
 		server: state.server.server,
 		Site_Url: state.settings.Site_Url,
 		Message_TimeFormat: state.settings.Message_TimeFormat,
@@ -55,13 +56,13 @@ const styles = StyleSheet.create({
 	}),
 	dispatch => ({
 		actions: bindActionCreators(actions, dispatch),
-		getMessages: rid => dispatch(messagesRequest({ rid }))
+		openRoom: rid => dispatch(openRoom({ rid }))
 	})
 )
 export default class RoomView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
-		getMessages: PropTypes.func.isRequired,
+		openRoom: PropTypes.func.isRequired,
 		rid: PropTypes.string,
 		sid: PropTypes.string,
 		name: PropTypes.string,
@@ -100,7 +101,7 @@ export default class RoomView extends React.Component {
 				realm.objectForPrimaryKey('subscriptions', this.sid).name
 		});
 		this.timer = setTimeout(() => this.setState({ slow: true }), 5000);
-		this.props.getMessages(this.rid);
+		this.props.openRoom(this.rid);
 		this.data.addListener(this.updateState);
 	}
 	componentDidMount() {
@@ -206,6 +207,7 @@ export default class RoomView extends React.Component {
 						renderRow={item => this.renderItem({ item })}
 						initialListSize={10}
 					/>
+					{this.props.usersTyping ? <Text>{this.props.usersTyping.join(',')}</Text> : null}
 				</SafeAreaView>
 				{this.renderFooter()}
 			</KeyboardView>
