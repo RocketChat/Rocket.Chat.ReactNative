@@ -3,7 +3,7 @@ import { ListView } from 'realm/react-native';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { View, StyleSheet, TextInput, SafeAreaView } from 'react-native';
+import { Platform, View, StyleSheet, TextInput, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import * as server from '../actions/connect';
@@ -78,15 +78,30 @@ export default class RoomsListView extends React.Component {
 		server: PropTypes.string
 	}
 
+	static navigationOptions = ({ navigation }) => {
+		if (Platform.OS !== 'ios') {
+			return;
+		}
+
+		const { params = {} } = navigation.state;
+		const headerRight = (
+			<Icon.Button
+				name='ios-create-outline'
+				color='blue'
+				size={26}
+				backgroundColor='transparent'
+				onPress={params.createChannel}
+			/>);
+
+		return { headerRight };
+	};
+
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			dataSource: [],
-			searching: false,
-			searchDataSource: [],
-			searchText: '',
-			login: false
+			searchText: ''
 		};
 		this.data = realm.objects('subscriptions').filtered('_server.id = $0', this.props.server).sorted('_updatedAt', true);
 	}
@@ -94,8 +109,11 @@ export default class RoomsListView extends React.Component {
 	componentWillMount() {
 		this.data.addListener(this.updateState);
 
+		this.props.navigation.setParams({
+			createChannel: () => this._createChannel()
+		});
+
 		this.setState({
-			...this.state,
 			dataSource: ds.cloneWithRows(this.data)
 		});
 	}
@@ -115,8 +133,7 @@ export default class RoomsListView extends React.Component {
 	onSearchChangeText = (text) => {
 		const searchText = text.trim();
 		this.setState({
-			searchText: text,
-			searching: searchText !== ''
+			searchText: text
 		});
 		if (searchText === '') {
 			return this.setState({
@@ -183,9 +200,7 @@ export default class RoomsListView extends React.Component {
 
 		const clearSearch = () => {
 			this.setState({
-				searchText: '',
-				searching: false,
-				searchDataSource: []
+				searchText: ''
 			});
 		};
 
@@ -258,7 +273,7 @@ export default class RoomsListView extends React.Component {
 			style={styles.list}
 			renderRow={this.renderItem}
 			renderHeader={this.renderSearchBar}
-			contentOffset={{ x: 0, y: 20 }}
+			contentOffset={{ x: 0, y: 38 }}
 			enableEmptySections
 			keyboardShouldPersistTaps='always'
 		/>
@@ -277,7 +292,7 @@ export default class RoomsListView extends React.Component {
 			<Banner />
 			<SafeAreaView style={styles.safeAreaView}>
 				{this.renderList()}
-				{this.renderCreateButtons()}
+				{Platform.OS === 'android' && this.renderCreateButtons()}
 			</SafeAreaView>
 		</View>)
 }

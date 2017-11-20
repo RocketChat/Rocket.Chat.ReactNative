@@ -1,6 +1,6 @@
 import Meteor from 'react-native-meteor';
 import Random from 'react-native-meteor/lib/Random';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, Platform } from 'react-native';
 import { hashPassword } from 'react-native-meteor/lib/utils';
 
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -255,6 +255,21 @@ const RocketChat = {
 			return cb && cb();
 		});
 	},
+	registerPushToken(id, token) {
+		const key = Platform.OS === 'ios' ? 'apn' : 'gcm';
+		const data = {
+			id: `RocketChatRN${ id }`,
+			token: { [key]: token },
+			appName: 'main',
+			userId: id,
+			metadata: {}
+		};
+		return call('raix:push-update', data);
+	},
+
+	updatePushToken(pushId) {
+		return call('raix:push-setuser', pushId);
+	},
 
 	loadMessagesForRoom(rid, end, cb) {
 		return new Promise((resolve, reject) => {
@@ -434,8 +449,8 @@ const RocketChat = {
 		}
 	},
 	getRooms() {
+		const { server, login } = reduxStore.getState();
 		return Promise.all([call('subscriptions/get'), call('rooms/get')]).then(([subscriptions, rooms]) => {
-			const { server, login } = reduxStore.getState();
 			const data = subscriptions.map((subscription) => {
 				subscription._updatedAt = (rooms.find(room => room._id === subscription.rid) || {})._updatedAt;
 				subscription._server = { id: server.server };

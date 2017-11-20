@@ -62,6 +62,8 @@ const saveToken = function* saveToken() {
 	const [server, user] = yield all([select(getServer), select(getUser)]);
 	yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
 	yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
+	const token = yield AsyncStorage.getItem('pushId');
+	yield token && RocketChat.registerPushToken(user.user.id, token);
 };
 
 const handleLoginRequest = function* handleLoginRequest({ credentials }) {
