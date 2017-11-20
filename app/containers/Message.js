@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { emojify } from 'react-emojione';
-import Markdown from 'react-native-easy-markdown';
+import Markdown from 'react-native-easy-markdown' // eslint-disable-line
 
 import Card from './message/Card';
 import Avatar from './Avatar';
