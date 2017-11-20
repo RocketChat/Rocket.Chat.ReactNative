@@ -27,6 +27,7 @@ export const FORGOT_PASSWORD = createRequestTypes('FORGOT_PASSWORD', [
 	'INIT'
 ]);
 export const ROOMS = createRequestTypes('ROOMS');
+export const ROOM_ROLES = createRequestTypes('ROOM_ROLES');
 export const APP = createRequestTypes('APP', ['READY', 'INIT']);
 export const MESSAGES = createRequestTypes('MESSAGES', [
 	...defaultTypes,

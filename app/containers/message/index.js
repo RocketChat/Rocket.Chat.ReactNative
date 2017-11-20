@@ -5,6 +5,7 @@ import { emojify } from 'react-emojione';
 import Markdown from 'react-native-easy-markdown'; // eslint-disable-line
 import ActionSheet from 'react-native-actionsheet';
 import { connect } from 'react-redux';
+import * as moment from 'moment';
 
 import Card from './Card';
 import User from './User';
@@ -18,11 +19,6 @@ import {
 	setInput
 } from '../../actions/messages';
 import RocketChat from '../../lib/rocketchat';
-
-const title = 'Message actions';
-const options = ['Cancel', 'Reply', 'Edit', 'Permalink', 'Copy', 'Quote', 'Star Message', 'Pin Message', 'Delete'];
-const CANCEL_INDEX = 0;
-const DESTRUCTIVE_INDEX = 8;
 
 const styles = StyleSheet.create({
 	content: {
@@ -48,7 +44,10 @@ const styles = StyleSheet.create({
 @connect(state => ({
 	message: state.messages.message,
 	permalink: state.messages.permalink,
-	user: state.login.user
+	user: state.login.user,
+	permissions: state.permissions,
+	Message_AllowEditing: state.settings.Message_AllowEditing,
+	Message_AllowEditing_BlockEditInMinutes: state.settings.Message_AllowEditing_BlockEditInMinutes
 }), dispatch => ({
 	deleteRequest: message => dispatch(deleteRequest(message)),
 	editInit: message => dispatch(editInit(message)),
@@ -69,6 +68,9 @@ export default class Message extends React.Component {
 		togglePinRequest: PropTypes.func.isRequired,
 		setInput: PropTypes.func.isRequired,
 		user: PropTypes.object.isRequired,
+		permissions: PropTypes.object.isRequired,
+		Message_AllowEditing: PropTypes.bool,
+		Message_AllowEditing_BlockEditInMinutes: PropTypes.number,
 		message: PropTypes.object,
 		permalink: PropTypes.string
 	}
@@ -82,6 +84,16 @@ export default class Message extends React.Component {
 		};
 		this.handleActionPress = this.handleActionPress.bind(this);
 		this.showActions = this.showActions.bind(this);
+
+		// this.options = ['Cancel', 'Reply', 'Edit', 'Permalink', 'Copy', 'Quote', 'Star Message', 'Pin Message', 'Delete'];
+		this.CANCEL_INDEX = 0;
+		this.options = ['Cancel'];
+		this.options.push('Reply');
+		if (this.allowEdit()) {
+			this.addButton('Edit');
+		}
+		this.options.push('Delete');
+		this.DESTRUCTIVE_INDEX = this.options.length - 1;
 	}
 
 	async componentWillReceiveProps(nextProps) {
@@ -111,6 +123,32 @@ export default class Message extends React.Component {
 				this.props.setInput({ msg });
 			}
 		}
+	}
+
+	addButton = () => {
+		this.options.push('Edit');
+	}
+
+	allowEdit = () => {
+		const hasPermission = this.props.permissions['edit-message'];
+		const isEditAllowed = this.props.Message_AllowEditing;
+		const editOwn = this.props.item.u && this.props.item.u._id === this.props.user.id;
+		if (!(hasPermission || (isEditAllowed && editOwn))) {
+			return false;
+		}
+		const blockEditInMinutes = this.props.Message_AllowEditing_BlockEditInMinutes;
+		if (blockEditInMinutes) {
+			let msgTs;
+			if (this.props.item.ts != null) {
+				msgTs = moment(this.props.item.ts);
+			}
+			let currentTsDiff;
+			if (msgTs != null) {
+				currentTsDiff = moment().diff(msgTs, 'minutes');
+			}
+			return currentTsDiff < blockEditInMinutes;
+		}
+		return true;
 	}
 
 	isDeleted() {
@@ -206,9 +244,6 @@ export default class Message extends React.Component {
 		// delete
 		} else if (actionIndex === 8) {
 			this.handleDelete();
-		// reply
-		} else {
-			console.log(actionIndex, this.props.item);
 		}
 	}
 
@@ -262,10 +297,10 @@ export default class Message extends React.Component {
 					</View>
 					<ActionSheet
 						ref={o => this.ActionSheet = o}
-						title={title}
-						options={options}
-						cancelButtonIndex={CANCEL_INDEX}
-						destructiveButtonIndex={DESTRUCTIVE_INDEX}
+						title='Messages actions'
+						options={this.options}
+						cancelButtonIndex={this.CANCEL_INDEX}
+						destructiveButtonIndex={this.DESTRUCTIVE_INDEX}
 						onPress={this.handleActionPress}
 					/>
 				</View>
