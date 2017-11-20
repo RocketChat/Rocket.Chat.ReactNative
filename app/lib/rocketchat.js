@@ -92,6 +92,11 @@ const RocketChat = {
 				Meteor._endLoggingIn();
 				Meteor._handleLoginCallback(err, result);
 				if (err) {
+					if (/user not found/i.test(err.reason)) {
+						err.error = 1;
+						err.reason = 'User or Password incorrect';
+						err.message = 'User or Password incorrect';
+					}
 					reject(err);
 				} else {
 					resolve(result);
@@ -167,26 +172,6 @@ const RocketChat = {
 
 		return this.login(params, callback);
 	},
-
-	// loadRooms(cb) {
-	// 	console.warn('a');
-	// 	Meteor.call('rooms/get', (err, data) => {
-	// 		if (err) {
-	// 			console.error(err);
-	// 		}
-	// 		console.warn(`rooms ${ data.length }`);
-	// 		if (data.length) {
-	// 			realm.write(() => {
-	// 				data.forEach((room) => {
-	// 					room._server = { id: reduxStore.getState().server.server };
-	// 					realm.create('rooms', room, true);
-	// 				});
-	// 			});
-	// 		}
-
-	// 		return cb && cb();
-	// 	});
-	// },
 
 	loadSubscriptions(cb) {
 		Meteor.call('subscriptions/get', (err, data) => {
