@@ -83,11 +83,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 
 		yield put(loginSuccess(user));
 	} catch (err) {
-		if (err.error === 403) {
-			yield put(logout());
-		} else {
-			yield put(loginFailure(err));
-		}
+		yield put(loginFailure(err));
 	}
 };
 
