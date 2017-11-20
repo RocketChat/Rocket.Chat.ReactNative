@@ -9,7 +9,6 @@ import {
 	loginSuccess,
 	loginFailure,
 	setToken,
-	logout,
 	registerSuccess,
 	setUsernameRequest,
 	setUsernameSuccess,
