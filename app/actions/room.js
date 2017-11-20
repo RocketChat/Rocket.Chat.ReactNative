@@ -13,8 +13,9 @@ export function roomRolesSuccess(roles) {
 	};
 }
 
-export function roomRolesFailure() {
+export function roomRolesFailure(err) {
 	return {
-		type: types.ROOM_ROLES.FAILURE
+		type: types.ROOM_ROLES.FAILURE,
+		err
 	};
 }

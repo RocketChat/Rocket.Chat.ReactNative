@@ -509,6 +509,9 @@ const RocketChat = {
 	getRoomRoles(rid) {
 		return call('getRoomRoles', { rid });
 	},
+	getUserRoles() {
+		return call('getUserRoles');
+	},
 	async getPermalink(message) {
 		return new Promise(async(resolve, reject) => {
 			let room;

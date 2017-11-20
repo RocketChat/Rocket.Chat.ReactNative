@@ -2,8 +2,8 @@ import * as types from '../actions/actionsTypes';
 
 const initialState = {
 	isFetching: false,
-	failure: false,
-	roles: []
+	roles: [],
+	err: {}
 };
 
 export default function login(state = initialState, action) {
@@ -24,8 +24,7 @@ export default function login(state = initialState, action) {
 			return {
 				...state,
 				isFetching: false,
-				failure: true,
-				roles: []
+				err: {}
 			};
 		default:
 			return state;
