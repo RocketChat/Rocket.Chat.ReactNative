@@ -8,6 +8,7 @@ import reduxStore from './createStore';
 import settingsType from '../constants/settings';
 import realm from './realm';
 import * as actions from '../actions';
+import { typing } from '../actions/room';
 import { disconnect, connectSuccess } from '../actions/connect';
 
 export { Accounts } from 'react-native-meteor';
@@ -61,19 +62,25 @@ const RocketChat = {
 			});
 
 			Meteor.ddp.on('connected', async() => {
-				Meteor.ddp.on('changed', (ddbMessage) => {
-					if (ddbMessage.collection === 'stream-room-messages') {
+				Meteor.ddp.on('changed', (ddpMessage) => {
+					if (ddpMessage.collection === 'stream-room-messages') {
 						realm.write(() => {
-							const message = ddbMessage.fields.args[0];
+							const message = ddpMessage.fields.args[0];
 							message.temp = false;
 							message._server = { id: reduxStore.getState().server.server };
 							realm.create('messages', message, true);
 						});
 					}
-
-					if (ddbMessage.collection === 'stream-notify-user') {
+					if (ddpMessage.collection === 'stream-notify-room') {
+						const [_rid, ev] = ddpMessage.fields.eventName.split('/');
+						if (ev !== 'typing') {
+							return;
+						}
+						reduxStore.dispatch(typing({ _rid, username: ddpMessage.fields.args[0], typing: ddpMessage.fields.args[1] }));
+					}
+					if (ddpMessage.collection === 'stream-notify-user') {
 						realm.write(() => {
-							const data = ddbMessage.fields.args[1];
+							const data = ddpMessage.fields.args[1];
 							data._server = { id: reduxStore.getState().server.server };
 							realm.create('subscriptions', data, true);
 						});
@@ -241,7 +248,6 @@ const RocketChat = {
 					}
 				}
 				resolve();
-				Meteor.subscribe('stream-room-messages', rid, false);
 			});
 		});
 	},
@@ -399,7 +405,13 @@ const RocketChat = {
 			return setting;
 		});
 	},
-	_filterSettings: settings => settings.filter(setting => settingsType[setting.type] && setting.value)
+	_filterSettings: settings => settings.filter(setting => settingsType[setting.type] && setting.value),
+	subscribe(...args) {
+		return Meteor.subscribe(...args);
+	},
+	unsubscribe(...args) {
+		return Meteor.unsubscribe(...args);
+	}
 };
 
 export default RocketChat;
