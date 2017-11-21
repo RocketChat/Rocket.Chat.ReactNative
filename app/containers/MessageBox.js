@@ -49,7 +49,8 @@ export default class MessageBox extends React.Component {
 		rid: PropTypes.string.isRequired,
 		editRequest: PropTypes.func.isRequired,
 		message: PropTypes.object,
-		editing: PropTypes.bool
+		editing: PropTypes.bool,
+		typing: PropTypes.bool
 	}
 
 	componentWillReceiveProps(nextProps) {
