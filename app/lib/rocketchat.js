@@ -473,7 +473,6 @@ const RocketChat = {
 	deleteMessage(message) {
 		return call('deleteMessage', { _id: message._id });
 	}
-
 };
 
 export default RocketChat;

@@ -112,7 +112,6 @@ export default class Message extends React.PureComponent {
 			extraStyle.opacity = 0.3;
 		}
 
-		const msg = emojify(item.msg, { output: 'unicode' });
 		const username = item.alias || item.u.username;
 
 		return (
