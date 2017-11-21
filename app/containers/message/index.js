@@ -4,9 +4,9 @@ import { View, StyleSheet } from 'react-native';
 import { emojify } from 'react-emojione';
 import Markdown from 'react-native-easy-markdown' // eslint-disable-line
 
-import Card from './message/Card';
-import Avatar from './Avatar';
-import User from './message/User';
+import Card from './Card';
+import User from './User';
+import Avatar from '../Avatar';
 
 const styles = StyleSheet.create({
 	content: {
