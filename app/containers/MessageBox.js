@@ -4,7 +4,7 @@ import { View, TextInput, StyleSheet, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
-import { imTyping } from '../actions/room';
+import { userTyping } from '../actions/room';
 import RocketChat from '../lib/rocketchat';
 import { editRequest } from '../actions/messages';
 
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
 	editing: state.messages.editing
 }), dispatch => ({
 	editRequest: message => dispatch(editRequest(message)),
-	typing: status => dispatch(imTyping(status))
+	typing: status => dispatch(userTyping(status))
 }))
 export default class MessageBox extends React.Component {
 	static propTypes = {
@@ -49,7 +49,8 @@ export default class MessageBox extends React.Component {
 		rid: PropTypes.string.isRequired,
 		editRequest: PropTypes.func.isRequired,
 		message: PropTypes.object,
-		editing: PropTypes.bool
+		editing: PropTypes.bool,
+		typing: PropTypes.bool
 	}
 
 	componentWillReceiveProps(nextProps) {

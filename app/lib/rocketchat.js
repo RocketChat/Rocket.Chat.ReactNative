@@ -8,7 +8,7 @@ import reduxStore from './createStore';
 import settingsType from '../constants/settings';
 import realm from './realm';
 import * as actions from '../actions';
-import { typing } from '../actions/room';
+import { someoneTyping } from '../actions/room';
 import { disconnect, connectSuccess } from '../actions/connect';
 
 export { Accounts } from 'react-native-meteor';
@@ -79,7 +79,7 @@ const RocketChat = {
 						if (ev !== 'typing') {
 							return;
 						}
-						return reduxStore.dispatch(typing({ _rid, username: ddpMessage.fields.args[0], typing: ddpMessage.fields.args[1] }));
+						return reduxStore.dispatch(someoneTyping({ _rid, username: ddpMessage.fields.args[0], typing: ddpMessage.fields.args[1] }));
 					}
 					if (ddpMessage.collection === 'stream-notify-user') {
 						const [type, data] = ddpMessage.fields.args;
