@@ -63,11 +63,13 @@ const RocketChat = {
 
 			Meteor.ddp.on('connected', async() => {
 				Meteor.ddp.on('changed', (ddpMessage) => {
+					const server = { id: reduxStore.getState().server.server };
 					if (ddpMessage.collection === 'stream-room-messages') {
 						realm.write(() => {
 							const message = ddpMessage.fields.args[0];
 							message.temp = false;
-							message._server = { id: reduxStore.getState().server.server };
+							message._server = server;
+							message.attachments = message.attachments || [];
 							realm.create('messages', message, true);
 						});
 					}
@@ -79,14 +81,33 @@ const RocketChat = {
 						reduxStore.dispatch(typing({ _rid, username: ddpMessage.fields.args[0], typing: ddpMessage.fields.args[1] }));
 					}
 					if (ddpMessage.collection === 'stream-notify-user') {
-						realm.write(() => {
-							const data = ddpMessage.fields.args[1];
-							data._server = { id: reduxStore.getState().server.server };
-							realm.create('subscriptions', data, true);
-						});
+						const [type, data] = ddpMessage.fields.args;
+						const [, ev] = ddpMessage.fields.eventName.split('/');
+						if (/subscriptions/.test(ev)) {
+							switch (type) {
+								case 'inserted':
+									data._server = server;
+									realm.write(() => {
+										realm.create('subscriptions', data, true);
+									});
+									break;
+								case 'updated':
+									delete data._updatedAt;
+									realm.write(() => {
+										realm.create('subscriptions', data, true);
+									});
+									break;
+								default:
+							}
+						}
+						if (/rooms/.test(ev) && type === 'updated') {
+							const sub = realm.objects('subscriptions').filtered('rid == $0', data._id)[0];
+							realm.write(() => {
+								sub._updatedAt = data._updatedAt;
+							});
+						}
 					}
 				});
-
 				RocketChat.getSettings();
 			});
 		})
@@ -234,6 +255,7 @@ const RocketChat = {
 						data.messages.forEach((message) => {
 							message.temp = false;
 							message._server = { id: reduxStore.getState().server.server };
+							message.attachments = message.attachments || [];
 							// write('messages', message);
 							realm.create('messages', message, true);
 						});
@@ -367,7 +389,11 @@ const RocketChat = {
 			rooms = rooms.update;
 		}
 		const data = subscriptions.map((subscription) => {
-			subscription._updatedAt = (rooms.find(room => room._id === subscription.rid) || subscription)._updatedAt;
+			const room = rooms.find(({ _id }) => _id === subscription.rid);
+			delete subscription._updatedAt;
+			if (room) {
+				subscription._updatedAt = room._updatedAt;
+			}
 			subscription._server = { id: server.server };
 			return subscription;
 		});
@@ -377,6 +403,7 @@ const RocketChat = {
 				realm.create('subscriptions', subscription, true));
 		});
 		Meteor.subscribe('stream-notify-user', `${ login.user.id }/subscriptions-changed`, false);
+		Meteor.subscribe('stream-notify-user', `${ login.user.id }/rooms-changed`, false);
 		return data;
 	},
 	logout({ server }) {

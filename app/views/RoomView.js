@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, StyleSheet, Button, SafeAreaView } from 'react-native';
+import { Text, View, StyleSheet, Button, SafeAreaView, Dimensions } from 'react-native';
 import { ListView } from 'realm/react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -193,6 +193,7 @@ export default class RoomView extends React.Component {
 	};
 
 	render() {
+		const { height } = Dimensions.get('window');
 		return (
 			<KeyboardView contentContainerStyle={styles.container} keyboardVerticalOffset={64}>
 				{this.renderBanner()}
@@ -200,7 +201,7 @@ export default class RoomView extends React.Component {
 					<ListView
 						enableEmptySections
 						style={styles.list}
-						onEndReachedThreshold={350}
+						onEndReachedThreshold={height / 2}
 						renderFooter={this.renderHeader}
 						onEndReached={this.onEndReached}
 						dataSource={this.state.dataSource}
