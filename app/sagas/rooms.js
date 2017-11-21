@@ -22,7 +22,7 @@ const watchRoomsRequest = function* watchRoomsRequest() {
 const cancelTyping = function* cancelTyping(username) {
 	while (true) {
 		const { typing, timeout } = yield race({
-			typing: take(types.ROOM.USER_TYPING),
+			typing: take(types.ROOM.SOMEONE_TYPING),
 			timeout: yield call(delay, 5000)
 		});
 		if (timeout || (typing.username === username && !typing.typing)) {
@@ -33,7 +33,7 @@ const cancelTyping = function* cancelTyping(username) {
 
 const usersTyping = function* usersTyping({ rid }) {
 	while (true) {
-		const { _rid, username, typing } = yield take(types.ROOM.USER_TYPING);
+		const { _rid, username, typing } = yield take(types.ROOM.SOMEONE_TYPING);
 		if (_rid === rid) {
 			yield (typing ? put(addUserTyping(username)) : put(removeUserTyping(username)));
 			if (typing) {
@@ -70,7 +70,7 @@ const watchRoomOpen = function* watchRoomOpen({ room }) {
 	subscriptions.forEach(sub => sub.stop());
 };
 
-const watchImTyping = function* watchImTyping({ status }) {
+const watchuserTyping = function* watchuserTyping({ status }) {
 	const auth = yield select(state => state.login.isAuthenticated);
 	if (!auth) {
 		yield take(types.LOGIN.SUCCESS);
@@ -90,7 +90,7 @@ const watchImTyping = function* watchImTyping({ status }) {
 };
 
 const root = function* root() {
-	yield takeLatest(types.ROOM.IM_TYPING, watchImTyping);
+	yield takeLatest(types.ROOM.USER_TYPING, watchuserTyping);
 	yield takeLatest(types.LOGIN.SUCCESS, watchRoomsRequest);
 	yield takeLatest(types.ROOM.OPEN, watchRoomOpen);
 };
