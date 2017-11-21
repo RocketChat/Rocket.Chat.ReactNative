@@ -29,7 +29,6 @@ const get = function* get({ rid }) {
 	}
 	try {
 		yield RocketChat.loadMessagesForRoom(rid, null);
-		yield RocketChat.readMessages(rid);
 		yield put(messagesSuccess());
 	} catch (err) {
 		console.log(err);
