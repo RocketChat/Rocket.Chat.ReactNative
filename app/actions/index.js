@@ -25,6 +25,14 @@ export function setAllSettings(settings) {
 		payload: settings
 	};
 }
+
+export function setAllPermissions(permissions) {
+	return {
+		type: types.SET_ALL_PERMISSIONS,
+		payload: permissions
+	};
+}
+
 export function login() {
 	return {
 		type: 'LOGIN'

@@ -24,6 +24,24 @@ const settingsSchema = {
 	}
 };
 
+const permissionsRolesSchema = {
+	name: 'permissionsRoles',
+	properties: {
+		value: 'string'
+	}
+};
+
+const permissionsSchema = {
+	name: 'permissions',
+	primaryKey: '_id',
+	properties: {
+		_id: 'string',
+		_server: 'servers',
+		roles: { type: 'list', objectType: 'permissionsRoles' },
+		_updatedAt: { type: 'date', optional: true }
+	}
+};
+
 const roomsSchema = {
 	name: 'rooms',
 	primaryKey: '_id',
@@ -130,7 +148,9 @@ const realm = new Realm({
 		usersSchema,
 		roomsSchema,
 		attachment,
-		messagesEditedBySchema
+		messagesEditedBySchema,
+		permissionsSchema,
+		permissionsRolesSchema
 	]
 });
 export default realm;
