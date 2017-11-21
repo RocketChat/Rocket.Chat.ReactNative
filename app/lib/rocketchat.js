@@ -70,6 +70,7 @@ const RocketChat = {
 							message.temp = false;
 							message._server = server;
 							message.attachments = message.attachments || [];
+							message.starred = !!message.starred;
 							realm.create('messages', message, true);
 						});
 					}
@@ -230,7 +231,7 @@ const RocketChat = {
 		const data = {
 			id: `RocketChatRN${ id }`,
 			token: { [key]: token },
-			appName: 'main',
+			appName: 'chat.rocket.reactnative', // TODO: try to get from config file
 			userId: id,
 			metadata: {}
 		};
@@ -257,6 +258,7 @@ const RocketChat = {
 							message._server = { id: reduxStore.getState().server.server };
 							message.attachments = message.attachments || [];
 							// write('messages', message);
+							message.starred = !!message.starred;
 							realm.create('messages', message, true);
 						});
 					});
@@ -433,6 +435,38 @@ const RocketChat = {
 		});
 	},
 	_filterSettings: settings => settings.filter(setting => settingsType[setting.type] && setting.value),
+	deleteMessage(message) {
+		return call('deleteMessage', { _id: message._id });
+	},
+	editMessage(message) {
+		const { _id, msg, rid } = message;
+		return call('updateMessage', { _id, msg, rid });
+	},
+	starMessage(message) {
+		return call('starMessage', { _id: message._id, rid: message.rid, starred: !message.starred });
+	},
+	togglePinMessage(message) {
+		if (message.pinned) {
+			return call('unpinMessage', message);
+		}
+		return call('pinMessage', message);
+	},
+	getRoom(rid) {
+		const result = realm.objects('subscriptions').filtered('rid = $0', rid);
+		if (result.length === 0) {
+			return Promise.reject(new Error('Room not found'));
+		}
+		return Promise.resolve(result[0]);
+	},
+	async getPermalink(message) {
+		const room = await RocketChat.getRoom(message.rid);
+		const roomType = {
+			p: 'group',
+			c: 'channel',
+			d: 'direct'
+		}[room.t];
+		return `${ room._server.id }/${ roomType }/${ room.name }?msg=${ message._id }`;
+	},
 	subscribe(...args) {
 		return Meteor.subscribe(...args);
 	},

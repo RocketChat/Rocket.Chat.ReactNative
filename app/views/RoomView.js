@@ -9,7 +9,7 @@ import * as actions from '../actions';
 import { openRoom } from '../actions/room';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
-import Message from '../containers/Message';
+import Message from '../containers/message';
 import MessageBox from '../containers/MessageBox';
 import KeyboardView from '../presentation/KeyboardView';
 
