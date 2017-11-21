@@ -6,6 +6,7 @@ import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import { imTyping } from '../actions/room';
 import RocketChat from '../lib/rocketchat';
+import { editRequest } from '../actions/messages';
 
 const styles = StyleSheet.create({
 	textBox: {
@@ -22,7 +23,6 @@ const styles = StyleSheet.create({
 	textBoxInput: {
 		height: 40,
 		alignSelf: 'stretch',
-		backgroundColor: '#fff',
 		flexGrow: 1
 	},
 	fileButton: {
@@ -30,31 +30,50 @@ const styles = StyleSheet.create({
 		paddingTop: 10,
 		paddingBottom: 10,
 		fontSize: 20
+	},
+	editing: {
+		backgroundColor: '#fff5df'
 	}
 });
 
-@connect(
-	null,
-	dispatch => ({
-		typing: status => dispatch(imTyping(status))
-	})
-)
-
-export default class MessageBox extends React.PureComponent {
+@connect(state => ({
+	message: state.messages.message,
+	editing: state.messages.editing
+}), dispatch => ({
+	editRequest: message => dispatch(editRequest(message)),
+	typing: status => dispatch(imTyping(status))
+}))
+export default class MessageBox extends React.Component {
 	static propTypes = {
 		onSubmit: PropTypes.func.isRequired,
-		rid: PropTypes.string.isRequired
+		rid: PropTypes.string.isRequired,
+		editRequest: PropTypes.func.isRequired,
+		message: PropTypes.object,
+		editing: PropTypes.bool
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (this.props.message !== nextProps.message) {
+			this.component.setNativeProps({ text: nextProps.message.msg });
+			this.component.focus();
+		}
 	}
 
 	submit(message) {
-		const text = message;
-		if (text.trim() === '') {
+		const { editing } = this.props;
+		if (message.trim() === '') {
 			return;
 		}
-		if (this.component) {
-			this.component.setNativeProps({ text: '' });
+
+		// if is editing a message
+		if (editing) {
+			const { _id, rid } = this.props.message;
+			this.props.editRequest({ _id, msg: message, rid });
+		} else {
+			// if is submiting a new message
+			this.props.onSubmit(message);
 		}
-		this.props.onSubmit(text);
+		this.component.setNativeProps({ text: '' });
 	}
 
 	addFile = () => {
@@ -86,7 +105,7 @@ export default class MessageBox extends React.PureComponent {
 
 	render() {
 		return (
-			<View style={styles.textBox}>
+			<View style={[styles.textBox, (this.props.editing ? styles.editing : null)]}>
 				<SafeAreaView style={styles.safeAreaView}>
 					<TextInput
 						ref={component => this.component = component}
