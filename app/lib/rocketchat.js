@@ -68,6 +68,7 @@ const RocketChat = {
 							const message = ddbMessage.fields.args[0];
 							message.temp = false;
 							message._server = server;
+							message.attachments = message.attachments || [];
 							realm.create('messages', message, true);
 						});
 					}
@@ -247,6 +248,7 @@ const RocketChat = {
 						data.messages.forEach((message) => {
 							message.temp = false;
 							message._server = { id: reduxStore.getState().server.server };
+							message.attachments = message.attachments || [];
 							// write('messages', message);
 							realm.create('messages', message, true);
 						});
