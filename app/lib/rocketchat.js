@@ -259,7 +259,7 @@ const RocketChat = {
 		const data = {
 			id: `RocketChatRN${ id }`,
 			token: { [key]: token },
-			appName: 'main',
+			appName: 'chat.rocket.reactnative', // TODO: try to get from config file
 			userId: id,
 			metadata: {}
 		};
