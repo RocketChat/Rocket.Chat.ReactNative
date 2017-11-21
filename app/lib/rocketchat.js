@@ -65,7 +65,7 @@ const RocketChat = {
 				Meteor.ddp.on('changed', (ddpMessage) => {
 					const server = { id: reduxStore.getState().server.server };
 					if (ddpMessage.collection === 'stream-room-messages') {
-						realm.write(() => {
+						return realm.write(() => {
 							const message = ddpMessage.fields.args[0];
 							message.temp = false;
 							message._server = server;
@@ -78,7 +78,7 @@ const RocketChat = {
 						if (ev !== 'typing') {
 							return;
 						}
-						reduxStore.dispatch(typing({ _rid, username: ddpMessage.fields.args[0], typing: ddpMessage.fields.args[1] }));
+						return reduxStore.dispatch(typing({ _rid, username: ddpMessage.fields.args[0], typing: ddpMessage.fields.args[1] }));
 					}
 					if (ddpMessage.collection === 'stream-notify-user') {
 						const [type, data] = ddpMessage.fields.args;
@@ -436,8 +436,9 @@ const RocketChat = {
 	subscribe(...args) {
 		return Meteor.subscribe(...args);
 	},
-	unsubscribe(...args) {
-		return Meteor.unsubscribe(...args);
+	emitTyping(room, t = true) {
+		const { login } = reduxStore.getState();
+		return call('stream-notify-room', `${ room }/typing`, login.user.username, t);
 	}
 };
 
