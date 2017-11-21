@@ -26,8 +26,8 @@ export const FORGOT_PASSWORD = createRequestTypes('FORGOT_PASSWORD', [
 	...defaultTypes,
 	'INIT'
 ]);
-export const ROOMS = createRequestTypes('ROOMS', [...defaultTypes, 'OPEN']);
-export const ROOM = createRequestTypes('ROOM', ['ADD_USER_TYPING', 'REMOVE_USER_TYPING', 'USER_TYPING']);
+export const ROOMS = createRequestTypes('ROOMS');
+export const ROOM = createRequestTypes('ROOM', ['ADD_USER_TYPING', 'REMOVE_USER_TYPING', 'USER_TYPING', 'OPEN', 'IM_TYPING']);
 export const APP = createRequestTypes('APP', ['READY', 'INIT']);
 export const MESSAGES = createRequestTypes('MESSAGES');
 export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [

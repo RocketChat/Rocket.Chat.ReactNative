@@ -19,10 +19,3 @@ export function roomsFailure(err) {
 		err
 	};
 }
-
-export function openRoom({ rid }) {
-	return {
-		type: types.ROOMS.OPEN,
-		rid
-	};
-}

@@ -6,6 +6,11 @@ const initialState = {
 
 export default function room(state = initialState, action) {
 	switch (action.type) {
+		case types.ROOM.OPEN:
+			return {
+				...initialState,
+				...action.room
+			};
 		case types.ROOM.ADD_USER_TYPING:
 			return {
 				...state,
@@ -16,8 +21,6 @@ export default function room(state = initialState, action) {
 				...state,
 				usersTyping: [...state.usersTyping.filter(user => user !== action.username)]
 			};
-		// case types.LOGOUT:
-		// 	return initialState;
 		default:
 			return state;
 	}

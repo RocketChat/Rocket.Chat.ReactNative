@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as actions from '../actions';
-import { openRoom } from '../actions/rooms';
+import { openRoom } from '../actions/room';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import Message from '../containers/Message';
@@ -15,6 +15,7 @@ import KeyboardView from '../presentation/KeyboardView';
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id });
 const styles = StyleSheet.create({
+	typing: { fontWeight: 'bold', paddingHorizontal: 15, height: 25 },
 	container: {
 		flex: 1,
 		backgroundColor: '#fff'
@@ -48,6 +49,7 @@ const styles = StyleSheet.create({
 
 @connect(
 	state => ({
+		username: state.login.user.username,
 		usersTyping: state.room.usersTyping,
 		server: state.server.server,
 		Site_Url: state.settings.Site_Url,
@@ -56,7 +58,7 @@ const styles = StyleSheet.create({
 	}),
 	dispatch => ({
 		actions: bindActionCreators(actions, dispatch),
-		openRoom: rid => dispatch(openRoom({ rid }))
+		openRoom: room => dispatch(openRoom(room))
 	})
 )
 export default class RoomView extends React.Component {
@@ -101,7 +103,7 @@ export default class RoomView extends React.Component {
 				realm.objectForPrimaryKey('subscriptions', this.sid).name
 		});
 		this.timer = setTimeout(() => this.setState({ slow: true }), 5000);
-		this.props.openRoom(this.rid);
+		this.props.openRoom({ rid: this.rid });
 		this.data.addListener(this.updateState);
 	}
 	componentDidMount() {
@@ -135,7 +137,12 @@ export default class RoomView extends React.Component {
 				});
 			});
 		}
-	};
+	}
+
+	get usersTyping() {
+		const users = this.props.usersTyping.filter(_username => this.props.username !== _username);
+		return users.length ? `${ users.join(' ,') } ${ users.length > 1 ? 'are' : 'is' } typing` : null;
+	}
 
 	updateState = () => {
 		this.setState({
@@ -190,8 +197,7 @@ export default class RoomView extends React.Component {
 		if (this.state.end) {
 			return <Text style={styles.loadingMore}>Start of conversation</Text>;
 		}
-	};
-
+	}
 	render() {
 		const { height } = Dimensions.get('window');
 		return (
@@ -208,9 +214,9 @@ export default class RoomView extends React.Component {
 						renderRow={item => this.renderItem({ item })}
 						initialListSize={10}
 					/>
-					{this.props.usersTyping ? <Text>{this.props.usersTyping.join(',')}</Text> : null}
 				</SafeAreaView>
 				{this.renderFooter()}
+				<Text style={styles.typing}>{this.usersTyping}</Text>
 			</KeyboardView>
 		);
 	}

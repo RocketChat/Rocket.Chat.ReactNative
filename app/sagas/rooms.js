@@ -1,4 +1,5 @@
-import { put, call, takeLatest, takeEvery, take, select, race, fork, cancel } from 'redux-saga/effects';
+import { put, call, takeLatest, take, select, race, fork, cancel } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
 import * as types from '../actions/actionsTypes';
 import { roomsSuccess, roomsFailure } from '../actions/rooms';
 import { addUserTyping, removeUserTyping } from '../actions/room';
@@ -17,43 +18,80 @@ const watchRoomsRequest = function* watchRoomsRequest() {
 		yield put(roomsFailure(err.status));
 	}
 };
-const userTyping = function* userTyping({ rid }) {
+
+const cancelTyping = function* cancelTyping(username) {
 	while (true) {
-		const { _rid, username, typing } = yield take(types.ROOM.USER_TYPING);
-		if (_rid === rid) {
-			const tmp = yield (typing ? put(addUserTyping(username)) : put(removeUserTyping(username)));
+		const { typing, timeout } = yield race({
+			typing: take(types.ROOM.USER_TYPING),
+			timeout: yield call(delay, 5000)
+		});
+		if (timeout || (typing.username === username && !typing.typing)) {
+			return yield put(removeUserTyping(username));
 		}
 	}
 };
 
-const watchRoomOpen = function* watchRoomOpen({ rid }) {
+const usersTyping = function* usersTyping({ rid }) {
+	while (true) {
+		const { _rid, username, typing } = yield take(types.ROOM.USER_TYPING);
+		if (_rid === rid) {
+			yield (typing ? put(addUserTyping(username)) : put(removeUserTyping(username)));
+			if (typing) {
+				fork(cancelTyping, username);
+			}
+		}
+	}
+};
+
+const watchRoomOpen = function* watchRoomOpen({ room }) {
 	const auth = yield select(state => state.login.isAuthenticated);
 	if (!auth) {
 		yield take(types.LOGIN.SUCCESS);
 	}
+
 	const subscriptions = [];
-	yield put(messagesRequest({ rid }));
+	yield put(messagesRequest({ rid: room.rid }));
 
 	const { open } = yield race({
 		messages: take(types.MESSAGES.SUCCESS),
-		open: take(types.ROOMS.OPEN)
+		open: take(types.ROOM.OPEN)
 	});
 
 	if (open) {
 		return;
 	}
-	RocketChat.readMessages(rid);
-	subscriptions.push(RocketChat.subscribe('stream-room-messages', rid, false));
-	subscriptions.push(RocketChat.subscribe('stream-notify-room', `${ rid }/typing`, false));
-	const thread = yield fork(userTyping, { rid });
-	yield take(types.ROOMS.OPEN);
+
+	RocketChat.readMessages(room.rid);
+	subscriptions.push(RocketChat.subscribe('stream-room-messages', room.rid, false));
+	subscriptions.push(RocketChat.subscribe('stream-notify-room', `${ room.rid }/typing`, false));
+	const thread = yield fork(usersTyping, { rid: room.rid });
+	yield take(types.ROOM.OPEN);
 	cancel(thread);
 	subscriptions.forEach(sub => sub.stop());
 };
 
+const watchImTyping = function* watchImTyping({ status }) {
+	const auth = yield select(state => state.login.isAuthenticated);
+	if (!auth) {
+		yield take(types.LOGIN.SUCCESS);
+	}
+
+	const room = yield select(state => state.room);
+
+	if (!room) {
+		return;
+	}
+	yield RocketChat.emitTyping(room.rid, status);
+
+	if (status) {
+		yield call(delay, 5000);
+		yield RocketChat.emitTyping(room.rid, false);
+	}
+};
 
 const root = function* root() {
+	yield takeLatest(types.ROOM.IM_TYPING, watchImTyping);
 	yield takeLatest(types.LOGIN.SUCCESS, watchRoomsRequest);
-	yield takeEvery(types.ROOMS.OPEN, watchRoomOpen);
+	yield takeLatest(types.ROOM.OPEN, watchRoomOpen);
 };
 export default root;

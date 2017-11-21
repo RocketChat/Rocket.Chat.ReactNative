@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import { View, TextInput, StyleSheet, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
+import { connect } from 'react-redux';
+import { imTyping } from '../actions/room';
 import RocketChat from '../lib/rocketchat';
 
 const styles = StyleSheet.create({
 	textBox: {
 		paddingTop: 1,
+		paddingHorizontal: 15,
 		borderTopWidth: 1,
 		borderTopColor: '#ccc',
 		backgroundColor: '#fff'
@@ -24,13 +27,18 @@ const styles = StyleSheet.create({
 	},
 	fileButton: {
 		color: '#aaa',
-		paddingLeft: 23,
-		paddingRight: 20,
 		paddingTop: 10,
 		paddingBottom: 10,
 		fontSize: 20
 	}
 });
+
+@connect(
+	null,
+	dispatch => ({
+		typing: status => dispatch(imTyping(status))
+	})
+)
 
 export default class MessageBox extends React.PureComponent {
 	static propTypes = {
@@ -80,7 +88,6 @@ export default class MessageBox extends React.PureComponent {
 		return (
 			<View style={styles.textBox}>
 				<SafeAreaView style={styles.safeAreaView}>
-					<Icon style={styles.fileButton} name='add-circle-outline' onPress={this.addFile} />
 					<TextInput
 						ref={component => this.component = component}
 						style={styles.textBoxInput}
@@ -88,9 +95,11 @@ export default class MessageBox extends React.PureComponent {
 						onSubmitEditing={event => this.submit(event.nativeEvent.text)}
 						blurOnSubmit={false}
 						placeholder='New message'
+						onChangeText={text => this.props.typing(text.length > 0)}
 						underlineColorAndroid='transparent'
 						defaultValue=''
 					/>
+					<Icon style={styles.fileButton} name='add-circle-outline' onPress={this.addFile} />
 				</SafeAreaView>
 			</View>
 		);
