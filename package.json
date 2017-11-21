@@ -22,6 +22,7 @@
     "react-emojione": "^5.0.0",
     "react-native": "0.50.3",
     "react-native-action-button": "^2.8.1",
+    "react-native-actionsheet": "^2.3.0",
     "react-native-animatable": "^1.2.4",
     "react-native-card-view": "0.0.3",
     "react-native-easy-markdown": "git+https://github.com/lappalj4/react-native-easy-markdown.git",
