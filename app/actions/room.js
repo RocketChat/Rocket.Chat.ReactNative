@@ -8,9 +8,9 @@ export function removeUserTyping(username) {
 	};
 }
 
-export function typing(data) {
+export function someoneTyping(data) {
 	return {
-		type: types.ROOM.USER_TYPING,
+		type: types.ROOM.SOMEONE_TYPING,
 		...data
 	};
 }
@@ -29,9 +29,9 @@ export function openRoom(room) {
 	};
 }
 
-export function imTyping(status = true) {
+export function userTyping(status = true) {
 	return {
-		type: types.ROOM.IM_TYPING,
+		type: types.ROOM.USER_TYPING,
 		status
 	};
 }

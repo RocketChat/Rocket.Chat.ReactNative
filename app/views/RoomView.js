@@ -71,7 +71,9 @@ export default class RoomView extends React.Component {
 		server: PropTypes.string,
 		Site_Url: PropTypes.string,
 		Message_TimeFormat: PropTypes.string,
-		loading: PropTypes.bool
+		loading: PropTypes.bool,
+		usersTyping: PropTypes.array,
+		username: PropTypes.string
 	};
 
 	constructor(props) {
