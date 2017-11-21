@@ -8,6 +8,7 @@ import reduxStore from './createStore';
 import settingsType from '../constants/settings';
 import realm from './realm';
 import * as actions from '../actions';
+import { someoneTyping } from '../actions/room';
 import { disconnect, connectSuccess } from '../actions/connect';
 
 export { Accounts } from 'react-native-meteor';
@@ -61,11 +62,11 @@ const RocketChat = {
 			});
 
 			Meteor.ddp.on('connected', async() => {
-				Meteor.ddp.on('changed', (ddbMessage) => {
+				Meteor.ddp.on('changed', (ddpMessage) => {
 					const server = { id: reduxStore.getState().server.server };
-					if (ddbMessage.collection === 'stream-room-messages') {
-						realm.write(() => {
-							const message = ddbMessage.fields.args[0];
+					if (ddpMessage.collection === 'stream-room-messages') {
+						return realm.write(() => {
+							const message = ddpMessage.fields.args[0];
 							message.temp = false;
 							message._server = server;
 							message.attachments = message.attachments || [];
@@ -73,10 +74,16 @@ const RocketChat = {
 							realm.create('messages', message, true);
 						});
 					}
-
-					if (ddbMessage.collection === 'stream-notify-user') {
-						const [type, data] = ddbMessage.fields.args;
-						const [, ev] = ddbMessage.fields.eventName.split('/');
+					if (ddpMessage.collection === 'stream-notify-room') {
+						const [_rid, ev] = ddpMessage.fields.eventName.split('/');
+						if (ev !== 'typing') {
+							return;
+						}
+						return reduxStore.dispatch(someoneTyping({ _rid, username: ddpMessage.fields.args[0], typing: ddpMessage.fields.args[1] }));
+					}
+					if (ddpMessage.collection === 'stream-notify-user') {
+						const [type, data] = ddpMessage.fields.args;
+						const [, ev] = ddpMessage.fields.eventName.split('/');
 						if (/subscriptions/.test(ev)) {
 							switch (type) {
 								case 'inserted':
@@ -265,7 +272,6 @@ const RocketChat = {
 					}
 				}
 				resolve();
-				Meteor.subscribe('stream-room-messages', rid, false);
 			});
 		});
 	},
@@ -446,40 +452,27 @@ const RocketChat = {
 		return call('pinMessage', message);
 	},
 	getRoom(rid) {
-		return new Promise((resolve, reject) => {
-			const result = realm.objects('subscriptions').filtered('rid = $0', rid);
-
-			if (result.length === 0) {
-				return reject(new Error('Room not found'));
-			}
-			return resolve(result[0]);
-		});
+		const result = realm.objects('subscriptions').filtered('rid = $0', rid);
+		if (result.length === 0) {
+			return Promise.reject(new Error('Room not found'));
+		}
+		return Promise.resolve(result[0]);
 	},
 	async getPermalink(message) {
-		return new Promise(async(resolve, reject) => {
-			let room;
-			try {
-				room = await RocketChat.getRoom(message.rid);
-			} catch (error) {
-				return reject(error);
-			}
-
-			let roomType;
-			switch (room.t) {
-				case 'p':
-					roomType = 'group';
-					break;
-				case 'c':
-					roomType = 'channel';
-					break;
-				case 'd':
-					roomType = 'direct';
-					break;
-				default:
-					break;
-			}
-			return resolve(`${ room._server.id }/${ roomType }/${ room.name }?msg=${ message._id }`);
-		});
+		const room = await RocketChat.getRoom(message.rid);
+		const roomType = {
+			p: 'group',
+			c: 'channel',
+			d: 'direct'
+		}[room.t];
+		return `${ room._server.id }/${ roomType }/${ room.name }?msg=${ message._id }`;
+	},
+	subscribe(...args) {
+		return Meteor.subscribe(...args);
+	},
+	emitTyping(room, t = true) {
+		const { login } = reduxStore.getState();
+		return call('stream-notify-room', `${ room }/typing`, login.user.username, t);
 	}
 };
 
