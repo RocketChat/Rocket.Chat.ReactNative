@@ -87,13 +87,12 @@ export default class RoomItem extends React.PureComponent {
 			return null;
 		}
 
-		const { color } = avatarInitialsAndColor(name);
-
 		if (type === 'd') {
 			return (
 				<Avatar text={name} baseUrl={baseUrl} size={40} />
 			);
 		}
+		const { color } = avatarInitialsAndColor(name);
 
 		return (
 			<View style={[styles.iconContainer, { backgroundColor: color }]}>
@@ -120,24 +119,13 @@ export default class RoomItem extends React.PureComponent {
 
 	render() {
 		const { unread, name, _updatedAt } = this.props;
-		if (_updatedAt) {
-			return (
-				<TouchableOpacity onPress={this.props.onPress} style={styles.container}>
-					{this.icon}
-					<View style={styles.roomNameView}>
-						<Text style={styles.roomName} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
-						<Text style={styles.update} ellipsizeMode='tail' numberOfLines={1}>{ moment(_updatedAt).format(this.props.dateFormat) }</Text>
-					</View>
-					{this.renderNumber(unread)}
-				</TouchableOpacity>
-			);
-		}
 
 		return (
 			<TouchableOpacity onPress={this.props.onPress} style={styles.container}>
 				{this.icon}
 				<View style={styles.roomNameView}>
 					<Text style={styles.roomName} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
+					{_updatedAt ? <Text style={styles.update} ellipsizeMode='tail' numberOfLines={1}>{ moment(_updatedAt).format(this.props.dateFormat) }</Text> : null}
 				</View>
 				{this.renderNumber(unread)}
 			</TouchableOpacity>
