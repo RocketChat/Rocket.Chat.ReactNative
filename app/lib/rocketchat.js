@@ -26,9 +26,7 @@ const RocketChat = {
 	TOKEN_KEY,
 
 	createChannel({ name, users, type }) {
-		return new Promise((resolve, reject) => {
-			Meteor.call(type ? 'createChannel' : 'createPrivateGroup', name, users, type, (err, res) => (err ? reject(err) : resolve(res)));
-		});
+		return call(type ? 'createChannel' : 'createPrivateGroup', name, users, type);
 	},
 
 	async getUserToken() {
@@ -52,61 +50,63 @@ const RocketChat = {
 			const url = `${ _url }/websocket`;
 
 			Meteor.connect(url, { autoConnect: true, autoReconnect: true });
+
 			Meteor.ddp.on('disconnected', () => {
 				reduxStore.dispatch(disconnect());
 			});
+
 			Meteor.ddp.on('connected', () => {
 				reduxStore.dispatch(connectSuccess());
 				resolve();
 			});
-			Meteor.ddp.on('connected', () => {
-				Meteor.call('public-settings/get', (err, data) => {
-					if (err) {
-						console.error(err);
-					}
 
-					const settings = {};
-					realm.write(() => {
-						data.forEach((item) => {
-							const setting = {
-								_id: item._id
-							};
-							setting._server = { id: reduxStore.getState().server.server };
-							if (settingsType[item.type]) {
-								setting[settingsType[item.type]] = item.value;
-								realm.create('settings', setting, true);
-							}
-
-							settings[item._id] = item.value;
-						});
-					});
-					reduxStore.dispatch(actions.setAllSettings(settings));
-				});
-
+			Meteor.ddp.on('connected', async() => {
 				Meteor.ddp.on('changed', (ddbMessage) => {
+					const server = { id: reduxStore.getState().server.server };
 					if (ddbMessage.collection === 'stream-room-messages') {
 						realm.write(() => {
 							const message = ddbMessage.fields.args[0];
 							message.temp = false;
-							message._server = { id: reduxStore.getState().server.server };
+							message._server = server;
+							message.attachments = message.attachments || [];
 							message.starred = !!message.starred;
 							realm.create('messages', message, true);
 						});
 					}
 
 					if (ddbMessage.collection === 'stream-notify-user') {
-						realm.write(() => {
-							const data = ddbMessage.fields.args[1];
-							data._server = { id: reduxStore.getState().server.server };
-							realm.create('subscriptions', data, true);
-						});
+						const [type, data] = ddbMessage.fields.args;
+						const [, ev] = ddbMessage.fields.eventName.split('/');
+						if (/subscriptions/.test(ev)) {
+							switch (type) {
+								case 'inserted':
+									data._server = server;
+									realm.write(() => {
+										realm.create('subscriptions', data, true);
+									});
+									break;
+								case 'updated':
+									delete data._updatedAt;
+									realm.write(() => {
+										realm.create('subscriptions', data, true);
+									});
+									break;
+								default:
+							}
+						}
+						if (/rooms/.test(ev) && type === 'updated') {
+							const sub = realm.objects('subscriptions').filtered('rid == $0', data._id)[0];
+							realm.write(() => {
+								sub._updatedAt = data._updatedAt;
+							});
+						}
 					}
 				});
+				RocketChat.getSettings();
 			});
 		})
 			.catch(e => console.error(e));
 	},
-
 	login(params, callback) {
 		return new Promise((resolve, reject) => {
 			Meteor._startLoggingIn();
@@ -114,6 +114,11 @@ const RocketChat = {
 				Meteor._endLoggingIn();
 				Meteor._handleLoginCallback(err, result);
 				if (err) {
+					if (/user not found/i.test(err.reason)) {
+						err.error = 1;
+						err.reason = 'User or Password incorrect';
+						err.message = 'User or Password incorrect';
+					}
 					reject(err);
 				} else {
 					resolve(result);
@@ -137,36 +142,15 @@ const RocketChat = {
 	},
 
 	register({ credentials }) {
-		return new Promise((resolve, reject) => {
-			Meteor.call('registerUser', credentials, (err, userId) => {
-				if (err) {
-					reject(err);
-				}
-				resolve(userId);
-			});
-		});
+		return call('registerUser', credentials);
 	},
 
 	setUsername({ credentials }) {
-		return new Promise((resolve, reject) => {
-			Meteor.call('setUsername', credentials.username, (err, result) => {
-				if (err) {
-					reject(err);
-				}
-				resolve(result);
-			});
-		});
+		return call('setUsername', credentials.username);
 	},
 
 	forgotPassword(email) {
-		return new Promise((resolve, reject) => {
-			Meteor.call('sendForgotPasswordEmail', email, (err, result) => {
-				if (err) {
-					reject(err);
-				}
-				resolve(result);
-			});
-		});
+		return call('sendForgotPasswordEmail', email);
 	},
 
 	loginWithPassword({ username, password, code }, callback) {
@@ -210,26 +194,6 @@ const RocketChat = {
 
 		return this.login(params, callback);
 	},
-
-	// loadRooms(cb) {
-	// 	console.warn('a');
-	// 	Meteor.call('rooms/get', (err, data) => {
-	// 		if (err) {
-	// 			console.error(err);
-	// 		}
-	// 		console.warn(`rooms ${ data.length }`);
-	// 		if (data.length) {
-	// 			realm.write(() => {
-	// 				data.forEach((room) => {
-	// 					room._server = { id: reduxStore.getState().server.server };
-	// 					realm.create('rooms', room, true);
-	// 				});
-	// 			});
-	// 		}
-
-	// 		return cb && cb();
-	// 	});
-	// },
 
 	loadSubscriptions(cb) {
 		Meteor.call('subscriptions/get', (err, data) => {
@@ -285,6 +249,7 @@ const RocketChat = {
 						data.messages.forEach((message) => {
 							message.temp = false;
 							message._server = { id: reduxStore.getState().server.server };
+							message.attachments = message.attachments || [];
 							// write('messages', message);
 							message.starred = !!message.starred;
 							realm.create('messages', message, true);
@@ -334,38 +299,17 @@ const RocketChat = {
 	},
 
 	spotlight(search, usernames) {
-		return new Promise((resolve, reject) => {
-			Meteor.call('spotlight', search, usernames, (error, result) => {
-				if (error) {
-					return reject(error);
-				}
-				return resolve(result);
-			});
-		});
+		return call('spotlight', search, usernames);
 	},
 
 	createDirectMessage(username) {
-		return new Promise((resolve, reject) => {
-			Meteor.call('createDirectMessage', username, (error, result) => {
-				if (error) {
-					return reject(error);
-				}
-				return resolve(result);
-			});
-		});
+		return call('createDirectMessage', username);
 	},
 	readMessages(rid) {
 		return call('readMessages', rid);
 	},
 	joinRoom(rid) {
-		return new Promise((resolve, reject) => {
-			Meteor.call('joinRoom', rid, (error, result) => {
-				if (error) {
-					return reject(error);
-				}
-				return resolve(result);
-			});
-		});
+		return call('joinRoom', rid);
 	},
 
 
@@ -379,26 +323,12 @@ const RocketChat = {
 	*/
 	_ufsCreate(fileInfo) {
 		// return call('ufsCreate', fileInfo);
-		return new Promise((resolve, reject) => {
-			Meteor.call('ufsCreate', fileInfo, (error, result) => {
-				if (error) {
-					return reject(error);
-				}
-				return resolve(result);
-			});
-		});
+		return call('ufsCreate', fileInfo);
 	},
 
 	// ["ZTE8CKHJt7LATv7Me","fileSystem","e8E96b2819"
 	_ufsComplete(fileId, store, token) {
-		return new Promise((resolve, reject) => {
-			Meteor.call('ufsComplete', fileId, store, token, (error, result) => {
-				if (error) {
-					return reject(error);
-				}
-				return resolve(result);
-			});
-		});
+		return call('ufsComplete', fileId, store, token);
 	},
 
 	/*
@@ -412,14 +342,7 @@ const RocketChat = {
 		}
 	*/
 	_sendFileMessage(rid, data, msg = {}) {
-		return new Promise((resolve, reject) => {
-			Meteor.call('sendFileMessage', rid, null, data, msg, (error, result) => {
-				if (error) {
-					return reject(error);
-				}
-				return resolve(result);
-			});
-		});
+		return call('sendFileMessage', rid, null, data, msg);
 	},
 	async sendFileMessage(rid, fileInfo, data) {
 		const placeholder = RocketChat.getMessage(rid, 'Sending an image');
@@ -448,23 +371,36 @@ const RocketChat = {
 			});
 		}
 	},
-	getRooms() {
+	async getRooms() {
 		const { server, login } = reduxStore.getState();
-		return Promise.all([call('subscriptions/get'), call('rooms/get')]).then(([subscriptions, rooms]) => {
-			const data = subscriptions.map((subscription) => {
-				subscription._updatedAt = (rooms.find(room => room._id === subscription.rid) || {})._updatedAt;
-				subscription._server = { id: server.server };
-				return subscription;
-			});
+		let lastMessage = realm
+			.objects('subscriptions')
+			.filtered('_server.id = $0', server.server)
+			.sorted('_updatedAt', true)[0];
+		lastMessage = lastMessage && new Date(lastMessage._updatedAt);
+		let [subscriptions, rooms] = await Promise.all([call('subscriptions/get', lastMessage), call('rooms/get', lastMessage)]);
 
-			realm.write(() => {
-				data.forEach((subscription) => {
-					realm.create('subscriptions', subscription, true);
-				});
-			});
-			Meteor.subscribe('stream-notify-user', `${ login.user.id }/subscriptions-changed`, false);
-			return data;
+		if (lastMessage) {
+			subscriptions = subscriptions.update;
+			rooms = rooms.update;
+		}
+		const data = subscriptions.map((subscription) => {
+			const room = rooms.find(({ _id }) => _id === subscription.rid);
+			delete subscription._updatedAt;
+			if (room) {
+				subscription._updatedAt = room._updatedAt;
+			}
+			subscription._server = { id: server.server };
+			return subscription;
 		});
+
+		realm.write(() => {
+			data.forEach(subscription =>
+				realm.create('subscriptions', subscription, true));
+		});
+		Meteor.subscribe('stream-notify-user', `${ login.user.id }/subscriptions-changed`, false);
+		Meteor.subscribe('stream-notify-user', `${ login.user.id }/rooms-changed`, false);
+		return data;
 	},
 	logout({ server }) {
 		Meteor.logout();
@@ -472,6 +408,27 @@ const RocketChat = {
 		AsyncStorage.removeItem(TOKEN_KEY);
 		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
 	},
+	async getSettings() {
+		const temp = realm.objects('settings').sorted('_updatedAt', true)[0];
+		const result = await (!temp ? call('public-settings/get') : call('public-settings/get', new Date(temp._updatedAt)));
+		const settings = temp ? result.update : result;
+		const filteredSettings = RocketChat._prepareSettings(RocketChat._filterSettings(settings));
+		realm.write(() => {
+			filteredSettings.forEach(setting => realm.create('settings', setting, true));
+		});
+		reduxStore.dispatch(actions.setAllSettings(RocketChat.parseSettings(filteredSettings)));
+	},
+	parseSettings: settings => settings.reduce((ret, item) => {
+		ret[item._id] = item[settingsType[item.type]] || item.valueAsString || item.value;
+		return ret;
+	}, {}),
+	_prepareSettings(settings) {
+		return settings.map((setting) => {
+			setting[settingsType[setting.type]] = setting.value;
+			return setting;
+		});
+	},
+	_filterSettings: settings => settings.filter(setting => settingsType[setting.type] && setting.value),
 	deleteMessage(message) {
 		return call('deleteMessage', { _id: message._id });
 	},
