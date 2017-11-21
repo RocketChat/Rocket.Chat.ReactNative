@@ -39,6 +39,12 @@ export default function messages(state = initialState, action) {
 				message: {},
 				editing: false
 			};
+		case types.MESSAGES.EDIT_FAILURE:
+			return {
+				...state,
+				message: {},
+				editing: false
+			};
 		case types.MESSAGES.PERMALINK_SUCCESS:
 			return {
 				...state,
