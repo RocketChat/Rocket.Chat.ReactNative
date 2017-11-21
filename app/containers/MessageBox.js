@@ -51,20 +51,14 @@ export default class MessageBox extends React.Component {
 		editing: PropTypes.bool
 	}
 
-	constructor(props) {
-		super(props);
-		this.state = { message: '' };
-	}
-
 	componentWillReceiveProps(nextProps) {
 		if (this.props.message !== nextProps.message) {
-			this.setState({ message: nextProps.message.msg });
+			this.component.setNativeProps({ text: nextProps.message.msg });
 			this.component.focus();
 		}
 	}
 
-	submit() {
-		const { message } = this.state;
+	submit(message) {
 		const { editing } = this.props;
 		if (message.trim() === '') {
 			return;
@@ -78,7 +72,7 @@ export default class MessageBox extends React.Component {
 			// if is submiting a new message
 			this.props.onSubmit(message);
 		}
-		this.setState({ message: '' });
+		this.component.setNativeProps({ text: '' });
 	}
 
 	addFile = () => {
@@ -117,13 +111,11 @@ export default class MessageBox extends React.Component {
 						ref={component => this.component = component}
 						style={styles.textBoxInput}
 						returnKeyType='send'
-						onSubmitEditing={() => this.submit()}
+						onSubmitEditing={event => this.submit(event.nativeEvent.text)}
 						blurOnSubmit={false}
 						placeholder='New message'
 						underlineColorAndroid='transparent'
 						defaultValue=''
-						value={this.state.message}
-						onChangeText={message => this.setState({ message })}
 					/>
 				</SafeAreaView>
 			</View>
