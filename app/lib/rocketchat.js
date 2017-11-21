@@ -383,7 +383,11 @@ const RocketChat = {
 			rooms = rooms.update;
 		}
 		const data = subscriptions.map((subscription) => {
-			subscription._updatedAt = (rooms.find(room => room._id === subscription.rid) || subscription)._updatedAt;
+			const room = rooms.find(({ _id }) => _id === subscription.rid);
+			delete subscription._updatedAt;
+			if (room) {
+				subscription._updatedAt = room._updatedAt;
+			}
 			subscription._server = { id: server.server };
 			return subscription;
 		});
