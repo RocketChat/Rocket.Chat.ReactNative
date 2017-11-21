@@ -39,6 +39,7 @@ platform :ios do
       type: "appstore",
       git_url: "git@github.com:RocketChat/Rocket.Chat.ReactNative.FastLane.git"
     ) # more information: https://codesigning.guide
+    pem()
     gym(scheme: "RocketChatRN") # Build your app - more options available
     pilot
 
@@ -66,6 +67,7 @@ platform :ios do
       type: "appstore",
       git_url: "git@github.com:RocketChat/Rocket.Chat.ReactNative.FastLane.git"
     ) # more information: https://codesigning.guide
+    pem()
     gym(scheme: "RocketChatRN") # Build your app - more options available
     # frameit
   end
