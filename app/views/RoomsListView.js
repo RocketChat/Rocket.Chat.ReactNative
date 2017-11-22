@@ -100,22 +100,20 @@ export default class RoomsListView extends React.Component {
 		super(props);
 
 		this.state = {
-			dataSource: [],
+			dataSource: ds.cloneWithRows([]),
 			searchText: ''
 		};
 		this.data = realm.objects('subscriptions').filtered('_server.id = $0', this.props.server).sorted('_updatedAt', true);
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.data.addListener(this.updateState);
 
 		this.props.navigation.setParams({
 			createChannel: () => this._createChannel()
 		});
 
-		this.setState({
-			dataSource: ds.cloneWithRows(this.data)
-		});
+		this.updateState();
 	}
 
 	componentWillReceiveProps(props) {
