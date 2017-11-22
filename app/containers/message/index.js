@@ -164,9 +164,9 @@ export default class Message extends React.Component {
 	isOwn = () => this.props.item.u && this.props.item.u._id === this.props.user.id;
 
 	allowEdit = () => {
-		const isEditAllowed = this.props.Message_AllowEditing;
 		const editOwn = this.isOwn();
-		if (!(this.props.hasEditPermission || (isEditAllowed && editOwn))) {
+		const { Message_AllowEditing: isEditAllowed, hasEditPermission } = this.props;
+		if (!(hasEditPermission || (isEditAllowed && editOwn))) {
 			return false;
 		}
 		const blockEditInMinutes = this.props.Message_AllowEditing_BlockEditInMinutes;
