@@ -66,6 +66,7 @@ const subscriptionSchema = {
 	properties: {
 		_id: 'string',
 		_server: 'servers',
+		f: { type: 'bool', optional: true },
 		t: 'string',
 		ts: { type: 'date', optional: true },
 		ls: { type: 'date', optional: true },
@@ -76,6 +77,7 @@ const subscriptionSchema = {
 		alert: { type: 'bool', optional: true },
 		roles: { type: 'list', objectType: 'subscriptionRolesSchema' },
 		unread: { type: 'int', optional: true },
+		userMentions: { type: 'int', optional: true },
 		// userMentions: 0,
 		// groupMentions: 0,
 		_updatedAt: { type: 'date', optional: true }
@@ -159,7 +161,8 @@ const realm = new Realm({
 		messagesEditedBySchema,
 		permissionsSchema,
 		permissionsRolesSchema
-	]
+	],
+	deleteRealmIfMigrationNeeded: true
 });
 export default realm;
 
