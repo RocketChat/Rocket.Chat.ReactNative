@@ -85,6 +85,10 @@ const RocketChat = {
 						const [type, data] = ddpMessage.fields.args;
 						const [, ev] = ddpMessage.fields.eventName.split('/');
 						if (/subscriptions/.test(ev)) {
+							if (data.roles) {
+								data.roles = data.roles.map(role => ({ value: role }));
+							}
+
 							switch (type) {
 								case 'inserted':
 									data._server = server;
@@ -408,6 +412,9 @@ const RocketChat = {
 			if (room) {
 				subscription._updatedAt = room._updatedAt;
 			}
+			if (subscription.roles) {
+				subscription.roles = subscription.roles.map(role => ({ value: role }));
+			}
 			subscription._server = { id: server.server };
 			return subscription;
 		});
@@ -482,13 +489,6 @@ const RocketChat = {
 			return call('unpinMessage', message);
 		}
 		return call('pinMessage', message);
-	},
-	getRoom(rid) {
-		const result = realm.objects('subscriptions').filtered('rid = $0', rid);
-		if (result.length === 0) {
-			return Promise.reject(new Error('Room not found'));
-		}
-		return Promise.resolve(result[0]);
 	},
 	async getPermalink(message) {
 		const room = await RocketChat.getRoom(message.rid);

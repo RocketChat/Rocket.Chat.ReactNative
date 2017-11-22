@@ -53,6 +53,13 @@ const roomsSchema = {
 	}
 };
 
+const subscriptionRolesSchema = {
+	name: 'subscriptionRolesSchema',
+	properties: {
+		value: 'string'
+	}
+};
+
 const subscriptionSchema = {
 	name: 'subscriptions',
 	primaryKey: '_id',
@@ -67,7 +74,7 @@ const subscriptionSchema = {
 		rid: 'string',
 		open: { type: 'bool', optional: true },
 		alert: { type: 'bool', optional: true },
-		// roles: [ 'owner' ],
+		roles: { type: 'list', objectType: 'subscriptionRolesSchema' },
 		unread: { type: 'int', optional: true },
 		// userMentions: 0,
 		// groupMentions: 0,
@@ -144,6 +151,7 @@ const realm = new Realm({
 		settingsSchema,
 		serversSchema,
 		subscriptionSchema,
+		subscriptionRolesSchema,
 		messagesSchema,
 		usersSchema,
 		roomsSchema,

@@ -17,7 +17,6 @@ import {
 	togglePinRequest,
 	setInput
 } from '../../actions/messages';
-import RocketChat from '../../lib/rocketchat';
 
 const title = 'Message actions';
 const options = ['Cancel', 'Reply', 'Edit', 'Permalink', 'Copy', 'Quote', 'Star Message', 'Pin Message', 'Delete'];
@@ -60,6 +59,7 @@ const styles = StyleSheet.create({
 export default class Message extends React.Component {
 	static propTypes = {
 		item: PropTypes.object.isRequired,
+		room: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
 		Message_TimeFormat: PropTypes.string.isRequired,
 		deleteRequest: PropTypes.func.isRequired,
@@ -102,10 +102,9 @@ export default class Message extends React.Component {
 			} else if (this.state.reply) {
 				this.setState({ reply: false });
 				let msg = `[ ](${ nextProps.permalink }) `;
-				const room = await RocketChat.getRoom(this.props.item.rid);
 
 				// if original message wasn't sent by current user and neither from a direct room
-				if (this.props.user.username !== this.props.item.u.username && room.t !== 'd') {
+				if (this.props.user.username !== this.props.item.u.username && this.props.room.t !== 'd') {
 					msg += `@${ this.props.item.u.username } `;
 				}
 				this.props.setInput({ msg });

@@ -89,6 +89,7 @@ export default class RoomView extends React.Component {
 			.objects('messages')
 			.filtered('_server.id = $0 AND rid = $1', this.props.server, this.rid)
 			.sorted('ts', true);
+		this.room = realm.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			slow: false,
 			dataSource: ds.cloneWithRows([]),
@@ -174,6 +175,7 @@ export default class RoomView extends React.Component {
 			item={item}
 			baseUrl={this.props.Site_Url}
 			Message_TimeFormat={this.props.Message_TimeFormat}
+			room={this.room}
 		/>
 	);
 
