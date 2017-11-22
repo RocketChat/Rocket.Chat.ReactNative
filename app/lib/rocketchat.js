@@ -149,6 +149,17 @@ const RocketChat = {
 		}).then(response => response.json());
 	},
 
+	userInfo({ server, token, userId }) {
+		return fetch(`${ server }/api/v1/users.info?userId=${ userId }`, {
+			method: 'get',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-Auth-Token': token,
+				'X-User-Id': userId
+			}
+		}).then(response => response.json());
+	},
+
 	register({ credentials }) {
 		return call('registerUser', credentials);
 	},
