@@ -15,7 +15,11 @@ import KeyboardView from '../presentation/KeyboardView';
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id });
 const styles = StyleSheet.create({
-	typing: { fontWeight: 'bold', paddingHorizontal: 15, height: 25 },
+	typing: {
+		paddingHorizontal: 15,
+		height: 25,
+		transform: [{ scaleY: -1 }]
+	},
 	container: {
 		flex: 1,
 		backgroundColor: '#fff'
@@ -211,6 +215,7 @@ export default class RoomView extends React.Component {
 						style={styles.list}
 						onEndReachedThreshold={height / 2}
 						renderFooter={this.renderHeader}
+						renderHeader={() => <Text style={styles.typing}>{this.usersTyping}</Text>}
 						onEndReached={this.onEndReached}
 						dataSource={this.state.dataSource}
 						renderRow={item => this.renderItem({ item })}
@@ -218,7 +223,6 @@ export default class RoomView extends React.Component {
 					/>
 				</SafeAreaView>
 				{this.renderFooter()}
-				<Text style={styles.typing}>{this.usersTyping}</Text>
 			</KeyboardView>
 		);
 	}
