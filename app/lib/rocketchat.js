@@ -85,6 +85,10 @@ const RocketChat = {
 						const [type, data] = ddpMessage.fields.args;
 						const [, ev] = ddpMessage.fields.eventName.split('/');
 						if (/subscriptions/.test(ev)) {
+							if (data.roles) {
+								data.roles = data.roles.map(role => ({ value: role }));
+							}
+
 							switch (type) {
 								case 'inserted':
 									data._server = server;
@@ -110,6 +114,7 @@ const RocketChat = {
 					}
 				});
 				RocketChat.getSettings();
+				RocketChat.getPermissions();
 			});
 		})
 			.catch(e => console.error(e));
@@ -139,6 +144,17 @@ const RocketChat = {
 
 	me({ server, token, userId }) {
 		return fetch(`${ server }/api/v1/me`, {
+			method: 'get',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-Auth-Token': token,
+				'X-User-Id': userId
+			}
+		}).then(response => response.json());
+	},
+
+	userInfo({ server, token, userId }) {
+		return fetch(`${ server }/api/v1/users.info?userId=${ userId }`, {
 			method: 'get',
 			headers: {
 				'Content-Type': 'application/json',
@@ -396,6 +412,9 @@ const RocketChat = {
 			if (room) {
 				subscription._updatedAt = room._updatedAt;
 			}
+			if (subscription.roles) {
+				subscription.roles = subscription.roles.map(role => ({ value: role }));
+			}
 			subscription._server = { id: server.server };
 			return subscription;
 		});
@@ -435,6 +454,26 @@ const RocketChat = {
 		});
 	},
 	_filterSettings: settings => settings.filter(setting => settingsType[setting.type] && setting.value),
+	async getPermissions() {
+		const temp = realm.objects('permissions').sorted('_updatedAt', true)[0];
+		const result = await (!temp ? call('permissions/get') : call('permissions/get', new Date(temp._updatedAt)));
+		let permissions = temp ? result.update : result;
+		permissions = RocketChat._preparePermissions(permissions);
+		realm.write(() => {
+			permissions.forEach(permission => realm.create('permissions', permission, true));
+		});
+		reduxStore.dispatch(actions.setAllPermissions(RocketChat.parsePermissions(permissions)));
+	},
+	parsePermissions: permissions => permissions.reduce((ret, item) => {
+		ret[item._id] = item.roles.reduce((roleRet, role) => [...roleRet, role.value], []);
+		return ret;
+	}, {}),
+	_preparePermissions(permissions) {
+		permissions.forEach((permission) => {
+			permission.roles = permission.roles.map(role => ({ value: role }));
+		});
+		return permissions;
+	},
 	deleteMessage(message) {
 		return call('deleteMessage', { _id: message._id });
 	},
