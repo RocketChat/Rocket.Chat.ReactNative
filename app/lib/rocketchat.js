@@ -490,6 +490,13 @@ const RocketChat = {
 		}
 		return call('pinMessage', message);
 	},
+	getRoom(rid) {
+		const result = realm.objects('subscriptions').filtered('rid = $0', rid);
+		if (result.length === 0) {
+			return Promise.reject(new Error('Room not found'));
+		}
+		return Promise.resolve(result[0]);
+	},
 	async getPermalink(message) {
 		const room = await RocketChat.getRoom(message.rid);
 		const roomType = {

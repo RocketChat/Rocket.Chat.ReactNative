@@ -49,12 +49,13 @@ const styles = StyleSheet.create({
 
 @connect(
 	state => ({
-		username: state.login.user.username,
+		user: state.login.user,
 		usersTyping: state.room.usersTyping,
 		server: state.server.server,
 		Site_Url: state.settings.Site_Url,
 		Message_TimeFormat: state.settings.Message_TimeFormat,
-		loading: state.messages.isFetching
+		loading: state.messages.isFetching,
+		permissions: state.permissions
 	}),
 	dispatch => ({
 		actions: bindActionCreators(actions, dispatch),
@@ -73,7 +74,8 @@ export default class RoomView extends React.Component {
 		Message_TimeFormat: PropTypes.string,
 		loading: PropTypes.bool,
 		usersTyping: PropTypes.array,
-		username: PropTypes.string
+		user: PropTypes.object,
+		permissions: PropTypes.object.isRequired
 	};
 
 	constructor(props) {
@@ -96,6 +98,18 @@ export default class RoomView extends React.Component {
 			loaded: true,
 			joined: typeof props.rid === 'undefined'
 		};
+
+		// permissions
+		const { roles } = this.room[0];
+		const roomRoles = Array.from(Object.keys(roles), i => roles[i].value);
+		const userRoles = this.props.user.roles || [];
+		const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
+		this.hasEditPermission = this.props.permissions['edit-message']
+			.some(item => mergedRoles.indexOf(item) !== -1);
+		this.hasDeletePermission = this.props.permissions['delete-message']
+			.some(item => mergedRoles.indexOf(item) !== -1);
+		this.hasForceDeletePermission = this.props.permissions['force-delete-message']
+			.some(item => mergedRoles.indexOf(item) !== -1);
 	}
 
 	componentWillMount() {
@@ -143,7 +157,7 @@ export default class RoomView extends React.Component {
 	}
 
 	get usersTyping() {
-		const users = this.props.usersTyping.filter(_username => this.props.username !== _username);
+		const users = this.props.usersTyping.filter(_username => this.props.user.username !== _username);
 		return users.length ? `${ users.join(' ,') } ${ users.length > 1 ? 'are' : 'is' } typing` : null;
 	}
 
@@ -176,6 +190,9 @@ export default class RoomView extends React.Component {
 			baseUrl={this.props.Site_Url}
 			Message_TimeFormat={this.props.Message_TimeFormat}
 			room={this.room}
+			hasEditPermission={this.hasEditPermission}
+			hasDeletePermission={this.hasDeletePermission}
+			hasForceDeletePermission={this.hasForceDeletePermission}
 		/>
 	);
 

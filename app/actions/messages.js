@@ -106,6 +106,12 @@ export function permalinkFailure(err) {
 	};
 }
 
+export function permalinkClear() {
+	return {
+		type: types.MESSAGES.PERMALINK_CLEAR
+	};
+}
+
 export function togglePinRequest(message) {
 	return {
 		type: types.MESSAGES.TOGGLE_PIN_REQUEST,
@@ -130,5 +136,11 @@ export function setInput(message) {
 	return {
 		type: types.MESSAGES.SET_INPUT,
 		message
+	};
+}
+
+export function clearInput() {
+	return {
+		type: types.MESSAGES.CLEAR_INPUT
 	};
 }

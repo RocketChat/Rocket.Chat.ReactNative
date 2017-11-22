@@ -6,7 +6,7 @@ import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import { userTyping } from '../actions/room';
 import RocketChat from '../lib/rocketchat';
-import { editRequest } from '../actions/messages';
+import { editRequest, clearInput } from '../actions/messages';
 
 const styles = StyleSheet.create({
 	textBox: {
@@ -41,7 +41,8 @@ const styles = StyleSheet.create({
 	editing: state.messages.editing
 }), dispatch => ({
 	editRequest: message => dispatch(editRequest(message)),
-	typing: status => dispatch(userTyping(status))
+	typing: status => dispatch(userTyping(status)),
+	clearInput: () => dispatch(clearInput())
 }))
 export default class MessageBox extends React.Component {
 	static propTypes = {
@@ -50,11 +51,12 @@ export default class MessageBox extends React.Component {
 		editRequest: PropTypes.func.isRequired,
 		message: PropTypes.object,
 		editing: PropTypes.bool,
-		typing: PropTypes.bool
+		typing: PropTypes.func,
+		clearInput: PropTypes.func
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (this.props.message !== nextProps.message) {
+		if (this.props.message !== nextProps.message && nextProps.message) {
 			this.component.setNativeProps({ text: nextProps.message.msg });
 			this.component.focus();
 		}
@@ -75,6 +77,7 @@ export default class MessageBox extends React.Component {
 			this.props.onSubmit(message);
 		}
 		this.component.setNativeProps({ text: '' });
+		this.props.clearInput();
 	}
 
 	addFile = () => {

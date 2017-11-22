@@ -5,6 +5,7 @@ import { emojify } from 'react-emojione';
 import Markdown from 'react-native-easy-markdown'; // eslint-disable-line
 import ActionSheet from 'react-native-actionsheet';
 import { connect } from 'react-redux';
+import * as moment from 'moment';
 
 import Card from './Card';
 import User from './User';
@@ -14,14 +15,10 @@ import {
 	editInit,
 	starRequest,
 	permalinkRequest,
+	permalinkClear,
 	togglePinRequest,
 	setInput
 } from '../../actions/messages';
-
-const title = 'Message actions';
-const options = ['Cancel', 'Reply', 'Edit', 'Permalink', 'Copy', 'Quote', 'Star Message', 'Pin Message', 'Delete'];
-const CANCEL_INDEX = 0;
-const DESTRUCTIVE_INDEX = 8;
 
 const styles = StyleSheet.create({
 	content: {
@@ -47,14 +44,21 @@ const styles = StyleSheet.create({
 @connect(state => ({
 	message: state.messages.message,
 	permalink: state.messages.permalink,
-	user: state.login.user
+	user: state.login.user,
+	Message_AllowDeleting: state.settings.Message_AllowDeleting,
+	Message_AllowDeleting_BlockDeleteInMinutes: state.settings.Message_AllowDeleting_BlockDeleteInMinutes,
+	Message_AllowEditing: state.settings.Message_AllowEditing,
+	Message_AllowEditing_BlockEditInMinutes: state.settings.Message_AllowEditing_BlockEditInMinutes,
+	Message_AllowPinning: state.settings.Message_AllowPinning,
+	Message_AllowStarring: state.settings.Message_AllowStarring
 }), dispatch => ({
 	deleteRequest: message => dispatch(deleteRequest(message)),
 	editInit: message => dispatch(editInit(message)),
 	starRequest: message => dispatch(starRequest(message)),
 	permalinkRequest: message => dispatch(permalinkRequest(message)),
 	togglePinRequest: message => dispatch(togglePinRequest(message)),
-	setInput: message => dispatch(setInput(message))
+	setInput: message => dispatch(setInput(message)),
+	permalinkClear: () => dispatch(permalinkClear())
 }))
 export default class Message extends React.Component {
 	static propTypes = {
@@ -66,11 +70,21 @@ export default class Message extends React.Component {
 		editInit: PropTypes.func.isRequired,
 		starRequest: PropTypes.func.isRequired,
 		permalinkRequest: PropTypes.func.isRequired,
+		permalinkClear: PropTypes.func.isRequired,
 		togglePinRequest: PropTypes.func.isRequired,
 		setInput: PropTypes.func.isRequired,
 		user: PropTypes.object.isRequired,
 		message: PropTypes.object,
-		permalink: PropTypes.string
+		permalink: PropTypes.string,
+		Message_AllowDeleting: PropTypes.bool,
+		Message_AllowDeleting_BlockDeleteInMinutes: PropTypes.number,
+		Message_AllowEditing: PropTypes.bool,
+		Message_AllowEditing_BlockEditInMinutes: PropTypes.number,
+		Message_AllowPinning: PropTypes.bool,
+		Message_AllowStarring: PropTypes.bool,
+		hasEditPermission: PropTypes.bool,
+		hasDeletePermission: PropTypes.bool,
+		hasForceDeletePermission: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -82,16 +96,51 @@ export default class Message extends React.Component {
 		};
 		this.handleActionPress = this.handleActionPress.bind(this);
 		this.showActions = this.showActions.bind(this);
+		// Cancel
+		this.options = ['Cancel'];
+		this.CANCEL_INDEX = 0;
+		// Reply
+		this.options.push('Reply');
+		this.REPLY_INDEX = this.options.length - 1;
+		// Edit
+		if (this.allowEdit()) {
+			this.options.push('Edit');
+			this.EDIT_INDEX = this.options.length - 1;
+		}
+		// Permalink
+		this.options.push('Permalink');
+		this.PERMALINK_INDEX = this.options.length - 1;
+		// Copy
+		this.options.push('Copy');
+		this.COPY_INDEX = this.options.length - 1;
+		// Quote
+		this.options.push('Quote');
+		this.QUOTE_INDEX = this.options.length - 1;
+		// Star
+		if (this.props.Message_AllowStarring) {
+			this.options.push('Star');
+			this.STAR_INDEX = this.options.length - 1;
+		}
+		// Pin
+		if (this.props.Message_AllowPinning) {
+			this.options.push('Pin');
+			this.PIN_INDEX = this.options.length - 1;
+		}
+		// Delete
+		if (this.allowDelete()) {
+			this.options.push('Delete');
+			this.DELETE_INDEX = this.options.length - 1;
+		}
 	}
 
 	async componentWillReceiveProps(nextProps) {
-		if (this.props.permalink !== nextProps.permalink) {
+		if (this.props.permalink !== nextProps.permalink && nextProps.permalink) {
 			// copy permalink
 			if (this.state.copyPermalink) {
 				this.setState({ copyPermalink: false });
 				await Clipboard.setString(nextProps.permalink);
 				Alert.alert('Permalink copied to clipboard!');
-
+				this.props.permalinkClear();
 			// quote
 			} else if (this.state.quote) {
 				this.setState({ quote: false });
@@ -110,6 +159,53 @@ export default class Message extends React.Component {
 				this.props.setInput({ msg });
 			}
 		}
+	}
+
+	isOwn = () => this.props.item.u && this.props.item.u._id === this.props.user.id;
+
+	allowEdit = () => {
+		const isEditAllowed = this.props.Message_AllowEditing;
+		const editOwn = this.isOwn();
+		if (!(this.props.hasEditPermission || (isEditAllowed && editOwn))) {
+			return false;
+		}
+		const blockEditInMinutes = this.props.Message_AllowEditing_BlockEditInMinutes;
+		if (blockEditInMinutes) {
+			let msgTs;
+			if (this.props.item.ts != null) {
+				msgTs = moment(this.props.item.ts);
+			}
+			let currentTsDiff;
+			if (msgTs != null) {
+				currentTsDiff = moment().diff(msgTs, 'minutes');
+			}
+			return currentTsDiff < blockEditInMinutes;
+		}
+		return true;
+	}
+
+	allowDelete = () => {
+		const deleteOwn = this.isOwn();
+		const { hasDeletePermission, hasForceDeletePermission, Message_AllowDeleting: isDeleteAllowed } = this.props;
+		if (!(hasDeletePermission || (isDeleteAllowed && deleteOwn) || this.props.hasForceDeletePermission)) {
+			return false;
+		}
+		if (hasForceDeletePermission) {
+			return true;
+		}
+		const blockDeleteInMinutes = this.props.Message_AllowDeleting_BlockDeleteInMinutes;
+		if (blockDeleteInMinutes != null && blockDeleteInMinutes !== 0) {
+			let msgTs;
+			if (this.props.item.ts != null) {
+				msgTs = moment(this.props.item.ts);
+			}
+			let currentTsDiff;
+			if (msgTs != null) {
+				currentTsDiff = moment().diff(msgTs, 'minutes');
+			}
+			return currentTsDiff < blockDeleteInMinutes;
+		}
+		return true;
 	}
 
 	isDeleted() {
@@ -166,7 +262,7 @@ export default class Message extends React.Component {
 		this.props.permalinkRequest(this.props.item);
 	}
 
-	handleTogglePin() {
+	handlePin() {
 		this.props.togglePinRequest(this.props.item);
 	}
 
@@ -181,30 +277,33 @@ export default class Message extends React.Component {
 	}
 
 	handleActionPress = (actionIndex) => {
-		// reply
-		if (actionIndex === 1) {
-			this.handleReply();
-		// edit
-		} else if (actionIndex === 2) {
-			this.handleEdit();
-		// permalink
-		} else if (actionIndex === 3) {
-			this.handlePermalink();
-		// copy
-		} else if (actionIndex === 4) {
-			this.handleCopy();
-		// quote
-		} else if (actionIndex === 5) {
-			this.handleQuote();
-		// star
-		} else if (actionIndex === 6) {
-			this.handleStar();
-		// toggle pin
-		} else if (actionIndex === 7) {
-			this.handleTogglePin();
-		// delete
-		} else if (actionIndex === 8) {
-			this.handleDelete();
+		switch (actionIndex) {
+			case this.REPLY_INDEX:
+				this.handleReply();
+				break;
+			case this.EDIT_INDEX:
+				this.handleEdit();
+				break;
+			case this.PERMALINK_INDEX:
+				this.handlePermalink();
+				break;
+			case this.COPY_INDEX:
+				this.handleCopy();
+				break;
+			case this.QUOTE_INDEX:
+				this.handleQuote();
+				break;
+			case this.STAR_INDEX:
+				this.handleStar();
+				break;
+			case this.PIN_INDEX:
+				this.handlePin();
+				break;
+			case this.DELETE_INDEX:
+				this.handleDelete();
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -258,10 +357,10 @@ export default class Message extends React.Component {
 					</View>
 					<ActionSheet
 						ref={o => this.ActionSheet = o}
-						title={title}
-						options={options}
-						cancelButtonIndex={CANCEL_INDEX}
-						destructiveButtonIndex={DESTRUCTIVE_INDEX}
+						title='Messages actions'
+						options={this.options}
+						cancelButtonIndex={this.CANCEL_INDEX}
+						destructiveButtonIndex={this.DELETE_INDEX}
 						onPress={this.handleActionPress}
 					/>
 				</View>
