@@ -431,42 +431,24 @@ const RocketChat = {
 	},
 	_filterSettings: settings => settings.filter(setting => settingsType[setting.type] && setting.value),
 	async getPermissions() {
-		// const permissions = await call('permissions/get');
-		// console.log(permissions)
-		// reduxStore.dispatch(actions.setAllPermissions(RocketChat.parsePermissions(permissions)));
-
 		const temp = realm.objects('permissions').sorted('_updatedAt', true)[0];
-		const permissions = await call('permissions/get');
-		const preparedPermissions = RocketChat._preparePermissions(permissions);
-		console.log(preparedPermissions)
-		// realm.write(() => {
-		// 	permissions.forEach(permission => realm.create('permissions', permission, true));
-		// });
+		const result = await (!temp ? call('permissions/get') : call('permissions/get', new Date(temp._updatedAt)));
+		let permissions = temp ? result.update : result;
+		permissions = RocketChat._preparePermissions(permissions);
+		realm.write(() => {
+			permissions.forEach(permission => realm.create('permissions', permission, true));
+		});
 		reduxStore.dispatch(actions.setAllPermissions(RocketChat.parsePermissions(permissions)));
-		// const filteredPermissions = RocketChat._preparePermissions(RocketChat._filterPermissions(permissions));
-
-		// const temp = realm.objects('permissions').sorted('_updatedAt', true)[0];
-		// const result = await (!temp ? call('public-permissions/get') : call('public-permissions/get', new Date(temp._updatedAt)));
-		// const permissions = temp ? result.update : result;
-		// const filteredPermissions = RocketChat._preparePermissions(RocketChat._filterPermissions(permissions));
-		// realm.write(() => {
-		// filteredPermissions.forEach(permission => realm.create('permissions', permission, true));
-		// });
-		// reduxStore.dispatch(actions.setAllPermissions(RocketChat.parsePermissions(filteredPermissions)));
 	},
 	parsePermissions: permissions => permissions.reduce((ret, item) => {
-		ret[item._id] = item.roles;
+		ret[item._id] = item.roles.reduce((roleRet, role) => [...roleRet, role.value], []);
 		return ret;
 	}, {}),
 	_preparePermissions(permissions) {
-		const tmpPermissions = [...permissions];
-		tmpPermissions.forEach((permission) => {
-			permission.roles = permission.roles.map((role) => {
-				role = { value: role };
-				return role;
-			});
+		permissions.forEach((permission) => {
+			permission.roles = permission.roles.map(role => ({ value: role }));
 		});
-		return tmpPermissions;
+		return permissions;
 	},
 	deleteMessage(message) {
 		return call('deleteMessage', { _id: message._id });
