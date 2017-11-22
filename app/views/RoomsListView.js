@@ -254,7 +254,10 @@ export default class RoomsListView extends React.Component {
 
 	renderItem = item => (
 		<RoomItem
+			alert={item.alert}
 			unread={item.unread}
+			userMentions={item.userMentions}
+			favorite={item.f}
 			name={item.name}
 			_updatedAt={item._updatedAt}
 			key={item._id}
