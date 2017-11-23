@@ -444,7 +444,8 @@ const RocketChat = {
 		reduxStore.dispatch(actions.setAllSettings(RocketChat.parseSettings(filteredSettings)));
 	},
 	parseSettings: settings => settings.reduce((ret, item) => {
-		ret[item._id] = item[settingsType[item.type]] || item.valueAsString || item.value;
+		ret[item._id] = item[settingsType[item.type]] || item.valueAsString || item.valueAsNumber ||
+			item.valueAsBoolean || item.value;
 		return ret;
 	}, {}),
 	_prepareSettings(settings) {
