@@ -108,22 +108,22 @@ export default class Message extends React.Component {
 			this.EDIT_INDEX = this.options.length - 1;
 		}
 		// Permalink
-		this.options.push('Permalink');
+		this.options.push('Copy Permalink');
 		this.PERMALINK_INDEX = this.options.length - 1;
 		// Copy
-		this.options.push('Copy');
+		this.options.push('Copy Message');
 		this.COPY_INDEX = this.options.length - 1;
 		// Quote
 		this.options.push('Quote');
 		this.QUOTE_INDEX = this.options.length - 1;
 		// Star
 		if (this.props.Message_AllowStarring) {
-			this.options.push('Star');
+			this.options.push('Star Message');
 			this.STAR_INDEX = this.options.length - 1;
 		}
 		// Pin
 		if (this.props.Message_AllowPinning) {
-			this.options.push('Pin');
+			this.options.push('Pin Message');
 			this.PIN_INDEX = this.options.length - 1;
 		}
 		// Delete
