@@ -47,6 +47,12 @@ export function editInit(message) {
 	};
 }
 
+export function editCancel() {
+	return {
+		type: types.MESSAGES.EDIT_CANCEL
+	};
+}
+
 export function editRequest(message) {
 	return {
 		type: types.MESSAGES.EDIT_REQUEST,

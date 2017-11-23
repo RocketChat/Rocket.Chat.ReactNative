@@ -118,12 +118,12 @@ export default class Message extends React.Component {
 		this.QUOTE_INDEX = this.options.length - 1;
 		// Star
 		if (this.props.Message_AllowStarring) {
-			this.options.push('Star Message');
+			this.options.push('Star');
 			this.STAR_INDEX = this.options.length - 1;
 		}
 		// Pin
 		if (this.props.Message_AllowPinning) {
-			this.options.push('Pin Message');
+			this.options.push('Pin');
 			this.PIN_INDEX = this.options.length - 1;
 		}
 		// Delete

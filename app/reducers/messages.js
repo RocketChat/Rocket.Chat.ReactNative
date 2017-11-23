@@ -33,6 +33,12 @@ export default function messages(state = initialState, action) {
 				message: action.message,
 				editing: true
 			};
+		case types.MESSAGES.EDIT_CANCEL:
+			return {
+				...state,
+				message: {},
+				editing: false
+			};
 		case types.MESSAGES.EDIT_SUCCESS:
 			return {
 				...state,

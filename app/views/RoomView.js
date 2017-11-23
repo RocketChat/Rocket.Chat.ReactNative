@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 
 import * as actions from '../actions';
 import { openRoom } from '../actions/room';
+import { editCancel } from '../actions/messages';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import Message from '../containers/message';
@@ -59,13 +60,15 @@ const styles = StyleSheet.create({
 	}),
 	dispatch => ({
 		actions: bindActionCreators(actions, dispatch),
-		openRoom: room => dispatch(openRoom(room))
+		openRoom: room => dispatch(openRoom(room)),
+		editCancel: () => dispatch(editCancel())
 	})
 )
 export default class RoomView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
 		openRoom: PropTypes.func.isRequired,
+		editCancel: PropTypes.func,
 		rid: PropTypes.string,
 		sid: PropTypes.string,
 		name: PropTypes.string,
@@ -132,6 +135,7 @@ export default class RoomView extends React.Component {
 	componentWillUnmount() {
 		clearTimeout(this.timer);
 		this.data.removeAllListeners();
+		this.props.editCancel();
 	}
 
 	onEndReached = () => {
