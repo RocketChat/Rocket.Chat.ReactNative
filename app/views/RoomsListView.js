@@ -193,7 +193,7 @@ export default class RoomsListView extends React.Component {
 
 	_onPressItem = (id, item = {}) => {
 		const navigateToRoom = (room) => {
-			this.props.navigation.navigate('Room', { room });
+			this.props.navigation.navigate('Room', { room, title: room.name });
 		};
 
 		const clearSearch = () => {
@@ -220,7 +220,7 @@ export default class RoomsListView extends React.Component {
 							}
 						});
 					}))
-					.then(sub => navigateToRoom({ sid: sub._id }))
+					.then(sub => navigateToRoom({ sid: sub._id, name: sub.name }))
 					.then(() => clearSearch());
 			} else {
 				clearSearch();
@@ -229,7 +229,7 @@ export default class RoomsListView extends React.Component {
 			return;
 		}
 
-		navigateToRoom({ sid: id, ...item });
+		navigateToRoom({ sid: id, name: item.name });
 		clearSearch();
 	}
 
