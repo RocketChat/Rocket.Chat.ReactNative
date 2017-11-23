@@ -335,35 +335,33 @@ export default class Message extends React.Component {
 			<TouchableOpacity
 				onLongPress={() => this.showActions()}
 				disabled={this.isDeleted()}
-				style={isEditing ? styles.editing : null}
+				style={[styles.message, extraStyle, isEditing ? styles.editing : null]}
 			>
-				<View style={[styles.message, extraStyle]}>
-					<Avatar
-						style={{ marginRight: 10 }}
-						text={item.avatar ? '' : username}
-						size={40}
+				<Avatar
+					style={{ marginRight: 10 }}
+					text={item.avatar ? '' : username}
+					size={40}
+					baseUrl={this.props.baseUrl}
+					avatar={item.avatar}
+				/>
+				<View style={[styles.content]}>
+					<User
+						onPress={this._onPress}
+						item={item}
+						Message_TimeFormat={this.props.Message_TimeFormat}
 						baseUrl={this.props.baseUrl}
-						avatar={item.avatar}
 					/>
-					<View style={[styles.content]}>
-						<User
-							onPress={this._onPress}
-							item={item}
-							Message_TimeFormat={this.props.Message_TimeFormat}
-							baseUrl={this.props.baseUrl}
-						/>
-						{this.attachments()}
-						{this.renderMessageContent(item)}
-					</View>
-					<ActionSheet
-						ref={o => this.ActionSheet = o}
-						title='Messages actions'
-						options={this.options}
-						cancelButtonIndex={this.CANCEL_INDEX}
-						destructiveButtonIndex={this.DELETE_INDEX}
-						onPress={this.handleActionPress}
-					/>
+					{this.attachments()}
+					{this.renderMessageContent(item)}
 				</View>
+				<ActionSheet
+					ref={o => this.ActionSheet = o}
+					title='Messages actions'
+					options={this.options}
+					cancelButtonIndex={this.CANCEL_INDEX}
+					destructiveButtonIndex={this.DELETE_INDEX}
+					onPress={this.handleActionPress}
+				/>
 			</TouchableOpacity>
 		);
 	}
