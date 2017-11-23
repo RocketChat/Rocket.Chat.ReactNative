@@ -37,6 +37,12 @@ export default class Cards extends React.PureComponent {
 		});
 	}
 
+	getDescription() {
+		if (this.props.data.description) {
+			return <Text style={{ alignSelf: 'center', fontWeight: 'bold' }}>{this.props.data.description}</Text>;
+		}
+	}
+
 	getImage() {
 		return (
 			<View>
@@ -50,7 +56,7 @@ export default class Cards extends React.PureComponent {
 						</CardImage>
 						<CardContent>
 							<Text style={[{ fontSize: 12, alignSelf: 'center', fontStyle: 'italic' }]}>{this.props.data.title}</Text>
-							<Text style={{ alignSelf: 'center', fontWeight: 'bold' }}>{this.props.data.description}</Text>
+							{this.getDescription()}
 						</CardContent>
 					</Card>
 				</TouchableOpacity>
