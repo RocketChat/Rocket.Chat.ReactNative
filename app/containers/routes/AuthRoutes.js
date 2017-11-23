@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { StackNavigator, DrawerNavigator, NavigationActions, HeaderBackButton } from 'react-navigation';
+import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
 import Sidebar from '../../containers/Sidebar';
 import DrawerMenuButton from '../../presentation/DrawerMenuButton';
@@ -12,14 +12,6 @@ import SelectUsersView from '../../views/SelectUsersView';
 
 const drawerPosition = 'left';
 const drawerIconPosition = 'headerLeft';
-
-const backToScreen = (navigation, routeName) => {
-	const action = NavigationActions.reset({
-		index: 0,
-		actions: [NavigationActions.navigate({ routeName })]
-	});
-	navigation.dispatch(action);
-};
 
 const AuthRoutes = StackNavigator(
 	{
@@ -36,13 +28,7 @@ const AuthRoutes = StackNavigator(
 			screen: RoomView,
 			navigationOptions({ navigation }) {
 				return {
-					title: navigation.state.params.title || 'Room',
-					headerLeft: (
-						<HeaderBackButton
-							title='Back'
-							onPress={() => backToScreen(navigation, 'RoomsList')}
-						/>
-					)
+					title: navigation.state.params.title || 'Room'
 					// [drawerIconPosition]: (<DrawerMenuButton navigation={navigation} />)÷
 				};
 			}
