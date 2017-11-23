@@ -11,6 +11,7 @@ import { editCancel } from '../actions/messages';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import Message from '../containers/message';
+import MessageActions from '../containers/MessageActions';
 import MessageBox from '../containers/MessageBox';
 import KeyboardView from '../presentation/KeyboardView';
 
@@ -55,8 +56,7 @@ const styles = StyleSheet.create({
 		server: state.server.server,
 		Site_Url: state.settings.Site_Url,
 		Message_TimeFormat: state.settings.Message_TimeFormat,
-		loading: state.messages.isFetching,
-		permissions: state.permissions
+		loading: state.messages.isFetching
 	}),
 	dispatch => ({
 		actions: bindActionCreators(actions, dispatch),
@@ -77,8 +77,7 @@ export default class RoomView extends React.Component {
 		Message_TimeFormat: PropTypes.string,
 		loading: PropTypes.bool,
 		usersTyping: PropTypes.array,
-		user: PropTypes.object,
-		permissions: PropTypes.object.isRequired
+		user: PropTypes.object
 	};
 
 	constructor(props) {
@@ -101,18 +100,6 @@ export default class RoomView extends React.Component {
 			loaded: true,
 			joined: typeof props.rid === 'undefined'
 		};
-
-		// permissions
-		const { roles } = this.room[0];
-		const roomRoles = Array.from(Object.keys(roles), i => roles[i].value);
-		const userRoles = this.props.user.roles || [];
-		const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
-		this.hasEditPermission = this.props.permissions['edit-message']
-			.some(item => mergedRoles.indexOf(item) !== -1);
-		this.hasDeletePermission = this.props.permissions['delete-message']
-			.some(item => mergedRoles.indexOf(item) !== -1);
-		this.hasForceDeletePermission = this.props.permissions['force-delete-message']
-			.some(item => mergedRoles.indexOf(item) !== -1);
 	}
 
 	componentWillMount() {
@@ -193,10 +180,6 @@ export default class RoomView extends React.Component {
 			item={item}
 			baseUrl={this.props.Site_Url}
 			Message_TimeFormat={this.props.Message_TimeFormat}
-			room={this.room}
-			hasEditPermission={this.hasEditPermission}
-			hasDeletePermission={this.hasDeletePermission}
-			hasForceDeletePermission={this.hasForceDeletePermission}
 		/>
 	);
 
@@ -242,6 +225,7 @@ export default class RoomView extends React.Component {
 				</SafeAreaView>
 				{this.renderFooter()}
 				<Text style={styles.typing}>{this.usersTyping}</Text>
+				<MessageActions rid={this.rid} />
 			</KeyboardView>
 		);
 	}

@@ -20,6 +20,19 @@ export function messagesFailure(err) {
 	};
 }
 
+export function actionsShow(actionMessage) {
+	return {
+		type: types.MESSAGES.ACTIONS_SHOW,
+		actionMessage
+	};
+}
+
+export function actionsHide() {
+	return {
+		type: types.MESSAGES.ACTIONS_HIDE
+	};
+}
+
 export function deleteRequest(message) {
 	return {
 		type: types.MESSAGES.DELETE_REQUEST,

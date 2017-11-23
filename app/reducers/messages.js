@@ -4,8 +4,10 @@ const initialState = {
 	isFetching: false,
 	failure: false,
 	message: {},
+	actionMessage: {},
 	editing: false,
-	permalink: ''
+	permalink: '',
+	showActions: false
 };
 
 export default function messages(state = initialState, action) {
@@ -26,6 +28,17 @@ export default function messages(state = initialState, action) {
 				isFetching: false,
 				failure: true,
 				errorMessage: action.err
+			};
+		case types.MESSAGES.ACTIONS_SHOW:
+			return {
+				...state,
+				showActions: true,
+				actionMessage: action.actionMessage
+			};
+		case types.MESSAGES.ACTIONS_HIDE:
+			return {
+				...state,
+				showActions: false
 			};
 		case types.MESSAGES.EDIT_INIT:
 			return {

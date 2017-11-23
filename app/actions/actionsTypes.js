@@ -31,6 +31,8 @@ export const ROOM = createRequestTypes('ROOM', ['ADD_USER_TYPING', 'REMOVE_USER_
 export const APP = createRequestTypes('APP', ['READY', 'INIT']);
 export const MESSAGES = createRequestTypes('MESSAGES', [
 	...defaultTypes,
+	'ACTIONS_SHOW',
+	'ACTIONS_HIDE',
 	'DELETE_REQUEST',
 	'DELETE_SUCCESS',
 	'DELETE_FAILURE',
