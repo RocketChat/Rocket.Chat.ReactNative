@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default class Message extends React.PureComponent {
+export default class User extends React.PureComponent {
 	static propTypes = {
 		item: PropTypes.object.isRequired,
 		Message_TimeFormat: PropTypes.string.isRequired,

@@ -70,7 +70,7 @@ const RocketChat = {
 							message.temp = false;
 							message._server = server;
 							message.attachments = message.attachments || [];
-							message.starred = !!message.starred;
+							message.starred = message.starred && message.starred.length > 0;
 							realm.create('messages', message, true);
 						});
 					}
@@ -85,6 +85,9 @@ const RocketChat = {
 						const [type, data] = ddpMessage.fields.args;
 						const [, ev] = ddpMessage.fields.eventName.split('/');
 						if (/subscriptions/.test(ev)) {
+							if (data.roles) {
+								data.roles = data.roles.map(role => ({ value: role }));
+							}
 							realm.write(() => {
 								realm.create('subscriptions', data, true);
 							});
@@ -98,6 +101,7 @@ const RocketChat = {
 					}
 				});
 				RocketChat.getSettings();
+				RocketChat.getPermissions();
 			});
 		})
 			.catch(e => console.error(e));
@@ -127,6 +131,17 @@ const RocketChat = {
 
 	me({ server, token, userId }) {
 		return fetch(`${ server }/api/v1/me`, {
+			method: 'get',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-Auth-Token': token,
+				'X-User-Id': userId
+			}
+		}).then(response => response.json());
+	},
+
+	userInfo({ server, token, userId }) {
+		return fetch(`${ server }/api/v1/users.info?userId=${ userId }`, {
 			method: 'get',
 			headers: {
 				'Content-Type': 'application/json',
@@ -385,6 +400,9 @@ const RocketChat = {
 			if (room) {
 				subscription.roomUpdatedAt = room._updatedAt;
 			}
+			if (subscription.roles) {
+				subscription.roles = subscription.roles.map(role => ({ value: role }));
+			}
 			subscription._server = { id: server.server };
 			return subscription;
 		});
@@ -413,7 +431,8 @@ const RocketChat = {
 		reduxStore.dispatch(actions.setAllSettings(RocketChat.parseSettings(filteredSettings)));
 	},
 	parseSettings: settings => settings.reduce((ret, item) => {
-		ret[item._id] = item[settingsType[item.type]] || item.valueAsString || item.value;
+		ret[item._id] = item[settingsType[item.type]] || item.valueAsString || item.valueAsNumber ||
+			item.valueAsBoolean || item.value;
 		return ret;
 	}, {}),
 	_prepareSettings(settings) {
@@ -423,6 +442,26 @@ const RocketChat = {
 		});
 	},
 	_filterSettings: settings => settings.filter(setting => settingsType[setting.type] && setting.value),
+	async getPermissions() {
+		const temp = realm.objects('permissions').sorted('_updatedAt', true)[0];
+		const result = await (!temp ? call('permissions/get') : call('permissions/get', new Date(temp._updatedAt)));
+		let permissions = temp ? result.update : result;
+		permissions = RocketChat._preparePermissions(permissions);
+		realm.write(() => {
+			permissions.forEach(permission => realm.create('permissions', permission, true));
+		});
+		reduxStore.dispatch(actions.setAllPermissions(RocketChat.parsePermissions(permissions)));
+	},
+	parsePermissions: permissions => permissions.reduce((ret, item) => {
+		ret[item._id] = item.roles.reduce((roleRet, role) => [...roleRet, role.value], []);
+		return ret;
+	}, {}),
+	_preparePermissions(permissions) {
+		permissions.forEach((permission) => {
+			permission.roles = permission.roles.map(role => ({ value: role }));
+		});
+		return permissions;
+	},
 	deleteMessage(message) {
 		return call('deleteMessage', { _id: message._id });
 	},
@@ -430,7 +469,7 @@ const RocketChat = {
 		const { _id, msg, rid } = message;
 		return call('updateMessage', { _id, msg, rid });
 	},
-	starMessage(message) {
+	toggleStarMessage(message) {
 		return call('starMessage', { _id: message._id, rid: message.rid, starred: !message.starred });
 	},
 	togglePinMessage(message) {

@@ -8,8 +8,8 @@ import server from './server';
 import navigator from './navigator';
 import createChannel from './createChannel';
 import app from './app';
-
+import permissions from './permissions';
 
 export default combineReducers({
-	settings, login, meteor, messages, server, navigator, createChannel, app, room
+	settings, login, meteor, messages, server, navigator, createChannel, app, room, permissions
 });

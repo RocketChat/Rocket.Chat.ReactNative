@@ -24,6 +24,24 @@ const settingsSchema = {
 	}
 };
 
+const permissionsRolesSchema = {
+	name: 'permissionsRoles',
+	properties: {
+		value: 'string'
+	}
+};
+
+const permissionsSchema = {
+	name: 'permissions',
+	primaryKey: '_id',
+	properties: {
+		_id: 'string',
+		_server: 'servers',
+		roles: { type: 'list', objectType: 'permissionsRoles' },
+		_updatedAt: { type: 'date', optional: true }
+	}
+};
+
 const roomsSchema = {
 	name: 'rooms',
 	primaryKey: '_id',
@@ -32,6 +50,13 @@ const roomsSchema = {
 		_server: 'servers',
 		t: 'string',
 		_updatedAt: { type: 'date', optional: true }
+	}
+};
+
+const subscriptionRolesSchema = {
+	name: 'subscriptionRolesSchema',
+	properties: {
+		value: 'string'
 	}
 };
 
@@ -50,7 +75,7 @@ const subscriptionSchema = {
 		rid: 'string',
 		open: { type: 'bool', optional: true },
 		alert: { type: 'bool', optional: true },
-		// roles: [ 'owner' ],
+		roles: { type: 'list', objectType: 'subscriptionRolesSchema' },
 		unread: { type: 'int', optional: true },
 		userMentions: { type: 'int', optional: true },
 		// userMentions: 0,
@@ -128,11 +153,14 @@ const realm = new Realm({
 		settingsSchema,
 		serversSchema,
 		subscriptionSchema,
+		subscriptionRolesSchema,
 		messagesSchema,
 		usersSchema,
 		roomsSchema,
 		attachment,
-		messagesEditedBySchema
+		messagesEditedBySchema,
+		permissionsSchema,
+		permissionsRolesSchema
 	],
 	deleteRealmIfMigrationNeeded: true
 });
