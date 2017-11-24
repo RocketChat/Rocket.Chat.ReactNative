@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, StyleSheet, Button, SafeAreaView, Dimensions } from 'react-native';
+import { Text, View, StyleSheet, Button, SafeAreaView } from 'react-native';
 import { ListView } from 'realm/react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -13,6 +13,7 @@ import RocketChat from '../lib/rocketchat';
 import Message from '../containers/message';
 import MessageActions from '../containers/MessageActions';
 import MessageBox from '../containers/MessageBox';
+import Typing from '../containers/Typing';
 import KeyboardView from '../presentation/KeyboardView';
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id });
@@ -48,11 +49,9 @@ const styles = StyleSheet.create({
 		color: '#ccc'
 	}
 });
-
+const typing = () => <Typing />;
 @connect(
 	state => ({
-		user: state.login.user,
-		usersTyping: state.room.usersTyping,
 		server: state.server.server,
 		Site_Url: state.settings.Site_Url,
 		Message_TimeFormat: state.settings.Message_TimeFormat,
@@ -70,14 +69,12 @@ export default class RoomView extends React.Component {
 		openRoom: PropTypes.func.isRequired,
 		editCancel: PropTypes.func,
 		rid: PropTypes.string,
+		server: PropTypes.string,
 		sid: PropTypes.string,
 		name: PropTypes.string,
-		server: PropTypes.string,
 		Site_Url: PropTypes.string,
 		Message_TimeFormat: PropTypes.string,
-		loading: PropTypes.bool,
-		usersTyping: PropTypes.array,
-		user: PropTypes.object
+		loading: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -147,11 +144,6 @@ export default class RoomView extends React.Component {
 		}
 	}
 
-	get usersTyping() {
-		const users = this.props.usersTyping.filter(_username => this.props.user.username !== _username);
-		return users.length ? `${ users.join(' ,') } ${ users.length > 1 ? 'are' : 'is' } typing` : null;
-	}
-
 	updateState = () => {
 		this.setState({
 			dataSource: ds.cloneWithRows(this.data)
@@ -207,7 +199,6 @@ export default class RoomView extends React.Component {
 		}
 	}
 	render() {
-		const { height } = Dimensions.get('window');
 		return (
 			<KeyboardView contentContainerStyle={styles.container} keyboardVerticalOffset={64}>
 				{this.renderBanner()}
@@ -215,8 +206,9 @@ export default class RoomView extends React.Component {
 					<ListView
 						enableEmptySections
 						style={styles.list}
-						onEndReachedThreshold={height / 2}
+						onEndReachedThreshold={0.5}
 						renderFooter={this.renderHeader}
+						renderHeader={typing}
 						onEndReached={this.onEndReached}
 						dataSource={this.state.dataSource}
 						renderRow={item => this.renderItem({ item })}
@@ -224,7 +216,6 @@ export default class RoomView extends React.Component {
 					/>
 				</SafeAreaView>
 				{this.renderFooter()}
-				<Text style={styles.typing}>{this.usersTyping}</Text>
 				<MessageActions room={this.room} />
 			</KeyboardView>
 		);
