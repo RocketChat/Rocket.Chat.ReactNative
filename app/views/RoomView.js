@@ -225,7 +225,7 @@ export default class RoomView extends React.Component {
 				</SafeAreaView>
 				{this.renderFooter()}
 				<Text style={styles.typing}>{this.usersTyping}</Text>
-				<MessageActions rid={this.rid} />
+				<MessageActions room={this.room} />
 			</KeyboardView>
 		);
 	}

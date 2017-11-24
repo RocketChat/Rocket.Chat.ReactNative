@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
 import * as moment from 'moment';
 
-import realm from '../lib/realm';
 import {
 	deleteRequest,
 	editInit,
@@ -22,11 +21,6 @@ import {
 		showActions: state.messages.showActions,
 		actionMessage: state.messages.actionMessage,
 		user: state.login.user,
-		usersTyping: state.room.usersTyping,
-		server: state.server.server,
-		Site_Url: state.settings.Site_Url,
-		Message_TimeFormat: state.settings.Message_TimeFormat,
-		loading: state.messages.isFetching,
 		permissions: state.permissions,
 		permalink: state.messages.permalink,
 		Message_AllowDeleting: state.settings.Message_AllowDeleting,
@@ -51,7 +45,7 @@ export default class MessageActions extends React.Component {
 	static propTypes = {
 		actionsHide: PropTypes.func.isRequired,
 		showActions: PropTypes.bool.isRequired,
-		rid: PropTypes.string,
+		room: PropTypes.object,
 		actionMessage: PropTypes.object,
 		user: PropTypes.object,
 		permissions: PropTypes.object.isRequired,
@@ -68,10 +62,7 @@ export default class MessageActions extends React.Component {
 		Message_AllowEditing: PropTypes.bool,
 		Message_AllowEditing_BlockEditInMinutes: PropTypes.number,
 		Message_AllowPinning: PropTypes.bool,
-		Message_AllowStarring: PropTypes.bool,
-		hasEditPermission: PropTypes.bool,
-		hasDeletePermission: PropTypes.bool,
-		hasForceDeletePermission: PropTypes.bool
+		Message_AllowStarring: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -82,10 +73,8 @@ export default class MessageActions extends React.Component {
 			quote: false
 		};
 		this.handleActionPress = this.handleActionPress.bind(this);
-		this.options = ['Cancel', 'Delete'];
-		// permissions
-		this.room = realm.objects('subscriptions').filtered('rid = $0', this.props.rid);
-		const { roles } = this.room[0];
+		this.options = [''];
+		const { roles } = this.props.room[0];
 		const roomRoles = Array.from(Object.keys(roles), i => roles[i].value);
 		const userRoles = this.props.user.roles || [];
 		const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
@@ -106,34 +95,34 @@ export default class MessageActions extends React.Component {
 			this.options.push('Reply');
 			this.REPLY_INDEX = this.options.length - 1;
 			// Edit
-			// if (this.allowEdit()) {
-			// 	this.options.push('Edit');
-			// 	this.EDIT_INDEX = this.options.length - 1;
-			// }
-			// // Permalink
-			// this.options.push('Copy Permalink');
-			// this.PERMALINK_INDEX = this.options.length - 1;
-			// // Copy
-			// this.options.push('Copy Message');
-			// this.COPY_INDEX = this.options.length - 1;
-			// // Quote
-			// this.options.push('Quote');
-			// this.QUOTE_INDEX = this.options.length - 1;
-			// // Star
-			// if (this.props.Message_AllowStarring) {
-			// 	this.options.push('Star');
-			// 	this.STAR_INDEX = this.options.length - 1;
-			// }
-			// // Pin
-			// if (this.props.Message_AllowPinning) {
-			// 	this.options.push('Pin');
-			// 	this.PIN_INDEX = this.options.length - 1;
-			// }
-			// // Delete
-			// if (this.allowDelete()) {
-			// 	this.options.push('Delete');
-			// 	this.DELETE_INDEX = this.options.length - 1;
-			// }
+			if (this.allowEdit(nextProps)) {
+				this.options.push('Edit');
+				this.EDIT_INDEX = this.options.length - 1;
+			}
+			// Permalink
+			this.options.push('Copy Permalink');
+			this.PERMALINK_INDEX = this.options.length - 1;
+			// Copy
+			this.options.push('Copy Message');
+			this.COPY_INDEX = this.options.length - 1;
+			// Quote
+			this.options.push('Quote');
+			this.QUOTE_INDEX = this.options.length - 1;
+			// Star
+			if (this.props.Message_AllowStarring) {
+				this.options.push('Star');
+				this.STAR_INDEX = this.options.length - 1;
+			}
+			// Pin
+			if (this.props.Message_AllowPinning) {
+				this.options.push('Pin');
+				this.PIN_INDEX = this.options.length - 1;
+			}
+			// Delete
+			if (this.allowDelete(nextProps)) {
+				this.options.push('Delete');
+				this.DELETE_INDEX = this.options.length - 1;
+			}
 			setTimeout(() => {
 				this.ActionSheet.show();
 			});
@@ -156,7 +145,7 @@ export default class MessageActions extends React.Component {
 				let msg = `[ ](${ nextProps.permalink }) `;
 
 				// if original message wasn't sent by current user and neither from a direct room
-				if (this.props.user.username !== this.props.actionMessage.u.username && this.room[0].t !== 'd') {
+				if (this.props.user.username !== this.props.actionMessage.u.username && this.props.room[0].t !== 'd') {
 					msg += `@${ this.props.actionMessage.u.username } `;
 				}
 				this.props.setInput({ msg });
@@ -164,19 +153,19 @@ export default class MessageActions extends React.Component {
 		}
 	}
 
-	isOwn = () => this.props.actionMessage.u && this.props.actionMessage.u._id === this.props.user.id;
+	isOwn = props => props.actionMessage.u && props.actionMessage.u._id === props.user.id;
 
-	allowEdit = () => {
-		const editOwn = this.isOwn();
-		const { Message_AllowEditing: isEditAllowed, hasEditPermission } = this.props;
-		if (!(hasEditPermission || (isEditAllowed && editOwn))) {
+	allowEdit = (props) => {
+		const editOwn = this.isOwn(props);
+		const { Message_AllowEditing: isEditAllowed } = this.props;
+		if (!(this.hasEditPermission || (isEditAllowed && editOwn))) {
 			return false;
 		}
 		const blockEditInMinutes = this.props.Message_AllowEditing_BlockEditInMinutes;
 		if (blockEditInMinutes) {
 			let msgTs;
-			if (this.props.actionMessage.ts != null) {
-				msgTs = moment(this.props.actionMessage.ts);
+			if (props.actionMessage.ts != null) {
+				msgTs = moment(props.actionMessage.ts);
 			}
 			let currentTsDiff;
 			if (msgTs != null) {
@@ -187,20 +176,20 @@ export default class MessageActions extends React.Component {
 		return true;
 	}
 
-	allowDelete = () => {
-		const deleteOwn = this.isOwn();
-		const { hasDeletePermission, hasForceDeletePermission, Message_AllowDeleting: isDeleteAllowed } = this.props;
-		if (!(hasDeletePermission || (isDeleteAllowed && deleteOwn) || this.props.hasForceDeletePermission)) {
+	allowDelete = (props) => {
+		const deleteOwn = this.isOwn(props);
+		const { Message_AllowDeleting: isDeleteAllowed } = this.props;
+		if (!(this.hasDeletePermission || (isDeleteAllowed && deleteOwn) || this.hasForceDeletePermission)) {
 			return false;
 		}
-		if (hasForceDeletePermission) {
+		if (this.hasForceDeletePermission) {
 			return true;
 		}
 		const blockDeleteInMinutes = this.props.Message_AllowDeleting_BlockDeleteInMinutes;
 		if (blockDeleteInMinutes != null && blockDeleteInMinutes !== 0) {
 			let msgTs;
-			if (this.props.actionMessage.ts != null) {
-				msgTs = moment(this.props.actionMessage.ts);
+			if (props.actionMessage.ts != null) {
+				msgTs = moment(props.actionMessage.ts);
 			}
 			let currentTsDiff;
 			if (msgTs != null) {
@@ -246,7 +235,6 @@ export default class MessageActions extends React.Component {
 
 	handlePermalink() {
 		this.setState({ copyPermalink: true });
-		console.warn(this.props.actionMessage)
 		this.props.permalinkRequest(this.props.actionMessage);
 	}
 
@@ -293,7 +281,7 @@ export default class MessageActions extends React.Component {
 			default:
 				break;
 		}
-		// this.props.actionsHide();
+		this.props.actionsHide();
 	}
 
 	render() {

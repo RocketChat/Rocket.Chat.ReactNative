@@ -49,7 +49,7 @@ export default class Message extends React.Component {
 
 	onLongPress() {
 		const { item } = this.props;
-		this.props.actionsShow(item);
+		this.props.actionsShow(JSON.parse(JSON.stringify(item)));
 	}
 
 	isDeleted() {

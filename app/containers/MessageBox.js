@@ -56,7 +56,7 @@ export default class MessageBox extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (this.props.message !== nextProps.message && nextProps.message && nextProps.editing) {
+		if (this.props.message !== nextProps.message && nextProps.message) {
 			this.component.setNativeProps({ text: nextProps.message.msg });
 			this.component.focus();
 		} else if (!nextProps.message) {
