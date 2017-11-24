@@ -125,8 +125,8 @@ export default class MessageBox extends React.Component {
 
 	updateSize = (height) => {
 		this.setState({ height });
-  }
-    
+	}
+
 	editCancel() {
 		this.props.editCancel();
 		this.component.setNativeProps({ text: '' });
