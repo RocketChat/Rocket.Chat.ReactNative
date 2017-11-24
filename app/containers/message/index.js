@@ -48,6 +48,8 @@ export default class Message extends React.Component {
 	}
 
 	onLongPress() {
+		console.warn(this.props.item)
+		// TESTE TYPE RM
 		const { item } = this.props;
 		this.props.actionsShow(JSON.parse(JSON.stringify(item)));
 	}
