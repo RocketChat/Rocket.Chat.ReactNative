@@ -50,7 +50,7 @@ export default class MessageBox extends React.Component {
 		editRequest: PropTypes.func.isRequired,
 		message: PropTypes.object,
 		editing: PropTypes.bool,
-		typing: PropTypes.bool
+		typing: PropTypes.func
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -61,12 +61,13 @@ export default class MessageBox extends React.Component {
 	}
 
 	submit(message) {
-		const { editing } = this.props;
+		this.component.setNativeProps({ text: '' });
+		this.props.typing(false);
 		if (message.trim() === '') {
 			return;
 		}
-
 		// if is editing a message
+		const { editing } = this.props;
 		if (editing) {
 			const { _id, rid } = this.props.message;
 			this.props.editRequest({ _id, msg: message, rid });
@@ -74,7 +75,6 @@ export default class MessageBox extends React.Component {
 			// if is submiting a new message
 			this.props.onSubmit(message);
 		}
-		this.component.setNativeProps({ text: '' });
 	}
 
 	addFile = () => {

@@ -85,26 +85,14 @@ const RocketChat = {
 						const [type, data] = ddpMessage.fields.args;
 						const [, ev] = ddpMessage.fields.eventName.split('/');
 						if (/subscriptions/.test(ev)) {
-							switch (type) {
-								case 'inserted':
-									data._server = server;
-									realm.write(() => {
-										realm.create('subscriptions', data, true);
-									});
-									break;
-								case 'updated':
-									delete data._updatedAt;
-									realm.write(() => {
-										realm.create('subscriptions', data, true);
-									});
-									break;
-								default:
-							}
+							realm.write(() => {
+								realm.create('subscriptions', data, true);
+							});
 						}
 						if (/rooms/.test(ev) && type === 'updated') {
 							const sub = realm.objects('subscriptions').filtered('rid == $0', data._id)[0];
 							realm.write(() => {
-								sub._updatedAt = data._updatedAt;
+								sub.roomUpdatedAt = data._updatedAt;
 							});
 						}
 					}
@@ -203,6 +191,7 @@ const RocketChat = {
 	},
 
 	loadSubscriptions(cb) {
+		const { server } = reduxStore.getState().server;
 		Meteor.call('subscriptions/get', (err, data) => {
 			if (err) {
 				console.error(err);
@@ -216,7 +205,7 @@ const RocketChat = {
 						// if (typeof item.value === 'string') {
 						// 	subscription.value = item.value;
 						// }
-						subscription._server = { id: reduxStore.getState().server.server };
+						subscription._server = { id: server };
 						// write('subscriptions', subscription);
 						realm.create('subscriptions', subscription, true);
 					});
@@ -382,24 +371,23 @@ const RocketChat = {
 		let lastMessage = realm
 			.objects('subscriptions')
 			.filtered('_server.id = $0', server.server)
-			.sorted('_updatedAt', true)[0];
-		lastMessage = lastMessage && new Date(lastMessage._updatedAt);
+			.sorted('roomUpdatedAt', true)[0];
+		lastMessage = lastMessage && new Date(lastMessage.roomUpdatedAt);
 		let [subscriptions, rooms] = await Promise.all([call('subscriptions/get', lastMessage), call('rooms/get', lastMessage)]);
 
 		if (lastMessage) {
 			subscriptions = subscriptions.update;
 			rooms = rooms.update;
 		}
+
 		const data = subscriptions.map((subscription) => {
 			const room = rooms.find(({ _id }) => _id === subscription.rid);
-			delete subscription._updatedAt;
 			if (room) {
-				subscription._updatedAt = room._updatedAt;
+				subscription.roomUpdatedAt = room._updatedAt;
 			}
 			subscription._server = { id: server.server };
 			return subscription;
 		});
-
 		realm.write(() => {
 			data.forEach(subscription =>
 				realm.create('subscriptions', subscription, true));
