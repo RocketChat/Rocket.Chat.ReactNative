@@ -7,9 +7,11 @@ import { bindActionCreators } from 'redux';
 
 import * as actions from '../actions';
 import { openRoom } from '../actions/room';
+import { editCancel } from '../actions/messages';
 import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import Message from '../containers/message';
+import MessageActions from '../containers/MessageActions';
 import MessageBox from '../containers/MessageBox';
 import Typing from '../containers/Typing';
 import KeyboardView from '../presentation/KeyboardView';
@@ -57,13 +59,15 @@ const typing = () => <Typing />;
 	}),
 	dispatch => ({
 		actions: bindActionCreators(actions, dispatch),
-		openRoom: room => dispatch(openRoom(room))
+		openRoom: room => dispatch(openRoom(room)),
+		editCancel: () => dispatch(editCancel())
 	})
 )
 export default class RoomView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
 		openRoom: PropTypes.func.isRequired,
+		editCancel: PropTypes.func,
 		rid: PropTypes.string,
 		server: PropTypes.string,
 		sid: PropTypes.string,
@@ -86,6 +90,7 @@ export default class RoomView extends React.Component {
 			.objects('messages')
 			.filtered('_server.id = $0 AND rid = $1', this.props.server, this.rid)
 			.sorted('ts', true);
+		this.room = realm.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			slow: false,
 			dataSource: ds.cloneWithRows([]),
@@ -114,6 +119,7 @@ export default class RoomView extends React.Component {
 	componentWillUnmount() {
 		clearTimeout(this.timer);
 		this.data.removeAllListeners();
+		this.props.editCancel();
 	}
 
 	onEndReached = () => {
@@ -210,6 +216,7 @@ export default class RoomView extends React.Component {
 					/>
 				</SafeAreaView>
 				{this.renderFooter()}
+				<MessageActions room={this.room} />
 			</KeyboardView>
 		);
 	}

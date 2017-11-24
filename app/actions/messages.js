@@ -20,6 +20,19 @@ export function messagesFailure(err) {
 	};
 }
 
+export function actionsShow(actionMessage) {
+	return {
+		type: types.MESSAGES.ACTIONS_SHOW,
+		actionMessage
+	};
+}
+
+export function actionsHide() {
+	return {
+		type: types.MESSAGES.ACTIONS_HIDE
+	};
+}
+
 export function deleteRequest(message) {
 	return {
 		type: types.MESSAGES.DELETE_REQUEST,
@@ -47,6 +60,12 @@ export function editInit(message) {
 	};
 }
 
+export function editCancel() {
+	return {
+		type: types.MESSAGES.EDIT_CANCEL
+	};
+}
+
 export function editRequest(message) {
 	return {
 		type: types.MESSAGES.EDIT_REQUEST,
@@ -66,22 +85,22 @@ export function editFailure() {
 	};
 }
 
-export function starRequest(message) {
+export function toggleStarRequest(message) {
 	return {
-		type: types.MESSAGES.STAR_REQUEST,
+		type: types.MESSAGES.TOGGLE_STAR_REQUEST,
 		message
 	};
 }
 
-export function starSuccess() {
+export function toggleStarSuccess() {
 	return {
-		type: types.MESSAGES.STAR_SUCCESS
+		type: types.MESSAGES.TOGGLE_STAR_SUCCESS
 	};
 }
 
-export function starFailure() {
+export function toggleStarFailure() {
 	return {
-		type: types.MESSAGES.STAR_FAILURE
+		type: types.MESSAGES.TOGGLE_STAR_FAILURE
 	};
 }
 
@@ -103,6 +122,12 @@ export function permalinkFailure(err) {
 	return {
 		type: types.MESSAGES.PERMALINK_FAILURE,
 		err
+	};
+}
+
+export function permalinkClear() {
+	return {
+		type: types.MESSAGES.PERMALINK_CLEAR
 	};
 }
 
@@ -130,5 +155,11 @@ export function setInput(message) {
 	return {
 		type: types.MESSAGES.SET_INPUT,
 		message
+	};
+}
+
+export function clearInput() {
+	return {
+		type: types.MESSAGES.CLEAR_INPUT
 	};
 }
