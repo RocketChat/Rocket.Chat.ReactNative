@@ -78,7 +78,7 @@ export default class MessageActions extends React.Component {
 		const roomRoles = Array.from(Object.keys(roles), i => roles[i].value);
 		const userRoles = this.props.user.roles || [];
 		this.mergedRoles = [...new Set([...roomRoles, ...userRoles])];
-		this.setPermissions(this.props);
+		this.setPermissions(this.props.permissions);
 	}
 
 	async componentWillReceiveProps(nextProps) {
@@ -150,15 +150,15 @@ export default class MessageActions extends React.Component {
 	}
 
 	componentDidUpdate() {
-		this.setPermissions(this.props);
+		this.setPermissions(this.props.permissions);
 	}
 
-	setPermissions(props) {
-		this.hasEditPermission = props.permissions['edit-message']
+	setPermissions(permissions) {
+		this.hasEditPermission = permissions['edit-message']
 			.some(item => this.mergedRoles.indexOf(item) !== -1);
-		this.hasDeletePermission = props.permissions['delete-message']
+		this.hasDeletePermission = permissions['delete-message']
 			.some(item => this.mergedRoles.indexOf(item) !== -1);
-		this.hasForceDeletePermission = props.permissions['force-delete-message']
+		this.hasForceDeletePermission = permissions['force-delete-message']
 			.some(item => this.mergedRoles.indexOf(item) !== -1);
 	}
 
