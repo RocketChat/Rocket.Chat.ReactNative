@@ -77,13 +77,8 @@ export default class MessageActions extends React.Component {
 		const { roles } = this.props.room[0];
 		const roomRoles = Array.from(Object.keys(roles), i => roles[i].value);
 		const userRoles = this.props.user.roles || [];
-		const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
-		this.hasEditPermission = this.props.permissions['edit-message']
-			.some(item => mergedRoles.indexOf(item) !== -1);
-		this.hasDeletePermission = this.props.permissions['delete-message']
-			.some(item => mergedRoles.indexOf(item) !== -1);
-		this.hasForceDeletePermission = this.props.permissions['force-delete-message']
-			.some(item => mergedRoles.indexOf(item) !== -1);
+		this.mergedRoles = [...new Set([...roomRoles, ...userRoles])];
+		this.setPermissions(this.props);
 	}
 
 	async componentWillReceiveProps(nextProps) {
@@ -152,6 +147,19 @@ export default class MessageActions extends React.Component {
 				this.props.setInput({ msg });
 			}
 		}
+	}
+
+	componentDidUpdate() {
+		this.setPermissions(this.props);
+	}
+
+	setPermissions(props) {
+		this.hasEditPermission = props.permissions['edit-message']
+			.some(item => this.mergedRoles.indexOf(item) !== -1);
+		this.hasDeletePermission = props.permissions['delete-message']
+			.some(item => this.mergedRoles.indexOf(item) !== -1);
+		this.hasForceDeletePermission = props.permissions['force-delete-message']
+			.some(item => this.mergedRoles.indexOf(item) !== -1);
 	}
 
 	isOwn = props => props.actionMessage.u && props.actionMessage.u._id === props.user.id;
