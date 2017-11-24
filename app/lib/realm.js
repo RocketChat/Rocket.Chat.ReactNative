@@ -55,7 +55,7 @@ const subscriptionSchema = {
 		userMentions: { type: 'int', optional: true },
 		// userMentions: 0,
 		// groupMentions: 0,
-		_updatedAt: { type: 'date', optional: true }
+		roomUpdatedAt: { type: 'date', optional: true }
 	}
 };
 

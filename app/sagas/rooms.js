@@ -23,7 +23,7 @@ const cancelTyping = function* cancelTyping(username) {
 	while (true) {
 		const { typing, timeout } = yield race({
 			typing: take(types.ROOM.SOMEONE_TYPING),
-			timeout: yield call(delay, 5000)
+			timeout: call(delay, 5000)
 		});
 		if (timeout || (typing.username === username && !typing.typing)) {
 			return yield put(removeUserTyping(username));
@@ -37,7 +37,7 @@ const usersTyping = function* usersTyping({ rid }) {
 		if (_rid === rid) {
 			yield (typing ? put(addUserTyping(username)) : put(removeUserTyping(username)));
 			if (typing) {
-				fork(cancelTyping, username);
+				yield fork(cancelTyping, username);
 			}
 		}
 	}
