@@ -482,7 +482,7 @@ const RocketChat = {
 		const { _id, msg, rid } = message;
 		return call('updateMessage', { _id, msg, rid });
 	},
-	starMessage(message) {
+	toggleStarMessage(message) {
 		return call('starMessage', { _id: message._id, rid: message.rid, starred: !message.starred });
 	},
 	togglePinMessage(message) {

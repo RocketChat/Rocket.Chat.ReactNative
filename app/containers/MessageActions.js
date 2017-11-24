@@ -8,7 +8,7 @@ import * as moment from 'moment';
 import {
 	deleteRequest,
 	editInit,
-	starRequest,
+	toggleStarRequest,
 	permalinkRequest,
 	permalinkClear,
 	togglePinRequest,
@@ -34,7 +34,7 @@ import {
 		actionsHide: () => dispatch(actionsHide()),
 		deleteRequest: message => dispatch(deleteRequest(message)),
 		editInit: message => dispatch(editInit(message)),
-		starRequest: message => dispatch(starRequest(message)),
+		toggleStarRequest: message => dispatch(toggleStarRequest(message)),
 		permalinkRequest: message => dispatch(permalinkRequest(message)),
 		permalinkClear: () => dispatch(permalinkClear()),
 		togglePinRequest: message => dispatch(togglePinRequest(message)),
@@ -51,7 +51,7 @@ export default class MessageActions extends React.Component {
 		permissions: PropTypes.object.isRequired,
 		deleteRequest: PropTypes.func.isRequired,
 		editInit: PropTypes.func.isRequired,
-		starRequest: PropTypes.func.isRequired,
+		toggleStarRequest: PropTypes.func.isRequired,
 		permalinkRequest: PropTypes.func.isRequired,
 		permalinkClear: PropTypes.func.isRequired,
 		togglePinRequest: PropTypes.func.isRequired,
@@ -230,7 +230,7 @@ export default class MessageActions extends React.Component {
 	}
 
 	handleStar() {
-		this.props.starRequest(this.props.actionMessage);
+		this.props.toggleStarRequest(this.props.actionMessage);
 	}
 
 	handlePermalink() {

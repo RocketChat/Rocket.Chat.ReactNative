@@ -85,22 +85,22 @@ export function editFailure() {
 	};
 }
 
-export function starRequest(message) {
+export function toggleStarRequest(message) {
 	return {
-		type: types.MESSAGES.STAR_REQUEST,
+		type: types.MESSAGES.TOGGLE_STAR_REQUEST,
 		message
 	};
 }
 
-export function starSuccess() {
+export function toggleStarSuccess() {
 	return {
-		type: types.MESSAGES.STAR_SUCCESS
+		type: types.MESSAGES.TOGGLE_STAR_SUCCESS
 	};
 }
 
-export function starFailure() {
+export function toggleStarFailure() {
 	return {
-		type: types.MESSAGES.STAR_FAILURE
+		type: types.MESSAGES.TOGGLE_STAR_FAILURE
 	};
 }
 
