@@ -6,7 +6,7 @@ import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import { userTyping } from '../actions/room';
 import RocketChat from '../lib/rocketchat';
-import { editRequest } from '../actions/messages';
+import { editRequest, editCancel, clearInput } from '../actions/messages';
 
 const styles = StyleSheet.create({
 	textBox: {
@@ -45,17 +45,21 @@ const styles = StyleSheet.create({
 	message: state.messages.message,
 	editing: state.messages.editing
 }), dispatch => ({
+	editCancel: () => dispatch(editCancel()),
 	editRequest: message => dispatch(editRequest(message)),
-	typing: status => dispatch(userTyping(status))
+	typing: status => dispatch(userTyping(status)),
+	clearInput: () => dispatch(clearInput())
 }))
 export default class MessageBox extends React.Component {
 	static propTypes = {
 		onSubmit: PropTypes.func.isRequired,
 		rid: PropTypes.string.isRequired,
+		editCancel: PropTypes.func.isRequired,
 		editRequest: PropTypes.func.isRequired,
 		message: PropTypes.object,
 		editing: PropTypes.bool,
-		typing: PropTypes.bool
+		typing: PropTypes.func,
+		clearInput: PropTypes.func
 	}
 
 	constructor(props) {
@@ -66,19 +70,22 @@ export default class MessageBox extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (this.props.message !== nextProps.message) {
+		if (this.props.message !== nextProps.message && nextProps.message) {
 			this.component.setNativeProps({ text: nextProps.message.msg });
 			this.component.focus();
+		} else if (!nextProps.message) {
+			this.component.setNativeProps({ text: '' });
 		}
 	}
 
 	submit(message) {
-		const { editing } = this.props;
+		this.component.setNativeProps({ text: '' });
+		this.props.typing(false);
 		if (message.trim() === '') {
 			return;
 		}
-
 		// if is editing a message
+		const { editing } = this.props;
 		if (editing) {
 			const { _id, rid } = this.props.message;
 			this.props.editRequest({ _id, msg: message, rid });
@@ -86,7 +93,7 @@ export default class MessageBox extends React.Component {
 			// if is submiting a new message
 			this.props.onSubmit(message);
 		}
-		this.component.setNativeProps({ text: '' });
+		this.props.clearInput();
 	}
 
 	addFile = () => {
@@ -116,9 +123,21 @@ export default class MessageBox extends React.Component {
 		});
 	}
 
-
 	updateSize = (height) => {
 		this.setState({ height });
+  }
+    
+	editCancel() {
+		this.props.editCancel();
+		this.component.setNativeProps({ text: '' });
+	}
+
+	renderLeftButton() {
+		const { editing } = this.props;
+		if (editing) {
+			return <Icon style={styles.actionButtons} name='close' onPress={() => this.editCancel()} />;
+		}
+		return <Icon style={styles.actionButtons} name='add-circle-outline' onPress={this.addFile} />;
 	}
 
 	render() {
@@ -126,7 +145,7 @@ export default class MessageBox extends React.Component {
 		return (
 			<View style={[styles.textBox, (this.props.editing ? styles.editing : null)]}>
 				<SafeAreaView style={styles.safeAreaView}>
-					<Icon style={styles.actionButtons} name='add-circle-outline' onPress={this.addFile} />
+					{this.renderLeftButton()}
 					<TextInput
 						ref={component => this.component = component}
 						style={[styles.textBoxInput, { height }]}

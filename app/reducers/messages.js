@@ -4,8 +4,10 @@ const initialState = {
 	isFetching: false,
 	failure: false,
 	message: {},
+	actionMessage: {},
 	editing: false,
-	permalink: ''
+	permalink: '',
+	showActions: false
 };
 
 export default function messages(state = initialState, action) {
@@ -27,11 +29,28 @@ export default function messages(state = initialState, action) {
 				failure: true,
 				errorMessage: action.err
 			};
+		case types.MESSAGES.ACTIONS_SHOW:
+			return {
+				...state,
+				showActions: true,
+				actionMessage: action.actionMessage
+			};
+		case types.MESSAGES.ACTIONS_HIDE:
+			return {
+				...state,
+				showActions: false
+			};
 		case types.MESSAGES.EDIT_INIT:
 			return {
 				...state,
 				message: action.message,
 				editing: true
+			};
+		case types.MESSAGES.EDIT_CANCEL:
+			return {
+				...state,
+				message: {},
+				editing: false
 			};
 		case types.MESSAGES.EDIT_SUCCESS:
 			return {
@@ -50,13 +69,21 @@ export default function messages(state = initialState, action) {
 				...state,
 				permalink: action.permalink
 			};
+		case types.MESSAGES.PERMALINK_CLEAR:
+			return {
+				...state,
+				permalink: ''
+			};
 		case types.MESSAGES.SET_INPUT:
 			return {
 				...state,
 				message: action.message
 			};
-		// case types.LOGOUT:
-		// 	return initialState;
+		case types.MESSAGES.CLEAR_INPUT:
+			return {
+				...state,
+				message: {}
+			};
 		default:
 			return state;
 	}

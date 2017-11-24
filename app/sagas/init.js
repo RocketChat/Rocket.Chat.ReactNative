@@ -18,8 +18,10 @@ const restore = function* restore() {
 		const currentServer = yield call([AsyncStorage, 'getItem'], 'currentServer');
 		if (currentServer) {
 			yield put(setServer(currentServer));
-			const tmp = realm.objects('settings');
-			yield put(actions.setAllSettings(RocketChat.parseSettings(tmp.slice(0, tmp.length))));
+			const settings = realm.objects('settings');
+			yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
+			const permissions = realm.objects('permissions');
+			yield put(actions.setAllPermissions(RocketChat.parsePermissions(permissions.slice(0, permissions.length))));
 		}
 		yield put(actions.appReady({}));
 	} catch (e) {

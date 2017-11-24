@@ -26,6 +26,7 @@ const setUsernameCall = args => RocketChat.setUsername(args);
 const logoutCall = args => RocketChat.logout(args);
 const meCall = args => RocketChat.me(args);
 const forgotPasswordCall = args => RocketChat.forgotPassword(args);
+const userInfoCall = args => RocketChat.userInfo(args);
 
 const getToken = function* getToken() {
 	const currentServer = yield select(getServer);
@@ -76,6 +77,10 @@ const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 		// if user has username
 		if (me.username) {
 			user.username = me.username;
+			const userInfo = yield call(userInfoCall, { server, token: user.token, userId: user.id });
+			if (userInfo.user.roles) {
+				user.roles = userInfo.user.roles;
+			}
 		} else {
 			yield put(registerIncomplete());
 		}
