@@ -7,8 +7,8 @@ import {
 	deleteFailure,
 	editSuccess,
 	editFailure,
-	starSuccess,
-	starFailure,
+	toggleStarSuccess,
+	toggleStarFailure,
 	permalinkSuccess,
 	permalinkFailure,
 	togglePinSuccess,
@@ -18,7 +18,7 @@ import RocketChat from '../lib/rocketchat';
 
 const deleteMessage = message => RocketChat.deleteMessage(message);
 const editMessage = message => RocketChat.editMessage(message);
-const starMessage = message => RocketChat.starMessage(message);
+const toggleStarMessage = message => RocketChat.toggleStarMessage(message);
 const getPermalink = message => RocketChat.getPermalink(message);
 const togglePinMessage = message => RocketChat.togglePinMessage(message);
 
@@ -54,12 +54,12 @@ const handleEditRequest = function* handleEditRequest({ message }) {
 	}
 };
 
-const handleStarRequest = function* handleStarRequest({ message }) {
+const handleToggleStarRequest = function* handleToggleStarRequest({ message }) {
 	try {
-		yield call(starMessage, message);
-		yield put(starSuccess());
+		yield call(toggleStarMessage, message);
+		yield put(toggleStarSuccess());
 	} catch (error) {
-		yield put(starFailure());
+		yield put(toggleStarFailure());
 	}
 };
 
@@ -85,7 +85,7 @@ const root = function* root() {
 	yield takeLatest(MESSAGES.REQUEST, get);
 	yield takeLatest(MESSAGES.DELETE_REQUEST, handleDeleteRequest);
 	yield takeLatest(MESSAGES.EDIT_REQUEST, handleEditRequest);
-	yield takeLatest(MESSAGES.STAR_REQUEST, handleStarRequest);
+	yield takeLatest(MESSAGES.TOGGLE_STAR_REQUEST, handleToggleStarRequest);
 	yield takeLatest(MESSAGES.PERMALINK_REQUEST, handlePermalinkRequest);
 	yield takeLatest(MESSAGES.TOGGLE_PIN_REQUEST, handleTogglePinRequest);
 };
