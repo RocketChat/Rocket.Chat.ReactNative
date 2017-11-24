@@ -87,13 +87,16 @@ exports[`render channel 1`] = `
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
-        Object {
-          "color": "#444",
-          "flex": 1,
-          "fontSize": 16,
-          "height": 16,
-          "paddingTop": 10,
-        }
+        Array [
+          Object {
+            "color": "#444",
+            "flex": 1,
+            "fontSize": 16,
+            "height": 16,
+            "paddingTop": 10,
+          },
+          undefined,
+        ]
       }
     >
       general
@@ -163,13 +166,16 @@ exports[`render no icon 1`] = `
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
-        Object {
-          "color": "#444",
-          "flex": 1,
-          "fontSize": 16,
-          "height": 16,
-          "paddingTop": 10,
-        }
+        Array [
+          Object {
+            "color": "#444",
+            "flex": 1,
+            "fontSize": 16,
+            "height": 16,
+            "paddingTop": 10,
+          },
+          undefined,
+        ]
       }
     >
       name
@@ -239,13 +245,16 @@ exports[`render private group 1`] = `
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
-        Object {
-          "color": "#444",
-          "flex": 1,
-          "fontSize": 16,
-          "height": 16,
-          "paddingTop": 10,
-        }
+        Array [
+          Object {
+            "color": "#444",
+            "flex": 1,
+            "fontSize": 16,
+            "height": 16,
+            "paddingTop": 10,
+          },
+          undefined,
+        ]
       }
     >
       private-group
@@ -351,13 +360,16 @@ exports[`render unread +999 1`] = `
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
-        Object {
-          "color": "#444",
-          "flex": 1,
-          "fontSize": 16,
-          "height": 16,
-          "paddingTop": 10,
-        }
+        Array [
+          Object {
+            "color": "#444",
+            "flex": 1,
+            "fontSize": 16,
+            "height": 16,
+            "paddingTop": 10,
+          },
+          undefined,
+        ]
       }
     >
       name
@@ -386,13 +398,13 @@ exports[`render unread +999 1`] = `
     style={
       Object {
         "backgroundColor": "#1d74f5",
-        "borderRadius": 5,
+        "borderRadius": 3,
         "color": "#fff",
         "fontSize": 14,
         "minWidth": 20,
         "overflow": "hidden",
-        "paddingLeft": 5,
-        "paddingRight": 5,
+        "paddingHorizontal": 5,
+        "paddingVertical": 2,
         "textAlign": "center",
       }
     }
@@ -483,13 +495,16 @@ exports[`render unread 1`] = `
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
-        Object {
-          "color": "#444",
-          "flex": 1,
-          "fontSize": 16,
-          "height": 16,
-          "paddingTop": 10,
-        }
+        Array [
+          Object {
+            "color": "#444",
+            "flex": 1,
+            "fontSize": 16,
+            "height": 16,
+            "paddingTop": 10,
+          },
+          undefined,
+        ]
       }
     >
       name
@@ -518,13 +533,13 @@ exports[`render unread 1`] = `
     style={
       Object {
         "backgroundColor": "#1d74f5",
-        "borderRadius": 5,
+        "borderRadius": 3,
         "color": "#fff",
         "fontSize": 14,
         "minWidth": 20,
         "overflow": "hidden",
-        "paddingLeft": 5,
-        "paddingRight": 5,
+        "paddingHorizontal": 5,
+        "paddingVertical": 2,
         "textAlign": "center",
       }
     }
@@ -615,13 +630,16 @@ exports[`renders correctly 1`] = `
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
-        Object {
-          "color": "#444",
-          "flex": 1,
-          "fontSize": 16,
-          "height": 16,
-          "paddingTop": 10,
-        }
+        Array [
+          Object {
+            "color": "#444",
+            "flex": 1,
+            "fontSize": 16,
+            "height": 16,
+            "paddingTop": 10,
+          },
+          undefined,
+        ]
       }
     >
       name

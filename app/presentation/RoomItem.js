@@ -17,14 +17,14 @@ const styles = StyleSheet.create({
 	},
 	number: {
 		minWidth: 20,
-		borderRadius: 5,
+		borderRadius: 3,
 		backgroundColor: '#1d74f5',
 		color: '#fff',
 		textAlign: 'center',
 		overflow: 'hidden',
 		fontSize: 14,
-		paddingLeft: 5,
-		paddingRight: 5
+		paddingHorizontal: 5,
+		paddingVertical: 2
 	},
 	roomNameView: {
 		flex: 1,
@@ -37,6 +37,12 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		height: 16,
 		color: '#444'
+	},
+	alert: {
+		fontWeight: 'bold'
+	},
+	favorite: {
+		// backgroundColor: '#eee'
 	},
 	update: {
 		flex: 1,
@@ -67,7 +73,10 @@ export default class RoomItem extends React.PureComponent {
 		type: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
 		_updatedAt: PropTypes.instanceOf(Date),
+		favorite: PropTypes.bool,
+		alert: PropTypes.bool,
 		unread: PropTypes.number,
+		userMentions: PropTypes.number,
 		baseUrl: PropTypes.string,
 		onPress: PropTypes.func,
 		dateFormat: PropTypes.string
@@ -101,13 +110,17 @@ export default class RoomItem extends React.PureComponent {
 		);
 	}
 
-	renderNumber = (unread) => {
+	renderNumber = (unread, userMentions) => {
 		if (!unread || unread <= 0) {
 			return;
 		}
 
 		if (unread >= 1000) {
 			unread = '999+';
+		}
+
+		if (userMentions > 0) {
+			unread = `@ ${ unread }`;
 		}
 
 		return (
@@ -118,16 +131,18 @@ export default class RoomItem extends React.PureComponent {
 	}
 
 	render() {
-		const { unread, name, _updatedAt } = this.props;
+		const {
+			favorite, alert, unread, userMentions, name, _updatedAt
+		} = this.props;
 
 		return (
-			<TouchableOpacity onPress={this.props.onPress} style={styles.container}>
+			<TouchableOpacity onPress={this.props.onPress} style={[styles.container, favorite && styles.favorite]}>
 				{this.icon}
 				<View style={styles.roomNameView}>
-					<Text style={styles.roomName} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
+					<Text style={[styles.roomName, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
 					{_updatedAt ? <Text style={styles.update} ellipsizeMode='tail' numberOfLines={1}>{ moment(_updatedAt).format(this.props.dateFormat) }</Text> : null}
 				</View>
-				{this.renderNumber(unread)}
+				{this.renderNumber(unread, userMentions)}
 			</TouchableOpacity>
 		);
 	}

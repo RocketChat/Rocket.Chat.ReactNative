@@ -253,13 +253,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           ellipsizeMode="tail"
           numberOfLines={1}
           style={
-            Object {
-              "color": "#444",
-              "flex": 1,
-              "fontSize": 16,
-              "height": 16,
-              "paddingTop": 10,
-            }
+            Array [
+              Object {
+                "color": "#444",
+                "flex": 1,
+                "fontSize": 16,
+                "height": 16,
+                "paddingTop": 10,
+              },
+              undefined,
+            ]
           }
         >
           rocket.cat
@@ -381,13 +384,18 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           ellipsizeMode="tail"
           numberOfLines={1}
           style={
-            Object {
-              "color": "#444",
-              "flex": 1,
-              "fontSize": 16,
-              "height": 16,
-              "paddingTop": 10,
-            }
+            Array [
+              Object {
+                "color": "#444",
+                "flex": 1,
+                "fontSize": 16,
+                "height": 16,
+                "paddingTop": 10,
+              },
+              Object {
+                "fontWeight": "bold",
+              },
+            ]
           }
         >
           rocket.cat
@@ -509,13 +517,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           ellipsizeMode="tail"
           numberOfLines={1}
           style={
-            Object {
-              "color": "#444",
-              "flex": 1,
-              "fontSize": 16,
-              "height": 16,
-              "paddingTop": 10,
-            }
+            Array [
+              Object {
+                "color": "#444",
+                "flex": 1,
+                "fontSize": 16,
+                "height": 16,
+                "paddingTop": 10,
+              },
+              undefined,
+            ]
           }
         >
           rocket.cat
@@ -544,13 +555,13 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         style={
           Object {
             "backgroundColor": "#1d74f5",
-            "borderRadius": 5,
+            "borderRadius": 3,
             "color": "#fff",
             "fontSize": 14,
             "minWidth": 20,
             "overflow": "hidden",
-            "paddingLeft": 5,
-            "paddingRight": 5,
+            "paddingHorizontal": 5,
+            "paddingVertical": 2,
             "textAlign": "center",
           }
         }
@@ -657,13 +668,18 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           ellipsizeMode="tail"
           numberOfLines={1}
           style={
-            Object {
-              "color": "#444",
-              "flex": 1,
-              "fontSize": 16,
-              "height": 16,
-              "paddingTop": 10,
-            }
+            Array [
+              Object {
+                "color": "#444",
+                "flex": 1,
+                "fontSize": 16,
+                "height": 16,
+                "paddingTop": 10,
+              },
+              Object {
+                "fontWeight": "bold",
+              },
+            ]
           }
         >
           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -692,13 +708,13 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         style={
           Object {
             "backgroundColor": "#1d74f5",
-            "borderRadius": 5,
+            "borderRadius": 3,
             "color": "#fff",
             "fontSize": 14,
             "minWidth": 20,
             "overflow": "hidden",
-            "paddingLeft": 5,
-            "paddingRight": 5,
+            "paddingHorizontal": 5,
+            "paddingVertical": 2,
             "textAlign": "center",
           }
         }
@@ -805,13 +821,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           ellipsizeMode="tail"
           numberOfLines={1}
           style={
-            Object {
-              "color": "#444",
-              "flex": 1,
-              "fontSize": 16,
-              "height": 16,
-              "paddingTop": 10,
-            }
+            Array [
+              Object {
+                "color": "#444",
+                "flex": 1,
+                "fontSize": 16,
+                "height": 16,
+                "paddingTop": 10,
+              },
+              undefined,
+            ]
           }
         >
           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -840,13 +859,13 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         style={
           Object {
             "backgroundColor": "#1d74f5",
-            "borderRadius": 5,
+            "borderRadius": 3,
             "color": "#fff",
             "fontSize": 14,
             "minWidth": 20,
             "overflow": "hidden",
-            "paddingLeft": 5,
-            "paddingRight": 5,
+            "paddingHorizontal": 5,
+            "paddingVertical": 2,
             "textAlign": "center",
           }
         }
@@ -953,13 +972,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           ellipsizeMode="tail"
           numberOfLines={1}
           style={
-            Object {
-              "color": "#444",
-              "flex": 1,
-              "fontSize": 16,
-              "height": 16,
-              "paddingTop": 10,
-            }
+            Array [
+              Object {
+                "color": "#444",
+                "flex": 1,
+                "fontSize": 16,
+                "height": 16,
+                "paddingTop": 10,
+              },
+              undefined,
+            ]
           }
         >
           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -988,13 +1010,13 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         style={
           Object {
             "backgroundColor": "#1d74f5",
-            "borderRadius": 5,
+            "borderRadius": 3,
             "color": "#fff",
             "fontSize": 14,
             "minWidth": 20,
             "overflow": "hidden",
-            "paddingLeft": 5,
-            "paddingRight": 5,
+            "paddingHorizontal": 5,
+            "paddingVertical": 2,
             "textAlign": "center",
           }
         }
@@ -1101,13 +1123,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           ellipsizeMode="tail"
           numberOfLines={1}
           style={
-            Object {
-              "color": "#444",
-              "flex": 1,
-              "fontSize": 16,
-              "height": 16,
-              "paddingTop": 10,
-            }
+            Array [
+              Object {
+                "color": "#444",
+                "flex": 1,
+                "fontSize": 16,
+                "height": 16,
+                "paddingTop": 10,
+              },
+              undefined,
+            ]
           }
         >
           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -1136,18 +1161,169 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         style={
           Object {
             "backgroundColor": "#1d74f5",
-            "borderRadius": 5,
+            "borderRadius": 3,
             "color": "#fff",
             "fontSize": 14,
             "minWidth": 20,
             "overflow": "hidden",
-            "paddingLeft": 5,
-            "paddingRight": 5,
+            "paddingHorizontal": 5,
+            "paddingVertical": 2,
             "textAlign": "center",
           }
         }
       >
         999+
+      </Text>
+    </View>
+    <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
+      collapsable={undefined}
+      hitSlop={undefined}
+      isTVSelectable={true}
+      nativeID={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "height": 56,
+          "opacity": 1,
+          "paddingLeft": 16,
+          "paddingRight": 16,
+        }
+      }
+      testID={undefined}
+      tvParallaxProperties={undefined}
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "justifyContent": "center",
+              "overflow": "hidden",
+            },
+            Object {
+              "backgroundColor": "#795548",
+              "borderRadius": 4,
+              "height": 40,
+              "width": 40,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "color": "#ffffff",
+              },
+              Object {
+                "fontSize": 20,
+              },
+            ]
+          }
+        >
+          LC
+        </Text>
+        <CachedImage
+          source={
+            Object {
+              "uri": "https://demo.rocket.chat/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+            }
+          }
+          style={
+            Array [
+              Object {
+                "position": "absolute",
+              },
+              Object {
+                "borderRadius": 4,
+                "height": 40,
+                "width": 40,
+              },
+            ]
+          }
+        />
+      </View>
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "marginLeft": 16,
+            "marginRight": 4,
+          }
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "color": "#444",
+                "flex": 1,
+                "fontSize": 16,
+                "height": 16,
+                "paddingTop": 10,
+              },
+              undefined,
+            ]
+          }
+        >
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#888",
+              "flex": 1,
+              "fontSize": 10,
+              "height": 10,
+            }
+          }
+        >
+          11-10-2017 10:00:00
+        </Text>
+      </View>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        style={
+          Object {
+            "backgroundColor": "#1d74f5",
+            "borderRadius": 3,
+            "color": "#fff",
+            "fontSize": 14,
+            "minWidth": 20,
+            "overflow": "hidden",
+            "paddingHorizontal": 5,
+            "paddingVertical": 2,
+            "textAlign": "center",
+          }
+        }
+      >
+        @ 999+
       </Text>
     </View>
     <View
@@ -1230,13 +1406,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           ellipsizeMode="tail"
           numberOfLines={1}
           style={
-            Object {
-              "color": "#444",
-              "flex": 1,
-              "fontSize": 16,
-              "height": 16,
-              "paddingTop": 10,
-            }
+            Array [
+              Object {
+                "color": "#444",
+                "flex": 1,
+                "fontSize": 16,
+                "height": 16,
+                "paddingTop": 10,
+              },
+              undefined,
+            ]
           }
         >
           W
@@ -1339,13 +1518,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           ellipsizeMode="tail"
           numberOfLines={1}
           style={
-            Object {
-              "color": "#444",
-              "flex": 1,
-              "fontSize": 16,
-              "height": 16,
-              "paddingTop": 10,
-            }
+            Array [
+              Object {
+                "color": "#444",
+                "flex": 1,
+                "fontSize": 16,
+                "height": 16,
+                "paddingTop": 10,
+              },
+              undefined,
+            ]
           }
         >
           WW
@@ -1448,13 +1630,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           ellipsizeMode="tail"
           numberOfLines={1}
           style={
-            Object {
-              "color": "#444",
-              "flex": 1,
-              "fontSize": 16,
-              "height": 16,
-              "paddingTop": 10,
-            }
+            Array [
+              Object {
+                "color": "#444",
+                "flex": 1,
+                "fontSize": 16,
+                "height": 16,
+                "paddingTop": 10,
+              },
+              undefined,
+            ]
           }
         >
           
