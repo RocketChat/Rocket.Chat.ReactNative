@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
 		color: '#aaa',
 		paddingTop: 10,
 		paddingBottom: 10,
+		paddingHorizontal: 8,
 		fontSize: 20,
 		alignSelf: 'flex-end'
 	},
