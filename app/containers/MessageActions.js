@@ -88,6 +88,7 @@ export default class MessageActions extends React.Component {
 
 	async componentWillReceiveProps(nextProps) {
 		if (nextProps.showActions !== this.props.showActions && nextProps.showActions) {
+			const { actionMessage } = nextProps;
 			// Cancel
 			this.options = ['Cancel'];
 			this.CANCEL_INDEX = 0;
@@ -110,12 +111,12 @@ export default class MessageActions extends React.Component {
 			this.QUOTE_INDEX = this.options.length - 1;
 			// Star
 			if (this.props.Message_AllowStarring) {
-				this.options.push('Star');
+				this.options.push(actionMessage.starred ? 'Unstar' : 'Star');
 				this.STAR_INDEX = this.options.length - 1;
 			}
 			// Pin
 			if (this.props.Message_AllowPinning) {
-				this.options.push('Pin');
+				this.options.push(actionMessage.pinned ? 'Unpin' : 'Pin');
 				this.PIN_INDEX = this.options.length - 1;
 			}
 			// Delete

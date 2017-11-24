@@ -70,7 +70,7 @@ const RocketChat = {
 							message.temp = false;
 							message._server = server;
 							message.attachments = message.attachments || [];
-							message.starred = !!message.starred;
+							message.starred = message.starred && message.starred.length > 0;
 							realm.create('messages', message, true);
 						});
 					}
