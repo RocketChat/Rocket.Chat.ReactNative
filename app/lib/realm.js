@@ -99,14 +99,16 @@ const attachment = {
 	name: 'attachment',
 	properties: {
 		description: { type: 'string', optional: true },
-
 		image_size: { type: 'int', optional: true },
-
 		image_type: { type: 'string', optional: true },
-
 		image_url: { type: 'string', optional: true },
+		audio_size: { type: 'int', optional: true },
+		audio_type: { type: 'string', optional: true },
+		audio_url: { type: 'string', optional: true },
+		video_size: { type: 'int', optional: true },
+		video_type: { type: 'string', optional: true },
+		video_url: { type: 'string', optional: true },
 		title: { type: 'string', optional: true },
-
 		title_link: { type: 'string', optional: true },
 		title_link_download: { type: 'bool', optional: true },
 		type: { type: 'string', optional: true }

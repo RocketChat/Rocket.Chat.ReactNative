@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
 
 @connect(state => ({
 	message: state.messages.message,
-	editing: state.messages.editing
+	editing: state.messages.editing,
+	server: state.server.server
 }), dispatch => ({
 	actionsShow: actionMessage => dispatch(actionsShow(actionMessage))
 }))
@@ -44,7 +45,8 @@ export default class Message extends React.Component {
 		Message_TimeFormat: PropTypes.string.isRequired,
 		message: PropTypes.object.isRequired,
 		editing: PropTypes.bool,
-		actionsShow: PropTypes.func
+		actionsShow: PropTypes.func,
+		server: PropTypes.string
 	}
 
 	onLongPress() {
@@ -57,11 +59,24 @@ export default class Message extends React.Component {
 	}
 
 	attachments() {
-		return this.props.item.attachments.length ? (
-			<Card
-				data={this.props.item.attachments[0]}
-			/>
-		) : null;
+		if (this.props.item.attachments.length === 0) {
+			return null;
+		}
+
+		const file = this.props.item.attachments[0];
+		if (file.image_type) {
+			return (
+				<Card
+					data={file}
+				/>
+			);
+		} else if (file.audio_type) {
+			return <Text>{`${ this.props.server }${ JSON.parse(JSON.stringify(file.audio_url)) }`}</Text>;
+		} else if (file.video_type) {
+			return <Text>{`${ this.props.server }${ JSON.parse(JSON.stringify(file.video_url)) }`}</Text>;
+		}
+
+		return <Text>Other type</Text>;
 	}
 
 	renderMessageContent() {
