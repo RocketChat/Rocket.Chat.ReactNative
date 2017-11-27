@@ -128,6 +128,7 @@ const messagesSchema = {
 		_id: 'string',
 		_server: 'servers',
 		msg: { type: 'string', optional: true },
+		t: { type: 'string', optional: true },
 		rid: 'string',
 		ts: 'date',
 		u: 'users',
