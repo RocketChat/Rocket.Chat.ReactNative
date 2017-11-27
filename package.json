@@ -52,11 +52,11 @@
     "regenerator-runtime": "^0.11.0",
     "remote-redux-devtools": "^0.5.12",
     "strip-ansi": "^4.0.0",
+    "@storybook/react-native": "^3.2.15",
     "snyk": "^1.41.1"
   },
   "devDependencies": {
     "@storybook/addon-storyshots": "^3.2.15",
-    "@storybook/react-native": "^3.2.15",
     "babel-eslint": "^8.0.2",
     "babel-jest": "21.2.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.10",
