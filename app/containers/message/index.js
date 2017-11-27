@@ -9,6 +9,7 @@ import { actionsShow } from '../../actions/messages';
 import Card from './Card';
 import User from './User';
 import Avatar from '../Avatar';
+import Audio from './Audio';
 
 const styles = StyleSheet.create({
 	content: {
@@ -71,7 +72,7 @@ export default class Message extends React.Component {
 				/>
 			);
 		} else if (file.audio_type) {
-			return <Text>{`${ this.props.server }${ JSON.parse(JSON.stringify(file.audio_url)) }`}</Text>;
+			return <Audio file={file} />;
 		} else if (file.video_type) {
 			return <Text>{`${ this.props.server }${ JSON.parse(JSON.stringify(file.video_url)) }`}</Text>;
 		}
