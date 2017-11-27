@@ -10,6 +10,7 @@ import Card from './Card';
 import User from './User';
 import Avatar from '../Avatar';
 import Audio from './Audio';
+import Video from './Video';
 
 const styles = StyleSheet.create({
 	content: {
@@ -34,8 +35,7 @@ const styles = StyleSheet.create({
 
 @connect(state => ({
 	message: state.messages.message,
-	editing: state.messages.editing,
-	server: state.server.server
+	editing: state.messages.editing
 }), dispatch => ({
 	actionsShow: actionMessage => dispatch(actionsShow(actionMessage))
 }))
@@ -46,8 +46,7 @@ export default class Message extends React.Component {
 		Message_TimeFormat: PropTypes.string.isRequired,
 		message: PropTypes.object.isRequired,
 		editing: PropTypes.bool,
-		actionsShow: PropTypes.func,
-		server: PropTypes.string
+		actionsShow: PropTypes.func
 	}
 
 	onLongPress() {
@@ -74,7 +73,7 @@ export default class Message extends React.Component {
 		} else if (file.audio_type) {
 			return <Audio file={file} />;
 		} else if (file.video_type) {
-			return <Text>{`${ this.props.server }${ JSON.parse(JSON.stringify(file.video_url)) }`}</Text>;
+			return <Video file={file} />;
 		}
 
 		return <Text>Other type</Text>;

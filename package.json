@@ -38,9 +38,12 @@
     "react-native-modal": "^4.1.1",
     "react-native-optimized-flatlist": "^1.0.3",
     "react-native-push-notification": "^3.0.1",
+    "react-native-sound": "^0.10.4",
     "react-native-svg": "^6.0.0",
     "react-native-svg-image": "^2.0.1",
     "react-native-vector-icons": "^4.4.2",
+    "react-native-video": "^2.0.0",
+    "react-native-video-controls": "^2.0.0",
     "react-native-zeroconf": "^0.8.3",
     "react-navigation": "^1.0.0-beta.19",
     "react-redux": "^5.0.6",
@@ -51,8 +54,8 @@
     "redux-saga": "^0.16.0",
     "regenerator-runtime": "^0.11.0",
     "remote-redux-devtools": "^0.5.12",
-    "strip-ansi": "^4.0.0",
-    "snyk": "^1.41.1"
+    "snyk": "^1.41.1",
+    "strip-ansi": "^4.0.0"
   },
   "devDependencies": {
     "@storybook/addon-storyshots": "^3.2.15",

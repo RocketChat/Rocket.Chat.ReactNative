@@ -32,6 +32,7 @@ export default class Cards extends React.PureComponent {
 		this.state = {
 			modalVisible: false
 		};
+		// TODO
 		RocketChat.getUserToken().then((token) => {
 			this.setState({ img: `${ this.props.base }${ this.props.data.image_url }?rc_uid=${ user._id }&rc_token=${ token }` });
 		});
