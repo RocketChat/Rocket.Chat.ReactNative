@@ -26,16 +26,6 @@ const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const RocketChat = {
 	TOKEN_KEY,
 
-	async resolveFile(url) {
-		const response = await fetch(url, {
-			method: 'GET',
-			mode: 'cors',
-			redirect: 'nofollow',
-			cache: 'default'
-		});
-		return response.url.toString();
-	},
-
 	createChannel({ name, users, type }) {
 		return call(type ? 'createChannel' : 'createPrivateGroup', name, users, type);
 	},

@@ -29,8 +29,6 @@ export default class Video extends React.PureComponent {
 			modalVisible: false,
 			uri: `${ server }${ file.video_url }?rc_uid=${ user.id }&rc_token=${ user.token }`
 		};
-		// this.setState({ img: `${ this.props.base }${ this.props.data.image_url }?rc_uid=${ user._id }&rc_token=${ token }` });
-		console.warn(this.state.uri)
 	}
 
 	toggleModal() {
