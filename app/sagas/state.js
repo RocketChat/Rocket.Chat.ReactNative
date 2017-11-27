@@ -2,7 +2,7 @@ import { takeLatest } from 'redux-saga/effects';
 import { FOREGROUND, BACKGROUND, INACTIVE } from 'redux-enhancer-react-native-appstate';
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
-	console.log('appHasComeBackToForeground')
+	yield console.log('appHasComeBackToForeground');
 };
 
 const root = function* root() {
