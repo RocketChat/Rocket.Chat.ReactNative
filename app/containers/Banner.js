@@ -30,21 +30,8 @@ export default class Banner extends React.PureComponent {
 		authenticating: PropTypes.bool,
 		offline: PropTypes.bool
 	}
-	componentWillMount() {
-		this.setState({
-			slow: false
-		});
-		this.timer = setTimeout(() => this.setState({ slow: true }), 5000);
-	}
-	componentWillUnmount() {
-		clearTimeout(this.timer);
-	}
 	render() {
 		const { connecting, authenticating, offline } = this.props;
-
-		if (!this.state.slow) {
-			return null;
-		}
 
 		if (offline) {
 			return (
