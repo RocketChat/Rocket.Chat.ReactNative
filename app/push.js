@@ -8,7 +8,7 @@ const handleNotification = (notification) => {
 		return;
 	}
 	const { rid, name } = EJSON.parse(notification.ejson);
-	return goRoom({ rid, name });
+	return rid && name && goRoom({ rid, name });
 };
 PushNotification.configure({
 

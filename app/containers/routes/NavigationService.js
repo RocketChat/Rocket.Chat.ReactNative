@@ -24,7 +24,7 @@ export function goBack() {
 
 
 export function goRoom({ rid, name }, counter = 0) {
-	if (counter > 10) {
+	if (!rid || !name || counter > 10) {
 		return;
 	}
 	if (!config.navigator) {

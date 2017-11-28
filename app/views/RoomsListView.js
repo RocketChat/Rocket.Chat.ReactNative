@@ -11,6 +11,7 @@ import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import RoomItem from '../presentation/RoomItem';
 import Banner from '../containers/Banner';
+import { goRoom } from '../containers/routes/NavigationService';
 
 const styles = StyleSheet.create({
 	container: {
@@ -192,10 +193,6 @@ export default class RoomsListView extends React.Component {
 	};
 
 	_onPressItem = (item = {}) => {
-		const navigateToRoom = (room) => {
-			this.props.navigation.navigate('Room', { room, title: room.name });
-		};
-
 		const clearSearch = () => {
 			this.setState({
 				searchText: ''
@@ -220,16 +217,16 @@ export default class RoomsListView extends React.Component {
 							}
 						});
 					}))
-					.then(sub => navigateToRoom({ room: sub, name: sub.name }))
+					.then(sub => goRoom({ room: sub, name: sub.name }))
 					.then(() => clearSearch());
 			} else {
 				clearSearch();
-				navigateToRoom(item);
+				goRoom(item);
 			}
 			return;
 		}
 
-		navigateToRoom(item);
+		goRoom(item);
 		clearSearch();
 	}
 
@@ -259,7 +256,7 @@ export default class RoomsListView extends React.Component {
 			userMentions={item.userMentions}
 			favorite={item.f}
 			name={item.name}
-			_updatedAt={item._updatedAt}
+			_updatedAt={item.roomUpdatedAt}
 			key={item._id}
 			type={item.t}
 			baseUrl={this.props.Site_Url}
