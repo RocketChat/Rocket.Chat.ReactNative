@@ -70,7 +70,6 @@ export default class RoomView extends React.Component {
 		editCancel: PropTypes.func,
 		rid: PropTypes.string,
 		server: PropTypes.string,
-		sid: PropTypes.string,
 		name: PropTypes.string,
 		Site_Url: PropTypes.string,
 		Message_TimeFormat: PropTypes.string,
