@@ -1,13 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { connect } from 'react-redux';
-
-import VideoModal from './VideoModal';
+import Modal from 'react-native-modal';
+import VideoPlayer from 'react-native-video-controls';
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1
+		flex: 1,
+		height: 100,
+		margin: 5
+	},
+	modal: {
+		margin: 0,
+		backgroundColor: '#000'
+	},
+	image: {
+		flex: 1,
+		width: null,
+		height: null,
+		resizeMode: 'contain'
 	}
 });
 
@@ -26,32 +38,41 @@ export default class Video extends React.PureComponent {
 		super(props);
 		const { server, file, user } = this.props;
 		this.state = {
-			modalVisible: false,
+			isVisible: false,
 			uri: `${ server }${ file.video_url }?rc_uid=${ user.id }&rc_token=${ user.token }`
 		};
 	}
 
 	toggleModal() {
 		this.setState({
-			modalVisible: !this.state.modalVisible
+			isVisible: !this.state.isVisible
 		});
 	}
 
 	render() {
-		const { modalVisible, uri } = this.state;
+		const { isVisible, uri } = this.state;
 		return (
 			<View>
 				<TouchableOpacity
 					style={styles.container}
 					onPress={() => this.toggleModal()}
 				>
-					<Text>Open</Text>
+					<Image
+						source={require('../../images/logo.png')}
+						style={styles.image}
+					/>
 				</TouchableOpacity>
-				<VideoModal
-					uri={uri}
-					isVisible={modalVisible}
-					onClose={() => this.toggleModal()}
-				/>
+				<Modal
+					isVisible={isVisible}
+					style={styles.modal}
+					supportedOrientations={['portrait', 'landscape']}
+				>
+					<VideoPlayer
+						source={{ uri }}
+						onBack={() => this.toggleModal()}
+						disableVolume
+					/>
+				</Modal>
 			</View>
 		);
 	}
