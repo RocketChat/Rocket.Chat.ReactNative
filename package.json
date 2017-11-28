@@ -75,7 +75,7 @@
     "jest": "21.2.1",
     "jest-cli": "^21.2.1",
     "react-dom": "16.1.1",
-    "react-test-renderer": "16.1.1"
+    "react-test-renderer": "16.2.0"
   },
   "jest": {
     "preset": "react-native",
