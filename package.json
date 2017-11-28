@@ -22,7 +22,7 @@
     "ejson": "^2.1.2",
     "moment": "^2.19.2",
     "prop-types": "^15.6.0",
-    "react": "16.1.1",
+    "react": "16.2.0",
     "react-emojione": "^5.0.0",
     "react-native": "0.50.3",
     "react-native-action-button": "^2.8.1",
