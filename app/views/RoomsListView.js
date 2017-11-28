@@ -259,7 +259,7 @@ export default class RoomsListView extends React.Component {
 			userMentions={item.userMentions}
 			favorite={item.f}
 			name={item.name}
-			_updatedAt={item._updatedAt}
+			_updatedAt={item.roomUpdatedAt}
 			key={item._id}
 			type={item.t}
 			baseUrl={this.props.Site_Url}
