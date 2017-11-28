@@ -88,7 +88,6 @@ export default class RoomView extends React.Component {
 			.sorted('ts', true);
 		this.room = realm.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
-			slow: false,
 			dataSource: ds.cloneWithRows([]),
 			loaded: true,
 			joined: typeof props.rid === 'undefined'
@@ -102,15 +101,11 @@ export default class RoomView extends React.Component {
 				this.props.navigation.state.params.name ||
 				this.props.navigation.state.params.room.name
 		});
-		this.timer = setTimeout(() => this.setState({ slow: true }), 5000);
 		this.props.openRoom({ rid: this.rid });
 		this.data.addListener(this.updateState);
 	}
 	componentDidMount() {
 		this.updateState();
-	}
-	componentDidUpdate() {
-		return !this.props.loading && clearTimeout(this.timer);
 	}
 	componentWillUnmount() {
 		clearTimeout(this.timer);
@@ -156,7 +151,7 @@ export default class RoomView extends React.Component {
 	};
 
 	renderBanner = () =>
-		(this.state.slow && this.props.loading ? (
+		(this.props.loading ? (
 			<View style={styles.bannerContainer}>
 				<Text style={styles.bannerText}>Loading new messages...</Text>
 			</View>
