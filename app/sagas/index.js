@@ -22,5 +22,5 @@ const root = function* root() {
 		state()
 	]);
 };
-// Consider using takeEvery
+
 export default root;
