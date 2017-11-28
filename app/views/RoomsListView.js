@@ -11,6 +11,7 @@ import realm from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import RoomItem from '../presentation/RoomItem';
 import Banner from '../containers/Banner';
+import { goRoom } from '../containers/routes/NavigationService';
 
 const styles = StyleSheet.create({
 	container: {
@@ -191,11 +192,7 @@ export default class RoomsListView extends React.Component {
 		});
 	};
 
-	_onPressItem = (id, item = {}) => {
-		const navigateToRoom = (room) => {
-			this.props.navigation.navigate('Room', { room, title: room.name });
-		};
-
+	_onPressItem = (item = {}) => {
 		const clearSearch = () => {
 			this.setState({
 				searchText: ''
@@ -220,16 +217,16 @@ export default class RoomsListView extends React.Component {
 							}
 						});
 					}))
-					.then(sub => navigateToRoom({ sid: sub._id, name: sub.name }))
+					.then(sub => goRoom({ room: sub, name: sub.name }))
 					.then(() => clearSearch());
 			} else {
 				clearSearch();
-				navigateToRoom({ rid: item._id, name: item.name });
+				goRoom(item);
 			}
 			return;
 		}
 
-		navigateToRoom({ sid: id, name: item.name });
+		goRoom(item);
 		clearSearch();
 	}
 
@@ -264,7 +261,7 @@ export default class RoomsListView extends React.Component {
 			type={item.t}
 			baseUrl={this.props.Site_Url}
 			dateFormat='MM-DD-YYYY HH:mm:ss'
-			onPress={() => this._onPressItem(item._id, item)}
+			onPress={() => this._onPressItem(item)}
 		/>
 	)
 
