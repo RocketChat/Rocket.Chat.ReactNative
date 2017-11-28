@@ -2,6 +2,7 @@ import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import logger from 'redux-logger';
 import { composeWithDevTools } from 'remote-redux-devtools';
+import applyAppStateListener from 'redux-enhancer-react-native-appstate';
 import reducers from '../reducers';
 import sagas from '../sagas';
 
@@ -13,12 +14,16 @@ if (__DEV__) {
 	const reduxImmutableStateInvariant = require('redux-immutable-state-invariant').default();
 
 	enhacers = composeWithDevTools(
+		applyAppStateListener(),
 		applyMiddleware(reduxImmutableStateInvariant),
 		applyMiddleware(sagaMiddleware),
 		applyMiddleware(logger)
 	);
 } else {
-	enhacers = composeWithDevTools(applyMiddleware(sagaMiddleware));
+	enhacers = composeWithDevTools(
+		applyAppStateListener(),
+		applyMiddleware(sagaMiddleware)
+	);
 }
 
 const store = enhacers(createStore)(reducers);
