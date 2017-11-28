@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, StyleSheet, SafeAreaView } from 'react-native';
+import { View, TextInput, StyleSheet, SafeAreaView, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
@@ -22,14 +22,19 @@ const styles = StyleSheet.create({
 	},
 	textBoxInput: {
 		height: 40,
-		alignSelf: 'stretch',
-		flexGrow: 1
+		minHeight: 40,
+		maxHeight: 120,
+		flexGrow: 1,
+		paddingHorizontal: 10,
+		paddingTop: 12
 	},
 	actionButtons: {
 		color: '#aaa',
 		paddingTop: 10,
 		paddingBottom: 10,
-		fontSize: 20
+		paddingHorizontal: 8,
+		fontSize: 20,
+		alignSelf: 'flex-end'
 	},
 	editing: {
 		backgroundColor: '#fff5df'
@@ -55,6 +60,13 @@ export default class MessageBox extends React.Component {
 		editing: PropTypes.bool,
 		typing: PropTypes.func,
 		clearInput: PropTypes.func
+	}
+
+	constructor(props) {
+		super(props);
+		this.state = {
+			height: 40
+		};
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -111,6 +123,10 @@ export default class MessageBox extends React.Component {
 		});
 	}
 
+	updateSize = (height) => {
+		this.setState({ height: height + (Platform.OS === 'ios' ? 20 : 0) });
+	}
+
 	editCancel() {
 		this.props.editCancel();
 		this.component.setNativeProps({ text: '' });
@@ -125,20 +141,27 @@ export default class MessageBox extends React.Component {
 	}
 
 	render() {
+		const { height } = this.state;
 		return (
 			<View style={[styles.textBox, (this.props.editing ? styles.editing : null)]}>
 				<SafeAreaView style={styles.safeAreaView}>
 					{this.renderLeftButton()}
 					<TextInput
 						ref={component => this.component = component}
-						style={styles.textBoxInput}
-						returnKeyType='send'
-						onSubmitEditing={event => this.submit(event.nativeEvent.text)}
+						style={[styles.textBoxInput, { height }]}
+						returnKeyType='default'
 						blurOnSubmit={false}
 						placeholder='New message'
 						onChangeText={text => this.props.typing(text.length > 0)}
 						underlineColorAndroid='transparent'
 						defaultValue=''
+						multiline
+						onContentSizeChange={e => this.updateSize(e.nativeEvent.contentSize.height)}
+					/>
+					<Icon
+						style={styles.actionButtons}
+						name='send'
+						onPress={() => this.submit(this.component._lastNativeText)}
 					/>
 				</SafeAreaView>
 			</View>
