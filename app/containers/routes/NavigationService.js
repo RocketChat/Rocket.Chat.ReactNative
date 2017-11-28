@@ -21,3 +21,22 @@ export function goBack() {
 		config.navigator.dispatch(action);
 	}
 }
+
+
+export function goRoom({ rid, name }, counter = 0) {
+	if (counter > 10) {
+		return;
+	}
+	if (!config.navigator) {
+		return setTimeout(() => goRoom({ rid, name }, counter + 1), 200);
+	}
+	const action = NavigationActions.reset({
+		index: 1,
+		actions: [
+			NavigationActions.navigate({ routeName: 'RoomsList' }),
+			NavigationActions.navigate({ routeName: 'Room', params: { room: { rid, name }, rid, name } })
+		]
+	});
+
+	return config.navigator.dispatch(action);
+}

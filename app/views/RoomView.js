@@ -79,12 +79,9 @@ export default class RoomView extends React.Component {
 
 	constructor(props) {
 		super(props);
-
-		this.sid = props.navigation.state.params.room.sid;
 		this.rid =
 			props.rid ||
-			props.navigation.state.params.room.rid ||
-			realm.objectForPrimaryKey('subscriptions', this.sid).rid;
+			props.navigation.state.params.room.rid;
 
 		this.data = realm
 			.objects('messages')
@@ -103,8 +100,8 @@ export default class RoomView extends React.Component {
 		this.props.navigation.setParams({
 			title:
 				this.props.name ||
-				this.props.navigation.state.params.room.name ||
-				realm.objectForPrimaryKey('subscriptions', this.sid).name
+				this.props.navigation.state.params.name ||
+				this.props.navigation.state.params.room.name
 		});
 		this.timer = setTimeout(() => this.setState({ slow: true }), 5000);
 		this.props.openRoom({ rid: this.rid });

@@ -191,7 +191,7 @@ export default class RoomsListView extends React.Component {
 		});
 	};
 
-	_onPressItem = (id, item = {}) => {
+	_onPressItem = (item = {}) => {
 		const navigateToRoom = (room) => {
 			this.props.navigation.navigate('Room', { room, title: room.name });
 		};
@@ -220,16 +220,16 @@ export default class RoomsListView extends React.Component {
 							}
 						});
 					}))
-					.then(sub => navigateToRoom({ sid: sub._id, name: sub.name }))
+					.then(sub => navigateToRoom({ room: sub, name: sub.name }))
 					.then(() => clearSearch());
 			} else {
 				clearSearch();
-				navigateToRoom({ rid: item._id, name: item.name });
+				navigateToRoom(item);
 			}
 			return;
 		}
 
-		navigateToRoom({ sid: id, name: item.name });
+		navigateToRoom(item);
 		clearSearch();
 	}
 
@@ -264,7 +264,7 @@ export default class RoomsListView extends React.Component {
 			type={item.t}
 			baseUrl={this.props.Site_Url}
 			dateFormat='MM-DD-YYYY HH:mm:ss'
-			onPress={() => this._onPressItem(item._id, item)}
+			onPress={() => this._onPressItem(item)}
 		/>
 	)
 
