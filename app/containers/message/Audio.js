@@ -1,99 +1,53 @@
-// import React from 'react';
-// import PropTypes from 'prop-types';
-// import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-// import { connect } from 'react-redux';
-// import Sound from 'react-native-sound';
-
-// const styles = StyleSheet.create({
-// 	container: {
-// 		flex: 1,
-// 		justifyContent: 'center'
-// 	}
-// });
-
-// @connect(state => ({
-// 	server: state.server.server
-// }))
-// export default class Audio extends React.PureComponent {
-// 	static propTypes = {
-// 		file: PropTypes.object.isRequired,
-// 		server: PropTypes.string.isRequired
-// 	}
-
-// 	constructor(props) {
-// 		super(props);
-// 		this.state = {
-// 			paused: true,
-// 			loading: true
-// 		};
-// 		const { file, server } = this.props;
-// 		const tmp = 'https://s3.amazonaws.com/hanselminutes/hanselminutes_0001.mp3';
-// 		const uri = tmp;
-// 		this.sound = new Sound(uri, undefined, (error) => {
-// 			if (error) {
-// 				console.warn(error);
-// 			} else {
-// 				this.setState({ loading: false });
-// 				// console.log('Playing sound');
-// 				// sound.play(() => {
-// 				// // Release when it's done so we're not using up resources
-// 				// 	sound.release();
-// 				// });
-// 			}
-// 		});
-// 	}
-
-// 	onPress() {
-// 		if (this.state.paused) {
-// 			this.sound.play();
-// 		} else {
-// 			this.sound.pause();
-// 		}
-// 		this.setState({ paused: !this.state.paused });
-// 	}
-
-// 	// getCurrentTime() {
-// 	// 	this.sound.getCurrentTime(seconds => console.warn(seconds));
-// 	// }
-
-// 	render() {
-// 		if (this.state.loading) {
-// 			return <Text>Loading...</Text>;
-// 		}
-// 		// this.getCurrentTime();
-// 		return (
-// 			<TouchableOpacity
-// 				style={styles.container}
-// 				onPress={() => this.onPress()}
-// 			>
-// 				<Text>{this.state.paused ? 'Play' : 'Pause'}</Text>
-// 			</TouchableOpacity>
-// 		);
-// 	}
-// }
-
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, TouchableOpacity, Image, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { connect } from 'react-redux';
-import Modal from 'react-native-modal';
-import VideoPlayer from 'react-native-video-controls';
+import Video from 'react-native-video';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import Slider from 'react-native-slider';
 
+const SUPPORTED_TYPES = ['video/webm'];
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		height: 100,
-		margin: 5
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: 50,
+		margin: 5,
+		backgroundColor: '#eee',
+		borderRadius: 6
 	},
-	modal: {
-		margin: 0,
-		backgroundColor: '#000'
+	playPauseButton: {
+		width: 50,
+		alignItems: 'center',
+		backgroundColor: 'transparent',
+		borderRightColor: '#ccc',
+		borderRightWidth: 1
 	},
-	image: {
+	playPauseIcon: {
+		color: '#ccc',
+		backgroundColor: 'transparent'
+	},
+	progressContainer: {
 		flex: 1,
-		width: null,
-		height: null,
-		resizeMode: 'contain'
+		justifyContent: 'center',
+		height: '100%',
+		marginHorizontal: 10
+	},
+	label: {
+		color: '#888',
+		fontSize: 10
+	},
+	currentTime: {
+		position: 'absolute',
+		left: 0,
+		bottom: 2
+	},
+	duration: {
+		position: 'absolute',
+		right: 0,
+		bottom: 2
 	}
 });
 
@@ -111,39 +65,96 @@ export default class Audio extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		const { server, file, user } = this.props;
+		this.onLoad = this.onLoad.bind(this);
+		this.onProgress = this.onProgress.bind(this);
+		this.onEnd = this.onEnd.bind(this);
 		this.state = {
-			isVisible: false,
+			currentTime: 0,
+			duration: 0,
+			paused: true,
 			uri: `${ server }${ file.audio_url }?rc_uid=${ user.id }&rc_token=${ user.token }`
 		};
 	}
 
-	toggleModal() {
-		this.setState({
-			isVisible: !this.state.isVisible
+	onLoad(data) {
+		this.setState({ duration: data.duration });
+	}
+
+	onProgress(data) {
+		if (data.currentTime < this.state.duration) {
+			this.setState({ currentTime: data.currentTime });
+		}
+	}
+
+	onEnd() {
+		this.setState({ paused: true, currentTime: 0 });
+		requestAnimationFrame(() => {
+			this.player.seek(0);
 		});
 	}
 
+	getCurrentTime() {
+		return this.formatTime(this.state.currentTime);
+	}
+
+	getDuration() {
+		return this.formatTime(this.state.duration);
+	}
+
+	formatTime(time = 0) {
+		time = Math.min(
+			Math.max(time, 0),
+			this.state.duration
+		);
+		const formattedMinutes = Math.floor(time / 60).toFixed(0).padStart(2, 0);
+		const formattedSeconds = Math.floor(time % 60).toFixed(0).padStart(2, 0);
+		return `${ formattedMinutes }:${ formattedSeconds }`;
+	}
+
+	isTypeSupported() {
+		return SUPPORTED_TYPES.indexOf(this.props.file.audio_type) === -1;
+	}
+
+	togglePlayPause() {
+		this.setState({ paused: !this.state.paused });
+	}
+
 	render() {
-		const { isVisible, uri } = this.state;
+		const { uri, paused } = this.state;
 		return (
-			<View>
+			<View style={styles.container}>
+				<Video
+					ref={(ref) => {
+						this.player = ref;
+					}}
+					source={{ uri }}
+					onLoad={this.onLoad}
+					onProgress={this.onProgress}
+					onEnd={this.onEnd}
+					paused={paused}
+					repeat={false}
+				/>
 				<TouchableOpacity
-					style={styles.container}
-					onPress={() => this.toggleModal()}
+					style={styles.playPauseButton}
+					onPress={() => this.togglePlayPause()}
 				>
-					<Text>AUDIO</Text>
+					{
+						paused ? <Icon name='play-arrow' size={50} style={styles.playPauseIcon} />
+							: <Icon name='pause' size={47} style={styles.playPauseIcon} />
+					}
 				</TouchableOpacity>
-				<Modal
-					isVisible={isVisible}
-					style={styles.modal}
-					supportedOrientations={['portrait', 'landscape']}
-				>
-					<VideoPlayer
-						source={{ uri }}
-						onBack={() => this.toggleModal()}
-						disableVolume
+				<View style={styles.progressContainer}>
+					<Text style={[styles.label, styles.currentTime]}>{this.getCurrentTime()}</Text>
+					<Text style={[styles.label, styles.duration]}>{this.getDuration()}</Text>
+					<Slider
+						value={this.state.currentTime}
+						maximumValue={this.state.duration}
+						minimumValue={0}
+						animateTransitions
+						thumbTintColor='#ccc'
+						onValueChange={value => this.setState({ currentTime: value })}
 					/>
-				</Modal>
+				</View>
 			</View>
 		);
 	}
