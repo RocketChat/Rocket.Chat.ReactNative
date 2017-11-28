@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, Linking } from 'react-native';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 import VideoPlayer from 'react-native-video-controls';
 
+const SUPPORTED_TYPES = ['video/webm'];
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -43,10 +44,22 @@ export default class Video extends React.PureComponent {
 		};
 	}
 
+	isTypeSupported() {
+		return SUPPORTED_TYPES.indexOf(this.props.file.video_type) === -1;
+	}
+
 	toggleModal() {
 		this.setState({
 			isVisible: !this.state.isVisible
 		});
+	}
+
+	open() {
+		if (!this.isTypeSupported()) {
+			Linking.openURL(this.state.uri);
+		} else {
+			this.toggleModal();
+		}
 	}
 
 	render() {
@@ -55,7 +68,7 @@ export default class Video extends React.PureComponent {
 			<View>
 				<TouchableOpacity
 					style={styles.container}
-					onPress={() => this.toggleModal()}
+					onPress={() => this.open()}
 				>
 					<Image
 						source={require('../../images/logo.png')}
