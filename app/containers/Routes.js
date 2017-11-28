@@ -12,7 +12,8 @@ import * as NavigationService from './routes/NavigationService';
 @connect(
 	state => ({
 		login: state.login,
-		app: state.app
+		app: state.app,
+		background: state.app.background
 	}),
 	dispatch => bindActionCreators({
 		appInit
@@ -26,7 +27,7 @@ export default class Routes extends React.Component {
 	}
 
 	componentWillMount() {
-		this.props.appInit();
+		return !this.props.app.ready && this.props.appInit();
 	}
 
 	componentDidUpdate() {
