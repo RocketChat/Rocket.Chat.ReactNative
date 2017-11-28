@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, StyleSheet, SafeAreaView } from 'react-native';
+import { View, TextInput, StyleSheet, SafeAreaView, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
@@ -124,7 +124,7 @@ export default class MessageBox extends React.Component {
 	}
 
 	updateSize = (height) => {
-		this.setState({ height: height + 20 });
+		this.setState({ height: height + (Platform.OS === 'ios' ? 20 : 0) });
 	}
 
 	editCancel() {
