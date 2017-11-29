@@ -115,6 +115,17 @@ const attachment = {
 	}
 };
 
+// const url = {
+// 	name: 'url',
+// 	properties: {
+// 		url: { type: 'string', optional: true },
+// 		title: { type: 'string', optional: true },
+// 		description: { type: 'string', optional: true },
+// 		author: { type: 'string', optional: true }
+// 	}
+// };
+
+
 const messagesEditedBySchema = {
 	name: 'messagesEditedBy',
 	properties: {
@@ -141,6 +152,7 @@ const messagesSchema = {
 		groupable: { type: 'bool', optional: true },
 		avatar: { type: 'string', optional: true },
 		attachments: { type: 'list', objectType: 'attachment' },
+		// urls: { type: 'list', objectType: 'url' },
 		_updatedAt: { type: 'date', optional: true },
 		temp: { type: 'bool', optional: true },
 		pinned: { type: 'bool', optional: true },
@@ -163,7 +175,8 @@ const realm = new Realm({
 		attachment,
 		messagesEditedBySchema,
 		permissionsSchema,
-		permissionsRolesSchema
+		permissionsRolesSchema,
+		// url
 	],
 	deleteRealmIfMigrationNeeded: true
 });

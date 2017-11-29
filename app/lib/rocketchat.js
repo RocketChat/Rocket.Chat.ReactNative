@@ -256,11 +256,13 @@ const RocketChat = {
 					return reject(err);
 				}
 				if (data && data.messages.length) {
+					console.log(data)
 					realm.write(() => {
 						data.messages.forEach((message) => {
 							message.temp = false;
 							message._server = { id: reduxStore.getState().server.server };
 							message.attachments = message.attachments || [];
+							message.urls = message.urls || [];
 							// write('messages', message);
 							message.starred = !!message.starred;
 							realm.create('messages', message, true);
