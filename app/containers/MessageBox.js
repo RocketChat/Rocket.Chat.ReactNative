@@ -122,7 +122,7 @@ export default class MessageBox extends React.Component {
 			}
 		});
 	}
-  
+
 	updateSize = (height) => {
 		this.setState({ height: height + (Platform.OS === 'ios' ? 20 : 0) });
 	}
