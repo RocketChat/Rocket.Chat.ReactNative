@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, TouchableOpacity, Text, Easing } from 'react-native';
-import { connect } from 'react-redux';
 import Video from 'react-native-video';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Slider from 'react-native-slider';
@@ -52,28 +51,24 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(state => ({
-	server: state.server.server,
-	user: state.login.user
-}))
 export default class Audio extends React.PureComponent {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
-		server: PropTypes.string.isRequired,
+		baseUrl: PropTypes.string.isRequired,
 		user: PropTypes.object.isRequired
 	}
 
 	constructor(props) {
 		super(props);
-		const { server, file, user } = this.props;
 		this.onLoad = this.onLoad.bind(this);
 		this.onProgress = this.onProgress.bind(this);
 		this.onEnd = this.onEnd.bind(this);
+		const { baseUrl, file, user } = props;
 		this.state = {
 			currentTime: 0,
 			duration: 0,
 			paused: true,
-			uri: `${ server }${ file.audio_url }?rc_uid=${ user.id }&rc_token=${ user.token }`
+			uri: `${ baseUrl }${ file.audio_url }?rc_uid=${ user.id }&rc_token=${ user.token }`
 		};
 	}
 

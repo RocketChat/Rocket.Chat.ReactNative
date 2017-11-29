@@ -4,7 +4,7 @@ import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { connect } from 'react-redux';
 
 import { actionsShow } from '../../actions/messages';
-import Card from './Card';
+import Image from './Image';
 import User from './User';
 import Avatar from '../Avatar';
 import Audio from './Audio';
@@ -44,6 +44,7 @@ export default class Message extends React.Component {
 		baseUrl: PropTypes.string.isRequired,
 		Message_TimeFormat: PropTypes.string.isRequired,
 		message: PropTypes.object.isRequired,
+		user: PropTypes.object.isRequired,
 		editing: PropTypes.bool,
 		actionsShow: PropTypes.func
 	}
@@ -63,16 +64,13 @@ export default class Message extends React.Component {
 		}
 
 		const file = this.props.item.attachments[0];
+		const { baseUrl, user } = this.props;
 		if (file.image_type) {
-			return (
-				<Card
-					data={file}
-				/>
-			);
+			return <Image file={file} baseUrl={baseUrl} user={user} />;
 		} else if (file.audio_type) {
-			return <Audio file={file} />;
+			return <Audio file={file} baseUrl={baseUrl} user={user} />;
 		} else if (file.video_type) {
-			return <Video file={file} />;
+			return <Video file={file} baseUrl={baseUrl} user={user} />;
 		}
 
 		return <Text>Other type</Text>;

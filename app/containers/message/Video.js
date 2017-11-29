@@ -25,23 +25,19 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(state => ({
-	server: state.server.server,
-	user: state.login.user
-}))
 export default class Video extends React.PureComponent {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
-		server: PropTypes.string.isRequired,
+		baseUrl: PropTypes.string.isRequired,
 		user: PropTypes.object.isRequired
 	}
 
 	constructor(props) {
 		super(props);
-		const { server, file, user } = this.props;
+		const { baseUrl, file, user } = props;
 		this.state = {
 			isVisible: false,
-			uri: `${ server }${ file.video_url }?rc_uid=${ user.id }&rc_token=${ user.token }`
+			uri: `${ baseUrl }${ file.video_url }?rc_uid=${ user.id }&rc_token=${ user.token }`
 		};
 	}
 
