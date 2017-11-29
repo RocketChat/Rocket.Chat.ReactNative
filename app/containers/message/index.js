@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { emojify } from 'react-emojione';
 import { connect } from 'react-redux';
 
 import { actionsShow } from '../../actions/messages';
