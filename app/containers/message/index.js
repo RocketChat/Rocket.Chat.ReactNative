@@ -85,6 +85,9 @@ export default class Message extends React.Component {
 		}
 
 		const msg = emojify(this.props.item.msg, { output: 'unicode' });
+		if (!msg) {
+			return null;
+		}
 		return (
 			<Markdown>
 				{msg}

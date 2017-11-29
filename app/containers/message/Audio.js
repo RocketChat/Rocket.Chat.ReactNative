@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, Easing } from 'react-native';
 import { connect } from 'react-redux';
 import Video from 'react-native-video';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -151,6 +151,11 @@ export default class Audio extends React.PureComponent {
 						maximumValue={this.state.duration}
 						minimumValue={0}
 						animateTransitions
+						animationConfig={{
+							duration: 250,
+							easing: Easing.linear,
+							delay: 0
+						}}
 						thumbTintColor='#ccc'
 						onValueChange={value => this.setState({ currentTime: value })}
 					/>
