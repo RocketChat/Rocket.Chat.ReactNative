@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { emojify } from 'react-emojione';
-import Markdown from 'react-native-easy-markdown'; // eslint-disable-line
 import { connect } from 'react-redux';
 
 import { actionsShow } from '../../actions/messages';
@@ -11,6 +10,7 @@ import User from './User';
 import Avatar from '../Avatar';
 import Audio from './Audio';
 import Video from './Video';
+import Markdown from './Markdown';
 
 const styles = StyleSheet.create({
 	content: {
@@ -84,14 +84,8 @@ export default class Message extends React.Component {
 			return <Text style={styles.textInfo}>Message removed</Text>;
 		}
 
-		const msg = emojify(this.props.item.msg, { output: 'unicode' });
-		if (!msg) {
-			return null;
-		}
 		return (
-			<Markdown>
-				{msg}
-			</Markdown>
+			<Markdown msg={this.props.item.msg} />
 		);
 	}
 

@@ -5,10 +5,11 @@ import { connect } from 'react-redux';
 import Video from 'react-native-video';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Slider from 'react-native-slider';
+import Markdown from './Markdown';
 
 const SUPPORTED_TYPES = ['video/webm'];
 const styles = StyleSheet.create({
-	container: {
+	audioContainer: {
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'center',
@@ -121,45 +122,49 @@ export default class Audio extends React.PureComponent {
 
 	render() {
 		const { uri, paused } = this.state;
+		const { description } = this.props.file;
 		return (
-			<View style={styles.container}>
-				<Video
-					ref={(ref) => {
-						this.player = ref;
-					}}
-					source={{ uri }}
-					onLoad={this.onLoad}
-					onProgress={this.onProgress}
-					onEnd={this.onEnd}
-					paused={paused}
-					repeat={false}
-				/>
-				<TouchableOpacity
-					style={styles.playPauseButton}
-					onPress={() => this.togglePlayPause()}
-				>
-					{
-						paused ? <Icon name='play-arrow' size={50} style={styles.playPauseIcon} />
-							: <Icon name='pause' size={47} style={styles.playPauseIcon} />
-					}
-				</TouchableOpacity>
-				<View style={styles.progressContainer}>
-					<Text style={[styles.label, styles.currentTime]}>{this.getCurrentTime()}</Text>
-					<Text style={[styles.label, styles.duration]}>{this.getDuration()}</Text>
-					<Slider
-						value={this.state.currentTime}
-						maximumValue={this.state.duration}
-						minimumValue={0}
-						animateTransitions
-						animationConfig={{
-							duration: 250,
-							easing: Easing.linear,
-							delay: 0
+			<View>
+				<View style={styles.audioContainer}>
+					<Video
+						ref={(ref) => {
+							this.player = ref;
 						}}
-						thumbTintColor='#ccc'
-						onValueChange={value => this.setState({ currentTime: value })}
+						source={{ uri }}
+						onLoad={this.onLoad}
+						onProgress={this.onProgress}
+						onEnd={this.onEnd}
+						paused={paused}
+						repeat={false}
 					/>
+					<TouchableOpacity
+						style={styles.playPauseButton}
+						onPress={() => this.togglePlayPause()}
+					>
+						{
+							paused ? <Icon name='play-arrow' size={50} style={styles.playPauseIcon} />
+								: <Icon name='pause' size={47} style={styles.playPauseIcon} />
+						}
+					</TouchableOpacity>
+					<View style={styles.progressContainer}>
+						<Text style={[styles.label, styles.currentTime]}>{this.getCurrentTime()}</Text>
+						<Text style={[styles.label, styles.duration]}>{this.getDuration()}</Text>
+						<Slider
+							value={this.state.currentTime}
+							maximumValue={this.state.duration}
+							minimumValue={0}
+							animateTransitions
+							animationConfig={{
+								duration: 250,
+								easing: Easing.linear,
+								delay: 0
+							}}
+							thumbTintColor='#ccc'
+							onValueChange={value => this.setState({ currentTime: value })}
+						/>
+					</View>
 				</View>
+				<Markdown msg={description} />
 			</View>
 		);
 	}

@@ -4,6 +4,7 @@ import { View, StyleSheet, TouchableOpacity, Image, Linking } from 'react-native
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 import VideoPlayer from 'react-native-video-controls';
+import Markdown from './Markdown';
 
 const SUPPORTED_TYPES = ['video/webm'];
 const styles = StyleSheet.create({
@@ -64,6 +65,7 @@ export default class Video extends React.PureComponent {
 
 	render() {
 		const { isVisible, uri } = this.state;
+		const { description } = this.props.file;
 		return (
 			<View>
 				<TouchableOpacity
@@ -74,6 +76,7 @@ export default class Video extends React.PureComponent {
 						source={require('../../images/logo.png')}
 						style={styles.image}
 					/>
+					<Markdown msg={description} />
 				</TouchableOpacity>
 				<Modal
 					isVisible={isVisible}
