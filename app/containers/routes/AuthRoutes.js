@@ -28,7 +28,7 @@ const AuthRoutes = StackNavigator(
 			screen: RoomView,
 			navigationOptions({ navigation }) {
 				return {
-					title: navigation.state.params.title || 'Room'
+					title: navigation.state.params.name || navigation.state.params.room.name || 'Room'
 					// [drawerIconPosition]: (<DrawerMenuButton navigation={navigation} />)÷
 				};
 			}
