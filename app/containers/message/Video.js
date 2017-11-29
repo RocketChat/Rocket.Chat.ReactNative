@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, TouchableOpacity, Image, Linking } from 'react-native';
-import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 import VideoPlayer from 'react-native-video-controls';
 import Markdown from './Markdown';
