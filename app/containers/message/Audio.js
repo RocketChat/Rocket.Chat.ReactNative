@@ -6,7 +6,6 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import Slider from 'react-native-slider';
 import Markdown from './Markdown';
 
-const SUPPORTED_TYPES = ['video/webm'];
 const styles = StyleSheet.create({
 	audioContainer: {
 		flex: 1,
@@ -51,6 +50,16 @@ const styles = StyleSheet.create({
 	}
 });
 
+const formatTime = (t = 0, duration = 0) => {
+	const time = Math.min(
+		Math.max(t, 0),
+		duration
+	);
+	const formattedMinutes = Math.floor(time / 60).toFixed(0).padStart(2, 0);
+	const formattedSeconds = Math.floor(time % 60).toFixed(0).padStart(2, 0);
+	return `${ formattedMinutes }:${ formattedSeconds }`;
+};
+
 export default class Audio extends React.PureComponent {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
@@ -90,25 +99,11 @@ export default class Audio extends React.PureComponent {
 	}
 
 	getCurrentTime() {
-		return this.formatTime(this.state.currentTime);
+		return formatTime(this.state.currentTime, this.state.duration);
 	}
 
 	getDuration() {
-		return this.formatTime(this.state.duration);
-	}
-
-	formatTime(time = 0) {
-		time = Math.min(
-			Math.max(time, 0),
-			this.state.duration
-		);
-		const formattedMinutes = Math.floor(time / 60).toFixed(0).padStart(2, 0);
-		const formattedSeconds = Math.floor(time % 60).toFixed(0).padStart(2, 0);
-		return `${ formattedMinutes }:${ formattedSeconds }`;
-	}
-
-	isTypeSupported() {
-		return SUPPORTED_TYPES.indexOf(this.props.file.audio_type) === -1;
+		return formatTime(this.state.duration);
 	}
 
 	togglePlayPause() {

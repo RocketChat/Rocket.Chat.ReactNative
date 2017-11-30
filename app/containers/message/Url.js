@@ -40,17 +40,15 @@ const styles = StyleSheet.create({
 	}
 });
 
+const onPress = (url) => {
+	Linking.openURL(url);
+};
 const Url = ({ url }) => {
 	if (!url) {
 		return null;
 	}
-
-	const onPress = () => {
-		Linking.openURL(url.url);
-	};
-
 	return (
-		<TouchableOpacity onPress={() => onPress()} style={styles.button}>
+		<TouchableOpacity onPress={() => onPress(url.url)} style={styles.button}>
 			<View style={styles.quoteSign} />
 			<Image
 				style={styles.image}
