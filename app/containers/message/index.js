@@ -10,6 +10,7 @@ import Avatar from '../Avatar';
 import Audio from './Audio';
 import Video from './Video';
 import Markdown from './Markdown';
+import Url from './Url';
 
 const styles = StyleSheet.create({
 	content: {
@@ -51,7 +52,6 @@ export default class Message extends React.Component {
 
 	onLongPress() {
 		const { item } = this.props;
-		console.warn(item)
 		this.props.actionsShow(JSON.parse(JSON.stringify(item)));
 	}
 
@@ -87,21 +87,14 @@ export default class Message extends React.Component {
 		);
 	}
 
-	renderMetaUrl() {
+	renderUrl() {
 		if (this.props.item.urls.length === 0) {
 			return null;
 		}
 
-		return (
-			<View style={{ flex: 1, height: 80, flexDirection: 'row', alignItems: 'center' }}>
-				<View style={{ borderWidth: 2, borderRadius: 4, borderColor: '#a0a0a0', height: '100%', marginRight: 5 }} />
-				<View style={{ height: 80, width: 80, backgroundColor: '#a0a0a0', borderRadius: 6 }}  />
-				<View style={{ flex: 1, height: '100%', flexDirection: 'column', padding: 4, justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-					<Text style={{ fontWeight: 'bold', fontSize: 16, color: '#a0a0a0' }}>Title</Text>
-					<Text>Description</Text>
-				</View>
-			</View>
-		);
+		return this.props.item.urls.map(url => (
+			<Url url={url} key={url._id} />
+		));
 	}
 
 	render() {
@@ -139,7 +132,7 @@ export default class Message extends React.Component {
 					/>
 					{this.attachments()}
 					{this.renderMessageContent()}
-					{this.renderMetaUrl()}
+					{this.renderUrl()}
 				</View>
 			</TouchableOpacity>
 		);

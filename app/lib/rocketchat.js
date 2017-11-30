@@ -70,6 +70,9 @@ const RocketChat = {
 							message.temp = false;
 							message._server = server;
 							message.attachments = message.attachments || [];
+							if (message.urls) {
+								message.urls = RocketChat._parseUrls(message.urls);
+							}
 							message.starred = message.starred && message.starred.length > 0;
 							realm.create('messages', message, true);
 						});
@@ -246,6 +249,25 @@ const RocketChat = {
 		return call('raix:push-setuser', pushId);
 	},
 
+	_parseUrls(urls) {
+		urls = urls.filter(url => url.meta && !url.ignoreParse);
+		urls = urls.map((url, index) => {
+			const tmp = {};
+			const { meta } = url;
+			tmp._id = index;
+			tmp.title = meta.ogTitle || meta.twitterTitle || meta.title || meta.pageTitle || meta.oembedTitle;
+			tmp.description = meta.ogDescription || meta.twitterDescription || meta.description || meta.oembedAuthorName;
+			let decodedOgImage;
+			if (meta.ogImage) {
+				decodedOgImage = meta.ogImage.replace(/&amp;/g, '&');
+			}
+			tmp.image = decodedOgImage || meta.twitterImage || meta.oembedThumbnailUrl;
+			tmp.url = url.url;
+			return tmp;
+		});
+		return urls;
+	},
+
 	loadMessagesForRoom(rid, end, cb) {
 		return new Promise((resolve, reject) => {
 			Meteor.call('loadHistory', rid, end, 20, (err, data) => {
@@ -256,13 +278,14 @@ const RocketChat = {
 					return reject(err);
 				}
 				if (data && data.messages.length) {
-					console.log(data)
 					realm.write(() => {
 						data.messages.forEach((message) => {
 							message.temp = false;
 							message._server = { id: reduxStore.getState().server.server };
 							message.attachments = message.attachments || [];
-							message.urls = message.urls || [];
+							if (message.urls) {
+								message.urls = RocketChat._parseUrls(message.urls);
+							}
 							// write('messages', message);
 							message.starred = !!message.starred;
 							realm.create('messages', message, true);
