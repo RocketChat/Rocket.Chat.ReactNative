@@ -1,4 +1,5 @@
 import { NavigationActions } from 'react-navigation';
+import reduxStore from '../../lib/createStore';
 
 const config = {};
 
@@ -31,6 +32,7 @@ export function goRoom({ rid, name }, counter = 0) {
 	if (!config.navigator) {
 		return setTimeout(() => goRoom({ rid, name }, counter + 1), 200);
 	}
+
 	const action = NavigationActions.reset({
 		index: 1,
 		actions: [
@@ -39,5 +41,5 @@ export function goRoom({ rid, name }, counter = 0) {
 		]
 	});
 
-	return config.navigator.dispatch(action);
+	requestAnimationFrame(() => config.navigator.dispatch(action), reduxStore.getState().app.starting);
 }

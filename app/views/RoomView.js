@@ -81,6 +81,9 @@ export default class RoomView extends React.Component {
 		this.rid =
 			props.rid ||
 			props.navigation.state.params.room.rid;
+		this.name = this.props.name ||
+		this.props.navigation.state.params.name ||
+		this.props.navigation.state.params.room.name;
 
 		this.data = realm
 			.objects('messages')
@@ -96,12 +99,9 @@ export default class RoomView extends React.Component {
 
 	componentWillMount() {
 		this.props.navigation.setParams({
-			title:
-				this.props.name ||
-				this.props.navigation.state.params.name ||
-				this.props.navigation.state.params.room.name
+			title: this.name
 		});
-		this.props.openRoom({ rid: this.rid });
+		this.props.openRoom({ rid: this.rid, name: this.name });
 		this.data.addListener(this.updateState);
 	}
 	componentDidMount() {
