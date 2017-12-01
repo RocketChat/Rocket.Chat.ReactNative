@@ -130,7 +130,9 @@ const handleSetUsernameRequest = function* handleSetUsernameRequest({ credential
 
 const handleLogout = function* handleLogout() {
 	const server = yield select(getServer);
-	yield call(logoutCall, { server });
+	if (server) {
+		yield call(logoutCall, { server });
+	}
 };
 
 const handleRegisterIncomplete = function* handleRegisterIncomplete() {

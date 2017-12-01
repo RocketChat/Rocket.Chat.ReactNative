@@ -12,7 +12,8 @@ import * as NavigationService from './routes/NavigationService';
 @connect(
 	state => ({
 		login: state.login,
-		app: state.app
+		app: state.app,
+		background: state.app.background
 	}),
 	dispatch => bindActionCreators({
 		appInit
@@ -26,7 +27,7 @@ export default class Routes extends React.Component {
 	}
 
 	componentWillMount() {
-		this.props.appInit();
+		return !this.props.app.ready && this.props.appInit();
 	}
 
 	componentDidUpdate() {
@@ -40,7 +41,7 @@ export default class Routes extends React.Component {
 			return (<Loading />);
 		}
 
-		if ((login.token && !login.failure && !login.isRegistering) || app.ready) {
+		if (login.token && !login.failure && !login.isRegistering) {
 			return (<AuthRoutes ref={nav => this.navigator = nav} />);
 		}
 
