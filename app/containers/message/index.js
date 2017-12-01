@@ -11,6 +11,7 @@ import Audio from './Audio';
 import Video from './Video';
 import Markdown from './Markdown';
 import Url from './Url';
+import Reply from './Reply';
 
 const styles = StyleSheet.create({
 	content: {
@@ -59,6 +60,10 @@ export default class Message extends React.Component {
 		return this.props.item.t === 'rm';
 	}
 
+	isPinned() {
+		return this.props.item.t === 'message_pinned';
+	}
+
 	attachments() {
 		if (this.props.item.attachments.length === 0) {
 			return null;
@@ -74,17 +79,16 @@ export default class Message extends React.Component {
 			return <Video file={file} baseUrl={baseUrl} user={user} />;
 		}
 
-		return <Text>Other type</Text>;
+		return <Reply attachment={file} timeFormat={this.props.Message_TimeFormat} />;
 	}
 
 	renderMessageContent() {
 		if (this.isDeleted()) {
 			return <Text style={styles.textInfo}>Message removed</Text>;
+		} else if (this.isPinned()) {
+			return <Text style={styles.textInfo}>Message pinned</Text>;
 		}
-
-		return (
-			<Markdown msg={this.props.item.msg} />
-		);
+		return <Markdown msg={this.props.item.msg} />;
 	}
 
 	renderUrl() {
@@ -130,8 +134,8 @@ export default class Message extends React.Component {
 						Message_TimeFormat={this.props.Message_TimeFormat}
 						baseUrl={this.props.baseUrl}
 					/>
-					{this.attachments()}
 					{this.renderMessageContent()}
+					{this.attachments()}
 					{this.renderUrl()}
 				</View>
 			</TouchableOpacity>

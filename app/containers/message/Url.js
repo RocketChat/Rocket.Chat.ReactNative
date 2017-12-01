@@ -2,10 +2,11 @@ import React from 'react';
 import { View, Text, TouchableOpacity, Linking, StyleSheet, Image } from 'react-native';
 import PropTypes from 'prop-types';
 
+import QuoteMark from './QuoteMark';
+
 const styles = StyleSheet.create({
 	button: {
 		flex: 1,
-		height: 80,
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginVertical: 2
@@ -49,7 +50,7 @@ const Url = ({ url }) => {
 	}
 	return (
 		<TouchableOpacity onPress={() => onPress(url.url)} style={styles.button}>
-			<View style={styles.quoteSign} />
+			<QuoteMark />
 			<Image
 				style={styles.image}
 				source={{ uri: encodeURI(url.image) }}

@@ -111,7 +111,14 @@ const attachment = {
 		title: { type: 'string', optional: true },
 		title_link: { type: 'string', optional: true },
 		title_link_download: { type: 'bool', optional: true },
-		type: { type: 'string', optional: true }
+		type: { type: 'string', optional: true },
+		author_icon: { type: 'string', optional: true },
+		author_name: { type: 'string', optional: true },
+		author_link: { type: 'string', optional: true },
+		text: { type: 'string', optional: true },
+		color: { type: 'string', optional: true },
+		ts: { type: 'date', optional: true },
+		attachments: { type: 'list', objectType: 'attachment' }
 	}
 };
 

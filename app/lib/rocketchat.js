@@ -265,6 +265,8 @@ const RocketChat = {
 		if (message.urls) {
 			message.urls = RocketChat._parseUrls(message.urls);
 		}
+		// loadHistory returns message.starred as object
+		// stream-room-messages returns message.starred as an array
 		message.starred = message.starred && (Array.isArray(message.starred) ? message.starred.length > 0 : !!message.starred);
 		return message;
 	},
