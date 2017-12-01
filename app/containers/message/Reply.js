@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
 });
 
 const onPress = (attachment) => {
-	console.warn(attachment)
 	const url = attachment.title_link || attachment.author_link;
 	if (!url) {
 		return;
