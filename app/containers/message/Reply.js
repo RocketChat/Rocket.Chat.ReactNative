@@ -30,18 +30,28 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
-	avatar: {
-		margin: 2
-	},
 	time: {
 		fontSize: 10,
 		fontWeight: 'normal',
 		color: '#888',
 		marginLeft: 5
+	},
+	fieldsContainer: {
+		flex: 1,
+		flexWrap: 'wrap',
+		flexDirection: 'row'
+	},
+	fieldContainer: {
+		flexDirection: 'column',
+		padding: 10
+	},
+	fieldTitle: {
+		fontWeight: 'bold'
 	}
 });
 
 const onPress = (attachment) => {
+	console.warn(attachment)
 	const url = attachment.title_link || attachment.author_link;
 	if (!url) {
 		return;
@@ -59,7 +69,7 @@ const Reply = ({ attachment, timeFormat }) => {
 		}
 		return (
 			<Avatar
-				style={styles.avatar}
+				style={{ marginLeft: 5 }}
 				text={attachment.author_name}
 				size={16}
 				avatar={attachment.author_icon}
@@ -80,6 +90,23 @@ const Reply = ({ attachment, timeFormat }) => {
 		attachment.text ? <Markdown msg={attachment.text} /> : null
 	);
 
+	const renderFields = () => {
+		if (!attachment.fields) {
+			return null;
+		}
+
+		return (
+			<View style={styles.fieldsContainer}>
+				{attachment.fields.map(field => (
+					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
+						<Text style={styles.fieldTitle}>{field.title}</Text>
+						<Text>{field.value}</Text>
+					</View>
+				))}
+			</View>
+		);
+	};
+
 	return (
 		<TouchableOpacity
 			onPress={() => onPress(attachment)}
@@ -93,7 +120,8 @@ const Reply = ({ attachment, timeFormat }) => {
 					</Text>
 				</View>
 				{renderText()}
-				{attachment.attachments.map(attach => <Reply attachment={attach} timeFormat={timeFormat} />)}
+				{renderFields()}
+				{attachment.attachments.map(attach => <Reply key={attach.text} attachment={attach} timeFormat={timeFormat} />)}
 			</View>
 		</TouchableOpacity>
 	);

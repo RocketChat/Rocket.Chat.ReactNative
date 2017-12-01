@@ -95,6 +95,15 @@ const usersSchema = {
 	}
 };
 
+const attachmentFields = {
+	name: 'attachmentFields',
+	properties: {
+		title: { type: 'string', optional: true },
+		value: { type: 'string', optional: true },
+		short: { type: 'bool', optional: true }
+	}
+};
+
 const attachment = {
 	name: 'attachment',
 	properties: {
@@ -118,7 +127,8 @@ const attachment = {
 		text: { type: 'string', optional: true },
 		color: { type: 'string', optional: true },
 		ts: { type: 'date', optional: true },
-		attachments: { type: 'list', objectType: 'attachment' }
+		attachments: { type: 'list', objectType: 'attachment' },
+		fields: { type: 'list', objectType: 'attachmentFields' }
 	}
 };
 
@@ -181,6 +191,7 @@ const realm = new Realm({
 		usersSchema,
 		roomsSchema,
 		attachment,
+		attachmentFields,
 		messagesEditedBySchema,
 		permissionsSchema,
 		permissionsRolesSchema,
