@@ -63,10 +63,9 @@ const RocketChat = {
 
 			Meteor.ddp.on('connected', async() => {
 				Meteor.ddp.on('changed', (ddpMessage) => {
-					const server = { id: reduxStore.getState().server.server };
 					if (ddpMessage.collection === 'stream-room-messages') {
 						return realm.write(() => {
-							const message = this._buildMessage(ddpMessage.fields.args[0], server);
+							const message = this._buildMessage(ddpMessage.fields.args[0]);
 							realm.create('messages', message, true);
 						});
 					}
@@ -258,15 +257,15 @@ const RocketChat = {
 			return tmp;
 		});
 	},
-	_buildMessage(message, server) {
-		server = server || reduxStore.getState().server.server;
+	_buildMessage(message) {
+		const { server } = reduxStore.getState().server;
 		message.temp = false;
 		message._server = { id: server };
 		message.attachments = message.attachments || [];
 		if (message.urls) {
 			message.urls = RocketChat._parseUrls(message.urls);
 		}
-		message.starred = !!message.starred;
+		message.starred = message.starred && (Array.isArray(message.starred) ? message.starred.length > 0 : !!message.starred);
 		return message;
 	},
 	loadMessagesForRoom(rid, end, cb) {
@@ -279,8 +278,7 @@ const RocketChat = {
 					return reject(err);
 				}
 				if (data && data.messages.length) {
-					const { server } = reduxStore.getState().server;
-					const messages = data.messages.map(message => this._buildMessage(message, server));
+					const messages = data.messages.map(message => this._buildMessage(message));
 					realm.write(() => {
 						messages.forEach((message) => {
 							realm.create('messages', message, true);
