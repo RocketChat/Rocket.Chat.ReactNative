@@ -95,23 +95,54 @@ const usersSchema = {
 	}
 };
 
+const attachmentFields = {
+	name: 'attachmentFields',
+	properties: {
+		title: { type: 'string', optional: true },
+		value: { type: 'string', optional: true },
+		short: { type: 'bool', optional: true }
+	}
+};
+
 const attachment = {
 	name: 'attachment',
 	properties: {
 		description: { type: 'string', optional: true },
-
 		image_size: { type: 'int', optional: true },
-
 		image_type: { type: 'string', optional: true },
-
 		image_url: { type: 'string', optional: true },
+		audio_size: { type: 'int', optional: true },
+		audio_type: { type: 'string', optional: true },
+		audio_url: { type: 'string', optional: true },
+		video_size: { type: 'int', optional: true },
+		video_type: { type: 'string', optional: true },
+		video_url: { type: 'string', optional: true },
 		title: { type: 'string', optional: true },
-
 		title_link: { type: 'string', optional: true },
 		title_link_download: { type: 'bool', optional: true },
-		type: { type: 'string', optional: true }
+		type: { type: 'string', optional: true },
+		author_icon: { type: 'string', optional: true },
+		author_name: { type: 'string', optional: true },
+		author_link: { type: 'string', optional: true },
+		text: { type: 'string', optional: true },
+		color: { type: 'string', optional: true },
+		ts: { type: 'date', optional: true },
+		attachments: { type: 'list', objectType: 'attachment' },
+		fields: { type: 'list', objectType: 'attachmentFields' }
 	}
 };
+
+const url = {
+	name: 'url',
+	properties: {
+		_id: 'int',
+		url: { type: 'string', optional: true },
+		title: { type: 'string', optional: true },
+		description: { type: 'string', optional: true },
+		image: { type: 'string', optional: true }
+	}
+};
+
 
 const messagesEditedBySchema = {
 	name: 'messagesEditedBy',
@@ -128,6 +159,7 @@ const messagesSchema = {
 		_id: 'string',
 		_server: 'servers',
 		msg: { type: 'string', optional: true },
+		t: { type: 'string', optional: true },
 		rid: 'string',
 		ts: 'date',
 		u: 'users',
@@ -138,6 +170,7 @@ const messagesSchema = {
 		groupable: { type: 'bool', optional: true },
 		avatar: { type: 'string', optional: true },
 		attachments: { type: 'list', objectType: 'attachment' },
+		urls: { type: 'list', objectType: 'url' },
 		_updatedAt: { type: 'date', optional: true },
 		temp: { type: 'bool', optional: true },
 		pinned: { type: 'bool', optional: true },
@@ -158,9 +191,11 @@ const realm = new Realm({
 		usersSchema,
 		roomsSchema,
 		attachment,
+		attachmentFields,
 		messagesEditedBySchema,
 		permissionsSchema,
-		permissionsRolesSchema
+		permissionsRolesSchema,
+		url
 	],
 	deleteRealmIfMigrationNeeded: true
 });

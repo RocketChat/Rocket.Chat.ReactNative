@@ -1,4 +1,4 @@
-{
+module.exports = {
 	"parser": "babel-eslint",
 	"extends": "airbnb",
 	"parserOptions": {
@@ -120,4 +120,4 @@
 	"globals": {
 		"__DEV__": true
 	}
-}
+};
