@@ -14,6 +14,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
+import com.brentvatne.react.ReactVideoPackage;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,7 +36,8 @@ public class MainApplication extends Application implements ReactApplication {
         new RNFetchBlobPackage(),
         new ZeroconfReactPackage(),
         new RealmReactPackage(),
-        new ReactNativePushNotificationPackage()
+        new ReactNativePushNotificationPackage(),
+        new ReactVideoPackage()
       );
     }
   };

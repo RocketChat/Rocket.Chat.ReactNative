@@ -63,14 +63,9 @@ const RocketChat = {
 
 			Meteor.ddp.on('connected', async() => {
 				Meteor.ddp.on('changed', (ddpMessage) => {
-					const server = { id: reduxStore.getState().server.server };
 					if (ddpMessage.collection === 'stream-room-messages') {
 						return realm.write(() => {
-							const message = ddpMessage.fields.args[0];
-							message.temp = false;
-							message._server = server;
-							message.attachments = message.attachments || [];
-							message.starred = message.starred && message.starred.length > 0;
+							const message = this._buildMessage(ddpMessage.fields.args[0]);
 							realm.create('messages', message, true);
 						});
 					}
@@ -246,6 +241,35 @@ const RocketChat = {
 		return call('raix:push-setuser', pushId);
 	},
 
+	_parseUrls(urls) {
+		return urls.filter(url => url.meta && !url.ignoreParse).map((url, index) => {
+			const tmp = {};
+			const { meta } = url;
+			tmp._id = index;
+			tmp.title = meta.ogTitle || meta.twitterTitle || meta.title || meta.pageTitle || meta.oembedTitle;
+			tmp.description = meta.ogDescription || meta.twitterDescription || meta.description || meta.oembedAuthorName;
+			let decodedOgImage;
+			if (meta.ogImage) {
+				decodedOgImage = meta.ogImage.replace(/&amp;/g, '&');
+			}
+			tmp.image = decodedOgImage || meta.twitterImage || meta.oembedThumbnailUrl;
+			tmp.url = url.url;
+			return tmp;
+		});
+	},
+	_buildMessage(message) {
+		const { server } = reduxStore.getState().server;
+		message.temp = false;
+		message._server = { id: server };
+		message.attachments = message.attachments || [];
+		if (message.urls) {
+			message.urls = RocketChat._parseUrls(message.urls);
+		}
+		// loadHistory returns message.starred as object
+		// stream-room-messages returns message.starred as an array
+		message.starred = message.starred && (Array.isArray(message.starred) ? message.starred.length > 0 : !!message.starred);
+		return message;
+	},
 	loadMessagesForRoom(rid, end, cb) {
 		return new Promise((resolve, reject) => {
 			Meteor.call('loadHistory', rid, end, 20, (err, data) => {
@@ -256,13 +280,9 @@ const RocketChat = {
 					return reject(err);
 				}
 				if (data && data.messages.length) {
+					const messages = data.messages.map(message => this._buildMessage(message));
 					realm.write(() => {
-						data.messages.forEach((message) => {
-							message.temp = false;
-							message._server = { id: reduxStore.getState().server.server };
-							message.attachments = message.attachments || [];
-							// write('messages', message);
-							message.starred = !!message.starred;
+						messages.forEach((message) => {
 							realm.create('messages', message, true);
 						});
 					});
