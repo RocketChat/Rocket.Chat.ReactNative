@@ -1,14 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { emojify } from 'react-emojione';
-import Markdown from 'react-native-easy-markdown'; // eslint-disable-line
 import { connect } from 'react-redux';
 
 import { actionsShow } from '../../actions/messages';
-import Card from './Card';
+import Image from './Image';
 import User from './User';
 import Avatar from '../Avatar';
+import Audio from './Audio';
+import Video from './Video';
+import Markdown from './Markdown';
+import Url from './Url';
+import Reply from './Reply';
 
 const styles = StyleSheet.create({
 	content: {
@@ -43,6 +46,7 @@ export default class Message extends React.Component {
 		baseUrl: PropTypes.string.isRequired,
 		Message_TimeFormat: PropTypes.string.isRequired,
 		message: PropTypes.object.isRequired,
+		user: PropTypes.object.isRequired,
 		editing: PropTypes.bool,
 		actionsShow: PropTypes.func
 	}
@@ -53,28 +57,48 @@ export default class Message extends React.Component {
 	}
 
 	isDeleted() {
-		return !this.props.item.msg;
+		return this.props.item.t === 'rm';
+	}
+
+	isPinned() {
+		return this.props.item.t === 'message_pinned';
 	}
 
 	attachments() {
-		return this.props.item.attachments.length ? (
-			<Card
-				data={this.props.item.attachments[0]}
-			/>
-		) : null;
+		if (this.props.item.attachments.length === 0) {
+			return null;
+		}
+
+		const file = this.props.item.attachments[0];
+		const { baseUrl, user } = this.props;
+		if (file.image_type) {
+			return <Image file={file} baseUrl={baseUrl} user={user} />;
+		} else if (file.audio_type) {
+			return <Audio file={file} baseUrl={baseUrl} user={user} />;
+		} else if (file.video_type) {
+			return <Video file={file} baseUrl={baseUrl} user={user} />;
+		}
+
+		return <Reply attachment={file} timeFormat={this.props.Message_TimeFormat} />;
 	}
 
 	renderMessageContent() {
 		if (this.isDeleted()) {
 			return <Text style={styles.textInfo}>Message removed</Text>;
+		} else if (this.isPinned()) {
+			return <Text style={styles.textInfo}>Message pinned</Text>;
+		}
+		return <Markdown msg={this.props.item.msg} />;
+	}
+
+	renderUrl() {
+		if (this.props.item.urls.length === 0) {
+			return null;
 		}
 
-		const msg = emojify(this.props.item.msg, { output: 'unicode' });
-		return (
-			<Markdown>
-				{msg}
-			</Markdown>
-		);
+		return this.props.item.urls.map(url => (
+			<Url url={url} key={url._id} />
+		));
 	}
 
 	render() {
@@ -110,8 +134,9 @@ export default class Message extends React.Component {
 						Message_TimeFormat={this.props.Message_TimeFormat}
 						baseUrl={this.props.baseUrl}
 					/>
+					{this.renderMessageContent()}
 					{this.attachments()}
-					{this.renderMessageContent(item)}
+					{this.renderUrl()}
 				</View>
 			</TouchableOpacity>
 		);

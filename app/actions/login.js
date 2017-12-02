@@ -76,8 +76,7 @@ export function loginFailure(err) {
 export function setToken(user = {}) {
 	return {
 		type: types.LOGIN.SET_TOKEN,
-		token: user.token,
-		user
+		...user
 	};
 }
 
