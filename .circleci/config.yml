@@ -184,8 +184,9 @@ jobs:
       - run:
           name: Fastlane Tesflight Upload
           command: |
+            git log --pretty=format:'+ %cd %s' -n 14 --date=short | grep -v 'Merge\\|release\\|Update circle\\|Update build' > change.log"
             cd ios
-            fastlane pilot upload
+            fastlane pilot upload --changelog "$(cat ../change.log)"
 
 workflows:
   version: 2
