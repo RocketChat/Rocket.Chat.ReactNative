@@ -30,6 +30,11 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
+	author: {
+		fontWeight: 'bold',
+		marginHorizontal: 5,
+		flex: 1
+	},
 	time: {
 		fontSize: 10,
 		fontWeight: 'normal',
@@ -57,6 +62,14 @@ const onPress = (attachment) => {
 	}
 	Linking.openURL(attachment.title_link || attachment.author_link);
 };
+
+// Support <http://link|Text>
+const formatText = text =>
+	text.replace(
+		new RegExp('(?:<|<)((?:https|http):\\/\\/[^\\|]+)\\|(.+?)(?=>|>)(?:>|>)', 'gm'),
+		(match, url, title) => `[${ title }](${ url })`
+	);
+
 const Reply = ({ attachment, timeFormat }) => {
 	if (!attachment) {
 		return null;
@@ -68,7 +81,6 @@ const Reply = ({ attachment, timeFormat }) => {
 		}
 		return (
 			<Avatar
-				style={{ marginLeft: 5 }}
 				text={attachment.author_name}
 				size={16}
 				avatar={attachment.author_icon}
@@ -77,7 +89,7 @@ const Reply = ({ attachment, timeFormat }) => {
 	};
 
 	const renderAuthor = () => (
-		attachment.author_name ? <Text style={{ fontWeight: 'bold' }}>{attachment.author_name}</Text> : null
+		attachment.author_name ? <Text style={styles.author}>{attachment.author_name}</Text> : null
 	);
 
 	const renderTime = () => {
@@ -85,8 +97,21 @@ const Reply = ({ attachment, timeFormat }) => {
 		return time ? <Text style={styles.time}>{ time }</Text> : null;
 	};
 
+	const renderTitle = () => {
+		if (!(attachment.author_icon || attachment.author_name || attachment.ts)) {
+			return null;
+		}
+		return (
+			<View style={styles.authorContainer}>
+				{renderAvatar()}
+				{renderAuthor()}
+				{renderTime()}
+			</View>
+		);
+	};
+
 	const renderText = () => (
-		attachment.text ? <Markdown msg={attachment.text} /> : null
+		attachment.text ? <Markdown msg={formatText(attachment.text)} /> : null
 	);
 
 	const renderFields = () => {
@@ -113,11 +138,7 @@ const Reply = ({ attachment, timeFormat }) => {
 		>
 			<QuoteMark color={attachment.color} />
 			<View style={styles.attachmentContainer}>
-				<View style={styles.authorContainer}>
-					<Text>
-						{renderAvatar()} &nbsp; {renderAuthor()} {renderTime()}
-					</Text>
-				</View>
+				{renderTitle()}
 				{renderText()}
 				{renderFields()}
 				{attachment.attachments.map(attach => <Reply key={attach.text} attachment={attach} timeFormat={timeFormat} />)}
