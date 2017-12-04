@@ -93,6 +93,19 @@ const Reply = ({ attachment, timeFormat }) => {
 		return time ? <Text style={styles.time}>{ time }</Text> : null;
 	};
 
+	const renderTitle = () => {
+		if (!(attachment.author_icon || attachment.author_name || attachment.ts)) {
+			return null;
+		}
+		return (
+			<View style={styles.authorContainer}>
+				<Text>
+					{renderAvatar()} &nbsp; {renderAuthor()} {renderTime()}
+				</Text>
+			</View>
+		);
+	};
+
 	const renderText = () => (
 		attachment.text ? <Markdown msg={formatText(attachment.text)} /> : null
 	);
@@ -121,11 +134,7 @@ const Reply = ({ attachment, timeFormat }) => {
 		>
 			<QuoteMark color={attachment.color} />
 			<View style={styles.attachmentContainer}>
-				<View style={styles.authorContainer}>
-					<Text>
-						{renderAvatar()} &nbsp; {renderAuthor()} {renderTime()}
-					</Text>
-				</View>
+				{renderTitle()}
 				{renderText()}
 				{renderFields()}
 				{attachment.attachments.map(attach => <Reply key={attach.text} attachment={attach} timeFormat={timeFormat} />)}
