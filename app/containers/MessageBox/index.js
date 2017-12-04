@@ -1,47 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, StyleSheet, SafeAreaView, Platform } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { View, Text, TextInput, SafeAreaView, Platform } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
-import { userTyping } from '../actions/room';
-import RocketChat from '../lib/rocketchat';
-import { editRequest, editCancel, clearInput } from '../actions/messages';
-
-const styles = StyleSheet.create({
-	textBox: {
-		paddingTop: 1,
-		paddingHorizontal: 15,
-		borderTopWidth: 1,
-		borderTopColor: '#ccc',
-		backgroundColor: '#fff'
-	},
-	safeAreaView: {
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
-	textBoxInput: {
-		height: 40,
-		minHeight: 40,
-		maxHeight: 120,
-		flexGrow: 1,
-		paddingHorizontal: 10,
-		paddingTop: 12
-	},
-	actionButtons: {
-		color: '#aaa',
-		paddingTop: 10,
-		paddingBottom: 10,
-		paddingHorizontal: 8,
-		fontSize: 20,
-		alignSelf: 'flex-end'
-	},
-	editing: {
-		backgroundColor: '#fff5df'
-	}
-});
+import * as Animatable from 'react-native-animatable';
+import { userTyping } from '../../actions/room';
+import RocketChat from '../../lib/rocketchat';
+import { editRequest, editCancel, clearInput } from '../../actions/messages';
+import Actions from './Actions';
+import styles from './style';
 
 @connect(state => ({
+	room: state.room,
 	message: state.messages.message,
 	editing: state.messages.editing
 }), dispatch => ({
@@ -65,7 +36,9 @@ export default class MessageBox extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			height: 40
+			height: 40,
+			text: '',
+			open: false
 		};
 	}
 
@@ -81,6 +54,7 @@ export default class MessageBox extends React.Component {
 	submit(message) {
 		this.component.setNativeProps({ text: '' });
 		this.props.typing(false);
+		this.setState({ text: '' });
 		if (message.trim() === '') {
 			return;
 		}
@@ -131,40 +105,70 @@ export default class MessageBox extends React.Component {
 		this.props.editCancel();
 		this.component.setNativeProps({ text: '' });
 	}
-
-	renderLeftButton() {
+	openEmoji() {
+		this.setState({ emoji: !this.state.emoji });
+	}
+	get leftButtons() {
 		const { editing } = this.props;
 		if (editing) {
-			return <Icon style={styles.actionButtons} name='close' onPress={() => this.editCancel()} />;
+			return <Icon style={styles.actionButtons} name='ios-close' onPress={() => this.editCancel()} />;
 		}
-		return <Icon style={styles.actionButtons} name='add-circle-outline' onPress={this.addFile} />;
+		return !this.state.emoji ? <Icon style={styles.actionButtons} onPress={() => this.openEmoji()} name='md-happy' /> : <Icon onPress={() => this.openEmoji()} style={styles.actionButtons} name='md-sad' />;
 	}
-
+	get rightButtons() {
+		if (this.state.text.length) {
+			return (<Icon
+				style={[styles.actionButtons]}
+				name='md-send'
+				onPress={() => this.submit(this.component._lastNativeText)}
+			/>);
+		}
+		return (<Animatable.View style={{ flexGrow: 0 }} useNativeDriver ref={component => this.moreActionsIcon = component}><Icon
+			style={[styles.actionButtons, { color: this.state.open ? '#1D74F5' : '#2F343D' }]}
+			name='ios-add'
+			onPress={() => this.moreActionsClick()}
+		/>
+          </Animatable.View>);
+	}
+	get placeholder() {
+		return `Message to ${ this.props.room.rid }`.substring(0, 35);
+	}
+	onChange(text) {
+		this.setState({ text });
+		this.props.typing(text.length > 0);
+	}
+	moreActionsClick() {
+		const [close, open] = [{ rotate: '135deg' }, { rotate: '0deg' }];
+		this.moreActionsIcon.transition(this.state.open ? close : open, !this.state.open ? close : open, 300, 'ease-out');
+		this.setState({ open: !this.state.open });
+	}
+	onAction() {
+		this.setState({ open: false });
+	}
 	render() {
 		const { height } = this.state;
 		return (
-			<View style={[styles.textBox, (this.props.editing ? styles.editing : null)]}>
-				<SafeAreaView style={styles.safeAreaView}>
-					{this.renderLeftButton()}
+			<SafeAreaView style={[styles.textBox, (this.props.editing ? styles.editing : null)]}>
+				<Actions open={this.state.open} onAction={() => this.onAction()} />
+				<View style={styles.textArea}>
+					{this.leftButtons}
 					<TextInput
 						ref={component => this.component = component}
 						style={[styles.textBoxInput, { height }]}
 						returnKeyType='default'
 						blurOnSubmit={false}
-						placeholder='New message'
-						onChangeText={text => this.props.typing(text.length > 0)}
+						placeholder={this.placeholder}
+						onChangeText={text => this.onChange(text)}
 						underlineColorAndroid='transparent'
 						defaultValue=''
 						multiline
+						placeholderTextColor='#9EA2A8'
 						onContentSizeChange={e => this.updateSize(e.nativeEvent.contentSize.height)}
+						onFocus={() => this.setState({ open: false })}
 					/>
-					<Icon
-						style={styles.actionButtons}
-						name='send'
-						onPress={() => this.submit(this.component._lastNativeText)}
-					/>
-				</SafeAreaView>
-			</View>
+					{this.rightButtons}
+				</View>
+			</SafeAreaView>
 		);
 	}
 }
