@@ -1,6 +1,6 @@
-import { takeLatest, take, select } from 'redux-saga/effects';
+import { takeLatest, select } from 'redux-saga/effects';
 import { FOREGROUND, BACKGROUND, INACTIVE } from 'redux-enhancer-react-native-appstate';
-import { LOGIN } from '../actions/actionsTypes';
+
 import RocketChat from '../lib/rocketchat';
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
