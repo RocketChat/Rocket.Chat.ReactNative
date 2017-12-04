@@ -30,6 +30,11 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
+	author: {
+		fontWeight: 'bold',
+		marginHorizontal: 5,
+		flex: 1
+	},
 	time: {
 		fontSize: 10,
 		fontWeight: 'normal',
@@ -76,7 +81,6 @@ const Reply = ({ attachment, timeFormat }) => {
 		}
 		return (
 			<Avatar
-				style={{ marginLeft: 5 }}
 				text={attachment.author_name}
 				size={16}
 				avatar={attachment.author_icon}
@@ -85,7 +89,7 @@ const Reply = ({ attachment, timeFormat }) => {
 	};
 
 	const renderAuthor = () => (
-		attachment.author_name ? <Text style={{ fontWeight: 'bold' }}>{attachment.author_name}</Text> : null
+		attachment.author_name ? <Text style={styles.author}>{attachment.author_name}</Text> : null
 	);
 
 	const renderTime = () => {
@@ -99,9 +103,9 @@ const Reply = ({ attachment, timeFormat }) => {
 		}
 		return (
 			<View style={styles.authorContainer}>
-				<Text>
-					{renderAvatar()} &nbsp; {renderAuthor()} {renderTime()}
-				</Text>
+				{renderAvatar()}
+				{renderAuthor()}
+				{renderTime()}
 			</View>
 		);
 	};
