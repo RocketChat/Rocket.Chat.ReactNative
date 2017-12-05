@@ -520,6 +520,12 @@ const RocketChat = {
 	emitTyping(room, t = true) {
 		const { login } = reduxStore.getState();
 		return call('stream-notify-room', `${ room }/typing`, login.user.username, t);
+	},
+	setUserPresenceAway() {
+		return call('UserPresence:away');
+	},
+	setUserPresenceOnline() {
+		return call('UserPresence:online');
 	}
 };
 
