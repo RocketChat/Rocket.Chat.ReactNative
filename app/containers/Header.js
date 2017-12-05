@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 	},
 	appBar: {
 		flex: 1,
-		marginTop: 20
+		marginTop: Platform.OS === 'ios' ? 20 : 0
 	},
 	header: {
 		flexDirection: 'row',
@@ -51,8 +51,8 @@ const styles = StyleSheet.create({
 		left: TITLE_OFFSET,
 		right: TITLE_OFFSET,
 		position: 'absolute',
-		alignItems: Platform.OS === 'ios' ? 'center' : 'flex-start',
-		justifyContent: 'center',
+		alignItems: 'center',
+		justifyContent: Platform.OS === 'ios' ? 'center' : 'flex-start',
 		flexDirection: 'row'
 	},
 	status: {

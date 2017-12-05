@@ -12,7 +12,6 @@ import RocketChat from '../lib/rocketchat';
 import RoomItem from '../presentation/RoomItem';
 import Banner from '../containers/Banner';
 import { goRoom } from '../containers/routes/NavigationService';
-import Header from '../containers/Header';
 
 const styles = StyleSheet.create({
 	container: {
@@ -79,27 +78,6 @@ export default class RoomsListView extends React.Component {
 		// Message_DateFormat: PropTypes.string,
 		server: PropTypes.string
 	}
-
-	static navigationOptions = ({ navigation }) => {
-		if (Platform.OS !== 'ios') {
-			return;
-		}
-
-		const { params = {} } = navigation.state;
-		const headerRight = (
-			<Icon.Button
-				name='ios-create-outline'
-				color='blue'
-				size={26}
-				backgroundColor='transparent'
-				onPress={params.createChannel}
-			/>);
-
-		return {
-			header: <Header navigation={navigation} />,
-			headerRight
-		};
-	};
 
 	constructor(props) {
 		super(props);
