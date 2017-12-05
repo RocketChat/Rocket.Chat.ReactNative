@@ -7,6 +7,8 @@ import Modal from 'react-native-modal';
 
 import DrawerMenuButton from '../presentation/DrawerMenuButton';
 import Avatar from './Avatar';
+import RocketChat from '../lib/rocketchat';
+import { STATUS_COLORS } from '../constants/colors';
 
 const TITLE_OFFSET = Platform.OS === 'ios' ? 70 : 56;
 
@@ -54,7 +56,6 @@ const styles = StyleSheet.create({
 		flexDirection: 'row'
 	},
 	status: {
-		backgroundColor: 'red',
 		borderRadius: 4,
 		width: 8,
 		height: 8,
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
 	modal: {
 		width: width - 60,
 		height: width - 60,
-		backgroundColor: '#fff',
+		backgroundColor: '#F7F7F7',
 		borderRadius: 4,
 		flexDirection: 'column'
 	},
@@ -91,12 +92,6 @@ const styles = StyleSheet.create({
 		borderBottomColor: 'rgba(0, 0, 0, .3)'
 	}
 });
-const statusColors = {
-	online: 'green',
-	busy: 'red',
-	away: 'yellow',
-	offline: 'gray'
-};
 
 @connect(state => ({
 	user: state.login.user,
@@ -117,6 +112,7 @@ export default class extends React.PureComponent {
 	}
 
 	onPressModalButton(status) {
+		RocketChat.setUserPresenceDefaultStatus(status);
 		this.hideModal();
 	}
 
@@ -138,7 +134,7 @@ export default class extends React.PureComponent {
 		}
 		return (
 			<TouchableOpacity style={styles.titleContainer} onPress={() => this.showModal()}>
-				<View style={styles.status} />
+				<View style={[styles.status, { backgroundColor: STATUS_COLORS[this.props.user.status || 'offline'] }]} />
 				<Avatar
 					text={this.props.user.username}
 					size={24}
@@ -167,12 +163,23 @@ export default class extends React.PureComponent {
 		);
 	}
 
-	renderModalButton = (status, text) => (
-		<TouchableOpacity style={styles.modalButton} onPress={() => this.onPressModalButton(status)}>
-			<View style={[styles.status, { backgroundColor: statusColors[status] }]} />
-			<Text>{text || status.charAt(0).toUpperCase() + status.slice(1)}</Text>
-		</TouchableOpacity>
-	);
+	renderModalButton = (status, text) => {
+		const statusStyle = [styles.status, { backgroundColor: STATUS_COLORS[status] }];
+		const textStyle = { flex: 1, fontWeight: this.props.user.status === status ? 'bold' : 'normal' };
+		return (
+			<TouchableOpacity
+				style={styles.modalButton}
+				onPress={() => this.onPressModalButton(status)}
+			>
+				<View style={{ width: '47%', alignItems: 'flex-end' }}>
+					<View style={statusStyle} />
+				</View>
+				<Text style={textStyle}>
+					{text || status.charAt(0).toUpperCase() + status.slice(1)}
+				</Text>
+			</TouchableOpacity>
+		);
+	};
 
 	render() {
 		return (
