@@ -118,3 +118,10 @@ export function forgotPasswordFailure(err) {
 		err
 	};
 }
+
+export function setUser(action) {
+	return {
+		type: types.USER.SET,
+		...action
+	};
+}
