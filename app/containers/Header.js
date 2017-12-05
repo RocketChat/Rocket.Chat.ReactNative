@@ -1,9 +1,10 @@
 import React from 'react';
-import { Text, View, StyleSheet, Platform, SafeAreaView, TouchableOpacity, Dimensions } from 'react-native';
+import { Text, View, StyleSheet, Platform, TouchableOpacity, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
+import { SafeAreaView } from 'react-navigation';
 
 import DrawerMenuButton from '../presentation/DrawerMenuButton';
 import Avatar from './Avatar';
@@ -30,7 +31,7 @@ if (Platform.OS === 'ios') {
 	};
 }
 
-const appBarHeight = Platform.OS === 'ios' ? 64 : 56;
+const appBarHeight = Platform.OS === 'ios' ? 44 : 56;
 const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
 	container: {
@@ -39,8 +40,7 @@ const styles = StyleSheet.create({
 		...platformContainerStyles
 	},
 	appBar: {
-		flex: 1,
-		marginTop: Platform.OS === 'ios' ? 20 : 0
+		flex: 1
 	},
 	header: {
 		flexDirection: 'row',
@@ -183,10 +183,7 @@ export default class extends React.PureComponent {
 
 	render() {
 		return (
-			<SafeAreaView
-				style={styles.container}
-				forceInset={{ top: 'always', bottom: 'never' }}
-			>
+			<SafeAreaView style={styles.container}>
 				<View style={styles.appBar}>
 					<View style={styles.header}>
 						<View style={styles.left}>
