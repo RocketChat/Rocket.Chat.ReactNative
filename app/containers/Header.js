@@ -89,7 +89,8 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		backgroundColor: 'transparent',
 		borderBottomWidth: StyleSheet.hairlineWidth,
-		borderBottomColor: 'rgba(0, 0, 0, .3)'
+		borderBottomColor: 'rgba(0, 0, 0, .3)',
+		paddingHorizontal: 20
 	}
 });
 
@@ -171,9 +172,7 @@ export default class extends React.PureComponent {
 				style={styles.modalButton}
 				onPress={() => this.onPressModalButton(status)}
 			>
-				<View style={{ width: '47%', alignItems: 'flex-end' }}>
-					<View style={statusStyle} />
-				</View>
+				<View style={statusStyle} />
 				<Text style={textStyle}>
 					{text || status.charAt(0).toUpperCase() + status.slice(1)}
 				</Text>
