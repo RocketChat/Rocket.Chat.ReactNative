@@ -12,6 +12,7 @@ import RocketChat from '../lib/rocketchat';
 import RoomItem from '../presentation/RoomItem';
 import Banner from '../containers/Banner';
 import { goRoom } from '../containers/routes/NavigationService';
+import Header from '../containers/Header';
 
 const styles = StyleSheet.create({
 	container: {
@@ -94,7 +95,10 @@ export default class RoomsListView extends React.Component {
 				onPress={params.createChannel}
 			/>);
 
-		return { headerRight };
+		return {
+			header: <Header navigation={navigation} />,
+			headerRight
+		};
 	};
 
 	constructor(props) {
