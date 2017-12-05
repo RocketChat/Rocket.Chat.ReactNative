@@ -1,5 +1,6 @@
 import { put, call, takeLatest, take, select, race, fork, cancel } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
+import { FOREGROUND } from 'redux-enhancer-react-native-appstate';
 import * as types from '../actions/actionsTypes';
 import { roomsSuccess, roomsFailure } from '../actions/rooms';
 import { addUserTyping, removeUserTyping } from '../actions/room';
@@ -60,7 +61,6 @@ const watchRoomOpen = function* watchRoomOpen({ room }) {
 	if (open) {
 		return;
 	}
-
 	RocketChat.readMessages(room.rid);
 	subscriptions.push(RocketChat.subscribe('stream-room-messages', room.rid, false));
 	subscriptions.push(RocketChat.subscribe('stream-notify-room', `${ room.rid }/typing`, false));
@@ -89,9 +89,18 @@ const watchuserTyping = function* watchuserTyping({ status }) {
 	}
 };
 
+const updateRoom = function* updateRoom() {
+	const room = yield select(state => state.room);
+	if (!room || !room.rid) {
+		return;
+	}
+	yield put(messagesRequest({ rid: room.rid }));
+};
 const root = function* root() {
 	yield takeLatest(types.ROOM.USER_TYPING, watchuserTyping);
 	yield takeLatest(types.LOGIN.SUCCESS, watchRoomsRequest);
 	yield takeLatest(types.ROOM.OPEN, watchRoomOpen);
+	yield takeLatest(FOREGROUND, updateRoom);
+	yield takeLatest(FOREGROUND, watchRoomsRequest);
 };
 export default root;

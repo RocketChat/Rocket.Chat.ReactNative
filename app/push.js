@@ -1,6 +1,15 @@
 import PushNotification from 'react-native-push-notification';
 import { AsyncStorage } from 'react-native';
+import EJSON from 'ejson';
+import { goRoom } from './containers/routes/NavigationService';
 
+const handleNotification = (notification) => {
+	if (notification.usernInteraction) {
+		return;
+	}
+	const { rid, name } = EJSON.parse(notification.ejson);
+	return rid && name && goRoom({ rid, name });
+};
 PushNotification.configure({
 
 	// (optional) Called when Token is generated (iOS and Android)
@@ -9,9 +18,7 @@ PushNotification.configure({
 	},
 
 	// (required) Called when a remote or local notification is opened or received
-	onNotification(notification) {
-		console.log('NOTIFICATION:', notification);
-	},
+	onNotification: handleNotification,
 
 	// ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications)
 	senderID: '673693445664',
@@ -25,7 +32,7 @@ PushNotification.configure({
 
 	// Should the initial notification be popped automatically
 	// default: true
-	popInitialNotification: false,
+	popInitialNotification: true,
 
 	/**
      * (optional) default: true

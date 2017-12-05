@@ -137,6 +137,7 @@ jobs:
       - run:
           name: Install NPM modules
           command: |
+            rm -rf node_modules
             npm install
             npm install react-native
 
@@ -185,7 +186,7 @@ jobs:
           name: Fastlane Tesflight Upload
           command: |
             cd ios
-            fastlane pilot upload
+            fastlane pilot upload --changelog "$(sh ../.circleci/changelog.sh)"
 
 workflows:
   version: 2

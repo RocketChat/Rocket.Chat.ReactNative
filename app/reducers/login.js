@@ -11,6 +11,8 @@ const initialState = {
 
 export default function login(state = initialState, action) {
 	switch (action.type) {
+		case types.APP.INIT:
+			return initialState;
 		case types.LOGIN.REQUEST:
 			return {
 				...state,

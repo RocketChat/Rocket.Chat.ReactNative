@@ -7,6 +7,7 @@ import messages from './messages';
 import selectServer from './selectServer';
 import createChannel from './createChannel';
 import init from './init';
+import state from './state';
 
 const root = function* root() {
 	yield all([
@@ -17,8 +18,9 @@ const root = function* root() {
 		login(),
 		connect(),
 		messages(),
-		selectServer()
+		selectServer(),
+		state()
 	]);
 };
-// Consider using takeEvery
+
 export default root;

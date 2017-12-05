@@ -55,7 +55,8 @@ const typing = () => <Typing />;
 		server: state.server.server,
 		Site_Url: state.settings.Site_Url,
 		Message_TimeFormat: state.settings.Message_TimeFormat,
-		loading: state.messages.isFetching
+		loading: state.messages.isFetching,
+		user: state.login.user
 	}),
 	dispatch => ({
 		actions: bindActionCreators(actions, dispatch),
@@ -67,10 +68,10 @@ export default class RoomView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
 		openRoom: PropTypes.func.isRequired,
+		user: PropTypes.object.isRequired,
 		editCancel: PropTypes.func,
 		rid: PropTypes.string,
 		server: PropTypes.string,
-		sid: PropTypes.string,
 		name: PropTypes.string,
 		Site_Url: PropTypes.string,
 		Message_TimeFormat: PropTypes.string,
@@ -79,12 +80,12 @@ export default class RoomView extends React.Component {
 
 	constructor(props) {
 		super(props);
-
-		this.sid = props.navigation.state.params.room.sid;
 		this.rid =
 			props.rid ||
-			props.navigation.state.params.room.rid ||
-			realm.objectForPrimaryKey('subscriptions', this.sid).rid;
+			props.navigation.state.params.room.rid;
+		this.name = this.props.name ||
+		this.props.navigation.state.params.name ||
+		this.props.navigation.state.params.room.name;
 
 		this.data = realm
 			.objects('messages')
@@ -92,7 +93,6 @@ export default class RoomView extends React.Component {
 			.sorted('ts', true);
 		this.room = realm.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
-			slow: false,
 			dataSource: ds.cloneWithRows([]),
 			loaded: true,
 			joined: typeof props.rid === 'undefined'
@@ -101,20 +101,13 @@ export default class RoomView extends React.Component {
 
 	componentWillMount() {
 		this.props.navigation.setParams({
-			title:
-				this.props.name ||
-				this.props.navigation.state.params.room.name ||
-				realm.objectForPrimaryKey('subscriptions', this.sid).name
+			title: this.name
 		});
-		this.timer = setTimeout(() => this.setState({ slow: true }), 5000);
-		this.props.openRoom({ rid: this.rid });
+		this.props.openRoom({ rid: this.rid, name: this.name });
 		this.data.addListener(this.updateState);
 	}
 	componentDidMount() {
 		this.updateState();
-	}
-	componentDidUpdate() {
-		return !this.props.loading && clearTimeout(this.timer);
 	}
 	componentWillUnmount() {
 		clearTimeout(this.timer);
@@ -160,7 +153,7 @@ export default class RoomView extends React.Component {
 	};
 
 	renderBanner = () =>
-		(this.state.slow && this.props.loading ? (
+		(this.props.loading ? (
 			<View style={styles.bannerContainer}>
 				<Text style={styles.bannerText}>Loading new messages...</Text>
 			</View>
@@ -172,6 +165,7 @@ export default class RoomView extends React.Component {
 			item={item}
 			baseUrl={this.props.Site_Url}
 			Message_TimeFormat={this.props.Message_TimeFormat}
+			user={this.props.user}
 		/>
 	);
 
