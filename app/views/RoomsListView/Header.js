@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		alignItems: 'center',
 		justifyContent: Platform.OS === 'ios' ? 'center' : 'flex-start',
-		flexDirection: 'row'
+		flexDirection: 'row',
+		height: 44
 	},
 	status: {
 		borderRadius: 4,
@@ -37,7 +38,8 @@ const styles = StyleSheet.create({
 		marginRight: 10
 	},
 	title: {
-		fontWeight: 'normal'
+		fontWeight: '500',
+		color: '#292E35'
 	},
 	left: {
 		left: 0,
@@ -45,7 +47,8 @@ const styles = StyleSheet.create({
 	},
 	right: {
 		right: 0,
-		position: 'absolute'
+		position: 'absolute',
+		flexDirection: 'row'
 	},
 	modal: {
 		width: width - 60,
@@ -64,11 +67,17 @@ const styles = StyleSheet.create({
 		borderBottomColor: 'rgba(0, 0, 0, .3)',
 		paddingHorizontal: 20
 	},
+	headerButton: {
+		backgroundColor: 'transparent',
+		height: 44,
+		width: 44,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
 	serverImage: {
-		width: 32,
-		height: 32,
-		padding: 10,
-		marginLeft: 10
+		width: 24,
+		height: 24,
+		borderRadius: 4
 	}
 });
 
@@ -111,6 +120,7 @@ export default class extends React.PureComponent {
 		return (
 			<View style={styles.left}>
 				<TouchableOpacity
+					style={styles.headerButton}
 					onPress={() => this.props.navigation.navigate('DrawerOpen')}
 				>
 					<CachedImage
@@ -146,13 +156,30 @@ export default class extends React.PureComponent {
 		}
 		return (
 			<View style={styles.right}>
-				<Icon.Button
-					name='ios-create-outline'
-					color='blue'
-					size={26}
-					backgroundColor='transparent'
-					onPress={() => this.createChannel()}
-				/>
+				{Platform.OS !== 'ios' ?
+					<TouchableOpacity
+						style={styles.headerButton}
+						onPress={() => alert('search!')}
+					>
+						<Icon
+							name='md-search'
+							color='#292E35'
+							size={24}
+							backgroundColor='transparent'
+						/>
+					</TouchableOpacity> : null}
+				{Platform.OS === 'ios' ?
+					<TouchableOpacity
+						style={styles.headerButton}
+						onPress={() => this.createChannel()}
+					>
+						<Icon
+							name='ios-add'
+							color='#292E35'
+							size={24}
+							backgroundColor='transparent'
+						/>
+					</TouchableOpacity> : null}
 			</View>
 		);
 	}
