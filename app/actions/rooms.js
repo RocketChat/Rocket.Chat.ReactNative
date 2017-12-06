@@ -19,3 +19,23 @@ export function roomsFailure(err) {
 		err
 	};
 }
+
+export function searchRequest(searchText) {
+	return {
+		type: types.ROOMS.SEARCH_REQUEST,
+		searchText
+	};
+}
+
+export function searchSuccess() {
+	return {
+		type: types.ROOMS.SEARCH_SUCCESS
+	};
+}
+
+export function searchFailure(err) {
+	return {
+		type: types.ROOMS.SEARCH_FAILURE,
+		err
+	};
+}

@@ -9,6 +9,7 @@ import { CachedImage } from 'react-native-img-cache';
 import Avatar from '../../containers/Avatar';
 import RocketChat from '../../lib/rocketchat';
 import { STATUS_COLORS } from '../../constants/colors';
+import { searchRequest } from '../../actions/rooms';
 
 const TITLE_OFFSET = Platform.OS === 'ios' ? 70 : 56;
 
@@ -84,6 +85,8 @@ const styles = StyleSheet.create({
 @connect(state => ({
 	user: state.login.user,
 	baseUrl: state.settings.Site_Url
+}), dispatch => ({
+	searchRequest: searchText => dispatch(searchRequest(searchText))
 }))
 export default class extends React.Component {
 	static propTypes = {
@@ -96,13 +99,27 @@ export default class extends React.Component {
 		super(props);
 		this.state = {
 			isModalVisible: false,
-			searching: false
+			searching: false,
+			searchText: ''
 		};
 	}
 
 	onPressModalButton(status) {
 		RocketChat.setUserPresenceDefaultStatus(status);
 		this.hideModal();
+	}
+
+	onSearchChangeText(text) {
+		const searchText = text.trim();
+		this.setState({ searchText: text });
+		this.props.searchRequest(searchText);
+	}
+
+	onPressSearchButton() {
+		this.setState({ searching: true });
+		requestAnimationFrame(() => {
+			this.inputSearch.focus();
+		});
 	}
 
 	showModal() {
@@ -157,7 +174,7 @@ export default class extends React.Component {
 				{Platform.OS === 'android' ?
 					<TouchableOpacity
 						style={styles.headerButton}
-						onPress={() => this.setState({ searching: true })}
+						onPress={() => this.onPressSearchButton()}
 					>
 						<Icon
 							name='md-search'
@@ -231,10 +248,11 @@ export default class extends React.Component {
 					</TouchableOpacity>
 				</View>
 				<TextInput
+					ref={inputSearch => this.inputSearch = inputSearch}
 					underlineColorAndroid='transparent'
 					style={{ flex: 1, marginLeft: 44 }}
-					// value={this.state.searchText}
-					onChangeText={this.props.teste}
+					value={this.state.searchText}
+					onChangeText={text => this.onSearchChangeText(text)}
 					returnKeyType='search'
 					placeholder='Search'
 					clearButtonMode='while-editing'

@@ -66,8 +66,8 @@ const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 	server: state.server.server,
 	login: state.login,
 	Site_Url: state.settings.Site_Url,
-	canShowList: state.login.token || state.login.user.token
-	// Message_DateFormat: state.settings.Message_DateFormat
+	canShowList: state.login.token || state.login.user.token,
+	searchText: state.rooms.searchText
 }), dispatch => ({
 	login: () => dispatch(actions.login()),
 	connect: () => dispatch(server.connectRequest())
@@ -77,8 +77,8 @@ export default class RoomsListView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
 		Site_Url: PropTypes.string,
-		// Message_DateFormat: PropTypes.string,
-		server: PropTypes.string
+		server: PropTypes.string,
+		searchText: PropTypes.string
 	}
 
 	static navigationOptions = ({ navigation }) => ({
@@ -110,6 +110,8 @@ export default class RoomsListView extends React.Component {
 			this.data.removeListener(this.updateState);
 			this.data = realm.objects('subscriptions').filtered('_server.id = $0', props.server).sorted('roomUpdatedAt', true);
 			this.data.addListener(this.updateState);
+		} else if (props.searchText && this.props.searchText !== props.searchText) {
+			this.search(props.searchText);
 		}
 	}
 
@@ -117,7 +119,11 @@ export default class RoomsListView extends React.Component {
 		this.data.removeAllListeners();
 	}
 
-	onSearchChangeText = (text) => {
+	onSearchChangeText(text) {
+		this.search(text);
+	}
+
+	search(text) {
 		const searchText = text.trim();
 		this.setState({
 			searchText: text
@@ -228,7 +234,7 @@ export default class RoomsListView extends React.Component {
 				underlineColorAndroid='transparent'
 				style={styles.searchBox}
 				value={this.state.searchText}
-				onChangeText={this.onSearchChangeText}
+				onChangeText={text => this.onSearchChangeText(text)}
 				returnKeyType='search'
 				placeholder='Search'
 				clearButtonMode='while-editing'
