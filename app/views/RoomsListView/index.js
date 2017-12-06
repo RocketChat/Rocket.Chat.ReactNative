@@ -12,6 +12,8 @@ import RocketChat from '../../lib/rocketchat';
 import RoomItem from '../../presentation/RoomItem';
 import Banner from '../../containers/Banner';
 import { goRoom } from '../../containers/routes/NavigationService';
+import Header from '../../containers/Header';
+import RoomsListHeader from './Header';
 
 const styles = StyleSheet.create({
 	container: {
@@ -78,6 +80,10 @@ export default class RoomsListView extends React.Component {
 		// Message_DateFormat: PropTypes.string,
 		server: PropTypes.string
 	}
+
+	static navigationOptions = ({ navigation }) => ({
+		header: <Header subview={<RoomsListHeader navigation={navigation} />} />
+	});
 
 	constructor(props) {
 		super(props);
