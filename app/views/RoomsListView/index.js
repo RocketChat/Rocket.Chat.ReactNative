@@ -5,13 +5,13 @@ import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Platform, View, StyleSheet, TextInput, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
-import * as actions from '../actions';
-import * as server from '../actions/connect';
-import realm from '../lib/realm';
-import RocketChat from '../lib/rocketchat';
-import RoomItem from '../presentation/RoomItem';
-import Banner from '../containers/Banner';
-import { goRoom } from '../containers/routes/NavigationService';
+import * as actions from '../../actions';
+import * as server from '../../actions/connect';
+import realm from '../../lib/realm';
+import RocketChat from '../../lib/rocketchat';
+import RoomItem from '../../presentation/RoomItem';
+import Banner from '../../containers/Banner';
+import { goRoom } from '../../containers/routes/NavigationService';
 
 const styles = StyleSheet.create({
 	container: {

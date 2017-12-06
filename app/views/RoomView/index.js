@@ -5,16 +5,16 @@ import { ListView } from 'realm/react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import * as actions from '../actions';
-import { openRoom } from '../actions/room';
-import { editCancel } from '../actions/messages';
-import realm from '../lib/realm';
-import RocketChat from '../lib/rocketchat';
-import Message from '../containers/message';
-import MessageActions from '../containers/MessageActions';
-import MessageBox from '../containers/MessageBox';
-import Typing from '../containers/Typing';
-import KeyboardView from '../presentation/KeyboardView';
+import * as actions from '../../actions';
+import { openRoom } from '../../actions/room';
+import { editCancel } from '../../actions/messages';
+import realm from '../../lib/realm';
+import RocketChat from '../../lib/rocketchat';
+import Message from '../../containers/message';
+import MessageActions from '../../containers/MessageActions';
+import MessageBox from '../../containers/MessageBox';
+import Typing from '../../containers/Typing';
+import KeyboardView from '../../presentation/KeyboardView';
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id });
 const styles = StyleSheet.create({
