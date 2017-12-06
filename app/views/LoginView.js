@@ -62,22 +62,23 @@ class LoginView extends React.Component {
 	}
 
 	renderTOTP = () => {
-		if (!this.props.login.failure || this.props.login.error.error !== 'totp-required') {
-			return null;
+		if (/totp/ig.test(this.props.login.error.error)) {
+			return (
+				<TextInput
+					ref={ref => this.codeInput = ref}
+					style={styles.input_white}
+					onChangeText={code => this.setState({ code })}
+					keyboardType='numeric'
+					autoCorrect={false}
+					returnKeyType='done'
+					autoCapitalize='none'
+					onSubmitEditing={this.submit}
+					placeholder='Code'
+					underlineColorAndroid='transparent'
+				/>
+			);
 		}
-		return (
-			<TextInput
-				ref={ref => this.codeInput = ref}
-				style={styles.input_white}
-				onChangeText={code => this.setState({ code })}
-				keyboardType='numeric'
-				autoCorrect={false}
-				returnKeyType='done'
-				autoCapitalize='none'
-				onSubmitEditing={this.submit}
-				placeholder='Code'
-			/>
-		);
+		return null;
 	}
 
 	// {this.props.login.isFetching && <Text> LOGANDO</Text>}
