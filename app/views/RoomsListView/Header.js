@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, Platform, TouchableOpacity, Dimensions } from 'react-native';
+import { Text, View, StyleSheet, Platform, TouchableOpacity, Dimensions, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
 	user: state.login.user,
 	baseUrl: state.settings.Site_Url
 }))
-export default class extends React.PureComponent {
+export default class extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
 		user: PropTypes.object.isRequired,
@@ -95,7 +95,8 @@ export default class extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isModalVisible: false
+			isModalVisible: false,
+			searching: false
 		};
 	}
 
@@ -151,15 +152,12 @@ export default class extends React.PureComponent {
 	}
 
 	renderRight() {
-		if (Platform.OS !== 'ios') {
-			return;
-		}
 		return (
 			<View style={styles.right}>
-				{Platform.OS !== 'ios' ?
+				{Platform.OS === 'android' ?
 					<TouchableOpacity
 						style={styles.headerButton}
-						onPress={() => alert('search!')}
+						onPress={() => this.setState({ searching: true })}
 					>
 						<Icon
 							name='md-search'
@@ -200,12 +198,57 @@ export default class extends React.PureComponent {
 		);
 	};
 
-	render() {
+	renderHeader() {
+		if (this.state.searching) {
+			return null;
+		}
 		return (
 			<View style={styles.header}>
 				{this.renderLeft()}
 				{this.renderTitle()}
 				{this.renderRight()}
+			</View>
+		);
+	}
+
+	renderSearch() {
+		if (!this.state.searching) {
+			return null;
+		}
+		return (
+			<View style={styles.header}>
+				<View style={styles.left}>
+					<TouchableOpacity
+						style={styles.headerButton}
+						onPress={() => this.setState({ searching: false })}
+					>
+						<Icon
+							name='md-arrow-back'
+							color='#292E35'
+							size={24}
+							backgroundColor='transparent'
+						/>
+					</TouchableOpacity>
+				</View>
+				<TextInput
+					underlineColorAndroid='transparent'
+					style={{ flex: 1, marginLeft: 44 }}
+					// value={this.state.searchText}
+					onChangeText={this.props.teste}
+					returnKeyType='search'
+					placeholder='Search'
+					clearButtonMode='while-editing'
+					blurOnSubmit
+				/>
+			</View>
+		);
+	}
+
+	render() {
+		return (
+			<View style={styles.header}>
+				{this.renderHeader()}
+				{this.renderSearch()}
 				<Modal
 					isVisible={this.state.isModalVisible}
 					supportedOrientations={['portrait', 'landscape']}
