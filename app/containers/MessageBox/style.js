@@ -5,7 +5,11 @@ export default StyleSheet.create({
 	textBox: {
 		backgroundColor: '#fff',
 		flex: 0,
-		alignItems: 'stretch'
+		alignItems: 'center',
+		borderTopWidth: 1,
+		borderTopColor: '#D8D8D8',
+		paddingHorizontal: 15,
+		paddingVertical: 15
 	},
 	safeAreaView: {
 		flexDirection: 'row',
@@ -18,21 +22,24 @@ export default StyleSheet.create({
 		flexGrow: 0
 	},
 	textBoxInput: {
-		minHeight: 40,
+		paddingVertical: 0,
+		paddingHorizontal: 10,
+		textAlignVertical: 'top',
 		maxHeight: 120,
 		flexGrow: 1,
-		width: 1
+		width: 1,
+		paddingTop: 0,
+		paddingBottom: 0
 	},
 	editing: {
 		backgroundColor: '#fff5df'
 	},
 	actionButtons: {
 		color: '#2F343D',
-		fontSize: 25,
-		paddingHorizontal: 15,
-		width: 55,
-		flex: 0,
-		textAlign: 'center'
+		fontSize: 20,
+		textAlign: 'center',
+		paddingHorizontal: 5,
+		flex: 0
 	},
 	actionRow: {
 		flexDirection: 'row',
