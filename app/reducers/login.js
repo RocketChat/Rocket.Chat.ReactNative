@@ -107,6 +107,14 @@ export default function login(state = initialState, action) {
 				failure: true,
 				error: action.err
 			};
+		case types.USER.SET:
+			return {
+				...state,
+				user: {
+					...state.user,
+					...action
+				}
+			};
 		default:
 			return state;
 	}

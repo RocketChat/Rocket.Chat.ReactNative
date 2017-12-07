@@ -4,6 +4,7 @@ import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
 import Sidebar from '../../containers/Sidebar';
 import DrawerMenuButton from '../../presentation/DrawerMenuButton';
+import Header from '../../containers/Header';
 
 import RoomsListView from '../../views/RoomsListView';
 import RoomView from '../../views/RoomView';
@@ -20,7 +21,7 @@ const AuthRoutes = StackNavigator(
 			navigationOptions({ navigation }) {
 				return {
 					title: 'Rooms',
-					[drawerIconPosition]: <DrawerMenuButton navigation={navigation} />
+					header: <Header navigation={navigation} />
 				};
 			}
 		},

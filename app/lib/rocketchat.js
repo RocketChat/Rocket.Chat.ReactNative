@@ -9,6 +9,7 @@ import settingsType from '../constants/settings';
 import realm from './realm';
 import * as actions from '../actions';
 import { someoneTyping } from '../actions/room';
+import { setUser } from '../actions/login';
 import { disconnect, connectSuccess } from '../actions/connect';
 
 export { Accounts } from 'react-native-meteor';
@@ -93,6 +94,9 @@ const RocketChat = {
 								sub.roomUpdatedAt = data._updatedAt;
 							});
 						}
+					}
+					if (ddpMessage.collection === 'users') {
+						return reduxStore.dispatch(setUser({ status: ddpMessage.fields.status || ddpMessage.fields.statusDefault }));
 					}
 				});
 				RocketChat.getSettings();
@@ -432,6 +436,7 @@ const RocketChat = {
 		});
 		Meteor.subscribe('stream-notify-user', `${ login.user.id }/subscriptions-changed`, false);
 		Meteor.subscribe('stream-notify-user', `${ login.user.id }/rooms-changed`, false);
+		Meteor.subscribe('userData', null, false);
 		return data;
 	},
 	logout({ server }) {
@@ -526,6 +531,9 @@ const RocketChat = {
 	},
 	setUserPresenceOnline() {
 		return call('UserPresence:online');
+	},
+	setUserPresenceDefaultStatus(status) {
+		return call('UserPresence:setDefaultStatus', status);
 	}
 };
 

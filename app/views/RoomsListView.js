@@ -79,24 +79,6 @@ export default class RoomsListView extends React.Component {
 		server: PropTypes.string
 	}
 
-	static navigationOptions = ({ navigation }) => {
-		if (Platform.OS !== 'ios') {
-			return;
-		}
-
-		const { params = {} } = navigation.state;
-		const headerRight = (
-			<Icon.Button
-				name='ios-create-outline'
-				color='blue'
-				size={26}
-				backgroundColor='transparent'
-				onPress={params.createChannel}
-			/>);
-
-		return { headerRight };
-	};
-
 	constructor(props) {
 		super(props);
 
