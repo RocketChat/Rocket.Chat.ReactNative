@@ -17,40 +17,10 @@ import Typing from '../../containers/Typing';
 import KeyboardView from '../../presentation/KeyboardView';
 import Header from '../../containers/Header';
 import RoomsHeader from './Header';
+import styles from './styles';
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id });
-const styles = StyleSheet.create({
-	typing: { fontWeight: 'bold', paddingHorizontal: 15, height: 25 },
-	container: {
-		flex: 1,
-		backgroundColor: '#fff'
-	},
-	safeAreaView: {
-		flex: 1
-	},
-	list: {
-		flex: 1,
-		transform: [{ scaleY: -1 }]
-	},
-	separator: {
-		height: 1,
-		backgroundColor: '#CED0CE'
-	},
-	bannerContainer: {
-		backgroundColor: 'orange'
-	},
-	bannerText: {
-		margin: 5,
-		textAlign: 'center',
-		color: '#a00'
-	},
-	loadingMore: {
-		transform: [{ scaleY: -1 }],
-		textAlign: 'center',
-		padding: 5,
-		color: '#ccc'
-	}
-});
+
 const typing = () => <Typing />;
 @connect(
 	state => ({

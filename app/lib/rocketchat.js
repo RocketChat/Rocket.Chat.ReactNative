@@ -48,6 +48,22 @@ const RocketChat = {
 		}
 		throw new Error({ error: 'invalid server' });
 	},
+	_setUser(ddpMessage) {
+		let status;
+		if (!ddpMessage.fields) {
+			status = 'offline';
+		} else {
+			status = ddpMessage.fields.status || 'offline';
+		}
+
+		if (reduxStore.getState().login.user.id === ddpMessage.id) {
+			return reduxStore.dispatch(setUser({ status }));
+		}
+
+		const activeUser = {};
+		activeUser[ddpMessage.id] = status;
+		return reduxStore.dispatch(setActiveUser(activeUser));
+	},
 	connect(_url) {
 		return new Promise((resolve) => {
 			const url = `${ _url }/websocket`;
@@ -64,6 +80,16 @@ const RocketChat = {
 			});
 
 			Meteor.ddp.on('connected', async() => {
+				Meteor.ddp.on('added', (ddpMessage) => {
+					if (ddpMessage.collection === 'users') {
+						return RocketChat._setUser(ddpMessage);
+					}
+				});
+				Meteor.ddp.on('removed', (ddpMessage) => {
+					if (ddpMessage.collection === 'users') {
+						return RocketChat._setUser(ddpMessage);
+					}
+				});
 				Meteor.ddp.on('changed', (ddpMessage) => {
 					if (ddpMessage.collection === 'stream-room-messages') {
 						return realm.write(() => {
@@ -97,13 +123,7 @@ const RocketChat = {
 						}
 					}
 					if (ddpMessage.collection === 'users') {
-						console.warn(ddpMessage)
-						if (reduxStore.getState().login.user.id === ddpMessage.id) {
-							return reduxStore.dispatch(setUser({ status: ddpMessage.fields.status || ddpMessage.fields.statusDefault }));
-						}
-						const activeUser = {};
-						activeUser[ddpMessage.id] = ddpMessage.fields.status;
-						return reduxStore.dispatch(setActiveUser(...activeUser));
+						return RocketChat._setUser(ddpMessage);
 					}
 				});
 				RocketChat.getSettings();

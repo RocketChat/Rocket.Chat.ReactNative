@@ -6,7 +6,7 @@ export default (state = initialState, action) => {
 	switch (action.type) {
 		case types.ACTIVE_USERS.SET:
 			return {
-				...initialState,
+				...state,
 				...action.user
 			};
 		default:

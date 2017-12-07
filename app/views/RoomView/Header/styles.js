@@ -1,7 +1,6 @@
-import { StyleSheet, Platform, Dimensions } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 const TITLE_OFFSET = Platform.OS === 'ios' ? 70 : 56;
-const { width } = Dimensions.get('window');
 export default StyleSheet.create({
 	header: {
 		flexDirection: 'row',
@@ -23,8 +22,9 @@ export default StyleSheet.create({
 		height: 8,
 		marginRight: 10
 	},
-	avatar: {
-		marginRight: 10
+	userStatus: {
+		fontSize: 10,
+		color: '#888'
 	},
 	title: {
 		fontWeight: '500',
@@ -39,37 +39,11 @@ export default StyleSheet.create({
 		position: 'absolute',
 		flexDirection: 'row'
 	},
-	modal: {
-		width: width - 60,
-		height: width - 60,
-		backgroundColor: '#F7F7F7',
-		borderRadius: 4,
-		flexDirection: 'column'
-	},
-	modalButton: {
-		flex: 1,
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: 'transparent',
-		borderBottomWidth: StyleSheet.hairlineWidth,
-		borderBottomColor: 'rgba(0, 0, 0, .3)',
-		paddingHorizontal: 20
-	},
 	headerButton: {
 		backgroundColor: 'transparent',
 		height: 44,
 		width: 44,
 		alignItems: 'center',
 		justifyContent: 'center'
-	},
-	serverImage: {
-		width: 24,
-		height: 24,
-		borderRadius: 4
-	},
-	inputSearch: {
-		flex: 1,
-		marginLeft: 44
 	}
 });
