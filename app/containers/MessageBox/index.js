@@ -34,7 +34,7 @@ export default class MessageBox extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			height: 40,
+			height: 20,
 			text: ''
 		};
 	}
