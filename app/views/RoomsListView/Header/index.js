@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 import { CachedImage } from 'react-native-img-cache';
+import { HeaderBackButton } from 'react-navigation';
 
 import Avatar from '../../../containers/Avatar';
 import RocketChat from '../../../lib/rocketchat';
@@ -168,17 +169,7 @@ export default class extends React.Component {
 		return (
 			<View style={styles.header}>
 				<View style={styles.left}>
-					<TouchableOpacity
-						style={styles.headerButton}
-						onPress={() => this.onPressCancelSearchButton()}
-					>
-						<Icon
-							name='md-arrow-back'
-							color='#292E35'
-							size={24}
-							backgroundColor='transparent'
-						/>
-					</TouchableOpacity>
+					<HeaderBackButton onPress={() => this.onPressCancelSearchButton()} />
 				</View>
 				<TextInput
 					ref={inputSearch => this.inputSearch = inputSearch}
