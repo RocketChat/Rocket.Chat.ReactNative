@@ -110,7 +110,7 @@ export default class RoomsListView extends React.Component {
 			this.data.removeListener(this.updateState);
 			this.data = realm.objects('subscriptions').filtered('_server.id = $0', props.server).sorted('roomUpdatedAt', true);
 			this.data.addListener(this.updateState);
-		} else if (props.searchText && this.props.searchText !== props.searchText) {
+		} else if (this.props.searchText !== props.searchText) {
 			this.search(props.searchText);
 		}
 	}
@@ -120,14 +120,12 @@ export default class RoomsListView extends React.Component {
 	}
 
 	onSearchChangeText(text) {
+		this.setState({ searchText: text });
 		this.search(text);
 	}
 
 	search(text) {
 		const searchText = text.trim();
-		this.setState({
-			searchText: text
-		});
 		if (searchText === '') {
 			return this.setState({
 				dataSource: ds.cloneWithRows(this.data)

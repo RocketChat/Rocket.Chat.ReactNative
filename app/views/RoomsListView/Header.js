@@ -9,7 +9,7 @@ import { CachedImage } from 'react-native-img-cache';
 import Avatar from '../../containers/Avatar';
 import RocketChat from '../../lib/rocketchat';
 import { STATUS_COLORS } from '../../constants/colors';
-import { searchRequest } from '../../actions/rooms';
+import { setSearch } from '../../actions/rooms';
 
 const TITLE_OFFSET = Platform.OS === 'ios' ? 70 : 56;
 
@@ -79,6 +79,10 @@ const styles = StyleSheet.create({
 		width: 24,
 		height: 24,
 		borderRadius: 4
+	},
+	inputSearch: {
+		flex: 1,
+		marginLeft: 44
 	}
 });
 
@@ -86,21 +90,21 @@ const styles = StyleSheet.create({
 	user: state.login.user,
 	baseUrl: state.settings.Site_Url
 }), dispatch => ({
-	searchRequest: searchText => dispatch(searchRequest(searchText))
+	setSearch: searchText => dispatch(setSearch(searchText))
 }))
 export default class extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
 		user: PropTypes.object.isRequired,
-		baseUrl: PropTypes.string
+		baseUrl: PropTypes.string,
+		setSearch: PropTypes.func
 	}
 
 	constructor(props) {
 		super(props);
 		this.state = {
 			isModalVisible: false,
-			searching: false,
-			searchText: ''
+			searching: false
 		};
 	}
 
@@ -110,9 +114,12 @@ export default class extends React.Component {
 	}
 
 	onSearchChangeText(text) {
-		const searchText = text.trim();
-		this.setState({ searchText: text });
-		this.props.searchRequest(searchText);
+		this.props.setSearch(text.trim());
+	}
+
+	onPressCancelSearchButton() {
+		this.setState({ searching: false });
+		this.props.setSearch('');
 	}
 
 	onPressSearchButton() {
@@ -237,7 +244,7 @@ export default class extends React.Component {
 				<View style={styles.left}>
 					<TouchableOpacity
 						style={styles.headerButton}
-						onPress={() => this.setState({ searching: false })}
+						onPress={() => this.onPressCancelSearchButton()}
 					>
 						<Icon
 							name='md-arrow-back'
@@ -250,8 +257,7 @@ export default class extends React.Component {
 				<TextInput
 					ref={inputSearch => this.inputSearch = inputSearch}
 					underlineColorAndroid='transparent'
-					style={{ flex: 1, marginLeft: 44 }}
-					value={this.state.searchText}
+					style={styles.inputSearch}
 					onChangeText={text => this.onSearchChangeText(text)}
 					returnKeyType='search'
 					placeholder='Search'

@@ -25,7 +25,7 @@ export default function login(state = initialState, action) {
 				failure: true,
 				errorMessage: action.err
 			};
-		case types.ROOMS.SEARCH_REQUEST:
+		case types.ROOMS.SET_SEARCH:
 			return {
 				...state,
 				searchText: action.searchText
