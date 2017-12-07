@@ -65,12 +65,14 @@ export default class MessageBox extends React.Component {
 			icons.push(<MyIcon
 				style={[styles.actionButtons, { color: '#1D74F5' }]}
 				name='send'
+				key='sendIcon'
 				onPress={() => this.submit(this.component._lastNativeText)}
 			/>);
 		}
 		icons.push(<MyIcon
 			style={[styles.actionButtons, { color: '#2F343D', fontSize: 16 }]}
 			name='plus'
+			key='fileIcon'
 			onPress={() => this.addFile()}
 		/>);
 		return icons;
