@@ -13,12 +13,7 @@ const AuthRoutes = StackNavigator(
 			screen: RoomsListView
 		},
 		Room: {
-			screen: RoomView,
-			navigationOptions({ navigation }) {
-				return {
-					title: navigation.state.params.name || navigation.state.params.room.name || 'Room'
-				};
-			}
+			screen: RoomView
 		},
 		CreateChannel: {
 			screen: CreateChannelView,

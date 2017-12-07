@@ -15,6 +15,8 @@ import MessageActions from '../../containers/MessageActions';
 import MessageBox from '../../containers/MessageBox';
 import Typing from '../../containers/Typing';
 import KeyboardView from '../../presentation/KeyboardView';
+import Header from '../../containers/Header';
+import RoomsHeader from './Header';
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id });
 const styles = StyleSheet.create({
@@ -77,6 +79,10 @@ export default class RoomView extends React.Component {
 		Message_TimeFormat: PropTypes.string,
 		loading: PropTypes.bool
 	};
+
+	static navigationOptions = ({ navigation }) => ({
+		header: <Header subview={<RoomsHeader navigation={navigation} />} />
+	});
 
 	constructor(props) {
 		super(props);
