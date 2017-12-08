@@ -3,69 +3,26 @@ import { ListView } from 'realm/react-native';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Platform, View, StyleSheet, TextInput, SafeAreaView } from 'react-native';
+import { Platform, View, TextInput, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
-import * as actions from '../actions';
-import * as server from '../actions/connect';
-import realm from '../lib/realm';
-import RocketChat from '../lib/rocketchat';
-import RoomItem from '../presentation/RoomItem';
-import Banner from '../containers/Banner';
-import { goRoom } from '../containers/routes/NavigationService';
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		alignItems: 'stretch',
-		justifyContent: 'center'
-	},
-	separator: {
-		height: 1,
-		backgroundColor: '#E7E7E7'
-	},
-	list: {
-		width: '100%',
-		backgroundColor: '#FFFFFF'
-	},
-	emptyView: {
-		flexGrow: 1,
-		alignItems: 'stretch',
-		justifyContent: 'center'
-	},
-	emptyText: {
-		textAlign: 'center',
-		fontSize: 18,
-		color: '#ccc'
-	},
-	actionButtonIcon: {
-		fontSize: 20,
-		height: 22,
-		color: 'white'
-	},
-	searchBoxView: {
-		backgroundColor: '#eee'
-	},
-	searchBox: {
-		backgroundColor: '#fff',
-		margin: 5,
-		borderRadius: 5,
-		padding: 5,
-		paddingLeft: 10,
-		color: '#aaa'
-	},
-	safeAreaView: {
-		flex: 1,
-		backgroundColor: '#fff'
-	}
-});
+import * as actions from '../../actions';
+import * as server from '../../actions/connect';
+import realm from '../../lib/realm';
+import RocketChat from '../../lib/rocketchat';
+import RoomItem from '../../presentation/RoomItem';
+import Banner from '../../containers/Banner';
+import { goRoom } from '../../containers/routes/NavigationService';
+import Header from '../../containers/Header';
+import RoomsListHeader from './Header';
+import styles from './styles';
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 @connect(state => ({
 	server: state.server.server,
 	login: state.login,
 	Site_Url: state.settings.Site_Url,
-	canShowList: state.login.token || state.login.user.token
-	// Message_DateFormat: state.settings.Message_DateFormat
+	canShowList: state.login.token || state.login.user.token,
+	searchText: state.rooms.searchText
 }), dispatch => ({
 	login: () => dispatch(actions.login()),
 	connect: () => dispatch(server.connectRequest())
@@ -75,9 +32,13 @@ export default class RoomsListView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
 		Site_Url: PropTypes.string,
-		// Message_DateFormat: PropTypes.string,
-		server: PropTypes.string
+		server: PropTypes.string,
+		searchText: PropTypes.string
 	}
+
+	static navigationOptions = ({ navigation }) => ({
+		header: <Header subview={<RoomsListHeader navigation={navigation} />} />
+	});
 
 	constructor(props) {
 		super(props);
@@ -104,6 +65,8 @@ export default class RoomsListView extends React.Component {
 			this.data.removeListener(this.updateState);
 			this.data = realm.objects('subscriptions').filtered('_server.id = $0', props.server).sorted('roomUpdatedAt', true);
 			this.data.addListener(this.updateState);
+		} else if (this.props.searchText !== props.searchText) {
+			this.search(props.searchText);
 		}
 	}
 
@@ -111,11 +74,13 @@ export default class RoomsListView extends React.Component {
 		this.data.removeAllListeners();
 	}
 
-	onSearchChangeText = (text) => {
+	onSearchChangeText(text) {
+		this.setState({ searchText: text });
+		this.search(text);
+	}
+
+	search(text) {
 		const searchText = text.trim();
-		this.setState({
-			searchText: text
-		});
 		if (searchText === '') {
 			return this.setState({
 				dataSource: ds.cloneWithRows(this.data)
@@ -222,7 +187,7 @@ export default class RoomsListView extends React.Component {
 				underlineColorAndroid='transparent'
 				style={styles.searchBox}
 				value={this.state.searchText}
-				onChangeText={this.onSearchChangeText}
+				onChangeText={text => this.onSearchChangeText(text)}
 				returnKeyType='search'
 				placeholder='Search'
 				clearButtonMode='while-editing'
@@ -251,8 +216,8 @@ export default class RoomsListView extends React.Component {
 			dataSource={this.state.dataSource}
 			style={styles.list}
 			renderRow={this.renderItem}
-			renderHeader={this.renderSearchBar}
-			contentOffset={{ x: 0, y: 38 }}
+			renderHeader={Platform.OS === 'ios' ? this.renderSearchBar : null}
+			contentOffset={Platform.OS === 'ios' ? { x: 0, y: 38 } : {}}
 			enableEmptySections
 			keyboardShouldPersistTaps='always'
 		/>

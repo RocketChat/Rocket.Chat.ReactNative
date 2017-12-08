@@ -11,6 +11,7 @@ import * as actions from '../actions';
 import { someoneTyping } from '../actions/room';
 import { setUser } from '../actions/login';
 import { disconnect, connectSuccess } from '../actions/connect';
+import { requestActiveUser } from '../actions/activeUsers';
 
 export { Accounts } from 'react-native-meteor';
 
@@ -47,6 +48,23 @@ const RocketChat = {
 		}
 		throw new Error({ error: 'invalid server' });
 	},
+	_setUser(ddpMessage) {
+		let status;
+		if (!ddpMessage.fields) {
+			status = 'offline';
+		} else {
+			status = ddpMessage.fields.status || 'offline';
+		}
+
+		const { user } = reduxStore.getState().login;
+		if (user && user.id === ddpMessage.id) {
+			return reduxStore.dispatch(setUser({ status }));
+		}
+
+		const activeUser = {};
+		activeUser[ddpMessage.id] = status;
+		return reduxStore.dispatch(requestActiveUser(activeUser));
+	},
 	connect(_url) {
 		return new Promise((resolve) => {
 			const url = `${ _url }/websocket`;
@@ -63,6 +81,16 @@ const RocketChat = {
 			});
 
 			Meteor.ddp.on('connected', async() => {
+				Meteor.ddp.on('added', (ddpMessage) => {
+					if (ddpMessage.collection === 'users') {
+						return RocketChat._setUser(ddpMessage);
+					}
+				});
+				Meteor.ddp.on('removed', (ddpMessage) => {
+					if (ddpMessage.collection === 'users') {
+						return RocketChat._setUser(ddpMessage);
+					}
+				});
 				Meteor.ddp.on('changed', (ddpMessage) => {
 					if (ddpMessage.collection === 'stream-room-messages') {
 						return realm.write(() => {
@@ -96,7 +124,7 @@ const RocketChat = {
 						}
 					}
 					if (ddpMessage.collection === 'users') {
-						return reduxStore.dispatch(setUser({ status: ddpMessage.fields.status || ddpMessage.fields.statusDefault }));
+						return RocketChat._setUser(ddpMessage);
 					}
 				});
 				RocketChat.getSettings();
@@ -436,7 +464,7 @@ const RocketChat = {
 		});
 		Meteor.subscribe('stream-notify-user', `${ login.user.id }/subscriptions-changed`, false);
 		Meteor.subscribe('stream-notify-user', `${ login.user.id }/rooms-changed`, false);
-		Meteor.subscribe('userData', null, false);
+		Meteor.subscribe('activeUsers', null, false);
 		return data;
 	},
 	logout({ server }) {
