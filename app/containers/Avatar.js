@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text, View } from 'react-native';
 import { CachedImage } from 'react-native-img-cache';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import avatarInitialsAndColor from '../utils/avatarInitialsAndColor';
 
 const styles = StyleSheet.create({
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
 class Avatar extends React.PureComponent {
 	render() {
 		const {
-			text = '', size = 25, baseUrl, borderRadius = 4, style, avatar
+			text = '', size = 25, baseUrl, borderRadius = 4, style, avatar, type = 'd'
 		} = this.props;
 		const { initials, color } = avatarInitialsAndColor(`${ text }`);
 
@@ -42,19 +43,32 @@ class Avatar extends React.PureComponent {
 			borderRadius
 		};
 
-		const uri = avatar || `${ baseUrl }/avatar/${ text }`;
-		const image = (avatar || baseUrl) && (
-			<CachedImage
-				style={[styles.avatar, avatarStyle]}
-				source={{ uri }}
-			/>
-		);
+		if (type === 'd') {
+			const uri = avatar || `${ baseUrl }/avatar/${ text }`;
+			const image = (avatar || baseUrl) && (
+				<CachedImage
+					style={[styles.avatar, avatarStyle]}
+					source={{ uri }}
+				/>
+			);
+			return (
+				<View style={[styles.iconContainer, iconContainerStyle, style]}>
+					<Text style={[styles.avatarInitials, avatarInitialsStyle]}>{initials}</Text>
+					{image}
+				</View>);
+		}
+
+		const icon = {
+			c: 'pound',
+			p: 'lock',
+			l: 'account'
+		}[type];
 
 		return (
 			<View style={[styles.iconContainer, iconContainerStyle, style]}>
-				<Text style={[styles.avatarInitials, avatarInitialsStyle]}>{initials}</Text>
-				{image}
-			</View>);
+				<MaterialCommunityIcons name={icon} style={[styles.avatarInitials, avatarInitialsStyle]} />
+			</View>
+		);
 	}
 }
 
@@ -64,6 +78,7 @@ Avatar.propTypes = {
 	text: PropTypes.string.isRequired,
 	avatar: PropTypes.string,
 	size: PropTypes.number,
-	borderRadius: PropTypes.number
+	borderRadius: PropTypes.number,
+	type: PropTypes.string
 };
 export default Avatar;

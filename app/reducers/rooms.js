@@ -2,7 +2,8 @@ import * as types from '../actions/actionsTypes';
 
 const initialState = {
 	isFetching: false,
-	failure: false
+	failure: false,
+	searchText: ''
 };
 
 export default function login(state = initialState, action) {
@@ -24,8 +25,11 @@ export default function login(state = initialState, action) {
 				failure: true,
 				errorMessage: action.err
 			};
-		// case types.LOGOUT:
-		// 	return initialState;
+		case types.ROOMS.SET_SEARCH:
+			return {
+				...state,
+				searchText: action.searchText
+			};
 		default:
 			return state;
 	}
