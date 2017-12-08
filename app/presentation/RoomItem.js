@@ -78,8 +78,7 @@ export default class RoomItem extends React.PureComponent {
 		unread: PropTypes.number,
 		userMentions: PropTypes.number,
 		baseUrl: PropTypes.string,
-		onPress: PropTypes.func,
-		dateFormat: PropTypes.string
+		onPress: PropTypes.func
 	}
 
 	get icon() {
@@ -111,7 +110,7 @@ export default class RoomItem extends React.PureComponent {
 	}
 
 	formatDate = date => moment(date).calendar(null, {
-		lastDay: '[Yesterday]',
+		lastDay: 'dddd',
 		sameDay: 'HH:mm',
 		lastWeek: 'dddd',
 		sameElse: 'MMM D'

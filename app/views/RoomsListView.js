@@ -242,7 +242,6 @@ export default class RoomsListView extends React.Component {
 			key={item._id}
 			type={item.t}
 			baseUrl={this.props.Site_Url}
-			dateFormat='MM-DD-YYYY HH:mm:ss'
 			onPress={() => this._onPressItem(item)}
 		/>
 	)
