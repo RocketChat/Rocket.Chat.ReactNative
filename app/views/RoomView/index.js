@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, StyleSheet, Button, SafeAreaView } from 'react-native';
+import { Text, View, Button, SafeAreaView } from 'react-native';
 import { ListView } from 'realm/react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
