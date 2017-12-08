@@ -56,7 +56,8 @@ const RocketChat = {
 			status = ddpMessage.fields.status || 'offline';
 		}
 
-		if (reduxStore.getState().login.user.id === ddpMessage.id) {
+		const { user } = reduxStore.getState().login;
+		if (user && user.id === ddpMessage.id) {
 			return reduxStore.dispatch(setUser({ status }));
 		}
 
