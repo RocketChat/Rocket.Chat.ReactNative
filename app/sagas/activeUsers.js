@@ -11,7 +11,7 @@ const watchActiveUsers = function* handleInput() {
 			status: take(types.ACTIVE_USERS.REQUEST),
 			timeout: delay(3000)
 		});
-		if (timeout) {
+		if (timeout && Object.keys(obj).length > 0) {
 			yield put(setActiveUser(obj));
 			obj = {};
 		}
