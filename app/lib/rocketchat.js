@@ -463,7 +463,6 @@ const RocketChat = {
 		});
 		Meteor.subscribe('stream-notify-user', `${ login.user.id }/subscriptions-changed`, false);
 		Meteor.subscribe('stream-notify-user', `${ login.user.id }/rooms-changed`, false);
-		// Meteor.subscribe('userData', null, false);
 		Meteor.subscribe('activeUsers', null, false);
 		return data;
 	},
