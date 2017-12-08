@@ -110,6 +110,13 @@ export default class RoomItem extends React.PureComponent {
 		);
 	}
 
+	formatDate = date => moment(date).calendar(null, {
+		lastDay: '[Yesterday]',
+		sameDay: 'HH:mm',
+		lastWeek: 'dddd',
+		sameElse: 'MMM D'
+	})
+
 	renderNumber = (unread, userMentions) => {
 		if (!unread || unread <= 0) {
 			return;
@@ -140,7 +147,7 @@ export default class RoomItem extends React.PureComponent {
 				{this.icon}
 				<View style={styles.roomNameView}>
 					<Text style={[styles.roomName, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
-					{_updatedAt ? <Text style={styles.update} ellipsizeMode='tail' numberOfLines={1}>{ moment(_updatedAt).format(this.props.dateFormat) }</Text> : null}
+					{_updatedAt ? <Text style={styles.update} ellipsizeMode='tail' numberOfLines={1}>{ this.formatDate(_updatedAt) }</Text> : null}
 				</View>
 				{this.renderNumber(unread, userMentions)}
 			</TouchableOpacity>
