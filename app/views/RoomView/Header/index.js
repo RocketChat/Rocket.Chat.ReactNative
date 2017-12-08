@@ -57,11 +57,7 @@ export default class extends React.Component {
 
 	isDirect = () => this.state.room && this.state.room.t === 'd';
 
-	renderLeft() {
-		return (
-			<HeaderBackButton onPress={() => this.props.navigation.goBack(null)} tintColor='#292E35' />
-		);
-	}
+	renderLeft = () => <HeaderBackButton onPress={() => this.props.navigation.goBack(null)} tintColor='#292E35' />;
 
 	renderTitle() {
 		if (!this.state.roomName) {
@@ -78,6 +74,7 @@ export default class extends React.Component {
 					size={24}
 					style={{ marginRight: 5 }}
 					baseUrl={this.props.baseUrl}
+					type={this.state.room.t}
 				/>
 				<View style={{ flexDirection: 'column' }}>
 					<Text style={styles.title}>{this.state.roomName}</Text>
