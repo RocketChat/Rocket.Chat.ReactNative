@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { StyleSheet, Text, View } from 'react-native';
 import { CachedImage } from 'react-native-img-cache';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -18,6 +19,10 @@ const styles = StyleSheet.create({
 		color: '#ffffff'
 	}
 });
+
+@connect(state => ({
+	baseUrl: state.settings.Site_Url
+}))
 
 class Avatar extends React.PureComponent {
 	render() {
