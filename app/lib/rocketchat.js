@@ -11,7 +11,7 @@ import * as actions from '../actions';
 import { someoneTyping } from '../actions/room';
 import { setUser } from '../actions/login';
 import { disconnect, connectSuccess } from '../actions/connect';
-import { setActiveUser } from '../actions/activeUsers';
+import { requestActiveUser } from '../actions/activeUsers';
 
 export { Accounts } from 'react-native-meteor';
 
@@ -62,7 +62,7 @@ const RocketChat = {
 
 		const activeUser = {};
 		activeUser[ddpMessage.id] = status;
-		return reduxStore.dispatch(setActiveUser(activeUser));
+		return reduxStore.dispatch(requestActiveUser(activeUser));
 	},
 	connect(_url) {
 		return new Promise((resolve) => {
