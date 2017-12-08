@@ -8,6 +8,7 @@ import selectServer from './selectServer';
 import createChannel from './createChannel';
 import init from './init';
 import state from './state';
+import activeUsers from './activeUsers';
 
 const root = function* root() {
 	yield all([
@@ -19,7 +20,8 @@ const root = function* root() {
 		connect(),
 		messages(),
 		selectServer(),
-		state()
+		state(),
+		activeUsers()
 	]);
 };
 

@@ -13,30 +13,29 @@ import RoomItem from '../app/presentation/RoomItem';
 import renderer from 'react-test-renderer';
 
 const date = new Date(2017, 10, 10, 10);
-const dateFormat = 'MM-DD-YYYY HH:mm:ss';
 
 jest.mock('react-native-img-cache', () => { return { CachedImage: 'View' } });
 
 it('renders correctly', () => {
-	expect(renderer.create(<Provider store={store}><View><RoomItem type="d" dateFormat={dateFormat} _updatedAt={date} name="name" /></View></Provider>).toJSON()).toMatchSnapshot();
+	expect(renderer.create(<Provider store={store}><View><RoomItem type="d" _updatedAt={date} name="name" /></View></Provider>).toJSON()).toMatchSnapshot();
 });
 
 it('render unread', () => {
-	expect(renderer.create(<Provider store={store}><View><RoomItem type="d" dateFormat={dateFormat} _updatedAt={date} name="name" unread={1} /></View></Provider>).toJSON()).toMatchSnapshot();
+	expect(renderer.create(<Provider store={store}><View><RoomItem type="d" _updatedAt={date} name="name" unread={1} /></View></Provider>).toJSON()).toMatchSnapshot();
 });
 
 it('render unread +999', () => {
-	expect(renderer.create(<Provider store={store}><View><RoomItem type="d" dateFormat={dateFormat} _updatedAt={date} name="name" unread={1000} /></View></Provider>).toJSON()).toMatchSnapshot();
+	expect(renderer.create(<Provider store={store}><View><RoomItem type="d" _updatedAt={date} name="name" unread={1000} /></View></Provider>).toJSON()).toMatchSnapshot();
 });
 
 it('render no icon', () => {
-	expect(renderer.create(<Provider store={store}><View><RoomItem type="X" dateFormat={dateFormat} _updatedAt={date} name="name" /></View></Provider>).toJSON()).toMatchSnapshot();
+	expect(renderer.create(<Provider store={store}><View><RoomItem type="X" _updatedAt={date} name="name" /></View></Provider>).toJSON()).toMatchSnapshot();
 });
 
 it('render private group', () => {
-	expect(renderer.create(<Provider store={store}><View><RoomItem type="g" dateFormat={dateFormat} _updatedAt={date} name="private-group" /> </View></Provider>).toJSON()).toMatchSnapshot();
+	expect(renderer.create(<Provider store={store}><View><RoomItem type="g" _updatedAt={date} name="private-group" /> </View></Provider>).toJSON()).toMatchSnapshot();
 });
 
 it('render channel', () => {
-	expect(renderer.create(<Provider store={store}><View><RoomItem type="c" dateFormat={dateFormat} _updatedAt={date} name="general" /></View></Provider>).toJSON()).toMatchSnapshot();
+	expect(renderer.create(<Provider store={store}><View><RoomItem type="c" _updatedAt={date} name="general" /></View></Provider>).toJSON()).toMatchSnapshot();
 });

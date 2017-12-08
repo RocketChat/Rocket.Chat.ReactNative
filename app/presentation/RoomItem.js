@@ -1,10 +1,8 @@
 import React from 'react';
 import moment from 'moment';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Avatar from '../containers/Avatar';
-import avatarInitialsAndColor from '../utils/avatarInitialsAndColor';
 
 const styles = StyleSheet.create({
 	container: {
@@ -49,22 +47,6 @@ const styles = StyleSheet.create({
 		fontSize: 10,
 		height: 10,
 		color: '#888'
-	},
-	iconContainer: {
-		height: 40,
-		width: 40,
-		borderRadius: 4,
-		overflow: 'hidden',
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	icon: {
-		fontSize: 20,
-		color: '#fff'
-	},
-	avatarInitials: {
-		fontSize: 20,
-		color: '#ffffff'
 	}
 });
 
@@ -78,37 +60,20 @@ export default class RoomItem extends React.PureComponent {
 		unread: PropTypes.number,
 		userMentions: PropTypes.number,
 		baseUrl: PropTypes.string,
-		onPress: PropTypes.func,
-		dateFormat: PropTypes.string
+		onPress: PropTypes.func
 	}
 
 	get icon() {
 		const { type, name, baseUrl } = this.props;
-
-		const icon = {
-			d: 'at',
-			c: 'pound',
-			p: 'lock',
-			l: 'account'
-		}[type];
-
-		if (!icon) {
-			return null;
-		}
-
-		if (type === 'd') {
-			return (
-				<Avatar text={name} baseUrl={baseUrl} size={40} />
-			);
-		}
-		const { color } = avatarInitialsAndColor(name);
-
-		return (
-			<View style={[styles.iconContainer, { backgroundColor: color }]}>
-				<MaterialCommunityIcons name={icon} style={styles.icon} />
-			</View>
-		);
+		return <Avatar text={name} baseUrl={baseUrl} size={40} type={type} />;
 	}
+
+	formatDate = date => moment(date).calendar(null, {
+		lastDay: 'dddd',
+		sameDay: 'HH:mm',
+		lastWeek: 'dddd',
+		sameElse: 'MMM D'
+	})
 
 	renderNumber = (unread, userMentions) => {
 		if (!unread || unread <= 0) {
@@ -140,7 +105,7 @@ export default class RoomItem extends React.PureComponent {
 				{this.icon}
 				<View style={styles.roomNameView}>
 					<Text style={[styles.roomName, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
-					{_updatedAt ? <Text style={styles.update} ellipsizeMode='tail' numberOfLines={1}>{ moment(_updatedAt).format(this.props.dateFormat) }</Text> : null}
+					{_updatedAt ? <Text style={styles.update} ellipsizeMode='tail' numberOfLines={1}>{ this.formatDate(_updatedAt) }</Text> : null}
 				</View>
 				{this.renderNumber(unread, userMentions)}
 			</TouchableOpacity>

@@ -1,54 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, StyleSheet, Button, SafeAreaView } from 'react-native';
+import { Text, View, Button, SafeAreaView } from 'react-native';
 import { ListView } from 'realm/react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import * as actions from '../actions';
-import { openRoom } from '../actions/room';
-import { editCancel } from '../actions/messages';
-import realm from '../lib/realm';
-import RocketChat from '../lib/rocketchat';
-import Message from '../containers/message';
-import MessageActions from '../containers/MessageActions';
-import MessageBox from '../containers/MessageBox';
-import Typing from '../containers/Typing';
-import KeyboardView from '../presentation/KeyboardView';
+import * as actions from '../../actions';
+import { openRoom } from '../../actions/room';
+import { editCancel } from '../../actions/messages';
+import realm from '../../lib/realm';
+import RocketChat from '../../lib/rocketchat';
+import Message from '../../containers/message';
+import MessageActions from '../../containers/MessageActions';
+import MessageBox from '../../containers/MessageBox';
+import Typing from '../../containers/Typing';
+import KeyboardView from '../../presentation/KeyboardView';
+import Header from '../../containers/Header';
+import RoomsHeader from './Header';
+import styles from './styles';
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id });
-const styles = StyleSheet.create({
-	typing: { fontWeight: 'bold', paddingHorizontal: 15, height: 25 },
-	container: {
-		flex: 1,
-		backgroundColor: '#fff'
-	},
-	safeAreaView: {
-		flex: 1
-	},
-	list: {
-		flex: 1,
-		transform: [{ scaleY: -1 }]
-	},
-	separator: {
-		height: 1,
-		backgroundColor: '#CED0CE'
-	},
-	bannerContainer: {
-		backgroundColor: 'orange'
-	},
-	bannerText: {
-		margin: 5,
-		textAlign: 'center',
-		color: '#a00'
-	},
-	loadingMore: {
-		transform: [{ scaleY: -1 }],
-		textAlign: 'center',
-		padding: 5,
-		color: '#ccc'
-	}
-});
+
 const typing = () => <Typing />;
 @connect(
 	state => ({
@@ -77,6 +49,10 @@ export default class RoomView extends React.Component {
 		Message_TimeFormat: PropTypes.string,
 		loading: PropTypes.bool
 	};
+
+	static navigationOptions = ({ navigation }) => ({
+		header: <Header subview={<RoomsHeader navigation={navigation} />} />
+	});
 
 	constructor(props) {
 		super(props);
