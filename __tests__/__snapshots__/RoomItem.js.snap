@@ -35,15 +35,16 @@ exports[`render channel 1`] = `
       Array [
         Object {
           "alignItems": "center",
-          "borderRadius": 4,
-          "height": 40,
           "justifyContent": "center",
           "overflow": "hidden",
-          "width": 40,
         },
         Object {
           "backgroundColor": "#00BCD4",
+          "borderRadius": 4,
+          "height": 40,
+          "width": 40,
         },
+        undefined,
       ]
     }
   >
@@ -57,10 +58,14 @@ exports[`render channel 1`] = `
             "color": undefined,
             "fontSize": 12,
           },
-          Object {
-            "color": "#fff",
-            "fontSize": 20,
-          },
+          Array [
+            Object {
+              "color": "#ffffff",
+            },
+            Object {
+              "fontSize": 20,
+            },
+          ],
           Object {
             "fontFamily": "Material Design Icons",
             "fontStyle": "normal",
@@ -153,6 +158,53 @@ exports[`render no icon 1`] = `
 >
   <View
     style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "overflow": "hidden",
+        },
+        Object {
+          "backgroundColor": "#3F51B5",
+          "borderRadius": 4,
+          "height": 40,
+          "width": 40,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={false}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "color": undefined,
+            "fontSize": 12,
+          },
+          Array [
+            Object {
+              "color": "#ffffff",
+            },
+            Object {
+              "fontSize": 20,
+            },
+          ],
+          Object {
+            "fontFamily": "Material Design Icons",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+        ]
+      }
+    >
+      
+    </Text>
+  </View>
+  <View
+    style={
       Object {
         "flex": 1,
         "marginLeft": 16,
@@ -230,6 +282,53 @@ exports[`render private group 1`] = `
   testID={undefined}
   tvParallaxProperties={undefined}
 >
+  <View
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "overflow": "hidden",
+        },
+        Object {
+          "backgroundColor": "#FF9800",
+          "borderRadius": 4,
+          "height": 40,
+          "width": 40,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={false}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "color": undefined,
+            "fontSize": 12,
+          },
+          Array [
+            Object {
+              "color": "#ffffff",
+            },
+            Object {
+              "fontSize": 20,
+            },
+          ],
+          Object {
+            "fontFamily": "Material Design Icons",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+        ]
+      }
+    >
+      
+    </Text>
+  </View>
   <View
     style={
       Object {
