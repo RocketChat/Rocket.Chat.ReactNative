@@ -28,7 +28,11 @@ const AuthRoutes = StackNavigator(
 			}
 		}
 	},
-	{}
+	{
+		navigationOptions: {
+			headerTitleAllowFontScaling: false
+		}
+	}
 );
 
 const Routes = DrawerNavigator(

@@ -133,6 +133,7 @@ class RegisterView extends React.Component {
 						style={[styles.button, this._valid() ? {}
 							: { color: placeholderTextColor }
 						]}
+						accessibilityTraits='button'
 					>REGISTER
 					</Text>
 				</TouchableOpacity>

@@ -6,11 +6,9 @@ import Avatar from '../containers/Avatar';
 
 const styles = StyleSheet.create({
 	container: {
-		// flex: 1,
 		flexDirection: 'row',
-		paddingLeft: 16,
-		paddingRight: 16,
-		height: 56,
+		paddingHorizontal: 16,
+		paddingVertical: 10,
 		alignItems: 'center'
 	},
 	number: {
@@ -30,10 +28,8 @@ const styles = StyleSheet.create({
 		marginRight: 4
 	},
 	roomName: {
-		paddingTop: 10,
 		flex: 1,
 		fontSize: 16,
-		height: 16,
 		color: '#444'
 	},
 	alert: {
@@ -45,7 +41,7 @@ const styles = StyleSheet.create({
 	update: {
 		flex: 1,
 		fontSize: 10,
-		height: 10,
+		// height: 10,
 		color: '#888'
 	}
 });
@@ -69,8 +65,8 @@ export default class RoomItem extends React.PureComponent {
 	}
 
 	formatDate = date => moment(date).calendar(null, {
-		lastDay: 'dddd',
-		sameDay: 'HH:mm',
+		lastDay: '[Yesterday]',
+		sameDay: 'h:mm A',
 		lastWeek: 'dddd',
 		sameElse: 'MMM D'
 	})
@@ -100,12 +96,27 @@ export default class RoomItem extends React.PureComponent {
 			favorite, alert, unread, userMentions, name, _updatedAt
 		} = this.props;
 
+		const date = this.formatDate(_updatedAt);
+
+		let accessibilityLabel = name;
+		if (unread === 1) {
+			accessibilityLabel += `, ${ unread } alert`;
+		} else if (unread > 1) {
+			accessibilityLabel += `, ${ unread } alerts`;
+		}
+
+		if (userMentions > 0) {
+			accessibilityLabel += ', you were mentioned';
+		}
+
+		accessibilityLabel += `, last message ${ date }`;
+
 		return (
-			<TouchableOpacity onPress={this.props.onPress} style={[styles.container, favorite && styles.favorite]}>
+			<TouchableOpacity onPress={this.props.onPress} style={[styles.container, favorite && styles.favorite]} accessibilityLabel={accessibilityLabel} accessibilityTraits='selected'>
 				{this.icon}
 				<View style={styles.roomNameView}>
 					<Text style={[styles.roomName, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
-					{_updatedAt ? <Text style={styles.update} ellipsizeMode='tail' numberOfLines={1}>{ this.formatDate(_updatedAt) }</Text> : null}
+					{_updatedAt ? <Text style={styles.update} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
 				</View>
 				{this.renderNumber(unread, userMentions)}
 			</TouchableOpacity>
