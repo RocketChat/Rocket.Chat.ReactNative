@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, TouchableHighlight, Text } from 'react-native';
 import { connect } from 'react-redux';
 
 import { actionsShow } from '../../actions/messages';
@@ -103,7 +103,7 @@ export default class Message extends React.Component {
 
 	render() {
 		const {
-			item, message, editing
+			item, message, editing, baseUrl
 		} = this.props;
 
 		const extraStyle = {};
@@ -115,30 +115,33 @@ export default class Message extends React.Component {
 		const isEditing = message._id === item._id && editing;
 
 		return (
-			<TouchableOpacity
+			<TouchableHighlight
 				onLongPress={() => this.onLongPress()}
 				disabled={this.isDeleted()}
+				underlayColor='rgba(0, 0, 0, 0.1)'
 				style={[styles.message, extraStyle, isEditing ? styles.editing : null]}
 			>
-				<Avatar
-					style={{ marginRight: 10 }}
-					text={item.avatar ? '' : username}
-					size={40}
-					baseUrl={this.props.baseUrl}
-					avatar={item.avatar}
-				/>
-				<View style={[styles.content]}>
-					<User
-						onPress={this._onPress}
-						item={item}
-						Message_TimeFormat={this.props.Message_TimeFormat}
-						baseUrl={this.props.baseUrl}
+				<View style={{ flexDirection: 'row' }}>
+					<Avatar
+						style={{ marginRight: 10 }}
+						text={item.avatar ? '' : username}
+						size={40}
+						baseUrl={baseUrl}
+						avatar={item.avatar}
 					/>
-					{this.renderMessageContent()}
-					{this.attachments()}
-					{this.renderUrl()}
+					<View style={[styles.content]}>
+						<User
+							onPress={this._onPress}
+							item={item}
+							Message_TimeFormat={this.props.Message_TimeFormat}
+							baseUrl={baseUrl}
+						/>
+						{this.renderMessageContent()}
+						{this.attachments()}
+						{this.renderUrl()}
+					</View>
 				</View>
-			</TouchableOpacity>
+			</TouchableHighlight>
 		);
 	}
 }

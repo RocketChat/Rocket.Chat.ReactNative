@@ -137,7 +137,7 @@ export default class RoomView extends React.Component {
 
 	renderItem = ({ item }) => (
 		<Message
-			id={item._id}
+			key={item._id}
 			item={item}
 			baseUrl={this.props.Site_Url}
 			Message_TimeFormat={this.props.Message_TimeFormat}
