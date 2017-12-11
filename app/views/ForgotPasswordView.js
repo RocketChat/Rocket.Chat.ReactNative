@@ -88,11 +88,11 @@ class ForgotPasswordView extends React.Component {
 							/>
 
 							<TouchableOpacity style={styles.buttonContainer} onPress={this.resetPassword}>
-								<Text style={styles.button}>RESET PASSWORD</Text>
+								<Text style={styles.button} accessibilityTraits='button'>RESET PASSWORD</Text>
 							</TouchableOpacity>
 
 							<TouchableOpacity style={styles.buttonContainer} onPress={this.backLogin}>
-								<Text style={styles.button}>BACK TO LOGIN</Text>
+								<Text style={styles.button} accessibilityTraits='button'>BACK TO LOGIN</Text>
 							</TouchableOpacity>
 
 							{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}

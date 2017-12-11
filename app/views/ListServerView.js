@@ -158,6 +158,7 @@ export default class ListServerView extends React.Component {
 			<Text
 				style={[styles.listItem]}
 				onPress={() => { this.onPressItem(item); }}
+				adjustsFontSizeToFit
 			>
 				{item.id}
 			</Text>

@@ -23,6 +23,8 @@ const PublicRoutes = StackNavigator(
 						<TouchableOpacity
 							onPress={() => navigation.navigate('AddServer')}
 							style={{ width: 50, alignItems: 'center' }}
+							accessibilityLabel='Add server'
+							accessibilityTraits='button'
 						>
 							<Icon name='plus' size={16} />
 						</TouchableOpacity>
@@ -68,7 +70,9 @@ const PublicRoutes = StackNavigator(
 		}
 	},
 	{
-
+		navigationOptions: {
+			headerTitleAllowFontScaling: false
+		}
 	}
 );
 

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import { actionsShow } from '../../actions/messages';
 import Image from './Image';
@@ -114,11 +115,14 @@ export default class Message extends React.Component {
 		const username = item.alias || item.u.username;
 		const isEditing = message._id === item._id && editing;
 
+		const accessibilityLabel = `Message from ${ item.alias || item.u.username } at ${ moment(item.ts).format(this.props.Message_TimeFormat) }, ${ this.props.item.msg }`;
+
 		return (
 			<TouchableOpacity
 				onLongPress={() => this.onLongPress()}
 				disabled={this.isDeleted()}
 				style={[styles.message, extraStyle, isEditing ? styles.editing : null]}
+				accessibilityLabel={accessibilityLabel}
 			>
 				<Avatar
 					style={{ marginRight: 10 }}

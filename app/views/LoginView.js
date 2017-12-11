@@ -3,7 +3,7 @@ import React from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import PropTypes from 'prop-types';
-import { Keyboard, Text, TextInput, View, TouchableOpacity, SafeAreaView } from 'react-native';
+import { Keyboard, Text, TextInput, View, ScrollView, TouchableOpacity, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import * as actions from '../actions';
@@ -88,7 +88,7 @@ class LoginView extends React.Component {
 				contentContainerStyle={styles.container}
 				keyboardVerticalOffset={128}
 			>
-				<View style={styles.loginView}>
+				<ScrollView style={styles.loginView}>
 					<SafeAreaView>
 						<View style={styles.formContainer}>
 							<TextInput
@@ -121,21 +121,21 @@ class LoginView extends React.Component {
 								style={styles.buttonContainer}
 								onPress={this.submit}
 							>
-								<Text style={styles.button}>LOGIN</Text>
+								<Text style={styles.button} accessibilityTraits='button'>LOGIN</Text>
 							</TouchableOpacity>
 
 							<View style={styles.loginSecondaryButtons}>
 								<TouchableOpacity style={styles.buttonContainer_inverted} onPress={this.register}>
-									<Text style={styles.button_inverted}>REGISTER</Text>
+									<Text style={styles.button_inverted} accessibilityTraits='button'>REGISTER</Text>
 								</TouchableOpacity>
 
 								<TouchableOpacity style={styles.buttonContainer_inverted} onPress={this.forgotPassword}>
-									<Text style={styles.button_inverted}>FORGOT MY PASSWORD</Text>
+									<Text style={styles.button_inverted} accessibilityTraits='button'>FORGOT MY PASSWORD</Text>
 								</TouchableOpacity>
 							</View>
 
 							<TouchableOpacity>
-								<Text style={styles.loginTermsText}>
+								<Text style={styles.loginTermsText} accessibilityTraits='button'>
 									By proceeding you are agreeing to our
 									<Text style={styles.link} onPress={this.termsService}> Terms of Service </Text>
 									and
@@ -146,7 +146,7 @@ class LoginView extends React.Component {
 						</View>
 						<Spinner visible={this.props.login.isFetching} textContent='Loading...' textStyle={{ color: '#FFF' }} />
 					</SafeAreaView>
-				</View>
+				</ScrollView>
 			</KeyboardView>
 		);
 	}

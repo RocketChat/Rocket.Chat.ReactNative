@@ -4,8 +4,8 @@ exports[`render channel 1`] = `
 <View>
   <View
     accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
+    accessibilityLabel="general, last message Nov 10"
+    accessibilityTraits="selected"
     accessible={true}
     collapsable={undefined}
     hitSlop={undefined}
@@ -22,10 +22,9 @@ exports[`render channel 1`] = `
       Object {
         "alignItems": "center",
         "flexDirection": "row",
-        "height": 56,
         "opacity": 1,
-        "paddingLeft": 16,
-        "paddingRight": 16,
+        "paddingHorizontal": 16,
+        "paddingVertical": 10,
       }
     }
     testID={undefined}
@@ -98,8 +97,6 @@ exports[`render channel 1`] = `
               "color": "#444",
               "flex": 1,
               "fontSize": 16,
-              "height": 16,
-              "paddingTop": 10,
             },
             undefined,
           ]
@@ -117,7 +114,6 @@ exports[`render channel 1`] = `
             "color": "#888",
             "flex": 1,
             "fontSize": 10,
-            "height": 10,
           }
         }
       >
@@ -132,8 +128,8 @@ exports[`render no icon 1`] = `
 <View>
   <View
     accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
+    accessibilityLabel="name, last message Nov 10"
+    accessibilityTraits="selected"
     accessible={true}
     collapsable={undefined}
     hitSlop={undefined}
@@ -150,10 +146,9 @@ exports[`render no icon 1`] = `
       Object {
         "alignItems": "center",
         "flexDirection": "row",
-        "height": 56,
         "opacity": 1,
-        "paddingLeft": 16,
-        "paddingRight": 16,
+        "paddingHorizontal": 16,
+        "paddingVertical": 10,
       }
     }
     testID={undefined}
@@ -226,8 +221,6 @@ exports[`render no icon 1`] = `
               "color": "#444",
               "flex": 1,
               "fontSize": 16,
-              "height": 16,
-              "paddingTop": 10,
             },
             undefined,
           ]
@@ -245,7 +238,6 @@ exports[`render no icon 1`] = `
             "color": "#888",
             "flex": 1,
             "fontSize": 10,
-            "height": 10,
           }
         }
       >
@@ -260,8 +252,8 @@ exports[`render private group 1`] = `
 <View>
   <View
     accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
+    accessibilityLabel="private-group, last message Nov 10"
+    accessibilityTraits="selected"
     accessible={true}
     collapsable={undefined}
     hitSlop={undefined}
@@ -278,10 +270,9 @@ exports[`render private group 1`] = `
       Object {
         "alignItems": "center",
         "flexDirection": "row",
-        "height": 56,
         "opacity": 1,
-        "paddingLeft": 16,
-        "paddingRight": 16,
+        "paddingHorizontal": 16,
+        "paddingVertical": 10,
       }
     }
     testID={undefined}
@@ -354,8 +345,6 @@ exports[`render private group 1`] = `
               "color": "#444",
               "flex": 1,
               "fontSize": 16,
-              "height": 16,
-              "paddingTop": 10,
             },
             undefined,
           ]
@@ -373,7 +362,6 @@ exports[`render private group 1`] = `
             "color": "#888",
             "flex": 1,
             "fontSize": 10,
-            "height": 10,
           }
         }
       >
@@ -389,8 +377,8 @@ exports[`render unread +999 1`] = `
 <View>
   <View
     accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
+    accessibilityLabel="name, 1000 alerts, last message Nov 10"
+    accessibilityTraits="selected"
     accessible={true}
     collapsable={undefined}
     hitSlop={undefined}
@@ -407,10 +395,9 @@ exports[`render unread +999 1`] = `
       Object {
         "alignItems": "center",
         "flexDirection": "row",
-        "height": 56,
         "opacity": 1,
-        "paddingLeft": 16,
-        "paddingRight": 16,
+        "paddingHorizontal": 16,
+        "paddingVertical": 10,
       }
     }
     testID={undefined}
@@ -436,7 +423,7 @@ exports[`render unread +999 1`] = `
     >
       <Text
         accessible={true}
-        allowFontScaling={true}
+        allowFontScaling={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -472,8 +459,6 @@ exports[`render unread +999 1`] = `
               "color": "#444",
               "flex": 1,
               "fontSize": 16,
-              "height": 16,
-              "paddingTop": 10,
             },
             undefined,
           ]
@@ -491,7 +476,6 @@ exports[`render unread +999 1`] = `
             "color": "#888",
             "flex": 1,
             "fontSize": 10,
-            "height": 10,
           }
         }
       >
@@ -526,8 +510,8 @@ exports[`render unread 1`] = `
 <View>
   <View
     accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
+    accessibilityLabel="name, 1 alert, last message Nov 10"
+    accessibilityTraits="selected"
     accessible={true}
     collapsable={undefined}
     hitSlop={undefined}
@@ -544,10 +528,9 @@ exports[`render unread 1`] = `
       Object {
         "alignItems": "center",
         "flexDirection": "row",
-        "height": 56,
         "opacity": 1,
-        "paddingLeft": 16,
-        "paddingRight": 16,
+        "paddingHorizontal": 16,
+        "paddingVertical": 10,
       }
     }
     testID={undefined}
@@ -573,7 +556,7 @@ exports[`render unread 1`] = `
     >
       <Text
         accessible={true}
-        allowFontScaling={true}
+        allowFontScaling={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -609,8 +592,6 @@ exports[`render unread 1`] = `
               "color": "#444",
               "flex": 1,
               "fontSize": 16,
-              "height": 16,
-              "paddingTop": 10,
             },
             undefined,
           ]
@@ -628,7 +609,6 @@ exports[`render unread 1`] = `
             "color": "#888",
             "flex": 1,
             "fontSize": 10,
-            "height": 10,
           }
         }
       >
@@ -663,8 +643,8 @@ exports[`renders correctly 1`] = `
 <View>
   <View
     accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
+    accessibilityLabel="name, last message Nov 10"
+    accessibilityTraits="selected"
     accessible={true}
     collapsable={undefined}
     hitSlop={undefined}
@@ -681,10 +661,9 @@ exports[`renders correctly 1`] = `
       Object {
         "alignItems": "center",
         "flexDirection": "row",
-        "height": 56,
         "opacity": 1,
-        "paddingLeft": 16,
-        "paddingRight": 16,
+        "paddingHorizontal": 16,
+        "paddingVertical": 10,
       }
     }
     testID={undefined}
@@ -710,7 +689,7 @@ exports[`renders correctly 1`] = `
     >
       <Text
         accessible={true}
-        allowFontScaling={true}
+        allowFontScaling={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -746,8 +725,6 @@ exports[`renders correctly 1`] = `
               "color": "#444",
               "flex": 1,
               "fontSize": 16,
-              "height": 16,
-              "paddingTop": 10,
             },
             undefined,
           ]
@@ -765,7 +742,6 @@ exports[`renders correctly 1`] = `
             "color": "#888",
             "flex": 1,
             "fontSize": 10,
-            "height": 10,
           }
         }
       >

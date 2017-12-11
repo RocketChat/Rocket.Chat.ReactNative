@@ -73,7 +73,7 @@ export default StyleSheet.create({
 		color: 'white'
 	},
 	input_white: {
-		height: 45,
+		paddingVertical: 12,
 		marginBottom: 20,
 		borderRadius: 2,
 		// padding: 14,
@@ -154,7 +154,7 @@ export default StyleSheet.create({
 	},
 	loginSecondaryButtons: {
 		flexDirection: 'row',
-		justifyContent: 'space-around',
-		alignItems: 'center'
+		flexWrap: 'wrap',
+		justifyContent: 'space-around'
 	}
 });
