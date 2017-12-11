@@ -56,6 +56,15 @@ export default class extends React.Component {
 		});
 	}
 
+	getUserStatus() {
+		return this.props.user.status || 'offline';
+	}
+
+	getUserStatusLabel() {
+		const status = this.getUserStatus();
+		return status.charAt(0).toUpperCase() + status.slice(1);
+	}
+
 	showModal() {
 		this.setState({ isModalVisible: true });
 	}
@@ -69,8 +78,12 @@ export default class extends React.Component {
 	}
 
 	renderLeft() {
+		if (this.state.searching) {
+			return null;
+		}
+
 		return (
-			<View style={styles.left}>
+			<View style={styles.left} accessible accessibilityLabel="Server's list" accessibilityTraits='button'>
 				<TouchableOpacity
 					style={styles.headerButton}
 					onPress={() => this.props.navigation.navigate('DrawerOpen')}
@@ -85,30 +98,43 @@ export default class extends React.Component {
 	}
 
 	renderTitle() {
+		if (this.state.searching) {
+			return null;
+		}
+
 		if (!this.props.user.username) {
 			return null;
 		}
+
+		const accessibilityLabel = `${ this.props.user.username }, ${ this.getUserStatusLabel() }, double tap to change status`;
+
 		return (
-			<TouchableOpacity style={styles.titleContainer} onPress={() => this.showModal()}>
-				<View style={[styles.status, { backgroundColor: STATUS_COLORS[this.props.user.status || 'offline'] }]} />
+			<TouchableOpacity style={styles.titleContainer} onPress={() => this.showModal()} accessibilityLabel={accessibilityLabel} accessibilityTraits='header'>
+				<View style={[styles.status, { backgroundColor: STATUS_COLORS[this.getUserStatus()] }]} />
 				<Avatar
 					text={this.props.user.username}
 					size={24}
 					style={{ marginRight: 5 }}
 					baseUrl={this.props.baseUrl}
 				/>
-				<Text style={styles.title}>{this.props.user.username}</Text>
+				<Text accessible={false} style={styles.title} ellipsizeMode='tail' numberOfLines={1} allowFontScaling={false}>{this.props.user.username}</Text>
 			</TouchableOpacity>
 		);
 	}
 
 	renderRight() {
+		if (this.state.searching) {
+			return null;
+		}
+
 		return (
 			<View style={styles.right}>
 				{Platform.OS === 'android' ?
 					<TouchableOpacity
 						style={styles.headerButton}
 						onPress={() => this.onPressSearchButton()}
+						accessibilityLabel='Search'
+						accessibilityTraits='button'
 					>
 						<Icon
 							name='md-search'
@@ -121,6 +147,8 @@ export default class extends React.Component {
 					<TouchableOpacity
 						style={styles.headerButton}
 						onPress={() => this.createChannel()}
+						accessibilityLabel='Create channel'
+						accessibilityTraits='button'
 					>
 						<Icon
 							name='ios-add'
@@ -149,19 +177,6 @@ export default class extends React.Component {
 		);
 	};
 
-	renderHeader() {
-		if (this.state.searching) {
-			return null;
-		}
-		return (
-			<View style={styles.header}>
-				{this.renderLeft()}
-				{this.renderTitle()}
-				{this.renderRight()}
-			</View>
-		);
-	}
-
 	renderSearch() {
 		if (!this.state.searching) {
 			return null;
@@ -188,7 +203,9 @@ export default class extends React.Component {
 	render() {
 		return (
 			<View style={styles.header}>
-				{this.renderHeader()}
+				{this.renderLeft()}
+				{this.renderTitle()}
+				{this.renderRight()}
 				{this.renderSearch()}
 				<Modal
 					isVisible={this.state.isModalVisible}

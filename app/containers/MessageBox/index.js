@@ -54,9 +54,27 @@ export default class MessageBox extends React.Component {
 	get leftButtons() {
 		const { editing } = this.props;
 		if (editing) {
-			return <Icon style={styles.actionButtons} name='ios-close' onPress={() => this.editCancel()} />;
+			return (<Icon
+				style={styles.actionButtons}
+				name='ios-close'
+				accessibilityLabel='Cancel editing'
+				accessibilityTraits='button'
+				onPress={() => this.editCancel()}
+			/>);
 		}
-		return !this.state.emoji ? <Icon style={styles.actionButtons} onPress={() => this.openEmoji()} name='md-happy' /> : <Icon onPress={() => this.openEmoji()} style={styles.actionButtons} name='md-sad' />;
+		return !this.state.emoji ? (<Icon
+			style={styles.actionButtons}
+			onPress={() => this.openEmoji()}
+			accessibilityLabel='Open emoji selector'
+			accessibilityTraits='button'
+			name='md-happy'
+		/>) : (<Icon
+			onPress={() => this.openEmoji()}
+			style={styles.actionButtons}
+			accessibilityLabel='Close emoji selector'
+			accessibilityTraits='button'
+			name='md-sad'
+		/>);
 	}
 	get rightButtons() {
 		const icons = [];
@@ -66,6 +84,8 @@ export default class MessageBox extends React.Component {
 				style={[styles.actionButtons, { color: '#1D74F5' }]}
 				name='send'
 				key='sendIcon'
+				accessibilityLabel='Send message'
+				accessibilityTraits='button'
 				onPress={() => this.submit(this.component._lastNativeText)}
 			/>);
 		}
@@ -73,6 +93,8 @@ export default class MessageBox extends React.Component {
 			style={[styles.actionButtons, { color: '#2F343D', fontSize: 16 }]}
 			name='plus'
 			key='fileIcon'
+			accessibilityLabel='Message actions'
+			accessibilityTraits='button'
 			onPress={() => this.addFile()}
 		/>);
 		return icons;
