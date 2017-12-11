@@ -1,6 +1,6 @@
 import Meteor from 'react-native-meteor';
 import Random from 'react-native-meteor/lib/Random';
-import { AsyncStorage, Platform } from 'react-native';
+import { AsyncStorage, Platform, InteractionManager } from 'react-native';
 import { hashPassword } from 'react-native-meteor/lib/utils';
 
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -83,12 +83,12 @@ const RocketChat = {
 			Meteor.ddp.on('connected', async() => {
 				Meteor.ddp.on('added', (ddpMessage) => {
 					if (ddpMessage.collection === 'users') {
-						return RocketChat._setUser(ddpMessage);
+						return InteractionManager.runAfterInteractions(() => RocketChat._setUser(ddpMessage));
 					}
 				});
 				Meteor.ddp.on('removed', (ddpMessage) => {
 					if (ddpMessage.collection === 'users') {
-						return RocketChat._setUser(ddpMessage);
+						return InteractionManager.runAfterInteractions(() => RocketChat._setUser(ddpMessage));
 					}
 				});
 				Meteor.ddp.on('changed', (ddpMessage) => {
@@ -124,7 +124,7 @@ const RocketChat = {
 						}
 					}
 					if (ddpMessage.collection === 'users') {
-						return RocketChat._setUser(ddpMessage);
+						return InteractionManager.runAfterInteractions(() => RocketChat._setUser(ddpMessage));
 					}
 				});
 				RocketChat.getSettings();
