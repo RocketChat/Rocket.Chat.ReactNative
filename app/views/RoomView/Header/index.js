@@ -57,14 +57,21 @@ export default class extends React.Component {
 
 	isDirect = () => this.state.room && this.state.room.t === 'd';
 
-	renderLeft = () => <HeaderBackButton onPress={() => this.props.navigation.goBack(null)} tintColor='#292E35' />;
+	renderLeft = () => <HeaderBackButton onPress={() => this.props.navigation.goBack(null)} tintColor='#292E35' title='Back' titleStyle={{ display: 'none' }} />;
 
 	renderTitle() {
 		if (!this.state.roomName) {
 			return null;
 		}
+
+		let accessibilityLabel = this.state.roomName;
+
+		if (this.isDirect()) {
+			accessibilityLabel += `, ${ this.getUserStatusLabel() }`;
+		}
+
 		return (
-			<TouchableOpacity style={styles.titleContainer}>
+			<TouchableOpacity style={styles.titleContainer} accessibilityLabel={accessibilityLabel} accessibilityTraits='header'>
 				{this.isDirect() ?
 					<View style={[styles.status, { backgroundColor: STATUS_COLORS[this.getUserStatus()] }]} />
 					: null
@@ -77,9 +84,9 @@ export default class extends React.Component {
 					type={this.state.room.t}
 				/>
 				<View style={{ flexDirection: 'column' }}>
-					<Text style={styles.title}>{this.state.roomName}</Text>
+					<Text style={styles.title} allowFontScaling={false}>{this.state.roomName}</Text>
 					{this.isDirect() ?
-						<Text style={styles.userStatus}>{this.getUserStatusLabel()}</Text>
+						<Text style={styles.userStatus} allowFontScaling={false}>{this.getUserStatusLabel()}</Text>
 						: null
 					}
 				</View>
@@ -92,6 +99,8 @@ export default class extends React.Component {
 			<TouchableOpacity
 				style={styles.headerButton}
 				onPress={() => {}}
+				accessibilityLabel='Room actions'
+				accessibilityTraits='button'
 			>
 				<Icon
 					name={Platform.OS === 'ios' ? 'ios-more' : 'md-more'}

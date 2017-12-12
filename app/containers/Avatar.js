@@ -58,7 +58,7 @@ class Avatar extends React.PureComponent {
 			);
 			return (
 				<View style={[styles.iconContainer, iconContainerStyle, style]}>
-					<Text style={[styles.avatarInitials, avatarInitialsStyle]}>{initials}</Text>
+					<Text style={[styles.avatarInitials, avatarInitialsStyle]} allowFontScaling={false}>{initials}</Text>
 					{image}
 				</View>);
 		}

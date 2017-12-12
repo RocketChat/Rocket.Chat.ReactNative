@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet, TouchableHighlight, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import moment from 'moment';
 
 import { actionsShow, errorActionsShow } from '../../actions/messages';
 import Image from './Image';
@@ -138,6 +139,8 @@ export default class Message extends React.Component {
 		const username = item.alias || item.u.username;
 		const isEditing = message._id === item._id && editing;
 
+		const accessibilityLabel = `Message from ${ item.alias || item.u.username } at ${ moment(item.ts).format(this.props.Message_TimeFormat) }, ${ this.props.item.msg }`;
+
 		return (
 			<TouchableHighlight
 				onLongPress={() => this.onLongPress()}
@@ -145,6 +148,7 @@ export default class Message extends React.Component {
 				underlayColor='#FFFFFF'
 				activeOpacity={0.3}
 				style={[styles.message, isEditing ? styles.editing : null]}
+				accessibilityLabel={accessibilityLabel}
 			>
 				<View style={{ flexDirection: 'row', flex: 1 }}>
 					{this.renderError()}
