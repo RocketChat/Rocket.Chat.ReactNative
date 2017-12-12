@@ -12,6 +12,7 @@ import realm from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
 import MessageActions from '../../containers/MessageActions';
+import MessageErrorActions from '../../containers/MessageErrorActions';
 import MessageBox from '../../containers/MessageBox';
 import Typing from '../../containers/Typing';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -119,13 +120,7 @@ export default class RoomView extends React.Component {
 		});
 	};
 
-	sendMessage = async(message) => {
-		try {
-			await RocketChat.sendMessage(this.rid, message);
-		} catch (error) {
-			alert(error);
-		}
-	};
+	sendMessage = message => RocketChat.sendMessage(this.rid, message);
 
 	joinRoom = async() => {
 		await RocketChat.joinRoom(this.props.rid);
@@ -193,6 +188,7 @@ export default class RoomView extends React.Component {
 				</SafeAreaView>
 				{this.renderFooter()}
 				<MessageActions room={this.room} />
+				<MessageErrorActions />
 			</KeyboardView>
 		);
 	}

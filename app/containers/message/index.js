@@ -4,7 +4,7 @@ import { View, StyleSheet, TouchableHighlight, Text, TouchableOpacity } from 're
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import { actionsShow } from '../../actions/messages';
+import { actionsShow, errorActionsShow } from '../../actions/messages';
 import Image from './Image';
 import User from './User';
 import Avatar from '../Avatar';
@@ -13,6 +13,7 @@ import Video from './Video';
 import Markdown from './Markdown';
 import Url from './Url';
 import Reply from './Reply';
+import messageStatus from '../../constants/messagesStatus';
 
 const styles = StyleSheet.create({
 	content: {
@@ -39,7 +40,8 @@ const styles = StyleSheet.create({
 	message: state.messages.message,
 	editing: state.messages.editing
 }), dispatch => ({
-	actionsShow: actionMessage => dispatch(actionsShow(actionMessage))
+	actionsShow: actionMessage => dispatch(actionsShow(actionMessage)),
+	errorActionsShow: actionMessage => dispatch(errorActionsShow(actionMessage))
 }))
 export default class Message extends React.Component {
 	static propTypes = {
@@ -49,12 +51,18 @@ export default class Message extends React.Component {
 		message: PropTypes.object.isRequired,
 		user: PropTypes.object.isRequired,
 		editing: PropTypes.bool,
-		actionsShow: PropTypes.func
+		actionsShow: PropTypes.func,
+		errorActionsShow: PropTypes.func
 	}
 
 	onLongPress() {
 		const { item } = this.props;
 		this.props.actionsShow(JSON.parse(JSON.stringify(item)));
+	}
+
+	onErrorPress() {
+		const { item } = this.props;
+		this.props.errorActionsShow(JSON.parse(JSON.stringify(item)));
 	}
 
 	isDeleted() {
@@ -66,7 +74,7 @@ export default class Message extends React.Component {
 	}
 
 	hasError() {
-		return this.props.item.status === 2;
+		return this.props.item.status === messageStatus.ERROR;
 	}
 
 	attachments() {
@@ -111,7 +119,7 @@ export default class Message extends React.Component {
 			return null;
 		}
 		return (
-			<TouchableOpacity onPress={() => alert('wow!')}>
+			<TouchableOpacity onPress={() => this.onErrorPress()}>
 				<Icon name='error-outline' color='red' size={20} style={{ padding: 10, paddingRight: 12, paddingLeft: 0 }} />
 			</TouchableOpacity>
 		);
@@ -123,7 +131,7 @@ export default class Message extends React.Component {
 		} = this.props;
 
 		const extraStyle = {};
-		if (item.status === 1 || item.status === 2) {
+		if (item.status === messageStatus.TEMP || item.status === messageStatus.ERROR) {
 			extraStyle.opacity = 0.3;
 		}
 
