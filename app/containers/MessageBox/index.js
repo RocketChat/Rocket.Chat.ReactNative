@@ -118,7 +118,6 @@ export default class MessageBox extends React.Component {
 	}
 	submit(message) {
 		this.component.setNativeProps({ text: '' });
-		this.props.clearInput();
 		this.setState({ text: '' });
 		requestAnimationFrame(() => {
 			this.props.typing(false);
@@ -134,6 +133,7 @@ export default class MessageBox extends React.Component {
 				// if is submiting a new message
 				this.props.onSubmit(message);
 			}
+			this.props.clearInput();
 		});
 	}
 
