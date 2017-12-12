@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, TouchableHighlight, Text } from 'react-native';
+import { View, StyleSheet, TouchableHighlight, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { actionsShow } from '../../actions/messages';
 import Image from './Image';
@@ -64,6 +65,10 @@ export default class Message extends React.Component {
 		return this.props.item.t === 'message_pinned';
 	}
 
+	hasError() {
+		return this.props.item.status === 2;
+	}
+
 	attachments() {
 		if (this.props.item.attachments.length === 0) {
 			return null;
@@ -101,13 +106,24 @@ export default class Message extends React.Component {
 		));
 	}
 
+	renderError = () => {
+		if (!this.hasError()) {
+			return null;
+		}
+		return (
+			<TouchableOpacity onPress={() => alert('wow!')}>
+				<Icon name='error-outline' color='red' size={20} style={{ padding: 10, paddingRight: 12, paddingLeft: 0 }} />
+			</TouchableOpacity>
+		);
+	}
+
 	render() {
 		const {
 			item, message, editing, baseUrl
 		} = this.props;
 
 		const extraStyle = {};
-		if (item.temp) {
+		if (item.status === 1 || item.status === 2) {
 			extraStyle.opacity = 0.3;
 		}
 
@@ -117,28 +133,32 @@ export default class Message extends React.Component {
 		return (
 			<TouchableHighlight
 				onLongPress={() => this.onLongPress()}
-				disabled={this.isDeleted()}
-				underlayColor='rgba(0, 0, 0, 0.1)'
-				style={[styles.message, extraStyle, isEditing ? styles.editing : null]}
+				disabled={this.isDeleted() || this.hasError()}
+				underlayColor='#FFFFFF'
+				activeOpacity={0.3}
+				style={[styles.message, isEditing ? styles.editing : null]}
 			>
-				<View style={{ flexDirection: 'row' }}>
-					<Avatar
-						style={{ marginRight: 10 }}
-						text={item.avatar ? '' : username}
-						size={40}
-						baseUrl={baseUrl}
-						avatar={item.avatar}
-					/>
-					<View style={[styles.content]}>
-						<User
-							onPress={this._onPress}
-							item={item}
-							Message_TimeFormat={this.props.Message_TimeFormat}
+				<View style={{ flexDirection: 'row', flex: 1 }}>
+					{this.renderError()}
+					<View style={[extraStyle, { flexDirection: 'row', flex: 1 }]}>
+						<Avatar
+							style={{ marginRight: 10 }}
+							text={item.avatar ? '' : username}
+							size={40}
 							baseUrl={baseUrl}
+							avatar={item.avatar}
 						/>
-						{this.renderMessageContent()}
-						{this.attachments()}
-						{this.renderUrl()}
+						<View style={[styles.content]}>
+							<User
+								onPress={this._onPress}
+								item={item}
+								Message_TimeFormat={this.props.Message_TimeFormat}
+								baseUrl={baseUrl}
+							/>
+							{this.renderMessageContent()}
+							{this.attachments()}
+							{this.renderUrl()}
+						</View>
 					</View>
 				</View>
 			</TouchableHighlight>

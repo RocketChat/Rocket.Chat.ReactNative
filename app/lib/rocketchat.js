@@ -1,6 +1,6 @@
 import Meteor from 'react-native-meteor';
 import Random from 'react-native-meteor/lib/Random';
-import { AsyncStorage, Platform, InteractionManager } from 'react-native';
+import { AsyncStorage, Platform } from 'react-native';
 import { hashPassword } from 'react-native-meteor/lib/utils';
 
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -83,12 +83,12 @@ const RocketChat = {
 			Meteor.ddp.on('connected', async() => {
 				Meteor.ddp.on('added', (ddpMessage) => {
 					if (ddpMessage.collection === 'users') {
-						return InteractionManager.runAfterInteractions(() => RocketChat._setUser(ddpMessage));
+						return RocketChat._setUser(ddpMessage);
 					}
 				});
 				Meteor.ddp.on('removed', (ddpMessage) => {
 					if (ddpMessage.collection === 'users') {
-						return InteractionManager.runAfterInteractions(() => RocketChat._setUser(ddpMessage));
+						return RocketChat._setUser(ddpMessage);
 					}
 				});
 				Meteor.ddp.on('changed', (ddpMessage) => {
@@ -124,7 +124,7 @@ const RocketChat = {
 						}
 					}
 					if (ddpMessage.collection === 'users') {
-						return InteractionManager.runAfterInteractions(() => RocketChat._setUser(ddpMessage));
+						return RocketChat._setUser(ddpMessage);
 					}
 				});
 				RocketChat.getSettings();
@@ -291,7 +291,8 @@ const RocketChat = {
 	},
 	_buildMessage(message) {
 		const { server } = reduxStore.getState().server;
-		message.temp = false;
+		// message.temp = false;
+		message.status = 0; // sent
 		message._server = { id: server };
 		message.attachments = message.attachments || [];
 		if (message.urls) {
@@ -341,7 +342,7 @@ const RocketChat = {
 			msg,
 			ts: new Date(),
 			_updatedAt: new Date(),
-			temp: true,
+			status: 1, // sending
 			_server: { id: reduxStore.getState().server.server },
 			u: {
 				_id: reduxStore.getState().login.user.id || '1',
@@ -355,9 +356,17 @@ const RocketChat = {
 		});
 		return message;
 	},
-	sendMessage(rid, msg) {
+	async sendMessage(rid, msg) {
 		const tempMessage = this.getMessage(rid, msg);
-		return call('sendMessage', { _id: tempMessage._id, rid, msg });
+		const sendMessageCall = call('sendMessage', { _id: tempMessage._id, rid, msg });
+		const timeoutCall = new Promise(resolve => setTimeout(resolve, 5000, 'timeout'));
+		const result = await Promise.race([sendMessageCall, timeoutCall]);
+		if (result === 'timeout') {
+			realm.write(() => {
+				tempMessage.status = 2; // error
+				realm.create('messages', tempMessage, true);
+			});
+		}
 	},
 
 	spotlight(search, usernames) {
@@ -464,7 +473,7 @@ const RocketChat = {
 		});
 		Meteor.subscribe('stream-notify-user', `${ login.user.id }/subscriptions-changed`, false);
 		Meteor.subscribe('stream-notify-user', `${ login.user.id }/rooms-changed`, false);
-		Meteor.subscribe('activeUsers', null, false);
+		// Meteor.subscribe('activeUsers', null, false);
 		return data;
 	},
 	logout({ server }) {

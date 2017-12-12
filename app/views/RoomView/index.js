@@ -119,7 +119,13 @@ export default class RoomView extends React.Component {
 		});
 	};
 
-	sendMessage = message => RocketChat.sendMessage(this.rid, message);
+	sendMessage = async(message) => {
+		try {
+			await RocketChat.sendMessage(this.rid, message);
+		} catch (error) {
+			alert(error);
+		}
+	};
 
 	joinRoom = async() => {
 		await RocketChat.joinRoom(this.props.rid);
