@@ -12,6 +12,7 @@ import realm from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
 import MessageActions from '../../containers/MessageActions';
+import MessageErrorActions from '../../containers/MessageErrorActions';
 import MessageBox from '../../containers/MessageBox';
 import Typing from '../../containers/Typing';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -137,7 +138,7 @@ export default class RoomView extends React.Component {
 
 	renderItem = ({ item }) => (
 		<Message
-			id={item._id}
+			key={item._id}
 			item={item}
 			baseUrl={this.props.Site_Url}
 			Message_TimeFormat={this.props.Message_TimeFormat}
@@ -187,6 +188,7 @@ export default class RoomView extends React.Component {
 				</SafeAreaView>
 				{this.renderFooter()}
 				<MessageActions room={this.room} />
+				<MessageErrorActions />
 			</KeyboardView>
 		);
 	}

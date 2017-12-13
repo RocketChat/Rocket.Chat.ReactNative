@@ -172,7 +172,7 @@ const messagesSchema = {
 		attachments: { type: 'list', objectType: 'attachment' },
 		urls: { type: 'list', objectType: 'url' },
 		_updatedAt: { type: 'date', optional: true },
-		temp: { type: 'bool', optional: true },
+		status: { type: 'int', optional: true },
 		pinned: { type: 'bool', optional: true },
 		starred: { type: 'bool', optional: true },
 		editedBy: 'messagesEditedBy'
