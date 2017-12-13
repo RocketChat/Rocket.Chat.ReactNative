@@ -7,7 +7,8 @@ const initialState = {
 	actionMessage: {},
 	editing: false,
 	permalink: '',
-	showActions: false
+	showActions: false,
+	showErrorActions: false
 };
 
 export default function messages(state = initialState, action) {
@@ -39,6 +40,17 @@ export default function messages(state = initialState, action) {
 			return {
 				...state,
 				showActions: false
+			};
+		case types.MESSAGES.ERROR_ACTIONS_SHOW:
+			return {
+				...state,
+				showErrorActions: true,
+				actionMessage: action.actionMessage
+			};
+		case types.MESSAGES.ERROR_ACTIONS_HIDE:
+			return {
+				...state,
+				showErrorActions: false
 			};
 		case types.MESSAGES.EDIT_INIT:
 			return {

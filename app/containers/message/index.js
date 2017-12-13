@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, TouchableHighlight, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
 
-import { actionsShow } from '../../actions/messages';
+import { actionsShow, errorActionsShow } from '../../actions/messages';
 import Image from './Image';
 import User from './User';
 import Avatar from '../Avatar';
@@ -13,6 +14,7 @@ import Video from './Video';
 import Markdown from './Markdown';
 import Url from './Url';
 import Reply from './Reply';
+import messageStatus from '../../constants/messagesStatus';
 
 const styles = StyleSheet.create({
 	content: {
@@ -39,7 +41,8 @@ const styles = StyleSheet.create({
 	message: state.messages.message,
 	editing: state.messages.editing
 }), dispatch => ({
-	actionsShow: actionMessage => dispatch(actionsShow(actionMessage))
+	actionsShow: actionMessage => dispatch(actionsShow(actionMessage)),
+	errorActionsShow: actionMessage => dispatch(errorActionsShow(actionMessage))
 }))
 export default class Message extends React.Component {
 	static propTypes = {
@@ -49,12 +52,18 @@ export default class Message extends React.Component {
 		message: PropTypes.object.isRequired,
 		user: PropTypes.object.isRequired,
 		editing: PropTypes.bool,
-		actionsShow: PropTypes.func
+		actionsShow: PropTypes.func,
+		errorActionsShow: PropTypes.func
 	}
 
 	onLongPress() {
 		const { item } = this.props;
 		this.props.actionsShow(JSON.parse(JSON.stringify(item)));
+	}
+
+	onErrorPress() {
+		const { item } = this.props;
+		this.props.errorActionsShow(JSON.parse(JSON.stringify(item)));
 	}
 
 	isDeleted() {
@@ -63,6 +72,10 @@ export default class Message extends React.Component {
 
 	isPinned() {
 		return this.props.item.t === 'message_pinned';
+	}
+
+	hasError() {
+		return this.props.item.status === messageStatus.ERROR;
 	}
 
 	attachments() {
@@ -102,13 +115,24 @@ export default class Message extends React.Component {
 		));
 	}
 
+	renderError = () => {
+		if (!this.hasError()) {
+			return null;
+		}
+		return (
+			<TouchableOpacity onPress={() => this.onErrorPress()}>
+				<Icon name='error-outline' color='red' size={20} style={{ padding: 10, paddingRight: 12, paddingLeft: 0 }} />
+			</TouchableOpacity>
+		);
+	}
+
 	render() {
 		const {
-			item, message, editing
+			item, message, editing, baseUrl
 		} = this.props;
 
 		const extraStyle = {};
-		if (item.temp) {
+		if (item.status === messageStatus.TEMP || item.status === messageStatus.ERROR) {
 			extraStyle.opacity = 0.3;
 		}
 
@@ -118,31 +142,38 @@ export default class Message extends React.Component {
 		const accessibilityLabel = `Message from ${ item.alias || item.u.username } at ${ moment(item.ts).format(this.props.Message_TimeFormat) }, ${ this.props.item.msg }`;
 
 		return (
-			<TouchableOpacity
+			<TouchableHighlight
 				onLongPress={() => this.onLongPress()}
-				disabled={this.isDeleted()}
-				style={[styles.message, extraStyle, isEditing ? styles.editing : null]}
+				disabled={this.isDeleted() || this.hasError()}
+				underlayColor='#FFFFFF'
+				activeOpacity={0.3}
+				style={[styles.message, isEditing ? styles.editing : null]}
 				accessibilityLabel={accessibilityLabel}
 			>
-				<Avatar
-					style={{ marginRight: 10 }}
-					text={item.avatar ? '' : username}
-					size={40}
-					baseUrl={this.props.baseUrl}
-					avatar={item.avatar}
-				/>
-				<View style={[styles.content]}>
-					<User
-						onPress={this._onPress}
-						item={item}
-						Message_TimeFormat={this.props.Message_TimeFormat}
-						baseUrl={this.props.baseUrl}
-					/>
-					{this.renderMessageContent()}
-					{this.attachments()}
-					{this.renderUrl()}
+				<View style={{ flexDirection: 'row', flex: 1 }}>
+					{this.renderError()}
+					<View style={[extraStyle, { flexDirection: 'row', flex: 1 }]}>
+						<Avatar
+							style={{ marginRight: 10 }}
+							text={item.avatar ? '' : username}
+							size={40}
+							baseUrl={baseUrl}
+							avatar={item.avatar}
+						/>
+						<View style={[styles.content]}>
+							<User
+								onPress={this._onPress}
+								item={item}
+								Message_TimeFormat={this.props.Message_TimeFormat}
+								baseUrl={baseUrl}
+							/>
+							{this.renderMessageContent()}
+							{this.attachments()}
+							{this.renderUrl()}
+						</View>
+					</View>
 				</View>
-			</TouchableOpacity>
+			</TouchableHighlight>
 		);
 	}
 }
