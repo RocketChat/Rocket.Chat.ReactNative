@@ -18,7 +18,6 @@ export default StyleSheet.create({
 	textArea: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		backgroundColor: 'white',
 		flexGrow: 0
 	},
 	textBoxInput: {

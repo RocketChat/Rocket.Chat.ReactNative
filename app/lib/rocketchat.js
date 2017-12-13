@@ -6,6 +6,7 @@ import { hashPassword } from 'react-native-meteor/lib/utils';
 import RNFetchBlob from 'react-native-fetch-blob';
 import reduxStore from './createStore';
 import settingsType from '../constants/settings';
+import messagesStatus from '../constants/messagesStatus';
 import realm from './realm';
 import * as actions from '../actions';
 import { someoneTyping } from '../actions/room';
@@ -24,6 +25,7 @@ const call = (method, ...params) => new Promise((resolve, reject) => {
 	});
 });
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
+const SERVER_TIMEOUT = 30000;
 
 const RocketChat = {
 	TOKEN_KEY,
@@ -291,7 +293,7 @@ const RocketChat = {
 	},
 	_buildMessage(message) {
 		const { server } = reduxStore.getState().server;
-		message.temp = false;
+		message.status = messagesStatus.SENT;
 		message._server = { id: server };
 		message.attachments = message.attachments || [];
 		if (message.urls) {
@@ -341,7 +343,7 @@ const RocketChat = {
 			msg,
 			ts: new Date(),
 			_updatedAt: new Date(),
-			temp: true,
+			status: messagesStatus.TEMP,
 			_server: { id: reduxStore.getState().server.server },
 			u: {
 				_id: reduxStore.getState().login.user.id || '1',
@@ -355,9 +357,29 @@ const RocketChat = {
 		});
 		return message;
 	},
-	sendMessage(rid, msg) {
+	async _sendMessageCall(message) {
+		const { _id, rid, msg } = message;
+		const sendMessageCall = call('sendMessage', { _id, rid, msg });
+		const timeoutCall = new Promise(resolve => setTimeout(resolve, SERVER_TIMEOUT, 'timeout'));
+		const result = await Promise.race([sendMessageCall, timeoutCall]);
+		if (result === 'timeout') {
+			realm.write(() => {
+				message.status = messagesStatus.ERROR;
+				realm.create('messages', message, true);
+			});
+		}
+	},
+	async sendMessage(rid, msg) {
 		const tempMessage = this.getMessage(rid, msg);
-		return call('sendMessage', { _id: tempMessage._id, rid, msg });
+		return RocketChat._sendMessageCall(tempMessage);
+	},
+	async resendMessage(messageId) {
+		const message = await realm.objects('messages').filtered('_id = $0', messageId)[0];
+		realm.write(() => {
+			message.status = messagesStatus.TEMP;
+			realm.create('messages', message, true);
+		});
+		return RocketChat._sendMessageCall(message);
 	},
 
 	spotlight(search, usernames) {
