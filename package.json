@@ -21,6 +21,7 @@
     ]
   },
   "dependencies": {
+    "@storybook/react-native": "^3.2.15",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-remove-console": "^6.8.5",
     "babel-polyfill": "^6.26.0",
@@ -33,7 +34,7 @@
     "react-native-action-button": "^2.8.3",
     "react-native-actionsheet": "^2.3.0",
     "react-native-animatable": "^1.2.4",
-    "react-native-easy-markdown": "git+https://github.com/lappalj4/react-native-easy-markdown.git",
+    "react-native-easy-markdown": "git+https://github.com/diegolmello/react-native-easy-markdown.git",
     "react-native-fetch-blob": "^0.10.8",
     "react-native-image-picker": "^0.26.7",
     "react-native-img-cache": "^1.5.2",
@@ -60,7 +61,7 @@
     "redux-saga": "^0.16.0",
     "regenerator-runtime": "^0.11.0",
     "remote-redux-devtools": "^0.5.12",
-    "@storybook/react-native": "^3.2.15",
+    "simple-markdown": "^0.3.1",
     "snyk": "^1.41.1",
     "strip-ansi": "^4.0.0"
   },
