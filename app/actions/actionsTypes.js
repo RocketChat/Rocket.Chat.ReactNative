@@ -27,13 +27,15 @@ export const FORGOT_PASSWORD = createRequestTypes('FORGOT_PASSWORD', [
 	'INIT'
 ]);
 export const USER = createRequestTypes('USER', ['SET']);
-export const ROOMS = createRequestTypes('ROOMS');
+export const ROOMS = createRequestTypes('ROOMS', [...defaultTypes, 'SET_SEARCH']);
 export const ROOM = createRequestTypes('ROOM', ['ADD_USER_TYPING', 'REMOVE_USER_TYPING', 'SOMEONE_TYPING', 'OPEN', 'USER_TYPING']);
 export const APP = createRequestTypes('APP', ['READY', 'INIT']);
 export const MESSAGES = createRequestTypes('MESSAGES', [
 	...defaultTypes,
 	'ACTIONS_SHOW',
 	'ACTIONS_HIDE',
+	'ERROR_ACTIONS_SHOW',
+	'ERROR_ACTIONS_HIDE',
 	'DELETE_REQUEST',
 	'DELETE_SUCCESS',
 	'DELETE_FAILURE',
@@ -75,6 +77,7 @@ export const SERVER = createRequestTypes('SERVER', [
 ]);
 export const METEOR = createRequestTypes('METEOR_CONNECT', [...defaultTypes, 'DISCONNECT']);
 export const LOGOUT = 'LOGOUT'; // logout is always success
+export const ACTIVE_USERS = createRequestTypes('ACTIVE_USERS', ['SET', 'REQUEST']);
 
 export const INCREMENT = 'INCREMENT';
 export const DECREMENT = 'DECREMENT';

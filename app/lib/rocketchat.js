@@ -6,11 +6,13 @@ import { hashPassword } from 'react-native-meteor/lib/utils';
 import RNFetchBlob from 'react-native-fetch-blob';
 import reduxStore from './createStore';
 import settingsType from '../constants/settings';
+import messagesStatus from '../constants/messagesStatus';
 import realm from './realm';
 import * as actions from '../actions';
 import { someoneTyping } from '../actions/room';
 import { setUser } from '../actions/login';
 import { disconnect, connectSuccess } from '../actions/connect';
+import { requestActiveUser } from '../actions/activeUsers';
 
 export { Accounts } from 'react-native-meteor';
 
@@ -23,6 +25,7 @@ const call = (method, ...params) => new Promise((resolve, reject) => {
 	});
 });
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
+const SERVER_TIMEOUT = 30000;
 
 const RocketChat = {
 	TOKEN_KEY,
@@ -47,6 +50,23 @@ const RocketChat = {
 		}
 		throw new Error({ error: 'invalid server' });
 	},
+	_setUser(ddpMessage) {
+		let status;
+		if (!ddpMessage.fields) {
+			status = 'offline';
+		} else {
+			status = ddpMessage.fields.status || 'offline';
+		}
+
+		const { user } = reduxStore.getState().login;
+		if (user && user.id === ddpMessage.id) {
+			return reduxStore.dispatch(setUser({ status }));
+		}
+
+		const activeUser = {};
+		activeUser[ddpMessage.id] = status;
+		return reduxStore.dispatch(requestActiveUser(activeUser));
+	},
 	connect(_url) {
 		return new Promise((resolve) => {
 			const url = `${ _url }/websocket`;
@@ -63,6 +83,16 @@ const RocketChat = {
 			});
 
 			Meteor.ddp.on('connected', async() => {
+				Meteor.ddp.on('added', (ddpMessage) => {
+					if (ddpMessage.collection === 'users') {
+						return RocketChat._setUser(ddpMessage);
+					}
+				});
+				Meteor.ddp.on('removed', (ddpMessage) => {
+					if (ddpMessage.collection === 'users') {
+						return RocketChat._setUser(ddpMessage);
+					}
+				});
 				Meteor.ddp.on('changed', (ddpMessage) => {
 					if (ddpMessage.collection === 'stream-room-messages') {
 						return realm.write(() => {
@@ -96,7 +126,7 @@ const RocketChat = {
 						}
 					}
 					if (ddpMessage.collection === 'users') {
-						return reduxStore.dispatch(setUser({ status: ddpMessage.fields.status || ddpMessage.fields.statusDefault }));
+						return RocketChat._setUser(ddpMessage);
 					}
 				});
 				RocketChat.getSettings();
@@ -263,7 +293,7 @@ const RocketChat = {
 	},
 	_buildMessage(message) {
 		const { server } = reduxStore.getState().server;
-		message.temp = false;
+		message.status = messagesStatus.SENT;
 		message._server = { id: server };
 		message.attachments = message.attachments || [];
 		if (message.urls) {
@@ -313,7 +343,7 @@ const RocketChat = {
 			msg,
 			ts: new Date(),
 			_updatedAt: new Date(),
-			temp: true,
+			status: messagesStatus.TEMP,
 			_server: { id: reduxStore.getState().server.server },
 			u: {
 				_id: reduxStore.getState().login.user.id || '1',
@@ -327,9 +357,29 @@ const RocketChat = {
 		});
 		return message;
 	},
-	sendMessage(rid, msg) {
+	async _sendMessageCall(message) {
+		const { _id, rid, msg } = message;
+		const sendMessageCall = call('sendMessage', { _id, rid, msg });
+		const timeoutCall = new Promise(resolve => setTimeout(resolve, SERVER_TIMEOUT, 'timeout'));
+		const result = await Promise.race([sendMessageCall, timeoutCall]);
+		if (result === 'timeout') {
+			realm.write(() => {
+				message.status = messagesStatus.ERROR;
+				realm.create('messages', message, true);
+			});
+		}
+	},
+	async sendMessage(rid, msg) {
 		const tempMessage = this.getMessage(rid, msg);
-		return call('sendMessage', { _id: tempMessage._id, rid, msg });
+		return RocketChat._sendMessageCall(tempMessage);
+	},
+	async resendMessage(messageId) {
+		const message = await realm.objects('messages').filtered('_id = $0', messageId)[0];
+		realm.write(() => {
+			message.status = messagesStatus.TEMP;
+			realm.create('messages', message, true);
+		});
+		return RocketChat._sendMessageCall(message);
 	},
 
 	spotlight(search, usernames) {
@@ -436,7 +486,7 @@ const RocketChat = {
 		});
 		Meteor.subscribe('stream-notify-user', `${ login.user.id }/subscriptions-changed`, false);
 		Meteor.subscribe('stream-notify-user', `${ login.user.id }/rooms-changed`, false);
-		Meteor.subscribe('userData', null, false);
+		Meteor.subscribe('activeUsers', null, false);
 		return data;
 	},
 	logout({ server }) {

@@ -33,6 +33,19 @@ export function actionsHide() {
 	};
 }
 
+export function errorActionsShow(actionMessage) {
+	return {
+		type: types.MESSAGES.ERROR_ACTIONS_SHOW,
+		actionMessage
+	};
+}
+
+export function errorActionsHide() {
+	return {
+		type: types.MESSAGES.ERROR_ACTIONS_HIDE
+	};
+}
+
 export function deleteRequest(message) {
 	return {
 		type: types.MESSAGES.DELETE_REQUEST,

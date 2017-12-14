@@ -1,6 +1,10 @@
 /* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions */
 
-// import React from 'react';
+import React from 'react';
+import { Provider } from 'react-redux';
+
+import { createStore, combineReducers } from 'redux';
+
 
 import { storiesOf } from '@storybook/react-native';
 // import { action } from '@storybook/addon-actions';
@@ -9,8 +13,11 @@ import { storiesOf } from '@storybook/react-native';
 import DirectMessage from './Channels/DirectMessage';
 import Avatar from './Avatar';
 
-storiesOf('Avatar', module).add('avatar', () => Avatar);
-storiesOf('Channel Cell', module).add('Direct Messages', () => DirectMessage);
+const reducers = combineReducers({ settings: () => ({}) });
+const store = createStore(reducers);
+
+storiesOf('Avatar', module).addDecorator(story => <Provider store={store}>{story()}</Provider>).add('avatar', () => Avatar);
+storiesOf('Channel Cell', module).addDecorator(story => <Provider store={store}>{story()}</Provider>).add('Direct Messages', () => DirectMessage);
 
 // storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />);
 

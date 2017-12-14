@@ -23,7 +23,7 @@ exports[`Storyshots Avatar avatar 1`] = `
     >
       <Text
         accessible={true}
-        allowFontScaling={true}
+        allowFontScaling={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -59,7 +59,7 @@ exports[`Storyshots Avatar avatar 1`] = `
     >
       <Text
         accessible={true}
-        allowFontScaling={true}
+        allowFontScaling={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -95,7 +95,7 @@ exports[`Storyshots Avatar avatar 1`] = `
     >
       <Text
         accessible={true}
-        allowFontScaling={true}
+        allowFontScaling={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -131,7 +131,7 @@ exports[`Storyshots Avatar avatar 1`] = `
     >
       <Text
         accessible={true}
-        allowFontScaling={true}
+        allowFontScaling={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -156,8 +156,8 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
   <View>
     <View
       accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
+      accessibilityLabel="rocket.cat, last message Nov 10"
+      accessibilityTraits="selected"
       accessible={true}
       collapsable={undefined}
       hitSlop={undefined}
@@ -174,10 +174,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         Object {
           "alignItems": "center",
           "flexDirection": "row",
-          "height": 56,
           "opacity": 1,
-          "paddingLeft": 16,
-          "paddingRight": 16,
+          "paddingHorizontal": 16,
+          "paddingVertical": 10,
         }
       }
       testID={undefined}
@@ -203,7 +202,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       >
         <Text
           accessible={true}
-          allowFontScaling={true}
+          allowFontScaling={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -218,25 +217,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         >
           RC
         </Text>
-        <CachedImage
-          source={
-            Object {
-              "uri": "https://demo.rocket.chat/avatar/rocket.cat",
-            }
-          }
-          style={
-            Array [
-              Object {
-                "position": "absolute",
-              },
-              Object {
-                "borderRadius": 4,
-                "height": 40,
-                "width": 40,
-              },
-            ]
-          }
-        />
       </View>
       <View
         style={
@@ -258,8 +238,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "color": "#444",
                 "flex": 1,
                 "fontSize": 16,
-                "height": 16,
-                "paddingTop": 10,
               },
               undefined,
             ]
@@ -277,18 +255,17 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               "color": "#888",
               "flex": 1,
               "fontSize": 10,
-              "height": 10,
             }
           }
         >
-          11-10-2017 10:00:00
+          Nov 10
         </Text>
       </View>
     </View>
     <View
       accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
+      accessibilityLabel="rocket.cat, last message Nov 10"
+      accessibilityTraits="selected"
       accessible={true}
       collapsable={undefined}
       hitSlop={undefined}
@@ -305,10 +282,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         Object {
           "alignItems": "center",
           "flexDirection": "row",
-          "height": 56,
           "opacity": 1,
-          "paddingLeft": 16,
-          "paddingRight": 16,
+          "paddingHorizontal": 16,
+          "paddingVertical": 10,
         }
       }
       testID={undefined}
@@ -334,7 +310,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       >
         <Text
           accessible={true}
-          allowFontScaling={true}
+          allowFontScaling={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -349,25 +325,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         >
           RC
         </Text>
-        <CachedImage
-          source={
-            Object {
-              "uri": "https://demo.rocket.chat/avatar/rocket.cat",
-            }
-          }
-          style={
-            Array [
-              Object {
-                "position": "absolute",
-              },
-              Object {
-                "borderRadius": 4,
-                "height": 40,
-                "width": 40,
-              },
-            ]
-          }
-        />
       </View>
       <View
         style={
@@ -389,8 +346,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "color": "#444",
                 "flex": 1,
                 "fontSize": 16,
-                "height": 16,
-                "paddingTop": 10,
               },
               Object {
                 "fontWeight": "bold",
@@ -410,18 +365,17 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               "color": "#888",
               "flex": 1,
               "fontSize": 10,
-              "height": 10,
             }
           }
         >
-          11-10-2017 10:00:00
+          Nov 10
         </Text>
       </View>
     </View>
     <View
       accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
+      accessibilityLabel="rocket.cat, 1 alert, last message Nov 10"
+      accessibilityTraits="selected"
       accessible={true}
       collapsable={undefined}
       hitSlop={undefined}
@@ -438,10 +392,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         Object {
           "alignItems": "center",
           "flexDirection": "row",
-          "height": 56,
           "opacity": 1,
-          "paddingLeft": 16,
-          "paddingRight": 16,
+          "paddingHorizontal": 16,
+          "paddingVertical": 10,
         }
       }
       testID={undefined}
@@ -467,7 +420,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       >
         <Text
           accessible={true}
-          allowFontScaling={true}
+          allowFontScaling={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -482,25 +435,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         >
           RC
         </Text>
-        <CachedImage
-          source={
-            Object {
-              "uri": "https://demo.rocket.chat/avatar/rocket.cat",
-            }
-          }
-          style={
-            Array [
-              Object {
-                "position": "absolute",
-              },
-              Object {
-                "borderRadius": 4,
-                "height": 40,
-                "width": 40,
-              },
-            ]
-          }
-        />
       </View>
       <View
         style={
@@ -522,8 +456,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "color": "#444",
                 "flex": 1,
                 "fontSize": 16,
-                "height": 16,
-                "paddingTop": 10,
               },
               undefined,
             ]
@@ -541,11 +473,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               "color": "#888",
               "flex": 1,
               "fontSize": 10,
-              "height": 10,
             }
           }
         >
-          11-10-2017 10:00:00
+          Nov 10
         </Text>
       </View>
       <Text
@@ -571,8 +502,8 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
     </View>
     <View
       accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
+      accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, 9 alerts, last message Nov 10"
+      accessibilityTraits="selected"
       accessible={true}
       collapsable={undefined}
       hitSlop={undefined}
@@ -589,10 +520,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         Object {
           "alignItems": "center",
           "flexDirection": "row",
-          "height": 56,
           "opacity": 1,
-          "paddingLeft": 16,
-          "paddingRight": 16,
+          "paddingHorizontal": 16,
+          "paddingVertical": 10,
         }
       }
       testID={undefined}
@@ -618,7 +548,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       >
         <Text
           accessible={true}
-          allowFontScaling={true}
+          allowFontScaling={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -633,25 +563,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         >
           LC
         </Text>
-        <CachedImage
-          source={
-            Object {
-              "uri": "https://demo.rocket.chat/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-            }
-          }
-          style={
-            Array [
-              Object {
-                "position": "absolute",
-              },
-              Object {
-                "borderRadius": 4,
-                "height": 40,
-                "width": 40,
-              },
-            ]
-          }
-        />
       </View>
       <View
         style={
@@ -673,8 +584,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "color": "#444",
                 "flex": 1,
                 "fontSize": 16,
-                "height": 16,
-                "paddingTop": 10,
               },
               Object {
                 "fontWeight": "bold",
@@ -694,11 +603,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               "color": "#888",
               "flex": 1,
               "fontSize": 10,
-              "height": 10,
             }
           }
         >
-          11-10-2017 10:00:00
+          Nov 10
         </Text>
       </View>
       <Text
@@ -724,8 +632,8 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
     </View>
     <View
       accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
+      accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, 99 alerts, last message Nov 10"
+      accessibilityTraits="selected"
       accessible={true}
       collapsable={undefined}
       hitSlop={undefined}
@@ -742,10 +650,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         Object {
           "alignItems": "center",
           "flexDirection": "row",
-          "height": 56,
           "opacity": 1,
-          "paddingLeft": 16,
-          "paddingRight": 16,
+          "paddingHorizontal": 16,
+          "paddingVertical": 10,
         }
       }
       testID={undefined}
@@ -771,7 +678,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       >
         <Text
           accessible={true}
-          allowFontScaling={true}
+          allowFontScaling={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -786,25 +693,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         >
           LC
         </Text>
-        <CachedImage
-          source={
-            Object {
-              "uri": "https://demo.rocket.chat/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-            }
-          }
-          style={
-            Array [
-              Object {
-                "position": "absolute",
-              },
-              Object {
-                "borderRadius": 4,
-                "height": 40,
-                "width": 40,
-              },
-            ]
-          }
-        />
       </View>
       <View
         style={
@@ -826,8 +714,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "color": "#444",
                 "flex": 1,
                 "fontSize": 16,
-                "height": 16,
-                "paddingTop": 10,
               },
               undefined,
             ]
@@ -845,11 +731,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               "color": "#888",
               "flex": 1,
               "fontSize": 10,
-              "height": 10,
             }
           }
         >
-          11-10-2017 10:00:00
+          Nov 10
         </Text>
       </View>
       <Text
@@ -875,8 +760,8 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
     </View>
     <View
       accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
+      accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, 100 alerts, last message Nov 10"
+      accessibilityTraits="selected"
       accessible={true}
       collapsable={undefined}
       hitSlop={undefined}
@@ -893,10 +778,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         Object {
           "alignItems": "center",
           "flexDirection": "row",
-          "height": 56,
           "opacity": 1,
-          "paddingLeft": 16,
-          "paddingRight": 16,
+          "paddingHorizontal": 16,
+          "paddingVertical": 10,
         }
       }
       testID={undefined}
@@ -922,7 +806,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       >
         <Text
           accessible={true}
-          allowFontScaling={true}
+          allowFontScaling={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -937,25 +821,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         >
           LC
         </Text>
-        <CachedImage
-          source={
-            Object {
-              "uri": "https://demo.rocket.chat/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-            }
-          }
-          style={
-            Array [
-              Object {
-                "position": "absolute",
-              },
-              Object {
-                "borderRadius": 4,
-                "height": 40,
-                "width": 40,
-              },
-            ]
-          }
-        />
       </View>
       <View
         style={
@@ -977,8 +842,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "color": "#444",
                 "flex": 1,
                 "fontSize": 16,
-                "height": 16,
-                "paddingTop": 10,
               },
               undefined,
             ]
@@ -996,11 +859,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               "color": "#888",
               "flex": 1,
               "fontSize": 10,
-              "height": 10,
             }
           }
         >
-          11-10-2017 10:00:00
+          Nov 10
         </Text>
       </View>
       <Text
@@ -1026,8 +888,8 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
     </View>
     <View
       accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
+      accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, 100000 alerts, last message Nov 10"
+      accessibilityTraits="selected"
       accessible={true}
       collapsable={undefined}
       hitSlop={undefined}
@@ -1044,10 +906,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         Object {
           "alignItems": "center",
           "flexDirection": "row",
-          "height": 56,
           "opacity": 1,
-          "paddingLeft": 16,
-          "paddingRight": 16,
+          "paddingHorizontal": 16,
+          "paddingVertical": 10,
         }
       }
       testID={undefined}
@@ -1073,7 +934,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       >
         <Text
           accessible={true}
-          allowFontScaling={true}
+          allowFontScaling={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -1088,25 +949,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         >
           LC
         </Text>
-        <CachedImage
-          source={
-            Object {
-              "uri": "https://demo.rocket.chat/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-            }
-          }
-          style={
-            Array [
-              Object {
-                "position": "absolute",
-              },
-              Object {
-                "borderRadius": 4,
-                "height": 40,
-                "width": 40,
-              },
-            ]
-          }
-        />
       </View>
       <View
         style={
@@ -1128,8 +970,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "color": "#444",
                 "flex": 1,
                 "fontSize": 16,
-                "height": 16,
-                "paddingTop": 10,
               },
               undefined,
             ]
@@ -1147,11 +987,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               "color": "#888",
               "flex": 1,
               "fontSize": 10,
-              "height": 10,
             }
           }
         >
-          11-10-2017 10:00:00
+          Nov 10
         </Text>
       </View>
       <Text
@@ -1177,8 +1016,8 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
     </View>
     <View
       accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
+      accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, 100000 alerts, you were mentioned, last message Nov 10"
+      accessibilityTraits="selected"
       accessible={true}
       collapsable={undefined}
       hitSlop={undefined}
@@ -1195,10 +1034,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         Object {
           "alignItems": "center",
           "flexDirection": "row",
-          "height": 56,
           "opacity": 1,
-          "paddingLeft": 16,
-          "paddingRight": 16,
+          "paddingHorizontal": 16,
+          "paddingVertical": 10,
         }
       }
       testID={undefined}
@@ -1224,7 +1062,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       >
         <Text
           accessible={true}
-          allowFontScaling={true}
+          allowFontScaling={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -1239,25 +1077,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         >
           LC
         </Text>
-        <CachedImage
-          source={
-            Object {
-              "uri": "https://demo.rocket.chat/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-            }
-          }
-          style={
-            Array [
-              Object {
-                "position": "absolute",
-              },
-              Object {
-                "borderRadius": 4,
-                "height": 40,
-                "width": 40,
-              },
-            ]
-          }
-        />
       </View>
       <View
         style={
@@ -1279,8 +1098,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "color": "#444",
                 "flex": 1,
                 "fontSize": 16,
-                "height": 16,
-                "paddingTop": 10,
               },
               undefined,
             ]
@@ -1298,11 +1115,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               "color": "#888",
               "flex": 1,
               "fontSize": 10,
-              "height": 10,
             }
           }
         >
-          11-10-2017 10:00:00
+          Nov 10
         </Text>
       </View>
       <Text
@@ -1328,8 +1144,8 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
     </View>
     <View
       accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
+      accessibilityLabel="W, last message Nov 10"
+      accessibilityTraits="selected"
       accessible={true}
       collapsable={undefined}
       hitSlop={undefined}
@@ -1346,10 +1162,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         Object {
           "alignItems": "center",
           "flexDirection": "row",
-          "height": 56,
           "opacity": 1,
-          "paddingLeft": 16,
-          "paddingRight": 16,
+          "paddingHorizontal": 16,
+          "paddingVertical": 10,
         }
       }
       testID={undefined}
@@ -1375,7 +1190,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       >
         <Text
           accessible={true}
-          allowFontScaling={true}
+          allowFontScaling={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -1411,8 +1226,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "color": "#444",
                 "flex": 1,
                 "fontSize": 16,
-                "height": 16,
-                "paddingTop": 10,
               },
               undefined,
             ]
@@ -1430,18 +1243,17 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               "color": "#888",
               "flex": 1,
               "fontSize": 10,
-              "height": 10,
             }
           }
         >
-          11-10-2017 10:00:00
+          Nov 10
         </Text>
       </View>
     </View>
     <View
       accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
+      accessibilityLabel="WW, last message Nov 10"
+      accessibilityTraits="selected"
       accessible={true}
       collapsable={undefined}
       hitSlop={undefined}
@@ -1458,10 +1270,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         Object {
           "alignItems": "center",
           "flexDirection": "row",
-          "height": 56,
           "opacity": 1,
-          "paddingLeft": 16,
-          "paddingRight": 16,
+          "paddingHorizontal": 16,
+          "paddingVertical": 10,
         }
       }
       testID={undefined}
@@ -1487,7 +1298,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       >
         <Text
           accessible={true}
-          allowFontScaling={true}
+          allowFontScaling={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -1523,8 +1334,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "color": "#444",
                 "flex": 1,
                 "fontSize": 16,
-                "height": 16,
-                "paddingTop": 10,
               },
               undefined,
             ]
@@ -1542,18 +1351,17 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               "color": "#888",
               "flex": 1,
               "fontSize": 10,
-              "height": 10,
             }
           }
         >
-          11-10-2017 10:00:00
+          Nov 10
         </Text>
       </View>
     </View>
     <View
       accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
+      accessibilityLabel=", last message Nov 10"
+      accessibilityTraits="selected"
       accessible={true}
       collapsable={undefined}
       hitSlop={undefined}
@@ -1570,10 +1378,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         Object {
           "alignItems": "center",
           "flexDirection": "row",
-          "height": 56,
           "opacity": 1,
-          "paddingLeft": 16,
-          "paddingRight": 16,
+          "paddingHorizontal": 16,
+          "paddingVertical": 10,
         }
       }
       testID={undefined}
@@ -1599,7 +1406,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       >
         <Text
           accessible={true}
-          allowFontScaling={true}
+          allowFontScaling={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -1635,8 +1442,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "color": "#444",
                 "flex": 1,
                 "fontSize": 16,
-                "height": 16,
-                "paddingTop": 10,
               },
               undefined,
             ]
@@ -1654,11 +1459,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               "color": "#888",
               "flex": 1,
               "fontSize": 10,
-              "height": 10,
             }
           }
         >
-          11-10-2017 10:00:00
+          Nov 10
         </Text>
       </View>
     </View>

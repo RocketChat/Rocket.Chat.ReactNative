@@ -19,3 +19,10 @@ export function roomsFailure(err) {
 		err
 	};
 }
+
+export function setSearch(searchText) {
+	return {
+		type: types.ROOMS.SET_SEARCH,
+		searchText
+	};
+}
