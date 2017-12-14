@@ -8,7 +8,7 @@ import { emojify } from 'react-emojione';
 const codeStyle = {
 	...Platform.select({
 		ios: { fontFamily: 'Courier New' },
-		android: { fontFamily: 'Roboto' }
+		android: { fontFamily: 'monospace' }
 	}),
 	backgroundColor: '#f8f8f8',
 	borderColor: '#cccccc',
