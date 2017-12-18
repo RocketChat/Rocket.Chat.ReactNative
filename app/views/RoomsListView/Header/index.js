@@ -15,6 +15,7 @@ import styles from './styles';
 
 @connect(state => ({
 	user: state.login.user,
+	connected: state.meteor.connected,
 	baseUrl: state.settings.Site_Url
 }), dispatch => ({
 	setSearch: searchText => dispatch(setSearch(searchText))
@@ -23,6 +24,7 @@ export default class extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
 		user: PropTypes.object.isRequired,
+		connected: PropTypes.bool,
 		baseUrl: PropTypes.string,
 		setSearch: PropTypes.func
 	}
@@ -57,7 +59,7 @@ export default class extends React.Component {
 	}
 
 	getUserStatus() {
-		return this.props.user.status || 'offline';
+		return (this.props.connected && this.props.user.status) || 'offline';
 	}
 
 	getUserStatusLabel() {
