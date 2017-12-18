@@ -68,7 +68,7 @@
   "devDependencies": {
     "@storybook/addon-storyshots": "^3.2.15",
     "babel-eslint": "^8.0.2",
-    "babel-jest": "21.2.0",
+    "babel-jest": "22.0.1",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.10",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react-native": "4.0.0",
