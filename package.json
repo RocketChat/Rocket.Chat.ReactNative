@@ -81,7 +81,7 @@
     "eslint-plugin-react-native": "^3.2.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "21.2.1",
-    "jest-cli": "^21.2.1",
+    "jest-cli": "^22.0.1",
     "react-dom": "^16.2.0",
     "react-test-renderer": "^16.2.0"
   },
