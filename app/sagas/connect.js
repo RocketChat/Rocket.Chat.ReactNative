@@ -1,5 +1,4 @@
 import { put, call, takeLatest, select } from 'redux-saga/effects';
-// import { delay } from 'redux-saga';
 import { METEOR } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 
@@ -9,8 +8,6 @@ const getServer = ({ server }) => server.server;
 
 
 const connect = url => RocketChat.connect(url);
-
-
 // const watchConnect = function* watchConnect() {
 // 	const { meteor } = yield select(state => state);
 // 	if (meteor.disconnected_by_user) {
