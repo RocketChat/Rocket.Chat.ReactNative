@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native';
-import { take, put, call, takeLatest, select, all } from 'redux-saga/effects';
+import { put, call, takeLatest, select, all } from 'redux-saga/effects';
 import * as types from '../actions/actionsTypes';
 import {
 	loginRequest,
@@ -46,7 +46,7 @@ const getToken = function* getToken() {
 
 const handleLoginWhenServerChanges = function* handleLoginWhenServerChanges() {
 	try {
-		yield take(types.METEOR.SUCCESS);
+		// yield take(types.METEOR.SUCCESS);
 		yield call(getToken);
 
 		const user = yield select(getUser);
@@ -149,7 +149,7 @@ const handleForgotPasswordRequest = function* handleForgotPasswordRequest({ emai
 };
 
 const root = function* root() {
-	yield takeLatest(types.SERVER.CHANGED, handleLoginWhenServerChanges);
+	yield takeLatest(types.METEOR.SUCCESS, handleLoginWhenServerChanges);
 	yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
 	yield takeLatest(types.LOGIN.SUCCESS, saveToken);
 	yield takeLatest(types.LOGIN.SUBMIT, handleLoginSubmit);
