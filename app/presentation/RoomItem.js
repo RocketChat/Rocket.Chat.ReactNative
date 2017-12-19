@@ -3,7 +3,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 import Avatar from '../containers/Avatar';
-import Touch from '../utils/touch';
+import Touch from '../utils/touch/index'; //eslint-disable-line
 
 const styles = StyleSheet.create({
 	container: {
