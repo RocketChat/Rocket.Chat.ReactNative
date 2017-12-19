@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, SafeAreaView, Platform, FlatList, Text, Animated, TouchableOpacity } from 'react-native';
+import { View, TextInput, SafeAreaView, Platform, FlatList, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
@@ -11,8 +11,10 @@ import styles from './style';
 import MyIcon from '../icons';
 import realm from '../../lib/realm';
 import Avatar from '../Avatar';
+import AnimatedContainer from './AnimatedContainer';
 
-const MENTION_HEIGHT = 40;
+const MENTIONS_TRACKING_TYPE_USERS = '@';
+const MENTIONS_TRACKING_TYPE_ROOMS = '#';
 
 @connect(state => ({
 	room: state.room,
@@ -40,25 +42,26 @@ export default class MessageBox extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.users = realm
-			.objects('users'); // .filtered('_server.id = $0', 'https://open.rocket.chat');
 		this.state = {
 			height: 20,
 			text: '',
-			isTrackingStarted: false,
-			usersFilter: this.users,
-			mentionKeyword: ''
+			isTrackingMentions: false,
+			mentionsTrackingType: '',
+			mentionKeyword: '',
+			mentions: [],
+			showAnimatedContainer: false,
+			previousChar: ' '
 		};
-		this.animatedBottom = new Animated.Value(0);
-		this.previousChar = ' ';
+		this.users = [];
+		this.subscriptions = [];
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (this.props.message !== nextProps.message && nextProps.message) {
-			this.component.setNativeProps({ text: nextProps.message.msg });
+		if (this.props.message !== nextProps.message && nextProps.message.msg) {
+			this.setState({ text: nextProps.message.msg });
 			this.component.focus();
 		} else if (!nextProps.message) {
-			this.component.setNativeProps({ text: '' });
+			this.setState({ text: '' });
 		}
 	}
 
@@ -66,15 +69,21 @@ export default class MessageBox extends React.Component {
 		this.setState({ text });
 		this.props.typing(text.length > 0);
 
+		// get last char
 		const lastChar = text.substr(text.length - 1);
-		const newWord = this.previousChar.trim().length === 0; // TODO: testar se é char via regex
-		if (lastChar === '@' && newWord) {
-			this.startTracking();
-		} else if ((lastChar === ' ' && this.state.isTrackingStarted) || text === '') {
-			this.stopTracking();
+		// identify if is a new word
+		const newWord = this.state.previousChar.trim().length === 0;
+		// if is a new word and is an identified tracking type, e.g. @ or #, start tracking
+		if ((lastChar === MENTIONS_TRACKING_TYPE_USERS || lastChar === MENTIONS_TRACKING_TYPE_ROOMS) && newWord) {
+			this.startTrackingMention(lastChar);
+		// if word ended and is still tracking mentions, stop tracking
+		} else if ((lastChar === ' ' && this.state.isTrackingMentions) || text === '') {
+			this.stopTrackingMention();
+		// if is tracking, identify keyword typed, e.g. transforms `@foo` on `foo`
+		} else if (this.state.isTrackingMentions) {
+			this.identifyMentionKeyword(text);
 		}
-		this.previousChar = lastChar;
-		this.identifyKeyword(text);
+		this.setState({ previousChar: lastChar });
 	}
 
 	get leftButtons() {
@@ -105,14 +114,14 @@ export default class MessageBox extends React.Component {
 	get rightButtons() {
 		const icons = [];
 
-		if (this.state.text.length) {
+		if (this.state.text) {
 			icons.push(<MyIcon
 				style={[styles.actionButtons, { color: '#1D74F5' }]}
 				name='send'
 				key='sendIcon'
 				accessibilityLabel='Send message'
 				accessibilityTraits='button'
-				onPress={() => this.submit(this.component._lastNativeText)}
+				onPress={() => this.submit(this.state.text)}
 			/>);
 		}
 		icons.push(<MyIcon
@@ -124,56 +133,6 @@ export default class MessageBox extends React.Component {
 			onPress={() => this.addFile()}
 		/>);
 		return icons;
-	}
-
-	startTracking() {
-		this.setState({
-			isTrackingStarted: true
-		});
-		this.openSuggestionsPanel();
-	}
-
-	stopTracking() {
-		this.closeSuggestionsPanel();
-		setTimeout(() => {
-			this.setState({
-				isTrackingStarted: false
-			});
-		}, 300);
-	}
-
-	openSuggestionsPanel() {
-		this.animatedBottom.setValue(0);
-		Animated.timing(this.animatedBottom, {
-			toValue: 1,
-			duration: 300
-		}).start();
-	}
-
-	closeSuggestionsPanel() {
-		Animated.timing(this.animatedBottom, {
-			toValue: 0,
-			duration: 300
-		}).start();
-	}
-
-	identifyKeyword(val) {
-		if (this.state.isTrackingStarted) {
-			const pattern = new RegExp(/@[0-9a-zA-Z-_.]+/);
-			const keywordArray = val.match(pattern);
-			if (keywordArray && !!keywordArray.length) {
-				const keyword = keywordArray[0].substring(1) || '';
-				this.setState({ mentionKeyword: keyword })
-				this.updateSuggestions(keyword);
-			}
-		}
-	}
-
-	updateSuggestions = (keyword) => {
-		const usersFilter = this.users.filtered('username CONTAINS[c] $0', keyword).slice();
-		this.setState({
-			usersFilter
-		});
 	}
 
 	updateSize = (height) => {
@@ -206,14 +165,14 @@ export default class MessageBox extends React.Component {
 	}
 	editCancel() {
 		this.props.editCancel();
-		this.component.setNativeProps({ text: '' });
+		this.setState({ text: '' });
 	}
 	openEmoji() {
 		this.setState({ emoji: !this.state.emoji });
 	}
 	submit(message) {
-		this.component.setNativeProps({ text: '' });
 		this.setState({ text: '' });
+		this.stopTrackingMention();
 		requestAnimationFrame(() => {
 			this.props.typing(false);
 			if (message.trim() === '') {
@@ -232,76 +191,99 @@ export default class MessageBox extends React.Component {
 		});
 	}
 
-	didPressMentionItem(item) {
-		const text = this.component._lastNativeText;
+	startTrackingMention(char) {
+		if (char === MENTIONS_TRACKING_TYPE_USERS) {
+			this.users = realm.objects('users');
+		} else {
+			this.subscriptions = realm.objects('subscriptions')
+				.filtered('_server.id = $0 AND t != $1', this.props.baseUrl, 'd');
+		}
+		this.setState({
+			showAnimatedContainer: true,
+			isTrackingMentions: true,
+			mentionsTrackingType: char,
+			mentions: (char === MENTIONS_TRACKING_TYPE_USERS) ? this.users : this.subscriptions
+		});
+	}
+
+	stopTrackingMention() {
+		this.setState({
+			showAnimatedContainer: false,
+			isTrackingMentions: false,
+			mentionsTrackingType: '',
+			mentionKeyword: '',
+			mentions: [],
+			previousChar: ' '
+		});
+		this.users = [];
+		this.subscriptions = [];
+	}
+
+	identifyMentionKeyword(val) {
+		let pattern;
+		if (this.state.mentionsTrackingType === MENTIONS_TRACKING_TYPE_USERS) {
+			pattern = new RegExp(/@[0-9a-zA-Z-_.]+/);
+		} else {
+			pattern = new RegExp(/#[0-9a-zA-Z-_.]+/);
+		}
+		const keywordArray = val.match(pattern);
+		if (keywordArray && !!keywordArray.length) {
+			const keyword = keywordArray[0].substring(1) || '';
+			this.setState({ mentionKeyword: keyword });
+			this.updateMentions(keyword);
+		}
+	}
+
+	updateMentions = (keyword) => {
+		if (this.state.mentionsTrackingType === MENTIONS_TRACKING_TYPE_USERS) {
+			const usersFilter = this.users.filtered('username CONTAINS[c] $0', keyword).slice();
+			this.setState({ mentions: usersFilter });
+		} else {
+			const subscriptionsFilter = this.subscriptions.filtered('name CONTAINS[c] $0', keyword).slice();
+			this.setState({ mentions: subscriptionsFilter });
+		}
+	}
+
+	_onPressMention(item) {
+		const { text } = this.state;
 		const message = text.slice(0, -this.state.mentionKeyword.length || text.length);
-		this.component.setNativeProps({ text: `${ message }${ item.username } ` });
+		this.setState({ text: `${ message }${ item.username || item.name } ` });
 		this.component.focus();
-		this.stopTracking();
+		this.stopTrackingMention();
 	}
 
 	renderMentionItem = item => (
 		<TouchableOpacity
-			style={{
-				height: MENTION_HEIGHT,
-				backgroundColor: '#F7F8FA',
-				borderBottomWidth: 1,
-				borderBottomColor: '#ECECEC',
-				flexDirection: 'row',
-				alignItems: 'center'
-			}}
-			onPress={() => this.didPressMentionItem(item)}
+			style={styles.mentionItem}
+			onPress={() => this._onPressMention(item)}
 		>
 			<Avatar
 				style={{ margin: 8 }}
-				text={item.username}
+				text={item.username || item.name}
 				size={24}
 				baseUrl={this.props.baseUrl}
 			/>
-			<Text>{item.username}</Text>
+			<Text>{item.username || item.name}</Text>
 		</TouchableOpacity>
 	)
 
 	renderMentions() {
-		const bottom = this.animatedBottom.interpolate({
-			inputRange: [0, 1],
-			outputRange: [-200, 53]
-		});
-
-		if (!this.state.isTrackingStarted || this.state.usersFilter.length === 0) {
-			return null;
-		}
-
-		return (
-			<Animated.View
-				style={{
-					position: 'absolute',
-					left: 0,
-					right: 0,
-					bottom,
-					zIndex: 1
-				}}
-			>
-				<FlatList
-					style={{
-						maxHeight: MENTION_HEIGHT * 4,
-						borderTopColor: '#ECECEC',
-						borderTopWidth: 1,
-						backgroundColor: '#fff'
-					}}
-					data={this.state.usersFilter}
-					renderItem={({ item }) => this.renderMentionItem(item)}
-					keyExtractor={item => item._id}
-				/>
-			</Animated.View>
+		const usersList = (
+			<FlatList
+				style={styles.mentionList}
+				data={this.state.mentions}
+				renderItem={({ item }) => this.renderMentionItem(item)}
+				keyExtractor={item => item._id}
+			/>
 		);
+		return <AnimatedContainer visible={this.state.showAnimatedContainer} subview={usersList} />;
 	}
 
 	render() {
 		const { height } = this.state;
 		return (
 			<View>
-				<SafeAreaView style={[styles.textBox, (this.props.editing ? styles.editing : null), { zIndex: 2 }]}>
+				<SafeAreaView style={[styles.textBox, (this.props.editing ? styles.editing : null)]}>
 					<View style={styles.textArea}>
 						{this.leftButtons}
 						<TextInput
@@ -311,6 +293,7 @@ export default class MessageBox extends React.Component {
 							blurOnSubmit={false}
 							placeholder='New Message'
 							onChangeText={text => this.onChangeText(text)}
+							value={this.state.text}
 							underlineColorAndroid='transparent'
 							defaultValue=''
 							multiline
