@@ -54,7 +54,7 @@ export default class MessageBox extends React.Component {
 			previousChar: ' '
 		};
 		this.users = [];
-		this.subscriptions = [];
+		this.rooms = [];
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -192,18 +192,96 @@ export default class MessageBox extends React.Component {
 		});
 	}
 
+	_getUsers(keyword) {
+		this.users = realm.objects('users');
+		if (keyword) {
+			this.users = this.users.filtered('username CONTAINS[c] $0', keyword);
+		}
+		this.setState({ mentions: this.users.slice() });
+
+		const usernames = [];
+		this.users.forEach(user => usernames.push(user.username));
+
+		if (keyword && usernames.length < 7) {
+			if (this.oldPromise) {
+				this.oldPromise();
+			}
+			Promise.race([
+				RocketChat.spotlight(keyword, usernames),
+				new Promise((resolve, reject) => (this.oldPromise = reject))
+			]).then(
+				(results) => {
+					realm.write(() => {
+						results.users.forEach((user) => {
+							user._server = {
+								id: this.props.baseUrl,
+								current: true
+							};
+							realm.create('users', user, true);
+						});
+					});
+				},
+				() => {}
+			).then(() => {
+				delete this.oldPromise;
+				this.users = realm.objects('users').filtered('username CONTAINS[c] $0', keyword);
+				this.setState({ mentions: this.users.slice() });
+			});
+		}
+	}
+
+	_getRooms(keyword) {
+		this.rooms = realm.objects('subscriptions')
+			.filtered('_server.id = $0 AND t != $1', this.props.baseUrl, 'd');
+		if (keyword) {
+			this.rooms = this.rooms.filtered('name CONTAINS[c] $0', keyword);
+		}
+		this.setState({ mentions: this.rooms.slice() });
+
+		const rooms = [];
+		this.rooms.forEach(room => rooms.push(room.name));
+
+		if (keyword && rooms.length < 7) {
+			if (this.oldPromise) {
+				this.oldPromise();
+			}
+			Promise.race([
+				RocketChat.spotlight(keyword, rooms),
+				new Promise((resolve, reject) => (this.oldPromise = reject))
+			]).then(
+				(results) => {
+					realm.write(() => {
+						results.rooms.forEach((sub) => {
+							sub.rid = sub._id;
+							sub._server = {
+								id: this.props.baseUrl,
+								current: true
+							};
+							realm.create('subscriptions', sub, true);
+						});
+					});
+				},
+				() => {}
+			).then(() => {
+				delete this.oldPromise;
+				this.rooms = realm.objects('subscriptions')
+					.filtered('_server.id = $0 AND t != $1', this.props.baseUrl, 'd')
+					.filtered('name CONTAINS[c] $0', keyword);
+				this.setState({ mentions: this.rooms.slice() });
+			});
+		}
+	}
+
 	startTrackingMention(char) {
 		if (char === MENTIONS_TRACKING_TYPE_USERS) {
-			this.users = realm.objects('users');
+			this._getUsers();
 		} else {
-			this.subscriptions = realm.objects('subscriptions')
-				.filtered('_server.id = $0 AND t != $1', this.props.baseUrl, 'd');
+			this._getRooms();
 		}
 		this.setState({
 			showAnimatedContainer: true,
 			isTrackingMentions: true,
-			mentionsTrackingType: char,
-			mentions: (char === MENTIONS_TRACKING_TYPE_USERS) ? this.users : this.subscriptions
+			mentionsTrackingType: char
 		});
 	}
 
@@ -220,7 +298,7 @@ export default class MessageBox extends React.Component {
 				previousChar: ' '
 			});
 			this.users = [];
-			this.subscriptions = [];
+			this.rooms = [];
 		}, 300);
 	}
 
@@ -241,11 +319,9 @@ export default class MessageBox extends React.Component {
 
 	updateMentions = (keyword) => {
 		if (this.state.mentionsTrackingType === MENTIONS_TRACKING_TYPE_USERS) {
-			const usersFilter = this.users.filtered('username CONTAINS[c] $0', keyword).slice();
-			this.setState({ mentions: usersFilter });
+			this._getUsers(keyword);
 		} else {
-			const subscriptionsFilter = this.subscriptions.filtered('name CONTAINS[c] $0', keyword).slice();
-			this.setState({ mentions: subscriptionsFilter });
+			this._getRooms(keyword);
 		}
 	}
 
