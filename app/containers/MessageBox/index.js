@@ -355,6 +355,8 @@ export default class MessageBox extends React.Component {
 				data={this.state.mentions}
 				renderItem={({ item }) => this.renderMentionItem(item)}
 				keyExtractor={item => item._id}
+				keyboardShouldPersistTaps='always'
+				keyboardDismissMode='interactive'
 			/>
 		);
 		const { showAnimatedContainer, messageboxHeight } = this.state;
