@@ -44,6 +44,7 @@ export default class MessageBox extends React.Component {
 		super(props);
 		this.state = {
 			height: 20,
+			messageboxHeight: 0,
 			text: '',
 			isTrackingMentions: false,
 			mentionsTrackingType: '',
@@ -208,15 +209,19 @@ export default class MessageBox extends React.Component {
 
 	stopTrackingMention() {
 		this.setState({
-			showAnimatedContainer: false,
-			isTrackingMentions: false,
-			mentionsTrackingType: '',
-			mentionKeyword: '',
-			mentions: [],
-			previousChar: ' '
+			showAnimatedContainer: false
 		});
-		this.users = [];
-		this.subscriptions = [];
+		setTimeout(() => {
+			this.setState({
+				isTrackingMentions: false,
+				mentionsTrackingType: '',
+				mentionKeyword: '',
+				mentions: [],
+				previousChar: ' '
+			});
+			this.users = [];
+			this.subscriptions = [];
+		}, 300);
 	}
 
 	identifyMentionKeyword(val) {
@@ -276,14 +281,18 @@ export default class MessageBox extends React.Component {
 				keyExtractor={item => item._id}
 			/>
 		);
-		return <AnimatedContainer visible={this.state.showAnimatedContainer} subview={usersList} />;
+		const { showAnimatedContainer, messageboxHeight } = this.state;
+		return <AnimatedContainer visible={showAnimatedContainer} subview={usersList} messageboxHeight={messageboxHeight} />;
 	}
 
 	render() {
 		const { height } = this.state;
 		return (
 			<View>
-				<SafeAreaView style={[styles.textBox, (this.props.editing ? styles.editing : null)]}>
+				<SafeAreaView
+					style={[styles.textBox, (this.props.editing ? styles.editing : null)]}
+					onLayout={event => this.setState({ messageboxHeight: event.nativeEvent.layout.height })}
+				>
 					<View style={styles.textArea}>
 						{this.leftButtons}
 						<TextInput

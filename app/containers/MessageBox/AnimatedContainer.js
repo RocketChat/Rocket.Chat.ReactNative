@@ -5,7 +5,8 @@ import { Animated } from 'react-native';
 export default class MessageBox extends React.PureComponent {
 	static propTypes = {
 		subview: PropTypes.object.isRequired,
-		visible: PropTypes.bool.isRequired
+		visible: PropTypes.bool.isRequired,
+		messageboxHeight: PropTypes.number.isRequired
 	}
 
 	constructor(props) {
@@ -35,7 +36,7 @@ export default class MessageBox extends React.PureComponent {
 	hide() {
 		Animated.timing(this.animatedBottom, {
 			toValue: 0,
-			duration: 2000,
+			duration: 300,
 			useNativeDriver: true
 		}).start();
 	}
@@ -43,7 +44,7 @@ export default class MessageBox extends React.PureComponent {
 	render() {
 		const bottom = this.animatedBottom.interpolate({
 			inputRange: [0, 1],
-			outputRange: [0, -253]
+			outputRange: [0, -this.props.messageboxHeight - 200]
 		});
 
 		return (
