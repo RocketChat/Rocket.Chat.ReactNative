@@ -66,12 +66,40 @@ export default class Message extends React.Component {
 		this.props.errorActionsShow(JSON.parse(JSON.stringify(item)));
 	}
 
-	isDeleted() {
-		return this.props.item.t === 'rm';
+	getInfoMessage() {
+		let message = '';
+		const messageType = this.props.item.t;
+
+		if (messageType === 'rm') {
+			message = 'Message removed';
+		} else if (messageType === 'uj') {
+			message = 'Has joined the channel.';
+		} else if (messageType === 'r') {
+			message = `Room name changed to: ${ this.props.item.msg } by ${ this.props.item.u.username }`;
+		} else if (messageType === 'message_pinned') {
+			message = 'Message pinned';
+		} else if (messageType === 'ul') {
+			message = 'Has left the channel.';
+		} else if (messageType === 'ru') {
+			message = `User ${ this.props.item.msg } removed by ${ this.props.item.u.username }`;
+		} else if (messageType === 'au') {
+			message = `User ${ this.props.item.msg } added by ${ this.props.item.u.username }`;
+		} else if (messageType === 'user-muted') {
+			message = `User ${ this.props.item.msg } muted by ${ this.props.item.u.username }`;
+		} else if (messageType === 'user-unmuted') {
+			message = `User ${ this.props.item.msg } unmuted by ${ this.props.item.u.username }`;
+		}
+
+		return message;
 	}
 
-	isPinned() {
-		return this.props.item.t === 'message_pinned';
+	isInfoMessage() {
+		return ['r', 'au', 'ru', 'ul', 'uj', 'rm', 'user-muted', 'user-unmuted', 'message_pinned'].includes(this.props.item.t);
+	}
+
+
+	isDeleted() {
+		return this.props.item.t === 'rm';
 	}
 
 	hasError() {
@@ -97,10 +125,8 @@ export default class Message extends React.Component {
 	}
 
 	renderMessageContent() {
-		if (this.isDeleted()) {
-			return <Text style={styles.textInfo}>Message removed</Text>;
-		} else if (this.isPinned()) {
-			return <Text style={styles.textInfo}>Message pinned</Text>;
+		if (this.isInfoMessage()) {
+			return <Text style={styles.textInfo}>{this.getInfoMessage()}</Text>;
 		}
 		return <Markdown msg={this.props.item.msg} />;
 	}
