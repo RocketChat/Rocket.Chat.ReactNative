@@ -156,5 +156,14 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		flexWrap: 'wrap',
 		justifyContent: 'space-around'
+	},
+	validText: {
+		color: 'green'
+	},
+	invalidText: {
+		color: 'red'
+	},
+	validatingText: {
+		color: '#aaa'
 	}
 });

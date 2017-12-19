@@ -2,24 +2,24 @@ import { put, takeEvery, call, takeLatest, race, take } from 'redux-saga/effects
 import { delay } from 'redux-saga';
 import { AsyncStorage } from 'react-native';
 import { SERVER } from '../actions/actionsTypes';
-import { connectRequest, disconnect } from '../actions/connect';
+import { connectRequest, disconnect, disconnect_by_user } from '../actions/connect';
 import { changedServer, serverSuccess, serverFailure, serverRequest, setServer } from '../actions/server';
-import { logout } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import realm from '../lib/realm';
 import * as NavigationService from '../containers/routes/NavigationService';
+// import { logout } from '../actions/login';
 
 const validate = function* validate(server) {
 	return yield RocketChat.testServer(server);
 };
 
 const selectServer = function* selectServer({ server }) {
+	yield put(disconnect_by_user());
 	yield put(disconnect());
 	yield put(changedServer(server));
 	yield call([AsyncStorage, 'setItem'], 'currentServer', server);
 	yield put(connectRequest(server));
 };
-
 
 const validateServer = function* validateServer({ server }) {
 	try {
@@ -48,8 +48,9 @@ const addServer = function* addServer({ server }) {
 };
 
 const handleGotoAddServer = function* handleGotoAddServer() {
-	yield put(logout());
 	yield call(AsyncStorage.removeItem, RocketChat.TOKEN_KEY);
+	yield put(disconnect_by_user());
+	yield put(disconnect());
 	yield delay(1000);
 	yield call(NavigationService.navigate, 'AddServer');
 };
