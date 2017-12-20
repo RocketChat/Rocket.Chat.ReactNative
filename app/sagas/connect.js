@@ -1,9 +1,7 @@
-import { put, call, takeLatest, select, take, race } from 'redux-saga/effects';
+import { call, takeLatest, select, take, race } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { METEOR } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
-
-import { connectSuccess, connectFailure } from '../actions/connect';
 
 const getServer = ({ server }) => server.server;
 

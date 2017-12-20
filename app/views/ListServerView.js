@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import { setServer } from '../actions/server';
 import realm from '../lib/realm';
 import Fade from '../animations/fade';
-import Banner from '../containers/Banner';
 
 const styles = StyleSheet.create({
 	view: {
