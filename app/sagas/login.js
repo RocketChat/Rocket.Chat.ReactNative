@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native';
-import { take, put, call, takeLatest, select, all } from 'redux-saga/effects';
+import { put, call, takeLatest, select, all } from 'redux-saga/effects';
 import * as types from '../actions/actionsTypes';
 import {
 	loginRequest,
@@ -8,6 +8,7 @@ import {
 	registerIncomplete,
 	loginSuccess,
 	loginFailure,
+	logout,
 	setToken,
 	registerSuccess,
 	setUsernameRequest,
@@ -40,16 +41,13 @@ const getToken = function* getToken() {
 			console.log('getTokenerr', e);
 		}
 	} else {
-		yield put(setToken());
+		return yield put(setToken());
 	}
 };
 
 const handleLoginWhenServerChanges = function* handleLoginWhenServerChanges() {
 	try {
-		yield take(types.METEOR.SUCCESS);
-		yield call(getToken);
-
-		const user = yield select(getUser);
+		const user = yield call(getToken);
 		if (user.token) {
 			yield put(loginRequest({ resume: user.token }));
 		}
@@ -76,17 +74,19 @@ const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 
 		// if user has username
 		if (me.username) {
-			user.username = me.username;
 			const userInfo = yield call(userInfoCall, { server, token: user.token, userId: user.id });
+			user.username = userInfo.user.username;
 			if (userInfo.user.roles) {
 				user.roles = userInfo.user.roles;
 			}
 		} else {
 			yield put(registerIncomplete());
 		}
-
 		yield put(loginSuccess(user));
 	} catch (err) {
+		if (err.error === 403) {
+			return yield put(logout());
+		}
 		yield put(loginFailure(err));
 	}
 };
@@ -149,7 +149,7 @@ const handleForgotPasswordRequest = function* handleForgotPasswordRequest({ emai
 };
 
 const root = function* root() {
-	yield takeLatest(types.SERVER.CHANGED, handleLoginWhenServerChanges);
+	yield takeLatest(types.METEOR.SUCCESS, handleLoginWhenServerChanges);
 	yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
 	yield takeLatest(types.LOGIN.SUCCESS, saveToken);
 	yield takeLatest(types.LOGIN.SUBMIT, handleLoginSubmit);

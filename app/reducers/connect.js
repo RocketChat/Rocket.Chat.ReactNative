@@ -4,6 +4,7 @@ const initialState = {
 	connecting: false,
 	connected: false,
 	errorMessage: '',
+	disconnected_by_user: false,
 	failure: false
 };
 
@@ -12,7 +13,8 @@ export default function connect(state = initialState, action) {
 		case METEOR.REQUEST:
 			return {
 				...state,
-				connecting: true
+				connecting: true,
+				disconnected_by_user: false
 			};
 		case METEOR.SUCCESS:
 			return {
@@ -28,6 +30,11 @@ export default function connect(state = initialState, action) {
 				connected: false,
 				failure: true,
 				errorMessage: action.err
+			};
+		case METEOR.DISCONNECT_BY_USER:
+			return {
+				...state,
+				disconnected_by_user: true
 			};
 		case METEOR.DISCONNECT:
 			return initialState;
