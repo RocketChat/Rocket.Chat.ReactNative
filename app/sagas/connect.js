@@ -28,13 +28,14 @@ const watchConnect = function* watchConnect() {
 	}
 };
 const test = function* test() {
-	try {
-		const server = yield select(getServer);
-		const response = yield call(connect, server);
-		yield put(connectSuccess(response));
-	} catch (err) {
-		yield put(connectFailure(err.status));
-	}
+	// try {
+	const server = yield select(getServer);
+	// const response =
+	yield call(connect, server);
+	// yield put(connectSuccess(response));
+	// } catch (err) {
+	// yield put(connectFailure(err.status));
+	// }
 };
 
 const root = function* root() {

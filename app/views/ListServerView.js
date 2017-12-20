@@ -184,7 +184,6 @@ export default class ListServerView extends React.Component {
 	render() {
 		return (
 			<View style={styles.view}>
-				<Banner />
 				<SafeAreaView style={styles.view}>
 					<SectionList
 						style={styles.list}

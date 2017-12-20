@@ -54,23 +54,21 @@ export default class Socket extends EventEmitter {
 			this.id += 1;
 			const id = obj.id || `${ this.id }`;
 			this.connection.send(EJSON.stringify({ ...obj, id }));
-			this.ddp.once(id, (data) => { console.log(data); return data.error ? reject(data.error) : resolve(data.result || data.subs); });
-		}).catch((e) => {
-			console.log(e);
-			return Promise.reject(e);
+			this.ddp.once(id, data => (data.error ? reject(data.error) : resolve(data.result || data.subs)));
 		});
 	}
 	_connect() {
 		const connection = new WebSocket(`${ this.url }/websocket`);
 		connection.onopen = () => {
+			this.emit('open');
 			this.send({ msg: 'connect', version: '1', support: ['1', 'pre2', 'pre1'] });
 		};
 		connection.onclose = e => this.emit('disconnected', e);
-		connection.onerror = () => {
-			// alert(error.type);
-			// console.log(error);
-			// console.log(`WebSocket Error ${ JSON.stringify({...error}) }`);
-		};
+		// connection.onerror = () => {
+		// 	// alert(error.type);
+		// 	// console.log(error);
+		// 	// console.log(`WebSocket Error ${ JSON.stringify({...error}) }`);
+		// };
 
 		connection.onmessage = (e) => {
 			const data = EJSON.parse(e.data);
@@ -81,7 +79,7 @@ export default class Socket extends EventEmitter {
 		this.connection = connection;
 	}
 	logout() {
-		return this.call('logout').then(() => this.disconnect());
+		return this.call('logout').then(() => this.subscriptions = {});
 	}
 	disconnect() {
 		this.emit('disconnected_by_user');

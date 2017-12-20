@@ -49,16 +49,15 @@ const addServer = function* addServer({ server }) {
 
 const handleGotoAddServer = function* handleGotoAddServer() {
 	yield call(AsyncStorage.removeItem, RocketChat.TOKEN_KEY);
-	yield put(disconnect_by_user());
-	yield put(disconnect());
-	yield delay(1000);
+	// yield put(disconnect_by_user());
+	// yield put(disconnect());
 	yield call(NavigationService.navigate, 'AddServer');
 };
 
 const root = function* root() {
 	yield takeLatest(SERVER.REQUEST, validateServer);
-	yield takeEvery(SERVER.SELECT, selectServer);
-	yield takeEvery(SERVER.ADD, addServer);
-	yield takeEvery(SERVER.GOTO_ADD, handleGotoAddServer);
+	yield takeLatest(SERVER.SELECT, selectServer);
+	yield takeLatest(SERVER.ADD, addServer);
+	yield takeLatest(SERVER.GOTO_ADD, handleGotoAddServer);
 };
 export default root;

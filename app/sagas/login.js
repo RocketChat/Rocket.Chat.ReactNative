@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native';
-import { put, call, takeLatest, select, all } from 'redux-saga/effects';
+import { put, call, takeLatest, select, all, take } from 'redux-saga/effects';
 import * as types from '../actions/actionsTypes';
 import {
 	loginRequest,
@@ -8,6 +8,7 @@ import {
 	registerIncomplete,
 	loginSuccess,
 	loginFailure,
+	logout,
 	setToken,
 	registerSuccess,
 	setUsernameRequest,
@@ -46,10 +47,7 @@ const getToken = function* getToken() {
 
 const handleLoginWhenServerChanges = function* handleLoginWhenServerChanges() {
 	try {
-		// yield take(types.METEOR.SUCCESS);
-		yield call(getToken);
-
-		const user = yield select(getUser);
+		const user = yield call(getToken);
 		if (user.token) {
 			yield put(loginRequest({ resume: user.token }));
 		}
@@ -72,21 +70,22 @@ const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 		const user = yield call(loginCall, credentials);
 
 		// GET /me from REST API
-		const me = yield call(meCall, { server, token: user.token, userId: user.id });
+		const userInfo = yield call(userInfoCall, { server, token: user.token, userId: user.id });
 
 		// if user has username
-		if (me.username) {
-			user.username = me.username;
-			const userInfo = yield call(userInfoCall, { server, token: user.token, userId: user.id });
+		if (userInfo.user.username) {
+			user.username = userInfo.user.username;
 			if (userInfo.user.roles) {
 				user.roles = userInfo.user.roles;
 			}
 		} else {
 			yield put(registerIncomplete());
 		}
-
 		yield put(loginSuccess(user));
 	} catch (err) {
+		if (err.error === 403) {
+			return yield put(logout());
+		}
 		yield put(loginFailure(err));
 	}
 };

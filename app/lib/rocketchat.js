@@ -11,7 +11,7 @@ import realm from './realm';
 import * as actions from '../actions';
 import { someoneTyping } from '../actions/room';
 import { setUser } from '../actions/login';
-import { disconnect, disconnect_by_user, connectSuccess } from '../actions/connect';
+import { disconnect, disconnect_by_user, connectSuccess, connectFailure } from '../actions/connect';
 import { requestActiveUser } from '../actions/activeUsers';
 import Ddp from './ddp';
 
@@ -78,12 +78,17 @@ const RocketChat = {
 			this.ddp.on('disconnected', () => {
 				reduxStore.dispatch(disconnect());
 			});
-			this.ddp.on('connected', async() => {
-				reduxStore.dispatch(connectSuccess());
+			this.ddp.on('open', async() => resolve(reduxStore.dispatch(connectSuccess())));
+			this.ddp.on('connected', () => {
 				RocketChat.getSettings();
 				RocketChat.getPermissions();
-				resolve();
 			});
+
+			this.ddp.on('error', (err) => {
+				alert(JSON.stringify(err));
+				reduxStore.dispatch(connectFailure());
+			});
+
 			this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
 
 
@@ -93,57 +98,37 @@ const RocketChat = {
 				}
 			});
 
-			this.ddp.on('changed', (ddpMessage) => {
-				if (ddpMessage.collection === 'stream-room-messages') {
-					return realm.write(() => {
-						const message = this._buildMessage(ddpMessage.fields.args[0]);
-						realm.create('messages', message, true);
+			this.ddp.on('stream-room-messages', ddpMessage => realm.write(() => {
+				const message = this._buildMessage(ddpMessage.fields.args[0]);
+				realm.create('messages', message, true);
+			}));
+
+			this.ddp.on('stream-notify-room', (ddpMessage) => {
+				const [_rid, ev] = ddpMessage.fields.eventName.split('/');
+				if (ev !== 'typing') {
+					return;
+				}
+				return reduxStore.dispatch(someoneTyping({ _rid, username: ddpMessage.fields.args[0], typing: ddpMessage.fields.args[1] }));
+			});
+
+			this.ddp.on('stream-notify-user', (ddpMessage) => {
+				const [type, data] = ddpMessage.fields.args;
+				const [, ev] = ddpMessage.fields.eventName.split('/');
+				if (/subscriptions/.test(ev)) {
+					if (data.roles) {
+						data.roles = data.roles.map(role => ({ value: role }));
+					}
+					realm.write(() => {
+						realm.create('subscriptions', data, true);
 					});
 				}
-				if (ddpMessage.collection === 'stream-notify-room') {
-					const [_rid, ev] = ddpMessage.fields.eventName.split('/');
-					if (ev !== 'typing') {
-						return;
-					}
-					return reduxStore.dispatch(someoneTyping({ _rid, username: ddpMessage.fields.args[0], typing: ddpMessage.fields.args[1] }));
-				}
-				if (ddpMessage.collection === 'stream-notify-user') {
-					const [type, data] = ddpMessage.fields.args;
-					const [, ev] = ddpMessage.fields.eventName.split('/');
-					if (/subscriptions/.test(ev)) {
-						if (data.roles) {
-							data.roles = data.roles.map(role => ({ value: role }));
-						}
-						realm.write(() => {
-							realm.create('subscriptions', data, true);
-						});
-					}
-					if (/rooms/.test(ev) && type === 'updated') {
-						const sub = realm.objects('subscriptions').filtered('rid == $0', data._id)[0];
-						realm.write(() => {
-							sub.roomUpdatedAt = data._updatedAt;
-						});
-					}
+				if (/rooms/.test(ev) && type === 'updated') {
+					const sub = realm.objects('subscriptions').filtered('rid == $0', data._id)[0];
+					realm.write(() => {
+						sub.roomUpdatedAt = data._updatedAt;
+					});
 				}
 			});
-		});
-	},
-	login(params, callback) {
-		return this.ddp.call('login', params).then((result) => {
-			if (typeof callback === 'function') {
-				callback(null, result);
-			}
-			return result;
-		}, (err) => {
-			if (/user not found/i.test(err.reason)) {
-				err.error = 1;
-				err.reason = 'User or Password incorrect';
-				err.message = 'User or Password incorrect';
-			}
-			if (typeof callback === 'function') {
-				callback(err, null);
-			}
-			return Promise.reject(err);
 		});
 	},
 
@@ -476,10 +461,28 @@ const RocketChat = {
 		delete this.ddp;
 		return this.ddp.disconnect();
 	},
+	login(params, callback) {
+		return this.ddp.call('login', params).then((result) => {
+			if (typeof callback === 'function') {
+				callback(null, result);
+			}
+			return result;
+		}, (err) => {
+			if (/user not found/i.test(err.reason)) {
+				err.error = 1;
+				err.reason = 'User or Password incorrect';
+				err.message = 'User or Password incorrect';
+			}
+			if (typeof callback === 'function') {
+				callback(err, null);
+			}
+			return Promise.reject(err);
+		});
+	},
 	logout({ server }) {
 		if (this.ddp) {
 			this.ddp.logout();
-			this.disconnect();
+			// this.disconnect();
 		}
 		AsyncStorage.removeItem(TOKEN_KEY);
 		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
