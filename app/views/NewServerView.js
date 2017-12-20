@@ -1,52 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, TextInput, View, StyleSheet, Dimensions } from 'react-native';
+import { Text, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 import { serverRequest, addServer } from '../actions/server';
 import KeyboardView from '../presentation/KeyboardView';
+import styles from './Styles';
 
-const styles = StyleSheet.create({
-	view: {
-		flex: 1,
-		flexDirection: 'column',
-		alignItems: 'stretch',
-		backgroundColor: '#fff'
-	},
-	input: {
-		height: 40,
-		borderColor: '#aaa',
-		margin: 20,
-		padding: 5,
-		borderWidth: 0,
-		backgroundColor: '#f8f8f8'
-	},
-	text: {
-		textAlign: 'center',
-		color: '#888'
-	},
-	validateText: {
-		position: 'absolute',
-		color: 'green',
-		textAlign: 'center',
-		paddingLeft: 50,
-		paddingRight: 50,
-		width: '100%'
-	},
-	validText: {
-		color: 'green'
-	},
-	invalidText: {
-		color: 'red'
-	},
-	validatingText: {
-		color: '#aaa'
-	},
-	spaceView: {
-		flexGrow: 1
-	}
-});
 @connect(state => ({
-	validInstance: !state.server.failure,
+	validInstance: !state.server.failure && !state.server.connecting,
 	validating: state.server.connecting
 }), dispatch => ({
 	validateServer: url => dispatch(serverRequest(url)),
@@ -83,7 +44,7 @@ export default class NewServerView extends React.Component {
 				this.setState({ editable: true });
 				this.adding = false;
 			}
-			if (this.props.validInstance && !this.props.validating) {
+			if (this.props.validInstance) {
 				this.props.navigation.goBack();
 				this.adding = false;
 			}
@@ -127,7 +88,7 @@ export default class NewServerView extends React.Component {
 		if (this.props.validating) {
 			return (
 				<Text style={[styles.validateText, styles.validatingText]}>
-					Validating {this.state.url} ...
+					Validating {this.state.text} ...
 				</Text>
 			);
 		}
@@ -149,27 +110,37 @@ export default class NewServerView extends React.Component {
 	render() {
 		return (
 			<KeyboardView
-				scrollEnabled={false}
-				contentContainerStyle={[styles.view, { height: Dimensions.get('window').height }]}
+				contentContainerStyle={styles.container}
 				keyboardVerticalOffset={128}
 			>
-				<View style={styles.spaceView} />
-				<TextInput
-					ref={ref => this.inputElement = ref}
-					style={styles.input}
-					onChangeText={this.onChangeText}
-					keyboardType='url'
-					autoCorrect={false}
-					returnKeyType='done'
-					autoCapitalize='none'
-					autoFocus
-					editable={this.state.editable}
-					onSubmitEditing={this.submit}
-					placeholder={this.state.defaultServer}
-				/>
-				<View style={styles.spaceView}>
+				<ScrollView
+					style={styles.loginView}
+					keyboardDismissMode='interactive'
+					keyboardShouldPersistTaps='always'
+				>
+					<TextInput
+						ref={ref => this.inputElement = ref}
+						style={styles.input_white}
+						onChangeText={this.onChangeText}
+						keyboardType='url'
+						autoCorrect={false}
+						returnKeyType='done'
+						autoCapitalize='none'
+						autoFocus
+						editable={this.state.editable}
+						placeholder={this.state.defaultServer}
+						underlineColorAndroid='transparent'
+					/>
+					<TouchableOpacity
+						disabled={!this.props.validInstance}
+						style={[styles.buttonContainer, this.props.validInstance ? null
+							: styles.disabledButton]}
+						onPress={this.submit}
+					>
+						<Text style={styles.button} accessibilityTraits='button'>Add</Text>
+					</TouchableOpacity>
 					{this.renderValidation()}
-				</View>
+				</ScrollView>
 			</KeyboardView>
 		);
 	}

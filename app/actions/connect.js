@@ -25,3 +25,8 @@ export function disconnect(err) {
 		err
 	};
 }
+export function disconnect_by_user() {
+	return {
+		type: types.METEOR.DISCONNECT_BY_USER
+	};
+}
