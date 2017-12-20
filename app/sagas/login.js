@@ -70,10 +70,11 @@ const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 		const user = yield call(loginCall, credentials);
 
 		// GET /me from REST API
-		const userInfo = yield call(userInfoCall, { server, token: user.token, userId: user.id });
+		const me = yield call(meCall, { server, token: user.token, userId: user.id });
 
 		// if user has username
-		if (userInfo.user.username) {
+		if (me.username) {
+			const userInfo = yield call(userInfoCall, { server, token: user.token, userId: user.id });
 			user.username = userInfo.user.username;
 			if (userInfo.user.roles) {
 				user.roles = userInfo.user.roles;
