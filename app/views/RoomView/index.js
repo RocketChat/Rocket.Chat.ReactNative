@@ -69,6 +69,8 @@ export default class RoomView extends React.Component {
 			.filtered('_server.id = $0 AND rid = $1', this.props.server, this.rid)
 			.sorted('ts', true);
 		this.room = realm.objects('subscriptions').filtered('rid = $0', this.rid);
+		this.unread = this.data.filtered('ts > $0', this.room[0].ls);
+		console.warn(this.unread)
 		this.state = {
 			dataSource: ds.cloneWithRows([]),
 			loaded: true,
