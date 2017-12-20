@@ -8,6 +8,7 @@ import {
 	registerIncomplete,
 	loginSuccess,
 	loginFailure,
+	logout,
 	setToken,
 	registerSuccess,
 	setUsernameRequest,
@@ -40,16 +41,13 @@ const getToken = function* getToken() {
 			console.log('getTokenerr', e);
 		}
 	} else {
-		yield put(setToken());
+		return yield put(setToken());
 	}
 };
 
 const handleLoginWhenServerChanges = function* handleLoginWhenServerChanges() {
 	try {
-		// yield take(types.METEOR.SUCCESS);
-		yield call(getToken);
-
-		const user = yield select(getUser);
+		const user = yield call(getToken);
 		if (user.token) {
 			yield put(loginRequest({ resume: user.token }));
 		}
@@ -76,17 +74,19 @@ const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 
 		// if user has username
 		if (me.username) {
-			user.username = me.username;
 			const userInfo = yield call(userInfoCall, { server, token: user.token, userId: user.id });
+			user.username = userInfo.user.username;
 			if (userInfo.user.roles) {
 				user.roles = userInfo.user.roles;
 			}
 		} else {
 			yield put(registerIncomplete());
 		}
-
 		yield put(loginSuccess(user));
 	} catch (err) {
+		if (err.error === 403) {
+			return yield put(logout());
+		}
 		yield put(loginFailure(err));
 	}
 };

@@ -1,9 +1,7 @@
-import { put, call, takeLatest, select, take, race } from 'redux-saga/effects';
+import { call, takeLatest, select, take, race } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { METEOR } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
-
-import { connectSuccess, connectFailure } from '../actions/connect';
 
 const getServer = ({ server }) => server.server;
 
@@ -28,13 +26,14 @@ const watchConnect = function* watchConnect() {
 	}
 };
 const test = function* test() {
-	try {
-		const server = yield select(getServer);
-		const response = yield call(connect, server);
-		yield put(connectSuccess(response));
-	} catch (err) {
-		yield put(connectFailure(err.status));
-	}
+	// try {
+	const server = yield select(getServer);
+	// const response =
+	yield call(connect, server);
+	// yield put(connectSuccess(response));
+	// } catch (err) {
+	// yield put(connectFailure(err.status));
+	// }
 };
 
 const root = function* root() {
