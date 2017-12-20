@@ -41,7 +41,7 @@ const getToken = function* getToken() {
 			console.log('getTokenerr', e);
 		}
 	} else {
-		yield put(setToken());
+		return yield put(setToken());
 	}
 };
 
