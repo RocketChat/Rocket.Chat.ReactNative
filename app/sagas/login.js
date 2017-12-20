@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native';
-import { put, call, takeLatest, select, all, take } from 'redux-saga/effects';
+import { put, call, takeLatest, select, all } from 'redux-saga/effects';
 import * as types from '../actions/actionsTypes';
 import {
 	loginRequest,
