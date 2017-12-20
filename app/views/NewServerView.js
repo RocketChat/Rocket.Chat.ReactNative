@@ -113,7 +113,11 @@ export default class NewServerView extends React.Component {
 				contentContainerStyle={styles.container}
 				keyboardVerticalOffset={128}
 			>
-				<ScrollView style={styles.loginView}>
+				<ScrollView
+					style={styles.loginView}
+					keyboardDismissMode='interactive'
+					keyboardShouldPersistTaps='always'
+				>
 					<TextInput
 						ref={ref => this.inputElement = ref}
 						style={styles.input_white}
