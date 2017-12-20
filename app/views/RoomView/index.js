@@ -184,6 +184,8 @@ export default class RoomView extends React.Component {
 						dataSource={this.state.dataSource}
 						renderRow={item => this.renderItem({ item })}
 						initialListSize={10}
+						keyboardShouldPersistTaps='always'
+						keyboardDismissMode='interactive'
 					/>
 				</SafeAreaView>
 				{this.renderFooter()}
