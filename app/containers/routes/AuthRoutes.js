@@ -6,6 +6,7 @@ import RoomsListView from '../../views/RoomsListView';
 import RoomView from '../../views/RoomView';
 import CreateChannelView from '../../views/CreateChannelView';
 import SelectUsersView from '../../views/SelectUsersView';
+import NewServerView from '../../views/NewServerView';
 
 const AuthRoutes = StackNavigator(
 	{
@@ -25,6 +26,12 @@ const AuthRoutes = StackNavigator(
 			screen: SelectUsersView,
 			navigationOptions: {
 				title: 'Select Users'
+			}
+		},
+		AddServer: {
+			screen: NewServerView,
+			navigationOptions: {
+				title: 'New server'
 			}
 		}
 	},
