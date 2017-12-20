@@ -1,8 +1,9 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import Avatar from '../containers/Avatar';
+import Touch from '../utils/touch/index'; //eslint-disable-line
 
 const styles = StyleSheet.create({
 	container: {
@@ -112,14 +113,16 @@ export default class RoomItem extends React.PureComponent {
 		accessibilityLabel += `, last message ${ date }`;
 
 		return (
-			<TouchableOpacity onPress={this.props.onPress} style={[styles.container, favorite && styles.favorite]} accessibilityLabel={accessibilityLabel} accessibilityTraits='selected'>
-				{this.icon}
-				<View style={styles.roomNameView}>
-					<Text style={[styles.roomName, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
-					{_updatedAt ? <Text style={styles.update} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
+			<Touch onPress={this.props.onPress} underlayColor='#FFFFFF' activeOpacity={0.5} accessibilityLabel={accessibilityLabel} accessibilityTraits='selected'>
+				<View style={[styles.container, favorite && styles.favorite]}>
+					{this.icon}
+					<View style={styles.roomNameView}>
+						<Text style={[styles.roomName, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
+						{_updatedAt ? <Text style={styles.update} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
+					</View>
+					{this.renderNumber(unread, userMentions)}
 				</View>
-				{this.renderNumber(unread, userMentions)}
-			</TouchableOpacity>
+			</Touch>
 		);
 	}
 }
