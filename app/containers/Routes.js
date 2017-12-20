@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import SplashScreen from 'react-native-splash-screen';
 import { appInit } from '../actions';
 
 import AuthRoutes from './routes/AuthRoutes';
@@ -28,6 +29,10 @@ export default class Routes extends React.Component {
 
 	componentWillMount() {
 		return !this.props.app.ready && this.props.appInit();
+	}
+
+	componentDidMount() {
+		SplashScreen.hide();
 	}
 
 	componentDidUpdate() {
