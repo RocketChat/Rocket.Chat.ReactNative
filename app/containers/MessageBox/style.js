@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+const MENTION_HEIGHT = 50;
 
 export default StyleSheet.create({
 	textBox: {
@@ -9,7 +10,8 @@ export default StyleSheet.create({
 		borderTopWidth: 1,
 		borderTopColor: '#D8D8D8',
 		paddingHorizontal: 15,
-		paddingVertical: 15
+		paddingVertical: 15,
+		zIndex: 2
 	},
 	safeAreaView: {
 		flexDirection: 'row',
@@ -62,5 +64,20 @@ export default StyleSheet.create({
 		borderBottomWidth: 1,
 		borderBottomColor: '#ECECEC',
 		color: '#2F343D'
+	},
+	mentionList: {
+		maxHeight: MENTION_HEIGHT * 4,
+		borderTopColor: '#ECECEC',
+		borderTopWidth: 1,
+		paddingHorizontal: 5,
+		backgroundColor: '#fff'
+	},
+	mentionItem: {
+		height: MENTION_HEIGHT,
+		backgroundColor: '#F7F8FA',
+		borderBottomWidth: 1,
+		borderBottomColor: '#ECECEC',
+		flexDirection: 'row',
+		alignItems: 'center'
 	}
 });

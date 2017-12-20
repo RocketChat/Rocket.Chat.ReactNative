@@ -346,8 +346,8 @@ const RocketChat = {
 		return RocketChat._sendMessageCall(message);
 	},
 
-	spotlight(search, usernames) {
-		return call('spotlight', search, usernames);
+	spotlight(search, usernames, type) {
+		return call('spotlight', search, usernames, type);
 	},
 
 	createDirectMessage(username) {
