@@ -15,13 +15,13 @@ export default class MessageBox extends React.PureComponent {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (this.props.visible !== nextProps.visible) {
-			if (nextProps.visible) {
-				this.show();
-			} else {
-				this.hide();
-			}
+		if (this.props.visible === nextProps.visible) {
+			return;
 		}
+		if (nextProps.visible) {
+			return this.show();
+		}
+		this.hide();
 	}
 
 	show() {

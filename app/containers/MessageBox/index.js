@@ -14,7 +14,11 @@ import Avatar from '../Avatar';
 import AnimatedContainer from './AnimatedContainer';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
-const MENTIONS_TRACKING_TYPE_ROOMS = '#';
+// const MENTIONS_TRACKING_TYPE_ROOMS = '#';
+
+const onlyUnique = function onlyUnique(value, index, self) {
+	return self.indexOf(({ id }) => value.id === id) === index;
+};
 
 @connect(state => ({
 	room: state.room,
@@ -46,17 +50,12 @@ export default class MessageBox extends React.Component {
 			height: 20,
 			messageboxHeight: 0,
 			text: '',
-			isTrackingMentions: false,
-			mentionsTrackingType: '',
-			mentionKeyword: '',
 			mentions: [],
-			showAnimatedContainer: false,
-			previousChar: ' '
+			showAnimatedContainer: false
 		};
 		this.users = [];
 		this.rooms = [];
 	}
-
 	componentWillReceiveProps(nextProps) {
 		if (this.props.message !== nextProps.message && nextProps.message.msg) {
 			this.setState({ text: nextProps.message.msg });
@@ -66,25 +65,30 @@ export default class MessageBox extends React.Component {
 		}
 	}
 
+	onChange() {
+		requestAnimationFrame(() => {
+			const { start, end } = this.component._lastNativeSelection;
+
+			const cursor = Math.max(start, end);
+
+			const text = this.component._lastNativeText;
+
+			const regexp = /(#|@)([a-z._-]+)$/im;
+
+			const result = text.substr(0, cursor).match(regexp);
+
+			if (!result) {
+				return this.stopTrackingMention();
+			}
+			const [, lastChar, name] = result;
+
+			this.identifyMentionKeyword(name, lastChar);
+		});
+	}
+
+
 	onChangeText(text) {
 		this.setState({ text });
-		this.props.typing(text.length > 0);
-
-		// get last char
-		const lastChar = text.substr(text.length - 1);
-		// identify if is a new word
-		const newWord = this.state.previousChar.trim().length === 0;
-		// if is a new word and is an identified tracking type, e.g. @ or #, start tracking
-		if ((lastChar === MENTIONS_TRACKING_TYPE_USERS || lastChar === MENTIONS_TRACKING_TYPE_ROOMS) && newWord) {
-			this.startTrackingMention(lastChar);
-		// if word ended and is still tracking mentions, stop tracking
-		} else if ((lastChar === ' ' && this.state.isTrackingMentions) || text === '') {
-			this.stopTrackingMention();
-		// if is tracking, identify keyword typed, e.g. transforms `@foo` on `foo`
-		} else if (this.state.isTrackingMentions) {
-			this.identifyMentionKeyword(text);
-		}
-		this.setState({ previousChar: lastChar });
 	}
 
 	get leftButtons() {
@@ -139,6 +143,7 @@ export default class MessageBox extends React.Component {
 	updateSize = (height) => {
 		this.setState({ height: height + (Platform.OS === 'ios' ? 0 : 0) });
 	}
+
 	addFile = () => {
 		const options = {
 			customButtons: [{
@@ -192,7 +197,7 @@ export default class MessageBox extends React.Component {
 		});
 	}
 
-	_getUsers(keyword) {
+	async _getUsers(keyword) {
 		this.users = realm.objects('users');
 		if (keyword) {
 			this.users = this.users.filtered('username CONTAINS[c] $0', keyword);
@@ -200,125 +205,97 @@ export default class MessageBox extends React.Component {
 		this.setState({ mentions: this.users.slice() });
 
 		const usernames = [];
+
+		if (keyword && this.users.length > 7) {
+			return;
+		}
+
 		this.users.forEach(user => usernames.push(user.username));
 
-		if (keyword && usernames.length < 7) {
-			if (this.oldPromise) {
-				this.oldPromise();
-			}
-			Promise.race([
-				RocketChat.spotlight(keyword, usernames),
+		if (this.oldPromise) {
+			this.oldPromise();
+		}
+		try {
+			const results = await Promise.race([
+				RocketChat.spotlight(keyword, usernames, { users: true }),
 				new Promise((resolve, reject) => (this.oldPromise = reject))
-			]).then(
-				(results) => {
-					realm.write(() => {
-						results.users.forEach((user) => {
-							user._server = {
-								id: this.props.baseUrl,
-								current: true
-							};
-							realm.create('users', user, true);
-						});
-					});
-				},
-				() => {}
-			).then(() => {
-				delete this.oldPromise;
-				this.users = realm.objects('users').filtered('username CONTAINS[c] $0', keyword);
-				this.setState({ mentions: this.users.slice() });
+			]);
+			realm.write(() => {
+				results.users.forEach((user) => {
+					user._server = {
+						id: this.props.baseUrl,
+						current: true
+					};
+					realm.create('users', user, true);
+				});
 			});
+		} catch (e) {
+			console.log('spotlight canceled');
+		} finally {
+			delete this.oldPromise;
+			this.users = realm.objects('users').filtered('username CONTAINS[c] $0', keyword);
+			this.setState({ mentions: this.users.slice() });
 		}
 	}
 
-	_getRooms(keyword) {
+	async _getRooms(keyword = '') {
+		this.roomsCache = this.roomsCache || [];
 		this.rooms = realm.objects('subscriptions')
 			.filtered('_server.id = $0 AND t != $1', this.props.baseUrl, 'd');
 		if (keyword) {
 			this.rooms = this.rooms.filtered('name CONTAINS[c] $0', keyword);
 		}
-		this.setState({ mentions: this.rooms.slice() });
 
 		const rooms = [];
-		this.rooms.forEach(room => rooms.push(room.name));
+		this.rooms.forEach(room => rooms.push(room));
 
-		if (keyword && rooms.length < 7) {
-			if (this.oldPromise) {
-				this.oldPromise();
+		this.roomsCache.forEach((room) => {
+			if (room.name && room.name.toUpperCase().indexOf(keyword.toUpperCase()) !== -1) {
+				rooms.push(room);
 			}
-			Promise.race([
-				RocketChat.spotlight(keyword, rooms),
-				new Promise((resolve, reject) => (this.oldPromise = reject))
-			]).then(
-				(results) => {
-					realm.write(() => {
-						results.rooms.forEach((sub) => {
-							sub.rid = sub._id;
-							sub._server = {
-								id: this.props.baseUrl,
-								current: true
-							};
-							realm.create('subscriptions', sub, true);
-						});
-					});
-				},
-				() => {}
-			).then(() => {
-				delete this.oldPromise;
-				this.rooms = realm.objects('subscriptions')
-					.filtered('_server.id = $0 AND t != $1', this.props.baseUrl, 'd')
-					.filtered('name CONTAINS[c] $0', keyword);
-				this.setState({ mentions: this.rooms.slice() });
-			});
-		}
-	}
-
-	startTrackingMention(char) {
-		if (char === MENTIONS_TRACKING_TYPE_USERS) {
-			this._getUsers();
-		} else {
-			this._getRooms();
-		}
-		this.setState({
-			showAnimatedContainer: true,
-			isTrackingMentions: true,
-			mentionsTrackingType: char
 		});
+
+		if (rooms.length > 3) {
+			this.setState({ mentions: rooms });
+			return;
+		}
+
+		if (this.oldPromise) {
+			this.oldPromise();
+		}
+
+		try {
+			const results = await Promise.race([
+				RocketChat.spotlight(keyword, [...rooms, ...this.roomsCache].map(r => r.name), { rooms: true }),
+				new Promise((resolve, reject) => (this.oldPromise = reject))
+			]);
+			this.roomsCache = [...this.roomsCache, ...results.rooms].filter(onlyUnique);
+			this.setState({ mentions: [...rooms.slice(), ...results.rooms] });
+		} catch (e) {
+			console.log('spotlight canceled');
+		} finally {
+			delete this.oldPromise;
+		}
 	}
 
 	stopTrackingMention() {
 		this.setState({
-			showAnimatedContainer: false
+			showAnimatedContainer: false,
+			mentions: []
 		});
-		setTimeout(() => {
-			this.setState({
-				isTrackingMentions: false,
-				mentionsTrackingType: '',
-				mentionKeyword: '',
-				mentions: [],
-				previousChar: ' '
-			});
-			this.users = [];
-			this.rooms = [];
-		}, 300);
+		this.users = [];
+		this.rooms = [];
 	}
 
-	identifyMentionKeyword(val) {
-		let pattern;
-		if (this.state.mentionsTrackingType === MENTIONS_TRACKING_TYPE_USERS) {
-			pattern = new RegExp(/@[0-9a-zA-Z-_.]+/);
-		} else {
-			pattern = new RegExp(/#[0-9a-zA-Z-_.]+/);
-		}
-		const keywordArray = val.match(pattern);
-		if (keywordArray && !!keywordArray.length) {
-			const keyword = keywordArray[0].substring(1) || '';
-			this.setState({ mentionKeyword: keyword });
-			this.updateMentions(keyword);
-		}
+	identifyMentionKeyword(keyword, type) {
+		this.updateMentions(keyword, type);
+		this.setState({
+			showAnimatedContainer: true
+		});
 	}
 
-	updateMentions = (keyword) => {
-		if (this.state.mentionsTrackingType === MENTIONS_TRACKING_TYPE_USERS) {
+	updateMentions = (keyword, type) => {
+		if (type === MENTIONS_TRACKING_TYPE_USERS) {
 			this._getUsers(keyword);
 		} else {
 			this._getRooms(keyword);
@@ -326,13 +303,21 @@ export default class MessageBox extends React.Component {
 	}
 
 	_onPressMention(item) {
-		const { text } = this.state;
-		const message = text.slice(0, -this.state.mentionKeyword.length || text.length);
-		this.setState({ text: `${ message }${ item.username || item.name } ` });
-		this.component.focus();
-		this.stopTrackingMention();
-	}
+		const msg = this.component._lastNativeText;
 
+		const { start, end } = this.component._lastNativeSelection;
+
+		const cursor = Math.max(start, end);
+
+		const regexp = /([a-z._-]+)$/im;
+
+		const result = msg.substr(0, cursor).replace(regexp, '');
+		const text = `${ result }${ item.username || item.name } ${ msg.slice(cursor) }`;
+		this.component.setNativeProps({ text });
+		this.setState({ text });
+		this.component.focus();
+		requestAnimationFrame(() => this.stopTrackingMention());
+	}
 	renderMentionItem = item => (
 		<TouchableOpacity
 			style={styles.mentionItem}
@@ -341,13 +326,12 @@ export default class MessageBox extends React.Component {
 			<Avatar
 				style={{ margin: 8 }}
 				text={item.username || item.name}
-				size={24}
+				size={30}
 				baseUrl={this.props.baseUrl}
 			/>
-			<Text>{item.username || item.name}</Text>
+			<Text>{item.username || item.name || JSON.stringify(item)}</Text>
 		</TouchableOpacity>
 	)
-
 	renderMentions() {
 		const usersList = (
 			<FlatList
@@ -362,7 +346,6 @@ export default class MessageBox extends React.Component {
 		const { showAnimatedContainer, messageboxHeight } = this.state;
 		return <AnimatedContainer visible={showAnimatedContainer} subview={usersList} messageboxHeight={messageboxHeight} />;
 	}
-
 	render() {
 		const { height } = this.state;
 		return (
@@ -380,6 +363,7 @@ export default class MessageBox extends React.Component {
 							blurOnSubmit={false}
 							placeholder='New Message'
 							onChangeText={text => this.onChangeText(text)}
+							onChange={event => this.onChange(event)}
 							value={this.state.text}
 							underlineColorAndroid='transparent'
 							defaultValue=''

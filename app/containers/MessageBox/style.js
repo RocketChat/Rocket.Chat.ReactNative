@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-const MENTION_HEIGHT = 40;
+const MENTION_HEIGHT = 56;
 
 export default StyleSheet.create({
 	textBox: {
@@ -69,6 +69,7 @@ export default StyleSheet.create({
 		maxHeight: MENTION_HEIGHT * 4,
 		borderTopColor: '#ECECEC',
 		borderTopWidth: 1,
+		paddingHorizontal: 5,
 		backgroundColor: '#fff'
 	},
 	mentionItem: {
