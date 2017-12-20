@@ -1,4 +1,3 @@
-// import Meteor from 'react-native-meteor';
 import Random from 'react-native-meteor/lib/Random';
 import { AsyncStorage, Platform } from 'react-native';
 import { hashPassword } from 'react-native-meteor/lib/utils';
