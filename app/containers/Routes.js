@@ -7,7 +7,6 @@ import { appInit } from '../actions';
 
 import AuthRoutes from './routes/AuthRoutes';
 import PublicRoutes from './routes/PublicRoutes';
-import Loading from '../presentation/Loading';
 import * as NavigationService from './routes/NavigationService';
 
 @connect(
@@ -31,8 +30,10 @@ export default class Routes extends React.Component {
 		return !this.props.app.ready && this.props.appInit();
 	}
 
-	componentDidMount() {
-		SplashScreen.hide();
+	componentWillReceiveProps(nextProps) {
+		if (!nextProps.app.starting && this.props.app.starting !== nextProps.app.starting) {
+			SplashScreen.hide();
+		}
 	}
 
 	componentDidUpdate() {
@@ -40,11 +41,7 @@ export default class Routes extends React.Component {
 	}
 
 	render() {
-		const { login, app } = this.props;
-
-		if (app.starting) {
-			return (<Loading />);
-		}
+		const { login } = this.props;
 
 		if (login.token && !login.failure && !login.isRegistering) {
 			return (<AuthRoutes ref={nav => this.navigator = nav} />);
