@@ -17,7 +17,7 @@ const MENTIONS_TRACKING_TYPE_USERS = '@';
 // const MENTIONS_TRACKING_TYPE_ROOMS = '#';
 
 const onlyUnique = function onlyUnique(value, index, self) {
-	return self.indexOf(({ id }) => value.id === id) === index;
+	return self.indexOf(({ _id }) => value._id === _id) === index;
 };
 
 @connect(state => ({
@@ -329,7 +329,7 @@ export default class MessageBox extends React.Component {
 				size={30}
 				baseUrl={this.props.baseUrl}
 			/>
-			<Text>{item.username || item.name || JSON.stringify(item)}</Text>
+			<Text>{item.username || item.name }</Text>
 		</TouchableOpacity>
 	)
 	renderMentions() {

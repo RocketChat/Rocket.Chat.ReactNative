@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-const MENTION_HEIGHT = 56;
+const MENTION_HEIGHT = 50;
 
 export default StyleSheet.create({
 	textBox: {
