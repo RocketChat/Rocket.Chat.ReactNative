@@ -41,10 +41,9 @@ export default class Routes extends React.Component {
 			return (<Loading />);
 		}
 
-		if (login.token && !login.failure && !login.isRegistering) {
-			return (<AuthRoutes ref={nav => this.navigator = nav} />);
+		if (!login.token || login.isRegistering) {
+			return (<PublicRoutes ref={nav => this.navigator = nav} />);
 		}
-
-		return (<PublicRoutes ref={nav => this.navigator = nav} />);
+		return (<AuthRoutes ref={nav => this.navigator = nav} />);
 	}
 }

@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import { setServer } from '../actions/server';
 import realm from '../lib/realm';
 import Fade from '../animations/fade';
-import Banner from '../containers/Banner';
 
 const styles = StyleSheet.create({
 	view: {
@@ -184,7 +183,6 @@ export default class ListServerView extends React.Component {
 	render() {
 		return (
 			<View style={styles.view}>
-				<Banner />
 				<SafeAreaView style={styles.view}>
 					<SectionList
 						style={styles.list}

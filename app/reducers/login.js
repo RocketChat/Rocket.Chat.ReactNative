@@ -26,7 +26,7 @@ export default function login(state = initialState, action) {
 				...state,
 				isFetching: false,
 				isAuthenticated: true,
-				user: action.user,
+				user: { ...state.user, ...action.user },
 				token: action.user.token,
 				failure: false,
 				error: ''

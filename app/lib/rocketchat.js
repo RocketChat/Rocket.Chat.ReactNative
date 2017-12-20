@@ -1,4 +1,3 @@
-import Meteor from 'react-native-meteor';
 import Random from 'react-native-meteor/lib/Random';
 import { AsyncStorage, Platform } from 'react-native';
 import { hashPassword } from 'react-native-meteor/lib/utils';
@@ -11,19 +10,13 @@ import realm from './realm';
 import * as actions from '../actions';
 import { someoneTyping } from '../actions/room';
 import { setUser } from '../actions/login';
-import { disconnect, connectSuccess } from '../actions/connect';
+import { disconnect, disconnect_by_user, connectSuccess, connectFailure } from '../actions/connect';
 import { requestActiveUser } from '../actions/activeUsers';
+import Ddp from './ddp';
 
 export { Accounts } from 'react-native-meteor';
 
-const call = (method, ...params) => new Promise((resolve, reject) => {
-	Meteor.call(method, ...params, (err, data) => {
-		if (err) {
-			reject(err);
-		}
-		resolve(data);
-	});
-});
+const call = (method, ...params) => RocketChat.ddp.call(method, ...params); // eslint-disable-line
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SERVER_TIMEOUT = 30000;
 
@@ -67,92 +60,72 @@ const RocketChat = {
 		activeUser[ddpMessage.id] = status;
 		return reduxStore.dispatch(requestActiveUser(activeUser));
 	},
-	connect(_url) {
+	reconnect() {
+		if (this.ddp) {
+			this.ddp.reconnect();
+		}
+	},
+	connect(url) {
+		if (this.ddp) {
+			this.ddp.disconnect();
+		}
+		this.ddp = new Ddp(url);
 		return new Promise((resolve) => {
-			const url = `${ _url }/websocket`;
-
-			Meteor.connect(url, { autoConnect: true, autoReconnect: true });
-
-			Meteor.ddp.on('disconnected', () => {
+			this.ddp.on('disconnected_by_user', () => {
+				reduxStore.dispatch(disconnect_by_user());
+			});
+			this.ddp.on('disconnected', () => {
 				reduxStore.dispatch(disconnect());
 			});
-
-			Meteor.ddp.on('connected', () => {
-				reduxStore.dispatch(connectSuccess());
-				resolve();
-			});
-
-			Meteor.ddp.on('connected', async() => {
-				Meteor.ddp.on('added', (ddpMessage) => {
-					if (ddpMessage.collection === 'users') {
-						return RocketChat._setUser(ddpMessage);
-					}
-				});
-				Meteor.ddp.on('removed', (ddpMessage) => {
-					if (ddpMessage.collection === 'users') {
-						return RocketChat._setUser(ddpMessage);
-					}
-				});
-				Meteor.ddp.on('changed', (ddpMessage) => {
-					if (ddpMessage.collection === 'stream-room-messages') {
-						return realm.write(() => {
-							const message = this._buildMessage(ddpMessage.fields.args[0]);
-							realm.create('messages', message, true);
-						});
-					}
-					if (ddpMessage.collection === 'stream-notify-room') {
-						const [_rid, ev] = ddpMessage.fields.eventName.split('/');
-						if (ev !== 'typing') {
-							return;
-						}
-						return reduxStore.dispatch(someoneTyping({ _rid, username: ddpMessage.fields.args[0], typing: ddpMessage.fields.args[1] }));
-					}
-					if (ddpMessage.collection === 'stream-notify-user') {
-						const [type, data] = ddpMessage.fields.args;
-						const [, ev] = ddpMessage.fields.eventName.split('/');
-						if (/subscriptions/.test(ev)) {
-							if (data.roles) {
-								data.roles = data.roles.map(role => ({ value: role }));
-							}
-							realm.write(() => {
-								realm.create('subscriptions', data, true);
-							});
-						}
-						if (/rooms/.test(ev) && type === 'updated') {
-							const sub = realm.objects('subscriptions').filtered('rid == $0', data._id)[0];
-							realm.write(() => {
-								sub.roomUpdatedAt = data._updatedAt;
-							});
-						}
-					}
-					if (ddpMessage.collection === 'users') {
-						return RocketChat._setUser(ddpMessage);
-					}
-				});
+			this.ddp.on('open', async() => resolve(reduxStore.dispatch(connectSuccess())));
+			this.ddp.on('connected', () => {
 				RocketChat.getSettings();
 				RocketChat.getPermissions();
 			});
-		})
-			.catch(e => console.error(e));
-	},
-	login(params, callback) {
-		return new Promise((resolve, reject) => {
-			Meteor._startLoggingIn();
-			return Meteor.call('login', params, (err, result) => {
-				Meteor._endLoggingIn();
-				Meteor._handleLoginCallback(err, result);
-				if (err) {
-					if (/user not found/i.test(err.reason)) {
-						err.error = 1;
-						err.reason = 'User or Password incorrect';
-						err.message = 'User or Password incorrect';
-					}
-					reject(err);
-				} else {
-					resolve(result);
+
+			this.ddp.on('error', (err) => {
+				alert(JSON.stringify(err));
+				reduxStore.dispatch(connectFailure());
+			});
+
+			this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
+
+
+			this.ddp.on('users', (ddpMessage) => {
+				if (ddpMessage.collection === 'users') {
+					return RocketChat._setUser(ddpMessage);
 				}
-				if (typeof callback === 'function') {
-					callback(err, result);
+			});
+
+			this.ddp.on('stream-room-messages', ddpMessage => realm.write(() => {
+				const message = this._buildMessage(ddpMessage.fields.args[0]);
+				realm.create('messages', message, true);
+			}));
+
+			this.ddp.on('stream-notify-room', (ddpMessage) => {
+				const [_rid, ev] = ddpMessage.fields.eventName.split('/');
+				if (ev !== 'typing') {
+					return;
+				}
+				return reduxStore.dispatch(someoneTyping({ _rid, username: ddpMessage.fields.args[0], typing: ddpMessage.fields.args[1] }));
+			});
+
+			this.ddp.on('stream-notify-user', (ddpMessage) => {
+				const [type, data] = ddpMessage.fields.args;
+				const [, ev] = ddpMessage.fields.eventName.split('/');
+				if (/subscriptions/.test(ev)) {
+					if (data.roles) {
+						data.roles = data.roles.map(role => ({ value: role }));
+					}
+					realm.write(() => {
+						realm.create('subscriptions', data, true);
+					});
+				}
+				if (/rooms/.test(ev) && type === 'updated') {
+					const sub = realm.objects('subscriptions').filtered('rid == $0', data._id)[0];
+					realm.write(() => {
+						sub.roomUpdatedAt = data._updatedAt;
+					});
 				}
 			});
 		});
@@ -236,10 +209,7 @@ const RocketChat = {
 
 	loadSubscriptions(cb) {
 		const { server } = reduxStore.getState().server;
-		Meteor.call('subscriptions/get', (err, data) => {
-			if (err) {
-				console.error(err);
-			}
+		this.ddp.call('subscriptions/get').then((data) => {
 			if (data.length) {
 				realm.write(() => {
 					data.forEach((subscription) => {
@@ -305,32 +275,26 @@ const RocketChat = {
 		return message;
 	},
 	loadMessagesForRoom(rid, end, cb) {
-		return new Promise((resolve, reject) => {
-			Meteor.call('loadHistory', rid, end, 20, (err, data) => {
-				if (err) {
-					if (cb) {
-						cb({ end: true });
-					}
-					return reject(err);
-				}
-				if (data && data.messages.length) {
-					const messages = data.messages.map(message => this._buildMessage(message));
-					realm.write(() => {
-						messages.forEach((message) => {
-							realm.create('messages', message, true);
-						});
+		return this.ddp.call('loadHistory', rid, end, 20).then((data) => {
+			if (data && data.messages.length) {
+				const messages = data.messages.map(message => this._buildMessage(message));
+				realm.write(() => {
+					messages.forEach((message) => {
+						realm.create('messages', message, true);
 					});
-				}
-
+				});
+			}
+			if (cb) {
+				cb({ end: data && data.messages.length < 20 });
+			}
+			return data.message;
+		}, (err) => {
+			if (err) {
 				if (cb) {
-					if (data && data.messages.length < 20) {
-						cb({ end: true });
-					} else {
-						cb({ end: false });
-					}
+					cb({ end: true });
 				}
-				resolve();
-			});
+				return Promise.reject(err);
+			}
 		});
 	},
 
@@ -484,14 +448,41 @@ const RocketChat = {
 			data.forEach(subscription =>
 				realm.create('subscriptions', subscription, true));
 		});
-		Meteor.subscribe('stream-notify-user', `${ login.user.id }/subscriptions-changed`, false);
-		Meteor.subscribe('stream-notify-user', `${ login.user.id }/rooms-changed`, false);
-		Meteor.subscribe('activeUsers', null, false);
+		this.ddp.subscribe('stream-notify-user', `${ login.user.id }/subscriptions-changed`, false);
+		this.ddp.subscribe('stream-notify-user', `${ login.user.id }/rooms-changed`, false);
 		return data;
 	},
+	disconnect() {
+		if (!this.ddp) {
+			return;
+		}
+		reduxStore.dispatch(disconnect_by_user());
+		delete this.ddp;
+		return this.ddp.disconnect();
+	},
+	login(params, callback) {
+		return this.ddp.call('login', params).then((result) => {
+			if (typeof callback === 'function') {
+				callback(null, result);
+			}
+			return result;
+		}, (err) => {
+			if (/user not found/i.test(err.reason)) {
+				err.error = 1;
+				err.reason = 'User or Password incorrect';
+				err.message = 'User or Password incorrect';
+			}
+			if (typeof callback === 'function') {
+				callback(err, null);
+			}
+			return Promise.reject(err);
+		});
+	},
 	logout({ server }) {
-		Meteor.logout();
-		Meteor.disconnect();
+		if (this.ddp) {
+			this.ddp.logout();
+			// this.disconnect();
+		}
 		AsyncStorage.removeItem(TOKEN_KEY);
 		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
 	},
@@ -570,7 +561,7 @@ const RocketChat = {
 		return `${ room._server.id }/${ roomType }/${ room.name }?msg=${ message._id }`;
 	},
 	subscribe(...args) {
-		return Meteor.subscribe(...args);
+		return this.ddp.subscribe(...args);
 	},
 	emitTyping(room, t = true) {
 		const { login } = reduxStore.getState();

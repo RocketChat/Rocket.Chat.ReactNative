@@ -67,7 +67,7 @@ const watchRoomOpen = function* watchRoomOpen({ room }) {
 	const thread = yield fork(usersTyping, { rid: room.rid });
 	yield take(types.ROOM.OPEN);
 	cancel(thread);
-	subscriptions.forEach(sub => sub.stop());
+	subscriptions.forEach(sub => sub.unsubscribe());
 };
 
 const watchuserTyping = function* watchuserTyping({ status }) {
