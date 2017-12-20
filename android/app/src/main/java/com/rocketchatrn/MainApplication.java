@@ -17,6 +17,7 @@ import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import java.util.Arrays;
 import java.util.List;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -37,7 +38,8 @@ public class MainApplication extends Application implements ReactApplication {
         new ZeroconfReactPackage(),
         new RealmReactPackage(),
         new ReactNativePushNotificationPackage(),
-        new ReactVideoPackage()
+        new ReactVideoPackage(),
+        new SplashScreenReactPackage()
       );
     }
   };
