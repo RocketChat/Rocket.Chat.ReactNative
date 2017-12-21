@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import SplashScreen from 'react-native-splash-screen';
 import { appInit } from '../actions';
 
 import AuthRoutes from './routes/AuthRoutes';
 import PublicRoutes from './routes/PublicRoutes';
-import Loading from '../presentation/Loading';
 import * as NavigationService from './routes/NavigationService';
 
 @connect(
@@ -30,21 +30,22 @@ export default class Routes extends React.Component {
 		return !this.props.app.ready && this.props.appInit();
 	}
 
+	componentWillReceiveProps(nextProps) {
+		if (!nextProps.app.starting && this.props.app.starting !== nextProps.app.starting) {
+			SplashScreen.hide();
+		}
+	}
+
 	componentDidUpdate() {
 		NavigationService.setNavigator(this.navigator);
 	}
 
 	render() {
-		const { login, app } = this.props;
+		const { login } = this.props;
 
-		if (app.starting) {
-			return (<Loading />);
+		if (!login.token || login.isRegistering) {
+			return (<PublicRoutes ref={nav => this.navigator = nav} />);
 		}
-
-		if (login.token && !login.failure && !login.isRegistering) {
-			return (<AuthRoutes ref={nav => this.navigator = nav} />);
-		}
-
-		return (<PublicRoutes ref={nav => this.navigator = nav} />);
+		return (<AuthRoutes ref={nav => this.navigator = nav} />);
 	}
 }
