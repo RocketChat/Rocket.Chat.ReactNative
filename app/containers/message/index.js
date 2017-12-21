@@ -34,6 +34,23 @@ const styles = StyleSheet.create({
 	},
 	editing: {
 		backgroundColor: '#fff5df'
+	},
+	firstUnread: {
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center',
+		marginBottom: 15
+	},
+	firstUnreadLine: {
+		borderTopColor: 'red',
+		borderTopWidth: 1,
+		flex: 1
+	},
+	firstUnreadBadge: {
+		color: 'red',
+		backgroundColor: '#fff',
+		fontSize: 11,
+		paddingHorizontal: 5
 	}
 });
 
@@ -53,7 +70,8 @@ export default class Message extends React.Component {
 		user: PropTypes.object.isRequired,
 		editing: PropTypes.bool,
 		actionsShow: PropTypes.func,
-		errorActionsShow: PropTypes.func
+		errorActionsShow: PropTypes.func,
+		isFirstUnread: PropTypes.bool
 	}
 
 	onLongPress() {
@@ -152,6 +170,18 @@ export default class Message extends React.Component {
 		);
 	}
 
+	renderFirstUnread = () => {
+		if (!this.props.isFirstUnread) {
+			return null;
+		}
+		return (
+			<View style={styles.firstUnread}>
+				<View style={styles.firstUnreadLine} />
+				<Text style={styles.firstUnreadBadge}>unread messages</Text>
+			</View>
+		);
+	}
+
 	render() {
 		const {
 			item, message, editing, baseUrl
@@ -176,26 +206,29 @@ export default class Message extends React.Component {
 				style={[styles.message, isEditing ? styles.editing : null]}
 				accessibilityLabel={accessibilityLabel}
 			>
-				<View style={{ flexDirection: 'row', flex: 1 }}>
-					{this.renderError()}
-					<View style={[extraStyle, { flexDirection: 'row', flex: 1 }]}>
-						<Avatar
-							style={{ marginRight: 10 }}
-							text={item.avatar ? '' : username}
-							size={40}
-							baseUrl={baseUrl}
-							avatar={item.avatar}
-						/>
-						<View style={[styles.content]}>
-							<User
-								onPress={this._onPress}
-								item={item}
-								Message_TimeFormat={this.props.Message_TimeFormat}
+				<View style={{ flexDirection: 'column', flex: 1 }}>
+					{this.renderFirstUnread()}
+					<View style={{ flexDirection: 'row', flex: 1 }}>
+						{this.renderError()}
+						<View style={[extraStyle, { flexDirection: 'row', flex: 1 }]}>
+							<Avatar
+								style={{ marginRight: 10 }}
+								text={item.avatar ? '' : username}
+								size={40}
 								baseUrl={baseUrl}
+								avatar={item.avatar}
 							/>
-							{this.renderMessageContent()}
-							{this.attachments()}
-							{this.renderUrl()}
+							<View style={[styles.content]}>
+								<User
+									onPress={this._onPress}
+									item={item}
+									Message_TimeFormat={this.props.Message_TimeFormat}
+									baseUrl={baseUrl}
+								/>
+								{this.renderMessageContent()}
+								{this.attachments()}
+								{this.renderUrl()}
+							</View>
 						</View>
 					</View>
 				</View>
