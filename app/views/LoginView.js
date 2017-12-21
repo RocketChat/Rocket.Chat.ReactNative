@@ -88,7 +88,11 @@ class LoginView extends React.Component {
 				contentContainerStyle={styles.container}
 				keyboardVerticalOffset={128}
 			>
-				<ScrollView style={styles.loginView}>
+				<ScrollView
+					style={styles.loginView}
+					keyboardDismissMode='interactive'
+					keyboardShouldPersistTaps='always'
+				>
 					<SafeAreaView>
 						<View style={styles.formContainer}>
 							<TextInput
