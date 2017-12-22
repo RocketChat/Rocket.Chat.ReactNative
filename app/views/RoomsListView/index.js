@@ -47,9 +47,7 @@ export default class RoomsListView extends React.Component {
 			dataSource: ds.cloneWithRows([]),
 			searchText: ''
 		};
-		this.data = realm.databases.activeDB.objects('subscriptions')
-			// .filtered('_server.id = $0', this.props.server)
-			.sorted('roomUpdatedAt', true);
+		this.data = realm.databases.activeDB.objects('subscriptions').sorted('roomUpdatedAt', true);
 	}
 
 	componentDidMount() {
@@ -65,9 +63,7 @@ export default class RoomsListView extends React.Component {
 	componentWillReceiveProps(props) {
 		if (this.props.server !== props.server) {
 			this.data.removeListener(this.updateState);
-			this.data = realm.databases.activeDB.objects('subscriptions')
-				// .filtered('_server.id = $0', props.server)
-				.sorted('roomUpdatedAt', true);
+			this.data = realm.databases.activeDB.objects('subscriptions').sorted('roomUpdatedAt', true);
 			this.data.addListener(this.updateState);
 		} else if (this.props.searchText !== props.searchText) {
 			this.search(props.searchText);

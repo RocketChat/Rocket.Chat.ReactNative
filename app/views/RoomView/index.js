@@ -25,7 +25,6 @@ const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._i
 const typing = () => <Typing />;
 @connect(
 	state => ({
-		server: state.server.server,
 		Site_Url: state.settings.Site_Url,
 		Message_TimeFormat: state.settings.Message_TimeFormat,
 		loading: state.messages.isFetching,
@@ -44,7 +43,6 @@ export default class RoomView extends React.Component {
 		user: PropTypes.object.isRequired,
 		editCancel: PropTypes.func,
 		rid: PropTypes.string,
-		server: PropTypes.string,
 		name: PropTypes.string,
 		Site_Url: PropTypes.string,
 		Message_TimeFormat: PropTypes.string,
@@ -65,7 +63,6 @@ export default class RoomView extends React.Component {
 		this.props.navigation.state.params.room.name;
 
 		this.data = realm.databases.activeDB.objects('messages')
-			// .filtered('_server.id = $0 AND rid = $1', this.props.server, this.rid)
 			.filtered('rid = $0', this.rid)
 			.sorted('ts', true);
 		this.room = realm.databases.activeDB.objects('subscriptions').filtered('rid = $0', this.rid);

@@ -207,19 +207,10 @@ const RocketChat = {
 	},
 
 	loadSubscriptions(cb) {
-		const { server } = reduxStore.getState().server;
 		this.ddp.call('subscriptions/get').then((data) => {
 			if (data.length) {
 				realm.databases.activeDB.write(() => {
 					data.forEach((subscription) => {
-						// const subscription = {
-						// 	_id: item._id
-						// };
-						// if (typeof item.value === 'string') {
-						// 	subscription.value = item.value;
-						// }
-						// subscription._server = { id: server };
-						// write('subscriptions', subscription);
 						realm.databases.activeDB.create('subscriptions', subscription, true);
 					});
 				});
@@ -261,9 +252,7 @@ const RocketChat = {
 		});
 	},
 	_buildMessage(message) {
-		const { server } = reduxStore.getState().server;
 		message.status = messagesStatus.SENT;
-		// message._server = { id: server };
 		message.attachments = message.attachments || [];
 		if (message.urls) {
 			message.urls = RocketChat._parseUrls(message.urls);
@@ -299,7 +288,6 @@ const RocketChat = {
 
 	getMessage(rid, msg = {}) {
 		const _id = Random.id();
-		// console.log('reduxStore.getState().login.id ', reduxStore.getState().login);
 		const message = {
 			_id,
 			rid,
@@ -307,7 +295,6 @@ const RocketChat = {
 			ts: new Date(),
 			_updatedAt: new Date(),
 			status: messagesStatus.TEMP,
-			// _server: { id: reduxStore.getState().server.server },
 			u: {
 				_id: reduxStore.getState().login.user.id || '1',
 				username: reduxStore.getState().login.user.username
@@ -316,7 +303,6 @@ const RocketChat = {
 
 		realm.databases.activeDB.write(() => {
 			realm.databases.activeDB.create('messages', message, true);
-			// write('messages', message, true);
 		});
 		return message;
 	},
@@ -419,10 +405,9 @@ const RocketChat = {
 		}
 	},
 	async getRooms() {
-		const { server, login } = reduxStore.getState();
+		const { login } = reduxStore.getState();
 		let lastMessage = realm.databases.activeDB
 			.objects('subscriptions')
-			// .filtered('_server.id = $0', server.server)
 			.sorted('roomUpdatedAt', true)[0];
 		lastMessage = lastMessage && new Date(lastMessage.roomUpdatedAt);
 		let [subscriptions, rooms] = await Promise.all([call('subscriptions/get', lastMessage), call('rooms/get', lastMessage)]);
@@ -440,7 +425,6 @@ const RocketChat = {
 			if (subscription.roles) {
 				subscription.roles = subscription.roles.map(role => ({ value: role }));
 			}
-			// subscription._server = { id: server.server };
 			return subscription;
 		});
 		realm.databases.activeDB.write(() => {
@@ -480,7 +464,6 @@ const RocketChat = {
 	logout({ server }) {
 		if (this.ddp) {
 			this.ddp.logout();
-			// this.disconnect();
 		}
 		AsyncStorage.removeItem(TOKEN_KEY);
 		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);

@@ -18,7 +18,6 @@ const settingsSchema = {
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
-		// _server: 'servers',
 		valueAsString: { type: 'string', optional: true },
 		valueAsBoolean: { type: 'bool', optional: true },
 		valueAsNumber: { type: 'int', optional: true },
@@ -39,7 +38,6 @@ const permissionsSchema = {
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
-		// _server: 'servers',
 		roles: { type: 'list', objectType: 'permissionsRoles' },
 		_updatedAt: { type: 'date', optional: true }
 	}
@@ -50,7 +48,6 @@ const roomsSchema = {
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
-		// _server: 'servers',
 		t: 'string',
 		_updatedAt: { type: 'date', optional: true }
 	}
@@ -68,7 +65,6 @@ const subscriptionSchema = {
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
-		// _server: 'servers',
 		f: { type: 'bool', optional: true },
 		t: 'string',
 		ts: { type: 'date', optional: true },
@@ -92,7 +88,6 @@ const usersSchema = {
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
-		// _server: 'servers',
 		username: 'string',
 		name: { type: 'string', optional: true }
 	}
@@ -160,7 +155,6 @@ const messagesSchema = {
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
-		// _server: 'servers',
 		msg: { type: 'string', optional: true },
 		t: { type: 'string', optional: true },
 		rid: 'string',

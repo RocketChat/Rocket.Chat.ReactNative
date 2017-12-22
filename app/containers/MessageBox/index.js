@@ -197,7 +197,7 @@ export default class MessageBox extends React.Component {
 	}
 
 	async _getUsers(keyword) {
-		this.users = realm.objects('users');
+		this.users = realm.databases.activeDB.objects('users');
 		if (keyword) {
 			this.users = this.users.filtered('username CONTAINS[c] $0', keyword);
 		}
@@ -221,10 +221,6 @@ export default class MessageBox extends React.Component {
 			]);
 			realm.databases.activeDB.write(() => {
 				results.users.forEach((user) => {
-					user._server = {
-						id: this.props.baseUrl,
-						current: true
-					};
 					realm.databases.activeDB.create('users', user, true);
 				});
 			});
@@ -240,7 +236,7 @@ export default class MessageBox extends React.Component {
 	async _getRooms(keyword = '') {
 		this.roomsCache = this.roomsCache || [];
 		this.rooms = realm.databases.activeDB.objects('subscriptions')
-			.filtered('_server.id = $0 AND t != $1', this.props.baseUrl, 'd');
+			.filtered('t != $0', 'd');
 		if (keyword) {
 			this.rooms = this.rooms.filtered('name CONTAINS[c] $0', keyword);
 		}
