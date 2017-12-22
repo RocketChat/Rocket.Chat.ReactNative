@@ -83,9 +83,9 @@ export default class RoomsListView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.data = realm
+		this.data = realm.databases.activeDB
 			.objects('subscriptions')
-			.filtered('_server.id = $0 AND t = $1', this.props.server, 'd');
+			.filtered('t = $0', 'd');
 		this.state = {
 			dataSource: ds.cloneWithRows(this.data),
 			// searching: false,

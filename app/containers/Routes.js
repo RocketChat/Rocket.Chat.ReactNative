@@ -31,13 +31,13 @@ export default class Routes extends React.Component {
 	}
 
 	componentDidMount() {
-		if (!this.props.app.starting) {
+		if (this.props.app.ready) {
 			SplashScreen.hide();
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (!nextProps.app.starting && this.props.app.starting !== nextProps.app.starting) {
+		if (nextProps.app.ready && this.props.app.ready !== nextProps.app.ready) {
 			SplashScreen.hide();
 		}
 	}
@@ -48,6 +48,10 @@ export default class Routes extends React.Component {
 
 	render() {
 		const { login } = this.props;
+
+		if (this.props.app.starting) {
+			return null;
+		}
 
 		if (!login.token || login.isRegistering) {
 			return (<PublicRoutes ref={nav => this.navigator = nav} />);

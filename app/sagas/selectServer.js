@@ -13,6 +13,7 @@ const validate = function* validate(server) {
 };
 
 const selectServer = function* selectServer({ server }) {
+	realm.setActiveDB(server);
 	yield put(disconnect_by_user());
 	yield put(disconnect());
 	yield put(changedServer(server));
@@ -39,8 +40,8 @@ const addServer = function* addServer({ server }) {
 		success: take(SERVER.SUCCESS)
 	});
 	if (!error) {
-		realm.write(() => {
-			realm.create('servers', { id: server, current: false }, true);
+		realm.databases.serversDB.write(() => {
+			realm.databases.serversDB.create('servers', { id: server, current: false }, true);
 		});
 		yield put(setServer(server));
 	}

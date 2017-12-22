@@ -90,16 +90,15 @@ const RocketChat = {
 
 			this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
 
-
 			this.ddp.on('users', (ddpMessage) => {
 				if (ddpMessage.collection === 'users') {
 					return RocketChat._setUser(ddpMessage);
 				}
 			});
 
-			this.ddp.on('stream-room-messages', ddpMessage => realm.write(() => {
+			this.ddp.on('stream-room-messages', ddpMessage => realm.databases.activeDB.write(() => {
 				const message = this._buildMessage(ddpMessage.fields.args[0]);
-				realm.create('messages', message, true);
+				realm.databases.activeDB.create('messages', message, true);
 			}));
 
 			this.ddp.on('stream-notify-room', (ddpMessage) => {
@@ -117,13 +116,13 @@ const RocketChat = {
 					if (data.roles) {
 						data.roles = data.roles.map(role => ({ value: role }));
 					}
-					realm.write(() => {
-						realm.create('subscriptions', data, true);
+					realm.databases.activeDB.write(() => {
+						realm.databases.activeDB.create('subscriptions', data, true);
 					});
 				}
 				if (/rooms/.test(ev) && type === 'updated') {
-					const sub = realm.objects('subscriptions').filtered('rid == $0', data._id)[0];
-					realm.write(() => {
+					const sub = realm.databases.activeDB.objects('subscriptions').filtered('rid == $0', data._id)[0];
+					realm.databases.activeDB.write(() => {
 						sub.roomUpdatedAt = data._updatedAt;
 					});
 				}
@@ -211,7 +210,7 @@ const RocketChat = {
 		const { server } = reduxStore.getState().server;
 		this.ddp.call('subscriptions/get').then((data) => {
 			if (data.length) {
-				realm.write(() => {
+				realm.databases.activeDB.write(() => {
 					data.forEach((subscription) => {
 						// const subscription = {
 						// 	_id: item._id
@@ -219,9 +218,9 @@ const RocketChat = {
 						// if (typeof item.value === 'string') {
 						// 	subscription.value = item.value;
 						// }
-						subscription._server = { id: server };
+						// subscription._server = { id: server };
 						// write('subscriptions', subscription);
-						realm.create('subscriptions', subscription, true);
+						realm.databases.activeDB.create('subscriptions', subscription, true);
 					});
 				});
 			}
@@ -264,7 +263,7 @@ const RocketChat = {
 	_buildMessage(message) {
 		const { server } = reduxStore.getState().server;
 		message.status = messagesStatus.SENT;
-		message._server = { id: server };
+		// message._server = { id: server };
 		message.attachments = message.attachments || [];
 		if (message.urls) {
 			message.urls = RocketChat._parseUrls(message.urls);
@@ -278,9 +277,9 @@ const RocketChat = {
 		return this.ddp.call('loadHistory', rid, end, 20).then((data) => {
 			if (data && data.messages.length) {
 				const messages = data.messages.map(message => this._buildMessage(message));
-				realm.write(() => {
+				realm.databases.activeDB.write(() => {
 					messages.forEach((message) => {
-						realm.create('messages', message, true);
+						realm.databases.activeDB.create('messages', message, true);
 					});
 				});
 			}
@@ -308,15 +307,15 @@ const RocketChat = {
 			ts: new Date(),
 			_updatedAt: new Date(),
 			status: messagesStatus.TEMP,
-			_server: { id: reduxStore.getState().server.server },
+			// _server: { id: reduxStore.getState().server.server },
 			u: {
 				_id: reduxStore.getState().login.user.id || '1',
 				username: reduxStore.getState().login.user.username
 			}
 		};
 
-		realm.write(() => {
-			realm.create('messages', message, true);
+		realm.databases.activeDB.write(() => {
+			realm.databases.activeDB.create('messages', message, true);
 			// write('messages', message, true);
 		});
 		return message;
@@ -327,9 +326,9 @@ const RocketChat = {
 		const timeoutCall = new Promise(resolve => setTimeout(resolve, SERVER_TIMEOUT, 'timeout'));
 		const result = await Promise.race([sendMessageCall, timeoutCall]);
 		if (result === 'timeout') {
-			realm.write(() => {
+			realm.databases.activeDB.write(() => {
 				message.status = messagesStatus.ERROR;
-				realm.create('messages', message, true);
+				realm.databases.activeDB.create('messages', message, true);
 			});
 		}
 	},
@@ -338,10 +337,10 @@ const RocketChat = {
 		return RocketChat._sendMessageCall(tempMessage);
 	},
 	async resendMessage(messageId) {
-		const message = await realm.objects('messages').filtered('_id = $0', messageId)[0];
-		realm.write(() => {
+		const message = await realm.databases.activeDB.objects('messages').filtered('_id = $0', messageId)[0];
+		realm.databases.activeDB.write(() => {
 			message.status = messagesStatus.TEMP;
-			realm.create('messages', message, true);
+			realm.databases.activeDB.create('messages', message, true);
 		});
 		return RocketChat._sendMessageCall(message);
 	},
@@ -413,17 +412,17 @@ const RocketChat = {
 		} catch (e) {
 			return e;
 		} finally {
-			realm.write(() => {
-				const msg = realm.objects('messages').filtered('_id = $0', placeholder._id);
-				realm.delete(msg);
+			realm.databases.activeDB.write(() => {
+				const msg = realm.databases.activeDB.objects('messages').filtered('_id = $0', placeholder._id);
+				realm.databases.activeDB.delete(msg);
 			});
 		}
 	},
 	async getRooms() {
 		const { server, login } = reduxStore.getState();
-		let lastMessage = realm
+		let lastMessage = realm.databases.activeDB
 			.objects('subscriptions')
-			.filtered('_server.id = $0', server.server)
+			// .filtered('_server.id = $0', server.server)
 			.sorted('roomUpdatedAt', true)[0];
 		lastMessage = lastMessage && new Date(lastMessage.roomUpdatedAt);
 		let [subscriptions, rooms] = await Promise.all([call('subscriptions/get', lastMessage), call('rooms/get', lastMessage)]);
@@ -441,12 +440,12 @@ const RocketChat = {
 			if (subscription.roles) {
 				subscription.roles = subscription.roles.map(role => ({ value: role }));
 			}
-			subscription._server = { id: server.server };
+			// subscription._server = { id: server.server };
 			return subscription;
 		});
-		realm.write(() => {
+		realm.databases.activeDB.write(() => {
 			data.forEach(subscription =>
-				realm.create('subscriptions', subscription, true));
+				realm.databases.activeDB.create('subscriptions', subscription, true));
 		});
 		this.ddp.subscribe('stream-notify-user', `${ login.user.id }/subscriptions-changed`, false);
 		this.ddp.subscribe('stream-notify-user', `${ login.user.id }/rooms-changed`, false);
@@ -487,12 +486,12 @@ const RocketChat = {
 		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
 	},
 	async getSettings() {
-		const temp = realm.objects('settings').sorted('_updatedAt', true)[0];
+		const temp = realm.databases.activeDB.objects('settings').sorted('_updatedAt', true)[0];
 		const result = await (!temp ? call('public-settings/get') : call('public-settings/get', new Date(temp._updatedAt)));
 		const settings = temp ? result.update : result;
 		const filteredSettings = RocketChat._prepareSettings(RocketChat._filterSettings(settings));
-		realm.write(() => {
-			filteredSettings.forEach(setting => realm.create('settings', setting, true));
+		realm.databases.activeDB.write(() => {
+			filteredSettings.forEach(setting => realm.databases.activeDB.create('settings', setting, true));
 		});
 		reduxStore.dispatch(actions.setAllSettings(RocketChat.parseSettings(filteredSettings)));
 	},
@@ -509,12 +508,12 @@ const RocketChat = {
 	},
 	_filterSettings: settings => settings.filter(setting => settingsType[setting.type] && setting.value),
 	async getPermissions() {
-		const temp = realm.objects('permissions').sorted('_updatedAt', true)[0];
+		const temp = realm.databases.activeDB.objects('permissions').sorted('_updatedAt', true)[0];
 		const result = await (!temp ? call('permissions/get') : call('permissions/get', new Date(temp._updatedAt)));
 		let permissions = temp ? result.update : result;
 		permissions = RocketChat._preparePermissions(permissions);
-		realm.write(() => {
-			permissions.forEach(permission => realm.create('permissions', permission, true));
+		realm.databases.activeDB.write(() => {
+			permissions.forEach(permission => realm.databases.activeDB.create('permissions', permission, true));
 		});
 		reduxStore.dispatch(actions.setAllPermissions(RocketChat.parsePermissions(permissions)));
 	},

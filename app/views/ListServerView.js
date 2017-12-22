@@ -84,7 +84,7 @@ export default class ListServerView extends React.Component {
 			sections: []
 		};
 		this.redirected = false;
-		realm.addListener('change', this.updateState);
+		realm.databases.serversDB.addListener('change', this.updateState);
 	}
 
 	componentWillMount() {
@@ -109,7 +109,7 @@ export default class ListServerView extends React.Component {
 
 	componentWillUnmount() {
 		zeroconf.stop();
-		realm.removeListener('change', this.updateState);
+		realm.databases.serversDB.removeListener('change', this.updateState);
 		zeroconf.removeListener('update', this.updateState);
 	}
 
@@ -120,7 +120,7 @@ export default class ListServerView extends React.Component {
 	getState = () => {
 		const sections = [{
 			title: 'My servers',
-			data: realm.objects('servers')
+			data: realm.databases.serversDB.objects('servers')
 		}];
 
 		this.state.nearBy = zeroconf.getServices();

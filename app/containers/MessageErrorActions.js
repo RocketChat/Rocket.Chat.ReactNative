@@ -41,9 +41,9 @@ export default class MessageActions extends React.Component {
 	handleResend = () => RocketChat.resendMessage(this.props.actionMessage._id);
 
 	handleDelete = () => {
-		realm.write(() => {
-			const msg = realm.objects('messages').filtered('_id = $0', this.props.actionMessage._id);
-			realm.delete(msg);
+		realm.databases.activeDB.write(() => {
+			const msg = realm.databases.activeDB.objects('messages').filtered('_id = $0', this.props.actionMessage._id);
+			realm.databases.activeDB.delete(msg);
 		});
 	}
 

@@ -219,27 +219,27 @@ export default class MessageBox extends React.Component {
 				RocketChat.spotlight(keyword, usernames, { users: true }),
 				new Promise((resolve, reject) => (this.oldPromise = reject))
 			]);
-			realm.write(() => {
+			realm.databases.activeDB.write(() => {
 				results.users.forEach((user) => {
 					user._server = {
 						id: this.props.baseUrl,
 						current: true
 					};
-					realm.create('users', user, true);
+					realm.databases.activeDB.create('users', user, true);
 				});
 			});
 		} catch (e) {
 			console.log('spotlight canceled');
 		} finally {
 			delete this.oldPromise;
-			this.users = realm.objects('users').filtered('username CONTAINS[c] $0', keyword);
+			this.users = realm.databases.activeDB.objects('users').filtered('username CONTAINS[c] $0', keyword);
 			this.setState({ mentions: this.users.slice() });
 		}
 	}
 
 	async _getRooms(keyword = '') {
 		this.roomsCache = this.roomsCache || [];
-		this.rooms = realm.objects('subscriptions')
+		this.rooms = realm.databases.activeDB.objects('subscriptions')
 			.filtered('_server.id = $0 AND t != $1', this.props.baseUrl, 'd');
 		if (keyword) {
 			this.rooms = this.rooms.filtered('name CONTAINS[c] $0', keyword);

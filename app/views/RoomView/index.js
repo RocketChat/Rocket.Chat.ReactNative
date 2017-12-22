@@ -64,11 +64,11 @@ export default class RoomView extends React.Component {
 		this.props.navigation.state.params.name ||
 		this.props.navigation.state.params.room.name;
 
-		this.data = realm
-			.objects('messages')
-			.filtered('_server.id = $0 AND rid = $1', this.props.server, this.rid)
+		this.data = realm.databases.activeDB.objects('messages')
+			// .filtered('_server.id = $0 AND rid = $1', this.props.server, this.rid)
+			.filtered('rid = $0', this.rid)
 			.sorted('ts', true);
-		this.room = realm.objects('subscriptions').filtered('rid = $0', this.rid);
+		this.room = realm.databases.activeDB.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			dataSource: ds.cloneWithRows([]),
 			loaded: true,
