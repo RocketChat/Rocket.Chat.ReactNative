@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, TouchableHighlight, Text, TouchableOpacity } from 'react-native';
+import { View, TouchableHighlight, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
@@ -15,27 +15,11 @@ import Markdown from './Markdown';
 import Url from './Url';
 import Reply from './Reply';
 import messageStatus from '../../constants/messagesStatus';
+import styles from './styles';
 
-const styles = StyleSheet.create({
-	content: {
-		flexGrow: 1,
-		flexShrink: 1
-	},
-	message: {
-		padding: 12,
-		paddingTop: 6,
-		paddingBottom: 6,
-		flexDirection: 'row',
-		transform: [{ scaleY: -1 }]
-	},
-	textInfo: {
-		fontStyle: 'italic',
-		color: '#a0a0a0'
-	},
-	editing: {
-		backgroundColor: '#fff5df'
-	}
-});
+const avatar = { marginRight: 10 };
+const flex = { flexDirection: 'row', flex: 1 };
+
 
 @connect(state => ({
 	message: state.messages.message,
@@ -54,6 +38,17 @@ export default class Message extends React.Component {
 		editing: PropTypes.bool,
 		actionsShow: PropTypes.func,
 		errorActionsShow: PropTypes.func
+	}
+
+	componentWillReceiveProps() {
+		this.extraStyle = this.extraStyle || {};
+		if (this.props.item.status === messageStatus.TEMP || this.props.item.status === messageStatus.ERROR) {
+			this.extraStyle.opacity = 0.3;
+		}
+	}
+
+	shouldComponentUpdate(nextProps) {
+		return this.props.item._updatedAt.toGMTString() !== nextProps.item._updatedAt.toGMTString() || this.props.item.status !== nextProps.item.status;
 	}
 
 	onLongPress() {
@@ -157,11 +152,6 @@ export default class Message extends React.Component {
 			item, message, editing, baseUrl
 		} = this.props;
 
-		const extraStyle = {};
-		if (item.status === messageStatus.TEMP || item.status === messageStatus.ERROR) {
-			extraStyle.opacity = 0.3;
-		}
-
 		const username = item.alias || item.u.username;
 		const isEditing = message._id === item._id && editing;
 
@@ -176,11 +166,11 @@ export default class Message extends React.Component {
 				style={[styles.message, isEditing ? styles.editing : null]}
 				accessibilityLabel={accessibilityLabel}
 			>
-				<View style={{ flexDirection: 'row', flex: 1 }}>
+				<View style={flex}>
 					{this.renderError()}
-					<View style={[extraStyle, { flexDirection: 'row', flex: 1 }]}>
+					<View style={[this.extraStyle, flex]}>
 						<Avatar
-							style={{ marginRight: 10 }}
+							style={avatar}
 							text={item.avatar ? '' : username}
 							size={40}
 							baseUrl={baseUrl}

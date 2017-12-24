@@ -19,7 +19,10 @@ const styles = StyleSheet.create({
 	usersTyping: state.room.usersTyping
 }))
 
-export default class Typing extends React.PureComponent {
+export default class Typing extends React.Component {
+	shouldComponentUpdate(nextProps) {
+		return this.props.usersTyping.join() !== nextProps.usersTyping.join();
+	}
 	get usersTyping() {
 		const users = this.props.usersTyping.filter(_username => this.props.username !== _username);
 		return users.length ? `${ users.join(' ,') } ${ users.length > 1 ? 'are' : 'is' } typing` : '';
