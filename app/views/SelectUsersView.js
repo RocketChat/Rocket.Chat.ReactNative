@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 import * as server from '../actions/connect';
 import * as createChannelActions from '../actions/createChannel';
-import realm from '../lib/realm';
+import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import RoomItem from '../presentation/RoomItem';
 import Banner from '../containers/Banner';
@@ -81,7 +81,7 @@ export default class RoomsListView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.data = realm.databases.activeDB
+		this.data = database
 			.objects('subscriptions')
 			.filtered('t = $0', 'd');
 		this.state = {

@@ -175,38 +175,51 @@ const messagesSchema = {
 		editedBy: 'messagesEditedBy'
 	}
 };
-
+const schema = [
+	settingsSchema,
+	subscriptionSchema,
+	subscriptionRolesSchema,
+	messagesSchema,
+	usersSchema,
+	roomsSchema,
+	attachment,
+	attachmentFields,
+	messagesEditedBySchema,
+	permissionsSchema,
+	permissionsRolesSchema,
+	url
+];
 class DB {
-	constructor() {
-		this.databases = {
-			serversDB: new Realm({
-				path: 'default.realm',
-				schema: [
-					serversSchema
-				],
-				deleteRealmIfMigrationNeeded: true
-			})
-		};
+	databases = {
+		serversDB: new Realm({
+			path: 'default.realm',
+			schema: [
+				serversSchema
+			],
+			deleteRealmIfMigrationNeeded: true
+		})
+	};
+	deleteAll(...args) {
+		return this.database.write(() => this.database.deleteAll(...args));
+	}
+	write(...args) {
+		return this.database.write(...args);
+	}
+	create(...args) {
+		return this.database.create(...args);
+	}
+	objects(...args) {
+		return this.database.objects(...args);
+	}
+	get database() {
+		return this.databases.activeDB;
 	}
 
 	setActiveDB(database) {
 		const path = database.replace(/(^\w+:|^)\/\//, '');
-		this.databases.activeDB = new Realm({
+		return this.databases.activeDB = new Realm({
 			path: `${ path }.realm`,
-			schema: [
-				settingsSchema,
-				subscriptionSchema,
-				subscriptionRolesSchema,
-				messagesSchema,
-				usersSchema,
-				roomsSchema,
-				attachment,
-				attachmentFields,
-				messagesEditedBySchema,
-				permissionsSchema,
-				permissionsRolesSchema,
-				url
-			],
+			schema,
 			deleteRealmIfMigrationNeeded: true
 		});
 	}

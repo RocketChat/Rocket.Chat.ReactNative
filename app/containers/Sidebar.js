@@ -4,7 +4,7 @@ import { ScrollView, Text, View, StyleSheet, FlatList, TouchableHighlight } from
 import { DrawerItems } from 'react-navigation';
 import { connect } from 'react-redux';
 
-import realm from '../lib/realm';
+import database from '../lib/realm';
 import { setServer, gotoAddServer } from '../actions/server';
 import { logout } from '../actions/login';
 

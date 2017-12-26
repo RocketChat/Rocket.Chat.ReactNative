@@ -6,7 +6,7 @@ import RNFetchBlob from 'react-native-fetch-blob';
 import reduxStore from './createStore';
 import settingsType from '../constants/settings';
 import messagesStatus from '../constants/messagesStatus';
-import realm from './realm';
+import database from './realm';
 import * as actions from '../actions';
 import { someoneTyping } from '../actions/room';
 import { setUser } from '../actions/login';
@@ -77,7 +77,9 @@ const RocketChat = {
 			this.ddp.on('disconnected', () => {
 				reduxStore.dispatch(disconnect());
 			});
-			this.ddp.on('open', async() => resolve(reduxStore.dispatch(connectSuccess())));
+			this.ddp.on('open', async() => {
+				resolve(reduxStore.dispatch(connectSuccess()));
+			});
 			this.ddp.on('connected', () => {
 				RocketChat.getSettings();
 				RocketChat.getPermissions();
@@ -96,9 +98,9 @@ const RocketChat = {
 				}
 			});
 
-			this.ddp.on('stream-room-messages', ddpMessage => realm.databases.activeDB.write(() => {
+			this.ddp.on('stream-room-messages', ddpMessage => database.write(() => {
 				const message = this._buildMessage(ddpMessage.fields.args[0]);
-				realm.databases.activeDB.create('messages', message, true);
+				database.create('messages', message, true);
 			}));
 
 			this.ddp.on('stream-notify-room', (ddpMessage) => {
@@ -116,13 +118,13 @@ const RocketChat = {
 					if (data.roles) {
 						data.roles = data.roles.map(role => ({ value: role }));
 					}
-					realm.databases.activeDB.write(() => {
-						realm.databases.activeDB.create('subscriptions', data, true);
+					database.write(() => {
+						database.create('subscriptions', data, true);
 					});
 				}
 				if (/rooms/.test(ev) && type === 'updated') {
-					const sub = realm.databases.activeDB.objects('subscriptions').filtered('rid == $0', data._id)[0];
-					realm.databases.activeDB.write(() => {
+					const sub = database.objects('subscriptions').filtered('rid == $0', data._id)[0];
+					database.write(() => {
 						sub.roomUpdatedAt = data._updatedAt;
 					});
 				}
@@ -209,9 +211,9 @@ const RocketChat = {
 	loadSubscriptions(cb) {
 		this.ddp.call('subscriptions/get').then((data) => {
 			if (data.length) {
-				realm.databases.activeDB.write(() => {
+				database.write(() => {
 					data.forEach((subscription) => {
-						realm.databases.activeDB.create('subscriptions', subscription, true);
+						database.create('subscriptions', subscription, true);
 					});
 				});
 			}
@@ -266,9 +268,9 @@ const RocketChat = {
 		return this.ddp.call('loadHistory', rid, end, 20).then((data) => {
 			if (data && data.messages.length) {
 				const messages = data.messages.map(message => this._buildMessage(message));
-				realm.databases.activeDB.write(() => {
+				database.write(() => {
 					messages.forEach((message) => {
-						realm.databases.activeDB.create('messages', message, true);
+						database.create('messages', message, true);
 					});
 				});
 			}
@@ -301,8 +303,8 @@ const RocketChat = {
 			}
 		};
 
-		realm.databases.activeDB.write(() => {
-			realm.databases.activeDB.create('messages', message, true);
+		database.write(() => {
+			database.create('messages', message, true);
 		});
 		return message;
 	},
@@ -312,9 +314,9 @@ const RocketChat = {
 		const timeoutCall = new Promise(resolve => setTimeout(resolve, SERVER_TIMEOUT, 'timeout'));
 		const result = await Promise.race([sendMessageCall, timeoutCall]);
 		if (result === 'timeout') {
-			realm.databases.activeDB.write(() => {
+			database.write(() => {
 				message.status = messagesStatus.ERROR;
-				realm.databases.activeDB.create('messages', message, true);
+				database.create('messages', message, true);
 			});
 		}
 	},
@@ -323,10 +325,10 @@ const RocketChat = {
 		return RocketChat._sendMessageCall(tempMessage);
 	},
 	async resendMessage(messageId) {
-		const message = await realm.databases.activeDB.objects('messages').filtered('_id = $0', messageId)[0];
-		realm.databases.activeDB.write(() => {
+		const message = await database.objects('messages').filtered('_id = $0', messageId)[0];
+		database.write(() => {
 			message.status = messagesStatus.TEMP;
-			realm.databases.activeDB.create('messages', message, true);
+			database.create('messages', message, true);
 		});
 		return RocketChat._sendMessageCall(message);
 	},
@@ -398,15 +400,15 @@ const RocketChat = {
 		} catch (e) {
 			return e;
 		} finally {
-			realm.databases.activeDB.write(() => {
-				const msg = realm.databases.activeDB.objects('messages').filtered('_id = $0', placeholder._id);
-				realm.databases.activeDB.delete(msg);
+			database.write(() => {
+				const msg = database.objects('messages').filtered('_id = $0', placeholder._id);
+				database.delete(msg);
 			});
 		}
 	},
 	async getRooms() {
 		const { login } = reduxStore.getState();
-		let lastMessage = realm.databases.activeDB
+		let lastMessage = database
 			.objects('subscriptions')
 			.sorted('roomUpdatedAt', true)[0];
 		lastMessage = lastMessage && new Date(lastMessage.roomUpdatedAt);
@@ -427,9 +429,9 @@ const RocketChat = {
 			}
 			return subscription;
 		});
-		realm.databases.activeDB.write(() => {
+		database.write(() => {
 			data.forEach(subscription =>
-				realm.databases.activeDB.create('subscriptions', subscription, true));
+				database.create('subscriptions', subscription, true));
 		});
 		this.ddp.subscribe('stream-notify-user', `${ login.user.id }/subscriptions-changed`, false);
 		this.ddp.subscribe('stream-notify-user', `${ login.user.id }/rooms-changed`, false);
@@ -465,18 +467,19 @@ const RocketChat = {
 		if (this.ddp) {
 			this.ddp.logout();
 		}
+		database.deleteAll();
 		AsyncStorage.removeItem(TOKEN_KEY);
 		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
 	},
 	async getSettings() {
-		const temp = realm.databases.activeDB.objects('settings').sorted('_updatedAt', true)[0];
+		const temp = database.objects('settings').sorted('_updatedAt', true)[0];
 		const result = await (!temp ? call('public-settings/get') : call('public-settings/get', new Date(temp._updatedAt)));
 		const settings = temp ? result.update : result;
 		const filteredSettings = RocketChat._prepareSettings(RocketChat._filterSettings(settings));
-		realm.databases.activeDB.write(() => {
-			filteredSettings.forEach(setting => realm.databases.activeDB.create('settings', setting, true));
+		database.write(() => {
+			filteredSettings.forEach(setting => database.create('settings', setting, true));
 		});
-		reduxStore.dispatch(actions.setAllSettings(RocketChat.parseSettings(filteredSettings)));
+		reduxStore.dispatch(actions.addSettings(RocketChat.parseSettings(filteredSettings)));
 	},
 	parseSettings: settings => settings.reduce((ret, item) => {
 		ret[item._id] = item[settingsType[item.type]] || item.valueAsString || item.valueAsNumber ||
@@ -491,12 +494,12 @@ const RocketChat = {
 	},
 	_filterSettings: settings => settings.filter(setting => settingsType[setting.type] && setting.value),
 	async getPermissions() {
-		const temp = realm.databases.activeDB.objects('permissions').sorted('_updatedAt', true)[0];
+		const temp = database.objects('permissions').sorted('_updatedAt', true)[0];
 		const result = await (!temp ? call('permissions/get') : call('permissions/get', new Date(temp._updatedAt)));
 		let permissions = temp ? result.update : result;
 		permissions = RocketChat._preparePermissions(permissions);
-		realm.databases.activeDB.write(() => {
-			permissions.forEach(permission => realm.databases.activeDB.create('permissions', permission, true));
+		database.write(() => {
+			permissions.forEach(permission => database.create('permissions', permission, true));
 		});
 		reduxStore.dispatch(actions.setAllPermissions(RocketChat.parsePermissions(permissions)));
 	},
@@ -527,7 +530,7 @@ const RocketChat = {
 		return call('pinMessage', message);
 	},
 	getRoom(rid) {
-		const result = realm.objects('subscriptions').filtered('rid = $0', rid);
+		const result = database.objects('subscriptions').filtered('rid = $0', rid);
 		if (result.length === 0) {
 			return Promise.reject(new Error('Room not found'));
 		}

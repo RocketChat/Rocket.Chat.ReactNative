@@ -12,7 +12,7 @@ import styles from './styles';
 
 @connect(state => ({
 	user: state.login.user,
-	baseUrl: state.settings.Site_Url,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	activeUsers: state.activeUsers
 }))
 export default class extends React.Component {
@@ -30,7 +30,7 @@ export default class extends React.Component {
 			roomName: props.navigation.state.params.name
 		};
 		this.rid = props.navigation.state.params.room.rid;
-		this.room = realm.databases.activeDB.objects('subscriptions').filtered('rid = $0', this.rid);
+		this.room = realm.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.room.addListener(this.updateState);
 	}
 

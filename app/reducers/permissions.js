@@ -13,5 +13,12 @@ export default function permissions(state = initialState.permissions, action) {
 		};
 	}
 
+	if (action.type === types.ADD_PERMISSIONS) {
+		return {
+			...state,
+			...action.payload
+		};
+	}
+
 	return state;
 }

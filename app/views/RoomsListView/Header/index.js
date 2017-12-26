@@ -16,7 +16,7 @@ import styles from './styles';
 @connect(state => ({
 	user: state.login.user,
 	connected: state.meteor.connected,
-	baseUrl: state.settings.Site_Url
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }), dispatch => ({
 	setSearch: searchText => dispatch(setSearch(searchText))
 }))

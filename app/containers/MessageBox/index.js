@@ -9,7 +9,7 @@ import RocketChat from '../../lib/rocketchat';
 import { editRequest, editCancel, clearInput } from '../../actions/messages';
 import styles from './style';
 import MyIcon from '../icons';
-import realm from '../../lib/realm';
+import database from '../../lib/realm';
 import Avatar from '../Avatar';
 import AnimatedContainer from './AnimatedContainer';
 
@@ -23,7 +23,7 @@ const onlyUnique = function onlyUnique(value, index, self) {
 	room: state.room,
 	message: state.messages.message,
 	editing: state.messages.editing,
-	baseUrl: state.settings.Site_Url
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }), dispatch => ({
 	editCancel: () => dispatch(editCancel()),
 	editRequest: message => dispatch(editRequest(message)),
@@ -197,7 +197,7 @@ export default class MessageBox extends React.Component {
 	}
 
 	async _getUsers(keyword) {
-		this.users = realm.databases.activeDB.objects('users');
+		this.users = database.objects('users');
 		if (keyword) {
 			this.users = this.users.filtered('username CONTAINS[c] $0', keyword);
 		}
@@ -219,23 +219,23 @@ export default class MessageBox extends React.Component {
 				RocketChat.spotlight(keyword, usernames, { users: true }),
 				new Promise((resolve, reject) => (this.oldPromise = reject))
 			]);
-			realm.databases.activeDB.write(() => {
+			database.write(() => {
 				results.users.forEach((user) => {
-					realm.databases.activeDB.create('users', user, true);
+					database.create('users', user, true);
 				});
 			});
 		} catch (e) {
 			console.log('spotlight canceled');
 		} finally {
 			delete this.oldPromise;
-			this.users = realm.databases.activeDB.objects('users').filtered('username CONTAINS[c] $0', keyword);
+			this.users = database.objects('users').filtered('username CONTAINS[c] $0', keyword);
 			this.setState({ mentions: this.users.slice() });
 		}
 	}
 
 	async _getRooms(keyword = '') {
 		this.roomsCache = this.roomsCache || [];
-		this.rooms = realm.databases.activeDB.objects('subscriptions')
+		this.rooms = database.objects('subscriptions')
 			.filtered('t != $0', 'd');
 		if (keyword) {
 			this.rooms = this.rooms.filtered('name CONTAINS[c] $0', keyword);
