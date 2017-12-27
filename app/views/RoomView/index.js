@@ -87,11 +87,7 @@ export default class RoomView extends React.Component {
 		this.data.addListener(this.updateState);
 	}
 	shouldComponentUpdate(nextProps, nextState) {
-		if (this.update) {
-			this.update = false;
-			return true;
-		}
-		return !(equal(this.props, nextProps) || equal(this.state, nextState));
+		return !(equal(this.props, nextProps) && equal(this.state, nextState));
 	}
 	componentWillUnmount() {
 		clearTimeout(this.timer);
@@ -122,7 +118,6 @@ export default class RoomView extends React.Component {
 	}
 
 	updateState = debounce(() => {
-		this.update = true;
 		this.setState({
 			dataSource: ds.cloneWithRows(this.data)
 		});
