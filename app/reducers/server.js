@@ -5,7 +5,7 @@ const initialState = {
 	connected: false,
 	errorMessage: '',
 	failure: false,
-	server: ''
+	server: {}
 };
 
 
