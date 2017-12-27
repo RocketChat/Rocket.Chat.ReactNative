@@ -54,12 +54,12 @@ export default class Sidebar extends Component {
 	}
 
 	componentWillMount() {
-		realm.databases.serversDB.addListener('change', this.updateState);
+		database.databases.serversDB.addListener('change', this.updateState);
 		this.setState(this.getState());
 	}
 
 	componentWillUnmount() {
-		realm.databases.serversDB.removeListener('change', this.updateState);
+		database.databases.serversDB.removeListener('change', this.updateState);
 	}
 
 	onItemPress = ({ route, focused }) => {
@@ -75,7 +75,7 @@ export default class Sidebar extends Component {
 	}
 
 	getState = () => ({
-		servers: realm.databases.serversDB.objects('servers')
+		servers: database.databases.serversDB.objects('servers')
 	})
 
 	updateState = () => {
