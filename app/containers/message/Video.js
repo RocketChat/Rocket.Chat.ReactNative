@@ -66,7 +66,7 @@ export default class Video extends React.PureComponent {
 					onPress={() => this.open()}
 				>
 					<Image
-						source={require('../../images/logo.png')}
+						source={require('../../../static/images/logo.png')}
 						style={styles.image}
 					/>
 					<Markdown msg={description} />
