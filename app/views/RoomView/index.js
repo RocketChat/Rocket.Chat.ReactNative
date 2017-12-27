@@ -8,7 +8,7 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../../actions';
 import { openRoom } from '../../actions/room';
 import { editCancel } from '../../actions/messages';
-import realm from '../../lib/realm';
+import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
 import MessageActions from '../../containers/MessageActions';
@@ -25,8 +25,7 @@ const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._i
 const typing = () => <Typing />;
 @connect(
 	state => ({
-		server: state.server.server,
-		Site_Url: state.settings.Site_Url,
+		Site_Url: state.settings.Site_Url || state.server ? state.server.server : '',
 		Message_TimeFormat: state.settings.Message_TimeFormat,
 		loading: state.messages.isFetching,
 		user: state.login.user
@@ -44,7 +43,6 @@ export default class RoomView extends React.Component {
 		user: PropTypes.object.isRequired,
 		editCancel: PropTypes.func,
 		rid: PropTypes.string,
-		server: PropTypes.string,
 		name: PropTypes.string,
 		Site_Url: PropTypes.string,
 		Message_TimeFormat: PropTypes.string,
@@ -64,11 +62,10 @@ export default class RoomView extends React.Component {
 		this.props.navigation.state.params.name ||
 		this.props.navigation.state.params.room.name;
 
-		this.data = realm
-			.objects('messages')
-			.filtered('_server.id = $0 AND rid = $1', this.props.server, this.rid)
+		this.data = database.objects('messages')
+			.filtered('rid = $0', this.rid)
 			.sorted('ts', true);
-		this.room = realm.objects('subscriptions').filtered('rid = $0', this.rid);
+		this.room = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			dataSource: ds.cloneWithRows([]),
 			loaded: true,

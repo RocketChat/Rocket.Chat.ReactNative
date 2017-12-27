@@ -12,7 +12,7 @@ import styles from './styles';
 
 @connect(state => ({
 	user: state.login.user,
-	baseUrl: state.settings.Site_Url,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	activeUsers: state.activeUsers
 }))
 export default class extends React.Component {

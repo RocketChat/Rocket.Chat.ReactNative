@@ -38,6 +38,7 @@ exports[`Storyshots Avatar avatar 1`] = `
       >
         TE
       </Text>
+      
     </View>
     <View
       style={
@@ -74,6 +75,7 @@ exports[`Storyshots Avatar avatar 1`] = `
       >
         AA
       </Text>
+      
     </View>
     <View
       style={
@@ -110,6 +112,7 @@ exports[`Storyshots Avatar avatar 1`] = `
       >
         BB
       </Text>
+      
     </View>
     <View
       style={
@@ -146,6 +149,7 @@ exports[`Storyshots Avatar avatar 1`] = `
       >
         TE
       </Text>
+      
     </View>
   </View>
 </RCTScrollView>
@@ -229,6 +233,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           >
             RC
           </Text>
+          
         </View>
         <View
           style={
@@ -350,6 +355,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           >
             RC
           </Text>
+          
         </View>
         <View
           style={
@@ -473,6 +479,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           >
             RC
           </Text>
+          
         </View>
         <View
           style={
@@ -614,6 +621,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           >
             LC
           </Text>
+          
         </View>
         <View
           style={
@@ -757,6 +765,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           >
             LC
           </Text>
+          
         </View>
         <View
           style={
@@ -898,6 +907,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           >
             LC
           </Text>
+          
         </View>
         <View
           style={
@@ -1039,6 +1049,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           >
             LC
           </Text>
+          
         </View>
         <View
           style={
@@ -1180,6 +1191,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           >
             LC
           </Text>
+          
         </View>
         <View
           style={
@@ -1321,6 +1333,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           >
             W
           </Text>
+          
         </View>
         <View
           style={
@@ -1442,6 +1455,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           >
             WW
           </Text>
+          
         </View>
         <View
           style={
@@ -1563,6 +1577,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           >
             
           </Text>
+          
         </View>
         <View
           style={
