@@ -489,6 +489,7 @@ exports[`render unread +999 1`] = `
         >
           NA
         </Text>
+        
       </View>
       <View
         style={
@@ -635,6 +636,7 @@ exports[`render unread 1`] = `
         >
           NA
         </Text>
+        
       </View>
       <View
         style={
@@ -781,6 +783,7 @@ exports[`renders correctly 1`] = `
         >
           NA
         </Text>
+        
       </View>
       <View
         style={

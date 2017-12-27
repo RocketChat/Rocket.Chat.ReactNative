@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 import * as server from '../actions/connect';
 import * as createChannelActions from '../actions/createChannel';
-import realm from '../lib/realm';
+import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import RoomItem from '../presentation/RoomItem';
 import Banner from '../containers/Banner';
@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 @connect(
 	state => ({
-		server: state.server.server,
 		login: state.login,
 		Site_Url: state.settings.Site_Url,
 		users: state.createChannel.users
@@ -74,7 +73,6 @@ export default class RoomsListView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
 		Site_Url: PropTypes.string,
-		server: PropTypes.string,
 		addUser: PropTypes.func.isRequired,
 		removeUser: PropTypes.func.isRequired,
 		resetCreateChannel: PropTypes.func.isRequired,
@@ -83,15 +81,12 @@ export default class RoomsListView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.data = realm
+		this.data = database
 			.objects('subscriptions')
-			.filtered('_server.id = $0 AND t = $1', this.props.server, 'd');
+			.filtered('t = $0', 'd');
 		this.state = {
 			dataSource: ds.cloneWithRows(this.data),
-			// searching: false,
-			// searchDataSource: [],
 			searchText: ''
-			// login: false
 		};
 		this.data.addListener(this.updateState);
 	}
@@ -105,7 +100,6 @@ export default class RoomsListView extends React.Component {
 		const searchText = text.trim();
 		this.setState({
 			searchText: text
-			// searching: searchText !== ''
 		});
 		if (searchText === '') {
 			return this.setState({
