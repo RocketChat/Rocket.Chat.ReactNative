@@ -7,7 +7,7 @@ import { Platform, View, TextInput, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import * as server from '../../actions/connect';
-import realm from '../../lib/realm';
+import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem from '../../presentation/RoomItem';
 import Banner from '../../containers/Banner';
@@ -47,7 +47,7 @@ export default class RoomsListView extends React.Component {
 			dataSource: ds.cloneWithRows([]),
 			searchText: ''
 		};
-		this.data = realm.objects('subscriptions').filtered('_server.id = $0', this.props.server).sorted('roomUpdatedAt', true);
+		this.data = database.objects('subscriptions').sorted('roomUpdatedAt', true);
 	}
 
 	componentDidMount() {
@@ -63,7 +63,7 @@ export default class RoomsListView extends React.Component {
 	componentWillReceiveProps(props) {
 		if (this.props.server !== props.server) {
 			this.data.removeListener(this.updateState);
-			this.data = realm.objects('subscriptions').filtered('_server.id = $0', props.server).sorted('roomUpdatedAt', true);
+			this.data = database.objects('subscriptions').sorted('roomUpdatedAt', true);
 			this.data.addListener(this.updateState);
 		} else if (this.props.searchText !== props.searchText) {
 			this.search(props.searchText);
@@ -151,7 +151,8 @@ export default class RoomsListView extends React.Component {
 			if (item.t === 'd') {
 				RocketChat.createDirectMessage(item.username)
 					.then(room => new Promise((resolve) => {
-						const data = realm.objects('subscriptions').filtered('_server.id = $0 AND rid = $1', this.props.server, room.rid);
+						const data = database.objects('subscriptions')
+							.filtered('rid = $1', room.rid);
 
 						if (data.length) {
 							return resolve(data[0]);
