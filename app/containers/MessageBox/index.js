@@ -145,6 +145,9 @@ export default class MessageBox extends React.Component {
 
 	addFile = () => {
 		const options = {
+			maxHeight: 1960,
+			maxWidth: 1960,
+			quality: 0.8,
 			customButtons: [{
 				name: 'import', title: 'Import File From'
 			}]
