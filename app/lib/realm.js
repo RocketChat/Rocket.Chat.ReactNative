@@ -1,5 +1,8 @@
 import Realm from 'realm';
+
 // import { AsyncStorage } from 'react-native';
+// Realm.clearTestState();
+// AsyncStorage.clear();
 
 const serversSchema = {
 	name: 'servers',
@@ -15,7 +18,6 @@ const settingsSchema = {
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
-		_server: 'servers',
 		valueAsString: { type: 'string', optional: true },
 		valueAsBoolean: { type: 'bool', optional: true },
 		valueAsNumber: { type: 'int', optional: true },
@@ -36,7 +38,6 @@ const permissionsSchema = {
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
-		_server: 'servers',
 		roles: { type: 'list', objectType: 'permissionsRoles' },
 		_updatedAt: { type: 'date', optional: true }
 	}
@@ -47,7 +48,6 @@ const roomsSchema = {
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
-		_server: 'servers',
 		t: 'string',
 		_updatedAt: { type: 'date', optional: true }
 	}
@@ -65,7 +65,6 @@ const subscriptionSchema = {
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
-		_server: 'servers',
 		f: { type: 'bool', optional: true },
 		t: 'string',
 		ts: { type: 'date', optional: true },
@@ -89,7 +88,6 @@ const usersSchema = {
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
-		_server: 'servers',
 		username: 'string',
 		name: { type: 'string', optional: true }
 	}
@@ -157,7 +155,6 @@ const messagesSchema = {
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
-		_server: 'servers',
 		msg: { type: 'string', optional: true },
 		t: { type: 'string', optional: true },
 		rid: 'string',
@@ -178,28 +175,56 @@ const messagesSchema = {
 		editedBy: 'messagesEditedBy'
 	}
 };
-//
-// Realm.clearTestState();
-// AsyncStorage.clear();
-const realm = new Realm({
-	schema: [
-		settingsSchema,
-		serversSchema,
-		subscriptionSchema,
-		subscriptionRolesSchema,
-		messagesSchema,
-		usersSchema,
-		roomsSchema,
-		attachment,
-		attachmentFields,
-		messagesEditedBySchema,
-		permissionsSchema,
-		permissionsRolesSchema,
-		url
-	],
-	deleteRealmIfMigrationNeeded: true
-});
-export default realm;
+const schema = [
+	settingsSchema,
+	subscriptionSchema,
+	subscriptionRolesSchema,
+	messagesSchema,
+	usersSchema,
+	roomsSchema,
+	attachment,
+	attachmentFields,
+	messagesEditedBySchema,
+	permissionsSchema,
+	permissionsRolesSchema,
+	url
+];
+class DB {
+	databases = {
+		serversDB: new Realm({
+			path: 'default.realm',
+			schema: [
+				serversSchema
+			],
+			deleteRealmIfMigrationNeeded: true
+		})
+	};
+	deleteAll(...args) {
+		return this.database.write(() => this.database.deleteAll(...args));
+	}
+	write(...args) {
+		return this.database.write(...args);
+	}
+	create(...args) {
+		return this.database.create(...args);
+	}
+	objects(...args) {
+		return this.database.objects(...args);
+	}
+	get database() {
+		return this.databases.activeDB;
+	}
+
+	setActiveDB(database) {
+		const path = database.replace(/(^\w+:|^)\/\//, '');
+		return this.databases.activeDB = new Realm({
+			path: `${ path }.realm`,
+			schema,
+			deleteRealmIfMigrationNeeded: true
+		});
+	}
+}
+export default new DB();
 
 // realm.write(() => {
 // 	realm.create('servers', { id: 'https://open.rocket.chat', current: false }, true);

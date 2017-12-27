@@ -1,15 +1,11 @@
 import React from 'react';
-
 import Spinner from 'react-native-loading-spinner-overlay';
-
 import PropTypes from 'prop-types';
 import { Keyboard, Text, TextInput, View, ScrollView, TouchableOpacity, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// import * as actions from '../actions';
 import * as loginActions from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
-// import { Keyboard } from 'react-native'
 
 import styles from './Styles';
 
@@ -81,7 +77,6 @@ class LoginView extends React.Component {
 		return null;
 	}
 
-	// {this.props.login.isFetching && <Text> LOGANDO</Text>}
 	render() {
 		return (
 			<KeyboardView
@@ -157,7 +152,6 @@ class LoginView extends React.Component {
 }
 
 function mapStateToProps(state) {
-	// console.log(Object.keys(state));
 	return {
 		server: state.server.server,
 		Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,

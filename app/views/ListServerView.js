@@ -6,7 +6,7 @@ import Zeroconf from 'react-native-zeroconf';
 import { View, Text, SectionList, StyleSheet, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import { setServer } from '../actions/server';
-import realm from '../lib/realm';
+import database from '../lib/realm';
 import Fade from '../animations/fade';
 
 const styles = StyleSheet.create({
@@ -83,8 +83,9 @@ export default class ListServerView extends React.Component {
 		this.state = {
 			sections: []
 		};
+		this.data = database.databases.serversDB.objects('servers');
 		this.redirected = false;
-		realm.addListener('change', this.updateState);
+		this.data.addListener(this.updateState);
 	}
 
 	componentWillMount() {
@@ -109,7 +110,7 @@ export default class ListServerView extends React.Component {
 
 	componentWillUnmount() {
 		zeroconf.stop();
-		realm.removeListener('change', this.updateState);
+		this.data.removeAllListeners();
 		zeroconf.removeListener('update', this.updateState);
 	}
 
@@ -120,7 +121,7 @@ export default class ListServerView extends React.Component {
 	getState = () => {
 		const sections = [{
 			title: 'My servers',
-			data: realm.objects('servers')
+			data: this.data
 		}];
 
 		this.state.nearBy = zeroconf.getServices();
