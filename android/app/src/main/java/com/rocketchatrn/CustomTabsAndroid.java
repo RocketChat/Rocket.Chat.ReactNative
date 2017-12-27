@@ -15,7 +15,7 @@ import com.facebook.react.bridge.ReactMethod;
 
 public class CustomTabsAndroid extends ReactContextBaseJavaModule {
 
-    private ReactApplicationContext context;
+    ReactApplicationContext context;
 
 
     CustomTabsAndroid(ReactApplicationContext reactContext) {
