@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, TouchableOpacity, Image, Linking, Platform } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, Platform } from 'react-native';
 import Modal from 'react-native-modal';
 import VideoPlayer from 'react-native-video-controls';
 import Markdown from './Markdown';
+import openLink from '../../utils/openLink';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(Platform.OS === 'ios' ? [] : ['video/webm', 'video/3gp', 'video/mkv'])];
 const isTypeSupported = type => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -53,7 +54,7 @@ export default class Video extends React.PureComponent {
 		if (isTypeSupported(this.props.file.video_type)) {
 			return this.toggleModal();
 		}
-		Linking.openURL(this.state.uri);
+		openLink(this.state.uri);
 	}
 
 	render() {
