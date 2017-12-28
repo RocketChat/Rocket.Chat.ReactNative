@@ -70,10 +70,11 @@ export default class RoomView extends React.Component {
 		this.data = realm
 			.objects('messages')
 			.filtered('_server.id = $0 AND rid = $1', this.props.server, this.rid)
-			.sorted('ts', true);
+			.sorted('ts');
 		this.room = realm.objects('subscriptions').filtered('rid = $0', this.rid);
+		const rowIds = this.data.map((row, index) => index).reverse();
 		this.state = {
-			dataSource: ds.cloneWithRows(this.data),
+			dataSource: ds.cloneWithRows(this.data, rowIds),
 			loaded: true,
 			joined: typeof props.rid === 'undefined'
 		};
@@ -98,7 +99,7 @@ export default class RoomView extends React.Component {
 	onEndReached = () => {
 		const rowCount = this.state.dataSource.getRowCount();
 		if (
-			rowCount &&
+			// rowCount &&
 			this.state.loaded &&
 			this.state.loadingMore !== true &&
 			this.state.end !== true
@@ -106,20 +107,22 @@ export default class RoomView extends React.Component {
 			this.setState({
 				loadingMore: true
 			});
-
-			const lastRowData = this.data[rowCount - 1];
-			RocketChat.loadMessagesForRoom(this.rid, lastRowData.ts, ({ end }) => {
-				this.setState({
-					loadingMore: false,
-					end
+			requestAnimationFrame(() => {
+				const lastRowData = this.data[0];
+				RocketChat.loadMessagesForRoom(this.rid, lastRowData.ts, ({ end }) => {
+					this.setState({
+						loadingMore: false,
+						end
+					});
 				});
 			});
 		}
 	}
 
 	updateState = debounce(() => {
+		const rowIds = this.data.map((row, index) => index).reverse();
 		this.setState({
-			dataSource: ds.cloneWithRows(this.data)
+			dataSource: this.state.dataSource.cloneWithRows(this.data, rowIds)
 		});
 	}, 50);
 
