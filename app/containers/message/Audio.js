@@ -5,6 +5,8 @@ import Video from 'react-native-video';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Slider from 'react-native-slider';
 import Markdown from './Markdown';
+import openLink from '../../utils/openLink';
+
 
 const styles = StyleSheet.create({
 	audioContainer: {
