@@ -4,7 +4,7 @@ import * as actions from '../actions';
 import { setServer } from '../actions/server';
 import { restoreToken } from '../actions/login';
 import { APP } from '../actions/actionsTypes';
-import realm from '../lib/realm';
+import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 
 const restore = function* restore() {
@@ -17,9 +17,9 @@ const restore = function* restore() {
 		const currentServer = yield call([AsyncStorage, 'getItem'], 'currentServer');
 		if (currentServer) {
 			yield put(setServer(currentServer));
-			const settings = realm.objects('settings');
+			const settings = database.objects('settings');
 			yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
-			const permissions = realm.objects('permissions');
+			const permissions = database.objects('permissions');
 			yield put(actions.setAllPermissions(RocketChat.parsePermissions(permissions.slice(0, permissions.length))));
 		}
 		yield put(actions.appReady({}));
