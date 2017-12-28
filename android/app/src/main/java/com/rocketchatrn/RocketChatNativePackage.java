@@ -10,10 +10,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by saketkumar on 27/12/17.
- */
-
 public class RocketChatNativePackage implements ReactPackage {
 
     public List<Class<? extends JavaScriptModule>> createJSModules() {
