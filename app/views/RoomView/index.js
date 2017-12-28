@@ -65,9 +65,9 @@ export default class RoomView extends React.Component {
 		this.props.navigation.state.params.name ||
 		this.props.navigation.state.params.room.name;
 
-		this.data = database.objects('messages')
+		this.data = database
 			.objects('messages')
-			.filtered('_server.id = $0 AND rid = $1', this.props.server, this.rid)
+			.filtered('rid = $0', this.rid)
 			.sorted('ts');
 		const rowIds = this.data.map((row, index) => index).reverse();
 		this.room = database.objects('subscriptions').filtered('rid = $0', this.rid);
@@ -95,7 +95,6 @@ export default class RoomView extends React.Component {
 	}
 
 	onEndReached = () => {
-		const rowCount = this.state.dataSource.getRowCount();
 		if (
 			// rowCount &&
 			this.state.loaded &&
