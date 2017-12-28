@@ -1,4 +1,11 @@
 module.exports = {
+	"settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".ios.js", ".android.js"]
+      }
+    }
+  },
 	"parser": "babel-eslint",
 	"extends": "airbnb",
 	"parserOptions": {
