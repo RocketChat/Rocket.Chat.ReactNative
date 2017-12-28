@@ -1,11 +1,13 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import Markdown from './Markdown';
 import QuoteMark from './QuoteMark';
 import Avatar from '../Avatar';
+import openLink from '../../utils/openLink';
+
 
 const styles = StyleSheet.create({
 	button: {
@@ -60,7 +62,7 @@ const onPress = (attachment) => {
 	if (!url) {
 		return;
 	}
-	Linking.openURL(attachment.title_link || attachment.author_link);
+	openLink(attachment.title_link || attachment.author_link);
 };
 
 // Support <http://link|Text>
