@@ -18,40 +18,42 @@ import com.brentvatne.react.ReactVideoPackage;
 import java.util.Arrays;
 import java.util.List;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
+import com.smixx.fabric.FabricPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
-  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+    private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+        @Override
+        public boolean getUseDeveloperSupport() {
+            return BuildConfig.DEBUG;
+        }
+
+        @Override
+        protected List<ReactPackage> getPackages() {
+            return Arrays.<ReactPackage>asList(
+                    new MainReactPackage(),
+                    new SvgPackage(),
+                    new ImagePickerPackage(),
+                    new VectorIconsPackage(),
+                    new RNFetchBlobPackage(),
+                    new ZeroconfReactPackage(),
+                    new RealmReactPackage(),
+                    new ReactNativePushNotificationPackage(),
+                    new ReactVideoPackage(),
+                    new SplashScreenReactPackage(),
+                    new FabricPackage()
+            );
+        }
+    };
+
     @Override
-    public boolean getUseDeveloperSupport() {
-      return BuildConfig.DEBUG;
+    public ReactNativeHost getReactNativeHost() {
+        return mReactNativeHost;
     }
 
     @Override
-    protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-			  new MainReactPackage(),
-        new SvgPackage(),
-        new ImagePickerPackage(),
-        new VectorIconsPackage(),
-        new RNFetchBlobPackage(),
-        new ZeroconfReactPackage(),
-        new RealmReactPackage(),
-        new ReactNativePushNotificationPackage(),
-        new ReactVideoPackage(),
-        new SplashScreenReactPackage()
-      );
+    public void onCreate() {
+        super.onCreate();
+        SoLoader.init(this, /* native exopackage */ false);
     }
-  };
-
-  @Override
-  public ReactNativeHost getReactNativeHost() {
-      return mReactNativeHost;
-  }
-
-	@Override
- 	public void onCreate() {
-   	super.onCreate();
-   	SoLoader.init(this, /* native exopackage */ false);
- 	}
 }
