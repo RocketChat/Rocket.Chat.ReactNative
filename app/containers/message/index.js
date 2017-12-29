@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableHighlight, Text, TouchableOpacity } from 'react-native';
+import { View, TouchableHighlight, Text, TouchableOpacity, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
@@ -37,9 +37,21 @@ export default class Message extends React.Component {
 		user: PropTypes.object.isRequired,
 		editing: PropTypes.bool,
 		actionsShow: PropTypes.func,
-		errorActionsShow: PropTypes.func
+		errorActionsShow: PropTypes.func,
+		animate: PropTypes.bool
 	}
 
+	componentWillMount() {
+		this._visibility = new Animated.Value(this.props.animate ? 0 : 1);
+	}
+	componentDidMount() {
+		if (this.props.animate) {
+			Animated.timing(this._visibility, {
+				toValue: 1,
+				duration: 300
+			}).start();
+		}
+	}
 	componentWillReceiveProps() {
 		this.extraStyle = this.extraStyle || {};
 		if (this.props.item.status === messageStatus.TEMP || this.props.item.status === messageStatus.ERROR) {
@@ -166,7 +178,7 @@ export default class Message extends React.Component {
 				style={[styles.message, isEditing ? styles.editing : null]}
 				accessibilityLabel={accessibilityLabel}
 			>
-				<View style={flex}>
+				<Animated.View style={[flex, { opacity: this._visibility }]}>
 					{this.renderError()}
 					<View style={[this.extraStyle, flex]}>
 						<Avatar
@@ -188,7 +200,7 @@ export default class Message extends React.Component {
 							{this.renderUrl()}
 						</View>
 					</View>
-				</View>
+				</Animated.View>
 			</TouchableHighlight>
 		);
 	}

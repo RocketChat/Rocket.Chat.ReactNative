@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, Button, SafeAreaView } from 'react-native';
-import { ListView } from 'realm/react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import equal from 'deep-equal';
 
+import { ListView } from './ListView';
 import * as actions from '../../actions';
 import { openRoom } from '../../actions/room';
 import { editCancel } from '../../actions/messages';
@@ -64,11 +64,11 @@ export default class RoomView extends React.Component {
 		this.name = this.props.name ||
 		this.props.navigation.state.params.name ||
 		this.props.navigation.state.params.room.name;
-
+		this.opened = new Date();
 		this.data = database
 			.objects('messages')
 			.filtered('rid = $0', this.rid)
-			.sorted('ts');
+			.sorted('ts', false);
 		const rowIds = this.data.map((row, index) => index).reverse();
 		this.room = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
@@ -132,10 +132,11 @@ export default class RoomView extends React.Component {
 		});
 	};
 
-	renderItem = ({ item }) => (
+	renderItem = item => (
 		<Message
 			key={item._id}
 			item={item}
+			animate={this.opened.toGMTString() < item.ts.toGMTString()}
 			baseUrl={this.props.Site_Url}
 			Message_TimeFormat={this.props.Message_TimeFormat}
 			user={this.props.user}
@@ -174,12 +175,12 @@ export default class RoomView extends React.Component {
 					<ListView
 						enableEmptySections
 						style={styles.list}
-						onEndReachedThreshold={0.5}
+						onEndReachedThreshold={500}
 						renderFooter={this.renderHeader}
 						renderHeader={typing}
 						onEndReached={this.onEndReached}
 						dataSource={this.state.dataSource}
-						renderRow={item => this.renderItem({ item })}
+						renderRow={item => this.renderItem(item)}
 						initialListSize={10}
 						keyboardShouldPersistTaps='always'
 						keyboardDismissMode='interactive'
