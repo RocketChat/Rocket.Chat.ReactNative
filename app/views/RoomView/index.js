@@ -105,7 +105,10 @@ export default class RoomView extends React.Component {
 				loadingMore: true
 			});
 			requestAnimationFrame(() => {
-				const lastRowData = this.data[0];
+				const lastRowData = this.data[this.data.length - 1];
+				if (!lastRowData) {
+					return;
+				}
 				RocketChat.loadMessagesForRoom(this.rid, lastRowData.ts, ({ end }) => {
 					this.setState({
 						loadingMore: false,
@@ -136,7 +139,7 @@ export default class RoomView extends React.Component {
 		<Message
 			key={item._id}
 			item={item}
-			animate={this.opened.toGMTString() < item.ts.toGMTString()}
+			animate={this.opened.toISOString() < item.ts.toISOString()}
 			baseUrl={this.props.Site_Url}
 			Message_TimeFormat={this.props.Message_TimeFormat}
 			user={this.props.user}

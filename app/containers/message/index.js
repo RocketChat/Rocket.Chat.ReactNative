@@ -164,6 +164,14 @@ export default class Message extends React.Component {
 			item, message, editing, baseUrl
 		} = this.props;
 
+		const marginLeft = this._visibility.interpolate({
+			inputRange: [0, 1],
+			outputRange: [-30, 0]
+		});
+		const opacity = this._visibility.interpolate({
+			inputRange: [0, 1],
+			outputRange: [0, 1]
+		});
 		const username = item.alias || item.u.username;
 		const isEditing = message._id === item._id && editing;
 
@@ -178,7 +186,7 @@ export default class Message extends React.Component {
 				style={[styles.message, isEditing ? styles.editing : null]}
 				accessibilityLabel={accessibilityLabel}
 			>
-				<Animated.View style={[flex, { opacity: this._visibility }]}>
+				<Animated.View style={[flex, { opacity, marginLeft }]}>
 					{this.renderError()}
 					<View style={[this.extraStyle, flex]}>
 						<Avatar
