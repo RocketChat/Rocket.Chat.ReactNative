@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="chat.rocket.reactnative"
     android:versionCode="1"
     android:versionName="1.0">
@@ -59,7 +60,7 @@
         </service>
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="${fabricKey}" />
+            android:value="FABRIC_KEY" />
     </application>
 
 </manifest>
