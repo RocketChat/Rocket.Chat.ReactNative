@@ -64,7 +64,10 @@ platform :ios do
   lane :build do
     # match(type: "appstore")
     # snapshot
-    gym(scheme: "RocketChatRN") # Build your app - more options available
+    gym(
+      scheme: "RocketChatRN",
+      export_method: "development"
+    ) # Build your app - more options available
     # frameit
   end
 
