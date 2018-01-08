@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import Slider from 'react-native-slider';
 import Markdown from './Markdown';
 
+
 const styles = StyleSheet.create({
 	audioContainer: {
 		flex: 1,

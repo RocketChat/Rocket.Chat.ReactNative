@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Linking, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import PropTypes from 'prop-types';
 
 import QuoteMark from './QuoteMark';
+import openLink from '../../utils/openLink';
 
 const styles = StyleSheet.create({
 	button: {
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
 });
 
 const onPress = (url) => {
-	Linking.openURL(url);
+	openLink(url);
 };
 const Url = ({ url }) => {
 	if (!url) {
