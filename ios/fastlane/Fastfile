@@ -66,7 +66,10 @@ platform :ios do
     # snapshot
     gym(
       scheme: "RocketChatRN",
-      export_method: "development"
+      export_method: "development",
+      configuration: "Debug",
+      silent: true,
+      skip_profile_detection: true
     ) # Build your app - more options available
     # frameit
   end
