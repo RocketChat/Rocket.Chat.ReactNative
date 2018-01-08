@@ -31,7 +31,7 @@
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-emojione": "^5.0.0",
-    "react-native": "^0.51.0",
+    "react-native": "^0.52.0",
     "react-native-action-button": "^2.8.3",
     "react-native-actionsheet": "^2.3.0",
     "react-native-animatable": "^1.2.4",
