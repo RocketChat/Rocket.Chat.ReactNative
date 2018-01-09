@@ -61,17 +61,19 @@ platform :ios do
   end
 
   desc "Build App for development"
-  lane :build do
-    # match(type: "appstore")
-    # snapshot
-    gym(
+  lane :build do |options|
+    xcodebuild(
+      project: "RocketChatRN.xcodeproj",
       scheme: "RocketChatRN",
-      export_method: "development",
       configuration: "Debug",
-      silent: true,
-      skip_profile_detection: true
-    ) # Build your app - more options available
-    # frameit
+      clean: options[:clean],
+      build: true,
+      destination: "generic/platform=iOS",
+      build_settings: {
+        "CODE_SIGNING_REQUIRED" => "NO",
+        "CODE_SIGN_IDENTITY" => ""
+      }
+    )
   end
 
   # You can define as many lanes as you want
