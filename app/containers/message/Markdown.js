@@ -25,7 +25,7 @@ const BlockCode = ({ node, state }) => (
 		{node.content}
 	</Text>
 );
-
+const mentionStyle = { color: '#13679a' };
 const rules = {
 	username: {
 		order: -1,
@@ -38,7 +38,7 @@ const rules = {
 				children: (
 					<Text
 						key={state.key}
-						style={{ color: '#13679a' }}
+						style={mentionStyle}
 						onPress={() => alert('Username')}
 					>
 						{node.content}
@@ -58,7 +58,7 @@ const rules = {
 				children: (
 					<Text
 						key={state.key}
-						style={{ color: '#13679a' }}
+						style={mentionStyle}
 						onPress={() => alert('Room')}
 					>
 						{node.content}
