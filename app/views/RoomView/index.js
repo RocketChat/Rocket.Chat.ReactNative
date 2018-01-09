@@ -68,8 +68,8 @@ export default class RoomView extends React.Component {
 		this.data = database
 			.objects('messages')
 			.filtered('rid = $0', this.rid)
-			.sorted('ts', false);
-		const rowIds = this.data.map((row, index) => index).reverse();
+			.sorted('ts', true);
+		const rowIds = this.data.map((row, index) => index);
 		this.room = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			dataSource: ds.cloneWithRows(this.data, rowIds),
@@ -120,7 +120,7 @@ export default class RoomView extends React.Component {
 	}
 
 	updateState = debounce(() => {
-		const rowIds = this.data.map((row, index) => index).reverse();
+		const rowIds = this.data.map((row, index) => index);
 		this.setState({
 			dataSource: this.state.dataSource.cloneWithRows(this.data, rowIds)
 		});
