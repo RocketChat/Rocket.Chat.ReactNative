@@ -30,7 +30,7 @@ const onlyUnique = function onlyUnique(value, index, self) {
 	typing: status => dispatch(userTyping(status)),
 	clearInput: () => dispatch(clearInput())
 }))
-export default class MessageBox extends React.Component {
+export default class MessageBox extends React.PureComponent {
 	static propTypes = {
 		onSubmit: PropTypes.func.isRequired,
 		rid: PropTypes.string.isRequired,

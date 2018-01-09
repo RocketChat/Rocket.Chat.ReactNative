@@ -15,7 +15,7 @@ import styles from './styles';
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	activeUsers: state.activeUsers
 }))
-export default class extends React.Component {
+export default class extends React.PureComponent {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
 		user: PropTypes.object.isRequired,
