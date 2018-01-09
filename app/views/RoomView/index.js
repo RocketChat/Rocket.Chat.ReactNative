@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, Button, SafeAreaView } from 'react-native';
-import { ListView } from 'realm/react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import equal from 'deep-equal';
 
+import { ListView } from './ListView';
 import * as actions from '../../actions';
 import { openRoom } from '../../actions/room';
 import { editCancel } from '../../actions/messages';
@@ -18,7 +19,10 @@ import Typing from '../../containers/Typing';
 import KeyboardView from '../../presentation/KeyboardView';
 import Header from '../../containers/Header';
 import RoomsHeader from './Header';
+import Banner from './banner';
 import styles from './styles';
+
+import debounce from '../../utils/debounce';
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id });
 
@@ -45,8 +49,7 @@ export default class RoomView extends React.Component {
 		rid: PropTypes.string,
 		name: PropTypes.string,
 		Site_Url: PropTypes.string,
-		Message_TimeFormat: PropTypes.string,
-		loading: PropTypes.bool
+		Message_TimeFormat: PropTypes.string
 	};
 
 	static navigationOptions = ({ navigation }) => ({
@@ -61,13 +64,15 @@ export default class RoomView extends React.Component {
 		this.name = this.props.name ||
 		this.props.navigation.state.params.name ||
 		this.props.navigation.state.params.room.name;
-
-		this.data = database.objects('messages')
+		this.opened = new Date();
+		this.data = database
+			.objects('messages')
 			.filtered('rid = $0', this.rid)
 			.sorted('ts', true);
+		const rowIds = this.data.map((row, index) => index);
 		this.room = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
-			dataSource: ds.cloneWithRows([]),
+			dataSource: ds.cloneWithRows(this.data, rowIds),
 			loaded: true,
 			joined: typeof props.rid === 'undefined'
 		};
@@ -80,8 +85,8 @@ export default class RoomView extends React.Component {
 		this.props.openRoom({ rid: this.rid, name: this.name });
 		this.data.addListener(this.updateState);
 	}
-	componentDidMount() {
-		this.updateState();
+	shouldComponentUpdate(nextProps, nextState) {
+		return !(equal(this.props, nextProps) && equal(this.state, nextState));
 	}
 	componentWillUnmount() {
 		clearTimeout(this.timer);
@@ -90,9 +95,8 @@ export default class RoomView extends React.Component {
 	}
 
 	onEndReached = () => {
-		const rowCount = this.state.dataSource.getRowCount();
 		if (
-			rowCount &&
+			// rowCount &&
 			this.state.loaded &&
 			this.state.loadingMore !== true &&
 			this.state.end !== true
@@ -100,22 +104,27 @@ export default class RoomView extends React.Component {
 			this.setState({
 				loadingMore: true
 			});
-
-			const lastRowData = this.data[rowCount - 1];
-			RocketChat.loadMessagesForRoom(this.rid, lastRowData.ts, ({ end }) => {
-				this.setState({
-					loadingMore: false,
-					end
+			requestAnimationFrame(() => {
+				const lastRowData = this.data[this.data.length - 1];
+				if (!lastRowData) {
+					return;
+				}
+				RocketChat.loadMessagesForRoom(this.rid, lastRowData.ts, ({ end }) => {
+					this.setState({
+						loadingMore: false,
+						end
+					});
 				});
 			});
 		}
 	}
 
-	updateState = () => {
+	updateState = debounce(() => {
+		const rowIds = this.data.map((row, index) => index);
 		this.setState({
-			dataSource: ds.cloneWithRows(this.data)
+			dataSource: this.state.dataSource.cloneWithRows(this.data, rowIds)
 		});
-	};
+	}, 50);
 
 	sendMessage = message => RocketChat.sendMessage(this.rid, message);
 
@@ -126,17 +135,11 @@ export default class RoomView extends React.Component {
 		});
 	};
 
-	renderBanner = () =>
-		(this.props.loading ? (
-			<View style={styles.bannerContainer}>
-				<Text style={styles.bannerText}>Loading new messages...</Text>
-			</View>
-		) : null);
-
-	renderItem = ({ item }) => (
+	renderItem = item => (
 		<Message
 			key={item._id}
 			item={item}
+			animate={this.opened.toISOString() < item.ts.toISOString()}
 			baseUrl={this.props.Site_Url}
 			Message_TimeFormat={this.props.Message_TimeFormat}
 			user={this.props.user}
@@ -169,17 +172,18 @@ export default class RoomView extends React.Component {
 	render() {
 		return (
 			<KeyboardView contentContainerStyle={styles.container} keyboardVerticalOffset={64}>
-				{this.renderBanner()}
+
+				<Banner />
 				<SafeAreaView style={styles.safeAreaView}>
 					<ListView
 						enableEmptySections
 						style={styles.list}
-						onEndReachedThreshold={0.5}
+						onEndReachedThreshold={500}
 						renderFooter={this.renderHeader}
 						renderHeader={typing}
 						onEndReached={this.onEndReached}
 						dataSource={this.state.dataSource}
-						renderRow={item => this.renderItem({ item })}
+						renderRow={item => this.renderItem(item)}
 						initialListSize={10}
 						keyboardShouldPersistTaps='always'
 						keyboardDismissMode='interactive'
