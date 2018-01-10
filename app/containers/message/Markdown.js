@@ -25,11 +25,11 @@ const BlockCode = ({ node, state }) => (
 		{node.content}
 	</Text>
 );
-
+const mentionStyle = { color: '#13679a' };
 const rules = {
 	username: {
 		order: -1,
-		match: SimpleMarkdown.inlineRegex(/@[0-9a-zA-Z-_.]+/),
+		match: SimpleMarkdown.inlineRegex(/^@[0-9a-zA-Z-_.]+/),
 		parse: capture => ({ content: capture[0] }),
 		react: (node, output, state) => ({
 			type: 'custom',
@@ -38,7 +38,7 @@ const rules = {
 				children: (
 					<Text
 						key={state.key}
-						style={{ color: '#13679a' }}
+						style={mentionStyle}
 						onPress={() => alert('Username')}
 					>
 						{node.content}
@@ -49,7 +49,7 @@ const rules = {
 	},
 	heading: {
 		order: -2,
-		match: SimpleMarkdown.inlineRegex(/#[0-9a-zA-Z-_.]+/),
+		match: SimpleMarkdown.inlineRegex(/^#[0-9a-zA-Z-_.]+/),
 		parse: capture => ({ content: capture[0] }),
 		react: (node, output, state) => ({
 			type: 'custom',
@@ -58,7 +58,7 @@ const rules = {
 				children: (
 					<Text
 						key={state.key}
-						style={{ color: '#13679a' }}
+						style={mentionStyle}
 						onPress={() => alert('Room')}
 					>
 						{node.content}
