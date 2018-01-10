@@ -179,7 +179,7 @@ jobs:
       - persist_to_workspace:
           root: ios
           paths:
-            - *.ipa
+            - ./*.ipa
 
   ios-testflight:
     macos:
