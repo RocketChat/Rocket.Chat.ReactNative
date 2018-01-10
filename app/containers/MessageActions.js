@@ -237,7 +237,6 @@ export default class MessageActions extends React.Component {
 	handleCopy = async() => {
 		await Clipboard.setString(this.props.actionMessage.msg);
 		showToast('Copied to clipboard!');
-
 	}
 
 	handleStar() {
