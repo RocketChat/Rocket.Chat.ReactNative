@@ -46,12 +46,12 @@ This will also make sure the profile is up to date
 ```
 fastlane ios release
 ```
-Deploy a new version to the App Store
+Build App for release
 ### ios build
 ```
 fastlane ios build
 ```
-Build App
+Build App for development
 
 ----
 
