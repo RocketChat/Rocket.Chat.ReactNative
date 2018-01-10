@@ -13,6 +13,7 @@ import database from '../../lib/realm';
 import Avatar from '../Avatar';
 import AnimatedContainer from './AnimatedContainer';
 import EmojiPicker from './EmojiPicker';
+import scrollPersistTaps from '../../utils/scrollPersistTaps';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 
@@ -367,8 +368,7 @@ export default class MessageBox extends React.PureComponent {
 				data={this.state.mentions}
 				renderItem={({ item }) => this.renderMentionItem(item)}
 				keyExtractor={item => item._id}
-				keyboardShouldPersistTaps='always'
-				keyboardDismissMode='interactive'
+				{...scrollPersistTaps}
 			/>
 		);
 		const { showMentionsContainer, messageboxHeight } = this.state;

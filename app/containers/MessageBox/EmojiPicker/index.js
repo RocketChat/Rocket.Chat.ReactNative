@@ -16,6 +16,7 @@ import TabBar from './TabBar';
 import EmojiCategory from './EmojiCategory';
 import styles from './styles';
 import categories from './categories';
+import scrollPersistTaps from '../../../utils/scrollPersistTaps';
 
 const charFromUtf16 = utf16 => String.fromCodePoint(...utf16.split('-').map(u => `0x${ u }`));
 const charFromEmojiObj = obj => charFromUtf16(obj.unified);
@@ -59,14 +60,22 @@ export default class extends Component {
 	}
 
 	render() {
+		const scrollProps = {
+			keyboardShouldPersistTaps: 'always'
+		};
 		return (
 			<View style={styles.container}>
 				<ScrollableTabView
 					renderTabBar={() => <TabBar />}
+					contentProps={scrollProps}
 				>
 					{
 						_.map(categories.tabs, (tab, i) => (
-							<ScrollView key={i} tabLabel={tab.tabLabel}>
+							<ScrollView
+								key={i}
+								tabLabel={tab.tabLabel}
+								{...scrollPersistTaps}
+							>
 								{this.renderCategory(tab.category)}
 							</ScrollView>
 						))

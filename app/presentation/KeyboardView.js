@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ViewPropTypes } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import scrollPersistTaps from '../utils/scrollPersistTaps';
 
 export default class KeyboardView extends React.PureComponent {
 	static propTypes = {
@@ -18,8 +19,7 @@ export default class KeyboardView extends React.PureComponent {
 	render() {
 		return (
 			<KeyboardAwareScrollView
-				keyboardDismissMode='interactive'
-				keyboardShouldPersistTaps='always'
+				{...scrollPersistTaps}
 				style={this.props.style}
 				contentContainerStyle={this.props.contentContainerStyle}
 				scrollEnabled={this.props.scrollEnabled}
