@@ -71,9 +71,9 @@ jobs:
           name: Configure Gradle
           command: |
             cd android
-            
+
             echo -e "" > ./gradle.properties
-            
+
             if [[ $KEYSTORE ]]; then
               echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
               echo -e "KEYSTORE=$KEYSTORE" >> ./gradle.properties
