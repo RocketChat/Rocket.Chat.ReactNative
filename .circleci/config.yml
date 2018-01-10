@@ -72,11 +72,16 @@ jobs:
           command: |
             cd android
 
-            echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
-            echo -e "KEYSTORE=$KEYSTORE" > ./gradle.properties
-            echo -e "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
-            echo -e "KEY_ALIAS=$KEY_ALIAS" >> ./gradle.properties
-            echo -e "KEY_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+            echo -e "" > ./gradle.properties
+
+            if [[ $KEYSTORE ]]; then
+              echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
+              echo -e "KEYSTORE=$KEYSTORE" >> ./gradle.properties
+              echo -e "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+              echo -e "KEY_ALIAS=$KEY_ALIAS" >> ./gradle.properties
+              echo -e "KEY_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+            fi
+
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
 
       - run:
@@ -89,7 +94,11 @@ jobs:
           name: Build Android App
           command: |
             cd android
-            ./gradlew assembleRelease
+            if [[ $KEYSTORE ]]; then
+              ./gradlew assembleRelease
+            else
+              ./gradlew assembleDebug
+            fi
 
             mkdir -p /tmp/build
 
@@ -155,7 +164,14 @@ jobs:
           command: |
             cd ios
             agvtool new-version -all $CIRCLE_BUILD_NUM
-            fastlane ios build
+
+            if [[ $MATCH_KEYCHAIN_NAME ]]; then
+              fastlane ios release
+            else
+              export MATCH_KEYCHAIN_NAME="temp"
+              export MATCH_KEYCHAIN_PASSWORD="temp"
+              fastlane ios build
+            fi
 
       - store_artifacts:
           path: ios/RocketChatRN.ipa
