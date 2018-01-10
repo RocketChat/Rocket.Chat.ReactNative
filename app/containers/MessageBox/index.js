@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, TextInput, SafeAreaView, Platform, FlatList, Text, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import { userTyping } from '../../actions/room';
@@ -97,7 +97,7 @@ export default class MessageBox extends React.PureComponent {
 		if (editing) {
 			return (<Icon
 				style={styles.actionButtons}
-				name='ios-close'
+				name='close'
 				accessibilityLabel='Cancel editing'
 				accessibilityTraits='button'
 				onPress={() => this.editCancel()}
@@ -108,13 +108,13 @@ export default class MessageBox extends React.PureComponent {
 			onPress={() => this.openEmoji()}
 			accessibilityLabel='Open emoji selector'
 			accessibilityTraits='button'
-			name='md-happy'
+			name='mood'
 		/>) : (<Icon
 			onPress={() => this.openEmoji()}
 			style={styles.actionButtons}
 			accessibilityLabel='Close emoji selector'
 			accessibilityTraits='button'
-			name='md-sad'
+			name='keyboard'
 		/>);
 	}
 	get rightButtons() {
