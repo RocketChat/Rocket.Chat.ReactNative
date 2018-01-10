@@ -181,7 +181,7 @@ export default class MessageBox extends React.PureComponent {
 		this.setState({ showEmojiContainer: !this.state.showEmojiContainer });
 	}
 	submit(message) {
-		this.setState({ text: '' });
+		this.setState({ text: '', showEmojiContainer: false });
 		this.stopTrackingMention();
 		requestAnimationFrame(() => {
 			this.props.typing(false);
