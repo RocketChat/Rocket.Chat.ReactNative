@@ -18,7 +18,7 @@ jobs:
           name: Install NPM modules
           command: |
             npm install
-            npm install codecov
+            # npm install codecov
 
       - run:
           name: Lint
@@ -139,7 +139,7 @@ jobs:
           command: |
             rm -rf node_modules
             npm install
-            npm install react-native
+            # npm install react-native
 
       - run:
           name: Fix known build error
