@@ -179,7 +179,7 @@ jobs:
       - persist_to_workspace:
           root: ios
           paths:
-            - RocketChatRN.ipa
+            - *.ipa
 
   ios-testflight:
     macos:
