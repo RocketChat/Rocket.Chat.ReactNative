@@ -21,7 +21,8 @@ import scrollPersistTaps from '../../../utils/scrollPersistTaps';
 const charFromUtf16 = utf16 => String.fromCodePoint(...utf16.split('-').map(u => `0x${ u }`));
 const charFromEmojiObj = obj => charFromUtf16(obj.unified);
 
-const groupedAndSorted = groupBy(orderBy(emoji, 'sort_order'), 'category');
+const filteredEmojis = emoji.filter(e => parseFloat(e.added_in) < 10.0);
+const groupedAndSorted = groupBy(orderBy(filteredEmojis, 'sort_order'), 'category');
 const emojisByCategory = mapValues(groupedAndSorted, group => group.map(charFromEmojiObj));
 
 export default class extends Component {
