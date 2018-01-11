@@ -1,7 +1,7 @@
 import React from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import PropTypes from 'prop-types';
-import { Text, TextInput, View, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
+import { Text, TextInput, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as loginActions from '../actions/login';
