@@ -175,6 +175,16 @@ const messagesSchema = {
 		editedBy: 'messagesEditedBy'
 	}
 };
+
+const frequentlyUsedEmojiSchema = {
+	name: 'frequentlyUsedEmoji',
+	primaryKey: 'code_point',
+	properties: {
+		code_point: 'int',
+		count: 'int'
+	}
+};
+
 const schema = [
 	settingsSchema,
 	subscriptionSchema,
@@ -187,7 +197,8 @@ const schema = [
 	messagesEditedBySchema,
 	permissionsSchema,
 	permissionsRolesSchema,
-	url
+	url,
+	frequentlyUsedEmojiSchema
 ];
 class DB {
 	databases = {
