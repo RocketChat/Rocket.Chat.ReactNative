@@ -177,9 +177,10 @@ jobs:
           path: ios/RocketChatRN.ipa
 
       - persist_to_workspace:
-          root: ios
+          root: .
           paths:
-            - RocketChatRN.ipa
+            - ios/*.ipa
+            - ios/fastlane/report.xml
 
   ios-testflight:
     macos:
