@@ -87,7 +87,8 @@
     "jest": "^22.0.3",
     "jest-cli": "^22.0.3",
     "react-dom": "^16.2.0",
-    "react-test-renderer": "^16.2.0"
+    "react-test-renderer": "^16.2.0",
+    "reactotron-react-native": "^1.14.0"
   },
   "jest": {
     "preset": "react-native",
