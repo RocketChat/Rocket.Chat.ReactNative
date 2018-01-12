@@ -12,7 +12,6 @@ import {
 import {
 	mapValues
 } from 'lodash/object';
-import { connect } from 'react-redux';
 import TabBar from './TabBar';
 import EmojiCategory from './EmojiCategory';
 import styles from './styles';
