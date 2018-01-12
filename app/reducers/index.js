@@ -10,9 +10,9 @@ import navigator from './navigator';
 import createChannel from './createChannel';
 import app from './app';
 import permissions from './permissions';
-import emojis from './emojis';
+import customEmojis from './customEmojis';
 import activeUsers from './activeUsers';
 
 export default combineReducers({
-	settings, login, meteor, messages, server, navigator, createChannel, app, room, rooms, permissions, emojis, activeUsers
+	settings, login, meteor, messages, server, navigator, createChannel, app, room, rooms, permissions, customEmojis, activeUsers
 });

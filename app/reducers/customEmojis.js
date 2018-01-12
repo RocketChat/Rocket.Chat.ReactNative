@@ -1,11 +1,11 @@
 import * as types from '../constants/types';
 
 const initialState = {
-	emojis: {}
+	customEmojis: {}
 };
 
 
-export default function emojis(state = initialState.emojis, action) {
+export default function customEmojis(state = initialState.customEmojis, action) {
 	if (action.type === types.SET_CUSTOM_EMOJIS) {
 		return {
 			...state,
