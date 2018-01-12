@@ -185,6 +185,25 @@ const frequentlyUsedEmojiSchema = {
 	}
 };
 
+const customEmojiAliasesSchema = {
+	name: 'customEmojiAliases',
+	properties: {
+		value: 'string'
+	}
+};
+
+const customEmojisSchema = {
+	name: 'customEmojis',
+	primaryKey: '_id',
+	properties: {
+		_id: 'string',
+		name: 'string',
+		aliases: { type: 'list', objectType: 'customEmojiAliases' },
+		extension: 'string',
+		_updatedAt: { type: 'date', optional: true }
+	}
+};
+
 const schema = [
 	settingsSchema,
 	subscriptionSchema,
@@ -198,7 +217,9 @@ const schema = [
 	permissionsSchema,
 	permissionsRolesSchema,
 	url,
-	frequentlyUsedEmojiSchema
+	frequentlyUsedEmojiSchema,
+	customEmojiAliasesSchema,
+	customEmojisSchema
 ];
 class DB {
 	databases = {
