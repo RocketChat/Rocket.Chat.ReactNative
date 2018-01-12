@@ -178,9 +178,11 @@ const messagesSchema = {
 
 const frequentlyUsedEmojiSchema = {
 	name: 'frequentlyUsedEmoji',
-	primaryKey: 'code_point',
+	primaryKey: 'content',
 	properties: {
-		code_point: 'int',
+		content: { type: 'string', optional: true },
+		extension: { type: 'string', optional: true },
+		isCustom: 'bool',
 		count: 'int'
 	}
 };

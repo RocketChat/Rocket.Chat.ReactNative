@@ -146,7 +146,7 @@ const Markdown = ({ msg, customEmojis, baseUrl }) => {
 
 Markdown.propTypes = {
 	msg: PropTypes.string.isRequired,
-	baseUrl: PropTypes.string.isRequired,
+	baseUrl: PropTypes.string,
 	customEmojis: PropTypes.object
 };
 

@@ -1,21 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	Text,
-	View,
-	TouchableOpacity
-} from 'react-native';
+import { Text, View, TouchableOpacity, Image } from 'react-native';
 import styles from './styles';
 
 export default class extends React.PureComponent {
 	static propTypes = {
-		emojis: PropTypes.array,
+		emojis: PropTypes.any,
 		finishedLoading: PropTypes.func,
 		onEmojiSelected: PropTypes.func
 	};
 
 	componentDidMount() {
 		this.props.finishedLoading();
+	}
+
+	renderEmoji = (emoji) => {
+		if (emoji.isCustom) {
+			return (
+				<Image
+					style={styles.customCategoryEmoji}
+					source={{ uri: `https://open.rocket.chat/emoji-custom/${ encodeURIComponent(emoji.content) }.${ emoji.extension }` }}
+				/>
+			);
+		}
+		return (
+			<Text style={styles.categoryEmoji}>
+				{emoji}
+			</Text>
+		);
 	}
 
 	render() {
@@ -27,12 +39,10 @@ export default class extends React.PureComponent {
 						(
 							<TouchableOpacity
 								activeOpacity={0.7}
-								key={emoji}
+								key={emoji.isCustom ? emoji.content : emoji}
 								onPress={() => this.props.onEmojiSelected(emoji)}
 							>
-								<Text style={styles.categoryEmoji}>
-									{emoji}
-								</Text>
+								{this.renderEmoji(emoji)}
 							</TouchableOpacity>
 						))}
 				</View>
