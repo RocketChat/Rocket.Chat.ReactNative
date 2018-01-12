@@ -34,14 +34,15 @@ export default class extends PureComponent {
 
 	constructor(props) {
 		super(props);
-		this.frequentlyUsed = database.objects('frequentlyUsedEmoji').sorted('count', true);
-		this.customEmojis = database.objects('customEmojis');
 		this.state = {
 			categories: categories.list.slice(0, 1),
 			frequentlyUsed: [],
 			customEmojis: []
 		};
+		this.frequentlyUsed = database.objects('frequentlyUsedEmoji').sorted('count', true);
+		this.customEmojis = database.objects('customEmojis');
 		this.updateFrequentlyUsed = this.updateFrequentlyUsed.bind(this);
+		this.updateCustomEmojis = this.updateCustomEmojis.bind(this);
 	}
 
 	componentWillMount() {
