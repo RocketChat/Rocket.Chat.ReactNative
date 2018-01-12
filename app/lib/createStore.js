@@ -26,6 +26,13 @@ if (__DEV__) {
 	);
 }
 
+// uncomment the following lines to integrate reactotron with redux
+// const store = Reactotron.createStore(
+//   reducers,
+//   enhacers(createStore)(reducers),
+// );
+
+
 const store = enhacers(createStore)(reducers);
 sagaMiddleware.run(sagas);
 
