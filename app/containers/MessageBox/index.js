@@ -128,14 +128,16 @@ export default class MessageBox extends React.PureComponent {
 				onPress={() => this.submit(this.state.text)}
 			/>);
 		}
-		icons.push(<MyIcon
-			style={[styles.actionButtons, { color: '#2F343D', fontSize: 16 }]}
-			name='plus'
-			key='fileIcon'
-			accessibilityLabel='Message actions'
-			accessibilityTraits='button'
-			onPress={() => this.addFile()}
-		/>);
+		else {
+			icons.push(<MyIcon
+				style={[styles.actionButtons, { color: '#2F343D', fontSize: 16 }]}
+				name='plus'
+				key='fileIcon'
+				accessibilityLabel='Message actions'
+				accessibilityTraits='button'
+				onPress={() => this.addFile()}
+			/>);
+		}
 		return icons;
 	}
 
