@@ -127,8 +127,7 @@ export default class MessageBox extends React.PureComponent {
 				accessibilityTraits='button'
 				onPress={() => this.submit(this.state.text)}
 			/>);
-		}
-		else {
+		} else {
 			icons.push(<MyIcon
 				style={[styles.actionButtons, { color: '#2F343D', fontSize: 16 }]}
 				name='plus'
