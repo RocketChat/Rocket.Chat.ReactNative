@@ -1,13 +1,14 @@
 import React from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import PropTypes from 'prop-types';
-import { Text, TextInput, View, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
+import { Text, TextInput, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as loginActions from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
 
 import styles from './Styles';
+import { showErrorAlert } from '../utils/info';
 
 class ForgotPasswordView extends React.Component {
 	static propTypes = {
@@ -35,11 +36,11 @@ class ForgotPasswordView extends React.Component {
 		if (login.success) {
 			this.props.navigation.goBack();
 			setTimeout(() => {
-				Alert.alert(
-					'Alert',
+				showErrorAlert(
 					'If this email is registered, ' +
 					'we\'ll send instructions on how to reset your password. ' +
-					'If you do not receive an email shortly, please come back and try again.'
+					'If you do not receive an email shortly, please come back and try again.',
+					'Alert'
 				);
 			});
 		}

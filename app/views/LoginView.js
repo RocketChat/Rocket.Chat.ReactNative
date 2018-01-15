@@ -8,6 +8,7 @@ import * as loginActions from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
 
 import styles from './Styles';
+import { showToast } from '../utils/info';
 
 class LoginView extends React.Component {
 	static propTypes = {
@@ -34,6 +35,7 @@ class LoginView extends React.Component {
 	submit = () => {
 		const {	username, password, code } = this.state;
 		if (username.trim() === '' || password.trim() === '') {
+			showToast('Email or password field is empty');
 			return;
 		}
 

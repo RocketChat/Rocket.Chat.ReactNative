@@ -10,6 +10,7 @@ import * as loginActions from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
 
 import styles from './Styles';
+import { showToast } from '../utils/info';
 
 const placeholderTextColor = 'rgba(255,255,255,.2)';
 
@@ -51,6 +52,7 @@ class RegisterView extends React.Component {
 			name, email, password, code
 		} = this.state;
 		if (!this._valid()) {
+			showToast('Some field is invalid or empty');
 			return;
 		}
 
