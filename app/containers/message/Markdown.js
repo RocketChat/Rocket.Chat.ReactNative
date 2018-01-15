@@ -121,11 +121,12 @@ const Markdown = ({ msg, customEmojis }) => {
 		}
 	};
 
+	const codeStyle = StyleSheet.flatten(styles.codeStyle);
 	return (
 		<EasyMarkdown
 			style={{ marginBottom: 0 }}
 			rules={rules}
-			markdownStyles={{ code: styles.codeStyle }}
+			markdownStyles={{ code: codeStyle }}
 		>{msg}
 		</EasyMarkdown>
 	);
