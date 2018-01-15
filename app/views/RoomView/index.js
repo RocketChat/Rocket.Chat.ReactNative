@@ -191,7 +191,6 @@ export default class RoomView extends React.Component {
 						keyboardDismissMode='interactive'
 					/>
 				</SafeAreaView>
-				{this.props.lastOpened ? <Text> {this.props.lastOpened.toISOString()} </Text> : null}
 				{this.renderFooter()}
 				<MessageActions room={this.room} />
 				<MessageErrorActions />
