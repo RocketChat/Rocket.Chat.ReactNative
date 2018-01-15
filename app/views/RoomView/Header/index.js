@@ -9,14 +9,18 @@ import realm from '../../../lib/realm';
 import Avatar from '../../../containers/Avatar';
 import { STATUS_COLORS } from '../../../constants/colors';
 import styles from './styles';
+import { closeRoom } from '../../../actions/room';
 
 @connect(state => ({
 	user: state.login.user,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	activeUsers: state.activeUsers
+}), dispatch => ({
+	close: () => dispatch(closeRoom())
 }))
 export default class extends React.PureComponent {
 	static propTypes = {
+		close: PropTypes.func.isRequired,
 		navigation: PropTypes.object.isRequired,
 		user: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string,
@@ -57,7 +61,15 @@ export default class extends React.PureComponent {
 
 	isDirect = () => this.state.room && this.state.room.t === 'd';
 
-	renderLeft = () => <HeaderBackButton onPress={() => this.props.navigation.goBack(null)} tintColor='#292E35' title='Back' titleStyle={{ display: 'none' }} />;
+	renderLeft = () => (<HeaderBackButton
+		onPress={() => {
+			this.props.close();
+			this.props.navigation.goBack(null);
+		}}
+		tintColor='#292E35'
+		title='Back'
+		titleStyle={{ display: 'none' }}
+	/>);
 
 	renderTitle() {
 		if (!this.state.roomName) {

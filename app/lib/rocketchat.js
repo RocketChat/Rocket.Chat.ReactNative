@@ -8,7 +8,7 @@ import settingsType from '../constants/settings';
 import messagesStatus from '../constants/messagesStatus';
 import database from './realm';
 import * as actions from '../actions';
-import { someoneTyping } from '../actions/room';
+import { someoneTyping, roomMessageReceived } from '../actions/room';
 import { setUser } from '../actions/login';
 import { disconnect, disconnect_by_user, connectSuccess, connectFailure } from '../actions/connect';
 import { requestActiveUser } from '../actions/activeUsers';
@@ -98,10 +98,10 @@ const RocketChat = {
 				}
 			});
 
-			this.ddp.on('stream-room-messages', ddpMessage => database.write(() => {
+			this.ddp.on('stream-room-messages', (ddpMessage) => {
 				const message = this._buildMessage(ddpMessage.fields.args[0]);
-				database.create('messages', message, true);
-			}));
+				return reduxStore.dispatch(roomMessageReceived(message));
+			});
 
 			this.ddp.on('stream-notify-room', (ddpMessage) => {
 				const [_rid, ev] = ddpMessage.fields.eventName.split('/');

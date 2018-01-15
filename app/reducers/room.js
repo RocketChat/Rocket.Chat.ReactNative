@@ -9,7 +9,17 @@ export default function room(state = initialState, action) {
 		case types.ROOM.OPEN:
 			return {
 				...initialState,
-				...action.room
+				...action.room,
+				lastOpen: new Date()
+			};
+		case types.ROOM.CLOSE:
+			return {
+				...initialState
+			};
+		case types.ROOM.SET_LAST_OPEN:
+			return {
+				...state,
+				lastOpen: action.date
 			};
 		case types.ROOM.ADD_USER_TYPING:
 			return {
