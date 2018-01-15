@@ -80,7 +80,7 @@ const watchRoomOpen = function* watchRoomOpen({ room }) {
 		open: take(types.ROOM.OPEN),
 		close: take(types.ROOM.CLOSE)
 	});
-	// cancel(thread);
+	cancel(thread);
 	subscriptions.forEach((sub) => {
 		sub.unsubscribe().catch(e => alert(e));
 	});
