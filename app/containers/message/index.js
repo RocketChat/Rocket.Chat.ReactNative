@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, TouchableHighlight, Text, TouchableOpacity } from 'react-native';
+import { View, TouchableHighlight, Text, TouchableOpacity, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
@@ -15,6 +15,10 @@ import Markdown from './Markdown';
 import Url from './Url';
 import Reply from './Reply';
 import messageStatus from '../../constants/messagesStatus';
+import styles from './styles';
+
+const avatar = { marginRight: 10 };
+const flex = { flexDirection: 'row', flex: 1 };
 
 const styles = StyleSheet.create({
 	content: {
@@ -71,7 +75,30 @@ export default class Message extends React.Component {
 		editing: PropTypes.bool,
 		actionsShow: PropTypes.func,
 		errorActionsShow: PropTypes.func,
-		isFirstUnread: PropTypes.bool
+		isFirstUnread: PropTypes.bool,
+		animate: PropTypes.bool
+	}
+
+	componentWillMount() {
+		this._visibility = new Animated.Value(this.props.animate ? 0 : 1);
+	}
+	componentDidMount() {
+		if (this.props.animate) {
+			Animated.timing(this._visibility, {
+				toValue: 1,
+				duration: 300
+			}).start();
+		}
+	}
+	componentWillReceiveProps() {
+		this.extraStyle = this.extraStyle || {};
+		if (this.props.item.status === messageStatus.TEMP || this.props.item.status === messageStatus.ERROR) {
+			this.extraStyle.opacity = 0.3;
+		}
+	}
+
+	shouldComponentUpdate(nextProps) {
+		return this.props.item._updatedAt.toGMTString() !== nextProps.item._updatedAt.toGMTString() || this.props.item.status !== nextProps.item.status;
 	}
 
 	onLongPress() {
@@ -187,11 +214,14 @@ export default class Message extends React.Component {
 			item, message, editing, baseUrl
 		} = this.props;
 
-		const extraStyle = {};
-		if (item.status === messageStatus.TEMP || item.status === messageStatus.ERROR) {
-			extraStyle.opacity = 0.3;
-		}
-
+		const marginLeft = this._visibility.interpolate({
+			inputRange: [0, 1],
+			outputRange: [-30, 0]
+		});
+		const opacity = this._visibility.interpolate({
+			inputRange: [0, 1],
+			outputRange: [0, 1]
+		});
 		const username = item.alias || item.u.username;
 		const isEditing = message._id === item._id && editing;
 
@@ -208,30 +238,30 @@ export default class Message extends React.Component {
 			>
 				<View style={{ flexDirection: 'column', flex: 1 }}>
 					{this.renderFirstUnread()}
-					<View style={{ flexDirection: 'row', flex: 1 }}>
-						{this.renderError()}
-						<View style={[extraStyle, { flexDirection: 'row', flex: 1 }]}>
-							<Avatar
-								style={{ marginRight: 10 }}
-								text={item.avatar ? '' : username}
-								size={40}
-								baseUrl={baseUrl}
-								avatar={item.avatar}
-							/>
-							<View style={[styles.content]}>
-								<User
-									onPress={this._onPress}
-									item={item}
-									Message_TimeFormat={this.props.Message_TimeFormat}
-									baseUrl={baseUrl}
-								/>
-								{this.renderMessageContent()}
-								{this.attachments()}
-								{this.renderUrl()}
-							</View>
-						</View>
-					</View>
-				</View>
+					<Animated.View style={[flex, { opacity, marginLeft }]}>
+            {this.renderError()}
+            <View style={[this.extraStyle, flex]}>
+              <Avatar
+                style={avatar}
+                text={item.avatar ? '' : username}
+                size={40}
+                baseUrl={baseUrl}
+                avatar={item.avatar}
+              />
+              <View style={[styles.content]}>
+                <User
+                  onPress={this._onPress}
+                  item={item}
+                  Message_TimeFormat={this.props.Message_TimeFormat}
+                  baseUrl={baseUrl}
+                />
+                {this.renderMessageContent()}
+                {this.attachments()}
+                {this.renderUrl()}
+              </View>
+            </View>
+          </Animated.View>
+        </View>
 			</TouchableHighlight>
 		);
 	}

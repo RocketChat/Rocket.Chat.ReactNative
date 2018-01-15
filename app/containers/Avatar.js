@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 });
 
 @connect(state => ({
-	baseUrl: state.settings.Site_Url
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }))
 
 class Avatar extends React.PureComponent {

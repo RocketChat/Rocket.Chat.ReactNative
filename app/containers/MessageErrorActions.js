@@ -5,7 +5,7 @@ import ActionSheet from 'react-native-actionsheet';
 
 import { errorActionsHide } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
-import realm from '../lib/realm';
+import database from '../lib/realm';
 
 @connect(
 	state => ({
@@ -41,9 +41,9 @@ export default class MessageActions extends React.Component {
 	handleResend = () => RocketChat.resendMessage(this.props.actionMessage._id);
 
 	handleDelete = () => {
-		realm.write(() => {
-			const msg = realm.objects('messages').filtered('_id = $0', this.props.actionMessage._id);
-			realm.delete(msg);
+		database.write(() => {
+			const msg = database.objects('messages').filtered('_id = $0', this.props.actionMessage._id);
+			database.delete(msg);
 		});
 	}
 

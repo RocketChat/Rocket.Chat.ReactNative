@@ -9,7 +9,7 @@ import RocketChat from '../../lib/rocketchat';
 import { editRequest, editCancel, clearInput } from '../../actions/messages';
 import styles from './style';
 import MyIcon from '../icons';
-import realm from '../../lib/realm';
+import database from '../../lib/realm';
 import Avatar from '../Avatar';
 import AnimatedContainer from './AnimatedContainer';
 
@@ -23,14 +23,14 @@ const onlyUnique = function onlyUnique(value, index, self) {
 	room: state.room,
 	message: state.messages.message,
 	editing: state.messages.editing,
-	baseUrl: state.settings.Site_Url
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }), dispatch => ({
 	editCancel: () => dispatch(editCancel()),
 	editRequest: message => dispatch(editRequest(message)),
 	typing: status => dispatch(userTyping(status)),
 	clearInput: () => dispatch(clearInput())
 }))
-export default class MessageBox extends React.Component {
+export default class MessageBox extends React.PureComponent {
 	static propTypes = {
 		onSubmit: PropTypes.func.isRequired,
 		rid: PropTypes.string.isRequired,
@@ -127,15 +127,16 @@ export default class MessageBox extends React.Component {
 				accessibilityTraits='button'
 				onPress={() => this.submit(this.state.text)}
 			/>);
+		} else {
+			icons.push(<MyIcon
+				style={[styles.actionButtons, { color: '#2F343D', fontSize: 16 }]}
+				name='plus'
+				key='fileIcon'
+				accessibilityLabel='Message actions'
+				accessibilityTraits='button'
+				onPress={() => this.addFile()}
+			/>);
 		}
-		icons.push(<MyIcon
-			style={[styles.actionButtons, { color: '#2F343D', fontSize: 16 }]}
-			name='plus'
-			key='fileIcon'
-			accessibilityLabel='Message actions'
-			accessibilityTraits='button'
-			onPress={() => this.addFile()}
-		/>);
 		return icons;
 	}
 
@@ -145,6 +146,9 @@ export default class MessageBox extends React.Component {
 
 	addFile = () => {
 		const options = {
+			maxHeight: 1960,
+			maxWidth: 1960,
+			quality: 0.8,
 			customButtons: [{
 				name: 'import', title: 'Import File From'
 			}]
@@ -197,7 +201,7 @@ export default class MessageBox extends React.Component {
 	}
 
 	async _getUsers(keyword) {
-		this.users = realm.objects('users');
+		this.users = database.objects('users');
 		if (keyword) {
 			this.users = this.users.filtered('username CONTAINS[c] $0', keyword);
 		}
@@ -219,28 +223,24 @@ export default class MessageBox extends React.Component {
 				RocketChat.spotlight(keyword, usernames, { users: true }),
 				new Promise((resolve, reject) => (this.oldPromise = reject))
 			]);
-			realm.write(() => {
+			database.write(() => {
 				results.users.forEach((user) => {
-					user._server = {
-						id: this.props.baseUrl,
-						current: true
-					};
-					realm.create('users', user, true);
+					database.create('users', user, true);
 				});
 			});
 		} catch (e) {
 			console.log('spotlight canceled');
 		} finally {
 			delete this.oldPromise;
-			this.users = realm.objects('users').filtered('username CONTAINS[c] $0', keyword);
+			this.users = database.objects('users').filtered('username CONTAINS[c] $0', keyword);
 			this.setState({ mentions: this.users.slice() });
 		}
 	}
 
 	async _getRooms(keyword = '') {
 		this.roomsCache = this.roomsCache || [];
-		this.rooms = realm.objects('subscriptions')
-			.filtered('_server.id = $0 AND t != $1', this.props.baseUrl, 'd');
+		this.rooms = database.objects('subscriptions')
+			.filtered('t != $0', 'd');
 		if (keyword) {
 			this.rooms = this.rooms.filtered('name CONTAINS[c] $0', keyword);
 		}

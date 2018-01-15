@@ -19,6 +19,12 @@ export function setCurrentServer(server) {
 	};
 }
 
+export function addSettings(settings) {
+	return {
+		type: types.ADD_SETTINGS,
+		payload: settings
+	};
+}
 export function setAllSettings(settings) {
 	return {
 		type: types.SET_ALL_SETTINGS,
