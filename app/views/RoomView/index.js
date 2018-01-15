@@ -43,7 +43,7 @@ const typing = () => <Typing />;
 )
 export default class RoomView extends React.Component {
 	static propTypes = {
-		lastOpened: PropTypes.instanceOf(Date),
+		// lastOpened: PropTypes.instanceOf(Date),
 		navigation: PropTypes.object.isRequired,
 		openRoom: PropTypes.func.isRequired,
 		user: PropTypes.object.isRequired,

@@ -20,6 +20,7 @@ import { closeRoom } from '../../../actions/room';
 }))
 export default class extends React.PureComponent {
 	static propTypes = {
+		close: PropTypes.func.isRequired,
 		navigation: PropTypes.object.isRequired,
 		user: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string,
