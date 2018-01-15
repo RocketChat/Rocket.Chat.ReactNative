@@ -18,5 +18,22 @@ export default StyleSheet.create({
 	},
 	editing: {
 		backgroundColor: '#fff5df'
+	},
+	firstUnread: {
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center',
+		marginBottom: 15
+	},
+	firstUnreadLine: {
+		borderTopColor: 'red',
+		borderTopWidth: 1,
+		flex: 1
+	},
+	firstUnreadBadge: {
+		color: 'red',
+		backgroundColor: '#fff',
+		fontSize: 11,
+		paddingHorizontal: 5
 	}
 });

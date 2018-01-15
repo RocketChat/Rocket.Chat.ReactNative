@@ -20,44 +20,6 @@ import styles from './styles';
 const avatar = { marginRight: 10 };
 const flex = { flexDirection: 'row', flex: 1 };
 
-const styles = StyleSheet.create({
-	content: {
-		flexGrow: 1,
-		flexShrink: 1
-	},
-	message: {
-		padding: 12,
-		paddingTop: 6,
-		paddingBottom: 6,
-		flexDirection: 'row',
-		transform: [{ scaleY: -1 }]
-	},
-	textInfo: {
-		fontStyle: 'italic',
-		color: '#a0a0a0'
-	},
-	editing: {
-		backgroundColor: '#fff5df'
-	},
-	firstUnread: {
-		flex: 1,
-		flexDirection: 'row',
-		alignItems: 'center',
-		marginBottom: 15
-	},
-	firstUnreadLine: {
-		borderTopColor: 'red',
-		borderTopWidth: 1,
-		flex: 1
-	},
-	firstUnreadBadge: {
-		color: 'red',
-		backgroundColor: '#fff',
-		fontSize: 11,
-		paddingHorizontal: 5
-	}
-});
-
 @connect(state => ({
 	message: state.messages.message,
 	editing: state.messages.editing
@@ -239,29 +201,29 @@ export default class Message extends React.Component {
 				<View style={{ flexDirection: 'column', flex: 1 }}>
 					{this.renderFirstUnread()}
 					<Animated.View style={[flex, { opacity, marginLeft }]}>
-            {this.renderError()}
-            <View style={[this.extraStyle, flex]}>
-              <Avatar
-                style={avatar}
-                text={item.avatar ? '' : username}
-                size={40}
-                baseUrl={baseUrl}
-                avatar={item.avatar}
-              />
-              <View style={[styles.content]}>
-                <User
-                  onPress={this._onPress}
-                  item={item}
-                  Message_TimeFormat={this.props.Message_TimeFormat}
-                  baseUrl={baseUrl}
-                />
-                {this.renderMessageContent()}
-                {this.attachments()}
-                {this.renderUrl()}
-              </View>
-            </View>
-          </Animated.View>
-        </View>
+						{this.renderError()}
+						<View style={[this.extraStyle, flex]}>
+							<Avatar
+								style={avatar}
+								text={item.avatar ? '' : username}
+								size={40}
+								baseUrl={baseUrl}
+								avatar={item.avatar}
+							/>
+							<View style={[styles.content]}>
+								<User
+									onPress={this._onPress}
+									item={item}
+									Message_TimeFormat={this.props.Message_TimeFormat}
+									baseUrl={baseUrl}
+								/>
+								{this.renderMessageContent()}
+								{this.attachments()}
+								{this.renderUrl()}
+							</View>
+						</View>
+					</Animated.View>
+				</View>
 			</TouchableHighlight>
 		);
 	}

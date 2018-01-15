@@ -69,9 +69,9 @@ export default class RoomView extends React.Component {
 			.objects('messages')
 			.filtered('rid = $0', this.rid)
 			.sorted('ts', true);
-		this.unread = this.data.filtered('ts > $0', this.room[0].ls).sorted('ts');
 		const rowIds = this.data.map((row, index) => index);
 		this.room = database.objects('subscriptions').filtered('rid = $0', this.rid);
+		this.unread = this.data.filtered('ts > $0', this.room[0].ls).sorted('ts');
 		this.state = {
 			dataSource: ds.cloneWithRows(this.data, rowIds),
 			loaded: true,
