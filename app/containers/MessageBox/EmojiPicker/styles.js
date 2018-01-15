@@ -55,8 +55,8 @@ export default StyleSheet.create({
 		textAlign: 'center'
 	},
 	customCategoryEmoji: {
-		height: EMOJI_SIZE - 4,
-		width: EMOJI_SIZE - 4,
-		margin: 2
+		height: EMOJI_SIZE - 8,
+		width: EMOJI_SIZE - 8,
+		margin: 4
 	}
 });

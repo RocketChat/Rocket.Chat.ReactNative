@@ -5,13 +5,8 @@ import { ScrollView, View } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import emojiDatasource from 'emoji-datasource/emoji.json';
 import _ from 'lodash';
-import {
-	groupBy,
-	orderBy
-} from 'lodash/collection';
-import {
-	mapValues
-} from 'lodash/object';
+import { groupBy, orderBy } from 'lodash/collection';
+import { mapValues } from 'lodash/object';
 import TabBar from './TabBar';
 import EmojiCategory from './EmojiCategory';
 import styles from './styles';

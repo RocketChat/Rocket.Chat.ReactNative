@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, TouchableOpacity, Image } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import styles from './styles';
+import CustomEmoji from '../../CustomEmoji';
 
 export default class extends React.PureComponent {
 	static propTypes = {
@@ -16,12 +17,8 @@ export default class extends React.PureComponent {
 
 	renderEmoji = (emoji) => {
 		if (emoji.isCustom) {
-			return (
-				<Image
-					style={styles.customCategoryEmoji}
-					source={{ uri: `https://open.rocket.chat/emoji-custom/${ encodeURIComponent(emoji.content) }.${ emoji.extension }` }}
-				/>
-			);
+			const style = StyleSheet.flatten(styles.customCategoryEmoji);
+			return <CustomEmoji style={style} emoji={emoji} />;
 		}
 		return (
 			<Text style={styles.categoryEmoji}>

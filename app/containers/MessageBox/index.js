@@ -353,9 +353,7 @@ export default class MessageBox extends React.PureComponent {
 	renderEmoji() {
 		const emojiContainer = (
 			<View style={styles.emojiContainer}>
-				<EmojiPicker
-					onEmojiSelected={emoji => this._onPressEmoji(emoji)}
-				/>
+				<EmojiPicker onEmojiSelected={emoji => this._onPressEmoji(emoji)} />
 			</View>
 		);
 		const { showEmojiContainer, messageboxHeight } = this.state;

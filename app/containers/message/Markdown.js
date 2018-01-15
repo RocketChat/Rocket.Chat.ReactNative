@@ -1,33 +1,23 @@
 import React from 'react';
-import { Text, Platform, Image } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import EasyMarkdown from 'react-native-easy-markdown'; // eslint-disable-line
 import SimpleMarkdown from 'simple-markdown';
 import { emojify } from 'react-emojione';
-
-const codeStyle = {
-	...Platform.select({
-		ios: { fontFamily: 'Courier New' },
-		android: { fontFamily: 'monospace' }
-	}),
-	backgroundColor: '#f8f8f8',
-	borderColor: '#cccccc',
-	borderWidth: 1,
-	borderRadius: 5,
-	padding: 5
-};
+import styles from './styles';
+import CustomEmoji from '../CustomEmoji';
 
 const BlockCode = ({ node, state }) => (
 	<Text
 		key={state.key}
-		style={codeStyle}
+		style={styles.codeStyle}
 	>
 		{node.content}
 	</Text>
 );
 const mentionStyle = { color: '#13679a' };
 
-const Markdown = ({ msg, customEmojis, baseUrl }) => {
+const Markdown = ({ msg, customEmojis }) => {
 	if (!msg) {
 		return null;
 	}
@@ -118,15 +108,12 @@ const Markdown = ({ msg, customEmojis, baseUrl }) => {
 					}
 				};
 				const content = node.content[1];
-				const emoji = customEmojis[content];
-				if (emoji) {
-					const uri = `${ baseUrl }/emoji-custom/${ encodeURIComponent(content) }.${ emoji }`;
+				const emojiExtension = customEmojis[content];
+				if (emojiExtension) {
+					const emoji = { extension: emojiExtension, content };
+					const style = StyleSheet.flatten(styles.customEmoji);
 					element.props.children = (
-						<Image
-							key={state.key}
-							style={{ width: 16, height: 16 }}
-							source={{ uri }}
-						/>
+						<CustomEmoji key={state.key} style={style} emoji={emoji} />
 					);
 				}
 				return element;
@@ -138,7 +125,7 @@ const Markdown = ({ msg, customEmojis, baseUrl }) => {
 		<EasyMarkdown
 			style={{ marginBottom: 0 }}
 			rules={rules}
-			markdownStyles={{ code: codeStyle }}
+			markdownStyles={{ code: styles.codeStyle }}
 		>{msg}
 		</EasyMarkdown>
 	);
@@ -146,7 +133,6 @@ const Markdown = ({ msg, customEmojis, baseUrl }) => {
 
 Markdown.propTypes = {
 	msg: PropTypes.string.isRequired,
-	baseUrl: PropTypes.string,
 	customEmojis: PropTypes.object
 };
 
