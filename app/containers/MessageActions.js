@@ -15,6 +15,7 @@ import {
 	setInput,
 	actionsHide
 } from '../actions/messages';
+import { showToast } from '../utils/info';
 
 @connect(
 	state => ({
@@ -127,7 +128,7 @@ export default class MessageActions extends React.Component {
 			if (this.state.copyPermalink) {
 				this.setState({ copyPermalink: false });
 				await Clipboard.setString(nextProps.permalink);
-				Alert.alert('Permalink copied to clipboard!');
+				showToast('Permalink copied to clipboard!');
 				this.props.permalinkClear();
 			// quote
 			} else if (this.state.quote) {
@@ -235,7 +236,7 @@ export default class MessageActions extends React.Component {
 
 	handleCopy = async() => {
 		await Clipboard.setString(this.props.actionMessage.msg);
-		Alert.alert('Copied to clipboard!');
+		showToast('Copied to clipboard!');
 	}
 
 	handleStar() {
