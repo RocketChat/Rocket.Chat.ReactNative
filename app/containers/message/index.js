@@ -159,18 +159,6 @@ export default class Message extends React.Component {
 		);
 	}
 
-	renderFirstUnread = () => {
-		if (!this.props.isFirstUnread) {
-			return null;
-		}
-		return (
-			<View style={styles.firstUnread}>
-				<View style={styles.firstUnreadLine} />
-				<Text style={styles.firstUnreadBadge}>unread messages</Text>
-			</View>
-		);
-	}
-
 	render() {
 		const {
 			item, message, editing, baseUrl
@@ -198,32 +186,29 @@ export default class Message extends React.Component {
 				style={[styles.message, isEditing ? styles.editing : null]}
 				accessibilityLabel={accessibilityLabel}
 			>
-				<View style={{ flexDirection: 'column', flex: 1 }}>
-					{this.renderFirstUnread()}
-					<Animated.View style={[flex, { opacity, marginLeft }]}>
-						{this.renderError()}
-						<View style={[this.extraStyle, flex]}>
-							<Avatar
-								style={avatar}
-								text={item.avatar ? '' : username}
-								size={40}
+				<Animated.View style={[flex, { opacity, marginLeft }]}>
+					{this.renderError()}
+					<View style={[this.extraStyle, flex]}>
+						<Avatar
+							style={avatar}
+							text={item.avatar ? '' : username}
+							size={40}
+							baseUrl={baseUrl}
+							avatar={item.avatar}
+						/>
+						<View style={[styles.content]}>
+							<User
+								onPress={this._onPress}
+								item={item}
+								Message_TimeFormat={this.props.Message_TimeFormat}
 								baseUrl={baseUrl}
-								avatar={item.avatar}
 							/>
-							<View style={[styles.content]}>
-								<User
-									onPress={this._onPress}
-									item={item}
-									Message_TimeFormat={this.props.Message_TimeFormat}
-									baseUrl={baseUrl}
-								/>
-								{this.renderMessageContent()}
-								{this.attachments()}
-								{this.renderUrl()}
-							</View>
+							{this.renderMessageContent()}
+							{this.attachments()}
+							{this.renderUrl()}
 						</View>
-					</Animated.View>
-				</View>
+					</View>
+				</Animated.View>
 			</TouchableHighlight>
 		);
 	}
