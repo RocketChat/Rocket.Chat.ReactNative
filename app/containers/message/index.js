@@ -23,7 +23,8 @@ const flex = { flexDirection: 'row', flex: 1 };
 
 @connect(state => ({
 	message: state.messages.message,
-	editing: state.messages.editing
+	editing: state.messages.editing,
+	customEmojis: state.customEmojis
 }), dispatch => ({
 	actionsShow: actionMessage => dispatch(actionsShow(actionMessage)),
 	errorActionsShow: actionMessage => dispatch(errorActionsShow(actionMessage))
@@ -38,7 +39,8 @@ export default class Message extends React.Component {
 		editing: PropTypes.bool,
 		actionsShow: PropTypes.func,
 		errorActionsShow: PropTypes.func,
-		animate: PropTypes.bool
+		animate: PropTypes.bool,
+		customEmojis: PropTypes.object
 	}
 
 	componentWillMount() {
@@ -135,7 +137,8 @@ export default class Message extends React.Component {
 		if (this.isInfoMessage()) {
 			return <Text style={styles.textInfo}>{this.getInfoMessage()}</Text>;
 		}
-		return <Markdown msg={this.props.item.msg} />;
+		const { item, customEmojis, baseUrl } = this.props;
+		return <Markdown msg={item.msg} customEmojis={customEmojis} baseUrl={baseUrl} />;
 	}
 
 	renderUrl() {

@@ -8,6 +8,7 @@ import * as loginActions from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
 
 import styles from './Styles';
+import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { showToast } from '../utils/info';
 
 class LoginView extends React.Component {
@@ -87,8 +88,7 @@ class LoginView extends React.Component {
 			>
 				<ScrollView
 					style={styles.loginView}
-					keyboardDismissMode='interactive'
-					keyboardShouldPersistTaps='always'
+					{...scrollPersistTaps}
 				>
 					<SafeAreaView>
 						<View style={styles.formContainer}>

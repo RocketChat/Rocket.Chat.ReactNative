@@ -23,6 +23,7 @@ import Banner from './banner';
 import styles from './styles';
 
 import debounce from '../../utils/debounce';
+import scrollPersistTaps from '../../utils/scrollPersistTaps';
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id });
 
@@ -187,8 +188,7 @@ export default class RoomView extends React.Component {
 						dataSource={this.state.dataSource}
 						renderRow={item => this.renderItem(item)}
 						initialListSize={10}
-						keyboardShouldPersistTaps='always'
-						keyboardDismissMode='interactive'
+						{...scrollPersistTaps}
 					/>
 				</SafeAreaView>
 				{this.renderFooter()}

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, SafeAreaView, Platform, FlatList, Text, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { View, TextInput, SafeAreaView, Platform, FlatList, Text, TouchableOpacity, Keyboard } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import { userTyping } from '../../actions/room';
@@ -12,6 +12,8 @@ import MyIcon from '../icons';
 import database from '../../lib/realm';
 import Avatar from '../Avatar';
 import AnimatedContainer from './AnimatedContainer';
+import EmojiPicker from './EmojiPicker';
+import scrollPersistTaps from '../../utils/scrollPersistTaps';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 
@@ -23,7 +25,8 @@ const onlyUnique = function onlyUnique(value, index, self) {
 	room: state.room,
 	message: state.messages.message,
 	editing: state.messages.editing,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	isKeyboardOpen: state.keyboard.isOpen
 }), dispatch => ({
 	editCancel: () => dispatch(editCancel()),
 	editRequest: message => dispatch(editRequest(message)),
@@ -40,7 +43,8 @@ export default class MessageBox extends React.PureComponent {
 		message: PropTypes.object,
 		editing: PropTypes.bool,
 		typing: PropTypes.func,
-		clearInput: PropTypes.func
+		clearInput: PropTypes.func,
+		isKeyboardOpen: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -50,7 +54,8 @@ export default class MessageBox extends React.PureComponent {
 			messageboxHeight: 0,
 			text: '',
 			mentions: [],
-			showAnimatedContainer: false
+			showMentionsContainer: false,
+			showEmojiContainer: false
 		};
 		this.users = [];
 		this.rooms = [];
@@ -61,6 +66,8 @@ export default class MessageBox extends React.PureComponent {
 			this.component.focus();
 		} else if (!nextProps.message) {
 			this.setState({ text: '' });
+		} else if (this.props.isKeyboardOpen !== nextProps.isKeyboardOpen && nextProps.isKeyboardOpen) {
+			this.closeEmoji();
 		}
 	}
 
@@ -95,24 +102,24 @@ export default class MessageBox extends React.PureComponent {
 		if (editing) {
 			return (<Icon
 				style={styles.actionButtons}
-				name='ios-close'
+				name='close'
 				accessibilityLabel='Cancel editing'
 				accessibilityTraits='button'
 				onPress={() => this.editCancel()}
 			/>);
 		}
-		return !this.state.emoji ? (<Icon
+		return !this.state.showEmojiContainer ? (<Icon
 			style={styles.actionButtons}
 			onPress={() => this.openEmoji()}
 			accessibilityLabel='Open emoji selector'
 			accessibilityTraits='button'
-			name='md-happy'
+			name='mood'
 		/>) : (<Icon
-			onPress={() => this.openEmoji()}
+			onPress={() => this.closeEmoji()}
 			style={styles.actionButtons}
 			accessibilityLabel='Close emoji selector'
 			accessibilityTraits='button'
-			name='md-sad'
+			name='keyboard'
 		/>);
 	}
 	get rightButtons() {
@@ -176,11 +183,16 @@ export default class MessageBox extends React.PureComponent {
 		this.props.editCancel();
 		this.setState({ text: '' });
 	}
-	openEmoji() {
-		this.setState({ emoji: !this.state.emoji });
+	async openEmoji() {
+		await this.setState({ showEmojiContainer: !this.state.showEmojiContainer });
+		Keyboard.dismiss();
+	}
+	closeEmoji() {
+		this.setState({ showEmojiContainer: false });
 	}
 	submit(message) {
 		this.setState({ text: '' });
+		this.closeEmoji();
 		this.stopTrackingMention();
 		requestAnimationFrame(() => {
 			this.props.typing(false);
@@ -279,7 +291,7 @@ export default class MessageBox extends React.PureComponent {
 
 	stopTrackingMention() {
 		this.setState({
-			showAnimatedContainer: false,
+			showMentionsContainer: false,
 			mentions: []
 		});
 		this.users = [];
@@ -289,7 +301,7 @@ export default class MessageBox extends React.PureComponent {
 	identifyMentionKeyword(keyword, type) {
 		this.updateMentions(keyword, type);
 		this.setState({
-			showAnimatedContainer: true
+			showMentionsContainer: true
 		});
 	}
 
@@ -317,6 +329,22 @@ export default class MessageBox extends React.PureComponent {
 		this.component.focus();
 		requestAnimationFrame(() => this.stopTrackingMention());
 	}
+	_onEmojiSelected(emoji) {
+		const { text } = this.state;
+		let newText = '';
+
+		// if messagebox has an active cursor
+		if (this.component._lastNativeSelection) {
+			const { start, end } = this.component._lastNativeSelection;
+			const cursor = Math.max(start, end);
+			newText = `${ text.substr(0, cursor) }${ emoji }${ text.substr(cursor) }`;
+		} else {
+			// if messagebox doesn't have a cursor, just append selected emoji
+			newText = `${ text }${ emoji }`;
+		}
+		this.component.setNativeProps({ text: newText });
+		this.setState({ text: newText });
+	}
 	renderMentionItem = item => (
 		<TouchableOpacity
 			style={styles.mentionItem}
@@ -331,6 +359,15 @@ export default class MessageBox extends React.PureComponent {
 			<Text>{item.username || item.name }</Text>
 		</TouchableOpacity>
 	)
+	renderEmoji() {
+		const emojiContainer = (
+			<View style={styles.emojiContainer}>
+				<EmojiPicker onEmojiSelected={emoji => this._onEmojiSelected(emoji)} />
+			</View>
+		);
+		const { showEmojiContainer, messageboxHeight } = this.state;
+		return <AnimatedContainer visible={showEmojiContainer} subview={emojiContainer} messageboxHeight={messageboxHeight} />;
+	}
 	renderMentions() {
 		const usersList = (
 			<FlatList
@@ -338,12 +375,11 @@ export default class MessageBox extends React.PureComponent {
 				data={this.state.mentions}
 				renderItem={({ item }) => this.renderMentionItem(item)}
 				keyExtractor={item => item._id}
-				keyboardShouldPersistTaps='always'
-				keyboardDismissMode='interactive'
+				{...scrollPersistTaps}
 			/>
 		);
-		const { showAnimatedContainer, messageboxHeight } = this.state;
-		return <AnimatedContainer visible={showAnimatedContainer} subview={usersList} messageboxHeight={messageboxHeight} />;
+		const { showMentionsContainer, messageboxHeight } = this.state;
+		return <AnimatedContainer visible={showMentionsContainer} subview={usersList} messageboxHeight={messageboxHeight} />;
 	}
 	render() {
 		const { height } = this.state;
@@ -374,6 +410,7 @@ export default class MessageBox extends React.PureComponent {
 					</View>
 				</SafeAreaView>
 				{this.renderMentions()}
+				{this.renderEmoji()}
 			</View>
 		);
 	}

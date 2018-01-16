@@ -83,6 +83,7 @@ const RocketChat = {
 			this.ddp.on('connected', () => {
 				RocketChat.getSettings();
 				RocketChat.getPermissions();
+				RocketChat.getCustomEmoji();
 			});
 
 			this.ddp.on('error', (err) => {
@@ -512,6 +513,29 @@ const RocketChat = {
 			permission.roles = permission.roles.map(role => ({ value: role }));
 		});
 		return permissions;
+	},
+	async getCustomEmoji() {
+		const temp = database.objects('customEmojis').sorted('_updatedAt', true)[0];
+		let emojis = await call('listEmojiCustom');
+		emojis = emojis.filter(emoji => !temp || emoji._updatedAt > temp._updatedAt);
+		emojis = RocketChat._prepareEmojis(emojis);
+		database.write(() => {
+			emojis.forEach(emoji => database.create('customEmojis', emoji, true));
+		});
+		reduxStore.dispatch(actions.setCustomEmojis(RocketChat.parseEmojis(emojis)));
+	},
+	parseEmojis: emojis => emojis.reduce((ret, item) => {
+		ret[item.name] = item.extension;
+		item.aliases.forEach((alias) => {
+			ret[alias.value] = item.extension;
+		});
+		return ret;
+	}, {}),
+	_prepareEmojis(emojis) {
+		emojis.forEach((emoji) => {
+			emoji.aliases = emoji.aliases.map(alias => ({ value: alias }));
+		});
+		return emojis;
 	},
 	deleteMessage(message) {
 		return call('deleteMessage', { _id: message._id });
