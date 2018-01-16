@@ -20,7 +20,6 @@ import styles from './styles';
 const avatar = { marginRight: 10 };
 const flex = { flexDirection: 'row', flex: 1 };
 
-
 @connect(state => ({
 	message: state.messages.message,
 	editing: state.messages.editing,
