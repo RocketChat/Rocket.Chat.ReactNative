@@ -81,3 +81,4 @@ export const ACTIVE_USERS = createRequestTypes('ACTIVE_USERS', ['SET', 'REQUEST'
 
 export const INCREMENT = 'INCREMENT';
 export const DECREMENT = 'DECREMENT';
+export const KEYBOARD = createRequestTypes('KEYBOARD', ['OPEN', 'CLOSE']);

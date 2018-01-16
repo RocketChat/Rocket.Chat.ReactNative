@@ -21,6 +21,8 @@ const restore = function* restore() {
 			yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
 			const permissions = database.objects('permissions');
 			yield put(actions.setAllPermissions(RocketChat.parsePermissions(permissions.slice(0, permissions.length))));
+			const emojis = database.objects('customEmojis');
+			yield put(actions.setCustomEmojis(RocketChat.parseEmojis(emojis.slice(0, emojis.length))));
 		}
 		yield put(actions.appReady({}));
 	} catch (e) {
