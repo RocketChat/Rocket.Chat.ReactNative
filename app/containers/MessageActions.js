@@ -75,7 +75,7 @@ export default class MessageActions extends React.Component {
 		};
 		this.handleActionPress = this.handleActionPress.bind(this);
 		this.options = [''];
-		const { roles } = this.props.room[0];
+		const { roles } = this.props.room;
 		const roomRoles = Array.from(Object.keys(roles), i => roles[i].value);
 		const userRoles = this.props.user.roles || [];
 		this.mergedRoles = [...new Set([...roomRoles, ...userRoles])];
@@ -142,7 +142,7 @@ export default class MessageActions extends React.Component {
 				let msg = `[ ](${ nextProps.permalink }) `;
 
 				// if original message wasn't sent by current user and neither from a direct room
-				if (this.props.user.username !== this.props.actionMessage.u.username && this.props.room[0].t !== 'd') {
+				if (this.props.user.username !== this.props.actionMessage.u.username && this.props.room.t !== 'd') {
 					msg += `@${ this.props.actionMessage.u.username } `;
 				}
 				this.props.setInput({ msg });

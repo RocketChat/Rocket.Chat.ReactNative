@@ -7,7 +7,7 @@ import equal from 'deep-equal';
 
 import { ListView } from './ListView';
 import * as actions from '../../actions';
-import { openRoom } from '../../actions/room';
+import { openRoom, setLastOpen } from '../../actions/room';
 import { editCancel } from '../../actions/messages';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
@@ -32,20 +32,20 @@ const typing = () => <Typing />;
 		Site_Url: state.settings.Site_Url || state.server ? state.server.server : '',
 		Message_TimeFormat: state.settings.Message_TimeFormat,
 		loading: state.messages.isFetching,
-		user: state.login.user,
-		lastOpened: state.room.lastOpen
+		user: state.login.user
 	}),
 	dispatch => ({
 		actions: bindActionCreators(actions, dispatch),
 		openRoom: room => dispatch(openRoom(room)),
-		editCancel: () => dispatch(editCancel())
+		editCancel: () => dispatch(editCancel()),
+		setLastOpen: date => dispatch(setLastOpen(date))
 	})
 )
 export default class RoomView extends React.Component {
 	static propTypes = {
-		// lastOpened: PropTypes.instanceOf(Date),
 		navigation: PropTypes.object.isRequired,
 		openRoom: PropTypes.func.isRequired,
+		setLastOpen: PropTypes.func.isRequired,
 		user: PropTypes.object.isRequired,
 		editCancel: PropTypes.func,
 		rid: PropTypes.string,
@@ -72,8 +72,7 @@ export default class RoomView extends React.Component {
 			.filtered('rid = $0', this.rid)
 			.sorted('ts', true);
 		const rowIds = this.data.map((row, index) => index);
-		this.room = database.objects('subscriptions').filtered('rid = $0', this.rid);
-		this.unread = this.data.filtered('ts > $0', this.room[0].ls).sorted('ts');
+		[this.room] = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			dataSource: ds.cloneWithRows(this.data, rowIds),
 			loaded: true,
@@ -85,7 +84,12 @@ export default class RoomView extends React.Component {
 		this.props.navigation.setParams({
 			title: this.name
 		});
-		this.props.openRoom({ rid: this.rid, name: this.name });
+		this.props.openRoom({ rid: this.rid, name: this.name, ls: this.room.ls });
+		if (this.room.alert || this.room.unread || this.room.userMentions) {
+			this.props.setLastOpen(this.room.ls);
+		} else {
+			this.props.setLastOpen(null);
+		}
 		this.data.addListener(this.updateState);
 	}
 	shouldComponentUpdate(nextProps, nextState) {
@@ -129,7 +133,9 @@ export default class RoomView extends React.Component {
 		});
 	}, 50);
 
-	sendMessage = message => RocketChat.sendMessage(this.rid, message);
+	sendMessage = message => RocketChat.sendMessage(this.rid, message).then(() => {
+		this.props.setLastOpen(null);
+	});
 
 	joinRoom = async() => {
 		await RocketChat.joinRoom(this.props.rid);
@@ -146,7 +152,6 @@ export default class RoomView extends React.Component {
 			baseUrl={this.props.Site_Url}
 			Message_TimeFormat={this.props.Message_TimeFormat}
 			user={this.props.user}
-			isFirstUnread={this.unread[0] && item._id === this.unread[0]._id}
 		/>
 	);
 
