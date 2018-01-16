@@ -46,7 +46,7 @@ export default class Socket extends EventEmitter {
 		this._connect();
 		this.ddp = new EventEmitter();
 		this.on('ping', () => this.send({ msg: 'pong' }));
-		this.on('result', data => this.ddp.emit(data.id, { result: data.result, error: data.error }));
+		this.on('result', data => this.ddp.emit(data.id, { id: data.id, result: data.result, error: data.error }));
 		this.on('ready', data => this.ddp.emit(data.subs[0], data));
 	}
 	send(obj) {
@@ -54,7 +54,7 @@ export default class Socket extends EventEmitter {
 			this.id += 1;
 			const id = obj.id || `${ this.id }`;
 			this.connection.send(EJSON.stringify({ ...obj, id }));
-			this.ddp.once(id, data => (data.error ? reject(data.error) : resolve(data.result || data.subs)));
+			this.ddp.once(id, data => (data.error ? reject(data.error) : resolve({ id, ...data })));
 		});
 	}
 	_connect() {
@@ -99,22 +99,22 @@ export default class Socket extends EventEmitter {
 	call(method, ...params) {
 		return this.send({
 			msg: 'method', method, params
-		});
+		}).then(data => data.result || data.subs);
 	}
 	unsubscribe(id) {
 		if (!this.subscriptions[id]) {
-			return Promise.reject();
+			return Promise.reject(id);
 		}
 		delete this.subscriptions[id];
 		return this.send({
 			msg: 'unsub',
 			id
-		});
+		}).then(data => data.result || data.subs);
 	}
 	subscribe(name, ...params) {
 		return this.send({
 			msg: 'sub', name, params
-		}).then((id) => {
+		}).then(({ id }) => {
 			const args = {
 				name,
 				params,
