@@ -1,7 +1,7 @@
 import { ListView as OldList } from 'realm/react-native';
 import React from 'react';
 import cloneReferencedElement from 'react-clone-referenced-element';
-import { ScrollView, ListView as OldList2, Text } from 'react-native';
+import { ScrollView, ListView as OldList2 } from 'react-native';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import DateSeparator from './DateSeparator';
