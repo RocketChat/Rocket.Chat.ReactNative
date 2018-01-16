@@ -38,7 +38,7 @@ export default class Message extends React.Component {
 		editing: PropTypes.bool,
 		actionsShow: PropTypes.func,
 		errorActionsShow: PropTypes.func,
-		isFirstUnread: PropTypes.bool,
+		animate: PropTypes.bool,
 		customEmojis: PropTypes.object
 	}
 
