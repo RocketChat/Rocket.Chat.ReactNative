@@ -2,6 +2,10 @@ import { ListView as OldList } from 'realm/react-native';
 import React from 'react';
 import cloneReferencedElement from 'react-clone-referenced-element';
 import { ScrollView, ListView as OldList2 } from 'react-native';
+import moment from 'moment';
+import { connect } from 'react-redux';
+import DateSeparator from './DateSeparator';
+import UnreadSeparator from './UnreadSeparator';
 
 const DEFAULT_SCROLL_CALLBACK_THROTTLE = 50;
 
@@ -15,6 +19,10 @@ export class DataSource extends OldList.DataSource {
 		return false;
 	}
 }
+
+@connect(state => ({
+	lastOpen: state.room.lastOpen
+}))
 export class ListView extends OldList2 {
 	constructor(props) {
 		super(props);
@@ -92,6 +100,19 @@ export class ListView extends OldList2 {
 					rowID,
 					this._onRowHighlighted,
 				)());
+				if (rowIdx !== rowIDs.length - 1) {
+					const nextRowID = rowIDs[rowIdx + 1];
+					const nextData = dataSource._dataBlob[sectionID][nextRowID];
+					if (!moment(data.ts).isSame(nextData.ts, 'day')) {
+						bodyComponents.push(<DateSeparator key={data.ts.toISOString()} ts={data.ts} />);
+					}
+					if (this.props.lastOpen &&
+						moment(data.ts).isAfter(this.props.lastOpen) &&
+						moment(nextData.ts).isBefore(this.props.lastOpen)
+					) {
+						bodyComponents.push(<UnreadSeparator key='unread-separator' />);
+					}
+				}
 				// totalIndex += 1;
 				rowCount += 1;
 				if (rowCount === this.state.curRenderedRowsCount) {
