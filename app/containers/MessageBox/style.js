@@ -79,5 +79,11 @@ export default StyleSheet.create({
 		borderBottomColor: '#ECECEC',
 		flexDirection: 'row',
 		alignItems: 'center'
+	},
+	emojiContainer: {
+		height: 200,
+		borderTopColor: '#ECECEC',
+		borderTopWidth: 1,
+		backgroundColor: '#fff'
 	}
 });
