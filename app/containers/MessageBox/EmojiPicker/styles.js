@@ -1,7 +1,7 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 
 const { width } = Dimensions.get('window');
-const EMOJI_SIZE = width / 8;
+const EMOJI_SIZE = width / (Platform.OS === 'ios' ? 8 : 9);
 
 export default StyleSheet.create({
 	container: {
