@@ -191,7 +191,8 @@ export default class MessageBox extends React.PureComponent {
 		this.setState({ showEmojiContainer: false });
 	}
 	submit(message) {
-		this.setState({ text: '', showEmojiContainer: false });
+		this.setState({ text: '' });
+		this.closeEmoji();
 		this.stopTrackingMention();
 		requestAnimationFrame(() => {
 			this.props.typing(false);
@@ -328,7 +329,7 @@ export default class MessageBox extends React.PureComponent {
 		this.component.focus();
 		requestAnimationFrame(() => this.stopTrackingMention());
 	}
-	_onPressEmoji(emoji) {
+	_onEmojiSelected(emoji) {
 		const { text } = this.state;
 		let newText = '';
 
@@ -343,7 +344,6 @@ export default class MessageBox extends React.PureComponent {
 		}
 		this.component.setNativeProps({ text: newText });
 		this.setState({ text: newText });
-		this.component.focus();
 	}
 	renderMentionItem = item => (
 		<TouchableOpacity
@@ -362,7 +362,7 @@ export default class MessageBox extends React.PureComponent {
 	renderEmoji() {
 		const emojiContainer = (
 			<View style={styles.emojiContainer}>
-				<EmojiPicker onEmojiSelected={emoji => this._onPressEmoji(emoji)} />
+				<EmojiPicker onEmojiSelected={emoji => this._onEmojiSelected(emoji)} />
 			</View>
 		);
 		const { showEmojiContainer, messageboxHeight } = this.state;
