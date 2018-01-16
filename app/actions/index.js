@@ -39,6 +39,13 @@ export function setAllPermissions(permissions) {
 	};
 }
 
+export function setCustomEmojis(emojis) {
+	return {
+		type: types.SET_CUSTOM_EMOJIS,
+		payload: emojis
+	};
+}
+
 export function login() {
 	return {
 		type: 'LOGIN'

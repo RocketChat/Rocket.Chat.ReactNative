@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 export default StyleSheet.create({
 	content: {
@@ -18,5 +18,20 @@ export default StyleSheet.create({
 	},
 	editing: {
 		backgroundColor: '#fff5df'
+	},
+	customEmoji: {
+		width: 16,
+		height: 16
+	},
+	codeStyle: {
+		...Platform.select({
+			ios: { fontFamily: 'Courier New' },
+			android: { fontFamily: 'monospace' }
+		}),
+		backgroundColor: '#f8f8f8',
+		borderColor: '#cccccc',
+		borderWidth: 1,
+		borderRadius: 5,
+		padding: 5
 	}
 });
