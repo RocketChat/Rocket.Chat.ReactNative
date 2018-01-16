@@ -32,7 +32,8 @@ const typing = () => <Typing />;
 		Site_Url: state.settings.Site_Url || state.server ? state.server.server : '',
 		Message_TimeFormat: state.settings.Message_TimeFormat,
 		loading: state.messages.isFetching,
-		user: state.login.user
+		user: state.login.user,
+		lastOpened: state.room.lastOpen
 	}),
 	dispatch => ({
 		actions: bindActionCreators(actions, dispatch),
@@ -42,6 +43,7 @@ const typing = () => <Typing />;
 )
 export default class RoomView extends React.Component {
 	static propTypes = {
+		// lastOpened: PropTypes.instanceOf(Date),
 		navigation: PropTypes.object.isRequired,
 		openRoom: PropTypes.func.isRequired,
 		user: PropTypes.object.isRequired,

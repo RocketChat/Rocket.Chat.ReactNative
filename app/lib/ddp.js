@@ -114,13 +114,14 @@ export default class Socket extends EventEmitter {
 	subscribe(name, ...params) {
 		return this.send({
 			msg: 'sub', name, params
-		}).then((data) => {
-			this.subscriptions[data.id] = {
+		}).then((id) => {
+			const args = {
 				name,
 				params,
-				unsubscribe: () => this.unsubscribe(data.id)
+				unsubscribe: () => this.unsubscribe(id)
 			};
-			return this.subscriptions[data.id];
+			this.subscriptions[id] = args;
+			return args;
 		});
 	}
 }
