@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, SafeAreaView, Platform, FlatList, Text, TouchableOpacity } from 'react-native';
+import { View, TextInput, SafeAreaView, Platform, FlatList, Text, TouchableOpacity, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
@@ -25,7 +25,8 @@ const onlyUnique = function onlyUnique(value, index, self) {
 	room: state.room,
 	message: state.messages.message,
 	editing: state.messages.editing,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	isKeyboardOpen: state.keyboard.isOpen
 }), dispatch => ({
 	editCancel: () => dispatch(editCancel()),
 	editRequest: message => dispatch(editRequest(message)),
@@ -42,7 +43,8 @@ export default class MessageBox extends React.PureComponent {
 		message: PropTypes.object,
 		editing: PropTypes.bool,
 		typing: PropTypes.func,
-		clearInput: PropTypes.func
+		clearInput: PropTypes.func,
+		isKeyboardOpen: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -64,6 +66,8 @@ export default class MessageBox extends React.PureComponent {
 			this.component.focus();
 		} else if (!nextProps.message) {
 			this.setState({ text: '' });
+		} else if (this.props.isKeyboardOpen !== nextProps.isKeyboardOpen && nextProps.isKeyboardOpen) {
+			this.closeEmoji();
 		}
 	}
 
@@ -111,7 +115,7 @@ export default class MessageBox extends React.PureComponent {
 			accessibilityTraits='button'
 			name='mood'
 		/>) : (<Icon
-			onPress={() => this.openEmoji()}
+			onPress={() => this.closeEmoji()}
 			style={styles.actionButtons}
 			accessibilityLabel='Close emoji selector'
 			accessibilityTraits='button'
@@ -179,8 +183,12 @@ export default class MessageBox extends React.PureComponent {
 		this.props.editCancel();
 		this.setState({ text: '' });
 	}
-	openEmoji() {
-		this.setState({ showEmojiContainer: !this.state.showEmojiContainer });
+	async openEmoji() {
+		await this.setState({ showEmojiContainer: !this.state.showEmojiContainer });
+		Keyboard.dismiss();
+	}
+	closeEmoji() {
+		this.setState({ showEmojiContainer: false });
 	}
 	submit(message) {
 		this.setState({ text: '', showEmojiContainer: false });

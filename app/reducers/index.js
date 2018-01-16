@@ -12,7 +12,21 @@ import app from './app';
 import permissions from './permissions';
 import customEmojis from './customEmojis';
 import activeUsers from './activeUsers';
+import keyboard from './keyboard';
 
 export default combineReducers({
-	settings, login, meteor, messages, server, navigator, createChannel, app, room, rooms, permissions, customEmojis, activeUsers
+	settings,
+	login,
+	meteor,
+	messages,
+	server,
+	navigator,
+	createChannel,
+	app,
+	room,
+	rooms,
+	permissions,
+	customEmojis,
+	activeUsers,
+	keyboard
 });
