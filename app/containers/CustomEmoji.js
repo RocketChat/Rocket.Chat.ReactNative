@@ -18,7 +18,7 @@ export default class extends React.PureComponent {
 		return (
 			<CachedImage
 				style={style}
-				source={{ uri: `${ baseUrl }/emoji-custom/${ encodeURIComponent(emoji.content) }.${ emoji.extension }` }}
+				source={{ uri: `${ baseUrl }/emoji-custom/${ encodeURIComponent(emoji.content || emoji.name) }.${ emoji.extension }` }}
 			/>
 		);
 	}

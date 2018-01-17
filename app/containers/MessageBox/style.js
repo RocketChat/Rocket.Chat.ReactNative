@@ -85,5 +85,10 @@ export default StyleSheet.create({
 		borderTopColor: '#ECECEC',
 		borderTopWidth: 1,
 		backgroundColor: '#fff'
+	},
+	mentionItemEmoji: {
+		margin: 8,
+		width: 30,
+		height: 30
 	}
 });

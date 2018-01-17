@@ -11,11 +11,13 @@ import styles from './style';
 import MyIcon from '../icons';
 import database from '../../lib/realm';
 import Avatar from '../Avatar';
+import CustomEmoji from '../CustomEmoji';
 import AnimatedContainer from './AnimatedContainer';
 import EmojiPicker from './EmojiPicker';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
+const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
 
 const onlyUnique = function onlyUnique(value, index, self) {
 	return self.indexOf(({ _id }) => value._id === _id) === index;
@@ -55,7 +57,8 @@ export default class MessageBox extends React.PureComponent {
 			text: '',
 			mentions: [],
 			showMentionsContainer: false,
-			showEmojiContainer: false
+			showEmojiContainer: false,
+			trackingType: ''
 		};
 		this.users = [];
 		this.rooms = [];
@@ -79,7 +82,7 @@ export default class MessageBox extends React.PureComponent {
 
 			const text = this.component._lastNativeText;
 
-			const regexp = /(#|@)([a-z._-]+)$/im;
+			const regexp = /(#|@|:)([a-z0-9._-]+)$/im;
 
 			const result = text.substr(0, cursor).match(regexp);
 
@@ -289,10 +292,19 @@ export default class MessageBox extends React.PureComponent {
 		}
 	}
 
+	async _getEmojis(keyword) {
+		this.emojis = database.objects('customEmojis');
+		if (keyword) {
+			this.emojis = this.emojis.filtered('name CONTAINS[c] $0', keyword);
+		}
+		this.setState({ mentions: this.emojis.slice() });
+	}
+
 	stopTrackingMention() {
 		this.setState({
 			showMentionsContainer: false,
-			mentions: []
+			mentions: [],
+			trackingType: ''
 		});
 		this.users = [];
 		this.rooms = [];
@@ -301,13 +313,16 @@ export default class MessageBox extends React.PureComponent {
 	identifyMentionKeyword(keyword, type) {
 		this.updateMentions(keyword, type);
 		this.setState({
-			showMentionsContainer: true
+			showMentionsContainer: true,
+			trackingType: type
 		});
 	}
 
 	updateMentions = (keyword, type) => {
 		if (type === MENTIONS_TRACKING_TYPE_USERS) {
 			this._getUsers(keyword);
+		} else if (type === MENTIONS_TRACKING_TYPE_EMOJIS) {
+			this._getEmojis(keyword);
 		} else {
 			this._getRooms(keyword);
 		}
@@ -320,10 +335,12 @@ export default class MessageBox extends React.PureComponent {
 
 		const cursor = Math.max(start, end);
 
-		const regexp = /([a-z._-]+)$/im;
+		const regexp = /([a-z0-9._-]+)$/im;
 
 		const result = msg.substr(0, cursor).replace(regexp, '');
-		const text = `${ result }${ item.username || item.name } ${ msg.slice(cursor) }`;
+		const mentionName = this.state.trackingType === MENTIONS_TRACKING_TYPE_EMOJIS ?
+			`${ item.name }:` : (item.username || item.name);
+		const text = `${ result }${ mentionName } ${ msg.slice(cursor) }`;
 		this.component.setNativeProps({ text });
 		this.setState({ text });
 		this.component.focus();
@@ -350,13 +367,27 @@ export default class MessageBox extends React.PureComponent {
 			style={styles.mentionItem}
 			onPress={() => this._onPressMention(item)}
 		>
-			<Avatar
-				style={{ margin: 8 }}
-				text={item.username || item.name}
-				size={30}
-				baseUrl={this.props.baseUrl}
-			/>
-			<Text>{item.username || item.name }</Text>
+			{this.state.trackingType === MENTIONS_TRACKING_TYPE_EMOJIS ?
+				[
+					<CustomEmoji
+						key='mention-item-avatar'
+						style={styles.mentionItemEmoji}
+						emoji={item}
+						baseUrl={this.props.baseUrl}
+					/>,
+					<Text key='mention-item-name'>:{ item.name }:</Text>
+				]
+				: [
+					<Avatar
+						key='mention-item-avatar'
+						style={{ margin: 8 }}
+						text={item.username || item.name}
+						size={30}
+						baseUrl={this.props.baseUrl}
+					/>,
+					<Text key='mention-item-name'>{ item.username || item.name }</Text>
+				]
+			}
 		</TouchableOpacity>
 	)
 	renderEmoji() {
