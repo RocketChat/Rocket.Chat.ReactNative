@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, SafeAreaView, Platform, FlatList, Text, TouchableOpacity, Keyboard } from 'react-native';
+import { View, TextInput, SafeAreaView, Platform, FlatList, Text, TouchableOpacity, Keyboard, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
@@ -371,7 +371,7 @@ export default class MessageBox extends React.PureComponent {
 				[
 					<CustomEmoji
 						key='mention-item-avatar'
-						style={styles.mentionItemEmoji}
+						style={StyleSheet.flatten(styles.mentionItemEmoji)}
 						emoji={item}
 						baseUrl={this.props.baseUrl}
 					/>,
