@@ -89,8 +89,10 @@ export default class MessageActions extends React.Component {
 			this.options = ['Cancel'];
 			this.CANCEL_INDEX = 0;
 			// Reply
-			this.options.push('Reply');
-			this.REPLY_INDEX = this.options.length - 1;
+			if (!this.isRoomReadOnly()) {
+				this.options.push('Reply');
+				this.REPLY_INDEX = this.options.length - 1;
+			}
 			// Edit
 			if (this.allowEdit(nextProps)) {
 				this.options.push('Edit');
@@ -103,8 +105,10 @@ export default class MessageActions extends React.Component {
 			this.options.push('Copy Message');
 			this.COPY_INDEX = this.options.length - 1;
 			// Quote
-			this.options.push('Quote');
-			this.QUOTE_INDEX = this.options.length - 1;
+			if (!this.isRoomReadOnly()) {
+				this.options.push('Quote');
+				this.QUOTE_INDEX = this.options.length - 1;
+			}
 			// Star
 			if (this.props.Message_AllowStarring) {
 				this.options.push(actionMessage.starred ? 'Unstar' : 'Star');
@@ -165,7 +169,12 @@ export default class MessageActions extends React.Component {
 
 	isOwn = props => props.actionMessage.u && props.actionMessage.u._id === props.user.id;
 
+	isRoomReadOnly = () => this.props.room.ro;
+
 	allowEdit = (props) => {
+		if (this.isRoomReadOnly()) {
+			return false;
+		}
 		const editOwn = this.isOwn(props);
 		const { Message_AllowEditing: isEditAllowed } = this.props;
 		if (!(this.hasEditPermission || (isEditAllowed && editOwn))) {
@@ -187,6 +196,9 @@ export default class MessageActions extends React.Component {
 	}
 
 	allowDelete = (props) => {
+		if (this.isRoomReadOnly()) {
+			return false;
+		}
 		const deleteOwn = this.isOwn(props);
 		const { Message_AllowDeleting: isDeleteAllowed } = this.props;
 		if (!(this.hasDeletePermission || (isDeleteAllowed && deleteOwn) || this.hasForceDeletePermission)) {
