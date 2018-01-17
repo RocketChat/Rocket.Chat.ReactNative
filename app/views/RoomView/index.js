@@ -73,7 +73,7 @@ export default class RoomView extends React.Component {
 			.filtered('rid = $0', this.rid)
 			.sorted('ts', true);
 		const rowIds = this.data.map((row, index) => index);
-		[this.room] = database.objects('subscriptions').filtered('rid = $0', this.rid);
+		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			dataSource: ds.cloneWithRows(this.data, rowIds),
 			loaded: true,
@@ -85,6 +85,7 @@ export default class RoomView extends React.Component {
 		this.props.navigation.setParams({
 			title: this.name
 		});
+		this.updateRoom();
 		this.props.openRoom({ rid: this.rid, name: this.name, ls: this.room.ls });
 		if (this.room.alert || this.room.unread || this.room.userMentions) {
 			this.props.setLastOpen(this.room.ls);
@@ -92,6 +93,7 @@ export default class RoomView extends React.Component {
 			this.props.setLastOpen(null);
 		}
 		this.data.addListener(this.updateState);
+		this.rooms.addListener(this.updateRoom);
 	}
 	shouldComponentUpdate(nextProps, nextState) {
 		return !(equal(this.props, nextProps) && equal(this.state, nextState));
@@ -134,6 +136,10 @@ export default class RoomView extends React.Component {
 		});
 	}, 50);
 
+	updateRoom = () => {
+		[this.room] = this.rooms;
+	}
+
 	sendMessage = message => RocketChat.sendMessage(this.rid, message).then(() => {
 		this.props.setLastOpen(null);
 	});
@@ -164,6 +170,13 @@ export default class RoomView extends React.Component {
 				<View>
 					<Text>You are in preview mode.</Text>
 					<Button title='Join' onPress={this.joinRoom} />
+				</View>
+			);
+		}
+		if (this.room.ro) {
+			return (
+				<View style={styles.readOnly}>
+					<Text>This room is read only</Text>
 				</View>
 			);
 		}
