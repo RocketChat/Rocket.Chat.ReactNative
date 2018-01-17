@@ -77,7 +77,8 @@ export default class RoomView extends React.Component {
 		this.state = {
 			dataSource: ds.cloneWithRows(this.data, rowIds),
 			loaded: true,
-			joined: typeof props.rid === 'undefined'
+			joined: typeof props.rid === 'undefined',
+			readOnly: false
 		};
 	}
 
@@ -138,6 +139,7 @@ export default class RoomView extends React.Component {
 
 	updateRoom = () => {
 		[this.room] = this.rooms;
+		this.setState({ readOnly: this.room.ro });
 	}
 
 	sendMessage = message => RocketChat.sendMessage(this.rid, message).then(() => {
@@ -173,7 +175,7 @@ export default class RoomView extends React.Component {
 				</View>
 			);
 		}
-		if (this.room.ro) {
+		if (this.state.readOnly) {
 			return (
 				<View style={styles.readOnly}>
 					<Text>This room is read only</Text>
