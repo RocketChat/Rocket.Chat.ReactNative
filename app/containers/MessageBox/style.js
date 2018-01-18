@@ -86,9 +86,16 @@ export default StyleSheet.create({
 		borderTopWidth: 1,
 		backgroundColor: '#fff'
 	},
-	mentionItemEmoji: {
+	mentionItemCustomEmoji: {
 		margin: 8,
 		width: 30,
 		height: 30
+	},
+	mentionItemEmoji: {
+		width: 46,
+		height: 36,
+		marginTop: 10,
+		fontSize: 30, // Testar no android Platform.OS
+		textAlign: 'center'
 	}
 });
