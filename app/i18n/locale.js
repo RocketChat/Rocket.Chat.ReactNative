@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { addLocaleData } from 'react-intl';
 import ar from 'react-intl/locale-data/ar';
 import bg from 'react-intl/locale-data/bg';
