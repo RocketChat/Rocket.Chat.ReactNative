@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 const MENTION_HEIGHT = 50;
 
@@ -94,8 +94,7 @@ export default StyleSheet.create({
 	mentionItemEmoji: {
 		width: 46,
 		height: 36,
-		marginTop: 10,
-		fontSize: 30, // Testar no android Platform.OS
+		fontSize: Platform.OS === 'ios' ? 30 : 25,
 		textAlign: 'center'
 	}
 });
