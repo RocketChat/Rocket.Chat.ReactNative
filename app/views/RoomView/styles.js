@@ -30,5 +30,8 @@ export default StyleSheet.create({
 		textAlign: 'center',
 		padding: 5,
 		color: '#ccc'
+	},
+	readOnly: {
+		padding: 10
 	}
 });
