@@ -300,7 +300,7 @@ export default class MessageBox extends React.PureComponent {
 		if (keyword) {
 			this.customEmojis = database.objects('customEmojis').filtered('name CONTAINS[c] $0', keyword).slice(0, 4);
 			this.emojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, 4);
-			const mergedEmojis = [...new Set([...this.customEmojis, ...this.emojis])];
+			const mergedEmojis = [...this.customEmojis, ...this.emojis];
 			this.setState({ mentions: mergedEmojis });
 		}
 	}
