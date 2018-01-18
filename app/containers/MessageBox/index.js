@@ -14,7 +14,7 @@ import database from '../../lib/realm';
 import Avatar from '../Avatar';
 import CustomEmoji from '../CustomEmoji';
 import AnimatedContainer from './AnimatedContainer';
-import EmojiPicker from './EmojiPicker';
+import EmojiPicker from '../EmojiPicker';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { emojis } from '../../emojis';
 

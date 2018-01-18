@@ -19,6 +19,7 @@ import Typing from '../../containers/Typing';
 import KeyboardView from '../../presentation/KeyboardView';
 import Header from '../../containers/Header';
 import RoomsHeader from './Header';
+import ReactionPicker from './ReactionPicker';
 import Banner from './banner';
 import styles from './styles';
 
@@ -216,6 +217,7 @@ export default class RoomView extends React.Component {
 				{this.renderFooter()}
 				{this.state.room._id ? <MessageActions room={this.state.room} /> : null}
 				<MessageErrorActions />
+				<ReactionPicker />
 			</KeyboardView>
 		);
 	}

@@ -8,7 +8,8 @@ const initialState = {
 	editing: false,
 	permalink: '',
 	showActions: false,
-	showErrorActions: false
+	showErrorActions: false,
+	showReactionPicker: false
 };
 
 export default function messages(state = initialState, action) {
@@ -95,6 +96,11 @@ export default function messages(state = initialState, action) {
 			return {
 				...state,
 				message: {}
+			};
+		case types.MESSAGES.TOGGLE_REACTION_PICKER:
+			return {
+				...state,
+				showReactionPicker: !state.showReactionPicker
 			};
 		default:
 			return state;

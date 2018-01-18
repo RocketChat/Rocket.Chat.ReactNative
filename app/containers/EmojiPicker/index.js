@@ -8,9 +8,9 @@ import TabBar from './TabBar';
 import EmojiCategory from './EmojiCategory';
 import styles from './styles';
 import categories from './categories';
-import scrollPersistTaps from '../../../utils/scrollPersistTaps';
-import database from '../../../lib/realm';
-import { emojisByCategory } from '../../../emojis';
+import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import database from '../../lib/realm';
+import { emojisByCategory } from '../../emojis';
 
 export default class extends PureComponent {
 	static propTypes = {
