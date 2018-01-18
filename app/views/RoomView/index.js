@@ -64,9 +64,9 @@ export default class RoomView extends React.Component {
 		this.rid =
 			props.rid ||
 			props.navigation.state.params.room.rid;
-		this.name = this.props.name ||
-		this.props.navigation.state.params.name ||
-		this.props.navigation.state.params.room.name;
+		this.name = props.name ||
+			props.navigation.state.params.name ||
+			props.navigation.state.params.room.name;
 		this.opened = new Date();
 		this.data = database
 			.objects('messages')
@@ -78,7 +78,7 @@ export default class RoomView extends React.Component {
 			dataSource: ds.cloneWithRows(this.data, rowIds),
 			loaded: true,
 			joined: typeof props.rid === 'undefined',
-			readOnly: false
+			room: {}
 		};
 	}
 
@@ -87,9 +87,9 @@ export default class RoomView extends React.Component {
 			title: this.name
 		});
 		this.updateRoom();
-		this.props.openRoom({ rid: this.rid, name: this.name, ls: this.room.ls });
-		if (this.room.alert || this.room.unread || this.room.userMentions) {
-			this.props.setLastOpen(this.room.ls);
+		this.props.openRoom({ rid: this.rid, name: this.name, ls: this.state.room.ls });
+		if (this.state.room.alert || this.state.room.unread || this.state.room.userMentions) {
+			this.props.setLastOpen(this.state.room.ls);
 		} else {
 			this.props.setLastOpen(null);
 		}
@@ -102,6 +102,7 @@ export default class RoomView extends React.Component {
 	componentWillUnmount() {
 		clearTimeout(this.timer);
 		this.data.removeAllListeners();
+		this.rooms.removeAllListeners();
 		this.props.editCancel();
 	}
 
@@ -138,8 +139,7 @@ export default class RoomView extends React.Component {
 	}, 50);
 
 	updateRoom = () => {
-		[this.room] = this.rooms;
-		this.setState({ readOnly: this.room.ro });
+		this.setState({ room: this.rooms[0] });
 	}
 
 	sendMessage = message => RocketChat.sendMessage(this.rid, message).then(() => {
@@ -175,7 +175,7 @@ export default class RoomView extends React.Component {
 				</View>
 			);
 		}
-		if (this.state.readOnly) {
+		if (this.state.room.ro) {
 			return (
 				<View style={styles.readOnly}>
 					<Text>This room is read only</Text>
@@ -214,7 +214,7 @@ export default class RoomView extends React.Component {
 					/>
 				</SafeAreaView>
 				{this.renderFooter()}
-				<MessageActions room={this.room} />
+				{this.state.room._id ? <MessageActions room={this.state.room} /> : null}
 				<MessageErrorActions />
 			</KeyboardView>
 		);

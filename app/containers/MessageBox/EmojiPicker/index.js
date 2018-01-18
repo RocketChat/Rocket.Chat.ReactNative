@@ -1,25 +1,16 @@
-import 'string.fromcodepoint';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { ScrollView, View } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
-import emojiDatasource from 'emoji-datasource/emoji.json';
 import _ from 'lodash';
-import { groupBy, orderBy } from 'lodash/collection';
-import { mapValues } from 'lodash/object';
+import { emojify } from 'react-emojione';
 import TabBar from './TabBar';
 import EmojiCategory from './EmojiCategory';
 import styles from './styles';
 import categories from './categories';
 import scrollPersistTaps from '../../../utils/scrollPersistTaps';
 import database from '../../../lib/realm';
-
-const charFromUtf16 = utf16 => String.fromCodePoint(...utf16.split('-').map(u => `0x${ u }`));
-const charFromEmojiObj = obj => charFromUtf16(obj.unified);
-
-const filteredEmojis = emojiDatasource.filter(e => parseFloat(e.added_in) < 10.0);
-const groupedAndSorted = groupBy(orderBy(filteredEmojis, 'sort_order'), 'category');
-const emojisByCategory = mapValues(groupedAndSorted, group => group.map(charFromEmojiObj));
+import { emojisByCategory } from '../../../emojis';
 
 export default class extends PureComponent {
 	static propTypes = {
@@ -29,7 +20,6 @@ export default class extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			categories: categories.list.slice(0, 1),
 			frequentlyUsed: [],
 			customEmojis: []
 		};
@@ -47,7 +37,8 @@ export default class extends PureComponent {
 	}
 
 	componentWillUnmount() {
-		clearTimeout(this._timeout);
+		this.frequentlyUsed.removeAllListeners();
+		this.customEmojis.removeAllListeners();
 	}
 
 	onEmojiSelected(emoji) {
@@ -58,10 +49,10 @@ export default class extends PureComponent {
 			});
 			this.props.onEmojiSelected(`:${ emoji.content }:`);
 		} else {
-			const content = emoji.codePointAt(0).toString();
+			const content = emoji;
 			const count = this._getFrequentlyUsedCount(content);
 			this._addFrequentlyUsed({ content, count, isCustom: false });
-			this.props.onEmojiSelected(emoji);
+			this.props.onEmojiSelected(emojify(`:${ emoji }:`, { output: 'unicode' }));
 		}
 	}
 	_addFrequentlyUsed = (emoji) => {
@@ -78,20 +69,15 @@ export default class extends PureComponent {
 			if (item.isCustom) {
 				return item;
 			}
-			return String.fromCodePoint(item.content);
+			return emojify(`${ item.content }`, { output: 'unicode' });
 		});
 		this.setState({ frequentlyUsed });
 	}
 
 	updateCustomEmojis() {
-		const customEmojis = _.map(this.customEmojis.slice(), item => ({ content: item.name, extension: item.extension, isCustom: true }));
+		const customEmojis = _.map(this.customEmojis.slice(), item =>
+			({ content: item.name, extension: item.extension, isCustom: true }));
 		this.setState({ customEmojis });
-	}
-
-	loadNextCategory() {
-		if (this.state.categories.length < categories.list.length) {
-			this.setState({ categories: categories.list.slice(0, this.state.categories.length + 1) });
-		}
 	}
 
 	renderCategory(category, i) {
@@ -109,7 +95,6 @@ export default class extends PureComponent {
 					key={category}
 					emojis={emojis}
 					onEmojiSelected={emoji => this.onEmojiSelected(emoji)}
-					finishedLoading={() => { this._timeout = setTimeout(this.loadNextCategory.bind(this), 100); }}
 				/>
 			</View>
 		);
