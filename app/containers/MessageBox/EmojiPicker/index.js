@@ -36,6 +36,11 @@ export default class extends PureComponent {
 		this.updateCustomEmojis();
 	}
 
+	componentWillUnmount() {
+		this.frequentlyUsed.removeAllListeners();
+		this.customEmojis.removeAllListeners();
+	}
+
 	onEmojiSelected(emoji) {
 		if (emoji.isCustom) {
 			const count = this._getFrequentlyUsedCount(emoji.content);
