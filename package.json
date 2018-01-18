@@ -29,7 +29,6 @@
     "babel-polyfill": "^6.26.0",
     "deep-equal": "^1.0.1",
     "ejson": "^2.1.2",
-    "emoji-datasource": "^4.0.3",
     "lodash": "^4.17.4",
     "moment": "^2.20.1",
     "prop-types": "^15.6.0",
@@ -71,7 +70,6 @@
     "remote-redux-devtools": "^0.5.12",
     "simple-markdown": "^0.3.1",
     "snyk": "^1.61.1",
-    "string.fromcodepoint": "^0.2.1",
     "strip-ansi": "^4.0.0"
   },
   "devDependencies": {

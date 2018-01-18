@@ -1,19 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { emojify } from 'react-emojione';
 import styles from './styles';
 import CustomEmoji from '../../CustomEmoji';
 
 export default class extends React.PureComponent {
 	static propTypes = {
 		emojis: PropTypes.any,
-		finishedLoading: PropTypes.func,
 		onEmojiSelected: PropTypes.func
 	};
-
-	componentDidMount() {
-		this.props.finishedLoading();
-	}
 
 	renderEmoji = (emoji) => {
 		if (emoji.isCustom) {
@@ -22,7 +18,7 @@ export default class extends React.PureComponent {
 		}
 		return (
 			<Text style={styles.categoryEmoji}>
-				{emoji}
+				{emojify(`:${ emoji }:`, { output: 'unicode' })}
 			</Text>
 		);
 	}

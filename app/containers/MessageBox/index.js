@@ -191,7 +191,10 @@ export default class MessageBox extends React.PureComponent {
 		this.setState({ text: '' });
 	}
 	async openEmoji() {
-		await this.setState({ showEmojiContainer: !this.state.showEmojiContainer });
+		await this.setState({
+			showEmojiContainer: true,
+			showMentionsContainer: false
+		});
 		Keyboard.dismiss();
 	}
 	closeEmoji() {
@@ -320,6 +323,7 @@ export default class MessageBox extends React.PureComponent {
 	identifyMentionKeyword(keyword, type) {
 		this.setState({
 			showMentionsContainer: true,
+			showEmojiContainer: false,
 			trackingType: type
 		});
 		this.updateMentions(keyword, type);
