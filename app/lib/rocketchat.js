@@ -432,10 +432,17 @@ const RocketChat = {
 			}
 			return subscription;
 		});
+		
 		database.write(() => {
 			data.forEach(subscription =>
 				database.create('subscriptions', subscription, true));
 		});
+
+		database.write(() => {
+			rooms.forEach(room => 
+				database.create('rooms', room, true));
+		});
+
 		this.ddp.subscribe('stream-notify-user', `${ login.user.id }/subscriptions-changed`, false);
 		this.ddp.subscribe('stream-notify-user', `${ login.user.id }/rooms-changed`, false);
 		return data;

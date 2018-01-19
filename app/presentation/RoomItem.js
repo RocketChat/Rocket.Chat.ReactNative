@@ -52,6 +52,7 @@ export default class RoomItem extends React.PureComponent {
 		type: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
 		_updatedAt: PropTypes.instanceOf(Date),
+		lastMessage: PropTypes.object,
 		favorite: PropTypes.bool,
 		alert: PropTypes.bool,
 		unread: PropTypes.number,
@@ -94,10 +95,12 @@ export default class RoomItem extends React.PureComponent {
 
 	render() {
 		const {
-			favorite, alert, unread, userMentions, name, _updatedAt
+			favorite, alert, unread, userMentions, name, lastMessage, _updatedAt
 		} = this.props;
 
 		const date = this.formatDate(_updatedAt);
+
+		console.log("do we have a last message?", lastMessage);
 
 		let accessibilityLabel = name;
 		if (unread === 1) {
@@ -118,6 +121,7 @@ export default class RoomItem extends React.PureComponent {
 					{this.icon}
 					<View style={styles.roomNameView}>
 						<Text style={[styles.roomName, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
+						{lastMessage ? <Text>{lastMessage.u.username}: {lastMessage.msg}</Text> : <Text>No Message</Text>}
 						{_updatedAt ? <Text style={styles.update} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
 					</View>
 					{this.renderNumber(unread, userMentions)}
