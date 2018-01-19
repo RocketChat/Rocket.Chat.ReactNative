@@ -31,14 +31,18 @@ export default class extends React.PureComponent {
 			>
 				<View
 					style={{
-						width: width - 60,
-						height: width - 60,
+						width: width - 10,
+						height: width - 10,
 						backgroundColor: '#F7F7F7',
 						borderRadius: 4,
 						flexDirection: 'column'
 					}}
 				>
-					<EmojiPicker />
+					<EmojiPicker
+						tabEmojiStyle={{ fontSize: 15 }}
+						customCategoryEmojiStyle={{ width: 20, height: 20 }}
+						categoryEmojiStyle={{ width: 20, height: 20 }}
+					/>
 				</View>
 			</Modal>
 		);

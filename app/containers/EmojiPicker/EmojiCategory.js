@@ -8,16 +8,18 @@ import CustomEmoji from '../CustomEmoji';
 export default class extends React.PureComponent {
 	static propTypes = {
 		emojis: PropTypes.any,
-		onEmojiSelected: PropTypes.func
+		onEmojiSelected: PropTypes.func,
+		customCategoryEmojiStyle: PropTypes.object,
+		categoryEmojiStyle: PropTypes.object
 	};
 
 	renderEmoji = (emoji) => {
 		if (emoji.isCustom) {
 			const style = StyleSheet.flatten(styles.customCategoryEmoji);
-			return <CustomEmoji style={style} emoji={emoji} />;
+			return <CustomEmoji style={[style, this.props.customCategoryEmojiStyle]} emoji={emoji} />;
 		}
 		return (
-			<Text style={styles.categoryEmoji}>
+			<Text style={[styles.categoryEmoji, this.props.categoryEmojiStyle]}>
 				{emojify(`:${ emoji }:`, { output: 'unicode' })}
 			</Text>
 		);

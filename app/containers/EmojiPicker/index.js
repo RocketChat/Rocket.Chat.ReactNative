@@ -14,7 +14,10 @@ import { emojisByCategory } from '../../emojis';
 
 export default class extends PureComponent {
 	static propTypes = {
-		onEmojiSelected: PropTypes.func
+		onEmojiSelected: PropTypes.func,
+		tabEmojiStyle: PropTypes.object,
+		customCategoryEmojiStyle: PropTypes.object,
+		categoryEmojiStyle: PropTypes.object
 	};
 
 	constructor(props) {
@@ -95,6 +98,8 @@ export default class extends PureComponent {
 					key={category}
 					emojis={emojis}
 					onEmojiSelected={emoji => this.onEmojiSelected(emoji)}
+					customCategoryEmojiStyle={this.props.customCategoryEmojiStyle}
+					categoryEmojiStyle={this.props.categoryEmojiStyle}
 				/>
 			</View>
 		);
@@ -107,7 +112,7 @@ export default class extends PureComponent {
 		return (
 			<View style={styles.container}>
 				<ScrollableTabView
-					renderTabBar={() => <TabBar />}
+					renderTabBar={() => <TabBar tabEmojiStyle={this.props.tabEmojiStyle} />}
 					contentProps={scrollProps}
 				>
 					{
