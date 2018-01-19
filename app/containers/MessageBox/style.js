@@ -85,5 +85,10 @@ export default StyleSheet.create({
 		borderTopColor: '#ECECEC',
 		borderTopWidth: 1,
 		backgroundColor: '#fff'
+	},
+	fixedMentionAvatar: {
+		fontWeight: 'bold',
+		textAlign: 'center',
+		width: 46
 	}
 });
