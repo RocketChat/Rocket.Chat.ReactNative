@@ -50,6 +50,7 @@ export default StyleSheet.create({
 	categoryEmoji: {
 		fontSize: EMOJI_SIZE - 14,
 		color: 'black',
+		backgroundColor: 'transparent',
 		height: EMOJI_SIZE,
 		width: EMOJI_SIZE,
 		textAlign: 'center'

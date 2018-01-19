@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Dimensions } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
-import styles from './styles';
 import EmojiPicker from '../../containers/EmojiPicker';
 import { toggleReactionPicker } from '../../actions/messages';
 
@@ -31,18 +30,14 @@ export default class extends React.PureComponent {
 			>
 				<View
 					style={{
-						width: width - 10,
-						height: width - 10,
+						width: width - 20,
+						height: width - 20,
 						backgroundColor: '#F7F7F7',
 						borderRadius: 4,
 						flexDirection: 'column'
 					}}
 				>
-					<EmojiPicker
-						tabEmojiStyle={{ fontSize: 15 }}
-						customCategoryEmojiStyle={{ width: 20, height: 20 }}
-						categoryEmojiStyle={{ width: 20, height: 20 }}
-					/>
+					<EmojiPicker tabEmojiStyle={{ fontSize: 15 }} />
 				</View>
 			</Modal>
 		);

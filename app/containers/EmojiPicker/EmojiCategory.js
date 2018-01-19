@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { emojify } from 'react-emojione';
 import styles from './styles';
 import CustomEmoji from '../CustomEmoji';
@@ -8,18 +8,25 @@ import CustomEmoji from '../CustomEmoji';
 export default class extends React.PureComponent {
 	static propTypes = {
 		emojis: PropTypes.any,
-		onEmojiSelected: PropTypes.func,
-		customCategoryEmojiStyle: PropTypes.object,
-		categoryEmojiStyle: PropTypes.object
+		onEmojiSelected: PropTypes.func
 	};
 
-	renderEmoji = (emoji) => {
+	constructor(props) {
+		super(props);
+		this.state = { width: null };
+	}
+
+	setWidth(width) {
+		this.setState({ width });
+	}
+
+	renderEmoji = (emoji, size) => {
 		if (emoji.isCustom) {
 			const style = StyleSheet.flatten(styles.customCategoryEmoji);
-			return <CustomEmoji style={[style, this.props.customCategoryEmojiStyle]} emoji={emoji} />;
+			return <CustomEmoji style={[style, { height: size - 8, width: size - 8 }]} emoji={emoji} />;
 		}
 		return (
-			<Text style={[styles.categoryEmoji, this.props.categoryEmojiStyle]}>
+			<Text style={[styles.categoryEmoji, { height: size, width: size, fontSize: size - 14 }]}>
 				{emojify(`:${ emoji }:`, { output: 'unicode' })}
 			</Text>
 		);
@@ -27,9 +34,16 @@ export default class extends React.PureComponent {
 
 	render() {
 		const { emojis } = this.props;
+		const { width } = this.state;
+		const size = width / (Platform.OS === 'ios' ? 8 : 9);
 		return (
 			<View>
-				<View style={styles.categoryInner}>
+				<View
+					style={styles.categoryInner}
+					onLayout={(event) => {
+						this.setWidth(event.nativeEvent.layout.width);
+					}}
+				>
 					{emojis.map(emoji =>
 						(
 							<TouchableOpacity
@@ -37,7 +51,7 @@ export default class extends React.PureComponent {
 								key={emoji.isCustom ? emoji.content : emoji}
 								onPress={() => this.props.onEmojiSelected(emoji)}
 							>
-								{this.renderEmoji(emoji)}
+								{this.renderEmoji(emoji, size)}
 							</TouchableOpacity>
 						))}
 				</View>

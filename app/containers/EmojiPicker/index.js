@@ -15,9 +15,7 @@ import { emojisByCategory } from '../../emojis';
 export default class extends PureComponent {
 	static propTypes = {
 		onEmojiSelected: PropTypes.func,
-		tabEmojiStyle: PropTypes.object,
-		customCategoryEmojiStyle: PropTypes.object,
-		categoryEmojiStyle: PropTypes.object
+		tabEmojiStyle: PropTypes.object
 	};
 
 	constructor(props) {
@@ -98,8 +96,6 @@ export default class extends PureComponent {
 					key={category}
 					emojis={emojis}
 					onEmojiSelected={emoji => this.onEmojiSelected(emoji)}
-					customCategoryEmojiStyle={this.props.customCategoryEmojiStyle}
-					categoryEmojiStyle={this.props.categoryEmojiStyle}
 				/>
 			</View>
 		);
