@@ -127,6 +127,7 @@ const RocketChat = {
 					const sub = database.objects('subscriptions').filtered('rid == $0', data._id)[0];
 					database.write(() => {
 						sub.roomUpdatedAt = data._updatedAt;
+						sub.ro = data.ro;
 					});
 				}
 			});
@@ -424,6 +425,7 @@ const RocketChat = {
 			const room = rooms.find(({ _id }) => _id === subscription.rid);
 			if (room) {
 				subscription.roomUpdatedAt = room._updatedAt;
+				subscription.ro = room.ro;
 			}
 			if (subscription.roles) {
 				subscription.roles = subscription.roles.map(role => ({ value: role }));
