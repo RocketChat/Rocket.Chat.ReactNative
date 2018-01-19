@@ -49,6 +49,7 @@ const roomsSchema = {
 	properties: {
 		_id: 'string',
 		t: 'string',
+		lastMessage: 'messages',
 		_updatedAt: { type: 'date', optional: true }
 	}
 };
