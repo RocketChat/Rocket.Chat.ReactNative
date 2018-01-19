@@ -91,13 +91,12 @@ export default class extends PureComponent {
 			emojis = emojisByCategory[category];
 		}
 		return (
-			<View style={styles.categoryContainer}>
-				<EmojiCategory
-					key={category}
-					emojis={emojis}
-					onEmojiSelected={emoji => this.onEmojiSelected(emoji)}
-				/>
-			</View>
+			<EmojiCategory
+				key={category}
+				emojis={emojis}
+				onEmojiSelected={emoji => this.onEmojiSelected(emoji)}
+				style={styles.categoryContainer}
+			/>
 		);
 	}
 

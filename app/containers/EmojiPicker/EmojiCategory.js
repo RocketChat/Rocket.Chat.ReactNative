@@ -22,8 +22,9 @@ export default class extends React.PureComponent {
 
 	renderEmoji = (emoji, size) => {
 		if (emoji.isCustom) {
-			const style = StyleSheet.flatten(styles.customCategoryEmoji);
-			return <CustomEmoji style={[style, { height: size - 8, width: size - 8 }]} emoji={emoji} />;
+			let style = StyleSheet.flatten(styles.customCategoryEmoji);
+			style = { ...style, height: size - 8, width: size - 8 };
+			return <CustomEmoji style={style} emoji={emoji} />;
 		}
 		return (
 			<Text style={[styles.categoryEmoji, { height: size, width: size, fontSize: size - 14 }]}>
@@ -37,24 +38,22 @@ export default class extends React.PureComponent {
 		const { width } = this.state;
 		const size = width / (Platform.OS === 'ios' ? 8 : 9);
 		return (
-			<View>
-				<View
-					style={styles.categoryInner}
-					onLayout={(event) => {
-						this.setWidth(event.nativeEvent.layout.width);
-					}}
-				>
-					{emojis.map(emoji =>
-						(
-							<TouchableOpacity
-								activeOpacity={0.7}
-								key={emoji.isCustom ? emoji.content : emoji}
-								onPress={() => this.props.onEmojiSelected(emoji)}
-							>
-								{this.renderEmoji(emoji, size)}
-							</TouchableOpacity>
-						))}
-				</View>
+			<View
+				style={styles.categoryInner}
+				onLayout={(event) => {
+					this.setWidth(event.nativeEvent.layout.width);
+				}}
+			>
+				{emojis.map(emoji =>
+					(
+						<TouchableOpacity
+							activeOpacity={0.7}
+							key={emoji.isCustom ? emoji.content : emoji}
+							onPress={() => this.props.onEmojiSelected(emoji)}
+						>
+							{this.renderEmoji(emoji, size)}
+						</TouchableOpacity>
+					))}
 			</View>
 		);
 	}

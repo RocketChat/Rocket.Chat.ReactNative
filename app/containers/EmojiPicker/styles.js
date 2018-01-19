@@ -45,7 +45,8 @@ export default StyleSheet.create({
 	categoryInner: {
 		flexWrap: 'wrap',
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		flex: 1
 	},
 	categoryEmoji: {
 		fontSize: EMOJI_SIZE - 14,
