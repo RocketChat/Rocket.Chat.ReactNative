@@ -81,7 +81,7 @@ export default class RoomsListView extends React.Component {
 	}
 
 	getLastMessage = (subscription) => {
-		const room = database.objects('rooms').sorted('_updatedAt', true).slice().find(({ _id }) => _id === subscription.rid);
+		const [ room ] = database.objects('rooms').filtered('_id = $0', subscription.rid).slice();
 		console.log('ROOM', room);
 		return room.lastMessage;
 	}
