@@ -7,7 +7,10 @@ module.exports = {
     }
   },
 	"parser": "babel-eslint",
-	"extends": "airbnb",
+	"extends": [
+		"airbnb",
+		"prettier",
+	],
 	"parserOptions": {
 		"sourceType": "module",
 		"ecmaVersion": 2017,
@@ -18,6 +21,7 @@ module.exports = {
 	},
 	"plugins": [
 		"react",
+		"prettier",
 		"jsx-a11y",
         "import",
     	"react-native"
