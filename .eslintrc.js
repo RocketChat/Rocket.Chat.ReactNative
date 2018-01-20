@@ -33,6 +33,14 @@ module.exports = {
 		"react/jsx-filename-extension": [1, {
 			"extensions": [".js", ".jsx"]
 		}],
+		"prettier/prettier": ["error", {
+			"singleQuote": true,
+			"trailingComma": "all",
+			"bracketSpacing": true,
+			"jsxBracketSameLine": true,
+			"parser": "flow",
+			"semi": true,
+		}],
 		"react/require-default-props": [0],
 		"react/no-unused-prop-types": [2, {
 			"skipShapeProps": true
