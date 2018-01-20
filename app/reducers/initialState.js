@@ -1,5 +1,5 @@
 export default {
-	server: null,
-	login: {},
-	settings: {}
+  server: null,
+  login: {},
+  settings: {},
 };

@@ -10,20 +10,17 @@ const sagaMiddleware = createSagaMiddleware();
 let enhacers;
 
 if (__DEV__) {
-	/* eslint-disable global-require */
-	const reduxImmutableStateInvariant = require('redux-immutable-state-invariant').default();
+  /* eslint-disable global-require */
+  const reduxImmutableStateInvariant = require('redux-immutable-state-invariant').default();
 
-	enhacers = composeWithDevTools(
-		applyAppStateListener(),
-		applyMiddleware(reduxImmutableStateInvariant),
-		applyMiddleware(sagaMiddleware),
-		applyMiddleware(logger)
-	);
+  enhacers = composeWithDevTools(
+    applyAppStateListener(),
+    applyMiddleware(reduxImmutableStateInvariant),
+    applyMiddleware(sagaMiddleware),
+    applyMiddleware(logger),
+  );
 } else {
-	enhacers = composeWithDevTools(
-		applyAppStateListener(),
-		applyMiddleware(sagaMiddleware)
-	);
+  enhacers = composeWithDevTools(applyAppStateListener(), applyMiddleware(sagaMiddleware));
 }
 
 // uncomment the following lines to integrate reactotron with redux
@@ -32,15 +29,14 @@ if (__DEV__) {
 //   enhacers(createStore)(reducers),
 // );
 
-
 const store = enhacers(createStore)(reducers);
 sagaMiddleware.run(sagas);
 
 if (module.hot && typeof module.hot.accept === 'function') {
-	module.hot.accept(() => {
-		store.replaceReducer(require('../reducers').default);
-		sagaMiddleware.run(require('../sagas').default);
-	});
+  module.hot.accept(() => {
+    store.replaceReducer(require('../reducers').default);
+    sagaMiddleware.run(require('../sagas').default);
+  });
 }
 
 export default store;

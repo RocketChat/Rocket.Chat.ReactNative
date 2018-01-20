@@ -13,7 +13,8 @@
     "android": "react-native run-android",
     "storybook": "storybook start -p 7007",
     "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "prepare": "npm run snyk-protect",
+    "prettier-all": "prettier --write --single-quote --jsx-bracket-same-line --trailing-comma all --print-width 100 --parser flow `find app -name \"*.js\"`"
   },
   "rnpm": {
     "assets": [

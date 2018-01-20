@@ -15,18 +15,18 @@ import activeUsers from './activeUsers';
 import keyboard from './keyboard';
 
 export default combineReducers({
-	settings,
-	login,
-	meteor,
-	messages,
-	server,
-	navigator,
-	createChannel,
-	app,
-	room,
-	rooms,
-	permissions,
-	customEmojis,
-	activeUsers,
-	keyboard
+  settings,
+  login,
+  meteor,
+  messages,
+  server,
+  navigator,
+  createChannel,
+  app,
+  room,
+  rooms,
+  permissions,
+  customEmojis,
+  activeUsers,
+  keyboard,
 });

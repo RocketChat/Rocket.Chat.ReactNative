@@ -4,7 +4,9 @@ import * as login from './login';
 import * as connect from './connect';
 
 const rootReducer = combineReducers({
-	...reducers, ...login, ...connect
+  ...reducers,
+  ...login,
+  ...connect,
 });
 
 export default rootReducer;
