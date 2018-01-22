@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableHighlight, Text, TouchableOpacity, Animated } from 'react-native';
+import { View, TouchableHighlight, Text, TouchableOpacity, Animated, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
+import { emojify } from 'react-emojione';
 
-import { actionsShow, errorActionsShow } from '../../actions/messages';
+import { actionsShow, errorActionsShow, toggleReactionPicker } from '../../actions/messages';
 import Image from './Image';
 import User from './User';
 import Avatar from '../Avatar';
@@ -14,6 +15,7 @@ import Video from './Video';
 import Markdown from './Markdown';
 import Url from './Url';
 import Reply from './Reply';
+import CustomEmoji from '../CustomEmoji';
 import messageStatus from '../../constants/messagesStatus';
 import styles from './styles';
 
@@ -26,7 +28,8 @@ const flex = { flexDirection: 'row', flex: 1 };
 	customEmojis: state.customEmojis
 }), dispatch => ({
 	actionsShow: actionMessage => dispatch(actionsShow(actionMessage)),
-	errorActionsShow: actionMessage => dispatch(errorActionsShow(actionMessage))
+	errorActionsShow: actionMessage => dispatch(errorActionsShow(actionMessage)),
+	toggleReactionPicker: message => dispatch(toggleReactionPicker(message))
 }))
 export default class Message extends React.Component {
 	static propTypes = {
@@ -72,6 +75,10 @@ export default class Message extends React.Component {
 	onErrorPress() {
 		const { item } = this.props;
 		this.props.errorActionsShow(JSON.parse(JSON.stringify(item)));
+	}
+
+	onReactionPress(emoji) {
+		console.warn(JSON.parse(JSON.stringify(this.props.item)))
 	}
 
 	getInfoMessage() {
@@ -161,6 +168,49 @@ export default class Message extends React.Component {
 		);
 	}
 
+	renderReactionEmoji(content) {
+		const parsedContent = content.replace(/^:|:$/g, '');
+		const emojiExtension = this.props.customEmojis[parsedContent];
+		if (emojiExtension) {
+			const emoji = { extension: emojiExtension, content: parsedContent };
+			const style = StyleSheet.flatten(styles.reactionCustomEmoji);
+			return <CustomEmoji key={content} style={style} emoji={emoji} />;
+		}
+		return <Text style={styles.reactionEmoji}>{ emojify(`${ content }`, { output: 'unicode' }) }</Text>;
+	}
+
+	renderReaction(reaction) {
+		return (
+			<TouchableOpacity
+				onPress={() => this.onReactionPress(reaction.emoji)}
+				key={reaction.emoji}
+			>
+				<View style={styles.reactionContainer}>
+					{ this.renderReactionEmoji(reaction.emoji) }
+					<Text style={styles.reactionCount}>{ reaction.usernames.length }</Text>
+				</View>
+			</TouchableOpacity>
+		);
+	}
+
+	renderReactions() {
+		if (this.props.item.reactions.length === 0) {
+			return null;
+		}
+		return (
+			<View style={styles.reactionsContainer}>
+				{this.props.item.reactions.map(reaction => this.renderReaction(reaction))}
+				<TouchableOpacity
+					onPress={() => this.props.toggleReactionPicker()}
+					key='add-reaction'
+					style={styles.reactionContainer}
+				>
+					<Icon name='insert-emoticon' size={15} />
+				</TouchableOpacity>
+			</View>
+		);
+	}
+
 	render() {
 		const {
 			item, message, editing, baseUrl
@@ -208,6 +258,7 @@ export default class Message extends React.Component {
 							{this.renderMessageContent()}
 							{this.attachments()}
 							{this.renderUrl()}
+							{this.renderReactions()}
 						</View>
 					</View>
 				</Animated.View>

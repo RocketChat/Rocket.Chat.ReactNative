@@ -19,6 +19,10 @@ export default class extends React.PureComponent {
 		toggleReactionPicker: PropTypes.func
 	};
 
+	_onEmojiSelected(emoji) {
+		alert(emoji)
+	}
+
 	render() {
 		return (
 			<Modal
@@ -37,7 +41,10 @@ export default class extends React.PureComponent {
 						flexDirection: 'column'
 					}}
 				>
-					<EmojiPicker tabEmojiStyle={{ fontSize: 15 }} />
+					<EmojiPicker
+						tabEmojiStyle={{ fontSize: 15 }}
+						onEmojiSelected={emoji => this._onEmojiSelected(emoji)}
+					/>
 				</View>
 			</Modal>
 		);
