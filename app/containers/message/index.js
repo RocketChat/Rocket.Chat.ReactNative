@@ -4,7 +4,6 @@ import { View, TouchableHighlight, Text, TouchableOpacity, Animated, StyleSheet 
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
-import { emojify } from 'react-emojione';
 
 import { actionsShow, errorActionsShow, toggleReactionPicker } from '../../actions/messages';
 import Image from './Image';
@@ -15,7 +14,8 @@ import Video from './Video';
 import Markdown from './Markdown';
 import Url from './Url';
 import Reply from './Reply';
-import CustomEmoji from '../CustomEmoji';
+import Reactions from './Reactions';
+import Emoji from './Emoji';
 import messageStatus from '../../constants/messagesStatus';
 import styles from './styles';
 
@@ -47,6 +47,11 @@ export default class Message extends React.Component {
 		onReactionPress: PropTypes.func
 	}
 
+	constructor(props) {
+		super(props);
+		this.state = { reactionsModal: false };
+	}
+
 	componentWillMount() {
 		this._visibility = new Animated.Value(this.props.animate ? 0 : 1);
 	}
@@ -67,6 +72,7 @@ export default class Message extends React.Component {
 
 	shouldComponentUpdate(nextProps) {
 		return this.props.item._updatedAt.toGMTString() !== nextProps.item._updatedAt.toGMTString() || this.props.item.status !== nextProps.item.status;
+		// return true;
 	}
 
 	onLongPress() {
@@ -79,6 +85,10 @@ export default class Message extends React.Component {
 
 	onReactionPress(emoji) {
 		this.props.onReactionPress(emoji, this.props.item._id);
+	}
+
+	onReactionLongPress() {
+		this.setState({ reactionsModal: true });
 	}
 
 	getInfoMessage() {
@@ -169,17 +179,6 @@ export default class Message extends React.Component {
 		);
 	}
 
-	renderReactionEmoji(content) {
-		const parsedContent = content.replace(/^:|:$/g, '');
-		const emojiExtension = this.props.customEmojis[parsedContent];
-		if (emojiExtension) {
-			const emoji = { extension: emojiExtension, content: parsedContent };
-			const style = StyleSheet.flatten(styles.reactionCustomEmoji);
-			return <CustomEmoji key={content} style={style} emoji={emoji} />;
-		}
-		return <Text style={styles.reactionEmoji}>{ emojify(`${ content }`, { output: 'unicode' }) }</Text>;
-	}
-
 	renderReaction(reaction) {
 		const reacted = reaction.usernames.findIndex(item => item.value === this.props.user.username) !== -1;
 		const reactedContainerStyle = reacted ? { borderColor: '#bde1fe', backgroundColor: '#f3f9ff' } : {};
@@ -187,10 +186,16 @@ export default class Message extends React.Component {
 		return (
 			<TouchableOpacity
 				onPress={() => this.onReactionPress(reaction.emoji)}
+				onLongPress={() => this.onReactionLongPress()}
 				key={reaction.emoji}
 			>
 				<View style={[styles.reactionContainer, reactedContainerStyle]}>
-					{ this.renderReactionEmoji(reaction.emoji) }
+					<Emoji
+						content={reaction.emoji}
+						standardEmojiStyle={StyleSheet.flatten(styles.reactionEmoji)}
+						customEmojiStyle={StyleSheet.flatten(styles.reactionCustomEmoji)}
+						customEmojis={this.props.customEmojis}
+					/>
 					<Text style={[styles.reactionCount, reactedCount]}>{ reaction.usernames.length }</Text>
 				</View>
 			</TouchableOpacity>
@@ -217,7 +222,7 @@ export default class Message extends React.Component {
 
 	render() {
 		const {
-			item, message, editing, baseUrl
+			item, message, editing, baseUrl, customEmojis
 		} = this.props;
 
 		const marginLeft = this._visibility.interpolate({
@@ -265,6 +270,16 @@ export default class Message extends React.Component {
 							{this.renderReactions()}
 						</View>
 					</View>
+					{this.state.reactionsModal ?
+						<Reactions
+							isVisible={this.state.reactionsModal}
+							onClose={() => this.setState({ reactionsModal: false })}
+							reactions={item.reactions}
+							user={this.props.user}
+							customEmojis={customEmojis}
+						/>
+						: null
+					}
 				</Animated.View>
 			</TouchableHighlight>
 		);
