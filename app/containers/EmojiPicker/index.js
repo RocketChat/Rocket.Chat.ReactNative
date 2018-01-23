@@ -53,7 +53,8 @@ export default class extends PureComponent {
 			const content = emoji;
 			const count = this._getFrequentlyUsedCount(content);
 			this._addFrequentlyUsed({ content, count, isCustom: false });
-			this.props.onEmojiSelected(emojify(`:${ emoji }:`, { output: 'unicode' }));
+			const shortname = `:${ emoji }:`;
+			this.props.onEmojiSelected(emojify(shortname, { output: 'unicode' }), shortname);
 		}
 	}
 	_addFrequentlyUsed = (emoji) => {

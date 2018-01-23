@@ -177,8 +177,9 @@ export function clearInput() {
 	};
 }
 
-export function toggleReactionPicker() {
+export function toggleReactionPicker(message) {
 	return {
-		type: types.MESSAGES.TOGGLE_REACTION_PICKER
+		type: types.MESSAGES.TOGGLE_REACTION_PICKER,
+		message
 	};
 }

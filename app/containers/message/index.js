@@ -42,7 +42,9 @@ export default class Message extends React.Component {
 		actionsShow: PropTypes.func,
 		errorActionsShow: PropTypes.func,
 		animate: PropTypes.bool,
-		customEmojis: PropTypes.object
+		customEmojis: PropTypes.object,
+		toggleReactionPicker: PropTypes.func,
+		onReactionPress: PropTypes.func
 	}
 
 	componentWillMount() {
@@ -68,17 +70,15 @@ export default class Message extends React.Component {
 	}
 
 	onLongPress() {
-		const { item } = this.props;
-		this.props.actionsShow(JSON.parse(JSON.stringify(item)));
+		this.props.actionsShow(this.parseMessage());
 	}
 
 	onErrorPress() {
-		const { item } = this.props;
-		this.props.errorActionsShow(JSON.parse(JSON.stringify(item)));
+		this.props.errorActionsShow(this.parseMessage());
 	}
 
 	onReactionPress(emoji) {
-		console.warn(JSON.parse(JSON.stringify(this.props.item)))
+		this.props.onReactionPress(emoji, this.props.item._id);
 	}
 
 	getInfoMessage() {
@@ -108,10 +108,11 @@ export default class Message extends React.Component {
 		return message;
 	}
 
+	parseMessage = () => JSON.parse(JSON.stringify(this.props.item));
+
 	isInfoMessage() {
 		return ['r', 'au', 'ru', 'ul', 'uj', 'rm', 'user-muted', 'user-unmuted', 'message_pinned'].includes(this.props.item.t);
 	}
-
 
 	isDeleted() {
 		return this.props.item.t === 'rm';
@@ -201,7 +202,7 @@ export default class Message extends React.Component {
 			<View style={styles.reactionsContainer}>
 				{this.props.item.reactions.map(reaction => this.renderReaction(reaction))}
 				<TouchableOpacity
-					onPress={() => this.props.toggleReactionPicker()}
+					onPress={() => this.props.toggleReactionPicker(this.parseMessage())}
 					key='add-reaction'
 					style={styles.reactionContainer}
 				>
@@ -227,7 +228,7 @@ export default class Message extends React.Component {
 		const username = item.alias || item.u.username;
 		const isEditing = message._id === item._id && editing;
 
-		const accessibilityLabel = `Message from ${ item.alias || item.u.username } at ${ moment(item.ts).format(this.props.Message_TimeFormat) }, ${ this.props.item.msg }`;
+		const accessibilityLabel = `Message from ${ username } at ${ moment(item.ts).format(this.props.Message_TimeFormat) }, ${ this.props.item.msg }`;
 
 		return (
 			<TouchableHighlight

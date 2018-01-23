@@ -100,7 +100,8 @@ export default function messages(state = initialState, action) {
 		case types.MESSAGES.TOGGLE_REACTION_PICKER:
 			return {
 				...state,
-				showReactionPicker: !state.showReactionPicker
+				showReactionPicker: !state.showReactionPicker,
+				actionMessage: action.message
 			};
 		default:
 			return state;

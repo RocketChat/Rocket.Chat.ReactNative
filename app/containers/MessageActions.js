@@ -283,7 +283,7 @@ export default class MessageActions extends React.Component {
 	}
 
 	handleReaction() {
-		this.props.toggleReactionPicker();
+		this.props.toggleReactionPicker(this.props.actionMessage);
 	}
 
 	handleActionPress = (actionIndex) => {

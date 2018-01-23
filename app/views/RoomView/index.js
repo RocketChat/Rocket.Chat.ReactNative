@@ -8,7 +8,7 @@ import equal from 'deep-equal';
 import { ListView } from './ListView';
 import * as actions from '../../actions';
 import { openRoom, setLastOpen } from '../../actions/room';
-import { editCancel } from '../../actions/messages';
+import { editCancel, toggleReactionPicker } from '../../actions/messages';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
@@ -34,13 +34,15 @@ const typing = () => <Typing />;
 		Site_Url: state.settings.Site_Url || state.server ? state.server.server : '',
 		Message_TimeFormat: state.settings.Message_TimeFormat,
 		loading: state.messages.isFetching,
-		user: state.login.user
+		user: state.login.user,
+		actionMessage: state.messages.actionMessage
 	}),
 	dispatch => ({
 		actions: bindActionCreators(actions, dispatch),
 		openRoom: room => dispatch(openRoom(room)),
 		editCancel: () => dispatch(editCancel()),
-		setLastOpen: date => dispatch(setLastOpen(date))
+		setLastOpen: date => dispatch(setLastOpen(date)),
+		toggleReactionPicker: message => dispatch(toggleReactionPicker(message))
 	})
 )
 export default class RoomView extends React.Component {
@@ -53,7 +55,9 @@ export default class RoomView extends React.Component {
 		rid: PropTypes.string,
 		name: PropTypes.string,
 		Site_Url: PropTypes.string,
-		Message_TimeFormat: PropTypes.string
+		Message_TimeFormat: PropTypes.string,
+		actionMessage: PropTypes.object,
+		toggleReactionPicker: PropTypes.func.isRequired
 	};
 
 	static navigationOptions = ({ navigation }) => ({
@@ -132,6 +136,11 @@ export default class RoomView extends React.Component {
 		}
 	}
 
+	onReactionPress = (shortname) => {
+		RocketChat.setReaction(shortname, this.props.actionMessage._id);
+		this.props.toggleReactionPicker();
+	};
+
 	updateState = debounce(() => {
 		const rowIds = this.data.map((row, index) => index);
 		this.setState({
@@ -162,6 +171,7 @@ export default class RoomView extends React.Component {
 			baseUrl={this.props.Site_Url}
 			Message_TimeFormat={this.props.Message_TimeFormat}
 			user={this.props.user}
+			onReactionPress={this.onReactionPress}
 		/>
 	);
 
@@ -217,7 +227,7 @@ export default class RoomView extends React.Component {
 				{this.renderFooter()}
 				{this.state.room._id ? <MessageActions room={this.state.room} /> : null}
 				<MessageErrorActions />
-				<ReactionPicker />
+				<ReactionPicker onEmojiSelected={shortname => this.onReactionPress(shortname)} />
 			</KeyboardView>
 		);
 	}

@@ -589,6 +589,9 @@ const RocketChat = {
 	},
 	setUserPresenceDefaultStatus(status) {
 		return call('UserPresence:setDefaultStatus', status);
+	},
+	setReaction(emoji, messageId) {
+		return call('setReaction', emoji, messageId);
 	}
 };
 

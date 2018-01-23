@@ -16,11 +16,15 @@ const { width } = Dimensions.get('window');
 export default class extends React.PureComponent {
 	static propTypes = {
 		showReactionPicker: PropTypes.bool,
-		toggleReactionPicker: PropTypes.func
+		toggleReactionPicker: PropTypes.func,
+		onEmojiSelected: PropTypes.func
 	};
 
-	_onEmojiSelected(emoji) {
-		alert(emoji)
+	onEmojiSelected(emoji, shortname) {
+		// standard emojis: `emoji` is unicode and `shortname` is :joy:
+		// custom emojis: only `emoji` is returned with shortname type (:joy:)
+		// to set reactions, we need shortname type
+		this.props.onEmojiSelected(shortname || emoji);
 	}
 
 	render() {
@@ -43,7 +47,7 @@ export default class extends React.PureComponent {
 				>
 					<EmojiPicker
 						tabEmojiStyle={{ fontSize: 15 }}
-						onEmojiSelected={emoji => this._onEmojiSelected(emoji)}
+						onEmojiSelected={(emoji, shortname) => this.onEmojiSelected(emoji, shortname)}
 					/>
 				</View>
 			</Modal>
