@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Alert, Clipboard } from 'react-native';
+import { Alert, Clipboard, Vibration } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
 import * as moment from 'moment';
@@ -126,6 +126,7 @@ export default class MessageActions extends React.Component {
 			}
 			setTimeout(() => {
 				this.ActionSheet.show();
+				Vibration.vibrate(50);
 			});
 		} else if (this.props.permalink !== nextProps.permalink && nextProps.permalink) {
 			// copy permalink
