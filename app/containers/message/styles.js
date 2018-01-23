@@ -54,7 +54,8 @@ export default StyleSheet.create({
 	reactionCount: {
 		fontSize: 12,
 		marginLeft: 2,
-		fontWeight: '600'
+		fontWeight: '600',
+		color: '#aaaaaa'
 	},
 	reactionEmoji: {
 		fontSize: 12

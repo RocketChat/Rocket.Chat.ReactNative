@@ -214,7 +214,7 @@ export default class Message extends React.Component {
 					key='add-reaction'
 					style={styles.reactionContainer}
 				>
-					<Icon name='insert-emoticon' size={15} />
+					<Icon name='insert-emoticon' color='#aaaaaa' size={15} />
 				</TouchableOpacity>
 			</View>
 		);
