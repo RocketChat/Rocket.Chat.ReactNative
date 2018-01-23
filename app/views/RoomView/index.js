@@ -136,9 +136,12 @@ export default class RoomView extends React.Component {
 		}
 	}
 
-	onReactionPress = (shortname) => {
-		RocketChat.setReaction(shortname, this.props.actionMessage._id);
-		this.props.toggleReactionPicker();
+	onReactionPress = (shortname, messageId) => {
+		if (!messageId) {
+			RocketChat.setReaction(shortname, this.props.actionMessage._id);
+			return this.props.toggleReactionPicker();
+		}
+		RocketChat.setReaction(shortname, messageId);
 	};
 
 	updateState = debounce(() => {
