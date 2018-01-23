@@ -181,14 +181,17 @@ export default class Message extends React.Component {
 	}
 
 	renderReaction(reaction) {
+		const reacted = reaction.usernames.findIndex(item => item.value === this.props.user.username) !== -1;
+		const reactedContainerStyle = reacted ? { borderColor: '#bde1fe', backgroundColor: '#f3f9ff' } : {};
+		const reactedCount = reacted ? { color: '#4fb0fc' } : {};
 		return (
 			<TouchableOpacity
 				onPress={() => this.onReactionPress(reaction.emoji)}
 				key={reaction.emoji}
 			>
-				<View style={styles.reactionContainer}>
+				<View style={[styles.reactionContainer, reactedContainerStyle]}>
 					{ this.renderReactionEmoji(reaction.emoji) }
-					<Text style={styles.reactionCount}>{ reaction.usernames.length }</Text>
+					<Text style={[styles.reactionCount, reactedCount]}>{ reaction.usernames.length }</Text>
 				</View>
 			</TouchableOpacity>
 		);
