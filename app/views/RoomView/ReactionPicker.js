@@ -33,6 +33,7 @@ export default class extends React.PureComponent {
 				isVisible={this.props.showReactionPicker}
 				style={{ alignItems: 'center' }}
 				onBackdropPress={() => this.props.toggleReactionPicker()}
+				onBackButtonPress={() => this.props.toggleReactionPicker()}
 				animationIn='fadeIn'
 				animationOut='fadeOut'
 			>
