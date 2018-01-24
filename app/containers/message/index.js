@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableHighlight, Text, TouchableOpacity, Animated, StyleSheet } from 'react-native';
+import { View, TouchableHighlight, Text, TouchableOpacity, Animated, StyleSheet, Vibration } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
@@ -14,7 +14,7 @@ import Video from './Video';
 import Markdown from './Markdown';
 import Url from './Url';
 import Reply from './Reply';
-import Reactions from './Reactions';
+import ReactionsModal from './ReactionsModal';
 import Emoji from './Emoji';
 import messageStatus from '../../constants/messagesStatus';
 import styles from './styles';
@@ -71,8 +71,8 @@ export default class Message extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		return this.props.item._updatedAt.toGMTString() !== nextProps.item._updatedAt.toGMTString() || this.props.item.status !== nextProps.item.status;
-		// return true;
+		// return this.props.item._updatedAt.toGMTString() !== nextProps.item._updatedAt.toGMTString() || this.props.item.status !== nextProps.item.status;
+		return true;
 	}
 
 	onLongPress() {
@@ -89,6 +89,7 @@ export default class Message extends React.Component {
 
 	onReactionLongPress() {
 		this.setState({ reactionsModal: true });
+		Vibration.vibrate(50);
 	}
 
 	getInfoMessage() {
@@ -271,7 +272,7 @@ export default class Message extends React.Component {
 						</View>
 					</View>
 					{this.state.reactionsModal ?
-						<Reactions
+						<ReactionsModal
 							isVisible={this.state.reactionsModal}
 							onClose={() => this.setState({ reactionsModal: false })}
 							reactions={item.reactions}

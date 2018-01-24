@@ -102,7 +102,6 @@ export default class extends React.PureComponent {
 			>
 				<TouchableWithoutFeedback onPress={onClose}>
 					<View style={styles.titleContainer}>
-						{/* <Text style={{ position: 'absolute', left: 0, top: 10, color: '#ffffff' }}>X</Text> */}
 						<Icon
 							style={styles.closeButton}
 							name='close'
