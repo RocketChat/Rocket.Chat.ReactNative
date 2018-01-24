@@ -13,67 +13,66 @@ import PrivacyPolicyView from '../../views/PrivacyPolicyView';
 import ForgotPasswordView from '../../views/ForgotPasswordView';
 
 const PublicRoutes = StackNavigator(
-	{
-		ListServer: {
-			screen: ListServerView,
-			navigationOptions({ navigation }) {
-				return {
-					title: 'Servers',
-					headerRight: (
-						<TouchableOpacity
-							onPress={() => navigation.navigate('AddServer')}
-							style={{ width: 50, alignItems: 'center' }}
-							accessibilityLabel='Add server'
-							accessibilityTraits='button'
-						>
-							<Icon name='plus' size={16} />
-						</TouchableOpacity>
-					)
-				};
-			}
-		},
-		AddServer: {
-			screen: NewServerView,
-			navigationOptions: {
-				title: 'New server'
-			}
-		},
-		Login: {
-			screen: LoginView,
-			navigationOptions: {
-				title: 'Login'
-			}
-		},
-		Register: {
-			screen: RegisterView,
-			navigationOptions: {
-				title: 'Register'
-			}
-		},
-		TermsService: {
-			screen: TermsServiceView,
-			navigationOptions: {
-				title: 'Terms of service'
-			}
-		},
-		PrivacyPolicy: {
-			screen: PrivacyPolicyView,
-			navigationOptions: {
-				title: 'Privacy policy'
-			}
-		},
-		ForgotPassword: {
-			screen: ForgotPasswordView,
-			navigationOptions: {
-				title: 'Forgot my password'
-			}
-		}
-	},
-	{
-		navigationOptions: {
-			headerTitleAllowFontScaling: false
-		}
-	}
+  {
+    ListServer: {
+      screen: ListServerView,
+      navigationOptions({ navigation }) {
+        return {
+          title: 'Servers',
+          headerRight: (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('AddServer')}
+              style={{ width: 50, alignItems: 'center' }}
+              accessibilityLabel="Add server"
+              accessibilityTraits="button">
+              <Icon name="plus" size={16} />
+            </TouchableOpacity>
+          ),
+        };
+      },
+    },
+    AddServer: {
+      screen: NewServerView,
+      navigationOptions: {
+        title: 'New server',
+      },
+    },
+    Login: {
+      screen: LoginView,
+      navigationOptions: {
+        title: 'Login',
+      },
+    },
+    Register: {
+      screen: RegisterView,
+      navigationOptions: {
+        title: 'Register',
+      },
+    },
+    TermsService: {
+      screen: TermsServiceView,
+      navigationOptions: {
+        title: 'Terms of service',
+      },
+    },
+    PrivacyPolicy: {
+      screen: PrivacyPolicyView,
+      navigationOptions: {
+        title: 'Privacy policy',
+      },
+    },
+    ForgotPassword: {
+      screen: ForgotPasswordView,
+      navigationOptions: {
+        title: 'Forgot my password',
+      },
+    },
+  },
+  {
+    navigationOptions: {
+      headerTitleAllowFontScaling: false,
+    },
+  },
 );
 
 export default PublicRoutes;

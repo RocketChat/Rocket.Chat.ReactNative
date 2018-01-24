@@ -11,18 +11,18 @@ import state from './state';
 import activeUsers from './activeUsers';
 
 const root = function* root() {
-	yield all([
-		init(),
-		createChannel(),
-		hello(),
-		rooms(),
-		login(),
-		connect(),
-		messages(),
-		selectServer(),
-		state(),
-		activeUsers()
-	]);
+  yield all([
+    init(),
+    createChannel(),
+    hello(),
+    rooms(),
+    login(),
+    connect(),
+    messages(),
+    selectServer(),
+    state(),
+    activeUsers(),
+  ]);
 };
 
 export default root;

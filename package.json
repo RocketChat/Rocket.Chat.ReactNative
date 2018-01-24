@@ -13,7 +13,8 @@
     "android": "react-native run-android",
     "storybook": "storybook start -p 7007",
     "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "prepare": "npm run snyk-protect",
+    "prettier-all": "prettier --write --single-quote --jsx-bracket-same-line --trailing-comma all --print-width 100 --parser flow `find app -name \"*.js\"`"
   },
   "rnpm": {
     "assets": [
@@ -84,13 +85,16 @@
     "codecov": "^3.0.0",
     "eslint": "^4.12.0",
     "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-prettier": "^2.5.0",
     "eslint-plugin-react": "^7.5.1",
     "eslint-plugin-react-native": "^3.2.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^22.0.3",
     "jest-cli": "^22.0.3",
+    "prettier": "1.10.2",
     "react-dom": "^16.2.0",
     "react-test-renderer": "^16.2.0",
     "reactotron-react-native": "^1.14.0"

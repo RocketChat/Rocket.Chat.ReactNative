@@ -6,9 +6,9 @@ import store from './lib/createStore';
 import Routes from './containers/Routes';
 
 const RocketChat = () => (
-	<Provider store={store}>
-		<Routes />
-	</Provider>
+  <Provider store={store}>
+    <Routes />
+  </Provider>
 );
 
 export default RocketChat;

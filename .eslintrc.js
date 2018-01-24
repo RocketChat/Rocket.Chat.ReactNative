@@ -7,7 +7,10 @@ module.exports = {
     }
   },
 	"parser": "babel-eslint",
-	"extends": "airbnb",
+	"extends": [
+		"airbnb",
+		"prettier",
+	],
 	"parserOptions": {
 		"sourceType": "module",
 		"ecmaVersion": 2017,
@@ -18,6 +21,7 @@ module.exports = {
 	},
 	"plugins": [
 		"react",
+		"prettier",
 		"jsx-a11y",
         "import",
     	"react-native"
@@ -33,6 +37,20 @@ module.exports = {
 		"react/jsx-filename-extension": [1, {
 			"extensions": [".js", ".jsx"]
 		}],
+		"prettier/prettier": ["error", {
+			"singleQuote": true,
+			"trailingComma": "all",
+			"bracketSpacing": true,
+			"jsxBracketSameLine": true,
+			"parser": "flow",
+			"printWidth": 100
+		}],
+		"curly": ["error", "multi-line"],
+		"comma-dangle": ["error", "always-multiline"],
+		"quote-props": 0,
+		"indent": 0,
+		"arrow-parens": 0,
+		"no-confusing-arrow": 0,
 		"react/require-default-props": [0],
 		"react/no-unused-prop-types": [2, {
 			"skipShapeProps": true
@@ -40,6 +58,9 @@ module.exports = {
 		"react/no-multi-comp": [0],
 		"react/jsx-indent": [2, "tab"],
 		"react/jsx-indent-props": [2, "tab"],
+		"react/jsx-wrap-multilines": 0,
+		"react/jsx-closing-bracket-location": 0,
+		"react/jsx-indent-props": 0,
 		"react/forbid-prop-types": 0,
 		"jsx-quotes": [2, "prefer-single"],
 		"jsx-a11y/href-no-hash": 0,

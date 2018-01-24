@@ -9,51 +9,51 @@ import SelectUsersView from '../../views/SelectUsersView';
 import NewServerView from '../../views/NewServerView';
 
 const AuthRoutes = StackNavigator(
-	{
-		RoomsList: {
-			screen: RoomsListView
-		},
-		Room: {
-			screen: RoomView
-		},
-		CreateChannel: {
-			screen: CreateChannelView,
-			navigationOptions: {
-				title: 'Create Channel'
-			}
-		},
-		SelectUsers: {
-			screen: SelectUsersView,
-			navigationOptions: {
-				title: 'Select Users'
-			}
-		},
-		AddServer: {
-			screen: NewServerView,
-			navigationOptions: {
-				title: 'New server'
-			}
-		}
-	},
-	{
-		navigationOptions: {
-			headerTitleAllowFontScaling: false
-		}
-	}
+  {
+    RoomsList: {
+      screen: RoomsListView,
+    },
+    Room: {
+      screen: RoomView,
+    },
+    CreateChannel: {
+      screen: CreateChannelView,
+      navigationOptions: {
+        title: 'Create Channel',
+      },
+    },
+    SelectUsers: {
+      screen: SelectUsersView,
+      navigationOptions: {
+        title: 'Select Users',
+      },
+    },
+    AddServer: {
+      screen: NewServerView,
+      navigationOptions: {
+        title: 'New server',
+      },
+    },
+  },
+  {
+    navigationOptions: {
+      headerTitleAllowFontScaling: false,
+    },
+  },
 );
 
 const Routes = DrawerNavigator(
-	{
-		Home: {
-			screen: AuthRoutes
-		}
-	},
-	{
-		contentComponent: Sidebar,
-		navigationOptions: {
-			drawerLockMode: Platform.OS === 'ios' ? 'locked-closed' : 'unlocked'
-		}
-	}
+  {
+    Home: {
+      screen: AuthRoutes,
+    },
+  },
+  {
+    contentComponent: Sidebar,
+    navigationOptions: {
+      drawerLockMode: Platform.OS === 'ios' ? 'locked-closed' : 'unlocked',
+    },
+  },
 );
 
 export default Routes;

@@ -1,4 +1,4 @@
 export default {
-	keyboardShouldPersistTaps: 'always',
-	keyboardDismissMode: 'interactive'
+  keyboardShouldPersistTaps: 'always',
+  keyboardDismissMode: 'interactive',
 };
