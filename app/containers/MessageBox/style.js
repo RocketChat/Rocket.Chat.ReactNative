@@ -96,5 +96,10 @@ export default StyleSheet.create({
 		height: 36,
 		fontSize: Platform.OS === 'ios' ? 30 : 25,
 		textAlign: 'center'
+	},
+	fixedMentionAvatar: {
+		fontWeight: 'bold',
+		textAlign: 'center',
+		width: 46
 	}
 });

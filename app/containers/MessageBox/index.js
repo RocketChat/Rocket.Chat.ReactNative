@@ -222,11 +222,21 @@ export default class MessageBox extends React.PureComponent {
 		});
 	}
 
+	_getFixedMentions(keyword) {
+		if ('all'.indexOf(keyword) !== -1) {
+			this.users = [{ _id: -1, username: 'all', desc: 'all' }, ...this.users];
+		}
+		if ('here'.indexOf(keyword) !== -1) {
+			this.users = [{ _id: -2, username: 'here', desc: 'active users' }, ...this.users];
+		}
+	}
+
 	async _getUsers(keyword) {
 		this.users = database.objects('users');
 		if (keyword) {
 			this.users = this.users.filtered('username CONTAINS[c] $0', keyword);
 		}
+		this._getFixedMentions(keyword);
 		this.setState({ mentions: this.users.slice() });
 
 		const usernames = [];
@@ -254,8 +264,9 @@ export default class MessageBox extends React.PureComponent {
 			console.log('spotlight canceled');
 		} finally {
 			delete this.oldPromise;
-			this.users = database.objects('users').filtered('username CONTAINS[c] $0', keyword);
-			this.setState({ mentions: this.users.slice() });
+			this.users = database.objects('users').filtered('username CONTAINS[c] $0', keyword).slice();
+			this._getFixedMentions(keyword);
+			this.setState({ mentions: this.users });
 		}
 	}
 
@@ -373,6 +384,15 @@ export default class MessageBox extends React.PureComponent {
 		this.component.setNativeProps({ text: newText });
 		this.setState({ text: newText });
 	}
+	renderFixedMentionItem = item => (
+		<TouchableOpacity
+			style={styles.mentionItem}
+			onPress={() => this._onPressMention(item)}
+		>
+			<Text style={styles.fixedMentionAvatar}>{item.username}</Text>
+			<Text>Notify {item.desc} in this room</Text>
+		</TouchableOpacity>
+	)
 	renderMentionEmoji = (item) => {
 		if (item.name) {
 			return (
@@ -393,29 +413,34 @@ export default class MessageBox extends React.PureComponent {
 			</Text>
 		);
 	}
-	renderMentionItem = item => (
-		<TouchableOpacity
-			style={styles.mentionItem}
-			onPress={() => this._onPressMention(item)}
-		>
-			{this.state.trackingType === MENTIONS_TRACKING_TYPE_EMOJIS ?
-				[
-					this.renderMentionEmoji(item),
-					<Text key='mention-item-name'>:{ item.name || item }:</Text>
-				]
-				: [
-					<Avatar
-						key='mention-item-avatar'
-						style={{ margin: 8 }}
-						text={item.username || item.name}
-						size={30}
-						baseUrl={this.props.baseUrl}
-					/>,
-					<Text key='mention-item-name'>{ item.username || item.name }</Text>
-				]
-			}
-		</TouchableOpacity>
-	)
+	renderMentionItem = (item) => {
+		if (item.username === 'all' || item.username === 'here') {
+			return this.renderFixedMentionItem(item);
+		}
+		return (
+			<TouchableOpacity
+				style={styles.mentionItem}
+				onPress={() => this._onPressMention(item)}
+			>
+				{this.state.trackingType === MENTIONS_TRACKING_TYPE_EMOJIS ?
+					[
+						this.renderMentionEmoji(item),
+						<Text key='mention-item-name'>:{ item.name || item }:</Text>
+					]
+					: [
+						<Avatar
+							key='mention-item-avatar'
+							style={{ margin: 8 }}
+							text={item.username || item.name}
+							size={30}
+							baseUrl={this.props.baseUrl}
+						/>,
+						<Text key='mention-item-name'>{ item.username || item.name }</Text>
+					]
+				}
+			</TouchableOpacity>
+		);
+	}
 	renderEmoji() {
 		const emojiContainer = (
 			<View style={styles.emojiContainer}>
