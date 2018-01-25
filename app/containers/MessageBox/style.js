@@ -9,8 +9,6 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		borderTopWidth: 1,
 		borderTopColor: '#D8D8D8',
-		paddingHorizontal: 15,
-		paddingVertical: 15,
 		zIndex: 2
 	},
 	safeAreaView: {
@@ -23,14 +21,13 @@ export default StyleSheet.create({
 		flexGrow: 0
 	},
 	textBoxInput: {
-		paddingVertical: 0,
-		paddingHorizontal: 10,
-		textAlignVertical: 'top',
+		paddingHorizontal: 5,
+		textAlignVertical: 'center',
 		maxHeight: 120,
 		flexGrow: 1,
 		width: 1,
-		paddingTop: 0,
-		paddingBottom: 0
+		paddingTop: 15,
+		paddingBottom: 15
 	},
 	editing: {
 		backgroundColor: '#fff5df'
@@ -39,7 +36,7 @@ export default StyleSheet.create({
 		color: '#2F343D',
 		fontSize: 20,
 		textAlign: 'center',
-		paddingHorizontal: 5,
+		padding: 15,
 		flex: 0
 	},
 	actionRow: {

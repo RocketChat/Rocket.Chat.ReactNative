@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Button, SafeAreaView } from 'react-native';
+import { Text, View, Button, SafeAreaView, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import equal from 'deep-equal';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 import { ListView } from './ListView';
 import * as actions from '../../actions';
@@ -16,14 +17,12 @@ import MessageActions from '../../containers/MessageActions';
 import MessageErrorActions from '../../containers/MessageErrorActions';
 import MessageBox from '../../containers/MessageBox';
 import Typing from '../../containers/Typing';
-import KeyboardView from '../../presentation/KeyboardView';
 import Header from '../../containers/Header';
 import RoomsHeader from './Header';
 import Banner from './banner';
 import styles from './styles';
 
 import debounce from '../../utils/debounce';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id });
 
@@ -196,8 +195,7 @@ export default class RoomView extends React.Component {
 	}
 	render() {
 		return (
-			<KeyboardView contentContainerStyle={styles.container} keyboardVerticalOffset={64}>
-
+			<View style={styles.container}>
 				<Banner />
 				<SafeAreaView style={styles.safeAreaView}>
 					<ListView
@@ -210,13 +208,15 @@ export default class RoomView extends React.Component {
 						dataSource={this.state.dataSource}
 						renderRow={item => this.renderItem(item)}
 						initialListSize={10}
-						{...scrollPersistTaps}
+						keyboardShouldPersistTaps='always'
+						keyboardDismissMode='on-drag'
 					/>
 				</SafeAreaView>
 				{this.renderFooter()}
 				<MessageActions room={this.room} />
 				<MessageErrorActions />
-			</KeyboardView>
+				{Platform.OS === 'ios' ? <KeyboardSpacer /> : null}
+			</View>
 		);
 	}
 }
