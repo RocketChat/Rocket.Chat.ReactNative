@@ -8,7 +8,7 @@ import settingsType from '../constants/settings';
 import messagesStatus from '../constants/messagesStatus';
 import database from './realm';
 import * as actions from '../actions';
-import { someoneTyping } from '../actions/room';
+import { someoneTyping, roomMessageReceived } from '../actions/room';
 import { setUser } from '../actions/login';
 import { disconnect, disconnect_by_user, connectSuccess, connectFailure } from '../actions/connect';
 import { requestActiveUser } from '../actions/activeUsers';
@@ -83,6 +83,7 @@ const RocketChat = {
 			this.ddp.on('connected', () => {
 				RocketChat.getSettings();
 				RocketChat.getPermissions();
+				RocketChat.getCustomEmoji();
 			});
 
 			this.ddp.on('error', (err) => {
@@ -98,10 +99,10 @@ const RocketChat = {
 				}
 			});
 
-			this.ddp.on('stream-room-messages', ddpMessage => database.write(() => {
+			this.ddp.on('stream-room-messages', (ddpMessage) => {
 				const message = this._buildMessage(ddpMessage.fields.args[0]);
-				database.create('messages', message, true);
-			}));
+				return reduxStore.dispatch(roomMessageReceived(message));
+			});
 
 			this.ddp.on('stream-notify-room', (ddpMessage) => {
 				const [_rid, ev] = ddpMessage.fields.eventName.split('/');
@@ -126,6 +127,7 @@ const RocketChat = {
 					const sub = database.objects('subscriptions').filtered('rid == $0', data._id)[0];
 					database.write(() => {
 						sub.roomUpdatedAt = data._updatedAt;
+						sub.ro = data.ro;
 					});
 				}
 			});
@@ -423,6 +425,7 @@ const RocketChat = {
 			const room = rooms.find(({ _id }) => _id === subscription.rid);
 			if (room) {
 				subscription.roomUpdatedAt = room._updatedAt;
+				subscription.ro = room.ro;
 			}
 			if (subscription.roles) {
 				subscription.roles = subscription.roles.map(role => ({ value: role }));
@@ -512,6 +515,29 @@ const RocketChat = {
 			permission.roles = permission.roles.map(role => ({ value: role }));
 		});
 		return permissions;
+	},
+	async getCustomEmoji() {
+		const temp = database.objects('customEmojis').sorted('_updatedAt', true)[0];
+		let emojis = await call('listEmojiCustom');
+		emojis = emojis.filter(emoji => !temp || emoji._updatedAt > temp._updatedAt);
+		emojis = RocketChat._prepareEmojis(emojis);
+		database.write(() => {
+			emojis.forEach(emoji => database.create('customEmojis', emoji, true));
+		});
+		reduxStore.dispatch(actions.setCustomEmojis(RocketChat.parseEmojis(emojis)));
+	},
+	parseEmojis: emojis => emojis.reduce((ret, item) => {
+		ret[item.name] = item.extension;
+		item.aliases.forEach((alias) => {
+			ret[alias.value] = item.extension;
+		});
+		return ret;
+	}, {}),
+	_prepareEmojis(emojis) {
+		emojis.forEach((emoji) => {
+			emoji.aliases = emoji.aliases.map(alias => ({ value: alias }));
+		});
+		return emojis;
 	},
 	deleteMessage(message) {
 		return call('deleteMessage', { _id: message._id });

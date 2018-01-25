@@ -79,7 +79,8 @@ const subscriptionSchema = {
 		userMentions: { type: 'int', optional: true },
 		// userMentions: 0,
 		// groupMentions: 0,
-		roomUpdatedAt: { type: 'date', optional: true }
+		roomUpdatedAt: { type: 'date', optional: true },
+		ro: { type: 'bool', optional: true }
 	}
 };
 
@@ -175,6 +176,37 @@ const messagesSchema = {
 		editedBy: 'messagesEditedBy'
 	}
 };
+
+const frequentlyUsedEmojiSchema = {
+	name: 'frequentlyUsedEmoji',
+	primaryKey: 'content',
+	properties: {
+		content: { type: 'string', optional: true },
+		extension: { type: 'string', optional: true },
+		isCustom: 'bool',
+		count: 'int'
+	}
+};
+
+const customEmojiAliasesSchema = {
+	name: 'customEmojiAliases',
+	properties: {
+		value: 'string'
+	}
+};
+
+const customEmojisSchema = {
+	name: 'customEmojis',
+	primaryKey: '_id',
+	properties: {
+		_id: 'string',
+		name: 'string',
+		aliases: { type: 'list', objectType: 'customEmojiAliases' },
+		extension: 'string',
+		_updatedAt: { type: 'date', optional: true }
+	}
+};
+
 const schema = [
 	settingsSchema,
 	subscriptionSchema,
@@ -187,7 +219,10 @@ const schema = [
 	messagesEditedBySchema,
 	permissionsSchema,
 	permissionsRolesSchema,
-	url
+	url,
+	frequentlyUsedEmojiSchema,
+	customEmojiAliasesSchema,
+	customEmojisSchema
 ];
 class DB {
 	databases = {

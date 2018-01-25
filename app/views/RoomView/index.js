@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Button, SafeAreaView } from 'react-native';
+import { Text, View, Button, SafeAreaView, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import equal from 'deep-equal';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 import { ListView } from './ListView';
 import * as actions from '../../actions';
-import { openRoom } from '../../actions/room';
+import { openRoom, setLastOpen } from '../../actions/room';
 import { editCancel } from '../../actions/messages';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
@@ -16,7 +17,6 @@ import MessageActions from '../../containers/MessageActions';
 import MessageErrorActions from '../../containers/MessageErrorActions';
 import MessageBox from '../../containers/MessageBox';
 import Typing from '../../containers/Typing';
-import KeyboardView from '../../presentation/KeyboardView';
 import Header from '../../containers/Header';
 import RoomsHeader from './Header';
 import Banner from './banner';
@@ -37,13 +37,15 @@ const typing = () => <Typing />;
 	dispatch => ({
 		actions: bindActionCreators(actions, dispatch),
 		openRoom: room => dispatch(openRoom(room)),
-		editCancel: () => dispatch(editCancel())
+		editCancel: () => dispatch(editCancel()),
+		setLastOpen: date => dispatch(setLastOpen(date))
 	})
 )
 export default class RoomView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
 		openRoom: PropTypes.func.isRequired,
+		setLastOpen: PropTypes.func.isRequired,
 		user: PropTypes.object.isRequired,
 		editCancel: PropTypes.func,
 		rid: PropTypes.string,
@@ -70,11 +72,12 @@ export default class RoomView extends React.Component {
 			.filtered('rid = $0', this.rid)
 			.sorted('ts', true);
 		const rowIds = this.data.map((row, index) => index);
-		this.room = database.objects('subscriptions').filtered('rid = $0', this.rid);
+		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			dataSource: ds.cloneWithRows(this.data, rowIds),
 			loaded: true,
-			joined: typeof props.rid === 'undefined'
+			joined: typeof props.rid === 'undefined',
+			readOnly: false
 		};
 	}
 
@@ -82,8 +85,15 @@ export default class RoomView extends React.Component {
 		this.props.navigation.setParams({
 			title: this.name
 		});
-		this.props.openRoom({ rid: this.rid, name: this.name });
+		this.updateRoom();
+		this.props.openRoom({ rid: this.rid, name: this.name, ls: this.room.ls });
+		if (this.room.alert || this.room.unread || this.room.userMentions) {
+			this.props.setLastOpen(this.room.ls);
+		} else {
+			this.props.setLastOpen(null);
+		}
 		this.data.addListener(this.updateState);
+		this.rooms.addListener(this.updateRoom);
 	}
 	shouldComponentUpdate(nextProps, nextState) {
 		return !(equal(this.props, nextProps) && equal(this.state, nextState));
@@ -126,7 +136,14 @@ export default class RoomView extends React.Component {
 		});
 	}, 50);
 
-	sendMessage = message => RocketChat.sendMessage(this.rid, message);
+	updateRoom = () => {
+		[this.room] = this.rooms;
+		this.setState({ readOnly: this.room.ro });
+	}
+
+	sendMessage = message => RocketChat.sendMessage(this.rid, message).then(() => {
+		this.props.setLastOpen(null);
+	});
 
 	joinRoom = async() => {
 		await RocketChat.joinRoom(this.props.rid);
@@ -157,6 +174,13 @@ export default class RoomView extends React.Component {
 				</View>
 			);
 		}
+		if (this.state.readOnly) {
+			return (
+				<View style={styles.readOnly}>
+					<Text>This room is read only</Text>
+				</View>
+			);
+		}
 		return <MessageBox ref={box => (this.box = box)} onSubmit={this.sendMessage} rid={this.rid} />;
 	};
 
@@ -171,8 +195,7 @@ export default class RoomView extends React.Component {
 	}
 	render() {
 		return (
-			<KeyboardView contentContainerStyle={styles.container} keyboardVerticalOffset={64}>
-
+			<View style={styles.container}>
 				<Banner />
 				<SafeAreaView style={styles.safeAreaView}>
 					<ListView
@@ -186,13 +209,14 @@ export default class RoomView extends React.Component {
 						renderRow={item => this.renderItem(item)}
 						initialListSize={10}
 						keyboardShouldPersistTaps='always'
-						keyboardDismissMode='interactive'
+						keyboardDismissMode='on-drag'
 					/>
 				</SafeAreaView>
 				{this.renderFooter()}
 				<MessageActions room={this.room} />
 				<MessageErrorActions />
-			</KeyboardView>
+				{Platform.OS === 'ios' ? <KeyboardSpacer /> : null}
+			</View>
 		);
 	}
 }

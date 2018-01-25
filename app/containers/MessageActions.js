@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Alert, Clipboard } from 'react-native';
+import { Alert, Clipboard, Vibration } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
 import * as moment from 'moment';
@@ -15,6 +15,7 @@ import {
 	setInput,
 	actionsHide
 } from '../actions/messages';
+import { showToast } from '../utils/info';
 
 @connect(
 	state => ({
@@ -74,7 +75,7 @@ export default class MessageActions extends React.Component {
 		};
 		this.handleActionPress = this.handleActionPress.bind(this);
 		this.options = [''];
-		const { roles } = this.props.room[0];
+		const { roles } = this.props.room;
 		const roomRoles = Array.from(Object.keys(roles), i => roles[i].value);
 		const userRoles = this.props.user.roles || [];
 		this.mergedRoles = [...new Set([...roomRoles, ...userRoles])];
@@ -88,8 +89,10 @@ export default class MessageActions extends React.Component {
 			this.options = ['Cancel'];
 			this.CANCEL_INDEX = 0;
 			// Reply
-			this.options.push('Reply');
-			this.REPLY_INDEX = this.options.length - 1;
+			if (!this.isRoomReadOnly()) {
+				this.options.push('Reply');
+				this.REPLY_INDEX = this.options.length - 1;
+			}
 			// Edit
 			if (this.allowEdit(nextProps)) {
 				this.options.push('Edit');
@@ -102,8 +105,10 @@ export default class MessageActions extends React.Component {
 			this.options.push('Copy Message');
 			this.COPY_INDEX = this.options.length - 1;
 			// Quote
-			this.options.push('Quote');
-			this.QUOTE_INDEX = this.options.length - 1;
+			if (!this.isRoomReadOnly()) {
+				this.options.push('Quote');
+				this.QUOTE_INDEX = this.options.length - 1;
+			}
 			// Star
 			if (this.props.Message_AllowStarring) {
 				this.options.push(actionMessage.starred ? 'Unstar' : 'Star');
@@ -121,13 +126,14 @@ export default class MessageActions extends React.Component {
 			}
 			setTimeout(() => {
 				this.ActionSheet.show();
+				Vibration.vibrate(50);
 			});
 		} else if (this.props.permalink !== nextProps.permalink && nextProps.permalink) {
 			// copy permalink
 			if (this.state.copyPermalink) {
 				this.setState({ copyPermalink: false });
 				await Clipboard.setString(nextProps.permalink);
-				Alert.alert('Permalink copied to clipboard!');
+				showToast('Permalink copied to clipboard!');
 				this.props.permalinkClear();
 			// quote
 			} else if (this.state.quote) {
@@ -141,7 +147,7 @@ export default class MessageActions extends React.Component {
 				let msg = `[ ](${ nextProps.permalink }) `;
 
 				// if original message wasn't sent by current user and neither from a direct room
-				if (this.props.user.username !== this.props.actionMessage.u.username && this.props.room[0].t !== 'd') {
+				if (this.props.user.username !== this.props.actionMessage.u.username && this.props.room.t !== 'd') {
 					msg += `@${ this.props.actionMessage.u.username } `;
 				}
 				this.props.setInput({ msg });
@@ -164,7 +170,12 @@ export default class MessageActions extends React.Component {
 
 	isOwn = props => props.actionMessage.u && props.actionMessage.u._id === props.user.id;
 
+	isRoomReadOnly = () => this.props.room.ro;
+
 	allowEdit = (props) => {
+		if (this.isRoomReadOnly()) {
+			return false;
+		}
 		const editOwn = this.isOwn(props);
 		const { Message_AllowEditing: isEditAllowed } = this.props;
 		if (!(this.hasEditPermission || (isEditAllowed && editOwn))) {
@@ -186,6 +197,9 @@ export default class MessageActions extends React.Component {
 	}
 
 	allowDelete = (props) => {
+		if (this.isRoomReadOnly()) {
+			return false;
+		}
 		const deleteOwn = this.isOwn(props);
 		const { Message_AllowDeleting: isDeleteAllowed } = this.props;
 		if (!(this.hasDeletePermission || (isDeleteAllowed && deleteOwn) || this.hasForceDeletePermission)) {
@@ -235,7 +249,7 @@ export default class MessageActions extends React.Component {
 
 	handleCopy = async() => {
 		await Clipboard.setString(this.props.actionMessage.msg);
-		Alert.alert('Copied to clipboard!');
+		showToast('Copied to clipboard!');
 	}
 
 	handleStar() {
