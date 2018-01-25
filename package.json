@@ -45,6 +45,7 @@
     "react-native-image-picker": "^0.26.7",
     "react-native-img-cache": "^1.5.2",
     "react-native-keyboard-aware-scroll-view": "^0.4.1",
+    "react-native-keyboard-spacer": "^0.4.1",
     "react-native-loading-spinner-overlay": "^0.5.2",
     "react-native-meteor": "^1.2.0",
     "react-native-modal": "^4.1.1",
