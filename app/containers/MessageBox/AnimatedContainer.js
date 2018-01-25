@@ -12,6 +12,7 @@ export default class MessageBox extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.animatedBottom = new Animated.Value(0);
+		this.state = { render: false };
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -25,6 +26,7 @@ export default class MessageBox extends React.PureComponent {
 	}
 
 	show() {
+		this.setState({ render: true });
 		this.animatedBottom.setValue(0);
 		Animated.timing(this.animatedBottom, {
 			toValue: 1,
@@ -39,6 +41,9 @@ export default class MessageBox extends React.PureComponent {
 			duration: 300,
 			useNativeDriver: true
 		}).start();
+		setTimeout(() => {
+			this.setState({ render: false });
+		}, 300);
 	}
 
 	render() {
@@ -46,6 +51,10 @@ export default class MessageBox extends React.PureComponent {
 			inputRange: [0, 1],
 			outputRange: [0, -this.props.messageboxHeight - 200]
 		});
+
+		if (!this.state.render) {
+			return null;
+		}
 
 		return (
 			<Animated.View
