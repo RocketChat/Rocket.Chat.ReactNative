@@ -209,7 +209,7 @@ export default class RoomView extends React.Component {
 						renderRow={item => this.renderItem(item)}
 						initialListSize={10}
 						keyboardShouldPersistTaps='always'
-						keyboardDismissMode='on-drag'
+						keyboardDismissMode='none'
 					/>
 				</SafeAreaView>
 				{this.renderFooter()}
