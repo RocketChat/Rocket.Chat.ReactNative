@@ -12,7 +12,7 @@ import styles from './style';
 import MyIcon from '../icons';
 import database from '../../lib/realm';
 import Avatar from '../Avatar';
-import CustomEmoji from '../CustomEmoji';
+import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import AnimatedContainer from './AnimatedContainer';
 import EmojiPicker from '../EmojiPicker';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
@@ -54,7 +54,6 @@ export default class MessageBox extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			height: 20,
 			messageboxHeight: 0,
 			text: '',
 			mentions: [],
@@ -78,17 +77,19 @@ export default class MessageBox extends React.PureComponent {
 		}
 	}
 
-	onChange() {
+	onChangeText(text) {
+		this.setState({ text });
+
 		requestAnimationFrame(() => {
 			const { start, end } = this.component._lastNativeSelection;
 
 			const cursor = Math.max(start, end);
 
-			const text = this.component._lastNativeText;
+			const lastNativeText = this.component._lastNativeText;
 
 			const regexp = /(#|@|:)([a-z0-9._-]+)$/im;
 
-			const result = text.substr(0, cursor).match(regexp);
+			const result = lastNativeText.substr(0, cursor).match(regexp);
 
 			if (!result) {
 				return this.stopTrackingMention();
@@ -97,11 +98,6 @@ export default class MessageBox extends React.PureComponent {
 
 			this.identifyMentionKeyword(name, lastChar);
 		});
-	}
-
-
-	onChangeText(text) {
-		this.setState({ text });
 	}
 
 	get leftButtons() {
@@ -152,10 +148,6 @@ export default class MessageBox extends React.PureComponent {
 			/>);
 		}
 		return icons;
-	}
-
-	updateSize = (height) => {
-		this.setState({ height: height + (Platform.OS === 'ios' ? 0 : 0) });
 	}
 
 	addFile = () => {
@@ -464,7 +456,6 @@ export default class MessageBox extends React.PureComponent {
 		return <AnimatedContainer visible={showMentionsContainer} subview={list} messageboxHeight={messageboxHeight} />;
 	}
 	render() {
-		const { height } = this.state;
 		return (
 			<View>
 				<SafeAreaView
@@ -475,18 +466,16 @@ export default class MessageBox extends React.PureComponent {
 						{this.leftButtons}
 						<TextInput
 							ref={component => this.component = component}
-							style={[styles.textBoxInput, { height }]}
+							style={styles.textBoxInput}
 							returnKeyType='default'
 							blurOnSubmit={false}
 							placeholder='New Message'
 							onChangeText={text => this.onChangeText(text)}
-							onChange={event => this.onChange(event)}
 							value={this.state.text}
 							underlineColorAndroid='transparent'
 							defaultValue=''
 							multiline
 							placeholderTextColor='#9EA2A8'
-							onContentSizeChange={e => this.updateSize(e.nativeEvent.contentSize.height)}
 						/>
 						{this.rightButtons}
 					</View>

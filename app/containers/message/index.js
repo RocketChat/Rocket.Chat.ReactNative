@@ -4,6 +4,7 @@ import { View, TouchableHighlight, Text, TouchableOpacity, Animated, StyleSheet,
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
+import equal from 'deep-equal';
 
 import { actionsShow, errorActionsShow, toggleReactionPicker } from '../../actions/messages';
 import Image from './Image';
@@ -34,6 +35,7 @@ const flex = { flexDirection: 'row', flex: 1 };
 export default class Message extends React.Component {
 	static propTypes = {
 		item: PropTypes.object.isRequired,
+		reactions: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
 		Message_TimeFormat: PropTypes.string.isRequired,
 		message: PropTypes.object.isRequired,
@@ -71,8 +73,10 @@ export default class Message extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		// return this.props.item._updatedAt.toGMTString() !== nextProps.item._updatedAt.toGMTString() || this.props.item.status !== nextProps.item.status;
-		return true;
+		if (!equal(this.props.reactions, nextProps.reactions)) {
+			return true;
+		}
+		return this.props.item._updatedAt.toGMTString() !== nextProps.item._updatedAt.toGMTString() || this.props.item.status !== nextProps.item.status;
 	}
 
 	onLongPress() {

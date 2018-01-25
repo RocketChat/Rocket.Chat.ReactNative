@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Text, View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { emojify } from 'react-emojione';
 import styles from './styles';
-import CustomEmoji from '../CustomEmoji';
+import CustomEmoji from './CustomEmoji';
 
 export default class extends React.PureComponent {
 	static propTypes = {

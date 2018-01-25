@@ -50,7 +50,8 @@ const styles = StyleSheet.create({
 		color: '#ffffff'
 	}
 });
-
+const standardEmojiStyle = { fontSize: 20 };
+const customEmojiStyle = { width: 20, height: 20 };
 export default class extends React.PureComponent {
 	static propTypes = {
 		isVisible: PropTypes.bool.isRequired,
@@ -74,8 +75,8 @@ export default class extends React.PureComponent {
 				<View style={styles.emojiContainer}>
 					<Emoji
 						content={item.emoji}
-						standardEmojiStyle={{ fontSize: 20 }}
-						customEmojiStyle={{ width: 20, height: 20 }}
+						standardEmojiStyle={standardEmojiStyle}
+						customEmojiStyle={customEmojiStyle}
 						customEmojis={this.props.customEmojis}
 					/>
 				</View>
