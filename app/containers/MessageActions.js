@@ -257,7 +257,7 @@ export default class MessageActions extends React.Component {
 
 	handleShare = async() => {
 		Share.share({
-			message: this.props.actionMessage.msg.content.replace(/<(?:.|\n)*?>/gm, ''),
+			message: this.props.actionMessage.msg.content.replace(/<(?:.|\n)*?>/gm, '')
 		});
 	};
 
