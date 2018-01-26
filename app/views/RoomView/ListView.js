@@ -12,7 +12,6 @@ import styles from './styles';
 import debounce from '../../utils/debounce';
 import Typing from '../../containers/Typing';
 import database from '../../lib/realm';
-import RocketChat from '../../lib/rocketchat';
 
 const DEFAULT_SCROLL_CALLBACK_THROTTLE = 100;
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, SafeAreaView, Platform, FlatList, Text, TouchableOpacity, Keyboard, StyleSheet } from 'react-native';
+import { View, TextInput, SafeAreaView, FlatList, Text, TouchableOpacity, Keyboard, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
