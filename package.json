@@ -48,7 +48,7 @@
     "react-native-keyboard-spacer": "^0.4.1",
     "react-native-loading-spinner-overlay": "^0.5.2",
     "react-native-meteor": "^1.2.0",
-    "react-native-modal": "^4.1.1",
+    "react-native-modal": "^5.0.0",
     "react-native-optimized-flatlist": "^1.0.3",
     "react-native-push-notification": "^3.0.1",
     "react-native-scrollable-tab-view": "^0.8.0",
