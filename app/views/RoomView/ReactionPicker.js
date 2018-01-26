@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Dimensions } from 'react-native';
+import { View, Dimensions, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 import EmojiPicker from '../../containers/EmojiPicker';
 import { toggleReactionPicker } from '../../actions/messages';
+import styles from './styles';
 
 const { width } = Dimensions.get('window');
 
@@ -37,17 +38,11 @@ export default class extends React.PureComponent {
 				animationIn='fadeIn'
 				animationOut='fadeOut'
 			>
-				<View
-					style={{
-						width: width - 20,
-						height: width - 20,
-						backgroundColor: '#F7F7F7',
-						borderRadius: 4,
-						flexDirection: 'column'
-					}}
-				>
+				<View style={styles.reactionPickerContainer}>
 					<EmojiPicker
 						tabEmojiStyle={{ fontSize: 15 }}
+						emojisPerRow={8}
+						width={width - (Platform.OS === 'android' ? 40 : 20)}
 						onEmojiSelected={(emoji, shortname) => this.onEmojiSelected(emoji, shortname)}
 					/>
 				</View>

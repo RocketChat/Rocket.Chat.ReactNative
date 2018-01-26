@@ -1,4 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
+
+const { width } = Dimensions.get('window');
 
 export default StyleSheet.create({
 	typing: { fontWeight: 'bold', paddingHorizontal: 15, height: 25 },
@@ -33,5 +35,13 @@ export default StyleSheet.create({
 	},
 	readOnly: {
 		padding: 10
+	},
+	reactionPickerContainer: {
+		width: width - 20,
+		height: width - 20,
+		paddingHorizontal: Platform.OS === 'android' ? 10 : 0,
+		backgroundColor: '#F7F7F7',
+		borderRadius: 4,
+		flexDirection: 'column'
 	}
 });

@@ -1,24 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, Platform, Dimensions } from 'react-native';
 import { emojify } from 'react-emojione';
 import styles from './styles';
 import CustomEmoji from './CustomEmoji';
 
+const { width: windowWidth } = Dimensions.get('window');
+
 export default class extends React.PureComponent {
 	static propTypes = {
 		emojis: PropTypes.any,
-		onEmojiSelected: PropTypes.func
+		onEmojiSelected: PropTypes.func,
+		emojisPerRow: PropTypes.number,
+		width: PropTypes.number
 	};
-
-	constructor(props) {
-		super(props);
-		this.state = { width: null };
-	}
-
-	setWidth(width) {
-		this.setState({ width });
-	}
 
 	renderEmoji = (emoji, size) => {
 		if (emoji.isCustom) {
@@ -34,16 +29,10 @@ export default class extends React.PureComponent {
 	}
 
 	render() {
-		const { emojis } = this.props;
-		const { width } = this.state;
-		const size = width / (Platform.OS === 'ios' ? 8 : 9);
+		const { emojis, width } = this.props;
+		const size = (width || windowWidth) / (this.props.emojisPerRow || (Platform.OS === 'ios' ? 8 : 9));
 		return (
-			<View
-				style={styles.categoryInner}
-				onLayout={(event) => {
-					this.setWidth(event.nativeEvent.layout.width);
-				}}
-			>
+			<View style={styles.categoryInner}>
 				{emojis.map(emoji =>
 					(
 						<TouchableOpacity
