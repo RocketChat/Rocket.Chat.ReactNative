@@ -8,13 +8,13 @@ import { toggleReactionPicker } from '../../actions/messages';
 import styles from './styles';
 
 const { width } = Dimensions.get('window');
-
+const tabEmojiStyle = { fontSize: 15 };
 @connect(state => ({
 	showReactionPicker: state.messages.showReactionPicker
 }), dispatch => ({
 	toggleReactionPicker: message => dispatch(toggleReactionPicker(message))
 }))
-export default class extends React.PureComponent {
+export default class extends React.Component {
 	static propTypes = {
 		showReactionPicker: PropTypes.bool,
 		toggleReactionPicker: PropTypes.func,
@@ -26,6 +26,10 @@ export default class extends React.PureComponent {
 		// custom emojis: only `emoji` is returned with shortname type (:joy:)
 		// to set reactions, we need shortname type
 		this.props.onEmojiSelected(shortname || emoji);
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		return nextProps.showReactionPicker != this.props.showReactionPicker;
 	}
 
 	render() {
@@ -40,7 +44,7 @@ export default class extends React.PureComponent {
 			>
 				<View style={styles.reactionPickerContainer}>
 					<EmojiPicker
-						tabEmojiStyle={{ fontSize: 15 }}
+						tabEmojiStyle={tabEmojiStyle}
 						emojisPerRow={8}
 						width={width - (Platform.OS === 'android' ? 40 : 20)}
 						onEmojiSelected={(emoji, shortname) => this.onEmojiSelected(emoji, shortname)}

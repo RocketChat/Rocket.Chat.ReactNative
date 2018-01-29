@@ -390,7 +390,7 @@ export default class MessageBox extends React.PureComponent {
 			return (
 				<CustomEmoji
 					key='mention-item-avatar'
-					style={StyleSheet.flatten(styles.mentionItemCustomEmoji)}
+					style={[styles.mentionItemCustomEmoji]}
 					emoji={item}
 					baseUrl={this.props.baseUrl}
 				/>

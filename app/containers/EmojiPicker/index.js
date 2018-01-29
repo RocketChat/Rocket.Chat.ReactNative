@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ScrollView, View } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
@@ -12,7 +12,11 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import database from '../../lib/realm';
 import { emojisByCategory } from '../../emojis';
 
-export default class extends PureComponent {
+const scrollProps = {
+	keyboardShouldPersistTaps: 'always'
+};
+
+export default class extends Component {
 	static propTypes = {
 		onEmojiSelected: PropTypes.func,
 		tabEmojiStyle: PropTypes.object,
@@ -30,6 +34,10 @@ export default class extends PureComponent {
 		this.customEmojis = database.objects('customEmojis');
 		this.updateFrequentlyUsed = this.updateFrequentlyUsed.bind(this);
 		this.updateCustomEmojis = this.updateCustomEmojis.bind(this);
+	}
+
+	shouldComponentUpdate() {
+		return false;
 	}
 
 	componentWillMount() {
@@ -95,20 +103,16 @@ export default class extends PureComponent {
 		}
 		return (
 			<EmojiCategory
-				key={category}
 				emojis={emojis}
 				onEmojiSelected={emoji => this.onEmojiSelected(emoji)}
 				style={styles.categoryContainer}
-				emojisPerRow={this.props.emojisPerRow}
+				size={this.props.emojisPerRow}
 				width={this.props.width}
 			/>
 		);
 	}
 
 	render() {
-		const scrollProps = {
-			keyboardShouldPersistTaps: 'always'
-		};
 		return (
 			<View style={styles.container}>
 				<ScrollableTabView
@@ -118,7 +122,7 @@ export default class extends PureComponent {
 					{
 						_.map(categories.tabs, (tab, i) => (
 							<ScrollView
-								key={i}
+								key={tab.category}
 								tabLabel={tab.tabLabel}
 								{...scrollPersistTaps}
 							>

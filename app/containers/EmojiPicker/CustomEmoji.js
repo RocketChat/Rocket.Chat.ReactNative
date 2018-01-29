@@ -13,7 +13,7 @@ export default class extends React.Component {
 		style: PropTypes.object
 	}
 	shouldComponentUpdate(next) {
-		return !equal(this.props, next);
+		return false;
 	}
 	render() {
 		const { baseUrl, emoji, style } = this.props;
