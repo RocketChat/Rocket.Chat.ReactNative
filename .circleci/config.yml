@@ -203,7 +203,7 @@ jobs:
           name: Fastlane Tesflight Upload
           command: |
             cd ios
-            fastlane pilot upload --changelog "$(sh ../.circleci/changelog.sh)"
+            fastlane pilot upload --ipa ios/RocketChatRN.ipa --changelog "$(sh ../.circleci/changelog.sh)"
 
 workflows:
   version: 2
