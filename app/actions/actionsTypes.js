@@ -55,7 +55,8 @@ export const MESSAGES = createRequestTypes('MESSAGES', [
 	'TOGGLE_PIN_SUCCESS',
 	'TOGGLE_PIN_FAILURE',
 	'SET_INPUT',
-	'CLEAR_INPUT'
+	'CLEAR_INPUT',
+	'TOGGLE_REACTION_PICKER'
 ]);
 export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [
 	...defaultTypes,

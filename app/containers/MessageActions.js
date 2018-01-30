@@ -13,7 +13,8 @@ import {
 	permalinkClear,
 	togglePinRequest,
 	setInput,
-	actionsHide
+	actionsHide,
+	toggleReactionPicker
 } from '../actions/messages';
 import { showToast } from '../utils/info';
 
@@ -39,7 +40,8 @@ import { showToast } from '../utils/info';
 		permalinkRequest: message => dispatch(permalinkRequest(message)),
 		permalinkClear: () => dispatch(permalinkClear()),
 		togglePinRequest: message => dispatch(togglePinRequest(message)),
-		setInput: message => dispatch(setInput(message))
+		setInput: message => dispatch(setInput(message)),
+		toggleReactionPicker: message => dispatch(toggleReactionPicker(message))
 	})
 )
 export default class MessageActions extends React.Component {
@@ -58,6 +60,7 @@ export default class MessageActions extends React.Component {
 		togglePinRequest: PropTypes.func.isRequired,
 		setInput: PropTypes.func.isRequired,
 		permalink: PropTypes.string,
+		toggleReactionPicker: PropTypes.func.isRequired,
 		Message_AllowDeleting: PropTypes.bool,
 		Message_AllowDeleting_BlockDeleteInMinutes: PropTypes.number,
 		Message_AllowEditing: PropTypes.bool,
@@ -118,6 +121,11 @@ export default class MessageActions extends React.Component {
 			if (this.props.Message_AllowPinning) {
 				this.options.push(actionMessage.pinned ? 'Unpin' : 'Pin');
 				this.PIN_INDEX = this.options.length - 1;
+			}
+			// Reaction
+			if (!this.isRoomReadOnly()) {
+				this.options.push('Add Reaction');
+				this.REACTION_INDEX = this.options.length - 1;
 			}
 			// Delete
 			if (this.allowDelete(nextProps)) {
@@ -275,6 +283,10 @@ export default class MessageActions extends React.Component {
 		this.props.permalinkRequest(this.props.actionMessage);
 	}
 
+	handleReaction() {
+		this.props.toggleReactionPicker(this.props.actionMessage);
+	}
+
 	handleActionPress = (actionIndex) => {
 		switch (actionIndex) {
 			case this.REPLY_INDEX:
@@ -297,6 +309,9 @@ export default class MessageActions extends React.Component {
 				break;
 			case this.PIN_INDEX:
 				this.handlePin();
+				break;
+			case this.REACTION_INDEX:
+				this.handleReaction();
 				break;
 			case this.DELETE_INDEX:
 				this.handleDelete();

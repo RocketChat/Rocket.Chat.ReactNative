@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 const MENTION_HEIGHT = 50;
 
@@ -82,6 +82,17 @@ export default StyleSheet.create({
 		borderTopColor: '#ECECEC',
 		borderTopWidth: 1,
 		backgroundColor: '#fff'
+	},
+	mentionItemCustomEmoji: {
+		margin: 8,
+		width: 30,
+		height: 30
+	},
+	mentionItemEmoji: {
+		width: 46,
+		height: 36,
+		fontSize: Platform.OS === 'ios' ? 30 : 25,
+		textAlign: 'center'
 	},
 	fixedMentionAvatar: {
 		fontWeight: 'bold',

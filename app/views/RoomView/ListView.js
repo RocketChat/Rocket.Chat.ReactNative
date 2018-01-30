@@ -4,10 +4,16 @@ import cloneReferencedElement from 'react-clone-referenced-element';
 import { ScrollView, ListView as OldList2 } from 'react-native';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
 import DateSeparator from './DateSeparator';
 import UnreadSeparator from './UnreadSeparator';
+import styles from './styles';
+import debounce from '../../utils/debounce';
+import Typing from '../../containers/Typing';
+import database from '../../lib/realm';
 
-const DEFAULT_SCROLL_CALLBACK_THROTTLE = 50;
+const DEFAULT_SCROLL_CALLBACK_THROTTLE = 100;
 
 export class DataSource extends OldList.DataSource {
 	getRowData(sectionIndex: number, rowIndex: number): any {
@@ -20,9 +26,58 @@ export class DataSource extends OldList.DataSource {
 	}
 }
 
+const ds = new DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id });
+
 @connect(state => ({
 	lastOpen: state.room.lastOpen
 }))
+
+export class List extends React.Component {
+	static propTypes = {
+		onEndReached: PropTypes.func,
+		renderFooter: PropTypes.func,
+		renderRow: PropTypes.func,
+		room: PropTypes.string,
+		end: PropTypes.bool
+	};
+	constructor(props) {
+		super(props);
+		this.data = database
+			.objects('messages')
+			.filtered('rid = $0', props.room)
+			.sorted('ts', true);
+		this.dataSource = ds.cloneWithRows(this.data);
+	}
+	componentDidMount() {
+		this.data.addListener(this.updateState);
+	}
+	shouldComponentUpdate(nextProps) {
+		return this.props.end !== nextProps.end;
+	}
+	updateState = debounce(() => {
+		// this.setState({
+		this.dataSource = this.dataSource.cloneWithRows(this.data);
+		this.forceUpdate();
+		// });
+	}, 100);
+
+	render() {
+		return (<ListView
+			enableEmptySections
+			style={styles.list}
+			onEndReachedThreshold={0.5}
+			renderFooter={this.props.renderFooter}
+			renderHeader={() => <Typing />}
+			onEndReached={() => this.props.onEndReached(this.data)}
+			dataSource={this.dataSource}
+			renderRow={item => this.props.renderRow(item)}
+			initialListSize={10}
+			keyboardShouldPersistTaps='always'
+			keyboardDismissMode='none'
+		/>);
+	}
+}
+
 export class ListView extends OldList2 {
 	constructor(props) {
 		super(props);

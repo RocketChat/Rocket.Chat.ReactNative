@@ -176,3 +176,10 @@ export function clearInput() {
 		type: types.MESSAGES.CLEAR_INPUT
 	};
 }
+
+export function toggleReactionPicker(message) {
+	return {
+		type: types.MESSAGES.TOGGLE_REACTION_PICKER,
+		message
+	};
+}
