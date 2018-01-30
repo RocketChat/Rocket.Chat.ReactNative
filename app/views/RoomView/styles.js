@@ -1,6 +1,4 @@
-import { StyleSheet, Dimensions, Platform } from 'react-native';
-
-const { width } = Dimensions.get('window');
+import { StyleSheet, Platform } from 'react-native';
 
 export default StyleSheet.create({
 	typing: { fontWeight: 'bold', paddingHorizontal: 15, height: 25 },

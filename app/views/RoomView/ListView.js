@@ -72,7 +72,6 @@ export class List extends React.Component {
 			dataSource={this.dataSource}
 			renderRow={item => this.props.renderRow(item)}
 			initialListSize={10}
-			initialListSize={10}
 			keyboardShouldPersistTaps='always'
 			keyboardDismissMode='none'
 		/>);

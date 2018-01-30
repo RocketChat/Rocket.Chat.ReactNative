@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView, View } from 'react-native';
+import { ScrollView } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import _ from 'lodash';
 import { emojify } from 'react-emojione';
@@ -126,7 +126,7 @@ export default class extends Component {
 				{
 					categories.tabs.map((tab, i) => (
 						<ScrollView
-							key={i}
+							key={tab.category}
 							tabLabel={tab.tabLabel}
 							{...scrollPersistTaps}
 						>

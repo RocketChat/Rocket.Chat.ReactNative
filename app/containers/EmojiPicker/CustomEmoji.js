@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { CachedImage } from 'react-native-img-cache';
 import { connect } from 'react-redux';
-import equal from 'deep-equal';
+
 @connect(state => ({
 	baseUrl: state.settings.Site_Url
 }))
@@ -12,7 +12,7 @@ export default class extends React.Component {
 		emoji: PropTypes.object.isRequired,
 		style: PropTypes.object
 	}
-	shouldComponentUpdate(nextProps) {
+	shouldComponentUpdate() {
 		return false;
 	}
 	render() {

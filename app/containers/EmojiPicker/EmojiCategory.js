@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, TouchableOpacity, StyleSheet, Platform, Dimensions } from 'react-native';
+import { Text, View, TouchableOpacity, Platform } from 'react-native';
 import { emojify } from 'react-emojione';
+import { responsive } from 'react-native-responsive-ui';
 import styles from './styles';
 import CustomEmoji from './CustomEmoji';
-import { responsive } from 'react-native-responsive-ui';
 
 
 const emojisPerRow = Platform.OS === 'ios' ? 8 : 9;
@@ -27,6 +27,7 @@ const nextFrame = () => new Promise(resolve => requestAnimationFrame(resolve));
 export default class EmojiCategory extends React.Component {
 	static propTypes = {
 		emojis: PropTypes.any,
+		window: PropTypes.any,
 		onEmojiSelected: PropTypes.func,
 		emojisPerRow: PropTypes.number,
 		width: PropTypes.number
@@ -44,11 +45,11 @@ export default class EmojiCategory extends React.Component {
 	async componentDidMount() {
 		const array = this.props.emojis;
 		const temparray = [];
-		let i,
-			j,
-			chunk = emojisPerRow * 3;
+		let i;
+		let j;
+		const chunk = emojisPerRow * 3;
 		for (i = chunk, j = array.length; i < j; i += chunk) {
-	    temparray.push(array.slice(i, i + chunk));
+			temparray.push(array.slice(i, i + chunk));
 		}
 		temparray.forEach(async(items) => {
 			await nextFrame();
@@ -63,13 +64,14 @@ export default class EmojiCategory extends React.Component {
 	}
 
 	renderItem(emoji, size) {
-		return (<TouchableOpacity
-			activeOpacity={0.7}
-			key={emoji.isCustom ? emoji.content : emoji}
-			onPress={() => this.props.onEmojiSelected(emoji)}
-		>
-			{renderEmoji(emoji, size)}
-		</TouchableOpacity>);
+		return (
+			<TouchableOpacity
+				activeOpacity={0.7}
+				key={emoji.isCustom ? emoji.content : emoji}
+				onPress={() => this.props.onEmojiSelected(emoji)}
+			>
+				{renderEmoji(emoji, size)}
+			</TouchableOpacity>);
 	}
 
 	render() {

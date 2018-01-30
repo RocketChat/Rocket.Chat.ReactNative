@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Dimensions, Platform } from 'react-native';
+import { View, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 import { responsive } from 'react-native-responsive-ui';
@@ -19,20 +19,21 @@ const tabEmojiStyle = { fontSize: 15 };
 @responsive
 export default class extends React.Component {
 	static propTypes = {
+		window: PropTypes.any,
 		showReactionPicker: PropTypes.bool,
 		toggleReactionPicker: PropTypes.func,
 		onEmojiSelected: PropTypes.func
 	};
+
+	shouldComponentUpdate(nextProps) {
+		return nextProps.showReactionPicker !== this.props.showReactionPicker || this.props.window.width !== nextProps.window.width;
+	}
 
 	onEmojiSelected(emoji, shortname) {
 		// standard emojis: `emoji` is unicode and `shortname` is :joy:
 		// custom emojis: only `emoji` is returned with shortname type (:joy:)
 		// to set reactions, we need shortname type
 		this.props.onEmojiSelected(shortname || emoji);
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		return nextProps.showReactionPicker != this.props.showReactionPicker || this.props.window.width != nextProps.window.width;
 	}
 
 	render() {
@@ -46,7 +47,7 @@ export default class extends React.Component {
 				animationIn='fadeIn'
 				animationOut='fadeOut'
 			>
-				<View style={[styles.reactionPickerContainer, { width: width - margin, height: Math.min(width, height) - margin * 2 }]}>
+				<View style={[styles.reactionPickerContainer, { width: width - margin, height: Math.min(width, height) - (margin * 2) }]}>
 					<EmojiPicker
 						tabEmojiStyle={tabEmojiStyle}
 						width={Math.min(width, height) - margin}
