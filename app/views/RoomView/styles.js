@@ -37,9 +37,9 @@ export default StyleSheet.create({
 		padding: 10
 	},
 	reactionPickerContainer: {
-		width: width - 20,
-		height: width - 20,
-		paddingHorizontal: Platform.OS === 'android' ? 10 : 0,
+		// width: width - 20,
+		// height: width - 20,
+		paddingHorizontal: Platform.OS === 'android' ? 11 : 10,
 		backgroundColor: '#F7F7F7',
 		borderRadius: 4,
 		flexDirection: 'column'

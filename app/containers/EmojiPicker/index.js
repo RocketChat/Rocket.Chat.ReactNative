@@ -35,16 +35,17 @@ export default class extends Component {
 		this.updateFrequentlyUsed = this.updateFrequentlyUsed.bind(this);
 		this.updateCustomEmojis = this.updateCustomEmojis.bind(this);
 	}
-
-	shouldComponentUpdate() {
-		return false;
-	}
+	//
+	// shouldComponentUpdate(nextProps) {
+	// 	return false;
+	// }
 
 	componentWillMount() {
 		this.frequentlyUsed.addListener(this.updateFrequentlyUsed);
 		this.customEmojis.addListener(this.updateCustomEmojis);
 		this.updateFrequentlyUsed();
 		this.updateCustomEmojis();
+		setTimeout(() => this.setState({ show: true }), 100);
 	}
 
 	componentWillUnmount() {
@@ -113,25 +114,28 @@ export default class extends Component {
 	}
 
 	render() {
+		if (!this.state.show) {
+			return null;
+		}
 		return (
-			<View style={styles.container}>
-				<ScrollableTabView
-					renderTabBar={() => <TabBar tabEmojiStyle={this.props.tabEmojiStyle} />}
-					contentProps={scrollProps}
-				>
-					{
-						_.map(categories.tabs, (tab, i) => (
-							<ScrollView
-								key={tab.category}
-								tabLabel={tab.tabLabel}
-								{...scrollPersistTaps}
-							>
-								{this.renderCategory(tab.category, i)}
-							</ScrollView>
-						))
-					}
-				</ScrollableTabView>
-			</View>
+			// <View style={styles.container}>
+			<ScrollableTabView
+				renderTabBar={() => <TabBar tabEmojiStyle={this.props.tabEmojiStyle} />}
+				contentProps={scrollProps}
+			>
+				{
+					categories.tabs.map((tab, i) => (
+						<ScrollView
+							key={i}
+							tabLabel={tab.tabLabel}
+							{...scrollPersistTaps}
+						>
+							{this.renderCategory(tab.category, i)}
+						</ScrollView>
+					))
+				}
+			</ScrollableTabView>
+			// </View>
 		);
 	}
 }

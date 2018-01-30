@@ -71,9 +71,10 @@ export class List extends React.Component {
 			onEndReached={() => this.props.onEndReached(this.data)}
 			dataSource={this.dataSource}
 			renderRow={item => this.props.renderRow(item)}
-			initialListSize={25}
+			initialListSize={10}
+			initialListSize={10}
 			keyboardShouldPersistTaps='always'
-			keyboardDismissMode='on-drag'
+			keyboardDismissMode='none'
 		/>);
 	}
 }

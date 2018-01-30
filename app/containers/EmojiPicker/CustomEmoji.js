@@ -12,7 +12,7 @@ export default class extends React.Component {
 		emoji: PropTypes.object.isRequired,
 		style: PropTypes.object
 	}
-	shouldComponentUpdate(next) {
+	shouldComponentUpdate(nextProps) {
 		return false;
 	}
 	render() {

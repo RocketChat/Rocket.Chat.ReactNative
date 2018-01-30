@@ -3,17 +3,20 @@ import PropTypes from 'prop-types';
 import { View, Dimensions, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
+import { responsive } from 'react-native-responsive-ui';
 import EmojiPicker from '../../containers/EmojiPicker';
 import { toggleReactionPicker } from '../../actions/messages';
 import styles from './styles';
 
-const { width } = Dimensions.get('window');
+const margin = Platform.OS === 'android' ? 40 : 20;
 const tabEmojiStyle = { fontSize: 15 };
+
 @connect(state => ({
 	showReactionPicker: state.messages.showReactionPicker
 }), dispatch => ({
 	toggleReactionPicker: message => dispatch(toggleReactionPicker(message))
 }))
+@responsive
 export default class extends React.Component {
 	static propTypes = {
 		showReactionPicker: PropTypes.bool,
@@ -29,10 +32,11 @@ export default class extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		return nextProps.showReactionPicker != this.props.showReactionPicker;
+		return nextProps.showReactionPicker != this.props.showReactionPicker || this.props.window.width != nextProps.window.width;
 	}
 
 	render() {
+		const { width, height } = this.props.window;
 		return (
 			<Modal
 				isVisible={this.props.showReactionPicker}
@@ -42,11 +46,10 @@ export default class extends React.Component {
 				animationIn='fadeIn'
 				animationOut='fadeOut'
 			>
-				<View style={styles.reactionPickerContainer}>
+				<View style={[styles.reactionPickerContainer, { width: width - margin, height: Math.min(width, height) - margin * 2 }]}>
 					<EmojiPicker
 						tabEmojiStyle={tabEmojiStyle}
-						emojisPerRow={8}
-						width={width - (Platform.OS === 'android' ? 40 : 20)}
+						width={Math.min(width, height) - margin}
 						onEmojiSelected={(emoji, shortname) => this.onEmojiSelected(emoji, shortname)}
 					/>
 				</View>

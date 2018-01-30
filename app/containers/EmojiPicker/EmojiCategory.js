@@ -4,8 +4,9 @@ import { Text, View, TouchableOpacity, StyleSheet, Platform, Dimensions } from '
 import { emojify } from 'react-emojione';
 import styles from './styles';
 import CustomEmoji from './CustomEmoji';
+import { responsive } from 'react-native-responsive-ui';
 
-const { width: windowWidth } = Dimensions.get('window');
+
 const emojisPerRow = Platform.OS === 'ios' ? 8 : 9;
 
 const renderEmoji = (emoji, size) => {
@@ -18,6 +19,11 @@ const renderEmoji = (emoji, size) => {
 		</Text>
 	);
 };
+
+
+const nextFrame = () => new Promise(resolve => requestAnimationFrame(resolve));
+
+@responsive
 export default class EmojiCategory extends React.Component {
 	static propTypes = {
 		emojis: PropTypes.any,
@@ -27,21 +33,31 @@ export default class EmojiCategory extends React.Component {
 	};
 	constructor(props) {
 		super(props);
-		const { width } = this.props;
-		this.size = (width || windowWidth) / (this.props.emojisPerRow || emojisPerRow);
+		const { width, height } = this.props.window;
+
+		this.size = Math.min(this.props.width || width, height) / (this.props.emojisPerRow || emojisPerRow);
 		this.emojis = [];
 	}
 	componentWillMount() {
-		this.emojis = this.props.emojis.slice(0, emojisPerRow * 4).map(item => this.renderItem(item, this.size));
+		this.emojis = this.props.emojis.slice(0, emojisPerRow * 3).map(item => this.renderItem(item, this.size));
 	}
-	componentDidMount() {
-		requestAnimationFrame(() => {
-			this.emojis = this.emojis.concat(this.props.emojis.slice(emojisPerRow * 4).map(item => this.renderItem(item, this.size)));
-			requestAnimationFrame(() => {
-				this.forceUpdate();
-			});
+	async componentDidMount() {
+		const array = this.props.emojis;
+		const temparray = [];
+		let i,
+			j,
+			chunk = emojisPerRow * 3;
+		for (i = chunk, j = array.length; i < j; i += chunk) {
+	    temparray.push(array.slice(i, i + chunk));
+		}
+		temparray.forEach(async(items) => {
+			await nextFrame();
+			this.emojis = this.emojis.concat(items.map(item => this.renderItem(item, this.size)));
+			this.forceUpdate();
+			await nextFrame();
 		});
 	}
+
 	shouldComponentUpdate() {
 		return false;
 	}
@@ -57,6 +73,6 @@ export default class EmojiCategory extends React.Component {
 	}
 
 	render() {
-		return (<View style={styles.categoryInner}>{this.emojis}</View>);
+		return <View style={styles.categoryInner}>{this.emojis}</View>;
 	}
 }
