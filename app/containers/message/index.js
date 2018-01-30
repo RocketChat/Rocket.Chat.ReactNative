@@ -52,6 +52,7 @@ export default class Message extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { reactionsModal: false };
+		this.onClose = this.onClose.bind(this);
 	}
 
 	componentWillMount() {
@@ -72,8 +73,11 @@ export default class Message extends React.Component {
 		}
 	}
 
-	shouldComponentUpdate(nextProps) {
+	shouldComponentUpdate(nextProps, nextState) {
 		if (!equal(this.props.reactions, nextProps.reactions)) {
+			return true;
+		}
+		if (this.state.reactionsModal !== nextState.reactionsModal) {
 			return true;
 		}
 		return this.props.item._updatedAt.toGMTString() !== nextProps.item._updatedAt.toGMTString() || this.props.item.status !== nextProps.item.status;
@@ -94,7 +98,9 @@ export default class Message extends React.Component {
 	onReactionPress(emoji) {
 		this.props.onReactionPress(emoji, this.props.item._id);
 	}
-
+	onClose() {
+		this.setState({ reactionsModal: false });
+	}
 	onReactionLongPress() {
 		this.setState({ reactionsModal: true });
 		Vibration.vibrate(50);
@@ -283,7 +289,7 @@ export default class Message extends React.Component {
 					{this.state.reactionsModal ?
 						<ReactionsModal
 							isVisible={this.state.reactionsModal}
-							onClose={() => this.setState({ reactionsModal: false })}
+							onClose={this.onClose}
 							reactions={item.reactions}
 							user={this.props.user}
 							customEmojis={customEmojis}

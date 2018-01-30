@@ -60,7 +60,6 @@ export default class extends React.PureComponent {
 		user: PropTypes.object.isRequired,
 		customEmojis: PropTypes.object.isRequired
 	}
-
 	renderItem = (item) => {
 		const count = item.usernames.length;
 		let usernames = item.usernames.slice(0, 3)
