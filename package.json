@@ -27,9 +27,9 @@
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-remove-console": "^6.8.5",
     "babel-polyfill": "^6.26.0",
+    "babel-preset-expo": "^4.0.0",
     "deep-equal": "^1.0.1",
     "ejson": "^2.1.2",
-    "emoji-datasource": "^4.0.3",
     "lodash": "^4.17.4",
     "moment": "^2.20.1",
     "prop-types": "^15.6.0",
@@ -51,6 +51,7 @@
     "react-native-modal": "^4.1.1",
     "react-native-optimized-flatlist": "^1.0.3",
     "react-native-push-notification": "^3.0.1",
+    "react-native-responsive-ui": "^1.1.1",
     "react-native-scrollable-tab-view": "^0.8.0",
     "react-native-slider": "^0.11.0",
     "react-native-splash-screen": "^3.0.6",
@@ -72,7 +73,6 @@
     "remote-redux-devtools": "^0.5.12",
     "simple-markdown": "^0.3.1",
     "snyk": "^1.61.1",
-    "string.fromcodepoint": "^0.2.1",
     "strip-ansi": "^4.0.0"
   },
   "devDependencies": {
