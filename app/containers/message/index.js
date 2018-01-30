@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableHighlight, Text, TouchableOpacity, Animated } from 'react-native';
+import { View, TouchableHighlight, Text, TouchableOpacity, Animated, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
@@ -62,6 +62,10 @@ export default class Message extends React.Component {
 
 	shouldComponentUpdate(nextProps) {
 		return this.props.item._updatedAt.toGMTString() !== nextProps.item._updatedAt.toGMTString() || this.props.item.status !== nextProps.item.status;
+	}
+
+	onPress = () => {
+		Keyboard.dismiss();
 	}
 
 	onLongPress() {
@@ -181,6 +185,7 @@ export default class Message extends React.Component {
 
 		return (
 			<TouchableHighlight
+				onPress={() => this.onPress()}
 				onLongPress={() => this.onLongPress()}
 				disabled={this.isDeleted() || this.hasError()}
 				underlayColor='#FFFFFF'
