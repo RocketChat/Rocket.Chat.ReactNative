@@ -5,7 +5,7 @@ import EasyMarkdown from 'react-native-easy-markdown'; // eslint-disable-line
 import SimpleMarkdown from 'simple-markdown';
 import { emojify } from 'react-emojione';
 import styles from './styles';
-import CustomEmoji from '../CustomEmoji';
+import CustomEmoji from '../EmojiPicker/CustomEmoji';
 
 const BlockCode = ({ node, state }) => (
 	<Text

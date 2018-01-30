@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, SafeAreaView, FlatList, Text, TouchableOpacity, Keyboard } from 'react-native';
+import { View, TextInput, SafeAreaView, FlatList, Text, TouchableOpacity, Keyboard, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
+import { emojify } from 'react-emojione';
 import { userTyping } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import { editRequest, editCancel, clearInput } from '../../actions/messages';
@@ -11,11 +12,14 @@ import styles from './style';
 import MyIcon from '../icons';
 import database from '../../lib/realm';
 import Avatar from '../Avatar';
+import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import AnimatedContainer from './AnimatedContainer';
-import EmojiPicker from './EmojiPicker';
+import EmojiPicker from '../EmojiPicker';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import { emojis } from '../../emojis';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
+const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
 
 const onlyUnique = function onlyUnique(value, index, self) {
 	return self.indexOf(({ _id }) => value._id === _id) === index;
@@ -54,10 +58,13 @@ export default class MessageBox extends React.PureComponent {
 			text: '',
 			mentions: [],
 			showMentionsContainer: false,
-			showEmojiContainer: false
+			showEmojiContainer: false,
+			trackingType: ''
 		};
 		this.users = [];
 		this.rooms = [];
+		this.emojis = [];
+		this.customEmojis = [];
 	}
 	componentWillReceiveProps(nextProps) {
 		if (this.props.message !== nextProps.message && nextProps.message.msg) {
@@ -80,7 +87,7 @@ export default class MessageBox extends React.PureComponent {
 
 			const lastNativeText = this.component._lastNativeText;
 
-			const regexp = /(#|@)([a-z._-]+)$/im;
+			const regexp = /(#|@|:)([a-z0-9._-]+)$/im;
 
 			const result = lastNativeText.substr(0, cursor).match(regexp);
 
@@ -176,7 +183,10 @@ export default class MessageBox extends React.PureComponent {
 		this.setState({ text: '' });
 	}
 	async openEmoji() {
-		await this.setState({ showEmojiContainer: !this.state.showEmojiContainer });
+		await this.setState({
+			showEmojiContainer: true,
+			showMentionsContainer: false
+		});
 		Keyboard.dismiss();
 	}
 	closeEmoji() {
@@ -292,25 +302,41 @@ export default class MessageBox extends React.PureComponent {
 		}
 	}
 
+	_getEmojis(keyword) {
+		if (keyword) {
+			this.customEmojis = database.objects('customEmojis').filtered('name CONTAINS[c] $0', keyword).slice(0, 4);
+			this.emojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, 4);
+			const mergedEmojis = [...this.customEmojis, ...this.emojis];
+			this.setState({ mentions: mergedEmojis });
+		}
+	}
+
 	stopTrackingMention() {
 		this.setState({
 			showMentionsContainer: false,
-			mentions: []
+			mentions: [],
+			trackingType: ''
 		});
 		this.users = [];
 		this.rooms = [];
+		this.customEmojis = [];
+		this.emojis = [];
 	}
 
 	identifyMentionKeyword(keyword, type) {
-		this.updateMentions(keyword, type);
 		this.setState({
-			showMentionsContainer: true
+			showMentionsContainer: true,
+			showEmojiContainer: false,
+			trackingType: type
 		});
+		this.updateMentions(keyword, type);
 	}
 
 	updateMentions = (keyword, type) => {
 		if (type === MENTIONS_TRACKING_TYPE_USERS) {
 			this._getUsers(keyword);
+		} else if (type === MENTIONS_TRACKING_TYPE_EMOJIS) {
+			this._getEmojis(keyword);
 		} else {
 			this._getRooms(keyword);
 		}
@@ -323,10 +349,12 @@ export default class MessageBox extends React.PureComponent {
 
 		const cursor = Math.max(start, end);
 
-		const regexp = /([a-z._-]+)$/im;
+		const regexp = /([a-z0-9._-]+)$/im;
 
 		const result = msg.substr(0, cursor).replace(regexp, '');
-		const text = `${ result }${ item.username || item.name } ${ msg.slice(cursor) }`;
+		const mentionName = this.state.trackingType === MENTIONS_TRACKING_TYPE_EMOJIS ?
+			`${ item.name || item }:` : (item.username || item.name);
+		const text = `${ result }${ mentionName } ${ msg.slice(cursor) }`;
 		this.component.setNativeProps({ text });
 		this.setState({ text });
 		this.component.focus();
@@ -357,6 +385,26 @@ export default class MessageBox extends React.PureComponent {
 			<Text>Notify {item.desc} in this room</Text>
 		</TouchableOpacity>
 	)
+	renderMentionEmoji = (item) => {
+		if (item.name) {
+			return (
+				<CustomEmoji
+					key='mention-item-avatar'
+					style={[styles.mentionItemCustomEmoji]}
+					emoji={item}
+					baseUrl={this.props.baseUrl}
+				/>
+			);
+		}
+		return (
+			<Text
+				key='mention-item-avatar'
+				style={[StyleSheet.flatten(styles.mentionItemEmoji)]}
+			>
+				{emojify(`:${ item }:`, { output: 'unicode' })}
+			</Text>
+		);
+	}
 	renderMentionItem = (item) => {
 		if (item.username === 'all' || item.username === 'here') {
 			return this.renderFixedMentionItem(item);
@@ -366,13 +414,22 @@ export default class MessageBox extends React.PureComponent {
 				style={styles.mentionItem}
 				onPress={() => this._onPressMention(item)}
 			>
-				<Avatar
-					style={{ margin: 8 }}
-					text={item.username || item.name}
-					size={30}
-					baseUrl={this.props.baseUrl}
-				/>
-				<Text>{item.username || item.name }</Text>
+				{this.state.trackingType === MENTIONS_TRACKING_TYPE_EMOJIS ?
+					[
+						this.renderMentionEmoji(item),
+						<Text key='mention-item-name'>:{ item.name || item }:</Text>
+					]
+					: [
+						<Avatar
+							key='mention-item-avatar'
+							style={{ margin: 8 }}
+							text={item.username || item.name}
+							size={30}
+							baseUrl={this.props.baseUrl}
+						/>,
+						<Text key='mention-item-name'>{ item.username || item.name }</Text>
+					]
+				}
 			</TouchableOpacity>
 		);
 	}
@@ -386,17 +443,17 @@ export default class MessageBox extends React.PureComponent {
 		return <AnimatedContainer visible={showEmojiContainer} subview={emojiContainer} messageboxHeight={messageboxHeight} />;
 	}
 	renderMentions() {
-		const usersList = (
+		const list = (
 			<FlatList
 				style={styles.mentionList}
 				data={this.state.mentions}
 				renderItem={({ item }) => this.renderMentionItem(item)}
-				keyExtractor={item => item._id}
+				keyExtractor={item => item._id || item}
 				{...scrollPersistTaps}
 			/>
 		);
 		const { showMentionsContainer, messageboxHeight } = this.state;
-		return <AnimatedContainer visible={showMentionsContainer} subview={usersList} messageboxHeight={messageboxHeight} />;
+		return <AnimatedContainer visible={showMentionsContainer} subview={list} messageboxHeight={messageboxHeight} />;
 	}
 	render() {
 		return (
