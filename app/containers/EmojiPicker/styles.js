@@ -1,7 +1,4 @@
-import { StyleSheet, Dimensions, Platform } from 'react-native';
-
-const { width } = Dimensions.get('window');
-const EMOJI_SIZE = width / (Platform.OS === 'ios' ? 8 : 9);
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
 	container: {
@@ -45,18 +42,16 @@ export default StyleSheet.create({
 	categoryInner: {
 		flexWrap: 'wrap',
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		justifyContent: 'flex-start',
+		flex: 1
 	},
 	categoryEmoji: {
-		fontSize: EMOJI_SIZE - 14,
 		color: 'black',
-		height: EMOJI_SIZE,
-		width: EMOJI_SIZE,
+		backgroundColor: 'transparent',
 		textAlign: 'center'
 	},
 	customCategoryEmoji: {
-		height: EMOJI_SIZE - 8,
-		width: EMOJI_SIZE - 8,
 		margin: 4
 	}
 });
