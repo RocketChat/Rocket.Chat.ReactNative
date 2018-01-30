@@ -27,6 +27,7 @@
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-remove-console": "^6.8.5",
     "babel-polyfill": "^6.26.0",
+    "babel-preset-expo": "^4.0.0",
     "deep-equal": "^1.0.1",
     "ejson": "^2.1.2",
     "lodash": "^4.17.4",
