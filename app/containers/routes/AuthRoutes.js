@@ -4,6 +4,7 @@ import { StackNavigator, DrawerNavigator } from 'react-navigation';
 import Sidebar from '../../containers/Sidebar';
 import RoomsListView from '../../views/RoomsListView';
 import RoomView from '../../views/RoomView';
+import RoomActionsView from '../../views/RoomActionsView';
 import CreateChannelView from '../../views/CreateChannelView';
 import SelectUsersView from '../../views/SelectUsersView';
 import NewServerView from '../../views/NewServerView';
@@ -15,6 +16,9 @@ const AuthRoutes = StackNavigator(
 		},
 		Room: {
 			screen: RoomView
+		},
+		RoomActions: {
+			screen: RoomActionsView
 		},
 		CreateChannel: {
 			screen: CreateChannelView,

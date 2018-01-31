@@ -110,7 +110,7 @@ export default class extends React.PureComponent {
 		<View style={styles.right}>
 			<TouchableOpacity
 				style={styles.headerButton}
-				onPress={() => {}}
+				onPress={() => this.props.navigation.navigate('RoomActions')}
 				accessibilityLabel='Room actions'
 				accessibilityTraits='button'
 			>
