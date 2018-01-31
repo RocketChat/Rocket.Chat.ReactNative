@@ -1,13 +1,24 @@
 import React from 'react';
-import { View, Platform, SectionList, Text } from 'react-native';
+import PropTypes from 'prop-types';
+import { View, Platform, SectionList, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import { connect } from 'react-redux';
 
 import styles from './styles';
 import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
 
-export default class extends React.Component {
+@connect(state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+}))
+export default class extends React.PureComponent {
+
+	static propTypes = {
+		baseUrl: PropTypes.string,
+		navigation: PropTypes.object
+	}
+
 	static navigationOptions = () => ({
 		title: 'Actions',
 		headerRight: (
@@ -30,52 +41,54 @@ export default class extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.sections = [{
-			data: [{ icon: 'ios-star', name: 'USER' }],
-			renderItem: this.renderRoomInfo
-		}, {
-			data: [
-				{ icon: 'ios-call-outline', name: 'Voicecall' },
-				{ icon: 'ios-videocam-outline', name: 'Video call' }
-			],
-			renderItem: this.renderItem
-		}, {
-			data: [
-				{ icon: 'ios-attach', name: 'Files' },
-				{ icon: 'ios-at-outline', name: 'Mentions' },
-				{ icon: 'ios-star-outline', name: 'Starred' },
-				{ icon: 'ios-search', name: 'Search' },
-				{ icon: 'ios-share-outline', name: 'Share' },
-				{ icon: 'ios-pin', name: 'Pinned' },
-				{ icon: 'ios-code', name: 'Snippets' },
-				{ icon: 'ios-notifications-outline', name: 'Notifications preferences' }
-			],
-			renderItem: this.renderItem
-		}, {
-			data: [
-				{ icon: 'ios-volume-off', name: 'Mute user' },
-				{ icon: 'block', name: 'Block user', type: 'danger' },
-			],
-			renderItem: this.renderItem
-		}];
+		this.room = props.navigation.state.params.room;
+		this.state = {
+			sections: [{
+				data: [{ icon: 'ios-star', name: 'USER' }],
+				renderItem: this.renderRoomInfo
+			}, {
+				data: [
+					{ icon: 'ios-call-outline', name: 'Voicecall' },
+					{ icon: 'ios-videocam-outline', name: 'Video call' }
+				],
+				renderItem: this.renderItem
+			}, {
+				data: [
+					{ icon: 'ios-attach', name: 'Files' },
+					{ icon: 'ios-at-outline', name: 'Mentions' },
+					{ icon: 'ios-star-outline', name: 'Starred' },
+					{ icon: 'ios-search', name: 'Search' },
+					{ icon: 'ios-share-outline', name: 'Share' },
+					{ icon: 'ios-pin', name: 'Pinned' },
+					{ icon: 'ios-code', name: 'Snippets' },
+					{ icon: 'ios-notifications-outline', name: 'Notifications preferences' }
+				],
+				renderItem: this.renderItem
+			}, {
+				data: [
+					{ icon: 'ios-volume-off', name: 'Mute user' },
+					{ icon: 'block', name: 'Block user', type: 'danger' }
+				],
+				renderItem: this.renderItem
+			}]
+		};
 	}
 
-	renderRoomInfo = () => (
-		<View style={styles.sectionItem}>
-			<Avatar
-				text={'d0711'}
-				size={50}
-				style={styles.avatar}
-				baseUrl='https://open.rocket.chat' // {this.props.baseUrl}
-				type={'d'}
-			/>
-			<View style={styles.roomTitleContainer}>
-				<Text style={styles.roomTitle}>ASIDHASIUDHASUDIH</Text>
-				<Text style={styles.roomDescription}>@ASIDHASIUDHASUDIH</Text>				
-			</View>
-			<Icon name='ios-arrow-forward' size={20} style={styles.sectionItemIcon} color='#cbced1' />			
-		</View>
-	)
+	renderRoomInfo = ({ item }) => this.renderTouchableItem([
+		<Avatar
+			key='avatar'
+			text={this.room.name}
+			size={50}
+			style={StyleSheet.flatten(styles.avatar)}
+			baseUrl={this.props.baseUrl}
+			type={this.room.t}
+		/>,
+		<View key='name' style={styles.roomTitleContainer}>
+			<Text style={styles.roomTitle}>{this.room.fname}</Text>
+			<Text style={styles.roomDescription}>@{this.room.name}</Text>
+		</View>,
+		<Icon key='icon' name='ios-arrow-forward' size={20} style={styles.sectionItemIcon} color='#cbced1' />
+	], item)
 
 	renderTouchableItem = (subview, item) => (
 		<Touch
@@ -100,7 +113,7 @@ export default class extends React.Component {
 			return this.renderTouchableItem(subview, item);
 		}
 		const subview = [
-			<Icon key='icon' name={item.icon} size={24} style={styles.sectionItemIcon} />,
+			<Icon key='left-icon' name={item.icon} size={24} style={styles.sectionItemIcon} />,
 			<Text key='name' style={styles.sectionItemName}>{ item.name }</Text>,
 			<Icon key='right-icon' name='ios-arrow-forward' size={20} style={styles.sectionItemIcon} color='#cbced1' />
 		];
@@ -124,7 +137,7 @@ export default class extends React.Component {
 			<SectionList
 				style={styles.container}
 				stickySectionHeadersEnabled={false}
-				sections={this.sections}
+				sections={this.state.sections}
 				SectionSeparatorComponent={this.renderSectionSeparator}
 				keyExtractor={(item, index) => index}
 			/>
