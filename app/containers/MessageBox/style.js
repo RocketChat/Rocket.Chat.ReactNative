@@ -26,7 +26,9 @@ export default StyleSheet.create({
 		flexGrow: 1,
 		width: 1,
 		paddingTop: 15,
-		paddingBottom: 15
+		paddingBottom: 15,
+		paddingLeft: 0,
+		paddingRight: 0
 	},
 	editing: {
 		backgroundColor: '#fff5df'
