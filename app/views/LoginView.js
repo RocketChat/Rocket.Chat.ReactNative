@@ -3,21 +3,44 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import PropTypes from 'prop-types';
 import { Keyboard, Text, TextInput, View, ScrollView, TouchableOpacity, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as loginActions from '../actions/login';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { loginSubmit } from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
 
 import styles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { showToast } from '../utils/info';
 
-class LoginView extends React.Component {
+@connect(state => ({
+	server: state.server.server,
+	login: state.login,
+	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
+	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
+	Accounts_OAuth_Facebook: state.settings.Accounts_OAuth_Facebook,
+	Accounts_OAuth_Github: state.settings.Accounts_OAuth_Github,
+	Accounts_OAuth_Gitlab: state.settings.Accounts_OAuth_Gitlab,
+	Accounts_OAuth_Google: state.settings.Accounts_OAuth_Google,
+	Accounts_OAuth_Linkedin: state.settings.Accounts_OAuth_Linkedin,
+	Accounts_OAuth_Meteor: state.settings.Accounts_OAuth_Meteor,
+	Accounts_OAuth_Twitter: state.settings.Accounts_OAuth_Twitter
+}), dispatch => ({
+	loginSubmit: params => dispatch(loginSubmit(params))
+}))
+export default class LoginView extends React.Component {
 	static propTypes = {
 		loginSubmit: PropTypes.func.isRequired,
+		navigation: PropTypes.object.isRequired,
+		login: PropTypes.object,
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
 		Accounts_PasswordPlaceholder: PropTypes.string,
-		login: PropTypes.object,
-		navigation: PropTypes.object.isRequired
+		Accounts_OAuth_Facebook: PropTypes.bool,
+		Accounts_OAuth_Github: PropTypes.bool,
+		Accounts_OAuth_Gitlab: PropTypes.bool,
+		Accounts_OAuth_Google: PropTypes.bool,
+		Accounts_OAuth_Linkedin: PropTypes.bool,
+		Accounts_OAuth_Meteor: PropTypes.bool,
+		Accounts_OAuth_Twitter: PropTypes.bool
 	}
 
 	static navigationOptions = () => ({
@@ -80,6 +103,10 @@ class LoginView extends React.Component {
 		return null;
 	}
 
+	onPressOAuth() {
+		alert('oauth!')
+	}
+
 	render() {
 		return (
 			<KeyboardView
@@ -135,6 +162,65 @@ class LoginView extends React.Component {
 								</TouchableOpacity>
 							</View>
 
+							<View style={styles.loginOAuthButtons}>
+								{this.props.Accounts_OAuth_Facebook &&
+									<TouchableOpacity
+										style={[styles.oauthButton, styles.facebookButton]}
+										onPress={this.onPressOAuth}
+									>
+										<Icon name='facebook' size={20} color='#ffffff' />
+									</TouchableOpacity>
+								}
+								{this.props.Accounts_OAuth_Github &&
+									<TouchableOpacity
+										style={[styles.oauthButton, styles.githubButton]}
+										onPress={this.onPressOAuth}
+									>
+										<Icon name='github' size={20} color='#ffffff' />
+									</TouchableOpacity>
+								}
+								{this.props.Accounts_OAuth_Gitlab &&
+									<TouchableOpacity
+										style={[styles.oauthButton, styles.gitlabButton]}
+										onPress={this.onPressOAuth}
+									>
+										<Icon name='gitlab' size={20} color='#ffffff' />
+									</TouchableOpacity>
+								}
+								{this.props.Accounts_OAuth_Google &&
+									<TouchableOpacity
+										style={[styles.oauthButton, styles.googleButton]}
+										onPress={this.onPressOAuth}
+									>
+										<Icon name='google' size={20} color='#ffffff' />
+									</TouchableOpacity>
+								}
+								{this.props.Accounts_OAuth_Linkedin &&
+									<TouchableOpacity
+										style={[styles.oauthButton, styles.linkedinButton]}
+										onPress={this.onPressOAuth}
+									>
+										<Icon name='linkedin' size={20} color='#ffffff' />
+									</TouchableOpacity>
+								}
+								{this.props.Accounts_OAuth_Meteor &&
+									<TouchableOpacity
+										style={[styles.oauthButton, styles.meteorButton]}
+										onPress={this.onPressOAuth}
+									>
+										<MaterialCommunityIcons name='meteor' size={25} color='#ffffff' />
+									</TouchableOpacity>
+								}
+								{this.props.Accounts_OAuth_Twitter &&
+									<TouchableOpacity
+										style={[styles.oauthButton, styles.twitterButton]}
+										onPress={this.onPressOAuth}
+									>
+										<Icon name='twitter' size={20} color='#ffffff' />
+									</TouchableOpacity>
+								}
+							</View>
+
 							<TouchableOpacity>
 								<Text style={styles.loginTermsText} accessibilityTraits='button'>
 									By proceeding you are agreeing to our
@@ -152,18 +238,3 @@ class LoginView extends React.Component {
 		);
 	}
 }
-
-function mapStateToProps(state) {
-	return {
-		server: state.server.server,
-		Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
-		Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
-		login: state.login
-	};
-}
-
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators(loginActions, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoginView);
