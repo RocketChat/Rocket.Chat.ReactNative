@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Alert, Clipboard, Vibration } from 'react-native';
+import { Alert, Clipboard, Vibration, Share } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
 import * as moment from 'moment';
@@ -107,6 +107,9 @@ export default class MessageActions extends React.Component {
 			// Copy
 			this.options.push('Copy Message');
 			this.COPY_INDEX = this.options.length - 1;
+			// Share
+			this.options.push('Share Message');
+			this.SHARE_INDEX = this.options.length - 1;
 			// Quote
 			if (!this.isRoomReadOnly()) {
 				this.options.push('Quote');
@@ -260,6 +263,12 @@ export default class MessageActions extends React.Component {
 		showToast('Copied to clipboard!');
 	}
 
+	handleShare = async() => {
+		Share.share({
+			message: this.props.actionMessage.msg.content.replace(/<(?:.|\n)*?>/gm, '')
+		});
+	};
+
 	handleStar() {
 		this.props.toggleStarRequest(this.props.actionMessage);
 	}
@@ -300,6 +309,9 @@ export default class MessageActions extends React.Component {
 				break;
 			case this.COPY_INDEX:
 				this.handleCopy();
+				break;
+			case this.SHARE_INDEX:
+				this.handleShare();
 				break;
 			case this.QUOTE_INDEX:
 				this.handleQuote();
