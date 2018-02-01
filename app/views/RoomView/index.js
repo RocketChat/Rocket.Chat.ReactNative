@@ -209,7 +209,7 @@ export default class RoomView extends React.Component {
 				{this.state.room._id ? <MessageActions room={this.state.room} /> : null}
 				<MessageErrorActions />
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
-				{Platform.OS === 'ios' ? <KeyboardSpacer /> : null}
+				{/* {Platform.OS === 'ios' ? <KeyboardSpacer /> : null} */}
 			</View>
 		);
 	}

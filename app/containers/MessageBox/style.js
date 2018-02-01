@@ -21,7 +21,6 @@ export default StyleSheet.create({
 		flexGrow: 0
 	},
 	textBoxInput: {
-		paddingHorizontal: 5,
 		textAlignVertical: 'center',
 		maxHeight: 120,
 		flexGrow: 1,
@@ -37,6 +36,7 @@ export default StyleSheet.create({
 		fontSize: 20,
 		textAlign: 'center',
 		padding: 15,
+		paddingHorizontal: 21,
 		flex: 0
 	},
 	actionRow: {
