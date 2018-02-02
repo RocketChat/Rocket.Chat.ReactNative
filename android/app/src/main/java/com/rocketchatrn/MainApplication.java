@@ -2,6 +2,7 @@ package chat.rocket.reactnative;
 
 import android.app.Application;
 
+import com.babisoft.ReactNativeLocalization.ReactNativeLocalizationPackage;
 import com.facebook.react.ReactApplication;
 import com.horcrux.svg.SvgPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -42,7 +43,8 @@ public class MainApplication extends Application implements ReactApplication {
               new ReactNativePushNotificationPackage(),
               new ReactVideoPackage(),
               new SplashScreenReactPackage(),
-              new RCTToastPackage()
+              new RCTToastPackage(),
+              new ReactNativeLocalizationPackage()
       );
     }
   };
