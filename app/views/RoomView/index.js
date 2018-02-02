@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Button, SafeAreaView, Platform, Keyboard } from 'react-native';
+import { Text, View, Button, SafeAreaView, Platform, Keyboard, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import equal from 'deep-equal';
@@ -23,6 +23,7 @@ import RoomsHeader from './Header';
 import ReactionPicker from './ReactionPicker';
 import Banner from './banner';
 import styles from './styles';
+const list = [{key: 'a'}, {key: 'b'}, {key: 'c'}, {key: 'd'}, {key: 'e'}]
 
 @connect(
 	state => ({
@@ -205,7 +206,6 @@ export default class RoomView extends React.Component {
 						renderRow={item => this.renderItem(item)}
 					/>
 				</SafeAreaView>
-				{this.renderFooter()}
 				{this.state.room._id ? <MessageActions room={this.state.room} /> : null}
 				<MessageErrorActions />
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />

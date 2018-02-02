@@ -462,11 +462,11 @@ export default class MessageBox extends React.PureComponent {
 
 	renderContent() {
 		return (
-			<View>
-				<SafeAreaView
-					style={[styles.textBox, (this.props.editing ? styles.editing : null)]}
-					onLayout={event => this.setState({ messageboxHeight: event.nativeEvent.layout.height })}
-				>
+			// <View>
+			// 	<SafeAreaView
+			// 		style={[styles.textBox, (this.props.editing ? styles.editing : null)]}
+			// 		onLayout={event => this.setState({ messageboxHeight: event.nativeEvent.layout.height })}
+			// 	>
 					<View style={styles.textArea}>
 						{this.leftButtons}
 						<TextInput
@@ -484,9 +484,70 @@ export default class MessageBox extends React.PureComponent {
 						/>
 						{this.rightButtons}
 					</View>
-				</SafeAreaView>
-			</View>
+			// 	</SafeAreaView>
+			// </View>
 		);
+		
+		// return (
+		// 	<View style={{
+		// 		flexDirection: 'row',
+		// 		alignItems: 'center',
+		// 		justifyContent: 'space-between',
+		// 	}}>
+		// 		<TextInput
+		// 			ref={component => this.component = component}
+		// 			// style={styles.textBoxInput}
+		// 			style={{
+		// 				flex: 1,
+		// 				margin: 10,
+		// 				paddingLeft: 10,
+		// 				paddingRight: 10,
+		// 				paddingTop: 2,
+		// 				paddingBottom: 5,
+		// 				fontSize: 16,
+		// 				backgroundColor: 'blue',
+		// 				// borderWidth: 0.5 / PixelRatio.get(),
+		// 				borderRadius: 18,
+		// 			}}
+		// 			// returnKeyType='default'
+		// 			// blurOnSubmit={false}
+		// 			// placeholder='New Message'
+		// 			// onChangeText={text => this.onChangeText(text)}
+		// 			// value={this.state.text}
+		// 			// underlineColorAndroid='transparent'
+		// 			// defaultValue=''
+		// 			// multiline
+		// 			// placeholderTextColor='#9EA2A8'
+		// 		/>
+		// 	</View>
+		// )
+
+		// return (
+		// 	<View style={{ borderTopWidth: StyleSheet.hairlineWidth, borderColor: '#bbb' }}>
+		// 		<View style={{
+		// 			flexDirection: 'row',
+		// 			alignItems: 'center',
+		// 			justifyContent: 'space-between',
+		// 		}}>
+		// 			<TextInput
+		// 				style={{
+		// 					flex: 1,
+		// 					margin: 10,
+		// 					paddingLeft: 10,
+		// 					paddingRight: 10,
+		// 					paddingTop: 2,
+		// 					paddingBottom: 5,
+		// 					fontSize: 16,
+		// 					backgroundColor: 'blue',
+		// 					borderRadius: 18,
+		// 				}}
+		// 				ref={(r) => {
+		// 					this.textInputRef = r;
+		// 				}}
+		// 			/>
+		// 		</View>
+		// 	</View>
+		// )
 	}
 
 	render() {
@@ -494,10 +555,15 @@ export default class MessageBox extends React.PureComponent {
 			<KeyboardAccessoryView
 				renderContent={() => this.renderContent()}
 				kbInputRef={this.component}
+				// onHeightChanged={height => console.warn(height)}
 				kbComponent={this.state.showEmojiKeyboard ? 'EmojiKeyboard' : null}
 				onKeyboardResigned={() => this.onKeyboardResigned()}
-				trackInteractive
-				revealKeyboardInteractive
+				// trackInteractive
+				// revealKeyboardInteractive
+				// requiresSameParentToManageScrollView
+				// style={{ height: 200 }}
+				// style={{ position: 'relative' }}
+				// requiresSameParentToManageScrollView
 			/>
 		);
 	}
