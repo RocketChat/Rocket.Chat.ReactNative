@@ -20,7 +20,7 @@ import styles from './styles';
 }), dispatch => ({
 	setSearch: searchText => dispatch(setSearch(searchText))
 }))
-export default class extends React.Component {
+export default class RoomsListHeaderView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
 		user: PropTypes.object.isRequired,

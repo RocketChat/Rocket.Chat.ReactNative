@@ -16,7 +16,7 @@ const scrollProps = {
 	keyboardShouldPersistTaps: 'always'
 };
 
-export default class extends Component {
+export default class EmojiPicker extends Component {
 	static propTypes = {
 		onEmojiSelected: PropTypes.func,
 		tabEmojiStyle: PropTypes.object,

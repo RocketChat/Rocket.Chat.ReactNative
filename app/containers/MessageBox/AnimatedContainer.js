@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Animated } from 'react-native';
 
-export default class MessageBox extends React.PureComponent {
+export default class AnimatedContainer extends React.PureComponent {
 	static propTypes = {
 		subview: PropTypes.object.isRequired,
 		visible: PropTypes.bool.isRequired,

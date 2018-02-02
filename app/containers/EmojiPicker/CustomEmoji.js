@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 @connect(state => ({
 	baseUrl: state.settings.Site_Url
 }))
-export default class extends React.Component {
+export default class CustomEmoji extends React.Component {
 	static propTypes = {
 		baseUrl: PropTypes.string.isRequired,
 		emoji: PropTypes.object.isRequired,
