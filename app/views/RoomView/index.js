@@ -23,7 +23,6 @@ import RoomsHeader from './Header';
 import ReactionPicker from './ReactionPicker';
 import Banner from './banner';
 import styles from './styles';
-const list = [{key: 'a'}, {key: 'b'}, {key: 'c'}, {key: 'd'}, {key: 'e'}]
 
 @connect(
 	state => ({
@@ -197,15 +196,14 @@ export default class RoomView extends React.Component {
 		return (
 			<View style={styles.container}>
 				<Banner />
-				<SafeAreaView style={styles.safeAreaView}>
-					<List
-						end={this.state.end}
-						room={this.rid}
-						renderFooter={this.renderHeader}
-						onEndReached={this.onEndReached}
-						renderRow={item => this.renderItem(item)}
-					/>
-				</SafeAreaView>
+				<List
+					end={this.state.end}
+					room={this.rid}
+					renderFooter={this.renderHeader}
+					onEndReached={this.onEndReached}
+					renderRow={item => this.renderItem(item)}
+				/>
+				{this.renderFooter()}
 				{this.state.room._id ? <MessageActions room={this.state.room} /> : null}
 				<MessageErrorActions />
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />

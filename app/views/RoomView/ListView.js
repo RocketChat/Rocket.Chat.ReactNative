@@ -12,6 +12,7 @@ import styles from './styles';
 import debounce from '../../utils/debounce';
 import Typing from '../../containers/Typing';
 import database from '../../lib/realm';
+import scrollPersistTaps from '../../utils/scrollPersistTaps';
 
 const DEFAULT_SCROLL_CALLBACK_THROTTLE = 100;
 
@@ -72,8 +73,7 @@ export class List extends React.Component {
 			dataSource={this.dataSource}
 			renderRow={item => this.props.renderRow(item)}
 			initialListSize={10}
-			keyboardShouldPersistTaps='always'
-			keyboardDismissMode='none'
+			{...scrollPersistTaps}
 		/>);
 	}
 }

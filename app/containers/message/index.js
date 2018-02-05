@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableHighlight, Text, TouchableOpacity, Animated, Keyboard, StyleSheet, Vibration } from 'react-native';
+import { View, TouchableHighlight, Text, TouchableOpacity, Animated, StyleSheet, Vibration } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
 import equal from 'deep-equal';
+import { KeyboardUtils } from 'react-native-keyboard-input';
 
 import { actionsShow, errorActionsShow, toggleReactionPicker } from '../../actions/messages';
 import Image from './Image';
@@ -84,7 +85,7 @@ export default class Message extends React.Component {
 	}
 
 	onPress = () => {
-		Keyboard.dismiss();
+		KeyboardUtils.dismiss();
 	}
 
 	onLongPress() {
