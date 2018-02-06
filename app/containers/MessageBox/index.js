@@ -397,7 +397,7 @@ export default class MessageBox extends React.PureComponent {
 			return (
 				<CustomEmoji
 					key='mention-item-avatar'
-					style={[styles.mentionItemCustomEmoji]}
+					style={styles.mentionItemCustomEmoji}
 					emoji={item}
 					baseUrl={this.props.baseUrl}
 				/>
@@ -406,7 +406,7 @@ export default class MessageBox extends React.PureComponent {
 		return (
 			<Text
 				key='mention-item-avatar'
-				style={[StyleSheet.flatten(styles.mentionItemEmoji)]}
+				style={styles.mentionItemEmoji}
 			>
 				{emojify(`:${ item }:`, { output: 'unicode' })}
 			</Text>

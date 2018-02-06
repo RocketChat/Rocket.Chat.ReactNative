@@ -209,8 +209,8 @@ export default class Message extends React.Component {
 				<View style={[styles.reactionContainer, reactedContainerStyle]}>
 					<Emoji
 						content={reaction.emoji}
-						standardEmojiStyle={StyleSheet.flatten(styles.reactionEmoji)}
-						customEmojiStyle={StyleSheet.flatten(styles.reactionCustomEmoji)}
+						standardEmojiStyle={styles.reactionEmoji}
+						customEmojiStyle={styles.reactionCustomEmoji}
 						customEmojis={this.props.customEmojis}
 					/>
 					<Text style={[styles.reactionCount, reactedCount]}>{ reaction.usernames.length }</Text>

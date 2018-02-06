@@ -1,4 +1,5 @@
 import React from 'react';
+import { ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
 import { CachedImage } from 'react-native-img-cache';
 import { connect } from 'react-redux';
@@ -10,7 +11,7 @@ export default class CustomEmoji extends React.Component {
 	static propTypes = {
 		baseUrl: PropTypes.string.isRequired,
 		emoji: PropTypes.object.isRequired,
-		style: PropTypes.object
+		style: ViewPropTypes.style
 	}
 	shouldComponentUpdate() {
 		return false;
