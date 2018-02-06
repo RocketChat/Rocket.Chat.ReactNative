@@ -45,9 +45,10 @@ export default class EmojiPicker extends Component {
 		this.customEmojis.addListener(this.updateCustomEmojis);
 		this.updateFrequentlyUsed();
 		this.updateCustomEmojis();
-		setTimeout(() => this.setState({ show: true }), 100);
 	}
-
+	componentDidMount() {
+		requestAnimationFrame(() => this.setState({ show: true }));
+	}
 	componentWillUnmount() {
 		this.frequentlyUsed.removeAllListeners();
 		this.customEmojis.removeAllListeners();

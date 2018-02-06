@@ -201,7 +201,7 @@ export default class MessageBox extends React.PureComponent {
 		this.setState({ text: '' });
 		this.closeEmoji();
 		this.stopTrackingMention();
-		KeyboardUtils.dismiss();
+		// KeyboardUtils.dismiss();
 		requestAnimationFrame(() => {
 			this.props.typing(false);
 			if (message.trim() === '') {

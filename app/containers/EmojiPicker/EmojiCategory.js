@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Text, View, TouchableOpacity, Platform, FlatList } from 'react-native';
 import { emojify } from 'react-emojione';
 import { responsive } from 'react-native-responsive-ui';
+import { OptimizedFlatList } from 'react-native-optimized-flatlist';
 import styles from './styles';
 import CustomEmoji from './CustomEmoji';
 
@@ -15,13 +16,14 @@ const renderEmoji = (emoji, size) => {
 	}
 	return (
 		<Text style={[styles.categoryEmoji, { height: size, width: size, fontSize: size - 14 }]}>
-			{emojify(`:${ emoji }:`, { output: 'unicode' })}
+		`:${ emoji }:`
 		</Text>
 	);
+	// {emojify(`:${ emoji }:`, { output: 'unicode' })}
 };
 
 
-// const nextFrame = () => new Promise(resolve => requestAnimationFrame(resolve));
+const nextFrame = () => new Promise(resolve => requestAnimationFrame(resolve));
 
 @responsive
 export default class EmojiCategory extends React.Component {
@@ -39,21 +41,21 @@ export default class EmojiCategory extends React.Component {
 		this.size = Math.min(this.props.width || width, height) / (this.props.emojisPerRow || emojisPerRow);
 		this.emojis = [];
 	}
-	// componentWillMount() {
-	// 	this.emojis = this.props.emojis.slice(0, emojisPerRow * 3).map(item => this.renderItem(item, this.size));
-	// }
+	componentWillMount() {
+		this.emojis = this.props.emojis;// .slice(0, emojisPerRow * 4);
+	}
 	// async componentDidMount() {
 	// 	const array = this.props.emojis;
 	// 	const temparray = [];
 	// 	let i;
 	// 	let j;
-	// 	const chunk = emojisPerRow * 3;
+	// 	const chunk = emojisPerRow * 4;
 	// 	for (i = chunk, j = array.length; i < j; i += chunk) {
 	// 		temparray.push(array.slice(i, i + chunk));
 	// 	}
 	// 	temparray.forEach(async(items) => {
 	// 		await nextFrame();
-	// 		this.emojis = this.emojis.concat(items.map(item => this.renderItem(item, this.size)));
+	// 		this.emojis = this.emojis.concat(items);
 	// 		this.forceUpdate();
 	// 		await nextFrame();
 	// 	});
@@ -76,12 +78,12 @@ export default class EmojiCategory extends React.Component {
 
 	render() {
 		return (
-			<FlatList
+			<OptimizedFlatList
 				keyExtractor={item => (item.isCustom && item.content) || item}
 				data={this.props.emojis}
 				renderItem={({ item }) => this.renderItem(item, this.size)}
 				numColumns={emojisPerRow}
-				initialNumToRender={20}
+				initialNumToRender={45}
 				keyboardShouldPersistTaps='always'
 				keyboardDismissMode='interactive'
 				getItemLayout={(data, index) => (

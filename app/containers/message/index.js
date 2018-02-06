@@ -63,7 +63,8 @@ export default class Message extends React.Component {
 		if (this.props.animate) {
 			Animated.timing(this._visibility, {
 				toValue: 1,
-				duration: 300
+				duration: 300,
+				useNativeDriver: true
 			}).start();
 		}
 	}
@@ -241,10 +242,12 @@ export default class Message extends React.Component {
 			item, message, editing, baseUrl, customEmojis
 		} = this.props;
 
-		const marginLeft = this._visibility.interpolate({
-			inputRange: [0, 1],
-			outputRange: [-30, 0]
-		});
+		const transform = [{
+			translateY: this._visibility.interpolate({
+				inputRange: [0, 1],
+				outputRange: [30, 0]
+			})
+		}];
 		const opacity = this._visibility.interpolate({
 			inputRange: [0, 1],
 			outputRange: [0, 1]
@@ -264,7 +267,7 @@ export default class Message extends React.Component {
 				style={[styles.message, isEditing ? styles.editing : null]}
 				accessibilityLabel={accessibilityLabel}
 			>
-				<Animated.View style={[flex, { opacity, marginLeft }]}>
+				<Animated.View style={[flex, { opacity, transform }]}>
 					{this.renderError()}
 					<View style={[this.extraStyle, flex]}>
 						<Avatar
