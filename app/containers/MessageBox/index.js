@@ -9,7 +9,7 @@ import { KeyboardAccessoryView, KeyboardUtils } from 'react-native-keyboard-inpu
 import { userTyping } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import { editRequest, editCancel, clearInput } from '../../actions/messages';
-import styles from './style';
+import styles from './styles';
 import MyIcon from '../icons';
 import database from '../../lib/realm';
 import Avatar from '../Avatar';

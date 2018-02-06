@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, ScrollView, Text } from 'react-native';
+import { View } from 'react-native';
 import { KeyboardRegistry } from 'react-native-keyboard-input';
 import { Provider } from 'react-redux';
 import store from '../../lib/createStore';
 import EmojiPicker from '../EmojiPicker';
+import styles from './styles';
 
 export default class EmojiKeyboard extends React.PureComponent {
 	onEmojiSelected = (emoji) => {
@@ -11,21 +12,11 @@ export default class EmojiKeyboard extends React.PureComponent {
 	}
 	render() {
 		return (
-			// <Provider store={store}>
-			// 	<View
-			// 		style={{
-			// 			flex: 1,
-			// 			borderTopColor: '#ECECEC',
-			// 			borderTopWidth: 1
-			// 		}}
-			// 	>
-			// 		<EmojiPicker onEmojiSelected={emoji => this.onEmojiSelected(emoji)} />
-			// 	</View>
-			// </Provider>
-			<ScrollView contentContainerStyle={{ backgroundColor: 'orange', height: 800 }}>
-				<Text>*** ANOTHER ONE ***</Text>
-				<Text>{this.props.title}</Text>
-			</ScrollView>
+			<Provider store={store}>
+				<View style={styles.emojiKeyboardContainer}>
+					<EmojiPicker onEmojiSelected={emoji => this.onEmojiSelected(emoji)} />
+				</View>
+			</Provider>
 		);
 	}
 }

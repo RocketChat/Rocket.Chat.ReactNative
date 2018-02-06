@@ -100,5 +100,10 @@ export default StyleSheet.create({
 		fontWeight: 'bold',
 		textAlign: 'center',
 		width: 46
+	},
+	emojiKeyboardContainer: {
+		flex: 1,
+		borderTopColor: '#ECECEC',
+		borderTopWidth: 1
 	}
 });
