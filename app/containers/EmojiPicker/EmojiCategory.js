@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, TouchableOpacity, Platform, FlatList } from 'react-native';
+import { Text, TouchableOpacity, Platform } from 'react-native';
 import { emojify } from 'react-emojione';
 import { responsive } from 'react-native-responsive-ui';
 import { OptimizedFlatList } from 'react-native-optimized-flatlist';
 import styles from './styles';
 import CustomEmoji from './CustomEmoji';
-
+import scrollPersistTaps from '../../utils/scrollPersistTaps';
 
 const emojisPerRow = Platform.OS === 'ios' ? 8 : 9;
 
@@ -16,14 +16,11 @@ const renderEmoji = (emoji, size) => {
 	}
 	return (
 		<Text style={[styles.categoryEmoji, { height: size, width: size, fontSize: size - 14 }]}>
-		`:${ emoji }:`
+			{emojify(`:${ emoji }:`, { output: 'unicode' })}
 		</Text>
 	);
-	// {emojify(`:${ emoji }:`, { output: 'unicode' })}
 };
 
-
-const nextFrame = () => new Promise(resolve => requestAnimationFrame(resolve));
 
 @responsive
 export default class EmojiCategory extends React.Component {
@@ -42,24 +39,8 @@ export default class EmojiCategory extends React.Component {
 		this.emojis = [];
 	}
 	componentWillMount() {
-		this.emojis = this.props.emojis;// .slice(0, emojisPerRow * 4);
+		this.emojis = this.props.emojis;
 	}
-	// async componentDidMount() {
-	// 	const array = this.props.emojis;
-	// 	const temparray = [];
-	// 	let i;
-	// 	let j;
-	// 	const chunk = emojisPerRow * 4;
-	// 	for (i = chunk, j = array.length; i < j; i += chunk) {
-	// 		temparray.push(array.slice(i, i + chunk));
-	// 	}
-	// 	temparray.forEach(async(items) => {
-	// 		await nextFrame();
-	// 		this.emojis = this.emojis.concat(items);
-	// 		this.forceUpdate();
-	// 		await nextFrame();
-	// 	});
-	// }
 
 	shouldComponentUpdate() {
 		return false;
@@ -84,12 +65,9 @@ export default class EmojiCategory extends React.Component {
 				renderItem={({ item }) => this.renderItem(item, this.size)}
 				numColumns={emojisPerRow}
 				initialNumToRender={45}
-				keyboardShouldPersistTaps='always'
-				keyboardDismissMode='interactive'
-				getItemLayout={(data, index) => (
-					{ length: this.size, offset: this.size * index, index }
-				)}
+				getItemLayout={(data, index) => ({ length: this.size, offset: this.size * index, index })}
 				removeClippedSubviews
+				{...scrollPersistTaps}
 			/>
 		);
 	}
