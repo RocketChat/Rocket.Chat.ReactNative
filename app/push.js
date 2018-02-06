@@ -4,10 +4,10 @@ import EJSON from 'ejson';
 import { goRoom } from './containers/routes/NavigationService';
 
 const handleNotification = (notification) => {
-	if (notification.usernInteraction) {
+	if (!notification.userInteraction) {
 		return;
 	}
-	const { rid, name } = EJSON.parse(notification.ejson);
+	const { rid, name } = EJSON.parse(notification.ejson || notification.data.ejson);
 	return rid && name && goRoom({ rid, name });
 };
 PushNotification.configure({
