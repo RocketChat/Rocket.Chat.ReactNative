@@ -123,7 +123,7 @@ class LoginView extends React.Component {
 								style={styles.buttonContainer}
 								onPress={this.submit}
 							>
-								<Text style={styles.button} accessibilityTraits='button'>{strings.backToLogin}</Text>
+								<Text style={styles.button} accessibilityTraits='button'>{strings.login}</Text>
 							</TouchableOpacity>
 
 							<View style={styles.loginSecondaryButtons}>
