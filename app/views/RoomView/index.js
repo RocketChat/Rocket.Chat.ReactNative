@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Button, SafeAreaView, Platform, Keyboard, FlatList } from 'react-native';
+import { Text, View, Button, Keyboard, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import equal from 'deep-equal';
-import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 import { List } from './ListView';
 import * as actions from '../../actions';
@@ -30,7 +29,8 @@ import styles from './styles';
 		Message_TimeFormat: state.settings.Message_TimeFormat,
 		loading: state.messages.isFetching,
 		user: state.login.user,
-		actionMessage: state.messages.actionMessage
+		actionMessage: state.messages.actionMessage,
+		layoutAnimation: state.room.layoutAnimation
 	}),
 	dispatch => ({
 		actions: bindActionCreators(actions, dispatch),
@@ -57,7 +57,8 @@ export default class RoomView extends React.Component {
 		actionMessage: PropTypes.object,
 		toggleReactionPicker: PropTypes.func.isRequired,
 		setKeyboardOpen: PropTypes.func,
-		setKeyboardClosed: PropTypes.func
+		setKeyboardClosed: PropTypes.func,
+		layoutAnimation: PropTypes.instanceOf(Date)
 	};
 
 	static navigationOptions = ({ navigation }) => ({
@@ -97,6 +98,11 @@ export default class RoomView extends React.Component {
 		this.rooms.addListener(this.updateRoom);
 		this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => this.props.setKeyboardOpen());
 		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => this.props.setKeyboardClosed());
+	}
+	componentWillReceiveProps(nextProps) {
+		if (this.props.layoutAnimation !== nextProps.layoutAnimation) {
+			LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+		}
 	}
 	shouldComponentUpdate(nextProps, nextState) {
 		return !(equal(this.props, nextProps) && equal(this.state, nextState));
@@ -141,9 +147,12 @@ export default class RoomView extends React.Component {
 		this.setState({ room: this.rooms[0] });
 	}
 
-	sendMessage = message => RocketChat.sendMessage(this.rid, message).then(() => {
-		this.props.setLastOpen(null);
-	});
+	sendMessage = (message) => {
+		LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+		RocketChat.sendMessage(this.rid, message).then(() => {
+			this.props.setLastOpen(null);
+		});
+	};
 
 	joinRoom = async() => {
 		await RocketChat.joinRoom(this.props.rid);
@@ -197,6 +206,7 @@ export default class RoomView extends React.Component {
 			<View style={styles.container}>
 				<Banner />
 				<List
+					key='room-view-messages'
 					end={this.state.end}
 					room={this.rid}
 					renderFooter={this.renderHeader}
@@ -207,7 +217,6 @@ export default class RoomView extends React.Component {
 				{this.state.room._id ? <MessageActions room={this.state.room} /> : null}
 				<MessageErrorActions />
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
-				{/* {Platform.OS === 'ios' ? <KeyboardSpacer /> : null} */}
 			</View>
 		);
 	}

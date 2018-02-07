@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, SafeAreaView, FlatList, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TextInput, SafeAreaView, FlatList, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
-import { KeyboardAccessoryView, KeyboardUtils } from 'react-native-keyboard-input';
-import { userTyping } from '../../actions/room';
+import { KeyboardAccessoryView } from 'react-native-keyboard-input';
+import { userTyping, layoutAnimation } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import { editRequest, editCancel, clearInput } from '../../actions/messages';
 import styles from './styles';
@@ -14,9 +14,7 @@ import MyIcon from '../icons';
 import database from '../../lib/realm';
 import Avatar from '../Avatar';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
-import AnimatedContainer from './AnimatedContainer';
 import EmojiPicker from '../EmojiPicker';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { emojis } from '../../emojis';
 import './EmojiKeyboard';
 
@@ -37,7 +35,8 @@ const onlyUnique = function onlyUnique(value, index, self) {
 	editCancel: () => dispatch(editCancel()),
 	editRequest: message => dispatch(editRequest(message)),
 	typing: status => dispatch(userTyping(status)),
-	clearInput: () => dispatch(clearInput())
+	clearInput: () => dispatch(clearInput()),
+	layoutAnimation: () => dispatch(layoutAnimation())
 }))
 export default class MessageBox extends React.PureComponent {
 	static propTypes = {
@@ -50,7 +49,8 @@ export default class MessageBox extends React.PureComponent {
 		editing: PropTypes.bool,
 		typing: PropTypes.func,
 		clearInput: PropTypes.func,
-		isKeyboardOpen: PropTypes.bool
+		isKeyboardOpen: PropTypes.bool,
+		layoutAnimation: PropTypes.func
 	}
 
 	constructor(props) {
@@ -201,7 +201,6 @@ export default class MessageBox extends React.PureComponent {
 		this.setState({ text: '' });
 		this.closeEmoji();
 		this.stopTrackingMention();
-		// KeyboardUtils.dismiss();
 		requestAnimationFrame(() => {
 			this.props.typing(false);
 			if (message.trim() === '') {
@@ -330,6 +329,9 @@ export default class MessageBox extends React.PureComponent {
 	}
 
 	identifyMentionKeyword(keyword, type) {
+		if (!this.state.showMentionsContainer) {
+			this.props.layoutAnimation();
+		}
 		this.setState({
 			showMentionsContainer: true,
 			showEmojiKeyboard: false,
@@ -449,44 +451,45 @@ export default class MessageBox extends React.PureComponent {
 		const { showEmojiKeyboard, messageboxHeight } = this.state;
 		return <AnimatedContainer visible={showEmojiKeyboard} subview={emojiContainer} messageboxHeight={messageboxHeight} />;
 	}
-	renderMentions() {
-		const list = (
-			<FlatList
-				style={styles.mentionList}
-				data={this.state.mentions}
-				renderItem={({ item }) => this.renderMentionItem(item)}
-				keyExtractor={item => item._id || item}
-				{...scrollPersistTaps}
-			/>
-		);
-		const { showMentionsContainer, messageboxHeight } = this.state;
-		return <AnimatedContainer visible={showMentionsContainer} subview={list} messageboxHeight={messageboxHeight} />;
-	}
+	renderMentions = () => (
+		<FlatList
+			key='messagebox-container'
+			style={styles.mentionList}
+			data={this.state.mentions}
+			renderItem={({ item }) => this.renderMentionItem(item)}
+			keyExtractor={item => item._id || item}
+			keyboardShouldPersistTaps='always'
+		/>
+	);
 
 	renderContent() {
 		return (
-			<SafeAreaView
-				style={[styles.textBox, (this.props.editing ? styles.editing : null)]}
-				onLayout={event => this.setState({ messageboxHeight: event.nativeEvent.layout.height })}
-			>
-				<View style={styles.textArea}>
-					{this.leftButtons}
-					<TextInput
-						ref={component => this.component = component}
-						style={styles.textBoxInput}
-						returnKeyType='default'
-						blurOnSubmit={false}
-						placeholder='New Message'
-						onChangeText={text => this.onChangeText(text)}
-						value={this.state.text}
-						underlineColorAndroid='transparent'
-						defaultValue=''
-						multiline
-						placeholderTextColor='#9EA2A8'
-					/>
-					{this.rightButtons}
-				</View>
-			</SafeAreaView>
+			[
+				this.renderMentions(),
+				<SafeAreaView
+					key='messagebox'
+					style={[styles.textBox, (this.props.editing ? styles.editing : null)]}
+					onLayout={event => this.setState({ messageboxHeight: event.nativeEvent.layout.height })}
+				>
+					<View style={styles.textArea}>
+						{this.leftButtons}
+						<TextInput
+							ref={component => this.component = component}
+							style={styles.textBoxInput}
+							returnKeyType='default'
+							blurOnSubmit={false}
+							placeholder='New Message'
+							onChangeText={text => this.onChangeText(text)}
+							value={this.state.text}
+							underlineColorAndroid='transparent'
+							defaultValue=''
+							multiline
+							placeholderTextColor='#9EA2A8'
+						/>
+						{this.rightButtons}
+					</View>
+				</SafeAreaView>
+			]
 		);
 	}
 
