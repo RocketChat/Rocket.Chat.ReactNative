@@ -5,6 +5,10 @@ export default StyleSheet.create({
 		flexGrow: 1,
 		flexShrink: 1
 	},
+	flex: {
+		flexDirection: 'row',
+		flex: 1
+	},
 	message: {
 		padding: 12,
 		paddingTop: 6,
@@ -63,5 +67,8 @@ export default StyleSheet.create({
 	reactionCustomEmoji: {
 		width: 15,
 		height: 15
+	},
+	avatar: {
+		marginRight: 10
 	}
 });

@@ -68,7 +68,6 @@ export default class RoomView extends React.Component {
 		this.name = props.name ||
 			props.navigation.state.params.name ||
 			props.navigation.state.params.room.name;
-		this.opened = new Date();
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			loaded: true,
@@ -94,7 +93,7 @@ export default class RoomView extends React.Component {
 	}
 	componentWillReceiveProps(nextProps) {
 		if (this.props.layoutAnimation !== nextProps.layoutAnimation) {
-			LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+			LayoutAnimation.spring();
 		}
 	}
 	shouldComponentUpdate(nextProps, nextState) {
@@ -139,7 +138,6 @@ export default class RoomView extends React.Component {
 	}
 
 	sendMessage = (message) => {
-		LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
 		RocketChat.sendMessage(this.rid, message).then(() => {
 			this.props.setLastOpen(null);
 		});
@@ -157,7 +155,6 @@ export default class RoomView extends React.Component {
 			key={item._id}
 			item={item}
 			reactions={JSON.parse(JSON.stringify(item.reactions))}
-			animate={this.opened.toISOString() < item.ts.toISOString()}
 			baseUrl={this.props.Site_Url}
 			Message_TimeFormat={this.props.Message_TimeFormat}
 			user={this.props.user}

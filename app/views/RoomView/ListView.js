@@ -1,7 +1,7 @@
 import { ListView as OldList } from 'realm/react-native';
 import React from 'react';
 import cloneReferencedElement from 'react-clone-referenced-element';
-import { ScrollView, ListView as OldList2 } from 'react-native';
+import { ScrollView, ListView as OldList2, LayoutAnimation } from 'react-native';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -54,6 +54,9 @@ export class List extends React.Component {
 	}
 	shouldComponentUpdate(nextProps) {
 		return this.props.end !== nextProps.end;
+	}
+	componentWillUpdate() {
+		LayoutAnimation.spring();
 	}
 	updateState = debounce(() => {
 		// this.setState({
