@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Button, Keyboard, LayoutAnimation } from 'react-native';
+import { Text, View, Button, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import equal from 'deep-equal';
@@ -9,7 +9,6 @@ import { List } from './ListView';
 import * as actions from '../../actions';
 import { openRoom, setLastOpen } from '../../actions/room';
 import { editCancel, toggleReactionPicker } from '../../actions/messages';
-import { setKeyboardOpen, setKeyboardClosed } from '../../actions/keyboard';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
@@ -37,9 +36,7 @@ import styles from './styles';
 		openRoom: room => dispatch(openRoom(room)),
 		editCancel: () => dispatch(editCancel()),
 		setLastOpen: date => dispatch(setLastOpen(date)),
-		toggleReactionPicker: message => dispatch(toggleReactionPicker(message)),
-		setKeyboardOpen: () => dispatch(setKeyboardOpen()),
-		setKeyboardClosed: () => dispatch(setKeyboardClosed())
+		toggleReactionPicker: message => dispatch(toggleReactionPicker(message))
 	})
 )
 export default class RoomView extends React.Component {
@@ -56,8 +53,6 @@ export default class RoomView extends React.Component {
 		loading: PropTypes.bool,
 		actionMessage: PropTypes.object,
 		toggleReactionPicker: PropTypes.func.isRequired,
-		setKeyboardOpen: PropTypes.func,
-		setKeyboardClosed: PropTypes.func,
 		layoutAnimation: PropTypes.instanceOf(Date)
 	};
 
@@ -96,8 +91,6 @@ export default class RoomView extends React.Component {
 		}
 
 		this.rooms.addListener(this.updateRoom);
-		this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => this.props.setKeyboardOpen());
-		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => this.props.setKeyboardClosed());
 	}
 	componentWillReceiveProps(nextProps) {
 		if (this.props.layoutAnimation !== nextProps.layoutAnimation) {
@@ -110,8 +103,6 @@ export default class RoomView extends React.Component {
 	componentWillUnmount() {
 		clearTimeout(this.timer);
 		this.rooms.removeAllListeners();
-		this.keyboardDidShowListener.remove();
-		this.keyboardDidHideListener.remove();
 		this.props.editCancel();
 	}
 

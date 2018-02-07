@@ -29,8 +29,7 @@ const onlyUnique = function onlyUnique(value, index, self) {
 	room: state.room,
 	message: state.messages.message,
 	editing: state.messages.editing,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	isKeyboardOpen: state.keyboard.isOpen
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }), dispatch => ({
 	editCancel: () => dispatch(editCancel()),
 	editRequest: message => dispatch(editRequest(message)),
@@ -49,14 +48,12 @@ export default class MessageBox extends React.PureComponent {
 		editing: PropTypes.bool,
 		typing: PropTypes.func,
 		clearInput: PropTypes.func,
-		isKeyboardOpen: PropTypes.bool,
 		layoutAnimation: PropTypes.func
 	}
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			messageboxHeight: 0,
 			text: '',
 			mentions: [],
 			showMentionsContainer: false,
@@ -75,8 +72,6 @@ export default class MessageBox extends React.PureComponent {
 			this.component.focus();
 		} else if (!nextProps.message) {
 			this.setState({ text: '' });
-		} else if (this.props.isKeyboardOpen !== nextProps.isKeyboardOpen && nextProps.isKeyboardOpen) {
-			this.closeEmoji();
 		}
 	}
 
@@ -442,15 +437,6 @@ export default class MessageBox extends React.PureComponent {
 			</TouchableOpacity>
 		);
 	}
-	renderEmoji() {
-		const emojiContainer = (
-			<View style={styles.emojiContainer}>
-				<EmojiPicker onEmojiSelected={emoji => this.onEmojiSelected(emoji)} />
-			</View>
-		);
-		const { showEmojiKeyboard, messageboxHeight } = this.state;
-		return <AnimatedContainer visible={showEmojiKeyboard} subview={emojiContainer} messageboxHeight={messageboxHeight} />;
-	}
 	renderMentions = () => (
 		<FlatList
 			key='messagebox-container'
@@ -469,7 +455,6 @@ export default class MessageBox extends React.PureComponent {
 				<SafeAreaView
 					key='messagebox'
 					style={[styles.textBox, (this.props.editing ? styles.editing : null)]}
-					onLayout={event => this.setState({ messageboxHeight: event.nativeEvent.layout.height })}
 				>
 					<View style={styles.textArea}>
 						{this.leftButtons}
