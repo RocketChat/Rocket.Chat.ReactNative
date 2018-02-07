@@ -15,7 +15,6 @@ import Message from '../../containers/message';
 import MessageActions from '../../containers/MessageActions';
 import MessageErrorActions from '../../containers/MessageErrorActions';
 import MessageBox from '../../containers/MessageBox';
-
 import Header from '../../containers/Header';
 import RoomsHeader from './Header';
 import ReactionPicker from './ReactionPicker';
@@ -77,12 +76,12 @@ export default class RoomView extends React.Component {
 		this.onReactionPress = this.onReactionPress.bind(this);
 	}
 
-	componentWillMount() {
+	async componentWillMount() {
 		this.props.navigation.setParams({
 			title: this.name
 		});
 		this.updateRoom();
-		this.props.openRoom({ rid: this.rid, name: this.name, ls: this.state.room.ls });
+		await this.props.openRoom({ rid: this.rid, name: this.name, ls: this.state.room.ls });
 		if (this.state.room.alert || this.state.room.unread || this.state.room.userMentions) {
 			this.props.setLastOpen(this.state.room.ls);
 		} else {
