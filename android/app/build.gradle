@@ -97,7 +97,7 @@ android {
         applicationId "chat.rocket.reactnative"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode VERSIONCODE as Integer
+        versionCode 57
         versionName "1.1"
         ndk {
             abiFilters "armeabi-v7a", "x86"
@@ -145,7 +145,6 @@ android {
 
 dependencies {
     compile project(':react-native-localization')
-    compile project(':@remobile/react-native-toast')
     compile project(':react-native-splash-screen')
     compile project(':react-native-video')
     compile project(':react-native-push-notification')
