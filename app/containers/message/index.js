@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableHighlight, Text, TouchableOpacity, Animated, StyleSheet, Vibration } from 'react-native';
+import { View, TouchableHighlight, Text, TouchableOpacity, Animated, Vibration } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';

@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
 	typing: { fontWeight: 'bold', paddingHorizontal: 15, height: 25 },

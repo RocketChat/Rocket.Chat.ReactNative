@@ -14,7 +14,6 @@ import MyIcon from '../icons';
 import database from '../../lib/realm';
 import Avatar from '../Avatar';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
-import EmojiPicker from '../EmojiPicker';
 import { emojis } from '../../emojis';
 import './EmojiKeyboard';
 
