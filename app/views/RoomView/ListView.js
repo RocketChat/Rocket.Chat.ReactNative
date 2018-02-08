@@ -52,7 +52,7 @@ export class List extends React.Component {
 		return this.props.end !== nextProps.end;
 	}
 	componentWillUpdate() {
-		LayoutAnimation.spring();
+		LayoutAnimation.easeInEaseOut();
 	}
 	updateState = debounce(() => {
 		// this.setState({
