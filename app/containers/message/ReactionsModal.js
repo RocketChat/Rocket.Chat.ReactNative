@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 });
 const standardEmojiStyle = { fontSize: 20 };
 const customEmojiStyle = { width: 20, height: 20 };
-export default class extends React.PureComponent {
+export default class ReactionsModal extends React.PureComponent {
 	static propTypes = {
 		isVisible: PropTypes.bool.isRequired,
 		onClose: PropTypes.func.isRequired,

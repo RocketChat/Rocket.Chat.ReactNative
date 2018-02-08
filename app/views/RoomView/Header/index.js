@@ -18,7 +18,7 @@ import { closeRoom } from '../../../actions/room';
 }), dispatch => ({
 	close: () => dispatch(closeRoom())
 }))
-export default class extends React.PureComponent {
+export default class RoomHeaderView extends React.PureComponent {
 	static propTypes = {
 		close: PropTypes.func.isRequired,
 		navigation: PropTypes.object.isRequired,

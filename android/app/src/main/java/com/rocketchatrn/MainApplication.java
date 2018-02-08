@@ -16,6 +16,7 @@ import com.facebook.soloader.SoLoader;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.remobile.toast.RCTToastPackage;
+import com.wix.reactnativekeyboardinput.KeyboardInputPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,16 +34,17 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
 			  new MainReactPackage(),
-              new SvgPackage(),
-              new ImagePickerPackage(),
-              new VectorIconsPackage(),
-              new RNFetchBlobPackage(),
-              new ZeroconfReactPackage(),
-              new RealmReactPackage(),
-              new ReactNativePushNotificationPackage(),
-              new ReactVideoPackage(),
-              new SplashScreenReactPackage(),
-              new RCTToastPackage()
+        new SvgPackage(),
+        new ImagePickerPackage(),
+        new VectorIconsPackage(),
+        new RNFetchBlobPackage(),
+        new ZeroconfReactPackage(),
+        new RealmReactPackage(),
+        new ReactNativePushNotificationPackage(),
+        new ReactVideoPackage(),
+        new SplashScreenReactPackage(),
+        new RCTToastPackage(),
+        new KeyboardInputPackage(MainApplication.this)
       );
     }
   };

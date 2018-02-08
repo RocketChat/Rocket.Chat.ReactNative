@@ -25,7 +25,7 @@ const styles = {
 	}
 };
 
-export default class extends React.PureComponent {
+export default class PhotoModal extends React.PureComponent {
 	static propTypes = {
 		title: PropTypes.string.isRequired,
 		image: PropTypes.string.isRequired,

@@ -16,7 +16,7 @@ import database from '../lib/realm';
 		errorActionsHide: () => dispatch(errorActionsHide())
 	})
 )
-export default class MessageActions extends React.Component {
+export default class MessageErrorActions extends React.Component {
 	static propTypes = {
 		errorActionsHide: PropTypes.func.isRequired,
 		showErrorActions: PropTypes.bool.isRequired,

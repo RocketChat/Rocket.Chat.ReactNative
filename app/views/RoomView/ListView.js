@@ -1,7 +1,7 @@
 import { ListView as OldList } from 'realm/react-native';
 import React from 'react';
 import cloneReferencedElement from 'react-clone-referenced-element';
-import { ScrollView, ListView as OldList2 } from 'react-native';
+import { ScrollView, ListView as OldList2, LayoutAnimation } from 'react-native';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -12,6 +12,7 @@ import styles from './styles';
 import debounce from '../../utils/debounce';
 import Typing from '../../containers/Typing';
 import database from '../../lib/realm';
+import scrollPersistTaps from '../../utils/scrollPersistTaps';
 
 const DEFAULT_SCROLL_CALLBACK_THROTTLE = 100;
 
@@ -27,10 +28,6 @@ export class DataSource extends OldList.DataSource {
 }
 
 const ds = new DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id });
-
-@connect(state => ({
-	lastOpen: state.room.lastOpen
-}))
 
 export class List extends React.Component {
 	static propTypes = {
@@ -54,6 +51,9 @@ export class List extends React.Component {
 	shouldComponentUpdate(nextProps) {
 		return this.props.end !== nextProps.end;
 	}
+	componentWillUpdate() {
+		LayoutAnimation.easeInEaseOut();
+	}
 	updateState = debounce(() => {
 		// this.setState({
 		this.dataSource = this.dataSource.cloneWithRows(this.data);
@@ -72,12 +72,14 @@ export class List extends React.Component {
 			dataSource={this.dataSource}
 			renderRow={item => this.props.renderRow(item)}
 			initialListSize={10}
-			keyboardShouldPersistTaps='always'
-			keyboardDismissMode='none'
+			{...scrollPersistTaps}
 		/>);
 	}
 }
 
+@connect(state => ({
+	lastOpen: state.room.lastOpen
+}))
 export class ListView extends OldList2 {
 	constructor(props) {
 		super(props);
