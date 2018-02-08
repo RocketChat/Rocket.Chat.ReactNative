@@ -17,7 +17,7 @@ const tabEmojiStyle = { fontSize: 15 };
 	toggleReactionPicker: message => dispatch(toggleReactionPicker(message))
 }))
 @responsive
-export default class extends React.Component {
+export default class ReactionPicker extends React.Component {
 	static propTypes = {
 		window: PropTypes.any,
 		showReactionPicker: PropTypes.bool,
