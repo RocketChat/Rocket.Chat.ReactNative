@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default class extends React.PureComponent {
+export default class Image extends React.PureComponent {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
