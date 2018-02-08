@@ -143,6 +143,21 @@ const url = {
 	}
 };
 
+const messagesReactionsUsernamesSchema = {
+	name: 'messagesReactionsUsernames',
+	properties: {
+		value: 'string'
+	}
+};
+
+const messagesReactionsSchema = {
+	name: 'messagesReactions',
+	primaryKey: 'emoji',
+	properties: {
+		emoji: 'string',
+		usernames: { type: 'list', objectType: 'messagesReactionsUsernames' }
+	}
+};
 
 const messagesEditedBySchema = {
 	name: 'messagesEditedBy',
@@ -174,7 +189,8 @@ const messagesSchema = {
 		status: { type: 'int', optional: true },
 		pinned: { type: 'bool', optional: true },
 		starred: { type: 'bool', optional: true },
-		editedBy: 'messagesEditedBy'
+		editedBy: 'messagesEditedBy',
+		reactions: { type: 'list', objectType: 'messagesReactions' }
 	}
 };
 
@@ -223,7 +239,9 @@ const schema = [
 	url,
 	frequentlyUsedEmojiSchema,
 	customEmojiAliasesSchema,
-	customEmojisSchema
+	customEmojisSchema,
+	messagesReactionsSchema,
+	messagesReactionsUsernamesSchema
 ];
 class DB {
 	databases = {

@@ -69,7 +69,7 @@ const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 		resetCreateChannel: () => dispatch(createChannelActions.reset())
 	})
 )
-export default class RoomsListView extends React.Component {
+export default class SelectUsersView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
 		Site_Url: PropTypes.string,

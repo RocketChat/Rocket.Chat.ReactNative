@@ -52,10 +52,13 @@ const Url = ({ url }) => {
 	return (
 		<TouchableOpacity onPress={() => onPress(url.url)} style={styles.button}>
 			<QuoteMark />
-			<Image
-				style={styles.image}
-				source={{ uri: encodeURI(url.image) }}
-			/>
+			{url.image ?
+				<Image
+					style={styles.image}
+					source={{ uri: encodeURI(url.image) }}
+				/>
+				: null
+			}
 			<View style={styles.textContainer}>
 				<Text style={styles.title}>{url.title}</Text>
 				<Text style={styles.description} numberOfLines={1}>{url.description}</Text>

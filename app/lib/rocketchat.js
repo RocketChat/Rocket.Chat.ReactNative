@@ -1,6 +1,7 @@
 import Random from 'react-native-meteor/lib/Random';
 import { AsyncStorage, Platform } from 'react-native';
 import { hashPassword } from 'react-native-meteor/lib/utils';
+import _ from 'lodash';
 
 import RNFetchBlob from 'react-native-fetch-blob';
 import reduxStore from './createStore';
@@ -264,6 +265,8 @@ const RocketChat = {
 		// loadHistory returns message.starred as object
 		// stream-room-messages returns message.starred as an array
 		message.starred = message.starred && (Array.isArray(message.starred) ? message.starred.length > 0 : !!message.starred);
+		message.reactions = _.map(message.reactions, (value, key) =>
+			({ emoji: key, usernames: value.usernames.map(username => ({ value: username })) }));
 		return message;
 	},
 	loadMessagesForRoom(rid, end, cb) {
@@ -590,6 +593,9 @@ const RocketChat = {
 	},
 	setUserPresenceDefaultStatus(status) {
 		return call('UserPresence:setDefaultStatus', status);
+	},
+	setReaction(emoji, messageId) {
+		return call('setReaction', emoji, messageId);
 	}
 };
 

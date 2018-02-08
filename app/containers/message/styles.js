@@ -5,6 +5,10 @@ export default StyleSheet.create({
 		flexGrow: 1,
 		flexShrink: 1
 	},
+	flex: {
+		flexDirection: 'row',
+		flex: 1
+	},
 	message: {
 		padding: 12,
 		paddingTop: 6,
@@ -33,5 +37,38 @@ export default StyleSheet.create({
 		borderWidth: 1,
 		borderRadius: 5,
 		padding: 5
+	},
+	reactionsContainer: {
+		flexDirection: 'row',
+		flexWrap: 'wrap'
+	},
+	reactionContainer: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		padding: 3,
+		borderWidth: 1,
+		borderColor: '#cccccc',
+		borderRadius: 4,
+		marginRight: 5,
+		marginBottom: 5,
+		height: 23,
+		width: 35
+	},
+	reactionCount: {
+		fontSize: 12,
+		marginLeft: 2,
+		fontWeight: '600',
+		color: '#aaaaaa'
+	},
+	reactionEmoji: {
+		fontSize: 12
+	},
+	reactionCustomEmoji: {
+		width: 15,
+		height: 15
+	},
+	avatar: {
+		marginRight: 10
 	}
 });
