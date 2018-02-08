@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 const MENTION_HEIGHT = 50;
 
@@ -9,8 +9,6 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		borderTopWidth: 1,
 		borderTopColor: '#D8D8D8',
-		paddingHorizontal: 15,
-		paddingVertical: 15,
 		zIndex: 2
 	},
 	safeAreaView: {
@@ -23,14 +21,14 @@ export default StyleSheet.create({
 		flexGrow: 0
 	},
 	textBoxInput: {
-		paddingVertical: 0,
-		paddingHorizontal: 10,
-		textAlignVertical: 'top',
+		textAlignVertical: 'center',
 		maxHeight: 120,
 		flexGrow: 1,
 		width: 1,
-		paddingTop: 0,
-		paddingBottom: 0
+		paddingTop: 15,
+		paddingBottom: 15,
+		paddingLeft: 0,
+		paddingRight: 0
 	},
 	editing: {
 		backgroundColor: '#fff5df'
@@ -39,7 +37,8 @@ export default StyleSheet.create({
 		color: '#2F343D',
 		fontSize: 20,
 		textAlign: 'center',
-		paddingHorizontal: 5,
+		padding: 15,
+		paddingHorizontal: 21,
 		flex: 0
 	},
 	actionRow: {
@@ -85,5 +84,26 @@ export default StyleSheet.create({
 		borderTopColor: '#ECECEC',
 		borderTopWidth: 1,
 		backgroundColor: '#fff'
+	},
+	mentionItemCustomEmoji: {
+		margin: 8,
+		width: 30,
+		height: 30
+	},
+	mentionItemEmoji: {
+		width: 46,
+		height: 36,
+		fontSize: Platform.OS === 'ios' ? 30 : 25,
+		textAlign: 'center'
+	},
+	fixedMentionAvatar: {
+		fontWeight: 'bold',
+		textAlign: 'center',
+		width: 46
+	},
+	emojiKeyboardContainer: {
+		flex: 1,
+		borderTopColor: '#ECECEC',
+		borderTopWidth: 1
 	}
 });

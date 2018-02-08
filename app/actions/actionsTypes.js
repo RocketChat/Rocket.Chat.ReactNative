@@ -28,7 +28,17 @@ export const FORGOT_PASSWORD = createRequestTypes('FORGOT_PASSWORD', [
 ]);
 export const USER = createRequestTypes('USER', ['SET']);
 export const ROOMS = createRequestTypes('ROOMS', [...defaultTypes, 'SET_SEARCH']);
-export const ROOM = createRequestTypes('ROOM', ['ADD_USER_TYPING', 'REMOVE_USER_TYPING', 'SOMEONE_TYPING', 'OPEN', 'CLOSE', 'USER_TYPING', 'MESSAGE_RECEIVED', 'SET_LAST_OPEN']);
+export const ROOM = createRequestTypes('ROOM', [
+	'ADD_USER_TYPING',
+	'REMOVE_USER_TYPING',
+	'SOMEONE_TYPING',
+	'OPEN',
+	'CLOSE',
+	'USER_TYPING',
+	'MESSAGE_RECEIVED',
+	'SET_LAST_OPEN',
+	'LAYOUT_ANIMATION'
+]);
 export const APP = createRequestTypes('APP', ['READY', 'INIT']);
 export const MESSAGES = createRequestTypes('MESSAGES', [
 	...defaultTypes,
@@ -55,7 +65,8 @@ export const MESSAGES = createRequestTypes('MESSAGES', [
 	'TOGGLE_PIN_SUCCESS',
 	'TOGGLE_PIN_FAILURE',
 	'SET_INPUT',
-	'CLEAR_INPUT'
+	'CLEAR_INPUT',
+	'TOGGLE_REACTION_PICKER'
 ]);
 export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [
 	...defaultTypes,
@@ -81,4 +92,4 @@ export const ACTIVE_USERS = createRequestTypes('ACTIVE_USERS', ['SET', 'REQUEST'
 
 export const INCREMENT = 'INCREMENT';
 export const DECREMENT = 'DECREMENT';
-export const KEYBOARD = createRequestTypes('KEYBOARD', ['OPEN', 'CLOSE']);
+
