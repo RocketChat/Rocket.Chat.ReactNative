@@ -5,7 +5,7 @@ import EasyMarkdown from 'react-native-easy-markdown'; // eslint-disable-line
 import SimpleMarkdown from 'simple-markdown';
 import { emojify } from 'react-emojione';
 import styles from './styles';
-import CustomEmoji from '../CustomEmoji';
+import CustomEmoji from '../EmojiPicker/CustomEmoji';
 
 const BlockCode = ({ node, state }) => (
 	<Text
@@ -111,9 +111,8 @@ const Markdown = ({ msg, customEmojis }) => {
 				const emojiExtension = customEmojis[content];
 				if (emojiExtension) {
 					const emoji = { extension: emojiExtension, content };
-					const style = StyleSheet.flatten(styles.customEmoji);
 					element.props.children = (
-						<CustomEmoji key={state.key} style={style} emoji={emoji} />
+						<CustomEmoji key={state.key} style={styles.customEmoji} emoji={emoji} />
 					);
 				}
 				return element;

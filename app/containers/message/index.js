@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableHighlight, Text, TouchableOpacity, Animated } from 'react-native';
+import { View, TouchableHighlight, Text, TouchableOpacity, Vibration } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
+import equal from 'deep-equal';
+import { KeyboardUtils } from 'react-native-keyboard-input';
 
-import { actionsShow, errorActionsShow } from '../../actions/messages';
+import { actionsShow, errorActionsShow, toggleReactionPicker } from '../../actions/messages';
 import Image from './Image';
 import User from './User';
 import Avatar from '../Avatar';
@@ -14,11 +16,10 @@ import Video from './Video';
 import Markdown from './Markdown';
 import Url from './Url';
 import Reply from './Reply';
+import ReactionsModal from './ReactionsModal';
+import Emoji from './Emoji';
 import messageStatus from '../../constants/messagesStatus';
 import styles from './styles';
-
-const avatar = { marginRight: 10 };
-const flex = { flexDirection: 'row', flex: 1 };
 
 @connect(state => ({
 	message: state.messages.message,
@@ -26,11 +27,13 @@ const flex = { flexDirection: 'row', flex: 1 };
 	customEmojis: state.customEmojis
 }), dispatch => ({
 	actionsShow: actionMessage => dispatch(actionsShow(actionMessage)),
-	errorActionsShow: actionMessage => dispatch(errorActionsShow(actionMessage))
+	errorActionsShow: actionMessage => dispatch(errorActionsShow(actionMessage)),
+	toggleReactionPicker: message => dispatch(toggleReactionPicker(message))
 }))
 export default class Message extends React.Component {
 	static propTypes = {
 		item: PropTypes.object.isRequired,
+		reactions: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
 		Message_TimeFormat: PropTypes.string.isRequired,
 		message: PropTypes.object.isRequired,
@@ -38,20 +41,15 @@ export default class Message extends React.Component {
 		editing: PropTypes.bool,
 		actionsShow: PropTypes.func,
 		errorActionsShow: PropTypes.func,
-		animate: PropTypes.bool,
-		customEmojis: PropTypes.object
+		customEmojis: PropTypes.object,
+		toggleReactionPicker: PropTypes.func,
+		onReactionPress: PropTypes.func
 	}
 
-	componentWillMount() {
-		this._visibility = new Animated.Value(this.props.animate ? 0 : 1);
-	}
-	componentDidMount() {
-		if (this.props.animate) {
-			Animated.timing(this._visibility, {
-				toValue: 1,
-				duration: 300
-			}).start();
-		}
+	constructor(props) {
+		super(props);
+		this.state = { reactionsModal: false };
+		this.onClose = this.onClose.bind(this);
 	}
 	componentWillReceiveProps() {
 		this.extraStyle = this.extraStyle || {};
@@ -60,18 +58,37 @@ export default class Message extends React.Component {
 		}
 	}
 
-	shouldComponentUpdate(nextProps) {
+	shouldComponentUpdate(nextProps, nextState) {
+		if (!equal(this.props.reactions, nextProps.reactions)) {
+			return true;
+		}
+		if (this.state.reactionsModal !== nextState.reactionsModal) {
+			return true;
+		}
 		return this.props.item._updatedAt.toGMTString() !== nextProps.item._updatedAt.toGMTString() || this.props.item.status !== nextProps.item.status;
 	}
 
+	onPress = () => {
+		KeyboardUtils.dismiss();
+	}
+
 	onLongPress() {
-		const { item } = this.props;
-		this.props.actionsShow(JSON.parse(JSON.stringify(item)));
+		this.props.actionsShow(this.parseMessage());
 	}
 
 	onErrorPress() {
-		const { item } = this.props;
-		this.props.errorActionsShow(JSON.parse(JSON.stringify(item)));
+		this.props.errorActionsShow(this.parseMessage());
+	}
+
+	onReactionPress(emoji) {
+		this.props.onReactionPress(emoji, this.props.item._id);
+	}
+	onClose() {
+		this.setState({ reactionsModal: false });
+	}
+	onReactionLongPress() {
+		this.setState({ reactionsModal: true });
+		Vibration.vibrate(50);
 	}
 
 	getInfoMessage() {
@@ -101,10 +118,11 @@ export default class Message extends React.Component {
 		return message;
 	}
 
+	parseMessage = () => JSON.parse(JSON.stringify(this.props.item));
+
 	isInfoMessage() {
 		return ['r', 'au', 'ru', 'ul', 'uj', 'rm', 'user-muted', 'user-unmuted', 'message_pinned'].includes(this.props.item.t);
 	}
-
 
 	isDeleted() {
 		return this.props.item.t === 'rm';
@@ -161,26 +179,58 @@ export default class Message extends React.Component {
 		);
 	}
 
+	renderReaction(reaction) {
+		const reacted = reaction.usernames.findIndex(item => item.value === this.props.user.username) !== -1;
+		const reactedContainerStyle = reacted ? { borderColor: '#bde1fe', backgroundColor: '#f3f9ff' } : {};
+		const reactedCount = reacted ? { color: '#4fb0fc' } : {};
+		return (
+			<TouchableOpacity
+				onPress={() => this.onReactionPress(reaction.emoji)}
+				onLongPress={() => this.onReactionLongPress()}
+				key={reaction.emoji}
+			>
+				<View style={[styles.reactionContainer, reactedContainerStyle]}>
+					<Emoji
+						content={reaction.emoji}
+						standardEmojiStyle={styles.reactionEmoji}
+						customEmojiStyle={styles.reactionCustomEmoji}
+						customEmojis={this.props.customEmojis}
+					/>
+					<Text style={[styles.reactionCount, reactedCount]}>{ reaction.usernames.length }</Text>
+				</View>
+			</TouchableOpacity>
+		);
+	}
+
+	renderReactions() {
+		if (this.props.item.reactions.length === 0) {
+			return null;
+		}
+		return (
+			<View style={styles.reactionsContainer}>
+				{this.props.item.reactions.map(reaction => this.renderReaction(reaction))}
+				<TouchableOpacity
+					onPress={() => this.props.toggleReactionPicker(this.parseMessage())}
+					key='add-reaction'
+					style={styles.reactionContainer}
+				>
+					<Icon name='insert-emoticon' color='#aaaaaa' size={15} />
+				</TouchableOpacity>
+			</View>
+		);
+	}
+
 	render() {
 		const {
-			item, message, editing, baseUrl
+			item, message, editing, baseUrl, customEmojis
 		} = this.props;
-
-		const marginLeft = this._visibility.interpolate({
-			inputRange: [0, 1],
-			outputRange: [-30, 0]
-		});
-		const opacity = this._visibility.interpolate({
-			inputRange: [0, 1],
-			outputRange: [0, 1]
-		});
 		const username = item.alias || item.u.username;
 		const isEditing = message._id === item._id && editing;
-
-		const accessibilityLabel = `Message from ${ item.alias || item.u.username } at ${ moment(item.ts).format(this.props.Message_TimeFormat) }, ${ this.props.item.msg }`;
+		const accessibilityLabel = `Message from ${ username } at ${ moment(item.ts).format(this.props.Message_TimeFormat) }, ${ this.props.item.msg }`;
 
 		return (
 			<TouchableHighlight
+				onPress={() => this.onPress()}
 				onLongPress={() => this.onLongPress()}
 				disabled={this.isDeleted() || this.hasError()}
 				underlayColor='#FFFFFF'
@@ -188,11 +238,11 @@ export default class Message extends React.Component {
 				style={[styles.message, isEditing ? styles.editing : null]}
 				accessibilityLabel={accessibilityLabel}
 			>
-				<Animated.View style={[flex, { opacity, marginLeft }]}>
+				<View style={styles.flex}>
 					{this.renderError()}
-					<View style={[this.extraStyle, flex]}>
+					<View style={[this.extraStyle, styles.flex]}>
 						<Avatar
-							style={avatar}
+							style={styles.avatar}
 							text={item.avatar ? '' : username}
 							size={40}
 							baseUrl={baseUrl}
@@ -208,9 +258,20 @@ export default class Message extends React.Component {
 							{this.renderMessageContent()}
 							{this.attachments()}
 							{this.renderUrl()}
+							{this.renderReactions()}
 						</View>
 					</View>
-				</Animated.View>
+					{this.state.reactionsModal ?
+						<ReactionsModal
+							isVisible={this.state.reactionsModal}
+							onClose={this.onClose}
+							reactions={item.reactions}
+							user={this.props.user}
+							customEmojis={customEmojis}
+						/>
+						: null
+					}
+				</View>
 			</TouchableHighlight>
 		);
 	}
