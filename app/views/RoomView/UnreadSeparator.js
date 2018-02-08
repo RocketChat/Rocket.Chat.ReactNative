@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, LayoutAnimation } from 'react-native';
 
 const styles = StyleSheet.create({
 	firstUnread: {
@@ -22,11 +22,16 @@ const styles = StyleSheet.create({
 	}
 });
 
-const UnreadSeparator = () => (
-	<View style={styles.firstUnread}>
-		<View style={styles.firstUnreadLine} />
-		<Text style={styles.firstUnreadBadge}>unread messages</Text>
-	</View>
-);
-
-export default UnreadSeparator;
+export default class UnreadSeparator extends React.PureComponent {
+	componentWillUnmount() {
+		LayoutAnimation.linear();
+	}
+	render() {
+		return (
+			<View style={styles.firstUnread}>
+				<View style={styles.firstUnreadLine} />
+				<Text style={styles.firstUnreadBadge}>unread messages</Text>
+			</View>
+		);
+	}
+}

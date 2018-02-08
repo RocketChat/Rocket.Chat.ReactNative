@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, TouchableOpacity, Text } from 'react-native';
 import styles from './styles';
 
-export default class extends React.PureComponent {
+export default class TabBar extends React.PureComponent {
 	static propTypes = {
 		goToPage: PropTypes.func,
 		activeTab: PropTypes.number,

@@ -111,9 +111,8 @@ const Markdown = ({ msg, customEmojis }) => {
 				const emojiExtension = customEmojis[content];
 				if (emojiExtension) {
 					const emoji = { extension: emojiExtension, content };
-					const style = StyleSheet.flatten(styles.customEmoji);
 					element.props.children = (
-						<CustomEmoji key={state.key} style={style} emoji={emoji} />
+						<CustomEmoji key={state.key} style={styles.customEmoji} emoji={emoji} />
 					);
 				}
 				return element;

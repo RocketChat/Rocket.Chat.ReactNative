@@ -29,7 +29,8 @@ export default class Fade extends React.Component {
 		}
 		Animated.timing(this._visibility, {
 			toValue: nextProps.visible ? 1 : 0,
-			duration: 300
+			duration: 300,
+			useNativeDriver: true
 		}).start(() => {
 			this.setState({ visible: nextProps.visible });
 		});
