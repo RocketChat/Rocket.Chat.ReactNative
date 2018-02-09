@@ -1,7 +1,5 @@
 import { StyleSheet } from 'react-native';
 
-const dangerColor = '#f5455c';
-
 export default StyleSheet.create({
 	container: {
 		backgroundColor: '#F6F7F9'
@@ -26,6 +24,9 @@ export default StyleSheet.create({
 	sectionItemName: {
 		flex: 1
 	},
+	sectionItemDescription: {
+		color: '#cbced1'
+	},
 	sectionSeparator: {
 		height: 10,
 		backgroundColor: '#F6F7F9'
@@ -35,7 +36,7 @@ export default StyleSheet.create({
 		borderTopWidth: 1
 	},
 	textColorDanger: {
-		color: dangerColor
+		color: '#f5455c'
 	},
 	avatar: {
 		marginHorizontal: 10
@@ -48,7 +49,6 @@ export default StyleSheet.create({
 	},
 	roomDescription: {
 		fontSize: 12,
-		fontWeight: '500',
 		color: '#cbced1'
 	}
 });
