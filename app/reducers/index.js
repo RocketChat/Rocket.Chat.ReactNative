@@ -12,7 +12,6 @@ import app from './app';
 import permissions from './permissions';
 import customEmojis from './customEmojis';
 import activeUsers from './activeUsers';
-import keyboard from './keyboard';
 
 export default combineReducers({
 	settings,
@@ -27,6 +26,5 @@ export default combineReducers({
 	rooms,
 	permissions,
 	customEmojis,
-	activeUsers,
-	keyboard
+	activeUsers
 });

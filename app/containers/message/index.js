@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableHighlight, Text, TouchableOpacity, Animated, Keyboard, StyleSheet, Vibration } from 'react-native';
+import { View, TouchableHighlight, Text, TouchableOpacity, Vibration } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
 import equal from 'deep-equal';
+import { KeyboardUtils } from 'react-native-keyboard-input';
 
 import { actionsShow, errorActionsShow, toggleReactionPicker } from '../../actions/messages';
 import Image from './Image';
@@ -19,9 +20,6 @@ import ReactionsModal from './ReactionsModal';
 import Emoji from './Emoji';
 import messageStatus from '../../constants/messagesStatus';
 import styles from './styles';
-
-const avatar = { marginRight: 10 };
-const flex = { flexDirection: 'row', flex: 1 };
 
 @connect(state => ({
 	message: state.messages.message,
@@ -43,7 +41,6 @@ export default class Message extends React.Component {
 		editing: PropTypes.bool,
 		actionsShow: PropTypes.func,
 		errorActionsShow: PropTypes.func,
-		animate: PropTypes.bool,
 		customEmojis: PropTypes.object,
 		toggleReactionPicker: PropTypes.func,
 		onReactionPress: PropTypes.func
@@ -53,18 +50,6 @@ export default class Message extends React.Component {
 		super(props);
 		this.state = { reactionsModal: false };
 		this.onClose = this.onClose.bind(this);
-	}
-
-	componentWillMount() {
-		this._visibility = new Animated.Value(this.props.animate ? 0 : 1);
-	}
-	componentDidMount() {
-		if (this.props.animate) {
-			Animated.timing(this._visibility, {
-				toValue: 1,
-				duration: 300
-			}).start();
-		}
 	}
 	componentWillReceiveProps() {
 		this.extraStyle = this.extraStyle || {};
@@ -84,7 +69,7 @@ export default class Message extends React.Component {
 	}
 
 	onPress = () => {
-		Keyboard.dismiss();
+		KeyboardUtils.dismiss();
 	}
 
 	onLongPress() {
@@ -207,8 +192,8 @@ export default class Message extends React.Component {
 				<View style={[styles.reactionContainer, reactedContainerStyle]}>
 					<Emoji
 						content={reaction.emoji}
-						standardEmojiStyle={StyleSheet.flatten(styles.reactionEmoji)}
-						customEmojiStyle={StyleSheet.flatten(styles.reactionCustomEmoji)}
+						standardEmojiStyle={styles.reactionEmoji}
+						customEmojiStyle={styles.reactionCustomEmoji}
 						customEmojis={this.props.customEmojis}
 					/>
 					<Text style={[styles.reactionCount, reactedCount]}>{ reaction.usernames.length }</Text>
@@ -239,18 +224,8 @@ export default class Message extends React.Component {
 		const {
 			item, message, editing, baseUrl, customEmojis
 		} = this.props;
-
-		const marginLeft = this._visibility.interpolate({
-			inputRange: [0, 1],
-			outputRange: [-30, 0]
-		});
-		const opacity = this._visibility.interpolate({
-			inputRange: [0, 1],
-			outputRange: [0, 1]
-		});
 		const username = item.alias || item.u.username;
 		const isEditing = message._id === item._id && editing;
-
 		const accessibilityLabel = `Message from ${ username } at ${ moment(item.ts).format(this.props.Message_TimeFormat) }, ${ this.props.item.msg }`;
 
 		return (
@@ -263,11 +238,11 @@ export default class Message extends React.Component {
 				style={[styles.message, isEditing ? styles.editing : null]}
 				accessibilityLabel={accessibilityLabel}
 			>
-				<Animated.View style={[flex, { opacity, marginLeft }]}>
+				<View style={styles.flex}>
 					{this.renderError()}
-					<View style={[this.extraStyle, flex]}>
+					<View style={[this.extraStyle, styles.flex]}>
 						<Avatar
-							style={avatar}
+							style={styles.avatar}
 							text={item.avatar ? '' : username}
 							size={40}
 							baseUrl={baseUrl}
@@ -296,7 +271,7 @@ export default class Message extends React.Component {
 						/>
 						: null
 					}
-				</Animated.View>
+				</View>
 			</TouchableHighlight>
 		);
 	}

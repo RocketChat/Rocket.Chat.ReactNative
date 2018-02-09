@@ -1,23 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Button, SafeAreaView, Platform, Keyboard } from 'react-native';
+import { Text, View, Button, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import equal from 'deep-equal';
-import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 import { List } from './ListView';
 import * as actions from '../../actions';
 import { openRoom, setLastOpen } from '../../actions/room';
 import { editCancel, toggleReactionPicker } from '../../actions/messages';
-import { setKeyboardOpen, setKeyboardClosed } from '../../actions/keyboard';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
 import MessageActions from '../../containers/MessageActions';
 import MessageErrorActions from '../../containers/MessageErrorActions';
 import MessageBox from '../../containers/MessageBox';
-
 import Header from '../../containers/Header';
 import RoomsHeader from './Header';
 import ReactionPicker from './ReactionPicker';
@@ -30,16 +27,15 @@ import styles from './styles';
 		Message_TimeFormat: state.settings.Message_TimeFormat,
 		loading: state.messages.isFetching,
 		user: state.login.user,
-		actionMessage: state.messages.actionMessage
+		actionMessage: state.messages.actionMessage,
+		layoutAnimation: state.room.layoutAnimation
 	}),
 	dispatch => ({
 		actions: bindActionCreators(actions, dispatch),
 		openRoom: room => dispatch(openRoom(room)),
 		editCancel: () => dispatch(editCancel()),
 		setLastOpen: date => dispatch(setLastOpen(date)),
-		toggleReactionPicker: message => dispatch(toggleReactionPicker(message)),
-		setKeyboardOpen: () => dispatch(setKeyboardOpen()),
-		setKeyboardClosed: () => dispatch(setKeyboardClosed())
+		toggleReactionPicker: message => dispatch(toggleReactionPicker(message))
 	})
 )
 export default class RoomView extends React.Component {
@@ -56,8 +52,7 @@ export default class RoomView extends React.Component {
 		loading: PropTypes.bool,
 		actionMessage: PropTypes.object,
 		toggleReactionPicker: PropTypes.func.isRequired,
-		setKeyboardOpen: PropTypes.func,
-		setKeyboardClosed: PropTypes.func
+		layoutAnimation: PropTypes.instanceOf(Date)
 	};
 
 	static navigationOptions = ({ navigation }) => ({
@@ -72,7 +67,6 @@ export default class RoomView extends React.Component {
 		this.name = props.name ||
 			props.navigation.state.params.name ||
 			props.navigation.state.params.room.name;
-		this.opened = new Date();
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			loaded: true,
@@ -82,12 +76,12 @@ export default class RoomView extends React.Component {
 		this.onReactionPress = this.onReactionPress.bind(this);
 	}
 
-	componentWillMount() {
+	async componentWillMount() {
 		this.props.navigation.setParams({
 			title: this.name
 		});
 		this.updateRoom();
-		this.props.openRoom({ rid: this.rid, name: this.name, ls: this.state.room.ls });
+		await this.props.openRoom({ rid: this.rid, name: this.name, ls: this.state.room.ls });
 		if (this.state.room.alert || this.state.room.unread || this.state.room.userMentions) {
 			this.props.setLastOpen(this.state.room.ls);
 		} else {
@@ -95,8 +89,11 @@ export default class RoomView extends React.Component {
 		}
 
 		this.rooms.addListener(this.updateRoom);
-		this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => this.props.setKeyboardOpen());
-		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => this.props.setKeyboardClosed());
+	}
+	componentWillReceiveProps(nextProps) {
+		if (this.props.layoutAnimation !== nextProps.layoutAnimation) {
+			LayoutAnimation.spring();
+		}
 	}
 	shouldComponentUpdate(nextProps, nextState) {
 		return !(equal(this.props, nextProps) && equal(this.state, nextState));
@@ -104,8 +101,6 @@ export default class RoomView extends React.Component {
 	componentWillUnmount() {
 		clearTimeout(this.timer);
 		this.rooms.removeAllListeners();
-		this.keyboardDidShowListener.remove();
-		this.keyboardDidHideListener.remove();
 		this.props.editCancel();
 	}
 
@@ -141,9 +136,11 @@ export default class RoomView extends React.Component {
 		this.setState({ room: this.rooms[0] });
 	}
 
-	sendMessage = message => RocketChat.sendMessage(this.rid, message).then(() => {
-		this.props.setLastOpen(null);
-	});
+	sendMessage = (message) => {
+		RocketChat.sendMessage(this.rid, message).then(() => {
+			this.props.setLastOpen(null);
+		});
+	};
 
 	joinRoom = async() => {
 		await RocketChat.joinRoom(this.props.rid);
@@ -157,7 +154,6 @@ export default class RoomView extends React.Component {
 			key={item._id}
 			item={item}
 			reactions={JSON.parse(JSON.stringify(item.reactions))}
-			animate={this.opened.toISOString() < item.ts.toISOString()}
 			baseUrl={this.props.Site_Url}
 			Message_TimeFormat={this.props.Message_TimeFormat}
 			user={this.props.user}
@@ -196,20 +192,18 @@ export default class RoomView extends React.Component {
 		return (
 			<View style={styles.container}>
 				<Banner />
-				<SafeAreaView style={styles.safeAreaView}>
-					<List
-						end={this.state.end}
-						room={this.rid}
-						renderFooter={this.renderHeader}
-						onEndReached={this.onEndReached}
-						renderRow={item => this.renderItem(item)}
-					/>
-				</SafeAreaView>
+				<List
+					key='room-view-messages'
+					end={this.state.end}
+					room={this.rid}
+					renderFooter={this.renderHeader}
+					onEndReached={this.onEndReached}
+					renderRow={item => this.renderItem(item)}
+				/>
 				{this.renderFooter()}
 				{this.state.room._id ? <MessageActions room={this.state.room} /> : null}
 				<MessageErrorActions />
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
-				{Platform.OS === 'ios' ? <KeyboardSpacer /> : null}
 			</View>
 		);
 	}
