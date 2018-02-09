@@ -1,11 +1,11 @@
 import 'babel-polyfill';
 import 'regenerator-runtime/runtime';
-import { AppRegistry } from 'react-native';
+import { AppRegistry, UIManager } from 'react-native';
 
 import './app/push';
 import RocketChat from './app/index';
 
-// UIManager.setLayoutAnimationEnabledExperimental(true);
+UIManager.setLayoutAnimationEnabledExperimental(true);
 
 // import './app/ReactotronConfig';
 // import { AppRegistry } from 'react-native';
