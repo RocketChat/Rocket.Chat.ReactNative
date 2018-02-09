@@ -42,7 +42,8 @@ export default class Panel extends React.Component {
 			this.state.animation,
 			{
 				toValue: finalValue,
-				duration: 150
+				duration: 150,
+				useNativeDriver: true
 			}
 		).start();
 	}

@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
 	typing: { fontWeight: 'bold', paddingHorizontal: 15, height: 25 },
@@ -37,7 +37,7 @@ export default StyleSheet.create({
 	reactionPickerContainer: {
 		// width: width - 20,
 		// height: width - 20,
-		paddingHorizontal: Platform.OS === 'android' ? 11 : 10,
+		// paddingHorizontal: Platform.OS === 'android' ? 11 : 10,
 		backgroundColor: '#F7F7F7',
 		borderRadius: 4,
 		flexDirection: 'column'
