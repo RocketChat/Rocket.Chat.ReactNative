@@ -460,6 +460,7 @@ export default class MessageBox extends React.PureComponent {
 						<TextInput
 							ref={component => this.component = component}
 							style={styles.textBoxInput}
+							keyboardType='email-address'
 							returnKeyType='default'
 							blurOnSubmit={false}
 							placeholder='New Message'
@@ -486,7 +487,7 @@ export default class MessageBox extends React.PureComponent {
 				onKeyboardResigned={() => this.onKeyboardResigned()}
 				onItemSelected={this._onEmojiSelected}
 				trackInteractive
-				revealKeyboardInteractive
+				// revealKeyboardInteractive
 				requiresSameParentToManageScrollView
 			/>
 		);
