@@ -12,7 +12,17 @@ let strings = new LocalizedStrings ({
     terms:"Terms of Service",
     privacyPolicy: "Privacy Policy",
     add: "Add",
-    login: "LOGIN"
+    login: "LOGIN",
+    reactions: "Reactions",
+    offline: "offline...",
+    connecting:"Connecting...",
+    authenticating:"Authenticating...",
+    preview:"You are in preview mode.",
+    readOnly:"This room is read only",
+    conversations:"Start of conversation",
+    loadingMessage:"Loading more messages...",
+    unread:"unread messages",
+    loadingNewMessages:"Loading new messages..."
   }
  });
 

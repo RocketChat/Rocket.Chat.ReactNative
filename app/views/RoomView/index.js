@@ -20,6 +20,7 @@ import RoomsHeader from './Header';
 import ReactionPicker from './ReactionPicker';
 import Banner from './banner';
 import styles from './styles';
+import { strings } from '../../i18n/translations';
 
 @connect(
 	state => ({
@@ -167,7 +168,7 @@ export default class RoomView extends React.Component {
 		if (!this.state.joined) {
 			return (
 				<View>
-					<Text>You are in preview mode.</Text>
+					<Text>{strings.preview}</Text>
 					<Button title='Join' onPress={this.joinRoom} />
 				</View>
 			);
@@ -175,7 +176,7 @@ export default class RoomView extends React.Component {
 		if (this.state.room.ro) {
 			return (
 				<View style={styles.readOnly}>
-					<Text>This room is read only</Text>
+					<Text>{strings.readOnly}</Text>
 				</View>
 			);
 		}
@@ -184,9 +185,9 @@ export default class RoomView extends React.Component {
 
 	renderHeader = () => {
 		if (this.state.end) {
-			return <Text style={styles.loadingMore}>Start of conversation</Text>;
+			return <Text style={styles.loadingMore}>{strings.conversations}</Text>;
 		}
-		return <Text style={styles.loadingMore}>Loading more messages...</Text>;
+		return <Text style={styles.loadingMore}>{strings.loadingMessage}</Text>;
 	}
 	render() {
 		return (
