@@ -100,6 +100,7 @@ export default class RoomItem extends React.PureComponent {
 	static propTypes = {
 		type: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
+		StoreLastMessage: PropTypes.bool,
 		_updatedAt: PropTypes.instanceOf(Date),
 		lastMessage: PropTypes.object,
 		favorite: PropTypes.bool,
@@ -115,6 +116,18 @@ export default class RoomItem extends React.PureComponent {
 		return <Avatar text={name} baseUrl={baseUrl} size={56} type={type} />;
 	}
 
+	get lastMessage() {
+		const {
+			lastMessage
+		} = this.props;
+
+		if (!this.props.StoreLastMessage) {
+			return '';
+		}
+
+		return lastMessage ? `${ lastMessage.u.username }: ${ emojify(lastMessage.msg, { output: 'unicode' }) }` : 'No Message';
+	}
+
 	formatDate = date => moment(date).calendar(null, {
 		lastDay: '[Yesterday]',
 		sameDay: 'h:mm A',
@@ -124,12 +137,10 @@ export default class RoomItem extends React.PureComponent {
 
 	render() {
 		const {
-			favorite, alert, unread, userMentions, name, lastMessage, _updatedAt
+			favorite, alert, unread, userMentions, name, _updatedAt
 		} = this.props;
 
 		const date = this.formatDate(_updatedAt);
-
-		console.log('do we have a last message?', lastMessage);
 
 		let accessibilityLabel = name;
 		if (unread === 1) {
@@ -154,11 +165,7 @@ export default class RoomItem extends React.PureComponent {
 							{_updatedAt ? <Text style={styles.update} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
 						</View>
 						<View style={styles.row}>
-
-
-							<Text style={[styles.lastMessage, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{!this.props.StoreLastMessage ? '' : lastMessage ? `${ lastMessage.u.username }: ${ emojify(lastMessage.msg, { output: 'unicode' }) }` : 'No Message'}</Text>
-
-
+							<Text style={[styles.lastMessage, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{this.lastMessage}</Text>
 							{renderNumber(unread, userMentions)}
 						</View>
 					</View>
