@@ -46,7 +46,7 @@ export default class extends React.PureComponent {
 			renderItem: this.renderRoomInfo
 		}, {
 			data: [
-				{ icon: 'ios-call-outline', name: 'Voicecall' },
+				{ icon: 'ios-call-outline', name: 'Voice call' },
 				{ icon: 'ios-videocam-outline', name: 'Video call' }
 			],
 			renderItem: this.renderItem
