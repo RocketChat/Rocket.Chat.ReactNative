@@ -11,6 +11,7 @@ import KeyboardView from '../presentation/KeyboardView';
 
 import styles from './Styles';
 import { showToast } from '../utils/info';
+import { strings } from '../i18n/translations';
 
 const placeholderTextColor = 'rgba(255,255,255,.2)';
 
@@ -136,7 +137,7 @@ class RegisterView extends React.Component {
 							: { color: placeholderTextColor }
 						]}
 						accessibilityTraits='button'
-					>REGISTER
+					>{strings.register}
 					</Text>
 				</TouchableOpacity>
 

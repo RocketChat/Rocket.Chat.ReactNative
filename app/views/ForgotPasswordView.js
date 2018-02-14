@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as loginActions from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
+import { strings } from '../i18n/translations';
 
 import styles from './Styles';
 import { showErrorAlert } from '../utils/info';
@@ -89,11 +90,11 @@ class ForgotPasswordView extends React.Component {
 							/>
 
 							<TouchableOpacity style={styles.buttonContainer} onPress={this.resetPassword}>
-								<Text style={styles.button} accessibilityTraits='button'>RESET PASSWORD</Text>
+								<Text style={styles.button} accessibilityTraits='button'>{strings.resetPassword}</Text>
 							</TouchableOpacity>
 
 							<TouchableOpacity style={styles.buttonContainer} onPress={this.backLogin}>
-								<Text style={styles.button} accessibilityTraits='button'>BACK TO LOGIN</Text>
+								<Text style={styles.button} accessibilityTraits='button'>{strings.backToLogin}</Text>
 							</TouchableOpacity>
 
 							{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}

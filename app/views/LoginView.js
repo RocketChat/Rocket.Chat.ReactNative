@@ -10,6 +10,7 @@ import KeyboardView from '../presentation/KeyboardView';
 import styles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { showToast } from '../utils/info';
+import { strings } from '../i18n/translations';
 
 class LoginView extends React.Component {
 	static propTypes = {
@@ -122,25 +123,25 @@ class LoginView extends React.Component {
 								style={styles.buttonContainer}
 								onPress={this.submit}
 							>
-								<Text style={styles.button} accessibilityTraits='button'>LOGIN</Text>
+								<Text style={styles.button} accessibilityTraits='button'>{strings.login}</Text>
 							</TouchableOpacity>
 
 							<View style={styles.loginSecondaryButtons}>
 								<TouchableOpacity style={styles.buttonContainer_inverted} onPress={this.register}>
-									<Text style={styles.button_inverted} accessibilityTraits='button'>REGISTER</Text>
+									<Text style={styles.button_inverted} accessibilityTraits='button'>{strings.register}</Text>
 								</TouchableOpacity>
 
 								<TouchableOpacity style={styles.buttonContainer_inverted} onPress={this.forgotPassword}>
-									<Text style={styles.button_inverted} accessibilityTraits='button'>FORGOT MY PASSWORD</Text>
+									<Text style={styles.button_inverted} accessibilityTraits='button'>{strings.forgotPassword}</Text>
 								</TouchableOpacity>
 							</View>
 
 							<TouchableOpacity>
 								<Text style={styles.loginTermsText} accessibilityTraits='button'>
-									By proceeding you are agreeing to our
-									<Text style={styles.link} onPress={this.termsService}> Terms of Service </Text>
+									{strings.byProceeding}
+									<Text style={styles.link} onPress={this.termsService}> {strings.terms} </Text>
 									and
-									<Text style={styles.link} onPress={this.privacyPolicy}> Privacy Policy</Text>
+									<Text style={styles.link} onPress={this.privacyPolicy}> {strings.privacyPolicy}</Text>
 								</Text>
 							</TouchableOpacity>
 							{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}

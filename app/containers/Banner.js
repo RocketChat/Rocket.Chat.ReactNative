@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { connect } from 'react-redux';
+import { strings } from '../i18n/translations';
 
 const styles = StyleSheet.create({
 	bannerContainer: {
@@ -36,14 +37,14 @@ export default class Banner extends React.PureComponent {
 		if (offline) {
 			return (
 				<View style={[styles.bannerContainer, { backgroundColor: 'red' }]}>
-					<Text style={[styles.bannerText, { color: '#a00' }]}>offline...</Text>
+					<Text style={[styles.bannerText, { color: '#a00' }]}>{strings.offline}</Text>
 				</View>
 			);
 		}
 		if (connecting) {
 			return (
 				<View style={[styles.bannerContainer, { backgroundColor: '#0d0' }]}>
-					<Text style={[styles.bannerText, { color: '#fff' }]}>Connecting...</Text>
+					<Text style={[styles.bannerText, { color: '#fff' }]}>{strings.connecting}</Text>
 				</View>
 			);
 		}
@@ -51,7 +52,7 @@ export default class Banner extends React.PureComponent {
 		if (authenticating) {
 			return (
 				<View style={[styles.bannerContainer, { backgroundColor: 'orange' }]}>
-					<Text style={[styles.bannerText, { color: '#a00' }]}>Authenticating...</Text>
+					<Text style={[styles.bannerText, { color: '#a00' }]}>{strings.authenticating}</Text>
 				</View>
 			);
 		}

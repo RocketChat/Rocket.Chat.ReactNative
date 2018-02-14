@@ -6,6 +6,7 @@ import { serverRequest, addServer } from '../actions/server';
 import KeyboardView from '../presentation/KeyboardView';
 import styles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
+import { strings } from '../i18n/translations';
 
 @connect(state => ({
 	validInstance: !state.server.failure && !state.server.connecting,
@@ -137,7 +138,7 @@ export default class NewServerView extends React.Component {
 							: styles.disabledButton]}
 						onPress={this.submit}
 					>
-						<Text style={styles.button} accessibilityTraits='button'>Add</Text>
+						<Text style={styles.button} accessibilityTraits='button'>{strings.add}</Text>
 					</TouchableOpacity>
 					{this.renderValidation()}
 				</ScrollView>

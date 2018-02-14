@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Emoji from './Emoji';
+import { strings } from '../../i18n/translations';
 
 const styles = StyleSheet.create({
 	titleContainer: {
@@ -108,7 +109,7 @@ export default class ReactionsModal extends React.PureComponent {
 							size={20}
 							onPress={onClose}
 						/>
-						<Text style={styles.title}>Reactions</Text>
+						<Text style={styles.title}>{strings.reactions}</Text>
 					</View>
 				</TouchableWithoutFeedback>
 				<View style={styles.listContainer}>
