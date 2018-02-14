@@ -47,7 +47,7 @@ Follow the [React Native Getting Started Guide](https://facebook.github.io/react
 
 ## Linux:
 
-- General requiriments:
+- General requirements:
 
   - JDK 7 or greater
   - Android SDK
@@ -59,7 +59,8 @@ Follow the [React Native Getting Started Guide](https://facebook.github.io/react
       $ cd watchman
       $ git checkout master
       $ ./autogen.sh
-      $ ./configure make
+      $ ./configure 
+      $ make
       $ sudo make install
       ```
       Configure your kernel to accept a lot of file watches, using a command like:
