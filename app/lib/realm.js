@@ -81,7 +81,8 @@ const subscriptionSchema = {
 		// userMentions: 0,
 		// groupMentions: 0,
 		roomUpdatedAt: { type: 'date', optional: true },
-		ro: { type: 'bool', optional: true }
+		ro: { type: 'bool', optional: true },
+		lastMessage: { type: 'messages', optional: true }
 	}
 };
 
@@ -135,7 +136,7 @@ const attachment = {
 const url = {
 	name: 'url',
 	properties: {
-		_id: 'int',
+		// _id: { type: 'int', optional: true },
 		url: { type: 'string', optional: true },
 		title: { type: 'string', optional: true },
 		description: { type: 'string', optional: true },
@@ -184,7 +185,7 @@ const messagesSchema = {
 		groupable: { type: 'bool', optional: true },
 		avatar: { type: 'string', optional: true },
 		attachments: { type: 'list', objectType: 'attachment' },
-		urls: { type: 'list', objectType: 'url' },
+		urls: { type: 'list', objectType: 'url', default: [] },
 		_updatedAt: { type: 'date', optional: true },
 		status: { type: 'int', optional: true },
 		pinned: { type: 'bool', optional: true },

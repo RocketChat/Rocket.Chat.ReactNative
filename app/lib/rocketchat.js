@@ -92,7 +92,7 @@ const RocketChat = {
 				reduxStore.dispatch(connectFailure());
 			});
 
-			this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
+			// this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
 
 			this.ddp.on('users', (ddpMessage) => {
 				if (ddpMessage.collection === 'users') {
@@ -128,11 +128,15 @@ const RocketChat = {
 					const sub = database.objects('subscriptions').filtered('rid == $0', data._id)[0];
 					database.write(() => {
 						sub.roomUpdatedAt = data._updatedAt;
+						if (data.lastMessage) {
+							// data.lastMessage.url = data.lastMessage.url || [];
+						}
+						sub.lastMessage = data.lastMessage;
 						sub.ro = data.ro;
 					});
 				}
 			});
-		});
+		}).catch(console.log);
 	},
 
 	me({ server, token, userId }) {
@@ -428,6 +432,10 @@ const RocketChat = {
 			const room = rooms.find(({ _id }) => _id === subscription.rid);
 			if (room) {
 				subscription.roomUpdatedAt = room._updatedAt;
+				// if (room.lastMessage) {
+				// 	room.lastMessage.url = room.lastMessage.url || [];
+				// }
+				subscription.lastMessage = room.lastMessage;
 				subscription.ro = room.ro;
 			}
 			if (subscription.roles) {
@@ -436,12 +444,16 @@ const RocketChat = {
 			return subscription;
 		});
 
-		database.write(() => {
-			data.forEach(subscription =>
-				database.create('subscriptions', subscription, true));
-			rooms.forEach(room => 
-				database.create('rooms', room, true));
-		});
+		try {
+			database.write(() => {
+				data.forEach(subscription => database.create('subscriptions', subscription, true));
+				// rooms.forEach(room =>	database.create('rooms', room, true));
+			});
+		} catch (e) {
+			alert(JSON.stringify(e));
+		} finally {
+
+		}
 
 		this.ddp.subscribe('stream-notify-user', `${ login.user.id }/subscriptions-changed`, false);
 		this.ddp.subscribe('stream-notify-user', `${ login.user.id }/rooms-changed`, false);
