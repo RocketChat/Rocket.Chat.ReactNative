@@ -48,7 +48,6 @@ export default class RoomsListView extends React.Component {
 			searchText: ''
 		};
 		this.data = database.objects('subscriptions').sorted('roomUpdatedAt', true);
-		
 	}
 
 	componentDidMount() {
@@ -81,9 +80,9 @@ export default class RoomsListView extends React.Component {
 	}
 
 	getLastMessage = (subscription) => {
-		const [ room ] = database.objects('rooms').filtered('_id = $0', subscription.rid).slice();
+		const [room] = database.objects('rooms').filtered('_id = $0', subscription.rid).slice();
 		console.log('ROOM', room);
-		return room.lastMessage;
+		return room && room.lastMessage;
 	}
 
 	search(text) {
@@ -209,8 +208,8 @@ export default class RoomsListView extends React.Component {
 			alert={item.alert}
 			unread={item.unread}
 			userMentions={item.userMentions}
-			lastMessage={this.getLastMessage(item)}
 			favorite={item.f}
+			lastMessage={item.lastMessage}
 			name={item.name}
 			_updatedAt={item.roomUpdatedAt}
 			key={item._id}
