@@ -8,6 +8,7 @@ import RoomActionsView from '../../views/RoomActionsView';
 import CreateChannelView from '../../views/CreateChannelView';
 import SelectUsersView from '../../views/SelectUsersView';
 import NewServerView from '../../views/NewServerView';
+import StarredMessagesView from '../../views/StarredMessagesView';
 
 const AuthRoutes = StackNavigator(
 	{
@@ -16,9 +17,6 @@ const AuthRoutes = StackNavigator(
 		},
 		Room: {
 			screen: RoomView
-		},
-		RoomActions: {
-			screen: RoomActionsView
 		},
 		CreateChannel: {
 			screen: CreateChannelView,
@@ -36,6 +34,20 @@ const AuthRoutes = StackNavigator(
 			screen: NewServerView,
 			navigationOptions: {
 				title: 'New server'
+			}
+		},
+		RoomActions: {
+			screen: RoomActionsView,
+			navigationOptions: {
+				title: 'Actions',
+				headerTintColor: '#292E35'
+			}
+		},
+		StarredMessages: {
+			screen: StarredMessagesView,
+			navigationOptions: {
+				title: 'Starred Messages',
+				headerTintColor: '#292E35'
 			}
 		}
 	},

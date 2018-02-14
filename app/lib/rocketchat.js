@@ -13,6 +13,7 @@ import { someoneTyping, roomMessageReceived } from '../actions/room';
 import { setUser } from '../actions/login';
 import { disconnect, disconnect_by_user, connectSuccess, connectFailure } from '../actions/connect';
 import { requestActiveUser } from '../actions/activeUsers';
+import { starredMessageReceived } from '../actions/starredMessages';
 import Ddp from './ddp';
 
 export { Accounts } from 'react-native-meteor';
@@ -92,7 +93,7 @@ const RocketChat = {
 				reduxStore.dispatch(connectFailure());
 			});
 
-			this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
+			// this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
 
 			this.ddp.on('users', (ddpMessage) => {
 				if (ddpMessage.collection === 'users') {
@@ -131,6 +132,13 @@ const RocketChat = {
 						sub.ro = data.ro;
 					});
 				}
+			});
+
+			this.ddp.on('rocketchat_starred_message', (ddpMessage) => {
+				const message = ddpMessage.fields;
+				const starredMessage = {};
+				starredMessage[ddpMessage.id] = this._buildMessage(message);
+				return reduxStore.dispatch(starredMessageReceived(starredMessage));
 			});
 		});
 	},
@@ -277,6 +285,12 @@ const RocketChat = {
 					messages.forEach((message) => {
 						database.create('messages', message, true);
 					});
+				});
+
+				const [subscription] = database.objects('subscriptions').filtered('rid = $0', rid);
+				database.write(() => {
+					subscription.lastOpen = new Date();
+					database.create('subscriptions', subscription, true);
 				});
 			}
 			if (cb) {

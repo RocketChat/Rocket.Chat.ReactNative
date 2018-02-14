@@ -12,6 +12,7 @@ import app from './app';
 import permissions from './permissions';
 import customEmojis from './customEmojis';
 import activeUsers from './activeUsers';
+import starredMessages from './starredMessages';
 
 export default combineReducers({
 	settings,
@@ -26,5 +27,6 @@ export default combineReducers({
 	rooms,
 	permissions,
 	customEmojis,
-	activeUsers
+	activeUsers,
+	starredMessages
 });

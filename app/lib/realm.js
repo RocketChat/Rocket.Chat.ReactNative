@@ -80,7 +80,8 @@ const subscriptionSchema = {
 		// userMentions: 0,
 		// groupMentions: 0,
 		roomUpdatedAt: { type: 'date', optional: true },
-		ro: { type: 'bool', optional: true }
+		ro: { type: 'bool', optional: true },
+		lastOpen: { type: 'date', optional: true }
 	}
 };
 

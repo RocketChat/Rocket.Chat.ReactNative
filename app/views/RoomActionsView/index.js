@@ -12,18 +12,17 @@ import Touch from '../../utils/touch';
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }))
-export default class extends React.PureComponent {
+export default class RoomActionsView extends React.PureComponent {
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		navigation: PropTypes.object
 	}
 
 	static navigationOptions = () => ({
-		title: 'Actions',
 		headerRight: (
 			<Touch
 				style={styles.headerButton}
-				// onPress={() => this.props.navigation.navigate('RoomActions')}
+				onPress={() => {}}
 				accessibilityLabel='Star room'
 				accessibilityTraits='button'
 			>
@@ -54,7 +53,12 @@ export default class extends React.PureComponent {
 			data: [
 				{ icon: 'ios-attach', name: 'Files' },
 				{ icon: 'ios-at-outline', name: 'Mentions' },
-				{ icon: 'ios-star-outline', name: 'Starred' },
+				{
+					icon: 'ios-star-outline',
+					name: 'Starred',
+					route: 'StarredMessages',
+					params: { rid: this.room.rid }
+				},
 				{ icon: 'ios-search', name: 'Search' },
 				{ icon: 'ios-share-outline', name: 'Share' },
 				{ icon: 'ios-pin', name: 'Pinned' },
@@ -102,7 +106,7 @@ export default class extends React.PureComponent {
 
 	renderTouchableItem = (subview, item) => (
 		<Touch
-			onPress={() => {}}
+			onPress={() => this.props.navigation.navigate(item.route, item.params)}
 			underlayColor='#FFFFFF'
 			activeOpacity={0.5}
 			accessibilityLabel={item.name}
