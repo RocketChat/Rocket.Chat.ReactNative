@@ -33,10 +33,12 @@ exports[`render channel 1`] = `
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "alignItems": "flex-start",
+            "borderBottomColor": "#ddd",
+            "borderBottomWidth": 0.5,
             "flexDirection": "row",
             "paddingHorizontal": 16,
-            "paddingVertical": 10,
+            "paddingVertical": 12,
           },
           undefined,
         ]
@@ -53,8 +55,8 @@ exports[`render channel 1`] = `
             Object {
               "backgroundColor": "#00BCD4",
               "borderRadius": 4,
-              "height": 40,
-              "width": 40,
+              "height": 56,
+              "width": 56,
             },
             undefined,
           ]
@@ -75,7 +77,7 @@ exports[`render channel 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 20,
+                  "fontSize": 28,
                 },
               ],
               Object {
@@ -93,44 +95,89 @@ exports[`render channel 1`] = `
         style={
           Object {
             "flex": 1,
+            "height": "100%",
             "marginLeft": 16,
             "marginRight": 4,
           }
         }
       >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          numberOfLines={1}
-          style={
-            Array [
-              Object {
-                "color": "#444",
-                "flex": 1,
-                "fontSize": 16,
-              },
-              undefined,
-            ]
-          }
-        >
-          general
-        </Text>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          numberOfLines={1}
+        <View
           style={
             Object {
-              "color": "#888",
+              "alignItems": "center",
               "flex": 1,
-              "fontSize": 10,
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "width": "100%",
             }
           }
         >
-          Nov 10
-        </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Object {
+                "color": "#444",
+                "flex": 1,
+                "fontSize": 18,
+                "fontWeight": "bold",
+                "marginRight": 8,
+              }
+            }
+          >
+            general
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Object {
+                "alignItems": "center",
+                "color": "#888",
+                "fontSize": 10,
+                "justifyContent": "center",
+              }
+            }
+          >
+            Nov 10
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flex": 1,
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "width": "100%",
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "color": "#444",
+                  "flex": 1,
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "marginRight": 8,
+                },
+                undefined,
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
     </View>
   </View>
@@ -170,10 +217,12 @@ exports[`render no icon 1`] = `
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "alignItems": "flex-start",
+            "borderBottomColor": "#ddd",
+            "borderBottomWidth": 0.5,
             "flexDirection": "row",
             "paddingHorizontal": 16,
-            "paddingVertical": 10,
+            "paddingVertical": 12,
           },
           undefined,
         ]
@@ -190,8 +239,8 @@ exports[`render no icon 1`] = `
             Object {
               "backgroundColor": "#3F51B5",
               "borderRadius": 4,
-              "height": 40,
-              "width": 40,
+              "height": 56,
+              "width": 56,
             },
             undefined,
           ]
@@ -212,7 +261,7 @@ exports[`render no icon 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 20,
+                  "fontSize": 28,
                 },
               ],
               Object {
@@ -230,44 +279,89 @@ exports[`render no icon 1`] = `
         style={
           Object {
             "flex": 1,
+            "height": "100%",
             "marginLeft": 16,
             "marginRight": 4,
           }
         }
       >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          numberOfLines={1}
-          style={
-            Array [
-              Object {
-                "color": "#444",
-                "flex": 1,
-                "fontSize": 16,
-              },
-              undefined,
-            ]
-          }
-        >
-          name
-        </Text>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          numberOfLines={1}
+        <View
           style={
             Object {
-              "color": "#888",
+              "alignItems": "center",
               "flex": 1,
-              "fontSize": 10,
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "width": "100%",
             }
           }
         >
-          Nov 10
-        </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Object {
+                "color": "#444",
+                "flex": 1,
+                "fontSize": 18,
+                "fontWeight": "bold",
+                "marginRight": 8,
+              }
+            }
+          >
+            name
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Object {
+                "alignItems": "center",
+                "color": "#888",
+                "fontSize": 10,
+                "justifyContent": "center",
+              }
+            }
+          >
+            Nov 10
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flex": 1,
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "width": "100%",
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "color": "#444",
+                  "flex": 1,
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "marginRight": 8,
+                },
+                undefined,
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
     </View>
   </View>
@@ -307,10 +401,12 @@ exports[`render private group 1`] = `
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "alignItems": "flex-start",
+            "borderBottomColor": "#ddd",
+            "borderBottomWidth": 0.5,
             "flexDirection": "row",
             "paddingHorizontal": 16,
-            "paddingVertical": 10,
+            "paddingVertical": 12,
           },
           undefined,
         ]
@@ -327,8 +423,8 @@ exports[`render private group 1`] = `
             Object {
               "backgroundColor": "#FF9800",
               "borderRadius": 4,
-              "height": 40,
-              "width": 40,
+              "height": 56,
+              "width": 56,
             },
             undefined,
           ]
@@ -349,7 +445,7 @@ exports[`render private group 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 20,
+                  "fontSize": 28,
                 },
               ],
               Object {
@@ -367,44 +463,89 @@ exports[`render private group 1`] = `
         style={
           Object {
             "flex": 1,
+            "height": "100%",
             "marginLeft": 16,
             "marginRight": 4,
           }
         }
       >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          numberOfLines={1}
-          style={
-            Array [
-              Object {
-                "color": "#444",
-                "flex": 1,
-                "fontSize": 16,
-              },
-              undefined,
-            ]
-          }
-        >
-          private-group
-        </Text>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          numberOfLines={1}
+        <View
           style={
             Object {
-              "color": "#888",
+              "alignItems": "center",
               "flex": 1,
-              "fontSize": 10,
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "width": "100%",
             }
           }
         >
-          Nov 10
-        </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Object {
+                "color": "#444",
+                "flex": 1,
+                "fontSize": 18,
+                "fontWeight": "bold",
+                "marginRight": 8,
+              }
+            }
+          >
+            private-group
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Object {
+                "alignItems": "center",
+                "color": "#888",
+                "fontSize": 10,
+                "justifyContent": "center",
+              }
+            }
+          >
+            Nov 10
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flex": 1,
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "width": "100%",
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "color": "#444",
+                  "flex": 1,
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "marginRight": 8,
+                },
+                undefined,
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
     </View>
   </View>
@@ -445,10 +586,12 @@ exports[`render unread +999 1`] = `
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "alignItems": "flex-start",
+            "borderBottomColor": "#ddd",
+            "borderBottomWidth": 0.5,
             "flexDirection": "row",
             "paddingHorizontal": 16,
-            "paddingVertical": 10,
+            "paddingVertical": 12,
           },
           undefined,
         ]
@@ -465,8 +608,8 @@ exports[`render unread +999 1`] = `
             Object {
               "backgroundColor": "#3F51B5",
               "borderRadius": 4,
-              "height": 40,
-              "width": 40,
+              "height": 56,
+              "width": 56,
             },
             undefined,
           ]
@@ -482,7 +625,7 @@ exports[`render unread +999 1`] = `
                 "color": "#ffffff",
               },
               Object {
-                "fontSize": 20,
+                "fontSize": 28,
               },
             ]
           }
@@ -495,65 +638,112 @@ exports[`render unread +999 1`] = `
         style={
           Object {
             "flex": 1,
+            "height": "100%",
             "marginLeft": 16,
             "marginRight": 4,
           }
         }
       >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          numberOfLines={1}
-          style={
-            Array [
-              Object {
-                "color": "#444",
-                "flex": 1,
-                "fontSize": 16,
-              },
-              undefined,
-            ]
-          }
-        >
-          name
-        </Text>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          numberOfLines={1}
+        <View
           style={
             Object {
-              "color": "#888",
+              "alignItems": "center",
               "flex": 1,
-              "fontSize": 10,
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "width": "100%",
             }
           }
         >
-          Nov 10
-        </Text>
-      </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
-        style={
-          Object {
-            "backgroundColor": "#1d74f5",
-            "borderRadius": 3,
-            "color": "#fff",
-            "fontSize": 14,
-            "minWidth": 20,
-            "overflow": "hidden",
-            "paddingHorizontal": 5,
-            "paddingVertical": 2,
-            "textAlign": "center",
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Object {
+                "color": "#444",
+                "flex": 1,
+                "fontSize": 18,
+                "fontWeight": "bold",
+                "marginRight": 8,
+              }
+            }
+          >
+            name
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Object {
+                "alignItems": "center",
+                "color": "#888",
+                "fontSize": 10,
+                "justifyContent": "center",
+              }
+            }
+          >
+            Nov 10
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flex": 1,
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "width": "100%",
+            }
           }
-        }
-      >
-        999+
-      </Text>
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "color": "#444",
+                  "flex": 1,
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "marginRight": 8,
+                },
+                undefined,
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "#1d74f5",
+                "borderRadius": 4,
+                "color": "#fff",
+                "fontSize": 14,
+                "justifyContent": "center",
+                "minWidth": 25,
+                "overflow": "hidden",
+                "paddingHorizontal": 5,
+                "paddingVertical": 4,
+                "textAlign": "center",
+              }
+            }
+          >
+            999+
+          </Text>
+        </View>
+      </View>
     </View>
   </View>
 </View>
@@ -592,10 +782,12 @@ exports[`render unread 1`] = `
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "alignItems": "flex-start",
+            "borderBottomColor": "#ddd",
+            "borderBottomWidth": 0.5,
             "flexDirection": "row",
             "paddingHorizontal": 16,
-            "paddingVertical": 10,
+            "paddingVertical": 12,
           },
           undefined,
         ]
@@ -612,8 +804,8 @@ exports[`render unread 1`] = `
             Object {
               "backgroundColor": "#3F51B5",
               "borderRadius": 4,
-              "height": 40,
-              "width": 40,
+              "height": 56,
+              "width": 56,
             },
             undefined,
           ]
@@ -629,7 +821,7 @@ exports[`render unread 1`] = `
                 "color": "#ffffff",
               },
               Object {
-                "fontSize": 20,
+                "fontSize": 28,
               },
             ]
           }
@@ -642,65 +834,112 @@ exports[`render unread 1`] = `
         style={
           Object {
             "flex": 1,
+            "height": "100%",
             "marginLeft": 16,
             "marginRight": 4,
           }
         }
       >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          numberOfLines={1}
-          style={
-            Array [
-              Object {
-                "color": "#444",
-                "flex": 1,
-                "fontSize": 16,
-              },
-              undefined,
-            ]
-          }
-        >
-          name
-        </Text>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          numberOfLines={1}
+        <View
           style={
             Object {
-              "color": "#888",
+              "alignItems": "center",
               "flex": 1,
-              "fontSize": 10,
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "width": "100%",
             }
           }
         >
-          Nov 10
-        </Text>
-      </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
-        style={
-          Object {
-            "backgroundColor": "#1d74f5",
-            "borderRadius": 3,
-            "color": "#fff",
-            "fontSize": 14,
-            "minWidth": 20,
-            "overflow": "hidden",
-            "paddingHorizontal": 5,
-            "paddingVertical": 2,
-            "textAlign": "center",
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Object {
+                "color": "#444",
+                "flex": 1,
+                "fontSize": 18,
+                "fontWeight": "bold",
+                "marginRight": 8,
+              }
+            }
+          >
+            name
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Object {
+                "alignItems": "center",
+                "color": "#888",
+                "fontSize": 10,
+                "justifyContent": "center",
+              }
+            }
+          >
+            Nov 10
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flex": 1,
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "width": "100%",
+            }
           }
-        }
-      >
-        1
-      </Text>
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "color": "#444",
+                  "flex": 1,
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "marginRight": 8,
+                },
+                undefined,
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "#1d74f5",
+                "borderRadius": 4,
+                "color": "#fff",
+                "fontSize": 14,
+                "justifyContent": "center",
+                "minWidth": 25,
+                "overflow": "hidden",
+                "paddingHorizontal": 5,
+                "paddingVertical": 4,
+                "textAlign": "center",
+              }
+            }
+          >
+            1
+          </Text>
+        </View>
+      </View>
     </View>
   </View>
 </View>
@@ -739,10 +978,12 @@ exports[`renders correctly 1`] = `
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "alignItems": "flex-start",
+            "borderBottomColor": "#ddd",
+            "borderBottomWidth": 0.5,
             "flexDirection": "row",
             "paddingHorizontal": 16,
-            "paddingVertical": 10,
+            "paddingVertical": 12,
           },
           undefined,
         ]
@@ -759,8 +1000,8 @@ exports[`renders correctly 1`] = `
             Object {
               "backgroundColor": "#3F51B5",
               "borderRadius": 4,
-              "height": 40,
-              "width": 40,
+              "height": 56,
+              "width": 56,
             },
             undefined,
           ]
@@ -776,7 +1017,7 @@ exports[`renders correctly 1`] = `
                 "color": "#ffffff",
               },
               Object {
-                "fontSize": 20,
+                "fontSize": 28,
               },
             ]
           }
@@ -789,44 +1030,89 @@ exports[`renders correctly 1`] = `
         style={
           Object {
             "flex": 1,
+            "height": "100%",
             "marginLeft": 16,
             "marginRight": 4,
           }
         }
       >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          numberOfLines={1}
-          style={
-            Array [
-              Object {
-                "color": "#444",
-                "flex": 1,
-                "fontSize": 16,
-              },
-              undefined,
-            ]
-          }
-        >
-          name
-        </Text>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          numberOfLines={1}
+        <View
           style={
             Object {
-              "color": "#888",
+              "alignItems": "center",
               "flex": 1,
-              "fontSize": 10,
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "width": "100%",
             }
           }
         >
-          Nov 10
-        </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Object {
+                "color": "#444",
+                "flex": 1,
+                "fontSize": 18,
+                "fontWeight": "bold",
+                "marginRight": 8,
+              }
+            }
+          >
+            name
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Object {
+                "alignItems": "center",
+                "color": "#888",
+                "fontSize": 10,
+                "justifyContent": "center",
+              }
+            }
+          >
+            Nov 10
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flex": 1,
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "width": "100%",
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "color": "#444",
+                  "flex": 1,
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "marginRight": 8,
+                },
+                undefined,
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
     </View>
   </View>
