@@ -90,11 +90,11 @@ export default class RoomView extends React.Component {
 
 		this.rooms.addListener(this.updateRoom);
 	}
-	componentWillReceiveProps(nextProps) {
-		if (this.props.layoutAnimation !== nextProps.layoutAnimation) {
-			LayoutAnimation.spring();
-		}
-	}
+	// componentWillReceiveProps(nextProps) {
+	// 	// if (this.props.layoutAnimation !== nextProps.layoutAnimation) {
+	// 	// 	LayoutAnimation.spring();
+	// 	// }
+	// }
 	shouldComponentUpdate(nextProps, nextState) {
 		return !(equal(this.props, nextProps) && equal(this.state, nextState));
 	}
