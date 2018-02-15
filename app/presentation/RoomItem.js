@@ -4,9 +4,12 @@ import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 import { emojify } from 'react-emojione';
 import { connect } from 'react-redux';
+import SimpleMarkdown from 'simple-markdown';
 
 import Avatar from '../containers/Avatar';
 import Touch from '../utils/touch/index'; //eslint-disable-line
+import CustomEmoji from '../containers/EmojiPicker/CustomEmoji';
+import Markdown from '../containers/message/Markdown';
 
 const styles = StyleSheet.create({
 	container: {
@@ -47,10 +50,7 @@ const styles = StyleSheet.create({
 	lastMessage: {
 		flex: 1,
 		flexShrink: 1,
-		fontSize: 16,
-		color: '#444',
 		marginRight: 8
-		// margin: 0
 	},
 	alert: {
 		fontWeight: 'bold'
@@ -72,6 +72,36 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	}
 });
+const markdownStyle = { block: { marginBottom: 0, flexWrap: 'wrap', flexDirection: 'row' } };
+
+const parseInline = (parse, content, state) => {
+	const isCurrentlyInline = state.inline || false;
+	state.inline = true;
+	const result = parse(content, state);
+	state.inline = isCurrentlyInline;
+	return result;
+};
+const parseCaptureInline = (capture, parse, state) => ({ content: parseInline(parse, capture[1], state) });
+const customRules = {
+	strong: {
+		order: -4,
+		match: SimpleMarkdown.inlineRegex(/^\*\*([\s\S]+?)\*\*(?!\*)/),
+		parse: parseCaptureInline,
+		react: (node, output, state) => ({
+			type: 'strong',
+			key: state.key,
+			props: {
+				children: output(node.content, state)
+			}
+		})
+	},
+	text: {
+		order: -3,
+		match: SimpleMarkdown.inlineRegex(/^[\s\S]+?(?=[^0-9A-Za-z\s\u00c0-\uffff]|\n\n| {2,}\n|\w+:\S|$)/),
+		parse: capture => ({ content: capture[0] }),
+		react: node => node.content
+	}
+}
 
 const renderNumber = (unread, userMentions) => {
 	if (!unread || unread <= 0) {
@@ -94,7 +124,8 @@ const renderNumber = (unread, userMentions) => {
 };
 
 @connect(state => ({
-	StoreLastMessage: state.settings.Store_Last_Message
+	StoreLastMessage: state.settings.Store_Last_Message,
+	customEmojis: state.customEmojis
 }))
 export default class RoomItem extends React.PureComponent {
 	static propTypes = {
@@ -108,7 +139,8 @@ export default class RoomItem extends React.PureComponent {
 		unread: PropTypes.number,
 		userMentions: PropTypes.number,
 		baseUrl: PropTypes.string,
-		onPress: PropTypes.func
+		onPress: PropTypes.func,
+		customEmojis: PropTypes.object
 	}
 
 	get icon() {
@@ -118,14 +150,18 @@ export default class RoomItem extends React.PureComponent {
 
 	get lastMessage() {
 		const {
-			lastMessage
+			lastMessage, alert
 		} = this.props;
 
 		if (!this.props.StoreLastMessage) {
 			return '';
 		}
 
-		return lastMessage ? `${ lastMessage.u.username }: ${ emojify(lastMessage.msg, { output: 'unicode' }) }` : 'No Message';
+		let msg = lastMessage ? `${ lastMessage.u.username }: ${ emojify(lastMessage.msg, { output: 'unicode' }) }` : 'No Message';
+		if (alert) {
+			msg = `**${ msg }**`;
+		}
+		return msg;
 	}
 
 	formatDate = date => moment(date).calendar(null, {
@@ -137,7 +173,7 @@ export default class RoomItem extends React.PureComponent {
 
 	render() {
 		const {
-			favorite, alert, unread, userMentions, name, _updatedAt
+			favorite, unread, userMentions, name, _updatedAt, customEmojis, baseUrl
 		} = this.props;
 
 		const date = this.formatDate(_updatedAt);
@@ -165,7 +201,15 @@ export default class RoomItem extends React.PureComponent {
 							{_updatedAt ? <Text style={styles.update} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
 						</View>
 						<View style={styles.row}>
-							<Text style={[styles.lastMessage, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{this.lastMessage}</Text>
+							<Markdown
+								msg={this.lastMessage}
+								customEmojis={customEmojis}
+								baseUrl={baseUrl}
+								style={styles.lastMessage}
+								markdownStyle={markdownStyle}
+								customRules={customRules}
+								renderInline
+							/>
 							{renderNumber(unread, userMentions)}
 						</View>
 					</View>
