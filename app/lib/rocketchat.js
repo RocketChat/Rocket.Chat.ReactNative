@@ -445,8 +445,6 @@ const RocketChat = {
 			});
 		} catch (e) {
 			alert(JSON.stringify(e));
-		} finally {
-
 		}
 
 		this.ddp.subscribe('stream-notify-user', `${ login.user.id }/subscriptions-changed`, false);
