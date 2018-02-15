@@ -8,7 +8,6 @@ import SimpleMarkdown from 'simple-markdown';
 
 import Avatar from '../containers/Avatar';
 import Touch from '../utils/touch/index'; //eslint-disable-line
-import CustomEmoji from '../containers/EmojiPicker/CustomEmoji';
 import Markdown from '../containers/message/Markdown';
 
 const styles = StyleSheet.create({
@@ -101,7 +100,7 @@ const customRules = {
 		parse: capture => ({ content: capture[0] }),
 		react: node => node.content
 	}
-}
+};
 
 const renderNumber = (unread, userMentions) => {
 	if (!unread || unread <= 0) {
