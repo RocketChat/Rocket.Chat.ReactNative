@@ -136,8 +136,8 @@ const RocketChat = {
 
 			this.ddp.on('rocketchat_starred_message', (ddpMessage) => {
 				const message = ddpMessage.fields;
-				const starredMessage = {};
-				starredMessage[ddpMessage.id] = this._buildMessage(message);
+				message.id = ddpMessage.id;
+				const starredMessage = this._buildMessage(message);
 				return reduxStore.dispatch(starredMessageReceived(starredMessage));
 			});
 		});
@@ -269,6 +269,8 @@ const RocketChat = {
 		message.attachments = message.attachments || [];
 		if (message.urls) {
 			message.urls = RocketChat._parseUrls(message.urls);
+		} else {
+			message.urls = [];
 		}
 		// loadHistory returns message.starred as object
 		// stream-room-messages returns message.starred as an array
