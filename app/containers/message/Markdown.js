@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
 import EasyMarkdown from 'react-native-easy-markdown'; // eslint-disable-line
 import SimpleMarkdown from 'simple-markdown';
@@ -17,13 +17,15 @@ const BlockCode = ({ node, state }) => (
 );
 const mentionStyle = { color: '#13679a' };
 
-const Markdown = ({ msg, customEmojis }) => {
+const Markdown = ({
+	msg, customEmojis, style, markdownStyle, customRules, renderInline
+}) => {
 	if (!msg) {
 		return null;
 	}
 	msg = emojify(msg, { output: 'unicode' });
 
-	const rules = {
+	const defaultRules = {
 		username: {
 			order: -1,
 			match: SimpleMarkdown.inlineRegex(/^@[0-9a-zA-Z-_.]+/),
@@ -121,11 +123,13 @@ const Markdown = ({ msg, customEmojis }) => {
 	};
 
 	const codeStyle = StyleSheet.flatten(styles.codeStyle);
+	style = StyleSheet.flatten(style);
 	return (
 		<EasyMarkdown
-			style={{ marginBottom: 0 }}
-			rules={rules}
-			markdownStyles={{ code: codeStyle }}
+			style={{ marginBottom: 0, ...style }}
+			markdownStyles={{ code: codeStyle, ...markdownStyle }}
+			rules={{ ...defaultRules, ...customRules }}
+			renderInline={renderInline}
 		>{msg}
 		</EasyMarkdown>
 	);
@@ -133,7 +137,11 @@ const Markdown = ({ msg, customEmojis }) => {
 
 Markdown.propTypes = {
 	msg: PropTypes.string.isRequired,
-	customEmojis: PropTypes.object
+	customEmojis: PropTypes.object,
+	style: ViewPropTypes.style,
+	markdownStyle: PropTypes.object,
+	customRules: PropTypes.object,
+	renderInline: PropTypes.bool
 };
 
 BlockCode.propTypes = {
