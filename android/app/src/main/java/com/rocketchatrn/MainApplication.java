@@ -44,7 +44,8 @@ public class MainApplication extends Application implements ReactApplication {
         new ReactVideoPackage(),
         new SplashScreenReactPackage(),
         new RCTToastPackage(),
-        new KeyboardInputPackage(MainApplication.this)
+        new KeyboardInputPackage(MainApplication.this),
+        new RocketChatNativePackage()
       );
     }
   };
