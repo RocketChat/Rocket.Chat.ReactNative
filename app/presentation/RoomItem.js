@@ -2,11 +2,12 @@ import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
-import { emojify } from 'react-emojione';
+
 import { connect } from 'react-redux';
 import SimpleMarkdown from 'simple-markdown';
 
 import Avatar from '../containers/Avatar';
+import Status from '../containers/status';
 import Touch from '../utils/touch/index'; //eslint-disable-line
 import Markdown from '../containers/message/Markdown';
 
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		paddingHorizontal: 16,
 		paddingVertical: 12,
-		alignItems: 'flex-start',
+		alignItems: 'center',
 		borderBottomWidth: 0.5,
 		borderBottomColor: '#ddd'
 	},
@@ -43,13 +44,18 @@ const styles = StyleSheet.create({
 		flex: 1,
 		fontSize: 18,
 		color: '#444',
-		fontWeight: 'bold',
+
 		marginRight: 8
 	},
 	lastMessage: {
 		flex: 1,
 		flexShrink: 1,
-		marginRight: 8
+		marginRight: 8,
+		maxHeight: 20,
+		overflow: 'hidden',
+		flexDirection: 'row',
+		alignItems: 'flex-start',
+		justifyContent: 'flex-start'
 	},
 	alert: {
 		fontWeight: 'bold'
@@ -61,6 +67,13 @@ const styles = StyleSheet.create({
 		width: '100%',
 		flex: 1,
 		flexDirection: 'row',
+		alignItems: 'flex-end',
+		justifyContent: 'flex-end'
+	},
+	firstRow: {
+		width: '100%',
+		flex: 1,
+		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
@@ -69,6 +82,13 @@ const styles = StyleSheet.create({
 		color: '#888',
 		alignItems: 'center',
 		justifyContent: 'center'
+	},
+	status: {
+		position: 'absolute',
+		bottom: -3,
+		right: -3,
+		borderWidth: 3,
+		borderColor: '#fff'
 	}
 });
 const markdownStyle = { block: { marginBottom: 0, flexWrap: 'wrap', flexDirection: 'row' } };
@@ -123,6 +143,7 @@ const renderNumber = (unread, userMentions) => {
 };
 
 @connect(state => ({
+	user: state.login.user,
 	StoreLastMessage: state.settings.Store_Last_Message,
 	customEmojis: state.customEmojis
 }))
@@ -137,28 +158,43 @@ export default class RoomItem extends React.PureComponent {
 		alert: PropTypes.bool,
 		unread: PropTypes.number,
 		userMentions: PropTypes.number,
-		baseUrl: PropTypes.string,
+		id: PropTypes.string,
 		onPress: PropTypes.func,
 		customEmojis: PropTypes.object
 	}
 
 	get icon() {
-		const { type, name, baseUrl } = this.props;
-		return <Avatar text={name} baseUrl={baseUrl} size={56} type={type} />;
+		const {
+			type, name, id
+		} = this.props;
+		return (<Avatar text={name} size={46} type={type}>{type === 'd' ? <Status style={styles.status} id={id} /> : null }</Avatar>);
 	}
 
 	get lastMessage() {
 		const {
-			lastMessage, alert
+			lastMessage, alert, type
 		} = this.props;
 
 		if (!this.props.StoreLastMessage) {
 			return '';
 		}
+		if (!lastMessage) {
+			return 'No Message';
+		}
 
-		let msg = lastMessage ? `${ lastMessage.u.username }: ${ emojify(lastMessage.msg, { output: 'unicode' }) }` : 'No Message';
+
+		let prefix = '';
+
+		if (lastMessage.u.username === this.props.user.username) {
+			prefix = 'You: ';
+		}	else if (type !== 'd') {
+			prefix = `${ lastMessage.u.username }: `;
+		}
+
+		const msg = `${ prefix }${ lastMessage.msg.replace(/[\n\t\r]/igm, '') }`;
+
 		if (alert) {
-			msg = `**${ msg }**`;
+			return `**${ msg.slice(0, 30) }${ msg.replace(/:[a-z0-9]+:/gi, ':::').length > 30 ? '...' : '' }**`;
 		}
 		return msg;
 	}
@@ -172,7 +208,7 @@ export default class RoomItem extends React.PureComponent {
 
 	render() {
 		const {
-			favorite, unread, userMentions, name, _updatedAt, customEmojis, baseUrl
+			favorite, unread, userMentions, name, _updatedAt, customEmojis, alert
 		} = this.props;
 
 		const date = this.formatDate(_updatedAt);
@@ -195,19 +231,19 @@ export default class RoomItem extends React.PureComponent {
 				<View style={[styles.container, favorite && styles.favorite]}>
 					{this.icon}
 					<View style={styles.roomNameView}>
-						<View style={styles.row}>
-							<Text style={styles.roomName} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
+						<View style={styles.firstRow}>
+							<Text style={[styles.roomName, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
 							{_updatedAt ? <Text style={styles.update} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
 						</View>
 						<View style={styles.row}>
 							<Markdown
 								msg={this.lastMessage}
 								customEmojis={customEmojis}
-								baseUrl={baseUrl}
 								style={styles.lastMessage}
 								markdownStyle={markdownStyle}
 								customRules={customRules}
 								renderInline
+								numberOfLines={1}
 							/>
 							{renderNumber(unread, userMentions)}
 						</View>

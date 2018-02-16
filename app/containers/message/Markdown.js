@@ -138,6 +138,7 @@ const Markdown = ({
 Markdown.propTypes = {
 	msg: PropTypes.string.isRequired,
 	customEmojis: PropTypes.object,
+	// eslint-disable-next-line react/no-typos
 	style: ViewPropTypes.style,
 	markdownStyle: PropTypes.object,
 	customRules: PropTypes.object,

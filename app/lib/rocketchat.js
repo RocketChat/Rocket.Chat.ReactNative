@@ -438,14 +438,12 @@ const RocketChat = {
 			return subscription;
 		});
 
-		try {
-			database.write(() => {
-				data.forEach(subscription => database.create('subscriptions', subscription, true));
-				// rooms.forEach(room =>	database.create('rooms', room, true));
-			});
-		} catch (e) {
-			alert(JSON.stringify(e));
-		}
+
+		database.write(() => {
+			data.forEach(subscription => database.create('subscriptions', subscription, true));
+			// rooms.forEach(room =>	database.create('rooms', room, true));
+		});
+
 
 		this.ddp.subscribe('stream-notify-user', `${ login.user.id }/subscriptions-changed`, false);
 		this.ddp.subscribe('stream-notify-user', `${ login.user.id }/rooms-changed`, false);
