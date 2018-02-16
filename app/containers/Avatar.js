@@ -8,7 +8,7 @@ import avatarInitialsAndColor from '../utils/avatarInitialsAndColor';
 
 const styles = StyleSheet.create({
 	iconContainer: {
-		overflow: 'hidden',
+		// overflow: 'hidden',
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
@@ -31,7 +31,8 @@ export default class Avatar extends React.PureComponent {
 		avatar: PropTypes.string,
 		size: PropTypes.number,
 		borderRadius: PropTypes.number,
-		type: PropTypes.string
+		type: PropTypes.string,
+		children: PropTypes.object
 	};
 	render() {
 		const {
@@ -68,6 +69,7 @@ export default class Avatar extends React.PureComponent {
 				<View style={[styles.iconContainer, iconContainerStyle, style]}>
 					<Text style={[styles.avatarInitials, avatarInitialsStyle]} allowFontScaling={false}>{initials}</Text>
 					{image}
+					{this.props.children}
 				</View>);
 		}
 

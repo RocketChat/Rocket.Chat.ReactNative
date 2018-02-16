@@ -1,4 +1,4 @@
-package com.rocketchatrn;
+package chat.rocket.reactnative;
 
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
