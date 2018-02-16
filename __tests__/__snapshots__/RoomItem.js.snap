@@ -33,7 +33,7 @@ exports[`render channel 1`] = `
       style={
         Array [
           Object {
-            "alignItems": "flex-start",
+            "alignItems": "center",
             "borderBottomColor": "#ddd",
             "borderBottomWidth": 0.5,
             "flexDirection": "row",
@@ -50,13 +50,12 @@ exports[`render channel 1`] = `
             Object {
               "alignItems": "center",
               "justifyContent": "center",
-              "overflow": "hidden",
             },
             Object {
               "backgroundColor": "#00BCD4",
               "borderRadius": 4,
-              "height": 56,
-              "width": 56,
+              "height": 46,
+              "width": 46,
             },
             undefined,
           ]
@@ -77,7 +76,7 @@ exports[`render channel 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 28,
+                  "fontSize": 23,
                 },
               ],
               Object {
@@ -118,13 +117,15 @@ exports[`render channel 1`] = `
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
-              Object {
-                "color": "#444",
-                "flex": 1,
-                "fontSize": 18,
-                "fontWeight": "bold",
-                "marginRight": 8,
-              }
+              Array [
+                Object {
+                  "color": "#444",
+                  "flex": 1,
+                  "fontSize": 18,
+                  "marginRight": 8,
+                },
+                undefined,
+              ]
             }
           >
             general
@@ -149,10 +150,10 @@ exports[`render channel 1`] = `
         <View
           style={
             Object {
-              "alignItems": "center",
+              "alignItems": "flex-end",
               "flex": 1,
               "flexDirection": "row",
-              "justifyContent": "center",
+              "justifyContent": "flex-end",
               "width": "100%",
             }
           }
@@ -196,7 +197,7 @@ exports[`render no icon 1`] = `
       style={
         Array [
           Object {
-            "alignItems": "flex-start",
+            "alignItems": "center",
             "borderBottomColor": "#ddd",
             "borderBottomWidth": 0.5,
             "flexDirection": "row",
@@ -213,13 +214,12 @@ exports[`render no icon 1`] = `
             Object {
               "alignItems": "center",
               "justifyContent": "center",
-              "overflow": "hidden",
             },
             Object {
               "backgroundColor": "#3F51B5",
               "borderRadius": 4,
-              "height": 56,
-              "width": 56,
+              "height": 46,
+              "width": 46,
             },
             undefined,
           ]
@@ -240,7 +240,7 @@ exports[`render no icon 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 28,
+                  "fontSize": 23,
                 },
               ],
               Object {
@@ -281,13 +281,15 @@ exports[`render no icon 1`] = `
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
-              Object {
-                "color": "#444",
-                "flex": 1,
-                "fontSize": 18,
-                "fontWeight": "bold",
-                "marginRight": 8,
-              }
+              Array [
+                Object {
+                  "color": "#444",
+                  "flex": 1,
+                  "fontSize": 18,
+                  "marginRight": 8,
+                },
+                undefined,
+              ]
             }
           >
             name
@@ -312,10 +314,10 @@ exports[`render no icon 1`] = `
         <View
           style={
             Object {
-              "alignItems": "center",
+              "alignItems": "flex-end",
               "flex": 1,
               "flexDirection": "row",
-              "justifyContent": "center",
+              "justifyContent": "flex-end",
               "width": "100%",
             }
           }
@@ -359,7 +361,7 @@ exports[`render private group 1`] = `
       style={
         Array [
           Object {
-            "alignItems": "flex-start",
+            "alignItems": "center",
             "borderBottomColor": "#ddd",
             "borderBottomWidth": 0.5,
             "flexDirection": "row",
@@ -376,13 +378,12 @@ exports[`render private group 1`] = `
             Object {
               "alignItems": "center",
               "justifyContent": "center",
-              "overflow": "hidden",
             },
             Object {
               "backgroundColor": "#FF9800",
               "borderRadius": 4,
-              "height": 56,
-              "width": 56,
+              "height": 46,
+              "width": 46,
             },
             undefined,
           ]
@@ -403,7 +404,7 @@ exports[`render private group 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 28,
+                  "fontSize": 23,
                 },
               ],
               Object {
@@ -444,13 +445,15 @@ exports[`render private group 1`] = `
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
-              Object {
-                "color": "#444",
-                "flex": 1,
-                "fontSize": 18,
-                "fontWeight": "bold",
-                "marginRight": 8,
-              }
+              Array [
+                Object {
+                  "color": "#444",
+                  "flex": 1,
+                  "fontSize": 18,
+                  "marginRight": 8,
+                },
+                undefined,
+              ]
             }
           >
             private-group
@@ -475,10 +478,10 @@ exports[`render private group 1`] = `
         <View
           style={
             Object {
-              "alignItems": "center",
+              "alignItems": "flex-end",
               "flex": 1,
               "flexDirection": "row",
-              "justifyContent": "center",
+              "justifyContent": "flex-end",
               "width": "100%",
             }
           }
@@ -523,7 +526,7 @@ exports[`render unread +999 1`] = `
       style={
         Array [
           Object {
-            "alignItems": "flex-start",
+            "alignItems": "center",
             "borderBottomColor": "#ddd",
             "borderBottomWidth": 0.5,
             "flexDirection": "row",
@@ -540,13 +543,12 @@ exports[`render unread +999 1`] = `
             Object {
               "alignItems": "center",
               "justifyContent": "center",
-              "overflow": "hidden",
             },
             Object {
               "backgroundColor": "#3F51B5",
               "borderRadius": 4,
-              "height": 56,
-              "width": 56,
+              "height": 46,
+              "width": 46,
             },
             undefined,
           ]
@@ -562,7 +564,7 @@ exports[`render unread +999 1`] = `
                 "color": "#ffffff",
               },
               Object {
-                "fontSize": 28,
+                "fontSize": 23,
               },
             ]
           }
@@ -570,6 +572,27 @@ exports[`render unread +999 1`] = `
           NA
         </Text>
         
+        <View
+          style={
+            Array [
+              Object {
+                "borderRadius": 16,
+                "height": 16,
+                "width": 16,
+              },
+              Object {
+                "borderColor": "#fff",
+                "borderWidth": 3,
+                "bottom": -3,
+                "position": "absolute",
+                "right": -3,
+              },
+              Object {
+                "backgroundColor": "#cbced1",
+              },
+            ]
+          }
+        />
       </View>
       <View
         style={
@@ -598,13 +621,15 @@ exports[`render unread +999 1`] = `
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
-              Object {
-                "color": "#444",
-                "flex": 1,
-                "fontSize": 18,
-                "fontWeight": "bold",
-                "marginRight": 8,
-              }
+              Array [
+                Object {
+                  "color": "#444",
+                  "flex": 1,
+                  "fontSize": 18,
+                  "marginRight": 8,
+                },
+                undefined,
+              ]
             }
           >
             name
@@ -629,10 +654,10 @@ exports[`render unread +999 1`] = `
         <View
           style={
             Object {
-              "alignItems": "center",
+              "alignItems": "flex-end",
               "flex": 1,
               "flexDirection": "row",
-              "justifyContent": "center",
+              "justifyContent": "flex-end",
               "width": "100%",
             }
           }
@@ -699,7 +724,7 @@ exports[`render unread 1`] = `
       style={
         Array [
           Object {
-            "alignItems": "flex-start",
+            "alignItems": "center",
             "borderBottomColor": "#ddd",
             "borderBottomWidth": 0.5,
             "flexDirection": "row",
@@ -716,13 +741,12 @@ exports[`render unread 1`] = `
             Object {
               "alignItems": "center",
               "justifyContent": "center",
-              "overflow": "hidden",
             },
             Object {
               "backgroundColor": "#3F51B5",
               "borderRadius": 4,
-              "height": 56,
-              "width": 56,
+              "height": 46,
+              "width": 46,
             },
             undefined,
           ]
@@ -738,7 +762,7 @@ exports[`render unread 1`] = `
                 "color": "#ffffff",
               },
               Object {
-                "fontSize": 28,
+                "fontSize": 23,
               },
             ]
           }
@@ -746,6 +770,27 @@ exports[`render unread 1`] = `
           NA
         </Text>
         
+        <View
+          style={
+            Array [
+              Object {
+                "borderRadius": 16,
+                "height": 16,
+                "width": 16,
+              },
+              Object {
+                "borderColor": "#fff",
+                "borderWidth": 3,
+                "bottom": -3,
+                "position": "absolute",
+                "right": -3,
+              },
+              Object {
+                "backgroundColor": "#cbced1",
+              },
+            ]
+          }
+        />
       </View>
       <View
         style={
@@ -774,13 +819,15 @@ exports[`render unread 1`] = `
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
-              Object {
-                "color": "#444",
-                "flex": 1,
-                "fontSize": 18,
-                "fontWeight": "bold",
-                "marginRight": 8,
-              }
+              Array [
+                Object {
+                  "color": "#444",
+                  "flex": 1,
+                  "fontSize": 18,
+                  "marginRight": 8,
+                },
+                undefined,
+              ]
             }
           >
             name
@@ -805,10 +852,10 @@ exports[`render unread 1`] = `
         <View
           style={
             Object {
-              "alignItems": "center",
+              "alignItems": "flex-end",
               "flex": 1,
               "flexDirection": "row",
-              "justifyContent": "center",
+              "justifyContent": "flex-end",
               "width": "100%",
             }
           }
@@ -875,7 +922,7 @@ exports[`renders correctly 1`] = `
       style={
         Array [
           Object {
-            "alignItems": "flex-start",
+            "alignItems": "center",
             "borderBottomColor": "#ddd",
             "borderBottomWidth": 0.5,
             "flexDirection": "row",
@@ -892,13 +939,12 @@ exports[`renders correctly 1`] = `
             Object {
               "alignItems": "center",
               "justifyContent": "center",
-              "overflow": "hidden",
             },
             Object {
               "backgroundColor": "#3F51B5",
               "borderRadius": 4,
-              "height": 56,
-              "width": 56,
+              "height": 46,
+              "width": 46,
             },
             undefined,
           ]
@@ -914,7 +960,7 @@ exports[`renders correctly 1`] = `
                 "color": "#ffffff",
               },
               Object {
-                "fontSize": 28,
+                "fontSize": 23,
               },
             ]
           }
@@ -922,6 +968,27 @@ exports[`renders correctly 1`] = `
           NA
         </Text>
         
+        <View
+          style={
+            Array [
+              Object {
+                "borderRadius": 16,
+                "height": 16,
+                "width": 16,
+              },
+              Object {
+                "borderColor": "#fff",
+                "borderWidth": 3,
+                "bottom": -3,
+                "position": "absolute",
+                "right": -3,
+              },
+              Object {
+                "backgroundColor": "#cbced1",
+              },
+            ]
+          }
+        />
       </View>
       <View
         style={
@@ -950,13 +1017,15 @@ exports[`renders correctly 1`] = `
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
-              Object {
-                "color": "#444",
-                "flex": 1,
-                "fontSize": 18,
-                "fontWeight": "bold",
-                "marginRight": 8,
-              }
+              Array [
+                Object {
+                  "color": "#444",
+                  "flex": 1,
+                  "fontSize": 18,
+                  "marginRight": 8,
+                },
+                undefined,
+              ]
             }
           >
             name
@@ -981,10 +1050,10 @@ exports[`renders correctly 1`] = `
         <View
           style={
             Object {
-              "alignItems": "center",
+              "alignItems": "flex-end",
               "flex": 1,
               "flexDirection": "row",
-              "justifyContent": "center",
+              "justifyContent": "flex-end",
               "width": "100%",
             }
           }
