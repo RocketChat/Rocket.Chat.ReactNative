@@ -302,28 +302,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "width": "100%",
               }
             }
-          >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "color": "#444",
-                    "flex": 1,
-                    "flexShrink": 1,
-                    "fontSize": 16,
-                    "marginRight": 8,
-                  },
-                  undefined,
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
+          />
         </View>
       </View>
     </View>
@@ -471,30 +450,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "width": "100%",
               }
             }
-          >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "color": "#444",
-                    "flex": 1,
-                    "flexShrink": 1,
-                    "fontSize": 16,
-                    "marginRight": 8,
-                  },
-                  Object {
-                    "fontWeight": "bold",
-                  },
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
+          />
         </View>
       </View>
     </View>
@@ -643,26 +599,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               }
             }
           >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "color": "#444",
-                    "flex": 1,
-                    "flexShrink": 1,
-                    "fontSize": 16,
-                    "marginRight": 8,
-                  },
-                  undefined,
-                ]
-              }
-            >
-              
-            </Text>
             <Text
               accessible={true}
               allowFontScaling={true}
@@ -838,28 +774,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               accessible={true}
               allowFontScaling={true}
               ellipsizeMode="tail"
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "color": "#444",
-                    "flex": 1,
-                    "flexShrink": 1,
-                    "fontSize": 16,
-                    "marginRight": 8,
-                  },
-                  Object {
-                    "fontWeight": "bold",
-                  },
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "alignItems": "center",
@@ -1027,26 +941,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               }
             }
           >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "color": "#444",
-                    "flex": 1,
-                    "flexShrink": 1,
-                    "fontSize": 16,
-                    "marginRight": 8,
-                  },
-                  undefined,
-                ]
-              }
-            >
-              
-            </Text>
             <Text
               accessible={true}
               allowFontScaling={true}
@@ -1222,26 +1116,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               accessible={true}
               allowFontScaling={true}
               ellipsizeMode="tail"
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "color": "#444",
-                    "flex": 1,
-                    "flexShrink": 1,
-                    "fontSize": 16,
-                    "marginRight": 8,
-                  },
-                  undefined,
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "alignItems": "center",
@@ -1409,26 +1283,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               }
             }
           >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "color": "#444",
-                    "flex": 1,
-                    "flexShrink": 1,
-                    "fontSize": 16,
-                    "marginRight": 8,
-                  },
-                  undefined,
-                ]
-              }
-            >
-              
-            </Text>
             <Text
               accessible={true}
               allowFontScaling={true}
@@ -1604,26 +1458,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               accessible={true}
               allowFontScaling={true}
               ellipsizeMode="tail"
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "color": "#444",
-                    "flex": 1,
-                    "flexShrink": 1,
-                    "fontSize": 16,
-                    "marginRight": 8,
-                  },
-                  undefined,
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "alignItems": "center",
@@ -1790,28 +1624,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "width": "100%",
               }
             }
-          >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "color": "#444",
-                    "flex": 1,
-                    "flexShrink": 1,
-                    "fontSize": 16,
-                    "marginRight": 8,
-                  },
-                  undefined,
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
+          />
         </View>
       </View>
     </View>
@@ -1959,28 +1772,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "width": "100%",
               }
             }
-          >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "color": "#444",
-                    "flex": 1,
-                    "flexShrink": 1,
-                    "fontSize": 16,
-                    "marginRight": 8,
-                  },
-                  undefined,
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
+          />
         </View>
       </View>
     </View>
@@ -2128,28 +1920,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                 "width": "100%",
               }
             }
-          >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "color": "#444",
-                    "flex": 1,
-                    "flexShrink": 1,
-                    "fontSize": 16,
-                    "marginRight": 8,
-                  },
-                  undefined,
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
+          />
         </View>
       </View>
     </View>
