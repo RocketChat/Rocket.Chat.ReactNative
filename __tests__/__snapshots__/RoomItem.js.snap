@@ -156,28 +156,7 @@ exports[`render channel 1`] = `
               "width": "100%",
             }
           }
-        >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "flexShrink": 1,
-                  "fontSize": 16,
-                  "marginRight": 8,
-                },
-                undefined,
-              ]
-            }
-          >
-            
-          </Text>
-        </View>
+        />
       </View>
     </View>
   </View>
@@ -340,28 +319,7 @@ exports[`render no icon 1`] = `
               "width": "100%",
             }
           }
-        >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "flexShrink": 1,
-                  "fontSize": 16,
-                  "marginRight": 8,
-                },
-                undefined,
-              ]
-            }
-          >
-            
-          </Text>
-        </View>
+        />
       </View>
     </View>
   </View>
@@ -524,28 +482,7 @@ exports[`render private group 1`] = `
               "width": "100%",
             }
           }
-        >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "flexShrink": 1,
-                  "fontSize": 16,
-                  "marginRight": 8,
-                },
-                undefined,
-              ]
-            }
-          >
-            
-          </Text>
-        </View>
+        />
       </View>
     </View>
   </View>
@@ -700,26 +637,6 @@ exports[`render unread +999 1`] = `
             }
           }
         >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "flexShrink": 1,
-                  "fontSize": 16,
-                  "marginRight": 8,
-                },
-                undefined,
-              ]
-            }
-          >
-            
-          </Text>
           <Text
             accessible={true}
             allowFontScaling={true}
@@ -900,26 +817,6 @@ exports[`render unread 1`] = `
             accessible={true}
             allowFontScaling={true}
             ellipsizeMode="tail"
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "flexShrink": 1,
-                  "fontSize": 16,
-                  "marginRight": 8,
-                },
-                undefined,
-              ]
-            }
-          >
-            
-          </Text>
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Object {
                 "alignItems": "center",
@@ -1091,28 +988,7 @@ exports[`renders correctly 1`] = `
               "width": "100%",
             }
           }
-        >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "flexShrink": 1,
-                  "fontSize": 16,
-                  "marginRight": 8,
-                },
-                undefined,
-              ]
-            }
-          >
-            
-          </Text>
-        </View>
+        />
       </View>
     </View>
   </View>
