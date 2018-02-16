@@ -30,7 +30,7 @@ export default class Status extends React.Component {
 
 	get status() {
 		const userId = this.props.id;
-		return this.props.activeUsers && this.props.activeUsers[userId] || 'offline';
+		return (this.props.activeUsers && this.props.activeUsers[userId]) || 'offline';
 	}
 
 	render() {

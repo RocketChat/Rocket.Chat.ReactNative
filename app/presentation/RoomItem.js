@@ -160,7 +160,8 @@ export default class RoomItem extends React.PureComponent {
 		userMentions: PropTypes.number,
 		id: PropTypes.string,
 		onPress: PropTypes.func,
-		customEmojis: PropTypes.object
+		customEmojis: PropTypes.object,
+		user: PropTypes.object
 	}
 
 	get icon() {
@@ -193,10 +194,13 @@ export default class RoomItem extends React.PureComponent {
 
 		const msg = `${ prefix }${ lastMessage.msg.replace(/[\n\t\r]/igm, '') }`;
 
+		const maxChars = 35;
+
+
 		if (alert) {
-			return `**${ msg.slice(0, 30) }${ msg.replace(/:[a-z0-9]+:/gi, ':::').length > 30 ? '...' : '' }**`;
+			return `**${ msg.slice(0, maxChars) }${ msg.replace(/:[a-z0-9]+:/gi, ':::').length > maxChars ? '...' : '' }**`;
 		}
-		return msg;
+		return `${ msg.slice(0, maxChars) }${ msg.replace(/:[a-z0-9]+:/gi, ':::').length > maxChars ? '...' : '' }`;
 	}
 
 	formatDate = date => moment(date).calendar(null, {
