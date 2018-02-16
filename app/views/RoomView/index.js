@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Button, LayoutAnimation } from 'react-native';
+import { Text, View, Button } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import equal from 'deep-equal';
@@ -51,8 +51,8 @@ export default class RoomView extends React.Component {
 		Message_TimeFormat: PropTypes.string,
 		loading: PropTypes.bool,
 		actionMessage: PropTypes.object,
-		toggleReactionPicker: PropTypes.func.isRequired,
-		layoutAnimation: PropTypes.instanceOf(Date)
+		toggleReactionPicker: PropTypes.func.isRequired
+		// layoutAnimation: PropTypes.instanceOf(Date)
 	};
 
 	static navigationOptions = ({ navigation }) => ({
@@ -90,11 +90,11 @@ export default class RoomView extends React.Component {
 
 		this.rooms.addListener(this.updateRoom);
 	}
-	componentWillReceiveProps(nextProps) {
-		if (this.props.layoutAnimation !== nextProps.layoutAnimation) {
-			LayoutAnimation.spring();
-		}
-	}
+	// componentWillReceiveProps(nextProps) {
+	// 	// if (this.props.layoutAnimation !== nextProps.layoutAnimation) {
+	// 	// 	LayoutAnimation.spring();
+	// 	// }
+	// }
 	shouldComponentUpdate(nextProps, nextState) {
 		return !(equal(this.props, nextProps) && equal(this.state, nextState));
 	}
