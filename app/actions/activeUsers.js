@@ -1,9 +1,9 @@
 import * as types from './actionsTypes';
 
-export function requestActiveUser(user) {
+export function requestActiveUser(users) {
 	return {
 		type: types.ACTIVE_USERS.REQUEST,
-		user
+		users
 	};
 }
 
