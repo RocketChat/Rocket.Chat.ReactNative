@@ -18,6 +18,7 @@ import styles from './styles';
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 @connect(state => ({
+	user: state.login.user,
 	server: state.server.server,
 	login: state.login,
 	Site_Url: state.settings.Site_Url,
@@ -31,6 +32,7 @@ const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 export default class RoomsListView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
+		user: PropTypes.object,
 		Site_Url: PropTypes.string,
 		server: PropTypes.string,
 		searchText: PropTypes.string
@@ -69,7 +71,9 @@ export default class RoomsListView extends React.Component {
 			this.search(props.searchText);
 		}
 	}
-
+	// componentWillUpdate() {
+	// 	LayoutAnimation.easeInEaseOut();
+	// }
 	componentWillUnmount() {
 		this.data.removeAllListeners();
 	}
@@ -77,6 +81,12 @@ export default class RoomsListView extends React.Component {
 	onSearchChangeText(text) {
 		this.setState({ searchText: text });
 		this.search(text);
+	}
+
+	getLastMessage = (subscription) => {
+		const [room] = database.objects('rooms').filtered('_id = $0', subscription.rid).slice();
+		console.log('ROOM', room);
+		return room && room.lastMessage;
 	}
 
 	search(text) {
@@ -197,20 +207,23 @@ export default class RoomsListView extends React.Component {
 		</View>
 	);
 
-	renderItem = item => (
-		<RoomItem
+	renderItem = (item) => {
+		const id = item.rid.replace(this.props.user.id, '').trim();
+		return (<RoomItem
 			alert={item.alert}
 			unread={item.unread}
 			userMentions={item.userMentions}
 			favorite={item.f}
+			lastMessage={item.lastMessage}
 			name={item.name}
 			_updatedAt={item.roomUpdatedAt}
 			key={item._id}
+			id={id}
 			type={item.t}
 			baseUrl={this.props.Site_Url}
 			onPress={() => this._onPressItem(item)}
-		/>
-	)
+		/>);
+	}
 
 	renderList = () => (
 		<ListView

@@ -128,11 +128,12 @@ const RocketChat = {
 					const sub = database.objects('subscriptions').filtered('rid == $0', data._id)[0];
 					database.write(() => {
 						sub.roomUpdatedAt = data._updatedAt;
+						sub.lastMessage = data.lastMessage;
 						sub.ro = data.ro;
 					});
 				}
 			});
-		});
+		}).catch(console.log);
 	},
 
 	me({ server, token, userId }) {
@@ -428,6 +429,7 @@ const RocketChat = {
 			const room = rooms.find(({ _id }) => _id === subscription.rid);
 			if (room) {
 				subscription.roomUpdatedAt = room._updatedAt;
+				subscription.lastMessage = room.lastMessage;
 				subscription.ro = room.ro;
 			}
 			if (subscription.roles) {
@@ -435,10 +437,14 @@ const RocketChat = {
 			}
 			return subscription;
 		});
+
+
 		database.write(() => {
-			data.forEach(subscription =>
-				database.create('subscriptions', subscription, true));
+			data.forEach(subscription => database.create('subscriptions', subscription, true));
+			// rooms.forEach(room =>	database.create('rooms', room, true));
 		});
+
+
 		this.ddp.subscribe('stream-notify-user', `${ login.user.id }/subscriptions-changed`, false);
 		this.ddp.subscribe('stream-notify-user', `${ login.user.id }/rooms-changed`, false);
 		return data;

@@ -18,6 +18,7 @@ import {
 } from '../actions/messages';
 import { showToast } from '../utils/info';
 
+const returnAnArray = obj => obj || [];
 @connect(
 	state => ({
 		showActions: state.messages.showActions,
@@ -171,11 +172,11 @@ export default class MessageActions extends React.Component {
 	}
 
 	setPermissions(permissions) {
-		this.hasEditPermission = permissions['edit-message']
+		this.hasEditPermission = returnAnArray(permissions['edit-message'])
 			.some(item => this.mergedRoles.indexOf(item) !== -1);
-		this.hasDeletePermission = permissions['delete-message']
+		this.hasDeletePermission = returnAnArray(permissions['delete-message'])
 			.some(item => this.mergedRoles.indexOf(item) !== -1);
-		this.hasForceDeletePermission = permissions['force-delete-message']
+		this.hasForceDeletePermission = returnAnArray(permissions['force-delete-message'])
 			.some(item => this.mergedRoles.indexOf(item) !== -1);
 	}
 
