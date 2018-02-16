@@ -143,7 +143,7 @@ const renderNumber = (unread, userMentions) => {
 };
 
 @connect(state => ({
-	user: state.login.user,
+	user: state.login && state.login.user,
 	StoreLastMessage: state.settings.Store_Last_Message,
 	customEmojis: state.customEmojis
 }))

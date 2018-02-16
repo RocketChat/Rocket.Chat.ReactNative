@@ -9,7 +9,6 @@ exports[`Storyshots Avatar avatar 1`] = `
           Object {
             "alignItems": "center",
             "justifyContent": "center",
-            "overflow": "hidden",
           },
           Object {
             "backgroundColor": "#3F51B5",
@@ -46,7 +45,6 @@ exports[`Storyshots Avatar avatar 1`] = `
           Object {
             "alignItems": "center",
             "justifyContent": "center",
-            "overflow": "hidden",
           },
           Object {
             "backgroundColor": "#9C27B0",
@@ -83,7 +81,6 @@ exports[`Storyshots Avatar avatar 1`] = `
           Object {
             "alignItems": "center",
             "justifyContent": "center",
-            "overflow": "hidden",
           },
           Object {
             "backgroundColor": "#9C27B0",
@@ -120,7 +117,6 @@ exports[`Storyshots Avatar avatar 1`] = `
           Object {
             "alignItems": "center",
             "justifyContent": "center",
-            "overflow": "hidden",
           },
           Object {
             "backgroundColor": "#3F51B5",
@@ -189,7 +185,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         style={
           Array [
             Object {
-              "alignItems": "flex-start",
+              "alignItems": "center",
               "borderBottomColor": "#ddd",
               "borderBottomWidth": 0.5,
               "flexDirection": "row",
@@ -206,13 +202,12 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               Object {
                 "alignItems": "center",
                 "justifyContent": "center",
-                "overflow": "hidden",
               },
               Object {
                 "backgroundColor": "#8BC34A",
                 "borderRadius": 4,
-                "height": 56,
-                "width": 56,
+                "height": 46,
+                "width": 46,
               },
               undefined,
             ]
@@ -228,7 +223,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 28,
+                  "fontSize": 23,
                 },
               ]
             }
@@ -236,6 +231,27 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             RC
           </Text>
           
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
+                },
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                Object {
+                  "backgroundColor": "#cbced1",
+                },
+              ]
+            }
+          />
         </View>
         <View
           style={
@@ -264,13 +280,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               ellipsizeMode="tail"
               numberOfLines={1}
               style={
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "fontSize": 18,
-                  "fontWeight": "bold",
-                  "marginRight": 8,
-                }
+                Array [
+                  Object {
+                    "color": "#444",
+                    "flex": 1,
+                    "fontSize": 18,
+                    "marginRight": 8,
+                  },
+                  undefined,
+                ]
               }
             >
               rocket.cat
@@ -295,10 +313,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Object {
-                "alignItems": "center",
+                "alignItems": "flex-end",
                 "flex": 1,
                 "flexDirection": "row",
-                "justifyContent": "center",
+                "justifyContent": "flex-end",
                 "width": "100%",
               }
             }
@@ -337,7 +355,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         style={
           Array [
             Object {
-              "alignItems": "flex-start",
+              "alignItems": "center",
               "borderBottomColor": "#ddd",
               "borderBottomWidth": 0.5,
               "flexDirection": "row",
@@ -354,13 +372,12 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               Object {
                 "alignItems": "center",
                 "justifyContent": "center",
-                "overflow": "hidden",
               },
               Object {
                 "backgroundColor": "#8BC34A",
                 "borderRadius": 4,
-                "height": 56,
-                "width": 56,
+                "height": 46,
+                "width": 46,
               },
               undefined,
             ]
@@ -376,7 +393,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 28,
+                  "fontSize": 23,
                 },
               ]
             }
@@ -384,6 +401,27 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             RC
           </Text>
           
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
+                },
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                Object {
+                  "backgroundColor": "#cbced1",
+                },
+              ]
+            }
+          />
         </View>
         <View
           style={
@@ -412,13 +450,17 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               ellipsizeMode="tail"
               numberOfLines={1}
               style={
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "fontSize": 18,
-                  "fontWeight": "bold",
-                  "marginRight": 8,
-                }
+                Array [
+                  Object {
+                    "color": "#444",
+                    "flex": 1,
+                    "fontSize": 18,
+                    "marginRight": 8,
+                  },
+                  Object {
+                    "fontWeight": "bold",
+                  },
+                ]
               }
             >
               rocket.cat
@@ -443,10 +485,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Object {
-                "alignItems": "center",
+                "alignItems": "flex-end",
                 "flex": 1,
                 "flexDirection": "row",
-                "justifyContent": "center",
+                "justifyContent": "flex-end",
                 "width": "100%",
               }
             }
@@ -485,7 +527,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         style={
           Array [
             Object {
-              "alignItems": "flex-start",
+              "alignItems": "center",
               "borderBottomColor": "#ddd",
               "borderBottomWidth": 0.5,
               "flexDirection": "row",
@@ -502,13 +544,12 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               Object {
                 "alignItems": "center",
                 "justifyContent": "center",
-                "overflow": "hidden",
               },
               Object {
                 "backgroundColor": "#8BC34A",
                 "borderRadius": 4,
-                "height": 56,
-                "width": 56,
+                "height": 46,
+                "width": 46,
               },
               undefined,
             ]
@@ -524,7 +565,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 28,
+                  "fontSize": 23,
                 },
               ]
             }
@@ -532,6 +573,27 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             RC
           </Text>
           
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
+                },
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                Object {
+                  "backgroundColor": "#cbced1",
+                },
+              ]
+            }
+          />
         </View>
         <View
           style={
@@ -560,13 +622,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               ellipsizeMode="tail"
               numberOfLines={1}
               style={
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "fontSize": 18,
-                  "fontWeight": "bold",
-                  "marginRight": 8,
-                }
+                Array [
+                  Object {
+                    "color": "#444",
+                    "flex": 1,
+                    "fontSize": 18,
+                    "marginRight": 8,
+                  },
+                  undefined,
+                ]
               }
             >
               rocket.cat
@@ -591,10 +655,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Object {
-                "alignItems": "center",
+                "alignItems": "flex-end",
                 "flex": 1,
                 "flexDirection": "row",
-                "justifyContent": "center",
+                "justifyContent": "flex-end",
                 "width": "100%",
               }
             }
@@ -656,7 +720,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         style={
           Array [
             Object {
-              "alignItems": "flex-start",
+              "alignItems": "center",
               "borderBottomColor": "#ddd",
               "borderBottomWidth": 0.5,
               "flexDirection": "row",
@@ -673,13 +737,12 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               Object {
                 "alignItems": "center",
                 "justifyContent": "center",
-                "overflow": "hidden",
               },
               Object {
                 "backgroundColor": "#795548",
                 "borderRadius": 4,
-                "height": 56,
-                "width": 56,
+                "height": 46,
+                "width": 46,
               },
               undefined,
             ]
@@ -695,7 +758,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 28,
+                  "fontSize": 23,
                 },
               ]
             }
@@ -703,6 +766,27 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             LC
           </Text>
           
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
+                },
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                Object {
+                  "backgroundColor": "#cbced1",
+                },
+              ]
+            }
+          />
         </View>
         <View
           style={
@@ -731,13 +815,17 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               ellipsizeMode="tail"
               numberOfLines={1}
               style={
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "fontSize": 18,
-                  "fontWeight": "bold",
-                  "marginRight": 8,
-                }
+                Array [
+                  Object {
+                    "color": "#444",
+                    "flex": 1,
+                    "fontSize": 18,
+                    "marginRight": 8,
+                  },
+                  Object {
+                    "fontWeight": "bold",
+                  },
+                ]
               }
             >
               Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -762,10 +850,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Object {
-                "alignItems": "center",
+                "alignItems": "flex-end",
                 "flex": 1,
                 "flexDirection": "row",
-                "justifyContent": "center",
+                "justifyContent": "flex-end",
                 "width": "100%",
               }
             }
@@ -827,7 +915,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         style={
           Array [
             Object {
-              "alignItems": "flex-start",
+              "alignItems": "center",
               "borderBottomColor": "#ddd",
               "borderBottomWidth": 0.5,
               "flexDirection": "row",
@@ -844,13 +932,12 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               Object {
                 "alignItems": "center",
                 "justifyContent": "center",
-                "overflow": "hidden",
               },
               Object {
                 "backgroundColor": "#795548",
                 "borderRadius": 4,
-                "height": 56,
-                "width": 56,
+                "height": 46,
+                "width": 46,
               },
               undefined,
             ]
@@ -866,7 +953,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 28,
+                  "fontSize": 23,
                 },
               ]
             }
@@ -874,6 +961,27 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             LC
           </Text>
           
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
+                },
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                Object {
+                  "backgroundColor": "#cbced1",
+                },
+              ]
+            }
+          />
         </View>
         <View
           style={
@@ -902,13 +1010,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               ellipsizeMode="tail"
               numberOfLines={1}
               style={
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "fontSize": 18,
-                  "fontWeight": "bold",
-                  "marginRight": 8,
-                }
+                Array [
+                  Object {
+                    "color": "#444",
+                    "flex": 1,
+                    "fontSize": 18,
+                    "marginRight": 8,
+                  },
+                  undefined,
+                ]
               }
             >
               Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -933,10 +1043,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Object {
-                "alignItems": "center",
+                "alignItems": "flex-end",
                 "flex": 1,
                 "flexDirection": "row",
-                "justifyContent": "center",
+                "justifyContent": "flex-end",
                 "width": "100%",
               }
             }
@@ -998,7 +1108,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         style={
           Array [
             Object {
-              "alignItems": "flex-start",
+              "alignItems": "center",
               "borderBottomColor": "#ddd",
               "borderBottomWidth": 0.5,
               "flexDirection": "row",
@@ -1015,13 +1125,12 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               Object {
                 "alignItems": "center",
                 "justifyContent": "center",
-                "overflow": "hidden",
               },
               Object {
                 "backgroundColor": "#795548",
                 "borderRadius": 4,
-                "height": 56,
-                "width": 56,
+                "height": 46,
+                "width": 46,
               },
               undefined,
             ]
@@ -1037,7 +1146,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 28,
+                  "fontSize": 23,
                 },
               ]
             }
@@ -1045,6 +1154,27 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             LC
           </Text>
           
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
+                },
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                Object {
+                  "backgroundColor": "#cbced1",
+                },
+              ]
+            }
+          />
         </View>
         <View
           style={
@@ -1073,13 +1203,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               ellipsizeMode="tail"
               numberOfLines={1}
               style={
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "fontSize": 18,
-                  "fontWeight": "bold",
-                  "marginRight": 8,
-                }
+                Array [
+                  Object {
+                    "color": "#444",
+                    "flex": 1,
+                    "fontSize": 18,
+                    "marginRight": 8,
+                  },
+                  undefined,
+                ]
               }
             >
               Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -1104,10 +1236,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Object {
-                "alignItems": "center",
+                "alignItems": "flex-end",
                 "flex": 1,
                 "flexDirection": "row",
-                "justifyContent": "center",
+                "justifyContent": "flex-end",
                 "width": "100%",
               }
             }
@@ -1169,7 +1301,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         style={
           Array [
             Object {
-              "alignItems": "flex-start",
+              "alignItems": "center",
               "borderBottomColor": "#ddd",
               "borderBottomWidth": 0.5,
               "flexDirection": "row",
@@ -1186,13 +1318,12 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               Object {
                 "alignItems": "center",
                 "justifyContent": "center",
-                "overflow": "hidden",
               },
               Object {
                 "backgroundColor": "#795548",
                 "borderRadius": 4,
-                "height": 56,
-                "width": 56,
+                "height": 46,
+                "width": 46,
               },
               undefined,
             ]
@@ -1208,7 +1339,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 28,
+                  "fontSize": 23,
                 },
               ]
             }
@@ -1216,6 +1347,27 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             LC
           </Text>
           
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
+                },
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                Object {
+                  "backgroundColor": "#cbced1",
+                },
+              ]
+            }
+          />
         </View>
         <View
           style={
@@ -1244,13 +1396,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               ellipsizeMode="tail"
               numberOfLines={1}
               style={
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "fontSize": 18,
-                  "fontWeight": "bold",
-                  "marginRight": 8,
-                }
+                Array [
+                  Object {
+                    "color": "#444",
+                    "flex": 1,
+                    "fontSize": 18,
+                    "marginRight": 8,
+                  },
+                  undefined,
+                ]
               }
             >
               Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -1275,10 +1429,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Object {
-                "alignItems": "center",
+                "alignItems": "flex-end",
                 "flex": 1,
                 "flexDirection": "row",
-                "justifyContent": "center",
+                "justifyContent": "flex-end",
                 "width": "100%",
               }
             }
@@ -1340,7 +1494,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         style={
           Array [
             Object {
-              "alignItems": "flex-start",
+              "alignItems": "center",
               "borderBottomColor": "#ddd",
               "borderBottomWidth": 0.5,
               "flexDirection": "row",
@@ -1357,13 +1511,12 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               Object {
                 "alignItems": "center",
                 "justifyContent": "center",
-                "overflow": "hidden",
               },
               Object {
                 "backgroundColor": "#795548",
                 "borderRadius": 4,
-                "height": 56,
-                "width": 56,
+                "height": 46,
+                "width": 46,
               },
               undefined,
             ]
@@ -1379,7 +1532,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 28,
+                  "fontSize": 23,
                 },
               ]
             }
@@ -1387,6 +1540,27 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             LC
           </Text>
           
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
+                },
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                Object {
+                  "backgroundColor": "#cbced1",
+                },
+              ]
+            }
+          />
         </View>
         <View
           style={
@@ -1415,13 +1589,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               ellipsizeMode="tail"
               numberOfLines={1}
               style={
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "fontSize": 18,
-                  "fontWeight": "bold",
-                  "marginRight": 8,
-                }
+                Array [
+                  Object {
+                    "color": "#444",
+                    "flex": 1,
+                    "fontSize": 18,
+                    "marginRight": 8,
+                  },
+                  undefined,
+                ]
               }
             >
               Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -1446,10 +1622,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Object {
-                "alignItems": "center",
+                "alignItems": "flex-end",
                 "flex": 1,
                 "flexDirection": "row",
-                "justifyContent": "center",
+                "justifyContent": "flex-end",
                 "width": "100%",
               }
             }
@@ -1511,7 +1687,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         style={
           Array [
             Object {
-              "alignItems": "flex-start",
+              "alignItems": "center",
               "borderBottomColor": "#ddd",
               "borderBottomWidth": 0.5,
               "flexDirection": "row",
@@ -1528,13 +1704,12 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               Object {
                 "alignItems": "center",
                 "justifyContent": "center",
-                "overflow": "hidden",
               },
               Object {
                 "backgroundColor": "#E91E63",
                 "borderRadius": 4,
-                "height": 56,
-                "width": 56,
+                "height": 46,
+                "width": 46,
               },
               undefined,
             ]
@@ -1550,7 +1725,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 28,
+                  "fontSize": 23,
                 },
               ]
             }
@@ -1558,6 +1733,27 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             W
           </Text>
           
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
+                },
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                Object {
+                  "backgroundColor": "#cbced1",
+                },
+              ]
+            }
+          />
         </View>
         <View
           style={
@@ -1586,13 +1782,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               ellipsizeMode="tail"
               numberOfLines={1}
               style={
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "fontSize": 18,
-                  "fontWeight": "bold",
-                  "marginRight": 8,
-                }
+                Array [
+                  Object {
+                    "color": "#444",
+                    "flex": 1,
+                    "fontSize": 18,
+                    "marginRight": 8,
+                  },
+                  undefined,
+                ]
               }
             >
               W
@@ -1617,10 +1815,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Object {
-                "alignItems": "center",
+                "alignItems": "flex-end",
                 "flex": 1,
                 "flexDirection": "row",
-                "justifyContent": "center",
+                "justifyContent": "flex-end",
                 "width": "100%",
               }
             }
@@ -1659,7 +1857,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         style={
           Array [
             Object {
-              "alignItems": "flex-start",
+              "alignItems": "center",
               "borderBottomColor": "#ddd",
               "borderBottomWidth": 0.5,
               "flexDirection": "row",
@@ -1676,13 +1874,12 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               Object {
                 "alignItems": "center",
                 "justifyContent": "center",
-                "overflow": "hidden",
               },
               Object {
                 "backgroundColor": "#9C27B0",
                 "borderRadius": 4,
-                "height": 56,
-                "width": 56,
+                "height": 46,
+                "width": 46,
               },
               undefined,
             ]
@@ -1698,7 +1895,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 28,
+                  "fontSize": 23,
                 },
               ]
             }
@@ -1706,6 +1903,27 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             WW
           </Text>
           
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
+                },
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                Object {
+                  "backgroundColor": "#cbced1",
+                },
+              ]
+            }
+          />
         </View>
         <View
           style={
@@ -1734,13 +1952,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               ellipsizeMode="tail"
               numberOfLines={1}
               style={
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "fontSize": 18,
-                  "fontWeight": "bold",
-                  "marginRight": 8,
-                }
+                Array [
+                  Object {
+                    "color": "#444",
+                    "flex": 1,
+                    "fontSize": 18,
+                    "marginRight": 8,
+                  },
+                  undefined,
+                ]
               }
             >
               WW
@@ -1765,10 +1985,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Object {
-                "alignItems": "center",
+                "alignItems": "flex-end",
                 "flex": 1,
                 "flexDirection": "row",
-                "justifyContent": "center",
+                "justifyContent": "flex-end",
                 "width": "100%",
               }
             }
@@ -1807,7 +2027,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
         style={
           Array [
             Object {
-              "alignItems": "flex-start",
+              "alignItems": "center",
               "borderBottomColor": "#ddd",
               "borderBottomWidth": 0.5,
               "flexDirection": "row",
@@ -1824,13 +2044,12 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               Object {
                 "alignItems": "center",
                 "justifyContent": "center",
-                "overflow": "hidden",
               },
               Object {
                 "backgroundColor": undefined,
                 "borderRadius": 4,
-                "height": 56,
-                "width": 56,
+                "height": 46,
+                "width": 46,
               },
               undefined,
             ]
@@ -1846,7 +2065,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 28,
+                  "fontSize": 23,
                 },
               ]
             }
@@ -1854,6 +2073,27 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             
           </Text>
           
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
+                },
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                Object {
+                  "backgroundColor": "#cbced1",
+                },
+              ]
+            }
+          />
         </View>
         <View
           style={
@@ -1882,13 +2122,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               ellipsizeMode="tail"
               numberOfLines={1}
               style={
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "fontSize": 18,
-                  "fontWeight": "bold",
-                  "marginRight": 8,
-                }
+                Array [
+                  Object {
+                    "color": "#444",
+                    "flex": 1,
+                    "fontSize": 18,
+                    "marginRight": 8,
+                  },
+                  undefined,
+                ]
               }
             >
               
@@ -1913,10 +2155,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Object {
-                "alignItems": "center",
+                "alignItems": "flex-end",
                 "flex": 1,
                 "flexDirection": "row",
-                "justifyContent": "center",
+                "justifyContent": "flex-end",
                 "width": "100%",
               }
             }
