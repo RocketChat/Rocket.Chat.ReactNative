@@ -39,12 +39,12 @@ export default class Message extends React.Component {
 		message: PropTypes.object.isRequired,
 		user: PropTypes.object.isRequired,
 		editing: PropTypes.bool,
-		actionsShow: PropTypes.func,
 		errorActionsShow: PropTypes.func,
 		customEmojis: PropTypes.object,
 		toggleReactionPicker: PropTypes.func,
 		onReactionPress: PropTypes.func,
-		style: ViewPropTypes.style
+		style: ViewPropTypes.style,
+		onLongPress: PropTypes.func
 	}
 
 	constructor(props) {
@@ -74,7 +74,7 @@ export default class Message extends React.Component {
 	}
 
 	onLongPress() {
-		this.props.actionsShow(this.parseMessage());
+		this.props.onLongPress(this.parseMessage());
 	}
 
 	onErrorPress() {

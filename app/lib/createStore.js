@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import logger from 'redux-logger';
 import { composeWithDevTools } from 'remote-redux-devtools';
@@ -20,7 +20,7 @@ if (__DEV__) {
 		applyMiddleware(logger)
 	);
 } else {
-	enhacers = composeWithDevTools(
+	enhacers = compose(
 		applyAppStateListener(),
 		applyMiddleware(sagaMiddleware)
 	);

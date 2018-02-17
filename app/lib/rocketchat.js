@@ -13,7 +13,7 @@ import { someoneTyping, roomMessageReceived } from '../actions/room';
 import { setUser } from '../actions/login';
 import { disconnect, disconnect_by_user, connectSuccess, connectFailure } from '../actions/connect';
 import { requestActiveUser } from '../actions/activeUsers';
-import { starredMessageReceived } from '../actions/starredMessages';
+import { starredMessageReceived, starredMessageUnstarred } from '../actions/starredMessages';
 import Ddp from './ddp';
 
 export { Accounts } from 'react-native-meteor';
@@ -93,7 +93,7 @@ const RocketChat = {
 				reduxStore.dispatch(connectFailure());
 			});
 
-			// this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
+			this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
 
 			this.ddp.on('users', (ddpMessage) => {
 				if (ddpMessage.collection === 'users') {
@@ -135,10 +135,13 @@ const RocketChat = {
 			});
 
 			this.ddp.on('rocketchat_starred_message', (ddpMessage) => {
-				const message = ddpMessage.fields;
-				message.id = ddpMessage.id;
-				const starredMessage = this._buildMessage(message);
-				return reduxStore.dispatch(starredMessageReceived(starredMessage));
+				if (ddpMessage.msg === 'added') {
+					const message = ddpMessage.fields;
+					message._id = ddpMessage.id;
+					const starredMessage = this._buildMessage(message);
+					return reduxStore.dispatch(starredMessageReceived(starredMessage));
+				}
+				return reduxStore.dispatch(starredMessageUnstarred(ddpMessage.id));
 			});
 		});
 	},

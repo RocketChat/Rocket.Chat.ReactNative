@@ -19,3 +19,10 @@ export function starredMessageReceived(message) {
 		message
 	};
 }
+
+export function starredMessageUnstarred(messageId) {
+	return {
+		type: types.STARRED_MESSAGES.MESSAGE_UNSTARRED,
+		messageId
+	};
+}
