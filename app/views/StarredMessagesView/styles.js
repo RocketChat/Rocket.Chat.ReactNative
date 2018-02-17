@@ -7,5 +7,11 @@ export default StyleSheet.create({
 	},
 	message: {
 		transform: [{ scaleY: 1 }]
+	},
+	listEmptyContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		backgroundColor: '#ffffff'
 	}
 });

@@ -143,8 +143,9 @@ const RocketChat = {
 					message._id = ddpMessage.id;
 					const starredMessage = this._buildMessage(message);
 					return reduxStore.dispatch(starredMessageReceived(starredMessage));
+				} else if (ddpMessage.msg === 'removed') {
+					return reduxStore.dispatch(starredMessageUnstarred(ddpMessage.id));
 				}
-				return reduxStore.dispatch(starredMessageUnstarred(ddpMessage.id));
 			});
 		}).catch(console.log);
 	},

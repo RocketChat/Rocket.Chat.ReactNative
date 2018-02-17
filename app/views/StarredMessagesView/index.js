@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
 
@@ -49,12 +49,6 @@ export default class StarredMessagesView extends React.PureComponent {
 		this.props.openStarredMessages(this.props.navigation.state.params.rid);
 	}
 
-	// componentWillReceiveProps() {
-	// 	this.props.messages.map(m => {
-	// 		console.warn(m)
-	// 	})
-	// }
-
 	componentWillUnmount() {
 		this.props.closeStarredMessages();
 	}
@@ -74,6 +68,12 @@ export default class StarredMessagesView extends React.PureComponent {
 		}
 	}
 
+	renderEmpty = () => (
+		<View style={styles.listEmptyContainer}>
+			<Text>No starred messages</Text>
+		</View>
+	)
+
 	renderItem = ({ item }) => (
 		<Message
 			item={item}
@@ -87,6 +87,9 @@ export default class StarredMessagesView extends React.PureComponent {
 	)
 
 	render() {
+		if (this.props.messages.length === 0) {
+			return this.renderEmpty();
+		}
 		return (
 			[
 				<FlatList
