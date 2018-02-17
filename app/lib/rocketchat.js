@@ -46,21 +46,27 @@ const RocketChat = {
 		throw new Error({ error: 'invalid server' });
 	},
 	_setUser(ddpMessage) {
-		let status;
-		if (!ddpMessage.fields) {
-			status = 'offline';
-		} else {
-			status = ddpMessage.fields.status || 'offline';
-		}
-
+		this.activeUsers = this.activeUsers || {};
 		const { user } = reduxStore.getState().login;
+
+		const status = (ddpMessage.fields && ddpMessage.fields.status) || 'offline';
+
 		if (user && user.id === ddpMessage.id) {
 			return reduxStore.dispatch(setUser({ status }));
 		}
 
-		const activeUser = {};
-		activeUser[ddpMessage.id] = status;
-		return reduxStore.dispatch(requestActiveUser(activeUser));
+		if (this._setUserTimer) {
+			clearTimeout(this._setUserTimer);
+			this._setUserTimer = null;
+		}
+
+
+		this._setUserTimer = setTimeout(() => {
+			reduxStore.dispatch(requestActiveUser(this.activeUsers));
+			this._setUserTimer = null;
+			return this.activeUsers = {};
+		}, 1000);
+		this.activeUsers[ddpMessage.id] = status;
 	},
 	reconnect() {
 		if (this.ddp) {
@@ -95,11 +101,7 @@ const RocketChat = {
 
 			this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
 
-			this.ddp.on('users', (ddpMessage) => {
-				if (ddpMessage.collection === 'users') {
-					return RocketChat._setUser(ddpMessage);
-				}
-			});
+			this.ddp.on('users', ddpMessage => RocketChat._setUser(ddpMessage));
 
 			this.ddp.on('stream-room-messages', (ddpMessage) => {
 				const message = this._buildMessage(ddpMessage.fields.args[0]);
@@ -129,6 +131,7 @@ const RocketChat = {
 					const sub = database.objects('subscriptions').filtered('rid == $0', data._id)[0];
 					database.write(() => {
 						sub.roomUpdatedAt = data._updatedAt;
+						sub.lastMessage = data.lastMessage;
 						sub.ro = data.ro;
 					});
 				}
@@ -143,7 +146,7 @@ const RocketChat = {
 				}
 				return reduxStore.dispatch(starredMessageUnstarred(ddpMessage.id));
 			});
-		});
+		}).catch(console.log);
 	},
 
 	me({ server, token, userId }) {
@@ -447,6 +450,7 @@ const RocketChat = {
 			const room = rooms.find(({ _id }) => _id === subscription.rid);
 			if (room) {
 				subscription.roomUpdatedAt = room._updatedAt;
+				subscription.lastMessage = room.lastMessage;
 				subscription.ro = room.ro;
 			}
 			if (subscription.roles) {
@@ -454,10 +458,14 @@ const RocketChat = {
 			}
 			return subscription;
 		});
+
+
 		database.write(() => {
-			data.forEach(subscription =>
-				database.create('subscriptions', subscription, true));
+			data.forEach(subscription => database.create('subscriptions', subscription, true));
+			// rooms.forEach(room =>	database.create('rooms', room, true));
 		});
+
+
 		this.ddp.subscribe('stream-notify-user', `${ login.user.id }/subscriptions-changed`, false);
 		this.ddp.subscribe('stream-notify-user', `${ login.user.id }/rooms-changed`, false);
 		return data;
