@@ -53,7 +53,7 @@ export default class RoomView extends React.Component {
 		loading: PropTypes.bool,
 		actionMessage: PropTypes.object,
 		toggleReactionPicker: PropTypes.func.isRequired,
-// 		layoutAnimation: PropTypes.instanceOf(Date),
+		// layoutAnimation: PropTypes.instanceOf(Date),
 		actionsShow: PropTypes.func
 	};
 
