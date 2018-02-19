@@ -13,7 +13,8 @@
     "android": "react-native run-android",
     "storybook": "storybook start -p 7007",
     "snyk-protect": "snyk protect",
-    "prepare": "exit 0"
+    "prepare": "exit 0",
+		"postinstall": "rm ./node_modules/react-native/local-cli/core/__fixtures__/files/package.json"
   },
   "rnpm": {
     "assets": [
@@ -30,6 +31,7 @@
     "babel-preset-expo": "^4.0.0",
     "deep-equal": "^1.0.1",
     "ejson": "^2.1.2",
+    "js-base64": "^2.4.3",
     "lodash": "^4.17.4",
     "moment": "^2.20.1",
     "prop-types": "^15.6.0",

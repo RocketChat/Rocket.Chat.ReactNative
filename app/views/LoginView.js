@@ -5,6 +5,8 @@ import { Keyboard, Text, TextInput, View, ScrollView, TouchableOpacity, SafeArea
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Base64 } from 'js-base64';
+
 import { loginSubmit } from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
 
@@ -12,22 +14,13 @@ import styles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { showToast } from '../utils/info';
 
-const teste = `
-	window.postMessage('oi');
-`
 
 @connect(state => ({
 	server: state.server.server,
 	login: state.login,
 	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
 	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
-	Accounts_OAuth_Facebook: state.settings.Accounts_OAuth_Facebook,
-	Accounts_OAuth_Github: state.settings.Accounts_OAuth_Github,
-	Accounts_OAuth_Gitlab: state.settings.Accounts_OAuth_Gitlab,
-	Accounts_OAuth_Google: state.settings.Accounts_OAuth_Google,
-	Accounts_OAuth_Linkedin: state.settings.Accounts_OAuth_Linkedin,
-	Accounts_OAuth_Meteor: state.settings.Accounts_OAuth_Meteor,
-	Accounts_OAuth_Twitter: state.settings.Accounts_OAuth_Twitter
+	settings: state.settings
 }), dispatch => ({
 	loginSubmit: params => dispatch(loginSubmit(params))
 }))
@@ -36,15 +29,7 @@ export default class LoginView extends React.Component {
 		loginSubmit: PropTypes.func.isRequired,
 		navigation: PropTypes.object.isRequired,
 		login: PropTypes.object,
-		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
-		Accounts_PasswordPlaceholder: PropTypes.string,
-		Accounts_OAuth_Facebook: PropTypes.bool,
-		Accounts_OAuth_Github: PropTypes.bool,
-		Accounts_OAuth_Gitlab: PropTypes.bool,
-		Accounts_OAuth_Google: PropTypes.bool,
-		Accounts_OAuth_Linkedin: PropTypes.bool,
-		Accounts_OAuth_Meteor: PropTypes.bool,
-		Accounts_OAuth_Twitter: PropTypes.bool
+		settings: PropTypes.object
 	}
 
 	static navigationOptions = () => ({
@@ -108,19 +93,20 @@ export default class LoginView extends React.Component {
 	}
 
 	onPressOAuth() {
-		alert('oauth!')
+		alert('oauth!');
 	}
 
 	render() {
 		return (
-			<WebView
-				source={{uri: 'https://accounts.google.com/signin/oauth/identifier?client_id=662030055877-uma7qar29ji84gopa740fasv2f6rfj1v.apps.googleusercontent.com&as=5GKF_beYoC-7C6KX53zaps6AX0IsUdyxaEQI7q2fLfuTF5YMG0Hyi_R2nA1mPhPJi2-STTVDYFq7SAY5fHYsLzuDbiypA2V47xg0JDc2V7G0zyD2tZIRdJth96FzIx2LOUfqn38MSUblpBe8k7mdoyRK3i0kanJOk2pQtrXSJzM&destination=https://open.rocket.chat&approval_state=!ChR3aGdKU29OVjktLUJ0ckxtVXB5OBIfRTJnejBYSFNMUGdWa0dXNXp4TGtfNjE4U3JJWUZSWQ∙ACThZt4AAAAAWnRmyOv4Kfizf_5oVeDFFKxPsSVlTtiG&xsrfsig=AHgIfE9cSyY0fH5eSWpN6-lxwst5bfKeCA&flowName=GeneralOAuthFlow'}}
-				userAgent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'
-				injectJavaScript={function() {alert('asduasiudhasiudh')}}
-				onMessage={(e) => console.log(e.nativeEvent)}
-				onNavigationStateChange={() => console.warn('onNavigationStateChange')}
-			/>
-		)
+			[<Text>{Object.keys(this.props.settings).filter(setting => /Accounts_OAuth/.test(setting) && this.props.settings[setting]).join('\n')}</Text>,
+				<WebView
+					source={{ uri: 'https://github.com/login?client_id=886a7b2a1fb067b10d3a&return_to=%2Flogin%2Foauth%2Fauthorize%3Fclient_id%3D886a7b2a1fb067b10d3a%26redirect_uri%3Dhttps%253A%252F%252Fopen.rocket.chat%252F_oauth%252Fgithub%253Fclose%26scope%3Duser%253Aemail%26state%3deyJsb2dpblN0eWxlIjoicG9wdXAiLCJjcmVkZW50aWFsVG9rZW4iOiJ5YXJoWnpuZ1NHcUtIX2dKOUNPTkpzRHVFb2hhVFhpencyTDRSMHAwV3lVIiwiaXNDb3Jkb3ZhIjp0cnVlfQ%3d%3d' }}
+					userAgent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'
+					onNavigationStateChange={(webViewState) => {
+						console.warn(webViewState.url);
+					}}
+				/>]
+		);
 	}
 
 	// render() {
