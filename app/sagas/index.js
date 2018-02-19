@@ -9,6 +9,8 @@ import createChannel from './createChannel';
 import init from './init';
 import state from './state';
 import activeUsers from './activeUsers';
+import starredMessages from './starredMessages';
+import pinnedMessages from './pinnedMessages';
 
 const root = function* root() {
 	yield all([
@@ -21,7 +23,9 @@ const root = function* root() {
 		messages(),
 		selectServer(),
 		state(),
-		activeUsers()
+		activeUsers(),
+		starredMessages(),
+		pinnedMessages()
 	]);
 };
 

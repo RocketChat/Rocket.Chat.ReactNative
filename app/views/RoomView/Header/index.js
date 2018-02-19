@@ -5,11 +5,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { HeaderBackButton } from 'react-navigation';
 
+import RocketChat from '../../../lib/rocketchat';
 import realm from '../../../lib/realm';
 import Avatar from '../../../containers/Avatar';
 import { STATUS_COLORS } from '../../../constants/colors';
 import styles from './styles';
 import { closeRoom } from '../../../actions/room';
+import Touch from '../../../utils/touch';
+
 
 @connect(state => ({
 	user: state.login.user,
@@ -108,9 +111,25 @@ export default class RoomHeaderView extends React.PureComponent {
 
 	renderRight = () => (
 		<View style={styles.right}>
+			<Touch
+				onPress={() => RocketChat.toggleFavorite(this.room[0].rid, this.room[0].f)}
+				accessibilityLabel='Star room'
+				accessibilityTraits='button'
+				underlayColor='#FFFFFF'
+				activeOpacity={0.5}
+			>
+				<View style={styles.headerButton}>
+					<Icon
+						name={`${ Platform.OS === 'ios' ? 'ios' : 'md' }-star${ this.room[0].f ? '' : '-outline' }`}
+						color='#f6c502'
+						size={24}
+						backgroundColor='transparent'
+					/>
+				</View>
+			</Touch>
 			<TouchableOpacity
 				style={styles.headerButton}
-				onPress={() => {}}
+				onPress={() => this.props.navigation.navigate('RoomActions', { rid: this.room[0].rid })}
 				accessibilityLabel='Room actions'
 				accessibilityTraits='button'
 			>
