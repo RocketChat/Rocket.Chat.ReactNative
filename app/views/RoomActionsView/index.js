@@ -8,6 +8,8 @@ import { connect } from 'react-redux';
 import styles from './styles';
 import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
+import database from '../../lib/realm';
+import RocketChat from '../../lib/rocketchat';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
@@ -18,29 +20,42 @@ export default class RoomActionsView extends React.PureComponent {
 		navigation: PropTypes.object
 	}
 
-	static navigationOptions = () => ({
-		headerRight: (
-			<Touch
-				onPress={() => {}}
-				accessibilityLabel='Star room'
-				accessibilityTraits='button'
-			>
-				<View style={styles.headerButton}>
-					<Icon
-						name={Platform.OS === 'ios' ? 'ios-star' : 'md-star'}
-						// name={Platform.OS === 'ios' ? 'ios-star-outline' : 'md-star-outline'}
-						color='#292E35'
-						size={24}
-						backgroundColor='transparent'
-					/>
-				</View>
-			</Touch>
-		)
-	});
+	static navigationOptions = ({ navigation }) => {
+		const { rid, f } = navigation.state.params;
+		return {
+			headerRight: (
+				<Touch
+					onPress={() => RocketChat.toggleFavorite(rid, f)}
+					accessibilityLabel='Star room'
+					accessibilityTraits='button'
+					underlayColor='#FFFFFF'
+					activeOpacity={0.5}
+				>
+					<View style={styles.headerButton}>
+						<Icon
+							name={`${ Platform.OS === 'ios' ? 'ios' : 'md' }-star${ f ? '' : '-outline' }`}
+							color='#292E35'
+							size={24}
+							backgroundColor='transparent'
+						/>
+					</View>
+				</Touch>
+			)
+		};
+	};
 
 	constructor(props) {
 		super(props);
-		this.room = props.navigation.state.params.room;
+		const { rid } = props.navigation.state.params;
+		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
+		this.state = {
+			sections: [],
+			room: {}
+		};
+	}
+
+	componentWillMount() {
+		this.updateRoom();
 		const sections = [{
 			data: [{ icon: 'ios-star', name: 'USER' }],
 			renderItem: this.renderRoomInfo
@@ -58,7 +73,7 @@ export default class RoomActionsView extends React.PureComponent {
 					icon: 'ios-star-outline',
 					name: 'Starred',
 					route: 'StarredMessages',
-					params: { rid: this.room.rid }
+					params: { rid: this.state.room.rid }
 				},
 				{ icon: 'ios-search', name: 'Search' },
 				{ icon: 'ios-share-outline', name: 'Share' },
@@ -68,7 +83,7 @@ export default class RoomActionsView extends React.PureComponent {
 			],
 			renderItem: this.renderItem
 		}];
-		if (this.room.t === 'd') {
+		if (this.state.room.t === 'd') {
 			sections.push({
 				data: [
 					{ icon: 'ios-volume-off', name: 'Mute user' },
@@ -86,21 +101,33 @@ export default class RoomActionsView extends React.PureComponent {
 				renderItem: this.renderItem
 			});
 		}
-		this.state = { sections };
+		this.setState({ sections });
+	}
+
+	componentDidMount() {
+		this.rooms.addListener(this.updateRoom);
+	}
+
+	updateRoom = () => {
+		const [room] = this.rooms;
+		this.setState({ room });
+		this.props.navigation.setParams({
+			f: room.f
+		});
 	}
 
 	renderRoomInfo = ({ item }) => this.renderTouchableItem([
 		<Avatar
 			key='avatar'
-			text={this.room.name}
+			text={this.state.room.name}
 			size={50}
 			style={StyleSheet.flatten(styles.avatar)}
 			baseUrl={this.props.baseUrl}
-			type={this.room.t}
+			type={this.state.room.t}
 		/>,
 		<View key='name' style={styles.roomTitleContainer}>
-			<Text style={styles.roomTitle}>{this.room.fname}</Text>
-			<Text style={styles.roomDescription}>@{this.room.name}</Text>
+			<Text style={styles.roomTitle}>{this.state.room.fname}</Text>
+			<Text style={styles.roomDescription}>@{this.state.room.name}</Text>
 		</View>,
 		<Icon key='icon' name='ios-arrow-forward' size={20} style={styles.sectionItemIcon} color='#cbced1' />
 	], item)

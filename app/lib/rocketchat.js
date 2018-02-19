@@ -620,6 +620,9 @@ const RocketChat = {
 	},
 	setReaction(emoji, messageId) {
 		return call('setReaction', emoji, messageId);
+	},
+	toggleFavorite(rid, f) {
+		return call('toggleFavorite', rid, !f);
 	}
 };
 

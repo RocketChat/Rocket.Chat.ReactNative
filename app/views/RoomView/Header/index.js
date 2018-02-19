@@ -110,7 +110,7 @@ export default class RoomHeaderView extends React.PureComponent {
 		<View style={styles.right}>
 			<TouchableOpacity
 				style={styles.headerButton}
-				onPress={() => this.props.navigation.navigate('RoomActions', { room: this.room[0] })}
+				onPress={() => this.props.navigation.navigate('RoomActions', { rid: this.room[0].rid })}
 				accessibilityLabel='Room actions'
 				accessibilityTraits='button'
 			>
