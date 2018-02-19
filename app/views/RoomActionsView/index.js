@@ -56,6 +56,24 @@ export default class RoomActionsView extends React.PureComponent {
 
 	componentWillMount() {
 		this.updateRoom();
+		this.updateSections();
+	}
+
+	componentDidMount() {
+		this.rooms.addListener(this.updateRoom);
+	}
+
+	updateRoom = () => {
+		const [room] = this.rooms;
+		this.setState({ room });
+		this.props.navigation.setParams({
+			f: room.f
+		});
+		this.updateSections();
+	}
+
+	updateSections = () => {
+		const { rid } = this.state.room;
 		const sections = [{
 			data: [{ icon: 'ios-star', name: 'USER' }],
 			renderItem: this.renderRoomInfo
@@ -73,11 +91,16 @@ export default class RoomActionsView extends React.PureComponent {
 					icon: 'ios-star-outline',
 					name: 'Starred',
 					route: 'StarredMessages',
-					params: { rid: this.state.room.rid }
+					params: { rid }
 				},
 				{ icon: 'ios-search', name: 'Search' },
 				{ icon: 'ios-share-outline', name: 'Share' },
-				{ icon: 'ios-pin', name: 'Pinned' },
+				{
+					icon: 'ios-pin',
+					name: 'Pinned',
+					route: 'PinnedMessages',
+					params: { rid }
+				},
 				{ icon: 'ios-code', name: 'Snippets' },
 				{ icon: 'ios-notifications-outline', name: 'Notifications preferences' }
 			],
@@ -102,18 +125,6 @@ export default class RoomActionsView extends React.PureComponent {
 			});
 		}
 		this.setState({ sections });
-	}
-
-	componentDidMount() {
-		this.rooms.addListener(this.updateRoom);
-	}
-
-	updateRoom = () => {
-		const [room] = this.rooms;
-		this.setState({ room });
-		this.props.navigation.setParams({
-			f: room.f
-		});
 	}
 
 	renderRoomInfo = ({ item }) => this.renderTouchableItem([

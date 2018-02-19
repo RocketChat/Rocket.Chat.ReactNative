@@ -13,7 +13,8 @@ if (__DEV__) {
 	/* eslint-disable global-require */
 	const reduxImmutableStateInvariant = require('redux-immutable-state-invariant').default();
 
-	enhacers = composeWithDevTools(
+	const devComposer = composeWithDevTools({ hostname: 'localhost', port: 8000 });
+	enhacers = devComposer(
 		applyAppStateListener(),
 		applyMiddleware(reduxImmutableStateInvariant),
 		applyMiddleware(sagaMiddleware),
