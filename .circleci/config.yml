@@ -94,6 +94,7 @@ jobs:
           name: Build Android App
           command: |
             cd android
+            ./gradlew --stop
             if [[ $KEYSTORE ]]; then
               ./gradlew assembleRelease --no-daemon
             else
