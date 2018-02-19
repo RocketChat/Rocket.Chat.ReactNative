@@ -95,9 +95,9 @@ jobs:
           command: |
             cd android
             if [[ $KEYSTORE ]]; then
-              ./gradlew assembleRelease --no-daemon --stacktrace
+              ./gradlew assembleRelease
             else
-              ./gradlew assembleDebug --no-daemon --stacktrace
+              ./gradlew assembleDebug
             fi
 
             mkdir -p /tmp/build
