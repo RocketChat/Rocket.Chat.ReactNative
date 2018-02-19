@@ -3,8 +3,7 @@ import * as types from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 
 const watchPinnedMessagesRoom = function* watchPinnedMessagesRoom({ rid }) {
-	const sub = yield RocketChat.subscribe('pinnedMessages', rid);
-	console.warn(sub)
+	const sub = yield RocketChat.subscribe('pinnedMessages', rid, 50);
 	yield take(types.PINNED_MESSAGES.CLOSE);
 	sub.unsubscribe().catch(e => alert(e));
 };

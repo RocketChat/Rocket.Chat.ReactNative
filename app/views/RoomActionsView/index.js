@@ -73,7 +73,7 @@ export default class RoomActionsView extends React.PureComponent {
 	}
 
 	updateSections = () => {
-		const { rid } = this.state.room;
+		const { rid, t } = this.state.room;
 		const sections = [{
 			data: [{ icon: 'ios-star', name: 'USER' }],
 			renderItem: this.renderRoomInfo
@@ -106,7 +106,7 @@ export default class RoomActionsView extends React.PureComponent {
 			],
 			renderItem: this.renderItem
 		}];
-		if (this.state.room.t === 'd') {
+		if (t === 'd') {
 			sections.push({
 				data: [
 					{ icon: 'ios-volume-off', name: 'Mute user' },
@@ -114,7 +114,7 @@ export default class RoomActionsView extends React.PureComponent {
 				],
 				renderItem: this.renderItem
 			});
-		} else {
+		} else if (t === 'c' || t === 'p') {
 			sections[2].data.unshift({ icon: 'ios-people', name: 'Members', description: '42 members' });
 			sections.push({
 				data: [

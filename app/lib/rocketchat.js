@@ -100,7 +100,7 @@ const RocketChat = {
 				reduxStore.dispatch(connectFailure());
 			});
 
-			// this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
+			this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
 
 			this.ddp.on('users', ddpMessage => RocketChat._setUser(ddpMessage));
 
@@ -149,15 +149,14 @@ const RocketChat = {
 				}
 			});
 
-			console.warn(ddpMessage)
 			this.ddp.on('rocketchat_pinned_message', (ddpMessage) => {
 				if (ddpMessage.msg === 'added') {
 					const message = ddpMessage.fields;
 					message._id = ddpMessage.id;
-					const starredMessage = this._buildMessage(message);
-					return reduxStore.dispatch(starredMessageReceived(starredMessage));
+					const pinnedMessage = this._buildMessage(message);
+					return reduxStore.dispatch(pinnedMessageReceived(pinnedMessage));
 				} else if (ddpMessage.msg === 'removed') {
-					return reduxStore.dispatch(starredMessageUnstarred(ddpMessage.id));
+					return reduxStore.dispatch(pinnedMessageUnpinned(ddpMessage.id));
 				}
 			});
 		}).catch(console.log);
