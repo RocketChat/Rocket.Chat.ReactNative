@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Alert, Clipboard, Vibration } from 'react-native';
+import { Alert, Clipboard, Vibration, Share } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
 import * as moment from 'moment';
@@ -18,6 +18,7 @@ import {
 } from '../actions/messages';
 import { showToast } from '../utils/info';
 
+const returnAnArray = obj => obj || [];
 @connect(
 	state => ({
 		showActions: state.messages.showActions,
@@ -107,6 +108,9 @@ export default class MessageActions extends React.Component {
 			// Copy
 			this.options.push('Copy Message');
 			this.COPY_INDEX = this.options.length - 1;
+			// Share
+			this.options.push('Share Message');
+			this.SHARE_INDEX = this.options.length - 1;
 			// Quote
 			if (!this.isRoomReadOnly()) {
 				this.options.push('Quote');
@@ -168,11 +172,11 @@ export default class MessageActions extends React.Component {
 	}
 
 	setPermissions(permissions) {
-		this.hasEditPermission = permissions['edit-message']
+		this.hasEditPermission = returnAnArray(permissions['edit-message'])
 			.some(item => this.mergedRoles.indexOf(item) !== -1);
-		this.hasDeletePermission = permissions['delete-message']
+		this.hasDeletePermission = returnAnArray(permissions['delete-message'])
 			.some(item => this.mergedRoles.indexOf(item) !== -1);
-		this.hasForceDeletePermission = permissions['force-delete-message']
+		this.hasForceDeletePermission = returnAnArray(permissions['force-delete-message'])
 			.some(item => this.mergedRoles.indexOf(item) !== -1);
 	}
 
@@ -260,6 +264,12 @@ export default class MessageActions extends React.Component {
 		showToast('Copied to clipboard!');
 	}
 
+	handleShare = async() => {
+		Share.share({
+			message: this.props.actionMessage.msg.content.replace(/<(?:.|\n)*?>/gm, '')
+		});
+	};
+
 	handleStar() {
 		this.props.toggleStarRequest(this.props.actionMessage);
 	}
@@ -300,6 +310,9 @@ export default class MessageActions extends React.Component {
 				break;
 			case this.COPY_INDEX:
 				this.handleCopy();
+				break;
+			case this.SHARE_INDEX:
+				this.handleShare();
 				break;
 			case this.QUOTE_INDEX:
 				this.handleQuote();

@@ -4,11 +4,13 @@ import EJSON from 'ejson';
 import { goRoom } from './containers/routes/NavigationService';
 
 const handleNotification = (notification) => {
-	if (notification.usernInteraction) {
+	if (!notification.userInteraction) {
 		return;
 	}
-	const { rid, name } = EJSON.parse(notification.ejson);
-	return rid && name && goRoom({ rid, name });
+	const {
+		rid, name, sender, type
+	} = EJSON.parse(notification.ejson || notification.data.ejson);
+	return rid && goRoom({ rid, name: type === 'd' ? sender.username : name });
 };
 PushNotification.configure({
 
