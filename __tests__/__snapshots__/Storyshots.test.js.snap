@@ -170,7 +170,14 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      style={null}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+          },
+          undefined,
+        ]
+      }
       testID={undefined}
       tvParallaxProperties={undefined}
     >
@@ -333,7 +340,14 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      style={null}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+          },
+          undefined,
+        ]
+      }
       testID={undefined}
       tvParallaxProperties={undefined}
     >
@@ -498,7 +512,14 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      style={null}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+          },
+          undefined,
+        ]
+      }
       testID={undefined}
       tvParallaxProperties={undefined}
     >
@@ -684,7 +705,14 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      style={null}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+          },
+          undefined,
+        ]
+      }
       testID={undefined}
       tvParallaxProperties={undefined}
     >
@@ -872,7 +900,14 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      style={null}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+          },
+          undefined,
+        ]
+      }
       testID={undefined}
       tvParallaxProperties={undefined}
     >
@@ -1058,7 +1093,14 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      style={null}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+          },
+          undefined,
+        ]
+      }
       testID={undefined}
       tvParallaxProperties={undefined}
     >
@@ -1244,7 +1286,14 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      style={null}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+          },
+          undefined,
+        ]
+      }
       testID={undefined}
       tvParallaxProperties={undefined}
     >
@@ -1430,7 +1479,14 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      style={null}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+          },
+          undefined,
+        ]
+      }
       testID={undefined}
       tvParallaxProperties={undefined}
     >
@@ -1616,7 +1672,14 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      style={null}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+          },
+          undefined,
+        ]
+      }
       testID={undefined}
       tvParallaxProperties={undefined}
     >
@@ -1779,7 +1842,14 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      style={null}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+          },
+          undefined,
+        ]
+      }
       testID={undefined}
       tvParallaxProperties={undefined}
     >
@@ -1942,7 +2012,14 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      style={null}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+          },
+          undefined,
+        ]
+      }
       testID={undefined}
       tvParallaxProperties={undefined}
     >
