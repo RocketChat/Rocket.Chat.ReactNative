@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Platform, SectionList, Text, StyleSheet } from 'react-native';
+import { View, SectionList, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
@@ -9,7 +9,6 @@ import styles from './styles';
 import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
 import database from '../../lib/realm';
-import RocketChat from '../../lib/rocketchat';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
@@ -19,30 +18,6 @@ export default class RoomActionsView extends React.PureComponent {
 		baseUrl: PropTypes.string,
 		navigation: PropTypes.object
 	}
-
-	static navigationOptions = ({ navigation }) => {
-		const { rid, f } = navigation.state.params;
-		return {
-			headerRight: (
-				<Touch
-					onPress={() => RocketChat.toggleFavorite(rid, f)}
-					accessibilityLabel='Star room'
-					accessibilityTraits='button'
-					underlayColor='#FFFFFF'
-					activeOpacity={0.5}
-				>
-					<View style={styles.headerButton}>
-						<Icon
-							name={`${ Platform.OS === 'ios' ? 'ios' : 'md' }-star${ f ? '' : '-outline' }`}
-							color='#292E35'
-							size={24}
-							backgroundColor='transparent'
-						/>
-					</View>
-				</Touch>
-			)
-		};
-	};
 
 	constructor(props) {
 		super(props);
@@ -145,7 +120,7 @@ export default class RoomActionsView extends React.PureComponent {
 
 	renderTouchableItem = (subview, item) => (
 		<Touch
-			onPress={() => this.props.navigation.navigate(item.route, item.params)}
+			onPress={() => item.route && this.props.navigation.navigate(item.route, item.params)}
 			underlayColor='#FFFFFF'
 			activeOpacity={0.5}
 			accessibilityLabel={item.name}

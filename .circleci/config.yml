@@ -41,8 +41,8 @@ jobs:
       - image: circleci/android:api-26-alpha
 
     environment:
-      GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"
-      JVM_OPTS: -Xmx2048m
+      GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"
+      JVM_OPTS: -Xmx4096m
       TERM: dumb
       BASH_ENV: "~/.nvm/nvm.sh"
 
@@ -95,9 +95,9 @@ jobs:
           command: |
             cd android
             if [[ $KEYSTORE ]]; then
-              ./gradlew assembleRelease
+              ./gradlew assembleRelease --no-daemon --stacktrace
             else
-              ./gradlew assembleDebug
+              ./gradlew assembleDebug --no-daemon --stacktrace
             fi
 
             mkdir -p /tmp/build
@@ -222,6 +222,10 @@ workflows:
               only:
                 - develop
                 - master
+      # - ios-testflight:
+      #     requires:
+      #       - ios-hold-testflight
+
       - android-build:
           requires:
             - lint-testunit
