@@ -17,8 +17,7 @@ const options = ['Unpin', 'Cancel'];
 	state => ({
 		messages: state.pinnedMessages.messages,
 		user: state.login.user,
-		baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-		Message_TimeFormat: state.settings.Message_TimeFormat
+		baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 	}),
 	dispatch => ({
 		openPinnedMessages: rid => dispatch(openPinnedMessages(rid)),
@@ -32,7 +31,6 @@ export default class PinnedMessagesView extends React.PureComponent {
 		messages: PropTypes.array,
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
-		Message_TimeFormat: PropTypes.string,
 		openPinnedMessages: PropTypes.func,
 		closePinnedMessages: PropTypes.func,
 		togglePinRequest: PropTypes.func
@@ -81,7 +79,7 @@ export default class PinnedMessagesView extends React.PureComponent {
 			reactions={item.reactions}
 			user={this.props.user}
 			baseUrl={this.props.baseUrl}
-			Message_TimeFormat={this.props.Message_TimeFormat}
+			Message_TimeFormat='MMMM Do YYYY, h:mm:ss a'
 			onLongPress={this.onLongPress}
 		/>
 	)

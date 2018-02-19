@@ -17,8 +17,7 @@ const options = ['Unstar', 'Cancel'];
 	state => ({
 		messages: state.starredMessages.messages,
 		user: state.login.user,
-		baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-		Message_TimeFormat: state.settings.Message_TimeFormat
+		baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 	}),
 	dispatch => ({
 		openStarredMessages: rid => dispatch(openStarredMessages(rid)),
@@ -32,7 +31,6 @@ export default class StarredMessagesView extends React.PureComponent {
 		messages: PropTypes.array,
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
-		Message_TimeFormat: PropTypes.string,
 		openStarredMessages: PropTypes.func,
 		closeStarredMessages: PropTypes.func,
 		toggleStarRequest: PropTypes.func
@@ -81,7 +79,7 @@ export default class StarredMessagesView extends React.PureComponent {
 			reactions={item.reactions}
 			user={this.props.user}
 			baseUrl={this.props.baseUrl}
-			Message_TimeFormat={this.props.Message_TimeFormat}
+			Message_TimeFormat='MMMM Do YYYY, h:mm:ss a'
 			onLongPress={this.onLongPress}
 		/>
 	)
