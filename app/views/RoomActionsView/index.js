@@ -21,18 +21,19 @@ export default class RoomActionsView extends React.PureComponent {
 	static navigationOptions = () => ({
 		headerRight: (
 			<Touch
-				style={styles.headerButton}
 				onPress={() => {}}
 				accessibilityLabel='Star room'
 				accessibilityTraits='button'
 			>
-				<Icon
-					name={Platform.OS === 'ios' ? 'ios-star' : 'md-star'}
-					// name={Platform.OS === 'ios' ? 'ios-star-outline' : 'md-star-outline'}
-					color='#292E35'
-					size={24}
-					backgroundColor='transparent'
-				/>
+				<View style={styles.headerButton}>
+					<Icon
+						name={Platform.OS === 'ios' ? 'ios-star' : 'md-star'}
+						// name={Platform.OS === 'ios' ? 'ios-star-outline' : 'md-star-outline'}
+						color='#292E35'
+						size={24}
+						backgroundColor='transparent'
+					/>
+				</View>
 			</Touch>
 		)
 	});
