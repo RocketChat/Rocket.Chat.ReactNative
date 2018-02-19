@@ -49,7 +49,7 @@
     "react-native-keyboard-tracking-view": "git+https://github.com/RocketChat/react-native-keyboard-tracking-view.git",
     "react-native-loading-spinner-overlay": "^0.5.2",
     "react-native-meteor": "^1.2.0",
-    "react-native-modal": "^4.1.1",
+    "react-native-modal": "^5.0.1",
     "react-native-optimized-flatlist": "^1.0.4",
     "react-native-push-notification": "^3.0.1",
     "react-native-responsive-ui": "^1.1.1",
