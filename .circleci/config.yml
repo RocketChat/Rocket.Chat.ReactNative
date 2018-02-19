@@ -41,8 +41,8 @@ jobs:
       - image: circleci/android:api-26-alpha
 
     environment:
-      GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"
-      JVM_OPTS: -Xmx4096m
+      GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"
+      JVM_OPTS: -Xmx2048m
       TERM: dumb
       BASH_ENV: "~/.nvm/nvm.sh"
 
@@ -94,9 +94,8 @@ jobs:
           name: Build Android App
           command: |
             cd android
-            ./gradlew --stop
             if [[ $KEYSTORE ]]; then
-              ./gradlew assembleRelease --no-daemon
+              ./gradlew clean assembleRelease --no-daemon
             else
               ./gradlew assembleDebug --no-daemon
             fi
