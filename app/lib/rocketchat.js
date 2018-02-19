@@ -21,6 +21,15 @@ const call = (method, ...params) => RocketChat.ddp.call(method, ...params); // e
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SERVER_TIMEOUT = 30000;
 
+
+const normalizeMessage = (lastMessage) => {
+	if (lastMessage) {
+		lastMessage.attachments = lastMessage.attachments || [];
+	}
+	return lastMessage;
+};
+
+
 const RocketChat = {
 	TOKEN_KEY,
 
@@ -128,9 +137,10 @@ const RocketChat = {
 				}
 				if (/rooms/.test(ev) && type === 'updated') {
 					const sub = database.objects('subscriptions').filtered('rid == $0', data._id)[0];
+
 					database.write(() => {
 						sub.roomUpdatedAt = data._updatedAt;
-						sub.lastMessage = data.lastMessage;
+						sub.lastMessage = normalizeMessage(data.lastMessage);
 						sub.ro = data.ro;
 					});
 				}
@@ -261,7 +271,7 @@ const RocketChat = {
 	},
 	_buildMessage(message) {
 		message.status = messagesStatus.SENT;
-		message.attachments = message.attachments || [];
+		normalizeMessage(message);
 		if (message.urls) {
 			message.urls = RocketChat._parseUrls(message.urls);
 		}
@@ -431,7 +441,7 @@ const RocketChat = {
 			const room = rooms.find(({ _id }) => _id === subscription.rid);
 			if (room) {
 				subscription.roomUpdatedAt = room._updatedAt;
-				subscription.lastMessage = room.lastMessage;
+				subscription.lastMessage = normalizeMessage(room.lastMessage);
 				subscription.ro = room.ro;
 			}
 			if (subscription.roles) {

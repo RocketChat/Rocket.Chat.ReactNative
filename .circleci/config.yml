@@ -95,9 +95,9 @@ jobs:
           command: |
             cd android
             if [[ $KEYSTORE ]]; then
-              ./gradlew assembleRelease
+              ./gradlew assembleRelease --no-daemon --stacktrace
             else
-              ./gradlew assembleDebug
+              ./gradlew assembleDebug --no-daemon --stacktrace
             fi
 
             mkdir -p /tmp/build
@@ -222,6 +222,10 @@ workflows:
               only:
                 - develop
                 - master
+      # - ios-testflight:
+      #     requires:
+      #       - ios-hold-testflight
+
       - android-build:
           requires:
             - lint-testunit
