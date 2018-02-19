@@ -8,7 +8,7 @@ import equal from 'deep-equal';
 import { List } from './ListView';
 import * as actions from '../../actions';
 import { openRoom, setLastOpen } from '../../actions/room';
-import { editCancel, toggleReactionPicker } from '../../actions/messages';
+import { editCancel, toggleReactionPicker, actionsShow } from '../../actions/messages';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
@@ -35,7 +35,8 @@ import styles from './styles';
 		openRoom: room => dispatch(openRoom(room)),
 		editCancel: () => dispatch(editCancel()),
 		setLastOpen: date => dispatch(setLastOpen(date)),
-		toggleReactionPicker: message => dispatch(toggleReactionPicker(message))
+		toggleReactionPicker: message => dispatch(toggleReactionPicker(message)),
+		actionsShow: actionMessage => dispatch(actionsShow(actionMessage))
 	})
 )
 export default class RoomView extends React.Component {
@@ -51,8 +52,9 @@ export default class RoomView extends React.Component {
 		Message_TimeFormat: PropTypes.string,
 		loading: PropTypes.bool,
 		actionMessage: PropTypes.object,
-		toggleReactionPicker: PropTypes.func.isRequired
-		// layoutAnimation: PropTypes.instanceOf(Date)
+		toggleReactionPicker: PropTypes.func.isRequired,
+		// layoutAnimation: PropTypes.instanceOf(Date),
+		actionsShow: PropTypes.func
 	};
 
 	static navigationOptions = ({ navigation }) => ({
@@ -124,6 +126,10 @@ export default class RoomView extends React.Component {
 		});
 	}
 
+	onMessageLongPress = (message) => {
+		this.props.actionsShow(message);
+	}
+
 	onReactionPress = (shortname, messageId) => {
 		if (!messageId) {
 			RocketChat.setReaction(shortname, this.props.actionMessage._id);
@@ -158,6 +164,7 @@ export default class RoomView extends React.Component {
 			Message_TimeFormat={this.props.Message_TimeFormat}
 			user={this.props.user}
 			onReactionPress={this.onReactionPress}
+			onLongPress={this.onMessageLongPress}
 		/>
 	);
 

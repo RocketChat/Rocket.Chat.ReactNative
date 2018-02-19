@@ -13,6 +13,8 @@ import { someoneTyping, roomMessageReceived } from '../actions/room';
 import { setUser } from '../actions/login';
 import { disconnect, disconnect_by_user, connectSuccess, connectFailure } from '../actions/connect';
 import { requestActiveUser } from '../actions/activeUsers';
+import { starredMessageReceived, starredMessageUnstarred } from '../actions/starredMessages';
+import { pinnedMessageReceived, pinnedMessageUnpinned } from '../actions/pinnedMessages';
 import Ddp from './ddp';
 
 export { Accounts } from 'react-native-meteor';
@@ -145,6 +147,30 @@ const RocketChat = {
 					});
 				}
 			});
+
+			this.ddp.on('rocketchat_starred_message', (ddpMessage) => {
+				if (ddpMessage.msg === 'added') {
+					const message = ddpMessage.fields;
+					message._id = ddpMessage.id;
+					const starredMessage = this._buildMessage(message);
+					return reduxStore.dispatch(starredMessageReceived(starredMessage));
+				}
+				if (ddpMessage.msg === 'removed') {
+					return reduxStore.dispatch(starredMessageUnstarred(ddpMessage.id));
+				}
+			});
+
+			this.ddp.on('rocketchat_pinned_message', (ddpMessage) => {
+				if (ddpMessage.msg === 'added') {
+					const message = ddpMessage.fields;
+					message._id = ddpMessage.id;
+					const pinnedMessage = this._buildMessage(message);
+					return reduxStore.dispatch(pinnedMessageReceived(pinnedMessage));
+				}
+				if (ddpMessage.msg === 'removed') {
+					return reduxStore.dispatch(pinnedMessageUnpinned(ddpMessage.id));
+				}
+			});
 		}).catch(console.log);
 	},
 
@@ -272,9 +298,7 @@ const RocketChat = {
 	_buildMessage(message) {
 		message.status = messagesStatus.SENT;
 		normalizeMessage(message);
-		if (message.urls) {
-			message.urls = RocketChat._parseUrls(message.urls);
-		}
+		message.urls = message.urls ? RocketChat._parseUrls(message.urls) : [];
 		// loadHistory returns message.starred as object
 		// stream-room-messages returns message.starred as an array
 		message.starred = message.starred && (Array.isArray(message.starred) ? message.starred.length > 0 : !!message.starred);
@@ -358,8 +382,15 @@ const RocketChat = {
 	createDirectMessage(username) {
 		return call('createDirectMessage', username);
 	},
-	readMessages(rid) {
-		return call('readMessages', rid);
+	async readMessages(rid) {
+		const ret = await call('readMessages', rid);
+
+		const [subscription] = database.objects('subscriptions').filtered('rid = $0', rid);
+		database.write(() => {
+			subscription.lastOpen = new Date();
+		});
+
+		return ret;
 	},
 	joinRoom(rid) {
 		return call('joinRoom', rid);
@@ -610,6 +641,9 @@ const RocketChat = {
 	},
 	setReaction(emoji, messageId) {
 		return call('setReaction', emoji, messageId);
+	},
+	toggleFavorite(rid, f) {
+		return call('toggleFavorite', rid, !f);
 	}
 };
 
