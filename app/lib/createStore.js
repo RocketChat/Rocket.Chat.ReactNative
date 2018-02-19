@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import logger from 'redux-logger';
 import { composeWithDevTools } from 'remote-redux-devtools';
@@ -13,14 +13,15 @@ if (__DEV__) {
 	/* eslint-disable global-require */
 	const reduxImmutableStateInvariant = require('redux-immutable-state-invariant').default();
 
-	enhacers = composeWithDevTools(
+	const devComposer = composeWithDevTools({ hostname: 'localhost', port: 8000 });
+	enhacers = devComposer(
 		applyAppStateListener(),
 		applyMiddleware(reduxImmutableStateInvariant),
 		applyMiddleware(sagaMiddleware),
 		applyMiddleware(logger)
 	);
 } else {
-	enhacers = composeWithDevTools(
+	enhacers = compose(
 		applyAppStateListener(),
 		applyMiddleware(sagaMiddleware)
 	);

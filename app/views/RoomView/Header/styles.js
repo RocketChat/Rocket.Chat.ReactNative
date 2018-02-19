@@ -42,7 +42,7 @@ export default StyleSheet.create({
 	headerButton: {
 		backgroundColor: 'transparent',
 		height: 44,
-		width: 44,
+		width: 40,
 		alignItems: 'center',
 		justifyContent: 'center'
 	}
