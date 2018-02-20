@@ -20,7 +20,9 @@ export const LOGIN = createRequestTypes('LOGIN', [
 	'REGISTER_INCOMPLETE',
 	'SET_USERNAME_SUBMIT',
 	'SET_USERNAME_REQUEST',
-	'SET_USERNAME_SUCCESS'
+	'SET_USERNAME_SUCCESS',
+	'OPEN',
+	'CLOSE'
 ]);
 export const FORGOT_PASSWORD = createRequestTypes('FORGOT_PASSWORD', [
 	...defaultTypes,

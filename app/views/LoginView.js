@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Base64 } from 'js-base64';
 
-import { loginSubmit } from '../actions/login';
+import { loginSubmit, open, close } from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
 
 import styles from './Styles';
@@ -30,11 +30,15 @@ const regex = /(?=.*(open\.rocket\.chat))(?=.*(code))(?=.*(credentialToken))/g;
 	Accounts_OAuth_Meteor: state.settings.Accounts_OAuth_Meteor,
 	Accounts_OAuth_Twitter: state.settings.Accounts_OAuth_Twitter
 }), dispatch => ({
-	loginSubmit: params => dispatch(loginSubmit(params))
+	loginSubmit: params => dispatch(loginSubmit(params)),
+	open: () => dispatch(open()),
+	close: () => dispatch(close())	
 }))
 export default class LoginView extends React.Component {
 	static propTypes = {
 		loginSubmit: PropTypes.func.isRequired,
+		open: PropTypes.func.isRequired,
+		close: PropTypes.func.isRequired,
 		navigation: PropTypes.object.isRequired,
 		login: PropTypes.object,
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.bool,
@@ -60,6 +64,14 @@ export default class LoginView extends React.Component {
 			password: '',
 			modalVisible: false
 		};
+	}
+
+	componentWillMount() {
+		this.props.open();
+	}
+
+	componentWillUnmount() {
+		this.props.close();
 	}
 
 	onPressOAuth = () => {

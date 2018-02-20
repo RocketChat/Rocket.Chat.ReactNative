@@ -84,10 +84,11 @@ const RocketChat = {
 			this.ddp.on('disconnected', () => {
 				reduxStore.dispatch(disconnect());
 			});
-			this.ddp.on('open', async() => {
-				resolve(reduxStore.dispatch(connectSuccess()));
-			});
+			// this.ddp.on('open', async() => {
+			// 	resolve(reduxStore.dispatch(connectSuccess()));
+			// });
 			this.ddp.on('connected', () => {
+				resolve(reduxStore.dispatch(connectSuccess()));
 				RocketChat.getSettings();
 				RocketChat.getPermissions();
 				RocketChat.getCustomEmoji();
@@ -98,7 +99,7 @@ const RocketChat = {
 				reduxStore.dispatch(connectFailure());
 			});
 
-			this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
+			// this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
 
 			this.ddp.on('users', ddpMessage => RocketChat._setUser(ddpMessage));
 
