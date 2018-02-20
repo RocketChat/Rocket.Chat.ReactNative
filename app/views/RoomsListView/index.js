@@ -3,7 +3,7 @@ import { ListView } from 'realm/react-native';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Platform, View, TextInput, SafeAreaView } from 'react-native';
+import { Platform, View, TextInput, SafeAreaView, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import * as server from '../../actions/connect';
@@ -49,6 +49,7 @@ export default class RoomsListView extends React.Component {
 			dataSource: ds.cloneWithRows([]),
 			searchText: ''
 		};
+		this._keyExtractor = this._keyExtractor.bind(this);
 		this.data = database.objects('subscriptions').sorted('roomUpdatedAt', true);
 	}
 
@@ -61,6 +62,10 @@ export default class RoomsListView extends React.Component {
 
 		this.updateState();
 	}
+
+	// shouldComponentUpdate() {
+	// 	return false;
+	// }
 
 	componentWillReceiveProps(props) {
 		if (this.props.server !== props.server) {
@@ -85,7 +90,6 @@ export default class RoomsListView extends React.Component {
 
 	getLastMessage = (subscription) => {
 		const [room] = database.objects('rooms').filtered('_id = $0', subscription.rid).slice();
-		console.log('ROOM', room);
 		return room && room.lastMessage;
 	}
 
@@ -147,6 +151,7 @@ export default class RoomsListView extends React.Component {
 		this.setState({
 			dataSource: ds.cloneWithRows(this.data)
 		});
+		// this.forceUpdate();
 	};
 
 	_onPressItem = (item = {}) => {
@@ -192,6 +197,10 @@ export default class RoomsListView extends React.Component {
 		this.props.navigation.navigate('SelectUsers');
 	}
 
+	_keyExtractor(item) {
+		return item.rid.replace(this.props.user.id, '').trim();
+	}
+
 	renderSearchBar = () => (
 		<View style={styles.searchBoxView}>
 			<TextInput
@@ -207,7 +216,7 @@ export default class RoomsListView extends React.Component {
 		</View>
 	);
 
-	renderItem = (item) => {
+	renderItem = ({ item }) => {
 		const id = item.rid.replace(this.props.user.id, '').trim();
 		return (<RoomItem
 			alert={item.alert}
@@ -226,10 +235,12 @@ export default class RoomsListView extends React.Component {
 	}
 
 	renderList = () => (
-		<ListView
+		<FlatList
+			data={this.data}
+			keyExtractor={this._keyExtractor}
 			dataSource={this.state.dataSource}
 			style={styles.list}
-			renderRow={this.renderItem}
+			renderItem={this.renderItem}
 			renderHeader={Platform.OS === 'ios' ? this.renderSearchBar : null}
 			contentOffset={Platform.OS === 'ios' ? { x: 0, y: 38 } : {}}
 			enableEmptySections

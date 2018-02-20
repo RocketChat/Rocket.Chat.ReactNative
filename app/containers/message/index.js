@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableHighlight, Text, TouchableOpacity, Vibration } from 'react-native';
+import { View, TouchableHighlight, Text, TouchableOpacity, Vibration, ViewPropTypes } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
@@ -33,17 +33,18 @@ import styles from './styles';
 export default class Message extends React.Component {
 	static propTypes = {
 		item: PropTypes.object.isRequired,
-		reactions: PropTypes.object.isRequired,
+		reactions: PropTypes.any.isRequired,
 		baseUrl: PropTypes.string.isRequired,
 		Message_TimeFormat: PropTypes.string.isRequired,
 		message: PropTypes.object.isRequired,
 		user: PropTypes.object.isRequired,
 		editing: PropTypes.bool,
-		actionsShow: PropTypes.func,
 		errorActionsShow: PropTypes.func,
 		customEmojis: PropTypes.object,
 		toggleReactionPicker: PropTypes.func,
-		onReactionPress: PropTypes.func
+		onReactionPress: PropTypes.func,
+		style: ViewPropTypes.style,
+		onLongPress: PropTypes.func
 	}
 
 	constructor(props) {
@@ -73,7 +74,7 @@ export default class Message extends React.Component {
 	}
 
 	onLongPress() {
-		this.props.actionsShow(this.parseMessage());
+		this.props.onLongPress(this.parseMessage());
 	}
 
 	onErrorPress() {
@@ -222,7 +223,7 @@ export default class Message extends React.Component {
 
 	render() {
 		const {
-			item, message, editing, baseUrl, customEmojis
+			item, message, editing, baseUrl, customEmojis, style
 		} = this.props;
 		const username = item.alias || item.u.username;
 		const isEditing = message._id === item._id && editing;
@@ -235,7 +236,7 @@ export default class Message extends React.Component {
 				disabled={this.isDeleted() || this.hasError()}
 				underlayColor='#FFFFFF'
 				activeOpacity={0.3}
-				style={[styles.message, isEditing ? styles.editing : null]}
+				style={[styles.message, isEditing ? styles.editing : null, style]}
 				accessibilityLabel={accessibilityLabel}
 			>
 				<View style={styles.flex}>

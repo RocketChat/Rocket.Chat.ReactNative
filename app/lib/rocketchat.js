@@ -13,6 +13,8 @@ import { someoneTyping, roomMessageReceived } from '../actions/room';
 import { setUser } from '../actions/login';
 import { disconnect, disconnect_by_user, connectSuccess, connectFailure } from '../actions/connect';
 import { requestActiveUser } from '../actions/activeUsers';
+import { starredMessageReceived, starredMessageUnstarred } from '../actions/starredMessages';
+import { pinnedMessageReceived, pinnedMessageUnpinned } from '../actions/pinnedMessages';
 import Ddp from './ddp';
 
 export { Accounts } from 'react-native-meteor';
@@ -20,6 +22,15 @@ export { Accounts } from 'react-native-meteor';
 const call = (method, ...params) => RocketChat.ddp.call(method, ...params); // eslint-disable-line
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SERVER_TIMEOUT = 30000;
+
+
+const normalizeMessage = (lastMessage) => {
+	if (lastMessage) {
+		lastMessage.attachments = lastMessage.attachments || [];
+	}
+	return lastMessage;
+};
+
 
 const RocketChat = {
 	TOKEN_KEY,
@@ -129,11 +140,36 @@ const RocketChat = {
 				}
 				if (/rooms/.test(ev) && type === 'updated') {
 					const sub = database.objects('subscriptions').filtered('rid == $0', data._id)[0];
+
 					database.write(() => {
 						sub.roomUpdatedAt = data._updatedAt;
-						sub.lastMessage = data.lastMessage;
+						sub.lastMessage = normalizeMessage(data.lastMessage);
 						sub.ro = data.ro;
 					});
+				}
+			});
+
+			this.ddp.on('rocketchat_starred_message', (ddpMessage) => {
+				if (ddpMessage.msg === 'added') {
+					const message = ddpMessage.fields;
+					message._id = ddpMessage.id;
+					const starredMessage = this._buildMessage(message);
+					return reduxStore.dispatch(starredMessageReceived(starredMessage));
+				}
+				if (ddpMessage.msg === 'removed') {
+					return reduxStore.dispatch(starredMessageUnstarred(ddpMessage.id));
+				}
+			});
+
+			this.ddp.on('rocketchat_pinned_message', (ddpMessage) => {
+				if (ddpMessage.msg === 'added') {
+					const message = ddpMessage.fields;
+					message._id = ddpMessage.id;
+					const pinnedMessage = this._buildMessage(message);
+					return reduxStore.dispatch(pinnedMessageReceived(pinnedMessage));
+				}
+				if (ddpMessage.msg === 'removed') {
+					return reduxStore.dispatch(pinnedMessageUnpinned(ddpMessage.id));
 				}
 			});
 		}).catch(console.log);
@@ -262,10 +298,8 @@ const RocketChat = {
 	},
 	_buildMessage(message) {
 		message.status = messagesStatus.SENT;
-		message.attachments = message.attachments || [];
-		if (message.urls) {
-			message.urls = RocketChat._parseUrls(message.urls);
-		}
+		normalizeMessage(message);
+		message.urls = message.urls ? RocketChat._parseUrls(message.urls) : [];
 		// loadHistory returns message.starred as object
 		// stream-room-messages returns message.starred as an array
 		message.starred = message.starred && (Array.isArray(message.starred) ? message.starred.length > 0 : !!message.starred);
@@ -349,8 +383,15 @@ const RocketChat = {
 	createDirectMessage(username) {
 		return call('createDirectMessage', username);
 	},
-	readMessages(rid) {
-		return call('readMessages', rid);
+	async readMessages(rid) {
+		const ret = await call('readMessages', rid);
+
+		const [subscription] = database.objects('subscriptions').filtered('rid = $0', rid);
+		database.write(() => {
+			subscription.lastOpen = new Date();
+		});
+
+		return ret;
 	},
 	joinRoom(rid) {
 		return call('joinRoom', rid);
@@ -432,7 +473,7 @@ const RocketChat = {
 			const room = rooms.find(({ _id }) => _id === subscription.rid);
 			if (room) {
 				subscription.roomUpdatedAt = room._updatedAt;
-				subscription.lastMessage = room.lastMessage;
+				subscription.lastMessage = normalizeMessage(room.lastMessage);
 				subscription.ro = room.ro;
 			}
 			if (subscription.roles) {
@@ -601,6 +642,9 @@ const RocketChat = {
 	},
 	setReaction(emoji, messageId) {
 		return call('setReaction', emoji, messageId);
+	},
+	toggleFavorite(rid, f) {
+		return call('toggleFavorite', rid, !f);
 	}
 };
 
