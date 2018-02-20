@@ -21,7 +21,7 @@ import * as NavigationService from '../containers/routes/NavigationService';
 
 const getUser = state => state.login;
 const getServer = state => state.server.server;
-const loginCall = args => (args.resume ? RocketChat.login(args) : RocketChat.loginWithPassword(args));
+const loginCall = args => ((args.resume || args.oauth) ? RocketChat.login(args) : RocketChat.loginWithPassword(args));
 const registerCall = args => RocketChat.register(args);
 const setUsernameCall = args => RocketChat.setUsername(args);
 const logoutCall = args => RocketChat.logout(args);
