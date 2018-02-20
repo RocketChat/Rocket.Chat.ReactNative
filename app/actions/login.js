@@ -136,3 +136,10 @@ export function close() {
 		type: types.LOGIN.CLOSE
 	};
 }
+
+export function setLoginServices(data) {
+	return {
+		type: types.LOGIN.SET_SERVICES,
+		data
+	};
+}

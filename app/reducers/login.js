@@ -6,7 +6,8 @@ const initialState = {
 	isRegistering: false,
 	token: '',
 	user: {},
-	error: ''
+	error: '',
+	services: {}
 };
 
 export default function login(state = initialState, action) {
@@ -113,6 +114,14 @@ export default function login(state = initialState, action) {
 				user: {
 					...state.user,
 					...action
+				}
+			};
+		case types.LOGIN.SET_SERVICES:
+			return {
+				...state,
+				services: {
+					...state.services,
+					...action.data
 				}
 			};
 		default:
