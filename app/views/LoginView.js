@@ -1,11 +1,12 @@
 import React from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import PropTypes from 'prop-types';
-import { Keyboard, Text, TextInput, View, ScrollView, TouchableOpacity, SafeAreaView, WebView, Modal } from 'react-native';
+import { Keyboard, Text, TextInput, View, ScrollView, TouchableOpacity, SafeAreaView, WebView } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Base64 } from 'js-base64';
+import Modal from 'react-native-modal';
 
 import { loginSubmit, open, close } from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
@@ -13,8 +14,6 @@ import KeyboardView from '../presentation/KeyboardView';
 import styles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { showToast } from '../utils/info';
-
-const regex = /(?=.*(open\.rocket\.chat))(?=.*(code))(?=.*(credentialToken))/g;
 
 @connect(state => ({
 	server: state.server.server,
@@ -120,6 +119,10 @@ export default class LoginView extends React.Component {
 
 	forgotPassword = () => {
 		this.props.navigation.navigate('ForgotPassword');
+	}
+
+	closeOAuth = () => {
+		this.setState({ modalVisible: false });
 	}
 
 	renderTOTP = () => {
@@ -273,10 +276,12 @@ export default class LoginView extends React.Component {
 					</ScrollView>
 				</KeyboardView>,
 				<Modal
+					key='modal-oauth'
 					visible={this.state.modalVisible}
 					animationType='slide'
-					onRequestClose={() => this.closeModal()}
-					key='modal-oauth'
+					style={styles.oAuthModal}
+					onBackButtonPress={this.closeOAuth}
+					useNativeDriver
 				>
 					<WebView
 						source={{ uri: this.state.oAuthUrl }}
@@ -291,6 +296,7 @@ export default class LoginView extends React.Component {
 							}
 						}}
 					/>
+					<Icon name='close' size={30} style={styles.closeOAuth} onPress={this.closeOAuth} />
 				</Modal>
 			]
 		);

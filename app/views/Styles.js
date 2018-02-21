@@ -199,5 +199,14 @@ export default StyleSheet.create({
 	},
 	twitterButton: {
 		backgroundColor: '#02acec'
+	},
+	closeOAuth: {
+		position: 'absolute',
+		left: 5,
+		top: 20,
+		backgroundColor: 'transparent'
+	},
+	oAuthModal: {
+		margin: 0
 	}
 });
