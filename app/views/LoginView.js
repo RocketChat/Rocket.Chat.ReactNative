@@ -13,7 +13,6 @@ import KeyboardView from '../presentation/KeyboardView';
 import styles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { showToast } from '../utils/info';
-import RocketChat from '../lib/rocketchat';
 
 const regex = /(?=.*(open\.rocket\.chat))(?=.*(code))(?=.*(credentialToken))/g;
 
@@ -42,6 +41,7 @@ export default class LoginView extends React.Component {
 		close: PropTypes.func.isRequired,
 		navigation: PropTypes.object.isRequired,
 		login: PropTypes.object,
+		server: PropTypes.string,
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.bool,
 		Accounts_PasswordPlaceholder: PropTypes.string,
 		Accounts_OAuth_Facebook: PropTypes.bool,
@@ -66,6 +66,7 @@ export default class LoginView extends React.Component {
 			password: '',
 			modalVisible: false
 		};
+		this.redirectRegex = new RegExp(`(?=.*(${ this.props.server }))(?=.*(code))(?=.*(credentialToken))`, 'g');
 	}
 
 	componentWillMount() {
@@ -83,7 +84,7 @@ export default class LoginView extends React.Component {
 	onPressGithub = () => {
 		const { clientId } = this.props.services.github;
 		const githubEndpoint = `https://github.com/login?client_id=${ clientId }&return_to=${ encodeURIComponent('/login/oauth/authorize') }`;
-		const redirect_uri = 'https://open.rocket.chat/_oauth/github/close';
+		const redirect_uri = `${ this.props.server }/_oauth/github/close`;
 		const state = Base64.encodeURI(JSON.stringify({ loginStyle: 'popup', credentialToken: 'VxSCiW7wBOTPA9p-6UPmXD21OlJCD6Dnaauy_7Ut_NK', isCordova: true }));
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=user:email&state=${ state }`;
 		const url = `${ githubEndpoint }${ encodeURIComponent(params) }`;
@@ -198,66 +199,64 @@ export default class LoginView extends React.Component {
 									</TouchableOpacity>
 								</View>
 
-								{this.props.services &&
-									<View style={styles.loginOAuthButtons}>
-										{this.props.Accounts_OAuth_Facebook &&
-											<TouchableOpacity
-												style={[styles.oauthButton, styles.facebookButton]}
-												onPress={this.onPressOAuth}
-											>
-												<Icon name='facebook' size={20} color='#ffffff' />
-											</TouchableOpacity>
-										}
-										{this.props.Accounts_OAuth_Github &&
-											<TouchableOpacity
-												style={[styles.oauthButton, styles.githubButton]}
-												onPress={this.onPressGithub}
-											>
-												<Icon name='github' size={20} color='#ffffff' />
-											</TouchableOpacity>
-										}
-										{this.props.Accounts_OAuth_Gitlab &&
-											<TouchableOpacity
-												style={[styles.oauthButton, styles.gitlabButton]}
-												onPress={this.onPressOAuth}
-											>
-												<Icon name='gitlab' size={20} color='#ffffff' />
-											</TouchableOpacity>
-										}
-										{this.props.Accounts_OAuth_Google &&
-											<TouchableOpacity
-												style={[styles.oauthButton, styles.googleButton]}
-												onPress={this.onPressOAuth}
-											>
-												<Icon name='google' size={20} color='#ffffff' />
-											</TouchableOpacity>
-										}
-										{this.props.Accounts_OAuth_Linkedin &&
-											<TouchableOpacity
-												style={[styles.oauthButton, styles.linkedinButton]}
-												onPress={this.onPressOAuth}
-											>
-												<Icon name='linkedin' size={20} color='#ffffff' />
-											</TouchableOpacity>
-										}
-										{this.props.Accounts_OAuth_Meteor &&
-											<TouchableOpacity
-												style={[styles.oauthButton, styles.meteorButton]}
-												onPress={this.onPressOAuth}
-											>
-												<MaterialCommunityIcons name='meteor' size={25} color='#ffffff' />
-											</TouchableOpacity>
-										}
-										{this.props.Accounts_OAuth_Twitter &&
-											<TouchableOpacity
-												style={[styles.oauthButton, styles.twitterButton]}
-												onPress={this.onPressOAuth}
-											>
-												<Icon name='twitter' size={20} color='#ffffff' />
-											</TouchableOpacity>
-										}
-									</View>
-								}
+								<View style={styles.loginOAuthButtons}>
+									{this.props.Accounts_OAuth_Facebook &&
+										<TouchableOpacity
+											style={[styles.oauthButton, styles.facebookButton]}
+											onPress={this.onPressOAuth}
+										>
+											<Icon name='facebook' size={20} color='#ffffff' />
+										</TouchableOpacity>
+									}
+									{this.props.Accounts_OAuth_Github && this.props.services.github &&
+										<TouchableOpacity
+											style={[styles.oauthButton, styles.githubButton]}
+											onPress={this.onPressGithub}
+										>
+											<Icon name='github' size={20} color='#ffffff' />
+										</TouchableOpacity>
+									}
+									{this.props.Accounts_OAuth_Gitlab &&
+										<TouchableOpacity
+											style={[styles.oauthButton, styles.gitlabButton]}
+											onPress={this.onPressOAuth}
+										>
+											<Icon name='gitlab' size={20} color='#ffffff' />
+										</TouchableOpacity>
+									}
+									{this.props.Accounts_OAuth_Google &&
+										<TouchableOpacity
+											style={[styles.oauthButton, styles.googleButton]}
+											onPress={this.onPressOAuth}
+										>
+											<Icon name='google' size={20} color='#ffffff' />
+										</TouchableOpacity>
+									}
+									{this.props.Accounts_OAuth_Linkedin &&
+										<TouchableOpacity
+											style={[styles.oauthButton, styles.linkedinButton]}
+											onPress={this.onPressOAuth}
+										>
+											<Icon name='linkedin' size={20} color='#ffffff' />
+										</TouchableOpacity>
+									}
+									{this.props.Accounts_OAuth_Meteor &&
+										<TouchableOpacity
+											style={[styles.oauthButton, styles.meteorButton]}
+											onPress={this.onPressOAuth}
+										>
+											<MaterialCommunityIcons name='meteor' size={25} color='#ffffff' />
+										</TouchableOpacity>
+									}
+									{this.props.Accounts_OAuth_Twitter &&
+										<TouchableOpacity
+											style={[styles.oauthButton, styles.twitterButton]}
+											onPress={this.onPressOAuth}
+										>
+											<Icon name='twitter' size={20} color='#ffffff' />
+										</TouchableOpacity>
+									}
+								</View>
 
 								<TouchableOpacity>
 									<Text style={styles.loginTermsText} accessibilityTraits='button'>
@@ -283,7 +282,7 @@ export default class LoginView extends React.Component {
 						source={{ uri: this.state.oAuthUrl }}
 						userAgent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'
 						onNavigationStateChange={(webViewState) => {
-							if (regex.test(webViewState.url)) {
+							if (this.redirectRegex.test(webViewState.url)) {
 								const url = decodeURIComponent(webViewState.url);
 								const parts = url.split('#');
 								const credentials = JSON.parse(parts[1]);
