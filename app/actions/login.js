@@ -143,3 +143,9 @@ export function setLoginServices(data) {
 		data
 	};
 }
+
+export function removeLoginServices() {
+	return {
+		type: types.LOGIN.REMOVE_SERVICES
+	};
+}

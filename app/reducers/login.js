@@ -124,6 +124,11 @@ export default function login(state = initialState, action) {
 					...action.data
 				}
 			};
+		case types.LOGIN.REMOVE_SERVICES:
+			return {
+				...state,
+				services: {}
+			};
 		default:
 			return state;
 	}

@@ -10,7 +10,7 @@ import messagesStatus from '../constants/messagesStatus';
 import database from './realm';
 import * as actions from '../actions';
 import { someoneTyping, roomMessageReceived } from '../actions/room';
-import { setUser, setLoginServices } from '../actions/login';
+import { setUser, setLoginServices, removeLoginServices } from '../actions/login';
 import { disconnect, disconnect_by_user, connectSuccess, connectFailure } from '../actions/connect';
 import { requestActiveUser } from '../actions/activeUsers';
 import { starredMessageReceived, starredMessageUnstarred } from '../actions/starredMessages';
@@ -174,20 +174,27 @@ const RocketChat = {
 			});
 
 			this.ddp.on('meteor_accounts_loginServiceConfiguration', (ddpMessage) => {
-				this.loginServices = this.loginServices || {};
-
-				if (this.loginServiceTimer) {
-					clearTimeout(this.loginServiceTimer);
-					this.loginServiceTimer = null;
+				if (ddpMessage.msg === 'added') {
+					this.loginServices = this.loginServices || {};
+					if (this.loginServiceTimer) {
+						clearTimeout(this.loginServiceTimer);
+						this.loginServiceTimer = null;
+					}
+					this.loginServiceTimer = setTimeout(() => {
+						reduxStore.dispatch(setLoginServices(this.loginServices));
+						this.loginServiceTimer = null;
+						return this.loginServices = {};
+					}, 1000);
+					this.loginServices[ddpMessage.fields.service] = { ...ddpMessage.fields };
+					delete this.loginServices[ddpMessage.fields.service].service;
+				} else if (ddpMessage.msg === 'removed') {
+					if (this.loginServiceTimer) {
+						clearTimeout(this.loginServiceTimer);
+					}
+					this.loginServiceTimer = setTimeout(() => {
+						return reduxStore.dispatch(removeLoginServices());
+					}, 1000);
 				}
-
-				this.loginServiceTimer = setTimeout(() => {
-					reduxStore.dispatch(setLoginServices(this.loginServices));
-					this.loginServiceTimer = null;
-					return this.loginServices = {};
-				}, 1000);
-				this.loginServices[ddpMessage.fields.service] = { ...ddpMessage.fields };
-				delete this.loginServices[ddpMessage.fields.service].service;
 			});
 		}).catch(console.log);
 	},

@@ -23,7 +23,8 @@ export const LOGIN = createRequestTypes('LOGIN', [
 	'SET_USERNAME_SUCCESS',
 	'OPEN',
 	'CLOSE',
-	'SET_SERVICES'
+	'SET_SERVICES',
+	'REMOVE_SERVICES'
 ]);
 export const FORGOT_PASSWORD = createRequestTypes('FORGOT_PASSWORD', [
 	...defaultTypes,

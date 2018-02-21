@@ -63,9 +63,10 @@ export default class LoginView extends React.Component {
 		this.state = {
 			username: '',
 			password: '',
-			modalVisible: false
+			modalVisible: false,
+			oAuthUrl: ''
 		};
-		this.redirectRegex = new RegExp(`(?=.*(${ this.props.server }))(?=.*(code))(?=.*(credentialToken))`, 'g');
+		this.redirectRegex = new RegExp(`(?=.*(${ this.props.server }))(?=.*(credentialToken))(?=.*(credentialSecret))`, 'g');
 	}
 
 	componentWillMount() {
@@ -77,17 +78,32 @@ export default class LoginView extends React.Component {
 	}
 
 	onPressOAuth = () => {
-		alert('oauth here');
+		alert('OAuth here :)')
+	}
+
+	onPressTwitter = () => {
+		const state = this.getOAuthState();
+		const url = `${ this.props.server }/_oauth/twitter/?requestTokenAndRedirect=true&state=${ state }`;
+		this.openOAuth(url);
 	}
 
 	onPressGithub = () => {
 		const { clientId } = this.props.services.github;
 		const githubEndpoint = `https://github.com/login?client_id=${ clientId }&return_to=${ encodeURIComponent('/login/oauth/authorize') }`;
 		const redirect_uri = `${ this.props.server }/_oauth/github/close`;
-		const state = Base64.encodeURI(JSON.stringify({ loginStyle: 'popup', credentialToken: 'VxSCiW7wBOTPA9p-6UPmXD21OlJCD6Dnaauy_7Ut_NK', isCordova: true }));
+		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=user:email&state=${ state }`;
 		const url = `${ githubEndpoint }${ encodeURIComponent(params) }`;
-		this.setState({ oAuthUrl: url, modalVisible: true });
+		this.openOAuth(url);
+	}
+
+	getOAuthState = () => {
+		const credentialToken = 'VxSCiW7wBOTPA9p-6UPmXD21OlJCD6Dnaauy_7Ut_NK';
+		return Base64.encodeURI(JSON.stringify({ loginStyle: 'popup', credentialToken, isCordova: true }));
+	}
+
+	openOAuth = (oAuthUrl) => {
+		this.setState({ oAuthUrl, modalVisible: true });
 	}
 
 	submit = () => {
@@ -254,7 +270,7 @@ export default class LoginView extends React.Component {
 									{this.props.Accounts_OAuth_Twitter &&
 										<TouchableOpacity
 											style={[styles.oauthButton, styles.twitterButton]}
-											onPress={this.onPressOAuth}
+											onPress={this.onPressTwitter}
 										>
 											<Icon name='twitter' size={20} color='#ffffff' />
 										</TouchableOpacity>
@@ -287,8 +303,8 @@ export default class LoginView extends React.Component {
 						source={{ uri: this.state.oAuthUrl }}
 						userAgent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'
 						onNavigationStateChange={(webViewState) => {
-							if (this.redirectRegex.test(webViewState.url)) {
-								const url = decodeURIComponent(webViewState.url);
+							const url = decodeURIComponent(webViewState.url);
+							if (this.redirectRegex.test(url)) {
 								const parts = url.split('#');
 								const credentials = JSON.parse(parts[1]);
 								this.props.loginSubmit({ oauth: { ...credentials } });
