@@ -14,6 +14,7 @@ import KeyboardView from '../presentation/KeyboardView';
 import styles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { showToast } from '../utils/info';
+import random from '../utils/random';
 
 @connect(state => ({
 	server: state.server.server,
@@ -149,7 +150,7 @@ export default class LoginView extends React.Component {
 	}
 
 	getOAuthState = () => {
-		const credentialToken = 'VxSCiW7wBOTPA9p-6UPmXD21OlJCD6Dnaauy_7Ut_NK';
+		const credentialToken = random(43);
 		return Base64.encodeURI(JSON.stringify({ loginStyle: 'popup', credentialToken, isCordova: true }));
 	}
 
