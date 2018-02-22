@@ -112,7 +112,7 @@ const RocketChat = {
 				reduxStore.dispatch(connectFailure());
 			});
 
-			// this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
+			this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
 
 			this.ddp.on('users', ddpMessage => RocketChat._setUser(ddpMessage));
 
