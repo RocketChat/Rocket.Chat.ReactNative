@@ -15,6 +15,7 @@ import { disconnect, disconnect_by_user, connectSuccess, connectFailure } from '
 import { requestActiveUser } from '../actions/activeUsers';
 import { starredMessageReceived, starredMessageUnstarred } from '../actions/starredMessages';
 import { pinnedMessageReceived, pinnedMessageUnpinned } from '../actions/pinnedMessages';
+import { mentionedMessagesReceived } from '../actions/mentionedMessages';
 import Ddp from './ddp';
 
 export { Accounts } from 'react-native-meteor';
@@ -109,7 +110,7 @@ const RocketChat = {
 				reduxStore.dispatch(connectFailure());
 			});
 
-			this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
+			// this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
 
 			this.ddp.on('users', ddpMessage => RocketChat._setUser(ddpMessage));
 
@@ -169,6 +170,27 @@ const RocketChat = {
 				}
 				if (ddpMessage.msg === 'removed') {
 					return reduxStore.dispatch(pinnedMessageUnpinned(ddpMessage.id));
+				}
+			});
+
+			this.ddp.on('rocketchat_mentioned_message', (ddpMessage) => {
+				if (ddpMessage.msg === 'added') {
+					this.mentionedMessages = this.mentionedMessages || [];
+
+					if (this.mentionedMessagesTimer) {
+						clearTimeout(this.mentionedMessagesTimer);
+						this.mentionedMessagesTimer = null;
+					}
+
+					this.mentionedMessagesTimer = setTimeout(() => {
+						reduxStore.dispatch(mentionedMessagesReceived(this.mentionedMessages));
+						this.mentionedMessagesTimer = null;
+						return this.mentionedMessages = [];
+					}, 1000);
+					const message = ddpMessage.fields;
+					message._id = ddpMessage.id;
+					const mentionedMessage = this._buildMessage(message);
+					this.mentionedMessages = [...this.mentionedMessages, mentionedMessage];
 				}
 			});
 		}).catch(console.log);

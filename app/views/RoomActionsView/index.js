@@ -61,7 +61,12 @@ export default class RoomActionsView extends React.PureComponent {
 		}, {
 			data: [
 				{ icon: 'ios-attach', name: 'Files' },
-				{ icon: 'ios-at-outline', name: 'Mentions' },
+				{
+					icon: 'ios-at-outline',
+					name: 'Mentions',
+					route: 'MentionedMessages',
+					params: { rid }
+				},
 				{
 					icon: 'ios-star-outline',
 					name: 'Starred',
