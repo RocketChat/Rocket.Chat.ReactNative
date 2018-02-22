@@ -81,6 +81,15 @@ export default class LoginView extends React.Component {
 		alert('OAuth here :)')
 	}
 
+	onPressFacebook = () => {
+		const { appId } = this.props.services.facebook;
+		const endpoint = 'https://m.facebook.com/v2.9/dialog/oauth';
+		const redirect_uri = `${ this.props.server }/_oauth/facebook?close`;
+		const state = this.getOAuthState();
+		const params = `?client_id=${ appId }&redirect_uri=${ redirect_uri }&display=touch&scope=email&state=${ state }`;
+		this.openOAuth(`${ endpoint }${ params }`);
+	}
+
 	onPressTwitter = () => {
 		const state = this.getOAuthState();
 		const url = `${ this.props.server }/_oauth/twitter/?requestTokenAndRedirect=true&state=${ state }`;
@@ -89,11 +98,11 @@ export default class LoginView extends React.Component {
 
 	onPressGithub = () => {
 		const { clientId } = this.props.services.github;
-		const githubEndpoint = `https://github.com/login?client_id=${ clientId }&return_to=${ encodeURIComponent('/login/oauth/authorize') }`;
+		const endpoint = `https://github.com/login?client_id=${ clientId }&return_to=${ encodeURIComponent('/login/oauth/authorize') }`;
 		const redirect_uri = `${ this.props.server }/_oauth/github/close`;
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=user:email&state=${ state }`;
-		const url = `${ githubEndpoint }${ encodeURIComponent(params) }`;
+		const url = `${ endpoint }${ encodeURIComponent(params) }`;
 		this.openOAuth(url);
 	}
 
@@ -222,7 +231,7 @@ export default class LoginView extends React.Component {
 									{this.props.Accounts_OAuth_Facebook &&
 										<TouchableOpacity
 											style={[styles.oauthButton, styles.facebookButton]}
-											onPress={this.onPressOAuth}
+											onPress={this.onPressFacebook}
 										>
 											<Icon name='facebook' size={20} color='#ffffff' />
 										</TouchableOpacity>
@@ -301,7 +310,7 @@ export default class LoginView extends React.Component {
 				>
 					<WebView
 						source={{ uri: this.state.oAuthUrl }}
-						userAgent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'
+						userAgent='UserAgent'
 						onNavigationStateChange={(webViewState) => {
 							const url = decodeURIComponent(webViewState.url);
 							if (this.redirectRegex.test(url)) {

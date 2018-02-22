@@ -17,6 +17,7 @@ const watchRoomsRequest = function* watchRoomsRequest() {
 		yield call(getRooms);
 		yield put(roomsSuccess());
 	} catch (err) {
+		alert(err);
 		yield put(roomsFailure(err.status));
 	}
 };

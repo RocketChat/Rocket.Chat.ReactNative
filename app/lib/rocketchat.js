@@ -27,6 +27,8 @@ const SERVER_TIMEOUT = 30000;
 const normalizeMessage = (lastMessage) => {
 	if (lastMessage) {
 		lastMessage.attachments = lastMessage.attachments || [];
+		lastMessage.reactions = _.map(lastMessage.reactions, (value, key) =>
+			({ emoji: key, usernames: value.usernames.map(username => ({ value: username })) }));
 	}
 	return lastMessage;
 };
@@ -191,9 +193,7 @@ const RocketChat = {
 					if (this.loginServiceTimer) {
 						clearTimeout(this.loginServiceTimer);
 					}
-					this.loginServiceTimer = setTimeout(() => {
-						return reduxStore.dispatch(removeLoginServices());
-					}, 1000);
+					this.loginServiceTimer = setTimeout(() => reduxStore.dispatch(removeLoginServices()), 1000);
 				}
 			});
 		}).catch(console.log);
@@ -327,8 +327,6 @@ const RocketChat = {
 		// loadHistory returns message.starred as object
 		// stream-room-messages returns message.starred as an array
 		message.starred = message.starred && (Array.isArray(message.starred) ? message.starred.length > 0 : !!message.starred);
-		message.reactions = _.map(message.reactions, (value, key) =>
-			({ emoji: key, usernames: value.usernames.map(username => ({ value: username })) }));
 		return message;
 	},
 	loadMessagesForRoom(rid, end, cb) {
