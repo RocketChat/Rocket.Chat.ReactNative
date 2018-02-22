@@ -136,7 +136,7 @@ export default class LoginView extends React.Component {
 	onPressMeteor = () => {
 		const { clientId } = this.props.services['meteor-developer'];
 		const endpoint = 'https://www.meteor.com/oauth2/authorize';
-		const redirect_uri = `${ this.props.server }/_oauth/meteor`;
+		const redirect_uri = `${ this.props.server }/_oauth/meteor-developer`;
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&state=${ state }&response_type=code`;
 		this.openOAuth(`${ endpoint }${ params }`);
