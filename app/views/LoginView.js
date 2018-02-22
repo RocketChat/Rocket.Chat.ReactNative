@@ -90,6 +90,15 @@ export default class LoginView extends React.Component {
 		this.openOAuth(`${ endpoint }${ params }`);
 	}
 
+	onPressGoogle = () => {
+		const { clientId } = this.props.services.google;
+		const endpoint = 'https://accounts.google.com/o/oauth2/auth';
+		const redirect_uri = `${ this.props.server }/_oauth/google?close`;
+		const state = this.getOAuthState();
+		const params = `?response_type=code&client_id=${ clientId }&scope=email&redirect_uri=${ redirect_uri }&state=${ state }`;
+		this.openOAuth(`${ endpoint }${ params }`);
+	}
+
 	onPressTwitter = () => {
 		const state = this.getOAuthState();
 		const url = `${ this.props.server }/_oauth/twitter/?requestTokenAndRedirect=true&state=${ state }`;
@@ -255,7 +264,7 @@ export default class LoginView extends React.Component {
 									{this.props.Accounts_OAuth_Google &&
 										<TouchableOpacity
 											style={[styles.oauthButton, styles.googleButton]}
-											onPress={this.onPressOAuth}
+											onPress={this.onPressGoogle}
 										>
 											<Icon name='google' size={20} color='#ffffff' />
 										</TouchableOpacity>
