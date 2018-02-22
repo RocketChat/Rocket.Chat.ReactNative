@@ -1,7 +1,7 @@
 import React from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import PropTypes from 'prop-types';
-import { Keyboard, Text, TextInput, View, ScrollView, TouchableOpacity, SafeAreaView, WebView } from 'react-native';
+import { Keyboard, Text, TextInput, View, ScrollView, TouchableOpacity, SafeAreaView, WebView, Platform, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -71,6 +71,12 @@ export default class LoginView extends React.Component {
 
 	componentWillMount() {
 		this.props.open();
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (this.props.services !== nextProps.services) {
+			LayoutAnimation.easeInEaseOut();
+		}
 	}
 
 	componentWillUnmount() {
@@ -263,7 +269,7 @@ export default class LoginView extends React.Component {
 									</TouchableOpacity>
 								</View>
 
-								<View style={styles.loginOAuthButtons}>
+								<View style={styles.loginOAuthButtons} key='services'>
 									{this.props.Accounts_OAuth_Facebook && this.props.services.facebook &&
 										<TouchableOpacity
 											style={[styles.oauthButton, styles.facebookButton]}
@@ -346,7 +352,7 @@ export default class LoginView extends React.Component {
 				>
 					<WebView
 						source={{ uri: this.state.oAuthUrl }}
-						userAgent='UserAgent'
+						userAgent={Platform.OS === 'ios' ? 'UserAgent' : 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1'}
 						onNavigationStateChange={(webViewState) => {
 							const url = decodeURIComponent(webViewState.url);
 							if (this.redirectRegex.test(url)) {

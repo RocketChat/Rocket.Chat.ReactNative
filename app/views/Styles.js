@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 
 export default StyleSheet.create({
 	container: {
@@ -203,7 +203,7 @@ export default StyleSheet.create({
 	closeOAuth: {
 		position: 'absolute',
 		left: 5,
-		top: 20,
+		top: Platform.OS === 'ios' ? 20 : 0,
 		backgroundColor: 'transparent'
 	},
 	oAuthModal: {
