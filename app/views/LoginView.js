@@ -77,16 +77,33 @@ export default class LoginView extends React.Component {
 		this.props.close();
 	}
 
-	onPressOAuth = () => {
-		alert('OAuth here :)')
-	}
-
 	onPressFacebook = () => {
 		const { appId } = this.props.services.facebook;
 		const endpoint = 'https://m.facebook.com/v2.9/dialog/oauth';
 		const redirect_uri = `${ this.props.server }/_oauth/facebook?close`;
+		const scope = 'email';
 		const state = this.getOAuthState();
-		const params = `?client_id=${ appId }&redirect_uri=${ redirect_uri }&display=touch&scope=email&state=${ state }`;
+		const params = `?client_id=${ appId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&display=touch`;
+		this.openOAuth(`${ endpoint }${ params }`);
+	}
+
+	onPressGithub = () => {
+		const { clientId } = this.props.services.github;
+		const endpoint = `https://github.com/login?client_id=${ clientId }&return_to=${ encodeURIComponent('/login/oauth/authorize') }`;
+		const redirect_uri = `${ this.props.server }/_oauth/github?close`;
+		const scope = 'user:email';
+		const state = this.getOAuthState();
+		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }`;
+		this.openOAuth(`${ endpoint }${ encodeURIComponent(params) }`);
+	}
+
+	onPressGitlab = () => {
+		const { clientId } = this.props.services.gitlab;
+		const endpoint = 'https://gitlab.com/oauth/authorize';
+		const redirect_uri = `${ this.props.server }/_oauth/gitlab?close`;
+		const scope = 'read_user';
+		const state = this.getOAuthState();
+		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&response_type=code`;
 		this.openOAuth(`${ endpoint }${ params }`);
 	}
 
@@ -94,24 +111,34 @@ export default class LoginView extends React.Component {
 		const { clientId } = this.props.services.google;
 		const endpoint = 'https://accounts.google.com/o/oauth2/auth';
 		const redirect_uri = `${ this.props.server }/_oauth/google?close`;
+		const scope = 'email';
 		const state = this.getOAuthState();
-		const params = `?response_type=code&client_id=${ clientId }&scope=email&redirect_uri=${ redirect_uri }&state=${ state }`;
+		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&response_type=code`;
+		this.openOAuth(`${ endpoint }${ params }`);
+	}
+
+	onPressLinkedin = () => {
+		const { clientId } = this.props.services.linkedin;
+		const endpoint = 'https://www.linkedin.com/uas/oauth2/authorization';
+		const redirect_uri = `${ this.props.server }/_oauth/linkedin?close`;
+		const scope = 'r_emailaddress';
+		const state = this.getOAuthState();
+		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&response_type=code`;
+		this.openOAuth(`${ endpoint }${ params }`);
+	}
+
+	onPressMeteor = () => {
+		const { clientId } = this.props.services['meteor-developer'];
+		const endpoint = 'https://www.meteor.com/oauth2/authorize';
+		const redirect_uri = `${ this.props.server }/_oauth/meteor`;
+		const state = this.getOAuthState();
+		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&state=${ state }&response_type=code`;
 		this.openOAuth(`${ endpoint }${ params }`);
 	}
 
 	onPressTwitter = () => {
 		const state = this.getOAuthState();
 		const url = `${ this.props.server }/_oauth/twitter/?requestTokenAndRedirect=true&state=${ state }`;
-		this.openOAuth(url);
-	}
-
-	onPressGithub = () => {
-		const { clientId } = this.props.services.github;
-		const endpoint = `https://github.com/login?client_id=${ clientId }&return_to=${ encodeURIComponent('/login/oauth/authorize') }`;
-		const redirect_uri = `${ this.props.server }/_oauth/github/close`;
-		const state = this.getOAuthState();
-		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=user:email&state=${ state }`;
-		const url = `${ endpoint }${ encodeURIComponent(params) }`;
 		this.openOAuth(url);
 	}
 
@@ -237,7 +264,7 @@ export default class LoginView extends React.Component {
 								</View>
 
 								<View style={styles.loginOAuthButtons}>
-									{this.props.Accounts_OAuth_Facebook &&
+									{this.props.Accounts_OAuth_Facebook && this.props.services.facebook &&
 										<TouchableOpacity
 											style={[styles.oauthButton, styles.facebookButton]}
 											onPress={this.onPressFacebook}
@@ -253,15 +280,15 @@ export default class LoginView extends React.Component {
 											<Icon name='github' size={20} color='#ffffff' />
 										</TouchableOpacity>
 									}
-									{this.props.Accounts_OAuth_Gitlab &&
+									{this.props.Accounts_OAuth_Gitlab && this.props.services.gitlab &&
 										<TouchableOpacity
 											style={[styles.oauthButton, styles.gitlabButton]}
-											onPress={this.onPressOAuth}
+											onPress={this.onPressGitlab}
 										>
 											<Icon name='gitlab' size={20} color='#ffffff' />
 										</TouchableOpacity>
 									}
-									{this.props.Accounts_OAuth_Google &&
+									{this.props.Accounts_OAuth_Google && this.props.services.google &&
 										<TouchableOpacity
 											style={[styles.oauthButton, styles.googleButton]}
 											onPress={this.onPressGoogle}
@@ -269,23 +296,23 @@ export default class LoginView extends React.Component {
 											<Icon name='google' size={20} color='#ffffff' />
 										</TouchableOpacity>
 									}
-									{this.props.Accounts_OAuth_Linkedin &&
+									{this.props.Accounts_OAuth_Linkedin && this.props.services.linkedin &&
 										<TouchableOpacity
 											style={[styles.oauthButton, styles.linkedinButton]}
-											onPress={this.onPressOAuth}
+											onPress={this.onPressLinkedin}
 										>
 											<Icon name='linkedin' size={20} color='#ffffff' />
 										</TouchableOpacity>
 									}
-									{this.props.Accounts_OAuth_Meteor &&
+									{this.props.Accounts_OAuth_Meteor && this.props.services['meteor-developer'] &&
 										<TouchableOpacity
 											style={[styles.oauthButton, styles.meteorButton]}
-											onPress={this.onPressOAuth}
+											onPress={this.onPressMeteor}
 										>
 											<MaterialCommunityIcons name='meteor' size={25} color='#ffffff' />
 										</TouchableOpacity>
 									}
-									{this.props.Accounts_OAuth_Twitter &&
+									{this.props.Accounts_OAuth_Twitter && this.props.services.twitter &&
 										<TouchableOpacity
 											style={[styles.oauthButton, styles.twitterButton]}
 											onPress={this.onPressTwitter}
