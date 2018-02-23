@@ -241,7 +241,7 @@ export default class RoomsListView extends React.Component {
 			dataSource={this.state.dataSource}
 			style={styles.list}
 			renderItem={this.renderItem}
-			renderHeader={Platform.OS === 'ios' ? this.renderSearchBar : null}
+			ListHeaderComponent={Platform.OS === 'ios' ? this.renderSearchBar : null}
 			contentOffset={Platform.OS === 'ios' ? { x: 0, y: 38 } : {}}
 			enableEmptySections
 			keyboardShouldPersistTaps='always'

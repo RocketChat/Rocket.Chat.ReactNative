@@ -30,6 +30,7 @@
     "babel-preset-expo": "^4.0.0",
     "deep-equal": "^1.0.1",
     "ejson": "^2.1.2",
+    "js-base64": "^2.4.3",
     "lodash": "^4.17.4",
     "moment": "^2.20.1",
     "prop-types": "^15.6.0",
