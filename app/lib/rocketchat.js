@@ -10,7 +10,7 @@ import messagesStatus from '../constants/messagesStatus';
 import database from './realm';
 import * as actions from '../actions';
 import { someoneTyping, roomMessageReceived } from '../actions/room';
-import { setUser } from '../actions/login';
+import { setUser, setLoginServices, removeLoginServices } from '../actions/login';
 import { disconnect, disconnect_by_user, connectSuccess, connectFailure } from '../actions/connect';
 import { requestActiveUser } from '../actions/activeUsers';
 import { starredMessageReceived, starredMessageUnstarred } from '../actions/starredMessages';
@@ -27,6 +27,8 @@ const SERVER_TIMEOUT = 30000;
 const normalizeMessage = (lastMessage) => {
 	if (lastMessage) {
 		lastMessage.attachments = lastMessage.attachments || [];
+		lastMessage.reactions = _.map(lastMessage.reactions, (value, key) =>
+			({ emoji: key, usernames: value.usernames.map(username => ({ value: username })) }));
 	}
 	return lastMessage;
 };
@@ -95,10 +97,11 @@ const RocketChat = {
 			this.ddp.on('disconnected', () => {
 				reduxStore.dispatch(disconnect());
 			});
-			this.ddp.on('open', async() => {
-				resolve(reduxStore.dispatch(connectSuccess()));
-			});
+			// this.ddp.on('open', async() => {
+			// 	resolve(reduxStore.dispatch(connectSuccess()));
+			// });
 			this.ddp.on('connected', () => {
+				resolve(reduxStore.dispatch(connectSuccess()));
 				RocketChat.getSettings();
 				RocketChat.getPermissions();
 				RocketChat.getCustomEmoji();
@@ -169,6 +172,28 @@ const RocketChat = {
 				}
 				if (ddpMessage.msg === 'removed') {
 					return reduxStore.dispatch(pinnedMessageUnpinned(ddpMessage.id));
+				}
+			});
+
+			this.ddp.on('meteor_accounts_loginServiceConfiguration', (ddpMessage) => {
+				if (ddpMessage.msg === 'added') {
+					this.loginServices = this.loginServices || {};
+					if (this.loginServiceTimer) {
+						clearTimeout(this.loginServiceTimer);
+						this.loginServiceTimer = null;
+					}
+					this.loginServiceTimer = setTimeout(() => {
+						reduxStore.dispatch(setLoginServices(this.loginServices));
+						this.loginServiceTimer = null;
+						return this.loginServices = {};
+					}, 1000);
+					this.loginServices[ddpMessage.fields.service] = { ...ddpMessage.fields };
+					delete this.loginServices[ddpMessage.fields.service].service;
+				} else if (ddpMessage.msg === 'removed') {
+					if (this.loginServiceTimer) {
+						clearTimeout(this.loginServiceTimer);
+					}
+					this.loginServiceTimer = setTimeout(() => reduxStore.dispatch(removeLoginServices()), 1000);
 				}
 			});
 		}).catch(console.log);
@@ -302,8 +327,6 @@ const RocketChat = {
 		// loadHistory returns message.starred as object
 		// stream-room-messages returns message.starred as an array
 		message.starred = message.starred && (Array.isArray(message.starred) ? message.starred.length > 0 : !!message.starred);
-		message.reactions = _.map(message.reactions, (value, key) =>
-			({ emoji: key, usernames: value.usernames.map(username => ({ value: username })) }));
 		return message;
 	},
 	loadMessagesForRoom(rid, end, cb) {
