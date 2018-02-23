@@ -13,8 +13,8 @@ import { someoneTyping, roomMessageReceived } from '../actions/room';
 import { setUser } from '../actions/login';
 import { disconnect, disconnect_by_user, connectSuccess, connectFailure } from '../actions/connect';
 import { requestActiveUser } from '../actions/activeUsers';
-import { starredMessageReceived, starredMessageUnstarred } from '../actions/starredMessages';
-import { pinnedMessageReceived, pinnedMessageUnpinned } from '../actions/pinnedMessages';
+import { starredMessagesReceived, starredMessageUnstarred } from '../actions/starredMessages';
+import { pinnedMessagesReceived, pinnedMessageUnpinned } from '../actions/pinnedMessages';
 import { mentionedMessagesReceived } from '../actions/mentionedMessages';
 import Ddp from './ddp';
 
@@ -151,25 +151,53 @@ const RocketChat = {
 
 			this.ddp.on('rocketchat_starred_message', (ddpMessage) => {
 				if (ddpMessage.msg === 'added') {
+					this.starredMessages = this.starredMessages || [];
+
+					if (this.starredMessagesTimer) {
+						clearTimeout(this.starredMessagesTimer);
+						this.starredMessagesTimer = null;
+					}
+
+					this.starredMessagesTimer = setTimeout(() => {
+						reduxStore.dispatch(starredMessagesReceived(this.starredMessages));
+						this.starredMessagesTimer = null;
+						return this.starredMessages = [];
+					}, 1000);
 					const message = ddpMessage.fields;
 					message._id = ddpMessage.id;
 					const starredMessage = this._buildMessage(message);
-					return reduxStore.dispatch(starredMessageReceived(starredMessage));
+					this.starredMessages = [...this.starredMessages, starredMessage];
 				}
 				if (ddpMessage.msg === 'removed') {
-					return reduxStore.dispatch(starredMessageUnstarred(ddpMessage.id));
+					if (reduxStore.getState().starredMessages.isOpen) {
+						return reduxStore.dispatch(starredMessageUnstarred(ddpMessage.id));
+					}
 				}
 			});
 
 			this.ddp.on('rocketchat_pinned_message', (ddpMessage) => {
 				if (ddpMessage.msg === 'added') {
+					this.pinnedMessages = this.pinnedMessages || [];
+
+					if (this.pinnedMessagesTimer) {
+						clearTimeout(this.pinnedMessagesTimer);
+						this.pinnedMessagesTimer = null;
+					}
+
+					this.pinnedMessagesTimer = setTimeout(() => {
+						reduxStore.dispatch(pinnedMessagesReceived(this.pinnedMessages));
+						this.pinnedMessagesTimer = null;
+						return this.pinnedMessages = [];
+					}, 1000);
 					const message = ddpMessage.fields;
 					message._id = ddpMessage.id;
 					const pinnedMessage = this._buildMessage(message);
-					return reduxStore.dispatch(pinnedMessageReceived(pinnedMessage));
+					this.pinnedMessages = [...this.pinnedMessages, pinnedMessage];
 				}
 				if (ddpMessage.msg === 'removed') {
-					return reduxStore.dispatch(pinnedMessageUnpinned(ddpMessage.id));
+					if (reduxStore.getState().pinnedMessages.isOpen) {
+						return reduxStore.dispatch(pinnedMessageUnpinned(ddpMessage.id));
+					}
 				}
 			});
 

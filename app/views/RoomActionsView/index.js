@@ -29,12 +29,9 @@ export default class RoomActionsView extends React.PureComponent {
 		};
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.updateRoom();
 		this.updateSections();
-	}
-
-	componentDidMount() {
 		this.rooms.addListener(this.updateRoom);
 	}
 

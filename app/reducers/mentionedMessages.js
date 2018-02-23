@@ -9,7 +9,7 @@ export default function server(state = initialState, action) {
 		case MENTIONED_MESSAGES.MESSAGES_RECEIVED:
 			return {
 				...state,
-				messages: [...state.messages, ...action.message]
+				messages: [...state.messages, ...action.messages]
 			};
 		case MENTIONED_MESSAGES.CLOSE:
 			return initialState;

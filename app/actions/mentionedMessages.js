@@ -13,9 +13,9 @@ export function closeMentionedMessages() {
 	};
 }
 
-export function mentionedMessagesReceived(message) {
+export function mentionedMessagesReceived(messages) {
 	return {
 		type: types.MENTIONED_MESSAGES.MESSAGES_RECEIVED,
-		message
+		messages
 	};
 }
