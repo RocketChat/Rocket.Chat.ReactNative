@@ -63,7 +63,7 @@ const RocketChat = {
 		const status = (ddpMessage.fields && ddpMessage.fields.status) || 'offline';
 
 		if (user && user.id === ddpMessage.id) {
-			return reduxStore.dispatch(setUser({ status }));
+			reduxStore.dispatch(setUser({ status }));
 		}
 
 		if (this._setUserTimer) {
@@ -110,7 +110,7 @@ const RocketChat = {
 				reduxStore.dispatch(connectFailure());
 			});
 
-			// this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
+			this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
 
 			this.ddp.on('users', ddpMessage => RocketChat._setUser(ddpMessage));
 
@@ -694,6 +694,9 @@ const RocketChat = {
 	},
 	toggleFavorite(rid, f) {
 		return call('toggleFavorite', rid, !f);
+	},
+	getRoomMembers(rid, allUsers) {
+		return call('getUsersOfRoom', rid, allUsers);
 	}
 };
 

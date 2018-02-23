@@ -37,6 +37,7 @@ module.exports = {
 		"react/no-unused-prop-types": [2, {
 			"skipShapeProps": true
 		}],
+		"react/no-did-mount-set-state": 0,
 		"react/no-multi-comp": [0],
 		"react/jsx-indent": [2, "tab"],
 		"react/jsx-indent-props": [2, "tab"],

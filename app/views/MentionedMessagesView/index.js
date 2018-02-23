@@ -28,7 +28,7 @@ export default class MentionedMessagesView extends React.PureComponent {
 		closeMentionedMessages: PropTypes.func
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.props.openMentionedMessages(this.props.navigation.state.params.rid);
 	}
 
