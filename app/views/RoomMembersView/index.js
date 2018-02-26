@@ -8,6 +8,8 @@ import Avatar from '../../containers/Avatar';
 import Status from '../../containers/status';
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
+import { goRoom } from '../../containers/routes/NavigationService';
+import database from '../../lib/realm';
 
 @connect(state => ({
 	user: state.login.user,
@@ -56,7 +58,7 @@ export default class MentionedMessagesView extends React.PureComponent {
 
 	componentWillMount() {
 		this.props.navigation.setParams({
-			onPressToogleStatus: this._onPressToogleStatus,
+			onPressToogleStatus: this.onPressToogleStatus,
 			allUsers: this.state.allUsers
 		});
 	}
@@ -69,12 +71,22 @@ export default class MentionedMessagesView extends React.PureComponent {
 		this.setState({ filtering: !!text, membersFiltered });
 	}
 
-	_onPressToogleStatus = async() => {
+	onPressToogleStatus = async() => {
 		const allUsers = !this.state.allUsers;
 		this.props.navigation.setParams({ allUsers });
 		const membersResult = await RocketChat.getRoomMembers(this.state.rid, allUsers);
 		const members = membersResult.records;
 		this.setState({ allUsers, members });
+	}
+
+	onPressItem = async(item) => {
+		const subscriptions = database.objects('subscriptions').filtered('name = $0', item.username);
+		if (subscriptions.length) {
+			goRoom({ rid: subscriptions[0].rid, name: subscriptions[0].name });
+		} else {
+			const room = await RocketChat.createDirectMessage(item.username);
+			goRoom({ room: room.rid, name: item.username });
+		}
 	}
 
 	renderSearchBar = () => (
@@ -94,10 +106,18 @@ export default class MentionedMessagesView extends React.PureComponent {
 	renderSeparator = () => <View style={styles.separator} />;
 
 	renderItem = ({ item }) => (
-		<View style={styles.item}>
-			<Avatar text={item.username} size={30} type='d' style={styles.avatar}>{<Status style={styles.status} id={item._id} />}</Avatar>
-			<Text style={styles.username}>{item.username}</Text>
-		</View>
+		<Touch
+			onPress={() => this.onPressItem(item)}
+			underlayColor='#ffffff'
+			activeOpacity={0.5}
+			accessibilityLabel={`Start a conversation with ${ item.username }`}
+			accessibilityTraits='button'
+		>
+			<View style={styles.item}>
+				<Avatar text={item.username} size={30} type='d' style={styles.avatar}>{<Status style={styles.status} id={item._id} />}</Avatar>
+				<Text style={styles.username}>{item.username}</Text>
+			</View>
+		</Touch>
 	)
 
 	render() {
