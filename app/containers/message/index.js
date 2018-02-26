@@ -165,7 +165,7 @@ export default class Message extends React.Component {
 		}
 
 		return this.props.item.urls.map(url => (
-			<Url url={url} key={url._id} />
+			<Url url={url} key={url.url} />
 		));
 	}
 

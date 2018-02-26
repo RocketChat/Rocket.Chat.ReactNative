@@ -460,7 +460,6 @@ export default class MessageBox extends React.PureComponent {
 						<TextInput
 							ref={component => this.component = component}
 							style={styles.textBoxInput}
-							keyboardType='email-address'
 							returnKeyType='default'
 							blurOnSubmit={false}
 							placeholder='New Message'
