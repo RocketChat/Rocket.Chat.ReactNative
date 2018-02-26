@@ -83,7 +83,10 @@ const subscriptionSchema = {
 		roomUpdatedAt: { type: 'date', optional: true },
 		ro: { type: 'bool', optional: true },
 		lastOpen: { type: 'date', optional: true },
-		lastMessage: { type: 'messages', optional: true }
+		lastMessage: { type: 'messages', optional: true },
+		description: { type: 'string', optional: true },
+		announcement: { type: 'string', optional: true },
+		topic: { type: 'string', optional: true }
 	}
 };
 

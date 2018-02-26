@@ -96,7 +96,7 @@ export default class RoomActionsView extends React.PureComponent {
 			sections[2].data.unshift({
 				icon: 'ios-people',
 				name: 'Members',
-				description: (members.length === 0 ? 'Loading' : `${ members.length } members`),
+				description: (members.length === 1 ? `${ members.length } member` : `${ members.length } members`),
 				route: 'RoomMembers',
 				params: { rid, members }
 			});
@@ -111,21 +111,28 @@ export default class RoomActionsView extends React.PureComponent {
 		this.setState({ sections });
 	}
 
-	renderRoomInfo = ({ item }) => this.renderTouchableItem([
-		<Avatar
-			key='avatar'
-			text={this.state.room.name}
-			size={50}
-			style={styles.avatar}
-			baseUrl={this.props.baseUrl}
-			type={this.state.room.t}
-		/>,
-		<View key='name' style={styles.roomTitleContainer}>
-			<Text style={styles.roomTitle}>{this.state.room.fname}</Text>
-			<Text style={styles.roomDescription}>@{this.state.room.name}</Text>
-		</View>,
-		<Icon key='icon' name='ios-arrow-forward' size={20} style={styles.sectionItemIcon} color='#cbced1' />
-	], item)
+	renderRoomInfo = ({ item }) => {
+		const {
+			fname, name, t, topic
+		} = this.state.room;
+		return (
+			this.renderTouchableItem([
+				<Avatar
+					key='avatar'
+					text={name}
+					size={50}
+					style={styles.avatar}
+					baseUrl={this.props.baseUrl}
+					type={t}
+				/>,
+				<View key='name' style={styles.roomTitleContainer}>
+					<Text style={styles.roomTitle}>{t === 'd' ? fname : name}</Text>
+					<Text style={styles.roomDescription} ellipsizeMode='tail' numberOfLines={1}>{t === 'd' ? `@${ name }` : topic}</Text>
+				</View>,
+				<Icon key='icon' name='ios-arrow-forward' size={20} style={styles.sectionItemIcon} color='#cbced1' />
+			], item)
+		);
+	}
 
 	renderTouchableItem = (subview, item) => (
 		<Touch

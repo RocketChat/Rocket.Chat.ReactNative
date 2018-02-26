@@ -547,6 +547,9 @@ const RocketChat = {
 				subscription.roomUpdatedAt = room._updatedAt;
 				subscription.lastMessage = normalizeMessage(room.lastMessage);
 				subscription.ro = room.ro;
+				subscription.description = room.description;
+				subscription.topic = room.topic;
+				subscription.announcement = room.announcement;
 			}
 			if (subscription.roles) {
 				subscription.roles = subscription.roles.map(role => ({ value: role }));

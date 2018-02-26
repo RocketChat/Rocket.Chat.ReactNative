@@ -7,6 +7,7 @@ import styles from './styles';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/status';
 import Touch from '../../utils/touch';
+import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
 import { goRoom } from '../../containers/routes/NavigationService';
 import database from '../../lib/realm';
@@ -131,6 +132,7 @@ export default class MentionedMessagesView extends React.PureComponent {
 				keyExtractor={item => item._id}
 				ItemSeparatorComponent={this.renderSeparator}
 				ListHeaderComponent={this.renderSearchBar}
+				{...scrollPersistTaps}
 			/>
 		);
 	}
