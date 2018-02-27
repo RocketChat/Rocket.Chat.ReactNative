@@ -4,7 +4,7 @@ import { View, TouchableHighlight, Text, TouchableOpacity, Vibration, ViewPropTy
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
-import equal from 'deep-equal';
+// import equal from 'deep-equal';
 import { KeyboardUtils } from 'react-native-keyboard-input';
 
 import { actionsShow, errorActionsShow, toggleReactionPicker } from '../../actions/messages';
