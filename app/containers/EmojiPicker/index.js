@@ -40,12 +40,6 @@ export default class EmojiPicker extends Component {
 	// 	return false;
 	// }
 
-	componentWillMount() {
-		this.frequentlyUsed.addListener(this.updateFrequentlyUsed);
-		this.customEmojis.addListener(this.updateCustomEmojis);
-		this.updateFrequentlyUsed();
-		this.updateCustomEmojis();
-	}
 	componentDidMount() {
 		requestAnimationFrame(() => this.setState({ show: true }));
 	}
@@ -69,6 +63,14 @@ export default class EmojiPicker extends Component {
 			this.props.onEmojiSelected(emojify(shortname, { output: 'unicode' }), shortname);
 		}
 	}
+
+	UNSAFE_componentWillMount() {
+		this.frequentlyUsed.addListener(this.updateFrequentlyUsed);
+		this.customEmojis.addListener(this.updateCustomEmojis);
+		this.updateFrequentlyUsed();
+		this.updateCustomEmojis();
+	}
+
 	_addFrequentlyUsed = (emoji) => {
 		database.write(() => {
 			database.create('frequentlyUsedEmoji', emoji, true);
@@ -123,7 +125,6 @@ export default class EmojiPicker extends Component {
 			<ScrollableTabView
 				renderTabBar={() => <TabBar tabEmojiStyle={this.props.tabEmojiStyle} />}
 				contentProps={scrollProps}
-				// prerenderingSiblingsNumber={1}
 			>
 				{
 					categories.tabs.map((tab, i) => (

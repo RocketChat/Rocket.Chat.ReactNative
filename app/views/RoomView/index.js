@@ -73,7 +73,7 @@ export default class RoomView extends React.Component {
 		this.state = {
 			loaded: true,
 			joined: typeof props.rid === 'undefined',
-			room: {}
+			room: this.rooms[0]
 		};
 		this.onReactionPress = this.onReactionPress.bind(this);
 	}
@@ -108,10 +108,6 @@ export default class RoomView extends React.Component {
 
 	onEndReached = (data) => {
 		if (this.props.loading || this.state.end) {
-			return;
-		}
-		if (!this.state.loaded) {
-			alert(2);
 			return;
 		}
 
@@ -159,6 +155,8 @@ export default class RoomView extends React.Component {
 		<Message
 			key={item._id}
 			item={item}
+			_updatedAt={item._updatedAt}
+			status={item.status}
 			reactions={JSON.parse(JSON.stringify(item.reactions))}
 			baseUrl={this.props.Site_Url}
 			Message_TimeFormat={this.props.Message_TimeFormat}

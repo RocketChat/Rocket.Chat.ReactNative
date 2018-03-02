@@ -65,6 +65,7 @@ export class List extends React.Component {
 		return (<ListView
 			enableEmptySections
 			style={styles.list}
+			data={this.data}
 			onEndReachedThreshold={0.5}
 			renderFooter={this.props.renderFooter}
 			renderHeader={() => <Typing />}
@@ -84,20 +85,9 @@ export class ListView extends OldList2 {
 	constructor(props) {
 		super(props);
 		this.state = {
-			curRenderedRowsCount: this.props.initialListSize,
+			curRenderedRowsCount: 20,
 			highlightedRow: ({}: Object)
 		};
-
-
-		this.renderRow = this.renderRow.bind(this);
-	}
-
-	renderRow(_, sectionId, rowId, ...args) {
-		const { props } = this;
-		const item = props.dataSource.getRow(sectionId, rowId);
-
-		// The item could be null because our data is a snapshot and it was deleted.
-		return item ? props.renderRow(item, sectionId, rowId, ...args) : null;
 	}
 
 	getInnerViewNode() {
@@ -115,9 +105,6 @@ export class ListView extends OldList2 {
 	render() {
 		const bodyComponents = [];
 
-		const { dataSource } = this.props;
-		const allRowIDs = dataSource.rowIdentities;
-		let rowCount = 0;
 		// const stickySectionHeaderIndices = [];
 
 		// const { renderSectionHeader } = this.props;
@@ -126,58 +113,27 @@ export class ListView extends OldList2 {
 		const footer = this.props.renderFooter && this.props.renderFooter();
 		// let totalIndex = header ? 1 : 0;
 
-		for (let sectionIdx = 0; sectionIdx < allRowIDs.length; sectionIdx += 1) {
-			const sectionID = dataSource.sectionIdentities[sectionIdx];
-			const rowIDs = allRowIDs[sectionIdx];
-			if (rowIDs.length === 0) {
+		const { data } = this.props;
+		let count = 0;
+
+		for (let i = 0; i < this.state.curRenderedRowsCount && i < data.length; i += 1, count += 1) {
+			const room = data[i];
+			bodyComponents.push(this.props.renderRow(room));
+
+			const nextData = data[i + 1];
+
+			if (!nextData) {
 				continue; // eslint-disable-line
 			}
 
-			// if (renderSectionHeader) {
-			// 	const element = renderSectionHeader(
-			// 		dataSource.getSectionHeaderData(sectionIdx),
-			// 		sectionID,
-			// 	);
-			// 	if (element) {
-			// 		bodyComponents.push(React.cloneElement(element, { key: `s_${ sectionID }` }), );
-			// 		if (this.props.stickySectionHeadersEnabled) {
-			// 			stickySectionHeaderIndices.push(totalIndex);
-			// 		}
-			// 		totalIndex++;
-			// 	}
-			// }
-
-			for (let rowIdx = 0; rowIdx < rowIDs.length; rowIdx += 1) {
-				const rowID = rowIDs[rowIdx];
-				const data = dataSource._dataBlob[sectionID][rowID];
-				bodyComponents.push(this.props.renderRow.bind(
-					null,
-					data,
-					sectionID,
-					rowID,
-					this._onRowHighlighted,
-				)());
-				if (rowIdx !== rowIDs.length - 1) {
-					const nextRowID = rowIDs[rowIdx + 1];
-					const nextData = dataSource._dataBlob[sectionID][nextRowID];
-					if (!moment(data.ts).isSame(nextData.ts, 'day')) {
-						bodyComponents.push(<DateSeparator key={data.ts.toISOString()} ts={data.ts} />);
-					}
-					if (this.props.lastOpen &&
-						moment(data.ts).isAfter(this.props.lastOpen) &&
-						moment(nextData.ts).isBefore(this.props.lastOpen)
-					) {
-						bodyComponents.push(<UnreadSeparator key='unread-separator' />);
-					}
-				}
-				// totalIndex += 1;
-				rowCount += 1;
-				if (rowCount === this.state.curRenderedRowsCount) {
-					break;
-				}
+			if (!moment(room.ts).isSame(nextData.ts, 'day')) {
+				bodyComponents.push(<DateSeparator key={room.ts.toISOString()} ts={room.ts} />);
 			}
-			if (rowCount >= this.state.curRenderedRowsCount) {
-				break;
+			if (this.props.lastOpen &&
+				moment(room.ts).isAfter(this.props.lastOpen) &&
+				moment(nextData.ts).isBefore(this.props.lastOpen)
+			) {
+				bodyComponents.push(<UnreadSeparator key='unread-separator' />);
 			}
 		}
 

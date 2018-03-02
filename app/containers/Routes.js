@@ -26,14 +26,11 @@ export default class Routes extends React.Component {
 		appInit: PropTypes.func.isRequired
 	}
 
-	componentWillMount() {
-		return !this.props.app.ready && this.props.appInit();
-	}
-
 	componentDidMount() {
 		if (this.props.app.ready) {
-			SplashScreen.hide();
+			return SplashScreen.hide();
 		}
+		this.props.appInit();
 	}
 
 	componentWillReceiveProps(nextProps) {
