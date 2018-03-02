@@ -78,7 +78,7 @@ export default class RoomView extends React.Component {
 		this.onReactionPress = this.onReactionPress.bind(this);
 	}
 
-	async componentWillMount() {
+	async componentDidMount() {
 		this.props.navigation.setParams({
 			title: this.name
 		});
