@@ -29,7 +29,7 @@ export default class RoomActionsView extends React.PureComponent {
 		};
 	}
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		this.updateRoom();
 		this.updateSections();
 	}

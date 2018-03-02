@@ -88,7 +88,7 @@ export default class ListServerView extends React.Component {
 		this.data.addListener(this.updateState);
 	}
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		zeroconf.on('update', this.updateState);
 
 		zeroconf.scan('http', 'tcp', 'local.');

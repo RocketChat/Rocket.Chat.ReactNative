@@ -38,7 +38,7 @@ export default class EmojiCategory extends React.Component {
 		this.size = Math.min(this.props.width || width, height) / (this.props.emojisPerRow || emojisPerRow);
 		this.emojis = [];
 	}
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		this.emojis = this.props.emojis;
 	}
 

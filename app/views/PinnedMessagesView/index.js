@@ -43,7 +43,7 @@ export default class PinnedMessagesView extends React.PureComponent {
 		};
 	}
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		this.props.openPinnedMessages(this.props.navigation.state.params.rid);
 	}
 

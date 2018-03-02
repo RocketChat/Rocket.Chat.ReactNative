@@ -40,7 +40,7 @@ export default class EmojiPicker extends Component {
 	// 	return false;
 	// }
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		this.frequentlyUsed.addListener(this.updateFrequentlyUsed);
 		this.customEmojis.addListener(this.updateCustomEmojis);
 		this.updateFrequentlyUsed();

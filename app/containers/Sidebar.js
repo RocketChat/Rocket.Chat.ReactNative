@@ -52,7 +52,7 @@ export default class Sidebar extends Component {
 		gotoAddServer: PropTypes.func.isRequired
 	}
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		database.databases.serversDB.addListener('change', this.updateState);
 		this.setState(this.getState());
 	}
