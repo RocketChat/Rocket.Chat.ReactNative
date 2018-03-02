@@ -34,7 +34,7 @@ export default class RoomHeaderView extends React.PureComponent {
 		super(props);
 		this.state = {
 			room: {},
-			roomName: props.navigation.state.params.name
+			roomName: props.navigation.state.params.room.name
 		};
 		this.rid = props.navigation.state.params.room.rid;
 		this.room = realm.objects('subscriptions').filtered('rid = $0', this.rid);
@@ -66,8 +66,8 @@ export default class RoomHeaderView extends React.PureComponent {
 
 	renderLeft = () => (<HeaderBackButton
 		onPress={() => {
-			this.props.close();
 			this.props.navigation.goBack(null);
+			requestAnimationFrame(() => this.props.close());
 		}}
 		tintColor='#292E35'
 		title='Back'

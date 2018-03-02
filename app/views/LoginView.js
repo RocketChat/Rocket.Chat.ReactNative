@@ -70,10 +70,6 @@ export default class LoginView extends React.Component {
 		this.redirectRegex = new RegExp(`(?=.*(${ this.props.server }))(?=.*(credentialToken))(?=.*(credentialSecret))`, 'g');
 	}
 
-	componentWillMount() {
-		this.props.open();
-	}
-
 	componentWillReceiveProps(nextProps) {
 		if (this.props.services !== nextProps.services) {
 			LayoutAnimation.easeInEaseOut();
@@ -152,6 +148,10 @@ export default class LoginView extends React.Component {
 	getOAuthState = () => {
 		const credentialToken = random(43);
 		return Base64.encodeURI(JSON.stringify({ loginStyle: 'popup', credentialToken, isCordova: true }));
+	}
+
+	UNSAFE_componentWillMount() {
+		this.props.open();
 	}
 
 	openOAuth = (oAuthUrl) => {

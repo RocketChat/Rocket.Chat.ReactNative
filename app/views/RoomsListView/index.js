@@ -15,6 +15,7 @@ import { goRoom } from '../../containers/routes/NavigationService';
 import Header from '../../containers/Header';
 import RoomsListHeader from './Header';
 import styles from './styles';
+import debounce from '../../utils/debounce';
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 @connect(state => ({
@@ -63,10 +64,6 @@ export default class RoomsListView extends React.Component {
 		this.updateState();
 	}
 
-	// shouldComponentUpdate() {
-	// 	return false;
-	// }
-
 	componentWillReceiveProps(props) {
 		if (this.props.server !== props.server) {
 			this.data.removeListener(this.updateState);
@@ -76,10 +73,9 @@ export default class RoomsListView extends React.Component {
 			this.search(props.searchText);
 		}
 	}
-	// componentWillUpdate() {
-	// 	LayoutAnimation.easeInEaseOut();
-	// }
+
 	componentWillUnmount() {
+		this.updateState.stop();
 		this.data.removeAllListeners();
 	}
 
@@ -88,109 +84,65 @@ export default class RoomsListView extends React.Component {
 		this.search(text);
 	}
 
-	getLastMessage = (subscription) => {
-		const [room] = database.objects('rooms').filtered('_id = $0', subscription.rid).slice();
-		return room && room.lastMessage;
-	}
+	updateState = debounce(() => {
+		this.forceUpdate();
+	}, 1000);
 
-	search(text) {
+	async search(text) {
 		const searchText = text.trim();
 		if (searchText === '') {
+			delete this.oldPromise;
 			return this.setState({
-				dataSource: ds.cloneWithRows(this.data)
+				search: false
 			});
 		}
 
-		const data = this.data.filtered('name CONTAINS[c] $0', searchText).slice();
+		let data = this.data.filtered('name CONTAINS[c] $0', searchText).slice(0, 7);
 
-		const usernames = [];
-		const dataSource = data.map((sub) => {
-			if (sub.t === 'd') {
-				usernames.push(sub.name);
+		const usernames = data.map(sub => sub.map);
+		try {
+			if (data.length < 7) {
+				if (this.oldPromise) {
+					this.oldPromise('cancel');
+				}
+
+				const { users, rooms } = await Promise.race([
+					RocketChat.spotlight(searchText, usernames, { users: true, rooms: true }),
+					new Promise((resolve, reject) => this.oldPromise = reject)
+				]);
+
+				data = data.concat(users.map(user => ({
+					...user,
+					rid: user.username,
+					name: user.username,
+					t: 'd',
+					search: true
+				})), rooms.map(room => ({
+					rid: room._id,
+					...room,
+					search: true
+				})));
+
+				delete this.oldPromise;
 			}
-			return sub;
-		});
-
-		if (dataSource.length < 7) {
-			if (this.oldPromise) {
-				this.oldPromise();
-			}
-			Promise.race([
-				RocketChat.spotlight(searchText, usernames),
-				new Promise((resolve, reject) => this.oldPromise = reject)
-			])
-				.then((results) => {
-					results.users.forEach((user) => {
-						dataSource.push({
-							...user,
-							name: user.username,
-							t: 'd',
-							search: true
-						});
-					});
-
-					results.rooms.forEach((room) => {
-						dataSource.push({
-							...room,
-							search: true
-						});
-					});
-
-					this.setState({
-						dataSource: ds.cloneWithRows(dataSource)
-					});
-				}, () => console.log('spotlight stopped'))
-				.then(() => delete this.oldPromise);
+			this.setState({
+				search: data
+			});
+		} catch (e) {
+			// alert(JSON.stringify(e));
 		}
-		this.setState({
-			dataSource: ds.cloneWithRows(dataSource)
-		});
 	}
 
-	updateState = () => {
-		this.setState({
-			dataSource: ds.cloneWithRows(this.data)
-		});
-		// this.forceUpdate();
-	};
-
-	_onPressItem = (item = {}) => {
-		const clearSearch = () => {
-			this.setState({
-				searchText: ''
-			});
-		};
-
+	_onPressItem = async(item = {}) => {
 		// if user is using the search we need first to join/create room
-		if (item.search) {
-			if (item.t === 'd') {
-				RocketChat.createDirectMessage(item.username)
-					.then(room => new Promise((resolve) => {
-						const data = database.objects('subscriptions')
-							.filtered('rid = $1', room.rid);
-
-						if (data.length) {
-							return resolve(data[0]);
-						}
-
-						data.addListener(() => {
-							if (data.length) {
-								resolve(data[0]);
-								data.removeAllListeners();
-							}
-						});
-					}))
-					.then(sub => goRoom({ room: sub, name: sub.name }))
-					.then(() => clearSearch());
-			} else {
-				clearSearch();
-				goRoom(item);
-			}
-			return;
+		if (!item.search) {
+			return this.props.navigation.navigate({ routeName: 'Room', params: { room: item, ...item } });
 		}
-
-		goRoom(item);
-		clearSearch();
+		if (item.t === 'd') {
+			const sub = await RocketChat.createDirectMessageAndWait(item.username);
+			return goRoom({ room: sub, name: sub.name });
+		}
+		return goRoom(item);
 	}
 
 	_createChannel() {
@@ -236,7 +188,7 @@ export default class RoomsListView extends React.Component {
 
 	renderList = () => (
 		<FlatList
-			data={this.data}
+			data={this.state.search ? this.state.search : this.data}
 			keyExtractor={this._keyExtractor}
 			dataSource={this.state.dataSource}
 			style={styles.list}
