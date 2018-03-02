@@ -155,6 +155,8 @@ export default class RoomView extends React.Component {
 		<Message
 			key={item._id}
 			item={item}
+			_updatedAt={item._updatedAt}
+			status={item.status}
 			reactions={JSON.parse(JSON.stringify(item.reactions))}
 			baseUrl={this.props.Site_Url}
 			Message_TimeFormat={this.props.Message_TimeFormat}

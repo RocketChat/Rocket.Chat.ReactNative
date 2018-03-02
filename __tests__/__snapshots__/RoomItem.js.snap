@@ -18,14 +18,7 @@ exports[`render channel 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -185,14 +178,7 @@ exports[`render no icon 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -352,14 +338,7 @@ exports[`render private group 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -520,14 +499,7 @@ exports[`render unread +999 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -721,14 +693,7 @@ exports[`render unread 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -922,14 +887,7 @@ exports[`renders correctly 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >

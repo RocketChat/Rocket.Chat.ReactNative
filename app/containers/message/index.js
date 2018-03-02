@@ -4,7 +4,7 @@ import { View, TouchableHighlight, Text, TouchableOpacity, Vibration, ViewPropTy
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
-// import equal from 'deep-equal';
+import equal from 'deep-equal';
 import { KeyboardUtils } from 'react-native-keyboard-input';
 
 import { actionsShow, errorActionsShow, toggleReactionPicker } from '../../actions/messages';
@@ -32,6 +32,7 @@ import styles from './styles';
 }))
 export default class Message extends React.Component {
 	static propTypes = {
+		status: PropTypes.any,
 		item: PropTypes.object.isRequired,
 		reactions: PropTypes.any.isRequired,
 		baseUrl: PropTypes.string.isRequired,
@@ -44,7 +45,8 @@ export default class Message extends React.Component {
 		toggleReactionPicker: PropTypes.func,
 		onReactionPress: PropTypes.func,
 		style: ViewPropTypes.style,
-		onLongPress: PropTypes.func
+		onLongPress: PropTypes.func,
+		_updatedAt: PropTypes.instanceOf(Date)
 	}
 
 	constructor(props) {
@@ -53,15 +55,15 @@ export default class Message extends React.Component {
 		this.onClose = this.onClose.bind(this);
 	}
 
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	if (!equal(this.props.reactions, nextProps.reactions)) {
-	// 		return true;
-	// 	}
-	// 	if (this.state.reactionsModal !== nextState.reactionsModal) {
-	// 		return true;
-	// 	}
-	// 	return this.props.item._updatedAt.toGMTString() !== nextProps.item._updatedAt.toGMTString() || this.props.item.status !== nextProps.item.status;
-	// }
+	shouldComponentUpdate(nextProps, nextState) {
+		if (!equal(this.props.reactions, nextProps.reactions)) {
+			return true;
+		}
+		if (this.state.reactionsModal !== nextState.reactionsModal) {
+			return true;
+		}
+		return this.props._updatedAt.toGMTString() !== nextProps._updatedAt.toGMTString() || this.props.status !== nextProps.status;
+	}
 
 	onPress = () => {
 		KeyboardUtils.dismiss();
