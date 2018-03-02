@@ -1,5 +1,4 @@
 import { NavigationActions } from 'react-navigation';
-import reduxStore from '../../lib/createStore';
 
 const config = {};
 

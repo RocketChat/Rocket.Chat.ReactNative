@@ -27,7 +27,7 @@ export class DataSource extends OldList.DataSource {
 	}
 }
 
-const ds = new DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id || r1._updatedAt.toISOString() !== r2._updatedAt.toISOString() });
+// const ds = new DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id || r1._updatedAt.toISOString() !== r2._updatedAt.toISOString() });
 
 export class List extends React.Component {
 	static propTypes = {
@@ -43,7 +43,7 @@ export class List extends React.Component {
 			.objects('messages')
 			.filtered('rid = $0', props.room)
 			.sorted('ts', true);
-		this.dataSource = ds.cloneWithRows(this.data);
+		// this.dataSource = ds.cloneWithRows(this.data);
 	}
 	componentDidMount() {
 		this.data.addListener(this.updateState);
@@ -56,7 +56,7 @@ export class List extends React.Component {
 	}
 	updateState = debounce(() => {
 		// this.setState({
-		this.dataSource = this.dataSource.cloneWithRows(this.data);
+		// this.dataSource = this.dataSource.cloneWithRows(this.data);
 		this.forceUpdate();
 		// });
 	}, 100);
@@ -105,9 +105,6 @@ export class ListView extends OldList2 {
 	render() {
 		const bodyComponents = [];
 
-		const { dataSource } = this.props;
-		const allRowIDs = dataSource.rowIdentities;
-		const rowCount = 0;
 		// const stickySectionHeaderIndices = [];
 
 		// const { renderSectionHeader } = this.props;
@@ -119,14 +116,14 @@ export class ListView extends OldList2 {
 		const { data } = this.props;
 		let count = 0;
 
-		for (let i = 0; i < this.state.curRenderedRowsCount && i < data.length; i++, count++) {
+		for (let i = 0; i < this.state.curRenderedRowsCount && i < data.length; i += 1, count += 1) {
 			const room = data[i];
 			bodyComponents.push(this.props.renderRow(room));
 
 			const nextData = data[i + 1];
 
 			if (!nextData) {
-				continue;
+				continue; // eslint-disable-line
 			}
 
 			if (!moment(room.ts).isSame(nextData.ts, 'day')) {
@@ -139,61 +136,6 @@ export class ListView extends OldList2 {
 				bodyComponents.push(<UnreadSeparator key='unread-separator' />);
 			}
 		}
-
-		// for (let sectionIdx = 0; rowCount === this.state.curRenderedRowsCount && sectionIdx < allRowIDs.length; sectionIdx += 1) {
-		// 	const sectionID = roomSource.sectionIdentities[sectionIdx];
-		// 	const rowIDs = allRowIDs[sectionIdx];
-		// 	if (rowIDs.length === 0) {
-		// 		continue; // eslint-disable-line
-		// 	}
-		//
-		// 	// if (renderSectionHeader) {
-		// 	// 	const element = renderSectionHeader(
-		// 	// 		dataSource.getSectionHeaderData(sectionIdx),
-		// 	// 		sectionID,
-		// 	// 	);
-		// 	// 	if (element) {
-		// 	// 		bodyComponents.push(React.cloneElement(element, { key: `s_${ sectionID }` }), );
-		// 	// 		if (this.props.stickySectionHeadersEnabled) {
-		// 	// 			stickySectionHeaderIndices.push(totalIndex);
-		// 	// 		}
-		// 	// 		totalIndex++;
-		// 	// 	}
-		// 	// }
-		//
-		// 	for (let rowIdx = 0; rrowCount === this.state.curRenderedRowsCount && owIdx < rowIDs.length; rowIdx += 1) {
-		// 		const rowID = rowIDs[rowIdx];
-		// 		const data = dataSource._dataBlob[sectionID][rowID];
-		// 		bodyComponents.push(this.props.renderRow.bind(
-		// 			null,
-		// 			data,
-		// 			sectionID,
-		// 			rowID,
-		// 			this._onRowHighlighted,
-		// 		)());
-		// 		if (rowIdx !== rowIDs.length - 1) {
-		// 			const nextRowID = rowIDs[rowIdx + 1];
-		// 			const nextData = dataSource._dataBlob[sectionID][nextRowID];
-		// 			if (!moment(data.ts).isSame(nextData.ts, 'day')) {
-		// 				bodyComponents.push(<DateSeparator key={data.ts.toISOString()} ts={data.ts} />);
-		// 			}
-		// 			if (this.props.lastOpen &&
-		// 				moment(data.ts).isAfter(this.props.lastOpen) &&
-		// 				moment(nextData.ts).isBefore(this.props.lastOpen)
-		// 			) {
-		// 				bodyComponents.push(<UnreadSeparator key='unread-separator' />);
-		// 			}
-		// 		}
-		// 		// totalIndex += 1;
-		// 		rowCount += 1;
-		// 		if (rowCount === this.state.curRenderedRowsCount) {
-		// 			break;
-		// 		}
-		// 	}
-		// 	if (rowCount >= this.state.curRenderedRowsCount) {
-		// 		break;
-		// 	}
-		// }
 
 		const { ...props } = this.props;
 		if (!props.scrollEventThrottle) {

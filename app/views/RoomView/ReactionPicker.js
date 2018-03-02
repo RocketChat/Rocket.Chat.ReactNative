@@ -37,9 +37,10 @@ export default class ReactionPicker extends React.Component {
 	}
 
 	render() {
-		const { width, height } = this.props.window;
-		return (
-			this.props.showReactionPicker ? <Modal
+		const { width, height, props: { showReactionPicker } } = this.props.window;
+
+		return (showReactionPicker ?
+			<Modal
 				isVisible={this.props.showReactionPicker}
 				style={{ alignItems: 'center' }}
 				onBackdropPress={() => this.props.toggleReactionPicker()}
