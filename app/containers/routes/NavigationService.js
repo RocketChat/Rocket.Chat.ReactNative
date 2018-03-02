@@ -30,7 +30,7 @@ export function goRoom({ rid, name }, counter = 0) {
 		return;
 	}
 	if (!config.navigator) {
-		return setTimeout(() => goRoom({ rid, name }, counter + 1), 200);
+		return setTimeout(() => goRoom({ rid, name }, counter + 1), 100);
 	}
 
 	const action = NavigationActions.reset({
@@ -41,5 +41,5 @@ export function goRoom({ rid, name }, counter = 0) {
 		]
 	});
 
-	requestAnimationFrame(() => config.navigator.dispatch(action), reduxStore.getState().app.starting);
+	config.navigator.dispatch(action);
 }

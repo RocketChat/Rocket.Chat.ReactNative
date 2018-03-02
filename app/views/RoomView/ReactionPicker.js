@@ -39,7 +39,7 @@ export default class ReactionPicker extends React.Component {
 	render() {
 		const { width, height } = this.props.window;
 		return (
-			<Modal
+			this.props.showReactionPicker ? <Modal
 				isVisible={this.props.showReactionPicker}
 				style={{ alignItems: 'center' }}
 				onBackdropPress={() => this.props.toggleReactionPicker()}
@@ -54,7 +54,7 @@ export default class ReactionPicker extends React.Component {
 						onEmojiSelected={(emoji, shortname) => this.onEmojiSelected(emoji, shortname)}
 					/>
 				</View>
-			</Modal>
+			</Modal> : null
 		);
 	}
 }

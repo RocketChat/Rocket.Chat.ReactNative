@@ -123,7 +123,6 @@ export default class EmojiPicker extends Component {
 			<ScrollableTabView
 				renderTabBar={() => <TabBar tabEmojiStyle={this.props.tabEmojiStyle} />}
 				contentProps={scrollProps}
-				// prerenderingSiblingsNumber={1}
 			>
 				{
 					categories.tabs.map((tab, i) => (

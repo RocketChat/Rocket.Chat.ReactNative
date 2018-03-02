@@ -77,7 +77,7 @@ const RocketChat = {
 			reduxStore.dispatch(requestActiveUser(this.activeUsers));
 			this._setUserTimer = null;
 			return this.activeUsers = {};
-		}, 1000);
+		}, 5000);
 		this.activeUsers[ddpMessage.id] = status;
 	},
 	reconnect() {

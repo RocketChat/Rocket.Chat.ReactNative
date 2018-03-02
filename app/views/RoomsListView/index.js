@@ -15,6 +15,7 @@ import { goRoom } from '../../containers/routes/NavigationService';
 import Header from '../../containers/Header';
 import RoomsListHeader from './Header';
 import styles from './styles';
+import debounce from '../../utils/debounce';
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 @connect(state => ({
@@ -86,11 +87,6 @@ export default class RoomsListView extends React.Component {
 	onSearchChangeText(text) {
 		this.setState({ searchText: text });
 		this.search(text);
-	}
-
-	getLastMessage = (subscription) => {
-		const [room] = database.objects('rooms').filtered('_id = $0', subscription.rid).slice();
-		return room && room.lastMessage;
 	}
 
 	search(text) {
@@ -188,9 +184,9 @@ export default class RoomsListView extends React.Component {
 			}
 			return;
 		}
-
-		goRoom(item);
-		clearSearch();
+		this.props.navigation.navigate({ routeName: 'Room', params: { room: item, ...item } });
+		// goRoom(item);
+		// clearSearch();
 	}
 
 	_createChannel() {

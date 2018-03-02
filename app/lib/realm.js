@@ -176,7 +176,7 @@ const messagesSchema = {
 		_id: 'string',
 		msg: { type: 'string', optional: true },
 		t: { type: 'string', optional: true },
-		rid: 'string',
+		rid: { type: 'string', indexed: true },
 		ts: 'date',
 		u: 'users',
 		// mentions: [],
