@@ -14,6 +14,7 @@ import customEmojis from './customEmojis';
 import activeUsers from './activeUsers';
 import starredMessages from './starredMessages';
 import pinnedMessages from './pinnedMessages';
+import mentionedMessages from './mentionedMessages';
 
 export default combineReducers({
 	settings,
@@ -30,5 +31,6 @@ export default combineReducers({
 	customEmojis,
 	activeUsers,
 	starredMessages,
-	pinnedMessages
+	pinnedMessages,
+	mentionedMessages
 });

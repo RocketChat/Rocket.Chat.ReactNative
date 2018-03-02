@@ -13,10 +13,10 @@ export function closeStarredMessages() {
 	};
 }
 
-export function starredMessageReceived(message) {
+export function starredMessagesReceived(messages) {
 	return {
-		type: types.STARRED_MESSAGES.MESSAGE_RECEIVED,
-		message
+		type: types.STARRED_MESSAGES.MESSAGES_RECEIVED,
+		messages
 	};
 }
 

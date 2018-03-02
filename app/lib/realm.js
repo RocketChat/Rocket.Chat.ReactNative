@@ -28,6 +28,7 @@ const settingsSchema = {
 
 const permissionsRolesSchema = {
 	name: 'permissionsRoles',
+	primaryKey: 'value',
 	properties: {
 		value: 'string'
 	}
@@ -56,6 +57,7 @@ const roomsSchema = {
 
 const subscriptionRolesSchema = {
 	name: 'subscriptionRolesSchema',
+	primaryKey: 'value',
 	properties: {
 		value: 'string'
 	}
@@ -70,9 +72,9 @@ const subscriptionSchema = {
 		t: 'string',
 		ts: { type: 'date', optional: true },
 		ls: { type: 'date', optional: true },
-		name: 'string',
+		name: { type: 'string', indexed: true },
 		fname: { type: 'string', optional: true },
-		rid: 'string',
+		rid: { type: 'string', indexed: true },
 		open: { type: 'bool', optional: true },
 		alert: { type: 'bool', optional: true },
 		roles: { type: 'list', objectType: 'subscriptionRolesSchema' },
@@ -83,7 +85,10 @@ const subscriptionSchema = {
 		roomUpdatedAt: { type: 'date', optional: true },
 		ro: { type: 'bool', optional: true },
 		lastOpen: { type: 'date', optional: true },
-		lastMessage: { type: 'messages', optional: true }
+		lastMessage: { type: 'messages', optional: true },
+		description: { type: 'string', optional: true },
+		announcement: { type: 'string', optional: true },
+		topic: { type: 'string', optional: true }
 	}
 };
 
@@ -136,6 +141,7 @@ const attachment = {
 
 const url = {
 	name: 'url',
+	primaryKey: 'url',
 	properties: {
 		// _id: { type: 'int', optional: true },
 		url: { type: 'string', optional: true },
@@ -147,6 +153,7 @@ const url = {
 
 const messagesReactionsUsernamesSchema = {
 	name: 'messagesReactionsUsernames',
+	primaryKey: 'value',
 	properties: {
 		value: 'string'
 	}
@@ -163,6 +170,7 @@ const messagesReactionsSchema = {
 
 const messagesEditedBySchema = {
 	name: 'messagesEditedBy',
+	primaryKey: '_id',
 	properties: {
 		_id: { type: 'string', optional: true },
 		username: { type: 'string', optional: true }
@@ -176,7 +184,7 @@ const messagesSchema = {
 		_id: 'string',
 		msg: { type: 'string', optional: true },
 		t: { type: 'string', optional: true },
-		rid: 'string',
+		rid: { type: 'string', indexed: true },
 		ts: 'date',
 		u: 'users',
 		// mentions: [],
@@ -209,6 +217,7 @@ const frequentlyUsedEmojiSchema = {
 
 const customEmojiAliasesSchema = {
 	name: 'customEmojiAliases',
+	primaryKey: 'value',
 	properties: {
 		value: 'string'
 	}

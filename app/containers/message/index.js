@@ -4,7 +4,7 @@ import { View, TouchableHighlight, Text, TouchableOpacity, Vibration, ViewPropTy
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
-import equal from 'deep-equal';
+// import equal from 'deep-equal';
 import { KeyboardUtils } from 'react-native-keyboard-input';
 
 import { actionsShow, errorActionsShow, toggleReactionPicker } from '../../actions/messages';
@@ -52,22 +52,16 @@ export default class Message extends React.Component {
 		this.state = { reactionsModal: false };
 		this.onClose = this.onClose.bind(this);
 	}
-	componentWillReceiveProps() {
-		this.extraStyle = this.extraStyle || {};
-		if (this.props.item.status === messageStatus.TEMP || this.props.item.status === messageStatus.ERROR) {
-			this.extraStyle.opacity = 0.3;
-		}
-	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		if (!equal(this.props.reactions, nextProps.reactions)) {
-			return true;
-		}
-		if (this.state.reactionsModal !== nextState.reactionsModal) {
-			return true;
-		}
-		return this.props.item._updatedAt.toGMTString() !== nextProps.item._updatedAt.toGMTString() || this.props.item.status !== nextProps.item.status;
-	}
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	if (!equal(this.props.reactions, nextProps.reactions)) {
+	// 		return true;
+	// 	}
+	// 	if (this.state.reactionsModal !== nextState.reactionsModal) {
+	// 		return true;
+	// 	}
+	// 	return this.props.item._updatedAt.toGMTString() !== nextProps.item._updatedAt.toGMTString() || this.props.item.status !== nextProps.item.status;
+	// }
 
 	onPress = () => {
 		KeyboardUtils.dismiss();
@@ -127,6 +121,10 @@ export default class Message extends React.Component {
 
 	isDeleted() {
 		return this.props.item.t === 'rm';
+	}
+
+	isTemp() {
+		return this.props.item.status === messageStatus.TEMP || this.props.item.status === messageStatus.ERROR;
 	}
 
 	hasError() {
@@ -241,7 +239,7 @@ export default class Message extends React.Component {
 			>
 				<View style={styles.flex}>
 					{this.renderError()}
-					<View style={[this.extraStyle, styles.flex]}>
+					<View style={[this.isTemp() && { opacity: 0.3 }, styles.flex]}>
 						<Avatar
 							style={styles.avatar}
 							text={item.avatar ? '' : username}
