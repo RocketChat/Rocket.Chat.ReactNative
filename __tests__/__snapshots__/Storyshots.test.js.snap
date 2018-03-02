@@ -299,12 +299,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               ellipsizeMode="tail"
               numberOfLines={1}
               style={
-                Object {
-                  "alignItems": "center",
-                  "color": "#888",
-                  "fontSize": 10,
-                  "justifyContent": "center",
-                }
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "color": "#888",
+                    "fontSize": 10,
+                    "justifyContent": "center",
+                  },
+                  undefined,
+                ]
               }
             >
               Nov 10
@@ -471,12 +474,17 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               ellipsizeMode="tail"
               numberOfLines={1}
               style={
-                Object {
-                  "alignItems": "center",
-                  "color": "#888",
-                  "fontSize": 10,
-                  "justifyContent": "center",
-                }
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "color": "#888",
+                    "fontSize": 10,
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "color": "#1d74f5",
+                  },
+                ]
               }
             >
               Nov 10
@@ -641,12 +649,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               ellipsizeMode="tail"
               numberOfLines={1}
               style={
-                Object {
-                  "alignItems": "center",
-                  "color": "#888",
-                  "fontSize": 10,
-                  "justifyContent": "center",
-                }
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "color": "#888",
+                    "fontSize": 10,
+                    "justifyContent": "center",
+                  },
+                  undefined,
+                ]
               }
             >
               Nov 10
@@ -836,12 +847,17 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               ellipsizeMode="tail"
               numberOfLines={1}
               style={
-                Object {
-                  "alignItems": "center",
-                  "color": "#888",
-                  "fontSize": 10,
-                  "justifyContent": "center",
-                }
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "color": "#888",
+                    "fontSize": 10,
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "color": "#1d74f5",
+                  },
+                ]
               }
             >
               Nov 10
@@ -1029,12 +1045,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               ellipsizeMode="tail"
               numberOfLines={1}
               style={
-                Object {
-                  "alignItems": "center",
-                  "color": "#888",
-                  "fontSize": 10,
-                  "justifyContent": "center",
-                }
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "color": "#888",
+                    "fontSize": 10,
+                    "justifyContent": "center",
+                  },
+                  undefined,
+                ]
               }
             >
               Nov 10
@@ -1222,12 +1241,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               ellipsizeMode="tail"
               numberOfLines={1}
               style={
-                Object {
-                  "alignItems": "center",
-                  "color": "#888",
-                  "fontSize": 10,
-                  "justifyContent": "center",
-                }
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "color": "#888",
+                    "fontSize": 10,
+                    "justifyContent": "center",
+                  },
+                  undefined,
+                ]
               }
             >
               Nov 10
@@ -1415,12 +1437,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               ellipsizeMode="tail"
               numberOfLines={1}
               style={
-                Object {
-                  "alignItems": "center",
-                  "color": "#888",
-                  "fontSize": 10,
-                  "justifyContent": "center",
-                }
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "color": "#888",
+                    "fontSize": 10,
+                    "justifyContent": "center",
+                  },
+                  undefined,
+                ]
               }
             >
               Nov 10
@@ -1608,12 +1633,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               ellipsizeMode="tail"
               numberOfLines={1}
               style={
-                Object {
-                  "alignItems": "center",
-                  "color": "#888",
-                  "fontSize": 10,
-                  "justifyContent": "center",
-                }
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "color": "#888",
+                    "fontSize": 10,
+                    "justifyContent": "center",
+                  },
+                  undefined,
+                ]
               }
             >
               Nov 10
@@ -1801,12 +1829,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               ellipsizeMode="tail"
               numberOfLines={1}
               style={
-                Object {
-                  "alignItems": "center",
-                  "color": "#888",
-                  "fontSize": 10,
-                  "justifyContent": "center",
-                }
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "color": "#888",
+                    "fontSize": 10,
+                    "justifyContent": "center",
+                  },
+                  undefined,
+                ]
               }
             >
               Nov 10
@@ -1971,12 +2002,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               ellipsizeMode="tail"
               numberOfLines={1}
               style={
-                Object {
-                  "alignItems": "center",
-                  "color": "#888",
-                  "fontSize": 10,
-                  "justifyContent": "center",
-                }
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "color": "#888",
+                    "fontSize": 10,
+                    "justifyContent": "center",
+                  },
+                  undefined,
+                ]
               }
             >
               Nov 10
@@ -2141,12 +2175,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               ellipsizeMode="tail"
               numberOfLines={1}
               style={
-                Object {
-                  "alignItems": "center",
-                  "color": "#888",
-                  "fontSize": 10,
-                  "justifyContent": "center",
-                }
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "color": "#888",
+                    "fontSize": 10,
+                    "justifyContent": "center",
+                  },
+                  undefined,
+                ]
               }
             >
               Nov 10

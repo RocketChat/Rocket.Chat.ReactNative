@@ -136,12 +136,15 @@ exports[`render channel 1`] = `
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
-              Object {
-                "alignItems": "center",
-                "color": "#888",
-                "fontSize": 10,
-                "justifyContent": "center",
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "color": "#888",
+                  "fontSize": 10,
+                  "justifyContent": "center",
+                },
+                undefined,
+              ]
             }
           >
             Nov 10
@@ -300,12 +303,15 @@ exports[`render no icon 1`] = `
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
-              Object {
-                "alignItems": "center",
-                "color": "#888",
-                "fontSize": 10,
-                "justifyContent": "center",
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "color": "#888",
+                  "fontSize": 10,
+                  "justifyContent": "center",
+                },
+                undefined,
+              ]
             }
           >
             Nov 10
@@ -464,12 +470,15 @@ exports[`render private group 1`] = `
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
-              Object {
-                "alignItems": "center",
-                "color": "#888",
-                "fontSize": 10,
-                "justifyContent": "center",
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "color": "#888",
+                  "fontSize": 10,
+                  "justifyContent": "center",
+                },
+                undefined,
+              ]
             }
           >
             Nov 10
@@ -640,12 +649,15 @@ exports[`render unread +999 1`] = `
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
-              Object {
-                "alignItems": "center",
-                "color": "#888",
-                "fontSize": 10,
-                "justifyContent": "center",
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "color": "#888",
+                  "fontSize": 10,
+                  "justifyContent": "center",
+                },
+                undefined,
+              ]
             }
           >
             Nov 10
@@ -838,12 +850,15 @@ exports[`render unread 1`] = `
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
-              Object {
-                "alignItems": "center",
-                "color": "#888",
-                "fontSize": 10,
-                "justifyContent": "center",
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "color": "#888",
+                  "fontSize": 10,
+                  "justifyContent": "center",
+                },
+                undefined,
+              ]
             }
           >
             Nov 10
@@ -1036,12 +1051,15 @@ exports[`renders correctly 1`] = `
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
-              Object {
-                "alignItems": "center",
-                "color": "#888",
-                "fontSize": 10,
-                "justifyContent": "center",
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "color": "#888",
+                  "fontSize": 10,
+                  "justifyContent": "center",
+                },
+                undefined,
+              ]
             }
           >
             Nov 10

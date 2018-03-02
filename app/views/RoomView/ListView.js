@@ -27,7 +27,7 @@ export class DataSource extends OldList.DataSource {
 	}
 }
 
-const ds = new DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id });
+const ds = new DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id || r1._updatedAt.toISOString() !== r2._updatedAt.toISOString() });
 
 export class List extends React.Component {
 	static propTypes = {

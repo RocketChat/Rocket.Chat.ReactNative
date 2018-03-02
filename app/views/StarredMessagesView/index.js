@@ -43,7 +43,7 @@ export default class StarredMessagesView extends React.PureComponent {
 		};
 	}
 
-	UNSAFE_componentWillMount() {
+	componentDidMount() {
 		this.props.openStarredMessages(this.props.navigation.state.params.rid);
 	}
 
