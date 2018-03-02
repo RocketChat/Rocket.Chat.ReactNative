@@ -195,22 +195,20 @@ export default class MessageBox extends React.PureComponent {
 		this.setState({ text: '' });
 		this.closeEmoji();
 		this.stopTrackingMention();
-		requestAnimationFrame(() => {
-			this.props.typing(false);
-			if (message.trim() === '') {
-				return;
-			}
-			// if is editing a message
-			const { editing } = this.props;
-			if (editing) {
-				const { _id, rid } = this.props.message;
-				this.props.editRequest({ _id, msg: message, rid });
-			} else {
-				// if is submiting a new message
-				this.props.onSubmit(message);
-			}
-			this.props.clearInput();
-		});
+		this.props.typing(false);
+		if (message.trim() === '') {
+			return;
+		}
+		// if is editing a message
+		const { editing } = this.props;
+		if (editing) {
+			const { _id, rid } = this.props.message;
+			this.props.editRequest({ _id, msg: message, rid });
+		} else {
+			// if is submiting a new message
+			this.props.onSubmit(message);
+		}
+		this.props.clearInput();
 	}
 
 	_getFixedMentions(keyword) {

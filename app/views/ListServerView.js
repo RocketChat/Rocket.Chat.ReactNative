@@ -88,14 +88,6 @@ export default class ListServerView extends React.Component {
 		this.data.addListener(this.updateState);
 	}
 
-	componentWillMount() {
-		zeroconf.on('update', this.updateState);
-
-		zeroconf.scan('http', 'tcp', 'local.');
-
-		this.setState(this.getState());
-	}
-
 	componentDidUpdate() {
 		if (this.props.connected &&
 			this.props.server &&
@@ -148,6 +140,14 @@ export default class ListServerView extends React.Component {
 		};
 	};
 
+	UNSAFE_componentWillMount() {
+		zeroconf.on('update', this.updateState);
+
+		zeroconf.scan('http', 'tcp', 'local.');
+
+		this.setState(this.getState());
+	}
+
 	updateState = () => {
 		this.setState(this.getState());
 	}
@@ -172,6 +172,7 @@ export default class ListServerView extends React.Component {
 			</Fade>
 		</View>
 	);
+
 
 	renderSectionHeader = ({ section }) => (
 		<Text style={styles.headerStyle}>{section.title}</Text>
