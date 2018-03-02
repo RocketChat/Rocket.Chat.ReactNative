@@ -93,8 +93,9 @@ export const SERVER = createRequestTypes('SERVER', [
 export const METEOR = createRequestTypes('METEOR_CONNECT', [...defaultTypes, 'DISCONNECT', 'DISCONNECT_BY_USER']);
 export const LOGOUT = 'LOGOUT'; // logout is always success
 export const ACTIVE_USERS = createRequestTypes('ACTIVE_USERS', ['SET', 'REQUEST']);
-export const STARRED_MESSAGES = createRequestTypes('STARRED_MESSAGES', ['OPEN', 'CLOSE', 'MESSAGE_RECEIVED', 'MESSAGE_UNSTARRED']);
-export const PINNED_MESSAGES = createRequestTypes('PINNED_MESSAGES', ['OPEN', 'CLOSE', 'MESSAGE_RECEIVED', 'MESSAGE_UNPINNED']);
+export const STARRED_MESSAGES = createRequestTypes('STARRED_MESSAGES', ['OPEN', 'CLOSE', 'MESSAGES_RECEIVED', 'MESSAGE_UNSTARRED']);
+export const PINNED_MESSAGES = createRequestTypes('PINNED_MESSAGES', ['OPEN', 'CLOSE', 'MESSAGES_RECEIVED', 'MESSAGE_UNPINNED']);
+export const MENTIONED_MESSAGES = createRequestTypes('MENTIONED_MESSAGES', ['OPEN', 'CLOSE', 'MESSAGES_RECEIVED']);
 
 export const INCREMENT = 'INCREMENT';
 export const DECREMENT = 'DECREMENT';
