@@ -40,6 +40,22 @@ const RocketChat = {
 	createChannel({ name, users, type }) {
 		return call(type ? 'createChannel' : 'createPrivateGroup', name, users, type);
 	},
+	async createDirectMessageAndWait(username) {
+		const room = await RocketChat.createDirectMessage(username);
+		return new Promise((resolve) => {
+			const data = database.objects('subscriptions')
+				.filtered('rid = $1', room.rid);
+
+			if (data.length) {
+				return resolve(data[0]);
+			}
+			data.addListener(() => {
+				if (!data.length) { return; }
+				data.removeAllListeners();
+				resolve(data[0]);
+			});
+		});
+	},
 
 	async getUserToken() {
 		try {
