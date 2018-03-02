@@ -13,7 +13,8 @@
     "android": "react-native run-android",
     "storybook": "storybook start -p 7007",
     "snyk-protect": "snyk protect",
-    "prepare": "exit 0"
+    "prepare": "exit 0",
+		"yarn" : "yarn"
   },
   "rnpm": {
     "assets": [
