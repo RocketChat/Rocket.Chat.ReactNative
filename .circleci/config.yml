@@ -147,7 +147,7 @@ jobs:
           name: Install NPM modules
           command: |
             rm -rf node_modules
-            npm installl --save react-native@0.51
+            npm install --save react-native@0.51
             npm install
             # npm install react-native
 
