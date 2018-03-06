@@ -52,6 +52,16 @@ export default class Sidebar extends Component {
 		gotoAddServer: PropTypes.func.isRequired
 	}
 
+	constructor(props) {
+		super(props);
+		this.state = { servers: [] };
+	}
+
+	componentDidMount() {
+		database.databases.serversDB.addListener('change', this.updateState);
+		this.setState(this.getState());
+	}
+
 	componentWillUnmount() {
 		database.databases.serversDB.removeListener('change', this.updateState);
 	}
@@ -71,11 +81,6 @@ export default class Sidebar extends Component {
 	getState = () => ({
 		servers: database.databases.serversDB.objects('servers')
 	})
-
-	UNSAFE_componentWillMount() {
-		database.databases.serversDB.addListener('change', this.updateState);
-		this.setState(this.getState());
-	}
 
 	updateState = () => {
 		this.setState(this.getState());
