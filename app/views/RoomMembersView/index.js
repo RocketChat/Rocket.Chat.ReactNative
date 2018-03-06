@@ -57,7 +57,7 @@ export default class MentionedMessagesView extends React.PureComponent {
 		};
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.props.navigation.setParams({
 			onPressToogleStatus: this.onPressToogleStatus,
 			allUsers: this.state.allUsers
