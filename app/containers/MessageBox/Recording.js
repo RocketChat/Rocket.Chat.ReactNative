@@ -105,7 +105,7 @@ export default class extends React.PureComponent {
 				key='messagebox'
 				style={styles.textBox}
 			>
-				<View style={[styles.textArea, { backgroundColor: '#eee' }]}>
+				<View style={[styles.textArea, { backgroundColor: '#F6F7F9' }]}>
 					<Icon
 						style={[styles.actionButtons, { color: 'red' }]}
 						name='clear'
