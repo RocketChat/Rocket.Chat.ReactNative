@@ -1,14 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, TextInput, SafeAreaView, FlatList,
-	Text, TouchableOpacity
-} from 'react-native';
+import { View, TextInput, SafeAreaView, FlatList, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
+import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import { userTyping, layoutAnimation } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import { editRequest, editCancel, clearInput } from '../../actions/messages';
