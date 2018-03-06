@@ -70,7 +70,7 @@ export default class LoginView extends React.Component {
 		this.redirectRegex = new RegExp(`(?=.*(${ this.props.server }))(?=.*(credentialToken))(?=.*(credentialSecret))`, 'g');
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.props.open();
 	}
 

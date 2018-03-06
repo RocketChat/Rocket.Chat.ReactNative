@@ -11,6 +11,7 @@ import state from './state';
 import activeUsers from './activeUsers';
 import starredMessages from './starredMessages';
 import pinnedMessages from './pinnedMessages';
+import mentionedMessages from './mentionedMessages';
 
 const root = function* root() {
 	yield all([
@@ -25,7 +26,8 @@ const root = function* root() {
 		state(),
 		activeUsers(),
 		starredMessages(),
-		pinnedMessages()
+		pinnedMessages(),
+		mentionedMessages()
 	]);
 };
 
