@@ -94,6 +94,7 @@ export default class extends React.PureComponent {
 	}
 
 	cancelAudioMessage = async() => {
+		this.setState({ recordingCanceled: true });
 		await AudioRecorder.stopRecording();
 		return this._finishRecording(false);
 	}
