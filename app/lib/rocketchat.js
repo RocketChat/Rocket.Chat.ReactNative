@@ -449,11 +449,7 @@ const RocketChat = {
 		}
 	*/
 	_sendFileMessage(rid, data, msg = {}) {
-		try {
-			return call('sendFileMessage', rid, null, data, msg);
-		}catch(e){
-			console.error(e);
-		}
+		return call('sendFileMessage', rid, null, data, msg);
 	},
 	async sendFileMessage(rid, fileInfo, data) {
 		const placeholder = RocketChat.getMessage(rid, 'Sending a file');
@@ -472,7 +468,7 @@ const RocketChat = {
 
 			const completeRresult = await RocketChat._ufsComplete(result.fileId, fileInfo.store, result.token);
 
-			return await RocketChat._sendFileMessage(completeRresult.rid, {
+			await RocketChat._sendFileMessage(completeRresult.rid, {
 				_id: completeRresult._id,
 				type: completeRresult.type,
 				size: completeRresult.size,
@@ -481,12 +477,15 @@ const RocketChat = {
 			});
 		} catch (e) {
 			console.error(e);
-			return e;
 		} finally {
-			database.write(() => {
-				const msg = database.objects('messages').filtered('_id = $0', placeholder._id);
-				database.delete(msg);
-			});
+			try{
+				database.write(() => {
+					const msg = database.objects('messages').filtered('_id = $0', placeholder._id);
+					database.delete(msg);
+				});
+			}catch(e){
+				console.error(e);
+			}
 		}
 	},
 	async getRooms() {

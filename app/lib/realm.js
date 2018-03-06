@@ -258,6 +258,9 @@ class DB {
 	deleteAll(...args) {
 		return this.database.write(() => this.database.deleteAll(...args));
 	}
+	delete(...args) {
+		return this.database.delete(...args);
+	}
 	write(...args) {
 		return this.database.write(...args);
 	}
