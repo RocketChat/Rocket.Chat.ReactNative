@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, SafeAreaView, FlatList, Text, TouchableOpacity } from 'react-native';
+import { View, TextInput, SafeAreaView, FlatList,
+		Text, TouchableOpacity, Platform, PermissionsAndroid } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
@@ -16,6 +17,8 @@ import Avatar from '../Avatar';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import { emojis } from '../../emojis';
 import './EmojiKeyboard';
+import { AudioRecorder, AudioUtils } from 'react-native-audio';
+
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
@@ -57,7 +60,9 @@ export default class MessageBox extends React.PureComponent {
 			mentions: [],
 			showMentionsContainer: false,
 			showEmojiKeyboard: false,
-			trackingType: ''
+			trackingType: '',
+			currentTime: 0.0,
+			recording: false,
 		};
 		this.users = [];
 		this.rooms = [];
@@ -160,7 +165,7 @@ export default class MessageBox extends React.PureComponent {
                                         name='check'
                                         accessibilityLabel='Finish recording'
                                         accessibilityTraits='button'
-                                        onPress={() => this.sendAudioMessage()}
+                                        onPress={() => this.finishAudioMessage()}
                                 />);
 			}
 			icons.push(<MyIcon
@@ -175,14 +180,70 @@ export default class MessageBox extends React.PureComponent {
 		return icons;
 	}
 
-	recordAudioMessage = () => {
-		this.setState({ recording: true });
+	_checkAudioPermission() {
+		if (this.state.hasPermission) {
+			return Promise.resolve(true);
+		}
+
+		if (Platform.OS !== 'android') {
+			return Promise.resolve(true);
+		}
+
+		const rationale = {
+			'title': 'Microphone Permission',
+			'message': 'Rocket Chat needs access to your microphone so you can send audio message.'
+		};
+
+		return PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO, rationale)
+			.then((result) => {
+				console.log('Permission result:', result);
+				return (result === true || result === PermissionsAndroid.RESULTS.GRANTED);
+			});
 	}
 
-	sendAudioMessage = () => {
+	_finishRecording(didSucceed, filePath) {
+		this.setState({ finished: didSucceed });
+		console.log(`Finished recording of duration ${this.state.currentTime} seconds at path: ${filePath}`);
+	}
+
+
+	recordAudioMessage = () => {
+		this._checkAudioPermission().then( (hasPermission) => {
+			this.setState({
+				recording: true,
+				audioPath: AudioUtils.DocumentDirectoryPath + '/' + Date.now() + '.aac',
+				hasPermission: hasPermission
+			});
+			AudioRecorder.prepareRecordingAtPath(this.state.audioPath, {
+				SampleRate: 22050,
+				Channels: 1,
+				AudioQuality: "Low",
+				AudioEncoding: "aac"
+			});
+			AudioRecorder.onProgress = (data) => {
+				this.setState({currentTime: Math.floor(data.currentTime)});
+			}
+			AudioRecorder.onFinished = (data) => {
+				if (Platform.OS === 'ios') {
+					this._finishRecording(data.status === "OK", data.audioFileURL);
+				}
+			};
+			AudioRecorder.startRecording();
+		});
+	}
+
+	async finishAudioMessage() {
 		this.setState({
 			recording: false
 		});
+		try {
+			const filePath = await AudioRecorder.stopRecording();
+			if (Platform.OS === 'android') {
+				this._finishRecording(true, filePath);
+			}
+		} catch(err){
+			console.error(err);
+		}
 	}
 
 	cancelAudioMessage = () => {
