@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, SectionList, Text, StyleSheet } from 'react-native';
+import { View, SectionList, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
@@ -9,6 +9,7 @@ import styles from './styles';
 import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
 import database from '../../lib/realm';
+import RocketChat from '../../lib/rocketchat';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
@@ -29,25 +30,19 @@ export default class RoomActionsView extends React.PureComponent {
 		};
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.updateRoom();
 		this.updateSections();
-	}
-
-	componentDidMount() {
 		this.rooms.addListener(this.updateRoom);
 	}
 
 	updateRoom = () => {
 		const [room] = this.rooms;
 		this.setState({ room });
-		this.props.navigation.setParams({
-			f: room.f
-		});
 		this.updateSections();
 	}
 
-	updateSections = () => {
+	updateSections = async() => {
 		const { rid, t } = this.state.room;
 		const sections = [{
 			data: [{ icon: 'ios-star', name: 'USER' }],
@@ -61,7 +56,12 @@ export default class RoomActionsView extends React.PureComponent {
 		}, {
 			data: [
 				{ icon: 'ios-attach', name: 'Files' },
-				{ icon: 'ios-at-outline', name: 'Mentions' },
+				{
+					icon: 'ios-at-outline',
+					name: 'Mentions',
+					route: 'MentionedMessages',
+					params: { rid }
+				},
 				{
 					icon: 'ios-star-outline',
 					name: 'Starred',
@@ -90,7 +90,16 @@ export default class RoomActionsView extends React.PureComponent {
 				renderItem: this.renderItem
 			});
 		} else if (t === 'c' || t === 'p') {
-			sections[2].data.unshift({ icon: 'ios-people', name: 'Members', description: '42 members' });
+			const membersResult = await RocketChat.getRoomMembers(rid, false);
+			const members = membersResult.records;
+
+			sections[2].data.unshift({
+				icon: 'ios-people',
+				name: 'Members',
+				description: (members.length === 1 ? `${ members.length } member` : `${ members.length } members`),
+				route: 'RoomMembers',
+				params: { rid, members }
+			});
 			sections.push({
 				data: [
 					{ icon: 'ios-volume-off', name: 'Mute channel' },
@@ -102,21 +111,28 @@ export default class RoomActionsView extends React.PureComponent {
 		this.setState({ sections });
 	}
 
-	renderRoomInfo = ({ item }) => this.renderTouchableItem([
-		<Avatar
-			key='avatar'
-			text={this.state.room.name}
-			size={50}
-			style={StyleSheet.flatten(styles.avatar)}
-			baseUrl={this.props.baseUrl}
-			type={this.state.room.t}
-		/>,
-		<View key='name' style={styles.roomTitleContainer}>
-			<Text style={styles.roomTitle}>{this.state.room.fname}</Text>
-			<Text style={styles.roomDescription}>@{this.state.room.name}</Text>
-		</View>,
-		<Icon key='icon' name='ios-arrow-forward' size={20} style={styles.sectionItemIcon} color='#cbced1' />
-	], item)
+	renderRoomInfo = ({ item }) => {
+		const {
+			fname, name, t, topic
+		} = this.state.room;
+		return (
+			this.renderTouchableItem([
+				<Avatar
+					key='avatar'
+					text={name}
+					size={50}
+					style={styles.avatar}
+					baseUrl={this.props.baseUrl}
+					type={t}
+				/>,
+				<View key='name' style={styles.roomTitleContainer}>
+					<Text style={styles.roomTitle}>{t === 'd' ? fname : name}</Text>
+					<Text style={styles.roomDescription} ellipsizeMode='tail' numberOfLines={1}>{t === 'd' ? `@${ name }` : topic}</Text>
+				</View>,
+				<Icon key='icon' name='ios-arrow-forward' size={20} style={styles.sectionItemIcon} color='#cbced1' />
+			], item)
+		);
+	}
 
 	renderTouchableItem = (subview, item) => (
 		<Touch

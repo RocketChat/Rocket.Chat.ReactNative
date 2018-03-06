@@ -13,10 +13,10 @@ export function closePinnedMessages() {
 	};
 }
 
-export function pinnedMessageReceived(message) {
+export function pinnedMessagesReceived(messages) {
 	return {
-		type: types.PINNED_MESSAGES.MESSAGE_RECEIVED,
-		message
+		type: types.PINNED_MESSAGES.MESSAGES_RECEIVED,
+		messages
 	};
 }
 

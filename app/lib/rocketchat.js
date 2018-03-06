@@ -13,8 +13,9 @@ import { someoneTyping, roomMessageReceived } from '../actions/room';
 import { setUser, setLoginServices, removeLoginServices } from '../actions/login';
 import { disconnect, disconnect_by_user, connectSuccess, connectFailure } from '../actions/connect';
 import { requestActiveUser } from '../actions/activeUsers';
-import { starredMessageReceived, starredMessageUnstarred } from '../actions/starredMessages';
-import { pinnedMessageReceived, pinnedMessageUnpinned } from '../actions/pinnedMessages';
+import { starredMessagesReceived, starredMessageUnstarred } from '../actions/starredMessages';
+import { pinnedMessagesReceived, pinnedMessageUnpinned } from '../actions/pinnedMessages';
+import { mentionedMessagesReceived } from '../actions/mentionedMessages';
 import Ddp from './ddp';
 
 export { Accounts } from 'react-native-meteor';
@@ -40,6 +41,22 @@ const RocketChat = {
 	createChannel({ name, users, type }) {
 		return call(type ? 'createChannel' : 'createPrivateGroup', name, users, type);
 	},
+	async createDirectMessageAndWait(username) {
+		const room = await RocketChat.createDirectMessage(username);
+		return new Promise((resolve) => {
+			const data = database.objects('subscriptions')
+				.filtered('rid = $1', room.rid);
+
+			if (data.length) {
+				return resolve(data[0]);
+			}
+			data.addListener(() => {
+				if (!data.length) { return; }
+				data.removeAllListeners();
+				resolve(data[0]);
+			});
+		});
+	},
 
 	async getUserToken() {
 		try {
@@ -64,7 +81,7 @@ const RocketChat = {
 		const status = (ddpMessage.fields && ddpMessage.fields.status) || 'offline';
 
 		if (user && user.id === ddpMessage.id) {
-			return reduxStore.dispatch(setUser({ status }));
+			reduxStore.dispatch(setUser({ status }));
 		}
 
 		if (this._setUserTimer) {
@@ -77,7 +94,7 @@ const RocketChat = {
 			reduxStore.dispatch(requestActiveUser(this.activeUsers));
 			this._setUserTimer = null;
 			return this.activeUsers = {};
-		}, 1000);
+		}, 5000);
 		this.activeUsers[ddpMessage.id] = status;
 	},
 	reconnect() {
@@ -153,25 +170,74 @@ const RocketChat = {
 
 			this.ddp.on('rocketchat_starred_message', (ddpMessage) => {
 				if (ddpMessage.msg === 'added') {
+					this.starredMessages = this.starredMessages || [];
+
+					if (this.starredMessagesTimer) {
+						clearTimeout(this.starredMessagesTimer);
+						this.starredMessagesTimer = null;
+					}
+
+					this.starredMessagesTimer = setTimeout(() => {
+						reduxStore.dispatch(starredMessagesReceived(this.starredMessages));
+						this.starredMessagesTimer = null;
+						return this.starredMessages = [];
+					}, 1000);
 					const message = ddpMessage.fields;
 					message._id = ddpMessage.id;
 					const starredMessage = this._buildMessage(message);
-					return reduxStore.dispatch(starredMessageReceived(starredMessage));
+					this.starredMessages = [...this.starredMessages, starredMessage];
 				}
 				if (ddpMessage.msg === 'removed') {
-					return reduxStore.dispatch(starredMessageUnstarred(ddpMessage.id));
+					if (reduxStore.getState().starredMessages.isOpen) {
+						return reduxStore.dispatch(starredMessageUnstarred(ddpMessage.id));
+					}
 				}
 			});
 
 			this.ddp.on('rocketchat_pinned_message', (ddpMessage) => {
 				if (ddpMessage.msg === 'added') {
+					this.pinnedMessages = this.pinnedMessages || [];
+
+					if (this.pinnedMessagesTimer) {
+						clearTimeout(this.pinnedMessagesTimer);
+						this.pinnedMessagesTimer = null;
+					}
+
+					this.pinnedMessagesTimer = setTimeout(() => {
+						reduxStore.dispatch(pinnedMessagesReceived(this.pinnedMessages));
+						this.pinnedMessagesTimer = null;
+						return this.pinnedMessages = [];
+					}, 1000);
 					const message = ddpMessage.fields;
 					message._id = ddpMessage.id;
 					const pinnedMessage = this._buildMessage(message);
-					return reduxStore.dispatch(pinnedMessageReceived(pinnedMessage));
+					this.pinnedMessages = [...this.pinnedMessages, pinnedMessage];
 				}
 				if (ddpMessage.msg === 'removed') {
-					return reduxStore.dispatch(pinnedMessageUnpinned(ddpMessage.id));
+					if (reduxStore.getState().pinnedMessages.isOpen) {
+						return reduxStore.dispatch(pinnedMessageUnpinned(ddpMessage.id));
+					}
+				}
+			});
+
+			this.ddp.on('rocketchat_mentioned_message', (ddpMessage) => {
+				if (ddpMessage.msg === 'added') {
+					this.mentionedMessages = this.mentionedMessages || [];
+
+					if (this.mentionedMessagesTimer) {
+						clearTimeout(this.mentionedMessagesTimer);
+						this.mentionedMessagesTimer = null;
+					}
+
+					this.mentionedMessagesTimer = setTimeout(() => {
+						reduxStore.dispatch(mentionedMessagesReceived(this.mentionedMessages));
+						this.mentionedMessagesTimer = null;
+						return this.mentionedMessages = [];
+					}, 1000);
+					const message = ddpMessage.fields;
+					message._id = ddpMessage.id;
+					const mentionedMessage = this._buildMessage(message);
+					this.mentionedMessages = [...this.mentionedMessages, mentionedMessage];
 				}
 			});
 
@@ -324,6 +390,7 @@ const RocketChat = {
 		message.status = messagesStatus.SENT;
 		normalizeMessage(message);
 		message.urls = message.urls ? RocketChat._parseUrls(message.urls) : [];
+		message._updatedAt = new Date();
 		// loadHistory returns message.starred as object
 		// stream-room-messages returns message.starred as an array
 		message.starred = message.starred && (Array.isArray(message.starred) ? message.starred.length > 0 : !!message.starred);
@@ -507,6 +574,9 @@ const RocketChat = {
 				subscription.roomUpdatedAt = room._updatedAt;
 				subscription.lastMessage = normalizeMessage(room.lastMessage);
 				subscription.ro = room.ro;
+				subscription.description = room.description;
+				subscription.topic = room.topic;
+				subscription.announcement = room.announcement;
 			}
 			if (subscription.roles) {
 				subscription.roles = subscription.roles.map(role => ({ value: role }));
@@ -677,6 +747,9 @@ const RocketChat = {
 	},
 	toggleFavorite(rid, f) {
 		return call('toggleFavorite', rid, !f);
+	},
+	getRoomMembers(rid, allUsers) {
+		return call('getUsersOfRoom', rid, allUsers);
 	}
 };
 

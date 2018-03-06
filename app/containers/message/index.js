@@ -32,6 +32,7 @@ import styles from './styles';
 }))
 export default class Message extends React.Component {
 	static propTypes = {
+		status: PropTypes.any,
 		item: PropTypes.object.isRequired,
 		reactions: PropTypes.any.isRequired,
 		baseUrl: PropTypes.string.isRequired,
@@ -44,19 +45,14 @@ export default class Message extends React.Component {
 		toggleReactionPicker: PropTypes.func,
 		onReactionPress: PropTypes.func,
 		style: ViewPropTypes.style,
-		onLongPress: PropTypes.func
+		onLongPress: PropTypes.func,
+		_updatedAt: PropTypes.instanceOf(Date)
 	}
 
 	constructor(props) {
 		super(props);
 		this.state = { reactionsModal: false };
 		this.onClose = this.onClose.bind(this);
-	}
-	componentWillReceiveProps() {
-		this.extraStyle = this.extraStyle || {};
-		if (this.props.item.status === messageStatus.TEMP || this.props.item.status === messageStatus.ERROR) {
-			this.extraStyle.opacity = 0.3;
-		}
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -66,7 +62,7 @@ export default class Message extends React.Component {
 		if (this.state.reactionsModal !== nextState.reactionsModal) {
 			return true;
 		}
-		return this.props.item._updatedAt.toGMTString() !== nextProps.item._updatedAt.toGMTString() || this.props.item.status !== nextProps.item.status;
+		return this.props._updatedAt.toGMTString() !== nextProps._updatedAt.toGMTString() || this.props.status !== nextProps.status;
 	}
 
 	onPress = () => {
@@ -127,6 +123,10 @@ export default class Message extends React.Component {
 
 	isDeleted() {
 		return this.props.item.t === 'rm';
+	}
+
+	isTemp() {
+		return this.props.item.status === messageStatus.TEMP || this.props.item.status === messageStatus.ERROR;
 	}
 
 	hasError() {
@@ -241,7 +241,7 @@ export default class Message extends React.Component {
 			>
 				<View style={styles.flex}>
 					{this.renderError()}
-					<View style={[this.extraStyle, styles.flex]}>
+					<View style={[this.isTemp() && { opacity: 0.3 }, styles.flex]}>
 						<Avatar
 							style={styles.avatar}
 							text={item.avatar ? '' : username}

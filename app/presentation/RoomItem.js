@@ -83,6 +83,9 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
+	updateAlert: {
+		color: '#1d74f5'
+	},
 	status: {
 		position: 'absolute',
 		bottom: -3,
@@ -173,7 +176,7 @@ export default class RoomItem extends React.PureComponent {
 
 	get lastMessage() {
 		const {
-			lastMessage, alert, type
+			lastMessage, type
 		} = this.props;
 
 		if (!this.props.StoreLastMessage) {
@@ -182,7 +185,6 @@ export default class RoomItem extends React.PureComponent {
 		if (!lastMessage) {
 			return 'No Message';
 		}
-
 
 		let prefix = '';
 
@@ -193,13 +195,7 @@ export default class RoomItem extends React.PureComponent {
 		}
 
 		const msg = `${ prefix }${ lastMessage.msg.replace(/[\n\t\r]/igm, '') }`;
-
 		const maxChars = 35;
-
-
-		if (alert) {
-			return `**${ msg.slice(0, maxChars) }${ msg.replace(/:[a-z0-9]+:/gi, ':::').length > maxChars ? '...' : '' }**`;
-		}
 		return `${ msg.slice(0, maxChars) }${ msg.replace(/:[a-z0-9]+:/gi, ':::').length > maxChars ? '...' : '' }`;
 	}
 
@@ -237,7 +233,7 @@ export default class RoomItem extends React.PureComponent {
 					<View style={styles.roomNameView}>
 						<View style={styles.firstRow}>
 							<Text style={[styles.roomName, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
-							{_updatedAt ? <Text style={styles.update} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
+							{_updatedAt ? <Text style={[styles.update, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
 						</View>
 						<View style={styles.row}>
 							<Markdown

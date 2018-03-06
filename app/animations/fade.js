@@ -17,9 +17,6 @@ export default class Fade extends React.Component {
 		this.state = {
 			visible: props.visible
 		};
-	}
-
-	componentWillMount() {
 		this._visibility = new Animated.Value(this.props.visible ? 1 : 0);
 	}
 

@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#eeeeee'
 	}
 });
-
+const keyExtractor = item => item.id;
 @connect(state => ({
 	server: state.server.server
 }), dispatch => ({
@@ -52,7 +52,12 @@ export default class Sidebar extends Component {
 		gotoAddServer: PropTypes.func.isRequired
 	}
 
-	componentWillMount() {
+	constructor(props) {
+		super(props);
+		this.state = { servers: [] };
+	}
+
+	componentDidMount() {
 		database.databases.serversDB.addListener('change', this.updateState);
 		this.setState(this.getState());
 	}
@@ -103,7 +108,7 @@ export default class Sidebar extends Component {
 					<FlatList
 						data={this.state.servers}
 						renderItem={this.renderItem}
-						keyExtractor={item => item.id}
+						keyExtractor={keyExtractor}
 					/>
 					<TouchableHighlight
 						onPress={() => { this.props.logout(); }}

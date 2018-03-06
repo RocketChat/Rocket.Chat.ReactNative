@@ -88,11 +88,9 @@ export default class ListServerView extends React.Component {
 		this.data.addListener(this.updateState);
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		zeroconf.on('update', this.updateState);
-
 		zeroconf.scan('http', 'tcp', 'local.');
-
 		this.setState(this.getState());
 	}
 
@@ -172,6 +170,7 @@ export default class ListServerView extends React.Component {
 			</Fade>
 		</View>
 	);
+
 
 	renderSectionHeader = ({ section }) => (
 		<Text style={styles.headerStyle}>{section.title}</Text>
