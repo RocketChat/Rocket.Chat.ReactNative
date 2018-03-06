@@ -468,7 +468,7 @@ const RocketChat = {
 
 			const completeRresult = await RocketChat._ufsComplete(result.fileId, fileInfo.store, result.token);
 
-			await RocketChat._sendFileMessage(completeRresult.rid, {
+			return await RocketChat._sendFileMessage(completeRresult.rid, {
 				_id: completeRresult._id,
 				type: completeRresult.type,
 				size: completeRresult.size,
@@ -476,7 +476,7 @@ const RocketChat = {
 				url: completeRresult.path
 			});
 		} catch (e) {
-			console.error(e);
+			return e;
 		} finally {
 			try{
 				database.write(() => {
