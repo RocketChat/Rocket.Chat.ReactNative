@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, SafeAreaView, FlatList, Text, TouchableOpacity } from 'react-native';
+import { View, TextInput, SafeAreaView, FlatList,
+		Text, TouchableOpacity, Platform, PermissionsAndroid } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
@@ -16,6 +17,8 @@ import Avatar from '../Avatar';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import { emojis } from '../../emojis';
 import './EmojiKeyboard';
+import { AudioRecorder, AudioUtils } from 'react-native-audio';
+
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
@@ -57,7 +60,10 @@ export default class MessageBox extends React.PureComponent {
 			mentions: [],
 			showMentionsContainer: false,
 			showEmojiKeyboard: false,
-			trackingType: ''
+			trackingType: '',
+			currentTime: '00:00',
+			recording: false,
+			recordingCanceled: false
 		};
 		this.users = [];
 		this.rooms = [];
@@ -139,6 +145,33 @@ export default class MessageBox extends React.PureComponent {
 				onPress={() => this.submit(this.state.text)}
 			/>);
 		} else {
+			if(!this.state.recording){
+				icons.push(<Icon
+					style={ [styles.actionButtons, { color: '#1D74F5' }] }
+					name='mic'
+					accessibilityLabel='Send audio message'
+					accessibilityTraits='button'
+					onPress={() => this.recordAudioMessage()}
+				/>);
+			}else{
+				icons.push(<Icon
+                                        style={ [styles.actionButtons, { color: 'red' }] }
+                                        name='clear'
+                                        accessibilityLabel='Cancel recording'
+                                        accessibilityTraits='button'
+                                        onPress={() => this.cancelAudioMessage()}
+                                />);
+				icons.push(<Text style={ { width:40 } }>
+					{this.state.currentTime}
+				</Text>);
+				icons.push(<Icon
+                                        style={ [styles.actionButtons, { color:'green' }] }
+                                        name='check'
+                                        accessibilityLabel='Finish recording'
+                                        accessibilityTraits='button'
+                                        onPress={() => this.finishAudioMessage()}
+                                />);
+			}
 			icons.push(<MyIcon
 				style={[styles.actionButtons, { color: '#2F343D', fontSize: 16 }]}
 				name='plus'
@@ -149,6 +182,126 @@ export default class MessageBox extends React.PureComponent {
 			/>);
 		}
 		return icons;
+	}
+
+	_formatTime(seconds) {
+		let minutes = Math.floor(seconds/60);
+		seconds = seconds % 60;
+		if (minutes < 10) { minutes = `0${ minutes }`; }
+		if (seconds < 10) { seconds = `0${ seconds }`; }
+		return `${ minutes }:${ seconds }`;
+	}
+
+	_checkAudioPermission() {
+		if (this.state.hasPermission) {
+			return Promise.resolve(true);
+		}
+
+		if (Platform.OS !== 'android') {
+			return Promise.resolve(true);
+		}
+
+		const rationale = {
+			'title': 'Microphone Permission',
+			'message': 'Rocket Chat needs access to your microphone so you can send audio message.'
+		};
+
+		return PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO, rationale)
+			.then((result) => {
+				return (result === true || result === PermissionsAndroid.RESULTS.GRANTED);
+			});
+	}
+
+	_finishRecording(didSucceed, filePath) {
+		this.setState({ finished: didSucceed });
+		console.log(`Finished recording of duration ${this.state.currentTime} seconds at path: ${filePath}`);
+		
+		const path = filePath.startsWith('file://') ? filePath.split('file://')[1] : filePath;
+		const fileInfo = {
+			type: 'audio/aac',
+			store: 'Uploads',
+			path: path
+		};
+
+		try{
+		  RocketChat.sendFileMessage(this.props.rid, fileInfo);//response.data);
+		}catch(e){
+			console.error(e);
+		}
+	}
+
+
+	recordAudioMessage = () => {
+		this._checkAudioPermission().then( (hasPermission) => {
+			if (!hasPermission) {
+				// permission denied
+				return;
+			}
+
+			this.setState({
+				recordingCanceled: false
+			});
+
+			const audioPath = AudioUtils.CachesDirectoryPath + '/' + Date.now() + '.aac';
+
+			AudioRecorder.prepareRecordingAtPath(audioPath, {
+				SampleRate: 22050,
+				Channels: 1,
+				AudioQuality: "Low",
+				AudioEncoding: "aac"
+			});
+
+			AudioRecorder.onProgress = (data) => {
+				this.setState({
+					currentTime: this._formatTime(Math.floor(data.currentTime))
+				});
+
+			}
+
+			AudioRecorder.onFinished = (data) => {
+				if (!this.state.recordingCanceled && Platform.OS === 'ios') {
+					this._finishRecording(data.status === "OK", data.audioFileURL);
+				}
+
+			};
+
+			AudioRecorder.startRecording();
+
+			this.setState({
+				recording: true,
+			});
+
+		});
+
+	}
+
+	async finishAudioMessage() {
+		this.setState({
+			recording: false
+		});
+
+		try {
+			const filePath = await AudioRecorder.stopRecording();
+			if (Platform.OS === 'android') {
+				this._finishRecording(true, filePath);
+			}
+
+		} catch(err){
+			console.error(err);
+		}
+
+	}
+
+	async cancelAudioMessage() {
+		this.setState({
+			recordingCanceled: true
+		});
+
+		await AudioRecorder.stopRecording();
+		this.setState({
+			recording: false
+		});
+
 	}
 
 	addFile = () => {
