@@ -139,6 +139,30 @@ export default class MessageBox extends React.PureComponent {
 				onPress={() => this.submit(this.state.text)}
 			/>);
 		} else {
+			if(!this.state.recording){
+				icons.push(<Icon
+					style={ [styles.actionButtons, { color: '#1D74F5' }] }
+					name='mic'
+					accessibilityLabel='Send audio message'
+					accessibilityTraits='button'
+					onPress={() => this.recordAudioMessage()}
+				/>);
+			}else{
+				icons.push(<Icon
+                                        style={ [styles.actionButtons, { color: 'red' }] }
+                                        name='clear'
+                                        accessibilityLabel='Cancel recording'
+                                        accessibilityTraits='button'
+                                        onPress={() => this.cancelAudioMessage()}
+                                />);
+				icons.push(<Icon
+                                        style={ [styles.actionButtons, { color:'green' }] }
+                                        name='check'
+                                        accessibilityLabel='Finish recording'
+                                        accessibilityTraits='button'
+                                        onPress={() => this.sendAudioMessage()}
+                                />);
+			}
 			icons.push(<MyIcon
 				style={[styles.actionButtons, { color: '#2F343D', fontSize: 16 }]}
 				name='plus'
@@ -149,6 +173,22 @@ export default class MessageBox extends React.PureComponent {
 			/>);
 		}
 		return icons;
+	}
+
+	recordAudioMessage = () => {
+		this.setState({ recording: true });
+	}
+
+	sendAudioMessage = () => {
+		this.setState({
+			recording: false
+		});
+	}
+
+	cancelAudioMessage = () => {
+		this.setState({
+			recording: false
+		});
 	}
 
 	addFile = () => {
