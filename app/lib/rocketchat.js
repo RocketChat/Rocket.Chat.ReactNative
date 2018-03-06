@@ -454,9 +454,9 @@ const RocketChat = {
 	async sendFileMessage(rid, fileInfo, data) {
 		const placeholder = RocketChat.getMessage(rid, 'Sending a file');
 		try {
-			if(!data){
+			if (!data) {
 				data = await RNFetchBlob.wrap(fileInfo.path);
-				let fileStat = await RNFetchBlob.fs.stat(fileInfo.path);
+				const fileStat = await RNFetchBlob.fs.stat(fileInfo.path);
 				fileInfo.size = fileStat.size;
 				fileInfo.name = fileStat.filename;
 			}
@@ -478,12 +478,12 @@ const RocketChat = {
 		} catch (e) {
 			return e;
 		} finally {
-			try{
+			try {
 				database.write(() => {
 					const msg = database.objects('messages').filtered('_id = $0', placeholder._id);
 					database.delete(msg);
 				});
-			}catch(e){
+			} catch (e) {
 				console.error(e);
 			}
 		}
