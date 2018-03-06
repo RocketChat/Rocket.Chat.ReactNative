@@ -17,6 +17,7 @@ export default class Fade extends React.Component {
 		this.state = {
 			visible: props.visible
 		};
+		this._visibility = new Animated.Value(this.props.visible ? 1 : 0);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -30,10 +31,6 @@ export default class Fade extends React.Component {
 		}).start(() => {
 			this.setState({ visible: nextProps.visible });
 		});
-	}
-
-	UNSAFE_componentWillMount() {
-		this._visibility = new Animated.Value(this.props.visible ? 1 : 0);
 	}
 
 	render() {
