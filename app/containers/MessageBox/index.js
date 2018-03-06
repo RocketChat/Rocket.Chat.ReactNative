@@ -63,6 +63,7 @@ export default class MessageBox extends React.PureComponent {
 			trackingType: '',
 			currentTime: 0.0,
 			recording: false,
+			recordingCanceled: false
 		};
 		this.users = [];
 		this.rooms = [];
@@ -160,6 +161,9 @@ export default class MessageBox extends React.PureComponent {
                                         accessibilityTraits='button'
                                         onPress={() => this.cancelAudioMessage()}
                                 />);
+				icons.push(<Text>
+					{this.state.currentTime}
+				</Text>);
 				icons.push(<Icon
                                         style={ [styles.actionButtons, { color:'green' }] }
                                         name='check'
@@ -196,7 +200,6 @@ export default class MessageBox extends React.PureComponent {
 
 		return PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO, rationale)
 			.then((result) => {
-				console.log('Permission result:', result);
 				return (result === true || result === PermissionsAndroid.RESULTS.GRANTED);
 			});
 	}
@@ -204,52 +207,93 @@ export default class MessageBox extends React.PureComponent {
 	_finishRecording(didSucceed, filePath) {
 		this.setState({ finished: didSucceed });
 		console.log(`Finished recording of duration ${this.state.currentTime} seconds at path: ${filePath}`);
+		
+		const path = filePath.startsWith('file://') ? filePath.split('file://')[1] : filePath;
+		const fileInfo = {
+			type: 'audio/aac',
+			store: 'Uploads',
+			path: path
+		};
+
+		try{
+		  RocketChat.sendFileMessage(this.props.rid, fileInfo);//response.data);
+		}catch(e){
+			console.error(e);
+		}
 	}
 
 
 	recordAudioMessage = () => {
 		this._checkAudioPermission().then( (hasPermission) => {
+			if (!hasPermission) {
+				// permission denied
+				return;
+			}
+
 			this.setState({
-				recording: true,
-				audioPath: AudioUtils.DocumentDirectoryPath + '/' + Date.now() + '.aac',
-				hasPermission: hasPermission
+				recordingCanceled: false
 			});
-			AudioRecorder.prepareRecordingAtPath(this.state.audioPath, {
+
+			const audioPath = AudioUtils.CachesDirectoryPath + '/' + Date.now() + '.aac';
+
+			AudioRecorder.prepareRecordingAtPath(audioPath, {
 				SampleRate: 22050,
 				Channels: 1,
 				AudioQuality: "Low",
 				AudioEncoding: "aac"
 			});
+
 			AudioRecorder.onProgress = (data) => {
-				this.setState({currentTime: Math.floor(data.currentTime)});
+				this.setState({
+					currentTime: Math.floor(data.currentTime)
+				});
+
 			}
+
 			AudioRecorder.onFinished = (data) => {
-				if (Platform.OS === 'ios') {
+				if (!this.state.recordingCanceled && Platform.OS === 'ios') {
 					this._finishRecording(data.status === "OK", data.audioFileURL);
 				}
+
 			};
+
 			AudioRecorder.startRecording();
+
+			this.setState({
+				recording: true,
+			});
+
 		});
+
 	}
 
 	async finishAudioMessage() {
 		this.setState({
 			recording: false
 		});
+
 		try {
 			const filePath = await AudioRecorder.stopRecording();
 			if (Platform.OS === 'android') {
 				this._finishRecording(true, filePath);
 			}
+
 		} catch(err){
 			console.error(err);
 		}
+
 	}
 
-	cancelAudioMessage = () => {
+	async cancelAudioMessage() {
+		this.setState({
+			recordingCanceled: true
+		});
+
+		await AudioRecorder.stopRecording();
 		this.setState({
 			recording: false
 		});
+
 	}
 
 	addFile = () => {

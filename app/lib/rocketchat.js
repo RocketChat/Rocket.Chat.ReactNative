@@ -449,13 +449,23 @@ const RocketChat = {
 		}
 	*/
 	_sendFileMessage(rid, data, msg = {}) {
-		return call('sendFileMessage', rid, null, data, msg);
+		try {
+			return call('sendFileMessage', rid, null, data, msg);
+		}catch(e){
+			console.error(e);
+		}
 	},
 	async sendFileMessage(rid, fileInfo, data) {
-		const placeholder = RocketChat.getMessage(rid, 'Sending an image');
+		const placeholder = RocketChat.getMessage(rid, 'Sending a file');
 		try {
-			const result = await RocketChat._ufsCreate({ ...fileInfo, rid });
+			if(!data){
+				data = await RNFetchBlob.wrap(fileInfo.path);
+				let fileStat = await RNFetchBlob.fs.stat(fileInfo.path);
+				fileInfo.size = fileStat.size;
+				fileInfo.name = fileStat.filename;
+			}
 
+			const result = await RocketChat._ufsCreate({ ...fileInfo, rid });
 			await RNFetchBlob.fetch('POST', result.url, {
 				'Content-Type': 'application/octet-stream'
 			}, data);
@@ -470,6 +480,7 @@ const RocketChat = {
 				url: completeRresult.path
 			});
 		} catch (e) {
+			console.error(e);
 			return e;
 		} finally {
 			database.write(() => {
