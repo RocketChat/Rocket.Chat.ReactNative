@@ -42,6 +42,10 @@ export default class EmojiPicker extends Component {
 
 	componentDidMount() {
 		requestAnimationFrame(() => this.setState({ show: true }));
+		this.frequentlyUsed.addListener(this.updateFrequentlyUsed);
+		this.customEmojis.addListener(this.updateCustomEmojis);
+		this.updateFrequentlyUsed();
+		this.updateCustomEmojis();
 	}
 	componentWillUnmount() {
 		this.frequentlyUsed.removeAllListeners();
@@ -62,13 +66,6 @@ export default class EmojiPicker extends Component {
 			const shortname = `:${ emoji }:`;
 			this.props.onEmojiSelected(emojify(shortname, { output: 'unicode' }), shortname);
 		}
-	}
-
-	UNSAFE_componentWillMount() {
-		this.frequentlyUsed.addListener(this.updateFrequentlyUsed);
-		this.customEmojis.addListener(this.updateCustomEmojis);
-		this.updateFrequentlyUsed();
-		this.updateCustomEmojis();
 	}
 
 	_addFrequentlyUsed = (emoji) => {
