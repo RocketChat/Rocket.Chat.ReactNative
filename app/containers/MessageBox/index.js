@@ -61,7 +61,7 @@ export default class MessageBox extends React.PureComponent {
 			showMentionsContainer: false,
 			showEmojiKeyboard: false,
 			trackingType: '',
-			currentTime: 0.0,
+			currentTime: '00:00',
 			recording: false,
 			recordingCanceled: false
 		};
@@ -161,7 +161,7 @@ export default class MessageBox extends React.PureComponent {
                                         accessibilityTraits='button'
                                         onPress={() => this.cancelAudioMessage()}
                                 />);
-				icons.push(<Text>
+				icons.push(<Text style={ { width:40 } }>
 					{this.state.currentTime}
 				</Text>);
 				icons.push(<Icon
@@ -182,6 +182,14 @@ export default class MessageBox extends React.PureComponent {
 			/>);
 		}
 		return icons;
+	}
+
+	_formatTime(seconds) {
+		let minutes = Math.floor(seconds/60);
+		seconds = seconds % 60;
+		if (minutes < 10) { minutes = `0${ minutes }`; }
+		if (seconds < 10) { seconds = `0${ seconds }`; }
+		return `${ minutes }:${ seconds }`;
 	}
 
 	_checkAudioPermission() {
@@ -245,7 +253,7 @@ export default class MessageBox extends React.PureComponent {
 
 			AudioRecorder.onProgress = (data) => {
 				this.setState({
-					currentTime: Math.floor(data.currentTime)
+					currentTime: this._formatTime(Math.floor(data.currentTime))
 				});
 
 			}
