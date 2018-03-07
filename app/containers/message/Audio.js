@@ -83,7 +83,7 @@ export default class Audio extends React.PureComponent {
 	}
 
 	onLoad(data) {
-		this.setState({ duration: data.duration });
+		this.setState({ duration: data.duration > 0 ? data.duration : 0 });
 	}
 
 	onProgress(data) {

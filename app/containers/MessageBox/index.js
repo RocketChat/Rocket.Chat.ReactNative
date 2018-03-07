@@ -6,6 +6,7 @@ import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
+
 import { userTyping, layoutAnimation } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import { editRequest, editCancel, clearInput } from '../../actions/messages';
@@ -15,7 +16,9 @@ import database from '../../lib/realm';
 import Avatar from '../Avatar';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import { emojis } from '../../emojis';
+import Recording from './Recording';
 import './EmojiKeyboard';
+
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
@@ -57,7 +60,7 @@ export default class MessageBox extends React.PureComponent {
 			mentions: [],
 			showMentionsContainer: false,
 			showEmojiKeyboard: false,
-			trackingType: ''
+			recording: false
 		};
 		this.users = [];
 		this.rooms = [];
@@ -138,16 +141,23 @@ export default class MessageBox extends React.PureComponent {
 				accessibilityTraits='button'
 				onPress={() => this.submit(this.state.text)}
 			/>);
-		} else {
-			icons.push(<MyIcon
-				style={[styles.actionButtons, { color: '#2F343D', fontSize: 16 }]}
-				name='plus'
-				key='fileIcon'
-				accessibilityLabel='Message actions'
-				accessibilityTraits='button'
-				onPress={() => this.addFile()}
-			/>);
+			return icons;
 		}
+		icons.push(<Icon
+			style={[styles.actionButtons, { color: '#1D74F5', paddingHorizontal: 10 }]}
+			name='mic'
+			accessibilityLabel='Send audio message'
+			accessibilityTraits='button'
+			onPress={() => this.recordAudioMessage()}
+		/>);
+		icons.push(<MyIcon
+			style={[styles.actionButtons, { color: '#2F343D', fontSize: 16 }]}
+			name='plus'
+			key='fileIcon'
+			accessibilityLabel='Message actions'
+			accessibilityTraits='button'
+			onPress={() => this.addFile()}
+		/>);
 		return icons;
 	}
 
@@ -188,9 +198,25 @@ export default class MessageBox extends React.PureComponent {
 			showEmojiKeyboard: true
 		});
 	}
+
+	async recordAudioMessage() {
+		const recording = await Recording.permission();
+		this.setState({ recording });
+	}
+
+	finishAudioMessage = async(fileInfo) => {
+		if (fileInfo) {
+			RocketChat.sendFileMessage(this.props.rid, fileInfo);
+		}
+		this.setState({
+			recording: false
+		});
+	}
+
 	closeEmoji() {
 		this.setState({ showEmojiKeyboard: false });
 	}
+
 	submit(message) {
 		this.setState({ text: '' });
 		this.closeEmoji();
@@ -446,6 +472,9 @@ export default class MessageBox extends React.PureComponent {
 	);
 
 	renderContent() {
+		if (this.state.recording) {
+			return (<Recording onFinish={this.finishAudioMessage} />);
+		}
 		return (
 			[
 				this.renderMentions(),
