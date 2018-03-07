@@ -13,7 +13,6 @@ export const _formatTime = function(seconds) {
 	return `${ minutes }:${ seconds }`;
 };
 
-
 export default class extends React.PureComponent {
 	static propTypes = {
 		onFinish: PropTypes.func.isRequired
@@ -36,10 +35,9 @@ export default class extends React.PureComponent {
 	constructor() {
 		super();
 
-
+		this.recordingCanceled = false;
 		this.state = {
-			currentTime: '00:00',
-			recordingCanceled: false
+			currentTime: '00:00'
 		};
 	}
 
@@ -60,12 +58,14 @@ export default class extends React.PureComponent {
 		};
 		//
 		AudioRecorder.onFinished = (data) => {
-			if (!this.state.recordingCanceled && Platform.OS === 'ios') {
+			if (!this.recordingCanceled && Platform.OS === 'ios') {
 				this._finishRecording(data.status === 'OK', data.audioFileURL);
 			}
 		};
 		AudioRecorder.startRecording();
 	}
+
+	recordingCanceled;
 
 	_finishRecording(didSucceed, filePath) {
 		if (!didSucceed) {
@@ -94,7 +94,7 @@ export default class extends React.PureComponent {
 	}
 
 	cancelAudioMessage = async() => {
-		this.setState({ recordingCanceled: true });
+		this.recordingCanceled = true;
 		await AudioRecorder.stopRecording();
 		return this._finishRecording(false);
 	}
