@@ -42,6 +42,7 @@
     "react-native-action-button": "^2.8.3",
     "react-native-actionsheet": "^2.3.0",
     "react-native-animatable": "^1.2.4",
+    "react-native-audio": "^4.0.0",
     "react-native-easy-markdown": "git+https://github.com/diegolmello/react-native-easy-markdown.git",
     "react-native-fetch-blob": "^0.10.8",
     "react-native-image-picker": "^0.26.7",
