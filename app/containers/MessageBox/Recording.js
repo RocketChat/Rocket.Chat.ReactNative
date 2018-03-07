@@ -65,8 +65,6 @@ export default class extends React.PureComponent {
 		AudioRecorder.startRecording();
 	}
 
-	recordingCanceled;
-
 	_finishRecording(didSucceed, filePath) {
 		if (!didSucceed) {
 			return this.props.onFinish && this.props.onFinish(didSucceed);
