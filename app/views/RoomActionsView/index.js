@@ -12,11 +12,13 @@ import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 
 @connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	user: state.login.user
 }))
 export default class RoomActionsView extends React.PureComponent {
 	static propTypes = {
 		baseUrl: PropTypes.string,
+		user: PropTypes.object,
 		navigation: PropTypes.object
 	}
 
@@ -26,24 +28,42 @@ export default class RoomActionsView extends React.PureComponent {
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.state = {
 			sections: [],
-			room: {}
+			room: {},
+			members: []
 		};
 	}
 
 	componentDidMount() {
 		this.updateRoom();
-		this.updateSections();
 		this.rooms.addListener(this.updateRoom);
 	}
 
-	updateRoom = () => {
-		const [room] = this.rooms;
-		this.setState({ room });
+	onPressTouchable = (item) => {
+		if (item.route) {
+			return this.props.navigation.navigate(item.route, item.params);
+		}
+		if (item.event) {
+			return item.event();
+		}
+	}
+
+	updateRoomMembers = async() => {
+		const membersResult = await RocketChat.getRoomMembers(this.state.room.rid, false);
+		const members = membersResult.records;
+		this.setState({ members });
 		this.updateSections();
 	}
 
+	updateRoom = async() => {
+		const [room] = this.rooms;
+		await this.setState({ room });
+		this.updateSections();
+		this.updateRoomMembers();
+	}
+
 	updateSections = async() => {
-		const { rid, t } = this.state.room;
+		const { rid, t, blocked } = this.state.room;
+		const { members } = this.state;
 		const sections = [{
 			data: [{ icon: 'ios-star', name: 'USER' }],
 			renderItem: this.renderRoomInfo
@@ -85,21 +105,25 @@ export default class RoomActionsView extends React.PureComponent {
 			sections.push({
 				data: [
 					{ icon: 'ios-volume-off', name: 'Mute user' },
-					{ icon: 'block', name: 'Block user', type: 'danger' }
+					{
+						icon: 'block',
+						name: `${ blocked ? 'Unblock' : 'Block' } user`,
+						type: 'danger',
+						event: () => this.toggleBlockUser()
+					}
 				],
 				renderItem: this.renderItem
 			});
 		} else if (t === 'c' || t === 'p') {
-			const membersResult = await RocketChat.getRoomMembers(rid, false);
-			const members = membersResult.records;
-
-			sections[2].data.unshift({
-				icon: 'ios-people',
-				name: 'Members',
-				description: (members.length === 1 ? `${ members.length } member` : `${ members.length } members`),
-				route: 'RoomMembers',
-				params: { rid, members }
-			});
+			if (members.length > 0) {
+				sections[2].data.unshift({
+					icon: 'ios-people',
+					name: 'Members',
+					description: (members.length === 1 ? `${ members.length } member` : `${ members.length } members`),
+					route: 'RoomMembers',
+					params: { rid, members }
+				});
+			}
 			sections.push({
 				data: [
 					{ icon: 'ios-volume-off', name: 'Mute channel' },
@@ -109,6 +133,13 @@ export default class RoomActionsView extends React.PureComponent {
 			});
 		}
 		this.setState({ sections });
+	}
+
+	toggleBlockUser = () => {
+		const { rid, blocked } = this.state.room;
+		const { members } = this.state;
+		const member = members.find(m => m.id !== this.props.user.id);
+		RocketChat.toggleBlockUser(rid, member._id, !blocked);
 	}
 
 	renderRoomInfo = ({ item }) => {
@@ -136,7 +167,7 @@ export default class RoomActionsView extends React.PureComponent {
 
 	renderTouchableItem = (subview, item) => (
 		<Touch
-			onPress={() => item.route && this.props.navigation.navigate(item.route, item.params)}
+			onPress={() => this.onPressTouchable(item)}
 			underlayColor='#FFFFFF'
 			activeOpacity={0.5}
 			accessibilityLabel={item.name}

@@ -88,7 +88,8 @@ const subscriptionSchema = {
 		lastMessage: { type: 'messages', optional: true },
 		description: { type: 'string', optional: true },
 		announcement: { type: 'string', optional: true },
-		topic: { type: 'string', optional: true }
+		topic: { type: 'string', optional: true },
+		blocked: { type: 'bool', optional: true }
 	}
 };
 

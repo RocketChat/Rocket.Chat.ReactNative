@@ -129,7 +129,7 @@ const RocketChat = {
 				reduxStore.dispatch(connectFailure());
 			});
 
-			this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
+			// this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
 
 			this.ddp.on('users', ddpMessage => RocketChat._setUser(ddpMessage));
 
@@ -152,6 +152,11 @@ const RocketChat = {
 				if (/subscriptions/.test(ev)) {
 					if (data.roles) {
 						data.roles = data.roles.map(role => ({ value: role }));
+					}
+					if (data.blocker) {
+						data.blocked = true;
+					} else {
+						data.blocked = false;
 					}
 					database.write(() => {
 						database.create('subscriptions', data, true);
@@ -750,6 +755,12 @@ const RocketChat = {
 	},
 	getRoomMembers(rid, allUsers) {
 		return call('getUsersOfRoom', rid, allUsers);
+	},
+	toggleBlockUser(rid, blocked, block) {
+		if (block) {
+			return call('blockUser', { rid, blocked });
+		}
+		return call('unblockUser', { rid, blocked });
 	}
 };
 
