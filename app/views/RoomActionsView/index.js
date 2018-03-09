@@ -96,7 +96,12 @@ export default class RoomActionsView extends React.PureComponent {
 					route: 'PinnedMessages',
 					params: { rid }
 				},
-				{ icon: 'ios-code', name: 'Snippets' },
+				{
+					icon: 'ios-code',
+					name: 'Snippets',
+					route: 'SnippetedMessages',
+					params: { rid }
+				},
 				{ icon: 'ios-notifications-outline', name: 'Notifications preferences' }
 			],
 			renderItem: this.renderItem

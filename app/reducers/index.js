@@ -15,6 +15,7 @@ import activeUsers from './activeUsers';
 import starredMessages from './starredMessages';
 import pinnedMessages from './pinnedMessages';
 import mentionedMessages from './mentionedMessages';
+import snippetedMessages from './snippetedMessages';
 
 export default combineReducers({
 	settings,
@@ -32,5 +33,6 @@ export default combineReducers({
 	activeUsers,
 	starredMessages,
 	pinnedMessages,
-	mentionedMessages
+	mentionedMessages,
+	snippetedMessages
 });

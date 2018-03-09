@@ -16,6 +16,7 @@ import { requestActiveUser } from '../actions/activeUsers';
 import { starredMessagesReceived, starredMessageUnstarred } from '../actions/starredMessages';
 import { pinnedMessagesReceived, pinnedMessageUnpinned } from '../actions/pinnedMessages';
 import { mentionedMessagesReceived } from '../actions/mentionedMessages';
+import { snippetedMessagesReceived } from '../actions/snippetedMessages';
 import Ddp from './ddp';
 
 export { Accounts } from 'react-native-meteor';
@@ -129,7 +130,7 @@ const RocketChat = {
 				reduxStore.dispatch(connectFailure());
 			});
 
-			// this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
+			this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
 
 			this.ddp.on('users', ddpMessage => RocketChat._setUser(ddpMessage));
 
@@ -243,6 +244,27 @@ const RocketChat = {
 					message._id = ddpMessage.id;
 					const mentionedMessage = this._buildMessage(message);
 					this.mentionedMessages = [...this.mentionedMessages, mentionedMessage];
+				}
+			});
+
+			this.ddp.on('rocketchat_snippeted_message', (ddpMessage) => {
+				if (ddpMessage.msg === 'added') {
+					this.snippetedMessages = this.snippetedMessages || [];
+
+					if (this.snippetedMessagesTimer) {
+						clearTimeout(this.snippetedMessagesTimer);
+						this.snippetedMessagesTimer = null;
+					}
+
+					this.snippetedMessagesTimer = setTimeout(() => {
+						reduxStore.dispatch(snippetedMessagesReceived(this.snippetedMessages));
+						this.snippetedMessagesTimer = null;
+						return this.snippetedMessages = [];
+					}, 1000);
+					const message = ddpMessage.fields;
+					message._id = ddpMessage.id;
+					const snippetedMessage = this._buildMessage(message);
+					this.snippetedMessages = [...this.snippetedMessages, snippetedMessage];
 				}
 			});
 
