@@ -16,6 +16,7 @@ import starredMessages from './starredMessages';
 import pinnedMessages from './pinnedMessages';
 import mentionedMessages from './mentionedMessages';
 import snippetedMessages from './snippetedMessages';
+import roomFiles from './roomFiles';
 
 export default combineReducers({
 	settings,
@@ -34,5 +35,6 @@ export default combineReducers({
 	starredMessages,
 	pinnedMessages,
 	mentionedMessages,
-	snippetedMessages
+	snippetedMessages,
+	roomFiles
 });

@@ -13,6 +13,7 @@ import starredMessages from './starredMessages';
 import pinnedMessages from './pinnedMessages';
 import mentionedMessages from './mentionedMessages';
 import snippetedMessages from './snippetedMessages';
+import roomFiles from './roomFiles';
 
 const root = function* root() {
 	yield all([
@@ -29,7 +30,8 @@ const root = function* root() {
 		starredMessages(),
 		pinnedMessages(),
 		mentionedMessages(),
-		snippetedMessages()
+		snippetedMessages(),
+		roomFiles()
 	]);
 };
 

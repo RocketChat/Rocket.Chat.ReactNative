@@ -49,6 +49,11 @@ export default class Message extends React.Component {
 		_updatedAt: PropTypes.instanceOf(Date)
 	}
 
+	static defaultProps = {
+		onLongPress: () => {},
+		_updatedAt: new Date()
+	}
+
 	constructor(props) {
 		super(props);
 		this.state = { reactionsModal: false };

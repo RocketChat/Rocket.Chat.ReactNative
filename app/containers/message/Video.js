@@ -76,6 +76,7 @@ export default class Video extends React.PureComponent {
 					isVisible={isVisible}
 					style={styles.modal}
 					supportedOrientations={['portrait', 'landscape']}
+					onBackButtonPress={() => this.toggleModal()}
 				>
 					<VideoPlayer
 						source={{ uri }}
