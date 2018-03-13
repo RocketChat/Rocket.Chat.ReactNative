@@ -201,7 +201,8 @@ const messagesSchema = {
 		pinned: { type: 'bool', optional: true },
 		starred: { type: 'bool', optional: true },
 		editedBy: 'messagesEditedBy',
-		reactions: { type: 'list', objectType: 'messagesReactions' }
+		reactions: { type: 'list', objectType: 'messagesReactions' },
+		role: { type: 'string', optional: true }
 	}
 };
 
