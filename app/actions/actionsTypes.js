@@ -38,6 +38,7 @@ export const ROOM = createRequestTypes('ROOM', [
 	'SOMEONE_TYPING',
 	'OPEN',
 	'CLOSE',
+	'LEAVE',
 	'USER_TYPING',
 	'MESSAGE_RECEIVED',
 	'SET_LAST_OPEN',

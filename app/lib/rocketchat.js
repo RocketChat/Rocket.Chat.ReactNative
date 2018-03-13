@@ -828,6 +828,9 @@ const RocketChat = {
 			return call('blockUser', { rid, blocked });
 		}
 		return call('unblockUser', { rid, blocked });
+	},
+	leaveRoom(rid) {
+		return call('leaveRoom', rid);
 	}
 };
 
