@@ -9,6 +9,7 @@ import { messagesRequest } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import * as NavigationService from '../containers/routes/NavigationService';
+
 const leaveRoom = rid => RocketChat.leaveRoom(rid);
 
 const getRooms = function* getRooms() {
