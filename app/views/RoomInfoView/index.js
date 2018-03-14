@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 
 import Status from '../../containers/status';
@@ -27,14 +27,7 @@ export default class RoomInfoView extends React.Component {
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.state = {
 			room: {},
-			roomUser: {},
-			data: [{
-				key: 'description'
-			}, {
-				key: 'topic'
-			}, {
-				key: 'announcement'
-			}]
+			roomUser: {}
 		};
 	}
 
@@ -64,18 +57,18 @@ export default class RoomInfoView extends React.Component {
 		this.setState({ room });
 	}
 
-	renderItem = (item, room) => (
+	renderItem = (key, room) => (
 		<View style={styles.item}>
-			<Text style={{ fontWeight: 'bold' }}>{item.key}</Text>
-			<Text style={{ color: '#ccc' }}>{ room[item.key] }</Text>
+			<Text style={styles.itemLabel}>{key}</Text>
+			<Text style={styles.itemContent}>{ room[key] }</Text>
 		</View>
 	);
 
 	render() {
-		const { room, data, roomUser } = this.state;
+		const { room, roomUser } = this.state;
 		const { name, t } = room;
 		return (
-			<View style={styles.container}>
+			<ScrollView style={styles.container}>
 				<View style={styles.avatarContainer}>
 					<Avatar
 						text={name}
@@ -88,12 +81,10 @@ export default class RoomInfoView extends React.Component {
 					</Avatar>
 					<Text style={styles.roomTitle}>{ this.getRoomTitle(room) }</Text>
 				</View>
-				<FlatList
-					data={data}
-					extraData={this.state}
-					renderItem={({ item }) => this.renderItem(item, room)}
-				/>
-			</View>
+				{this.renderItem('description', room)}
+				{this.renderItem('topic', room)}
+				{this.renderItem('announcement', room)}
+			</ScrollView>
 		);
 	}
 }

@@ -44,5 +44,11 @@ export default StyleSheet.create({
 		borderWidth: 4,
 		bottom: -4,
 		right: -4
+	},
+	itemLabel: {
+		fontWeight: '500'
+	},
+	itemContent: {
+		color: '#ccc'
 	}
 });
