@@ -13,7 +13,7 @@ export default StyleSheet.create({
 	},
 	sectionItem: {
 		backgroundColor: '#ffffff',
-		paddingVertical: 10,
+		paddingVertical: 16,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
@@ -26,6 +26,10 @@ export default StyleSheet.create({
 	},
 	sectionItemDescription: {
 		color: '#ccc'
+	},
+	separator: {
+		height: StyleSheet.hairlineWidth,
+		backgroundColor: '#ddd'
 	},
 	sectionSeparator: {
 		height: 10,

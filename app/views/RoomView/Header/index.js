@@ -86,7 +86,12 @@ export default class RoomHeaderView extends React.PureComponent {
 		}
 
 		return (
-			<TouchableOpacity style={styles.titleContainer} accessibilityLabel={accessibilityLabel} accessibilityTraits='header'>
+			<TouchableOpacity
+				style={styles.titleContainer}
+				accessibilityLabel={accessibilityLabel}
+				accessibilityTraits='header'
+				onPress={() => this.props.navigation.navigate('RoomInfo', { rid: this.rid })}
+			>
 				{this.isDirect() ?
 					<View style={[styles.status, { backgroundColor: STATUS_COLORS[this.getUserStatus()] }]} />
 					: null

@@ -267,6 +267,8 @@ export default class RoomActionsView extends React.PureComponent {
 		return this.renderTouchableItem(subview, item);
 	}
 
+	renderSeparator = () => <View style={styles.separator} />;
+
 	renderSectionSeparator = (data) => {
 		if (!data.trailingItem) {
 			if (!data.trailingSection) {
@@ -286,6 +288,7 @@ export default class RoomActionsView extends React.PureComponent {
 				stickySectionHeadersEnabled={false}
 				sections={this.state.sections}
 				SectionSeparatorComponent={this.renderSectionSeparator}
+				ItemSeparatorComponent={this.renderSeparator}
 				keyExtractor={(item, index) => index}
 			/>
 		);
