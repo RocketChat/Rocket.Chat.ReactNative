@@ -208,5 +208,15 @@ export default StyleSheet.create({
 	},
 	oAuthModal: {
 		margin: 0
+	},
+	status: {
+		position: 'absolute',
+		bottom: -3,
+		right: -3,
+		borderWidth: 3,
+		borderColor: '#fff',
+		borderRadius: 16,
+		width: 16,
+		height: 16
 	}
 });

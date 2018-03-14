@@ -171,6 +171,9 @@ const RocketChat = {
 						sub.roomUpdatedAt = data._updatedAt;
 						sub.lastMessage = normalizeMessage(data.lastMessage);
 						sub.ro = data.ro;
+						sub.description = data.description;
+						sub.topic = data.topic;
+						sub.announcement = data.announcement;
 					});
 				}
 			});
@@ -822,6 +825,14 @@ const RocketChat = {
 	},
 	getRoomMembers(rid, allUsers) {
 		return call('getUsersOfRoom', rid, allUsers);
+	},
+	async getRoomMember(rid, currentUserId) {
+		try {
+			const membersResult = await RocketChat.getRoomMembers(rid, true);
+			return Promise.resolve(membersResult.records.find(m => m.id !== currentUserId));
+		} catch (error) {
+			return Promise.reject(error);
+		}
 	},
 	toggleBlockUser(rid, blocked, block) {
 		if (block) {

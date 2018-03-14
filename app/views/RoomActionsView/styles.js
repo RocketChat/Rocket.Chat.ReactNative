@@ -25,7 +25,7 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	sectionItemDescription: {
-		color: '#cbced1'
+		color: '#ccc'
 	},
 	sectionSeparator: {
 		height: 10,
@@ -49,6 +49,6 @@ export default StyleSheet.create({
 	},
 	roomDescription: {
 		fontSize: 12,
-		color: '#cbced1'
+		color: '#ccc'
 	}
 });

@@ -121,6 +121,12 @@ export default class Message extends React.Component {
 			message = `${ msg } was set ${ role } by ${ u.username }`;
 		} else if (t === 'subscription-role-removed') {
 			message = `${ msg } is no longer ${ role } by ${ u.username }`;
+		} else if (t === 'room_changed_description') {
+			message = `Room description changed to: ${ msg } by ${ u.username }`;
+		} else if (t === 'room_changed_announcement') {
+			message = `Room announcement changed to: ${ msg } by ${ u.username }`;
+		} else if (t === 'room_changed_topic') {
+			message = `Room topic changed to: ${ msg } by ${ u.username }`;
 		}
 
 		return message;
@@ -130,7 +136,20 @@ export default class Message extends React.Component {
 
 	isInfoMessage() {
 		return [
-			'r', 'au', 'ru', 'ul', 'uj', 'rm', 'user-muted', 'user-unmuted', 'message_pinned', 'subscription-role-added', 'subscription-role-removed'
+			'r',
+			'au',
+			'ru',
+			'ul',
+			'uj',
+			'rm',
+			'user-muted',
+			'user-unmuted',
+			'message_pinned',
+			'subscription-role-added',
+			'subscription-role-removed',
+			'room_changed_description',
+			'room_changed_announcement',
+			'room_changed_topic'
 		].includes(this.props.item.t);
 	}
 
