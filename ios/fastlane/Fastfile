@@ -36,8 +36,7 @@ platform :ios do
   desc "This will also make sure the profile is up to date"
   lane :beta do
     match(
-      type: "appstore",
-      git_url: "git@github.com:RocketChat/Rocket.Chat.ReactNative.FastLane.git"
+      type: "appstore"
     ) # more information: https://codesigning.guide
     pem()
     gym(scheme: "RocketChatRN") # Build your app - more options available
@@ -52,8 +51,7 @@ platform :ios do
     # match(type: "appstore")
     # snapshot
     match(
-      type: "appstore",
-      git_url: "git@github.com:RocketChat/Rocket.Chat.ReactNative.FastLane.git"
+      type: "appstore"
     ) # more information: https://codesigning.guide
     pem()
     gym(scheme: "RocketChatRN") # Build your app - more options available
