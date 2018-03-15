@@ -15,6 +15,7 @@ import SnippetedMessagesView from '../../views/SnippetedMessagesView';
 import RoomFilesView from '../../views/RoomFilesView';
 import RoomMembersView from '../../views/RoomMembersView';
 import RoomInfoView from '../../views/RoomInfoView';
+import RoomInfoEditView from '../../views/RoomInfoEditView';
 
 const AuthRoutes = StackNavigator(
 	{
@@ -95,6 +96,13 @@ const AuthRoutes = StackNavigator(
 			screen: RoomInfoView,
 			navigationOptions: {
 				title: 'Room Info',
+				headerTintColor: '#292E35'
+			}
+		},
+		RoomInfoEdit: {
+			screen: RoomInfoEditView,
+			navigationOptions: {
+				title: 'Room Info Edit',
 				headerTintColor: '#292E35'
 			}
 		}

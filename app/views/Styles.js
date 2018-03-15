@@ -83,6 +83,9 @@ export default StyleSheet.create({
 		borderColor: 'rgba(0,0,0,.15)',
 		color: 'black'
 	},
+	buttonContainerLastChild: {
+		marginBottom: 40
+	},
 	buttonContainer: {
 		paddingVertical: 15,
 		backgroundColor: '#414852',

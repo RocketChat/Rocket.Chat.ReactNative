@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 import Status from '../../containers/status';
 import Avatar from '../../containers/Avatar';
@@ -9,6 +10,7 @@ import styles from './styles';
 import sharedStyles from '../Styles';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
+import Touch from '../../utils/touch';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -20,6 +22,22 @@ export default class RoomInfoView extends React.Component {
 		user: PropTypes.object,
 		navigation: PropTypes.object
 	}
+
+	static navigationOptions = ({ navigation }) => ({
+		headerRight: (
+			<Touch
+				onPress={() => navigation.navigate('RoomInfoEdit', { rid: navigation.state.params.rid })}
+				underlayColor='#ffffff'
+				activeOpacity={0.5}
+				accessibilityLabel='edit'
+				accessibilityTraits='button'
+			>
+				<View style={styles.headerButton}>
+					<MaterialIcon name='edit' size={20} />
+				</View>
+			</Touch>
+		)
+	});
 
 	constructor(props) {
 		super(props);

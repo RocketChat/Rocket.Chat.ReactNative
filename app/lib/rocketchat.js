@@ -842,6 +842,9 @@ const RocketChat = {
 	},
 	leaveRoom(rid) {
 		return call('leaveRoom', rid);
+	},
+	saveRoomSettings(rid, setting, value) {
+		return call('saveRoomSettings', rid, setting, value);
 	}
 };
 
