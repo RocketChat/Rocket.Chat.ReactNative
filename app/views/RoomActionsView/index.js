@@ -104,8 +104,8 @@ export default class RoomActionsView extends React.PureComponent {
 			renderItem: this.renderRoomInfo
 		}, {
 			data: [
-				{ icon: 'ios-call-outline', name: 'Voice call' },
-				{ icon: 'ios-videocam-outline', name: 'Video call' }
+				{ icon: 'ios-call-outline', name: 'Voice call', disabled: true },
+				{ icon: 'ios-videocam-outline', name: 'Video call', disabled: true }
 			],
 			renderItem: this.renderItem
 		}, {
@@ -128,8 +128,8 @@ export default class RoomActionsView extends React.PureComponent {
 					route: 'StarredMessages',
 					params: { rid }
 				},
-				{ icon: 'ios-search', name: 'Search' },
-				{ icon: 'ios-share-outline', name: 'Share' },
+				{ icon: 'ios-search', name: 'Search', disabled: true },
+				{ icon: 'ios-share-outline', name: 'Share', disabled: true },
 				{
 					icon: 'ios-pin',
 					name: 'Pinned',
@@ -142,14 +142,14 @@ export default class RoomActionsView extends React.PureComponent {
 					route: 'SnippetedMessages',
 					params: { rid }
 				},
-				{ icon: 'ios-notifications-outline', name: 'Notifications preferences' }
+				{ icon: 'ios-notifications-outline', name: 'Notifications preferences', disabled: true }
 			],
 			renderItem: this.renderItem
 		}];
 		if (t === 'd') {
 			sections.push({
 				data: [
-					{ icon: 'ios-volume-off', name: 'Mute user' },
+					{ icon: 'ios-volume-off', name: 'Mute user', disabled: true },
 					{
 						icon: 'block',
 						name: `${ blocked ? 'Unblock' : 'Block' } user`,
@@ -171,7 +171,7 @@ export default class RoomActionsView extends React.PureComponent {
 			}
 			sections.push({
 				data: [
-					{ icon: 'ios-volume-off', name: 'Mute channel' },
+					{ icon: 'ios-volume-off', name: 'Mute channel', disabled: true },
 					{
 						icon: 'block',
 						name: 'Leave channel',
@@ -244,7 +244,7 @@ export default class RoomActionsView extends React.PureComponent {
 			accessibilityLabel={item.name}
 			accessibilityTraits='button'
 		>
-			<View style={styles.sectionItem}>
+			<View style={[styles.sectionItem, item.disabled && styles.sectionItemDisabled]}>
 				{subview}
 			</View>
 		</Touch>
