@@ -568,15 +568,15 @@ after@0.8.2:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/after/-/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
 
-ajv-keywords@^1.0.0:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-1.5.1.tgz#314dd0a4b3368fad3dfcdc54ede6171b886daf3c"
+ajv-keywords@^2.1.0:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-2.1.1.tgz#617997fc5f60576894c435f940d819e135b80762"
 
 ajv-keywords@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-3.1.0.tgz#ac2b27939c543e95d2c06e7f7f5c27be4aa543be"
 
-ajv@^4.7.0, ajv@^4.9.1:
+ajv@^4.9.1:
   version "4.11.8"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-4.11.8.tgz#82ffb02b29e662ae53bdc20af15947706739c536"
   dependencies:
@@ -592,7 +592,7 @@ ajv@^5.0.0:
     json-schema-traverse "^0.3.0"
     json-stable-stringify "^1.0.1"
 
-ajv@^5.1.0, ajv@^5.3.0:
+ajv@^5.1.0, ajv@^5.2.3, ajv@^5.3.0:
   version "5.5.2"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.5.2.tgz#73b5eeca3fab653e3d3f9422b341ad42205dc965"
   dependencies:
@@ -938,7 +938,7 @@ babel-core@^6.0.0, babel-core@^6.24.1, babel-core@^6.26.0, babel-core@^6.7.2:
     slash "^1.0.0"
     source-map "^0.5.6"
 
-babel-eslint@^8.2.2:
+babel-eslint@^8.0.2:
   version "8.2.2"
   resolved "https://registry.yarnpkg.com/babel-eslint/-/babel-eslint-8.2.2.tgz#1102273354c6f0b29b4ea28a65f97d122296b68b"
   dependencies:
@@ -3651,7 +3651,7 @@ eslint-module-utils@^2.1.1:
     debug "^2.6.8"
     pkg-dir "^1.0.0"
 
-eslint-plugin-import@^2.9.0:
+eslint-plugin-import@^2.8.0:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.9.0.tgz#26002efbfca5989b7288ac047508bd24f217b169"
   dependencies:
@@ -3688,7 +3688,7 @@ eslint-plugin-react-native@^3.2.0:
   dependencies:
     eslint-plugin-react-native-globals "^0.1.1"
 
-eslint-plugin-react@^7.7.0:
+eslint-plugin-react@^7.5.1:
   version "7.7.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.7.0.tgz#f606c719dbd8a1a2b3d25c16299813878cca0160"
   dependencies:
@@ -3712,9 +3712,9 @@ eslint-visitor-keys@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#3f3180fb2e291017716acb4c9d6d5b5c34a6a81d"
 
-eslint@^4.18.1:
-  version "4.18.1"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-4.18.1.tgz#b9138440cb1e98b2f44a0d578c6ecf8eae6150b0"
+eslint@^4.12.0:
+  version "4.18.2"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-4.18.2.tgz#0f81267ad1012e7d2051e186a9004cc2267b8d45"
   dependencies:
     ajv "^5.3.0"
     babel-code-frame "^6.22.0"
@@ -3751,7 +3751,7 @@ eslint@^4.18.1:
     semver "^5.3.0"
     strip-ansi "^4.0.0"
     strip-json-comments "~2.0.1"
-    table "^4.0.1"
+    table "4.0.2"
     text-table "~0.2.0"
 
 espree@^3.5.2:
@@ -5906,14 +5906,6 @@ lodash.escape@^3.0.0:
   dependencies:
     lodash._root "^3.0.0"
 
-lodash.every@^4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/lodash.every/-/lodash.every-4.6.0.tgz#eb89984bebc4364279bb3aefbbd1ca19bfa6c6a7"
-
-lodash.filter@^4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/lodash.filter/-/lodash.filter-4.6.0.tgz#668b1d4981603ae1cc5a6fa760143e480b4c4ace"
-
 lodash.isarguments@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/lodash.isarguments/-/lodash.isarguments-3.1.0.tgz#2f573d85c6a24289ff00663b491c1d338ff3458a"
@@ -5922,21 +5914,9 @@ lodash.isarray@^3.0.0:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/lodash.isarray/-/lodash.isarray-3.0.4.tgz#79e4eb88c36a8122af86f844aa9bcd851b5fbb55"
 
-lodash.isequal@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
-
-lodash.isfunction@^3.0.8:
-  version "3.0.9"
-  resolved "https://registry.yarnpkg.com/lodash.isfunction/-/lodash.isfunction-3.0.9.tgz#06de25df4db327ac931981d1bdb067e5af68d051"
-
 lodash.isplainobject@^4.0.6:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/lodash.isplainobject/-/lodash.isplainobject-4.0.6.tgz#7c526a52d89b45c45cc690b88163be0497f550cb"
-
-lodash.isstring@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/lodash.isstring/-/lodash.isstring-4.0.1.tgz#d527dfb5456eca7cc9bb95d5daeaf88ba54a5451"
 
 lodash.keys@^3.0.0, lodash.keys@^3.1.2:
   version "3.1.2"
@@ -5945,10 +5925,6 @@ lodash.keys@^3.0.0, lodash.keys@^3.1.2:
     lodash._getnative "^3.0.0"
     lodash.isarguments "^3.0.0"
     lodash.isarray "^3.0.0"
-
-lodash.keys@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/lodash.keys/-/lodash.keys-4.2.0.tgz#a08602ac12e4fb83f91fc1fb7a360a4d9ba35205"
 
 lodash.memoize@^4.1.2:
   version "4.1.2"
@@ -6010,10 +5986,6 @@ lodash.templatesettings@^3.0.0:
 lodash.throttle@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
-
-lodash.union@^4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/lodash.union/-/lodash.union-4.6.0.tgz#48bb5088409f16f1821666641c44dd1aaae3cd88"
 
 lodash.uniq@^4.5.0:
   version "4.5.0"
@@ -7694,6 +7666,10 @@ react-native-animatable@^1.2.4:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-audio@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-audio/-/react-native-audio-4.0.0.tgz#e263c7711150de37b013741eeb2ede37941d3011"
+
 react-native-compat@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-compat/-/react-native-compat-1.0.0.tgz#491dbd8a0105ac061b8d0d926463ce6a3dff33bc"
@@ -7743,23 +7719,23 @@ react-native-iphone-x-helper@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.0.2.tgz#7dbca530930f7c1ce8633cc8fd13ba94102992e1"
 
-react-native-keyboard-aware-scroll-view@^0.4.1:
-  version "0.4.3"
-  resolved "https://registry.yarnpkg.com/react-native-keyboard-aware-scroll-view/-/react-native-keyboard-aware-scroll-view-0.4.3.tgz#206e197730902ce01d026910ff8409a2a363e1ac"
+react-native-keyboard-aware-scroll-view@^0.4.4:
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-aware-scroll-view/-/react-native-keyboard-aware-scroll-view-0.4.4.tgz#116d08975a84482e4ee64dd0b526a8f04138b0a7"
   dependencies:
     prop-types "^15.6.0"
     react-native-iphone-x-helper "^1.0.1"
 
 "react-native-keyboard-input@git+https://github.com/RocketChat/react-native-keyboard-input.git":
-  version "5.0.0"
-  resolved "git+https://github.com/RocketChat/react-native-keyboard-input.git#38273b0513f69a5e6e0719f65a675f9f2b5ee883"
+  version "5.1.1"
+  resolved "git+https://github.com/RocketChat/react-native-keyboard-input.git#5bc63ae8b80a4ca5a3714a81dd058ee6bbe00a30"
   dependencies:
     lodash "^4.17.4"
     react-native-keyboard-tracking-view "git+https://github.com/RocketChat/react-native-keyboard-tracking-view.git"
 
 "react-native-keyboard-tracking-view@git+https://github.com/RocketChat/react-native-keyboard-tracking-view.git":
-  version "5.1.1"
-  resolved "git+https://github.com/RocketChat/react-native-keyboard-tracking-view.git#3a4084f0a1063e23ae6435facdf1f79152558d15"
+  version "5.3.2"
+  resolved "git+https://github.com/RocketChat/react-native-keyboard-tracking-view.git#151979f82a5aba8755993e7001ba608c135de6b7"
 
 react-native-loading-spinner-overlay@^0.5.2:
   version "0.5.2"
@@ -7879,9 +7855,9 @@ react-native-zeroconf@^0.8.3:
   dependencies:
     events "^1.1.0"
 
-react-native@0.54.0-rc.4:
-  version "0.54.0-rc.4"
-  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.54.0-rc.4.tgz#d678ac7ae69345060c3dea639fd3665adb4016fd"
+react-native@0.54:
+  version "0.54.0"
+  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.54.0.tgz#1582cc2b2a639d46e39c44bcc50e051d0061820a"
   dependencies:
     absolute-path "^0.0.0"
     art "^0.10.0"
@@ -7942,9 +7918,9 @@ react-native@0.54.0-rc.4:
     xmldoc "^0.4.0"
     yargs "^9.0.0"
 
-react-navigation@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/react-navigation/-/react-navigation-1.2.1.tgz#06cb2c97eb1b2e20bdb4ff7aee1acfa218a1561b"
+react-navigation@^1.3.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/react-navigation/-/react-navigation-1.4.0.tgz#2e1ec70a5d37af78d4b2cab588caf179b2b16859"
   dependencies:
     clamp "^1.0.1"
     hoist-non-react-statics "^2.2.0"
@@ -8836,9 +8812,11 @@ slash@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"
 
-slice-ansi@0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/slice-ansi/-/slice-ansi-0.0.4.tgz#edbf8903f66f7ce2f8eafd6ceed65e264c831b35"
+slice-ansi@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/slice-ansi/-/slice-ansi-1.0.0.tgz#044f1a49d8842ff307aad6b505ed178bd950134d"
+  dependencies:
+    is-fullwidth-code-point "^2.0.0"
 
 slide@^1.1.5:
   version "1.1.6"
@@ -9333,16 +9311,16 @@ sync-request@^3.0.1:
     http-response-object "^1.0.1"
     then-request "^2.0.1"
 
-table@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/table/-/table-4.0.1.tgz#a8116c133fac2c61f4a420ab6cdf5c4d61f0e435"
+table@4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/table/-/table-4.0.2.tgz#a33447375391e766ad34d3486e6e2aedc84d2e36"
   dependencies:
-    ajv "^4.7.0"
-    ajv-keywords "^1.0.0"
-    chalk "^1.1.1"
-    lodash "^4.0.0"
-    slice-ansi "0.0.4"
-    string-width "^2.0.0"
+    ajv "^5.2.3"
+    ajv-keywords "^2.1.0"
+    chalk "^2.1.0"
+    lodash "^4.17.4"
+    slice-ansi "1.0.0"
+    string-width "^2.1.1"
 
 tapable@^0.2.7:
   version "0.2.8"
@@ -9985,20 +9963,6 @@ which@^1.2.12, which@^1.2.14, which@^1.2.9, which@^1.3.0:
   resolved "https://registry.yarnpkg.com/which/-/which-1.3.0.tgz#ff04bdfc010ee547d780bec38e1ac1c2777d253a"
   dependencies:
     isexe "^2.0.0"
-
-why-did-you-update@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/why-did-you-update/-/why-did-you-update-0.1.1.tgz#c73d361511fecd899056e9954ca9b1ab760d3097"
-  dependencies:
-    lodash.every "^4.6.0"
-    lodash.filter "^4.6.0"
-    lodash.isequal "^4.5.0"
-    lodash.isfunction "^3.0.8"
-    lodash.isstring "^4.0.1"
-    lodash.keys "^4.2.0"
-    lodash.pick "^4.4.0"
-    lodash.some "^4.6.0"
-    lodash.union "^4.6.0"
 
 wide-align@^1.1.0:
   version "1.1.2"

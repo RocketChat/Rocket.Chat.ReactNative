@@ -53,7 +53,6 @@ export default class RoomView extends React.Component {
 		loading: PropTypes.bool,
 		actionMessage: PropTypes.object,
 		toggleReactionPicker: PropTypes.func.isRequired,
-		// layoutAnimation: PropTypes.instanceOf(Date),
 		actionsShow: PropTypes.func
 	};
 
@@ -92,16 +91,10 @@ export default class RoomView extends React.Component {
 
 		this.rooms.addListener(this.updateRoom);
 	}
-	// componentWillReceiveProps(nextProps) {
-	// 	// if (this.props.layoutAnimation !== nextProps.layoutAnimation) {
-	// 	// 	LayoutAnimation.spring();
-	// 	// }
-	// }
 	shouldComponentUpdate(nextProps, nextState) {
-		return !(equal(this.props, nextProps) && equal(this.state, nextState));
+		return !(equal(this.props, nextProps) && equal(this.state, nextState) && this.state.room.ro === nextState.room.ro);
 	}
 	componentWillUnmount() {
-		clearTimeout(this.timer);
 		this.rooms.removeAllListeners();
 		this.props.editCancel();
 	}
@@ -136,6 +129,7 @@ export default class RoomView extends React.Component {
 
 	updateRoom = () => {
 		this.setState({ room: this.rooms[0] });
+		this.forceUpdate();
 	}
 
 	sendMessage = (message) => {
