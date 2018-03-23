@@ -88,7 +88,8 @@ const subscriptionSchema = {
 		lastMessage: { type: 'messages', optional: true },
 		description: { type: 'string', optional: true },
 		announcement: { type: 'string', optional: true },
-		topic: { type: 'string', optional: true }
+		topic: { type: 'string', optional: true },
+		blocked: { type: 'bool', optional: true }
 	}
 };
 
@@ -200,7 +201,8 @@ const messagesSchema = {
 		pinned: { type: 'bool', optional: true },
 		starred: { type: 'bool', optional: true },
 		editedBy: 'messagesEditedBy',
-		reactions: { type: 'list', objectType: 'messagesReactions' }
+		reactions: { type: 'list', objectType: 'messagesReactions' },
+		role: { type: 'string', optional: true }
 	}
 };
 
@@ -266,6 +268,9 @@ class DB {
 	};
 	deleteAll(...args) {
 		return this.database.write(() => this.database.deleteAll(...args));
+	}
+	delete(...args) {
+		return this.database.delete(...args);
 	}
 	write(...args) {
 		return this.database.write(...args);

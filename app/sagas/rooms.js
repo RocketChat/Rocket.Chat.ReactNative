@@ -1,3 +1,4 @@
+import { Alert } from 'react-native';
 import { put, call, takeLatest, take, select, race, fork, cancel, takeEvery } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { FOREGROUND, BACKGROUND } from 'redux-enhancer-react-native-appstate';
@@ -7,6 +8,9 @@ import { addUserTyping, removeUserTyping, setLastOpen } from '../actions/room';
 import { messagesRequest } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
+import * as NavigationService from '../containers/routes/NavigationService';
+
+const leaveRoom = rid => RocketChat.leaveRoom(rid);
 
 const getRooms = function* getRooms() {
 	return yield RocketChat.getRooms();
@@ -117,6 +121,26 @@ const updateLastOpen = function* updateLastOpen() {
 	yield put(setLastOpen());
 };
 
+const handleLeaveRoom = function* handleLeaveRoom({ rid }) {
+	try {
+		yield call(leaveRoom, rid);
+		NavigationService.goRoomsList();
+		yield delay(1000);
+		database.write(() => {
+			const messages = database.objects('messages').filtered('rid = $0', rid);
+			database.delete(messages);
+			const subscription = database.objects('subscriptions').filtered('rid = $0', rid);
+			database.delete(subscription);
+		});
+	} catch (e) {
+		if (e.error === 'error-you-are-last-owner') {
+			Alert.alert('You are the last owner. Please set new owner before leaving the room.');
+		} else {
+			Alert.alert(e);
+		}
+	}
+};
+
 const root = function* root() {
 	yield takeLatest(types.ROOM.USER_TYPING, watchuserTyping);
 	yield takeLatest(types.LOGIN.SUCCESS, watchRoomsRequest);
@@ -125,5 +149,6 @@ const root = function* root() {
 	yield takeLatest(FOREGROUND, updateRoom);
 	yield takeLatest(FOREGROUND, watchRoomsRequest);
 	yield takeLatest(BACKGROUND, updateLastOpen);
+	yield takeLatest(types.ROOM.LEAVE, handleLeaveRoom);
 };
 export default root;
