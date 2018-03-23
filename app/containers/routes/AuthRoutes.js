@@ -11,6 +11,8 @@ import NewServerView from '../../views/NewServerView';
 import StarredMessagesView from '../../views/StarredMessagesView';
 import PinnedMessagesView from '../../views/PinnedMessagesView';
 import MentionedMessagesView from '../../views/MentionedMessagesView';
+import SnippetedMessagesView from '../../views/SnippetedMessagesView';
+import RoomFilesView from '../../views/RoomFilesView';
 import RoomMembersView from '../../views/RoomMembersView';
 
 const AuthRoutes = StackNavigator(
@@ -64,6 +66,20 @@ const AuthRoutes = StackNavigator(
 			screen: MentionedMessagesView,
 			navigationOptions: {
 				title: 'Mentioned Messages',
+				headerTintColor: '#292E35'
+			}
+		},
+		SnippetedMessages: {
+			screen: SnippetedMessagesView,
+			navigationOptions: {
+				title: 'Snippet Messages',
+				headerTintColor: '#292E35'
+			}
+		},
+		RoomFiles: {
+			screen: RoomFilesView,
+			navigationOptions: {
+				title: 'Room Files',
 				headerTintColor: '#292E35'
 			}
 		},
