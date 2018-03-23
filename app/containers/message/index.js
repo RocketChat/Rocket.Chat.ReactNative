@@ -49,6 +49,11 @@ export default class Message extends React.Component {
 		_updatedAt: PropTypes.instanceOf(Date)
 	}
 
+	static defaultProps = {
+		onLongPress: () => {},
+		_updatedAt: new Date()
+	}
+
 	constructor(props) {
 		super(props);
 		this.state = { reactionsModal: false };
@@ -90,26 +95,32 @@ export default class Message extends React.Component {
 
 	getInfoMessage() {
 		let message = '';
-		const messageType = this.props.item.t;
+		const {
+			t, role, msg, u
+		} = this.props.item;
 
-		if (messageType === 'rm') {
+		if (t === 'rm') {
 			message = 'Message removed';
-		} else if (messageType === 'uj') {
+		} else if (t === 'uj') {
 			message = 'Has joined the channel.';
-		} else if (messageType === 'r') {
-			message = `Room name changed to: ${ this.props.item.msg } by ${ this.props.item.u.username }`;
-		} else if (messageType === 'message_pinned') {
+		} else if (t === 'r') {
+			message = `Room name changed to: ${ msg } by ${ u.username }`;
+		} else if (t === 'message_pinned') {
 			message = 'Message pinned';
-		} else if (messageType === 'ul') {
+		} else if (t === 'ul') {
 			message = 'Has left the channel.';
-		} else if (messageType === 'ru') {
-			message = `User ${ this.props.item.msg } removed by ${ this.props.item.u.username }`;
-		} else if (messageType === 'au') {
-			message = `User ${ this.props.item.msg } added by ${ this.props.item.u.username }`;
-		} else if (messageType === 'user-muted') {
-			message = `User ${ this.props.item.msg } muted by ${ this.props.item.u.username }`;
-		} else if (messageType === 'user-unmuted') {
-			message = `User ${ this.props.item.msg } unmuted by ${ this.props.item.u.username }`;
+		} else if (t === 'ru') {
+			message = `User ${ msg } removed by ${ u.username }`;
+		} else if (t === 'au') {
+			message = `User ${ msg } added by ${ u.username }`;
+		} else if (t === 'user-muted') {
+			message = `User ${ msg } muted by ${ u.username }`;
+		} else if (t === 'user-unmuted') {
+			message = `User ${ msg } unmuted by ${ u.username }`;
+		} else if (t === 'subscription-role-added') {
+			message = `${ msg } was set ${ role } by ${ u.username }`;
+		} else if (t === 'subscription-role-removed') {
+			message = `${ msg } is no longer ${ role } by ${ u.username }`;
 		}
 
 		return message;
@@ -118,7 +129,9 @@ export default class Message extends React.Component {
 	parseMessage = () => JSON.parse(JSON.stringify(this.props.item));
 
 	isInfoMessage() {
-		return ['r', 'au', 'ru', 'ul', 'uj', 'rm', 'user-muted', 'user-unmuted', 'message_pinned'].includes(this.props.item.t);
+		return [
+			'r', 'au', 'ru', 'ul', 'uj', 'rm', 'user-muted', 'user-unmuted', 'message_pinned', 'subscription-role-added', 'subscription-role-removed'
+		].includes(this.props.item.t);
 	}
 
 	isDeleted() {
