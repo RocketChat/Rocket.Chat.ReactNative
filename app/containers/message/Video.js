@@ -34,15 +34,7 @@ export default class Video extends React.PureComponent {
 		user: PropTypes.object.isRequired
 	}
 
-	constructor(props) {
-		super(props);
-		const { baseUrl, file, user } = props;
-		this.state = {
-			isVisible: false,
-			uri: `${ baseUrl }${ file.video_url }?rc_uid=${ user.id }&rc_token=${ user.token }`
-		};
-	}
-
+	state = { isVisible: false };
 
 	toggleModal() {
 		this.setState({
@@ -58,8 +50,10 @@ export default class Video extends React.PureComponent {
 	}
 
 	render() {
-		const { isVisible, uri } = this.state;
-		const { description } = this.props.file;
+		const { isVisible } = this.state;
+		const { video_url, description } = this.props.file;
+		const { baseUrl, user } = this.props;
+		const uri = `${ baseUrl }${ video_url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
 		return (
 			<View>
 				<TouchableOpacity
@@ -76,6 +70,7 @@ export default class Video extends React.PureComponent {
 					isVisible={isVisible}
 					style={styles.modal}
 					supportedOrientations={['portrait', 'landscape']}
+					onBackButtonPress={() => this.toggleModal()}
 				>
 					<VideoPlayer
 						source={{ uri }}

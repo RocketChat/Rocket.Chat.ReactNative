@@ -147,7 +147,7 @@ jobs:
           name: Install NPM modules
           command: |
             rm -rf node_modules
-            npm install --save react-native@0.51
+            # npm install --save react-native@0.51
             npm install
             # npm install react-native
 
@@ -185,7 +185,7 @@ jobs:
 
   ios-testflight:
     macos:
-      xcode: "8.3.3"
+      xcode: "9.0"
 
     steps:
       - checkout
