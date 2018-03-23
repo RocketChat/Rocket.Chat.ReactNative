@@ -75,7 +75,6 @@
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.0",
     "regenerator-runtime": "^0.11.1",
-    "remote-redux-devtools": "^0.5.12",
     "simple-markdown": "^0.3.1",
     "snyk": "^1.61.1",
     "strip-ansi": "^4.0.0"
@@ -99,7 +98,9 @@
     "jest-cli": "^22.0.3",
     "react-dom": "^16.2.0",
     "react-test-renderer": "^16.2.0",
-    "reactotron-react-native": "^1.14.0"
+    "reactotron-react-native": "^1.14.0",
+    "reactotron-redux": "^1.13.0",
+    "reactotron-redux-saga": "^1.13.0"
   },
   "jest": {
     "preset": "react-native",

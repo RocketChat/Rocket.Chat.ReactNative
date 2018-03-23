@@ -1,40 +1,37 @@
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore as reduxCreateStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import logger from 'redux-logger';
-import { composeWithDevTools } from 'remote-redux-devtools';
 import applyAppStateListener from 'redux-enhancer-react-native-appstate';
+import Reactotron from 'reactotron-react-native'; // eslint-disable-line
 import reducers from '../reducers';
 import sagas from '../sagas';
 
-const sagaMiddleware = createSagaMiddleware();
-let enhacers;
+const createStore = __DEV__ ? Reactotron.createStore : reduxCreateStore;
+let sagaMiddleware;
+let enhancers;
 
 if (__DEV__) {
 	/* eslint-disable global-require */
 	const reduxImmutableStateInvariant = require('redux-immutable-state-invariant').default();
+	sagaMiddleware = createSagaMiddleware({
+		sagaMonitor: Reactotron.createSagaMonitor()
+	});
 
-	const devComposer = composeWithDevTools({ hostname: 'localhost', port: 8000 });
-	enhacers = devComposer(
+	enhancers = compose(
 		applyAppStateListener(),
 		applyMiddleware(reduxImmutableStateInvariant),
 		applyMiddleware(sagaMiddleware),
 		applyMiddleware(logger)
 	);
 } else {
-	enhacers = compose(
+	sagaMiddleware = createSagaMiddleware();
+	enhancers = compose(
 		applyAppStateListener(),
 		applyMiddleware(sagaMiddleware)
 	);
 }
 
-// uncomment the following lines to integrate reactotron with redux
-// const store = Reactotron.createStore(
-//   reducers,
-//   enhacers(createStore)(reducers),
-// );
-
-
-const store = enhacers(createStore)(reducers);
+const store = createStore(reducers, enhancers);
 sagaMiddleware.run(sagas);
 
 if (module.hot && typeof module.hot.accept === 'function') {

@@ -146,6 +146,7 @@ export default class MessageBox extends React.PureComponent {
 		icons.push(<Icon
 			style={[styles.actionButtons, { color: '#1D74F5', paddingHorizontal: 10 }]}
 			name='mic'
+			key='micIcon'
 			accessibilityLabel='Send audio message'
 			accessibilityTraits='button'
 			onPress={() => this.recordAudioMessage()}
