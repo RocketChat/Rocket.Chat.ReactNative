@@ -24,3 +24,6 @@ project(':react-native-push-notification').projectDir = new File(rootProject.pro
 include ':react-native-toast'
 project(':react-native-toast').projectDir = new File(settingsDir, '../node_modules/@remobile/react-native-toast/android')
 include ':app'
+
+include ':react-native-fabric'
+project(':react-native-fabric').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fabric/android')
