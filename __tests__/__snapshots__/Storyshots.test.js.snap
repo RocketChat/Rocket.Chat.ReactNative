@@ -9,7 +9,6 @@ exports[`Storyshots Avatar avatar 1`] = `
           Object {
             "alignItems": "center",
             "justifyContent": "center",
-            "overflow": "hidden",
           },
           Object {
             "backgroundColor": "#3F51B5",
@@ -46,7 +45,6 @@ exports[`Storyshots Avatar avatar 1`] = `
           Object {
             "alignItems": "center",
             "justifyContent": "center",
-            "overflow": "hidden",
           },
           Object {
             "backgroundColor": "#9C27B0",
@@ -83,7 +81,6 @@ exports[`Storyshots Avatar avatar 1`] = `
           Object {
             "alignItems": "center",
             "justifyContent": "center",
-            "overflow": "hidden",
           },
           Object {
             "backgroundColor": "#9C27B0",
@@ -120,7 +117,6 @@ exports[`Storyshots Avatar avatar 1`] = `
           Object {
             "alignItems": "center",
             "justifyContent": "center",
-            "overflow": "hidden",
           },
           Object {
             "backgroundColor": "#3F51B5",
@@ -174,14 +170,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "backgroundColor": "transparent",
-          },
-          undefined,
-        ]
-      }
+      style={null}
       testID={undefined}
       tvParallaxProperties={undefined}
     >
@@ -190,9 +179,11 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           Array [
             Object {
               "alignItems": "center",
+              "borderBottomColor": "#ddd",
+              "borderBottomWidth": 0.5,
               "flexDirection": "row",
               "paddingHorizontal": 16,
-              "paddingVertical": 10,
+              "paddingVertical": 12,
             },
             undefined,
           ]
@@ -204,13 +195,12 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               Object {
                 "alignItems": "center",
                 "justifyContent": "center",
-                "overflow": "hidden",
               },
               Object {
                 "backgroundColor": "#8BC34A",
                 "borderRadius": 4,
-                "height": 40,
-                "width": 40,
+                "height": 46,
+                "width": 46,
               },
               undefined,
             ]
@@ -226,7 +216,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 20,
+                  "fontSize": 23,
                 },
               ]
             }
@@ -234,49 +224,99 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             RC
           </Text>
           
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
+                },
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                Object {
+                  "backgroundColor": "#cbced1",
+                },
+              ]
+            }
+          />
         </View>
         <View
           style={
             Object {
               "flex": 1,
+              "height": "100%",
               "marginLeft": 16,
               "marginRight": 4,
             }
           }
         >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "fontSize": 16,
-                },
-                undefined,
-              ]
-            }
-          >
-            rocket.cat
-          </Text>
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
+          <View
             style={
               Object {
-                "color": "#888",
+                "alignItems": "center",
                 "flex": 1,
-                "fontSize": 10,
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "width": "100%",
               }
             }
           >
-            Nov 10
-          </Text>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "color": "#444",
+                    "flex": 1,
+                    "fontSize": 18,
+                    "marginRight": 8,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              rocket.cat
+            </Text>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "color": "#888",
+                    "fontSize": 10,
+                    "justifyContent": "center",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Nov 10
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignItems": "flex-end",
+                "flex": 1,
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+                "width": "100%",
+              }
+            }
+          />
         </View>
       </View>
     </View>
@@ -296,14 +336,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "backgroundColor": "transparent",
-          },
-          undefined,
-        ]
-      }
+      style={null}
       testID={undefined}
       tvParallaxProperties={undefined}
     >
@@ -312,9 +345,11 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           Array [
             Object {
               "alignItems": "center",
+              "borderBottomColor": "#ddd",
+              "borderBottomWidth": 0.5,
               "flexDirection": "row",
               "paddingHorizontal": 16,
-              "paddingVertical": 10,
+              "paddingVertical": 12,
             },
             undefined,
           ]
@@ -326,13 +361,12 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               Object {
                 "alignItems": "center",
                 "justifyContent": "center",
-                "overflow": "hidden",
               },
               Object {
                 "backgroundColor": "#8BC34A",
                 "borderRadius": 4,
-                "height": 40,
-                "width": 40,
+                "height": 46,
+                "width": 46,
               },
               undefined,
             ]
@@ -348,7 +382,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 20,
+                  "fontSize": 23,
                 },
               ]
             }
@@ -356,51 +390,103 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             RC
           </Text>
           
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
+                },
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                Object {
+                  "backgroundColor": "#cbced1",
+                },
+              ]
+            }
+          />
         </View>
         <View
           style={
             Object {
               "flex": 1,
+              "height": "100%",
               "marginLeft": 16,
               "marginRight": 4,
             }
           }
         >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "fontSize": 16,
-                },
-                Object {
-                  "fontWeight": "bold",
-                },
-              ]
-            }
-          >
-            rocket.cat
-          </Text>
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
+          <View
             style={
               Object {
-                "color": "#888",
+                "alignItems": "center",
                 "flex": 1,
-                "fontSize": 10,
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "width": "100%",
               }
             }
           >
-            Nov 10
-          </Text>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "color": "#444",
+                    "flex": 1,
+                    "fontSize": 18,
+                    "marginRight": 8,
+                  },
+                  Object {
+                    "fontWeight": "bold",
+                  },
+                ]
+              }
+            >
+              rocket.cat
+            </Text>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "color": "#888",
+                    "fontSize": 10,
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "color": "#1d74f5",
+                  },
+                ]
+              }
+            >
+              Nov 10
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignItems": "flex-end",
+                "flex": 1,
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+                "width": "100%",
+              }
+            }
+          />
         </View>
       </View>
     </View>
@@ -420,14 +506,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "backgroundColor": "transparent",
-          },
-          undefined,
-        ]
-      }
+      style={null}
       testID={undefined}
       tvParallaxProperties={undefined}
     >
@@ -436,9 +515,11 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           Array [
             Object {
               "alignItems": "center",
+              "borderBottomColor": "#ddd",
+              "borderBottomWidth": 0.5,
               "flexDirection": "row",
               "paddingHorizontal": 16,
-              "paddingVertical": 10,
+              "paddingVertical": 12,
             },
             undefined,
           ]
@@ -450,13 +531,12 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               Object {
                 "alignItems": "center",
                 "justifyContent": "center",
-                "overflow": "hidden",
               },
               Object {
                 "backgroundColor": "#8BC34A",
                 "borderRadius": 4,
-                "height": 40,
-                "width": 40,
+                "height": 46,
+                "width": 46,
               },
               undefined,
             ]
@@ -472,7 +552,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 20,
+                  "fontSize": 23,
                 },
               ]
             }
@@ -480,70 +560,123 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             RC
           </Text>
           
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
+                },
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                Object {
+                  "backgroundColor": "#cbced1",
+                },
+              ]
+            }
+          />
         </View>
         <View
           style={
             Object {
               "flex": 1,
+              "height": "100%",
               "marginLeft": 16,
               "marginRight": 4,
             }
           }
         >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "fontSize": 16,
-                },
-                undefined,
-              ]
-            }
-          >
-            rocket.cat
-          </Text>
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
+          <View
             style={
               Object {
-                "color": "#888",
+                "alignItems": "center",
                 "flex": 1,
-                "fontSize": 10,
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "width": "100%",
               }
             }
           >
-            Nov 10
-          </Text>
-        </View>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          style={
-            Object {
-              "backgroundColor": "#1d74f5",
-              "borderRadius": 3,
-              "color": "#fff",
-              "fontSize": 14,
-              "minWidth": 20,
-              "overflow": "hidden",
-              "paddingHorizontal": 5,
-              "paddingVertical": 2,
-              "textAlign": "center",
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "color": "#444",
+                    "flex": 1,
+                    "fontSize": 18,
+                    "marginRight": 8,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              rocket.cat
+            </Text>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "color": "#888",
+                    "fontSize": 10,
+                    "justifyContent": "center",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Nov 10
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignItems": "flex-end",
+                "flex": 1,
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+                "width": "100%",
+              }
             }
-          }
-        >
-          1
-        </Text>
+          >
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "#1d74f5",
+                  "borderRadius": 4,
+                  "color": "#fff",
+                  "fontSize": 14,
+                  "justifyContent": "center",
+                  "minWidth": 25,
+                  "overflow": "hidden",
+                  "paddingHorizontal": 5,
+                  "paddingVertical": 4,
+                  "textAlign": "center",
+                }
+              }
+            >
+              1
+            </Text>
+          </View>
+        </View>
       </View>
     </View>
     <View
@@ -562,14 +695,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "backgroundColor": "transparent",
-          },
-          undefined,
-        ]
-      }
+      style={null}
       testID={undefined}
       tvParallaxProperties={undefined}
     >
@@ -578,9 +704,11 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           Array [
             Object {
               "alignItems": "center",
+              "borderBottomColor": "#ddd",
+              "borderBottomWidth": 0.5,
               "flexDirection": "row",
               "paddingHorizontal": 16,
-              "paddingVertical": 10,
+              "paddingVertical": 12,
             },
             undefined,
           ]
@@ -592,13 +720,12 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               Object {
                 "alignItems": "center",
                 "justifyContent": "center",
-                "overflow": "hidden",
               },
               Object {
                 "backgroundColor": "#795548",
                 "borderRadius": 4,
-                "height": 40,
-                "width": 40,
+                "height": 46,
+                "width": 46,
               },
               undefined,
             ]
@@ -614,7 +741,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 20,
+                  "fontSize": 23,
                 },
               ]
             }
@@ -622,72 +749,127 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             LC
           </Text>
           
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
+                },
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                Object {
+                  "backgroundColor": "#cbced1",
+                },
+              ]
+            }
+          />
         </View>
         <View
           style={
             Object {
               "flex": 1,
+              "height": "100%",
               "marginLeft": 16,
               "marginRight": 4,
             }
           }
         >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "fontSize": 16,
-                },
-                Object {
-                  "fontWeight": "bold",
-                },
-              ]
-            }
-          >
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-          </Text>
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
+          <View
             style={
               Object {
-                "color": "#888",
+                "alignItems": "center",
                 "flex": 1,
-                "fontSize": 10,
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "width": "100%",
               }
             }
           >
-            Nov 10
-          </Text>
-        </View>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          style={
-            Object {
-              "backgroundColor": "#1d74f5",
-              "borderRadius": 3,
-              "color": "#fff",
-              "fontSize": 14,
-              "minWidth": 20,
-              "overflow": "hidden",
-              "paddingHorizontal": 5,
-              "paddingVertical": 2,
-              "textAlign": "center",
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "color": "#444",
+                    "flex": 1,
+                    "fontSize": 18,
+                    "marginRight": 8,
+                  },
+                  Object {
+                    "fontWeight": "bold",
+                  },
+                ]
+              }
+            >
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+            </Text>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "color": "#888",
+                    "fontSize": 10,
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "color": "#1d74f5",
+                  },
+                ]
+              }
+            >
+              Nov 10
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignItems": "flex-end",
+                "flex": 1,
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+                "width": "100%",
+              }
             }
-          }
-        >
-          9
-        </Text>
+          >
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "#1d74f5",
+                  "borderRadius": 4,
+                  "color": "#fff",
+                  "fontSize": 14,
+                  "justifyContent": "center",
+                  "minWidth": 25,
+                  "overflow": "hidden",
+                  "paddingHorizontal": 5,
+                  "paddingVertical": 4,
+                  "textAlign": "center",
+                }
+              }
+            >
+              9
+            </Text>
+          </View>
+        </View>
       </View>
     </View>
     <View
@@ -706,14 +888,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "backgroundColor": "transparent",
-          },
-          undefined,
-        ]
-      }
+      style={null}
       testID={undefined}
       tvParallaxProperties={undefined}
     >
@@ -722,9 +897,11 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           Array [
             Object {
               "alignItems": "center",
+              "borderBottomColor": "#ddd",
+              "borderBottomWidth": 0.5,
               "flexDirection": "row",
               "paddingHorizontal": 16,
-              "paddingVertical": 10,
+              "paddingVertical": 12,
             },
             undefined,
           ]
@@ -736,13 +913,12 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               Object {
                 "alignItems": "center",
                 "justifyContent": "center",
-                "overflow": "hidden",
               },
               Object {
                 "backgroundColor": "#795548",
                 "borderRadius": 4,
-                "height": 40,
-                "width": 40,
+                "height": 46,
+                "width": 46,
               },
               undefined,
             ]
@@ -758,7 +934,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 20,
+                  "fontSize": 23,
                 },
               ]
             }
@@ -766,70 +942,123 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             LC
           </Text>
           
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
+                },
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                Object {
+                  "backgroundColor": "#cbced1",
+                },
+              ]
+            }
+          />
         </View>
         <View
           style={
             Object {
               "flex": 1,
+              "height": "100%",
               "marginLeft": 16,
               "marginRight": 4,
             }
           }
         >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "fontSize": 16,
-                },
-                undefined,
-              ]
-            }
-          >
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-          </Text>
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
+          <View
             style={
               Object {
-                "color": "#888",
+                "alignItems": "center",
                 "flex": 1,
-                "fontSize": 10,
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "width": "100%",
               }
             }
           >
-            Nov 10
-          </Text>
-        </View>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          style={
-            Object {
-              "backgroundColor": "#1d74f5",
-              "borderRadius": 3,
-              "color": "#fff",
-              "fontSize": 14,
-              "minWidth": 20,
-              "overflow": "hidden",
-              "paddingHorizontal": 5,
-              "paddingVertical": 2,
-              "textAlign": "center",
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "color": "#444",
+                    "flex": 1,
+                    "fontSize": 18,
+                    "marginRight": 8,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+            </Text>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "color": "#888",
+                    "fontSize": 10,
+                    "justifyContent": "center",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Nov 10
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignItems": "flex-end",
+                "flex": 1,
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+                "width": "100%",
+              }
             }
-          }
-        >
-          99
-        </Text>
+          >
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "#1d74f5",
+                  "borderRadius": 4,
+                  "color": "#fff",
+                  "fontSize": 14,
+                  "justifyContent": "center",
+                  "minWidth": 25,
+                  "overflow": "hidden",
+                  "paddingHorizontal": 5,
+                  "paddingVertical": 4,
+                  "textAlign": "center",
+                }
+              }
+            >
+              99
+            </Text>
+          </View>
+        </View>
       </View>
     </View>
     <View
@@ -848,14 +1077,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "backgroundColor": "transparent",
-          },
-          undefined,
-        ]
-      }
+      style={null}
       testID={undefined}
       tvParallaxProperties={undefined}
     >
@@ -864,9 +1086,11 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           Array [
             Object {
               "alignItems": "center",
+              "borderBottomColor": "#ddd",
+              "borderBottomWidth": 0.5,
               "flexDirection": "row",
               "paddingHorizontal": 16,
-              "paddingVertical": 10,
+              "paddingVertical": 12,
             },
             undefined,
           ]
@@ -878,13 +1102,12 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               Object {
                 "alignItems": "center",
                 "justifyContent": "center",
-                "overflow": "hidden",
               },
               Object {
                 "backgroundColor": "#795548",
                 "borderRadius": 4,
-                "height": 40,
-                "width": 40,
+                "height": 46,
+                "width": 46,
               },
               undefined,
             ]
@@ -900,7 +1123,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 20,
+                  "fontSize": 23,
                 },
               ]
             }
@@ -908,70 +1131,123 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             LC
           </Text>
           
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
+                },
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                Object {
+                  "backgroundColor": "#cbced1",
+                },
+              ]
+            }
+          />
         </View>
         <View
           style={
             Object {
               "flex": 1,
+              "height": "100%",
               "marginLeft": 16,
               "marginRight": 4,
             }
           }
         >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "fontSize": 16,
-                },
-                undefined,
-              ]
-            }
-          >
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-          </Text>
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
+          <View
             style={
               Object {
-                "color": "#888",
+                "alignItems": "center",
                 "flex": 1,
-                "fontSize": 10,
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "width": "100%",
               }
             }
           >
-            Nov 10
-          </Text>
-        </View>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          style={
-            Object {
-              "backgroundColor": "#1d74f5",
-              "borderRadius": 3,
-              "color": "#fff",
-              "fontSize": 14,
-              "minWidth": 20,
-              "overflow": "hidden",
-              "paddingHorizontal": 5,
-              "paddingVertical": 2,
-              "textAlign": "center",
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "color": "#444",
+                    "flex": 1,
+                    "fontSize": 18,
+                    "marginRight": 8,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+            </Text>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "color": "#888",
+                    "fontSize": 10,
+                    "justifyContent": "center",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Nov 10
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignItems": "flex-end",
+                "flex": 1,
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+                "width": "100%",
+              }
             }
-          }
-        >
-          100
-        </Text>
+          >
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "#1d74f5",
+                  "borderRadius": 4,
+                  "color": "#fff",
+                  "fontSize": 14,
+                  "justifyContent": "center",
+                  "minWidth": 25,
+                  "overflow": "hidden",
+                  "paddingHorizontal": 5,
+                  "paddingVertical": 4,
+                  "textAlign": "center",
+                }
+              }
+            >
+              100
+            </Text>
+          </View>
+        </View>
       </View>
     </View>
     <View
@@ -990,14 +1266,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "backgroundColor": "transparent",
-          },
-          undefined,
-        ]
-      }
+      style={null}
       testID={undefined}
       tvParallaxProperties={undefined}
     >
@@ -1006,9 +1275,11 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           Array [
             Object {
               "alignItems": "center",
+              "borderBottomColor": "#ddd",
+              "borderBottomWidth": 0.5,
               "flexDirection": "row",
               "paddingHorizontal": 16,
-              "paddingVertical": 10,
+              "paddingVertical": 12,
             },
             undefined,
           ]
@@ -1020,13 +1291,12 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               Object {
                 "alignItems": "center",
                 "justifyContent": "center",
-                "overflow": "hidden",
               },
               Object {
                 "backgroundColor": "#795548",
                 "borderRadius": 4,
-                "height": 40,
-                "width": 40,
+                "height": 46,
+                "width": 46,
               },
               undefined,
             ]
@@ -1042,7 +1312,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 20,
+                  "fontSize": 23,
                 },
               ]
             }
@@ -1050,70 +1320,123 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             LC
           </Text>
           
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
+                },
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                Object {
+                  "backgroundColor": "#cbced1",
+                },
+              ]
+            }
+          />
         </View>
         <View
           style={
             Object {
               "flex": 1,
+              "height": "100%",
               "marginLeft": 16,
               "marginRight": 4,
             }
           }
         >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "fontSize": 16,
-                },
-                undefined,
-              ]
-            }
-          >
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-          </Text>
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
+          <View
             style={
               Object {
-                "color": "#888",
+                "alignItems": "center",
                 "flex": 1,
-                "fontSize": 10,
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "width": "100%",
               }
             }
           >
-            Nov 10
-          </Text>
-        </View>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          style={
-            Object {
-              "backgroundColor": "#1d74f5",
-              "borderRadius": 3,
-              "color": "#fff",
-              "fontSize": 14,
-              "minWidth": 20,
-              "overflow": "hidden",
-              "paddingHorizontal": 5,
-              "paddingVertical": 2,
-              "textAlign": "center",
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "color": "#444",
+                    "flex": 1,
+                    "fontSize": 18,
+                    "marginRight": 8,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+            </Text>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "color": "#888",
+                    "fontSize": 10,
+                    "justifyContent": "center",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Nov 10
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignItems": "flex-end",
+                "flex": 1,
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+                "width": "100%",
+              }
             }
-          }
-        >
-          999+
-        </Text>
+          >
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "#1d74f5",
+                  "borderRadius": 4,
+                  "color": "#fff",
+                  "fontSize": 14,
+                  "justifyContent": "center",
+                  "minWidth": 25,
+                  "overflow": "hidden",
+                  "paddingHorizontal": 5,
+                  "paddingVertical": 4,
+                  "textAlign": "center",
+                }
+              }
+            >
+              999+
+            </Text>
+          </View>
+        </View>
       </View>
     </View>
     <View
@@ -1132,14 +1455,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "backgroundColor": "transparent",
-          },
-          undefined,
-        ]
-      }
+      style={null}
       testID={undefined}
       tvParallaxProperties={undefined}
     >
@@ -1148,9 +1464,11 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           Array [
             Object {
               "alignItems": "center",
+              "borderBottomColor": "#ddd",
+              "borderBottomWidth": 0.5,
               "flexDirection": "row",
               "paddingHorizontal": 16,
-              "paddingVertical": 10,
+              "paddingVertical": 12,
             },
             undefined,
           ]
@@ -1162,13 +1480,12 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               Object {
                 "alignItems": "center",
                 "justifyContent": "center",
-                "overflow": "hidden",
               },
               Object {
                 "backgroundColor": "#795548",
                 "borderRadius": 4,
-                "height": 40,
-                "width": 40,
+                "height": 46,
+                "width": 46,
               },
               undefined,
             ]
@@ -1184,7 +1501,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 20,
+                  "fontSize": 23,
                 },
               ]
             }
@@ -1192,70 +1509,123 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             LC
           </Text>
           
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
+                },
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                Object {
+                  "backgroundColor": "#cbced1",
+                },
+              ]
+            }
+          />
         </View>
         <View
           style={
             Object {
               "flex": 1,
+              "height": "100%",
               "marginLeft": 16,
               "marginRight": 4,
             }
           }
         >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "fontSize": 16,
-                },
-                undefined,
-              ]
-            }
-          >
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-          </Text>
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
+          <View
             style={
               Object {
-                "color": "#888",
+                "alignItems": "center",
                 "flex": 1,
-                "fontSize": 10,
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "width": "100%",
               }
             }
           >
-            Nov 10
-          </Text>
-        </View>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          style={
-            Object {
-              "backgroundColor": "#1d74f5",
-              "borderRadius": 3,
-              "color": "#fff",
-              "fontSize": 14,
-              "minWidth": 20,
-              "overflow": "hidden",
-              "paddingHorizontal": 5,
-              "paddingVertical": 2,
-              "textAlign": "center",
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "color": "#444",
+                    "flex": 1,
+                    "fontSize": 18,
+                    "marginRight": 8,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+            </Text>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "color": "#888",
+                    "fontSize": 10,
+                    "justifyContent": "center",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Nov 10
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignItems": "flex-end",
+                "flex": 1,
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+                "width": "100%",
+              }
             }
-          }
-        >
-          @ 999+
-        </Text>
+          >
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "#1d74f5",
+                  "borderRadius": 4,
+                  "color": "#fff",
+                  "fontSize": 14,
+                  "justifyContent": "center",
+                  "minWidth": 25,
+                  "overflow": "hidden",
+                  "paddingHorizontal": 5,
+                  "paddingVertical": 4,
+                  "textAlign": "center",
+                }
+              }
+            >
+              @ 999+
+            </Text>
+          </View>
+        </View>
       </View>
     </View>
     <View
@@ -1274,14 +1644,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "backgroundColor": "transparent",
-          },
-          undefined,
-        ]
-      }
+      style={null}
       testID={undefined}
       tvParallaxProperties={undefined}
     >
@@ -1290,9 +1653,11 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           Array [
             Object {
               "alignItems": "center",
+              "borderBottomColor": "#ddd",
+              "borderBottomWidth": 0.5,
               "flexDirection": "row",
               "paddingHorizontal": 16,
-              "paddingVertical": 10,
+              "paddingVertical": 12,
             },
             undefined,
           ]
@@ -1304,13 +1669,12 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               Object {
                 "alignItems": "center",
                 "justifyContent": "center",
-                "overflow": "hidden",
               },
               Object {
                 "backgroundColor": "#E91E63",
                 "borderRadius": 4,
-                "height": 40,
-                "width": 40,
+                "height": 46,
+                "width": 46,
               },
               undefined,
             ]
@@ -1326,7 +1690,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 20,
+                  "fontSize": 23,
                 },
               ]
             }
@@ -1334,49 +1698,99 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             W
           </Text>
           
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
+                },
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                Object {
+                  "backgroundColor": "#cbced1",
+                },
+              ]
+            }
+          />
         </View>
         <View
           style={
             Object {
               "flex": 1,
+              "height": "100%",
               "marginLeft": 16,
               "marginRight": 4,
             }
           }
         >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "fontSize": 16,
-                },
-                undefined,
-              ]
-            }
-          >
-            W
-          </Text>
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
+          <View
             style={
               Object {
-                "color": "#888",
+                "alignItems": "center",
                 "flex": 1,
-                "fontSize": 10,
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "width": "100%",
               }
             }
           >
-            Nov 10
-          </Text>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "color": "#444",
+                    "flex": 1,
+                    "fontSize": 18,
+                    "marginRight": 8,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              W
+            </Text>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "color": "#888",
+                    "fontSize": 10,
+                    "justifyContent": "center",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Nov 10
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignItems": "flex-end",
+                "flex": 1,
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+                "width": "100%",
+              }
+            }
+          />
         </View>
       </View>
     </View>
@@ -1396,14 +1810,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "backgroundColor": "transparent",
-          },
-          undefined,
-        ]
-      }
+      style={null}
       testID={undefined}
       tvParallaxProperties={undefined}
     >
@@ -1412,9 +1819,11 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           Array [
             Object {
               "alignItems": "center",
+              "borderBottomColor": "#ddd",
+              "borderBottomWidth": 0.5,
               "flexDirection": "row",
               "paddingHorizontal": 16,
-              "paddingVertical": 10,
+              "paddingVertical": 12,
             },
             undefined,
           ]
@@ -1426,13 +1835,12 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               Object {
                 "alignItems": "center",
                 "justifyContent": "center",
-                "overflow": "hidden",
               },
               Object {
                 "backgroundColor": "#9C27B0",
                 "borderRadius": 4,
-                "height": 40,
-                "width": 40,
+                "height": 46,
+                "width": 46,
               },
               undefined,
             ]
@@ -1448,7 +1856,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 20,
+                  "fontSize": 23,
                 },
               ]
             }
@@ -1456,49 +1864,99 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             WW
           </Text>
           
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
+                },
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                Object {
+                  "backgroundColor": "#cbced1",
+                },
+              ]
+            }
+          />
         </View>
         <View
           style={
             Object {
               "flex": 1,
+              "height": "100%",
               "marginLeft": 16,
               "marginRight": 4,
             }
           }
         >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "fontSize": 16,
-                },
-                undefined,
-              ]
-            }
-          >
-            WW
-          </Text>
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
+          <View
             style={
               Object {
-                "color": "#888",
+                "alignItems": "center",
                 "flex": 1,
-                "fontSize": 10,
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "width": "100%",
               }
             }
           >
-            Nov 10
-          </Text>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "color": "#444",
+                    "flex": 1,
+                    "fontSize": 18,
+                    "marginRight": 8,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              WW
+            </Text>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "color": "#888",
+                    "fontSize": 10,
+                    "justifyContent": "center",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Nov 10
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignItems": "flex-end",
+                "flex": 1,
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+                "width": "100%",
+              }
+            }
+          />
         </View>
       </View>
     </View>
@@ -1518,14 +1976,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "backgroundColor": "transparent",
-          },
-          undefined,
-        ]
-      }
+      style={null}
       testID={undefined}
       tvParallaxProperties={undefined}
     >
@@ -1534,9 +1985,11 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           Array [
             Object {
               "alignItems": "center",
+              "borderBottomColor": "#ddd",
+              "borderBottomWidth": 0.5,
               "flexDirection": "row",
               "paddingHorizontal": 16,
-              "paddingVertical": 10,
+              "paddingVertical": 12,
             },
             undefined,
           ]
@@ -1548,13 +2001,12 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               Object {
                 "alignItems": "center",
                 "justifyContent": "center",
-                "overflow": "hidden",
               },
               Object {
                 "backgroundColor": undefined,
                 "borderRadius": 4,
-                "height": 40,
-                "width": 40,
+                "height": 46,
+                "width": 46,
               },
               undefined,
             ]
@@ -1570,7 +2022,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 20,
+                  "fontSize": 23,
                 },
               ]
             }
@@ -1578,49 +2030,99 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             
           </Text>
           
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
+                },
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                Object {
+                  "backgroundColor": "#cbced1",
+                },
+              ]
+            }
+          />
         </View>
         <View
           style={
             Object {
               "flex": 1,
+              "height": "100%",
               "marginLeft": 16,
               "marginRight": 4,
             }
           }
         >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "color": "#444",
-                  "flex": 1,
-                  "fontSize": 16,
-                },
-                undefined,
-              ]
-            }
-          >
-            
-          </Text>
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
+          <View
             style={
               Object {
-                "color": "#888",
+                "alignItems": "center",
                 "flex": 1,
-                "fontSize": 10,
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "width": "100%",
               }
             }
           >
-            Nov 10
-          </Text>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "color": "#444",
+                    "flex": 1,
+                    "fontSize": 18,
+                    "marginRight": 8,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "color": "#888",
+                    "fontSize": 10,
+                    "justifyContent": "center",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Nov 10
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignItems": "flex-end",
+                "flex": 1,
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+                "width": "100%",
+              }
+            }
+          />
         </View>
       </View>
     </View>

@@ -3,7 +3,7 @@ import { ListView } from 'realm/react-native';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Platform, View, TextInput, SafeAreaView } from 'react-native';
+import { Platform, View, TextInput, SafeAreaView, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import * as server from '../../actions/connect';
@@ -15,9 +15,11 @@ import { goRoom } from '../../containers/routes/NavigationService';
 import Header from '../../containers/Header';
 import RoomsListHeader from './Header';
 import styles from './styles';
+import debounce from '../../utils/debounce';
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 @connect(state => ({
+	user: state.login.user,
 	server: state.server.server,
 	login: state.login,
 	Site_Url: state.settings.Site_Url,
@@ -31,6 +33,7 @@ const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 export default class RoomsListView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
+		user: PropTypes.object,
 		Site_Url: PropTypes.string,
 		server: PropTypes.string,
 		searchText: PropTypes.string
@@ -47,6 +50,7 @@ export default class RoomsListView extends React.Component {
 			dataSource: ds.cloneWithRows([]),
 			searchText: ''
 		};
+		this._keyExtractor = this._keyExtractor.bind(this);
 		this.data = database.objects('subscriptions').sorted('roomUpdatedAt', true);
 	}
 
@@ -71,6 +75,7 @@ export default class RoomsListView extends React.Component {
 	}
 
 	componentWillUnmount() {
+		this.updateState.stop();
 		this.data.removeAllListeners();
 	}
 
@@ -79,107 +84,73 @@ export default class RoomsListView extends React.Component {
 		this.search(text);
 	}
 
-	search(text) {
+	updateState = debounce(() => {
+		this.forceUpdate();
+	}, 1000);
+
+	async search(text) {
 		const searchText = text.trim();
 		if (searchText === '') {
+			delete this.oldPromise;
 			return this.setState({
-				dataSource: ds.cloneWithRows(this.data)
+				search: false
 			});
 		}
 
-		const data = this.data.filtered('name CONTAINS[c] $0', searchText).slice();
+		let data = this.data.filtered('name CONTAINS[c] $0', searchText).slice(0, 7);
 
-		const usernames = [];
-		const dataSource = data.map((sub) => {
-			if (sub.t === 'd') {
-				usernames.push(sub.name);
+		const usernames = data.map(sub => sub.map);
+		try {
+			if (data.length < 7) {
+				if (this.oldPromise) {
+					this.oldPromise('cancel');
+				}
+
+				const { users, rooms } = await Promise.race([
+					RocketChat.spotlight(searchText, usernames, { users: true, rooms: true }),
+					new Promise((resolve, reject) => this.oldPromise = reject)
+				]);
+
+				data = data.concat(users.map(user => ({
+					...user,
+					rid: user.username,
+					name: user.username,
+					t: 'd',
+					search: true
+				})), rooms.map(room => ({
+					rid: room._id,
+					...room,
+					search: true
+				})));
+
+				delete this.oldPromise;
 			}
-			return sub;
-		});
-
-		if (dataSource.length < 7) {
-			if (this.oldPromise) {
-				this.oldPromise();
-			}
-			Promise.race([
-				RocketChat.spotlight(searchText, usernames),
-				new Promise((resolve, reject) => this.oldPromise = reject)
-			])
-				.then((results) => {
-					results.users.forEach((user) => {
-						dataSource.push({
-							...user,
-							name: user.username,
-							t: 'd',
-							search: true
-						});
-					});
-
-					results.rooms.forEach((room) => {
-						dataSource.push({
-							...room,
-							search: true
-						});
-					});
-
-					this.setState({
-						dataSource: ds.cloneWithRows(dataSource)
-					});
-				}, () => console.log('spotlight stopped'))
-				.then(() => delete this.oldPromise);
+			this.setState({
+				search: data
+			});
+		} catch (e) {
+			// alert(JSON.stringify(e));
 		}
-		this.setState({
-			dataSource: ds.cloneWithRows(dataSource)
-		});
 	}
 
-	updateState = () => {
-		this.setState({
-			dataSource: ds.cloneWithRows(this.data)
-		});
-	};
-
-	_onPressItem = (item = {}) => {
-		const clearSearch = () => {
-			this.setState({
-				searchText: ''
-			});
-		};
-
+	_onPressItem = async(item = {}) => {
 		// if user is using the search we need first to join/create room
-		if (item.search) {
-			if (item.t === 'd') {
-				RocketChat.createDirectMessage(item.username)
-					.then(room => new Promise((resolve) => {
-						const data = database.objects('subscriptions')
-							.filtered('rid = $1', room.rid);
-
-						if (data.length) {
-							return resolve(data[0]);
-						}
-
-						data.addListener(() => {
-							if (data.length) {
-								resolve(data[0]);
-								data.removeAllListeners();
-							}
-						});
-					}))
-					.then(sub => goRoom({ room: sub, name: sub.name }))
-					.then(() => clearSearch());
-			} else {
-				clearSearch();
-				goRoom(item);
-			}
-			return;
+		if (!item.search) {
+			return this.props.navigation.navigate({ routeName: 'Room', params: { room: item, ...item } });
 		}
-
-		goRoom(item);
-		clearSearch();
+		if (item.t === 'd') {
+			const sub = await RocketChat.createDirectMessageAndWait(item.username);
+			return goRoom({ room: sub, name: sub.name });
+		}
+		return goRoom(item);
 	}
 
 	_createChannel() {
 		this.props.navigation.navigate('SelectUsers');
+	}
+
+	_keyExtractor(item) {
+		return item.rid.replace(this.props.user.id, '').trim();
 	}
 
 	renderSearchBar = () => (
@@ -197,27 +168,32 @@ export default class RoomsListView extends React.Component {
 		</View>
 	);
 
-	renderItem = item => (
-		<RoomItem
+	renderItem = ({ item }) => {
+		const id = item.rid.replace(this.props.user.id, '').trim();
+		return (<RoomItem
 			alert={item.alert}
 			unread={item.unread}
 			userMentions={item.userMentions}
 			favorite={item.f}
+			lastMessage={item.lastMessage}
 			name={item.name}
 			_updatedAt={item.roomUpdatedAt}
 			key={item._id}
+			id={id}
 			type={item.t}
 			baseUrl={this.props.Site_Url}
 			onPress={() => this._onPressItem(item)}
-		/>
-	)
+		/>);
+	}
 
 	renderList = () => (
-		<ListView
+		<FlatList
+			data={this.state.search ? this.state.search : this.data}
+			keyExtractor={this._keyExtractor}
 			dataSource={this.state.dataSource}
 			style={styles.list}
-			renderRow={this.renderItem}
-			renderHeader={Platform.OS === 'ios' ? this.renderSearchBar : null}
+			renderItem={this.renderItem}
+			ListHeaderComponent={Platform.OS === 'ios' ? this.renderSearchBar : null}
 			contentOffset={Platform.OS === 'ios' ? { x: 0, y: 38 } : {}}
 			enableEmptySections
 			keyboardShouldPersistTaps='always'

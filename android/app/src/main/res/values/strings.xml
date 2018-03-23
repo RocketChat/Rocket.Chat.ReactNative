@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">RocketChatRN</string>
+
+    <string name="no_browser_found">No Browser Found</string>
 </resources>

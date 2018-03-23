@@ -15,6 +15,10 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.brentvatne.react.ReactVideoPackage;
+import com.remobile.toast.RCTToastPackage;
+import com.wix.reactnativekeyboardinput.KeyboardInputPackage;
+import com.rnim.rn.audio.ReactNativeAudioPackage;
+
 import java.util.Arrays;
 import java.util.List;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
@@ -55,5 +59,25 @@ public class MainApplication extends Application implements ReactApplication {
     public void onCreate() {
         super.onCreate();
         SoLoader.init(this, /* native exopackage */ false);
+    }
+
+    @Override
+    protected List<ReactPackage> getPackages() {
+      return Arrays.<ReactPackage>asList(
+			  new MainReactPackage(),
+        new SvgPackage(),
+        new ImagePickerPackage(),
+        new VectorIconsPackage(),
+        new RNFetchBlobPackage(),
+        new ZeroconfReactPackage(),
+        new RealmReactPackage(),
+        new ReactNativePushNotificationPackage(),
+        new ReactVideoPackage(),
+        new SplashScreenReactPackage(),
+        new RCTToastPackage(),
+        new ReactNativeAudioPackage(),
+        new KeyboardInputPackage(MainApplication.this),
+        new RocketChatNativePackage()
+      );
     }
 }

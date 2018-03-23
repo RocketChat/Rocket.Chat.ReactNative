@@ -28,6 +28,7 @@ const settingsSchema = {
 
 const permissionsRolesSchema = {
 	name: 'permissionsRoles',
+	primaryKey: 'value',
 	properties: {
 		value: 'string'
 	}
@@ -49,12 +50,14 @@ const roomsSchema = {
 	properties: {
 		_id: 'string',
 		t: 'string',
+		lastMessage: 'messages',
 		_updatedAt: { type: 'date', optional: true }
 	}
 };
 
 const subscriptionRolesSchema = {
 	name: 'subscriptionRolesSchema',
+	primaryKey: 'value',
 	properties: {
 		value: 'string'
 	}
@@ -69,9 +72,9 @@ const subscriptionSchema = {
 		t: 'string',
 		ts: { type: 'date', optional: true },
 		ls: { type: 'date', optional: true },
-		name: 'string',
+		name: { type: 'string', indexed: true },
 		fname: { type: 'string', optional: true },
-		rid: 'string',
+		rid: { type: 'string', indexed: true },
 		open: { type: 'bool', optional: true },
 		alert: { type: 'bool', optional: true },
 		roles: { type: 'list', objectType: 'subscriptionRolesSchema' },
@@ -79,7 +82,14 @@ const subscriptionSchema = {
 		userMentions: { type: 'int', optional: true },
 		// userMentions: 0,
 		// groupMentions: 0,
-		roomUpdatedAt: { type: 'date', optional: true }
+		roomUpdatedAt: { type: 'date', optional: true },
+		ro: { type: 'bool', optional: true },
+		lastOpen: { type: 'date', optional: true },
+		lastMessage: { type: 'messages', optional: true },
+		description: { type: 'string', optional: true },
+		announcement: { type: 'string', optional: true },
+		topic: { type: 'string', optional: true },
+		blocked: { type: 'bool', optional: true }
 	}
 };
 
@@ -132,8 +142,9 @@ const attachment = {
 
 const url = {
 	name: 'url',
+	primaryKey: 'url',
 	properties: {
-		_id: 'int',
+		// _id: { type: 'int', optional: true },
 		url: { type: 'string', optional: true },
 		title: { type: 'string', optional: true },
 		description: { type: 'string', optional: true },
@@ -141,9 +152,26 @@ const url = {
 	}
 };
 
+const messagesReactionsUsernamesSchema = {
+	name: 'messagesReactionsUsernames',
+	primaryKey: 'value',
+	properties: {
+		value: 'string'
+	}
+};
+
+const messagesReactionsSchema = {
+	name: 'messagesReactions',
+	primaryKey: 'emoji',
+	properties: {
+		emoji: 'string',
+		usernames: { type: 'list', objectType: 'messagesReactionsUsernames' }
+	}
+};
 
 const messagesEditedBySchema = {
 	name: 'messagesEditedBy',
+	primaryKey: '_id',
 	properties: {
 		_id: { type: 'string', optional: true },
 		username: { type: 'string', optional: true }
@@ -157,7 +185,7 @@ const messagesSchema = {
 		_id: 'string',
 		msg: { type: 'string', optional: true },
 		t: { type: 'string', optional: true },
-		rid: 'string',
+		rid: { type: 'string', indexed: true },
 		ts: 'date',
 		u: 'users',
 		// mentions: [],
@@ -167,14 +195,48 @@ const messagesSchema = {
 		groupable: { type: 'bool', optional: true },
 		avatar: { type: 'string', optional: true },
 		attachments: { type: 'list', objectType: 'attachment' },
-		urls: { type: 'list', objectType: 'url' },
+		urls: { type: 'list', objectType: 'url', default: [] },
 		_updatedAt: { type: 'date', optional: true },
 		status: { type: 'int', optional: true },
 		pinned: { type: 'bool', optional: true },
 		starred: { type: 'bool', optional: true },
-		editedBy: 'messagesEditedBy'
+		editedBy: 'messagesEditedBy',
+		reactions: { type: 'list', objectType: 'messagesReactions' },
+		role: { type: 'string', optional: true }
 	}
 };
+
+const frequentlyUsedEmojiSchema = {
+	name: 'frequentlyUsedEmoji',
+	primaryKey: 'content',
+	properties: {
+		content: { type: 'string', optional: true },
+		extension: { type: 'string', optional: true },
+		isCustom: 'bool',
+		count: 'int'
+	}
+};
+
+const customEmojiAliasesSchema = {
+	name: 'customEmojiAliases',
+	primaryKey: 'value',
+	properties: {
+		value: 'string'
+	}
+};
+
+const customEmojisSchema = {
+	name: 'customEmojis',
+	primaryKey: '_id',
+	properties: {
+		_id: 'string',
+		name: 'string',
+		aliases: { type: 'list', objectType: 'customEmojiAliases' },
+		extension: 'string',
+		_updatedAt: { type: 'date', optional: true }
+	}
+};
+
 const schema = [
 	settingsSchema,
 	subscriptionSchema,
@@ -187,7 +249,12 @@ const schema = [
 	messagesEditedBySchema,
 	permissionsSchema,
 	permissionsRolesSchema,
-	url
+	url,
+	frequentlyUsedEmojiSchema,
+	customEmojiAliasesSchema,
+	customEmojisSchema,
+	messagesReactionsSchema,
+	messagesReactionsUsernamesSchema
 ];
 class DB {
 	databases = {
@@ -201,6 +268,9 @@ class DB {
 	};
 	deleteAll(...args) {
 		return this.database.write(() => this.database.deleteAll(...args));
+	}
+	delete(...args) {
+		return this.database.delete(...args);
 	}
 	write(...args) {
 		return this.database.write(...args);

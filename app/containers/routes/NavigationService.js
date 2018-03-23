@@ -1,5 +1,4 @@
 import { NavigationActions } from 'react-navigation';
-import reduxStore from '../../lib/createStore';
 
 const config = {};
 
@@ -23,6 +22,15 @@ export function goBack() {
 	}
 }
 
+export function goRoomsList() {
+	if (config.navigator) {
+		const action = NavigationActions.reset({
+			index: 0,
+			actions: [NavigationActions.navigate({ routeName: 'RoomsList' })]
+		});
+		config.navigator.dispatch(action);
+	}
+}
 
 export function goRoom({ rid, name }, counter = 0) {
 	// about counter: we can call this method before navigator be set. so we have to wait, if we tried a lot, we give up ...
@@ -30,7 +38,7 @@ export function goRoom({ rid, name }, counter = 0) {
 		return;
 	}
 	if (!config.navigator) {
-		return setTimeout(() => goRoom({ rid, name }, counter + 1), 200);
+		return setTimeout(() => goRoom({ rid, name }, counter + 1), 100);
 	}
 
 	const action = NavigationActions.reset({
@@ -41,5 +49,5 @@ export function goRoom({ rid, name }, counter = 0) {
 		]
 	});
 
-	requestAnimationFrame(() => config.navigator.dispatch(action), reduxStore.getState().app.starting);
+	config.navigator.dispatch(action);
 }

@@ -1,19 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, SafeAreaView, Platform, FlatList, Text, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { View, TextInput, SafeAreaView, FlatList, Text, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
-import { userTyping } from '../../actions/room';
+import { emojify } from 'react-emojione';
+import { KeyboardAccessoryView } from 'react-native-keyboard-input';
+
+import { userTyping, layoutAnimation } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import { editRequest, editCancel, clearInput } from '../../actions/messages';
-import styles from './style';
+import styles from './styles';
 import MyIcon from '../icons';
 import database from '../../lib/realm';
 import Avatar from '../Avatar';
-import AnimatedContainer from './AnimatedContainer';
+import CustomEmoji from '../EmojiPicker/CustomEmoji';
+import { emojis } from '../../emojis';
+import Recording from './Recording';
+import './EmojiKeyboard';
+
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
+const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
 
 const onlyUnique = function onlyUnique(value, index, self) {
 	return self.indexOf(({ _id }) => value._id === _id) === index;
@@ -28,7 +36,8 @@ const onlyUnique = function onlyUnique(value, index, self) {
 	editCancel: () => dispatch(editCancel()),
 	editRequest: message => dispatch(editRequest(message)),
 	typing: status => dispatch(userTyping(status)),
-	clearInput: () => dispatch(clearInput())
+	clearInput: () => dispatch(clearInput()),
+	layoutAnimation: () => dispatch(layoutAnimation())
 }))
 export default class MessageBox extends React.PureComponent {
 	static propTypes = {
@@ -40,20 +49,24 @@ export default class MessageBox extends React.PureComponent {
 		message: PropTypes.object,
 		editing: PropTypes.bool,
 		typing: PropTypes.func,
-		clearInput: PropTypes.func
+		clearInput: PropTypes.func,
+		layoutAnimation: PropTypes.func
 	}
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			height: 20,
-			messageboxHeight: 0,
 			text: '',
 			mentions: [],
-			showAnimatedContainer: false
+			showMentionsContainer: false,
+			showEmojiKeyboard: false,
+			recording: false
 		};
 		this.users = [];
 		this.rooms = [];
+		this.emojis = [];
+		this.customEmojis = [];
+		this._onEmojiSelected = this._onEmojiSelected.bind(this);
 	}
 	componentWillReceiveProps(nextProps) {
 		if (this.props.message !== nextProps.message && nextProps.message.msg) {
@@ -64,17 +77,19 @@ export default class MessageBox extends React.PureComponent {
 		}
 	}
 
-	onChange() {
+	onChangeText(text) {
+		this.setState({ text });
+
 		requestAnimationFrame(() => {
 			const { start, end } = this.component._lastNativeSelection;
 
 			const cursor = Math.max(start, end);
 
-			const text = this.component._lastNativeText;
+			const lastNativeText = this.component._lastNativeText;
 
-			const regexp = /(#|@)([a-z._-]+)$/im;
+			const regexp = /(#|@|:)([a-z0-9._-]+)$/im;
 
-			const result = text.substr(0, cursor).match(regexp);
+			const result = lastNativeText.substr(0, cursor).match(regexp);
 
 			if (!result) {
 				return this.stopTrackingMention();
@@ -85,9 +100,8 @@ export default class MessageBox extends React.PureComponent {
 		});
 	}
 
-
-	onChangeText(text) {
-		this.setState({ text });
+	onKeyboardResigned() {
+		this.closeEmoji();
 	}
 
 	get leftButtons() {
@@ -95,24 +109,24 @@ export default class MessageBox extends React.PureComponent {
 		if (editing) {
 			return (<Icon
 				style={styles.actionButtons}
-				name='ios-close'
+				name='close'
 				accessibilityLabel='Cancel editing'
 				accessibilityTraits='button'
 				onPress={() => this.editCancel()}
 			/>);
 		}
-		return !this.state.emoji ? (<Icon
+		return !this.state.showEmojiKeyboard ? (<Icon
 			style={styles.actionButtons}
 			onPress={() => this.openEmoji()}
 			accessibilityLabel='Open emoji selector'
 			accessibilityTraits='button'
-			name='md-happy'
+			name='mood'
 		/>) : (<Icon
-			onPress={() => this.openEmoji()}
+			onPress={() => this.closeEmoji()}
 			style={styles.actionButtons}
 			accessibilityLabel='Close emoji selector'
 			accessibilityTraits='button'
-			name='md-sad'
+			name='keyboard'
 		/>);
 	}
 	get rightButtons() {
@@ -127,7 +141,16 @@ export default class MessageBox extends React.PureComponent {
 				accessibilityTraits='button'
 				onPress={() => this.submit(this.state.text)}
 			/>);
+			return icons;
 		}
+		icons.push(<Icon
+			style={[styles.actionButtons, { color: '#1D74F5', paddingHorizontal: 10 }]}
+			name='mic'
+			key='micIcon'
+			accessibilityLabel='Send audio message'
+			accessibilityTraits='button'
+			onPress={() => this.recordAudioMessage()}
+		/>);
 		icons.push(<MyIcon
 			style={[styles.actionButtons, { color: '#2F343D', fontSize: 16 }]}
 			name='plus'
@@ -137,10 +160,6 @@ export default class MessageBox extends React.PureComponent {
 			onPress={() => this.addFile()}
 		/>);
 		return icons;
-	}
-
-	updateSize = (height) => {
-		this.setState({ height: height + (Platform.OS === 'ios' ? 0 : 0) });
 	}
 
 	addFile = () => {
@@ -175,28 +194,57 @@ export default class MessageBox extends React.PureComponent {
 		this.props.editCancel();
 		this.setState({ text: '' });
 	}
-	openEmoji() {
-		this.setState({ emoji: !this.state.emoji });
+	async openEmoji() {
+		await this.setState({
+			showEmojiKeyboard: true
+		});
 	}
+
+	async recordAudioMessage() {
+		const recording = await Recording.permission();
+		this.setState({ recording });
+	}
+
+	finishAudioMessage = async(fileInfo) => {
+		if (fileInfo) {
+			RocketChat.sendFileMessage(this.props.rid, fileInfo);
+		}
+		this.setState({
+			recording: false
+		});
+	}
+
+	closeEmoji() {
+		this.setState({ showEmojiKeyboard: false });
+	}
+
 	submit(message) {
 		this.setState({ text: '' });
+		this.closeEmoji();
 		this.stopTrackingMention();
-		requestAnimationFrame(() => {
-			this.props.typing(false);
-			if (message.trim() === '') {
-				return;
-			}
-			// if is editing a message
-			const { editing } = this.props;
-			if (editing) {
-				const { _id, rid } = this.props.message;
-				this.props.editRequest({ _id, msg: message, rid });
-			} else {
-				// if is submiting a new message
-				this.props.onSubmit(message);
-			}
-			this.props.clearInput();
-		});
+		this.props.typing(false);
+		if (message.trim() === '') {
+			return;
+		}
+		// if is editing a message
+		const { editing } = this.props;
+		if (editing) {
+			const { _id, rid } = this.props.message;
+			this.props.editRequest({ _id, msg: message, rid });
+		} else {
+			// if is submiting a new message
+			this.props.onSubmit(message);
+		}
+		this.props.clearInput();
+	}
+
+	_getFixedMentions(keyword) {
+		if ('all'.indexOf(keyword) !== -1) {
+			this.users = [{ _id: -1, username: 'all', desc: 'all' }, ...this.users];
+		}
+		if ('here'.indexOf(keyword) !== -1) {
+			this.users = [{ _id: -2, username: 'here', desc: 'active users' }, ...this.users];
+		}
 	}
 
 	async _getUsers(keyword) {
@@ -204,6 +252,7 @@ export default class MessageBox extends React.PureComponent {
 		if (keyword) {
 			this.users = this.users.filtered('username CONTAINS[c] $0', keyword);
 		}
+		this._getFixedMentions(keyword);
 		this.setState({ mentions: this.users.slice() });
 
 		const usernames = [];
@@ -231,8 +280,9 @@ export default class MessageBox extends React.PureComponent {
 			console.log('spotlight canceled');
 		} finally {
 			delete this.oldPromise;
-			this.users = database.objects('users').filtered('username CONTAINS[c] $0', keyword);
-			this.setState({ mentions: this.users.slice() });
+			this.users = database.objects('users').filtered('username CONTAINS[c] $0', keyword).slice();
+			this._getFixedMentions(keyword);
+			this.setState({ mentions: this.users });
 		}
 	}
 
@@ -276,25 +326,44 @@ export default class MessageBox extends React.PureComponent {
 		}
 	}
 
+	_getEmojis(keyword) {
+		if (keyword) {
+			this.customEmojis = database.objects('customEmojis').filtered('name CONTAINS[c] $0', keyword).slice(0, 4);
+			this.emojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, 4);
+			const mergedEmojis = [...this.customEmojis, ...this.emojis];
+			this.setState({ mentions: mergedEmojis });
+		}
+	}
+
 	stopTrackingMention() {
 		this.setState({
-			showAnimatedContainer: false,
-			mentions: []
+			showMentionsContainer: false,
+			mentions: [],
+			trackingType: ''
 		});
 		this.users = [];
 		this.rooms = [];
+		this.customEmojis = [];
+		this.emojis = [];
 	}
 
 	identifyMentionKeyword(keyword, type) {
-		this.updateMentions(keyword, type);
+		if (!this.state.showMentionsContainer) {
+			this.props.layoutAnimation();
+		}
 		this.setState({
-			showAnimatedContainer: true
+			showMentionsContainer: true,
+			showEmojiKeyboard: false,
+			trackingType: type
 		});
+		this.updateMentions(keyword, type);
 	}
 
 	updateMentions = (keyword, type) => {
 		if (type === MENTIONS_TRACKING_TYPE_USERS) {
 			this._getUsers(keyword);
+		} else if (type === MENTIONS_TRACKING_TYPE_EMOJIS) {
+			this._getEmojis(keyword);
 		} else {
 			this._getRooms(keyword);
 		}
@@ -307,73 +376,147 @@ export default class MessageBox extends React.PureComponent {
 
 		const cursor = Math.max(start, end);
 
-		const regexp = /([a-z._-]+)$/im;
+		const regexp = /([a-z0-9._-]+)$/im;
 
 		const result = msg.substr(0, cursor).replace(regexp, '');
-		const text = `${ result }${ item.username || item.name } ${ msg.slice(cursor) }`;
+		const mentionName = this.state.trackingType === MENTIONS_TRACKING_TYPE_EMOJIS ?
+			`${ item.name || item }:` : (item.username || item.name);
+		const text = `${ result }${ mentionName } ${ msg.slice(cursor) }`;
 		this.component.setNativeProps({ text });
 		this.setState({ text });
 		this.component.focus();
 		requestAnimationFrame(() => this.stopTrackingMention());
 	}
-	renderMentionItem = item => (
+	_onEmojiSelected(keyboardId, params) {
+		const { text } = this.state;
+		const { emoji } = params;
+		let newText = '';
+
+		// if messagebox has an active cursor
+		if (this.component._lastNativeSelection) {
+			const { start, end } = this.component._lastNativeSelection;
+			const cursor = Math.max(start, end);
+			newText = `${ text.substr(0, cursor) }${ emoji }${ text.substr(cursor) }`;
+		} else {
+			// if messagebox doesn't have a cursor, just append selected emoji
+			newText = `${ text }${ emoji }`;
+		}
+		this.component.setNativeProps({ text: newText });
+		this.setState({ text: newText });
+	}
+	renderFixedMentionItem = item => (
 		<TouchableOpacity
 			style={styles.mentionItem}
 			onPress={() => this._onPressMention(item)}
 		>
-			<Avatar
-				style={{ margin: 8 }}
-				text={item.username || item.name}
-				size={30}
-				baseUrl={this.props.baseUrl}
-			/>
-			<Text>{item.username || item.name }</Text>
+			<Text style={styles.fixedMentionAvatar}>{item.username}</Text>
+			<Text>Notify {item.desc} in this room</Text>
 		</TouchableOpacity>
 	)
-	renderMentions() {
-		const usersList = (
-			<FlatList
-				style={styles.mentionList}
-				data={this.state.mentions}
-				renderItem={({ item }) => this.renderMentionItem(item)}
-				keyExtractor={item => item._id}
-				keyboardShouldPersistTaps='always'
-				keyboardDismissMode='interactive'
-			/>
-		);
-		const { showAnimatedContainer, messageboxHeight } = this.state;
-		return <AnimatedContainer visible={showAnimatedContainer} subview={usersList} messageboxHeight={messageboxHeight} />;
-	}
-	render() {
-		const { height } = this.state;
+	renderMentionEmoji = (item) => {
+		if (item.name) {
+			return (
+				<CustomEmoji
+					key='mention-item-avatar'
+					style={styles.mentionItemCustomEmoji}
+					emoji={item}
+					baseUrl={this.props.baseUrl}
+				/>
+			);
+		}
 		return (
-			<View>
+			<Text
+				key='mention-item-avatar'
+				style={styles.mentionItemEmoji}
+			>
+				{emojify(`:${ item }:`, { output: 'unicode' })}
+			</Text>
+		);
+	}
+	renderMentionItem = (item) => {
+		if (item.username === 'all' || item.username === 'here') {
+			return this.renderFixedMentionItem(item);
+		}
+		return (
+			<TouchableOpacity
+				style={styles.mentionItem}
+				onPress={() => this._onPressMention(item)}
+			>
+				{this.state.trackingType === MENTIONS_TRACKING_TYPE_EMOJIS ?
+					[
+						this.renderMentionEmoji(item),
+						<Text key='mention-item-name'>:{ item.name || item }:</Text>
+					]
+					: [
+						<Avatar
+							key='mention-item-avatar'
+							style={{ margin: 8 }}
+							text={item.username || item.name}
+							size={30}
+							baseUrl={this.props.baseUrl}
+						/>,
+						<Text key='mention-item-name'>{ item.username || item.name }</Text>
+					]
+				}
+			</TouchableOpacity>
+		);
+	}
+	renderMentions = () => (
+		<FlatList
+			key='messagebox-container'
+			style={styles.mentionList}
+			data={this.state.mentions}
+			renderItem={({ item }) => this.renderMentionItem(item)}
+			keyExtractor={item => item._id || item}
+			keyboardShouldPersistTaps='always'
+		/>
+	);
+
+	renderContent() {
+		if (this.state.recording) {
+			return (<Recording onFinish={this.finishAudioMessage} />);
+		}
+		return (
+			[
+				this.renderMentions(),
 				<SafeAreaView
+					key='messagebox'
 					style={[styles.textBox, (this.props.editing ? styles.editing : null)]}
-					onLayout={event => this.setState({ messageboxHeight: event.nativeEvent.layout.height })}
 				>
 					<View style={styles.textArea}>
 						{this.leftButtons}
 						<TextInput
 							ref={component => this.component = component}
-							style={[styles.textBoxInput, { height }]}
+							style={styles.textBoxInput}
 							returnKeyType='default'
 							blurOnSubmit={false}
 							placeholder='New Message'
 							onChangeText={text => this.onChangeText(text)}
-							onChange={event => this.onChange(event)}
 							value={this.state.text}
 							underlineColorAndroid='transparent'
 							defaultValue=''
 							multiline
 							placeholderTextColor='#9EA2A8'
-							onContentSizeChange={e => this.updateSize(e.nativeEvent.contentSize.height)}
 						/>
 						{this.rightButtons}
 					</View>
 				</SafeAreaView>
-				{this.renderMentions()}
-			</View>
+			]
+		);
+	}
+
+	render() {
+		return (
+			<KeyboardAccessoryView
+				renderContent={() => this.renderContent()}
+				kbInputRef={this.component}
+				kbComponent={this.state.showEmojiKeyboard ? 'EmojiKeyboard' : null}
+				onKeyboardResigned={() => this.onKeyboardResigned()}
+				onItemSelected={this._onEmojiSelected}
+				trackInteractive
+				// revealKeyboardInteractive
+				requiresSameParentToManageScrollView
+			/>
 		);
 	}
 }

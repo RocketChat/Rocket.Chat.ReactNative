@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableHighlight, Text, TouchableOpacity, Animated } from 'react-native';
+import { View, TouchableHighlight, Text, TouchableOpacity, Vibration, ViewPropTypes } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
+import equal from 'deep-equal';
+import { KeyboardUtils } from 'react-native-keyboard-input';
 
-import { actionsShow, errorActionsShow } from '../../actions/messages';
+import { actionsShow, errorActionsShow, toggleReactionPicker } from '../../actions/messages';
 import Image from './Image';
 import User from './User';
 import Avatar from '../Avatar';
@@ -14,99 +16,130 @@ import Video from './Video';
 import Markdown from './Markdown';
 import Url from './Url';
 import Reply from './Reply';
+import ReactionsModal from './ReactionsModal';
+import Emoji from './Emoji';
 import messageStatus from '../../constants/messagesStatus';
 import styles from './styles';
 
-const avatar = { marginRight: 10 };
-const flex = { flexDirection: 'row', flex: 1 };
-
-
 @connect(state => ({
 	message: state.messages.message,
-	editing: state.messages.editing
+	editing: state.messages.editing,
+	customEmojis: state.customEmojis
 }), dispatch => ({
 	actionsShow: actionMessage => dispatch(actionsShow(actionMessage)),
-	errorActionsShow: actionMessage => dispatch(errorActionsShow(actionMessage))
+	errorActionsShow: actionMessage => dispatch(errorActionsShow(actionMessage)),
+	toggleReactionPicker: message => dispatch(toggleReactionPicker(message))
 }))
 export default class Message extends React.Component {
 	static propTypes = {
+		status: PropTypes.any,
 		item: PropTypes.object.isRequired,
+		reactions: PropTypes.any.isRequired,
 		baseUrl: PropTypes.string.isRequired,
 		Message_TimeFormat: PropTypes.string.isRequired,
 		message: PropTypes.object.isRequired,
 		user: PropTypes.object.isRequired,
 		editing: PropTypes.bool,
-		actionsShow: PropTypes.func,
 		errorActionsShow: PropTypes.func,
-		animate: PropTypes.bool
+		customEmojis: PropTypes.object,
+		toggleReactionPicker: PropTypes.func,
+		onReactionPress: PropTypes.func,
+		style: ViewPropTypes.style,
+		onLongPress: PropTypes.func,
+		_updatedAt: PropTypes.instanceOf(Date)
 	}
 
-	componentWillMount() {
-		this._visibility = new Animated.Value(this.props.animate ? 0 : 1);
-	}
-	componentDidMount() {
-		if (this.props.animate) {
-			Animated.timing(this._visibility, {
-				toValue: 1,
-				duration: 300
-			}).start();
-		}
-	}
-	componentWillReceiveProps() {
-		this.extraStyle = this.extraStyle || {};
-		if (this.props.item.status === messageStatus.TEMP || this.props.item.status === messageStatus.ERROR) {
-			this.extraStyle.opacity = 0.3;
-		}
+	static defaultProps = {
+		onLongPress: () => {},
+		_updatedAt: new Date()
 	}
 
-	shouldComponentUpdate(nextProps) {
-		return this.props.item._updatedAt.toGMTString() !== nextProps.item._updatedAt.toGMTString() || this.props.item.status !== nextProps.item.status;
+	constructor(props) {
+		super(props);
+		this.state = { reactionsModal: false };
+		this.onClose = this.onClose.bind(this);
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		if (!equal(this.props.reactions, nextProps.reactions)) {
+			return true;
+		}
+		if (this.state.reactionsModal !== nextState.reactionsModal) {
+			return true;
+		}
+		return this.props._updatedAt.toGMTString() !== nextProps._updatedAt.toGMTString() || this.props.status !== nextProps.status;
+	}
+
+	onPress = () => {
+		KeyboardUtils.dismiss();
 	}
 
 	onLongPress() {
-		const { item } = this.props;
-		this.props.actionsShow(JSON.parse(JSON.stringify(item)));
+		this.props.onLongPress(this.parseMessage());
 	}
 
 	onErrorPress() {
-		const { item } = this.props;
-		this.props.errorActionsShow(JSON.parse(JSON.stringify(item)));
+		this.props.errorActionsShow(this.parseMessage());
+	}
+
+	onReactionPress(emoji) {
+		this.props.onReactionPress(emoji, this.props.item._id);
+	}
+	onClose() {
+		this.setState({ reactionsModal: false });
+	}
+	onReactionLongPress() {
+		this.setState({ reactionsModal: true });
+		Vibration.vibrate(50);
 	}
 
 	getInfoMessage() {
 		let message = '';
-		const messageType = this.props.item.t;
+		const {
+			t, role, msg, u
+		} = this.props.item;
 
-		if (messageType === 'rm') {
+		if (t === 'rm') {
 			message = 'Message removed';
-		} else if (messageType === 'uj') {
+		} else if (t === 'uj') {
 			message = 'Has joined the channel.';
-		} else if (messageType === 'r') {
-			message = `Room name changed to: ${ this.props.item.msg } by ${ this.props.item.u.username }`;
-		} else if (messageType === 'message_pinned') {
+		} else if (t === 'r') {
+			message = `Room name changed to: ${ msg } by ${ u.username }`;
+		} else if (t === 'message_pinned') {
 			message = 'Message pinned';
-		} else if (messageType === 'ul') {
+		} else if (t === 'ul') {
 			message = 'Has left the channel.';
-		} else if (messageType === 'ru') {
-			message = `User ${ this.props.item.msg } removed by ${ this.props.item.u.username }`;
-		} else if (messageType === 'au') {
-			message = `User ${ this.props.item.msg } added by ${ this.props.item.u.username }`;
-		} else if (messageType === 'user-muted') {
-			message = `User ${ this.props.item.msg } muted by ${ this.props.item.u.username }`;
-		} else if (messageType === 'user-unmuted') {
-			message = `User ${ this.props.item.msg } unmuted by ${ this.props.item.u.username }`;
+		} else if (t === 'ru') {
+			message = `User ${ msg } removed by ${ u.username }`;
+		} else if (t === 'au') {
+			message = `User ${ msg } added by ${ u.username }`;
+		} else if (t === 'user-muted') {
+			message = `User ${ msg } muted by ${ u.username }`;
+		} else if (t === 'user-unmuted') {
+			message = `User ${ msg } unmuted by ${ u.username }`;
+		} else if (t === 'subscription-role-added') {
+			message = `${ msg } was set ${ role } by ${ u.username }`;
+		} else if (t === 'subscription-role-removed') {
+			message = `${ msg } is no longer ${ role } by ${ u.username }`;
 		}
 
 		return message;
 	}
 
-	isInfoMessage() {
-		return ['r', 'au', 'ru', 'ul', 'uj', 'rm', 'user-muted', 'user-unmuted', 'message_pinned'].includes(this.props.item.t);
-	}
+	parseMessage = () => JSON.parse(JSON.stringify(this.props.item));
 
+	isInfoMessage() {
+		return [
+			'r', 'au', 'ru', 'ul', 'uj', 'rm', 'user-muted', 'user-unmuted', 'message_pinned', 'subscription-role-added', 'subscription-role-removed'
+		].includes(this.props.item.t);
+	}
 
 	isDeleted() {
 		return this.props.item.t === 'rm';
+	}
+
+	isTemp() {
+		return this.props.item.status === messageStatus.TEMP || this.props.item.status === messageStatus.ERROR;
 	}
 
 	hasError() {
@@ -135,7 +168,8 @@ export default class Message extends React.Component {
 		if (this.isInfoMessage()) {
 			return <Text style={styles.textInfo}>{this.getInfoMessage()}</Text>;
 		}
-		return <Markdown msg={this.props.item.msg} />;
+		const { item, customEmojis, baseUrl } = this.props;
+		return <Markdown msg={item.msg} customEmojis={customEmojis} baseUrl={baseUrl} />;
 	}
 
 	renderUrl() {
@@ -144,7 +178,7 @@ export default class Message extends React.Component {
 		}
 
 		return this.props.item.urls.map(url => (
-			<Url url={url} key={url._id} />
+			<Url url={url} key={url.url} />
 		));
 	}
 
@@ -159,38 +193,70 @@ export default class Message extends React.Component {
 		);
 	}
 
+	renderReaction(reaction) {
+		const reacted = reaction.usernames.findIndex(item => item.value === this.props.user.username) !== -1;
+		const reactedContainerStyle = reacted ? { borderColor: '#bde1fe', backgroundColor: '#f3f9ff' } : {};
+		const reactedCount = reacted ? { color: '#4fb0fc' } : {};
+		return (
+			<TouchableOpacity
+				onPress={() => this.onReactionPress(reaction.emoji)}
+				onLongPress={() => this.onReactionLongPress()}
+				key={reaction.emoji}
+			>
+				<View style={[styles.reactionContainer, reactedContainerStyle]}>
+					<Emoji
+						content={reaction.emoji}
+						standardEmojiStyle={styles.reactionEmoji}
+						customEmojiStyle={styles.reactionCustomEmoji}
+						customEmojis={this.props.customEmojis}
+					/>
+					<Text style={[styles.reactionCount, reactedCount]}>{ reaction.usernames.length }</Text>
+				</View>
+			</TouchableOpacity>
+		);
+	}
+
+	renderReactions() {
+		if (this.props.item.reactions.length === 0) {
+			return null;
+		}
+		return (
+			<View style={styles.reactionsContainer}>
+				{this.props.item.reactions.map(reaction => this.renderReaction(reaction))}
+				<TouchableOpacity
+					onPress={() => this.props.toggleReactionPicker(this.parseMessage())}
+					key='add-reaction'
+					style={styles.reactionContainer}
+				>
+					<Icon name='insert-emoticon' color='#aaaaaa' size={15} />
+				</TouchableOpacity>
+			</View>
+		);
+	}
+
 	render() {
 		const {
-			item, message, editing, baseUrl
+			item, message, editing, baseUrl, customEmojis, style
 		} = this.props;
-
-		const marginLeft = this._visibility.interpolate({
-			inputRange: [0, 1],
-			outputRange: [-30, 0]
-		});
-		const opacity = this._visibility.interpolate({
-			inputRange: [0, 1],
-			outputRange: [0, 1]
-		});
 		const username = item.alias || item.u.username;
 		const isEditing = message._id === item._id && editing;
-
-		const accessibilityLabel = `Message from ${ item.alias || item.u.username } at ${ moment(item.ts).format(this.props.Message_TimeFormat) }, ${ this.props.item.msg }`;
+		const accessibilityLabel = `Message from ${ username } at ${ moment(item.ts).format(this.props.Message_TimeFormat) }, ${ this.props.item.msg }`;
 
 		return (
 			<TouchableHighlight
+				onPress={() => this.onPress()}
 				onLongPress={() => this.onLongPress()}
 				disabled={this.isDeleted() || this.hasError()}
 				underlayColor='#FFFFFF'
 				activeOpacity={0.3}
-				style={[styles.message, isEditing ? styles.editing : null]}
+				style={[styles.message, isEditing ? styles.editing : null, style]}
 				accessibilityLabel={accessibilityLabel}
 			>
-				<Animated.View style={[flex, { opacity, marginLeft }]}>
+				<View style={styles.flex}>
 					{this.renderError()}
-					<View style={[this.extraStyle, flex]}>
+					<View style={[this.isTemp() && { opacity: 0.3 }, styles.flex]}>
 						<Avatar
-							style={avatar}
+							style={styles.avatar}
 							text={item.avatar ? '' : username}
 							size={40}
 							baseUrl={baseUrl}
@@ -206,9 +272,20 @@ export default class Message extends React.Component {
 							{this.renderMessageContent()}
 							{this.attachments()}
 							{this.renderUrl()}
+							{this.renderReactions()}
 						</View>
 					</View>
-				</Animated.View>
+					{this.state.reactionsModal ?
+						<ReactionsModal
+							isVisible={this.state.reactionsModal}
+							onClose={this.onClose}
+							reactions={item.reactions}
+							user={this.props.user}
+							customEmojis={customEmojis}
+						/>
+						: null
+					}
+				</View>
 			</TouchableHighlight>
 		);
 	}

@@ -13,7 +13,6 @@ export function loginRequest(credentials) {
 	};
 }
 
-
 export function registerSubmit(credentials) {
 	return {
 		type: types.LOGIN.REGISTER_SUBMIT,
@@ -123,5 +122,30 @@ export function setUser(action) {
 	return {
 		type: types.USER.SET,
 		...action
+	};
+}
+
+export function open() {
+	return {
+		type: types.LOGIN.OPEN
+	};
+}
+
+export function close() {
+	return {
+		type: types.LOGIN.CLOSE
+	};
+}
+
+export function setLoginServices(data) {
+	return {
+		type: types.LOGIN.SET_SERVICES,
+		data
+	};
+}
+
+export function removeLoginServices() {
+	return {
+		type: types.LOGIN.REMOVE_SERVICES
 	};
 }

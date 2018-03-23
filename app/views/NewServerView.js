@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { serverRequest, addServer } from '../actions/server';
 import KeyboardView from '../presentation/KeyboardView';
 import styles from './Styles';
+import scrollPersistTaps from '../utils/scrollPersistTaps';
 
 @connect(state => ({
 	validInstance: !state.server.failure && !state.server.connecting,
@@ -115,8 +116,7 @@ export default class NewServerView extends React.Component {
 			>
 				<ScrollView
 					style={styles.loginView}
-					keyboardDismissMode='interactive'
-					keyboardShouldPersistTaps='always'
+					{...scrollPersistTaps}
 				>
 					<TextInput
 						ref={ref => this.inputElement = ref}

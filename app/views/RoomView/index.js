@@ -1,55 +1,59 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Button, SafeAreaView } from 'react-native';
+import { Text, View, Button } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import equal from 'deep-equal';
 
-import { ListView } from './ListView';
+import { List } from './ListView';
 import * as actions from '../../actions';
-import { openRoom } from '../../actions/room';
-import { editCancel } from '../../actions/messages';
+import { openRoom, setLastOpen } from '../../actions/room';
+import { editCancel, toggleReactionPicker, actionsShow } from '../../actions/messages';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
 import MessageActions from '../../containers/MessageActions';
 import MessageErrorActions from '../../containers/MessageErrorActions';
 import MessageBox from '../../containers/MessageBox';
-import Typing from '../../containers/Typing';
-import KeyboardView from '../../presentation/KeyboardView';
 import Header from '../../containers/Header';
 import RoomsHeader from './Header';
+import ReactionPicker from './ReactionPicker';
 import Banner from './banner';
 import styles from './styles';
 
-import debounce from '../../utils/debounce';
-
-const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id });
-
-const typing = () => <Typing />;
 @connect(
 	state => ({
 		Site_Url: state.settings.Site_Url || state.server ? state.server.server : '',
 		Message_TimeFormat: state.settings.Message_TimeFormat,
 		loading: state.messages.isFetching,
-		user: state.login.user
+		user: state.login.user,
+		actionMessage: state.messages.actionMessage,
+		layoutAnimation: state.room.layoutAnimation
 	}),
 	dispatch => ({
 		actions: bindActionCreators(actions, dispatch),
 		openRoom: room => dispatch(openRoom(room)),
-		editCancel: () => dispatch(editCancel())
+		editCancel: () => dispatch(editCancel()),
+		setLastOpen: date => dispatch(setLastOpen(date)),
+		toggleReactionPicker: message => dispatch(toggleReactionPicker(message)),
+		actionsShow: actionMessage => dispatch(actionsShow(actionMessage))
 	})
 )
 export default class RoomView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
 		openRoom: PropTypes.func.isRequired,
+		setLastOpen: PropTypes.func.isRequired,
 		user: PropTypes.object.isRequired,
 		editCancel: PropTypes.func,
 		rid: PropTypes.string,
 		name: PropTypes.string,
 		Site_Url: PropTypes.string,
-		Message_TimeFormat: PropTypes.string
+		Message_TimeFormat: PropTypes.string,
+		loading: PropTypes.bool,
+		actionMessage: PropTypes.object,
+		toggleReactionPicker: PropTypes.func.isRequired,
+		actionsShow: PropTypes.func
 	};
 
 	static navigationOptions = ({ navigation }) => ({
@@ -61,72 +65,78 @@ export default class RoomView extends React.Component {
 		this.rid =
 			props.rid ||
 			props.navigation.state.params.room.rid;
-		this.name = this.props.name ||
-		this.props.navigation.state.params.name ||
-		this.props.navigation.state.params.room.name;
-		this.opened = new Date();
-		this.data = database
-			.objects('messages')
-			.filtered('rid = $0', this.rid)
-			.sorted('ts', true);
-		const rowIds = this.data.map((row, index) => index);
-		this.room = database.objects('subscriptions').filtered('rid = $0', this.rid);
+		this.name = props.name ||
+			props.navigation.state.params.name ||
+			props.navigation.state.params.room.name;
+		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
-			dataSource: ds.cloneWithRows(this.data, rowIds),
 			loaded: true,
-			joined: typeof props.rid === 'undefined'
+			joined: typeof props.rid === 'undefined',
+			room: this.rooms[0]
 		};
+		this.onReactionPress = this.onReactionPress.bind(this);
 	}
 
-	componentWillMount() {
+	async componentDidMount() {
 		this.props.navigation.setParams({
 			title: this.name
 		});
-		this.props.openRoom({ rid: this.rid, name: this.name });
-		this.data.addListener(this.updateState);
+		this.updateRoom();
+		await this.props.openRoom({ rid: this.rid, name: this.name, ls: this.state.room.ls });
+		if (this.state.room.alert || this.state.room.unread || this.state.room.userMentions) {
+			this.props.setLastOpen(this.state.room.ls);
+		} else {
+			this.props.setLastOpen(null);
+		}
+
+		this.rooms.addListener(this.updateRoom);
 	}
 	shouldComponentUpdate(nextProps, nextState) {
-		return !(equal(this.props, nextProps) && equal(this.state, nextState));
+		return !(equal(this.props, nextProps) && equal(this.state, nextState) && this.state.room.ro === nextState.room.ro);
 	}
 	componentWillUnmount() {
-		clearTimeout(this.timer);
-		this.data.removeAllListeners();
+		this.rooms.removeAllListeners();
 		this.props.editCancel();
 	}
 
-	onEndReached = () => {
-		if (
-			// rowCount &&
-			this.state.loaded &&
-			this.state.loadingMore !== true &&
-			this.state.end !== true
-		) {
-			this.setState({
-				loadingMore: true
-			});
-			requestAnimationFrame(() => {
-				const lastRowData = this.data[this.data.length - 1];
-				if (!lastRowData) {
-					return;
-				}
-				RocketChat.loadMessagesForRoom(this.rid, lastRowData.ts, ({ end }) => {
-					this.setState({
-						loadingMore: false,
-						end
-					});
-				});
-			});
+	onEndReached = (data) => {
+		if (this.props.loading || this.state.end) {
+			return;
 		}
+
+		requestAnimationFrame(() => {
+			const lastRowData = data[data.length - 1];
+			if (!lastRowData) {
+				return;
+			}
+			RocketChat.loadMessagesForRoom(this.rid, lastRowData.ts, ({ end }) => end && this.setState({
+				end
+			}));
+		});
 	}
 
-	updateState = debounce(() => {
-		const rowIds = this.data.map((row, index) => index);
-		this.setState({
-			dataSource: this.state.dataSource.cloneWithRows(this.data, rowIds)
-		});
-	}, 50);
+	onMessageLongPress = (message) => {
+		this.props.actionsShow(message);
+	}
 
-	sendMessage = message => RocketChat.sendMessage(this.rid, message);
+	onReactionPress = (shortname, messageId) => {
+		if (!messageId) {
+			RocketChat.setReaction(shortname, this.props.actionMessage._id);
+			return this.props.toggleReactionPicker();
+		}
+		RocketChat.setReaction(shortname, messageId);
+	};
+
+	updateRoom = () => {
+		this.setState({ room: this.rooms[0] });
+		this.forceUpdate();
+	}
+
+	sendMessage = (message) => {
+		RocketChat.sendMessage(this.rid, message).then(() => {
+			this.props.setLastOpen(null);
+		});
+	};
 
 	joinRoom = async() => {
 		await RocketChat.joinRoom(this.props.rid);
@@ -139,10 +149,14 @@ export default class RoomView extends React.Component {
 		<Message
 			key={item._id}
 			item={item}
-			animate={this.opened.toISOString() < item.ts.toISOString()}
+			_updatedAt={item._updatedAt}
+			status={item.status}
+			reactions={JSON.parse(JSON.stringify(item.reactions))}
 			baseUrl={this.props.Site_Url}
 			Message_TimeFormat={this.props.Message_TimeFormat}
 			user={this.props.user}
+			onReactionPress={this.onReactionPress}
+			onLongPress={this.onMessageLongPress}
 		/>
 	);
 
@@ -157,42 +171,39 @@ export default class RoomView extends React.Component {
 				</View>
 			);
 		}
+		if (this.state.room.ro) {
+			return (
+				<View style={styles.readOnly}>
+					<Text>This room is read only</Text>
+				</View>
+			);
+		}
 		return <MessageBox ref={box => (this.box = box)} onSubmit={this.sendMessage} rid={this.rid} />;
 	};
 
 	renderHeader = () => {
-		if (this.state.loadingMore) {
-			return <Text style={styles.loadingMore}>Loading more messages...</Text>;
-		}
-
 		if (this.state.end) {
 			return <Text style={styles.loadingMore}>Start of conversation</Text>;
 		}
+		return <Text style={styles.loadingMore}>Loading more messages...</Text>;
 	}
 	render() {
 		return (
-			<KeyboardView contentContainerStyle={styles.container} keyboardVerticalOffset={64}>
-
+			<View style={styles.container}>
 				<Banner />
-				<SafeAreaView style={styles.safeAreaView}>
-					<ListView
-						enableEmptySections
-						style={styles.list}
-						onEndReachedThreshold={500}
-						renderFooter={this.renderHeader}
-						renderHeader={typing}
-						onEndReached={this.onEndReached}
-						dataSource={this.state.dataSource}
-						renderRow={item => this.renderItem(item)}
-						initialListSize={10}
-						keyboardShouldPersistTaps='always'
-						keyboardDismissMode='interactive'
-					/>
-				</SafeAreaView>
+				<List
+					key='room-view-messages'
+					end={this.state.end}
+					room={this.rid}
+					renderFooter={this.renderHeader}
+					onEndReached={this.onEndReached}
+					renderRow={item => this.renderItem(item)}
+				/>
 				{this.renderFooter()}
-				<MessageActions room={this.room} />
+				{this.state.room._id ? <MessageActions room={this.state.room} /> : null}
 				<MessageErrorActions />
-			</KeyboardView>
+				<ReactionPicker onEmojiSelected={this.onReactionPress} />
+			</View>
 		);
 	}
 }

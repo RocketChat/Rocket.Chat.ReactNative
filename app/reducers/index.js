@@ -10,8 +10,31 @@ import navigator from './navigator';
 import createChannel from './createChannel';
 import app from './app';
 import permissions from './permissions';
+import customEmojis from './customEmojis';
 import activeUsers from './activeUsers';
+import starredMessages from './starredMessages';
+import pinnedMessages from './pinnedMessages';
+import mentionedMessages from './mentionedMessages';
+import snippetedMessages from './snippetedMessages';
+import roomFiles from './roomFiles';
 
 export default combineReducers({
-	settings, login, meteor, messages, server, navigator, createChannel, app, room, rooms, permissions, activeUsers
+	settings,
+	login,
+	meteor,
+	messages,
+	server,
+	navigator,
+	createChannel,
+	app,
+	room,
+	rooms,
+	permissions,
+	customEmojis,
+	activeUsers,
+	starredMessages,
+	pinnedMessages,
+	mentionedMessages,
+	snippetedMessages,
+	roomFiles
 });

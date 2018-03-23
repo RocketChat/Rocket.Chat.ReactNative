@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ViewPropTypes } from 'react-native';
 import { CachedImage } from 'react-native-img-cache';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import avatarInitialsAndColor from '../utils/avatarInitialsAndColor';
 
 const styles = StyleSheet.create({
 	iconContainer: {
-		overflow: 'hidden',
+		// overflow: 'hidden',
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
@@ -23,8 +23,17 @@ const styles = StyleSheet.create({
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }))
-
-class Avatar extends React.PureComponent {
+export default class Avatar extends React.PureComponent {
+	static propTypes = {
+		style: ViewPropTypes.style,
+		baseUrl: PropTypes.string,
+		text: PropTypes.string.isRequired,
+		avatar: PropTypes.string,
+		size: PropTypes.number,
+		borderRadius: PropTypes.number,
+		type: PropTypes.string,
+		children: PropTypes.object
+	};
 	render() {
 		const {
 			text = '', size = 25, baseUrl, borderRadius = 4, style, avatar, type = 'd'
@@ -60,6 +69,7 @@ class Avatar extends React.PureComponent {
 				<View style={[styles.iconContainer, iconContainerStyle, style]}>
 					<Text style={[styles.avatarInitials, avatarInitialsStyle]} allowFontScaling={false}>{initials}</Text>
 					{image}
+					{this.props.children}
 				</View>);
 		}
 
@@ -76,14 +86,3 @@ class Avatar extends React.PureComponent {
 		);
 	}
 }
-
-Avatar.propTypes = {
-	style: PropTypes.object,
-	baseUrl: PropTypes.string,
-	text: PropTypes.string.isRequired,
-	avatar: PropTypes.string,
-	size: PropTypes.number,
-	borderRadius: PropTypes.number,
-	type: PropTypes.string
-};
-export default Avatar;
