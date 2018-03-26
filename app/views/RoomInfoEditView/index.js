@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, TextInput, View, ScrollView, TouchableOpacity, SafeAreaView, Keyboard } from 'react-native';
+import { Text, TextInput, View, ScrollView, TouchableOpacity, SafeAreaView, Keyboard, Switch, StyleSheet } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import KeyboardView from '../../presentation/KeyboardView';
@@ -27,21 +27,15 @@ export default class RoomInfoEditView extends React.Component {
 			topic: '',
 			announcement: '',
 			nameError: {},
-			descriptionError: {},
-			topicError: {},
-			announcementError: {},
-			saving: false
+			saving: false,
+			t: false,
+			ro: false
 		};
 	}
 
 	async componentDidMount() {
 		await this.updateRoom();
-		const {
-			name, description, topic, announcement
-		} = this.state.room;
-		this.setState({
-			name, description, topic, announcement
-		});
+		this.init();
 		this.rooms.addListener(this.updateRoom);
 	}
 
@@ -54,23 +48,43 @@ export default class RoomInfoEditView extends React.Component {
 		this.setState({ room });
 	}
 
+	init = () => {
+		const {
+			name, description, topic, announcement, t, ro
+		} = this.state.room;
+		this.setState({
+			name, description, topic, announcement, t: t === 'p', ro
+		});
+	}
+
 	clearErrors = () => {
 		this.setState({
-			nameError: {}, descriptionError: {}, topicError: {}, announcementError: {}
+			nameError: {}
 		});
+	}
+
+	reset = () => {
+		this.clearErrors();
+		this.init();
 	}
 
 	formIsChanged = () => {
 		const {
-			room, name, description, topic, announcement
+			room, name, description, topic, announcement, t, ro
 		} = this.state;
-		return !(room.name === name && room.description === description && room.topic === topic && room.announcement === announcement);
+		return !(room.name === name &&
+			room.description === description &&
+			room.topic === topic &&
+			room.announcement === announcement &&
+			room.t === 'p' === t &&
+			room.ro === ro
+		);
 	}
 
 	submit = async() => {
 		Keyboard.dismiss();
 		const {
-			room, name, description, topic, announcement
+			room, name, description, topic, announcement, t, ro
 		} = this.state;
 
 		this.setState({ saving: true });
@@ -84,41 +98,40 @@ export default class RoomInfoEditView extends React.Component {
 		// Clear error objects
 		await this.clearErrors();
 
+		const params = {};
+
 		// Name
 		if (room.name !== name) {
-			try {
-				await RocketChat.saveRoomSettings(room.rid, 'roomName', name);
-			} catch (nameError) {
-				this.setState({ nameError });
-				error = true;
-			}
+			params.roomName = name;
 		}
 		// Description
 		if (room.description !== description) {
-			try {
-				await RocketChat.saveRoomSettings(room.rid, 'roomDescription', description);
-			} catch (descriptionError) {
-				this.setState({ descriptionError });
-				error = true;
-			}
+			params.roomDescription = description;
 		}
 		// Topic
 		if (room.topic !== topic) {
-			try {
-				await RocketChat.saveRoomSettings(room.rid, 'roomTopic', topic);
-			} catch (topicError) {
-				this.setState({ topicError });
-				error = true;
-			}
+			params.roomTopic = topic;
 		}
 		// Announcement
 		if (room.announcement !== announcement) {
-			try {
-				await RocketChat.saveRoomSettings(room.rid, 'roomAnnouncement', announcement);
-			} catch (announcementError) {
-				this.setState({ announcementError });
-				error = true;
+			params.roomAnnouncement = announcement;
+		}
+		// Room Type
+		if (room.t !== t) {
+			params.roomType = t ? 'p' : 'c';
+		}
+		// Read Only
+		if (room.ro !== ro) {
+			params.readOnly = ro;
+		}
+
+		try {
+			await RocketChat.saveRoomSettings(room.rid, params);
+		} catch (e) {
+			if (e.error === 'error-invalid-room-name') {
+				this.setState({ nameError: e });
 			}
+			error = true;
 		}
 
 		await this.setState({ saving: false });
@@ -133,7 +146,7 @@ export default class RoomInfoEditView extends React.Component {
 
 	render() {
 		const {
-			name, nameError, description, descriptionError, topic, topicError, announcement, announcementError
+			name, nameError, description, topic, announcement, t, ro
 		} = this.state;
 		return (
 			<KeyboardView
@@ -162,10 +175,10 @@ export default class RoomInfoEditView extends React.Component {
 								{nameError.error && <Text style={sharedStyles.error}>{nameError.reason}</Text>}
 							</View>
 							<View style={styles.inputContainer}>
-								<Text style={[styles.label, descriptionError.error && styles.labelError]}>Description</Text>
+								<Text style={styles.label}>Description</Text>
 								<TextInput
 									ref={(e) => { this.description = e; }}
-									style={[styles.input, descriptionError.error && styles.inputError]}
+									style={styles.input}
 									onChangeText={value => this.setState({ description: value })}
 									value={description}
 									autoCorrect={false}
@@ -177,10 +190,10 @@ export default class RoomInfoEditView extends React.Component {
 								/>
 							</View>
 							<View style={styles.inputContainer}>
-								<Text style={[styles.label, topicError.error && styles.labelError]}>Topic</Text>
+								<Text style={styles.label}>Topic</Text>
 								<TextInput
 									ref={(e) => { this.topic = e; }}
-									style={[styles.input, topicError.error && styles.inputError]}
+									style={styles.input}
 									onChangeText={value => this.setState({ topic: value })}
 									value={topic}
 									autoCorrect={false}
@@ -192,10 +205,10 @@ export default class RoomInfoEditView extends React.Component {
 								/>
 							</View>
 							<View style={styles.inputContainer}>
-								<Text style={[styles.label, announcementError.error && styles.labelError]}>Announcement</Text>
+								<Text style={styles.label}>Announcement</Text>
 								<TextInput
 									ref={(e) => { this.announcement = e; }}
-									style={[styles.input, announcementError.error && styles.inputError]}
+									style={styles.input}
 									onChangeText={value => this.setState({ announcement: value })}
 									value={announcement}
 									autoCorrect={false}
@@ -206,6 +219,38 @@ export default class RoomInfoEditView extends React.Component {
 									multiline
 								/>
 							</View>
+							<View style={styles.switchContainer}>
+								<View style={[styles.switchLabelContainer, sharedStyles.alignItemsFlexEnd]}>
+									<Text style={styles.switchLabelPrimary}>Public</Text>
+									<Text style={[styles.switchLabelSecondary, sharedStyles.textAlignRight]}>Everyone can access this channel</Text>
+								</View>
+								<Switch
+									style={styles.switch}
+									onValueChange={value => this.setState({ t: value })}
+									value={t}
+								/>
+								<View style={styles.switchLabelContainer}>
+									<Text style={styles.switchLabelPrimary}>Private</Text>
+									<Text style={styles.switchLabelSecondary}>Just invited people can access this channel</Text>
+								</View>
+							</View>
+							<View style={styles.divider} />
+							<View style={styles.switchContainer}>
+								<View style={[styles.switchLabelContainer, sharedStyles.alignItemsFlexEnd]}>
+									<Text style={styles.switchLabelPrimary}>Colaborative</Text>
+									<Text style={[styles.switchLabelSecondary, sharedStyles.textAlignRight]}>All users in the channel can write new messages</Text>
+								</View>
+								<Switch
+									style={styles.switch}
+									onValueChange={value => this.setState({ ro: value })}
+									value={ro}
+								/>
+								<View style={styles.switchLabelContainer}>
+									<Text style={styles.switchLabelPrimary}>Read Only</Text>
+									<Text style={styles.switchLabelSecondary}>Only authorized users can write new messages</Text>
+								</View>
+							</View>
+							<View style={styles.divider} />
 							<TouchableOpacity
 								style={[sharedStyles.buttonContainer, !this.formIsChanged() && styles.buttonContainerDisabled]}
 								onPress={this.submit}

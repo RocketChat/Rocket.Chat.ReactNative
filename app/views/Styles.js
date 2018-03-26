@@ -221,5 +221,11 @@ export default StyleSheet.create({
 		borderRadius: 16,
 		width: 16,
 		height: 16
+	},
+	alignItemsFlexEnd: {
+		alignItems: 'flex-end'
+	},
+	textAlignRight: {
+		textAlign: 'right'
 	}
 });
