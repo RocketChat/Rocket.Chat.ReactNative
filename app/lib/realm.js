@@ -89,7 +89,8 @@ const subscriptionSchema = {
 		description: { type: 'string', optional: true },
 		announcement: { type: 'string', optional: true },
 		topic: { type: 'string', optional: true },
-		blocked: { type: 'bool', optional: true }
+		blocked: { type: 'bool', optional: true },
+		reactWhenReadOnly: { type: 'bool', optional: true }
 	}
 };
 

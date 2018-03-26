@@ -29,7 +29,8 @@ export default class RoomInfoEditView extends React.Component {
 			nameError: {},
 			saving: false,
 			t: false,
-			ro: false
+			ro: false,
+			reactWhenReadOnly: false
 		};
 	}
 
@@ -50,10 +51,10 @@ export default class RoomInfoEditView extends React.Component {
 
 	init = () => {
 		const {
-			name, description, topic, announcement, t, ro
+			name, description, topic, announcement, t, ro, reactWhenReadOnly
 		} = this.state.room;
 		this.setState({
-			name, description, topic, announcement, t: t === 'p', ro
+			name, description, topic, announcement, t: t === 'p', ro, reactWhenReadOnly
 		});
 	}
 
@@ -70,21 +71,22 @@ export default class RoomInfoEditView extends React.Component {
 
 	formIsChanged = () => {
 		const {
-			room, name, description, topic, announcement, t, ro
+			room, name, description, topic, announcement, t, ro, reactWhenReadOnly
 		} = this.state;
 		return !(room.name === name &&
 			room.description === description &&
 			room.topic === topic &&
 			room.announcement === announcement &&
 			room.t === 'p' === t &&
-			room.ro === ro
+			room.ro === ro &&
+			room.reactWhenReadOnly === reactWhenReadOnly
 		);
 	}
 
 	submit = async() => {
 		Keyboard.dismiss();
 		const {
-			room, name, description, topic, announcement, t, ro
+			room, name, description, topic, announcement, t, ro, reactWhenReadOnly
 		} = this.state;
 
 		this.setState({ saving: true });
@@ -124,6 +126,10 @@ export default class RoomInfoEditView extends React.Component {
 		if (room.ro !== ro) {
 			params.readOnly = ro;
 		}
+		// Read Only
+		if (room.reactWhenReadOnly !== reactWhenReadOnly) {
+			params.reactWhenReadOnly = reactWhenReadOnly;
+		}
 
 		try {
 			await RocketChat.saveRoomSettings(room.rid, params);
@@ -146,7 +152,7 @@ export default class RoomInfoEditView extends React.Component {
 
 	render() {
 		const {
-			name, nameError, description, topic, announcement, t, ro
+			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly
 		} = this.state;
 		return (
 			<KeyboardView
@@ -251,6 +257,26 @@ export default class RoomInfoEditView extends React.Component {
 								</View>
 							</View>
 							<View style={styles.divider} />
+							{ro &&
+								[
+									<View style={styles.switchContainer} key='allow-reactions-container'>
+										<View style={[styles.switchLabelContainer, sharedStyles.alignItemsFlexEnd]}>
+											<Text style={styles.switchLabelPrimary}>No Reactions</Text>
+											<Text style={[styles.switchLabelSecondary, sharedStyles.textAlignRight]}>Reactions are disabled</Text>
+										</View>
+										<Switch
+											style={styles.switch}
+											onValueChange={value => this.setState({ reactWhenReadOnly: value })}
+											value={reactWhenReadOnly}
+										/>
+										<View style={styles.switchLabelContainer}>
+											<Text style={styles.switchLabelPrimary}>Allow Reactions</Text>
+											<Text style={styles.switchLabelSecondary}>Reactions are enabled</Text>
+										</View>
+									</View>,
+									<View style={styles.divider} key='allow-reactions-divider' />
+								]
+							}
 							<TouchableOpacity
 								style={[sharedStyles.buttonContainer, !this.formIsChanged() && styles.buttonContainerDisabled]}
 								onPress={this.submit}

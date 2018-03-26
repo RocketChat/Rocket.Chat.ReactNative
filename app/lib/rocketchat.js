@@ -174,6 +174,7 @@ const RocketChat = {
 						sub.description = data.description;
 						sub.topic = data.topic;
 						sub.announcement = data.announcement;
+						sub.reactWhenReadOnly = data.reactWhenReadOnly;
 					});
 				}
 			});
@@ -652,6 +653,7 @@ const RocketChat = {
 				subscription.description = room.description;
 				subscription.topic = room.topic;
 				subscription.announcement = room.announcement;
+				subscription.reactWhenReadOnly = room.reactWhenReadOnly;
 			}
 			if (subscription.roles) {
 				subscription.roles = subscription.roles.map(role => ({ value: role }));
