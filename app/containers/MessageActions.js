@@ -80,8 +80,11 @@ export default class MessageActions extends React.Component {
 		this.handleActionPress = this.handleActionPress.bind(this);
 		this.options = [''];
 		const { roles } = this.props.room;
+		// user roles on the room
 		const roomRoles = Array.from(Object.keys(roles), i => roles[i].value);
+		// user roles on the server
 		const userRoles = this.props.user.roles || [];
+		// merge both roles
 		this.mergedRoles = [...new Set([...roomRoles, ...userRoles])];
 		this.setPermissions(this.props.permissions);
 	}
@@ -172,6 +175,7 @@ export default class MessageActions extends React.Component {
 	}
 
 	setPermissions(permissions) {
+		// each permission has specific roles to behave, e.g. admin or owner
 		this.hasEditPermission = returnAnArray(permissions['edit-message'])
 			.some(item => this.mergedRoles.indexOf(item) !== -1);
 		this.hasDeletePermission = returnAnArray(permissions['delete-message'])

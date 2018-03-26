@@ -12,32 +12,41 @@ import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Touch from '../../utils/touch';
 
+const returnAnArray = obj => obj || [];
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	user: state.login.user
+	user: state.login.user,
+	permissions: state.permissions
 }))
 export default class RoomInfoView extends React.Component {
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		user: PropTypes.object,
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		permissions: PropTypes.object
 	}
 
-	static navigationOptions = ({ navigation }) => ({
-		headerRight: (
-			<Touch
-				onPress={() => navigation.navigate('RoomInfoEdit', { rid: navigation.state.params.rid })}
-				underlayColor='#ffffff'
-				activeOpacity={0.5}
-				accessibilityLabel='edit'
-				accessibilityTraits='button'
-			>
-				<View style={styles.headerButton}>
-					<MaterialIcon name='edit' size={20} />
-				</View>
-			</Touch>
-		)
-	});
+	static navigationOptions = ({ navigation }) => {
+		const params = navigation.state.params || {};
+		if (!params.hasEditPermission) {
+			return;
+		}
+		return {
+			headerRight: (
+				<Touch
+					onPress={() => navigation.navigate('RoomInfoEdit', { rid: navigation.state.params.rid })}
+					underlayColor='#ffffff'
+					activeOpacity={0.5}
+					accessibilityLabel='edit'
+					accessibilityTraits='button'
+				>
+					<View style={styles.headerButton}>
+						<MaterialIcon name='edit' size={20} />
+					</View>
+				</Touch>
+			)
+		};
+	};
 
 	constructor(props) {
 		super(props);
@@ -62,6 +71,17 @@ export default class RoomInfoView extends React.Component {
 				console.warn(error);
 			}
 		}
+
+		const { roles } = this.state.room;
+		// user roles on the room
+		const roomRoles = Array.from(Object.keys(roles), i => roles[i].value);
+		// user roles on the server
+		const userRoles = this.props.user.roles || [];
+		// merge both roles
+		this.mergedRoles = [...new Set([...roomRoles, ...userRoles])];
+		const hasEditPermission = returnAnArray(this.props.permissions['edit-room'])
+			.some(item => this.mergedRoles.indexOf(item) !== -1);
+		this.props.navigation.setParams({ hasEditPermission });
 	}
 
 	componentWillUnmount() {
