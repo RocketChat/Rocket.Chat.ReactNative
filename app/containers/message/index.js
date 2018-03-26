@@ -127,6 +127,8 @@ export default class Message extends React.Component {
 			message = `Room announcement changed to: ${ msg } by ${ u.username }`;
 		} else if (t === 'room_changed_topic') {
 			message = `Room topic changed to: ${ msg } by ${ u.username }`;
+		} else if (t === 'room_changed_privacy') {
+			message = `Room type changed to: ${ msg } by ${ u.username }`;
 		}
 
 		return message;
@@ -149,7 +151,8 @@ export default class Message extends React.Component {
 			'subscription-role-removed',
 			'room_changed_description',
 			'room_changed_announcement',
-			'room_changed_topic'
+			'room_changed_topic',
+			'room_changed_privacy'
 		].includes(this.props.item.t);
 	}
 
