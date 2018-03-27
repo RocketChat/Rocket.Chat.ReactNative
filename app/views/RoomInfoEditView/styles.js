@@ -25,8 +25,21 @@ export default StyleSheet.create({
 		color: 'red',
 		borderColor: 'red'
 	},
+	buttonInverted: {
+		borderColor: 'rgba(0,0,0,.15)',
+		borderWidth: 2,
+		borderRadius: 2
+	},
 	buttonContainerDisabled: {
 		backgroundColor: 'rgba(65, 72, 82, 0.7)'
+	},
+	buttonDanger: {
+		borderColor: 'red',
+		borderWidth: 2,
+		borderRadius: 2
+	},
+	colorDanger: {
+		color: 'red'
 	},
 	switchContainer: {
 		flexDirection: 'row',

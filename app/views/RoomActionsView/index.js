@@ -204,9 +204,7 @@ export default class RoomActionsView extends React.PureComponent {
 				{
 					text: 'Yes, leave it!',
 					style: 'destructive',
-					onPress: async() => {
-						this.props.leaveRoom(room.rid);
-					}
+					onPress: () => this.props.leaveRoom(room.rid)
 				}
 			]
 		);

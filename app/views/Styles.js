@@ -89,7 +89,8 @@ export default StyleSheet.create({
 	buttonContainer: {
 		paddingVertical: 15,
 		backgroundColor: '#414852',
-		marginBottom: 20
+		marginBottom: 20,
+		borderRadius: 2
 	},
 	buttonContainer_white: {
 		paddingVertical: 15,
@@ -180,7 +181,7 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		margin: 4,
-		borderRadius: 4
+		borderRadius: 2
 	},
 	facebookButton: {
 		backgroundColor: '#3b5998'

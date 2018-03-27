@@ -845,6 +845,9 @@ const RocketChat = {
 	leaveRoom(rid) {
 		return call('leaveRoom', rid);
 	},
+	eraseRoom(rid) {
+		return call('eraseRoom', rid);
+	},
 	saveRoomSettings(rid, params) {
 		return call('saveRoomSettings', rid, params);
 	}

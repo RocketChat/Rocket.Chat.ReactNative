@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, TextInput, View, ScrollView, TouchableOpacity, SafeAreaView, Keyboard, Switch, StyleSheet } from 'react-native';
+import { Text, TextInput, View, ScrollView, TouchableOpacity, SafeAreaView, Keyboard, Switch, Alert } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { connect } from 'react-redux';
 
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
@@ -10,10 +11,15 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert, showToast } from '../../utils/info';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
+import { eraseRoom } from '../../actions/room';
 
+@connect(null, dispatch => ({
+	eraseRoom: rid => dispatch(eraseRoom(rid))
+}))
 export default class RoomInfoEditView extends React.Component {
 	static propTypes = {
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		eraseRoom: PropTypes.func
 	};
 
 	constructor(props) {
@@ -148,6 +154,25 @@ export default class RoomInfoEditView extends React.Component {
 				showToast('Settings succesfully changed!');
 			}
 		}, 100);
+	}
+
+	delete = () => {
+		Alert.alert(
+			'Are you sure?',
+			'Deleting a room will delete all messages posted within the room. This cannot be undone.',
+			[
+				{
+					text: 'Cancel',
+					style: 'cancel'
+				},
+				{
+					text: 'Yes, delete it!',
+					style: 'destructive',
+					onPress: () => this.props.eraseRoom(this.state.room.rid)
+				}
+			],
+			{ cancelable: false }
+		);
 	}
 
 	render() {
@@ -285,10 +310,17 @@ export default class RoomInfoEditView extends React.Component {
 								<Text style={sharedStyles.button} accessibilityTraits='button'>SAVE</Text>
 							</TouchableOpacity>
 							<TouchableOpacity
-								style={[sharedStyles.buttonContainer_inverted, sharedStyles.buttonContainerLastChild]}
+								style={[sharedStyles.buttonContainer_inverted, styles.buttonInverted]}
 								onPress={this.reset}
 							>
 								<Text style={sharedStyles.button_inverted} accessibilityTraits='button'>RESET</Text>
+							</TouchableOpacity>
+							<View style={styles.divider} />
+							<TouchableOpacity
+								style={[sharedStyles.buttonContainer_inverted, sharedStyles.buttonContainerLastChild, styles.buttonDanger]}
+								onPress={this.delete}
+							>
+								<Text style={[sharedStyles.button_inverted, styles.colorDanger]} accessibilityTraits='button'>DELETE</Text>
 							</TouchableOpacity>
 						</View>
 						<Spinner visible={this.state.saving} textContent='Loading...' textStyle={{ color: '#FFF' }} />
