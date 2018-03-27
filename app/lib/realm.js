@@ -80,8 +80,6 @@ const subscriptionSchema = {
 		roles: { type: 'list', objectType: 'subscriptionRolesSchema' },
 		unread: { type: 'int', optional: true },
 		userMentions: { type: 'int', optional: true },
-		// userMentions: 0,
-		// groupMentions: 0,
 		roomUpdatedAt: { type: 'date', optional: true },
 		ro: { type: 'bool', optional: true },
 		lastOpen: { type: 'date', optional: true },
@@ -90,7 +88,9 @@ const subscriptionSchema = {
 		announcement: { type: 'string', optional: true },
 		topic: { type: 'string', optional: true },
 		blocked: { type: 'bool', optional: true },
-		reactWhenReadOnly: { type: 'bool', optional: true }
+		reactWhenReadOnly: { type: 'bool', optional: true },
+		archived: { type: 'bool', optional: true },
+		joinCodeRequired: { type: 'bool', optional: true }
 	}
 };
 

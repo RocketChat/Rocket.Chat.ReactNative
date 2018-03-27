@@ -176,6 +176,8 @@ const RocketChat = {
 						sub.topic = data.topic;
 						sub.announcement = data.announcement;
 						sub.reactWhenReadOnly = data.reactWhenReadOnly;
+						sub.archived = data.archived;
+						sub.joinCodeRequired = data.joinCodeRequired;
 					});
 				}
 			});
@@ -655,6 +657,8 @@ const RocketChat = {
 				subscription.topic = room.topic;
 				subscription.announcement = room.announcement;
 				subscription.reactWhenReadOnly = room.reactWhenReadOnly;
+				subscription.archived = room.archived;
+				subscription.joinCodeRequired = room.joinCodeRequired;
 			}
 			if (subscription.roles) {
 				subscription.roles = subscription.roles.map(role => ({ value: role }));
@@ -848,6 +852,12 @@ const RocketChat = {
 	},
 	eraseRoom(rid) {
 		return call('eraseRoom', rid);
+	},
+	toggleArchiveRoom(rid, archive) {
+		if (archive) {
+			return call('archiveRoom', rid);
+		}
+		return call('unarchiveRoom', rid);
 	},
 	saveRoomSettings(rid, params) {
 		return call('saveRoomSettings', rid, params);

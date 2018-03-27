@@ -37,6 +37,7 @@ export default class RCTextInput extends React.PureComponent {
 		label: PropTypes.string,
 		value: PropTypes.string,
 		error: PropTypes.object,
+		inputProps: PropTypes.object,
 		inputRef: PropTypes.func,
 		onChangeText: PropTypes.func,
 		onSubmitEditing: PropTypes.func
@@ -49,7 +50,7 @@ export default class RCTextInput extends React.PureComponent {
 
 	render() {
 		const {
-			label, value, error, inputRef, onChangeText, onSubmitEditing
+			label, value, error, inputRef, onChangeText, onSubmitEditing, inputProps
 		} = this.props;
 		return (
 			<View style={styles.inputContainer}>
@@ -66,7 +67,7 @@ export default class RCTextInput extends React.PureComponent {
 					returnKeyType='next'
 					autoCapitalize='none'
 					underlineColorAndroid='transparent'
-					multiline
+					{...inputProps}
 				/>
 				{error.error && <Text style={sharedStyles.error}>{error.reason}</Text>}
 			</View>
