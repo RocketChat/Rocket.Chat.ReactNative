@@ -26,6 +26,7 @@ const call = (method, ...params) => RocketChat.ddp.call(method, ...params); // e
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SERVER_TIMEOUT = 30000;
 
+const returnAnArray = obj => obj || [];
 
 const normalizeMessage = (lastMessage) => {
 	if (lastMessage) {
@@ -850,6 +851,28 @@ const RocketChat = {
 	},
 	saveRoomSettings(rid, params) {
 		return call('saveRoomSettings', rid, params);
+	},
+	hasPermission(permissions, rid) {
+		// get the room from realm
+		const room = database.objects('subscriptions').filtered('rid = $0', rid)[0];
+		// get room roles
+		const { roles } = room;
+		// transform room roles to array
+		const roomRoles = Array.from(Object.keys(roles), i => roles[i].value);
+		// get user roles on the server from redux
+		const userRoles = reduxStore.getState().login.user.roles || [];
+		// get all permissions from redux
+		const allPermissions = reduxStore.getState().permissions;
+		// merge both roles
+		const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
+
+		// return permissions in object format
+		// e.g. { 'edit-room': true, 'set-readonly': false }
+		return permissions.reduce((result, permission) => {
+			result[permission] = returnAnArray(allPermissions[permission])
+				.some(item => mergedRoles.indexOf(item) !== -1);
+			return result;
+		}, {});
 	}
 };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, TextInput, View, ScrollView, TouchableOpacity, SafeAreaView, Keyboard, Switch, Alert } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, SafeAreaView, Keyboard, Alert } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from 'react-redux';
 
@@ -15,6 +15,12 @@ import { eraseRoom } from '../../actions/room';
 import RCTextInput from '../../containers/TextInput';
 import SwitchContainer from './SwitchContainer';
 
+const PERMISSION_SET_READONLY = 'set-readonly';
+const PERMISSION_SET_REACT_WHEN_READONLY = 'set-react-when-readonly';
+const PERMISSION_DELETE_C = 'delete-c';
+const PERMISSION_DELETE_P = 'delete-p';
+const PERMISSIONS_ARRAY = [PERMISSION_SET_READONLY, PERMISSION_SET_REACT_WHEN_READONLY, PERMISSION_DELETE_C, PERMISSION_DELETE_P];
+
 @connect(null, dispatch => ({
 	eraseRoom: rid => dispatch(eraseRoom(rid))
 }))
@@ -28,6 +34,7 @@ export default class RoomInfoEditView extends React.Component {
 		super(props);
 		const { rid } = props.navigation.state.params;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
+		this.permissions = {};
 		this.state = {
 			room: {},
 			name: '',
@@ -46,6 +53,7 @@ export default class RoomInfoEditView extends React.Component {
 		await this.updateRoom();
 		this.init();
 		this.rooms.addListener(this.updateRoom);
+		this.permissions = RocketChat.hasPermission(PERMISSIONS_ARRAY, this.state.room.rid);
 	}
 
 	componentWillUnmount() {
@@ -177,6 +185,10 @@ export default class RoomInfoEditView extends React.Component {
 		);
 	}
 
+	hasDeletePermission = () => (
+		this.state.room.t === 'p' ? this.permissions[PERMISSION_DELETE_P] : this.permissions[PERMISSION_DELETE_C]
+	);
+
 	render() {
 		const {
 			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly
@@ -236,6 +248,7 @@ export default class RoomInfoEditView extends React.Component {
 								rightLabelPrimary='Read Only'
 								rightLabelSecondary='Only authorized users can write new messages'
 								onValueChange={value => this.setState({ ro: value })}
+								disabled={!this.permissions[PERMISSION_SET_READONLY]}
 							/>
 							{ro &&
 								<SwitchContainer
@@ -245,6 +258,7 @@ export default class RoomInfoEditView extends React.Component {
 									rightLabelPrimary='Allow Reactions'
 									rightLabelSecondary='Reactions are enabled'
 									onValueChange={value => this.setState({ reactWhenReadOnly: value })}
+									disabled={!this.permissions[PERMISSION_SET_REACT_WHEN_READONLY]}
 								/>
 							}
 							<TouchableOpacity
@@ -262,8 +276,14 @@ export default class RoomInfoEditView extends React.Component {
 							</TouchableOpacity>
 							<View style={styles.divider} />
 							<TouchableOpacity
-								style={[sharedStyles.buttonContainer_inverted, sharedStyles.buttonContainerLastChild, styles.buttonDanger]}
+								style={[
+									sharedStyles.buttonContainer_inverted,
+									sharedStyles.buttonContainerLastChild,
+									styles.buttonDanger,
+									!this.hasDeletePermission() && sharedStyles.opacity5
+								]}
 								onPress={this.delete}
+								disabled={!this.hasDeletePermission()}
 							>
 								<Text style={[sharedStyles.button_inverted, styles.colorDanger]} accessibilityTraits='button'>DELETE</Text>
 							</TouchableOpacity>

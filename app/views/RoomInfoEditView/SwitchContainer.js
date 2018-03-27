@@ -8,6 +8,7 @@ import sharedStyles from '../../views/Styles';
 export default class SwitchContainer extends React.PureComponent {
 	static propTypes = {
 		value: PropTypes.bool,
+		disabled: PropTypes.bool,
 		leftLabelPrimary: PropTypes.string,
 		leftLabelSecondary: PropTypes.string,
 		rightLabelPrimary: PropTypes.string,
@@ -17,7 +18,7 @@ export default class SwitchContainer extends React.PureComponent {
 
 	render() {
 		const {
-			value, onValueChange, leftLabelPrimary, leftLabelSecondary, rightLabelPrimary, rightLabelSecondary
+			value, disabled, onValueChange, leftLabelPrimary, leftLabelSecondary, rightLabelPrimary, rightLabelSecondary
 		} = this.props;
 		return (
 			[
@@ -30,6 +31,7 @@ export default class SwitchContainer extends React.PureComponent {
 						style={styles.switch}
 						onValueChange={onValueChange}
 						value={value}
+						disabled={disabled}
 					/>
 					<View style={styles.switchLabelContainer}>
 						<Text style={styles.switchLabelPrimary}>{rightLabelPrimary}</Text>

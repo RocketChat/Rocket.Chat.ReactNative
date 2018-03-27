@@ -230,5 +230,8 @@ export default StyleSheet.create({
 	},
 	textAlignRight: {
 		textAlign: 'right'
+	},
+	opacity5: {
+		opacity: 0.5
 	}
 });

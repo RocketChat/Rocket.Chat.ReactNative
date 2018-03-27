@@ -12,7 +12,8 @@ import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Touch from '../../utils/touch';
 
-const returnAnArray = obj => obj || [];
+const PERMISSION_EDIT_ROOM = 'edit-room';
+
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	user: state.login.user,
@@ -22,8 +23,7 @@ export default class RoomInfoView extends React.Component {
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		user: PropTypes.object,
-		navigation: PropTypes.object,
-		permissions: PropTypes.object
+		navigation: PropTypes.object
 	}
 
 	static navigationOptions = ({ navigation }) => {
@@ -72,16 +72,8 @@ export default class RoomInfoView extends React.Component {
 			}
 		}
 
-		const { roles } = this.state.room;
-		// user roles on the room
-		const roomRoles = Array.from(Object.keys(roles), i => roles[i].value);
-		// user roles on the server
-		const userRoles = this.props.user.roles || [];
-		// merge both roles
-		this.mergedRoles = [...new Set([...roomRoles, ...userRoles])];
-		const hasEditPermission = returnAnArray(this.props.permissions['edit-room'])
-			.some(item => this.mergedRoles.indexOf(item) !== -1);
-		this.props.navigation.setParams({ hasEditPermission });
+		const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], this.state.room.rid);
+		this.props.navigation.setParams({ hasEditPermission: permissions[PERMISSION_EDIT_ROOM] });
 	}
 
 	componentWillUnmount() {
