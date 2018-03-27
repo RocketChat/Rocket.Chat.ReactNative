@@ -1,5 +1,7 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
 
+import { COLOR_DANGER } from '../constants/colors';
+
 export default StyleSheet.create({
 	container: {
 		backgroundColor: 'white',
@@ -56,7 +58,7 @@ export default StyleSheet.create({
 		color: '#2f343d'
 	},
 	label_error: {
-		color: 'red',
+		color: COLOR_DANGER,
 		flexGrow: 1,
 		paddingHorizontal: 0,
 		marginBottom: 20
@@ -121,7 +123,7 @@ export default StyleSheet.create({
 	},
 	error: {
 		textAlign: 'center',
-		color: 'red',
+		color: COLOR_DANGER,
 		paddingTop: 5
 	},
 	loading: {
@@ -170,7 +172,7 @@ export default StyleSheet.create({
 		color: 'green'
 	},
 	invalidText: {
-		color: 'red'
+		color: COLOR_DANGER
 	},
 	validatingText: {
 		color: '#aaa'

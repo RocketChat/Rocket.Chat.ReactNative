@@ -12,6 +12,8 @@ import { showErrorAlert, showToast } from '../../utils/info';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import { eraseRoom } from '../../actions/room';
+import RCTextInput from '../../containers/TextInput';
+import SwitchContainer from './SwitchContainer';
 
 @connect(null, dispatch => ({
 	eraseRoom: rid => dispatch(eraseRoom(rid))
@@ -190,117 +192,60 @@ export default class RoomInfoEditView extends React.Component {
 				>
 					<SafeAreaView>
 						<View style={sharedStyles.formContainer}>
-							<View style={styles.inputContainer}>
-								<Text style={[styles.label, nameError.error && styles.labelError]}>Name</Text>
-								<TextInput
-									ref={(e) => { this.name = e; }}
-									style={[styles.input, nameError.error && styles.inputError]}
-									onChangeText={value => this.setState({ name: value })}
-									value={name}
-									autoCorrect={false}
-									returnKeyType='next'
-									autoCapitalize='none'
-									underlineColorAndroid='transparent'
-									onSubmitEditing={() => { this.description.focus(); }}
-								/>
-								{nameError.error && <Text style={sharedStyles.error}>{nameError.reason}</Text>}
-							</View>
-							<View style={styles.inputContainer}>
-								<Text style={styles.label}>Description</Text>
-								<TextInput
-									ref={(e) => { this.description = e; }}
-									style={styles.input}
-									onChangeText={value => this.setState({ description: value })}
-									value={description}
-									autoCorrect={false}
-									returnKeyType='next'
-									autoCapitalize='none'
-									underlineColorAndroid='transparent'
-									onSubmitEditing={() => { this.topic.focus(); }}
-									multiline
-								/>
-							</View>
-							<View style={styles.inputContainer}>
-								<Text style={styles.label}>Topic</Text>
-								<TextInput
-									ref={(e) => { this.topic = e; }}
-									style={styles.input}
-									onChangeText={value => this.setState({ topic: value })}
-									value={topic}
-									autoCorrect={false}
-									returnKeyType='next'
-									autoCapitalize='none'
-									underlineColorAndroid='transparent'
-									onSubmitEditing={() => { this.announcement.focus(); }}
-									multiline
-								/>
-							</View>
-							<View style={styles.inputContainer}>
-								<Text style={styles.label}>Announcement</Text>
-								<TextInput
-									ref={(e) => { this.announcement = e; }}
-									style={styles.input}
-									onChangeText={value => this.setState({ announcement: value })}
-									value={announcement}
-									autoCorrect={false}
-									returnKeyType='done'
-									autoCapitalize='none'
-									underlineColorAndroid='transparent'
-									onSubmitEditing={this.submit}
-									multiline
-								/>
-							</View>
-							<View style={styles.switchContainer}>
-								<View style={[styles.switchLabelContainer, sharedStyles.alignItemsFlexEnd]}>
-									<Text style={styles.switchLabelPrimary}>Public</Text>
-									<Text style={[styles.switchLabelSecondary, sharedStyles.textAlignRight]}>Everyone can access this channel</Text>
-								</View>
-								<Switch
-									style={styles.switch}
-									onValueChange={value => this.setState({ t: value })}
-									value={t}
-								/>
-								<View style={styles.switchLabelContainer}>
-									<Text style={styles.switchLabelPrimary}>Private</Text>
-									<Text style={styles.switchLabelSecondary}>Just invited people can access this channel</Text>
-								</View>
-							</View>
-							<View style={styles.divider} />
-							<View style={styles.switchContainer}>
-								<View style={[styles.switchLabelContainer, sharedStyles.alignItemsFlexEnd]}>
-									<Text style={styles.switchLabelPrimary}>Colaborative</Text>
-									<Text style={[styles.switchLabelSecondary, sharedStyles.textAlignRight]}>All users in the channel can write new messages</Text>
-								</View>
-								<Switch
-									style={styles.switch}
-									onValueChange={value => this.setState({ ro: value })}
-									value={ro}
-								/>
-								<View style={styles.switchLabelContainer}>
-									<Text style={styles.switchLabelPrimary}>Read Only</Text>
-									<Text style={styles.switchLabelSecondary}>Only authorized users can write new messages</Text>
-								</View>
-							</View>
-							<View style={styles.divider} />
+							<RCTextInput
+								inputRef={(e) => { this.name = e; }}
+								label='Name'
+								value={name}
+								onChangeText={value => this.setState({ name: value })}
+								onSubmitEditing={() => { this.description.focus(); }}
+								error={nameError}
+							/>
+							<RCTextInput
+								inputRef={(e) => { this.description = e; }}
+								label='Description'
+								value={description}
+								onChangeText={value => this.setState({ description: value })}
+								onSubmitEditing={() => { this.topic.focus(); }}
+							/>
+							<RCTextInput
+								inputRef={(e) => { this.topic = e; }}
+								label='Topic'
+								value={topic}
+								onChangeText={value => this.setState({ topic: value })}
+								onSubmitEditing={() => { this.announcement.focus(); }}
+							/>
+							<RCTextInput
+								inputRef={(e) => { this.announcement = e; }}
+								label='Announcement'
+								value={announcement}
+								onChangeText={value => this.setState({ announcement: value })}
+								onSubmitEditing={this.submit}
+							/>
+							<SwitchContainer
+								value={t}
+								leftLabelPrimary='Public'
+								leftLabelSecondary='Everyone can access this channel'
+								rightLabelPrimary='Private'
+								rightLabelSecondary='Just invited people can access this channel'
+								onValueChange={value => this.setState({ t: value })}
+							/>
+							<SwitchContainer
+								value={ro}
+								leftLabelPrimary='Colaborative'
+								leftLabelSecondary='All users in the channel can write new messages'
+								rightLabelPrimary='Read Only'
+								rightLabelSecondary='Only authorized users can write new messages'
+								onValueChange={value => this.setState({ ro: value })}
+							/>
 							{ro &&
-								[
-									<View style={styles.switchContainer} key='allow-reactions-container'>
-										<View style={[styles.switchLabelContainer, sharedStyles.alignItemsFlexEnd]}>
-											<Text style={styles.switchLabelPrimary}>No Reactions</Text>
-											<Text style={[styles.switchLabelSecondary, sharedStyles.textAlignRight]}>Reactions are disabled</Text>
-										</View>
-										<Switch
-											style={styles.switch}
-											onValueChange={value => this.setState({ reactWhenReadOnly: value })}
-											value={reactWhenReadOnly}
-										/>
-										<View style={styles.switchLabelContainer}>
-											<Text style={styles.switchLabelPrimary}>Allow Reactions</Text>
-											<Text style={styles.switchLabelSecondary}>Reactions are enabled</Text>
-										</View>
-									</View>,
-									<View style={styles.divider} key='allow-reactions-divider' />
-								]
+								<SwitchContainer
+									value={reactWhenReadOnly}
+									leftLabelPrimary='No Reactions'
+									leftLabelSecondary='Reactions are disabled'
+									rightLabelPrimary='Allow Reactions'
+									rightLabelSecondary='Reactions are enabled'
+									onValueChange={value => this.setState({ reactWhenReadOnly: value })}
+								/>
 							}
 							<TouchableOpacity
 								style={[sharedStyles.buttonContainer, !this.formIsChanged() && styles.buttonContainerDisabled]}
