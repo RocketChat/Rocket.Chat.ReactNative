@@ -123,7 +123,7 @@ export default class MessageActions extends React.Component {
 				this.PIN_INDEX = this.options.length - 1;
 			}
 			// Reaction
-			if (!this.isRoomReadOnly()) {
+			if (!this.isRoomReadOnly() || this.canReactWhenReadOnly()) {
 				this.options.push('Add Reaction');
 				this.REACTION_INDEX = this.options.length - 1;
 			}
@@ -178,6 +178,8 @@ export default class MessageActions extends React.Component {
 	isOwn = props => props.actionMessage.u && props.actionMessage.u._id === props.user.id;
 
 	isRoomReadOnly = () => this.props.room.ro;
+
+	canReactWhenReadOnly = () => this.props.room.reactWhenReadOnly;	
 
 	allowEdit = (props) => {
 		if (this.isRoomReadOnly()) {
