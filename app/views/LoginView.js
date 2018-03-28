@@ -29,7 +29,8 @@ class LoginView extends React.Component {
 
 		this.state = {
 			username: '',
-			password: ''
+			password: '',
+			showPassword:false,
 		};
 	}
 
@@ -103,18 +104,26 @@ class LoginView extends React.Component {
 								onSubmitEditing={() => { this.password.focus(); }}
 								placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email or username'}
 							/>
-							<TextInput
-								ref={(e) => { this.password = e; }}
-								style={styles.input_white}
-								onChangeText={password => this.setState({ password })}
-								secureTextEntry
-								autoCorrect={false}
-								returnKeyType='done'
-								autoCapitalize='none'
-								underlineColorAndroid='transparent'
-								onSubmitEditing={this.submit}
-								placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
-							/>
+							<View style={{flexDirection:'row',borderColor:'black'}}>
+								<View style={{flex:1}}>
+									<TextInput
+										ref={(e) => { this.password = e; }}
+										style={[styles.input_white,{alignItems:'center',justifyContent:'center'}]}
+										onChangeText={password => this.setState({ password })}
+										secureTextEntry= {!this.state.showPassword}
+										autoCorrect={false}
+										returnKeyType='done'
+										autoCapitalize='none'
+										underlineColorAndroid='transparent'
+										onSubmitEditing={this.submit}
+										placeholder={this.props.Accounts_PasswordPlaceholder || 'Enter Password'}
+									/>
+								</View>
+								<TouchableOpacity style={{alignItems:'center',justifyContent:'center'}} onPress={(e)=>{this.setState({showPassword : !this.state.showPassword})}}>
+									<Text>{!this.state.showPassword && this.state.password.length != 0 ?"Show":"Hide"}</Text>
+								</TouchableOpacity>
+							</View>
+							
 
 							{this.renderTOTP()}
 
