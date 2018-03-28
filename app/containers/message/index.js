@@ -46,12 +46,14 @@ export default class Message extends React.Component {
 		onReactionPress: PropTypes.func,
 		style: ViewPropTypes.style,
 		onLongPress: PropTypes.func,
-		_updatedAt: PropTypes.instanceOf(Date)
+		_updatedAt: PropTypes.instanceOf(Date),
+		archived: PropTypes.bool
 	}
 
 	static defaultProps = {
 		onLongPress: () => {},
-		_updatedAt: new Date()
+		_updatedAt: new Date(),
+		archived: false
 	}
 
 	constructor(props) {
@@ -258,7 +260,7 @@ export default class Message extends React.Component {
 
 	render() {
 		const {
-			item, message, editing, baseUrl, customEmojis, style
+			item, message, editing, baseUrl, customEmojis, style, archived
 		} = this.props;
 		const username = item.alias || item.u.username;
 		const isEditing = message._id === item._id && editing;
@@ -268,7 +270,7 @@ export default class Message extends React.Component {
 			<TouchableHighlight
 				onPress={() => this.onPress()}
 				onLongPress={() => this.onLongPress()}
-				disabled={this.isDeleted() || this.hasError()}
+				disabled={this.isDeleted() || this.hasError() || archived}
 				underlayColor='#FFFFFF'
 				activeOpacity={0.3}
 				style={[styles.message, isEditing ? styles.editing : null, style]}

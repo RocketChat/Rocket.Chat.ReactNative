@@ -29,7 +29,6 @@ const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 	login: () => dispatch(actions.login()),
 	connect: () => dispatch(server.connectRequest())
 }))
-
 export default class RoomsListView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
@@ -51,7 +50,7 @@ export default class RoomsListView extends React.Component {
 			searchText: ''
 		};
 		this._keyExtractor = this._keyExtractor.bind(this);
-		this.data = database.objects('subscriptions').sorted('roomUpdatedAt', true);
+		this.data = database.objects('subscriptions').filtered('archived != true').sorted('roomUpdatedAt', true);
 	}
 
 	componentDidMount() {
@@ -67,7 +66,7 @@ export default class RoomsListView extends React.Component {
 	componentWillReceiveProps(props) {
 		if (this.props.server !== props.server) {
 			this.data.removeListener(this.updateState);
-			this.data = database.objects('subscriptions').sorted('roomUpdatedAt', true);
+			this.data = database.objects('subscriptions').filtered('archived != true').sorted('roomUpdatedAt', true);
 			this.data.addListener(this.updateState);
 		} else if (this.props.searchText !== props.searchText) {
 			this.search(props.searchText);
@@ -97,7 +96,7 @@ export default class RoomsListView extends React.Component {
 			});
 		}
 
-		let data = this.data.filtered('name CONTAINS[c] $0', searchText).slice(0, 7);
+		let data = database.objects('subscriptions').filtered('name CONTAINS[c] $0', searchText).slice(0, 7);
 
 		const usernames = data.map(sub => sub.map);
 		try {
