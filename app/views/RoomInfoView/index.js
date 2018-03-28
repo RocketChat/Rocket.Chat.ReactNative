@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import moment from 'moment';
 
 import Status from '../../containers/status';
 import Avatar from '../../containers/Avatar';
@@ -17,13 +18,17 @@ const PERMISSION_EDIT_ROOM = 'edit-room';
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	user: state.login.user,
-	permissions: state.permissions
+	permissions: state.permissions,
+	activeUsers: state.activeUsers,
+	Message_TimeFormat: state.settings.Message_TimeFormat
 }))
 export default class RoomInfoView extends React.Component {
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		user: PropTypes.object,
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		activeUsers: PropTypes.object,
+		Message_TimeFormat: PropTypes.string
 	}
 
 	static navigationOptions = ({ navigation }) => {
@@ -67,6 +72,7 @@ export default class RoomInfoView extends React.Component {
 			try {
 				const roomUser = await RocketChat.getRoomMember(this.state.room.rid, this.props.user.id);
 				this.setState({ roomUser });
+				RocketChat.subscribe('fullUserData', this.state.room.fname);
 			} catch (error) {
 				console.warn(error);
 			}
@@ -82,6 +88,8 @@ export default class RoomInfoView extends React.Component {
 
 	getRoomTitle = room => (room.t === 'd' ? room.fname : room.name);
 
+	isDirect = () => this.state.room.t === 'd';
+
 	updateRoom = async() => {
 		const [room] = this.rooms;
 		this.setState({ room });
@@ -93,6 +101,27 @@ export default class RoomInfoView extends React.Component {
 			<Text style={styles.itemContent}>{ room[key] }</Text>
 		</View>
 	);
+
+	renderRoles = () => (
+		<View style={styles.item}>
+			<Text style={styles.itemLabel}>Roles</Text>
+			<Text style={styles.itemContent}>1, 2, 3</Text>
+		</View>
+	)
+
+	renderTimezone = (userId) => {
+		if (this.props.activeUsers[userId]) {
+			const { utcOffset } = this.props.activeUsers[userId];
+
+			return (
+				<View style={styles.item}>
+					<Text style={styles.itemLabel}>Timezone</Text>
+					<Text style={styles.itemContent}>{moment().utcOffset(utcOffset).format(this.props.Message_TimeFormat)} (UTC { utcOffset })</Text>
+				</View>
+			);
+		}
+		return null;
+	}
 
 	render() {
 		const { room, roomUser } = this.state;
@@ -111,9 +140,11 @@ export default class RoomInfoView extends React.Component {
 					</Avatar>
 					<Text style={styles.roomTitle}>{ this.getRoomTitle(room) }</Text>
 				</View>
-				{this.renderItem('description', room)}
-				{this.renderItem('topic', room)}
-				{this.renderItem('announcement', room)}
+				{!this.isDirect() && this.renderItem('description', room)}
+				{!this.isDirect() && this.renderItem('topic', room)}
+				{!this.isDirect() && this.renderItem('announcement', room)}
+				{this.isDirect() && this.renderRoles()}
+				{this.isDirect() && this.renderTimezone(roomUser._id)}
 			</ScrollView>
 		);
 	}

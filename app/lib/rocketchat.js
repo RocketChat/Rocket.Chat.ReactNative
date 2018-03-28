@@ -12,7 +12,7 @@ import * as actions from '../actions';
 import { someoneTyping, roomMessageReceived } from '../actions/room';
 import { setUser, setLoginServices, removeLoginServices } from '../actions/login';
 import { disconnect, disconnect_by_user, connectSuccess, connectFailure } from '../actions/connect';
-import { requestActiveUser } from '../actions/activeUsers';
+import { setActiveUser } from '../actions/activeUsers';
 import { starredMessagesReceived, starredMessageUnstarred } from '../actions/starredMessages';
 import { pinnedMessagesReceived, pinnedMessageUnpinned } from '../actions/pinnedMessages';
 import { mentionedMessagesReceived } from '../actions/mentionedMessages';
@@ -94,11 +94,11 @@ const RocketChat = {
 
 
 		this._setUserTimer = setTimeout(() => {
-			reduxStore.dispatch(requestActiveUser(this.activeUsers));
+			reduxStore.dispatch(setActiveUser(this.activeUsers));
 			this._setUserTimer = null;
 			return this.activeUsers = {};
 		}, 5000);
-		this.activeUsers[ddpMessage.id] = status;
+		this.activeUsers[ddpMessage.id] = ddpMessage.fields;
 	},
 	reconnect() {
 		if (this.ddp) {

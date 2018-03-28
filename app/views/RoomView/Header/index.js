@@ -50,7 +50,8 @@ export default class RoomHeaderView extends React.PureComponent {
 
 	getUserStatus() {
 		const userId = this.rid.replace(this.props.user.id, '').trim();
-		return this.props.activeUsers[userId] || 'offline';
+		const userInfo = this.props.activeUsers[userId];
+		return (userInfo && userInfo.status) || 'offline';
 	}
 
 	getUserStatusLabel() {
