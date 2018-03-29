@@ -25,12 +25,12 @@ export default class Status extends React.Component {
 
 	shouldComponentUpdate(nextProps) {
 		const userId = this.props.id;
-		return this.status !== nextProps.activeUsers[userId];
+		return (nextProps.activeUsers[userId] && nextProps.activeUsers[userId].status) !== this.status;
 	}
 
 	get status() {
 		const userId = this.props.id;
-		return (this.props.activeUsers && this.props.activeUsers[userId]) || 'offline';
+		return (this.props.activeUsers && this.props.activeUsers[userId] && this.props.activeUsers[userId].status) || 'offline';
 	}
 
 	render() {

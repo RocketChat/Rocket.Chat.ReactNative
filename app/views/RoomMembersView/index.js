@@ -4,6 +4,7 @@ import { FlatList, Text, View, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 
 import styles from './styles';
+import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/status';
 import Touch from '../../utils/touch';
@@ -115,7 +116,7 @@ export default class MentionedMessagesView extends React.PureComponent {
 			accessibilityTraits='button'
 		>
 			<View style={styles.item}>
-				<Avatar text={item.username} size={30} type='d' style={styles.avatar}>{<Status style={styles.status} id={item._id} />}</Avatar>
+				<Avatar text={item.username} size={30} type='d' style={styles.avatar}>{<Status style={[sharedStyles.status, styles.status]} id={item._id} />}</Avatar>
 				<Text style={styles.username}>{item.username}</Text>
 			</View>
 		</Touch>

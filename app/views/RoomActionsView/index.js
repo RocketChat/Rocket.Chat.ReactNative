@@ -6,7 +6,9 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 
 import styles from './styles';
+import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
+import Status from '../../containers/status';
 import Touch from '../../utils/touch';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
@@ -33,13 +35,15 @@ export default class RoomActionsView extends React.PureComponent {
 		this.state = {
 			sections: [],
 			room: {},
-			members: []
+			members: [],
+			member: {}
 		};
 	}
 
 	async componentDidMount() {
 		await this.updateRoom();
 		this.updateRoomMembers();
+		this.updateRoomMember();
 		this.rooms.addListener(this.updateRoom);
 	}
 
@@ -59,7 +63,7 @@ export default class RoomActionsView extends React.PureComponent {
 	getRoomTitle = room => (room.t === 'd' ? room.fname : room.name);
 
 	updateRoomMembers = async() => {
-		let members;
+		let members = [];
 		try {
 			const membersResult = await RocketChat.getRoomMembers(this.state.room.rid, false);
 			members = membersResult.records;
@@ -68,6 +72,17 @@ export default class RoomActionsView extends React.PureComponent {
 		}
 		this.setState({ members });
 		this.updateSections();
+	}
+
+	updateRoomMember = async() => {
+		if (this.state.room.t === 'd') {
+			try {
+				const member = await RocketChat.getRoomMember(this.state.room.rid, this.props.user.id);
+				this.setState({ member });
+			} catch (error) {
+				console.warn(error);
+			}
+		}
 	}
 
 	updateRoom = async() => {
@@ -80,12 +95,17 @@ export default class RoomActionsView extends React.PureComponent {
 		const { rid, t, blocked } = this.state.room;
 		const { members } = this.state;
 		const sections = [{
-			data: [{ icon: 'ios-star', name: 'USER' }],
+			data: [{
+				icon: 'ios-star',
+				name: 'USER',
+				route: 'RoomInfo',
+				params: { rid }
+			}],
 			renderItem: this.renderRoomInfo
 		}, {
 			data: [
-				{ icon: 'ios-call-outline', name: 'Voice call' },
-				{ icon: 'ios-videocam-outline', name: 'Video call' }
+				{ icon: 'ios-call-outline', name: 'Voice call', disabled: true },
+				{ icon: 'ios-videocam-outline', name: 'Video call', disabled: true }
 			],
 			renderItem: this.renderItem
 		}, {
@@ -108,8 +128,8 @@ export default class RoomActionsView extends React.PureComponent {
 					route: 'StarredMessages',
 					params: { rid }
 				},
-				{ icon: 'ios-search', name: 'Search' },
-				{ icon: 'ios-share-outline', name: 'Share' },
+				{ icon: 'ios-search', name: 'Search', disabled: true },
+				{ icon: 'ios-share-outline', name: 'Share', disabled: true },
 				{
 					icon: 'ios-pin',
 					name: 'Pinned',
@@ -122,14 +142,14 @@ export default class RoomActionsView extends React.PureComponent {
 					route: 'SnippetedMessages',
 					params: { rid }
 				},
-				{ icon: 'ios-notifications-outline', name: 'Notifications preferences' }
+				{ icon: 'ios-notifications-outline', name: 'Notifications preferences', disabled: true }
 			],
 			renderItem: this.renderItem
 		}];
 		if (t === 'd') {
 			sections.push({
 				data: [
-					{ icon: 'ios-volume-off', name: 'Mute user' },
+					{ icon: 'ios-volume-off', name: 'Mute user', disabled: true },
 					{
 						icon: 'block',
 						name: `${ blocked ? 'Unblock' : 'Block' } user`,
@@ -151,7 +171,7 @@ export default class RoomActionsView extends React.PureComponent {
 			}
 			sections.push({
 				data: [
-					{ icon: 'ios-volume-off', name: 'Mute channel' },
+					{ icon: 'ios-volume-off', name: 'Mute channel', disabled: true },
 					{
 						icon: 'block',
 						name: 'Leave channel',
@@ -167,8 +187,7 @@ export default class RoomActionsView extends React.PureComponent {
 
 	toggleBlockUser = () => {
 		const { rid, blocked } = this.state.room;
-		const { members } = this.state;
-		const member = members.find(m => m.id !== this.props.user.id);
+		const { member } = this.state;
 		RocketChat.toggleBlockUser(rid, member._id, !blocked);
 	}
 
@@ -185,16 +204,14 @@ export default class RoomActionsView extends React.PureComponent {
 				{
 					text: 'Yes, leave it!',
 					style: 'destructive',
-					onPress: async() => {
-						this.props.leaveRoom(room.rid);
-					}
+					onPress: () => this.props.leaveRoom(room.rid)
 				}
 			]
 		);
 	}
 
 	renderRoomInfo = ({ item }) => {
-		const { room } = this.state;
+		const { room, member } = this.state;
 		const { name, t, topic } = room;
 		return (
 			this.renderTouchableItem([
@@ -205,12 +222,14 @@ export default class RoomActionsView extends React.PureComponent {
 					style={styles.avatar}
 					baseUrl={this.props.baseUrl}
 					type={t}
-				/>,
+				>
+					{t === 'd' ? <Status style={sharedStyles.status} id={member._id} /> : null }
+				</Avatar>,
 				<View key='name' style={styles.roomTitleContainer}>
 					<Text style={styles.roomTitle}>{ this.getRoomTitle(room) }</Text>
 					<Text style={styles.roomDescription} ellipsizeMode='tail' numberOfLines={1}>{t === 'd' ? `@${ name }` : topic}</Text>
 				</View>,
-				<Icon key='icon' name='ios-arrow-forward' size={20} style={styles.sectionItemIcon} color='#cbced1' />
+				<Icon key='icon' name='ios-arrow-forward' size={20} style={styles.sectionItemIcon} color='#ccc' />
 			], item)
 		);
 	}
@@ -223,7 +242,7 @@ export default class RoomActionsView extends React.PureComponent {
 			accessibilityLabel={item.name}
 			accessibilityTraits='button'
 		>
-			<View style={styles.sectionItem}>
+			<View style={[styles.sectionItem, item.disabled && styles.sectionItemDisabled]}>
 				{subview}
 			</View>
 		</Touch>
@@ -241,10 +260,12 @@ export default class RoomActionsView extends React.PureComponent {
 			<Icon key='left-icon' name={item.icon} size={24} style={styles.sectionItemIcon} />,
 			<Text key='name' style={styles.sectionItemName}>{ item.name }</Text>,
 			item.description && <Text key='description' style={styles.sectionItemDescription}>{ item.description }</Text>,
-			<Icon key='right-icon' name='ios-arrow-forward' size={20} style={styles.sectionItemIcon} color='#cbced1' />
+			<Icon key='right-icon' name='ios-arrow-forward' size={20} style={styles.sectionItemIcon} color='#ccc' />
 		];
 		return this.renderTouchableItem(subview, item);
 	}
+
+	renderSeparator = () => <View style={styles.separator} />;
 
 	renderSectionSeparator = (data) => {
 		if (!data.trailingItem) {
@@ -265,6 +286,7 @@ export default class RoomActionsView extends React.PureComponent {
 				stickySectionHeadersEnabled={false}
 				sections={this.state.sections}
 				SectionSeparatorComponent={this.renderSectionSeparator}
+				ItemSeparatorComponent={this.renderSeparator}
 				keyExtractor={(item, index) => index}
 			/>
 		);

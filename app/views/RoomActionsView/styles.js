@@ -13,9 +13,12 @@ export default StyleSheet.create({
 	},
 	sectionItem: {
 		backgroundColor: '#ffffff',
-		paddingVertical: 10,
+		paddingVertical: 16,
 		flexDirection: 'row',
 		alignItems: 'center'
+	},
+	sectionItemDisabled: {
+		opacity: 0.3
 	},
 	sectionItemIcon: {
 		width: 45,
@@ -25,7 +28,11 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	sectionItemDescription: {
-		color: '#cbced1'
+		color: '#ccc'
+	},
+	separator: {
+		height: StyleSheet.hairlineWidth,
+		backgroundColor: '#ddd'
 	},
 	sectionSeparator: {
 		height: 10,
@@ -49,6 +56,6 @@ export default StyleSheet.create({
 	},
 	roomDescription: {
 		fontSize: 12,
-		color: '#cbced1'
+		color: '#ccc'
 	}
 });
