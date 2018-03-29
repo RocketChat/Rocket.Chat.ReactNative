@@ -7,7 +7,7 @@ export default StyleSheet.create({
 	},
 	item: {
 		flexDirection: 'row',
-		paddingVertical: 8,
+		paddingVertical: 10,
 		paddingHorizontal: 16,
 		alignItems: 'center'
 	},
@@ -15,14 +15,12 @@ export default StyleSheet.create({
 		marginRight: 16
 	},
 	status: {
-		position: 'absolute',
-		bottom: -3,
-		right: -3,
+		bottom: -2,
+		right: -2,
 		borderWidth: 2,
-		borderColor: '#fff',
-		borderRadius: 12,
-		width: 12,
-		height: 12
+		borderRadius: 10,
+		width: 10,
+		height: 10
 	},
 	separator: {
 		height: StyleSheet.hairlineWidth,

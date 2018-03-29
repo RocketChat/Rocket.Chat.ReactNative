@@ -12,12 +12,13 @@ import * as actions from '../actions';
 import { someoneTyping, roomMessageReceived } from '../actions/room';
 import { setUser, setLoginServices, removeLoginServices } from '../actions/login';
 import { disconnect, disconnect_by_user, connectSuccess, connectFailure } from '../actions/connect';
-import { requestActiveUser } from '../actions/activeUsers';
+import { setActiveUser } from '../actions/activeUsers';
 import { starredMessagesReceived, starredMessageUnstarred } from '../actions/starredMessages';
 import { pinnedMessagesReceived, pinnedMessageUnpinned } from '../actions/pinnedMessages';
 import { mentionedMessagesReceived } from '../actions/mentionedMessages';
 import { snippetedMessagesReceived } from '../actions/snippetedMessages';
 import { roomFilesReceived } from '../actions/roomFiles';
+import { setRoles } from '../actions/roles';
 import Ddp from './ddp';
 
 export { Accounts } from 'react-native-meteor';
@@ -26,6 +27,7 @@ const call = (method, ...params) => RocketChat.ddp.call(method, ...params); // e
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SERVER_TIMEOUT = 30000;
 
+const returnAnArray = obj => obj || [];
 
 const normalizeMessage = (lastMessage) => {
 	if (lastMessage) {
@@ -91,13 +93,12 @@ const RocketChat = {
 			this._setUserTimer = null;
 		}
 
-
 		this._setUserTimer = setTimeout(() => {
-			reduxStore.dispatch(requestActiveUser(this.activeUsers));
+			reduxStore.dispatch(setActiveUser(this.activeUsers));
 			this._setUserTimer = null;
 			return this.activeUsers = {};
-		}, 5000);
-		this.activeUsers[ddpMessage.id] = status;
+		}, 3000);
+		this.activeUsers[ddpMessage.id] = ddpMessage.fields;
 	},
 	reconnect() {
 		if (this.ddp) {
@@ -124,14 +125,14 @@ const RocketChat = {
 				RocketChat.getSettings();
 				RocketChat.getPermissions();
 				RocketChat.getCustomEmoji();
+				this.ddp.subscribe('activeUsers');
+				this.ddp.subscribe('roles');
 			});
 
 			this.ddp.on('error', (err) => {
 				alert(JSON.stringify(err));
 				reduxStore.dispatch(connectFailure());
 			});
-
-			this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
 
 			this.ddp.on('users', ddpMessage => RocketChat._setUser(ddpMessage));
 
@@ -171,6 +172,12 @@ const RocketChat = {
 						sub.roomUpdatedAt = data._updatedAt;
 						sub.lastMessage = normalizeMessage(data.lastMessage);
 						sub.ro = data.ro;
+						sub.description = data.description;
+						sub.topic = data.topic;
+						sub.announcement = data.announcement;
+						sub.reactWhenReadOnly = data.reactWhenReadOnly;
+						sub.archived = data.archived;
+						sub.joinCodeRequired = data.joinCodeRequired;
 					});
 				}
 			});
@@ -333,6 +340,28 @@ const RocketChat = {
 					}
 					this.loginServiceTimer = setTimeout(() => reduxStore.dispatch(removeLoginServices()), 1000);
 				}
+			});
+
+			this.ddp.on('rocketchat_roles', (ddpMessage) => {
+				this.roles = this.roles || {};
+
+				if (this.roleTimer) {
+					clearTimeout(this.roleTimer);
+					this.roleTimer = null;
+				}
+				this.roleTimer = setTimeout(() => {
+					reduxStore.dispatch(setRoles(this.roles));
+
+					database.write(() => {
+						_.forEach(this.roles, (description, _id) => {
+							database.create('roles', { _id, description }, true);
+						});
+					});
+
+					this.roleTimer = null;
+					return this.roles = {};
+				}, 5000);
+				this.roles[ddpMessage.id] = ddpMessage.fields.description;
 			});
 		}).catch(console.log);
 	},
@@ -649,6 +678,9 @@ const RocketChat = {
 				subscription.description = room.description;
 				subscription.topic = room.topic;
 				subscription.announcement = room.announcement;
+				subscription.reactWhenReadOnly = room.reactWhenReadOnly;
+				subscription.archived = room.archived;
+				subscription.joinCodeRequired = room.joinCodeRequired;
 			}
 			if (subscription.roles) {
 				subscription.roles = subscription.roles.map(role => ({ value: role }));
@@ -823,6 +855,17 @@ const RocketChat = {
 	getRoomMembers(rid, allUsers) {
 		return call('getUsersOfRoom', rid, allUsers);
 	},
+	getUserRoles() {
+		return call('getUserRoles');
+	},
+	async getRoomMember(rid, currentUserId) {
+		try {
+			const membersResult = await RocketChat.getRoomMembers(rid, true);
+			return Promise.resolve(membersResult.records.find(m => m.id !== currentUserId));
+		} catch (error) {
+			return Promise.reject(error);
+		}
+	},
 	toggleBlockUser(rid, blocked, block) {
 		if (block) {
 			return call('blockUser', { rid, blocked });
@@ -831,6 +874,40 @@ const RocketChat = {
 	},
 	leaveRoom(rid) {
 		return call('leaveRoom', rid);
+	},
+	eraseRoom(rid) {
+		return call('eraseRoom', rid);
+	},
+	toggleArchiveRoom(rid, archive) {
+		if (archive) {
+			return call('archiveRoom', rid);
+		}
+		return call('unarchiveRoom', rid);
+	},
+	saveRoomSettings(rid, params) {
+		return call('saveRoomSettings', rid, params);
+	},
+	hasPermission(permissions, rid) {
+		// get the room from realm
+		const room = database.objects('subscriptions').filtered('rid = $0', rid)[0];
+		// get room roles
+		const { roles } = room;
+		// transform room roles to array
+		const roomRoles = Array.from(Object.keys(roles), i => roles[i].value);
+		// get user roles on the server from redux
+		const userRoles = reduxStore.getState().login.user.roles || [];
+		// get all permissions from redux
+		const allPermissions = reduxStore.getState().permissions;
+		// merge both roles
+		const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
+
+		// return permissions in object format
+		// e.g. { 'edit-room': true, 'set-readonly': false }
+		return permissions.reduce((result, permission) => {
+			result[permission] = returnAnArray(allPermissions[permission])
+				.some(item => mergedRoles.indexOf(item) !== -1);
+			return result;
+		}, {});
 	}
 };
 
