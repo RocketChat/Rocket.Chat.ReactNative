@@ -1,5 +1,7 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
 
+import { COLOR_DANGER } from '../constants/colors';
+
 export default StyleSheet.create({
 	container: {
 		backgroundColor: 'white',
@@ -56,7 +58,7 @@ export default StyleSheet.create({
 		color: '#2f343d'
 	},
 	label_error: {
-		color: 'red',
+		color: COLOR_DANGER,
 		flexGrow: 1,
 		paddingHorizontal: 0,
 		marginBottom: 20
@@ -83,10 +85,14 @@ export default StyleSheet.create({
 		borderColor: 'rgba(0,0,0,.15)',
 		color: 'black'
 	},
+	buttonContainerLastChild: {
+		marginBottom: 40
+	},
 	buttonContainer: {
 		paddingVertical: 15,
 		backgroundColor: '#414852',
-		marginBottom: 20
+		marginBottom: 20,
+		borderRadius: 2
 	},
 	buttonContainer_white: {
 		paddingVertical: 15,
@@ -117,7 +123,7 @@ export default StyleSheet.create({
 	},
 	error: {
 		textAlign: 'center',
-		color: 'red',
+		color: COLOR_DANGER,
 		paddingTop: 5
 	},
 	loading: {
@@ -166,7 +172,7 @@ export default StyleSheet.create({
 		color: 'green'
 	},
 	invalidText: {
-		color: 'red'
+		color: COLOR_DANGER
 	},
 	validatingText: {
 		color: '#aaa'
@@ -177,7 +183,7 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		margin: 4,
-		borderRadius: 4
+		borderRadius: 2
 	},
 	facebookButton: {
 		backgroundColor: '#3b5998'
@@ -208,5 +214,24 @@ export default StyleSheet.create({
 	},
 	oAuthModal: {
 		margin: 0
+	},
+	status: {
+		position: 'absolute',
+		bottom: -3,
+		right: -3,
+		borderWidth: 3,
+		borderColor: '#fff',
+		borderRadius: 16,
+		width: 16,
+		height: 16
+	},
+	alignItemsFlexEnd: {
+		alignItems: 'flex-end'
+	},
+	textAlignRight: {
+		textAlign: 'right'
+	},
+	opacity5: {
+		opacity: 0.5
 	}
 });

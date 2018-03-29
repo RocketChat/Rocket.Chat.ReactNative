@@ -12,6 +12,7 @@ import app from './app';
 import permissions from './permissions';
 import customEmojis from './customEmojis';
 import activeUsers from './activeUsers';
+import roles from './roles';
 import starredMessages from './starredMessages';
 import pinnedMessages from './pinnedMessages';
 import mentionedMessages from './mentionedMessages';
@@ -32,6 +33,7 @@ export default combineReducers({
 	permissions,
 	customEmojis,
 	activeUsers,
+	roles,
 	starredMessages,
 	pinnedMessages,
 	mentionedMessages,

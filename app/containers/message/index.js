@@ -46,12 +46,14 @@ export default class Message extends React.Component {
 		onReactionPress: PropTypes.func,
 		style: ViewPropTypes.style,
 		onLongPress: PropTypes.func,
-		_updatedAt: PropTypes.instanceOf(Date)
+		_updatedAt: PropTypes.instanceOf(Date),
+		archived: PropTypes.bool
 	}
 
 	static defaultProps = {
 		onLongPress: () => {},
-		_updatedAt: new Date()
+		_updatedAt: new Date(),
+		archived: false
 	}
 
 	constructor(props) {
@@ -121,6 +123,14 @@ export default class Message extends React.Component {
 			message = `${ msg } was set ${ role } by ${ u.username }`;
 		} else if (t === 'subscription-role-removed') {
 			message = `${ msg } is no longer ${ role } by ${ u.username }`;
+		} else if (t === 'room_changed_description') {
+			message = `Room description changed to: ${ msg } by ${ u.username }`;
+		} else if (t === 'room_changed_announcement') {
+			message = `Room announcement changed to: ${ msg } by ${ u.username }`;
+		} else if (t === 'room_changed_topic') {
+			message = `Room topic changed to: ${ msg } by ${ u.username }`;
+		} else if (t === 'room_changed_privacy') {
+			message = `Room type changed to: ${ msg } by ${ u.username }`;
 		}
 
 		return message;
@@ -130,7 +140,21 @@ export default class Message extends React.Component {
 
 	isInfoMessage() {
 		return [
-			'r', 'au', 'ru', 'ul', 'uj', 'rm', 'user-muted', 'user-unmuted', 'message_pinned', 'subscription-role-added', 'subscription-role-removed'
+			'r',
+			'au',
+			'ru',
+			'ul',
+			'uj',
+			'rm',
+			'user-muted',
+			'user-unmuted',
+			'message_pinned',
+			'subscription-role-added',
+			'subscription-role-removed',
+			'room_changed_description',
+			'room_changed_announcement',
+			'room_changed_topic',
+			'room_changed_privacy'
 		].includes(this.props.item.t);
 	}
 
@@ -236,7 +260,7 @@ export default class Message extends React.Component {
 
 	render() {
 		const {
-			item, message, editing, baseUrl, customEmojis, style
+			item, message, editing, baseUrl, customEmojis, style, archived
 		} = this.props;
 		const username = item.alias || item.u.username;
 		const isEditing = message._id === item._id && editing;
@@ -246,7 +270,7 @@ export default class Message extends React.Component {
 			<TouchableHighlight
 				onPress={() => this.onPress()}
 				onLongPress={() => this.onLongPress()}
-				disabled={this.isDeleted() || this.hasError()}
+				disabled={this.isDeleted() || this.hasError() || archived}
 				underlayColor='#FFFFFF'
 				activeOpacity={0.3}
 				style={[styles.message, isEditing ? styles.editing : null, style]}

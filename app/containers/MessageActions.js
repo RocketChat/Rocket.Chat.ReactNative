@@ -17,8 +17,8 @@ import {
 	toggleReactionPicker
 } from '../actions/messages';
 import { showToast } from '../utils/info';
+import RocketChat from '../lib/rocketchat';
 
-const returnAnArray = obj => obj || [];
 @connect(
 	state => ({
 		showActions: state.messages.showActions,
@@ -79,10 +79,6 @@ export default class MessageActions extends React.Component {
 		};
 		this.handleActionPress = this.handleActionPress.bind(this);
 		this.options = [''];
-		const { roles } = this.props.room;
-		const roomRoles = Array.from(Object.keys(roles), i => roles[i].value);
-		const userRoles = this.props.user.roles || [];
-		this.mergedRoles = [...new Set([...roomRoles, ...userRoles])];
 		this.setPermissions(this.props.permissions);
 	}
 
@@ -127,7 +123,7 @@ export default class MessageActions extends React.Component {
 				this.PIN_INDEX = this.options.length - 1;
 			}
 			// Reaction
-			if (!this.isRoomReadOnly()) {
+			if (!this.isRoomReadOnly() || this.canReactWhenReadOnly()) {
 				this.options.push('Add Reaction');
 				this.REACTION_INDEX = this.options.length - 1;
 			}
@@ -171,18 +167,19 @@ export default class MessageActions extends React.Component {
 		this.setPermissions(this.props.permissions);
 	}
 
-	setPermissions(permissions) {
-		this.hasEditPermission = returnAnArray(permissions['edit-message'])
-			.some(item => this.mergedRoles.indexOf(item) !== -1);
-		this.hasDeletePermission = returnAnArray(permissions['delete-message'])
-			.some(item => this.mergedRoles.indexOf(item) !== -1);
-		this.hasForceDeletePermission = returnAnArray(permissions['force-delete-message'])
-			.some(item => this.mergedRoles.indexOf(item) !== -1);
+	setPermissions() {
+		const permissions = ['edit-message', 'delete-message', 'force-delete-message'];
+		const result = RocketChat.hasPermission(permissions, this.props.room.rid);
+		this.hasEditPermission = result[permissions[0]];
+		this.hasDeletePermission = result[permissions[1]];
+		this.hasForceDeletePermission = result[permissions[2]];
 	}
 
 	isOwn = props => props.actionMessage.u && props.actionMessage.u._id === props.user.id;
 
 	isRoomReadOnly = () => this.props.room.ro;
+
+	canReactWhenReadOnly = () => this.props.room.reactWhenReadOnly;
 
 	allowEdit = (props) => {
 		if (this.isRoomReadOnly()) {
