@@ -833,6 +833,9 @@ const RocketChat = {
 	getRoomMembers(rid, allUsers) {
 		return call('getUsersOfRoom', rid, allUsers);
 	},
+	getUserRoles() {
+		return call('getUserRoles');
+	},
 	async getRoomMember(rid, currentUserId) {
 		try {
 			const membersResult = await RocketChat.getRoomMembers(rid, true);

@@ -50,5 +50,14 @@ export default StyleSheet.create({
 	},
 	itemContent: {
 		color: '#ccc'
+	},
+	rolesContainer: {
+		flexDirection: 'row'
+	},
+	roleBadge: {
+		padding: 8,
+		backgroundColor: '#ddd',
+		borderRadius: 2,
+		marginRight: 5
 	}
 });

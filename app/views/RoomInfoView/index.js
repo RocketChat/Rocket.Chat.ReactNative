@@ -57,9 +57,13 @@ export default class RoomInfoView extends React.Component {
 		super(props);
 		const { rid } = props.navigation.state.params;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
+		this.sub = {
+			unsubscribe: () => {}
+		};
 		this.state = {
 			room: {},
-			roomUser: {}
+			roomUser: {},
+			roles: []
 		};
 	}
 
@@ -72,18 +76,39 @@ export default class RoomInfoView extends React.Component {
 			try {
 				const roomUser = await RocketChat.getRoomMember(this.state.room.rid, this.props.user.id);
 				this.setState({ roomUser });
-				RocketChat.subscribe('fullUserData', this.state.room.fname);
-			} catch (error) {
-				console.warn(error);
-			}
-		}
+				const username = this.state.room.name;
 
-		const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], this.state.room.rid);
-		this.props.navigation.setParams({ hasEditPermission: permissions[PERMISSION_EDIT_ROOM] });
+				const activeUser = this.props.activeUsers[roomUser._id];
+				if (!activeUser || !activeUser.utcOffset) {
+					// get full user data looking for utcOffset
+					// will be catched by .on('users) and saved on activeUsers reducer
+					this.getFullUserData(username);
+				}
+
+				// get all users roles
+				// needs to be changed by a better method
+				const allUsersRoles = await RocketChat.getUserRoles();
+				const userRoles = allUsersRoles.find(user => user.username === username);
+				if (userRoles) {
+					this.setState({ roles: userRoles.roles || [] });
+				}
+			} catch (error) {
+				alert(error);
+			}
+		} else {
+			const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], this.state.room.rid);
+			this.props.navigation.setParams({ hasEditPermission: permissions[PERMISSION_EDIT_ROOM] });
+		}
 	}
 
 	componentWillUnmount() {
 		this.rooms.removeAllListeners();
+		this.sub.unsubscribe();
+	}
+
+	getFullUserData = async(username) => {
+		const result = await RocketChat.subscribe('fullUserData', username);
+		this.sub = result;
 	}
 
 	getRoomTitle = room => (room.t === 'd' ? room.fname : room.name);
@@ -103,15 +128,26 @@ export default class RoomInfoView extends React.Component {
 	);
 
 	renderRoles = () => (
+		this.state.roles.length > 0 &&
 		<View style={styles.item}>
 			<Text style={styles.itemLabel}>Roles</Text>
-			<Text style={styles.itemContent}>1, 2, 3</Text>
+			<View style={styles.rolesContainer}>
+				{this.state.roles.map(role => (
+					<View style={styles.roleBadge} key={role}>
+						<Text>{ role }</Text>
+					</View>
+				))}
+			</View>
 		</View>
 	)
 
 	renderTimezone = (userId) => {
 		if (this.props.activeUsers[userId]) {
 			const { utcOffset } = this.props.activeUsers[userId];
+
+			if (!utcOffset) {
+				return null;
+			}
 
 			return (
 				<View style={styles.item}>
