@@ -489,6 +489,7 @@ export default class MessageBox extends React.PureComponent {
 							ref={component => this.component = component}
 							style={styles.textBoxInput}
 							returnKeyType='default'
+							keyboardType='twitter'
 							blurOnSubmit={false}
 							placeholder='New Message'
 							onChangeText={text => this.onChangeText(text)}
