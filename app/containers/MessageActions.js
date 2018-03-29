@@ -179,7 +179,7 @@ export default class MessageActions extends React.Component {
 
 	isRoomReadOnly = () => this.props.room.ro;
 
-	canReactWhenReadOnly = () => this.props.room.reactWhenReadOnly;	
+	canReactWhenReadOnly = () => this.props.room.reactWhenReadOnly;
 
 	allowEdit = (props) => {
 		if (this.isRoomReadOnly()) {

@@ -131,7 +131,7 @@ const goRoomsListAndDelete = function* goRoomsListAndDelete(rid) {
 		const subscription = database.objects('subscriptions').filtered('rid = $0', rid);
 		database.delete(subscription);
 	});
-}
+};
 
 const handleLeaveRoom = function* handleLeaveRoom({ rid }) {
 	try {
