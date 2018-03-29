@@ -4,7 +4,8 @@ export default StyleSheet.create({
 	container: {
 		flex: 1,
 		flexDirection: 'column',
-		backgroundColor: '#ffffff'
+		backgroundColor: '#ffffff',
+		padding: 10
 	},
 	headerButton: {
 		backgroundColor: 'transparent',
@@ -15,8 +16,8 @@ export default StyleSheet.create({
 	},
 	item: {
 		padding: 10,
-		borderColor: '#EBEDF1',
-		borderTopWidth: StyleSheet.hairlineWidth,
+		// borderColor: '#EBEDF1',
+		// borderTopWidth: StyleSheet.hairlineWidth,
 		justifyContent: 'center'
 	},
 	avatarContainer: {
@@ -46,10 +47,14 @@ export default StyleSheet.create({
 		right: -4
 	},
 	itemLabel: {
-		fontWeight: '500'
+		fontWeight: '600',
+		marginBottom: 10
 	},
 	itemContent: {
 		color: '#ccc'
+	},
+	itemContent__empty: {
+		fontStyle: 'italic'
 	},
 	rolesContainer: {
 		flexDirection: 'row',

@@ -15,6 +15,8 @@ import Touch from '../../utils/touch';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
+const camelize = str => str.replace(/^(.)/, (match, chr) => chr.toUpperCase());
+
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	user: state.login.user,
@@ -121,11 +123,11 @@ export default class RoomInfoView extends React.Component {
 		const [room] = this.rooms;
 		this.setState({ room });
 	}
-
+	// TODO: translate
 	renderItem = (key, room) => (
 		<View style={styles.item}>
-			<Text style={styles.itemLabel}>{key}</Text>
-			<Text style={styles.itemContent}>{ room[key] }</Text>
+			<Text style={styles.itemLabel}>{camelize(key)}</Text>
+			<Text style={[styles.itemContent, !room[key] && styles.itemContent__empty]}>{ room[key] ? room[key] : `No ${ key } provided.` }</Text>
 		</View>
 	);
 
@@ -150,7 +152,7 @@ export default class RoomInfoView extends React.Component {
 			if (!utcOffset) {
 				return null;
 			}
-
+			// TODO: translate
 			return (
 				<View style={styles.item}>
 					<Text style={styles.itemLabel}>Timezone</Text>
@@ -178,6 +180,7 @@ export default class RoomInfoView extends React.Component {
 					</Avatar>
 					<Text style={styles.roomTitle}>{ this.getRoomTitle(room) }</Text>
 				</View>
+
 				{!this.isDirect() && this.renderItem('description', room)}
 				{!this.isDirect() && this.renderItem('topic', room)}
 				{!this.isDirect() && this.renderItem('announcement', room)}
