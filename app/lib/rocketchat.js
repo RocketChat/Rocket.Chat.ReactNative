@@ -18,6 +18,7 @@ import { pinnedMessagesReceived, pinnedMessageUnpinned } from '../actions/pinned
 import { mentionedMessagesReceived } from '../actions/mentionedMessages';
 import { snippetedMessagesReceived } from '../actions/snippetedMessages';
 import { roomFilesReceived } from '../actions/roomFiles';
+import { setRoles } from '../actions/roles';
 import Ddp from './ddp';
 
 export { Accounts } from 'react-native-meteor';
@@ -92,12 +93,11 @@ const RocketChat = {
 			this._setUserTimer = null;
 		}
 
-
 		this._setUserTimer = setTimeout(() => {
 			reduxStore.dispatch(setActiveUser(this.activeUsers));
 			this._setUserTimer = null;
 			return this.activeUsers = {};
-		}, 5000);
+		}, 3000);
 		this.activeUsers[ddpMessage.id] = ddpMessage.fields;
 	},
 	reconnect() {
@@ -125,14 +125,14 @@ const RocketChat = {
 				RocketChat.getSettings();
 				RocketChat.getPermissions();
 				RocketChat.getCustomEmoji();
+				this.ddp.subscribe('activeUsers');
+				this.ddp.subscribe('roles');
 			});
 
 			this.ddp.on('error', (err) => {
 				alert(JSON.stringify(err));
 				reduxStore.dispatch(connectFailure());
 			});
-
-			this.ddp.on('connected', () => this.ddp.subscribe('activeUsers', null, false));
 
 			this.ddp.on('users', ddpMessage => RocketChat._setUser(ddpMessage));
 
@@ -340,6 +340,28 @@ const RocketChat = {
 					}
 					this.loginServiceTimer = setTimeout(() => reduxStore.dispatch(removeLoginServices()), 1000);
 				}
+			});
+
+			this.ddp.on('rocketchat_roles', (ddpMessage) => {
+				this.roles = this.roles || {};
+
+				if (this.roleTimer) {
+					clearTimeout(this.roleTimer);
+					this.roleTimer = null;
+				}
+				this.roleTimer = setTimeout(() => {
+					reduxStore.dispatch(setRoles(this.roles));
+
+					database.write(() => {
+						_.forEach(this.roles, (description, _id) => {
+							database.create('roles', { _id, description }, true);
+						});
+					});
+
+					this.roleTimer = null;
+					return this.roles = {};
+				}, 5000);
+				this.roles[ddpMessage.id] = ddpMessage.fields.description;
 			});
 		}).catch(console.log);
 	},

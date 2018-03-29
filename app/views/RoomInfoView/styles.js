@@ -52,12 +52,14 @@ export default StyleSheet.create({
 		color: '#ccc'
 	},
 	rolesContainer: {
-		flexDirection: 'row'
+		flexDirection: 'row',
+		flexWrap: 'wrap'
 	},
 	roleBadge: {
 		padding: 8,
 		backgroundColor: '#ddd',
 		borderRadius: 2,
-		marginRight: 5
+		marginRight: 5,
+		marginBottom: 5
 	}
 });

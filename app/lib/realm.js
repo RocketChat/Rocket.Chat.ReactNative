@@ -238,6 +238,15 @@ const customEmojisSchema = {
 	}
 };
 
+const rolesSchema = {
+	name: 'roles',
+	primaryKey: '_id',
+	properties: {
+		_id: 'string',
+		description: { type: 'string', optional: true }
+	}
+};
+
 const schema = [
 	settingsSchema,
 	subscriptionSchema,
@@ -255,7 +264,8 @@ const schema = [
 	customEmojiAliasesSchema,
 	customEmojisSchema,
 	messagesReactionsSchema,
-	messagesReactionsUsernamesSchema
+	messagesReactionsUsernamesSchema,
+	rolesSchema
 ];
 class DB {
 	databases = {

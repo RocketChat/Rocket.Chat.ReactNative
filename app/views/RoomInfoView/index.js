@@ -20,7 +20,8 @@ const PERMISSION_EDIT_ROOM = 'edit-room';
 	user: state.login.user,
 	permissions: state.permissions,
 	activeUsers: state.activeUsers,
-	Message_TimeFormat: state.settings.Message_TimeFormat
+	Message_TimeFormat: state.settings.Message_TimeFormat,
+	roles: state.roles
 }))
 export default class RoomInfoView extends React.Component {
 	static propTypes = {
@@ -28,7 +29,8 @@ export default class RoomInfoView extends React.Component {
 		user: PropTypes.object,
 		navigation: PropTypes.object,
 		activeUsers: PropTypes.object,
-		Message_TimeFormat: PropTypes.string
+		Message_TimeFormat: PropTypes.string,
+		roles: PropTypes.object
 	}
 
 	static navigationOptions = ({ navigation }) => {
@@ -134,7 +136,7 @@ export default class RoomInfoView extends React.Component {
 			<View style={styles.rolesContainer}>
 				{this.state.roles.map(role => (
 					<View style={styles.roleBadge} key={role}>
-						<Text>{ role }</Text>
+						<Text>{ this.props.roles[role] }</Text>
 					</View>
 				))}
 			</View>
