@@ -11,6 +11,7 @@ import database from '../lib/realm';
 import * as NavigationService from '../containers/routes/NavigationService';
 
 const leaveRoom = rid => RocketChat.leaveRoom(rid);
+const eraseRoom = rid => RocketChat.eraseRoom(rid);
 
 const getRooms = function* getRooms() {
 	return yield RocketChat.getRooms();
@@ -121,23 +122,36 @@ const updateLastOpen = function* updateLastOpen() {
 	yield put(setLastOpen());
 };
 
+const goRoomsListAndDelete = function* goRoomsListAndDelete(rid) {
+	NavigationService.goRoomsList();
+	yield delay(1000);
+	database.write(() => {
+		const messages = database.objects('messages').filtered('rid = $0', rid);
+		database.delete(messages);
+		const subscription = database.objects('subscriptions').filtered('rid = $0', rid);
+		database.delete(subscription);
+	});
+};
+
 const handleLeaveRoom = function* handleLeaveRoom({ rid }) {
 	try {
 		yield call(leaveRoom, rid);
-		NavigationService.goRoomsList();
-		yield delay(1000);
-		database.write(() => {
-			const messages = database.objects('messages').filtered('rid = $0', rid);
-			database.delete(messages);
-			const subscription = database.objects('subscriptions').filtered('rid = $0', rid);
-			database.delete(subscription);
-		});
+		yield goRoomsListAndDelete(rid);
 	} catch (e) {
 		if (e.error === 'error-you-are-last-owner') {
 			Alert.alert('You are the last owner. Please set new owner before leaving the room.');
 		} else {
-			Alert.alert(e);
+			Alert.alert('Something happened when leaving room!');
 		}
+	}
+};
+
+const handleEraseRoom = function* handleEraseRoom({ rid }) {
+	try {
+		yield call(eraseRoom, rid);
+		yield goRoomsListAndDelete(rid);
+	} catch (e) {
+		Alert.alert('Something happened when erasing room!');
 	}
 };
 
@@ -150,5 +164,6 @@ const root = function* root() {
 	yield takeLatest(FOREGROUND, watchRoomsRequest);
 	yield takeLatest(BACKGROUND, updateLastOpen);
 	yield takeLatest(types.ROOM.LEAVE, handleLeaveRoom);
+	yield takeLatest(types.ROOM.ERASE, handleEraseRoom);
 };
 export default root;

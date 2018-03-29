@@ -50,7 +50,8 @@ export default class RoomHeaderView extends React.PureComponent {
 
 	getUserStatus() {
 		const userId = this.rid.replace(this.props.user.id, '').trim();
-		return this.props.activeUsers[userId] || 'offline';
+		const userInfo = this.props.activeUsers[userId];
+		return (userInfo && userInfo.status) || 'offline';
 	}
 
 	getUserStatusLabel() {
@@ -86,7 +87,12 @@ export default class RoomHeaderView extends React.PureComponent {
 		}
 
 		return (
-			<TouchableOpacity style={styles.titleContainer} accessibilityLabel={accessibilityLabel} accessibilityTraits='header'>
+			<TouchableOpacity
+				style={styles.titleContainer}
+				accessibilityLabel={accessibilityLabel}
+				accessibilityTraits='header'
+				onPress={() => this.props.navigation.navigate('RoomInfo', { rid: this.rid })}
+			>
 				{this.isDirect() ?
 					<View style={[styles.status, { backgroundColor: STATUS_COLORS[this.getUserStatus()] }]} />
 					: null
