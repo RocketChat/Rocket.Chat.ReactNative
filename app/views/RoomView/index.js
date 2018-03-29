@@ -157,6 +157,7 @@ export default class RoomView extends React.Component {
 			user={this.props.user}
 			onReactionPress={this.onReactionPress}
 			onLongPress={this.onMessageLongPress}
+			archived={this.state.room.archived}
 		/>
 	);
 
@@ -171,7 +172,7 @@ export default class RoomView extends React.Component {
 				</View>
 			);
 		}
-		if (this.state.room.ro) {
+		if (this.state.room.ro || this.state.room.archived) {
 			return (
 				<View style={styles.readOnly}>
 					<Text>This room is read only</Text>
