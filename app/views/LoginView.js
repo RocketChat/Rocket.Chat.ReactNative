@@ -65,6 +65,7 @@ export default class LoginView extends React.Component {
 			username: '',
 			password: '',
 			modalVisible: false,
+			showPassword: false,
 			oAuthUrl: ''
 		};
 		this.redirectRegex = new RegExp(`(?=.*(${ this.props.server }))(?=.*(credentialToken))(?=.*(credentialSecret))`, 'g');
@@ -238,19 +239,21 @@ export default class LoginView extends React.Component {
 									onSubmitEditing={() => { this.password.focus(); }}
 									placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email or username'}
 								/>
-								<TextInput
-									ref={(e) => { this.password = e; }}
-									style={styles.input_white}
-									onChangeText={password => this.setState({ password })}
-									secureTextEntry
-									autoCorrect={false}
-									returnKeyType='done'
-									autoCapitalize='none'
-									underlineColorAndroid='transparent'
-									onSubmitEditing={this.submit}
-									placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
-								/>
-
+								<View style={styles.passInput}>
+									<TextInput
+										ref={(e) => { this.password = e; }}
+										style={styles.input_white}
+										onChangeText={password => this.setState({ password })}
+										secureTextEntry={!this.state.showPassword}
+										autoCorrect={false}
+										returnKeyType='done'
+										autoCapitalize='none'
+										underlineColorAndroid='transparent'
+										onSubmitEditing={this.submit}
+										placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
+									/>
+									<Icon name='eye' style={styles.passIcon} size={20} onPress={() => { this.setState({ showPassword: !this.state.showPassword }); }}/>
+								</View>
 								{this.renderTOTP()}
 
 								<TouchableOpacity
