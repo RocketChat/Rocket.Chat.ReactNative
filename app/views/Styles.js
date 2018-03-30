@@ -32,6 +32,16 @@ export default StyleSheet.create({
 		justifyContent: 'center',
 		flex: 1
 	},
+	passInput: {
+		flex: 1,
+		position: 'relative'
+	},
+	passIcon: {
+		position: 'absolute',
+		right: 0,
+		padding: 10,
+		color: 'rgba(0,0,0,.45)'
+	},
 	loginLogo: {
 		width: Dimensions.get('window').width - 150,
 		height: Dimensions.get('window').width - 150,
