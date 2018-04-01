@@ -2,6 +2,8 @@ import React from 'react';
 import { View, StyleSheet, Text, TextInput } from 'react-native';
 import PropTypes from 'prop-types';
 
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 import sharedStyles from '../views/Styles';
 import { COLOR_DANGER } from '../constants/colors';
 
@@ -29,46 +31,57 @@ const styles = StyleSheet.create({
 	inputError: {
 		color: COLOR_DANGER,
 		borderColor: COLOR_DANGER
+	},
+	wrap: {
+		flex: 1,
+		position: 'relative'
+	},
+	icon: {
+		position: 'absolute',
+		right: 0,
+		padding: 10,
+		color: 'rgba(0,0,0,.45)'
 	}
 });
+
 
 export default class RCTextInput extends React.PureComponent {
 	static propTypes = {
 		label: PropTypes.string,
-		value: PropTypes.string,
 		error: PropTypes.object,
-		inputProps: PropTypes.object,
-		inputRef: PropTypes.func,
-		onChangeText: PropTypes.func,
-		onSubmitEditing: PropTypes.func
+		secureTextEntry: PropTypes.bool
 	}
-
 	static defaultProps = {
-		label: 'Label',
+		showPassword: false,
 		error: {}
 	}
+	state = {
+		showPassword: false
+	}
+
+	get icon() { return <Icon name={this.state.showPassword ? 'eye-slash' : 'eye'} style={styles.icon} size={20} onPress={this.tooglePassword} />; }
+
+	tooglePassword = () => this.setState({ showPassword: !this.state.showPassword })
 
 	render() {
 		const {
-			label, value, error, inputRef, onChangeText, onSubmitEditing, inputProps
+			label, error, secureTextEntry, ...inputProps
 		} = this.props;
+		const { showPassword } = this.state;
 		return (
 			<View style={styles.inputContainer}>
-				<Text style={[styles.label, error.error && styles.labelError]}>
-					{label}
-				</Text>
-				<TextInput
-					ref={inputRef}
-					style={[styles.input, error.error && styles.inputError]}
-					onChangeText={onChangeText}
-					onSubmitEditing={onSubmitEditing}
-					value={value}
-					autoCorrect={false}
-					returnKeyType='next'
-					autoCapitalize='none'
-					underlineColorAndroid='transparent'
-					{...inputProps}
-				/>
+				{ label && <Text style={[styles.label, error.error && styles.labelError]}>{label}</Text> }
+				<View style={styles.wrap}>
+					<TextInput
+						style={[styles.input, error.error && styles.inputError]}
+						autoCorrect={false}
+						autoCapitalize='none'
+						underlineColorAndroid='transparent'
+						secureTextEntry={secureTextEntry && !showPassword}
+						{...inputProps}
+					/>
+					{secureTextEntry && this.icon}
+				</View>
 				{error.error && <Text style={sharedStyles.error}>{error.reason}</Text>}
 			</View>
 		);
