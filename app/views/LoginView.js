@@ -1,7 +1,7 @@
 import React from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import PropTypes from 'prop-types';
-import { Keyboard, Text, TextInput, View, ScrollView, TouchableOpacity, SafeAreaView, WebView, Platform, LayoutAnimation } from 'react-native';
+import { Keyboard, Text, View, ScrollView, TouchableOpacity, SafeAreaView, WebView, Platform, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -10,6 +10,7 @@ import Modal from 'react-native-modal';
 
 import { loginSubmit, open, close } from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
+import TextInput from '../containers/TextInput';
 
 import styles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
@@ -65,7 +66,6 @@ export default class LoginView extends React.Component {
 			username: '',
 			password: '',
 			modalVisible: false,
-			showPassword: false,
 			oAuthUrl: ''
 		};
 		this.redirectRegex = new RegExp(`(?=.*(${ this.props.server }))(?=.*(credentialToken))(?=.*(credentialSecret))`, 'g');
@@ -239,21 +239,20 @@ export default class LoginView extends React.Component {
 									onSubmitEditing={() => { this.password.focus(); }}
 									placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email or username'}
 								/>
-								<View style={styles.passInput}>
-									<TextInput
-										ref={(e) => { this.password = e; }}
-										style={styles.input_white}
-										onChangeText={password => this.setState({ password })}
-										secureTextEntry={!this.state.showPassword}
-										autoCorrect={false}
-										returnKeyType='done'
-										autoCapitalize='none'
-										underlineColorAndroid='transparent'
-										onSubmitEditing={this.submit}
-										placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
-									/>
-									<Icon name='eye' style={styles.passIcon} size={20} onPress={() => { this.setState({ showPassword: !this.state.showPassword }); }}/>
-								</View>
+
+								<TextInput
+									ref={(e) => { this.password = e; }}
+									style={styles.input_white}
+									onChangeText={password => this.setState({ password })}
+									secureTextEntry
+									autoCorrect={false}
+									returnKeyType='done'
+									autoCapitalize='none'
+									underlineColorAndroid='transparent'
+									onSubmitEditing={this.submit}
+									placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
+								/>
+
 								{this.renderTOTP()}
 
 								<TouchableOpacity
