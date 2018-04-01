@@ -1,7 +1,7 @@
 import React from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import PropTypes from 'prop-types';
-import { Keyboard, Text, TextInput, View, ScrollView, TouchableOpacity, SafeAreaView, WebView, Platform, LayoutAnimation } from 'react-native';
+import { Keyboard, Text, View, ScrollView, TouchableOpacity, SafeAreaView, WebView, Platform, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -10,6 +10,7 @@ import Modal from 'react-native-modal';
 
 import { loginSubmit, open, close } from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
+import TextInput from '../containers/TextInput';
 
 import styles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
@@ -238,6 +239,7 @@ export default class LoginView extends React.Component {
 									onSubmitEditing={() => { this.password.focus(); }}
 									placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email or username'}
 								/>
+
 								<TextInput
 									ref={(e) => { this.password = e; }}
 									style={styles.input_white}
