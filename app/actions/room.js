@@ -42,6 +42,13 @@ export function leaveRoom(rid) {
 	};
 }
 
+export function eraseRoom(rid) {
+	return {
+		type: types.ROOM.ERASE,
+		rid
+	};
+}
+
 export function userTyping(status = true) {
 	return {
 		type: types.ROOM.USER_TYPING,

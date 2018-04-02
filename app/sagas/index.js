@@ -8,7 +8,6 @@ import selectServer from './selectServer';
 import createChannel from './createChannel';
 import init from './init';
 import state from './state';
-import activeUsers from './activeUsers';
 import starredMessages from './starredMessages';
 import pinnedMessages from './pinnedMessages';
 import mentionedMessages from './mentionedMessages';
@@ -26,7 +25,6 @@ const root = function* root() {
 		messages(),
 		selectServer(),
 		state(),
-		activeUsers(),
 		starredMessages(),
 		pinnedMessages(),
 		mentionedMessages(),
