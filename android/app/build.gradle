@@ -166,6 +166,7 @@ repositories {
 }
 
 dependencies {
+    compile project(':react-native-fabric')
     compile project(':react-native-audio')
     compile project(":reactnativekeyboardinput")
     compile project(':react-native-splash-screen')

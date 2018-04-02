@@ -18,6 +18,7 @@ import com.brentvatne.react.ReactVideoPackage;
 import com.remobile.toast.RCTToastPackage;
 import com.wix.reactnativekeyboardinput.KeyboardInputPackage;
 import com.rnim.rn.audio.ReactNativeAudioPackage;
+import com.smixx.fabric.FabricPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,7 +48,8 @@ public class MainApplication extends Application implements ReactApplication {
         new RCTToastPackage(),
         new ReactNativeAudioPackage(),
         new KeyboardInputPackage(MainApplication.this),
-        new RocketChatNativePackage()
+        new RocketChatNativePackage(),
+        new FabricPackage()
       );
     }
   };
