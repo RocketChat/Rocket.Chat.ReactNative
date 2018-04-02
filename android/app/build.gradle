@@ -98,7 +98,6 @@ android {
         minSdkVersion 16
         targetSdkVersion 22
         versionCode VERSIONCODE as Integer
-        manifestPlaceholders = [fabricKey:FABRIC_KEY]
         versionName "1.1"
         ndk {
             abiFilters "armeabi-v7a", "x86"
