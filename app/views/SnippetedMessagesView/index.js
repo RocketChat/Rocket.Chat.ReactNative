@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
+import LoggedView from '../View';
 import { openSnippetedMessages, closeSnippetedMessages } from '../../actions/snippetedMessages';
 import styles from './styles';
 import Message from '../../containers/message';
@@ -18,7 +19,7 @@ import Message from '../../containers/message';
 		closeSnippetedMessages: () => dispatch(closeSnippetedMessages())
 	})
 )
-export default class SnippetedMessagesView extends React.PureComponent {
+export default class SnippetedMessagesView extends LoggedView {
 	static propTypes = {
 		navigation: PropTypes.object,
 		messages: PropTypes.array,
@@ -26,6 +27,10 @@ export default class SnippetedMessagesView extends React.PureComponent {
 		baseUrl: PropTypes.string,
 		openSnippetedMessages: PropTypes.func,
 		closeSnippetedMessages: PropTypes.func
+	}
+
+	constructor(props) {
+		super('SnippetedMessagesView', props);
 	}
 
 	componentDidMount() {

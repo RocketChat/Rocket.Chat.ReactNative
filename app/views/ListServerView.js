@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import Zeroconf from 'react-native-zeroconf';
 import { View, Text, SectionList, StyleSheet, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
+
+import LoggedView from './View';
 import { setServer } from '../actions/server';
 import database from '../lib/realm';
 import Fade from '../animations/fade';
@@ -69,7 +71,7 @@ const zeroconf = new Zeroconf();
 }), dispatch => ({
 	selectServer: server => dispatch(setServer(server))
 }))
-export default class ListServerView extends React.Component {
+export default class ListServerView extends LoggedView {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
 		login: PropTypes.object.isRequired,
@@ -79,7 +81,7 @@ export default class ListServerView extends React.Component {
 	}
 
 	constructor(props) {
-		super(props);
+		super('ListServerView', props);
 		this.state = {
 			sections: []
 		};
