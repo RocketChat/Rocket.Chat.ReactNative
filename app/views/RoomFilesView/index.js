@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
+import LoggedView from '../View';
 import { openRoomFiles, closeRoomFiles } from '../../actions/roomFiles';
 import styles from './styles';
 import Message from '../../containers/message';
@@ -18,7 +19,7 @@ import Message from '../../containers/message';
 		closeRoomFiles: () => dispatch(closeRoomFiles())
 	})
 )
-export default class RoomFilesView extends React.PureComponent {
+export default class RoomFilesView extends LoggedView {
 	static propTypes = {
 		navigation: PropTypes.object,
 		messages: PropTypes.array,
@@ -26,6 +27,10 @@ export default class RoomFilesView extends React.PureComponent {
 		baseUrl: PropTypes.string,
 		openRoomFiles: PropTypes.func,
 		closeRoomFiles: PropTypes.func
+	}
+
+	constructor(props) {
+		super('RoomFilesView', props);
 	}
 
 	componentDidMount() {

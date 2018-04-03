@@ -4,6 +4,8 @@ import { Text, View, ScrollView, TouchableOpacity, SafeAreaView, Keyboard, Alert
 import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from 'react-redux';
 
+
+import LoggedView from '../View';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
 import styles from './styles';
@@ -34,14 +36,14 @@ const PERMISSIONS_ARRAY = [
 @connect(null, dispatch => ({
 	eraseRoom: rid => dispatch(eraseRoom(rid))
 }))
-export default class RoomInfoEditView extends React.Component {
+export default class RoomInfoEditView extends LoggedView {
 	static propTypes = {
 		navigation: PropTypes.object,
 		eraseRoom: PropTypes.func
 	};
 
 	constructor(props) {
-		super(props);
+		super('RoomInfoEditView', props);
 		const { rid } = props.navigation.state.params;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.permissions = {};
@@ -59,6 +61,7 @@ export default class RoomInfoEditView extends React.Component {
 			reactWhenReadOnly: false
 		};
 	}
+
 
 	async componentDidMount() {
 		await this.updateRoom();

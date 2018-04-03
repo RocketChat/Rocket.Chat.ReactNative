@@ -4,13 +4,14 @@ import PropTypes from 'prop-types';
 import { Text, TextInput, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
+import LoggedView from './View';
 import * as loginActions from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
-
 import styles from './Styles';
 import { showErrorAlert } from '../utils/info';
 
-class ForgotPasswordView extends React.Component {
+class ForgotPasswordView extends LoggedView {
 	static propTypes = {
 		forgotPasswordInit: PropTypes.func.isRequired,
 		forgotPasswordRequest: PropTypes.func.isRequired,
@@ -19,7 +20,7 @@ class ForgotPasswordView extends React.Component {
 	}
 
 	constructor(props) {
-		super(props);
+		super('ForgotPasswordView', props);
 
 		this.state = {
 			email: '',

@@ -22,8 +22,20 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>100</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>This app uses the microphone to record audio message.</string>
+	<key>Fabric</key>
+	<dict>
+		<key>APIKey</key>
+		<string>YOUR_API_KEY</string>
+		<key>Kits</key>
+		<array>
+			<dict>
+				<key>KitInfo</key>
+				<dict/>
+				<key>KitName</key>
+				<string>Crashlytics</string>
+			</dict>
+		</array>
+	</dict>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
@@ -42,7 +54,9 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Upload images from camera</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app uses the microphone to record audio message.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Upload images from library</string>
 	<key>UIAppFonts</key>

@@ -52,7 +52,6 @@ export default class RCTextInput extends React.PureComponent {
 		secureTextEntry: PropTypes.bool
 	}
 	static defaultProps = {
-		showPassword: false,
 		error: {}
 	}
 	state = {

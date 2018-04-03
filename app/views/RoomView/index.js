@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import equal from 'deep-equal';
 
+import LoggedView from '../View';
 import { List } from './ListView';
 import * as actions from '../../actions';
 import { openRoom, setLastOpen } from '../../actions/room';
@@ -39,7 +40,7 @@ import styles from './styles';
 		actionsShow: actionMessage => dispatch(actionsShow(actionMessage))
 	})
 )
-export default class RoomView extends React.Component {
+export default class RoomView extends LoggedView {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
 		openRoom: PropTypes.func.isRequired,
@@ -61,7 +62,7 @@ export default class RoomView extends React.Component {
 	});
 
 	constructor(props) {
-		super(props);
+		super('RoomView', props);
 		this.rid =
 			props.rid ||
 			props.navigation.state.params.room.rid;
