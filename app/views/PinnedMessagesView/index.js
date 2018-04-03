@@ -4,6 +4,7 @@ import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
 
+import LoggedView from '../View';
 import { openPinnedMessages, closePinnedMessages } from '../../actions/pinnedMessages';
 import styles from './styles';
 import Message from '../../containers/message';
@@ -25,7 +26,7 @@ const options = ['Unpin', 'Cancel'];
 		togglePinRequest: message => dispatch(togglePinRequest(message))
 	})
 )
-export default class PinnedMessagesView extends React.PureComponent {
+export default class PinnedMessagesView extends LoggedView {
 	static propTypes = {
 		navigation: PropTypes.object,
 		messages: PropTypes.array,
@@ -37,7 +38,7 @@ export default class PinnedMessagesView extends React.PureComponent {
 	}
 
 	constructor(props) {
-		super(props);
+		super('PinnedMessagesView', props);
 		this.state = {
 			message: {}
 		};

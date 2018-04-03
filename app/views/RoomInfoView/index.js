@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
 
+import LoggedView from '../View';
 import Status from '../../containers/status';
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
@@ -25,7 +26,7 @@ const camelize = str => str.replace(/^(.)/, (match, chr) => chr.toUpperCase());
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	roles: state.roles
 }))
-export default class RoomInfoView extends React.Component {
+export default class RoomInfoView extends LoggedView {
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		user: PropTypes.object,
@@ -58,7 +59,7 @@ export default class RoomInfoView extends React.Component {
 	};
 
 	constructor(props) {
-		super(props);
+		super('RoomInfoView', props);
 		const { rid } = props.navigation.state.params;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.sub = {

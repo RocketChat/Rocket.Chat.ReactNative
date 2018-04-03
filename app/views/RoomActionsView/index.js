@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 
+import LoggedView from '../View';
 import styles from './styles';
 import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
@@ -20,7 +21,7 @@ import { leaveRoom } from '../../actions/room';
 }), dispatch => ({
 	leaveRoom: rid => dispatch(leaveRoom(rid))
 }))
-export default class RoomActionsView extends React.PureComponent {
+export default class RoomActionsView extends LoggedView {
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		user: PropTypes.object,
@@ -29,7 +30,7 @@ export default class RoomActionsView extends React.PureComponent {
 	}
 
 	constructor(props) {
-		super(props);
+		super('RoomActionsView', props);
 		const { rid } = props.navigation.state.params;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.state = {

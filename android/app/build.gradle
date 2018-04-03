@@ -143,7 +143,29 @@ android {
     }
 }
 
+buildscript {
+  repositories {
+    maven { url 'https://maven.fabric.io/public' }
+  }
+
+  dependencies {
+    // These docs use an open ended version so that our plugin
+    // can be updated quickly in response to Android tooling updates
+
+    // We recommend changing it to the latest version from our changelog:
+    // https://docs.fabric.io/android/changelog.html#fabric-gradle-plugin
+    classpath 'io.fabric.tools:gradle:1.+'
+  }
+}
+
+apply plugin: 'io.fabric'
+
+repositories {
+  maven { url 'https://maven.fabric.io/public' }
+}
+
 dependencies {
+    compile project(':react-native-fabric')
     compile project(':react-native-audio')
     compile project(":reactnativekeyboardinput")
     compile project(':react-native-splash-screen')
@@ -162,6 +184,9 @@ dependencies {
     compile "com.facebook.react:react-native:+"  // From node_modules
     compile 'com.facebook.fresco:fresco:1.7.1'
     compile 'com.facebook.fresco:animated-gif:1.7.1'
+    compile('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
+        transitive = true;
+    }
 }
 
 // Run this once to be able to run the application with BUCK

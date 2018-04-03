@@ -3,9 +3,22 @@ import PropTypes from 'prop-types';
 import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
+import LoggedView from '../View';
 import { openSnippetedMessages, closeSnippetedMessages } from '../../actions/snippetedMessages';
 import styles from './styles';
 import Message from '../../containers/message';
+
+const renderItem = ({ item }) => (
+	<Message
+		item={item}
+		style={styles.message}
+		reactions={item.reactions}
+		user={this.props.user}
+		baseUrl={this.props.baseUrl}
+		Message_TimeFormat='MMMM Do YYYY, h:mm:ss a'
+		onLongPress={() => {}}
+	/>
+);
 
 @connect(
 	state => ({
@@ -18,7 +31,7 @@ import Message from '../../containers/message';
 		closeSnippetedMessages: () => dispatch(closeSnippetedMessages())
 	})
 )
-export default class SnippetedMessagesView extends React.PureComponent {
+export default class SnippetedMessagesView extends LoggedView {
 	static propTypes = {
 		navigation: PropTypes.object,
 		messages: PropTypes.array,
@@ -26,6 +39,10 @@ export default class SnippetedMessagesView extends React.PureComponent {
 		baseUrl: PropTypes.string,
 		openSnippetedMessages: PropTypes.func,
 		closeSnippetedMessages: PropTypes.func
+	}
+
+	constructor(props) {
+		super('SnippetedMessagesView', props);
 	}
 
 	componentDidMount() {
@@ -42,18 +59,6 @@ export default class SnippetedMessagesView extends React.PureComponent {
 		</View>
 	)
 
-	renderItem = ({ item }) => (
-		<Message
-			item={item}
-			style={styles.message}
-			reactions={item.reactions}
-			user={this.props.user}
-			baseUrl={this.props.baseUrl}
-			Message_TimeFormat='MMMM Do YYYY, h:mm:ss a'
-			onLongPress={() => {}}
-		/>
-	)
-
 	render() {
 		if (this.props.messages.length === 0) {
 			return this.renderEmpty();
@@ -62,7 +67,7 @@ export default class SnippetedMessagesView extends React.PureComponent {
 			<FlatList
 				key='snippet-messages-view-list'
 				data={this.props.messages}
-				renderItem={this.renderItem}
+				renderItem={renderItem}
 				style={styles.list}
 				keyExtractor={item => item._id}
 			/>

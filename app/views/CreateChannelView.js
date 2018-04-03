@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { TextInput, View, Text, Switch, TouchableOpacity, SafeAreaView } from 'react-native';
+
+import LoggedView from './View';
 import { createChannelRequest } from '../actions/createChannel';
 import styles from './Styles';
 import KeyboardView from '../presentation/KeyboardView';
@@ -15,7 +17,7 @@ import KeyboardView from '../presentation/KeyboardView';
 		createChannel: data => dispatch(createChannelRequest(data))
 	})
 )
-export default class CreateChannelView extends React.Component {
+export default class CreateChannelView extends LoggedView {
 	static navigationOptions = () => ({
 		title: 'Create a New Channel'
 	});
@@ -27,7 +29,7 @@ export default class CreateChannelView extends React.Component {
 	};
 
 	constructor(props) {
-		super(props);
+		super('CreateChannelView', props);
 		this.default = {
 			channelName: '',
 			type: true

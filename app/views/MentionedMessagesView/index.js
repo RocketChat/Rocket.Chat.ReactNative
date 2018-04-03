@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
+import LoggedView from '../View';
 import { openMentionedMessages, closeMentionedMessages } from '../../actions/mentionedMessages';
 import styles from './styles';
 import Message from '../../containers/message';
@@ -18,7 +19,7 @@ import Message from '../../containers/message';
 		closeMentionedMessages: () => dispatch(closeMentionedMessages())
 	})
 )
-export default class MentionedMessagesView extends React.PureComponent {
+export default class MentionedMessagesView extends LoggedView {
 	static propTypes = {
 		navigation: PropTypes.object,
 		messages: PropTypes.array,
@@ -26,6 +27,10 @@ export default class MentionedMessagesView extends React.PureComponent {
 		baseUrl: PropTypes.string,
 		openMentionedMessages: PropTypes.func,
 		closeMentionedMessages: PropTypes.func
+	}
+
+	constructor(props) {
+		super('MentionedMessagesView', props);
 	}
 
 	componentDidMount() {

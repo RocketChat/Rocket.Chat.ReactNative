@@ -54,12 +54,15 @@ export class List extends React.Component {
 	componentWillUpdate() {
 		LayoutAnimation.easeInEaseOut();
 	}
+	componentWillUnmount() {
+		this.updateState.stop();
+	}
 	updateState = debounce(() => {
 		// this.setState({
 		this.dataSource = this.dataSource.cloneWithRows(this.data);
 		this.forceUpdate();
 		// });
-	}, 100);
+	}, 300);
 
 	render() {
 		return (<ListView
