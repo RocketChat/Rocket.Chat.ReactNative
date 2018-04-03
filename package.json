@@ -40,7 +40,7 @@
     "react": "^16.2.0",
     "react-clone-referenced-element": "^1.0.1",
     "react-emojione": "^5.0.0",
-    "react-native": "0.54",
+    "react-native": "~0.55.0",
     "react-native-action-button": "^2.8.3",
     "react-native-actionsheet": "^2.3.0",
     "react-native-animatable": "^1.2.4",
