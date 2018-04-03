@@ -37,10 +37,6 @@ export default class CreateChannelView extends LoggedView {
 		this.state = this.default;
 	}
 
-	componentDidMount() {
-		Answers.logContentView('CreateChannel');
-	}
-
 	componentDidUpdate() {
 		if (!this.adding) {
 			return;

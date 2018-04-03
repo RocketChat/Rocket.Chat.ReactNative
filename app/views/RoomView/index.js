@@ -4,7 +4,6 @@ import { Text, View, Button } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import equal from 'deep-equal';
-import { Answers } from 'react-native-fabric';
 
 import LoggedView from '../View';
 import { List } from './ListView';

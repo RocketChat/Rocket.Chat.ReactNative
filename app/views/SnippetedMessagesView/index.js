@@ -8,6 +8,18 @@ import { openSnippetedMessages, closeSnippetedMessages } from '../../actions/sni
 import styles from './styles';
 import Message from '../../containers/message';
 
+const renderItem = ({ item }) => (
+	<Message
+		item={item}
+		style={styles.message}
+		reactions={item.reactions}
+		user={this.props.user}
+		baseUrl={this.props.baseUrl}
+		Message_TimeFormat='MMMM Do YYYY, h:mm:ss a'
+		onLongPress={() => {}}
+	/>
+);
+
 @connect(
 	state => ({
 		messages: state.snippetedMessages.messages,
@@ -47,18 +59,6 @@ export default class SnippetedMessagesView extends LoggedView {
 		</View>
 	)
 
-	renderItem = ({ item }) => (
-		<Message
-			item={item}
-			style={styles.message}
-			reactions={item.reactions}
-			user={this.props.user}
-			baseUrl={this.props.baseUrl}
-			Message_TimeFormat='MMMM Do YYYY, h:mm:ss a'
-			onLongPress={() => {}}
-		/>
-	)
-
 	render() {
 		if (this.props.messages.length === 0) {
 			return this.renderEmpty();
@@ -67,7 +67,7 @@ export default class SnippetedMessagesView extends LoggedView {
 			<FlatList
 				key='snippet-messages-view-list'
 				data={this.props.messages}
-				renderItem={this.renderItem}
+				renderItem={renderItem}
 				style={styles.list}
 				keyExtractor={item => item._id}
 			/>

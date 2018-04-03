@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Text, View, ScrollView, TouchableOpacity, SafeAreaView, Keyboard, Alert } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from 'react-redux';
-import { Answers } from 'react-native-fabric';
+
 
 import LoggedView from '../View';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -64,7 +64,6 @@ export default class RoomInfoEditView extends LoggedView {
 
 
 	async componentDidMount() {
-		Answers.logContentView('Edit room');
 		await this.updateRoom();
 		this.init();
 		this.rooms.addListener(this.updateRoom);
