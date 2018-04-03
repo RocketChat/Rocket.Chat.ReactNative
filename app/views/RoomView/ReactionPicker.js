@@ -37,7 +37,7 @@ export default class ReactionPicker extends React.Component {
 	}
 
 	render() {
-		const { width, height, showReactionPicker } = this.props.window;
+		const { window: { width, height }, showReactionPicker } = this.props;
 
 		return (showReactionPicker ?
 			<Modal

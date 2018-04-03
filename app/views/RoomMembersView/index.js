@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FlatList, Text, View, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 
+import LoggedView from '../View';
 import styles from './styles';
 import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
@@ -17,7 +18,7 @@ import database from '../../lib/realm';
 	user: state.login.user,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }))
-export default class MentionedMessagesView extends React.PureComponent {
+export default class MentionedMessagesView extends LoggedView {
 	static propTypes = {
 		navigation: PropTypes.object
 	}
@@ -47,7 +48,7 @@ export default class MentionedMessagesView extends React.PureComponent {
 	};
 
 	constructor(props) {
-		super(props);
+		super('MentionedMessagesView', props);
 		const { rid, members } = props.navigation.state.params;
 		this.state = {
 			allUsers: false,

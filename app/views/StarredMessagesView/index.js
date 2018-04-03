@@ -4,6 +4,7 @@ import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
 
+import LoggedView from '../View';
 import { openStarredMessages, closeStarredMessages } from '../../actions/starredMessages';
 import styles from './styles';
 import Message from '../../containers/message';
@@ -25,7 +26,7 @@ const options = ['Unstar', 'Cancel'];
 		toggleStarRequest: message => dispatch(toggleStarRequest(message))
 	})
 )
-export default class StarredMessagesView extends React.PureComponent {
+export default class StarredMessagesView extends LoggedView {
 	static propTypes = {
 		navigation: PropTypes.object,
 		messages: PropTypes.array,
@@ -37,7 +38,7 @@ export default class StarredMessagesView extends React.PureComponent {
 	}
 
 	constructor(props) {
-		super(props);
+		super('StarredMessagesView', props);
 		this.state = {
 			message: {}
 		};

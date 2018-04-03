@@ -49,6 +49,10 @@
 		70A8D9B456894EFFAF027CAB /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A30DA4B2D474348824CD05B /* FontAwesome.ttf */; };
 		74815BBCB91147C08C8F7B3D /* libRNAudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1142E3442BA94B19BCF52814 /* libRNAudio.a */; };
 		77C35F50C01C43668188886C /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A0EEFAF8AB14F5B9E796CDD /* libRNVectorIcons.a */; };
+		7A2D202320726F1400D0AA04 /* libSMXCrashlytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2D201F20726EF600D0AA04 /* libSMXCrashlytics.a */; };
+		7A309C9C20724870000C6B13 /* Fabric.sh in Resources */ = {isa = PBXBuildFile; fileRef = 7A309C9B20724870000C6B13 /* Fabric.sh */; };
+		7A32C246206D791D001C80E9 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A32C20F206D791D001C80E9 /* Fabric.framework */; };
+		7A32C247206D791D001C80E9 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A32C245206D791D001C80E9 /* Crashlytics.framework */; };
 		7A430E4F20238C46008F55BC /* libRCTCustomInputController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A430E1E20238C02008F55BC /* libRCTCustomInputController.a */; };
 		7AFB806E205AE65700D004E7 /* libRCTToast.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AFB804C205AE63100D004E7 /* libRCTToast.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
@@ -301,6 +305,20 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RCTLinking;
 		};
+		7A2D201E20726EF600D0AA04 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7A2D1FE620726EF600D0AA04 /* SMXCrashlytics.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D8D9DB831C6D03DB009FBC0E;
+			remoteInfo = SMXCrashlytics;
+		};
+		7A2D202020726EF600D0AA04 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7A2D1FE620726EF600D0AA04 /* SMXCrashlytics.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6463C84C1EBA12A60095B8CD;
+			remoteInfo = "SMXCrashlytics-tvOS";
+		};
 		7A430E1D20238C02008F55BC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7A430E1620238C01008F55BC /* RCTCustomInputController.xcodeproj */;
@@ -492,7 +510,11 @@
 		60B2A6A31FC4588700BD58E5 /* RocketChatRN.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = RocketChatRN.entitlements; path = RocketChatRN/RocketChatRN.entitlements; sourceTree = "<group>"; };
 		6533FB90166345D29F1B91C0 /* libRNFetchBlob.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFetchBlob.a; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
+		7A2D1FE620726EF600D0AA04 /* SMXCrashlytics.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SMXCrashlytics.xcodeproj; path = "../node_modules/react-native-fabric/ios/SMXCrashlytics.xcodeproj"; sourceTree = "<group>"; };
+		7A309C9B20724870000C6B13 /* Fabric.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = Fabric.sh; path = RocketChatRN/Fabric.sh; sourceTree = "<group>"; };
 		7A30DA4B2D474348824CD05B /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
+		7A32C20F206D791D001C80E9 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = "../../../../Downloads/com.crashlytics.ios-manual/Fabric.framework"; sourceTree = "<group>"; };
+		7A32C245206D791D001C80E9 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = "../../../../Downloads/com.crashlytics.ios-manual/Crashlytics.framework"; sourceTree = "<group>"; };
 		7A430E1620238C01008F55BC /* RCTCustomInputController.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCustomInputController.xcodeproj; path = "../node_modules/react-native-keyboard-input/lib/ios/RCTCustomInputController.xcodeproj"; sourceTree = "<group>"; };
 		7AFB8035205AE63000D004E7 /* RCTToast.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTToast.xcodeproj; path = "../node_modules/@remobile/react-native-toast/ios/RCTToast.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
@@ -528,6 +550,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A2D202320726F1400D0AA04 /* libSMXCrashlytics.a in Frameworks */,
 				7AFB806E205AE65700D004E7 /* libRCTToast.a in Frameworks */,
 				B8971BB2202A093B0000D245 /* libKeyboardTrackingView.a in Frameworks */,
 				7A430E4F20238C46008F55BC /* libRCTCustomInputController.a in Frameworks */,
@@ -535,6 +558,7 @@
 				B88F586F1FBF57F600B352B8 /* libRCTPushNotification.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
+				7A32C246206D791D001C80E9 /* Fabric.framework in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
@@ -552,6 +576,7 @@
 				8A159EDB97C44E52AF62D69C /* libRNSVG.a in Frameworks */,
 				C758F0BD5C3244E2BA073E61 /* libRNImagePicker.a in Frameworks */,
 				8ECBD927DDAC4987B98E102E /* libRCTVideo.a in Frameworks */,
+				7A32C247206D791D001C80E9 /* Crashlytics.framework in Frameworks */,
 				0F026E58B8A6427D9A204D89 /* libSplashScreen.a in Frameworks */,
 				2C800DF680F8451599E80AF1 /* libSafariViewManager.a in Frameworks */,
 				74815BBCB91147C08C8F7B3D /* libRNAudio.a in Frameworks */,
@@ -673,6 +698,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				7A309C9B20724870000C6B13 /* Fabric.sh */,
 			);
 			name = RocketChatRN;
 			sourceTree = "<group>";
@@ -742,6 +768,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		7A2D1FE720726EF600D0AA04 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7A2D201F20726EF600D0AA04 /* libSMXCrashlytics.a */,
+				7A2D202120726EF600D0AA04 /* libSMXCrashlytics.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		7A430E1720238C01008F55BC /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -778,6 +813,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				7A2D1FE620726EF600D0AA04 /* SMXCrashlytics.xcodeproj */,
 				7AFB8035205AE63000D004E7 /* RCTToast.xcodeproj */,
 				B8971BAC202A091D0000D245 /* KeyboardTrackingView.xcodeproj */,
 				7A430E1620238C01008F55BC /* RCTCustomInputController.xcodeproj */,
@@ -819,6 +855,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				7A32C245206D791D001C80E9 /* Crashlytics.framework */,
+				7A32C20F206D791D001C80E9 /* Fabric.framework */,
 				13B07FAE1A68108700A75B9A /* RocketChatRN */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* RocketChatRNTests */,
@@ -1164,6 +1202,10 @@
 					ProjectRef = 4019A5E1911B4C61944FBCEC /* SafariViewManager.xcodeproj */;
 				},
 				{
+					ProductGroup = 7A2D1FE720726EF600D0AA04 /* Products */;
+					ProjectRef = 7A2D1FE620726EF600D0AA04 /* SMXCrashlytics.xcodeproj */;
+				},
+				{
 					ProductGroup = 7ADCFEBC1FEA8A7900763ED8 /* Products */;
 					ProjectRef = 30FCE1B6376C423E94C9FBB0 /* SplashScreen.xcodeproj */;
 				},
@@ -1396,6 +1438,20 @@
 			remoteRef = 78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		7A2D201F20726EF600D0AA04 /* libSMXCrashlytics.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSMXCrashlytics.a;
+			remoteRef = 7A2D201E20726EF600D0AA04 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7A2D202120726EF600D0AA04 /* libSMXCrashlytics.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSMXCrashlytics.a;
+			remoteRef = 7A2D202020726EF600D0AA04 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		7A430E1E20238C02008F55BC /* libRCTCustomInputController.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1559,6 +1615,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B8C682A81FD850F4003A12C8 /* icomoon.ttf in Resources */,
+				7A309C9C20724870000C6B13 /* Fabric.sh in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				AE5D35882AE04CC29630FB3D /* Entypo.ttf in Resources */,
@@ -1597,7 +1654,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -1607,7 +1664,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n/bin/sh \"${PROJECT_DIR}/RocketChatRN/Fabric.sh\"";
 		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1787,6 +1844,10 @@
 				CURRENT_PROJECT_VERSION = 100;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/realm/src/**",
@@ -1828,6 +1889,10 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 100;
 				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/realm/src/**",

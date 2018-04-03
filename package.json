@@ -14,7 +14,9 @@
     "storybook": "storybook start -p 7007",
     "snyk-protect": "snyk protect",
     "prepare": "exit 0",
-    "yarn": "yarn"
+    "yarn": "yarn",
+    "fabric-ios": "./scripts/fabric-ios.sh",
+    "fabric-android": "./scripts/fabric-android.sh"
   },
   "rnpm": {
     "assets": [
@@ -44,6 +46,7 @@
     "react-native-animatable": "^1.2.4",
     "react-native-audio": "^4.0.0",
     "react-native-easy-markdown": "git+https://github.com/diegolmello/react-native-easy-markdown.git",
+    "react-native-fabric": "^0.5.1",
     "react-native-fetch-blob": "^0.10.8",
     "react-native-image-picker": "^0.26.7",
     "react-native-img-cache": "^1.5.2",

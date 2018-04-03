@@ -1,5 +1,6 @@
 import { AsyncStorage } from 'react-native';
 import { put, call, takeLatest, select, all, take } from 'redux-saga/effects';
+import { Answers } from 'react-native-fabric';
 import * as types from '../actions/actionsTypes';
 import {
 	loginRequest,
@@ -63,6 +64,7 @@ const saveToken = function* saveToken() {
 	yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
 	const token = yield AsyncStorage.getItem('pushId');
 	yield token && RocketChat.registerPushToken(user.user.id, token);
+	Answers.logLogin('Email', true, { server });
 };
 
 const handleLoginRequest = function* handleLoginRequest({ credentials }) {
