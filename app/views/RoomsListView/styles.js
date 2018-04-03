@@ -39,9 +39,5 @@ export default StyleSheet.create({
 		padding: 5,
 		paddingLeft: 10,
 		color: '#aaa'
-	},
-	safeAreaView: {
-		flex: 1,
-		backgroundColor: '#fff'
 	}
 });

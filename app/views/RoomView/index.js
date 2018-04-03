@@ -180,7 +180,7 @@ export default class RoomView extends LoggedView {
 				</View>
 			);
 		}
-		return <MessageBox ref={box => (this.box = box)} onSubmit={this.sendMessage} rid={this.rid} />;
+		return <MessageBox onSubmit={this.sendMessage} rid={this.rid} />;
 	};
 
 	renderHeader = () => {

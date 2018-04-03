@@ -7699,7 +7699,7 @@ react-native-img-cache@^1.5.2:
   dependencies:
     crypto-js "^3.1.9-1"
 
-react-native-iphone-x-helper@^1.0.1:
+react-native-iphone-x-helper@^1.0.1, react-native-iphone-x-helper@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.0.2.tgz#7dbca530930f7c1ce8633cc8fd13ba94102992e1"
 
