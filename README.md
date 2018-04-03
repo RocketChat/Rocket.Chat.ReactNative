@@ -44,10 +44,10 @@ Follow the [React Native Getting Started Guide](https://facebook.github.io/react
 
 - Run application
     ```bash
-    $ react-native run-ios
+    $ yarn ios
     ```
     ```bash
-    $ react-native run-android
+    $ yarn android
     ```
 
 # Storybook
