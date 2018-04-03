@@ -1,8 +1,1 @@
-#!/bin/sh
-
-#  Fabric.sh
-#  RocketChatRN
-#
-#  Created by Diego Mello on 02/04/18.
-#  Copyright © 2018 Facebook. All rights reserved.
-
+./Fabric.framework/run YOUR_API_KEY YOUR_API_SECRET

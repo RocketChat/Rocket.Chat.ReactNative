@@ -14,7 +14,9 @@
     "storybook": "storybook start -p 7007",
     "snyk-protect": "snyk protect",
     "prepare": "exit 0",
-    "yarn": "yarn"
+    "yarn": "yarn",
+    "fabric-ios": "./scripts/fabric-ios.sh",
+    "fabric-android": "./scripts/fabric-android.sh"
   },
   "rnpm": {
     "assets": [

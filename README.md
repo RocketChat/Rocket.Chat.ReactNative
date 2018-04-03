@@ -24,22 +24,10 @@ Follow the [React Native Getting Started Guide](https://facebook.github.io/react
     $ npm install -g react-native-cli
     $ yarn
     ```
-- Android configuration
-  * Add `VERSIONCODE` to `gradle.properties`
-    ```
-    VERSIONCODE=999
-    ```
-  * Create `fabric.properties` file
+- Configuration
 	```bash
-    $ echo -e "" > ./android/app/fabric.properties
-    $ echo -e "apiKey=YOUR_FABRIC_API_KEY" >> ./android/app/fabric.properties
-	$ echo -e "apiSecret=YOUR_FABRIC_API_SECRET" >> ./android/app/fabric.properties
-    ```
-- iOS configuration
-  * Place `YOUR_FABRIC_API_KEY` on `Info.plist`
-  * Update `Fabric.sh` file
-	```bash
-    $ echo -e "./Fabric.framework/run YOUR_FABRIC_API_KEY YOUR_FABRIC_API_SECRET" >> ./ios/RocketChatRN/Fabric.sh
+    $ yarn fabric-ios --key="YOUR_API_KEY" --secret="YOUR_API_SECRET"
+    $ yarn fabric-android --key="YOUR_API_KEY" --secret="YOUR_API_SECRET"
     ```
 
 - Run application
