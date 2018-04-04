@@ -175,7 +175,7 @@ export default class SelectUsersView extends React.Component {
 	_onPressSelectedItem = item => this.toggleUser(item);
 
 	_createChannel = () => {
-		this.props.navigation.navigate('CreateChannel');
+		this.props.navigation.navigate({ key: 'CreateChannel', routeName: 'CreateChannel' });
 	};
 
 	renderHeader = () => (

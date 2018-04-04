@@ -135,7 +135,7 @@ export default class RoomsListView extends React.Component {
 	_onPressItem = async(item = {}) => {
 		// if user is using the search we need first to join/create room
 		if (!item.search) {
-			return this.props.navigation.navigate({ routeName: 'Room', params: { room: item, ...item } });
+			return this.props.navigation.navigate({ key: `Room-${ item._id }`, routeName: 'Room', params: { room: item, ...item } });
 		}
 		if (item.t === 'd') {
 			const sub = await RocketChat.createDirectMessageAndWait(item.username);
@@ -145,7 +145,7 @@ export default class RoomsListView extends React.Component {
 	}
 
 	_createChannel() {
-		this.props.navigation.navigate('SelectUsers');
+		this.props.navigation.navigate({ key: 'SelectUsers', routeName: 'SelectUsers' });
 	}
 
 	_keyExtractor(item) {

@@ -102,7 +102,7 @@ export default class ListServerView extends LoggedView {
 			!this.props.login.token &&
 			!this.redirected) {
 			this.redirected = true;
-			this.props.navigation.navigate('Login');
+			this.props.navigation.navigate({ key: 'Login', routeName: 'Login' });
 		} else if (!this.props.connected) {
 			this.redirected = false;
 		}
