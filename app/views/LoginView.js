@@ -175,7 +175,7 @@ export default class LoginView extends React.Component {
 	}
 
 	register = () => {
-		this.props.navigation.navigate({ key: 'Register', routeName: 'Register'});
+		this.props.navigation.navigate({ key: 'Register', routeName: 'Register' });
 	}
 
 	termsService = () => {
