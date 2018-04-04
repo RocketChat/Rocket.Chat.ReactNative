@@ -10,7 +10,6 @@ import * as server from '../../actions/connect';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem from '../../presentation/RoomItem';
-import Banner from '../../containers/Banner';
 import { goRoom } from '../../containers/routes/NavigationService';
 import Header from '../../containers/Header';
 import RoomsListHeader from './Header';
@@ -209,7 +208,6 @@ export default class RoomsListView extends React.Component {
 
 	render = () => (
 		<View style={styles.container}>
-			<Banner />
 			<SafeAreaView style={styles.safeAreaView}>
 				{this.renderList()}
 				{Platform.OS === 'android' && this.renderCreateButtons()}

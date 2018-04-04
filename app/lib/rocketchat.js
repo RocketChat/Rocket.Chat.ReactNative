@@ -10,9 +10,10 @@ import messagesStatus from '../constants/messagesStatus';
 import database from './realm';
 import * as actions from '../actions';
 import { someoneTyping, roomMessageReceived } from '../actions/room';
-import { setUser, setLoginServices, removeLoginServices } from '../actions/login';
+import { setUser, setLoginServices, removeLoginServices, loginRequest } from '../actions/login';
 import { disconnect, disconnect_by_user, connectSuccess, connectFailure } from '../actions/connect';
 import { setActiveUser } from '../actions/activeUsers';
+import { loginSuccess, loginFailure } from '../actions/login';
 import { starredMessagesReceived, starredMessageUnstarred } from '../actions/starredMessages';
 import { pinnedMessagesReceived, pinnedMessageUnpinned } from '../actions/pinnedMessages';
 import { mentionedMessagesReceived } from '../actions/mentionedMessages';
@@ -21,12 +22,15 @@ import { roomFilesReceived } from '../actions/roomFiles';
 import { setRoles } from '../actions/roles';
 import Ddp from './ddp';
 
+
+import getRooms from './methods/getRooms';
+
 export { Accounts } from 'react-native-meteor';
 
-const call = (method, ...params) => RocketChat.ddp.call(method, ...params); // eslint-disable-line
+
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SERVER_TIMEOUT = 30000;
-
+const call = (method, ...params) => RocketChat.ddp.call(method, ...params); // eslint-disable-line
 const returnAnArray = obj => obj || [];
 
 const normalizeMessage = (lastMessage) => {
@@ -100,41 +104,57 @@ const RocketChat = {
 		}, 3000);
 		this.activeUsers[ddpMessage.id] = ddpMessage.fields;
 	},
-	reconnect() {
-		if (this.ddp) {
-			this.ddp.reconnect();
-		}
-	},
-	connect(url) {
-		if (this.ddp) {
-			this.ddp.disconnect();
-		}
-		this.ddp = new Ddp(url);
+	connect(url, login) {
 		return new Promise((resolve) => {
-			this.ddp.on('disconnected_by_user', () => {
-				reduxStore.dispatch(disconnect_by_user());
+			if (this.ddp) {
+				this.ddp.disconnect();
+				delete this.ddp;
+			}
+
+			this.ddp = new Ddp(url, login);
+
+
+			this.ddp.on('login', () => reduxStore.dispatch(loginRequest()));
+
+			this.ddp.on('users', ddpMessage => RocketChat._setUser(ddpMessage));
+
+			this.ddp.on('logged', async(user) => {
+				// GET /me from REST API
+				const me = await this.me({ token: user.token, userId: user.id });
+				if (me.username) {
+					const userInfo = await this.userInfo({ token: user.token, userId: user.id });
+					user.username = me.username;//= userInfo.user.username;
+					if (userInfo.user.roles) {
+						user.roles = userInfo.user.roles;
+					}
+				}
+
+				reduxStore.dispatch(loginSuccess(user));
+				this.getRooms().catch(alert);
+				// if user has username
 			});
-			this.ddp.on('disconnected', () => {
-				reduxStore.dispatch(disconnect());
-			});
-			// this.ddp.on('open', async() => {
-			// 	resolve(reduxStore.dispatch(connectSuccess()));
-			// });
-			this.ddp.on('connected', () => {
-				resolve(reduxStore.dispatch(connectSuccess()));
+
+			this.ddp.on('logginError', err => reduxStore.dispatch(loginFailure(err)));
+			this.ddp.on('open', () => {
 				RocketChat.getSettings();
 				RocketChat.getPermissions();
 				RocketChat.getCustomEmoji();
-				this.ddp.subscribe('activeUsers');
-				this.ddp.subscribe('roles');
+				reduxStore.dispatch(connectSuccess());
+				resolve();
 			});
 
-			this.ddp.on('error', (err) => {
-				alert(JSON.stringify(err));
-				reduxStore.dispatch(connectFailure());
+			this.ddp.once('open', () => {
+				try {
+					this.ddp.subscribe('activeUsers');
+					this.ddp.subscribe('roles');
+				} catch (e) {
+					alert(e);
+				}
 			});
 
-			this.ddp.on('users', ddpMessage => RocketChat._setUser(ddpMessage));
+			this.ddp.on('disconnected', () => {
+				reduxStore.dispatch(disconnect());
+			});
 
 			this.ddp.on('stream-room-messages', (ddpMessage) => {
 				const message = this._buildMessage(ddpMessage.fields.args[0]);
@@ -363,10 +383,19 @@ const RocketChat = {
 				}, 5000);
 				this.roles[ddpMessage.id] = ddpMessage.fields.description;
 			});
-		}).catch(console.log);
+
+			this.ddp.on('error', (err) => {
+				alert(JSON.stringify(err));
+				reduxStore.dispatch(connectFailure());
+			});
+
+			this.ddp.on('connected', () => {
+				// resolve(reduxStore.dispatch(connectSuccess()));
+			});
+		}).catch(alert);
 	},
 
-	me({ server, token, userId }) {
+	me({ server = reduxStore.getState().server.server, token, userId }) {
 		return fetch(`${ server }/api/v1/me`, {
 			method: 'get',
 			headers: {
@@ -377,7 +406,7 @@ const RocketChat = {
 		}).then(response => response.json());
 	},
 
-	userInfo({ server, token, userId }) {
+	userInfo({ server = reduxStore.getState().server.server, token, userId }) {
 		return fetch(`${ server }/api/v1/users.info?userId=${ userId }`, {
 			method: 'get',
 			headers: {
@@ -646,6 +675,7 @@ const RocketChat = {
 		} catch (e) {
 			return e;
 		} finally {
+			// TODO: fix that
 			try {
 				database.write(() => {
 					const msg = database.objects('messages').filtered('_id = $0', placeholder._id);
@@ -656,74 +686,20 @@ const RocketChat = {
 			}
 		}
 	},
-	async getRooms() {
-		const { login } = reduxStore.getState();
-		let lastMessage = database
-			.objects('subscriptions')
-			.sorted('roomUpdatedAt', true)[0];
-		lastMessage = lastMessage && new Date(lastMessage.roomUpdatedAt);
-		let [subscriptions, rooms] = await Promise.all([call('subscriptions/get', lastMessage), call('rooms/get', lastMessage)]);
-
-		if (lastMessage) {
-			subscriptions = subscriptions.update;
-			rooms = rooms.update;
-		}
-
-		const data = subscriptions.map((subscription) => {
-			const room = rooms.find(({ _id }) => _id === subscription.rid);
-			if (room) {
-				subscription.roomUpdatedAt = room._updatedAt;
-				subscription.lastMessage = normalizeMessage(room.lastMessage);
-				subscription.ro = room.ro;
-				subscription.description = room.description;
-				subscription.topic = room.topic;
-				subscription.announcement = room.announcement;
-				subscription.reactWhenReadOnly = room.reactWhenReadOnly;
-				subscription.archived = room.archived;
-				subscription.joinCodeRequired = room.joinCodeRequired;
-			}
-			if (subscription.roles) {
-				subscription.roles = subscription.roles.map(role => ({ value: role }));
-			}
-			return subscription;
-		});
-
-
-		database.write(() => {
-			data.forEach(subscription => database.create('subscriptions', subscription, true));
-			// rooms.forEach(room =>	database.create('rooms', room, true));
-		});
-
-
-		this.ddp.subscribe('stream-notify-user', `${ login.user.id }/subscriptions-changed`, false);
-		this.ddp.subscribe('stream-notify-user', `${ login.user.id }/rooms-changed`, false);
-		return data;
+	getRooms() {
+		return getRooms.call(this);
 	},
-	disconnect() {
-		if (!this.ddp) {
-			return;
-		}
-		reduxStore.dispatch(disconnect_by_user());
-		delete this.ddp;
-		return this.ddp.disconnect();
-	},
-	login(params, callback) {
-		return this.ddp.call('login', params).then((result) => {
-			if (typeof callback === 'function') {
-				callback(null, result);
-			}
-			return result;
-		}, (err) => {
-			if (/user not found/i.test(err.reason)) {
-				err.error = 1;
-				err.reason = 'User or Password incorrect';
-				err.message = 'User or Password incorrect';
-			}
-			if (typeof callback === 'function') {
-				callback(err, null);
-			}
-			return Promise.reject(err);
-		});
+	// disconnect() {
+	// 	if (!this.ddp) {
+	// 		return;
+	// 	}
+	// 	const { ddp } = this;
+	// 	reduxStore.dispatch(disconnect_by_user());
+	// 	delete this.ddp;
+	// 	return ddp.disconnect();
+	// },
+	login(params) {
+		return this.ddp.login(params);
 	},
 	logout({ server }) {
 		if (this.ddp) {

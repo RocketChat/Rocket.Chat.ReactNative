@@ -6,11 +6,7 @@ import { connect } from 'react-redux';
 
 const styles = StyleSheet.create({
 	bannerContainer: {
-		backgroundColor: '#ddd',
-		position: 'absolute',
-		top: '0%',
-		zIndex: 10,
-		width: '100%'
+		backgroundColor: '#ddd'
 	},
 	bannerText: {
 		textAlign: 'center',
@@ -21,7 +17,8 @@ const styles = StyleSheet.create({
 @connect(state => ({
 	connecting: state.meteor.connecting,
 	authenticating: state.login.isFetching,
-	offline: !state.meteor.connected
+	offline: !state.meteor.connected,
+	logged: !!state.login.token
 }))
 
 export default class Banner extends React.PureComponent {
@@ -31,7 +28,9 @@ export default class Banner extends React.PureComponent {
 		offline: PropTypes.bool
 	}
 	render() {
-		const { connecting, authenticating, offline } = this.props;
+		const {
+			connecting, authenticating, offline, logged
+		} = this.props;
 
 		if (offline) {
 			return (
@@ -40,6 +39,7 @@ export default class Banner extends React.PureComponent {
 				</View>
 			);
 		}
+
 		if (connecting) {
 			return (
 				<View style={[styles.bannerContainer, { backgroundColor: '#0d0' }]}>
@@ -56,6 +56,14 @@ export default class Banner extends React.PureComponent {
 			);
 		}
 
-		return null;
+		if (logged) {
+			return this.props.children;
+		}
+
+		return (
+			<View style={[styles.bannerContainer, { backgroundColor: 'orange' }]}>
+				<Text style={[styles.bannerText, { color: '#a00' }]}>Not logged...</Text>
+			</View>
+		);
 	}
 }

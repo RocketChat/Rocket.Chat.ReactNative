@@ -157,11 +157,10 @@ const handleEraseRoom = function* handleEraseRoom({ rid }) {
 
 const root = function* root() {
 	yield takeLatest(types.ROOM.USER_TYPING, watchuserTyping);
-	yield takeLatest(types.LOGIN.SUCCESS, watchRoomsRequest);
 	yield takeLatest(types.ROOM.OPEN, watchRoomOpen);
 	yield takeEvery(types.ROOM.MESSAGE_RECEIVED, handleMessageReceived);
-	yield takeLatest(FOREGROUND, updateRoom);
-	yield takeLatest(FOREGROUND, watchRoomsRequest);
+	// yield takeLatest(FOREGROUND, updateRoom);
+	// yield takeLatest(FOREGROUND, watchRoomsRequest);
 	yield takeLatest(BACKGROUND, updateLastOpen);
 	yield takeLatest(types.ROOM.LEAVE, handleLeaveRoom);
 	yield takeLatest(types.ROOM.ERASE, handleEraseRoom);

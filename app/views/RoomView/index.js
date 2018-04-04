@@ -192,7 +192,6 @@ export default class RoomView extends LoggedView {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Banner />
 				<List
 					key='room-view-messages'
 					end={this.state.end}

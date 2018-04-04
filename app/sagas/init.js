@@ -16,6 +16,7 @@ const restore = function* restore() {
 		}
 
 		const currentServer = yield call([AsyncStorage, 'getItem'], 'currentServer');
+
 		if (currentServer) {
 			yield put(setServer(currentServer));
 			const settings = database.objects('settings');

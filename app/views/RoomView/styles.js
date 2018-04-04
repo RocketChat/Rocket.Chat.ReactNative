@@ -28,7 +28,7 @@ export default StyleSheet.create({
 	loadingMore: {
 		transform: [{ scaleY: -1 }],
 		textAlign: 'center',
-		padding: 5,
+		padding: 15,
 		color: '#ccc'
 	},
 	readOnly: {

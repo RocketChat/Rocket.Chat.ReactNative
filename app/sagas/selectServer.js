@@ -15,8 +15,9 @@ const validate = function* validate(server) {
 
 const selectServer = function* selectServer({ server }) {
 	yield database.setActiveDB(server);
-	yield put(disconnect_by_user());
-	yield put(disconnect());
+
+	// yield RocketChat.disconnect();
+
 	yield put(changedServer(server));
 	yield call([AsyncStorage, 'setItem'], 'currentServer', server);
 	const settings = database.objects('settings');

@@ -51,6 +51,7 @@ const roomsSchema = {
 		_id: 'string',
 		t: 'string',
 		lastMessage: 'messages',
+		description: { type: 'string', optional: true },
 		_updatedAt: { type: 'date', optional: true }
 	}
 };

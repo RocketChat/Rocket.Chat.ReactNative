@@ -51,7 +51,7 @@ export class List extends React.Component {
 	shouldComponentUpdate(nextProps) {
 		return this.props.end !== nextProps.end;
 	}
-	componentWillUpdate() {
+	getSnapshotBeforeUpdate() {
 		LayoutAnimation.easeInEaseOut();
 	}
 	componentWillUnmount() {

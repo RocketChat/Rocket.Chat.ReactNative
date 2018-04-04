@@ -1,4 +1,5 @@
 import EJSON from 'ejson';
+import { Answers } from 'react-native-fabric';
 
 class EventEmitter {
 	constructor() {
@@ -24,6 +25,7 @@ class EventEmitter {
 				try {
 					listener.apply(this, args);
 				} catch (e) {
+					Answers.logCustom(e);
 					console.log(e);
 				}
 			});
@@ -38,18 +40,52 @@ class EventEmitter {
 }
 
 export default class Socket extends EventEmitter {
-	constructor(url) {
+	constructor(url, login) {
 		super();
+		this.lastping = null;
 		this.url = url.replace(/^http/, 'ws');
 		this.id = 0;
 		this.subscriptions = {};
-		this._connect();
 		this.ddp = new EventEmitter();
-		this.on('ping', () => this.send({ msg: 'pong' }));
+		this._login = login;
+
+		this.on('ping', () => {
+			this.lastping = new Date();
+			this.send({ msg: 'pong' });
+			if (this.timeout) {
+				clearTimeout(this.timeout);
+				this.timeout = null;
+			}
+			this.timeout = setTimeout(() => this.reconnect(), 35000);
+		});
+
 		this.on('result', data => this.ddp.emit(data.id, { id: data.id, result: data.result, error: data.error }));
 		this.on('ready', data => this.ddp.emit(data.subs[0], data));
+		this.on('disconnected', () => { delete this.connection; this.reconnect(); });
+
+		this.on('open', async() => {
+			this.send({ msg: 'connect', version: '1', support: ['1', 'pre2', 'pre1'] });
+		});
+		this._connect();
 	}
-	send(obj) {
+	async login(params) {
+		try {
+			this.emit('login', params);
+			const result = await this.call('login', params);
+			this._login = { resume: result.token, ...result };
+			this.emit('logged', result);
+			return result;
+		} catch (err) {
+			if (/user not found/i.test(err.reason)) {
+				err.error = 1;
+				err.reason = 'User or Password incorrect';
+				err.message = 'User or Password incorrect';
+			}
+			this.emit('logginError', err);
+			return Promise.reject(err);
+		}
+	}
+	async send(obj) {
 		return new Promise((resolve, reject) => {
 			this.id += 1;
 			const id = obj.id || `${ this.id }`;
@@ -57,49 +93,61 @@ export default class Socket extends EventEmitter {
 			this.ddp.once(id, data => (data.error ? reject(data.error) : resolve({ id, ...data })));
 		});
 	}
+	_close() {
+		console.log(new Error().stack);
+		try {
+			this.connection && this.connection.readyState > 1 && this.connection.close && this.connection.close(300, 'disconnect');
+			delete this.connection;
+		} catch (e) {
+			console.log(e);
+		}
+	}
 	_connect() {
-		const connection = new WebSocket(`${ this.url }/websocket`);
-		connection.onopen = () => {
-			this.emit('open');
-			this.send({ msg: 'connect', version: '1', support: ['1', 'pre2', 'pre1'] });
-		};
-		connection.onclose = e => this.emit('disconnected', e);
-		// connection.onerror = () => {
-		// 	// alert(error.type);
-		// 	// console.log(error);
-		// 	// console.log(`WebSocket Error ${ JSON.stringify({...error}) }`);
-		// };
+		return new Promise((resolve) => {
+			this._close();
+			clearInterval(this.reconnect_timeout);
+			this.reconnect_timeout = setInterval(() => this.connection.readyState > 1 && this.reconnect(), 5000);
+			const connection = this.connection = new WebSocket(`${ this.url }/websocket`);
 
-		connection.onmessage = (e) => {
-			const data = EJSON.parse(e.data);
-			this.emit(data.msg, data);
-			return data.collection && this.emit(data.collection, data);
-		};
-		// this.on('disconnected', e => alert(JSON.stringify(e)));
-		this.connection = connection;
+			connection.onopen = () => {
+				this.emit('open');
+				resolve();
+				this.ddp.emit('open');
+				this._login && this.login(this._login);
+				connection.onclose = e => this.emit('disconnected', e);
+			};
+			connection.onmessage = (e) => {
+				const data = EJSON.parse(e.data);
+				this.emit(data.msg, data);
+				return data.collection && this.emit(data.collection, data);
+			};
+		}).catch(alert);
 	}
 	logout() {
+		this._login = null;
 		return this.call('logout').then(() => this.subscriptions = {});
 	}
 	disconnect() {
-		this.emit('disconnected_by_user');
-		this.connection.close();
+		this._close();
 	}
-	reconnect() {
+	async reconnect() {
 		this.disconnect();
-		this.once('connected', () => {
+		await this._connect();
+		this.once('logged', () => {
 			Object.keys(this.subscriptions).forEach((key) => {
 				const { name, params } = this.subscriptions[key];
 				this.subscriptions[key].unsubscribe();
 				this.subscribe(name, params);
 			});
 		});
-		this._connect();
 	}
 	call(method, ...params) {
 		return this.send({
 			msg: 'method', method, params
-		}).then(data => data.result || data.subs);
+		}).then(data => data.result || data.subs).catch((err) => {
+			Answers.logCustom('DDP call Error', err);
+			return Promise.reject(err);
+		});
 	}
 	unsubscribe(id) {
 		if (!this.subscriptions[id]) {
@@ -109,7 +157,10 @@ export default class Socket extends EventEmitter {
 		return this.send({
 			msg: 'unsub',
 			id
-		}).then(data => data.result || data.subs);
+		}).then(data => data.result || data.subs).catch((err) => {
+			Answers.logCustom('DDP unsubscribe Error', err);
+			return Promise.reject(err);
+		});
 	}
 	subscribe(name, ...params) {
 		return this.send({
@@ -122,6 +173,9 @@ export default class Socket extends EventEmitter {
 			};
 			this.subscriptions[id] = args;
 			return args;
+		}).catch((err) => {
+			Answers.logCustom('DDP subscribe Error', err);
+			return Promise.reject(err);
 		});
 	}
 }

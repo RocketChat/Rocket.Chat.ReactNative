@@ -63,36 +63,27 @@ const saveToken = function* saveToken() {
 	yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
 	yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
 	const token = yield AsyncStorage.getItem('pushId');
+
 	yield token && RocketChat.registerPushToken(user.user.id, token);
+
+	if (!user.user.username) {
+		// yield put(registerIncomplete());
+	}
 	Answers.logLogin('Email', true, { server });
 };
 
-const handleLoginRequest = function* handleLoginRequest({ credentials }) {
-	try {
-		const server = yield select(getServer);
-		const user = yield call(loginCall, credentials);
-
-		// GET /me from REST API
-		const me = yield call(meCall, { server, token: user.token, userId: user.id });
-
-		// if user has username
-		if (me.username) {
-			const userInfo = yield call(userInfoCall, { server, token: user.token, userId: user.id });
-			user.username = userInfo.user.username;
-			if (userInfo.user.roles) {
-				user.roles = userInfo.user.roles;
-			}
-		} else {
-			yield put(registerIncomplete());
-		}
-		yield put(loginSuccess(user));
-	} catch (err) {
-		if (err.error === 403) {
-			return yield put(logout());
-		}
-		yield put(loginFailure(err));
-	}
-};
+// const handleLoginRequest = function* handleLoginRequest({ credentials }) {
+// 	try {
+// 		const server = yield select(getServer);
+// 		const user = yield call(loginCall, credentials);
+// 		yield put(loginSuccess(user));
+// 	} catch (err) {
+// 		if (err.error === 403) {
+// 			return yield put(logout());
+// 		}
+// 		yield put(loginFailure(err));
+// 	}
+// };
 
 const handleLoginSubmit = function* handleLoginSubmit({ credentials }) {
 	yield put(loginRequest(credentials));
@@ -162,8 +153,8 @@ const watchLoginOpen = function* watchLoginOpen() {
 };
 
 const root = function* root() {
-	yield takeLatest(types.METEOR.SUCCESS, handleLoginWhenServerChanges);
-	yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
+	// yield takeLatest(types.METEOR.SUCCESS, handleLoginWhenServerChanges);
+	// yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
 	yield takeLatest(types.LOGIN.SUCCESS, saveToken);
 	yield takeLatest(types.LOGIN.SUBMIT, handleLoginSubmit);
 	yield takeLatest(types.LOGIN.REGISTER_REQUEST, handleRegisterRequest);
