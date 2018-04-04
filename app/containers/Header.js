@@ -25,12 +25,12 @@ const height = Platform.OS === 'ios' ? 44 : 56;
 const backgroundColor = Platform.OS === 'ios' ? '#F7F7F7' : '#FFF';
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor
+		backgroundColor,
+		...platformContainerStyles
 	},
 	appBar: {
 		height,
-		backgroundColor,
-		...platformContainerStyles
+		backgroundColor
 	}
 });
 

@@ -159,7 +159,8 @@ export default class RoomsListHeaderView extends React.PureComponent {
 							size={24}
 							backgroundColor='transparent'
 						/>
-					</TouchableOpacity> : null}
+					</TouchableOpacity> : null
+				}
 			</View>
 		);
 	}

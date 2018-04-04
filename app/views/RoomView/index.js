@@ -73,7 +73,7 @@ export default class RoomView extends LoggedView {
 		this.state = {
 			loaded: true,
 			joined: typeof props.rid === 'undefined',
-			room: this.rooms[0]
+			room: {}
 		};
 		this.onReactionPress = this.onReactionPress.bind(this);
 	}
