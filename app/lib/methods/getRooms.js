@@ -13,15 +13,16 @@ const lastMessage = () => {
 		return null;
 	}
 };
-const getRoomDpp = async() => {
+const getRoomDpp = async function() {
 	const { ddp } = this;
 	const ls = lastMessage();
 	const [subscriptions, rooms] = await Promise.all([ddp.call('subscriptions/get', ls), ddp.call('rooms/get', ls)]);
 	return mergeSubscriptionsRooms(subscriptions, rooms, ls);
 };
-const getRoomRest = async() => {
+const getRoomRest = async function() {
 	const ls = lastMessage();
-	const { token, id } = this.ddp._login;
+	const { ddp } = this;
+	const { token, id } = ddp._login;
 	const server = this.ddp.url.replace('ws', 'http');
 	const [subscriptions, rooms] = await Promise.all([get({ token, id, server }, 'subscriptions.get', ls), get({ token, id, server }, 'rooms.get', ls)]);
 	return mergeSubscriptionsRooms(subscriptions, rooms, ls);

@@ -25,19 +25,20 @@ export const getMessage = (rid, msg = {}) => {
 	return message;
 };
 
-const sendMessageByRest = (message) => {
+function sendMessageByRest(message) {
 	const { token, id } = this.ddp._login;
 	const server = this.ddp.url.replace('ws', 'http');
 	const { _id, rid, msg } = message;
 	return post({ token, id, server }, 'chat.sendMessage', { message: { _id, rid, msg } });
-};
+}
 
-const sendMessageByDDP = (message) => {
+function sendMessageByDDP(message) {
 	const { _id, rid, msg } = message;
 	return this.ddp.call('sendMessage', { _id, rid, msg });
-};
+}
 
-export const _sendMessageCall = async(message) => {
+
+export async function _sendMessageCall(message) {
 	try {
 		const data = await (this.ddp._logged ? sendMessageByDDP.call(this, message) : sendMessageByRest.call(this, message));
 		return data;

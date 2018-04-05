@@ -115,10 +115,9 @@ export default class Socket extends EventEmitter {
 			this._close();
 			clearInterval(this.reconnect_timeout);
 			this.reconnect_timeout = setInterval(() => (!this.connection || this.connection.readyState) > 1 && this.reconnect(), 5000);
-			const { connection } = this;
 			this.connection = new WebSocket(`${ this.url }/websocket`);
 
-			connection.onopen = () => {
+			this.connection.onopen = () => {
 				this.emit('open');
 				resolve();
 				this.ddp.emit('open');
@@ -126,9 +125,9 @@ export default class Socket extends EventEmitter {
 				if (this._login) {
 					this.login(this._login);
 				}
-				connection.onclose = e => this.emit('disconnected', e);
+				this.connection.onclose = e => this.emit('disconnected', e);
 			};
-			connection.onmessage = (e) => {
+			this.connection.onmessage = (e) => {
 				const data = EJSON.parse(e.data);
 				this.emit(data.msg, data);
 				return data.collection && this.emit(data.collection, data);

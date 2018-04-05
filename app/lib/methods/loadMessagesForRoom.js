@@ -3,14 +3,14 @@ import database from '../realm';
 
 import buildMessage from './helpers/buildMessage';
 
-const loadMessagesForRoomRest = (rid, end) => {
+function loadMessagesForRoomRest(rid, end) {
 	const { token, id } = this.ddp._login;
 	const server = this.ddp.url.replace('ws', 'http');
 	return get({ token, id, server }, 'channels.history', { rid, end }).messages;
-};
+}
 
 
-const loadMessagesForRoomDDP = async(rid, end) => {
+async function loadMessagesForRoomDDP(rid, end) {
 	const data = await this.ddp.call('loadHistory', rid, end, 20);
 	if (!data || !data.messages.length) {
 		return [];
@@ -30,7 +30,7 @@ const loadMessagesForRoomDDP = async(rid, end) => {
 	// 		return Promise.reject(err);
 	// 	}
 	// });
-};
+}
 
 export default async function(...args) {
 	const data = await (this.ddp._logged ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args).map(message => buildMessage(message)));
