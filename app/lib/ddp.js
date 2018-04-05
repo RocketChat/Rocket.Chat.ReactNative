@@ -101,7 +101,10 @@ export default class Socket extends EventEmitter {
 	_close() {
 		console.log(new Error().stack);
 		try {
-			this.connection && this.connection.readyState > 1 && this.connection.close && this.connection.close(300, 'disconnect');
+			// this.connection && this.connection.readyState > 1 && this.connection.close && this.connection.close(300, 'disconnect');
+			if (this.connection && this.connection.readyState > 1 && this.connection.close) {
+				this.connection.close(300, 'disconnect');
+			}
 			delete this.connection;
 		} catch (e) {
 			console.log(e);
@@ -112,13 +115,17 @@ export default class Socket extends EventEmitter {
 			this._close();
 			clearInterval(this.reconnect_timeout);
 			this.reconnect_timeout = setInterval(() => (!this.connection || this.connection.readyState) > 1 && this.reconnect(), 5000);
-			const connection = this.connection = new WebSocket(`${ this.url }/websocket`);
+			const { connection } = this;
+			this.connection = new WebSocket(`${ this.url }/websocket`);
 
 			connection.onopen = () => {
 				this.emit('open');
 				resolve();
 				this.ddp.emit('open');
-				this._login && this.login(this._login);
+				// this._login && this.login(this._login);
+				if (this._login) {
+					this.login(this._login);
+				}
 				connection.onclose = e => this.emit('disconnected', e);
 			};
 			connection.onmessage = (e) => {

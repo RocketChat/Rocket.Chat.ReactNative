@@ -1,4 +1,6 @@
 import normalizeMessage from './normalizeMessage';
+import messagesStatus from '../../../constants/messagesStatus';
+import RocketChat from '../../rocketchat';
 
 export default (message) => {
 	message.status = messagesStatus.SENT;

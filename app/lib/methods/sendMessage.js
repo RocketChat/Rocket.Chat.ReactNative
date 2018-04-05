@@ -25,9 +25,20 @@ export const getMessage = (rid, msg = {}) => {
 	return message;
 };
 
-export const _sendMessageCall = async function(message) {
+const sendMessageByRest = (message) => {
+	const { token, id } = this.ddp._login;
+	const server = this.ddp.url.replace('ws', 'http');
+	const { _id, rid, msg } = message;
+	return post({ token, id, server }, 'chat.sendMessage', { message: { _id, rid, msg } });
+};
+
+const sendMessageByDDP = (message) => {
+	const { _id, rid, msg } = message;
+	return this.ddp.call('sendMessage', { _id, rid, msg });
+};
+
+export const _sendMessageCall = async(message) => {
 	try {
-		const { _id, rid, msg } = message;
 		const data = await (this.ddp._logged ? sendMessageByDDP.call(this, message) : sendMessageByRest.call(this, message));
 		return data;
 	} catch (e) {
@@ -36,18 +47,6 @@ export const _sendMessageCall = async function(message) {
 			database.create('messages', message, true);
 		});
 	}
-};
-
-const sendMessageByRest = function(message) {
-	const { token, id } = this.ddp._login;
-	const server = this.ddp.url.replace('ws', 'http');
-	const { _id, rid, msg } = message;
-	return post({ token, id, server }, 'chat.sendMessage', { message: { _id, rid, msg } });
-};
-
-const sendMessageByDDP = function(message) {
-	const { _id, rid, msg } = message;
-	return this.ddp.call('sendMessage', { _id, rid, msg });
 };
 
 export default async function(rid, msg) {

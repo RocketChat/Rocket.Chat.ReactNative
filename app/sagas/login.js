@@ -6,11 +6,8 @@ import {
 	loginRequest,
 	loginSubmit,
 	registerRequest,
-	registerIncomplete,
-	loginSuccess,
 	loginFailure,
-	logout,
-	setToken,
+	// setToken,
 	registerSuccess,
 	setUsernameRequest,
 	setUsernameSuccess,
@@ -23,40 +20,40 @@ import * as NavigationService from '../containers/routes/NavigationService';
 const getUser = state => state.login;
 const getServer = state => state.server.server;
 const getIsConnected = state => state.meteor.connected;
-const loginCall = args => ((args.resume || args.oauth) ? RocketChat.login(args) : RocketChat.loginWithPassword(args));
+// const loginCall = args => ((args.resume || args.oauth) ? RocketChat.login(args) : RocketChat.loginWithPassword(args));
 const registerCall = args => RocketChat.register(args);
 const setUsernameCall = args => RocketChat.setUsername(args);
 const logoutCall = args => RocketChat.logout(args);
-const meCall = args => RocketChat.me(args);
+// const meCall = args => RocketChat.me(args);
 const forgotPasswordCall = args => RocketChat.forgotPassword(args);
-const userInfoCall = args => RocketChat.userInfo(args);
+// const userInfoCall = args => RocketChat.userInfo(args);
 
-const getToken = function* getToken() {
-	const currentServer = yield select(getServer);
-	const user = yield call([AsyncStorage, 'getItem'], `${ RocketChat.TOKEN_KEY }-${ currentServer }`);
-	if (user) {
-		try {
-			yield put(setToken(JSON.parse(user)));
-			yield call([AsyncStorage, 'setItem'], RocketChat.TOKEN_KEY, JSON.parse(user).token || '');
-			return JSON.parse(user);
-		} catch (e) {
-			console.log('getTokenerr', e);
-		}
-	} else {
-		return yield put(setToken());
-	}
-};
+// const getToken = function* getToken() {
+// 	const currentServer = yield select(getServer);
+// 	const user = yield call([AsyncStorage, 'getItem'], `${ RocketChat.TOKEN_KEY }-${ currentServer }`);
+// 	if (user) {
+// 		try {
+// 			yield put(setToken(JSON.parse(user)));
+// 			yield call([AsyncStorage, 'setItem'], RocketChat.TOKEN_KEY, JSON.parse(user).token || '');
+// 			return JSON.parse(user);
+// 		} catch (e) {
+// 			console.log('getTokenerr', e);
+// 		}
+// 	} else {
+// 		return yield put(setToken());
+// 	}
+// };
 
-const handleLoginWhenServerChanges = function* handleLoginWhenServerChanges() {
-	try {
-		const user = yield call(getToken);
-		if (user.token) {
-			yield put(loginRequest({ resume: user.token }));
-		}
-	} catch (e) {
-		console.log(e);
-	}
-};
+// const handleLoginWhenServerChanges = function* handleLoginWhenServerChanges() {
+// 	try {
+// 		const user = yield call(getToken);
+// 		if (user.token) {
+// 			yield put(loginRequest({ resume: user.token }));
+// 		}
+// 	} catch (e) {
+// 		console.log(e);
+// 	}
+// };
 
 const saveToken = function* saveToken() {
 	const [server, user] = yield all([select(getServer), select(getUser)]);

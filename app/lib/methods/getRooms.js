@@ -1,27 +1,25 @@
 import { get } from './helpers/rest';
 import database from '../realm';
-import reduxStore from '../createStore';
 
-import normalizeMessage from './helpers/normalizeMessage';
 import mergeSubscriptionsRooms from './helpers/mergeSubscriptionsRooms';
 
-const lastMessage = function() {
+const lastMessage = () => {
 	try {
-		const lastMessage = database
+		const message = database
 			.objects('subscriptions')
 			.sorted('roomUpdatedAt', true)[0];
-		return lastMessage && new Date(lastMessage.roomUpdatedAt);
+		return message && new Date(message.roomUpdatedAt);
 	} catch (e) {
 		return null;
 	}
 };
-const getRoomDpp = async function() {
+const getRoomDpp = async() => {
 	const { ddp } = this;
 	const ls = lastMessage();
 	const [subscriptions, rooms] = await Promise.all([ddp.call('subscriptions/get', ls), ddp.call('rooms/get', ls)]);
 	return mergeSubscriptionsRooms(subscriptions, rooms, ls);
 };
-const getRoomRest = async function() {
+const getRoomRest = async() => {
 	const ls = lastMessage();
 	const { token, id } = this.ddp._login;
 	const server = this.ddp.url.replace('ws', 'http');
@@ -30,7 +28,8 @@ const getRoomRest = async function() {
 };
 
 export default async function() {
-	const data = await (this.ddp._logged ? getRoomDpp.apply(this) : getRoomRest.apply(this));
+	// eslint-disable-next-line
+	const data = await ((false && this.ddp._logged) ? getRoomDpp.apply(this) : getRoomRest.apply(this));
 	database.write(() => {
 		data.forEach(subscription => database.create('subscriptions', subscription, true));
 	});

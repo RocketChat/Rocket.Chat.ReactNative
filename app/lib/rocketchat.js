@@ -1,4 +1,3 @@
-import Random from 'react-native-meteor/lib/Random';
 import { AsyncStorage, Platform } from 'react-native';
 import { hashPassword } from 'react-native-meteor/lib/utils';
 import _ from 'lodash';
@@ -10,10 +9,9 @@ import messagesStatus from '../constants/messagesStatus';
 import database from './realm';
 import * as actions from '../actions';
 import { someoneTyping, roomMessageReceived } from '../actions/room';
-import { setUser, setLoginServices, removeLoginServices, loginRequest } from '../actions/login';
-import { disconnect, disconnect_by_user, connectSuccess, connectFailure } from '../actions/connect';
+import { setUser, setLoginServices, removeLoginServices, loginRequest, loginSuccess, loginFailure } from '../actions/login';
+import { disconnect, connectSuccess, connectFailure } from '../actions/connect';
 import { setActiveUser } from '../actions/activeUsers';
-import { loginSuccess, loginFailure } from '../actions/login';
 import { starredMessagesReceived, starredMessageUnstarred } from '../actions/starredMessages';
 import { pinnedMessagesReceived, pinnedMessageUnpinned } from '../actions/pinnedMessages';
 import { mentionedMessagesReceived } from '../actions/mentionedMessages';
@@ -33,7 +31,6 @@ export { Accounts } from 'react-native-meteor';
 
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
-const SERVER_TIMEOUT = 30000;
 const call = (method, ...params) => RocketChat.ddp.call(method, ...params); // eslint-disable-line
 const returnAnArray = obj => obj || [];
 

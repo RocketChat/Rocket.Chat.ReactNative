@@ -117,8 +117,14 @@ export default class RoomHeaderView extends React.PureComponent {
 			offline, connecting, authenticating, logged, loading
 		} = this.props;
 
-
-		const t = title(offline, connecting, authenticating, logged) || loading ? 'Loading messages...' : this.isDirect() ? this.getUserStatusLabel() : this.state.room.description || ' ';
+		let t = '';
+		if (title(offline, connecting, authenticating, logged) || loading) {
+			t = 'Loading messages...';
+		} else if (this.isDirect()) {
+			t = this.getUserStatusLabel();
+		} else {
+			t = this.state.room.description || ' ';
+		}
 
 		return (
 			<TouchableOpacity
@@ -134,8 +140,9 @@ export default class RoomHeaderView extends React.PureComponent {
 					style={{ marginRight: 5 }}
 					baseUrl={this.props.baseUrl}
 					type={this.state.room.t}
-				>{this.isDirect() ?
-					<View style={[styles.status, { backgroundColor: STATUS_COLORS[this.getUserStatus()] }]} />
+				>
+					{this.isDirect() ?
+						<View style={[styles.status, { backgroundColor: STATUS_COLORS[this.getUserStatus()] }]} />
 						: null
 					}
 				</Avatar>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Platform, TouchableOpacity, TextInput, LayoutAnimation } from 'react-native';
+import { Text, View, Platform, TouchableOpacity, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -8,7 +8,6 @@ import { CachedImage } from 'react-native-img-cache';
 import { HeaderBackButton } from 'react-navigation';
 
 import Avatar from '../../../containers/Avatar';
-import Banner from '../../../containers/Banner';
 import RocketChat from '../../../lib/rocketchat';
 import { STATUS_COLORS } from '../../../constants/colors';
 import { setSearch } from '../../../actions/rooms';

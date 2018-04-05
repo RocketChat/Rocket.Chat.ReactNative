@@ -1,23 +1,8 @@
-import { call, takeLatest, select, take, race, put, all } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
+import { call, takeLatest, select, put, all } from 'redux-saga/effects';
 import { AsyncStorage } from 'react-native';
 import { METEOR } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
-import {
-	loginRequest,
-	loginSubmit,
-	registerRequest,
-	registerIncomplete,
-	loginSuccess,
-	loginFailure,
-	logout,
-	setToken,
-	registerSuccess,
-	setUsernameRequest,
-	setUsernameSuccess,
-	forgotPasswordSuccess,
-	forgotPasswordFailure
-} from '../actions/login';
+import { setToken } from '../actions/login';
 
 const getServer = ({ server }) => server.server;
 const getToken = function* getToken() {

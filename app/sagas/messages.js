@@ -1,5 +1,5 @@
-import { takeLatest, select, take, put, call } from 'redux-saga/effects';
-import { MESSAGES, LOGIN } from '../actions/actionsTypes';
+import { takeLatest, put, call } from 'redux-saga/effects';
+import { MESSAGES } from '../actions/actionsTypes';
 import {
 	messagesSuccess,
 	messagesFailure,

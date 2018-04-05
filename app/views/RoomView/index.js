@@ -19,7 +19,6 @@ import MessageBox from '../../containers/MessageBox';
 import Header from '../../containers/Header';
 import RoomsHeader from './Header';
 import ReactionPicker from './ReactionPicker';
-import Banner from './banner';
 import styles from './styles';
 
 @connect(

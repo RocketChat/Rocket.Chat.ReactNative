@@ -1,6 +1,6 @@
 import normalizeMessage from './normalizeMessage';
 // TODO: delete and update
-export default (subscriptions = [], rooms = [], lastMessage) => {
+export default (subscriptions = [], rooms = []) => {
 	if (subscriptions.update) {
 		subscriptions = subscriptions.update;
 		rooms = rooms.update;

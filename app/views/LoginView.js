@@ -9,7 +9,7 @@ import { Base64 } from 'js-base64';
 import Modal from 'react-native-modal';
 
 import RocketChat from '../lib/rocketchat';
-import { loginSubmit, open, close } from '../actions/login';
+import { open, close } from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
 import TextInput from '../containers/TextInput';
 

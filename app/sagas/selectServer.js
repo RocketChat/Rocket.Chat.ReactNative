@@ -3,7 +3,7 @@ import { delay } from 'redux-saga';
 import { AsyncStorage } from 'react-native';
 import { SERVER } from '../actions/actionsTypes';
 import * as actions from '../actions';
-import { connectRequest, disconnect, disconnect_by_user } from '../actions/connect';
+import { connectRequest } from '../actions/connect';
 import { changedServer, serverSuccess, serverFailure, serverRequest, setServer } from '../actions/server';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
@@ -28,8 +28,6 @@ const selectServer = function* selectServer({ server }) {
 		yield put(connectRequest(server));
 	} catch (e) {
 		alert(e);
-	} finally {
-
 	}
 };
 

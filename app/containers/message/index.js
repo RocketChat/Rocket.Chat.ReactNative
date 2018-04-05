@@ -72,7 +72,8 @@ export default class Message extends React.Component {
 		if (this.props.status !== nextProps.status) {
 			return true;
 		}
-		if (!this.props._updatedAt | nextProps._updatedAt) {
+		// eslint-disable-next-line
+		if (!!this.props._updatedAt ^ !!nextProps._updatedAt) {
 			return true;
 		}
 		return this.props._updatedAt.toGMTString() !== nextProps._updatedAt.toGMTString();
