@@ -23,7 +23,11 @@ import { setRoles } from '../actions/roles';
 import Ddp from './ddp';
 
 
+import normalizeMessage from './methods/helpers/normalizeMessage';
+
 import getRooms from './methods/getRooms';
+import loadMessagesForRoom from './methods/loadMessagesForRoom';
+import sendMessage, { getMessage, _sendMessageCall } from './methods/sendMessage';
 
 export { Accounts } from 'react-native-meteor';
 
@@ -32,16 +36,6 @@ const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SERVER_TIMEOUT = 30000;
 const call = (method, ...params) => RocketChat.ddp.call(method, ...params); // eslint-disable-line
 const returnAnArray = obj => obj || [];
-
-const normalizeMessage = (lastMessage) => {
-	if (lastMessage) {
-		lastMessage.attachments = lastMessage.attachments || [];
-		lastMessage.reactions = _.map(lastMessage.reactions, (value, key) =>
-			({ emoji: key, usernames: value.usernames.map(username => ({ value: username })) }));
-	}
-	return lastMessage;
-};
-
 
 const RocketChat = {
 	TOKEN_KEY,
@@ -111,29 +105,50 @@ const RocketChat = {
 				delete this.ddp;
 			}
 
-			this.ddp = new Ddp(url, login);
 
+			this.ddp = new Ddp(url, login);
+			if (login) {
+				RocketChat.getRooms().catch(err => alert(err));
+			}
 
 			this.ddp.on('login', () => reduxStore.dispatch(loginRequest()));
 
 			this.ddp.on('users', ddpMessage => RocketChat._setUser(ddpMessage));
 
-			this.ddp.on('logged', async(user) => {
-				// GET /me from REST API
-				const me = await this.me({ token: user.token, userId: user.id });
-				if (me.username) {
-					const userInfo = await this.userInfo({ token: user.token, userId: user.id });
-					user.username = me.username;//= userInfo.user.username;
-					if (userInfo.user.roles) {
-						user.roles = userInfo.user.roles;
-					}
+			this.ddp.on('logged', () => {
+				try {
+					RocketChat.getRooms();
+				} catch (e) {
+					console.log(e);
 				}
-
-				reduxStore.dispatch(loginSuccess(user));
-				this.getRooms().catch(alert);
-				// if user has username
 			});
+			this.ddp.on('logged', async(user) => {
+				try {
+					// GET /me from REST API
+					const me = await this.me({ token: user.token, userId: user.id });
+					if (me.username) {
+						const userInfo = await this.userInfo({ token: user.token, userId: user.id });
+						user.username = me.username;//= userInfo.user.username;
+						if (userInfo.user.roles) {
+							user.roles = userInfo.user.roles;
+						}
+					}
 
+					reduxStore.dispatch(loginSuccess(user));
+					// this.getRooms().catch(alert);
+					// if user has username
+				} catch (e) {
+					alert(e);
+				}
+			});
+			this.ddp.once('logged', ({ id }) => {
+				try {
+					this.ddp.subscribe('stream-notify-user', `${ id }/subscriptions-changed`, false);
+					this.ddp.subscribe('stream-notify-user', `${ id }/rooms-changed`, false);
+				} catch (e) {
+					alert(e);
+				}
+			});
 			this.ddp.on('logginError', err => reduxStore.dispatch(loginFailure(err)));
 			this.ddp.on('open', () => {
 				RocketChat.getSettings();
@@ -392,7 +407,7 @@ const RocketChat = {
 			this.ddp.on('connected', () => {
 				// resolve(reduxStore.dispatch(connectSuccess()));
 			});
-		}).catch(alert);
+		}).catch(err => alert(`asd ${ err }`));
 	},
 
 	me({ server = reduxStore.getState().server.server, token, userId }) {
@@ -526,66 +541,10 @@ const RocketChat = {
 		message.starred = message.starred && (Array.isArray(message.starred) ? message.starred.length > 0 : !!message.starred);
 		return message;
 	},
-	loadMessagesForRoom(rid, end, cb) {
-		return this.ddp.call('loadHistory', rid, end, 20).then((data) => {
-			if (data && data.messages.length) {
-				const messages = data.messages.map(message => this._buildMessage(message));
-				database.write(() => {
-					messages.forEach((message) => {
-						database.create('messages', message, true);
-					});
-				});
-			}
-			if (cb) {
-				cb({ end: data && data.messages.length < 20 });
-			}
-			return data.message;
-		}, (err) => {
-			if (err) {
-				if (cb) {
-					cb({ end: true });
-				}
-				return Promise.reject(err);
-			}
-		});
-	},
-
-	getMessage(rid, msg = {}) {
-		const _id = Random.id();
-		const message = {
-			_id,
-			rid,
-			msg,
-			ts: new Date(),
-			_updatedAt: new Date(),
-			status: messagesStatus.TEMP,
-			u: {
-				_id: reduxStore.getState().login.user.id || '1',
-				username: reduxStore.getState().login.user.username
-			}
-		};
-
-		database.write(() => {
-			database.create('messages', message, true);
-		});
-		return message;
-	},
-	async _sendMessageCall(message) {
-		const { _id, rid, msg } = message;
-		const sendMessageCall = call('sendMessage', { _id, rid, msg });
-		const timeoutCall = new Promise(resolve => setTimeout(resolve, SERVER_TIMEOUT, 'timeout'));
-		const result = await Promise.race([sendMessageCall, timeoutCall]);
-		if (result === 'timeout') {
-			database.write(() => {
-				message.status = messagesStatus.ERROR;
-				database.create('messages', message, true);
-			});
-		}
-	},
-	async sendMessage(rid, msg) {
-		const tempMessage = this.getMessage(rid, msg);
-		return RocketChat._sendMessageCall(tempMessage);
-	},
+	loadMessagesForRoom,
+	getMessage,
+	_sendMessageCall,
+	sendMessage,
 	async resendMessage(messageId) {
 		const message = await database.objects('messages').filtered('_id = $0', messageId)[0];
 		database.write(() => {
@@ -689,15 +648,6 @@ const RocketChat = {
 	getRooms() {
 		return getRooms.call(this);
 	},
-	// disconnect() {
-	// 	if (!this.ddp) {
-	// 		return;
-	// 	}
-	// 	const { ddp } = this;
-	// 	reduxStore.dispatch(disconnect_by_user());
-	// 	delete this.ddp;
-	// 	return ddp.disconnect();
-	// },
 	login(params) {
 		return this.ddp.login(params);
 	},

@@ -33,30 +33,13 @@ const getToken = function* getToken() {
 
 
 const connect = (...args) => RocketChat.connect(...args);
-// const watchConnect = function* watchConnect() {
-// 	const { disconnect } = yield race({
-// 		disconnect: take(METEOR.DISCONNECT),
-// 		disconnected_by_user: take(METEOR.DISCONNECT_BY_USER)
-// 	});
-// 	if (disconnect) {
-// 		while (true) {
-// 			const { connected } = yield race({
-// 				connected: take(METEOR.SUCCESS),
-// 				timeout: call(delay, 1000)
-// 			});
-// 			if (connected) {
-// 				return;
-// 			}
-// 			yield RocketChat.reconnect();
-// 		}
-// 	}
-// };
+
 const test = function* test() {
 	try {
 		const server = yield select(getServer);
 		const user = yield call(getToken);
 		// const response =
-		yield all([call(connect, server, user && user.token ? { resume: user.token } : undefined)]);// , put(loginRequest({ resume: user.token }))]);
+		yield all([call(connect, server, user && user.token ? { resume: user.token, ...user.user } : undefined)]);// , put(loginRequest({ resume: user.token }))]);
 	// yield put(connectSuccess(response));
 	} catch (err) {
 		alert(err);

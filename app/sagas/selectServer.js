@@ -14,17 +14,23 @@ const validate = function* validate(server) {
 };
 
 const selectServer = function* selectServer({ server }) {
-	yield database.setActiveDB(server);
+	try {
+		yield database.setActiveDB(server);
 
-	// yield RocketChat.disconnect();
+		// yield RocketChat.disconnect();
 
-	yield put(changedServer(server));
-	yield call([AsyncStorage, 'setItem'], 'currentServer', server);
-	const settings = database.objects('settings');
-	yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
-	const permissions = database.objects('permissions');
-	yield put(actions.setAllPermissions(RocketChat.parsePermissions(permissions.slice(0, permissions.length))));
-	yield put(connectRequest(server));
+		yield put(changedServer(server));
+		yield call([AsyncStorage, 'setItem'], 'currentServer', server);
+		const settings = database.objects('settings');
+		yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
+		const permissions = database.objects('permissions');
+		yield put(actions.setAllPermissions(RocketChat.parsePermissions(permissions.slice(0, permissions.length))));
+		yield put(connectRequest(server));
+	} catch (e) {
+		alert(e);
+	} finally {
+
+	}
 };
 
 const validateServer = function* validateServer({ server }) {
