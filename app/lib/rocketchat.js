@@ -193,6 +193,11 @@ const RocketChat = {
 					} else {
 						data.blocked = false;
 					}
+					if (data.mobilePushNotifications === 'nothing') {
+						data.notifications = true;
+					} else {
+						data.notifications = false;
+					}
 					database.write(() => {
 						database.create('subscriptions', data, true);
 					});
@@ -809,6 +814,9 @@ const RocketChat = {
 	},
 	saveRoomSettings(rid, params) {
 		return call('saveRoomSettings', rid, params);
+	},
+	saveNotificationSettings(rid, param, value) {
+		return call('saveNotificationSettings', rid, param, value);
 	},
 	hasPermission(permissions, rid) {
 		// get the room from realm

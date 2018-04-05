@@ -91,7 +91,8 @@ const subscriptionSchema = {
 		blocked: { type: 'bool', optional: true },
 		reactWhenReadOnly: { type: 'bool', optional: true },
 		archived: { type: 'bool', optional: true },
-		joinCodeRequired: { type: 'bool', optional: true }
+		joinCodeRequired: { type: 'bool', optional: true },
+		notifications: { type: 'bool', optional: true }
 	}
 };
 

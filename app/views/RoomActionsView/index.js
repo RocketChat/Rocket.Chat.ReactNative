@@ -93,7 +93,7 @@ export default class RoomActionsView extends LoggedView {
 	}
 
 	updateSections = async() => {
-		const { rid, t, blocked } = this.state.room;
+		const { rid, t, blocked, notifications } = this.state.room;
 		const { members } = this.state;
 		const sections = [{
 			data: [{
@@ -143,14 +143,17 @@ export default class RoomActionsView extends LoggedView {
 					route: 'SnippetedMessages',
 					params: { rid }
 				},
-				{ icon: 'ios-notifications-outline', name: 'Notifications preferences', disabled: true }
+				{
+					icon: `ios-notifications${ notifications ? '' : '-off' }-outline`,
+					name: `${ notifications ? 'Enable' : 'Disable' } notifications`,
+					event: () => this.toggleNotifications()
+				}
 			],
 			renderItem: this.renderItem
 		}];
 		if (t === 'd') {
 			sections.push({
 				data: [
-					{ icon: 'ios-volume-off', name: 'Mute user', disabled: true },
 					{
 						icon: 'block',
 						name: `${ blocked ? 'Unblock' : 'Block' } user`,
@@ -172,7 +175,6 @@ export default class RoomActionsView extends LoggedView {
 			}
 			sections.push({
 				data: [
-					{ icon: 'ios-volume-off', name: 'Mute channel', disabled: true },
 					{
 						icon: 'block',
 						name: 'Leave channel',
@@ -209,6 +211,11 @@ export default class RoomActionsView extends LoggedView {
 				}
 			]
 		);
+	}
+
+	toggleNotifications = () => {
+		const { room } = this.state;
+		RocketChat.saveNotificationSettings(room.rid, 'mobilePushNotifications', room.notifications ? 'default' : 'nothing');
 	}
 
 	renderRoomInfo = ({ item }) => {
