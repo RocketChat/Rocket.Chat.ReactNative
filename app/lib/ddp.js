@@ -39,7 +39,6 @@ class EventEmitter {
 	}
 }
 
-
 export default class Socket extends EventEmitter {
 	constructor(url, login) {
 		super();

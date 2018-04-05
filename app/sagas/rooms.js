@@ -62,14 +62,7 @@ const handleMessageReceived = function* handleMessageReceived({ message }) {
 };
 
 const watchRoomOpen = function* watchRoomOpen({ room }) {
-	const auth = yield select(state => state.login.isAuthenticated);
-	if (!auth) {
-		yield take(types.LOGIN.SUCCESS);
-	}
-
-
 	yield put(messagesRequest({ rid: room.rid }));
-
 	const { open } = yield race({
 		messages: take(types.MESSAGES.SUCCESS),
 		open: take(types.ROOM.OPEN)

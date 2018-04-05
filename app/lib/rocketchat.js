@@ -23,7 +23,10 @@ import Ddp from './ddp';
 
 import normalizeMessage from './methods/helpers/normalizeMessage';
 
+
+import readMessages from './methods/readMessages';
 import getRooms from './methods/getRooms';
+import _buildMessage from './methods/helpers/buildMessage';
 import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import sendMessage, { getMessage, _sendMessageCall } from './methods/sendMessage';
 
@@ -169,7 +172,7 @@ const RocketChat = {
 			});
 
 			this.ddp.on('stream-room-messages', (ddpMessage) => {
-				const message = this._buildMessage(ddpMessage.fields.args[0]);
+				const message = _buildMessage(ddpMessage.fields.args[0]);
 				return reduxStore.dispatch(roomMessageReceived(message));
 			});
 
@@ -230,7 +233,7 @@ const RocketChat = {
 					}, 1000);
 					const message = ddpMessage.fields;
 					message._id = ddpMessage.id;
-					const starredMessage = this._buildMessage(message);
+					const starredMessage = _buildMessage(message);
 					this.starredMessages = [...this.starredMessages, starredMessage];
 				}
 				if (ddpMessage.msg === 'removed') {
@@ -256,7 +259,7 @@ const RocketChat = {
 					}, 1000);
 					const message = ddpMessage.fields;
 					message._id = ddpMessage.id;
-					const pinnedMessage = this._buildMessage(message);
+					const pinnedMessage = _buildMessage(message);
 					this.pinnedMessages = [...this.pinnedMessages, pinnedMessage];
 				}
 				if (ddpMessage.msg === 'removed') {
@@ -282,7 +285,7 @@ const RocketChat = {
 					}, 1000);
 					const message = ddpMessage.fields;
 					message._id = ddpMessage.id;
-					const mentionedMessage = this._buildMessage(message);
+					const mentionedMessage = _buildMessage(message);
 					this.mentionedMessages = [...this.mentionedMessages, mentionedMessage];
 				}
 			});
@@ -303,7 +306,7 @@ const RocketChat = {
 					}, 1000);
 					const message = ddpMessage.fields;
 					message._id = ddpMessage.id;
-					const snippetedMessage = this._buildMessage(message);
+					const snippetedMessage = _buildMessage(message);
 					this.snippetedMessages = [...this.snippetedMessages, snippetedMessage];
 				}
 			});
@@ -407,28 +410,6 @@ const RocketChat = {
 		}).catch(err => alert(`asd ${ err }`));
 	},
 
-	me({ server = reduxStore.getState().server.server, token, userId }) {
-		return fetch(`${ server }/api/v1/me`, {
-			method: 'get',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-Auth-Token': token,
-				'X-User-Id': userId
-			}
-		}).then(response => response.json());
-	},
-
-	userInfo({ server = reduxStore.getState().server.server, token, userId }) {
-		return fetch(`${ server }/api/v1/users.info?userId=${ userId }`, {
-			method: 'get',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-Auth-Token': token,
-				'X-User-Id': userId
-			}
-		}).then(response => response.json());
-	},
-
 	register({ credentials }) {
 		return call('registerUser', credentials);
 	},
@@ -483,19 +464,6 @@ const RocketChat = {
 		return this.login(params, callback);
 	},
 
-	loadSubscriptions(cb) {
-		this.ddp.call('subscriptions/get').then((data) => {
-			if (data.length) {
-				database.write(() => {
-					data.forEach((subscription) => {
-						database.create('subscriptions', subscription, true);
-					});
-				});
-			}
-
-			return cb && cb();
-		});
-	},
 	registerPushToken(id, token) {
 		const key = Platform.OS === 'ios' ? 'apn' : 'gcm';
 		const data = {
@@ -511,44 +479,39 @@ const RocketChat = {
 	updatePushToken(pushId) {
 		return call('raix:push-setuser', pushId);
 	},
-
-	_parseUrls(urls) {
-		return urls.filter(url => url.meta && !url.ignoreParse).map((url, index) => {
-			const tmp = {};
-			const { meta } = url;
-			tmp._id = index;
-			tmp.title = meta.ogTitle || meta.twitterTitle || meta.title || meta.pageTitle || meta.oembedTitle;
-			tmp.description = meta.ogDescription || meta.twitterDescription || meta.description || meta.oembedAuthorName;
-			let decodedOgImage;
-			if (meta.ogImage) {
-				decodedOgImage = meta.ogImage.replace(/&amp;/g, '&');
-			}
-			tmp.image = decodedOgImage || meta.twitterImage || meta.oembedThumbnailUrl;
-			tmp.url = url.url;
-			return tmp;
-		});
-	},
-	_buildMessage(message) {
-		message.status = messagesStatus.SENT;
-		normalizeMessage(message);
-		message.urls = message.urls ? RocketChat._parseUrls(message.urls) : [];
-		message._updatedAt = new Date();
-		// loadHistory returns message.starred as object
-		// stream-room-messages returns message.starred as an array
-		message.starred = message.starred && (Array.isArray(message.starred) ? message.starred.length > 0 : !!message.starred);
-		return message;
-	},
 	loadMessagesForRoom,
 	getMessage,
-	_sendMessageCall,
 	sendMessage,
+	getRooms,
+	readMessages,
+	me({ server = reduxStore.getState().server.server, token, userId }) {
+		return fetch(`${ server }/api/v1/me`, {
+			method: 'get',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-Auth-Token': token,
+				'X-User-Id': userId
+			}
+		}).then(response => response.json());
+	},
+
+	userInfo({ server = reduxStore.getState().server.server, token, userId }) {
+		return fetch(`${ server }/api/v1/users.info?userId=${ userId }`, {
+			method: 'get',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-Auth-Token': token,
+				'X-User-Id': userId
+			}
+		}).then(response => response.json());
+	},
 	async resendMessage(messageId) {
 		const message = await database.objects('messages').filtered('_id = $0', messageId)[0];
+		message.status = messagesStatus.TEMP;
 		database.write(() => {
-			message.status = messagesStatus.TEMP;
 			database.create('messages', message, true);
 		});
-		return RocketChat._sendMessageCall(message);
+		return _sendMessageCall(message);
 	},
 
 	spotlight(search, usernames, type) {
@@ -557,16 +520,6 @@ const RocketChat = {
 
 	createDirectMessage(username) {
 		return call('createDirectMessage', username);
-	},
-	async readMessages(rid) {
-		const ret = await call('readMessages', rid);
-
-		const [subscription] = database.objects('subscriptions').filtered('rid = $0', rid);
-		database.write(() => {
-			subscription.lastOpen = new Date();
-		});
-
-		return ret;
 	},
 	joinRoom(rid) {
 		return call('joinRoom', rid);
@@ -641,9 +594,6 @@ const RocketChat = {
 				console.error(e);
 			}
 		}
-	},
-	getRooms() {
-		return getRooms.call(this);
 	},
 	login(params) {
 		return this.ddp.login(params);
