@@ -31,10 +31,11 @@ const getRoomRest = async function() {
 };
 
 export default async function() {
+	const { database: db } = database;
 	// eslint-disable-next-line
 	const data = await (this.ddp._logged ? getRoomDpp.apply(this) : getRoomRest.apply(this));
-	database.write(() => {
-		data.forEach(subscription => database.create('subscriptions', subscription, true));
+	db.write(() => {
+		data.forEach(subscription => db.create('subscriptions', subscription, true));
 	});
 	return data;
 }

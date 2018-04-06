@@ -10,7 +10,12 @@ export const get = function({
 			'X-Auth-Token': token,
 			'X-User-Id': id
 		}
-	}).then(response => response.json());
+	}).then(response => response.json(), alert).then((msg) => {
+		if (msg.success !== undefined && !msg.success) {
+			return Promise.reject(msg);
+		}
+		return msg;
+	});
 };
 
 

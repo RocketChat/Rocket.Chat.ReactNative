@@ -51,16 +51,28 @@ export default class Socket extends EventEmitter {
 		this.subscriptions = {};
 		this.ddp = new EventEmitter();
 		this._logged = false;
-
-		this.on('ping', () => {
+		const waitTimeout = () => setTimeout(async() => {
+			this.send({ msg: 'ping' });
+			this.timeout = setTimeout(() => this.reconnect(), 5000);
+		}, 45000);
+		const handlePing = () => {
 			this.lastping = new Date();
 			this.send({ msg: 'pong' });
 			if (this.timeout) {
 				clearTimeout(this.timeout);
-				this.timeout = null;
 			}
-			this.timeout = setTimeout(() => { this.reconnect(); }, 45000);
-		});
+			this.timeout = waitTimeout();
+		};
+		const handlePong = () => {
+			this.lastping = new Date();
+			if (this.timeout) {
+				clearTimeout(this.timeout);
+			}
+			this.timeout = waitTimeout();
+		};
+
+		this.on('pong', handlePong);
+		this.on('ping', handlePing);
 
 		this.on('result', data => this.ddp.emit(data.id, { id: data.id, result: data.result, error: data.error }));
 		this.on('ready', data => this.ddp.emit(data.subs[0], data));
@@ -130,7 +142,7 @@ export default class Socket extends EventEmitter {
 					this.login(this._login);
 				}
 			};
-			this.connection.onclose = (e) => { alert(`${ JSON.stringify(e) }`); this.emit('disconnected', e); };
+			this.connection.onclose = (e) => { this.emit('disconnected', e); };
 			this.connection.onmessage = (e) => {
 				const data = EJSON.parse(e.data);
 				this.emit(data.msg, data);

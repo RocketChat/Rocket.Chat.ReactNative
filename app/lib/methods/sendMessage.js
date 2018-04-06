@@ -51,18 +51,19 @@ export async function _sendMessageCall(message) {
 }
 
 export default async function(rid, msg) {
+	const { database: db } = database;
 	try {
 		const message = getMessage(rid, msg);
-		const room = database.objects('subscriptions').filtered('rid == $0', rid);
+		const room = db.objects('subscriptions').filtered('rid == $0', rid);
 
-		database.write(() => {
+		db.write(() => {
 			room.lastMessage = message;
 		});
 
 		const ret = await _sendMessageCall.call(this, message);
 		// TODO: maybe I have created a bug in the future here <3
-		database.write(() => {
-			database.create('messages', buildMessage({ ...message, ...ret }), true);
+		db.write(() => {
+			db.create('messages', buildMessage({ ...message, ...ret }), true);
 		});
 	} catch (e) {
 		console.log(e);
