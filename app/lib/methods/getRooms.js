@@ -16,18 +16,18 @@ const lastMessage = () => {
 const getRoomDpp = async function() {
 	console.log('getRoomDpp');
 	const { ddp } = this;
-	const ls = lastMessage();
-	const [subscriptions, rooms] = await Promise.all([ddp.call('subscriptions/get', ls), ddp.call('rooms/get', ls)]);
-	return mergeSubscriptionsRooms(subscriptions, rooms, ls);
+	const updatedSince = lastMessage();
+	const [subscriptions, rooms] = await Promise.all([ddp.call('subscriptions/get', updatedSince), ddp.call('rooms/get', updatedSince)]);
+	return mergeSubscriptionsRooms(subscriptions, rooms);
 };
 const getRoomRest = async function() {
 	console.log('getRoomRest');
-	const ls = lastMessage();
+	const updatedSince = lastMessage();
 	const { ddp } = this;
 	const { token, id } = ddp._login;
 	const server = this.ddp.url.replace('ws', 'http');
-	const [subscriptions, rooms] = await Promise.all([get({ token, id, server }, 'subscriptions.get', ls), get({ token, id, server }, 'rooms.get', ls)]);
-	return mergeSubscriptionsRooms(subscriptions, rooms, ls);
+	const [subscriptions, rooms] = await Promise.all([get({ token, id, server }, 'subscriptions.get', { updatedSince }), get({ token, id, server }, 'rooms.get', { updatedSince })]);
+	return mergeSubscriptionsRooms(subscriptions, rooms);
 };
 
 export default async function() {

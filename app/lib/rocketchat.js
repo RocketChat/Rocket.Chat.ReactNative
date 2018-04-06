@@ -1,6 +1,7 @@
 import { AsyncStorage, Platform } from 'react-native';
 import { hashPassword } from 'react-native-meteor/lib/utils';
 import _ from 'lodash';
+import { Answers } from 'react-native-fabric';
 
 import RNFetchBlob from 'react-native-fetch-blob';
 import reduxStore from './createStore';
@@ -41,6 +42,7 @@ const protectedFunction = fn => (params) => {
 	try {
 		fn(params);
 	} catch (e) {
+		Answers.log(e);
 		console.log(e);
 	}
 };
@@ -389,7 +391,7 @@ const RocketChat = {
 			}));
 
 			this.ddp.on('error', protectedFunction((err) => {
-				alert(JSON.stringify(err));
+				Answers.log(err);
 				reduxStore.dispatch(connectFailure());
 			}));
 		}).catch(err => alert(`asd ${ err }`));

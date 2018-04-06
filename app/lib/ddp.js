@@ -59,12 +59,12 @@ export default class Socket extends EventEmitter {
 				clearTimeout(this.timeout);
 				this.timeout = null;
 			}
-			this.timeout = setTimeout(() => this.reconnect(), 35000);
+			this.timeout = setTimeout(() => { this.reconnect(); }, 45000);
 		});
 
 		this.on('result', data => this.ddp.emit(data.id, { id: data.id, result: data.result, error: data.error }));
 		this.on('ready', data => this.ddp.emit(data.subs[0], data));
-		this.on('disconnected', () => { delete this.connection; this._logged = false; this.reconnect(); });
+		this.on('disconnected', () => { delete this.connection; this._logged = false; setTimeout(() => this.reconnect(), 1000); });
 		this.on('logged', () => this._logged = true);
 
 		this.on('open', async() => {
@@ -103,10 +103,10 @@ export default class Socket extends EventEmitter {
 		console.log(new Error().stack);
 		try {
 			// this.connection && this.connection.readyState > 1 && this.connection.close && this.connection.close(300, 'disconnect');
-			if (this.connection && this.connection.readyState > 1 && this.connection.close) {
+			if (this.connection && this.connection.close) {
 				this.connection.close(300, 'disconnect');
+				delete this.connection;
 			}
-			delete this.connection;
 		} catch (e) {
 			console.log(e);
 		}
@@ -126,8 +126,8 @@ export default class Socket extends EventEmitter {
 				if (this._login) {
 					this.login(this._login);
 				}
-				this.connection.onclose = e => this.emit('disconnected', e);
 			};
+			this.connection.onclose = e => this.emit('disconnected', e);
 			this.connection.onmessage = (e) => {
 				const data = EJSON.parse(e.data);
 				this.emit(data.msg, data);
@@ -143,10 +143,9 @@ export default class Socket extends EventEmitter {
 		this._close();
 	}
 	async reconnect() {
-		this.disconnect();
 		await this._connect();
 		this.once('logged', () => {
-			Object.keys(this.subscriptions).forEach((key) => {
+			Object.keys(this.subscriptions || {}).forEach((key) => {
 				const { name, params } = this.subscriptions[key];
 				this.subscriptions[key].unsubscribe();
 				this.subscribe(name, params);
@@ -170,6 +169,7 @@ export default class Socket extends EventEmitter {
 			msg: 'unsub',
 			id
 		}).then(data => data.result || data.subs).catch((err) => {
+			alert(`DDP unsubscribe Error ${ err }`);
 			Answers.logCustom('DDP unsubscribe Error', err);
 			return Promise.reject(err);
 		});
@@ -186,6 +186,7 @@ export default class Socket extends EventEmitter {
 			this.subscriptions[id] = args;
 			return args;
 		}).catch((err) => {
+			alert(`DDP subscribe Error ${ err }`);
 			Answers.logCustom('DDP subscribe Error', err);
 			return Promise.reject(err);
 		});

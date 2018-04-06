@@ -81,7 +81,7 @@ export default class RoomView extends LoggedView {
 		this.props.navigation.setParams({
 			title: this.name
 		});
-		this.updateRoom();
+
 		await this.props.openRoom({ rid: this.rid, name: this.name, ls: this.state.room.ls });
 		if (this.state.room.alert || this.state.room.unread || this.state.room.userMentions) {
 			this.props.setLastOpen(this.state.room.ls);
@@ -128,8 +128,7 @@ export default class RoomView extends LoggedView {
 	};
 
 	updateRoom = () => {
-		this.setState({ room: this.rooms[0] });
-		this.forceUpdate();
+		this.setState({ room: JSON.parse(JSON.stringify(this.rooms[0])) });
 	}
 
 	sendMessage = (message) => {
