@@ -59,7 +59,7 @@ export default class Socket extends EventEmitter {
 				clearTimeout(this.timeout);
 				this.timeout = null;
 			}
-			this.timeout = setTimeout(() => { alert('timeou'); this.reconnect(); }, 45000);
+			this.timeout = setTimeout(() => { this.reconnect(); }, 45000);
 		});
 
 		this.on('result', data => this.ddp.emit(data.id, { id: data.id, result: data.result, error: data.error }));
@@ -96,7 +96,11 @@ export default class Socket extends EventEmitter {
 			this.id += 1;
 			const id = obj.id || `${ this.id }`;
 			this.connection.send(EJSON.stringify({ ...obj, id }));
-			this.ddp.once(id, data => (data.error ? reject(data.error) : resolve({ id, ...data })));
+			const cancel = this.ddp.on('disconnected', reject);
+			this.ddp.once(id, (data) => {
+				this.ddp.removeListener(id, cancel);
+				return (data.error ? reject(data.error) : resolve({ id, ...data }));
+			});
 		});
 	}
 	_close() {
