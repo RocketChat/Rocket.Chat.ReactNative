@@ -59,12 +59,12 @@ export default class Socket extends EventEmitter {
 				clearTimeout(this.timeout);
 				this.timeout = null;
 			}
-			this.timeout = setTimeout(() => { this.reconnect(); }, 45000);
+			this.timeout = setTimeout(() => { alert('timeou'); this.reconnect(); }, 45000);
 		});
 
 		this.on('result', data => this.ddp.emit(data.id, { id: data.id, result: data.result, error: data.error }));
 		this.on('ready', data => this.ddp.emit(data.subs[0], data));
-		this.on('disconnected', () => { delete this.connection; this._logged = false; setTimeout(() => this.reconnect(), 1000); });
+		this.on('disconnected', () => { alert('disconnected'); delete this.connection; this._logged = false; setTimeout(() => this.reconnect(), 1000); });
 		this.on('logged', () => this._logged = true);
 
 		this.on('open', async() => {
@@ -100,7 +100,6 @@ export default class Socket extends EventEmitter {
 		});
 	}
 	_close() {
-		console.log(new Error().stack);
 		try {
 			// this.connection && this.connection.readyState > 1 && this.connection.close && this.connection.close(300, 'disconnect');
 			if (this.connection && this.connection.close) {
@@ -127,7 +126,7 @@ export default class Socket extends EventEmitter {
 					this.login(this._login);
 				}
 			};
-			this.connection.onclose = e => this.emit('disconnected', e);
+			this.connection.onclose = (e) => { alert(`${ JSON.stringify(e) }`); this.emit('disconnected', e); };
 			this.connection.onmessage = (e) => {
 				const data = EJSON.parse(e.data);
 				this.emit(data.msg, data);

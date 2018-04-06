@@ -45,7 +45,7 @@ export default function subscribeRooms(id) {
 			});
 		}
 		if (/rooms/.test(ev) && type === 'updated') {
-			const sub = database.objects('subscriptions').filtered('rid == $0', data._id)[0];
+			const [sub] = database.objects('subscriptions').filtered('rid == $0', data._id);
 			database.write(() => {
 				sub.roomUpdatedAt = data._updatedAt;
 				sub.lastMessage = normalizeMessage(data.lastMessage);
