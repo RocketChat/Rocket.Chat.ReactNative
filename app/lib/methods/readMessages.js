@@ -12,7 +12,7 @@ const	readMessagesREST = function readMessagesREST(rid) {
 };
 
 export default async function readMessages(rid) {
-	const data = await (false && this.ddp._logged ? readMessagesDDP.call(this, rid) : readMessagesREST.call(this, rid));
+	const data = await (this.ddp._logged ? readMessagesDDP.call(this, rid) : readMessagesREST.call(this, rid));
 	const [subscription] = database.objects('subscriptions').filtered('rid = $0', rid);
 	database.write(() => {
 		subscription.open = true;

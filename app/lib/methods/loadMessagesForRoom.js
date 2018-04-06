@@ -3,14 +3,17 @@ import database from '../realm';
 
 import buildMessage from './helpers/buildMessage';
 
-function loadMessagesForRoomRest(rid, end) {
+async function loadMessagesForRoomRest(rid, end) {
+	console.log('loadMessagesForRoomRest');
 	const { token, id } = this.ddp._login;
 	const server = this.ddp.url.replace('ws', 'http');
-	return get({ token, id, server }, 'channels.history', { rid, end }).messages;
+	const data = await get({ token, id, server }, 'channels.history', { rid, end });
+	return data.messages;
 }
 
 
 async function loadMessagesForRoomDDP(rid, end) {
+	console.log('loadMessagesForRoomDDP');
 	const data = await this.ddp.call('loadHistory', rid, end, 20);
 	if (!data || !data.messages.length) {
 		return [];
@@ -33,9 +36,9 @@ async function loadMessagesForRoomDDP(rid, end) {
 }
 
 export default async function(...args) {
-	const data = await (this.ddp._logged ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args).map(message => buildMessage(message)));
+	const data = await (this.ddp._logged ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args));
 	database.write(() => {
-		data.forEach((message) => {
+		data.map(buildMessage).forEach((message) => {
 			database.create('messages', message, true);
 		});
 	});

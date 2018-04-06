@@ -14,12 +14,14 @@ const lastMessage = () => {
 	}
 };
 const getRoomDpp = async function() {
+	console.log('getRoomDpp');
 	const { ddp } = this;
 	const ls = lastMessage();
 	const [subscriptions, rooms] = await Promise.all([ddp.call('subscriptions/get', ls), ddp.call('rooms/get', ls)]);
 	return mergeSubscriptionsRooms(subscriptions, rooms, ls);
 };
 const getRoomRest = async function() {
+	console.log('getRoomRest');
 	const ls = lastMessage();
 	const { ddp } = this;
 	const { token, id } = ddp._login;
@@ -30,7 +32,7 @@ const getRoomRest = async function() {
 
 export default async function() {
 	// eslint-disable-next-line
-	const data = await ((false && this.ddp._logged) ? getRoomDpp.apply(this) : getRoomRest.apply(this));
+	const data = await (this.ddp._logged ? getRoomDpp.apply(this) : getRoomRest.apply(this));
 	database.write(() => {
 		data.forEach(subscription => database.create('subscriptions', subscription, true));
 	});

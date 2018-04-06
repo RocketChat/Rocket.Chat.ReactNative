@@ -37,7 +37,6 @@ function sendMessageByDDP(message) {
 	return this.ddp.call('sendMessage', { _id, rid, msg });
 }
 
-
 export async function _sendMessageCall(message) {
 	try {
 		const data = await (this.ddp._logged ? sendMessageByDDP.call(this, message) : sendMessageByRest.call(this, message));
@@ -48,7 +47,7 @@ export async function _sendMessageCall(message) {
 			database.create('messages', message, true);
 		});
 	}
-};
+}
 
 export default async function(rid, msg) {
 	try {

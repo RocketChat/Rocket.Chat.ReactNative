@@ -10,6 +10,7 @@ class EventEmitter {
 			this.events[event] = [];
 		}
 		this.events[event].push(listener);
+		return listener;
 	}
 	removeListener(event, listener) {
 		if (typeof this.events[event] === 'object') {
@@ -36,6 +37,7 @@ class EventEmitter {
 			this.removeListener(event, g);
 			listener.apply(this, args);
 		});
+		return listener;
 	}
 }
 
