@@ -51,18 +51,18 @@ export class List extends React.Component {
 	shouldComponentUpdate(nextProps) {
 		return this.props.end !== nextProps.end;
 	}
-	componentWillUpdate() {
-		LayoutAnimation.easeInEaseOut();
-	}
 	componentWillUnmount() {
 		this.updateState.stop();
+	}
+	getSnapshotBeforeUpdate = () => {
+		LayoutAnimation.easeInEaseOut();
 	}
 	updateState = debounce(() => {
 		// this.setState({
 		this.dataSource = this.dataSource.cloneWithRows(this.data);
 		this.forceUpdate();
 		// });
-	}, 300);
+	}, 500);
 
 	render() {
 		return (<ListView

@@ -14,10 +14,38 @@ import { closeRoom } from '../../../actions/room';
 import Touch from '../../../utils/touch';
 
 
+const title = (offline, connecting, authenticating, logged) => {
+	if (offline) {
+		return 'You are offline...';
+	}
+
+	if (connecting) {
+		return 'Connecting...';
+	}
+
+	if (authenticating) {
+		return 'Authenticating...';
+	}
+
+	if (logged) {
+		return null;
+	}
+
+	return 'Not logged...';
+};
+
 @connect(state => ({
 	user: state.login.user,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	activeUsers: state.activeUsers
+	activeUsers: state.activeUsers,
+
+
+	loading: state.messages.isFetching,
+
+	connecting: state.meteor.connecting,
+	authenticating: state.login.isFetching,
+	offline: !state.meteor.connected,
+	logged: !!state.login.token
 }), dispatch => ({
 	close: () => dispatch(closeRoom())
 }))
@@ -75,7 +103,7 @@ export default class RoomHeaderView extends React.PureComponent {
 		titleStyle={{ display: 'none' }}
 	/>);
 
-	renderTitle() {
+	renderCenter() {
 		if (!this.state.roomName) {
 			return null;
 		}
@@ -85,6 +113,18 @@ export default class RoomHeaderView extends React.PureComponent {
 		if (this.isDirect()) {
 			accessibilityLabel += `, ${ this.getUserStatusLabel() }`;
 		}
+		const {
+			offline, connecting, authenticating, logged, loading
+		} = this.props;
+
+		let t = '';
+		if (title(offline, connecting, authenticating, logged) || loading) {
+			t = 'Loading messages...';
+		} else if (this.isDirect()) {
+			t = this.getUserStatusLabel();
+		} else {
+			t = this.state.room.description || ' ';
+		}
 
 		return (
 			<TouchableOpacity
@@ -93,23 +133,24 @@ export default class RoomHeaderView extends React.PureComponent {
 				accessibilityTraits='header'
 				onPress={() => this.props.navigation.navigate('RoomInfo', { rid: this.rid })}
 			>
-				{this.isDirect() ?
-					<View style={[styles.status, { backgroundColor: STATUS_COLORS[this.getUserStatus()] }]} />
-					: null
-				}
+
 				<Avatar
 					text={this.state.roomName}
 					size={24}
 					style={{ marginRight: 5 }}
 					baseUrl={this.props.baseUrl}
 					type={this.state.room.t}
-				/>
-				<View style={{ flexDirection: 'column' }}>
-					<Text style={styles.title} allowFontScaling={false}>{this.state.roomName}</Text>
+				>
 					{this.isDirect() ?
-						<Text style={styles.userStatus} allowFontScaling={false}>{this.getUserStatusLabel()}</Text>
+						<View style={[styles.status, { backgroundColor: STATUS_COLORS[this.getUserStatus()] }]} />
 						: null
 					}
+				</Avatar>
+				<View style={{ flexDirection: 'column', justifyContent: 'flex-start' }}>
+					<Text style={styles.title} allowFontScaling={false}>{this.state.roomName}</Text>
+
+					{ t && <Text style={styles.userStatus} allowFontScaling={false}>{t}</Text>}
+
 				</View>
 			</TouchableOpacity>
 		);
@@ -153,7 +194,7 @@ export default class RoomHeaderView extends React.PureComponent {
 		return (
 			<View style={styles.header}>
 				{this.renderLeft()}
-				{this.renderTitle()}
+				{this.renderCenter()}
 				{this.renderRight()}
 			</View>
 		);

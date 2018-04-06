@@ -1,5 +1,5 @@
-import { takeLatest, select, take, put, call } from 'redux-saga/effects';
-import { MESSAGES, LOGIN } from '../actions/actionsTypes';
+import { takeLatest, put, call } from 'redux-saga/effects';
+import { MESSAGES } from '../actions/actionsTypes';
 import {
 	messagesSuccess,
 	messagesFailure,
@@ -23,10 +23,6 @@ const getPermalink = message => RocketChat.getPermalink(message);
 const togglePinMessage = message => RocketChat.togglePinMessage(message);
 
 const get = function* get({ rid }) {
-	const auth = yield select(state => state.login.isAuthenticated);
-	if (!auth) {
-		yield take(LOGIN.SUCCESS);
-	}
 	try {
 		yield RocketChat.loadMessagesForRoom(rid, null);
 		yield put(messagesSuccess());

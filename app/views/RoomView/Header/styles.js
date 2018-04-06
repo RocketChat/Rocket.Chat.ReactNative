@@ -1,6 +1,6 @@
 import { StyleSheet, Platform } from 'react-native';
 
-const TITLE_OFFSET = Platform.OS === 'ios' ? 70 : 56;
+const TITLE_OFFSET = Platform.OS === 'ios' ? 56 : 56;
 export default StyleSheet.create({
 	header: {
 		flexDirection: 'row',
@@ -12,15 +12,19 @@ export default StyleSheet.create({
 		right: TITLE_OFFSET,
 		position: 'absolute',
 		alignItems: 'center',
-		justifyContent: Platform.OS === 'ios' ? 'center' : 'flex-start',
+		justifyContent: Platform.OS === 'ios' ? 'flex-start' : 'flex-start',
 		flexDirection: 'row',
 		height: 44
 	},
 	status: {
-		borderRadius: 4,
-		width: 8,
-		height: 8,
-		marginRight: 10
+		borderRadius: 10,
+		width: 10,
+		height: 10,
+		position: 'absolute',
+		borderWidth: 2,
+		borderColor: '#fff',
+		bottom: -2,
+		right: -2
 	},
 	userStatus: {
 		fontSize: 10,

@@ -1,9 +1,9 @@
 import { Alert } from 'react-native';
 import { put, call, takeLatest, take, select, race, fork, cancel, takeEvery } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
-import { FOREGROUND, BACKGROUND } from 'redux-enhancer-react-native-appstate';
+import { BACKGROUND } from 'redux-enhancer-react-native-appstate';
 import * as types from '../actions/actionsTypes';
-import { roomsSuccess, roomsFailure } from '../actions/rooms';
+// import { roomsSuccess, roomsFailure } from '../actions/rooms';
 import { addUserTyping, removeUserTyping, setLastOpen } from '../actions/room';
 import { messagesRequest } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
@@ -13,18 +13,18 @@ import * as NavigationService from '../containers/routes/NavigationService';
 const leaveRoom = rid => RocketChat.leaveRoom(rid);
 const eraseRoom = rid => RocketChat.eraseRoom(rid);
 
-const getRooms = function* getRooms() {
-	return yield RocketChat.getRooms();
-};
+// const getRooms = function* getRooms() {
+// 	return yield RocketChat.getRooms();
+// };
 
-const watchRoomsRequest = function* watchRoomsRequest() {
-	try {
-		yield call(getRooms);
-		yield put(roomsSuccess());
-	} catch (err) {
-		yield put(roomsFailure(err.status));
-	}
-};
+// const watchRoomsRequest = function* watchRoomsRequest() {
+// 	try {
+// 		yield call(getRooms);
+// 		yield put(roomsSuccess());
+// 	} catch (err) {
+// 		yield put(roomsFailure(err.status));
+// 	}
+// };
 
 const cancelTyping = function* cancelTyping(username) {
 	while (true) {
@@ -62,14 +62,7 @@ const handleMessageReceived = function* handleMessageReceived({ message }) {
 };
 
 const watchRoomOpen = function* watchRoomOpen({ room }) {
-	const auth = yield select(state => state.login.isAuthenticated);
-	if (!auth) {
-		yield take(types.LOGIN.SUCCESS);
-	}
-
-
 	yield put(messagesRequest({ rid: room.rid }));
-
 	const { open } = yield race({
 		messages: take(types.MESSAGES.SUCCESS),
 		open: take(types.ROOM.OPEN)
@@ -110,13 +103,13 @@ const watchuserTyping = function* watchuserTyping({ status }) {
 	}
 };
 
-const updateRoom = function* updateRoom() {
-	const room = yield select(state => state.room);
-	if (!room || !room.rid) {
-		return;
-	}
-	yield put(messagesRequest({ rid: room.rid }));
-};
+// const updateRoom = function* updateRoom() {
+// 	const room = yield select(state => state.room);
+// 	if (!room || !room.rid) {
+// 		return;
+// 	}
+// 	yield put(messagesRequest({ rid: room.rid }));
+// };
 
 const updateLastOpen = function* updateLastOpen() {
 	yield put(setLastOpen());
@@ -157,11 +150,10 @@ const handleEraseRoom = function* handleEraseRoom({ rid }) {
 
 const root = function* root() {
 	yield takeLatest(types.ROOM.USER_TYPING, watchuserTyping);
-	yield takeLatest(types.LOGIN.SUCCESS, watchRoomsRequest);
 	yield takeLatest(types.ROOM.OPEN, watchRoomOpen);
 	yield takeEvery(types.ROOM.MESSAGE_RECEIVED, handleMessageReceived);
-	yield takeLatest(FOREGROUND, updateRoom);
-	yield takeLatest(FOREGROUND, watchRoomsRequest);
+	// yield takeLatest(FOREGROUND, updateRoom);
+	// yield takeLatest(FOREGROUND, watchRoomsRequest);
 	yield takeLatest(BACKGROUND, updateLastOpen);
 	yield takeLatest(types.ROOM.LEAVE, handleLeaveRoom);
 	yield takeLatest(types.ROOM.ERASE, handleEraseRoom);

@@ -74,7 +74,7 @@ export default class RoomInfoEditView extends LoggedView {
 		this.rooms.removeAllListeners();
 	}
 
-	updateRoom = async() => {
+	updateRoom = () => {
 		const [room] = this.rooms;
 		this.setState({ room });
 	}

@@ -51,6 +51,7 @@ const roomsSchema = {
 		_id: 'string',
 		t: 'string',
 		lastMessage: 'messages',
+		description: { type: 'string', optional: true },
 		_updatedAt: { type: 'date', optional: true }
 	}
 };
@@ -137,7 +138,9 @@ const attachment = {
 		color: { type: 'string', optional: true },
 		ts: { type: 'date', optional: true },
 		attachments: { type: 'list', objectType: 'attachment' },
-		fields: { type: 'list', objectType: 'attachmentFields' }
+		fields: {
+			type: 'list', objectType: 'attachmentFields', default: []
+		}
 	}
 };
 
@@ -296,7 +299,7 @@ class DB {
 		return this.databases.activeDB;
 	}
 
-	setActiveDB(database) {
+	setActiveDB(database = '') {
 		const path = database.replace(/(^\w+:|^)\/\//, '');
 		return this.databases.activeDB = new Realm({
 			path: `${ path }.realm`,

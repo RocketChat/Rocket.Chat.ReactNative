@@ -1,4 +1,5 @@
 import { NavigationActions } from 'react-navigation';
+import { Answers } from 'react-native-fabric';
 
 const config = {};
 
@@ -10,6 +11,7 @@ export function setNavigator(nav) {
 
 export function navigate(routeName, params) {
 	if (config.navigator && routeName) {
+		Answers.logContentView(routeName);
 		const action = NavigationActions.navigate({ routeName, params });
 		config.navigator.dispatch(action);
 	}
@@ -24,6 +26,7 @@ export function goBack() {
 
 export function goRoomsList() {
 	if (config.navigator) {
+		Answers.logContentView('RoomsList');
 		const action = NavigationActions.reset({
 			index: 0,
 			actions: [NavigationActions.navigate({ routeName: 'RoomsList' })]
@@ -48,6 +51,6 @@ export function goRoom({ rid, name }, counter = 0) {
 			NavigationActions.navigate({ routeName: 'Room', params: { room: { rid, name }, rid, name } })
 		]
 	});
-
+	Answers.logContentView('Room');
 	config.navigator.dispatch(action);
 }
