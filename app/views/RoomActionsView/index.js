@@ -129,7 +129,12 @@ export default class RoomActionsView extends LoggedView {
 					route: 'StarredMessages',
 					params: { rid }
 				},
-				{ icon: 'ios-search', name: 'Search', disabled: true },
+				{
+					icon: 'ios-search',
+					name: 'Search',
+					route: 'SearchMessages',
+					params: { rid }
+				},
 				{ icon: 'ios-share-outline', name: 'Share', disabled: true },
 				{
 					icon: 'ios-pin',

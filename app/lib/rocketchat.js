@@ -818,6 +818,9 @@ const RocketChat = {
 	saveNotificationSettings(rid, param, value) {
 		return call('saveNotificationSettings', rid, param, value);
 	},
+	messageSearch(text, rid, limit) {
+		return call('messageSearch', text, rid, limit);
+	},
 	hasPermission(permissions, rid) {
 		// get the room from realm
 		const room = database.objects('subscriptions').filtered('rid = $0', rid)[0];

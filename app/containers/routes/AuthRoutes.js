@@ -12,6 +12,7 @@ import StarredMessagesView from '../../views/StarredMessagesView';
 import PinnedMessagesView from '../../views/PinnedMessagesView';
 import MentionedMessagesView from '../../views/MentionedMessagesView';
 import SnippetedMessagesView from '../../views/SnippetedMessagesView';
+import SearchMessagesView from '../../views/SearchMessagesView';
 import RoomFilesView from '../../views/RoomFilesView';
 import RoomMembersView from '../../views/RoomMembersView';
 import RoomInfoView from '../../views/RoomInfoView';
@@ -75,6 +76,13 @@ const AuthRoutes = StackNavigator(
 			screen: SnippetedMessagesView,
 			navigationOptions: {
 				title: 'Snippet Messages',
+				headerTintColor: '#292E35'
+			}
+		},
+		SearchMessages: {
+			screen: SearchMessagesView,
+			navigationOptions: {
+				title: 'Search Messages',
 				headerTintColor: '#292E35'
 			}
 		},

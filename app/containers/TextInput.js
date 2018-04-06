@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, TextInput } from 'react-native';
+import { View, StyleSheet, Text, TextInput, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
 		borderColor: COLOR_DANGER
 	},
 	wrap: {
-		flex: 1,
 		position: 'relative'
 	},
 	icon: {
@@ -49,7 +48,9 @@ export default class RCTextInput extends React.PureComponent {
 	static propTypes = {
 		label: PropTypes.string,
 		error: PropTypes.object,
-		secureTextEntry: PropTypes.bool
+		secureTextEntry: PropTypes.bool,
+		containerStyle: ViewPropTypes.style,
+		inputRef: PropTypes.func
 	}
 	static defaultProps = {
 		error: {}
@@ -64,15 +65,16 @@ export default class RCTextInput extends React.PureComponent {
 
 	render() {
 		const {
-			label, error, secureTextEntry, ...inputProps
+			label, error, secureTextEntry, containerStyle, inputRef, ...inputProps
 		} = this.props;
 		const { showPassword } = this.state;
 		return (
-			<View style={styles.inputContainer}>
+			<View style={[styles.inputContainer, containerStyle]}>
 				{ label && <Text style={[styles.label, error.error && styles.labelError]}>{label}</Text> }
 				<View style={styles.wrap}>
 					<TextInput
 						style={[styles.input, error.error && styles.inputError]}
+						ref={inputRef}
 						autoCorrect={false}
 						autoCapitalize='none'
 						underlineColorAndroid='transparent'

@@ -199,7 +199,7 @@ export default class LoginView extends React.Component {
 		if (/totp/ig.test(this.props.login.error.error)) {
 			return (
 				<TextInput
-					ref={ref => this.codeInput = ref}
+					inputRef={ref => this.codeInput = ref}
 					style={styles.input_white}
 					onChangeText={code => this.setState({ code })}
 					keyboardType='numeric'
@@ -237,7 +237,7 @@ export default class LoginView extends React.Component {
 								/>
 
 								<TextInput
-									ref={(e) => { this.password = e; }}
+									inputRef={(e) => { this.password = e; }}
 									style={styles.input_white}
 									onChangeText={password => this.setState({ password })}
 									secureTextEntry
