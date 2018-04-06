@@ -227,6 +227,7 @@ workflows:
           filters:
             branches:
               only:
+                - beta
                 - develop
                 - master
       # - ios-testflight:
