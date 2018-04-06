@@ -6,6 +6,7 @@ import database from '../realm';
 
 async function loadMessagesForRoomRest(rid, end) {
 	console.log('loadMessagesForRoomRest');
+
 	const { token, id } = this.ddp._login;
 	const server = this.ddp.url.replace('ws', 'http');
 	const data = await get({ token, id, server }, 'channels.history', { rid, end });
