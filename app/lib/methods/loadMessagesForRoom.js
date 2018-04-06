@@ -1,6 +1,6 @@
 import { get } from './helpers/rest';
 import database from '../realm';
-
+import { InteractionManager } from 'react-native';
 import buildMessage from './helpers/buildMessage';
 
 async function loadMessagesForRoomRest(rid, end) {
@@ -14,7 +14,7 @@ async function loadMessagesForRoomRest(rid, end) {
 
 async function loadMessagesForRoomDDP(rid, end) {
 	console.log('loadMessagesForRoomDDP');
-	const data = await this.ddp.call('loadHistory', rid, end, 20);
+	const data = await this.ddp.call('loadHistory', rid, end, 50);
 	if (!data || !data.messages.length) {
 		return [];
 	}
@@ -37,9 +37,11 @@ async function loadMessagesForRoomDDP(rid, end) {
 
 export default async function(...args) {
 	const data = await (this.ddp._logged ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args));
-	database.write(() => {
-		data.map(buildMessage).forEach((message) => {
-			database.create('messages', message, true);
+	InteractionManager.runAfterInteractions(() => {
+		database.write(() => {
+			data.map(buildMessage).forEach((message) => {
+				database.create('messages', message, true);
+			});
 		});
 	});
 	return data;

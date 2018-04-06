@@ -389,7 +389,6 @@ const RocketChat = {
 			}));
 
 			this.ddp.on('error', protectedFunction((err) => {
-				alert(JSON.stringify(err));
 				reduxStore.dispatch(connectFailure());
 			}));
 		}).catch(err => alert(`asd ${ err }`));
