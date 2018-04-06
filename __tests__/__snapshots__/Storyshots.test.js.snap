@@ -308,13 +308,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           </View>
           <View
             style={
-              Object {
-                "alignItems": "flex-end",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "flex-end",
-                "width": "100%",
-              }
+              Array [
+                Object {
+                  "alignItems": "flex-end",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "flex-end",
+                  "width": "100%",
+                },
+              ]
             }
           />
         </View>
@@ -478,13 +480,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           </View>
           <View
             style={
-              Object {
-                "alignItems": "flex-end",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "flex-end",
-                "width": "100%",
-              }
+              Array [
+                Object {
+                  "alignItems": "flex-end",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "flex-end",
+                  "width": "100%",
+                },
+              ]
             }
           />
         </View>
@@ -644,13 +648,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           </View>
           <View
             style={
-              Object {
-                "alignItems": "flex-end",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "flex-end",
-                "width": "100%",
-              }
+              Array [
+                Object {
+                  "alignItems": "flex-end",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "flex-end",
+                  "width": "100%",
+                },
+              ]
             }
           >
             <Text
@@ -837,13 +843,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           </View>
           <View
             style={
-              Object {
-                "alignItems": "flex-end",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "flex-end",
-                "width": "100%",
-              }
+              Array [
+                Object {
+                  "alignItems": "flex-end",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "flex-end",
+                  "width": "100%",
+                },
+              ]
             }
           >
             <Text
@@ -1026,13 +1034,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           </View>
           <View
             style={
-              Object {
-                "alignItems": "flex-end",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "flex-end",
-                "width": "100%",
-              }
+              Array [
+                Object {
+                  "alignItems": "flex-end",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "flex-end",
+                  "width": "100%",
+                },
+              ]
             }
           >
             <Text
@@ -1215,13 +1225,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           </View>
           <View
             style={
-              Object {
-                "alignItems": "flex-end",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "flex-end",
-                "width": "100%",
-              }
+              Array [
+                Object {
+                  "alignItems": "flex-end",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "flex-end",
+                  "width": "100%",
+                },
+              ]
             }
           >
             <Text
@@ -1404,13 +1416,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           </View>
           <View
             style={
-              Object {
-                "alignItems": "flex-end",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "flex-end",
-                "width": "100%",
-              }
+              Array [
+                Object {
+                  "alignItems": "flex-end",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "flex-end",
+                  "width": "100%",
+                },
+              ]
             }
           >
             <Text
@@ -1593,13 +1607,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           </View>
           <View
             style={
-              Object {
-                "alignItems": "flex-end",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "flex-end",
-                "width": "100%",
-              }
+              Array [
+                Object {
+                  "alignItems": "flex-end",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "flex-end",
+                  "width": "100%",
+                },
+              ]
             }
           >
             <Text
@@ -1782,13 +1798,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           </View>
           <View
             style={
-              Object {
-                "alignItems": "flex-end",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "flex-end",
-                "width": "100%",
-              }
+              Array [
+                Object {
+                  "alignItems": "flex-end",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "flex-end",
+                  "width": "100%",
+                },
+              ]
             }
           />
         </View>
@@ -1948,13 +1966,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           </View>
           <View
             style={
-              Object {
-                "alignItems": "flex-end",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "flex-end",
-                "width": "100%",
-              }
+              Array [
+                Object {
+                  "alignItems": "flex-end",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "flex-end",
+                  "width": "100%",
+                },
+              ]
             }
           />
         </View>
@@ -2114,13 +2134,15 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           </View>
           <View
             style={
-              Object {
-                "alignItems": "flex-end",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "flex-end",
-                "width": "100%",
-              }
+              Array [
+                Object {
+                  "alignItems": "flex-end",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "flex-end",
+                  "width": "100%",
+                },
+              ]
             }
           />
         </View>
