@@ -62,7 +62,7 @@ export class List extends React.Component {
 		this.dataSource = this.dataSource.cloneWithRows(this.data);
 		this.forceUpdate();
 		// });
-	}, 500);
+	}, 100);
 
 	render() {
 		return (<ListView

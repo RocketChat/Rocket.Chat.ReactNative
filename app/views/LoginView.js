@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Base64 } from 'js-base64';
 import Modal from 'react-native-modal';
+import { Answers } from 'react-native-fabric';
 
 import RocketChat from '../lib/rocketchat';
 import { open, close } from '../actions/login';
@@ -160,14 +161,15 @@ export default class LoginView extends React.Component {
 		this.setState({ oAuthUrl, modalVisible: true });
 	}
 
-	submit = () => {
+	submit = async() => {
 		const {	username, password, code } = this.state;
 		if (username.trim() === '' || password.trim() === '') {
 			showToast('Email or password field is empty');
 			return;
 		}
 
-		this.props.loginSubmit({ username, password, code });
+		await this.props.loginSubmit({ username, password, code });
+		Answers.logLogin('Email', true, { server: this.props.server });
 		Keyboard.dismiss();
 	}
 

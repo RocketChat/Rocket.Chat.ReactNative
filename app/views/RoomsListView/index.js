@@ -84,7 +84,7 @@ export default class RoomsListView extends React.Component {
 
 	updateState = debounce(() => {
 		this.forceUpdate();
-	}, 1000);
+	}, 500);
 
 	async search(text) {
 		const searchText = text.trim();

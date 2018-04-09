@@ -152,6 +152,7 @@ const RocketChat = {
 				RocketChat.getSettings();
 				RocketChat.getPermissions();
 				RocketChat.getCustomEmoji();
+				RocketChat.subscribe('meteor.loginServiceConfiguration');
 				reduxStore.dispatch(connectSuccess());
 				resolve();
 			}));

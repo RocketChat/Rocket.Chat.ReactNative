@@ -76,7 +76,7 @@ export default class Socket extends EventEmitter {
 
 		this.on('result', data => this.ddp.emit(data.id, { id: data.id, result: data.result, error: data.error }));
 		this.on('ready', data => this.ddp.emit(data.subs[0], data));
-		this.on('disconnected', () => { alert('disconnected'); delete this.connection; this._logged = false; setTimeout(() => this.reconnect(), 1000); });
+		this.on('disconnected', () => { delete this.connection; this._logged = false; setTimeout(() => this.reconnect(), 2000); });
 		this.on('logged', () => this._logged = true);
 
 		this.on('open', async() => {
@@ -184,7 +184,7 @@ export default class Socket extends EventEmitter {
 			msg: 'unsub',
 			id
 		}).then(data => data.result || data.subs).catch((err) => {
-			alert(`DDP unsubscribe Error ${ err }`);
+			// alert(`DDP unsubscribe Error ${ err }`);
 			Answers.logCustom('DDP unsubscribe Error', err);
 			return Promise.reject(err);
 		});
@@ -201,7 +201,7 @@ export default class Socket extends EventEmitter {
 			this.subscriptions[id] = args;
 			return args;
 		}).catch((err) => {
-			alert(`DDP subscribe Error ${ err }`);
+			// alert(`DDP subscribe Error ${ err }`);
 			Answers.logCustom('DDP subscribe Error', err);
 			return Promise.reject(err);
 		});
