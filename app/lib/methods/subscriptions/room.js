@@ -33,14 +33,14 @@ export default function subscribeRooms(id) {
 		const [, ev] = ddpMessage.fields.eventName.split('/');
 		if (/subscriptions/.test(ev)) {
 			if (data.roles) {
-				data.roles = data.roles.map(role => ({ value: role }));
+				data.roles = data.roles.map(role => (role.value ? role : { value: role }));
 			}
 			if (data.blocker) {
 				data.blocked = true;
 			} else {
 				data.blocked = false;
 			}
-			database.write(() => {
+			return database.write(() => {
 				database.create('subscriptions', data, true);
 			});
 		}

@@ -80,6 +80,7 @@ export default class Socket extends EventEmitter {
 		this.on('logged', () => this._logged = true);
 
 		this.on('open', async() => {
+			this._logged = false;
 			this.send({ msg: 'connect', version: '1', support: ['1', 'pre2', 'pre1'] });
 		});
 

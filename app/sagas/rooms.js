@@ -63,14 +63,14 @@ const handleMessageReceived = function* handleMessageReceived({ message }) {
 
 const watchRoomOpen = function* watchRoomOpen({ room }) {
 	yield put(messagesRequest({ rid: room.rid }));
-	const { open } = yield race({
-		messages: take(types.MESSAGES.SUCCESS),
-		open: take(types.ROOM.OPEN)
-	});
-
-	if (open) {
-		return;
-	}
+	// const { open } = yield race({
+	// 	messages: take(types.MESSAGES.SUCCESS),
+	// 	open: take(types.ROOM.OPEN)
+	// });
+	//
+	// if (open) {
+	// 	return;
+	// }
 	RocketChat.readMessages(room.rid);
 	const subscriptions = yield Promise.all([RocketChat.subscribe('stream-room-messages', room.rid, false), RocketChat.subscribe('stream-notify-room', `${ room.rid }/typing`, false)]);
 	const thread = yield fork(usersTyping, { rid: room.rid });

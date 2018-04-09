@@ -41,13 +41,11 @@ export default async function(...args) {
 	const { database: db } = database;
 	const data = await (this.ddp._logged ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args));
 	if (data) {
-		InteractionManager.runAfterInteractions(() => {
-			db.write(() => {
-				data.map(buildMessage).forEach((message) => {
-					db.create('messages', message, true);
-				});
-			});
-		});
+		try {
+			InteractionManager.runAfterInteractions(() => db.write(() => data.map(buildMessage).forEach(message => db.create('messages', message, true))));
+		} catch (e) {
+			alert(e);
+		}
 	}
 	return data;
 }

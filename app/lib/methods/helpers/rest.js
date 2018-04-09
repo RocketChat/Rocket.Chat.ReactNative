@@ -1,5 +1,13 @@
 import toQuery from './toQuery';
 
+
+const handleSuccess = (msg) => {
+	if (msg.success !== undefined && !msg.success) {
+		return Promise.reject(msg);
+	}
+	return msg;
+};
+
 export const get = function({
 	token, id, server
 }, method, params = {}) {
@@ -10,12 +18,7 @@ export const get = function({
 			'X-Auth-Token': token,
 			'X-User-Id': id
 		}
-	}).then(response => response.json(), alert).then((msg) => {
-		if (msg.success !== undefined && !msg.success) {
-			return Promise.reject(msg);
-		}
-		return msg;
-	});
+	}).then(response => response.json()).then(handleSuccess);
 };
 
 
@@ -31,10 +34,5 @@ export const post = function({
 			'X-Auth-Token': token,
 			'X-User-Id': id
 		}
-	}).then(response => response.json(), alert).then((msg) => {
-		if (msg.success !== undefined && !msg.success) {
-			return Promise.reject(msg);
-		}
-		return msg;
-	});
+	}).then(response => response.json()).then(handleSuccess);
 };
