@@ -144,7 +144,11 @@ export default class RoomsListView extends React.Component {
 	}
 
 	_createChannel() {
-		this.props.navigation.navigate('SelectUsers');
+		this.props.navigation.navigate({
+			key: 'SelectedUsers',
+			routeName: 'SelectedUsers',
+			params: { nextAction: () => this.props.navigation.navigate('CreateChannel') }
+		});
 	}
 
 	_keyExtractor(item) {

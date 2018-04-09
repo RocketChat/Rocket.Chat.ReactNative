@@ -821,6 +821,11 @@ const RocketChat = {
 	messageSearch(text, rid, limit) {
 		return call('messageSearch', text, rid, limit);
 	},
+	addUsersToRoom(rid) {
+		let { users } = reduxStore.getState().selectedUsers;
+		users = users.map(u => u.name);
+		return call('addUsersToRoom', { rid, users });
+	},
 	hasPermission(permissions, rid) {
 		// get the room from realm
 		const room = database.objects('subscriptions').filtered('rid = $0', rid)[0];

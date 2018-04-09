@@ -102,7 +102,8 @@ export default class RoomsListHeaderView extends React.PureComponent {
 	}
 
 	createChannel() {
-		this.props.navigation.navigate('SelectUsers');
+		const params = this.props.navigation.state.params || {};
+		params.createChannel();
 	}
 
 	renderLeft() {

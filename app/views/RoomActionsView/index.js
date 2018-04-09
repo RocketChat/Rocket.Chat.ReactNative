@@ -14,12 +14,14 @@ import Touch from '../../utils/touch';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import { leaveRoom } from '../../actions/room';
+import { setLoading } from '../../actions/selectedUsers';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	user: state.login.user
 }), dispatch => ({
-	leaveRoom: rid => dispatch(leaveRoom(rid))
+	leaveRoom: rid => dispatch(leaveRoom(rid)),
+	setLoadingInvite: loading => dispatch(setLoading(loading))
 }))
 export default class RoomActionsView extends LoggedView {
 	static propTypes = {
@@ -36,7 +38,8 @@ export default class RoomActionsView extends LoggedView {
 		this.state = {
 			sections: [],
 			room: {},
-			members: [],
+			onlineMembers: [],
+			allMembers: [],
 			member: {}
 		};
 	}
@@ -64,15 +67,22 @@ export default class RoomActionsView extends LoggedView {
 	getRoomTitle = room => (room.t === 'd' ? room.fname : room.name);
 
 	updateRoomMembers = async() => {
-		let members = [];
-		try {
-			const membersResult = await RocketChat.getRoomMembers(this.state.room.rid, false);
-			members = membersResult.records;
-		} catch (error) {
-			return;
+		const { t } = this.state.room;
+		if (t === 'c' || t === 'p') {
+			let onlineMembers = [];
+			let allMembers = [];
+			try {
+				const onlineMembersCall = RocketChat.getRoomMembers(this.state.room.rid, false);
+				const allMembersCall = RocketChat.getRoomMembers(this.state.room.rid, true);
+				const [onlineMembersResult, allMembersResult] = [await onlineMembersCall, await allMembersCall];
+				onlineMembers = onlineMembersResult.records;
+				allMembers = allMembersResult.records;
+			} catch (error) {
+				return;
+			}
+			this.setState({ onlineMembers, allMembers });
+			this.updateSections();
 		}
-		this.setState({ members });
-		this.updateSections();
 	}
 
 	updateRoomMember = async() => {
@@ -93,8 +103,10 @@ export default class RoomActionsView extends LoggedView {
 	}
 
 	updateSections = async() => {
-		const { rid, t, blocked, notifications } = this.state.room;
-		const { members } = this.state;
+		const {
+			rid, t, blocked, notifications
+		} = this.state.room;
+		const { onlineMembers, allMembers } = this.state;
 		const sections = [{
 			data: [{
 				icon: 'ios-star',
@@ -169,15 +181,45 @@ export default class RoomActionsView extends LoggedView {
 				renderItem: this.renderItem
 			});
 		} else if (t === 'c' || t === 'p') {
-			if (members.length > 0) {
-				sections[2].data.unshift({
-					icon: 'ios-people',
-					name: 'Members',
-					description: (members.length === 1 ? `${ members.length } member` : `${ members.length } members`),
-					route: 'RoomMembers',
-					params: { rid, members }
+			const actions = [{
+				icon: 'ios-people',
+				name: 'Members',
+				description: (onlineMembers.length === 1 ? `${ onlineMembers.length } member` : `${ onlineMembers.length } members`),
+				route: 'RoomMembers',
+				params: { rid, members: onlineMembers }
+			}];
+			// Invite user
+			const userInRoom = !!allMembers.find(m => m.username === this.props.user.username);
+			const permissions = RocketChat.hasPermission(['add-user-to-joined-room', 'add-user-to-any-c-room', 'add-user-to-any-p-room'], rid);
+			let canAddUser = false;
+			if (userInRoom && permissions['add-user-to-joined-room']) {
+				canAddUser = true;
+			} else if (t === 'c' && permissions['add-user-to-any-c-room']) {
+				canAddUser = true;
+			} else if (t === 'p' && permissions['add-user-to-any-p-room']) {
+				canAddUser = true;
+			}
+			if (canAddUser) {
+				actions.push({
+					icon: 'ios-person-add',
+					name: 'Add user',
+					route: 'SelectedUsers',
+					params: {
+						nextAction: async() => {
+							try {
+								this.props.setLoadingInvite(true);
+								await RocketChat.addUsersToRoom(rid);
+								this.props.navigation.goBack();
+							} catch (error) {
+								console.warn(error);
+							} finally {
+								this.props.setLoadingInvite(false);
+							}
+						}
+					}
 				});
 			}
+			sections[2].data = [...actions, ...sections[2].data];
 			sections.push({
 				data: [
 					{

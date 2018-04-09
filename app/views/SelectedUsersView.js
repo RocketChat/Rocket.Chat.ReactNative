@@ -5,13 +5,13 @@ import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { View, StyleSheet, TextInput, Text, TouchableOpacity, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
+import Spinner from 'react-native-loading-spinner-overlay';
 import * as actions from '../actions';
 import * as server from '../actions/connect';
-import * as createChannelActions from '../actions/createChannel';
+import { addUser, removeUser, reset } from '../actions/selectedUsers';
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import RoomItem from '../presentation/RoomItem';
-import Banner from '../containers/Banner';
 import Avatar from '../containers/Avatar';
 
 const styles = StyleSheet.create({
@@ -57,26 +57,25 @@ const styles = StyleSheet.create({
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 @connect(
 	state => ({
-		login: state.login,
 		Site_Url: state.settings.Site_Url,
-		users: state.createChannel.users
+		users: state.selectedUsers.users,
+		loading: state.selectedUsers.loading
 	}),
 	dispatch => ({
-		login: () => dispatch(actions.login()),
-		connect: () => dispatch(server.connectRequest()),
-		addUser: user => dispatch(createChannelActions.addUser(user)),
-		removeUser: user => dispatch(createChannelActions.removeUser(user)),
-		resetCreateChannel: () => dispatch(createChannelActions.reset())
+		addUser: user => dispatch(addUser(user)),
+		removeUser: user => dispatch(removeUser(user)),
+		reset: () => dispatch(reset())
 	})
 )
-export default class SelectUsersView extends React.Component {
+export default class SelectedUsersView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
 		Site_Url: PropTypes.string,
 		addUser: PropTypes.func.isRequired,
 		removeUser: PropTypes.func.isRequired,
-		resetCreateChannel: PropTypes.func.isRequired,
-		users: PropTypes.array
+		reset: PropTypes.func.isRequired,
+		users: PropTypes.array,
+		loading: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -93,7 +92,7 @@ export default class SelectUsersView extends React.Component {
 
 	componentWillUnmount() {
 		this.data.removeListener(this.updateState);
-		this.props.resetCreateChannel();
+		this.props.reset();
 	}
 
 	onSearchChangeText = (text) => {
@@ -174,8 +173,9 @@ export default class SelectUsersView extends React.Component {
 
 	_onPressSelectedItem = item => this.toggleUser(item);
 
-	_createChannel = () => {
-		this.props.navigation.navigate('CreateChannel');
+	nextAction = () => {
+		const params = this.props.navigation.state.params || {};
+		params.nextAction();
 	};
 
 	renderHeader = () => (
@@ -254,17 +254,17 @@ export default class SelectUsersView extends React.Component {
 		return (
 			<ActionButton
 				buttonColor='rgba(67, 165, 71, 1)'
-				onPress={() => this._createChannel()}
+				onPress={() => this.nextAction()}
 				icon={<Icon name='md-arrow-forward' style={styles.actionButtonIcon} />}
 			/>
 		);
 	};
 	render = () => (
 		<View style={styles.container}>
-			<Banner />
 			<SafeAreaView style={styles.safeAreaView}>
 				{this.renderList()}
 				{this.renderCreateButton()}
+				<Spinner visible={this.props.loading} textContent='Loading...' textStyle={{ color: '#FFF' }} />
 			</SafeAreaView>
 		</View>
 	);

@@ -74,16 +74,8 @@ export const MESSAGES = createRequestTypes('MESSAGES', [
 	'CLEAR_INPUT',
 	'TOGGLE_REACTION_PICKER'
 ]);
-export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [
-	...defaultTypes,
-	'REQUEST_USERS',
-	'SUCCESS_USERS',
-	'FAILURE_USERS',
-	'SET_USERS',
-	'ADD_USER',
-	'REMOVE_USER',
-	'RESET'
-]);
+export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [...defaultTypes]);
+export const SELECTED_USERS = createRequestTypes('SELECTED_USERS', ['ADD_USER', 'REMOVE_USER', 'RESET', 'SET_LOADING']);
 export const NAVIGATION = createRequestTypes('NAVIGATION', ['SET']);
 export const SERVER = createRequestTypes('SERVER', [
 	...defaultTypes,
