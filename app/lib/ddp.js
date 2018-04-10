@@ -1,5 +1,6 @@
 import EJSON from 'ejson';
 import { Answers } from 'react-native-fabric';
+import { AppState } from 'react-native';
 
 class EventEmitter {
 	constructor() {
@@ -44,6 +45,7 @@ class EventEmitter {
 export default class Socket extends EventEmitter {
 	constructor(url, login) {
 		super();
+		this.state = 'active';
 		this.lastping = null;
 		this._login = login;
 		this.url = url.replace(/^http/, 'ws');
@@ -52,9 +54,10 @@ export default class Socket extends EventEmitter {
 		this.ddp = new EventEmitter();
 		this._logged = false;
 		const waitTimeout = () => setTimeout(async() => {
+			this.connection.ping();
 			this.send({ msg: 'ping' });
 			this.timeout = setTimeout(() => this.reconnect(), 5000);
-		}, 45000);
+		}, 40000);
 		const handlePing = () => {
 			this.lastping = new Date();
 			this.send({ msg: 'pong' });
@@ -70,6 +73,14 @@ export default class Socket extends EventEmitter {
 			}
 			this.timeout = waitTimeout();
 		};
+
+
+		AppState.addEventListener('change', (nextAppState) => {
+			if (this.state && this.state.match(/inactive|background/) && nextAppState === 'active' && (!this.connection || this.connection.readyState > 1)) {
+				this.reconnect();
+			}
+			this.state = nextAppState;
+		});
 
 		this.on('pong', handlePong);
 		this.on('ping', handlePing);
@@ -132,7 +143,7 @@ export default class Socket extends EventEmitter {
 			this._close();
 			clearInterval(this.reconnect_timeout);
 			this.reconnect_timeout = setInterval(() => (!this.connection || this.connection.readyState) > 1 && this.reconnect(), 5000);
-			this.connection = new WebSocket(`${ this.url }/websocket`);
+			this.connection = new WebSocket(`${ this.url }/websocket`, null, { headers: { 'Accept-Encoding': 'gzip, deflate, bt', 'Sec-WebSocket-Extensions': 'permessage-deflate' } });
 
 			this.connection.onopen = () => {
 				this.emit('open');

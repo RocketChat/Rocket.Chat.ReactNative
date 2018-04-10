@@ -13,14 +13,17 @@ async function loadMessagesForRoomRest(rid, end) {
 	return data.messages;
 }
 
-
 async function loadMessagesForRoomDDP(rid, end) {
-	console.log('loadMessagesForRoomDDP');
-	const data = await this.ddp.call('loadHistory', rid, end, 50);
-	if (!data || !data.messages.length) {
-		return [];
+	try {
+		console.log('loadMessagesForRoomDDP');
+		const data = await this.ddp.call('loadHistory', rid, end, 50);
+		if (!data || !data.messages.length) {
+			return [];
+		}
+		return data.messages;
+	} catch (e) {
+		return loadMessagesForRoomRest.call(this, rid, end);
 	}
-	return data.messages;
 
 	// }
 	// 	if (cb) {

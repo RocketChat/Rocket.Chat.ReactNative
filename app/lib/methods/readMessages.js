@@ -1,14 +1,18 @@
 import { post } from './helpers/rest';
 import database from '../realm';
 
-const readMessagesDDP = function readMessagesDDP(rid) {
-	return this.ddp.call('readMessages', rid);
-};
-
 const	readMessagesREST = function readMessagesREST(rid) {
 	const { token, id } = this.ddp._login;
 	const server = this.ddp.url.replace('ws', 'http');
 	return post({ token, id, server }, 'subscriptions.read', { rid });
+};
+
+const readMessagesDDP = function readMessagesDDP(rid) {
+	try {
+		return this.ddp.call('readMessages', rid);
+	} catch (e) {
+		return readMessagesREST.call(this, rid);
+	}
 };
 
 export default async function readMessages(rid) {

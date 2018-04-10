@@ -11,8 +11,9 @@ const parse = (subscription, room) => {
 		subscription.announcement = room.announcement;
 	}
 	if (subscription.roles && subscription.roles.length) {
-		subscription.roles = subscription.roles.map(role => ({ value: role }));
+		subscription.roles = subscription.roles.map(role => (role.value ? role : { value: role }));
 	}
+	subscription.roles = [];
 	return subscription;
 };
 export default (subscriptions = [], rooms = []) => {
@@ -23,7 +24,7 @@ export default (subscriptions = [], rooms = []) => {
 	return subscriptions.map((s) => {
 		const index = rooms.findIndex(({ _id }) => _id === s.rid);
 		if (index < 0) {
-			return s;
+			return parse(s);
 		}
 		const [room] = rooms.splice(index, 1);
 		return parse(s, room);
