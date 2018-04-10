@@ -48,7 +48,7 @@ export async function _sendMessageCall(message) {
 			database.create('messages', message, true);
 		});
 	}
-};
+}
 
 export default async function(rid, msg) {
 	try {

@@ -67,7 +67,7 @@ export class List extends React.Component {
 	render() {
 		return (<ListView
 			enableEmptySections
-			style={styles.list}
+			style={[styles.list]}
 			data={this.data}
 			onEndReachedThreshold={0.5}
 			renderFooter={this.props.renderFooter}

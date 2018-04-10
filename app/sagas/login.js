@@ -64,9 +64,9 @@ const saveToken = function* saveToken() {
 		yield RocketChat.registerPushToken(user.user.id, token);
 	}
 
-	if (!user.user.username) {
-		// yield put(registerIncomplete());
-	}
+	// if (!user.user.username) {
+	// yield put(registerIncomplete());
+	// }
 	Answers.logLogin('Email', true, { server });
 };
 

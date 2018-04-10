@@ -38,7 +38,6 @@ export default class CreateChannelView extends LoggedView {
 	}
 
 	submit() {
-		this.adding = true;
 		if (!this.state.channelName.trim() || this.props.createChannel.isFetching) {
 			return;
 		}
@@ -98,7 +97,6 @@ export default class CreateChannelView extends LoggedView {
 						returnKeyType='done'
 						autoCapitalize='none'
 						autoFocus
-						// onSubmitEditing={() => this.textInput.focus()}
 						placeholder='Type the channel name here'
 					/>
 					{this.renderChannelNameError()}

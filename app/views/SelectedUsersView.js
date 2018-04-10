@@ -2,7 +2,7 @@ import ActionButton from 'react-native-action-button';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { View, StyleSheet, TextInput, Text, TouchableOpacity, SafeAreaView, FlatList, LayoutAnimation } from 'react-native';
+import { View, StyleSheet, TextInput, Text, TouchableOpacity, SafeAreaView, FlatList, LayoutAnimation, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { addUser, removeUser, reset } from '../actions/selectedUsers';
@@ -75,6 +75,35 @@ export default class SelectedUsersView extends React.Component {
 		loading: PropTypes.bool
 	};
 
+	static navigationOptions = ({ navigation }) => {
+		const params = navigation.state.params || {};
+
+		return {
+			headerRight: (
+				params.showCreateiOS && Platform.OS === 'ios' ?
+					<TouchableOpacity
+						style={{
+							backgroundColor: 'transparent',
+							height: 44,
+							width: 44,
+							alignItems: 'center',
+							justifyContent: 'center'
+						}}
+						onPress={() => params.nextAction()}
+						accessibilityLabel='Create channel'
+						accessibilityTraits='button'
+					>
+						<Icon
+							name='ios-add'
+							color='#292E35'
+							size={24}
+							backgroundColor='transparent'
+						/>
+					</TouchableOpacity> : null
+			)
+		};
+	};
+
 	constructor(props) {
 		super(props);
 		this.data = database.objects('subscriptions').filtered('t = $0', 'd').sorted('roomUpdatedAt', true);
@@ -83,6 +112,20 @@ export default class SelectedUsersView extends React.Component {
 			search: []
 		};
 		this.data.addListener(this.updateState);
+	}
+
+	// componentDidMount() {
+	// 	this.props.navigation.setParams({
+	// 		nextAction: this.nextAction
+	// 	});
+	// }
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.users.length !== this.props.users.length) {
+			this.props.navigation.setParams({
+				showCreateiOS: nextProps.users.length > 0
+			});
+		}
 	}
 
 	componentWillUnmount() {
@@ -222,6 +265,12 @@ export default class SelectedUsersView extends React.Component {
 			type={item.t}
 			baseUrl={this.props.Site_Url}
 			onPress={() => this._onPressItem(item._id, item)}
+			lastMessage={item.lastMessage}
+			id={item.rid.replace(this.props.user.id, '').trim()}
+			_updatedAt={item.roomUpdatedAt}
+			alert={item.alert}
+			unread={item.unread}
+			userMentions={item.userMentions}
 		/>
 	);
 	renderList = () => (
@@ -237,7 +286,7 @@ export default class SelectedUsersView extends React.Component {
 		/>
 	);
 	renderCreateButton = () => {
-		if (this.props.users.length === 0) {
+		if (this.props.users.length === 0 || Platform.OS === 'ios') {
 			return null;
 		}
 		return (

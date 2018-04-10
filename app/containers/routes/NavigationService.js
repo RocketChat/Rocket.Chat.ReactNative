@@ -12,7 +12,7 @@ export function setNavigator(nav) {
 export function navigate(routeName, params) {
 	if (config.navigator && routeName) {
 		Answers.logContentView(routeName);
-		const action = NavigationActions.navigate({ routeName, params });
+		const action = NavigationActions.navigate({ key: routeName, routeName, params });
 		config.navigator.dispatch(action);
 	}
 }
@@ -29,7 +29,7 @@ export function goRoomsList() {
 		Answers.logContentView('RoomsList');
 		const action = NavigationActions.reset({
 			index: 0,
-			actions: [NavigationActions.navigate({ routeName: 'RoomsList' })]
+			actions: [NavigationActions.navigate({ key: 'RoomsList', routeName: 'RoomsList' })]
 		});
 		config.navigator.dispatch(action);
 	}
@@ -47,8 +47,8 @@ export function goRoom({ rid, name }, counter = 0) {
 	const action = NavigationActions.reset({
 		index: 1,
 		actions: [
-			NavigationActions.navigate({ routeName: 'RoomsList' }),
-			NavigationActions.navigate({ routeName: 'Room', params: { room: { rid, name }, rid, name } })
+			NavigationActions.navigate({ key: 'RoomsList', routeName: 'RoomsList' }),
+			NavigationActions.navigate({ key: `Room-${ rid }`, routeName: 'Room', params: { room: { rid, name }, rid, name } })
 		]
 	});
 	Answers.logContentView('Room');

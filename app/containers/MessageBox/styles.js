@@ -11,14 +11,11 @@ export default StyleSheet.create({
 		borderTopColor: '#D8D8D8',
 		zIndex: 2
 	},
-	safeAreaView: {
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
 	textArea: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		flexGrow: 0
+		flexGrow: 0,
+		backgroundColor: '#fff'
 	},
 	textBoxInput: {
 		textAlignVertical: 'center',
@@ -41,29 +38,6 @@ export default StyleSheet.create({
 		paddingHorizontal: 21,
 		flex: 0
 	},
-	actionRow: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		alignContent: 'center'
-	},
-	actionContent: {
-		borderBottomWidth: 1,
-		borderBottomColor: '#ECECEC',
-
-		borderTopWidth: 1,
-		borderTopColor: '#ECECEC',
-
-		backgroundColor: '#F7F8FA'
-	},
-	actionTitle: {
-		flex: 1,
-		fontSize: 17,
-		padding: 14,
-		textAlign: 'right',
-		borderBottomWidth: 1,
-		borderBottomColor: '#ECECEC',
-		color: '#2F343D'
-	},
 	mentionList: {
 		maxHeight: MENTION_HEIGHT * 4,
 		borderTopColor: '#ECECEC',
@@ -78,12 +52,6 @@ export default StyleSheet.create({
 		borderBottomColor: '#ECECEC',
 		flexDirection: 'row',
 		alignItems: 'center'
-	},
-	emojiContainer: {
-		height: 200,
-		borderTopColor: '#ECECEC',
-		borderTopWidth: 1,
-		backgroundColor: '#fff'
 	},
 	mentionItemCustomEmoji: {
 		margin: 8,
@@ -105,5 +73,13 @@ export default StyleSheet.create({
 		flex: 1,
 		borderTopColor: '#ECECEC',
 		borderTopWidth: 1
+	},
+	iphoneXArea: {
+		height: 50,
+		backgroundColor: '#fff',
+		position: 'absolute',
+		bottom: 0,
+		left: 0,
+		right: 0
 	}
 });

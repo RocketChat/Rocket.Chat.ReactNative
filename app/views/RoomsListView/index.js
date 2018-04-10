@@ -2,7 +2,7 @@ import ActionButton from 'react-native-action-button';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Platform, View, TextInput, SafeAreaView, FlatList } from 'react-native';
+import { Platform, View, TextInput, FlatList, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import * as server from '../../actions/connect';
@@ -132,7 +132,7 @@ export default class RoomsListView extends React.Component {
 	_onPressItem = async(item = {}) => {
 		// if user is using the search we need first to join/create room
 		if (!item.search) {
-			return this.props.navigation.navigate({ routeName: 'Room', params: { room: item, ...item } });
+			return this.props.navigation.navigate({ key: `Room-${ item._id }`, routeName: 'Room', params: { room: item, ...item } });
 		}
 		if (item.t === 'd') {
 			const sub = await RocketChat.createDirectMessageAndWait(item.username);
