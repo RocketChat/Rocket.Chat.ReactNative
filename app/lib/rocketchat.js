@@ -215,6 +215,9 @@ const RocketChat = {
 						sub.reactWhenReadOnly = data.reactWhenReadOnly;
 						sub.archived = data.archived;
 						sub.joinCodeRequired = data.joinCodeRequired;
+						if (data.muted) {
+							sub.muted = data.muted.map(m => ({ value: m }));
+						}
 					});
 				}
 			});
@@ -805,6 +808,12 @@ const RocketChat = {
 	},
 	eraseRoom(rid) {
 		return call('eraseRoom', rid);
+	},
+	toggleMuteUserInRoom(rid, username, mute) {
+		if (mute) {
+			return call('muteUserInRoom', { rid, username });
+		}
+		return call('unmuteUserInRoom', { rid, username });
 	},
 	toggleArchiveRoom(rid, archive) {
 		if (archive) {

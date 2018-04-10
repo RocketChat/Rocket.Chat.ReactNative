@@ -64,6 +64,14 @@ const subscriptionRolesSchema = {
 	}
 };
 
+const userMutedInRoomSchema = {
+	name: 'usersMuted',
+	primaryKey: 'value',
+	properties: {
+		value: 'string'
+	}
+};
+
 const subscriptionSchema = {
 	name: 'subscriptions',
 	primaryKey: '_id',
@@ -92,7 +100,8 @@ const subscriptionSchema = {
 		reactWhenReadOnly: { type: 'bool', optional: true },
 		archived: { type: 'bool', optional: true },
 		joinCodeRequired: { type: 'bool', optional: true },
-		notifications: { type: 'bool', optional: true }
+		notifications: { type: 'bool', optional: true },
+		muted: { type: 'list', objectType: 'usersMuted' }
 	}
 };
 
@@ -269,7 +278,8 @@ const schema = [
 	customEmojisSchema,
 	messagesReactionsSchema,
 	messagesReactionsUsernamesSchema,
-	rolesSchema
+	rolesSchema,
+	userMutedInRoomSchema
 ];
 class DB {
 	databases = {
