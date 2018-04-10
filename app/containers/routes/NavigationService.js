@@ -48,6 +48,5 @@ export function goRoom({ rid, name }, counter = 0) {
 			NavigationActions.navigate({ key: `Room-${ rid }`, routeName: 'Room', params: { room: { rid, name }, rid, name } })
 		]
 	});
-
 	config.navigator.dispatch(action);
 }

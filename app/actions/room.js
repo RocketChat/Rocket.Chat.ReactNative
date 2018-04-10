@@ -23,6 +23,7 @@ export function addUserTyping(username) {
 }
 
 export function openRoom(room) {
+	console.log(room);
 	return {
 		type: types.ROOM.OPEN,
 		room

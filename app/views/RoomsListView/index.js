@@ -1,5 +1,4 @@
 import ActionButton from 'react-native-action-button';
-import { ListView } from 'realm/react-native';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -10,14 +9,12 @@ import * as server from '../../actions/connect';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem from '../../presentation/RoomItem';
-import Banner from '../../containers/Banner';
 import { goRoom } from '../../containers/routes/NavigationService';
 import Header from '../../containers/Header';
 import RoomsListHeader from './Header';
 import styles from './styles';
 import debounce from '../../utils/debounce';
 
-const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 @connect(state => ({
 	user: state.login.user,
 	server: state.server.server,
@@ -46,8 +43,8 @@ export default class RoomsListView extends React.Component {
 		super(props);
 
 		this.state = {
-			dataSource: ds.cloneWithRows([]),
-			searchText: ''
+			searchText: '',
+			search: []
 		};
 		this._keyExtractor = this._keyExtractor.bind(this);
 		this.data = database.objects('subscriptions').filtered('archived != true').sorted('roomUpdatedAt', true);
@@ -85,14 +82,14 @@ export default class RoomsListView extends React.Component {
 
 	updateState = debounce(() => {
 		this.forceUpdate();
-	}, 1000);
+	}, 500);
 
 	async search(text) {
 		const searchText = text.trim();
 		if (searchText === '') {
 			delete this.oldPromise;
 			return this.setState({
-				search: false
+				search: []
 			});
 		}
 
@@ -145,7 +142,11 @@ export default class RoomsListView extends React.Component {
 	}
 
 	_createChannel() {
-		this.props.navigation.navigate({ key: 'SelectUsers', routeName: 'SelectUsers' });
+		this.props.navigation.navigate({
+			key: 'SelectedUsers',
+			routeName: 'SelectedUsers',
+			params: { nextAction: () => this.props.navigation.navigate('CreateChannel') }
+		});
 	}
 
 	_keyExtractor(item) {
@@ -187,9 +188,8 @@ export default class RoomsListView extends React.Component {
 
 	renderList = () => (
 		<FlatList
-			data={this.state.search ? this.state.search : this.data}
+			data={this.state.search.length > 0 ? this.state.search : this.data}
 			keyExtractor={this._keyExtractor}
-			dataSource={this.state.dataSource}
 			style={styles.list}
 			renderItem={this.renderItem}
 			ListHeaderComponent={Platform.OS === 'ios' ? this.renderSearchBar : null}
@@ -209,7 +209,6 @@ export default class RoomsListView extends React.Component {
 
 	render = () => (
 		<View style={styles.container}>
-			<Banner />
 			{this.renderList()}
 			{Platform.OS === 'android' && this.renderCreateButtons()}
 		</View>)

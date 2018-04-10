@@ -2,7 +2,7 @@ import React from 'react';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
-import Zeroconf from 'react-native-zeroconf';
+// import Zeroconf from 'react-native-zeroconf';
 import { View, Text, SectionList, StyleSheet, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const zeroconf = new Zeroconf();
+// const zeroconf = new Zeroconf();
 
 
 @connect(state => ({
@@ -91,8 +91,8 @@ export default class ListServerView extends LoggedView {
 	}
 
 	componentDidMount() {
-		zeroconf.on('update', this.updateState);
-		zeroconf.scan('http', 'tcp', 'local.');
+		// zeroconf.on('update', this.updateState);
+		// zeroconf.scan('http', 'tcp', 'local.');
 		this.setState(this.getState());
 	}
 
@@ -109,9 +109,9 @@ export default class ListServerView extends LoggedView {
 	}
 
 	componentWillUnmount() {
-		zeroconf.stop();
+		// zeroconf.stop();
 		this.data.removeAllListeners();
-		zeroconf.removeListener('update', this.updateState);
+		// zeroconf.removeListener('update', this.updateState);
 	}
 
 	onPressItem = (item) => {
@@ -123,24 +123,24 @@ export default class ListServerView extends LoggedView {
 			title: 'My servers',
 			data: this.data
 		}];
-
-		this.state.nearBy = zeroconf.getServices();
-		if (this.state.nearBy) {
-			const nearBy = Object.keys(this.state.nearBy)
-				.filter(key => this.state.nearBy[key].addresses);
-			if (nearBy.length) {
-				sections.push({
-					title: 'Nearby',
-					data: nearBy.map((key) => {
-						const server = this.state.nearBy[key];
-						const address = `http://${ server.addresses[0] }:${ server.port }`;
-						return {
-							id: address
-						};
-					})
-				});
-			}
-		}
+		//
+		// this.state.nearBy = zeroconf.getServices();
+		// if (this.state.nearBy) {
+		// 	const nearBy = Object.keys(this.state.nearBy)
+		// 		.filter(key => this.state.nearBy[key].addresses);
+		// 	if (nearBy.length) {
+		// 		sections.push({
+		// 			title: 'Nearby',
+		// 			data: nearBy.map((key) => {
+		// 				const server = this.state.nearBy[key];
+		// 				const address = `http://${ server.addresses[0] }:${ server.port }`;
+		// 				return {
+		// 					id: address
+		// 				};
+		// 			})
+		// 		});
+		// 	}
+		// }
 
 		return {
 			...this.state,
@@ -184,18 +184,17 @@ export default class ListServerView extends LoggedView {
 
 	render() {
 		return (
-			<View style={styles.view}>
-				<SafeAreaView style={styles.view}>
-					<SectionList
-						style={styles.list}
-						sections={this.state.sections}
-						renderItem={this.renderItem}
-						renderSectionHeader={this.renderSectionHeader}
-						keyExtractor={item => item.id}
-						ItemSeparatorComponent={this.renderSeparator}
-					/>
-				</SafeAreaView>
-			</View>
+
+			<SafeAreaView style={styles.view}>
+				<SectionList
+					style={styles.list}
+					sections={this.state.sections}
+					renderItem={this.renderItem}
+					renderSectionHeader={this.renderSectionHeader}
+					keyExtractor={item => item.id}
+					ItemSeparatorComponent={this.renderSeparator}
+				/>
+			</SafeAreaView>
 		);
 	}
 }

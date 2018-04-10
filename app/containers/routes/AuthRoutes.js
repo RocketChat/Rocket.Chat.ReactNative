@@ -6,12 +6,13 @@ import RoomsListView from '../../views/RoomsListView';
 import RoomView from '../../views/RoomView';
 import RoomActionsView from '../../views/RoomActionsView';
 import CreateChannelView from '../../views/CreateChannelView';
-import SelectUsersView from '../../views/SelectUsersView';
+import SelectedUsersView from '../../views/SelectedUsersView';
 import NewServerView from '../../views/NewServerView';
 import StarredMessagesView from '../../views/StarredMessagesView';
 import PinnedMessagesView from '../../views/PinnedMessagesView';
 import MentionedMessagesView from '../../views/MentionedMessagesView';
 import SnippetedMessagesView from '../../views/SnippetedMessagesView';
+import SearchMessagesView from '../../views/SearchMessagesView';
 import RoomFilesView from '../../views/RoomFilesView';
 import RoomMembersView from '../../views/RoomMembersView';
 import RoomInfoView from '../../views/RoomInfoView';
@@ -31,8 +32,8 @@ const AuthRoutes = StackNavigator(
 				title: 'Create Channel'
 			}
 		},
-		SelectUsers: {
-			screen: SelectUsersView,
+		SelectedUsers: {
+			screen: SelectedUsersView,
 			navigationOptions: {
 				title: 'Select Users'
 			}
@@ -75,6 +76,13 @@ const AuthRoutes = StackNavigator(
 			screen: SnippetedMessagesView,
 			navigationOptions: {
 				title: 'Snippet Messages',
+				headerTintColor: '#292E35'
+			}
+		},
+		SearchMessages: {
+			screen: SearchMessagesView,
+			navigationOptions: {
+				title: 'Search Messages',
 				headerTintColor: '#292E35'
 			}
 		},

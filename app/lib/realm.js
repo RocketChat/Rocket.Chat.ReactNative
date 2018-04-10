@@ -51,12 +51,21 @@ const roomsSchema = {
 		_id: 'string',
 		t: 'string',
 		lastMessage: 'messages',
+		description: { type: 'string', optional: true },
 		_updatedAt: { type: 'date', optional: true }
 	}
 };
 
 const subscriptionRolesSchema = {
 	name: 'subscriptionRolesSchema',
+	primaryKey: 'value',
+	properties: {
+		value: 'string'
+	}
+};
+
+const userMutedInRoomSchema = {
+	name: 'usersMuted',
 	primaryKey: 'value',
 	properties: {
 		value: 'string'
@@ -90,7 +99,9 @@ const subscriptionSchema = {
 		blocked: { type: 'bool', optional: true },
 		reactWhenReadOnly: { type: 'bool', optional: true },
 		archived: { type: 'bool', optional: true },
-		joinCodeRequired: { type: 'bool', optional: true }
+		joinCodeRequired: { type: 'bool', optional: true },
+		notifications: { type: 'bool', optional: true },
+		muted: { type: 'list', objectType: 'usersMuted' }
 	}
 };
 
@@ -137,7 +148,9 @@ const attachment = {
 		color: { type: 'string', optional: true },
 		ts: { type: 'date', optional: true },
 		attachments: { type: 'list', objectType: 'attachment' },
-		fields: { type: 'list', objectType: 'attachmentFields' }
+		fields: {
+			type: 'list', objectType: 'attachmentFields', default: []
+		}
 	}
 };
 
@@ -265,7 +278,8 @@ const schema = [
 	customEmojisSchema,
 	messagesReactionsSchema,
 	messagesReactionsUsernamesSchema,
-	rolesSchema
+	rolesSchema,
+	userMutedInRoomSchema
 ];
 class DB {
 	databases = {
@@ -296,7 +310,7 @@ class DB {
 		return this.databases.activeDB;
 	}
 
-	setActiveDB(database) {
+	setActiveDB(database = '') {
 		const path = database.replace(/(^\w+:|^)\/\//, '');
 		return this.databases.activeDB = new Realm({
 			path: `${ path }.realm`,

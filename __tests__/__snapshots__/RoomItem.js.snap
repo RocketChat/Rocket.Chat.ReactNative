@@ -145,13 +145,15 @@ exports[`render channel 1`] = `
         </View>
         <View
           style={
-            Object {
-              "alignItems": "flex-end",
-              "flex": 1,
-              "flexDirection": "row",
-              "justifyContent": "flex-end",
-              "width": "100%",
-            }
+            Array [
+              Object {
+                "alignItems": "flex-end",
+                "flex": 1,
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+                "width": "100%",
+              },
+            ]
           }
         />
       </View>
@@ -305,13 +307,15 @@ exports[`render no icon 1`] = `
         </View>
         <View
           style={
-            Object {
-              "alignItems": "flex-end",
-              "flex": 1,
-              "flexDirection": "row",
-              "justifyContent": "flex-end",
-              "width": "100%",
-            }
+            Array [
+              Object {
+                "alignItems": "flex-end",
+                "flex": 1,
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+                "width": "100%",
+              },
+            ]
           }
         />
       </View>
@@ -465,13 +469,15 @@ exports[`render private group 1`] = `
         </View>
         <View
           style={
-            Object {
-              "alignItems": "flex-end",
-              "flex": 1,
-              "flexDirection": "row",
-              "justifyContent": "flex-end",
-              "width": "100%",
-            }
+            Array [
+              Object {
+                "alignItems": "flex-end",
+                "flex": 1,
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+                "width": "100%",
+              },
+            ]
           }
         />
       </View>
@@ -637,13 +643,15 @@ exports[`render unread +999 1`] = `
         </View>
         <View
           style={
-            Object {
-              "alignItems": "flex-end",
-              "flex": 1,
-              "flexDirection": "row",
-              "justifyContent": "flex-end",
-              "width": "100%",
-            }
+            Array [
+              Object {
+                "alignItems": "flex-end",
+                "flex": 1,
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+                "width": "100%",
+              },
+            ]
           }
         >
           <Text
@@ -831,13 +839,15 @@ exports[`render unread 1`] = `
         </View>
         <View
           style={
-            Object {
-              "alignItems": "flex-end",
-              "flex": 1,
-              "flexDirection": "row",
-              "justifyContent": "flex-end",
-              "width": "100%",
-            }
+            Array [
+              Object {
+                "alignItems": "flex-end",
+                "flex": 1,
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+                "width": "100%",
+              },
+            ]
           }
         >
           <Text
@@ -1025,13 +1035,15 @@ exports[`renders correctly 1`] = `
         </View>
         <View
           style={
-            Object {
-              "alignItems": "flex-end",
-              "flex": 1,
-              "flexDirection": "row",
-              "justifyContent": "flex-end",
-              "width": "100%",
-            }
+            Array [
+              Object {
+                "alignItems": "flex-end",
+                "flex": 1,
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+                "width": "100%",
+              },
+            ]
           }
         />
       </View>

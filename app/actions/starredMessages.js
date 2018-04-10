@@ -1,9 +1,10 @@
 import * as types from './actionsTypes';
 
-export function openStarredMessages(rid) {
+export function openStarredMessages(rid, limit) {
 	return {
 		type: types.STARRED_MESSAGES.OPEN,
-		rid
+		rid,
+		limit
 	};
 }
 

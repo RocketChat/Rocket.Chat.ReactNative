@@ -12,7 +12,7 @@ import KeyboardView from '../presentation/KeyboardView';
 @connect(
 	state => ({
 		createChannel: state.createChannel,
-		users: state.createChannel.users
+		users: state.selectedUsers.users
 	}),
 	dispatch => ({
 		create: data => dispatch(createChannelRequest(data))
@@ -120,7 +120,12 @@ export default class CreateChannelView extends LoggedView {
 					</Text>
 					<TouchableOpacity
 						onPress={() => this.submit()}
-						style={[styles.buttonContainer_white, styles.enabledButton]}
+						style={[
+							styles.buttonContainer_white,
+							this.state.channelName.length === 0 || this.props.createChannel.isFetching
+								? styles.disabledButton
+								: styles.enabledButton
+						]}
 					>
 						<Text style={styles.button_white}>CREATE</Text>
 					</TouchableOpacity>

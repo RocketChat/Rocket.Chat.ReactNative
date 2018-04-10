@@ -7,8 +7,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Base64 } from 'js-base64';
 import Modal from 'react-native-modal';
+import { Answers } from 'react-native-fabric';
 
-import { loginSubmit, open, close } from '../actions/login';
+import RocketChat from '../lib/rocketchat';
+import { open, close } from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
 import TextInput from '../containers/TextInput';
 
@@ -31,7 +33,7 @@ import random from '../utils/random';
 	Accounts_OAuth_Twitter: state.settings.Accounts_OAuth_Twitter,
 	services: state.login.services
 }), dispatch => ({
-	loginSubmit: params => dispatch(loginSubmit(params)),
+	loginSubmit: params => RocketChat.loginWithPassword(params),
 	open: () => dispatch(open()),
 	close: () => dispatch(close())
 }))
@@ -159,14 +161,15 @@ export default class LoginView extends React.Component {
 		this.setState({ oAuthUrl, modalVisible: true });
 	}
 
-	submit = () => {
+	submit = async() => {
 		const {	username, password, code } = this.state;
 		if (username.trim() === '' || password.trim() === '') {
 			showToast('Email or password field is empty');
 			return;
 		}
 
-		this.props.loginSubmit({ username, password, code });
+		await this.props.loginSubmit({ username, password, code });
+		Answers.logLogin('Email', true, { server: this.props.server });
 		Keyboard.dismiss();
 	}
 
@@ -198,16 +201,14 @@ export default class LoginView extends React.Component {
 		if (/totp/ig.test(this.props.login.error.error)) {
 			return (
 				<TextInput
-					ref={ref => this.codeInput = ref}
+					inputRef={ref => this.codeInput = ref}
 					style={styles.input_white}
 					onChangeText={code => this.setState({ code })}
 					keyboardType='numeric'
-					autoCorrect={false}
 					returnKeyType='done'
 					autoCapitalize='none'
 					onSubmitEditing={this.submit}
 					placeholder='Code'
-					underlineColorAndroid='transparent'
 				/>
 			);
 		}
@@ -232,23 +233,17 @@ export default class LoginView extends React.Component {
 									style={styles.input_white}
 									onChangeText={username => this.setState({ username })}
 									keyboardType='email-address'
-									autoCorrect={false}
 									returnKeyType='next'
-									autoCapitalize='none'
-									underlineColorAndroid='transparent'
 									onSubmitEditing={() => { this.password.focus(); }}
 									placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email or username'}
 								/>
 
 								<TextInput
-									ref={(e) => { this.password = e; }}
+									inputRef={(e) => { this.password = e; }}
 									style={styles.input_white}
 									onChangeText={password => this.setState({ password })}
 									secureTextEntry
-									autoCorrect={false}
 									returnKeyType='done'
-									autoCapitalize='none'
-									underlineColorAndroid='transparent'
 									onSubmitEditing={this.submit}
 									placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
 								/>

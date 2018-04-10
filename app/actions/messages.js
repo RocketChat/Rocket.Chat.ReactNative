@@ -1,9 +1,9 @@
 import * as types from './actionsTypes';
 
-export function messagesRequest({ rid }) {
+export function messagesRequest(room) {
 	return {
 		type: types.MESSAGES.REQUEST,
-		rid
+		room
 	};
 }
 

@@ -9,6 +9,7 @@ import { openStarredMessages, closeStarredMessages } from '../../actions/starred
 import styles from './styles';
 import Message from '../../containers/message';
 import { toggleStarRequest } from '../../actions/messages';
+import RCActivityIndicator from '../../containers/ActivityIndicator';
 
 const STAR_INDEX = 0;
 const CANCEL_INDEX = 1;
@@ -17,11 +18,12 @@ const options = ['Unstar', 'Cancel'];
 @connect(
 	state => ({
 		messages: state.starredMessages.messages,
+		ready: state.starredMessages.ready,
 		user: state.login.user,
 		baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 	}),
 	dispatch => ({
-		openStarredMessages: rid => dispatch(openStarredMessages(rid)),
+		openStarredMessages: (rid, limit) => dispatch(openStarredMessages(rid, limit)),
 		closeStarredMessages: () => dispatch(closeStarredMessages()),
 		toggleStarRequest: message => dispatch(toggleStarRequest(message))
 	})
@@ -30,6 +32,7 @@ export default class StarredMessagesView extends LoggedView {
 	static propTypes = {
 		navigation: PropTypes.object,
 		messages: PropTypes.array,
+		ready: PropTypes.bool,
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
 		openStarredMessages: PropTypes.func,
@@ -40,12 +43,22 @@ export default class StarredMessagesView extends LoggedView {
 	constructor(props) {
 		super('StarredMessagesView', props);
 		this.state = {
-			message: {}
+			message: {},
+			loading: true,
+			loadingMore: false,
+			messages: []
 		};
 	}
 
 	componentDidMount() {
-		this.props.openStarredMessages(this.props.navigation.state.params.rid);
+		this.limit = 20;
+		this.props.openStarredMessages(this.props.navigation.state.params.rid, this.limit);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.ready && nextProps.ready !== this.props.ready) {
+			this.setState({ loading: false, loadingMore: false });
+		}
 	}
 
 	componentWillUnmount() {
@@ -64,6 +77,19 @@ export default class StarredMessagesView extends LoggedView {
 				break;
 			default:
 				break;
+		}
+	}
+
+	moreData = () => {
+		const { loadingMore } = this.state;
+		const { messages } = this.props;
+		if (messages.length < this.limit) {
+			return;
+		}
+		if (!loadingMore) {
+			this.setState({ loadingMore: true });
+			this.limit += 20;
+			this.props.openStarredMessages(this.props.navigation.state.params.rid, this.limit);
 		}
 	}
 
@@ -86,17 +112,21 @@ export default class StarredMessagesView extends LoggedView {
 	)
 
 	render() {
-		if (this.props.messages.length === 0) {
-			return this.renderEmpty();
-		}
+		const { loading, loadingMore } = this.state;
+		const { messages } = this.props;
+
 		return (
 			[
 				<FlatList
 					key='starred-messages-view-list'
-					data={this.props.messages}
+					data={messages}
 					renderItem={this.renderItem}
 					style={styles.list}
 					keyExtractor={item => item._id}
+					onEndReached={this.moreData}
+					onEndReachedThreshold={0.01}
+					ListHeaderComponent={loading && <RCActivityIndicator />}
+					ListFooterComponent={loadingMore && <RCActivityIndicator />}
 				/>,
 				<ActionSheet
 					key='starred-messages-view-action-sheet'
