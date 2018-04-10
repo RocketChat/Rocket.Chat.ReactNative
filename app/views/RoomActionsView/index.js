@@ -54,7 +54,7 @@ export default class RoomActionsView extends LoggedView {
 
 	onPressTouchable = (item) => {
 		if (item.route) {
-			return this.props.navigation.navigate(item.route, item.params);
+			return this.props.navigation.navigate({ key: item.route, routeName: item.route, params: item.params });
 		}
 		if (item.event) {
 			return item.event();

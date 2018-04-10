@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import PropTypes from 'prop-types';
-import { SafeAreaView } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 let platformContainerStyles;
 if (Platform.OS === 'ios') {
@@ -21,15 +21,16 @@ if (Platform.OS === 'ios') {
 	};
 }
 
-const appBarHeight = Platform.OS === 'ios' ? 44 : 56;
+const height = Platform.OS === 'ios' ? 44 : 56;
+const backgroundColor = Platform.OS === 'ios' ? '#F7F7F7' : '#FFF';
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: Platform.OS === 'ios' ? '#F7F7F7' : '#FFF',
-		height: appBarHeight,
+		backgroundColor,
 		...platformContainerStyles
 	},
 	appBar: {
-		flex: 1
+		height,
+		backgroundColor
 	}
 });
 
@@ -40,7 +41,7 @@ export default class Header extends React.PureComponent {
 
 	render() {
 		return (
-			<SafeAreaView style={styles.container}>
+			<SafeAreaView forceInset={{ bottom: 'never' }} style={styles.container}>
 				<View style={styles.appBar}>
 					{this.props.subview}
 				</View>

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { TextInput, View, Text, Switch, TouchableOpacity, SafeAreaView } from 'react-native';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import LoggedView from './View';
 import { createChannelRequest } from '../actions/createChannel';
@@ -10,11 +11,11 @@ import KeyboardView from '../presentation/KeyboardView';
 
 @connect(
 	state => ({
-		result: state.createChannel,
+		createChannel: state.createChannel,
 		users: state.createChannel.users
 	}),
 	dispatch => ({
-		createChannel: data => dispatch(createChannelRequest(data))
+		create: data => dispatch(createChannelRequest(data))
 	})
 )
 export default class CreateChannelView extends LoggedView {
@@ -22,34 +23,22 @@ export default class CreateChannelView extends LoggedView {
 		title: 'Create a New Channel'
 	});
 	static propTypes = {
-		createChannel: PropTypes.func.isRequired,
-		result: PropTypes.object.isRequired,
+		create: PropTypes.func.isRequired,
+		createChannel: PropTypes.object.isRequired,
 		users: PropTypes.array.isRequired,
 		navigation: PropTypes.object.isRequired
 	};
 
 	constructor(props) {
 		super('CreateChannelView', props);
-		this.default = {
+		this.state = {
 			channelName: '',
 			type: true
 		};
-		this.state = this.default;
-	}
-
-	componentDidUpdate() {
-		if (!this.adding) {
-			return;
-		}
-		if (this.props.result.result && !this.props.result.failure) {
-			this.props.navigation.navigate('Room', { room: this.props.result.result });
-			this.adding = false;
-		}
 	}
 
 	submit() {
-		this.adding = true;
-		if (!this.state.channelName.trim() || this.props.result.isFetching) {
+		if (!this.state.channelName.trim() || this.props.createChannel.isFetching) {
 			return;
 		}
 		const { channelName, type = true } = this.state;
@@ -59,19 +48,21 @@ export default class CreateChannelView extends LoggedView {
 		users = users.map(user => user.name);
 
 		// create channel
-		this.props.createChannel({ name: channelName, users, type });
+		this.props.create({ name: channelName, users, type });
 	}
 
 	renderChannelNameError() {
 		if (
-			!this.props.result.failure ||
-			this.props.result.error.error !== 'error-duplicate-channel-name'
+			!this.props.createChannel.failure ||
+			this.props.createChannel.error.error !== 'error-duplicate-channel-name'
 		) {
 			return null;
 		}
 
 		return (
-			<Text style={[styles.label_white, styles.label_error]}>{this.props.result.error.reason}</Text>
+			<Text style={[styles.label_white, styles.label_error]}>
+				{this.props.createChannel.error.reason}
+			</Text>
 		);
 	}
 
@@ -106,7 +97,6 @@ export default class CreateChannelView extends LoggedView {
 						returnKeyType='done'
 						autoCapitalize='none'
 						autoFocus
-						// onSubmitEditing={() => this.textInput.focus()}
 						placeholder='Type the channel name here'
 					/>
 					{this.renderChannelNameError()}
@@ -130,18 +120,16 @@ export default class CreateChannelView extends LoggedView {
 					</Text>
 					<TouchableOpacity
 						onPress={() => this.submit()}
-						style={[
-							styles.buttonContainer_white,
-							this.state.channelName.length === 0 || this.props.result.isFetching
-								? styles.disabledButton
-								: styles.enabledButton
-						]}
+						style={[styles.buttonContainer_white, styles.enabledButton]}
 					>
-						<Text style={styles.button_white}>
-							{this.props.result.isFetching ? 'LOADING' : 'CREATE'}!
-						</Text>
+						<Text style={styles.button_white}>CREATE</Text>
 					</TouchableOpacity>
 				</SafeAreaView>
+				<Spinner
+					visible={this.props.createChannel.isFetching}
+					textContent='Loading...'
+					textStyle={{ color: '#FFF' }}
+				/>
 			</KeyboardView>
 		);
 	}

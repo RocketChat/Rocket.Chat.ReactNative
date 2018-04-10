@@ -77,7 +77,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 	}
 
 	createChannel() {
-		this.props.navigation.navigate('SelectUsers');
+		this.props.navigation.navigate({ key: 'SelectUsers', routeName: 'SelectUsers' });
 	}
 
 	renderLeft() {
@@ -89,7 +89,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 			<View style={styles.left} accessible accessibilityLabel="Server's list" accessibilityTraits='button'>
 				<TouchableOpacity
 					style={styles.headerButton}
-					onPress={() => this.props.navigation.navigate('DrawerOpen')}
+					onPress={() => this.props.navigation.navigate({ key: 'DrawerOpen', routeName: 'DrawerOpen' })}
 				>
 					<CachedImage
 						style={styles.serverImage}
@@ -159,7 +159,8 @@ export default class RoomsListHeaderView extends React.PureComponent {
 							size={24}
 							backgroundColor='transparent'
 						/>
-					</TouchableOpacity> : null}
+					</TouchableOpacity> : null
+				}
 			</View>
 		);
 	}

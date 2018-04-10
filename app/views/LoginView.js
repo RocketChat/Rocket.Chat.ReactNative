@@ -175,19 +175,19 @@ export default class LoginView extends React.Component {
 	}
 
 	register = () => {
-		this.props.navigation.navigate('Register');
+		this.props.navigation.navigate({ key: 'Register', routeName: 'Register' });
 	}
 
 	termsService = () => {
-		this.props.navigation.navigate('TermsService');
+		this.props.navigation.navigate({ key: 'TermsService', routeName: 'TermsService' });
 	}
 
 	privacyPolicy = () => {
-		this.props.navigation.navigate('PrivacyPolicy');
+		this.props.navigation.navigate({ key: 'PrivacyPolicy', routeName: 'PrivacyPolicy' });
 	}
 
 	forgotPassword = () => {
-		this.props.navigation.navigate('ForgotPassword');
+		this.props.navigation.navigate({ key: 'ForgotPassword', routeName: 'ForgotPassword' });
 	}
 
 	closeOAuth = () => {

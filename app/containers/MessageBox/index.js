@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, SafeAreaView, FlatList, Text, TouchableOpacity } from 'react-native';
+import { View, TextInput, FlatList, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 
 import { userTyping, layoutAnimation } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
@@ -479,45 +480,44 @@ export default class MessageBox extends React.PureComponent {
 		return (
 			[
 				this.renderMentions(),
-				<SafeAreaView
-					key='messagebox'
-					style={[styles.textBox, (this.props.editing ? styles.editing : null)]}
-				>
-					<View style={styles.textArea}>
-						{this.leftButtons}
-						<TextInput
-							ref={component => this.component = component}
-							style={styles.textBoxInput}
-							returnKeyType='default'
-							keyboardType='twitter'
-							blurOnSubmit={false}
-							placeholder='New Message'
-							onChangeText={text => this.onChangeText(text)}
-							value={this.state.text}
-							underlineColorAndroid='transparent'
-							defaultValue=''
-							multiline
-							placeholderTextColor='#9EA2A8'
-						/>
-						{this.rightButtons}
-					</View>
-				</SafeAreaView>
+				<View key='messagebox' style={[styles.textArea, this.props.editing && styles.editing]}>
+					{this.leftButtons}
+					<TextInput
+						ref={component => this.component = component}
+						style={styles.textBoxInput}
+						returnKeyType='default'
+						keyboardType='twitter'
+						blurOnSubmit={false}
+						placeholder='New Message'
+						onChangeText={text => this.onChangeText(text)}
+						value={this.state.text}
+						underlineColorAndroid='transparent'
+						defaultValue=''
+						multiline
+						placeholderTextColor='#9EA2A8'
+					/>
+					{this.rightButtons}
+				</View>
 			]
 		);
 	}
 
 	render() {
 		return (
-			<KeyboardAccessoryView
-				renderContent={() => this.renderContent()}
-				kbInputRef={this.component}
-				kbComponent={this.state.showEmojiKeyboard ? 'EmojiKeyboard' : null}
-				onKeyboardResigned={() => this.onKeyboardResigned()}
-				onItemSelected={this._onEmojiSelected}
-				trackInteractive
-				// revealKeyboardInteractive
-				requiresSameParentToManageScrollView
-			/>
+			[
+				<KeyboardAccessoryView
+					key='input'
+					renderContent={() => this.renderContent()}
+					kbInputRef={this.component}
+					kbComponent={this.state.showEmojiKeyboard ? 'EmojiKeyboard' : null}
+					onKeyboardResigned={() => this.onKeyboardResigned()}
+					onItemSelected={this._onEmojiSelected}
+					trackInteractive
+					// revealKeyboardInteractive
+					requiresSameParentToManageScrollView
+				/>,
+				isIphoneX() ? <View key='iphonex-area' style={styles.iphoneXArea} /> : null
+			]
 		);
 	}
 }
