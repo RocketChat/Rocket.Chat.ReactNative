@@ -21,7 +21,7 @@ if (__DEV__) {
 		applyAppStateListener(),
 		applyMiddleware(reduxImmutableStateInvariant),
 		applyMiddleware(sagaMiddleware),
-		applyMiddleware(logger)
+		// applyMiddleware(logger)
 	);
 } else {
 	sagaMiddleware = createSagaMiddleware();

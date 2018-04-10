@@ -77,7 +77,7 @@ export default class Socket extends EventEmitter {
 		}, 40000);
 		const handlePing = () => {
 			this.lastping = new Date();
-			this.send({ msg: 'pong' });
+			this.send({ msg: 'pong' }, true);
 			if (this.timeout) {
 				clearTimeout(this.timeout);
 			}
@@ -95,7 +95,7 @@ export default class Socket extends EventEmitter {
 		AppState.addEventListener('change', (nextAppState) => {
 			if (this.state && this.state.match(/inactive|background/) && nextAppState === 'active' && (!this.connection || this.connection.readyState > 1)) {
 				this.reconnect();
-				this.connection.ping();
+				this.send({ msg: 'ping' }, true);
 			}
 			this.state = nextAppState;
 		});
@@ -132,13 +132,16 @@ export default class Socket extends EventEmitter {
 			return Promise.reject(err);
 		}
 	}
-	async send(obj) {
+	async send(obj, ignore) {
 		// TODO: reject on disconnect
 		return new Promise((resolve, reject) => {
 			this.id += 1;
 			const id = obj.id || `${ this.id }`;
 			console.log({ ...obj, id });
 			this.connection.send(EJSON.stringify({ ...obj, id }));
+			if (ignore) {
+				return;
+			}
 			const cancel = this.ddp.on('disconnected', reject);
 			this.ddp.once(id, (data) => {
 				this.ddp.removeListener(id, cancel);
