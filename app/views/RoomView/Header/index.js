@@ -11,8 +11,6 @@ import Avatar from '../../../containers/Avatar';
 import { STATUS_COLORS } from '../../../constants/colors';
 import styles from './styles';
 import { closeRoom } from '../../../actions/room';
-import Touch from '../../../utils/touch';
-
 
 const title = (offline, connecting, authenticating, logged) => {
 	if (offline) {
@@ -38,10 +36,7 @@ const title = (offline, connecting, authenticating, logged) => {
 	user: state.login.user,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	activeUsers: state.activeUsers,
-
-
 	loading: state.messages.isFetching,
-
 	connecting: state.meteor.connecting,
 	authenticating: state.login.isFetching,
 	offline: !state.meteor.connected,
@@ -72,6 +67,7 @@ export default class RoomHeaderView extends React.PureComponent {
 	componentDidMount() {
 		this.updateState();
 	}
+
 	componentWillUnmount() {
 		this.room.removeAllListeners();
 	}
@@ -123,7 +119,7 @@ export default class RoomHeaderView extends React.PureComponent {
 		} else if (this.isDirect()) {
 			t = this.getUserStatusLabel();
 		} else {
-			t = this.state.room.description || ' ';
+			t = this.state.room.topic || ' ';
 		}
 
 		return (
@@ -137,7 +133,7 @@ export default class RoomHeaderView extends React.PureComponent {
 				<Avatar
 					text={this.state.roomName}
 					size={24}
-					style={{ marginRight: 5 }}
+					style={styles.avatar}
 					baseUrl={this.props.baseUrl}
 					type={this.state.room.t}
 				>
@@ -146,10 +142,10 @@ export default class RoomHeaderView extends React.PureComponent {
 						: null
 					}
 				</Avatar>
-				<View style={{ flexDirection: 'column', justifyContent: 'flex-start' }}>
+				<View style={styles.titleTextContainer}>
 					<Text style={styles.title} allowFontScaling={false}>{this.state.roomName}</Text>
 
-					{ t && <Text style={styles.userStatus} allowFontScaling={false}>{t}</Text>}
+					{ t && <Text style={styles.userStatus} allowFontScaling={false} numberOfLines={1}>{t}</Text>}
 
 				</View>
 			</TouchableOpacity>
@@ -158,22 +154,19 @@ export default class RoomHeaderView extends React.PureComponent {
 
 	renderRight = () => (
 		<View style={styles.right}>
-			<Touch
+			<TouchableOpacity
+				style={styles.headerButton}
 				onPress={() => RocketChat.toggleFavorite(this.room[0].rid, this.room[0].f)}
 				accessibilityLabel='Star room'
 				accessibilityTraits='button'
-				underlayColor='#FFFFFF'
-				activeOpacity={0.5}
 			>
-				<View style={styles.headerButton}>
-					<Icon
-						name={`${ Platform.OS === 'ios' ? 'ios' : 'md' }-star${ this.room[0].f ? '' : '-outline' }`}
-						color='#f6c502'
-						size={24}
-						backgroundColor='transparent'
-					/>
-				</View>
-			</Touch>
+				<Icon
+					name={`${ Platform.OS === 'ios' ? 'ios' : 'md' }-star${ this.room[0].f ? '' : '-outline' }`}
+					color='#f6c502'
+					size={24}
+					backgroundColor='transparent'
+				/>
+			</TouchableOpacity>
 			<TouchableOpacity
 				style={styles.headerButton}
 				onPress={() => this.props.navigation.navigate('RoomActions', { rid: this.room[0].rid })}

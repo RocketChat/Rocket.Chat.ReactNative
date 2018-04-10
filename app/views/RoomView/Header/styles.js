@@ -1,6 +1,5 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-const TITLE_OFFSET = Platform.OS === 'ios' ? 56 : 56;
 export default StyleSheet.create({
 	header: {
 		flexDirection: 'row',
@@ -8,13 +7,17 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	titleContainer: {
-		left: TITLE_OFFSET,
-		right: TITLE_OFFSET,
-		position: 'absolute',
 		alignItems: 'center',
-		justifyContent: Platform.OS === 'ios' ? 'flex-start' : 'flex-start',
+		justifyContent: 'flex-start',
 		flexDirection: 'row',
+		flex: 1,
+		marginLeft: 18,
 		height: 44
+	},
+	titleTextContainer: {
+		flexDirection: 'column',
+		justifyContent: 'flex-start',
+		flex: 1
 	},
 	status: {
 		borderRadius: 10,
@@ -34,13 +37,7 @@ export default StyleSheet.create({
 		fontWeight: '500',
 		color: '#292E35'
 	},
-	left: {
-		left: 0,
-		position: 'absolute'
-	},
 	right: {
-		right: 0,
-		position: 'absolute',
 		flexDirection: 'row'
 	},
 	headerButton: {
@@ -49,5 +46,8 @@ export default StyleSheet.create({
 		width: 40,
 		alignItems: 'center',
 		justifyContent: 'center'
+	},
+	avatar: {
+		marginRight: 5
 	}
 });
