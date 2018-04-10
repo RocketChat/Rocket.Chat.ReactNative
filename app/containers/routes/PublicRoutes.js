@@ -21,7 +21,7 @@ const PublicRoutes = StackNavigator(
 					title: 'Servers',
 					headerRight: (
 						<TouchableOpacity
-							onPress={() => navigation.navigate('AddServer')}
+							onPress={() => navigation.navigate({ key: 'AddServer', routeName: 'AddServer' })}
 							style={{ width: 50, alignItems: 'center' }}
 							accessibilityLabel='Add server'
 							accessibilityTraits='button'
