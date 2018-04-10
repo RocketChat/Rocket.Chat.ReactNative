@@ -1,6 +1,23 @@
 import EJSON from 'ejson';
+
 import { Answers } from 'react-native-fabric';
-import { AppState } from 'react-native';
+import { AppState, NativeModules, Platform, BlobManager } from 'react-native';
+
+const { WebSocketModule } = NativeModules;
+
+class WS extends WebSocket {
+	_close(code?: number, reason?: string): void {
+		if (Platform.OS === 'android') {
+			WebSocketModule.close(code, reason, this._socketId);
+		} else {
+			WebSocketModule.close(this._socketId);
+		}
+
+		if (BlobManager.isAvailable && this._binaryType === 'blob') {
+			BlobManager.removeWebSocketHandler(this._socketId);
+		}
+	}
+}
 
 class EventEmitter {
 	constructor() {
@@ -143,7 +160,7 @@ export default class Socket extends EventEmitter {
 			this._close();
 			clearInterval(this.reconnect_timeout);
 			this.reconnect_timeout = setInterval(() => (!this.connection || this.connection.readyState) > 1 && this.reconnect(), 5000);
-			this.connection = new WebSocket(`${ this.url }/websocket`, null, { headers: { 'Accept-Encoding': 'gzip, deflate, bt', 'Sec-WebSocket-Extensions': 'permessage-deflate' } });
+			this.connection = new WS(`${ this.url }/websocket`, null, { headers: { 'Accept-Encoding': 'gzip', 'Sec-WebSocket-Extensions': 'permessage-deflate' } });
 
 			this.connection.onopen = () => {
 				this.emit('open');

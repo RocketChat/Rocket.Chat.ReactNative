@@ -67,7 +67,7 @@ export default class Sidebar extends Component {
 	}
 
 	onItemPress = ({ route, focused }) => {
-		this.props.navigation.navigate('DrawerClose');
+		this.props.navigation.navigate({ key: 'DrawerClose', routeName: 'DrawerClose' });
 		if (!focused) {
 			this.props.navigation.navigate(route.routeName, undefined);
 		}
@@ -75,7 +75,7 @@ export default class Sidebar extends Component {
 
 	onPressItem = (item) => {
 		this.props.selectServer(item.id);
-		this.props.navigation.navigate('DrawerClose');
+		this.props.navigation.navigate({ key: 'DrawerClose', routeName: 'DrawerClose' });
 	}
 
 	getState = () => ({

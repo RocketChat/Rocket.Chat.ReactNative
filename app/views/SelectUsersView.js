@@ -3,7 +3,7 @@ import { ListView } from 'realm/react-native';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { View, StyleSheet, TextInput, Text, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, StyleSheet, TextInput, Text, TouchableOpacity, SafeAreaView, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import * as server from '../actions/connect';
@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 @connect(
 	state => ({
+		user: state.login.user,
 		login: state.login,
 		Site_Url: state.settings.Site_Url,
 		users: state.createChannel.users
@@ -76,7 +77,37 @@ export default class SelectUsersView extends React.Component {
 		addUser: PropTypes.func.isRequired,
 		removeUser: PropTypes.func.isRequired,
 		resetCreateChannel: PropTypes.func.isRequired,
-		users: PropTypes.array
+		users: PropTypes.array,
+		user: PropTypes.object
+	};
+
+	static navigationOptions = ({ navigation }) => {
+		const params = navigation.state.params || {};
+
+		return {
+			headerRight: (
+				params.showCreateiOS && Platform.OS === 'ios' ?
+					<TouchableOpacity
+						style={{
+							backgroundColor: 'transparent',
+							height: 44,
+							width: 44,
+							alignItems: 'center',
+							justifyContent: 'center'
+						}}
+						onPress={() => params.createChannel()}
+						accessibilityLabel='Create channel'
+						accessibilityTraits='button'
+					>
+						<Icon
+							name='ios-add'
+							color='#292E35'
+							size={24}
+							backgroundColor='transparent'
+						/>
+					</TouchableOpacity> : null
+			)
+		};
 	};
 
 	constructor(props) {
@@ -89,6 +120,20 @@ export default class SelectUsersView extends React.Component {
 			searchText: ''
 		};
 		this.data.addListener(this.updateState);
+	}
+
+	componentDidMount() {
+		this.props.navigation.setParams({
+			createChannel: this._createChannel
+		});
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.users.length !== this.props.users.length) {
+			this.props.navigation.setParams({
+				showCreateiOS: nextProps.users.length > 0
+			});
+		}
 	}
 
 	componentWillUnmount() {
@@ -175,7 +220,7 @@ export default class SelectUsersView extends React.Component {
 	_onPressSelectedItem = item => this.toggleUser(item);
 
 	_createChannel = () => {
-		this.props.navigation.navigate('CreateChannel');
+		this.props.navigation.navigate({ key: 'CreateChannel', routeName: 'CreateChannel' });
 	};
 
 	renderHeader = () => (
@@ -234,6 +279,12 @@ export default class SelectUsersView extends React.Component {
 			type={item.t}
 			baseUrl={this.props.Site_Url}
 			onPress={() => this._onPressItem(item._id, item)}
+			lastMessage={item.lastMessage}
+			id={item.rid.replace(this.props.user.id, '').trim()}
+			_updatedAt={item.roomUpdatedAt}
+			alert={item.alert}
+			unread={item.unread}
+			userMentions={item.userMentions}
 		/>
 	);
 	renderList = () => (
@@ -248,7 +299,7 @@ export default class SelectUsersView extends React.Component {
 		/>
 	);
 	renderCreateButton = () => {
-		if (this.props.users.length === 0) {
+		if (this.props.users.length === 0 || Platform.OS === 'ios') {
 			return null;
 		}
 		return (

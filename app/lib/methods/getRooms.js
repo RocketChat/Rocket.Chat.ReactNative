@@ -37,11 +37,15 @@ const getRoomDpp = async function() {
 };
 
 export default async function() {
-	const { database: db } = database;
-	// eslint-disable-next-line
-	const data = await (this.ddp._logged ? getRoomDpp.apply(this) : getRoomRest.apply(this));
-	db.write(() => {
-		data.forEach(subscription => db.create('subscriptions', subscription, true));
-	});
-	return data;
+	try {
+		const { database: db } = database;
+		// eslint-disable-next-line
+		const data = await (this.ddp._logged ? getRoomDpp.apply(this) : getRoomRest.apply(this));
+		db.write(() => {
+			data.forEach(subscription => db.create('subscriptions', subscription, true));
+		});
+		return data;
+	} catch (e) {
+		alert(e);
+	}
 }

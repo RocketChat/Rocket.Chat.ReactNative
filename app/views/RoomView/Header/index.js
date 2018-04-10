@@ -131,7 +131,7 @@ export default class RoomHeaderView extends React.PureComponent {
 				style={styles.titleContainer}
 				accessibilityLabel={accessibilityLabel}
 				accessibilityTraits='header'
-				onPress={() => this.props.navigation.navigate('RoomInfo', { rid: this.rid })}
+				onPress={() => this.props.navigation.navigate({ key: 'RoomInfo', routeName: 'RoomInfo', params: { rid: this.rid } })}
 			>
 
 				<Avatar
@@ -176,7 +176,7 @@ export default class RoomHeaderView extends React.PureComponent {
 			</Touch>
 			<TouchableOpacity
 				style={styles.headerButton}
-				onPress={() => this.props.navigation.navigate('RoomActions', { rid: this.room[0].rid })}
+				onPress={() => this.props.navigation.navigate({ key: 'RoomActions', routeName: 'RoomActions', params: { rid: this.room[0].rid } })}
 				accessibilityLabel='Room actions'
 				accessibilityTraits='button'
 			>

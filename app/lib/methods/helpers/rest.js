@@ -14,7 +14,7 @@ export const get = function({
 	return fetch(`${ server }/api/v1/${ method }?${ toQuery(params) }`, {
 		method: 'get',
 		headers: {
-			'Accept-Encoding': 'gzip,deflate',
+			// 'Accept-Encoding': 'gzip',
 			'Content-Type': 'application/json',
 			'X-Auth-Token': token,
 			'X-User-Id': id
@@ -30,7 +30,7 @@ export const post = function({
 		method: 'post',
 		body: JSON.stringify(params),
 		headers: {
-			'Accept-Encoding': 'gzip,deflate',
+			// 'Accept-Encoding': 'gzip',
 			'Content-Type': 'application/json',
 			// Accept: 'application/json',
 			'X-Auth-Token': token,

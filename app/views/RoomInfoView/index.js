@@ -44,7 +44,7 @@ export default class RoomInfoView extends LoggedView {
 		return {
 			headerRight: (
 				<Touch
-					onPress={() => navigation.navigate('RoomInfoEdit', { rid: navigation.state.params.rid })}
+					onPress={() => navigation.navigate({ key: 'RoomInfoEdit', routeName: 'RoomInfoEdit', params: { rid: navigation.state.params.rid } })}
 					underlayColor='#ffffff'
 					activeOpacity={0.5}
 					accessibilityLabel='edit'
