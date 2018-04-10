@@ -1,6 +1,7 @@
 import { AsyncStorage, Platform } from 'react-native';
 import { hashPassword } from 'react-native-meteor/lib/utils';
 import _ from 'lodash';
+import Random from 'react-native-meteor/lib/Random';
 
 import RNFetchBlob from 'react-native-fetch-blob';
 import reduxStore from './createStore';
@@ -142,6 +143,7 @@ const RocketChat = {
 				try {
 					this.ddp.subscribe('stream-notify-user', `${ id }/subscriptions-changed`, false);
 					this.ddp.subscribe('stream-notify-user', `${ id }/rooms-changed`, false);
+					this.ddp.subscribe('stream-notify-user', `${ id }/message`, false);
 				} catch (e) {
 					alert(e);
 				}
@@ -218,6 +220,25 @@ const RocketChat = {
 						if (data.muted) {
 							sub.muted = data.muted.map(m => ({ value: m }));
 						}
+					});
+				}
+				if (/message/.test(ev)) {
+					const [args] = ddpMessage.fields.args;
+					const _id = Random.id();
+					const message = {
+						_id,
+						rid: args.rid,
+						msg: args.msg,
+						ts: new Date(),
+						_updatedAt: new Date(),
+						status: messagesStatus.SENT,
+						u: {
+							_id,
+							username: 'rocket.cat'
+						}
+					};
+					database.write(() => {
+						database.create('messages', message, true);
 					});
 				}
 			});
