@@ -42,7 +42,7 @@ const protectedFunction = fn => (params) => {
 	try {
 		fn(params);
 	} catch (e) {
-		Answers.log(e);
+		Answers.logCustom(e);
 		console.log(e);
 	}
 };
@@ -392,7 +392,9 @@ const RocketChat = {
 			}));
 
 			this.ddp.on('error', protectedFunction((err) => {
-				Answers.log(err);
+				alert(JSON.stringify(err));
+				console.log(err);
+				Answers.logCustom('disconnect', err);
 				reduxStore.dispatch(connectFailure());
 			}));
 		}).catch(err => alert(`asd ${ err }`));

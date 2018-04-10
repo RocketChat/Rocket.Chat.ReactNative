@@ -29,34 +29,38 @@ export default function subscribeRooms(id) {
 	this.ddp.on('disconnected', () => { loop(); });
 
 	this.ddp.on('stream-notify-user', (ddpMessage) => {
-		const [type, data] = ddpMessage.fields.args;
-		const [, ev] = ddpMessage.fields.eventName.split('/');
-		if (/subscriptions/.test(ev)) {
-			if (data.roles) {
-				data.roles = data.roles.map(role => (role.value ? role : { value: role }));
+		try {
+			const [type, data] = ddpMessage.fields.args;
+			const [, ev] = ddpMessage.fields.eventName.split('/');
+			if (/subscriptions/.test(ev)) {
+				if (data.roles) {
+					data.roles = data.roles.map(role => (role.value ? role : { value: role }));
+				}
+				if (data.blocker) {
+					data.blocked = true;
+				} else {
+					data.blocked = false;
+				}
+				return database.write(() => {
+					database.create('subscriptions', data, true);
+				});
 			}
-			if (data.blocker) {
-				data.blocked = true;
-			} else {
-				data.blocked = false;
+			if (/rooms/.test(ev) && type === 'updated') {
+				const [sub] = database.objects('subscriptions').filtered('rid == $0', data._id);
+				database.write(() => {
+					sub.roomUpdatedAt = data._updatedAt;
+					sub.lastMessage = normalizeMessage(data.lastMessage);
+					sub.ro = data.ro;
+					sub.description = data.description;
+					sub.topic = data.topic;
+					sub.announcement = data.announcement;
+					sub.reactWhenReadOnly = data.reactWhenReadOnly;
+					sub.archived = data.archived;
+					sub.joinCodeRequired = data.joinCodeRequired;
+				});
 			}
-			return database.write(() => {
-				database.create('subscriptions', data, true);
-			});
-		}
-		if (/rooms/.test(ev) && type === 'updated') {
-			const [sub] = database.objects('subscriptions').filtered('rid == $0', data._id);
-			database.write(() => {
-				sub.roomUpdatedAt = data._updatedAt;
-				sub.lastMessage = normalizeMessage(data.lastMessage);
-				sub.ro = data.ro;
-				sub.description = data.description;
-				sub.topic = data.topic;
-				sub.announcement = data.announcement;
-				sub.reactWhenReadOnly = data.reactWhenReadOnly;
-				sub.archived = data.archived;
-				sub.joinCodeRequired = data.joinCodeRequired;
-			});
+		} catch (e) {
+			alert(e);
 		}
 	});
 }

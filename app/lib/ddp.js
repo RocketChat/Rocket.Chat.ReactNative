@@ -1,9 +1,9 @@
 import EJSON from 'ejson';
 
 import { Answers } from 'react-native-fabric';
-import { AppState, NativeModules, Platform, BlobManager } from 'react-native';
+import { AppState, NativeModules, Platform } from 'react-native';
 
-const { WebSocketModule } = NativeModules;
+const { WebSocketModule, BlobManager } = NativeModules;
 
 class WS extends WebSocket {
 	_close(code?: number, reason?: string): void {
@@ -71,7 +71,7 @@ export default class Socket extends EventEmitter {
 		this.ddp = new EventEmitter();
 		this._logged = false;
 		const waitTimeout = () => setTimeout(async() => {
-			this.connection.ping();
+			// this.connection.ping();
 			this.send({ msg: 'ping' });
 			this.timeout = setTimeout(() => this.reconnect(), 5000);
 		}, 40000);
@@ -95,6 +95,7 @@ export default class Socket extends EventEmitter {
 		AppState.addEventListener('change', (nextAppState) => {
 			if (this.state && this.state.match(/inactive|background/) && nextAppState === 'active' && (!this.connection || this.connection.readyState > 1)) {
 				this.reconnect();
+				this.connection.ping();
 			}
 			this.state = nextAppState;
 		});
@@ -136,6 +137,7 @@ export default class Socket extends EventEmitter {
 		return new Promise((resolve, reject) => {
 			this.id += 1;
 			const id = obj.id || `${ this.id }`;
+			console.log({ ...obj, id });
 			this.connection.send(EJSON.stringify({ ...obj, id }));
 			const cancel = this.ddp.on('disconnected', reject);
 			this.ddp.once(id, (data) => {

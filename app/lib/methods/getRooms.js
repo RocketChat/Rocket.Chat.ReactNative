@@ -15,7 +15,7 @@ const lastMessage = () => {
 };
 
 const getRoomRest = async function() {
-	console.log('getRoomRest');
+	console.log('getRoomsRest');
 	const updatedSince = lastMessage();
 	const { ddp } = this;
 	const { token, id } = ddp._login;
@@ -25,7 +25,7 @@ const getRoomRest = async function() {
 };
 
 const getRoomDpp = async function() {
-	console.log('getRoomDpp');
+	console.log('getRoomsDpp');
 	try {
 		const { ddp } = this;
 		const updatedSince = lastMessage();

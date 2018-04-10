@@ -72,7 +72,7 @@ export default class RoomView extends LoggedView {
 		this.state = {
 			loaded: true,
 			joined: typeof props.rid === 'undefined',
-			room: {}
+			room: JSON.parse(JSON.stringify(this.rooms[0]))
 		};
 		this.onReactionPress = this.onReactionPress.bind(this);
 	}
@@ -81,8 +81,10 @@ export default class RoomView extends LoggedView {
 		this.props.navigation.setParams({
 			title: this.name
 		});
-
-		await this.props.openRoom({ rid: this.rid, name: this.name, ls: this.state.room.ls });
+		console.log(this.state.room);
+		await this.props.openRoom({
+			rid: this.rid, t: this.state.room.t, name: this.name, ls: this.state.room.ls
+		});
 		if (this.state.room.alert || this.state.room.unread || this.state.room.userMentions) {
 			this.props.setLastOpen(this.state.room.ls);
 		} else {
@@ -109,7 +111,8 @@ export default class RoomView extends LoggedView {
 			if (!lastRowData) {
 				return;
 			}
-			RocketChat.loadMessagesForRoom(this.rid, lastRowData.ts, ({ end }) => end && this.setState({
+			// TODO: fix
+			RocketChat.loadMessagesForRoom({ rid: this.rid, t: this.state.room.t, latest: lastRowData.ts }, ({ end }) => end && this.setState({
 				end
 			}));
 		});
