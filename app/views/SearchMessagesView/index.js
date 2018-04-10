@@ -51,13 +51,13 @@ export default class SearchMessagesView extends LoggedView {
 		}
 	}
 
-	onChangeSearch = async(search) => {
+	onChangeSearch = (search) => {
 		this.limit = 0;
 		this.setState({ search, searching: true });
 		this.search();
 	}
 
-	moreData = async() => {
+	moreData = () => {
 		const { search, loadingMore, messages } = this.state;
 		if (messages.length < this.limit) {
 			return;

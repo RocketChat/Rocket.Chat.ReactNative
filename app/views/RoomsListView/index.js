@@ -209,9 +209,7 @@ export default class RoomsListView extends React.Component {
 
 	render = () => (
 		<View style={styles.container}>
-			<SafeAreaView style={styles.safeAreaView}>
-				{this.renderList()}
-				{Platform.OS === 'android' && this.renderCreateButtons()}
-			</SafeAreaView>
+			{this.renderList()}
+			{Platform.OS === 'android' && this.renderCreateButtons()}
 		</View>)
 }
