@@ -1,16 +1,26 @@
 import toQuery from './toQuery';
 
+
+const handleSuccess = (msg) => {
+	if (msg.success !== undefined && !msg.success) {
+		return Promise.reject(msg);
+	}
+	return msg;
+};
+
 export const get = function({
 	token, id, server
 }, method, params = {}) {
-	return fetch(`${ server }/api/v1/${ method }?${ toQuery(params) }`, {
+	console.log(`${ server }/api/v1/${ method }/?${ toQuery(params) }`);
+	return fetch(`${ server }/api/v1/${ method }/?${ toQuery(params) }`, {
 		method: 'get',
 		headers: {
+			// 'Accept-Encoding': 'gzip',
 			'Content-Type': 'application/json',
 			'X-Auth-Token': token,
 			'X-User-Id': id
 		}
-	}).then(response => response.json());
+	}).then(response => response.json()).then(handleSuccess);
 };
 
 
@@ -21,15 +31,11 @@ export const post = function({
 		method: 'post',
 		body: JSON.stringify(params),
 		headers: {
+			// 'Accept-Encoding': 'gzip',
 			'Content-Type': 'application/json',
 			// Accept: 'application/json',
 			'X-Auth-Token': token,
 			'X-User-Id': id
 		}
-	}).then(response => response.json(), alert).then((msg) => {
-		if (msg.success !== undefined && !msg.success) {
-			return Promise.reject(msg);
-		}
-		return msg;
-	});
+	}).then(response => response.json()).then(handleSuccess);
 };

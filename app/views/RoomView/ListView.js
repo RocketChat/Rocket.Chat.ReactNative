@@ -52,17 +52,16 @@ export class List extends React.Component {
 		return this.props.end !== nextProps.end;
 	}
 	componentWillUnmount() {
+		this.date.removeAllListeners();
 		this.updateState.stop();
-	}
-	getSnapshotBeforeUpdate = () => {
-		LayoutAnimation.easeInEaseOut();
 	}
 	updateState = debounce(() => {
 		// this.setState({
 		this.dataSource = this.dataSource.cloneWithRows(this.data);
+		LayoutAnimation.easeInEaseOut();
 		this.forceUpdate();
 		// });
-	}, 300);
+	}, 100);
 
 	render() {
 		return (<ListView

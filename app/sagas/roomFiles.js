@@ -3,9 +3,13 @@ import * as types from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 
 const watchRoomFiles = function* watchRoomFiles({ rid }) {
-	const sub = yield RocketChat.subscribe('roomFiles', rid, 50);
-	yield take(types.ROOM_FILES.CLOSE);
-	sub.unsubscribe().catch(e => alert(e));
+	try {
+		const sub = yield RocketChat.subscribe('roomFiles', rid, 50);
+		yield take(types.ROOM_FILES.CLOSE);
+		yield sub.unsubscribe();
+	} catch (e) {
+		console.log(e);
+	}
 };
 
 const root = function* root() {

@@ -1,6 +1,7 @@
 import Random from 'react-native-meteor/lib/Random';
 import messagesStatus from '../../constants/messagesStatus';
 
+import buildMessage from '../methods/helpers/buildMessage';
 import { post } from './helpers/rest';
 import database from '../realm';
 import reduxStore from '../createStore';
@@ -37,7 +38,6 @@ function sendMessageByDDP(message) {
 	return this.ddp.call('sendMessage', { _id, rid, msg });
 }
 
-
 export async function _sendMessageCall(message) {
 	try {
 		const data = await (this.ddp._logged ? sendMessageByDDP.call(this, message) : sendMessageByRest.call(this, message));
@@ -51,13 +51,19 @@ export async function _sendMessageCall(message) {
 }
 
 export default async function(rid, msg) {
+	const { database: db } = database;
 	try {
 		const message = getMessage(rid, msg);
+		const room = db.objects('subscriptions').filtered('rid == $0', rid);
+
+		db.write(() => {
+			room.lastMessage = message;
+		});
+
 		const ret = await _sendMessageCall.call(this, message);
 		// TODO: maybe I have created a bug in the future here <3
-		database.write(() => {
-			ret.status = messagesStatus.sent;
-			database.create('messages', { ...message, ...ret }, true);
+		db.write(() => {
+			db.create('messages', buildMessage({ ...message, ...ret }), true);
 		});
 	} catch (e) {
 		console.log(e);

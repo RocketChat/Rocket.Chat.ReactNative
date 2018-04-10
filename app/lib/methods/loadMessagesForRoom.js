@@ -1,21 +1,40 @@
+import { InteractionManager } from 'react-native';
+
 import { get } from './helpers/rest';
+import buildMessage from './helpers/buildMessage';
 import database from '../realm';
 
-import buildMessage from './helpers/buildMessage';
 
-function loadMessagesForRoomRest(rid, end) {
-	const { token, id } = this.ddp._login;
-	const server = this.ddp.url.replace('ws', 'http');
-	return get({ token, id, server }, 'channels.history', { rid, end }).messages;
+// TODO: api fix
+const types = {
+	c: 'channels', d: 'im', p: 'groups'
+};
+
+async function loadMessagesForRoomRest({ rid: roomId, latest, t }) {
+	try {
+		console.log('loadMessagesForRoomRest');
+
+		const { token, id } = this.ddp._login;
+		const server = this.ddp.url.replace('ws', 'http');
+		const data = await get({ token, id, server }, `${ types[t] }.history`, { roomId, latest });
+		return data.messages;
+	} catch (e) {
+		console.log(e);
+	}
 }
 
-
-async function loadMessagesForRoomDDP(rid, end) {
-	const data = await this.ddp.call('loadHistory', rid, end, 20);
-	if (!data || !data.messages.length) {
-		return [];
+async function loadMessagesForRoomDDP(...args) {
+	const [{ rid: roomId, latest }] = args;
+	try {
+		console.log('loadMessagesForRoomDDP');
+		const data = await this.ddp.call('loadHistory', roomId, latest, 50);
+		if (!data || !data.messages.length) {
+			return [];
+		}
+		return data.messages;
+	} catch (e) {
+		return loadMessagesForRoomRest.call(this, ...args);
 	}
-	return data.messages;
 
 	// }
 	// 	if (cb) {
@@ -33,11 +52,14 @@ async function loadMessagesForRoomDDP(rid, end) {
 }
 
 export default async function(...args) {
-	const data = await (this.ddp._logged ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args).map(message => buildMessage(message)));
-	database.write(() => {
-		data.forEach((message) => {
-			database.create('messages', message, true);
-		});
-	});
+	const { database: db } = database;
+	const data = await (this.ddp._logged ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args));
+	if (data) {
+		try {
+			InteractionManager.runAfterInteractions(() => db.write(() => data.map(buildMessage).forEach(message => db.create('messages', message, true))));
+		} catch (e) {
+			alert(e);
+		}
+	}
 	return data;
 }

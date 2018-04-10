@@ -2,7 +2,7 @@ import ActionButton from 'react-native-action-button';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Platform, View, TextInput, FlatList, SafeAreaView } from 'react-native';
+import { Platform, View, TextInput, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import * as server from '../../actions/connect';
@@ -82,7 +82,7 @@ export default class RoomsListView extends React.Component {
 
 	updateState = debounce(() => {
 		this.forceUpdate();
-	}, 1000);
+	}, 500);
 
 	async search(text) {
 		const searchText = text.trim();

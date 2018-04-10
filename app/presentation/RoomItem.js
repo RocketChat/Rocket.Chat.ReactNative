@@ -2,9 +2,11 @@ import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
-
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 import SimpleMarkdown from 'simple-markdown';
+
+import messagesStatus from '../constants/messagesStatus';
 
 import Avatar from '../containers/Avatar';
 import Status from '../containers/status';
@@ -208,7 +210,7 @@ export default class RoomItem extends React.PureComponent {
 
 	render() {
 		const {
-			favorite, unread, userMentions, name, _updatedAt, customEmojis, alert
+			favorite, unread, userMentions, name, _updatedAt, customEmojis, alert, status
 		} = this.props;
 
 		const date = this.formatDate(_updatedAt);
@@ -235,7 +237,8 @@ export default class RoomItem extends React.PureComponent {
 							<Text style={[styles.roomName, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
 							{_updatedAt ? <Text style={[styles.update, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
 						</View>
-						<View style={styles.row}>
+						<View style={[styles.row]}>
+							{status === messagesStatus.ERROR ? <Icon name='error-outline' color='red' size={12} style={{ marginRight: 5, alignSelf: 'center' }} /> : null }
 							<Markdown
 								msg={this.lastMessage}
 								customEmojis={customEmojis}

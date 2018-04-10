@@ -18,7 +18,7 @@ const BlockCode = ({ node, state }) => (
 const mentionStyle = { color: '#13679a' };
 
 const Markdown = ({
-	msg, customEmojis, style, markdownStyle, customRules, renderInline
+	msg, customEmojis = {}, style, markdownStyle, customRules, renderInline
 }) => {
 	if (!msg) {
 		return null;
