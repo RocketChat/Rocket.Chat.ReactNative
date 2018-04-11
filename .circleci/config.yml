@@ -62,7 +62,7 @@ jobs:
       - run:
           name: Install NPM modules
           command: |
-            sudo npm install -g yarn
+            npm install -g yarn
             yarn
 
       - restore_cache:
