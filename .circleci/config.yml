@@ -62,8 +62,9 @@ jobs:
       - run:
           name: Install NPM modules
           command: |
-            npm install -g yarn
-            sudo yarn
+            sudo apt-get update && sudo apt-get install yarn
+            sudo apt remove cmdtest
+            yarn
 
       - restore_cache:
           key: android-{{ checksum ".circleci/config.yml" }}-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
