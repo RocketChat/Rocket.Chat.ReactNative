@@ -40,7 +40,7 @@ function sendMessageByDDP(message) {
 
 export async function _sendMessageCall(message) {
 	try {
-		const data = await (this.ddp._logged ? sendMessageByDDP.call(this, message) : sendMessageByRest.call(this, message));
+		const data = await (this.ddp.status ? sendMessageByDDP.call(this, message) : sendMessageByRest.call(this, message));
 		return data;
 	} catch (e) {
 		database.write(() => {

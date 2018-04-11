@@ -128,14 +128,14 @@ export class ListView extends OldList2 {
 				continue; // eslint-disable-line
 			}
 
-			if (!moment(room.ts).isSame(nextData.ts, 'day')) {
-				bodyComponents.push(<DateSeparator key={room.ts.toISOString()} ts={room.ts} />);
-			}
 			if (this.props.lastOpen &&
 				moment(room.ts).isAfter(this.props.lastOpen) &&
 				moment(nextData.ts).isBefore(this.props.lastOpen)
 			) {
 				bodyComponents.push(<UnreadSeparator key='unread-separator' />);
+			}
+			if (!moment(room.ts).isSame(nextData.ts, 'day')) {
+				bodyComponents.push(<DateSeparator key={room.ts.toISOString()} ts={room.ts} />);
 			}
 		}
 

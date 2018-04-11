@@ -33,6 +33,7 @@ async function loadMessagesForRoomDDP(...args) {
 		}
 		return data.messages;
 	} catch (e) {
+		alert(e);
 		return loadMessagesForRoomRest.call(this, ...args);
 	}
 
@@ -53,7 +54,7 @@ async function loadMessagesForRoomDDP(...args) {
 
 export default async function(...args) {
 	const { database: db } = database;
-	const data = await (this.ddp._logged ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args));
+	const data = await (this.ddp.status ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args));
 	if (data) {
 		try {
 			InteractionManager.runAfterInteractions(() => db.write(() => data.map(buildMessage).forEach(message => db.create('messages', message, true))));

@@ -93,9 +93,16 @@ export default class Socket extends EventEmitter {
 
 
 		AppState.addEventListener('change', (nextAppState) => {
-			if (this.state && this.state.match(/inactive|background/) && nextAppState === 'active' && (!this.connection || this.connection.readyState > 1)) {
-				this.reconnect();
-				this.send({ msg: 'ping' }, true);
+			if (this.state && this.state.match(/inactive/) && nextAppState === 'active') {
+				try {
+					this.send({ msg: 'ping' }, true);
+					this.connection.ping();
+				} catch (e) {
+					this.reconnect();
+				}
+			}
+			if (this.state && this.state.match(/background/) && nextAppState === 'active') {
+				this.emit('background');
 			}
 			this.state = nextAppState;
 		});
@@ -120,6 +127,7 @@ export default class Socket extends EventEmitter {
 			this.emit('login', params);
 			const result = await this.call('login', params);
 			this._login = { resume: result.token, ...result };
+			this._logged = true;
 			this.emit('logged', result);
 			return result;
 		} catch (err) {
@@ -136,7 +144,7 @@ export default class Socket extends EventEmitter {
 		return new Promise((resolve, reject) => {
 			this.id += 1;
 			const id = obj.id || `${ this.id }`;
-			console.log({ ...obj, id });
+			console.log('send', { ...obj, id });
 			this.connection.send(EJSON.stringify({ ...obj, id }));
 			if (ignore) {
 				return;
@@ -147,6 +155,9 @@ export default class Socket extends EventEmitter {
 				return (data.error ? reject(data.error) : resolve({ id, ...data }));
 			});
 		});
+	}
+	get status() {
+		return this.connection && this.connection.readyState === 1 && !!this._logged;
 	}
 	_close() {
 		try {
@@ -178,6 +189,7 @@ export default class Socket extends EventEmitter {
 			this.connection.onclose = e => this.emit('disconnected', e);
 			this.connection.onmessage = (e) => {
 				try {
+					console.log('received', e.data, e.target.readyState);
 					const data = EJSON.parse(e.data);
 					this.emit(data.msg, data);
 					return data.collection && this.emit(data.collection, data);
@@ -231,11 +243,13 @@ export default class Socket extends EventEmitter {
 			msg: 'sub', name, params
 		}).then(({ id }) => {
 			const args = {
+				id,
 				name,
 				params,
 				unsubscribe: () => this.unsubscribe(id)
 			};
 			this.subscriptions[id] = args;
+			console.log(args);
 			return args;
 		}).catch((err) => {
 			// alert(`DDP subscribe Error ${ err }`);
