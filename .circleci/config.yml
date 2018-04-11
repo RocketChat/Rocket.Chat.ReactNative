@@ -62,7 +62,7 @@ jobs:
       - run:
           name: Install NPM modules
           command: |
-            sudo apt-get install --no-install-recommends yarn
+            sudo apt-get update && sudo apt-get install yarn
             yarn
 
       - restore_cache:
