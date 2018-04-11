@@ -10,7 +10,7 @@ import settingsType from '../constants/settings';
 import messagesStatus from '../constants/messagesStatus';
 import database from './realm';
 import * as actions from '../actions';
-import { someoneTyping, roomMessageReceived } from '../actions/room';
+import { someoneTyping } from '../actions/room';
 import { setUser, setLoginServices, removeLoginServices, loginRequest, loginSuccess, loginFailure } from '../actions/login';
 import { disconnect, connectSuccess, connectFailure } from '../actions/connect';
 import { setActiveUser } from '../actions/activeUsers';
@@ -24,9 +24,10 @@ import Ddp from './ddp';
 
 import normalizeMessage from './methods/helpers/normalizeMessage';
 
-import subscribeRooms from './methods/subscriptions/room';
+import subscribeRooms from './methods/subscriptions/rooms';
+import subscribeRoom from './methods/subscriptions/room';
 
-
+import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
 import getRooms from './methods/getRooms';
 import _buildMessage from './methods/helpers/buildMessage';
@@ -39,18 +40,10 @@ const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const call = (method, ...params) => RocketChat.ddp.call(method, ...params); // eslint-disable-line
 const returnAnArray = obj => obj || [];
 
-const protectedFunction = fn => (params) => {
-	try {
-		fn(params);
-	} catch (e) {
-		Answers.logCustom(e);
-		console.log(e);
-	}
-};
-
 const RocketChat = {
 	TOKEN_KEY,
 	subscribeRooms,
+	subscribeRoom,
 	createChannel({ name, users, type }) {
 		return call(type ? 'createChannel' : 'createPrivateGroup', name, users, type);
 	},
@@ -165,11 +158,6 @@ const RocketChat = {
 
 			this.ddp.on('disconnected', protectedFunction(() => {
 				reduxStore.dispatch(disconnect());
-			}));
-
-			this.ddp.on('stream-room-messages', protectedFunction((ddpMessage) => {
-				const message = _buildMessage(ddpMessage.fields.args[0]);
-				return reduxStore.dispatch(roomMessageReceived(message));
 			}));
 
 			this.ddp.on('stream-notify-room', protectedFunction((ddpMessage) => {

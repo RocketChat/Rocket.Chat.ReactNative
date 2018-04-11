@@ -71,17 +71,21 @@ const watchRoomOpen = function* watchRoomOpen({ room }) {
 	// if (open) {
 	// 	return;
 	// }
+
 	RocketChat.readMessages(room.rid);
-	const subscriptions = yield Promise.all([RocketChat.subscribe('stream-room-messages', room.rid, false), RocketChat.subscribe('stream-notify-room', `${ room.rid }/typing`, false)]);
+	const sub = yield RocketChat.subscribeRoom(room);
+	// const subscriptions = yield Promise.all([RocketChat.subscribe('stream-room-messages', room.rid, false), RocketChat.subscribe('stream-notify-room', `${ room.rid }/typing`, false)]);
 	const thread = yield fork(usersTyping, { rid: room.rid });
 	yield race({
 		open: take(types.ROOM.OPEN),
 		close: take(types.ROOM.CLOSE)
 	});
 	cancel(thread);
-	subscriptions.forEach((sub) => {
-		sub.unsubscribe().catch(e => alert(e));
-	});
+	sub.stop();
+
+	// subscriptions.forEach((sub) => {
+	// 	sub.unsubscribe().catch(e => alert(e));
+	// });
 };
 
 const watchuserTyping = function* watchuserTyping({ status }) {
