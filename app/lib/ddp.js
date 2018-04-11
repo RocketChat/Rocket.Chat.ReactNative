@@ -1,23 +1,23 @@
 import EJSON from 'ejson';
 
 import { Answers } from 'react-native-fabric';
-import { AppState, NativeModules, Platform } from 'react-native';
+import { AppState } from 'react-native';
 
-const { WebSocketModule, BlobManager } = NativeModules;
+// const { WebSocketModule, BlobManager } = NativeModules;
 
-class WS extends WebSocket {
-	_close(code?: number, reason?: string): void {
-		if (Platform.OS === 'android') {
-			WebSocketModule.close(code, reason, this._socketId);
-		} else {
-			WebSocketModule.close(this._socketId);
-		}
-
-		if (BlobManager.isAvailable && this._binaryType === 'blob') {
-			BlobManager.removeWebSocketHandler(this._socketId);
-		}
-	}
-}
+// class WebSocket extends WebSocket {
+// 	_close(code?: number, reason?: string): void {
+// 		if (Platform.OS === 'android') {
+// 			WebSocketModule.close(code, reason, this._socketId);
+// 		} else {
+// 			WebSocketModule.close(this._socketId);
+// 		}
+//
+// 		if (BlobManager.isAvailable && this._binaryType === 'blob') {
+// 			BlobManager.removeWebSocketHandler(this._socketId);
+// 		}
+// 	}
+// }
 
 class EventEmitter {
 	constructor() {
@@ -133,7 +133,6 @@ export default class Socket extends EventEmitter {
 		}
 	}
 	async send(obj, ignore) {
-		// TODO: reject on disconnect
 		return new Promise((resolve, reject) => {
 			this.id += 1;
 			const id = obj.id || `${ this.id }`;
@@ -142,7 +141,7 @@ export default class Socket extends EventEmitter {
 			if (ignore) {
 				return;
 			}
-			const cancel = this.ddp.on('disconnected', reject);
+			const cancel = this.ddp.once('disconnected', reject);
 			this.ddp.once(id, (data) => {
 				this.ddp.removeListener(id, cancel);
 				return (data.error ? reject(data.error) : resolve({ id, ...data }));
@@ -165,7 +164,7 @@ export default class Socket extends EventEmitter {
 			this._close();
 			clearInterval(this.reconnect_timeout);
 			this.reconnect_timeout = setInterval(() => (!this.connection || this.connection.readyState) > 1 && this.reconnect(), 5000);
-			this.connection = new WS(`${ this.url }/websocket`, null, { headers: { 'Accept-Encoding': 'gzip', 'Sec-WebSocket-Extensions': 'permessage-deflate' } });
+			this.connection = new WebSocket(`${ this.url }/websocket`, null);
 
 			this.connection.onopen = () => {
 				this.emit('open');
@@ -176,11 +175,15 @@ export default class Socket extends EventEmitter {
 					this.login(this._login);
 				}
 			};
-			this.connection.onclose = (e) => { this.emit('disconnected', e); };
+			this.connection.onclose = e => this.emit('disconnected', e);
 			this.connection.onmessage = (e) => {
-				const data = EJSON.parse(e.data);
-				this.emit(data.msg, data);
-				return data.collection && this.emit(data.collection, data);
+				try {
+					const data = EJSON.parse(e.data);
+					this.emit(data.msg, data);
+					return data.collection && this.emit(data.collection, data);
+				} catch (err) {
+					Answers.logCustom('EJSON parse', err);
+				}
 			};
 		}).catch(alert);
 	}

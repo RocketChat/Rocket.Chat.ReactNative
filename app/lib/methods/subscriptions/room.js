@@ -1,7 +1,7 @@
-import database from '../../realm';
+// import database from '../../realm';
 import { roomMessageReceived } from '../../../actions/room';
 import reduxStore from '../../createStore';
-import normalizeMessage from '../helpers/normalizeMessage';
+// import normalizeMessage from '../helpers/normalizeMessage';
 import _buildMessage from '../helpers/buildMessage';
 import protectedFunction from '../helpers/protectedFunction';
 
