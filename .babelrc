@@ -3,7 +3,7 @@
   "plugins": ["transform-decorators-legacy"],
   "env": {
     "production": {
-      "plugins": []
+      "plugins": ["transform-remove-console"]
     }
   }
 }

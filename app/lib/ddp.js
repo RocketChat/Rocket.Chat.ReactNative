@@ -45,7 +45,7 @@ class EventEmitter {
 					listener.apply(this, args);
 				} catch (e) {
 					Answers.logCustom(e);
-					console.log(e);
+					// console.log(e);
 				}
 			});
 		}
@@ -144,7 +144,7 @@ export default class Socket extends EventEmitter {
 		return new Promise((resolve, reject) => {
 			this.id += 1;
 			const id = obj.id || `${ this.id }`;
-			console.log('send', { ...obj, id });
+			// console.log('send', { ...obj, id });
 			this.connection.send(EJSON.stringify({ ...obj, id }));
 			if (ignore) {
 				return;
@@ -167,7 +167,7 @@ export default class Socket extends EventEmitter {
 				delete this.connection;
 			}
 		} catch (e) {
-			console.log(e);
+			// console.log(e);
 		}
 	}
 	_connect() {
@@ -189,7 +189,7 @@ export default class Socket extends EventEmitter {
 			this.connection.onclose = e => this.emit('disconnected', e);
 			this.connection.onmessage = (e) => {
 				try {
-					console.log('received', e.data, e.target.readyState);
+					// console.log('received', e.data, e.target.readyState);
 					const data = EJSON.parse(e.data);
 					this.emit(data.msg, data);
 					return data.collection && this.emit(data.collection, data);
@@ -249,7 +249,7 @@ export default class Socket extends EventEmitter {
 				unsubscribe: () => this.unsubscribe(id)
 			};
 			this.subscriptions[id] = args;
-			console.log(args);
+			// console.log(args);
 			return args;
 		}).catch((err) => {
 			// alert(`DDP subscribe Error ${ err }`);

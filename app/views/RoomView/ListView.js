@@ -1,7 +1,7 @@
 import { ListView as OldList } from 'realm/react-native';
 import React from 'react';
 import cloneReferencedElement from 'react-clone-referenced-element';
-import { ScrollView, ListView as OldList2, LayoutAnimation } from 'react-native';
+import { ScrollView, ListView as OldList2, LayoutAnimation, FlatList } from 'react-native';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -43,7 +43,7 @@ export class List extends React.Component {
 			.objects('messages')
 			.filtered('rid = $0', props.room)
 			.sorted('ts', true);
-		this.dataSource = ds.cloneWithRows(this.data);
+		// this.dataSource = ds.cloneWithRows(this.data);
 	}
 	componentDidMount() {
 		this.data.addListener(this.updateState);
@@ -57,24 +57,25 @@ export class List extends React.Component {
 	}
 	updateState = debounce(() => {
 		// this.setState({
-		this.dataSource = this.dataSource.cloneWithRows(this.data);
+		// this.dataSource = this.dataSource.cloneWithRows(this.data);
 		LayoutAnimation.easeInEaseOut();
 		this.forceUpdate();
 		// });
 	}, 100);
 
 	render() {
-		return (<ListView
-			enableEmptySections
+		return (<FlatList
 			style={[styles.list]}
 			data={this.data}
+			keyExtractor={item => item._id}
 			onEndReachedThreshold={0.5}
-			renderFooter={this.props.renderFooter}
-			renderHeader={() => <Typing />}
+			ListFooterComponent={this.props.renderFooter}
+			ListHeaderComponent={<Typing />}
 			onEndReached={() => this.props.onEndReached(this.data)}
 			dataSource={this.dataSource}
-			renderRow={item => this.props.renderRow(item)}
-			initialListSize={10}
+			renderItem={({ item }) => this.props.renderRow(item)}
+			initialNumToRender={10}
+			removeClippedSubviews
 			{...scrollPersistTaps}
 		/>);
 	}

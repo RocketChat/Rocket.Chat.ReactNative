@@ -2,6 +2,7 @@ import normalizeMessage from './normalizeMessage';
 // TODO: delete and update
 
 export const merge = (subscription, room) => {
+	subscription.muted = [];
 	if (room) {
 		subscription.roomUpdatedAt = room._updatedAt;
 		subscription.lastMessage = normalizeMessage(room.lastMessage);
@@ -12,9 +13,9 @@ export const merge = (subscription, room) => {
 		subscription.reactWhenReadOnly = room.reactWhenReadOnly;
 		subscription.archived = room.archived;
 		subscription.joinCodeRequired = room.joinCodeRequired;
-    subscription.muted = [];
+
 		if (room.muted && room.muted.length) {
-			subscription.muted = room.muted.map(role => ({ value: role }));
+			subscription.muted = room.muted.filter(role => role).map(role => ({ value: role }));
 		}
 	}
 	if (subscription.roles && subscription.roles.length) {
