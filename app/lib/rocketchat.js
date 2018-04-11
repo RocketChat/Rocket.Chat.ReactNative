@@ -122,6 +122,8 @@ const RocketChat = {
 				RocketChat.getRooms();
 			}));
 
+			this.ddp.on('background', () => this.getRooms().catch(alert));
+
 			this.ddp.on('logged', protectedFunction(async(user) => {
 				// GET /me from REST API
 				const me = await this.me({ token: user.token, userId: user.id });
@@ -375,7 +377,7 @@ const RocketChat = {
 
 					this.roleTimer = null;
 					return this.roles = {};
-				}, 5000);
+				}, 1000);
 				this.roles[ddpMessage.id] = ddpMessage.fields.description;
 			}));
 

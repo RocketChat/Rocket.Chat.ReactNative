@@ -40,7 +40,7 @@ export default async function() {
 	try {
 		const { database: db } = database;
 		// eslint-disable-next-line
-		const data = await (this.ddp._logged ? getRoomDpp.apply(this) : getRoomRest.apply(this));
+		const data = await (this.ddp.status ? getRoomDpp.apply(this) : getRoomRest.apply(this));
 		db.write(() => {
 			data.forEach(subscription => db.create('subscriptions', subscription, true));
 		});

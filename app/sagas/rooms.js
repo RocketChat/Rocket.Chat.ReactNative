@@ -50,14 +50,18 @@ const usersTyping = function* usersTyping({ rid }) {
 	}
 };
 const handleMessageReceived = function* handleMessageReceived({ message }) {
-	const room = yield select(state => state.room);
+	try {
+		const room = yield select(state => state.room);
 
-	if (message.rid === room.rid) {
-		database.write(() => {
-			database.create('messages', message, true);
-		});
+		if (message.rid === room.rid) {
+			database.write(() => {
+				database.create('messages', message, true);
+			});
 
-		RocketChat.readMessages(room.rid);
+			RocketChat.readMessages(room.rid);
+		}
+	} catch (e) {
+		console.log(e);
 	}
 };
 
