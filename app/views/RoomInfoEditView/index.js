@@ -265,7 +265,7 @@ export default class RoomInfoEditView extends LoggedView {
 					<SafeAreaView>
 						<View style={sharedStyles.formContainer}>
 							<RCTextInput
-								ref={(e) => { this.name = e; }}
+								inputRef={(e) => { this.name = e; }}
 								label='Name'
 								value={name}
 								onChangeText={value => this.setState({ name: value })}
@@ -273,7 +273,7 @@ export default class RoomInfoEditView extends LoggedView {
 								error={nameError}
 							/>
 							<RCTextInput
-								ref={(e) => { this.description = e; }}
+								inputRef={(e) => { this.description = e; }}
 								label='Description'
 								value={description}
 								onChangeText={value => this.setState({ description: value })}
@@ -281,7 +281,7 @@ export default class RoomInfoEditView extends LoggedView {
 								inputProps={{ multiline: true }}
 							/>
 							<RCTextInput
-								ref={(e) => { this.topic = e; }}
+								inputRef={(e) => { this.topic = e; }}
 								label='Topic'
 								value={topic}
 								onChangeText={value => this.setState({ topic: value })}
@@ -289,7 +289,7 @@ export default class RoomInfoEditView extends LoggedView {
 								inputProps={{ multiline: true }}
 							/>
 							<RCTextInput
-								ref={(e) => { this.announcement = e; }}
+								inputRef={(e) => { this.announcement = e; }}
 								label='Announcement'
 								value={announcement}
 								onChangeText={value => this.setState({ announcement: value })}
@@ -297,7 +297,7 @@ export default class RoomInfoEditView extends LoggedView {
 								inputProps={{ multiline: true }}
 							/>
 							<RCTextInput
-								ref={(e) => { this.joinCode = e; }}
+								inputRef={(e) => { this.joinCode = e; }}
 								label='Password'
 								value={joinCode}
 								onChangeText={value => this.setState({ joinCode: value })}

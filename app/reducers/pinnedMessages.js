@@ -2,7 +2,8 @@ import { PINNED_MESSAGES } from '../actions/actionsTypes';
 
 const initialState = {
 	messages: [],
-	isOpen: false
+	isOpen: false,
+	ready: false
 };
 
 export default function server(state = initialState, action) {
@@ -10,7 +11,13 @@ export default function server(state = initialState, action) {
 		case PINNED_MESSAGES.OPEN:
 			return {
 				...state,
-				isOpen: true
+				isOpen: true,
+				ready: false
+			};
+		case PINNED_MESSAGES.READY:
+			return {
+				...state,
+				ready: true
 			};
 		case PINNED_MESSAGES.MESSAGES_RECEIVED:
 			return {

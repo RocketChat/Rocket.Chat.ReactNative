@@ -74,16 +74,8 @@ export const MESSAGES = createRequestTypes('MESSAGES', [
 	'CLEAR_INPUT',
 	'TOGGLE_REACTION_PICKER'
 ]);
-export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [
-	...defaultTypes,
-	'REQUEST_USERS',
-	'SUCCESS_USERS',
-	'FAILURE_USERS',
-	'SET_USERS',
-	'ADD_USER',
-	'REMOVE_USER',
-	'RESET'
-]);
+export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [...defaultTypes]);
+export const SELECTED_USERS = createRequestTypes('SELECTED_USERS', ['ADD_USER', 'REMOVE_USER', 'RESET', 'SET_LOADING']);
 export const NAVIGATION = createRequestTypes('NAVIGATION', ['SET']);
 export const SERVER = createRequestTypes('SERVER', [
 	...defaultTypes,
@@ -96,11 +88,11 @@ export const METEOR = createRequestTypes('METEOR_CONNECT', [...defaultTypes, 'DI
 export const LOGOUT = 'LOGOUT'; // logout is always success
 export const ACTIVE_USERS = createRequestTypes('ACTIVE_USERS', ['SET']);
 export const ROLES = createRequestTypes('ROLES', ['SET']);
-export const STARRED_MESSAGES = createRequestTypes('STARRED_MESSAGES', ['OPEN', 'CLOSE', 'MESSAGES_RECEIVED', 'MESSAGE_UNSTARRED']);
-export const PINNED_MESSAGES = createRequestTypes('PINNED_MESSAGES', ['OPEN', 'CLOSE', 'MESSAGES_RECEIVED', 'MESSAGE_UNPINNED']);
-export const MENTIONED_MESSAGES = createRequestTypes('MENTIONED_MESSAGES', ['OPEN', 'CLOSE', 'MESSAGES_RECEIVED']);
-export const SNIPPETED_MESSAGES = createRequestTypes('SNIPPETED_MESSAGES', ['OPEN', 'CLOSE', 'MESSAGES_RECEIVED']);
-export const ROOM_FILES = createRequestTypes('ROOM_FILES', ['OPEN', 'CLOSE', 'MESSAGES_RECEIVED']);
+export const STARRED_MESSAGES = createRequestTypes('STARRED_MESSAGES', ['OPEN', 'READY', 'CLOSE', 'MESSAGES_RECEIVED', 'MESSAGE_UNSTARRED']);
+export const PINNED_MESSAGES = createRequestTypes('PINNED_MESSAGES', ['OPEN', 'READY', 'CLOSE', 'MESSAGES_RECEIVED', 'MESSAGE_UNPINNED']);
+export const MENTIONED_MESSAGES = createRequestTypes('MENTIONED_MESSAGES', ['OPEN', 'READY', 'CLOSE', 'MESSAGES_RECEIVED']);
+export const SNIPPETED_MESSAGES = createRequestTypes('SNIPPETED_MESSAGES', ['OPEN', 'READY', 'CLOSE', 'MESSAGES_RECEIVED']);
+export const ROOM_FILES = createRequestTypes('ROOM_FILES', ['OPEN', 'READY', 'CLOSE', 'MESSAGES_RECEIVED']);
 
 export const INCREMENT = 'INCREMENT';
 export const DECREMENT = 'DECREMENT';

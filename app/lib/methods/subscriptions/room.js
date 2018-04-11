@@ -6,7 +6,11 @@ import _buildMessage from '../helpers/buildMessage';
 import protectedFunction from '../helpers/protectedFunction';
 
 export default async function subscribeRoom({ rid, t }) {
-	const subscriptions = await Promise.all([this.ddp.subscribe('stream-room-messages', rid, false), this.ddp.subscribe('stream-notify-room', `${ rid }/typing`, false)]);
+	const subscriptions = await Promise.all([
+		this.ddp.subscribe('stream-room-messages', rid, false),
+		this.ddp.subscribe('stream-notify-room', `${ rid }/typing`, false),
+		this.ddp.subscribe('stream-notify-user', `${ rid }/message`, false)
+	]);
 	this.ddp.on('stream-room-messages', protectedFunction((ddpMessage) => {
 		const message = _buildMessage(ddpMessage.fields.args[0]);
 		return reduxStore.dispatch(roomMessageReceived(message));

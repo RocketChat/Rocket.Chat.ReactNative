@@ -22,20 +22,20 @@ Follow the [React Native Getting Started Guide](https://facebook.github.io/react
     $ git clone git@github.com:RocketChat/Rocket.Chat.ReactNative.git
     $ cd Rocket.Chat.ReactNative
     $ npm install -g react-native-cli
-    $ yarn
+    $ npm install
     ```
 - Configuration
 	```bash
-    $ yarn fabric-ios --key="YOUR_API_KEY" --secret="YOUR_API_SECRET"
-    $ yarn fabric-android --key="YOUR_API_KEY" --secret="YOUR_API_SECRET"
+    $ npm run fabric-ios --key="YOUR_API_KEY" --secret="YOUR_API_SECRET"
+    $ npm run fabric-android --key="YOUR_API_KEY" --secret="YOUR_API_SECRET"
     ```
 
 - Run application
     ```bash
-    $ yarn ios
+    $ npm run ios
     ```
     ```bash
-    $ yarn android
+    $ npm run android
     ```
 
 # Storybook

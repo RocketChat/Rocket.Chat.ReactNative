@@ -12,13 +12,22 @@ export const merge = (subscription, room) => {
 		subscription.reactWhenReadOnly = room.reactWhenReadOnly;
 		subscription.archived = room.archived;
 		subscription.joinCodeRequired = room.joinCodeRequired;
+    subscription.muted = [];
+		if (room.muted && room.muted.length) {
+			subscription.muted = room.muted.map(role => ({ value: role }));
+		}
 	}
 	if (subscription.roles && subscription.roles.length) {
 		subscription.roles = subscription.roles.map(role => (role.value ? role : { value: role }));
 	}
 
+	if (subscription.mobilePushNotifications === 'nothing') {
+		subscription.notifications = true;
+	} else {
+		subscription.notifications = false;
+	}
+
 	subscription.blocked = !!subscription.blocker;
-	// subscription.roles = [];
 	return subscription;
 };
 

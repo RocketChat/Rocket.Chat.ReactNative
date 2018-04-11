@@ -63,7 +63,7 @@ const saveToken = function* saveToken() {
 	yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
 	const token = yield AsyncStorage.getItem('pushId');
 	if (token) {
-		RocketChat.registerPushToken(user.user.id, token);
+		yield RocketChat.registerPushToken(user.user.id, token);
 	}
 	if (!user.user.username) {
 		yield put(registerIncomplete());

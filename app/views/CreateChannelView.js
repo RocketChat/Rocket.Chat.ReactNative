@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { TextInput, View, Text, Switch, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, Switch, TouchableOpacity, SafeAreaView } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
+import RCTextInput from '../containers/TextInput';
 
 import LoggedView from './View';
 import { createChannelRequest } from '../actions/createChannel';
@@ -12,7 +13,7 @@ import KeyboardView from '../presentation/KeyboardView';
 @connect(
 	state => ({
 		createChannel: state.createChannel,
-		users: state.createChannel.users
+		users: state.selectedUsers.users
 	}),
 	dispatch => ({
 		create: data => dispatch(createChannelRequest(data))
@@ -88,16 +89,13 @@ export default class CreateChannelView extends LoggedView {
 				contentContainerStyle={styles.defaultView}
 			>
 				<SafeAreaView style={styles.formContainer}>
-					<Text style={styles.label_white}>Channel Name</Text>
-					<TextInput
+					<RCTextInput
+						label='Channel Name'
 						value={this.state.channelName}
-						style={styles.input_white}
 						onChangeText={channelName => this.setState({ channelName })}
-						autoCorrect={false}
-						returnKeyType='done'
-						autoCapitalize='none'
-						autoFocus
 						placeholder='Type the channel name here'
+						returnKeyType='done'
+						autoFocus
 					/>
 					{this.renderChannelNameError()}
 					{this.renderTypeSwitch()}
@@ -120,7 +118,12 @@ export default class CreateChannelView extends LoggedView {
 					</Text>
 					<TouchableOpacity
 						onPress={() => this.submit()}
-						style={[styles.buttonContainer_white, styles.enabledButton]}
+						style={[
+							styles.buttonContainer_white,
+							this.state.channelName.length === 0 || this.props.createChannel.isFetching
+								? styles.disabledButton
+								: styles.enabledButton
+						]}
 					>
 						<Text style={styles.button_white}>CREATE</Text>
 					</TouchableOpacity>

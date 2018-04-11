@@ -1,9 +1,16 @@
 import * as types from './actionsTypes';
 
-export function openRoomFiles(rid) {
+export function openRoomFiles(rid, limit) {
 	return {
 		type: types.ROOM_FILES.OPEN,
-		rid
+		rid,
+		limit
+	};
+}
+
+export function readyRoomFiles() {
+	return {
+		type: types.ROOM_FILES.READY
 	};
 }
 
