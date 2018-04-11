@@ -8,6 +8,12 @@ export function openStarredMessages(rid, limit) {
 	};
 }
 
+export function readyStarredMessages() {
+	return {
+		type: types.STARRED_MESSAGES.READY
+	};
+}
+
 export function closeStarredMessages() {
 	return {
 		type: types.STARRED_MESSAGES.CLOSE

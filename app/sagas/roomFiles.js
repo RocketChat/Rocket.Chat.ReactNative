@@ -1,18 +1,31 @@
-import { take, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 import * as types from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
+import { readyRoomFiles } from '../actions/roomFiles';
 
-const watchRoomFiles = function* watchRoomFiles({ rid }) {
-	try {
-		const sub = yield RocketChat.subscribe('roomFiles', rid, 50);
-		yield take(types.ROOM_FILES.CLOSE);
-		yield sub.unsubscribe();
-	} catch (e) {
-		console.log(e);
+let sub;
+let newSub;
+
+const openRoomFiles = function* openRoomFiles({ rid, limit }) {
+	newSub = yield RocketChat.subscribe('roomFiles', rid, limit);
+	yield put(readyRoomFiles());
+	if (sub) {
+		sub.unsubscribe().catch(e => console.warn(e));
+	}
+	sub = newSub;
+};
+
+const closeRoomFiles = function* closeRoomFiles() {
+	if (sub) {
+		yield sub.unsubscribe().catch(e => console.warn(e));
+	}
+	if (newSub) {
+		yield newSub.unsubscribe().catch(e => console.warn(e));
 	}
 };
 
 const root = function* root() {
-	yield takeLatest(types.ROOM_FILES.OPEN, watchRoomFiles);
+	yield takeLatest(types.ROOM_FILES.OPEN, openRoomFiles);
+	yield takeLatest(types.ROOM_FILES.CLOSE, closeRoomFiles);
 };
 export default root;

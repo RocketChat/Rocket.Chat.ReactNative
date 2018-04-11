@@ -14,11 +14,15 @@ export default function server(state = initialState, action) {
 				isOpen: true,
 				ready: false
 			};
+		case STARRED_MESSAGES.READY:
+			return {
+				...state,
+				ready: true
+			};
 		case STARRED_MESSAGES.MESSAGES_RECEIVED:
 			return {
 				...state,
-				messages: [...state.messages, ...action.messages],
-				ready: true
+				messages: [...state.messages, ...action.messages]
 			};
 		case STARRED_MESSAGES.MESSAGE_UNSTARRED:
 			return {

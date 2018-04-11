@@ -1,11 +1,19 @@
 import * as types from './actionsTypes';
 
-export function openMentionedMessages(rid) {
+export function openMentionedMessages(rid, limit) {
 	return {
 		type: types.MENTIONED_MESSAGES.OPEN,
-		rid
+		rid,
+		limit
 	};
 }
+
+export function readyMentionedMessages() {
+	return {
+		type: types.MENTIONED_MESSAGES.READY
+	};
+}
+
 
 export function closeMentionedMessages() {
 	return {

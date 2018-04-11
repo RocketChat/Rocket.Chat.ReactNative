@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
 
@@ -45,14 +45,13 @@ export default class StarredMessagesView extends LoggedView {
 		this.state = {
 			message: {},
 			loading: true,
-			loadingMore: false,
-			messages: []
+			loadingMore: false
 		};
 	}
 
 	componentDidMount() {
 		this.limit = 20;
-		this.props.openStarredMessages(this.props.navigation.state.params.rid, this.limit);
+		this.load();
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -80,6 +79,10 @@ export default class StarredMessagesView extends LoggedView {
 		}
 	}
 
+	load = () => {
+		this.props.openStarredMessages(this.props.navigation.state.params.rid, this.limit);
+	}
+
 	moreData = () => {
 		const { loadingMore } = this.state;
 		const { messages } = this.props;
@@ -89,7 +92,7 @@ export default class StarredMessagesView extends LoggedView {
 		if (!loadingMore) {
 			this.setState({ loadingMore: true });
 			this.limit += 20;
-			this.props.openStarredMessages(this.props.navigation.state.params.rid, this.limit);
+			this.load();
 		}
 	}
 
@@ -113,7 +116,11 @@ export default class StarredMessagesView extends LoggedView {
 
 	render() {
 		const { loading, loadingMore } = this.state;
-		const { messages } = this.props;
+		const { messages, ready } = this.props;
+
+		if (ready && messages.length === 0) {
+			return this.renderEmpty();
+		}
 
 		return (
 			[
@@ -124,7 +131,6 @@ export default class StarredMessagesView extends LoggedView {
 					style={styles.list}
 					keyExtractor={item => item._id}
 					onEndReached={this.moreData}
-					onEndReachedThreshold={0.01}
 					ListHeaderComponent={loading && <RCActivityIndicator />}
 					ListFooterComponent={loadingMore && <RCActivityIndicator />}
 				/>,

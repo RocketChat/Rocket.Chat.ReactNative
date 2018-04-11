@@ -1,18 +1,31 @@
-import { take, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 import * as types from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
+import { readySnippetedMessages } from '../actions/snippetedMessages';
 
-const watchSnippetedMessagesRoom = function* watchSnippetedMessagesRoom({ rid }) {
-	try {
-		const sub = yield RocketChat.subscribe('snippetedMessages', rid, 50);
-		yield take(types.SNIPPETED_MESSAGES.CLOSE);
-		yield sub.unsubscribe();
-	} catch (e) {
-		console.log(e);
+let sub;
+let newSub;
+
+const openSnippetedMessagesRoom = function* openSnippetedMessagesRoom({ rid, limit }) {
+	newSub = yield RocketChat.subscribe('snippetedMessages', rid, limit);
+	yield put(readySnippetedMessages());
+	if (sub) {
+		sub.unsubscribe().catch(e => console.warn(e));
+	}
+	sub = newSub;
+};
+
+const closeSnippetedMessagesRoom = function* closeSnippetedMessagesRoom() {
+	if (sub) {
+		yield sub.unsubscribe().catch(e => console.warn(e));
+	}
+	if (newSub) {
+		yield newSub.unsubscribe().catch(e => console.warn(e));
 	}
 };
 
 const root = function* root() {
-	yield takeLatest(types.SNIPPETED_MESSAGES.OPEN, watchSnippetedMessagesRoom);
+	yield takeLatest(types.SNIPPETED_MESSAGES.OPEN, openSnippetedMessagesRoom);
+	yield takeLatest(types.SNIPPETED_MESSAGES.CLOSE, closeSnippetedMessagesRoom);
 };
 export default root;
