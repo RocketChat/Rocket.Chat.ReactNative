@@ -1,7 +1,6 @@
 import { get } from './helpers/rest';
+import mergeSubscriptionsRooms, { merge } from './helpers/mergeSubscriptionsRooms';
 import database from '../realm';
-
-import mergeSubscriptionsRooms from './helpers/mergeSubscriptionsRooms';
 
 const lastMessage = () => {
 	try {
@@ -40,11 +39,18 @@ export default async function() {
 	try {
 		const { database: db } = database;
 		// eslint-disable-next-line
-		const data = await (this.ddp.status ? getRoomDpp.apply(this) : getRoomRest.apply(this));
+		const {subscriptions, rooms} = await (this.ddp.status ? getRoomDpp.apply(this) : getRoomRest.apply(this));
+
+		console.log(subscriptions, rooms);
+
+		const data = rooms.map(room => ({ room, sub: database.objects('subscriptions').filtered('rid == $0', room._id) }));
+
 		db.write(() => {
-			data.forEach(subscription => db.create('subscriptions', subscription, true));
+			subscriptions.forEach(subscription => db.create('subscriptions', subscription, true));
+			data.forEach(({ sub, room }) => sub[0] && merge(sub[0], room));
 		});
-		return data;
+
+		return true;
 	} catch (e) {
 		alert(e);
 	}

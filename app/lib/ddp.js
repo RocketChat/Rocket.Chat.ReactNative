@@ -243,11 +243,13 @@ export default class Socket extends EventEmitter {
 			msg: 'sub', name, params
 		}).then(({ id }) => {
 			const args = {
+				id,
 				name,
 				params,
 				unsubscribe: () => this.unsubscribe(id)
 			};
 			this.subscriptions[id] = args;
+			console.log(args);
 			return args;
 		}).catch((err) => {
 			// alert(`DDP subscribe Error ${ err }`);
