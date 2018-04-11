@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
 
 @connect(
 	state => ({
+		user: state.login.user,
 		Site_Url: state.settings.Site_Url,
 		users: state.selectedUsers.users,
 		loading: state.selectedUsers.loading
@@ -67,6 +68,7 @@ const styles = StyleSheet.create({
 export default class SelectedUsersView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
+		user: PropTypes.object,
 		Site_Url: PropTypes.string,
 		addUser: PropTypes.func.isRequired,
 		removeUser: PropTypes.func.isRequired,
@@ -113,12 +115,6 @@ export default class SelectedUsersView extends React.Component {
 		};
 		this.data.addListener(this.updateState);
 	}
-
-	// componentDidMount() {
-	// 	this.props.navigation.setParams({
-	// 		nextAction: this.nextAction
-	// 	});
-	// }
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.users.length !== this.props.users.length) {
@@ -293,7 +289,7 @@ export default class SelectedUsersView extends React.Component {
 			<ActionButton
 				buttonColor='rgba(67, 165, 71, 1)'
 				onPress={() => this.nextAction()}
-				icon={<Icon name='md-arrow-forward' style={styles.actionButtonIcon} />}
+				renderIcon={() => <Icon name='md-arrow-forward' style={styles.actionButtonIcon} />}
 			/>
 		);
 	};

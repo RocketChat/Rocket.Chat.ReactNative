@@ -14,7 +14,6 @@
     "storybook": "storybook start -p 7007",
     "snyk-protect": "snyk protect",
     "prepare": "exit 0",
-    "yarn": "yarn",
     "fabric-ios": "./scripts/fabric-ios.sh",
     "fabric-android": "./scripts/fabric-android.sh"
   },
@@ -118,7 +117,6 @@
   "snyk": true,
   "engines": {
     "node": ">=8.x",
-    "npm": ">=4.x",
-    "yarn": ">=0.21.3"
+    "npm": ">=4.x"
   }
 }
