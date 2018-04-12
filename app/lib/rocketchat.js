@@ -130,7 +130,7 @@ const RocketChat = {
 				const me = await this.me({ token: user.token, userId: user.id });
 				if (me.username) {
 					const userInfo = await this.userInfo({ token: user.token, userId: user.id });
-					user.username = me.username;//= userInfo.user.username;
+					user.username = me.username;
 					if (userInfo.user.roles) {
 						user.roles = userInfo.user.roles;
 					}
@@ -138,7 +138,6 @@ const RocketChat = {
 
 				reduxStore.dispatch(loginSuccess(user));
 				this.getRooms().catch(alert);
-				// if user has username
 			}));
 			this.ddp.once('logged', protectedFunction(({ id }) => this.subscribeRooms(id)));
 

@@ -1,7 +1,7 @@
 import { ListView as OldList } from 'realm/react-native';
 import React from 'react';
 import cloneReferencedElement from 'react-clone-referenced-element';
-import { ScrollView, ListView as OldList2, LayoutAnimation, FlatList } from 'react-native';
+import { ScrollView, ListView as OldList2, LayoutAnimation } from 'react-native';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -27,7 +27,7 @@ export class DataSource extends OldList.DataSource {
 	}
 }
 
-// const ds = new DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id || r1._updatedAt.toISOString() !== r2._updatedAt.toISOString() });
+const ds = new DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id || r1._updatedAt.toISOString() !== r2._updatedAt.toISOString() });
 
 export class List extends React.Component {
 	static propTypes = {
@@ -43,7 +43,7 @@ export class List extends React.Component {
 			.objects('messages')
 			.filtered('rid = $0', props.room)
 			.sorted('ts', true);
-		// this.dataSource = ds.cloneWithRows(this.data);
+		this.dataSource = ds.cloneWithRows(this.data);
 	}
 	componentDidMount() {
 		this.data.addListener(this.updateState);
@@ -57,25 +57,25 @@ export class List extends React.Component {
 	}
 	updateState = debounce(() => {
 		// this.setState({
-		// this.dataSource = this.dataSource.cloneWithRows(this.data);
+		this.dataSource = this.dataSource.cloneWithRows(this.data);
 		LayoutAnimation.easeInEaseOut();
 		this.forceUpdate();
 		// });
 	}, 100);
 
 	render() {
-		return (<FlatList
+		return (<ListView
+			enableEmptySections
 			style={[styles.list]}
 			data={this.data}
 			keyExtractor={item => item._id}
 			onEndReachedThreshold={0.5}
-			ListFooterComponent={this.props.renderFooter}
-			ListHeaderComponent={<Typing />}
+			renderFooter={this.props.renderFooter}
+			renderHeader={() => <Typing />}
 			onEndReached={() => this.props.onEndReached(this.data)}
 			dataSource={this.dataSource}
-			renderItem={({ item }) => this.props.renderRow(item)}
-			initialNumToRender={10}
-			removeClippedSubviews
+			renderRow={item => this.props.renderRow(item)}
+			initialListSize={10}
 			{...scrollPersistTaps}
 		/>);
 	}

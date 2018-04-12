@@ -326,14 +326,12 @@ export default class LoginView extends React.Component {
 									}
 								</View>
 
-								<TouchableOpacity>
-									<Text style={styles.loginTermsText} accessibilityTraits='button'>
-										By proceeding you are agreeing to our
-										<Text style={styles.link} onPress={this.termsService}> Terms of Service </Text>
-										and
-										<Text style={styles.link} onPress={this.privacyPolicy}> Privacy Policy</Text>
-									</Text>
-								</TouchableOpacity>
+								<Text style={styles.loginTermsText}>
+									By proceeding you are agreeing to our
+									<Text style={styles.link} onPress={this.termsService}> Terms of Service </Text>
+									and
+									<Text style={styles.link} onPress={this.privacyPolicy}> Privacy Policy</Text>
+								</Text>
 								{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
 							</View>
 							<Spinner visible={this.props.login.isFetching} textContent='Loading...' textStyle={{ color: '#FFF' }} />
