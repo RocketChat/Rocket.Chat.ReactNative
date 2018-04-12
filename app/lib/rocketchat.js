@@ -115,7 +115,7 @@ const RocketChat = {
 				protectedFunction(() => RocketChat.getRooms());
 			}
 
-			// this.ddp.on('login', protectedFunction(() => reduxStore.dispatch(loginRequest())));
+			this.ddp.on('login', protectedFunction(() => reduxStore.dispatch(loginRequest())));
 
 			this.ddp.on('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 
