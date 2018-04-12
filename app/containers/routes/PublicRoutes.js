@@ -35,37 +35,43 @@ const PublicRoutes = StackNavigator(
 		AddServer: {
 			screen: NewServerView,
 			navigationOptions: {
-				title: 'New server'
+				title: 'New server',
+				headerTintColor: '#292E35'
 			}
 		},
 		Login: {
 			screen: LoginView,
 			navigationOptions: {
-				title: 'Login'
+				title: 'Login',
+				headerTintColor: '#292E35'
 			}
 		},
 		Register: {
 			screen: RegisterView,
 			navigationOptions: {
-				title: 'Register'
+				title: 'Register',
+				headerTintColor: '#292E35'
 			}
 		},
 		TermsService: {
 			screen: TermsServiceView,
 			navigationOptions: {
-				title: 'Terms of service'
+				title: 'Terms of service',
+				headerTintColor: '#292E35'
 			}
 		},
 		PrivacyPolicy: {
 			screen: PrivacyPolicyView,
 			navigationOptions: {
-				title: 'Privacy policy'
+				title: 'Privacy policy',
+				headerTintColor: '#292E35'
 			}
 		},
 		ForgotPassword: {
 			screen: ForgotPasswordView,
 			navigationOptions: {
-				title: 'Forgot my password'
+				title: 'Forgot my password',
+				headerTintColor: '#292E35'
 			}
 		}
 	},

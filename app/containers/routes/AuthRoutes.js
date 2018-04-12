@@ -29,19 +29,22 @@ const AuthRoutes = StackNavigator(
 		CreateChannel: {
 			screen: CreateChannelView,
 			navigationOptions: {
-				title: 'Create Channel'
+				title: 'Create Channel',
+				headerTintColor: '#292E35'
 			}
 		},
 		SelectedUsers: {
 			screen: SelectedUsersView,
 			navigationOptions: {
-				title: 'Select Users'
+				title: 'Select Users',
+				headerTintColor: '#292E35'
 			}
 		},
 		AddServer: {
 			screen: NewServerView,
 			navigationOptions: {
-				title: 'New server'
+				title: 'New server',
+				headerTintColor: '#292E35'
 			}
 		},
 		RoomActions: {
