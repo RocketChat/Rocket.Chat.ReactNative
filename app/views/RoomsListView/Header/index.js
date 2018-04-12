@@ -8,6 +8,7 @@ import { CachedImage } from 'react-native-img-cache';
 import { HeaderBackButton } from 'react-navigation';
 
 import Avatar from '../../../containers/Avatar';
+import Status from '../../../containers/status';
 import RocketChat from '../../../lib/rocketchat';
 import { STATUS_COLORS } from '../../../constants/colors';
 import { setSearch } from '../../../actions/rooms';
@@ -128,29 +129,29 @@ export default class RoomsListHeaderView extends React.PureComponent {
 
 	renderCenter() {
 		const {
-			offline, connecting, authenticating, logged
+			offline, connecting, authenticating, logged, user
 		} = this.props;
 
 		if (this.state.searching) {
 			return null;
 		}
 
-		if (!this.props.user.username) {
+		if (!user.username) {
 			return null;
 		}
 
 		const t = title(offline, connecting, authenticating, logged);
 
-		const accessibilityLabel = `${ this.props.user.username }, ${ this.getUserStatusLabel() }, double tap to change status`;
+		const accessibilityLabel = `${ user.username }, ${ this.getUserStatusLabel() }, double tap to change status`;
 		return (
 
 			<TouchableOpacity style={styles.titleContainer} onPress={() => this.showModal()} accessibilityLabel={accessibilityLabel} accessibilityTraits='header'>
 				<Avatar
-					text={this.props.user.username}
+					text={user.username}
 					size={24}
 					baseUrl={this.props.baseUrl}
 				>
-					<View style={[styles.status, styles.user_status, { backgroundColor: STATUS_COLORS[this.getUserStatus()] }]} />
+					<Status style={[styles.status, styles.user_status]} id={user.id} />
 				</Avatar>
 				<View style={styles.rows}>
 					<Text accessible={false} style={styles.title} ellipsizeMode='tail' numberOfLines={1} allowFontScaling={false}>{this.props.user.username}</Text>
@@ -201,7 +202,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 	}
 
 	renderModalButton = (status, text) => {
-		const statusStyle = [styles.status, { backgroundColor: STATUS_COLORS[status] }];
+		const statusStyle = [styles.status, { marginRight: 10, backgroundColor: STATUS_COLORS[status] }];
 		const textStyle = { flex: 1, fontWeight: this.props.user.status === status ? 'bold' : 'normal' };
 		return (
 			<TouchableOpacity
