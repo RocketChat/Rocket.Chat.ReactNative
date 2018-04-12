@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native';
-import { put, call, takeLatest, select, all } from 'redux-saga/effects';
+import { put, call, take, takeLatest, select, all } from 'redux-saga/effects';
 
 import * as types from '../actions/actionsTypes';
 import {
@@ -22,6 +22,7 @@ import * as NavigationService from '../containers/routes/NavigationService';
 
 const getUser = state => state.login;
 const getServer = state => state.server.server;
+const getIsConnected = state => state.meteor.connected;
 
 // const loginCall = args => ((args.resume || args.oauth) ? RocketChat.login(args) : RocketChat.loginWithPassword(args));
 const registerCall = args => RocketChat.register(args);
@@ -140,6 +141,16 @@ const handleForgotPasswordRequest = function* handleForgotPasswordRequest({ emai
 	}
 };
 
+const watchLoginOpen = function* watchLoginOpen() {
+	const isConnected = yield select(getIsConnected);
+	if (!isConnected) {
+		yield take(types.METEOR.SUCCESS);
+	}
+	const sub = yield RocketChat.subscribe('meteor.loginServiceConfiguration');
+	yield take(types.LOGIN.CLOSE);
+	sub.unsubscribe().catch(e => alert(e));
+};
+
 const root = function* root() {
 	// yield takeLatest(types.METEOR.SUCCESS, handleLoginWhenServerChanges);
 	// yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
@@ -153,5 +164,6 @@ const root = function* root() {
 	yield takeLatest(types.LOGIN.SET_USERNAME_REQUEST, handleSetUsernameRequest);
 	yield takeLatest(types.LOGOUT, handleLogout);
 	yield takeLatest(types.FORGOT_PASSWORD.REQUEST, handleForgotPasswordRequest);
+	yield takeLatest(types.LOGIN.OPEN, watchLoginOpen);
 };
 export default root;

@@ -34,12 +34,14 @@ import random from '../utils/random';
 	services: state.login.services
 }), dispatch => ({
 	loginSubmit: params => RocketChat.loginWithPassword(params),
+	loginOAuth: params => RocketChat.login(params),
 	open: () => dispatch(open()),
 	close: () => dispatch(close())
 }))
 export default class LoginView extends React.Component {
 	static propTypes = {
 		loginSubmit: PropTypes.func.isRequired,
+		loginOAuth: PropTypes.func.isRequired,
 		open: PropTypes.func.isRequired,
 		close: PropTypes.func.isRequired,
 		navigation: PropTypes.object.isRequired,
@@ -167,14 +169,14 @@ export default class LoginView extends React.Component {
 			showToast('Email or password field is empty');
 			return;
 		}
-
-		await this.props.loginSubmit({ username, password, code });
-		Answers.logLogin('Email', true, { server: this.props.server });
 		Keyboard.dismiss();
-	}
 
-	submitOAuth = (code, credentialToken) => {
-		this.props.loginSubmit({ code, credentialToken });
+		try {
+			await this.props.loginSubmit({ username, password, code });
+			Answers.logLogin('Email', true, { server: this.props.server });
+		} catch (error) {
+			console.warn(error);
+		}
 	}
 
 	register = () => {
@@ -354,7 +356,7 @@ export default class LoginView extends React.Component {
 							if (this.redirectRegex.test(url)) {
 								const parts = url.split('#');
 								const credentials = JSON.parse(parts[1]);
-								this.props.loginSubmit({ oauth: { ...credentials } });
+								this.props.loginOAuth({ oauth: { ...credentials } });
 								this.setState({ modalVisible: false });
 							}
 						}}

@@ -147,7 +147,6 @@ const RocketChat = {
 				RocketChat.getSettings();
 				RocketChat.getPermissions();
 				RocketChat.getCustomEmoji();
-				RocketChat.subscribe('meteor.loginServiceConfiguration');
 				reduxStore.dispatch(connectSuccess());
 				resolve();
 			}));
@@ -474,6 +473,18 @@ const RocketChat = {
 		return this.login(params, callback);
 	},
 
+	login(params) {
+		return this.ddp.login(params);
+	},
+	logout({ server }) {
+		if (this.ddp) {
+			this.ddp.logout();
+		}
+		database.deleteAll();
+		AsyncStorage.removeItem(TOKEN_KEY);
+		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
+	},
+
 	registerPushToken(id, token) {
 		const key = Platform.OS === 'ios' ? 'apn' : 'gcm';
 		const data = {
@@ -604,17 +615,6 @@ const RocketChat = {
 				console.error(e);
 			}
 		}
-	},
-	login(params) {
-		return this.ddp.login(params);
-	},
-	logout({ server }) {
-		if (this.ddp) {
-			this.ddp.logout();
-		}
-		database.deleteAll();
-		AsyncStorage.removeItem(TOKEN_KEY);
-		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
 	},
 	async getSettings() {
 		const temp = database.objects('settings').sorted('_updatedAt', true)[0];
