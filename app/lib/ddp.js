@@ -131,13 +131,14 @@ export default class Socket extends EventEmitter {
 			this.emit('logged', result);
 			return result;
 		} catch (err) {
-			if (/user not found/i.test(err.reason)) {
-				err.error = 1;
-				err.reason = 'User or Password incorrect';
-				err.message = 'User or Password incorrect';
+			const error = { ...err };
+			if (/user not found/i.test(error.reason)) {
+				error.error = 1;
+				error.reason = 'User or Password incorrect';
+				error.message = 'User or Password incorrect';
 			}
-			this.emit('logginError', err);
-			return Promise.reject(err);
+			this.emit('logginError', error);
+			return Promise.reject(error);
 		}
 	}
 	async send(obj, ignore) {
@@ -197,7 +198,7 @@ export default class Socket extends EventEmitter {
 					Answers.logCustom('EJSON parse', err);
 				}
 			};
-		}).catch(alert);
+		}).catch(e => console.warn('_connect', e));
 	}
 	logout() {
 		this._login = null;
@@ -233,7 +234,7 @@ export default class Socket extends EventEmitter {
 			msg: 'unsub',
 			id
 		}).then(data => data.result || data.subs).catch((err) => {
-			// alert(`DDP unsubscribe Error ${ err }`);
+			console.warn('unsubscribe', err);
 			Answers.logCustom('DDP unsubscribe Error', err);
 			return Promise.reject(err);
 		});
@@ -252,7 +253,7 @@ export default class Socket extends EventEmitter {
 			// console.log(args);
 			return args;
 		}).catch((err) => {
-			// alert(`DDP subscribe Error ${ err }`);
+			console.warn('subscribe', err);
 			Answers.logCustom('DDP subscribe Error', err);
 			return Promise.reject(err);
 		});

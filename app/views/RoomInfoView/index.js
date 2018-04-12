@@ -98,7 +98,7 @@ export default class RoomInfoView extends LoggedView {
 					this.setState({ roles: userRoles.roles || [] });
 				}
 			} catch (error) {
-				alert(error);
+				console.warn('RoomInfoView', error);
 			}
 		} else {
 			const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], this.state.room.rid);

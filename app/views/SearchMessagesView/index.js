@@ -47,7 +47,7 @@ export default class SearchMessagesView extends LoggedView {
 			}
 			this.setState({ messages, searching: false, loadingMore: false });
 		} catch (error) {
-			alert(error);
+			console.warn('search', error);
 		}
 	}
 

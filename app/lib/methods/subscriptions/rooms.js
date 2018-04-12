@@ -26,6 +26,11 @@ export default function subscribeRooms(id) {
 		timer = false;
 	});
 
+	this.ddp.on('logout', () => {
+		clearTimeout(timer);
+		timer = true;
+	});
+
 	this.ddp.on('disconnected', () => { loop(); });
 
 	this.ddp.on('stream-notify-user', (ddpMessage) => {
@@ -45,7 +50,7 @@ export default function subscribeRooms(id) {
 				});
 			}
 		} catch (e) {
-			alert(e);
+			console.warn('stream-notify-user', e);
 		}
 	});
 }

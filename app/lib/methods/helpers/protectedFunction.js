@@ -5,6 +5,8 @@ export default fn => (params) => {
 		fn(params);
 	} catch (e) {
 		Answers.logCustom('erro', e);
-		console.log(e);
+		if (__DEV__) {
+			alert(e);
+		}
 	}
 };

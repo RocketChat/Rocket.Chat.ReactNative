@@ -41,7 +41,7 @@ export default async function subscribeRoom({ rid, t }) {
 
 	return {
 		stop() {
-			subscriptions.forEach(sub => sub.unsubscribe().catch(e => alert(e)));
+			subscriptions.forEach(sub => sub.unsubscribe().catch(e => console.warn('room', e)));
 			clearTimeout(timer);
 		}
 	};

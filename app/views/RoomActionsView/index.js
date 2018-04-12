@@ -91,7 +91,7 @@ export default class RoomActionsView extends LoggedView {
 				const member = await RocketChat.getRoomMember(this.state.room.rid, this.props.user.id);
 				this.setState({ member });
 			} catch (error) {
-				console.warn(error);
+				console.warn('RoomActions updateRoomMember', error);
 			}
 		}
 	}
@@ -211,7 +211,7 @@ export default class RoomActionsView extends LoggedView {
 								await RocketChat.addUsersToRoom(rid);
 								this.props.navigation.goBack();
 							} catch (error) {
-								console.warn(error);
+								console.warn('RoomActions Add User', error);
 							} finally {
 								this.props.setLoadingInvite(false);
 							}

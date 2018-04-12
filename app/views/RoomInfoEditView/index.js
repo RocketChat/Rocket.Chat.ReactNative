@@ -232,7 +232,7 @@ export default class RoomInfoEditView extends LoggedView {
 						try {
 							RocketChat.toggleArchiveRoom(this.state.room.rid, !archived);
 						} catch (error) {
-							alert(error);
+							console.warn('toggleArchive', error);
 						}
 					}
 				}

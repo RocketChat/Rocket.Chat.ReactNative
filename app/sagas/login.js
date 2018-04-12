@@ -148,7 +148,7 @@ const watchLoginOpen = function* watchLoginOpen() {
 	}
 	const sub = yield RocketChat.subscribe('meteor.loginServiceConfiguration');
 	yield take(types.LOGIN.CLOSE);
-	sub.unsubscribe().catch(e => alert(e));
+	sub.unsubscribe().catch(e => console.warn('watchLoginOpen', e));
 };
 
 const root = function* root() {

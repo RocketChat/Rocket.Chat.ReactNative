@@ -10,17 +10,17 @@ const openSnippetedMessagesRoom = function* openSnippetedMessagesRoom({ rid, lim
 	newSub = yield RocketChat.subscribe('snippetedMessages', rid, limit);
 	yield put(readySnippetedMessages());
 	if (sub) {
-		sub.unsubscribe().catch(e => console.warn(e));
+		sub.unsubscribe().catch(e => console.warn('openSnippetedMessagesRoom', e));
 	}
 	sub = newSub;
 };
 
 const closeSnippetedMessagesRoom = function* closeSnippetedMessagesRoom() {
 	if (sub) {
-		yield sub.unsubscribe().catch(e => console.warn(e));
+		yield sub.unsubscribe().catch(e => console.warn('closeSnippetedMessagesRoom sub', e));
 	}
 	if (newSub) {
-		yield newSub.unsubscribe().catch(e => console.warn(e));
+		yield newSub.unsubscribe().catch(e => console.warn('closeSnippetedMessagesRoom newSub', e));
 	}
 };
 

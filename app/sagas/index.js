@@ -1,5 +1,4 @@
 import { all } from 'redux-saga/effects';
-import hello from './hello';
 import login from './login';
 import connect from './connect';
 import rooms from './rooms';
@@ -18,7 +17,6 @@ const root = function* root() {
 	yield all([
 		init(),
 		createChannel(),
-		hello(),
 		rooms(),
 		login(),
 		connect(),

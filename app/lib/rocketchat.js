@@ -119,13 +119,15 @@ const RocketChat = {
 
 			this.ddp.on('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 
-			this.ddp.on('logged', protectedFunction(() => {
-				RocketChat.getRooms();
-			}));
+			// this.ddp.on('logged', protectedFunction(() => {
+			// 	RocketChat.getRooms();
+			// }));
 
-			this.ddp.on('background', () => this.getRooms().catch(alert));
+			this.ddp.on('background', () => this.getRooms().catch(e => console.warn('background getRooms', e)));
 
 			this.ddp.on('logged', protectedFunction(async(user) => {
+				this.getRooms().catch(e => console.warn('logged getRooms', e));
+
 				// GET /me from REST API
 				const me = await this.me({ token: user.token, userId: user.id });
 				if (me.username) {
@@ -137,7 +139,6 @@ const RocketChat = {
 				}
 
 				reduxStore.dispatch(loginSuccess(user));
-				this.getRooms().catch(alert);
 			}));
 			this.ddp.once('logged', protectedFunction(({ id }) => this.subscribeRooms(id)));
 
@@ -411,12 +412,11 @@ const RocketChat = {
 			}));
 
 			this.ddp.on('error', protectedFunction((err) => {
-				alert(JSON.stringify(err));
-				console.log(err);
+				console.warn('onError', JSON.stringify(err));
 				Answers.logCustom('disconnect', err);
 				reduxStore.dispatch(connectFailure());
 			}));
-		}).catch(err => alert(`asd ${ err }`));
+		}).catch(err => console.warn(`asd ${ err }`));
 	},
 
 	register({ credentials }) {

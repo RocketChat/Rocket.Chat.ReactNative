@@ -175,7 +175,7 @@ export default class LoginView extends React.Component {
 			await this.props.loginSubmit({ username, password, code });
 			Answers.logLogin('Email', true, { server: this.props.server });
 		} catch (error) {
-			console.warn(error);
+			console.warn('LoginView submit', error);
 		}
 	}
 
