@@ -81,7 +81,6 @@ export default class RoomView extends LoggedView {
 		this.props.navigation.setParams({
 			title: this.name
 		});
-		console.log(this.state.room);
 		await this.props.openRoom({
 			rid: this.rid, t: this.state.room.t, name: this.name, ls: this.state.room.ls
 		});

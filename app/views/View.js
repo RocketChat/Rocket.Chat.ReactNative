@@ -7,6 +7,6 @@ export default class extends React.Component {
 		Answers.logContentView(name);
 	}
 	componentDidCatch = (error, info) => {
-		Answers.log(error, info);
+		Answers.logCustom(error, info);
 	}
 }

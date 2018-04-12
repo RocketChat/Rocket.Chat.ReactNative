@@ -13,8 +13,8 @@ import RCActivityIndicator from '../../containers/ActivityIndicator';
 	state => ({
 		messages: state.roomFiles.messages,
 		ready: state.roomFiles.ready,
-		user: state.login.user,
-		baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+		user: state.login.user
+		// baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 	}),
 	dispatch => ({
 		openRoomFiles: (rid, limit) => dispatch(openRoomFiles(rid, limit)),
@@ -84,20 +84,18 @@ export default class RoomFilesView extends LoggedView {
 			style={styles.message}
 			reactions={item.reactions}
 			user={this.props.user}
-			baseUrl={this.props.baseUrl}
 			Message_TimeFormat='MMMM Do YYYY, h:mm:ss a'
 			onLongPress={() => {}}
 		/>
 	)
 
 	render() {
-		const { loading, loadingMore } = this.state;
 		const { messages, ready } = this.props;
-
 		if (ready && messages.length === 0) {
 			return this.renderEmpty();
 		}
 
+		const { loading, loadingMore } = this.state;
 		return (
 			<FlatList
 				key='room-files-view-list'
