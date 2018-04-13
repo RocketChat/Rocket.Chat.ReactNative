@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { View, Text, StyleSheet } from 'react-native';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -31,6 +32,10 @@ const styles = StyleSheet.create({
 	}
 });
 
+@connect(state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	Message_TimeFormat: state.settings.Message_TimeFormat
+}))
 export default class User extends React.PureComponent {
 	static propTypes = {
 		item: PropTypes.object.isRequired,

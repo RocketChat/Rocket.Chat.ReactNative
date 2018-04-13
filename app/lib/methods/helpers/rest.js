@@ -11,8 +11,8 @@ const handleSuccess = (msg) => {
 export const get = function({
 	token, id, server
 }, method, params = {}) {
-	console.log(`${ server }/api/v1/${ method }/?${ toQuery(params) }`);
-	return fetch(`${ server }/api/v1/${ method }/?${ toQuery(params) }`, {
+	console.log(`${ server }/api/v1/${ method }?${ toQuery(params) }`);
+	return fetch(`${ server }/api/v1/${ method }?${ toQuery(params) }`, {
 		method: 'get',
 		headers: {
 			// 'Accept-Encoding': 'gzip',
@@ -33,7 +33,7 @@ export const post = function({
 		headers: {
 			// 'Accept-Encoding': 'gzip',
 			'Content-Type': 'application/json',
-			// Accept: 'application/json',
+			Accept: 'application/json',
 			'X-Auth-Token': token,
 			'X-User-Id': id
 		}

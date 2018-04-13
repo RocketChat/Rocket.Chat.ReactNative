@@ -21,10 +21,59 @@ import Emoji from './Emoji';
 import messageStatus from '../../constants/messagesStatus';
 import styles from './styles';
 
+const getInfoMessage = ({
+	t, role, msg, u
+}) => {
+	if (t === 'rm') {
+		return 'Message removed';
+	} else if (t === 'uj') {
+		return 'Has joined the channel.';
+	} else if (t === 'r') {
+		return `Room name changed to: ${ msg } by ${ u.username }`;
+	} else if (t === 'message_pinned') {
+		return 'Message pinned';
+	} else if (t === 'ul') {
+		return 'Has left the channel.';
+	} else if (t === 'ru') {
+		return `User ${ msg } removed by ${ u.username }`;
+	} else if (t === 'au') {
+		return `User ${ msg } added by ${ u.username }`;
+	} else if (t === 'user-muted') {
+		return `User ${ msg } muted by ${ u.username }`;
+	} else if (t === 'user-unmuted') {
+		return `User ${ msg } unmuted by ${ u.username }`;
+	} else if (t === 'subscription-role-added') {
+		return `${ msg } was set ${ role } by ${ u.username }`;
+	} else if (t === 'subscription-role-removed') {
+		return `${ msg } is no longer ${ role } by ${ u.username }`;
+	} else if (t === 'room_changed_description') {
+		return `Room description changed to: ${ msg } by ${ u.username }`;
+	} else if (t === 'room_changed_announcement') {
+		return `Room announcement changed to: ${ msg } by ${ u.username }`;
+	} else if (t === 'room_changed_topic') {
+		return `Room topic changed to: ${ msg } by ${ u.username }`;
+	} else if (t === 'room_changed_privacy') {
+		return `Room type changed to: ${ msg } by ${ u.username }`;
+	}
+	return '';
+};
+
+const renderUrl = (urls) => {
+	if (urls.length === 0) {
+		return null;
+	}
+
+	return urls.map(url => (
+		<Url url={url} key={url.url} />
+	));
+};
+
 @connect(state => ({
 	message: state.messages.message,
 	editing: state.messages.editing,
-	customEmojis: state.customEmojis
+	customEmojis: state.customEmojis,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	Message_TimeFormat: state.settings.Message_TimeFormat
 }), dispatch => ({
 	actionsShow: actionMessage => dispatch(actionsShow(actionMessage)),
 	errorActionsShow: actionMessage => dispatch(errorActionsShow(actionMessage)),
@@ -63,9 +112,6 @@ export default class Message extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		if (!equal(this.props.reactions, nextProps.reactions)) {
-			return true;
-		}
 		if (this.state.reactionsModal !== nextState.reactionsModal) {
 			return true;
 		}
@@ -74,6 +120,9 @@ export default class Message extends React.Component {
 		}
 		// eslint-disable-next-line
 		if (!!this.props._updatedAt ^ !!nextProps._updatedAt) {
+			return true;
+		}
+		if (!equal(this.props.reactions, nextProps.reactions)) {
 			return true;
 		}
 		return this.props._updatedAt.toGMTString() !== nextProps._updatedAt.toGMTString();
@@ -87,11 +136,11 @@ export default class Message extends React.Component {
 		this.props.onLongPress(this.parseMessage());
 	}
 
-	onErrorPress() {
+	onErrorPress = () => {
 		this.props.errorActionsShow(this.parseMessage());
 	}
 
-	onReactionPress(emoji) {
+	onReactionPress = (emoji) => {
 		this.props.onReactionPress(emoji, this.props.item._id);
 	}
 	onClose() {
@@ -100,47 +149,6 @@ export default class Message extends React.Component {
 	onReactionLongPress() {
 		this.setState({ reactionsModal: true });
 		Vibration.vibrate(50);
-	}
-
-	getInfoMessage() {
-		let message = '';
-		const {
-			t, role, msg, u
-		} = this.props.item;
-
-		if (t === 'rm') {
-			message = 'Message removed';
-		} else if (t === 'uj') {
-			message = 'Has joined the channel.';
-		} else if (t === 'r') {
-			message = `Room name changed to: ${ msg } by ${ u.username }`;
-		} else if (t === 'message_pinned') {
-			message = 'Message pinned';
-		} else if (t === 'ul') {
-			message = 'Has left the channel.';
-		} else if (t === 'ru') {
-			message = `User ${ msg } removed by ${ u.username }`;
-		} else if (t === 'au') {
-			message = `User ${ msg } added by ${ u.username }`;
-		} else if (t === 'user-muted') {
-			message = `User ${ msg } muted by ${ u.username }`;
-		} else if (t === 'user-unmuted') {
-			message = `User ${ msg } unmuted by ${ u.username }`;
-		} else if (t === 'subscription-role-added') {
-			message = `${ msg } was set ${ role } by ${ u.username }`;
-		} else if (t === 'subscription-role-removed') {
-			message = `${ msg } is no longer ${ role } by ${ u.username }`;
-		} else if (t === 'room_changed_description') {
-			message = `Room description changed to: ${ msg } by ${ u.username }`;
-		} else if (t === 'room_changed_announcement') {
-			message = `Room announcement changed to: ${ msg } by ${ u.username }`;
-		} else if (t === 'room_changed_topic') {
-			message = `Room topic changed to: ${ msg } by ${ u.username }`;
-		} else if (t === 'room_changed_privacy') {
-			message = `Room type changed to: ${ msg } by ${ u.username }`;
-		}
-
-		return message;
 	}
 
 	parseMessage = () => JSON.parse(JSON.stringify(this.props.item));
@@ -186,9 +194,11 @@ export default class Message extends React.Component {
 		const { baseUrl, user } = this.props;
 		if (file.image_type) {
 			return <Image file={file} baseUrl={baseUrl} user={user} />;
-		} else if (file.audio_type) {
+		}
+		if (file.audio_type) {
 			return <Audio file={file} baseUrl={baseUrl} user={user} />;
-		} else if (file.video_type) {
+		}
+		if (file.video_type) {
 			return <Video file={file} baseUrl={baseUrl} user={user} />;
 		}
 
@@ -197,20 +207,10 @@ export default class Message extends React.Component {
 
 	renderMessageContent() {
 		if (this.isInfoMessage()) {
-			return <Text style={styles.textInfo}>{this.getInfoMessage()}</Text>;
+			return <Text style={styles.textInfo}>{getInfoMessage(this.props.item)}</Text>;
 		}
 		const { item, customEmojis, baseUrl } = this.props;
 		return <Markdown msg={item.msg} customEmojis={customEmojis} baseUrl={baseUrl} />;
-	}
-
-	renderUrl() {
-		if (this.props.item.urls.length === 0) {
-			return null;
-		}
-
-		return this.props.item.urls.map(url => (
-			<Url url={url} key={url.url} />
-		));
 	}
 
 	renderError = () => {
@@ -218,13 +218,13 @@ export default class Message extends React.Component {
 			return null;
 		}
 		return (
-			<TouchableOpacity onPress={() => this.onErrorPress()}>
+			<TouchableOpacity onPress={this.onErrorPress}>
 				<Icon name='error-outline' color='red' size={20} style={{ padding: 10, paddingRight: 12, paddingLeft: 0 }} />
 			</TouchableOpacity>
 		);
 	}
 
-	renderReaction(reaction) {
+	renderReaction = (reaction) => {
 		const reacted = reaction.usernames.findIndex(item => item.value === this.props.user.username) !== -1;
 		const reactedContainerStyle = reacted ? { borderColor: '#bde1fe', backgroundColor: '#f3f9ff' } : {};
 		const reactedCount = reacted ? { color: '#4fb0fc' } : {};
@@ -253,7 +253,7 @@ export default class Message extends React.Component {
 		}
 		return (
 			<View style={styles.reactionsContainer}>
-				{this.props.item.reactions.map(reaction => this.renderReaction(reaction))}
+				{this.props.item.reactions.map(this.renderReaction)}
 				<TouchableOpacity
 					onPress={() => this.props.toggleReactionPicker(this.parseMessage())}
 					key='add-reaction'
@@ -267,9 +267,9 @@ export default class Message extends React.Component {
 
 	render() {
 		const {
-			item, message, editing, baseUrl, customEmojis, style, archived
+			item, message, editing, baseUrl, customEmojis, style, archived, user
 		} = this.props;
-		const username = item.alias || item.u.username;
+		const username = item.alias || user.username;
 		const isEditing = message._id === item._id && editing;
 		const accessibilityLabel = `Message from ${ username } at ${ moment(item.ts).format(this.props.Message_TimeFormat) }, ${ this.props.item.msg }`;
 
@@ -280,7 +280,7 @@ export default class Message extends React.Component {
 				disabled={this.isDeleted() || this.hasError() || archived}
 				underlayColor='#FFFFFF'
 				activeOpacity={0.3}
-				style={[styles.message, isEditing ? styles.editing : null, style]}
+				style={[styles.message, isEditing ? styles.editing : null, style, styles.flex]}
 				accessibilityLabel={accessibilityLabel}
 			>
 				<View style={styles.flex}>
@@ -290,7 +290,6 @@ export default class Message extends React.Component {
 							style={styles.avatar}
 							text={item.avatar ? '' : username}
 							size={40}
-							baseUrl={baseUrl}
 							avatar={item.avatar}
 						/>
 						<View style={[styles.content]}>
@@ -302,7 +301,7 @@ export default class Message extends React.Component {
 							/>
 							{this.renderMessageContent()}
 							{this.attachments()}
-							{this.renderUrl()}
+							{renderUrl(item.urls)}
 							{this.renderReactions()}
 						</View>
 					</View>

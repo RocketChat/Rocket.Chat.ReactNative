@@ -38,31 +38,44 @@ export default class SearchMessagesView extends LoggedView {
 		this.name.focus();
 	}
 
+	componentWillUnmount() {
+		this.onChangeSearch.stop();
+	}
+
 	search = async() => {
+		if (this._cancel) {
+			this._cancel('cancel');
+		}
+		const cancel = new Promise((r, reject) => this._cancel = reject);
 		let messages = [];
 		try {
-			const result = await RocketChat.messageSearch(this.state.search, this.props.navigation.state.params.rid, this.limit);
-			if (result.messages.length > 0) {
-				messages = result.messages.map(message => buildMessage(message));
-			}
+			const result = await Promise.race([RocketChat.messageSearch(this.searchText, this.props.navigation.state.params.rid, this.limit), cancel]);
+			messages = result.messages.map(message => buildMessage(message));
 			this.setState({ messages, searching: false, loadingMore: false });
 		} catch (error) {
-			alert(error);
+			console.log(error);
+			this._cancel = null;
+			if (error !== 'cancel') {
+				this.setState({ searching: false, loadingMore: false });
+			}
 		}
 	}
 
-	onChangeSearch = (search) => {
+	onChangeSearch = debounce((search) => {
+		this.searchText = search;
 		this.limit = 0;
-		this.setState({ search, searching: true });
+		if (!this.state.searching) {
+			this.setState({ searching: true });
+		}
 		this.search();
-	}
+	}, 1000)
 
 	moreData = () => {
-		const { search, loadingMore, messages } = this.state;
+		const { loadingMore, messages } = this.state;
 		if (messages.length < this.limit) {
 			return;
 		}
-		if (search && !loadingMore) {
+		if (this.searchText && !loadingMore) {
 			this.setState({ loadingMore: true });
 			this.limit += 20;
 			this.search();
@@ -87,7 +100,7 @@ export default class SearchMessagesView extends LoggedView {
 	);
 
 	render() {
-		const { search, searching, loadingMore } = this.state;
+		const { searching, loadingMore } = this.state;
 		return (
 			<View
 				style={styles.container}
@@ -96,8 +109,7 @@ export default class SearchMessagesView extends LoggedView {
 					<RCTextInput
 						inputRef={(e) => { this.name = e; }}
 						label='Search'
-						value={search}
-						onChangeText={debounce(text => this.onChangeSearch(text), 500)}
+						onChangeText={this.onChangeSearch}
 						placeholder='Search Messages'
 					/>
 					<Markdown msg='You can search using RegExp. e.g. `/^text$/i`' />
@@ -105,7 +117,6 @@ export default class SearchMessagesView extends LoggedView {
 				</View>
 				<FlatList
 					data={this.state.messages}
-					extraData={this.state.messages}
 					renderItem={this.renderItem}
 					style={styles.list}
 					keyExtractor={item => item._id}

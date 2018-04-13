@@ -66,7 +66,7 @@ const handleMessageReceived = function* handleMessageReceived({ message }) {
 };
 
 const watchRoomOpen = function* watchRoomOpen({ room }) {
-	yield put(messagesRequest({ rid: room.rid, t: room.t }));
+	yield put(messagesRequest({ ...room }));
 	// const { open } = yield race({
 	// 	messages: take(types.MESSAGES.SUCCESS),
 	// 	open: take(types.ROOM.OPEN)

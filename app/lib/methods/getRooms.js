@@ -41,8 +41,6 @@ export default async function() {
 		// eslint-disable-next-line
 		const {subscriptions, rooms} = await (this.ddp.status ? getRoomDpp.apply(this) : getRoomRest.apply(this));
 
-		console.log(subscriptions, rooms);
-
 		const data = rooms.map(room => ({ room, sub: database.objects('subscriptions').filtered('rid == $0', room._id) }));
 
 		db.write(() => {

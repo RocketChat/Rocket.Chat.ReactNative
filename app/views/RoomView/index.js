@@ -82,7 +82,7 @@ export default class RoomView extends LoggedView {
 			title: this.name
 		});
 		await this.props.openRoom({
-			rid: this.rid, t: this.state.room.t, name: this.name, ls: this.state.room.ls
+			...this.state.room
 		});
 		if (this.state.room.alert || this.state.room.unread || this.state.room.userMentions) {
 			this.props.setLastOpen(this.state.room.ls);
@@ -153,8 +153,6 @@ export default class RoomView extends LoggedView {
 			_updatedAt={item._updatedAt}
 			status={item.status}
 			reactions={JSON.parse(JSON.stringify(item.reactions))}
-			baseUrl={this.props.Site_Url}
-			Message_TimeFormat={this.props.Message_TimeFormat}
 			user={this.props.user}
 			onReactionPress={this.onReactionPress}
 			onLongPress={this.onMessageLongPress}
@@ -162,7 +160,7 @@ export default class RoomView extends LoggedView {
 		/>
 	);
 
-	renderSeparator = () => <View style={styles.separator} />;
+	// renderSeparator = () => <View style={styles.separator} />;
 
 	renderFooter = () => {
 		if (!this.state.joined) {
@@ -198,7 +196,7 @@ export default class RoomView extends LoggedView {
 					room={this.rid}
 					renderFooter={this.renderHeader}
 					onEndReached={this.onEndReached}
-					renderRow={item => this.renderItem(item)}
+					renderRow={this.renderItem}
 				/>
 				{this.renderFooter()}
 				{this.state.room._id ? <MessageActions room={this.state.room} /> : null}

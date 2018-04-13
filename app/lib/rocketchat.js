@@ -32,6 +32,8 @@ import readMessages from './methods/readMessages';
 import getRooms from './methods/getRooms';
 import _buildMessage from './methods/helpers/buildMessage';
 import loadMessagesForRoom from './methods/loadMessagesForRoom';
+import loadMissedMessages from './methods/loadMissedMessages';
+
 import sendMessage, { getMessage, _sendMessageCall } from './methods/sendMessage';
 
 export { Accounts } from 'react-native-meteor';
@@ -490,6 +492,7 @@ const RocketChat = {
 	updatePushToken(pushId) {
 		return call('raix:push-setuser', pushId);
 	},
+	loadMissedMessages,
 	loadMessagesForRoom,
 	getMessage,
 	sendMessage,
