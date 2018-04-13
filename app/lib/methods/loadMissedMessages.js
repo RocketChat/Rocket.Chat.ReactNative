@@ -12,7 +12,7 @@ async function loadMissedMessagesRest({ rid: roomId, lastOpen: lastUpdate }) {
 		const server = this.ddp.url.replace('ws', 'http');
 		const { result } = await get({ token, id, server }, 'chat.syncMessages', { roomId, lastUpdate });
 		// TODO: api fix
-		return result.updated;
+		return result.updated || result.messages;
 	} catch (e) {
 		console.log(e);
 	}
@@ -20,10 +20,10 @@ async function loadMissedMessagesRest({ rid: roomId, lastOpen: lastUpdate }) {
 
 async function loadMissedMessagesDDP(...args) {
 	const [{ rid, lastOpen: lastUpdate }] = args;
-	console.log(lastUpdate);
+
 	try {
 		const data = await this.ddp.call('messages/get', rid, { lastUpdate: new Date(lastUpdate) });
-		return data.updated;
+		return data.updated || data.messages;
 	} catch (e) {
 		alert(e);
 		return loadMissedMessagesRest.call(this, ...args);
