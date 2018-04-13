@@ -84,7 +84,7 @@ export default class RoomFilesView extends LoggedView {
 			style={styles.message}
 			reactions={item.reactions}
 			user={this.props.user}
-			Message_TimeFormat='MMMM Do YYYY, h:mm:ss a'
+			customTimeFormat='MMMM Do YYYY, h:mm:ss a'
 			onLongPress={() => {}}
 		/>
 	)

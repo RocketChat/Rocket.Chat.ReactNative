@@ -410,7 +410,7 @@ const RocketChat = {
 					this.roleTimer = null;
 					return this.roles = {};
 				}, 1000);
-				this.roles[ddpMessage.id] = ddpMessage.fields.description;
+				this.roles[ddpMessage.id] = (ddpMessage.fields && ddpMessage.fields.description) || undefined;
 			}));
 
 			this.ddp.on('error', protectedFunction((err) => {

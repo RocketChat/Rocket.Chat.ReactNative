@@ -118,7 +118,6 @@ export default class SelectedUsersView extends React.Component {
 		super(props);
 		this.data = database.objects('subscriptions').filtered('t = $0', 'd').sorted('roomUpdatedAt', true);
 		this.state = {
-			searchText: '',
 			search: []
 		};
 		this.data.addListener(this.updateState);
@@ -139,7 +138,6 @@ export default class SelectedUsersView extends React.Component {
 	}
 
 	onSearchChangeText(text) {
-		this.setState({ searchText: text });
 		this.search(text);
 	}
 
@@ -225,7 +223,6 @@ export default class SelectedUsersView extends React.Component {
 			<TextInput
 				underlineColorAndroid='transparent'
 				style={styles.searchBox}
-				value={this.state.searchText}
 				onChangeText={text => this.onSearchChangeText(text)}
 				returnKeyType='search'
 				placeholder='Search'
