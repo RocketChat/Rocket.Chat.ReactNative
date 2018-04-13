@@ -43,7 +43,6 @@ export default class RoomsListView extends React.Component {
 		super(props);
 
 		this.state = {
-			searchText: '',
 			search: []
 		};
 		this._keyExtractor = this._keyExtractor.bind(this);
@@ -76,7 +75,6 @@ export default class RoomsListView extends React.Component {
 	}
 
 	onSearchChangeText(text) {
-		this.setState({ searchText: text });
 		this.search(text);
 	}
 
@@ -158,7 +156,6 @@ export default class RoomsListView extends React.Component {
 			<TextInput
 				underlineColorAndroid='transparent'
 				style={styles.searchBox}
-				value={this.state.searchText}
 				onChangeText={text => this.onSearchChangeText(text)}
 				returnKeyType='search'
 				placeholder='Search'
