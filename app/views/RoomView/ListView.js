@@ -65,19 +65,17 @@ export class List extends React.Component {
 
 	render() {
 		return (<ListView
+			enableEmptySections
 			style={styles.list}
-			inverted
 			data={this.data}
 			keyExtractor={item => item._id}
 			onEndReachedThreshold={0.5}
-			ListFooterComponent={this.props.renderFooter}
-			ListHeaderComponent={<Typing />}
+			renderFooter={this.props.renderFooter}
+			renderHeader={() => <Typing />}
 			onEndReached={() => this.props.onEndReached(this.data)}
 			dataSource={this.dataSource}
-			renderItem={({ item }) => this.props.renderRow(item)}
 			renderRow={item => this.props.renderRow(item)}
-			initialNumToRender={7}
-			removeClippedSubviews
+			initialListSize={10}
 			{...scrollPersistTaps}
 		/>);
 	}

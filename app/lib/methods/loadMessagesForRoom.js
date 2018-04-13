@@ -12,28 +12,25 @@ const types = {
 
 async function loadMessagesForRoomRest({ rid: roomId, latest, t }) {
 	try {
-		console.log('loadMessagesForRoomRest');
-
 		const { token, id } = this.ddp._login;
 		const server = this.ddp.url.replace('ws', 'http');
 		const data = await get({ token, id, server }, `${ types[t] }.history`, { roomId, latest });
 		return data.messages;
 	} catch (e) {
-		console.log(e);
+		console.warn('loadMessagesForRoomRest', e);
 	}
 }
 
 async function loadMessagesForRoomDDP(...args) {
 	const [{ rid: roomId, latest }] = args;
 	try {
-		console.log('loadMessagesForRoomDDP');
 		const data = await this.ddp.call('loadHistory', roomId, latest, 50);
 		if (!data || !data.messages.length) {
 			return [];
 		}
 		return data.messages;
 	} catch (e) {
-		alert(e);
+		console.warn('loadMessagesForRoomDDP', e);
 		return loadMessagesForRoomRest.call(this, ...args);
 	}
 
@@ -59,7 +56,7 @@ export default async function(...args) {
 		try {
 			InteractionManager.runAfterInteractions(() => db.write(() => data.forEach(message => db.create('messages', message, true))));
 		} catch (e) {
-			alert(e);
+			console.warn('loadMessagesForRoom', e);
 		}
 	}
 	return data;

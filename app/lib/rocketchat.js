@@ -121,26 +121,26 @@ const RocketChat = {
 
 			this.ddp.on('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 
-			this.ddp.on('logged', protectedFunction(() => {
-				RocketChat.getRooms();
-			}));
+			// this.ddp.on('logged', protectedFunction(() => {
+			// 	RocketChat.getRooms();
+			// }));
 
-			this.ddp.on('background', () => this.getRooms().catch(alert));
+			this.ddp.on('background', () => this.getRooms().catch(e => console.warn('background getRooms', e)));
 
 			this.ddp.on('logged', protectedFunction(async(user) => {
+				this.getRooms().catch(e => console.warn('logged getRooms', e));
+
 				// GET /me from REST API
 				const me = await this.me({ token: user.token, userId: user.id });
 				if (me.username) {
 					const userInfo = await this.userInfo({ token: user.token, userId: user.id });
-					user.username = me.username;//= userInfo.user.username;
+					user.username = me.username;
 					if (userInfo.user.roles) {
 						user.roles = userInfo.user.roles;
 					}
 				}
 
 				reduxStore.dispatch(loginSuccess(user));
-				this.getRooms().catch(alert);
-				// if user has username
 			}));
 			this.ddp.once('logged', protectedFunction(({ id }) => this.subscribeRooms(id)));
 
@@ -150,7 +150,6 @@ const RocketChat = {
 				RocketChat.getSettings();
 				RocketChat.getPermissions();
 				RocketChat.getCustomEmoji();
-				RocketChat.subscribe('meteor.loginServiceConfiguration');
 				reduxStore.dispatch(connectSuccess());
 				resolve();
 			}));
@@ -415,12 +414,11 @@ const RocketChat = {
 			}));
 
 			this.ddp.on('error', protectedFunction((err) => {
-				alert(JSON.stringify(err));
-				console.log(err);
+				console.warn('onError', JSON.stringify(err));
 				Answers.logCustom('disconnect', err);
 				reduxStore.dispatch(connectFailure());
 			}));
-		}).catch(err => alert(`asd ${ err }`));
+		}).catch(err => console.warn(`asd ${ err }`));
 	},
 
 	register({ credentials }) {
@@ -475,6 +473,18 @@ const RocketChat = {
 		}
 
 		return this.login(params, callback);
+	},
+
+	login(params) {
+		return this.ddp.login(params);
+	},
+	logout({ server }) {
+		if (this.ddp) {
+			this.ddp.logout();
+		}
+		database.deleteAll();
+		AsyncStorage.removeItem(TOKEN_KEY);
+		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
 	},
 
 	registerPushToken(id, token) {
@@ -608,17 +618,6 @@ const RocketChat = {
 				console.error(e);
 			}
 		}
-	},
-	login(params) {
-		return this.ddp.login(params);
-	},
-	logout({ server }) {
-		if (this.ddp) {
-			this.ddp.logout();
-		}
-		database.deleteAll();
-		AsyncStorage.removeItem(TOKEN_KEY);
-		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
 	},
 	async getSettings() {
 		const temp = database.objects('settings').sorted('_updatedAt', true)[0];

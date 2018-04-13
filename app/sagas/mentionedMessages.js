@@ -10,17 +10,17 @@ const openMentionedMessagesRoom = function* openMentionedMessagesRoom({ rid, lim
 	newSub = yield RocketChat.subscribe('mentionedMessages', rid, limit);
 	yield put(readyMentionedMessages());
 	if (sub) {
-		sub.unsubscribe().catch(e => console.warn(e));
+		sub.unsubscribe().catch(e => console.warn('openMentionedMessagesRoom', e));
 	}
 	sub = newSub;
 };
 
 const closeMentionedMessagesRoom = function* closeMentionedMessagesRoom() {
 	if (sub) {
-		yield sub.unsubscribe().catch(e => console.warn(e));
+		yield sub.unsubscribe().catch(e => console.warn('closeMentionedMessagesRoom sub', e));
 	}
 	if (newSub) {
-		yield newSub.unsubscribe().catch(e => console.warn(e));
+		yield newSub.unsubscribe().catch(e => console.warn('closeMentionedMessagesRoom newSub', e));
 	}
 };
 

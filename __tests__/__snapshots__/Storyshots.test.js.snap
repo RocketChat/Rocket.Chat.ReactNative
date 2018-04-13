@@ -232,13 +232,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
+                Array [
+                  Object {
+                    "borderColor": "#fff",
+                    "borderWidth": 3,
+                    "bottom": -3,
+                    "position": "absolute",
+                    "right": -3,
+                  },
+                  undefined,
+                ],
                 Object {
                   "backgroundColor": "#cbced1",
                 },
@@ -308,15 +311,11 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           </View>
           <View
             style={
-              Array [
-                Object {
-                  "alignItems": "flex-end",
-                  "flex": 1,
-                  "flexDirection": "row",
-                  "justifyContent": "flex-end",
-                  "width": "100%",
-                },
-              ]
+              Object {
+                "alignItems": "flex-end",
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+              }
             }
           />
         </View>
@@ -400,13 +399,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
+                Array [
+                  Object {
+                    "borderColor": "#fff",
+                    "borderWidth": 3,
+                    "bottom": -3,
+                    "position": "absolute",
+                    "right": -3,
+                  },
+                  undefined,
+                ],
                 Object {
                   "backgroundColor": "#cbced1",
                 },
@@ -480,15 +482,11 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           </View>
           <View
             style={
-              Array [
-                Object {
-                  "alignItems": "flex-end",
-                  "flex": 1,
-                  "flexDirection": "row",
-                  "justifyContent": "flex-end",
-                  "width": "100%",
-                },
-              ]
+              Object {
+                "alignItems": "flex-end",
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+              }
             }
           />
         </View>
@@ -572,13 +570,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
+                Array [
+                  Object {
+                    "borderColor": "#fff",
+                    "borderWidth": 3,
+                    "bottom": -3,
+                    "position": "absolute",
+                    "right": -3,
+                  },
+                  undefined,
+                ],
                 Object {
                   "backgroundColor": "#cbced1",
                 },
@@ -648,15 +649,11 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           </View>
           <View
             style={
-              Array [
-                Object {
-                  "alignItems": "flex-end",
-                  "flex": 1,
-                  "flexDirection": "row",
-                  "justifyContent": "flex-end",
-                  "width": "100%",
-                },
-              ]
+              Object {
+                "alignItems": "flex-end",
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+              }
             }
           >
             <Text
@@ -763,13 +760,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
+                Array [
+                  Object {
+                    "borderColor": "#fff",
+                    "borderWidth": 3,
+                    "bottom": -3,
+                    "position": "absolute",
+                    "right": -3,
+                  },
+                  undefined,
+                ],
                 Object {
                   "backgroundColor": "#cbced1",
                 },
@@ -843,15 +843,11 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           </View>
           <View
             style={
-              Array [
-                Object {
-                  "alignItems": "flex-end",
-                  "flex": 1,
-                  "flexDirection": "row",
-                  "justifyContent": "flex-end",
-                  "width": "100%",
-                },
-              ]
+              Object {
+                "alignItems": "flex-end",
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+              }
             }
           >
             <Text
@@ -958,13 +954,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
+                Array [
+                  Object {
+                    "borderColor": "#fff",
+                    "borderWidth": 3,
+                    "bottom": -3,
+                    "position": "absolute",
+                    "right": -3,
+                  },
+                  undefined,
+                ],
                 Object {
                   "backgroundColor": "#cbced1",
                 },
@@ -1034,15 +1033,11 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           </View>
           <View
             style={
-              Array [
-                Object {
-                  "alignItems": "flex-end",
-                  "flex": 1,
-                  "flexDirection": "row",
-                  "justifyContent": "flex-end",
-                  "width": "100%",
-                },
-              ]
+              Object {
+                "alignItems": "flex-end",
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+              }
             }
           >
             <Text
@@ -1149,13 +1144,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
+                Array [
+                  Object {
+                    "borderColor": "#fff",
+                    "borderWidth": 3,
+                    "bottom": -3,
+                    "position": "absolute",
+                    "right": -3,
+                  },
+                  undefined,
+                ],
                 Object {
                   "backgroundColor": "#cbced1",
                 },
@@ -1225,15 +1223,11 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           </View>
           <View
             style={
-              Array [
-                Object {
-                  "alignItems": "flex-end",
-                  "flex": 1,
-                  "flexDirection": "row",
-                  "justifyContent": "flex-end",
-                  "width": "100%",
-                },
-              ]
+              Object {
+                "alignItems": "flex-end",
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+              }
             }
           >
             <Text
@@ -1340,13 +1334,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
+                Array [
+                  Object {
+                    "borderColor": "#fff",
+                    "borderWidth": 3,
+                    "bottom": -3,
+                    "position": "absolute",
+                    "right": -3,
+                  },
+                  undefined,
+                ],
                 Object {
                   "backgroundColor": "#cbced1",
                 },
@@ -1416,15 +1413,11 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           </View>
           <View
             style={
-              Array [
-                Object {
-                  "alignItems": "flex-end",
-                  "flex": 1,
-                  "flexDirection": "row",
-                  "justifyContent": "flex-end",
-                  "width": "100%",
-                },
-              ]
+              Object {
+                "alignItems": "flex-end",
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+              }
             }
           >
             <Text
@@ -1531,13 +1524,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
+                Array [
+                  Object {
+                    "borderColor": "#fff",
+                    "borderWidth": 3,
+                    "bottom": -3,
+                    "position": "absolute",
+                    "right": -3,
+                  },
+                  undefined,
+                ],
                 Object {
                   "backgroundColor": "#cbced1",
                 },
@@ -1607,15 +1603,11 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           </View>
           <View
             style={
-              Array [
-                Object {
-                  "alignItems": "flex-end",
-                  "flex": 1,
-                  "flexDirection": "row",
-                  "justifyContent": "flex-end",
-                  "width": "100%",
-                },
-              ]
+              Object {
+                "alignItems": "flex-end",
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+              }
             }
           >
             <Text
@@ -1722,13 +1714,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
+                Array [
+                  Object {
+                    "borderColor": "#fff",
+                    "borderWidth": 3,
+                    "bottom": -3,
+                    "position": "absolute",
+                    "right": -3,
+                  },
+                  undefined,
+                ],
                 Object {
                   "backgroundColor": "#cbced1",
                 },
@@ -1798,15 +1793,11 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           </View>
           <View
             style={
-              Array [
-                Object {
-                  "alignItems": "flex-end",
-                  "flex": 1,
-                  "flexDirection": "row",
-                  "justifyContent": "flex-end",
-                  "width": "100%",
-                },
-              ]
+              Object {
+                "alignItems": "flex-end",
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+              }
             }
           />
         </View>
@@ -1890,13 +1881,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
+                Array [
+                  Object {
+                    "borderColor": "#fff",
+                    "borderWidth": 3,
+                    "bottom": -3,
+                    "position": "absolute",
+                    "right": -3,
+                  },
+                  undefined,
+                ],
                 Object {
                   "backgroundColor": "#cbced1",
                 },
@@ -1966,15 +1960,11 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           </View>
           <View
             style={
-              Array [
-                Object {
-                  "alignItems": "flex-end",
-                  "flex": 1,
-                  "flexDirection": "row",
-                  "justifyContent": "flex-end",
-                  "width": "100%",
-                },
-              ]
+              Object {
+                "alignItems": "flex-end",
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+              }
             }
           />
         </View>
@@ -2058,13 +2048,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
+                Array [
+                  Object {
+                    "borderColor": "#fff",
+                    "borderWidth": 3,
+                    "bottom": -3,
+                    "position": "absolute",
+                    "right": -3,
+                  },
+                  undefined,
+                ],
                 Object {
                   "backgroundColor": "#cbced1",
                 },
@@ -2134,15 +2127,11 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           </View>
           <View
             style={
-              Array [
-                Object {
-                  "alignItems": "flex-end",
-                  "flex": 1,
-                  "flexDirection": "row",
-                  "justifyContent": "flex-end",
-                  "width": "100%",
-                },
-              ]
+              Object {
+                "alignItems": "flex-end",
+                "flexDirection": "row",
+                "justifyContent": "flex-end",
+              }
             }
           />
         </View>

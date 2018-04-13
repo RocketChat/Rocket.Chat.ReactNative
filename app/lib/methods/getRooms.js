@@ -14,9 +14,8 @@ const lastMessage = () => {
 };
 
 const getRoomRest = async function() {
-	console.log('getRoomsRest');
-	const updatedSince = lastMessage();
 	const { ddp } = this;
+	const updatedSince = lastMessage();
 	const { token, id } = ddp._login;
 	const server = this.ddp.url.replace('ws', 'http');
 	const [subscriptions, rooms] = await Promise.all([get({ token, id, server }, 'subscriptions.get', { updatedSince }), get({ token, id, server }, 'rooms.get', { updatedSince })]);
@@ -24,7 +23,6 @@ const getRoomRest = async function() {
 };
 
 const getRoomDpp = async function() {
-	console.log('getRoomsDpp');
 	try {
 		const { ddp } = this;
 		const updatedSince = lastMessage();
@@ -37,6 +35,9 @@ const getRoomDpp = async function() {
 
 export default async function() {
 	try {
+		if (!this.ddp._login) {
+			return false;
+		}
 		const { database: db } = database;
 		// eslint-disable-next-line
 		const {subscriptions, rooms} = await (this.ddp.status ? getRoomDpp.apply(this) : getRoomRest.apply(this));
@@ -50,6 +51,6 @@ export default async function() {
 
 		return true;
 	} catch (e) {
-		alert(e);
+		console.warn('getRooms', e);
 	}
 }

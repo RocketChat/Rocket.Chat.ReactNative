@@ -267,9 +267,9 @@ export default class Message extends React.Component {
 
 	render() {
 		const {
-			item, message, editing, baseUrl, customEmojis, style, archived, user
+			item, message, editing, baseUrl, customEmojis, style, archived
 		} = this.props;
-		const username = item.alias || user.username;
+		const username = item.alias || item.u.username;
 		const isEditing = message._id === item._id && editing;
 		const accessibilityLabel = `Message from ${ username } at ${ moment(item.ts).format(this.props.Message_TimeFormat) }, ${ this.props.item.msg }`;
 

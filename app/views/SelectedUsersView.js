@@ -49,6 +49,14 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	status: {
+		bottom: -2,
+		right: -2,
+		borderWidth: 2,
+		borderRadius: 12,
+		width: 12,
+		height: 12
 	}
 });
 
@@ -261,12 +269,10 @@ export default class SelectedUsersView extends React.Component {
 			type={item.t}
 			baseUrl={this.props.Site_Url}
 			onPress={() => this._onPressItem(item._id, item)}
-			lastMessage={item.lastMessage}
 			id={item.rid.replace(this.props.user.id, '').trim()}
-			_updatedAt={item.roomUpdatedAt}
-			alert={item.alert}
-			unread={item.unread}
-			userMentions={item.userMentions}
+			showLastMessage={false}
+			avatarSize={30}
+			statusStyle={styles.status}
 		/>
 	);
 	renderList = () => (

@@ -27,7 +27,7 @@ const selectServer = function* selectServer({ server }) {
 		yield put(actions.setAllPermissions(RocketChat.parsePermissions(permissions.slice(0, permissions.length))));
 		yield put(connectRequest(server));
 	} catch (e) {
-		alert(e);
+		console.warn('selectServer', e);
 	}
 };
 
@@ -37,7 +37,7 @@ const validateServer = function* validateServer({ server }) {
 		yield call(validate, server);
 		yield put(serverSuccess());
 	} catch (e) {
-		console.log(e);
+		console.warn('validateServer', e);
 		yield put(serverFailure(e));
 	}
 };

@@ -27,7 +27,7 @@ const get = function* get({ room }) {
 		yield RocketChat.loadMissedMessages(room);
 		yield put(messagesSuccess());
 	} catch (err) {
-		console.log(err);
+		console.warn('messagesFailure', err);
 		yield put(messagesFailure(err.status));
 	}
 };

@@ -10,7 +10,11 @@ const getToken = function* getToken() {
 	const user = yield call([AsyncStorage, 'getItem'], `${ RocketChat.TOKEN_KEY }-${ currentServer }`);
 	if (user) {
 		yield put(setToken(JSON.parse(user)));
-		yield call([AsyncStorage, 'setItem'], RocketChat.TOKEN_KEY, JSON.parse(user).token || '');
+		try {
+			yield call([AsyncStorage, 'setItem'], RocketChat.TOKEN_KEY, JSON.parse(user).token || '');
+		} catch (error) {
+			console.warn('getToken', error);
+		}
 		return JSON.parse(user);
 	}
 	return yield put(setToken());
@@ -27,7 +31,7 @@ const test = function* test() {
 		yield all([call(connect, server, user && user.token ? { resume: user.token, ...user.user } : undefined)]);// , put(loginRequest({ resume: user.token }))]);
 	// yield put(connectSuccess(response));
 	} catch (err) {
-		alert(err);
+		console.warn('test', err);
 	// yield put(connectFailure(err.status));
 	}
 };

@@ -34,12 +34,14 @@ import random from '../utils/random';
 	services: state.login.services
 }), dispatch => ({
 	loginSubmit: params => RocketChat.loginWithPassword(params),
+	loginOAuth: params => RocketChat.login(params),
 	open: () => dispatch(open()),
 	close: () => dispatch(close())
 }))
 export default class LoginView extends React.Component {
 	static propTypes = {
 		loginSubmit: PropTypes.func.isRequired,
+		loginOAuth: PropTypes.func.isRequired,
 		open: PropTypes.func.isRequired,
 		close: PropTypes.func.isRequired,
 		navigation: PropTypes.object.isRequired,
@@ -167,14 +169,14 @@ export default class LoginView extends React.Component {
 			showToast('Email or password field is empty');
 			return;
 		}
-
-		await this.props.loginSubmit({ username, password, code });
-		Answers.logLogin('Email', true, { server: this.props.server });
 		Keyboard.dismiss();
-	}
 
-	submitOAuth = (code, credentialToken) => {
-		this.props.loginSubmit({ code, credentialToken });
+		try {
+			await this.props.loginSubmit({ username, password, code });
+			Answers.logLogin('Email', true, { server: this.props.server });
+		} catch (error) {
+			console.warn('LoginView submit', error);
+		}
 	}
 
 	register = () => {
@@ -326,14 +328,12 @@ export default class LoginView extends React.Component {
 									}
 								</View>
 
-								<TouchableOpacity>
-									<Text style={styles.loginTermsText} accessibilityTraits='button'>
-										By proceeding you are agreeing to our
-										<Text style={styles.link} onPress={this.termsService}> Terms of Service </Text>
-										and
-										<Text style={styles.link} onPress={this.privacyPolicy}> Privacy Policy</Text>
-									</Text>
-								</TouchableOpacity>
+								<Text style={styles.loginTermsText}>
+									By proceeding you are agreeing to our
+									<Text style={styles.link} onPress={this.termsService}> Terms of Service </Text>
+									and
+									<Text style={styles.link} onPress={this.privacyPolicy}> Privacy Policy</Text>
+								</Text>
 								{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
 							</View>
 							<Spinner visible={this.props.login.isFetching} textContent='Loading...' textStyle={{ color: '#FFF' }} />
@@ -356,7 +356,7 @@ export default class LoginView extends React.Component {
 							if (this.redirectRegex.test(url)) {
 								const parts = url.split('#');
 								const credentials = JSON.parse(parts[1]);
-								this.props.loginSubmit({ oauth: { ...credentials } });
+								this.props.loginOAuth({ oauth: { ...credentials } });
 								this.setState({ modalVisible: false });
 							}
 						}}

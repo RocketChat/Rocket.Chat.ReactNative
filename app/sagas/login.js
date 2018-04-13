@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native';
-import { put, call, takeLatest, select, all } from 'redux-saga/effects';
+import { put, call, take, takeLatest, select, all } from 'redux-saga/effects';
 
 import * as types from '../actions/actionsTypes';
 import {
@@ -7,9 +7,9 @@ import {
 	loginSubmit,
 	registerRequest,
 	registerIncomplete,
-	loginSuccess,
+	// loginSuccess,
 	loginFailure,
-	logout,
+	// logout,
 	// setToken,
 	registerSuccess,
 	setUsernameRequest,
@@ -22,8 +22,9 @@ import * as NavigationService from '../containers/routes/NavigationService';
 
 const getUser = state => state.login;
 const getServer = state => state.server.server;
+const getIsConnected = state => state.meteor.connected;
 
-const loginCall = args => ((args.resume || args.oauth) ? RocketChat.login(args) : RocketChat.loginWithPassword(args));
+// const loginCall = args => ((args.resume || args.oauth) ? RocketChat.login(args) : RocketChat.loginWithPassword(args));
 const registerCall = args => RocketChat.register(args);
 const setUsernameCall = args => RocketChat.setUsername(args);
 const logoutCall = args => RocketChat.logout(args);
@@ -70,18 +71,18 @@ const saveToken = function* saveToken() {
 	}
 };
 
-const handleLoginRequest = function* handleLoginRequest({ credentials }) {
-	try {
-		// const server = yield select(getServer);
-		const user = yield call(loginCall, credentials);
-		yield put(loginSuccess(user));
-	} catch (err) {
-		if (err.error === 403) {
-			return yield put(logout());
-		}
-		yield put(loginFailure(err));
-	}
-};
+// const handleLoginRequest = function* handleLoginRequest({ credentials }) {
+// 	try {
+// 		// const server = yield select(getServer);
+// 		const user = yield call(loginCall, credentials);
+// 		yield put(loginSuccess(user));
+// 	} catch (err) {
+// 		if (err.error === 403) {
+// 			return yield put(logout());
+// 		}
+// 		yield put(loginFailure(err));
+// 	}
+// };
 
 const handleLoginSubmit = function* handleLoginSubmit({ credentials }) {
 	yield put(loginRequest(credentials));
@@ -140,9 +141,19 @@ const handleForgotPasswordRequest = function* handleForgotPasswordRequest({ emai
 	}
 };
 
+const watchLoginOpen = function* watchLoginOpen() {
+	const isConnected = yield select(getIsConnected);
+	if (!isConnected) {
+		yield take(types.METEOR.SUCCESS);
+	}
+	const sub = yield RocketChat.subscribe('meteor.loginServiceConfiguration');
+	yield take(types.LOGIN.CLOSE);
+	sub.unsubscribe().catch(e => console.warn('watchLoginOpen', e));
+};
+
 const root = function* root() {
 	// yield takeLatest(types.METEOR.SUCCESS, handleLoginWhenServerChanges);
-	yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
+	// yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
 	yield takeLatest(types.LOGIN.SUCCESS, saveToken);
 	yield takeLatest(types.LOGIN.SUBMIT, handleLoginSubmit);
 	yield takeLatest(types.LOGIN.REGISTER_REQUEST, handleRegisterRequest);
@@ -153,5 +164,6 @@ const root = function* root() {
 	yield takeLatest(types.LOGIN.SET_USERNAME_REQUEST, handleSetUsernameRequest);
 	yield takeLatest(types.LOGOUT, handleLogout);
 	yield takeLatest(types.FORGOT_PASSWORD.REQUEST, handleForgotPasswordRequest);
+	yield takeLatest(types.LOGIN.OPEN, watchLoginOpen);
 };
 export default root;

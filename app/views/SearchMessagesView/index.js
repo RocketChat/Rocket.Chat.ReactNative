@@ -53,11 +53,11 @@ export default class SearchMessagesView extends LoggedView {
 			messages = result.messages.map(message => buildMessage(message));
 			this.setState({ messages, searching: false, loadingMore: false });
 		} catch (error) {
-			console.log(error);
 			this._cancel = null;
 			if (error !== 'cancel') {
-				this.setState({ searching: false, loadingMore: false });
+				return this.setState({ searching: false, loadingMore: false });
 			}
+			console.warn('search', error);
 		}
 	}
 

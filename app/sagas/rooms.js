@@ -61,7 +61,7 @@ const handleMessageReceived = function* handleMessageReceived({ message }) {
 			RocketChat.readMessages(room.rid);
 		}
 	} catch (e) {
-		console.log(e);
+		console.warn('handleMessageReceived', e);
 	}
 };
 

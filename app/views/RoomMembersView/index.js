@@ -6,9 +6,8 @@ import ActionSheet from 'react-native-actionsheet';
 
 import LoggedView from '../View';
 import styles from './styles';
-import sharedStyles from '../Styles';
-import Avatar from '../../containers/Avatar';
-import Status from '../../containers/status';
+
+import RoomItem from '../../presentation/RoomItem';
 import Touch from '../../utils/touch';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
@@ -135,7 +134,7 @@ export default class MentionedMessagesView extends LoggedView {
 			await RocketChat.toggleMuteUserInRoom(rid, userLongPressed.username, !userLongPressed.muted);
 			showToast(`User has been ${ userLongPressed.muted ? 'unmuted' : 'muted' }!`);
 		} catch (error) {
-			console.warn(error);
+			console.warn('handleMute', error);
 		}
 	}
 
@@ -166,19 +165,17 @@ export default class MentionedMessagesView extends LoggedView {
 	renderSeparator = () => <View style={styles.separator} />;
 
 	renderItem = ({ item }) => (
-		<Touch
+		<RoomItem
+			name={item.username}
+			type='d'
+			baseUrl={this.props.baseUrl}
 			onPress={() => this.onPressUser(item)}
 			onLongPress={() => this.onLongPressUser(item)}
-			underlayColor='#ffffff'
-			activeOpacity={0.5}
-			accessibilityLabel={`Start a conversation with ${ item.username }`}
-			accessibilityTraits='button'
-		>
-			<View style={styles.item}>
-				<Avatar text={item.username} size={30} type='d' style={styles.avatar}>{<Status style={[sharedStyles.status, styles.status]} id={item._id} />}</Avatar>
-				<Text style={styles.username}>{item.username}</Text>
-			</View>
-		</Touch>
+			id={item._id}
+			showLastMessage={false}
+			avatarSize={30}
+			statusStyle={styles.status}
+		/>
 	)
 
 	render() {
