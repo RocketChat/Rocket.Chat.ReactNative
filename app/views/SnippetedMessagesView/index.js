@@ -85,7 +85,7 @@ export default class SnippetedMessagesView extends LoggedView {
 			reactions={item.reactions}
 			user={this.props.user}
 			baseUrl={this.props.baseUrl}
-			Message_TimeFormat='MMMM Do YYYY, h:mm:ss a'
+			customTimeFormat='MMMM Do YYYY, h:mm:ss a'
 			onLongPress={() => {}}
 		/>
 	);

@@ -86,6 +86,7 @@ export default class Message extends React.Component {
 		reactions: PropTypes.any.isRequired,
 		baseUrl: PropTypes.string.isRequired,
 		Message_TimeFormat: PropTypes.string.isRequired,
+		customTimeFormat: PropTypes.string,
 		message: PropTypes.object.isRequired,
 		user: PropTypes.object.isRequired,
 		editing: PropTypes.bool,
@@ -151,6 +152,11 @@ export default class Message extends React.Component {
 		Vibration.vibrate(50);
 	}
 
+	get timeFormat() {
+		const { customTimeFormat, Message_TimeFormat } = this.props;
+		return customTimeFormat || Message_TimeFormat;
+	}
+
 	parseMessage = () => JSON.parse(JSON.stringify(this.props.item));
 
 	isInfoMessage() {
@@ -202,7 +208,7 @@ export default class Message extends React.Component {
 			return <Video file={file} baseUrl={baseUrl} user={user} />;
 		}
 
-		return <Reply attachment={file} timeFormat={this.props.Message_TimeFormat} />;
+		return <Reply attachment={file} timeFormat={this.timeFormat} />;
 	}
 
 	renderMessageContent() {
@@ -271,7 +277,7 @@ export default class Message extends React.Component {
 		} = this.props;
 		const username = item.alias || item.u.username;
 		const isEditing = message._id === item._id && editing;
-		const accessibilityLabel = `Message from ${ username } at ${ moment(item.ts).format(this.props.Message_TimeFormat) }, ${ this.props.item.msg }`;
+		const accessibilityLabel = `Message from ${ username } at ${ moment(item.ts).format(this.timeFormat) }, ${ this.props.item.msg }`;
 
 		return (
 			<TouchableHighlight
@@ -296,7 +302,7 @@ export default class Message extends React.Component {
 							<User
 								onPress={this._onPress}
 								item={item}
-								Message_TimeFormat={this.props.Message_TimeFormat}
+								Message_TimeFormat={this.timeFormat}
 								baseUrl={baseUrl}
 							/>
 							{this.renderMessageContent()}

@@ -33,8 +33,7 @@ const styles = StyleSheet.create({
 });
 
 @connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	Message_TimeFormat: state.settings.Message_TimeFormat
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }))
 export default class User extends React.PureComponent {
 	static propTypes = {
