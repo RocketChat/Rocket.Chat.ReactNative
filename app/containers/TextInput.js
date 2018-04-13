@@ -39,7 +39,9 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		right: 0,
 		padding: 10,
-		color: 'rgba(0,0,0,.45)'
+		color: 'rgba(0,0,0,.45)',
+		height: 56,
+		textAlignVertical: 'center'
 	}
 });
 
