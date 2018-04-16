@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import ListServerView from '../../views/ListServerView';
 import NewServerView from '../../views/NewServerView';
+import LoginSignupView from '../../views/LoginSignupView';
 import LoginView from '../../views/LoginView';
 import RegisterView from '../../views/RegisterView';
 
@@ -12,32 +13,47 @@ import TermsServiceView from '../../views/TermsServiceView';
 import PrivacyPolicyView from '../../views/PrivacyPolicyView';
 import ForgotPasswordView from '../../views/ForgotPasswordView';
 
+const MainStack = StackNavigator({
+	ListServer: {
+		screen: ListServerView,
+		navigationOptions({ navigation }) {
+			return {
+				title: 'Servers',
+				headerRight: (
+					<TouchableOpacity
+						onPress={() => navigation.navigate({ key: 'AddServer', routeName: 'AddServer' })}
+						style={{ width: 50, alignItems: 'center' }}
+						accessibilityLabel='Add server'
+						accessibilityTraits='button'
+					>
+						<Icon name='plus' size={16} />
+					</TouchableOpacity>
+				)
+			};
+		}
+	},
+	AddServer: {
+		screen: NewServerView,
+		navigationOptions: {
+			title: 'New server',
+			headerTintColor: '#292E35'
+		}
+	},
+	LoginSignup: {
+		screen: LoginSignupView,
+		navigationOptions: {
+			title: 'Login SIGNUP',
+			headerTintColor: '#292E35'
+		}
+	}
+}, {
+	headerMode: 'screen'
+});
+
 const PublicRoutes = StackNavigator(
 	{
-		ListServer: {
-			screen: ListServerView,
-			navigationOptions({ navigation }) {
-				return {
-					title: 'Servers',
-					headerRight: (
-						<TouchableOpacity
-							onPress={() => navigation.navigate({ key: 'AddServer', routeName: 'AddServer' })}
-							style={{ width: 50, alignItems: 'center' }}
-							accessibilityLabel='Add server'
-							accessibilityTraits='button'
-						>
-							<Icon name='plus' size={16} />
-						</TouchableOpacity>
-					)
-				};
-			}
-		},
-		AddServer: {
-			screen: NewServerView,
-			navigationOptions: {
-				title: 'New server',
-				headerTintColor: '#292E35'
-			}
+		Main: {
+			screen: MainStack
 		},
 		Login: {
 			screen: LoginView,
@@ -76,9 +92,8 @@ const PublicRoutes = StackNavigator(
 		}
 	},
 	{
-		navigationOptions: {
-			headerTitleAllowFontScaling: false
-		}
+		mode: 'modal',
+		headerMode: 'none'
 	}
 );
 
