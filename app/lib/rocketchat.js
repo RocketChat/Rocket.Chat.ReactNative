@@ -18,13 +18,13 @@ import { starredMessagesReceived, starredMessageUnstarred } from '../actions/sta
 import { pinnedMessagesReceived, pinnedMessageUnpinned } from '../actions/pinnedMessages';
 import { mentionedMessagesReceived } from '../actions/mentionedMessages';
 import { snippetedMessagesReceived } from '../actions/snippetedMessages';
-import { roomFilesReceived, someoneTyping } from '../actions/roomFiles';
+import { roomFilesReceived } from '../actions/roomFiles';
+import { someoneTyping, roomMessageReceived } from '../actions/room';
 import { setRoles } from '../actions/roles';
 import Ddp from './ddp';
 
 import normalizeMessage from './methods/helpers/normalizeMessage';
 
-import { roomMessageReceived } from '../actions/room';
 import subscribeRooms from './methods/subscriptions/rooms';
 import subscribeRoom from './methods/subscriptions/room';
 
