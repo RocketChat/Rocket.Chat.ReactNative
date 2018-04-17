@@ -11,14 +11,10 @@ const types = {
 };
 
 async function loadMessagesForRoomRest({ rid: roomId, latest, t }) {
-	try {
-		const { token, id } = this.ddp._login;
-		const server = this.ddp.url.replace('ws', 'http');
-		const data = await get({ token, id, server }, `${ types[t] }.history`, { roomId, latest });
-		return data.messages;
-	} catch (e) {
-		console.warn('loadMessagesForRoomRest', e);
-	}
+	const { token, id } = this.ddp._login;
+	const server = this.ddp.url.replace('ws', 'http');
+	const data = await get({ token, id, server }, `${ types[t] }.history`, { roomId, latest });
+	return data.messages;
 }
 
 async function loadMessagesForRoomDDP(...args) {
@@ -49,15 +45,20 @@ async function loadMessagesForRoomDDP(...args) {
 	// });
 }
 
-export default async function(...args) {
+export default async function loadMessagesForRoom(...args) {
+	console.log('aqui');
 	const { database: db } = database;
+	console.log('database', db);
+
 	const data = (await (this.ddp.status ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args))).map(buildMessage);
 	if (data) {
-		try {
-			InteractionManager.runAfterInteractions(() => db.write(() => data.forEach(message => db.create('messages', message, true))));
-		} catch (e) {
-			console.warn('loadMessagesForRoom', e);
-		}
+		InteractionManager.runAfterInteractions(() => {
+			try {
+				db.write(() => data.forEach(message => db.create('messages', message, true)));
+			} catch (e) {
+				console.warn('loadMessagesForRoom', e);
+			}
+		});
 	}
 	return data;
 }

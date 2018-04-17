@@ -281,6 +281,45 @@ const schema = [
 	rolesSchema,
 	userMutedInRoomSchema
 ];
+
+// class DebouncedDb {
+// 	constructor(db) {
+// 		this.database = db;
+// 	}
+// 	deleteAll(...args) {
+// 		return this.database.write(() => this.database.deleteAll(...args));
+// 	}
+// 	delete(...args) {
+// 		return this.database.delete(...args);
+// 	}
+// 	write(fn) {
+// 		return fn();
+// 	}
+// 	create(...args) {
+// 		this.queue = this.queue || [];
+// 		if (this.timer) {
+// 			clearTimeout(this.timer);
+// 			this.timer = null;
+// 		}
+// 		this.timer = setTimeout(() => {
+// 			alert(this.queue.length);
+// 			this.database.write(() => {
+// 				this.queue.forEach(({ db, args }) => this.database.create(...args));
+// 			});
+//
+// 			this.timer = null;
+// 			return this.roles = [];
+// 		}, 1000);
+//
+// 		this.queue.push({
+// 			db: this.database,
+// 			args
+// 		});
+// 	}
+// 	objects(...args) {
+// 		return this.database.objects(...args);
+// 	}
+// }
 class DB {
 	databases = {
 		serversDB: new Realm({

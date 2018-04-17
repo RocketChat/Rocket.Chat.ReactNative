@@ -6,16 +6,11 @@ import database from '../realm';
 
 
 async function loadMissedMessagesRest({ rid: roomId, lastOpen: lastUpdate }) {
-	console.log(lastUpdate);
-	try {
-		const { token, id } = this.ddp._login;
-		const server = this.ddp.url.replace('ws', 'http');
-		const { result } = await get({ token, id, server }, 'chat.syncMessages', { roomId, lastUpdate });
-		// TODO: api fix
-		return result.updated || result.messages;
-	} catch (e) {
-		console.log(e);
-	}
+	const { token, id } = this.ddp._login;
+	const server = this.ddp.url.replace('ws', 'http');
+	const { result } = await get({ token, id, server }, 'chat.syncMessages', { roomId, lastUpdate });
+	// TODO: api fix
+	return result.updated || result.messages;
 }
 
 async function loadMissedMessagesDDP(...args) {
@@ -25,7 +20,6 @@ async function loadMissedMessagesDDP(...args) {
 		const data = await this.ddp.call('messages/get', rid, { lastUpdate: new Date(lastUpdate) });
 		return data.updated || data.messages;
 	} catch (e) {
-		alert(e);
 		return loadMissedMessagesRest.call(this, ...args);
 	}
 
@@ -46,16 +40,18 @@ async function loadMissedMessagesDDP(...args) {
 
 export default async function(...args) {
 	const { database: db } = database;
+
 	const data = (await (this.ddp.status ? loadMissedMessagesDDP.call(this, ...args) : loadMissedMessagesRest.call(this, ...args)));
+
 	if (data) {
-		try {
-			InteractionManager.runAfterInteractions(() => {
-				const messages = data.map(buildMessage);
-				db.write(() => messages.forEach(message => db.create('messages', message, true)));
-			});
-		} catch (e) {
-			alert(e);
-		}
+		data.forEach(buildMessage);
+		InteractionManager.runAfterInteractions(() => {
+			try {
+				db.write(() => data.forEach(message => db.create('messages', message, true)));
+			} catch (e) {
+				console.warn('loadMessagesForRoom', e);
+			}
+		});
 	}
 	return data;
 }

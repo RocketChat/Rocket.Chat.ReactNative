@@ -101,6 +101,7 @@
     "jest": "^22.4.3",
     "jest-cli": "^22.4.3",
     "react-dom": "^16.3.1",
+    "react-native-bundle-visualizer": "^1.2.0",
     "react-test-renderer": "^16.3.1",
     "reactotron-react-native": "^1.14.0",
     "reactotron-redux": "^1.13.0",
