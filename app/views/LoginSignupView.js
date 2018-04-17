@@ -1,23 +1,25 @@
 import React from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import PropTypes from 'prop-types';
-import { Keyboard, Text, View, ScrollView, TouchableOpacity, SafeAreaView, WebView, Platform, LayoutAnimation } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, SafeAreaView, WebView, Platform, LayoutAnimation, Image } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Base64 } from 'js-base64';
 import Modal from 'react-native-modal';
-import { Answers } from 'react-native-fabric';
+import TinyColor from 'tinycolor2';
 
 import RocketChat from '../lib/rocketchat';
 import { open, close } from '../actions/login';
-import KeyboardView from '../presentation/KeyboardView';
-import TextInput from '../containers/TextInput';
 
 import styles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
-import { showToast } from '../utils/info';
 import random from '../utils/random';
+import Touch from '../utils/touch';
+import { COLOR_BUTTON_PRIMARY, COLOR_LOGIN_BACKGROUND } from '../constants/colors';
+
+const userAgentAndroid = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1';
+const userAgent = Platform.OS === 'ios' ? 'UserAgent' : userAgentAndroid;
 
 @connect(state => ({
 	server: state.server.server,
@@ -33,14 +35,12 @@ import random from '../utils/random';
 	Accounts_OAuth_Twitter: state.settings.Accounts_OAuth_Twitter,
 	services: state.login.services
 }), dispatch => ({
-	loginSubmit: params => RocketChat.loginWithPassword(params),
 	loginOAuth: params => RocketChat.login(params),
 	open: () => dispatch(open()),
 	close: () => dispatch(close())
 }))
 export default class LoginView extends React.Component {
 	static propTypes = {
-		loginSubmit: PropTypes.func.isRequired,
 		loginOAuth: PropTypes.func.isRequired,
 		open: PropTypes.func.isRequired,
 		close: PropTypes.func.isRequired,
@@ -59,18 +59,13 @@ export default class LoginView extends React.Component {
 		services: PropTypes.object
 	}
 
-	static navigationOptions = () => ({
-		title: 'Login'
-	});
-
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			username: '',
-			password: '',
 			modalVisible: false,
-			oAuthUrl: ''
+			oAuthUrl: '',
+			showSocialButtons: false
 		};
 		this.redirectRegex = new RegExp(`(?=.*(${ this.props.server }))(?=.*(credentialToken))(?=.*(credentialSecret))`, 'g');
 	}
@@ -163,116 +158,57 @@ export default class LoginView extends React.Component {
 		this.setState({ oAuthUrl, modalVisible: true });
 	}
 
-	submit = async() => {
-		const {	username, password, code } = this.state;
-		if (username.trim() === '' || password.trim() === '') {
-			showToast('Email or password field is empty');
-			return;
-		}
-		Keyboard.dismiss();
-
-		try {
-			await this.props.loginSubmit({ username, password, code });
-			Answers.logLogin('Email', true, { server: this.props.server });
-		} catch (error) {
-			console.warn('LoginView submit', error);
-		}
-	}
-
 	register = () => {
 		this.props.navigation.navigate({ key: 'Register', routeName: 'Register' });
-	}
-
-	termsService = () => {
-		this.props.navigation.navigate({ key: 'TermsService', routeName: 'TermsService' });
-	}
-
-	privacyPolicy = () => {
-		this.props.navigation.navigate({ key: 'PrivacyPolicy', routeName: 'PrivacyPolicy' });
-	}
-
-	forgotPassword = () => {
-		this.props.navigation.navigate({ key: 'ForgotPassword', routeName: 'ForgotPassword' });
 	}
 
 	closeOAuth = () => {
 		this.setState({ modalVisible: false });
 	}
 
-	renderTOTP = () => {
-		if (/totp/ig.test(this.props.login.error.error)) {
-			return (
-				<TextInput
-					inputRef={ref => this.codeInput = ref}
-					style={styles.input_white}
-					onChangeText={code => this.setState({ code })}
-					keyboardType='numeric'
-					returnKeyType='done'
-					autoCapitalize='none'
-					onSubmitEditing={this.submit}
-					placeholder='Code'
-				/>
-			);
-		}
-		return null;
+	toggleSocialButtons = () => {
+		this.setState({ showSocialButtons: !this.state.showSocialButtons });
 	}
 
 	render() {
 		return (
 			[
-				<KeyboardView
-					contentContainerStyle={styles.container}
-					keyboardVerticalOffset={128}
+				<ScrollView
 					key='login-view'
+					style={styles.container}
+					{...scrollPersistTaps}
 				>
-					<ScrollView
-						style={styles.loginView}
-						{...scrollPersistTaps}
-					>
-						<SafeAreaView>
-							<View style={styles.formContainer}>
-								{/* <TextInput
-									style={styles.input_white}
-									onChangeText={username => this.setState({ username })}
-									keyboardType='email-address'
-									returnKeyType='next'
-									onSubmitEditing={() => { this.password.focus(); }}
-									placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email or username'}
-								/>
+					<SafeAreaView>
+						<View style={{ alignItems: 'center', justifyContent: 'center' }}>
+							<Image
+								source={require('../../static/images/logo.png')}
+								style={styles.loginLogo}
+								resizeMode='center'
+							/>
+							<Text style={[styles.loginText, { color: '#81848A', fontSize: 20 }]}>Prepare to take off with</Text>
+							<Text style={[styles.loginText, { fontSize: 20 }]}>the ultimate chat platform</Text>
+							<Image source={{ uri: 'https://via.placeholder.com/200x200' }} style={{ width: 200, height: 200, marginVertical: 10 }} />
+							<Touch
+								style={[styles.loginButtonContainer, styles.marginBottom10, styles.loginButtonPrimary]}
+								onPress={() => this.props.navigation.navigate({ key: 'Login', routeName: 'Login' })}
+								accessibilityTraits='button'
+								underlayColor={TinyColor(COLOR_BUTTON_PRIMARY).darken(20)}
+							>
+								<Text style={styles.loginButtonText}>I have an account</Text>
+							</Touch>
+							<Touch
+								style={[styles.loginButtonContainer, styles.marginBottom10]}
+								onPress={() => this.props.navigation.navigate({ key: 'Register', routeName: 'Register' })}
+								accessibilityTraits='button'
+								underlayColor={TinyColor('white').darken(10)}
+							>
+								<Text style={[styles.loginButtonText, { color: '#292E35' }]}>Create account</Text>
+							</Touch>
 
-								<TextInput
-									inputRef={(e) => { this.password = e; }}
-									style={styles.input_white}
-									onChangeText={password => this.setState({ password })}
-									secureTextEntry
-									returnKeyType='done'
-									onSubmitEditing={this.submit}
-									placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
-								/>
-
-								{this.renderTOTP()} */}
-
-								<TouchableOpacity
-									style={styles.buttonContainer}
-									// onPress={this.submit}
-									onPress={() => this.props.navigation.navigate('Login')}
-								>
-									<Text style={styles.button} accessibilityTraits='button'>LOGIN</Text>
-								</TouchableOpacity>
-
-								<View style={styles.loginSecondaryButtons}>
-									<TouchableOpacity
-										style={styles.buttonContainer_inverted}
-										onPress={() => this.props.navigation.navigate('Register')}
-									>
-										<Text style={styles.button_inverted} accessibilityTraits='button'>REGISTER</Text>
-									</TouchableOpacity>
-
-									{/* <TouchableOpacity style={styles.buttonContainer_inverted} onPress={this.forgotPassword}>
-										<Text style={styles.button_inverted} accessibilityTraits='button'>FORGOT MY PASSWORD</Text>
-									</TouchableOpacity> */}
-								</View>
-
+							<View style={{ backgroundColor: '#dddddd', width: '100%', borderRadius: 2, padding: 16, paddingTop: 20, marginBottom: 40 }}>
+								<Text style={[styles.loginButtonText, { color: '#292E35', textAlign: 'left' }]}>
+									Or continue using Social accounts
+								</Text>
 								<View style={styles.loginOAuthButtons} key='services'>
 									{this.props.Accounts_OAuth_Facebook && this.props.services.facebook &&
 										<TouchableOpacity
@@ -332,10 +268,10 @@ export default class LoginView extends React.Component {
 									}
 								</View>
 							</View>
-							<Spinner visible={this.props.login.isFetching} textContent='Loading...' textStyle={{ color: '#FFF' }} />
-						</SafeAreaView>
-					</ScrollView>
-				</KeyboardView>,
+						</View>
+						<Spinner visible={this.props.login.isFetching} textContent='Loading...' textStyle={{ color: '#FFF' }} />
+					</SafeAreaView>
+				</ScrollView>,
 				<Modal
 					key='modal-oauth'
 					visible={this.state.modalVisible}
@@ -346,7 +282,7 @@ export default class LoginView extends React.Component {
 				>
 					<WebView
 						source={{ uri: this.state.oAuthUrl }}
-						userAgent={Platform.OS === 'ios' ? 'UserAgent' : 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1'}
+						userAgent={userAgent}
 						onNavigationStateChange={(webViewState) => {
 							const url = decodeURIComponent(webViewState.url);
 							if (this.redirectRegex.test(url)) {

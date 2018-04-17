@@ -1,16 +1,16 @@
 import React from 'react';
-
-import Spinner from 'react-native-loading-spinner-overlay';
-
 import PropTypes from 'prop-types';
-import { Keyboard, Text, TextInput, View, TouchableOpacity, SafeAreaView } from 'react-native';
+import Spinner from 'react-native-loading-spinner-overlay';
+import { Keyboard, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as loginActions from '../actions/login';
-import KeyboardView from '../presentation/KeyboardView';
 
+import * as loginActions from '../actions/login';
+import TextInput from '../containers/TextInput';
+import KeyboardView from '../presentation/KeyboardView';
 import styles from './Styles';
 import { showToast } from '../utils/info';
+import CloseModalButton from '../containers/CloseModalButton';
 
 const placeholderTextColor = 'rgba(255,255,255,.2)';
 
@@ -37,21 +37,21 @@ class RegisterView extends React.Component {
 		};
 	}
 
-	_valid() {
+	valid() {
 		const {
 			name, email, password, confirmPassword
 		} = this.state;
 		return name.trim() && email.trim() &&
 			password && confirmPassword && password === confirmPassword;
 	}
-	_invalidEmail() {
-		return this.props.login.failure && /Email/.test(this.props.login.error.reason);
+	invalidEmail() {
+		return this.props.login.failure && /Email/.test(this.props.login.error.reason) ? this.props.login.error : {};
 	}
 	submit = () => {
 		const {
 			name, email, password, code
 		} = this.state;
-		if (!this._valid()) {
+		if (!this.valid()) {
 			showToast('Some field is invalid or empty');
 			return;
 		}
@@ -64,6 +64,7 @@ class RegisterView extends React.Component {
 	usernameSubmit = () => {
 		const { username } = this.state;
 		if (!username) {
+			showToast('Username is empty');
 			return;
 		}
 
@@ -76,55 +77,47 @@ class RegisterView extends React.Component {
 			return null;
 		}
 		return (
-			<View style={styles.formContainer}>
+			<View>
 				<TextInput
-					ref={(e) => { this.name = e; }}
-					style={styles.input_white}
-					onChangeText={name => this.setState({ name })}
-					autoCorrect={false}
-					autoFocus
-					returnKeyType='next'
-					autoCapitalize='none'
-					underlineColorAndroid='transparent'
-					onSubmitEditing={() => { this.email.focus(); }}
+					inputRef={(e) => { this.name = e; }}
+					label={this.props.Accounts_NamePlaceholder || 'Name'}
 					placeholder={this.props.Accounts_NamePlaceholder || 'Name'}
-				/>
-
-				<TextInput
-					ref={(e) => { this.email = e; }}
-					style={[styles.input_white, this._invalidEmail() ? { borderColor: 'red' } : {}]}
-					onChangeText={email => this.setState({ email })}
-					keyboardType='email-address'
-					autoCorrect={false}
 					returnKeyType='next'
-					autoCapitalize='none'
-					underlineColorAndroid='transparent'
-					onSubmitEditing={() => { this.password.focus(); }}
+					onChangeText={name => this.setState({ name })}
+					onSubmitEditing={() => { this.email.focus(); }}
+				/>
+				<TextInput
+					inputRef={(e) => { this.email = e; }}
+					label={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email'}
 					placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email'}
-				/>
-				<TextInput
-					ref={(e) => { this.password = e; }}
-					style={styles.input_white}
-					onChangeText={password => this.setState({ password })}
-					secureTextEntry
-					autoCorrect={false}
 					returnKeyType='next'
-					autoCapitalize='none'
-					underlineColorAndroid='transparent'
-					onSubmitEditing={() => { this.confirmPassword.focus(); }}
-					placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
+					keyboardType='email-address'
+					onChangeText={email => this.setState({ email })}
+					onSubmitEditing={() => { this.password.focus(); }}
+					error={this.invalidEmail()}
 				/>
 				<TextInput
-					ref={(e) => { this.confirmPassword = e; }}
-					style={[styles.input_white, this.state.password && this.state.confirmPassword && this.state.confirmPassword !== this.state.password ? { borderColor: 'red' } : {}]}
-					onChangeText={confirmPassword => this.setState({ confirmPassword })}
+					inputRef={(e) => { this.password = e; }}
+					label={this.props.Accounts_PasswordPlaceholder || 'Password'}
+					placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
+					returnKeyType='next'
 					secureTextEntry
-					autoCorrect={false}
-					returnKeyType='done'
-					autoCapitalize='none'
-					underlineColorAndroid='transparent'
-					onSubmitEditing={this.submit}
+					onChangeText={password => this.setState({ password })}
+					onSubmitEditing={() => { this.confirmPassword.focus(); }}
+				/>
+				<TextInput
+					inputRef={(e) => { this.confirmPassword = e; }}
+					inputStyle={
+						this.state.password &&
+						this.state.confirmPassword &&
+						this.state.confirmPassword !== this.state.password ? { borderColor: 'red' } : {}
+					}
+					label={this.props.Accounts_RepeatPasswordPlaceholder || 'Repeat Password'}
 					placeholder={this.props.Accounts_RepeatPasswordPlaceholder || 'Repeat Password'}
+					returnKeyType='done'
+					secureTextEntry
+					onChangeText={confirmPassword => this.setState({ confirmPassword })}
+					onSubmitEditing={this.submit}
 				/>
 
 				<TouchableOpacity
@@ -132,7 +125,7 @@ class RegisterView extends React.Component {
 					onPress={this.submit}
 				>
 					<Text
-						style={[styles.button, this._valid() ? {}
+						style={[styles.button, this.valid() ? {}
 							: { color: placeholderTextColor }
 						]}
 						accessibilityTraits='button'
@@ -150,17 +143,14 @@ class RegisterView extends React.Component {
 			return null;
 		}
 		return (
-			<View style={styles.formContainer}>
+			<View>
 				<TextInput
-					ref={(e) => { this.username = e; }}
-					style={styles.input_white}
-					onChangeText={username => this.setState({ username })}
-					autoCorrect={false}
-					returnKeyType='next'
-					autoCapitalize='none'
-					underlineColorAndroid='transparent'
-					onSubmitEditing={() => { this.usernameSubmit(); }}
+					inputRef={(e) => { this.username = e; }}
+					label={this.props.Accounts_UsernamePlaceholder || 'Username'}
 					placeholder={this.props.Accounts_UsernamePlaceholder || 'Username'}
+					returnKeyType='done'
+					onChangeText={username => this.setState({ username })}
+					onSubmitEditing={() => { this.usernameSubmit(); }}
 				/>
 
 				<TouchableOpacity
@@ -180,6 +170,8 @@ class RegisterView extends React.Component {
 			<KeyboardView contentContainerStyle={styles.container}>
 				<SafeAreaView>
 					<View style={styles.loginView}>
+						<CloseModalButton navigation={this.props.navigation} />
+						<Text style={[styles.loginText, styles.loginTitle]}>Sign Up</Text>
 						{this._renderRegister()}
 						{this._renderUsername()}
 						<Spinner visible={this.props.login.isFetching} textContent='Loading...' textStyle={{ color: '#FFF' }} />

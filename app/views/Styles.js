@@ -1,13 +1,11 @@
-import { StyleSheet, Dimensions, Platform } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
-import { COLOR_DANGER } from '../constants/colors';
+import { COLOR_DANGER, COLOR_BUTTON_PRIMARY, COLOR_TEXT } from '../constants/colors';
 
 export default StyleSheet.create({
 	container: {
 		backgroundColor: 'white',
-		flex: 1
-	},
-	loginView: {
+		flex: 1,
 		padding: 20
 	},
 	view: {
@@ -27,22 +25,6 @@ export default StyleSheet.create({
 	defaultViewBackground: {
 		backgroundColor: '#fff'
 	},
-	logoContainer: {
-		alignItems: 'center',
-		justifyContent: 'center',
-		flex: 1
-	},
-	loginLogo: {
-		width: Dimensions.get('window').width - 150,
-		height: Dimensions.get('window').width - 150,
-		resizeMode: 'contain'
-	},
-	registerLogo: {
-		width: Dimensions.get('window').width - 40,
-		height: 100,
-		resizeMode: 'contain'
-	},
-	formContainer: {},
 	label: {
 		lineHeight: 40,
 		height: 40,
@@ -64,7 +46,6 @@ export default StyleSheet.create({
 		marginBottom: 20
 	},
 	input: {
-		height: 45,
 		marginBottom: 20,
 		borderRadius: 2,
 		// padding: 14,
@@ -74,17 +55,17 @@ export default StyleSheet.create({
 		borderColor: '#e1e5e8',
 		color: 'white'
 	},
-	input_white: {
-		paddingVertical: 12,
-		marginBottom: 20,
-		borderRadius: 2,
-		// padding: 14,
-		paddingHorizontal: 10,
-		borderWidth: 2,
-		backgroundColor: 'white',
-		borderColor: 'rgba(0,0,0,.15)',
-		color: 'black'
-	},
+	// input_white: {
+	// 	paddingVertical: 12,
+	// 	marginBottom: 20,
+	// 	borderRadius: 2,
+	// 	// padding: 14,
+	// 	paddingHorizontal: 10,
+	// 	borderWidth: 2,
+	// 	backgroundColor: 'white',
+	// 	borderColor: 'rgba(0,0,0,.15)',
+	// 	color: 'black'
+	// },
 	buttonContainerLastChild: {
 		marginBottom: 40
 	},
@@ -106,13 +87,11 @@ export default StyleSheet.create({
 	button: {
 		textAlign: 'center',
 		color: 'white',
-		borderRadius: 2,
 		fontWeight: '700'
 	},
 	button_white: {
 		textAlign: 'center',
 		color: 'white',
-		borderRadius: 2,
 		fontWeight: '700'
 	},
 	button_inverted: {
@@ -233,5 +212,51 @@ export default StyleSheet.create({
 	},
 	opacity5: {
 		opacity: 0.5
+	},
+	marginBottom10: {
+		marginBottom: 10
+	},
+
+	textColor: {
+		color: COLOR_TEXT
+	},
+	loginButtonContainer: {
+		paddingHorizontal: 15,
+		paddingVertical: 10,
+		borderRadius: 2
+	},
+	loginButtonPrimary: {
+		backgroundColor: COLOR_BUTTON_PRIMARY
+	},
+	loginButtonText: {
+		textAlign: 'center',
+		color: 'white',
+		fontWeight: '700'
+	},
+	loginText: {
+		fontWeight: '700',
+		color: COLOR_TEXT
+	},
+	loginTitle: {
+		fontSize: 20,
+		marginVertical: 25
+	},
+	loginLogo: {
+		width: 50,
+		height: 50,
+		marginVertical: 25
+	},
+	loginInput: {
+		backgroundColor: '#1D2025',
+		color: '#BABEC0',
+		fontWeight: '700',
+		borderRadius: 4,
+		borderWidth: 0
+	},
+	loginInputLabel: {
+		color: '#BABEC0',
+		marginBottom: 10,
+		fontSize: 14,
+		fontWeight: '700'
 	}
 });

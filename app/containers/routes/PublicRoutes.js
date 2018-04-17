@@ -42,8 +42,7 @@ const MainStack = StackNavigator({
 	LoginSignup: {
 		screen: LoginSignupView,
 		navigationOptions: {
-			title: 'Login SIGNUP',
-			headerTintColor: '#292E35'
+			header: null
 		}
 	}
 }, {

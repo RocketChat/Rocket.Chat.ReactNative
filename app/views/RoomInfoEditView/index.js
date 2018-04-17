@@ -258,10 +258,7 @@ export default class RoomInfoEditView extends LoggedView {
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>
-				<ScrollView
-					style={sharedStyles.loginView}
-					{...scrollPersistTaps}
-				>
+				<ScrollView {...scrollPersistTaps}>
 					<SafeAreaView>
 						<View style={sharedStyles.formContainer}>
 							<RCTextInput
