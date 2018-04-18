@@ -150,13 +150,17 @@ const handleForgotPasswordRequest = function* handleForgotPasswordRequest({ emai
 };
 
 const watchLoginOpen = function* watchLoginOpen() {
-	const isConnected = yield select(getIsConnected);
-	if (!isConnected) {
-		yield take(types.METEOR.SUCCESS);
+	try {
+		const isConnected = yield select(getIsConnected);
+		if (!isConnected) {
+			yield take(types.METEOR.SUCCESS);
+		}
+		const sub = yield RocketChat.subscribe('meteor.loginServiceConfiguration');
+		yield take(types.LOGIN.CLOSE);
+		sub.unsubscribe().catch(e => console.warn('watchLoginOpen unsubscribe', e));
+	} catch (error) {
+		console.warn('watchLoginOpen', error);
 	}
-	const sub = yield RocketChat.subscribe('meteor.loginServiceConfiguration');
-	yield take(types.LOGIN.CLOSE);
-	sub.unsubscribe().catch(e => console.warn('watchLoginOpen', e));
 };
 
 const root = function* root() {

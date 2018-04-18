@@ -118,17 +118,23 @@ export default class ListServerView extends LoggedView {
 		// zeroconf.removeListener('update', this.updateState);
 	}
 
+	selectAndNavigateTo = (server) => {
+		const { selectServer, navigation } = this.props;
+		selectServer(server);
+		navigation.navigate({ key: 'LoginSignup', routeName: 'LoginSignup' });
+	}
+
 	jumpToSelectedServer() {
-		const { server, selectServer } = this.props;
+		const { server } = this.props;
 		if (server) {
 			setTimeout(() => {
-				selectServer(server);
+				this.selectAndNavigateTo(server);
 			}, 300);
 		}
 	}
 
 	onPressItem = (item) => {
-		this.props.selectServer(item.id);
+		this.selectAndNavigateTo(item.id);
 	}
 
 	getState = () => {
