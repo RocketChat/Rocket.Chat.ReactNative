@@ -76,7 +76,7 @@ export default class LoginView extends React.Component {
 				keyboardVerticalOffset={128}
 				key='login-view'
 			>
-				<ScrollView {...scrollPersistTaps}>
+				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
 					<SafeAreaView>
 						<CloseModalButton navigation={this.props.navigation} />
 						<Text style={[styles.loginText, styles.loginTitle]}>Login</Text>
@@ -105,14 +105,15 @@ export default class LoginView extends React.Component {
 
 						<View style={{ alignItems: 'flex-start' }}>
 							<Touch
-								style={[styles.loginButtonContainer, styles.marginBottom10, styles.loginButtonPrimary]}
 								onPress={this.submit}
 								accessibilityTraits='button'
-								underlayColor={TinyColor(COLOR_BUTTON_PRIMARY).darken(20)}
+								underlayColor={TinyColor(COLOR_BUTTON_PRIMARY).lighten(50)}
 							>
-								<Text style={styles.loginButtonText}>Login</Text>
+								<View style={[styles.loginButtonContainer, styles.loginButtonPrimary]}>
+									<Text style={styles.loginButtonText}>Login</Text>
+								</View>
 							</Touch>
-							<Text style={[styles.loginText, { marginTop: 10 }]}>New in Rocket.Chat? &nbsp;
+							<Text style={[styles.loginText, { marginTop: 20 }]}>New in Rocket.Chat? &nbsp;
 								<Text
 									style={{ color: COLOR_BUTTON_PRIMARY }}
 									onPress={() => this.props.navigation.navigate('Register')}

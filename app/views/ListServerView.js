@@ -46,18 +46,16 @@ const styles = StyleSheet.create({
 		paddingLeft: 14,
 		color: '#888'
 	},
-	serverItemButton: {
-		flex: 1,
+	serverItem: {
+		flexDirection: 'row',
+		alignItems: 'center',
 		backgroundColor: '#fff',
 		padding: 14
 	},
-	serverItemContainer: {
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
-
 	listItem: {
-		color: '#666', flexGrow: 1, lineHeight: 30
+		color: '#666',
+		flexGrow: 1,
+		lineHeight: 30
 	},
 	serverChecked: {
 		flexGrow: 0
@@ -173,12 +171,11 @@ export default class ListServerView extends LoggedView {
 
 	renderItem = ({ item }) => (
 		<Touch
-			style={styles.serverItemButton}
 			underlayColor={TinyColor('white').darken(20)}
 			accessibilityTraits='button'
 			onPress={() => { this.onPressItem(item); }}
 		>
-			<View style={styles.serverItemContainer}>
+			<View style={styles.serverItem}>
 				<Text
 					style={[styles.listItem]}
 					adjustsFontSizeToFit

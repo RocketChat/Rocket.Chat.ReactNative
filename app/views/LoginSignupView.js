@@ -239,7 +239,7 @@ export default class LoginView extends React.Component {
 					}
 				</View>
 			</View>
-		)
+		);
 	}
 
 	render() {
@@ -247,7 +247,7 @@ export default class LoginView extends React.Component {
 			[
 				<ScrollView
 					key='login-view'
-					style={styles.container}
+					style={[styles.container, styles.containerScrollView]}
 					{...scrollPersistTaps}
 				>
 					<SafeAreaView>
@@ -261,21 +261,25 @@ export default class LoginView extends React.Component {
 							<Text style={[styles.loginText, { fontSize: 20 }]}>the ultimate chat platform</Text>
 							<Image source={{ uri: 'https://via.placeholder.com/200x200' }} style={{ width: 200, height: 200, marginVertical: 10 }} />
 							<Touch
-								style={[styles.loginButtonContainer, styles.marginBottom10, styles.loginButtonPrimary]}
 								onPress={() => this.props.navigation.navigate({ key: 'Login', routeName: 'Login' })}
 								accessibilityTraits='button'
-								underlayColor={TinyColor(COLOR_BUTTON_PRIMARY).darken(20)}
+								underlayColor={TinyColor(COLOR_BUTTON_PRIMARY).lighten(50)}
 							>
-								<Text style={styles.loginButtonText}>I have an account</Text>
+								<View style={[styles.loginButtonContainer, styles.loginButtonPrimary]}>
+									<Text style={styles.loginButtonText}>I have an account</Text>
+								</View>
 							</Touch>
+							<View style={styles.marginBottom10} />
 							<Touch
-								style={[styles.loginButtonContainer, styles.marginBottom10]}
 								onPress={() => this.props.navigation.navigate({ key: 'Register', routeName: 'Register' })}
 								accessibilityTraits='button'
-								underlayColor={TinyColor('white').darken(10)}
+								underlayColor={TinyColor('white').darken(20)}
 							>
-								<Text style={[styles.loginButtonText, { color: '#292E35' }]}>Create account</Text>
+								<View style={styles.loginButtonContainer}>
+									<Text style={[styles.loginButtonText, { color: '#292E35' }]}>Create account</Text>
+								</View>
 							</Touch>
+							<View style={styles.marginBottom10} />
 
 							{this.renderServices()}
 						</View>

@@ -5,7 +5,9 @@ import { COLOR_DANGER, COLOR_BUTTON_PRIMARY, COLOR_TEXT } from '../constants/col
 export default StyleSheet.create({
 	container: {
 		backgroundColor: 'white',
-		flex: 1,
+		flex: 1
+	},
+	containerScrollView: {
 		padding: 20
 	},
 	view: {

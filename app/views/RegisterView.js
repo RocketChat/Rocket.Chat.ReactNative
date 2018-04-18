@@ -152,12 +152,14 @@ export default class RegisterView extends React.Component {
 						<Text style={styles.link} onPress={this.privacyPolicy}> Privacy Policy</Text>
 					</Text>
 					<Touch
-						style={[styles.loginButtonContainer, styles.marginBottom10, styles.loginButtonPrimary]}
 						onPress={this.submit}
 						accessibilityTraits='button'
-						underlayColor={TinyColor(COLOR_BUTTON_PRIMARY).darken(20)}
+						underlayColor={TinyColor(COLOR_BUTTON_PRIMARY).lighten(50)}
+						style={styles.marginBottom10}
 					>
-						<Text style={styles.loginButtonText}>Register</Text>
+						<View style={[styles.loginButtonContainer, styles.loginButtonPrimary]}>
+							<Text style={styles.loginButtonText}>Register</Text>
+						</View>
 					</Touch>
 				</View>
 
@@ -182,14 +184,15 @@ export default class RegisterView extends React.Component {
 					onSubmitEditing={() => { this.usernameSubmit(); }}
 				/>
 
-				<View style={{ alignItems: 'flex-start' }}>
+				<View style={[styles.marginBottom10, { alignItems: 'flex-start' }]}>
 					<Touch
-						style={[styles.loginButtonContainer, styles.marginBottom10, styles.loginButtonPrimary]}
 						onPress={this.usernameSubmit}
 						accessibilityTraits='button'
-						underlayColor={TinyColor(COLOR_BUTTON_PRIMARY).darken(20)}
+						underlayColor={TinyColor(COLOR_BUTTON_PRIMARY).lighten(50)}
 					>
-						<Text style={styles.loginButtonText}>Register</Text>
+						<View style={[styles.loginButtonContainer, styles.loginButtonPrimary]}>
+							<Text style={styles.loginButtonText}>Register</Text>
+						</View>
 					</Touch>
 				</View>
 
@@ -201,15 +204,13 @@ export default class RegisterView extends React.Component {
 	render() {
 		return (
 			<KeyboardView contentContainerStyle={styles.container}>
-				<ScrollView {...scrollPersistTaps}>
+				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
 					<SafeAreaView>
-						<View style={styles.loginView}>
-							<CloseModalButton navigation={this.props.navigation} />
-							<Text style={[styles.loginText, styles.loginTitle]}>Sign Up</Text>
-							{this._renderRegister()}
-							{this._renderUsername()}
-							<Spinner visible={this.props.login.isFetching} textContent='Loading...' textStyle={{ color: '#FFF' }} />
-						</View>
+						<CloseModalButton navigation={this.props.navigation} />
+						<Text style={[styles.loginText, styles.loginTitle]}>Sign Up</Text>
+						{this._renderRegister()}
+						{this._renderUsername()}
+						<Spinner visible={this.props.login.isFetching} textContent='Loading...' textStyle={{ color: '#FFF' }} />
 					</SafeAreaView>
 				</ScrollView>
 			</KeyboardView>

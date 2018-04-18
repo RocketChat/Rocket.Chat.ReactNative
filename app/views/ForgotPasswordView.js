@@ -1,7 +1,7 @@
 import React from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import PropTypes from 'prop-types';
-import { Text, View, SafeAreaView } from 'react-native';
+import { Text, View, SafeAreaView, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import TinyColor from 'tinycolor2';
 
@@ -12,6 +12,7 @@ import TextInput from '../containers/TextInput';
 import styles from './Styles';
 import { showErrorAlert } from '../utils/info';
 import Touch from '../utils/touch';
+import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { COLOR_BUTTON_PRIMARY } from '../constants/colors';
 
 @connect(state => ({
@@ -83,35 +84,38 @@ export default class ForgotPasswordView extends LoggedView {
 				contentContainerStyle={styles.container}
 				keyboardVerticalOffset={128}
 			>
-				<SafeAreaView>
-					<View style={styles.loginView}>
-						<View style={styles.formContainer}>
-							<TextInput
-								inputStyle={this.state.invalidEmail ? { borderColor: 'red' } : {}}
-								label='Email'
-								placeholder='Email'
-								keyboardType='email-address'
-								returnKeyType='next'
-								onChangeText={email => this.validate(email)}
-								onSubmitEditing={() => this.resetPassword()}
-							/>
+				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
+					<SafeAreaView>
+						<View style={styles.loginView}>
+							<View style={styles.formContainer}>
+								<TextInput
+									inputStyle={this.state.invalidEmail ? { borderColor: 'red' } : {}}
+									label='Email'
+									placeholder='Email'
+									keyboardType='email-address'
+									returnKeyType='next'
+									onChangeText={email => this.validate(email)}
+									onSubmitEditing={() => this.resetPassword()}
+								/>
 
-							<View style={{ alignItems: 'flex-start' }}>
-								<Touch
-									style={[styles.loginButtonContainer, styles.marginBottom10, styles.loginButtonPrimary]}
-									onPress={this.resetPassword}
-									accessibilityTraits='button'
-									underlayColor={TinyColor(COLOR_BUTTON_PRIMARY).darken(20)}
-								>
-									<Text style={styles.loginButtonText}>Reset password</Text>
-								</Touch>
+								<View style={[styles.marginBottom10, { alignItems: 'flex-start' }]}>
+									<Touch
+										onPress={this.resetPassword}
+										accessibilityTraits='button'
+										underlayColor={TinyColor(COLOR_BUTTON_PRIMARY).lighten(50)}
+									>
+										<View style={[styles.loginButtonContainer, styles.loginButtonPrimary]}>
+											<Text style={styles.loginButtonText}>Reset password</Text>
+										</View>
+									</Touch>
+								</View>
+
+								{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
 							</View>
-
-							{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
+							<Spinner visible={this.props.login.isFetching} textContent='Loading...' textStyle={{ color: '#FFF' }} />
 						</View>
-						<Spinner visible={this.props.login.isFetching} textContent='Loading...' textStyle={{ color: '#FFF' }} />
-					</View>
-				</SafeAreaView>
+					</SafeAreaView>
+				</ScrollView>
 			</KeyboardView>
 		);
 	}

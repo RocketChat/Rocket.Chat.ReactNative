@@ -50,6 +50,7 @@ export default class NewServerView extends React.Component {
 
 	submit = () => {
 		this.props.addServer(this.completeUrl(this.state.text));
+		this.props.navigation.navigate('LoginSignup');
 	}
 
 	completeUrl = (url) => {
@@ -105,7 +106,7 @@ export default class NewServerView extends React.Component {
 				contentContainerStyle={styles.container}
 				keyboardVerticalOffset={128}
 			>
-				<ScrollView {...scrollPersistTaps}>
+				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
 					<SafeAreaView>
 						<Text style={[styles.loginText, styles.loginTitle]}>Sign in your server</Text>
 						<TextInput
@@ -119,13 +120,14 @@ export default class NewServerView extends React.Component {
 						{this.renderValidation()}
 						<View style={{ alignItems: 'flex-start', marginTop: 20 }}>
 							<Touch
-								style={[styles.loginButtonContainer, styles.loginButtonPrimary, !validInstance && styles.opacity5]}
 								onPress={this.submit}
 								accessibilityTraits='button'
-								underlayColor={TinyColor(COLOR_BUTTON_PRIMARY).darken(20)}
+								underlayColor={TinyColor(COLOR_BUTTON_PRIMARY).lighten(50)}
 								disabled={!validInstance}
 							>
-								<Text style={styles.loginButtonText}>Connect</Text>
+								<View style={[styles.loginButtonContainer, styles.loginButtonPrimary, !validInstance && styles.opacity5]}>
+									<Text style={styles.loginButtonText}>Connect</Text>
+								</View>
 							</Touch>
 						</View>
 						<Spinner visible={this.props.addingServer} textContent='Loading...' textStyle={{ color: '#FFF' }} />
