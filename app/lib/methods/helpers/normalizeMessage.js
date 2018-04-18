@@ -1,15 +1,20 @@
 import parseUrls from './parseUrls';
 
-export default (msg) => {
-	if (!msg) { return; }
+function normalizeAttachments(msg) {
 	if (typeof msg.attachments !== typeof [] || !msg.attachments || !msg.attachments.length) {
 		msg.attachments = [];
 	}
 	msg.attachments = msg.attachments.map((att) => {
 		att.fields = att.fields || [];
+		att = normalizeAttachments(att);
 		return att;
 	});
+	return msg;
+}
 
+export default (msg) => {
+	if (!msg) { return; }
+	msg = normalizeAttachments(msg);
 	msg.reactions = msg.reactions || [];
 	// TODO: api problems
 	if (Array.isArray(msg.reactions)) {
