@@ -146,12 +146,13 @@ const renderNumber = (unread, userMentions) => {
 	);
 };
 
+const attrs = ['name', 'unread', 'userMentions', 'alert', 'lastMessage'];
 @connect(state => ({
 	user: state.login && state.login.user,
 	StoreLastMessage: state.settings.Store_Last_Message,
 	customEmojis: state.customEmojis
 }))
-export default class RoomItem extends React.PureComponent {
+export default class RoomItem extends React.Component {
 	static propTypes = {
 		type: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
@@ -176,7 +177,15 @@ export default class RoomItem extends React.PureComponent {
 		showLastMessage: true,
 		avatarSize: 46
 	}
+	shouldComponentUpdate(nextProps) {
+		const oldlastMessage = this.props.lastMessage;
+		const newLastmessage = nextProps.lastMessage;
 
+		if (oldlastMessage && newLastmessage && oldlastMessage.ts !== newLastmessage.ts) {
+			return true;
+		}
+		return attrs.some(key => nextProps[key] !== this.props[key]);
+	}
 	get icon() {
 		const {
 			type, name, id, avatarSize, statusStyle

@@ -9,7 +9,7 @@ import { COLOR_DANGER, COLOR_TEXT } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	inputContainer: {
-		marginBottom: 20
+		marginBottom: 15
 	},
 	label: {
 		marginBottom: 10,
@@ -18,13 +18,14 @@ const styles = StyleSheet.create({
 		fontWeight: '700'
 	},
 	input: {
-		// height: 45,
 		fontSize: 14,
 		paddingTop: 12,
 		paddingBottom: 12,
+		// paddingTop: 5,
+		// paddingBottom: 5,
 		paddingHorizontal: 10,
 		borderWidth: 2,
-		borderRadius: 2,
+		borderRadius: 4,
 		backgroundColor: 'white',
 		borderColor: 'rgba(0,0,0,.15)',
 		color: 'black'

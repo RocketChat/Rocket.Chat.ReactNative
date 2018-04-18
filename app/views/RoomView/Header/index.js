@@ -56,7 +56,7 @@ export default class RoomHeaderView extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			room: {},
+			room: realm.objects('subscriptions').filtered('rid = $0', this.rid)[0] || {},
 			roomName: props.navigation.state.params.room.name
 		};
 		this.rid = props.navigation.state.params.room.rid;
@@ -156,12 +156,12 @@ export default class RoomHeaderView extends React.PureComponent {
 		<View style={styles.right}>
 			<TouchableOpacity
 				style={styles.headerButton}
-				onPress={() => RocketChat.toggleFavorite(this.room[0].rid, this.room[0].f)}
+				onPress={() => RocketChat.toggleFavorite(this.state.room.rid, this.state.room.f)}
 				accessibilityLabel='Star room'
 				accessibilityTraits='button'
 			>
 				<Icon
-					name={`${ Platform.OS === 'ios' ? 'ios' : 'md' }-star${ this.room[0].f ? '' : '-outline' }`}
+					name={`${ Platform.OS === 'ios' ? 'ios' : 'md' }-star${ this.state.room.f ? '' : '-outline' }`}
 					color='#f6c502'
 					size={24}
 					backgroundColor='transparent'
@@ -169,7 +169,7 @@ export default class RoomHeaderView extends React.PureComponent {
 			</TouchableOpacity>
 			<TouchableOpacity
 				style={styles.headerButton}
-				onPress={() => this.props.navigation.navigate({ key: 'RoomActions', routeName: 'RoomActions', params: { rid: this.room[0].rid } })}
+				onPress={() => this.props.navigation.navigate({ key: 'RoomActions', routeName: 'RoomActions', params: { rid: this.state.room.rid } })}
 				accessibilityLabel='Room actions'
 				accessibilityTraits='button'
 			>

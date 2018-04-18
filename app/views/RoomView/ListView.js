@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import DateSeparator from './DateSeparator';
 import UnreadSeparator from './UnreadSeparator';
 import styles from './styles';
-import debounce from '../../utils/debounce';
+import throttle from '../../utils/throttle';
 import Typing from '../../containers/Typing';
 import database from '../../lib/realm';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
@@ -55,13 +55,13 @@ export class List extends React.Component {
 		this.date.removeAllListeners();
 		this.updateState.stop();
 	}
-	updateState = debounce(() => {
+	updateState = throttle(() => {
 		// this.setState({
 		this.dataSource = this.dataSource.cloneWithRows(this.data);
 		LayoutAnimation.easeInEaseOut();
 		this.forceUpdate();
 		// });
-	}, 100);
+	}, 2500);
 
 	render() {
 		return (<ListView

@@ -2,7 +2,7 @@ import ActionButton from 'react-native-action-button';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Platform, View, TextInput, FlatList } from 'react-native';
+import { Platform, View, TextInput, FlatList, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import * as server from '../../actions/connect';
@@ -13,7 +13,7 @@ import { goRoom } from '../../containers/routes/NavigationService';
 import Header from '../../containers/Header';
 import RoomsListHeader from './Header';
 import styles from './styles';
-import debounce from '../../utils/debounce';
+import throttle from '../../utils/throttle';
 
 @connect(state => ({
 	user: state.login.user,
@@ -78,9 +78,10 @@ export default class RoomsListView extends React.Component {
 		this.search(text);
 	}
 
-	updateState = debounce(() => {
+	updateState = throttle(() => {
+		LayoutAnimation.easeInEaseOut();
 		this.forceUpdate();
-	}, 500);
+	}, 1500);
 
 	async search(text) {
 		const searchText = text.trim();

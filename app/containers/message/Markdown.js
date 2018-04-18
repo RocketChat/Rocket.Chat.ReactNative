@@ -92,51 +92,57 @@ const defaultRules = {
 };
 
 const codeStyle = StyleSheet.flatten(styles.codeStyle);
-const Markdown = ({
-	msg, customEmojis = {}, style, markdownStyle, customRules, renderInline
-}) => {
-	if (!msg) {
-		return null;
+export default class Markdown extends React.Component {
+	shouldComponentUpdate(nextProps) {
+		return nextProps.msg !== this.props.msg;
 	}
-	msg = emojify(msg, { output: 'unicode' });
+	render() {
+		const {
+			msg, customEmojis = {}, style, markdownStyle, customRules, renderInline
+		} = this.props;
+		if (!msg) {
+			return null;
+		}
+		const m = emojify(msg, { output: 'unicode' });
 
-	style = StyleSheet.flatten(style);
-	return (
-		<EasyMarkdown
-			style={{ marginBottom: 0, ...style }}
-			markdownStyles={{ code: codeStyle, ...markdownStyle }}
-			rules={{
-				customEmoji: {
-					order: -5,
-					match: SimpleMarkdown.inlineRegex(/^:([0-9a-zA-Z-_.]+):/),
-					parse: capture => ({ content: capture }),
-					react: (node, output, state) => {
-						const element = {
-							type: 'custom',
-							key: state.key,
-							props: {
-								children: <Text key={state.key}>{node.content[0]}</Text>
+		const s = StyleSheet.flatten(style);
+		return (
+			<EasyMarkdown
+				style={{ marginBottom: 0, ...s }}
+				markdownStyles={{ code: codeStyle, ...markdownStyle }}
+				rules={{
+					customEmoji: {
+						order: -5,
+						match: SimpleMarkdown.inlineRegex(/^:([0-9a-zA-Z-_.]+):/),
+						parse: capture => ({ content: capture }),
+						react: (node, output, state) => {
+							const element = {
+								type: 'custom',
+								key: state.key,
+								props: {
+									children: <Text key={state.key}>{node.content[0]}</Text>
+								}
+							};
+							const content = node.content[1];
+							const emojiExtension = customEmojis[content];
+							if (emojiExtension) {
+								const emoji = { extension: emojiExtension, content };
+								element.props.children = (
+									<CustomEmoji key={state.key} style={styles.customEmoji} emoji={emoji} />
+								);
 							}
-						};
-						const content = node.content[1];
-						const emojiExtension = customEmojis[content];
-						if (emojiExtension) {
-							const emoji = { extension: emojiExtension, content };
-							element.props.children = (
-								<CustomEmoji key={state.key} style={styles.customEmoji} emoji={emoji} />
-							);
+							return element;
 						}
-						return element;
-					}
-				},
-				...defaultRules,
-				...customRules
-			}}
-			renderInline={renderInline}
-		>{msg}
-		</EasyMarkdown>
-	);
-};
+					},
+					...defaultRules,
+					...customRules
+				}}
+				renderInline={renderInline}
+			>{m}
+			</EasyMarkdown>
+		);
+	}
+}
 
 Markdown.propTypes = {
 	msg: PropTypes.string,
@@ -152,5 +158,3 @@ BlockCode.propTypes = {
 	node: PropTypes.object,
 	state: PropTypes.object
 };
-
-export default Markdown;

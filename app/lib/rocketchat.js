@@ -1,6 +1,6 @@
 import { AsyncStorage, Platform } from 'react-native';
 import { hashPassword } from 'react-native-meteor/lib/utils';
-import _ from 'lodash';
+import foreach from 'lodash/forEach';
 import Random from 'react-native-meteor/lib/Random';
 import { Answers } from 'react-native-fabric';
 
@@ -9,8 +9,8 @@ import reduxStore from './createStore';
 import settingsType from '../constants/settings';
 import messagesStatus from '../constants/messagesStatus';
 import database from './realm';
-import * as actions from '../actions';
-import { someoneTyping } from '../actions/room';
+// import * as actions from '../actions';
+
 import { setUser, setLoginServices, removeLoginServices, loginRequest, loginSuccess, loginFailure } from '../actions/login';
 import { disconnect, connectSuccess, connectFailure } from '../actions/connect';
 import { setActiveUser } from '../actions/activeUsers';
@@ -19,6 +19,7 @@ import { pinnedMessagesReceived, pinnedMessageUnpinned } from '../actions/pinned
 import { mentionedMessagesReceived } from '../actions/mentionedMessages';
 import { snippetedMessagesReceived } from '../actions/snippetedMessages';
 import { roomFilesReceived } from '../actions/roomFiles';
+import { someoneTyping, roomMessageReceived } from '../actions/room';
 import { setRoles } from '../actions/roles';
 import Ddp from './ddp';
 
@@ -29,14 +30,18 @@ import subscribeRoom from './methods/subscriptions/room';
 
 import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
+import getSettings from './methods/getSettings';
+
 import getRooms from './methods/getRooms';
+import getPermissions from './methods/getPermissions';
+import getCustomEmoji from './methods/getCustomEmojis';
+
+
 import _buildMessage from './methods/helpers/buildMessage';
 import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import loadMissedMessages from './methods/loadMissedMessages';
 
 import sendMessage, { getMessage, _sendMessageCall } from './methods/sendMessage';
-
-export { Accounts } from 'react-native-meteor';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const call = (method, ...params) => RocketChat.ddp.call(method, ...params); // eslint-disable-line
@@ -119,6 +124,8 @@ const RocketChat = {
 
 			this.ddp.on('login', protectedFunction(() => reduxStore.dispatch(loginRequest())));
 
+			this.ddp.on('logginError', protectedFunction(err => reduxStore.dispatch(loginFailure(err))));
+
 			this.ddp.on('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 
 			// this.ddp.on('logged', protectedFunction(() => {
@@ -127,9 +134,10 @@ const RocketChat = {
 
 			this.ddp.on('background', () => this.getRooms().catch(e => console.warn('background getRooms', e)));
 
+			this.ddp.on('disconnected', () => console.log('disconnected'));
+
 			this.ddp.on('logged', protectedFunction(async(user) => {
 				this.getRooms().catch(e => console.warn('logged getRooms', e));
-
 				// GET /me from REST API
 				const me = await this.me({ token: user.token, userId: user.id });
 				if (me.username) {
@@ -139,17 +147,16 @@ const RocketChat = {
 						user.roles = userInfo.user.roles;
 					}
 				}
-
 				reduxStore.dispatch(loginSuccess(user));
 			}));
-			this.ddp.once('logged', protectedFunction(({ id }) => this.subscribeRooms(id)));
+			this.ddp.once('logged', protectedFunction(({ id }) => { this.subscribeRooms(id); }));
 
-			this.ddp.on('logginError', protectedFunction(err => reduxStore.dispatch(loginFailure(err))));
+			// TODO: fix api (get emojis by date/version....)
+			this.ddp.on('once', () => RocketChat.getCustomEmoji());
 
 			this.ddp.on('open', protectedFunction(() => {
 				RocketChat.getSettings();
 				RocketChat.getPermissions();
-				RocketChat.getCustomEmoji();
 				reduxStore.dispatch(connectSuccess());
 				resolve();
 			}));
@@ -162,6 +169,11 @@ const RocketChat = {
 			this.ddp.on('disconnected', protectedFunction(() => {
 				reduxStore.dispatch(disconnect());
 			}));
+
+			this.ddp.on('stream-room-messages', (ddpMessage) => {
+				const message = _buildMessage(ddpMessage.fields.args[0]);
+				requestAnimationFrame(() => reduxStore.dispatch(roomMessageReceived(message)));
+			});
 
 			this.ddp.on('stream-notify-room', protectedFunction((ddpMessage) => {
 				const [_rid, ev] = ddpMessage.fields.eventName.split('/');
@@ -225,9 +237,9 @@ const RocketChat = {
 							username: 'rocket.cat'
 						}
 					};
-					database.write(() => {
+					requestAnimationFrame(() => database.write(() => {
 						database.create('messages', message, true);
-					});
+					}));
 				}
 			}));
 
@@ -402,7 +414,7 @@ const RocketChat = {
 					reduxStore.dispatch(setRoles(this.roles));
 
 					database.write(() => {
-						_.forEach(this.roles, (description, _id) => {
+						foreach(this.roles, (description, _id) => {
 							database.create('roles', { _id, description }, true);
 						});
 					});
@@ -619,16 +631,9 @@ const RocketChat = {
 			}
 		}
 	},
-	async getSettings() {
-		const temp = database.objects('settings').sorted('_updatedAt', true)[0];
-		const result = await (!temp ? call('public-settings/get') : call('public-settings/get', new Date(temp._updatedAt)));
-		const settings = temp ? result.update : result;
-		const filteredSettings = RocketChat._prepareSettings(RocketChat._filterSettings(settings));
-		database.write(() => {
-			filteredSettings.forEach(setting => database.create('settings', setting, true));
-		});
-		reduxStore.dispatch(actions.addSettings(RocketChat.parseSettings(filteredSettings)));
-	},
+	getSettings,
+	getPermissions,
+	getCustomEmoji,
 	parseSettings: settings => settings.reduce((ret, item) => {
 		ret[item._id] = item[settingsType[item.type]] || item.valueAsString || item.valueAsNumber ||
 			item.valueAsBoolean || item.value;
@@ -641,16 +646,6 @@ const RocketChat = {
 		});
 	},
 	_filterSettings: settings => settings.filter(setting => settingsType[setting.type] && setting.value),
-	async getPermissions() {
-		const temp = database.objects('permissions').sorted('_updatedAt', true)[0];
-		const result = await (!temp ? call('permissions/get') : call('permissions/get', new Date(temp._updatedAt)));
-		let permissions = temp ? result.update : result;
-		permissions = RocketChat._preparePermissions(permissions);
-		database.write(() => {
-			permissions.forEach(permission => database.create('permissions', permission, true));
-		});
-		reduxStore.dispatch(actions.setAllPermissions(RocketChat.parsePermissions(permissions)));
-	},
 	parsePermissions: permissions => permissions.reduce((ret, item) => {
 		ret[item._id] = item.roles.reduce((roleRet, role) => [...roleRet, role.value], []);
 		return ret;
@@ -660,16 +655,6 @@ const RocketChat = {
 			permission.roles = permission.roles.map(role => ({ value: role }));
 		});
 		return permissions;
-	},
-	async getCustomEmoji() {
-		const temp = database.objects('customEmojis').sorted('_updatedAt', true)[0];
-		let emojis = await call('listEmojiCustom');
-		emojis = emojis.filter(emoji => !temp || emoji._updatedAt > temp._updatedAt);
-		emojis = RocketChat._prepareEmojis(emojis);
-		database.write(() => {
-			emojis.forEach(emoji => database.create('customEmojis', emoji, true));
-		});
-		reduxStore.dispatch(actions.setCustomEmojis(RocketChat.parseEmojis(emojis)));
 	},
 	parseEmojis: emojis => emojis.reduce((ret, item) => {
 		ret[item.name] = item.extension;

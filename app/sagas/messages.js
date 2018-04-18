@@ -24,7 +24,11 @@ const togglePinMessage = message => RocketChat.togglePinMessage(message);
 
 const get = function* get({ room }) {
 	try {
-		yield RocketChat.loadMissedMessages(room);
+		if (room.lastOpen) {
+			yield RocketChat.loadMissedMessages(room);
+		} else {
+			yield RocketChat.loadMessagesForRoom(room);
+		}
 		yield put(messagesSuccess());
 	} catch (err) {
 		console.warn('messagesFailure', err);

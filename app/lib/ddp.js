@@ -45,7 +45,7 @@ class EventEmitter {
 					listener.apply(this, args);
 				} catch (e) {
 					Answers.logCustom(e);
-					// console.log(e);
+					console.warn(e);
 				}
 			});
 		}
@@ -96,7 +96,7 @@ export default class Socket extends EventEmitter {
 			if (this.state && this.state.match(/inactive/) && nextAppState === 'active') {
 				try {
 					this.send({ msg: 'ping' }, true);
-					this.connection.ping();
+					// this.connection.ping();
 				} catch (e) {
 					this.reconnect();
 				}
@@ -112,6 +112,7 @@ export default class Socket extends EventEmitter {
 
 		this.on('result', data => this.ddp.emit(data.id, { id: data.id, result: data.result, error: data.error }));
 		this.on('ready', data => this.ddp.emit(data.subs[0], data));
+		this.on('error', () => { delete this.connection; this._logged = false; this.reconnect(); });
 		this.on('disconnected', () => { delete this.connection; this._logged = false; setTimeout(() => this.reconnect(), 2000); });
 		this.on('logged', () => this._logged = true);
 
@@ -144,7 +145,7 @@ export default class Socket extends EventEmitter {
 	async send(obj, ignore) {
 		return new Promise((resolve, reject) => {
 			this.id += 1;
-			const id = obj.id || `${ this.id }`;
+			const id = obj.id || `ddp-react-native-${ this.id }`;
 			// console.log('send', { ...obj, id });
 			this.connection.send(EJSON.stringify({ ...obj, id }));
 			if (ignore) {
@@ -152,6 +153,7 @@ export default class Socket extends EventEmitter {
 			}
 			const cancel = this.ddp.once('disconnected', reject);
 			this.ddp.once(id, (data) => {
+				// console.log(data);
 				this.ddp.removeListener(id, cancel);
 				return (data.error ? reject(data.error) : resolve({ id, ...data }));
 			});
@@ -208,14 +210,14 @@ export default class Socket extends EventEmitter {
 		this._close();
 	}
 	async reconnect() {
-		await this._connect();
 		this.once('logged', () => {
 			Object.keys(this.subscriptions || {}).forEach((key) => {
 				const { name, params } = this.subscriptions[key];
 				this.subscriptions[key].unsubscribe();
-				this.subscribe(name, params);
+				this.subscribe(name, ...params);
 			});
 		});
+		await this._connect();
 	}
 	call(method, ...params) {
 		return this.send({
@@ -240,6 +242,7 @@ export default class Socket extends EventEmitter {
 		});
 	}
 	subscribe(name, ...params) {
+		console.log(name, params);
 		return this.send({
 			msg: 'sub', name, params
 		}).then(({ id }) => {
@@ -249,6 +252,7 @@ export default class Socket extends EventEmitter {
 				params,
 				unsubscribe: () => this.unsubscribe(id)
 			};
+
 			this.subscriptions[id] = args;
 			// console.log(args);
 			return args;
