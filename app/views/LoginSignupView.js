@@ -16,7 +16,7 @@ import styles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import random from '../utils/random';
 import Touch from '../utils/touch';
-import { COLOR_BUTTON_PRIMARY, COLOR_LOGIN_BACKGROUND } from '../constants/colors';
+import { COLOR_BUTTON_PRIMARY } from '../constants/colors';
 
 const userAgentAndroid = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1';
 const userAgent = Platform.OS === 'ios' ? 'UserAgent' : userAgentAndroid;
@@ -170,6 +170,78 @@ export default class LoginView extends React.Component {
 		this.setState({ showSocialButtons: !this.state.showSocialButtons });
 	}
 
+	renderServices = () => {
+		const { services } = this.props;
+		if (!Object.keys(services).length) {
+			return null;
+		}
+		return (
+			<View style={{ backgroundColor: '#dddddd', width: '100%', borderRadius: 2, padding: 16, paddingTop: 20, marginBottom: 40 }}>
+				<Text style={[styles.loginButtonText, { color: '#292E35', textAlign: 'left' }]}>
+					Or continue using Social accounts
+				</Text>
+				<View style={styles.loginOAuthButtons} key='services'>
+					{this.props.Accounts_OAuth_Facebook && this.props.services.facebook &&
+						<TouchableOpacity
+							style={[styles.oauthButton, styles.facebookButton]}
+							onPress={this.onPressFacebook}
+						>
+							<Icon name='facebook' size={20} color='#ffffff' />
+						</TouchableOpacity>
+					}
+					{this.props.Accounts_OAuth_Github && this.props.services.github &&
+						<TouchableOpacity
+							style={[styles.oauthButton, styles.githubButton]}
+							onPress={this.onPressGithub}
+						>
+							<Icon name='github' size={20} color='#ffffff' />
+						</TouchableOpacity>
+					}
+					{this.props.Accounts_OAuth_Gitlab && this.props.services.gitlab &&
+						<TouchableOpacity
+							style={[styles.oauthButton, styles.gitlabButton]}
+							onPress={this.onPressGitlab}
+						>
+							<Icon name='gitlab' size={20} color='#ffffff' />
+						</TouchableOpacity>
+					}
+					{this.props.Accounts_OAuth_Google && this.props.services.google &&
+						<TouchableOpacity
+							style={[styles.oauthButton, styles.googleButton]}
+							onPress={this.onPressGoogle}
+						>
+							<Icon name='google' size={20} color='#ffffff' />
+						</TouchableOpacity>
+					}
+					{this.props.Accounts_OAuth_Linkedin && this.props.services.linkedin &&
+						<TouchableOpacity
+							style={[styles.oauthButton, styles.linkedinButton]}
+							onPress={this.onPressLinkedin}
+						>
+							<Icon name='linkedin' size={20} color='#ffffff' />
+						</TouchableOpacity>
+					}
+					{this.props.Accounts_OAuth_Meteor && this.props.services['meteor-developer'] &&
+						<TouchableOpacity
+							style={[styles.oauthButton, styles.meteorButton]}
+							onPress={this.onPressMeteor}
+						>
+							<MaterialCommunityIcons name='meteor' size={25} color='#ffffff' />
+						</TouchableOpacity>
+					}
+					{this.props.Accounts_OAuth_Twitter && this.props.services.twitter &&
+						<TouchableOpacity
+							style={[styles.oauthButton, styles.twitterButton]}
+							onPress={this.onPressTwitter}
+						>
+							<Icon name='twitter' size={20} color='#ffffff' />
+						</TouchableOpacity>
+					}
+				</View>
+			</View>
+		)
+	}
+
 	render() {
 		return (
 			[
@@ -205,69 +277,7 @@ export default class LoginView extends React.Component {
 								<Text style={[styles.loginButtonText, { color: '#292E35' }]}>Create account</Text>
 							</Touch>
 
-							<View style={{ backgroundColor: '#dddddd', width: '100%', borderRadius: 2, padding: 16, paddingTop: 20, marginBottom: 40 }}>
-								<Text style={[styles.loginButtonText, { color: '#292E35', textAlign: 'left' }]}>
-									Or continue using Social accounts
-								</Text>
-								<View style={styles.loginOAuthButtons} key='services'>
-									{this.props.Accounts_OAuth_Facebook && this.props.services.facebook &&
-										<TouchableOpacity
-											style={[styles.oauthButton, styles.facebookButton]}
-											onPress={this.onPressFacebook}
-										>
-											<Icon name='facebook' size={20} color='#ffffff' />
-										</TouchableOpacity>
-									}
-									{this.props.Accounts_OAuth_Github && this.props.services.github &&
-										<TouchableOpacity
-											style={[styles.oauthButton, styles.githubButton]}
-											onPress={this.onPressGithub}
-										>
-											<Icon name='github' size={20} color='#ffffff' />
-										</TouchableOpacity>
-									}
-									{this.props.Accounts_OAuth_Gitlab && this.props.services.gitlab &&
-										<TouchableOpacity
-											style={[styles.oauthButton, styles.gitlabButton]}
-											onPress={this.onPressGitlab}
-										>
-											<Icon name='gitlab' size={20} color='#ffffff' />
-										</TouchableOpacity>
-									}
-									{this.props.Accounts_OAuth_Google && this.props.services.google &&
-										<TouchableOpacity
-											style={[styles.oauthButton, styles.googleButton]}
-											onPress={this.onPressGoogle}
-										>
-											<Icon name='google' size={20} color='#ffffff' />
-										</TouchableOpacity>
-									}
-									{this.props.Accounts_OAuth_Linkedin && this.props.services.linkedin &&
-										<TouchableOpacity
-											style={[styles.oauthButton, styles.linkedinButton]}
-											onPress={this.onPressLinkedin}
-										>
-											<Icon name='linkedin' size={20} color='#ffffff' />
-										</TouchableOpacity>
-									}
-									{this.props.Accounts_OAuth_Meteor && this.props.services['meteor-developer'] &&
-										<TouchableOpacity
-											style={[styles.oauthButton, styles.meteorButton]}
-											onPress={this.onPressMeteor}
-										>
-											<MaterialCommunityIcons name='meteor' size={25} color='#ffffff' />
-										</TouchableOpacity>
-									}
-									{this.props.Accounts_OAuth_Twitter && this.props.services.twitter &&
-										<TouchableOpacity
-											style={[styles.oauthButton, styles.twitterButton]}
-											onPress={this.onPressTwitter}
-										>
-											<Icon name='twitter' size={20} color='#ffffff' />
-										</TouchableOpacity>
-									}
-								</View>
-							</View>
+							{this.renderServices()}
 						</View>
 						<Spinner visible={this.props.login.isFetching} textContent='Loading...' textStyle={{ color: '#FFF' }} />
 					</SafeAreaView>

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { NavigationActions } from 'react-navigation';
 import { COLOR_TEXT } from '../constants/colors';
 
 const styles = StyleSheet.create({
@@ -22,7 +23,7 @@ export default class CloseModalButton extends React.PureComponent {
 
 	render() {
 		return (
-			<TouchableOpacity onPress={() => this.props.navigation.goBack()} style={styles.button}>
+			<TouchableOpacity onPress={() => this.props.navigation.dispatch(NavigationActions.back())} style={styles.button}>
 				<Icon
 					style={styles.icon}
 					name='close'

@@ -50,3 +50,9 @@ export function goRoom({ rid, name }, counter = 0) {
 	});
 	config.navigator.dispatch(action);
 }
+
+export function dispatch(action) {
+	if (config.navigator) {
+		config.navigator.dispatch(action);
+	}
+}

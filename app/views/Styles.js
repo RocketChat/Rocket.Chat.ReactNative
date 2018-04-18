@@ -129,13 +129,14 @@ export default StyleSheet.create({
 		backgroundColor: '#1d74f5'
 	},
 	link: {
-		fontWeight: 'bold'
+		fontWeight: 'bold',
+		color: COLOR_BUTTON_PRIMARY
 	},
 	loginTermsText: {
-		marginTop: 10,
-		textAlign: 'center',
+		marginBottom: 20,
 		color: '#414852',
-		fontSize: 16
+		fontSize: 13,
+		fontWeight: '700'
 	},
 	loginSecondaryButtons: {
 		flexDirection: 'row',

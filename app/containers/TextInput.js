@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Text, TextInput, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import sharedStyles from '../views/Styles';
 import { COLOR_DANGER, COLOR_TEXT } from '../constants/colors';
@@ -12,12 +12,14 @@ const styles = StyleSheet.create({
 		marginBottom: 20
 	},
 	label: {
-		marginBottom: 4,
-		fontSize: 16,
-		color: COLOR_TEXT
+		marginBottom: 10,
+		color: COLOR_TEXT,
+		fontSize: 14,
+		fontWeight: '700'
 	},
 	input: {
 		// height: 45,
+		fontSize: 14,
 		paddingTop: 12,
 		paddingBottom: 12,
 		paddingHorizontal: 10,
@@ -39,7 +41,7 @@ const styles = StyleSheet.create({
 	},
 	icon: {
 		position: 'absolute',
-		padding: 10,
+		padding: 12,
 		color: 'rgba(0,0,0,.45)',
 		height: 45,
 		textAlignVertical: 'center'
@@ -65,7 +67,7 @@ export default class RCTextInput extends React.PureComponent {
 
 	icon = ({ name, onPress, style }) => <Icon name={name} style={[styles.icon, style]} size={20} onPress={onPress} />
 
-	iconLeft = name => this.icon({ name, onPress: () => {}, style: { left: 0 } });
+	iconLeft = name => this.icon({ name, onPress: null, style: { left: 0 } });
 
 	iconPassword = name => this.icon({ name, onPress: () => this.tooglePassword(), style: { right: 0 } });
 
@@ -96,7 +98,7 @@ export default class RCTextInput extends React.PureComponent {
 						{...inputProps}
 					/>
 					{iconLeft && this.iconLeft(iconLeft)}
-					{secureTextEntry && this.iconPassword(showPassword ? 'eye-slash' : 'eye')}
+					{secureTextEntry && this.iconPassword(showPassword ? 'eye-off' : 'eye')}
 				</View>
 				{error.error && <Text style={sharedStyles.error}>{error.reason}</Text>}
 			</View>

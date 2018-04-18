@@ -5,11 +5,13 @@ import PropTypes from 'prop-types';
 // import Zeroconf from 'react-native-zeroconf';
 import { View, Text, SectionList, StyleSheet, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
+import TinyColor from 'tinycolor2';
 
 import LoggedView from './View';
 import { setServer } from '../actions/server';
 import database from '../lib/realm';
 import Fade from '../animations/fade';
+import Touch from '../utils/touch';
 
 const styles = StyleSheet.create({
 	view: {
@@ -44,13 +46,14 @@ const styles = StyleSheet.create({
 		paddingLeft: 14,
 		color: '#888'
 	},
-	serverItem: {
+	serverItemButton: {
 		flex: 1,
-		flexDirection: 'row',
-		// justifyContent: 'center',
-		alignItems: 'center',
 		backgroundColor: '#fff',
 		padding: 14
+	},
+	serverItemContainer: {
+		flexDirection: 'row',
+		alignItems: 'center'
 	},
 
 	listItem: {
@@ -86,32 +89,42 @@ export default class ListServerView extends LoggedView {
 			sections: []
 		};
 		this.data = database.databases.serversDB.objects('servers');
-		this.redirected = false;
+		// this.redirected = false;
 		this.data.addListener(this.updateState);
 	}
 
 	componentDidMount() {
 		// zeroconf.on('update', this.updateState);
 		// zeroconf.scan('http', 'tcp', 'local.');
-		this.setState(this.getState());
+		this.updateState();
+		this.jumpToSelectedServer();
 	}
 
-	componentDidUpdate() {
-		if (this.props.connected &&
-			this.props.server &&
-			!this.props.login.token &&
-			!this.redirected) {
-			this.redirected = true;
-			this.props.navigation.navigate({ key: 'LoginSignup', routeName: 'LoginSignup' });
-		} else if (!this.props.connected) {
-			this.redirected = false;
-		}
-	}
+	// componentDidUpdate() {
+	// 	if (this.props.connected &&
+	// 		this.props.server &&
+	// 		!this.props.login.token &&
+	// 		!this.redirected) {
+	// 		this.redirected = true;
+	// 		this.props.navigation.navigate({ key: 'LoginSignup', routeName: 'LoginSignup' });
+	// 	} else if (!this.props.connected) {
+	// 		this.redirected = false;
+	// 	}
+	// }
 
 	componentWillUnmount() {
 		// zeroconf.stop();
 		this.data.removeAllListeners();
 		// zeroconf.removeListener('update', this.updateState);
+	}
+
+	jumpToSelectedServer() {
+		const { server, selectServer } = this.props;
+		if (server) {
+			setTimeout(() => {
+				selectServer(server);
+			}, 300);
+		}
 	}
 
 	onPressItem = (item) => {
@@ -153,24 +166,29 @@ export default class ListServerView extends LoggedView {
 	}
 
 	renderItem = ({ item }) => (
-
-		<View style={styles.serverItem}>
-			<Text
-				style={[styles.listItem]}
-				onPress={() => { this.onPressItem(item); }}
-				adjustsFontSizeToFit
-			>
-				{item.id}
-			</Text>
-			<Fade visible={this.props.server === item.id}>
-				<Icon
-					iconSize={24}
-					size={24}
-					style={styles.serverChecked}
-					name='ios-checkmark-circle-outline'
-				/>
-			</Fade>
-		</View>
+		<Touch
+			style={styles.serverItemButton}
+			underlayColor={TinyColor('white').darken(20)}
+			accessibilityTraits='button'
+			onPress={() => { this.onPressItem(item); }}
+		>
+			<View style={styles.serverItemContainer}>
+				<Text
+					style={[styles.listItem]}
+					adjustsFontSizeToFit
+				>
+					{item.id}
+				</Text>
+				<Fade visible={this.props.server === item.id}>
+					<Icon
+						iconSize={24}
+						size={24}
+						style={styles.serverChecked}
+						name='ios-checkmark-circle-outline'
+					/>
+				</Fade>
+			</View>
+		</Touch>
 	);
 
 
@@ -184,7 +202,6 @@ export default class ListServerView extends LoggedView {
 
 	render() {
 		return (
-
 			<SafeAreaView style={styles.view}>
 				<SectionList
 					style={styles.list}

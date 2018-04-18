@@ -95,7 +95,7 @@ export default class LoginView extends React.Component {
 							label='Password'
 							placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
 							returnKeyType='done'
-							iconLeft='key'
+							iconLeft='key-variant'
 							secureTextEntry
 							onSubmitEditing={this.submit}
 							onChangeText={password => this.setState({ password })}
@@ -112,12 +112,17 @@ export default class LoginView extends React.Component {
 							>
 								<Text style={styles.loginButtonText}>Login</Text>
 							</Touch>
-							<Text style={styles.loginText}>New in Rocket.Chat? &nbsp;
+							<Text style={[styles.loginText, { marginTop: 10 }]}>New in Rocket.Chat? &nbsp;
 								<Text
 									style={{ color: COLOR_BUTTON_PRIMARY }}
 									onPress={() => this.props.navigation.navigate('Register')}
 								>Sign Up
 								</Text>
+							</Text>
+							<Text
+								style={[styles.loginText, { marginTop: 20, fontSize: 13 }]}
+								onPress={() => this.props.navigation.navigate('ForgotPassword')}
+							>Forgot password
 							</Text>
 						</View>
 
