@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { View, Text, Switch, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
-import Spinner from 'react-native-loading-spinner-overlay';
 
 import RCTextInput from '../containers/TextInput';
+import Loading from '../containers/Loading';
 import LoggedView from './View';
 import { createChannelRequest } from '../actions/createChannel';
 import styles from './Styles';
@@ -129,7 +129,7 @@ export default class CreateChannelView extends LoggedView {
 						>
 							<Text style={styles.button_white}>CREATE</Text>
 						</TouchableOpacity>
-						<Spinner visible={this.props.createChannel.isFetching} textContent='Loading...' textStyle={{ color: '#FFF' }} />
+						<Loading visible={this.props.createChannel.isFetching} />
 					</SafeAreaView>
 				</ScrollView>
 			</KeyboardView>

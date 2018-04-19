@@ -1,5 +1,4 @@
 import React from 'react';
-import Spinner from 'react-native-loading-spinner-overlay';
 import PropTypes from 'prop-types';
 import { Text, View, SafeAreaView, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
@@ -9,6 +8,7 @@ import { forgotPasswordInit, forgotPasswordRequest } from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
+import Loading from '../containers/Loading';
 import styles from './Styles';
 import { showErrorAlert } from '../utils/info';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
@@ -107,7 +107,7 @@ export default class ForgotPasswordView extends LoggedView {
 
 								{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
 							</View>
-							<Spinner visible={this.props.login.isFetching} textContent='Loading...' textStyle={{ color: '#FFF' }} />
+							<Loading visible={this.props.login.isFetching} />
 						</View>
 					</SafeAreaView>
 				</ScrollView>

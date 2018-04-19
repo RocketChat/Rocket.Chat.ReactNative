@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, ScrollView, View, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
-import Spinner from 'react-native-loading-spinner-overlay';
 
 import { serverRequest, addServer } from '../actions/server';
 import KeyboardView from '../presentation/KeyboardView';
@@ -10,6 +9,7 @@ import styles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import Button from '../containers/Button';
 import TextInput from '../containers/TextInput';
+import Loading from '../containers/Loading';
 
 @connect(state => ({
 	validInstance: !state.server.failure && !state.server.connecting,
@@ -124,7 +124,7 @@ export default class NewServerView extends React.Component {
 								disabled={!validInstance}
 							/>
 						</View>
-						<Spinner visible={this.props.addingServer} textContent='Loading...' textStyle={{ color: '#FFF' }} />
+						<Loading visible={this.props.addingServer} />
 					</SafeAreaView>
 				</ScrollView>
 			</KeyboardView>

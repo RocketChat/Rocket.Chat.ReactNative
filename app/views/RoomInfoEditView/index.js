@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, ScrollView, TouchableOpacity, SafeAreaView, Keyboard, Alert } from 'react-native';
-import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from 'react-redux';
-
 
 import LoggedView from '../View';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -15,6 +13,7 @@ import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import { eraseRoom } from '../../actions/room';
 import RCTextInput from '../../containers/TextInput';
+import Loading from '../../containers/Loading';
 import SwitchContainer from './SwitchContainer';
 import random from '../../utils/random';
 
@@ -372,7 +371,7 @@ export default class RoomInfoEditView extends LoggedView {
 								<Text style={[sharedStyles.button_inverted, styles.colorDanger]} accessibilityTraits='button'>DELETE</Text>
 							</TouchableOpacity>
 						</View>
-						<Spinner visible={this.state.saving} textContent='Loading...' textStyle={{ color: '#FFF' }} />
+						<Loading visible={this.state.saving} />
 					</SafeAreaView>
 				</ScrollView>
 			</KeyboardView>

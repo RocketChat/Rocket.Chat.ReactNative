@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Spinner from 'react-native-loading-spinner-overlay';
 import { Keyboard, Text, View, SafeAreaView, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 
 import { registerSubmit, setUsernameSubmit } from '../actions/login';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
+import Loading from '../containers/Loading';
 import KeyboardView from '../presentation/KeyboardView';
 import styles from './Styles';
 import { showToast } from '../utils/info';
@@ -199,7 +199,7 @@ export default class RegisterView extends React.Component {
 						<Text style={[styles.loginText, styles.loginTitle]}>Sign Up</Text>
 						{this._renderRegister()}
 						{this._renderUsername()}
-						<Spinner visible={this.props.login.isFetching} textContent='Loading...' textStyle={{ color: '#FFF' }} />
+						<Loading visible={this.props.login.isFetching} />
 					</SafeAreaView>
 				</ScrollView>
 			</KeyboardView>

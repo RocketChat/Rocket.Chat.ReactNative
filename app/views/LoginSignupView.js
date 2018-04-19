@@ -1,5 +1,4 @@
 import React from 'react';
-import Spinner from 'react-native-loading-spinner-overlay';
 import PropTypes from 'prop-types';
 import { Text, View, ScrollView, TouchableOpacity, SafeAreaView, WebView, Platform, LayoutAnimation, Image, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
@@ -15,6 +14,7 @@ import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import random from '../utils/random';
 import Button from '../containers/Button';
+import Loading from '../containers/Loading';
 
 const userAgentAndroid = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1';
 const userAgent = Platform.OS === 'ios' ? 'UserAgent' : userAgentAndroid;
@@ -302,7 +302,7 @@ export default class LoginView extends React.Component {
 							/>
 							{this.renderServices()}
 						</View>
-						<Spinner visible={this.props.login.isFetching} textContent='Loading...' textStyle={{ color: '#FFF' }} />
+						<Loading visible={this.props.login.isFetching} />
 					</SafeAreaView>
 				</ScrollView>,
 				<Modal
