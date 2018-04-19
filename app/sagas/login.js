@@ -3,8 +3,8 @@ import { put, call, take, takeLatest, select, all } from 'redux-saga/effects';
 
 import * as types from '../actions/actionsTypes';
 import {
-	// loginRequest,
-	// loginSubmit,
+	loginRequest,
+	loginSubmit,
 	registerRequest,
 	registerIncomplete,
 	// loginSuccess,
@@ -25,10 +25,10 @@ const getServer = state => state.server.server;
 const getIsConnected = state => state.meteor.connected;
 
 // const loginCall = args => ((args.resume || args.oauth) ? RocketChat.login(args) : RocketChat.loginWithPassword(args));
-const loginCall = args => RocketChat.loginWithPassword(args);
 const registerCall = args => RocketChat.register(args);
 const setUsernameCall = args => RocketChat.setUsername(args);
 const logoutCall = args => RocketChat.logout(args);
+
 const forgotPasswordCall = args => RocketChat.forgotPassword(args);
 
 // const getToken = function* getToken() {
@@ -84,9 +84,9 @@ const saveToken = function* saveToken() {
 // 	}
 // };
 
-// const handleLoginSubmit = function* handleLoginSubmit({ credentials }) {
-// 	yield put(loginRequest(credentials));
-// };
+const handleLoginSubmit = function* handleLoginSubmit({ credentials }) {
+	yield put(loginRequest(credentials));
+};
 
 const handleRegisterSubmit = function* handleRegisterSubmit({ credentials }) {
 	yield put(registerRequest(credentials));
@@ -102,18 +102,10 @@ const handleRegisterRequest = function* handleRegisterRequest({ credentials }) {
 };
 
 const handleRegisterSuccess = function* handleRegisterSuccess({ credentials }) {
-	// yield put(loginSubmit({
-	// 	username: credentials.email,
-	// 	password: credentials.pass
-	// }));
-	try {
-		yield call(loginCall, {
-			username: credentials.email,
-			password: credentials.pass
-		});
-	} catch (err) {
-		yield put(loginFailure(err));
-	}
+	yield put(loginSubmit({
+		username: credentials.email,
+		password: credentials.pass
+	}));
 };
 
 const handleSetUsernameSubmit = function* handleSetUsernameSubmit({ credentials }) {
@@ -150,24 +142,20 @@ const handleForgotPasswordRequest = function* handleForgotPasswordRequest({ emai
 };
 
 const watchLoginOpen = function* watchLoginOpen() {
-	try {
-		const isConnected = yield select(getIsConnected);
-		if (!isConnected) {
-			yield take(types.METEOR.SUCCESS);
-		}
-		const sub = yield RocketChat.subscribe('meteor.loginServiceConfiguration');
-		yield take(types.LOGIN.CLOSE);
-		sub.unsubscribe().catch(e => console.warn('watchLoginOpen unsubscribe', e));
-	} catch (error) {
-		console.warn('watchLoginOpen', error);
+	const isConnected = yield select(getIsConnected);
+	if (!isConnected) {
+		yield take(types.METEOR.SUCCESS);
 	}
+	const sub = yield RocketChat.subscribe('meteor.loginServiceConfiguration');
+	yield take(types.LOGIN.CLOSE);
+	sub.unsubscribe().catch(e => console.warn('watchLoginOpen', e));
 };
 
 const root = function* root() {
 	// yield takeLatest(types.METEOR.SUCCESS, handleLoginWhenServerChanges);
 	// yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
 	yield takeLatest(types.LOGIN.SUCCESS, saveToken);
-	// yield takeLatest(types.LOGIN.SUBMIT, handleLoginSubmit);
+	yield takeLatest(types.LOGIN.SUBMIT, handleLoginSubmit);
 	yield takeLatest(types.LOGIN.REGISTER_REQUEST, handleRegisterRequest);
 	yield takeLatest(types.LOGIN.REGISTER_SUBMIT, handleRegisterSubmit);
 	yield takeLatest(types.LOGIN.REGISTER_SUCCESS, handleRegisterSuccess);

@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Platform, View, TextInput, FlatList, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
+import * as actions from '../../actions';
+import * as server from '../../actions/connect';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem from '../../presentation/RoomItem';
@@ -16,8 +18,13 @@ import throttle from '../../utils/throttle';
 @connect(state => ({
 	user: state.login.user,
 	server: state.server.server,
+	login: state.login,
 	Site_Url: state.settings.Site_Url,
+	canShowList: state.login.token || state.login.user.token,
 	searchText: state.rooms.searchText
+}), dispatch => ({
+	login: () => dispatch(actions.login()),
+	connect: () => dispatch(server.connectRequest())
 }))
 export default class RoomsListView extends React.Component {
 	static propTypes = {

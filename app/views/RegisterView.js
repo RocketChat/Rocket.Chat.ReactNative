@@ -1,32 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import Spinner from 'react-native-loading-spinner-overlay';
-import { Keyboard, Text, View, SafeAreaView, ScrollView } from 'react-native';
-import { connect } from 'react-redux';
-import TinyColor from 'tinycolor2';
 
-import { registerSubmit, setUsernameSubmit } from '../actions/login';
-import TextInput from '../containers/TextInput';
+import Spinner from 'react-native-loading-spinner-overlay';
+
+import PropTypes from 'prop-types';
+import { Keyboard, Text, TextInput, View, TouchableOpacity, SafeAreaView } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as loginActions from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
+
 import styles from './Styles';
 import { showToast } from '../utils/info';
-import CloseModalButton from '../containers/CloseModalButton';
-import Touch from '../utils/touch';
-import scrollPersistTaps from '../utils/scrollPersistTaps';
-import { COLOR_BUTTON_PRIMARY } from '../constants/colors';
 
-@connect(state => ({
-	server: state.server.server,
-	Accounts_NamePlaceholder: state.settings.Accounts_NamePlaceholder,
-	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
-	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
-	Accounts_RepeatPasswordPlaceholder: state.settings.Accounts_RepeatPasswordPlaceholder,
-	login: state.login
-}), dispatch => ({
-	registerSubmit: params => dispatch(registerSubmit(params)),
-	setUsernameSubmit: params => dispatch(setUsernameSubmit(params))
-}))
-export default class RegisterView extends React.Component {
+const placeholderTextColor = 'rgba(255,255,255,.2)';
+
+class RegisterView extends React.Component {
 	static propTypes = {
 		registerSubmit: PropTypes.func.isRequired,
 		setUsernameSubmit: PropTypes.func,
@@ -38,31 +26,32 @@ export default class RegisterView extends React.Component {
 		login: PropTypes.object
 	}
 
-	state = {
-		name: '',
-		email: '',
-		password: '',
-		confirmPassword: '',
-		username: ''
-	};
+	constructor(props) {
+		super(props);
 
-	valid() {
+		this.state = {
+			name: '',
+			email: '',
+			password: '',
+			confirmPassword: ''
+		};
+	}
+
+	_valid() {
 		const {
 			name, email, password, confirmPassword
 		} = this.state;
 		return name.trim() && email.trim() &&
 			password && confirmPassword && password === confirmPassword;
 	}
-
-	invalidEmail() {
-		return this.props.login.failure && /Email/.test(this.props.login.error.reason) ? this.props.login.error : {};
+	_invalidEmail() {
+		return this.props.login.failure && /Email/.test(this.props.login.error.reason);
 	}
-
 	submit = () => {
 		const {
 			name, email, password, code
 		} = this.state;
-		if (!this.valid()) {
+		if (!this._valid()) {
 			showToast('Some field is invalid or empty');
 			return;
 		}
@@ -72,11 +61,9 @@ export default class RegisterView extends React.Component {
 		});
 		Keyboard.dismiss();
 	}
-
 	usernameSubmit = () => {
 		const { username } = this.state;
 		if (!username) {
-			showToast('Username is empty');
 			return;
 		}
 
@@ -84,84 +71,74 @@ export default class RegisterView extends React.Component {
 		Keyboard.dismiss();
 	}
 
-	termsService = () => {
-		this.props.navigation.navigate({ key: 'TermsService', routeName: 'TermsService' });
-	}
-
-	privacyPolicy = () => {
-		this.props.navigation.navigate({ key: 'PrivacyPolicy', routeName: 'PrivacyPolicy' });
-	}
-
 	_renderRegister() {
 		if (this.props.login.token) {
 			return null;
 		}
 		return (
-			<View>
+			<View style={styles.formContainer}>
 				<TextInput
-					inputRef={(e) => { this.name = e; }}
-					label={this.props.Accounts_NamePlaceholder || 'Name'}
-					placeholder={this.props.Accounts_NamePlaceholder || 'Name'}
-					returnKeyType='next'
-					iconLeft='account'
+					ref={(e) => { this.name = e; }}
+					style={styles.input_white}
 					onChangeText={name => this.setState({ name })}
+					autoCorrect={false}
+					autoFocus
+					returnKeyType='next'
+					autoCapitalize='none'
+					underlineColorAndroid='transparent'
 					onSubmitEditing={() => { this.email.focus(); }}
-				/>
-				<TextInput
-					inputRef={(e) => { this.email = e; }}
-					label={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email'}
-					placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email'}
-					returnKeyType='next'
-					keyboardType='email-address'
-					iconLeft='email'
-					onChangeText={email => this.setState({ email })}
-					onSubmitEditing={() => { this.password.focus(); }}
-					error={this.invalidEmail()}
-				/>
-				<TextInput
-					inputRef={(e) => { this.password = e; }}
-					label={this.props.Accounts_PasswordPlaceholder || 'Password'}
-					placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
-					returnKeyType='next'
-					iconLeft='key-variant'
-					secureTextEntry
-					onChangeText={password => this.setState({ password })}
-					onSubmitEditing={() => { this.confirmPassword.focus(); }}
-				/>
-				<TextInput
-					inputRef={(e) => { this.confirmPassword = e; }}
-					inputStyle={
-						this.state.password &&
-						this.state.confirmPassword &&
-						this.state.confirmPassword !== this.state.password ? { borderColor: 'red' } : {}
-					}
-					label={this.props.Accounts_RepeatPasswordPlaceholder || 'Repeat Password'}
-					placeholder={this.props.Accounts_RepeatPasswordPlaceholder || 'Repeat Password'}
-					returnKeyType='done'
-					iconLeft='key-variant'
-					secureTextEntry
-					onChangeText={confirmPassword => this.setState({ confirmPassword })}
-					onSubmitEditing={this.submit}
+					placeholder={this.props.Accounts_NamePlaceholder || 'Name'}
 				/>
 
-				<View style={{ alignItems: 'flex-start' }}>
-					<Text style={styles.loginTermsText}>
-						By proceeding you are agreeing to our
-						<Text style={styles.link} onPress={this.termsService}> Terms of Service </Text>
-						and
-						<Text style={styles.link} onPress={this.privacyPolicy}> Privacy Policy</Text>
-					</Text>
-					<Touch
-						onPress={this.submit}
+				<TextInput
+					ref={(e) => { this.email = e; }}
+					style={[styles.input_white, this._invalidEmail() ? { borderColor: 'red' } : {}]}
+					onChangeText={email => this.setState({ email })}
+					keyboardType='email-address'
+					autoCorrect={false}
+					returnKeyType='next'
+					autoCapitalize='none'
+					underlineColorAndroid='transparent'
+					onSubmitEditing={() => { this.password.focus(); }}
+					placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email'}
+				/>
+				<TextInput
+					ref={(e) => { this.password = e; }}
+					style={styles.input_white}
+					onChangeText={password => this.setState({ password })}
+					secureTextEntry
+					autoCorrect={false}
+					returnKeyType='next'
+					autoCapitalize='none'
+					underlineColorAndroid='transparent'
+					onSubmitEditing={() => { this.confirmPassword.focus(); }}
+					placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
+				/>
+				<TextInput
+					ref={(e) => { this.confirmPassword = e; }}
+					style={[styles.input_white, this.state.password && this.state.confirmPassword && this.state.confirmPassword !== this.state.password ? { borderColor: 'red' } : {}]}
+					onChangeText={confirmPassword => this.setState({ confirmPassword })}
+					secureTextEntry
+					autoCorrect={false}
+					returnKeyType='done'
+					autoCapitalize='none'
+					underlineColorAndroid='transparent'
+					onSubmitEditing={this.submit}
+					placeholder={this.props.Accounts_RepeatPasswordPlaceholder || 'Repeat Password'}
+				/>
+
+				<TouchableOpacity
+					style={[styles.buttonContainer, styles.registerContainer]}
+					onPress={this.submit}
+				>
+					<Text
+						style={[styles.button, this._valid() ? {}
+							: { color: placeholderTextColor }
+						]}
 						accessibilityTraits='button'
-						underlayColor={TinyColor(COLOR_BUTTON_PRIMARY).lighten(50)}
-						style={styles.marginBottom10}
-					>
-						<View style={[styles.loginButtonContainer, styles.loginButtonPrimary]}>
-							<Text style={styles.loginButtonText}>Register</Text>
-						</View>
-					</Touch>
-				</View>
+					>REGISTER
+					</Text>
+				</TouchableOpacity>
 
 				{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
 			</View>
@@ -173,28 +150,25 @@ export default class RegisterView extends React.Component {
 			return null;
 		}
 		return (
-			<View>
+			<View style={styles.formContainer}>
 				<TextInput
-					inputRef={(e) => { this.username = e; }}
-					label={this.props.Accounts_UsernamePlaceholder || 'Username'}
-					placeholder={this.props.Accounts_UsernamePlaceholder || 'Username'}
-					returnKeyType='done'
-					iconLeft='at'
+					ref={(e) => { this.username = e; }}
+					style={styles.input_white}
 					onChangeText={username => this.setState({ username })}
+					autoCorrect={false}
+					returnKeyType='next'
+					autoCapitalize='none'
+					underlineColorAndroid='transparent'
 					onSubmitEditing={() => { this.usernameSubmit(); }}
+					placeholder={this.props.Accounts_UsernamePlaceholder || 'Username'}
 				/>
 
-				<View style={[styles.marginBottom10, { alignItems: 'flex-start' }]}>
-					<Touch
-						onPress={this.usernameSubmit}
-						accessibilityTraits='button'
-						underlayColor={TinyColor(COLOR_BUTTON_PRIMARY).lighten(50)}
-					>
-						<View style={[styles.loginButtonContainer, styles.loginButtonPrimary]}>
-							<Text style={styles.loginButtonText}>Register</Text>
-						</View>
-					</Touch>
-				</View>
+				<TouchableOpacity
+					style={[styles.buttonContainer, styles.registerContainer]}
+					onPress={this.usernameSubmit}
+				>
+					<Text style={styles.button}>REGISTER</Text>
+				</TouchableOpacity>
 
 				{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
 			</View>
@@ -204,16 +178,31 @@ export default class RegisterView extends React.Component {
 	render() {
 		return (
 			<KeyboardView contentContainerStyle={styles.container}>
-				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
-					<SafeAreaView>
-						<CloseModalButton navigation={this.props.navigation} />
-						<Text style={[styles.loginText, styles.loginTitle]}>Sign Up</Text>
+				<SafeAreaView>
+					<View style={styles.loginView}>
 						{this._renderRegister()}
 						{this._renderUsername()}
 						<Spinner visible={this.props.login.isFetching} textContent='Loading...' textStyle={{ color: '#FFF' }} />
-					</SafeAreaView>
-				</ScrollView>
+					</View>
+				</SafeAreaView>
 			</KeyboardView>
 		);
 	}
 }
+
+function mapStateToProps(state) {
+	return {
+		server: state.server.server,
+		Accounts_NamePlaceholder: state.settings.Accounts_NamePlaceholder,
+		Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
+		Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
+		Accounts_RepeatPasswordPlaceholder: state.settings.Accounts_RepeatPasswordPlaceholder,
+		login: state.login
+	};
+}
+
+function mapDispatchToProps(dispatch) {
+	return bindActionCreators(loginActions, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterView);
