@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, TextInput, ViewPropTypes } from 'react-native';
+import { View, StyleSheet, Text, TextInput, ViewPropTypes, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -42,10 +42,19 @@ const styles = StyleSheet.create({
 	},
 	icon: {
 		position: 'absolute',
-		padding: 12,
 		color: 'rgba(0,0,0,.45)',
 		height: 45,
-		textAlignVertical: 'center'
+		textAlignVertical: 'center',
+		...Platform.select({
+			ios: {
+				padding: 12
+			},
+			android: {
+				paddingHorizontal: 12,
+				paddingTop: 18,
+				paddingBottom: 6
+			}
+		})
 	}
 });
 
