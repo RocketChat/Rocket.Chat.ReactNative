@@ -2,16 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, ScrollView, View, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
-import TinyColor from 'tinycolor2';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import { serverRequest, addServer } from '../actions/server';
 import KeyboardView from '../presentation/KeyboardView';
 import styles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
-import Touch from '../utils/touch';
+import Button from '../containers/Button';
 import TextInput from '../containers/TextInput';
-import { COLOR_BUTTON_PRIMARY } from '../constants/colors';
 
 @connect(state => ({
 	validInstance: !state.server.failure && !state.server.connecting,
@@ -119,16 +117,12 @@ export default class NewServerView extends React.Component {
 						/>
 						{this.renderValidation()}
 						<View style={{ alignItems: 'flex-start', marginTop: 20 }}>
-							<Touch
+							<Button
+								title='Connect'
+								type='primary'
 								onPress={this.submit}
-								accessibilityTraits='button'
-								underlayColor={TinyColor(COLOR_BUTTON_PRIMARY).lighten(50)}
 								disabled={!validInstance}
-							>
-								<View style={[styles.loginButtonContainer, styles.loginButtonPrimary, !validInstance && styles.opacity5]}>
-									<Text style={styles.loginButtonText}>Connect</Text>
-								</View>
-							</Touch>
+							/>
 						</View>
 						<Spinner visible={this.props.addingServer} textContent='Loading...' textStyle={{ color: '#FFF' }} />
 					</SafeAreaView>

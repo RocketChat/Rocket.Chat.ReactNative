@@ -7,7 +7,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Base64 } from 'js-base64';
 import Modal from 'react-native-modal';
-import TinyColor from 'tinycolor2';
 
 import RocketChat from '../lib/rocketchat';
 import { open, close } from '../actions/login';
@@ -15,8 +14,7 @@ import { open, close } from '../actions/login';
 import styles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import random from '../utils/random';
-import Touch from '../utils/touch';
-import { COLOR_BUTTON_PRIMARY } from '../constants/colors';
+import Button from '../containers/Button';
 
 const userAgentAndroid = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1';
 const userAgent = Platform.OS === 'ios' ? 'UserAgent' : userAgentAndroid;
@@ -260,27 +258,16 @@ export default class LoginView extends React.Component {
 							<Text style={[styles.loginText, { color: '#81848A', fontSize: 20 }]}>Prepare to take off with</Text>
 							<Text style={[styles.loginText, { fontSize: 20 }]}>the ultimate chat platform</Text>
 							<Image source={{ uri: 'https://via.placeholder.com/200x200' }} style={{ width: 200, height: 200, marginVertical: 10 }} />
-							<Touch
+							<Button
+								title='I have an account'
+								type='primary'
 								onPress={() => this.props.navigation.navigate({ key: 'Login', routeName: 'Login' })}
-								accessibilityTraits='button'
-								underlayColor={TinyColor(COLOR_BUTTON_PRIMARY).lighten(50)}
-							>
-								<View style={[styles.loginButtonContainer, styles.loginButtonPrimary]}>
-									<Text style={styles.loginButtonText}>I have an account</Text>
-								</View>
-							</Touch>
-							<View style={styles.marginBottom10} />
-							<Touch
+							/>
+							<Button
+								title='Create account'
+								type='secondary'
 								onPress={() => this.props.navigation.navigate({ key: 'Register', routeName: 'Register' })}
-								accessibilityTraits='button'
-								underlayColor={TinyColor('white').darken(20)}
-							>
-								<View style={styles.loginButtonContainer}>
-									<Text style={[styles.loginButtonText, { color: '#292E35' }]}>Create account</Text>
-								</View>
-							</Touch>
-							<View style={styles.marginBottom10} />
-
+							/>
 							{this.renderServices()}
 						</View>
 						<Spinner visible={this.props.login.isFetching} textContent='Loading...' textStyle={{ color: '#FFF' }} />

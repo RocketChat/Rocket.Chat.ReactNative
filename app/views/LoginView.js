@@ -4,13 +4,12 @@ import PropTypes from 'prop-types';
 import { Keyboard, Text, ScrollView, SafeAreaView, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Answers } from 'react-native-fabric';
-import TinyColor from 'tinycolor2';
 
 import RocketChat from '../lib/rocketchat';
 import KeyboardView from '../presentation/KeyboardView';
 import TextInput from '../containers/TextInput';
 import CloseModalButton from '../containers/CloseModalButton';
-import Touch from '../utils/touch';
+import Button from '../containers/Button';
 import styles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { showToast } from '../utils/info';
@@ -104,15 +103,11 @@ export default class LoginView extends React.Component {
 						{this.renderTOTP()}
 
 						<View style={{ alignItems: 'flex-start' }}>
-							<Touch
+							<Button
+								title='Login'
+								type='primary'
 								onPress={this.submit}
-								accessibilityTraits='button'
-								underlayColor={TinyColor(COLOR_BUTTON_PRIMARY).lighten(50)}
-							>
-								<View style={[styles.loginButtonContainer, styles.loginButtonPrimary]}>
-									<Text style={styles.loginButtonText}>Login</Text>
-								</View>
-							</Touch>
+							/>
 							<Text style={[styles.loginText, { marginTop: 20 }]}>New in Rocket.Chat? &nbsp;
 								<Text
 									style={{ color: COLOR_BUTTON_PRIMARY }}

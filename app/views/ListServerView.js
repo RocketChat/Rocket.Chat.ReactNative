@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 // import Zeroconf from 'react-native-zeroconf';
 import { View, Text, SectionList, StyleSheet, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
-import TinyColor from 'tinycolor2';
 
 import LoggedView from './View';
 import { setServer } from '../actions/server';
@@ -173,7 +172,7 @@ export default class ListServerView extends LoggedView {
 
 	renderItem = ({ item }) => (
 		<Touch
-			underlayColor={TinyColor('white').darken(20)}
+			underlayColor='#ccc'
 			accessibilityTraits='button'
 			onPress={() => { this.onPressItem(item); }}
 		>

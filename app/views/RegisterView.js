@@ -3,17 +3,15 @@ import PropTypes from 'prop-types';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Keyboard, Text, View, SafeAreaView, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
-import TinyColor from 'tinycolor2';
 
 import { registerSubmit, setUsernameSubmit } from '../actions/login';
 import TextInput from '../containers/TextInput';
+import Button from '../containers/Button';
 import KeyboardView from '../presentation/KeyboardView';
 import styles from './Styles';
 import { showToast } from '../utils/info';
 import CloseModalButton from '../containers/CloseModalButton';
-import Touch from '../utils/touch';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
-import { COLOR_BUTTON_PRIMARY } from '../constants/colors';
 
 @connect(state => ({
 	server: state.server.server,
@@ -151,16 +149,11 @@ export default class RegisterView extends React.Component {
 						and
 						<Text style={styles.link} onPress={this.privacyPolicy}> Privacy Policy</Text>
 					</Text>
-					<Touch
+					<Button
+						title='Register'
+						type='primary'
 						onPress={this.submit}
-						accessibilityTraits='button'
-						underlayColor={TinyColor(COLOR_BUTTON_PRIMARY).lighten(50)}
-						style={styles.marginBottom10}
-					>
-						<View style={[styles.loginButtonContainer, styles.loginButtonPrimary]}>
-							<Text style={styles.loginButtonText}>Register</Text>
-						</View>
-					</Touch>
+					/>
 				</View>
 
 				{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
@@ -185,15 +178,11 @@ export default class RegisterView extends React.Component {
 				/>
 
 				<View style={[styles.marginBottom10, { alignItems: 'flex-start' }]}>
-					<Touch
+					<Button
+						title='Register'
+						type='primary'
 						onPress={this.usernameSubmit}
-						accessibilityTraits='button'
-						underlayColor={TinyColor(COLOR_BUTTON_PRIMARY).lighten(50)}
-					>
-						<View style={[styles.loginButtonContainer, styles.loginButtonPrimary]}>
-							<Text style={styles.loginButtonText}>Register</Text>
-						</View>
-					</Touch>
+					/>
 				</View>
 
 				{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
