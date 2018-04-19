@@ -34,7 +34,7 @@ export default function login(state = initialState, action) {
 			};
 		case types.LOGIN.FAILURE:
 			return {
-				...state,
+				...initialState,
 				isFetching: false,
 				isAuthenticated: false,
 				failure: true,

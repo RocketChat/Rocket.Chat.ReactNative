@@ -28,6 +28,7 @@ const getIsConnected = state => state.meteor.connected;
 const loginCall = args => RocketChat.loginWithPassword(args);
 const registerCall = args => RocketChat.register(args);
 const setUsernameCall = args => RocketChat.setUsername(args);
+const loginSuccessCall = () => RocketChat.loginSuccess();
 const logoutCall = args => RocketChat.logout(args);
 const forgotPasswordCall = args => RocketChat.forgotPassword(args);
 
@@ -66,7 +67,7 @@ const saveToken = function* saveToken() {
 	if (token) {
 		yield RocketChat.registerPushToken(user.user.id, token);
 	}
-	if (!user.user.username) {
+	if (!user.user.username && !user.isRegistering) {
 		yield put(registerIncomplete());
 	}
 };
@@ -102,10 +103,6 @@ const handleRegisterRequest = function* handleRegisterRequest({ credentials }) {
 };
 
 const handleRegisterSuccess = function* handleRegisterSuccess({ credentials }) {
-	// yield put(loginSubmit({
-	// 	username: credentials.email,
-	// 	password: credentials.pass
-	// }));
 	try {
 		yield call(loginCall, {
 			username: credentials.email,
@@ -124,6 +121,7 @@ const handleSetUsernameRequest = function* handleSetUsernameRequest({ credential
 	try {
 		yield call(setUsernameCall, { credentials });
 		yield put(setUsernameSuccess());
+		yield call(loginSuccessCall);
 	} catch (err) {
 		yield put(loginFailure(err));
 	}
