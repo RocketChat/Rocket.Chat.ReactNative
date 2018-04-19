@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { NavigationActions } from 'react-navigation';
 import { COLOR_TEXT } from '../constants/colors';
 
@@ -12,7 +12,8 @@ const styles = StyleSheet.create({
 		marginTop: 5
 	},
 	icon: {
-		color: COLOR_TEXT
+		color: COLOR_TEXT,
+		left: -5
 	}
 });
 

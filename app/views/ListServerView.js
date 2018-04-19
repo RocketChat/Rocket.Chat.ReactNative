@@ -125,7 +125,7 @@ export default class ListServerView extends LoggedView {
 	}
 
 	jumpToSelectedServer() {
-		if (this.props.server) {
+		if (this.props.server && !this.props.login.isRegistering) {
 			setTimeout(() => {
 				this.openLogin();
 			}, 300);
