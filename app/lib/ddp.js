@@ -63,7 +63,7 @@ export default class Socket extends EventEmitter {
 	constructor(url, login) {
 		super();
 		this.state = 'active';
-		this.lastping = null;
+		this.lastping = new Date();
 		this._login = login;
 		this.url = url.replace(/^http/, 'ws');
 		this.id = 0;
@@ -123,6 +123,15 @@ export default class Socket extends EventEmitter {
 
 		this._connect();
 	}
+	check() {
+		if (!this.lastping) {
+			return false;
+		}
+		if ((Math.abs(this.lastping.getTime() - new Date().getTime()) / 1000) > 50) {
+			return false;
+		}
+		return true;
+	}
 	async login(params) {
 		try {
 			this.emit('login', params);
@@ -160,7 +169,7 @@ export default class Socket extends EventEmitter {
 		});
 	}
 	get status() {
-		return this.connection && this.connection.readyState === 1 && !!this._logged;
+		return this.connection && this.connection.readyState === 1 && !!this._logged && this.check();
 	}
 	_close() {
 		try {
@@ -177,8 +186,11 @@ export default class Socket extends EventEmitter {
 		return new Promise((resolve) => {
 			this._close();
 			clearInterval(this.reconnect_timeout);
-			this.reconnect_timeout = setInterval(() => (!this.connection || this.connection.readyState) > 1 && this.reconnect(), 5000);
 			this.connection = new WebSocket(`${ this.url }/websocket`, null);
+			this.reconnect_timeout = setInterval(() => {
+				console.log('reconnect_timeout text', (!this.connection || this.connection.readyState > 1 || !this.check()));
+				return (!this.connection || this.connection.readyState > 1 || !this.check()) && this.reconnect();
+			}, 5000);
 
 			this.connection.onopen = () => {
 				this.emit('open');
