@@ -142,7 +142,7 @@ export default class RegisterView extends React.Component {
 					onSubmitEditing={this.submit}
 				/>
 
-				<View style={{ alignItems: 'flex-start' }}>
+				<View style={styles.alignItemsFlexStart}>
 					<Text style={styles.loginTermsText}>
 						By proceeding you are agreeing to our
 						<Text style={styles.link} onPress={this.termsService}> Terms of Service </Text>
@@ -177,7 +177,7 @@ export default class RegisterView extends React.Component {
 					onSubmitEditing={() => { this.usernameSubmit(); }}
 				/>
 
-				<View style={[styles.marginBottom10, { alignItems: 'flex-start' }]}>
+				<View style={styles.alignItemsFlexStart}>
 					<Button
 						title='Register'
 						type='primary'

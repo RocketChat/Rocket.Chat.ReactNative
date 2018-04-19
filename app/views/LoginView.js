@@ -102,13 +102,13 @@ export default class LoginView extends React.Component {
 
 						{this.renderTOTP()}
 
-						<View style={{ alignItems: 'flex-start' }}>
+						<View style={styles.alignItemsFlexStart}>
 							<Button
 								title='Login'
 								type='primary'
 								onPress={this.submit}
 							/>
-							<Text style={[styles.loginText, { marginTop: 20 }]}>New in Rocket.Chat? &nbsp;
+							<Text style={[styles.loginText, { marginTop: 10 }]}>New in Rocket.Chat? &nbsp;
 								<Text
 									style={{ color: COLOR_BUTTON_PRIMARY }}
 									onPress={() => this.props.navigation.navigate('Register')}

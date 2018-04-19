@@ -10,23 +10,6 @@ export default StyleSheet.create({
 	containerScrollView: {
 		padding: 20
 	},
-	view: {
-		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'center',
-		padding: 20,
-		alignItems: 'stretch',
-		backgroundColor: '#2f343d'
-	},
-	defaultView: {
-		flexDirection: 'column',
-		justifyContent: 'center',
-		padding: 20,
-		alignItems: 'stretch'
-	},
-	defaultViewBackground: {
-		backgroundColor: '#fff'
-	},
 	label: {
 		lineHeight: 40,
 		height: 40,
@@ -47,27 +30,6 @@ export default StyleSheet.create({
 		paddingHorizontal: 0,
 		marginBottom: 20
 	},
-	input: {
-		marginBottom: 20,
-		borderRadius: 2,
-		// padding: 14,
-		paddingHorizontal: 10,
-		borderWidth: 2,
-		backgroundColor: 'rgba(255,255,255,.2)',
-		borderColor: '#e1e5e8',
-		color: 'white'
-	},
-	// input_white: {
-	// 	paddingVertical: 12,
-	// 	marginBottom: 20,
-	// 	borderRadius: 2,
-	// 	// padding: 14,
-	// 	paddingHorizontal: 10,
-	// 	borderWidth: 2,
-	// 	backgroundColor: 'white',
-	// 	borderColor: 'rgba(0,0,0,.15)',
-	// 	color: 'black'
-	// },
 	buttonContainerLastChild: {
 		marginBottom: 40
 	},
@@ -140,11 +102,6 @@ export default StyleSheet.create({
 		fontSize: 13,
 		fontWeight: '700'
 	},
-	loginSecondaryButtons: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		justifyContent: 'space-around'
-	},
 	loginOAuthButtons: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
@@ -210,32 +167,16 @@ export default StyleSheet.create({
 	alignItemsFlexEnd: {
 		alignItems: 'flex-end'
 	},
+	alignItemsFlexStart: {
+		alignItems: 'flex-start'
+	},
 	textAlignRight: {
 		textAlign: 'right'
 	},
 	opacity5: {
 		opacity: 0.5
 	},
-	marginBottom10: {
-		marginBottom: 10
-	},
 
-	textColor: {
-		color: COLOR_TEXT
-	},
-	loginButtonContainer: {
-		paddingHorizontal: 15,
-		paddingVertical: 10,
-		borderRadius: 2
-	},
-	loginButtonPrimary: {
-		backgroundColor: COLOR_BUTTON_PRIMARY
-	},
-	loginButtonText: {
-		textAlign: 'center',
-		color: 'white',
-		fontWeight: '700'
-	},
 	loginText: {
 		fontWeight: '700',
 		color: COLOR_TEXT
@@ -248,18 +189,5 @@ export default StyleSheet.create({
 		width: 50,
 		height: 50,
 		marginVertical: 25
-	},
-	loginInput: {
-		backgroundColor: '#1D2025',
-		color: '#BABEC0',
-		fontWeight: '700',
-		borderRadius: 4,
-		borderWidth: 0
-	},
-	loginInputLabel: {
-		color: '#BABEC0',
-		marginBottom: 10,
-		fontSize: 14,
-		fontWeight: '700'
 	}
 });

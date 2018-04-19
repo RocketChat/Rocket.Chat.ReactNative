@@ -97,7 +97,7 @@ export default class ForgotPasswordView extends LoggedView {
 									onSubmitEditing={() => this.resetPassword()}
 								/>
 
-								<View style={{ alignItems: 'flex-start' }}>
+								<View style={styles.alignItemsFlexStart}>
 									<Button
 										title='Reset password'
 										type='primary'

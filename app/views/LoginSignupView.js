@@ -1,7 +1,7 @@
 import React from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import PropTypes from 'prop-types';
-import { Text, View, ScrollView, TouchableOpacity, SafeAreaView, WebView, Platform, LayoutAnimation, Image } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, SafeAreaView, WebView, Platform, LayoutAnimation, Image, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -11,13 +11,36 @@ import Modal from 'react-native-modal';
 import RocketChat from '../lib/rocketchat';
 import { open, close } from '../actions/login';
 
-import styles from './Styles';
+import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import random from '../utils/random';
 import Button from '../containers/Button';
 
 const userAgentAndroid = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1';
 const userAgent = Platform.OS === 'ios' ? 'UserAgent' : userAgentAndroid;
+
+const styles = StyleSheet.create({
+	container: {
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	header: {
+		fontSize: 20
+	},
+	servicesContainer: {
+		backgroundColor: '#dddddd',
+		width: '100%',
+		borderRadius: 2,
+		padding: 16,
+		paddingTop: 20,
+		marginBottom: 40
+	},
+	servicesTitle: {
+		color: '#292E35',
+		textAlign: 'left',
+		fontWeight: '700'
+	}
+});
 
 @connect(state => ({
 	server: state.server.server,
@@ -174,14 +197,14 @@ export default class LoginView extends React.Component {
 			return null;
 		}
 		return (
-			<View style={{ backgroundColor: '#dddddd', width: '100%', borderRadius: 2, padding: 16, paddingTop: 20, marginBottom: 40 }}>
-				<Text style={[styles.loginButtonText, { color: '#292E35', textAlign: 'left' }]}>
+			<View style={styles.servicesContainer}>
+				<Text style={styles.servicesTitle}>
 					Or continue using Social accounts
 				</Text>
-				<View style={styles.loginOAuthButtons} key='services'>
+				<View style={sharedStyles.loginOAuthButtons} key='services'>
 					{this.props.Accounts_OAuth_Facebook && this.props.services.facebook &&
 						<TouchableOpacity
-							style={[styles.oauthButton, styles.facebookButton]}
+							style={[sharedStyles.oauthButton, sharedStyles.facebookButton]}
 							onPress={this.onPressFacebook}
 						>
 							<Icon name='facebook' size={20} color='#ffffff' />
@@ -189,7 +212,7 @@ export default class LoginView extends React.Component {
 					}
 					{this.props.Accounts_OAuth_Github && this.props.services.github &&
 						<TouchableOpacity
-							style={[styles.oauthButton, styles.githubButton]}
+							style={[sharedStyles.oauthButton, sharedStyles.githubButton]}
 							onPress={this.onPressGithub}
 						>
 							<Icon name='github' size={20} color='#ffffff' />
@@ -197,7 +220,7 @@ export default class LoginView extends React.Component {
 					}
 					{this.props.Accounts_OAuth_Gitlab && this.props.services.gitlab &&
 						<TouchableOpacity
-							style={[styles.oauthButton, styles.gitlabButton]}
+							style={[sharedStyles.oauthButton, sharedStyles.gitlabButton]}
 							onPress={this.onPressGitlab}
 						>
 							<Icon name='gitlab' size={20} color='#ffffff' />
@@ -205,7 +228,7 @@ export default class LoginView extends React.Component {
 					}
 					{this.props.Accounts_OAuth_Google && this.props.services.google &&
 						<TouchableOpacity
-							style={[styles.oauthButton, styles.googleButton]}
+							style={[sharedStyles.oauthButton, sharedStyles.googleButton]}
 							onPress={this.onPressGoogle}
 						>
 							<Icon name='google' size={20} color='#ffffff' />
@@ -213,7 +236,7 @@ export default class LoginView extends React.Component {
 					}
 					{this.props.Accounts_OAuth_Linkedin && this.props.services.linkedin &&
 						<TouchableOpacity
-							style={[styles.oauthButton, styles.linkedinButton]}
+							style={[sharedStyles.oauthButton, sharedStyles.linkedinButton]}
 							onPress={this.onPressLinkedin}
 						>
 							<Icon name='linkedin' size={20} color='#ffffff' />
@@ -221,7 +244,7 @@ export default class LoginView extends React.Component {
 					}
 					{this.props.Accounts_OAuth_Meteor && this.props.services['meteor-developer'] &&
 						<TouchableOpacity
-							style={[styles.oauthButton, styles.meteorButton]}
+							style={[sharedStyles.oauthButton, sharedStyles.meteorButton]}
 							onPress={this.onPressMeteor}
 						>
 							<MaterialCommunityIcons name='meteor' size={25} color='#ffffff' />
@@ -229,7 +252,7 @@ export default class LoginView extends React.Component {
 					}
 					{this.props.Accounts_OAuth_Twitter && this.props.services.twitter &&
 						<TouchableOpacity
-							style={[styles.oauthButton, styles.twitterButton]}
+							style={[sharedStyles.oauthButton, sharedStyles.twitterButton]}
 							onPress={this.onPressTwitter}
 						>
 							<Icon name='twitter' size={20} color='#ffffff' />
@@ -245,18 +268,18 @@ export default class LoginView extends React.Component {
 			[
 				<ScrollView
 					key='login-view'
-					style={[styles.container, styles.containerScrollView]}
+					style={[sharedStyles.container, sharedStyles.containerScrollView]}
 					{...scrollPersistTaps}
 				>
 					<SafeAreaView>
-						<View style={{ alignItems: 'center', justifyContent: 'center' }}>
+						<View style={styles.container}>
 							<Image
 								source={require('../../static/images/logo.png')}
-								style={styles.loginLogo}
+								style={sharedStyles.loginLogo}
 								resizeMode='center'
 							/>
-							<Text style={[styles.loginText, { color: '#81848A', fontSize: 20 }]}>Prepare to take off with</Text>
-							<Text style={[styles.loginText, { fontSize: 20 }]}>the ultimate chat platform</Text>
+							<Text style={[sharedStyles.loginText, styles.header, { color: '#81848A' }]}>Prepare to take off with</Text>
+							<Text style={[sharedStyles.loginText, styles.header]}>the ultimate chat platform</Text>
 							<Image source={{ uri: 'https://via.placeholder.com/200x200' }} style={{ width: 200, height: 200, marginVertical: 10 }} />
 							<Button
 								title='I have an account'
@@ -277,7 +300,7 @@ export default class LoginView extends React.Component {
 					key='modal-oauth'
 					visible={this.state.modalVisible}
 					animationType='slide'
-					style={styles.oAuthModal}
+					style={sharedStyles.oAuthModal}
 					onBackButtonPress={this.closeOAuth}
 					useNativeDriver
 				>
@@ -294,7 +317,7 @@ export default class LoginView extends React.Component {
 							}
 						}}
 					/>
-					<Icon name='close' size={30} style={styles.closeOAuth} onPress={this.closeOAuth} />
+					<Icon name='close' size={30} style={sharedStyles.closeOAuth} onPress={this.closeOAuth} />
 				</Modal>
 			]
 		);

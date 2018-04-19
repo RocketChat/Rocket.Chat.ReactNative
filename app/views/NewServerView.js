@@ -116,7 +116,7 @@ export default class NewServerView extends React.Component {
 							onChangeText={this.onChangeText}
 						/>
 						{this.renderValidation()}
-						<View style={{ alignItems: 'flex-start', marginTop: 20 }}>
+						<View style={[styles.alignItemsFlexStart, { marginTop: 20 }]}>
 							<Button
 								title='Connect'
 								type='primary'
