@@ -39,6 +39,12 @@ const styles = StyleSheet.create({
 		color: '#292E35',
 		textAlign: 'left',
 		fontWeight: '700'
+	},
+	planetImage: {
+		width: 200,
+		height: 162,
+		marginVertical: 20,
+		opacity: 0.6
 	}
 });
 
@@ -280,7 +286,10 @@ export default class LoginView extends React.Component {
 							/>
 							<Text style={[sharedStyles.loginText, styles.header, { color: '#81848A' }]}>Prepare to take off with</Text>
 							<Text style={[sharedStyles.loginText, styles.header]}>the ultimate chat platform</Text>
-							<Image source={{ uri: 'https://via.placeholder.com/200x200' }} style={{ width: 200, height: 200, marginVertical: 10 }} />
+							<Image
+								style={styles.planetImage}
+								source={require('../../static/images/planet.png')}
+							/>
 							<Button
 								title='I have an account'
 								type='primary'
