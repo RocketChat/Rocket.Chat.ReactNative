@@ -110,6 +110,32 @@ const RocketChat = {
 
 		this.activeUsers[ddpMessage.id] = ddpMessage.fields;
 	},
+	async loginSuccess(user) {
+		if (!user) {
+			const { user: u } = reduxStore.getState().login;
+			user = Object.assign({}, u);
+		}
+		const { server } = reduxStore.getState().server;
+		const hasUsernameKey = `${ server }-${ user.id }`;
+
+		// TODO: one api call
+		// call /me only one time
+		let username = await AsyncStorage.getItem(hasUsernameKey);
+		if (!username) {
+			const me = await this.me({ token: user.token, userId: user.id });
+			// eslint-disable-next-line
+			username = me.username;
+		}
+		if (username) {
+			await AsyncStorage.setItem(hasUsernameKey, username);
+			const userInfo = await this.userInfo({ token: user.token, userId: user.id });
+			user.username = userInfo.user.username;
+			if (userInfo.user.roles) {
+				user.roles = userInfo.user.roles;
+			}
+		}
+		return reduxStore.dispatch(loginSuccess(user));
+	},
 	connect(url, login) {
 		return new Promise((resolve) => {
 			if (this.ddp) {
@@ -136,18 +162,9 @@ const RocketChat = {
 
 			this.ddp.on('disconnected', () => console.log('disconnected'));
 
-			this.ddp.on('logged', protectedFunction(async(user) => {
+			this.ddp.on('logged', protectedFunction((user) => {
 				this.getRooms().catch(e => console.warn('logged getRooms', e));
-				// GET /me from REST API
-				const me = await this.me({ token: user.token, userId: user.id });
-				if (me.username) {
-					const userInfo = await this.userInfo({ token: user.token, userId: user.id });
-					user.username = me.username;
-					if (userInfo.user.roles) {
-						user.roles = userInfo.user.roles;
-					}
-				}
-				reduxStore.dispatch(loginSuccess(user));
+				this.loginSuccess(user);
 			}));
 			this.ddp.once('logged', protectedFunction(({ id }) => { this.subscribeRooms(id); }));
 
