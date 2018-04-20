@@ -168,9 +168,6 @@ const RocketChat = {
 			}));
 			this.ddp.once('logged', protectedFunction(({ id }) => { this.subscribeRooms(id); }));
 
-			// TODO: fix api (get emojis by date/version....)
-			this.ddp.on('once', () => RocketChat.getCustomEmoji());
-
 			this.ddp.on('open', protectedFunction(() => {
 				RocketChat.getSettings();
 				RocketChat.getPermissions();
@@ -182,6 +179,9 @@ const RocketChat = {
 				this.ddp.subscribe('activeUsers');
 				this.ddp.subscribe('roles');
 			}));
+
+			// TODO: fix api (get emojis by date/version....)
+			this.ddp.once('open', () => RocketChat.getCustomEmoji());
 
 			this.ddp.on('disconnected', protectedFunction(() => {
 				reduxStore.dispatch(disconnect());

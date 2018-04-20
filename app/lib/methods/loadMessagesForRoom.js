@@ -51,7 +51,8 @@ export default async function loadMessagesForRoom(...args) {
 	console.log('database', db);
 
 	return new Promise(async(resolve) => {
-		const data = (await (this.ddp.status ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args))).map(buildMessage);
+		// eslint-disable-next-line
+		const data = (await (false && this.ddp.status ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args))).map(buildMessage);
 		if (data) {
 			InteractionManager.runAfterInteractions(() => {
 				try {
