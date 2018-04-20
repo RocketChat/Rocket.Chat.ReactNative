@@ -1,17 +1,25 @@
 import React from 'react';
-import Spinner from 'react-native-loading-spinner-overlay';
 import PropTypes from 'prop-types';
-import { Text, TextInput, View, TouchableOpacity, SafeAreaView } from 'react-native';
+import { Text, View, SafeAreaView, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import LoggedView from './View';
-import * as loginActions from '../actions/login';
+import { forgotPasswordInit, forgotPasswordRequest } from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
+import TextInput from '../containers/TextInput';
+import Button from '../containers/Button';
+import Loading from '../containers/Loading';
 import styles from './Styles';
 import { showErrorAlert } from '../utils/info';
+import scrollPersistTaps from '../utils/scrollPersistTaps';
 
-class ForgotPasswordView extends LoggedView {
+@connect(state => ({
+	login: state.login
+}), dispatch => ({
+	forgotPasswordInit: () => dispatch(forgotPasswordInit()),
+	forgotPasswordRequest: email => dispatch(forgotPasswordRequest(email))
+}))
+export default class ForgotPasswordView extends LoggedView {
 	static propTypes = {
 		forgotPasswordInit: PropTypes.func.isRequired,
 		forgotPasswordRequest: PropTypes.func.isRequired,
@@ -58,10 +66,11 @@ class ForgotPasswordView extends LoggedView {
 	}
 
 	resetPassword = () => {
-		if (this.state.invalidEmail) {
+		const { email, invalidEmail } = this.state;
+		if (invalidEmail || !email) {
 			return;
 		}
-		this.props.forgotPasswordRequest(this.state.email);
+		this.props.forgotPasswordRequest(email);
 	}
 
 	backLogin = () => {
@@ -74,47 +83,35 @@ class ForgotPasswordView extends LoggedView {
 				contentContainerStyle={styles.container}
 				keyboardVerticalOffset={128}
 			>
-				<SafeAreaView>
-					<View style={styles.loginView}>
-						<View style={styles.formContainer}>
-							<TextInput
-								style={[styles.input_white, this.state.invalidEmail ? { borderColor: 'red' } : {}]}
-								onChangeText={email => this.validate(email)}
-								keyboardType='email-address'
-								autoCorrect={false}
-								returnKeyType='next'
-								autoCapitalize='none'
-								underlineColorAndroid='transparent'
-								onSubmitEditing={() => this.resetPassword()}
-								placeholder='Email'
-							/>
+				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
+					<SafeAreaView>
+						<View style={styles.loginView}>
+							<View style={styles.formContainer}>
+								<TextInput
+									inputStyle={this.state.invalidEmail ? { borderColor: 'red' } : {}}
+									label='Email'
+									placeholder='Email'
+									keyboardType='email-address'
+									returnKeyType='next'
+									onChangeText={email => this.validate(email)}
+									onSubmitEditing={() => this.resetPassword()}
+								/>
 
-							<TouchableOpacity style={styles.buttonContainer} onPress={this.resetPassword}>
-								<Text style={styles.button} accessibilityTraits='button'>RESET PASSWORD</Text>
-							</TouchableOpacity>
+								<View style={styles.alignItemsFlexStart}>
+									<Button
+										title='Reset password'
+										type='primary'
+										onPress={this.resetPassword}
+									/>
+								</View>
 
-							<TouchableOpacity style={styles.buttonContainer} onPress={this.backLogin}>
-								<Text style={styles.button} accessibilityTraits='button'>BACK TO LOGIN</Text>
-							</TouchableOpacity>
-
-							{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
+								{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
+							</View>
+							<Loading visible={this.props.login.isFetching} />
 						</View>
-						<Spinner visible={this.props.login.isFetching} textContent='Loading...' textStyle={{ color: '#FFF' }} />
-					</View>
-				</SafeAreaView>
+					</SafeAreaView>
+				</ScrollView>
 			</KeyboardView>
 		);
 	}
 }
-
-function mapStateToProps(state) {
-	return {
-		login: state.login
-	};
-}
-
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators(loginActions, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ForgotPasswordView);

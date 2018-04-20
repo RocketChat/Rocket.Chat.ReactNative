@@ -10,6 +10,7 @@ import LoggedView from './View';
 import { setServer } from '../actions/server';
 import database from '../lib/realm';
 import Fade from '../animations/fade';
+import Touch from '../utils/touch';
 
 const styles = StyleSheet.create({
 	view: {
@@ -45,16 +46,15 @@ const styles = StyleSheet.create({
 		color: '#888'
 	},
 	serverItem: {
-		flex: 1,
 		flexDirection: 'row',
-		// justifyContent: 'center',
 		alignItems: 'center',
 		backgroundColor: '#fff',
 		padding: 14
 	},
-
 	listItem: {
-		color: '#666', flexGrow: 1, lineHeight: 30
+		color: '#666',
+		flexGrow: 1,
+		lineHeight: 30
 	},
 	serverChecked: {
 		flexGrow: 0
@@ -86,27 +86,28 @@ export default class ListServerView extends LoggedView {
 			sections: []
 		};
 		this.data = database.databases.serversDB.objects('servers');
-		this.redirected = false;
+		// this.redirected = false;
 		this.data.addListener(this.updateState);
 	}
 
 	componentDidMount() {
 		// zeroconf.on('update', this.updateState);
 		// zeroconf.scan('http', 'tcp', 'local.');
-		this.setState(this.getState());
+		this.updateState();
+		this.jumpToSelectedServer();
 	}
 
-	componentDidUpdate() {
-		if (this.props.connected &&
-			this.props.server &&
-			!this.props.login.token &&
-			!this.redirected) {
-			this.redirected = true;
-			this.props.navigation.navigate({ key: 'Login', routeName: 'Login' });
-		} else if (!this.props.connected) {
-			this.redirected = false;
-		}
-	}
+	// componentDidUpdate() {
+	// 	if (this.props.connected &&
+	// 		this.props.server &&
+	// 		!this.props.login.token &&
+	// 		!this.redirected) {
+	// 		this.redirected = true;
+	// 		this.props.navigation.navigate({ key: 'LoginSignup', routeName: 'LoginSignup' });
+	// 	} else if (!this.props.connected) {
+	// 		this.redirected = false;
+	// 	}
+	// }
 
 	componentWillUnmount() {
 		// zeroconf.stop();
@@ -114,8 +115,25 @@ export default class ListServerView extends LoggedView {
 		// zeroconf.removeListener('update', this.updateState);
 	}
 
+	openLogin = () => {
+		this.props.navigation.navigate({ key: 'LoginSignup', routeName: 'LoginSignup' });
+	}
+
+	selectAndNavigateTo = (server) => {
+		this.props.selectServer(server);
+		this.openLogin();
+	}
+
+	jumpToSelectedServer() {
+		if (this.props.server && !this.props.login.isRegistering) {
+			setTimeout(() => {
+				this.openLogin();
+			}, 300);
+		}
+	}
+
 	onPressItem = (item) => {
-		this.props.selectServer(item.id);
+		this.selectAndNavigateTo(item.id);
 	}
 
 	getState = () => {
@@ -153,24 +171,28 @@ export default class ListServerView extends LoggedView {
 	}
 
 	renderItem = ({ item }) => (
-
-		<View style={styles.serverItem}>
-			<Text
-				style={[styles.listItem]}
-				onPress={() => { this.onPressItem(item); }}
-				adjustsFontSizeToFit
-			>
-				{item.id}
-			</Text>
-			<Fade visible={this.props.server === item.id}>
-				<Icon
-					iconSize={24}
-					size={24}
-					style={styles.serverChecked}
-					name='ios-checkmark-circle-outline'
-				/>
-			</Fade>
-		</View>
+		<Touch
+			underlayColor='#ccc'
+			accessibilityTraits='button'
+			onPress={() => { this.onPressItem(item); }}
+		>
+			<View style={styles.serverItem}>
+				<Text
+					style={[styles.listItem]}
+					adjustsFontSizeToFit
+				>
+					{item.id}
+				</Text>
+				<Fade visible={this.props.server === item.id}>
+					<Icon
+						iconSize={24}
+						size={24}
+						style={styles.serverChecked}
+						name='ios-checkmark-circle-outline'
+					/>
+				</Fade>
+			</View>
+		</Touch>
 	);
 
 
@@ -184,7 +206,6 @@ export default class ListServerView extends LoggedView {
 
 	render() {
 		return (
-
 			<SafeAreaView style={styles.view}>
 				<SectionList
 					style={styles.list}

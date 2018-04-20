@@ -1,11 +1,10 @@
 import EJSON from 'ejson';
-
 import { Answers } from 'react-native-fabric';
 import { AppState } from 'react-native';
-
+// import { AppState, NativeModules } from 'react-native';
 // const { WebSocketModule, BlobManager } = NativeModules;
 
-// class WebSocket extends WebSocket {
+// class WS extends WebSocket {
 // 	_close(code?: number, reason?: string): void {
 // 		if (Platform.OS === 'android') {
 // 			WebSocketModule.close(code, reason, this._socketId);
@@ -59,13 +58,14 @@ class EventEmitter {
 	}
 }
 
+
 export default class Socket extends EventEmitter {
 	constructor(url, login) {
 		super();
 		this.state = 'active';
-		this.lastping = null;
+		this.lastping = new Date();
 		this._login = login;
-		this.url = url.replace(/^http/, 'ws');
+		this.url = url;// .replace(/^http/, 'ws');
 		this.id = 0;
 		this.subscriptions = {};
 		this.ddp = new EventEmitter();
@@ -112,16 +112,32 @@ export default class Socket extends EventEmitter {
 
 		this.on('result', data => this.ddp.emit(data.id, { id: data.id, result: data.result, error: data.error }));
 		this.on('ready', data => this.ddp.emit(data.subs[0], data));
-		this.on('error', () => { delete this.connection; this._logged = false; this.reconnect(); });
-		this.on('disconnected', () => { delete this.connection; this._logged = false; setTimeout(() => this.reconnect(), 2000); });
+		// this.on('error', () => this.reconnect());
+		this.on('disconnected', () => this.reconnect());
 		this.on('logged', () => this._logged = true);
 
+		this.on('logged', () => {
+			Object.keys(this.subscriptions || {}).forEach((key) => {
+				const { name, params } = this.subscriptions[key];
+				this.subscriptions[key].unsubscribe();
+				this.subscribe(name, ...params);
+			});
+		});
 		this.on('open', async() => {
 			this._logged = false;
 			this.send({ msg: 'connect', version: '1', support: ['1', 'pre2', 'pre1'] });
 		});
 
 		this._connect();
+	}
+	check() {
+		if (!this.lastping) {
+			return false;
+		}
+		if ((Math.abs(this.lastping.getTime() - new Date().getTime()) / 1000) > 50) {
+			return false;
+		}
+		return true;
 	}
 	async login(params) {
 		try {
@@ -143,6 +159,7 @@ export default class Socket extends EventEmitter {
 		}
 	}
 	async send(obj, ignore) {
+		console.log('send');
 		return new Promise((resolve, reject) => {
 			this.id += 1;
 			const id = obj.id || `ddp-react-native-${ this.id }`;
@@ -160,7 +177,7 @@ export default class Socket extends EventEmitter {
 		});
 	}
 	get status() {
-		return this.connection && this.connection.readyState === 1 && !!this._logged;
+		return this.connection && this.connection.readyState === 1 && this.check() && !!this._logged;
 	}
 	_close() {
 		try {
@@ -177,7 +194,10 @@ export default class Socket extends EventEmitter {
 		return new Promise((resolve) => {
 			this._close();
 			clearInterval(this.reconnect_timeout);
-			this.reconnect_timeout = setInterval(() => (!this.connection || this.connection.readyState) > 1 && this.reconnect(), 5000);
+			this.reconnect_timeout = setInterval(() => {
+				console.log('reconnect_timeout text', (!this.connection || this.connection.readyState > 1 || !this.check()));
+				return (!this.connection || this.connection.readyState > 1 || !this.check()) && this.reconnect();
+			}, 5000);
 			this.connection = new WebSocket(`${ this.url }/websocket`, null);
 
 			this.connection.onopen = () => {
@@ -200,7 +220,7 @@ export default class Socket extends EventEmitter {
 					Answers.logCustom('EJSON parse', err);
 				}
 			};
-		}).catch(e => console.warn('_connect', e));
+		});
 	}
 	logout() {
 		this._login = null;
@@ -210,14 +230,16 @@ export default class Socket extends EventEmitter {
 		this._close();
 	}
 	async reconnect() {
-		this.once('logged', () => {
-			Object.keys(this.subscriptions || {}).forEach((key) => {
-				const { name, params } = this.subscriptions[key];
-				this.subscriptions[key].unsubscribe();
-				this.subscribe(name, ...params);
-			});
-		});
-		await this._connect();
+		if (this._timer) {
+			return;
+		}
+		delete this.connection;
+		this._logged = false;
+
+		this._timer = setTimeout(() => {
+			delete this._timer;
+			this._connect();
+		}, 1000);
 	}
 	call(method, ...params) {
 		return this.send({

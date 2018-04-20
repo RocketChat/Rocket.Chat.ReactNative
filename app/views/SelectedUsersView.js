@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { View, StyleSheet, TextInput, Text, TouchableOpacity, SafeAreaView, FlatList, LayoutAnimation, Platform } from 'react-native';
 import { connect } from 'react-redux';
-import Spinner from 'react-native-loading-spinner-overlay';
 import { addUser, removeUser, reset } from '../actions/selectedUsers';
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import RoomItem from '../presentation/RoomItem';
 import Avatar from '../containers/Avatar';
+import Loading from '../containers/Loading';
 import debounce from '../utils/debounce';
 
 const styles = StyleSheet.create({
@@ -301,7 +301,7 @@ export default class SelectedUsersView extends React.Component {
 			<SafeAreaView style={styles.safeAreaView}>
 				{this.renderList()}
 				{this.renderCreateButton()}
-				<Spinner visible={this.props.loading} textContent='Loading...' textStyle={{ color: '#FFF' }} />
+				<Loading visible={this.props.loading} />
 			</SafeAreaView>
 		</View>
 	);
