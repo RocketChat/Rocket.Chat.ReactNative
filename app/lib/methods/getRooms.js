@@ -33,9 +33,9 @@ const getRoomDpp = async function() {
 
 export default async function() {
 	const { database: db } = database;
-	// eslint-disable-next-line
 
 	return new Promise(async(resolve) => {
+		// eslint-disable-next-line
 		const { subscriptions, rooms } = await (false && this.ddp.status ? getRoomDpp.apply(this) : getRoomRest.apply(this));
 
 		const data = rooms.map(room => ({ room, sub: database.objects('subscriptions').filtered('rid == $0', room._id) }));
