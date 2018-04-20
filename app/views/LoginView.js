@@ -17,11 +17,14 @@ import { COLOR_BUTTON_PRIMARY } from '../constants/colors';
 
 @connect(state => ({
 	server: state.server.server,
-	login: state.login
+	failure: state.login.failure,
+	isFetching: state.login.isFetching,
+	reason: state.login.error && state.login.error.reason,
+	error: state.login.error && state.login.error.error
 }), () => ({
 	loginSubmit: params => RocketChat.loginWithPassword(params)
 }))
-export default class LoginView extends React.Component {
+export default class LoginView extends React.PureComponent {
 	static propTypes = {
 		loginSubmit: PropTypes.func.isRequired,
 		navigation: PropTypes.object.isRequired,
@@ -51,7 +54,7 @@ export default class LoginView extends React.Component {
 	}
 
 	renderTOTP = () => {
-		if (/totp/ig.test(this.props.login.error.error)) {
+		if (/totp/ig.test(this.props.error)) {
 			return (
 				<TextInput
 					inputRef={ref => this.codeInput = ref}
@@ -122,8 +125,8 @@ export default class LoginView extends React.Component {
 							</Text>
 						</View>
 
-						{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
-						<Loading visible={this.props.login.isFetching} />
+						{this.props.failure && <Text style={styles.error}>{this.props.reason}</Text>}
+						<Loading visible={this.props.isFetching} />
 					</SafeAreaView>
 				</ScrollView>
 			</KeyboardView>

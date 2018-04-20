@@ -112,10 +112,17 @@ export default class Socket extends EventEmitter {
 
 		this.on('result', data => this.ddp.emit(data.id, { id: data.id, result: data.result, error: data.error }));
 		this.on('ready', data => this.ddp.emit(data.subs[0], data));
-		this.on('error', () => { delete this.connection; this._logged = false; this.reconnect(); });
-		this.on('disconnected', () => { delete this.connection; this._logged = false; setTimeout(() => this.reconnect(), 2000); });
+		// this.on('error', () => this.reconnect());
+		this.on('disconnected', () => this.reconnect());
 		this.on('logged', () => this._logged = true);
 
+		this.on('logged', () => {
+			Object.keys(this.subscriptions || {}).forEach((key) => {
+				const { name, params } = this.subscriptions[key];
+				this.subscriptions[key].unsubscribe();
+				this.subscribe(name, ...params);
+			});
+		});
 		this.on('open', async() => {
 			this._logged = false;
 			this.send({ msg: 'connect', version: '1', support: ['1', 'pre2', 'pre1'] });
@@ -223,14 +230,16 @@ export default class Socket extends EventEmitter {
 		this._close();
 	}
 	async reconnect() {
-		this.once('logged', () => {
-			Object.keys(this.subscriptions || {}).forEach((key) => {
-				const { name, params } = this.subscriptions[key];
-				this.subscriptions[key].unsubscribe();
-				this.subscribe(name, ...params);
-			});
-		});
-		await this._connect();
+		if (this._timer) {
+			return;
+		}
+		delete this.connection;
+		this._logged = false;
+
+		this._timer = setTimeout(() => {
+			delete this._timer;
+			this._connect();
+		}, 1000);
 	}
 	call(method, ...params) {
 		return this.send({
