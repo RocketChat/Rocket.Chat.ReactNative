@@ -1,23 +1,28 @@
 import React from 'react';
-import { View, StyleSheet, Text, TextInput, ViewPropTypes } from 'react-native';
+import { View, StyleSheet, Text, TextInput, ViewPropTypes, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import sharedStyles from '../views/Styles';
-import { COLOR_DANGER } from '../constants/colors';
+import { COLOR_DANGER, COLOR_TEXT } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	inputContainer: {
 		marginBottom: 15
 	},
 	label: {
-		marginBottom: 4,
-		fontSize: 16
+		marginBottom: 10,
+		color: COLOR_TEXT,
+		fontSize: 14,
+		fontWeight: '700'
 	},
 	input: {
-		paddingTop: 5,
-		paddingBottom: 5,
+		fontSize: 14,
+		paddingTop: 12,
+		paddingBottom: 12,
+		// paddingTop: 5,
+		// paddingBottom: 5,
 		paddingHorizontal: 10,
 		borderWidth: 2,
 		borderRadius: 4,
@@ -37,11 +42,19 @@ const styles = StyleSheet.create({
 	},
 	icon: {
 		position: 'absolute',
-		right: 0,
-		padding: 10,
 		color: 'rgba(0,0,0,.45)',
-		height: 56,
-		textAlignVertical: 'center'
+		height: 45,
+		textAlignVertical: 'center',
+		...Platform.select({
+			ios: {
+				padding: 12
+			},
+			android: {
+				paddingHorizontal: 12,
+				paddingTop: 18,
+				paddingBottom: 6
+			}
+		})
 	}
 });
 
@@ -52,6 +65,7 @@ export default class RCTextInput extends React.PureComponent {
 		error: PropTypes.object,
 		secureTextEntry: PropTypes.bool,
 		containerStyle: ViewPropTypes.style,
+		inputStyle: PropTypes.object,
 		inputRef: PropTypes.func
 	}
 	static defaultProps = {
@@ -61,13 +75,17 @@ export default class RCTextInput extends React.PureComponent {
 		showPassword: false
 	}
 
-	get icon() { return <Icon name={this.state.showPassword ? 'eye-slash' : 'eye'} style={styles.icon} size={20} onPress={this.tooglePassword} />; }
+	icon = ({ name, onPress, style }) => <Icon name={name} style={[styles.icon, style]} size={20} onPress={onPress} />
 
-	tooglePassword = () => this.setState({ showPassword: !this.state.showPassword })
+	iconLeft = name => this.icon({ name, onPress: null, style: { left: 0 } });
+
+	iconPassword = name => this.icon({ name, onPress: () => this.tooglePassword(), style: { right: 0 } });
+
+	tooglePassword = () => this.setState({ showPassword: !this.state.showPassword });
 
 	render() {
 		const {
-			label, error, secureTextEntry, containerStyle, inputRef, ...inputProps
+			label, error, secureTextEntry, containerStyle, inputRef, iconLeft, inputStyle, ...inputProps
 		} = this.props;
 		const { showPassword } = this.state;
 		return (
@@ -75,7 +93,13 @@ export default class RCTextInput extends React.PureComponent {
 				{ label && <Text style={[styles.label, error.error && styles.labelError]}>{label}</Text> }
 				<View style={styles.wrap}>
 					<TextInput
-						style={[styles.input, error.error && styles.inputError]}
+						style={[
+							styles.input,
+							error.error && styles.inputError,
+							inputStyle,
+							iconLeft && { paddingLeft: 40 },
+							secureTextEntry && { paddingRight: 40 }
+						]}
 						ref={inputRef}
 						autoCorrect={false}
 						autoCapitalize='none'
@@ -83,7 +107,8 @@ export default class RCTextInput extends React.PureComponent {
 						secureTextEntry={secureTextEntry && !showPassword}
 						{...inputProps}
 					/>
-					{secureTextEntry && this.icon}
+					{iconLeft && this.iconLeft(iconLeft)}
+					{secureTextEntry && this.iconPassword(showPassword ? 'eye-off' : 'eye')}
 				</View>
 				{error.error && <Text style={sharedStyles.error}>{error.reason}</Text>}
 			</View>

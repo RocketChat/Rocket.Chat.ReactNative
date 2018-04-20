@@ -5,7 +5,8 @@ const initialState = {
 	connected: false,
 	errorMessage: '',
 	failure: false,
-	server: ''
+	server: '',
+	adding: false
 };
 
 
@@ -32,8 +33,17 @@ export default function server(state = initialState, action) {
 				failure: true,
 				errorMessage: action.err
 			};
+		case SERVER.ADD:
+			return {
+				...state,
+				adding: true
+			};
 		case SERVER.SELECT:
-			return { ...state, server: action.server };
+			return {
+				...state,
+				server: action.server,
+				adding: false
+			};
 		default:
 			return state;
 	}
