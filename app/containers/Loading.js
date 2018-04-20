@@ -88,7 +88,7 @@ export default class Loading extends React.PureComponent {
 			>
 				<View style={styles.container}>
 					<Animated.Image
-						source={require('../../static/images/logo.png')}
+						source={require('../static/images/logo.png')}
 						style={[styles.image, {
 							opacity: this.state.opacity,
 							transform: [{

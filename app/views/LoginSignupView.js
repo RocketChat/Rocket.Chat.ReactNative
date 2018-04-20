@@ -280,7 +280,7 @@ export default class LoginView extends React.Component {
 					<SafeAreaView>
 						<View style={styles.container}>
 							<Image
-								source={require('../../static/images/logo.png')}
+								source={require('../static/images/logo.png')}
 								style={sharedStyles.loginLogo}
 								resizeMode='center'
 							/>
@@ -288,7 +288,7 @@ export default class LoginView extends React.Component {
 							<Text style={[sharedStyles.loginText, styles.header]}>the ultimate chat platform</Text>
 							<Image
 								style={styles.planetImage}
-								source={require('../../static/images/planet.png')}
+								source={require('../static/images/planet.png')}
 							/>
 							<Button
 								title='I have an account'
