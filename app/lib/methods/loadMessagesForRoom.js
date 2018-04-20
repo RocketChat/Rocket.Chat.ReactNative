@@ -56,11 +56,11 @@ export default async function loadMessagesForRoom(...args) {
 			InteractionManager.runAfterInteractions(() => {
 				try {
 					db.write(() => data.forEach(message => db.create('messages', message, true)));
+					resolve(data);
 				} catch (e) {
 					console.warn('loadMessagesForRoom', e);
 				}
 			});
-			resolve(data);
 		}
 		return resolve([]);
 	});
