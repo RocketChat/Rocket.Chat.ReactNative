@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { CachedImage } from 'react-native-img-cache';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
 import PhotoModal from './PhotoModal';
 
 const styles = StyleSheet.create({
@@ -35,6 +36,9 @@ const styles = StyleSheet.create({
 	}
 });
 
+@connect(state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+}))
 export default class Image extends React.PureComponent {
 	static propTypes = {
 		file: PropTypes.object.isRequired,

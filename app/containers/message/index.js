@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableHighlight, Text, TouchableOpacity, Vibration, ViewPropTypes } from 'react-native';
+import { View, Text, TouchableOpacity, Vibration, ViewPropTypes } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
 import equal from 'deep-equal';
 import { KeyboardUtils } from 'react-native-keyboard-input';
 
-import { actionsShow, errorActionsShow, toggleReactionPicker } from '../../actions/messages';
 import Image from './Image';
 import User from './User';
 import Avatar from '../Avatar';
@@ -18,8 +17,10 @@ import Url from './Url';
 import Reply from './Reply';
 import ReactionsModal from './ReactionsModal';
 import Emoji from './Emoji';
-import messageStatus from '../../constants/messagesStatus';
 import styles from './styles';
+import { actionsShow, errorActionsShow, toggleReactionPicker } from '../../actions/messages';
+import messagesStatus from '../../constants/messagesStatus';
+import Touch from '../../utils/touch';
 
 const getInfoMessage = ({
 	t, role, msg, u
@@ -58,22 +59,12 @@ const getInfoMessage = ({
 	return '';
 };
 
-const renderUrl = (urls) => {
-	if (urls.length === 0) {
-		return null;
-	}
-
-	return urls.map(url => (
-		<Url url={url} key={url.url} />
-	));
-};
-
 @connect(state => ({
 	message: state.messages.message,
 	editing: state.messages.editing,
 	customEmojis: state.customEmojis,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	Message_TimeFormat: state.settings.Message_TimeFormat
+	Message_TimeFormat: state.settings.Message_TimeFormat,
+	Message_GroupingPeriod: state.settings.Message_GroupingPeriod
 }), dispatch => ({
 	actionsShow: actionMessage => dispatch(actionsShow(actionMessage)),
 	errorActionsShow: actionMessage => dispatch(errorActionsShow(actionMessage)),
@@ -84,8 +75,8 @@ export default class Message extends React.Component {
 		status: PropTypes.any,
 		item: PropTypes.object.isRequired,
 		reactions: PropTypes.any.isRequired,
-		baseUrl: PropTypes.string.isRequired,
 		Message_TimeFormat: PropTypes.string.isRequired,
+		Message_GroupingPeriod: PropTypes.number.isRequired,
 		customTimeFormat: PropTypes.string,
 		message: PropTypes.object.isRequired,
 		user: PropTypes.object.isRequired,
@@ -130,7 +121,8 @@ export default class Message extends React.Component {
 	}
 
 	onPress = () => {
-		KeyboardUtils.dismiss();
+		console.warn(this.props.previousItem)
+		// KeyboardUtils.dismiss();
 	}
 
 	onLongPress() {
@@ -184,14 +176,55 @@ export default class Message extends React.Component {
 	}
 
 	isTemp() {
-		return this.props.item.status === messageStatus.TEMP || this.props.item.status === messageStatus.ERROR;
+		return this.props.item.status === messagesStatus.TEMP || this.props.item.status === messagesStatus.ERROR;
 	}
 
 	hasError() {
-		return this.props.item.status === messageStatus.ERROR;
+		return this.props.item.status === messagesStatus.ERROR;
 	}
 
-	attachments() {
+	renderHeader = (username) => {
+		const { item, previousItem } = this.props;
+		let render = false;
+
+		if (previousItem && (
+			(previousItem.ts.toDateString() !== item.ts.toDateString()) ||
+			(previousItem.groupable === false || item.groupable === false) ||
+			(previousItem.u.username !== item.u.username) ||
+			(item.ts - previousItem.ts > this.props.Message_GroupingPeriod * 1000)
+		)) {
+			render = true;
+		}
+
+		if (render) {
+			return (
+				<View style={[styles.flex, { marginBottom: 5 }]}>
+					<Avatar
+						style={styles.avatar}
+						text={item.avatar ? '' : username}
+						size={20}
+						avatar={item.avatar}
+					/>
+					<User
+						onPress={this._onPress}
+						item={item}
+						Message_TimeFormat={this.timeFormat}
+					/>
+				</View>
+			);
+		}
+		return null;
+	}
+
+	renderContent() {
+		if (this.isInfoMessage()) {
+			return <Text style={styles.textInfo}>{getInfoMessage(this.props.item)}</Text>;
+		}
+		const { item, customEmojis, baseUrl } = this.props;
+		return <Markdown msg={item.msg} customEmojis={customEmojis} baseUrl={baseUrl} />;
+	}
+
+	renderAttachment() {
 		if (this.props.item.attachments.length === 0) {
 			return null;
 		}
@@ -211,13 +244,16 @@ export default class Message extends React.Component {
 		return <Reply attachment={file} timeFormat={this.timeFormat} />;
 	}
 
-	renderMessageContent() {
-		if (this.isInfoMessage()) {
-			return <Text style={styles.textInfo}>{getInfoMessage(this.props.item)}</Text>;
+	renderUrl = () => {
+		const { urls } = this.props.item;
+		if (urls.length === 0) {
+			return null;
 		}
-		const { item, customEmojis, baseUrl } = this.props;
-		return <Markdown msg={item.msg} customEmojis={customEmojis} baseUrl={baseUrl} />;
-	}
+
+		return urls.map(url => (
+			<Url url={url} key={url.url} />
+		));
+	};
 
 	renderError = () => {
 		if (!this.hasError()) {
@@ -273,14 +309,14 @@ export default class Message extends React.Component {
 
 	render() {
 		const {
-			item, message, editing, baseUrl, customEmojis, style, archived
+			item, message, editing, customEmojis, style, archived
 		} = this.props;
 		const username = item.alias || item.u.username;
 		const isEditing = message._id === item._id && editing;
 		const accessibilityLabel = `Message from ${ username } at ${ moment(item.ts).format(this.timeFormat) }, ${ this.props.item.msg }`;
 
 		return (
-			<TouchableHighlight
+			<Touch
 				onPress={() => this.onPress()}
 				onLongPress={() => this.onLongPress()}
 				disabled={this.isDeleted() || this.hasError() || archived}
@@ -289,40 +325,31 @@ export default class Message extends React.Component {
 				style={[styles.message, isEditing ? styles.editing : null, style, styles.flex]}
 				accessibilityLabel={accessibilityLabel}
 			>
-				<View style={styles.flex}>
-					{this.renderError()}
-					<View style={[this.isTemp() && { opacity: 0.3 }, styles.flex]}>
-						<Avatar
-							style={styles.avatar}
-							text={item.avatar ? '' : username}
-							size={40}
-							avatar={item.avatar}
-						/>
-						<View style={[styles.content]}>
-							<User
-								onPress={this._onPress}
-								item={item}
-								Message_TimeFormat={this.timeFormat}
-								baseUrl={baseUrl}
-							/>
-							{this.renderMessageContent()}
-							{this.attachments()}
-							{renderUrl(item.urls)}
-							{this.renderReactions()}
+				<View style={{ flexDirection: 'column', flex: 1 }}>
+					{this.renderHeader(username)}
+					<View style={styles.flex}>
+						{this.renderError()}
+						<View style={[styles.flex, this.isTemp() && { opacity: 0.3 }, { marginLeft: 30 }]}>
+							<View style={styles.content}>
+								{this.renderContent()}
+								{this.renderAttachment()}
+								{this.renderUrl()}
+								{this.renderReactions()}
+							</View>
 						</View>
+						{this.state.reactionsModal ?
+							<ReactionsModal
+								isVisible={this.state.reactionsModal}
+								onClose={this.onClose}
+								reactions={item.reactions}
+								user={this.props.user}
+								customEmojis={customEmojis}
+							/>
+							: null
+						}
 					</View>
-					{this.state.reactionsModal ?
-						<ReactionsModal
-							isVisible={this.state.reactionsModal}
-							onClose={this.onClose}
-							reactions={item.reactions}
-							user={this.props.user}
-							customEmojis={customEmojis}
-						/>
-						: null
-					}
 				</View>
-			</TouchableHighlight>
+			</Touch>
 		);
 	}
 }
