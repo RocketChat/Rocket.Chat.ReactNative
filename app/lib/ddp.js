@@ -1,11 +1,10 @@
 import EJSON from 'ejson';
-
 import { Answers } from 'react-native-fabric';
 import { AppState } from 'react-native';
-
+// import { AppState, NativeModules } from 'react-native';
 // const { WebSocketModule, BlobManager } = NativeModules;
 
-// class WebSocket extends WebSocket {
+// class WS extends WebSocket {
 // 	_close(code?: number, reason?: string): void {
 // 		if (Platform.OS === 'android') {
 // 			WebSocketModule.close(code, reason, this._socketId);
@@ -59,13 +58,14 @@ class EventEmitter {
 	}
 }
 
+
 export default class Socket extends EventEmitter {
 	constructor(url, login) {
 		super();
 		this.state = 'active';
 		this.lastping = new Date();
 		this._login = login;
-		this.url = url.replace(/^http/, 'ws');
+		this.url = url;// .replace(/^http/, 'ws');
 		this.id = 0;
 		this.subscriptions = {};
 		this.ddp = new EventEmitter();
@@ -152,6 +152,7 @@ export default class Socket extends EventEmitter {
 		}
 	}
 	async send(obj, ignore) {
+		console.log('send');
 		return new Promise((resolve, reject) => {
 			this.id += 1;
 			const id = obj.id || `ddp-react-native-${ this.id }`;
@@ -169,7 +170,7 @@ export default class Socket extends EventEmitter {
 		});
 	}
 	get status() {
-		return this.connection && this.connection.readyState === 1 && !!this._logged && this.check();
+		return this.connection && this.connection.readyState === 1 && this.check() && !!this._logged;
 	}
 	_close() {
 		try {
@@ -186,11 +187,11 @@ export default class Socket extends EventEmitter {
 		return new Promise((resolve) => {
 			this._close();
 			clearInterval(this.reconnect_timeout);
-			this.connection = new WebSocket(`${ this.url }/websocket`, null);
 			this.reconnect_timeout = setInterval(() => {
 				console.log('reconnect_timeout text', (!this.connection || this.connection.readyState > 1 || !this.check()));
 				return (!this.connection || this.connection.readyState > 1 || !this.check()) && this.reconnect();
 			}, 5000);
+			this.connection = new WebSocket(`${ this.url }/websocket`, null);
 
 			this.connection.onopen = () => {
 				this.emit('open');
@@ -212,7 +213,7 @@ export default class Socket extends EventEmitter {
 					Answers.logCustom('EJSON parse', err);
 				}
 			};
-		}).catch(e => console.warn('_connect', e));
+		});
 	}
 	logout() {
 		this._login = null;
