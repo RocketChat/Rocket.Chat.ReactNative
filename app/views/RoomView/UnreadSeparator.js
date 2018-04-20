@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginVertical: -7
+		marginVertical: 3
 	},
 	firstUnreadLine: {
 		borderTopColor: 'red',

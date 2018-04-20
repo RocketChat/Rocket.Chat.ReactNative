@@ -121,11 +121,10 @@ export default class Message extends React.Component {
 	}
 
 	onPress = () => {
-		console.warn(this.props.previousItem)
-		// KeyboardUtils.dismiss();
+		KeyboardUtils.dismiss();
 	}
 
-	onLongPress() {
+	onLongPress = () => {
 		this.props.onLongPress(this.parseMessage());
 	}
 
@@ -198,7 +197,7 @@ export default class Message extends React.Component {
 
 		if (render) {
 			return (
-				<View style={[styles.flex, { marginBottom: 5 }]}>
+				<View style={styles.flex}>
 					<Avatar
 						style={styles.avatar}
 						text={item.avatar ? '' : username}
@@ -261,15 +260,15 @@ export default class Message extends React.Component {
 		}
 		return (
 			<TouchableOpacity onPress={this.onErrorPress}>
-				<Icon name='error-outline' color='red' size={20} style={{ padding: 10, paddingRight: 12, paddingLeft: 0 }} />
+				<Icon name='error-outline' color='red' size={20} style={styles.errorIcon} />
 			</TouchableOpacity>
 		);
 	}
 
 	renderReaction = (reaction) => {
 		const reacted = reaction.usernames.findIndex(item => item.value === this.props.user.username) !== -1;
-		const reactedContainerStyle = reacted ? { borderColor: '#bde1fe', backgroundColor: '#f3f9ff' } : {};
-		const reactedCount = reacted ? { color: '#4fb0fc' } : {};
+		const reactedContainerStyle = reacted && styles.reactedContainer;
+		const reactedCount = reacted && styles.reactedCountText;
 		return (
 			<TouchableOpacity
 				onPress={() => this.onReactionPress(reaction.emoji)}
@@ -317,27 +316,24 @@ export default class Message extends React.Component {
 
 		return (
 			<Touch
-				onPress={() => this.onPress()}
-				onLongPress={() => this.onLongPress()}
+				onPress={this.onPress}
+				onLongPress={this.onLongPress}
 				disabled={this.isDeleted() || this.hasError() || archived}
 				underlayColor='#FFFFFF'
 				activeOpacity={0.3}
-				style={[styles.message, isEditing ? styles.editing : null, style, styles.flex]}
 				accessibilityLabel={accessibilityLabel}
 			>
-				<View style={{ flexDirection: 'column', flex: 1 }}>
+				<View style={[styles.message, isEditing && styles.editing, style]}>
 					{this.renderHeader(username)}
 					<View style={styles.flex}>
 						{this.renderError()}
-						<View style={[styles.flex, this.isTemp() && { opacity: 0.3 }, { marginLeft: 30 }]}>
-							<View style={styles.content}>
-								{this.renderContent()}
-								{this.renderAttachment()}
-								{this.renderUrl()}
-								{this.renderReactions()}
-							</View>
+						<View style={[styles.messageContent, this.isTemp() && { opacity: 0.3 }]}>
+							{this.renderContent()}
+							{this.renderAttachment()}
+							{this.renderUrl()}
+							{this.renderReactions()}
 						</View>
-						{this.state.reactionsModal ?
+						{this.state.reactionsModal &&
 							<ReactionsModal
 								isVisible={this.state.reactionsModal}
 								onClose={this.onClose}
@@ -345,7 +341,6 @@ export default class Message extends React.Component {
 								user={this.props.user}
 								customEmojis={customEmojis}
 							/>
-							: null
 						}
 					</View>
 				</View>
