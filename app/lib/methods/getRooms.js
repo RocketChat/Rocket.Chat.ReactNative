@@ -34,16 +34,18 @@ const getRoomDpp = async function() {
 export default async function() {
 	const { database: db } = database;
 	// eslint-disable-next-line
-	const {subscriptions, rooms} = await ( false && this.ddp.status ? getRoomDpp.apply(this) : getRoomRest.apply(this));
 
-	const data = rooms.map(room => ({ room, sub: database.objects('subscriptions').filtered('rid == $0', room._id) }));
+	return new Promise(async(resolve) => {
+		const { subscriptions, rooms } = await (false && this.ddp.status ? getRoomDpp.apply(this) : getRoomRest.apply(this));
 
-	InteractionManager.runAfterInteractions(() => {
-		db.write(() => {
-			subscriptions.forEach(subscription => db.create('subscriptions', subscription, true));
-			data.forEach(({ sub, room }) => sub[0] && merge(sub[0], room));
+		const data = rooms.map(room => ({ room, sub: database.objects('subscriptions').filtered('rid == $0', room._id) }));
+
+		InteractionManager.runAfterInteractions(() => {
+			db.write(() => {
+				subscriptions.forEach(subscription => db.create('subscriptions', subscription, true));
+				data.forEach(({ sub, room }) => sub[0] && merge(sub[0], room));
+			});
+			resolve(data);
 		});
-		// showToast('Rooms updated');
 	});
-	return true;
 }

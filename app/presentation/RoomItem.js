@@ -146,7 +146,7 @@ const renderNumber = (unread, userMentions) => {
 	);
 };
 
-const attrs = ['name', 'unread', 'userMentions', 'alert', 'lastMessage'];
+const attrs = ['name', 'unread', 'userMentions', 'alert', 'showLastMessage', 'type', '_updatedAt'];
 @connect(state => ({
 	user: state.login && state.login.user,
 	StoreLastMessage: state.settings.Store_Last_Message,

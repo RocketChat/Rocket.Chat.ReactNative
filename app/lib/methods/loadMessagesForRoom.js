@@ -50,15 +50,18 @@ export default async function loadMessagesForRoom(...args) {
 	const { database: db } = database;
 	console.log('database', db);
 
-	const data = (await (this.ddp.status ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args))).map(buildMessage);
-	if (data) {
-		InteractionManager.runAfterInteractions(() => {
-			try {
-				db.write(() => data.forEach(message => db.create('messages', message, true)));
-			} catch (e) {
-				console.warn('loadMessagesForRoom', e);
-			}
-		});
-	}
-	return data;
+	return new Promise(async(resolve) => {
+		const data = (await (this.ddp.status ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args))).map(buildMessage);
+		if (data) {
+			InteractionManager.runAfterInteractions(() => {
+				try {
+					db.write(() => data.forEach(message => db.create('messages', message, true)));
+				} catch (e) {
+					console.warn('loadMessagesForRoom', e);
+				}
+			});
+			resolve(data);
+		}
+		return resolve([]);
+	});
 }
