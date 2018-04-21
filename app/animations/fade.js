@@ -17,9 +17,6 @@ export default class Fade extends React.Component {
 		this.state = {
 			visible: props.visible
 		};
-	}
-
-	componentWillMount() {
 		this._visibility = new Animated.Value(this.props.visible ? 1 : 0);
 	}
 
@@ -29,7 +26,8 @@ export default class Fade extends React.Component {
 		}
 		Animated.timing(this._visibility, {
 			toValue: nextProps.visible ? 1 : 0,
-			duration: 300
+			duration: 300,
+			useNativeDriver: true
 		}).start(() => {
 			this.setState({ visible: nextProps.visible });
 		});

@@ -14,12 +14,12 @@ const styles = {
 	}
 };
 
-export default class extends React.PureComponent {
+export default class Photo extends React.PureComponent {
 	static propTypes = {
-		image: PropTypes.string.isRequired
+		navigation: PropTypes.object.isRequired
 	}
 	render() {
-		const { image } = this.props;
+		const { image } = this.props.navigation.state.params;
 		return (
 			<View style={styles.imageWrapper}>
 				<ScrollView contentContainerStyle={styles.imageWrapper} maximumZoomScale={1.5}>
@@ -27,7 +27,7 @@ export default class extends React.PureComponent {
 						style={{ ...styles.image }}
 						source={{ uri: encodeURI(image) }}
 						mutable
-						resizeMode={'contain'}
+						resizeMode='contain'
 					/>
 				</ScrollView>
 			</View>

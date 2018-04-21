@@ -9,13 +9,12 @@
 
 #import "AppDelegate.h"
 
-// **********************************************
-// *** DON'T MISS: THE NEXT LINE IS IMPORTANT ***
-// **********************************************
-#import "RCCManager.h"
-
+#import <React/RCTPushNotificationManager.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import "SplashScreen.h"
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
 
 @implementation AppDelegate
 
@@ -25,25 +24,50 @@
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 
-  // **********************************************
-  // *** DON'T MISS: THIS IS HOW WE BOOTSTRAP *****
-  // **********************************************
-  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  self.window.backgroundColor = [UIColor whiteColor];
-  [[RCCManager sharedInstance] initBridgeWithBundleURL:jsCodeLocation launchOptions:launchOptions];
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
+                                                     moduleName:@"RocketChatRN"
+                                              initialProperties:nil
+                                                  launchOptions:launchOptions];
+  rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
+  
+  NSString *newAgent = @"Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1";
+  NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:newAgent, @"UserAgent", nil];
+  [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
 
-//  RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
-//                                                      moduleName:@"RocketChatRN"
-//                                               initialProperties:nil
-//                                                   launchOptions:launchOptions];
-//  rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
-//
-//  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-//  UIViewController *rootViewController = [UIViewController new];
-//  rootViewController.view = rootView;
-//  self.window.rootViewController = rootViewController;
-//  [self.window makeKeyAndVisible];
+  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+  UIViewController *rootViewController = [UIViewController new];
+  rootViewController.view = rootView;
+  self.window.rootViewController = rootViewController;
+  [self.window makeKeyAndVisible];
+  [SplashScreen show];
+  [Fabric with:@[[Crashlytics class]]];
   return YES;
 }
 
+// Required to register for notifications
+ - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
+ {
+  [RCTPushNotificationManager didRegisterUserNotificationSettings:notificationSettings];
+ }
+ // Required for the register event.
+ - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+ {
+  [RCTPushNotificationManager didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+ }
+ // Required for the notification event. You must call the completion handler after handling the remote notification.
+ - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+                                                        fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+ {
+   [RCTPushNotificationManager didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
+ }
+ // Required for the registrationError event.
+ - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+ {
+  [RCTPushNotificationManager didFailToRegisterForRemoteNotificationsWithError:error];
+ }
+ // Required for the localNotification event.
+ - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+ {
+  [RCTPushNotificationManager didReceiveLocalNotification:notification];
+ }
 @end
