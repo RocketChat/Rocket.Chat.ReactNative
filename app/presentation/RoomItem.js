@@ -149,8 +149,7 @@ const renderNumber = (unread, userMentions) => {
 const attrs = ['name', 'unread', 'userMentions', 'alert', 'showLastMessage', 'type', '_updatedAt'];
 @connect(state => ({
 	user: state.login && state.login.user,
-	StoreLastMessage: state.settings.Store_Last_Message,
-	customEmojis: state.customEmojis
+	StoreLastMessage: state.settings.Store_Last_Message
 }))
 export default class RoomItem extends React.Component {
 	static propTypes = {
@@ -167,7 +166,6 @@ export default class RoomItem extends React.Component {
 		id: PropTypes.string,
 		onPress: PropTypes.func,
 		onLongPress: PropTypes.func,
-		customEmojis: PropTypes.object,
 		user: PropTypes.object,
 		avatarSize: PropTypes.number,
 		statusStyle: ViewPropTypes.style
@@ -227,7 +225,7 @@ export default class RoomItem extends React.Component {
 
 	render() {
 		const {
-			favorite, unread, userMentions, name, _updatedAt, customEmojis, alert, status
+			favorite, unread, userMentions, name, _updatedAt, alert, status
 		} = this.props;
 
 		const date = this.formatDate(_updatedAt);
@@ -267,7 +265,6 @@ export default class RoomItem extends React.Component {
 							{status === messagesStatus.ERROR ? <Icon name='error-outline' color='red' size={12} style={{ marginRight: 5, alignSelf: 'center' }} /> : null }
 							<Markdown
 								msg={this.lastMessage}
-								customEmojis={customEmojis}
 								style={styles.lastMessage}
 								markdownStyle={markdownStyle}
 								customRules={customRules}

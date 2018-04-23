@@ -82,7 +82,6 @@ export default class Message extends React.Component {
 		user: PropTypes.object.isRequired,
 		editing: PropTypes.bool,
 		errorActionsShow: PropTypes.func,
-		customEmojis: PropTypes.object,
 		toggleReactionPicker: PropTypes.func,
 		onReactionPress: PropTypes.func,
 		style: ViewPropTypes.style,
@@ -216,8 +215,8 @@ export default class Message extends React.Component {
 		if (this.isInfoMessage()) {
 			return <Text style={styles.textInfo}>{getInfoMessage(this.props.item)}</Text>;
 		}
-		const { item, customEmojis, baseUrl } = this.props;
-		return <Markdown msg={item.msg} customEmojis={customEmojis} baseUrl={baseUrl} />;
+		const { item } = this.props;
+		return <Markdown msg={item.msg} />;
 	}
 
 	renderAttachment() {
@@ -226,15 +225,15 @@ export default class Message extends React.Component {
 		}
 
 		const file = this.props.item.attachments[0];
-		const { baseUrl, user } = this.props;
+		const { user } = this.props;
 		if (file.image_type) {
-			return <Image file={file} baseUrl={baseUrl} user={user} />;
+			return <Image file={file} user={user} />;
 		}
 		if (file.audio_type) {
-			return <Audio file={file} baseUrl={baseUrl} user={user} />;
+			return <Audio file={file} user={user} />;
 		}
 		if (file.video_type) {
-			return <Video file={file} baseUrl={baseUrl} user={user} />;
+			return <Video file={file} user={user} />;
 		}
 
 		return <Reply attachment={file} timeFormat={this.timeFormat} />;
@@ -277,7 +276,6 @@ export default class Message extends React.Component {
 						content={reaction.emoji}
 						standardEmojiStyle={styles.reactionEmoji}
 						customEmojiStyle={styles.reactionCustomEmoji}
-						customEmojis={this.props.customEmojis}
 					/>
 					<Text style={[styles.reactionCount, reactedCount]}>{ reaction.usernames.length }</Text>
 				</View>
@@ -305,7 +303,7 @@ export default class Message extends React.Component {
 
 	render() {
 		const {
-			item, message, editing, customEmojis, style, archived
+			item, message, editing, style, archived
 		} = this.props;
 		const username = item.alias || item.u.username;
 		const isEditing = message._id === item._id && editing;
@@ -315,7 +313,7 @@ export default class Message extends React.Component {
 			<Touch
 				onPress={this.onPress}
 				onLongPress={this.onLongPress}
-				disabled={this.isDeleted() || this.hasError() || archived}
+				disabled={this.isInfoMessage() || this.hasError() || archived}
 				underlayColor='#FFFFFF'
 				activeOpacity={0.3}
 				accessibilityLabel={accessibilityLabel}
@@ -330,16 +328,15 @@ export default class Message extends React.Component {
 							{this.renderUrl()}
 							{this.renderReactions()}
 						</View>
-						{this.state.reactionsModal &&
-							<ReactionsModal
-								isVisible={this.state.reactionsModal}
-								onClose={this.onClose}
-								reactions={item.reactions}
-								user={this.props.user}
-								customEmojis={customEmojis}
-							/>
-						}
 					</View>
+					{this.state.reactionsModal &&
+						<ReactionsModal
+							isVisible={this.state.reactionsModal}
+							onClose={this.onClose}
+							reactions={item.reactions}
+							user={this.props.user}
+						/>
+					}
 				</View>
 			</Touch>
 		);
