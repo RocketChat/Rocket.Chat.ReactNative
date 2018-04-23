@@ -2,8 +2,11 @@ import database from '../../realm';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
 
 export default async function subscribeRooms(id) {
-	const subscriptions = Promise.all([this.ddp.subscribe('stream-notify-user', `${ id }/subscriptions-changed`, false),
-		this.ddp.subscribe('stream-notify-user', `${ id }/rooms-changed`, false)]);
+	const subscriptions = Promise.all([
+		this.ddp.subscribe('stream-notify-user', `${ id }/subscriptions-changed`, false),
+		this.ddp.subscribe('stream-notify-user', `${ id }/rooms-changed`, false),
+		this.ddp.subscribe('stream-notify-user', `${ id }/message`, false)
+	]);
 
 	let timer = null;
 	const loop = (time = new Date()) => {

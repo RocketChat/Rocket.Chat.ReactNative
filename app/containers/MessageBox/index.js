@@ -80,6 +80,7 @@ export default class MessageBox extends React.PureComponent {
 
 	onChangeText(text) {
 		this.setState({ text });
+		this.props.typing(text.length > 0);
 
 		requestAnimationFrame(() => {
 			const { start, end } = this.component._lastNativeSelection;
