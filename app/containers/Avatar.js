@@ -36,7 +36,7 @@ export default class Avatar extends React.PureComponent {
 	};
 	render() {
 		const {
-			text = '', size = 25, baseUrl, borderRadius = 4, style, avatar, type = 'd'
+			text = '', size = 25, baseUrl, borderRadius = 2, style, avatar, type = 'd'
 		} = this.props;
 		const { initials, color } = avatarInitialsAndColor(`${ text }`);
 

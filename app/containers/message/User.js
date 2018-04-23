@@ -8,7 +8,9 @@ import Avatar from '../Avatar';
 
 const styles = StyleSheet.create({
 	username: {
-		fontWeight: 'bold'
+		color: '#000',
+		fontWeight: '400',
+		fontSize: 14
 	},
 	usernameView: {
 		flexDirection: 'row',
@@ -23,7 +25,8 @@ const styles = StyleSheet.create({
 	time: {
 		fontSize: 10,
 		color: '#888',
-		paddingLeft: 5
+		paddingLeft: 5,
+		fontWeight: '400'
 	},
 	edited: {
 		marginLeft: 5,

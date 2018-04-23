@@ -11,8 +11,7 @@ export default StyleSheet.create({
 	},
 	message: {
 		paddingHorizontal: 12,
-		// paddingTop: 6,
-		paddingBottom: 6,
+		paddingVertical: 3,
 		flexDirection: 'column',
 		transform: [{ scaleY: -1 }],
 		flex: 1
@@ -28,6 +27,7 @@ export default StyleSheet.create({
 		width: 16,
 		height: 16
 	},
+	temp: { opacity: 0.3 },
 	codeStyle: {
 		...Platform.select({
 			ios: { fontFamily: 'Courier New' },

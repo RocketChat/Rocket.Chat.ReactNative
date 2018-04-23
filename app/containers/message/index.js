@@ -184,35 +184,31 @@ export default class Message extends React.Component {
 
 	renderHeader = (username) => {
 		const { item, previousItem } = this.props;
-		let render = false;
 
 		if (previousItem && (
-			(previousItem.ts.toDateString() !== item.ts.toDateString()) ||
-			(previousItem.groupable === false || item.groupable === false) ||
-			(previousItem.u.username !== item.u.username) ||
-			(item.ts - previousItem.ts > this.props.Message_GroupingPeriod * 1000)
+			(previousItem.u.username === item.u.username) &&
+			!(previousItem.groupable === false || item.groupable === false) &&
+			(previousItem.status === item.status) &&
+			(item.ts - previousItem.ts < this.props.Message_GroupingPeriod * 1000)
 		)) {
-			render = true;
+			return null;
 		}
 
-		if (render) {
-			return (
-				<View style={styles.flex}>
-					<Avatar
-						style={styles.avatar}
-						text={item.avatar ? '' : username}
-						size={20}
-						avatar={item.avatar}
-					/>
-					<User
-						onPress={this._onPress}
-						item={item}
-						Message_TimeFormat={this.timeFormat}
-					/>
-				</View>
-			);
-		}
-		return null;
+		return (
+			<View style={styles.flex}>
+				<Avatar
+					style={styles.avatar}
+					text={item.avatar ? '' : username}
+					size={20}
+					avatar={item.avatar}
+				/>
+				<User
+					onPress={this._onPress}
+					item={item}
+					Message_TimeFormat={this.timeFormat}
+				/>
+			</View>
+		);
 	}
 
 	renderContent() {
@@ -327,7 +323,7 @@ export default class Message extends React.Component {
 					{this.renderHeader(username)}
 					<View style={styles.flex}>
 						{this.renderError()}
-						<View style={[styles.messageContent, this.isTemp() && { opacity: 0.3 }]}>
+						<View style={[styles.messageContent, this.isTemp() && styles.temp]}>
 							{this.renderContent()}
 							{this.renderAttachment()}
 							{this.renderUrl()}

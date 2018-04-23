@@ -22,8 +22,7 @@ export default StyleSheet.create({
 		maxHeight: 120,
 		flexGrow: 1,
 		width: 1,
-		paddingTop: 15,
-		paddingBottom: 15,
+		paddingVertical: 12,
 		paddingLeft: 0,
 		paddingRight: 0
 	},
@@ -35,7 +34,7 @@ export default StyleSheet.create({
 		fontSize: 20,
 		textAlign: 'center',
 		padding: 15,
-		paddingHorizontal: 21,
+		paddingHorizontal: 12,
 		flex: 0
 	},
 	mentionList: {
