@@ -23,8 +23,7 @@ export default async function subscribeRoom({ rid, t }) {
 
 	const promises = Promise.all([
 		this.ddp.subscribe('stream-room-messages', rid, false),
-		this.ddp.subscribe('stream-notify-room', `${ rid }/typing`, false),
-		this.ddp.subscribe('stream-notify-user', `${ rid }/message`, false)
+		this.ddp.subscribe('stream-notify-room', `${ rid }/typing`, false)
 	]);
 
 	if (!this.ddp.status) {
