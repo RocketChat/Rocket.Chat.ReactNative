@@ -186,6 +186,7 @@ export default class Message extends React.Component {
 		const { item, previousItem } = this.props;
 
 		if (previousItem && (
+			(previousItem.ts.toDateString() === item.ts.toDateString()) &&
 			(previousItem.u.username === item.u.username) &&
 			!(previousItem.groupable === false || item.groupable === false) &&
 			(previousItem.status === item.status) &&
