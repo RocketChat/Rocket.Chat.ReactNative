@@ -112,7 +112,7 @@ export default class RoomHeaderView extends React.PureComponent {
 		} = this.props;
 
 		let t = '';
-		if (title(offline, connecting, authenticating, logged) || loading) {
+		if (!title(offline, connecting, authenticating, logged) && loading) {
 			t = 'Loading messages...';
 		} else if (this.isDirect()) {
 			t = this.getUserStatusLabel();
