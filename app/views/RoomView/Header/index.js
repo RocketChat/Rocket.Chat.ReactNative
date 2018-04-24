@@ -11,13 +11,35 @@ import Avatar from '../../../containers/Avatar';
 import { STATUS_COLORS } from '../../../constants/colors';
 import styles from './styles';
 import { closeRoom } from '../../../actions/room';
-import Touch from '../../../utils/touch';
 
+const title = (offline, connecting, authenticating, logged) => {
+	if (offline) {
+		return 'You are offline...';
+	}
+
+	if (connecting) {
+		return 'Connecting...';
+	}
+
+	if (authenticating) {
+		return 'Authenticating...';
+	}
+
+	if (logged) {
+		return null;
+	}
+
+	return 'Not logged...';
+};
 
 @connect(state => ({
 	user: state.login.user,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	activeUsers: state.activeUsers
+	activeUsers: state.activeUsers,
+	loading: state.messages.isFetching,
+	connecting: state.meteor.connecting,
+	authenticating: state.login.isFetching,
+	offline: !state.meteor.connected,
+	logged: !!state.login.token
 }), dispatch => ({
 	close: () => dispatch(closeRoom())
 }))
@@ -26,14 +48,13 @@ export default class RoomHeaderView extends React.PureComponent {
 		close: PropTypes.func.isRequired,
 		navigation: PropTypes.object.isRequired,
 		user: PropTypes.object.isRequired,
-		baseUrl: PropTypes.string,
 		activeUsers: PropTypes.object
 	}
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			room: {},
+			room: realm.objects('subscriptions').filtered('rid = $0', this.rid)[0] || {},
 			roomName: props.navigation.state.params.room.name
 		};
 		this.rid = props.navigation.state.params.room.rid;
@@ -44,6 +65,7 @@ export default class RoomHeaderView extends React.PureComponent {
 	componentDidMount() {
 		this.updateState();
 	}
+
 	componentWillUnmount() {
 		this.room.removeAllListeners();
 	}
@@ -75,7 +97,7 @@ export default class RoomHeaderView extends React.PureComponent {
 		titleStyle={{ display: 'none' }}
 	/>);
 
-	renderTitle() {
+	renderCenter() {
 		if (!this.state.roomName) {
 			return null;
 		}
@@ -85,6 +107,18 @@ export default class RoomHeaderView extends React.PureComponent {
 		if (this.isDirect()) {
 			accessibilityLabel += `, ${ this.getUserStatusLabel() }`;
 		}
+		const {
+			offline, connecting, authenticating, logged, loading
+		} = this.props;
+
+		let t = '';
+		if (!title(offline, connecting, authenticating, logged) && loading) {
+			t = 'Loading messages...';
+		} else if (this.isDirect()) {
+			t = this.getUserStatusLabel();
+		} else {
+			t = this.state.room.topic || ' ';
+		}
 
 		return (
 			<TouchableOpacity
@@ -93,23 +127,23 @@ export default class RoomHeaderView extends React.PureComponent {
 				accessibilityTraits='header'
 				onPress={() => this.props.navigation.navigate({ key: 'RoomInfo', routeName: 'RoomInfo', params: { rid: this.rid } })}
 			>
-				{this.isDirect() ?
-					<View style={[styles.status, { backgroundColor: STATUS_COLORS[this.getUserStatus()] }]} />
-					: null
-				}
+
 				<Avatar
 					text={this.state.roomName}
 					size={24}
-					style={{ marginRight: 5 }}
-					baseUrl={this.props.baseUrl}
+					style={styles.avatar}
 					type={this.state.room.t}
-				/>
-				<View style={{ flexDirection: 'column' }}>
-					<Text style={styles.title} allowFontScaling={false}>{this.state.roomName}</Text>
+				>
 					{this.isDirect() ?
-						<Text style={styles.userStatus} allowFontScaling={false}>{this.getUserStatusLabel()}</Text>
+						<View style={[styles.status, { backgroundColor: STATUS_COLORS[this.getUserStatus()] }]} />
 						: null
 					}
+				</Avatar>
+				<View style={styles.titleTextContainer}>
+					<Text style={styles.title} allowFontScaling={false}>{this.state.roomName}</Text>
+
+					{ t && <Text style={styles.userStatus} allowFontScaling={false} numberOfLines={1}>{t}</Text>}
+
 				</View>
 			</TouchableOpacity>
 		);
@@ -117,25 +151,22 @@ export default class RoomHeaderView extends React.PureComponent {
 
 	renderRight = () => (
 		<View style={styles.right}>
-			<Touch
-				onPress={() => RocketChat.toggleFavorite(this.room[0].rid, this.room[0].f)}
-				accessibilityLabel='Star room'
-				accessibilityTraits='button'
-				underlayColor='#FFFFFF'
-				activeOpacity={0.5}
-			>
-				<View style={styles.headerButton}>
-					<Icon
-						name={`${ Platform.OS === 'ios' ? 'ios' : 'md' }-star${ this.room[0].f ? '' : '-outline' }`}
-						color='#f6c502'
-						size={24}
-						backgroundColor='transparent'
-					/>
-				</View>
-			</Touch>
 			<TouchableOpacity
 				style={styles.headerButton}
-				onPress={() => this.props.navigation.navigate({ key: 'RoomActions', routeName: 'RoomActions', params: { rid: this.room[0].rid } })}
+				onPress={() => RocketChat.toggleFavorite(this.state.room.rid, this.state.room.f)}
+				accessibilityLabel='Star room'
+				accessibilityTraits='button'
+			>
+				<Icon
+					name={`${ Platform.OS === 'ios' ? 'ios' : 'md' }-star${ this.state.room.f ? '' : '-outline' }`}
+					color='#f6c502'
+					size={24}
+					backgroundColor='transparent'
+				/>
+			</TouchableOpacity>
+			<TouchableOpacity
+				style={styles.headerButton}
+				onPress={() => this.props.navigation.navigate({ key: 'RoomActions', routeName: 'RoomActions', params: { rid: this.state.room.rid } })}
 				accessibilityLabel='Room actions'
 				accessibilityTraits='button'
 			>
@@ -153,7 +184,7 @@ export default class RoomHeaderView extends React.PureComponent {
 		return (
 			<View style={styles.header}>
 				{this.renderLeft()}
-				{this.renderTitle()}
+				{this.renderCenter()}
 				{this.renderRight()}
 			</View>
 		);

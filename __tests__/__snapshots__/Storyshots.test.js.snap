@@ -12,7 +12,7 @@ exports[`Storyshots Avatar avatar 1`] = `
           },
           Object {
             "backgroundColor": "#3F51B5",
-            "borderRadius": 4,
+            "borderRadius": 2,
             "height": 25,
             "width": 25,
           },
@@ -48,7 +48,7 @@ exports[`Storyshots Avatar avatar 1`] = `
           },
           Object {
             "backgroundColor": "#9C27B0",
-            "borderRadius": 4,
+            "borderRadius": 2,
             "height": 40,
             "width": 40,
           },
@@ -84,7 +84,7 @@ exports[`Storyshots Avatar avatar 1`] = `
           },
           Object {
             "backgroundColor": "#9C27B0",
-            "borderRadius": 4,
+            "borderRadius": 2,
             "height": 30,
             "width": 30,
           },
@@ -198,7 +198,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               },
               Object {
                 "backgroundColor": "#8BC34A",
-                "borderRadius": 4,
+                "borderRadius": 2,
                 "height": 46,
                 "width": 46,
               },
@@ -232,13 +232,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
+                Array [
+                  Object {
+                    "borderColor": "#fff",
+                    "borderWidth": 3,
+                    "bottom": -3,
+                    "position": "absolute",
+                    "right": -3,
+                  },
+                  undefined,
+                ],
                 Object {
                   "backgroundColor": "#cbced1",
                 },
@@ -310,10 +313,8 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             style={
               Object {
                 "alignItems": "flex-end",
-                "flex": 1,
                 "flexDirection": "row",
                 "justifyContent": "flex-end",
-                "width": "100%",
               }
             }
           />
@@ -364,7 +365,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               },
               Object {
                 "backgroundColor": "#8BC34A",
-                "borderRadius": 4,
+                "borderRadius": 2,
                 "height": 46,
                 "width": 46,
               },
@@ -398,13 +399,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
+                Array [
+                  Object {
+                    "borderColor": "#fff",
+                    "borderWidth": 3,
+                    "bottom": -3,
+                    "position": "absolute",
+                    "right": -3,
+                  },
+                  undefined,
+                ],
                 Object {
                   "backgroundColor": "#cbced1",
                 },
@@ -480,10 +484,8 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             style={
               Object {
                 "alignItems": "flex-end",
-                "flex": 1,
                 "flexDirection": "row",
                 "justifyContent": "flex-end",
-                "width": "100%",
               }
             }
           />
@@ -534,7 +536,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               },
               Object {
                 "backgroundColor": "#8BC34A",
-                "borderRadius": 4,
+                "borderRadius": 2,
                 "height": 46,
                 "width": 46,
               },
@@ -568,13 +570,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
+                Array [
+                  Object {
+                    "borderColor": "#fff",
+                    "borderWidth": 3,
+                    "bottom": -3,
+                    "position": "absolute",
+                    "right": -3,
+                  },
+                  undefined,
+                ],
                 Object {
                   "backgroundColor": "#cbced1",
                 },
@@ -646,10 +651,8 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             style={
               Object {
                 "alignItems": "flex-end",
-                "flex": 1,
                 "flexDirection": "row",
                 "justifyContent": "flex-end",
-                "width": "100%",
               }
             }
           >
@@ -723,7 +726,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               },
               Object {
                 "backgroundColor": "#795548",
-                "borderRadius": 4,
+                "borderRadius": 2,
                 "height": 46,
                 "width": 46,
               },
@@ -757,13 +760,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
+                Array [
+                  Object {
+                    "borderColor": "#fff",
+                    "borderWidth": 3,
+                    "bottom": -3,
+                    "position": "absolute",
+                    "right": -3,
+                  },
+                  undefined,
+                ],
                 Object {
                   "backgroundColor": "#cbced1",
                 },
@@ -839,10 +845,8 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             style={
               Object {
                 "alignItems": "flex-end",
-                "flex": 1,
                 "flexDirection": "row",
                 "justifyContent": "flex-end",
-                "width": "100%",
               }
             }
           >
@@ -916,7 +920,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               },
               Object {
                 "backgroundColor": "#795548",
-                "borderRadius": 4,
+                "borderRadius": 2,
                 "height": 46,
                 "width": 46,
               },
@@ -950,13 +954,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
+                Array [
+                  Object {
+                    "borderColor": "#fff",
+                    "borderWidth": 3,
+                    "bottom": -3,
+                    "position": "absolute",
+                    "right": -3,
+                  },
+                  undefined,
+                ],
                 Object {
                   "backgroundColor": "#cbced1",
                 },
@@ -1028,10 +1035,8 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             style={
               Object {
                 "alignItems": "flex-end",
-                "flex": 1,
                 "flexDirection": "row",
                 "justifyContent": "flex-end",
-                "width": "100%",
               }
             }
           >
@@ -1105,7 +1110,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               },
               Object {
                 "backgroundColor": "#795548",
-                "borderRadius": 4,
+                "borderRadius": 2,
                 "height": 46,
                 "width": 46,
               },
@@ -1139,13 +1144,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
+                Array [
+                  Object {
+                    "borderColor": "#fff",
+                    "borderWidth": 3,
+                    "bottom": -3,
+                    "position": "absolute",
+                    "right": -3,
+                  },
+                  undefined,
+                ],
                 Object {
                   "backgroundColor": "#cbced1",
                 },
@@ -1217,10 +1225,8 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             style={
               Object {
                 "alignItems": "flex-end",
-                "flex": 1,
                 "flexDirection": "row",
                 "justifyContent": "flex-end",
-                "width": "100%",
               }
             }
           >
@@ -1294,7 +1300,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               },
               Object {
                 "backgroundColor": "#795548",
-                "borderRadius": 4,
+                "borderRadius": 2,
                 "height": 46,
                 "width": 46,
               },
@@ -1328,13 +1334,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
+                Array [
+                  Object {
+                    "borderColor": "#fff",
+                    "borderWidth": 3,
+                    "bottom": -3,
+                    "position": "absolute",
+                    "right": -3,
+                  },
+                  undefined,
+                ],
                 Object {
                   "backgroundColor": "#cbced1",
                 },
@@ -1406,10 +1415,8 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             style={
               Object {
                 "alignItems": "flex-end",
-                "flex": 1,
                 "flexDirection": "row",
                 "justifyContent": "flex-end",
-                "width": "100%",
               }
             }
           >
@@ -1483,7 +1490,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               },
               Object {
                 "backgroundColor": "#795548",
-                "borderRadius": 4,
+                "borderRadius": 2,
                 "height": 46,
                 "width": 46,
               },
@@ -1517,13 +1524,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
+                Array [
+                  Object {
+                    "borderColor": "#fff",
+                    "borderWidth": 3,
+                    "bottom": -3,
+                    "position": "absolute",
+                    "right": -3,
+                  },
+                  undefined,
+                ],
                 Object {
                   "backgroundColor": "#cbced1",
                 },
@@ -1595,10 +1605,8 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             style={
               Object {
                 "alignItems": "flex-end",
-                "flex": 1,
                 "flexDirection": "row",
                 "justifyContent": "flex-end",
-                "width": "100%",
               }
             }
           >
@@ -1672,7 +1680,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               },
               Object {
                 "backgroundColor": "#E91E63",
-                "borderRadius": 4,
+                "borderRadius": 2,
                 "height": 46,
                 "width": 46,
               },
@@ -1706,13 +1714,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
+                Array [
+                  Object {
+                    "borderColor": "#fff",
+                    "borderWidth": 3,
+                    "bottom": -3,
+                    "position": "absolute",
+                    "right": -3,
+                  },
+                  undefined,
+                ],
                 Object {
                   "backgroundColor": "#cbced1",
                 },
@@ -1784,10 +1795,8 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             style={
               Object {
                 "alignItems": "flex-end",
-                "flex": 1,
                 "flexDirection": "row",
                 "justifyContent": "flex-end",
-                "width": "100%",
               }
             }
           />
@@ -1838,7 +1847,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               },
               Object {
                 "backgroundColor": "#9C27B0",
-                "borderRadius": 4,
+                "borderRadius": 2,
                 "height": 46,
                 "width": 46,
               },
@@ -1872,13 +1881,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
+                Array [
+                  Object {
+                    "borderColor": "#fff",
+                    "borderWidth": 3,
+                    "bottom": -3,
+                    "position": "absolute",
+                    "right": -3,
+                  },
+                  undefined,
+                ],
                 Object {
                   "backgroundColor": "#cbced1",
                 },
@@ -1950,10 +1962,8 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             style={
               Object {
                 "alignItems": "flex-end",
-                "flex": 1,
                 "flexDirection": "row",
                 "justifyContent": "flex-end",
-                "width": "100%",
               }
             }
           />
@@ -2004,7 +2014,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               },
               Object {
                 "backgroundColor": undefined,
-                "borderRadius": 4,
+                "borderRadius": 2,
                 "height": 46,
                 "width": 46,
               },
@@ -2038,13 +2048,16 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
+                Array [
+                  Object {
+                    "borderColor": "#fff",
+                    "borderWidth": 3,
+                    "bottom": -3,
+                    "position": "absolute",
+                    "right": -3,
+                  },
+                  undefined,
+                ],
                 Object {
                   "backgroundColor": "#cbced1",
                 },
@@ -2116,10 +2129,8 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             style={
               Object {
                 "alignItems": "flex-end",
-                "flex": 1,
                 "flexDirection": "row",
                 "justifyContent": "flex-end",
-                "width": "100%",
               }
             }
           />

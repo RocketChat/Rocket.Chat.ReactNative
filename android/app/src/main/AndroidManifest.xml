@@ -26,7 +26,9 @@
       android:allowBackup="true"
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher"
-      android:theme="@style/AppTheme">
+      android:theme="@style/AppTheme"
+			android:resizeableActivity="true"
+			android:largeHeap="true">
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"

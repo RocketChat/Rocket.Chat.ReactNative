@@ -80,6 +80,7 @@ export default class MessageBox extends React.PureComponent {
 
 	onChangeText(text) {
 		this.setState({ text });
+		this.props.typing(text.length > 0);
 
 		requestAnimationFrame(() => {
 			const { start, end } = this.component._lastNativeSelection;
@@ -174,11 +175,11 @@ export default class MessageBox extends React.PureComponent {
 		};
 		ImagePicker.showImagePicker(options, (response) => {
 			if (response.didCancel) {
-				console.log('User cancelled image picker');
+				console.warn('User cancelled image picker');
 			} else if (response.error) {
-				console.log('ImagePicker Error: ', response.error);
+				console.warn('ImagePicker Error: ', response.error);
 			} else if (response.customButton) {
-				console.log('User tapped custom button: ', response.customButton);
+				console.warn('User tapped custom button: ', response.customButton);
 			} else {
 				const fileInfo = {
 					name: response.fileName,
@@ -278,7 +279,7 @@ export default class MessageBox extends React.PureComponent {
 				});
 			});
 		} catch (e) {
-			console.log('spotlight canceled');
+			console.warn('spotlight canceled');
 		} finally {
 			delete this.oldPromise;
 			this.users = database.objects('users').filtered('username CONTAINS[c] $0', keyword).slice();
@@ -321,7 +322,7 @@ export default class MessageBox extends React.PureComponent {
 			this.roomsCache = [...this.roomsCache, ...results.rooms].filter(onlyUnique);
 			this.setState({ mentions: [...rooms.slice(), ...results.rooms] });
 		} catch (e) {
-			console.log('spotlight canceled');
+			console.warn('spotlight canceled');
 		} finally {
 			delete this.oldPromise;
 		}
@@ -454,7 +455,6 @@ export default class MessageBox extends React.PureComponent {
 							style={{ margin: 8 }}
 							text={item.username || item.name}
 							size={30}
-							baseUrl={this.props.baseUrl}
 						/>,
 						<Text key='mention-item-name'>{ item.username || item.name }</Text>
 					]

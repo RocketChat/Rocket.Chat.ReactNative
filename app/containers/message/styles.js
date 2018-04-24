@@ -1,20 +1,20 @@
 import { StyleSheet, Platform } from 'react-native';
 
 export default StyleSheet.create({
-	content: {
-		flexGrow: 1,
-		flexShrink: 1
+	messageContent: {
+		flex: 1,
+		marginLeft: 30
 	},
 	flex: {
 		flexDirection: 'row',
 		flex: 1
 	},
 	message: {
-		padding: 12,
-		paddingTop: 6,
-		paddingBottom: 6,
-		flexDirection: 'row',
-		transform: [{ scaleY: -1 }]
+		paddingHorizontal: 12,
+		paddingVertical: 3,
+		flexDirection: 'column',
+		transform: [{ scaleY: -1 }],
+		flex: 1
 	},
 	textInfo: {
 		fontStyle: 'italic',
@@ -27,6 +27,7 @@ export default StyleSheet.create({
 		width: 16,
 		height: 16
 	},
+	temp: { opacity: 0.3 },
 	codeStyle: {
 		...Platform.select({
 			ios: { fontFamily: 'Courier New' },
@@ -40,7 +41,8 @@ export default StyleSheet.create({
 	},
 	reactionsContainer: {
 		flexDirection: 'row',
-		flexWrap: 'wrap'
+		flexWrap: 'wrap',
+		marginTop: 6
 	},
 	reactionContainer: {
 		flexDirection: 'row',
@@ -70,5 +72,17 @@ export default StyleSheet.create({
 	},
 	avatar: {
 		marginRight: 10
+	},
+	reactedContainer: {
+		borderColor: '#bde1fe',
+		backgroundColor: '#f3f9ff'
+	},
+	reactedCountText: {
+		color: '#4fb0fc'
+	},
+	errorIcon: {
+		padding: 10,
+		paddingRight: 12,
+		paddingLeft: 0
 	}
 });

@@ -8,15 +8,41 @@ import { CachedImage } from 'react-native-img-cache';
 import { HeaderBackButton } from 'react-navigation';
 
 import Avatar from '../../../containers/Avatar';
+import Status from '../../../containers/status';
 import RocketChat from '../../../lib/rocketchat';
 import { STATUS_COLORS } from '../../../constants/colors';
 import { setSearch } from '../../../actions/rooms';
 import styles from './styles';
 
+const title = (offline, connecting, authenticating, logged) => {
+	if (offline) {
+		return 'offline...';
+	}
+
+	if (connecting) {
+		return 'Connecting...';
+	}
+
+	if (authenticating) {
+		return 'Authenticating...';
+	}
+
+	if (logged) {
+		return null;
+	}
+
+	return 'Not logged...';
+};
+
 @connect(state => ({
 	user: state.login.user,
 	connected: state.meteor.connected,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+
+	connecting: state.meteor.connecting,
+	authenticating: state.login.isFetching,
+	offline: !state.meteor.connected,
+	logged: !!state.login.token
 }), dispatch => ({
 	setSearch: searchText => dispatch(setSearch(searchText))
 }))
@@ -77,7 +103,8 @@ export default class RoomsListHeaderView extends React.PureComponent {
 	}
 
 	createChannel() {
-		this.props.navigation.navigate({ key: 'SelectUsers', routeName: 'SelectUsers' });
+		const params = this.props.navigation.state.params || {};
+		params.createChannel();
 	}
 
 	renderLeft() {
@@ -100,27 +127,35 @@ export default class RoomsListHeaderView extends React.PureComponent {
 		);
 	}
 
-	renderTitle() {
+	renderCenter() {
+		const {
+			offline, connecting, authenticating, logged, user
+		} = this.props;
+
 		if (this.state.searching) {
 			return null;
 		}
 
-		if (!this.props.user.username) {
+		if (!user.username) {
 			return null;
 		}
 
-		const accessibilityLabel = `${ this.props.user.username }, ${ this.getUserStatusLabel() }, double tap to change status`;
+		const t = title(offline, connecting, authenticating, logged);
 
+		const accessibilityLabel = `${ user.username }, ${ this.getUserStatusLabel() }, double tap to change status`;
 		return (
+
 			<TouchableOpacity style={styles.titleContainer} onPress={() => this.showModal()} accessibilityLabel={accessibilityLabel} accessibilityTraits='header'>
-				<View style={[styles.status, { backgroundColor: STATUS_COLORS[this.getUserStatus()] }]} />
 				<Avatar
-					text={this.props.user.username}
+					text={user.username}
 					size={24}
-					style={{ marginRight: 5 }}
-					baseUrl={this.props.baseUrl}
-				/>
-				<Text accessible={false} style={styles.title} ellipsizeMode='tail' numberOfLines={1} allowFontScaling={false}>{this.props.user.username}</Text>
+				>
+					<Status style={[styles.status, styles.user_status]} id={user.id} />
+				</Avatar>
+				<View style={styles.rows}>
+					<Text accessible={false} style={styles.title} ellipsizeMode='tail' numberOfLines={1} allowFontScaling={false}>{this.props.user.username}</Text>
+					{ t && <Text accessible={false} style={styles.status_text} ellipsizeMode='tail' numberOfLines={1} allowFontScaling={false}>{t}</Text>}
+				</View>
 			</TouchableOpacity>
 		);
 	}
@@ -166,7 +201,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 	}
 
 	renderModalButton = (status, text) => {
-		const statusStyle = [styles.status, { backgroundColor: STATUS_COLORS[status] }];
+		const statusStyle = [styles.status, { marginRight: 10, backgroundColor: STATUS_COLORS[status] }];
 		const textStyle = { flex: 1, fontWeight: this.props.user.status === status ? 'bold' : 'normal' };
 		return (
 			<TouchableOpacity
@@ -208,7 +243,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 		return (
 			<View style={styles.header}>
 				{this.renderLeft()}
-				{this.renderTitle()}
+				{this.renderCenter()}
 				{this.renderRight()}
 				{this.renderSearch()}
 				<Modal

@@ -4,8 +4,8 @@ import { View, StyleSheet, TouchableOpacity, Text, Easing } from 'react-native';
 import Video from 'react-native-video';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Slider from 'react-native-slider';
+import { connect } from 'react-redux';
 import Markdown from './Markdown';
-
 
 const styles = StyleSheet.create({
 	audioContainer: {
@@ -61,6 +61,9 @@ const formatTime = (t = 0, duration = 0) => {
 	return `${ formattedMinutes }:${ formattedSeconds }`;
 };
 
+@connect(state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+}))
 export default class Audio extends React.PureComponent {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
@@ -115,8 +118,8 @@ export default class Audio extends React.PureComponent {
 		const { uri, paused } = this.state;
 		const { description } = this.props.file;
 		return (
-			<View>
-				<View style={styles.audioContainer}>
+			[
+				<View key='audio' style={styles.audioContainer}>
 					<Video
 						ref={(ref) => {
 							this.player = ref;
@@ -154,9 +157,9 @@ export default class Audio extends React.PureComponent {
 							onValueChange={value => this.setState({ currentTime: value })}
 						/>
 					</View>
-				</View>
-				<Markdown msg={description} />
-			</View>
+				</View>,
+				<Markdown key='description' msg={description} />
+			]
 		);
 	}
 }
