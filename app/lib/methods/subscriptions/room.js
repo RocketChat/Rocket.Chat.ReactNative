@@ -12,7 +12,7 @@ export default async function subscribeRoom({ rid, t }) {
 		}
 		timer = setTimeout(async() => {
 			try {
-				await this.loadMissedMessages({ rid, t, latest: timer });
+				await this.loadMissedMessages({ rid, t, lastOpen: timer });
 				timer = false;
 				loop();
 			} catch (e) {
