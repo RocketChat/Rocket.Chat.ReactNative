@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import EasyMarkdown from 'react-native-easy-markdown'; // eslint-disable-line
 import SimpleMarkdown from 'simple-markdown';
 import { emojify } from 'react-emojione';
+import { connect } from 'react-redux';
 import styles from './styles';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 
@@ -92,6 +93,10 @@ const defaultRules = {
 };
 
 const codeStyle = StyleSheet.flatten(styles.codeStyle);
+
+@connect(state => ({
+	customEmojis: state.customEmojis
+}))
 export default class Markdown extends React.Component {
 	shouldComponentUpdate(nextProps) {
 		return nextProps.msg !== this.props.msg;

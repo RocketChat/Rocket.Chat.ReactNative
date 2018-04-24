@@ -1,16 +1,17 @@
 import React from 'react';
-
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, Keyboard, LayoutAnimation } from 'react-native';
+import { View, StyleSheet, Text, Keyboard, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
 
 const styles = StyleSheet.create({
 	typing: {
-
 		transform: [{ scaleY: -1 }],
 		fontWeight: 'bold',
 		paddingHorizontal: 15,
 		height: 25
+	},
+	emptySpace: {
+		height: 5
 	}
 });
 
@@ -18,7 +19,6 @@ const styles = StyleSheet.create({
 	username: state.login.user && state.login.user.username,
 	usersTyping: state.room.usersTyping
 }))
-
 export default class Typing extends React.Component {
 	shouldComponentUpdate(nextProps) {
 		return this.props.usersTyping.join() !== nextProps.usersTyping.join();
@@ -37,7 +37,7 @@ export default class Typing extends React.Component {
 		const { usersTyping } = this;
 
 		if (!usersTyping) {
-			return null;
+			return <View style={styles.emptySpace} />;
 		}
 
 		return (<Text style={styles.typing} onPress={() => this.onPress()}>{usersTyping}</Text>);

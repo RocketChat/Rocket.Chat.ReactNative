@@ -22,7 +22,9 @@ export default StyleSheet.create({
 		maxHeight: 120,
 		flexGrow: 1,
 		width: 1,
-		paddingVertical: 12,
+		// paddingVertical: 12, needs to be paddingTop/paddingBottom because of iOS/Android's TextInput differences on rendering
+		paddingTop: 12,
+		paddingBottom: 12,
 		paddingLeft: 0,
 		paddingRight: 0
 	},

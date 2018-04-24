@@ -707,16 +707,17 @@ const RocketChat = {
 		if (!result) {
 			return Promise.reject(new Error('Room not found'));
 		}
-		return Promise.resolve(result[0]);
+		return Promise.resolve(result);
 	},
 	async getPermalink(message) {
 		const room = await RocketChat.getRoom(message.rid);
+		const { server } = reduxStore.getState().server;
 		const roomType = {
 			p: 'group',
 			c: 'channel',
 			d: 'direct'
 		}[room.t];
-		return `${ room._server.id }/${ roomType }/${ room.name }?msg=${ message._id }`;
+		return `${ server }/${ roomType }/${ room.name }?msg=${ message._id }`;
 	},
 	subscribe(...args) {
 		return this.ddp.subscribe(...args);
