@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 		fontSize: 20
 	},
 	servicesContainer: {
-		backgroundColor: '#dddddd',
+		backgroundColor: '#F7F8FA',
 		width: '100%',
 		borderRadius: 2,
 		padding: 16,
