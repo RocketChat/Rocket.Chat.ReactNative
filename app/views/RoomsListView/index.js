@@ -1,33 +1,23 @@
 import ActionButton from 'react-native-action-button';
-import { ListView } from 'realm/react-native';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Platform, View, TextInput, FlatList } from 'react-native';
+import { Platform, View, TextInput, FlatList, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
-import * as actions from '../../actions';
-import * as server from '../../actions/connect';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem from '../../presentation/RoomItem';
-import Banner from '../../containers/Banner';
 import { goRoom } from '../../containers/routes/NavigationService';
 import Header from '../../containers/Header';
 import RoomsListHeader from './Header';
 import styles from './styles';
-import debounce from '../../utils/debounce';
+import throttle from '../../utils/throttle';
 
-const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 @connect(state => ({
 	user: state.login.user,
 	server: state.server.server,
-	login: state.login,
 	Site_Url: state.settings.Site_Url,
-	canShowList: state.login.token || state.login.user.token,
 	searchText: state.rooms.searchText
-}), dispatch => ({
-	login: () => dispatch(actions.login()),
-	connect: () => dispatch(server.connectRequest())
 }))
 export default class RoomsListView extends React.Component {
 	static propTypes = {
@@ -46,11 +36,10 @@ export default class RoomsListView extends React.Component {
 		super(props);
 
 		this.state = {
-			dataSource: ds.cloneWithRows([]),
-			searchText: ''
+			search: []
 		};
 		this._keyExtractor = this._keyExtractor.bind(this);
-		this.data = database.objects('subscriptions').filtered('archived != true').sorted('roomUpdatedAt', true);
+		this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
 	}
 
 	componentDidMount() {
@@ -66,7 +55,7 @@ export default class RoomsListView extends React.Component {
 	componentWillReceiveProps(props) {
 		if (this.props.server !== props.server) {
 			this.data.removeListener(this.updateState);
-			this.data = database.objects('subscriptions').filtered('archived != true').sorted('roomUpdatedAt', true);
+			this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
 			this.data.addListener(this.updateState);
 		} else if (this.props.searchText !== props.searchText) {
 			this.search(props.searchText);
@@ -79,20 +68,20 @@ export default class RoomsListView extends React.Component {
 	}
 
 	onSearchChangeText(text) {
-		this.setState({ searchText: text });
 		this.search(text);
 	}
 
-	updateState = debounce(() => {
+	updateState = throttle(() => {
+		LayoutAnimation.easeInEaseOut();
 		this.forceUpdate();
-	}, 1000);
+	}, 1500);
 
 	async search(text) {
 		const searchText = text.trim();
 		if (searchText === '') {
 			delete this.oldPromise;
 			return this.setState({
-				search: false
+				search: []
 			});
 		}
 
@@ -145,7 +134,11 @@ export default class RoomsListView extends React.Component {
 	}
 
 	_createChannel() {
-		this.props.navigation.navigate({ key: 'SelectUsers', routeName: 'SelectUsers' });
+		this.props.navigation.navigate({
+			key: 'SelectedUsers',
+			routeName: 'SelectedUsers',
+			params: { nextAction: () => this.props.navigation.navigate('CreateChannel') }
+		});
 	}
 
 	_keyExtractor(item) {
@@ -157,7 +150,6 @@ export default class RoomsListView extends React.Component {
 			<TextInput
 				underlineColorAndroid='transparent'
 				style={styles.searchBox}
-				value={this.state.searchText}
 				onChangeText={text => this.onSearchChangeText(text)}
 				returnKeyType='search'
 				placeholder='Search'
@@ -187,14 +179,14 @@ export default class RoomsListView extends React.Component {
 
 	renderList = () => (
 		<FlatList
-			data={this.state.search ? this.state.search : this.data}
+			data={this.state.search.length > 0 ? this.state.search : this.data}
 			keyExtractor={this._keyExtractor}
-			dataSource={this.state.dataSource}
 			style={styles.list}
 			renderItem={this.renderItem}
 			ListHeaderComponent={Platform.OS === 'ios' ? this.renderSearchBar : null}
 			contentOffset={Platform.OS === 'ios' ? { x: 0, y: 38 } : {}}
 			enableEmptySections
+			removeClippedSubviews
 			keyboardShouldPersistTaps='always'
 		/>
 	)
@@ -209,7 +201,6 @@ export default class RoomsListView extends React.Component {
 
 	render = () => (
 		<View style={styles.container}>
-			<Banner />
 			{this.renderList()}
 			{Platform.OS === 'android' && this.renderCreateButtons()}
 		</View>)

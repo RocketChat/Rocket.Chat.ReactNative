@@ -3,8 +3,9 @@ import { delay } from 'redux-saga';
 import { AsyncStorage } from 'react-native';
 import { SERVER } from '../actions/actionsTypes';
 import * as actions from '../actions';
-import { connectRequest, disconnect, disconnect_by_user } from '../actions/connect';
-import { changedServer, serverSuccess, serverFailure, serverRequest, setServer } from '../actions/server';
+import { connectRequest } from '../actions/connect';
+import { serverSuccess, serverFailure, serverRequest, setServer } from '../actions/server';
+import { setRoles } from '../actions/roles';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import * as NavigationService from '../containers/routes/NavigationService';
@@ -14,16 +15,28 @@ const validate = function* validate(server) {
 };
 
 const selectServer = function* selectServer({ server }) {
-	yield database.setActiveDB(server);
-	yield put(disconnect_by_user());
-	yield put(disconnect());
-	yield put(changedServer(server));
-	yield call([AsyncStorage, 'setItem'], 'currentServer', server);
-	const settings = database.objects('settings');
-	yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
-	const permissions = database.objects('permissions');
-	yield put(actions.setAllPermissions(RocketChat.parsePermissions(permissions.slice(0, permissions.length))));
-	yield put(connectRequest(server));
+	try {
+		yield database.setActiveDB(server);
+
+		// yield RocketChat.disconnect();
+
+		yield call([AsyncStorage, 'setItem'], 'currentServer', server);
+		const settings = database.objects('settings');
+		yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
+		const permissions = database.objects('permissions');
+		yield put(actions.setAllPermissions(RocketChat.parsePermissions(permissions.slice(0, permissions.length))));
+		const emojis = database.objects('customEmojis');
+		yield put(actions.setCustomEmojis(RocketChat.parseEmojis(emojis.slice(0, emojis.length))));
+		const roles = database.objects('roles');
+		yield put(setRoles(roles.reduce((result, role) => {
+			result[role._id] = role.description;
+			return result;
+		}, {})));
+
+		yield put(connectRequest(server));
+	} catch (e) {
+		console.warn('selectServer', e);
+	}
 };
 
 const validateServer = function* validateServer({ server }) {
@@ -32,7 +45,7 @@ const validateServer = function* validateServer({ server }) {
 		yield call(validate, server);
 		yield put(serverSuccess());
 	} catch (e) {
-		console.log(e);
+		console.warn('validateServer', e);
 		yield put(serverFailure(e));
 	}
 };

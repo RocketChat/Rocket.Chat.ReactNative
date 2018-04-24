@@ -28,7 +28,7 @@ jobs:
       - run:
           name: Test
           command: |
-            npm test
+            npm run test
 
       - run:
           name: Codecov
@@ -151,9 +151,7 @@ jobs:
           name: Install NPM modules
           command: |
             rm -rf node_modules
-            # npm install --save react-native@0.51
             npm install
-            # npm install react-native
 
       - run:
           name: Fix known build error
@@ -227,6 +225,7 @@ workflows:
           filters:
             branches:
               only:
+                - beta
                 - develop
                 - master
       # - ios-testflight:

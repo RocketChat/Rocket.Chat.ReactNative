@@ -7,6 +7,7 @@ import room from './room';
 import rooms from './rooms';
 import server from './server';
 import navigator from './navigator';
+import selectedUsers from './selectedUsers';
 import createChannel from './createChannel';
 import app from './app';
 import permissions from './permissions';
@@ -26,6 +27,7 @@ export default combineReducers({
 	messages,
 	server,
 	navigator,
+	selectedUsers,
 	createChannel,
 	app,
 	room,

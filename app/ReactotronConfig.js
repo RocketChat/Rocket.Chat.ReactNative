@@ -10,4 +10,6 @@ if (__DEV__) {
         .use(reactotronRedux())
         .use(sagaPlugin())
         .connect();
+    // Running on android device
+    // $ adb reverse tcp:9090 tcp:9090
 }

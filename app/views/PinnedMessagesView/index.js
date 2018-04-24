@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
 
@@ -9,6 +9,7 @@ import { openPinnedMessages, closePinnedMessages } from '../../actions/pinnedMes
 import styles from './styles';
 import Message from '../../containers/message';
 import { togglePinRequest } from '../../actions/messages';
+import RCActivityIndicator from '../../containers/ActivityIndicator';
 
 const PIN_INDEX = 0;
 const CANCEL_INDEX = 1;
@@ -17,11 +18,12 @@ const options = ['Unpin', 'Cancel'];
 @connect(
 	state => ({
 		messages: state.pinnedMessages.messages,
+		ready: state.pinnedMessages.ready,
 		user: state.login.user,
 		baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 	}),
 	dispatch => ({
-		openPinnedMessages: rid => dispatch(openPinnedMessages(rid)),
+		openPinnedMessages: (rid, limit) => dispatch(openPinnedMessages(rid, limit)),
 		closePinnedMessages: () => dispatch(closePinnedMessages()),
 		togglePinRequest: message => dispatch(togglePinRequest(message))
 	})
@@ -30,6 +32,7 @@ export default class PinnedMessagesView extends LoggedView {
 	static propTypes = {
 		navigation: PropTypes.object,
 		messages: PropTypes.array,
+		ready: PropTypes.bool,
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
 		openPinnedMessages: PropTypes.func,
@@ -40,12 +43,21 @@ export default class PinnedMessagesView extends LoggedView {
 	constructor(props) {
 		super('PinnedMessagesView', props);
 		this.state = {
-			message: {}
+			message: {},
+			loading: true,
+			loadingMore: false
 		};
 	}
 
 	componentDidMount() {
-		this.props.openPinnedMessages(this.props.navigation.state.params.rid);
+		this.limit = 20;
+		this.load();
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.ready && nextProps.ready !== this.props.ready) {
+			this.setState({ loading: false, loadingMore: false });
+		}
 	}
 
 	componentWillUnmount() {
@@ -67,6 +79,23 @@ export default class PinnedMessagesView extends LoggedView {
 		}
 	}
 
+	load = () => {
+		this.props.openPinnedMessages(this.props.navigation.state.params.rid, this.limit);
+	}
+
+	moreData = () => {
+		const { loadingMore } = this.state;
+		const { messages } = this.props;
+		if (messages.length < this.limit) {
+			return;
+		}
+		if (!loadingMore) {
+			this.setState({ loadingMore: true });
+			this.limit += 20;
+			this.load();
+		}
+	}
+
 	renderEmpty = () => (
 		<View style={styles.listEmptyContainer}>
 			<Text>No pinned messages</Text>
@@ -80,23 +109,30 @@ export default class PinnedMessagesView extends LoggedView {
 			reactions={item.reactions}
 			user={this.props.user}
 			baseUrl={this.props.baseUrl}
-			Message_TimeFormat='MMMM Do YYYY, h:mm:ss a'
+			customTimeFormat='MMMM Do YYYY, h:mm:ss a'
 			onLongPress={this.onLongPress}
 		/>
 	)
 
 	render() {
-		if (this.props.messages.length === 0) {
+		const { loading, loadingMore } = this.state;
+		const { messages, ready } = this.props;
+
+		if (ready && messages.length === 0) {
 			return this.renderEmpty();
 		}
+
 		return (
 			[
 				<FlatList
 					key='pinned-messages-view-list'
-					data={this.props.messages}
+					data={messages}
 					renderItem={this.renderItem}
 					style={styles.list}
 					keyExtractor={item => item._id}
+					onEndReached={this.moreData}
+					ListHeaderComponent={loading && <RCActivityIndicator />}
+					ListFooterComponent={loadingMore && <RCActivityIndicator />}
 				/>,
 				<ActionSheet
 					key='pinned-messages-view-action-sheet'

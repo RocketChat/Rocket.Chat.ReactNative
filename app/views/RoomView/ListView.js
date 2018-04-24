@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import DateSeparator from './DateSeparator';
 import UnreadSeparator from './UnreadSeparator';
 import styles from './styles';
-import debounce from '../../utils/debounce';
+import throttle from '../../utils/throttle';
 import Typing from '../../containers/Typing';
 import database from '../../lib/realm';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
@@ -51,30 +51,31 @@ export class List extends React.Component {
 	shouldComponentUpdate(nextProps) {
 		return this.props.end !== nextProps.end;
 	}
-	componentWillUpdate() {
-		LayoutAnimation.easeInEaseOut();
-	}
 	componentWillUnmount() {
+		this.date.removeListener(this.updateState);
+		this.date.removeAllListeners();
 		this.updateState.stop();
 	}
-	updateState = debounce(() => {
+	updateState = throttle(() => {
 		// this.setState({
 		this.dataSource = this.dataSource.cloneWithRows(this.data);
+		LayoutAnimation.easeInEaseOut();
 		this.forceUpdate();
 		// });
-	}, 300);
+	}, 2500);
 
 	render() {
 		return (<ListView
 			enableEmptySections
-			style={[styles.list]}
+			style={styles.list}
 			data={this.data}
+			keyExtractor={item => item._id}
 			onEndReachedThreshold={0.5}
 			renderFooter={this.props.renderFooter}
 			renderHeader={() => <Typing />}
 			onEndReached={() => this.props.onEndReached(this.data)}
 			dataSource={this.dataSource}
-			renderRow={item => this.props.renderRow(item)}
+			renderRow={(item, previousItem) => this.props.renderRow(item, previousItem)}
 			initialListSize={10}
 			{...scrollPersistTaps}
 		/>);
@@ -88,8 +89,8 @@ export class ListView extends OldList2 {
 	constructor(props) {
 		super(props);
 		this.state = {
-			curRenderedRowsCount: 20,
-			highlightedRow: ({}: Object)
+			curRenderedRowsCount: 10
+			// highlightedRow: ({}: Object)
 		};
 	}
 
@@ -120,23 +121,23 @@ export class ListView extends OldList2 {
 		let count = 0;
 
 		for (let i = 0; i < this.state.curRenderedRowsCount && i < data.length; i += 1, count += 1) {
-			const room = data[i];
-			bodyComponents.push(this.props.renderRow(room));
+			const message = data[i];
+			const previousMessage = data[i + 1];
+			bodyComponents.push(this.props.renderRow(message, previousMessage));
 
-			const nextData = data[i + 1];
 
-			if (!nextData) {
+			if (!previousMessage) {
 				continue; // eslint-disable-line
 			}
 
-			if (!moment(room.ts).isSame(nextData.ts, 'day')) {
-				bodyComponents.push(<DateSeparator key={room.ts.toISOString()} ts={room.ts} />);
-			}
 			if (this.props.lastOpen &&
-				moment(room.ts).isAfter(this.props.lastOpen) &&
-				moment(nextData.ts).isBefore(this.props.lastOpen)
+				moment(message.ts).isAfter(this.props.lastOpen) &&
+				moment(previousMessage.ts).isBefore(this.props.lastOpen)
 			) {
 				bodyComponents.push(<UnreadSeparator key='unread-separator' />);
+			}
+			if (!moment(message.ts).isSame(previousMessage.ts, 'day')) {
+				bodyComponents.push(<DateSeparator key={message.ts.toISOString()} ts={message.ts} />);
 			}
 		}
 

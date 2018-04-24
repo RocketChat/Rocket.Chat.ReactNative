@@ -1,10 +1,12 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
-
+import { View, Text, StyleSheet, ViewPropTypes } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 import SimpleMarkdown from 'simple-markdown';
+
+import messagesStatus from '../constants/messagesStatus';
 
 import Avatar from '../containers/Avatar';
 import Status from '../containers/status';
@@ -44,7 +46,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		fontSize: 18,
 		color: '#444',
-
 		marginRight: 8
 	},
 	lastMessage: {
@@ -64,8 +65,8 @@ const styles = StyleSheet.create({
 		// backgroundColor: '#eee'
 	},
 	row: {
-		width: '100%',
-		flex: 1,
+		// width: '100%',
+		// flex: 1,
 		flexDirection: 'row',
 		alignItems: 'flex-end',
 		justifyContent: 'flex-end'
@@ -145,41 +146,57 @@ const renderNumber = (unread, userMentions) => {
 	);
 };
 
+const attrs = ['name', 'unread', 'userMentions', 'alert', 'showLastMessage', 'type', '_updatedAt'];
 @connect(state => ({
 	user: state.login && state.login.user,
-	StoreLastMessage: state.settings.Store_Last_Message,
-	customEmojis: state.customEmojis
+	StoreLastMessage: state.settings.Store_Last_Message
 }))
-export default class RoomItem extends React.PureComponent {
+export default class RoomItem extends React.Component {
 	static propTypes = {
 		type: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
 		StoreLastMessage: PropTypes.bool,
 		_updatedAt: PropTypes.instanceOf(Date),
 		lastMessage: PropTypes.object,
+		showLastMessage: PropTypes.bool,
 		favorite: PropTypes.bool,
 		alert: PropTypes.bool,
 		unread: PropTypes.number,
 		userMentions: PropTypes.number,
 		id: PropTypes.string,
 		onPress: PropTypes.func,
-		customEmojis: PropTypes.object,
-		user: PropTypes.object
+		onLongPress: PropTypes.func,
+		user: PropTypes.object,
+		avatarSize: PropTypes.number,
+		statusStyle: ViewPropTypes.style
 	}
 
+	static defaultProps = {
+		showLastMessage: true,
+		avatarSize: 46
+	}
+	shouldComponentUpdate(nextProps) {
+		const oldlastMessage = this.props.lastMessage;
+		const newLastmessage = nextProps.lastMessage;
+
+		if (oldlastMessage && newLastmessage && oldlastMessage.ts !== newLastmessage.ts) {
+			return true;
+		}
+		return attrs.some(key => nextProps[key] !== this.props[key]);
+	}
 	get icon() {
 		const {
-			type, name, id
+			type, name, id, avatarSize, statusStyle
 		} = this.props;
-		return (<Avatar text={name} size={46} type={type}>{type === 'd' ? <Status style={styles.status} id={id} /> : null }</Avatar>);
+		return (<Avatar text={name} size={avatarSize} type={type}>{type === 'd' ? <Status style={[styles.status, statusStyle]} id={id} /> : null }</Avatar>);
 	}
 
 	get lastMessage() {
 		const {
-			lastMessage, type
+			lastMessage, type, showLastMessage
 		} = this.props;
 
-		if (!this.props.StoreLastMessage) {
+		if (!this.props.StoreLastMessage || !showLastMessage) {
 			return '';
 		}
 		if (!lastMessage) {
@@ -208,7 +225,7 @@ export default class RoomItem extends React.PureComponent {
 
 	render() {
 		const {
-			favorite, unread, userMentions, name, _updatedAt, customEmojis, alert
+			favorite, unread, userMentions, name, _updatedAt, alert, status
 		} = this.props;
 
 		const date = this.formatDate(_updatedAt);
@@ -224,10 +241,19 @@ export default class RoomItem extends React.PureComponent {
 			accessibilityLabel += ', you were mentioned';
 		}
 
-		accessibilityLabel += `, last message ${ date }`;
+		if (date) {
+			accessibilityLabel += `, last message ${ date }`;
+		}
 
 		return (
-			<Touch onPress={this.props.onPress} underlayColor='#FFFFFF' activeOpacity={0.5} accessibilityLabel={accessibilityLabel} accessibilityTraits='selected'>
+			<Touch
+				onPress={this.props.onPress}
+				onLongPress={this.props.onLongPress}
+				underlayColor='#FFFFFF'
+				activeOpacity={0.5}
+				accessibilityLabel={accessibilityLabel}
+				accessibilityTraits='selected'
+			>
 				<View style={[styles.container, favorite && styles.favorite]}>
 					{this.icon}
 					<View style={styles.roomNameView}>
@@ -236,9 +262,9 @@ export default class RoomItem extends React.PureComponent {
 							{_updatedAt ? <Text style={[styles.update, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
 						</View>
 						<View style={styles.row}>
+							{status === messagesStatus.ERROR ? <Icon name='error-outline' color='red' size={12} style={{ marginRight: 5, alignSelf: 'center' }} /> : null }
 							<Markdown
 								msg={this.lastMessage}
-								customEmojis={customEmojis}
 								style={styles.lastMessage}
 								markdownStyle={markdownStyle}
 								customRules={customRules}
