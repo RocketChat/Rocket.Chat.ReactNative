@@ -19,5 +19,6 @@ export default async function() {
 	InteractionManager.runAfterInteractions(() => database.write(() => {
 		emojis.forEach(emoji => database.create('customEmojis', emoji, true));
 	}));
+	alert('veio');
 	reduxStore.dispatch(actions.setCustomEmojis(this.parseEmojis(emojis)));
 }
