@@ -89,8 +89,8 @@ export class ListView extends OldList2 {
 	constructor(props) {
 		super(props);
 		this.state = {
-			curRenderedRowsCount: 20,
-			highlightedRow: ({}: Object)
+			curRenderedRowsCount: 10
+			// highlightedRow: ({}: Object)
 		};
 	}
 

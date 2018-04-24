@@ -150,10 +150,6 @@ const RocketChat = {
 
 			this.ddp.on('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 
-			// this.ddp.on('logged', protectedFunction(() => {
-			// 	RocketChat.getRooms();
-			// }));
-
 			this.ddp.on('background', () => this.getRooms().catch(e => console.warn('background getRooms', e)));
 
 			this.ddp.on('disconnected', () => console.log('disconnected'));
@@ -163,21 +159,6 @@ const RocketChat = {
 				this.loginSuccess(user);
 			}));
 			this.ddp.once('logged', protectedFunction(({ id }) => { this.subscribeRooms(id); }));
-
-			// TODO: fix api (get emojis by date/version....)
-			this.ddp.once('open', () => RocketChat.getCustomEmoji());
-
-			this.ddp.on('open', protectedFunction(() => {
-				RocketChat.getSettings();
-				RocketChat.getPermissions();
-				reduxStore.dispatch(connectSuccess());
-				resolve();
-			}));
-
-			this.ddp.once('open', protectedFunction(() => {
-				this.ddp.subscribe('activeUsers');
-				this.ddp.subscribe('roles');
-			}));
 
 			this.ddp.on('disconnected', protectedFunction(() => {
 				reduxStore.dispatch(disconnect());
@@ -442,6 +423,21 @@ const RocketChat = {
 				console.warn('onError', JSON.stringify(err));
 				Answers.logCustom('disconnect', err);
 				reduxStore.dispatch(connectFailure());
+			}));
+
+			// TODO: fix api (get emojis by date/version....)
+
+			this.ddp.on('open', protectedFunction(() => {
+				RocketChat.getSettings();
+				RocketChat.getPermissions();
+				reduxStore.dispatch(connectSuccess());
+				resolve();
+			}));
+
+			this.ddp.once('open', protectedFunction(() => {
+				this.ddp.subscribe('activeUsers');
+				this.ddp.subscribe('roles');
+				RocketChat.getCustomEmoji();
 			}));
 		}).catch(err => console.warn(`asd ${ err }`));
 	},
