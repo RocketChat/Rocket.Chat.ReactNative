@@ -115,19 +115,15 @@ const RocketChat = {
 			const { user: u } = reduxStore.getState().login;
 			user = Object.assign({}, u);
 		}
-		const { server } = reduxStore.getState().server;
-		const hasUsernameKey = `${ server }-${ user.id }`;
 
 		// TODO: one api call
 		// call /me only one time
-		let username = await AsyncStorage.getItem(hasUsernameKey);
-		if (!username) {
+		if (!user.username) {
 			const me = await this.me({ token: user.token, userId: user.id });
 			// eslint-disable-next-line
-			username = me.username;
+			user.username = me.username;
 		}
-		if (username) {
-			await AsyncStorage.setItem(hasUsernameKey, username);
+		if (user.username) {
 			const userInfo = await this.userInfo({ token: user.token, userId: user.id });
 			user.username = userInfo.user.username;
 			if (userInfo.user.roles) {

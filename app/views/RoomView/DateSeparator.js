@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginVertical: 3
+		marginVertical: -5
 	},
 	dateSeparatorLine: {
 		borderTopColor: '#eaeaea',

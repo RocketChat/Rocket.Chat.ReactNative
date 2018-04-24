@@ -34,7 +34,6 @@ const title = (offline, connecting, authenticating, logged) => {
 
 @connect(state => ({
 	user: state.login.user,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	activeUsers: state.activeUsers,
 	loading: state.messages.isFetching,
 	connecting: state.meteor.connecting,
@@ -49,7 +48,6 @@ export default class RoomHeaderView extends React.PureComponent {
 		close: PropTypes.func.isRequired,
 		navigation: PropTypes.object.isRequired,
 		user: PropTypes.object.isRequired,
-		baseUrl: PropTypes.string,
 		activeUsers: PropTypes.object
 	}
 
@@ -134,7 +132,6 @@ export default class RoomHeaderView extends React.PureComponent {
 					text={this.state.roomName}
 					size={24}
 					style={styles.avatar}
-					baseUrl={this.props.baseUrl}
 					type={this.state.room.t}
 				>
 					{this.isDirect() ?

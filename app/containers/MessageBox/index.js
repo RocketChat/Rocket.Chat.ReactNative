@@ -455,7 +455,6 @@ export default class MessageBox extends React.PureComponent {
 							style={{ margin: 8 }}
 							text={item.username || item.name}
 							size={30}
-							baseUrl={this.props.baseUrl}
 						/>,
 						<Text key='mention-item-name'>{ item.username || item.name }</Text>
 					]
