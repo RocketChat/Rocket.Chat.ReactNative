@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, ScrollView, TouchableOpacity, SafeAreaView, Keyboard, Alert } from 'react-native';
-import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from 'react-redux';
-
 
 import LoggedView from '../View';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -15,6 +13,7 @@ import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import { eraseRoom } from '../../actions/room';
 import RCTextInput from '../../containers/TextInput';
+import Loading from '../../containers/Loading';
 import SwitchContainer from './SwitchContainer';
 import random from '../../utils/random';
 
@@ -74,7 +73,7 @@ export default class RoomInfoEditView extends LoggedView {
 		this.rooms.removeAllListeners();
 	}
 
-	updateRoom = async() => {
+	updateRoom = () => {
 		const [room] = this.rooms;
 		this.setState({ room });
 	}
@@ -232,7 +231,7 @@ export default class RoomInfoEditView extends LoggedView {
 						try {
 							RocketChat.toggleArchiveRoom(this.state.room.rid, !archived);
 						} catch (error) {
-							alert(error);
+							console.warn('toggleArchive', error);
 						}
 					}
 				}
@@ -258,14 +257,11 @@ export default class RoomInfoEditView extends LoggedView {
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>
-				<ScrollView
-					style={sharedStyles.loginView}
-					{...scrollPersistTaps}
-				>
+				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 					<SafeAreaView>
 						<View style={sharedStyles.formContainer}>
 							<RCTextInput
-								ref={(e) => { this.name = e; }}
+								inputRef={(e) => { this.name = e; }}
 								label='Name'
 								value={name}
 								onChangeText={value => this.setState({ name: value })}
@@ -273,7 +269,7 @@ export default class RoomInfoEditView extends LoggedView {
 								error={nameError}
 							/>
 							<RCTextInput
-								ref={(e) => { this.description = e; }}
+								inputRef={(e) => { this.description = e; }}
 								label='Description'
 								value={description}
 								onChangeText={value => this.setState({ description: value })}
@@ -281,7 +277,7 @@ export default class RoomInfoEditView extends LoggedView {
 								inputProps={{ multiline: true }}
 							/>
 							<RCTextInput
-								ref={(e) => { this.topic = e; }}
+								inputRef={(e) => { this.topic = e; }}
 								label='Topic'
 								value={topic}
 								onChangeText={value => this.setState({ topic: value })}
@@ -289,7 +285,7 @@ export default class RoomInfoEditView extends LoggedView {
 								inputProps={{ multiline: true }}
 							/>
 							<RCTextInput
-								ref={(e) => { this.announcement = e; }}
+								inputRef={(e) => { this.announcement = e; }}
 								label='Announcement'
 								value={announcement}
 								onChangeText={value => this.setState({ announcement: value })}
@@ -297,7 +293,7 @@ export default class RoomInfoEditView extends LoggedView {
 								inputProps={{ multiline: true }}
 							/>
 							<RCTextInput
-								ref={(e) => { this.joinCode = e; }}
+								inputRef={(e) => { this.joinCode = e; }}
 								label='Password'
 								value={joinCode}
 								onChangeText={value => this.setState({ joinCode: value })}
@@ -375,7 +371,7 @@ export default class RoomInfoEditView extends LoggedView {
 								<Text style={[sharedStyles.button_inverted, styles.colorDanger]} accessibilityTraits='button'>DELETE</Text>
 							</TouchableOpacity>
 						</View>
-						<Spinner visible={this.state.saving} textContent='Loading...' textStyle={{ color: '#FFF' }} />
+						<Loading visible={this.state.saving} />
 					</SafeAreaView>
 				</ScrollView>
 			</KeyboardView>

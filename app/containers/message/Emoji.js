@@ -2,8 +2,12 @@ import React from 'react';
 import { Text, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
 import { emojify } from 'react-emojione';
+import { connect } from 'react-redux';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 
+@connect(state => ({
+	customEmojis: state.customEmojis
+}))
 export default class Emoji extends React.PureComponent {
 	static propTypes = {
 		content: PropTypes.string,

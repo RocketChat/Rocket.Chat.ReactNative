@@ -1,18 +1,16 @@
 import ActionButton from 'react-native-action-button';
-import { ListView } from 'realm/react-native';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { View, StyleSheet, TextInput, Text, TouchableOpacity, SafeAreaView, Platform } from 'react-native';
+import { View, StyleSheet, TextInput, Text, TouchableOpacity, SafeAreaView, FlatList, LayoutAnimation, Platform } from 'react-native';
 import { connect } from 'react-redux';
-import * as actions from '../actions';
-import * as server from '../actions/connect';
-import * as createChannelActions from '../actions/createChannel';
+import { addUser, removeUser, reset } from '../actions/selectedUsers';
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import RoomItem from '../presentation/RoomItem';
-import Banner from '../containers/Banner';
 import Avatar from '../containers/Avatar';
+import Loading from '../containers/Loading';
+import debounce from '../utils/debounce';
 
 const styles = StyleSheet.create({
 	container: {
@@ -51,34 +49,40 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	status: {
+		bottom: -2,
+		right: -2,
+		borderWidth: 2,
+		borderRadius: 12,
+		width: 12,
+		height: 12
 	}
 });
 
-const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 @connect(
 	state => ({
 		user: state.login.user,
-		login: state.login,
 		Site_Url: state.settings.Site_Url,
-		users: state.createChannel.users
+		users: state.selectedUsers.users,
+		loading: state.selectedUsers.loading
 	}),
 	dispatch => ({
-		login: () => dispatch(actions.login()),
-		connect: () => dispatch(server.connectRequest()),
-		addUser: user => dispatch(createChannelActions.addUser(user)),
-		removeUser: user => dispatch(createChannelActions.removeUser(user)),
-		resetCreateChannel: () => dispatch(createChannelActions.reset())
+		addUser: user => dispatch(addUser(user)),
+		removeUser: user => dispatch(removeUser(user)),
+		reset: () => dispatch(reset())
 	})
 )
-export default class SelectUsersView extends React.Component {
+export default class SelectedUsersView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
+		user: PropTypes.object,
 		Site_Url: PropTypes.string,
 		addUser: PropTypes.func.isRequired,
 		removeUser: PropTypes.func.isRequired,
-		resetCreateChannel: PropTypes.func.isRequired,
+		reset: PropTypes.func.isRequired,
 		users: PropTypes.array,
-		user: PropTypes.object
+		loading: PropTypes.bool
 	};
 
 	static navigationOptions = ({ navigation }) => {
@@ -95,7 +99,7 @@ export default class SelectUsersView extends React.Component {
 							alignItems: 'center',
 							justifyContent: 'center'
 						}}
-						onPress={() => params.createChannel()}
+						onPress={() => params.nextAction()}
 						accessibilityLabel='Create channel'
 						accessibilityTraits='button'
 					>
@@ -112,20 +116,11 @@ export default class SelectUsersView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.data = database
-			.objects('subscriptions')
-			.filtered('t = $0', 'd');
+		this.data = database.objects('subscriptions').filtered('t = $0', 'd').sorted('roomUpdatedAt', true);
 		this.state = {
-			dataSource: ds.cloneWithRows(this.data),
-			searchText: ''
+			search: []
 		};
 		this.data.addListener(this.updateState);
-	}
-
-	componentDidMount() {
-		this.props.navigation.setParams({
-			createChannel: this._createChannel
-		});
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -137,70 +132,62 @@ export default class SelectUsersView extends React.Component {
 	}
 
 	componentWillUnmount() {
-		this.data.removeListener(this.updateState);
-		this.props.resetCreateChannel();
+		this.updateState.stop();
+		this.data.removeAllListeners();
+		this.props.reset();
 	}
 
-	onSearchChangeText = (text) => {
+	onSearchChangeText(text) {
+		this.search(text);
+	}
+
+	updateState = debounce(() => {
+		this.forceUpdate();
+	}, 1000);
+
+	async search(text) {
 		const searchText = text.trim();
-		this.setState({
-			searchText: text
-		});
 		if (searchText === '') {
+			delete this.oldPromise;
 			return this.setState({
-				dataSource: ds.cloneWithRows(this.data)
+				search: []
 			});
 		}
 
-		const data = this.data.filtered('name CONTAINS[c] $0', searchText).slice();
+		let data = this.data.filtered('name CONTAINS[c] $0 AND t = $1', searchText, 'd').slice(0, 7);
 
-		const usernames = [];
-		const dataSource = data.map((sub) => {
-			if (sub.t === 'd') {
-				usernames.push(sub.name);
-			}
-			return sub;
-		});
+		const usernames = data.map(sub => sub.map);
+		try {
+			if (data.length < 7) {
+				if (this.oldPromise) {
+					this.oldPromise('cancel');
+				}
 
-		if (dataSource.length < 7) {
-			if (this.oldPromise) {
-				this.oldPromise();
+				const { users } = await Promise.race([
+					RocketChat.spotlight(searchText, usernames, { users: true, rooms: false }),
+					new Promise((resolve, reject) => this.oldPromise = reject)
+				]);
+
+				data = users.map(user => ({
+					...user,
+					rid: user.username,
+					name: user.username,
+					t: 'd',
+					search: true
+				}));
+
+				delete this.oldPromise;
 			}
-			Promise.race([
-				RocketChat.spotlight(searchText, usernames),
-				new Promise((resolve, reject) => (this.oldPromise = reject))
-			])
-				.then(
-					(results) => {
-						results.users.forEach((user) => {
-							dataSource.push({
-								...user,
-								name: user.username,
-								t: 'd',
-								search: true
-							});
-						});
-						this.setState({
-							dataSource: ds.cloneWithRows(dataSource)
-						});
-					},
-					() => console.log('spotlight stopped')
-				)
-				.then(() => delete this.oldPromise);
+			this.setState({
+				search: data
+			});
+		} catch (e) {
+			// alert(JSON.stringify(e));
 		}
-
-		this.setState({
-			dataSource: ds.cloneWithRows(dataSource)
-		});
-	};
-
-	updateState = () => {
-		this.setState({
-			dataSource: ds.cloneWithRows(this.data)
-		});
-	};
+	}
 
 	toggleUser = (user) => {
+		LayoutAnimation.easeInEaseOut();
 		const index = this.props.users.findIndex(el => el.name === user.name);
 		if (index === -1) {
 			this.props.addUser(user);
@@ -219,8 +206,9 @@ export default class SelectUsersView extends React.Component {
 
 	_onPressSelectedItem = item => this.toggleUser(item);
 
-	_createChannel = () => {
-		this.props.navigation.navigate({ key: 'CreateChannel', routeName: 'CreateChannel' });
+	nextAction = () => {
+		const params = this.props.navigation.state.params || {};
+		params.nextAction();
 	};
 
 	renderHeader = () => (
@@ -235,8 +223,7 @@ export default class SelectUsersView extends React.Component {
 			<TextInput
 				underlineColorAndroid='transparent'
 				style={styles.searchBox}
-				value={this.state.searchText}
-				onChangeText={this.onSearchChangeText}
+				onChangeText={text => this.onSearchChangeText(text)}
 				returnKeyType='search'
 				placeholder='Search'
 				clearButtonMode='while-editing'
@@ -248,52 +235,51 @@ export default class SelectUsersView extends React.Component {
 		if (this.props.users.length === 0) {
 			return null;
 		}
-		const usersDataSource = ds.cloneWithRows(this.props.users);
 		return (
-			<ListView
-				dataSource={usersDataSource}
+			<FlatList
+				data={this.props.users}
+				keyExtractor={item => item._id}
 				style={styles.list}
-				renderRow={this.renderSelectedItem}
+				renderItem={this.renderSelectedItem}
 				enableEmptySections
 				keyboardShouldPersistTaps='always'
 				horizontal
 			/>
 		);
 	};
-	renderSelectedItem = item => (
+	renderSelectedItem = ({ item }) => (
 		<TouchableOpacity
 			key={item._id}
 			style={styles.selectItemView}
 			onPress={() => this._onPressSelectedItem(item)}
 		>
-			<Avatar text={item.name} baseUrl={this.props.Site_Url} size={40} />
+			<Avatar text={item.name} size={40} />
 			<Text ellipsizeMode='tail' numberOfLines={1} style={{ fontSize: 10 }}>
 				{item.name}
 			</Text>
 		</TouchableOpacity>
 	);
-	renderItem = item => (
+	renderItem = ({ item }) => (
 		<RoomItem
 			key={item._id}
 			name={item.name}
 			type={item.t}
 			baseUrl={this.props.Site_Url}
 			onPress={() => this._onPressItem(item._id, item)}
-			lastMessage={item.lastMessage}
 			id={item.rid.replace(this.props.user.id, '').trim()}
-			_updatedAt={item.roomUpdatedAt}
-			alert={item.alert}
-			unread={item.unread}
-			userMentions={item.userMentions}
+			showLastMessage={false}
+			avatarSize={30}
+			statusStyle={styles.status}
 		/>
 	);
 	renderList = () => (
-		<ListView
-			dataSource={this.state.dataSource}
+		<FlatList
+			data={this.state.search.length > 0 ? this.state.search : this.data}
+			extraData={this.props}
+			keyExtractor={item => item._id}
 			style={styles.list}
-			renderRow={this.renderItem}
-			renderHeader={this.renderHeader}
-			contentOffset={{ x: 0, y: this.props.users.length > 0 ? 38 : 0 }}
+			renderItem={this.renderItem}
+			ListHeaderComponent={this.renderHeader}
 			enableEmptySections
 			keyboardShouldPersistTaps='always'
 		/>
@@ -305,17 +291,17 @@ export default class SelectUsersView extends React.Component {
 		return (
 			<ActionButton
 				buttonColor='rgba(67, 165, 71, 1)'
-				onPress={() => this._createChannel()}
-				icon={<Icon name='md-arrow-forward' style={styles.actionButtonIcon} />}
+				onPress={() => this.nextAction()}
+				renderIcon={() => <Icon name='md-arrow-forward' style={styles.actionButtonIcon} />}
 			/>
 		);
 	};
 	render = () => (
 		<View style={styles.container}>
-			<Banner />
 			<SafeAreaView style={styles.safeAreaView}>
 				{this.renderList()}
 				{this.renderCreateButton()}
+				<Loading visible={this.props.loading} />
 			</SafeAreaView>
 		</View>
 	);

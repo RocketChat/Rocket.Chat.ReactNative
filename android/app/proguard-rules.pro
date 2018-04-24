@@ -18,7 +18,7 @@
 
 # Disabling obfuscation is useful if you collect stack traces from production crashes
 # (unless you are using a system that supports de-obfuscate the stack traces).
--dontobfuscate
+# -dontobfuscate
 
 # React Native
 
@@ -49,6 +49,7 @@
 -keepclassmembers class *  { @com.facebook.react.uimanager.annotations.ReactPropGroup <methods>; }
 
 -dontwarn com.facebook.react.**
+-keep,includedescriptorclasses class com.facebook.react.bridge.** { *; }
 
 # TextLayoutBuilder uses a non-public Android constructor within StaticLayout.
 # See libs/proxy/src/main/java/com/facebook/fbui/textlayoutbuilder/proxy for details.
@@ -68,3 +69,25 @@
 -dontwarn java.nio.file.*
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
 -dontwarn okio.**
+
+# Fresco
+# Keep our interfaces so they can be used by other ProGuard rules.
+# See http://sourceforge.net/p/proguard/bugs/466/
+-keep,allowobfuscation @interface com.facebook.soloader.DoNotOptimize
+
+# Do not strip any method/class that is annotated with @DoNotOptimize
+-keep @com.facebook.soloader.DoNotOptimize class *
+-keepclassmembers class * {
+    @com.facebook.soloader.DoNotOptimize *;
+}
+
+# Keep native methods
+-keepclassmembers class * {
+    native <methods>;
+}
+
+# For Fabric to properly de-obfuscate your crash reports, you need to remove this line from your ProGuard config:
+ -printmapping mapping.txt
+
+-dontwarn javax.annotation.**
+-dontwarn com.facebook.infer.**

@@ -28,4 +28,5 @@ const handleRequest = function* handleRequest({ data }) {
 const root = function* root() {
 	yield takeLatest(CREATE_CHANNEL.REQUEST, handleRequest);
 };
+
 export default root;

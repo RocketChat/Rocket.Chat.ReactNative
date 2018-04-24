@@ -3,6 +3,7 @@ import { View, Text, TouchableWithoutFeedback, FlatList, StyleSheet } from 'reac
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { connect } from 'react-redux';
 import Emoji from './Emoji';
 
 const styles = StyleSheet.create({
@@ -52,6 +53,10 @@ const styles = StyleSheet.create({
 });
 const standardEmojiStyle = { fontSize: 20 };
 const customEmojiStyle = { width: 20, height: 20 };
+
+@connect(state => ({
+	customEmojis: state.customEmojis
+}))
 export default class ReactionsModal extends React.PureComponent {
 	static propTypes = {
 		isVisible: PropTypes.bool.isRequired,

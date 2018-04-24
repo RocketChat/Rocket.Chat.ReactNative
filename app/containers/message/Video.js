@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, TouchableOpacity, Image, Platform } from 'react-native';
+import { StyleSheet, TouchableOpacity, Image, Platform } from 'react-native';
 import Modal from 'react-native-modal';
 import VideoPlayer from 'react-native-video-controls';
+import { connect } from 'react-redux';
 import Markdown from './Markdown';
 import openLink from '../../utils/openLink';
 
@@ -27,6 +28,9 @@ const styles = StyleSheet.create({
 	}
 });
 
+@connect(state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+}))
 export default class Video extends React.PureComponent {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
@@ -55,18 +59,20 @@ export default class Video extends React.PureComponent {
 		const { baseUrl, user } = this.props;
 		const uri = `${ baseUrl }${ video_url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
 		return (
-			<View>
+			[
 				<TouchableOpacity
+					key='button'
 					style={styles.container}
 					onPress={() => this.open()}
 				>
 					<Image
-						source={require('../../../static/images/logo.png')}
+						source={require('../../static/images/logo.png')}
 						style={styles.image}
 					/>
 					<Markdown msg={description} />
-				</TouchableOpacity>
+				</TouchableOpacity>,
 				<Modal
+					key='modal'
 					isVisible={isVisible}
 					style={styles.modal}
 					supportedOrientations={['portrait', 'landscape']}
@@ -78,7 +84,7 @@ export default class Video extends React.PureComponent {
 						disableVolume
 					/>
 				</Modal>
-			</View>
+			]
 		);
 	}
 }

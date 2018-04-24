@@ -1,11 +1,19 @@
 import * as types from './actionsTypes';
 
-export function openPinnedMessages(rid) {
+export function openPinnedMessages(rid, limit) {
 	return {
 		type: types.PINNED_MESSAGES.OPEN,
-		rid
+		rid,
+		limit
 	};
 }
+
+export function readyPinnedMessages() {
+	return {
+		type: types.PINNED_MESSAGES.READY
+	};
+}
+
 
 export function closePinnedMessages() {
 	return {

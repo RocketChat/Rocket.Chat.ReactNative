@@ -2,7 +2,7 @@ export default function throttle(fn, threshhold = 250, scope) {
 	let last;
 	let deferTimer;
 
-	return (...args) => {
+	const _throttle = (...args) => {
 		const context = scope || this;
 
 		const now = +new Date();
@@ -19,4 +19,8 @@ export default function throttle(fn, threshhold = 250, scope) {
 			fn.apply(context, args);
 		}
 	};
+
+	_throttle.stop = () => clearTimeout(deferTimer);
+
+	return _throttle;
 }

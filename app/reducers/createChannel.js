@@ -3,7 +3,8 @@ import { CREATE_CHANNEL } from '../actions/actionsTypes';
 const initialState = {
 	isFetching: false,
 	failure: false,
-	users: []
+	result: '',
+	error: ''
 };
 
 export default function messages(state = initialState, action) {
@@ -11,9 +12,9 @@ export default function messages(state = initialState, action) {
 		case CREATE_CHANNEL.REQUEST:
 			return {
 				...state,
-				error: undefined,
+				isFetching: true,
 				failure: false,
-				isFetching: true
+				error: ''
 			};
 		case CREATE_CHANNEL.SUCCESS:
 			return {
@@ -29,18 +30,6 @@ export default function messages(state = initialState, action) {
 				failure: true,
 				error: action.err
 			};
-		case CREATE_CHANNEL.ADD_USER:
-			return {
-				...state,
-				users: state.users.concat(action.user)
-			};
-		case CREATE_CHANNEL.REMOVE_USER:
-			return {
-				...state,
-				users: state.users.filter(item => item.name !== action.user.name)
-			};
-		case CREATE_CHANNEL.RESET:
-			return initialState;
 		default:
 			return state;
 	}

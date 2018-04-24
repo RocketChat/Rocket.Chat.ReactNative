@@ -6,4 +6,7 @@ export default class extends React.Component {
 		super(props);
 		Answers.logContentView(name);
 	}
+	componentDidCatch = (error, info) => {
+		Answers.logCustom(error, info);
+	}
 }

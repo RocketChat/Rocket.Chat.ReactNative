@@ -1,41 +1,30 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CachedImage } from 'react-native-img-cache';
-import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
 import PhotoModal from './PhotoModal';
+import Markdown from './Markdown';
 
 const styles = StyleSheet.create({
 	button: {
 		flex: 1,
-		flexDirection: 'column',
-		height: 320,
-		borderColor: '#ccc',
-		borderWidth: 1,
-		borderRadius: 6
+		flexDirection: 'column'
 	},
 	image: {
-		flex: 1,
-		height: undefined,
-		width: undefined,
-		resizeMode: 'contain'
+		width: 320,
+		height: 200,
+		resizeMode: 'cover'
 	},
 	labelContainer: {
-		height: 62,
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	imageName: {
-		fontSize: 12,
-		alignSelf: 'center',
-		fontStyle: 'italic'
-	},
-	message: {
-		alignSelf: 'center',
-		fontWeight: 'bold'
+		alignItems: 'flex-start'
 	}
 });
 
-export default class Image extends React.PureComponent {
+@connect(state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+}))
+export default class extends React.PureComponent {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
@@ -45,8 +34,9 @@ export default class Image extends React.PureComponent {
 	state = { modalVisible: false };
 
 	getDescription() {
-		if (this.props.file.description) {
-			return <Text style={styles.message}>{this.props.file.description}</Text>;
+		const { file, customEmojis } = this.props;
+		if (file.description) {
+			return <Markdown msg={file.description} customEmojis={customEmojis} />;
 		}
 	}
 
@@ -60,8 +50,9 @@ export default class Image extends React.PureComponent {
 		const { baseUrl, file, user } = this.props;
 		const img = `${ baseUrl }${ file.image_url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
 		return (
-			<View>
+			[
 				<TouchableOpacity
+					key='image'
 					onPress={() => this._onPressButton()}
 					style={styles.button}
 				>
@@ -69,18 +60,16 @@ export default class Image extends React.PureComponent {
 						style={styles.image}
 						source={{ uri: encodeURI(img) }}
 					/>
-					<View style={styles.labelContainer}>
-						<Text style={styles.imageName}>{this.props.file.title}</Text>
-						{this.getDescription()}
-					</View>
-				</TouchableOpacity>
+					{this.getDescription()}
+				</TouchableOpacity>,
 				<PhotoModal
+					key='modal'
 					title={this.props.file.title}
 					image={img}
 					isVisible={this.state.modalVisible}
 					onClose={() => this.setState({ modalVisible: false })}
 				/>
-			</View>
+			]
 		);
 	}
 }
