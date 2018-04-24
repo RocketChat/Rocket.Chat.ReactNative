@@ -39,7 +39,7 @@ export default class RoomsListView extends React.Component {
 			search: []
 		};
 		this._keyExtractor = this._keyExtractor.bind(this);
-		this.data = database.objects('subscriptions').filtered('archived != true').sorted('roomUpdatedAt', true);
+		this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
 	}
 
 	componentDidMount() {
@@ -55,7 +55,7 @@ export default class RoomsListView extends React.Component {
 	componentWillReceiveProps(props) {
 		if (this.props.server !== props.server) {
 			this.data.removeListener(this.updateState);
-			this.data = database.objects('subscriptions').filtered('archived != true').sorted('roomUpdatedAt', true);
+			this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
 			this.data.addListener(this.updateState);
 		} else if (this.props.searchText !== props.searchText) {
 			this.search(props.searchText);
