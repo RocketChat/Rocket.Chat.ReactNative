@@ -2,7 +2,8 @@ import { STARRED_MESSAGES } from '../actions/actionsTypes';
 
 const initialState = {
 	messages: [],
-	isOpen: false
+	isOpen: false,
+	ready: false
 };
 
 export default function server(state = initialState, action) {
@@ -10,7 +11,13 @@ export default function server(state = initialState, action) {
 		case STARRED_MESSAGES.OPEN:
 			return {
 				...state,
-				isOpen: true
+				isOpen: true,
+				ready: false
+			};
+		case STARRED_MESSAGES.READY:
+			return {
+				...state,
+				ready: true
 			};
 		case STARRED_MESSAGES.MESSAGES_RECEIVED:
 			return {

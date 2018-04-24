@@ -18,9 +18,9 @@ export default StyleSheet.create({
 		bottom: -2,
 		right: -2,
 		borderWidth: 2,
-		borderRadius: 10,
-		width: 10,
-		height: 10
+		borderRadius: 12,
+		width: 12,
+		height: 12
 	},
 	separator: {
 		height: StyleSheet.hairlineWidth,

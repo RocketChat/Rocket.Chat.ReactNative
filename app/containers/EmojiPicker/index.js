@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
-import _ from 'lodash';
+import map from 'lodash/map';
 import { emojify } from 'react-emojione';
 import TabBar from './TabBar';
 import EmojiCategory from './EmojiCategory';
@@ -78,7 +78,7 @@ export default class EmojiPicker extends Component {
 		return emojiRow.length ? emojiRow[0].count + 1 : 1;
 	}
 	updateFrequentlyUsed() {
-		const frequentlyUsed = _.map(this.frequentlyUsed.slice(), (item) => {
+		const frequentlyUsed = map(this.frequentlyUsed.slice(), (item) => {
 			if (item.isCustom) {
 				return item;
 			}
@@ -88,7 +88,7 @@ export default class EmojiPicker extends Component {
 	}
 
 	updateCustomEmojis() {
-		const customEmojis = _.map(this.customEmojis.slice(), item =>
+		const customEmojis = map(this.customEmojis.slice(), item =>
 			({ content: item.name, extension: item.extension, isCustom: true }));
 		this.setState({ customEmojis });
 	}

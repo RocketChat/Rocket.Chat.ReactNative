@@ -1,6 +1,6 @@
 import { StyleSheet, Platform, Dimensions } from 'react-native';
 
-const TITLE_OFFSET = Platform.OS === 'ios' ? 70 : 56;
+const TITLE_OFFSET = Platform.OS === 'ios' ? 46 : 46;
 const { width } = Dimensions.get('window');
 export default StyleSheet.create({
 	header: {
@@ -13,18 +13,17 @@ export default StyleSheet.create({
 		right: TITLE_OFFSET,
 		position: 'absolute',
 		alignItems: 'center',
-		justifyContent: Platform.OS === 'ios' ? 'center' : 'flex-start',
+		justifyContent: 'flex-start',
 		flexDirection: 'row',
 		height: 44
 	},
 	status: {
-		borderRadius: 4,
-		width: 8,
-		height: 8,
-		marginRight: 10
+		borderRadius: 10,
+		width: 10,
+		height: 10
 	},
 	avatar: {
-		marginRight: 10
+		marginRight: 15
 	},
 	title: {
 		fontWeight: '500',
@@ -63,6 +62,13 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
+	user_status: {
+		position: 'absolute',
+		bottom: -2,
+		right: -2,
+		borderWidth: 2,
+		borderColor: '#fff'
+	},
 	serverImage: {
 		width: 24,
 		height: 24,
@@ -71,5 +77,13 @@ export default StyleSheet.create({
 	inputSearch: {
 		flex: 1,
 		marginLeft: 44
+	},
+	rows: {
+		flexGrow: 1,
+		marginHorizontal: 5
+	},
+	status_text: {
+		fontSize: 10,
+		color: '#888'
 	}
 });

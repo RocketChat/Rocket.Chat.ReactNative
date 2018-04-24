@@ -46,7 +46,7 @@ exports[`render channel 1`] = `
             },
             Object {
               "backgroundColor": "#00BCD4",
-              "borderRadius": 4,
+              "borderRadius": 2,
               "height": 46,
               "width": 46,
             },
@@ -147,10 +147,8 @@ exports[`render channel 1`] = `
           style={
             Object {
               "alignItems": "flex-end",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "flex-end",
-              "width": "100%",
             }
           }
         />
@@ -206,7 +204,7 @@ exports[`render no icon 1`] = `
             },
             Object {
               "backgroundColor": "#3F51B5",
-              "borderRadius": 4,
+              "borderRadius": 2,
               "height": 46,
               "width": 46,
             },
@@ -307,10 +305,8 @@ exports[`render no icon 1`] = `
           style={
             Object {
               "alignItems": "flex-end",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "flex-end",
-              "width": "100%",
             }
           }
         />
@@ -366,7 +362,7 @@ exports[`render private group 1`] = `
             },
             Object {
               "backgroundColor": "#FF9800",
-              "borderRadius": 4,
+              "borderRadius": 2,
               "height": 46,
               "width": 46,
             },
@@ -467,10 +463,8 @@ exports[`render private group 1`] = `
           style={
             Object {
               "alignItems": "flex-end",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "flex-end",
-              "width": "100%",
             }
           }
         />
@@ -527,7 +521,7 @@ exports[`render unread +999 1`] = `
             },
             Object {
               "backgroundColor": "#3F51B5",
-              "borderRadius": 4,
+              "borderRadius": 2,
               "height": 46,
               "width": 46,
             },
@@ -561,13 +555,16 @@ exports[`render unread +999 1`] = `
                 "height": 16,
                 "width": 16,
               },
-              Object {
-                "borderColor": "#fff",
-                "borderWidth": 3,
-                "bottom": -3,
-                "position": "absolute",
-                "right": -3,
-              },
+              Array [
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                undefined,
+              ],
               Object {
                 "backgroundColor": "#cbced1",
               },
@@ -639,10 +636,8 @@ exports[`render unread +999 1`] = `
           style={
             Object {
               "alignItems": "flex-end",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "flex-end",
-              "width": "100%",
             }
           }
         >
@@ -721,7 +716,7 @@ exports[`render unread 1`] = `
             },
             Object {
               "backgroundColor": "#3F51B5",
-              "borderRadius": 4,
+              "borderRadius": 2,
               "height": 46,
               "width": 46,
             },
@@ -755,13 +750,16 @@ exports[`render unread 1`] = `
                 "height": 16,
                 "width": 16,
               },
-              Object {
-                "borderColor": "#fff",
-                "borderWidth": 3,
-                "bottom": -3,
-                "position": "absolute",
-                "right": -3,
-              },
+              Array [
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                undefined,
+              ],
               Object {
                 "backgroundColor": "#cbced1",
               },
@@ -833,10 +831,8 @@ exports[`render unread 1`] = `
           style={
             Object {
               "alignItems": "flex-end",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "flex-end",
-              "width": "100%",
             }
           }
         >
@@ -915,7 +911,7 @@ exports[`renders correctly 1`] = `
             },
             Object {
               "backgroundColor": "#3F51B5",
-              "borderRadius": 4,
+              "borderRadius": 2,
               "height": 46,
               "width": 46,
             },
@@ -949,13 +945,16 @@ exports[`renders correctly 1`] = `
                 "height": 16,
                 "width": 16,
               },
-              Object {
-                "borderColor": "#fff",
-                "borderWidth": 3,
-                "bottom": -3,
-                "position": "absolute",
-                "right": -3,
-              },
+              Array [
+                Object {
+                  "borderColor": "#fff",
+                  "borderWidth": 3,
+                  "bottom": -3,
+                  "position": "absolute",
+                  "right": -3,
+                },
+                undefined,
+              ],
               Object {
                 "backgroundColor": "#cbced1",
               },
@@ -1027,10 +1026,8 @@ exports[`renders correctly 1`] = `
           style={
             Object {
               "alignItems": "flex-end",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "flex-end",
-              "width": "100%",
             }
           }
         />

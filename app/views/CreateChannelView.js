@@ -1,18 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { TextInput, View, Text, Switch, TouchableOpacity, SafeAreaView } from 'react-native';
-import Spinner from 'react-native-loading-spinner-overlay';
+import { View, Text, Switch, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 
+import RCTextInput from '../containers/TextInput';
+import Loading from '../containers/Loading';
 import LoggedView from './View';
 import { createChannelRequest } from '../actions/createChannel';
 import styles from './Styles';
 import KeyboardView from '../presentation/KeyboardView';
+import scrollPersistTaps from '../utils/scrollPersistTaps';
 
 @connect(
 	state => ({
 		createChannel: state.createChannel,
-		users: state.createChannel.users
+		users: state.selectedUsers.users
 	}),
 	dispatch => ({
 		create: data => dispatch(createChannelRequest(data))
@@ -84,52 +86,52 @@ export default class CreateChannelView extends LoggedView {
 	render() {
 		return (
 			<KeyboardView
-				style={[styles.defaultViewBackground, { flex: 1 }]}
-				contentContainerStyle={styles.defaultView}
+				contentContainerStyle={styles.container}
+				keyboardVerticalOffset={128}
 			>
-				<SafeAreaView style={styles.formContainer}>
-					<Text style={styles.label_white}>Channel Name</Text>
-					<TextInput
-						value={this.state.channelName}
-						style={styles.input_white}
-						onChangeText={channelName => this.setState({ channelName })}
-						autoCorrect={false}
-						returnKeyType='done'
-						autoCapitalize='none'
-						autoFocus
-						placeholder='Type the channel name here'
-					/>
-					{this.renderChannelNameError()}
-					{this.renderTypeSwitch()}
-					<Text
-						style={[
-							styles.label_white,
-							{
-								color: '#9ea2a8',
-								flexGrow: 1,
-								paddingHorizontal: 0,
-								marginBottom: 20
-							}
-						]}
-					>
-						{this.state.type ? (
-							'Everyone can access this channel'
-						) : (
-							'Just invited people can access this channel'
-						)}
-					</Text>
-					<TouchableOpacity
-						onPress={() => this.submit()}
-						style={[styles.buttonContainer_white, styles.enabledButton]}
-					>
-						<Text style={styles.button_white}>CREATE</Text>
-					</TouchableOpacity>
-				</SafeAreaView>
-				<Spinner
-					visible={this.props.createChannel.isFetching}
-					textContent='Loading...'
-					textStyle={{ color: '#FFF' }}
-				/>
+				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
+					<SafeAreaView>
+						<RCTextInput
+							label='Channel Name'
+							value={this.state.channelName}
+							onChangeText={channelName => this.setState({ channelName })}
+							placeholder='Type the channel name here'
+							returnKeyType='done'
+							autoFocus
+						/>
+						{this.renderChannelNameError()}
+						{this.renderTypeSwitch()}
+						<Text
+							style={[
+								styles.label_white,
+								{
+									color: '#9ea2a8',
+									flexGrow: 1,
+									paddingHorizontal: 0,
+									marginBottom: 20
+								}
+							]}
+						>
+							{this.state.type ? (
+								'Everyone can access this channel'
+							) : (
+								'Just invited people can access this channel'
+							)}
+						</Text>
+						<TouchableOpacity
+							onPress={() => this.submit()}
+							style={[
+								styles.buttonContainer_white,
+								this.state.channelName.length === 0 || this.props.createChannel.isFetching
+									? styles.disabledButton
+									: styles.enabledButton
+							]}
+						>
+							<Text style={styles.button_white}>CREATE</Text>
+						</TouchableOpacity>
+						<Loading visible={this.props.createChannel.isFetching} />
+					</SafeAreaView>
+				</ScrollView>
 			</KeyboardView>
 		);
 	}
