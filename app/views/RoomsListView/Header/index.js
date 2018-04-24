@@ -149,7 +149,6 @@ export default class RoomsListHeaderView extends React.PureComponent {
 				<Avatar
 					text={user.username}
 					size={24}
-					baseUrl={this.props.baseUrl}
 				>
 					<Status style={[styles.status, styles.user_status]} id={user.id} />
 				</Avatar>

@@ -193,22 +193,17 @@ export default class Socket extends EventEmitter {
 	}
 	_connect() {
 		return new Promise((resolve) => {
+			this.lastping = new Date();
 			this._close();
 			clearInterval(this.reconnect_timeout);
-			this.reconnect_timeout = setInterval(() => {
-				console.log('reconnect_timeout text', (!this.connection || this.connection.readyState > 1 || !this.check()));
-				return (!this.connection || this.connection.readyState > 1 || !this.check()) && this.reconnect();
-			}, 5000);
+			this.reconnect_timeout = setInterval(() => (!this.connection || this.connection.readyState > 1 || !this.check()) && this.reconnect(), 5000);
 			this.connection = new WebSocket(`${ this.url }/websocket`, null);
 
 			this.connection.onopen = () => {
 				this.emit('open');
 				resolve();
 				this.ddp.emit('open');
-				// this._login && this.login(this._login);
-				if (this._login) {
-					this.login(this._login);
-				}
+				return this._login && this.login(this._login);
 			};
 			this.connection.onclose = debounce((e) => { console.log('aer'); this.emit('disconnected', e); }, 300);
 			this.connection.onmessage = (e) => {

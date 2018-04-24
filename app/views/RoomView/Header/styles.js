@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 export default StyleSheet.create({
 	header: {
@@ -11,7 +11,7 @@ export default StyleSheet.create({
 		justifyContent: 'flex-start',
 		flexDirection: 'row',
 		flex: 1,
-		marginLeft: 18,
+		marginLeft: Platform.OS === 'ios' ? 18 : 0,
 		height: 44
 	},
 	titleTextContainer: {

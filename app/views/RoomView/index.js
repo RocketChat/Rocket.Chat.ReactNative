@@ -146,7 +146,7 @@ export default class RoomView extends LoggedView {
 		});
 	};
 
-	renderItem = item => (
+	renderItem = (item, previousItem) => (
 		<Message
 			key={item._id}
 			item={item}
@@ -157,6 +157,7 @@ export default class RoomView extends LoggedView {
 			onReactionPress={this.onReactionPress}
 			onLongPress={this.onMessageLongPress}
 			archived={this.state.room.archived}
+			previousItem={previousItem}
 		/>
 	);
 

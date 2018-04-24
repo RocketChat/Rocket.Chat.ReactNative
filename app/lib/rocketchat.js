@@ -115,19 +115,15 @@ const RocketChat = {
 			const { user: u } = reduxStore.getState().login;
 			user = Object.assign({}, u);
 		}
-		const { server } = reduxStore.getState().server;
-		const hasUsernameKey = `${ server }-${ user.id }`;
 
 		// TODO: one api call
 		// call /me only one time
-		let username = await AsyncStorage.getItem(hasUsernameKey);
-		if (!username) {
+		if (!user.username) {
 			const me = await this.me({ token: user.token, userId: user.id });
 			// eslint-disable-next-line
-			username = me.username;
+			user.username = me.username;
 		}
-		if (username) {
-			await AsyncStorage.setItem(hasUsernameKey, username);
+		if (user.username) {
 			const userInfo = await this.userInfo({ token: user.token, userId: user.id });
 			user.username = userInfo.user.username;
 			if (userInfo.user.roles) {
@@ -154,10 +150,6 @@ const RocketChat = {
 
 			this.ddp.on('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 
-			// this.ddp.on('logged', protectedFunction(() => {
-			// 	RocketChat.getRooms();
-			// }));
-
 			this.ddp.on('background', () => this.getRooms().catch(e => console.warn('background getRooms', e)));
 
 			this.ddp.on('disconnected', () => console.log('disconnected'));
@@ -167,21 +159,6 @@ const RocketChat = {
 				this.loginSuccess(user);
 			}));
 			this.ddp.once('logged', protectedFunction(({ id }) => { this.subscribeRooms(id); }));
-
-			this.ddp.on('open', protectedFunction(() => {
-				RocketChat.getSettings();
-				RocketChat.getPermissions();
-				reduxStore.dispatch(connectSuccess());
-				resolve();
-			}));
-
-			this.ddp.once('open', protectedFunction(() => {
-				this.ddp.subscribe('activeUsers');
-				this.ddp.subscribe('roles');
-			}));
-
-			// TODO: fix api (get emojis by date/version....)
-			this.ddp.once('open', () => RocketChat.getCustomEmoji());
 
 			this.ddp.on('disconnected', protectedFunction(() => {
 				reduxStore.dispatch(disconnect());
@@ -447,6 +424,21 @@ const RocketChat = {
 				Answers.logCustom('disconnect', err);
 				reduxStore.dispatch(connectFailure());
 			}));
+
+			// TODO: fix api (get emojis by date/version....)
+
+			this.ddp.on('open', protectedFunction(() => {
+				RocketChat.getSettings();
+				RocketChat.getPermissions();
+				reduxStore.dispatch(connectSuccess());
+				resolve();
+			}));
+
+			this.ddp.once('open', protectedFunction(() => {
+				this.ddp.subscribe('activeUsers');
+				this.ddp.subscribe('roles');
+				RocketChat.getCustomEmoji();
+			}));
 		}).catch(err => console.warn(`asd ${ err }`));
 	},
 
@@ -707,16 +699,17 @@ const RocketChat = {
 		if (!result) {
 			return Promise.reject(new Error('Room not found'));
 		}
-		return Promise.resolve(result[0]);
+		return Promise.resolve(result);
 	},
 	async getPermalink(message) {
 		const room = await RocketChat.getRoom(message.rid);
+		const { server } = reduxStore.getState().server;
 		const roomType = {
 			p: 'group',
 			c: 'channel',
 			d: 'direct'
 		}[room.t];
-		return `${ room._server.id }/${ roomType }/${ room.name }?msg=${ message._id }`;
+		return `${ server }/${ roomType }/${ room.name }?msg=${ message._id }`;
 	},
 	subscribe(...args) {
 		return this.ddp.subscribe(...args);

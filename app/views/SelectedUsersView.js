@@ -253,7 +253,7 @@ export default class SelectedUsersView extends React.Component {
 			style={styles.selectItemView}
 			onPress={() => this._onPressSelectedItem(item)}
 		>
-			<Avatar text={item.name} baseUrl={this.props.Site_Url} size={40} />
+			<Avatar text={item.name} size={40} />
 			<Text ellipsizeMode='tail' numberOfLines={1} style={{ fontSize: 10 }}>
 				{item.name}
 			</Text>

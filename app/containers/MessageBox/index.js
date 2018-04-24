@@ -80,6 +80,7 @@ export default class MessageBox extends React.PureComponent {
 
 	onChangeText(text) {
 		this.setState({ text });
+		this.props.typing(text.length > 0);
 
 		requestAnimationFrame(() => {
 			const { start, end } = this.component._lastNativeSelection;
@@ -454,7 +455,6 @@ export default class MessageBox extends React.PureComponent {
 							style={{ margin: 8 }}
 							text={item.username || item.name}
 							size={30}
-							baseUrl={this.props.baseUrl}
 						/>,
 						<Text key='mention-item-name'>{ item.username || item.name }</Text>
 					]
