@@ -1,6 +1,7 @@
 import EJSON from 'ejson';
 import { Answers } from 'react-native-fabric';
 import { AppState } from 'react-native';
+import debounce from '../utils/debounce';
 // import { AppState, NativeModules } from 'react-native';
 // const { WebSocketModule, BlobManager } = NativeModules;
 
@@ -73,7 +74,7 @@ export default class Socket extends EventEmitter {
 		const waitTimeout = () => setTimeout(async() => {
 			// this.connection.ping();
 			this.send({ msg: 'ping' });
-			this.timeout = setTimeout(() => this.reconnect(), 5000);
+			this.timeout = setTimeout(() => this.reconnect(), 1000);
 		}, 40000);
 		const handlePing = () => {
 			this.lastping = new Date();
@@ -113,7 +114,7 @@ export default class Socket extends EventEmitter {
 		this.on('result', data => this.ddp.emit(data.id, { id: data.id, result: data.result, error: data.error }));
 		this.on('ready', data => this.ddp.emit(data.subs[0], data));
 		// this.on('error', () => this.reconnect());
-		this.on('disconnected', () => this.reconnect());
+		this.on('disconnected', debounce(() => this.reconnect(), 300));
 		this.on('logged', () => this._logged = true);
 
 		this.on('logged', () => {
@@ -204,7 +205,7 @@ export default class Socket extends EventEmitter {
 				this.ddp.emit('open');
 				return this._login && this.login(this._login);
 			};
-			this.connection.onclose = e => this.emit('disconnected', e);
+			this.connection.onclose = debounce((e) => { console.log('aer'); this.emit('disconnected', e); }, 300);
 			this.connection.onmessage = (e) => {
 				try {
 					// console.log('received', e.data, e.target.readyState);
