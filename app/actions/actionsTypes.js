@@ -93,6 +93,7 @@ export const PINNED_MESSAGES = createRequestTypes('PINNED_MESSAGES', ['OPEN', 'R
 export const MENTIONED_MESSAGES = createRequestTypes('MENTIONED_MESSAGES', ['OPEN', 'READY', 'CLOSE', 'MESSAGES_RECEIVED']);
 export const SNIPPETED_MESSAGES = createRequestTypes('SNIPPETED_MESSAGES', ['OPEN', 'READY', 'CLOSE', 'MESSAGES_RECEIVED']);
 export const ROOM_FILES = createRequestTypes('ROOM_FILES', ['OPEN', 'READY', 'CLOSE', 'MESSAGES_RECEIVED']);
+export const DEEP_LINKING = createRequestTypes('DEEP_LINKING', ['OPEN']);
 
 export const INCREMENT = 'INCREMENT';
 export const DECREMENT = 'DECREMENT';
