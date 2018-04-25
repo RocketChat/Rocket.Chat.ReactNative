@@ -85,7 +85,7 @@ export default class RCTextInput extends React.PureComponent {
 
 	render() {
 		const {
-			label, error, secureTextEntry, containerStyle, inputRef, iconLeft, inputStyle, ...inputProps
+			label, error, secureTextEntry, containerStyle, inputRef, iconLeft, inputStyle, testID, ...inputProps
 		} = this.props;
 		const { showPassword } = this.state;
 		return (
@@ -105,6 +105,7 @@ export default class RCTextInput extends React.PureComponent {
 						autoCapitalize='none'
 						underlineColorAndroid='transparent'
 						secureTextEntry={secureTextEntry && !showPassword}
+						testID={testID}
 						{...inputProps}
 					/>
 					{iconLeft && this.iconLeft(iconLeft)}
