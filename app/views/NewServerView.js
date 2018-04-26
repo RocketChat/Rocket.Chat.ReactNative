@@ -10,6 +10,7 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import Button from '../containers/Button';
 import TextInput from '../containers/TextInput';
 import Loading from '../containers/Loading';
+import LoggedView from './View';
 
 @connect(state => ({
 	validInstance: !state.server.failure && !state.server.connecting,
@@ -19,7 +20,7 @@ import Loading from '../containers/Loading';
 	validateServer: url => dispatch(serverRequest(url)),
 	addServer: url => dispatch(addServer(url))
 }))
-export default class NewServerView extends React.Component {
+export default class NewServerView extends LoggedView {
 	static propTypes = {
 		validateServer: PropTypes.func.isRequired,
 		addServer: PropTypes.func.isRequired,
@@ -30,7 +31,7 @@ export default class NewServerView extends React.Component {
 	}
 
 	constructor(props) {
-		super(props);
+		super('NewServerView', props);
 		this.state = {
 			defaultServer: 'https://open.rocket.chat'
 		};
