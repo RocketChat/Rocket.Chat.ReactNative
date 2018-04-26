@@ -96,7 +96,7 @@ android {
     defaultConfig {
         applicationId "chat.rocket.reactnative"
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode VERSIONCODE as Integer
         versionName "1"
         ndk {
@@ -191,7 +191,7 @@ dependencies {
     compile "com.facebook.react:react-native:+"  // From node_modules
     compile 'com.facebook.fresco:fresco:1.7.1'
     compile 'com.facebook.fresco:animated-gif:1.7.1'
-    compile('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') {
         transitive = true;
     }
 }

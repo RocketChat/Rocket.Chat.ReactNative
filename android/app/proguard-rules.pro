@@ -87,7 +87,12 @@
 }
 
 # For Fabric to properly de-obfuscate your crash reports, you need to remove this line from your ProGuard config:
- -printmapping mapping.txt
+# -printmapping mapping.txt
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**
+
 
 -dontwarn javax.annotation.**
 -dontwarn com.facebook.infer.**

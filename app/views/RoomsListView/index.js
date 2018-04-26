@@ -12,6 +12,7 @@ import Header from '../../containers/Header';
 import RoomsListHeader from './Header';
 import styles from './styles';
 import throttle from '../../utils/throttle';
+import LoggedView from '../View';
 
 @connect(state => ({
 	user: state.login.user,
@@ -19,7 +20,7 @@ import throttle from '../../utils/throttle';
 	Site_Url: state.settings.Site_Url,
 	searchText: state.rooms.searchText
 }))
-export default class RoomsListView extends React.Component {
+export default class RoomsListView extends LoggedView {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
 		user: PropTypes.object,
@@ -33,7 +34,7 @@ export default class RoomsListView extends React.Component {
 	});
 
 	constructor(props) {
-		super(props);
+		super('RoomsListView', props);
 
 		this.state = {
 			search: []

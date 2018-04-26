@@ -6,7 +6,6 @@ import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
-import { isIphoneX } from 'react-native-iphone-x-helper';
 
 import { userTyping, layoutAnimation } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
@@ -504,20 +503,18 @@ export default class MessageBox extends React.PureComponent {
 
 	render() {
 		return (
-			[
-				<KeyboardAccessoryView
-					key='input'
-					renderContent={() => this.renderContent()}
-					kbInputRef={this.component}
-					kbComponent={this.state.showEmojiKeyboard ? 'EmojiKeyboard' : null}
-					onKeyboardResigned={() => this.onKeyboardResigned()}
-					onItemSelected={this._onEmojiSelected}
-					trackInteractive
-					// revealKeyboardInteractive
-					requiresSameParentToManageScrollView
-				/>,
-				isIphoneX() ? <View key='iphonex-area' style={styles.iphoneXArea} /> : null
-			]
+			<KeyboardAccessoryView
+				key='input'
+				renderContent={() => this.renderContent()}
+				kbInputRef={this.component}
+				kbComponent={this.state.showEmojiKeyboard ? 'EmojiKeyboard' : null}
+				onKeyboardResigned={() => this.onKeyboardResigned()}
+				onItemSelected={this._onEmojiSelected}
+				trackInteractive
+				// revealKeyboardInteractive
+				requiresSameParentToManageScrollView
+				addBottomView
+			/>
 		);
 	}
 }
