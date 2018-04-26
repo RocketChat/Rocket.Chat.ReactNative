@@ -104,6 +104,7 @@ export default class RegisterView extends React.Component {
 					iconLeft='account'
 					onChangeText={name => this.setState({ name })}
 					onSubmitEditing={() => { this.email.focus(); }}
+					testID='register-view-input'
 				/>
 				<TextInput
 					inputRef={(e) => { this.email = e; }}
@@ -115,6 +116,7 @@ export default class RegisterView extends React.Component {
 					onChangeText={email => this.setState({ email })}
 					onSubmitEditing={() => { this.password.focus(); }}
 					error={this.invalidEmail()}
+					testID='register-view-email'
 				/>
 				<TextInput
 					inputRef={(e) => { this.password = e; }}
@@ -125,6 +127,7 @@ export default class RegisterView extends React.Component {
 					secureTextEntry
 					onChangeText={password => this.setState({ password })}
 					onSubmitEditing={() => { this.confirmPassword.focus(); }}
+					testID='register-view-password'
 				/>
 				<TextInput
 					inputRef={(e) => { this.confirmPassword = e; }}
@@ -140,6 +143,7 @@ export default class RegisterView extends React.Component {
 					secureTextEntry
 					onChangeText={confirmPassword => this.setState({ confirmPassword })}
 					onSubmitEditing={this.submit}
+					testID='register-view-repeat-password'
 				/>
 
 				<View style={styles.alignItemsFlexStart}>

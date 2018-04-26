@@ -1,12 +1,19 @@
+
+const { takeScreenshot } = require('./helpers/screenshot');
+const {
+	device, expect, element, by, waitFor
+} = require('detox');
+
 describe('Add server', () => {
 	before(async() => {
-		await device.launchApp({ permissions: { notifications: 'YES' } });
-		// await device.reloadReactNative({ permissions: { notifications: 'YES' } });
-		// await setPermissions(['notifications=YES']);
+		await device.reloadReactNative({ permissions: { notifications: 'YES' } });
+	});
+	beforeEach(async() => {
+		await device.reloadReactNative();
+		await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(2000);
 	});
 
 	it('should have an add server screen', async() => {
-		await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(2000);
 		await expect(element(by.id('new-server-view'))).toBeVisible();
 	});
 
@@ -14,6 +21,13 @@ describe('Add server', () => {
 		await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(2000);
 		await waitFor(element(by.id('new-server-view-input'))).toBeVisible().withTimeout(2000);
 		await expect(element(by.id('new-server-view-input'))).toBeVisible();
+	});
+
+
+	it('should insert invalidtest get a invalid instance for "invalidtest"', async() => {
+		await element(by.id('new-server-view-input')).typeText('invalidtest');
+		await waitFor(element(by.text(' is not a valid Rocket.Chat instance'))).toBeVisible().withTimeout(10000);
+		await expect(element(by.text(' is not a valid Rocket.Chat instance'))).toBeVisible();
 	});
 
 	it('should insert open server and get ok', async() => {
@@ -24,21 +38,20 @@ describe('Add server', () => {
 
 
 	it('should insert open get a valid instance for "open"', async() => {
-		await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(2000);
-		await waitFor(element(by.id('new-server-view-input'))).toBeVisible().withTimeout(2000);
-		await element(by.id('new-server-view-input')).clearText();
 		await element(by.id('new-server-view-input')).typeText('open');
 		await waitFor(element(by.text(' is a valid Rocket.Chat instance'))).toBeVisible().withTimeout(2000);
 		await expect(element(by.text(' is a valid Rocket.Chat instance'))).toBeVisible();
 	});
 
-	// it('should show hello screen after tap', async () => {
-	//   await element(by.id('hello_button')).tap();
-	//   await expect(element(by.text('Hello!!!'))).toBeVisible();
-	// });
+	it('should have a button to add a new server', async() => {
+		await element(by.id('new-server-view-input')).typeText('open');
+		await waitFor(element(by.text(' is a valid Rocket.Chat instance'))).toBeVisible().withTimeout(2000);
 
-	// it('should show world screen after tap', async () => {
-	//   await element(by.id('world_button')).tap();
-	//   await expect(element(by.text('World!!!'))).toBeVisible();
-	// });
+		await expect(element(by.text('Connect'))).toBeVisible();
+		await element(by.text('Connect')).tap();
+	});
+
+	afterEach(async() => {
+		takeScreenshot();
+	});
 });

@@ -85,12 +85,12 @@ export default class RCTextInput extends React.PureComponent {
 
 	render() {
 		const {
-			label, error, secureTextEntry, containerStyle, inputRef, iconLeft, inputStyle, testID, ...inputProps
+			label, error, secureTextEntry, containerStyle, inputRef, iconLeft, inputStyle, testID, placeholder, ...inputProps
 		} = this.props;
 		const { showPassword } = this.state;
 		return (
 			<View style={[styles.inputContainer, containerStyle]}>
-				{ label && <Text style={[styles.label, error.error && styles.labelError]}>{label}</Text> }
+				{label && <Text contentDescription={null} accessibilityLabel={null} style={[styles.label, error.error && styles.labelError]}>{label}</Text> }
 				<View style={styles.wrap}>
 					<TextInput
 						style={[
@@ -106,6 +106,9 @@ export default class RCTextInput extends React.PureComponent {
 						underlineColorAndroid='transparent'
 						secureTextEntry={secureTextEntry && !showPassword}
 						testID={testID}
+						accessibilityLabel={placeholder}
+						placeholder={placeholder}
+						contentDescription={placeholder}
 						{...inputProps}
 					/>
 					{iconLeft && this.iconLeft(iconLeft)}
