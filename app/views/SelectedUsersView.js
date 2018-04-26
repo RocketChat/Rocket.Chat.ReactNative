@@ -11,6 +11,7 @@ import RoomItem from '../presentation/RoomItem';
 import Avatar from '../containers/Avatar';
 import Loading from '../containers/Loading';
 import debounce from '../utils/debounce';
+import LoggedView from './View';
 
 const styles = StyleSheet.create({
 	container: {
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
 		reset: () => dispatch(reset())
 	})
 )
-export default class SelectedUsersView extends React.Component {
+export default class SelectedUsersView extends LoggedView {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
 		user: PropTypes.object,
@@ -115,7 +116,7 @@ export default class SelectedUsersView extends React.Component {
 	};
 
 	constructor(props) {
-		super(props);
+		super('SelectedUsersView', props);
 		this.data = database.objects('subscriptions').filtered('t = $0', 'd').sorted('roomUpdatedAt', true);
 		this.state = {
 			search: []

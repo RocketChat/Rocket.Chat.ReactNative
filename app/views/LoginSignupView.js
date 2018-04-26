@@ -9,7 +9,7 @@ import Modal from 'react-native-modal';
 
 import RocketChat from '../lib/rocketchat';
 import { open, close } from '../actions/login';
-
+import LoggedView from './View';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import random from '../utils/random';
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
 	open: () => dispatch(open()),
 	close: () => dispatch(close())
 }))
-export default class LoginView extends React.Component {
+export default class LoginSignupView extends LoggedView {
 	static propTypes = {
 		loginOAuth: PropTypes.func.isRequired,
 		open: PropTypes.func.isRequired,
@@ -87,7 +87,7 @@ export default class LoginView extends React.Component {
 	}
 
 	constructor(props) {
-		super(props);
+		super('LoginSignupView', props);
 
 		this.state = {
 			modalVisible: false,
