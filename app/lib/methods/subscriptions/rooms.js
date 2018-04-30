@@ -34,7 +34,11 @@ export default async function subscribeRooms(id) {
 		timer = true;
 	});
 
-	this.ddp.on('disconnected', () => { loop(); });
+	this.ddp.on('disconnected', () => {
+		if (this._login) {
+			loop();
+		}
+	});
 
 	this.ddp.on('stream-notify-user', (ddpMessage) => {
 		const [type, data] = ddpMessage.fields.args;

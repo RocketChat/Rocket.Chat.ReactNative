@@ -224,6 +224,8 @@ export default class Socket extends EventEmitter {
 	}
 	disconnect() {
 		this._close();
+		this._login = null;
+		this.subscriptions = {};
 	}
 	async reconnect() {
 		if (this._timer) {
