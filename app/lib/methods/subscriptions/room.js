@@ -57,7 +57,11 @@ export default async function subscribeRoom({ rid, t }) {
 		promises = subscribe(this.ddp, rid);
 	});
 
-	disconnected = this.ddp.on('disconnected', () => { loop(); });
+	disconnected = this.ddp.on('disconnected', () => {
+		if (this._login) {
+			loop();
+		}
+	});
 
 	if (!this.ddp.status) {
 		loop();

@@ -1,10 +1,10 @@
-import { put, call, takeLatest, race, take } from 'redux-saga/effects';
+import { put, call, takeLatest } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { AsyncStorage } from 'react-native';
 import { SERVER } from '../actions/actionsTypes';
 import * as actions from '../actions';
 import { connectRequest } from '../actions/connect';
-import { serverSuccess, serverFailure, serverRequest, setServer } from '../actions/server';
+import { serverSuccess, serverFailure, setServer } from '../actions/server';
 import { setRoles } from '../actions/roles';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
@@ -21,6 +21,7 @@ const selectServer = function* selectServer({ server }) {
 		// yield RocketChat.disconnect();
 
 		yield call([AsyncStorage, 'setItem'], 'currentServer', server);
+		// yield AsyncStorage.removeItem(RocketChat.TOKEN_KEY);
 		const settings = database.objects('settings');
 		yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
 		const permissions = database.objects('permissions');
@@ -33,7 +34,7 @@ const selectServer = function* selectServer({ server }) {
 			return result;
 		}, {})));
 
-		yield put(connectRequest(server));
+		yield put(connectRequest());
 	} catch (e) {
 		console.warn('selectServer', e);
 	}
@@ -51,18 +52,10 @@ const validateServer = function* validateServer({ server }) {
 };
 
 const addServer = function* addServer({ server }) {
-	yield put(serverRequest(server));
-
-	const { error } = yield race({
-		error: take(SERVER.FAILURE),
-		success: take(SERVER.SUCCESS)
+	database.databases.serversDB.write(() => {
+		database.databases.serversDB.create('servers', { id: server, current: false }, true);
 	});
-	if (!error) {
-		database.databases.serversDB.write(() => {
-			database.databases.serversDB.create('servers', { id: server, current: false }, true);
-		});
-		yield put(setServer(server));
-	}
+	yield put(setServer(server));
 };
 
 const handleGotoAddServer = function* handleGotoAddServer() {
