@@ -52,8 +52,7 @@ export class List extends React.Component {
 		return this.props.end !== nextProps.end;
 	}
 	componentWillUnmount() {
-		this.date.removeListener(this.updateState);
-		this.date.removeAllListeners();
+		this.data.removeAllListeners();
 		this.updateState.stop();
 	}
 	updateState = throttle(() => {

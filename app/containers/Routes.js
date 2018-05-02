@@ -60,9 +60,12 @@ export default class Routes extends React.Component {
 	handleOpenURL({ url }) {
 		if (url) {
 			url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
-			url = url.replace(/room\?/, '');
-			const params = parseQuery(url);
-			this.props.deepLinkingOpen(params);
+			const regex = /^(room|auth)\?/;
+			if (url.match(regex)) {
+				url = url.replace(regex, '');
+				const params = parseQuery(url);
+				this.props.deepLinkingOpen(params);
+			}
 		}
 	}
 

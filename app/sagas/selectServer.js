@@ -1,14 +1,14 @@
-import { put, call, takeLatest } from 'redux-saga/effects';
+import { put, call, takeLatest, take } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { AsyncStorage } from 'react-native';
-import { SERVER } from '../actions/actionsTypes';
+import { SERVER, LOGIN } from '../actions/actionsTypes';
 import * as actions from '../actions';
 import { connectRequest } from '../actions/connect';
 import { serverSuccess, serverFailure, setServer } from '../actions/server';
 import { setRoles } from '../actions/roles';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
-import * as NavigationService from '../containers/routes/NavigationService';
+import { navigate } from '../containers/routes/NavigationService';
 
 const validate = function* validate(server) {
 	return yield RocketChat.testServer(server);
@@ -56,11 +56,13 @@ const addServer = function* addServer({ server }) {
 		database.databases.serversDB.create('servers', { id: server, current: false }, true);
 	});
 	yield put(setServer(server));
+	yield take(LOGIN.SET_TOKEN);
+	navigate('LoginSignup');
 };
 
 const handleGotoAddServer = function* handleGotoAddServer() {
 	yield call(AsyncStorage.removeItem, RocketChat.TOKEN_KEY);
-	yield call(NavigationService.navigate, 'AddServer');
+	yield call(navigate, 'AddServer');
 };
 
 const root = function* root() {

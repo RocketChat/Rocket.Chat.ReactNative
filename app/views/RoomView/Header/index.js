@@ -64,6 +64,14 @@ export default class RoomHeaderView extends React.PureComponent {
 		this.room.addListener(this.updateState);
 	}
 
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.navigation.state.params.room !== this.props.navigation.state.params.room) {
+			this.room.removeAllListeners();
+			this.room = realm.objects('subscriptions').filtered('rid = $0', nextProps.navigation.state.params.room.rid);
+			this.room.addListener(this.updateState);
+		}
+	}
+
 	componentWillUnmount() {
 		this.room.removeAllListeners();
 	}
