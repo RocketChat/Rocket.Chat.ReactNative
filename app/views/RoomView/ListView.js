@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 import DateSeparator from './DateSeparator';
 import UnreadSeparator from './UnreadSeparator';
 import styles from './styles';
-import throttle from '../../utils/throttle';
 import Typing from '../../containers/Typing';
 import database from '../../lib/realm';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
