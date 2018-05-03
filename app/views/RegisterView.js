@@ -104,7 +104,7 @@ export default class RegisterView extends React.Component {
 					iconLeft='account'
 					onChangeText={name => this.setState({ name })}
 					onSubmitEditing={() => { this.email.focus(); }}
-					testID='register-view-input'
+					testID='register-view-name'
 				/>
 				<TextInput
 					inputRef={(e) => { this.email = e; }}
@@ -157,6 +157,7 @@ export default class RegisterView extends React.Component {
 						title='Register'
 						type='primary'
 						onPress={this.submit}
+						testID='register-view-submit'
 					/>
 				</View>
 
@@ -179,6 +180,7 @@ export default class RegisterView extends React.Component {
 					iconLeft='at'
 					onChangeText={username => this.setState({ username })}
 					onSubmitEditing={() => { this.usernameSubmit(); }}
+					testID='register-view-username'
 				/>
 
 				<View style={styles.alignItemsFlexStart}>
@@ -186,6 +188,7 @@ export default class RegisterView extends React.Component {
 						title='Register'
 						type='primary'
 						onPress={this.usernameSubmit}
+						testID='register-view-submit-username'
 					/>
 				</View>
 
@@ -198,7 +201,7 @@ export default class RegisterView extends React.Component {
 		return (
 			<KeyboardView contentContainerStyle={styles.container}>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
-					<SafeAreaView>
+					<SafeAreaView testID='register-view'>
 						<CloseModalButton navigation={this.props.navigation} />
 						<Text style={[styles.loginText, styles.loginTitle]}>Sign Up</Text>
 						{this._renderRegister()}

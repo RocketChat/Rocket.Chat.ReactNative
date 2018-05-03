@@ -200,7 +200,7 @@ export default class RoomsListView extends React.Component {
 	);
 
 	render = () => (
-		<View style={styles.container}>
+		<View style={styles.container} testID='rooms-list-view'>
 			{this.renderList()}
 			{Platform.OS === 'android' && this.renderCreateButtons()}
 		</View>)

@@ -109,7 +109,9 @@
     "reactotron-redux-saga": "^1.13.0"
   },
   "jest": {
-		"testPathIgnorePatterns": ["e2e"],
+    "testPathIgnorePatterns": [
+      "e2e"
+    ],
     "preset": "react-native",
     "coverageDirectory": "./coverage/",
     "collectCoverage": true,

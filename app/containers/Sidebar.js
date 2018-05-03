@@ -103,7 +103,7 @@ export default class Sidebar extends Component {
 
 	render() {
 		return (
-			<ScrollView style={styles.scrollView}>
+			<ScrollView style={styles.scrollView} testID='sidebar'>
 				<View style={{ paddingBottom: 20 }}>
 					<FlatList
 						data={this.state.servers}

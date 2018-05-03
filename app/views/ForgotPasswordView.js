@@ -73,10 +73,6 @@ export default class ForgotPasswordView extends LoggedView {
 		this.props.forgotPasswordRequest(email);
 	}
 
-	backLogin = () => {
-		this.props.navigation.goBack();
-	}
-
 	render() {
 		return (
 			<KeyboardView
@@ -84,7 +80,7 @@ export default class ForgotPasswordView extends LoggedView {
 				keyboardVerticalOffset={128}
 			>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
-					<SafeAreaView>
+					<SafeAreaView testID='forgot-password-view'>
 						<View style={styles.loginView}>
 							<View style={styles.formContainer}>
 								<TextInput
@@ -95,6 +91,7 @@ export default class ForgotPasswordView extends LoggedView {
 									returnKeyType='next'
 									onChangeText={email => this.validate(email)}
 									onSubmitEditing={() => this.resetPassword()}
+									testID='forgot-password-view-email'
 								/>
 
 								<View style={styles.alignItemsFlexStart}>
@@ -102,6 +99,7 @@ export default class ForgotPasswordView extends LoggedView {
 										title='Reset password'
 										type='primary'
 										onPress={this.resetPassword}
+										testID='forgot-password-view-submit'
 									/>
 								</View>
 

@@ -79,7 +79,7 @@ export default class LoginView extends React.PureComponent {
 				key='login-view'
 			>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
-					<SafeAreaView>
+					<SafeAreaView testID='login-view'>
 						<CloseModalButton navigation={this.props.navigation} />
 						<Text style={[styles.loginText, styles.loginTitle]}>Login</Text>
 						<TextInput
@@ -90,6 +90,7 @@ export default class LoginView extends React.PureComponent {
 							iconLeft='at'
 							onChangeText={username => this.setState({ username })}
 							onSubmitEditing={() => { this.password.focus(); }}
+							testID='login-view-email'
 						/>
 
 						<TextInput
@@ -101,6 +102,7 @@ export default class LoginView extends React.PureComponent {
 							secureTextEntry
 							onSubmitEditing={this.submit}
 							onChangeText={password => this.setState({ password })}
+							testID='login-view-password'
 						/>
 
 						{this.renderTOTP()}
@@ -110,17 +112,20 @@ export default class LoginView extends React.PureComponent {
 								title='Login'
 								type='primary'
 								onPress={this.submit}
+								testID='login-view-submit'
 							/>
-							<Text style={[styles.loginText, { marginTop: 10 }]}>New in Rocket.Chat? &nbsp;
-								<Text
-									style={{ color: COLOR_BUTTON_PRIMARY }}
-									onPress={() => this.props.navigation.navigate('Register')}
-								>Sign Up
+							<Text
+								style={[styles.loginText, { marginTop: 10 }]}
+								testID='login-view-register'
+								onPress={() => this.props.navigation.navigate('Register')}
+							>New in Rocket.Chat? &nbsp;
+								<Text style={{ color: COLOR_BUTTON_PRIMARY }}>Sign Up
 								</Text>
 							</Text>
 							<Text
 								style={[styles.loginText, { marginTop: 20, fontSize: 13 }]}
 								onPress={() => this.props.navigation.navigate('ForgotPassword')}
+								testID='login-view-forgot-password'
 							>Forgot password
 							</Text>
 						</View>
