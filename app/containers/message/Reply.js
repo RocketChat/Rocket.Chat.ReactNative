@@ -65,13 +65,6 @@ const onPress = (attachment) => {
 	openLink(attachment.title_link || attachment.author_link);
 };
 
-// Support <http://link|Text>
-const formatText = text =>
-	text.replace(
-		new RegExp('(?:<|<)((?:https|http):\\/\\/[^\\|]+)\\|(.+?)(?=>|>)(?:>|>)', 'gm'),
-		(match, url, title) => `[${ title }](${ url })`
-	);
-
 const Reply = ({ attachment, timeFormat }) => {
 	if (!attachment) {
 		return null;
@@ -113,7 +106,7 @@ const Reply = ({ attachment, timeFormat }) => {
 	};
 
 	const renderText = () => (
-		attachment.text ? <Markdown msg={formatText(attachment.text)} /> : null
+		attachment.text ? <Markdown msg={attachment.text} /> : null
 	);
 
 	const renderFields = () => {
