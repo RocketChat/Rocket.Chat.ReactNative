@@ -1,7 +1,6 @@
 import React from 'react';
 import { ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
-// import { CachedImage } from 'react-native-img-cache';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import { ScrollView, View, Text, TouchableWithoutFeedback } from 'react-native';
-// import { CachedImage } from 'react-native-img-cache';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';

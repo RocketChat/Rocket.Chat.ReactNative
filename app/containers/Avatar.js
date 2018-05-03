@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { StyleSheet, Text, View, ViewPropTypes } from 'react-native';
-// import { CachedImage } from 'react-native-img-cache';
 import FastImage from 'react-native-fast-image';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import avatarInitialsAndColor from '../utils/avatarInitialsAndColor';

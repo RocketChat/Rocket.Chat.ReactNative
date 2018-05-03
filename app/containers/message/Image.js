@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-// import { CachedImage } from 'react-native-img-cache';
 import FastImage from 'react-native-fast-image';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';

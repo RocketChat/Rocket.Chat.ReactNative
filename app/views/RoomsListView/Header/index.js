@@ -4,7 +4,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
-// import { CachedImage } from 'react-native-img-cache';
 import FastImage from 'react-native-fast-image';
 import { HeaderBackButton } from 'react-navigation';
 
