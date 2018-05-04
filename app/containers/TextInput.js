@@ -75,11 +75,26 @@ export default class RCTextInput extends React.PureComponent {
 		showPassword: false
 	}
 
-	icon = ({ name, onPress, style }) => <Icon name={name} style={[styles.icon, style]} size={20} onPress={onPress} />
+	icon = ({
+		name,
+		onPress,
+		style,
+		testID
+	}) => <Icon name={name} style={[styles.icon, style]} size={20} onPress={onPress} testID={testID} />
 
-	iconLeft = name => this.icon({ name, onPress: null, style: { left: 0 } });
+	iconLeft = name => this.icon({
+		name,
+		onPress: null,
+		style: { left: 0 },
+		testID: this.props.testID ? `${ this.props.testID }-icon-left` : null
+	});
 
-	iconPassword = name => this.icon({ name, onPress: () => this.tooglePassword(), style: { right: 0 } });
+	iconPassword = name => this.icon({
+		name,
+		onPress: () => this.tooglePassword(),
+		style: { right: 0 },
+		testID: this.props.testID ? `${ this.props.testID }-icon-right` : null
+	});
 
 	tooglePassword = () => this.setState({ showPassword: !this.state.showPassword });
 

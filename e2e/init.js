@@ -1,4 +1,3 @@
-const { takeScreenshot } = require('./helpers/screenshot');
 const detox = require('detox');
 const config = require('../package.json').detox;
 
@@ -9,8 +8,4 @@ before(async() => {
 
 after(async() => {
 	await detox.cleanup();
-});
-
-afterEach(async() => {
-	takeScreenshot();
 });
