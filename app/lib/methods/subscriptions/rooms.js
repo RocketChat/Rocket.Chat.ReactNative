@@ -24,35 +24,41 @@ export default async function subscribeRooms(id) {
 		}, 5000);
 	};
 
-	this.ddp.on('logged', () => {
-		clearTimeout(timer);
-		timer = false;
-	});
+	if (this.ddp) {
+		this.ddp.on('logged', () => {
+			clearTimeout(timer);
+			timer = false;
+		});
 
-	this.ddp.on('logout', () => {
-		clearTimeout(timer);
-		timer = true;
-	});
+		this.ddp.on('logout', () => {
+			clearTimeout(timer);
+			timer = true;
+		});
 
-	this.ddp.on('disconnected', () => { loop(); });
+		this.ddp.on('disconnected', () => {
+			if (this._login) {
+				loop();
+			}
+		});
 
-	this.ddp.on('stream-notify-user', (ddpMessage) => {
-		const [type, data] = ddpMessage.fields.args;
-		const [, ev] = ddpMessage.fields.eventName.split('/');
-		if (/subscriptions/.test(ev)) {
-			const tpm = merge(data);
-			return database.write(() => {
-				database.create('subscriptions', tpm, true);
-			});
-		}
-		if (/rooms/.test(ev) && type === 'updated') {
-			const [sub] = database.objects('subscriptions').filtered('rid == $0', data._id);
-			database.write(() => {
-				merge(sub, data);
-			});
-		}
-	});
+		this.ddp.on('stream-notify-user', (ddpMessage) => {
+			const [type, data] = ddpMessage.fields.args;
+			const [, ev] = ddpMessage.fields.eventName.split('/');
+			if (/subscriptions/.test(ev)) {
+				const tpm = merge(data);
+				return database.write(() => {
+					database.create('subscriptions', tpm, true);
+				});
+			}
+			if (/rooms/.test(ev) && type === 'updated') {
+				const [sub] = database.objects('subscriptions').filtered('rid == $0', data._id);
+				database.write(() => {
+					merge(sub, data);
+				});
+			}
+		});
+	}
 
 	await subscriptions;
-	console.log(this.ddp.subscriptions);
+	// console.log(this.ddp.subscriptions);
 }

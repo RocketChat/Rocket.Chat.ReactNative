@@ -17,7 +17,10 @@ const getToken = function* getToken() {
 		}
 		return JSON.parse(user);
 	}
-	return yield put(setToken());
+
+	yield AsyncStorage.removeItem(RocketChat.TOKEN_KEY);
+	yield put(setToken());
+	return null;
 };
 
 

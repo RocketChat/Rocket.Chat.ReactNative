@@ -12,6 +12,7 @@ import pinnedMessages from './pinnedMessages';
 import mentionedMessages from './mentionedMessages';
 import snippetedMessages from './snippetedMessages';
 import roomFiles from './roomFiles';
+import deepLinking from './deepLinking';
 
 const root = function* root() {
 	yield all([
@@ -27,7 +28,8 @@ const root = function* root() {
 		pinnedMessages(),
 		mentionedMessages(),
 		snippetedMessages(),
-		roomFiles()
+		roomFiles(),
+		deepLinking()
 	]);
 };
 
