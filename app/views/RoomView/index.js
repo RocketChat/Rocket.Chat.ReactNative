@@ -190,7 +190,7 @@ export default class RoomView extends LoggedView {
 	}
 	render() {
 		return (
-			<View style={styles.container}>
+			<View style={styles.container} testID='room-view'>
 				<List
 					key='room-view-messages'
 					end={this.state.end}

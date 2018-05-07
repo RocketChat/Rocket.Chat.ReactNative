@@ -2,10 +2,10 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
+const data = require('./data');
 
 describe('Add server', () => {
-	beforeEach(async() => {
-		await device.reloadReactNative();
+	before(async() => {
 		await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(2000);
 	});
 
@@ -42,7 +42,7 @@ describe('Add server', () => {
 	
 		it('should have a button to add a new server', async() => {
 			await element(by.id('new-server-view-input')).tap();
-			await element(by.id('new-server-view-input')).typeText('open');
+			await element(by.id('new-server-view-input')).replaceText(data.server);
 			await waitFor(element(by.text(' is a valid Rocket.Chat instance'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('new-server-view-button'))).toBeVisible();
 			await element(by.id('new-server-view-button')).tap();

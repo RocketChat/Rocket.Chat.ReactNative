@@ -174,6 +174,7 @@ export default class RoomsListView extends React.Component {
 			type={item.t}
 			baseUrl={this.props.Site_Url}
 			onPress={() => this._onPressItem(item)}
+			testID={`rooms-list-view-item-${ item.name }`}
 		/>);
 	}
 
@@ -188,6 +189,7 @@ export default class RoomsListView extends React.Component {
 			enableEmptySections
 			removeClippedSubviews
 			keyboardShouldPersistTaps='always'
+			testID='rooms-list-view-list'
 		/>
 	)
 

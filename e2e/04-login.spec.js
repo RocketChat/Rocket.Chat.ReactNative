@@ -2,21 +2,13 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
-
-navigateToLogin = async() => {
-	await waitFor(element(by.id('new-server-view-button'))).toBeVisible().withTimeout(2000);
-	await element(by.id('welcome-view-login')).tap();
-	await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
-}
+const { addServer, navigateToLogin } = require('./helpers/app');
+const data = require('./data');
 
 describe('Login screen', () => {
 	before(async() => {
 		await device.launchApp({ delete: true, permissions: { notifications: 'YES' } });
-		await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(2000);
-		await element(by.id('new-server-view-input')).replaceText('open');
-		await waitFor(element(by.text(' is a valid Rocket.Chat instance'))).toBeVisible().withTimeout(2000);
-		await waitFor(element(by.id('new-server-view-button'))).toBeVisible().withTimeout(2000);
-		await element(by.id('new-server-view-button')).tap();
+		await addServer();
 	});
 
 	describe('Render', () => {
@@ -87,7 +79,7 @@ describe('Login screen', () => {
 	
 		it('should insert wrong password and get error', async() => {
 			await element(by.id('login-view-email')).tap();
-			await element(by.id('login-view-email')).replaceText('d0711');
+			await element(by.id('login-view-email')).replaceText(data.user);
 			await element(by.id('login-view-password')).tap();
 			await element(by.id('login-view-password')).typeText('error');
 			await element(by.id('login-view-submit')).tap();
@@ -97,9 +89,9 @@ describe('Login screen', () => {
 	
 		it('should login with success', async() => {
 			await element(by.id('login-view-email')).tap();
-			await element(by.id('login-view-email')).replaceText('d0711');
+			await element(by.id('login-view-email')).replaceText(data.user);
 			await element(by.id('login-view-password')).tap();
-			await element(by.id('login-view-password')).replaceText('123');
+			await element(by.id('login-view-password')).replaceText(data.password);
 			await element(by.id('login-view-submit')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();

@@ -103,8 +103,8 @@ export default class Sidebar extends Component {
 
 	render() {
 		return (
-			<ScrollView style={styles.scrollView} testID='sidebar'>
-				<View style={{ paddingBottom: 20 }}>
+			<ScrollView style={styles.scrollView}>
+				<View style={{ paddingBottom: 20 }} testID='sidebar'>
 					<FlatList
 						data={this.state.servers}
 						renderItem={this.renderItem}
@@ -112,6 +112,7 @@ export default class Sidebar extends Component {
 					/>
 					<TouchableHighlight
 						onPress={() => { this.props.logout(); }}
+						testID='sidebar-logout'
 					>
 						<View style={styles.serverItem}>
 							<Text>
@@ -121,6 +122,7 @@ export default class Sidebar extends Component {
 					</TouchableHighlight>
 					<TouchableHighlight
 						onPress={() => { this.props.gotoAddServer(); }}
+						testID='sidebar-add-server'
 					>
 						<View style={styles.serverItem}>
 							<Text>

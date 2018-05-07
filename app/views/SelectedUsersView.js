@@ -297,7 +297,7 @@ export default class SelectedUsersView extends React.Component {
 		);
 	};
 	render = () => (
-		<View style={styles.container}>
+		<View style={styles.container} testID='select-users-view'>
 			<SafeAreaView style={styles.safeAreaView}>
 				{this.renderList()}
 				{this.renderCreateButton()}
