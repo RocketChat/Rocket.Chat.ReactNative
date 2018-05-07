@@ -49,7 +49,6 @@ export default class NewServerView extends LoggedView {
 
 	submit = () => {
 		this.props.addServer(this.completeUrl(this.state.text));
-		this.props.navigation.navigate('LoginSignup');
 	}
 
 	completeUrl = (url) => {

@@ -21,8 +21,10 @@ const stop = (ddp) => {
 		promises = false;
 	}
 
-	ddp.removeListener('logged', logged);
-	ddp.removeListener('disconnected', disconnected);
+	if (ddp) {
+		ddp.removeListener('logged', logged);
+		ddp.removeListener('disconnected', disconnected);
+	}
 
 	logged = false;
 	disconnected = false;
@@ -50,18 +52,21 @@ export default async function subscribeRoom({ rid, t }) {
 		}, 5000);
 	};
 
-
-	logged = this.ddp.on('logged', () => {
-		clearTimeout(timer);
-		timer = false;
-		promises = subscribe(this.ddp, rid);
-	});
-
-	disconnected = this.ddp.on('disconnected', () => { loop(); });
-
-	if (!this.ddp.status) {
+	if (!this.ddp || !this.ddp.status) {
 		loop();
 	} else {
+		logged = this.ddp.on('logged', () => {
+			clearTimeout(timer);
+			timer = false;
+			promises = subscribe(this.ddp, rid);
+		});
+
+		disconnected = this.ddp.on('disconnected', () => {
+			if (this._login) {
+				loop();
+			}
+		});
+
 		promises = subscribe(this.ddp, rid);
 	}
 
