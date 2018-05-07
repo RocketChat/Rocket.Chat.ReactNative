@@ -123,13 +123,17 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	_onPressItem = async(item = {}) => {
-		// if user is using the search we need first to join/create room
 		if (!item.search) {
-			return this.props.navigation.navigate({ key: `Room-${ item._id }`, routeName: 'Room', params: { room: item, ...item } });
+			return goRoom({ rid: item.rid });
 		}
 		if (item.t === 'd') {
-			const sub = await RocketChat.createDirectMessageAndWait(item.username);
-			return goRoom({ room: sub, name: sub.name });
+			// if user is using the search we need first to join/create room
+			try {
+				const sub = await RocketChat.createDirectMessage(item.username);
+				return goRoom(sub);
+			} catch (error) {
+				console.warn('_onPressItem', error);
+			}
 		}
 		return goRoom(item);
 	}

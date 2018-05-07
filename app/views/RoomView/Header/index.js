@@ -54,16 +54,22 @@ export default class RoomHeaderView extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			room: realm.objects('subscriptions').filtered('rid = $0', this.rid)[0] || {},
-			roomName: props.navigation.state.params.room.name
+			room: props.navigation.state.params.room
 		};
-		this.rid = props.navigation.state.params.room.rid;
-		this.room = realm.objects('subscriptions').filtered('rid = $0', this.rid);
-		this.room.addListener(this.updateState);
+		this.room = realm.objects('subscriptions').filtered('rid = $0', this.state.room.rid);
 	}
 
 	componentDidMount() {
 		this.updateState();
+		this.room.addListener(this.updateState);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.navigation.state.params.room !== this.props.navigation.state.params.room) {
+			this.room.removeAllListeners();
+			this.room = realm.objects('subscriptions').filtered('rid = $0', nextProps.navigation.state.params.room.rid);
+			this.room.addListener(this.updateState);
+		}
 	}
 
 	componentWillUnmount() {
@@ -71,7 +77,7 @@ export default class RoomHeaderView extends React.PureComponent {
 	}
 
 	getUserStatus() {
-		const userId = this.rid.replace(this.props.user.id, '').trim();
+		const userId = this.state.room.rid.replace(this.props.user.id, '').trim();
 		const userInfo = this.props.activeUsers[userId];
 		return (userInfo && userInfo.status) || 'offline';
 	}
@@ -82,7 +88,9 @@ export default class RoomHeaderView extends React.PureComponent {
 	}
 
 	updateState = () => {
-		this.setState({ room: this.room[0] });
+		if (this.room.length > 0) {
+			this.setState({ room: this.room[0] });
+		}
 	};
 
 	isDirect = () => this.state.room && this.state.room.t === 'd';
@@ -98,11 +106,11 @@ export default class RoomHeaderView extends React.PureComponent {
 	/>);
 
 	renderCenter() {
-		if (!this.state.roomName) {
+		if (!this.state.room.name) {
 			return null;
 		}
 
-		let accessibilityLabel = this.state.roomName;
+		let accessibilityLabel = this.state.room.name;
 
 		if (this.isDirect()) {
 			accessibilityLabel += `, ${ this.getUserStatusLabel() }`;
@@ -125,11 +133,11 @@ export default class RoomHeaderView extends React.PureComponent {
 				style={styles.titleContainer}
 				accessibilityLabel={accessibilityLabel}
 				accessibilityTraits='header'
-				onPress={() => this.props.navigation.navigate({ key: 'RoomInfo', routeName: 'RoomInfo', params: { rid: this.rid } })}
+				onPress={() => this.props.navigation.navigate({ key: 'RoomInfo', routeName: 'RoomInfo', params: { rid: this.state.rid } })}
 			>
 
 				<Avatar
-					text={this.state.roomName}
+					text={this.state.room.name}
 					size={24}
 					style={styles.avatar}
 					type={this.state.room.t}
@@ -140,7 +148,7 @@ export default class RoomHeaderView extends React.PureComponent {
 					}
 				</Avatar>
 				<View style={styles.titleTextContainer}>
-					<Text style={styles.title} allowFontScaling={false}>{this.state.roomName}</Text>
+					<Text style={styles.title} allowFontScaling={false}>{this.state.room.name}</Text>
 
 					{ t && <Text style={styles.userStatus} allowFontScaling={false} numberOfLines={1}>{t}</Text>}
 

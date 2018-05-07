@@ -34,7 +34,7 @@ export function goRoomsList() {
 
 export function goRoom({ rid, name }, counter = 0) {
 	// about counter: we can call this method before navigator be set. so we have to wait, if we tried a lot, we give up ...
-	if (!rid || !name || counter > 10) {
+	if (!rid || counter > 10) {
 		return;
 	}
 	if (!config.navigator) {

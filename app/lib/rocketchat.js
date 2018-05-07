@@ -35,7 +35,7 @@ import getSettings from './methods/getSettings';
 import getRooms from './methods/getRooms';
 import getPermissions from './methods/getPermissions';
 import getCustomEmoji from './methods/getCustomEmojis';
-
+import canOpenRoom from './methods/canOpenRoom';
 
 import _buildMessage from './methods/helpers/buildMessage';
 import loadMessagesForRoom from './methods/loadMessagesForRoom';
@@ -51,6 +51,7 @@ const RocketChat = {
 	TOKEN_KEY,
 	subscribeRooms,
 	subscribeRoom,
+	canOpenRoom,
 	createChannel({ name, users, type }) {
 		return call(type ? 'createChannel' : 'createPrivateGroup', name, users, type);
 	},
