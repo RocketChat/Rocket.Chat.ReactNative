@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
-import { CachedImage } from 'react-native-img-cache';
+import FastImage from 'react-native-fast-image';
 import { HeaderBackButton } from 'react-navigation';
 
 import Avatar from '../../../containers/Avatar';
@@ -118,7 +118,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 					style={styles.headerButton}
 					onPress={() => this.props.navigation.navigate({ key: 'DrawerOpen', routeName: 'DrawerOpen' })}
 				>
-					<CachedImage
+					<FastImage
 						style={styles.serverImage}
 						source={{ uri: encodeURI(`${ this.props.baseUrl }/assets/favicon_32.png`) }}
 					/>

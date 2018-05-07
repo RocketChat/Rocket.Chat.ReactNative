@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { CachedImage } from 'react-native-img-cache';
+import FastImage from 'react-native-fast-image';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import PhotoModal from './PhotoModal';
@@ -13,8 +13,8 @@ const styles = StyleSheet.create({
 	},
 	image: {
 		width: 320,
-		height: 200,
-		resizeMode: 'cover'
+		height: 200
+		// resizeMode: 'cover'
 	},
 	labelContainer: {
 		alignItems: 'flex-start'
@@ -56,7 +56,7 @@ export default class extends React.PureComponent {
 					onPress={() => this._onPressButton()}
 					style={styles.button}
 				>
-					<CachedImage
+					<FastImage
 						style={styles.image}
 						source={{ uri: encodeURI(img) }}
 					/>
