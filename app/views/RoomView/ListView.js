@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 import DateSeparator from './DateSeparator';
 import UnreadSeparator from './UnreadSeparator';
 import styles from './styles';
-import throttle from '../../utils/throttle';
 import Typing from '../../containers/Typing';
 import database from '../../lib/realm';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
@@ -52,17 +51,16 @@ export class List extends React.Component {
 		return this.props.end !== nextProps.end;
 	}
 	componentWillUnmount() {
-		this.date.removeListener(this.updateState);
-		this.date.removeAllListeners();
+		this.data.removeAllListeners();
 		this.updateState.stop();
 	}
-	updateState = throttle(() => {
+	updateState = () => {
 		// this.setState({
 		this.dataSource = this.dataSource.cloneWithRows(this.data);
 		LayoutAnimation.easeInEaseOut();
 		this.forceUpdate();
 		// });
-	}, 2500);
+	};
 
 	render() {
 		return (<ListView
@@ -70,13 +68,14 @@ export class List extends React.Component {
 			style={styles.list}
 			data={this.data}
 			keyExtractor={item => item._id}
-			onEndReachedThreshold={0.5}
+			onEndReachedThreshold={100}
 			renderFooter={this.props.renderFooter}
 			renderHeader={() => <Typing />}
 			onEndReached={() => this.props.onEndReached(this.data)}
 			dataSource={this.dataSource}
 			renderRow={(item, previousItem) => this.props.renderRow(item, previousItem)}
-			initialListSize={10}
+			initialListSize={20}
+			pageSize={20}
 			{...scrollPersistTaps}
 		/>);
 	}
