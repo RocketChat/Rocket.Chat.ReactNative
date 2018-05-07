@@ -37,7 +37,49 @@ exports[`Storyshots Avatar avatar 1`] = `
       >
         TE
       </Text>
-      
+      <View
+        style={
+          Array [
+            Array [
+              Object {
+                "position": "absolute",
+              },
+              Object {
+                "borderRadius": 2,
+                "height": 25,
+                "width": 25,
+              },
+            ],
+            Object {
+              "overflow": "hidden",
+            },
+          ]
+        }
+      >
+        <FastImageView
+          onFastImageError={undefined}
+          onFastImageLoad={undefined}
+          onFastImageLoadEnd={undefined}
+          onFastImageLoadStart={undefined}
+          onFastImageProgress={undefined}
+          resizeMode="cover"
+          source={
+            Object {
+              "priority": "high",
+              "uri": "/avatar/test",
+            }
+          }
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
     </View>
     <View
       style={
@@ -73,7 +115,49 @@ exports[`Storyshots Avatar avatar 1`] = `
       >
         AA
       </Text>
-      
+      <View
+        style={
+          Array [
+            Array [
+              Object {
+                "position": "absolute",
+              },
+              Object {
+                "borderRadius": 2,
+                "height": 40,
+                "width": 40,
+              },
+            ],
+            Object {
+              "overflow": "hidden",
+            },
+          ]
+        }
+      >
+        <FastImageView
+          onFastImageError={undefined}
+          onFastImageLoad={undefined}
+          onFastImageLoadEnd={undefined}
+          onFastImageLoadStart={undefined}
+          onFastImageProgress={undefined}
+          resizeMode="cover"
+          source={
+            Object {
+              "priority": "high",
+              "uri": "/avatar/aa",
+            }
+          }
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
     </View>
     <View
       style={
@@ -109,7 +193,49 @@ exports[`Storyshots Avatar avatar 1`] = `
       >
         BB
       </Text>
-      
+      <View
+        style={
+          Array [
+            Array [
+              Object {
+                "position": "absolute",
+              },
+              Object {
+                "borderRadius": 2,
+                "height": 30,
+                "width": 30,
+              },
+            ],
+            Object {
+              "overflow": "hidden",
+            },
+          ]
+        }
+      >
+        <FastImageView
+          onFastImageError={undefined}
+          onFastImageLoad={undefined}
+          onFastImageLoadEnd={undefined}
+          onFastImageLoadStart={undefined}
+          onFastImageProgress={undefined}
+          resizeMode="cover"
+          source={
+            Object {
+              "priority": "high",
+              "uri": "/avatar/bb",
+            }
+          }
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
     </View>
     <View
       style={
@@ -145,7 +271,49 @@ exports[`Storyshots Avatar avatar 1`] = `
       >
         TE
       </Text>
-      
+      <View
+        style={
+          Array [
+            Array [
+              Object {
+                "position": "absolute",
+              },
+              Object {
+                "borderRadius": 2,
+                "height": 25,
+                "width": 25,
+              },
+            ],
+            Object {
+              "overflow": "hidden",
+            },
+          ]
+        }
+      >
+        <FastImageView
+          onFastImageError={undefined}
+          onFastImageLoad={undefined}
+          onFastImageLoadEnd={undefined}
+          onFastImageLoadStart={undefined}
+          onFastImageProgress={undefined}
+          resizeMode="cover"
+          source={
+            Object {
+              "priority": "high",
+              "uri": "/avatar/test",
+            }
+          }
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
     </View>
   </View>
 </RCTScrollView>
@@ -223,7 +391,49 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           >
             RC
           </Text>
-          
+          <View
+            style={
+              Array [
+                Array [
+                  Object {
+                    "position": "absolute",
+                  },
+                  Object {
+                    "borderRadius": 2,
+                    "height": 46,
+                    "width": 46,
+                  },
+                ],
+                Object {
+                  "overflow": "hidden",
+                },
+              ]
+            }
+          >
+            <FastImageView
+              onFastImageError={undefined}
+              onFastImageLoad={undefined}
+              onFastImageLoadEnd={undefined}
+              onFastImageLoadStart={undefined}
+              onFastImageProgress={undefined}
+              resizeMode="cover"
+              source={
+                Object {
+                  "priority": "high",
+                  "uri": "/avatar/rocket.cat",
+                }
+              }
+              style={
+                Object {
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+          </View>
           <View
             style={
               Array [
@@ -390,7 +600,49 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           >
             RC
           </Text>
-          
+          <View
+            style={
+              Array [
+                Array [
+                  Object {
+                    "position": "absolute",
+                  },
+                  Object {
+                    "borderRadius": 2,
+                    "height": 46,
+                    "width": 46,
+                  },
+                ],
+                Object {
+                  "overflow": "hidden",
+                },
+              ]
+            }
+          >
+            <FastImageView
+              onFastImageError={undefined}
+              onFastImageLoad={undefined}
+              onFastImageLoadEnd={undefined}
+              onFastImageLoadStart={undefined}
+              onFastImageProgress={undefined}
+              resizeMode="cover"
+              source={
+                Object {
+                  "priority": "high",
+                  "uri": "/avatar/rocket.cat",
+                }
+              }
+              style={
+                Object {
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+          </View>
           <View
             style={
               Array [
@@ -561,7 +813,49 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           >
             RC
           </Text>
-          
+          <View
+            style={
+              Array [
+                Array [
+                  Object {
+                    "position": "absolute",
+                  },
+                  Object {
+                    "borderRadius": 2,
+                    "height": 46,
+                    "width": 46,
+                  },
+                ],
+                Object {
+                  "overflow": "hidden",
+                },
+              ]
+            }
+          >
+            <FastImageView
+              onFastImageError={undefined}
+              onFastImageLoad={undefined}
+              onFastImageLoadEnd={undefined}
+              onFastImageLoadStart={undefined}
+              onFastImageProgress={undefined}
+              resizeMode="cover"
+              source={
+                Object {
+                  "priority": "high",
+                  "uri": "/avatar/rocket.cat",
+                }
+              }
+              style={
+                Object {
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+          </View>
           <View
             style={
               Array [
@@ -751,7 +1045,49 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           >
             LC
           </Text>
-          
+          <View
+            style={
+              Array [
+                Array [
+                  Object {
+                    "position": "absolute",
+                  },
+                  Object {
+                    "borderRadius": 2,
+                    "height": 46,
+                    "width": 46,
+                  },
+                ],
+                Object {
+                  "overflow": "hidden",
+                },
+              ]
+            }
+          >
+            <FastImageView
+              onFastImageError={undefined}
+              onFastImageLoad={undefined}
+              onFastImageLoadEnd={undefined}
+              onFastImageLoadStart={undefined}
+              onFastImageProgress={undefined}
+              resizeMode="cover"
+              source={
+                Object {
+                  "priority": "high",
+                  "uri": "/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+                }
+              }
+              style={
+                Object {
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+          </View>
           <View
             style={
               Array [
@@ -945,7 +1281,49 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           >
             LC
           </Text>
-          
+          <View
+            style={
+              Array [
+                Array [
+                  Object {
+                    "position": "absolute",
+                  },
+                  Object {
+                    "borderRadius": 2,
+                    "height": 46,
+                    "width": 46,
+                  },
+                ],
+                Object {
+                  "overflow": "hidden",
+                },
+              ]
+            }
+          >
+            <FastImageView
+              onFastImageError={undefined}
+              onFastImageLoad={undefined}
+              onFastImageLoadEnd={undefined}
+              onFastImageLoadStart={undefined}
+              onFastImageProgress={undefined}
+              resizeMode="cover"
+              source={
+                Object {
+                  "priority": "high",
+                  "uri": "/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+                }
+              }
+              style={
+                Object {
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+          </View>
           <View
             style={
               Array [
@@ -1135,7 +1513,49 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           >
             LC
           </Text>
-          
+          <View
+            style={
+              Array [
+                Array [
+                  Object {
+                    "position": "absolute",
+                  },
+                  Object {
+                    "borderRadius": 2,
+                    "height": 46,
+                    "width": 46,
+                  },
+                ],
+                Object {
+                  "overflow": "hidden",
+                },
+              ]
+            }
+          >
+            <FastImageView
+              onFastImageError={undefined}
+              onFastImageLoad={undefined}
+              onFastImageLoadEnd={undefined}
+              onFastImageLoadStart={undefined}
+              onFastImageProgress={undefined}
+              resizeMode="cover"
+              source={
+                Object {
+                  "priority": "high",
+                  "uri": "/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+                }
+              }
+              style={
+                Object {
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+          </View>
           <View
             style={
               Array [
@@ -1325,7 +1745,49 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           >
             LC
           </Text>
-          
+          <View
+            style={
+              Array [
+                Array [
+                  Object {
+                    "position": "absolute",
+                  },
+                  Object {
+                    "borderRadius": 2,
+                    "height": 46,
+                    "width": 46,
+                  },
+                ],
+                Object {
+                  "overflow": "hidden",
+                },
+              ]
+            }
+          >
+            <FastImageView
+              onFastImageError={undefined}
+              onFastImageLoad={undefined}
+              onFastImageLoadEnd={undefined}
+              onFastImageLoadStart={undefined}
+              onFastImageProgress={undefined}
+              resizeMode="cover"
+              source={
+                Object {
+                  "priority": "high",
+                  "uri": "/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+                }
+              }
+              style={
+                Object {
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+          </View>
           <View
             style={
               Array [
@@ -1515,7 +1977,49 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           >
             LC
           </Text>
-          
+          <View
+            style={
+              Array [
+                Array [
+                  Object {
+                    "position": "absolute",
+                  },
+                  Object {
+                    "borderRadius": 2,
+                    "height": 46,
+                    "width": 46,
+                  },
+                ],
+                Object {
+                  "overflow": "hidden",
+                },
+              ]
+            }
+          >
+            <FastImageView
+              onFastImageError={undefined}
+              onFastImageLoad={undefined}
+              onFastImageLoadEnd={undefined}
+              onFastImageLoadStart={undefined}
+              onFastImageProgress={undefined}
+              resizeMode="cover"
+              source={
+                Object {
+                  "priority": "high",
+                  "uri": "/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+                }
+              }
+              style={
+                Object {
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+          </View>
           <View
             style={
               Array [
@@ -1705,7 +2209,49 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           >
             W
           </Text>
-          
+          <View
+            style={
+              Array [
+                Array [
+                  Object {
+                    "position": "absolute",
+                  },
+                  Object {
+                    "borderRadius": 2,
+                    "height": 46,
+                    "width": 46,
+                  },
+                ],
+                Object {
+                  "overflow": "hidden",
+                },
+              ]
+            }
+          >
+            <FastImageView
+              onFastImageError={undefined}
+              onFastImageLoad={undefined}
+              onFastImageLoadEnd={undefined}
+              onFastImageLoadStart={undefined}
+              onFastImageProgress={undefined}
+              resizeMode="cover"
+              source={
+                Object {
+                  "priority": "high",
+                  "uri": "/avatar/W",
+                }
+              }
+              style={
+                Object {
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+          </View>
           <View
             style={
               Array [
@@ -1872,7 +2418,49 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           >
             WW
           </Text>
-          
+          <View
+            style={
+              Array [
+                Array [
+                  Object {
+                    "position": "absolute",
+                  },
+                  Object {
+                    "borderRadius": 2,
+                    "height": 46,
+                    "width": 46,
+                  },
+                ],
+                Object {
+                  "overflow": "hidden",
+                },
+              ]
+            }
+          >
+            <FastImageView
+              onFastImageError={undefined}
+              onFastImageLoad={undefined}
+              onFastImageLoadEnd={undefined}
+              onFastImageLoadStart={undefined}
+              onFastImageProgress={undefined}
+              resizeMode="cover"
+              source={
+                Object {
+                  "priority": "high",
+                  "uri": "/avatar/WW",
+                }
+              }
+              style={
+                Object {
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+          </View>
           <View
             style={
               Array [
@@ -2039,7 +2627,49 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           >
             
           </Text>
-          
+          <View
+            style={
+              Array [
+                Array [
+                  Object {
+                    "position": "absolute",
+                  },
+                  Object {
+                    "borderRadius": 2,
+                    "height": 46,
+                    "width": 46,
+                  },
+                ],
+                Object {
+                  "overflow": "hidden",
+                },
+              ]
+            }
+          >
+            <FastImageView
+              onFastImageError={undefined}
+              onFastImageLoad={undefined}
+              onFastImageLoadEnd={undefined}
+              onFastImageLoadStart={undefined}
+              onFastImageProgress={undefined}
+              resizeMode="cover"
+              source={
+                Object {
+                  "priority": "high",
+                  "uri": "/avatar/",
+                }
+              }
+              style={
+                Object {
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+          </View>
           <View
             style={
               Array [

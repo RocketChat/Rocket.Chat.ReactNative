@@ -19,6 +19,7 @@ import com.remobile.toast.RCTToastPackage;
 import com.wix.reactnativekeyboardinput.KeyboardInputPackage;
 import com.rnim.rn.audio.ReactNativeAudioPackage;
 import com.smixx.fabric.FabricPackage;
+import com.dylanvann.fastimage.FastImageViewPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -49,7 +50,8 @@ public class MainApplication extends Application implements ReactApplication {
         new ReactNativeAudioPackage(),
         new KeyboardInputPackage(MainApplication.this),
         new RocketChatNativePackage(),
-        new FabricPackage()
+        new FabricPackage(),
+        new FastImageViewPackage()
       );
     }
   };

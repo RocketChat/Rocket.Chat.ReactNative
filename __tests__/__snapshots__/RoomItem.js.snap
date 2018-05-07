@@ -546,7 +546,49 @@ exports[`render unread +999 1`] = `
         >
           NA
         </Text>
-        
+        <View
+          style={
+            Array [
+              Array [
+                Object {
+                  "position": "absolute",
+                },
+                Object {
+                  "borderRadius": 2,
+                  "height": 46,
+                  "width": 46,
+                },
+              ],
+              Object {
+                "overflow": "hidden",
+              },
+            ]
+          }
+        >
+          <FastImageView
+            onFastImageError={undefined}
+            onFastImageLoad={undefined}
+            onFastImageLoadEnd={undefined}
+            onFastImageLoadStart={undefined}
+            onFastImageProgress={undefined}
+            resizeMode="cover"
+            source={
+              Object {
+                "priority": "high",
+                "uri": "/avatar/name",
+              }
+            }
+            style={
+              Object {
+                "bottom": 0,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              }
+            }
+          />
+        </View>
         <View
           style={
             Array [
@@ -741,7 +783,49 @@ exports[`render unread 1`] = `
         >
           NA
         </Text>
-        
+        <View
+          style={
+            Array [
+              Array [
+                Object {
+                  "position": "absolute",
+                },
+                Object {
+                  "borderRadius": 2,
+                  "height": 46,
+                  "width": 46,
+                },
+              ],
+              Object {
+                "overflow": "hidden",
+              },
+            ]
+          }
+        >
+          <FastImageView
+            onFastImageError={undefined}
+            onFastImageLoad={undefined}
+            onFastImageLoadEnd={undefined}
+            onFastImageLoadStart={undefined}
+            onFastImageProgress={undefined}
+            resizeMode="cover"
+            source={
+              Object {
+                "priority": "high",
+                "uri": "/avatar/name",
+              }
+            }
+            style={
+              Object {
+                "bottom": 0,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              }
+            }
+          />
+        </View>
         <View
           style={
             Array [
@@ -936,7 +1020,49 @@ exports[`renders correctly 1`] = `
         >
           NA
         </Text>
-        
+        <View
+          style={
+            Array [
+              Array [
+                Object {
+                  "position": "absolute",
+                },
+                Object {
+                  "borderRadius": 2,
+                  "height": 46,
+                  "width": 46,
+                },
+              ],
+              Object {
+                "overflow": "hidden",
+              },
+            ]
+          }
+        >
+          <FastImageView
+            onFastImageError={undefined}
+            onFastImageLoad={undefined}
+            onFastImageLoadEnd={undefined}
+            onFastImageLoadStart={undefined}
+            onFastImageProgress={undefined}
+            resizeMode="cover"
+            source={
+              Object {
+                "priority": "high",
+                "uri": "/avatar/name",
+              }
+            }
+            style={
+              Object {
+                "bottom": 0,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              }
+            }
+          />
+        </View>
         <View
           style={
             Array [

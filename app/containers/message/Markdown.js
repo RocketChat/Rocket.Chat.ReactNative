@@ -94,6 +94,13 @@ const defaultRules = {
 
 const codeStyle = StyleSheet.flatten(styles.codeStyle);
 
+// Support <http://link|Text>
+const formatText = text =>
+	text.replace(
+		new RegExp('(?:<|<)((?:https|http):\\/\\/[^\\|]+)\\|(.+?)(?=>|>)(?:>|>)', 'gm'),
+		(match, url, title) => `[${ title }](${ url })`
+	);
+
 @connect(state => ({
 	customEmojis: state.customEmojis
 }))
@@ -108,7 +115,8 @@ export default class Markdown extends React.Component {
 		if (!msg) {
 			return null;
 		}
-		const m = emojify(msg, { output: 'unicode' });
+		let m = formatText(msg);
+		m = emojify(m, { output: 'unicode' });
 
 		const s = StyleSheet.flatten(style);
 		return (
