@@ -115,6 +115,7 @@ export default class MessageBox extends React.PureComponent {
 				accessibilityLabel='Cancel editing'
 				accessibilityTraits='button'
 				onPress={() => this.editCancel()}
+				testID='messagebox-cancel-editing'
 			/>);
 		}
 		return !this.state.showEmojiKeyboard ? (<Icon
@@ -123,12 +124,14 @@ export default class MessageBox extends React.PureComponent {
 			accessibilityLabel='Open emoji selector'
 			accessibilityTraits='button'
 			name='mood'
+			testID='messagebox-open-emoji'
 		/>) : (<Icon
 			onPress={() => this.closeEmoji()}
 			style={styles.actionButtons}
 			accessibilityLabel='Close emoji selector'
 			accessibilityTraits='button'
 			name='keyboard'
+			testID='messagebox-close-emoji'
 		/>);
 	}
 	get rightButtons() {
@@ -142,6 +145,7 @@ export default class MessageBox extends React.PureComponent {
 				accessibilityLabel='Send message'
 				accessibilityTraits='button'
 				onPress={() => this.submit(this.state.text)}
+				testID='messagebox-send-message'
 			/>);
 			return icons;
 		}
@@ -152,6 +156,7 @@ export default class MessageBox extends React.PureComponent {
 			accessibilityLabel='Send audio message'
 			accessibilityTraits='button'
 			onPress={() => this.recordAudioMessage()}
+			testID='messagebox-send-audio'
 		/>);
 		icons.push(<MyIcon
 			style={[styles.actionButtons, { color: '#2F343D', fontSize: 16 }]}
@@ -160,6 +165,7 @@ export default class MessageBox extends React.PureComponent {
 			accessibilityLabel='Message actions'
 			accessibilityTraits='button'
 			onPress={() => this.addFile()}
+			testID='messagebox-actions'
 		/>);
 		return icons;
 	}
@@ -443,6 +449,7 @@ export default class MessageBox extends React.PureComponent {
 			<TouchableOpacity
 				style={styles.mentionItem}
 				onPress={() => this._onPressMention(item)}
+				testID={`mention-item-${ this.state.trackingType === MENTIONS_TRACKING_TYPE_EMOJIS ? item.name || item : item.username || item.name }`}
 			>
 				{this.state.trackingType === MENTIONS_TRACKING_TYPE_EMOJIS ?
 					[
@@ -462,16 +469,23 @@ export default class MessageBox extends React.PureComponent {
 			</TouchableOpacity>
 		);
 	}
-	renderMentions = () => (
-		<FlatList
-			key='messagebox-container'
-			style={styles.mentionList}
-			data={this.state.mentions}
-			renderItem={({ item }) => this.renderMentionItem(item)}
-			keyExtractor={item => item._id || item}
-			keyboardShouldPersistTaps='always'
-		/>
-	);
+	renderMentions = () => {
+		const { mentions } = this.state;
+		if (!mentions.length) {
+			return null;
+		}
+		return (
+			<View key='messagebox-container' testID='messagebox-container'>
+				<FlatList
+					style={styles.mentionList}
+					data={this.state.mentions}
+					renderItem={({ item }) => this.renderMentionItem(item)}
+					keyExtractor={item => item._id || item}
+					keyboardShouldPersistTaps='always'
+				/>
+			</View>
+		);
+	};
 
 	renderContent() {
 		if (this.state.recording) {
@@ -480,7 +494,11 @@ export default class MessageBox extends React.PureComponent {
 		return (
 			[
 				this.renderMentions(),
-				<View key='messagebox' style={[styles.textArea, this.props.editing && styles.editing]}>
+				<View
+					key='messagebox'
+					style={[styles.textArea, this.props.editing && styles.editing]}
+					testID='messagebox'
+				>
 					{this.leftButtons}
 					<TextInput
 						ref={component => this.component = component}
@@ -495,6 +513,7 @@ export default class MessageBox extends React.PureComponent {
 						defaultValue=''
 						multiline
 						placeholderTextColor='#9EA2A8'
+						testID='messagebox-input'
 					/>
 					{this.rightButtons}
 				</View>

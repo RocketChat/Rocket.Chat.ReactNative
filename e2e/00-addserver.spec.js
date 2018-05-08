@@ -10,7 +10,7 @@ describe('Add server', () => {
 	});
 
 	describe('Render', async() => {
-		it('should have an add server screen', async() => {
+		it('should have add server screen', async() => {
 			await expect(element(by.id('new-server-view'))).toBeVisible();
 		});
 	

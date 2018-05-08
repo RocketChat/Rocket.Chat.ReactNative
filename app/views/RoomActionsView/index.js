@@ -338,14 +338,16 @@ export default class RoomActionsView extends LoggedView {
 
 	render() {
 		return (
-			<SectionList
-				style={styles.container}
-				stickySectionHeadersEnabled={false}
-				sections={this.sections}
-				SectionSeparatorComponent={this.renderSectionSeparator}
-				ItemSeparatorComponent={renderSeparator}
-				keyExtractor={item => item.name}
-			/>
+			<View testID='room-actions-view'>
+				<SectionList
+					style={styles.container}
+					stickySectionHeadersEnabled={false}
+					sections={this.sections}
+					SectionSeparatorComponent={this.renderSectionSeparator}
+					ItemSeparatorComponent={renderSeparator}
+					keyExtractor={item => item.name}
+				/>
+			</View>
 		);
 	}
 }

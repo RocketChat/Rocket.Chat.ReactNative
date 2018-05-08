@@ -48,7 +48,10 @@ export default class ReactionPicker extends React.Component {
 				animationIn='fadeIn'
 				animationOut='fadeOut'
 			>
-				<View style={[styles.reactionPickerContainer, { width: width - margin, height: Math.min(width, height) - (margin * 2) }]}>
+				<View
+					style={[styles.reactionPickerContainer, { width: width - margin, height: Math.min(width, height) - (margin * 2) }]}
+					testID='reaction-picker'
+				>
 					<EmojiPicker
 						tabEmojiStyle={tabEmojiStyle}
 						width={Math.min(width, height) - margin}

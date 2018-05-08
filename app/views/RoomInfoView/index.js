@@ -169,7 +169,7 @@ export default class RoomInfoView extends LoggedView {
 		const { name, t } = room;
 		return (
 			<ScrollView style={styles.container}>
-				<View style={styles.avatarContainer}>
+				<View style={styles.avatarContainer} testID='room-info-view'>
 					<Avatar
 						text={name}
 						size={100}

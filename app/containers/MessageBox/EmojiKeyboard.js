@@ -13,7 +13,7 @@ export default class EmojiKeyboard extends React.PureComponent {
 	render() {
 		return (
 			<Provider store={store}>
-				<View style={styles.emojiKeyboardContainer}>
+				<View style={styles.emojiKeyboardContainer} testID='messagebox-keyboard-emoji'>
 					<EmojiPicker onEmojiSelected={emoji => this.onEmojiSelected(emoji)} />
 				</View>
 			</Provider>

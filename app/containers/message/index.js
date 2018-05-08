@@ -270,6 +270,7 @@ export default class Message extends React.Component {
 				onPress={() => this.onReactionPress(reaction.emoji)}
 				onLongPress={() => this.onReactionLongPress()}
 				key={reaction.emoji}
+				testID={`message-reaction-${ reaction.emoji }`}
 			>
 				<View style={[styles.reactionContainer, reactedContainerStyle]}>
 					<Emoji
@@ -292,7 +293,8 @@ export default class Message extends React.Component {
 				{this.props.item.reactions.map(this.renderReaction)}
 				<TouchableOpacity
 					onPress={() => this.props.toggleReactionPicker(this.parseMessage())}
-					key='add-reaction'
+					key='message-add-reaction'
+					testID='message-add-reaction'
 					style={styles.reactionContainer}
 				>
 					<Icon name='insert-emoticon' color='#aaaaaa' size={15} />

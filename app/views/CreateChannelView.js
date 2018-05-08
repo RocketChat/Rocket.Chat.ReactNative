@@ -62,7 +62,7 @@ export default class CreateChannelView extends LoggedView {
 		}
 
 		return (
-			<Text style={[styles.label_white, styles.label_error]}>
+			<Text style={[styles.label_white, styles.label_error]} testID='create-channel-error'>
 				{this.props.createChannel.error.reason}
 			</Text>
 		);
@@ -75,6 +75,7 @@ export default class CreateChannelView extends LoggedView {
 					style={[{ flexGrow: 0, flexShrink: 1 }]}
 					value={this.state.type}
 					onValueChange={type => this.setState({ type })}
+					testID='create-channel-type'
 				/>
 				<Text style={[styles.label_white, styles.switchLabel]}>
 					{this.state.type ? 'Public' : 'Private'}
@@ -90,7 +91,7 @@ export default class CreateChannelView extends LoggedView {
 				keyboardVerticalOffset={128}
 			>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
-					<SafeAreaView>
+					<SafeAreaView testID='create-channel-view'>
 						<RCTextInput
 							label='Channel Name'
 							value={this.state.channelName}
@@ -98,6 +99,7 @@ export default class CreateChannelView extends LoggedView {
 							placeholder='Type the channel name here'
 							returnKeyType='done'
 							autoFocus
+							testID='create-channel-name'
 						/>
 						{this.renderChannelNameError()}
 						{this.renderTypeSwitch()}
@@ -126,6 +128,7 @@ export default class CreateChannelView extends LoggedView {
 									? styles.disabledButton
 									: styles.enabledButton
 							]}
+							testID='create-channel-submit'
 						>
 							<Text style={styles.button_white}>CREATE</Text>
 						</TouchableOpacity>

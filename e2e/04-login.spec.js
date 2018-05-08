@@ -9,13 +9,10 @@ describe('Login screen', () => {
 	before(async() => {
 		await device.launchApp({ delete: true, permissions: { notifications: 'YES' } });
 		await addServer();
+		await navigateToLogin();
 	});
 
 	describe('Render', () => {
-		before(async() => {
-			await navigateToLogin()
-		})
-
 		it('should have login screen', async() => {
 			await expect(element(by.id('login-view'))).toBeVisible();
 		});

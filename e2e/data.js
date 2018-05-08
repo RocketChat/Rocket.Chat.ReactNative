@@ -1,9 +1,10 @@
-const random = new Date().getTime();
+const random = require('./helpers/random');
+const value = random(15);
 const data = {
     server: 'open',
-    user: `user-${ random }`,
-    password: `password-${ random }`,
-    email: `diegolmello+${ random }@gmail.com`,
-
+    user: `user-${ value }`,
+    password: `password-${ value }`,
+    email: `diegolmello+${ value }@gmail.com`,
+    random: value
 }
 module.exports = data;

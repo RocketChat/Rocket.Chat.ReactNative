@@ -9,13 +9,10 @@ describe('Create user screen', () => {
 	before(async() => {
 		await device.launchApp({ delete: true, permissions: { notifications: 'YES' } });
 		await addServer();
+		await navigateToRegister();
 	});
 
 	describe('Render', () => {
-		before(async() => {
-			await navigateToRegister();
-		});
-
 		it('should have create user screen', async() => {
 			await expect(element(by.id('register-view'))).toBeVisible();
 		});

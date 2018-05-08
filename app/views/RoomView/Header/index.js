@@ -126,6 +126,7 @@ export default class RoomHeaderView extends React.PureComponent {
 				accessibilityLabel={accessibilityLabel}
 				accessibilityTraits='header'
 				onPress={() => this.props.navigation.navigate({ key: 'RoomInfo', routeName: 'RoomInfo', params: { rid: this.rid } })}
+				testID='room-view-header-title'
 			>
 
 				<Avatar
@@ -140,7 +141,7 @@ export default class RoomHeaderView extends React.PureComponent {
 					}
 				</Avatar>
 				<View style={styles.titleTextContainer}>
-					<Text style={styles.title} allowFontScaling={false}>{this.state.roomName}</Text>
+					<Text style={styles.title} allowFontScaling={false} testID='room-view-title'>{this.state.roomName}</Text>
 
 					{ t && <Text style={styles.userStatus} allowFontScaling={false} numberOfLines={1}>{t}</Text>}
 
@@ -156,6 +157,7 @@ export default class RoomHeaderView extends React.PureComponent {
 				onPress={() => RocketChat.toggleFavorite(this.state.room.rid, this.state.room.f)}
 				accessibilityLabel='Star room'
 				accessibilityTraits='button'
+				testID='room-view-header-star'
 			>
 				<Icon
 					name={`${ Platform.OS === 'ios' ? 'ios' : 'md' }-star${ this.state.room.f ? '' : '-outline' }`}
@@ -169,6 +171,7 @@ export default class RoomHeaderView extends React.PureComponent {
 				onPress={() => this.props.navigation.navigate({ key: 'RoomActions', routeName: 'RoomActions', params: { rid: this.state.room.rid } })}
 				accessibilityLabel='Room actions'
 				accessibilityTraits='button'
+				testID='room-view-header-actions'
 			>
 				<Icon
 					name={Platform.OS === 'ios' ? 'ios-more' : 'md-more'}
@@ -182,7 +185,7 @@ export default class RoomHeaderView extends React.PureComponent {
 
 	render() {
 		return (
-			<View style={styles.header}>
+			<View style={styles.header} testID='room-view-header'>
 				{this.renderLeft()}
 				{this.renderCenter()}
 				{this.renderRight()}

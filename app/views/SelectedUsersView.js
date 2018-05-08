@@ -102,6 +102,7 @@ export default class SelectedUsersView extends React.Component {
 						onPress={() => params.nextAction()}
 						accessibilityLabel='Create channel'
 						accessibilityTraits='button'
+						testID='selected-users-view-create-channel'
 					>
 						<Icon
 							name='ios-add'
@@ -228,6 +229,7 @@ export default class SelectedUsersView extends React.Component {
 				placeholder='Search'
 				clearButtonMode='while-editing'
 				blurOnSubmit
+				testID='select-users-view-search'
 			/>
 		</View>
 	);
@@ -252,6 +254,7 @@ export default class SelectedUsersView extends React.Component {
 			key={item._id}
 			style={styles.selectItemView}
 			onPress={() => this._onPressSelectedItem(item)}
+			testID={`selected-user-${ item.name }`}
 		>
 			<Avatar text={item.name} size={40} />
 			<Text ellipsizeMode='tail' numberOfLines={1} style={{ fontSize: 10 }}>
@@ -270,6 +273,7 @@ export default class SelectedUsersView extends React.Component {
 			showLastMessage={false}
 			avatarSize={30}
 			statusStyle={styles.status}
+			testID={`select-users-view-item-${ item.name }`}
 		/>
 	);
 	renderList = () => (

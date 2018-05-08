@@ -30,12 +30,18 @@ async function login() {
     await element(by.id('login-view-password')).replaceText(data.password);
     await element(by.id('login-view-submit')).tap();
     await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
-    await expect(element(by.id('rooms-list-view'))).toBeVisible();
+}
+
+async function navigateToRoom(room) {
+    await waitFor(element(by.id(`rooms-list-view-item-private${ data.random }`))).toBeVisible().withTimeout(2000);
+    await element(by.id(`rooms-list-view-item-private${ data.random }`)).tap();
+    await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(2000);
 }
 
 module.exports = {
     addServer,
     navigateToLogin,
     navigateToRegister,
-    login
+    login,
+    navigateToRoom
 };

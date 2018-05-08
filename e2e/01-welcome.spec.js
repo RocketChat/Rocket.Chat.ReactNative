@@ -10,6 +10,10 @@ describe('Welcome screen', () => {
 	});
 
 	describe('Render', async() => {
+		it('should have welcome screen', async() => {
+			await expect(element(by.id('welcome-view'))).toBeVisible();
+		});
+
 		it('should have register button', async() => {
 			await expect(element(by.id('welcome-view-register'))).toBeVisible();
 		});
