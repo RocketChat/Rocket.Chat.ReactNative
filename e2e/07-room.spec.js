@@ -2,7 +2,7 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
-const { login, navigateToRoom } = require('./helpers/app');
+const { login } = require('./helpers/app');
 const data = require('./data');
 
 async function mockMessage(message) {
@@ -12,9 +12,15 @@ async function mockMessage(message) {
 	await waitFor(element(by.text(`${ data.random }${ message }`))).toBeVisible().withTimeout(2000);
 };
 
+async function navigateToRoom() {
+    await waitFor(element(by.id(`rooms-list-view-item-private${ data.random }`))).toBeVisible().withTimeout(2000);
+    await element(by.id(`rooms-list-view-item-private${ data.random }`)).tap();
+    await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(2000);
+}
+
 describe('Room screen', () => {
 	before(async() => {
-		await device.launchApp({ delete: true, permissions: { notifications: 'YES' } });
+		// await device.launchApp({ delete: true, permissions: { notifications: 'YES' } });
 		await login();
         await navigateToRoom();
 	});
@@ -148,8 +154,7 @@ describe('Room screen', () => {
 	
 			it('should show and tap on user autocomplete', async() => {
 				await element(by.id('messagebox-input')).tap();
-				await element(by.id('messagebox-input')).replaceText('@');
-				await element(by.id('messagebox-input')).typeText('rocket');
+				await element(by.id('messagebox-input')).typeText('@rocket');
 				await waitFor(element(by.id('messagebox-container'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('messagebox-container'))).toBeVisible();
 				await element(by.id('mention-item-rocket.cat')).tap();
@@ -158,8 +163,7 @@ describe('Room screen', () => {
 	
 			it('should show and tap on room autocomplete', async() => {
 				await element(by.id('messagebox-input')).tap();
-				await element(by.id('messagebox-input')).replaceText('#');
-				await element(by.id('messagebox-input')).typeText('gener');
+				await element(by.id('messagebox-input')).typeText('#gener');
 				await waitFor(element(by.id('messagebox-container'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('messagebox-container'))).toBeVisible();
 				await element(by.id('mention-item-general')).tap();

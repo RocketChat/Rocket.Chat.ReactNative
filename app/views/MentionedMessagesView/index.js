@@ -73,7 +73,7 @@ export default class MentionedMessagesView extends LoggedView {
 	}
 
 	renderEmpty = () => (
-		<View style={styles.listEmptyContainer}>
+		<View style={styles.listEmptyContainer} testID='mentioned-messages-view'>
 			<Text>No mentioned messages</Text>
 		</View>
 	)
@@ -99,16 +99,19 @@ export default class MentionedMessagesView extends LoggedView {
 		}
 
 		return (
-			<FlatList
-				key='mentioned-messages-view-list'
-				data={messages}
-				renderItem={this.renderItem}
-				style={styles.list}
-				keyExtractor={item => item._id}
-				onEndReached={this.moreData}
-				ListHeaderComponent={loading && <RCActivityIndicator />}
-				ListFooterComponent={loadingMore && <RCActivityIndicator />}
-			/>
+			[
+				<FlatList
+					key='mentioned-messages-view-list'
+					testID='mentioned-messages-view'
+					data={messages}
+					renderItem={this.renderItem}
+					style={styles.list}
+					keyExtractor={item => item._id}
+					onEndReached={this.moreData}
+					ListHeaderComponent={loading && <RCActivityIndicator />}
+					ListFooterComponent={loadingMore && <RCActivityIndicator />}
+				/>
+			]
 		);
 	}
 }

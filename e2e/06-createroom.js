@@ -17,7 +17,7 @@ async function navigateToCreateChannel() {
 
 describe('Create room screen', () => {
 	before(async() => {
-        await device.launchApp({ delete: true, permissions: { notifications: 'YES' } });
+        // await device.launchApp({ delete: true, permissions: { notifications: 'YES' } });
         await login();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 		await element(by.id('rooms-list-view-create-channel')).tap();

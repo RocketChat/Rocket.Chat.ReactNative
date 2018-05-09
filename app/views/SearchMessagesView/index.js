@@ -104,6 +104,7 @@ export default class SearchMessagesView extends LoggedView {
 		return (
 			<View
 				style={styles.container}
+				testID='search-messages-view'
 			>
 				<View style={styles.searchContainer}>
 					<RCTextInput

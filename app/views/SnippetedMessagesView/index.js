@@ -73,7 +73,7 @@ export default class SnippetedMessagesView extends LoggedView {
 	}
 
 	renderEmpty = () => (
-		<View style={styles.listEmptyContainer}>
+		<View style={styles.listEmptyContainer} testID='snippeted-messages-view'>
 			<Text>No snippeted messages</Text>
 		</View>
 	)
@@ -99,16 +99,19 @@ export default class SnippetedMessagesView extends LoggedView {
 		}
 
 		return (
-			<FlatList
-				key='snippet-messages-view-list'
-				data={messages}
-				renderItem={this.renderItem}
-				style={styles.list}
-				keyExtractor={item => item._id}
-				onEndReached={this.moreData}
-				ListHeaderComponent={loading && <RCActivityIndicator />}
-				ListFooterComponent={loadingMore && <RCActivityIndicator />}
-			/>
+			[
+				<FlatList
+					key='snippeted-messages-view-list'
+					testID='snippeted-messages-view'
+					data={messages}
+					renderItem={this.renderItem}
+					style={styles.list}
+					keyExtractor={item => item._id}
+					onEndReached={this.moreData}
+					ListHeaderComponent={loading && <RCActivityIndicator />}
+					ListFooterComponent={loadingMore && <RCActivityIndicator />}
+				/>
+			]
 		);
 	}
 }

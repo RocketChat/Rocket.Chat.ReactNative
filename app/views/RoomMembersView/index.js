@@ -184,6 +184,7 @@ export default class MentionedMessagesView extends LoggedView {
 			[
 				<FlatList
 					key='room-members-view-list'
+					testID='room-members-view'
 					data={filtering ? membersFiltered : members}
 					renderItem={this.renderItem}
 					style={styles.list}

@@ -132,13 +132,24 @@ export default class RoomActionsView extends LoggedView {
 				icon: 'ios-star',
 				name: 'USER',
 				route: 'RoomInfo',
-				params: { rid }
+				params: { rid },
+				testID: 'room-actions-info'
 			}],
 			renderItem: this.renderRoomInfo
 		}, {
 			data: [
-				{ icon: 'ios-call-outline', name: 'Voice call', disabled: true },
-				{ icon: 'ios-videocam-outline', name: 'Video call', disabled: true }
+				{
+					icon: 'ios-call-outline',
+					name: 'Voice call',
+					disabled: true,
+					testID: 'room-actions-voice'
+				},
+				{
+					icon: 'ios-videocam-outline',
+					name: 'Video call',
+					disabled: true,
+					testID: 'room-actions-video'
+				}
 			],
 			renderItem: this.renderItem
 		}, {
@@ -147,43 +158,55 @@ export default class RoomActionsView extends LoggedView {
 					icon: 'ios-attach',
 					name: 'Files',
 					route: 'RoomFiles',
-					params: { rid }
+					params: { rid },
+					testID: 'room-actions-files'
 				},
 				{
 					icon: 'ios-at-outline',
 					name: 'Mentions',
 					route: 'MentionedMessages',
-					params: { rid }
+					params: { rid },
+					testID: 'room-actions-mentioned'
 				},
 				{
 					icon: 'ios-star-outline',
 					name: 'Starred',
 					route: 'StarredMessages',
-					params: { rid }
+					params: { rid },
+					testID: 'room-actions-starred'
 				},
 				{
 					icon: 'ios-search',
 					name: 'Search',
 					route: 'SearchMessages',
-					params: { rid }
+					params: { rid },
+					testID: 'room-actions-search'
 				},
-				{ icon: 'ios-share-outline', name: 'Share', disabled: true },
+				{
+					icon: 'ios-share-outline',
+					name: 'Share',
+					disabled: true,
+					testID: 'room-actions-share'
+				},
 				{
 					icon: 'ios-pin',
 					name: 'Pinned',
 					route: 'PinnedMessages',
-					params: { rid }
+					params: { rid },
+					testID: 'room-actions-pinned'
 				},
 				{
 					icon: 'ios-code',
 					name: 'Snippets',
 					route: 'SnippetedMessages',
-					params: { rid }
+					params: { rid },
+					testID: 'room-actions-snippeted'
 				},
 				{
 					icon: `ios-notifications${ notifications ? '' : '-off' }-outline`,
 					name: `${ notifications ? 'Enable' : 'Disable' } notifications`,
-					event: () => this.toggleNotifications()
+					event: () => this.toggleNotifications(),
+					testID: 'room-actions-notifications'
 				}
 			],
 			renderItem: this.renderItem
@@ -196,7 +219,8 @@ export default class RoomActionsView extends LoggedView {
 						icon: 'block',
 						name: `${ blocked ? 'Unblock' : 'Block' } user`,
 						type: 'danger',
-						event: () => this.toggleBlockUser()
+						event: () => this.toggleBlockUser(),
+						testID: 'room-actions-block-user'
 					}
 				],
 				renderItem: this.renderItem
@@ -207,7 +231,8 @@ export default class RoomActionsView extends LoggedView {
 				name: 'Members',
 				description: (onlineMembers.length === 1 ? `${ onlineMembers.length } member` : `${ onlineMembers.length } members`),
 				route: 'RoomMembers',
-				params: { rid, members: onlineMembers }
+				params: { rid, members: onlineMembers },
+				testID: 'room-actions-members'
 			}];
 
 			if (this.canAddUser) {
@@ -227,7 +252,8 @@ export default class RoomActionsView extends LoggedView {
 								this.props.setLoadingInvite(false);
 							}
 						}
-					}
+					},
+					testID: 'room-actions-add-user'
 				});
 			}
 			sections[2].data = [...actions, ...sections[2].data];
@@ -237,7 +263,8 @@ export default class RoomActionsView extends LoggedView {
 						icon: 'block',
 						name: 'Leave channel',
 						type: 'danger',
-						event: () => this.leaveChannel()
+						event: () => this.leaveChannel(),
+						testID: 'room-actions-leave-channel'
 					}
 				],
 				renderItem: this.renderItem
@@ -306,6 +333,7 @@ export default class RoomActionsView extends LoggedView {
 			activeOpacity={0.5}
 			accessibilityLabel={item.name}
 			accessibilityTraits='button'
+			testID={item.testID}
 		>
 			<View style={[styles.sectionItem, item.disabled && styles.sectionItemDisabled]}>
 				{subview}
@@ -346,6 +374,7 @@ export default class RoomActionsView extends LoggedView {
 					SectionSeparatorComponent={this.renderSectionSeparator}
 					ItemSeparatorComponent={renderSeparator}
 					keyExtractor={item => item.name}
+					testID='room-actions-list'
 				/>
 			</View>
 		);

@@ -7,7 +7,7 @@ const data = require('./data');
 
 describe('Rooms list screen', () => {
 	before(async() => {
-        await device.launchApp({ delete: true, permissions: { notifications: 'YES' } });
+        // await device.launchApp({ delete: true, permissions: { notifications: 'YES' } });
         await login();
         await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 	});
@@ -54,12 +54,6 @@ describe('Rooms list screen', () => {
 			await device.reloadReactNative();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 		});
-
-		// it('should navigate to room', async() => {
-		// 	await element(by.id(`rooms-list-view-item-${ data.room }`)).tap();
-		// 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(2000);
-		// 	await expect(element(by.id('room-view'))).toBeVisible();
-		// });
 
 		// Usage - Header
 		describe('Header', async() => {
