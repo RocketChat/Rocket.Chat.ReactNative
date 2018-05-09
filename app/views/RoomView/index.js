@@ -65,22 +65,17 @@ export default class RoomView extends LoggedView {
 		this.rid =
 			props.rid ||
 			props.navigation.state.params.room.rid;
-		this.name = props.name ||
-			props.navigation.state.params.name ||
-			props.navigation.state.params.room.name;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			loaded: true,
 			joined: typeof props.rid === 'undefined',
-			room: JSON.parse(JSON.stringify(this.rooms[0]))
+			room: {}
 		};
 		this.onReactionPress = this.onReactionPress.bind(this);
 	}
 
 	async componentDidMount() {
-		this.props.navigation.setParams({
-			title: this.name
-		});
+		await this.updateRoom();
 		await this.props.openRoom({
 			...this.state.room
 		});
@@ -89,7 +84,6 @@ export default class RoomView extends LoggedView {
 		} else {
 			this.props.setLastOpen(null);
 		}
-
 		this.rooms.addListener(this.updateRoom);
 	}
 	shouldComponentUpdate(nextProps, nextState) {
@@ -129,8 +123,10 @@ export default class RoomView extends LoggedView {
 		RocketChat.setReaction(shortname, messageId);
 	};
 
-	updateRoom = () => {
-		this.setState({ room: JSON.parse(JSON.stringify(this.rooms[0])) });
+	updateRoom = async() => {
+		if (this.rooms.length > 0) {
+			await this.setState({ room: JSON.parse(JSON.stringify(this.rooms[0])) });
+		}
 	}
 
 	sendMessage = (message) => {

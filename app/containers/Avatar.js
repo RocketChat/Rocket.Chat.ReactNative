@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { StyleSheet, Text, View, ViewPropTypes } from 'react-native';
-import { CachedImage } from 'react-native-img-cache';
+import FastImage from 'react-native-fast-image';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import avatarInitialsAndColor from '../utils/avatarInitialsAndColor';
 
@@ -34,6 +34,7 @@ export default class Avatar extends React.PureComponent {
 		type: PropTypes.string,
 		children: PropTypes.object
 	};
+	state = { showInitials: true };
 	render() {
 		const {
 			text = '', size = 25, baseUrl, borderRadius = 2, style, avatar, type = 'd'
@@ -59,15 +60,25 @@ export default class Avatar extends React.PureComponent {
 
 		if (type === 'd') {
 			const uri = avatar || `${ baseUrl }/avatar/${ text }`;
-			const image = (avatar || baseUrl) && (
-				<CachedImage
+			const image = uri && (
+				<FastImage
 					style={[styles.avatar, avatarStyle]}
-					source={{ uri }}
+					source={{
+						uri,
+						priority: FastImage.priority.high
+					}}
 				/>
 			);
 			return (
 				<View style={[styles.iconContainer, iconContainerStyle, style]}>
-					<Text style={[styles.avatarInitials, avatarInitialsStyle]} allowFontScaling={false}>{initials}</Text>
+					{this.state.showInitials &&
+						<Text
+							style={[styles.avatarInitials, avatarInitialsStyle]}
+							allowFontScaling={false}
+						>
+							{initials}
+						</Text>
+					}
 					{image}
 					{this.props.children}
 				</View>);

@@ -24,8 +24,7 @@ async function navigateToRegister() {
 }
 
 async function login() {
-    await addServer();
-    await navigateToLogin();
+    await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
     await element(by.id('login-view-email')).replaceText(data.user);
     await element(by.id('login-view-password')).replaceText(data.password);
     await element(by.id('login-view-submit')).tap();

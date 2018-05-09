@@ -206,7 +206,7 @@ export default class ListServerView extends LoggedView {
 
 	render() {
 		return (
-			<SafeAreaView style={styles.view}>
+			<SafeAreaView style={styles.view} testID='list-server-view'>
 				<SectionList
 					style={styles.list}
 					sections={this.state.sections}

@@ -14,6 +14,7 @@ import styles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { showToast } from '../utils/info';
 import { COLOR_BUTTON_PRIMARY } from '../constants/colors';
+import LoggedView from './View';
 
 @connect(state => ({
 	server: state.server.server,
@@ -24,7 +25,7 @@ import { COLOR_BUTTON_PRIMARY } from '../constants/colors';
 }), () => ({
 	loginSubmit: params => RocketChat.loginWithPassword(params)
 }))
-export default class LoginView extends React.PureComponent {
+export default class LoginView extends LoggedView {
 	static propTypes = {
 		loginSubmit: PropTypes.func.isRequired,
 		navigation: PropTypes.object.isRequired,
@@ -32,10 +33,13 @@ export default class LoginView extends React.PureComponent {
 		server: PropTypes.string
 	}
 
-	state = {
-		username: '',
-		password: ''
-	};
+	constructor(props) {
+		super('LoginView', props);
+		this.state = {
+			username: '',
+			password: ''
+		};
+	}
 
 	submit = async() => {
 		const {	username, password, code } = this.state;

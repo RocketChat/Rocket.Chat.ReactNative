@@ -12,6 +12,7 @@ import styles from './Styles';
 import { showToast } from '../utils/info';
 import CloseModalButton from '../containers/CloseModalButton';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
+import LoggedView from './View';
 
 @connect(state => ({
 	server: state.server.server,
@@ -24,7 +25,7 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 	registerSubmit: params => dispatch(registerSubmit(params)),
 	setUsernameSubmit: params => dispatch(setUsernameSubmit(params))
 }))
-export default class RegisterView extends React.Component {
+export default class RegisterView extends LoggedView {
 	static propTypes = {
 		registerSubmit: PropTypes.func.isRequired,
 		setUsernameSubmit: PropTypes.func,
@@ -36,13 +37,16 @@ export default class RegisterView extends React.Component {
 		login: PropTypes.object
 	}
 
-	state = {
-		name: '',
-		email: '',
-		password: '',
-		confirmPassword: '',
-		username: ''
-	};
+	constructor(props) {
+		super('RegisterView', props);
+		this.state = {
+			name: '',
+			email: '',
+			password: '',
+			confirmPassword: '',
+			username: ''
+		};
+	}
 
 	valid() {
 		const {

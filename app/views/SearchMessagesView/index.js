@@ -50,7 +50,7 @@ export default class SearchMessagesView extends LoggedView {
 		let messages = [];
 		try {
 			const result = await Promise.race([RocketChat.messageSearch(this.searchText, this.props.navigation.state.params.rid, this.limit), cancel]);
-			messages = result.messages.map(message => buildMessage(message));
+			messages = result.message.docs.map(message => buildMessage(message));
 			this.setState({ messages, searching: false, loadingMore: false });
 		} catch (error) {
 			this._cancel = null;
@@ -112,6 +112,7 @@ export default class SearchMessagesView extends LoggedView {
 						label='Search'
 						onChangeText={this.onChangeSearch}
 						placeholder='Search Messages'
+						testID='search-message-view-input'
 					/>
 					<Markdown msg='You can search using RegExp. e.g. `/^text$/i`' />
 					<View style={styles.divider} />

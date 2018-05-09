@@ -8,7 +8,10 @@ const data = require('./data');
 describe('Rooms list screen', () => {
 	before(async() => {
         // await device.launchApp({ delete: true, permissions: { notifications: 'YES' } });
-        await login();
+		// await addServer();
+    	// await navigateToLogin();
+		// await login();
+		await device.reloadReactNative();
         await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 	});
 
@@ -74,6 +77,18 @@ describe('Rooms list screen', () => {
 				await waitFor(element(by.id('sidebar'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('sidebar'))).toBeVisible();
 			});
+		});
+
+		it('should search room and navigate', async() => {
+			await element(by.id('rooms-list-view-list')).swipe('down');
+			await waitFor(element(by.id('rooms-list-view-search'))).toBeVisible().withTimeout(2000);
+			await expect(element(by.id('rooms-list-view-search'))).toBeVisible();
+			await element(by.id('rooms-list-view-search')).tap();
+			await element(by.id('rooms-list-view-search')).replaceText('rocket.cat');
+			await waitFor(element(by.id('rooms-list-view-item-rocket.cat'))).toBeVisible().withTimeout(10000);
+			await expect(element(by.id('rooms-list-view-item-rocket.cat'))).toBeVisible();
+			await element(by.id('rooms-list-view-item-rocket.cat')).tap();
+			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(2000);
 		});
 
 		// Usage - Sidebar

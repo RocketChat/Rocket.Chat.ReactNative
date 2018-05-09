@@ -86,7 +86,7 @@ export default class RoomActionsView extends LoggedView {
 	}
 
 	updateRoomMember = async() => {
-		if (this.state.room.t === 'd') {
+		if (this.state.room.t !== 'd') {
 			return {};
 		}
 		try {
@@ -273,10 +273,14 @@ export default class RoomActionsView extends LoggedView {
 		return sections;
 	}
 
-	toggleBlockUser = () => {
+	toggleBlockUser = async() => {
 		const { rid, blocked } = this.state.room;
 		const { member } = this.state;
-		RocketChat.toggleBlockUser(rid, member._id, !blocked);
+		try {
+			await RocketChat.toggleBlockUser(rid, member._id, !blocked);
+		} catch (error) {
+			console.warn(error);
+		}
 	}
 
 	leaveChannel = () => {

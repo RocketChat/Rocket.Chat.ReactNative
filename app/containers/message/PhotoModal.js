@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, View, Text, TouchableWithoutFeedback } from 'react-native';
-import { CachedImage } from 'react-native-img-cache';
+import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 
@@ -50,7 +50,7 @@ export default class PhotoModal extends React.PureComponent {
 				<View style={styles.imageWrapper}>
 					<ScrollView contentContainerStyle={styles.imageWrapper} maximumZoomScale={5}>
 						<TouchableWithoutFeedback onPress={onClose}>
-							<CachedImage
+							<FastImage
 								style={styles.image}
 								source={{ uri: encodeURI(image) }}
 								mutable

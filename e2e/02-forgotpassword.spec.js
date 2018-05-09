@@ -7,8 +7,9 @@ const data = require('./data');
 
 describe('Forgot password screen', () => {
 	before(async() => {
-		await device.launchApp({ delete: true, permissions: { notifications: 'YES' } });
-		await addServer();
+		// await device.launchApp({ delete: true, permissions: { notifications: 'YES' } });
+		// await addServer();
+		await device.reloadReactNative();
 		await navigateToLogin();
 		await element(by.id('login-view-forgot-password')).tap();
 		await waitFor(element(by.id('forgot-password-view'))).toBeVisible().withTimeout(2000);
@@ -44,5 +45,5 @@ describe('Forgot password screen', () => {
 		afterEach(async() => {
 			takeScreenshot();
 		});
-	})
+	});
 });

@@ -21,7 +21,10 @@ async function navigateToRoom() {
 describe('Room screen', () => {
 	before(async() => {
 		// await device.launchApp({ delete: true, permissions: { notifications: 'YES' } });
-		await login();
+		// await addServer();
+    	// await navigateToLogin();
+		// await login();
+		await device.reloadReactNative();
         await navigateToRoom();
 	});
 
@@ -152,18 +155,22 @@ describe('Room screen', () => {
 				await expect(element(by.id('messagebox-input'))).toHaveText(':joy: ');
 			});
 	
-			it('should show and tap on user autocomplete', async() => {
+			it('should show and tap on user autocomplete and send mention', async() => {
 				await element(by.id('messagebox-input')).tap();
-				await element(by.id('messagebox-input')).typeText('@rocket');
+				await element(by.id('messagebox-input')).typeText(`@${ data.user }`);
 				await waitFor(element(by.id('messagebox-container'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('messagebox-container'))).toBeVisible();
-				await element(by.id('mention-item-rocket.cat')).tap();
-				await expect(element(by.id('messagebox-input'))).toHaveText('@rocket.cat ');
+				await element(by.id(`mention-item-${ data.user }`)).tap();
+				await expect(element(by.id('messagebox-input'))).toHaveText(`@${ data.user } `);
+				await element(by.id('messagebox-input')).tap();
+				await element(by.id('messagebox-input')).typeText('test');
+				await element(by.id('messagebox-send-message')).tap();
+				await waitFor(element(by.text(`@${ data.user } test`))).toBeVisible().withTimeout(2000);
 			});
 	
 			it('should show and tap on room autocomplete', async() => {
 				await element(by.id('messagebox-input')).tap();
-				await element(by.id('messagebox-input')).typeText('#gener');
+				await element(by.id('messagebox-input')).typeText('#gene');
 				await waitFor(element(by.id('messagebox-container'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('messagebox-container'))).toBeVisible();
 				await element(by.id('mention-item-general')).tap();
@@ -258,7 +265,7 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('reaction-picker-grinning'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('reaction-picker-grinning'))).toBeVisible();
 				await element(by.id('reaction-picker-grinning')).tap();
-				await waitFor(element(by.id('message-reaction-:grinning:'))).toBeVisible().withTimeout(2000);
+				await waitFor(element(by.id('message-reaction-:grinning:'))).toBeVisible().withTimeout(5000);
 				await expect(element(by.id('message-reaction-:grinning:'))).toBeVisible();
 			});
 
@@ -273,7 +280,7 @@ describe('Room screen', () => {
 
 			it('should remove reaction', async() => {
 				await element(by.id('message-reaction-:grinning:')).tap();
-				await waitFor(element(by.id('message-reaction-:grinning:'))).toBeNotVisible().withTimeout(2000);
+				await waitFor(element(by.id('message-reaction-:grinning:'))).toBeNotVisible().withTimeout(5000);
 				await expect(element(by.id('message-reaction-:grinning:'))).toBeNotVisible();
 			});
 
@@ -289,7 +296,7 @@ describe('Room screen', () => {
 				await element(by.text('Cancel')).tap();
 			});
 
-			// TODO: delete message
+			// TODO: delete message - swipe on action sheet missing
 		});
 
 		afterEach(async() => {

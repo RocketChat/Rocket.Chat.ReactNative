@@ -49,6 +49,7 @@ export default class RoomInfoView extends LoggedView {
 					activeOpacity={0.5}
 					accessibilityLabel='edit'
 					accessibilityTraits='button'
+					testID='room-info-view-edit-button'
 				>
 					<View style={styles.headerButton}>
 						<MaterialIcon name='edit' size={20} />
@@ -128,7 +129,11 @@ export default class RoomInfoView extends LoggedView {
 	renderItem = (key, room) => (
 		<View style={styles.item}>
 			<Text style={styles.itemLabel}>{camelize(key)}</Text>
-			<Text style={[styles.itemContent, !room[key] && styles.itemContent__empty]}>{ room[key] ? room[key] : `No ${ key } provided.` }</Text>
+			<Text
+				style={[styles.itemContent, !room[key] && styles.itemContent__empty]}
+				testID={`room-info-view-${ key }`}
+			>{ room[key] ? room[key] : `No ${ key } provided.` }
+			</Text>
 		</View>
 	);
 
@@ -178,7 +183,7 @@ export default class RoomInfoView extends LoggedView {
 					>
 						{t === 'd' ? <Status style={[sharedStyles.status, styles.status]} id={roomUser._id} /> : null}
 					</Avatar>
-					<Text style={styles.roomTitle}>{ this.getRoomTitle(room) }</Text>
+					<Text style={styles.roomTitle} testID='room-info-view-name'>{ this.getRoomTitle(room) }</Text>
 				</View>
 
 				{!this.isDirect() && this.renderItem('description', room)}

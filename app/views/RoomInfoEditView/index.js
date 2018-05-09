@@ -257,8 +257,12 @@ export default class RoomInfoEditView extends LoggedView {
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>
-				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
-					<SafeAreaView>
+				<ScrollView
+					contentContainerStyle={sharedStyles.containerScrollView}
+					testID='room-info-edit-view-list'
+					{...scrollPersistTaps}
+				>
+					<SafeAreaView testID='room-info-edit-view'>
 						<View style={sharedStyles.formContainer}>
 							<RCTextInput
 								inputRef={(e) => { this.name = e; }}
@@ -267,6 +271,7 @@ export default class RoomInfoEditView extends LoggedView {
 								onChangeText={value => this.setState({ name: value })}
 								onSubmitEditing={() => { this.description.focus(); }}
 								error={nameError}
+								testID='room-info-edit-view-name'
 							/>
 							<RCTextInput
 								inputRef={(e) => { this.description = e; }}
@@ -274,7 +279,7 @@ export default class RoomInfoEditView extends LoggedView {
 								value={description}
 								onChangeText={value => this.setState({ description: value })}
 								onSubmitEditing={() => { this.topic.focus(); }}
-								inputProps={{ multiline: true }}
+								testID='room-info-edit-view-description'
 							/>
 							<RCTextInput
 								inputRef={(e) => { this.topic = e; }}
@@ -282,7 +287,7 @@ export default class RoomInfoEditView extends LoggedView {
 								value={topic}
 								onChangeText={value => this.setState({ topic: value })}
 								onSubmitEditing={() => { this.announcement.focus(); }}
-								inputProps={{ multiline: true }}
+								testID='room-info-edit-view-topic'
 							/>
 							<RCTextInput
 								inputRef={(e) => { this.announcement = e; }}
@@ -290,7 +295,7 @@ export default class RoomInfoEditView extends LoggedView {
 								value={announcement}
 								onChangeText={value => this.setState({ announcement: value })}
 								onSubmitEditing={() => { this.joinCode.focus(); }}
-								inputProps={{ multiline: true }}
+								testID='room-info-edit-view-announcement'
 							/>
 							<RCTextInput
 								inputRef={(e) => { this.joinCode = e; }}
@@ -298,7 +303,8 @@ export default class RoomInfoEditView extends LoggedView {
 								value={joinCode}
 								onChangeText={value => this.setState({ joinCode: value })}
 								onSubmitEditing={this.submit}
-								inputProps={{ secureTextEntry: true }}
+								secureTextEntry
+								testID='room-info-edit-view-password'
 							/>
 							<SwitchContainer
 								value={t}
@@ -307,6 +313,7 @@ export default class RoomInfoEditView extends LoggedView {
 								rightLabelPrimary='Private'
 								rightLabelSecondary='Just invited people can access this channel'
 								onValueChange={value => this.setState({ t: value })}
+								testID='room-info-edit-view-t'
 							/>
 							<SwitchContainer
 								value={ro}
@@ -316,6 +323,7 @@ export default class RoomInfoEditView extends LoggedView {
 								rightLabelSecondary='Only authorized users can write new messages'
 								onValueChange={value => this.setState({ ro: value })}
 								disabled={!this.permissions[PERMISSION_SET_READONLY]}
+								testID='room-info-edit-view-ro'
 							/>
 							{ro &&
 								<SwitchContainer
@@ -326,12 +334,14 @@ export default class RoomInfoEditView extends LoggedView {
 									rightLabelSecondary='Reactions are enabled'
 									onValueChange={value => this.setState({ reactWhenReadOnly: value })}
 									disabled={!this.permissions[PERMISSION_SET_REACT_WHEN_READONLY]}
+									testID='room-info-edit-view-react-when-ro'
 								/>
 							}
 							<TouchableOpacity
 								style={[sharedStyles.buttonContainer, !this.formIsChanged() && styles.buttonContainerDisabled]}
 								onPress={this.submit}
 								disabled={!this.formIsChanged()}
+								testID='room-info-edit-view-submit'
 							>
 								<Text style={sharedStyles.button} accessibilityTraits='button'>SAVE</Text>
 							</TouchableOpacity>
@@ -339,6 +349,7 @@ export default class RoomInfoEditView extends LoggedView {
 								<TouchableOpacity
 									style={[sharedStyles.buttonContainer_inverted, styles.buttonInverted, { flex: 1 }]}
 									onPress={this.reset}
+									testID='room-info-edit-view-reset'
 								>
 									<Text style={sharedStyles.button_inverted} accessibilityTraits='button'>RESET</Text>
 								</TouchableOpacity>
@@ -351,6 +362,7 @@ export default class RoomInfoEditView extends LoggedView {
 									]}
 									onPress={this.toggleArchive}
 									disabled={!this.hasArchivePermission()}
+									testID='room-info-edit-view-archive'
 								>
 									<Text style={[sharedStyles.button_inverted, styles.colorDanger]} accessibilityTraits='button'>
 										{ room.archived ? 'UNARCHIVE' : 'ARCHIVE' }
@@ -367,6 +379,7 @@ export default class RoomInfoEditView extends LoggedView {
 								]}
 								onPress={this.delete}
 								disabled={!this.hasDeletePermission()}
+								testID='room-info-edit-view-delete'
 							>
 								<Text style={[sharedStyles.button_inverted, styles.colorDanger]} accessibilityTraits='button'>DELETE</Text>
 							</TouchableOpacity>

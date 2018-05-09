@@ -82,21 +82,21 @@ apply from: "../../node_modules/react-native/react.gradle"
  * Upload all the APKs to the Play Store and people will download
  * the correct one based on the CPU architecture of their device.
  */
-def enableSeparateBuildPerCPUArchitecture = true
+def enableSeparateBuildPerCPUArchitecture = false
 
 /**
  * Run Proguard to shrink the Java bytecode in release builds.
  */
-def enableProguardInReleaseBuilds = true
+def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.1"
 
     defaultConfig {
         applicationId "chat.rocket.reactnative"
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode VERSIONCODE as Integer
         versionName "1"
         ndk {
@@ -124,16 +124,16 @@ android {
     }
     buildTypes {
         release {
-            signingConfig signingConfigs.release
-            shrinkResources enableProguardInReleaseBuilds
-            zipAlignEnabled enableProguardInReleaseBuilds
+            // shrinkResources enableProguardInReleaseBuilds
+            // zipAlignEnabled enableProguardInReleaseBuilds
+            // useProguard enableProguardInReleaseBuilds
             minifyEnabled enableProguardInReleaseBuilds
-            useProguard enableProguardInReleaseBuilds
             setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'])
+            signingConfig signingConfigs.release
         }
-				debug {
-						 applicationIdSuffix ".debug"
-				 }
+        debug {
+            applicationIdSuffix ".debug"
+        }
     }
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
@@ -184,14 +184,16 @@ dependencies {
     compile project(':react-native-fetch-blob')
     compile project(':react-native-zeroconf')
     compile project(':react-native-toast')
+    compile project(':react-native-fast-image')
     compile project(':realm')
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"
+    compile "com.android.support:support-v4:27.1.0"
     compile 'com.android.support:customtabs:23.0.1'
     compile "com.facebook.react:react-native:+"  // From node_modules
     compile 'com.facebook.fresco:fresco:1.7.1'
     compile 'com.facebook.fresco:animated-gif:1.7.1'
-    compile('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') {
         transitive = true;
     }
 }

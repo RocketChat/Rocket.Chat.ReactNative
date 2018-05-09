@@ -12,6 +12,7 @@ import Header from '../../containers/Header';
 import RoomsListHeader from './Header';
 import styles from './styles';
 import throttle from '../../utils/throttle';
+import LoggedView from '../View';
 
 @connect(state => ({
 	user: state.login.user,
@@ -19,7 +20,7 @@ import throttle from '../../utils/throttle';
 	Site_Url: state.settings.Site_Url,
 	searchText: state.rooms.searchText
 }))
-export default class RoomsListView extends React.Component {
+export default class RoomsListView extends LoggedView {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
 		user: PropTypes.object,
@@ -33,7 +34,7 @@ export default class RoomsListView extends React.Component {
 	});
 
 	constructor(props) {
-		super(props);
+		super('RoomsListView', props);
 
 		this.state = {
 			search: []
@@ -87,7 +88,7 @@ export default class RoomsListView extends React.Component {
 
 		let data = database.objects('subscriptions').filtered('name CONTAINS[c] $0', searchText).slice(0, 7);
 
-		const usernames = data.map(sub => sub.map);
+		const usernames = data.map(sub => sub.name);
 		try {
 			if (data.length < 7) {
 				if (this.oldPromise) {
@@ -122,13 +123,17 @@ export default class RoomsListView extends React.Component {
 	}
 
 	_onPressItem = async(item = {}) => {
-		// if user is using the search we need first to join/create room
 		if (!item.search) {
-			return this.props.navigation.navigate({ key: `Room-${ item._id }`, routeName: 'Room', params: { room: item, ...item } });
+			return goRoom({ rid: item.rid });
 		}
 		if (item.t === 'd') {
-			const sub = await RocketChat.createDirectMessageAndWait(item.username);
-			return goRoom({ room: sub, name: sub.name });
+			// if user is using the search we need first to join/create room
+			try {
+				const sub = await RocketChat.createDirectMessage(item.username);
+				return goRoom(sub);
+			} catch (error) {
+				console.warn('_onPressItem', error);
+			}
 		}
 		return goRoom(item);
 	}
@@ -155,6 +160,9 @@ export default class RoomsListView extends React.Component {
 				placeholder='Search'
 				clearButtonMode='while-editing'
 				blurOnSubmit
+				autoCorrect={false}
+				autoCapitalize='none'
+				testID='rooms-list-view-search'
 			/>
 		</View>
 	);

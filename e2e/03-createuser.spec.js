@@ -7,8 +7,9 @@ const data = require('./data');
 
 describe('Create user screen', () => {
 	before(async() => {
-		await device.launchApp({ delete: true, permissions: { notifications: 'YES' } });
-		await addServer();
+		// await device.launchApp({ delete: true, permissions: { notifications: 'YES' } });
+		// await addServer();
+		await device.reloadReactNative();
 		await navigateToRegister();
 	});
 

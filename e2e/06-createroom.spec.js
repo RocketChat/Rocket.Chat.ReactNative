@@ -2,22 +2,25 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
-const { login } = require('./helpers/app');
+const { navigateToLogin, login } = require('./helpers/app');
 const data = require('./data');
 
 async function navigateToCreateChannel() {
 	await element(by.id('select-users-view-search')).tap();
 	await element(by.id('select-users-view-search')).replaceText('rocket.cat');
-	await waitFor(element(by.id('select-users-view-item-rocket.cat'))).toBeVisible().withTimeout(2000);
+	await waitFor(element(by.id('select-users-view-item-rocket.cat'))).toBeVisible().withTimeout(10000);
 	await element(by.id('select-users-view-item-rocket.cat')).tap();
 	await waitFor(element(by.id('selected-user-rocket.cat'))).toBeVisible().withTimeout(2000);
-	await element(by.id('selected-users-view-create-channel')).tap();
+	await element(by.id('selected-users-view-submit')).tap();
 	await waitFor(element(by.id('create-channel-view'))).toBeVisible().withTimeout(2000);
 }
 
 describe('Create room screen', () => {
 	before(async() => {
-        // await device.launchApp({ delete: true, permissions: { notifications: 'YES' } });
+		// await device.launchApp({ delete: true, permissions: { notifications: 'YES' } });
+		// await addServer();
+		
+		await navigateToLogin();
         await login();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 		await element(by.id('rooms-list-view-create-channel')).tap();
@@ -55,22 +58,22 @@ describe('Create room screen', () => {
 		it('should search users', async() => {
 			await element(by.id('select-users-view-search')).tap();
 			await element(by.id('select-users-view-search')).replaceText('rocket.cat');
-			await waitFor(element(by.id(`select-users-view-item-rocket.cat`))).toBeVisible().withTimeout(2000);
+			await waitFor(element(by.id(`select-users-view-item-rocket.cat`))).toBeVisible().withTimeout(10000);
 			await expect(element(by.id(`select-users-view-item-rocket.cat`))).toBeVisible();
 		});
 
 		it('should select/unselect user', async() => {
 			await element(by.id('select-users-view-search')).tap();
 			await element(by.id('select-users-view-search')).replaceText('rocket.cat');
-			await waitFor(element(by.id('select-users-view-item-rocket.cat'))).toBeVisible().withTimeout(2000);
+			await waitFor(element(by.id('select-users-view-item-rocket.cat'))).toBeVisible().withTimeout(10000);
 			await element(by.id('select-users-view-item-rocket.cat')).tap();
 			await waitFor(element(by.id('selected-user-rocket.cat'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('selected-user-rocket.cat'))).toBeVisible();
-			await expect(element(by.id('selected-users-view-create-channel'))).toBeVisible();
+			await expect(element(by.id('selected-users-view-submit'))).toBeVisible();
 			await element(by.id('selected-user-rocket.cat')).tap();
 			await waitFor(element(by.id('selected-user-rocket.cat'))).toBeNotVisible().withTimeout(2000);
 			await expect(element(by.id('selected-user-rocket.cat'))).toBeNotVisible();
-			await expect(element(by.id('selected-users-view-create-channel'))).toBeNotVisible();
+			await expect(element(by.id('selected-users-view-submit'))).toBeNotVisible();
 		});
 
 		it('should navigate to create channel view', async() => {
