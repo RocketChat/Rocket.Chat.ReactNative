@@ -169,20 +169,23 @@ export default class RoomInfoView extends LoggedView {
 		return null;
 	}
 
+	renderAvatar = (room, roomUser) => (
+		<Avatar
+			text={room.name}
+			size={100}
+			style={styles.avatar}
+			type={room.t}
+		>
+			{room.t === 'd' ? <Status style={[sharedStyles.status, styles.status]} id={roomUser._id} /> : null}
+		</Avatar>
+	)
+
 	render() {
 		const { room, roomUser } = this.state;
-		const { name, t } = room;
 		return (
 			<ScrollView style={styles.container}>
 				<View style={styles.avatarContainer} testID='room-info-view'>
-					<Avatar
-						text={name}
-						size={100}
-						style={styles.avatar}
-						type={t}
-					>
-						{t === 'd' ? <Status style={[sharedStyles.status, styles.status]} id={roomUser._id} /> : null}
-					</Avatar>
+					{room.name && this.renderAvatar(room, roomUser)}
 					<Text style={styles.roomTitle} testID='room-info-view-name'>{ this.getRoomTitle(room) }</Text>
 				</View>
 

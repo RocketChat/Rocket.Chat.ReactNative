@@ -262,6 +262,8 @@ workflows:
     jobs:
       - lint-testunit
       - e2e-test
+        requires:
+            - lint-testunit
 
       - ios-build:
           requires:
