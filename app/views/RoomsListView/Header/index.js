@@ -65,7 +65,11 @@ export default class RoomsListHeaderView extends React.PureComponent {
 	}
 
 	onPressModalButton(status) {
-		RocketChat.setUserPresenceDefaultStatus(status);
+		try {
+			RocketChat.setUserPresenceDefaultStatus(status);
+		} catch (error) {
+			console.warn('onPressModalButton', error);
+		}
 		this.hideModal();
 	}
 
@@ -219,6 +223,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 			<TouchableOpacity
 				style={styles.modalButton}
 				onPress={() => this.onPressModalButton(status)}
+				testID={`rooms-list-view-user-presence-${ status }`}
 			>
 				<View style={statusStyle} />
 				<Text style={textStyle}>

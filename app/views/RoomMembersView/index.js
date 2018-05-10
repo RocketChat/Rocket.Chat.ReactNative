@@ -94,11 +94,15 @@ export default class MentionedMessagesView extends LoggedView {
 	}
 
 	onPressToogleStatus = async() => {
-		const allUsers = !this.state.allUsers;
-		this.props.navigation.setParams({ allUsers });
-		const membersResult = await RocketChat.getRoomMembers(this.state.rid, allUsers);
-		const members = membersResult.records;
-		this.setState({ allUsers, members });
+		try {
+			const allUsers = !this.state.allUsers;
+			this.props.navigation.setParams({ allUsers });
+			const membersResult = await RocketChat.getRoomMembers(this.state.rid, allUsers);
+			const members = membersResult.records;
+			this.setState({ allUsers, members });
+		} catch (error) {
+			console.warn('onPressToogleStatus', error);
+		}
 	}
 
 	onPressUser = async(item) => {
@@ -106,8 +110,12 @@ export default class MentionedMessagesView extends LoggedView {
 		if (subscriptions.length) {
 			goRoom({ rid: subscriptions[0].rid, name: subscriptions[0].name });
 		} else {
-			const room = await RocketChat.createDirectMessage(item.username);
-			goRoom({ room: room.rid, name: item.username });
+			try {
+				const room = await RocketChat.createDirectMessage(item.username);
+				goRoom({ room: room.rid, name: item.username });
+			} catch (error) {
+				console.warn('onPressUser', error);
+			}
 		}
 	}
 

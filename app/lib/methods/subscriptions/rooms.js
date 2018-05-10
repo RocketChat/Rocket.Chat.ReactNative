@@ -1,5 +1,6 @@
 import database from '../../realm';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
+import protectedFunction from '../helpers/protectedFunction';
 
 export default async function subscribeRooms(id) {
 	const subscriptions = Promise.all([
@@ -41,7 +42,7 @@ export default async function subscribeRooms(id) {
 			}
 		});
 
-		this.ddp.on('stream-notify-user', (ddpMessage) => {
+		this.ddp.on('stream-notify-user', protectedFunction((ddpMessage) => {
 			const [type, data] = ddpMessage.fields.args;
 			const [, ev] = ddpMessage.fields.eventName.split('/');
 			if (/subscriptions/.test(ev)) {
@@ -56,9 +57,13 @@ export default async function subscribeRooms(id) {
 					merge(sub, data);
 				});
 			}
-		});
+		}));
 	}
 
-	await subscriptions;
+	try {
+		await subscriptions;
+	} catch (error) {
+		console.warn('subscribeRooms', error);
+	}
 	// console.log(this.ddp.subscriptions);
 }

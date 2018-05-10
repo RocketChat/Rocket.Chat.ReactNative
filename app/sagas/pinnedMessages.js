@@ -7,12 +7,16 @@ let sub;
 let newSub;
 
 const openPinnedMessagesRoom = function* openPinnedMessagesRoom({ rid, limit }) {
-	newSub = yield RocketChat.subscribe('pinnedMessages', rid, limit);
-	yield put(readyPinnedMessages());
-	if (sub) {
-		sub.unsubscribe().catch(e => console.warn('openPinnedMessagesRoom', e));
+	try {
+		newSub = yield RocketChat.subscribe('pinnedMessages', rid, limit);
+		yield put(readyPinnedMessages());
+		if (sub) {
+			sub.unsubscribe().catch(e => console.warn('openPinnedMessagesRoom', e));
+		}
+		sub = newSub;
+	} catch (error) {
+		console.warn('openPinnedMessagesRoom', error);
 	}
-	sub = newSub;
 };
 
 const closePinnedMessagesRoom = function* closePinnedMessagesRoom() {

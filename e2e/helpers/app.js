@@ -17,12 +17,6 @@ async function navigateToLogin() {
     await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
 }
 
-async function navigateToRegister() {
-    await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(2000);
-    await element(by.id('welcome-view-register')).tap();
-    await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
-}
-
 async function login() {
     await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
     await element(by.id('login-view-email')).replaceText(data.user);
@@ -31,9 +25,17 @@ async function login() {
     await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 }
 
+async function logout() {
+    await element(by.id('rooms-list-view-sidebar')).tap();
+    await waitFor(element(by.id('sidebar'))).toBeVisible().withTimeout(2000);
+    await element(by.id('sidebar-logout')).tap();
+    await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(2000);
+    await expect(element(by.id('welcome-view'))).toBeVisible();
+}
+
 module.exports = {
     addServer,
     navigateToLogin,
-    navigateToRegister,
-    login
+    login,
+    logout
 };

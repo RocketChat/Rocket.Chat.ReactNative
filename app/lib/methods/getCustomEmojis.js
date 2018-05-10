@@ -12,12 +12,16 @@ const getLastMessage = () => {
 
 
 export default async function() {
-	const lastMessage = getLastMessage();
-	let emojis = await this.ddp.call('listEmojiCustom');
-	emojis = emojis.filter(emoji => !lastMessage || emoji._updatedAt > lastMessage);
-	emojis = this._prepareEmojis(emojis);
-	InteractionManager.runAfterInteractions(() => database.write(() => {
-		emojis.forEach(emoji => database.create('customEmojis', emoji, true));
-	}));
-	reduxStore.dispatch(actions.setCustomEmojis(this.parseEmojis(emojis)));
+	try {
+		const lastMessage = getLastMessage();
+		let emojis = await this.ddp.call('listEmojiCustom');
+		emojis = emojis.filter(emoji => !lastMessage || emoji._updatedAt > lastMessage);
+		emojis = this._prepareEmojis(emojis);
+		InteractionManager.runAfterInteractions(() => database.write(() => {
+			emojis.forEach(emoji => database.create('customEmojis', emoji, true));
+		}));
+		reduxStore.dispatch(actions.setCustomEmojis(this.parseEmojis(emojis)));	
+	} catch (error) {
+		console.warn('getCustomEmojis', error);
+	}
 }

@@ -5,12 +5,11 @@ const { takeScreenshot } = require('./helpers/screenshot');
 const { addServer, navigateToLogin } = require('./helpers/app');
 const data = require('./data');
 
+// 21s
 describe('Forgot password screen', () => {
 	before(async() => {
-		// await device.launchApp({ delete: true, permissions: { notifications: 'YES' } });
-		// await addServer();
-		await device.reloadReactNative();
-		await navigateToLogin();
+		await element(by.id('welcome-view-login')).tap();
+    	await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
 		await element(by.id('login-view-forgot-password')).tap();
 		await waitFor(element(by.id('forgot-password-view'))).toBeVisible().withTimeout(2000);
 	});
@@ -35,7 +34,6 @@ describe('Forgot password screen', () => {
 
 	describe('Usage', async() => {
 		it('should reset password and navigate to login', async() => {
-			await element(by.id('forgot-password-view-email')).tap();
 			await element(by.id('forgot-password-view-email')).replaceText(data.email);
 			await element(by.id('forgot-password-view-submit')).tap();
 			await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);

@@ -2,13 +2,18 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
-const { addServer, navigateToRegister } = require('./helpers/app');
+const { logout } = require('./helpers/app');
 const data = require('./data');
 
+async function navigateToRegister() {
+    await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(2000);
+    await element(by.id('welcome-view-register')).tap();
+    await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
+}
+
+// 49s
 describe('Create user screen', () => {
 	before(async() => {
-		// await device.launchApp({ delete: true, permissions: { notifications: 'YES' } });
-		// await addServer();
 		await device.reloadReactNative();
 		await navigateToRegister();
 	});
@@ -56,11 +61,6 @@ describe('Create user screen', () => {
 	});
 
 	describe('Usage', () => {
-		beforeEach(async() => {
-			await device.reloadReactNative();
-			await navigateToRegister();
-		});
-
 		it('should navigate to welcome', async() => {
 			await element(by.id('close-modal-button')).tap();
 			await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(2000);
@@ -68,28 +68,26 @@ describe('Create user screen', () => {
 		});
 
 		it('should create user', async() => {
-			await element(by.id('register-view-name')).tap();
+			await navigateToRegister();
 			await element(by.id('register-view-name')).replaceText(data.user);
-			await element(by.id('register-view-email')).tap();
 			await element(by.id('register-view-email')).replaceText(data.email);
-			await element(by.id('register-view-password')).tap();
 			await element(by.id('register-view-password')).replaceText(data.password);
-			await element(by.id('register-view-repeat-password')).tap();
 			await element(by.id('register-view-repeat-password')).replaceText(data.password);
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.id('register-view-username'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('register-view-username'))).toBeVisible();
-			await element(by.id('register-view-username')).tap();
 			await element(by.id('register-view-username')).replaceText(data.user);
 			await element(by.id('register-view-submit-username')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
+
 		});
 		// TODO: errors
 		// TODO: terms and privacy
 
-		afterEach(async() => {
+		after(async() => {
 			takeScreenshot();
+			await logout();
 		});
 	});
 });

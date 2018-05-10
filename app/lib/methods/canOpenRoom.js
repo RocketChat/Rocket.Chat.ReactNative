@@ -39,13 +39,18 @@ async function canOpenRoomDDP(...args) {
 
 export default async function canOpenRoom({ rid, path }) {
 	const { database: db } = database;
-	const room = db.objects('subscriptions').filtered('rid == $0', rid);
-	if (room.length) {
-		return true;
-	}
+	try {
+		const room = db.objects('subscriptions').filtered('rid == $0', rid);
+		if (room.length) {
+			return true;
+		}
 
-	const [type, name] = path.split('/');
-	// eslint-disable-next-line
-	const data = await (this.ddp && this.ddp.status ? canOpenRoomDDP.call(this, { rid, type, name }) : canOpenRoomREST.call(this, { type, rid }));
-	return data;
+		const [type, name] = path.split('/');
+		// eslint-disable-next-line
+		const data = await (this.ddp && this.ddp.status ? canOpenRoomDDP.call(this, { rid, type, name }) : canOpenRoomREST.call(this, { type, rid }));
+		return data;
+	} catch (error) {
+		console.warn('canOpenRoom', error);
+		return null;
+	}
 }

@@ -52,12 +52,16 @@ const validateServer = function* validateServer({ server }) {
 };
 
 const addServer = function* addServer({ server }) {
-	database.databases.serversDB.write(() => {
-		database.databases.serversDB.create('servers', { id: server, current: false }, true);
-	});
-	yield put(setServer(server));
-	yield take(LOGIN.SET_TOKEN);
-	navigate('LoginSignup');
+	try {
+		database.databases.serversDB.write(() => {
+			database.databases.serversDB.create('servers', { id: server, current: false }, true);
+		});
+		yield put(setServer(server));
+		yield take(LOGIN.SET_TOKEN);
+		navigate('LoginSignup');
+	} catch (error) {
+		console.warn('addServer', error);
+	}
 };
 
 const handleGotoAddServer = function* handleGotoAddServer() {

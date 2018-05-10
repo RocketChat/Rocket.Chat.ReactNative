@@ -129,7 +129,11 @@ export default class Socket extends EventEmitter {
 			this.send({ msg: 'connect', version: '1', support: ['1', 'pre2', 'pre1'] });
 		});
 
-		this._connect();
+		try {
+			this._connect();
+		} catch (error) {
+			console.warn('ddp constructor _connect call', error);
+		}
 	}
 	check() {
 		if (!this.lastping) {
@@ -236,7 +240,11 @@ export default class Socket extends EventEmitter {
 
 		this._timer = setTimeout(() => {
 			delete this._timer;
-			this._connect();
+			try {
+				this._connect();
+			} catch (error) {
+				console.warn('reconnect _connect call', error);
+			}
 		}, 1000);
 	}
 	call(method, ...params) {

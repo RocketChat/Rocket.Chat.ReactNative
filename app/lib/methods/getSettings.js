@@ -11,14 +11,18 @@ const getLastMessage = () => {
 };
 
 export default async function() {
-	const lastMessage = getLastMessage();
-	const result = await (!lastMessage ? this.ddp.call('public-settings/get') : this.ddp.call('public-settings/get', new Date(lastMessage)));
-	console.log('getSettings', lastMessage, result);
+	try {
+		const lastMessage = getLastMessage();
+		const result = await (!lastMessage ? this.ddp.call('public-settings/get') : this.ddp.call('public-settings/get', new Date(lastMessage)));
+		console.log('getSettings', lastMessage, result);
 
-	const filteredSettings = this._prepareSettings(this._filterSettings(result.update || result));
+		const filteredSettings = this._prepareSettings(this._filterSettings(result.update || result));
 
-	InteractionManager.runAfterInteractions(() =>
-		database.write(() =>
-			filteredSettings.forEach(setting => database.create('settings', setting, true))));
-	reduxStore.dispatch(actions.addSettings(this.parseSettings(filteredSettings)));
+		InteractionManager.runAfterInteractions(() =>
+			database.write(() =>
+				filteredSettings.forEach(setting => database.create('settings', setting, true))));
+		reduxStore.dispatch(actions.addSettings(this.parseSettings(filteredSettings)));
+	} catch (error) {
+		console.warn('getSettings', error);
+	}
 }

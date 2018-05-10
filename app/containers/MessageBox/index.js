@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 
-import { userTyping, layoutAnimation } from '../../actions/room';
+import { userTyping } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import { editRequest, editCancel, clearInput } from '../../actions/messages';
 import styles from './styles';
@@ -36,8 +36,7 @@ const onlyUnique = function onlyUnique(value, index, self) {
 	editCancel: () => dispatch(editCancel()),
 	editRequest: message => dispatch(editRequest(message)),
 	typing: status => dispatch(userTyping(status)),
-	clearInput: () => dispatch(clearInput()),
-	layoutAnimation: () => dispatch(layoutAnimation())
+	clearInput: () => dispatch(clearInput())
 }))
 export default class MessageBox extends React.PureComponent {
 	static propTypes = {
@@ -49,8 +48,7 @@ export default class MessageBox extends React.PureComponent {
 		message: PropTypes.object,
 		editing: PropTypes.bool,
 		typing: PropTypes.func,
-		clearInput: PropTypes.func,
-		layoutAnimation: PropTypes.func
+		clearInput: PropTypes.func
 	}
 
 	constructor(props) {
@@ -58,7 +56,6 @@ export default class MessageBox extends React.PureComponent {
 		this.state = {
 			text: '',
 			mentions: [],
-			showMentionsContainer: false,
 			showEmojiKeyboard: false,
 			recording: false
 		};
@@ -91,7 +88,6 @@ export default class MessageBox extends React.PureComponent {
 			const regexp = /(#|@|:)([a-z0-9._-]+)$/im;
 
 			const result = lastNativeText.substr(0, cursor).match(regexp);
-
 			if (!result) {
 				return this.stopTrackingMention();
 			}
@@ -278,11 +274,13 @@ export default class MessageBox extends React.PureComponent {
 				RocketChat.spotlight(keyword, usernames, { users: true }),
 				new Promise((resolve, reject) => (this.oldPromise = reject))
 			]);
-			database.write(() => {
-				results.users.forEach((user) => {
-					database.create('users', user, true);
+			if (results.users && results.users.length) {
+				database.write(() => {
+					results.users.forEach((user) => {
+						database.create('users', user, true);
+					});
 				});
-			});
+			}
 		} catch (e) {
 			console.warn('spotlight canceled');
 		} finally {
@@ -324,7 +322,9 @@ export default class MessageBox extends React.PureComponent {
 				RocketChat.spotlight(keyword, [...rooms, ...this.roomsCache].map(r => r.name), { rooms: true }),
 				new Promise((resolve, reject) => (this.oldPromise = reject))
 			]);
-			this.roomsCache = [...this.roomsCache, ...results.rooms].filter(onlyUnique);
+			if (results.rooms && results.rooms.length) {
+				this.roomsCache = [...this.roomsCache, ...results.rooms].filter(onlyUnique);
+			}
 			this.setState({ mentions: [...rooms.slice(), ...results.rooms] });
 		} catch (e) {
 			console.warn('spotlight canceled');
@@ -344,7 +344,6 @@ export default class MessageBox extends React.PureComponent {
 
 	stopTrackingMention() {
 		this.setState({
-			showMentionsContainer: false,
 			mentions: [],
 			trackingType: ''
 		});
@@ -355,11 +354,7 @@ export default class MessageBox extends React.PureComponent {
 	}
 
 	identifyMentionKeyword(keyword, type) {
-		if (!this.state.showMentionsContainer) {
-			this.props.layoutAnimation();
-		}
 		this.setState({
-			showMentionsContainer: true,
 			showEmojiKeyboard: false,
 			trackingType: type
 		});
@@ -469,15 +464,15 @@ export default class MessageBox extends React.PureComponent {
 		);
 	}
 	renderMentions = () => {
-		const { mentions } = this.state;
-		if (!mentions.length) {
+		const { mentions, trackingType } = this.state;
+		if (!trackingType) {
 			return null;
 		}
 		return (
 			<View key='messagebox-container' testID='messagebox-container'>
 				<FlatList
 					style={styles.mentionList}
-					data={this.state.mentions}
+					data={mentions}
 					renderItem={({ item }) => this.renderMentionItem(item)}
 					keyExtractor={item => item._id || item}
 					keyboardShouldPersistTaps='always'

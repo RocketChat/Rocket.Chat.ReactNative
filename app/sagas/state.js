@@ -8,7 +8,11 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	if (!auth) {
 		return;
 	}
-	return yield RocketChat.setUserPresenceOnline();
+	try {
+		return yield RocketChat.setUserPresenceOnline();
+	} catch (error) {
+		console.warn('appHasComeBackToForeground RocketChat.setUserPresenceOnline', error);
+	}
 };
 
 const appHasComeBackToBackground = function* appHasComeBackToBackground() {
@@ -16,7 +20,11 @@ const appHasComeBackToBackground = function* appHasComeBackToBackground() {
 	if (!auth) {
 		return;
 	}
-	return yield RocketChat.setUserPresenceAway();
+	try {
+		return yield RocketChat.setUserPresenceAway();
+	} catch (error) {
+		console.warn('appHasComeBackToBackground RocketChat.setUserPresenceAway', error);
+	}
 };
 
 const root = function* root() {

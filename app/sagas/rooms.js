@@ -66,30 +66,35 @@ const handleMessageReceived = function* handleMessageReceived({ message }) {
 };
 
 const watchRoomOpen = function* watchRoomOpen({ room }) {
-	yield put(messagesRequest({ ...room }));
-	// const { open } = yield race({
-	// 	messages: take(types.MESSAGES.SUCCESS),
-	// 	open: take(types.ROOM.OPEN)
-	// });
-	//
-	// if (open) {
-	// 	return;
-	// }
+	try {
+		yield put(messagesRequest({ ...room }));
+		// const { open } = yield race({
+		// 	messages: take(types.MESSAGES.SUCCESS),
+		// 	open: take(types.ROOM.OPEN)
+		// });
+		//
+		// if (open) {
+		// 	return;
+		// }
 
-	RocketChat.readMessages(room.rid);
-	const sub = yield RocketChat.subscribeRoom(room);
-	// const subscriptions = yield Promise.all([RocketChat.subscribe('stream-room-messages', room.rid, false), RocketChat.subscribe('stream-notify-room', `${ room.rid }/typing`, false)]);
-	const thread = yield fork(usersTyping, { rid: room.rid });
-	yield race({
-		open: take(types.ROOM.OPEN),
-		close: take(types.ROOM.CLOSE)
-	});
-	cancel(thread);
-	sub.stop();
+		RocketChat.readMessages(room.rid);
+		const sub = yield RocketChat.subscribeRoom(room);
+		console.warn('watchRoomOpen')
+		// const subscriptions = yield Promise.all([RocketChat.subscribe('stream-room-messages', room.rid, false), RocketChat.subscribe('stream-notify-room', `${ room.rid }/typing`, false)]);
+		const thread = yield fork(usersTyping, { rid: room.rid });
+		yield race({
+			open: take(types.ROOM.OPEN),
+			close: take(types.ROOM.CLOSE)
+		});
+		cancel(thread);
+		sub.stop();
 
-	// subscriptions.forEach((sub) => {
-	// 	sub.unsubscribe().catch(e => alert(e));
-	// });
+		// subscriptions.forEach((sub) => {
+		// 	sub.unsubscribe().catch(e => alert(e));
+		// });
+	} catch (error) {
+		console.warn('watchRoomOpen', error);
+	}
 };
 
 const watchuserTyping = function* watchuserTyping({ status }) {
@@ -103,11 +108,15 @@ const watchuserTyping = function* watchuserTyping({ status }) {
 	if (!room) {
 		return;
 	}
-	yield RocketChat.emitTyping(room.rid, status);
+	try {
+		yield RocketChat.emitTyping(room.rid, status);
 
-	if (status) {
-		yield call(delay, 5000);
-		yield RocketChat.emitTyping(room.rid, false);
+		if (status) {
+			yield call(delay, 5000);
+			yield RocketChat.emitTyping(room.rid, false);
+		}
+	} catch (error) {
+		console.warn('watchuserTyping', error);
 	}
 };
 
@@ -126,12 +135,16 @@ const updateLastOpen = function* updateLastOpen() {
 const goRoomsListAndDelete = function* goRoomsListAndDelete(rid) {
 	NavigationService.goRoomsList();
 	yield delay(1000);
-	database.write(() => {
-		const messages = database.objects('messages').filtered('rid = $0', rid);
-		database.delete(messages);
-		const subscription = database.objects('subscriptions').filtered('rid = $0', rid);
-		database.delete(subscription);
-	});
+	try {
+		database.write(() => {
+			const messages = database.objects('messages').filtered('rid = $0', rid);
+			database.delete(messages);
+			const subscription = database.objects('subscriptions').filtered('rid = $0', rid);
+			database.delete(subscription);
+		});	
+	} catch (error) {
+		console.warn('goRoomsListAndDelete', error);
+	}
 };
 
 const handleLeaveRoom = function* handleLeaveRoom({ rid }) {

@@ -120,12 +120,24 @@ const RocketChat = {
 		// TODO: one api call
 		// call /me only one time
 		if (!user.username) {
-			const me = await this.me({ token: user.token, userId: user.id });
+			let me;
+			try {
+				me = await this.me({ token: user.token, userId: user.id });
+			} catch (error) {
+				console.warn('loginSuccess this.me', error);
+				return;
+			}
 			// eslint-disable-next-line
 			user.username = me.username;
 		}
 		if (user.username) {
-			const userInfo = await this.userInfo({ token: user.token, userId: user.id });
+			let userInfo;
+			try {
+				userInfo = await this.userInfo({ token: user.token, userId: user.id });
+			} catch (error) {
+				console.warn('loginSuccess this.userInfo', error);
+				return;
+			}
 			user.username = userInfo.user.username;
 			if (userInfo.user.roles) {
 				user.roles = userInfo.user.roles;
@@ -163,9 +175,11 @@ const RocketChat = {
 
 			this.ddp.on('disconnected', protectedFunction(() => {
 				reduxStore.dispatch(disconnect());
+				console.warn(this.ddp);
 			}));
 
 			this.ddp.on('stream-room-messages', (ddpMessage) => {
+				// TODO: debounce
 				const message = _buildMessage(ddpMessage.fields.args[0]);
 				requestAnimationFrame(() => reduxStore.dispatch(roomMessageReceived(message)));
 			});
@@ -502,7 +516,11 @@ const RocketChat = {
 	},
 	logout({ server }) {
 		if (this.ddp) {
-			this.ddp.logout();
+			try {
+				this.ddp.logout();
+			} catch (error) {
+				console.warn('logout', error);
+			}
 		}
 		database.deleteAll();
 		AsyncStorage.removeItem(TOKEN_KEY);
@@ -703,7 +721,12 @@ const RocketChat = {
 		return Promise.resolve(result);
 	},
 	async getPermalink(message) {
-		const room = await RocketChat.getRoom(message.rid);
+		let room;
+		try {
+			room = await RocketChat.getRoom(message.rid);
+		} catch (error) {
+			return null;
+		}
 		const { server } = reduxStore.getState().server;
 		const roomType = {
 			p: 'group',

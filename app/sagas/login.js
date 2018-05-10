@@ -60,15 +60,19 @@ const forgotPasswordCall = args => RocketChat.forgotPassword(args);
 // };
 
 const saveToken = function* saveToken() {
-	const [server, user] = yield all([select(getServer), select(getUser)]);
-	yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
-	yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
-	const token = yield AsyncStorage.getItem('pushId');
-	if (token) {
-		yield RocketChat.registerPushToken(user.user.id, token);
-	}
-	if (!user.user.username && !user.isRegistering) {
-		yield put(registerIncomplete());
+	try {
+		const [server, user] = yield all([select(getServer), select(getUser)]);
+		yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
+		yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
+		const token = yield AsyncStorage.getItem('pushId');
+		if (token) {
+			yield RocketChat.registerPushToken(user.user.id, token);
+		}
+		if (!user.user.username && !user.isRegistering) {
+			yield put(registerIncomplete());
+		}
+	} catch (error) {
+		console.warn('saveToken', error);
 	}
 };
 
@@ -130,7 +134,11 @@ const handleSetUsernameRequest = function* handleSetUsernameRequest({ credential
 const handleLogout = function* handleLogout() {
 	const server = yield select(getServer);
 	if (server) {
-		yield call(logoutCall, { server });
+		try {
+			yield call(logoutCall, { server });
+		} catch (error) {
+			console.warn('handleLogout', error);
+		}
 	}
 };
 

@@ -3,6 +3,7 @@ import { InteractionManager } from 'react-native';
 import { get } from './helpers/rest';
 import buildMessage from './helpers/buildMessage';
 import database from '../realm';
+import { rejects } from 'assert';
 
 
 async function loadMissedMessagesRest({ rid: roomId, lastOpen: lastUpdate }) {
@@ -40,20 +41,26 @@ async function loadMissedMessagesDDP(...args) {
 
 export default async function(...args) {
 	const { database: db } = database;
-	return new Promise(async(resolve) => {
-		// eslint-disable-next-line
-		const data = (await (false && this.ddp.status ? loadMissedMessagesDDP.call(this, ...args) : loadMissedMessagesRest.call(this, ...args)));
+	return new Promise(async(resolve, reject) => {
+		try {
+			// eslint-disable-next-line
+			const data = (await (false && this.ddp.status ? loadMissedMessagesDDP.call(this, ...args) : loadMissedMessagesRest.call(this, ...args)));
 
-		if (data) {
-			data.forEach(buildMessage);
-			return InteractionManager.runAfterInteractions(() => {
-				try {
-					db.write(() => data.forEach(message => db.create('messages', message, true)));
-					resolve(data);
-				} catch (e) {
-					console.warn('loadMessagesForRoom', e);
-				}
-			});
+			if (data) {
+				data.forEach(buildMessage);
+				return InteractionManager.runAfterInteractions(() => {
+					try {
+						db.write(() => data.forEach(message => db.create('messages', message, true)));
+						resolve(data);
+					} catch (e) {
+						console.warn('loadMissedMessages 1', e);
+						return reject();
+					}
+				});
+			}
+		} catch (error) {
+			console.warn('loadMissedMessages 2', error);
+			return reject(error);
 		}
 		resolve([]);
 	});

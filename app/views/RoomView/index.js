@@ -116,11 +116,15 @@ export default class RoomView extends LoggedView {
 	}
 
 	onReactionPress = (shortname, messageId) => {
-		if (!messageId) {
-			RocketChat.setReaction(shortname, this.props.actionMessage._id);
-			return this.props.toggleReactionPicker();
+		try {
+			if (!messageId) {
+				RocketChat.setReaction(shortname, this.props.actionMessage._id);
+				return this.props.toggleReactionPicker();
+			}
+			RocketChat.setReaction(shortname, messageId);
+		} catch (error) {
+			console.warn('onReactionPress', error);
 		}
-		RocketChat.setReaction(shortname, messageId);
 	};
 
 	updateRoom = async() => {
@@ -136,10 +140,14 @@ export default class RoomView extends LoggedView {
 	};
 
 	joinRoom = async() => {
-		await RocketChat.joinRoom(this.props.rid);
-		this.setState({
-			joined: true
-		});
+		try {
+			await RocketChat.joinRoom(this.props.rid);
+			this.setState({
+				joined: true
+			});	
+		} catch (error) {
+			console.warn('joinRoom', error);
+		}
 	};
 
 	renderItem = (item, previousItem) => (

@@ -304,7 +304,11 @@ export default class RoomActionsView extends LoggedView {
 
 	toggleNotifications = () => {
 		const { room } = this.state;
-		RocketChat.saveNotificationSettings(room.rid, 'mobilePushNotifications', room.notifications ? 'default' : 'nothing');
+		try {
+			RocketChat.saveNotificationSettings(room.rid, 'mobilePushNotifications', room.notifications ? 'default' : 'nothing');
+		} catch (error) {
+			console.warn('toggleNotifications', error);
+		}
 	}
 
 	renderRoomInfo = ({ item }) => {

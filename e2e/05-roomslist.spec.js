@@ -2,19 +2,11 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
-const { login } = require('./helpers/app');
+const { login, navigateToLogin } = require('./helpers/app');
 const data = require('./data');
 
+// 56s
 describe('Rooms list screen', () => {
-	before(async() => {
-        // await device.launchApp({ delete: true, permissions: { notifications: 'YES' } });
-		// await addServer();
-    	// await navigateToLogin();
-		// await login();
-		await device.reloadReactNative();
-        await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
-	});
-
 	describe('Render', async() => {
 		it('should have rooms list screen', async() => {
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
@@ -53,42 +45,28 @@ describe('Rooms list screen', () => {
 	});
 
 	describe('Usage', async() => {
-		beforeEach(async() => {
-			await device.reloadReactNative();
-			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
-		});
-
-		// Usage - Header
-		describe('Header', async() => {
-			it('should navigate to create channel', async() => {
-				await element(by.id('rooms-list-view-create-channel')).tap();
-				await waitFor(element(by.id('select-users-view'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('select-users-view'))).toBeVisible();
-			});
-			
-			it('should show user presence modal', async() => {
-				await element(by.id('rooms-list-view-user')).tap();
-				await waitFor(element(by.id('rooms-list-view-user-presence-modal'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('rooms-list-view-user-presence-modal'))).toBeVisible();
-			});
-	
-			it('should show sidebar', async() => {
-				await element(by.id('rooms-list-view-sidebar')).tap();
-				await waitFor(element(by.id('sidebar'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('sidebar'))).toBeVisible();
-			});
+		it('should show user presence modal', async() => {
+			await element(by.id('rooms-list-view-user')).tap();
+			await waitFor(element(by.id('rooms-list-view-user-presence-modal'))).toBeVisible().withTimeout(2000);
+			await expect(element(by.id('rooms-list-view-user-presence-modal'))).toBeVisible();
+			await element(by.id('rooms-list-view-user-presence-online')).tap();
+			await waitFor(element(by.id('rooms-list-view-user-presence-modal'))).toBeNotVisible().withTimeout(5000);
+			await expect(element(by.id('rooms-list-view-user-presence-modal'))).toBeNotVisible();
 		});
 
 		it('should search room and navigate', async() => {
 			await element(by.id('rooms-list-view-list')).swipe('down');
 			await waitFor(element(by.id('rooms-list-view-search'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('rooms-list-view-search'))).toBeVisible();
-			await element(by.id('rooms-list-view-search')).tap();
 			await element(by.id('rooms-list-view-search')).replaceText('rocket.cat');
 			await waitFor(element(by.id('rooms-list-view-item-rocket.cat'))).toBeVisible().withTimeout(10000);
 			await expect(element(by.id('rooms-list-view-item-rocket.cat'))).toBeVisible();
 			await element(by.id('rooms-list-view-item-rocket.cat')).tap();
-			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(2000);
+			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
+			await expect(element(by.id('room-view'))).toBeVisible();
+			await element(by.id('header-back')).atIndex(0).tap();
+			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
+			await expect(element(by.id('rooms-list-view'))).toBeVisible();
 		});
 
 		// Usage - Sidebar
@@ -99,14 +77,19 @@ describe('Rooms list screen', () => {
 				await element(by.id('sidebar-add-server')).tap();
 				await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('new-server-view'))).toBeVisible();
+				await element(by.id('header-back')).atIndex(0).tap();
+				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
+				await expect(element(by.id('rooms-list-view'))).toBeVisible();
 			});
 	
 			it('should logout', async() => {
 				await element(by.id('rooms-list-view-sidebar')).tap();
 				await waitFor(element(by.id('sidebar'))).toBeVisible().withTimeout(2000);
 				await element(by.id('sidebar-logout')).tap();
-				await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(2000);
+				await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(5000);
 				await expect(element(by.id('welcome-view'))).toBeVisible();
+				await navigateToLogin();
+				await login();
 			});
 		});
 

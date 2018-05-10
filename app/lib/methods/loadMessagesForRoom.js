@@ -50,19 +50,24 @@ export default async function loadMessagesForRoom(...args) {
 	const { database: db } = database;
 	console.log('database', db);
 
-	return new Promise(async(resolve) => {
-		// eslint-disable-next-line
-		const data = (await (false && this.ddp.status ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args))).map(buildMessage);
-		if (data) {
-			InteractionManager.runAfterInteractions(() => {
-				try {
-					db.write(() => data.forEach(message => db.create('messages', message, true)));
-					resolve(data);
-				} catch (e) {
-					console.warn('loadMessagesForRoom', e);
-				}
-			});
+	return new Promise(async(resolve, reject) => {
+		try {
+			// eslint-disable-next-line
+			const data = (await (false && this.ddp.status ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args))).map(buildMessage);
+			if (data) {
+				InteractionManager.runAfterInteractions(() => {
+					try {
+						db.write(() => data.forEach(message => db.create('messages', message, true)));
+						resolve(data);
+					} catch (e) {
+						console.warn('loadMessagesForRoom', e);
+						return reject(e);
+					}
+				});
+			}
+			return resolve([]);
+		} catch (error) {
+			return reject(error);
 		}
-		return resolve([]);
 	});
 }

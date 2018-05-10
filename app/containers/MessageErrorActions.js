@@ -38,13 +38,23 @@ export default class MessageErrorActions extends React.Component {
 		}
 	}
 
-	handleResend = () => RocketChat.resendMessage(this.props.actionMessage._id);
+	handleResend = () => {
+		try {
+			RocketChat.resendMessage(this.props.actionMessage._id)
+		} catch (error) {
+			console.warn('handleResend', error);
+		}
+	};
 
 	handleDelete = () => {
-		database.write(() => {
-			const msg = database.objects('messages').filtered('_id = $0', this.props.actionMessage._id);
-			database.delete(msg);
-		});
+		try {
+			database.write(() => {
+				const msg = database.objects('messages').filtered('_id = $0', this.props.actionMessage._id);
+				database.delete(msg);
+			});
+		} catch (error) {
+			console.warn('handleDelete', error);
+		}
 	}
 
 	handleActionPress = (actionIndex) => {

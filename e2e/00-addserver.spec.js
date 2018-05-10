@@ -4,6 +4,7 @@ const {
 const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 
+// 36s
 describe('Add server', () => {
 	before(async() => {
 		await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(2000);
@@ -34,14 +35,12 @@ describe('Add server', () => {
 		});
 
 		it('should insert "invalidtest" and get an invalid instance', async() => {
-			await element(by.id('new-server-view-input')).tap();
-			await element(by.id('new-server-view-input')).typeText('invalidtest');
+			await element(by.id('new-server-view-input')).replaceText('invalidtest');
 			await waitFor(element(by.text(' is not a valid Rocket.Chat instance'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.text(' is not a valid Rocket.Chat instance'))).toBeVisible();
 		});
 	
 		it('should have a button to add a new server', async() => {
-			await element(by.id('new-server-view-input')).tap();
 			await element(by.id('new-server-view-input')).replaceText(data.server);
 			await waitFor(element(by.text(' is a valid Rocket.Chat instance'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('new-server-view-button'))).toBeVisible();

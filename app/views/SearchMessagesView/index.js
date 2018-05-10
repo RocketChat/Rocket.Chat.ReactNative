@@ -92,9 +92,13 @@ export default class SearchMessagesView extends LoggedView {
 			customTimeFormat='MMMM Do YYYY, h:mm:ss a'
 			onLongPress={() => {}}
 			onReactionPress={async(emoji) => {
-				await RocketChat.setReaction(emoji, item._id);
-				this.search();
-				this.forceUpdate();
+				try {
+					await RocketChat.setReaction(emoji, item._id);
+					this.search();
+					this.forceUpdate();
+				} catch (error) {
+					console.warn('onReactionPress', error);
+				}
 			}}
 		/>
 	);

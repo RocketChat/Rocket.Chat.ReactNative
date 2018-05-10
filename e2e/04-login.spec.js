@@ -5,10 +5,9 @@ const { takeScreenshot } = require('./helpers/screenshot');
 const { addServer, navigateToLogin } = require('./helpers/app');
 const data = require('./data');
 
+// 33s
 describe('Login screen', () => {
 	before(async() => {
-		await device.launchApp({ delete: true, permissions: { notifications: 'YES' } });
-		await addServer();
 		await navigateToLogin();
 	});
 
@@ -51,31 +50,28 @@ describe('Login screen', () => {
 	});
 
 	describe('Usage', () => {
-		beforeEach(async() => {
-			await device.reloadReactNative();
-			await navigateToLogin();
-		});
-
 		it('should navigate to register', async() => {
 			await element(by.id('login-view-register')).tap();
 			await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('register-view'))).toBeVisible();
+			await element(by.id('close-modal-button').withAncestor(by.id('register-view'))).tap();
 		});
 	
 		it('should navigate to forgot password', async() => {
 			await element(by.id('login-view-forgot-password')).tap();
 			await waitFor(element(by.id('forgot-password-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('forgot-password-view'))).toBeVisible();
+			await element(by.id('header-back')).tap();
 		});
 
 		it('should navigate to welcome', async() => {
 			await element(by.id('close-modal-button')).tap();
 			await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('welcome-view'))).toBeVisible();
+			await navigateToLogin();
 		});
 	
 		it('should insert wrong password and get error', async() => {
-			await element(by.id('login-view-email')).tap();
 			await element(by.id('login-view-email')).replaceText(data.user);
 			await element(by.id('login-view-password')).tap();
 			await element(by.id('login-view-password')).typeText('error');
@@ -85,9 +81,6 @@ describe('Login screen', () => {
 		});
 	
 		it('should login with success', async() => {
-			await element(by.id('login-view-email')).tap();
-			await element(by.id('login-view-email')).replaceText(data.user);
-			await element(by.id('login-view-password')).tap();
 			await element(by.id('login-view-password')).replaceText(data.password);
 			await element(by.id('login-view-submit')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);

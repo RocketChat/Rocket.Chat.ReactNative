@@ -69,9 +69,13 @@ export default class EmojiPicker extends Component {
 	}
 
 	_addFrequentlyUsed = (emoji) => {
-		database.write(() => {
-			database.create('frequentlyUsedEmoji', emoji, true);
-		});
+		try {
+			database.write(() => {
+				database.create('frequentlyUsedEmoji', emoji, true);
+			});
+		} catch (error) {
+			console.warn('_addFrequentlyUsed', error);
+		}
 	}
 	_getFrequentlyUsedCount = (content) => {
 		const emojiRow = this.frequentlyUsed.filtered('content == $0', content);

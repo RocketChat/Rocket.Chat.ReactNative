@@ -7,12 +7,16 @@ let sub;
 let newSub;
 
 const openStarredMessagesRoom = function* openStarredMessagesRoom({ rid, limit }) {
-	newSub = yield RocketChat.subscribe('starredMessages', rid, limit);
-	yield put(readyStarredMessages());
-	if (sub) {
-		sub.unsubscribe().catch(e => console.warn('openStarredMessagesRoom', e));
+	try {
+		newSub = yield RocketChat.subscribe('starredMessages', rid, limit);
+		yield put(readyStarredMessages());
+		if (sub) {
+			sub.unsubscribe().catch(e => console.warn('openStarredMessagesRoom', e));
+		}
+		sub = newSub;
+	} catch (error) {
+		console.warn('openStarredMessagesRoom', error);
 	}
-	sub = newSub;
 };
 
 const closeStarredMessagesRoom = function* closeStarredMessagesRoom() {

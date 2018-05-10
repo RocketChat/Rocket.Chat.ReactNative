@@ -162,7 +162,13 @@ export default class RoomHeaderView extends React.PureComponent {
 		<View style={styles.right}>
 			<TouchableOpacity
 				style={styles.headerButton}
-				onPress={() => RocketChat.toggleFavorite(this.state.room.rid, this.state.room.f)}
+				onPress={() => {
+					try {
+						RocketChat.toggleFavorite(this.state.room.rid, this.state.room.f);
+					} catch (error) {
+						console.warn('toggleFavorite', error);
+					}
+				}}
 				accessibilityLabel='Star room'
 				accessibilityTraits='button'
 				testID='room-view-header-star'

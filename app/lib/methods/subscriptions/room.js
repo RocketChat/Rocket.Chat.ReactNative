@@ -8,7 +8,7 @@ const subscribe = (ddp, rid) => Promise.all([
 	ddp.subscribe('stream-room-messages', rid, false),
 	ddp.subscribe('stream-notify-room', `${ rid }/typing`, false)
 ]);
-const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(e => console.warn(e)));
+const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(e => console.warn('unsubscribe room', e)));
 
 let timer = null;
 let promises;
@@ -58,7 +58,7 @@ export default async function subscribeRoom({ rid, t }) {
 		logged = this.ddp.on('logged', () => {
 			clearTimeout(timer);
 			timer = false;
-			promises = subscribe(this.ddp, rid);
+			// promises = subscribe(this.ddp, rid);
 		});
 
 		disconnected = this.ddp.on('disconnected', () => {
@@ -67,7 +67,11 @@ export default async function subscribeRoom({ rid, t }) {
 			}
 		});
 
-		promises = subscribe(this.ddp, rid);
+		try {
+			promises = subscribe(this.ddp, rid);
+		} catch (error) {
+			console.warn('subscribeRoom', error);
+		}
 	}
 
 	return {
