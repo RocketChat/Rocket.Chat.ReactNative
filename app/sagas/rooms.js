@@ -13,6 +13,9 @@ import * as NavigationService from '../containers/routes/NavigationService';
 const leaveRoom = rid => RocketChat.leaveRoom(rid);
 const eraseRoom = rid => RocketChat.eraseRoom(rid);
 
+let sub;
+let thread;
+
 // const getRooms = function* getRooms() {
 // 	return yield RocketChat.getRooms();
 // };
@@ -78,10 +81,12 @@ const watchRoomOpen = function* watchRoomOpen({ room }) {
 		// }
 
 		RocketChat.readMessages(room.rid);
-		const sub = yield RocketChat.subscribeRoom(room);
-		console.warn('watchRoomOpen')
+		if (sub) {
+			sub.stop();
+		}
+		sub = yield RocketChat.subscribeRoom(room);
 		// const subscriptions = yield Promise.all([RocketChat.subscribe('stream-room-messages', room.rid, false), RocketChat.subscribe('stream-notify-room', `${ room.rid }/typing`, false)]);
-		const thread = yield fork(usersTyping, { rid: room.rid });
+		thread = yield fork(usersTyping, { rid: room.rid });
 		yield race({
 			open: take(types.ROOM.OPEN),
 			close: take(types.ROOM.CLOSE)
@@ -141,7 +146,7 @@ const goRoomsListAndDelete = function* goRoomsListAndDelete(rid) {
 			database.delete(messages);
 			const subscription = database.objects('subscriptions').filtered('rid = $0', rid);
 			database.delete(subscription);
-		});	
+		});
 	} catch (error) {
 		console.warn('goRoomsListAndDelete', error);
 	}
@@ -149,6 +154,7 @@ const goRoomsListAndDelete = function* goRoomsListAndDelete(rid) {
 
 const handleLeaveRoom = function* handleLeaveRoom({ rid }) {
 	try {
+		sub.stop();
 		yield call(leaveRoom, rid);
 		yield goRoomsListAndDelete(rid);
 	} catch (e) {
@@ -162,6 +168,7 @@ const handleLeaveRoom = function* handleLeaveRoom({ rid }) {
 
 const handleEraseRoom = function* handleEraseRoom({ rid }) {
 	try {
+		sub.stop();
 		yield call(eraseRoom, rid);
 		yield goRoomsListAndDelete(rid);
 	} catch (e) {
