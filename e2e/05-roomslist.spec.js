@@ -5,7 +5,6 @@ const { takeScreenshot } = require('./helpers/screenshot');
 const { login, navigateToLogin } = require('./helpers/app');
 const data = require('./data');
 
-// 56s
 describe('Rooms list screen', () => {
 	describe('Render', async() => {
 		it('should have rooms list screen', async() => {
@@ -67,6 +66,8 @@ describe('Rooms list screen', () => {
 			await element(by.id('header-back')).atIndex(0).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
+			await waitFor(element(by.id('rooms-list-view-item-rocket.cat'))).toBeVisible().withTimeout(60000);
+			await expect(element(by.id('rooms-list-view-item-rocket.cat'))).toBeVisible();
 		});
 
 		// Usage - Sidebar

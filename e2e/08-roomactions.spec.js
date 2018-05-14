@@ -209,7 +209,7 @@ describe('Room actions screen', () => {
 			it('should show mentioned messages', async() => {
 				await element(by.id('room-actions-mentioned')).tap();
 				await waitFor(element(by.id('mentioned-messages-view'))).toExist().withTimeout(2000);
-				await waitFor(element(by.text(`@${ data.user } test`).withAncestor(by.id('mentioned-messages-view')))).toBeVisible().withTimeout(10000);
+				await waitFor(element(by.text(`@${ data.user } test`).withAncestor(by.id('mentioned-messages-view')))).toBeVisible().withTimeout(60000);
 				await expect(element(by.text(`@${ data.user } test`).withAncestor(by.id('mentioned-messages-view')))).toBeVisible();
 				await backToActions();
 			});
@@ -217,13 +217,13 @@ describe('Room actions screen', () => {
 			it('should show starred message and unstar it', async() => {
 				await element(by.id('room-actions-starred')).tap();
 				await waitFor(element(by.id('starred-messages-view'))).toExist().withTimeout(2000);
-				await waitFor(element(by.text(`${ data.random }message`).withAncestor(by.id('starred-messages-view')))).toBeVisible().withTimeout(10000);
+				await waitFor(element(by.text(`${ data.random }message`).withAncestor(by.id('starred-messages-view')))).toBeVisible().withTimeout(60000);
 				await expect(element(by.text(`${ data.random }message`).withAncestor(by.id('starred-messages-view')))).toBeVisible();
 				await element(by.text(`${ data.random }message`).withAncestor(by.id('starred-messages-view'))).longPress();
 				await waitFor(element(by.text('Unstar'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.text('Unstar'))).toBeVisible();
 				await element(by.text('Unstar')).tap();
-				await waitFor(element(by.text(`${ data.random }message`).withAncestor(by.id('starred-messages-view')))).toBeNotVisible().withTimeout(5000);
+				await waitFor(element(by.text(`${ data.random }message`).withAncestor(by.id('starred-messages-view')))).toBeNotVisible().withTimeout(60000);
 				await expect(element(by.text(`${ data.random }message`).withAncestor(by.id('starred-messages-view')))).toBeNotVisible();
 				await backToActions();
 			});
@@ -232,13 +232,13 @@ describe('Room actions screen', () => {
 				await waitFor(element(by.id('room-actions-pinned'))).toBeVisible().whileElement(by.id('room-actions-list')).scroll(scrollDown, 'down');
 				await element(by.id('room-actions-pinned')).tap();
 				await waitFor(element(by.id('pinned-messages-view'))).toExist().withTimeout(2000);
-				await waitFor(element(by.text(`${ data.random }edited`).withAncestor(by.id('pinned-messages-view')))).toBeVisible().withTimeout(10000);
+				await waitFor(element(by.text(`${ data.random }edited`).withAncestor(by.id('pinned-messages-view'))).atIndex(0)).toBeVisible().withTimeout(60000);
 				await expect(element(by.text(`${ data.random }edited`).withAncestor(by.id('pinned-messages-view')))).toBeVisible();
 				await element(by.text(`${ data.random }edited`).withAncestor(by.id('pinned-messages-view'))).longPress();
 				await waitFor(element(by.text('Unpin'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.text('Unpin'))).toBeVisible();
 				await element(by.text('Unpin')).tap();
-				await waitFor(element(by.text(`${ data.random }edited`).withAncestor(by.id('pinned-messages-view')))).toBeNotVisible().withTimeout(5000);
+				await waitFor(element(by.text(`${ data.random }edited`).withAncestor(by.id('pinned-messages-view'))).atIndex(0)).toBeNotVisible().withTimeout(60000);
 				await expect(element(by.text(`${ data.random }edited`).withAncestor(by.id('pinned-messages-view')))).toBeNotVisible();
 				await backToActions();
 			});
@@ -249,7 +249,7 @@ describe('Room actions screen', () => {
 				await expect(element(by.id('search-message-view-input'))).toBeVisible();
 				await element(by.id('search-message-view-input')).tap();
 				await element(by.id('search-message-view-input')).replaceText(`/${ data.random }message/`);
-				await waitFor(element(by.text(`${ data.random }message`).withAncestor(by.id('search-messages-view'))).atIndex(0)).toBeVisible().withTimeout(10000);
+				await waitFor(element(by.text(`${ data.random }message`).withAncestor(by.id('search-messages-view'))).atIndex(0)).toBeVisible().withTimeout(60000);
 				await expect(element(by.text(`${ data.random }message`).withAncestor(by.id('search-messages-view'))).atIndex(0)).toBeVisible();
 				await backToActions();
 			});
@@ -258,10 +258,10 @@ describe('Room actions screen', () => {
 				await waitFor(element(by.id('room-actions-notifications'))).toBeVisible().whileElement(by.id('room-actions-list')).scroll(scrollDown, 'down');
 				await expect(element(by.text('Disable notifications'))).toBeVisible();
 				await element(by.id('room-actions-notifications')).tap();
-				await waitFor(element(by.text('Enable notifications'))).toBeVisible().withTimeout(10000);
+				await waitFor(element(by.text('Enable notifications'))).toBeVisible().withTimeout(60000);
 				await expect(element(by.text('Enable notifications'))).toBeVisible();
 				await element(by.id('room-actions-notifications')).tap();
-				await waitFor(element(by.text('Disable notifications'))).toBeVisible().withTimeout(10000);
+				await waitFor(element(by.text('Disable notifications'))).toBeVisible().withTimeout(60000);
 				await expect(element(by.text('Disable notifications'))).toBeVisible();
 			});
 
@@ -280,7 +280,7 @@ describe('Room actions screen', () => {
 				await waitFor(element(by.text('Yes, leave it!'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.text('Yes, leave it!'))).toBeVisible();
 				await element(by.text('Yes, leave it!')).tap();
-				await waitFor(element(by.text('You are the last owner. Please set new owner before leaving the room.'))).toBeVisible().withTimeout(10000);
+				await waitFor(element(by.text('You are the last owner. Please set new owner before leaving the room.'))).toBeVisible().withTimeout(60000);
 				await expect(element(by.text('You are the last owner. Please set new owner before leaving the room.'))).toBeVisible();
 				await takeScreenshot();
 				await element(by.text('OK')).tap();
@@ -289,23 +289,23 @@ describe('Room actions screen', () => {
 
 			describe('Add User', async() => {
 				it('should add user to the room', async() => {
-					const user = 'diego.detox';
+					const user = 'diego.detox'; // TODO: needs other user (maybe already created like rocket.cat)
 					await waitFor(element(by.id('room-actions-add-user'))).toBeVisible().whileElement(by.id('room-actions-list')).scroll(scrollDown, 'up');
 					await element(by.id('room-actions-add-user')).tap();
 					await element(by.id('select-users-view-search')).tap();
 					await element(by.id('select-users-view-search')).replaceText(user);
-					await waitFor(element(by.id(`select-users-view-item-${ user }`))).toBeVisible().withTimeout(10000);
+					await waitFor(element(by.id(`select-users-view-item-${ user }`))).toBeVisible().withTimeout(60000);
 					await expect(element(by.id(`select-users-view-item-${ user }`))).toBeVisible();
 					await element(by.id(`select-users-view-item-${ user }`)).tap();
 					await waitFor(element(by.id(`selected-user-${ user }`))).toBeVisible().withTimeout(5000);
 					await expect(element(by.id(`selected-user-${ user }`))).toBeVisible();
 					await element(by.id('selected-users-view-submit')).tap();
-					await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(10000);
+					await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
 					await element(by.id('room-view-header-actions')).tap();
 					await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
 					await element(by.id('room-actions-members')).tap();
 					await element(by.id('room-members-view-toggle-status')).tap();
-					await waitFor(element(by.id(`room-members-view-item-${ user }`))).toBeVisible().withTimeout(10000);
+					await waitFor(element(by.id(`room-members-view-item-${ user }`))).toBeVisible().withTimeout(60000);
 					await expect(element(by.id(`room-members-view-item-${ user }`))).toBeVisible();
 					await backToActions();
 				});
@@ -325,24 +325,24 @@ describe('Room actions screen', () => {
 
 				it('should show/hide all users', async() => {
 					await element(by.id('room-members-view-toggle-status')).tap();
-					await waitFor(element(by.id(`room-members-view-item-${ user }`))).toBeVisible().withTimeout(10000);
+					await waitFor(element(by.id(`room-members-view-item-${ user }`))).toBeVisible().withTimeout(60000);
 					await expect(element(by.id(`room-members-view-item-${ user }`))).toBeVisible();
 					await element(by.id('room-members-view-toggle-status')).tap();
-					await waitFor(element(by.id(`room-members-view-item-${ user }`))).toBeNotVisible().withTimeout(10000);
+					await waitFor(element(by.id(`room-members-view-item-${ user }`))).toBeNotVisible().withTimeout(60000);
 					await expect(element(by.id(`room-members-view-item-${ user }`))).toBeNotVisible();
 				});
 
 				it('should filter user', async() => {
 					await element(by.id('room-members-view-toggle-status')).tap();
-					await waitFor(element(by.id(`room-members-view-item-${ user }`))).toBeVisible().withTimeout(10000);
+					await waitFor(element(by.id(`room-members-view-item-${ user }`))).toBeVisible().withTimeout(60000);
 					await expect(element(by.id(`room-members-view-item-${ user }`))).toBeVisible();
 					await element(by.id('room-members-view-search')).replaceText('rocket');
-					await waitFor(element(by.id(`room-members-view-item-${ user }`))).toBeNotVisible().withTimeout(10000);
+					await waitFor(element(by.id(`room-members-view-item-${ user }`))).toBeNotVisible().withTimeout(60000);
 					await expect(element(by.id(`room-members-view-item-${ user }`))).toBeNotVisible();
 					await element(by.id('room-members-view-search')).tap();
 					await element(by.id('room-members-view-search')).clearText('');
-					await waitFor(element(by.id(`room-members-view-item-${ user }`))).toBeVisible().withTimeout(10000);
-					
+					await waitFor(element(by.id(`room-members-view-item-${ user }`))).toBeVisible().withTimeout(60000);
+					await expect(element(by.id(`room-members-view-item-${ user }`))).toBeVisible();
 				});
 
 				it('should mute user', async() => {
@@ -350,26 +350,27 @@ describe('Room actions screen', () => {
 					await waitFor(element(by.text('Mute'))).toBeVisible().withTimeout(5000);
 					await expect(element(by.text('Mute'))).toBeVisible();
 					await element(by.text('Mute')).tap();
-					await waitFor(element(by.text('User has been muted!'))).toBeVisible().withTimeout(10000);
+					await waitFor(element(by.text('User has been muted!'))).toBeVisible().withTimeout(60000);
 					await expect(element(by.text('User has been muted!'))).toBeVisible();
-					await waitFor(element(by.text('User has been muted!'))).toBeNotVisible().withTimeout(5000);
+					await waitFor(element(by.text('User has been muted!'))).toBeNotVisible().withTimeout(60000);
 					await expect(element(by.text('User has been muted!'))).toBeNotVisible();
 					await element(by.id(`room-members-view-item-${ user }`)).longPress();
 					await waitFor(element(by.text('Unmute'))).toBeVisible().withTimeout(2000);
 					await expect(element(by.text('Unmute'))).toBeVisible();
 					await element(by.text('Unmute')).tap();
-					await waitFor(element(by.text('User has been unmuted!'))).toBeVisible().withTimeout(10000);
+					await waitFor(element(by.text('User has been unmuted!'))).toBeVisible().withTimeout(60000);
 					await expect(element(by.text('User has been unmuted!'))).toBeVisible();
 					await waitFor(element(by.text('User has been unmuted!'))).toBeNotVisible().withTimeout(5000);
 					await expect(element(by.text('User has been unmuted!'))).toBeNotVisible();
 				});
 
 				it('should navigate to direct room', async() => {
-					await waitFor(element(by.id(`room-members-view-item-${ data.user }`))).toExist().withTimeout(5000);
-					await element(by.id(`room-members-view-item-${ data.user }`)).tap();
-					await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(10000);
+					await waitFor(element(by.id(`room-members-view-item-${ user }`))).toExist().withTimeout(5000);
+					await element(by.id(`room-members-view-item-${ user }`)).tap();
+					await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
 					await expect(element(by.id('room-view'))).toBeVisible();
-					await expect(element(by.id('room-view-title'))).toHaveText(data.user);
+					await waitFor(element(by.id('room-view-title'))).toHaveText(user).withTimeout(60000);
+					await expect(element(by.id('room-view-title'))).toHaveText(user);
 					await element(by.id('header-back')).atIndex(0).tap();
 					await waitFor(element(by.id('room-list-view'))).toBeVisible().withTimeout(2000);
 				});
@@ -388,10 +389,10 @@ describe('Room actions screen', () => {
 			it('should block/unblock user', async() => {
 				await waitFor(element(by.id('room-actions-block-user'))).toBeVisible().whileElement(by.id('room-actions-list')).scroll(scrollDown, 'down');
 				await element(by.id('room-actions-block-user')).tap();
-				await waitFor(element(by.text('Unblock user'))).toBeVisible().withTimeout(5000);
+				await waitFor(element(by.text('Unblock user'))).toBeVisible().withTimeout(60000);
 				await expect(element(by.text('Unblock user'))).toBeVisible();
 				await element(by.id('room-actions-block-user')).tap();
-				await waitFor(element(by.text('Block user'))).toBeVisible().withTimeout(5000);
+				await waitFor(element(by.text('Block user'))).toBeVisible().withTimeout(60000);
 				await expect(element(by.text('Block user'))).toBeVisible();
 			});
 

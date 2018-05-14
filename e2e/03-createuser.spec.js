@@ -11,7 +11,6 @@ async function navigateToRegister() {
     await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
 }
 
-// 49s
 describe('Create user screen', () => {
 	before(async() => {
 		await device.reloadReactNative();

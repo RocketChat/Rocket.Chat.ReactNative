@@ -5,7 +5,6 @@ const { takeScreenshot } = require('./helpers/screenshot');
 const { addServer, navigateToLogin } = require('./helpers/app');
 const data = require('./data');
 
-// 33s
 describe('Login screen', () => {
 	before(async() => {
 		await navigateToLogin();

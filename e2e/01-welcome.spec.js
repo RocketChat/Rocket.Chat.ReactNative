@@ -3,7 +3,6 @@ const {
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
 
-// 17s
 describe('Welcome screen', () => {
 	describe('Render', async() => {
 		it('should have welcome screen', async() => {

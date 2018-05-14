@@ -76,14 +76,6 @@ export default class RoomView extends LoggedView {
 
 	async componentDidMount() {
 		await this.updateRoom();
-		await this.props.openRoom({
-			...this.state.room
-		});
-		if (this.state.room.alert || this.state.room.unread || this.state.room.userMentions) {
-			this.props.setLastOpen(this.state.room.ls);
-		} else {
-			this.props.setLastOpen(null);
-		}
 		this.rooms.addListener(this.updateRoom);
 	}
 	shouldComponentUpdate(nextProps, nextState) {
@@ -129,7 +121,18 @@ export default class RoomView extends LoggedView {
 
 	updateRoom = async() => {
 		if (this.rooms.length > 0) {
+			const { room: prevRoom } = this.state;
 			await this.setState({ room: JSON.parse(JSON.stringify(this.rooms[0])) });
+			if (!prevRoom.rid) {
+				await this.props.openRoom({
+					...this.state.room
+				});
+				if (this.state.room.alert || this.state.room.unread || this.state.room.userMentions) {
+					this.props.setLastOpen(this.state.room.ls);
+				} else {
+					this.props.setLastOpen(null);
+				}
+			}
 		}
 	}
 

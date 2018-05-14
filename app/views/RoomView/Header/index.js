@@ -107,7 +107,7 @@ export default class RoomHeaderView extends React.PureComponent {
 
 	renderCenter() {
 		if (!this.state.room.name) {
-			return null;
+			return <View style={styles.titleContainer} />;
 		}
 
 		let accessibilityLabel = this.state.room.name;

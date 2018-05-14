@@ -4,7 +4,6 @@ const {
 const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 
-// 36s
 describe('Add server', () => {
 	before(async() => {
 		await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(2000);

@@ -208,7 +208,7 @@ describe('Room screen', () => {
 				await element(by.text('Edit')).tap();
 				await element(by.id('messagebox-input')).typeText('ed');
 				await element(by.id('messagebox-send-message')).tap();
-				await waitFor(element(by.text(`${ data.random }edited`))).toBeVisible().withTimeout(5000);
+				await waitFor(element(by.text(`${ data.random }edited`))).toBeVisible().withTimeout(60000);
 				await expect(element(by.text(`${ data.random }edited`))).toBeVisible();
 			});
 
@@ -267,7 +267,7 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('reaction-picker-grinning'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('reaction-picker-grinning'))).toBeVisible();
 				await element(by.id('reaction-picker-grinning')).tap();
-				await waitFor(element(by.id('message-reaction-:grinning:'))).toBeVisible().withTimeout(5000);
+				await waitFor(element(by.id('message-reaction-:grinning:'))).toBeVisible().withTimeout(60000);
 				await expect(element(by.id('message-reaction-:grinning:'))).toBeVisible();
 			});
 
@@ -280,12 +280,12 @@ describe('Room screen', () => {
 				await element(by.id('reaction-picker-😃')).tap();
 				await waitFor(element(by.id('reaction-picker-grimacing'))).toBeVisible().withTimeout(2000);
 				await element(by.id('reaction-picker-grimacing')).tap();
-				await waitFor(element(by.id('message-reaction-:grimacing:'))).toBeVisible().withTimeout(5000);
+				await waitFor(element(by.id('message-reaction-:grimacing:'))).toBeVisible().withTimeout(60000);
 			});
 
 			it('should remove reaction', async() => {
 				await element(by.id('message-reaction-:grinning:')).tap();
-				await waitFor(element(by.id('message-reaction-:grinning:'))).toBeNotVisible().withTimeout(5000);
+				await waitFor(element(by.id('message-reaction-:grinning:'))).toBeNotVisible().withTimeout(60000);
 				await expect(element(by.id('message-reaction-:grinning:'))).toBeNotVisible();
 			});
 

@@ -112,7 +112,7 @@ export default class MentionedMessagesView extends LoggedView {
 		} else {
 			try {
 				const room = await RocketChat.createDirectMessage(item.username);
-				goRoom({ rid: room.rid });
+				goRoom({ rid: room.rid, name: item.username });
 			} catch (error) {
 				console.warn('onPressUser', error);
 			}

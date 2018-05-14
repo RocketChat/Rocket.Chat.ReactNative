@@ -5,7 +5,6 @@ const { takeScreenshot } = require('./helpers/screenshot');
 const { addServer, navigateToLogin } = require('./helpers/app');
 const data = require('./data');
 
-// 21s
 describe('Forgot password screen', () => {
 	before(async() => {
 		await element(by.id('welcome-view-login')).tap();
