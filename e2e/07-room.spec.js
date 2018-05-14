@@ -218,6 +218,8 @@ describe('Room screen', () => {
 				await expect(element(by.text('Messages actions'))).toBeVisible();
 				await element(by.text('Copy Permalink')).tap();
 				await expect(element(by.text('Permalink copied to clipboard!'))).toBeVisible();
+				await waitFor(element(by.text('Permalink copied to clipboard!'))).toBeNotVisible().withTimeout(5000);
+				
 				// TODO: test clipboard
 			});
 
@@ -227,6 +229,7 @@ describe('Room screen', () => {
 				await expect(element(by.text('Messages actions'))).toBeVisible();
 				await element(by.text('Copy Message')).tap();
 				await expect(element(by.text('Copied to clipboard!'))).toBeVisible();
+				await waitFor(element(by.text('Copied to clipboard!'))).toBeNotVisible().withTimeout(5000);
 				// TODO: test clipboard
 			});
 

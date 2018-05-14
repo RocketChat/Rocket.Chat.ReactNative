@@ -77,7 +77,9 @@ describe('Create room screen', () => {
 			await expect(element(by.id('room-view'))).toBeVisible();
 			await expect(element(by.id('room-view-title'))).toHaveText(`private${ data.random }`);
 			await element(by.id('header-back')).tap();
-			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
+			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
+			await waitFor(element(by.id(`rooms-list-view-item-private${ data.random }`))).toBeVisible().withTimeout(30000);
+			await expect(element(by.id(`rooms-list-view-item-private${ data.random }`))).toBeVisible();
 		});
 
 		it('should create public room', async() => {
@@ -93,7 +95,9 @@ describe('Create room screen', () => {
 			await expect(element(by.id('room-view'))).toBeVisible();
 			await expect(element(by.id('room-view-title'))).toHaveText(`public${ data.random }`);
 			await element(by.id('header-back')).tap();
-			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
+			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
+			await waitFor(element(by.id(`rooms-list-view-item-public${ data.random }`))).toBeVisible().withTimeout(30000);
+			await expect(element(by.id(`rooms-list-view-item-public${ data.random }`))).toBeVisible();
 		});
 
 		afterEach(async() => {
