@@ -3,7 +3,6 @@ import { InteractionManager } from 'react-native';
 import { get } from './helpers/rest';
 import buildMessage from './helpers/buildMessage';
 import database from '../realm';
-import { rejects } from 'assert';
 
 
 async function loadMissedMessagesRest({ rid: roomId, lastOpen: lastUpdate }) {

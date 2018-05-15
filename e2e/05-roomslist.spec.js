@@ -63,6 +63,8 @@ describe('Rooms list screen', () => {
 			await element(by.id('rooms-list-view-item-rocket.cat')).tap();
 			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 			await expect(element(by.id('room-view'))).toBeVisible();
+			await waitFor(element(by.id('room-view-title'))).toHaveText('rocket.cat').withTimeout(60000);
+			await expect(element(by.id('room-view-title'))).toHaveText('rocket.cat');
 			await element(by.id('header-back')).atIndex(0).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
@@ -87,7 +89,7 @@ describe('Rooms list screen', () => {
 				await element(by.id('rooms-list-view-sidebar')).tap();
 				await waitFor(element(by.id('sidebar'))).toBeVisible().withTimeout(2000);
 				await element(by.id('sidebar-logout')).tap();
-				await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(5000);
+				await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(60000);
 				await expect(element(by.id('welcome-view'))).toBeVisible();
 				await navigateToLogin();
 				await login();

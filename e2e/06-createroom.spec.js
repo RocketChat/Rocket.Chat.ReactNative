@@ -4,7 +4,6 @@ const {
 const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 
-// 59s
 describe('Create room screen', () => {
 	before(async() => {
 		await element(by.id('rooms-list-view-create-channel')).tap();
@@ -65,7 +64,7 @@ describe('Create room screen', () => {
 		it('should get invalid room', async() => {
 			await element(by.id('create-channel-name')).replaceText('general');
 			await element(by.id('create-channel-submit')).tap();
-			await waitFor(element(by.id('create-channel-error'))).toBeVisible().withTimeout(10000);
+			await waitFor(element(by.id('create-channel-error'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('create-channel-error'))).toBeVisible();
 		});
 
@@ -73,8 +72,9 @@ describe('Create room screen', () => {
 			await element(by.id('create-channel-name')).replaceText(`private${ data.random }`);
 			await element(by.id('create-channel-type')).tap();
 			await element(by.id('create-channel-submit')).tap();
-			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(10000);
+			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('room-view'))).toBeVisible();
+			await waitFor(element(by.id('room-view-title'))).toHaveText(`private${ data.random }`).withTimeout(60000);
 			await expect(element(by.id('room-view-title'))).toHaveText(`private${ data.random }`);
 			await element(by.id('header-back')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
@@ -91,8 +91,9 @@ describe('Create room screen', () => {
 			await waitFor(element(by.id('create-channel-view'))).toBeVisible().withTimeout(5000);
 			await element(by.id('create-channel-name')).replaceText(`public${ data.random }`);
 			await element(by.id('create-channel-submit')).tap();
-			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(10000);
+			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('room-view'))).toBeVisible();
+			await waitFor(element(by.id('room-view-title'))).toHaveText(`public${ data.random }`).withTimeout(60000);
 			await expect(element(by.id('room-view-title'))).toHaveText(`public${ data.random }`);
 			await element(by.id('header-back')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
