@@ -81,8 +81,7 @@ export const SERVER = createRequestTypes('SERVER', [
 	...defaultTypes,
 	'SELECT',
 	'CHANGED',
-	'ADD',
-	'GOTO_ADD'
+	'ADD'
 ]);
 export const METEOR = createRequestTypes('METEOR_CONNECT', [...defaultTypes, 'DISCONNECT', 'DISCONNECT_BY_USER']);
 export const LOGOUT = 'LOGOUT'; // logout is always success
