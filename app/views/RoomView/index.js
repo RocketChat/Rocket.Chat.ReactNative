@@ -27,8 +27,7 @@ import styles from './styles';
 		Message_TimeFormat: state.settings.Message_TimeFormat,
 		loading: state.messages.isFetching,
 		user: state.login.user,
-		actionMessage: state.messages.actionMessage,
-		layoutAnimation: state.room.layoutAnimation
+		actionMessage: state.messages.actionMessage
 	}),
 	dispatch => ({
 		actions: bindActionCreators(actions, dispatch),

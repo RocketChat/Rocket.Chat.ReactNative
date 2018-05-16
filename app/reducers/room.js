@@ -1,8 +1,7 @@
 import * as types from '../actions/actionsTypes';
 
 const initialState = {
-	usersTyping: [],
-	layoutAnimation: new Date()
+	usersTyping: []
 };
 
 export default function room(state = initialState, action) {
@@ -31,11 +30,6 @@ export default function room(state = initialState, action) {
 			return {
 				...state,
 				usersTyping: [...state.usersTyping.filter(user => user !== action.username)]
-			};
-		case types.ROOM.LAYOUT_ANIMATION:
-			return {
-				...state,
-				layoutAnimation: new Date()
 			};
 		default:
 			return state;

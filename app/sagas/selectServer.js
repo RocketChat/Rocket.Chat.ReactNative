@@ -60,15 +60,9 @@ const addServer = function* addServer({ server }) {
 	navigate('LoginSignup');
 };
 
-const handleGotoAddServer = function* handleGotoAddServer() {
-	yield call(AsyncStorage.removeItem, RocketChat.TOKEN_KEY);
-	yield call(navigate, 'AddServer');
-};
-
 const root = function* root() {
 	yield takeLatest(SERVER.REQUEST, validateServer);
 	yield takeLatest(SERVER.SELECT, selectServer);
 	yield takeLatest(SERVER.ADD, addServer);
-	yield takeLatest(SERVER.GOTO_ADD, handleGotoAddServer);
 };
 export default root;

@@ -115,6 +115,7 @@ export default class NewServerView extends LoggedView {
 							placeholder={this.state.defaultServer}
 							returnKeyType='done'
 							onChangeText={this.onChangeText}
+							onSubmitEditing={this.submit}
 						/>
 						{this.renderValidation()}
 						<View style={[styles.alignItemsFlexStart, { marginTop: 20 }]}>
