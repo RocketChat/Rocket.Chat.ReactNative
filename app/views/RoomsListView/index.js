@@ -124,7 +124,7 @@ export default class RoomsListView extends LoggedView {
 
 	_onPressItem = async(item = {}) => {
 		if (!item.search) {
-			return goRoom({ rid: item.rid });
+			return goRoom({ rid: item.rid, name: item.name });
 		}
 		if (item.t === 'd') {
 			// if user is using the search we need first to join/create room
