@@ -49,8 +49,6 @@ export default class RoomsListView extends LoggedView {
 		this.props.navigation.setParams({
 			createChannel: () => this._createChannel()
 		});
-
-		this.updateState();
 	}
 
 	componentWillReceiveProps(props) {
