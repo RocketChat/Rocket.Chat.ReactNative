@@ -45,10 +45,6 @@ export default class RoomsListView extends LoggedView {
 
 	componentDidMount() {
 		this.data.addListener(this.updateState);
-
-		this.props.navigation.setParams({
-			createChannel: () => this._createChannel()
-		});
 	}
 
 	componentWillReceiveProps(props) {
@@ -136,7 +132,7 @@ export default class RoomsListView extends LoggedView {
 		return goRoom(item);
 	}
 
-	_createChannel() {
+	createChannel() {
 		this.props.navigation.navigate({
 			key: 'SelectedUsers',
 			routeName: 'SelectedUsers',
@@ -198,7 +194,7 @@ export default class RoomsListView extends LoggedView {
 
 	renderCreateButtons = () => (
 		<ActionButton buttonColor='rgba(231,76,60,1)'>
-			<ActionButton.Item buttonColor='#9b59b6' title='Create Channel' onPress={() => { this._createChannel(); }} >
+			<ActionButton.Item buttonColor='#9b59b6' title='Create Channel' onPress={() => { this.createChannel(); }} >
 				<Icon name='md-chatbubbles' style={styles.actionButtonIcon} />
 			</ActionButton.Item>
 		</ActionButton>
