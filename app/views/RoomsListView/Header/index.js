@@ -241,6 +241,8 @@ export default class RoomsListHeaderView extends React.PureComponent {
 					placeholder='Search'
 					clearButtonMode='while-editing'
 					blurOnSubmit
+					autoCorrect={false}
+					autoCapitalize='none'
 				/>
 			</View>
 		);

@@ -86,7 +86,7 @@ export default class RoomsListView extends LoggedView {
 
 		let data = database.objects('subscriptions').filtered('name CONTAINS[c] $0', searchText).slice(0, 7);
 
-		const usernames = data.map(sub => sub.map);
+		const usernames = data.map(sub => sub.name);
 		try {
 			if (data.length < 7) {
 				if (this.oldPromise) {
@@ -158,6 +158,8 @@ export default class RoomsListView extends LoggedView {
 				placeholder='Search'
 				clearButtonMode='while-editing'
 				blurOnSubmit
+				autoCorrect={false}
+				autoCapitalize='none'
 			/>
 		</View>
 	);

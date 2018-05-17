@@ -229,6 +229,8 @@ export default class SelectedUsersView extends LoggedView {
 				placeholder='Search'
 				clearButtonMode='while-editing'
 				blurOnSubmit
+				autoCorrect={false}
+				autoCapitalize='none'
 			/>
 		</View>
 	);
