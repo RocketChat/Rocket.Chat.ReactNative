@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
-
+import { Answers } from 'react-native-fabric';
 import LoggedView from '../View';
 import RCTextInput from '../../containers/TextInput';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
@@ -92,9 +92,16 @@ export default class SearchMessagesView extends LoggedView {
 			customTimeFormat='MMMM Do YYYY, h:mm:ss a'
 			onLongPress={() => {}}
 			onReactionPress={async(emoji) => {
-				await RocketChat.setReaction(emoji, item._id);
-				this.search();
-				this.forceUpdate();
+				try {
+					await RocketChat.setReaction(emoji, item._id);
+					this.search();
+					this.forceUpdate();
+				} catch (e) {
+					Answers.logCustom('error', e);
+					if (__DEV__) {
+						console.warn('onReactionPress', e);
+					}
+				}
 			}}
 		/>
 	);

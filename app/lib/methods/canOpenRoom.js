@@ -1,3 +1,4 @@
+import { Answers } from 'react-native-fabric';
 import { post } from './helpers/rest';
 import database from '../realm';
 
@@ -45,7 +46,15 @@ export default async function canOpenRoom({ rid, path }) {
 	}
 
 	const [type, name] = path.split('/');
-	// eslint-disable-next-line
-	const data = await (this.ddp && this.ddp.status ? canOpenRoomDDP.call(this, { rid, type, name }) : canOpenRoomREST.call(this, { type, rid }));
-	return data;
+
+	try {
+		// eslint-disable-next-line
+		const data = await (this.ddp && this.ddp.status ? canOpenRoomDDP.call(this, { rid, type, name }) : canOpenRoomREST.call(this, { type, rid }));
+		return data;
+	} catch (e) {
+		Answers.logCustom('error', e);
+		if (__DEV__) {
+			console.warn('canOpenRoom', e);
+		}
+	}
 }

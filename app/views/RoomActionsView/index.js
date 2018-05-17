@@ -4,6 +4,7 @@ import { View, SectionList, Text, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
+import { Answers } from 'react-native-fabric';
 
 import LoggedView from '../View';
 import styles from './styles';
@@ -249,7 +250,14 @@ export default class RoomActionsView extends LoggedView {
 	toggleBlockUser = () => {
 		const { rid, blocked } = this.state.room;
 		const { member } = this.state;
-		RocketChat.toggleBlockUser(rid, member._id, !blocked);
+		try {
+			RocketChat.toggleBlockUser(rid, member._id, !blocked);
+		} catch (e) {
+			Answers.logCustom('error', e);
+			if (__DEV__) {
+				console.warn('toggleBlockUser', e);
+			}
+		}
 	}
 
 	leaveChannel = () => {
@@ -273,7 +281,14 @@ export default class RoomActionsView extends LoggedView {
 
 	toggleNotifications = () => {
 		const { room } = this.state;
-		RocketChat.saveNotificationSettings(room.rid, 'mobilePushNotifications', room.notifications ? 'default' : 'nothing');
+		try {
+			RocketChat.saveNotificationSettings(room.rid, 'mobilePushNotifications', room.notifications ? 'default' : 'nothing');
+		} catch (e) {
+			Answers.logCustom('error', e);
+			if (__DEV__) {
+				console.warn('toggleNotifications', e);
+			}
+		}
 	}
 
 	renderRoomInfo = ({ item }) => {

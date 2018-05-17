@@ -1,4 +1,5 @@
 import { InteractionManager } from 'react-native';
+import { Answers } from 'react-native-fabric';
 import reduxStore from '../createStore';
 // import { get } from './helpers/rest';
 
@@ -12,12 +13,19 @@ const getLastMessage = () => {
 
 
 export default async function() {
-	const lastMessage = getLastMessage();
-	let emojis = await this.ddp.call('listEmojiCustom');
-	emojis = emojis.filter(emoji => !lastMessage || emoji._updatedAt > lastMessage);
-	emojis = this._prepareEmojis(emojis);
-	InteractionManager.runAfterInteractions(() => database.write(() => {
-		emojis.forEach(emoji => database.create('customEmojis', emoji, true));
-	}));
-	reduxStore.dispatch(actions.setCustomEmojis(this.parseEmojis(emojis)));
+	try {
+		const lastMessage = getLastMessage();
+		let emojis = await this.ddp.call('listEmojiCustom');
+		emojis = emojis.filter(emoji => !lastMessage || emoji._updatedAt > lastMessage);
+		emojis = this._prepareEmojis(emojis);
+		InteractionManager.runAfterInteractions(() => database.write(() => {
+			emojis.forEach(emoji => database.create('customEmojis', emoji, true));
+		}));
+		reduxStore.dispatch(actions.setCustomEmojis(this.parseEmojis(emojis)));
+	} catch (e) {
+		Answers.logCustom('error', e);
+		if (__DEV__) {
+			console.warn('getCustomEmojis', e);
+		}
+	}
 }

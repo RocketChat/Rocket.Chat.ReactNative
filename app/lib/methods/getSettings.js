@@ -1,4 +1,5 @@
 import { InteractionManager } from 'react-native';
+import { Answers } from 'react-native-fabric';
 import reduxStore from '../createStore';
 // import { get } from './helpers/rest';
 
@@ -11,14 +12,20 @@ const getLastMessage = () => {
 };
 
 export default async function() {
-	const lastMessage = getLastMessage();
-	const result = await (!lastMessage ? this.ddp.call('public-settings/get') : this.ddp.call('public-settings/get', new Date(lastMessage)));
-	console.log('getSettings', lastMessage, result);
+	try {
+		const lastMessage = getLastMessage();
+		const result = await (!lastMessage ? this.ddp.call('public-settings/get') : this.ddp.call('public-settings/get', new Date(lastMessage)));
 
-	const filteredSettings = this._prepareSettings(this._filterSettings(result.update || result));
+		const filteredSettings = this._prepareSettings(this._filterSettings(result.update || result));
 
-	InteractionManager.runAfterInteractions(() =>
-		database.write(() =>
-			filteredSettings.forEach(setting => database.create('settings', setting, true))));
-	reduxStore.dispatch(actions.addSettings(this.parseSettings(filteredSettings)));
+		InteractionManager.runAfterInteractions(() =>
+			database.write(() =>
+				filteredSettings.forEach(setting => database.create('settings', setting, true))));
+		reduxStore.dispatch(actions.addSettings(this.parseSettings(filteredSettings)));	
+	} catch (e) {
+		Answers.logCustom('error', e);
+		if (__DEV__) {
+			console.warn('getSettings', e);
+		}
+	}
 }

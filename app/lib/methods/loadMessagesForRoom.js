@@ -1,5 +1,5 @@
 import { InteractionManager } from 'react-native';
-
+import { Answers } from 'react-native-fabric';
 import { get } from './helpers/rest';
 import buildMessage from './helpers/buildMessage';
 import database from '../realm';
@@ -46,23 +46,25 @@ async function loadMessagesForRoomDDP(...args) {
 }
 
 export default async function loadMessagesForRoom(...args) {
-	console.log('aqui');
 	const { database: db } = database;
-	console.log('database', db);
 
-	return new Promise(async(resolve) => {
-		// eslint-disable-next-line
-		const data = (await (false && this.ddp.status ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args))).map(buildMessage);
-		if (data) {
-			InteractionManager.runAfterInteractions(() => {
-				try {
+	return new Promise(async(resolve, reject) => {
+		try {
+			// eslint-disable-next-line
+			const data = (await (false && this.ddp.status ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args))).map(buildMessage);
+			if (data) {
+				InteractionManager.runAfterInteractions(() => {
 					db.write(() => data.forEach(message => db.create('messages', message, true)));
-					resolve(data);
-				} catch (e) {
-					console.warn('loadMessagesForRoom', e);
-				}
-			});
+					return resolve(data);
+				});
+			}
+			return resolve([]);
+		} catch (e) {
+			Answers.logCustom('error', e);
+			if (__DEV__) {
+				console.warn('loadMessagesForRoom', e);
+			}
+			reject(e);
 		}
-		return resolve([]);
 	});
 }

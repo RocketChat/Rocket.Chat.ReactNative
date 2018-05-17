@@ -101,7 +101,7 @@ export default class SelectedUsersView extends LoggedView {
 							justifyContent: 'center'
 						}}
 						onPress={() => params.nextAction()}
-						accessibilityLabel='Create channel'
+						accessibilityLabel='Submit'
 						accessibilityTraits='button'
 					>
 						<Icon

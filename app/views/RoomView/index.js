@@ -4,6 +4,7 @@ import { Text, View, Button } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import equal from 'deep-equal';
+import { Answers } from 'react-native-fabric';
 
 import LoggedView from '../View';
 import { List } from './ListView';
@@ -115,11 +116,18 @@ export default class RoomView extends LoggedView {
 	}
 
 	onReactionPress = (shortname, messageId) => {
-		if (!messageId) {
-			RocketChat.setReaction(shortname, this.props.actionMessage._id);
-			return this.props.toggleReactionPicker();
+		try {
+			if (!messageId) {
+				RocketChat.setReaction(shortname, this.props.actionMessage._id);
+				return this.props.toggleReactionPicker();
+			}
+			RocketChat.setReaction(shortname, messageId);
+		} catch (e) {
+			Answers.logCustom('error', e);
+			if (__DEV__) {
+				console.warn('onReactionPress', e);
+			}
 		}
-		RocketChat.setReaction(shortname, messageId);
 	};
 
 	updateRoom = async() => {
@@ -135,10 +143,17 @@ export default class RoomView extends LoggedView {
 	};
 
 	joinRoom = async() => {
-		await RocketChat.joinRoom(this.props.rid);
-		this.setState({
-			joined: true
-		});
+		try {
+			await RocketChat.joinRoom(this.props.rid);
+			this.setState({
+				joined: true
+			});
+		} catch (e) {
+			Answers.logCustom('error', e);
+			if (__DEV__) {
+				console.warn('joinRoom', e);
+			}
+		}
 	};
 
 	renderItem = (item, previousItem) => (

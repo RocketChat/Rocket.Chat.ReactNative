@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { FlatList, Text, View, TextInput, Vibration } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
+import { Answers } from 'react-native-fabric';
 
 import LoggedView from '../View';
 import styles from './styles';
-
 import RoomItem from '../../presentation/RoomItem';
 import Touch from '../../utils/touch';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
@@ -93,20 +93,34 @@ export default class MentionedMessagesView extends LoggedView {
 	}
 
 	onPressToogleStatus = async() => {
-		const allUsers = !this.state.allUsers;
-		this.props.navigation.setParams({ allUsers });
-		const membersResult = await RocketChat.getRoomMembers(this.state.rid, allUsers);
-		const members = membersResult.records;
-		this.setState({ allUsers, members });
+		try {
+			const allUsers = !this.state.allUsers;
+			this.props.navigation.setParams({ allUsers });
+			const membersResult = await RocketChat.getRoomMembers(this.state.rid, allUsers);
+			const members = membersResult.records;
+			this.setState({ allUsers, members });
+		} catch (e) {
+			Answers.logCustom('error', e);
+			if (__DEV__) {
+				console.warn('onPressToogleStatus', e);
+			}
+		}
 	}
 
 	onPressUser = async(item) => {
-		const subscriptions = database.objects('subscriptions').filtered('name = $0', item.username);
-		if (subscriptions.length) {
-			goRoom({ rid: subscriptions[0].rid, name: subscriptions[0].name });
-		} else {
-			const room = await RocketChat.createDirectMessage(item.username);
-			goRoom({ rid: room.rid, name: item.username });
+		try {
+			const subscriptions = database.objects('subscriptions').filtered('name = $0', item.username);
+			if (subscriptions.length) {
+				goRoom({ rid: subscriptions[0].rid, name: subscriptions[0].name });
+			} else {
+				const room = await RocketChat.createDirectMessage(item.username);
+				goRoom({ rid: room.rid, name: item.username });
+			}
+		} catch (e) {
+			Answers.logCustom('error', e);
+			if (__DEV__) {
+				console.warn('onPressUser', e);
+			}
 		}
 	}
 
@@ -133,8 +147,11 @@ export default class MentionedMessagesView extends LoggedView {
 		try {
 			await RocketChat.toggleMuteUserInRoom(rid, userLongPressed.username, !userLongPressed.muted);
 			showToast(`User has been ${ userLongPressed.muted ? 'unmuted' : 'muted' }!`);
-		} catch (error) {
-			console.warn('handleMute', error);
+		} catch (e) {
+			Answers.logCustom('error', e);
+			if (__DEV__) {
+				console.warn('handleMute', e);
+			}
 		}
 	}
 

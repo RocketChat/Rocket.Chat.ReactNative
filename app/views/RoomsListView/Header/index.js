@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 import FastImage from 'react-native-fast-image';
 import { HeaderBackButton } from 'react-navigation';
-
+import { Answers } from 'react-native-fabric';
 import Avatar from '../../../containers/Avatar';
 import Status from '../../../containers/status';
 import RocketChat from '../../../lib/rocketchat';
@@ -65,7 +65,14 @@ export default class RoomsListHeaderView extends React.PureComponent {
 	}
 
 	onPressModalButton(status) {
-		RocketChat.setUserPresenceDefaultStatus(status);
+		try {
+			RocketChat.setUserPresenceDefaultStatus(status);
+		} catch (e) {
+			Answers.logCustom('error', e);
+			if (__DEV__) {
+				console.warn('onPressModalButton', e);
+			}
+		}
 		this.hideModal();
 	}
 

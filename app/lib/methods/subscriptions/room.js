@@ -3,12 +3,13 @@
 // import normalizeMessage from '../helpers/normalizeMessage';
 // import _buildMessage from '../helpers/buildMessage';
 // import protectedFunction from '../helpers/protectedFunction';
+import { Answers } from 'react-native-fabric';
 
 const subscribe = (ddp, rid) => Promise.all([
 	ddp.subscribe('stream-room-messages', rid, false),
 	ddp.subscribe('stream-notify-room', `${ rid }/typing`, false)
 ]);
-const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(e => console.warn(e)));
+const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(e => console.warn('unsubscribe room', e)));
 
 let timer = null;
 let promises;
@@ -58,7 +59,7 @@ export default async function subscribeRoom({ rid, t }) {
 		logged = this.ddp.on('logged', () => {
 			clearTimeout(timer);
 			timer = false;
-			promises = subscribe(this.ddp, rid);
+			// promises = subscribe(this.ddp, rid);
 		});
 
 		disconnected = this.ddp.on('disconnected', () => {
@@ -67,7 +68,14 @@ export default async function subscribeRoom({ rid, t }) {
 			}
 		});
 
-		promises = subscribe(this.ddp, rid);
+		try {
+			promises = subscribe(this.ddp, rid);
+		} catch (e) {
+			Answers.logCustom('error', e);
+			if (__DEV__) {
+				console.warn('sendMessage', e);
+			}
+		}
 	}
 
 	return {

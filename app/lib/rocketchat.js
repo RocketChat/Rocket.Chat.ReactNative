@@ -112,26 +112,33 @@ const RocketChat = {
 		this.activeUsers[ddpMessage.id] = ddpMessage.fields;
 	},
 	async loginSuccess(user) {
-		if (!user) {
-			const { user: u } = reduxStore.getState().login;
-			user = Object.assign({}, u);
-		}
+		try {
+			if (!user) {
+				const { user: u } = reduxStore.getState().login;
+				user = Object.assign({}, u);
+			}
 
-		// TODO: one api call
-		// call /me only one time
-		if (!user.username) {
-			const me = await this.me({ token: user.token, userId: user.id });
-			// eslint-disable-next-line
-			user.username = me.username;
-		}
-		if (user.username) {
-			const userInfo = await this.userInfo({ token: user.token, userId: user.id });
-			user.username = userInfo.user.username;
-			if (userInfo.user.roles) {
-				user.roles = userInfo.user.roles;
+			// TODO: one api call
+			// call /me only one time
+			if (!user.username) {
+				const me = await this.me({ token: user.token, userId: user.id });
+				// eslint-disable-next-line
+				user.username = me.username;
+			}
+			if (user.username) {
+				const userInfo = await this.userInfo({ token: user.token, userId: user.id });
+				user.username = userInfo.user.username;
+				if (userInfo.user.roles) {
+					user.roles = userInfo.user.roles;
+				}
+			}
+			return reduxStore.dispatch(loginSuccess(user));
+		} catch (e) {
+			Answers.logCustom('error', e);
+			if (__DEV__) {
+				console.warn('loginSuccess', e);
 			}
 		}
-		return reduxStore.dispatch(loginSuccess(user));
 	},
 	connect(url, login) {
 		return new Promise((resolve) => {
@@ -502,7 +509,14 @@ const RocketChat = {
 	},
 	logout({ server }) {
 		if (this.ddp) {
-			this.ddp.logout();
+			try {
+				this.ddp.logout();
+			} catch (e) {
+				Answers.logCustom('error', e);
+				if (__DEV__) {
+					console.warn('logout', e);
+				}
+			}
 		}
 		database.deleteAll();
 		AsyncStorage.removeItem(TOKEN_KEY);
@@ -703,7 +717,16 @@ const RocketChat = {
 		return Promise.resolve(result);
 	},
 	async getPermalink(message) {
-		const room = await RocketChat.getRoom(message.rid);
+		let room;
+		try {
+			room = await RocketChat.getRoom(message.rid);
+		} catch (e) {
+			Answers.logCustom('error', e);
+			if (__DEV__) {
+				console.warn('subscribeRooms', e);
+			}
+			return null;
+		}
 		const { server } = reduxStore.getState().server;
 		const roomType = {
 			p: 'group',

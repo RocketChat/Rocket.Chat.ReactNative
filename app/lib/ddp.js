@@ -44,8 +44,10 @@ class EventEmitter {
 				try {
 					listener.apply(this, args);
 				} catch (e) {
-					Answers.logCustom(e);
-					console.warn(e);
+					Answers.logCustom('error', e);
+					if (__DEV__) {
+						console.warn('emit', e);
+					}
 				}
 			});
 		}
@@ -129,7 +131,14 @@ export default class Socket extends EventEmitter {
 			this.send({ msg: 'connect', version: '1', support: ['1', 'pre2', 'pre1'] });
 		});
 
-		this._connect();
+		try {
+			this._connect();
+		} catch (e) {
+			Answers.logCustom('error', e);
+			if (__DEV__) {
+				console.warn(e);
+			}
+		}
 	}
 	check() {
 		if (!this.lastping) {
@@ -234,9 +243,16 @@ export default class Socket extends EventEmitter {
 		delete this.connection;
 		this._logged = false;
 
-		this._timer = setTimeout(() => {
+		this._timer = setTimeout(async() => {
 			delete this._timer;
-			this._connect();
+			try {
+				await this._connect();
+			} catch (e) {
+				Answers.logCustom('error', e);
+				if (__DEV__) {
+					console.warn('_connect', e);
+				}
+			}
 		}, 1000);
 	}
 	call(method, ...params) {

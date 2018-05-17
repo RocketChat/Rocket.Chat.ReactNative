@@ -1,6 +1,7 @@
 import { put, call, takeLatest, take } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { AsyncStorage } from 'react-native';
+import { Answers } from 'react-native-fabric';
 import { SERVER, LOGIN } from '../actions/actionsTypes';
 import * as actions from '../actions';
 import { connectRequest } from '../actions/connect';
@@ -36,7 +37,10 @@ const selectServer = function* selectServer({ server }) {
 
 		yield put(connectRequest());
 	} catch (e) {
-		console.warn('selectServer', e);
+		Answers.logCustom('error', e);
+		if (__DEV__) {
+			console.warn('selectServer', e);
+		}
 	}
 };
 
@@ -52,12 +56,19 @@ const validateServer = function* validateServer({ server }) {
 };
 
 const addServer = function* addServer({ server }) {
-	database.databases.serversDB.write(() => {
-		database.databases.serversDB.create('servers', { id: server, current: false }, true);
-	});
-	yield put(setServer(server));
-	yield take(LOGIN.SET_TOKEN);
-	navigate('LoginSignup');
+	try {
+		database.databases.serversDB.write(() => {
+			database.databases.serversDB.create('servers', { id: server, current: false }, true);
+		});
+		yield put(setServer(server));
+		yield take(LOGIN.SET_TOKEN);
+		navigate('LoginSignup');
+	} catch (e) {
+		Answers.logCustom('error', e);
+		if (__DEV__) {
+			console.warn('addServer', e);
+		}
+	}
 };
 
 const root = function* root() {

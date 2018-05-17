@@ -1,4 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects';
+import { Answers } from 'react-native-fabric';
 import * as types from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import { readyPinnedMessages } from '../actions/pinnedMessages';
@@ -7,12 +8,19 @@ let sub;
 let newSub;
 
 const openPinnedMessagesRoom = function* openPinnedMessagesRoom({ rid, limit }) {
-	newSub = yield RocketChat.subscribe('pinnedMessages', rid, limit);
-	yield put(readyPinnedMessages());
-	if (sub) {
-		sub.unsubscribe().catch(e => console.warn('openPinnedMessagesRoom', e));
+	try {
+		newSub = yield RocketChat.subscribe('pinnedMessages', rid, limit);
+		yield put(readyPinnedMessages());
+		if (sub) {
+			sub.unsubscribe();
+		}
+		sub = newSub;
+	} catch (e) {
+		Answers.logCustom('error', e);
+		if (__DEV__) {
+			console.warn('openPinnedMessagesRoom', e);
+		}
 	}
-	sub = newSub;
 };
 
 const closePinnedMessagesRoom = function* closePinnedMessagesRoom() {

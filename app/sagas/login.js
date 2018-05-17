@@ -1,6 +1,6 @@
 import { AsyncStorage } from 'react-native';
 import { put, call, take, takeLatest, select, all } from 'redux-saga/effects';
-
+import { Answers } from 'react-native-fabric';
 import * as types from '../actions/actionsTypes';
 import {
 	// loginRequest,
@@ -60,15 +60,22 @@ const forgotPasswordCall = args => RocketChat.forgotPassword(args);
 // };
 
 const saveToken = function* saveToken() {
-	const [server, user] = yield all([select(getServer), select(getUser)]);
-	yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
-	yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
-	const token = yield AsyncStorage.getItem('pushId');
-	if (token) {
-		yield RocketChat.registerPushToken(user.user.id, token);
-	}
-	if (!user.user.username && !user.isRegistering) {
-		yield put(registerIncomplete());
+	try {
+		const [server, user] = yield all([select(getServer), select(getUser)]);
+		yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
+		yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
+		const token = yield AsyncStorage.getItem('pushId');
+		if (token) {
+			yield RocketChat.registerPushToken(user.user.id, token);
+		}
+		if (!user.user.username && !user.isRegistering) {
+			yield put(registerIncomplete());
+		}
+	} catch (e) {
+		Answers.logCustom('error', e);
+		if (__DEV__) {
+			console.warn('saveToken', e);
+		}
 	}
 };
 
@@ -130,7 +137,14 @@ const handleSetUsernameRequest = function* handleSetUsernameRequest({ credential
 const handleLogout = function* handleLogout() {
 	const server = yield select(getServer);
 	if (server) {
-		yield call(logoutCall, { server });
+		try {
+			yield call(logoutCall, { server });
+		} catch (e) {
+			Answers.logCustom('error', e);
+			if (__DEV__) {
+				console.warn('logout', e);
+			}
+		}
 	}
 };
 

@@ -10,6 +10,7 @@ import styles from './styles';
 import categories from './categories';
 import database from '../../lib/realm';
 import { emojisByCategory } from '../../emojis';
+import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 
 const scrollProps = {
 	keyboardShouldPersistTaps: 'always',
@@ -68,11 +69,11 @@ export default class EmojiPicker extends Component {
 		}
 	}
 
-	_addFrequentlyUsed = (emoji) => {
+	_addFrequentlyUsed = protectedFunction((emoji) => {
 		database.write(() => {
 			database.create('frequentlyUsedEmoji', emoji, true);
 		});
-	}
+	})
 	_getFrequentlyUsedCount = (content) => {
 		const emojiRow = this.frequentlyUsed.filtered('content == $0', content);
 		return emojiRow.length ? emojiRow[0].count + 1 : 1;

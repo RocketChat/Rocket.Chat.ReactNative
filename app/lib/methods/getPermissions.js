@@ -1,4 +1,5 @@
 import { InteractionManager } from 'react-native';
+import { Answers } from 'react-native-fabric';
 import reduxStore from '../createStore';
 // import { get } from './helpers/rest';
 
@@ -12,11 +13,17 @@ const getLastMessage = () => {
 
 
 export default async function() {
-	const lastMessage = getLastMessage();
-	const result = await (!lastMessage ? this.ddp.call('permissions/get') : this.ddp.call('permissions/get', new Date(lastMessage)));
-	const permissions = this._preparePermissions(result.update || result);
-	console.log('getPermissions', permissions);
-	InteractionManager.runAfterInteractions(() => database.write(() =>
-		permissions.forEach(permission => database.create('permissions', permission, true))));
-	reduxStore.dispatch(actions.setAllPermissions(this.parsePermissions(permissions)));
+	try {
+		const lastMessage = getLastMessage();
+		const result = await (!lastMessage ? this.ddp.call('permissions/get') : this.ddp.call('permissions/get', new Date(lastMessage)));
+		const permissions = this._preparePermissions(result.update || result);
+		InteractionManager.runAfterInteractions(() => database.write(() =>
+			permissions.forEach(permission => database.create('permissions', permission, true))));
+		reduxStore.dispatch(actions.setAllPermissions(this.parsePermissions(permissions)));
+	} catch (e) {
+		Answers.logCustom('error', e);
+		if (__DEV__) {
+			console.warn('getPermissions', e);
+		}
+	}
 }

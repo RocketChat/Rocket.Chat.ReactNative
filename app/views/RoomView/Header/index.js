@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { HeaderBackButton } from 'react-navigation';
+import { Answers } from 'react-native-fabric';
 
 import RocketChat from '../../../lib/rocketchat';
 import realm from '../../../lib/realm';
@@ -161,7 +162,16 @@ export default class RoomHeaderView extends React.PureComponent {
 		<View style={styles.right}>
 			<TouchableOpacity
 				style={styles.headerButton}
-				onPress={() => RocketChat.toggleFavorite(this.state.room.rid, this.state.room.f)}
+				onPress={() => {
+					try {
+						RocketChat.toggleFavorite(this.state.room.rid, this.state.room.f);
+					} catch (e) {
+						Answers.logCustom('error', e);
+						if (__DEV__) {
+							console.warn('toggleFavorite', e);
+						}
+					}
+				}}
 				accessibilityLabel='Star room'
 				accessibilityTraits='button'
 			>
