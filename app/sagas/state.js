@@ -11,7 +11,7 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	try {
 		return yield RocketChat.setUserPresenceOnline();
 	} catch (e) {
-		Answers.logCustom('error', e);
+		Answers.logCustom('appHasComeBackToForeground', e);
 		if (__DEV__) {
 			console.warn('appHasComeBackToForeground', e);
 		}
@@ -26,7 +26,7 @@ const appHasComeBackToBackground = function* appHasComeBackToBackground() {
 	try {
 		return yield RocketChat.setUserPresenceAway();
 	} catch (e) {
-		Answers.logCustom('error', e);
+		Answers.logCustom('appHasComeBackToBackground', e);
 		if (__DEV__) {
 			console.warn('appHasComeBackToBackground', e);
 		}

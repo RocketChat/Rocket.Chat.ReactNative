@@ -67,7 +67,7 @@ export default async function(rid, msg) {
 			db.create('messages', buildMessage({ ...message, ...ret }), true);
 		});
 	} catch (e) {
-		Answers.logCustom('error', e);
+		Answers.logCustom('sendMessage', e);
 		if (__DEV__) {
 			console.warn('sendMessage', e);
 		}

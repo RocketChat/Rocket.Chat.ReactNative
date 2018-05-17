@@ -23,7 +23,7 @@ export default async function() {
 		}));
 		reduxStore.dispatch(actions.setCustomEmojis(this.parseEmojis(emojis)));
 	} catch (e) {
-		Answers.logCustom('error', e);
+		Answers.logCustom('getCustomEmojis', e);
 		if (__DEV__) {
 			console.warn('getCustomEmojis', e);
 		}

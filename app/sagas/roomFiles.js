@@ -16,7 +16,7 @@ const openRoomFiles = function* openRoomFiles({ rid, limit }) {
 		}
 		sub = newSub;
 	} catch (e) {
-		Answers.logCustom('error', e);
+		Answers.logCustom('openRoomFiles', e);
 		if (__DEV__) {
 			console.warn('openRoomFiles', e);
 		}
@@ -24,11 +24,18 @@ const openRoomFiles = function* openRoomFiles({ rid, limit }) {
 };
 
 const closeRoomFiles = function* closeRoomFiles() {
-	if (sub) {
-		yield sub.unsubscribe().catch(e => console.warn('closeRoomFiles sub', e));
-	}
-	if (newSub) {
-		yield newSub.unsubscribe().catch(e => console.warn('closeRoomFiles newSub', e));
+	try {
+		if (sub) {
+			yield sub.unsubscribe();
+		}
+		if (newSub) {
+			yield newSub.unsubscribe();
+		}
+	} catch (e) {
+		Answers.logCustom('closeRoomFiles', e);
+		if (__DEV__) {
+			console.warn('closeRoomFiles', e);
+		}
 	}
 };
 

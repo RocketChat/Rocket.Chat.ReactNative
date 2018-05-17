@@ -52,7 +52,7 @@ export default async function canOpenRoom({ rid, path }) {
 		const data = await (this.ddp && this.ddp.status ? canOpenRoomDDP.call(this, { rid, type, name }) : canOpenRoomREST.call(this, { type, rid }));
 		return data;
 	} catch (e) {
-		Answers.logCustom('error', e);
+		Answers.logCustom('canOpenRoom', e);
 		if (__DEV__) {
 			console.warn('canOpenRoom', e);
 		}

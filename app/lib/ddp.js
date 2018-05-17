@@ -44,7 +44,7 @@ class EventEmitter {
 				try {
 					listener.apply(this, args);
 				} catch (e) {
-					Answers.logCustom('error', e);
+					Answers.logCustom('EventEmitter.emit', e);
 					if (__DEV__) {
 						console.warn('emit', e);
 					}
@@ -134,7 +134,7 @@ export default class Socket extends EventEmitter {
 		try {
 			this._connect();
 		} catch (e) {
-			Answers.logCustom('error', e);
+			Answers.logCustom('ddp.constructor._connect', e);
 			if (__DEV__) {
 				console.warn(e);
 			}
@@ -248,7 +248,7 @@ export default class Socket extends EventEmitter {
 			try {
 				await this._connect();
 			} catch (e) {
-				Answers.logCustom('error', e);
+				Answers.logCustom('ddp.reconnect._connect', e);
 				if (__DEV__) {
 					console.warn('_connect', e);
 				}

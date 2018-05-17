@@ -115,7 +115,7 @@ export default class RoomView extends LoggedView {
 			}
 			RocketChat.setReaction(shortname, messageId);
 		} catch (e) {
-			Answers.logCustom('error', e);
+			Answers.logCustom('RoomView.onReactionPress', e);
 			if (__DEV__) {
 				console.warn('onReactionPress', e);
 			}
@@ -152,7 +152,7 @@ export default class RoomView extends LoggedView {
 				joined: true
 			});
 		} catch (e) {
-			Answers.logCustom('error', e);
+			Answers.logCustom('joinRoom', e);
 			if (__DEV__) {
 				console.warn('joinRoom', e);
 			}

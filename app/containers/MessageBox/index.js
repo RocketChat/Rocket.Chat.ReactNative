@@ -6,7 +6,7 @@ import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
-
+import { Answers } from 'react-native-fabric';
 import { userTyping } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import { editRequest, editCancel, clearInput } from '../../actions/messages';
@@ -173,6 +173,7 @@ export default class MessageBox extends React.PureComponent {
 				console.warn('User cancelled image picker');
 			} else if (response.error) {
 				console.warn('ImagePicker Error: ', response.error);
+				Answers.logCustom('ImagePicker Error', response.error);
 			} else if (response.customButton) {
 				console.warn('User tapped custom button: ', response.customButton);
 			} else {

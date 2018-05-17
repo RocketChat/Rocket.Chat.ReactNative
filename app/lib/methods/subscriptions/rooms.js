@@ -64,7 +64,7 @@ export default async function subscribeRooms(id) {
 	try {
 		await subscriptions;
 	} catch (e) {
-		Answers.logCustom('error', e);
+		Answers.logCustom('subscribeRooms', e);
 		if (__DEV__) {
 			console.warn('subscribeRooms', e);
 		}

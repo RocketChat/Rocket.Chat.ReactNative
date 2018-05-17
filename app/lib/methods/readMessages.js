@@ -33,9 +33,9 @@ export default async function readMessages(rid) {
 		});
 		return data;
 	} catch (e) {
-		Answers.logCustom('error', e);
+		Answers.logCustom('readMessages', e);
 		if (__DEV__) {
-			console.warn('getCustomEmojis', e);
+			console.warn('readMessages', e);
 		}
 	}
 }

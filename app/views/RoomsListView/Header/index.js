@@ -68,7 +68,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 		try {
 			RocketChat.setUserPresenceDefaultStatus(status);
 		} catch (e) {
-			Answers.logCustom('error', e);
+			Answers.logCustom('onPressModalButton', e);
 			if (__DEV__) {
 				console.warn('onPressModalButton', e);
 			}

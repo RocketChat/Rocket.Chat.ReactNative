@@ -16,7 +16,7 @@ const openSnippetedMessagesRoom = function* openSnippetedMessagesRoom({ rid, lim
 		}
 		sub = newSub;
 	} catch (e) {
-		Answers.logCustom('error', e);
+		Answers.logCustom('openSnippetedMessagesRoom', e);
 		if (__DEV__) {
 			console.warn('openSnippetedMessagesRoom', e);
 		}
@@ -24,11 +24,18 @@ const openSnippetedMessagesRoom = function* openSnippetedMessagesRoom({ rid, lim
 };
 
 const closeSnippetedMessagesRoom = function* closeSnippetedMessagesRoom() {
-	if (sub) {
-		yield sub.unsubscribe().catch(e => console.warn('closeSnippetedMessagesRoom sub', e));
-	}
-	if (newSub) {
-		yield newSub.unsubscribe().catch(e => console.warn('closeSnippetedMessagesRoom newSub', e));
+	try {
+		if (sub) {
+			yield sub.unsubscribe();
+		}
+		if (newSub) {
+			yield newSub.unsubscribe();
+		}
+	} catch (e) {
+		Answers.logCustom('closeSnippetedMessagesRoom', e);
+		if (__DEV__) {
+			console.warn('closeSnippetedMessagesRoom', e);
+		}
 	}
 };
 

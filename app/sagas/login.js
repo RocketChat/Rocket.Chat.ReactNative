@@ -72,7 +72,7 @@ const saveToken = function* saveToken() {
 			yield put(registerIncomplete());
 		}
 	} catch (e) {
-		Answers.logCustom('error', e);
+		Answers.logCustom('saveToken', e);
 		if (__DEV__) {
 			console.warn('saveToken', e);
 		}
@@ -140,9 +140,9 @@ const handleLogout = function* handleLogout() {
 		try {
 			yield call(logoutCall, { server });
 		} catch (e) {
-			Answers.logCustom('error', e);
+			Answers.logCustom('handleLogout', e);
 			if (__DEV__) {
-				console.warn('logout', e);
+				console.warn('handleLogout', e);
 			}
 		}
 	}
@@ -169,9 +169,12 @@ const watchLoginOpen = function* watchLoginOpen() {
 		}
 		const sub = yield RocketChat.subscribe('meteor.loginServiceConfiguration');
 		yield take(types.LOGIN.CLOSE);
-		sub.unsubscribe().catch(e => console.warn('watchLoginOpen unsubscribe', e));
-	} catch (error) {
-		console.warn('watchLoginOpen', error);
+		sub.unsubscribe();
+	} catch (e) {
+		Answers.logCustom('watchLoginOpen', e);
+		if (__DEV__) {
+			console.warn('watchLoginOpen', e);
+		}
 	}
 };
 

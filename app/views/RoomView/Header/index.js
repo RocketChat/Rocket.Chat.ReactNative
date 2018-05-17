@@ -166,7 +166,7 @@ export default class RoomHeaderView extends React.PureComponent {
 					try {
 						RocketChat.toggleFavorite(this.state.room.rid, this.state.room.f);
 					} catch (e) {
-						Answers.logCustom('error', e);
+						Answers.logCustom('toggleFavorite', e);
 						if (__DEV__) {
 							console.warn('toggleFavorite', e);
 						}

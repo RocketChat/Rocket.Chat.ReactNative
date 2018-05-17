@@ -100,7 +100,7 @@ export default class MentionedMessagesView extends LoggedView {
 			const members = membersResult.records;
 			this.setState({ allUsers, members });
 		} catch (e) {
-			Answers.logCustom('error', e);
+			Answers.logCustom('onPressToogleStatus', e);
 			if (__DEV__) {
 				console.warn('onPressToogleStatus', e);
 			}
@@ -117,7 +117,7 @@ export default class MentionedMessagesView extends LoggedView {
 				goRoom({ rid: room.rid, name: item.username });
 			}
 		} catch (e) {
-			Answers.logCustom('error', e);
+			Answers.logCustom('onPressUser', e);
 			if (__DEV__) {
 				console.warn('onPressUser', e);
 			}
@@ -148,7 +148,7 @@ export default class MentionedMessagesView extends LoggedView {
 			await RocketChat.toggleMuteUserInRoom(rid, userLongPressed.username, !userLongPressed.muted);
 			showToast(`User has been ${ userLongPressed.muted ? 'unmuted' : 'muted' }!`);
 		} catch (e) {
-			Answers.logCustom('error', e);
+			Answers.logCustom('handleMute', e);
 			if (__DEV__) {
 				console.warn('handleMute', e);
 			}

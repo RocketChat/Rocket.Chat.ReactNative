@@ -60,7 +60,7 @@ export default async function loadMessagesForRoom(...args) {
 			}
 			return resolve([]);
 		} catch (e) {
-			Answers.logCustom('error', e);
+			Answers.logCustom('loadMessagesForRoom', e);
 			if (__DEV__) {
 				console.warn('loadMessagesForRoom', e);
 			}

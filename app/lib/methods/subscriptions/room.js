@@ -9,7 +9,13 @@ const subscribe = (ddp, rid) => Promise.all([
 	ddp.subscribe('stream-room-messages', rid, false),
 	ddp.subscribe('stream-notify-room', `${ rid }/typing`, false)
 ]);
-const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(e => console.warn('unsubscribe room', e)));
+const unsubscribe = subscriptions =>
+	subscriptions.forEach(sub => sub.unsubscribe().catch((e) => {
+		Answers.logCustom('unsubscribeRoom', e);
+		if (__DEV__) {
+			console.warn('unsubscribeRoom', e);
+		}
+	}));
 
 let timer = null;
 let promises;
@@ -71,9 +77,9 @@ export default async function subscribeRoom({ rid, t }) {
 		try {
 			promises = subscribe(this.ddp, rid);
 		} catch (e) {
-			Answers.logCustom('error', e);
+			Answers.logCustom('subscribeRoom', e);
 			if (__DEV__) {
-				console.warn('sendMessage', e);
+				console.warn('subscribeRoom', e);
 			}
 		}
 	}

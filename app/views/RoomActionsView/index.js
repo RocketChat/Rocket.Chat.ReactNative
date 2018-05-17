@@ -93,8 +93,11 @@ export default class RoomActionsView extends LoggedView {
 		try {
 			const member = await RocketChat.getRoomMember(this.state.room.rid, this.props.user_id);
 			return { member };
-		} catch (error) {
-			console.warn('RoomActions updateRoomMember', error);
+		} catch (e) {
+			Answers.logCustom('RoomActions updateRoomMember', e);
+			if (__DEV__) {
+				console.warn('RoomActions updateRoomMember', e);
+			}
 			return {};
 		}
 	}
@@ -222,8 +225,11 @@ export default class RoomActionsView extends LoggedView {
 								this.props.setLoadingInvite(true);
 								await RocketChat.addUsersToRoom(rid);
 								this.props.navigation.goBack();
-							} catch (error) {
-								console.warn('RoomActions Add User', error);
+							} catch (e) {
+								Answers.logCustom('RoomActions Add User', e);
+								if (__DEV__) {
+									console.warn('RoomActions Add User', e);
+								}
 							} finally {
 								this.props.setLoadingInvite(false);
 							}
@@ -253,7 +259,7 @@ export default class RoomActionsView extends LoggedView {
 		try {
 			RocketChat.toggleBlockUser(rid, member._id, !blocked);
 		} catch (e) {
-			Answers.logCustom('error', e);
+			Answers.logCustom('toggleBlockUser', e);
 			if (__DEV__) {
 				console.warn('toggleBlockUser', e);
 			}
@@ -284,7 +290,7 @@ export default class RoomActionsView extends LoggedView {
 		try {
 			RocketChat.saveNotificationSettings(room.rid, 'mobilePushNotifications', room.notifications ? 'default' : 'nothing');
 		} catch (e) {
-			Answers.logCustom('error', e);
+			Answers.logCustom('toggleNotifications', e);
 			if (__DEV__) {
 				console.warn('toggleNotifications', e);
 			}

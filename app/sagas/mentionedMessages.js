@@ -16,7 +16,7 @@ const openMentionedMessagesRoom = function* openMentionedMessagesRoom({ rid, lim
 		}
 		sub = newSub;
 	} catch (e) {
-		Answers.logCustom('error', e);
+		Answers.logCustom('openMentionedMessagesRoom', e);
 		if (__DEV__) {
 			console.warn('openMentionedMessagesRoom', e);
 		}
@@ -24,11 +24,18 @@ const openMentionedMessagesRoom = function* openMentionedMessagesRoom({ rid, lim
 };
 
 const closeMentionedMessagesRoom = function* closeMentionedMessagesRoom() {
-	if (sub) {
-		yield sub.unsubscribe().catch(e => console.warn('closeMentionedMessagesRoom sub', e));
-	}
-	if (newSub) {
-		yield newSub.unsubscribe().catch(e => console.warn('closeMentionedMessagesRoom newSub', e));
+	try {
+		if (sub) {
+			yield sub.unsubscribe();
+		}
+		if (newSub) {
+			yield newSub.unsubscribe();
+		}
+	} catch (e) {
+		Answers.logCustom('closeMentionedMessagesRoom', e);
+		if (__DEV__) {
+			console.warn('closeMentionedMessagesRoom', e);
+		}
 	}
 };
 

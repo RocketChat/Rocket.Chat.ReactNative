@@ -134,7 +134,7 @@ const RocketChat = {
 			}
 			return reduxStore.dispatch(loginSuccess(user));
 		} catch (e) {
-			Answers.logCustom('error', e);
+			Answers.logCustom('rocketchat.loginSuccess', e);
 			if (__DEV__) {
 				console.warn('loginSuccess', e);
 			}
@@ -447,7 +447,12 @@ const RocketChat = {
 				this.ddp.subscribe('roles');
 				RocketChat.getCustomEmoji();
 			}));
-		}).catch(err => console.warn(`asd ${ err }`));
+		}).catch((e) => {
+			Answers.logCustom('rocketchat.connect catch', e);
+			if (__DEV__) {
+				console.warn('rocketchat.connect catch', e);
+			}
+		});
 	},
 
 	register({ credentials }) {
@@ -512,7 +517,7 @@ const RocketChat = {
 			try {
 				this.ddp.logout();
 			} catch (e) {
-				Answers.logCustom('error', e);
+				Answers.logCustom('rocketchat.logout', e);
 				if (__DEV__) {
 					console.warn('logout', e);
 				}
@@ -721,9 +726,9 @@ const RocketChat = {
 		try {
 			room = await RocketChat.getRoom(message.rid);
 		} catch (e) {
-			Answers.logCustom('error', e);
+			Answers.logCustom('rocketchat.getPermalink', e);
 			if (__DEV__) {
-				console.warn('subscribeRooms', e);
+				console.warn('getPermalink', e);
 			}
 			return null;
 		}

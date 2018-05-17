@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, ScrollView, TouchableOpacity, SafeAreaView, Keyboard, Alert } from 'react-native';
 import { connect } from 'react-redux';
+import { Answers } from 'react-native-fabric';
 
 import LoggedView from '../View';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -230,8 +231,11 @@ export default class RoomInfoEditView extends LoggedView {
 					onPress: () => {
 						try {
 							RocketChat.toggleArchiveRoom(this.state.room.rid, !archived);
-						} catch (error) {
-							console.warn('toggleArchive', error);
+						} catch (e) {
+							Answers.logCustom('toggleArchive', e);
+							if (__DEV__) {
+								console.warn('toggleArchive', e);
+							}
 						}
 					}
 				}

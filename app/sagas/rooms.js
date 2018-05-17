@@ -96,7 +96,7 @@ const watchRoomOpen = function* watchRoomOpen({ room }) {
 		// 	sub.unsubscribe().catch(e => alert(e));
 		// });
 	} catch (e) {
-		Answers.logCustom('error', e);
+		Answers.logCustom('watchRoomOpen', e);
 		if (__DEV__) {
 			console.warn('watchRoomOpen', e);
 		}
@@ -123,7 +123,7 @@ const watchuserTyping = function* watchuserTyping({ status }) {
 			yield RocketChat.emitTyping(room.rid, false);
 		}
 	} catch (e) {
-		Answers.logCustom('error', e);
+		Answers.logCustom('watchuserTyping', e);
 		if (__DEV__) {
 			console.warn('watchuserTyping', e);
 		}

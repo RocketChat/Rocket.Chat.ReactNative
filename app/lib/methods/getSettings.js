@@ -23,7 +23,7 @@ export default async function() {
 				filteredSettings.forEach(setting => database.create('settings', setting, true))));
 		reduxStore.dispatch(actions.addSettings(this.parseSettings(filteredSettings)));	
 	} catch (e) {
-		Answers.logCustom('error', e);
+		Answers.logCustom('getSettings', e);
 		if (__DEV__) {
 			console.warn('getSettings', e);
 		}

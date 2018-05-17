@@ -52,12 +52,15 @@ export default class SearchMessagesView extends LoggedView {
 			const result = await Promise.race([RocketChat.messageSearch(this.searchText, this.props.navigation.state.params.rid, this.limit), cancel]);
 			messages = result.message.docs.map(message => buildMessage(message));
 			this.setState({ messages, searching: false, loadingMore: false });
-		} catch (error) {
+		} catch (e) {
 			this._cancel = null;
-			if (error !== 'cancel') {
+			if (e !== 'cancel') {
 				return this.setState({ searching: false, loadingMore: false });
 			}
-			console.warn('search', error);
+			Answers.logCustom('SearchMessagesView.search', e);
+			if (__DEV__) {
+				console.warn('SearchMessagesView.search', e);
+			}
 		}
 	}
 
@@ -97,9 +100,9 @@ export default class SearchMessagesView extends LoggedView {
 					this.search();
 					this.forceUpdate();
 				} catch (e) {
-					Answers.logCustom('error', e);
+					Answers.logCustom('SearchMessagesView.onReactionPress', e);
 					if (__DEV__) {
-						console.warn('onReactionPress', e);
+						console.warn('SearchMessagesView.onReactionPress', e);
 					}
 				}
 			}}

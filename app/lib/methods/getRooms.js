@@ -50,7 +50,7 @@ export default async function() {
 				resolve(data);
 			});
 		} catch (e) {
-			Answers.logCustom('error', e);
+			Answers.logCustom('getRooms', e);
 			if (__DEV__) {
 				console.warn('getRooms', e);
 			}

@@ -1,5 +1,6 @@
 import { AsyncStorage } from 'react-native';
 import { call, put, takeLatest } from 'redux-saga/effects';
+import { Answers } from 'react-native-fabric';
 import * as actions from '../actions';
 import { setServer } from '../actions/server';
 import { restoreToken, setUser } from '../actions/login';
@@ -25,7 +26,10 @@ const restore = function* restore() {
 
 		yield put(actions.appReady({}));
 	} catch (e) {
-		console.warn('restore', e);
+		Answers.logCustom('restore', e);
+		if (__DEV__) {
+			console.warn('restore', e);
+		}
 	}
 };
 

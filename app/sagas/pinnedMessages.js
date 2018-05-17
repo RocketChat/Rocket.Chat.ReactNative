@@ -16,7 +16,7 @@ const openPinnedMessagesRoom = function* openPinnedMessagesRoom({ rid, limit }) 
 		}
 		sub = newSub;
 	} catch (e) {
-		Answers.logCustom('error', e);
+		Answers.logCustom('openPinnedMessagesRoom', e);
 		if (__DEV__) {
 			console.warn('openPinnedMessagesRoom', e);
 		}
@@ -24,11 +24,18 @@ const openPinnedMessagesRoom = function* openPinnedMessagesRoom({ rid, limit }) 
 };
 
 const closePinnedMessagesRoom = function* closePinnedMessagesRoom() {
-	if (sub) {
-		yield sub.unsubscribe().catch(e => console.warn('closePinnedMessagesRoom sub', e));
-	}
-	if (newSub) {
-		yield newSub.unsubscribe().catch(e => console.warn('closePinnedMessagesRoom newSub', e));
+	try {
+		if (sub) {
+			yield sub.unsubscribe();
+		}
+		if (newSub) {
+			yield newSub.unsubscribe();
+		}
+	} catch (e) {
+		Answers.logCustom('closePinnedMessagesRoom', e);
+		if (__DEV__) {
+			console.warn('closePinnedMessagesRoom', e);
+		}
 	}
 };
 

@@ -16,7 +16,7 @@ const openStarredMessagesRoom = function* openStarredMessagesRoom({ rid, limit }
 		}
 		sub = newSub;
 	} catch (e) {
-		Answers.logCustom('error', e);
+		Answers.logCustom('openStarredMessagesRoom', e);
 		if (__DEV__) {
 			console.warn('openStarredMessagesRoom', e);
 		}
@@ -24,11 +24,18 @@ const openStarredMessagesRoom = function* openStarredMessagesRoom({ rid, limit }
 };
 
 const closeStarredMessagesRoom = function* closeStarredMessagesRoom() {
-	if (sub) {
-		yield sub.unsubscribe().catch(e => console.warn('closeStarredMessagesRoom sub', e));
-	}
-	if (newSub) {
-		yield newSub.unsubscribe().catch(e => console.warn('closeStarredMessagesRoom newSub', e));
+	try {
+		if (sub) {
+			yield sub.unsubscribe();
+		}
+		if (newSub) {
+			yield newSub.unsubscribe();
+		}
+	} catch (e) {
+		Answers.logCustom('closeStarredMessagesRoom', e);
+		if (__DEV__) {
+			console.warn('closeStarredMessagesRoom', e);
+		}
 	}
 };
 

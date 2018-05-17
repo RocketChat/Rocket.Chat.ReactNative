@@ -54,7 +54,7 @@ export default async function(...args) {
 			}
 			resolve([]);
 		} catch (e) {
-			Answers.logCustom('error', e);
+			Answers.logCustom('loadMissedMessages', e);
 			if (__DEV__) {
 				console.warn('loadMissedMessages', e);
 			}

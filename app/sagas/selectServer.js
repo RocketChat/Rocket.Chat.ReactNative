@@ -37,7 +37,7 @@ const selectServer = function* selectServer({ server }) {
 
 		yield put(connectRequest());
 	} catch (e) {
-		Answers.logCustom('error', e);
+		Answers.logCustom('selectServer', e);
 		if (__DEV__) {
 			console.warn('selectServer', e);
 		}
@@ -64,7 +64,7 @@ const addServer = function* addServer({ server }) {
 		yield take(LOGIN.SET_TOKEN);
 		navigate('LoginSignup');
 	} catch (e) {
-		Answers.logCustom('error', e);
+		Answers.logCustom('addServer', e);
 		if (__DEV__) {
 			console.warn('addServer', e);
 		}

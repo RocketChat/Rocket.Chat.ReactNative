@@ -21,7 +21,7 @@ export default async function() {
 			permissions.forEach(permission => database.create('permissions', permission, true))));
 		reduxStore.dispatch(actions.setAllPermissions(this.parsePermissions(permissions)));
 	} catch (e) {
-		Answers.logCustom('error', e);
+		Answers.logCustom('getPermissions', e);
 		if (__DEV__) {
 			console.warn('getPermissions', e);
 		}
