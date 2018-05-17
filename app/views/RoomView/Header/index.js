@@ -11,6 +11,7 @@ import Avatar from '../../../containers/Avatar';
 import { STATUS_COLORS } from '../../../constants/colors';
 import styles from './styles';
 import { closeRoom } from '../../../actions/room';
+import RoomTypeIcon from '../../../containers/RoomTypeIcon';
 
 const title = (offline, connecting, authenticating, logged) => {
 	if (offline) {
@@ -148,7 +149,10 @@ export default class RoomHeaderView extends React.PureComponent {
 					}
 				</Avatar>
 				<View style={styles.titleTextContainer}>
-					<Text style={styles.title} allowFontScaling={false}>{this.state.room.name}</Text>
+					<Text style={styles.title} allowFontScaling={false}>
+						<RoomTypeIcon type={this.state.room.t} size={13} />&nbsp;
+						{this.state.room.name}
+					</Text>
 
 					{ t && <Text style={styles.userStatus} allowFontScaling={false} numberOfLines={1}>{t}</Text>}
 
