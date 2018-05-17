@@ -116,7 +116,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 			<View style={styles.left} accessible accessibilityLabel="Server's list" accessibilityTraits='button'>
 				<TouchableOpacity
 					style={styles.headerButton}
-					onPress={() => this.props.navigation.navigate({ key: 'DrawerOpen', routeName: 'DrawerOpen' })}
+					onPress={() => this.props.navigation.openDrawer()}
 				>
 					<FastImage
 						style={styles.serverImage}
