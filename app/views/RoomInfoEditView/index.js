@@ -274,7 +274,6 @@ export default class RoomInfoEditView extends LoggedView {
 								value={description}
 								onChangeText={value => this.setState({ description: value })}
 								onSubmitEditing={() => { this.topic.focus(); }}
-								inputProps={{ multiline: true }}
 							/>
 							<RCTextInput
 								inputRef={(e) => { this.topic = e; }}
@@ -282,7 +281,6 @@ export default class RoomInfoEditView extends LoggedView {
 								value={topic}
 								onChangeText={value => this.setState({ topic: value })}
 								onSubmitEditing={() => { this.announcement.focus(); }}
-								inputProps={{ multiline: true }}
 							/>
 							<RCTextInput
 								inputRef={(e) => { this.announcement = e; }}
@@ -290,7 +288,6 @@ export default class RoomInfoEditView extends LoggedView {
 								value={announcement}
 								onChangeText={value => this.setState({ announcement: value })}
 								onSubmitEditing={() => { this.joinCode.focus(); }}
-								inputProps={{ multiline: true }}
 							/>
 							<RCTextInput
 								inputRef={(e) => { this.joinCode = e; }}
@@ -298,7 +295,7 @@ export default class RoomInfoEditView extends LoggedView {
 								value={joinCode}
 								onChangeText={value => this.setState({ joinCode: value })}
 								onSubmitEditing={this.submit}
-								inputProps={{ secureTextEntry: true }}
+								secureTextEntry
 							/>
 							<SwitchContainer
 								value={t}

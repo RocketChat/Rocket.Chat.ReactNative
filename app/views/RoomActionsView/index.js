@@ -87,7 +87,7 @@ export default class RoomActionsView extends LoggedView {
 	}
 
 	updateRoomMember = async() => {
-		if (this.state.room.t === 'd') {
+		if (this.state.room.t !== 'd') {
 			return {};
 		}
 		try {
