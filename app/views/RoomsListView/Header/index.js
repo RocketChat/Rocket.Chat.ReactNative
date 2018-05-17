@@ -6,13 +6,14 @@ import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 import FastImage from 'react-native-fast-image';
 import { HeaderBackButton } from 'react-navigation';
-import { Answers } from 'react-native-fabric';
+
 import Avatar from '../../../containers/Avatar';
 import Status from '../../../containers/status';
 import RocketChat from '../../../lib/rocketchat';
 import { STATUS_COLORS } from '../../../constants/colors';
 import { setSearch } from '../../../actions/rooms';
 import styles from './styles';
+import log from '../../../utils/log';
 
 const title = (offline, connecting, authenticating, logged) => {
 	if (offline) {
@@ -68,10 +69,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 		try {
 			RocketChat.setUserPresenceDefaultStatus(status);
 		} catch (e) {
-			Answers.logCustom('onPressModalButton', e);
-			if (__DEV__) {
-				console.warn('onPressModalButton', e);
-			}
+			log('onPressModalButton', e);
 		}
 		this.hideModal();
 	}

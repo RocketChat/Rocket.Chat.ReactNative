@@ -1,10 +1,11 @@
 import { InteractionManager } from 'react-native';
-import { Answers } from 'react-native-fabric';
+
 import reduxStore from '../createStore';
 // import { get } from './helpers/rest';
 
 import database from '../realm';
 import * as actions from '../../actions';
+import log from '../../utils/log';
 
 const getLastMessage = () => {
 	const setting = database.objects('permissions').sorted('_updatedAt', true)[0];
@@ -21,9 +22,6 @@ export default async function() {
 			permissions.forEach(permission => database.create('permissions', permission, true))));
 		reduxStore.dispatch(actions.setAllPermissions(this.parsePermissions(permissions)));
 	} catch (e) {
-		Answers.logCustom('getPermissions', e);
-		if (__DEV__) {
-			console.warn('getPermissions', e);
-		}
+		log('getPermissions', e);
 	}
 }

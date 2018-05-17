@@ -1,10 +1,11 @@
 import { InteractionManager } from 'react-native';
-import { Answers } from 'react-native-fabric';
+
 import reduxStore from '../createStore';
 // import { get } from './helpers/rest';
 
 import database from '../realm';
 import * as actions from '../../actions';
+import log from '../../utils/log';
 
 const getLastMessage = () => {
 	const setting = database.objects('customEmojis').sorted('_updatedAt', true)[0];
@@ -23,9 +24,6 @@ export default async function() {
 		}));
 		reduxStore.dispatch(actions.setCustomEmojis(this.parseEmojis(emojis)));
 	} catch (e) {
-		Answers.logCustom('getCustomEmojis', e);
-		if (__DEV__) {
-			console.warn('getCustomEmojis', e);
-		}
+		log('getCustomEmojis', e);
 	}
 }

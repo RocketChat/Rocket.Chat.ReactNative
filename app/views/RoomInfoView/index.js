@@ -4,7 +4,6 @@ import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
-import { Answers } from 'react-native-fabric';
 
 import LoggedView from '../View';
 import Status from '../../containers/status';
@@ -14,6 +13,7 @@ import sharedStyles from '../Styles';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Touch from '../../utils/touch';
+import log from '../../utils/log';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
@@ -99,10 +99,7 @@ export default class RoomInfoView extends LoggedView {
 					this.setState({ roles: userRoles.roles || [] });
 				}
 			} catch (e) {
-				Answers.logCustom('RoomInfoView.componentDidMount', e);
-				if (__DEV__) {
-					console.warn('RoomInfoView.componentDidMount', e);
-				}
+				log('RoomInfoView.componentDidMount', e);
 			}
 		} else {
 			const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], this.state.room.rid);

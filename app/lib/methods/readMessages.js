@@ -1,6 +1,6 @@
-import { Answers } from 'react-native-fabric';
 import { post } from './helpers/rest';
 import database from '../realm';
+import log from '../../utils/log';
 
 const	readMessagesREST = function readMessagesREST(rid) {
 	const { token, id } = this.ddp._login;
@@ -33,9 +33,6 @@ export default async function readMessages(rid) {
 		});
 		return data;
 	} catch (e) {
-		Answers.logCustom('readMessages', e);
-		if (__DEV__) {
-			console.warn('readMessages', e);
-		}
+		log('readMessages', e);
 	}
 }

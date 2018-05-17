@@ -1,8 +1,9 @@
 import { put, takeLatest } from 'redux-saga/effects';
-import { Answers } from 'react-native-fabric';
+
 import * as types from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import { readyStarredMessages } from '../actions/starredMessages';
+import log from '../utils/log';
 
 let sub;
 let newSub;
@@ -16,10 +17,7 @@ const openStarredMessagesRoom = function* openStarredMessagesRoom({ rid, limit }
 		}
 		sub = newSub;
 	} catch (e) {
-		Answers.logCustom('openStarredMessagesRoom', e);
-		if (__DEV__) {
-			console.warn('openStarredMessagesRoom', e);
-		}
+		log('openStarredMessagesRoom', e);
 	}
 };
 
@@ -32,10 +30,7 @@ const closeStarredMessagesRoom = function* closeStarredMessagesRoom() {
 			yield newSub.unsubscribe();
 		}
 	} catch (e) {
-		Answers.logCustom('closeStarredMessagesRoom', e);
-		if (__DEV__) {
-			console.warn('closeStarredMessagesRoom', e);
-		}
+		log('closeStarredMessagesRoom', e);
 	}
 };
 

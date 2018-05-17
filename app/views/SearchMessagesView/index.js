@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import { Answers } from 'react-native-fabric';
+
 import LoggedView from '../View';
 import RCTextInput from '../../containers/TextInput';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
@@ -13,6 +13,7 @@ import RocketChat from '../../lib/rocketchat';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import Message from '../../containers/message';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import log from '../../utils/log';
 
 @connect(state => ({
 	user: state.login.user,
@@ -57,10 +58,7 @@ export default class SearchMessagesView extends LoggedView {
 			if (e !== 'cancel') {
 				return this.setState({ searching: false, loadingMore: false });
 			}
-			Answers.logCustom('SearchMessagesView.search', e);
-			if (__DEV__) {
-				console.warn('SearchMessagesView.search', e);
-			}
+			log('SearchMessagesView.search', e);
 		}
 	}
 
@@ -100,10 +98,7 @@ export default class SearchMessagesView extends LoggedView {
 					this.search();
 					this.forceUpdate();
 				} catch (e) {
-					Answers.logCustom('SearchMessagesView.onReactionPress', e);
-					if (__DEV__) {
-						console.warn('SearchMessagesView.onReactionPress', e);
-					}
+					log('SearchMessagesView.onReactionPress', e);
 				}
 			}}
 		/>

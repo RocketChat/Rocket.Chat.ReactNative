@@ -1,6 +1,6 @@
-import { Answers } from 'react-native-fabric';
 import { post } from './helpers/rest';
 import database from '../realm';
+import log from '../../utils/log';
 
 // TODO: api fix
 const ddpTypes = {
@@ -52,9 +52,6 @@ export default async function canOpenRoom({ rid, path }) {
 		const data = await (this.ddp && this.ddp.status ? canOpenRoomDDP.call(this, { rid, type, name }) : canOpenRoomREST.call(this, { type, rid }));
 		return data;
 	} catch (e) {
-		Answers.logCustom('canOpenRoom', e);
-		if (__DEV__) {
-			console.warn('canOpenRoom', e);
-		}
+		log('canOpenRoom', e);
 	}
 }

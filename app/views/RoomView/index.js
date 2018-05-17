@@ -4,7 +4,6 @@ import { Text, View, Button } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import equal from 'deep-equal';
-import { Answers } from 'react-native-fabric';
 
 import LoggedView from '../View';
 import { List } from './ListView';
@@ -21,6 +20,7 @@ import Header from '../../containers/Header';
 import RoomsHeader from './Header';
 import ReactionPicker from './ReactionPicker';
 import styles from './styles';
+import log from '../../utils/log';
 
 @connect(
 	state => ({
@@ -115,10 +115,7 @@ export default class RoomView extends LoggedView {
 			}
 			RocketChat.setReaction(shortname, messageId);
 		} catch (e) {
-			Answers.logCustom('RoomView.onReactionPress', e);
-			if (__DEV__) {
-				console.warn('onReactionPress', e);
-			}
+			log('RoomView.onReactionPress', e);
 		}
 	};
 
@@ -152,10 +149,7 @@ export default class RoomView extends LoggedView {
 				joined: true
 			});
 		} catch (e) {
-			Answers.logCustom('joinRoom', e);
-			if (__DEV__) {
-				console.warn('joinRoom', e);
-			}
+			log('joinRoom', e);
 		}
 	};
 

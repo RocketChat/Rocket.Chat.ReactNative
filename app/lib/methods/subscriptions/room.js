@@ -3,7 +3,7 @@
 // import normalizeMessage from '../helpers/normalizeMessage';
 // import _buildMessage from '../helpers/buildMessage';
 // import protectedFunction from '../helpers/protectedFunction';
-import { Answers } from 'react-native-fabric';
+import log from '../../../utils/log';
 
 const subscribe = (ddp, rid) => Promise.all([
 	ddp.subscribe('stream-room-messages', rid, false),
@@ -11,10 +11,7 @@ const subscribe = (ddp, rid) => Promise.all([
 ]);
 const unsubscribe = subscriptions =>
 	subscriptions.forEach(sub => sub.unsubscribe().catch((e) => {
-		Answers.logCustom('unsubscribeRoom', e);
-		if (__DEV__) {
-			console.warn('unsubscribeRoom', e);
-		}
+		log('unsubscribeRoom', e);
 	}));
 
 let timer = null;
@@ -77,10 +74,7 @@ export default async function subscribeRoom({ rid, t }) {
 		try {
 			promises = subscribe(this.ddp, rid);
 		} catch (e) {
-			Answers.logCustom('subscribeRoom', e);
-			if (__DEV__) {
-				console.warn('subscribeRoom', e);
-			}
+			log('subscribeRoom', e);
 		}
 	}
 

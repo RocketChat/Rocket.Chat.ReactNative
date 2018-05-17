@@ -1,9 +1,9 @@
 import { InteractionManager } from 'react-native';
-import { Answers } from 'react-native-fabric';
+
 import { get } from './helpers/rest';
 import buildMessage from './helpers/buildMessage';
 import database from '../realm';
-
+import log from '../../utils/log';
 
 async function loadMissedMessagesRest({ rid: roomId, lastOpen: lastUpdate }) {
 	const { token, id } = this.ddp._login;
@@ -54,10 +54,7 @@ export default async function(...args) {
 			}
 			resolve([]);
 		} catch (e) {
-			Answers.logCustom('loadMissedMessages', e);
-			if (__DEV__) {
-				console.warn('loadMissedMessages', e);
-			}
+			log('loadMissedMessages', e);
 			reject(e);
 		}
 	});

@@ -1,9 +1,10 @@
 import { InteractionManager } from 'react-native';
-import { Answers } from 'react-native-fabric';
+
 // import { showToast } from '../../utils/info';
 import { get } from './helpers/rest';
 import mergeSubscriptionsRooms, { merge } from './helpers/mergeSubscriptionsRooms';
 import database from '../realm';
+import log from '../../utils/log';
 
 const lastMessage = () => {
 	const message = database
@@ -50,10 +51,7 @@ export default async function() {
 				resolve(data);
 			});
 		} catch (e) {
-			Answers.logCustom('getRooms', e);
-			if (__DEV__) {
-				console.warn('getRooms', e);
-			}
+			log('getRooms', e);
 			reject(e);
 		}
 	});

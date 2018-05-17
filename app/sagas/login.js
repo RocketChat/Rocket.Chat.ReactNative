@@ -1,6 +1,6 @@
 import { AsyncStorage } from 'react-native';
 import { put, call, take, takeLatest, select, all } from 'redux-saga/effects';
-import { Answers } from 'react-native-fabric';
+
 import * as types from '../actions/actionsTypes';
 import {
 	// loginRequest,
@@ -19,6 +19,7 @@ import {
 } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import * as NavigationService from '../containers/routes/NavigationService';
+import log from '../utils/log';
 
 const getUser = state => state.login;
 const getServer = state => state.server.server;
@@ -72,10 +73,7 @@ const saveToken = function* saveToken() {
 			yield put(registerIncomplete());
 		}
 	} catch (e) {
-		Answers.logCustom('saveToken', e);
-		if (__DEV__) {
-			console.warn('saveToken', e);
-		}
+		log('saveToken', e);
 	}
 };
 
@@ -140,10 +138,7 @@ const handleLogout = function* handleLogout() {
 		try {
 			yield call(logoutCall, { server });
 		} catch (e) {
-			Answers.logCustom('handleLogout', e);
-			if (__DEV__) {
-				console.warn('handleLogout', e);
-			}
+			log('handleLogout', e);
 		}
 	}
 };
@@ -171,10 +166,7 @@ const watchLoginOpen = function* watchLoginOpen() {
 		yield take(types.LOGIN.CLOSE);
 		sub.unsubscribe();
 	} catch (e) {
-		Answers.logCustom('watchLoginOpen', e);
-		if (__DEV__) {
-			console.warn('watchLoginOpen', e);
-		}
+		log('watchLoginOpen', e);
 	}
 };
 

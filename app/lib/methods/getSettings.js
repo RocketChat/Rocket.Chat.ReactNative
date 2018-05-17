@@ -1,10 +1,10 @@
 import { InteractionManager } from 'react-native';
-import { Answers } from 'react-native-fabric';
+
 import reduxStore from '../createStore';
 // import { get } from './helpers/rest';
-
 import database from '../realm';
 import * as actions from '../../actions';
+import log from '../../utils/log';
 
 const getLastMessage = () => {
 	const [setting] = database.objects('settings').sorted('_updatedAt', true);
@@ -23,9 +23,6 @@ export default async function() {
 				filteredSettings.forEach(setting => database.create('settings', setting, true))));
 		reduxStore.dispatch(actions.addSettings(this.parseSettings(filteredSettings)));	
 	} catch (e) {
-		Answers.logCustom('getSettings', e);
-		if (__DEV__) {
-			console.warn('getSettings', e);
-		}
+		log('getSettings', e);
 	}
 }

@@ -2,7 +2,7 @@ import { Alert } from 'react-native';
 import { put, call, takeLatest, take, select, race, fork, cancel, takeEvery } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { BACKGROUND } from 'redux-enhancer-react-native-appstate';
-import { Answers } from 'react-native-fabric';
+
 import * as types from '../actions/actionsTypes';
 // import { roomsSuccess, roomsFailure } from '../actions/rooms';
 import { addUserTyping, removeUserTyping, setLastOpen } from '../actions/room';
@@ -10,6 +10,7 @@ import { messagesRequest } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import * as NavigationService from '../containers/routes/NavigationService';
+import log from '../utils/log';
 
 const leaveRoom = rid => RocketChat.leaveRoom(rid);
 const eraseRoom = rid => RocketChat.eraseRoom(rid);
@@ -96,10 +97,7 @@ const watchRoomOpen = function* watchRoomOpen({ room }) {
 		// 	sub.unsubscribe().catch(e => alert(e));
 		// });
 	} catch (e) {
-		Answers.logCustom('watchRoomOpen', e);
-		if (__DEV__) {
-			console.warn('watchRoomOpen', e);
-		}
+		log('watchRoomOpen', e);
 	}
 };
 
@@ -123,10 +121,7 @@ const watchuserTyping = function* watchuserTyping({ status }) {
 			yield RocketChat.emitTyping(room.rid, false);
 		}
 	} catch (e) {
-		Answers.logCustom('watchuserTyping', e);
-		if (__DEV__) {
-			console.warn('watchuserTyping', e);
-		}
+		log('watchuserTyping', e);
 	}
 };
 

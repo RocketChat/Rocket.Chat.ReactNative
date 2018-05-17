@@ -1,9 +1,9 @@
 import { InteractionManager } from 'react-native';
-import { Answers } from 'react-native-fabric';
+
 import { get } from './helpers/rest';
 import buildMessage from './helpers/buildMessage';
 import database from '../realm';
-
+import log from '../../utils/log';
 
 // TODO: api fix
 const types = {
@@ -60,10 +60,7 @@ export default async function loadMessagesForRoom(...args) {
 			}
 			return resolve([]);
 		} catch (e) {
-			Answers.logCustom('loadMessagesForRoom', e);
-			if (__DEV__) {
-				console.warn('loadMessagesForRoom', e);
-			}
+			log('loadMessagesForRoom', e);
 			reject(e);
 		}
 	});

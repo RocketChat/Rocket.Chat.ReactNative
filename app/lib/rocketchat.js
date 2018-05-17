@@ -2,13 +2,13 @@ import { AsyncStorage, Platform } from 'react-native';
 import { hashPassword } from 'react-native-meteor/lib/utils';
 import foreach from 'lodash/forEach';
 import Random from 'react-native-meteor/lib/Random';
-import { Answers } from 'react-native-fabric';
-
 import RNFetchBlob from 'react-native-fetch-blob';
+
 import reduxStore from './createStore';
 import settingsType from '../constants/settings';
 import messagesStatus from '../constants/messagesStatus';
 import database from './realm';
+import log from '../utils/log';
 // import * as actions from '../actions';
 
 import { setUser, setLoginServices, removeLoginServices, loginRequest, loginSuccess, loginFailure } from '../actions/login';
@@ -134,10 +134,7 @@ const RocketChat = {
 			}
 			return reduxStore.dispatch(loginSuccess(user));
 		} catch (e) {
-			Answers.logCustom('rocketchat.loginSuccess', e);
-			if (__DEV__) {
-				console.warn('loginSuccess', e);
-			}
+			log('rocketchat.loginSuccess', e);
 		}
 	},
 	connect(url, login) {
@@ -158,12 +155,12 @@ const RocketChat = {
 
 			this.ddp.on('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 
-			this.ddp.on('background', () => this.getRooms().catch(e => console.warn('background getRooms', e)));
+			this.ddp.on('background', () => this.getRooms().catch(e => log('background getRooms', e)));
 
 			this.ddp.on('disconnected', () => console.log('disconnected'));
 
 			this.ddp.on('logged', protectedFunction((user) => {
-				this.getRooms().catch(e => console.warn('logged getRooms', e));
+				this.getRooms().catch(e => log('logged getRooms', e));
 				this.loginSuccess(user);
 			}));
 			this.ddp.once('logged', protectedFunction(({ id }) => { this.subscribeRooms(id); }));
@@ -427,11 +424,10 @@ const RocketChat = {
 				this.roles[ddpMessage.id] = (ddpMessage.fields && ddpMessage.fields.description) || undefined;
 			}));
 
-			this.ddp.on('error', protectedFunction((err) => {
-				console.warn('onError', JSON.stringify(err));
-				Answers.logCustom('disconnect', err);
+			this.ddp.on('error', (err) => {
+				log('rocketchat.onerror', err);
 				reduxStore.dispatch(connectFailure());
-			}));
+			});
 
 			// TODO: fix api (get emojis by date/version....)
 
@@ -448,10 +444,7 @@ const RocketChat = {
 				RocketChat.getCustomEmoji();
 			}));
 		}).catch((e) => {
-			Answers.logCustom('rocketchat.connect catch', e);
-			if (__DEV__) {
-				console.warn('rocketchat.connect catch', e);
-			}
+			log('rocketchat.connect catch', e);
 		});
 	},
 
@@ -517,10 +510,7 @@ const RocketChat = {
 			try {
 				this.ddp.logout();
 			} catch (e) {
-				Answers.logCustom('rocketchat.logout', e);
-				if (__DEV__) {
-					console.warn('logout', e);
-				}
+				log('rocketchat.logout', e);
 			}
 		}
 		database.deleteAll();
@@ -726,10 +716,7 @@ const RocketChat = {
 		try {
 			room = await RocketChat.getRoom(message.rid);
 		} catch (e) {
-			Answers.logCustom('rocketchat.getPermalink', e);
-			if (__DEV__) {
-				console.warn('getPermalink', e);
-			}
+			log('rocketchat.getPermalink', e);
 			return null;
 		}
 		const { server } = reduxStore.getState().server;

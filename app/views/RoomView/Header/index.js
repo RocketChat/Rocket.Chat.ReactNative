@@ -4,7 +4,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { HeaderBackButton } from 'react-navigation';
-import { Answers } from 'react-native-fabric';
 
 import RocketChat from '../../../lib/rocketchat';
 import realm from '../../../lib/realm';
@@ -12,6 +11,7 @@ import Avatar from '../../../containers/Avatar';
 import { STATUS_COLORS } from '../../../constants/colors';
 import styles from './styles';
 import { closeRoom } from '../../../actions/room';
+import log from '../../../utils/log';
 
 const title = (offline, connecting, authenticating, logged) => {
 	if (offline) {
@@ -166,10 +166,7 @@ export default class RoomHeaderView extends React.PureComponent {
 					try {
 						RocketChat.toggleFavorite(this.state.room.rid, this.state.room.f);
 					} catch (e) {
-						Answers.logCustom('toggleFavorite', e);
-						if (__DEV__) {
-							console.warn('toggleFavorite', e);
-						}
+						log('toggleFavorite', e);
 					}
 				}}
 				accessibilityLabel='Star room'

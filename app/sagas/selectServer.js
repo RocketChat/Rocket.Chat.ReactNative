@@ -1,7 +1,7 @@
 import { put, call, takeLatest, take } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { AsyncStorage } from 'react-native';
-import { Answers } from 'react-native-fabric';
+
 import { SERVER, LOGIN } from '../actions/actionsTypes';
 import * as actions from '../actions';
 import { connectRequest } from '../actions/connect';
@@ -10,6 +10,7 @@ import { setRoles } from '../actions/roles';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import { navigate } from '../containers/routes/NavigationService';
+import log from '../utils/log';
 
 const validate = function* validate(server) {
 	return yield RocketChat.testServer(server);
@@ -37,10 +38,7 @@ const selectServer = function* selectServer({ server }) {
 
 		yield put(connectRequest());
 	} catch (e) {
-		Answers.logCustom('selectServer', e);
-		if (__DEV__) {
-			console.warn('selectServer', e);
-		}
+		log('selectServer', e);
 	}
 };
 
@@ -64,10 +62,7 @@ const addServer = function* addServer({ server }) {
 		yield take(LOGIN.SET_TOKEN);
 		navigate('LoginSignup');
 	} catch (e) {
-		Answers.logCustom('addServer', e);
-		if (__DEV__) {
-			console.warn('addServer', e);
-		}
+		log('addServer', e);
 	}
 };
 

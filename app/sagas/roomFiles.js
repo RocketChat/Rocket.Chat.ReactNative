@@ -1,8 +1,9 @@
 import { put, takeLatest } from 'redux-saga/effects';
-import { Answers } from 'react-native-fabric';
+
 import * as types from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import { readyRoomFiles } from '../actions/roomFiles';
+import log from '../utils/log';
 
 let sub;
 let newSub;
@@ -16,10 +17,7 @@ const openRoomFiles = function* openRoomFiles({ rid, limit }) {
 		}
 		sub = newSub;
 	} catch (e) {
-		Answers.logCustom('openRoomFiles', e);
-		if (__DEV__) {
-			console.warn('openRoomFiles', e);
-		}
+		log('openRoomFiles', e);
 	}
 };
 
@@ -32,10 +30,7 @@ const closeRoomFiles = function* closeRoomFiles() {
 			yield newSub.unsubscribe();
 		}
 	} catch (e) {
-		Answers.logCustom('closeRoomFiles', e);
-		if (__DEV__) {
-			console.warn('closeRoomFiles', e);
-		}
+		log('closeRoomFiles', e);
 	}
 };
 

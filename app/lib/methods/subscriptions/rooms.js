@@ -1,7 +1,7 @@
-import { Answers } from 'react-native-fabric';
 import database from '../../realm';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
 import protectedFunction from '../helpers/protectedFunction';
+import log from '../../../utils/log';
 
 export default async function subscribeRooms(id) {
 	const subscriptions = Promise.all([
@@ -64,10 +64,7 @@ export default async function subscribeRooms(id) {
 	try {
 		await subscriptions;
 	} catch (e) {
-		Answers.logCustom('subscribeRooms', e);
-		if (__DEV__) {
-			console.warn('subscribeRooms', e);
-		}
+		log('subscribeRooms', e);
 	}
 	// console.log(this.ddp.subscriptions);
 }

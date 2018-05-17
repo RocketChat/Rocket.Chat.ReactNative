@@ -4,7 +4,6 @@ import { View, SectionList, Text, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
-import { Answers } from 'react-native-fabric';
 
 import LoggedView from '../View';
 import styles from './styles';
@@ -16,6 +15,7 @@ import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import { leaveRoom } from '../../actions/room';
 import { setLoading } from '../../actions/selectedUsers';
+import log from '../../utils/log';
 
 const renderSeparator = () => <View style={styles.separator} />;
 const getRoomTitle = room => (room.t === 'd' ? room.fname : room.name);
@@ -94,10 +94,7 @@ export default class RoomActionsView extends LoggedView {
 			const member = await RocketChat.getRoomMember(this.state.room.rid, this.props.user_id);
 			return { member };
 		} catch (e) {
-			Answers.logCustom('RoomActions updateRoomMember', e);
-			if (__DEV__) {
-				console.warn('RoomActions updateRoomMember', e);
-			}
+			log('RoomActions updateRoomMember', e);
 			return {};
 		}
 	}
@@ -226,10 +223,7 @@ export default class RoomActionsView extends LoggedView {
 								await RocketChat.addUsersToRoom(rid);
 								this.props.navigation.goBack();
 							} catch (e) {
-								Answers.logCustom('RoomActions Add User', e);
-								if (__DEV__) {
-									console.warn('RoomActions Add User', e);
-								}
+								log('RoomActions Add User', e);
 							} finally {
 								this.props.setLoadingInvite(false);
 							}
@@ -259,10 +253,7 @@ export default class RoomActionsView extends LoggedView {
 		try {
 			RocketChat.toggleBlockUser(rid, member._id, !blocked);
 		} catch (e) {
-			Answers.logCustom('toggleBlockUser', e);
-			if (__DEV__) {
-				console.warn('toggleBlockUser', e);
-			}
+			log('toggleBlockUser', e);
 		}
 	}
 
@@ -290,10 +281,7 @@ export default class RoomActionsView extends LoggedView {
 		try {
 			RocketChat.saveNotificationSettings(room.rid, 'mobilePushNotifications', room.notifications ? 'default' : 'nothing');
 		} catch (e) {
-			Answers.logCustom('toggleNotifications', e);
-			if (__DEV__) {
-				console.warn('toggleNotifications', e);
-			}
+			log('toggleNotifications', e);
 		}
 	}
 

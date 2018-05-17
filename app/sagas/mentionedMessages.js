@@ -1,8 +1,9 @@
 import { put, takeLatest } from 'redux-saga/effects';
-import { Answers } from 'react-native-fabric';
+
 import * as types from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import { readyMentionedMessages } from '../actions/mentionedMessages';
+import log from '../utils/log';
 
 let sub;
 let newSub;
@@ -16,10 +17,7 @@ const openMentionedMessagesRoom = function* openMentionedMessagesRoom({ rid, lim
 		}
 		sub = newSub;
 	} catch (e) {
-		Answers.logCustom('openMentionedMessagesRoom', e);
-		if (__DEV__) {
-			console.warn('openMentionedMessagesRoom', e);
-		}
+		log('openMentionedMessagesRoom', e);
 	}
 };
 
@@ -32,10 +30,7 @@ const closeMentionedMessagesRoom = function* closeMentionedMessagesRoom() {
 			yield newSub.unsubscribe();
 		}
 	} catch (e) {
-		Answers.logCustom('closeMentionedMessagesRoom', e);
-		if (__DEV__) {
-			console.warn('closeMentionedMessagesRoom', e);
-		}
+		log('closeMentionedMessagesRoom', e);
 	}
 };
 

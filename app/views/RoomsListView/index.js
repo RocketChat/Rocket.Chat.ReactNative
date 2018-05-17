@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Platform, View, TextInput, FlatList, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
-import { Answers } from 'react-native-fabric';
 
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
@@ -15,6 +14,7 @@ import RoomsListHeader from './Header';
 import styles from './styles';
 import throttle from '../../utils/throttle';
 import LoggedView from '../View';
+import log from '../../utils/log';
 
 @connect(state => ({
 	user: state.login.user,
@@ -128,10 +128,7 @@ export default class RoomsListView extends LoggedView {
 				const sub = await RocketChat.createDirectMessage(item.username);
 				return goRoom(sub);
 			} catch (e) {
-				Answers.logCustom('RoomsListView._onPressItem', e);
-				if (__DEV__) {
-					console.warn('RoomsListView._onPressItem', e);
-				}
+				log('RoomsListView._onPressItem', e);
 			}
 		}
 		return goRoom(item);
