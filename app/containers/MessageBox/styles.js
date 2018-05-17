@@ -15,7 +15,9 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		flexGrow: 0,
-		backgroundColor: '#fff'
+		backgroundColor: '#fff',
+		borderTopColor: '#ECECEC',
+		borderTopWidth: 1
 	},
 	textBoxInput: {
 		textAlignVertical: 'center',
@@ -40,19 +42,16 @@ export default StyleSheet.create({
 		flex: 0
 	},
 	mentionList: {
-		maxHeight: MENTION_HEIGHT * 4,
-		borderTopColor: '#ECECEC',
-		borderTopWidth: 1,
-		paddingHorizontal: 5,
-		backgroundColor: '#fff'
+		maxHeight: MENTION_HEIGHT * 4
 	},
 	mentionItem: {
 		height: MENTION_HEIGHT,
 		backgroundColor: '#F7F8FA',
-		borderBottomWidth: 1,
-		borderBottomColor: '#ECECEC',
+		borderTopWidth: 1,
+		borderTopColor: '#ECECEC',
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingHorizontal: 5
 	},
 	mentionItemCustomEmoji: {
 		margin: 8,
