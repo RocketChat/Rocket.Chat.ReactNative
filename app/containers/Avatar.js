@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { StyleSheet, Text, View, ViewPropTypes } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import avatarInitialsAndColor from '../utils/avatarInitialsAndColor';
 
 const styles = StyleSheet.create({
@@ -49,7 +48,8 @@ export default class Avatar extends React.PureComponent {
 		};
 
 		const avatarInitialsStyle = {
-			fontSize: size / 2
+			fontSize: size / 1.6,
+			fontWeight: '800'
 		};
 
 		const avatarStyle = {
@@ -58,9 +58,11 @@ export default class Avatar extends React.PureComponent {
 			borderRadius
 		};
 
+		let image;
+
 		if (type === 'd') {
 			const uri = avatar || `${ baseUrl }/avatar/${ text }`;
-			const image = uri && (
+			image = uri && (
 				<FastImage
 					style={[styles.avatar, avatarStyle]}
 					source={{
@@ -69,30 +71,20 @@ export default class Avatar extends React.PureComponent {
 					}}
 				/>
 			);
-			return (
-				<View style={[styles.iconContainer, iconContainerStyle, style]}>
-					{this.state.showInitials &&
-						<Text
-							style={[styles.avatarInitials, avatarInitialsStyle]}
-							allowFontScaling={false}
-						>
-							{initials}
-						</Text>
-					}
-					{image}
-					{this.props.children}
-				</View>);
 		}
-
-		const icon = {
-			c: 'pound',
-			p: 'lock',
-			l: 'account'
-		}[type];
 
 		return (
 			<View style={[styles.iconContainer, iconContainerStyle, style]}>
-				<MaterialCommunityIcons name={icon} style={[styles.avatarInitials, avatarInitialsStyle]} />
+				{this.state.showInitials &&
+					<Text
+						style={[styles.avatarInitials, avatarInitialsStyle]}
+						allowFontScaling={false}
+					>
+						{initials}
+					</Text>
+				}
+				{image}
+				{this.props.children}
 			</View>
 		);
 	}
