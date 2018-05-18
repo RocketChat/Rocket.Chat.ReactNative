@@ -2,16 +2,15 @@ import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, ViewPropTypes } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 import SimpleMarkdown from 'simple-markdown';
-
-import messagesStatus from '../constants/messagesStatus';
 
 import Avatar from '../containers/Avatar';
 import Status from '../containers/status';
 import Touch from '../utils/touch/index'; //eslint-disable-line
 import Markdown from '../containers/message/Markdown';
+import RoomTypeIcon from '../containers/RoomTypeIcon';
 
 const styles = StyleSheet.create({
 	container: {
@@ -93,6 +92,10 @@ const styles = StyleSheet.create({
 		right: -3,
 		borderWidth: 3,
 		borderColor: '#fff'
+	},
+	type: {
+		marginRight: 5,
+		marginTop: 3
 	}
 });
 const markdownStyle = { block: { marginBottom: 0, flexWrap: 'wrap', flexDirection: 'row' } };
@@ -216,6 +219,16 @@ export default class RoomItem extends React.Component {
 		return `${ msg.slice(0, maxChars) }${ msg.replace(/:[a-z0-9]+:/gi, ':::').length > maxChars ? '...' : '' }`;
 	}
 
+	get type() {
+		const icon = {
+			c: 'pound',
+			p: 'lock',
+			l: 'account',
+			d: 'at'
+		}[this.props.type];
+		return <Icon name={icon} size={15} style={styles.type} />;
+	}
+
 	formatDate = date => moment(date).calendar(null, {
 		lastDay: '[Yesterday]',
 		sameDay: 'h:mm A',
@@ -225,7 +238,7 @@ export default class RoomItem extends React.Component {
 
 	render() {
 		const {
-			favorite, unread, userMentions, name, _updatedAt, alert, status
+			favorite, unread, userMentions, name, _updatedAt, alert, type
 		} = this.props;
 
 		const date = this.formatDate(_updatedAt);
@@ -258,11 +271,11 @@ export default class RoomItem extends React.Component {
 					{this.icon}
 					<View style={styles.roomNameView}>
 						<View style={styles.firstRow}>
+							<RoomTypeIcon type={type} />
 							<Text style={[styles.roomName, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
 							{_updatedAt ? <Text style={[styles.update, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
 						</View>
 						<View style={styles.row}>
-							{status === messagesStatus.ERROR ? <Icon name='error-outline' color='red' size={12} style={{ marginRight: 5, alignSelf: 'center' }} /> : null }
 							<Markdown
 								msg={this.lastMessage}
 								style={styles.lastMessage}

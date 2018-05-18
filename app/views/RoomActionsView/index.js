@@ -15,9 +15,10 @@ import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import { leaveRoom } from '../../actions/room';
 import { setLoading } from '../../actions/selectedUsers';
+import RoomTypeIcon from '../../containers/RoomTypeIcon';
 
 const renderSeparator = () => <View style={styles.separator} />;
-const getRoomTitle = room => (room.t === 'd' ? room.fname : room.name);
+const getRoomTitle = room => (room.t === 'd' ? <Text>{room.fname}</Text> : <Text><RoomTypeIcon type={room.t} />&nbsp;{room.name}</Text>);
 
 @connect(state => ({
 	user_id: state.login.user.id,
