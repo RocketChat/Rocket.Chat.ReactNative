@@ -6,6 +6,10 @@ const { login, navigateToLogin } = require('./helpers/app');
 const data = require('./data');
 
 describe('Rooms list screen', () => {
+	before(async() => {
+		await device.reloadReactNative(); // TODO: remove this after fix logout subscription
+	});
+
 	describe('Render', async() => {
 		it('should have rooms list screen', async() => {
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();

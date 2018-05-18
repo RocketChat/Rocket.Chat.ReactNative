@@ -74,8 +74,8 @@ export default class RoomView extends LoggedView {
 		this.onReactionPress = this.onReactionPress.bind(this);
 	}
 
-	async componentDidMount() {
-		await this.updateRoom();
+	componentDidMount() {
+		this.updateRoom();
 		this.rooms.addListener(this.updateRoom);
 	}
 	shouldComponentUpdate(nextProps, nextState) {
@@ -147,7 +147,7 @@ export default class RoomView extends LoggedView {
 			await RocketChat.joinRoom(this.props.rid);
 			this.setState({
 				joined: true
-			});	
+			});
 		} catch (error) {
 			console.warn('joinRoom', error);
 		}

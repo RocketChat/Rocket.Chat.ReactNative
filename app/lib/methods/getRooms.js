@@ -3,7 +3,6 @@ import { InteractionManager } from 'react-native';
 import { get } from './helpers/rest';
 import mergeSubscriptionsRooms, { merge } from './helpers/mergeSubscriptionsRooms';
 import database from '../realm';
-import { rejects } from 'assert';
 
 const lastMessage = () => {
 	const message = database

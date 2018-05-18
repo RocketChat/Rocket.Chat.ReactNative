@@ -12,4 +12,6 @@ if (__DEV__) {
         .connect();
     // Running on android device
     // $ adb reverse tcp:9090 tcp:9090
+    Reactotron.clear();
+    console.warn = Reactotron.log;
 }

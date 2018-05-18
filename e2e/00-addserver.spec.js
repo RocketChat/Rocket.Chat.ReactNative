@@ -28,11 +28,6 @@ describe('Add server', () => {
 	});
 
 	describe('Usage', async() => {
-		beforeEach(async() => {
-			await device.reloadReactNative();
-			await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(2000);
-		});
-
 		it('should insert "invalidtest" and get an invalid instance', async() => {
 			await element(by.id('new-server-view-input')).replaceText('invalidtest');
 			await waitFor(element(by.text(' is not a valid Rocket.Chat instance'))).toBeVisible().withTimeout(2000);

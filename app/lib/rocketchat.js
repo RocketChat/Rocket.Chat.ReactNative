@@ -192,65 +192,66 @@ const RocketChat = {
 				return reduxStore.dispatch(someoneTyping({ _rid, username: ddpMessage.fields.args[0], typing: ddpMessage.fields.args[1] }));
 			}));
 
-			this.ddp.on('stream-notify-user', protectedFunction((ddpMessage) => {
-				const [type, data] = ddpMessage.fields.args;
-				const [, ev] = ddpMessage.fields.eventName.split('/');
-				if (/subscriptions/.test(ev)) {
-					if (data.roles) {
-						data.roles = data.roles.map(role => ({ value: role }));
-					}
-					if (data.blocker) {
-						data.blocked = true;
-					} else {
-						data.blocked = false;
-					}
-					if (data.mobilePushNotifications === 'nothing') {
-						data.notifications = true;
-					} else {
-						data.notifications = false;
-					}
-					database.write(() => {
-						database.create('subscriptions', data, true);
-					});
-				}
-				if (/rooms/.test(ev) && type === 'updated') {
-					const sub = database.objects('subscriptions').filtered('rid == $0', data._id)[0];
+			// this.ddp.on('stream-notify-user', protectedFunction((ddpMessage) => {
+			// 	console.warn('rc.stream-notify-user')
+			// 	const [type, data] = ddpMessage.fields.args;
+			// 	const [, ev] = ddpMessage.fields.eventName.split('/');
+			// 	if (/subscriptions/.test(ev)) {
+			// 		if (data.roles) {
+			// 			data.roles = data.roles.map(role => ({ value: role }));
+			// 		}
+			// 		if (data.blocker) {
+			// 			data.blocked = true;
+			// 		} else {
+			// 			data.blocked = false;
+			// 		}
+			// 		if (data.mobilePushNotifications === 'nothing') {
+			// 			data.notifications = true;
+			// 		} else {
+			// 			data.notifications = false;
+			// 		}
+			// 		database.write(() => {
+			// 			database.create('subscriptions', data, true);
+			// 		});
+			// 	}
+			// 	if (/rooms/.test(ev) && type === 'updated') {
+			// 		const sub = database.objects('subscriptions').filtered('rid == $0', data._id)[0];
 
-					database.write(() => {
-						sub.roomUpdatedAt = data._updatedAt;
-						sub.lastMessage = normalizeMessage(data.lastMessage);
-						sub.ro = data.ro;
-						sub.description = data.description;
-						sub.topic = data.topic;
-						sub.announcement = data.announcement;
-						sub.reactWhenReadOnly = data.reactWhenReadOnly;
-						sub.archived = data.archived;
-						sub.joinCodeRequired = data.joinCodeRequired;
-						if (data.muted) {
-							sub.muted = data.muted.map(m => ({ value: m }));
-						}
-					});
-				}
-				if (/message/.test(ev)) {
-					const [args] = ddpMessage.fields.args;
-					const _id = Random.id();
-					const message = {
-						_id,
-						rid: args.rid,
-						msg: args.msg,
-						ts: new Date(),
-						_updatedAt: new Date(),
-						status: messagesStatus.SENT,
-						u: {
-							_id,
-							username: 'rocket.cat'
-						}
-					};
-					requestAnimationFrame(() => database.write(() => {
-						database.create('messages', message, true);
-					}));
-				}
-			}));
+			// 		database.write(() => {
+			// 			sub.roomUpdatedAt = data._updatedAt;
+			// 			sub.lastMessage = normalizeMessage(data.lastMessage);
+			// 			sub.ro = data.ro;
+			// 			sub.description = data.description;
+			// 			sub.topic = data.topic;
+			// 			sub.announcement = data.announcement;
+			// 			sub.reactWhenReadOnly = data.reactWhenReadOnly;
+			// 			sub.archived = data.archived;
+			// 			sub.joinCodeRequired = data.joinCodeRequired;
+			// 			if (data.muted) {
+			// 				sub.muted = data.muted.map(m => ({ value: m }));
+			// 			}
+			// 		});
+			// 	}
+			// 	if (/message/.test(ev)) {
+			// 		const [args] = ddpMessage.fields.args;
+			// 		const _id = Random.id();
+			// 		const message = {
+			// 			_id,
+			// 			rid: args.rid,
+			// 			msg: args.msg,
+			// 			ts: new Date(),
+			// 			_updatedAt: new Date(),
+			// 			status: messagesStatus.SENT,
+			// 			u: {
+			// 				_id,
+			// 				username: 'rocket.cat'
+			// 			}
+			// 		};
+			// 		requestAnimationFrame(() => database.write(() => {
+			// 			database.create('messages', message, true);
+			// 		}));
+			// 	}
+			// }));
 
 			this.ddp.on('rocketchat_starred_message', protectedFunction((ddpMessage) => {
 				if (ddpMessage.msg === 'added') {
