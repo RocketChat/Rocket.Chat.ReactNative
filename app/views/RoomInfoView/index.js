@@ -13,6 +13,8 @@ import sharedStyles from '../Styles';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Touch from '../../utils/touch';
+
+import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
@@ -98,8 +100,8 @@ export default class RoomInfoView extends LoggedView {
 				if (userRoles) {
 					this.setState({ roles: userRoles.roles || [] });
 				}
-			} catch (error) {
-				console.warn('RoomInfoView', error);
+			} catch (e) {
+				log('RoomInfoView.componentDidMount', e);
 			}
 		} else {
 			const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], this.state.room.rid);
@@ -163,25 +165,28 @@ export default class RoomInfoView extends LoggedView {
 		return null;
 	}
 
+	renderAvatar = (room, roomUser) => (
+		<Avatar
+			text={room.name}
+			size={100}
+			style={styles.avatar}
+			type={room.t}
+		>
+			{room.t === 'd' ? <Status style={[sharedStyles.status, styles.status]} id={roomUser._id} /> : null}
+		</Avatar>
+	)
+
 	render() {
 		const { room, roomUser } = this.state;
-		const { name, t } = room;
+		if (!room) {
+			return <View />;
+		}
 		return (
 			<ScrollView style={styles.container}>
 				<View style={styles.avatarContainer}>
-					<Avatar
-						text={name}
-						size={100}
-						style={styles.avatar}
-						type={t}
-					>
-						{t === 'd' ? <Status style={[sharedStyles.status, styles.status]} id={roomUser._id} /> : null}
-					</Avatar>
-					<Text style={styles.roomTitle}>
-						{ getRoomTitle(room) }
-					</Text>
+					{this.renderAvatar(room, roomUser)}
+					<Text style={styles.roomTitle}>{ this.getRoomTitle(room) }</Text>
 				</View>
-
 				{!this.isDirect() && this.renderItem('description', room)}
 				{!this.isDirect() && this.renderItem('topic', room)}
 				{!this.isDirect() && this.renderItem('announcement', room)}

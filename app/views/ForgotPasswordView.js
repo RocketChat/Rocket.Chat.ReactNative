@@ -73,10 +73,6 @@ export default class ForgotPasswordView extends LoggedView {
 		this.props.forgotPasswordRequest(email);
 	}
 
-	backLogin = () => {
-		this.props.navigation.goBack();
-	}
-
 	render() {
 		return (
 			<KeyboardView

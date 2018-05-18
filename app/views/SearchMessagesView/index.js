@@ -13,6 +13,7 @@ import RocketChat from '../../lib/rocketchat';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import Message from '../../containers/message';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import log from '../../utils/log';
 
 @connect(state => ({
 	user: state.login.user,
@@ -50,14 +51,14 @@ export default class SearchMessagesView extends LoggedView {
 		let messages = [];
 		try {
 			const result = await Promise.race([RocketChat.messageSearch(this.searchText, this.props.navigation.state.params.rid, this.limit), cancel]);
-			messages = result.messages.map(message => buildMessage(message));
+			messages = result.message.docs.map(message => buildMessage(message));
 			this.setState({ messages, searching: false, loadingMore: false });
-		} catch (error) {
+		} catch (e) {
 			this._cancel = null;
-			if (error !== 'cancel') {
+			if (e !== 'cancel') {
 				return this.setState({ searching: false, loadingMore: false });
 			}
-			console.warn('search', error);
+			log('SearchMessagesView.search', e);
 		}
 	}
 
@@ -92,9 +93,13 @@ export default class SearchMessagesView extends LoggedView {
 			customTimeFormat='MMMM Do YYYY, h:mm:ss a'
 			onLongPress={() => {}}
 			onReactionPress={async(emoji) => {
-				await RocketChat.setReaction(emoji, item._id);
-				this.search();
-				this.forceUpdate();
+				try {
+					await RocketChat.setReaction(emoji, item._id);
+					this.search();
+					this.forceUpdate();
+				} catch (e) {
+					log('SearchMessagesView.onReactionPress', e);
+				}
 			}}
 		/>
 	);
