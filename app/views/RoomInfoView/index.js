@@ -185,7 +185,7 @@ export default class RoomInfoView extends LoggedView {
 			<ScrollView style={styles.container}>
 				<View style={styles.avatarContainer}>
 					{this.renderAvatar(room, roomUser)}
-					<Text style={styles.roomTitle}>{ this.getRoomTitle(room) }</Text>
+					<Text style={styles.roomTitle}>{ getRoomTitle(room) }</Text>
 				</View>
 				{!this.isDirect() && this.renderItem('description', room)}
 				{!this.isDirect() && this.renderItem('topic', room)}

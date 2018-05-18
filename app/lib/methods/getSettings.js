@@ -21,7 +21,7 @@ export default async function() {
 		InteractionManager.runAfterInteractions(() =>
 			database.write(() =>
 				filteredSettings.forEach(setting => database.create('settings', setting, true))));
-		reduxStore.dispatch(actions.addSettings(this.parseSettings(filteredSettings)));	
+		reduxStore.dispatch(actions.addSettings(this.parseSettings(filteredSettings)));
 	} catch (e) {
 		log('getSettings', e);
 	}
