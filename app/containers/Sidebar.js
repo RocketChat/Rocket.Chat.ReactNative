@@ -4,7 +4,7 @@ import { ScrollView, Text, View, StyleSheet, FlatList, TouchableHighlight } from
 import { connect } from 'react-redux';
 
 import database from '../lib/realm';
-import { setServer, gotoAddServer } from '../actions/server';
+import { setServer } from '../actions/server';
 import { logout } from '../actions/login';
 
 const styles = StyleSheet.create({
@@ -40,16 +40,14 @@ const keyExtractor = item => item.id;
 	server: state.server.server
 }), dispatch => ({
 	selectServer: server => dispatch(setServer(server)),
-	logout: () => dispatch(logout()),
-	gotoAddServer: () => dispatch(gotoAddServer())
+	logout: () => dispatch(logout())
 }))
 export default class Sidebar extends Component {
 	static propTypes = {
 		server: PropTypes.string.isRequired,
 		selectServer: PropTypes.func.isRequired,
 		navigation: PropTypes.object.isRequired,
-		logout: PropTypes.func.isRequired,
-		gotoAddServer: PropTypes.func.isRequired
+		logout: PropTypes.func.isRequired
 	}
 
 	constructor(props) {
@@ -120,7 +118,7 @@ export default class Sidebar extends Component {
 						</View>
 					</TouchableHighlight>
 					<TouchableHighlight
-						onPress={() => { this.props.gotoAddServer(); }}
+						onPress={() => { this.props.navigation.navigate({ key: 'AddServer', routeName: 'AddServer' }); }}
 					>
 						<View style={styles.serverItem}>
 							<Text>

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 // import Zeroconf from 'react-native-zeroconf';
 import { View, Text, SectionList, StyleSheet, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
+import { withNavigationFocus } from 'react-navigation';
 
 import LoggedView from './View';
 import { setServer } from '../actions/server';
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
 }), dispatch => ({
 	selectServer: server => dispatch(setServer(server))
 }))
-export default class ListServerView extends LoggedView {
+class ListServerView extends LoggedView {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
 		login: PropTypes.object.isRequired,
@@ -127,8 +128,10 @@ export default class ListServerView extends LoggedView {
 	jumpToSelectedServer() {
 		if (this.props.server && !this.props.login.isRegistering) {
 			setTimeout(() => {
-				this.openLogin();
-			}, 300);
+				if (this.props.isFocused) {
+					this.openLogin();
+				}
+			}, 500);
 		}
 	}
 
@@ -219,3 +222,4 @@ export default class ListServerView extends LoggedView {
 		);
 	}
 }
+export default withNavigationFocus(ListServerView);

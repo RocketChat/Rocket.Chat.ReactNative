@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Platform, View, TextInput, FlatList, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
+
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem from '../../presentation/RoomItem';
@@ -13,6 +14,7 @@ import RoomsListHeader from './Header';
 import styles from './styles';
 import throttle from '../../utils/throttle';
 import LoggedView from '../View';
+import log from '../../utils/log';
 
 @connect(state => ({
 	user: state.login.user,
@@ -45,12 +47,6 @@ export default class RoomsListView extends LoggedView {
 
 	componentDidMount() {
 		this.data.addListener(this.updateState);
-
-		this.props.navigation.setParams({
-			createChannel: () => this._createChannel()
-		});
-
-		this.updateState();
 	}
 
 	componentWillReceiveProps(props) {
@@ -88,7 +84,7 @@ export default class RoomsListView extends LoggedView {
 
 		let data = database.objects('subscriptions').filtered('name CONTAINS[c] $0', searchText).slice(0, 7);
 
-		const usernames = data.map(sub => sub.map);
+		const usernames = data.map(sub => sub.name);
 		try {
 			if (data.length < 7) {
 				if (this.oldPromise) {
@@ -124,21 +120,21 @@ export default class RoomsListView extends LoggedView {
 
 	_onPressItem = async(item = {}) => {
 		if (!item.search) {
-			return goRoom({ rid: item.rid });
+			return goRoom({ rid: item.rid, name: item.name });
 		}
 		if (item.t === 'd') {
 			// if user is using the search we need first to join/create room
 			try {
 				const sub = await RocketChat.createDirectMessage(item.username);
 				return goRoom(sub);
-			} catch (error) {
-				console.warn('_onPressItem', error);
+			} catch (e) {
+				log('RoomsListView._onPressItem', e);
 			}
 		}
 		return goRoom(item);
 	}
 
-	_createChannel() {
+	createChannel() {
 		this.props.navigation.navigate({
 			key: 'SelectedUsers',
 			routeName: 'SelectedUsers',
@@ -160,6 +156,8 @@ export default class RoomsListView extends LoggedView {
 				placeholder='Search'
 				clearButtonMode='while-editing'
 				blurOnSubmit
+				autoCorrect={false}
+				autoCapitalize='none'
 			/>
 		</View>
 	);
@@ -198,7 +196,7 @@ export default class RoomsListView extends LoggedView {
 
 	renderCreateButtons = () => (
 		<ActionButton buttonColor='rgba(231,76,60,1)'>
-			<ActionButton.Item buttonColor='#9b59b6' title='Create Channel' onPress={() => { this._createChannel(); }} >
+			<ActionButton.Item buttonColor='#9b59b6' title='Create Channel' onPress={() => { this.createChannel(); }} >
 				<Icon name='md-chatbubbles' style={styles.actionButtonIcon} />
 			</ActionButton.Item>
 		</ActionButton>

@@ -16,6 +16,7 @@ import RCTextInput from '../../containers/TextInput';
 import Loading from '../../containers/Loading';
 import SwitchContainer from './SwitchContainer';
 import random from '../../utils/random';
+import log from '../../utils/log';
 
 const PERMISSION_SET_READONLY = 'set-readonly';
 const PERMISSION_SET_REACT_WHEN_READONLY = 'set-react-when-readonly';
@@ -182,6 +183,7 @@ export default class RoomInfoEditView extends LoggedView {
 				this.setState({ nameError: e });
 			}
 			error = true;
+			log('saveRoomSettings', e);
 		}
 
 		await this.setState({ saving: false });
@@ -230,8 +232,8 @@ export default class RoomInfoEditView extends LoggedView {
 					onPress: () => {
 						try {
 							RocketChat.toggleArchiveRoom(this.state.room.rid, !archived);
-						} catch (error) {
-							console.warn('toggleArchive', error);
+						} catch (e) {
+							log('toggleArchive', e);
 						}
 					}
 				}
@@ -274,7 +276,6 @@ export default class RoomInfoEditView extends LoggedView {
 								value={description}
 								onChangeText={value => this.setState({ description: value })}
 								onSubmitEditing={() => { this.topic.focus(); }}
-								inputProps={{ multiline: true }}
 							/>
 							<RCTextInput
 								inputRef={(e) => { this.topic = e; }}
@@ -282,7 +283,6 @@ export default class RoomInfoEditView extends LoggedView {
 								value={topic}
 								onChangeText={value => this.setState({ topic: value })}
 								onSubmitEditing={() => { this.announcement.focus(); }}
-								inputProps={{ multiline: true }}
 							/>
 							<RCTextInput
 								inputRef={(e) => { this.announcement = e; }}
@@ -290,7 +290,6 @@ export default class RoomInfoEditView extends LoggedView {
 								value={announcement}
 								onChangeText={value => this.setState({ announcement: value })}
 								onSubmitEditing={() => { this.joinCode.focus(); }}
-								inputProps={{ multiline: true }}
 							/>
 							<RCTextInput
 								inputRef={(e) => { this.joinCode = e; }}
@@ -298,7 +297,7 @@ export default class RoomInfoEditView extends LoggedView {
 								value={joinCode}
 								onChangeText={value => this.setState({ joinCode: value })}
 								onSubmitEditing={this.submit}
-								inputProps={{ secureTextEntry: true }}
+								secureTextEntry
 							/>
 							<SwitchContainer
 								value={t}

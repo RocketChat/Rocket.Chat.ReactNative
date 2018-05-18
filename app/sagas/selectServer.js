@@ -1,6 +1,7 @@
 import { put, call, takeLatest, take } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { AsyncStorage } from 'react-native';
+
 import { SERVER, LOGIN } from '../actions/actionsTypes';
 import * as actions from '../actions';
 import { connectRequest } from '../actions/connect';
@@ -9,6 +10,7 @@ import { setRoles } from '../actions/roles';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import { navigate } from '../containers/routes/NavigationService';
+import log from '../utils/log';
 
 const validate = function* validate(server) {
 	return yield RocketChat.testServer(server);
@@ -36,7 +38,7 @@ const selectServer = function* selectServer({ server }) {
 
 		yield put(connectRequest());
 	} catch (e) {
-		console.warn('selectServer', e);
+		log('selectServer', e);
 	}
 };
 
@@ -52,23 +54,21 @@ const validateServer = function* validateServer({ server }) {
 };
 
 const addServer = function* addServer({ server }) {
-	database.databases.serversDB.write(() => {
-		database.databases.serversDB.create('servers', { id: server, current: false }, true);
-	});
-	yield put(setServer(server));
-	yield take(LOGIN.SET_TOKEN);
-	navigate('LoginSignup');
-};
-
-const handleGotoAddServer = function* handleGotoAddServer() {
-	yield call(AsyncStorage.removeItem, RocketChat.TOKEN_KEY);
-	yield call(navigate, 'AddServer');
+	try {
+		database.databases.serversDB.write(() => {
+			database.databases.serversDB.create('servers', { id: server, current: false }, true);
+		});
+		yield put(setServer(server));
+		yield take(LOGIN.SET_TOKEN);
+		navigate('LoginSignup');
+	} catch (e) {
+		log('addServer', e);
+	}
 };
 
 const root = function* root() {
 	yield takeLatest(SERVER.REQUEST, validateServer);
 	yield takeLatest(SERVER.SELECT, selectServer);
 	yield takeLatest(SERVER.ADD, addServer);
-	yield takeLatest(SERVER.GOTO_ADD, handleGotoAddServer);
 };
 export default root;

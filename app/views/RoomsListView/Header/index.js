@@ -13,6 +13,7 @@ import RocketChat from '../../../lib/rocketchat';
 import { STATUS_COLORS } from '../../../constants/colors';
 import { setSearch } from '../../../actions/rooms';
 import styles from './styles';
+import log from '../../../utils/log';
 
 const title = (offline, connecting, authenticating, logged) => {
 	if (offline) {
@@ -65,7 +66,11 @@ export default class RoomsListHeaderView extends React.PureComponent {
 	}
 
 	onPressModalButton(status) {
-		RocketChat.setUserPresenceDefaultStatus(status);
+		try {
+			RocketChat.setUserPresenceDefaultStatus(status);
+		} catch (e) {
+			log('onPressModalButton', e);
+		}
 		this.hideModal();
 	}
 
@@ -103,8 +108,11 @@ export default class RoomsListHeaderView extends React.PureComponent {
 	}
 
 	createChannel() {
-		const params = this.props.navigation.state.params || {};
-		params.createChannel();
+		this.props.navigation.navigate({
+			key: 'SelectedUsers',
+			routeName: 'SelectedUsers',
+			params: { nextAction: () => this.props.navigation.navigate('CreateChannel') }
+		});
 	}
 
 	renderLeft() {
@@ -234,6 +242,8 @@ export default class RoomsListHeaderView extends React.PureComponent {
 					placeholder='Search'
 					clearButtonMode='while-editing'
 					blurOnSubmit
+					autoCorrect={false}
+					autoCapitalize='none'
 				/>
 			</View>
 		);

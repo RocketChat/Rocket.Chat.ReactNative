@@ -19,6 +19,7 @@ import {
 } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import * as NavigationService from '../containers/routes/NavigationService';
+import log from '../utils/log';
 
 const getUser = state => state.login;
 const getServer = state => state.server.server;
@@ -60,15 +61,19 @@ const forgotPasswordCall = args => RocketChat.forgotPassword(args);
 // };
 
 const saveToken = function* saveToken() {
-	const [server, user] = yield all([select(getServer), select(getUser)]);
-	yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
-	yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
-	const token = yield AsyncStorage.getItem('pushId');
-	if (token) {
-		yield RocketChat.registerPushToken(user.user.id, token);
-	}
-	if (!user.user.username && !user.isRegistering) {
-		yield put(registerIncomplete());
+	try {
+		const [server, user] = yield all([select(getServer), select(getUser)]);
+		yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
+		yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
+		const token = yield AsyncStorage.getItem('pushId');
+		if (token) {
+			yield RocketChat.registerPushToken(user.user.id, token);
+		}
+		if (!user.user.username && !user.isRegistering) {
+			yield put(registerIncomplete());
+		}
+	} catch (e) {
+		log('saveToken', e);
 	}
 };
 
@@ -130,7 +135,11 @@ const handleSetUsernameRequest = function* handleSetUsernameRequest({ credential
 const handleLogout = function* handleLogout() {
 	const server = yield select(getServer);
 	if (server) {
-		yield call(logoutCall, { server });
+		try {
+			yield call(logoutCall, { server });
+		} catch (e) {
+			log('handleLogout', e);
+		}
 	}
 };
 
@@ -155,9 +164,9 @@ const watchLoginOpen = function* watchLoginOpen() {
 		}
 		const sub = yield RocketChat.subscribe('meteor.loginServiceConfiguration');
 		yield take(types.LOGIN.CLOSE);
-		sub.unsubscribe().catch(e => console.warn('watchLoginOpen unsubscribe', e));
-	} catch (error) {
-		console.warn('watchLoginOpen', error);
+		sub.unsubscribe();
+	} catch (e) {
+		log('watchLoginOpen', e);
 	}
 };
 

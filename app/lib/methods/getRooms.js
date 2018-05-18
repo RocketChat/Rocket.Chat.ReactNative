@@ -1,8 +1,10 @@
 import { InteractionManager } from 'react-native';
+
 // import { showToast } from '../../utils/info';
 import { get } from './helpers/rest';
 import mergeSubscriptionsRooms, { merge } from './helpers/mergeSubscriptionsRooms';
 import database from '../realm';
+import log from '../../utils/log';
 
 const lastMessage = () => {
 	const message = database
@@ -34,18 +36,23 @@ const getRoomDpp = async function() {
 export default async function() {
 	const { database: db } = database;
 
-	return new Promise(async(resolve) => {
-		// eslint-disable-next-line
-		const { subscriptions, rooms } = await (false && this.ddp.status ? getRoomDpp.apply(this) : getRoomRest.apply(this));
+	return new Promise(async(resolve, reject) => {
+		try {
+			// eslint-disable-next-line
+			const { subscriptions, rooms } = await (false && this.ddp.status ? getRoomDpp.apply(this) : getRoomRest.apply(this));
 
-		const data = rooms.map(room => ({ room, sub: database.objects('subscriptions').filtered('rid == $0', room._id) }));
+			const data = rooms.map(room => ({ room, sub: database.objects('subscriptions').filtered('rid == $0', room._id) }));
 
-		InteractionManager.runAfterInteractions(() => {
-			db.write(() => {
-				subscriptions.forEach(subscription => db.create('subscriptions', subscription, true));
-				data.forEach(({ sub, room }) => sub[0] && merge(sub[0], room));
+			InteractionManager.runAfterInteractions(() => {
+				db.write(() => {
+					subscriptions.forEach(subscription => db.create('subscriptions', subscription, true));
+					data.forEach(({ sub, room }) => sub[0] && merge(sub[0], room));
+				});
+				resolve(data);
 			});
-			resolve(data);
-		});
+		} catch (e) {
+			log('getRooms', e);
+			reject(e);
+		}
 	});
 }

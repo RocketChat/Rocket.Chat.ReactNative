@@ -2,13 +2,13 @@ import { AsyncStorage, Platform } from 'react-native';
 import { hashPassword } from 'react-native-meteor/lib/utils';
 import foreach from 'lodash/forEach';
 import Random from 'react-native-meteor/lib/Random';
-import { Answers } from 'react-native-fabric';
-
 import RNFetchBlob from 'react-native-fetch-blob';
+
 import reduxStore from './createStore';
 import settingsType from '../constants/settings';
 import messagesStatus from '../constants/messagesStatus';
 import database from './realm';
+import log from '../utils/log';
 // import * as actions from '../actions';
 
 import { setUser, setLoginServices, removeLoginServices, loginRequest, loginSuccess, loginFailure } from '../actions/login';
@@ -112,26 +112,30 @@ const RocketChat = {
 		this.activeUsers[ddpMessage.id] = ddpMessage.fields;
 	},
 	async loginSuccess(user) {
-		if (!user) {
-			const { user: u } = reduxStore.getState().login;
-			user = Object.assign({}, u);
-		}
-
-		// TODO: one api call
-		// call /me only one time
-		if (!user.username) {
-			const me = await this.me({ token: user.token, userId: user.id });
-			// eslint-disable-next-line
-			user.username = me.username;
-		}
-		if (user.username) {
-			const userInfo = await this.userInfo({ token: user.token, userId: user.id });
-			user.username = userInfo.user.username;
-			if (userInfo.user.roles) {
-				user.roles = userInfo.user.roles;
+		try {
+			if (!user) {
+				const { user: u } = reduxStore.getState().login;
+				user = Object.assign({}, u);
 			}
+
+			// TODO: one api call
+			// call /me only one time
+			if (!user.username) {
+				const me = await this.me({ token: user.token, userId: user.id });
+				// eslint-disable-next-line
+				user.username = me.username;
+			}
+			if (user.username) {
+				const userInfo = await this.userInfo({ token: user.token, userId: user.id });
+				user.username = userInfo.user.username;
+				if (userInfo.user.roles) {
+					user.roles = userInfo.user.roles;
+				}
+			}
+			return reduxStore.dispatch(loginSuccess(user));
+		} catch (e) {
+			log('rocketchat.loginSuccess', e);
 		}
-		return reduxStore.dispatch(loginSuccess(user));
 	},
 	connect(url, login) {
 		return new Promise((resolve) => {
@@ -151,12 +155,12 @@ const RocketChat = {
 
 			this.ddp.on('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 
-			this.ddp.on('background', () => this.getRooms().catch(e => console.warn('background getRooms', e)));
+			this.ddp.on('background', () => this.getRooms().catch(e => log('background getRooms', e)));
 
 			this.ddp.on('disconnected', () => console.log('disconnected'));
 
 			this.ddp.on('logged', protectedFunction((user) => {
-				this.getRooms().catch(e => console.warn('logged getRooms', e));
+				this.getRooms().catch(e => log('logged getRooms', e));
 				this.loginSuccess(user);
 			}));
 			this.ddp.once('logged', protectedFunction(({ id }) => { this.subscribeRooms(id); }));
@@ -420,11 +424,10 @@ const RocketChat = {
 				this.roles[ddpMessage.id] = (ddpMessage.fields && ddpMessage.fields.description) || undefined;
 			}));
 
-			this.ddp.on('error', protectedFunction((err) => {
-				console.warn('onError', JSON.stringify(err));
-				Answers.logCustom('disconnect', err);
+			this.ddp.on('error', (err) => {
+				log('rocketchat.onerror', err);
 				reduxStore.dispatch(connectFailure());
-			}));
+			});
 
 			// TODO: fix api (get emojis by date/version....)
 
@@ -440,7 +443,9 @@ const RocketChat = {
 				this.ddp.subscribe('roles');
 				RocketChat.getCustomEmoji();
 			}));
-		}).catch(err => console.warn(`asd ${ err }`));
+		}).catch((e) => {
+			log('rocketchat.connect catch', e);
+		});
 	},
 
 	register({ credentials }) {
@@ -502,7 +507,11 @@ const RocketChat = {
 	},
 	logout({ server }) {
 		if (this.ddp) {
-			this.ddp.logout();
+			try {
+				this.ddp.logout();
+			} catch (e) {
+				log('rocketchat.logout', e);
+			}
 		}
 		database.deleteAll();
 		AsyncStorage.removeItem(TOKEN_KEY);
@@ -703,7 +712,13 @@ const RocketChat = {
 		return Promise.resolve(result);
 	},
 	async getPermalink(message) {
-		const room = await RocketChat.getRoom(message.rid);
+		let room;
+		try {
+			room = await RocketChat.getRoom(message.rid);
+		} catch (e) {
+			log('rocketchat.getPermalink', e);
+			return null;
+		}
 		const { server } = reduxStore.getState().server;
 		const roomType = {
 			p: 'group',
