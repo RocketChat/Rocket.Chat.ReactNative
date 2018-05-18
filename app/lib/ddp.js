@@ -176,6 +176,7 @@ export default class Socket extends EventEmitter {
 			const cancel = this.ddp.once('disconnected', reject);
 			this.ddp.once(id, (data) => {
 				// console.log(data);
+				this.lastping = new Date();
 				this.ddp.removeListener(id, cancel);
 				return (data.error ? reject(data.error) : resolve({ id, ...data }));
 			});
