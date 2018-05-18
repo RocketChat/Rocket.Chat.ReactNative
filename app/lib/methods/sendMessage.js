@@ -1,10 +1,11 @@
 import Random from 'react-native-meteor/lib/Random';
-import messagesStatus from '../../constants/messagesStatus';
 
+import messagesStatus from '../../constants/messagesStatus';
 import buildMessage from '../methods/helpers/buildMessage';
 import { post } from './helpers/rest';
 import database from '../realm';
 import reduxStore from '../createStore';
+import log from '../../utils/log';
 
 export const getMessage = (rid, msg = {}) => {
 	const _id = Random.id();
@@ -67,6 +68,6 @@ export default async function(rid, msg) {
 			db.create('messages', buildMessage({ ...message, ...ret }), true);
 		});
 	} catch (e) {
-		console.warn('sendMessage', e);
+		log('sendMessage', e);
 	}
 }

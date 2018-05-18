@@ -11,6 +11,8 @@ import Avatar from '../../../containers/Avatar';
 import { STATUS_COLORS } from '../../../constants/colors';
 import styles from './styles';
 import { closeRoom } from '../../../actions/room';
+
+import log from '../../../utils/log';
 import RoomTypeIcon from '../../../containers/RoomTypeIcon';
 
 const title = (offline, connecting, authenticating, logged) => {
@@ -108,7 +110,7 @@ export default class RoomHeaderView extends React.PureComponent {
 
 	renderCenter() {
 		if (!this.state.room.name) {
-			return null;
+			return <View style={styles.titleContainer} />;
 		}
 
 		let accessibilityLabel = this.state.room.name;
@@ -134,7 +136,7 @@ export default class RoomHeaderView extends React.PureComponent {
 				style={styles.titleContainer}
 				accessibilityLabel={accessibilityLabel}
 				accessibilityTraits='header'
-				onPress={() => this.props.navigation.navigate({ key: 'RoomInfo', routeName: 'RoomInfo', params: { rid: this.state.rid } })}
+				onPress={() => this.props.navigation.navigate({ key: 'RoomInfo', routeName: 'RoomInfo', params: this.state.room })}
 			>
 
 				<Avatar
@@ -165,7 +167,13 @@ export default class RoomHeaderView extends React.PureComponent {
 		<View style={styles.right}>
 			<TouchableOpacity
 				style={styles.headerButton}
-				onPress={() => RocketChat.toggleFavorite(this.state.room.rid, this.state.room.f)}
+				onPress={() => {
+					try {
+						RocketChat.toggleFavorite(this.state.room.rid, this.state.room.f);
+					} catch (e) {
+						log('toggleFavorite', e);
+					}
+				}}
 				accessibilityLabel='Star room'
 				accessibilityTraits='button'
 			>

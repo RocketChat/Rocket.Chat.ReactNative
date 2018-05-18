@@ -42,8 +42,7 @@ export const ROOM = createRequestTypes('ROOM', [
 	'ERASE',
 	'USER_TYPING',
 	'MESSAGE_RECEIVED',
-	'SET_LAST_OPEN',
-	'LAYOUT_ANIMATION'
+	'SET_LAST_OPEN'
 ]);
 export const APP = createRequestTypes('APP', ['READY', 'INIT']);
 export const MESSAGES = createRequestTypes('MESSAGES', [
@@ -81,8 +80,7 @@ export const SERVER = createRequestTypes('SERVER', [
 	...defaultTypes,
 	'SELECT',
 	'CHANGED',
-	'ADD',
-	'GOTO_ADD'
+	'ADD'
 ]);
 export const METEOR = createRequestTypes('METEOR_CONNECT', [...defaultTypes, 'DISCONNECT', 'DISCONNECT_BY_USER']);
 export const LOGOUT = 'LOGOUT'; // logout is always success

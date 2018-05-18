@@ -1,10 +1,12 @@
 import { AsyncStorage } from 'react-native';
 import { call, put, takeLatest } from 'redux-saga/effects';
+
 import * as actions from '../actions';
 import { setServer } from '../actions/server';
 import { restoreToken, setUser } from '../actions/login';
 import { APP } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
+import log from '../utils/log';
 
 const restore = function* restore() {
 	try {
@@ -25,7 +27,7 @@ const restore = function* restore() {
 
 		yield put(actions.appReady({}));
 	} catch (e) {
-		console.warn('restore', e);
+		log('restore', e);
 	}
 };
 

@@ -1,5 +1,6 @@
 import { post } from './helpers/rest';
 import database from '../realm';
+import log from '../../utils/log';
 
 const	readMessagesREST = function readMessagesREST(rid) {
 	const { token, id } = this.ddp._login;
@@ -17,17 +18,21 @@ const readMessagesDDP = function readMessagesDDP(rid) {
 
 export default async function readMessages(rid) {
 	const { database: db } = database;
-	// eslint-disable-next-line
-	const data = await (false && this.ddp.status ? readMessagesDDP.call(this, rid) : readMessagesREST.call(this, rid));
-	const [subscription] = db.objects('subscriptions').filtered('rid = $0', rid);
-	db.write(() => {
-		subscription.open = true;
-		subscription.alert = false;
-		subscription.unread = 0;
-		subscription.userMentions = 0;
-		subscription.groupMentions = 0;
-		subscription.ls = new Date();
-		subscription.lastOpen = new Date();
-	});
-	return data;
+	try {
+		// eslint-disable-next-line
+		const data = await (false && this.ddp.status ? readMessagesDDP.call(this, rid) : readMessagesREST.call(this, rid));
+		const [subscription] = db.objects('subscriptions').filtered('rid = $0', rid);
+		db.write(() => {
+			subscription.open = true;
+			subscription.alert = false;
+			subscription.unread = 0;
+			subscription.userMentions = 0;
+			subscription.groupMentions = 0;
+			subscription.ls = new Date();
+			subscription.lastOpen = new Date();
+		});
+		return data;
+	} catch (e) {
+		log('readMessages', e);
+	}
 }

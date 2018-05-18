@@ -4,7 +4,7 @@ export default fn => (params) => {
 	try {
 		fn(params);
 	} catch (e) {
-		Answers.logCustom('erro', e);
+		Answers.logCustom('error', e);
 		if (__DEV__) {
 			alert(e);
 		}

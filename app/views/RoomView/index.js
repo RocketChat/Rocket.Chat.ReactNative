@@ -20,6 +20,7 @@ import Header from '../../containers/Header';
 import RoomsHeader from './Header';
 import ReactionPicker from './ReactionPicker';
 import styles from './styles';
+import log from '../../utils/log';
 
 @connect(
 	state => ({
@@ -27,8 +28,7 @@ import styles from './styles';
 		Message_TimeFormat: state.settings.Message_TimeFormat,
 		loading: state.messages.isFetching,
 		user: state.login.user,
-		actionMessage: state.messages.actionMessage,
-		layoutAnimation: state.room.layoutAnimation
+		actionMessage: state.messages.actionMessage
 	}),
 	dispatch => ({
 		actions: bindActionCreators(actions, dispatch),
@@ -76,14 +76,6 @@ export default class RoomView extends LoggedView {
 
 	async componentDidMount() {
 		await this.updateRoom();
-		await this.props.openRoom({
-			...this.state.room
-		});
-		if (this.state.room.alert || this.state.room.unread || this.state.room.userMentions) {
-			this.props.setLastOpen(this.state.room.ls);
-		} else {
-			this.props.setLastOpen(null);
-		}
 		this.rooms.addListener(this.updateRoom);
 	}
 	shouldComponentUpdate(nextProps, nextState) {
@@ -116,16 +108,31 @@ export default class RoomView extends LoggedView {
 	}
 
 	onReactionPress = (shortname, messageId) => {
-		if (!messageId) {
-			RocketChat.setReaction(shortname, this.props.actionMessage._id);
-			return this.props.toggleReactionPicker();
+		try {
+			if (!messageId) {
+				RocketChat.setReaction(shortname, this.props.actionMessage._id);
+				return this.props.toggleReactionPicker();
+			}
+			RocketChat.setReaction(shortname, messageId);
+		} catch (e) {
+			log('RoomView.onReactionPress', e);
 		}
-		RocketChat.setReaction(shortname, messageId);
 	};
 
 	updateRoom = async() => {
 		if (this.rooms.length > 0) {
+			const { room: prevRoom } = this.state;
 			await this.setState({ room: JSON.parse(JSON.stringify(this.rooms[0])) });
+			if (!prevRoom.rid) {
+				await this.props.openRoom({
+					...this.state.room
+				});
+				if (this.state.room.alert || this.state.room.unread || this.state.room.userMentions) {
+					this.props.setLastOpen(this.state.room.ls);
+				} else {
+					this.props.setLastOpen(null);
+				}
+			}
 		}
 	}
 
@@ -136,10 +143,14 @@ export default class RoomView extends LoggedView {
 	};
 
 	joinRoom = async() => {
-		await RocketChat.joinRoom(this.props.rid);
-		this.setState({
-			joined: true
-		});
+		try {
+			await RocketChat.joinRoom(this.props.rid);
+			this.setState({
+				joined: true
+			});
+		} catch (e) {
+			log('joinRoom', e);
+		}
 	};
 
 	renderItem = (item, previousItem) => (

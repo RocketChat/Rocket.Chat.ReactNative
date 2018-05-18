@@ -15,6 +15,7 @@ import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import { leaveRoom } from '../../actions/room';
 import { setLoading } from '../../actions/selectedUsers';
+import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 
 const renderSeparator = () => <View style={styles.separator} />;
@@ -87,14 +88,14 @@ export default class RoomActionsView extends LoggedView {
 	}
 
 	updateRoomMember = async() => {
-		if (this.state.room.t === 'd') {
+		if (this.state.room.t !== 'd') {
 			return {};
 		}
 		try {
 			const member = await RocketChat.getRoomMember(this.state.room.rid, this.props.user_id);
 			return { member };
-		} catch (error) {
-			console.warn('RoomActions updateRoomMember', error);
+		} catch (e) {
+			log('RoomActions updateRoomMember', e);
 			return {};
 		}
 	}
@@ -222,8 +223,8 @@ export default class RoomActionsView extends LoggedView {
 								this.props.setLoadingInvite(true);
 								await RocketChat.addUsersToRoom(rid);
 								this.props.navigation.goBack();
-							} catch (error) {
-								console.warn('RoomActions Add User', error);
+							} catch (e) {
+								log('RoomActions Add User', e);
 							} finally {
 								this.props.setLoadingInvite(false);
 							}
@@ -250,7 +251,11 @@ export default class RoomActionsView extends LoggedView {
 	toggleBlockUser = () => {
 		const { rid, blocked } = this.state.room;
 		const { member } = this.state;
-		RocketChat.toggleBlockUser(rid, member._id, !blocked);
+		try {
+			RocketChat.toggleBlockUser(rid, member._id, !blocked);
+		} catch (e) {
+			log('toggleBlockUser', e);
+		}
 	}
 
 	leaveChannel = () => {
@@ -274,7 +279,11 @@ export default class RoomActionsView extends LoggedView {
 
 	toggleNotifications = () => {
 		const { room } = this.state;
-		RocketChat.saveNotificationSettings(room.rid, 'mobilePushNotifications', room.notifications ? 'default' : 'nothing');
+		try {
+			RocketChat.saveNotificationSettings(room.rid, 'mobilePushNotifications', room.notifications ? 'default' : 'nothing');
+		} catch (e) {
+			log('toggleNotifications', e);
+		}
 	}
 
 	renderRoomInfo = ({ item }) => {

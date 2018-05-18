@@ -1,7 +1,8 @@
 import EJSON from 'ejson';
-import { Answers } from 'react-native-fabric';
 import { AppState } from 'react-native';
+
 import debounce from '../utils/debounce';
+import log from '../utils/log';
 // import { AppState, NativeModules } from 'react-native';
 // const { WebSocketModule, BlobManager } = NativeModules;
 
@@ -44,8 +45,7 @@ class EventEmitter {
 				try {
 					listener.apply(this, args);
 				} catch (e) {
-					Answers.logCustom(e);
-					console.warn(e);
+					log('EventEmitter.emit', e);
 				}
 			});
 		}
@@ -129,7 +129,11 @@ export default class Socket extends EventEmitter {
 			this.send({ msg: 'connect', version: '1', support: ['1', 'pre2', 'pre1'] });
 		});
 
-		this._connect();
+		try {
+			this._connect();
+		} catch (e) {
+			log('ddp.constructor._connect', e);
+		}
 	}
 	check() {
 		if (!this.lastping) {
@@ -213,7 +217,7 @@ export default class Socket extends EventEmitter {
 					this.emit(data.msg, data);
 					return data.collection && this.emit(data.collection, data);
 				} catch (err) {
-					Answers.logCustom('EJSON parse', err);
+					log('EJSON parse', err);
 				}
 			};
 		});
@@ -234,16 +238,20 @@ export default class Socket extends EventEmitter {
 		delete this.connection;
 		this._logged = false;
 
-		this._timer = setTimeout(() => {
+		this._timer = setTimeout(async() => {
 			delete this._timer;
-			this._connect();
+			try {
+				await this._connect();
+			} catch (e) {
+				log('ddp.reconnect._connect', e);
+			}
 		}, 1000);
 	}
 	call(method, ...params) {
 		return this.send({
 			msg: 'method', method, params
 		}).then(data => data.result || data.subs).catch((err) => {
-			Answers.logCustom('DDP call Error', err);
+			log('DDP call Error', err);
 			return Promise.reject(err);
 		});
 	}
@@ -256,8 +264,7 @@ export default class Socket extends EventEmitter {
 			msg: 'unsub',
 			id
 		}).then(data => data.result || data.subs).catch((err) => {
-			console.warn('unsubscribe', err);
-			Answers.logCustom('DDP unsubscribe Error', err);
+			log('DDP unsubscribe Error', err);
 			return Promise.reject(err);
 		});
 	}
@@ -277,8 +284,7 @@ export default class Socket extends EventEmitter {
 			// console.log(args);
 			return args;
 		}).catch((err) => {
-			console.warn('subscribe', err);
-			Answers.logCustom('DDP subscribe Error', err);
+			log('DDP subscribe Error', err);
 			return Promise.reject(err);
 		});
 	}

@@ -187,9 +187,9 @@ dependencies {
     compile project(':react-native-fast-image')
     compile project(':realm')
     compile fileTree(dir: "libs", include: ["*.jar"])
-    compile "com.android.support:appcompat-v7:23.0.1"
+    compile "com.android.support:appcompat-v7:27.1.0"
     compile "com.android.support:support-v4:27.1.0"
-    compile 'com.android.support:customtabs:23.0.1'
+    compile 'com.android.support:customtabs:27.1.0'
     compile "com.facebook.react:react-native:+"  // From node_modules
     compile 'com.facebook.fresco:fresco:1.7.1'
     compile 'com.facebook.fresco:animated-gif:1.7.1'
