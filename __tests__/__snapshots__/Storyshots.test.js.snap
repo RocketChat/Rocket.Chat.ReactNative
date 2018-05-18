@@ -30,12 +30,13 @@ exports[`Storyshots Avatar avatar 1`] = `
               "color": "#ffffff",
             },
             Object {
-              "fontSize": 12.5,
+              "fontSize": 15.625,
+              "fontWeight": "800",
             },
           ]
         }
       >
-        TE
+        T
       </Text>
       <View
         style={
@@ -108,12 +109,13 @@ exports[`Storyshots Avatar avatar 1`] = `
               "color": "#ffffff",
             },
             Object {
-              "fontSize": 20,
+              "fontSize": 25,
+              "fontWeight": "800",
             },
           ]
         }
       >
-        AA
+        A
       </Text>
       <View
         style={
@@ -186,12 +188,13 @@ exports[`Storyshots Avatar avatar 1`] = `
               "color": "#ffffff",
             },
             Object {
-              "fontSize": 15,
+              "fontSize": 18.75,
+              "fontWeight": "800",
             },
           ]
         }
       >
-        BB
+        B
       </Text>
       <View
         style={
@@ -264,12 +267,13 @@ exports[`Storyshots Avatar avatar 1`] = `
               "color": "#ffffff",
             },
             Object {
-              "fontSize": 12.5,
+              "fontSize": 15.625,
+              "fontWeight": "800",
             },
           ]
         }
       >
-        TE
+        T
       </Text>
       <View
         style={
@@ -384,12 +388,13 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 23,
+                  "fontSize": 28.75,
+                  "fontWeight": "800",
                 },
               ]
             }
           >
-            RC
+            R
           </Text>
           <View
             style={
@@ -480,6 +485,30 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               }
             }
           >
+            <Text
+              accessible={true}
+              allowFontScaling={false}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 15,
+                  },
+                  Object {
+                    "marginRight": 5,
+                    "marginTop": 3,
+                  },
+                  Object {
+                    "fontFamily": "Material Design Icons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
             <Text
               accessible={true}
               allowFontScaling={true}
@@ -593,12 +622,13 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 23,
+                  "fontSize": 28.75,
+                  "fontWeight": "800",
                 },
               ]
             }
           >
-            RC
+            R
           </Text>
           <View
             style={
@@ -689,6 +719,30 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               }
             }
           >
+            <Text
+              accessible={true}
+              allowFontScaling={false}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 15,
+                  },
+                  Object {
+                    "marginRight": 5,
+                    "marginTop": 3,
+                  },
+                  Object {
+                    "fontFamily": "Material Design Icons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
             <Text
               accessible={true}
               allowFontScaling={true}
@@ -806,12 +860,13 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 23,
+                  "fontSize": 28.75,
+                  "fontWeight": "800",
                 },
               ]
             }
           >
-            RC
+            R
           </Text>
           <View
             style={
@@ -902,6 +957,30 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               }
             }
           >
+            <Text
+              accessible={true}
+              allowFontScaling={false}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 15,
+                  },
+                  Object {
+                    "marginRight": 5,
+                    "marginTop": 3,
+                  },
+                  Object {
+                    "fontFamily": "Material Design Icons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
             <Text
               accessible={true}
               allowFontScaling={true}
@@ -1038,12 +1117,13 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 23,
+                  "fontSize": 28.75,
+                  "fontWeight": "800",
                 },
               ]
             }
           >
-            LC
+            L
           </Text>
           <View
             style={
@@ -1134,6 +1214,30 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               }
             }
           >
+            <Text
+              accessible={true}
+              allowFontScaling={false}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 15,
+                  },
+                  Object {
+                    "marginRight": 5,
+                    "marginTop": 3,
+                  },
+                  Object {
+                    "fontFamily": "Material Design Icons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
             <Text
               accessible={true}
               allowFontScaling={true}
@@ -1274,12 +1378,13 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 23,
+                  "fontSize": 28.75,
+                  "fontWeight": "800",
                 },
               ]
             }
           >
-            LC
+            L
           </Text>
           <View
             style={
@@ -1370,6 +1475,30 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               }
             }
           >
+            <Text
+              accessible={true}
+              allowFontScaling={false}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 15,
+                  },
+                  Object {
+                    "marginRight": 5,
+                    "marginTop": 3,
+                  },
+                  Object {
+                    "fontFamily": "Material Design Icons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
             <Text
               accessible={true}
               allowFontScaling={true}
@@ -1506,12 +1635,13 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 23,
+                  "fontSize": 28.75,
+                  "fontWeight": "800",
                 },
               ]
             }
           >
-            LC
+            L
           </Text>
           <View
             style={
@@ -1602,6 +1732,30 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               }
             }
           >
+            <Text
+              accessible={true}
+              allowFontScaling={false}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 15,
+                  },
+                  Object {
+                    "marginRight": 5,
+                    "marginTop": 3,
+                  },
+                  Object {
+                    "fontFamily": "Material Design Icons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
             <Text
               accessible={true}
               allowFontScaling={true}
@@ -1738,12 +1892,13 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 23,
+                  "fontSize": 28.75,
+                  "fontWeight": "800",
                 },
               ]
             }
           >
-            LC
+            L
           </Text>
           <View
             style={
@@ -1834,6 +1989,30 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               }
             }
           >
+            <Text
+              accessible={true}
+              allowFontScaling={false}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 15,
+                  },
+                  Object {
+                    "marginRight": 5,
+                    "marginTop": 3,
+                  },
+                  Object {
+                    "fontFamily": "Material Design Icons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
             <Text
               accessible={true}
               allowFontScaling={true}
@@ -1970,12 +2149,13 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 23,
+                  "fontSize": 28.75,
+                  "fontWeight": "800",
                 },
               ]
             }
           >
-            LC
+            L
           </Text>
           <View
             style={
@@ -2066,6 +2246,30 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               }
             }
           >
+            <Text
+              accessible={true}
+              allowFontScaling={false}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 15,
+                  },
+                  Object {
+                    "marginRight": 5,
+                    "marginTop": 3,
+                  },
+                  Object {
+                    "fontFamily": "Material Design Icons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
             <Text
               accessible={true}
               allowFontScaling={true}
@@ -2202,7 +2406,8 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 23,
+                  "fontSize": 28.75,
+                  "fontWeight": "800",
                 },
               ]
             }
@@ -2298,6 +2503,30 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               }
             }
           >
+            <Text
+              accessible={true}
+              allowFontScaling={false}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 15,
+                  },
+                  Object {
+                    "marginRight": 5,
+                    "marginTop": 3,
+                  },
+                  Object {
+                    "fontFamily": "Material Design Icons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
             <Text
               accessible={true}
               allowFontScaling={true}
@@ -2411,12 +2640,13 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 23,
+                  "fontSize": 28.75,
+                  "fontWeight": "800",
                 },
               ]
             }
           >
-            WW
+            W
           </Text>
           <View
             style={
@@ -2507,6 +2737,30 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               }
             }
           >
+            <Text
+              accessible={true}
+              allowFontScaling={false}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 15,
+                  },
+                  Object {
+                    "marginRight": 5,
+                    "marginTop": 3,
+                  },
+                  Object {
+                    "fontFamily": "Material Design Icons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
             <Text
               accessible={true}
               allowFontScaling={true}
@@ -2620,7 +2874,8 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   "color": "#ffffff",
                 },
                 Object {
-                  "fontSize": 23,
+                  "fontSize": 28.75,
+                  "fontWeight": "800",
                 },
               ]
             }
@@ -2716,6 +2971,30 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               }
             }
           >
+            <Text
+              accessible={true}
+              allowFontScaling={false}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 15,
+                  },
+                  Object {
+                    "marginRight": 5,
+                    "marginTop": 3,
+                  },
+                  Object {
+                    "fontFamily": "Material Design Icons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
             <Text
               accessible={true}
               allowFontScaling={true}
