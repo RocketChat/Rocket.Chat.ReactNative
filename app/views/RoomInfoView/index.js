@@ -13,12 +13,14 @@ import sharedStyles from '../Styles';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Touch from '../../utils/touch';
+
 import log from '../../utils/log';
+import RoomTypeIcon from '../../containers/RoomTypeIcon';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
 const camelize = str => str.replace(/^(.)/, (match, chr) => chr.toUpperCase());
-
+const getRoomTitle = room => (room.t === 'd' ? <Text>{room.fname}</Text> : <Text><RoomTypeIcon type={room.t} />&nbsp;{room.name}</Text>);
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	user: state.login.user,
@@ -117,8 +119,6 @@ export default class RoomInfoView extends LoggedView {
 		this.sub = result;
 	}
 
-	getRoomTitle = room => (room.t === 'd' ? room.fname : room.name);
-
 	isDirect = () => this.state.room.t === 'd';
 
 	updateRoom = async() => {
@@ -187,7 +187,6 @@ export default class RoomInfoView extends LoggedView {
 					{this.renderAvatar(room, roomUser)}
 					<Text style={styles.roomTitle}>{ this.getRoomTitle(room) }</Text>
 				</View>
-
 				{!this.isDirect() && this.renderItem('description', room)}
 				{!this.isDirect() && this.renderItem('topic', room)}
 				{!this.isDirect() && this.renderItem('announcement', room)}
