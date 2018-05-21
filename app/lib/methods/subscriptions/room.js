@@ -3,12 +3,16 @@
 // import normalizeMessage from '../helpers/normalizeMessage';
 // import _buildMessage from '../helpers/buildMessage';
 // import protectedFunction from '../helpers/protectedFunction';
+import log from '../../../utils/log';
 
 const subscribe = (ddp, rid) => Promise.all([
 	ddp.subscribe('stream-room-messages', rid, false),
 	ddp.subscribe('stream-notify-room', `${ rid }/typing`, false)
 ]);
-const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(e => console.warn('unsubscribe room', e)));
+const unsubscribe = subscriptions =>
+	subscriptions.forEach(sub => sub.unsubscribe().catch((e) => {
+		log('unsubscribeRoom', e);
+	}));
 
 let timer = null;
 let promises;
@@ -69,8 +73,8 @@ export default async function subscribeRoom({ rid, t }) {
 
 		try {
 			promises = subscribe(this.ddp, rid);
-		} catch (error) {
-			console.warn('subscribeRoom', error);
+		} catch (e) {
+			log('subscribeRoom', e);
 		}
 	}
 

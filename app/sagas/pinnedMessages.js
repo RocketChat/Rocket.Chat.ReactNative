@@ -1,7 +1,9 @@
 import { put, takeLatest } from 'redux-saga/effects';
+
 import * as types from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import { readyPinnedMessages } from '../actions/pinnedMessages';
+import log from '../utils/log';
 
 let sub;
 let newSub;
@@ -11,20 +13,24 @@ const openPinnedMessagesRoom = function* openPinnedMessagesRoom({ rid, limit }) 
 		newSub = yield RocketChat.subscribe('pinnedMessages', rid, limit);
 		yield put(readyPinnedMessages());
 		if (sub) {
-			sub.unsubscribe().catch(e => console.warn('openPinnedMessagesRoom', e));
+			sub.unsubscribe();
 		}
 		sub = newSub;
-	} catch (error) {
-		console.warn('openPinnedMessagesRoom', error);
+	} catch (e) {
+		log('openPinnedMessagesRoom', e);
 	}
 };
 
 const closePinnedMessagesRoom = function* closePinnedMessagesRoom() {
-	if (sub) {
-		yield sub.unsubscribe().catch(e => console.warn('closePinnedMessagesRoom sub', e));
-	}
-	if (newSub) {
-		yield newSub.unsubscribe().catch(e => console.warn('closePinnedMessagesRoom newSub', e));
+	try {
+		if (sub) {
+			yield sub.unsubscribe();
+		}
+		if (newSub) {
+			yield newSub.unsubscribe();
+		}
+	} catch (e) {
+		log('closePinnedMessagesRoom', e);
 	}
 };
 

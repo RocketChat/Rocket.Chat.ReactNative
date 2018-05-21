@@ -20,6 +20,7 @@ import Header from '../../containers/Header';
 import RoomsHeader from './Header';
 import ReactionPicker from './ReactionPicker';
 import styles from './styles';
+import log from '../../utils/log';
 
 @connect(
 	state => ({
@@ -27,8 +28,7 @@ import styles from './styles';
 		Message_TimeFormat: state.settings.Message_TimeFormat,
 		loading: state.messages.isFetching,
 		user: state.login.user,
-		actionMessage: state.messages.actionMessage,
-		layoutAnimation: state.room.layoutAnimation
+		actionMessage: state.messages.actionMessage
 	}),
 	dispatch => ({
 		actions: bindActionCreators(actions, dispatch),
@@ -114,8 +114,8 @@ export default class RoomView extends LoggedView {
 				return this.props.toggleReactionPicker();
 			}
 			RocketChat.setReaction(shortname, messageId);
-		} catch (error) {
-			console.warn('onReactionPress', error);
+		} catch (e) {
+			log('RoomView.onReactionPress', e);
 		}
 	};
 
@@ -148,8 +148,8 @@ export default class RoomView extends LoggedView {
 			this.setState({
 				joined: true
 			});
-		} catch (error) {
-			console.warn('joinRoom', error);
+		} catch (e) {
+			log('joinRoom', e);
 		}
 	};
 

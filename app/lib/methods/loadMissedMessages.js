@@ -3,7 +3,7 @@ import { InteractionManager } from 'react-native';
 import { get } from './helpers/rest';
 import buildMessage from './helpers/buildMessage';
 import database from '../realm';
-
+import log from '../../utils/log';
 
 async function loadMissedMessagesRest({ rid: roomId, lastOpen: lastUpdate }) {
 	const { token, id } = this.ddp._login;
@@ -48,19 +48,14 @@ export default async function(...args) {
 			if (data) {
 				data.forEach(buildMessage);
 				return InteractionManager.runAfterInteractions(() => {
-					try {
-						db.write(() => data.forEach(message => db.create('messages', message, true)));
-						resolve(data);
-					} catch (e) {
-						console.warn('loadMissedMessages 1', e);
-						return reject();
-					}
+					db.write(() => data.forEach(message => db.create('messages', message, true)));
+					resolve(data);
 				});
 			}
-		} catch (error) {
-			console.warn('loadMissedMessages 2', error);
-			return reject(error);
+			resolve([]);
+		} catch (e) {
+			log('loadMissedMessages', e);
+			reject(e);
 		}
-		resolve([]);
 	});
 }

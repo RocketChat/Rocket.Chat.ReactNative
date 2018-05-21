@@ -6,6 +6,7 @@ import ActionSheet from 'react-native-actionsheet';
 import { errorActionsHide } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
+import protectedFunction from '../lib/methods/helpers/protectedFunction';
 
 @connect(
 	state => ({
@@ -38,24 +39,14 @@ export default class MessageErrorActions extends React.Component {
 		}
 	}
 
-	handleResend = () => {
-		try {
-			RocketChat.resendMessage(this.props.actionMessage._id)
-		} catch (error) {
-			console.warn('handleResend', error);
-		}
-	};
+	handleResend = protectedFunction(() => RocketChat.resendMessage(this.props.actionMessage._id));
 
-	handleDelete = () => {
-		try {
-			database.write(() => {
-				const msg = database.objects('messages').filtered('_id = $0', this.props.actionMessage._id);
-				database.delete(msg);
-			});
-		} catch (error) {
-			console.warn('handleDelete', error);
-		}
-	}
+	handleDelete = protectedFunction(() => {
+		database.write(() => {
+			const msg = database.objects('messages').filtered('_id = $0', this.props.actionMessage._id);
+			database.delete(msg);
+		});
+	})
 
 	handleActionPress = (actionIndex) => {
 		switch (actionIndex) {

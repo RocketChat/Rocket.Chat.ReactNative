@@ -2,6 +2,7 @@ import { takeLatest, select } from 'redux-saga/effects';
 import { FOREGROUND, BACKGROUND, INACTIVE } from 'redux-enhancer-react-native-appstate';
 
 import RocketChat from '../lib/rocketchat';
+import log from '../utils/log';
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	const auth = yield select(state => state.login.isAuthenticated);
@@ -10,8 +11,8 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	}
 	try {
 		return yield RocketChat.setUserPresenceOnline();
-	} catch (error) {
-		console.warn('appHasComeBackToForeground RocketChat.setUserPresenceOnline', error);
+	} catch (e) {
+		log('appHasComeBackToForeground', e);
 	}
 };
 
@@ -22,8 +23,8 @@ const appHasComeBackToBackground = function* appHasComeBackToBackground() {
 	}
 	try {
 		return yield RocketChat.setUserPresenceAway();
-	} catch (error) {
-		console.warn('appHasComeBackToBackground RocketChat.setUserPresenceAway', error);
+	} catch (e) {
+		log('appHasComeBackToBackground', e);
 	}
 };
 

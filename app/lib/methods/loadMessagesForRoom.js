@@ -3,7 +3,7 @@ import { InteractionManager } from 'react-native';
 import { get } from './helpers/rest';
 import buildMessage from './helpers/buildMessage';
 import database from '../realm';
-
+import log from '../../utils/log';
 
 // TODO: api fix
 const types = {
@@ -46,9 +46,7 @@ async function loadMessagesForRoomDDP(...args) {
 }
 
 export default async function loadMessagesForRoom(...args) {
-	console.log('aqui');
 	const { database: db } = database;
-	console.log('database', db);
 
 	return new Promise(async(resolve, reject) => {
 		try {
@@ -56,18 +54,14 @@ export default async function loadMessagesForRoom(...args) {
 			const data = (await (false && this.ddp.status ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args))).map(buildMessage);
 			if (data) {
 				InteractionManager.runAfterInteractions(() => {
-					try {
-						db.write(() => data.forEach(message => db.create('messages', message, true)));
-						return resolve(data);
-					} catch (e) {
-						console.warn('loadMessagesForRoom', e);
-						return reject(e);
-					}
+					db.write(() => data.forEach(message => db.create('messages', message, true)));
+					return resolve(data);
 				});
 			}
 			return resolve([]);
-		} catch (error) {
-			return reject(error);
+		} catch (e) {
+			log('loadMessagesForRoom', e);
+			reject(e);
 		}
 	});
 }

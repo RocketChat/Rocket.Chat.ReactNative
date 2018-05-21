@@ -61,26 +61,16 @@ exports[`render channel 1`] = `
           style={
             Array [
               Object {
-                "color": undefined,
-                "fontSize": 12,
+                "color": "#ffffff",
               },
-              Array [
-                Object {
-                  "color": "#ffffff",
-                },
-                Object {
-                  "fontSize": 23,
-                },
-              ],
               Object {
-                "fontFamily": "Material Design Icons",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
+                "fontSize": 28.75,
+                "fontWeight": "800",
               },
             ]
           }
         >
-          
+          G
         </Text>
       </View>
       <View
@@ -104,6 +94,30 @@ exports[`render channel 1`] = `
             }
           }
         >
+          <Text
+            accessible={true}
+            allowFontScaling={false}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "color": undefined,
+                  "fontSize": 15,
+                },
+                Object {
+                  "marginRight": 5,
+                  "marginTop": 3,
+                },
+                Object {
+                  "fontFamily": "Material Design Icons",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+              ]
+            }
+          >
+            
+          </Text>
           <Text
             accessible={true}
             allowFontScaling={true}
@@ -219,26 +233,16 @@ exports[`render no icon 1`] = `
           style={
             Array [
               Object {
-                "color": undefined,
-                "fontSize": 12,
+                "color": "#ffffff",
               },
-              Array [
-                Object {
-                  "color": "#ffffff",
-                },
-                Object {
-                  "fontSize": 23,
-                },
-              ],
               Object {
-                "fontFamily": "Material Design Icons",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
+                "fontSize": 28.75,
+                "fontWeight": "800",
               },
             ]
           }
         >
-          
+          N
         </Text>
       </View>
       <View
@@ -262,6 +266,30 @@ exports[`render no icon 1`] = `
             }
           }
         >
+          <Text
+            accessible={true}
+            allowFontScaling={false}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "color": undefined,
+                  "fontSize": 15,
+                },
+                Object {
+                  "marginRight": 5,
+                  "marginTop": 3,
+                },
+                Object {
+                  "fontFamily": "Material Design Icons",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+              ]
+            }
+          >
+            
+          </Text>
           <Text
             accessible={true}
             allowFontScaling={true}
@@ -377,26 +405,16 @@ exports[`render private group 1`] = `
           style={
             Array [
               Object {
-                "color": undefined,
-                "fontSize": 12,
+                "color": "#ffffff",
               },
-              Array [
-                Object {
-                  "color": "#ffffff",
-                },
-                Object {
-                  "fontSize": 23,
-                },
-              ],
               Object {
-                "fontFamily": "Material Design Icons",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
+                "fontSize": 28.75,
+                "fontWeight": "800",
               },
             ]
           }
         >
-          
+          P
         </Text>
       </View>
       <View
@@ -420,6 +438,30 @@ exports[`render private group 1`] = `
             }
           }
         >
+          <Text
+            accessible={true}
+            allowFontScaling={false}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "color": undefined,
+                  "fontSize": 15,
+                },
+                Object {
+                  "marginRight": 5,
+                  "marginTop": 3,
+                },
+                Object {
+                  "fontFamily": "Material Design Icons",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+              ]
+            }
+          >
+            
+          </Text>
           <Text
             accessible={true}
             allowFontScaling={true}
@@ -539,12 +581,13 @@ exports[`render unread +999 1`] = `
                 "color": "#ffffff",
               },
               Object {
-                "fontSize": 23,
+                "fontSize": 28.75,
+                "fontWeight": "800",
               },
             ]
           }
         >
-          NA
+          N
         </Text>
         <View
           style={
@@ -635,6 +678,30 @@ exports[`render unread +999 1`] = `
             }
           }
         >
+          <Text
+            accessible={true}
+            allowFontScaling={false}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "color": undefined,
+                  "fontSize": 15,
+                },
+                Object {
+                  "marginRight": 5,
+                  "marginTop": 3,
+                },
+                Object {
+                  "fontFamily": "Material Design Icons",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+              ]
+            }
+          >
+            
+          </Text>
           <Text
             accessible={true}
             allowFontScaling={true}
@@ -776,12 +843,13 @@ exports[`render unread 1`] = `
                 "color": "#ffffff",
               },
               Object {
-                "fontSize": 23,
+                "fontSize": 28.75,
+                "fontWeight": "800",
               },
             ]
           }
         >
-          NA
+          N
         </Text>
         <View
           style={
@@ -872,6 +940,30 @@ exports[`render unread 1`] = `
             }
           }
         >
+          <Text
+            accessible={true}
+            allowFontScaling={false}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "color": undefined,
+                  "fontSize": 15,
+                },
+                Object {
+                  "marginRight": 5,
+                  "marginTop": 3,
+                },
+                Object {
+                  "fontFamily": "Material Design Icons",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+              ]
+            }
+          >
+            
+          </Text>
           <Text
             accessible={true}
             allowFontScaling={true}
@@ -1013,12 +1105,13 @@ exports[`renders correctly 1`] = `
                 "color": "#ffffff",
               },
               Object {
-                "fontSize": 23,
+                "fontSize": 28.75,
+                "fontWeight": "800",
               },
             ]
           }
         >
-          NA
+          N
         </Text>
         <View
           style={
@@ -1109,6 +1202,30 @@ exports[`renders correctly 1`] = `
             }
           }
         >
+          <Text
+            accessible={true}
+            allowFontScaling={false}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "color": undefined,
+                  "fontSize": 15,
+                },
+                Object {
+                  "marginRight": 5,
+                  "marginTop": 3,
+                },
+                Object {
+                  "fontFamily": "Material Design Icons",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+              ]
+            }
+          >
+            
+          </Text>
           <Text
             accessible={true}
             allowFontScaling={true}

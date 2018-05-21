@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, ScrollView, View, SafeAreaView } from 'react-native';
+import { Text, ScrollView, View, SafeAreaView, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 
 import { serverRequest, addServer } from '../actions/server';
@@ -48,6 +48,7 @@ export default class NewServerView extends LoggedView {
 	}
 
 	submit = () => {
+		Keyboard.dismiss();
 		this.props.addServer(this.completeUrl(this.state.text));
 	}
 
@@ -115,6 +116,7 @@ export default class NewServerView extends LoggedView {
 							returnKeyType='done'
 							onChangeText={this.onChangeText}
 							testID='new-server-view-input'
+							onSubmitEditing={this.submit}
 						/>
 						{this.renderValidation()}
 						<View style={[styles.alignItemsFlexStart, { marginTop: 20 }]}>

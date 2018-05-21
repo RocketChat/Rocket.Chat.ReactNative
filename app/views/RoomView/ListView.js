@@ -12,6 +12,7 @@ import styles from './styles';
 import Typing from '../../containers/Typing';
 import database from '../../lib/realm';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import throttle from '../../utils/throttle';
 
 const DEFAULT_SCROLL_CALLBACK_THROTTLE = 100;
 
@@ -54,13 +55,13 @@ export class List extends React.Component {
 		this.data.removeAllListeners();
 		this.updateState.stop();
 	}
-	updateState = () => {
+	updateState = throttle(() => {
 		// this.setState({
 		this.dataSource = this.dataSource.cloneWithRows(this.data);
 		LayoutAnimation.easeInEaseOut();
 		this.forceUpdate();
 		// });
-	};
+	}, 1000);
 
 	render() {
 		return (<ListView

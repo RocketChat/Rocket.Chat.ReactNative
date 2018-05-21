@@ -13,6 +13,7 @@ import RocketChat from '../../../lib/rocketchat';
 import { STATUS_COLORS } from '../../../constants/colors';
 import { setSearch } from '../../../actions/rooms';
 import styles from './styles';
+import log from '../../../utils/log';
 
 const title = (offline, connecting, authenticating, logged) => {
 	if (offline) {
@@ -67,8 +68,8 @@ export default class RoomsListHeaderView extends React.PureComponent {
 	onPressModalButton(status) {
 		try {
 			RocketChat.setUserPresenceDefaultStatus(status);
-		} catch (error) {
-			console.warn('onPressModalButton', error);
+		} catch (e) {
+			log('onPressModalButton', e);
 		}
 		this.hideModal();
 	}

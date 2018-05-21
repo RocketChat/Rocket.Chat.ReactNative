@@ -1,8 +1,10 @@
 import { InteractionManager } from 'react-native';
+
 // import { showToast } from '../../utils/info';
 import { get } from './helpers/rest';
 import mergeSubscriptionsRooms, { merge } from './helpers/mergeSubscriptionsRooms';
 import database from '../realm';
+import log from '../../utils/log';
 
 const lastMessage = () => {
 	const message = database
@@ -48,9 +50,9 @@ export default async function() {
 				});
 				resolve(data);
 			});
-		} catch (error) {
-			console.warn('getRooms', error);
-			return reject(error);
+		} catch (e) {
+			log('getRooms', e);
+			reject(e);
 		}
 	});
 }

@@ -12,6 +12,9 @@ import { STATUS_COLORS } from '../../../constants/colors';
 import styles from './styles';
 import { closeRoom } from '../../../actions/room';
 
+import log from '../../../utils/log';
+import RoomTypeIcon from '../../../containers/RoomTypeIcon';
+
 const title = (offline, connecting, authenticating, logged) => {
 	if (offline) {
 		return 'You are offline...';
@@ -149,7 +152,12 @@ export default class RoomHeaderView extends React.PureComponent {
 					}
 				</Avatar>
 				<View style={styles.titleTextContainer}>
-					<Text style={styles.title} allowFontScaling={false} testID='room-view-title'>{this.state.room.name}</Text>
+					<View style={{ flexDirection: 'row' }}>
+						<RoomTypeIcon type={this.state.room.t} size={13} />
+						<Text style={styles.title} allowFontScaling={false} testID='room-view-title'>
+							{this.state.room.name}
+						</Text>
+					</View>
 
 					{ t && <Text style={styles.userStatus} allowFontScaling={false} numberOfLines={1}>{t}</Text>}
 
@@ -165,8 +173,8 @@ export default class RoomHeaderView extends React.PureComponent {
 				onPress={() => {
 					try {
 						RocketChat.toggleFavorite(this.state.room.rid, this.state.room.f);
-					} catch (error) {
-						console.warn('toggleFavorite', error);
+					} catch (e) {
+						log('toggleFavorite', e);
 					}
 				}}
 				accessibilityLabel='Star room'

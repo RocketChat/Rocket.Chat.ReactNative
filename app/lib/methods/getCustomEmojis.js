@@ -1,9 +1,11 @@
 import { InteractionManager } from 'react-native';
+
 import reduxStore from '../createStore';
 // import { get } from './helpers/rest';
 
 import database from '../realm';
 import * as actions from '../../actions';
+import log from '../../utils/log';
 
 const getLastMessage = () => {
 	const setting = database.objects('customEmojis').sorted('_updatedAt', true)[0];
@@ -20,8 +22,8 @@ export default async function() {
 		InteractionManager.runAfterInteractions(() => database.write(() => {
 			emojis.forEach(emoji => database.create('customEmojis', emoji, true));
 		}));
-		reduxStore.dispatch(actions.setCustomEmojis(this.parseEmojis(emojis)));	
-	} catch (error) {
-		console.warn('getCustomEmojis', error);
+		reduxStore.dispatch(actions.setCustomEmojis(this.parseEmojis(emojis)));
+	} catch (e) {
+		log('getCustomEmojis', e);
 	}
 }

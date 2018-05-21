@@ -19,6 +19,7 @@ import {
 } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import * as NavigationService from '../containers/routes/NavigationService';
+import log from '../utils/log';
 
 const getUser = state => state.login;
 const getServer = state => state.server.server;
@@ -71,8 +72,8 @@ const saveToken = function* saveToken() {
 		if (!user.user.username && !user.isRegistering) {
 			yield put(registerIncomplete());
 		}
-	} catch (error) {
-		console.warn('saveToken', error);
+	} catch (e) {
+		log('saveToken', e);
 	}
 };
 
@@ -136,8 +137,8 @@ const handleLogout = function* handleLogout() {
 	if (server) {
 		try {
 			yield call(logoutCall, { server });
-		} catch (error) {
-			console.warn('handleLogout', error);
+		} catch (e) {
+			log('handleLogout', e);
 		}
 	}
 };
@@ -163,9 +164,9 @@ const watchLoginOpen = function* watchLoginOpen() {
 		}
 		const sub = yield RocketChat.subscribe('meteor.loginServiceConfiguration');
 		yield take(types.LOGIN.CLOSE);
-		sub.unsubscribe().catch(e => console.warn('watchLoginOpen unsubscribe', e));
-	} catch (error) {
-		console.warn('watchLoginOpen', error);
+		yield sub.unsubscribe().catch(err => console.warn(err));
+	} catch (e) {
+		log('watchLoginOpen', e);
 	}
 };
 

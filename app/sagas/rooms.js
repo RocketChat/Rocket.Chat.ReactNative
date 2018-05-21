@@ -2,6 +2,7 @@ import { Alert } from 'react-native';
 import { put, call, takeLatest, take, select, race, fork, cancel, takeEvery } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { BACKGROUND } from 'redux-enhancer-react-native-appstate';
+
 import * as types from '../actions/actionsTypes';
 // import { roomsSuccess, roomsFailure } from '../actions/rooms';
 import { addUserTyping, removeUserTyping, setLastOpen } from '../actions/room';
@@ -9,6 +10,7 @@ import { messagesRequest } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import * as NavigationService from '../containers/routes/NavigationService';
+import log from '../utils/log';
 
 const leaveRoom = rid => RocketChat.leaveRoom(rid);
 const eraseRoom = rid => RocketChat.eraseRoom(rid);
@@ -81,9 +83,6 @@ const watchRoomOpen = function* watchRoomOpen({ room }) {
 		// }
 
 		RocketChat.readMessages(room.rid);
-		if (sub) {
-			sub.stop();
-		}
 		sub = yield RocketChat.subscribeRoom(room);
 		// const subscriptions = yield Promise.all([RocketChat.subscribe('stream-room-messages', room.rid, false), RocketChat.subscribe('stream-notify-room', `${ room.rid }/typing`, false)]);
 		thread = yield fork(usersTyping, { rid: room.rid });
@@ -91,14 +90,14 @@ const watchRoomOpen = function* watchRoomOpen({ room }) {
 			open: take(types.ROOM.OPEN),
 			close: take(types.ROOM.CLOSE)
 		});
-		yield cancel(thread);
+		cancel(thread);
 		sub.stop();
 
 		// subscriptions.forEach((sub) => {
 		// 	sub.unsubscribe().catch(e => alert(e));
 		// });
-	} catch (error) {
-		console.warn('watchRoomOpen', error);
+	} catch (e) {
+		log('watchRoomOpen', e);
 	}
 };
 
@@ -113,6 +112,7 @@ const watchuserTyping = function* watchuserTyping({ status }) {
 	if (!room) {
 		return;
 	}
+
 	try {
 		yield RocketChat.emitTyping(room.rid, status);
 
@@ -120,8 +120,8 @@ const watchuserTyping = function* watchuserTyping({ status }) {
 			yield call(delay, 5000);
 			yield RocketChat.emitTyping(room.rid, false);
 		}
-	} catch (error) {
-		console.warn('watchuserTyping', error);
+	} catch (e) {
+		log('watchuserTyping', e);
 	}
 };
 

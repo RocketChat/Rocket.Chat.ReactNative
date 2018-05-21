@@ -1,5 +1,6 @@
 import { post } from './helpers/rest';
 import database from '../realm';
+import log from '../../utils/log';
 
 const	readMessagesREST = function readMessagesREST(rid) {
 	const { token, id } = this.ddp._login;
@@ -31,8 +32,7 @@ export default async function readMessages(rid) {
 			subscription.lastOpen = new Date();
 		});
 		return data;
-	} catch (error) {
-		console.warn('readMessages', error);
+	} catch (e) {
+		log('readMessages', e);
 	}
-	return null;
 }

@@ -1,7 +1,9 @@
 import { put, takeLatest } from 'redux-saga/effects';
+
 import * as types from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import { readyStarredMessages } from '../actions/starredMessages';
+import log from '../utils/log';
 
 let sub;
 let newSub;
@@ -11,20 +13,24 @@ const openStarredMessagesRoom = function* openStarredMessagesRoom({ rid, limit }
 		newSub = yield RocketChat.subscribe('starredMessages', rid, limit);
 		yield put(readyStarredMessages());
 		if (sub) {
-			sub.unsubscribe().catch(e => console.warn('openStarredMessagesRoom', e));
+			sub.unsubscribe();
 		}
 		sub = newSub;
-	} catch (error) {
-		console.warn('openStarredMessagesRoom', error);
+	} catch (e) {
+		log('openStarredMessagesRoom', e);
 	}
 };
 
 const closeStarredMessagesRoom = function* closeStarredMessagesRoom() {
-	if (sub) {
-		yield sub.unsubscribe().catch(e => console.warn('closeStarredMessagesRoom sub', e));
-	}
-	if (newSub) {
-		yield newSub.unsubscribe().catch(e => console.warn('closeStarredMessagesRoom newSub', e));
+	try {
+		if (sub) {
+			yield sub.unsubscribe();
+		}
+		if (newSub) {
+			yield newSub.unsubscribe();
+		}
+	} catch (e) {
+		log('closeStarredMessagesRoom', e);
 	}
 };
 

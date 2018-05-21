@@ -223,4 +223,3 @@ class ListServerView extends LoggedView {
 	}
 }
 export default withNavigationFocus(ListServerView);
-

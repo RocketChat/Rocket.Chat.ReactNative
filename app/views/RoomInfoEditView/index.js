@@ -16,6 +16,7 @@ import RCTextInput from '../../containers/TextInput';
 import Loading from '../../containers/Loading';
 import SwitchContainer from './SwitchContainer';
 import random from '../../utils/random';
+import log from '../../utils/log';
 
 const PERMISSION_SET_READONLY = 'set-readonly';
 const PERMISSION_SET_REACT_WHEN_READONLY = 'set-react-when-readonly';
@@ -73,9 +74,9 @@ export default class RoomInfoEditView extends LoggedView {
 		this.rooms.removeAllListeners();
 	}
 
-	updateRoom = () => {
+	updateRoom = async() => {
 		const [room] = this.rooms;
-		this.setState({ room });
+		await this.setState({ room });
 	}
 
 	init = () => {
@@ -182,6 +183,7 @@ export default class RoomInfoEditView extends LoggedView {
 				this.setState({ nameError: e });
 			}
 			error = true;
+			log('saveRoomSettings', e);
 		}
 
 		await this.setState({ saving: false });
@@ -230,8 +232,8 @@ export default class RoomInfoEditView extends LoggedView {
 					onPress: () => {
 						try {
 							RocketChat.toggleArchiveRoom(this.state.room.rid, !archived);
-						} catch (error) {
-							console.warn('toggleArchive', error);
+						} catch (e) {
+							log('toggleArchive', e);
 						}
 					}
 				}

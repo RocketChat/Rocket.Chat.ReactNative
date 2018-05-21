@@ -120,7 +120,7 @@ export default class Sidebar extends Component {
 						</View>
 					</TouchableHighlight>
 					<TouchableHighlight
-						onPress={() => { this.props.navigation.navigate('AddServer'); }}
+						onPress={() => { this.props.navigation.navigate({ key: 'AddServer', routeName: 'AddServer' }); }}
 						testID='sidebar-add-server'
 					>
 						<View style={styles.serverItem}>

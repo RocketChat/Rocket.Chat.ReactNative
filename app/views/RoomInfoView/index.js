@@ -14,10 +14,16 @@ import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Touch from '../../utils/touch';
 
+import log from '../../utils/log';
+import RoomTypeIcon from '../../containers/RoomTypeIcon';
+
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
 const camelize = str => str.replace(/^(.)/, (match, chr) => chr.toUpperCase());
-
+const getRoomTitle = room => (room.t === 'd' ?
+	<Text testID='room-info-view-name'>{room.fname}</Text> :
+	[<RoomTypeIcon type={room.t} />, <Text testID='room-info-view-name'>{room.name}</Text>]
+);
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	user: state.login.user,
@@ -98,8 +104,8 @@ export default class RoomInfoView extends LoggedView {
 				if (userRoles) {
 					this.setState({ roles: userRoles.roles || [] });
 				}
-			} catch (error) {
-				console.warn('RoomInfoView', error);
+			} catch (e) {
+				log('RoomInfoView.componentDidMount', e);
 			}
 		} else {
 			const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], this.state.room.rid);
@@ -116,8 +122,6 @@ export default class RoomInfoView extends LoggedView {
 		const result = await RocketChat.subscribe('fullUserData', username);
 		this.sub = result;
 	}
-
-	getRoomTitle = room => (room.t === 'd' ? room.fname : room.name);
 
 	isDirect = () => this.state.room.t === 'd';
 
@@ -182,13 +186,15 @@ export default class RoomInfoView extends LoggedView {
 
 	render() {
 		const { room, roomUser } = this.state;
+		if (!room) {
+			return <View />;
+		}
 		return (
 			<ScrollView style={styles.container}>
 				<View style={styles.avatarContainer} testID='room-info-view'>
-					{room.name && this.renderAvatar(room, roomUser)}
-					<Text style={styles.roomTitle} testID='room-info-view-name'>{ this.getRoomTitle(room) }</Text>
+					{this.renderAvatar(room, roomUser)}
+					<View style={styles.roomTitle}>{ getRoomTitle(room) }</View>
 				</View>
-
 				{!this.isDirect() && this.renderItem('description', room)}
 				{!this.isDirect() && this.renderItem('topic', room)}
 				{!this.isDirect() && this.renderItem('announcement', room)}

@@ -15,9 +15,11 @@ import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import { leaveRoom } from '../../actions/room';
 import { setLoading } from '../../actions/selectedUsers';
+import log from '../../utils/log';
+import RoomTypeIcon from '../../containers/RoomTypeIcon';
 
 const renderSeparator = () => <View style={styles.separator} />;
-const getRoomTitle = room => (room.t === 'd' ? room.fname : room.name);
+const getRoomTitle = room => (room.t === 'd' ? <Text>{room.fname}</Text> : <Text><RoomTypeIcon type={room.t} />&nbsp;{room.name}</Text>);
 
 @connect(state => ({
 	user_id: state.login.user.id,
@@ -92,8 +94,8 @@ export default class RoomActionsView extends LoggedView {
 		try {
 			const member = await RocketChat.getRoomMember(this.state.room.rid, this.props.user_id);
 			return { member };
-		} catch (error) {
-			console.warn('RoomActions updateRoomMember', error);
+		} catch (e) {
+			log('RoomActions updateRoomMember', e);
 			return {};
 		}
 	}
@@ -246,8 +248,8 @@ export default class RoomActionsView extends LoggedView {
 								this.props.setLoadingInvite(true);
 								await RocketChat.addUsersToRoom(rid);
 								this.props.navigation.goBack();
-							} catch (error) {
-								console.warn('RoomActions Add User', error);
+							} catch (e) {
+								log('RoomActions Add User', e);
 							} finally {
 								this.props.setLoadingInvite(false);
 							}
@@ -277,9 +279,9 @@ export default class RoomActionsView extends LoggedView {
 		const { rid, blocked } = this.state.room;
 		const { member } = this.state;
 		try {
-			await RocketChat.toggleBlockUser(rid, member._id, !blocked);
-		} catch (error) {
-			console.warn(error);
+			RocketChat.toggleBlockUser(rid, member._id, !blocked);
+		} catch (e) {
+			log('toggleBlockUser', e);
 		}
 	}
 
@@ -306,8 +308,8 @@ export default class RoomActionsView extends LoggedView {
 		const { room } = this.state;
 		try {
 			RocketChat.saveNotificationSettings(room.rid, 'mobilePushNotifications', room.notifications ? 'default' : 'nothing');
-		} catch (error) {
-			console.warn('toggleNotifications', error);
+		} catch (e) {
+			log('toggleNotifications', e);
 		}
 	}
 

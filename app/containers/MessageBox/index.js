@@ -18,7 +18,7 @@ import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import { emojis } from '../../emojis';
 import Recording from './Recording';
 import './EmojiKeyboard';
-
+import log from '../../utils/log';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
@@ -178,7 +178,7 @@ export default class MessageBox extends React.PureComponent {
 			if (response.didCancel) {
 				console.warn('User cancelled image picker');
 			} else if (response.error) {
-				console.warn('ImagePicker Error: ', response.error);
+				log('ImagePicker Error', response.error);
 			} else if (response.customButton) {
 				console.warn('User tapped custom button: ', response.customButton);
 			} else {

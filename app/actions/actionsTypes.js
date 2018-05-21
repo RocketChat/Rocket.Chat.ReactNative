@@ -42,8 +42,7 @@ export const ROOM = createRequestTypes('ROOM', [
 	'ERASE',
 	'USER_TYPING',
 	'MESSAGE_RECEIVED',
-	'SET_LAST_OPEN',
-	'LAYOUT_ANIMATION'
+	'SET_LAST_OPEN'
 ]);
 export const APP = createRequestTypes('APP', ['READY', 'INIT']);
 export const MESSAGES = createRequestTypes('MESSAGES', [

@@ -72,8 +72,7 @@ describe('Login screen', () => {
 	
 		it('should insert wrong password and get error', async() => {
 			await element(by.id('login-view-email')).replaceText(data.user);
-			await element(by.id('login-view-password')).tap();
-			await element(by.id('login-view-password')).typeText('error');
+			await element(by.id('login-view-password')).replaceText('error');
 			await element(by.id('login-view-submit')).tap();
 			await waitFor(element(by.text('User or Password incorrect'))).toBeVisible().withTimeout(10000);
 			await expect(element(by.text('User or Password incorrect'))).toBeVisible();

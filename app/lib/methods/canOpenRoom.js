@@ -1,5 +1,6 @@
 import { post } from './helpers/rest';
 import database from '../realm';
+import log from '../../utils/log';
 
 // TODO: api fix
 const ddpTypes = {
@@ -39,18 +40,19 @@ async function canOpenRoomDDP(...args) {
 
 export default async function canOpenRoom({ rid, path }) {
 	const { database: db } = database;
-	try {
-		const room = db.objects('subscriptions').filtered('rid == $0', rid);
-		if (room.length) {
-			return true;
-		}
 
-		const [type, name] = path.split('/');
+	const room = db.objects('subscriptions').filtered('rid == $0', rid);
+	if (room.length) {
+		return true;
+	}
+
+	const [type, name] = path.split('/');
+
+	try {
 		// eslint-disable-next-line
 		const data = await (this.ddp && this.ddp.status ? canOpenRoomDDP.call(this, { rid, type, name }) : canOpenRoomREST.call(this, { type, rid }));
 		return data;
-	} catch (error) {
-		console.warn('canOpenRoom', error);
-		return null;
+	} catch (e) {
+		log('canOpenRoom', e);
 	}
 }

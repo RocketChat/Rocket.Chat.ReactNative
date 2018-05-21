@@ -3,6 +3,7 @@ import database from '../../realm';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
 import protectedFunction from '../helpers/protectedFunction';
 import messagesStatus from '../../../constants/messagesStatus';
+import log from '../../../utils/log';
 
 export default async function subscribeRooms(id) {
 	const subscriptions = Promise.all([
@@ -85,8 +86,8 @@ export default async function subscribeRooms(id) {
 
 	try {
 		await subscriptions;
-	} catch (error) {
-		console.warn('subscribeRooms', error);
+	} catch (e) {
+		log('subscribeRooms', e);
 	}
 	// console.log(this.ddp.subscriptions);
 }
