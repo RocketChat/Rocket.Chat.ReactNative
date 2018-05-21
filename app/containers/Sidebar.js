@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ScrollView, Text, View, StyleSheet, FlatList, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
+import { DrawerActions } from 'react-navigation';
 
 import database from '../lib/realm';
 import { setServer } from '../actions/server';
@@ -64,16 +65,9 @@ export default class Sidebar extends Component {
 		database.databases.serversDB.removeListener('change', this.updateState);
 	}
 
-	onItemPress = ({ route, focused }) => {
-		this.props.navigation.navigate({ key: 'DrawerClose', routeName: 'DrawerClose' });
-		if (!focused) {
-			this.props.navigation.navigate(route.routeName, undefined);
-		}
-	}
-
 	onPressItem = (item) => {
 		this.props.selectServer(item.id);
-		this.props.navigation.navigate({ key: 'DrawerClose', routeName: 'DrawerClose' });
+		this.props.navigation.dispatch(DrawerActions.closeDrawer());
 	}
 
 	getState = () => ({

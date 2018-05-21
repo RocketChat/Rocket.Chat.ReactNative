@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-import { StackNavigator, DrawerNavigator } from 'react-navigation';
+import { createStackNavigator, createDrawerNavigator } from 'react-navigation';
 
 import Sidebar from '../../containers/Sidebar';
 import RoomsListView from '../../views/RoomsListView';
@@ -18,7 +18,7 @@ import RoomMembersView from '../../views/RoomMembersView';
 import RoomInfoView from '../../views/RoomInfoView';
 import RoomInfoEditView from '../../views/RoomInfoEditView';
 
-const AuthRoutes = StackNavigator(
+const AuthRoutes = createStackNavigator(
 	{
 		RoomsList: {
 			screen: RoomsListView
@@ -125,7 +125,7 @@ const AuthRoutes = StackNavigator(
 	}
 );
 
-const Routes = DrawerNavigator(
+const Routes = createDrawerNavigator(
 	{
 		Home: {
 			screen: AuthRoutes

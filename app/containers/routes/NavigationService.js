@@ -1,4 +1,4 @@
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions, StackActions } from 'react-navigation';
 
 const config = {};
 
@@ -24,7 +24,7 @@ export function goBack() {
 
 export function goRoomsList() {
 	if (config.navigator) {
-		const action = NavigationActions.reset({
+		const action = StackActions.reset({
 			index: 0,
 			actions: [NavigationActions.navigate({ key: 'RoomsList', routeName: 'RoomsList' })]
 		});
@@ -41,7 +41,7 @@ export function goRoom({ rid, name }, counter = 0) {
 		return setTimeout(() => goRoom({ rid, name }, counter + 1), 100);
 	}
 
-	const action = NavigationActions.reset({
+	const action = StackActions.reset({
 		index: 1,
 		actions: [
 			NavigationActions.navigate({ key: 'RoomsList', routeName: 'RoomsList' }),
