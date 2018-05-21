@@ -48,13 +48,17 @@ describe('Rooms list screen', () => {
 	});
 
 	describe('Usage', async() => {
-		it('should show user presence modal', async() => {
+		it('should change user presence modal', async() => {
+			await waitFor(element(by.label(`${ data.user }, Online, tap to change status`))).toBeVisible().withTimeout(60000);
+			await expect(element(by.label(`${ data.user }, Online, tap to change status`))).toBeVisible();
 			await element(by.id('rooms-list-view-user')).tap();
 			await waitFor(element(by.id('rooms-list-view-user-presence-modal'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('rooms-list-view-user-presence-modal'))).toBeVisible();
-			await element(by.id('rooms-list-view-user-presence-online')).tap();
+			await element(by.id('rooms-list-view-user-presence-busy')).tap();
 			await waitFor(element(by.id('rooms-list-view-user-presence-modal'))).toBeNotVisible().withTimeout(5000);
 			await expect(element(by.id('rooms-list-view-user-presence-modal'))).toBeNotVisible();
+			await waitFor(element(by.label(`${ data.user }, Busy, tap to change status`))).toBeVisible().withTimeout(60000);
+			await expect(element(by.label(`${ data.user }, Busy, tap to change status`))).toBeVisible();
 		});
 
 		it('should search room and navigate', async() => {

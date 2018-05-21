@@ -155,7 +155,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 
 		const t = title(offline, connecting, authenticating, logged);
 
-		const accessibilityLabel = `${ user.username }, ${ this.getUserStatusLabel() }, double tap to change status`;
+		const accessibilityLabel = `${ user.username }, ${ this.getUserStatusLabel() }, tap to change status`;
 		return (
 			<TouchableOpacity
 				style={styles.titleContainer}
