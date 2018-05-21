@@ -67,7 +67,7 @@
     "react-native-video": "^2.0.0",
     "react-native-video-controls": "^2.2.1",
     "react-native-zeroconf": "^0.8.3",
-    "react-navigation": "^1.5.11",
+    "react-navigation": "^2.0.0",
     "react-redux": "^5.0.6",
     "realm": "^2.6.0",
     "redux": "^4.0.0",
