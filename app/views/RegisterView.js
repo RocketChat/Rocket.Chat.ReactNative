@@ -164,8 +164,6 @@ export default class RegisterView extends LoggedView {
 						testID='register-view-submit'
 					/>
 				</View>
-
-				{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
 			</View>
 		);
 	}
@@ -195,8 +193,6 @@ export default class RegisterView extends LoggedView {
 						testID='register-view-submit-username'
 					/>
 				</View>
-
-				{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
 			</View>
 		);
 	}
@@ -210,6 +206,11 @@ export default class RegisterView extends LoggedView {
 						<Text style={[styles.loginText, styles.loginTitle]}>Sign Up</Text>
 						{this._renderRegister()}
 						{this._renderUsername()}
+						{this.props.login.failure &&
+							<Text style={styles.error} testID='register-view-error'>
+								{this.props.login.error.reason}
+							</Text>
+						}
 						<Loading visible={this.props.login.isFetching} />
 					</SafeAreaView>
 				</ScrollView>

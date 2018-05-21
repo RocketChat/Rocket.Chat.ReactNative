@@ -66,8 +66,46 @@ describe('Create user screen', () => {
 			await expect(element(by.id('welcome-view'))).toBeVisible();
 		});
 
-		it('should create user', async() => {
+		it('should submit empty form and raise error', async() => {
 			await navigateToRegister();
+			await element(by.id('register-view-submit')).tap();
+			await waitFor(element(by.text('Some field is invalid or empty'))).toBeVisible().withTimeout(10000);
+			await expect(element(by.text('Some field is invalid or empty'))).toBeVisible();
+		});
+
+		it('should submit different passwords and raise error', async() => {
+			await element(by.id('register-view-name')).replaceText(data.user);
+			await element(by.id('register-view-email')).replaceText(data.email);
+			await element(by.id('register-view-password')).replaceText('abc');
+			await element(by.id('register-view-repeat-password')).replaceText('xyz');
+			await element(by.id('register-view-submit')).tap();
+			await waitFor(element(by.text('Some field is invalid or empty'))).toBeVisible().withTimeout(10000);
+			await expect(element(by.text('Some field is invalid or empty'))).toBeVisible();
+		});
+
+		it('should submit invalid email and raise error', async() => {
+			await element(by.id('register-view-name')).replaceText(data.user);
+			await element(by.id('register-view-email')).replaceText('invalidemail');
+			await element(by.id('register-view-password')).replaceText(data.password);
+			await element(by.id('register-view-repeat-password')).replaceText(data.password);
+			await element(by.id('register-view-submit')).tap();
+			await waitFor(element(by.id('register-view-error'))).toBeVisible().withTimeout(60000);
+			await expect(element(by.id('register-view-error'))).toBeVisible();
+			await expect(element(by.id('register-view-error'))).toHaveText('Invalid email invalidemail');
+		});
+
+		it('should submit email already taken and raise error', async() => {
+			await element(by.id('register-view-name')).replaceText(data.user);
+			await element(by.id('register-view-email')).replaceText('diego.mello@rocket.chat');
+			await element(by.id('register-view-password')).replaceText(data.password);
+			await element(by.id('register-view-repeat-password')).replaceText(data.password);
+			await element(by.id('register-view-submit')).tap();
+			await waitFor(element(by.id('register-view-error'))).toBeVisible().withTimeout(60000);
+			await expect(element(by.id('register-view-error'))).toBeVisible();
+			await expect(element(by.id('register-view-error'))).toHaveText('Email already exists.');
+		});
+
+		it('should complete first part of register', async() => {
 			await element(by.id('register-view-name')).replaceText(data.user);
 			await element(by.id('register-view-email')).replaceText(data.email);
 			await element(by.id('register-view-password')).replaceText(data.password);
@@ -75,17 +113,35 @@ describe('Create user screen', () => {
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.id('register-view-username'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('register-view-username'))).toBeVisible();
+		});
+
+		it('should submit empty username and raise error', async() => {
+			await element(by.id('register-view-submit-username')).tap();
+			await waitFor(element(by.text('Username is empty'))).toBeVisible().withTimeout(10000);
+			await expect(element(by.text('Username is empty'))).toBeVisible();
+		});
+
+		it('should submit already taken username and raise error', async() => {
+			await element(by.id('register-view-username')).replaceText('diego.mello');
+			await element(by.id('register-view-submit-username')).tap();
+			await waitFor(element(by.id('register-view-error'))).toBeVisible().withTimeout(60000);
+			await expect(element(by.id('register-view-error'))).toBeVisible();
+		});
+
+		it('should finish register', async() => {
 			await element(by.id('register-view-username')).replaceText(data.user);
 			await element(by.id('register-view-submit-username')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
-
 		});
-		// TODO: errors
+
 		// TODO: terms and privacy
 
-		after(async() => {
+		afterEach(async() => {
 			takeScreenshot();
+		});
+
+		after(async() => {
 			await logout();
 		});
 	});
