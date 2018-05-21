@@ -130,7 +130,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 			>
 				<TouchableOpacity
 					style={styles.headerButton}
-					onPress={() => this.props.navigation.navigate({ key: 'DrawerOpen', routeName: 'DrawerOpen' })}
+					onPress={() => this.props.navigation.openDrawer()}
 				>
 					<FastImage
 						style={styles.serverImage}

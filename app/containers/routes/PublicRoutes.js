@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import ListServerView from '../../views/ListServerView';
@@ -19,7 +19,7 @@ const hasServers = () => {
 	return db.length > 0;
 };
 
-const ServerStack = StackNavigator({
+const ServerStack = createStackNavigator({
 	ListServer: {
 		screen: ListServerView,
 		navigationOptions({ navigation }) {
@@ -55,7 +55,7 @@ const ServerStack = StackNavigator({
 	initialRouteName: hasServers() ? 'ListServer' : 'AddServer'
 });
 
-const LoginStack = StackNavigator({
+const LoginStack = createStackNavigator({
 	Login: {
 		screen: LoginView,
 		navigationOptions: {
@@ -73,7 +73,7 @@ const LoginStack = StackNavigator({
 	headerMode: 'screen'
 });
 
-const RegisterStack = StackNavigator({
+const RegisterStack = createStackNavigator({
 	Register: {
 		screen: RegisterView,
 		navigationOptions: {
@@ -98,7 +98,7 @@ const RegisterStack = StackNavigator({
 	headerMode: 'screen'
 });
 
-const PublicRoutes = StackNavigator(
+const PublicRoutes = createStackNavigator(
 	{
 		Server: {
 			screen: ServerStack

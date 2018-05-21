@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ScrollView, Text, View, StyleSheet, FlatList, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
+import { DrawerActions } from 'react-navigation';
 
 import database from '../lib/realm';
 import { setServer } from '../actions/server';
@@ -64,16 +65,9 @@ export default class Sidebar extends Component {
 		database.databases.serversDB.removeListener('change', this.updateState);
 	}
 
-	onItemPress = ({ route, focused }) => {
-		this.props.navigation.navigate({ key: 'DrawerClose', routeName: 'DrawerClose' });
-		if (!focused) {
-			this.props.navigation.navigate(route.routeName, undefined);
-		}
-	}
-
 	onPressItem = (item) => {
 		this.props.selectServer(item.id);
-		this.props.navigation.navigate({ key: 'DrawerClose', routeName: 'DrawerClose' });
+		this.closeDrawer();
 	}
 
 	getState = () => ({
@@ -82,6 +76,10 @@ export default class Sidebar extends Component {
 
 	updateState = () => {
 		this.setState(this.getState());
+	}
+
+	closeDrawer = () => {
+		this.props.navigation.dispatch(DrawerActions.closeDrawer());
 	}
 
 	renderItem = ({ item, separators }) => (
@@ -110,7 +108,10 @@ export default class Sidebar extends Component {
 						keyExtractor={keyExtractor}
 					/>
 					<TouchableHighlight
-						onPress={() => { this.props.logout(); }}
+						onPress={() => {
+							this.closeDrawer();
+							this.props.logout();
+						}}
 						testID='sidebar-logout'
 					>
 						<View style={styles.serverItem}>
@@ -120,7 +121,10 @@ export default class Sidebar extends Component {
 						</View>
 					</TouchableHighlight>
 					<TouchableHighlight
-						onPress={() => { this.props.navigation.navigate({ key: 'AddServer', routeName: 'AddServer' }); }}
+						onPress={() => {
+							this.closeDrawer();
+							this.props.navigation.navigate({ key: 'AddServer', routeName: 'AddServer' });
+						}}
 						testID='sidebar-add-server'
 					>
 						<View style={styles.serverItem}>
