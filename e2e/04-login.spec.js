@@ -82,7 +82,7 @@ describe('Login screen', () => {
 		it('should login with success', async() => {
 			await element(by.id('login-view-password')).replaceText(data.password);
 			await element(by.id('login-view-submit')).tap();
-			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
+			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
 		});
 

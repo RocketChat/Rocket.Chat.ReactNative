@@ -39,6 +39,7 @@ describe('Rooms list screen', () => {
 	
 			it('should have sidebar button', async() => {
 				await expect(element(by.id('rooms-list-view-sidebar'))).toBeVisible();
+				await expect(element(by.id('rooms-list-view-sidebar'))).toHaveLabel(`Connected to ${ data.server }. Tap to view servers list.`);
 			});
 		});
 
@@ -55,7 +56,7 @@ describe('Rooms list screen', () => {
 			await waitFor(element(by.id('rooms-list-view-user-presence-modal'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('rooms-list-view-user-presence-modal'))).toBeVisible();
 			await element(by.id('rooms-list-view-user-presence-busy')).tap();
-			await waitFor(element(by.id('rooms-list-view-user-presence-modal'))).toBeNotVisible().withTimeout(5000);
+			await waitFor(element(by.id('rooms-list-view-user-presence-modal'))).toBeNotVisible().withTimeout(10000);
 			await expect(element(by.id('rooms-list-view-user-presence-modal'))).toBeNotVisible();
 			await waitFor(element(by.label(`${ data.user }, Busy, tap to change status`))).toBeVisible().withTimeout(60000);
 			await expect(element(by.label(`${ data.user }, Busy, tap to change status`))).toBeVisible();
@@ -69,7 +70,7 @@ describe('Rooms list screen', () => {
 			await waitFor(element(by.id('rooms-list-view-item-rocket.cat'))).toBeVisible().withTimeout(10000);
 			await expect(element(by.id('rooms-list-view-item-rocket.cat'))).toBeVisible();
 			await element(by.id('rooms-list-view-item-rocket.cat')).tap();
-			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
+			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(10000);
 			await expect(element(by.id('room-view'))).toBeVisible();
 			await waitFor(element(by.id('room-view-title'))).toHaveText('rocket.cat').withTimeout(60000);
 			await expect(element(by.id('room-view-title'))).toHaveText('rocket.cat');

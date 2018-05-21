@@ -111,7 +111,7 @@ describe('Create user screen', () => {
 			await element(by.id('register-view-password')).replaceText(data.password);
 			await element(by.id('register-view-repeat-password')).replaceText(data.password);
 			await element(by.id('register-view-submit')).tap();
-			await waitFor(element(by.id('register-view-username'))).toBeVisible().withTimeout(2000);
+			await waitFor(element(by.id('register-view-username'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('register-view-username'))).toBeVisible();
 		});
 
@@ -131,7 +131,7 @@ describe('Create user screen', () => {
 		it('should finish register', async() => {
 			await element(by.id('register-view-username')).replaceText(data.user);
 			await element(by.id('register-view-submit-username')).tap();
-			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
+			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
 		});
 

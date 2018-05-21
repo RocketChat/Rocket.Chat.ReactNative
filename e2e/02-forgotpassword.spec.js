@@ -35,7 +35,7 @@ describe('Forgot password screen', () => {
 		it('should reset password and navigate to login', async() => {
 			await element(by.id('forgot-password-view-email')).replaceText(data.email);
 			await element(by.id('forgot-password-view-submit')).tap();
-			await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
+			await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('login-view'))).toBeVisible();
 		});
 

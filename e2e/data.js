@@ -1,10 +1,11 @@
 const random = require('./helpers/random');
-const value = random(15);
+const value = random(20);
 const data = {
-    server: 'http://localhost:3000',
+    server: 'https://unstable.rocket.chat',
+    alternateServer: 'https://stable.rocket.chat',
     user: `user${ value }`,
     password: `password${ value }`,
-    email: `diegolmello+${ value }@gmail.com`, // TODO: change email
+    email: `detoxrn+${ value }@rocket.chat`,
     random: value
 }
 module.exports = data;

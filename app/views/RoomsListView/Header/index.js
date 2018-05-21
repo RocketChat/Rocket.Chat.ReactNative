@@ -123,7 +123,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 			<View
 				style={styles.left}
 				accessible
-				accessibilityLabel="Server's list"
+				accessibilityLabel={`Connected to ${ this.props.baseUrl }. Tap to view servers list.`}
 				accessibilityTraits='button'
 				testID='rooms-list-view-sidebar'
 			>

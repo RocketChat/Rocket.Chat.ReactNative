@@ -288,7 +288,7 @@ describe('Room actions screen', () => {
 
 			describe('Add User', async() => {
 				it('should add user to the room', async() => {
-					const user = 'diego.detox'; // TODO: needs other user (maybe already created like rocket.cat)
+					const user = 'detoxrn';
 					await waitFor(element(by.id('room-actions-add-user'))).toBeVisible().whileElement(by.id('room-actions-list')).scroll(scrollDown, 'up');
 					await element(by.id('room-actions-add-user')).tap();
 					await element(by.id('select-users-view-search')).tap();
@@ -315,7 +315,7 @@ describe('Room actions screen', () => {
 			});
 
 			describe('Room Members', async() => {
-				const user = 'diego.detox';
+				const user = 'detoxrn';
 				before(async() => {
 					await element(by.id('room-actions-members')).tap();
 					await waitFor(element(by.id('room-members-view'))).toExist().withTimeout(2000);

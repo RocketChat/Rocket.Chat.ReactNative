@@ -90,6 +90,7 @@ export default class Sidebar extends Component {
 			onShowUnderlay={separators.highlight}
 			onHideUnderlay={separators.unhighlight}
 			onPress={() => { this.onPressItem(item); }}
+			testID={`sidebar-${ item.id }`}
 		>
 			<View style={[styles.serverItem, (item.id === this.props.server ? styles.selectedServer : null)]}>
 				<Text>
