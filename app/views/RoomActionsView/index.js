@@ -71,6 +71,11 @@ export default class RoomActionsView extends LoggedView {
 
 	updateRoomMembers = async() => {
 		const { t } = this.state.room;
+
+		if (!this.canViewMembers) {
+			return {};
+		}
+
 		if (t === 'c' || t === 'p') {
 			let onlineMembers = [];
 			let allMembers = [];
@@ -123,9 +128,20 @@ export default class RoomActionsView extends LoggedView {
 		}
 		return false;
 	}
+	get canViewMembers() {
+		const { rid, t, broadcast } = this.state.room;
+		if (broadcast) {
+			const viewBroadcastMemberListPermission = 'view-broadcast-member-list';
+			const permissions = RocketChat.hasPermission([viewBroadcastMemberListPermission], rid);
+			if (!permissions[viewBroadcastMemberListPermission]) {
+				return false;
+			}
+		}
+		return (t === 'c' || t === 'p');
+	}
 	get sections() {
 		const {
-			rid, t, blocked, notifications
+			rid, t, blocker, notifications
 		} = this.room;
 		const { onlineMembers } = this.state;
 
@@ -219,7 +235,7 @@ export default class RoomActionsView extends LoggedView {
 				data: [
 					{
 						icon: 'block',
-						name: `${ blocked ? 'Unblock' : 'Block' } user`,
+						name: `${ blocker ? 'Unblock' : 'Block' } user`,
 						type: 'danger',
 						event: () => this.toggleBlockUser(),
 						testID: 'room-actions-block-user'
@@ -228,14 +244,18 @@ export default class RoomActionsView extends LoggedView {
 				renderItem: this.renderItem
 			});
 		} else if (t === 'c' || t === 'p') {
-			const actions = [{
-				icon: 'ios-people',
-				name: 'Members',
-				description: (onlineMembers.length === 1 ? `${ onlineMembers.length } member` : `${ onlineMembers.length } members`),
-				route: 'RoomMembers',
-				params: { rid, members: onlineMembers },
-				testID: 'room-actions-members'
-			}];
+			const actions = [];
+
+			if (this.canViewMembers) {
+				actions.push({
+					icon: 'ios-people',
+					name: 'Members',
+					description: (onlineMembers.length === 1 ? `${ onlineMembers.length } member` : `${ onlineMembers.length } members`),
+					route: 'RoomMembers',
+					params: { rid, members: onlineMembers },
+					testID: 'room-actions-members'
+				});
+			}
 
 			if (this.canAddUser) {
 				actions.push({
@@ -276,10 +296,10 @@ export default class RoomActionsView extends LoggedView {
 	}
 
 	toggleBlockUser = async() => {
-		const { rid, blocked } = this.state.room;
+		const { rid, blocker } = this.state.room;
 		const { member } = this.state;
 		try {
-			RocketChat.toggleBlockUser(rid, member._id, !blocked);
+			RocketChat.toggleBlockUser(rid, member._id, !blocker);
 		} catch (e) {
 			log('toggleBlockUser', e);
 		}

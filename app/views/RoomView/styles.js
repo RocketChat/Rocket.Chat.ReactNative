@@ -34,6 +34,9 @@ export default StyleSheet.create({
 	readOnly: {
 		padding: 10
 	},
+	blockedOrBlocker: {
+		padding: 10
+	},
 	reactionPickerContainer: {
 		// width: width - 20,
 		// height: width - 20,

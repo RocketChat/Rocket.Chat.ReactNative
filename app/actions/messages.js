@@ -183,3 +183,10 @@ export function toggleReactionPicker(message) {
 		message
 	};
 }
+
+export function replyBroadcast(message) {
+	return {
+		type: types.MESSAGES.REPLY_BROADCAST,
+		message
+	};
+}

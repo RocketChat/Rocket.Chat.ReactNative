@@ -80,11 +80,17 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
 		alignItems: 'center',
-		paddingHorizontal: 0
+		paddingHorizontal: 0,
+		paddingBottom: 5
 	},
 	switchLabel: {
-		flexGrow: 1,
+		fontSize: 16,
+		color: '#2f343d',
 		paddingHorizontal: 10
+	},
+	switchDescription: {
+		fontSize: 16,
+		color: '#9ea2a8'
 	},
 	disabledButton: {
 		backgroundColor: '#e1e5e8'

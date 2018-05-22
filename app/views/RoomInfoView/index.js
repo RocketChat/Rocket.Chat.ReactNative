@@ -21,8 +21,11 @@ const PERMISSION_EDIT_ROOM = 'edit-room';
 
 const camelize = str => str.replace(/^(.)/, (match, chr) => chr.toUpperCase());
 const getRoomTitle = room => (room.t === 'd' ?
-	<Text testID='room-info-view-name'>{room.fname}</Text> :
-	[<RoomTypeIcon type={room.t} />, <Text testID='room-info-view-name'>{room.name}</Text>]
+	<Text testID='room-info-view-name' style={styles.roomTitle}>{room.fname}</Text> :
+	[
+		<RoomTypeIcon type={room.t} key='room-info-type' />,
+		<Text testID='room-info-view-name' style={styles.roomTitle} key='room-info-name'>{room.name}</Text>
+	]
 );
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -184,6 +187,17 @@ export default class RoomInfoView extends LoggedView {
 		</Avatar>
 	)
 
+	renderBroadcast = () => (
+		<View style={styles.item}>
+			<Text style={styles.itemLabel}>Broadcast Channel</Text>
+			<Text
+				style={styles.itemContent}
+				testID='room-info-view-broadcast'
+			>Only authorized users can write new messages, but the other users will be able to reply
+			</Text>
+		</View>
+	)
+
 	render() {
 		const { room, roomUser } = this.state;
 		if (!room) {
@@ -193,13 +207,14 @@ export default class RoomInfoView extends LoggedView {
 			<ScrollView style={styles.container}>
 				<View style={styles.avatarContainer} testID='room-info-view'>
 					{this.renderAvatar(room, roomUser)}
-					<View style={styles.roomTitle}>{ getRoomTitle(room) }</View>
+					<View style={styles.roomTitleContainer}>{ getRoomTitle(room) }</View>
 				</View>
 				{!this.isDirect() && this.renderItem('description', room)}
 				{!this.isDirect() && this.renderItem('topic', room)}
 				{!this.isDirect() && this.renderItem('announcement', room)}
 				{this.isDirect() && this.renderRoles()}
 				{this.isDirect() && this.renderTimezone(roomUser._id)}
+				{room.broadcast && this.renderBroadcast()}
 			</ScrollView>
 		);
 	}

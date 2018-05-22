@@ -18,7 +18,7 @@ import Reply from './Reply';
 import ReactionsModal from './ReactionsModal';
 import Emoji from './Emoji';
 import styles from './styles';
-import { actionsShow, errorActionsShow, toggleReactionPicker } from '../../actions/messages';
+import { actionsShow, errorActionsShow, toggleReactionPicker, replyBroadcast } from '../../actions/messages';
 import messagesStatus from '../../constants/messagesStatus';
 import Touch from '../../utils/touch';
 
@@ -68,7 +68,8 @@ const getInfoMessage = ({
 }), dispatch => ({
 	actionsShow: actionMessage => dispatch(actionsShow(actionMessage)),
 	errorActionsShow: actionMessage => dispatch(errorActionsShow(actionMessage)),
-	toggleReactionPicker: message => dispatch(toggleReactionPicker(message))
+	toggleReactionPicker: message => dispatch(toggleReactionPicker(message)),
+	replyBroadcast: message => dispatch(replyBroadcast(message))
 }))
 export default class Message extends React.Component {
 	static propTypes = {
@@ -83,17 +84,20 @@ export default class Message extends React.Component {
 		editing: PropTypes.bool,
 		errorActionsShow: PropTypes.func,
 		toggleReactionPicker: PropTypes.func,
+		replyBroadcast: PropTypes.func,
 		onReactionPress: PropTypes.func,
 		style: ViewPropTypes.style,
 		onLongPress: PropTypes.func,
 		_updatedAt: PropTypes.instanceOf(Date),
-		archived: PropTypes.bool
+		archived: PropTypes.bool,
+		broadcast: PropTypes.bool
 	}
 
 	static defaultProps = {
 		onLongPress: () => {},
 		_updatedAt: new Date(),
-		archived: false
+		archived: false,
+		broadcast: false
 	}
 
 	constructor(props) {
@@ -114,6 +118,9 @@ export default class Message extends React.Component {
 			return true;
 		}
 		if (!equal(this.props.reactions, nextProps.reactions)) {
+			return true;
+		}
+		if (this.props.broadcast !== nextProps.broadcast) {
 			return true;
 		}
 		return this.props._updatedAt.toGMTString() !== nextProps._updatedAt.toGMTString();
@@ -169,6 +176,8 @@ export default class Message extends React.Component {
 		].includes(this.props.item.t);
 	}
 
+	isOwn = () => this.props.item.u && this.props.item.u._id === this.props.user.id;
+
 	isDeleted() {
 		return this.props.item.t === 'rm';
 	}
@@ -187,7 +196,7 @@ export default class Message extends React.Component {
 		if (previousItem && (
 			(previousItem.ts.toDateString() === item.ts.toDateString()) &&
 			(previousItem.u.username === item.u.username) &&
-			!(previousItem.groupable === false || item.groupable === false) &&
+			!(previousItem.groupable === false || item.groupable === false || this.props.broadcast === true) &&
 			(previousItem.status === item.status) &&
 			(item.ts - previousItem.ts < this.props.Message_GroupingPeriod * 1000)
 		)) {
@@ -303,6 +312,20 @@ export default class Message extends React.Component {
 		);
 	}
 
+	renderBroadcastReply() {
+		if (!this.props.broadcast || this.isOwn()) {
+			return null;
+		}
+		return (
+			<TouchableOpacity
+				style={styles.broadcastButton}
+				onPress={() => this.props.replyBroadcast(this.parseMessage())}
+			>
+				<Text style={styles.broadcastButtonText}>Reply</Text>
+			</TouchableOpacity>
+		);
+	}
+
 	render() {
 		const {
 			item, message, editing, style, archived
@@ -329,6 +352,7 @@ export default class Message extends React.Component {
 							{this.renderAttachment()}
 							{this.renderUrl()}
 							{this.renderReactions()}
+							{this.renderBroadcastReply()}
 						</View>
 					</View>
 					{this.state.reactionsModal &&
