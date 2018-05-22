@@ -14,7 +14,7 @@ export default class SwitchContainer extends React.PureComponent {
 		rightLabelPrimary: PropTypes.string,
 		rightLabelSecondary: PropTypes.string,
 		onValueChange: PropTypes.func,
-		testID: PropTypes.string,
+		testID: PropTypes.string
 	}
 
 	render() {

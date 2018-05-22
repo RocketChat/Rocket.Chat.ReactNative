@@ -2,7 +2,7 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
-const { addServer, navigateToLogin } = require('./helpers/app');
+const { navigateToLogin } = require('./helpers/app');
 const data = require('./data');
 
 describe('Login screen', () => {
