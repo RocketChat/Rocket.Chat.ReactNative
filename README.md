@@ -38,6 +38,20 @@ Follow the [React Native Getting Started Guide](https://facebook.github.io/react
     $ npm run android
     ```
 
+# Detox (end-to-end tests)
+
+## 1. Build your app
+
+```bash
+$ detox build
+```
+
+## 2. Run the tests
+
+```bash
+$ detox test
+```
+
 # Storybook
 - General requirements
     - Install storybook

@@ -5,6 +5,10 @@ const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 
 describe('Change server', () => {
+	before(async() => {
+		await device.reloadReactNative();
+	});
+
 	it('should add server and create new user', async() => {
 		// Navigate to add server
 		await element(by.id('rooms-list-view-sidebar')).tap();
