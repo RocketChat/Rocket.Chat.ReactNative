@@ -337,6 +337,7 @@ export default class MessageActions extends React.Component {
 			<ActionSheet
 				ref={o => this.ActionSheet = o}
 				title='Messages actions'
+				testID='message-actions'
 				options={this.options}
 				cancelButtonIndex={this.CANCEL_INDEX}
 				destructiveButtonIndex={this.DELETE_INDEX}

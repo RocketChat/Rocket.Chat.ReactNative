@@ -1,6 +1,8 @@
+import Random from 'react-native-meteor/lib/Random';
 import database from '../../realm';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
 import protectedFunction from '../helpers/protectedFunction';
+import messagesStatus from '../../../constants/messagesStatus';
 import log from '../../../utils/log';
 
 export default async function subscribeRooms(id) {
@@ -26,7 +28,9 @@ export default async function subscribeRooms(id) {
 		}, 5000);
 	};
 
-	if (this.ddp) {
+	if (!this.ddp && this._login) {
+		loop();
+	} else {
 		this.ddp.on('logged', () => {
 			clearTimeout(timer);
 			timer = false;
@@ -48,7 +52,7 @@ export default async function subscribeRooms(id) {
 			const [, ev] = ddpMessage.fields.eventName.split('/');
 			if (/subscriptions/.test(ev)) {
 				const tpm = merge(data);
-				return database.write(() => {
+				database.write(() => {
 					database.create('subscriptions', tpm, true);
 				});
 			}
@@ -57,6 +61,25 @@ export default async function subscribeRooms(id) {
 				database.write(() => {
 					merge(sub, data);
 				});
+			}
+			if (/message/.test(ev)) {
+				const [args] = ddpMessage.fields.args;
+				const _id = Random.id();
+				const message = {
+					_id,
+					rid: args.rid,
+					msg: args.msg,
+					ts: new Date(),
+					_updatedAt: new Date(),
+					status: messagesStatus.SENT,
+					u: {
+						_id,
+						username: 'rocket.cat'
+					}
+				};
+				requestAnimationFrame(() => database.write(() => {
+					database.create('messages', message, true);
+				}));
 			}
 		}));
 	}

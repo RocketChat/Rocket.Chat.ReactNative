@@ -77,6 +77,7 @@ export class List extends React.Component {
 			renderRow={(item, previousItem) => this.props.renderRow(item, previousItem)}
 			initialListSize={20}
 			pageSize={20}
+			testID='room-view-messages'
 			{...scrollPersistTaps}
 		/>);
 	}

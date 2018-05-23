@@ -73,7 +73,7 @@ export default class RoomFilesView extends LoggedView {
 	}
 
 	renderEmpty = () => (
-		<View style={styles.listEmptyContainer}>
+		<View style={styles.listEmptyContainer} testID='room-files-view'>
 			<Text>No files</Text>
 		</View>
 	)
@@ -97,16 +97,19 @@ export default class RoomFilesView extends LoggedView {
 
 		const { loading, loadingMore } = this.state;
 		return (
-			<FlatList
-				key='room-files-view-list'
-				data={messages}
-				renderItem={this.renderItem}
-				style={styles.list}
-				keyExtractor={item => item._id}
-				onEndReached={this.moreData}
-				ListHeaderComponent={loading && <RCActivityIndicator />}
-				ListFooterComponent={loadingMore && <RCActivityIndicator />}
-			/>
+			[
+				<FlatList
+					key='room-files-view-list'
+					testID='room-files-view'
+					data={messages}
+					renderItem={this.renderItem}
+					style={styles.list}
+					keyExtractor={item => item._id}
+					onEndReached={this.moreData}
+					ListHeaderComponent={loading && <RCActivityIndicator />}
+					ListFooterComponent={loadingMore && <RCActivityIndicator />}
+				/>
+			]
 		);
 	}
 }

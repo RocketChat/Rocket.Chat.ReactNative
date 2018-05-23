@@ -67,7 +67,7 @@ export default class Sidebar extends Component {
 
 	onPressItem = (item) => {
 		this.props.selectServer(item.id);
-		this.props.navigation.dispatch(DrawerActions.closeDrawer());
+		this.closeDrawer();
 	}
 
 	getState = () => ({
@@ -78,12 +78,17 @@ export default class Sidebar extends Component {
 		this.setState(this.getState());
 	}
 
+	closeDrawer = () => {
+		this.props.navigation.dispatch(DrawerActions.closeDrawer());
+	}
+
 	renderItem = ({ item, separators }) => (
 
 		<TouchableHighlight
 			onShowUnderlay={separators.highlight}
 			onHideUnderlay={separators.unhighlight}
 			onPress={() => { this.onPressItem(item); }}
+			testID={`sidebar-${ item.id }`}
 		>
 			<View style={[styles.serverItem, (item.id === this.props.server ? styles.selectedServer : null)]}>
 				<Text>
@@ -96,14 +101,18 @@ export default class Sidebar extends Component {
 	render() {
 		return (
 			<ScrollView style={styles.scrollView}>
-				<View style={{ paddingBottom: 20 }}>
+				<View style={{ paddingBottom: 20 }} testID='sidebar'>
 					<FlatList
 						data={this.state.servers}
 						renderItem={this.renderItem}
 						keyExtractor={keyExtractor}
 					/>
 					<TouchableHighlight
-						onPress={() => { this.props.logout(); }}
+						onPress={() => {
+							this.closeDrawer();
+							this.props.logout();
+						}}
+						testID='sidebar-logout'
 					>
 						<View style={styles.serverItem}>
 							<Text>
@@ -112,7 +121,11 @@ export default class Sidebar extends Component {
 						</View>
 					</TouchableHighlight>
 					<TouchableHighlight
-						onPress={() => { this.props.navigation.navigate({ key: 'AddServer', routeName: 'AddServer' }); }}
+						onPress={() => {
+							this.closeDrawer();
+							this.props.navigation.navigate({ key: 'AddServer', routeName: 'AddServer' });
+						}}
+						testID='sidebar-add-server'
 					>
 						<View style={styles.serverItem}>
 							<Text>

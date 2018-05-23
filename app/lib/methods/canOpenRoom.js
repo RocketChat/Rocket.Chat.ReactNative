@@ -40,6 +40,7 @@ async function canOpenRoomDDP(...args) {
 
 export default async function canOpenRoom({ rid, path }) {
 	const { database: db } = database;
+
 	const room = db.objects('subscriptions').filtered('rid == $0', rid);
 	if (room.length) {
 		return true;

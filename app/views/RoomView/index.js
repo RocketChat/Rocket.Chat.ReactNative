@@ -74,8 +74,8 @@ export default class RoomView extends LoggedView {
 		this.onReactionPress = this.onReactionPress.bind(this);
 	}
 
-	async componentDidMount() {
-		await this.updateRoom();
+	componentDidMount() {
+		this.updateRoom();
 		this.rooms.addListener(this.updateRoom);
 	}
 	shouldComponentUpdate(nextProps, nextState) {
@@ -197,7 +197,7 @@ export default class RoomView extends LoggedView {
 	}
 	render() {
 		return (
-			<View style={styles.container}>
+			<View style={styles.container} testID='room-view'>
 				<List
 					key='room-view-messages'
 					end={this.state.end}

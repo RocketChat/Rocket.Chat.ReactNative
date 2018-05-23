@@ -97,7 +97,7 @@ export default class PinnedMessagesView extends LoggedView {
 	}
 
 	renderEmpty = () => (
-		<View style={styles.listEmptyContainer}>
+		<View style={styles.listEmptyContainer} testID='pinned-messages-view'>
 			<Text>No pinned messages</Text>
 		</View>
 	)
@@ -126,6 +126,7 @@ export default class PinnedMessagesView extends LoggedView {
 			[
 				<FlatList
 					key='pinned-messages-view-list'
+					testID='pinned-messages-view'
 					data={messages}
 					renderItem={this.renderItem}
 					style={styles.list}

@@ -24,7 +24,11 @@ export default class CloseModalButton extends React.PureComponent {
 
 	render() {
 		return (
-			<TouchableOpacity onPress={() => this.props.navigation.dispatch(NavigationActions.back())} style={styles.button}>
+			<TouchableOpacity
+				onPress={() => this.props.navigation.dispatch(NavigationActions.back())}
+				style={styles.button}
+				testID='close-modal-button'
+			>
 				<Icon
 					style={styles.icon}
 					name='close'

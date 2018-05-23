@@ -20,6 +20,7 @@ export default class TabBar extends React.PureComponent {
 						key={tab}
 						onPress={() => this.props.goToPage(i)}
 						style={styles.tab}
+						testID={`reaction-picker-${ tab }`}
 					>
 						<Text style={[styles.tabEmoji, this.props.tabEmojiStyle]}>{tab}</Text>
 						{this.props.activeTab === i ? <View style={styles.activeTabLine} /> : <View style={styles.tabLine} />}

@@ -106,7 +106,7 @@ export default class NewServerView extends LoggedView {
 				keyboardVerticalOffset={128}
 			>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
-					<SafeAreaView>
+					<SafeAreaView testID='new-server-view'>
 						<Text style={[styles.loginText, styles.loginTitle]}>Sign in your server</Text>
 						<TextInput
 							inputRef={e => this.input = e}
@@ -115,6 +115,7 @@ export default class NewServerView extends LoggedView {
 							placeholder={this.state.defaultServer}
 							returnKeyType='done'
 							onChangeText={this.onChangeText}
+							testID='new-server-view-input'
 							onSubmitEditing={this.submit}
 						/>
 						{this.renderValidation()}
@@ -124,6 +125,7 @@ export default class NewServerView extends LoggedView {
 								type='primary'
 								onPress={this.submit}
 								disabled={!validInstance}
+								testID='new-server-view-button'
 							/>
 						</View>
 						<Loading visible={this.props.addingServer} />

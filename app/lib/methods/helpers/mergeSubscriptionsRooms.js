@@ -15,7 +15,7 @@ export const merge = (subscription, room) => {
 		subscription.joinCodeRequired = room.joinCodeRequired;
 
 		if (room.muted && room.muted.length) {
-			subscription.muted = room.muted.filter(role => role).map(role => ({ value: role }));
+			subscription.muted = room.muted.filter(user => user).map(user => ({ value: user }));
 		}
 	}
 	if (subscription.roles && subscription.roles.length) {

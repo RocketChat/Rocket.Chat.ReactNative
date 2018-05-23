@@ -103,6 +103,7 @@ export default class SelectedUsersView extends LoggedView {
 						onPress={() => params.nextAction()}
 						accessibilityLabel='Submit'
 						accessibilityTraits='button'
+						testID='selected-users-view-submit'
 					>
 						<Icon
 							name='ios-add'
@@ -229,6 +230,7 @@ export default class SelectedUsersView extends LoggedView {
 				placeholder='Search'
 				clearButtonMode='while-editing'
 				blurOnSubmit
+				testID='select-users-view-search'
 				autoCorrect={false}
 				autoCapitalize='none'
 			/>
@@ -255,6 +257,7 @@ export default class SelectedUsersView extends LoggedView {
 			key={item._id}
 			style={styles.selectItemView}
 			onPress={() => this._onPressSelectedItem(item)}
+			testID={`selected-user-${ item.name }`}
 		>
 			<Avatar text={item.name} size={40} />
 			<Text ellipsizeMode='tail' numberOfLines={1} style={{ fontSize: 10 }}>
@@ -273,6 +276,7 @@ export default class SelectedUsersView extends LoggedView {
 			showLastMessage={false}
 			avatarSize={30}
 			statusStyle={styles.status}
+			testID={`select-users-view-item-${ item.name }`}
 		/>
 	);
 	renderList = () => (
@@ -300,7 +304,7 @@ export default class SelectedUsersView extends LoggedView {
 		);
 	};
 	render = () => (
-		<View style={styles.container}>
+		<View style={styles.container} testID='select-users-view'>
 			<SafeAreaView style={styles.safeAreaView}>
 				{this.renderList()}
 				{this.renderCreateButton()}
