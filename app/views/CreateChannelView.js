@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { View, Text, Switch, TouchableOpacity, SafeAreaView, ScrollView, Platform } from 'react-native';
+import { View, Text, Switch, SafeAreaView, ScrollView, Platform } from 'react-native';
 
 import RCTextInput from '../containers/TextInput';
 import Loading from '../containers/Loading';
@@ -76,14 +76,14 @@ export default class CreateChannelView extends LoggedView {
 	}
 
 	renderSwitch = ({
-		value, label, description, onValueChange, disabled = false
+		id, value, label, description, onValueChange, disabled = false
 	}) => (
 		<View style={{ marginBottom: 15 }}>
 			<View style={styles.switchContainer}>
 				<Switch
 					value={value}
 					onValueChange={onValueChange}
-					testID='create-channel-type'
+					testID={`create-channel-${ id }`}
 					onTintColor='#2de0a5'
 					tintColor={Platform.OS === 'android' ? '#f5455c' : null}
 					disabled={disabled}
@@ -97,6 +97,7 @@ export default class CreateChannelView extends LoggedView {
 	renderType() {
 		const { type } = this.state;
 		return this.renderSwitch({
+			id: 'type',
 			value: type,
 			label: type ? 'Private Channel' : 'Public Channel',
 			description: type ? 'Just invited people can access this channel' : 'Everyone can access this channel',
@@ -107,6 +108,7 @@ export default class CreateChannelView extends LoggedView {
 	renderReadOnly() {
 		const { readOnly, broadcast } = this.state;
 		return this.renderSwitch({
+			id: 'readonly',
 			value: readOnly,
 			label: 'Read Only Channel',
 			description: readOnly ? 'Only authorized users can write new messages' : 'All users in the channel can write new messages',
@@ -118,6 +120,7 @@ export default class CreateChannelView extends LoggedView {
 	renderBroadcast() {
 		const { broadcast, readOnly } = this.state;
 		return this.renderSwitch({
+			id: 'broadcast',
 			value: broadcast,
 			label: 'Broadcast Channel',
 			description: 'Only authorized users can write new messages, but the other users will be able to reply',

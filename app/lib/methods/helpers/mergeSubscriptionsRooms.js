@@ -4,6 +4,9 @@ import normalizeMessage from './normalizeMessage';
 export const merge = (subscription, room) => {
 	subscription.muted = [];
 	if (room) {
+		if (room.rid) {
+			subscription.rid = room.rid;
+		}
 		subscription.roomUpdatedAt = room._updatedAt;
 		subscription.lastMessage = normalizeMessage(room.lastMessage);
 		subscription.ro = room.ro;

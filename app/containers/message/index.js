@@ -22,6 +22,24 @@ import { actionsShow, errorActionsShow, toggleReactionPicker, replyBroadcast } f
 import messagesStatus from '../../constants/messagesStatus';
 import Touch from '../../utils/touch';
 
+const SYSTEM_MESSAGES = [
+	'r',
+	'au',
+	'ru',
+	'ul',
+	'uj',
+	'rm',
+	'user-muted',
+	'user-unmuted',
+	'message_pinned',
+	'subscription-role-added',
+	'subscription-role-removed',
+	'room_changed_description',
+	'room_changed_announcement',
+	'room_changed_topic',
+	'room_changed_privacy'
+];
+
 const getInfoMessage = ({
 	t, role, msg, u
 }) => {
@@ -157,23 +175,7 @@ export default class Message extends React.Component {
 	parseMessage = () => JSON.parse(JSON.stringify(this.props.item));
 
 	isInfoMessage() {
-		return [
-			'r',
-			'au',
-			'ru',
-			'ul',
-			'uj',
-			'rm',
-			'user-muted',
-			'user-unmuted',
-			'message_pinned',
-			'subscription-role-added',
-			'subscription-role-removed',
-			'room_changed_description',
-			'room_changed_announcement',
-			'room_changed_topic',
-			'room_changed_privacy'
-		].includes(this.props.item.t);
+		return SYSTEM_MESSAGES.includes(this.props.item.t);
 	}
 
 	isOwn = () => this.props.item.u && this.props.item.u._id === this.props.user.id;

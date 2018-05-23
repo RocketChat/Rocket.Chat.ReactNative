@@ -49,10 +49,7 @@ const roomsSchema = {
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
-		t: 'string',
-		lastMessage: 'messages',
-		description: { type: 'string', optional: true },
-		_updatedAt: { type: 'date', optional: true }
+		broadcast: { type: 'bool', optional: true }
 	}
 };
 
