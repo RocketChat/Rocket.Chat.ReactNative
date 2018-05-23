@@ -13,12 +13,13 @@ export default class SwitchContainer extends React.PureComponent {
 		leftLabelSecondary: PropTypes.string,
 		rightLabelPrimary: PropTypes.string,
 		rightLabelSecondary: PropTypes.string,
-		onValueChange: PropTypes.func
+		onValueChange: PropTypes.func,
+		testID: PropTypes.string
 	}
 
 	render() {
 		const {
-			value, disabled, onValueChange, leftLabelPrimary, leftLabelSecondary, rightLabelPrimary, rightLabelSecondary
+			value, disabled, onValueChange, leftLabelPrimary, leftLabelSecondary, rightLabelPrimary, rightLabelSecondary, testID
 		} = this.props;
 		return (
 			[
@@ -32,6 +33,7 @@ export default class SwitchContainer extends React.PureComponent {
 						onValueChange={onValueChange}
 						value={value}
 						disabled={disabled}
+						testID={testID}
 					/>
 					<View style={styles.switchLabelContainer}>
 						<Text style={styles.switchLabelPrimary}>{rightLabelPrimary}</Text>

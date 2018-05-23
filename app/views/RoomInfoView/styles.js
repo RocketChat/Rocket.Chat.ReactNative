@@ -31,7 +31,8 @@ export default StyleSheet.create({
 	},
 	roomTitle: {
 		fontSize: 18,
-		paddingTop: 20
+		paddingTop: 20,
+		flexDirection: 'row'
 	},
 	roomDescription: {
 		fontSize: 14,

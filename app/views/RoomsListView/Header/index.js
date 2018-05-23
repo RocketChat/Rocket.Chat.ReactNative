@@ -121,7 +121,13 @@ export default class RoomsListHeaderView extends React.PureComponent {
 		}
 
 		return (
-			<View style={styles.left} accessible accessibilityLabel="Server's list" accessibilityTraits='button'>
+			<View
+				style={styles.left}
+				accessible
+				accessibilityLabel={`Connected to ${ this.props.baseUrl }. Tap to view servers list.`}
+				accessibilityTraits='button'
+				testID='rooms-list-view-sidebar'
+			>
 				<TouchableOpacity
 					style={styles.headerButton}
 					onPress={() => this.props.navigation.openDrawer()}
@@ -150,10 +156,15 @@ export default class RoomsListHeaderView extends React.PureComponent {
 
 		const t = title(offline, connecting, authenticating, logged);
 
-		const accessibilityLabel = `${ user.username }, ${ this.getUserStatusLabel() }, double tap to change status`;
+		const accessibilityLabel = `${ user.username }, ${ this.getUserStatusLabel() }, tap to change status`;
 		return (
-
-			<TouchableOpacity style={styles.titleContainer} onPress={() => this.showModal()} accessibilityLabel={accessibilityLabel} accessibilityTraits='header'>
+			<TouchableOpacity
+				style={styles.titleContainer}
+				onPress={() => this.showModal()}
+				accessibilityLabel={accessibilityLabel}
+				accessibilityTraits='header'
+				testID='rooms-list-view-user'
+			>
 				<Avatar
 					text={user.username}
 					size={24}
@@ -195,6 +206,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 						onPress={() => this.createChannel()}
 						accessibilityLabel='Create channel'
 						accessibilityTraits='button'
+						testID='rooms-list-view-create-channel'
 					>
 						<Icon
 							name='ios-add'
@@ -215,6 +227,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 			<TouchableOpacity
 				style={styles.modalButton}
 				onPress={() => this.onPressModalButton(status)}
+				testID={`rooms-list-view-user-presence-${ status }`}
 			>
 				<View style={statusStyle} />
 				<Text style={textStyle}>
@@ -251,7 +264,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 
 	render() {
 		return (
-			<View style={styles.header}>
+			<View style={styles.header} testID='rooms-list-view-header'>
 				{this.renderLeft()}
 				{this.renderCenter()}
 				{this.renderRight()}
@@ -262,6 +275,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 					style={{ alignItems: 'center' }}
 					onModalHide={() => this.hideModal()}
 					onBackdropPress={() => this.hideModal()}
+					testID='rooms-list-view-user-presence-modal'
 				>
 					<View style={styles.modal}>
 						{this.renderModalButton('online')}

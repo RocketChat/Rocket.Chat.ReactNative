@@ -60,7 +60,7 @@ export default class Button extends React.PureComponent {
 
 	render() {
 		const {
-			title, type, onPress, disabled
+			title, type, onPress, disabled, ...otherProps
 		} = this.props;
 		return (
 			<Touch
@@ -68,6 +68,7 @@ export default class Button extends React.PureComponent {
 				accessibilityTraits='button'
 				style={Platform.OS === 'ios' && styles.margin}
 				disabled={disabled}
+				{...otherProps}
 			>
 				<View
 					style={[

@@ -35,6 +35,52 @@ jobs:
           command: |
             npx codecov
 
+  e2e-test:
+    macos:
+      xcode: "9.0"
+
+    environment:
+      BASH_ENV: "~/.nvm/nvm.sh"
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install Node 8
+          command: |
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+            source ~/.nvm/nvm.sh
+            # https://github.com/creationix/nvm/issues/1394
+            set +e
+            nvm install 8
+
+      - run:
+          name: Install appleSimUtils
+          command: |
+            brew update
+            brew tap wix/brew
+            brew install applesimutils
+
+      - run:
+          name: Install NPM modules
+          command: |
+            rm -rf node_modules
+            npm install
+            npm install -g detox-cli
+
+      - run:
+          name: Build
+          command: |
+            detox build
+
+      - run:
+          name: Test
+          command: |
+            detox test
+
+      - store_artifacts:
+          path: /tmp/screenshots
+
   android-build:
     <<: *defaults
     docker:
@@ -215,10 +261,14 @@ workflows:
   build-and-test:
     jobs:
       - lint-testunit
+      - e2e-test:
+          requires:
+            - lint-testunit
 
       - ios-build:
           requires:
             - lint-testunit
+            - e2e-test
       - ios-testflight:
           requires:
             - ios-build
@@ -235,3 +285,4 @@ workflows:
       - android-build:
           requires:
             - lint-testunit
+            - e2e-test

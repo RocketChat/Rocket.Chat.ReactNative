@@ -39,6 +39,7 @@ export default class MentionedMessagesView extends LoggedView {
 					accessibilityLabel={label}
 					accessibilityTraits='button'
 					style={styles.headerButtonTouchable}
+					testID='room-members-view-toggle-status'
 				>
 					<View style={styles.headerButton}>
 						<Text style={styles.headerButtonText}>{label}</Text>
@@ -168,6 +169,7 @@ export default class MentionedMessagesView extends LoggedView {
 				blurOnSubmit
 				autoCorrect={false}
 				autoCapitalize='none'
+				testID='room-members-view-search'
 			/>
 		</View>
 	)
@@ -185,6 +187,7 @@ export default class MentionedMessagesView extends LoggedView {
 			showLastMessage={false}
 			avatarSize={30}
 			statusStyle={styles.status}
+			testID={`room-members-view-item-${ item.username }`}
 		/>
 	)
 
@@ -194,6 +197,7 @@ export default class MentionedMessagesView extends LoggedView {
 			[
 				<FlatList
 					key='room-members-view-list'
+					testID='room-members-view'
 					data={filtering ? membersFiltered : members}
 					renderItem={this.renderItem}
 					style={styles.list}

@@ -97,7 +97,7 @@ export default class StarredMessagesView extends LoggedView {
 	}
 
 	renderEmpty = () => (
-		<View style={styles.listEmptyContainer}>
+		<View style={styles.listEmptyContainer} testID='starred-messages-view'>
 			<Text>No starred messages</Text>
 		</View>
 	)
@@ -126,6 +126,7 @@ export default class StarredMessagesView extends LoggedView {
 			[
 				<FlatList
 					key='starred-messages-view-list'
+					testID='starred-messages-view'
 					data={messages}
 					renderItem={this.renderItem}
 					style={styles.list}

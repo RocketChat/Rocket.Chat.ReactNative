@@ -21,9 +21,13 @@ export const getMessage = (rid, msg = {}) => {
 			username: reduxStore.getState().login.user.username
 		}
 	};
-	database.write(() => {
-		database.create('messages', message, true);
-	});
+	try {
+		database.write(() => {
+			database.create('messages', message, true);
+		});
+	} catch (error) {
+		console.warn('getMessage', error);
+	}
 	return message;
 };
 

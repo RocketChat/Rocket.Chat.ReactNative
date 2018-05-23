@@ -171,7 +171,8 @@ export default class RoomItem extends React.Component {
 		onLongPress: PropTypes.func,
 		user: PropTypes.object,
 		avatarSize: PropTypes.number,
-		statusStyle: ViewPropTypes.style
+		statusStyle: ViewPropTypes.style,
+		testID: PropTypes.string
 	}
 
 	static defaultProps = {
@@ -238,7 +239,7 @@ export default class RoomItem extends React.Component {
 
 	render() {
 		const {
-			favorite, unread, userMentions, name, _updatedAt, alert, type
+			favorite, unread, userMentions, name, _updatedAt, alert, type, testID
 		} = this.props;
 
 		const date = this.formatDate(_updatedAt);
@@ -266,6 +267,7 @@ export default class RoomItem extends React.Component {
 				activeOpacity={0.5}
 				accessibilityLabel={accessibilityLabel}
 				accessibilityTraits='selected'
+				testID={testID}
 			>
 				<View style={[styles.container, favorite && styles.favorite]}>
 					{this.icon}
