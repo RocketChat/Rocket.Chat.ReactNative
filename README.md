@@ -39,14 +39,13 @@ Follow the [React Native Getting Started Guide](https://facebook.github.io/react
     ```
 
 # Detox (end-to-end tests)
-
-## 1. Build your app
+- Build your app
 
 ```bash
 $ detox build
 ```
 
-## 2. Run the tests
+- Run tests
 
 ```bash
 $ detox test
