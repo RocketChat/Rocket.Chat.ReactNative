@@ -108,6 +108,7 @@ export default class RegisterView extends LoggedView {
 					iconLeft='account'
 					onChangeText={name => this.setState({ name })}
 					onSubmitEditing={() => { this.email.focus(); }}
+					testID='register-view-name'
 				/>
 				<TextInput
 					inputRef={(e) => { this.email = e; }}
@@ -119,6 +120,7 @@ export default class RegisterView extends LoggedView {
 					onChangeText={email => this.setState({ email })}
 					onSubmitEditing={() => { this.password.focus(); }}
 					error={this.invalidEmail()}
+					testID='register-view-email'
 				/>
 				<TextInput
 					inputRef={(e) => { this.password = e; }}
@@ -129,6 +131,7 @@ export default class RegisterView extends LoggedView {
 					secureTextEntry
 					onChangeText={password => this.setState({ password })}
 					onSubmitEditing={() => { this.confirmPassword.focus(); }}
+					testID='register-view-password'
 				/>
 				<TextInput
 					inputRef={(e) => { this.confirmPassword = e; }}
@@ -144,6 +147,7 @@ export default class RegisterView extends LoggedView {
 					secureTextEntry
 					onChangeText={confirmPassword => this.setState({ confirmPassword })}
 					onSubmitEditing={this.submit}
+					testID='register-view-repeat-password'
 				/>
 
 				<View style={styles.alignItemsFlexStart}>
@@ -157,10 +161,9 @@ export default class RegisterView extends LoggedView {
 						title='Register'
 						type='primary'
 						onPress={this.submit}
+						testID='register-view-submit'
 					/>
 				</View>
-
-				{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
 			</View>
 		);
 	}
@@ -179,6 +182,7 @@ export default class RegisterView extends LoggedView {
 					iconLeft='at'
 					onChangeText={username => this.setState({ username })}
 					onSubmitEditing={() => { this.usernameSubmit(); }}
+					testID='register-view-username'
 				/>
 
 				<View style={styles.alignItemsFlexStart}>
@@ -186,10 +190,9 @@ export default class RegisterView extends LoggedView {
 						title='Register'
 						type='primary'
 						onPress={this.usernameSubmit}
+						testID='register-view-submit-username'
 					/>
 				</View>
-
-				{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
 			</View>
 		);
 	}
@@ -198,11 +201,16 @@ export default class RegisterView extends LoggedView {
 		return (
 			<KeyboardView contentContainerStyle={styles.container}>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
-					<SafeAreaView>
+					<SafeAreaView testID='register-view'>
 						<CloseModalButton navigation={this.props.navigation} />
 						<Text style={[styles.loginText, styles.loginTitle]}>Sign Up</Text>
 						{this._renderRegister()}
 						{this._renderUsername()}
+						{this.props.login.failure &&
+							<Text style={styles.error} testID='register-view-error'>
+								{this.props.login.error.reason}
+							</Text>
+						}
 						<Loading visible={this.props.login.isFetching} />
 					</SafeAreaView>
 				</ScrollView>

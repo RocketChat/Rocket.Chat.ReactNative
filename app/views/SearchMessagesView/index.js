@@ -109,6 +109,7 @@ export default class SearchMessagesView extends LoggedView {
 		return (
 			<View
 				style={styles.container}
+				testID='search-messages-view'
 			>
 				<View style={styles.searchContainer}>
 					<RCTextInput
@@ -116,6 +117,7 @@ export default class SearchMessagesView extends LoggedView {
 						label='Search'
 						onChangeText={this.onChangeSearch}
 						placeholder='Search Messages'
+						testID='search-message-view-input'
 					/>
 					<Markdown msg='You can search using RegExp. e.g. `/^text$/i`' />
 					<View style={styles.divider} />

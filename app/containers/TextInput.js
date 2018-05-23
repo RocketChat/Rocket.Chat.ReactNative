@@ -75,22 +75,37 @@ export default class RCTextInput extends React.PureComponent {
 		showPassword: false
 	}
 
-	icon = ({ name, onPress, style }) => <Icon name={name} style={[styles.icon, style]} size={20} onPress={onPress} />
+	icon = ({
+		name,
+		onPress,
+		style,
+		testID
+	}) => <Icon name={name} style={[styles.icon, style]} size={20} onPress={onPress} testID={testID} />
 
-	iconLeft = name => this.icon({ name, onPress: null, style: { left: 0 } });
+	iconLeft = name => this.icon({
+		name,
+		onPress: null,
+		style: { left: 0 },
+		testID: this.props.testID ? `${ this.props.testID }-icon-left` : null
+	});
 
-	iconPassword = name => this.icon({ name, onPress: () => this.tooglePassword(), style: { right: 0 } });
+	iconPassword = name => this.icon({
+		name,
+		onPress: () => this.tooglePassword(),
+		style: { right: 0 },
+		testID: this.props.testID ? `${ this.props.testID }-icon-right` : null
+	});
 
 	tooglePassword = () => this.setState({ showPassword: !this.state.showPassword });
 
 	render() {
 		const {
-			label, error, secureTextEntry, containerStyle, inputRef, iconLeft, inputStyle, ...inputProps
+			label, error, secureTextEntry, containerStyle, inputRef, iconLeft, inputStyle, testID, placeholder, ...inputProps
 		} = this.props;
 		const { showPassword } = this.state;
 		return (
 			<View style={[styles.inputContainer, containerStyle]}>
-				{ label && <Text style={[styles.label, error.error && styles.labelError]}>{label}</Text> }
+				{label && <Text contentDescription={null} accessibilityLabel={null} style={[styles.label, error.error && styles.labelError]}>{label}</Text> }
 				<View style={styles.wrap}>
 					<TextInput
 						style={[
@@ -105,6 +120,10 @@ export default class RCTextInput extends React.PureComponent {
 						autoCapitalize='none'
 						underlineColorAndroid='transparent'
 						secureTextEntry={secureTextEntry && !showPassword}
+						testID={testID}
+						accessibilityLabel={placeholder}
+						placeholder={placeholder}
+						contentDescription={placeholder}
 						{...inputProps}
 					/>
 					{iconLeft && this.iconLeft(iconLeft)}

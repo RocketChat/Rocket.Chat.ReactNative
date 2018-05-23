@@ -49,6 +49,7 @@ export default class EmojiCategory extends React.Component {
 				activeOpacity={0.7}
 				key={emoji.isCustom ? emoji.content : emoji}
 				onPress={() => this.props.onEmojiSelected(emoji)}
+				testID={`reaction-picker-${ emoji.isCustom ? emoji.content : emoji }`}
 			>
 				{renderEmoji(emoji, size)}
 			</TouchableOpacity>);

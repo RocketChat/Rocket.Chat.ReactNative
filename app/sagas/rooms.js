@@ -140,12 +140,16 @@ const updateLastOpen = function* updateLastOpen() {
 const goRoomsListAndDelete = function* goRoomsListAndDelete(rid) {
 	NavigationService.goRoomsList();
 	yield delay(1000);
-	database.write(() => {
-		const messages = database.objects('messages').filtered('rid = $0', rid);
-		database.delete(messages);
-		const subscription = database.objects('subscriptions').filtered('rid = $0', rid);
-		database.delete(subscription);
-	});
+	try {
+		database.write(() => {
+			const messages = database.objects('messages').filtered('rid = $0', rid);
+			database.delete(messages);
+			const subscription = database.objects('subscriptions').filtered('rid = $0', rid);
+			database.delete(subscription);
+		});
+	} catch (error) {
+		console.warn('goRoomsListAndDelete', error);
+	}
 };
 
 const handleLeaveRoom = function* handleLeaveRoom({ rid }) {

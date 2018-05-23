@@ -158,6 +158,7 @@ export default class RoomsListView extends LoggedView {
 				blurOnSubmit
 				autoCorrect={false}
 				autoCapitalize='none'
+				testID='rooms-list-view-search'
 			/>
 		</View>
 	);
@@ -177,6 +178,7 @@ export default class RoomsListView extends LoggedView {
 			type={item.t}
 			baseUrl={this.props.Site_Url}
 			onPress={() => this._onPressItem(item)}
+			testID={`rooms-list-view-item-${ item.name }`}
 		/>);
 	}
 
@@ -191,6 +193,7 @@ export default class RoomsListView extends LoggedView {
 			enableEmptySections
 			removeClippedSubviews
 			keyboardShouldPersistTaps='always'
+			testID='rooms-list-view-list'
 		/>
 	)
 
@@ -203,7 +206,7 @@ export default class RoomsListView extends LoggedView {
 	);
 
 	render = () => (
-		<View style={styles.container}>
+		<View style={styles.container} testID='rooms-list-view'>
 			{this.renderList()}
 			{Platform.OS === 'android' && this.renderCreateButtons()}
 		</View>)

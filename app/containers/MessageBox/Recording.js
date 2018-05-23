@@ -100,7 +100,8 @@ export default class extends React.PureComponent {
 	render() {
 		return (
 			<SafeAreaView
-				key='messagebox'
+				key='messagebox-recording'
+				testID='messagebox-recording'
 				style={styles.textBox}
 			>
 				<View style={[styles.textArea, { backgroundColor: '#F6F7F9' }]}>

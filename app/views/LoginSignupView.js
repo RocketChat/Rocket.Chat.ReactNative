@@ -277,7 +277,7 @@ export default class LoginSignupView extends LoggedView {
 					style={[sharedStyles.container, sharedStyles.containerScrollView]}
 					{...scrollPersistTaps}
 				>
-					<SafeAreaView>
+					<SafeAreaView testID='welcome-view'>
 						<View style={styles.container}>
 							<Image
 								source={require('../static/images/logo.png')}
@@ -294,11 +294,13 @@ export default class LoginSignupView extends LoggedView {
 								title='I have an account'
 								type='primary'
 								onPress={() => this.props.navigation.navigate({ key: 'Login', routeName: 'Login' })}
+								testID='welcome-view-login'
 							/>
 							<Button
 								title='Create account'
 								type='secondary'
 								onPress={() => this.props.navigation.navigate({ key: 'Register', routeName: 'Register' })}
+								testID='welcome-view-register'
 							/>
 							{this.renderServices()}
 						</View>

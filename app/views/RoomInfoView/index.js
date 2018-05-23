@@ -20,7 +20,10 @@ import RoomTypeIcon from '../../containers/RoomTypeIcon';
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
 const camelize = str => str.replace(/^(.)/, (match, chr) => chr.toUpperCase());
-const getRoomTitle = room => (room.t === 'd' ? <Text>{room.fname}</Text> : <Text><RoomTypeIcon type={room.t} />&nbsp;{room.name}</Text>);
+const getRoomTitle = room => (room.t === 'd' ?
+	<Text testID='room-info-view-name'>{room.fname}</Text> :
+	[<RoomTypeIcon type={room.t} />, <Text testID='room-info-view-name'>{room.name}</Text>]
+);
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	user: state.login.user,
@@ -52,6 +55,7 @@ export default class RoomInfoView extends LoggedView {
 					activeOpacity={0.5}
 					accessibilityLabel='edit'
 					accessibilityTraits='button'
+					testID='room-info-view-edit-button'
 				>
 					<View style={styles.headerButton}>
 						<MaterialIcon name='edit' size={20} />
@@ -129,7 +133,11 @@ export default class RoomInfoView extends LoggedView {
 	renderItem = (key, room) => (
 		<View style={styles.item}>
 			<Text style={styles.itemLabel}>{camelize(key)}</Text>
-			<Text style={[styles.itemContent, !room[key] && styles.itemContent__empty]}>{ room[key] ? room[key] : `No ${ key } provided.` }</Text>
+			<Text
+				style={[styles.itemContent, !room[key] && styles.itemContent__empty]}
+				testID={`room-info-view-${ key }`}
+			>{ room[key] ? room[key] : `No ${ key } provided.` }
+			</Text>
 		</View>
 	);
 
@@ -183,9 +191,9 @@ export default class RoomInfoView extends LoggedView {
 		}
 		return (
 			<ScrollView style={styles.container}>
-				<View style={styles.avatarContainer}>
+				<View style={styles.avatarContainer} testID='room-info-view'>
 					{this.renderAvatar(room, roomUser)}
-					<Text style={styles.roomTitle}>{ getRoomTitle(room) }</Text>
+					<View style={styles.roomTitle}>{ getRoomTitle(room) }</View>
 				</View>
 				{!this.isDirect() && this.renderItem('description', room)}
 				{!this.isDirect() && this.renderItem('topic', room)}
