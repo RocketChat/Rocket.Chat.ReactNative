@@ -8,11 +8,10 @@ import { connect } from 'react-redux';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem from '../../presentation/RoomItem';
-import { goRoom } from '../../containers/routes/NavigationService';
 import Header from '../../containers/Header';
 import RoomsListHeader from './Header';
 import styles from './styles';
-import throttle from '../../utils/throttle';
+import debounce from '../../utils/debounce';
 import LoggedView from '../View';
 import log from '../../utils/log';
 
@@ -39,7 +38,8 @@ export default class RoomsListView extends LoggedView {
 		super('RoomsListView', props);
 
 		this.state = {
-			search: []
+			search: [],
+			rooms: []
 		};
 		this._keyExtractor = this._keyExtractor.bind(this);
 		this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
@@ -68,10 +68,10 @@ export default class RoomsListView extends LoggedView {
 		this.search(text);
 	}
 
-	updateState = throttle(() => {
+	updateState = debounce(() => {
 		LayoutAnimation.easeInEaseOut();
-		this.forceUpdate();
-	}, 1500);
+		this.setState({ rooms: this.data.slice() });
+	})
 
 	async search(text) {
 		const searchText = text.trim();
@@ -118,20 +118,33 @@ export default class RoomsListView extends LoggedView {
 		}
 	}
 
+	goRoom = (rid, name) => {
+		this.props.navigation.navigate({
+			key: `Room-${ rid }`,
+			routeName: 'Room',
+			params: { room: { rid, name }, rid, name }
+		});
+	}
+
 	_onPressItem = async(item = {}) => {
 		if (!item.search) {
-			return goRoom({ rid: item.rid, name: item.name });
+			const { rid, name } = item;
+			return this.goRoom(rid, name);
 		}
 		if (item.t === 'd') {
 			// if user is using the search we need first to join/create room
 			try {
-				const sub = await RocketChat.createDirectMessage(item.username);
-				return goRoom(sub);
+				const { username } = item;
+				const sub = await RocketChat.createDirectMessage(username);
+				const { rid } = sub;
+				return this.goRoom(rid, username);
 			} catch (e) {
 				log('RoomsListView._onPressItem', e);
 			}
+		} else {
+			const { rid, name } = item;
+			return this.goRoom(rid, name);
 		}
-		return goRoom(item);
 	}
 
 	createChannel() {
@@ -184,7 +197,8 @@ export default class RoomsListView extends LoggedView {
 
 	renderList = () => (
 		<FlatList
-			data={this.state.search.length > 0 ? this.state.search : this.data}
+			data={this.state.search.length > 0 ? this.state.search : this.state.rooms}
+			extraData={this.state.search.length > 0 ? this.state.search : this.state.rooms}
 			keyExtractor={this._keyExtractor}
 			style={styles.list}
 			renderItem={this.renderItem}

@@ -149,7 +149,7 @@ const renderNumber = (unread, userMentions) => {
 	);
 };
 
-const attrs = ['name', 'unread', 'userMentions', 'alert', 'showLastMessage', 'type', '_updatedAt'];
+const attrs = ['name', 'unread', 'userMentions', 'alert', 'showLastMessage', 'type'];
 @connect(state => ({
 	user: state.login && state.login.user,
 	StoreLastMessage: state.settings.Store_Last_Message
@@ -183,7 +183,10 @@ export default class RoomItem extends React.Component {
 		const oldlastMessage = this.props.lastMessage;
 		const newLastmessage = nextProps.lastMessage;
 
-		if (oldlastMessage && newLastmessage && oldlastMessage.ts !== newLastmessage.ts) {
+		if (oldlastMessage && newLastmessage && oldlastMessage.ts.toGMTString() !== newLastmessage.ts.toGMTString()) {
+			return true;
+		}
+		if (this.props._updatedAt && nextProps._updatedAt && nextProps._updatedAt.toGMTString() !== this.props._updatedAt.toGMTString()) {
 			return true;
 		}
 		return attrs.some(key => nextProps[key] !== this.props[key]);
