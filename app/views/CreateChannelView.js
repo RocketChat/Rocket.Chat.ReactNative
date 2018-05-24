@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { View, Text, Switch, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, Switch, SafeAreaView, ScrollView, Platform } from 'react-native';
 
 import RCTextInput from '../containers/TextInput';
 import Loading from '../containers/Loading';
@@ -10,6 +10,7 @@ import { createChannelRequest } from '../actions/createChannel';
 import styles from './Styles';
 import KeyboardView from '../presentation/KeyboardView';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
+import Button from '../containers/Button';
 
 @connect(
 	state => ({
@@ -35,22 +36,28 @@ export default class CreateChannelView extends LoggedView {
 		super('CreateChannelView', props);
 		this.state = {
 			channelName: '',
-			type: true
+			type: true,
+			readOnly: false,
+			broadcast: false
 		};
 	}
 
-	submit() {
+	submit = () => {
 		if (!this.state.channelName.trim() || this.props.createChannel.isFetching) {
 			return;
 		}
-		const { channelName, type = true } = this.state;
+		const {
+			channelName, type, readOnly, broadcast
+		} = this.state;
 		let { users } = this.props;
 
 		// transform users object into array of usernames
 		users = users.map(user => user.name);
 
 		// create channel
-		this.props.create({ name: channelName, users, type });
+		this.props.create({
+			name: channelName, users, type, readOnly, broadcast
+		});
 	}
 
 	renderChannelNameError() {
@@ -68,20 +75,62 @@ export default class CreateChannelView extends LoggedView {
 		);
 	}
 
-	renderTypeSwitch() {
-		return (
-			<View style={[styles.view_white, styles.switchContainer]}>
+	renderSwitch = ({
+		id, value, label, description, onValueChange, disabled = false
+	}) => (
+		<View style={{ marginBottom: 15 }}>
+			<View style={styles.switchContainer}>
 				<Switch
-					style={[{ flexGrow: 0, flexShrink: 1 }]}
-					value={this.state.type}
-					onValueChange={type => this.setState({ type })}
-					testID='create-channel-type'
+					value={value}
+					onValueChange={onValueChange}
+					testID={`create-channel-${ id }`}
+					onTintColor='#2de0a5'
+					tintColor={Platform.OS === 'android' ? '#f5455c' : null}
+					disabled={disabled}
 				/>
-				<Text style={[styles.label_white, styles.switchLabel]}>
-					{this.state.type ? 'Public' : 'Private'}
-				</Text>
+				<Text style={styles.switchLabel}>{label}</Text>
 			</View>
-		);
+			<Text style={styles.switchDescription}>{description}</Text>
+		</View>
+	);
+
+	renderType() {
+		const { type } = this.state;
+		return this.renderSwitch({
+			id: 'type',
+			value: type,
+			label: type ? 'Private Channel' : 'Public Channel',
+			description: type ? 'Just invited people can access this channel' : 'Everyone can access this channel',
+			onValueChange: value => this.setState({ type: value })
+		});
+	}
+
+	renderReadOnly() {
+		const { readOnly, broadcast } = this.state;
+		return this.renderSwitch({
+			id: 'readonly',
+			value: readOnly,
+			label: 'Read Only Channel',
+			description: readOnly ? 'Only authorized users can write new messages' : 'All users in the channel can write new messages',
+			onValueChange: value => this.setState({ readOnly: value }),
+			disabled: broadcast
+		});
+	}
+
+	renderBroadcast() {
+		const { broadcast, readOnly } = this.state;
+		return this.renderSwitch({
+			id: 'broadcast',
+			value: broadcast,
+			label: 'Broadcast Channel',
+			description: 'Only authorized users can write new messages, but the other users will be able to reply',
+			onValueChange: (value) => {
+				this.setState({
+					broadcast: value,
+					readOnly: value ? true : readOnly
+				});
+			}
+		});
 	}
 
 	render() {
@@ -102,36 +151,18 @@ export default class CreateChannelView extends LoggedView {
 							testID='create-channel-name'
 						/>
 						{this.renderChannelNameError()}
-						{this.renderTypeSwitch()}
-						<Text
-							style={[
-								styles.label_white,
-								{
-									color: '#9ea2a8',
-									flexGrow: 1,
-									paddingHorizontal: 0,
-									marginBottom: 20
-								}
-							]}
-						>
-							{this.state.type ? (
-								'Everyone can access this channel'
-							) : (
-								'Just invited people can access this channel'
-							)}
-						</Text>
-						<TouchableOpacity
-							onPress={() => this.submit()}
-							style={[
-								styles.buttonContainer_white,
-								this.state.channelName.length === 0 || this.props.createChannel.isFetching
-									? styles.disabledButton
-									: styles.enabledButton
-							]}
-							testID='create-channel-submit'
-						>
-							<Text style={styles.button_white}>CREATE</Text>
-						</TouchableOpacity>
+						{this.renderType()}
+						{this.renderReadOnly()}
+						{this.renderBroadcast()}
+						<View style={styles.alignItemsFlexStart}>
+							<Button
+								title='Create'
+								type='primary'
+								onPress={this.submit}
+								disabled={this.state.channelName.length === 0 || this.props.createChannel.isFetching}
+								testID='create-channel-submit'
+							/>
+						</View>
 						<Loading visible={this.props.createChannel.isFetching} />
 					</SafeAreaView>
 				</ScrollView>

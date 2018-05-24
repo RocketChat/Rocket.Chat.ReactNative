@@ -84,5 +84,18 @@ export default StyleSheet.create({
 		padding: 10,
 		paddingRight: 12,
 		paddingLeft: 0
+	},
+	broadcastButton: {
+		borderColor: '#1d74f5',
+		borderWidth: 2,
+		borderRadius: 2,
+		paddingVertical: 10,
+		width: 100,
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginTop: 6
+	},
+	broadcastButtonText: {
+		color: '#1d74f5'
 	}
 });

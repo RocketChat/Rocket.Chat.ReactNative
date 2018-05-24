@@ -324,10 +324,10 @@ export default class RoomInfoEditView extends LoggedView {
 								rightLabelPrimary='Read Only'
 								rightLabelSecondary='Only authorized users can write new messages'
 								onValueChange={value => this.setState({ ro: value })}
-								disabled={!this.permissions[PERMISSION_SET_READONLY]}
+								disabled={!this.permissions[PERMISSION_SET_READONLY] || room.broadcast}
 								testID='room-info-edit-view-ro'
 							/>
-							{ro &&
+							{ro && !room.broadcast &&
 								<SwitchContainer
 									value={reactWhenReadOnly}
 									leftLabelPrimary='No Reactions'
@@ -338,6 +338,12 @@ export default class RoomInfoEditView extends LoggedView {
 									disabled={!this.permissions[PERMISSION_SET_REACT_WHEN_READONLY]}
 									testID='room-info-edit-view-react-when-ro'
 								/>
+							}
+							{room.broadcast &&
+								[
+									<Text style={styles.broadcast}>Broadcast channel</Text>,
+									<View style={styles.divider} />
+								]
 							}
 							<TouchableOpacity
 								style={[sharedStyles.buttonContainer, !this.formIsChanged() && styles.buttonContainerDisabled]}

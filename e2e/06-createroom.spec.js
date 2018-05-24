@@ -59,7 +59,9 @@ describe('Create room screen', () => {
 			await expect(element(by.id('create-channel-view'))).toBeVisible();
 			await expect(element(by.id('create-channel-name'))).toBeVisible();
 			await expect(element(by.id('create-channel-type'))).toBeVisible();
-			await expect(element(by.id('create-channel-submit'))).toBeVisible();
+			await expect(element(by.id('create-channel-readonly'))).toBeVisible();
+			await expect(element(by.id('create-channel-broadcast'))).toExist();
+			await expect(element(by.id('create-channel-submit'))).toExist();
 		});
 
 		it('should get invalid room', async() => {
@@ -69,28 +71,9 @@ describe('Create room screen', () => {
 			await expect(element(by.id('create-channel-error'))).toBeVisible();
 		});
 
-		it('should create private room', async() => {
-			await element(by.id('create-channel-name')).replaceText(`private${ data.random }`);
-			await element(by.id('create-channel-type')).tap();
-			await element(by.id('create-channel-submit')).tap();
-			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
-			await expect(element(by.id('room-view'))).toBeVisible();
-			await waitFor(element(by.id('room-view-title'))).toHaveText(`private${ data.random }`).withTimeout(60000);
-			await expect(element(by.id('room-view-title'))).toHaveText(`private${ data.random }`);
-			await element(by.id('header-back')).tap();
-			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
-			await waitFor(element(by.id(`rooms-list-view-item-private${ data.random }`))).toBeVisible().withTimeout(60000);
-			await expect(element(by.id(`rooms-list-view-item-private${ data.random }`))).toBeVisible();
-		});
-
 		it('should create public room', async() => {
-			await element(by.id('rooms-list-view-create-channel')).tap();
-			await waitFor(element(by.id('select-users-view'))).toBeVisible().withTimeout(2000);
-			await element(by.id('select-users-view-item-rocket.cat')).tap();
-			await waitFor(element(by.id('selected-user-rocket.cat'))).toBeVisible().withTimeout(5000);
-			await element(by.id('selected-users-view-submit')).tap();
-			await waitFor(element(by.id('create-channel-view'))).toBeVisible().withTimeout(5000);
 			await element(by.id('create-channel-name')).replaceText(`public${ data.random }`);
+			await element(by.id('create-channel-type')).tap();
 			await element(by.id('create-channel-submit')).tap();
 			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('room-view'))).toBeVisible();
@@ -100,6 +83,25 @@ describe('Create room screen', () => {
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			await waitFor(element(by.id(`rooms-list-view-item-public${ data.random }`))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id(`rooms-list-view-item-public${ data.random }`))).toBeVisible();
+		});
+
+		it('should create private room', async() => {
+			await element(by.id('rooms-list-view-create-channel')).tap();
+			await waitFor(element(by.id('select-users-view'))).toBeVisible().withTimeout(2000);
+			await element(by.id('select-users-view-item-rocket.cat')).tap();
+			await waitFor(element(by.id('selected-user-rocket.cat'))).toBeVisible().withTimeout(5000);
+			await element(by.id('selected-users-view-submit')).tap();
+			await waitFor(element(by.id('create-channel-view'))).toBeVisible().withTimeout(5000);
+			await element(by.id('create-channel-name')).replaceText(`private${ data.random }`);
+			await element(by.id('create-channel-submit')).tap();
+			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
+			await expect(element(by.id('room-view'))).toBeVisible();
+			await waitFor(element(by.id('room-view-title'))).toHaveText(`private${ data.random }`).withTimeout(60000);
+			await expect(element(by.id('room-view-title'))).toHaveText(`private${ data.random }`);
+			await element(by.id('header-back')).tap();
+			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
+			await waitFor(element(by.id(`rooms-list-view-item-private${ data.random }`))).toBeVisible().withTimeout(60000);
+			await expect(element(by.id(`rooms-list-view-item-private${ data.random }`))).toBeVisible();
 		});
 
 		afterEach(async() => {

@@ -1,4 +1,5 @@
-import { takeLatest, put, call } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
+import { takeLatest, put, call, select } from 'redux-saga/effects';
 import { MESSAGES } from '../actions/actionsTypes';
 import {
 	messagesSuccess,
@@ -12,9 +13,13 @@ import {
 	permalinkSuccess,
 	permalinkFailure,
 	togglePinSuccess,
-	togglePinFailure
+	togglePinFailure,
+	setInput
 } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
+import database from '../lib/realm';
+import { goRoom } from '../containers/routes/NavigationService';
+import log from '../utils/log';
 
 const deleteMessage = message => RocketChat.deleteMessage(message);
 const editMessage = message => RocketChat.editMessage(message);
@@ -81,6 +86,25 @@ const handleTogglePinRequest = function* handleTogglePinRequest({ message }) {
 	}
 };
 
+const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
+	try {
+		const { username } = message.u;
+		const subscriptions = database.objects('subscriptions').filtered('name = $0', username);
+		if (subscriptions.length) {
+			goRoom({ rid: subscriptions[0].rid, name: subscriptions[0].name });
+		} else {
+			const room = yield RocketChat.createDirectMessage(username);
+			goRoom({ rid: room.rid, name: username });
+		}
+		yield delay(100);
+		const server = yield select(state => state.server.server);
+		const msg = `[ ](${ server }/direct/${ username }?msg=${ message._id })`;
+		yield put(setInput({ msg }));
+	} catch (e) {
+		log('handleReplyBroadcast', e);
+	}
+};
+
 const root = function* root() {
 	yield takeLatest(MESSAGES.REQUEST, get);
 	yield takeLatest(MESSAGES.DELETE_REQUEST, handleDeleteRequest);
@@ -88,5 +112,6 @@ const root = function* root() {
 	yield takeLatest(MESSAGES.TOGGLE_STAR_REQUEST, handleToggleStarRequest);
 	yield takeLatest(MESSAGES.PERMALINK_REQUEST, handlePermalinkRequest);
 	yield takeLatest(MESSAGES.TOGGLE_PIN_REQUEST, handleTogglePinRequest);
+	yield takeLatest(MESSAGES.REPLY_BROADCAST, handleReplyBroadcast);
 };
 export default root;

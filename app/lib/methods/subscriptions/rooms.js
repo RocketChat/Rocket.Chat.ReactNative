@@ -51,16 +51,24 @@ export default async function subscribeRooms(id) {
 			const [type, data] = ddpMessage.fields.args;
 			const [, ev] = ddpMessage.fields.eventName.split('/');
 			if (/subscriptions/.test(ev)) {
-				const tpm = merge(data);
+				const rooms = database.objects('rooms').filtered('_id == $0', data.rid);
+				const tpm = merge(data, rooms[0]);
 				database.write(() => {
 					database.create('subscriptions', tpm, true);
+					database.delete(rooms);
 				});
 			}
-			if (/rooms/.test(ev) && type === 'updated') {
-				const [sub] = database.objects('subscriptions').filtered('rid == $0', data._id);
-				database.write(() => {
-					merge(sub, data);
-				});
+			if (/rooms/.test(ev)) {
+				if (type === 'updated') {
+					const [sub] = database.objects('subscriptions').filtered('rid == $0', data._id);
+					database.write(() => {
+						merge(sub, data);
+					});
+				} else if (type === 'inserted') {
+					database.write(() => {
+						database.create('rooms', data, true);
+					});
+				}
 			}
 			if (/message/.test(ev)) {
 				const [args] = ddpMessage.fields.args;
