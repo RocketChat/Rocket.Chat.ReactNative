@@ -42,5 +42,9 @@ export default StyleSheet.create({
 		borderColor: '#ddd',
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		marginVertical: 20
+	},
+	broadcast: {
+		fontWeight: 'bold',
+		textAlign: 'center'
 	}
 });

@@ -49,10 +49,7 @@ const roomsSchema = {
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
-		t: 'string',
-		lastMessage: 'messages',
-		description: { type: 'string', optional: true },
-		_updatedAt: { type: 'date', optional: true }
+		broadcast: { type: 'bool', optional: true }
 	}
 };
 
@@ -97,11 +94,13 @@ const subscriptionSchema = {
 		announcement: { type: 'string', optional: true },
 		topic: { type: 'string', optional: true },
 		blocked: { type: 'bool', optional: true },
+		blocker: { type: 'bool', optional: true },
 		reactWhenReadOnly: { type: 'bool', optional: true },
 		archived: { type: 'bool', optional: true },
 		joinCodeRequired: { type: 'bool', optional: true },
 		notifications: { type: 'bool', optional: true },
-		muted: { type: 'list', objectType: 'usersMuted' }
+		muted: { type: 'list', objectType: 'usersMuted' },
+		broadcast: { type: 'bool', optional: true }
 	}
 };
 

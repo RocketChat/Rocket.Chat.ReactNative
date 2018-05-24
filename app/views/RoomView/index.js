@@ -153,6 +153,22 @@ export default class RoomView extends LoggedView {
 		}
 	};
 
+	isOwner = () => this.state.room && this.state.room.roles && Array.from(Object.keys(this.state.room.roles), i => this.state.room.roles[i].value).includes('owner');
+
+	isMuted = () => this.state.room && this.state.room.muted && Array.from(Object.keys(this.state.room.muted), i => this.state.room.muted[i].value).includes(this.props.user.username);
+
+	isReadOnly = () => this.state.room.ro && this.isMuted() && !this.isOwner();
+
+	isBlocked = () => {
+		if (this.state.room) {
+			const { t, blocked, blocker } = this.state.room;
+			if (t === 'd' && (blocked || blocker)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	renderItem = (item, previousItem) => (
 		<Message
 			key={item._id}
@@ -164,6 +180,7 @@ export default class RoomView extends LoggedView {
 			onReactionPress={this.onReactionPress}
 			onLongPress={this.onMessageLongPress}
 			archived={this.state.room.archived}
+			broadcast={this.state.room.broadcast}
 			previousItem={previousItem}
 		/>
 	);
@@ -179,10 +196,17 @@ export default class RoomView extends LoggedView {
 				</View>
 			);
 		}
-		if (this.state.room.ro || this.state.room.archived) {
+		if (this.state.room.archived || this.isReadOnly()) {
 			return (
 				<View style={styles.readOnly}>
 					<Text>This room is read only</Text>
+				</View>
+			);
+		}
+		if (this.isBlocked()) {
+			return (
+				<View style={styles.blockedOrBlocker}>
+					<Text>This room is blocked</Text>
 				</View>
 			);
 		}
