@@ -4,9 +4,13 @@ export default fn => (params) => {
 	try {
 		fn(params);
 	} catch (e) {
-		Answers.logCustom('error', e);
+		let error = e;
+		if (typeof error !== 'object') {
+			error = { error };
+		}
+		Answers.logCustom('error', error);
 		if (__DEV__) {
-			alert(e);
+			alert(error);
 		}
 	}
 };
