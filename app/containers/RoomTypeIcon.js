@@ -11,6 +11,10 @@ const styles = StyleSheet.create({
 });
 
 const RoomTypeIcon = ({ type, size }) => {
+	if (!type) {
+		return null;
+	}
+
 	const icon = {
 		c: 'pound',
 		p: 'lock',
@@ -21,7 +25,7 @@ const RoomTypeIcon = ({ type, size }) => {
 };
 
 RoomTypeIcon.propTypes = {
-	type: PropTypes.string.isRequired,
+	type: PropTypes.string,
 	size: PropTypes.number
 };
 

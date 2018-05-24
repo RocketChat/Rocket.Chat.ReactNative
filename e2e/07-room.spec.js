@@ -176,39 +176,12 @@ describe('Room screen', () => {
 		});
 
 		describe('Message', async() => {
-			before(async() => {
-				await mockMessage('reply');
-				await mockMessage('edit');
-				await mockMessage('quote');
-			});
-
 			it('should show message actions', async() => {
 				await element(by.text(`${ data.random }message`)).longPress();
 				await waitFor(element(by.text('Messages actions'))).toBeVisible().withTimeout(5000);
 				await expect(element(by.text('Messages actions'))).toBeVisible();
 				await element(by.text('Cancel')).tap();
 				await waitFor(element(by.text('Cancel'))).toBeNotVisible().withTimeout(2000);
-			});
-
-			it('should reply message', async() => {
-				await element(by.text(`${ data.random }reply`)).longPress();
-				await waitFor(element(by.text('Messages actions'))).toBeVisible().withTimeout(5000);
-				await expect(element(by.text('Messages actions'))).toBeVisible();
-				await element(by.text('Reply')).tap();
-				await element(by.id('messagebox-input')).typeText('replied');
-				await element(by.id('messagebox-send-message')).tap();
-				// TODO: test if reply was sent
-			});
-
-			it('should edit message', async() => {
-				await element(by.text(`${ data.random }edit`)).longPress();
-				await waitFor(element(by.text('Messages actions'))).toBeVisible().withTimeout(5000);
-				await expect(element(by.text('Messages actions'))).toBeVisible();
-				await element(by.text('Edit')).tap();
-				await element(by.id('messagebox-input')).typeText('ed');
-				await element(by.id('messagebox-send-message')).tap();
-				await waitFor(element(by.text(`${ data.random }edited`))).toBeVisible().withTimeout(60000);
-				await expect(element(by.text(`${ data.random }edited`))).toBeVisible();
 			});
 
 			it('should copy permalink', async() => {
@@ -230,16 +203,6 @@ describe('Room screen', () => {
 				await expect(element(by.text('Copied to clipboard!'))).toBeVisible();
 				await waitFor(element(by.text('Copied to clipboard!'))).toBeNotVisible().withTimeout(5000);
 				// TODO: test clipboard
-			});
-
-			it('should quote message', async() => {
-				await element(by.text(`${ data.random }quote`)).longPress();
-				await waitFor(element(by.text('Messages actions'))).toBeVisible().withTimeout(5000);
-				await expect(element(by.text('Messages actions'))).toBeVisible();
-				await element(by.text('Quote')).tap();
-				await element(by.id('messagebox-input')).typeText(`${ data.random }quoted`);
-				await element(by.id('messagebox-send-message')).tap();
-				// TODO: test if quote was sent
 			});
 
 			it('should star message', async() => {
@@ -286,6 +249,40 @@ describe('Room screen', () => {
 				await element(by.id('message-reaction-:grinning:')).tap();
 				await waitFor(element(by.id('message-reaction-:grinning:'))).toBeNotVisible().withTimeout(60000);
 				await expect(element(by.id('message-reaction-:grinning:'))).toBeNotVisible();
+			});
+
+			it('should reply message', async() => {
+				await mockMessage('reply');
+				await element(by.text(`${ data.random }reply`)).longPress();
+				await waitFor(element(by.text('Messages actions'))).toBeVisible().withTimeout(5000);
+				await expect(element(by.text('Messages actions'))).toBeVisible();
+				await element(by.text('Reply')).tap();
+				await element(by.id('messagebox-input')).typeText('replied');
+				await element(by.id('messagebox-send-message')).tap();
+				// TODO: test if reply was sent
+			});
+
+			it('should edit message', async() => {
+				await mockMessage('edit');
+				await element(by.text(`${ data.random }edit`)).longPress();
+				await waitFor(element(by.text('Messages actions'))).toBeVisible().withTimeout(5000);
+				await expect(element(by.text('Messages actions'))).toBeVisible();
+				await element(by.text('Edit')).tap();
+				await element(by.id('messagebox-input')).typeText('ed');
+				await element(by.id('messagebox-send-message')).tap();
+				await waitFor(element(by.text(`${ data.random }edited`))).toBeVisible().withTimeout(60000);
+				await expect(element(by.text(`${ data.random }edited`))).toBeVisible();
+			});
+
+			it('should quote message', async() => {
+				await mockMessage('quote');
+				await element(by.text(`${ data.random }quote`)).longPress();
+				await waitFor(element(by.text('Messages actions'))).toBeVisible().withTimeout(5000);
+				await expect(element(by.text('Messages actions'))).toBeVisible();
+				await element(by.text('Quote')).tap();
+				await element(by.id('messagebox-input')).typeText(`${ data.random }quoted`);
+				await element(by.id('messagebox-send-message')).tap();
+				// TODO: test if quote was sent
 			});
 
 			it('should pin message', async() => {

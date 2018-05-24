@@ -4,6 +4,9 @@ import normalizeMessage from './normalizeMessage';
 export const merge = (subscription, room) => {
 	subscription.muted = [];
 	if (room) {
+		if (room.rid) {
+			subscription.rid = room.rid;
+		}
 		subscription.roomUpdatedAt = room._updatedAt;
 		subscription.lastMessage = normalizeMessage(room.lastMessage);
 		subscription.ro = room.ro;
@@ -13,6 +16,7 @@ export const merge = (subscription, room) => {
 		subscription.reactWhenReadOnly = room.reactWhenReadOnly;
 		subscription.archived = room.archived;
 		subscription.joinCodeRequired = room.joinCodeRequired;
+		subscription.broadcast = room.broadcast;
 
 		if (room.muted && room.muted.length) {
 			subscription.muted = room.muted.filter(user => user).map(user => ({ value: user }));
@@ -28,7 +32,8 @@ export const merge = (subscription, room) => {
 		subscription.notifications = false;
 	}
 
-	subscription.blocked = !!subscription.blocker;
+	subscription.blocker = !!subscription.blocker;
+	subscription.blocked = !!subscription.blocked;
 	return subscription;
 };
 

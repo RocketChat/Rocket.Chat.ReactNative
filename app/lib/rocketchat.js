@@ -49,8 +49,10 @@ const RocketChat = {
 	subscribeRooms,
 	subscribeRoom,
 	canOpenRoom,
-	createChannel({ name, users, type }) {
-		return call(type ? 'createChannel' : 'createPrivateGroup', name, users, type);
+	createChannel({
+		name, users, type, readOnly, broadcast
+	}) {
+		return call(type ? 'createPrivateGroup' : 'createChannel', name, users, readOnly, {}, { broadcast });
 	},
 	async createDirectMessageAndWait(username) {
 		const room = await RocketChat.createDirectMessage(username);

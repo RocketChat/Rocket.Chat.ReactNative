@@ -29,10 +29,12 @@ export default StyleSheet.create({
 	avatar: {
 		marginHorizontal: 10
 	},
-	roomTitle: {
-		fontSize: 18,
+	roomTitleContainer: {
 		paddingTop: 20,
 		flexDirection: 'row'
+	},
+	roomTitle: {
+		fontSize: 18
 	},
 	roomDescription: {
 		fontSize: 14,
