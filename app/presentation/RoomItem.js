@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, ViewPropTypes } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
-import SimpleMarkdown from 'simple-markdown';
+// import SimpleMarkdown from 'simple-markdown';
 
 import Avatar from '../containers/Avatar';
 import Status from '../containers/status';
@@ -65,10 +65,10 @@ const styles = StyleSheet.create({
 	},
 	row: {
 		// width: '100%',
-		// flex: 1,
+		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'flex-end',
-		justifyContent: 'flex-end'
+		alignItems: 'center'
+		// justifyContent: 'flex-end'
 	},
 	firstRow: {
 		width: '100%',
@@ -98,36 +98,36 @@ const styles = StyleSheet.create({
 		marginTop: 3
 	}
 });
-const markdownStyle = { block: { marginBottom: 0, flexWrap: 'wrap', flexDirection: 'row' } };
+// const markdownStyle = { block: { marginBottom: 0, flexWrap: 'wrap', flexDirection: 'row' } };
 
-const parseInline = (parse, content, state) => {
-	const isCurrentlyInline = state.inline || false;
-	state.inline = true;
-	const result = parse(content, state);
-	state.inline = isCurrentlyInline;
-	return result;
-};
-const parseCaptureInline = (capture, parse, state) => ({ content: parseInline(parse, capture[1], state) });
-const customRules = {
-	strong: {
-		order: -4,
-		match: SimpleMarkdown.inlineRegex(/^\*\*([\s\S]+?)\*\*(?!\*)/),
-		parse: parseCaptureInline,
-		react: (node, output, state) => ({
-			type: 'strong',
-			key: state.key,
-			props: {
-				children: output(node.content, state)
-			}
-		})
-	},
-	text: {
-		order: -3,
-		match: SimpleMarkdown.inlineRegex(/^[\s\S]+?(?=[^0-9A-Za-z\s\u00c0-\uffff]|\n\n| {2,}\n|\w+:\S|$)/),
-		parse: capture => ({ content: capture[0] }),
-		react: node => node.content
-	}
-};
+// const parseInline = (parse, content, state) => {
+// 	const isCurrentlyInline = state.inline || false;
+// 	state.inline = true;
+// 	const result = parse(content, state);
+// 	state.inline = isCurrentlyInline;
+// 	return result;
+// };
+// const parseCaptureInline = (capture, parse, state) => ({ content: parseInline(parse, capture[1], state) });
+// const customRules = {
+// 	strong: {
+// 		order: -4,
+// 		match: SimpleMarkdown.inlineRegex(/^\*\*([\s\S]+?)\*\*(?!\*)/),
+// 		parse: parseCaptureInline,
+// 		react: (node, output, state) => ({
+// 			type: 'strong',
+// 			key: state.key,
+// 			props: {
+// 				children: output(node.content, state)
+// 			}
+// 		})
+// 	},
+// 	text: {
+// 		order: -3,
+// 		match: SimpleMarkdown.inlineRegex(/^[\s\S]+?(?=[^0-9A-Za-z\s\u00c0-\uffff]|\n\n| {2,}\n|\w+:\S|$)/),
+// 		parse: capture => ({ content: capture[0] }),
+// 		react: node => node.content
+// 	}
+// };
 
 const renderNumber = (unread, userMentions) => {
 	if (!unread || unread <= 0) {
@@ -283,11 +283,23 @@ export default class RoomItem extends React.Component {
 						<View style={styles.row}>
 							<Markdown
 								msg={this.lastMessage}
-								style={styles.lastMessage}
-								markdownStyle={markdownStyle}
-								customRules={customRules}
-								renderInline
-								numberOfLines={1}
+								style={{
+									view: {
+										flex: 1
+									}
+								}}
+								rules={{
+									mention: node => (
+										<Text key={node.key}>
+											@{node.content}
+										</Text>
+									),
+									hashtag: node => (
+										<Text key={node.key}>
+											#{node.content}
+										</Text>
+									)
+								}}
 							/>
 							{renderNumber(unread, userMentions)}
 						</View>

@@ -551,9 +551,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Object {
-                "alignItems": "flex-end",
+                "alignItems": "center",
+                "flex": 1,
                 "flexDirection": "row",
-                "justifyContent": "flex-end",
               }
             }
           />
@@ -789,9 +789,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Object {
-                "alignItems": "flex-end",
+                "alignItems": "center",
+                "flex": 1,
                 "flexDirection": "row",
-                "justifyContent": "flex-end",
               }
             }
           />
@@ -1023,9 +1023,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Object {
-                "alignItems": "flex-end",
+                "alignItems": "center",
+                "flex": 1,
                 "flexDirection": "row",
-                "justifyContent": "flex-end",
               }
             }
           >
@@ -1284,9 +1284,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Object {
-                "alignItems": "flex-end",
+                "alignItems": "center",
+                "flex": 1,
                 "flexDirection": "row",
-                "justifyContent": "flex-end",
               }
             }
           >
@@ -1541,9 +1541,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Object {
-                "alignItems": "flex-end",
+                "alignItems": "center",
+                "flex": 1,
                 "flexDirection": "row",
-                "justifyContent": "flex-end",
               }
             }
           >
@@ -1798,9 +1798,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Object {
-                "alignItems": "flex-end",
+                "alignItems": "center",
+                "flex": 1,
                 "flexDirection": "row",
-                "justifyContent": "flex-end",
               }
             }
           >
@@ -2055,9 +2055,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Object {
-                "alignItems": "flex-end",
+                "alignItems": "center",
+                "flex": 1,
                 "flexDirection": "row",
-                "justifyContent": "flex-end",
               }
             }
           >
@@ -2312,9 +2312,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Object {
-                "alignItems": "flex-end",
+                "alignItems": "center",
+                "flex": 1,
                 "flexDirection": "row",
-                "justifyContent": "flex-end",
               }
             }
           >
@@ -2569,9 +2569,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Object {
-                "alignItems": "flex-end",
+                "alignItems": "center",
+                "flex": 1,
                 "flexDirection": "row",
-                "justifyContent": "flex-end",
               }
             }
           />
@@ -2803,9 +2803,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Object {
-                "alignItems": "flex-end",
+                "alignItems": "center",
+                "flex": 1,
                 "flexDirection": "row",
-                "justifyContent": "flex-end",
               }
             }
           />
@@ -3037,9 +3037,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Object {
-                "alignItems": "flex-end",
+                "alignItems": "center",
+                "flex": 1,
                 "flexDirection": "row",
-                "justifyContent": "flex-end",
               }
             }
           />

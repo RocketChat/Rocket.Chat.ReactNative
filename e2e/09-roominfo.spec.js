@@ -90,7 +90,7 @@ describe('Room info screen', () => {
 			});
 	
 			it('should have name input', async() => {
-				await expect(element(by.id('room-info-edit-view-name'))).toBeVisible();
+				await expect(element(by.id('room-info-edit-view-name'))).toExist();
 			});
 	
 			it('should have description input', async() => {

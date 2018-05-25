@@ -13,7 +13,7 @@ const openMentionedMessagesRoom = function* openMentionedMessagesRoom({ rid, lim
 		newSub = yield RocketChat.subscribe('mentionedMessages', rid, limit);
 		yield put(readyMentionedMessages());
 		if (sub) {
-			sub.unsubscribe();
+			sub.unsubscribe().catch(err => console.warn(err));
 		}
 		sub = newSub;
 	} catch (e) {
