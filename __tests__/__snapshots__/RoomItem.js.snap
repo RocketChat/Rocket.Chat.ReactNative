@@ -160,9 +160,9 @@ exports[`render channel 1`] = `
         <View
           style={
             Object {
-              "alignItems": "flex-end",
+              "alignItems": "center",
+              "flex": 1,
               "flexDirection": "row",
-              "justifyContent": "flex-end",
             }
           }
         />
@@ -332,9 +332,9 @@ exports[`render no icon 1`] = `
         <View
           style={
             Object {
-              "alignItems": "flex-end",
+              "alignItems": "center",
+              "flex": 1,
               "flexDirection": "row",
-              "justifyContent": "flex-end",
             }
           }
         />
@@ -504,9 +504,9 @@ exports[`render private group 1`] = `
         <View
           style={
             Object {
-              "alignItems": "flex-end",
+              "alignItems": "center",
+              "flex": 1,
               "flexDirection": "row",
-              "justifyContent": "flex-end",
             }
           }
         />
@@ -744,9 +744,9 @@ exports[`render unread +999 1`] = `
         <View
           style={
             Object {
-              "alignItems": "flex-end",
+              "alignItems": "center",
+              "flex": 1,
               "flexDirection": "row",
-              "justifyContent": "flex-end",
             }
           }
         >
@@ -1006,9 +1006,9 @@ exports[`render unread 1`] = `
         <View
           style={
             Object {
-              "alignItems": "flex-end",
+              "alignItems": "center",
+              "flex": 1,
               "flexDirection": "row",
-              "justifyContent": "flex-end",
             }
           }
         >
@@ -1268,9 +1268,9 @@ exports[`renders correctly 1`] = `
         <View
           style={
             Object {
-              "alignItems": "flex-end",
+              "alignItems": "center",
+              "flex": 1,
               "flexDirection": "row",
-              "justifyContent": "flex-end",
             }
           }
         />

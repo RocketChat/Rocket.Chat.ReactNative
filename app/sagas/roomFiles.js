@@ -13,7 +13,7 @@ const openRoomFiles = function* openRoomFiles({ rid, limit }) {
 		newSub = yield RocketChat.subscribe('roomFiles', rid, limit);
 		yield put(readyRoomFiles());
 		if (sub) {
-			sub.unsubscribe();
+			sub.unsubscribe().catch(err => console.warn(err));
 		}
 		sub = newSub;
 	} catch (e) {

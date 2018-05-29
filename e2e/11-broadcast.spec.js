@@ -56,6 +56,8 @@ describe('Broadcast room', () => {
 		await element(by.id('login-view-password')).replaceText(data.alternateUserPassword);
 		await element(by.id('login-view-submit')).tap();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
+		await device.reloadReactNative(); // remove after fix logout
+		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);		
 		await waitFor(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toBeVisible().withTimeout(60000);
 		await expect(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toBeVisible();
 		await element(by.id(`rooms-list-view-item-broadcast${ data.random }`)).tap();
