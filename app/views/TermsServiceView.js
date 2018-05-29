@@ -3,14 +3,10 @@ import PropTypes from 'prop-types';
 import { WebView } from 'react-native';
 import { connect } from 'react-redux';
 
-class TermsServiceView extends React.Component {
+class TermsServiceView extends React.PureComponent {
 	static propTypes = {
 		termsService: PropTypes.string
 	}
-
-	static navigationOptions = () => ({
-		title: 'Terms of service'
-	});
 
 	render() {
 		return (

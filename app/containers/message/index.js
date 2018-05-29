@@ -21,6 +21,7 @@ import styles from './styles';
 import { actionsShow, errorActionsShow, toggleReactionPicker, replyBroadcast } from '../../actions/messages';
 import messagesStatus from '../../constants/messagesStatus';
 import Touch from '../../utils/touch';
+import I18n from '../../i18n';
 
 const SYSTEM_MESSAGES = [
 	'r',
@@ -44,35 +45,35 @@ const getInfoMessage = ({
 	t, role, msg, u
 }) => {
 	if (t === 'rm') {
-		return 'Message removed';
+		return I18n.t('Message_removed');
 	} else if (t === 'uj') {
-		return 'Has joined the channel.';
+		return I18n.t('Has_joined_the_channel');
 	} else if (t === 'r') {
-		return `Room name changed to: ${ msg } by ${ u.username }`;
+		return I18n.t('Room_name_changed', { name: msg, userBy: u.username });
 	} else if (t === 'message_pinned') {
-		return 'Message pinned';
+		return I18n.t('Message_pinned');
 	} else if (t === 'ul') {
-		return 'Has left the channel.';
+		return I18n.t('Has_left_the_channel');
 	} else if (t === 'ru') {
-		return `User ${ msg } removed by ${ u.username }`;
+		return I18n.t('User_removed_by', { userRemoved: msg, userBy: u.username });
 	} else if (t === 'au') {
-		return `User ${ msg } added by ${ u.username }`;
+		return I18n.t('User_added_by', { userAdded: msg, userBy: u.username });
 	} else if (t === 'user-muted') {
-		return `User ${ msg } muted by ${ u.username }`;
+		return I18n.t('User_muted_by', { userMuted: msg, userBy: u.username });
 	} else if (t === 'user-unmuted') {
-		return `User ${ msg } unmuted by ${ u.username }`;
+		return I18n.t('User_unmuted_by', { userUnmuted: msg, userBy: u.username });
 	} else if (t === 'subscription-role-added') {
 		return `${ msg } was set ${ role } by ${ u.username }`;
 	} else if (t === 'subscription-role-removed') {
 		return `${ msg } is no longer ${ role } by ${ u.username }`;
 	} else if (t === 'room_changed_description') {
-		return `Room description changed to: ${ msg } by ${ u.username }`;
+		return I18n.t('Room_changed_description', { description: msg, userBy: u.username });
 	} else if (t === 'room_changed_announcement') {
-		return `Room announcement changed to: ${ msg } by ${ u.username }`;
+		return I18n.t('Room_changed_announcement', { announcement: msg, userBy: u.username });
 	} else if (t === 'room_changed_topic') {
-		return `Room topic changed to: ${ msg } by ${ u.username }`;
+		return I18n.t('Room_changed_topic', { topic: msg, userBy: u.username });
 	} else if (t === 'room_changed_privacy') {
-		return `Room type changed to: ${ msg } by ${ u.username }`;
+		return I18n.t('Room_changed_privacy', { type: msg, userBy: u.username });
 	}
 	return '';
 };
@@ -334,7 +335,7 @@ export default class Message extends React.Component {
 		} = this.props;
 		const username = item.alias || item.u.username;
 		const isEditing = message._id === item._id && editing;
-		const accessibilityLabel = `Message from ${ username } at ${ moment(item.ts).format(this.timeFormat) }, ${ this.props.item.msg }`;
+		const accessibilityLabel = I18n.t('Message_accessibility', { user: username, time: moment(item.ts).format(this.timeFormat), message: this.props.item.msg });
 
 		return (
 			<Touch

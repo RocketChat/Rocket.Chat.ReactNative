@@ -206,7 +206,7 @@ export default class LoginSignupView extends LoggedView {
 		return (
 			<View style={styles.servicesContainer}>
 				<Text style={styles.servicesTitle}>
-					Or continue using Social accounts
+					{I18n.t('Or_continue_using_social_accounts')}
 				</Text>
 				<View style={sharedStyles.loginOAuthButtons} key='services'>
 					{this.props.Accounts_OAuth_Facebook && this.props.services.facebook &&
@@ -285,20 +285,20 @@ export default class LoginSignupView extends LoggedView {
 								style={sharedStyles.loginLogo}
 								resizeMode='center'
 							/>
-							<Text style={[sharedStyles.loginText, styles.header, { color: '#81848A' }]}>Prepare to take off with</Text>
-							<Text style={[sharedStyles.loginText, styles.header]}>the ultimate chat platform</Text>
+							<Text style={[sharedStyles.loginText, styles.header, { color: '#81848A' }]}>{I18n.t('Welcome_title_pt_1')}</Text>
+							<Text style={[sharedStyles.loginText, styles.header]}>{I18n.t('Welcome_title_pt_2')}</Text>
 							<Image
 								style={styles.planetImage}
 								source={require('../static/images/planet.png')}
 							/>
 							<Button
-								title={I18n.t('test')}
+								title={I18n.t('I_have_an_account')}
 								type='primary'
 								onPress={() => this.props.navigation.navigate({ key: 'Login', routeName: 'Login' })}
 								testID='welcome-view-login'
 							/>
 							<Button
-								title='Create account'
+								title={I18n.t('Create_account')}
 								type='secondary'
 								onPress={() => this.props.navigation.navigate({ key: 'Register', routeName: 'Register' })}
 								testID='welcome-view-register'

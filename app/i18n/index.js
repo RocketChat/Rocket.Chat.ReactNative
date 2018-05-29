@@ -1,16 +1,11 @@
 import I18n from 'react-native-i18n';
-// import en from './locales/en';
-// import fr from './locales/fr';
+import en from './locales/en';
+import pt from './locales/pt';
 
 I18n.fallbacks = true;
 
 I18n.translations = {
-	en: {
-		test: 'Hi'
-	},
-	pt: {
-		test: 'Olá, fera'
-	}
+	en, pt
 };
 
 export default I18n;

@@ -11,6 +11,7 @@ import Status from '../containers/status';
 import Touch from '../utils/touch/index'; //eslint-disable-line
 import Markdown from '../containers/message/Markdown';
 import RoomTypeIcon from '../containers/RoomTypeIcon';
+import I18n from '../i18n';
 
 const styles = StyleSheet.create({
 	container: {
@@ -207,13 +208,13 @@ export default class RoomItem extends React.Component {
 			return '';
 		}
 		if (!lastMessage) {
-			return 'No Message';
+			return I18n.t('No_Message');
 		}
 
 		let prefix = '';
 
 		if (lastMessage.u.username === this.props.user.username) {
-			prefix = 'You: ';
+			prefix = I18n.t('You_colon');
 		}	else if (type !== 'd') {
 			prefix = `${ lastMessage.u.username }: `;
 		}
@@ -234,7 +235,7 @@ export default class RoomItem extends React.Component {
 	}
 
 	formatDate = date => moment(date).calendar(null, {
-		lastDay: '[Yesterday]',
+		lastDay: `[${ I18n.t('Yesterday') }]`,
 		sameDay: 'h:mm A',
 		lastWeek: 'dddd',
 		sameElse: 'MMM D'
@@ -249,17 +250,17 @@ export default class RoomItem extends React.Component {
 
 		let accessibilityLabel = name;
 		if (unread === 1) {
-			accessibilityLabel += `, ${ unread } alert`;
+			accessibilityLabel += `, ${ unread } ${ I18n.t('alert') }`;
 		} else if (unread > 1) {
-			accessibilityLabel += `, ${ unread } alerts`;
+			accessibilityLabel += `, ${ unread } ${ I18n.t('alerts') }`;
 		}
 
 		if (userMentions > 0) {
-			accessibilityLabel += ', you were mentioned';
+			accessibilityLabel += `, ${ I18n.t('you_were_mentioned') }`;
 		}
 
 		if (date) {
-			accessibilityLabel += `, last message ${ date }`;
+			accessibilityLabel += `, ${ I18n.t('last_message') } ${ date }`;
 		}
 
 		return (
