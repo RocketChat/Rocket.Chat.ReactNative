@@ -615,7 +615,7 @@ const RocketChat = {
 		return call('sendFileMessage', rid, null, data, msg);
 	},
 	async sendFileMessage(rid, fileInfo, data) {
-		const placeholder = RocketChat.getMessage(rid, 'Sending a file');
+		let placeholder;
 		try {
 			if (!data) {
 				data = await RNFetchBlob.wrap(fileInfo.path);
@@ -623,6 +623,15 @@ const RocketChat = {
 				fileInfo.size = fileStat.size;
 				fileInfo.name = fileStat.filename;
 			}
+
+			const { FileUpload_MaxFileSize } = reduxStore.getState().settings;
+
+			// -1 maxFileSize means there is no limit
+			if (FileUpload_MaxFileSize > -1 && fileInfo.size > FileUpload_MaxFileSize) {
+				return Promise.reject({ error: 'error-file-too-large' }); // eslint-disable-line
+			}
+
+			placeholder = RocketChat.getMessage(rid, 'Sending a file');
 
 			const result = await RocketChat._ufsCreate({ ...fileInfo, rid });
 			await RNFetchBlob.fetch('POST', result.url, {
@@ -643,10 +652,12 @@ const RocketChat = {
 		} finally {
 			// TODO: fix that
 			try {
-				database.write(() => {
-					const msg = database.objects('messages').filtered('_id = $0', placeholder._id);
-					database.delete(msg);
-				});
+				if (placeholder) {
+					database.write(() => {
+						const msg = database.objects('messages').filtered('_id = $0', placeholder._id);
+						database.delete(msg);
+					});
+				}
 			} catch (e) {
 				console.error(e);
 			}
