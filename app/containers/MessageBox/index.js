@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, FlatList, Text, TouchableOpacity } from 'react-native';
+import { View, TextInput, FlatList, Text, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
@@ -209,12 +209,19 @@ export default class MessageBox extends React.PureComponent {
 	}
 
 	finishAudioMessage = async(fileInfo) => {
-		if (fileInfo) {
-			RocketChat.sendFileMessage(this.props.rid, fileInfo);
-		}
 		this.setState({
 			recording: false
 		});
+		if (fileInfo) {
+			try {
+				await RocketChat.sendFileMessage(this.props.rid, fileInfo);
+			} catch (e) {
+				if (e && e.error === 'error-file-too-large') {
+					return Alert.alert('File is too large!');
+				}
+				log('finishAudioMessage', e);
+			}
+		}
 	}
 
 	closeEmoji() {
