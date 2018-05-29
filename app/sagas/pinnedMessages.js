@@ -13,7 +13,7 @@ const openPinnedMessagesRoom = function* openPinnedMessagesRoom({ rid, limit }) 
 		newSub = yield RocketChat.subscribe('pinnedMessages', rid, limit);
 		yield put(readyPinnedMessages());
 		if (sub) {
-			sub.unsubscribe();
+			sub.unsubscribe().catch(err => console.warn(err));
 		}
 		sub = newSub;
 	} catch (e) {

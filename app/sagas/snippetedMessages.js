@@ -13,7 +13,7 @@ const openSnippetedMessagesRoom = function* openSnippetedMessagesRoom({ rid, lim
 		newSub = yield RocketChat.subscribe('snippetedMessages', rid, limit);
 		yield put(readySnippetedMessages());
 		if (sub) {
-			sub.unsubscribe();
+			sub.unsubscribe().catch(err => console.warn(err));
 		}
 		sub = newSub;
 	} catch (e) {
