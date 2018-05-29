@@ -13,7 +13,7 @@ const openStarredMessagesRoom = function* openStarredMessagesRoom({ rid, limit }
 		newSub = yield RocketChat.subscribe('starredMessages', rid, limit);
 		yield put(readyStarredMessages());
 		if (sub) {
-			sub.unsubscribe();
+			sub.unsubscribe().catch(err => console.warn(err));
 		}
 		sub = newSub;
 	} catch (e) {

@@ -97,5 +97,16 @@ export default StyleSheet.create({
 	},
 	broadcastButtonText: {
 		color: '#1d74f5'
+	},
+	mention: {
+		color: '#13679a'
+	},
+	paragraph: {
+		marginTop: 0,
+		marginBottom: 0,
+		flexWrap: 'wrap',
+		flexDirection: 'row',
+		alignItems: 'flex-start',
+		justifyContent: 'flex-start'
 	}
 });
