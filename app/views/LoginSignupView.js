@@ -15,6 +15,7 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import random from '../utils/random';
 import Button from '../containers/Button';
 import Loading from '../containers/Loading';
+import I18n from '../i18n';
 
 const userAgentAndroid = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1';
 const userAgent = Platform.OS === 'ios' ? 'UserAgent' : userAgentAndroid;
@@ -291,7 +292,7 @@ export default class LoginSignupView extends LoggedView {
 								source={require('../static/images/planet.png')}
 							/>
 							<Button
-								title='I have an account'
+								title={I18n.t('test')}
 								type='primary'
 								onPress={() => this.props.navigation.navigate({ key: 'Login', routeName: 'Login' })}
 								testID='welcome-view-login'
