@@ -228,7 +228,7 @@ export default class RoomInfoEditView extends LoggedView {
 					style: 'cancel'
 				},
 				{
-					text: I18n.t('Yes_action_it', { action: I18n.t(action) }),
+					text: I18n.t('Yes_action_it', { action }),
 					style: 'destructive',
 					onPress: () => {
 						try {

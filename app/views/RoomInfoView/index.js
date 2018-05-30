@@ -136,7 +136,7 @@ export default class RoomInfoView extends LoggedView {
 
 	renderItem = (key, room) => (
 		<View style={styles.item}>
-			<Text style={styles.itemLabel}>{camelize(I18n.t(key))}</Text>
+			<Text style={styles.itemLabel}>{I18n.t(camelize(key))}</Text>
 			<Text
 				style={[styles.itemContent, !room[key] && styles.itemContent__empty]}
 				testID={`room-info-view-${ key }`}

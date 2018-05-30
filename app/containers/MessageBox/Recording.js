@@ -37,6 +37,7 @@ export default class extends React.PureComponent {
 		super();
 
 		this.recordingCanceled = false;
+		this.recording = true;
 		this.state = {
 			currentTime: '00:00'
 		};
@@ -66,6 +67,12 @@ export default class extends React.PureComponent {
 		AudioRecorder.startRecording();
 	}
 
+	componentWillUnmount() {
+		if (this.recording) {
+			this.cancelAudioMessage();
+		}
+	}
+
 	_finishRecording(didSucceed, filePath) {
 		if (!didSucceed) {
 			return this.props.onFinish && this.props.onFinish(didSucceed);
@@ -82,6 +89,7 @@ export default class extends React.PureComponent {
 
 	finishAudioMessage = async() => {
 		try {
+			this.recording = false;
 			const filePath = await AudioRecorder.stopRecording();
 			if (Platform.OS === 'android') {
 				this._finishRecording(true, filePath);
@@ -93,6 +101,7 @@ export default class extends React.PureComponent {
 	}
 
 	cancelAudioMessage = async() => {
+		this.recording = false;
 		this.recordingCanceled = true;
 		await AudioRecorder.stopRecording();
 		return this._finishRecording(false);
@@ -114,7 +123,7 @@ export default class extends React.PureComponent {
 						accessibilityTraits='button'
 						onPress={this.cancelAudioMessage}
 					/>
-					<Text key='currentTime' style={[styles.textBoxInput, { width: 50, height: 60 }]}>{this.state.currentTime}</Text>
+					<Text key='currentTime' style={styles.textBoxInput}>{this.state.currentTime}</Text>
 					<Icon
 						style={[styles.actionButtons, { color: 'green' }]}
 						name='check'
