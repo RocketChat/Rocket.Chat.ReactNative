@@ -1,98 +1,13 @@
 import React from 'react';
-import { Text, StyleSheet, ViewPropTypes } from 'react-native';
+import { Text, Platform } from 'react-native';
 import PropTypes from 'prop-types';
-import EasyMarkdown from 'react-native-easy-markdown'; // eslint-disable-line
-import SimpleMarkdown from 'simple-markdown';
 import { emojify } from 'react-emojione';
 import { connect } from 'react-redux';
+import MarkdownRenderer, { PluginContainer } from 'react-native-markdown-renderer';
+import MarkdownFlowdock from 'markdown-it-flowdock';
 import styles from './styles';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
-
-const BlockCode = ({ node, state }) => (
-	<Text
-		key={state.key}
-		style={styles.codeStyle}
-	>
-		{node.content}
-	</Text>
-);
-const mentionStyle = { color: '#13679a' };
-
-const defaultRules = {
-	username: {
-		order: -1,
-		match: SimpleMarkdown.inlineRegex(/^@[0-9a-zA-Z-_.]+/),
-		parse: capture => ({ content: capture[0] }),
-		react: (node, output, state) => ({
-			type: 'custom',
-			key: state.key,
-			props: {
-				children: (
-					<Text
-						key={state.key}
-						style={mentionStyle}
-						onPress={() => alert('Username')}
-					>
-						{node.content}
-					</Text>
-				)
-			}
-		})
-	},
-	heading: {
-		order: -2,
-		match: SimpleMarkdown.inlineRegex(/^#[0-9a-zA-Z-_.]+/),
-		parse: capture => ({ content: capture[0] }),
-		react: (node, output, state) => ({
-			type: 'custom',
-			key: state.key,
-			props: {
-				children: (
-					<Text
-						key={state.key}
-						style={mentionStyle}
-						onPress={() => alert('Room')}
-					>
-						{node.content}
-					</Text>
-				)
-			}
-		})
-	},
-	fence: {
-		order: -3,
-		match: SimpleMarkdown.blockRegex(/^ *(`{3,}|~{3,}) *(\S+)? *\n([\s\S]+?)\s*\1 *(?:\n *)+\n/),
-		parse: capture => ({
-			lang: capture[2] || undefined,
-			content: capture[3]
-		}),
-		react: (node, output, state) => ({
-			type: 'custom',
-			key: state.key,
-			props: {
-				children: (
-					<BlockCode key={state.key} node={node} state={state} />
-				)
-			}
-		})
-	},
-	blockCode: {
-		order: -4,
-		match: SimpleMarkdown.blockRegex(/^(```)\s*([\s\S]*?[^`])\s*\1(?!```)/),
-		parse: capture => ({ content: capture[2] }),
-		react: (node, output, state) => ({
-			type: 'custom',
-			key: state.key,
-			props: {
-				children: (
-					<BlockCode key={state.key} node={node} state={state} />
-				)
-			}
-		})
-	}
-};
-
-const codeStyle = StyleSheet.flatten(styles.codeStyle);
+import MarkdownEmojiPlugin from './MarkdownEmojiPlugin';
 
 // Support <http://link|Text>
 const formatText = text =>
@@ -110,49 +25,64 @@ export default class Markdown extends React.Component {
 	}
 	render() {
 		const {
-			msg, customEmojis = {}, style, markdownStyle, customRules, renderInline
+			msg, customEmojis, style, rules
 		} = this.props;
 		if (!msg) {
 			return null;
 		}
 		let m = formatText(msg);
 		m = emojify(m, { output: 'unicode' });
-
-		const s = StyleSheet.flatten(style);
 		return (
-			<EasyMarkdown
-				style={{ marginBottom: 0, ...s }}
-				markdownStyles={{ code: codeStyle, ...markdownStyle }}
+			<MarkdownRenderer
 				rules={{
-					customEmoji: {
-						order: -5,
-						match: SimpleMarkdown.inlineRegex(/^:([0-9a-zA-Z-_.]+):/),
-						parse: capture => ({ content: capture }),
-						react: (node, output, state) => {
-							const element = {
-								type: 'custom',
-								key: state.key,
-								props: {
-									children: <Text key={state.key}>{node.content[0]}</Text>
-								}
-							};
-							const content = node.content[1];
+					...Platform.OS === 'android' ? {} : {
+						paragraph: (node, children) => (
+							<Text key={node.key} style={styles.paragraph}>
+								{children}
+							</Text>
+						)
+					},
+					mention: node => (
+						<Text key={node.key} onPress={() => alert(`Username @${ node.content }`)} style={styles.mention}>
+							@{node.content}
+						</Text>
+					),
+					hashtag: node => (
+						<Text key={node.key} onPress={() => alert(`Room #${ node.content }`)} style={styles.mention}>
+							#{node.content}
+						</Text>
+					),
+					emoji: (node) => {
+						if (node.children && node.children.length && node.children[0].children && node.children[0].children.length) {
+							const { content } = node.children[0].children[0];
 							const emojiExtension = customEmojis[content];
 							if (emojiExtension) {
 								const emoji = { extension: emojiExtension, content };
-								element.props.children = (
-									<CustomEmoji key={state.key} style={styles.customEmoji} emoji={emoji} />
-								);
+								return <CustomEmoji key={node.key} style={styles.customEmoji} emoji={emoji} />;
 							}
-							return element;
+							return <Text key={node.key}>:{content}:</Text>;
 						}
+						return null;
 					},
-					...defaultRules,
-					...customRules
+					...rules
 				}}
-				renderInline={renderInline}
+				style={{
+					paragraph: styles.paragraph,
+					codeInline: {
+						borderWidth: 1,
+						borderColor: '#CCCCCC',
+						backgroundColor: '#f5f5f5',
+						padding: 2,
+						borderRadius: 4
+					},
+					...style
+				}}
+				plugins={[
+					new PluginContainer(MarkdownFlowdock),
+					new PluginContainer(MarkdownEmojiPlugin)
+				]}
 			>{m}
-			</EasyMarkdown>
+			</MarkdownRenderer>
 		);
 	}
 }
@@ -160,14 +90,6 @@ export default class Markdown extends React.Component {
 Markdown.propTypes = {
 	msg: PropTypes.string,
 	customEmojis: PropTypes.object,
-	// eslint-disable-next-line react/no-typos
-	style: ViewPropTypes.style,
-	markdownStyle: PropTypes.object,
-	customRules: PropTypes.object,
-	renderInline: PropTypes.bool
-};
-
-BlockCode.propTypes = {
-	node: PropTypes.object,
-	state: PropTypes.object
+	style: PropTypes.any,
+	rules: PropTypes.object
 };
