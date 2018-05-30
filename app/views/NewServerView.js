@@ -49,8 +49,10 @@ export default class NewServerView extends LoggedView {
 	}
 
 	submit = () => {
-		Keyboard.dismiss();
-		this.props.addServer(this.completeUrl(this.state.text));
+		if (this.props.validInstance) {
+			Keyboard.dismiss();
+			this.props.addServer(this.completeUrl(this.state.text));
+		}
 	}
 
 	completeUrl = (url) => {
