@@ -98,7 +98,7 @@ const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 		}
 		yield delay(100);
 		const server = yield select(state => state.server.server);
-		const msg = `[ ](${ server }/direct/${ username }?msg=${ message._id })`;
+		const msg = `[ ](${ server }/direct/${ username }?msg=${ message._id }) `;
 		yield put(setInput({ msg }));
 	} catch (e) {
 		log('handleReplyBroadcast', e);

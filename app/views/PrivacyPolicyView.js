@@ -3,14 +3,10 @@ import PropTypes from 'prop-types';
 import { WebView } from 'react-native';
 import { connect } from 'react-redux';
 
-class PrivacyPolicyView extends React.Component {
+class PrivacyPolicyView extends React.PureComponent {
 	static propTypes = {
 		privacyPolicy: PropTypes.string
 	}
-
-	static navigationOptions = () => ({
-		title: 'Terms of service'
-	});
 
 	render() {
 		return (

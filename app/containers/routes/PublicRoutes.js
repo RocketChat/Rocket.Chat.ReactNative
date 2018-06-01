@@ -13,6 +13,7 @@ import TermsServiceView from '../../views/TermsServiceView';
 import PrivacyPolicyView from '../../views/PrivacyPolicyView';
 import ForgotPasswordView from '../../views/ForgotPasswordView';
 import database from '../../lib/realm';
+import I18n from '../../i18n';
 
 const hasServers = () => {
 	const db = database.databases.serversDB.objects('servers');
@@ -24,12 +25,12 @@ const ServerStack = createStackNavigator({
 		screen: ListServerView,
 		navigationOptions({ navigation }) {
 			return {
-				title: 'Servers',
+				title: I18n.t('Servers'),
 				headerRight: (
 					<TouchableOpacity
 						onPress={() => navigation.navigate({ key: 'AddServer', routeName: 'AddServer' })}
 						style={{ width: 50, alignItems: 'center' }}
-						accessibilityLabel='Add server'
+						accessibilityLabel={I18n.t('Add_Server')}
 						accessibilityTraits='button'
 					>
 						<Icon name='plus' size={16} />
@@ -65,7 +66,7 @@ const LoginStack = createStackNavigator({
 	ForgotPassword: {
 		screen: ForgotPasswordView,
 		navigationOptions: {
-			title: 'Forgot my password',
+			title: I18n.t('Forgot_my_password'),
 			headerTintColor: '#292E35'
 		}
 	}
@@ -83,14 +84,14 @@ const RegisterStack = createStackNavigator({
 	TermsService: {
 		screen: TermsServiceView,
 		navigationOptions: {
-			title: 'Terms of service',
+			title: I18n.t('Terms_of_Service'),
 			headerTintColor: '#292E35'
 		}
 	},
 	PrivacyPolicy: {
 		screen: PrivacyPolicyView,
 		navigationOptions: {
-			title: 'Privacy policy',
+			title: I18n.t('Privacy_Policy'),
 			headerTintColor: '#292E35'
 		}
 	}
