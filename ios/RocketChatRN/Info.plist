@@ -30,7 +30,6 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>rocketchat</string>
-				<string>https://go.rocket.chat</string>
 			</array>
 		</dict>
 	</array>
