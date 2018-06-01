@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Text, LayoutAnimation } from 'react-native';
+import I18n from '../../i18n';
 
 const styles = StyleSheet.create({
 	firstUnread: {
@@ -30,7 +31,7 @@ export default class UnreadSeparator extends React.PureComponent {
 		return (
 			<View style={styles.firstUnread}>
 				<View style={styles.firstUnreadLine} />
-				<Text style={styles.firstUnreadBadge}>unread messages</Text>
+				<Text style={styles.firstUnreadBadge}>{I18n.t('unread_messages')}</Text>
 			</View>
 		);
 	}

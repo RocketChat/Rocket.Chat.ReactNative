@@ -18,6 +18,7 @@ import {
 } from '../actions/messages';
 import { showToast } from '../utils/info';
 import RocketChat from '../lib/rocketchat';
+import I18n from '../i18n';
 
 @connect(
 	state => ({
@@ -86,50 +87,50 @@ export default class MessageActions extends React.Component {
 		if (nextProps.showActions !== this.props.showActions && nextProps.showActions) {
 			const { actionMessage } = nextProps;
 			// Cancel
-			this.options = ['Cancel'];
+			this.options = [I18n.t('Cancel')];
 			this.CANCEL_INDEX = 0;
 			// Reply
 			if (!this.isRoomReadOnly()) {
-				this.options.push('Reply');
+				this.options.push(I18n.t('Reply'));
 				this.REPLY_INDEX = this.options.length - 1;
 			}
 			// Edit
 			if (this.allowEdit(nextProps)) {
-				this.options.push('Edit');
+				this.options.push(I18n.t('Edit'));
 				this.EDIT_INDEX = this.options.length - 1;
 			}
 			// Permalink
-			this.options.push('Copy Permalink');
+			this.options.push(I18n.t('Copy_Permalink'));
 			this.PERMALINK_INDEX = this.options.length - 1;
 			// Copy
-			this.options.push('Copy Message');
+			this.options.push(I18n.t('Copy_Message'));
 			this.COPY_INDEX = this.options.length - 1;
 			// Share
-			this.options.push('Share Message');
+			this.options.push(I18n.t('Share_Message'));
 			this.SHARE_INDEX = this.options.length - 1;
 			// Quote
 			if (!this.isRoomReadOnly()) {
-				this.options.push('Quote');
+				this.options.push(I18n.t('Quote'));
 				this.QUOTE_INDEX = this.options.length - 1;
 			}
 			// Star
 			if (this.props.Message_AllowStarring) {
-				this.options.push(actionMessage.starred ? 'Unstar' : 'Star');
+				this.options.push(I18n.t(actionMessage.starred ? 'Unstar' : 'Star'));
 				this.STAR_INDEX = this.options.length - 1;
 			}
 			// Pin
 			if (this.props.Message_AllowPinning) {
-				this.options.push(actionMessage.pinned ? 'Unpin' : 'Pin');
+				this.options.push(I18n.t(actionMessage.pinned ? 'Unpin' : 'Pin'));
 				this.PIN_INDEX = this.options.length - 1;
 			}
 			// Reaction
 			if (!this.isRoomReadOnly() || this.canReactWhenReadOnly()) {
-				this.options.push('Add Reaction');
+				this.options.push(I18n.t('Add_Reaction'));
 				this.REACTION_INDEX = this.options.length - 1;
 			}
 			// Delete
 			if (this.allowDelete(nextProps)) {
-				this.options.push('Delete');
+				this.options.push(I18n.t('Delete'));
 				this.DELETE_INDEX = this.options.length - 1;
 			}
 			setTimeout(() => {
@@ -141,7 +142,7 @@ export default class MessageActions extends React.Component {
 			if (this.state.copyPermalink) {
 				this.setState({ copyPermalink: false });
 				await Clipboard.setString(nextProps.permalink);
-				showToast('Permalink copied to clipboard!');
+				showToast(I18n.t('Permalink_copied_to_clipboard'));
 				this.props.permalinkClear();
 			// quote
 			} else if (this.state.quote) {
@@ -234,15 +235,15 @@ export default class MessageActions extends React.Component {
 
 	handleDelete() {
 		Alert.alert(
-			'Are you sure?',
-			'You will not be able to recover this message!',
+			I18n.t('Are_you_sure_question_mark'),
+			I18n.t('You_will_not_be_able_to_recover_this_message'),
 			[
 				{
-					text: 'Cancel',
+					text: I18n.t('Cancel'),
 					style: 'cancel'
 				},
 				{
-					text: 'Yes, delete it!',
+					text: I18n.t('Yes_action_it', { action: 'delete' }),
 					style: 'destructive',
 					onPress: () => this.props.deleteRequest(this.props.actionMessage)
 				}
@@ -258,7 +259,7 @@ export default class MessageActions extends React.Component {
 
 	handleCopy = async() => {
 		await Clipboard.setString(this.props.actionMessage.msg);
-		showToast('Copied to clipboard!');
+		showToast(I18n.t('Copied_to_clipboard'));
 	}
 
 	handleShare = async() => {
@@ -336,7 +337,7 @@ export default class MessageActions extends React.Component {
 		return (
 			<ActionSheet
 				ref={o => this.ActionSheet = o}
-				title='Messages actions'
+				title={I18n.t('Message_actions')}
 				testID='message-actions'
 				options={this.options}
 				cancelButtonIndex={this.CANCEL_INDEX}

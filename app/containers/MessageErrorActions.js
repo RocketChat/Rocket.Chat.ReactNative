@@ -7,6 +7,7 @@ import { errorActionsHide } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
+import I18n from '../i18n';
 
 @connect(
 	state => ({
@@ -27,7 +28,7 @@ export default class MessageErrorActions extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleActionPress = this.handleActionPress.bind(this);
-		this.options = ['Cancel', 'Delete', 'Resend'];
+		this.options = [I18n.t('Cancel'), I18n.t('Delete'), I18n.t('Resend')];
 		this.CANCEL_INDEX = 0;
 		this.DELETE_INDEX = 1;
 		this.RESEND_INDEX = 2;
@@ -66,7 +67,7 @@ export default class MessageErrorActions extends React.Component {
 		return (
 			<ActionSheet
 				ref={o => this.ActionSheet = o}
-				title='Messages actions'
+				title={I18n.t('Message_actions')}
 				options={this.options}
 				cancelButtonIndex={this.CANCEL_INDEX}
 				destructiveButtonIndex={this.DELETE_INDEX}

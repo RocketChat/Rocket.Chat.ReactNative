@@ -14,6 +14,7 @@ import buildMessage from '../../lib/methods/helpers/buildMessage';
 import Message from '../../containers/message';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import log from '../../utils/log';
+import I18n from '../../i18n';
 
 @connect(state => ({
 	user: state.login.user,
@@ -114,12 +115,12 @@ export default class SearchMessagesView extends LoggedView {
 				<View style={styles.searchContainer}>
 					<RCTextInput
 						inputRef={(e) => { this.name = e; }}
-						label='Search'
+						label={I18n.t('Search')}
 						onChangeText={this.onChangeSearch}
-						placeholder='Search Messages'
+						placeholder={I18n.t('Search_Messages')}
 						testID='search-message-view-input'
 					/>
-					<Markdown msg='You can search using RegExp. e.g. `/^text$/i`' />
+					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} />
 					<View style={styles.divider} />
 				</View>
 				<FlatList

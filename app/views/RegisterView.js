@@ -13,6 +13,7 @@ import { showToast } from '../utils/info';
 import CloseModalButton from '../containers/CloseModalButton';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import LoggedView from './View';
+import I18n from '../i18n';
 
 @connect(state => ({
 	server: state.server.server,
@@ -65,7 +66,7 @@ export default class RegisterView extends LoggedView {
 			name, email, password, code
 		} = this.state;
 		if (!this.valid()) {
-			showToast('Some field is invalid or empty');
+			showToast(I18n.t('Some_field_is_invalid_or_empty'));
 			return;
 		}
 
@@ -78,7 +79,7 @@ export default class RegisterView extends LoggedView {
 	usernameSubmit = () => {
 		const { username } = this.state;
 		if (!username) {
-			showToast('Username is empty');
+			showToast(I18n.t('Username_is_empty'));
 			return;
 		}
 
@@ -102,8 +103,8 @@ export default class RegisterView extends LoggedView {
 			<View>
 				<TextInput
 					inputRef={(e) => { this.name = e; }}
-					label={this.props.Accounts_NamePlaceholder || 'Name'}
-					placeholder={this.props.Accounts_NamePlaceholder || 'Name'}
+					label={this.props.Accounts_NamePlaceholder || I18n.t('Name')}
+					placeholder={this.props.Accounts_NamePlaceholder || I18n.t('Name')}
 					returnKeyType='next'
 					iconLeft='account'
 					onChangeText={name => this.setState({ name })}
@@ -112,8 +113,8 @@ export default class RegisterView extends LoggedView {
 				/>
 				<TextInput
 					inputRef={(e) => { this.email = e; }}
-					label={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email'}
-					placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email'}
+					label={this.props.Accounts_EmailOrUsernamePlaceholder || I18n.t('Email')}
+					placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || I18n.t('Email')}
 					returnKeyType='next'
 					keyboardType='email-address'
 					iconLeft='email'
@@ -124,8 +125,8 @@ export default class RegisterView extends LoggedView {
 				/>
 				<TextInput
 					inputRef={(e) => { this.password = e; }}
-					label={this.props.Accounts_PasswordPlaceholder || 'Password'}
-					placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
+					label={this.props.Accounts_PasswordPlaceholder || I18n.t('Password')}
+					placeholder={this.props.Accounts_PasswordPlaceholder || I18n.t('Password')}
 					returnKeyType='next'
 					iconLeft='key-variant'
 					secureTextEntry
@@ -140,8 +141,8 @@ export default class RegisterView extends LoggedView {
 						this.state.confirmPassword &&
 						this.state.confirmPassword !== this.state.password ? { borderColor: 'red' } : {}
 					}
-					label={this.props.Accounts_RepeatPasswordPlaceholder || 'Repeat Password'}
-					placeholder={this.props.Accounts_RepeatPasswordPlaceholder || 'Repeat Password'}
+					label={this.props.Accounts_RepeatPasswordPlaceholder || I18n.t('Repeat_Password')}
+					placeholder={this.props.Accounts_RepeatPasswordPlaceholder || I18n.t('Repeat_Password')}
 					returnKeyType='done'
 					iconLeft='key-variant'
 					secureTextEntry
@@ -152,13 +153,13 @@ export default class RegisterView extends LoggedView {
 
 				<View style={styles.alignItemsFlexStart}>
 					<Text style={styles.loginTermsText}>
-						By proceeding you are agreeing to our
-						<Text style={styles.link} onPress={this.termsService}> Terms of Service </Text>
-						and
-						<Text style={styles.link} onPress={this.privacyPolicy}> Privacy Policy</Text>
+						{I18n.t('By_proceeding_you_are_agreeing')}
+						<Text style={styles.link} onPress={this.termsService}>{I18n.t('Terms_of_Service')}</Text>
+						{I18n.t('and')}
+						<Text style={styles.link} onPress={this.privacyPolicy}>{I18n.t('Privacy_Policy')}</Text>
 					</Text>
 					<Button
-						title='Register'
+						title={I18n.t('Register')}
 						type='primary'
 						onPress={this.submit}
 						testID='register-view-submit'
@@ -176,8 +177,8 @@ export default class RegisterView extends LoggedView {
 			<View>
 				<TextInput
 					inputRef={(e) => { this.username = e; }}
-					label={this.props.Accounts_UsernamePlaceholder || 'Username'}
-					placeholder={this.props.Accounts_UsernamePlaceholder || 'Username'}
+					label={this.props.Accounts_UsernamePlaceholder || I18n.t('Username')}
+					placeholder={this.props.Accounts_UsernamePlaceholder || I18n.t('Username')}
 					returnKeyType='done'
 					iconLeft='at'
 					onChangeText={username => this.setState({ username })}
@@ -187,7 +188,7 @@ export default class RegisterView extends LoggedView {
 
 				<View style={styles.alignItemsFlexStart}>
 					<Button
-						title='Register'
+						title={I18n.t('Register')}
 						type='primary'
 						onPress={this.usernameSubmit}
 						testID='register-view-submit-username'
@@ -203,7 +204,7 @@ export default class RegisterView extends LoggedView {
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
 					<SafeAreaView testID='register-view'>
 						<CloseModalButton navigation={this.props.navigation} />
-						<Text style={[styles.loginText, styles.loginTitle]}>Sign Up</Text>
+						<Text style={[styles.loginText, styles.loginTitle]}>{I18n.t('Sign_Up')}</Text>
 						{this._renderRegister()}
 						{this._renderUsername()}
 						{this.props.login.failure &&

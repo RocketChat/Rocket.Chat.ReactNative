@@ -8,6 +8,7 @@ import { openSnippetedMessages, closeSnippetedMessages } from '../../actions/sni
 import styles from './styles';
 import Message from '../../containers/message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
+import I18n from '../../i18n';
 
 @connect(
 	state => ({
@@ -74,7 +75,7 @@ export default class SnippetedMessagesView extends LoggedView {
 
 	renderEmpty = () => (
 		<View style={styles.listEmptyContainer} testID='snippeted-messages-view'>
-			<Text>No snippeted messages</Text>
+			<Text>{I18n.t('No_snippeted_messages')}</Text>
 		</View>
 	)
 

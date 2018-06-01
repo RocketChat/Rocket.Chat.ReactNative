@@ -14,25 +14,26 @@ import { STATUS_COLORS } from '../../../constants/colors';
 import { setSearch } from '../../../actions/rooms';
 import styles from './styles';
 import log from '../../../utils/log';
+import I18n from '../../../i18n';
 
 const title = (offline, connecting, authenticating, logged) => {
 	if (offline) {
-		return 'offline...';
+		return `${ I18n.t('Offline') }...`;
 	}
 
 	if (connecting) {
-		return 'Connecting...';
+		return `${ I18n.t('Connecting') }...`;
 	}
 
 	if (authenticating) {
-		return 'Authenticating...';
+		return `${ I18n.t('Authenticating') }...`;
 	}
 
 	if (logged) {
 		return null;
 	}
 
-	return 'Not logged...';
+	return `${ I18n.t('Not_logged') }...`;
 };
 
 @connect(state => ({
@@ -96,7 +97,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 
 	getUserStatusLabel() {
 		const status = this.getUserStatus();
-		return status.charAt(0).toUpperCase() + status.slice(1);
+		return I18n.t(status.charAt(0).toUpperCase() + status.slice(1));
 	}
 
 	showModal() {
@@ -124,7 +125,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 			<View
 				style={styles.left}
 				accessible
-				accessibilityLabel={`Connected to ${ this.props.baseUrl }. Tap to view servers list.`}
+				accessibilityLabel={`${ I18n.t('Connected_to') } ${ this.props.baseUrl }. ${ I18n.t('Tap_to_view_servers_list') }.`}
 				accessibilityTraits='button'
 				testID='rooms-list-view-sidebar'
 			>
@@ -156,7 +157,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 
 		const t = title(offline, connecting, authenticating, logged);
 
-		const accessibilityLabel = `${ user.username }, ${ this.getUserStatusLabel() }, tap to change status`;
+		const accessibilityLabel = `${ user.username }, ${ this.getUserStatusLabel() }, ${ I18n.t('tap_to_change_status') }`;
 		return (
 			<TouchableOpacity
 				style={styles.titleContainer}
@@ -190,7 +191,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 					<TouchableOpacity
 						style={styles.headerButton}
 						onPress={() => this.onPressSearchButton()}
-						accessibilityLabel='Search'
+						accessibilityLabel={I18n.t('Search')}
 						accessibilityTraits='button'
 					>
 						<Icon
@@ -204,7 +205,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 					<TouchableOpacity
 						style={styles.headerButton}
 						onPress={() => this.createChannel()}
-						accessibilityLabel='Create channel'
+						accessibilityLabel={I18n.t('Create_Channel')}
 						accessibilityTraits='button'
 						testID='rooms-list-view-create-channel'
 					>
@@ -223,6 +224,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 	renderModalButton = (status, text) => {
 		const statusStyle = [styles.status, { marginRight: 10, backgroundColor: STATUS_COLORS[status] }];
 		const textStyle = { flex: 1, fontWeight: this.props.user.status === status ? 'bold' : 'normal' };
+		const label = text || status;
 		return (
 			<TouchableOpacity
 				style={styles.modalButton}
@@ -231,7 +233,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 			>
 				<View style={statusStyle} />
 				<Text style={textStyle}>
-					{text || status.charAt(0).toUpperCase() + status.slice(1)}
+					{I18n.t(label.charAt(0).toUpperCase() + label.slice(1))}
 				</Text>
 			</TouchableOpacity>
 		);
@@ -252,7 +254,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 					style={styles.inputSearch}
 					onChangeText={text => this.onSearchChangeText(text)}
 					returnKeyType='search'
-					placeholder='Search'
+					placeholder={I18n.t('Search')}
 					clearButtonMode='while-editing'
 					blurOnSubmit
 					autoCorrect={false}
@@ -281,7 +283,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 						{this.renderModalButton('online')}
 						{this.renderModalButton('busy')}
 						{this.renderModalButton('away')}
-						{this.renderModalButton('offline', 'Invisible')}
+						{this.renderModalButton('offline', 'invisible')}
 					</View>
 				</Modal>
 			</View>

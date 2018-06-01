@@ -4,6 +4,7 @@ import { View, SafeAreaView, Platform, PermissionsAndroid, Text } from 'react-na
 import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import styles from './styles';
+import I18n from '../../i18n';
 
 export const _formatTime = function(seconds) {
 	let minutes = Math.floor(seconds / 60);
@@ -24,8 +25,8 @@ export default class extends React.PureComponent {
 		}
 
 		const rationale = {
-			title: 'Microphone Permission',
-			message: 'Rocket Chat needs access to your microphone so you can send audio message.'
+			title: I18n.t('Microphone_Permission'),
+			message: I18n.t('Microphone_Permission_Message')
 		};
 
 		const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO, rationale);
@@ -118,7 +119,7 @@ export default class extends React.PureComponent {
 						style={[styles.actionButtons, { color: 'red' }]}
 						name='clear'
 						key='clear'
-						accessibilityLabel='Cancel recording'
+						accessibilityLabel={I18n.t('Cancel_recording')}
 						accessibilityTraits='button'
 						onPress={this.cancelAudioMessage}
 					/>
@@ -127,7 +128,7 @@ export default class extends React.PureComponent {
 						style={[styles.actionButtons, { color: 'green' }]}
 						name='check'
 						key='check'
-						accessibilityLabel='Finish recording'
+						accessibilityLabel={I18n.t('Finish_recording')}
 						accessibilityTraits='button'
 						onPress={this.finishAudioMessage}
 					/>

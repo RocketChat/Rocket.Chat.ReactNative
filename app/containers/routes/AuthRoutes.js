@@ -17,6 +17,9 @@ import RoomFilesView from '../../views/RoomFilesView';
 import RoomMembersView from '../../views/RoomMembersView';
 import RoomInfoView from '../../views/RoomInfoView';
 import RoomInfoEditView from '../../views/RoomInfoEditView';
+import I18n from '../../i18n';
+
+const headerTintColor = '#292E35';
 
 const AuthRoutes = createStackNavigator(
 	{
@@ -29,92 +32,92 @@ const AuthRoutes = createStackNavigator(
 		CreateChannel: {
 			screen: CreateChannelView,
 			navigationOptions: {
-				title: 'Create Channel',
-				headerTintColor: '#292E35'
+				title: I18n.t('Create_Channel'),
+				headerTintColor
 			}
 		},
 		SelectedUsers: {
 			screen: SelectedUsersView,
 			navigationOptions: {
-				title: 'Select Users',
-				headerTintColor: '#292E35'
+				title: I18n.t('Select_Users'),
+				headerTintColor
 			}
 		},
 		AddServer: {
 			screen: NewServerView,
 			navigationOptions: {
-				title: 'New server',
-				headerTintColor: '#292E35'
+				title: I18n.t('New_Server'),
+				headerTintColor
 			}
 		},
 		RoomActions: {
 			screen: RoomActionsView,
 			navigationOptions: {
-				title: 'Actions',
-				headerTintColor: '#292E35'
+				title: I18n.t('Actions'),
+				headerTintColor
 			}
 		},
 		StarredMessages: {
 			screen: StarredMessagesView,
 			navigationOptions: {
-				title: 'Starred Messages',
-				headerTintColor: '#292E35'
+				title: I18n.t('Starred_Messages'),
+				headerTintColor
 			}
 		},
 		PinnedMessages: {
 			screen: PinnedMessagesView,
 			navigationOptions: {
-				title: 'Pinned Messages',
-				headerTintColor: '#292E35'
+				title: I18n.t('Pinned_Messages'),
+				headerTintColor
 			}
 		},
 		MentionedMessages: {
 			screen: MentionedMessagesView,
 			navigationOptions: {
-				title: 'Mentioned Messages',
-				headerTintColor: '#292E35'
+				title: I18n.t('Mentioned_Messages'),
+				headerTintColor
 			}
 		},
 		SnippetedMessages: {
 			screen: SnippetedMessagesView,
 			navigationOptions: {
-				title: 'Snippet Messages',
-				headerTintColor: '#292E35'
+				title: I18n.t('Snippet_Messages'),
+				headerTintColor
 			}
 		},
 		SearchMessages: {
 			screen: SearchMessagesView,
 			navigationOptions: {
-				title: 'Search Messages',
-				headerTintColor: '#292E35'
+				title: I18n.t('Search_Messages'),
+				headerTintColor
 			}
 		},
 		RoomFiles: {
 			screen: RoomFilesView,
 			navigationOptions: {
-				title: 'Room Files',
-				headerTintColor: '#292E35'
+				title: I18n.t('Room_Files'),
+				headerTintColor
 			}
 		},
 		RoomMembers: {
 			screen: RoomMembersView,
 			navigationOptions: {
-				title: 'Room Members',
-				headerTintColor: '#292E35'
+				title: I18n.t('Room_Members'),
+				headerTintColor
 			}
 		},
 		RoomInfo: {
 			screen: RoomInfoView,
 			navigationOptions: {
-				title: 'Room Info',
-				headerTintColor: '#292E35'
+				title: I18n.t('Room_Info'),
+				headerTintColor
 			}
 		},
 		RoomInfoEdit: {
 			screen: RoomInfoEditView,
 			navigationOptions: {
-				title: 'Room Info Edit',
-				headerTintColor: '#292E35'
+				title: I18n.t('Room_Info_Edit'),
+				headerTintColor
 			}
 		}
 	},
