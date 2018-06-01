@@ -70,7 +70,8 @@ export default class RoomView extends LoggedView {
 		this.state = {
 			loaded: true,
 			joined: typeof props.rid === 'undefined',
-			room: {}
+			room: {},
+			end: false
 		};
 		this.onReactionPress = this.onReactionPress.bind(this);
 	}
@@ -87,20 +88,15 @@ export default class RoomView extends LoggedView {
 		this.props.editCancel();
 	}
 
-	onEndReached = (data) => {
-		if (this.props.loading || this.state.end) {
+	onEndReached = (lastRowData) => {
+		if (!lastRowData) {
+			this.setState({ end: true });
 			return;
 		}
 
-		requestAnimationFrame(() => {
-			const lastRowData = data[data.length - 1];
-			if (!lastRowData) {
-				return;
-			}
-			// TODO: fix
-			RocketChat.loadMessagesForRoom({ rid: this.rid, t: this.state.room.t, latest: lastRowData.ts }, ({ end }) => end && this.setState({
-				end
-			}));
+		requestAnimationFrame(async() => {
+			const result = await RocketChat.loadMessagesForRoom({ rid: this.rid, t: this.state.room.t, latest: lastRowData.ts });
+			this.setState({ end: result < 20 });
 		});
 	}
 

@@ -6,8 +6,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import DateSeparator from './DateSeparator';
-import UnreadSeparator from './UnreadSeparator';
+import Separator from './Separator';
 import styles from './styles';
 import Typing from '../../containers/Typing';
 import database from '../../lib/realm';
@@ -72,7 +71,7 @@ export class List extends React.Component {
 			onEndReachedThreshold={100}
 			renderFooter={this.props.renderFooter}
 			renderHeader={() => <Typing />}
-			onEndReached={() => this.props.onEndReached(this.data)}
+			onEndReached={() => this.props.onEndReached(this.data[this.data.length - 1])}
 			dataSource={this.dataSource}
 			renderRow={(item, previousItem) => this.props.renderRow(item, previousItem)}
 			initialListSize={20}
@@ -128,17 +127,21 @@ export class ListView extends OldList2 {
 
 
 			if (!previousMessage) {
+				bodyComponents.push(<Separator key={message.ts.toISOString()} ts={message.ts} />);
 				continue; // eslint-disable-line
 			}
 
-			if (this.props.lastOpen &&
+			const showUnreadSeparator = this.props.lastOpen &&
 				moment(message.ts).isAfter(this.props.lastOpen) &&
-				moment(previousMessage.ts).isBefore(this.props.lastOpen)
-			) {
-				bodyComponents.push(<UnreadSeparator key='unread-separator' />);
-			}
-			if (!moment(message.ts).isSame(previousMessage.ts, 'day')) {
-				bodyComponents.push(<DateSeparator key={message.ts.toISOString()} ts={message.ts} />);
+				moment(previousMessage.ts).isBefore(this.props.lastOpen);
+			const showDateSeparator = !moment(message.ts).isSame(previousMessage.ts, 'day');
+
+			if (showUnreadSeparator || showDateSeparator) {
+				bodyComponents.push(<Separator
+					key={message.ts.toISOString()}
+					ts={showDateSeparator ? message.ts : null}
+					unread={showUnreadSeparator}
+				/>);
 			}
 		}
 
