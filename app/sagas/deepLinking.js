@@ -31,7 +31,17 @@ const handleOpen = function* handleOpen({ params }) {
 		yield take(types.APP.READY);
 	}
 
+	if (!params.host) {
+		return;
+	}
+
 	const host = `https://${ params.host }`;
+
+	try {
+		yield RocketChat.testServer(host);
+	} catch (error) {
+		return;
+	}
 
 	// TODO: needs better test
 	// if deep link is from same server
