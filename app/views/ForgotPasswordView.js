@@ -12,6 +12,7 @@ import Loading from '../containers/Loading';
 import styles from './Styles';
 import { showErrorAlert } from '../utils/info';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
+import I18n from '../i18n';
 
 @connect(state => ({
 	login: state.login
@@ -45,12 +46,7 @@ export default class ForgotPasswordView extends LoggedView {
 		if (login.success) {
 			this.props.navigation.goBack();
 			setTimeout(() => {
-				showErrorAlert(
-					'If this email is registered, ' +
-					'we\'ll send instructions on how to reset your password. ' +
-					'If you do not receive an email shortly, please come back and try again.',
-					'Alert'
-				);
+				showErrorAlert(I18n.t('Forgot_password_If_this_email_is_registered'), I18n.t('Alert'));
 			});
 		}
 	}
@@ -85,8 +81,8 @@ export default class ForgotPasswordView extends LoggedView {
 							<View style={styles.formContainer}>
 								<TextInput
 									inputStyle={this.state.invalidEmail ? { borderColor: 'red' } : {}}
-									label='Email'
-									placeholder='Email'
+									label={I18n.t('Email')}
+									placeholder={I18n.t('Email')}
 									keyboardType='email-address'
 									returnKeyType='next'
 									onChangeText={email => this.validate(email)}
@@ -96,7 +92,7 @@ export default class ForgotPasswordView extends LoggedView {
 
 								<View style={styles.alignItemsFlexStart}>
 									<Button
-										title='Reset password'
+										title={I18n.t('Reset_password')}
 										type='primary'
 										onPress={this.resetPassword}
 										testID='forgot-password-view-submit'

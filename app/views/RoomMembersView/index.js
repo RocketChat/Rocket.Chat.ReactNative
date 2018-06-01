@@ -14,6 +14,7 @@ import { goRoom } from '../../containers/routes/NavigationService';
 import database from '../../lib/realm';
 import { showToast } from '../../utils/info';
 import log from '../../utils/log';
+import I18n from '../../i18n';
 
 @connect(state => ({
 	user: state.login.user,
@@ -26,7 +27,7 @@ export default class MentionedMessagesView extends LoggedView {
 
 	static navigationOptions = ({ navigation }) => {
 		const params = navigation.state.params || {};
-		const label = params.allUsers ? 'All' : 'Online';
+		const label = params.allUsers ? I18n.t('All') : I18n.t('Online');
 		if (params.allUsers === undefined) {
 			return;
 		}
@@ -123,14 +124,14 @@ export default class MentionedMessagesView extends LoggedView {
 		if (!this.permissions['mute-user']) {
 			return;
 		}
-		this.actionSheetOptions = ['Cancel'];
+		this.actionSheetOptions = [I18n.t('Cancel')];
 		const { muted } = this.state.room;
 		const userIsMuted = !!muted.find(m => m.value === user.username);
 		user.muted = userIsMuted;
 		if (userIsMuted) {
-			this.actionSheetOptions.push('Unmute');
+			this.actionSheetOptions.push(I18n.t('Unmute'));
 		} else {
-			this.actionSheetOptions.push('Mute');
+			this.actionSheetOptions.push(I18n.t('Mute'));
 		}
 		this.setState({ userLongPressed: user });
 		Vibration.vibrate(50);
@@ -141,7 +142,7 @@ export default class MentionedMessagesView extends LoggedView {
 		const { rid, userLongPressed } = this.state;
 		try {
 			await RocketChat.toggleMuteUserInRoom(rid, userLongPressed.username, !userLongPressed.muted);
-			showToast(`User has been ${ userLongPressed.muted ? 'unmuted' : 'muted' }!`);
+			showToast(I18n.t('User_has_been_key', { key: userLongPressed.muted ? I18n.t('unmuted') : I18n.t('muted') }));
 		} catch (e) {
 			log('handleMute', e);
 		}
@@ -164,7 +165,7 @@ export default class MentionedMessagesView extends LoggedView {
 				style={styles.searchBox}
 				onChangeText={text => this.onSearchChangeText(text)}
 				returnKeyType='search'
-				placeholder='Search'
+				placeholder={I18n.t('Search')}
 				clearButtonMode='while-editing'
 				blurOnSubmit
 				autoCorrect={false}
@@ -209,7 +210,7 @@ export default class MentionedMessagesView extends LoggedView {
 				<ActionSheet
 					key='room-members-actionsheet'
 					ref={o => this.ActionSheet = o}
-					title='Actions'
+					title={I18n.t('Actions')}
 					options={this.actionSheetOptions}
 					cancelButtonIndex={this.CANCEL_INDEX}
 					onPress={this.handleActionPress}

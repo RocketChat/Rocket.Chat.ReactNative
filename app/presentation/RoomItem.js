@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, ViewPropTypes } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
-// import SimpleMarkdown from 'simple-markdown';
 
 import Avatar from '../containers/Avatar';
 import Status from '../containers/status';
 import Touch from '../utils/touch/index'; //eslint-disable-line
 import Markdown from '../containers/message/Markdown';
 import RoomTypeIcon from '../containers/RoomTypeIcon';
+import I18n from '../i18n';
 
 const styles = StyleSheet.create({
 	container: {
@@ -98,36 +98,6 @@ const styles = StyleSheet.create({
 		marginTop: 3
 	}
 });
-// const markdownStyle = { block: { marginBottom: 0, flexWrap: 'wrap', flexDirection: 'row' } };
-
-// const parseInline = (parse, content, state) => {
-// 	const isCurrentlyInline = state.inline || false;
-// 	state.inline = true;
-// 	const result = parse(content, state);
-// 	state.inline = isCurrentlyInline;
-// 	return result;
-// };
-// const parseCaptureInline = (capture, parse, state) => ({ content: parseInline(parse, capture[1], state) });
-// const customRules = {
-// 	strong: {
-// 		order: -4,
-// 		match: SimpleMarkdown.inlineRegex(/^\*\*([\s\S]+?)\*\*(?!\*)/),
-// 		parse: parseCaptureInline,
-// 		react: (node, output, state) => ({
-// 			type: 'strong',
-// 			key: state.key,
-// 			props: {
-// 				children: output(node.content, state)
-// 			}
-// 		})
-// 	},
-// 	text: {
-// 		order: -3,
-// 		match: SimpleMarkdown.inlineRegex(/^[\s\S]+?(?=[^0-9A-Za-z\s\u00c0-\uffff]|\n\n| {2,}\n|\w+:\S|$)/),
-// 		parse: capture => ({ content: capture[0] }),
-// 		react: node => node.content
-// 	}
-// };
 
 const renderNumber = (unread, userMentions) => {
 	if (!unread || unread <= 0) {
@@ -207,13 +177,13 @@ export default class RoomItem extends React.Component {
 			return '';
 		}
 		if (!lastMessage) {
-			return 'No Message';
+			return I18n.t('No_Message');
 		}
 
 		let prefix = '';
 
 		if (lastMessage.u.username === this.props.user.username) {
-			prefix = 'You: ';
+			prefix = I18n.t('You_colon');
 		}	else if (type !== 'd') {
 			prefix = `${ lastMessage.u.username }: `;
 		}
@@ -234,7 +204,7 @@ export default class RoomItem extends React.Component {
 	}
 
 	formatDate = date => moment(date).calendar(null, {
-		lastDay: '[Yesterday]',
+		lastDay: `[${ I18n.t('Yesterday') }]`,
 		sameDay: 'h:mm A',
 		lastWeek: 'dddd',
 		sameElse: 'MMM D'
@@ -249,17 +219,17 @@ export default class RoomItem extends React.Component {
 
 		let accessibilityLabel = name;
 		if (unread === 1) {
-			accessibilityLabel += `, ${ unread } alert`;
+			accessibilityLabel += `, ${ unread } ${ I18n.t('alert') }`;
 		} else if (unread > 1) {
-			accessibilityLabel += `, ${ unread } alerts`;
+			accessibilityLabel += `, ${ unread } ${ I18n.t('alerts') }`;
 		}
 
 		if (userMentions > 0) {
-			accessibilityLabel += ', you were mentioned';
+			accessibilityLabel += `, ${ I18n.t('you_were_mentioned') }`;
 		}
 
 		if (date) {
-			accessibilityLabel += `, last message ${ date }`;
+			accessibilityLabel += `, ${ I18n.t('last_message') } ${ date }`;
 		}
 
 		return (

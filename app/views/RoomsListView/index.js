@@ -14,6 +14,7 @@ import styles from './styles';
 import debounce from '../../utils/debounce';
 import LoggedView from '../View';
 import log from '../../utils/log';
+import I18n from '../../i18n';
 
 @connect(state => ({
 	user: state.login.user,
@@ -166,7 +167,7 @@ export default class RoomsListView extends LoggedView {
 				style={styles.searchBox}
 				onChangeText={text => this.onSearchChangeText(text)}
 				returnKeyType='search'
-				placeholder='Search'
+				placeholder={I18n.t('Search')}
 				clearButtonMode='while-editing'
 				blurOnSubmit
 				autoCorrect={false}
@@ -213,7 +214,7 @@ export default class RoomsListView extends LoggedView {
 
 	renderCreateButtons = () => (
 		<ActionButton buttonColor='rgba(231,76,60,1)'>
-			<ActionButton.Item buttonColor='#9b59b6' title='Create Channel' onPress={() => { this.createChannel(); }} >
+			<ActionButton.Item buttonColor='#9b59b6' title={I18n.t('Create_Channel')} onPress={() => { this.createChannel(); }} >
 				<Icon name='md-chatbubbles' style={styles.actionButtonIcon} />
 			</ActionButton.Item>
 		</ActionButton>
