@@ -71,7 +71,7 @@ export class List extends React.Component {
 			onEndReachedThreshold={100}
 			renderFooter={this.props.renderFooter}
 			renderHeader={() => <Typing />}
-			onEndReached={() => this.props.onEndReached(this.data)}
+			onEndReached={() => this.props.onEndReached(this.data[this.data.length - 1])}
 			dataSource={this.dataSource}
 			renderRow={(item, previousItem) => this.props.renderRow(item, previousItem)}
 			initialListSize={20}
@@ -127,6 +127,7 @@ export class ListView extends OldList2 {
 
 
 			if (!previousMessage) {
+				bodyComponents.push(<Separator key={message.ts.toISOString()} ts={message.ts} />);
 				continue; // eslint-disable-line
 			}
 
