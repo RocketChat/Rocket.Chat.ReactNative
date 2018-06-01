@@ -17,6 +17,7 @@ import { leaveRoom } from '../../actions/room';
 import { setLoading } from '../../actions/selectedUsers';
 import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
+import I18n from '../../i18n';
 
 const renderSeparator = () => <View style={styles.separator} />;
 const getRoomTitle = room => (room.t === 'd' ? <Text>{room.fname}</Text> : <Text><RoomTypeIcon type={room.t} />&nbsp;{room.name}</Text>);
@@ -158,13 +159,13 @@ export default class RoomActionsView extends LoggedView {
 			data: [
 				{
 					icon: 'ios-call-outline',
-					name: 'Voice call',
+					name: I18n.t('Voice_call'),
 					disabled: true,
 					testID: 'room-actions-voice'
 				},
 				{
 					icon: 'ios-videocam-outline',
-					name: 'Video call',
+					name: I18n.t('Video_call'),
 					disabled: true,
 					testID: 'room-actions-video'
 				}
@@ -174,55 +175,55 @@ export default class RoomActionsView extends LoggedView {
 			data: [
 				{
 					icon: 'ios-attach',
-					name: 'Files',
+					name: I18n.t('Files'),
 					route: 'RoomFiles',
 					params: { rid },
 					testID: 'room-actions-files'
 				},
 				{
 					icon: 'ios-at-outline',
-					name: 'Mentions',
+					name: I18n.t('Mentions'),
 					route: 'MentionedMessages',
 					params: { rid },
 					testID: 'room-actions-mentioned'
 				},
 				{
 					icon: 'ios-star-outline',
-					name: 'Starred',
+					name: I18n.t('Starred'),
 					route: 'StarredMessages',
 					params: { rid },
 					testID: 'room-actions-starred'
 				},
 				{
 					icon: 'ios-search',
-					name: 'Search',
+					name: I18n.t('Search'),
 					route: 'SearchMessages',
 					params: { rid },
 					testID: 'room-actions-search'
 				},
 				{
 					icon: 'ios-share-outline',
-					name: 'Share',
+					name: I18n.t('Share'),
 					disabled: true,
 					testID: 'room-actions-share'
 				},
 				{
 					icon: 'ios-pin',
-					name: 'Pinned',
+					name: I18n.t('Pinned'),
 					route: 'PinnedMessages',
 					params: { rid },
 					testID: 'room-actions-pinned'
 				},
 				{
 					icon: 'ios-code',
-					name: 'Snippets',
+					name: I18n.t('Snippets'),
 					route: 'SnippetedMessages',
 					params: { rid },
 					testID: 'room-actions-snippeted'
 				},
 				{
 					icon: `ios-notifications${ notifications ? '' : '-off' }-outline`,
-					name: `${ notifications ? 'Enable' : 'Disable' } notifications`,
+					name: I18n.t(`${ notifications ? 'Enable' : 'Disable' }_notifications`),
 					event: () => this.toggleNotifications(),
 					testID: 'room-actions-notifications'
 				}
@@ -235,7 +236,7 @@ export default class RoomActionsView extends LoggedView {
 				data: [
 					{
 						icon: 'block',
-						name: `${ blocker ? 'Unblock' : 'Block' } user`,
+						name: I18n.t(`${ blocker ? 'Unblock' : 'Block' }_user`),
 						type: 'danger',
 						event: () => this.toggleBlockUser(),
 						testID: 'room-actions-block-user'
@@ -249,8 +250,10 @@ export default class RoomActionsView extends LoggedView {
 			if (this.canViewMembers) {
 				actions.push({
 					icon: 'ios-people',
-					name: 'Members',
-					description: (onlineMembers.length === 1 ? `${ onlineMembers.length } member` : `${ onlineMembers.length } members`),
+					name: I18n.t('Members'),
+					description: (onlineMembers.length === 1 ?
+						I18n.t('1_online_member') :
+						I18n.t('N_online_members', { n: onlineMembers.length })),
 					route: 'RoomMembers',
 					params: { rid, members: onlineMembers },
 					testID: 'room-actions-members'
@@ -260,7 +263,7 @@ export default class RoomActionsView extends LoggedView {
 			if (this.canAddUser) {
 				actions.push({
 					icon: 'ios-person-add',
-					name: 'Add user',
+					name: I18n.t('Add_user'),
 					route: 'SelectedUsers',
 					params: {
 						nextAction: async() => {
@@ -283,7 +286,7 @@ export default class RoomActionsView extends LoggedView {
 				data: [
 					{
 						icon: 'block',
-						name: 'Leave channel',
+						name: I18n.t('Leave_channel'),
 						type: 'danger',
 						event: () => this.leaveChannel(),
 						testID: 'room-actions-leave-channel'
@@ -308,15 +311,15 @@ export default class RoomActionsView extends LoggedView {
 	leaveChannel = () => {
 		const { room } = this.state;
 		Alert.alert(
-			'Are you sure?',
-			`Are you sure you want to leave the room ${ getRoomTitle(room) }?`,
+			I18n.t('Are_you_sure_question_mark'),
+			I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: room.t === 'd' ? room.fname : room.name }),
 			[
 				{
-					text: 'Cancel',
+					text: I18n.t('Cancel'),
 					style: 'cancel'
 				},
 				{
-					text: 'Yes, leave it!',
+					text: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
 					style: 'destructive',
 					onPress: () => this.props.leaveRoom(room.rid)
 				}

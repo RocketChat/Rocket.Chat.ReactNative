@@ -16,6 +16,7 @@ import Touch from '../../utils/touch';
 
 import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
+import I18n from '../../i18n';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
@@ -56,7 +57,7 @@ export default class RoomInfoView extends LoggedView {
 					onPress={() => navigation.navigate({ key: 'RoomInfoEdit', routeName: 'RoomInfoEdit', params: { rid: navigation.state.params.rid } })}
 					underlayColor='#ffffff'
 					activeOpacity={0.5}
-					accessibilityLabel='edit'
+					accessibilityLabel={I18n.t('edit')}
 					accessibilityTraits='button'
 					testID='room-info-view-edit-button'
 				>
@@ -132,14 +133,14 @@ export default class RoomInfoView extends LoggedView {
 		const [room] = this.rooms;
 		this.setState({ room });
 	}
-	// TODO: translate
+
 	renderItem = (key, room) => (
 		<View style={styles.item}>
-			<Text style={styles.itemLabel}>{camelize(key)}</Text>
+			<Text style={styles.itemLabel}>{I18n.t(camelize(key))}</Text>
 			<Text
 				style={[styles.itemContent, !room[key] && styles.itemContent__empty]}
 				testID={`room-info-view-${ key }`}
-			>{ room[key] ? room[key] : `No ${ key } provided.` }
+			>{ room[key] ? room[key] : I18n.t(`No_${ key }_provided`) }
 			</Text>
 		</View>
 	);
@@ -147,7 +148,7 @@ export default class RoomInfoView extends LoggedView {
 	renderRoles = () => (
 		this.state.roles.length > 0 &&
 		<View style={styles.item}>
-			<Text style={styles.itemLabel}>Roles</Text>
+			<Text style={styles.itemLabel}>{I18n.t('Roles')}</Text>
 			<View style={styles.rolesContainer}>
 				{this.state.roles.map(role => (
 					<View style={styles.roleBadge} key={role}>
@@ -168,7 +169,7 @@ export default class RoomInfoView extends LoggedView {
 			// TODO: translate
 			return (
 				<View style={styles.item}>
-					<Text style={styles.itemLabel}>Timezone</Text>
+					<Text style={styles.itemLabel}>{I18n.t('Timezone')}</Text>
 					<Text style={styles.itemContent}>{moment().utcOffset(utcOffset).format(this.props.Message_TimeFormat)} (UTC { utcOffset })</Text>
 				</View>
 			);
@@ -189,11 +190,11 @@ export default class RoomInfoView extends LoggedView {
 
 	renderBroadcast = () => (
 		<View style={styles.item}>
-			<Text style={styles.itemLabel}>Broadcast Channel</Text>
+			<Text style={styles.itemLabel}>{I18n.t('Broadcast_Channel')}</Text>
 			<Text
 				style={styles.itemContent}
 				testID='room-info-view-broadcast'
-			>Only authorized users can write new messages, but the other users will be able to reply
+			>{I18n.t('Broadcast_channel_Description')}
 			</Text>
 		</View>
 	)

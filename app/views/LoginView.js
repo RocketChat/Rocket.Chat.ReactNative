@@ -15,6 +15,7 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { showToast } from '../utils/info';
 import { COLOR_BUTTON_PRIMARY } from '../constants/colors';
 import LoggedView from './View';
+import I18n from '../i18n';
 
 @connect(state => ({
 	server: state.server.server,
@@ -44,7 +45,7 @@ export default class LoginView extends LoggedView {
 	submit = async() => {
 		const {	username, password, code } = this.state;
 		if (username.trim() === '' || password.trim() === '') {
-			showToast('Email or password field is empty');
+			showToast(I18n.t('Email_or_password_field_is_empty'));
 			return;
 		}
 		Keyboard.dismiss();
@@ -62,9 +63,9 @@ export default class LoginView extends LoggedView {
 			return (
 				<TextInput
 					inputRef={ref => this.codeInput = ref}
-					label='Code'
+					label={I18n.t('Code')}
 					onChangeText={code => this.setState({ code })}
-					placeholder='Code'
+					placeholder={I18n.t('Code')}
 					keyboardType='numeric'
 					returnKeyType='done'
 					autoCapitalize='none'
@@ -87,8 +88,8 @@ export default class LoginView extends LoggedView {
 						<CloseModalButton navigation={this.props.navigation} />
 						<Text style={[styles.loginText, styles.loginTitle]}>Login</Text>
 						<TextInput
-							label='Username'
-							placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || 'Username'}
+							label={I18n.t('Username')}
+							placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || I18n.t('Username')}
 							keyboardType='email-address'
 							returnKeyType='next'
 							iconLeft='at'
@@ -99,8 +100,8 @@ export default class LoginView extends LoggedView {
 
 						<TextInput
 							inputRef={(e) => { this.password = e; }}
-							label='Password'
-							placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
+							label={I18n.t('Password')}
+							placeholder={this.props.Accounts_PasswordPlaceholder || I18n.t('Password')}
 							returnKeyType='done'
 							iconLeft='key-variant'
 							secureTextEntry
@@ -113,7 +114,7 @@ export default class LoginView extends LoggedView {
 
 						<View style={styles.alignItemsFlexStart}>
 							<Button
-								title='Login'
+								title={I18n.t('Login')}
 								type='primary'
 								onPress={this.submit}
 								testID='login-view-submit'
@@ -122,15 +123,15 @@ export default class LoginView extends LoggedView {
 								style={[styles.loginText, { marginTop: 10 }]}
 								testID='login-view-register'
 								onPress={() => this.props.navigation.navigate('Register')}
-							>New in Rocket.Chat? &nbsp;
-								<Text style={{ color: COLOR_BUTTON_PRIMARY }}>Sign Up
+							>{I18n.t('New_in_RocketChat_question_mark')} &nbsp;
+								<Text style={{ color: COLOR_BUTTON_PRIMARY }}>{I18n.t('Sign_Up')}
 								</Text>
 							</Text>
 							<Text
 								style={[styles.loginText, { marginTop: 20, fontSize: 13 }]}
 								onPress={() => this.props.navigation.navigate('ForgotPassword')}
 								testID='login-view-forgot-password'
-							>Forgot password
+							>{I18n.t('Forgot_password')}
 							</Text>
 						</View>
 

@@ -8,6 +8,7 @@ import { openMentionedMessages, closeMentionedMessages } from '../../actions/men
 import styles from './styles';
 import Message from '../../containers/message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
+import I18n from '../../i18n';
 
 @connect(
 	state => ({
@@ -74,7 +75,7 @@ export default class MentionedMessagesView extends LoggedView {
 
 	renderEmpty = () => (
 		<View style={styles.listEmptyContainer} testID='mentioned-messages-view'>
-			<Text>No mentioned messages</Text>
+			<Text>{I18n.t('No_mentioned_messages')}</Text>
 		</View>
 	)
 

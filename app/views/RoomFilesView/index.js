@@ -8,6 +8,7 @@ import { openRoomFiles, closeRoomFiles } from '../../actions/roomFiles';
 import styles from './styles';
 import Message from '../../containers/message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
+import I18n from '../../i18n';
 
 @connect(
 	state => ({
@@ -74,7 +75,7 @@ export default class RoomFilesView extends LoggedView {
 
 	renderEmpty = () => (
 		<View style={styles.listEmptyContainer} testID='room-files-view'>
-			<Text>No files</Text>
+			<Text>{I18n.t('No_files')}</Text>
 		</View>
 	)
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import I18n from '../../i18n';
 
 const styles = StyleSheet.create({
 	container: {
@@ -36,7 +37,7 @@ const DateSeparator = ({ ts, unread }) => {
 			<View style={styles.container}>
 				<Text style={[styles.text, styles.unreadText]}>{date}</Text>
 				<View style={[styles.line, styles.unreadLine]} />
-				<Text style={[styles.text, styles.unreadText]}>unread messages</Text>
+				<Text style={[styles.text, styles.unreadText]}>{I18n.t('unread_messages')}</Text>
 			</View>
 		);
 	}
@@ -52,7 +53,7 @@ const DateSeparator = ({ ts, unread }) => {
 	return (
 		<View style={styles.container}>
 			<View style={[styles.line, styles.unreadLine]} />
-			<Text style={[styles.text, styles.unreadText]}>unread messages</Text>
+			<Text style={[styles.text, styles.unreadText]}>{I18n.t('unread_messages')}</Text>
 		</View>
 	);
 };
