@@ -277,7 +277,6 @@ workflows:
                 - beta
                 - develop
                 - master
-                - universal-links
       # - ios-testflight:
       #     requires:
       #       - ios-hold-testflight
