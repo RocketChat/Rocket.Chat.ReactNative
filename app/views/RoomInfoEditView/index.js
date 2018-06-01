@@ -17,6 +17,7 @@ import Loading from '../../containers/Loading';
 import SwitchContainer from './SwitchContainer';
 import random from '../../utils/random';
 import log from '../../utils/log';
+import I18n from '../../i18n';
 
 const PERMISSION_SET_READONLY = 'set-readonly';
 const PERMISSION_SET_REACT_WHEN_READONLY = 'set-react-when-readonly';
@@ -133,7 +134,7 @@ export default class RoomInfoEditView extends LoggedView {
 		let error = false;
 
 		if (!this.formIsChanged()) {
-			showErrorAlert('Nothing to save!');
+			showErrorAlert(I18n.t('Nothing_to_save'));
 			return;
 		}
 
@@ -189,24 +190,24 @@ export default class RoomInfoEditView extends LoggedView {
 		await this.setState({ saving: false });
 		setTimeout(() => {
 			if (error) {
-				showErrorAlert('There was an error while saving settings!');
+				showErrorAlert(I18n.t('There_was_an_error_while_saving_settings'));
 			} else {
-				showToast('Settings succesfully changed!');
+				showToast(I18n.t('Settings_succesfully_changed'));
 			}
 		}, 100);
 	}
 
 	delete = () => {
 		Alert.alert(
-			'Are you sure?',
-			'Deleting a room will delete all messages posted within the room. This cannot be undone.',
+			I18n.t('Are_you_sure_question_mark'),
+			I18n.t('Delete_Room_Warning'),
 			[
 				{
-					text: 'Cancel',
+					text: I18n.t('Cancel'),
 					style: 'cancel'
 				},
 				{
-					text: 'Yes, delete it!',
+					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
 					onPress: () => this.props.eraseRoom(this.state.room.rid)
 				}
@@ -217,17 +218,17 @@ export default class RoomInfoEditView extends LoggedView {
 
 	toggleArchive = () => {
 		const { archived } = this.state.room;
-		const action = `${ archived ? 'un' : '' }archive`;
+		const action = I18n.t(`${ archived ? 'un' : '' }archive`);
 		Alert.alert(
-			'Are you sure?',
-			`Do you really want to ${ action } this room?`,
+			I18n.t('Are_you_sure_question_mark'),
+			I18n.t('Do_you_really_want_to_key_this_room_question_mark', { key: action }),
 			[
 				{
-					text: 'Cancel',
+					text: I18n.t('Cancel'),
 					style: 'cancel'
 				},
 				{
-					text: `Yes, ${ action } it!`,
+					text: I18n.t('Yes_action_it', { action }),
 					style: 'destructive',
 					onPress: () => {
 						try {
@@ -268,7 +269,7 @@ export default class RoomInfoEditView extends LoggedView {
 						<View style={sharedStyles.formContainer}>
 							<RCTextInput
 								inputRef={(e) => { this.name = e; }}
-								label='Name'
+								label={I18n.t('Name')}
 								value={name}
 								onChangeText={value => this.setState({ name: value })}
 								onSubmitEditing={() => { this.description.focus(); }}
@@ -277,7 +278,7 @@ export default class RoomInfoEditView extends LoggedView {
 							/>
 							<RCTextInput
 								inputRef={(e) => { this.description = e; }}
-								label='Description'
+								label={I18n.t('Description')}
 								value={description}
 								onChangeText={value => this.setState({ description: value })}
 								onSubmitEditing={() => { this.topic.focus(); }}
@@ -285,7 +286,7 @@ export default class RoomInfoEditView extends LoggedView {
 							/>
 							<RCTextInput
 								inputRef={(e) => { this.topic = e; }}
-								label='Topic'
+								label={I18n.t('Topic')}
 								value={topic}
 								onChangeText={value => this.setState({ topic: value })}
 								onSubmitEditing={() => { this.announcement.focus(); }}
@@ -293,7 +294,7 @@ export default class RoomInfoEditView extends LoggedView {
 							/>
 							<RCTextInput
 								inputRef={(e) => { this.announcement = e; }}
-								label='Announcement'
+								label={I18n.t('Announcement')}
 								value={announcement}
 								onChangeText={value => this.setState({ announcement: value })}
 								onSubmitEditing={() => { this.joinCode.focus(); }}
@@ -301,7 +302,7 @@ export default class RoomInfoEditView extends LoggedView {
 							/>
 							<RCTextInput
 								inputRef={(e) => { this.joinCode = e; }}
-								label='Password'
+								label={I18n.t('Password')}
 								value={joinCode}
 								onChangeText={value => this.setState({ joinCode: value })}
 								onSubmitEditing={this.submit}
@@ -310,19 +311,19 @@ export default class RoomInfoEditView extends LoggedView {
 							/>
 							<SwitchContainer
 								value={t}
-								leftLabelPrimary='Public'
-								leftLabelSecondary='Everyone can access this channel'
-								rightLabelPrimary='Private'
-								rightLabelSecondary='Just invited people can access this channel'
+								leftLabelPrimary={I18n.t('Public')}
+								leftLabelSecondary={I18n.t('Everyone_can_access_this_channel')}
+								rightLabelPrimary={I18n.t('Private')}
+								rightLabelSecondary={I18n.t('Just_invited_people_can_access_this_channel')}
 								onValueChange={value => this.setState({ t: value })}
 								testID='room-info-edit-view-t'
 							/>
 							<SwitchContainer
 								value={ro}
-								leftLabelPrimary='Colaborative'
-								leftLabelSecondary='All users in the channel can write new messages'
-								rightLabelPrimary='Read Only'
-								rightLabelSecondary='Only authorized users can write new messages'
+								leftLabelPrimary={I18n.t('Colaborative')}
+								leftLabelSecondary={I18n.t('All_users_in_the_channel_can_write_new_messages')}
+								rightLabelPrimary={I18n.t('Read_Only')}
+								rightLabelSecondary={I18n.t('Only_authorized_users_can_write_new_messages')}
 								onValueChange={value => this.setState({ ro: value })}
 								disabled={!this.permissions[PERMISSION_SET_READONLY] || room.broadcast}
 								testID='room-info-edit-view-ro'
@@ -330,10 +331,10 @@ export default class RoomInfoEditView extends LoggedView {
 							{ro && !room.broadcast &&
 								<SwitchContainer
 									value={reactWhenReadOnly}
-									leftLabelPrimary='No Reactions'
-									leftLabelSecondary='Reactions are disabled'
-									rightLabelPrimary='Allow Reactions'
-									rightLabelSecondary='Reactions are enabled'
+									leftLabelPrimary={I18n.t('No_Reactions')}
+									leftLabelSecondary={I18n.t('Reactions_are_disabled')}
+									rightLabelPrimary={I18n.t('Allow_Reactions')}
+									rightLabelSecondary={I18n.t('Reactions_are_enabled')}
 									onValueChange={value => this.setState({ reactWhenReadOnly: value })}
 									disabled={!this.permissions[PERMISSION_SET_REACT_WHEN_READONLY]}
 									testID='room-info-edit-view-react-when-ro'
@@ -341,7 +342,7 @@ export default class RoomInfoEditView extends LoggedView {
 							}
 							{room.broadcast &&
 								[
-									<Text style={styles.broadcast}>Broadcast channel</Text>,
+									<Text style={styles.broadcast}>{I18n.t('Broadcast_Channel')}</Text>,
 									<View style={styles.divider} />
 								]
 							}
@@ -351,7 +352,7 @@ export default class RoomInfoEditView extends LoggedView {
 								disabled={!this.formIsChanged()}
 								testID='room-info-edit-view-submit'
 							>
-								<Text style={sharedStyles.button} accessibilityTraits='button'>SAVE</Text>
+								<Text style={sharedStyles.button} accessibilityTraits='button'>{I18n.t('SAVE')}</Text>
 							</TouchableOpacity>
 							<View style={{ flexDirection: 'row' }}>
 								<TouchableOpacity
@@ -359,7 +360,7 @@ export default class RoomInfoEditView extends LoggedView {
 									onPress={this.reset}
 									testID='room-info-edit-view-reset'
 								>
-									<Text style={sharedStyles.button_inverted} accessibilityTraits='button'>RESET</Text>
+									<Text style={sharedStyles.button_inverted} accessibilityTraits='button'>{I18n.t('RESET')}</Text>
 								</TouchableOpacity>
 								<TouchableOpacity
 									style={[
@@ -373,7 +374,7 @@ export default class RoomInfoEditView extends LoggedView {
 									testID='room-info-edit-view-archive'
 								>
 									<Text style={[sharedStyles.button_inverted, styles.colorDanger]} accessibilityTraits='button'>
-										{ room.archived ? 'UNARCHIVE' : 'ARCHIVE' }
+										{ room.archived ? I18n.t('UNARCHIVE') : I18n.t('ARCHIVE') }
 									</Text>
 								</TouchableOpacity>
 							</View>
@@ -389,7 +390,7 @@ export default class RoomInfoEditView extends LoggedView {
 								disabled={!this.hasDeletePermission()}
 								testID='room-info-edit-view-delete'
 							>
-								<Text style={[sharedStyles.button_inverted, styles.colorDanger]} accessibilityTraits='button'>DELETE</Text>
+								<Text style={[sharedStyles.button_inverted, styles.colorDanger]} accessibilityTraits='button'>{I18n.t('DELETE')}</Text>
 							</TouchableOpacity>
 						</View>
 						<Loading visible={this.state.saving} />

@@ -7,6 +7,7 @@ import { DrawerActions } from 'react-navigation';
 import database from '../lib/realm';
 import { setServer } from '../actions/server';
 import { logout } from '../actions/login';
+import I18n from '../i18n';
 
 const styles = StyleSheet.create({
 	scrollView: {
@@ -115,9 +116,7 @@ export default class Sidebar extends Component {
 						testID='sidebar-logout'
 					>
 						<View style={styles.serverItem}>
-							<Text>
-								Logout
-							</Text>
+							<Text>{I18n.t('Logout')}</Text>
 						</View>
 					</TouchableHighlight>
 					<TouchableHighlight
@@ -128,9 +127,7 @@ export default class Sidebar extends Component {
 						testID='sidebar-add-server'
 					>
 						<View style={styles.serverItem}>
-							<Text>
-								Add Server
-							</Text>
+							<Text>{I18n.t('Add_Server')}</Text>
 						</View>
 					</TouchableHighlight>
 				</View>

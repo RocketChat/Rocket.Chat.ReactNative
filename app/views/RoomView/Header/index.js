@@ -11,28 +11,28 @@ import Avatar from '../../../containers/Avatar';
 import { STATUS_COLORS } from '../../../constants/colors';
 import styles from './styles';
 import { closeRoom } from '../../../actions/room';
-
 import log from '../../../utils/log';
 import RoomTypeIcon from '../../../containers/RoomTypeIcon';
+import I18n from '../../../i18n';
 
 const title = (offline, connecting, authenticating, logged) => {
 	if (offline) {
-		return 'You are offline...';
+		return `${ I18n.t('You_are_offline') }...`;
 	}
 
 	if (connecting) {
-		return 'Connecting...';
+		return `${ I18n.t('Connecting') }...`;
 	}
 
 	if (authenticating) {
-		return 'Authenticating...';
+		return `${ I18n.t('Authenticating') }...`;
 	}
 
 	if (logged) {
 		return null;
 	}
 
-	return 'Not logged...';
+	return `${ I18n.t('Not_logged') }...`;
 };
 
 @connect(state => ({
@@ -87,7 +87,7 @@ export default class RoomHeaderView extends React.PureComponent {
 
 	getUserStatusLabel() {
 		const status = this.getUserStatus();
-		return status.charAt(0).toUpperCase() + status.slice(1);
+		return I18n.t(status.charAt(0).toUpperCase() + status.slice(1));
 	}
 
 	updateState = () => {
@@ -104,7 +104,7 @@ export default class RoomHeaderView extends React.PureComponent {
 			requestAnimationFrame(() => this.props.close());
 		}}
 		tintColor='#292E35'
-		title='Back'
+		title={I18n.t('Back')}
 		titleStyle={{ display: 'none' }}
 	/>);
 
@@ -124,7 +124,7 @@ export default class RoomHeaderView extends React.PureComponent {
 
 		let t = '';
 		if (!title(offline, connecting, authenticating, logged) && loading) {
-			t = 'Loading messages...';
+			t = I18n.t('Loading_messages_ellipsis');
 		} else if (this.isDirect()) {
 			t = this.getUserStatusLabel();
 		} else {
@@ -177,7 +177,7 @@ export default class RoomHeaderView extends React.PureComponent {
 						log('toggleFavorite', e);
 					}
 				}}
-				accessibilityLabel='Star room'
+				accessibilityLabel={I18n.t('Star_room')}
 				accessibilityTraits='button'
 				testID='room-view-header-star'
 			>
@@ -191,7 +191,7 @@ export default class RoomHeaderView extends React.PureComponent {
 			<TouchableOpacity
 				style={styles.headerButton}
 				onPress={() => this.props.navigation.navigate({ key: 'RoomActions', routeName: 'RoomActions', params: { rid: this.state.room.rid } })}
-				accessibilityLabel='Room actions'
+				accessibilityLabel={I18n.t('Room_actions')}
 				accessibilityTraits='button'
 				testID='room-view-header-actions'
 			>

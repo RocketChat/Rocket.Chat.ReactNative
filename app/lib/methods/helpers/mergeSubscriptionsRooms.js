@@ -2,7 +2,6 @@ import normalizeMessage from './normalizeMessage';
 // TODO: delete and update
 
 export const merge = (subscription, room) => {
-	subscription.muted = [];
 	if (room) {
 		if (room.rid) {
 			subscription.rid = room.rid;
@@ -19,7 +18,9 @@ export const merge = (subscription, room) => {
 		subscription.broadcast = room.broadcast;
 
 		if (room.muted && room.muted.length) {
-			subscription.muted = room.muted.filter(user => user).map(user => ({ value: user }));
+			subscription.muted = room.muted.map(user => ({ value: user }));
+		} else {
+			subscription.muted = [];
 		}
 	}
 	if (subscription.roles && subscription.roles.length) {

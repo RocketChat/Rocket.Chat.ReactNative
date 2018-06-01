@@ -12,6 +12,7 @@ import Avatar from '../containers/Avatar';
 import Loading from '../containers/Loading';
 import debounce from '../utils/debounce';
 import LoggedView from './View';
+import I18n from '../i18n';
 
 const styles = StyleSheet.create({
 	container: {
@@ -101,7 +102,7 @@ export default class SelectedUsersView extends LoggedView {
 							justifyContent: 'center'
 						}}
 						onPress={() => params.nextAction()}
-						accessibilityLabel='Submit'
+						accessibilityLabel={I18n.t('Submit')}
 						accessibilityTraits='button'
 						testID='selected-users-view-submit'
 					>
@@ -227,7 +228,7 @@ export default class SelectedUsersView extends LoggedView {
 				style={styles.searchBox}
 				onChangeText={text => this.onSearchChangeText(text)}
 				returnKeyType='search'
-				placeholder='Search'
+				placeholder={I18n.t('Search')}
 				clearButtonMode='while-editing'
 				blurOnSubmit
 				testID='select-users-view-search'

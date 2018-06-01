@@ -19,6 +19,7 @@ import { emojis } from '../../emojis';
 import Recording from './Recording';
 import './EmojiKeyboard';
 import log from '../../utils/log';
+import I18n from '../../i18n';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
@@ -107,7 +108,7 @@ export default class MessageBox extends React.PureComponent {
 			return (<Icon
 				style={styles.actionButtons}
 				name='close'
-				accessibilityLabel='Cancel editing'
+				accessibilityLabel={I18n.t('Cancel_editing')}
 				accessibilityTraits='button'
 				onPress={() => this.editCancel()}
 				testID='messagebox-cancel-editing'
@@ -116,14 +117,14 @@ export default class MessageBox extends React.PureComponent {
 		return !this.state.showEmojiKeyboard ? (<Icon
 			style={styles.actionButtons}
 			onPress={() => this.openEmoji()}
-			accessibilityLabel='Open emoji selector'
+			accessibilityLabel={I18n.t('Open_emoji_selector')}
 			accessibilityTraits='button'
 			name='mood'
 			testID='messagebox-open-emoji'
 		/>) : (<Icon
 			onPress={() => this.closeEmoji()}
 			style={styles.actionButtons}
-			accessibilityLabel='Close emoji selector'
+			accessibilityLabel={I18n.t('Close_emoji_selector')}
 			accessibilityTraits='button'
 			name='keyboard'
 			testID='messagebox-close-emoji'
@@ -137,7 +138,7 @@ export default class MessageBox extends React.PureComponent {
 				style={[styles.actionButtons, { color: '#1D74F5' }]}
 				name='send'
 				key='sendIcon'
-				accessibilityLabel='Send message'
+				accessibilityLabel={I18n.t('Send message')}
 				accessibilityTraits='button'
 				onPress={() => this.submit(this.state.text)}
 				testID='messagebox-send-message'
@@ -148,7 +149,7 @@ export default class MessageBox extends React.PureComponent {
 			style={[styles.actionButtons, { color: '#1D74F5', paddingHorizontal: 10 }]}
 			name='mic'
 			key='micIcon'
-			accessibilityLabel='Send audio message'
+			accessibilityLabel={I18n.t('Send audio message')}
 			accessibilityTraits='button'
 			onPress={() => this.recordAudioMessage()}
 			testID='messagebox-send-audio'
@@ -157,7 +158,7 @@ export default class MessageBox extends React.PureComponent {
 			style={[styles.actionButtons, { color: '#2F343D', fontSize: 16 }]}
 			name='plus'
 			key='fileIcon'
-			accessibilityLabel='Message actions'
+			accessibilityLabel={I18n.t('Message actions')}
 			accessibilityTraits='button'
 			onPress={() => this.addFile()}
 			testID='messagebox-actions'
@@ -169,18 +170,13 @@ export default class MessageBox extends React.PureComponent {
 		const options = {
 			maxHeight: 1960,
 			maxWidth: 1960,
-			quality: 0.8,
-			customButtons: [{
-				name: 'import', title: 'Import File From'
-			}]
+			quality: 0.8
 		};
 		ImagePicker.showImagePicker(options, (response) => {
 			if (response.didCancel) {
 				console.warn('User cancelled image picker');
 			} else if (response.error) {
 				log('ImagePicker Error', response.error);
-			} else if (response.customButton) {
-				console.warn('User tapped custom button: ', response.customButton);
 			} else {
 				const fileInfo = {
 					name: response.fileName,
@@ -250,10 +246,10 @@ export default class MessageBox extends React.PureComponent {
 
 	_getFixedMentions(keyword) {
 		if ('all'.indexOf(keyword) !== -1) {
-			this.users = [{ _id: -1, username: 'all', desc: 'all' }, ...this.users];
+			this.users = [{ _id: -1, username: 'all' }, ...this.users];
 		}
 		if ('here'.indexOf(keyword) !== -1) {
-			this.users = [{ _id: -2, username: 'here', desc: 'active users' }, ...this.users];
+			this.users = [{ _id: -2, username: 'here' }, ...this.users];
 		}
 	}
 
@@ -419,7 +415,7 @@ export default class MessageBox extends React.PureComponent {
 			onPress={() => this._onPressMention(item)}
 		>
 			<Text style={styles.fixedMentionAvatar}>{item.username}</Text>
-			<Text>Notify {item.desc} in this room</Text>
+			<Text>{item.username === 'here' ? I18n.t('Notify_active_in_this_room') : I18n.t('Notify_all_in_this_room')}</Text>
 		</TouchableOpacity>
 	)
 	renderMentionEmoji = (item) => {
@@ -507,7 +503,7 @@ export default class MessageBox extends React.PureComponent {
 						returnKeyType='default'
 						keyboardType='twitter'
 						blurOnSubmit={false}
-						placeholder='New Message'
+						placeholder={I18n.t('New_Message')}
 						onChangeText={text => this.onChangeText(text)}
 						value={this.state.text}
 						underlineColorAndroid='transparent'

@@ -5,6 +5,7 @@ import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 import Emoji from './Emoji';
+import I18n from '../../i18n';
 
 const styles = StyleSheet.create({
 	titleContainer: {
@@ -68,11 +69,11 @@ export default class ReactionsModal extends React.PureComponent {
 	renderItem = (item) => {
 		const count = item.usernames.length;
 		let usernames = item.usernames.slice(0, 3)
-			.map(username => (username.value === this.props.user.username ? 'you' : username.value)).join(', ');
+			.map(username => (username.value === this.props.user.username ? I18n.t('you') : username.value)).join(', ');
 		if (count > 3) {
-			usernames = `${ usernames } and more ${ count - 3 }`;
+			usernames = `${ usernames } ${ I18n.t('and_more') } ${ count - 3 }`;
 		} else {
-			usernames = usernames.replace(/,(?=[^,]*$)/, ' and');
+			usernames = usernames.replace(/,(?=[^,]*$)/, ` ${ I18n.t('and') }`);
 		}
 		return (
 			<View style={styles.itemContainer}>
@@ -86,7 +87,7 @@ export default class ReactionsModal extends React.PureComponent {
 				</View>
 				<View style={styles.peopleItemContainer}>
 					<Text style={styles.reactCount}>
-						{count === 1 ? '1 person' : `${ count } people`} reacted
+						{count === 1 ? I18n.t('1_person_reacted') : I18n.t('N_people_reacted', { n: count })}
 					</Text>
 					<Text style={styles.peopleReacted}>{ usernames }</Text>
 				</View>
@@ -113,7 +114,7 @@ export default class ReactionsModal extends React.PureComponent {
 							size={20}
 							onPress={onClose}
 						/>
-						<Text style={styles.title}>Reactions</Text>
+						<Text style={styles.title}>{I18n.t('Reactions')}</Text>
 					</View>
 				</TouchableWithoutFeedback>
 				<View style={styles.listContainer}>

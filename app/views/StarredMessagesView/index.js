@@ -10,10 +10,11 @@ import styles from './styles';
 import Message from '../../containers/message';
 import { toggleStarRequest } from '../../actions/messages';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
+import I18n from '../../i18n';
 
 const STAR_INDEX = 0;
 const CANCEL_INDEX = 1;
-const options = ['Unstar', 'Cancel'];
+const options = [I18n.t('Unstar'), I18n.t('Cancel')];
 
 @connect(
 	state => ({
@@ -98,7 +99,7 @@ export default class StarredMessagesView extends LoggedView {
 
 	renderEmpty = () => (
 		<View style={styles.listEmptyContainer} testID='starred-messages-view'>
-			<Text>No starred messages</Text>
+			<Text>{I18n.t('No_starred_messages')}</Text>
 		</View>
 	)
 
@@ -138,7 +139,7 @@ export default class StarredMessagesView extends LoggedView {
 				<ActionSheet
 					key='starred-messages-view-action-sheet'
 					ref={o => this.actionSheet = o}
-					title='Actions'
+					title={I18n.t('Actions')}
 					options={options}
 					cancelButtonIndex={CANCEL_INDEX}
 					onPress={this.handleActionPress}
