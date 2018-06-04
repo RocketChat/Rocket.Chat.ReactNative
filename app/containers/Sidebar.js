@@ -15,6 +15,7 @@ import Touch from '../utils/touch';
 import { STATUS_COLORS } from '../constants/colors';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
+import I18n from '../i18n';
 
 const styles = StyleSheet.create({
 	selected: {
@@ -72,6 +73,9 @@ const styles = StyleSheet.create({
 		width: 12,
 		height: 12,
 		marginRight: 5
+	},
+	currentServerText: {
+		fontWeight: 'bold'
 	}
 });
 const keyExtractor = item => item.id;
@@ -297,7 +301,7 @@ export default class Sidebar extends Component {
 									<Status style={styles.status} id={user.id} />
 									<Text>{user.username}</Text>
 								</View>
-								<Text style={{ fontWeight: 'bold' }}>{server}</Text>
+								<Text style={styles.currentServerText}>{server}</Text>
 							</View>
 							<Icon
 								name={this.state.showServers ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}

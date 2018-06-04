@@ -29,20 +29,6 @@ async function loadMessagesForRoomDDP(...args) {
 		console.warn('loadMessagesForRoomDDP', e);
 		return loadMessagesForRoomRest.call(this, ...args);
 	}
-
-	// }
-	// 	if (cb) {
-	// 		cb({ end: data && data.messages.length < 20 });
-	// 	}
-	// 	return data.message;
-	// }, (err) => {
-	// 	if (err) {
-	// 		if (cb) {
-	// 			cb({ end: true });
-	// 		}
-	// 		return Promise.reject(err);
-	// 	}
-	// });
 }
 
 export default async function loadMessagesForRoom(...args) {
@@ -52,13 +38,14 @@ export default async function loadMessagesForRoom(...args) {
 		try {
 			// eslint-disable-next-line
 			const data = (await (false && this.ddp.status ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args))).map(buildMessage);
-			if (data) {
+			if (data && data.length) {
 				InteractionManager.runAfterInteractions(() => {
 					db.write(() => data.forEach(message => db.create('messages', message, true)));
 					return resolve(data);
 				});
+			} else {
+				return resolve([]);
 			}
-			return resolve([]);
 		} catch (e) {
 			log('loadMessagesForRoom', e);
 			reject(e);

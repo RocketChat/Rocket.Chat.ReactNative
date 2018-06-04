@@ -10,10 +10,11 @@ import styles from './styles';
 import Message from '../../containers/message';
 import { togglePinRequest } from '../../actions/messages';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
+import I18n from '../../i18n';
 
 const PIN_INDEX = 0;
 const CANCEL_INDEX = 1;
-const options = ['Unpin', 'Cancel'];
+const options = [I18n.t('Unpin'), I18n.t('Cancel')];
 
 @connect(
 	state => ({
@@ -98,7 +99,7 @@ export default class PinnedMessagesView extends LoggedView {
 
 	renderEmpty = () => (
 		<View style={styles.listEmptyContainer} testID='pinned-messages-view'>
-			<Text>No pinned messages</Text>
+			<Text>{I18n.t('No_pinned_messages')}</Text>
 		</View>
 	)
 
@@ -138,7 +139,7 @@ export default class PinnedMessagesView extends LoggedView {
 				<ActionSheet
 					key='pinned-messages-view-action-sheet'
 					ref={o => this.actionSheet = o}
-					title='Actions'
+					title={I18n.t('Actions')}
 					options={options}
 					cancelButtonIndex={CANCEL_INDEX}
 					onPress={this.handleActionPress}

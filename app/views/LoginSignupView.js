@@ -15,6 +15,7 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import random from '../utils/random';
 import Button from '../containers/Button';
 import Loading from '../containers/Loading';
+import I18n from '../i18n';
 
 const userAgentAndroid = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1';
 const userAgent = Platform.OS === 'ios' ? 'UserAgent' : userAgentAndroid;
@@ -205,7 +206,7 @@ export default class LoginSignupView extends LoggedView {
 		return (
 			<View style={styles.servicesContainer}>
 				<Text style={styles.servicesTitle}>
-					Or continue using Social accounts
+					{I18n.t('Or_continue_using_social_accounts')}
 				</Text>
 				<View style={sharedStyles.loginOAuthButtons} key='services'>
 					{this.props.Accounts_OAuth_Facebook && this.props.services.facebook &&
@@ -284,20 +285,20 @@ export default class LoginSignupView extends LoggedView {
 								style={sharedStyles.loginLogo}
 								resizeMode='center'
 							/>
-							<Text style={[sharedStyles.loginText, styles.header, { color: '#81848A' }]}>Prepare to take off with</Text>
-							<Text style={[sharedStyles.loginText, styles.header]}>the ultimate chat platform</Text>
+							<Text style={[sharedStyles.loginText, styles.header, { color: '#81848A' }]}>{I18n.t('Welcome_title_pt_1')}</Text>
+							<Text style={[sharedStyles.loginText, styles.header]}>{I18n.t('Welcome_title_pt_2')}</Text>
 							<Image
 								style={styles.planetImage}
 								source={require('../static/images/planet.png')}
 							/>
 							<Button
-								title='I have an account'
+								title={I18n.t('I_have_an_account')}
 								type='primary'
 								onPress={() => this.props.navigation.navigate({ key: 'Login', routeName: 'Login' })}
 								testID='welcome-view-login'
 							/>
 							<Button
-								title='Create account'
+								title={I18n.t('Create_account')}
 								type='secondary'
 								onPress={() => this.props.navigation.navigate({ key: 'Register', routeName: 'Register' })}
 								testID='welcome-view-register'

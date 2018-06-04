@@ -12,6 +12,7 @@ import { setServer } from '../actions/server';
 import database from '../lib/realm';
 import Fade from '../animations/fade';
 import Touch from '../utils/touch';
+import I18n from '../i18n';
 
 const styles = StyleSheet.create({
 	view: {
@@ -141,7 +142,7 @@ class ListServerView extends LoggedView {
 
 	getState = () => {
 		const sections = [{
-			title: 'My servers',
+			title: I18n.t('My_servers'),
 			data: this.data
 		}];
 		//

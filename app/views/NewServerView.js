@@ -11,6 +11,7 @@ import Button from '../containers/Button';
 import TextInput from '../containers/TextInput';
 import Loading from '../containers/Loading';
 import LoggedView from './View';
+import I18n from '../i18n';
 
 @connect(state => ({
 	validInstance: !state.server.failure && !state.server.connecting,
@@ -81,7 +82,7 @@ export default class NewServerView extends LoggedView {
 		if (this.props.validating) {
 			return (
 				<Text style={[styles.validateText, styles.validatingText]}>
-					Validating {this.state.text || 'open'} ...
+					{I18n.t('Validating')} {this.state.text || 'open'} ...
 				</Text>
 			);
 		}
@@ -89,13 +90,13 @@ export default class NewServerView extends LoggedView {
 		if (this.props.validInstance) {
 			return (
 				<Text style={[styles.validateText, styles.validText]}>
-					{this.state.url} is a valid Rocket.Chat instance
+					{this.state.url} {I18n.t('is_a_valid_RocketChat_instance')}
 				</Text>
 			);
 		}
 		return (
 			<Text style={[styles.validateText, styles.invalidText]}>
-				{this.state.url} is not a valid Rocket.Chat instance
+				{this.state.url} {I18n.t('is_not_a_valid_RocketChat_instance')}
 			</Text>
 		);
 	}
@@ -109,11 +110,11 @@ export default class NewServerView extends LoggedView {
 			>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
 					<SafeAreaView testID='new-server-view'>
-						<Text style={[styles.loginText, styles.loginTitle]}>Sign in your server</Text>
+						<Text style={[styles.loginText, styles.loginTitle]}>{I18n.t('Sign_in_your_server')}</Text>
 						<TextInput
 							inputRef={e => this.input = e}
 							containerStyle={{ marginBottom: 5 }}
-							label='Your server'
+							label={I18n.t('Your_server')}
 							placeholder={this.state.defaultServer}
 							returnKeyType='done'
 							onChangeText={this.onChangeText}
@@ -123,7 +124,7 @@ export default class NewServerView extends LoggedView {
 						{this.renderValidation()}
 						<View style={[styles.alignItemsFlexStart, { marginTop: 20 }]}>
 							<Button
-								title='Connect'
+								title={I18n.t('Connect')}
 								type='primary'
 								onPress={this.submit}
 								disabled={!validInstance}

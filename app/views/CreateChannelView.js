@@ -11,6 +11,7 @@ import styles from './Styles';
 import KeyboardView from '../presentation/KeyboardView';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import Button from '../containers/Button';
+import I18n from '../i18n';
 
 @connect(
 	state => ({
@@ -22,9 +23,6 @@ import Button from '../containers/Button';
 	})
 )
 export default class CreateChannelView extends LoggedView {
-	static navigationOptions = () => ({
-		title: 'Create a New Channel'
-	});
 	static propTypes = {
 		create: PropTypes.func.isRequired,
 		createChannel: PropTypes.object.isRequired,
@@ -99,8 +97,8 @@ export default class CreateChannelView extends LoggedView {
 		return this.renderSwitch({
 			id: 'type',
 			value: type,
-			label: type ? 'Private Channel' : 'Public Channel',
-			description: type ? 'Just invited people can access this channel' : 'Everyone can access this channel',
+			label: type ? I18n.t('Private_Channel') : I18n.t('Public_Channel'),
+			description: type ? I18n.t('Just_invited_people_can_access_this_channel') : I18n.t('Everyone_can_access_this_channel'),
 			onValueChange: value => this.setState({ type: value })
 		});
 	}
@@ -110,8 +108,8 @@ export default class CreateChannelView extends LoggedView {
 		return this.renderSwitch({
 			id: 'readonly',
 			value: readOnly,
-			label: 'Read Only Channel',
-			description: readOnly ? 'Only authorized users can write new messages' : 'All users in the channel can write new messages',
+			label: I18n.t('Read_Only_Channel'),
+			description: readOnly ? I18n.t('Only_authorized_users_can_write_new_messages') : I18n.t('All_users_in_the_channel_can_write_new_messages'),
 			onValueChange: value => this.setState({ readOnly: value }),
 			disabled: broadcast
 		});
@@ -122,8 +120,8 @@ export default class CreateChannelView extends LoggedView {
 		return this.renderSwitch({
 			id: 'broadcast',
 			value: broadcast,
-			label: 'Broadcast Channel',
-			description: 'Only authorized users can write new messages, but the other users will be able to reply',
+			label: I18n.t('Broadcast_Channel'),
+			description: I18n.t('Broadcast_channel_Description'),
 			onValueChange: (value) => {
 				this.setState({
 					broadcast: value,
@@ -142,10 +140,10 @@ export default class CreateChannelView extends LoggedView {
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
 					<SafeAreaView testID='create-channel-view'>
 						<RCTextInput
-							label='Channel Name'
+							label={I18n.t('Channel_Name')}
 							value={this.state.channelName}
 							onChangeText={channelName => this.setState({ channelName })}
-							placeholder='Type the channel name here'
+							placeholder={I18n.t('Type_the_channel_name_here')}
 							returnKeyType='done'
 							autoFocus
 							testID='create-channel-name'
@@ -156,7 +154,7 @@ export default class CreateChannelView extends LoggedView {
 						{this.renderBroadcast()}
 						<View style={styles.alignItemsFlexStart}>
 							<Button
-								title='Create'
+								title={I18n.t('Create')}
 								type='primary'
 								onPress={this.submit}
 								disabled={this.state.channelName.length === 0 || this.props.createChannel.isFetching}

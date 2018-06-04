@@ -178,16 +178,16 @@ describe('Room screen', () => {
 		describe('Message', async() => {
 			it('should show message actions', async() => {
 				await element(by.text(`${ data.random }message`)).longPress();
-				await waitFor(element(by.text('Messages actions'))).toBeVisible().withTimeout(5000);
-				await expect(element(by.text('Messages actions'))).toBeVisible();
+				await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
+				await expect(element(by.text('Message actions'))).toBeVisible();
 				await element(by.text('Cancel')).tap();
 				await waitFor(element(by.text('Cancel'))).toBeNotVisible().withTimeout(2000);
 			});
 
 			it('should copy permalink', async() => {
 				await element(by.text(`${ data.random }message`)).longPress();
-				await waitFor(element(by.text('Messages actions'))).toBeVisible().withTimeout(5000);
-				await expect(element(by.text('Messages actions'))).toBeVisible();
+				await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
+				await expect(element(by.text('Message actions'))).toBeVisible();
 				await element(by.text('Copy Permalink')).tap();
 				await expect(element(by.text('Permalink copied to clipboard!'))).toBeVisible();
 				await waitFor(element(by.text('Permalink copied to clipboard!'))).toBeNotVisible().withTimeout(5000);
@@ -197,8 +197,8 @@ describe('Room screen', () => {
 
 			it('should copy message', async() => {
 				await element(by.text(`${ data.random }message`)).longPress();
-				await waitFor(element(by.text('Messages actions'))).toBeVisible().withTimeout(5000);
-				await expect(element(by.text('Messages actions'))).toBeVisible();
+				await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
+				await expect(element(by.text('Message actions'))).toBeVisible();
 				await element(by.text('Copy Message')).tap();
 				await expect(element(by.text('Copied to clipboard!'))).toBeVisible();
 				await waitFor(element(by.text('Copied to clipboard!'))).toBeNotVisible().withTimeout(5000);
@@ -207,10 +207,10 @@ describe('Room screen', () => {
 
 			it('should star message', async() => {
 				await element(by.text(`${ data.random }message`)).longPress();
-				await waitFor(element(by.text('Messages actions'))).toBeVisible().withTimeout(5000);
-				await expect(element(by.text('Messages actions'))).toBeVisible();
+				await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
+				await expect(element(by.text('Message actions'))).toBeVisible();
 				await element(by.text('Star')).tap();
-				await waitFor(element(by.text('Messages actions'))).toBeNotVisible().withTimeout(5000);
+				await waitFor(element(by.text('Message actions'))).toBeNotVisible().withTimeout(5000);
 				await element(by.text(`${ data.random }message`)).longPress();
 				await waitFor(element(by.text('Unstar'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.text('Unstar'))).toBeVisible();
@@ -220,8 +220,8 @@ describe('Room screen', () => {
 
 			it('should react to message', async() => {
 				await element(by.text(`${ data.random }message`)).longPress();
-				await waitFor(element(by.text('Messages actions'))).toBeVisible().withTimeout(5000);
-				await expect(element(by.text('Messages actions'))).toBeVisible();
+				await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
+				await expect(element(by.text('Message actions'))).toBeVisible();
 				await element(by.text('Add Reaction')).tap();
 				await waitFor(element(by.id('reaction-picker'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('reaction-picker'))).toBeVisible();
@@ -254,8 +254,8 @@ describe('Room screen', () => {
 			it('should reply message', async() => {
 				await mockMessage('reply');
 				await element(by.text(`${ data.random }reply`)).longPress();
-				await waitFor(element(by.text('Messages actions'))).toBeVisible().withTimeout(5000);
-				await expect(element(by.text('Messages actions'))).toBeVisible();
+				await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
+				await expect(element(by.text('Message actions'))).toBeVisible();
 				await element(by.text('Reply')).tap();
 				await element(by.id('messagebox-input')).typeText('replied');
 				await element(by.id('messagebox-send-message')).tap();
@@ -265,8 +265,8 @@ describe('Room screen', () => {
 			it('should edit message', async() => {
 				await mockMessage('edit');
 				await element(by.text(`${ data.random }edit`)).longPress();
-				await waitFor(element(by.text('Messages actions'))).toBeVisible().withTimeout(5000);
-				await expect(element(by.text('Messages actions'))).toBeVisible();
+				await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
+				await expect(element(by.text('Message actions'))).toBeVisible();
 				await element(by.text('Edit')).tap();
 				await element(by.id('messagebox-input')).typeText('ed');
 				await element(by.id('messagebox-send-message')).tap();
@@ -277,8 +277,8 @@ describe('Room screen', () => {
 			it('should quote message', async() => {
 				await mockMessage('quote');
 				await element(by.text(`${ data.random }quote`)).longPress();
-				await waitFor(element(by.text('Messages actions'))).toBeVisible().withTimeout(5000);
-				await expect(element(by.text('Messages actions'))).toBeVisible();
+				await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
+				await expect(element(by.text('Message actions'))).toBeVisible();
 				await element(by.text('Quote')).tap();
 				await element(by.id('messagebox-input')).typeText(`${ data.random }quoted`);
 				await element(by.id('messagebox-send-message')).tap();
@@ -287,10 +287,10 @@ describe('Room screen', () => {
 
 			it('should pin message', async() => {
 				await element(by.text(`${ data.random }edited`)).longPress();
-				await waitFor(element(by.text('Messages actions'))).toBeVisible().withTimeout(5000);
-				await expect(element(by.text('Messages actions'))).toBeVisible();
+				await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
+				await expect(element(by.text('Message actions'))).toBeVisible();
 				await element(by.text('Pin')).tap();
-				await waitFor(element(by.text('Messages actions'))).toBeNotVisible().withTimeout(5000);
+				await waitFor(element(by.text('Message actions'))).toBeNotVisible().withTimeout(5000);
 				await waitFor(element(by.text(`${ data.random }edited`)).atIndex(1)).toBeVisible().withTimeout(60000);
 				await element(by.text(`${ data.random }edited`)).atIndex(0).longPress();
 				await waitFor(element(by.text('Unpin'))).toBeVisible().withTimeout(2000);
