@@ -28,6 +28,7 @@ async function login() {
 async function logout() {
     await element(by.id('rooms-list-view-sidebar')).tap();
     await waitFor(element(by.id('sidebar'))).toBeVisible().withTimeout(2000);
+	await waitFor(element(by.id('sidebar-logout'))).toBeVisible().withTimeout(2000);
     await element(by.id('sidebar-logout')).tap();
     await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(2000);
     await expect(element(by.id('welcome-view'))).toBeVisible();

@@ -26,15 +26,15 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	itemLeft: {
-		marginHorizontal: 16,
-		width: 24,
+		marginHorizontal: 10,
+		width: 30,
 		alignItems: 'center'
 	},
 	itemLeftOpacity: {
 		opacity: 0.62
 	},
 	itemText: {
-		margin: 16,
+		marginVertical: 16,
 		fontWeight: 'bold',
 		color: '#292E35'
 	},
@@ -49,9 +49,6 @@ const styles = StyleSheet.create({
 		borderRadius: 4
 	},
 	header: {
-		borderBottomWidth: StyleSheet.hairlineWidth,
-		borderColor: '#ddd',
-		marginBottom: 4,
 		paddingVertical: 16,
 		flexDirection: 'row',
 		alignItems: 'center'
@@ -100,16 +97,16 @@ export default class Sidebar extends Component {
 			servers: [],
 			status: [{
 				id: 'online',
-				name: 'Online'
+				name: I18n.t('Online')
 			}, {
 				id: 'busy',
-				name: 'Busy'
+				name: I18n.t('Busy')
 			}, {
 				id: 'away',
-				name: 'Away'
+				name: I18n.t('Away')
 			}, {
 				id: 'offline',
-				name: 'Invisible'
+				name: I18n.t('Invisible')
 			}],
 			showServers: false
 		};
@@ -162,13 +159,14 @@ export default class Sidebar extends Component {
 	renderSeparator = key => <View key={key} style={styles.separator} />;
 
 	renderItem = ({
-		text, left, selected, onPress
+		text, left, selected, onPress, testID
 	}) => (
 		<Touch
 			key={text}
 			onPress={onPress}
 			underlayColor='rgba(255, 255, 255, 0.5)'
 			activeOpacity={0.3}
+			testID={testID}
 		>
 			<View style={[styles.item, selected && styles.selected]}>
 				<View style={[styles.itemLeft, !selected && styles.itemLeftOpacity]}>
@@ -187,13 +185,14 @@ export default class Sidebar extends Component {
 			left: <View style={[styles.status, { backgroundColor: STATUS_COLORS[item.id] }]} />,
 			selected: this.props.user.status === item.id,
 			onPress: () => {
-				if (this.props.user.status === item.id) {
-					return this.closeDrawer();
-				}
-				try {
-					RocketChat.setUserPresenceDefaultStatus(item.id);
-				} catch (e) {
-					log('onPressModalButton', e);
+				this.closeDrawer();
+				this.toggleServers();
+				if (this.props.user.status !== item.id) {
+					try {
+						RocketChat.setUserPresenceDefaultStatus(item.id);
+					} catch (e) {
+						log('onPressModalButton', e);
+					}
 				}
 			}
 		})
@@ -208,42 +207,48 @@ export default class Sidebar extends Component {
 			/>,
 			selected: this.props.server === item.id,
 			onPress: () => {
-				if (this.props.server === item.id) {
-					return this.closeDrawer();
+				this.closeDrawer();
+				this.toggleServers();
+				if (this.props.server !== item.id) {
+					this.props.selectServer(item.id);
 				}
-				this.props.selectServer(item.id);
-			}
+			},
+			testID: `sidebar-${ item.id }`
 		})
 	)
 
 	renderNavigation = () => (
 		[
 			this.renderItem({
-				text: 'Chats',
+				text: I18n.t('Chats'),
 				left: <Icon name='chat-bubble' size={20} />,
 				onPress: () => this.sidebarNavigate('Chats'),
-				selected: this.isRouteFocused('Chats')
+				selected: this.isRouteFocused('Chats'),
+				testID: 'sidebar-chats'
 			}),
 			this.renderItem({
-				text: 'Profile',
+				text: I18n.t('Profile'),
 				left: <Icon name='person' size={20} />,
 				onPress: () => this.sidebarNavigate('ProfileView'),
-				selected: this.isRouteFocused('ProfileView')
+				selected: this.isRouteFocused('ProfileView'),
+				testID: 'sidebar-profile'
 			}),
 			this.renderItem({
-				text: 'Settings',
+				text: I18n.t('Settings'),
 				left: <Icon name='settings' size={20} />,
 				onPress: () => this.sidebarNavigate('SettingsView'),
-				selected: this.isRouteFocused('SettingsView')
+				selected: this.isRouteFocused('SettingsView'),
+				testID: 'sidebar-settings'
 			}),
 			this.renderSeparator('separator-logout'),
 			this.renderItem({
-				text: 'Logout',
+				text: I18n.t('Logout'),
 				left: <Icon
 					name='exit-to-app'
 					size={20}
 				/>,
-				onPress: () => this.props.logout()
+				onPress: () => this.props.logout(),
+				testID: 'sidebar-logout'
 			})
 		]
 	)
@@ -267,15 +272,17 @@ export default class Sidebar extends Component {
 			/>,
 			this.renderSeparator('separator-add-server'),
 			this.renderItem({
-				text: 'Add Server',
+				text: I18n.t('Add_Server'),
 				left: <Icon
 					name='add'
 					size={20}
 				/>,
 				onPress: () => {
 					this.closeDrawer();
-					this.props.navigation.navigate({ key: 'AddServer', routeName: 'AddServer' });
-				}
+					this.toggleServers();
+					this.props.navigation.navigate('AddServer');
+				},
+				testID: 'sidebar-add-server'
 			})
 		]
 	)
@@ -284,11 +291,16 @@ export default class Sidebar extends Component {
 		const { user, server } = this.props;
 		return (
 			<ScrollView>
-				<SafeAreaView style={styles.container} forceInset={{ top: 'always', horizontal: 'never' }}>
+				<SafeAreaView
+					style={styles.container}
+					forceInset={{ top: 'always', horizontal: 'never' }}
+					testID='sidebar'
+				>
 					<Touch
 						onPress={() => this.toggleServers()}
 						underlayColor='rgba(255, 255, 255, 0.5)'
 						activeOpacity={0.3}
+						testID='sidebar-toggle-server'
 					>
 						<View style={styles.header}>
 							<Avatar
@@ -309,6 +321,8 @@ export default class Sidebar extends Component {
 							/>
 						</View>
 					</Touch>
+
+					{this.renderSeparator('separator-header')}
 
 					{!this.state.showServers && this.renderNavigation()}
 					{this.state.showServers && this.renderServers()}
