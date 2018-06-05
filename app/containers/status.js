@@ -13,7 +13,8 @@ const styles = StyleSheet.create({
 });
 
 @connect(state => ({
-	activeUsers: state.activeUsers
+	activeUsers: state.activeUsers,
+	user: state.login.user
 }))
 
 export default class Status extends React.Component {
@@ -24,12 +25,18 @@ export default class Status extends React.Component {
 	};
 
 	shouldComponentUpdate(nextProps) {
-		const userId = this.props.id;
+		const { id: userId, user } = this.props;
+		if (user.id === userId) {
+			return (nextProps.user && nextProps.user.status !== user.status);
+		}
 		return (nextProps.activeUsers[userId] && nextProps.activeUsers[userId].status) !== this.status;
 	}
 
 	get status() {
-		const userId = this.props.id;
+		const { id: userId, user } = this.props;
+		if (user.id === userId) {
+			return user.status || 'offline';
+		}
 		return (this.props.activeUsers && this.props.activeUsers[userId] && this.props.activeUsers[userId].status) || 'offline';
 	}
 
