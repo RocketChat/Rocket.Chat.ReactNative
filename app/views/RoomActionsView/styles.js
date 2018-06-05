@@ -4,13 +4,6 @@ export default StyleSheet.create({
 	container: {
 		backgroundColor: '#F6F7F9'
 	},
-	headerButton: {
-		backgroundColor: 'transparent',
-		height: 44,
-		width: 44,
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
 	sectionItem: {
 		backgroundColor: '#ffffff',
 		paddingVertical: 16,

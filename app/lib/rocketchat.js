@@ -91,10 +91,8 @@ const RocketChat = {
 		this.activeUsers = this.activeUsers || {};
 		const { user } = reduxStore.getState().login;
 
-		const status = (ddpMessage.fields && ddpMessage.fields.status) || 'offline';
-
-		if (user && user.id === ddpMessage.id) {
-			reduxStore.dispatch(setUser({ status }));
+		if (ddpMessage.fields && user && user.id === ddpMessage.id) {
+			reduxStore.dispatch(setUser(ddpMessage.fields));
 		}
 
 		if (this._setUserTimer) {
@@ -106,9 +104,14 @@ const RocketChat = {
 			reduxStore.dispatch(setActiveUser(this.activeUsers));
 			this._setUserTimer = null;
 			return this.activeUsers = {};
-		}, 1000);
+		}, 3000);
 
-		this.activeUsers[ddpMessage.id] = ddpMessage.fields;
+		const activeUser = reduxStore.getState().activeUsers[ddpMessage.id];
+		if (!ddpMessage.fields) {
+			this.activeUsers[ddpMessage.id] = {};
+		} else {
+			this.activeUsers[ddpMessage.id] = { ...this.activeUsers[ddpMessage.id], ...activeUser, ...ddpMessage.fields };
+		}
 	},
 	async loginSuccess(user) {
 		try {
@@ -121,15 +124,11 @@ const RocketChat = {
 			// call /me only one time
 			if (!user.username) {
 				const me = await this.me({ token: user.token, userId: user.id });
-				// eslint-disable-next-line
-				user.username = me.username;
+				user = { ...user, ...me };
 			}
 			if (user.username) {
 				const userInfo = await this.userInfo({ token: user.token, userId: user.id });
-				user.username = userInfo.user.username;
-				if (userInfo.user.roles) {
-					user.roles = userInfo.user.roles;
-				}
+				user = { ...user, ...userInfo.user };
 			}
 			return reduxStore.dispatch(loginSuccess(user));
 		} catch (e) {
@@ -802,6 +801,9 @@ const RocketChat = {
 	},
 	saveRoomSettings(rid, params) {
 		return call('saveRoomSettings', rid, params);
+	},
+	saveUserProfile(params) {
+		return call('saveUserProfile', params);
 	},
 	saveNotificationSettings(rid, param, value) {
 		return call('saveNotificationSettings', rid, param, value);

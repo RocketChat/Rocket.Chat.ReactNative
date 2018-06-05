@@ -14,6 +14,7 @@ import { closeRoom } from '../../../actions/room';
 import log from '../../../utils/log';
 import RoomTypeIcon from '../../../containers/RoomTypeIcon';
 import I18n from '../../../i18n';
+import sharedStyles from '../../Styles';
 
 const title = (offline, connecting, authenticating, logged) => {
 	if (offline) {
@@ -169,7 +170,7 @@ export default class RoomHeaderView extends React.PureComponent {
 	renderRight = () => (
 		<View style={styles.right}>
 			<TouchableOpacity
-				style={styles.headerButton}
+				style={sharedStyles.headerButton}
 				onPress={() => {
 					try {
 						RocketChat.toggleFavorite(this.state.room.rid, this.state.room.f);
@@ -189,7 +190,7 @@ export default class RoomHeaderView extends React.PureComponent {
 				/>
 			</TouchableOpacity>
 			<TouchableOpacity
-				style={styles.headerButton}
+				style={sharedStyles.headerButton}
 				onPress={() => this.props.navigation.navigate({ key: 'RoomActions', routeName: 'RoomActions', params: { rid: this.state.room.rid } })}
 				accessibilityLabel={I18n.t('Room_actions')}
 				accessibilityTraits='button'

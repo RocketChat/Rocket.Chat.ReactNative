@@ -153,6 +153,8 @@ export default class Sidebar extends Component {
 		const { navigate } = this.props.navigation;
 		if (!this.isRouteFocused(route)) {
 			navigate(route);
+		} else {
+			this.closeDrawer();
 		}
 	}
 

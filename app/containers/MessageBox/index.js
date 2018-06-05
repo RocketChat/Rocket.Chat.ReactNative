@@ -172,7 +172,7 @@ export default class MessageBox extends React.PureComponent {
 			maxWidth: 1960,
 			quality: 0.8
 		};
-		ImagePicker.showImagePicker(options, (response) => {
+		ImagePicker.showImagePicker(options, async(response) => {
 			if (response.didCancel) {
 				console.warn('User cancelled image picker');
 			} else if (response.error) {
@@ -185,7 +185,11 @@ export default class MessageBox extends React.PureComponent {
 					// description: '',
 					store: 'Uploads'
 				};
-				RocketChat.sendFileMessage(this.props.rid, fileInfo, response.data);
+				try {
+					await RocketChat.sendFileMessage(this.props.rid, fileInfo, response.data);
+				} catch (e) {
+					log('addFile', e);
+				}
 			}
 		});
 	}

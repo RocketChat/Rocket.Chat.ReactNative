@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, TouchableOpacity } from 'react-native';
 import { createStackNavigator, createDrawerNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -22,6 +22,7 @@ import RoomInfoEditView from '../../views/RoomInfoEditView';
 import ProfileView from '../../views/ProfileView';
 import SettingsView from '../../views/SettingsView';
 import I18n from '../../i18n';
+import sharedStyles from '../../views/Styles';
 
 const headerTintColor = '#292E35';
 
@@ -132,6 +133,18 @@ const AuthRoutes = createStackNavigator(
 	}
 );
 
+const MenuButton = ({ navigation, testID }) => (
+	<TouchableOpacity
+		style={sharedStyles.headerButton}
+		onPress={navigation.toggleDrawer}
+		accessibilityLabel={I18n.t('Toggle_Drawer')}
+		accessibilityTraits='button'
+		testID={testID}
+	>
+		<Icon name='menu' size={30} color='#292E35' />
+	</TouchableOpacity>
+)
+
 const Routes = createDrawerNavigator(
 	{
 		Chats: {
@@ -148,7 +161,7 @@ const Routes = createDrawerNavigator(
 					navigationOptions: ({ navigation }) => ({
 						title: 'Profile',
 						headerTintColor: '#292E35',
-						headerLeft: <Icon name='menu' size={30} color='#292E35' onPress={() => navigation.toggleDrawer()} /> // TODO: refactor
+						headerLeft: <MenuButton navigation={navigation} testID='profile-view-sidebar' />
 					})
 				}
 			})
@@ -160,7 +173,7 @@ const Routes = createDrawerNavigator(
 					navigationOptions: ({ navigation }) => ({
 						title: 'Settings',
 						headerTintColor: '#292E35',
-						headerLeft: <Icon name='menu' size={30} color='#292E35' onPress={() => navigation.toggleDrawer()} /> // TODO: refactor
+						headerLeft: <MenuButton navigation={navigation} testID='settings-view-sidebar' />
 					})
 				}
 			})

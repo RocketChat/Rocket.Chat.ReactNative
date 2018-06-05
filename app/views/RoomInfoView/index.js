@@ -61,7 +61,7 @@ export default class RoomInfoView extends LoggedView {
 					accessibilityTraits='button'
 					testID='room-info-view-edit-button'
 				>
-					<View style={styles.headerButton}>
+					<View style={sharedStyles.headerButton}>
 						<MaterialIcon name='edit' size={20} />
 					</View>
 				</Touch>
