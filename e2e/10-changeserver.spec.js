@@ -13,6 +13,8 @@ describe('Change server', () => {
 		// Navigate to add server
 		await element(by.id('rooms-list-view-sidebar')).tap();
 		await waitFor(element(by.id('sidebar'))).toBeVisible().withTimeout(2000);
+		await element(by.id('sidebar-toggle-server')).tap();
+		await waitFor(element(by.id('sidebar-add-server'))).toBeVisible().withTimeout(2000);
 		await element(by.id('sidebar-add-server')).tap();
 		await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(2000);
 		// Add server
@@ -44,6 +46,9 @@ describe('Change server', () => {
 	it('should change server', async() => {
 		await element(by.id('rooms-list-view-sidebar')).tap();
 		await waitFor(element(by.id('sidebar'))).toBeVisible().withTimeout(2000);
+		await element(by.id('sidebar-toggle-server')).tap();
+		await waitFor(element(by.id(`sidebar-${ data.server }`))).toBeVisible().withTimeout(2000);
+		await expect(element(by.id(`sidebar-${ data.server }`))).toBeVisible();
 		await element(by.id(`sidebar-${ data.server }`)).tap();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 		await waitFor(element(by.id('rooms-list-view-sidebar').and(by.label(`Connected to ${ data.server }. Tap to view servers list.`)))).toBeVisible().withTimeout(60000);
