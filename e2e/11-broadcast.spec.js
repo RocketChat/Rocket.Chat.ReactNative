@@ -93,8 +93,7 @@ describe('Broadcast room', () => {
 		await element(by.id('messagebox-input')).typeText(`${ data.random }broadcastreply`);
 		await element(by.id('messagebox-send-message')).tap();
 		await waitFor(element(by.text(`${ data.random }message`))).toBeVisible().withTimeout(60000);
-		await expect(element(by.text(`${ data.random }message`))).toBeVisible(); // broadcasted message
-		await expect(element(by.text(` ${ data.random }broadcastreply`))).toBeVisible(); // reply
+		await expect(element(by.text(`${ data.random }message`))).toBeVisible();
 	});
 
 	afterEach(async() => {
