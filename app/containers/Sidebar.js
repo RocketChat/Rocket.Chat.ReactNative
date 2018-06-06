@@ -213,6 +213,7 @@ export default class Sidebar extends Component {
 				this.toggleServers();
 				if (this.props.server !== item.id) {
 					this.props.selectServer(item.id);
+					this.props.navigation.navigate('RoomsList');
 				}
 			},
 			testID: `sidebar-${ item.id }`

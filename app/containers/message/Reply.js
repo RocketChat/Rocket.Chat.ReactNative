@@ -78,7 +78,6 @@ const Reply = ({ attachment, timeFormat }) => {
 			<Avatar
 				text={attachment.author_name}
 				size={16}
-				avatar={attachment.author_icon}
 			/>
 		);
 	};

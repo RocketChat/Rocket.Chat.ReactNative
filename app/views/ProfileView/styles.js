@@ -1,50 +1,24 @@
 import { StyleSheet } from 'react-native';
 
-import { COLOR_DANGER } from '../../constants/colors';
-
 export default StyleSheet.create({
-	buttonInverted: {
-		borderColor: 'rgba(0,0,0,.15)',
-		borderWidth: 2,
-		borderRadius: 2
+	avatarContainer: {
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginBottom: 10
 	},
-	buttonContainerDisabled: {
-		backgroundColor: 'rgba(65, 72, 82, 0.7)'
-	},
-	buttonDanger: {
-		borderColor: COLOR_DANGER,
-		borderWidth: 2,
-		borderRadius: 2
-	},
-	colorDanger: {
-		color: COLOR_DANGER
-	},
-	switchContainer: {
+	avatarButtons: {
+		flexWrap: 'wrap',
 		flexDirection: 'row',
-		alignItems: 'flex-start'
+		justifyContent: 'flex-start'
 	},
-	switchLabelContainer: {
-		flex: 1,
-		paddingHorizontal: 10
-	},
-	switchLabelPrimary: {
-		fontSize: 16,
-		paddingBottom: 6
-	},
-	switchLabelSecondary: {
-		fontSize: 12
-	},
-	switch: {
-		alignSelf: 'center'
-	},
-	divider: {
-		height: StyleSheet.hairlineWidth,
-		borderColor: '#ddd',
-		borderBottomWidth: StyleSheet.hairlineWidth,
-		marginVertical: 20
-	},
-	broadcast: {
-		fontWeight: 'bold',
-		textAlign: 'center'
+	avatarButton: {
+		backgroundColor: '#e1e5e8',
+		width: 50,
+		height: 50,
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginRight: 15,
+		marginBottom: 15,
+		borderRadius: 2
 	}
 });

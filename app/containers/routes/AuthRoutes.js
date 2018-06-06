@@ -143,7 +143,7 @@ const MenuButton = ({ navigation, testID }) => (
 	>
 		<Icon name='menu' size={30} color='#292E35' />
 	</TouchableOpacity>
-)
+);
 
 const Routes = createDrawerNavigator(
 	{
@@ -181,9 +181,7 @@ const Routes = createDrawerNavigator(
 	},
 	{
 		contentComponent: Sidebar,
-		navigationOptions: {
-			drawerLockMode: Platform.OS === 'ios' ? 'locked-closed' : 'unlocked'
-		},
+		drawerLockMode: Platform.OS === 'ios' ? 'locked-closed' : 'unlocked',
 		initialRouteName: 'Chats',
 		backBehavior: 'initialRoute'
 	}

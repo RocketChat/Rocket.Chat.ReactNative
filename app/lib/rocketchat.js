@@ -161,7 +161,10 @@ const RocketChat = {
 				this.getRooms().catch(e => log('logged getRooms', e));
 				this.loginSuccess(user);
 			}));
-			this.ddp.once('logged', protectedFunction(({ id }) => { this.subscribeRooms(id); }));
+			this.ddp.once('logged', protectedFunction(({ id }) => {
+				this.subscribeRooms(id);
+				this.ddp.subscribe('stream-notify-logged', 'updateAvatar', false);
+			}));
 
 			this.ddp.on('disconnected', protectedFunction(() => {
 				reduxStore.dispatch(disconnect());
@@ -181,6 +184,24 @@ const RocketChat = {
 				}
 				return reduxStore.dispatch(someoneTyping({ _rid, username: ddpMessage.fields.args[0], typing: ddpMessage.fields.args[1] }));
 			}));
+
+			this.ddp.on('stream-notify-logged', (ddpMessage) => {
+				// this entire logic needs a better solution
+				// we're using it only because our image cache lib doesn't support clear cache
+				if (ddpMessage.fields && ddpMessage.fields.eventName === 'updateAvatar') {
+					const { args } = ddpMessage.fields;
+					database.write(() => {
+						args.forEach((arg) => {
+							const user = database.objects('users').filtered('username = $0', arg.username);
+							if (!user.length) {
+								database.create('users', { username: arg.username, avatarVersion: 0 });
+							} else {
+								user[0].avatarVersion += 1;
+							}
+						});
+					});
+				}
+			});
 
 			// this.ddp.on('stream-notify-user', protectedFunction((ddpMessage) => {
 			// 	console.warn('rc.stream-notify-user')
@@ -837,6 +858,15 @@ const RocketChat = {
 				.some(item => mergedRoles.indexOf(item) !== -1);
 			return result;
 		}, {});
+	},
+	getAvatarSuggestion() {
+		return call('getAvatarSuggestion');
+	},
+	resetAvatar() {
+		return call('resetAvatar');
+	},
+	setAvatarFromService({ data, contentType = '', service = null }) {
+		return call('setAvatarFromService', data, contentType, service);
 	}
 };
 

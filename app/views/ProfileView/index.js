@@ -4,10 +4,13 @@ import { View, ScrollView, SafeAreaView, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
 import SHA256 from 'js-sha256';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import ImagePicker from 'react-native-image-picker';
 
 import LoggedView from '../View';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
+import styles from './styles';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert, showToast } from '../../utils/info';
 import RocketChat from '../../lib/rocketchat';
@@ -16,6 +19,8 @@ import Loading from '../../containers/Loading';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
+import Avatar from '../../containers/Avatar';
+import Touch from '../../utils/touch';
 
 @connect(state => ({
 	user: state.login.user
@@ -36,12 +41,21 @@ export default class ProfileView extends LoggedView {
 			email: null,
 			newPassword: null,
 			typedPassword: null,
-			avatarUrl: null
+			avatarUrl: null,
+			avatar: {},
+			avatarSuggestions: {}
 		};
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		this.init();
+
+		try {
+			const result = await RocketChat.getAvatarSuggestion();
+			this.setState({ avatarSuggestions: result });
+		} catch (e) {
+			log('getAvatarSuggestion', e);
+		}
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -59,19 +73,22 @@ export default class ProfileView extends LoggedView {
 			username,
 			email: emails ? emails[0].address : null,
 			newPassword: null,
-			typedPassword: null
+			typedPassword: null,
+			avatarUrl: null,
+			avatar: {}
 		});
 	}
 
 	formIsChanged = () => {
 		const {
-			name, username, email, newPassword
+			name, username, email, newPassword, avatar
 		} = this.state;
 		const { user } = this.props;
 		return !(user.name === name &&
 			user.username === username &&
 			!newPassword &&
-			(user.emails && user.emails[0].address === email)
+			(user.emails && user.emails[0].address === email) &&
+			!avatar.data
 		);
 	}
 
@@ -84,7 +101,7 @@ export default class ProfileView extends LoggedView {
 		this.setState({ saving: true, showPasswordAlert: false });
 
 		const {
-			name, username, email, newPassword, typedPassword
+			name, username, email, newPassword, typedPassword, avatar
 		} = this.state;
 		const { user } = this.props;
 
@@ -125,10 +142,18 @@ export default class ProfileView extends LoggedView {
 		}
 
 		try {
+			if (avatar) {
+				try {
+					await RocketChat.setAvatarFromService(avatar);
+				} catch (e) {
+					return console.warn(e);
+				}
+			}
+
 			await RocketChat.saveUserProfile(params);
 			this.setState({ saving: false });
 			setTimeout(() => {
-				showToast(I18n.t('Settings_succesfully_changed'));
+				showToast(I18n.t('Profile_saved_successfully'));
 				this.init();
 			}, 300);
 		} catch (e) {
@@ -137,11 +162,95 @@ export default class ProfileView extends LoggedView {
 				if (e && e.error) {
 					return showErrorAlert(I18n.t(e.error, e.details));
 				}
-				showErrorAlert(I18n.t('There_was_an_error_while_saving_settings'));
-				log('saveRoomSettings', e);
+				showErrorAlert(I18n.t('There_was_an_error_while_action', { action: 'saving_profile' }));
+				log('saveUserProfile', e);
 			}, 300);
 		}
 	}
+
+	setAvatar = (avatar) => {
+		this.setState({ avatar });
+	}
+
+	resetAvatar = async() => {
+		try {
+			await RocketChat.resetAvatar();
+			showToast(I18n.t('Avatar_changed_successfully'));
+			this.init();
+		} catch (e) {
+			if (e && e.error) {
+				if (e.details.timeToReset) {
+					return showErrorAlert(I18n.t('error-too-many-requests', {
+						seconds: parseInt(e.details.timeToReset / 1000, 10)
+					}));
+				}
+				return showErrorAlert(I18n.t(e.error, e.details));
+			}
+			showErrorAlert(I18n.t('There_was_an_error_while_action', { action: 'changing_avatar' }));
+			log('resetAvatar', e);
+		}
+	}
+
+	pickImage = () => {
+		const options = {
+			title: I18n.t('Select_Avatar')
+		};
+		ImagePicker.showImagePicker(options, async(response) => {
+			if (response.didCancel) {
+				console.warn('User cancelled image picker');
+			} else if (response.error) {
+				log('ImagePicker Error', response.error);
+			} else {
+				this.setAvatar({ url: response.uri, data: `data:image/jpeg;base64,${ response.data }`, service: 'upload' });
+			}
+		});
+	}
+
+	renderAvatarButton = ({
+		key, child, onPress, disabled = false
+	}) => (
+		<Touch
+			key={key}
+			onPress={onPress}
+			underlayColor='rgba(255, 255, 255, 0.5)'
+			activeOpacity={0.3}
+			disabled={disabled}
+		>
+			<View
+				style={[styles.avatarButton, { opacity: disabled ? 0.5 : 1 }]}
+			>
+				{child}
+			</View>
+		</Touch>
+	)
+
+	renderAvatarButtons = () => (
+		<View style={styles.avatarButtons}>
+			{this.renderAvatarButton({
+				child: <Avatar text={this.props.user.username} size={50} forceInitials />,
+				onPress: () => this.resetAvatar()
+			})}
+			{this.renderAvatarButton({
+				child: <Icon name='file-upload' size={30} />,
+				onPress: () => this.pickImage()
+			})}
+			{this.renderAvatarButton({
+				child: <Icon name='link' size={30} />,
+				onPress: () => this.setAvatar({ url: this.state.avatarUrl, data: this.state.avatarUrl, service: 'url' }),
+				disabled: !this.state.avatarUrl
+			})}
+			{Object.keys(this.state.avatarSuggestions).map((service) => {
+				const { url, blob, contentType } = this.state.avatarSuggestions[service];
+				return this.renderAvatarButton({
+					key: service,
+					child: <Avatar avatar={url} size={50} />,
+					onPress: () => this.setAvatar({
+						url, data: blob, service, contentType
+					})
+				});
+			})}
+		</View>
+	);
 
 	render() {
 		const {
@@ -158,62 +267,68 @@ export default class ProfileView extends LoggedView {
 					{...scrollPersistTaps}
 				>
 					<SafeAreaView testID='profile-view'>
-						<View style={sharedStyles.formContainer}>
-							<RCTextInput
-								inputRef={(e) => { this.name = e; }}
-								label={I18n.t('Name')}
-								placeholder={I18n.t('Name')}
-								value={name}
-								onChangeText={value => this.setState({ name: value })}
-								onSubmitEditing={() => { this.username.focus(); }}
-								testID='profile-view-name'
+						<View style={styles.avatarContainer}>
+							<Avatar
+								text={username}
+								avatar={this.state.avatar && this.state.avatar.url}
+								size={100}
 							/>
-							<RCTextInput
-								inputRef={(e) => { this.username = e; }}
-								label={I18n.t('Username')}
-								placeholder={I18n.t('Username')}
-								value={username}
-								onChangeText={value => this.setState({ username: value })}
-								onSubmitEditing={() => { this.email.focus(); }}
-								testID='profile-view-username'
+						</View>
+						<RCTextInput
+							inputRef={(e) => { this.name = e; }}
+							label={I18n.t('Name')}
+							placeholder={I18n.t('Name')}
+							value={name}
+							onChangeText={value => this.setState({ name: value })}
+							onSubmitEditing={() => { this.username.focus(); }}
+							testID='profile-view-name'
+						/>
+						<RCTextInput
+							inputRef={(e) => { this.username = e; }}
+							label={I18n.t('Username')}
+							placeholder={I18n.t('Username')}
+							value={username}
+							onChangeText={value => this.setState({ username: value })}
+							onSubmitEditing={() => { this.email.focus(); }}
+							testID='profile-view-username'
+						/>
+						<RCTextInput
+							inputRef={(e) => { this.email = e; }}
+							label={I18n.t('Email')}
+							placeholder={I18n.t('Email')}
+							value={email}
+							onChangeText={value => this.setState({ email: value })}
+							onSubmitEditing={() => { this.newPassword.focus(); }}
+							testID='profile-view-email'
+						/>
+						<RCTextInput
+							inputRef={(e) => { this.newPassword = e; }}
+							label={I18n.t('New_Password')}
+							placeholder={I18n.t('New_Password')}
+							value={newPassword}
+							onChangeText={value => this.setState({ newPassword: value })}
+							onSubmitEditing={() => { this.avatarUrl.focus(); }}
+							secureTextEntry
+							testID='profile-view-new-password'
+						/>
+						<RCTextInput
+							inputRef={(e) => { this.avatarUrl = e; }}
+							label={I18n.t('Avatar_Url')}
+							placeholder={I18n.t('Avatar_Url')}
+							value={avatarUrl}
+							onChangeText={value => this.setState({ avatarUrl: value })}
+							onSubmitEditing={this.submit}
+							testID='profile-view-avatar-url'
+						/>
+						{this.renderAvatarButtons()}
+						<View style={sharedStyles.alignItemsFlexStart}>
+							<Button
+								title={I18n.t('Save_Changes')}
+								type='primary'
+								onPress={this.submit}
+								disabled={!this.formIsChanged()}
+								testID='new-server-view-button'
 							/>
-							<RCTextInput
-								inputRef={(e) => { this.email = e; }}
-								label={I18n.t('Email')}
-								placeholder={I18n.t('Email')}
-								value={email}
-								onChangeText={value => this.setState({ email: value })}
-								onSubmitEditing={() => { this.newPassword.focus(); }}
-								testID='profile-view-email'
-							/>
-							<RCTextInput
-								inputRef={(e) => { this.newPassword = e; }}
-								label={I18n.t('New_Password')}
-								placeholder={I18n.t('New_Password')}
-								value={newPassword}
-								onChangeText={value => this.setState({ newPassword: value })}
-								onSubmitEditing={() => { this.avatarUrl.focus(); }}
-								secureTextEntry
-								testID='profile-view-new-password'
-							/>
-							<RCTextInput
-								inputRef={(e) => { this.avatarUrl = e; }}
-								label={I18n.t('Avatar_Url')}
-								placeholder={I18n.t('Avatar_Url')}
-								value={avatarUrl}
-								onChangeText={value => this.setState({ avatarUrl: value })}
-								onSubmitEditing={this.submit}
-								testID='profile-view-avatar-url'
-							/>
-							<View style={sharedStyles.alignItemsFlexStart}>
-								<Button
-									title={I18n.t('Save_Changes')}
-									type='primary'
-									onPress={this.submit}
-									disabled={!this.formIsChanged()}
-									testID='new-server-view-button'
-								/>
-							</View>
 						</View>
 						<Loading visible={this.state.saving} />
 						<Dialog.Container visible={this.state.showPasswordAlert}>

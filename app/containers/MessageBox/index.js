@@ -463,6 +463,7 @@ export default class MessageBox extends React.PureComponent {
 							style={{ margin: 8 }}
 							text={item.username || item.name}
 							size={30}
+							type={item.username ? 'd' : 'c'}
 						/>,
 						<Text key='mention-item-name'>{ item.username || item.name }</Text>
 					]
@@ -481,7 +482,7 @@ export default class MessageBox extends React.PureComponent {
 					style={styles.mentionList}
 					data={mentions}
 					renderItem={({ item }) => this.renderMentionItem(item)}
-					keyExtractor={item => item._id || item}
+					keyExtractor={item => item._id || item.username || item}
 					keyboardShouldPersistTaps='always'
 				/>
 			</View>
