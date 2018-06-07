@@ -150,7 +150,7 @@ const Routes = createDrawerNavigator(
 		Chats: {
 			screen: AuthRoutes,
 			navigationOptions: {
-				drawerLabel: 'Chats',
+				drawerLabel: I18n.t('Chats'),
 				drawerIcon: () => <Icon name='chat-bubble' size={20} />
 			}
 		},
@@ -159,7 +159,7 @@ const Routes = createDrawerNavigator(
 				ProfileView: {
 					screen: ProfileView,
 					navigationOptions: ({ navigation }) => ({
-						title: 'Profile',
+						title: I18n.t('Profile'),
 						headerTintColor: '#292E35',
 						headerLeft: <MenuButton navigation={navigation} testID='profile-view-sidebar' />
 					})
@@ -171,7 +171,7 @@ const Routes = createDrawerNavigator(
 				SettingsView: {
 					screen: SettingsView,
 					navigationOptions: ({ navigation }) => ({
-						title: 'Settings',
+						title: I18n.t('Settings'),
 						headerTintColor: '#292E35',
 						headerLeft: <MenuButton navigation={navigation} testID='settings-view-sidebar' />
 					})

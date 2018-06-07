@@ -8,7 +8,6 @@ import LoggedView from '../View';
 import styles from './styles';
 import sharedStyles from '../Styles';
 import RoomItem from '../../presentation/RoomItem';
-import Touch from '../../utils/touch';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
 import { goRoom } from '../../containers/routes/NavigationService';

@@ -19,7 +19,8 @@ const restore = function* restore() {
 		if (currentServer) {
 			yield put(setServer(currentServer));
 
-			const login = yield call([AsyncStorage, 'getItem'], `${ RocketChat.TOKEN_KEY }-${ currentServer }`);
+			let login = yield call([AsyncStorage, 'getItem'], `${ RocketChat.TOKEN_KEY }-${ currentServer }`);
+			login = JSON.parse(login);
 			if (login && login.user) {
 				yield put(setUser(login.user));
 			}

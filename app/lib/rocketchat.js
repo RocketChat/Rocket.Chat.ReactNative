@@ -826,6 +826,9 @@ const RocketChat = {
 	saveUserProfile(params) {
 		return call('saveUserProfile', params);
 	},
+	saveUserPreferences(params) {
+		return call('saveUserPreferences', params);
+	},
 	saveNotificationSettings(rid, param, value) {
 		return call('saveNotificationSettings', rid, param, value);
 	},

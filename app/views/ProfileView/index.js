@@ -96,6 +96,19 @@ export default class ProfileView extends LoggedView {
 		this.setState({ showPasswordAlert: false });
 	}
 
+	handleError = (e, func, action) => {
+		if (e && e.error) {
+			if (e.details.timeToReset) {
+				return showErrorAlert(I18n.t('error-too-many-requests', {
+					seconds: parseInt(e.details.timeToReset / 1000, 10)
+				}));
+			}
+			return showErrorAlert(I18n.t(e.error, e.details));
+		}
+		showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
+		log(func, e);
+	}
+
 	submit = async() => {
 		Keyboard.dismiss();
 		this.setState({ saving: true, showPasswordAlert: false });
@@ -142,11 +155,12 @@ export default class ProfileView extends LoggedView {
 		}
 
 		try {
-			if (avatar) {
+			if (avatar.url) {
 				try {
 					await RocketChat.setAvatarFromService(avatar);
 				} catch (e) {
-					return console.warn(e);
+					this.setState({ saving: false, typedPassword: null });
+					return setTimeout(() => this.handleError(e, 'setAvatarFromService', 'changing_avatar'), 300);
 				}
 			}
 
@@ -159,11 +173,7 @@ export default class ProfileView extends LoggedView {
 		} catch (e) {
 			this.setState({ saving: false, typedPassword: null });
 			setTimeout(() => {
-				if (e && e.error) {
-					return showErrorAlert(I18n.t(e.error, e.details));
-				}
-				showErrorAlert(I18n.t('There_was_an_error_while_action', { action: 'saving_profile' }));
-				log('saveUserProfile', e);
+				this.handleError(e, 'saveUserProfile', 'saving_profile');
 			}, 300);
 		}
 	}
@@ -178,16 +188,7 @@ export default class ProfileView extends LoggedView {
 			showToast(I18n.t('Avatar_changed_successfully'));
 			this.init();
 		} catch (e) {
-			if (e && e.error) {
-				if (e.details.timeToReset) {
-					return showErrorAlert(I18n.t('error-too-many-requests', {
-						seconds: parseInt(e.details.timeToReset / 1000, 10)
-					}));
-				}
-				return showErrorAlert(I18n.t(e.error, e.details));
-			}
-			showErrorAlert(I18n.t('There_was_an_error_while_action', { action: 'changing_avatar' }));
-			log('resetAvatar', e);
+			this.handleError(e, 'resetAvatar', 'changing_avatar');
 		}
 	}
 
@@ -327,7 +328,7 @@ export default class ProfileView extends LoggedView {
 								type='primary'
 								onPress={this.submit}
 								disabled={!this.formIsChanged()}
-								testID='new-server-view-button'
+								testID='profile-view-button'
 							/>
 						</View>
 						<Loading visible={this.state.saving} />
