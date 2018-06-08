@@ -6,6 +6,7 @@ import Dialog from 'react-native-dialog';
 import SHA256 from 'js-sha256';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
+import RNPickerSelect from 'react-native-picker-select';
 
 import LoggedView from '../View';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -23,12 +24,14 @@ import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
 
 @connect(state => ({
-	user: state.login.user
+	user: state.login.user,
+	Accounts_CustomFields: state.settings.Accounts_CustomFields
 }))
 export default class ProfileView extends LoggedView {
 	static propTypes = {
 		navigation: PropTypes.object,
-		user: PropTypes.object
+		user: PropTypes.object,
+		Accounts_CustomFields: PropTypes.string
 	};
 
 	constructor(props) {
@@ -43,7 +46,8 @@ export default class ProfileView extends LoggedView {
 			typedPassword: null,
 			avatarUrl: null,
 			avatar: {},
-			avatarSuggestions: {}
+			avatarSuggestions: {},
+			customFields: {}
 		};
 	}
 
@@ -66,7 +70,7 @@ export default class ProfileView extends LoggedView {
 
 	init = (user) => {
 		const {
-			name, username, emails
+			name, username, emails, customFields
 		} = user || this.props.user;
 		this.setState({
 			name,
@@ -75,20 +79,33 @@ export default class ProfileView extends LoggedView {
 			newPassword: null,
 			typedPassword: null,
 			avatarUrl: null,
-			avatar: {}
+			avatar: {},
+			customFields: customFields || {}
 		});
 	}
 
 	formIsChanged = () => {
 		const {
-			name, username, email, newPassword, avatar
+			name, username, email, newPassword, avatar, customFields
 		} = this.state;
 		const { user } = this.props;
+		let customFieldsChanged = false;
+
+		const customFieldsKeys = Object.keys(customFields);
+		if (customFieldsKeys.length) {
+			customFieldsKeys.forEach((key) => {
+				if (user.customFields[key] !== customFields[key]) {
+					customFieldsChanged = true;
+				}
+			});
+		}
+
 		return !(user.name === name &&
 			user.username === username &&
 			!newPassword &&
 			(user.emails && user.emails[0].address === email) &&
-			!avatar.data
+			!avatar.data &&
+			!customFieldsChanged
 		);
 	}
 
@@ -97,8 +114,8 @@ export default class ProfileView extends LoggedView {
 	}
 
 	handleError = (e, func, action) => {
-		if (e && e.error) {
-			if (e.details.timeToReset) {
+		if (e && e.error && e.error !== 500) {
+			if (e.details && e.details.timeToReset) {
 				return showErrorAlert(I18n.t('error-too-many-requests', {
 					seconds: parseInt(e.details.timeToReset / 1000, 10)
 				}));
@@ -111,17 +128,17 @@ export default class ProfileView extends LoggedView {
 
 	submit = async() => {
 		Keyboard.dismiss();
-		this.setState({ saving: true, showPasswordAlert: false });
-
-		const {
-			name, username, email, newPassword, typedPassword, avatar
-		} = this.state;
-		const { user } = this.props;
 
 		if (!this.formIsChanged()) {
 			return;
 		}
 
+		this.setState({ saving: true, showPasswordAlert: false });
+
+		const {
+			name, username, email, newPassword, typedPassword, avatar, customFields
+		} = this.state;
+		const { user } = this.props;
 		const params = {};
 
 		// Name
@@ -164,7 +181,7 @@ export default class ProfileView extends LoggedView {
 				}
 			}
 
-			await RocketChat.saveUserProfile(params);
+			await RocketChat.saveUserProfile(params, customFields);
 			this.setState({ saving: false });
 			setTimeout(() => {
 				showToast(I18n.t('Profile_saved_successfully'));
@@ -257,9 +274,63 @@ export default class ProfileView extends LoggedView {
 		</View>
 	);
 
+	renderCustomFields = () => {
+		const { customFields } = this.state;
+		if (!this.props.Accounts_CustomFields) {
+			return null;
+		}
+		const parsedCustomFields = JSON.parse(this.props.Accounts_CustomFields);
+		return Object.keys(parsedCustomFields).map((key, index, array) => {
+			if (parsedCustomFields[key].type === 'select') {
+				const options = parsedCustomFields[key].options.map(option => ({ label: option, value: option }));
+				return (
+					<RNPickerSelect
+						key={key}
+						items={options}
+						onValueChange={(value) => {
+							const newValue = {};
+							newValue[key] = value;
+							this.setState({ customFields: { ...this.state.customFields, ...newValue } });
+						}}
+						value={customFields[key]}
+					>
+						<RCTextInput
+							inputRef={(e) => { this[key] = e; }}
+							label={key}
+							placeholder={key}
+							value={customFields[key]}
+							testID='settings-view-language'
+						/>
+					</RNPickerSelect>
+				);
+			}
+
+			return (
+				<RCTextInput
+					inputRef={(e) => { this[key] = e; }}
+					key={key}
+					label={key}
+					placeholder={key}
+					value={customFields[key]}
+					onChangeText={(value) => {
+						const newValue = {};
+						newValue[key] = value;
+						this.setState({ customFields: { ...this.state.customFields, ...newValue } });
+					}}
+					onSubmitEditing={() => {
+						if (array.length - 1 > index) {
+							return this[array[index + 1]].focus();
+						}
+						this.avatarUrl.focus();
+					}}
+				/>
+			);
+		});
+	}
+
 	render() {
 		const {
-			name, username, email, newPassword, avatarUrl
+			name, username, email, newPassword, avatarUrl, customFields
 		} = this.state;
 		return (
 			<KeyboardView
@@ -312,10 +383,16 @@ export default class ProfileView extends LoggedView {
 							placeholder={I18n.t('New_Password')}
 							value={newPassword}
 							onChangeText={value => this.setState({ newPassword: value })}
-							onSubmitEditing={() => { this.avatarUrl.focus(); }}
+							onSubmitEditing={() => {
+								if (Object.keys(customFields).length) {
+									return this[Object.keys(customFields)[0]].focus();
+								}
+								this.avatarUrl.focus();
+							}}
 							secureTextEntry
 							testID='profile-view-new-password'
 						/>
+						{this.renderCustomFields()}
 						<RCTextInput
 							inputRef={(e) => { this.avatarUrl = e; }}
 							label={I18n.t('Avatar_Url')}

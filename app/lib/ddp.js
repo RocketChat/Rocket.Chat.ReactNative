@@ -129,11 +129,7 @@ export default class Socket extends EventEmitter {
 			this.send({ msg: 'connect', version: '1', support: ['1', 'pre2', 'pre1'] });
 		});
 
-		try {
-			this._connect();
-		} catch (e) {
-			log('ddp.constructor._connect', e);
-		}
+		this._connect().catch(e => log('ddp.constructor._connect', e));
 	}
 	check() {
 		if (!this.lastping) {
@@ -148,9 +144,11 @@ export default class Socket extends EventEmitter {
 		try {
 			this.emit('login', params);
 			const result = await this.call('login', params);
-			this._login = { resume: result.token, ...result };
+			// this._login = { resume: result.token, ...result };
+			this._login = { resume: result.token, ...result, ...params };
 			this._logged = true;
-			this.emit('logged', result);
+			// this.emit('logged', result);
+			this.emit('logged', this._login);
 			return result;
 		} catch (err) {
 			const error = { ...err };

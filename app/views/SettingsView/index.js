@@ -113,7 +113,6 @@ export default class SettingsView extends LoggedView {
 								label={I18n.t('Language')}
 								placeholder={I18n.t('Language')}
 								value={language}
-								onChangeText={value => this.setState({ language: value })}
 								testID='settings-view-language'
 							/>
 						</RNPickerSelect>

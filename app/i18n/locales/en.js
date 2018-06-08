@@ -71,6 +71,7 @@ export default {
 	'error-user-has-no-roles': 'User has no roles',
 	'error-user-limit-exceeded': 'The number of users you are trying to invite to #channel_name exceeds the limit set by the administrator',
 	'error-user-not-in-room': 'User is not in this room',
+	'error-user-registration-custom-field': 'error-user-registration-custom-field',
 	'error-user-registration-disabled': 'User registration is disabled',
 	'error-user-registration-secret': 'User registration is only allowed via Secret URL',
 	'error-you-are-last-owner': 'You are the last owner. Please set new owner before leaving the room.',

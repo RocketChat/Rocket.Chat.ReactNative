@@ -823,8 +823,8 @@ const RocketChat = {
 	saveRoomSettings(rid, params) {
 		return call('saveRoomSettings', rid, params);
 	},
-	saveUserProfile(params) {
-		return call('saveUserProfile', params);
+	saveUserProfile(params, customFields) {
+		return call('saveUserProfile', params, customFields);
 	},
 	saveUserPreferences(params) {
 		return call('saveUserPreferences', params);
