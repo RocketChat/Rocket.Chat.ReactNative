@@ -618,7 +618,7 @@ exports[`render unread +999 1`] = `
             source={
               Object {
                 "priority": "high",
-                "uri": "/avatar/name",
+                "uri": "/avatar/name?random=0",
               }
             }
             style={
@@ -880,7 +880,7 @@ exports[`render unread 1`] = `
             source={
               Object {
                 "priority": "high",
-                "uri": "/avatar/name",
+                "uri": "/avatar/name?random=0",
               }
             }
             style={
@@ -1142,7 +1142,7 @@ exports[`renders correctly 1`] = `
             source={
               Object {
                 "priority": "high",
-                "uri": "/avatar/name",
+                "uri": "/avatar/name?random=0",
               }
             }
             style={

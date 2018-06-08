@@ -47,7 +47,7 @@ export default class Avatar extends React.PureComponent {
 	componentDidMount() {
 		const { text, type } = this.props;
 		if (type === 'd') {
-			this.users = database.objects('users').filtered('username = $0', text);
+			this.users = this.userQuery(text);
 			this.users.addListener(this.update);
 			this.update();
 		}
@@ -58,7 +58,7 @@ export default class Avatar extends React.PureComponent {
 			if (this.users) {
 				this.users.removeAllListeners();
 			}
-			this.users = database.objects('users').filtered('username = $0', nextProps.text);
+			this.users = this.userQuery(nextProps.text);
 			this.users.addListener(this.update);
 			this.update();
 		}
@@ -72,6 +72,22 @@ export default class Avatar extends React.PureComponent {
 
 	get avatarVersion() {
 		return (this.state.user && this.state.user.avatarVersion) || 0;
+	}
+
+	/** FIXME: Workaround
+	 * While we don't have containers/components structure, this is breaking tests.
+	 * In that case, avatar would be a component, it would receive an `avatarVersion` param
+	 * and we would have a avatar container in charge of making queries.
+	 * Also, it would make possible to write unit tests like these.
+	*/
+	userQuery = (username) => {
+		if (database && database.databases && database.databases.activeDB) {
+			return database.objects('users').filtered('username = $0', username);
+		}
+		return {
+			addListener: () => {},
+			removeAllListeners: () => {}
+		};
 	}
 
 	update = () => {

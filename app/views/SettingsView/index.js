@@ -36,9 +36,6 @@ export default class SettingsView extends LoggedView {
 			languages: [{
 				label: 'English',
 				value: 'en'
-			}, {
-				label: 'Português do Brasil',
-				value: 'pt-BR'
 			}],
 			saving: false
 		};
