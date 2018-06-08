@@ -2,7 +2,7 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
-const { logout, navigateToLogin } = require('./helpers/app');
+const { logout, navigateToLogin, login } = require('./helpers/app');
 const data = require('./data');
 
 describe('Broadcast room', () => {
@@ -99,4 +99,13 @@ describe('Broadcast room', () => {
 	afterEach(async() => {
 		takeScreenshot();
 	});
+
+	after(async() => {
+		// log back as main test user and left screen on RoomsListView
+		await element(by.id('header-back')).tap();
+		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
+		await logout();
+		await navigateToLogin();
+		await login();
+	})
 });

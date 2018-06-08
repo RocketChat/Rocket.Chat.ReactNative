@@ -212,6 +212,7 @@ export default class ProfileView extends LoggedView {
 	}) => (
 		<Touch
 			key={key}
+			testID={key}
 			onPress={onPress}
 			underlayColor='rgba(255, 255, 255, 0.5)'
 			activeOpacity={0.3}
@@ -229,21 +230,24 @@ export default class ProfileView extends LoggedView {
 		<View style={styles.avatarButtons}>
 			{this.renderAvatarButton({
 				child: <Avatar text={this.props.user.username} size={50} forceInitials />,
-				onPress: () => this.resetAvatar()
+				onPress: () => this.resetAvatar(),
+				key: 'profile-view-reset-avatar'
 			})}
 			{this.renderAvatarButton({
 				child: <Icon name='file-upload' size={30} />,
-				onPress: () => this.pickImage()
+				onPress: () => this.pickImage(),
+				key: 'profile-view-upload-avatar'
 			})}
 			{this.renderAvatarButton({
 				child: <Icon name='link' size={30} />,
 				onPress: () => this.setAvatar({ url: this.state.avatarUrl, data: this.state.avatarUrl, service: 'url' }),
-				disabled: !this.state.avatarUrl
+				disabled: !this.state.avatarUrl,
+				key: 'profile-view-avatar-url-button'
 			})}
 			{Object.keys(this.state.avatarSuggestions).map((service) => {
 				const { url, blob, contentType } = this.state.avatarSuggestions[service];
 				return this.renderAvatarButton({
-					key: service,
+					key: `profile-view-avatar-${ service }`,
 					child: <Avatar avatar={url} size={50} />,
 					onPress: () => this.setAvatar({
 						url, data: blob, service, contentType
@@ -268,7 +272,7 @@ export default class ProfileView extends LoggedView {
 					{...scrollPersistTaps}
 				>
 					<SafeAreaView testID='profile-view'>
-						<View style={styles.avatarContainer}>
+						<View style={styles.avatarContainer} testID='profile-view-avatar'>
 							<Avatar
 								text={username}
 								avatar={this.state.avatar && this.state.avatar.url}
@@ -328,7 +332,7 @@ export default class ProfileView extends LoggedView {
 								type='primary'
 								onPress={this.submit}
 								disabled={!this.formIsChanged()}
-								testID='profile-view-button'
+								testID='profile-view-submit'
 							/>
 						</View>
 						<Loading visible={this.state.saving} />
@@ -342,6 +346,7 @@ export default class ProfileView extends LoggedView {
 							<Dialog.Input
 								onChangeText={value => this.setState({ typedPassword: value })}
 								secureTextEntry
+								testID='profile-view-typed-password'
 							/>
 							<Dialog.Button label={I18n.t('Cancel')} onPress={this.closePasswordAlert} />
 							<Dialog.Button label={I18n.t('Save')} onPress={this.submit} />
