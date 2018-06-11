@@ -124,7 +124,7 @@ export default class Avatar extends React.PureComponent {
 
 		if (type === 'd' && !forceInitials) {
 			const uri = avatar || `${ baseUrl }/avatar/${ text }?random=${ this.avatarVersion }`;
-			image = uri && (
+			image = uri ? (
 				<FastImage
 					style={[styles.avatar, avatarStyle]}
 					source={{
@@ -132,18 +132,19 @@ export default class Avatar extends React.PureComponent {
 						priority: FastImage.priority.high
 					}}
 				/>
-			);
+			) : null;
 		}
 
 		return (
 			<View style={[styles.iconContainer, iconContainerStyle, style]}>
-				{this.state.showInitials &&
+				{this.state.showInitials ?
 					<Text
 						style={[styles.avatarInitials, avatarInitialsStyle]}
 						allowFontScaling={false}
 					>
 						{initials}
 					</Text>
+					: null
 				}
 				{image}
 				{this.props.children}

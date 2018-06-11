@@ -223,6 +223,6 @@ export default class RoomsListView extends LoggedView {
 	render = () => (
 		<View style={styles.container} testID='rooms-list-view'>
 			{this.renderList()}
-			{Platform.OS === 'android' && this.renderCreateButtons()}
+			{Platform.OS === 'android' ? this.renderCreateButtons() : null}
 		</View>)
 }

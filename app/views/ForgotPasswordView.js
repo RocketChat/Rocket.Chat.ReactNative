@@ -98,7 +98,7 @@ export default class ForgotPasswordView extends LoggedView {
 								/>
 							</View>
 
-							{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
+							{this.props.login.failure ? <Text style={styles.error}>{this.props.login.error.reason}</Text> : null}
 							<Loading visible={this.props.login.isFetching} />
 						</View>
 					</SafeAreaView>

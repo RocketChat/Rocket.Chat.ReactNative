@@ -175,7 +175,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 				</Avatar>
 				<View style={styles.rows}>
 					<Text accessible={false} style={styles.title} ellipsizeMode='tail' numberOfLines={1} allowFontScaling={false}>{this.props.user.username}</Text>
-					{ t && <Text accessible={false} style={styles.status_text} ellipsizeMode='tail' numberOfLines={1} allowFontScaling={false}>{t}</Text>}
+					{ t ? <Text accessible={false} style={styles.status_text} ellipsizeMode='tail' numberOfLines={1} allowFontScaling={false}>{t}</Text> : null}
 				</View>
 			</TouchableOpacity>
 		);

@@ -160,7 +160,7 @@ export default class RoomHeaderView extends React.PureComponent {
 						</Text>
 					</View>
 
-					{ t && <Text style={styles.userStatus} allowFontScaling={false} numberOfLines={1}>{t}</Text>}
+					{ t ? <Text style={styles.userStatus} allowFontScaling={false} numberOfLines={1}>{t}</Text> : null}
 
 				</View>
 			</TouchableOpacity>

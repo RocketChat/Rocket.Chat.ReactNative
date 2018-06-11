@@ -341,8 +341,8 @@ export default class Sidebar extends Component {
 
 					{this.renderSeparator('separator-header')}
 
-					{!this.state.showServers && this.renderNavigation()}
-					{this.state.showServers && this.renderServers()}
+					{!this.state.showServers ? this.renderNavigation() : null}
+					{this.state.showServers ? this.renderServers() : null}
 				</SafeAreaView>
 			</ScrollView>
 		);

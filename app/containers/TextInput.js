@@ -105,7 +105,7 @@ export default class RCTextInput extends React.PureComponent {
 		const { showPassword } = this.state;
 		return (
 			<View style={[styles.inputContainer, containerStyle]}>
-				{label && <Text contentDescription={null} accessibilityLabel={null} style={[styles.label, error.error && styles.labelError]}>{label}</Text> }
+				{label ? <Text contentDescription={null} accessibilityLabel={null} style={[styles.label, error.error && styles.labelError]}>{label}</Text> : null }
 				<View style={styles.wrap}>
 					<TextInput
 						style={[
@@ -126,10 +126,10 @@ export default class RCTextInput extends React.PureComponent {
 						contentDescription={placeholder}
 						{...inputProps}
 					/>
-					{iconLeft && this.iconLeft(iconLeft)}
-					{secureTextEntry && this.iconPassword(showPassword ? 'eye-off' : 'eye')}
+					{iconLeft ? this.iconLeft(iconLeft) : null}
+					{secureTextEntry ? this.iconPassword(showPassword ? 'eye-off' : 'eye') : null}
 				</View>
-				{error.error && <Text style={sharedStyles.error}>{error.reason}</Text>}
+				{error.error ? <Text style={sharedStyles.error}>{error.reason}</Text> : null}
 			</View>
 		);
 	}

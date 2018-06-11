@@ -327,7 +327,7 @@ export default class RoomInfoEditView extends LoggedView {
 							disabled={!this.permissions[PERMISSION_SET_READONLY] || room.broadcast}
 							testID='room-info-edit-view-ro'
 						/>
-						{ro && !room.broadcast &&
+						{ro && !room.broadcast ?
 							<SwitchContainer
 								value={reactWhenReadOnly}
 								leftLabelPrimary={I18n.t('No_Reactions')}
@@ -338,12 +338,14 @@ export default class RoomInfoEditView extends LoggedView {
 								disabled={!this.permissions[PERMISSION_SET_REACT_WHEN_READONLY]}
 								testID='room-info-edit-view-react-when-ro'
 							/>
+							: null
 						}
-						{room.broadcast &&
+						{room.broadcast ?
 							[
 								<Text style={styles.broadcast}>{I18n.t('Broadcast_Channel')}</Text>,
 								<View style={styles.divider} />
 							]
+							: null
 						}
 						<TouchableOpacity
 							style={[sharedStyles.buttonContainer, !this.formIsChanged() && styles.buttonContainerDisabled]}
