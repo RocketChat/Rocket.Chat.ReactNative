@@ -151,7 +151,7 @@ const RocketChat = {
 
 			this.ddp.on('login', protectedFunction(() => reduxStore.dispatch(loginRequest())));
 
-			this.ddp.on('logginError', protectedFunction(err => reduxStore.dispatch(loginFailure(err))));
+			this.ddp.on('loginError', protectedFunction(err => reduxStore.dispatch(loginFailure(err))));
 
 			this.ddp.on('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 

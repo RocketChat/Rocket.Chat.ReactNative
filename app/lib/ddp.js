@@ -71,14 +71,14 @@ export default class Socket extends EventEmitter {
 		this.subscriptions = {};
 		this.ddp = new EventEmitter();
 		this._logged = false;
-		const waitTimeout = () => setTimeout(async() => {
+		const waitTimeout = () => setTimeout(() => {
 			// this.connection.ping();
-			this.send({ msg: 'ping' });
+			this.send({ msg: 'ping' }).catch(e => log('ping', e));
 			this.timeout = setTimeout(() => this.reconnect(), 1000);
 		}, 40000);
 		const handlePing = () => {
 			this.lastping = new Date();
-			this.send({ msg: 'pong' }, true);
+			this.send({ msg: 'pong' }, true).catch(e => log('pong', e));
 			if (this.timeout) {
 				clearTimeout(this.timeout);
 			}
@@ -93,10 +93,10 @@ export default class Socket extends EventEmitter {
 		};
 
 
-		AppState.addEventListener('change', (nextAppState) => {
+		AppState.addEventListener('change', async(nextAppState) => {
 			if (this.state && this.state.match(/inactive/) && nextAppState === 'active') {
 				try {
-					this.send({ msg: 'ping' }, true);
+					await this.send({ msg: 'ping' }, true);
 					// this.connection.ping();
 				} catch (e) {
 					this.reconnect();
@@ -115,25 +115,21 @@ export default class Socket extends EventEmitter {
 		this.on('ready', data => this.ddp.emit(data.subs[0], data));
 		// this.on('error', () => this.reconnect());
 		this.on('disconnected', debounce(() => this.reconnect(), 300));
-		this.on('logged', () => this._logged = true);
 
 		this.on('logged', () => {
+			this._logged = true;
 			Object.keys(this.subscriptions || {}).forEach((key) => {
 				const { name, params } = this.subscriptions[key];
-				this.subscriptions[key].unsubscribe();
-				this.subscribe(name, ...params);
+				this.subscriptions[key].unsubscribe().catch(e => log('this.on(logged) unsub', e));
+				this.subscribe(name, ...params).catch(e => log('this.on(logged) sub', e));
 			});
 		});
 		this.on('open', async() => {
 			this._logged = false;
-			this.send({ msg: 'connect', version: '1', support: ['1', 'pre2', 'pre1'] });
+			this.send({ msg: 'connect', version: '1', support: ['1', 'pre2', 'pre1'] }).catch(e => log('this.on(open)', e));
 		});
 
-		try {
-			this._connect();
-		} catch (e) {
-			log('ddp.constructor._connect', e);
-		}
+		this._connect().catch(e => log('ddp.constructor._connect', e));
 	}
 	check() {
 		if (!this.lastping) {
@@ -159,7 +155,7 @@ export default class Socket extends EventEmitter {
 				error.reason = 'User or Password incorrect';
 				error.message = 'User or Password incorrect';
 			}
-			this.emit('logginError', error);
+			this.emit('loginError', error);
 			return Promise.reject(error);
 		}
 	}
@@ -201,7 +197,11 @@ export default class Socket extends EventEmitter {
 			this.lastping = new Date();
 			this._close();
 			clearInterval(this.reconnect_timeout);
-			this.reconnect_timeout = setInterval(() => (!this.connection || this.connection.readyState > 1 || !this.check()) && this.reconnect(), 5000);
+			this.reconnect_timeout = setInterval(() => {
+				if (!this.connection || this.connection.readyState > 1 || !this.check()) {
+					this.reconnect();
+				}
+			}, 5000);
 			this.connection = new WebSocket(`${ this.url }/websocket`, null);
 
 			this.connection.onopen = () => {
@@ -210,7 +210,9 @@ export default class Socket extends EventEmitter {
 				this.ddp.emit('open');
 				return this._login && this.login(this._login);
 			};
-			this.connection.onclose = debounce((e) => { console.log('aer'); this.emit('disconnected', e); }, 300);
+			this.connection.onclose = debounce((e) => {
+				this.emit('disconnected', e);
+			}, 300);
 			this.connection.onmessage = (e) => {
 				try {
 					// console.log('received', e.data, e.target.readyState);
@@ -225,10 +227,13 @@ export default class Socket extends EventEmitter {
 	}
 	logout() {
 		this._login = null;
-		return this.call('logout').then(() => this.subscriptions = {});
+		return this.call('logout')
+			.catch(e => log('logout', e))
+			.finally(() => this.subscriptions = {});
 	}
 	disconnect() {
 		this._close();
+		this._logged = false;
 		this._login = null;
 		this.subscriptions = {};
 	}
@@ -236,7 +241,7 @@ export default class Socket extends EventEmitter {
 		if (this._timer) {
 			return;
 		}
-		delete this.connection;
+		this._close();
 		this._logged = false;
 
 		this._timer = setTimeout(async() => {
