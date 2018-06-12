@@ -91,10 +91,11 @@ const RocketChat = {
 		this.activeUsers = this.activeUsers || {};
 		const { user } = reduxStore.getState().login;
 
-		const status = (ddpMessage.fields && ddpMessage.fields.status) || 'offline';
-
 		if (user && user.id === ddpMessage.id) {
-			reduxStore.dispatch(setUser({ status }));
+			if (!ddpMessage.fields) {
+				reduxStore.dispatch(setUser({ status: 'offline' }));
+			}
+			reduxStore.dispatch(setUser(ddpMessage.fields));
 		}
 
 		if (this._setUserTimer) {
