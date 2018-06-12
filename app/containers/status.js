@@ -22,7 +22,9 @@ export default class Status extends React.Component {
 	static propTypes = {
 		style: ViewPropTypes.style,
 		id: PropTypes.string,
-		activeUsers: PropTypes.object
+		activeUsers: PropTypes.object,
+		user: PropTypes.object,
+		offline: PropTypes.bool
 	};
 
 	shouldComponentUpdate(nextProps) {
