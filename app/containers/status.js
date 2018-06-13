@@ -14,27 +14,36 @@ const styles = StyleSheet.create({
 
 @connect(state => ({
 	activeUsers: state.activeUsers,
-	user: state.login.user
+	user: state.login.user,
+	offline: !state.meteor.connected
 }))
 
 export default class Status extends React.Component {
 	static propTypes = {
 		style: ViewPropTypes.style,
 		id: PropTypes.string,
-		activeUsers: PropTypes.object
+		activeUsers: PropTypes.object,
+		user: PropTypes.object,
+		offline: PropTypes.bool
 	};
 
 	shouldComponentUpdate(nextProps) {
 		const { id: userId, user } = this.props;
 		if (user.id === userId) {
+			if (nextProps.offline !== this.props.offline) {
+				return true;
+			}
 			return (nextProps.user && nextProps.user.status !== user.status);
 		}
 		return (nextProps.activeUsers[userId] && nextProps.activeUsers[userId].status) !== this.status;
 	}
 
 	get status() {
-		const { id: userId, user } = this.props;
+		const { id: userId, user, offline } = this.props;
 		if (user.id === userId) {
+			if (offline) {
+				return 'offline';
+			}
 			return user.status || 'offline';
 		}
 		return (this.props.activeUsers && this.props.activeUsers[userId] && this.props.activeUsers[userId].status) || 'offline';

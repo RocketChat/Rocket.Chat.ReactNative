@@ -91,10 +91,11 @@ const RocketChat = {
 		this.activeUsers = this.activeUsers || {};
 		const { user } = reduxStore.getState().login;
 
-		const status = (ddpMessage.fields && ddpMessage.fields.status) || 'offline';
-
 		if (user && user.id === ddpMessage.id) {
-			reduxStore.dispatch(setUser({ status }));
+			if (!ddpMessage.fields) {
+				reduxStore.dispatch(setUser({ status: 'offline' }));
+			}
+			reduxStore.dispatch(setUser(ddpMessage.fields));
 		}
 
 		if (this._setUserTimer) {
@@ -150,7 +151,7 @@ const RocketChat = {
 
 			this.ddp.on('login', protectedFunction(() => reduxStore.dispatch(loginRequest())));
 
-			this.ddp.on('logginError', protectedFunction(err => reduxStore.dispatch(loginFailure(err))));
+			this.ddp.on('loginError', protectedFunction(err => reduxStore.dispatch(loginFailure(err))));
 
 			this.ddp.on('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 

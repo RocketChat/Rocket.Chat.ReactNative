@@ -15,10 +15,6 @@ export const _formatTime = function(seconds) {
 };
 
 export default class extends React.PureComponent {
-	static propTypes = {
-		onFinish: PropTypes.func.isRequired
-	}
-
 	static async permission() {
 		if (Platform.OS !== 'android') {
 			return true;
@@ -31,6 +27,10 @@ export default class extends React.PureComponent {
 
 		const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO, rationale);
 		return result === true || result === PermissionsAndroid.RESULTS.GRANTED;
+	}
+
+	static propTypes = {
+		onFinish: PropTypes.func.isRequired
 	}
 
 	constructor() {
