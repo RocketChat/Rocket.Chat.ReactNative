@@ -3,15 +3,10 @@
 exports[`render channel 1`] = `
 <View>
   <View
-    accessibilityComponentType={undefined}
     accessibilityLabel="general, last message Nov 10"
     accessibilityTraits="selected"
     accessible={true}
-    hasTVPreferredFocus={undefined}
-    hitSlop={undefined}
     isTVSelectable={true}
-    nativeID={undefined}
-    onLayout={undefined}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -19,8 +14,6 @@ exports[`render channel 1`] = `
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
     style={null}
-    testID={undefined}
-    tvParallaxProperties={undefined}
   >
     <View
       style={
@@ -175,15 +168,10 @@ exports[`render channel 1`] = `
 exports[`render no icon 1`] = `
 <View>
   <View
-    accessibilityComponentType={undefined}
     accessibilityLabel="name, last message Nov 10"
     accessibilityTraits="selected"
     accessible={true}
-    hasTVPreferredFocus={undefined}
-    hitSlop={undefined}
     isTVSelectable={true}
-    nativeID={undefined}
-    onLayout={undefined}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -191,8 +179,6 @@ exports[`render no icon 1`] = `
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
     style={null}
-    testID={undefined}
-    tvParallaxProperties={undefined}
   >
     <View
       style={
@@ -347,15 +333,10 @@ exports[`render no icon 1`] = `
 exports[`render private group 1`] = `
 <View>
   <View
-    accessibilityComponentType={undefined}
     accessibilityLabel="private-group, last message Nov 10"
     accessibilityTraits="selected"
     accessible={true}
-    hasTVPreferredFocus={undefined}
-    hitSlop={undefined}
     isTVSelectable={true}
-    nativeID={undefined}
-    onLayout={undefined}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -363,8 +344,6 @@ exports[`render private group 1`] = `
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
     style={null}
-    testID={undefined}
-    tvParallaxProperties={undefined}
   >
     <View
       style={
@@ -520,15 +499,10 @@ exports[`render private group 1`] = `
 exports[`render unread +999 1`] = `
 <View>
   <View
-    accessibilityComponentType={undefined}
     accessibilityLabel="name, 1000 alerts, last message Nov 10"
     accessibilityTraits="selected"
     accessible={true}
-    hasTVPreferredFocus={undefined}
-    hitSlop={undefined}
     isTVSelectable={true}
-    nativeID={undefined}
-    onLayout={undefined}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -536,8 +510,6 @@ exports[`render unread +999 1`] = `
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
     style={null}
-    testID={undefined}
-    tvParallaxProperties={undefined}
   >
     <View
       style={
@@ -609,11 +581,6 @@ exports[`render unread +999 1`] = `
           }
         >
           <FastImageView
-            onFastImageError={undefined}
-            onFastImageLoad={undefined}
-            onFastImageLoadEnd={undefined}
-            onFastImageLoadStart={undefined}
-            onFastImageProgress={undefined}
             resizeMode="cover"
             source={
               Object {
@@ -782,15 +749,10 @@ exports[`render unread +999 1`] = `
 exports[`render unread 1`] = `
 <View>
   <View
-    accessibilityComponentType={undefined}
     accessibilityLabel="name, 1 alert, last message Nov 10"
     accessibilityTraits="selected"
     accessible={true}
-    hasTVPreferredFocus={undefined}
-    hitSlop={undefined}
     isTVSelectable={true}
-    nativeID={undefined}
-    onLayout={undefined}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -798,8 +760,6 @@ exports[`render unread 1`] = `
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
     style={null}
-    testID={undefined}
-    tvParallaxProperties={undefined}
   >
     <View
       style={
@@ -871,11 +831,6 @@ exports[`render unread 1`] = `
           }
         >
           <FastImageView
-            onFastImageError={undefined}
-            onFastImageLoad={undefined}
-            onFastImageLoadEnd={undefined}
-            onFastImageLoadStart={undefined}
-            onFastImageProgress={undefined}
             resizeMode="cover"
             source={
               Object {
@@ -1044,15 +999,10 @@ exports[`render unread 1`] = `
 exports[`renders correctly 1`] = `
 <View>
   <View
-    accessibilityComponentType={undefined}
     accessibilityLabel="name, last message Nov 10"
     accessibilityTraits="selected"
     accessible={true}
-    hasTVPreferredFocus={undefined}
-    hitSlop={undefined}
     isTVSelectable={true}
-    nativeID={undefined}
-    onLayout={undefined}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -1060,8 +1010,6 @@ exports[`renders correctly 1`] = `
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
     style={null}
-    testID={undefined}
-    tvParallaxProperties={undefined}
   >
     <View
       style={
@@ -1133,11 +1081,6 @@ exports[`renders correctly 1`] = `
           }
         >
           <FastImageView
-            onFastImageError={undefined}
-            onFastImageLoad={undefined}
-            onFastImageLoadEnd={undefined}
-            onFastImageLoadStart={undefined}
-            onFastImageProgress={undefined}
             resizeMode="cover"
             source={
               Object {

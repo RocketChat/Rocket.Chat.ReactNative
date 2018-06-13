@@ -58,11 +58,6 @@ exports[`Storyshots Avatar avatar 1`] = `
         }
       >
         <FastImageView
-          onFastImageError={undefined}
-          onFastImageLoad={undefined}
-          onFastImageLoadEnd={undefined}
-          onFastImageLoadStart={undefined}
-          onFastImageProgress={undefined}
           resizeMode="cover"
           source={
             Object {
@@ -137,11 +132,6 @@ exports[`Storyshots Avatar avatar 1`] = `
         }
       >
         <FastImageView
-          onFastImageError={undefined}
-          onFastImageLoad={undefined}
-          onFastImageLoadEnd={undefined}
-          onFastImageLoadStart={undefined}
-          onFastImageProgress={undefined}
           resizeMode="cover"
           source={
             Object {
@@ -216,11 +206,6 @@ exports[`Storyshots Avatar avatar 1`] = `
         }
       >
         <FastImageView
-          onFastImageError={undefined}
-          onFastImageLoad={undefined}
-          onFastImageLoadEnd={undefined}
-          onFastImageLoadStart={undefined}
-          onFastImageProgress={undefined}
           resizeMode="cover"
           source={
             Object {
@@ -295,11 +280,6 @@ exports[`Storyshots Avatar avatar 1`] = `
         }
       >
         <FastImageView
-          onFastImageError={undefined}
-          onFastImageLoad={undefined}
-          onFastImageLoadEnd={undefined}
-          onFastImageLoadStart={undefined}
-          onFastImageProgress={undefined}
           resizeMode="cover"
           source={
             Object {
@@ -327,15 +307,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
 <RCTScrollView>
   <View>
     <View
-      accessibilityComponentType={undefined}
       accessibilityLabel="rocket.cat, last message Nov 10"
       accessibilityTraits="selected"
       accessible={true}
-      hasTVPreferredFocus={undefined}
-      hitSlop={undefined}
       isTVSelectable={true}
-      nativeID={undefined}
-      onLayout={undefined}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -343,8 +318,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={null}
-      testID={undefined}
-      tvParallaxProperties={undefined}
     >
       <View
         style={
@@ -416,11 +389,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             }
           >
             <FastImageView
-              onFastImageError={undefined}
-              onFastImageLoad={undefined}
-              onFastImageLoadEnd={undefined}
-              onFastImageLoadStart={undefined}
-              onFastImageProgress={undefined}
               resizeMode="cover"
               source={
                 Object {
@@ -561,15 +529,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       </View>
     </View>
     <View
-      accessibilityComponentType={undefined}
       accessibilityLabel="rocket.cat, last message Nov 10"
       accessibilityTraits="selected"
       accessible={true}
-      hasTVPreferredFocus={undefined}
-      hitSlop={undefined}
       isTVSelectable={true}
-      nativeID={undefined}
-      onLayout={undefined}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -577,8 +540,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={null}
-      testID={undefined}
-      tvParallaxProperties={undefined}
     >
       <View
         style={
@@ -650,11 +611,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             }
           >
             <FastImageView
-              onFastImageError={undefined}
-              onFastImageLoad={undefined}
-              onFastImageLoadEnd={undefined}
-              onFastImageLoadStart={undefined}
-              onFastImageProgress={undefined}
               resizeMode="cover"
               source={
                 Object {
@@ -799,15 +755,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       </View>
     </View>
     <View
-      accessibilityComponentType={undefined}
       accessibilityLabel="rocket.cat, 1 alert, last message Nov 10"
       accessibilityTraits="selected"
       accessible={true}
-      hasTVPreferredFocus={undefined}
-      hitSlop={undefined}
       isTVSelectable={true}
-      nativeID={undefined}
-      onLayout={undefined}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -815,8 +766,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={null}
-      testID={undefined}
-      tvParallaxProperties={undefined}
     >
       <View
         style={
@@ -888,11 +837,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             }
           >
             <FastImageView
-              onFastImageError={undefined}
-              onFastImageLoad={undefined}
-              onFastImageLoadEnd={undefined}
-              onFastImageLoadStart={undefined}
-              onFastImageProgress={undefined}
               resizeMode="cover"
               source={
                 Object {
@@ -1056,15 +1000,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       </View>
     </View>
     <View
-      accessibilityComponentType={undefined}
       accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, 9 alerts, last message Nov 10"
       accessibilityTraits="selected"
       accessible={true}
-      hasTVPreferredFocus={undefined}
-      hitSlop={undefined}
       isTVSelectable={true}
-      nativeID={undefined}
-      onLayout={undefined}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -1072,8 +1011,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={null}
-      testID={undefined}
-      tvParallaxProperties={undefined}
     >
       <View
         style={
@@ -1145,11 +1082,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             }
           >
             <FastImageView
-              onFastImageError={undefined}
-              onFastImageLoad={undefined}
-              onFastImageLoadEnd={undefined}
-              onFastImageLoadStart={undefined}
-              onFastImageProgress={undefined}
               resizeMode="cover"
               source={
                 Object {
@@ -1317,15 +1249,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       </View>
     </View>
     <View
-      accessibilityComponentType={undefined}
       accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, 99 alerts, last message Nov 10"
       accessibilityTraits="selected"
       accessible={true}
-      hasTVPreferredFocus={undefined}
-      hitSlop={undefined}
       isTVSelectable={true}
-      nativeID={undefined}
-      onLayout={undefined}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -1333,8 +1260,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={null}
-      testID={undefined}
-      tvParallaxProperties={undefined}
     >
       <View
         style={
@@ -1406,11 +1331,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             }
           >
             <FastImageView
-              onFastImageError={undefined}
-              onFastImageLoad={undefined}
-              onFastImageLoadEnd={undefined}
-              onFastImageLoadStart={undefined}
-              onFastImageProgress={undefined}
               resizeMode="cover"
               source={
                 Object {
@@ -1574,15 +1494,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       </View>
     </View>
     <View
-      accessibilityComponentType={undefined}
       accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, 100 alerts, last message Nov 10"
       accessibilityTraits="selected"
       accessible={true}
-      hasTVPreferredFocus={undefined}
-      hitSlop={undefined}
       isTVSelectable={true}
-      nativeID={undefined}
-      onLayout={undefined}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -1590,8 +1505,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={null}
-      testID={undefined}
-      tvParallaxProperties={undefined}
     >
       <View
         style={
@@ -1663,11 +1576,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             }
           >
             <FastImageView
-              onFastImageError={undefined}
-              onFastImageLoad={undefined}
-              onFastImageLoadEnd={undefined}
-              onFastImageLoadStart={undefined}
-              onFastImageProgress={undefined}
               resizeMode="cover"
               source={
                 Object {
@@ -1831,15 +1739,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       </View>
     </View>
     <View
-      accessibilityComponentType={undefined}
       accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, 100000 alerts, last message Nov 10"
       accessibilityTraits="selected"
       accessible={true}
-      hasTVPreferredFocus={undefined}
-      hitSlop={undefined}
       isTVSelectable={true}
-      nativeID={undefined}
-      onLayout={undefined}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -1847,8 +1750,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={null}
-      testID={undefined}
-      tvParallaxProperties={undefined}
     >
       <View
         style={
@@ -1920,11 +1821,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             }
           >
             <FastImageView
-              onFastImageError={undefined}
-              onFastImageLoad={undefined}
-              onFastImageLoadEnd={undefined}
-              onFastImageLoadStart={undefined}
-              onFastImageProgress={undefined}
               resizeMode="cover"
               source={
                 Object {
@@ -2088,15 +1984,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       </View>
     </View>
     <View
-      accessibilityComponentType={undefined}
       accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, 100000 alerts, you were mentioned, last message Nov 10"
       accessibilityTraits="selected"
       accessible={true}
-      hasTVPreferredFocus={undefined}
-      hitSlop={undefined}
       isTVSelectable={true}
-      nativeID={undefined}
-      onLayout={undefined}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -2104,8 +1995,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={null}
-      testID={undefined}
-      tvParallaxProperties={undefined}
     >
       <View
         style={
@@ -2177,11 +2066,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             }
           >
             <FastImageView
-              onFastImageError={undefined}
-              onFastImageLoad={undefined}
-              onFastImageLoadEnd={undefined}
-              onFastImageLoadStart={undefined}
-              onFastImageProgress={undefined}
               resizeMode="cover"
               source={
                 Object {
@@ -2345,15 +2229,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       </View>
     </View>
     <View
-      accessibilityComponentType={undefined}
       accessibilityLabel="W, last message Nov 10"
       accessibilityTraits="selected"
       accessible={true}
-      hasTVPreferredFocus={undefined}
-      hitSlop={undefined}
       isTVSelectable={true}
-      nativeID={undefined}
-      onLayout={undefined}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -2361,8 +2240,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={null}
-      testID={undefined}
-      tvParallaxProperties={undefined}
     >
       <View
         style={
@@ -2434,11 +2311,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             }
           >
             <FastImageView
-              onFastImageError={undefined}
-              onFastImageLoad={undefined}
-              onFastImageLoadEnd={undefined}
-              onFastImageLoadStart={undefined}
-              onFastImageProgress={undefined}
               resizeMode="cover"
               source={
                 Object {
@@ -2579,15 +2451,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       </View>
     </View>
     <View
-      accessibilityComponentType={undefined}
       accessibilityLabel="WW, last message Nov 10"
       accessibilityTraits="selected"
       accessible={true}
-      hasTVPreferredFocus={undefined}
-      hitSlop={undefined}
       isTVSelectable={true}
-      nativeID={undefined}
-      onLayout={undefined}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -2595,8 +2462,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={null}
-      testID={undefined}
-      tvParallaxProperties={undefined}
     >
       <View
         style={
@@ -2668,11 +2533,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             }
           >
             <FastImageView
-              onFastImageError={undefined}
-              onFastImageLoad={undefined}
-              onFastImageLoadEnd={undefined}
-              onFastImageLoadStart={undefined}
-              onFastImageProgress={undefined}
               resizeMode="cover"
               source={
                 Object {
@@ -2813,15 +2673,10 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       </View>
     </View>
     <View
-      accessibilityComponentType={undefined}
       accessibilityLabel=", last message Nov 10"
       accessibilityTraits="selected"
       accessible={true}
-      hasTVPreferredFocus={undefined}
-      hitSlop={undefined}
       isTVSelectable={true}
-      nativeID={undefined}
-      onLayout={undefined}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -2829,8 +2684,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={null}
-      testID={undefined}
-      tvParallaxProperties={undefined}
     >
       <View
         style={
@@ -2902,11 +2755,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
             }
           >
             <FastImageView
-              onFastImageError={undefined}
-              onFastImageLoad={undefined}
-              onFastImageLoadEnd={undefined}
-              onFastImageLoadStart={undefined}
-              onFastImageProgress={undefined}
               resizeMode="cover"
               source={
                 Object {
