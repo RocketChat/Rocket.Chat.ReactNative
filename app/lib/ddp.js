@@ -144,9 +144,11 @@ export default class Socket extends EventEmitter {
 		try {
 			this.emit('login', params);
 			const result = await this.call('login', params);
-			this._login = { resume: result.token, ...result };
+			// this._login = { resume: result.token, ...result };
+			this._login = { resume: result.token, ...result, ...params };
 			this._logged = true;
-			this.emit('logged', result);
+			// this.emit('logged', result);
+			this.emit('logged', this._login);
 			return result;
 		} catch (err) {
 			const error = { ...err };

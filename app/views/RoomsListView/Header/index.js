@@ -13,6 +13,7 @@ import RocketChat from '../../../lib/rocketchat';
 import { STATUS_COLORS } from '../../../constants/colors';
 import { setSearch } from '../../../actions/rooms';
 import styles from './styles';
+import sharedStyles from '../../Styles';
 import log from '../../../utils/log';
 import I18n from '../../../i18n';
 
@@ -130,7 +131,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 				testID='rooms-list-view-sidebar'
 			>
 				<TouchableOpacity
-					style={styles.headerButton}
+					style={sharedStyles.headerButton}
 					onPress={() => this.props.navigation.openDrawer()}
 				>
 					<FastImage
@@ -174,7 +175,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 				</Avatar>
 				<View style={styles.rows}>
 					<Text accessible={false} style={styles.title} ellipsizeMode='tail' numberOfLines={1} allowFontScaling={false}>{this.props.user.username}</Text>
-					{ t && <Text accessible={false} style={styles.status_text} ellipsizeMode='tail' numberOfLines={1} allowFontScaling={false}>{t}</Text>}
+					{ t ? <Text accessible={false} style={styles.status_text} ellipsizeMode='tail' numberOfLines={1} allowFontScaling={false}>{t}</Text> : null}
 				</View>
 			</TouchableOpacity>
 		);
@@ -189,7 +190,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 			<View style={styles.right}>
 				{Platform.OS === 'android' ?
 					<TouchableOpacity
-						style={styles.headerButton}
+						style={sharedStyles.headerButton}
 						onPress={() => this.onPressSearchButton()}
 						accessibilityLabel={I18n.t('Search')}
 						accessibilityTraits='button'
@@ -203,7 +204,7 @@ export default class RoomsListHeaderView extends React.PureComponent {
 					</TouchableOpacity> : null}
 				{Platform.OS === 'ios' ?
 					<TouchableOpacity
-						style={styles.headerButton}
+						style={sharedStyles.headerButton}
 						onPress={() => this.createChannel()}
 						accessibilityLabel={I18n.t('Create_Channel')}
 						accessibilityTraits='button'

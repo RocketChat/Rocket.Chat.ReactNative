@@ -62,7 +62,7 @@ exports[`Storyshots Avatar avatar 1`] = `
           source={
             Object {
               "priority": "high",
-              "uri": "/avatar/test",
+              "uri": "/avatar/test?random=0",
             }
           }
           style={
@@ -136,7 +136,7 @@ exports[`Storyshots Avatar avatar 1`] = `
           source={
             Object {
               "priority": "high",
-              "uri": "/avatar/aa",
+              "uri": "/avatar/aa?random=0",
             }
           }
           style={
@@ -210,7 +210,7 @@ exports[`Storyshots Avatar avatar 1`] = `
           source={
             Object {
               "priority": "high",
-              "uri": "/avatar/bb",
+              "uri": "/avatar/bb?random=0",
             }
           }
           style={
@@ -284,7 +284,7 @@ exports[`Storyshots Avatar avatar 1`] = `
           source={
             Object {
               "priority": "high",
-              "uri": "/avatar/test",
+              "uri": "/avatar/test?random=0",
             }
           }
           style={
@@ -393,7 +393,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               source={
                 Object {
                   "priority": "high",
-                  "uri": "/avatar/rocket.cat",
+                  "uri": "/avatar/rocket.cat?random=0",
                 }
               }
               style={
@@ -615,7 +615,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               source={
                 Object {
                   "priority": "high",
-                  "uri": "/avatar/rocket.cat",
+                  "uri": "/avatar/rocket.cat?random=0",
                 }
               }
               style={
@@ -841,7 +841,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               source={
                 Object {
                   "priority": "high",
-                  "uri": "/avatar/rocket.cat",
+                  "uri": "/avatar/rocket.cat?random=0",
                 }
               }
               style={
@@ -1086,7 +1086,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               source={
                 Object {
                   "priority": "high",
-                  "uri": "/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+                  "uri": "/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries?random=0",
                 }
               }
               style={
@@ -1335,7 +1335,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               source={
                 Object {
                   "priority": "high",
-                  "uri": "/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+                  "uri": "/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries?random=0",
                 }
               }
               style={
@@ -1580,7 +1580,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               source={
                 Object {
                   "priority": "high",
-                  "uri": "/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+                  "uri": "/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries?random=0",
                 }
               }
               style={
@@ -1825,7 +1825,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               source={
                 Object {
                   "priority": "high",
-                  "uri": "/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+                  "uri": "/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries?random=0",
                 }
               }
               style={
@@ -2070,7 +2070,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               source={
                 Object {
                   "priority": "high",
-                  "uri": "/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+                  "uri": "/avatar/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries?random=0",
                 }
               }
               style={
@@ -2315,7 +2315,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               source={
                 Object {
                   "priority": "high",
-                  "uri": "/avatar/W",
+                  "uri": "/avatar/W?random=0",
                 }
               }
               style={
@@ -2537,7 +2537,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               source={
                 Object {
                   "priority": "high",
-                  "uri": "/avatar/WW",
+                  "uri": "/avatar/WW?random=0",
                 }
               }
               style={
@@ -2759,7 +2759,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
               source={
                 Object {
                   "priority": "high",
-                  "uri": "/avatar/",
+                  "uri": "/avatar/?random=0",
                 }
               }
               style={
