@@ -10,7 +10,6 @@ import navigator from './navigator';
 import selectedUsers from './selectedUsers';
 import createChannel from './createChannel';
 import app from './app';
-import permissions from './permissions';
 import customEmojis from './customEmojis';
 import activeUsers from './activeUsers';
 import roles from './roles';
@@ -32,7 +31,6 @@ export default combineReducers({
 	app,
 	room,
 	rooms,
-	permissions,
 	customEmojis,
 	activeUsers,
 	roles,

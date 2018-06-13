@@ -31,7 +31,6 @@ const getRoomTitle = room => (room.t === 'd' ?
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	user: state.login.user,
-	permissions: state.permissions,
 	activeUsers: state.activeUsers,
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	roles: state.roles

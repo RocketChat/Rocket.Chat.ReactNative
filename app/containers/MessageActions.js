@@ -25,7 +25,6 @@ import I18n from '../i18n';
 		showActions: state.messages.showActions,
 		actionMessage: state.messages.actionMessage,
 		user: state.login.user,
-		permissions: state.permissions,
 		permalink: state.messages.permalink,
 		Message_AllowDeleting: state.settings.Message_AllowDeleting,
 		Message_AllowDeleting_BlockDeleteInMinutes: state.settings.Message_AllowDeleting_BlockDeleteInMinutes,
@@ -53,7 +52,6 @@ export default class MessageActions extends React.Component {
 		room: PropTypes.object,
 		actionMessage: PropTypes.object,
 		user: PropTypes.object,
-		permissions: PropTypes.object.isRequired,
 		deleteRequest: PropTypes.func.isRequired,
 		editInit: PropTypes.func.isRequired,
 		toggleStarRequest: PropTypes.func.isRequired,
@@ -80,7 +78,7 @@ export default class MessageActions extends React.Component {
 		};
 		this.handleActionPress = this.handleActionPress.bind(this);
 		this.options = [''];
-		this.setPermissions(this.props.permissions);
+		this.setPermissions();
 	}
 
 	async componentWillReceiveProps(nextProps) {
@@ -165,7 +163,7 @@ export default class MessageActions extends React.Component {
 	}
 
 	componentDidUpdate() {
-		this.setPermissions(this.props.permissions);
+		this.setPermissions();
 	}
 
 	setPermissions() {

@@ -4,7 +4,7 @@ import foreach from 'lodash/forEach';
 import RNFetchBlob from 'react-native-fetch-blob';
 
 import reduxStore from './createStore';
-import settingsType from '../constants/settings';
+import defaultSettings from '../constants/settings';
 import messagesStatus from '../constants/messagesStatus';
 import database from './realm';
 import log from '../utils/log';
@@ -193,9 +193,7 @@ const RocketChat = {
 					database.write(() => {
 						args.forEach((arg) => {
 							const user = database.objects('users').filtered('username = $0', arg.username);
-							if (!user.length) {
-								database.create('users', { username: arg.username, avatarVersion: 0 });
-							} else {
+							if (user.length > 0) {
 								user[0].avatarVersion += 1;
 							}
 						});
@@ -687,27 +685,17 @@ const RocketChat = {
 	getPermissions,
 	getCustomEmoji,
 	parseSettings: settings => settings.reduce((ret, item) => {
-		ret[item._id] = item[settingsType[item._id].type] || item.valueAsString || item.valueAsNumber ||
+		ret[item._id] = item[defaultSettings[item._id].type] || item.valueAsString || item.valueAsNumber ||
 			item.valueAsBoolean || item.value;
 		return ret;
 	}, {}),
 	_prepareSettings(settings) {
 		return settings.map((setting) => {
-			setting[settingsType[setting._id].type] = setting.value;
+			setting[defaultSettings[setting._id].type] = setting.value;
 			return setting;
 		});
 	},
-	_filterSettings: settings => settings.filter(setting => settingsType[setting._id] && setting.value),
-	parsePermissions: permissions => permissions.reduce((ret, item) => {
-		ret[item._id] = item.roles.reduce((roleRet, role) => [...roleRet, role.value], []);
-		return ret;
-	}, {}),
-	_preparePermissions(permissions) {
-		permissions.forEach((permission) => {
-			permission.roles = permission.roles.map(role => ({ value: role }));
-		});
-		return permissions;
-	},
+	_filterSettings: settings => settings.filter(setting => defaultSettings[setting._id] && setting.value),
 	parseEmojis: emojis => emojis.reduce((ret, item) => {
 		ret[item.name] = item.extension;
 		item.aliases.forEach((alias) => {
@@ -843,22 +831,26 @@ const RocketChat = {
 	hasPermission(permissions, rid) {
 		// get the room from realm
 		const room = database.objects('subscriptions').filtered('rid = $0', rid)[0];
+		// get permissions from realm
+		const permissionsFiltered = database.objects('permissions')
+			.filter(permission => permissions.includes(permission._id));
 		// get room roles
 		const { roles } = room;
 		// transform room roles to array
 		const roomRoles = Array.from(Object.keys(roles), i => roles[i].value);
 		// get user roles on the server from redux
 		const userRoles = reduxStore.getState().login.user.roles || [];
-		// get all permissions from redux
-		const allPermissions = reduxStore.getState().permissions;
 		// merge both roles
 		const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
 
 		// return permissions in object format
 		// e.g. { 'edit-room': true, 'set-readonly': false }
 		return permissions.reduce((result, permission) => {
-			result[permission] = returnAnArray(allPermissions[permission])
-				.some(item => mergedRoles.indexOf(item) !== -1);
+			result[permission] = false;
+			const permissionFound = permissionsFiltered.find(p => p._id === permission);
+			if (permissionFound) {
+				result[permission] = returnAnArray(permissionFound.roles).some(r => mergedRoles.includes(r.value));
+			}
 			return result;
 		}, {});
 	},
