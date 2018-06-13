@@ -61,7 +61,7 @@ export default class RoomInfoView extends LoggedView {
 					accessibilityTraits='button'
 					testID='room-info-view-edit-button'
 				>
-					<View style={styles.headerButton}>
+					<View style={sharedStyles.headerButton}>
 						<MaterialIcon name='edit' size={20} />
 					</View>
 				</Touch>
@@ -146,17 +146,18 @@ export default class RoomInfoView extends LoggedView {
 	);
 
 	renderRoles = () => (
-		this.state.roles.length > 0 &&
-		<View style={styles.item}>
-			<Text style={styles.itemLabel}>{I18n.t('Roles')}</Text>
-			<View style={styles.rolesContainer}>
-				{this.state.roles.map(role => (
-					<View style={styles.roleBadge} key={role}>
-						<Text>{ this.props.roles[role] }</Text>
-					</View>
-				))}
+		this.state.roles.length > 0 ?
+			<View style={styles.item}>
+				<Text style={styles.itemLabel}>{I18n.t('Roles')}</Text>
+				<View style={styles.rolesContainer}>
+					{this.state.roles.map(role => (
+						<View style={styles.roleBadge} key={role}>
+							<Text>{ this.props.roles[role] }</Text>
+						</View>
+					))}
+				</View>
 			</View>
-		</View>
+			: null
 	)
 
 	renderTimezone = (userId) => {
@@ -210,12 +211,12 @@ export default class RoomInfoView extends LoggedView {
 					{this.renderAvatar(room, roomUser)}
 					<View style={styles.roomTitleContainer}>{ getRoomTitle(room) }</View>
 				</View>
-				{!this.isDirect() && this.renderItem('description', room)}
-				{!this.isDirect() && this.renderItem('topic', room)}
-				{!this.isDirect() && this.renderItem('announcement', room)}
-				{this.isDirect() && this.renderRoles()}
-				{this.isDirect() && this.renderTimezone(roomUser._id)}
-				{room.broadcast && this.renderBroadcast()}
+				{!this.isDirect() ? this.renderItem('description', room) : null}
+				{!this.isDirect() ? this.renderItem('topic', room) : null}
+				{!this.isDirect() ? this.renderItem('announcement', room) : null}
+				{this.isDirect() ? this.renderRoles() : null}
+				{this.isDirect() ? this.renderTimezone(roomUser._id) : null}
+				{room.broadcast ? this.renderBroadcast() : null}
 			</ScrollView>
 		);
 	}

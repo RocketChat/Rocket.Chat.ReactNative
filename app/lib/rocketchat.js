@@ -91,10 +91,7 @@ const RocketChat = {
 		this.activeUsers = this.activeUsers || {};
 		const { user } = reduxStore.getState().login;
 
-		if (user && user.id === ddpMessage.id) {
-			if (!ddpMessage.fields) {
-				reduxStore.dispatch(setUser({ status: 'offline' }));
-			}
+		if (ddpMessage.fields && user && user.id === ddpMessage.id) {
 			reduxStore.dispatch(setUser(ddpMessage.fields));
 		}
 
@@ -107,9 +104,14 @@ const RocketChat = {
 			reduxStore.dispatch(setActiveUser(this.activeUsers));
 			this._setUserTimer = null;
 			return this.activeUsers = {};
-		}, 1000);
+		}, 3000);
 
-		this.activeUsers[ddpMessage.id] = ddpMessage.fields;
+		const activeUser = reduxStore.getState().activeUsers[ddpMessage.id];
+		if (!ddpMessage.fields) {
+			this.activeUsers[ddpMessage.id] = {};
+		} else {
+			this.activeUsers[ddpMessage.id] = { ...this.activeUsers[ddpMessage.id], ...activeUser, ...ddpMessage.fields };
+		}
 	},
 	async loginSuccess(user) {
 		try {
@@ -122,15 +124,11 @@ const RocketChat = {
 			// call /me only one time
 			if (!user.username) {
 				const me = await this.me({ token: user.token, userId: user.id });
-				// eslint-disable-next-line
-				user.username = me.username;
+				user = { ...user, ...me };
 			}
 			if (user.username) {
 				const userInfo = await this.userInfo({ token: user.token, userId: user.id });
-				user.username = userInfo.user.username;
-				if (userInfo.user.roles) {
-					user.roles = userInfo.user.roles;
-				}
+				user = { ...user, ...userInfo.user };
 			}
 			return reduxStore.dispatch(loginSuccess(user));
 		} catch (e) {
@@ -163,7 +161,10 @@ const RocketChat = {
 				this.getRooms().catch(e => log('logged getRooms', e));
 				this.loginSuccess(user);
 			}));
-			this.ddp.once('logged', protectedFunction(({ id }) => { this.subscribeRooms(id); }));
+			this.ddp.once('logged', protectedFunction(({ id }) => {
+				this.subscribeRooms(id);
+				this.ddp.subscribe('stream-notify-logged', 'updateAvatar', false);
+			}));
 
 			this.ddp.on('disconnected', protectedFunction(() => {
 				reduxStore.dispatch(disconnect());
@@ -183,6 +184,24 @@ const RocketChat = {
 				}
 				return reduxStore.dispatch(someoneTyping({ _rid, username: ddpMessage.fields.args[0], typing: ddpMessage.fields.args[1] }));
 			}));
+
+			this.ddp.on('stream-notify-logged', (ddpMessage) => {
+				// this entire logic needs a better solution
+				// we're using it only because our image cache lib doesn't support clear cache
+				if (ddpMessage.fields && ddpMessage.fields.eventName === 'updateAvatar') {
+					const { args } = ddpMessage.fields;
+					database.write(() => {
+						args.forEach((arg) => {
+							const user = database.objects('users').filtered('username = $0', arg.username);
+							if (!user.length) {
+								database.create('users', { username: arg.username, avatarVersion: 0 });
+							} else {
+								user[0].avatarVersion += 1;
+							}
+						});
+					});
+				}
+			});
 
 			// this.ddp.on('stream-notify-user', protectedFunction((ddpMessage) => {
 			// 	console.warn('rc.stream-notify-user')
@@ -804,6 +823,12 @@ const RocketChat = {
 	saveRoomSettings(rid, params) {
 		return call('saveRoomSettings', rid, params);
 	},
+	saveUserProfile(params, customFields) {
+		return call('saveUserProfile', params, customFields);
+	},
+	saveUserPreferences(params) {
+		return call('saveUserPreferences', params);
+	},
 	saveNotificationSettings(rid, param, value) {
 		return call('saveNotificationSettings', rid, param, value);
 	},
@@ -836,6 +861,15 @@ const RocketChat = {
 				.some(item => mergedRoles.indexOf(item) !== -1);
 			return result;
 		}, {});
+	},
+	getAvatarSuggestion() {
+		return call('getAvatarSuggestion');
+	},
+	resetAvatar() {
+		return call('resetAvatar');
+	},
+	setAvatarFromService({ data, contentType = '', service = null }) {
+		return call('setAvatarFromService', data, contentType, service);
 	}
 };
 

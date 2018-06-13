@@ -95,8 +95,12 @@ export default class RoomView extends LoggedView {
 		}
 
 		requestAnimationFrame(async() => {
-			const result = await RocketChat.loadMessagesForRoom({ rid: this.rid, t: this.state.room.t, latest: lastRowData.ts });
-			this.setState({ end: result < 20 });
+			try {
+				const result = await RocketChat.loadMessagesForRoom({ rid: this.rid, t: this.state.room.t, latest: lastRowData.ts });
+				this.setState({ end: result < 20 });
+			} catch (e) {
+				log('RoomView.onEndReached', e);
+			}
 		});
 	}
 

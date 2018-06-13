@@ -120,8 +120,10 @@ export function forgotPasswordFailure(err) {
 
 export function setUser(action) {
 	return {
-		type: types.USER.SET,
-		...action
+		// do not change this params order
+		// since we use spread operator, sometimes `type` is overriden
+		...action,
+		type: types.USER.SET
 	};
 }
 

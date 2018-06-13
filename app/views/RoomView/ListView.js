@@ -113,8 +113,8 @@ export class ListView extends OldList2 {
 
 		// const { renderSectionHeader } = this.props;
 
-		const header = this.props.renderHeader && this.props.renderHeader();
-		const footer = this.props.renderFooter && this.props.renderFooter();
+		const header = this.props.renderHeader ? this.props.renderHeader() : null;
+		const footer = this.props.renderFooter ? this.props.renderFooter() : null;
 		// let totalIndex = header ? 1 : 0;
 
 		const { data } = this.props;

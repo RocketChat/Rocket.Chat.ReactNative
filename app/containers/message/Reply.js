@@ -78,7 +78,6 @@ const Reply = ({ attachment, timeFormat }) => {
 			<Avatar
 				text={attachment.author_name}
 				size={16}
-				avatar={attachment.author_icon}
 			/>
 		);
 	};
@@ -136,7 +135,11 @@ const Reply = ({ attachment, timeFormat }) => {
 				{renderTitle()}
 				{renderText()}
 				{renderFields()}
-				{attachment.attachments && attachment.attachments.map(attach => <Reply key={attach.text} attachment={attach} timeFormat={timeFormat} />)}
+				{attachment.attachments ?
+					attachment.attachments
+						.map(attach => <Reply key={attach.text} attachment={attach} timeFormat={timeFormat} />)
+					: null
+				}
 			</View>
 		</TouchableOpacity>
 	);

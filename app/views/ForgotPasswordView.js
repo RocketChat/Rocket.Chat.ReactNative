@@ -78,29 +78,27 @@ export default class ForgotPasswordView extends LoggedView {
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
 					<SafeAreaView testID='forgot-password-view'>
 						<View style={styles.loginView}>
-							<View style={styles.formContainer}>
-								<TextInput
-									inputStyle={this.state.invalidEmail ? { borderColor: 'red' } : {}}
-									label={I18n.t('Email')}
-									placeholder={I18n.t('Email')}
-									keyboardType='email-address'
-									returnKeyType='next'
-									onChangeText={email => this.validate(email)}
-									onSubmitEditing={() => this.resetPassword()}
-									testID='forgot-password-view-email'
+							<TextInput
+								inputStyle={this.state.invalidEmail ? { borderColor: 'red' } : {}}
+								label={I18n.t('Email')}
+								placeholder={I18n.t('Email')}
+								keyboardType='email-address'
+								returnKeyType='next'
+								onChangeText={email => this.validate(email)}
+								onSubmitEditing={() => this.resetPassword()}
+								testID='forgot-password-view-email'
+							/>
+
+							<View style={styles.alignItemsFlexStart}>
+								<Button
+									title={I18n.t('Reset_password')}
+									type='primary'
+									onPress={this.resetPassword}
+									testID='forgot-password-view-submit'
 								/>
-
-								<View style={styles.alignItemsFlexStart}>
-									<Button
-										title={I18n.t('Reset_password')}
-										type='primary'
-										onPress={this.resetPassword}
-										testID='forgot-password-view-submit'
-									/>
-								</View>
-
-								{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
 							</View>
+
+							{this.props.login.failure ? <Text style={styles.error}>{this.props.login.error.reason}</Text> : null}
 							<Loading visible={this.props.login.isFetching} />
 						</View>
 					</SafeAreaView>

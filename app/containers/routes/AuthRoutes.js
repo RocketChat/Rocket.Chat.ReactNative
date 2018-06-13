@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, TouchableOpacity } from 'react-native';
 import { createStackNavigator, createDrawerNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -22,6 +22,7 @@ import RoomInfoEditView from '../../views/RoomInfoEditView';
 import ProfileView from '../../views/ProfileView';
 import SettingsView from '../../views/SettingsView';
 import I18n from '../../i18n';
+import sharedStyles from '../../views/Styles';
 
 const headerTintColor = '#292E35';
 
@@ -132,12 +133,24 @@ const AuthRoutes = createStackNavigator(
 	}
 );
 
+const MenuButton = ({ navigation, testID }) => (
+	<TouchableOpacity
+		style={sharedStyles.headerButton}
+		onPress={navigation.toggleDrawer}
+		accessibilityLabel={I18n.t('Toggle_Drawer')}
+		accessibilityTraits='button'
+		testID={testID}
+	>
+		<Icon name='menu' size={30} color='#292E35' />
+	</TouchableOpacity>
+);
+
 const Routes = createDrawerNavigator(
 	{
 		Chats: {
 			screen: AuthRoutes,
 			navigationOptions: {
-				drawerLabel: 'Chats',
+				drawerLabel: I18n.t('Chats'),
 				drawerIcon: () => <Icon name='chat-bubble' size={20} />
 			}
 		},
@@ -146,9 +159,9 @@ const Routes = createDrawerNavigator(
 				ProfileView: {
 					screen: ProfileView,
 					navigationOptions: ({ navigation }) => ({
-						title: 'Profile',
+						title: I18n.t('Profile'),
 						headerTintColor: '#292E35',
-						headerLeft: <Icon name='menu' size={30} color='#292E35' onPress={() => navigation.toggleDrawer()} /> // TODO: refactor
+						headerLeft: <MenuButton navigation={navigation} testID='profile-view-sidebar' />
 					})
 				}
 			})
@@ -158,9 +171,9 @@ const Routes = createDrawerNavigator(
 				SettingsView: {
 					screen: SettingsView,
 					navigationOptions: ({ navigation }) => ({
-						title: 'Settings',
+						title: I18n.t('Settings'),
 						headerTintColor: '#292E35',
-						headerLeft: <Icon name='menu' size={30} color='#292E35' onPress={() => navigation.toggleDrawer()} /> // TODO: refactor
+						headerLeft: <MenuButton navigation={navigation} testID='settings-view-sidebar' />
 					})
 				}
 			})
@@ -168,9 +181,7 @@ const Routes = createDrawerNavigator(
 	},
 	{
 		contentComponent: Sidebar,
-		navigationOptions: {
-			drawerLockMode: Platform.OS === 'ios' ? 'locked-closed' : 'unlocked'
-		},
+		drawerLockMode: Platform.OS === 'ios' ? 'locked-closed' : 'unlocked',
 		initialRouteName: 'Chats',
 		backBehavior: 'initialRoute'
 	}

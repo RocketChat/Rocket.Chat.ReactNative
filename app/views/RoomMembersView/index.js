@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, Text, View, TextInput, Vibration } from 'react-native';
+import { FlatList, Text, View, TextInput, Vibration, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
 
 import LoggedView from '../View';
 import styles from './styles';
+import sharedStyles from '../Styles';
 import RoomItem from '../../presentation/RoomItem';
-import Touch from '../../utils/touch';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
 import { goRoom } from '../../containers/routes/NavigationService';
@@ -33,19 +33,15 @@ export default class MentionedMessagesView extends LoggedView {
 		}
 		return {
 			headerRight: (
-				<Touch
+				<TouchableOpacity
 					onPress={params.onPressToogleStatus}
-					underlayColor='#ffffff'
-					activeOpacity={0.5}
 					accessibilityLabel={label}
 					accessibilityTraits='button'
-					style={styles.headerButtonTouchable}
+					style={[sharedStyles.headerButton, styles.headerButton]}
 					testID='room-members-view-toggle-status'
 				>
-					<View style={styles.headerButton}>
-						<Text style={styles.headerButtonText}>{label}</Text>
-					</View>
-				</Touch>
+					<Text>{label}</Text>
+				</TouchableOpacity>
 			)
 		};
 	};

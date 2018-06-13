@@ -135,7 +135,7 @@ export default class LoginView extends LoggedView {
 							</Text>
 						</View>
 
-						{this.props.failure && <Text style={styles.error}>{this.props.reason}</Text>}
+						{this.props.failure ? <Text style={styles.error}>{this.props.reason}</Text> : null}
 						<Loading visible={this.props.isFetching} />
 					</SafeAreaView>
 				</ScrollView>

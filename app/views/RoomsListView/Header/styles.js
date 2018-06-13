@@ -55,13 +55,6 @@ export default StyleSheet.create({
 		borderBottomColor: 'rgba(0, 0, 0, .3)',
 		paddingHorizontal: 20
 	},
-	headerButton: {
-		backgroundColor: 'transparent',
-		height: 44,
-		width: 44,
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
 	user_status: {
 		position: 'absolute',
 		bottom: -2,
