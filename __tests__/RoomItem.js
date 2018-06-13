@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 
 import { createStore, combineReducers } from 'redux';
 
-const reducers = combineReducers({login:() => ({user: {}}), settings:() => ({})});
+const reducers = combineReducers({login:() => ({user: {}}), settings:() => ({}), meteor: () => ({ connected: true })});
 const store = createStore(reducers);
 
 import React from 'react';
