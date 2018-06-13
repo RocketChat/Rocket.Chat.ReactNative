@@ -687,17 +687,17 @@ const RocketChat = {
 	getPermissions,
 	getCustomEmoji,
 	parseSettings: settings => settings.reduce((ret, item) => {
-		ret[item._id] = item[settingsType[item.type]] || item.valueAsString || item.valueAsNumber ||
+		ret[item._id] = item[settingsType[item._id].type] || item.valueAsString || item.valueAsNumber ||
 			item.valueAsBoolean || item.value;
 		return ret;
 	}, {}),
 	_prepareSettings(settings) {
 		return settings.map((setting) => {
-			setting[settingsType[setting.type]] = setting.value;
+			setting[settingsType[setting._id].type] = setting.value;
 			return setting;
 		});
 	},
-	_filterSettings: settings => settings.filter(setting => settingsType[setting.type] && setting.value),
+	_filterSettings: settings => settings.filter(setting => settingsType[setting._id] && setting.value),
 	parsePermissions: permissions => permissions.reduce((ret, item) => {
 		ret[item._id] = item.roles.reduce((roleRet, role) => [...roleRet, role.value], []);
 		return ret;
