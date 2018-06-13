@@ -122,8 +122,12 @@ export default class RoomInfoView extends LoggedView {
 	}
 
 	getFullUserData = async(username) => {
-		const result = await RocketChat.subscribe('fullUserData', username);
-		this.sub = result;
+		try {
+			const result = await RocketChat.subscribe('fullUserData', username);
+			this.sub = result;
+		} catch (e) {
+			log('getFullUserData', e);
+		}
 	}
 
 	isDirect = () => this.state.room.t === 'd';

@@ -1,4 +1,4 @@
-import { AsyncStorage, Platform } from 'react-native';
+import { AsyncStorage, Platform, InteractionManager } from 'react-native';
 import { hashPassword } from 'react-native-meteor/lib/utils';
 import foreach from 'lodash/forEach';
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -104,7 +104,7 @@ const RocketChat = {
 			reduxStore.dispatch(setActiveUser(this.activeUsers));
 			this._setUserTimer = null;
 			return this.activeUsers = {};
-		}, 3000);
+		}, 5000);
 
 		const activeUser = reduxStore.getState().activeUsers[ddpMessage.id];
 		if (!ddpMessage.fields) {
@@ -190,14 +190,13 @@ const RocketChat = {
 				// we're using it only because our image cache lib doesn't support clear cache
 				if (ddpMessage.fields && ddpMessage.fields.eventName === 'updateAvatar') {
 					const { args } = ddpMessage.fields;
-					database.write(() => {
+					InteractionManager.runAfterInteractions(() =>
 						args.forEach((arg) => {
 							const user = database.objects('users').filtered('username = $0', arg.username);
 							if (user.length > 0) {
 								user[0].avatarVersion += 1;
 							}
-						});
-					});
+						}));
 				}
 			});
 

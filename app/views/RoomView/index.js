@@ -9,7 +9,7 @@ import LoggedView from '../View';
 import { List } from './ListView';
 // import * as actions from '../../actions';
 import { openRoom, setLastOpen } from '../../actions/room';
-import { editCancel, toggleReactionPicker, actionsShow } from '../../actions/messages';
+import { toggleReactionPicker, actionsShow } from '../../actions/messages';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
@@ -22,6 +22,7 @@ import ReactionPicker from './ReactionPicker';
 import styles from './styles';
 import log from '../../utils/log';
 import I18n from '../../i18n';
+import debounce from '../../utils/debounce';
 
 @connect(
 	state => ({
@@ -29,12 +30,14 @@ import I18n from '../../i18n';
 		// Message_TimeFormat: state.settings.Message_TimeFormat,
 		loading: state.messages.isFetching,
 		user: state.login.user,
-		actionMessage: state.messages.actionMessage
+		actionMessage: state.messages.actionMessage,
+		showActions: state.messages.showActions,
+		showErrorActions: state.messages.showErrorActions
 	}),
 	dispatch => ({
 		// actions: bindActionCreators(actions, dispatch),
 		openRoom: room => dispatch(openRoom(room)),
-		editCancel: () => dispatch(editCancel()),
+		// editCancel: () => dispatch(editCancel()),
 		setLastOpen: date => dispatch(setLastOpen(date)),
 		toggleReactionPicker: message => dispatch(toggleReactionPicker(message)),
 		actionsShow: actionMessage => dispatch(actionsShow(actionMessage))
@@ -46,7 +49,7 @@ export default class RoomView extends LoggedView {
 		openRoom: PropTypes.func.isRequired,
 		setLastOpen: PropTypes.func.isRequired,
 		user: PropTypes.object.isRequired,
-		editCancel: PropTypes.func,
+		// editCancel: PropTypes.func,
 		rid: PropTypes.string,
 		name: PropTypes.string,
 		// Site_Url: PropTypes.string,
@@ -85,10 +88,10 @@ export default class RoomView extends LoggedView {
 	}
 	componentWillUnmount() {
 		this.rooms.removeAllListeners();
-		this.props.editCancel();
+		this.onEndReached.stop();
 	}
 
-	onEndReached = (lastRowData) => {
+	onEndReached = debounce((lastRowData) => {
 		if (!lastRowData) {
 			this.setState({ end: true });
 			return;
@@ -102,7 +105,7 @@ export default class RoomView extends LoggedView {
 				log('RoomView.onEndReached', e);
 			}
 		});
-	}
+	})
 
 	onMessageLongPress = (message) => {
 		this.props.actionsShow(message);
@@ -186,8 +189,6 @@ export default class RoomView extends LoggedView {
 		/>
 	);
 
-	// renderSeparator = () => <View style={styles.separator} />;
-
 	renderFooter = () => {
 		if (!this.state.joined) {
 			return (
@@ -232,8 +233,8 @@ export default class RoomView extends LoggedView {
 					renderRow={this.renderItem}
 				/>
 				{this.renderFooter()}
-				{this.state.room._id ? <MessageActions room={this.state.room} /> : null}
-				<MessageErrorActions />
+				{this.state.room._id && this.props.showActions ? <MessageActions room={this.state.room} /> : null}
+				{this.props.showErrorActions ? <MessageErrorActions /> : null}
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
 			</View>
 		);

@@ -11,7 +11,6 @@ import I18n from '../i18n';
 
 @connect(
 	state => ({
-		showErrorActions: state.messages.showErrorActions,
 		actionMessage: state.messages.actionMessage
 	}),
 	dispatch => ({
@@ -21,7 +20,6 @@ import I18n from '../i18n';
 export default class MessageErrorActions extends React.Component {
 	static propTypes = {
 		errorActionsHide: PropTypes.func.isRequired,
-		showErrorActions: PropTypes.bool.isRequired,
 		actionMessage: PropTypes.object
 	};
 
@@ -32,12 +30,7 @@ export default class MessageErrorActions extends React.Component {
 		this.CANCEL_INDEX = 0;
 		this.DELETE_INDEX = 1;
 		this.RESEND_INDEX = 2;
-	}
-
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.showErrorActions !== this.props.showErrorActions && nextProps.showErrorActions) {
-			this.ActionSheet.show();
-		}
+		this.ActionSheet.show();
 	}
 
 	handleResend = protectedFunction(() => RocketChat.resendMessage(this.props.actionMessage._id));
