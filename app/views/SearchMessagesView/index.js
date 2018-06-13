@@ -129,8 +129,8 @@ export default class SearchMessagesView extends LoggedView {
 					style={styles.list}
 					keyExtractor={item => item._id}
 					onEndReached={this.moreData}
-					ListHeaderComponent={searching && <RCActivityIndicator />}
-					ListFooterComponent={loadingMore && <RCActivityIndicator />}
+					ListHeaderComponent={searching ? <RCActivityIndicator /> : null}
+					ListFooterComponent={loadingMore ? <RCActivityIndicator /> : null}
 					{...scrollPersistTaps}
 				/>
 			</View>

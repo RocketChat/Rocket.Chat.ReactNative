@@ -133,8 +133,8 @@ export default class PinnedMessagesView extends LoggedView {
 					style={styles.list}
 					keyExtractor={item => item._id}
 					onEndReached={this.moreData}
-					ListHeaderComponent={loading && <RCActivityIndicator />}
-					ListFooterComponent={loadingMore && <RCActivityIndicator />}
+					ListHeaderComponent={loading ? <RCActivityIndicator /> : null}
+					ListFooterComponent={loadingMore ? <RCActivityIndicator /> : null}
 				/>,
 				<ActionSheet
 					key='pinned-messages-view-action-sheet'

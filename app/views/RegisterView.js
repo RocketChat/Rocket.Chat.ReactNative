@@ -207,10 +207,11 @@ export default class RegisterView extends LoggedView {
 						<Text style={[styles.loginText, styles.loginTitle]}>{I18n.t('Sign_Up')}</Text>
 						{this._renderRegister()}
 						{this._renderUsername()}
-						{this.props.login.failure &&
+						{this.props.login.failure ?
 							<Text style={styles.error} testID='register-view-error'>
 								{this.props.login.error.reason}
 							</Text>
+							: null
 						}
 						<Loading visible={this.props.login.isFetching} />
 					</SafeAreaView>

@@ -172,7 +172,7 @@ export default class MessageBox extends React.PureComponent {
 			maxWidth: 1960,
 			quality: 0.8
 		};
-		ImagePicker.showImagePicker(options, (response) => {
+		ImagePicker.showImagePicker(options, async(response) => {
 			if (response.didCancel) {
 				console.warn('User cancelled image picker');
 			} else if (response.error) {
@@ -185,7 +185,11 @@ export default class MessageBox extends React.PureComponent {
 					// description: '',
 					store: 'Uploads'
 				};
-				RocketChat.sendFileMessage(this.props.rid, fileInfo, response.data);
+				try {
+					await RocketChat.sendFileMessage(this.props.rid, fileInfo, response.data);
+				} catch (e) {
+					log('addFile', e);
+				}
 			}
 		});
 	}
@@ -459,6 +463,7 @@ export default class MessageBox extends React.PureComponent {
 							style={{ margin: 8 }}
 							text={item.username || item.name}
 							size={30}
+							type={item.username ? 'd' : 'c'}
 						/>,
 						<Text key='mention-item-name'>{ item.username || item.name }</Text>
 					]
@@ -477,7 +482,7 @@ export default class MessageBox extends React.PureComponent {
 					style={styles.mentionList}
 					data={mentions}
 					renderItem={({ item }) => this.renderMentionItem(item)}
-					keyExtractor={item => item._id || item}
+					keyExtractor={item => item._id || item.username || item}
 					keyboardShouldPersistTaps='always'
 				/>
 			</View>

@@ -31,18 +31,6 @@ export default StyleSheet.create({
 		fontSize: 16,
 		color: '#444'
 	},
-	headerButtonTouchable: {
-		borderRadius: 4
-	},
-	headerButton: {
-		padding: 6,
-		backgroundColor: 'transparent',
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	headerButtonText: {
-		color: '#292E35'
-	},
 	searchBoxView: {
 		backgroundColor: '#eee'
 	},
@@ -53,5 +41,9 @@ export default StyleSheet.create({
 		padding: 5,
 		paddingLeft: 10,
 		color: '#aaa'
+	},
+	headerButton: {
+		marginRight: 9,
+		alignItems: 'flex-end'
 	}
 });

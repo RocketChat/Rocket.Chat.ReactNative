@@ -381,7 +381,7 @@ export default class RoomActionsView extends LoggedView {
 		] : [
 			<Icon key='left-icon' name={item.icon} size={24} style={styles.sectionItemIcon} />,
 			<Text key='name' style={styles.sectionItemName}>{ item.name }</Text>,
-			item.description && <Text key='description' style={styles.sectionItemDescription}>{ item.description }</Text>,
+			item.description ? <Text key='description' style={styles.sectionItemDescription}>{ item.description }</Text> : null,
 			<Icon key='right-icon' name='ios-arrow-forward' size={20} style={styles.sectionItemIcon} color='#ccc' />
 		];
 		return this.renderTouchableItem(subview, item);

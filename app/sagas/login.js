@@ -20,6 +20,7 @@ import {
 import RocketChat from '../lib/rocketchat';
 import * as NavigationService from '../containers/routes/NavigationService';
 import log from '../utils/log';
+import I18n from '../i18n';
 
 const getUser = state => state.login;
 const getServer = state => state.server.server;
@@ -170,6 +171,15 @@ const watchLoginOpen = function* watchLoginOpen() {
 	}
 };
 
+// eslint-disable-next-line require-yield
+const handleSetUser = function* handleSetUser(params) {
+	const [server, user] = yield all([select(getServer), select(getUser)]);
+	if (params.language) {
+		I18n.locale = params.language;
+	}
+	yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
+};
+
 const root = function* root() {
 	// yield takeLatest(types.METEOR.SUCCESS, handleLoginWhenServerChanges);
 	// yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
@@ -184,5 +194,6 @@ const root = function* root() {
 	yield takeLatest(types.LOGOUT, handleLogout);
 	yield takeLatest(types.FORGOT_PASSWORD.REQUEST, handleForgotPasswordRequest);
 	yield takeLatest(types.LOGIN.OPEN, watchLoginOpen);
+	yield takeLatest(types.USER.SET, handleSetUser);
 };
 export default root;

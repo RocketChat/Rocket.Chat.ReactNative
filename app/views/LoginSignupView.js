@@ -209,61 +209,68 @@ export default class LoginSignupView extends LoggedView {
 					{I18n.t('Or_continue_using_social_accounts')}
 				</Text>
 				<View style={sharedStyles.loginOAuthButtons} key='services'>
-					{this.props.Accounts_OAuth_Facebook && this.props.services.facebook &&
+					{this.props.Accounts_OAuth_Facebook && this.props.services.facebook ?
 						<TouchableOpacity
 							style={[sharedStyles.oauthButton, sharedStyles.facebookButton]}
 							onPress={this.onPressFacebook}
 						>
 							<Icon name='facebook' size={20} color='#ffffff' />
 						</TouchableOpacity>
+						: null
 					}
-					{this.props.Accounts_OAuth_Github && this.props.services.github &&
+					{this.props.Accounts_OAuth_Github && this.props.services.github ?
 						<TouchableOpacity
 							style={[sharedStyles.oauthButton, sharedStyles.githubButton]}
 							onPress={this.onPressGithub}
 						>
 							<Icon name='github' size={20} color='#ffffff' />
 						</TouchableOpacity>
+						: null
 					}
-					{this.props.Accounts_OAuth_Gitlab && this.props.services.gitlab &&
+					{this.props.Accounts_OAuth_Gitlab && this.props.services.gitlab ?
 						<TouchableOpacity
 							style={[sharedStyles.oauthButton, sharedStyles.gitlabButton]}
 							onPress={this.onPressGitlab}
 						>
 							<Icon name='gitlab' size={20} color='#ffffff' />
 						</TouchableOpacity>
+						: null
 					}
-					{this.props.Accounts_OAuth_Google && this.props.services.google &&
+					{this.props.Accounts_OAuth_Google && this.props.services.google ?
 						<TouchableOpacity
 							style={[sharedStyles.oauthButton, sharedStyles.googleButton]}
 							onPress={this.onPressGoogle}
 						>
 							<Icon name='google' size={20} color='#ffffff' />
 						</TouchableOpacity>
+						: null
 					}
-					{this.props.Accounts_OAuth_Linkedin && this.props.services.linkedin &&
+					{this.props.Accounts_OAuth_Linkedin && this.props.services.linkedin ?
 						<TouchableOpacity
 							style={[sharedStyles.oauthButton, sharedStyles.linkedinButton]}
 							onPress={this.onPressLinkedin}
 						>
 							<Icon name='linkedin' size={20} color='#ffffff' />
 						</TouchableOpacity>
+						: null
 					}
-					{this.props.Accounts_OAuth_Meteor && this.props.services['meteor-developer'] &&
+					{this.props.Accounts_OAuth_Meteor && this.props.services['meteor-developer'] ?
 						<TouchableOpacity
 							style={[sharedStyles.oauthButton, sharedStyles.meteorButton]}
 							onPress={this.onPressMeteor}
 						>
 							<MaterialCommunityIcons name='meteor' size={25} color='#ffffff' />
 						</TouchableOpacity>
+						: null
 					}
-					{this.props.Accounts_OAuth_Twitter && this.props.services.twitter &&
+					{this.props.Accounts_OAuth_Twitter && this.props.services.twitter ?
 						<TouchableOpacity
 							style={[sharedStyles.oauthButton, sharedStyles.twitterButton]}
 							onPress={this.onPressTwitter}
 						>
 							<Icon name='twitter' size={20} color='#ffffff' />
 						</TouchableOpacity>
+						: null
 					}
 				</View>
 			</View>

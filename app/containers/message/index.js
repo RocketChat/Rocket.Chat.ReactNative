@@ -358,13 +358,14 @@ export default class Message extends React.Component {
 							{this.renderBroadcastReply()}
 						</View>
 					</View>
-					{this.state.reactionsModal &&
+					{this.state.reactionsModal ?
 						<ReactionsModal
 							isVisible={this.state.reactionsModal}
 							onClose={this.onClose}
 							reactions={item.reactions}
 							user={this.props.user}
 						/>
+						: null
 					}
 				</View>
 			</Touch>

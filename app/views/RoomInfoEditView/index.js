@@ -190,7 +190,7 @@ export default class RoomInfoEditView extends LoggedView {
 		await this.setState({ saving: false });
 		setTimeout(() => {
 			if (error) {
-				showErrorAlert(I18n.t('There_was_an_error_while_saving_settings'));
+				showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_settings') }));
 			} else {
 				showToast(I18n.t('Settings_succesfully_changed'));
 			}
@@ -266,133 +266,133 @@ export default class RoomInfoEditView extends LoggedView {
 					{...scrollPersistTaps}
 				>
 					<SafeAreaView testID='room-info-edit-view'>
-						<View style={sharedStyles.formContainer}>
-							<RCTextInput
-								inputRef={(e) => { this.name = e; }}
-								label={I18n.t('Name')}
-								value={name}
-								onChangeText={value => this.setState({ name: value })}
-								onSubmitEditing={() => { this.description.focus(); }}
-								error={nameError}
-								testID='room-info-edit-view-name'
-							/>
-							<RCTextInput
-								inputRef={(e) => { this.description = e; }}
-								label={I18n.t('Description')}
-								value={description}
-								onChangeText={value => this.setState({ description: value })}
-								onSubmitEditing={() => { this.topic.focus(); }}
-								testID='room-info-edit-view-description'
-							/>
-							<RCTextInput
-								inputRef={(e) => { this.topic = e; }}
-								label={I18n.t('Topic')}
-								value={topic}
-								onChangeText={value => this.setState({ topic: value })}
-								onSubmitEditing={() => { this.announcement.focus(); }}
-								testID='room-info-edit-view-topic'
-							/>
-							<RCTextInput
-								inputRef={(e) => { this.announcement = e; }}
-								label={I18n.t('Announcement')}
-								value={announcement}
-								onChangeText={value => this.setState({ announcement: value })}
-								onSubmitEditing={() => { this.joinCode.focus(); }}
-								testID='room-info-edit-view-announcement'
-							/>
-							<RCTextInput
-								inputRef={(e) => { this.joinCode = e; }}
-								label={I18n.t('Password')}
-								value={joinCode}
-								onChangeText={value => this.setState({ joinCode: value })}
-								onSubmitEditing={this.submit}
-								secureTextEntry
-								testID='room-info-edit-view-password'
-							/>
+						<RCTextInput
+							inputRef={(e) => { this.name = e; }}
+							label={I18n.t('Name')}
+							value={name}
+							onChangeText={value => this.setState({ name: value })}
+							onSubmitEditing={() => { this.description.focus(); }}
+							error={nameError}
+							testID='room-info-edit-view-name'
+						/>
+						<RCTextInput
+							inputRef={(e) => { this.description = e; }}
+							label={I18n.t('Description')}
+							value={description}
+							onChangeText={value => this.setState({ description: value })}
+							onSubmitEditing={() => { this.topic.focus(); }}
+							testID='room-info-edit-view-description'
+						/>
+						<RCTextInput
+							inputRef={(e) => { this.topic = e; }}
+							label={I18n.t('Topic')}
+							value={topic}
+							onChangeText={value => this.setState({ topic: value })}
+							onSubmitEditing={() => { this.announcement.focus(); }}
+							testID='room-info-edit-view-topic'
+						/>
+						<RCTextInput
+							inputRef={(e) => { this.announcement = e; }}
+							label={I18n.t('Announcement')}
+							value={announcement}
+							onChangeText={value => this.setState({ announcement: value })}
+							onSubmitEditing={() => { this.joinCode.focus(); }}
+							testID='room-info-edit-view-announcement'
+						/>
+						<RCTextInput
+							inputRef={(e) => { this.joinCode = e; }}
+							label={I18n.t('Password')}
+							value={joinCode}
+							onChangeText={value => this.setState({ joinCode: value })}
+							onSubmitEditing={this.submit}
+							secureTextEntry
+							testID='room-info-edit-view-password'
+						/>
+						<SwitchContainer
+							value={t}
+							leftLabelPrimary={I18n.t('Public')}
+							leftLabelSecondary={I18n.t('Everyone_can_access_this_channel')}
+							rightLabelPrimary={I18n.t('Private')}
+							rightLabelSecondary={I18n.t('Just_invited_people_can_access_this_channel')}
+							onValueChange={value => this.setState({ t: value })}
+							testID='room-info-edit-view-t'
+						/>
+						<SwitchContainer
+							value={ro}
+							leftLabelPrimary={I18n.t('Colaborative')}
+							leftLabelSecondary={I18n.t('All_users_in_the_channel_can_write_new_messages')}
+							rightLabelPrimary={I18n.t('Read_Only')}
+							rightLabelSecondary={I18n.t('Only_authorized_users_can_write_new_messages')}
+							onValueChange={value => this.setState({ ro: value })}
+							disabled={!this.permissions[PERMISSION_SET_READONLY] || room.broadcast}
+							testID='room-info-edit-view-ro'
+						/>
+						{ro && !room.broadcast ?
 							<SwitchContainer
-								value={t}
-								leftLabelPrimary={I18n.t('Public')}
-								leftLabelSecondary={I18n.t('Everyone_can_access_this_channel')}
-								rightLabelPrimary={I18n.t('Private')}
-								rightLabelSecondary={I18n.t('Just_invited_people_can_access_this_channel')}
-								onValueChange={value => this.setState({ t: value })}
-								testID='room-info-edit-view-t'
+								value={reactWhenReadOnly}
+								leftLabelPrimary={I18n.t('No_Reactions')}
+								leftLabelSecondary={I18n.t('Reactions_are_disabled')}
+								rightLabelPrimary={I18n.t('Allow_Reactions')}
+								rightLabelSecondary={I18n.t('Reactions_are_enabled')}
+								onValueChange={value => this.setState({ reactWhenReadOnly: value })}
+								disabled={!this.permissions[PERMISSION_SET_REACT_WHEN_READONLY]}
+								testID='room-info-edit-view-react-when-ro'
 							/>
-							<SwitchContainer
-								value={ro}
-								leftLabelPrimary={I18n.t('Colaborative')}
-								leftLabelSecondary={I18n.t('All_users_in_the_channel_can_write_new_messages')}
-								rightLabelPrimary={I18n.t('Read_Only')}
-								rightLabelSecondary={I18n.t('Only_authorized_users_can_write_new_messages')}
-								onValueChange={value => this.setState({ ro: value })}
-								disabled={!this.permissions[PERMISSION_SET_READONLY] || room.broadcast}
-								testID='room-info-edit-view-ro'
-							/>
-							{ro && !room.broadcast &&
-								<SwitchContainer
-									value={reactWhenReadOnly}
-									leftLabelPrimary={I18n.t('No_Reactions')}
-									leftLabelSecondary={I18n.t('Reactions_are_disabled')}
-									rightLabelPrimary={I18n.t('Allow_Reactions')}
-									rightLabelSecondary={I18n.t('Reactions_are_enabled')}
-									onValueChange={value => this.setState({ reactWhenReadOnly: value })}
-									disabled={!this.permissions[PERMISSION_SET_REACT_WHEN_READONLY]}
-									testID='room-info-edit-view-react-when-ro'
-								/>
-							}
-							{room.broadcast &&
-								[
-									<Text style={styles.broadcast}>{I18n.t('Broadcast_Channel')}</Text>,
-									<View style={styles.divider} />
-								]
-							}
+							: null
+						}
+						{room.broadcast ?
+							[
+								<Text style={styles.broadcast}>{I18n.t('Broadcast_Channel')}</Text>,
+								<View style={styles.divider} />
+							]
+							: null
+						}
+						<TouchableOpacity
+							style={[sharedStyles.buttonContainer, !this.formIsChanged() && styles.buttonContainerDisabled]}
+							onPress={this.submit}
+							disabled={!this.formIsChanged()}
+							testID='room-info-edit-view-submit'
+						>
+							<Text style={sharedStyles.button} accessibilityTraits='button'>{I18n.t('SAVE')}</Text>
+						</TouchableOpacity>
+						<View style={{ flexDirection: 'row' }}>
 							<TouchableOpacity
-								style={[sharedStyles.buttonContainer, !this.formIsChanged() && styles.buttonContainerDisabled]}
-								onPress={this.submit}
-								disabled={!this.formIsChanged()}
-								testID='room-info-edit-view-submit'
+								style={[sharedStyles.buttonContainer_inverted, styles.buttonInverted, { flex: 1 }]}
+								onPress={this.reset}
+								testID='room-info-edit-view-reset'
 							>
-								<Text style={sharedStyles.button} accessibilityTraits='button'>{I18n.t('SAVE')}</Text>
+								<Text style={sharedStyles.button_inverted} accessibilityTraits='button'>{I18n.t('RESET')}</Text>
 							</TouchableOpacity>
-							<View style={{ flexDirection: 'row' }}>
-								<TouchableOpacity
-									style={[sharedStyles.buttonContainer_inverted, styles.buttonInverted, { flex: 1 }]}
-									onPress={this.reset}
-									testID='room-info-edit-view-reset'
-								>
-									<Text style={sharedStyles.button_inverted} accessibilityTraits='button'>{I18n.t('RESET')}</Text>
-								</TouchableOpacity>
-								<TouchableOpacity
-									style={[
-										sharedStyles.buttonContainer_inverted,
-										styles.buttonDanger,
-										!this.hasArchivePermission() && sharedStyles.opacity5,
-										{ flex: 1, marginLeft: 10 }
-									]}
-									onPress={this.toggleArchive}
-									disabled={!this.hasArchivePermission()}
-									testID='room-info-edit-view-archive'
-								>
-									<Text style={[sharedStyles.button_inverted, styles.colorDanger]} accessibilityTraits='button'>
-										{ room.archived ? I18n.t('UNARCHIVE') : I18n.t('ARCHIVE') }
-									</Text>
-								</TouchableOpacity>
-							</View>
-							<View style={styles.divider} />
 							<TouchableOpacity
 								style={[
 									sharedStyles.buttonContainer_inverted,
-									sharedStyles.buttonContainerLastChild,
 									styles.buttonDanger,
-									!this.hasDeletePermission() && sharedStyles.opacity5
+									!this.hasArchivePermission() && sharedStyles.opacity5,
+									{ flex: 1, marginLeft: 10 }
 								]}
-								onPress={this.delete}
-								disabled={!this.hasDeletePermission()}
-								testID='room-info-edit-view-delete'
+								onPress={this.toggleArchive}
+								disabled={!this.hasArchivePermission()}
+								testID='room-info-edit-view-archive'
 							>
-								<Text style={[sharedStyles.button_inverted, styles.colorDanger]} accessibilityTraits='button'>{I18n.t('DELETE')}</Text>
+								<Text style={[sharedStyles.button_inverted, styles.colorDanger]} accessibilityTraits='button'>
+									{ room.archived ? I18n.t('UNARCHIVE') : I18n.t('ARCHIVE') }
+								</Text>
 							</TouchableOpacity>
 						</View>
+						<View style={styles.divider} />
+						<TouchableOpacity
+							style={[
+								sharedStyles.buttonContainer_inverted,
+								sharedStyles.buttonContainerLastChild,
+								styles.buttonDanger,
+								!this.hasDeletePermission() && sharedStyles.opacity5
+							]}
+							onPress={this.delete}
+							disabled={!this.hasDeletePermission()}
+							testID='room-info-edit-view-delete'
+						>
+							<Text style={[sharedStyles.button_inverted, styles.colorDanger]} accessibilityTraits='button'>{I18n.t('DELETE')}</Text>
+						</TouchableOpacity>
 						<Loading visible={this.state.saving} />
 					</SafeAreaView>
 				</ScrollView>

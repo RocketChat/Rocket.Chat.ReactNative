@@ -95,26 +95,20 @@ export default class Sidebar extends Component {
 		super(props);
 		this.state = {
 			servers: [],
-			status: [{
-				id: 'online',
-				name: I18n.t('Online')
-			}, {
-				id: 'busy',
-				name: I18n.t('Busy')
-			}, {
-				id: 'away',
-				name: I18n.t('Away')
-			}, {
-				id: 'offline',
-				name: I18n.t('Invisible')
-			}],
 			showServers: false
 		};
 	}
 
 	componentDidMount() {
-		database.databases.serversDB.addListener('change', this.updateState);
 		this.setState(this.getState());
+		this.setStatus();
+		database.databases.serversDB.addListener('change', this.updateState);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.user && this.props.user && this.props.user.language !== nextProps.user.language) {
+			this.setStatus();
+		}
 	}
 
 	componentWillUnmount() {
@@ -124,6 +118,26 @@ export default class Sidebar extends Component {
 	onPressItem = (item) => {
 		this.props.selectServer(item.id);
 		this.closeDrawer();
+	}
+
+	setStatus = () => {
+		setTimeout(() => {
+			this.setState({
+				status: [{
+					id: 'online',
+					name: I18n.t('Online')
+				}, {
+					id: 'busy',
+					name: I18n.t('Busy')
+				}, {
+					id: 'away',
+					name: I18n.t('Away')
+				}, {
+					id: 'offline',
+					name: I18n.t('Invisible')
+				}]
+			});
+		});
 	}
 
 	getState = () => ({
@@ -153,6 +167,8 @@ export default class Sidebar extends Component {
 		const { navigate } = this.props.navigation;
 		if (!this.isRouteFocused(route)) {
 			navigate(route);
+		} else {
+			this.closeDrawer();
 		}
 	}
 
@@ -211,6 +227,7 @@ export default class Sidebar extends Component {
 				this.toggleServers();
 				if (this.props.server !== item.id) {
 					this.props.selectServer(item.id);
+					this.props.navigation.navigate('RoomsList');
 				}
 			},
 			testID: `sidebar-${ item.id }`
@@ -324,8 +341,8 @@ export default class Sidebar extends Component {
 
 					{this.renderSeparator('separator-header')}
 
-					{!this.state.showServers && this.renderNavigation()}
-					{this.state.showServers && this.renderServers()}
+					{!this.state.showServers ? this.renderNavigation() : null}
+					{this.state.showServers ? this.renderServers() : null}
 				</SafeAreaView>
 			</ScrollView>
 		);

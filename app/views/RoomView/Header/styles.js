@@ -40,13 +40,6 @@ export default StyleSheet.create({
 	right: {
 		flexDirection: 'row'
 	},
-	headerButton: {
-		backgroundColor: 'transparent',
-		height: 44,
-		width: 40,
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
 	avatar: {
 		marginRight: 5
 	}

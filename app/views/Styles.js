@@ -195,5 +195,12 @@ export default StyleSheet.create({
 		width: 50,
 		height: 50,
 		marginVertical: 25
+	},
+	headerButton: {
+		backgroundColor: 'transparent',
+		height: 44,
+		width: 44,
+		alignItems: 'center',
+		justifyContent: 'center'
 	}
 });

@@ -7,13 +7,6 @@ export default StyleSheet.create({
 		backgroundColor: '#ffffff',
 		padding: 10
 	},
-	headerButton: {
-		backgroundColor: 'transparent',
-		height: 44,
-		width: 44,
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
 	item: {
 		padding: 10,
 		// borderColor: '#EBEDF1',

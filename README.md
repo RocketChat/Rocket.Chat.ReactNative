@@ -12,6 +12,12 @@
 
 **Supported Server Versions:** 0.58.0+ (We are working to support earlier versions)
 
+# Download
+[![Rocket.Chat.ReactNative on Google Play](https://play.google.com/intl/en_us/badges/images/badge_new.png)](https://play.google.com/store/apps/details?id=chat.rocket.reactnative)
+
+Note: If you want to try iOS version, send us an email to testflight@rocket.chat and we'll add you to TestFlight users.
+
+
 # Installing dependencies
 
 Follow the [React Native Getting Started Guide](https://facebook.github.io/react-native/docs/getting-started.html) for detailed instructions on setting up your local machine for development.
