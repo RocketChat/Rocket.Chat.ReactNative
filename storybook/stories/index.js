@@ -13,7 +13,7 @@ import { storiesOf } from '@storybook/react-native';
 import DirectMessage from './Channels/DirectMessage';
 import Avatar from './Avatar';
 
-const reducers = combineReducers({ settings: () => ({}), login: () => ({ user: {} }) });
+const reducers = combineReducers({ settings: () => ({}), login: () => ({ user: {} }), meteor: () => ({ connected: true }) });
 const store = createStore(reducers);
 
 storiesOf('Avatar', module).addDecorator(story => <Provider store={store}>{story()}</Provider>).add('avatar', () => Avatar);
