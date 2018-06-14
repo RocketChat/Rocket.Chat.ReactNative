@@ -15,7 +15,8 @@
     "snyk-protect": "snyk protect",
     "prepare": "exit 0",
     "fabric-ios": "./scripts/fabric-ios.sh",
-    "fabric-android": "./scripts/fabric-android.sh"
+    "fabric-android": "./scripts/fabric-android.sh",
+    "postinstall": "cp ./temp/react.gradle ./node_modules/react-native"
   },
   "rnpm": {
     "assets": [
