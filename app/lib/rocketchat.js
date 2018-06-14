@@ -80,11 +80,26 @@ const RocketChat = {
 	},
 	async testServer(url) {
 		if (/^(https?:\/\/)?(((\w|[0-9-_])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
-			const response = await fetch(url, { method: 'HEAD' });
-			if (response.status === 200 && response.headers.get('x-instance-id') != null && response.headers.get('x-instance-id').length) {
-				return url;
+			try {
+				let response = await RNFetchBlob.fetch('HEAD', url);
+				response = response.respInfo;
+				if (response.status === 200 && response.headers['x-instance-id'] != null && response.headers['x-instance-id'].length) {
+					return url;
+				}
+			} catch (e) {
+				log('testServer', e);
 			}
 		}
+		// if (/^(https?:\/\/)?(((\w|[0-9-_])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
+		// 	try {
+		// 		const response = await fetch(url, { method: 'HEAD' });
+		// 		if (response.status === 200 && response.headers.get('x-instance-id') != null && response.headers.get('x-instance-id').length) {
+		// 			return url;
+		// 		}
+		// 	} catch (error) {
+		// 		console.log(error)
+		// 	}
+		// }
 		throw new Error({ error: 'invalid server' });
 	},
 	_setUser(ddpMessage) {
