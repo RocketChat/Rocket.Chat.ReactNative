@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Platform, TouchableOpacity, TextInput } from 'react-native';
+import { Text, View, Platform, TouchableOpacity, TextInput, LayoutAnimation } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -68,8 +68,11 @@ export default class RoomsListHeaderView extends React.Component {
 		};
 	}
 
-	shouldComponentUpdate(nextProps) {
+	shouldComponentUpdate(nextProps, nextState) {
 		if (!equal(this.props, nextProps)) {
+			return true;
+		}
+		if (!equal(this.state, nextState)) {
 			return true;
 		}
 		return false;
@@ -89,14 +92,20 @@ export default class RoomsListHeaderView extends React.Component {
 	}
 
 	onPressCancelSearchButton() {
-		this.setState({ searching: false });
-		this.props.setSearch('');
+		requestAnimationFrame(() => {
+			LayoutAnimation.easeInEaseOut();
+			this.setState({ searching: false });
+			this.props.setSearch('');
+		});
 	}
 
 	onPressSearchButton() {
-		this.setState({ searching: true });
 		requestAnimationFrame(() => {
-			this.inputSearch.focus();
+			LayoutAnimation.easeInEaseOut();
+			this.setState({ searching: true });
+			if (this.inputSearch) {
+				this.inputSearch.focus();
+			}
 		});
 	}
 
