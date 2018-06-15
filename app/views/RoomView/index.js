@@ -91,8 +91,8 @@ export default class RoomView extends LoggedView {
 		this.onEndReached.stop();
 	}
 
-	onEndReached = debounce((lastRowData) => {
-		if (!lastRowData) {
+	onEndReached = debounce((lastRowData, length) => {
+		if (!lastRowData || length < 20) {
 			this.setState({ end: true });
 			return;
 		}

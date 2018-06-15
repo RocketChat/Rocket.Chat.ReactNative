@@ -71,7 +71,7 @@ export class List extends React.Component {
 			onEndReachedThreshold={100}
 			renderFooter={this.props.renderFooter}
 			renderHeader={() => <Typing />}
-			onEndReached={() => this.props.onEndReached(this.data[this.data.length - 1])}
+			onEndReached={() => this.props.onEndReached(this.data[this.data.length - 1], this.data.length)}
 			dataSource={this.dataSource}
 			renderRow={(item, previousItem) => this.props.renderRow(item, previousItem)}
 			initialListSize={20}
