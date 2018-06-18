@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 import FastImage from 'react-native-fast-image';
 import { HeaderBackButton } from 'react-navigation';
+import equal from 'deep-equal';
 
 import Avatar from '../../../containers/Avatar';
 import Status from '../../../containers/status';
@@ -50,7 +51,7 @@ const title = (offline, connecting, authenticating, logged) => {
 	setSearch: searchText => dispatch(setSearch(searchText))
 }))
 
-export default class RoomsListHeaderView extends React.PureComponent {
+export default class RoomsListHeaderView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object.isRequired,
 		user: PropTypes.object.isRequired,
@@ -65,6 +66,13 @@ export default class RoomsListHeaderView extends React.PureComponent {
 			isModalVisible: false,
 			searching: false
 		};
+	}
+
+	shouldComponentUpdate(nextProps) {
+		if (!equal(this.props, nextProps)) {
+			return true;
+		}
+		return false;
 	}
 
 	onPressModalButton(status) {

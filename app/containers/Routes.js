@@ -57,6 +57,10 @@ export default class Routes extends React.Component {
 		NavigationService.setNavigator(this.navigator);
 	}
 
+	componentWillUnmount() {
+		Linking.removeAllListeners();
+	}
+
 	handleOpenURL({ url }) {
 		if (url) {
 			url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
