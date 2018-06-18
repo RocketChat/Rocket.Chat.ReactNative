@@ -70,7 +70,7 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	updateState = debounce(() => {
-		LayoutAnimation.easeInEaseOut();
+		// LayoutAnimation.easeInEaseOut();
 		this.setState({ rooms: this.data.slice() });
 	})
 

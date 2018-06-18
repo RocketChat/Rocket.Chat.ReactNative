@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Button } from 'react-native';
+import { Text, View, Button, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
 // import { bindActionCreators } from 'redux';
 import equal from 'deep-equal';
@@ -141,6 +141,7 @@ export default class RoomView extends LoggedView {
 	}
 
 	sendMessage = (message) => {
+		LayoutAnimation.easeInEaseOut();
 		RocketChat.sendMessage(this.rid, message).then(() => {
 			this.props.setLastOpen(null);
 		});

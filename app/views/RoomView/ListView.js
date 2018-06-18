@@ -57,7 +57,7 @@ export class List extends React.Component {
 	updateState = throttle(() => {
 		// this.setState({
 		this.dataSource = this.dataSource.cloneWithRows(this.data);
-		LayoutAnimation.easeInEaseOut();
+		// LayoutAnimation.easeInEaseOut();
 		this.forceUpdate();
 		// });
 	}, 1000);
