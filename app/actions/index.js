@@ -32,13 +32,6 @@ export function setAllSettings(settings) {
 	};
 }
 
-export function setAllPermissions(permissions) {
-	return {
-		type: types.SET_ALL_PERMISSIONS,
-		payload: permissions
-	};
-}
-
 export function setCustomEmojis(emojis) {
 	return {
 		type: types.SET_CUSTOM_EMOJIS,

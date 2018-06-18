@@ -106,8 +106,9 @@ const subscriptionSchema = {
 
 const usersSchema = {
 	name: 'users',
-	primaryKey: 'username',
+	primaryKey: '_id',
 	properties: {
+		_id: 'string',
 		username: 'string',
 		name: { type: 'string', optional: true },
 		avatarVersion: { type: 'int', optional: true }

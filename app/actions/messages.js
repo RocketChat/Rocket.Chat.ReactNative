@@ -117,33 +117,6 @@ export function toggleStarFailure() {
 	};
 }
 
-export function permalinkRequest(message) {
-	return {
-		type: types.MESSAGES.PERMALINK_REQUEST,
-		message
-	};
-}
-
-export function permalinkSuccess(permalink) {
-	return {
-		type: types.MESSAGES.PERMALINK_SUCCESS,
-		permalink
-	};
-}
-
-export function permalinkFailure(err) {
-	return {
-		type: types.MESSAGES.PERMALINK_FAILURE,
-		err
-	};
-}
-
-export function permalinkClear() {
-	return {
-		type: types.MESSAGES.PERMALINK_CLEAR
-	};
-}
-
 export function togglePinRequest(message) {
 	return {
 		type: types.MESSAGES.TOGGLE_PIN_REQUEST,

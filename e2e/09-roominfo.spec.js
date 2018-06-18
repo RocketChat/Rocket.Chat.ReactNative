@@ -318,7 +318,7 @@ describe('Room info screen', () => {
 				await expect(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible();
 			});
 	
-			after(async() => {
+			afterEach(async() => {
 				takeScreenshot();
 			});
 		});
