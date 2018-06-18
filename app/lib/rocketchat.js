@@ -1,4 +1,4 @@
-import { AsyncStorage, Platform, InteractionManager } from 'react-native';
+import { AsyncStorage, Platform } from 'react-native';
 import { hashPassword } from 'react-native-meteor/lib/utils';
 import foreach from 'lodash/forEach';
 import RNFetchBlob from 'react-native-fetch-blob';

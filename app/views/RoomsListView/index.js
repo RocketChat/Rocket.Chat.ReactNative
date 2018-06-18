@@ -2,7 +2,7 @@ import ActionButton from 'react-native-action-button';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Platform, View, TextInput, FlatList, LayoutAnimation } from 'react-native';
+import { Platform, View, TextInput, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 
 import database from '../../lib/realm';
