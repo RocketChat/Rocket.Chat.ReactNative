@@ -6,7 +6,7 @@ import { BACKGROUND } from 'redux-enhancer-react-native-appstate';
 import * as types from '../actions/actionsTypes';
 // import { roomsSuccess, roomsFailure } from '../actions/rooms';
 import { addUserTyping, removeUserTyping, setLastOpen } from '../actions/room';
-import { messagesRequest } from '../actions/messages';
+import { messagesRequest, editCancel } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import * as NavigationService from '../containers/routes/NavigationService';
@@ -92,6 +92,7 @@ const watchRoomOpen = function* watchRoomOpen({ room }) {
 		});
 		cancel(thread);
 		sub.stop();
+		yield put(editCancel());
 
 		// subscriptions.forEach((sub) => {
 		// 	sub.unsubscribe().catch(e => alert(e));

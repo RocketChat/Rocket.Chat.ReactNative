@@ -6,7 +6,6 @@ const initialState = {
 	message: {},
 	actionMessage: {},
 	editing: false,
-	permalink: '',
 	showActions: false,
 	showErrorActions: false,
 	showReactionPicker: false
@@ -76,16 +75,6 @@ export default function messages(state = initialState, action) {
 				...state,
 				message: {},
 				editing: false
-			};
-		case types.MESSAGES.PERMALINK_SUCCESS:
-			return {
-				...state,
-				permalink: action.permalink
-			};
-		case types.MESSAGES.PERMALINK_CLEAR:
-			return {
-				...state,
-				permalink: ''
 			};
 		case types.MESSAGES.SET_INPUT:
 			return {
