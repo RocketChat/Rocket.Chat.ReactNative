@@ -424,6 +424,7 @@ export default class ProfileView extends LoggedView {
 								onChangeText={value => this.setState({ typedPassword: value })}
 								secureTextEntry
 								testID='profile-view-typed-password'
+								style={styles.dialogInput}
 							/>
 							<Dialog.Button label={I18n.t('Cancel')} onPress={this.closePasswordAlert} />
 							<Dialog.Button label={I18n.t('Save')} onPress={this.submit} />

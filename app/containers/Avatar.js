@@ -44,34 +44,35 @@ export default class Avatar extends React.PureComponent {
 	};
 	state = { showInitials: true, user: {} };
 
-	componentDidMount() {
-		const { text, type } = this.props;
-		if (type === 'd') {
-			this.users = this.userQuery(text);
-			this.users.addListener(this.update);
-			this.update();
-		}
-	}
+	// componentDidMount() {
+	// 	const { text, type } = this.props;
+	// 	if (type === 'd') {
+	// 		this.users = this.userQuery(text);
+	// 		this.users.addListener(this.update);
+	// 		this.update();
+	// 	}
+	// }
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.text !== this.props.text && nextProps.type === 'd') {
-			if (this.users) {
-				this.users.removeAllListeners();
-			}
-			this.users = this.userQuery(nextProps.text);
-			this.users.addListener(this.update);
-			this.update();
-		}
-	}
+	// componentWillReceiveProps(nextProps) {
+	// 	if (nextProps.text !== this.props.text && nextProps.type === 'd') {
+	// 		if (this.users) {
+	// 			this.users.removeAllListeners();
+	// 		}
+	// 		this.users = this.userQuery(nextProps.text);
+	// 		this.users.addListener(this.update);
+	// 		this.update();
+	// 	}
+	// }
 
-	componentWillUnmount() {
-		if (this.users) {
-			this.users.removeAllListeners();
-		}
-	}
+	// componentWillUnmount() {
+	// 	if (this.users) {
+	// 		this.users.removeAllListeners();
+	// 	}
+	// }
 
 	get avatarVersion() {
-		return (this.state.user && this.state.user.avatarVersion) || 0;
+		// return (this.state.user && this.state.user.avatarVersion) || 0;
+		return 0;
 	}
 
 	/** FIXME: Workaround
@@ -80,21 +81,21 @@ export default class Avatar extends React.PureComponent {
 	 * and we would have a avatar container in charge of making queries.
 	 * Also, it would make possible to write unit tests like these.
 	*/
-	userQuery = (username) => {
-		if (database && database.databases && database.databases.activeDB) {
-			return database.objects('users').filtered('username = $0', username);
-		}
-		return {
-			addListener: () => {},
-			removeAllListeners: () => {}
-		};
-	}
+	// userQuery = (username) => {
+	// 	if (database && database.databases && database.databases.activeDB) {
+	// 		return database.objects('users').filtered('username = $0', username);
+	// 	}
+	// 	return {
+	// 		addListener: () => {},
+	// 		removeAllListeners: () => {}
+	// 	};
+	// }
 
-	update = () => {
-		if (this.users.length) {
-			this.setState({ user: this.users[0] });
-		}
-	}
+	// update = () => {
+	// 	if (this.users.length) {
+	// 		this.setState({ user: this.users[0] });
+	// 	}
+	// }
 
 	render() {
 		const {
