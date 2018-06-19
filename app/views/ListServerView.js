@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 // import Zeroconf from 'react-native-zeroconf';
 import { View, Text, SectionList, StyleSheet, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
-import { withNavigationFocus } from 'react-navigation';
+import { Navigation } from 'react-native-navigation';
+// import { withNavigationFocus } from 'react-navigation';
 
 import LoggedView from './View';
 import { setServer } from '../actions/server';
@@ -66,20 +67,37 @@ const styles = StyleSheet.create({
 // const zeroconf = new Zeroconf();
 
 
-@connect(state => ({
-	server: state.server.server,
-	login: state.login,
-	connected: state.meteor.connected
-}), dispatch => ({
-	selectServer: server => dispatch(setServer(server))
-}))
+// @connect(state => ({
+// 	server: state.server.server,
+// 	login: state.login,
+// 	connected: state.meteor.connected
+// }), dispatch => ({
+// 	selectServer: server => dispatch(setServer(server))
+// }))
 class ListServerView extends LoggedView {
 	static propTypes = {
-		navigation: PropTypes.object.isRequired,
+		// navigation: PropTypes.object.isRequired,
 		login: PropTypes.object.isRequired,
 		selectServer: PropTypes.func.isRequired,
 		connected: PropTypes.bool.isRequired,
 		server: PropTypes.string
+	}
+
+	static get options() {
+		return {
+			topBar: {
+				title: {
+					text: 'Servers'
+				},
+				rightButtons: [
+					{
+						id: 'buttonOne',
+						title: 'Add'
+					//   icon: require('icon.png')
+					}
+				],
+			}
+		};
 	}
 
 	constructor(props) {
@@ -115,6 +133,14 @@ class ListServerView extends LoggedView {
 		// zeroconf.stop();
 		this.data.removeAllListeners();
 		// zeroconf.removeListener('update', this.updateState);
+	}
+
+	onNavigationButtonPressed(id) {
+		Navigation.push(this.props.componentId, {
+			component: {
+				name: 'NewServerView'
+			}
+		});
 	}
 
 	openLogin = () => {
@@ -210,17 +236,31 @@ class ListServerView extends LoggedView {
 
 	render() {
 		return (
-			<SafeAreaView style={styles.view} testID='list-server-view'>
-				<SectionList
-					style={styles.list}
-					sections={this.state.sections}
-					renderItem={this.renderItem}
-					renderSectionHeader={this.renderSectionHeader}
-					keyExtractor={item => item.id}
-					ItemSeparatorComponent={this.renderSeparator}
-				/>
-			</SafeAreaView>
+			// <SafeAreaView style={styles.view} testID='list-server-view'>
+			<SectionList
+				style={styles.list}
+				sections={this.state.sections}
+				renderItem={this.renderItem}
+				renderSectionHeader={this.renderSectionHeader}
+				keyExtractor={item => item.id}
+				ItemSeparatorComponent={this.renderSeparator}
+			/>
+			// </SafeAreaView>
 		);
 	}
 }
-export default withNavigationFocus(ListServerView);
+// @connect(state => ({
+// 	server: state.server.server,
+// 	login: state.login,
+// 	connected: state.meteor.connected
+// }), dispatch => ({
+// 	selectServer: server => dispatch(setServer(server))
+// }))
+const mapStateToProps = state => ({
+	server: state.server.server,
+	login: state.login,
+	connected: state.meteor.connected
+});
+
+export default connect(mapStateToProps, null, null, {"withRef" : true})(ListServerView);
+// export default withNavigationFocus(ListServerView);
