@@ -1,7 +1,7 @@
 import { ListView as OldList } from 'realm/react-native';
 import React from 'react';
 import cloneReferencedElement from 'react-clone-referenced-element';
-import { ScrollView, ListView as OldList2, LayoutAnimation } from 'react-native';
+import { ScrollView, ListView as OldList2 } from 'react-native';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -57,7 +57,7 @@ export class List extends React.Component {
 	updateState = throttle(() => {
 		// this.setState({
 		this.dataSource = this.dataSource.cloneWithRows(this.data);
-		LayoutAnimation.easeInEaseOut();
+		// LayoutAnimation.easeInEaseOut();
 		this.forceUpdate();
 		// });
 	}, 1000);
@@ -71,7 +71,7 @@ export class List extends React.Component {
 			onEndReachedThreshold={100}
 			renderFooter={this.props.renderFooter}
 			renderHeader={() => <Typing />}
-			onEndReached={() => this.props.onEndReached(this.data[this.data.length - 1])}
+			onEndReached={() => this.props.onEndReached(this.data[this.data.length - 1], this.data.length)}
 			dataSource={this.dataSource}
 			renderRow={(item, previousItem) => this.props.renderRow(item, previousItem)}
 			initialListSize={20}

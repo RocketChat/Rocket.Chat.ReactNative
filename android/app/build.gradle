@@ -91,12 +91,12 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "27.0.1"
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
         applicationId "chat.rocket.reactnative"
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion 27
         versionCode VERSIONCODE as Integer
         versionName "1"
         ndk {

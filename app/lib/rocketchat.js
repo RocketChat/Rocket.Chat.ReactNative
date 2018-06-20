@@ -1,4 +1,4 @@
-import { AsyncStorage, Platform, InteractionManager } from 'react-native';
+import { AsyncStorage, Platform } from 'react-native';
 import { hashPassword } from 'react-native-meteor/lib/utils';
 import foreach from 'lodash/forEach';
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -10,7 +10,7 @@ import database from './realm';
 import log from '../utils/log';
 // import * as actions from '../actions';
 
-import { setUser, setLoginServices, removeLoginServices, loginRequest, loginSuccess, loginFailure } from '../actions/login';
+import { setUser, setLoginServices, removeLoginServices, loginRequest, loginSuccess, loginFailure, logout } from '../actions/login';
 import { disconnect, connectSuccess, connectFailure } from '../actions/connect';
 import { setActiveUser } from '../actions/activeUsers';
 import { starredMessagesReceived, starredMessageUnstarred } from '../actions/starredMessages';
@@ -80,11 +80,26 @@ const RocketChat = {
 	},
 	async testServer(url) {
 		if (/^(https?:\/\/)?(((\w|[0-9-_])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
-			const response = await fetch(url, { method: 'HEAD' });
-			if (response.status === 200 && response.headers.get('x-instance-id') != null && response.headers.get('x-instance-id').length) {
-				return url;
+			try {
+				let response = await RNFetchBlob.fetch('HEAD', url);
+				response = response.respInfo;
+				if (response.status === 200 && response.headers['x-instance-id'] != null && response.headers['x-instance-id'].length) {
+					return url;
+				}
+			} catch (e) {
+				log('testServer', e);
 			}
 		}
+		// if (/^(https?:\/\/)?(((\w|[0-9-_])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
+		// 	try {
+		// 		const response = await fetch(url, { method: 'HEAD' });
+		// 		if (response.status === 200 && response.headers.get('x-instance-id') != null && response.headers.get('x-instance-id').length) {
+		// 			return url;
+		// 		}
+		// 	} catch (error) {
+		// 		console.log(error)
+		// 	}
+		// }
 		throw new Error({ error: 'invalid server' });
 	},
 	_setUser(ddpMessage) {
@@ -151,6 +166,8 @@ const RocketChat = {
 
 			this.ddp.on('loginError', protectedFunction(err => reduxStore.dispatch(loginFailure(err))));
 
+			this.ddp.on('forbidden', protectedFunction(() => reduxStore.dispatch(logout())));
+
 			this.ddp.on('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 
 			this.ddp.on('background', () => this.getRooms().catch(e => log('background getRooms', e)));
@@ -163,7 +180,7 @@ const RocketChat = {
 			}));
 			this.ddp.once('logged', protectedFunction(({ id }) => {
 				this.subscribeRooms(id);
-				this.ddp.subscribe('stream-notify-logged', 'updateAvatar', false);
+				// this.ddp.subscribe('stream-notify-logged', 'updateAvatar', false);
 			}));
 
 			this.ddp.on('disconnected', protectedFunction(() => {
@@ -185,20 +202,22 @@ const RocketChat = {
 				return reduxStore.dispatch(someoneTyping({ _rid, username: ddpMessage.fields.args[0], typing: ddpMessage.fields.args[1] }));
 			}));
 
-			this.ddp.on('stream-notify-logged', (ddpMessage) => {
-				// this entire logic needs a better solution
-				// we're using it only because our image cache lib doesn't support clear cache
-				if (ddpMessage.fields && ddpMessage.fields.eventName === 'updateAvatar') {
-					const { args } = ddpMessage.fields;
-					InteractionManager.runAfterInteractions(() =>
-						args.forEach((arg) => {
-							const user = database.objects('users').filtered('username = $0', arg.username);
-							if (user.length > 0) {
-								user[0].avatarVersion += 1;
-							}
-						}));
-				}
-			});
+			// this.ddp.on('stream-notify-logged', (ddpMessage) => {
+			// 	// this entire logic needs a better solution
+			// 	// we're using it only because our image cache lib doesn't support clear cache
+			// 	if (ddpMessage.fields && ddpMessage.fields.eventName === 'updateAvatar') {
+			// 		const { args } = ddpMessage.fields;
+			// 		InteractionManager.runAfterInteractions(() =>
+			// 			args.forEach((arg) => {
+			// 				const user = database.objects('users').filtered('username = $0', arg.username);
+			// 				if (user.length > 0) {
+			// 					database.write(() => {
+			// 						user[0].avatarVersion += 1;
+			// 					});
+			// 				}
+			// 			}));
+			// 	}
+			// });
 
 			// this.ddp.on('stream-notify-user', protectedFunction((ddpMessage) => {
 			// 	console.warn('rc.stream-notify-user')
