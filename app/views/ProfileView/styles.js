@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 export default StyleSheet.create({
 	avatarContainer: {
@@ -20,5 +20,14 @@ export default StyleSheet.create({
 		marginRight: 15,
 		marginBottom: 15,
 		borderRadius: 2
-	}
+	},
+	dialogInput: Platform.select({
+		ios: {},
+		android: {
+			borderRadius: 4,
+			borderColor: 'rgba(0,0,0,.15)',
+			borderWidth: 2,
+			paddingHorizontal: 10
+		}
+	})
 });

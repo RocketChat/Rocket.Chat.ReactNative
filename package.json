@@ -15,7 +15,8 @@
     "snyk-protect": "snyk protect",
     "prepare": "exit 0",
     "fabric-ios": "./scripts/fabric-ios.sh",
-    "fabric-android": "./scripts/fabric-android.sh"
+    "fabric-android": "./scripts/fabric-android.sh",
+    "postinstall": "cp ./temp/react.gradle ./node_modules/react-native"
   },
   "rnpm": {
     "assets": [
@@ -104,7 +105,7 @@
     "react-dom": "^16.4.0",
     "react-native-bundle-visualizer": "^1.2.0",
     "react-test-renderer": "^16.4.0",
-    "reactotron-react-native": "^1.14.0",
+    "reactotron-react-native": "^2.0.0-beta.6",
     "reactotron-redux": "^1.13.0",
     "reactotron-redux-saga": "^1.13.0"
   },

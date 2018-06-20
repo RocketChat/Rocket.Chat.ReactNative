@@ -206,11 +206,13 @@ export default class Socket extends EventEmitter {
 			}, 5000);
 			this.connection = new WebSocket(`${ this.url }/websocket`, null);
 
-			this.connection.onopen = () => {
+			this.connection.onopen = async() => {
 				this.emit('open');
 				resolve();
 				this.ddp.emit('open');
-				return this._login && this.login(this._login);
+				if (this._login) {
+					return this.login(this._login).catch(e => console.warn(e));
+				}
 			};
 			this.connection.onclose = debounce((e) => {
 				this.emit('disconnected', e);
@@ -260,6 +262,9 @@ export default class Socket extends EventEmitter {
 			msg: 'method', method, params
 		}).then(data => data.result || data.subs).catch((err) => {
 			log('DDP call Error', err);
+			if (err && /you've been logged out by the server/i.test(err.reason)) {
+				return this.emit('forbidden');
+			}
 			return Promise.reject(err);
 		});
 	}
