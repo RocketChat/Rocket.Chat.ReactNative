@@ -58,7 +58,7 @@ export default class Routes extends React.Component {
 	}
 
 	componentWillUnmount() {
-		Linking.removeAllListeners();
+		Linking.removeEventListener('url', this.handleOpenURL);
 	}
 
 	handleOpenURL({ url }) {

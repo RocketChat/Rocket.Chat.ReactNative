@@ -119,6 +119,7 @@ jobs:
             cd android
 
             echo -e "" > ./gradle.properties
+            echo -e "android.enableAapt2=false" >> ./gradle.properties
 
             if [[ $KEYSTORE ]]; then
               echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE

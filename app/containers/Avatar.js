@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { StyleSheet, Text, View, ViewPropTypes } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import avatarInitialsAndColor from '../utils/avatarInitialsAndColor';
-import database from '../lib/realm';
 
 const styles = StyleSheet.create({
 	iconContainer: {
@@ -42,37 +41,38 @@ export default class Avatar extends React.PureComponent {
 		borderRadius: 2,
 		forceInitials: false
 	};
-	state = { showInitials: true, user: {} };
+	state = { showInitials: true };
 
-	componentDidMount() {
-		const { text, type } = this.props;
-		if (type === 'd') {
-			this.users = this.userQuery(text);
-			this.users.addListener(this.update);
-			this.update();
-		}
-	}
+	// componentDidMount() {
+	// 	const { text, type } = this.props;
+	// 	if (type === 'd') {
+	// 		this.users = this.userQuery(text);
+	// 		this.users.addListener(this.update);
+	// 		this.update();
+	// 	}
+	// }
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.text !== this.props.text && nextProps.type === 'd') {
-			if (this.users) {
-				this.users.removeAllListeners();
-			}
-			this.users = this.userQuery(nextProps.text);
-			this.users.addListener(this.update);
-			this.update();
-		}
-	}
+	// componentWillReceiveProps(nextProps) {
+	// 	if (nextProps.text !== this.props.text && nextProps.type === 'd') {
+	// 		if (this.users) {
+	// 			this.users.removeAllListeners();
+	// 		}
+	// 		this.users = this.userQuery(nextProps.text);
+	// 		this.users.addListener(this.update);
+	// 		this.update();
+	// 	}
+	// }
 
-	componentWillUnmount() {
-		if (this.users) {
-			this.users.removeAllListeners();
-		}
-	}
+	// componentWillUnmount() {
+	// 	if (this.users) {
+	// 		this.users.removeAllListeners();
+	// 	}
+	// }
 
-	get avatarVersion() {
-		return (this.state.user && this.state.user.avatarVersion) || 0;
-	}
+	// get avatarVersion() {
+	// 	// return (this.state.user && this.state.user.avatarVersion) || 0;
+	// 	return 0;
+	// }
 
 	/** FIXME: Workaround
 	 * While we don't have containers/components structure, this is breaking tests.
@@ -80,21 +80,21 @@ export default class Avatar extends React.PureComponent {
 	 * and we would have a avatar container in charge of making queries.
 	 * Also, it would make possible to write unit tests like these.
 	*/
-	userQuery = (username) => {
-		if (database && database.databases && database.databases.activeDB) {
-			return database.objects('users').filtered('username = $0', username);
-		}
-		return {
-			addListener: () => {},
-			removeAllListeners: () => {}
-		};
-	}
+	// userQuery = (username) => {
+	// 	if (database && database.databases && database.databases.activeDB) {
+	// 		return database.objects('users').filtered('username = $0', username);
+	// 	}
+	// 	return {
+	// 		addListener: () => {},
+	// 		removeAllListeners: () => {}
+	// 	};
+	// }
 
-	update = () => {
-		if (this.users.length) {
-			this.setState({ user: this.users[0] });
-		}
-	}
+	// update = () => {
+	// 	if (this.users.length) {
+	// 		this.setState({ user: this.users[0] });
+	// 	}
+	// }
 
 	render() {
 		const {
@@ -123,7 +123,7 @@ export default class Avatar extends React.PureComponent {
 		let image;
 
 		if (type === 'd' && !forceInitials) {
-			const uri = avatar || `${ baseUrl }/avatar/${ text }?random=${ this.avatarVersion }`;
+			const uri = avatar || `${ baseUrl }/avatar/${ text }`;
 			image = uri ? (
 				<FastImage
 					style={[styles.avatar, avatarStyle]}
