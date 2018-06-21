@@ -22,6 +22,6 @@ public class MainActivity extends NavigationActivity {
     // protected void onCreate(Bundle savedInstanceState) {
     //     // SplashScreen.show(this);
     //     super.onCreate(savedInstanceState);
-    //     Fabric.with(this, new Crashlytics());
+    //     // Fabric.with(this, new Crashlytics());
     // }
 }

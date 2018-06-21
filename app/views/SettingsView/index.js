@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { View, ScrollView, SafeAreaView } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import LoggedView from '../View';
 import RocketChat from '../../lib/rocketchat';
@@ -16,17 +17,28 @@ import Loading from '../../containers/Loading';
 import { showErrorAlert, showToast } from '../../utils/info';
 import log from '../../utils/log';
 import { setUser } from '../../actions/login';
+import { NavigationControllerManager } from '../../NavigationController';
 
-@connect(state => ({
-	user: state.login.user
-}), dispatch => ({
-	setUser: params => dispatch(setUser(params))
-}))
-export default class SettingsView extends LoggedView {
+class SettingsView extends LoggedView {
 	static propTypes = {
 		user: PropTypes.object,
 		setUser: PropTypes.func
-	};
+	}
+
+	static get options() {
+		return {
+			topBar: {
+				leftButtons: [{
+					id: 'Sidemenu',
+					title: 'Menu',
+					icon: require('../../static/images/navicon_menu.png') // eslint-disable-line
+				}],
+				title: {
+					text: 'Settings'
+				}
+			}
+		};
+	}
 
 	constructor(props) {
 		super('SettingsView', props);
@@ -39,6 +51,20 @@ export default class SettingsView extends LoggedView {
 			}],
 			saving: false
 		};
+	}
+
+	componentDidMount() {
+		NavigationControllerManager.getSharedInstance().setActiveRootComponentId(this.props.componentId, 'SettingsView');
+	}
+
+	onNavigationButtonPressed = () => {
+		Navigation.mergeOptions(this.props.componentId, {
+			sideMenu: {
+				left: {
+					visible: true
+				}
+			}
+		});
 	}
 
 	formIsChanged = () => {
@@ -132,3 +158,13 @@ export default class SettingsView extends LoggedView {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	user: state.login.user
+});
+
+const mapDispatchToProps = dispatch => ({
+	setUser: params => dispatch(setUser(params))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(SettingsView);

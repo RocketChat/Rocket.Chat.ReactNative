@@ -4,6 +4,7 @@ import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
+import { Navigation } from 'react-native-navigation';
 
 import LoggedView from '../View';
 import Status from '../../containers/status';
@@ -28,49 +29,30 @@ const getRoomTitle = room => (room.t === 'd' ?
 		<Text testID='room-info-view-name' style={styles.roomTitle} key='room-info-name'>{room.name}</Text>
 	]
 );
-@connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	user: state.login.user,
-	activeUsers: state.activeUsers,
-	Message_TimeFormat: state.settings.Message_TimeFormat,
-	roles: state.roles
-}))
-export default class RoomInfoView extends LoggedView {
+
+class RoomInfoView extends LoggedView {
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		user: PropTypes.object,
-		navigation: PropTypes.object,
+		// navigation: PropTypes.object,
 		activeUsers: PropTypes.object,
 		Message_TimeFormat: PropTypes.string,
 		roles: PropTypes.object
 	}
 
-	static navigationOptions = ({ navigation }) => {
-		const params = navigation.state.params || {};
-		if (!params.hasEditPermission) {
-			return;
-		}
+	static get options() {
 		return {
-			headerRight: (
-				<Touch
-					onPress={() => navigation.navigate({ key: 'RoomInfoEdit', routeName: 'RoomInfoEdit', params: { rid: navigation.state.params.rid } })}
-					underlayColor='#ffffff'
-					activeOpacity={0.5}
-					accessibilityLabel={I18n.t('edit')}
-					accessibilityTraits='button'
-					testID='room-info-view-edit-button'
-				>
-					<View style={sharedStyles.headerButton}>
-						<MaterialIcon name='edit' size={20} />
-					</View>
-				</Touch>
-			)
+			topBar: {
+				title: {
+					text: 'Info'
+				}
+			}
 		};
-	};
+	}
 
 	constructor(props) {
 		super('RoomInfoView', props);
-		const { rid } = props.navigation.state.params;
+		const { rid } = props;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.sub = {
 			unsubscribe: () => {}
@@ -111,14 +93,36 @@ export default class RoomInfoView extends LoggedView {
 				log('RoomInfoView.componentDidMount', e);
 			}
 		} else {
+			// TODO: permission!
 			const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], this.state.room.rid);
-			this.props.navigation.setParams({ hasEditPermission: permissions[PERMISSION_EDIT_ROOM] });
+			if (permissions[PERMISSION_EDIT_ROOM]) {
+				Navigation.mergeOptions(this.props.componentId, {
+					topBar: {
+						rightButtons: [{
+							id: 'RoomInfoView.edit',
+							title: 'Edit',
+							icon: require('../../static/images/navicon_add.png') // eslint-disable-line
+						}]
+					}
+				});
+			}
 		}
 	}
 
 	componentWillUnmount() {
 		this.rooms.removeAllListeners();
 		this.sub.unsubscribe();
+	}
+
+	onNavigationButtonPressed = () => {
+		Navigation.push(this.props.componentId, {
+			component: {
+				name: 'RoomInfoEditView',
+				passProps: {
+					rid: this.props.rid
+				}
+			}
+		});
 	}
 
 	getFullUserData = async(username) => {
@@ -224,3 +228,13 @@ export default class RoomInfoView extends LoggedView {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	user: state.login.user,
+	activeUsers: state.activeUsers,
+	Message_TimeFormat: state.settings.Message_TimeFormat,
+	roles: state.roles
+});
+
+export default connect(mapStateToProps, null, null, { withRef: true })(RoomInfoView);

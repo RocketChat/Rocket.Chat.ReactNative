@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Base64 } from 'js-base64';
 import Modal from 'react-native-modal';
+import { Navigation } from 'react-native-navigation';
 
 import RocketChat from '../lib/rocketchat';
 import { open, close } from '../actions/login';
@@ -49,30 +50,30 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(state => ({
-	server: state.server.server,
-	login: state.login,
-	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
-	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
-	Accounts_OAuth_Facebook: state.settings.Accounts_OAuth_Facebook,
-	Accounts_OAuth_Github: state.settings.Accounts_OAuth_Github,
-	Accounts_OAuth_Gitlab: state.settings.Accounts_OAuth_Gitlab,
-	Accounts_OAuth_Google: state.settings.Accounts_OAuth_Google,
-	Accounts_OAuth_Linkedin: state.settings.Accounts_OAuth_Linkedin,
-	Accounts_OAuth_Meteor: state.settings.Accounts_OAuth_Meteor,
-	Accounts_OAuth_Twitter: state.settings.Accounts_OAuth_Twitter,
-	services: state.login.services
-}), dispatch => ({
-	loginOAuth: params => RocketChat.login(params),
-	open: () => dispatch(open()),
-	close: () => dispatch(close())
-}))
-export default class LoginSignupView extends LoggedView {
+// @connect(state => ({
+// 	server: state.server.server,
+// 	login: state.login,
+// 	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
+// 	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
+// 	Accounts_OAuth_Facebook: state.settings.Accounts_OAuth_Facebook,
+// 	Accounts_OAuth_Github: state.settings.Accounts_OAuth_Github,
+// 	Accounts_OAuth_Gitlab: state.settings.Accounts_OAuth_Gitlab,
+// 	Accounts_OAuth_Google: state.settings.Accounts_OAuth_Google,
+// 	Accounts_OAuth_Linkedin: state.settings.Accounts_OAuth_Linkedin,
+// 	Accounts_OAuth_Meteor: state.settings.Accounts_OAuth_Meteor,
+// 	Accounts_OAuth_Twitter: state.settings.Accounts_OAuth_Twitter,
+// 	services: state.login.services
+// }), dispatch => ({
+// 	loginOAuth: params => RocketChat.login(params),
+// 	open: () => dispatch(open()),
+// 	close: () => dispatch(close())
+// }))
+class LoginSignupView extends LoggedView {
 	static propTypes = {
 		loginOAuth: PropTypes.func.isRequired,
 		open: PropTypes.func.isRequired,
 		close: PropTypes.func.isRequired,
-		navigation: PropTypes.object.isRequired,
+		// navigation: PropTypes.object.isRequired,
 		login: PropTypes.object,
 		server: PropTypes.string,
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.bool,
@@ -85,6 +86,14 @@ export default class LoginSignupView extends LoggedView {
 		Accounts_OAuth_Meteor: PropTypes.bool,
 		Accounts_OAuth_Twitter: PropTypes.bool,
 		services: PropTypes.object
+	}
+
+	static get options() {
+		return {
+			topBar: {
+				visible: false
+			}
+		};
 	}
 
 	constructor(props) {
@@ -186,8 +195,30 @@ export default class LoginSignupView extends LoggedView {
 		this.setState({ oAuthUrl, modalVisible: true });
 	}
 
+	login = () => {
+		// this.props.navigation.navigate({ key: 'Register', routeName: 'Register' });
+		Navigation.showModal({
+			stack: {
+				children: [{
+					component: {
+						name: 'LoginView'
+					}
+				}]
+			}
+		});
+	}
+
 	register = () => {
-		this.props.navigation.navigate({ key: 'Register', routeName: 'Register' });
+		// this.props.navigation.navigate({ key: 'Register', routeName: 'Register' });
+		Navigation.showModal({
+			stack: {
+				children: [{
+					component: {
+						name: 'RegisterView'
+					}
+				}]
+			}
+		});
 	}
 
 	closeOAuth = () => {
@@ -285,35 +316,35 @@ export default class LoginSignupView extends LoggedView {
 					style={[sharedStyles.container, sharedStyles.containerScrollView]}
 					{...scrollPersistTaps}
 				>
-					<SafeAreaView testID='welcome-view'>
-						<View style={styles.container}>
-							<Image
-								source={require('../static/images/logo.png')}
-								style={sharedStyles.loginLogo}
-								resizeMode='center'
-							/>
-							<Text style={[sharedStyles.loginText, styles.header, { color: '#81848A' }]}>{I18n.t('Welcome_title_pt_1')}</Text>
-							<Text style={[sharedStyles.loginText, styles.header]}>{I18n.t('Welcome_title_pt_2')}</Text>
-							<Image
-								style={styles.planetImage}
-								source={require('../static/images/planet.png')}
-							/>
-							<Button
-								title={I18n.t('I_have_an_account')}
-								type='primary'
-								onPress={() => this.props.navigation.navigate({ key: 'Login', routeName: 'Login' })}
-								testID='welcome-view-login'
-							/>
-							<Button
-								title={I18n.t('Create_account')}
-								type='secondary'
-								onPress={() => this.props.navigation.navigate({ key: 'Register', routeName: 'Register' })}
-								testID='welcome-view-register'
-							/>
-							{this.renderServices()}
-						</View>
-						<Loading visible={this.props.login.isFetching} />
-					</SafeAreaView>
+					{/* <SafeAreaView testID='welcome-view'> */}
+					<View style={styles.container}>
+						<Image
+							source={require('../static/images/logo.png')}
+							style={sharedStyles.loginLogo}
+							resizeMode='center'
+						/>
+						<Text style={[sharedStyles.loginText, styles.header, { color: '#81848A' }]}>{I18n.t('Welcome_title_pt_1')}</Text>
+						<Text style={[sharedStyles.loginText, styles.header]}>{I18n.t('Welcome_title_pt_2')}</Text>
+						<Image
+							style={styles.planetImage}
+							source={require('../static/images/planet.png')}
+						/>
+						<Button
+							title={I18n.t('I_have_an_account')}
+							type='primary'
+							onPress={() => this.login()}
+							testID='welcome-view-login'
+						/>
+						<Button
+							title={I18n.t('Create_account')}
+							type='secondary'
+							onPress={() => this.register()}
+							testID='welcome-view-register'
+						/>
+						{this.renderServices()}
+					</View>
+					<Loading visible={this.props.login.isFetching} />
+					{/* </SafeAreaView> */}
 				</ScrollView>,
 				<Modal
 					key='modal-oauth'
@@ -342,3 +373,26 @@ export default class LoginSignupView extends LoggedView {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	server: state.server.server,
+	login: state.login,
+	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
+	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
+	Accounts_OAuth_Facebook: state.settings.Accounts_OAuth_Facebook,
+	Accounts_OAuth_Github: state.settings.Accounts_OAuth_Github,
+	Accounts_OAuth_Gitlab: state.settings.Accounts_OAuth_Gitlab,
+	Accounts_OAuth_Google: state.settings.Accounts_OAuth_Google,
+	Accounts_OAuth_Linkedin: state.settings.Accounts_OAuth_Linkedin,
+	Accounts_OAuth_Meteor: state.settings.Accounts_OAuth_Meteor,
+	Accounts_OAuth_Twitter: state.settings.Accounts_OAuth_Twitter,
+	services: state.login.services
+});
+
+const mapDispatchToProps = dispatch => ({
+	loginOAuth: params => RocketChat.login(params),
+	open: () => dispatch(open()),
+	close: () => dispatch(close())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(LoginSignupView);

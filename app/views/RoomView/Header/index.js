@@ -3,7 +3,8 @@ import { Text, View, Platform, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { HeaderBackButton } from 'react-navigation';
+// import { HeaderBackButton } from 'react-navigation';
+import { Navigation } from 'react-native-navigation';
 
 import RocketChat from '../../../lib/rocketchat';
 import realm from '../../../lib/realm';
@@ -36,21 +37,10 @@ const title = (offline, connecting, authenticating, logged) => {
 	return `${ I18n.t('Not_logged') }...`;
 };
 
-@connect(state => ({
-	user: state.login.user,
-	activeUsers: state.activeUsers,
-	loading: state.messages.isFetching,
-	connecting: state.meteor.connecting,
-	authenticating: state.login.isFetching,
-	offline: !state.meteor.connected,
-	logged: !!state.login.token
-}), dispatch => ({
-	close: () => dispatch(closeRoom())
-}))
-export default class RoomHeaderView extends React.PureComponent {
+class RoomHeaderView extends React.PureComponent {
 	static propTypes = {
 		close: PropTypes.func.isRequired,
-		navigation: PropTypes.object.isRequired,
+		// navigation: PropTypes.object.isRequired,
 		user: PropTypes.object.isRequired,
 		activeUsers: PropTypes.object
 	}
@@ -58,9 +48,9 @@ export default class RoomHeaderView extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			room: props.navigation.state.params.room
+			room: props.room
 		};
-		this.room = realm.objects('subscriptions').filtered('rid = $0', this.state.room.rid);
+		this.room = realm.objects('subscriptions').filtered('rid = $0', props.room.rid);
 	}
 
 	componentDidMount() {
@@ -68,16 +58,17 @@ export default class RoomHeaderView extends React.PureComponent {
 		this.room.addListener(this.updateState);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.navigation.state.params.room !== this.props.navigation.state.params.room) {
-			this.room.removeAllListeners();
-			this.room = realm.objects('subscriptions').filtered('rid = $0', nextProps.navigation.state.params.room.rid);
-			this.room.addListener(this.updateState);
-		}
-	}
+	// componentWillReceiveProps(nextProps) {
+	// 	if (nextProps.navigation.state.params.room !== this.props.navigation.state.params.room) {
+	// 		this.room.removeAllListeners();
+	// 		this.room = realm.objects('subscriptions').filtered('rid = $0', nextProps.navigation.state.params.room.rid);
+	// 		this.room.addListener(this.updateState);
+	// 	}
+	// }
 
 	componentWillUnmount() {
 		this.room.removeAllListeners();
+		this.props.close();
 	}
 
 	getUserStatus() {
@@ -99,15 +90,26 @@ export default class RoomHeaderView extends React.PureComponent {
 
 	isDirect = () => this.state.room && this.state.room.t === 'd';
 
-	renderLeft = () => (<HeaderBackButton
-		onPress={() => {
-			this.props.navigation.goBack(null);
-			requestAnimationFrame(() => this.props.close());
-		}}
-		tintColor='#292E35'
-		title={I18n.t('Back')}
-		titleStyle={{ display: 'none' }}
-	/>);
+	goToRoomInfo = () => {
+		Navigation.push(this.props.roomComponentId, {
+			component: {
+				name: 'RoomInfoView',
+				passProps: {
+					rid: this.state.room.rid
+				}
+			}
+		});
+	}
+
+	// renderLeft = () => (<HeaderBackButton
+	// 	onPress={() => {
+	// 		this.props.navigation.goBack(null);
+	// 		requestAnimationFrame(() => this.props.close());
+	// 	}}
+	// 	tintColor='#292E35'
+	// 	title={I18n.t('Back')}
+	// 	titleStyle={{ display: 'none' }}
+	// />);
 
 	renderCenter() {
 		if (!this.state.room.name) {
@@ -137,7 +139,7 @@ export default class RoomHeaderView extends React.PureComponent {
 				style={styles.titleContainer}
 				accessibilityLabel={accessibilityLabel}
 				accessibilityTraits='header'
-				onPress={() => this.props.navigation.navigate({ key: 'RoomInfo', routeName: 'RoomInfo', params: { rid: this.state.room.rid } })}
+				onPress={() => this.goToRoomInfo()}
 				testID='room-view-header-title'
 			>
 
@@ -167,52 +169,68 @@ export default class RoomHeaderView extends React.PureComponent {
 		);
 	}
 
-	renderRight = () => (
-		<View style={styles.right}>
-			<TouchableOpacity
-				style={sharedStyles.headerButton}
-				onPress={() => {
-					try {
-						RocketChat.toggleFavorite(this.state.room.rid, this.state.room.f);
-					} catch (e) {
-						log('toggleFavorite', e);
-					}
-				}}
-				accessibilityLabel={I18n.t('Star_room')}
-				accessibilityTraits='button'
-				testID='room-view-header-star'
-			>
-				<Icon
-					name={`${ Platform.OS === 'ios' ? 'ios' : 'md' }-star${ this.state.room.f ? '' : '-outline' }`}
-					color='#f6c502'
-					size={24}
-					backgroundColor='transparent'
-				/>
-			</TouchableOpacity>
-			<TouchableOpacity
-				style={sharedStyles.headerButton}
-				onPress={() => this.props.navigation.navigate({ key: 'RoomActions', routeName: 'RoomActions', params: { rid: this.state.room.rid } })}
-				accessibilityLabel={I18n.t('Room_actions')}
-				accessibilityTraits='button'
-				testID='room-view-header-actions'
-			>
-				<Icon
-					name={Platform.OS === 'ios' ? 'ios-more' : 'md-more'}
-					color='#292E35'
-					size={24}
-					backgroundColor='transparent'
-				/>
-			</TouchableOpacity>
-		</View>
-	);
+	// renderRight = () => (
+	// 	<View style={styles.right}>
+	// 		<TouchableOpacity
+	// 			style={sharedStyles.headerButton}
+	// 			onPress={() => {
+	// 				try {
+	// 					RocketChat.toggleFavorite(this.state.room.rid, this.state.room.f);
+	// 				} catch (e) {
+	// 					log('toggleFavorite', e);
+	// 				}
+	// 			}}
+	// 			accessibilityLabel={I18n.t('Star_room')}
+	// 			accessibilityTraits='button'
+	// 			testID='room-view-header-star'
+	// 		>
+	// 			<Icon
+	// 				name={`${ Platform.OS === 'ios' ? 'ios' : 'md' }-star${ this.state.room.f ? '' : '-outline' }`}
+	// 				color='#f6c502'
+	// 				size={24}
+	// 				backgroundColor='transparent'
+	// 			/>
+	// 		</TouchableOpacity>
+	// 		<TouchableOpacity
+	// 			style={sharedStyles.headerButton}
+	// 			onPress={() => this.props.navigation.navigate({ key: 'RoomActions', routeName: 'RoomActions', params: { rid: this.state.room.rid } })}
+	// 			accessibilityLabel={I18n.t('Room_actions')}
+	// 			accessibilityTraits='button'
+	// 			testID='room-view-header-actions'
+	// 		>
+	// 			<Icon
+	// 				name={Platform.OS === 'ios' ? 'ios-more' : 'md-more'}
+	// 				color='#292E35'
+	// 				size={24}
+	// 				backgroundColor='transparent'
+	// 			/>
+	// 		</TouchableOpacity>
+	// 	</View>
+	// );
 
 	render() {
 		return (
 			<View style={styles.header} testID='room-view-header'>
-				{this.renderLeft()}
+				{/* {this.renderLeft()} */}
 				{this.renderCenter()}
-				{this.renderRight()}
+				{/* {this.renderRight()} */}
 			</View>
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	user: state.login.user,
+	activeUsers: state.activeUsers,
+	loading: state.messages.isFetching,
+	connecting: state.meteor.connecting,
+	authenticating: state.login.isFetching,
+	offline: !state.meteor.connected,
+	logged: !!state.login.token
+});
+
+const mapDispatchToProps = dispatch => ({
+	close: () => dispatch(closeRoom())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(RoomHeaderView);

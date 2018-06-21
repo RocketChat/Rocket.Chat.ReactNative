@@ -8,6 +8,16 @@ class TermsServiceView extends React.PureComponent {
 		termsService: PropTypes.string
 	}
 
+	static get options() {
+		return {
+			topBar: {
+				title: {
+					text: 'Terms of Service'
+				}
+			}
+		};
+	}
+
 	render() {
 		return (
 			<WebView source={{ html: this.props.termsService }} />
@@ -15,10 +25,8 @@ class TermsServiceView extends React.PureComponent {
 	}
 }
 
-function mapStateToProps(state) {
-	return {
-		termsService: state.settings.Layout_Terms_of_Service
-	};
-}
+const mapStateToProps = state => ({
+	termsService: state.settings.Layout_Terms_of_Service
+});
 
-export default connect(mapStateToProps)(TermsServiceView);
+export default connect(mapStateToProps, null, null, { withRef: true })(TermsServiceView);

@@ -10,27 +10,25 @@ import Message from '../../containers/message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 
-@connect(
-	state => ({
-		messages: state.mentionedMessages.messages,
-		ready: state.mentionedMessages.ready,
-		user: state.login.user,
-		baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-	}),
-	dispatch => ({
-		openMentionedMessages: (rid, limit) => dispatch(openMentionedMessages(rid, limit)),
-		closeMentionedMessages: () => dispatch(closeMentionedMessages())
-	})
-)
-export default class MentionedMessagesView extends LoggedView {
+class MentionedMessagesView extends LoggedView {
 	static propTypes = {
-		navigation: PropTypes.object,
+		// navigation: PropTypes.object,
 		messages: PropTypes.array,
 		ready: PropTypes.bool,
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
 		openMentionedMessages: PropTypes.func,
 		closeMentionedMessages: PropTypes.func
+	}
+
+	static get options() {
+		return {
+			topBar: {
+				title: {
+					text: 'Mentioned Messages'
+				}
+			}
+		};
 	}
 
 	constructor(props) {
@@ -57,7 +55,7 @@ export default class MentionedMessagesView extends LoggedView {
 	}
 
 	load = () => {
-		this.props.openMentionedMessages(this.props.navigation.state.params.rid, this.limit);
+		this.props.openMentionedMessages(this.props.rid, this.limit);
 	}
 
 	moreData = () => {
@@ -116,3 +114,16 @@ export default class MentionedMessagesView extends LoggedView {
 		);
 	}
 }
+const mapStateToProps = state => ({
+	messages: state.mentionedMessages.messages,
+	ready: state.mentionedMessages.ready,
+	user: state.login.user,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+});
+
+const mapDispatchToProps = dispatch => ({
+	openMentionedMessages: (rid, limit) => dispatch(openMentionedMessages(rid, limit)),
+	closeMentionedMessages: () => dispatch(closeMentionedMessages())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(MentionedMessagesView);

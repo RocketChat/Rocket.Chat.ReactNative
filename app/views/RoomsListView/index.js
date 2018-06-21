@@ -4,36 +4,48 @@ import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Platform, View, TextInput, FlatList } from 'react-native';
 import { connect } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem from '../../presentation/RoomItem';
-import Header from '../../containers/Header';
-import RoomsListHeader from './Header';
 import styles from './styles';
 import debounce from '../../utils/debounce';
 import LoggedView from '../View';
 import log from '../../utils/log';
 import I18n from '../../i18n';
+import { NavigationControllerManager } from '../../NavigationController';
 
-@connect(state => ({
-	user: state.login.user,
-	server: state.server.server,
-	Site_Url: state.settings.Site_Url,
-	searchText: state.rooms.searchText
-}))
-export default class RoomsListView extends LoggedView {
+class RoomsListView extends LoggedView {
 	static propTypes = {
-		navigation: PropTypes.object.isRequired,
+		// navigation: PropTypes.object.isRequired,
 		user: PropTypes.object,
 		Site_Url: PropTypes.string,
 		server: PropTypes.string,
 		searchText: PropTypes.string
 	}
 
-	static navigationOptions = ({ navigation }) => ({
-		header: <Header subview={<RoomsListHeader navigation={navigation} />} />
-	});
+	static get options() {
+		return {
+			topBar: {
+				leftButtons: [{
+					id: 'Sidemenu',
+					title: 'Menu',
+					icon: require('../../static/images/navicon_menu.png') // eslint-disable-line
+				}],
+				title: {
+					component: {
+						name: 'RoomsListHeaderView'
+					}
+				},
+				rightButtons: [{
+					id: 'RoomsListView.createChannel',
+					title: 'Add',
+					icon: require('../../static/images/navicon_add.png') // eslint-disable-line
+				}]
+			}
+		};
+	}
 
 	constructor(props) {
 		super('RoomsListView', props);
@@ -47,6 +59,7 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	componentDidMount() {
+		NavigationControllerManager.getSharedInstance().setActiveRootComponentId(this.props.componentId, 'RoomsListView');
 		this.data.addListener(this.updateState);
 	}
 
@@ -63,6 +76,29 @@ export default class RoomsListView extends LoggedView {
 	componentWillUnmount() {
 		this.updateState.stop();
 		this.data.removeAllListeners();
+	}
+
+	onNavigationButtonPressed = (id) => {
+		if (id === 'Sidemenu') {
+			Navigation.mergeOptions(this.props.componentId, {
+				sideMenu: {
+					left: {
+						visible: true
+					}
+				}
+			});
+		} else if (id === 'RoomsListView.createChannel') {
+			Navigation.push(this.props.componentId, {
+				component: {
+					name: 'SelectedUsersView',
+					passProps: {
+						nextAction: 'CREATE_CHANNEL'
+					}
+				}
+			});
+		} else {
+			alert(id);
+		}
 	}
 
 	onSearchChangeText(text) {
@@ -120,10 +156,20 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	goRoom = (rid, name) => {
-		this.props.navigation.navigate({
-			key: `Room-${ rid }`,
-			routeName: 'Room',
-			params: { room: { rid, name }, rid, name }
+		// this.props.navigation.navigate({
+		// 	key: `Room-${ rid }`,
+		// 	routeName: 'Room',
+		// 	params: { room: { rid, name }, rid, name }
+		// });
+		Navigation.push(this.props.componentId, {
+			component: {
+				name: 'RoomView',
+				passProps: {
+					room: { rid, name },
+					rid,
+					name
+				}
+			}
 		});
 	}
 
@@ -226,3 +272,12 @@ export default class RoomsListView extends LoggedView {
 			{Platform.OS === 'android' ? this.renderCreateButtons() : null}
 		</View>)
 }
+
+const mapStateToProps = state => ({
+	user: state.login.user,
+	server: state.server.server,
+	Site_Url: state.settings.Site_Url,
+	searchText: state.rooms.searchText
+});
+
+export default connect(mapStateToProps, null, null, { withRef: true })(RoomsListView);

@@ -16,22 +16,9 @@ const STAR_INDEX = 0;
 const CANCEL_INDEX = 1;
 const options = [I18n.t('Unstar'), I18n.t('Cancel')];
 
-@connect(
-	state => ({
-		messages: state.starredMessages.messages,
-		ready: state.starredMessages.ready,
-		user: state.login.user,
-		baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-	}),
-	dispatch => ({
-		openStarredMessages: (rid, limit) => dispatch(openStarredMessages(rid, limit)),
-		closeStarredMessages: () => dispatch(closeStarredMessages()),
-		toggleStarRequest: message => dispatch(toggleStarRequest(message))
-	})
-)
-export default class StarredMessagesView extends LoggedView {
+class StarredMessagesView extends LoggedView {
 	static propTypes = {
-		navigation: PropTypes.object,
+		// navigation: PropTypes.object,
 		messages: PropTypes.array,
 		ready: PropTypes.bool,
 		user: PropTypes.object,
@@ -39,6 +26,16 @@ export default class StarredMessagesView extends LoggedView {
 		openStarredMessages: PropTypes.func,
 		closeStarredMessages: PropTypes.func,
 		toggleStarRequest: PropTypes.func
+	}
+
+	static get options() {
+		return {
+			topBar: {
+				title: {
+					text: 'Starred Messages'
+				}
+			}
+		};
 	}
 
 	constructor(props) {
@@ -81,7 +78,7 @@ export default class StarredMessagesView extends LoggedView {
 	}
 
 	load = () => {
-		this.props.openStarredMessages(this.props.navigation.state.params.rid, this.limit);
+		this.props.openStarredMessages(this.props.rid, this.limit);
 	}
 
 	moreData = () => {
@@ -148,3 +145,18 @@ export default class StarredMessagesView extends LoggedView {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	messages: state.starredMessages.messages,
+	ready: state.starredMessages.ready,
+	user: state.login.user,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+});
+
+const mapDispatchToProps = dispatch => ({
+	openStarredMessages: (rid, limit) => dispatch(openStarredMessages(rid, limit)),
+	closeStarredMessages: () => dispatch(closeStarredMessages()),
+	toggleStarRequest: message => dispatch(toggleStarRequest(message))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(StarredMessagesView);

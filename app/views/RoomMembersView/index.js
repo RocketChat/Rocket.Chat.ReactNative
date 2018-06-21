@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { FlatList, Text, View, TextInput, Vibration, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
+import { Navigation } from 'react-native-navigation';
 
 import LoggedView from '../View';
 import styles from './styles';
-import sharedStyles from '../Styles';
+// import sharedStyles from '../Styles';
 import RoomItem from '../../presentation/RoomItem';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
@@ -16,42 +17,52 @@ import { showToast } from '../../utils/info';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 
-@connect(state => ({
-	user: state.login.user,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-}))
-export default class MentionedMessagesView extends LoggedView {
-	static propTypes = {
-		navigation: PropTypes.object
-	}
+class RoomMembersView extends LoggedView {
+	// static propTypes = {
+	// 	navigation: PropTypes.object
+	// }
 
-	static navigationOptions = ({ navigation }) => {
-		const params = navigation.state.params || {};
-		const label = params.allUsers ? I18n.t('All') : I18n.t('Online');
-		if (params.allUsers === undefined) {
-			return;
-		}
+	// static navigationOptions = ({ navigation }) => {
+	// 	const params = navigation.state.params || {};
+	// 	const label = params.allUsers ? I18n.t('All') : I18n.t('Online');
+	// 	if (params.allUsers === undefined) {
+	// 		return;
+	// 	}
+	// 	return {
+	// 		headerRight: (
+	// 			<TouchableOpacity
+	// 				onPress={params.onPressToogleStatus}
+	// 				accessibilityLabel={label}
+	// 				accessibilityTraits='button'
+	// 				style={[sharedStyles.headerButton, styles.headerButton]}
+	// 				testID='room-members-view-toggle-status'
+	// 			>
+	// 				<Text>{label}</Text>
+	// 			</TouchableOpacity>
+	// 		)
+	// 	};
+	// };
+	static get options() {
 		return {
-			headerRight: (
-				<TouchableOpacity
-					onPress={params.onPressToogleStatus}
-					accessibilityLabel={label}
-					accessibilityTraits='button'
-					style={[sharedStyles.headerButton, styles.headerButton]}
-					testID='room-members-view-toggle-status'
-				>
-					<Text>{label}</Text>
-				</TouchableOpacity>
-			)
+			topBar: {
+				title: {
+					text: 'Room Members'
+				},
+				rightButtons: [{
+					id: 'RoomMembersView.toggleOnline',
+					title: 'All',
+					icon: require('../../static/images/navicon_add.png') // eslint-disable-line
+				}]
+			}
 		};
-	};
+	}
 
 	constructor(props) {
 		super('MentionedMessagesView', props);
 		this.CANCEL_INDEX = 0;
 		this.MUTE_INDEX = 1;
 		this.actionSheetOptions = [''];
-		const { rid, members } = props.navigation.state.params;
+		const { rid, members } = props;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.permissions = RocketChat.hasPermission(['mute-user'], rid);
 		this.state = {
@@ -66,15 +77,35 @@ export default class MentionedMessagesView extends LoggedView {
 	}
 
 	componentDidMount() {
-		this.props.navigation.setParams({
-			onPressToogleStatus: this.onPressToogleStatus,
-			allUsers: this.state.allUsers
-		});
+		// this.props.navigation.setParams({
+		// 	onPressToogleStatus: this.onPressToogleStatus,
+		// 	allUsers: this.state.allUsers
+		// });
 		this.rooms.addListener(this.updateRoom);
 	}
 
 	componentWillUnmount() {
 		this.rooms.removeAllListeners();
+	}
+
+	onNavigationButtonPressed = async() => {
+		try {
+			const allUsers = !this.state.allUsers;
+			const membersResult = await RocketChat.getRoomMembers(this.state.rid, allUsers);
+			const members = membersResult.records;
+			this.setState({ allUsers, members });
+			Navigation.mergeOptions(this.props.componentId, {
+				topBar: {
+					rightButtons: [{
+						id: 'RoomMembersView.toggleOnline',
+						title: this.state.allUsers ? 'Online' : 'All',
+						icon: require('../../static/images/navicon_add.png') // eslint-disable-line
+					}]
+				}
+			});
+		} catch (e) {
+			log('onPressToogleStatus', e);
+		}
 	}
 
 	updateRoom = async() => {
@@ -91,15 +122,15 @@ export default class MentionedMessagesView extends LoggedView {
 	}
 
 	onPressToogleStatus = async() => {
-		try {
-			const allUsers = !this.state.allUsers;
-			this.props.navigation.setParams({ allUsers });
-			const membersResult = await RocketChat.getRoomMembers(this.state.rid, allUsers);
-			const members = membersResult.records;
-			this.setState({ allUsers, members });
-		} catch (e) {
-			log('onPressToogleStatus', e);
-		}
+		// try {
+		// 	const allUsers = !this.state.allUsers;
+		// 	this.props.navigation.setParams({ allUsers });
+		// 	const membersResult = await RocketChat.getRoomMembers(this.state.rid, allUsers);
+		// 	const members = membersResult.records;
+		// 	this.setState({ allUsers, members });
+		// } catch (e) {
+		// 	log('onPressToogleStatus', e);
+		// }
 	}
 
 	onPressUser = async(item) => {
@@ -215,3 +246,10 @@ export default class MentionedMessagesView extends LoggedView {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	user: state.login.user,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+});
+
+export default connect(mapStateToProps, null, null, { withRef: true })(RoomMembersView);

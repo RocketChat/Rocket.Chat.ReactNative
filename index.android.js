@@ -2,7 +2,7 @@
 // import 'regenerator-runtime/runtime';
 // import { AppRegistry, UIManager } from 'react-native';
 
-// import './app/ReactotronConfig';
+import './app/ReactotronConfig';
 // import './app/push';
 // import RocketChat from './app/index';
 

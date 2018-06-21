@@ -34,18 +34,24 @@ const PERMISSIONS_ARRAY = [
 	PERMISSION_DELETE_P
 ];
 
-@connect(null, dispatch => ({
-	eraseRoom: rid => dispatch(eraseRoom(rid))
-}))
-export default class RoomInfoEditView extends LoggedView {
+class RoomInfoEditView extends LoggedView {
 	static propTypes = {
-		navigation: PropTypes.object,
 		eraseRoom: PropTypes.func
 	};
 
+	static get options() {
+		return {
+			topBar: {
+				title: {
+					text: 'Edit'
+				}
+			}
+		};
+	}
+
 	constructor(props) {
 		super('RoomInfoEditView', props);
-		const { rid } = props.navigation.state.params;
+		const { rid } = props;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.permissions = {};
 		this.state = {
@@ -400,3 +406,9 @@ export default class RoomInfoEditView extends LoggedView {
 		);
 	}
 }
+
+const mapDispatchToProps = dispatch => ({
+	eraseRoom: rid => dispatch(eraseRoom(rid))
+});
+
+export default connect(null, mapDispatchToProps, null, { withRef: true })(RoomInfoEditView);

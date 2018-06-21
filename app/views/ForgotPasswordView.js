@@ -14,18 +14,22 @@ import { showErrorAlert } from '../utils/info';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 
-@connect(state => ({
-	login: state.login
-}), dispatch => ({
-	forgotPasswordInit: () => dispatch(forgotPasswordInit()),
-	forgotPasswordRequest: email => dispatch(forgotPasswordRequest(email))
-}))
-export default class ForgotPasswordView extends LoggedView {
+class ForgotPasswordView extends LoggedView {
 	static propTypes = {
 		forgotPasswordInit: PropTypes.func.isRequired,
 		forgotPasswordRequest: PropTypes.func.isRequired,
 		login: PropTypes.object,
-		navigation: PropTypes.object.isRequired
+		// navigation: PropTypes.object.isRequired
+	}
+
+	static get options() {
+		return {
+			topBar: {
+				title: {
+					text: 'Forgot Password'
+				}
+			}
+		};
 	}
 
 	constructor(props) {
@@ -107,3 +111,14 @@ export default class ForgotPasswordView extends LoggedView {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	login: state.login
+});
+
+const dispatchToProps = dispatch => ({
+	forgotPasswordInit: () => dispatch(forgotPasswordInit()),
+	forgotPasswordRequest: email => dispatch(forgotPasswordRequest(email))
+});
+
+export default connect(mapStateToProps, dispatchToProps, null, { withRef: true })(ForgotPasswordView);

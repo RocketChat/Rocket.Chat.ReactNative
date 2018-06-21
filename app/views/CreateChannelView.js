@@ -13,21 +13,12 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import Button from '../containers/Button';
 import I18n from '../i18n';
 
-@connect(
-	state => ({
-		createChannel: state.createChannel,
-		users: state.selectedUsers.users
-	}),
-	dispatch => ({
-		create: data => dispatch(createChannelRequest(data))
-	})
-)
-export default class CreateChannelView extends LoggedView {
+class CreateChannelView extends LoggedView {
 	static propTypes = {
 		create: PropTypes.func.isRequired,
 		createChannel: PropTypes.object.isRequired,
 		users: PropTypes.array.isRequired,
-		navigation: PropTypes.object.isRequired
+		// navigation: PropTypes.object.isRequired
 	};
 
 	constructor(props) {
@@ -168,3 +159,14 @@ export default class CreateChannelView extends LoggedView {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	createChannel: state.createChannel,
+	users: state.selectedUsers.users
+});
+
+const mapDispatchToProps = dispatch => ({
+	create: data => dispatch(createChannelRequest(data))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(CreateChannelView);

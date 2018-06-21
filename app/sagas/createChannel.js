@@ -1,9 +1,11 @@
 import { delay } from 'redux-saga';
 import { select, put, call, take, takeLatest } from 'redux-saga/effects';
+import { Navigation } from 'react-native-navigation';
+
 import { CREATE_CHANNEL, LOGIN } from '../actions/actionsTypes';
 import { createChannelSuccess, createChannelFailure } from '../actions/createChannel';
 import RocketChat from '../lib/rocketchat';
-import { goRoom } from '../containers/routes/NavigationService';
+// import { goRoom } from '../containers/routes/NavigationService';
 
 const create = function* create(data) {
 	return yield RocketChat.createChannel(data);
@@ -18,7 +20,36 @@ const handleRequest = function* handleRequest({ data }) {
 		}
 		const result = yield call(create, data);
 		const { rid, name } = result;
-		goRoom({ rid, name });
+		// goRoom({ rid, name });
+		Navigation.setRoot({
+			root: {
+				sideMenu: {
+					left: {
+						component: {
+							name: 'Sidebar'
+						}
+					},
+					center: {
+						stack: {
+							children: [{
+								component: {
+									name: 'RoomsListView'
+								}
+							}, {
+								component: {
+									name: 'RoomView',
+									passProps: {
+										room: { rid, name },
+										rid,
+										name
+									}
+								}
+							}]
+						}
+					}
+				}
+			}
+		});
 		yield put(createChannelSuccess(result));
 	} catch (err) {
 		yield put(createChannelFailure(err));

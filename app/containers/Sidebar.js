@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView, Text, View, StyleSheet, FlatList, LayoutAnimation } from 'react-native';
+import { ScrollView, Text, View, StyleSheet, FlatList, LayoutAnimation, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
-import { DrawerActions, SafeAreaView } from 'react-navigation';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Navigation } from 'react-native-navigation';
 
 import database from '../lib/realm';
 import { setServer } from '../actions/server';
@@ -16,6 +16,7 @@ import { STATUS_COLORS } from '../constants/colors';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import I18n from '../i18n';
+import { NavigationControllerManager } from '../NavigationController';
 
 const styles = StyleSheet.create({
 	selected: {
@@ -76,18 +77,12 @@ const styles = StyleSheet.create({
 	}
 });
 const keyExtractor = item => item.id;
-@connect(state => ({
-	server: state.server.server,
-	user: state.login.user
-}), dispatch => ({
-	selectServer: server => dispatch(setServer(server)),
-	logout: () => dispatch(logout())
-}))
-export default class Sidebar extends Component {
+
+class Sidebar extends Component {
 	static propTypes = {
 		server: PropTypes.string.isRequired,
 		selectServer: PropTypes.func.isRequired,
-		navigation: PropTypes.object.isRequired,
+		// navigation: PropTypes.object.isRequired,
 		logout: PropTypes.func.isRequired
 	}
 
@@ -117,7 +112,7 @@ export default class Sidebar extends Component {
 
 	onPressItem = (item) => {
 		this.props.selectServer(item.id);
-		this.closeDrawer();
+		// this.closeDrawer();
 	}
 
 	setStatus = () => {
@@ -149,7 +144,14 @@ export default class Sidebar extends Component {
 	}
 
 	closeDrawer = () => {
-		this.props.navigation.dispatch(DrawerActions.closeDrawer());
+		// this.props.navigation.dispatch(DrawerActions.closeDrawer());
+		Navigation.mergeOptions(this.props.componentId, {
+			sideMenu: {
+				left: {
+					visible: false
+				}
+			}
+		});
 	}
 
 	toggleServers = () => {
@@ -158,17 +160,63 @@ export default class Sidebar extends Component {
 	}
 
 	isRouteFocused = (route) => {
-		const { state } = this.props.navigation;
-		const activeItemKey = state.routes[state.index] ? state.routes[state.index].key : null;
-		return activeItemKey === route;
+		// const { state } = this.props.navigation;
+		// const activeItemKey = state.routes[state.index] ? state.routes[state.index].key : null;
+		// return activeItemKey === route;
+		return false;
 	}
 
 	sidebarNavigate = (route) => {
-		const { navigate } = this.props.navigation;
-		if (!this.isRouteFocused(route)) {
-			navigate(route);
-		} else {
-			this.closeDrawer();
+		// const { navigate } = this.props.navigation;
+		// if (!this.isRouteFocused(route)) {
+		// 	navigate(route);
+		// } else {
+		// 	this.closeDrawer();
+		// }
+		// Navigation.mergeOptions()
+		// Navigation.setRoot({
+		// 	root: {
+		// 		sideMenu: {
+		// 			left: {
+		// 				component: {
+		// 					name: 'Sidebar'
+		// 				}
+		// 			},
+		// 			center: {
+		// 				stack: {
+		// 					children: [{
+		// 						component: {
+		// 							name: route
+		// 						}
+		// 					}]
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+		// });
+		Navigation.mergeOptions(this.props.componentId, {
+			sideMenu: {
+				left: {
+					visible: false
+				}
+			}
+		});
+		if (NavigationControllerManager.getSharedInstance().getActiveRootComponent().componentName !== route) {
+			Navigation.setStackRoot(NavigationControllerManager.getSharedInstance().getActiveRootComponent().componentId, {
+				component: {
+					name: route,
+					options: {
+						animated: true // Will animate root change same as push
+					},
+					topBar: {
+						leftButtons: [{
+							id: 'sidemenu',
+							title: 'Menu',
+							icon: require('../static/images/navicon_add.png') // eslint-disable-line
+						}]
+					}
+				}
+			});
 		}
 	}
 
@@ -223,12 +271,12 @@ export default class Sidebar extends Component {
 			/>,
 			selected: this.props.server === item.id,
 			onPress: () => {
-				this.closeDrawer();
+				// this.closeDrawer();
 				this.toggleServers();
-				if (this.props.server !== item.id) {
-					this.props.selectServer(item.id);
-					this.props.navigation.navigate('RoomsList');
-				}
+				// if (this.props.server !== item.id) {
+				// 	this.props.selectServer(item.id);
+				// 	this.props.navigation.navigate('RoomsList');
+				// }
 			},
 			testID: `sidebar-${ item.id }`
 		})
@@ -239,7 +287,7 @@ export default class Sidebar extends Component {
 			this.renderItem({
 				text: I18n.t('Chats'),
 				left: <Icon name='chat-bubble' size={20} />,
-				onPress: () => this.sidebarNavigate('Chats'),
+				onPress: () => this.sidebarNavigate('RoomsListView'),
 				selected: this.isRouteFocused('Chats'),
 				testID: 'sidebar-chats'
 			}),
@@ -307,10 +355,9 @@ export default class Sidebar extends Component {
 	render() {
 		const { user, server } = this.props;
 		return (
-			<ScrollView>
+			<ScrollView style={{ backgroundColor: '#fff' }}>
 				<SafeAreaView
-					style={styles.container}
-					forceInset={{ top: 'always', horizontal: 'never' }}
+					// forceInset={{ top: 'always', horizontal: 'never' }}
 					testID='sidebar'
 				>
 					<Touch
@@ -348,3 +395,15 @@ export default class Sidebar extends Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	server: state.server.server,
+	user: state.login.user
+});
+
+const mapDispatchToProps = dispatch => ({
+	selectServer: server => dispatch(setServer(server)),
+	logout: () => dispatch(logout())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(Sidebar);

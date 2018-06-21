@@ -16,15 +16,7 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 
-@connect(state => ({
-	user: state.login.user,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-}))
-export default class SearchMessagesView extends LoggedView {
-	static propTypes = {
-		navigation: PropTypes.object
-	};
-
+class SearchMessagesView extends LoggedView {
 	constructor(props) {
 		super('SearchMessagesView', props);
 		this.limit = 0;
@@ -33,6 +25,16 @@ export default class SearchMessagesView extends LoggedView {
 			messages: [],
 			searching: false,
 			loadingMore: false
+		};
+	}
+
+	static get options() {
+		return {
+			topBar: {
+				title: {
+					text: 'Search Messages'
+				}
+			}
 		};
 	}
 
@@ -51,7 +53,7 @@ export default class SearchMessagesView extends LoggedView {
 		const cancel = new Promise((r, reject) => this._cancel = reject);
 		let messages = [];
 		try {
-			const result = await Promise.race([RocketChat.messageSearch(this.searchText, this.props.navigation.state.params.rid, this.limit), cancel]);
+			const result = await Promise.race([RocketChat.messageSearch(this.searchText, this.props.rid, this.limit), cancel]);
 			messages = result.message.docs.map(message => buildMessage(message));
 			this.setState({ messages, searching: false, loadingMore: false });
 		} catch (e) {
@@ -137,3 +139,10 @@ export default class SearchMessagesView extends LoggedView {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	user: state.login.user,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+});
+
+export default connect(mapStateToProps, null, null, { withRef: true })(SearchMessagesView);

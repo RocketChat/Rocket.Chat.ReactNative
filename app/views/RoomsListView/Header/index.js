@@ -38,22 +38,9 @@ const title = (offline, connecting, authenticating, logged) => {
 	return `${ I18n.t('Not_logged') }...`;
 };
 
-@connect(state => ({
-	user: state.login.user,
-	connected: state.meteor.connected,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-
-	connecting: state.meteor.connecting,
-	authenticating: state.login.isFetching,
-	offline: !state.meteor.connected,
-	logged: !!state.login.token
-}), dispatch => ({
-	setSearch: searchText => dispatch(setSearch(searchText))
-}))
-
-export default class RoomsListHeaderView extends React.Component {
+class RoomsListHeaderView extends React.Component {
 	static propTypes = {
-		navigation: PropTypes.object.isRequired,
+		// navigation: PropTypes.object.isRequired,
 		user: PropTypes.object.isRequired,
 		connected: PropTypes.bool,
 		baseUrl: PropTypes.string,
@@ -126,13 +113,13 @@ export default class RoomsListHeaderView extends React.Component {
 		this.setState({ isModalVisible: false });
 	}
 
-	createChannel() {
-		this.props.navigation.navigate({
-			key: 'SelectedUsers',
-			routeName: 'SelectedUsers',
-			params: { nextAction: () => this.props.navigation.navigate('CreateChannel') }
-		});
-	}
+	// createChannel() {
+	// 	this.props.navigation.navigate({
+	// 		key: 'SelectedUsers',
+	// 		routeName: 'SelectedUsers',
+	// 		params: { nextAction: () => this.props.navigation.navigate('CreateChannel') }
+	// 	});
+	// }
 
 	renderLeft() {
 		if (this.state.searching) {
@@ -178,7 +165,8 @@ export default class RoomsListHeaderView extends React.Component {
 		const accessibilityLabel = `${ user.username }, ${ this.getUserStatusLabel() }, ${ I18n.t('tap_to_change_status') }`;
 		return (
 			<TouchableOpacity
-				style={styles.titleContainer}
+				// style={styles.titleContainer}
+				style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
 				onPress={() => this.showModal()}
 				accessibilityLabel={accessibilityLabel}
 				accessibilityTraits='header'
@@ -282,14 +270,17 @@ export default class RoomsListHeaderView extends React.Component {
 		);
 	}
 
+	// render() {
+	// 	return this.renderCenter();
+	// }
 	render() {
 		return (
 			<View style={styles.header} testID='rooms-list-view-header'>
-				{this.renderLeft()}
+				{/* {this.renderLeft()} */}
 				{this.renderCenter()}
-				{this.renderRight()}
-				{this.renderSearch()}
-				<Modal
+				{/* {this.renderRight()} */}
+				{/* {this.renderSearch()} */}
+				{/* <Modal
 					isVisible={this.state.isModalVisible}
 					supportedOrientations={['portrait', 'landscape']}
 					style={{ alignItems: 'center' }}
@@ -303,8 +294,25 @@ export default class RoomsListHeaderView extends React.Component {
 						{this.renderModalButton('away')}
 						{this.renderModalButton('offline', 'invisible')}
 					</View>
-				</Modal>
+				</Modal> */}
 			</View>
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	user: state.login.user,
+	connected: state.meteor.connected,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+
+	connecting: state.meteor.connecting,
+	authenticating: state.login.isFetching,
+	offline: !state.meteor.connected,
+	logged: !!state.login.token
+});
+
+const mapDispatchToProps = dispatch => ({
+	setSearch: searchText => dispatch(setSearch(searchText))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(RoomsListHeaderView);

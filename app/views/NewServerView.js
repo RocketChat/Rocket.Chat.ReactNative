@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, ScrollView, View, SafeAreaView, Keyboard } from 'react-native';
+import { Text, ScrollView, View, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 
 import { serverRequest, addServer } from '../actions/server';
@@ -13,32 +13,21 @@ import Loading from '../containers/Loading';
 import LoggedView from './View';
 import I18n from '../i18n';
 
-// @connect(state => ({
-// 	validInstance: !state.server.failure && !state.server.connecting,
-// 	validating: state.server.connecting,
-// 	addingServer: state.server.adding
-// }), dispatch => ({
-// 	validateServer: url => dispatch(serverRequest(url)),
-// 	addServer: url => dispatch(addServer(url))
-// }))
 class NewServerView extends LoggedView {
 	static propTypes = {
 		validateServer: PropTypes.func.isRequired,
 		addServer: PropTypes.func.isRequired,
 		validating: PropTypes.bool.isRequired,
 		validInstance: PropTypes.bool.isRequired,
-		addingServer: PropTypes.bool.isRequired,
-		// navigation: PropTypes.object.isRequired
+		addingServer: PropTypes.bool.isRequired
 	}
 
 	static get options() {
 		return {
 			topBar: {
-				title: {
-					text: 'New Server'
-				}
+				visible: true
 			}
-		}
+		};
 	}
 
 	constructor(props) {
@@ -61,7 +50,7 @@ class NewServerView extends LoggedView {
 	submit = () => {
 		if (this.props.validInstance) {
 			Keyboard.dismiss();
-			this.props.addServer(this.completeUrl(this.state.text));
+			this.props.addServer(this.completeUrl(this.state.text), this.props.componentId);
 		}
 	}
 
@@ -119,43 +108,35 @@ class NewServerView extends LoggedView {
 				keyboardVerticalOffset={128}
 			>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
-					{/* <SafeAreaView testID='new-server-view'> */}
-					<Text style={[styles.loginText, styles.loginTitle]}>{I18n.t('Sign_in_your_server')}</Text>
-					<TextInput
-						inputRef={e => this.input = e}
-						containerStyle={{ marginBottom: 5 }}
-						label={I18n.t('Your_server')}
-						placeholder={this.state.defaultServer}
-						returnKeyType='done'
-						onChangeText={this.onChangeText}
-						testID='new-server-view-input'
-						onSubmitEditing={this.submit}
-					/>
-					{this.renderValidation()}
-					<View style={[styles.alignItemsFlexStart, { marginTop: 20 }]}>
-						<Button
-							title={I18n.t('Connect')}
-							type='primary'
-							onPress={this.submit}
-							disabled={!validInstance}
-							testID='new-server-view-button'
+					<View testID='new-server-view'>
+						<Text style={[styles.loginText, styles.loginTitle]}>{I18n.t('Sign_in_your_server')}</Text>
+						<TextInput
+							inputRef={e => this.input = e}
+							containerStyle={{ marginBottom: 5 }}
+							label={I18n.t('Your_server')}
+							placeholder={this.state.defaultServer}
+							returnKeyType='done'
+							onChangeText={this.onChangeText}
+							testID='new-server-view-input'
+							onSubmitEditing={this.submit}
 						/>
+						{this.renderValidation()}
+						<View style={[styles.alignItemsFlexStart, { marginTop: 20 }]}>
+							<Button
+								title={I18n.t('Connect')}
+								type='primary'
+								onPress={this.submit}
+								disabled={!validInstance}
+								testID='new-server-view-button'
+							/>
+						</View>
+						<Loading visible={this.props.addingServer} />
 					</View>
-					<Loading visible={this.props.addingServer} />
-					{/* </SafeAreaView> */}
 				</ScrollView>
 			</KeyboardView>
 		);
 	}
 }
-// @connect(state => ({
-// 	validInstance: !state.server.failure && !state.server.connecting,
-// 	validating: state.server.connecting,
-// 	addingServer: state.server.adding
-// }), dispatch => ({
-// 	validateServer: url => dispatch(serverRequest(url)),
-// 	addServer: url => dispatch(addServer(url))
-// }))
 
 const mapStateToProps = state => ({
 	validInstance: !state.server.failure && !state.server.connecting,
@@ -165,7 +146,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	validateServer: url => dispatch(serverRequest(url)),
-	addServer: url => dispatch(addServer(url))
+	addServer: (url, componentId) => dispatch(addServer(url, componentId))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps, null, {"withRef" : true})(NewServerView);
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(NewServerView);

@@ -1,5 +1,6 @@
 import { AsyncStorage } from 'react-native';
 import { put, call, take, takeLatest, select, all } from 'redux-saga/effects';
+import { Navigation } from 'react-native-navigation';
 
 import * as types from '../actions/actionsTypes';
 import {
@@ -21,6 +22,7 @@ import RocketChat from '../lib/rocketchat';
 import * as NavigationService from '../containers/routes/NavigationService';
 import log from '../utils/log';
 import I18n from '../i18n';
+import { startLogged, startNotLogged } from '../../app';
 
 const getUser = state => state.login;
 const getServer = state => state.server.server;
@@ -34,34 +36,7 @@ const loginSuccessCall = () => RocketChat.loginSuccess();
 const logoutCall = args => RocketChat.logout(args);
 const forgotPasswordCall = args => RocketChat.forgotPassword(args);
 
-// const getToken = function* getToken() {
-// 	const currentServer = yield select(getServer);
-// 	const user = yield call([AsyncStorage, 'getItem'], `${ RocketChat.TOKEN_KEY }-${ currentServer }`);
-// 	if (user) {
-// 		try {
-// 			yield put(setToken(JSON.parse(user)));
-// 			yield call([AsyncStorage, 'setItem'], RocketChat.TOKEN_KEY, JSON.parse(user).token || '');
-// 			return JSON.parse(user);
-// 		} catch (e) {
-// 			console.log('getTokenerr', e);
-// 		}
-// 	} else {
-// 		return yield put(setToken());
-// 	}
-// };
-
-// const handleLoginWhenServerChanges = function* handleLoginWhenServerChanges() {
-// 	try {
-// 		const user = yield call(getToken);
-// 		if (user.token) {
-// 			yield put(loginRequest({ resume: user.token }));
-// 		}
-// 	} catch (e) {
-// 		console.log(e);
-// 	}
-// };
-
-const saveToken = function* saveToken() {
+const handleLoginSuccess = function* handleLoginSuccess() {
 	try {
 		const [server, user] = yield all([select(getServer), select(getUser)]);
 		yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
@@ -73,27 +48,30 @@ const saveToken = function* saveToken() {
 		if (!user.user.username && !user.isRegistering) {
 			yield put(registerIncomplete());
 		}
+		Navigation.setRoot({
+			root: {
+				sideMenu: {
+					left: {
+						component: {
+							name: 'Sidebar'
+						}
+					},
+					center: {
+						stack: {
+							children: [{
+								component: {
+									name: 'RoomsListView'
+								}
+							}]
+						}
+					}
+				}
+			}
+		});
 	} catch (e) {
-		log('saveToken', e);
+		log('handleLoginSuccess', e);
 	}
 };
-
-// const handleLoginRequest = function* handleLoginRequest({ credentials }) {
-// 	try {
-// 		// const server = yield select(getServer);
-// 		const user = yield call(loginCall, credentials);
-// 		yield put(loginSuccess(user));
-// 	} catch (err) {
-// 		if (err.error === 403) {
-// 			return yield put(logout());
-// 		}
-// 		yield put(loginFailure(err));
-// 	}
-// };
-
-// const handleLoginSubmit = function* handleLoginSubmit({ credentials }) {
-// 	yield put(loginRequest(credentials));
-// };
 
 const handleRegisterSubmit = function* handleRegisterSubmit({ credentials }) {
 	yield put(registerRequest(credentials));
@@ -137,6 +115,17 @@ const handleLogout = function* handleLogout() {
 	const server = yield select(getServer);
 	if (server) {
 		try {
+			yield Navigation.setRoot({
+				root: {
+					stack: {
+						children: [{
+							component: {
+								name: 'ListServerView'
+							}
+						}]
+					}
+				}
+			});
 			yield call(logoutCall, { server });
 		} catch (e) {
 			log('handleLogout', e);
@@ -183,7 +172,7 @@ const handleSetUser = function* handleSetUser(params) {
 const root = function* root() {
 	// yield takeLatest(types.METEOR.SUCCESS, handleLoginWhenServerChanges);
 	// yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
-	yield takeLatest(types.LOGIN.SUCCESS, saveToken);
+	yield takeLatest(types.LOGIN.SUCCESS, handleLoginSuccess);
 	// yield takeLatest(types.LOGIN.SUBMIT, handleLoginSubmit);
 	yield takeLatest(types.LOGIN.REGISTER_REQUEST, handleRegisterRequest);
 	yield takeLatest(types.LOGIN.REGISTER_SUBMIT, handleRegisterSubmit);

@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { View, StyleSheet, TextInput, Text, TouchableOpacity, SafeAreaView, FlatList, LayoutAnimation, Platform } from 'react-native';
 import { connect } from 'react-redux';
-import { addUser, removeUser, reset } from '../actions/selectedUsers';
+import { Navigation } from 'react-native-navigation';
+
+import { addUser, removeUser, reset, setLoading } from '../actions/selectedUsers';
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import RoomItem from '../presentation/RoomItem';
@@ -13,6 +15,7 @@ import Loading from '../containers/Loading';
 import debounce from '../utils/debounce';
 import LoggedView from './View';
 import I18n from '../i18n';
+import log from '../utils/log';
 
 const styles = StyleSheet.create({
 	container: {
@@ -62,22 +65,9 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(
-	state => ({
-		user: state.login.user,
-		Site_Url: state.settings.Site_Url,
-		users: state.selectedUsers.users,
-		loading: state.selectedUsers.loading
-	}),
-	dispatch => ({
-		addUser: user => dispatch(addUser(user)),
-		removeUser: user => dispatch(removeUser(user)),
-		reset: () => dispatch(reset())
-	})
-)
-export default class SelectedUsersView extends LoggedView {
+class SelectedUsersView extends LoggedView {
 	static propTypes = {
-		navigation: PropTypes.object.isRequired,
+		// navigation: PropTypes.object.isRequired,
 		user: PropTypes.object,
 		Site_Url: PropTypes.string,
 		addUser: PropTypes.func.isRequired,
@@ -87,35 +77,16 @@ export default class SelectedUsersView extends LoggedView {
 		loading: PropTypes.bool
 	};
 
-	static navigationOptions = ({ navigation }) => {
-		const params = navigation.state.params || {};
-
+	static get options() {
 		return {
-			headerRight: (
-				params.showCreateiOS && Platform.OS === 'ios' ?
-					<TouchableOpacity
-						style={{
-							backgroundColor: 'transparent',
-							height: 44,
-							width: 44,
-							alignItems: 'center',
-							justifyContent: 'center'
-						}}
-						onPress={() => params.nextAction()}
-						accessibilityLabel={I18n.t('Submit')}
-						accessibilityTraits='button'
-						testID='selected-users-view-submit'
-					>
-						<Icon
-							name='ios-add'
-							color='#292E35'
-							size={24}
-							backgroundColor='transparent'
-						/>
-					</TouchableOpacity> : null
-			)
+			topBar: {
+				title: {
+					text: 'Select Users'
+				},
+				rightButtons: []
+			}
 		};
-	};
+	}
 
 	constructor(props) {
 		super('SelectedUsersView', props);
@@ -128,8 +99,14 @@ export default class SelectedUsersView extends LoggedView {
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.users.length !== this.props.users.length) {
-			this.props.navigation.setParams({
-				showCreateiOS: nextProps.users.length > 0
+			Navigation.mergeOptions(this.props.componentId, {
+				topBar: {
+					rightButtons: [{
+						id: 'SelectedUsers.createChannel',
+						title: this.props.nextAction === 'CREATE_CHANNEL' ? 'Create' : 'Add',
+						icon: require('../static/images/navicon_add.png') // eslint-disable-line
+					}]
+				}
 			});
 		}
 	}
@@ -138,6 +115,28 @@ export default class SelectedUsersView extends LoggedView {
 		this.updateState.stop();
 		this.data.removeAllListeners();
 		this.props.reset();
+	}
+
+	onNavigationButtonPressed = async() => {
+		const { nextAction, componentId } = this.props;
+		if (nextAction === 'CREATE_CHANNEL') {
+			Navigation.push(componentId, {
+				component: {
+					name: 'CreateChannelView'
+				}
+			});
+		} else if (nextAction === 'ADD_USER') {
+			try {
+				this.props.setLoadingInvite(true);
+				await RocketChat.addUsersToRoom(this.props.rid);
+				Navigation.pop(this.props.componentId);
+				// this.props.navigation.goBack();
+			} catch (e) {
+				log('RoomActions Add User', e);
+			} finally {
+				this.props.setLoadingInvite(false);
+			}
+		}
 	}
 
 	onSearchChangeText(text) {
@@ -308,9 +307,25 @@ export default class SelectedUsersView extends LoggedView {
 		<View style={styles.container} testID='select-users-view'>
 			<SafeAreaView style={styles.safeAreaView}>
 				{this.renderList()}
-				{this.renderCreateButton()}
+				{/* {this.renderCreateButton()} */}
 				<Loading visible={this.props.loading} />
 			</SafeAreaView>
 		</View>
 	);
 }
+
+const mapStateToProps = state => ({
+	user: state.login.user,
+	Site_Url: state.settings.Site_Url,
+	users: state.selectedUsers.users,
+	loading: state.selectedUsers.loading
+});
+
+const mapDispatchToProps = dispatch => ({
+	addUser: user => dispatch(addUser(user)),
+	removeUser: user => dispatch(removeUser(user)),
+	reset: () => dispatch(reset()),
+	setLoadingInvite: loading => dispatch(setLoading(loading))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(SelectedUsersView);

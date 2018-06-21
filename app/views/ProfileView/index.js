@@ -7,6 +7,7 @@ import SHA256 from 'js-sha256';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import RNPickerSelect from 'react-native-picker-select';
+import { Navigation } from 'react-native-navigation';
 
 import LoggedView from '../View';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -22,17 +23,29 @@ import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
+import { NavigationControllerManager } from '../../NavigationController';
 
-@connect(state => ({
-	user: state.login.user,
-	Accounts_CustomFields: state.settings.Accounts_CustomFields
-}))
-export default class ProfileView extends LoggedView {
+class ProfileView extends LoggedView {
 	static propTypes = {
 		navigation: PropTypes.object,
 		user: PropTypes.object,
 		Accounts_CustomFields: PropTypes.string
-	};
+	}
+
+	static get options() {
+		return {
+			topBar: {
+				leftButtons: [{
+					id: 'Sidemenu',
+					title: 'Menu',
+					icon: require('../../static/images/navicon_menu.png') // eslint-disable-line
+				}],
+				title: {
+					text: 'Profile'
+				}
+			}
+		};
+	}
 
 	constructor(props) {
 		super('ProfileView', props);
@@ -53,6 +66,7 @@ export default class ProfileView extends LoggedView {
 
 	async componentDidMount() {
 		this.init();
+		NavigationControllerManager.getSharedInstance().setActiveRootComponentId(this.props.componentId, 'ProfileView');
 
 		try {
 			const result = await RocketChat.getAvatarSuggestion();
@@ -66,6 +80,16 @@ export default class ProfileView extends LoggedView {
 		if (this.props.user !== nextProps.user) {
 			this.init(nextProps.user);
 		}
+	}
+
+	onNavigationButtonPressed = () => {
+		Navigation.mergeOptions(this.props.componentId, {
+			sideMenu: {
+				left: {
+					visible: true
+				}
+			}
+		});
 	}
 
 	init = (user) => {
@@ -435,3 +459,10 @@ export default class ProfileView extends LoggedView {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	user: state.login.user,
+	Accounts_CustomFields: state.settings.Accounts_CustomFields
+});
+
+export default connect(mapStateToProps, null, null, { withRef: true })(ProfileView);

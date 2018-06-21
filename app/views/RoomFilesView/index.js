@@ -10,27 +10,25 @@ import Message from '../../containers/message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 
-@connect(
-	state => ({
-		messages: state.roomFiles.messages,
-		ready: state.roomFiles.ready,
-		user: state.login.user
-		// baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-	}),
-	dispatch => ({
-		openRoomFiles: (rid, limit) => dispatch(openRoomFiles(rid, limit)),
-		closeRoomFiles: () => dispatch(closeRoomFiles())
-	})
-)
-export default class RoomFilesView extends LoggedView {
+class RoomFilesView extends LoggedView {
 	static propTypes = {
-		navigation: PropTypes.object,
+		// navigation: PropTypes.object,
 		messages: PropTypes.array,
 		ready: PropTypes.bool,
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
 		openRoomFiles: PropTypes.func,
 		closeRoomFiles: PropTypes.func
+	}
+
+	static get options() {
+		return {
+			topBar: {
+				title: {
+					text: 'Room files'
+				}
+			}
+		};
 	}
 
 	constructor(props) {
@@ -57,7 +55,7 @@ export default class RoomFilesView extends LoggedView {
 	}
 
 	load = () => {
-		this.props.openRoomFiles(this.props.navigation.state.params.rid, this.limit);
+		this.props.openRoomFiles(this.props.rid, this.limit);
 	}
 
 	moreData = () => {
@@ -114,3 +112,16 @@ export default class RoomFilesView extends LoggedView {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	messages: state.roomFiles.messages,
+	ready: state.roomFiles.ready,
+	user: state.login.user
+});
+
+const mapDispatchToProps = dispatch => ({
+	openRoomFiles: (rid, limit) => dispatch(openRoomFiles(rid, limit)),
+	closeRoomFiles: () => dispatch(closeRoomFiles())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(RoomFilesView);

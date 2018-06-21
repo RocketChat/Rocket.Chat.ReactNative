@@ -1,8 +1,8 @@
 package chat.rocket.reactnative;
 
- import android.app.Application;
+import android.app.Application;
 
- import com.facebook.react.ReactApplication;
+import com.facebook.react.ReactApplication;
 import com.horcrux.svg.SvgPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -26,6 +26,9 @@ import com.reactnativenavigation.NavigationApplication;
 import java.util.Arrays;
 import java.util.List;
 // import org.devio.rn.splashscreen.SplashScreenReactPackage;
+
+import io.fabric.sdk.android.Fabric;
+import com.crashlytics.android.Crashlytics;
 
 public class MainApplication extends NavigationApplication {
 
@@ -100,9 +103,9 @@ public class MainApplication extends NavigationApplication {
   //     return mReactNativeHost;
   // }
 
-	// @Override
- 	// public void onCreate() {
-  //  	super.onCreate();
-  //  	SoLoader.init(this, /* native exopackage */ false);
- 	// }
+	@Override
+ 	public void onCreate() {
+   	super.onCreate();
+   	Fabric.with(this, new Crashlytics());
+ 	}
 }

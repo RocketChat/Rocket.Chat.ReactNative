@@ -4,6 +4,7 @@ export default StyleSheet.create({
 	header: {
 		flexDirection: 'row',
 		alignItems: 'center',
+		justifyContent: 'center',
 		flex: 1
 	},
 	titleContainer: {

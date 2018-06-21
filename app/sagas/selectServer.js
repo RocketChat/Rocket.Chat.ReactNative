@@ -1,6 +1,7 @@
 import { put, call, takeLatest, take } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { AsyncStorage } from 'react-native';
+import { Navigation } from 'react-native-navigation';
 
 import { SERVER, LOGIN } from '../actions/actionsTypes';
 import * as actions from '../actions';
@@ -9,7 +10,7 @@ import { serverSuccess, serverFailure, setServer } from '../actions/server';
 import { setRoles } from '../actions/roles';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
-import { navigate } from '../containers/routes/NavigationService';
+// import { navigate } from '../containers/routes/NavigationService';
 import log from '../utils/log';
 
 const validate = function* validate(server) {
@@ -51,14 +52,18 @@ const validateServer = function* validateServer({ server }) {
 	}
 };
 
-const addServer = function* addServer({ server }) {
+const addServer = function* addServer({ server, componentId }) {
 	try {
 		database.databases.serversDB.write(() => {
 			database.databases.serversDB.create('servers', { id: server, current: false }, true);
 		});
 		yield put(setServer(server));
-		yield take(LOGIN.SET_TOKEN);
-		navigate('LoginSignup');
+		yield take(LOGIN.SET_TOKEN); // TODO: really need this?
+		Navigation.push(componentId, {
+			component: {
+				name: 'LoginSignupView'
+			}
+		});
 	} catch (e) {
 		log('addServer', e);
 	}

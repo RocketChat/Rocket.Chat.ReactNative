@@ -4,6 +4,7 @@ import { Text, View, Button, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
 // import { bindActionCreators } from 'redux';
 import equal from 'deep-equal';
+import { Navigation } from 'react-native-navigation';
 
 import LoggedView from '../View';
 import { List } from './ListView';
@@ -16,36 +17,16 @@ import Message from '../../containers/message';
 import MessageActions from '../../containers/MessageActions';
 import MessageErrorActions from '../../containers/MessageErrorActions';
 import MessageBox from '../../containers/MessageBox';
-import Header from '../../containers/Header';
-import RoomsHeader from './Header';
+// import Header from '../../containers/Header';
+// import RoomHeader from './Header';
 import ReactionPicker from './ReactionPicker';
 import styles from './styles';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import debounce from '../../utils/debounce';
 
-@connect(
-	state => ({
-		// Site_Url: state.settings.Site_Url || state.server ? state.server.server : '',
-		// Message_TimeFormat: state.settings.Message_TimeFormat,
-		loading: state.messages.isFetching,
-		user: state.login.user,
-		actionMessage: state.messages.actionMessage,
-		showActions: state.messages.showActions,
-		showErrorActions: state.messages.showErrorActions
-	}),
-	dispatch => ({
-		// actions: bindActionCreators(actions, dispatch),
-		openRoom: room => dispatch(openRoom(room)),
-		// editCancel: () => dispatch(editCancel()),
-		setLastOpen: date => dispatch(setLastOpen(date)),
-		toggleReactionPicker: message => dispatch(toggleReactionPicker(message)),
-		actionsShow: actionMessage => dispatch(actionsShow(actionMessage))
-	})
-)
-export default class RoomView extends LoggedView {
+class RoomView extends LoggedView {
 	static propTypes = {
-		navigation: PropTypes.object.isRequired,
 		openRoom: PropTypes.func.isRequired,
 		setLastOpen: PropTypes.func.isRequired,
 		user: PropTypes.object.isRequired,
@@ -60,15 +41,25 @@ export default class RoomView extends LoggedView {
 		actionsShow: PropTypes.func
 	};
 
-	static navigationOptions = ({ navigation }) => ({
-		header: <Header subview={<RoomsHeader navigation={navigation} />} />
-	});
+	static get options() {
+		return {
+			topBar: {
+				rightButtons: [{
+					id: 'RoomView.more',
+					title: 'More',
+					icon: require('../../static/images/navicon_add.png') // eslint-disable-line
+				}, {
+					id: 'RoomView.star',
+					title: 'Star',
+					icon: require('../../static/images/navicon_add.png') // eslint-disable-line
+				}]
+			}
+		};
+	}
 
 	constructor(props) {
 		super('RoomView', props);
-		this.rid =
-			props.rid ||
-			props.navigation.state.params.room.rid;
+		this.rid = props.rid;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			loaded: true,
@@ -89,6 +80,27 @@ export default class RoomView extends LoggedView {
 	componentWillUnmount() {
 		this.rooms.removeAllListeners();
 		this.onEndReached.stop();
+	}
+
+	onNavigationButtonPressed = (id) => {
+		if (id === 'RoomView.more') {
+			Navigation.push(this.props.componentId, {
+				component: {
+					name: 'RoomActionsView',
+					passProps: {
+						rid: this.state.room.rid
+					}
+				}
+			});
+		} else if (id === 'RoomView.star') {
+			try {
+				RocketChat.toggleFavorite(this.state.room.rid, this.state.room.f);
+			} catch (e) {
+				log('toggleFavorite', e);
+			}
+		} else {
+			alert(id);
+		}
 	}
 
 	onEndReached = debounce((lastRowData, length) => {
@@ -128,6 +140,19 @@ export default class RoomView extends LoggedView {
 			const { room: prevRoom } = this.state;
 			await this.setState({ room: JSON.parse(JSON.stringify(this.rooms[0])) });
 			if (!prevRoom.rid) {
+				Navigation.mergeOptions(this.props.componentId, {
+					topBar: {
+						title: {
+							component: {
+								name: 'RoomHeaderView',
+								passProps: {
+									room: this.state.room,
+									roomComponentId: this.props.componentId
+								}
+							}
+						}
+					}
+				});
 				await this.props.openRoom({
 					...this.state.room
 				});
@@ -191,14 +216,14 @@ export default class RoomView extends LoggedView {
 	);
 
 	renderFooter = () => {
-		if (!this.state.joined) {
-			return (
-				<View>
-					<Text>{I18n.t('You_are_in_preview_mode')}</Text>
-					<Button title='Join' onPress={this.joinRoom} />
-				</View>
-			);
-		}
+		// if (!this.state.joined) {
+		// 	return (
+		// 		<View>
+		// 			<Text>{I18n.t('You_are_in_preview_mode')}</Text>
+		// 			<Button title='Join' onPress={this.joinRoom} />
+		// 		</View>
+		// 	);
+		// }
 		if (this.state.room.archived || this.isReadOnly()) {
 			return (
 				<View style={styles.readOnly}>
@@ -241,3 +266,20 @@ export default class RoomView extends LoggedView {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	loading: state.messages.isFetching,
+	user: state.login.user,
+	actionMessage: state.messages.actionMessage,
+	showActions: state.messages.showActions,
+	showErrorActions: state.messages.showErrorActions
+});
+
+const mapDispatchToProps = dispatch => ({
+	openRoom: room => dispatch(openRoom(room)),
+	setLastOpen: date => dispatch(setLastOpen(date)),
+	toggleReactionPicker: message => dispatch(toggleReactionPicker(message)),
+	actionsShow: actionMessage => dispatch(actionsShow(actionMessage))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(RoomView);

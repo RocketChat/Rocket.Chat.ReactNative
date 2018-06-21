@@ -13,10 +13,11 @@ export function serverRequest(server) {
 	};
 }
 
-export function addServer(server) {
+export function addServer(server, componentId) {
 	return {
 		type: SERVER.ADD,
-		server
+		server,
+		componentId
 	};
 }
 

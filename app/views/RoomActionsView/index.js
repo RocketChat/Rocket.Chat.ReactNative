@@ -4,6 +4,7 @@ import { View, SectionList, Text, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import LoggedView from '../View';
 import styles from './styles';
@@ -14,7 +15,6 @@ import Touch from '../../utils/touch';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import { leaveRoom } from '../../actions/room';
-import { setLoading } from '../../actions/selectedUsers';
 import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
@@ -22,25 +22,27 @@ import I18n from '../../i18n';
 const renderSeparator = () => <View style={styles.separator} />;
 const getRoomTitle = room => (room.t === 'd' ? <Text>{room.fname}</Text> : <Text><RoomTypeIcon type={room.t} />&nbsp;{room.name}</Text>);
 
-@connect(state => ({
-	user_id: state.login.user.id,
-	user_username: state.login.user.username
-}), dispatch => ({
-	leaveRoom: rid => dispatch(leaveRoom(rid)),
-	setLoadingInvite: loading => dispatch(setLoading(loading))
-}))
-
-export default class RoomActionsView extends LoggedView {
+class RoomActionsView extends LoggedView {
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		user: PropTypes.object,
-		navigation: PropTypes.object,
+		// navigation: PropTypes.object,
 		leaveRoom: PropTypes.func
+	}
+
+	static get options() {
+		return {
+			topBar: {
+				title: {
+					text: 'Room Actions'
+				}
+			}
+		};
 	}
 
 	constructor(props) {
 		super('RoomActionsView', props);
-		const { rid } = props.navigation.state.params;
+		const { rid } = props;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		[this.room] = this.rooms;
 		this.state = {
@@ -63,7 +65,13 @@ export default class RoomActionsView extends LoggedView {
 
 	onPressTouchable = (item) => {
 		if (item.route) {
-			return this.props.navigation.navigate({ key: item.route, routeName: item.route, params: item.params });
+			// return this.props.navigation.navigate({ key: item.route, routeName: item.route, params: item.params });
+			Navigation.push(this.props.componentId, {
+				component: {
+					name: item.route,
+					passProps: item.params
+				}
+			});
 		}
 		if (item.event) {
 			return item.event();
@@ -150,7 +158,7 @@ export default class RoomActionsView extends LoggedView {
 			data: [{
 				icon: 'ios-star',
 				name: 'USER',
-				route: 'RoomInfo',
+				route: 'RoomInfoView',
 				params: { rid },
 				testID: 'room-actions-info'
 			}],
@@ -176,28 +184,28 @@ export default class RoomActionsView extends LoggedView {
 				{
 					icon: 'ios-attach',
 					name: I18n.t('Files'),
-					route: 'RoomFiles',
+					route: 'RoomFilesView',
 					params: { rid },
 					testID: 'room-actions-files'
 				},
 				{
 					icon: 'ios-at-outline',
 					name: I18n.t('Mentions'),
-					route: 'MentionedMessages',
+					route: 'MentionedMessagesView',
 					params: { rid },
 					testID: 'room-actions-mentioned'
 				},
 				{
 					icon: 'ios-star-outline',
 					name: I18n.t('Starred'),
-					route: 'StarredMessages',
+					route: 'StarredMessagesView',
 					params: { rid },
 					testID: 'room-actions-starred'
 				},
 				{
 					icon: 'ios-search',
 					name: I18n.t('Search'),
-					route: 'SearchMessages',
+					route: 'SearchMessagesView',
 					params: { rid },
 					testID: 'room-actions-search'
 				},
@@ -210,14 +218,14 @@ export default class RoomActionsView extends LoggedView {
 				{
 					icon: 'ios-pin',
 					name: I18n.t('Pinned'),
-					route: 'PinnedMessages',
+					route: 'PinnedMessagesView',
 					params: { rid },
 					testID: 'room-actions-pinned'
 				},
 				{
 					icon: 'ios-code',
 					name: I18n.t('Snippets'),
-					route: 'SnippetedMessages',
+					route: 'SnippetedMessagesView',
 					params: { rid },
 					testID: 'room-actions-snippeted'
 				},
@@ -254,7 +262,7 @@ export default class RoomActionsView extends LoggedView {
 					description: (onlineMembers.length === 1 ?
 						I18n.t('1_online_member') :
 						I18n.t('N_online_members', { n: onlineMembers.length })),
-					route: 'RoomMembers',
+					route: 'RoomMembersView',
 					params: { rid, members: onlineMembers },
 					testID: 'room-actions-members'
 				});
@@ -264,19 +272,21 @@ export default class RoomActionsView extends LoggedView {
 				actions.push({
 					icon: 'ios-person-add',
 					name: I18n.t('Add_user'),
-					route: 'SelectedUsers',
+					route: 'SelectedUsersView',
 					params: {
-						nextAction: async() => {
-							try {
-								this.props.setLoadingInvite(true);
-								await RocketChat.addUsersToRoom(rid);
-								this.props.navigation.goBack();
-							} catch (e) {
-								log('RoomActions Add User', e);
-							} finally {
-								this.props.setLoadingInvite(false);
-							}
-						}
+						nextAction: 'ADD_USER',
+						rid
+						// nextAction: async() => {
+						// 	try {
+						// 		this.props.setLoadingInvite(true);
+						// 		await RocketChat.addUsersToRoom(rid);
+						// 		// this.props.navigation.goBack();
+						// 	} catch (e) {
+						// 		log('RoomActions Add User', e);
+						// 	} finally {
+						// 		this.props.setLoadingInvite(false);
+						// 	}
+						// }
 					},
 					testID: 'room-actions-add-user'
 				});
@@ -413,3 +423,14 @@ export default class RoomActionsView extends LoggedView {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	user_id: state.login.user.id,
+	user_username: state.login.user.username
+});
+
+const mapDispatchToProps = dispatch => ({
+	leaveRoom: rid => dispatch(leaveRoom(rid))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(RoomActionsView);

@@ -91,9 +91,9 @@ class ListServerView extends LoggedView {
 				},
 				rightButtons: [
 					{
-						id: 'buttonOne',
-						title: 'Add'
-					//   icon: require('icon.png')
+						id: 'AddServer',
+						title: 'Add',
+						icon: require('../static/images/navicon_add.png') // eslint-disable-line
 					}
 				],
 			}
@@ -135,7 +135,7 @@ class ListServerView extends LoggedView {
 		// zeroconf.removeListener('update', this.updateState);
 	}
 
-	onNavigationButtonPressed(id) {
+	onNavigationButtonPressed() {
 		Navigation.push(this.props.componentId, {
 			component: {
 				name: 'NewServerView'
@@ -144,7 +144,12 @@ class ListServerView extends LoggedView {
 	}
 
 	openLogin = () => {
-		this.props.navigation.navigate({ key: 'LoginSignup', routeName: 'LoginSignup' });
+		// this.props.navigation.navigate({ key: 'LoginSignup', routeName: 'LoginSignup' });
+		Navigation.push(this.props.componentId, {
+			component: {
+				name: 'LoginSignupView'
+			}
+		});
 	}
 
 	selectAndNavigateTo = (server) => {
@@ -262,5 +267,8 @@ const mapStateToProps = state => ({
 	connected: state.meteor.connected
 });
 
-export default connect(mapStateToProps, null, null, {"withRef" : true})(ListServerView);
-// export default withNavigationFocus(ListServerView);
+const mapDispatchToProps = dispatch => ({
+	selectServer: server => dispatch(setServer(server))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(ListServerView);

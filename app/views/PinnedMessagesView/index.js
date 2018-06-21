@@ -16,22 +16,8 @@ const PIN_INDEX = 0;
 const CANCEL_INDEX = 1;
 const options = [I18n.t('Unpin'), I18n.t('Cancel')];
 
-@connect(
-	state => ({
-		messages: state.pinnedMessages.messages,
-		ready: state.pinnedMessages.ready,
-		user: state.login.user,
-		baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-	}),
-	dispatch => ({
-		openPinnedMessages: (rid, limit) => dispatch(openPinnedMessages(rid, limit)),
-		closePinnedMessages: () => dispatch(closePinnedMessages()),
-		togglePinRequest: message => dispatch(togglePinRequest(message))
-	})
-)
-export default class PinnedMessagesView extends LoggedView {
+class PinnedMessagesView extends LoggedView {
 	static propTypes = {
-		navigation: PropTypes.object,
 		messages: PropTypes.array,
 		ready: PropTypes.bool,
 		user: PropTypes.object,
@@ -39,6 +25,16 @@ export default class PinnedMessagesView extends LoggedView {
 		openPinnedMessages: PropTypes.func,
 		closePinnedMessages: PropTypes.func,
 		togglePinRequest: PropTypes.func
+	}
+
+	static get options() {
+		return {
+			topBar: {
+				title: {
+					text: 'Pinned Messages'
+				}
+			}
+		};
 	}
 
 	constructor(props) {
@@ -81,7 +77,7 @@ export default class PinnedMessagesView extends LoggedView {
 	}
 
 	load = () => {
-		this.props.openPinnedMessages(this.props.navigation.state.params.rid, this.limit);
+		this.props.openPinnedMessages(this.props.rid, this.limit);
 	}
 
 	moreData = () => {
@@ -148,3 +144,18 @@ export default class PinnedMessagesView extends LoggedView {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	messages: state.pinnedMessages.messages,
+	ready: state.pinnedMessages.ready,
+	user: state.login.user,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+});
+
+const mapDispatchToProps = dispatch => ({
+	openPinnedMessages: (rid, limit) => dispatch(openPinnedMessages(rid, limit)),
+	closePinnedMessages: () => dispatch(closePinnedMessages()),
+	togglePinRequest: message => dispatch(togglePinRequest(message))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(PinnedMessagesView);

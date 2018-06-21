@@ -8,15 +8,15 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		flex: 1
 	},
-	titleContainer: {
-		left: TITLE_OFFSET,
-		right: TITLE_OFFSET,
-		position: 'absolute',
-		alignItems: 'center',
-		justifyContent: 'flex-start',
-		flexDirection: 'row',
-		height: 44
-	},
+	// titleContainer: {
+	// 	left: TITLE_OFFSET,
+	// 	right: TITLE_OFFSET,
+	// 	position: 'absolute',
+	// 	alignItems: 'center',
+	// 	justifyContent: 'flex-start',
+	// 	flexDirection: 'row',
+	// 	height: 44
+	// },
 	status: {
 		borderRadius: 10,
 		width: 10,

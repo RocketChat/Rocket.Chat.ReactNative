@@ -8,6 +8,16 @@ class PrivacyPolicyView extends React.PureComponent {
 		privacyPolicy: PropTypes.string
 	}
 
+	static get options() {
+		return {
+			topBar: {
+				title: {
+					text: 'Privacy Policy'
+				}
+			}
+		};
+	}
+
 	render() {
 		return (
 			<WebView source={{ html: this.props.privacyPolicy }} />
@@ -15,10 +25,8 @@ class PrivacyPolicyView extends React.PureComponent {
 	}
 }
 
-function mapStateToProps(state) {
-	return {
-		privacyPolicy: state.settings.Layout_Privacy_Policy
-	};
-}
+const mapStateToProps = state => ({
+	privacyPolicy: state.settings.Layout_Privacy_Policy
+});
 
-export default connect(mapStateToProps)(PrivacyPolicyView);
+export default connect(mapStateToProps, null, null, { withRef: true })(PrivacyPolicyView);

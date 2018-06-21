@@ -6,8 +6,8 @@ import applyAppStateListener from 'redux-enhancer-react-native-appstate';
 import reducers from '../reducers';
 import sagas from '../sagas';
 
-// const createStore = __DEV__ ? Reactotron.createStore : reduxCreateStore;
-const createStore = reduxCreateStore;
+const createStore = __DEV__ ? Reactotron.createStore : reduxCreateStore;
+// const createStore = reduxCreateStore;
 let sagaMiddleware;
 let enhancers;
 
