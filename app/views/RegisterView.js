@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Keyboard, Text, View, SafeAreaView, ScrollView } from 'react-native';
+import { Keyboard, Text, View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
@@ -11,13 +11,15 @@ import Loading from '../containers/Loading';
 import KeyboardView from '../presentation/KeyboardView';
 import styles from './Styles';
 import { showToast } from '../utils/info';
-import CloseModalButton from '../containers/CloseModalButton';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import LoggedView from './View';
 import I18n from '../i18n';
 
+/** @extends React.Component */
 class RegisterView extends LoggedView {
 	static propTypes = {
+		componentId: PropTypes.any,
+		server: PropTypes.string,
 		registerSubmit: PropTypes.func.isRequired,
 		setUsernameSubmit: PropTypes.func,
 		Accounts_UsernamePlaceholder: PropTypes.string,
@@ -26,19 +28,6 @@ class RegisterView extends LoggedView {
 		Accounts_PasswordPlaceholder: PropTypes.string,
 		Accounts_RepeatPasswordPlaceholder: PropTypes.string,
 		login: PropTypes.object
-	}
-
-	static get options() {
-		return {
-			topBar: {
-				visible: true,
-				transparent: true,
-				// leftButtons: [{
-				// 	id: 'close',
-				// 	title: 'Close'
-				// }]
-			}
-		};
 	}
 
 	constructor(props) {
@@ -50,9 +39,16 @@ class RegisterView extends LoggedView {
 			confirmPassword: '',
 			username: ''
 		};
+		Navigation.mergeOptions(this.props.componentId, {
+			topBar: {
+				title: {
+					text: props.server
+				}
+			}
+		});
 	}
 
-	onNavigationButtonPressed(id) {
+	onNavigationButtonPressed() {
 		Navigation.dismissModal(this.props.componentId);
 	}
 
@@ -95,7 +91,6 @@ class RegisterView extends LoggedView {
 	}
 
 	termsService = () => {
-		// this.props.navigation.navigate({ key: 'TermsService', routeName: 'TermsService' });
 		Navigation.push(this.props.componentId, {
 			component: {
 				name: 'TermsServiceView'
@@ -104,7 +99,6 @@ class RegisterView extends LoggedView {
 	}
 
 	privacyPolicy = () => {
-		// this.props.navigation.navigate({ key: 'PrivacyPolicy', routeName: 'PrivacyPolicy' });
 		Navigation.push(this.props.componentId, {
 			component: {
 				name: 'PrivacyPolicyView'
@@ -219,19 +213,18 @@ class RegisterView extends LoggedView {
 		return (
 			<KeyboardView contentContainerStyle={styles.container}>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
-					{/* <SafeAreaView testID='register-view'> */}
-					{/* <CloseModalButton navigation={this.props.navigation} /> */}
-					<Text style={[styles.loginText, styles.loginTitle]}>{I18n.t('Sign_Up')}</Text>
-					{this._renderRegister()}
-					{this._renderUsername()}
-					{this.props.login.failure ?
-						<Text style={styles.error} testID='register-view-error'>
-							{this.props.login.error.reason}
-						</Text>
-						: null
-					}
-					<Loading visible={this.props.login.isFetching} />
-					{/* </SafeAreaView> */}
+					<View testID='register-view'>
+						<Text style={[styles.loginText, styles.loginTitle]}>{I18n.t('Sign_Up')}</Text>
+						{this._renderRegister()}
+						{this._renderUsername()}
+						{this.props.login.failure ?
+							<Text style={styles.error} testID='register-view-error'>
+								{this.props.login.error.reason}
+							</Text>
+							: null
+						}
+						<Loading visible={this.props.login.isFetching} />
+					</View>
 				</ScrollView>
 			</KeyboardView>
 		);

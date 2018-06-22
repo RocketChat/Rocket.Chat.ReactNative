@@ -19,12 +19,15 @@ import log from '../../utils/log';
 import { setUser } from '../../actions/login';
 import { NavigationControllerManager } from '../../NavigationController';
 
+/** @extends React.Component */
 class SettingsView extends LoggedView {
 	static propTypes = {
+		componentId: PropTypes.any,
 		user: PropTypes.object,
 		setUser: PropTypes.func
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	static get options() {
 		return {
 			topBar: {
@@ -95,7 +98,13 @@ class SettingsView extends LoggedView {
 		try {
 			await RocketChat.saveUserPreferences(params);
 			this.props.setUser({ language: params.language });
-			this.props.navigation.setParams({ title: I18n.t('Settings') });
+			Navigation.mergeOptions(this.props.componentId, {
+				topBar: {
+					title: {
+						text: I18n.t('Settings')
+					}
+				}
+			});
 
 			this.setState({ saving: false });
 			setTimeout(() => {

@@ -16,8 +16,10 @@ const PIN_INDEX = 0;
 const CANCEL_INDEX = 1;
 const options = [I18n.t('Unpin'), I18n.t('Cancel')];
 
+/** @extends React.Component */
 class PinnedMessagesView extends LoggedView {
 	static propTypes = {
+		rid: PropTypes.string,
 		messages: PropTypes.array,
 		ready: PropTypes.bool,
 		user: PropTypes.object,
@@ -27,6 +29,7 @@ class PinnedMessagesView extends LoggedView {
 		togglePinRequest: PropTypes.func
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	static get options() {
 		return {
 			topBar: {

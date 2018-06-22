@@ -2,7 +2,7 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
-const { logout, navigateToLogin, login } = require('./helpers/app');
+const { logout, navigateToLogin, login, tapBack } = require('./helpers/app');
 const data = require('./data');
 
 describe('Broadcast room', () => {
@@ -28,9 +28,9 @@ describe('Broadcast room', () => {
 		await waitFor(element(by.id('room-info-view'))).toBeVisible().withTimeout(2000);
 		await waitFor(element(by.id('room-info-view-broadcast'))).toBeVisible().withTimeout(2000);
 		await expect(element(by.id('room-info-view-broadcast'))).toBeVisible();
-		await element(by.id('header-back')).atIndex(0).tap();
+		await tapBack();
 		await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(2000);
-		await element(by.id('header-back')).atIndex(0).tap();
+		await tapBack();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 		await waitFor(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toBeVisible().withTimeout(60000);
 		await expect(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toBeVisible();
@@ -47,7 +47,7 @@ describe('Broadcast room', () => {
 	});
 
 	it('should login as user without write message authorization and enter room', async() => {
-		await element(by.id('header-back')).tap();
+		await tapBack();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 		await expect(element(by.id('rooms-list-view'))).toBeVisible();
 		await logout();
@@ -102,7 +102,7 @@ describe('Broadcast room', () => {
 
 	after(async() => {
 		// log back as main test user and left screen on RoomsListView
-		await element(by.id('header-back')).tap();
+		await tapBack();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 		await logout();
 		await navigateToLogin();

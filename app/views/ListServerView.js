@@ -2,11 +2,9 @@ import React from 'react';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
-// import Zeroconf from 'react-native-zeroconf';
-import { View, Text, SectionList, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, SectionList, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
-// import { withNavigationFocus } from 'react-navigation';
 
 import LoggedView from './View';
 import { setServer } from '../actions/server';
@@ -64,25 +62,16 @@ const styles = StyleSheet.create({
 	}
 });
 
-// const zeroconf = new Zeroconf();
-
-
-// @connect(state => ({
-// 	server: state.server.server,
-// 	login: state.login,
-// 	connected: state.meteor.connected
-// }), dispatch => ({
-// 	selectServer: server => dispatch(setServer(server))
-// }))
+/** @extends React.Component */
 class ListServerView extends LoggedView {
 	static propTypes = {
-		// navigation: PropTypes.object.isRequired,
+		componentId: PropTypes.any,
 		login: PropTypes.object.isRequired,
 		selectServer: PropTypes.func.isRequired,
-		connected: PropTypes.bool.isRequired,
 		server: PropTypes.string
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	static get options() {
 		return {
 			topBar: {
@@ -95,7 +84,7 @@ class ListServerView extends LoggedView {
 						title: 'Add',
 						icon: require('../static/images/navicon_add.png') // eslint-disable-line
 					}
-				],
+				]
 			}
 		};
 	}
@@ -106,33 +95,16 @@ class ListServerView extends LoggedView {
 			sections: []
 		};
 		this.data = database.databases.serversDB.objects('servers');
-		// this.redirected = false;
 		this.data.addListener(this.updateState);
 	}
 
 	componentDidMount() {
-		// zeroconf.on('update', this.updateState);
-		// zeroconf.scan('http', 'tcp', 'local.');
 		this.updateState();
 		this.jumpToSelectedServer();
 	}
 
-	// componentDidUpdate() {
-	// 	if (this.props.connected &&
-	// 		this.props.server &&
-	// 		!this.props.login.token &&
-	// 		!this.redirected) {
-	// 		this.redirected = true;
-	// 		this.props.navigation.navigate({ key: 'LoginSignup', routeName: 'LoginSignup' });
-	// 	} else if (!this.props.connected) {
-	// 		this.redirected = false;
-	// 	}
-	// }
-
 	componentWillUnmount() {
-		// zeroconf.stop();
 		this.data.removeAllListeners();
-		// zeroconf.removeListener('update', this.updateState);
 	}
 
 	onNavigationButtonPressed() {
@@ -143,8 +115,23 @@ class ListServerView extends LoggedView {
 		});
 	}
 
+	onPressItem = (item) => {
+		this.selectAndNavigateTo(item.id);
+	}
+
+	getState = () => {
+		const sections = [{
+			title: I18n.t('My_servers'),
+			data: this.data
+		}];
+
+		return {
+			...this.state,
+			sections
+		};
+	};
+
 	openLogin = () => {
-		// this.props.navigation.navigate({ key: 'LoginSignup', routeName: 'LoginSignup' });
 		Navigation.push(this.props.componentId, {
 			component: {
 				name: 'LoginSignupView'
@@ -160,46 +147,10 @@ class ListServerView extends LoggedView {
 	jumpToSelectedServer() {
 		if (this.props.server && !this.props.login.isRegistering) {
 			setTimeout(() => {
-				if (this.props.isFocused) {
-					this.openLogin();
-				}
+				this.openLogin();
 			}, 500);
 		}
 	}
-
-	onPressItem = (item) => {
-		this.selectAndNavigateTo(item.id);
-	}
-
-	getState = () => {
-		const sections = [{
-			title: I18n.t('My_servers'),
-			data: this.data
-		}];
-		//
-		// this.state.nearBy = zeroconf.getServices();
-		// if (this.state.nearBy) {
-		// 	const nearBy = Object.keys(this.state.nearBy)
-		// 		.filter(key => this.state.nearBy[key].addresses);
-		// 	if (nearBy.length) {
-		// 		sections.push({
-		// 			title: 'Nearby',
-		// 			data: nearBy.map((key) => {
-		// 				const server = this.state.nearBy[key];
-		// 				const address = `http://${ server.addresses[0] }:${ server.port }`;
-		// 				return {
-		// 					id: address
-		// 				};
-		// 			})
-		// 		});
-		// 	}
-		// }
-
-		return {
-			...this.state,
-			sections
-		};
-	};
 
 	updateState = () => {
 		this.setState(this.getState());
@@ -241,26 +192,20 @@ class ListServerView extends LoggedView {
 
 	render() {
 		return (
-			// <SafeAreaView style={styles.view} testID='list-server-view'>
-			<SectionList
-				style={styles.list}
-				sections={this.state.sections}
-				renderItem={this.renderItem}
-				renderSectionHeader={this.renderSectionHeader}
-				keyExtractor={item => item.id}
-				ItemSeparatorComponent={this.renderSeparator}
-			/>
-			// </SafeAreaView>
+			<View style={styles.view} testID='list-server-view'>
+				<SectionList
+					style={styles.list}
+					sections={this.state.sections}
+					renderItem={this.renderItem}
+					renderSectionHeader={this.renderSectionHeader}
+					keyExtractor={item => item.id}
+					ItemSeparatorComponent={this.renderSeparator}
+				/>
+			</View>
 		);
 	}
 }
-// @connect(state => ({
-// 	server: state.server.server,
-// 	login: state.login,
-// 	connected: state.meteor.connected
-// }), dispatch => ({
-// 	selectServer: server => dispatch(setServer(server))
-// }))
+
 const mapStateToProps = state => ({
 	server: state.server.server,
 	login: state.login,

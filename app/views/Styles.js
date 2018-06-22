@@ -189,7 +189,7 @@ export default StyleSheet.create({
 	},
 	loginTitle: {
 		fontSize: 20,
-		marginVertical: 25
+		marginBottom: 20
 	},
 	loginLogo: {
 		width: 50,

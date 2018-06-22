@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Button, LayoutAnimation } from 'react-native';
+import { Text, View, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
 // import { bindActionCreators } from 'redux';
 import equal from 'deep-equal';
@@ -25,32 +25,34 @@ import log from '../../utils/log';
 import I18n from '../../i18n';
 import debounce from '../../utils/debounce';
 
+/** @extends React.Component */
 class RoomView extends LoggedView {
 	static propTypes = {
+		componentId: PropTypes.any,
 		openRoom: PropTypes.func.isRequired,
 		setLastOpen: PropTypes.func.isRequired,
 		user: PropTypes.object.isRequired,
-		// editCancel: PropTypes.func,
 		rid: PropTypes.string,
-		name: PropTypes.string,
-		// Site_Url: PropTypes.string,
-		// Message_TimeFormat: PropTypes.string,
-		loading: PropTypes.bool,
+		showActions: PropTypes.bool,
+		showErrorActions: PropTypes.bool,
 		actionMessage: PropTypes.object,
 		toggleReactionPicker: PropTypes.func.isRequired,
 		actionsShow: PropTypes.func
 	};
 
+	// eslint-disable-next-line react/sort-comp
 	static get options() {
 		return {
 			topBar: {
 				rightButtons: [{
 					id: 'RoomView.more',
-					title: 'More',
+					title: 'Actions',
+					testID: 'room-view-header-actions',
 					icon: require('../../static/images/navicon_add.png') // eslint-disable-line
 				}, {
 					id: 'RoomView.star',
 					title: 'Star',
+					testID: 'room-view-header-star',
 					icon: require('../../static/images/navicon_add.png') // eslint-disable-line
 				}]
 			}
@@ -268,7 +270,6 @@ class RoomView extends LoggedView {
 }
 
 const mapStateToProps = state => ({
-	loading: state.messages.isFetching,
 	user: state.login.user,
 	actionMessage: state.messages.actionMessage,
 	showActions: state.messages.showActions,

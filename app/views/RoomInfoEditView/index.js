@@ -34,11 +34,14 @@ const PERMISSIONS_ARRAY = [
 	PERMISSION_DELETE_P
 ];
 
+/** @extends React.Component */
 class RoomInfoEditView extends LoggedView {
 	static propTypes = {
+		rid: PropTypes.string,
 		eraseRoom: PropTypes.func
 	};
 
+	// eslint-disable-next-line react/sort-comp
 	static get options() {
 		return {
 			topBar: {

@@ -1,21 +1,17 @@
 import React from 'react';
-import { Text, View, Platform, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Text, View, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 // import { HeaderBackButton } from 'react-navigation';
 import { Navigation } from 'react-native-navigation';
 
-import RocketChat from '../../../lib/rocketchat';
 import realm from '../../../lib/realm';
 import Avatar from '../../../containers/Avatar';
 import { STATUS_COLORS } from '../../../constants/colors';
 import styles from './styles';
 import { closeRoom } from '../../../actions/room';
-import log from '../../../utils/log';
 import RoomTypeIcon from '../../../containers/RoomTypeIcon';
 import I18n from '../../../i18n';
-import sharedStyles from '../../Styles';
 
 const title = (offline, connecting, authenticating, logged) => {
 	if (offline) {
@@ -39,10 +35,16 @@ const title = (offline, connecting, authenticating, logged) => {
 
 class RoomHeaderView extends React.PureComponent {
 	static propTypes = {
+		roomComponentId: PropTypes.any,
+		room: PropTypes.object,
 		close: PropTypes.func.isRequired,
-		// navigation: PropTypes.object.isRequired,
 		user: PropTypes.object.isRequired,
-		activeUsers: PropTypes.object
+		activeUsers: PropTypes.object,
+		offline: PropTypes.bool,
+		connecting: PropTypes.bool,
+		authenticating: PropTypes.bool,
+		logged: PropTypes.bool,
+		loading: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -57,14 +59,6 @@ class RoomHeaderView extends React.PureComponent {
 		this.updateState();
 		this.room.addListener(this.updateState);
 	}
-
-	// componentWillReceiveProps(nextProps) {
-	// 	if (nextProps.navigation.state.params.room !== this.props.navigation.state.params.room) {
-	// 		this.room.removeAllListeners();
-	// 		this.room = realm.objects('subscriptions').filtered('rid = $0', nextProps.navigation.state.params.room.rid);
-	// 		this.room.addListener(this.updateState);
-	// 	}
-	// }
 
 	componentWillUnmount() {
 		this.room.removeAllListeners();
@@ -101,17 +95,7 @@ class RoomHeaderView extends React.PureComponent {
 		});
 	}
 
-	// renderLeft = () => (<HeaderBackButton
-	// 	onPress={() => {
-	// 		this.props.navigation.goBack(null);
-	// 		requestAnimationFrame(() => this.props.close());
-	// 	}}
-	// 	tintColor='#292E35'
-	// 	title={I18n.t('Back')}
-	// 	titleStyle={{ display: 'none' }}
-	// />);
-
-	renderCenter() {
+	render() {
 		if (!this.state.room.name) {
 			return <View style={styles.titleContainer} />;
 		}
@@ -135,85 +119,38 @@ class RoomHeaderView extends React.PureComponent {
 		}
 
 		return (
-			<TouchableOpacity
-				style={styles.titleContainer}
-				accessibilityLabel={accessibilityLabel}
-				accessibilityTraits='header'
-				onPress={() => this.goToRoomInfo()}
-				testID='room-view-header-title'
-			>
-
-				<Avatar
-					text={this.state.room.name}
-					size={24}
-					style={styles.avatar}
-					type={this.state.room.t}
-				>
-					{this.isDirect() ?
-						<View style={[styles.status, { backgroundColor: STATUS_COLORS[this.getUserStatus()] }]} />
-						: null
-					}
-				</Avatar>
-				<View style={styles.titleTextContainer}>
-					<View style={{ flexDirection: 'row' }}>
-						<RoomTypeIcon type={this.state.room.t} size={13} />
-						<Text style={styles.title} allowFontScaling={false} testID='room-view-title'>
-							{this.state.room.name}
-						</Text>
-					</View>
-
-					{ t ? <Text style={styles.userStatus} allowFontScaling={false} numberOfLines={1}>{t}</Text> : null}
-
-				</View>
-			</TouchableOpacity>
-		);
-	}
-
-	// renderRight = () => (
-	// 	<View style={styles.right}>
-	// 		<TouchableOpacity
-	// 			style={sharedStyles.headerButton}
-	// 			onPress={() => {
-	// 				try {
-	// 					RocketChat.toggleFavorite(this.state.room.rid, this.state.room.f);
-	// 				} catch (e) {
-	// 					log('toggleFavorite', e);
-	// 				}
-	// 			}}
-	// 			accessibilityLabel={I18n.t('Star_room')}
-	// 			accessibilityTraits='button'
-	// 			testID='room-view-header-star'
-	// 		>
-	// 			<Icon
-	// 				name={`${ Platform.OS === 'ios' ? 'ios' : 'md' }-star${ this.state.room.f ? '' : '-outline' }`}
-	// 				color='#f6c502'
-	// 				size={24}
-	// 				backgroundColor='transparent'
-	// 			/>
-	// 		</TouchableOpacity>
-	// 		<TouchableOpacity
-	// 			style={sharedStyles.headerButton}
-	// 			onPress={() => this.props.navigation.navigate({ key: 'RoomActions', routeName: 'RoomActions', params: { rid: this.state.room.rid } })}
-	// 			accessibilityLabel={I18n.t('Room_actions')}
-	// 			accessibilityTraits='button'
-	// 			testID='room-view-header-actions'
-	// 		>
-	// 			<Icon
-	// 				name={Platform.OS === 'ios' ? 'ios-more' : 'md-more'}
-	// 				color='#292E35'
-	// 				size={24}
-	// 				backgroundColor='transparent'
-	// 			/>
-	// 		</TouchableOpacity>
-	// 	</View>
-	// );
-
-	render() {
-		return (
 			<View style={styles.header} testID='room-view-header'>
-				{/* {this.renderLeft()} */}
-				{this.renderCenter()}
-				{/* {this.renderRight()} */}
+				<TouchableOpacity
+					style={styles.titleContainer}
+					accessibilityLabel={accessibilityLabel}
+					accessibilityTraits='header'
+					onPress={() => this.goToRoomInfo()}
+					testID='room-view-header-title'
+				>
+
+					<Avatar
+						text={this.state.room.name}
+						size={24}
+						style={styles.avatar}
+						type={this.state.room.t}
+					>
+						{this.isDirect() ?
+							<View style={[styles.status, { backgroundColor: STATUS_COLORS[this.getUserStatus()] }]} />
+							: null
+						}
+					</Avatar>
+					<View style={styles.titleTextContainer}>
+						<View style={{ flexDirection: 'row' }}>
+							<RoomTypeIcon type={this.state.room.t} size={13} />
+							<Text style={styles.title} allowFontScaling={false} testID='room-view-title'>
+								{this.state.room.name}
+							</Text>
+						</View>
+
+						{ t ? <Text style={styles.userStatus} allowFontScaling={false} numberOfLines={1}>{t}</Text> : null}
+
+					</View>
+				</TouchableOpacity>
 			</View>
 		);
 	}

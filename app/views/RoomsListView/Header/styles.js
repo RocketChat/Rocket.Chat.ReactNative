@@ -1,6 +1,5 @@
-import { StyleSheet, Platform, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
-const TITLE_OFFSET = Platform.OS === 'ios' ? 46 : 46;
 const { width } = Dimensions.get('window');
 export default StyleSheet.create({
 	header: {
@@ -8,15 +7,6 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		flex: 1
 	},
-	// titleContainer: {
-	// 	left: TITLE_OFFSET,
-	// 	right: TITLE_OFFSET,
-	// 	position: 'absolute',
-	// 	alignItems: 'center',
-	// 	justifyContent: 'flex-start',
-	// 	flexDirection: 'row',
-	// 	height: 44
-	// },
 	status: {
 		borderRadius: 10,
 		width: 10,

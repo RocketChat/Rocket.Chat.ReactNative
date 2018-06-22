@@ -19,10 +19,9 @@ import {
 	forgotPasswordFailure
 } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
-import * as NavigationService from '../containers/routes/NavigationService';
+// import * as NavigationService from '../containers/routes/NavigationService';
 import log from '../utils/log';
 import I18n from '../i18n';
-import { startLogged, startNotLogged } from '../../app';
 
 const getUser = state => state.login;
 const getServer = state => state.server.server;
@@ -45,29 +44,30 @@ const handleLoginSuccess = function* handleLoginSuccess() {
 		if (token) {
 			yield RocketChat.registerPushToken(user.user.id, token);
 		}
-		if (!user.user.username && !user.isRegistering) {
+		if (!user.user.username || user.isRegistering) {
 			yield put(registerIncomplete());
+		} else {
+			// Navigation.setRoot({
+			// 	root: {
+			// 		sideMenu: {
+			// 			left: {
+			// 				component: {
+			// 					name: 'Sidebar'
+			// 				}
+			// 			},
+			// 			center: {
+			// 				stack: {
+			// 					children: [{
+			// 						component: {
+			// 							name: 'RoomsListView'
+			// 						}
+			// 					}]
+			// 				}
+			// 			}
+			// 		}
+			// 	}
+			// });
 		}
-		Navigation.setRoot({
-			root: {
-				sideMenu: {
-					left: {
-						component: {
-							name: 'Sidebar'
-						}
-					},
-					center: {
-						stack: {
-							children: [{
-								component: {
-									name: 'RoomsListView'
-								}
-							}]
-						}
-					}
-				}
-			}
-		});
 	} catch (e) {
 		log('handleLoginSuccess', e);
 	}
@@ -133,9 +133,9 @@ const handleLogout = function* handleLogout() {
 	}
 };
 
-const handleRegisterIncomplete = function* handleRegisterIncomplete() {
-	yield call(NavigationService.navigate, 'Register');
-};
+// const handleRegisterIncomplete = function* handleRegisterIncomplete() {
+// 	yield call(NavigationService.navigate, 'Register');
+// };
 
 const handleForgotPasswordRequest = function* handleForgotPasswordRequest({ email }) {
 	try {
@@ -177,7 +177,7 @@ const root = function* root() {
 	yield takeLatest(types.LOGIN.REGISTER_REQUEST, handleRegisterRequest);
 	yield takeLatest(types.LOGIN.REGISTER_SUBMIT, handleRegisterSubmit);
 	yield takeLatest(types.LOGIN.REGISTER_SUCCESS, handleRegisterSuccess);
-	yield takeLatest(types.LOGIN.REGISTER_INCOMPLETE, handleRegisterIncomplete);
+	// yield takeLatest(types.LOGIN.REGISTER_INCOMPLETE, handleRegisterIncomplete);
 	yield takeLatest(types.LOGIN.SET_USERNAME_SUBMIT, handleSetUsernameSubmit);
 	yield takeLatest(types.LOGIN.SET_USERNAME_REQUEST, handleSetUsernameRequest);
 	yield takeLatest(types.LOGOUT, handleLogout);

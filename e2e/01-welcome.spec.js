@@ -2,6 +2,7 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
+const { tapBack } = require('./helpers/app');
 
 describe('Welcome screen', () => {
 	describe('Render', async() => {
@@ -29,14 +30,16 @@ describe('Welcome screen', () => {
 			await element(by.id('welcome-view-login')).tap();
 			await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('login-view'))).toBeVisible();
-			await element(by.id('close-modal-button')).tap();
+			// await element(by.id('close-modal-button')).tap();
+			await tapBack();
 		});
 		
 		it('should navigate to register', async() => {
 			await element(by.id('welcome-view-register')).tap();
 			await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('register-view'))).toBeVisible();
-			await element(by.id('close-modal-button')).tap();
+			await tapBack();
+			// await element(by.id('close-modal-button')).tap();
 		});
 
 		afterEach(async() => {

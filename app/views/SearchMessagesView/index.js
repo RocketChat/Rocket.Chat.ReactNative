@@ -16,18 +16,25 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 
+/** @extends React.Component */
 class SearchMessagesView extends LoggedView {
+	static propTypes = {
+		rid: PropTypes.string,
+		user: PropTypes.object, // TODO: should use specific user fields
+		baseUrl: PropTypes.string
+	}
+
 	constructor(props) {
 		super('SearchMessagesView', props);
 		this.limit = 0;
 		this.state = {
-			search: '',
 			messages: [],
 			searching: false,
 			loadingMore: false
 		};
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	static get options() {
 		return {
 			topBar: {
@@ -45,6 +52,15 @@ class SearchMessagesView extends LoggedView {
 	componentWillUnmount() {
 		this.onChangeSearch.stop();
 	}
+
+	onChangeSearch = debounce((search) => {
+		this.searchText = search;
+		this.limit = 0;
+		if (!this.state.searching) {
+			this.setState({ searching: true });
+		}
+		this.search();
+	}, 1000)
 
 	search = async() => {
 		if (this._cancel) {
@@ -64,15 +80,6 @@ class SearchMessagesView extends LoggedView {
 			log('SearchMessagesView.search', e);
 		}
 	}
-
-	onChangeSearch = debounce((search) => {
-		this.searchText = search;
-		this.limit = 0;
-		if (!this.state.searching) {
-			this.setState({ searching: true });
-		}
-		this.search();
-	}, 1000)
 
 	moreData = () => {
 		const { loadingMore, messages } = this.state;

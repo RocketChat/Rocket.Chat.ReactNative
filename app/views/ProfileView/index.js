@@ -25,13 +25,15 @@ import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
 import { NavigationControllerManager } from '../../NavigationController';
 
+/** @extends React.Component */
 class ProfileView extends LoggedView {
 	static propTypes = {
-		navigation: PropTypes.object,
+		componentId: PropTypes.any,
 		user: PropTypes.object,
 		Accounts_CustomFields: PropTypes.string
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	static get options() {
 		return {
 			topBar: {
@@ -90,6 +92,10 @@ class ProfileView extends LoggedView {
 				}
 			}
 		});
+	}
+
+	setAvatar = (avatar) => {
+		this.setState({ avatar });
 	}
 
 	init = (user) => {
@@ -217,10 +223,6 @@ class ProfileView extends LoggedView {
 				this.handleError(e, 'saveUserProfile', 'saving_profile');
 			}, 300);
 		}
-	}
-
-	setAvatar = (avatar) => {
-		this.setState({ avatar });
 	}
 
 	resetAvatar = async() => {

@@ -13,8 +13,10 @@ import Loading from '../containers/Loading';
 import LoggedView from './View';
 import I18n from '../i18n';
 
+/** @extends React.Component */
 class NewServerView extends LoggedView {
 	static propTypes = {
+		componentId: PropTypes.any,
 		validateServer: PropTypes.func.isRequired,
 		addServer: PropTypes.func.isRequired,
 		validating: PropTypes.bool.isRequired,
@@ -22,10 +24,13 @@ class NewServerView extends LoggedView {
 		addingServer: PropTypes.bool.isRequired
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	static get options() {
 		return {
 			topBar: {
-				visible: true
+				title: {
+					text: 'New Server'
+				}
 			}
 		};
 	}
@@ -50,7 +55,7 @@ class NewServerView extends LoggedView {
 	submit = () => {
 		if (this.props.validInstance) {
 			Keyboard.dismiss();
-			this.props.addServer(this.completeUrl(this.state.text), this.props.componentId);
+			this.props.addServer(this.completeUrl(this.state.text));
 		}
 	}
 

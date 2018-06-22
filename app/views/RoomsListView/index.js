@@ -1,7 +1,5 @@
-import ActionButton from 'react-native-action-button';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Icon from 'react-native-vector-icons/Ionicons';
 import { Platform, View, TextInput, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
@@ -16,21 +14,25 @@ import log from '../../utils/log';
 import I18n from '../../i18n';
 import { NavigationControllerManager } from '../../NavigationController';
 
+/** @extends React.Component */
 class RoomsListView extends LoggedView {
 	static propTypes = {
-		// navigation: PropTypes.object.isRequired,
+		componentId: PropTypes.any,
 		user: PropTypes.object,
 		Site_Url: PropTypes.string,
 		server: PropTypes.string,
 		searchText: PropTypes.string
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	static get options() {
 		return {
 			topBar: {
 				leftButtons: [{
 					id: 'Sidemenu',
 					title: 'Menu',
+					testID: 'rooms-list-view-sidebar',
+					accessibilityLabel: 'teste',
 					icon: require('../../static/images/navicon_menu.png') // eslint-disable-line
 				}],
 				title: {
@@ -41,6 +43,7 @@ class RoomsListView extends LoggedView {
 				rightButtons: [{
 					id: 'RoomsListView.createChannel',
 					title: 'Add',
+					testID: 'rooms-list-view-create-channel',
 					icon: require('../../static/images/navicon_add.png') // eslint-disable-line
 				}]
 			}
@@ -54,7 +57,6 @@ class RoomsListView extends LoggedView {
 			search: [],
 			rooms: []
 		};
-		this._keyExtractor = this._keyExtractor.bind(this);
 		this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
 	}
 
@@ -106,7 +108,6 @@ class RoomsListView extends LoggedView {
 	}
 
 	updateState = debounce(() => {
-		// LayoutAnimation.easeInEaseOut();
 		this.setState({ rooms: this.data.slice() });
 	})
 
@@ -156,11 +157,6 @@ class RoomsListView extends LoggedView {
 	}
 
 	goRoom = (rid, name) => {
-		// this.props.navigation.navigate({
-		// 	key: `Room-${ rid }`,
-		// 	routeName: 'Room',
-		// 	params: { room: { rid, name }, rid, name }
-		// });
 		Navigation.push(this.props.componentId, {
 			component: {
 				name: 'RoomView',
@@ -192,18 +188,6 @@ class RoomsListView extends LoggedView {
 			const { rid, name } = item;
 			return this.goRoom(rid, name);
 		}
-	}
-
-	createChannel() {
-		this.props.navigation.navigate({
-			key: 'SelectedUsers',
-			routeName: 'SelectedUsers',
-			params: { nextAction: () => this.props.navigation.navigate('CreateChannel') }
-		});
-	}
-
-	_keyExtractor(item) {
-		return item.rid.replace(this.props.user.id, '').trim();
 	}
 
 	renderSearchBar = () => (
@@ -246,7 +230,7 @@ class RoomsListView extends LoggedView {
 		<FlatList
 			data={this.state.search.length > 0 ? this.state.search : this.state.rooms}
 			extraData={this.state.search.length > 0 ? this.state.search : this.state.rooms}
-			keyExtractor={this._keyExtractor}
+			keyExtractor={item => item.rid}
 			style={styles.list}
 			renderItem={this.renderItem}
 			ListHeaderComponent={Platform.OS === 'ios' ? this.renderSearchBar : null}
@@ -258,18 +242,9 @@ class RoomsListView extends LoggedView {
 		/>
 	)
 
-	renderCreateButtons = () => (
-		<ActionButton buttonColor='rgba(231,76,60,1)'>
-			<ActionButton.Item buttonColor='#9b59b6' title={I18n.t('Create_Channel')} onPress={() => { this.createChannel(); }} >
-				<Icon name='md-chatbubbles' style={styles.actionButtonIcon} />
-			</ActionButton.Item>
-		</ActionButton>
-	);
-
 	render = () => (
 		<View style={styles.container} testID='rooms-list-view'>
 			{this.renderList()}
-			{Platform.OS === 'android' ? this.renderCreateButtons() : null}
 		</View>)
 }
 

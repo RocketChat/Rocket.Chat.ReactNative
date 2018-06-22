@@ -13,12 +13,12 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import Button from '../containers/Button';
 import I18n from '../i18n';
 
+/** @extends React.Component */
 class CreateChannelView extends LoggedView {
 	static propTypes = {
 		create: PropTypes.func.isRequired,
 		createChannel: PropTypes.object.isRequired,
-		users: PropTypes.array.isRequired,
-		// navigation: PropTypes.object.isRequired
+		users: PropTypes.array.isRequired
 	};
 
 	constructor(props) {

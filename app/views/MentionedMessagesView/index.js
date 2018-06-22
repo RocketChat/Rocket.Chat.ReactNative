@@ -10,9 +10,10 @@ import Message from '../../containers/message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 
+/** @extends React.Component */
 class MentionedMessagesView extends LoggedView {
 	static propTypes = {
-		// navigation: PropTypes.object,
+		rid: PropTypes.string,
 		messages: PropTypes.array,
 		ready: PropTypes.bool,
 		user: PropTypes.object,
@@ -21,6 +22,7 @@ class MentionedMessagesView extends LoggedView {
 		closeMentionedMessages: PropTypes.func
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	static get options() {
 		return {
 			topBar: {

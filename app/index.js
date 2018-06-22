@@ -18,6 +18,7 @@ import { Navigation } from 'react-native-navigation';
 import RocketChat from './lib/rocketchat';
 import store from './lib/createStore';
 import { appInit } from './actions';
+import database from './lib/realm';
 
 import WithProvider from './views/WithProvider';
 import NewServerView from './views/NewServerView';
@@ -72,19 +73,24 @@ function startLogged() {
 	});
 }
 
-function startNotLogged() {
+function startNotLogged(route) {
 	Navigation.setRoot({
 		root: {
 			stack: {
 				children: [{
 					component: {
-						name: 'ListServerView'
+						name: route
 					}
 				}]
 			}
 		}
 	});
 }
+
+const hasServers = () => {
+	const db = database.databases.serversDB.objects('servers');
+	return db.length > 0;
+};
 
 async function start() {
 	Navigation.registerComponent('NewServerView', () => WithProvider(NewServerView, store));
@@ -120,9 +126,25 @@ async function start() {
 	Navigation.events().registerAppLaunchedListener(async() => {
 		const token = await AsyncStorage.getItem(RocketChat.TOKEN_KEY);
 		if (token) {
-			startLogged();
+			return startLogged();
 		}
-		startNotLogged();
+		if (hasServers()) {
+			startNotLogged('ListServerView');
+		} else {
+			startNotLogged('NewServerView');
+		}
+
+		Navigation.setDefaultOptions({
+			topBar: {
+				backButton: {
+					title: 'Back'
+				}
+			}
+		});
+	});
+
+	Navigation.events().registerComponentDidAppearListener((componentId, componentName) => {
+		console.warn(componentName)
 	});
 }
 

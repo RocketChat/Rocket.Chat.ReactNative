@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, ScrollView, TouchableOpacity, SafeAreaView, WebView, Platform, LayoutAnimation, Image, StyleSheet } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, WebView, Platform, LayoutAnimation, Image, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -45,35 +45,17 @@ const styles = StyleSheet.create({
 	planetImage: {
 		width: 200,
 		height: 162,
-		marginVertical: 20,
-		opacity: 0.6
+		marginVertical: 20
 	}
 });
 
-// @connect(state => ({
-// 	server: state.server.server,
-// 	login: state.login,
-// 	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
-// 	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
-// 	Accounts_OAuth_Facebook: state.settings.Accounts_OAuth_Facebook,
-// 	Accounts_OAuth_Github: state.settings.Accounts_OAuth_Github,
-// 	Accounts_OAuth_Gitlab: state.settings.Accounts_OAuth_Gitlab,
-// 	Accounts_OAuth_Google: state.settings.Accounts_OAuth_Google,
-// 	Accounts_OAuth_Linkedin: state.settings.Accounts_OAuth_Linkedin,
-// 	Accounts_OAuth_Meteor: state.settings.Accounts_OAuth_Meteor,
-// 	Accounts_OAuth_Twitter: state.settings.Accounts_OAuth_Twitter,
-// 	services: state.login.services
-// }), dispatch => ({
-// 	loginOAuth: params => RocketChat.login(params),
-// 	open: () => dispatch(open()),
-// 	close: () => dispatch(close())
-// }))
+/** @extends React.Component */
 class LoginSignupView extends LoggedView {
 	static propTypes = {
+		componentId: PropTypes.any,
 		loginOAuth: PropTypes.func.isRequired,
 		open: PropTypes.func.isRequired,
 		close: PropTypes.func.isRequired,
-		// navigation: PropTypes.object.isRequired,
 		login: PropTypes.object,
 		server: PropTypes.string,
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.bool,
@@ -88,6 +70,7 @@ class LoginSignupView extends LoggedView {
 		services: PropTypes.object
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	static get options() {
 		return {
 			topBar: {
@@ -196,27 +179,17 @@ class LoginSignupView extends LoggedView {
 	}
 
 	login = () => {
-		// this.props.navigation.navigate({ key: 'Register', routeName: 'Register' });
-		Navigation.showModal({
-			stack: {
-				children: [{
-					component: {
-						name: 'LoginView'
-					}
-				}]
+		Navigation.push(this.props.componentId, {
+			component: {
+				name: 'LoginView'
 			}
 		});
 	}
 
 	register = () => {
-		// this.props.navigation.navigate({ key: 'Register', routeName: 'Register' });
-		Navigation.showModal({
-			stack: {
-				children: [{
-					component: {
-						name: 'RegisterView'
-					}
-				}]
+		Navigation.push(this.props.componentId, {
+			component: {
+				name: 'RegisterView'
 			}
 		});
 	}
@@ -316,35 +289,35 @@ class LoginSignupView extends LoggedView {
 					style={[sharedStyles.container, sharedStyles.containerScrollView]}
 					{...scrollPersistTaps}
 				>
-					{/* <SafeAreaView testID='welcome-view'> */}
-					<View style={styles.container}>
-						<Image
-							source={require('../static/images/logo.png')}
-							style={sharedStyles.loginLogo}
-							resizeMode='center'
-						/>
-						<Text style={[sharedStyles.loginText, styles.header, { color: '#81848A' }]}>{I18n.t('Welcome_title_pt_1')}</Text>
-						<Text style={[sharedStyles.loginText, styles.header]}>{I18n.t('Welcome_title_pt_2')}</Text>
-						<Image
-							style={styles.planetImage}
-							source={require('../static/images/planet.png')}
-						/>
-						<Button
-							title={I18n.t('I_have_an_account')}
-							type='primary'
-							onPress={() => this.login()}
-							testID='welcome-view-login'
-						/>
-						<Button
-							title={I18n.t('Create_account')}
-							type='secondary'
-							onPress={() => this.register()}
-							testID='welcome-view-register'
-						/>
-						{this.renderServices()}
+					<View testID='welcome-view'>
+						<View style={styles.container}>
+							<Image
+								source={require('../static/images/logo.png')}
+								style={sharedStyles.loginLogo}
+								resizeMode='center'
+							/>
+							<Text style={[sharedStyles.loginText, styles.header, { color: '#81848A' }]}>{I18n.t('Welcome_title_pt_1')}</Text>
+							<Text style={[sharedStyles.loginText, styles.header]}>{I18n.t('Welcome_title_pt_2')}</Text>
+							<Image
+								style={styles.planetImage}
+								source={require('../static/images/planet.png')}
+							/>
+							<Button
+								title={I18n.t('I_have_an_account')}
+								type='primary'
+								onPress={() => this.login()}
+								testID='welcome-view-login'
+							/>
+							<Button
+								title={I18n.t('Create_account')}
+								type='secondary'
+								onPress={() => this.register()}
+								testID='welcome-view-register'
+							/>
+							{this.renderServices()}
+						</View>
+						<Loading visible={this.props.login.isFetching} />
 					</View>
-					<Loading visible={this.props.login.isFetching} />
-					{/* </SafeAreaView> */}
 				</ScrollView>,
 				<Modal
 					key='modal-oauth'

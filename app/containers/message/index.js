@@ -109,7 +109,8 @@ export default class Message extends React.Component {
 		onLongPress: PropTypes.func,
 		_updatedAt: PropTypes.instanceOf(Date),
 		archived: PropTypes.bool,
-		broadcast: PropTypes.bool
+		broadcast: PropTypes.bool,
+		previousItem: PropTypes.object
 	}
 
 	static defaultProps = {

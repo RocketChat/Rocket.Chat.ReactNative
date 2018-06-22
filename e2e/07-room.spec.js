@@ -3,6 +3,7 @@ const {
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
+const { tapBack } = require('./helpers/app');
 
 async function mockMessage(message) {
 	await element(by.id('messagebox-input')).tap();
@@ -35,10 +36,6 @@ describe('Room screen', () => {
 		describe('Header', async() => {
 			it('should have room header', async() => {
 				await expect(element(by.id('room-view-header'))).toBeVisible();
-			});
-
-			it('should have back button', async() => {
-				await expect(element(by.id('header-back'))).toBeVisible();
 			});
 
 			it('should have title', async() => {
@@ -86,7 +83,7 @@ describe('Room screen', () => {
 	describe('Usage', async() => {
 		describe('Header', async() => {
 			it('should back to rooms list', async() => {
-				await element(by.id('header-back')).tap();
+				await tapBack();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('rooms-list-view'))).toBeVisible();
 				await navigateToRoom();
@@ -96,7 +93,7 @@ describe('Room screen', () => {
 				await element(by.id('room-view-header-title')).tap();
 				await waitFor(element(by.id('room-info-view'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('room-info-view'))).toBeVisible();
-				await element(by.id('header-back')).atIndex(0).tap();
+				await tapBack();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			});
 	
@@ -104,7 +101,7 @@ describe('Room screen', () => {
 				await element(by.id('room-view-header-actions')).tap();
 				await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('room-actions-view'))).toBeVisible();
-				await element(by.id('header-back')).atIndex(0).tap();
+				await tapBack();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			});
 		});
@@ -307,7 +304,7 @@ describe('Room screen', () => {
 		});
 
 		after(async() => {
-			await element(by.id('header-back')).tap();
+			await tapBack();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
 		});

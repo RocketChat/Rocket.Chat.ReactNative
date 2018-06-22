@@ -22,14 +22,17 @@ import I18n from '../../i18n';
 const renderSeparator = () => <View style={styles.separator} />;
 const getRoomTitle = room => (room.t === 'd' ? <Text>{room.fname}</Text> : <Text><RoomTypeIcon type={room.t} />&nbsp;{room.name}</Text>);
 
+/** @extends React.Component */
 class RoomActionsView extends LoggedView {
 	static propTypes = {
-		baseUrl: PropTypes.string,
-		user: PropTypes.object,
-		// navigation: PropTypes.object,
+		rid: PropTypes.string,
+		componentId: PropTypes.any,
+		user_id: PropTypes.string,
+		user_username: PropTypes.string,
 		leaveRoom: PropTypes.func
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	static get options() {
 		return {
 			topBar: {
@@ -276,17 +279,6 @@ class RoomActionsView extends LoggedView {
 					params: {
 						nextAction: 'ADD_USER',
 						rid
-						// nextAction: async() => {
-						// 	try {
-						// 		this.props.setLoadingInvite(true);
-						// 		await RocketChat.addUsersToRoom(rid);
-						// 		// this.props.navigation.goBack();
-						// 	} catch (e) {
-						// 		log('RoomActions Add User', e);
-						// 	} finally {
-						// 		this.props.setLoadingInvite(false);
-						// 	}
-						// }
 					},
 					testID: 'room-actions-add-user'
 				});

@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
 import { Navigation } from 'react-native-navigation';
 
@@ -13,7 +12,6 @@ import styles from './styles';
 import sharedStyles from '../Styles';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
-import Touch from '../../utils/touch';
 
 import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
@@ -30,16 +28,18 @@ const getRoomTitle = room => (room.t === 'd' ?
 	]
 );
 
+/** @extends React.Component */
 class RoomInfoView extends LoggedView {
 	static propTypes = {
-		baseUrl: PropTypes.string,
+		componentId: PropTypes.any,
+		rid: PropTypes.string,
 		user: PropTypes.object,
-		// navigation: PropTypes.object,
 		activeUsers: PropTypes.object,
 		Message_TimeFormat: PropTypes.string,
 		roles: PropTypes.object
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	static get options() {
 		return {
 			topBar: {
@@ -101,6 +101,7 @@ class RoomInfoView extends LoggedView {
 						rightButtons: [{
 							id: 'RoomInfoView.edit',
 							title: 'Edit',
+							testID: 'room-info-view-edit-button',
 							icon: require('../../static/images/navicon_add.png') // eslint-disable-line
 						}]
 					}

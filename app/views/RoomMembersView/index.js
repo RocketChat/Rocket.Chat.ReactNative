@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, Text, View, TextInput, Vibration, TouchableOpacity } from 'react-native';
+import { FlatList, View, TextInput, Vibration } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
 import { Navigation } from 'react-native-navigation';
@@ -11,37 +11,23 @@ import styles from './styles';
 import RoomItem from '../../presentation/RoomItem';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
-import { goRoom } from '../../containers/routes/NavigationService';
+// import { goRoom } from '../../containers/routes/NavigationService';
 import database from '../../lib/realm';
 import { showToast } from '../../utils/info';
 import log from '../../utils/log';
 import I18n from '../../i18n';
+import { NavigationControllerManager } from '../../NavigationController';
 
+/** @extends React.Component */
 class RoomMembersView extends LoggedView {
-	// static propTypes = {
-	// 	navigation: PropTypes.object
-	// }
+	static propTypes = {
+		componentId: PropTypes.any,
+		rid: PropTypes.string,
+		members: PropTypes.array,
+		baseUrl: PropTypes.string
+	}
 
-	// static navigationOptions = ({ navigation }) => {
-	// 	const params = navigation.state.params || {};
-	// 	const label = params.allUsers ? I18n.t('All') : I18n.t('Online');
-	// 	if (params.allUsers === undefined) {
-	// 		return;
-	// 	}
-	// 	return {
-	// 		headerRight: (
-	// 			<TouchableOpacity
-	// 				onPress={params.onPressToogleStatus}
-	// 				accessibilityLabel={label}
-	// 				accessibilityTraits='button'
-	// 				style={[sharedStyles.headerButton, styles.headerButton]}
-	// 				testID='room-members-view-toggle-status'
-	// 			>
-	// 				<Text>{label}</Text>
-	// 			</TouchableOpacity>
-	// 		)
-	// 	};
-	// };
+	// eslint-disable-next-line react/sort-comp
 	static get options() {
 		return {
 			topBar: {
@@ -51,6 +37,7 @@ class RoomMembersView extends LoggedView {
 				rightButtons: [{
 					id: 'RoomMembersView.toggleOnline',
 					title: 'All',
+					testID: 'room-members-view-toggle-status',
 					icon: require('../../static/images/navicon_add.png') // eslint-disable-line
 				}]
 			}
@@ -77,10 +64,6 @@ class RoomMembersView extends LoggedView {
 	}
 
 	componentDidMount() {
-		// this.props.navigation.setParams({
-		// 	onPressToogleStatus: this.onPressToogleStatus,
-		// 	allUsers: this.state.allUsers
-		// });
 		this.rooms.addListener(this.updateRoom);
 	}
 
@@ -104,13 +87,8 @@ class RoomMembersView extends LoggedView {
 				}
 			});
 		} catch (e) {
-			log('onPressToogleStatus', e);
+			log('RoomMembers.onNavigationButtonPressed', e);
 		}
-	}
-
-	updateRoom = async() => {
-		const [room] = this.rooms;
-		await this.setState({ room });
 	}
 
 	onSearchChangeText = (text) => {
@@ -121,26 +99,14 @@ class RoomMembersView extends LoggedView {
 		this.setState({ filtering: !!text, membersFiltered });
 	}
 
-	onPressToogleStatus = async() => {
-		// try {
-		// 	const allUsers = !this.state.allUsers;
-		// 	this.props.navigation.setParams({ allUsers });
-		// 	const membersResult = await RocketChat.getRoomMembers(this.state.rid, allUsers);
-		// 	const members = membersResult.records;
-		// 	this.setState({ allUsers, members });
-		// } catch (e) {
-		// 	log('onPressToogleStatus', e);
-		// }
-	}
-
 	onPressUser = async(item) => {
 		try {
 			const subscriptions = database.objects('subscriptions').filtered('name = $0', item.username);
 			if (subscriptions.length) {
-				goRoom({ rid: subscriptions[0].rid, name: subscriptions[0].name });
+				this.goRoom({ rid: subscriptions[0].rid, name: subscriptions[0].name });
 			} else {
 				const room = await RocketChat.createDirectMessage(item.username);
-				goRoom({ rid: room.rid, name: item.username });
+				this.goRoom({ rid: room.rid, name: item.username });
 			}
 		} catch (e) {
 			log('onPressUser', e);
@@ -163,6 +129,25 @@ class RoomMembersView extends LoggedView {
 		this.setState({ userLongPressed: user });
 		Vibration.vibrate(50);
 		this.ActionSheet.show();
+	}
+
+	updateRoom = async() => {
+		const [room] = this.rooms;
+		await this.setState({ room });
+	}
+
+	goRoom = ({ rid, name }) => {
+		Navigation.popToRoot(this.props.componentId);
+		Navigation.push(NavigationControllerManager.getSharedInstance().getActiveRootComponent().componentId, {
+			component: {
+				name: 'RoomView',
+				passProps: {
+					room: { rid, name },
+					rid,
+					name
+				}
+			}
+		});
 	}
 
 	handleMute = async() => {

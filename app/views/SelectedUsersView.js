@@ -65,18 +65,23 @@ const styles = StyleSheet.create({
 	}
 });
 
+/** @extends React.Component */
 class SelectedUsersView extends LoggedView {
 	static propTypes = {
-		// navigation: PropTypes.object.isRequired,
+		componentId: PropTypes.any,
+		rid: PropTypes.string,
+		nextAction: PropTypes.string.isRequired,
 		user: PropTypes.object,
 		Site_Url: PropTypes.string,
 		addUser: PropTypes.func.isRequired,
 		removeUser: PropTypes.func.isRequired,
 		reset: PropTypes.func.isRequired,
 		users: PropTypes.array,
-		loading: PropTypes.bool
+		loading: PropTypes.bool,
+		setLoadingInvite: PropTypes.func
 	};
 
+	// eslint-disable-next-line react/sort-comp
 	static get options() {
 		return {
 			topBar: {
@@ -99,13 +104,19 @@ class SelectedUsersView extends LoggedView {
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.users.length !== this.props.users.length) {
+			const { length } = nextProps.users;
+			const rightButtons = [];
+			if (length > 0) {
+				rightButtons.push({
+					id: 'SelectedUsers.createChannel',
+					title: this.props.nextAction === 'CREATE_CHANNEL' ? 'Create' : 'Add',
+					testID: 'selected-users-view-submit',
+					icon: require('../static/images/navicon_add.png') // eslint-disable-line
+				});
+			}
 			Navigation.mergeOptions(this.props.componentId, {
 				topBar: {
-					rightButtons: [{
-						id: 'SelectedUsers.createChannel',
-						title: this.props.nextAction === 'CREATE_CHANNEL' ? 'Create' : 'Add',
-						icon: require('../static/images/navicon_add.png') // eslint-disable-line
-					}]
+					rightButtons
 				}
 			});
 		}
@@ -208,10 +219,7 @@ class SelectedUsersView extends LoggedView {
 
 	_onPressSelectedItem = item => this.toggleUser(item);
 
-	nextAction = () => {
-		const params = this.props.navigation.state.params || {};
-		params.nextAction();
-	};
+	teste = () => {}
 
 	renderHeader = () => (
 		<View style={styles.container}>

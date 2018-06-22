@@ -3,6 +3,7 @@ const {
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
+const { tapBack } = require('./helpers/app');
 
 describe('Create room screen', () => {
 	before(async() => {
@@ -27,7 +28,7 @@ describe('Create room screen', () => {
 
 	describe('Usage', async() => {
 		it('should back to rooms list', async() => {
-			await element(by.id('header-back')).tap();
+			await tapBack();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
 			await element(by.id('rooms-list-view-create-channel')).tap();
@@ -79,7 +80,7 @@ describe('Create room screen', () => {
 			await expect(element(by.id('room-view'))).toBeVisible();
 			await waitFor(element(by.id('room-view-title'))).toHaveText(`public${ data.random }`).withTimeout(60000);
 			await expect(element(by.id('room-view-title'))).toHaveText(`public${ data.random }`);
-			await element(by.id('header-back')).tap();
+			await tapBack();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			await waitFor(element(by.id(`rooms-list-view-item-public${ data.random }`))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id(`rooms-list-view-item-public${ data.random }`))).toBeVisible();
@@ -98,7 +99,7 @@ describe('Create room screen', () => {
 			await expect(element(by.id('room-view'))).toBeVisible();
 			await waitFor(element(by.id('room-view-title'))).toHaveText(`private${ data.random }`).withTimeout(60000);
 			await expect(element(by.id('room-view-title'))).toHaveText(`private${ data.random }`);
-			await element(by.id('header-back')).tap();
+			await tapBack();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			await waitFor(element(by.id(`rooms-list-view-item-private${ data.random }`))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id(`rooms-list-view-item-private${ data.random }`))).toBeVisible();

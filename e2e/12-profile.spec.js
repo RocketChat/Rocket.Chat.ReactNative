@@ -12,7 +12,7 @@ describe('Profile screen', () => {
 		await element(by.id('rooms-list-view-sidebar')).tap();
 		await waitFor(element(by.id('sidebar'))).toBeVisible().withTimeout(2000);
 		await waitFor(element(by.id('sidebar-profile'))).toBeVisible().withTimeout(2000);
-		await expect(element(by.id('sidebar-profile'))).toBeVisible();
+		// await expect(element(by.id('sidebar-profile'))).toBeVisible();
 		await element(by.id('sidebar-profile')).tap();
 		await waitFor(element(by.id('profile-view'))).toBeVisible().withTimeout(2000);
 

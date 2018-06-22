@@ -80,9 +80,10 @@ const keyExtractor = item => item.id;
 
 class Sidebar extends Component {
 	static propTypes = {
+		componentId: PropTypes.any,
 		server: PropTypes.string.isRequired,
 		selectServer: PropTypes.func.isRequired,
-		// navigation: PropTypes.object.isRequired,
+		user: PropTypes.object,
 		logout: PropTypes.func.isRequired
 	}
 
@@ -144,7 +145,6 @@ class Sidebar extends Component {
 	}
 
 	closeDrawer = () => {
-		// this.props.navigation.dispatch(DrawerActions.closeDrawer());
 		Navigation.mergeOptions(this.props.componentId, {
 			sideMenu: {
 				left: {
@@ -159,61 +159,14 @@ class Sidebar extends Component {
 		this.setState({ showServers: !this.state.showServers });
 	}
 
-	isRouteFocused = (route) => {
-		// const { state } = this.props.navigation;
-		// const activeItemKey = state.routes[state.index] ? state.routes[state.index].key : null;
-		// return activeItemKey === route;
-		return false;
-	}
-
 	sidebarNavigate = (route) => {
-		// const { navigate } = this.props.navigation;
-		// if (!this.isRouteFocused(route)) {
-		// 	navigate(route);
-		// } else {
-		// 	this.closeDrawer();
-		// }
-		// Navigation.mergeOptions()
-		// Navigation.setRoot({
-		// 	root: {
-		// 		sideMenu: {
-		// 			left: {
-		// 				component: {
-		// 					name: 'Sidebar'
-		// 				}
-		// 			},
-		// 			center: {
-		// 				stack: {
-		// 					children: [{
-		// 						component: {
-		// 							name: route
-		// 						}
-		// 					}]
-		// 				}
-		// 			}
-		// 		}
-		// 	}
-		// });
-		Navigation.mergeOptions(this.props.componentId, {
-			sideMenu: {
-				left: {
-					visible: false
-				}
-			}
-		});
+		this.closeDrawer();
 		if (NavigationControllerManager.getSharedInstance().getActiveRootComponent().componentName !== route) {
 			Navigation.setStackRoot(NavigationControllerManager.getSharedInstance().getActiveRootComponent().componentId, {
 				component: {
 					name: route,
 					options: {
 						animated: true // Will animate root change same as push
-					},
-					topBar: {
-						leftButtons: [{
-							id: 'sidemenu',
-							title: 'Menu',
-							icon: require('../static/images/navicon_add.png') // eslint-disable-line
-						}]
 					}
 				}
 			});
@@ -223,7 +176,7 @@ class Sidebar extends Component {
 	renderSeparator = key => <View key={key} style={styles.separator} />;
 
 	renderItem = ({
-		text, left, selected, onPress, testID
+		text, left, onPress, testID
 	}) => (
 		<Touch
 			key={text}
@@ -232,8 +185,8 @@ class Sidebar extends Component {
 			activeOpacity={0.3}
 			testID={testID}
 		>
-			<View style={[styles.item, selected && styles.selected]}>
-				<View style={[styles.itemLeft, !selected && styles.itemLeftOpacity]}>
+			<View style={styles.item}>
+				<View style={styles.itemLeft}>
 					{left}
 				</View>
 				<Text style={styles.itemText}>
@@ -271,12 +224,12 @@ class Sidebar extends Component {
 			/>,
 			selected: this.props.server === item.id,
 			onPress: () => {
-				// this.closeDrawer();
+				this.closeDrawer();
 				this.toggleServers();
-				// if (this.props.server !== item.id) {
-				// 	this.props.selectServer(item.id);
-				// 	this.props.navigation.navigate('RoomsList');
-				// }
+				if (this.props.server !== item.id) {
+					this.props.selectServer(item.id);
+					this.sidebarNavigate('RoomsListView');
+				}
 			},
 			testID: `sidebar-${ item.id }`
 		})
@@ -288,21 +241,18 @@ class Sidebar extends Component {
 				text: I18n.t('Chats'),
 				left: <Icon name='chat-bubble' size={20} />,
 				onPress: () => this.sidebarNavigate('RoomsListView'),
-				selected: this.isRouteFocused('Chats'),
 				testID: 'sidebar-chats'
 			}),
 			this.renderItem({
 				text: I18n.t('Profile'),
 				left: <Icon name='person' size={20} />,
 				onPress: () => this.sidebarNavigate('ProfileView'),
-				selected: this.isRouteFocused('ProfileView'),
 				testID: 'sidebar-profile'
 			}),
 			this.renderItem({
 				text: I18n.t('Settings'),
 				left: <Icon name='settings' size={20} />,
 				onPress: () => this.sidebarNavigate('SettingsView'),
-				selected: this.isRouteFocused('SettingsView'),
 				testID: 'sidebar-settings'
 			}),
 			this.renderSeparator('separator-logout'),
@@ -345,7 +295,11 @@ class Sidebar extends Component {
 				onPress: () => {
 					this.closeDrawer();
 					this.toggleServers();
-					this.props.navigation.navigate('AddServer');
+					Navigation.push(NavigationControllerManager.getSharedInstance().getActiveRootComponent().componentId, {
+						component: {
+							name: 'NewServerView'
+						}
+					});
 				},
 				testID: 'sidebar-add-server'
 			})
@@ -354,12 +308,12 @@ class Sidebar extends Component {
 
 	render() {
 		const { user, server } = this.props;
+		if (!user) {
+			return null;
+		}
 		return (
 			<ScrollView style={{ backgroundColor: '#fff' }}>
-				<SafeAreaView
-					// forceInset={{ top: 'always', horizontal: 'never' }}
-					testID='sidebar'
-				>
+				<SafeAreaView testID='sidebar'>
 					<Touch
 						onPress={() => this.toggleServers()}
 						underlayColor='rgba(255, 255, 255, 0.5)'

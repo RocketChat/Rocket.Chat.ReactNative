@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { WebView } from 'react-native';
 import { connect } from 'react-redux';
 
+/** @extends React.Component */
 class PrivacyPolicyView extends React.PureComponent {
 	static propTypes = {
 		privacyPolicy: PropTypes.string

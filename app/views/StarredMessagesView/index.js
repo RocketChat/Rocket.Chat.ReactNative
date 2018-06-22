@@ -16,9 +16,10 @@ const STAR_INDEX = 0;
 const CANCEL_INDEX = 1;
 const options = [I18n.t('Unstar'), I18n.t('Cancel')];
 
+/** @extends React.Component */
 class StarredMessagesView extends LoggedView {
 	static propTypes = {
-		// navigation: PropTypes.object,
+		rid: PropTypes.string,
 		messages: PropTypes.array,
 		ready: PropTypes.bool,
 		user: PropTypes.object,
@@ -28,6 +29,7 @@ class StarredMessagesView extends LoggedView {
 		toggleStarRequest: PropTypes.func
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	static get options() {
 		return {
 			topBar: {

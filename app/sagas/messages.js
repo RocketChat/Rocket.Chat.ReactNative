@@ -1,5 +1,7 @@
 import { delay } from 'redux-saga';
 import { takeLatest, put, call, select } from 'redux-saga/effects';
+import { Navigation } from 'react-native-navigation';
+
 import { MESSAGES } from '../actions/actionsTypes';
 import {
 	messagesSuccess,
@@ -16,8 +18,9 @@ import {
 } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
-import { goRoom } from '../containers/routes/NavigationService';
+// import { goRoom } from '../containers/routes/NavigationService';
 import log from '../utils/log';
+import { NavigationControllerManager } from '../NavigationController';
 
 const deleteMessage = message => RocketChat.deleteMessage(message);
 const editMessage = message => RocketChat.editMessage(message);
@@ -72,6 +75,20 @@ const handleTogglePinRequest = function* handleTogglePinRequest({ message }) {
 	} catch (error) {
 		yield put(togglePinFailure(error));
 	}
+};
+
+const goRoom = ({ rid, name }) => {
+	Navigation.popToRoot(NavigationControllerManager.getSharedInstance().getActiveRootComponent().componentId);
+	Navigation.push(NavigationControllerManager.getSharedInstance().getActiveRootComponent().componentId, {
+		component: {
+			name: 'RoomView',
+			passProps: {
+				room: { rid, name },
+				rid,
+				name
+			}
+		}
+	});
 };
 
 const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {

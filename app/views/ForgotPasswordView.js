@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, SafeAreaView, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import LoggedView from './View';
 import { forgotPasswordInit, forgotPasswordRequest } from '../actions/login';
@@ -14,14 +15,16 @@ import { showErrorAlert } from '../utils/info';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 
+/** @extends React.Component */
 class ForgotPasswordView extends LoggedView {
 	static propTypes = {
+		componentId: PropTypes.any,
 		forgotPasswordInit: PropTypes.func.isRequired,
 		forgotPasswordRequest: PropTypes.func.isRequired,
-		login: PropTypes.object,
-		// navigation: PropTypes.object.isRequired
+		login: PropTypes.object
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	static get options() {
 		return {
 			topBar: {
@@ -48,7 +51,7 @@ class ForgotPasswordView extends LoggedView {
 	componentDidUpdate() {
 		const { login } = this.props;
 		if (login.success) {
-			this.props.navigation.goBack();
+			Navigation.pop(this.props.componentId);
 			setTimeout(() => {
 				showErrorAlert(I18n.t('Forgot_password_If_this_email_is_registered'), I18n.t('Alert'));
 			});

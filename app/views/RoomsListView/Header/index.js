@@ -1,10 +1,8 @@
 import React from 'react';
-import { Text, View, Platform, TouchableOpacity, TextInput, LayoutAnimation } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Text, View, TouchableOpacity, TextInput, LayoutAnimation } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
-import FastImage from 'react-native-fast-image';
 import { HeaderBackButton } from 'react-navigation';
 import equal from 'deep-equal';
 
@@ -14,7 +12,6 @@ import RocketChat from '../../../lib/rocketchat';
 import { STATUS_COLORS } from '../../../constants/colors';
 import { setSearch } from '../../../actions/rooms';
 import styles from './styles';
-import sharedStyles from '../../Styles';
 import log from '../../../utils/log';
 import I18n from '../../../i18n';
 
@@ -40,11 +37,13 @@ const title = (offline, connecting, authenticating, logged) => {
 
 class RoomsListHeaderView extends React.Component {
 	static propTypes = {
-		// navigation: PropTypes.object.isRequired,
 		user: PropTypes.object.isRequired,
 		connected: PropTypes.bool,
-		baseUrl: PropTypes.string,
-		setSearch: PropTypes.func
+		setSearch: PropTypes.func,
+		offline: PropTypes.bool,
+		connecting: PropTypes.bool,
+		authenticating: PropTypes.bool,
+		logged: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -113,40 +112,6 @@ class RoomsListHeaderView extends React.Component {
 		this.setState({ isModalVisible: false });
 	}
 
-	// createChannel() {
-	// 	this.props.navigation.navigate({
-	// 		key: 'SelectedUsers',
-	// 		routeName: 'SelectedUsers',
-	// 		params: { nextAction: () => this.props.navigation.navigate('CreateChannel') }
-	// 	});
-	// }
-
-	renderLeft() {
-		if (this.state.searching) {
-			return null;
-		}
-
-		return (
-			<View
-				style={styles.left}
-				accessible
-				accessibilityLabel={`${ I18n.t('Connected_to') } ${ this.props.baseUrl }. ${ I18n.t('Tap_to_view_servers_list') }.`}
-				accessibilityTraits='button'
-				testID='rooms-list-view-sidebar'
-			>
-				<TouchableOpacity
-					style={sharedStyles.headerButton}
-					onPress={() => this.props.navigation.openDrawer()}
-				>
-					<FastImage
-						style={styles.serverImage}
-						source={{ uri: encodeURI(`${ this.props.baseUrl }/assets/favicon_32.png`) }}
-					/>
-				</TouchableOpacity>
-			</View>
-		);
-	}
-
 	renderCenter() {
 		const {
 			offline, connecting, authenticating, logged, user
@@ -166,7 +131,9 @@ class RoomsListHeaderView extends React.Component {
 		return (
 			<TouchableOpacity
 				// style={styles.titleContainer}
-				style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
+				style={{
+					flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'
+				}} // TODO: refactor
 				onPress={() => this.showModal()}
 				accessibilityLabel={accessibilityLabel}
 				accessibilityTraits='header'
@@ -183,47 +150,6 @@ class RoomsListHeaderView extends React.Component {
 					{ t ? <Text accessible={false} style={styles.status_text} ellipsizeMode='tail' numberOfLines={1} allowFontScaling={false}>{t}</Text> : null}
 				</View>
 			</TouchableOpacity>
-		);
-	}
-
-	renderRight() {
-		if (this.state.searching) {
-			return null;
-		}
-
-		return (
-			<View style={styles.right}>
-				{Platform.OS === 'android' ?
-					<TouchableOpacity
-						style={sharedStyles.headerButton}
-						onPress={() => this.onPressSearchButton()}
-						accessibilityLabel={I18n.t('Search')}
-						accessibilityTraits='button'
-					>
-						<Icon
-							name='md-search'
-							color='#292E35'
-							size={24}
-							backgroundColor='transparent'
-						/>
-					</TouchableOpacity> : null}
-				{Platform.OS === 'ios' ?
-					<TouchableOpacity
-						style={sharedStyles.headerButton}
-						onPress={() => this.createChannel()}
-						accessibilityLabel={I18n.t('Create_Channel')}
-						accessibilityTraits='button'
-						testID='rooms-list-view-create-channel'
-					>
-						<Icon
-							name='ios-add'
-							color='#292E35'
-							size={24}
-							backgroundColor='transparent'
-						/>
-					</TouchableOpacity> : null
-				}
-			</View>
 		);
 	}
 
@@ -270,17 +196,12 @@ class RoomsListHeaderView extends React.Component {
 		);
 	}
 
-	// render() {
-	// 	return this.renderCenter();
-	// }
 	render() {
 		return (
 			<View style={styles.header} testID='rooms-list-view-header'>
-				{/* {this.renderLeft()} */}
 				{this.renderCenter()}
-				{/* {this.renderRight()} */}
-				{/* {this.renderSearch()} */}
-				{/* <Modal
+				{this.renderSearch()}
+				<Modal
 					isVisible={this.state.isModalVisible}
 					supportedOrientations={['portrait', 'landscape']}
 					style={{ alignItems: 'center' }}
@@ -294,7 +215,7 @@ class RoomsListHeaderView extends React.Component {
 						{this.renderModalButton('away')}
 						{this.renderModalButton('offline', 'invisible')}
 					</View>
-				</Modal> */}
+				</Modal>
 			</View>
 		);
 	}
