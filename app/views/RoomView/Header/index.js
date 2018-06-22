@@ -1,15 +1,12 @@
 import React from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { HeaderBackButton } from 'react-navigation';
 import { Navigation } from 'react-native-navigation';
 
-import realm from '../../../lib/realm';
 import Avatar from '../../../containers/Avatar';
 import { STATUS_COLORS } from '../../../constants/colors';
 import styles from './styles';
-import { closeRoom } from '../../../actions/room';
 import RoomTypeIcon from '../../../containers/RoomTypeIcon';
 import I18n from '../../../i18n';
 
@@ -36,37 +33,24 @@ const title = (offline, connecting, authenticating, logged) => {
 class RoomHeaderView extends React.PureComponent {
 	static propTypes = {
 		roomComponentId: PropTypes.any,
-		room: PropTypes.object,
-		close: PropTypes.func.isRequired,
 		user: PropTypes.object.isRequired,
 		activeUsers: PropTypes.object,
 		offline: PropTypes.bool,
 		connecting: PropTypes.bool,
 		authenticating: PropTypes.bool,
 		logged: PropTypes.bool,
-		loading: PropTypes.bool
-	}
-
-	constructor(props) {
-		super(props);
-		this.state = {
-			room: props.room
-		};
-		this.room = realm.objects('subscriptions').filtered('rid = $0', props.room.rid);
-	}
-
-	componentDidMount() {
-		this.updateState();
-		this.room.addListener(this.updateState);
-	}
-
-	componentWillUnmount() {
-		this.room.removeAllListeners();
-		this.props.close();
+		loading: PropTypes.bool,
+		room_rid: PropTypes.string,
+		room_name: PropTypes.string,
+		room_t: PropTypes.string,
+		room_topic: PropTypes.string
 	}
 
 	getUserStatus() {
-		const userId = this.state.room.rid.replace(this.props.user.id, '').trim();
+		if (!this.props.room_rid) {
+			return 'offline';
+		}
+		const userId = this.props.room_rid.replace(this.props.user.id, '').trim();
 		const userInfo = this.props.activeUsers[userId];
 		return (userInfo && userInfo.status) || 'offline';
 	}
@@ -76,31 +60,25 @@ class RoomHeaderView extends React.PureComponent {
 		return I18n.t(status.charAt(0).toUpperCase() + status.slice(1));
 	}
 
-	updateState = () => {
-		if (this.room.length > 0) {
-			this.setState({ room: this.room[0] });
-		}
-	};
-
-	isDirect = () => this.state.room && this.state.room.t === 'd';
+	isDirect = () => this.props.room_t === 'd';
 
 	goToRoomInfo = () => {
 		Navigation.push(this.props.roomComponentId, {
 			component: {
 				name: 'RoomInfoView',
 				passProps: {
-					rid: this.state.room.rid
+					rid: this.props.room_rid
 				}
 			}
 		});
 	}
 
 	render() {
-		if (!this.state.room.name) {
+		if (!this.props.room_name) {
 			return <View style={styles.titleContainer} />;
 		}
 
-		let accessibilityLabel = this.state.room.name;
+		let accessibilityLabel = this.props.room_name;
 
 		if (this.isDirect()) {
 			accessibilityLabel += `, ${ this.getUserStatusLabel() }`;
@@ -115,42 +93,37 @@ class RoomHeaderView extends React.PureComponent {
 		} else if (this.isDirect()) {
 			t = this.getUserStatusLabel();
 		} else {
-			t = this.state.room.topic || ' ';
+			t = this.props.room_topic || ' ';
 		}
 
 		return (
-			<View style={styles.header} testID='room-view-header'>
-				<TouchableOpacity
-					style={styles.titleContainer}
-					accessibilityLabel={accessibilityLabel}
-					accessibilityTraits='header'
-					onPress={() => this.goToRoomInfo()}
-					testID='room-view-header-title'
+			<View
+				style={styles.header}
+				testID='room-view-header'
+				accessibilityLabel={accessibilityLabel}
+			>
+				<Avatar
+					text={this.props.room_name}
+					size={24}
+					style={styles.avatar}
+					type={this.props.room_t}
 				>
-
-					<Avatar
-						text={this.state.room.name}
-						size={24}
-						style={styles.avatar}
-						type={this.state.room.t}
-					>
-						{this.isDirect() ?
-							<View style={[styles.status, { backgroundColor: STATUS_COLORS[this.getUserStatus()] }]} />
-							: null
-						}
-					</Avatar>
-					<View style={styles.titleTextContainer}>
-						<View style={{ flexDirection: 'row' }}>
-							<RoomTypeIcon type={this.state.room.t} size={13} />
-							<Text style={styles.title} allowFontScaling={false} testID='room-view-title'>
-								{this.state.room.name}
-							</Text>
-						</View>
-
-						{ t ? <Text style={styles.userStatus} allowFontScaling={false} numberOfLines={1}>{t}</Text> : null}
-
+					{this.isDirect() ?
+						<View style={[styles.status, { backgroundColor: STATUS_COLORS[this.getUserStatus()] }]} />
+						: null
+					}
+				</Avatar>
+				<View style={styles.titleTextContainer}>
+					<View style={{ flexDirection: 'row' }}>
+						<RoomTypeIcon type={this.props.room_t} size={13} />
+						<Text style={styles.title} allowFontScaling={false} testID='room-view-title'>
+							{this.props.room_name}
+						</Text>
 					</View>
-				</TouchableOpacity>
+
+					{ t ? <Text style={styles.userStatus} allowFontScaling={false} numberOfLines={1}>{t}</Text> : null}
+
+				</View>
 			</View>
 		);
 	}
@@ -163,11 +136,11 @@ const mapStateToProps = state => ({
 	connecting: state.meteor.connecting,
 	authenticating: state.login.isFetching,
 	offline: !state.meteor.connected,
-	logged: !!state.login.token
+	logged: !!state.login.token,
+	room_rid: state.room.rid,
+	room_name: state.room.name,
+	room_t: state.room.t,
+	room_topic: state.room.topic
 });
 
-const mapDispatchToProps = dispatch => ({
-	close: () => dispatch(closeRoom())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(RoomHeaderView);
+export default connect(mapStateToProps, null, null, { withRef: true })(RoomHeaderView);

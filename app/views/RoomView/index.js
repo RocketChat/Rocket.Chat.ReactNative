@@ -9,7 +9,7 @@ import { Navigation } from 'react-native-navigation';
 import LoggedView from '../View';
 import { List } from './ListView';
 // import * as actions from '../../actions';
-import { openRoom, setLastOpen } from '../../actions/room';
+import { openRoom, closeRoom, setLastOpen } from '../../actions/room';
 import { toggleReactionPicker, actionsShow } from '../../actions/messages';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
@@ -37,13 +37,19 @@ class RoomView extends LoggedView {
 		showErrorActions: PropTypes.bool,
 		actionMessage: PropTypes.object,
 		toggleReactionPicker: PropTypes.func.isRequired,
-		actionsShow: PropTypes.func
+		actionsShow: PropTypes.func,
+		close: PropTypes.func
 	};
 
 	// eslint-disable-next-line react/sort-comp
 	static get options() {
 		return {
 			topBar: {
+				title: {
+					component: {
+						name: 'RoomHeaderView'
+					}
+				},
 				rightButtons: [{
 					id: 'RoomView.more',
 					title: 'Actions',
@@ -55,6 +61,11 @@ class RoomView extends LoggedView {
 					testID: 'room-view-header-star',
 					icon: require('../../static/images/navicon_add.png') // eslint-disable-line
 				}]
+			},
+			sideMenu: {
+				left: {
+					enabled: false
+				}
 			}
 		};
 	}
@@ -82,6 +93,7 @@ class RoomView extends LoggedView {
 	componentWillUnmount() {
 		this.rooms.removeAllListeners();
 		this.onEndReached.stop();
+		this.props.close();
 	}
 
 	onNavigationButtonPressed = (id) => {
@@ -142,19 +154,6 @@ class RoomView extends LoggedView {
 			const { room: prevRoom } = this.state;
 			await this.setState({ room: JSON.parse(JSON.stringify(this.rooms[0])) });
 			if (!prevRoom.rid) {
-				Navigation.mergeOptions(this.props.componentId, {
-					topBar: {
-						title: {
-							component: {
-								name: 'RoomHeaderView',
-								passProps: {
-									room: this.state.room,
-									roomComponentId: this.props.componentId
-								}
-							}
-						}
-					}
-				});
 				await this.props.openRoom({
 					...this.state.room
 				});
@@ -218,6 +217,7 @@ class RoomView extends LoggedView {
 	);
 
 	renderFooter = () => {
+		// TODO: fix it
 		// if (!this.state.joined) {
 		// 	return (
 		// 		<View>
@@ -280,7 +280,8 @@ const mapDispatchToProps = dispatch => ({
 	openRoom: room => dispatch(openRoom(room)),
 	setLastOpen: date => dispatch(setLastOpen(date)),
 	toggleReactionPicker: message => dispatch(toggleReactionPicker(message)),
-	actionsShow: actionMessage => dispatch(actionsShow(actionMessage))
+	actionsShow: actionMessage => dispatch(actionsShow(actionMessage)),
+	close: () => dispatch(closeRoom())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(RoomView);

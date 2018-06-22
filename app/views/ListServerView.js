@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
 import LoggedView from './View';
-import { setServer } from '../actions/server';
+import { selectServer } from '../actions/server';
 import database from '../lib/realm';
 import Fade from '../animations/fade';
 import Touch from '../utils/touch';
@@ -213,7 +213,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	selectServer: server => dispatch(setServer(server))
+	selectServer: server => dispatch(selectServer(server))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(ListServerView);

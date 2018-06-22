@@ -18,6 +18,8 @@ import { Navigation } from 'react-native-navigation';
 import RocketChat from './lib/rocketchat';
 import store from './lib/createStore';
 import { appInit } from './actions';
+import { restoreToken, setUser } from './actions/login';
+import { selectServer } from './actions/server';
 import database from './lib/realm';
 
 import WithProvider from './views/WithProvider';
@@ -121,9 +123,28 @@ async function start() {
 	Navigation.registerComponent('SnippetedMessagesView', () => WithProvider(SnippetedMessagesView, store));
 	Navigation.registerComponent('StarredMessagesView', () => WithProvider(StarredMessagesView, store));
 
-	store.dispatch(appInit());
-
 	Navigation.events().registerAppLaunchedListener(async() => {
+		// const currentServer = await AsyncStorage.getItem('currentServer');
+		// if (currentServer) {
+		// 	console.warn('setActiveDB')
+		// 	database.setActiveDB(currentServer);
+		// }
+		store.dispatch(appInit());
+
+		// const token = await AsyncStorage.getItem(RocketChat.TOKEN_KEY);
+		// if (token) {
+		// 	store.dispatch(restoreToken(token));
+		// }
+		// const currentServer = await AsyncStorage.getItem('currentServer');
+		// if (currentServer) {
+		// 	store.dispatch(selectServer(currentServer));
+
+		// 	const login = await AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ currentServer }`);
+		// 	if (login) {
+		// 		store.dispatch(setUser(JSON.parse(login)));
+		// 	}
+		// }
+
 		const token = await AsyncStorage.getItem(RocketChat.TOKEN_KEY);
 		if (token) {
 			return startLogged();

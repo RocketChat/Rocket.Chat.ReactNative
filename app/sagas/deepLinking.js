@@ -2,7 +2,7 @@ import { AsyncStorage } from 'react-native';
 import { delay } from 'redux-saga';
 import { takeLatest, take, select, put } from 'redux-saga/effects';
 import * as types from '../actions/actionsTypes';
-import { setServer, addServer } from '../actions/server';
+import { selectServer, addServer } from '../actions/server';
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 
@@ -51,7 +51,7 @@ const handleOpen = function* handleOpen({ params }) {
 		const servers = yield database.databases.serversDB.objects('servers').filtered('id = $0', host); // TODO: need better test
 		if (servers.length) {
 			// if server exists, select it
-			yield put(setServer(servers[0].id));
+			yield put(selectServer(servers[0].id));
 			yield delay(2000);
 			yield navigate({ server: servers[0].id, params, sameServer: false });
 		} else {

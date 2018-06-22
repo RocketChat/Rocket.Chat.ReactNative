@@ -36,10 +36,13 @@ class RoomsListView extends LoggedView {
 					icon: require('../../static/images/navicon_menu.png') // eslint-disable-line
 				}],
 				title: {
-					component: {
-						name: 'RoomsListHeaderView'
-					}
+					text: 'Messages'
 				},
+				// title: {
+				// 	component: {
+				// 		name: 'RoomsListHeaderView'
+				// 	}
+				// },
 				rightButtons: [{
 					id: 'RoomsListView.createChannel',
 					title: 'Add',
@@ -57,19 +60,23 @@ class RoomsListView extends LoggedView {
 			search: [],
 			rooms: []
 		};
+		// setTimeout(() => {
 		this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
+		this.data.addListener(this.updateState);
+		// }, 500);
 	}
 
 	componentDidMount() {
 		NavigationControllerManager.getSharedInstance().setActiveRootComponentId(this.props.componentId, 'RoomsListView');
-		this.data.addListener(this.updateState);
 	}
 
 	componentWillReceiveProps(props) {
 		if (this.props.server !== props.server) {
-			this.data.removeListener(this.updateState);
-			this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
-			this.data.addListener(this.updateState);
+			if (this.data) {
+				this.data.removeListener(this.updateState);
+				this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
+				this.data.addListener(this.updateState);
+			}
 		} else if (this.props.searchText !== props.searchText) {
 			this.search(props.searchText);
 		}
@@ -77,7 +84,9 @@ class RoomsListView extends LoggedView {
 
 	componentWillUnmount() {
 		this.updateState.stop();
-		this.data.removeAllListeners();
+		if (this.data) {
+			this.data.removeAllListeners();
+		}
 	}
 
 	onNavigationButtonPressed = (id) => {

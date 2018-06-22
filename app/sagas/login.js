@@ -19,7 +19,7 @@ import {
 	forgotPasswordFailure
 } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
-// import * as NavigationService from '../containers/routes/NavigationService';
+import { NavigationControllerManager } from '../NavigationController';
 import log from '../utils/log';
 import I18n from '../i18n';
 
@@ -46,28 +46,29 @@ const handleLoginSuccess = function* handleLoginSuccess() {
 		}
 		if (!user.user.username || user.isRegistering) {
 			yield put(registerIncomplete());
-		} else {
-			// Navigation.setRoot({
-			// 	root: {
-			// 		sideMenu: {
-			// 			left: {
-			// 				component: {
-			// 					name: 'Sidebar'
-			// 				}
-			// 			},
-			// 			center: {
-			// 				stack: {
-			// 					children: [{
-			// 						component: {
-			// 							name: 'RoomsListView'
-			// 						}
-			// 					}]
-			// 				}
-			// 			}
-			// 		}
-			// 	}
-			// });
 		}
+		// else {
+		// 	Navigation.setRoot({
+		// 		root: {
+		// 			sideMenu: {
+		// 				left: {
+		// 					component: {
+		// 						name: 'Sidebar'
+		// 					}
+		// 				},
+		// 				center: {
+		// 					stack: {
+		// 						children: [{
+		// 							component: {
+		// 								name: 'RoomsListView'
+		// 							}
+		// 						}]
+		// 					}
+		// 				}
+		// 			}
+		// 		}
+		// 	});
+		// }
 	} catch (e) {
 		log('handleLoginSuccess', e);
 	}

@@ -6,7 +6,7 @@ import { Navigation } from 'react-native-navigation';
 import { SERVER } from '../actions/actionsTypes';
 import * as actions from '../actions';
 import { connectRequest } from '../actions/connect';
-import { serverSuccess, serverFailure, setServer } from '../actions/server';
+import { serverSuccess, serverFailure, selectServer } from '../actions/server';
 import { setRoles } from '../actions/roles';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
@@ -16,7 +16,7 @@ const validate = function* validate(server) {
 	return yield RocketChat.testServer(server);
 };
 
-const selectServer = function* selectServer({ server }) {
+const handleSelectServer = function* handleSelectServer({ server }) {
 	try {
 		yield database.setActiveDB(server);
 
@@ -36,7 +36,7 @@ const selectServer = function* selectServer({ server }) {
 
 		yield put(connectRequest());
 	} catch (e) {
-		log('selectServer', e);
+		log('handleSelectServer', e);
 	}
 };
 
@@ -67,7 +67,7 @@ const addServer = function* addServer({ server }) {
 		database.databases.serversDB.write(() => {
 			database.databases.serversDB.create('servers', { id: server, current: false }, true);
 		});
-		yield put(setServer(server));
+		yield put(selectServer(server));
 	} catch (e) {
 		log('addServer', e);
 	}
@@ -75,7 +75,7 @@ const addServer = function* addServer({ server }) {
 
 const root = function* root() {
 	yield takeLatest(SERVER.REQUEST, validateServer);
-	yield takeLatest(SERVER.SELECT, selectServer);
+	yield takeLatest(SERVER.SELECT, handleSelectServer);
 	yield takeLatest(SERVER.ADD, addServer);
 };
 export default root;

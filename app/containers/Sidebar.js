@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Navigation } from 'react-native-navigation';
 
 import database from '../lib/realm';
-import { setServer } from '../actions/server';
+import { selectServer } from '../actions/server';
 import { logout } from '../actions/login';
 import Avatar from '../containers/Avatar';
 import Status from '../containers/status';
@@ -313,7 +313,7 @@ class Sidebar extends Component {
 		}
 		return (
 			<ScrollView style={{ backgroundColor: '#fff' }}>
-				<SafeAreaView testID='sidebar'>
+				<View testID='sidebar'>
 					<Touch
 						onPress={() => this.toggleServers()}
 						underlayColor='rgba(255, 255, 255, 0.5)'
@@ -344,7 +344,7 @@ class Sidebar extends Component {
 
 					{!this.state.showServers ? this.renderNavigation() : null}
 					{this.state.showServers ? this.renderServers() : null}
-				</SafeAreaView>
+				</View>
 			</ScrollView>
 		);
 	}
@@ -356,7 +356,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	selectServer: server => dispatch(setServer(server)),
+	selectServer: server => dispatch(selectServer(server)),
 	logout: () => dispatch(logout())
 });
 
