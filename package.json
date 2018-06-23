@@ -79,7 +79,7 @@
     "redux-enhancer-react-native-appstate": "^0.3.1",
     "redux-immutable-state-invariant": "^2.1.0",
     "redux-saga": "^0.16.0",
-    "regenerator-runtime": "^0.11.1",
+    "regenerator-runtime": "^0.12.0",
     "snyk": "^1.82.2",
     "strip-ansi": "^4.0.0"
   },
