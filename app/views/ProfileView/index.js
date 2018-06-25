@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, SafeAreaView, Keyboard } from 'react-native';
+import { View, ScrollView, SafeAreaView, Keyboard, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
 import SHA256 from 'js-sha256';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import RNPickerSelect from 'react-native-picker-select';
-import { Navigation } from 'react-native-navigation';
 
 import LoggedView from '../View';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -23,30 +22,14 @@ import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
-import { NavigationControllerManager } from '../../NavigationController';
+import { iconsMap } from '../../Icons';
 
 /** @extends React.Component */
 class ProfileView extends LoggedView {
 	static propTypes = {
-		componentId: PropTypes.any,
+		navigator: PropTypes.object,
 		user: PropTypes.object,
 		Accounts_CustomFields: PropTypes.string
-	}
-
-	// eslint-disable-next-line react/sort-comp
-	static get options() {
-		return {
-			topBar: {
-				leftButtons: [{
-					id: 'Sidemenu',
-					title: 'Menu',
-					icon: require('../../static/images/navicon_menu.png') // eslint-disable-line
-				}],
-				title: {
-					text: 'Profile'
-				}
-			}
-		};
 	}
 
 	constructor(props) {
@@ -64,11 +47,21 @@ class ProfileView extends LoggedView {
 			avatarSuggestions: {},
 			customFields: {}
 		};
+		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+		props.navigator.setTitle({ title: 'Profile' });
+	}
+
+	componentWillMount() {
+		this.props.navigator.setButtons({
+			leftButtons: [{
+				id: 'sideMenu',
+				icon: Platform.OS === 'ios' ? iconsMap['ios-menu'] : undefined
+			}]
+		});
 	}
 
 	async componentDidMount() {
 		this.init();
-		NavigationControllerManager.getSharedInstance().setActiveRootComponentId(this.props.componentId, 'ProfileView');
 
 		try {
 			const result = await RocketChat.getAvatarSuggestion();
@@ -84,14 +77,16 @@ class ProfileView extends LoggedView {
 		}
 	}
 
-	onNavigationButtonPressed = () => {
-		Navigation.mergeOptions(this.props.componentId, {
-			sideMenu: {
-				left: {
-					visible: true
-				}
+	onNavigatorEvent(event) {
+		if (event.type === 'NavBarButtonPress') {
+			if (event.id === 'sideMenu' && Platform.OS === 'ios') {
+				this.props.navigator.toggleDrawer({
+					side: 'left',
+					animated: true,
+					to: 'missing'
+				});
 			}
-		});
+		}
 	}
 
 	setAvatar = (avatar) => {

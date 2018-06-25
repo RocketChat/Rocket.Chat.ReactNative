@@ -1,4 +1,5 @@
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, Platform } from 'react-native';
+import { delay } from 'redux-saga';
 import { put, call, take, takeLatest, select, all } from 'redux-saga/effects';
 import { Navigation } from 'react-native-navigation';
 
@@ -19,7 +20,6 @@ import {
 	forgotPasswordFailure
 } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
-import { NavigationControllerManager } from '../NavigationController';
 import log from '../utils/log';
 import I18n from '../i18n';
 
@@ -27,7 +27,6 @@ const getUser = state => state.login;
 const getServer = state => state.server.server;
 const getIsConnected = state => state.meteor.connected;
 
-// const loginCall = args => ((args.resume || args.oauth) ? RocketChat.login(args) : RocketChat.loginWithPassword(args));
 const loginCall = args => RocketChat.loginWithPassword(args);
 const registerCall = args => RocketChat.register(args);
 const setUsernameCall = args => RocketChat.setUsername(args);
@@ -38,6 +37,7 @@ const forgotPasswordCall = args => RocketChat.forgotPassword(args);
 const handleLoginSuccess = function* handleLoginSuccess() {
 	try {
 		const [server, user] = yield all([select(getServer), select(getUser)]);
+		const prevToken = yield AsyncStorage.getItem(RocketChat.TOKEN_KEY);
 		yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
 		yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
 		const token = yield AsyncStorage.getItem('pushId');
@@ -46,29 +46,19 @@ const handleLoginSuccess = function* handleLoginSuccess() {
 		}
 		if (!user.user.username || user.isRegistering) {
 			yield put(registerIncomplete());
+		} else if (prevToken !== user.token) {
+			Navigation.startSingleScreenApp({
+				screen: {
+					screen: 'RoomsListView'
+				},
+				drawer: {
+					left: {
+						screen: 'Sidebar'
+					}
+				},
+				animationType: Platform.OS === 'ios' ? 'none' : 'slide-down'
+			});
 		}
-		// else {
-		// 	Navigation.setRoot({
-		// 		root: {
-		// 			sideMenu: {
-		// 				left: {
-		// 					component: {
-		// 						name: 'Sidebar'
-		// 					}
-		// 				},
-		// 				center: {
-		// 					stack: {
-		// 						children: [{
-		// 							component: {
-		// 								name: 'RoomsListView'
-		// 							}
-		// 						}]
-		// 					}
-		// 				}
-		// 			}
-		// 		}
-		// 	});
-		// }
 	} catch (e) {
 		log('handleLoginSuccess', e);
 	}
@@ -116,17 +106,12 @@ const handleLogout = function* handleLogout() {
 	const server = yield select(getServer);
 	if (server) {
 		try {
-			yield Navigation.setRoot({
-				root: {
-					stack: {
-						children: [{
-							component: {
-								name: 'ListServerView'
-							}
-						}]
-					}
+			yield Navigation.startSingleScreenApp({
+				screen: {
+					screen: 'ListServerView'
 				}
 			});
+			yield delay(300);
 			yield call(logoutCall, { server });
 		} catch (e) {
 			log('handleLogout', e);

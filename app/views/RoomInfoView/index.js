@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { Navigation } from 'react-native-navigation';
 
 import LoggedView from '../View';
 import Status from '../../containers/status';
@@ -16,6 +15,7 @@ import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
+import { iconsMap } from '../../Icons';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
@@ -31,23 +31,12 @@ const getRoomTitle = room => (room.t === 'd' ?
 /** @extends React.Component */
 class RoomInfoView extends LoggedView {
 	static propTypes = {
-		componentId: PropTypes.any,
+		navigator: PropTypes.object,
 		rid: PropTypes.string,
 		user: PropTypes.object,
 		activeUsers: PropTypes.object,
 		Message_TimeFormat: PropTypes.string,
 		roles: PropTypes.object
-	}
-
-	// eslint-disable-next-line react/sort-comp
-	static get options() {
-		return {
-			topBar: {
-				title: {
-					text: 'Info'
-				}
-			}
-		};
 	}
 
 	constructor(props) {
@@ -62,6 +51,8 @@ class RoomInfoView extends LoggedView {
 			roomUser: {},
 			roles: []
 		};
+		props.navigator.setTitle({ title: 'Info' });
+		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
 
 	async componentDidMount() {
@@ -69,43 +60,42 @@ class RoomInfoView extends LoggedView {
 		this.rooms.addListener(this.updateRoom);
 
 		// get user of room
-		if (this.state.room.t === 'd') {
-			try {
-				const roomUser = await RocketChat.getRoomMember(this.state.room.rid, this.props.user.id);
-				this.setState({ roomUser });
-				const username = this.state.room.name;
+		if (this.state.room) {
+			if (this.state.room.t === 'd') {
+				try {
+					const roomUser = await RocketChat.getRoomMember(this.state.room.rid, this.props.user.id);
+					this.setState({ roomUser });
+					const username = this.state.room.name;
 
-				const activeUser = this.props.activeUsers[roomUser._id];
-				if (!activeUser || !activeUser.utcOffset) {
-					// get full user data looking for utcOffset
-					// will be catched by .on('users) and saved on activeUsers reducer
-					this.getFullUserData(username);
-				}
-
-				// get all users roles
-				// needs to be changed by a better method
-				const allUsersRoles = await RocketChat.getUserRoles();
-				const userRoles = allUsersRoles.find(user => user.username === username);
-				if (userRoles) {
-					this.setState({ roles: userRoles.roles || [] });
-				}
-			} catch (e) {
-				log('RoomInfoView.componentDidMount', e);
-			}
-		} else {
-			// TODO: permission!
-			const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], this.state.room.rid);
-			if (permissions[PERMISSION_EDIT_ROOM]) {
-				Navigation.mergeOptions(this.props.componentId, {
-					topBar: {
-						rightButtons: [{
-							id: 'RoomInfoView.edit',
-							title: 'Edit',
-							testID: 'room-info-view-edit-button',
-							icon: require('../../static/images/navicon_add.png') // eslint-disable-line
-						}]
+					const activeUser = this.props.activeUsers[roomUser._id];
+					if (!activeUser || !activeUser.utcOffset) {
+						// get full user data looking for utcOffset
+						// will be catched by .on('users) and saved on activeUsers reducer
+						this.getFullUserData(username);
 					}
-				});
+
+					// get all users roles
+					// needs to be changed by a better method
+					const allUsersRoles = await RocketChat.getUserRoles();
+					const userRoles = allUsersRoles.find(user => user.username === username);
+					if (userRoles) {
+						this.setState({ roles: userRoles.roles || [] });
+					}
+				} catch (e) {
+					log('RoomInfoView.componentDidMount', e);
+				}
+			} else {
+				// TODO: permission!
+				const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], this.state.room.rid);
+				if (permissions[PERMISSION_EDIT_ROOM]) {
+					this.props.navigator.setButtons({
+						rightButtons: [{
+							id: 'edit',
+							icon: iconsMap['ios-create-outline'],
+							testID: 'room-info-view-edit-button'
+						}]
+					});
+				}
 			}
 		}
 	}
@@ -115,15 +105,18 @@ class RoomInfoView extends LoggedView {
 		this.sub.unsubscribe();
 	}
 
-	onNavigationButtonPressed = () => {
-		Navigation.push(this.props.componentId, {
-			component: {
-				name: 'RoomInfoEditView',
-				passProps: {
-					rid: this.props.rid
-				}
+	onNavigatorEvent(event) {
+		if (event.type === 'NavBarButtonPress') {
+			if (event.id === 'edit') {
+				this.props.navigator.push({
+					screen: 'RoomInfoEditView',
+					title: 'Edit',
+					passProps: {
+						rid: this.props.rid
+					}
+				});
 			}
-		});
+		}
 	}
 
 	getFullUserData = async(username) => {

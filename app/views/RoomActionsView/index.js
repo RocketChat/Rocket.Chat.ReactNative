@@ -4,7 +4,6 @@ import { View, SectionList, Text, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
 
 import LoggedView from '../View';
 import styles from './styles';
@@ -26,21 +25,10 @@ const getRoomTitle = room => (room.t === 'd' ? <Text>{room.fname}</Text> : <Text
 class RoomActionsView extends LoggedView {
 	static propTypes = {
 		rid: PropTypes.string,
-		componentId: PropTypes.any,
+		navigator: PropTypes.object,
 		user_id: PropTypes.string,
 		user_username: PropTypes.string,
 		leaveRoom: PropTypes.func
-	}
-
-	// eslint-disable-next-line react/sort-comp
-	static get options() {
-		return {
-			topBar: {
-				title: {
-					text: 'Room Actions'
-				}
-			}
-		};
 	}
 
 	constructor(props) {
@@ -54,6 +42,7 @@ class RoomActionsView extends LoggedView {
 			allMembers: [],
 			member: {}
 		};
+		props.navigator.setTitle({ title: 'Actions' });
 	}
 
 	async componentDidMount() {
@@ -68,12 +57,9 @@ class RoomActionsView extends LoggedView {
 
 	onPressTouchable = (item) => {
 		if (item.route) {
-			// return this.props.navigation.navigate({ key: item.route, routeName: item.route, params: item.params });
-			Navigation.push(this.props.componentId, {
-				component: {
-					name: item.route,
-					passProps: item.params
-				}
+			this.props.navigator.push({
+				screen: item.route,
+				passProps: item.params
 			});
 		}
 		if (item.event) {
@@ -81,45 +67,6 @@ class RoomActionsView extends LoggedView {
 		}
 	}
 
-	updateRoomMembers = async() => {
-		const { t } = this.state.room;
-
-		if (!this.canViewMembers) {
-			return {};
-		}
-
-		if (t === 'c' || t === 'p') {
-			let onlineMembers = [];
-			let allMembers = [];
-			try {
-				const onlineMembersCall = RocketChat.getRoomMembers(this.state.room.rid, false);
-				const allMembersCall = RocketChat.getRoomMembers(this.state.room.rid, true);
-				const [onlineMembersResult, allMembersResult] = await Promise.all([onlineMembersCall, allMembersCall]);
-				onlineMembers = onlineMembersResult.records;
-				allMembers = allMembersResult.records;
-				return { onlineMembers, allMembers };
-			} catch (error) {
-				return {};
-			}
-		}
-	}
-
-	updateRoomMember = async() => {
-		if (this.state.room.t !== 'd') {
-			return {};
-		}
-		try {
-			const member = await RocketChat.getRoomMember(this.state.room.rid, this.props.user_id);
-			return { member };
-		} catch (e) {
-			log('RoomActions updateRoomMember', e);
-			return {};
-		}
-	}
-
-	updateRoom = () => {
-		this.setState({ room: this.room });
-	}
 	get canAddUser() { // Invite user
 		const {
 			rid, t
@@ -298,6 +245,46 @@ class RoomActionsView extends LoggedView {
 			});
 		}
 		return sections;
+	}
+
+	updateRoomMembers = async() => {
+		const { t } = this.state.room;
+
+		if (!this.canViewMembers) {
+			return {};
+		}
+
+		if (t === 'c' || t === 'p') {
+			let onlineMembers = [];
+			let allMembers = [];
+			try {
+				const onlineMembersCall = RocketChat.getRoomMembers(this.state.room.rid, false);
+				const allMembersCall = RocketChat.getRoomMembers(this.state.room.rid, true);
+				const [onlineMembersResult, allMembersResult] = await Promise.all([onlineMembersCall, allMembersCall]);
+				onlineMembers = onlineMembersResult.records;
+				allMembers = allMembersResult.records;
+				return { onlineMembers, allMembers };
+			} catch (error) {
+				return {};
+			}
+		}
+	}
+
+	updateRoomMember = async() => {
+		if (this.state.room.t !== 'd') {
+			return {};
+		}
+		try {
+			const member = await RocketChat.getRoomMember(this.state.room.rid, this.props.user_id);
+			return { member };
+		} catch (e) {
+			log('RoomActions updateRoomMember', e);
+			return {};
+		}
+	}
+
+	updateRoom = () => {
+		this.setState({ room: this.room });
 	}
 
 	toggleBlockUser = async() => {

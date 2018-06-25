@@ -6,7 +6,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Base64 } from 'js-base64';
 import Modal from 'react-native-modal';
-import { Navigation } from 'react-native-navigation';
 
 import RocketChat from '../lib/rocketchat';
 import { open, close } from '../actions/login';
@@ -52,7 +51,7 @@ const styles = StyleSheet.create({
 /** @extends React.Component */
 class LoginSignupView extends LoggedView {
 	static propTypes = {
-		componentId: PropTypes.any,
+		navigator: PropTypes.object,
 		loginOAuth: PropTypes.func.isRequired,
 		open: PropTypes.func.isRequired,
 		close: PropTypes.func.isRequired,
@@ -68,15 +67,6 @@ class LoginSignupView extends LoggedView {
 		Accounts_OAuth_Meteor: PropTypes.bool,
 		Accounts_OAuth_Twitter: PropTypes.bool,
 		services: PropTypes.object
-	}
-
-	// eslint-disable-next-line react/sort-comp
-	static get options() {
-		return {
-			topBar: {
-				visible: false
-			}
-		};
 	}
 
 	constructor(props) {
@@ -179,18 +169,18 @@ class LoginSignupView extends LoggedView {
 	}
 
 	login = () => {
-		Navigation.push(this.props.componentId, {
-			component: {
-				name: 'LoginView'
-			}
+		this.props.navigator.push({
+			screen: 'LoginView',
+			title: this.props.server,
+			backButtonTitle: 'Welcome'
 		});
 	}
 
 	register = () => {
-		Navigation.push(this.props.componentId, {
-			component: {
-				name: 'RegisterView'
-			}
+		this.props.navigator.push({
+			screen: 'RegisterView',
+			title: this.props.server,
+			backButtonTitle: 'Welcome'
 		});
 	}
 

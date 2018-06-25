@@ -1,8 +1,8 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { AsyncStorage } from 'react-native';
-import { Navigation } from 'react-native-navigation';
 
+import { NavigationActions } from '../Navigation';
 import { SERVER } from '../actions/actionsTypes';
 import * as actions from '../actions';
 import { connectRequest } from '../actions/connect';
@@ -53,17 +53,7 @@ const validateServer = function* validateServer({ server }) {
 
 const addServer = function* addServer({ server }) {
 	try {
-		Navigation.setRoot({
-			root: {
-				stack: {
-					children: [{
-						component: {
-							name: 'ListServerView'
-						}
-					}]
-				}
-			}
-		});
+		yield call(NavigationActions.resetTo, { screen: 'ListServerView' });
 		database.databases.serversDB.write(() => {
 			database.databases.serversDB.create('servers', { id: server, current: false }, true);
 		});

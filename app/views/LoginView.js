@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Keyboard, Text, ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Answers } from 'react-native-fabric';
-import { Navigation } from 'react-native-navigation';
 
 import RocketChat from '../lib/rocketchat';
 import KeyboardView from '../presentation/KeyboardView';
@@ -20,7 +19,7 @@ import I18n from '../i18n';
 /** @extends React.Component */
 class LoginView extends LoggedView {
 	static propTypes = {
-		componentId: PropTypes.any,
+		navigator: PropTypes.object,
 		loginSubmit: PropTypes.func.isRequired,
 		login: PropTypes.object,
 		server: PropTypes.string,
@@ -38,17 +37,6 @@ class LoginView extends LoggedView {
 			username: '',
 			password: ''
 		};
-		Navigation.mergeOptions(this.props.componentId, {
-			topBar: {
-				title: {
-					text: props.server
-				}
-			}
-		});
-	}
-
-	onNavigationButtonPressed() {
-		Navigation.dismissModal(this.props.componentId);
 	}
 
 	submit = async() => {
@@ -68,18 +56,16 @@ class LoginView extends LoggedView {
 	}
 
 	register = () => {
-		Navigation.push(this.props.componentId, {
-			component: {
-				name: 'RegisterView'
-			}
+		this.props.navigator.push({
+			screen: 'RegisterView',
+			title: this.props.server,
+			backButtonTitle: 'Login'
 		});
 	}
 
 	forgotPassword = () => {
-		Navigation.push(this.props.componentId, {
-			component: {
-				name: 'ForgotPasswordView'
-			}
+		this.props.navigator.push({
+			screen: 'ForgotPasswordView'
 		});
 	}
 

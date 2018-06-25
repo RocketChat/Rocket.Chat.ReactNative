@@ -18,21 +18,10 @@ import I18n from '../i18n';
 /** @extends React.Component */
 class ForgotPasswordView extends LoggedView {
 	static propTypes = {
-		componentId: PropTypes.any,
+		navigator: PropTypes.object,
 		forgotPasswordInit: PropTypes.func.isRequired,
 		forgotPasswordRequest: PropTypes.func.isRequired,
 		login: PropTypes.object
-	}
-
-	// eslint-disable-next-line react/sort-comp
-	static get options() {
-		return {
-			topBar: {
-				title: {
-					text: 'Forgot Password'
-				}
-			}
-		};
 	}
 
 	constructor(props) {
@@ -42,6 +31,7 @@ class ForgotPasswordView extends LoggedView {
 			email: '',
 			invalidEmail: false
 		};
+		props.navigator.setTitle({ title: 'Forgot Password' });
 	}
 
 	componentDidMount() {
@@ -51,7 +41,7 @@ class ForgotPasswordView extends LoggedView {
 	componentDidUpdate() {
 		const { login } = this.props;
 		if (login.success) {
-			Navigation.pop(this.props.componentId);
+			this.props.navigator.pop();
 			setTimeout(() => {
 				showErrorAlert(I18n.t('Forgot_password_If_this_email_is_registered'), I18n.t('Alert'));
 			});

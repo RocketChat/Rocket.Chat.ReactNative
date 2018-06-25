@@ -14,6 +14,7 @@ import I18n from '../../i18n';
 class SnippetedMessagesView extends LoggedView {
 	static propTypes = {
 		rid: PropTypes.string,
+		navigator: PropTypes.object,
 		messages: PropTypes.array,
 		ready: PropTypes.bool,
 		user: PropTypes.object,
@@ -22,23 +23,13 @@ class SnippetedMessagesView extends LoggedView {
 		closeSnippetedMessages: PropTypes.func
 	}
 
-	// eslint-disable-next-line react/sort-comp
-	static get options() {
-		return {
-			topBar: {
-				title: {
-					text: 'Snippeted Messages'
-				}
-			}
-		};
-	}
-
 	constructor(props) {
 		super('SnippetedMessagesView', props);
 		this.state = {
 			loading: true,
 			loadingMore: false
 		};
+		props.navigator.setTitle({ title: 'Snippeted' });
 	}
 
 	componentDidMount() {

@@ -16,7 +16,7 @@
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 #import <React/RCTLinkingManager.h>
-#import <ReactNativeNavigation/ReactNativeNavigation.h>
+#import "RCCManager.h"
 
 
 @implementation AppDelegate
@@ -24,9 +24,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
-
-  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
-  [ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
+  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+  
+  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+  self.window.backgroundColor = [UIColor whiteColor];
+  [[RCCManager sharedInstance] initBridgeWithBundleURL:jsCodeLocation launchOptions:launchOptions];
 
 //  RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
 //                                                     moduleName:@"RocketChatRN"

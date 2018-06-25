@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { View, StyleSheet, TextInput, Text, TouchableOpacity, SafeAreaView, FlatList, LayoutAnimation, Platform } from 'react-native';
 import { connect } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
 
 import { addUser, removeUser, reset, setLoading } from '../actions/selectedUsers';
 import database from '../lib/realm';
@@ -16,6 +15,7 @@ import debounce from '../utils/debounce';
 import LoggedView from './View';
 import I18n from '../i18n';
 import log from '../utils/log';
+import { iconsMap } from '../Icons';
 
 const styles = StyleSheet.create({
 	container: {
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 /** @extends React.Component */
 class SelectedUsersView extends LoggedView {
 	static propTypes = {
-		componentId: PropTypes.any,
+		navigator: PropTypes.object,
 		rid: PropTypes.string,
 		nextAction: PropTypes.string.isRequired,
 		user: PropTypes.object,
@@ -81,18 +81,6 @@ class SelectedUsersView extends LoggedView {
 		setLoadingInvite: PropTypes.func
 	};
 
-	// eslint-disable-next-line react/sort-comp
-	static get options() {
-		return {
-			topBar: {
-				title: {
-					text: 'Select Users'
-				},
-				rightButtons: []
-			}
-		};
-	}
-
 	constructor(props) {
 		super('SelectedUsersView', props);
 		this.data = database.objects('subscriptions').filtered('t = $0', 'd').sorted('roomUpdatedAt', true);
@@ -100,6 +88,8 @@ class SelectedUsersView extends LoggedView {
 			search: []
 		};
 		this.data.addListener(this.updateState);
+		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+		props.navigator.setTitle({ title: 'Select Users' });
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -108,17 +98,12 @@ class SelectedUsersView extends LoggedView {
 			const rightButtons = [];
 			if (length > 0) {
 				rightButtons.push({
-					id: 'SelectedUsers.createChannel',
-					title: this.props.nextAction === 'CREATE_CHANNEL' ? 'Create' : 'Add',
+					id: 'create',
 					testID: 'selected-users-view-submit',
-					icon: require('../static/images/navicon_add.png') // eslint-disable-line
+					icon: iconsMap['ios-add']
 				});
 			}
-			Navigation.mergeOptions(this.props.componentId, {
-				topBar: {
-					rightButtons
-				}
-			});
+			this.props.navigator.setButtons({ rightButtons });
 		}
 	}
 
@@ -128,24 +113,24 @@ class SelectedUsersView extends LoggedView {
 		this.props.reset();
 	}
 
-	onNavigationButtonPressed = async() => {
-		const { nextAction, componentId } = this.props;
-		if (nextAction === 'CREATE_CHANNEL') {
-			Navigation.push(componentId, {
-				component: {
-					name: 'CreateChannelView'
+	async onNavigatorEvent(event) {
+		if (event.type === 'NavBarButtonPress') {
+			if (event.id === 'create') {
+				const { nextAction, setLoadingInvite, navigator } = this.props;
+				if (nextAction === 'CREATE_CHANNEL') {
+					this.props.navigator.push({ screen: 'CreateChannelView' });
+				} else {
+					try {
+						setLoadingInvite(true);
+						await RocketChat.addUsersToRoom(this.props.rid);
+						navigator.pop();
+						// this.props.navigation.goBack();
+					} catch (e) {
+						log('RoomActions Add User', e);
+					} finally {
+						setLoadingInvite(false);
+					}
 				}
-			});
-		} else if (nextAction === 'ADD_USER') {
-			try {
-				this.props.setLoadingInvite(true);
-				await RocketChat.addUsersToRoom(this.props.rid);
-				Navigation.pop(this.props.componentId);
-				// this.props.navigation.goBack();
-			} catch (e) {
-				log('RoomActions Add User', e);
-			} finally {
-				this.props.setLoadingInvite(false);
 			}
 		}
 	}

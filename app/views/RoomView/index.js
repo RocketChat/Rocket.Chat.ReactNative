@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
-// import { bindActionCreators } from 'redux';
 import equal from 'deep-equal';
-import { Navigation } from 'react-native-navigation';
 
 import LoggedView from '../View';
 import { List } from './ListView';
@@ -24,15 +22,17 @@ import styles from './styles';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import debounce from '../../utils/debounce';
+import { iconsMap } from '../../Icons';
 
 /** @extends React.Component */
 class RoomView extends LoggedView {
 	static propTypes = {
-		componentId: PropTypes.any,
+		navigator: PropTypes.object,
 		openRoom: PropTypes.func.isRequired,
 		setLastOpen: PropTypes.func.isRequired,
 		user: PropTypes.object.isRequired,
 		rid: PropTypes.string,
+		name: PropTypes.string,
 		showActions: PropTypes.bool,
 		showErrorActions: PropTypes.bool,
 		actionMessage: PropTypes.object,
@@ -40,35 +40,6 @@ class RoomView extends LoggedView {
 		actionsShow: PropTypes.func,
 		close: PropTypes.func
 	};
-
-	// eslint-disable-next-line react/sort-comp
-	static get options() {
-		return {
-			topBar: {
-				title: {
-					component: {
-						name: 'RoomHeaderView'
-					}
-				},
-				rightButtons: [{
-					id: 'RoomView.more',
-					title: 'Actions',
-					testID: 'room-view-header-actions',
-					icon: require('../../static/images/navicon_add.png') // eslint-disable-line
-				}, {
-					id: 'RoomView.star',
-					title: 'Star',
-					testID: 'room-view-header-star',
-					icon: require('../../static/images/navicon_add.png') // eslint-disable-line
-				}]
-			},
-			sideMenu: {
-				left: {
-					enabled: false
-				}
-			}
-		};
-	}
 
 	constructor(props) {
 		super('RoomView', props);
@@ -81,6 +52,22 @@ class RoomView extends LoggedView {
 			end: false
 		};
 		this.onReactionPress = this.onReactionPress.bind(this);
+		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+		props.navigator.setTitle({ title: props.name });
+	}
+
+	async componentWillMount() {
+		this.props.navigator.setButtons({
+			rightButtons: [{
+				id: 'more',
+				testID: 'room-view-header-actions',
+				icon: iconsMap['ios-more']
+			}, {
+				id: 'star',
+				testID: 'room-view-header-star',
+				icon: iconsMap['ios-star-outline']
+			}]
+		});
 	}
 
 	componentDidMount() {
@@ -90,30 +77,45 @@ class RoomView extends LoggedView {
 	shouldComponentUpdate(nextProps, nextState) {
 		return !(equal(this.props, nextProps) && equal(this.state, nextState) && this.state.room.ro === nextState.room.ro);
 	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (prevState.room.f !== this.state.room.f) {
+			this.props.navigator.setButtons({
+				rightButtons: [{
+					id: 'more',
+					testID: 'room-view-header-actions',
+					icon: iconsMap['ios-more']
+				}, {
+					id: 'star',
+					testID: 'room-view-header-star',
+					icon: this.state.room.f ? iconsMap['ios-star'] : iconsMap['ios-star-outline']
+				}]
+			});
+		}
+	}
+
 	componentWillUnmount() {
 		this.rooms.removeAllListeners();
 		this.onEndReached.stop();
 		this.props.close();
 	}
 
-	onNavigationButtonPressed = (id) => {
-		if (id === 'RoomView.more') {
-			Navigation.push(this.props.componentId, {
-				component: {
-					name: 'RoomActionsView',
+	onNavigatorEvent(event) {
+		if (event.type === 'NavBarButtonPress') {
+			if (event.id === 'more') {
+				this.props.navigator.push({
+					screen: 'RoomActionsView',
 					passProps: {
 						rid: this.state.room.rid
 					}
+				});
+			} else if (event.id === 'star') {
+				try {
+					RocketChat.toggleFavorite(this.state.room.rid, this.state.room.f);
+				} catch (e) {
+					log('toggleFavorite', e);
 				}
-			});
-		} else if (id === 'RoomView.star') {
-			try {
-				RocketChat.toggleFavorite(this.state.room.rid, this.state.room.f);
-			} catch (e) {
-				log('toggleFavorite', e);
 			}
-		} else {
-			alert(id);
 		}
 	}
 

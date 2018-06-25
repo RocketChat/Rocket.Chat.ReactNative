@@ -8,16 +8,6 @@ class TermsServiceView extends React.PureComponent {
 		termsService: PropTypes.string
 	}
 
-	static get options() {
-		return {
-			topBar: {
-				title: {
-					text: 'Terms of Service'
-				}
-			}
-		};
-	}
-
 	render() {
 		return (
 			<WebView source={{ html: this.props.termsService }} />

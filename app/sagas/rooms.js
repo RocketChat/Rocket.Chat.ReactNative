@@ -2,9 +2,7 @@ import { Alert } from 'react-native';
 import { put, call, takeLatest, take, select, race, fork, cancel, takeEvery } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { BACKGROUND } from 'redux-enhancer-react-native-appstate';
-import { Navigation } from 'react-native-navigation';
 
-import { NavigationControllerManager } from '../NavigationController';
 import * as types from '../actions/actionsTypes';
 // import { roomsSuccess, roomsFailure } from '../actions/rooms';
 import { addUserTyping, removeUserTyping, setLastOpen } from '../actions/room';
@@ -12,6 +10,7 @@ import { messagesRequest, editCancel } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import log from '../utils/log';
+import { NavigationActions } from '../Navigation';
 
 const leaveRoom = rid => RocketChat.leaveRoom(rid);
 const eraseRoom = rid => RocketChat.eraseRoom(rid);
@@ -140,7 +139,7 @@ const updateLastOpen = function* updateLastOpen() {
 };
 
 const goRoomsListAndDelete = function* goRoomsListAndDelete(rid) {
-	Navigation.popToRoot(NavigationControllerManager.getSharedInstance().getActiveRootComponent().componentId);
+	NavigationActions.popToRoot();
 	yield delay(1000);
 	try {
 		database.write(() => {

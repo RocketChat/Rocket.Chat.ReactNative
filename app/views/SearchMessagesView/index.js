@@ -20,6 +20,7 @@ import I18n from '../../i18n';
 class SearchMessagesView extends LoggedView {
 	static propTypes = {
 		rid: PropTypes.string,
+		navigator: PropTypes.object,
 		user: PropTypes.object, // TODO: should use specific user fields
 		baseUrl: PropTypes.string
 	}
@@ -32,17 +33,7 @@ class SearchMessagesView extends LoggedView {
 			searching: false,
 			loadingMore: false
 		};
-	}
-
-	// eslint-disable-next-line react/sort-comp
-	static get options() {
-		return {
-			topBar: {
-				title: {
-					text: 'Search Messages'
-				}
-			}
-		};
+		props.navigator.setTitle({ title: 'Search' });
 	}
 
 	componentDidMount() {

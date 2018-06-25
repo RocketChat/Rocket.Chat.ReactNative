@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { FlatList, View, TextInput, Vibration } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
-import { Navigation } from 'react-native-navigation';
 
 import LoggedView from '../View';
 import styles from './styles';
@@ -16,32 +15,21 @@ import database from '../../lib/realm';
 import { showToast } from '../../utils/info';
 import log from '../../utils/log';
 import I18n from '../../i18n';
-import { NavigationControllerManager } from '../../NavigationController';
 
 /** @extends React.Component */
 class RoomMembersView extends LoggedView {
+	static navigatorButtons = {
+		rightButtons: [{
+			title: 'All',
+			id: 'toggleOnline'
+		}]
+	};
+
 	static propTypes = {
-		componentId: PropTypes.any,
+		navigator: PropTypes.object,
 		rid: PropTypes.string,
 		members: PropTypes.array,
 		baseUrl: PropTypes.string
-	}
-
-	// eslint-disable-next-line react/sort-comp
-	static get options() {
-		return {
-			topBar: {
-				title: {
-					text: 'Room Members'
-				},
-				rightButtons: [{
-					id: 'RoomMembersView.toggleOnline',
-					title: 'All',
-					testID: 'room-members-view-toggle-status',
-					icon: require('../../static/images/navicon_add.png') // eslint-disable-line
-				}]
-			}
-		};
 	}
 
 	constructor(props) {
@@ -61,6 +49,8 @@ class RoomMembersView extends LoggedView {
 			userLongPressed: {},
 			room: {}
 		};
+		props.navigator.setTitle({ title: 'Room Members' });
+		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
 
 	componentDidMount() {
@@ -71,23 +61,24 @@ class RoomMembersView extends LoggedView {
 		this.rooms.removeAllListeners();
 	}
 
-	onNavigationButtonPressed = async() => {
-		try {
-			const allUsers = !this.state.allUsers;
-			const membersResult = await RocketChat.getRoomMembers(this.state.rid, allUsers);
-			const members = membersResult.records;
-			this.setState({ allUsers, members });
-			Navigation.mergeOptions(this.props.componentId, {
-				topBar: {
-					rightButtons: [{
-						id: 'RoomMembersView.toggleOnline',
-						title: this.state.allUsers ? 'Online' : 'All',
-						icon: require('../../static/images/navicon_add.png') // eslint-disable-line
-					}]
+	async onNavigatorEvent(event) {
+		if (event.type === 'NavBarButtonPress') {
+			if (event.id === 'toggleOnline') {
+				try {
+					const allUsers = !this.state.allUsers;
+					const membersResult = await RocketChat.getRoomMembers(this.state.rid, allUsers);
+					const members = membersResult.records;
+					this.setState({ allUsers, members });
+					this.props.navigator.setButtons({
+						rightButtons: [{
+							title: this.state.allUsers ? 'Online' : 'All',
+							id: 'toggleOnline'
+						}]
+					});
+				} catch (e) {
+					log('RoomMembers.onNavigationButtonPressed', e);
 				}
-			});
-		} catch (e) {
-			log('RoomMembers.onNavigationButtonPressed', e);
+			}
 		}
 	}
 
@@ -137,15 +128,13 @@ class RoomMembersView extends LoggedView {
 	}
 
 	goRoom = ({ rid, name }) => {
-		Navigation.popToRoot(this.props.componentId);
-		Navigation.push(NavigationControllerManager.getSharedInstance().getActiveRootComponent().componentId, {
-			component: {
-				name: 'RoomView',
-				passProps: {
-					room: { rid, name },
-					rid,
-					name
-				}
+		this.props.navigator.popToRoot();
+		this.props.navigator.push({
+			screen: 'RoomView',
+			passProps: {
+				room: { rid, name },
+				rid,
+				name
 			}
 		});
 	}

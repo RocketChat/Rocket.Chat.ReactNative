@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Keyboard, Text, View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
 
 import { registerSubmit, setUsernameSubmit } from '../actions/login';
 import TextInput from '../containers/TextInput';
@@ -18,7 +17,7 @@ import I18n from '../i18n';
 /** @extends React.Component */
 class RegisterView extends LoggedView {
 	static propTypes = {
-		componentId: PropTypes.any,
+		navigator: PropTypes.object,
 		server: PropTypes.string,
 		registerSubmit: PropTypes.func.isRequired,
 		setUsernameSubmit: PropTypes.func,
@@ -39,17 +38,6 @@ class RegisterView extends LoggedView {
 			confirmPassword: '',
 			username: ''
 		};
-		Navigation.mergeOptions(this.props.componentId, {
-			topBar: {
-				title: {
-					text: props.server
-				}
-			}
-		});
-	}
-
-	onNavigationButtonPressed() {
-		Navigation.dismissModal(this.props.componentId);
 	}
 
 	valid() {
@@ -91,18 +79,16 @@ class RegisterView extends LoggedView {
 	}
 
 	termsService = () => {
-		Navigation.push(this.props.componentId, {
-			component: {
-				name: 'TermsServiceView'
-			}
+		this.props.navigator.push({
+			screen: 'TermsServiceView',
+			title: 'Terms of Service'
 		});
 	}
 
 	privacyPolicy = () => {
-		Navigation.push(this.props.componentId, {
-			component: {
-				name: 'PrivacyPolicyView'
-			}
+		this.props.navigator.push({
+			screen: 'PrivacyPolicyView',
+			title: 'Privacy Policy'
 		});
 	}
 

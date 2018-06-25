@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView, Text, View, StyleSheet, FlatList, LayoutAnimation, SafeAreaView } from 'react-native';
+import { ScrollView, Text, View, StyleSheet, FlatList, LayoutAnimation, AsyncStorage, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -16,7 +16,7 @@ import { STATUS_COLORS } from '../constants/colors';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import I18n from '../i18n';
-import { NavigationControllerManager } from '../NavigationController';
+import { NavigationActions } from '../Navigation';
 
 const styles = StyleSheet.create({
 	selected: {
@@ -80,7 +80,7 @@ const keyExtractor = item => item.id;
 
 class Sidebar extends Component {
 	static propTypes = {
-		componentId: PropTypes.any,
+		navigator: PropTypes.object,
 		server: PropTypes.string.isRequired,
 		selectServer: PropTypes.func.isRequired,
 		user: PropTypes.object,
@@ -113,7 +113,6 @@ class Sidebar extends Component {
 
 	onPressItem = (item) => {
 		this.props.selectServer(item.id);
-		// this.closeDrawer();
 	}
 
 	setStatus = () => {
@@ -145,12 +144,10 @@ class Sidebar extends Component {
 	}
 
 	closeDrawer = () => {
-		Navigation.mergeOptions(this.props.componentId, {
-			sideMenu: {
-				left: {
-					visible: false
-				}
-			}
+		this.props.navigator.toggleDrawer({
+			side: 'left',
+			animated: true,
+			to: 'close'
 		});
 	}
 
@@ -161,16 +158,9 @@ class Sidebar extends Component {
 
 	sidebarNavigate = (route) => {
 		this.closeDrawer();
-		if (NavigationControllerManager.getSharedInstance().getActiveRootComponent().componentName !== route) {
-			Navigation.setStackRoot(NavigationControllerManager.getSharedInstance().getActiveRootComponent().componentId, {
-				component: {
-					name: route,
-					options: {
-						animated: true // Will animate root change same as push
-					}
-				}
-			});
-		}
+		NavigationActions.resetTo({
+			screen: route
+		});
 	}
 
 	renderSeparator = key => <View key={key} style={styles.separator} />;
@@ -223,11 +213,19 @@ class Sidebar extends Component {
 				source={{ uri: encodeURI(`${ item.id }/assets/favicon_32.png`) }}
 			/>,
 			selected: this.props.server === item.id,
-			onPress: () => {
+			onPress: async() => {
 				this.closeDrawer();
 				this.toggleServers();
 				if (this.props.server !== item.id) {
 					this.props.selectServer(item.id);
+					const token = await AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ item.id }`);
+					if (!token) {
+						return Navigation.startSingleScreenApp({
+							screen: {
+								screen: 'ListServerView'
+							}
+						});
+					}
 					this.sidebarNavigate('RoomsListView');
 				}
 			},
@@ -258,10 +256,7 @@ class Sidebar extends Component {
 			this.renderSeparator('separator-logout'),
 			this.renderItem({
 				text: I18n.t('Logout'),
-				left: <Icon
-					name='exit-to-app'
-					size={20}
-				/>,
+				left: <Icon name='exit-to-app' size={20} />,
 				onPress: () => this.props.logout(),
 				testID: 'sidebar-logout'
 			})
@@ -295,10 +290,8 @@ class Sidebar extends Component {
 				onPress: () => {
 					this.closeDrawer();
 					this.toggleServers();
-					Navigation.push(NavigationControllerManager.getSharedInstance().getActiveRootComponent().componentId, {
-						component: {
-							name: 'NewServerView'
-						}
+					NavigationActions.push({
+						screen: 'NewServerView'
 					});
 				},
 				testID: 'sidebar-add-server'
@@ -313,7 +306,7 @@ class Sidebar extends Component {
 		}
 		return (
 			<ScrollView style={{ backgroundColor: '#fff' }}>
-				<View testID='sidebar'>
+				<SafeAreaView testID='sidebar'>
 					<Touch
 						onPress={() => this.toggleServers()}
 						underlayColor='rgba(255, 255, 255, 0.5)'
@@ -344,7 +337,7 @@ class Sidebar extends Component {
 
 					{!this.state.showServers ? this.renderNavigation() : null}
 					{this.state.showServers ? this.renderServers() : null}
-				</View>
+				</SafeAreaView>
 			</ScrollView>
 		);
 	}

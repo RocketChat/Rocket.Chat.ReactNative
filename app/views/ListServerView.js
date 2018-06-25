@@ -4,7 +4,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
 import { View, Text, SectionList, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
 
 import LoggedView from './View';
 import { selectServer } from '../actions/server';
@@ -12,6 +11,7 @@ import database from '../lib/realm';
 import Fade from '../animations/fade';
 import Touch from '../utils/touch';
 import I18n from '../i18n';
+import { iconsMap } from '../Icons';
 
 const styles = StyleSheet.create({
 	view: {
@@ -65,28 +65,10 @@ const styles = StyleSheet.create({
 /** @extends React.Component */
 class ListServerView extends LoggedView {
 	static propTypes = {
-		componentId: PropTypes.any,
+		navigator: PropTypes.object,
 		login: PropTypes.object.isRequired,
 		selectServer: PropTypes.func.isRequired,
 		server: PropTypes.string
-	}
-
-	// eslint-disable-next-line react/sort-comp
-	static get options() {
-		return {
-			topBar: {
-				title: {
-					text: 'Servers'
-				},
-				rightButtons: [
-					{
-						id: 'AddServer',
-						title: 'Add',
-						icon: require('../static/images/navicon_add.png') // eslint-disable-line
-					}
-				]
-			}
-		};
 	}
 
 	constructor(props) {
@@ -96,6 +78,17 @@ class ListServerView extends LoggedView {
 		};
 		this.data = database.databases.serversDB.objects('servers');
 		this.data.addListener(this.updateState);
+		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+		props.navigator.setTitle({ title: 'Servers' });
+	}
+
+	async componentWillMount() {
+		this.props.navigator.setButtons({
+			rightButtons: [{
+				id: 'addServer',
+				icon: iconsMap['ios-add']
+			}]
+		});
 	}
 
 	componentDidMount() {
@@ -107,12 +100,14 @@ class ListServerView extends LoggedView {
 		this.data.removeAllListeners();
 	}
 
-	onNavigationButtonPressed() {
-		Navigation.push(this.props.componentId, {
-			component: {
-				name: 'NewServerView'
+	onNavigatorEvent(event) {
+		if (event.type === 'NavBarButtonPress') {
+			if (event.id === 'addServer') {
+				this.props.navigator.push({
+					screen: 'NewServerView'
+				});
 			}
-		});
+		}
 	}
 
 	onPressItem = (item) => {
@@ -131,23 +126,22 @@ class ListServerView extends LoggedView {
 		};
 	};
 
-	openLogin = () => {
-		Navigation.push(this.props.componentId, {
-			component: {
-				name: 'LoginSignupView'
-			}
+	openLogin = (server) => {
+		this.props.navigator.push({
+			screen: 'LoginSignupView',
+			title: server
 		});
 	}
 
 	selectAndNavigateTo = (server) => {
 		this.props.selectServer(server);
-		this.openLogin();
+		this.openLogin(server);
 	}
 
 	jumpToSelectedServer() {
 		if (this.props.server && !this.props.login.isRegistering) {
 			setTimeout(() => {
-				this.openLogin();
+				this.openLogin(this.props.server);
 			}, 500);
 		}
 	}

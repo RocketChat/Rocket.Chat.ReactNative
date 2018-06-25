@@ -16,7 +16,7 @@ import I18n from '../i18n';
 /** @extends React.Component */
 class NewServerView extends LoggedView {
 	static propTypes = {
-		componentId: PropTypes.any,
+		navigator: PropTypes.object,
 		validateServer: PropTypes.func.isRequired,
 		addServer: PropTypes.func.isRequired,
 		validating: PropTypes.bool.isRequired,
@@ -24,27 +24,13 @@ class NewServerView extends LoggedView {
 		addingServer: PropTypes.bool.isRequired
 	}
 
-	// eslint-disable-next-line react/sort-comp
-	static get options() {
-		return {
-			topBar: {
-				title: {
-					text: 'New Server'
-				}
-			}
-		};
-	}
-
 	constructor(props) {
 		super('NewServerView', props);
 		this.state = {
 			defaultServer: 'https://open.rocket.chat'
 		};
-		this.props.validateServer(this.state.defaultServer); // Need to call because in case of submit with empty field
-	}
-
-	componentDidMount() {
-		this.input.focus();
+		props.validateServer(this.state.defaultServer); // Need to call because in case of submit with empty field
+		props.navigator.setTitle({ title: 'New Server' });
 	}
 
 	onChangeText = (text) => {

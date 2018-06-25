@@ -14,22 +14,12 @@ import I18n from '../../i18n';
 class RoomFilesView extends LoggedView {
 	static propTypes = {
 		rid: PropTypes.string,
+		navigator: PropTypes.object,
 		messages: PropTypes.array,
 		ready: PropTypes.bool,
 		user: PropTypes.object,
 		openRoomFiles: PropTypes.func,
 		closeRoomFiles: PropTypes.func
-	}
-
-	// eslint-disable-next-line react/sort-comp
-	static get options() {
-		return {
-			topBar: {
-				title: {
-					text: 'Room files'
-				}
-			}
-		};
 	}
 
 	constructor(props) {
@@ -38,6 +28,7 @@ class RoomFilesView extends LoggedView {
 			loading: true,
 			loadingMore: false
 		};
+		props.navigator.setTitle({ title: 'Room Files' });
 	}
 
 	componentDidMount() {

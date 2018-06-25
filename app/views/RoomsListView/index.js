@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Platform, View, TextInput, FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
+// import Icon from 'react-native-vector-icons/Ionicons';
 
+import { iconsMap } from '../../Icons';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem from '../../presentation/RoomItem';
@@ -12,45 +13,15 @@ import debounce from '../../utils/debounce';
 import LoggedView from '../View';
 import log from '../../utils/log';
 import I18n from '../../i18n';
-import { NavigationControllerManager } from '../../NavigationController';
 
 /** @extends React.Component */
 class RoomsListView extends LoggedView {
 	static propTypes = {
-		componentId: PropTypes.any,
+		navigator: PropTypes.object,
 		user: PropTypes.object,
 		Site_Url: PropTypes.string,
 		server: PropTypes.string,
 		searchText: PropTypes.string
-	}
-
-	// eslint-disable-next-line react/sort-comp
-	static get options() {
-		return {
-			topBar: {
-				leftButtons: [{
-					id: 'Sidemenu',
-					title: 'Menu',
-					testID: 'rooms-list-view-sidebar',
-					accessibilityLabel: 'teste',
-					icon: require('../../static/images/navicon_menu.png') // eslint-disable-line
-				}],
-				title: {
-					text: 'Messages'
-				},
-				// title: {
-				// 	component: {
-				// 		name: 'RoomsListHeaderView'
-				// 	}
-				// },
-				rightButtons: [{
-					id: 'RoomsListView.createChannel',
-					title: 'Add',
-					testID: 'rooms-list-view-create-channel',
-					icon: require('../../static/images/navicon_add.png') // eslint-disable-line
-				}]
-			}
-		};
 	}
 
 	constructor(props) {
@@ -60,14 +31,23 @@ class RoomsListView extends LoggedView {
 			search: [],
 			rooms: []
 		};
-		// setTimeout(() => {
 		this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
 		this.data.addListener(this.updateState);
-		// }, 500);
+		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+		props.navigator.setTitle({ title: 'Messages' });
 	}
 
-	componentDidMount() {
-		NavigationControllerManager.getSharedInstance().setActiveRootComponentId(this.props.componentId, 'RoomsListView');
+	async componentWillMount() {
+		this.props.navigator.setButtons({
+			leftButtons: [{
+				id: 'sideMenu',
+				icon: Platform.OS === 'ios' ? iconsMap['ios-menu'] : undefined
+			}],
+			rightButtons: [{
+				id: 'createChannel',
+				icon: iconsMap['ios-add']
+			}]
+		});
 	}
 
 	componentWillReceiveProps(props) {
@@ -89,26 +69,22 @@ class RoomsListView extends LoggedView {
 		}
 	}
 
-	onNavigationButtonPressed = (id) => {
-		if (id === 'Sidemenu') {
-			Navigation.mergeOptions(this.props.componentId, {
-				sideMenu: {
-					left: {
-						visible: true
-					}
-				}
-			});
-		} else if (id === 'RoomsListView.createChannel') {
-			Navigation.push(this.props.componentId, {
-				component: {
-					name: 'SelectedUsersView',
+	onNavigatorEvent(event) {
+		if (event.type === 'NavBarButtonPress') {
+			if (event.id === 'createChannel') {
+				this.props.navigator.push({
+					screen: 'SelectedUsersView',
 					passProps: {
 						nextAction: 'CREATE_CHANNEL'
 					}
-				}
-			});
-		} else {
-			alert(id);
+				});
+			} else if (event.id === 'sideMenu' && Platform.OS === 'ios') {
+				this.props.navigator.toggleDrawer({
+					side: 'left',
+					animated: true,
+					to: 'missing'
+				});
+			}
 		}
 	}
 
@@ -166,14 +142,12 @@ class RoomsListView extends LoggedView {
 	}
 
 	goRoom = (rid, name) => {
-		Navigation.push(this.props.componentId, {
-			component: {
-				name: 'RoomView',
-				passProps: {
-					room: { rid, name },
-					rid,
-					name
-				}
+		this.props.navigator.push({
+			screen: 'RoomView',
+			passProps: {
+				room: { rid, name },
+				rid,
+				name
 			}
 		});
 	}

@@ -2,7 +2,6 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
 
 import Avatar from '../../../containers/Avatar';
 import { STATUS_COLORS } from '../../../constants/colors';
@@ -32,7 +31,6 @@ const title = (offline, connecting, authenticating, logged) => {
 
 class RoomHeaderView extends React.PureComponent {
 	static propTypes = {
-		roomComponentId: PropTypes.any,
 		user: PropTypes.object.isRequired,
 		activeUsers: PropTypes.object,
 		offline: PropTypes.bool,
@@ -61,17 +59,6 @@ class RoomHeaderView extends React.PureComponent {
 	}
 
 	isDirect = () => this.props.room_t === 'd';
-
-	goToRoomInfo = () => {
-		Navigation.push(this.props.roomComponentId, {
-			component: {
-				name: 'RoomInfoView',
-				passProps: {
-					rid: this.props.room_rid
-				}
-			}
-		});
-	}
 
 	render() {
 		if (!this.props.room_name) {

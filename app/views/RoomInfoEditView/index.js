@@ -41,17 +41,6 @@ class RoomInfoEditView extends LoggedView {
 		eraseRoom: PropTypes.func
 	};
 
-	// eslint-disable-next-line react/sort-comp
-	static get options() {
-		return {
-			topBar: {
-				title: {
-					text: 'Edit'
-				}
-			}
-		};
-	}
-
 	constructor(props) {
 		super('RoomInfoEditView', props);
 		const { rid } = props;

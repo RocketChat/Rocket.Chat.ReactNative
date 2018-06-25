@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, SafeAreaView } from 'react-native';
+import { View, ScrollView, SafeAreaView, Platform } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
 
 import LoggedView from '../View';
 import RocketChat from '../../lib/rocketchat';
@@ -17,30 +16,14 @@ import Loading from '../../containers/Loading';
 import { showErrorAlert, showToast } from '../../utils/info';
 import log from '../../utils/log';
 import { setUser } from '../../actions/login';
-import { NavigationControllerManager } from '../../NavigationController';
+import { iconsMap } from '../../Icons';
 
 /** @extends React.Component */
 class SettingsView extends LoggedView {
 	static propTypes = {
-		componentId: PropTypes.any,
+		navigator: PropTypes.object,
 		user: PropTypes.object,
 		setUser: PropTypes.func
-	}
-
-	// eslint-disable-next-line react/sort-comp
-	static get options() {
-		return {
-			topBar: {
-				leftButtons: [{
-					id: 'Sidemenu',
-					title: 'Menu',
-					icon: require('../../static/images/navicon_menu.png') // eslint-disable-line
-				}],
-				title: {
-					text: 'Settings'
-				}
-			}
-		};
 	}
 
 	constructor(props) {
@@ -54,20 +37,29 @@ class SettingsView extends LoggedView {
 			}],
 			saving: false
 		};
+		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+		props.navigator.setTitle({ title: 'Settings' });
 	}
 
-	componentDidMount() {
-		NavigationControllerManager.getSharedInstance().setActiveRootComponentId(this.props.componentId, 'SettingsView');
-	}
-
-	onNavigationButtonPressed = () => {
-		Navigation.mergeOptions(this.props.componentId, {
-			sideMenu: {
-				left: {
-					visible: true
-				}
-			}
+	componentWillMount() {
+		this.props.navigator.setButtons({
+			leftButtons: [{
+				id: 'sideMenu',
+				icon: Platform.OS === 'ios' ? iconsMap['ios-menu'] : undefined
+			}]
 		});
+	}
+
+	onNavigatorEvent(event) {
+		if (event.type === 'NavBarButtonPress') {
+			if (event.id === 'sideMenu' && Platform.OS === 'ios') {
+				this.props.navigator.toggleDrawer({
+					side: 'left',
+					animated: true,
+					to: 'missing'
+				});
+			}
+		}
 	}
 
 	formIsChanged = () => {
@@ -98,13 +90,6 @@ class SettingsView extends LoggedView {
 		try {
 			await RocketChat.saveUserPreferences(params);
 			this.props.setUser({ language: params.language });
-			Navigation.mergeOptions(this.props.componentId, {
-				topBar: {
-					title: {
-						text: I18n.t('Settings')
-					}
-				}
-			});
 
 			this.setState({ saving: false });
 			setTimeout(() => {

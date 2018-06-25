@@ -37,6 +37,11 @@ public class MainApplication extends NavigationApplication {
     return BuildConfig.DEBUG;
   }
 
+  @Override
+  public String getJSMainModuleName() {
+      return "index";
+  }
+
   protected List<ReactPackage> getPackages() {
       // Add additional packages you require here
       // No need to add RnnPackage and MainReactPackage

@@ -20,6 +20,7 @@ const options = [I18n.t('Unstar'), I18n.t('Cancel')];
 class StarredMessagesView extends LoggedView {
 	static propTypes = {
 		rid: PropTypes.string,
+		navigator: PropTypes.object,
 		messages: PropTypes.array,
 		ready: PropTypes.bool,
 		user: PropTypes.object,
@@ -29,17 +30,6 @@ class StarredMessagesView extends LoggedView {
 		toggleStarRequest: PropTypes.func
 	}
 
-	// eslint-disable-next-line react/sort-comp
-	static get options() {
-		return {
-			topBar: {
-				title: {
-					text: 'Starred Messages'
-				}
-			}
-		};
-	}
-
 	constructor(props) {
 		super('StarredMessagesView', props);
 		this.state = {
@@ -47,6 +37,7 @@ class StarredMessagesView extends LoggedView {
 			loading: true,
 			loadingMore: false
 		};
+		props.navigator.setTitle({ title: 'Starred' });
 	}
 
 	componentDidMount() {

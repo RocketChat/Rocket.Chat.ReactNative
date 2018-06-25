@@ -16,6 +16,7 @@ import I18n from '../i18n';
 /** @extends React.Component */
 class CreateChannelView extends LoggedView {
 	static propTypes = {
+		navigator: PropTypes.object,
 		create: PropTypes.func.isRequired,
 		createChannel: PropTypes.object.isRequired,
 		users: PropTypes.array.isRequired
@@ -29,6 +30,7 @@ class CreateChannelView extends LoggedView {
 			readOnly: false,
 			broadcast: false
 		};
+		props.navigator.setTitle({ title: 'Create Channel' });
 	}
 
 	submit = () => {

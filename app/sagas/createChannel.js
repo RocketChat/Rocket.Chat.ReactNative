@@ -1,6 +1,6 @@
 import { delay } from 'redux-saga';
 import { select, put, call, take, takeLatest } from 'redux-saga/effects';
-import { Navigation } from 'react-native-navigation';
+import { NavigationActions } from '../Navigation';
 
 import { CREATE_CHANNEL, LOGIN } from '../actions/actionsTypes';
 import { createChannelSuccess, createChannelFailure } from '../actions/createChannel';
@@ -20,34 +20,14 @@ const handleRequest = function* handleRequest({ data }) {
 		}
 		const result = yield call(create, data);
 		const { rid, name } = result;
-		// goRoom({ rid, name });
-		Navigation.setRoot({
-			root: {
-				sideMenu: {
-					left: {
-						component: {
-							name: 'Sidebar'
-						}
-					},
-					center: {
-						stack: {
-							children: [{
-								component: {
-									name: 'RoomsListView'
-								}
-							}, {
-								component: {
-									name: 'RoomView',
-									passProps: {
-										room: { rid, name },
-										rid,
-										name
-									}
-								}
-							}]
-						}
-					}
-				}
+		NavigationActions.popToRoot();
+		NavigationActions.push({
+			screen: 'RoomView',
+			title: name,
+			passProps: {
+				room: { rid, name },
+				rid,
+				name
 			}
 		});
 		yield put(createChannelSuccess(result));
