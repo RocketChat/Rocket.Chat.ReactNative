@@ -403,4 +403,4 @@ const mapDispatchToProps = dispatch => ({
 	eraseRoom: rid => dispatch(eraseRoom(rid))
 });
 
-export default connect(null, mapDispatchToProps, null, { withRef: true })(RoomInfoEditView);
+export default connect(null, mapDispatchToProps)(RoomInfoEditView);

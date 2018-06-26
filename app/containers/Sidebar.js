@@ -226,7 +226,6 @@ class Sidebar extends Component {
 							}
 						});
 					}
-					this.sidebarNavigate('RoomsListView');
 				}
 			},
 			testID: `sidebar-${ item.id }`
@@ -353,4 +352,4 @@ const mapDispatchToProps = dispatch => ({
 	logout: () => dispatch(logout())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(Sidebar);
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

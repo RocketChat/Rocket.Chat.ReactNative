@@ -231,4 +231,4 @@ const mapDispatchToProps = dispatch => ({
 	setUsernameSubmit: params => dispatch(setUsernameSubmit(params))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(RegisterView);
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterView);

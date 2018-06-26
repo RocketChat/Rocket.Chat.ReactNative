@@ -20,4 +20,4 @@ const mapStateToProps = state => ({
 	privacyPolicy: state.settings.Layout_Privacy_Policy
 });
 
-export default connect(mapStateToProps, null, null, { withRef: true })(PrivacyPolicyView);
+export default connect(mapStateToProps, null)(PrivacyPolicyView);

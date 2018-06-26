@@ -19,4 +19,4 @@ const mapStateToProps = state => ({
 	termsService: state.settings.Layout_Terms_of_Service
 });
 
-export default connect(mapStateToProps, null, null, { withRef: true })(TermsServiceView);
+export default connect(mapStateToProps, null)(TermsServiceView);

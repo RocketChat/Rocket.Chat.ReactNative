@@ -210,4 +210,4 @@ const mapDispatchToProps = dispatch => ({
 	selectServer: server => dispatch(selectServer(server))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(ListServerView);
+export default connect(mapStateToProps, mapDispatchToProps)(ListServerView);

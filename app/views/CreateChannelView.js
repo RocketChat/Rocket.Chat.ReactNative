@@ -171,4 +171,4 @@ const mapDispatchToProps = dispatch => ({
 	create: data => dispatch(createChannelRequest(data))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(CreateChannelView);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateChannelView);

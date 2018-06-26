@@ -143,4 +143,4 @@ const mapStateToProps = state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 });
 
-export default connect(mapStateToProps, null, null, { withRef: true })(SearchMessagesView);
+export default connect(mapStateToProps, null)(SearchMessagesView);

@@ -358,4 +358,4 @@ const mapDispatchToProps = dispatch => ({
 	close: () => dispatch(close())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(LoginSignupView);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginSignupView);

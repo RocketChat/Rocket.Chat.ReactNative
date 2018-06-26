@@ -119,4 +119,4 @@ const mapDispatchToProps = dispatch => ({
 	closeMentionedMessages: () => dispatch(closeMentionedMessages())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(MentionedMessagesView);
+export default connect(mapStateToProps, mapDispatchToProps)(MentionedMessagesView);

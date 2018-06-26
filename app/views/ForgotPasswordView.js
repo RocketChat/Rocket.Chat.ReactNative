@@ -114,4 +114,4 @@ const dispatchToProps = dispatch => ({
 	forgotPasswordRequest: email => dispatch(forgotPasswordRequest(email))
 });
 
-export default connect(mapStateToProps, dispatchToProps, null, { withRef: true })(ForgotPasswordView);
+export default connect(mapStateToProps, dispatchToProps)(ForgotPasswordView);

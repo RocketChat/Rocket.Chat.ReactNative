@@ -116,4 +116,4 @@ const mapDispatchToProps = dispatch => ({
 	closeRoomFiles: () => dispatch(closeRoomFiles())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(RoomFilesView);
+export default connect(mapStateToProps, mapDispatchToProps)(RoomFilesView);

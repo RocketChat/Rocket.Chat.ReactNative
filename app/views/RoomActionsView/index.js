@@ -412,4 +412,4 @@ const mapDispatchToProps = dispatch => ({
 	leaveRoom: rid => dispatch(leaveRoom(rid))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(RoomActionsView);
+export default connect(mapStateToProps, mapDispatchToProps)(RoomActionsView);

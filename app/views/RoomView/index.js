@@ -6,7 +6,6 @@ import equal from 'deep-equal';
 
 import LoggedView from '../View';
 import { List } from './ListView';
-// import * as actions from '../../actions';
 import { openRoom, closeRoom, setLastOpen } from '../../actions/room';
 import { toggleReactionPicker, actionsShow } from '../../actions/messages';
 import database from '../../lib/realm';
@@ -15,8 +14,6 @@ import Message from '../../containers/message';
 import MessageActions from '../../containers/MessageActions';
 import MessageErrorActions from '../../containers/MessageErrorActions';
 import MessageBox from '../../containers/MessageBox';
-// import Header from '../../containers/Header';
-// import RoomHeader from './Header';
 import ReactionPicker from './ReactionPicker';
 import styles from './styles';
 import log from '../../utils/log';
@@ -61,11 +58,11 @@ class RoomView extends LoggedView {
 			rightButtons: [{
 				id: 'more',
 				testID: 'room-view-header-actions',
-				icon: iconsMap['ios-more']
+				icon: iconsMap['md-more']
 			}, {
 				id: 'star',
 				testID: 'room-view-header-star',
-				icon: iconsMap['ios-star-outline']
+				icon: iconsMap['md-star-outline']
 			}]
 		});
 	}
@@ -84,11 +81,11 @@ class RoomView extends LoggedView {
 				rightButtons: [{
 					id: 'more',
 					testID: 'room-view-header-actions',
-					icon: iconsMap['ios-more']
+					icon: iconsMap['md-more']
 				}, {
 					id: 'star',
 					testID: 'room-view-header-star',
-					icon: this.state.room.f ? iconsMap['ios-star'] : iconsMap['ios-star-outline']
+					icon: this.state.room.f ? iconsMap['md-star'] : iconsMap['md-star-outline']
 				}]
 			});
 		}
@@ -156,6 +153,7 @@ class RoomView extends LoggedView {
 			const { room: prevRoom } = this.state;
 			await this.setState({ room: JSON.parse(JSON.stringify(this.rooms[0])) });
 			if (!prevRoom.rid) {
+				this.props.navigator.setTitle({ title: this.state.room.name });
 				await this.props.openRoom({
 					...this.state.room
 				});
@@ -286,4 +284,4 @@ const mapDispatchToProps = dispatch => ({
 	close: () => dispatch(closeRoom())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(RoomView);
+export default connect(mapStateToProps, mapDispatchToProps)(RoomView);

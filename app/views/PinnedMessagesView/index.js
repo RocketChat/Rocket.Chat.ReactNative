@@ -152,4 +152,4 @@ const mapDispatchToProps = dispatch => ({
 	togglePinRequest: message => dispatch(togglePinRequest(message))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(PinnedMessagesView);
+export default connect(mapStateToProps, mapDispatchToProps)(PinnedMessagesView);

@@ -166,4 +166,4 @@ const mapDispatchToProps = () => ({
 	loginSubmit: params => RocketChat.loginWithPassword(params)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(LoginView);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginView);

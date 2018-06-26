@@ -462,4 +462,4 @@ const mapStateToProps = state => ({
 	Accounts_CustomFields: state.settings.Accounts_CustomFields
 });
 
-export default connect(mapStateToProps, null, null, { withRef: true })(ProfileView);
+export default connect(mapStateToProps, null)(ProfileView);

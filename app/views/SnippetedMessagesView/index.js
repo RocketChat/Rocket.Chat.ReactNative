@@ -120,4 +120,4 @@ const mapDispatchToProps = dispatch => ({
 	closeSnippetedMessages: () => dispatch(closeSnippetedMessages())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(SnippetedMessagesView);
+export default connect(mapStateToProps, mapDispatchToProps)(SnippetedMessagesView);

@@ -140,4 +140,4 @@ const mapDispatchToProps = dispatch => ({
 	addServer: (url, componentId) => dispatch(addServer(url, componentId))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(NewServerView);
+export default connect(mapStateToProps, mapDispatchToProps)(NewServerView);

@@ -161,4 +161,4 @@ const mapDispatchToProps = dispatch => ({
 	setUser: params => dispatch(setUser(params))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(SettingsView);
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsView);

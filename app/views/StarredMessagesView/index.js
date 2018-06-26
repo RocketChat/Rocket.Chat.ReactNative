@@ -152,4 +152,4 @@ const mapDispatchToProps = dispatch => ({
 	toggleStarRequest: message => dispatch(toggleStarRequest(message))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(StarredMessagesView);
+export default connect(mapStateToProps, mapDispatchToProps)(StarredMessagesView);

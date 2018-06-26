@@ -231,4 +231,4 @@ const mapStateToProps = state => ({
 	roles: state.roles
 });
 
-export default connect(mapStateToProps, null, null, { withRef: true })(RoomInfoView);
+export default connect(mapStateToProps, null)(RoomInfoView);

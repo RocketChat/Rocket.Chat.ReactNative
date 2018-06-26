@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Platform, View, TextInput, FlatList } from 'react-native';
 import { connect } from 'react-redux';
-// import Icon from 'react-native-vector-icons/Ionicons';
 
 import { iconsMap } from '../../Icons';
 import database from '../../lib/realm';
@@ -52,11 +51,9 @@ class RoomsListView extends LoggedView {
 
 	componentWillReceiveProps(props) {
 		if (this.props.server !== props.server) {
-			if (this.data) {
-				this.data.removeListener(this.updateState);
-				this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
-				this.data.addListener(this.updateState);
-			}
+			this.data.removeListener(this.updateState);
+			this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
+			this.data.addListener(this.updateState);
 		} else if (this.props.searchText !== props.searchText) {
 			this.search(props.searchText);
 		}
@@ -238,4 +235,4 @@ const mapStateToProps = state => ({
 	searchText: state.rooms.searchText
 });
 
-export default connect(mapStateToProps, null, null, { withRef: true })(RoomsListView);
+export default connect(mapStateToProps, null)(RoomsListView);

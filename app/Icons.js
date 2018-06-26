@@ -1,13 +1,13 @@
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const icons = {
-	'ios-search': [30, Ionicons],
-	'ios-menu': [30, Ionicons],
-	'ios-star': [30, Ionicons],
-	'ios-star-outline': [30, Ionicons],
-	'ios-create-outline': [30, Ionicons],
-	'ios-more': [30, Ionicons],
-	'ios-add': [30, Ionicons],
+	'md-search': [30, Ionicons],
+	'md-menu': [30, Ionicons],
+	'md-star': [30, Ionicons],
+	'md-star-outline': [30, Ionicons],
+	'md-create-outline': [30, Ionicons],
+	'md-more': [30, Ionicons],
+	'md-add': [30, Ionicons]
 };
 
 const iconsMap = {};

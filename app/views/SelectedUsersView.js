@@ -321,4 +321,4 @@ const mapDispatchToProps = dispatch => ({
 	setLoadingInvite: loading => dispatch(setLoading(loading))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(SelectedUsersView);
+export default connect(mapStateToProps, mapDispatchToProps)(SelectedUsersView);
