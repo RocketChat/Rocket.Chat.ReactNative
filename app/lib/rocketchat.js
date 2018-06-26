@@ -175,8 +175,8 @@ const RocketChat = {
 			this.ddp.on('disconnected', () => console.log('disconnected'));
 
 			this.ddp.on('logged', protectedFunction((user) => {
-				this.getRooms().catch(e => log('logged getRooms', e));
 				this.loginSuccess(user);
+				this.getRooms().catch(e => log('logged getRooms', e));
 			}));
 			this.ddp.once('logged', protectedFunction(({ id }) => {
 				this.subscribeRooms(id);

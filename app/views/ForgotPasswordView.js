@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, SafeAreaView, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
 
 import LoggedView from './View';
 import { forgotPasswordInit, forgotPasswordRequest } from '../actions/login';

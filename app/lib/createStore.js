@@ -7,7 +7,6 @@ import reducers from '../reducers';
 import sagas from '../sagas';
 
 const createStore = __DEV__ ? Reactotron.createStore : reduxCreateStore;
-// const createStore = reduxCreateStore;
 let sagaMiddleware;
 let enhancers;
 

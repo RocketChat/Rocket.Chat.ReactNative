@@ -1,16 +1,19 @@
 import PushNotification from 'react-native-push-notification';
 import { AsyncStorage } from 'react-native';
 import EJSON from 'ejson';
-import { goRoom } from './containers/routes/NavigationService';
+
+import { NavigationActions } from './Navigation';
 
 const handleNotification = (notification) => {
-	if (!notification.userInteraction) {
-		return;
+	if (notification.userInteraction) {
+		const {
+			rid, name, sender, type
+		} = EJSON.parse(notification.ejson || notification.data.ejson);
+		NavigationActions.push({
+			screen: 'RoomView',
+			passProps: { rid, name: type === 'd' ? sender.username : name }
+		});
 	}
-	const {
-		rid, name, sender, type
-	} = EJSON.parse(notification.ejson || notification.data.ejson);
-	return rid && goRoom({ rid, name: type === 'd' ? sender.username : name });
 };
 PushNotification.configure({
 
