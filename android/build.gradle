@@ -6,6 +6,7 @@ buildscript {
         mavenLocal()
         mavenCentral()
         jcenter()
+        google()
     }
     dependencies {
         // classpath 'com.android.tools.build:gradle:2.2.3'
