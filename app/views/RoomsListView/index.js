@@ -37,14 +37,17 @@ class RoomsListView extends LoggedView {
 	}
 
 	async componentWillMount() {
+		const rightButtons = []; // TODO: add android
 		this.props.navigator.setButtons({
 			leftButtons: [{
-				id: 'sideMenu',
-				icon: Platform.OS === 'ios' ? iconsMap['ios-menu'] : undefined
+				id: 'sideMenu'
 			}],
 			rightButtons: [{
 				id: 'createChannel',
-				icon: iconsMap['ios-add']
+				icon: iconsMap['md-add']
+			}, {
+				id: 'search',
+				icon: iconsMap['md-search']
 			}]
 		});
 	}
@@ -67,19 +70,49 @@ class RoomsListView extends LoggedView {
 	}
 
 	onNavigatorEvent(event) {
+		const { navigator } = this.props;
 		if (event.type === 'NavBarButtonPress') {
 			if (event.id === 'createChannel') {
-				this.props.navigator.push({
+				navigator.push({
 					screen: 'SelectedUsersView',
 					passProps: {
 						nextAction: 'CREATE_CHANNEL'
 					}
 				});
 			} else if (event.id === 'sideMenu' && Platform.OS === 'ios') {
-				this.props.navigator.toggleDrawer({
+				navigator.toggleDrawer({
 					side: 'left',
 					animated: true,
 					to: 'missing'
+				});
+			} else if (event.id === 'search') {
+				navigator.setStyle({
+					navBarCustomView: 'RoomsListSearchView',
+					navBarComponentAlignment: 'fill'
+				});
+				navigator.setButtons({
+					leftButtons: [{
+						id: 'cancelSearch',
+						icon: iconsMap['md-arrow-back']
+					}],
+					rightButtons: []
+				});
+			} else if (event.id === 'cancelSearch') {
+				navigator.setStyle({
+					navBarCustomView: ''
+				});
+				navigator.setButtons({
+					leftButtons: [{
+						id: 'sideMenu',
+						icon: Platform.OS === 'ios' ? iconsMap['ios-menu'] : undefined
+					}],
+					rightButtons: [{
+						id: 'createChannel',
+						icon: iconsMap['md-add']
+					}, {
+						id: 'search',
+						icon: iconsMap['md-search']
+					}]
 				});
 			}
 		}
