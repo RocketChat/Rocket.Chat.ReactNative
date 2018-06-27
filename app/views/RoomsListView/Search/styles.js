@@ -5,9 +5,7 @@ export default StyleSheet.create({
 		zIndex: 2,
 		flexDirection: 'row',
 		alignItems: 'center',
-		flex: 1,
-		height: 44,
-		width: 300
+		flex: 1
 	},
 	inputSearch: {
 		flex: 1,

@@ -48,20 +48,24 @@ class ProfileView extends LoggedView {
 			customFields: {}
 		};
 		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
-		props.navigator.setTitle({ title: 'Profile' });
 	}
 
 	componentWillMount() {
 		this.props.navigator.setButtons({
 			leftButtons: [{
 				id: 'sideMenu',
-				icon: Platform.OS === 'ios' ? iconsMap['ios-menu'] : undefined
+				icon: Platform.OS === 'ios' ? iconsMap.menu : undefined
 			}]
 		});
 	}
 
 	async componentDidMount() {
 		this.init();
+
+		this.props.navigator.setDrawerEnabled({
+			side: 'left',
+			enabled: true
+		});
 
 		try {
 			const result = await RocketChat.getAvatarSuggestion();

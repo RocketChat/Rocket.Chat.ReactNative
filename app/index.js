@@ -9,17 +9,20 @@ import { iconsLoaded } from './Icons';
 import { registerScreens } from './views';
 import { deepLinkingOpen } from './actions/deepLinking';
 import parseQuery from './lib/methods/helpers/parseQuery';
+import I18n from './i18n';
 
 const startLogged = () => {
 	Navigation.startSingleScreenApp({
 		screen: {
-			screen: 'RoomsListView'
+			screen: 'RoomsListView',
+			title: I18n.t('Messages')
 		},
 		drawer: {
 			left: {
 				screen: 'Sidebar'
 			}
-		}
+		},
+		animationType: 'fade'
 	});
 };
 
@@ -27,8 +30,9 @@ const startNotLogged = (route) => {
 	Navigation.startSingleScreenApp({
 		screen: {
 			screen: route,
-			title: route === 'NewServerView' ? 'New Server' : 'Servers'
-		}
+			title: route === 'NewServerView' ? I18n.t('New_Server') : I18n.t('Servers')
+		},
+		animationType: 'fade'
 	});
 };
 

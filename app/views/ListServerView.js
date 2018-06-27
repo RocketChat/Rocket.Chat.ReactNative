@@ -79,14 +79,13 @@ class ListServerView extends LoggedView {
 		this.data = database.databases.serversDB.objects('servers');
 		this.data.addListener(this.updateState);
 		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
-		props.navigator.setTitle({ title: 'Servers' });
 	}
 
 	async componentWillMount() {
 		this.props.navigator.setButtons({
 			rightButtons: [{
 				id: 'addServer',
-				icon: iconsMap['ios-add']
+				icon: iconsMap.add
 			}]
 		});
 	}
@@ -104,7 +103,8 @@ class ListServerView extends LoggedView {
 		if (event.type === 'NavBarButtonPress') {
 			if (event.id === 'addServer') {
 				this.props.navigator.push({
-					screen: 'NewServerView'
+					screen: 'NewServerView',
+					title: I18n.t('New_Server')
 				});
 			}
 		}

@@ -81,14 +81,16 @@ class RegisterView extends LoggedView {
 	termsService = () => {
 		this.props.navigator.push({
 			screen: 'TermsServiceView',
-			title: 'Terms of Service'
+			title: I18n.t('Terms_of_Service'),
+			backButtonTitle: I18n.t('Sign_Up')
 		});
 	}
 
 	privacyPolicy = () => {
 		this.props.navigator.push({
 			screen: 'PrivacyPolicyView',
-			title: 'Privacy Policy'
+			title: I18n.t('Privacy_Policy'),
+			backButtonTitle: I18n.t('Sign_Up')
 		});
 	}
 

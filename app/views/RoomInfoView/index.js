@@ -51,7 +51,6 @@ class RoomInfoView extends LoggedView {
 			roomUser: {},
 			roles: []
 		};
-		props.navigator.setTitle({ title: 'Info' });
 		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
 
@@ -91,7 +90,7 @@ class RoomInfoView extends LoggedView {
 					this.props.navigator.setButtons({
 						rightButtons: [{
 							id: 'edit',
-							icon: iconsMap['ios-create-outline'],
+							icon: iconsMap.create,
 							testID: 'room-info-view-edit-button'
 						}]
 					});
@@ -110,7 +109,7 @@ class RoomInfoView extends LoggedView {
 			if (event.id === 'edit') {
 				this.props.navigator.push({
 					screen: 'RoomInfoEditView',
-					title: 'Edit',
+					title: I18n.t('Room_Info_Edit'),
 					passProps: {
 						rid: this.props.rid
 					}

@@ -38,15 +38,21 @@ class SettingsView extends LoggedView {
 			saving: false
 		};
 		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
-		props.navigator.setTitle({ title: 'Settings' });
 	}
 
 	componentWillMount() {
 		this.props.navigator.setButtons({
 			leftButtons: [{
 				id: 'sideMenu',
-				icon: Platform.OS === 'ios' ? iconsMap['ios-menu'] : undefined
+				icon: Platform.OS === 'ios' ? iconsMap.menu : undefined
 			}]
+		});
+	}
+
+	componentDidMount() {
+		this.props.navigator.setDrawerEnabled({
+			side: 'left',
+			enabled: true
 		});
 	}
 

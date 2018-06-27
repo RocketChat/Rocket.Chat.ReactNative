@@ -13,8 +13,7 @@ class RoomsListSearchView extends React.Component {
 	}
 
 	componentDidMount() {
-		console.warn('componentDidMount')
-		// this.inputSearch.focus();
+		this.inputSearch.focus();
 	}
 
 	onSearchChangeText(text) {

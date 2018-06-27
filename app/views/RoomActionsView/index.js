@@ -42,7 +42,6 @@ class RoomActionsView extends LoggedView {
 			allMembers: [],
 			member: {}
 		};
-		props.navigator.setTitle({ title: 'Actions' });
 	}
 
 	async componentDidMount() {
@@ -59,6 +58,7 @@ class RoomActionsView extends LoggedView {
 		if (item.route) {
 			this.props.navigator.push({
 				screen: item.route,
+				title: item.name,
 				passProps: item.params
 			});
 		}
@@ -107,7 +107,7 @@ class RoomActionsView extends LoggedView {
 		const sections = [{
 			data: [{
 				icon: 'ios-star',
-				name: 'USER',
+				name: I18n.t('Room_Info'),
 				route: 'RoomInfoView',
 				params: { rid },
 				testID: 'room-actions-info'

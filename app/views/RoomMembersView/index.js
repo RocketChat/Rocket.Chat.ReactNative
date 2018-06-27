@@ -49,7 +49,6 @@ class RoomMembersView extends LoggedView {
 			userLongPressed: {},
 			room: {}
 		};
-		props.navigator.setTitle({ title: 'Room Members' });
 		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
 
@@ -129,14 +128,17 @@ class RoomMembersView extends LoggedView {
 
 	goRoom = ({ rid, name }) => {
 		this.props.navigator.popToRoot();
-		this.props.navigator.push({
-			screen: 'RoomView',
-			passProps: {
-				room: { rid, name },
-				rid,
-				name
-			}
-		});
+		setTimeout(() => {
+			this.props.navigator.push({
+				screen: 'RoomView',
+				title: name,
+				passProps: {
+					room: { rid, name },
+					rid,
+					name
+				}
+			});
+		}, 500);
 	}
 
 	handleMute = async() => {

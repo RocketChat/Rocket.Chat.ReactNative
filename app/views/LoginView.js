@@ -59,13 +59,15 @@ class LoginView extends LoggedView {
 		this.props.navigator.push({
 			screen: 'RegisterView',
 			title: this.props.server,
-			backButtonTitle: 'Login'
+			backButtonTitle: I18n.t('Login')
 		});
 	}
 
 	forgotPassword = () => {
 		this.props.navigator.push({
-			screen: 'ForgotPasswordView'
+			screen: 'ForgotPasswordView',
+			title: I18n.t('Forgot_Password'),
+			backButtonTitle: I18n.t('Login')
 		});
 	}
 

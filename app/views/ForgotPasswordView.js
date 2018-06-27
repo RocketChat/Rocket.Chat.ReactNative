@@ -30,7 +30,6 @@ class ForgotPasswordView extends LoggedView {
 			email: '',
 			invalidEmail: false
 		};
-		props.navigator.setTitle({ title: 'Forgot Password' });
 	}
 
 	componentDidMount() {

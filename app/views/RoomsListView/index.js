@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Platform, View, TextInput, FlatList } from 'react-native';
+import { Platform, View, TextInput, FlatList, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 
 import { iconsMap } from '../../Icons';
@@ -33,23 +33,10 @@ class RoomsListView extends LoggedView {
 		this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
 		this.data.addListener(this.updateState);
 		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
-		props.navigator.setTitle({ title: 'Messages' });
 	}
 
 	async componentWillMount() {
-		const rightButtons = []; // TODO: add android
-		this.props.navigator.setButtons({
-			leftButtons: [{
-				id: 'sideMenu'
-			}],
-			rightButtons: [{
-				id: 'createChannel',
-				icon: iconsMap['md-add']
-			}, {
-				id: 'search',
-				icon: iconsMap['md-search']
-			}]
-		});
+		this.initDefaultHeader();
 	}
 
 	componentWillReceiveProps(props) {
@@ -75,6 +62,7 @@ class RoomsListView extends LoggedView {
 			if (event.id === 'createChannel') {
 				navigator.push({
 					screen: 'SelectedUsersView',
+					title: I18n.t('Select_Users'),
 					passProps: {
 						nextAction: 'CREATE_CHANNEL'
 					}
@@ -86,40 +74,75 @@ class RoomsListView extends LoggedView {
 					to: 'missing'
 				});
 			} else if (event.id === 'search') {
-				navigator.setStyle({
-					navBarCustomView: 'RoomsListSearchView',
-					navBarComponentAlignment: 'fill'
-				});
-				navigator.setButtons({
-					leftButtons: [{
-						id: 'cancelSearch',
-						icon: iconsMap['md-arrow-back']
-					}],
-					rightButtons: []
-				});
+				this.initSearchingAndroid();
 			} else if (event.id === 'cancelSearch') {
-				navigator.setStyle({
-					navBarCustomView: ''
-				});
-				navigator.setButtons({
-					leftButtons: [{
-						id: 'sideMenu',
-						icon: Platform.OS === 'ios' ? iconsMap['ios-menu'] : undefined
-					}],
-					rightButtons: [{
-						id: 'createChannel',
-						icon: iconsMap['md-add']
-					}, {
-						id: 'search',
-						icon: iconsMap['md-search']
-					}]
-				});
+				this.cancelSearchingAndroid();
 			}
+		} else if (event.type === 'ScreenChangedEvent' && event.id === 'didAppear') {
+			this.props.navigator.setDrawerEnabled({
+				side: 'left',
+				enabled: true
+			});
 		}
 	}
 
 	onSearchChangeText(text) {
 		this.search(text);
+	}
+
+	initDefaultHeader = () => {
+		const { navigator } = this.props;
+		const rightButtons = [{
+			id: 'createChannel',
+			icon: iconsMap.add
+		}];
+
+		if (Platform.OS === 'android') {
+			rightButtons.push({
+				id: 'search',
+				icon: iconsMap.search
+			});
+		}
+
+		navigator.setButtons({
+			leftButtons: [{
+				id: 'sideMenu',
+				icon: Platform.OS === 'ios' ? iconsMap.menu : undefined
+			}],
+			rightButtons
+		});
+	}
+
+	initSearchingAndroid = () => {
+		const { navigator } = this.props;
+		navigator.setButtons({
+			leftButtons: [{
+				id: 'cancelSearch',
+				icon: iconsMap['md-arrow-back']
+			}],
+			rightButtons: []
+		});
+		navigator.setStyle({
+			navBarCustomView: 'RoomsListSearchView',
+			navBarComponentAlignment: 'fill'
+		});
+		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+	}
+
+	cancelSearchingAndroid = () => {
+		if (Platform.OS === 'android') {
+			this.props.navigator.setStyle({
+				navBarCustomView: ''
+			});
+			this.setState({ search: [] });
+			this.initDefaultHeader();
+			BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+		}
+	}
+
+	handleBackPress = () => {
+		this.cancelSearchingAndroid();
+		return true;
 	}
 
 	updateState = debounce(() => {
@@ -174,12 +197,14 @@ class RoomsListView extends LoggedView {
 	goRoom = (rid, name) => {
 		this.props.navigator.push({
 			screen: 'RoomView',
+			title: name,
 			passProps: {
 				room: { rid, name },
 				rid,
 				name
 			}
 		});
+		this.cancelSearchingAndroid();
 	}
 
 	_onPressItem = async(item = {}) => {

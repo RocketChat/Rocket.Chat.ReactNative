@@ -33,7 +33,6 @@ class SearchMessagesView extends LoggedView {
 			searching: false,
 			loadingMore: false
 		};
-		props.navigator.setTitle({ title: 'Search' });
 	}
 
 	componentDidMount() {

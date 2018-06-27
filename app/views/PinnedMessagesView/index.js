@@ -20,7 +20,6 @@ const options = [I18n.t('Unpin'), I18n.t('Cancel')];
 class PinnedMessagesView extends LoggedView {
 	static propTypes = {
 		rid: PropTypes.string,
-		navigator: PropTypes.object,
 		messages: PropTypes.array,
 		ready: PropTypes.bool,
 		user: PropTypes.object,
@@ -37,7 +36,6 @@ class PinnedMessagesView extends LoggedView {
 			loading: true,
 			loadingMore: false
 		};
-		props.navigator.setTitle({ title: 'Pinned' });
 	}
 
 	componentDidMount() {

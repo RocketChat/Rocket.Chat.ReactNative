@@ -20,7 +20,6 @@ const options = [I18n.t('Unstar'), I18n.t('Cancel')];
 class StarredMessagesView extends LoggedView {
 	static propTypes = {
 		rid: PropTypes.string,
-		navigator: PropTypes.object,
 		messages: PropTypes.array,
 		ready: PropTypes.bool,
 		user: PropTypes.object,
@@ -37,7 +36,6 @@ class StarredMessagesView extends LoggedView {
 			loading: true,
 			loadingMore: false
 		};
-		props.navigator.setTitle({ title: 'Starred' });
 	}
 
 	componentDidMount() {

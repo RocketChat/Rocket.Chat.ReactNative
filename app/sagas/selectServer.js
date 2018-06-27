@@ -11,6 +11,7 @@ import { setRoles } from '../actions/roles';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import log from '../utils/log';
+import I18n from '../i18n';
 
 const validate = function* validate(server) {
 	return yield RocketChat.testServer(server);
@@ -53,7 +54,7 @@ const validateServer = function* validateServer({ server }) {
 
 const addServer = function* addServer({ server }) {
 	try {
-		yield call(NavigationActions.resetTo, { screen: 'ListServerView' });
+		yield call(NavigationActions.resetTo, { screen: 'ListServerView', title: I18n.t('Servers') });
 		database.databases.serversDB.write(() => {
 			database.databases.serversDB.create('servers', { id: server, current: false }, true);
 		});

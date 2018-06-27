@@ -28,7 +28,6 @@ class RoomFilesView extends LoggedView {
 			loading: true,
 			loadingMore: false
 		};
-		props.navigator.setTitle({ title: 'Room Files' });
 	}
 
 	componentDidMount() {

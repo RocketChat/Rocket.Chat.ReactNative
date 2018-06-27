@@ -30,7 +30,6 @@ class NewServerView extends LoggedView {
 			defaultServer: 'https://open.rocket.chat'
 		};
 		props.validateServer(this.state.defaultServer); // Need to call because in case of submit with empty field
-		props.navigator.setTitle({ title: 'New Server' });
 	}
 
 	onChangeText = (text) => {

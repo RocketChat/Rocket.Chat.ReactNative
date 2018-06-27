@@ -49,7 +49,8 @@ const handleLoginSuccess = function* handleLoginSuccess() {
 		} else if (prevToken !== user.token) {
 			Navigation.startSingleScreenApp({
 				screen: {
-					screen: 'RoomsListView'
+					screen: 'RoomsListView',
+					title: I18n.t('Messages')
 				},
 				drawer: {
 					left: {
@@ -106,9 +107,10 @@ const handleLogout = function* handleLogout() {
 	const server = yield select(getServer);
 	if (server) {
 		try {
-			yield Navigation.startSingleScreenApp({
+			Navigation.startSingleScreenApp({
 				screen: {
-					screen: 'ListServerView'
+					screen: 'ListServerView',
+					title: I18n.t('Servers')
 				}
 			});
 			yield delay(300);

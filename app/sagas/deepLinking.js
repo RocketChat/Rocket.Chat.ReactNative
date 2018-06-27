@@ -7,12 +7,14 @@ import { selectServer, addServer } from '../actions/server';
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import { NavigationActions } from '../Navigation';
+import I18n from '../i18n';
 
 const navigate = function* go({ params, sameServer = true }) {
 	if (!sameServer) {
 		yield Navigation.startSingleScreenApp({
 			screen: {
-				screen: 'RoomsListView'
+				screen: 'RoomsListView',
+				title: I18n.t('Messages')
 			},
 			drawer: {
 				left: {
@@ -72,7 +74,8 @@ const handleOpen = function* handleOpen({ params }) {
 			if (!token) {
 				Navigation.startSingleScreenApp({
 					screen: {
-						screen: 'ListServerView'
+						screen: 'ListServerView',
+						title: I18n.t('Servers')
 					}
 				});
 				yield put(selectServer(deepLinkServer));

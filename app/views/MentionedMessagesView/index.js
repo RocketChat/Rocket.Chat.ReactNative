@@ -14,7 +14,6 @@ import I18n from '../../i18n';
 class MentionedMessagesView extends LoggedView {
 	static propTypes = {
 		rid: PropTypes.string,
-		navigator: PropTypes.object,
 		messages: PropTypes.array,
 		ready: PropTypes.bool,
 		user: PropTypes.object,
@@ -29,7 +28,6 @@ class MentionedMessagesView extends LoggedView {
 			loading: true,
 			loadingMore: false
 		};
-		props.navigator.setTitle({ title: 'Mentioned' });
 	}
 
 	componentDidMount() {

@@ -156,11 +156,9 @@ class Sidebar extends Component {
 		this.setState({ showServers: !this.state.showServers });
 	}
 
-	sidebarNavigate = (route) => {
+	sidebarNavigate = (screen, title) => {
 		this.closeDrawer();
-		NavigationActions.resetTo({
-			screen: route
-		});
+		NavigationActions.resetTo({ screen, title });
 	}
 
 	renderSeparator = key => <View key={key} style={styles.separator} />;
@@ -222,7 +220,8 @@ class Sidebar extends Component {
 					if (!token) {
 						return Navigation.startSingleScreenApp({
 							screen: {
-								screen: 'ListServerView'
+								screen: 'ListServerView',
+								title: I18n.t('Servers')
 							}
 						});
 					}
@@ -237,19 +236,19 @@ class Sidebar extends Component {
 			this.renderItem({
 				text: I18n.t('Chats'),
 				left: <Icon name='chat-bubble' size={20} />,
-				onPress: () => this.sidebarNavigate('RoomsListView'),
+				onPress: () => this.sidebarNavigate('RoomsListView', I18n.t('Messages')),
 				testID: 'sidebar-chats'
 			}),
 			this.renderItem({
 				text: I18n.t('Profile'),
 				left: <Icon name='person' size={20} />,
-				onPress: () => this.sidebarNavigate('ProfileView'),
+				onPress: () => this.sidebarNavigate('ProfileView', I18n.t('Profile')),
 				testID: 'sidebar-profile'
 			}),
 			this.renderItem({
 				text: I18n.t('Settings'),
 				left: <Icon name='settings' size={20} />,
-				onPress: () => this.sidebarNavigate('SettingsView'),
+				onPress: () => this.sidebarNavigate('SettingsView', I18n.t('Settings')),
 				testID: 'sidebar-settings'
 			}),
 			this.renderSeparator('separator-logout'),
@@ -290,7 +289,8 @@ class Sidebar extends Component {
 					this.closeDrawer();
 					this.toggleServers();
 					NavigationActions.push({
-						screen: 'NewServerView'
+						screen: 'NewServerView',
+						title: I18n.t('Add_Server')
 					});
 				},
 				testID: 'sidebar-add-server'

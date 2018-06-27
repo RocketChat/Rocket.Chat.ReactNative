@@ -89,7 +89,13 @@ class SelectedUsersView extends LoggedView {
 		};
 		this.data.addListener(this.updateState);
 		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
-		props.navigator.setTitle({ title: 'Select Users' });
+	}
+
+	componentDidMount() {
+		this.props.navigator.setDrawerEnabled({
+			side: 'left',
+			enabled: false
+		});
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -100,7 +106,7 @@ class SelectedUsersView extends LoggedView {
 				rightButtons.push({
 					id: 'create',
 					testID: 'selected-users-view-submit',
-					icon: iconsMap['ios-add']
+					icon: iconsMap.add
 				});
 			}
 			this.props.navigator.setButtons({ rightButtons });
@@ -118,13 +124,15 @@ class SelectedUsersView extends LoggedView {
 			if (event.id === 'create') {
 				const { nextAction, setLoadingInvite, navigator } = this.props;
 				if (nextAction === 'CREATE_CHANNEL') {
-					this.props.navigator.push({ screen: 'CreateChannelView' });
+					this.props.navigator.push({
+						screen: 'CreateChannelView',
+						title: I18n.t('Create_Channel')
+					});
 				} else {
 					try {
 						setLoadingInvite(true);
 						await RocketChat.addUsersToRoom(this.props.rid);
 						navigator.pop();
-						// this.props.navigation.goBack();
 					} catch (e) {
 						log('RoomActions Add User', e);
 					} finally {

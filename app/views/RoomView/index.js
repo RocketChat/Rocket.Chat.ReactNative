@@ -29,7 +29,6 @@ class RoomView extends LoggedView {
 		setLastOpen: PropTypes.func.isRequired,
 		user: PropTypes.object.isRequired,
 		rid: PropTypes.string,
-		name: PropTypes.string,
 		showActions: PropTypes.bool,
 		showErrorActions: PropTypes.bool,
 		actionMessage: PropTypes.object,
@@ -50,7 +49,6 @@ class RoomView extends LoggedView {
 		};
 		this.onReactionPress = this.onReactionPress.bind(this);
 		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
-		props.navigator.setTitle({ title: props.name });
 	}
 
 	async componentWillMount() {
@@ -58,12 +56,16 @@ class RoomView extends LoggedView {
 			rightButtons: [{
 				id: 'more',
 				testID: 'room-view-header-actions',
-				icon: iconsMap['md-more']
+				icon: iconsMap.more
 			}, {
 				id: 'star',
 				testID: 'room-view-header-star',
-				icon: iconsMap['md-star-outline']
+				icon: iconsMap.starOutline
 			}]
+		});
+		this.props.navigator.setDrawerEnabled({
+			side: 'left',
+			enabled: false
 		});
 	}
 
@@ -81,11 +83,11 @@ class RoomView extends LoggedView {
 				rightButtons: [{
 					id: 'more',
 					testID: 'room-view-header-actions',
-					icon: iconsMap['md-more']
+					icon: iconsMap.more
 				}, {
 					id: 'star',
 					testID: 'room-view-header-star',
-					icon: this.state.room.f ? iconsMap['md-star'] : iconsMap['md-star-outline']
+					icon: this.state.room.f ? iconsMap.star : iconsMap.starOutline
 				}]
 			});
 		}
@@ -102,6 +104,7 @@ class RoomView extends LoggedView {
 			if (event.id === 'more') {
 				this.props.navigator.push({
 					screen: 'RoomActionsView',
+					title: I18n.t('Actions'),
 					passProps: {
 						rid: this.state.room.rid
 					}

@@ -30,7 +30,6 @@ class CreateChannelView extends LoggedView {
 			readOnly: false,
 			broadcast: false
 		};
-		props.navigator.setTitle({ title: 'Create Channel' });
 	}
 
 	submit = () => {
