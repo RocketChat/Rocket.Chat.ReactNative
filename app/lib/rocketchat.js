@@ -541,6 +541,7 @@ const RocketChat = {
 	},
 
 	login(params) {
+		console.warn(params)
 		return this.ddp.login(params);
 	},
 	logout({ server }) {

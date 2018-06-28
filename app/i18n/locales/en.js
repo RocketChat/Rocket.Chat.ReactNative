@@ -109,6 +109,7 @@ export default {
 	changing_avatar: 'changing avatar',
 	Channel_Name: 'Channel Name',
 	Chats: 'Chats',
+	Close: 'Close',
 	Close_emoji_selector: 'Close emoji selector',
 	Code: 'Code',
 	Colaborative: 'Colaborative',

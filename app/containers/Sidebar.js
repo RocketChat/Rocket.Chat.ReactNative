@@ -325,6 +325,7 @@ class Sidebar extends Component {
 							<Icon
 								name={this.state.showServers ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
 								size={30}
+								style={{ paddingHorizontal: 10 }}
 							/>
 						</View>
 					</Touch>
