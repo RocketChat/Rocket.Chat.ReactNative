@@ -34,11 +34,11 @@ async function logout() {
     await expect(element(by.id('welcome-view'))).toBeVisible();
 }
 
-async function tapBack() {
+async function tapBack(label) {
     try {
-      return element(by.traits(['button']).and(by.label('Back'))).atIndex(0).tap();
+      return element(by.traits(['button']).and(by.label(label || 'Back'))).atIndex(0).tap();
     } catch (err) {
-      return element(by.type('_UIModernBarButton').and(by.label('Back'))).tap();
+      return element(by.type('_UIModernBarButton').and(by.label(label || 'Back'))).tap();
     }
 }
 

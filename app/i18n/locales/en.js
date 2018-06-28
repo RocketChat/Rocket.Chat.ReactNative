@@ -141,6 +141,7 @@ export default {
 	Forgot_my_password: 'Forgot my password',
 	Forgot_password_If_this_email_is_registered: 'If this email is registered, we\'ll send instructions on how to reset your password. If you do not receive an email shortly, please come back and try again.',
 	Forgot_password: 'Forgot password',
+	Forgot_Password: 'Forgot Password',
 	Has_joined_the_channel: 'Has joined the channel',
 	Has_left_the_channel: 'Has left the channel',
 	I_have_an_account: 'I have an account',

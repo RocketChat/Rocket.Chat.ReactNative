@@ -94,7 +94,8 @@ class RoomsListView extends LoggedView {
 		const { navigator } = this.props;
 		const rightButtons = [{
 			id: 'createChannel',
-			icon: iconsMap.add
+			icon: iconsMap.add,
+			testID: 'rooms-list-view-create-channel'
 		}];
 
 		if (Platform.OS === 'android') {
@@ -107,7 +108,8 @@ class RoomsListView extends LoggedView {
 		navigator.setButtons({
 			leftButtons: [{
 				id: 'sideMenu',
-				icon: Platform.OS === 'ios' ? iconsMap.menu : undefined
+				icon: Platform.OS === 'ios' ? iconsMap.menu : undefined,
+				testID: 'rooms-list-view-sidebar'
 			}],
 			rightButtons
 		});

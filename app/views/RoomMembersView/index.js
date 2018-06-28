@@ -21,7 +21,8 @@ class RoomMembersView extends LoggedView {
 	static navigatorButtons = {
 		rightButtons: [{
 			title: 'All',
-			id: 'toggleOnline'
+			id: 'toggleOnline',
+			testID: 'room-members-view-toggle-status'
 		}]
 	};
 
@@ -71,7 +72,8 @@ class RoomMembersView extends LoggedView {
 					this.props.navigator.setButtons({
 						rightButtons: [{
 							title: this.state.allUsers ? 'Online' : 'All',
-							id: 'toggleOnline'
+							id: 'toggleOnline',
+							testID: 'room-members-view-toggle-status'
 						}]
 					});
 				} catch (e) {
@@ -138,7 +140,7 @@ class RoomMembersView extends LoggedView {
 					name
 				}
 			});
-		}, 500);
+		}, 1000);
 	}
 
 	handleMute = async() => {

@@ -75,8 +75,9 @@ const handleTogglePinRequest = function* handleTogglePinRequest({ message }) {
 	}
 };
 
-const goRoom = ({ rid, name }) => {
+const goRoom = function* goRoom({ rid, name }) {
 	NavigationActions.popToRoot();
+	yield delay(1000);
 	NavigationActions.push({
 		screen: 'RoomView',
 		passProps: {
@@ -92,12 +93,12 @@ const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 		const { username } = message.u;
 		const subscriptions = database.objects('subscriptions').filtered('name = $0', username);
 		if (subscriptions.length) {
-			goRoom({ rid: subscriptions[0].rid, name: subscriptions[0].name });
+			yield goRoom({ rid: subscriptions[0].rid, name: subscriptions[0].name });
 		} else {
 			const room = yield RocketChat.createDirectMessage(username);
-			goRoom({ rid: room.rid, name: username });
+			yield goRoom({ rid: room.rid, name: username });
 		}
-		yield delay(100);
+		yield delay(500);
 		const server = yield select(state => state.server.server);
 		const msg = `[ ](${ server }/direct/${ username }?msg=${ message._id }) `;
 		yield put(setInput({ msg }));

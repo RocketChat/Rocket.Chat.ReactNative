@@ -28,7 +28,7 @@ describe('Create room screen', () => {
 
 	describe('Usage', async() => {
 		it('should back to rooms list', async() => {
-			await tapBack();
+			await tapBack('Messages');
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
 			await element(by.id('rooms-list-view-create-channel')).tap();
@@ -78,9 +78,9 @@ describe('Create room screen', () => {
 			await element(by.id('create-channel-submit')).tap();
 			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('room-view'))).toBeVisible();
-			await waitFor(element(by.id('room-view-title'))).toHaveText(`public${ data.random }`).withTimeout(60000);
-			await expect(element(by.id('room-view-title'))).toHaveText(`public${ data.random }`);
-			await tapBack();
+			await waitFor(element(by.text(`public${ data.random }`))).toBeVisible().withTimeout(60000);
+			await expect(element(by.text(`public${ data.random }`))).toBeVisible();
+			await tapBack('Messages');
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			await waitFor(element(by.id(`rooms-list-view-item-public${ data.random }`))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id(`rooms-list-view-item-public${ data.random }`))).toBeVisible();
@@ -97,9 +97,9 @@ describe('Create room screen', () => {
 			await element(by.id('create-channel-submit')).tap();
 			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('room-view'))).toBeVisible();
-			await waitFor(element(by.id('room-view-title'))).toHaveText(`private${ data.random }`).withTimeout(60000);
-			await expect(element(by.id('room-view-title'))).toHaveText(`private${ data.random }`);
-			await tapBack();
+			await waitFor(element(by.text(`private${ data.random }`))).toBeVisible().withTimeout(60000);
+			await expect(element(by.text(`private${ data.random }`))).toBeVisible();
+			await tapBack('Messages');
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			await waitFor(element(by.id(`rooms-list-view-item-private${ data.random }`))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id(`rooms-list-view-item-private${ data.random }`))).toBeVisible();

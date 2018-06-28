@@ -21,7 +21,7 @@ const handleRequest = function* handleRequest({ data }) {
 		const result = yield call(create, data);
 		const { rid, name } = result;
 		NavigationActions.popToRoot();
-		yield delay(500);
+		yield delay(1000);
 		NavigationActions.push({
 			screen: 'RoomView',
 			title: name,

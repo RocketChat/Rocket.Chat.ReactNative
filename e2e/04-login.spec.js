@@ -49,18 +49,18 @@ describe('Login screen', () => {
 			await element(by.id('login-view-register')).tap();
 			await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('register-view'))).toBeVisible();
-			await tapBack();
+			await tapBack('Login');
 		});
 	
 		it('should navigate to forgot password', async() => {
 			await element(by.id('login-view-forgot-password')).tap();
 			await waitFor(element(by.id('forgot-password-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('forgot-password-view'))).toBeVisible();
-			await tapBack();
+			await tapBack('Login');
 		});
 
 		it('should navigate to welcome', async() => {
-			await tapBack();
+			await tapBack('Welcome');
 			await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('welcome-view'))).toBeVisible();
 			await navigateToLogin();

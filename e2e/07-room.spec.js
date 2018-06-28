@@ -34,15 +34,6 @@ describe('Room screen', () => {
 
 		// Render - Header
 		describe('Header', async() => {
-			it('should have room header', async() => {
-				await expect(element(by.id('room-view-header'))).toBeVisible();
-			});
-
-			it('should have title', async() => {
-				await expect(element(by.id('room-view-header-title'))).toBeVisible();
-				await expect(element(by.id('room-view-title'))).toHaveText(`private${ data.random }`);
-			});
-
 			it('should have star button', async() => {
 				await expect(element(by.id('room-view-header-star'))).toBeVisible();
 			});
@@ -83,25 +74,17 @@ describe('Room screen', () => {
 	describe('Usage', async() => {
 		describe('Header', async() => {
 			it('should back to rooms list', async() => {
-				await tapBack();
+				await tapBack('Messages');
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('rooms-list-view'))).toBeVisible();
 				await navigateToRoom();
-			});
-
-			it('should tap on title and navigate to room info', async() => {
-				await element(by.id('room-view-header-title')).tap();
-				await waitFor(element(by.id('room-info-view'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('room-info-view'))).toBeVisible();
-				await tapBack();
-				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			});
 	
 			it('should tap on more and navigate to room actions', async() => {
 				await element(by.id('room-view-header-actions')).tap();
 				await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('room-actions-view'))).toBeVisible();
-				await tapBack();
+				await tapBack(`private${ data.random }`);
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			});
 		});
@@ -304,7 +287,7 @@ describe('Room screen', () => {
 		});
 
 		after(async() => {
-			await tapBack();
+			await tapBack('Messages');
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
 		});

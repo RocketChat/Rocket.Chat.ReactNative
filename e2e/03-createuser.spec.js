@@ -2,7 +2,7 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
-const { logout, tapBack, sleep } = require('./helpers/app');
+const { logout, sleep } = require('./helpers/app');
 const data = require('./data');
 
 async function navigateToRegister() {

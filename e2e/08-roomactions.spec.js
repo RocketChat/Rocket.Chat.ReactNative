@@ -22,14 +22,14 @@ async function navigateToRoomActions(type) {
 }
 
 async function backToActions() {
-	await tapBack();
+	await tapBack('Actions');
 	await waitFor(element(by.id('rooms-actions-view'))).toBeVisible().withTimeout(2000);
 }
 
-async function backToRoomsList() {
-	await tapBack();
+async function backToRoomsList(room) {
+	await tapBack(room);
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(2000);
-	await tapBack();
+	await tapBack('Messages');
 	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 }
 
@@ -98,7 +98,7 @@ describe('Room actions screen', () => {
 			});
 
 			after(async() => {
-				await backToRoomsList();
+				await backToRoomsList('rocket.cat');
 			});
 		});
 
@@ -363,9 +363,9 @@ describe('Room actions screen', () => {
 					await element(by.id(`room-members-view-item-${ user }`)).tap();
 					await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
 					await expect(element(by.id('room-view'))).toBeVisible();
-					await waitFor(element(by.id('room-view-title'))).toHaveText(user).withTimeout(60000);
-					await expect(element(by.id('room-view-title'))).toHaveText(user);
-					await tapBack();
+					await waitFor(element(by.text(user))).toBeVisible().withTimeout(60000);
+				await expect(element(by.text(user))).toBeVisible();
+					await tapBack('Messages');
 					await waitFor(element(by.id('room-list-view'))).toBeVisible().withTimeout(2000);
 				});
 
