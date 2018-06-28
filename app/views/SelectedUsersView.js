@@ -1,8 +1,6 @@
-import ActionButton from 'react-native-action-button';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { View, StyleSheet, TextInput, Text, TouchableOpacity, SafeAreaView, FlatList, LayoutAnimation, Platform } from 'react-native';
+import { View, StyleSheet, TextInput, Text, TouchableOpacity, SafeAreaView, FlatList, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
 
 import { addUser, removeUser, reset, setLoading } from '../actions/selectedUsers';
@@ -30,11 +28,6 @@ const styles = StyleSheet.create({
 	list: {
 		width: '100%',
 		backgroundColor: '#FFFFFF'
-	},
-	actionButtonIcon: {
-		fontSize: 20,
-		height: 22,
-		color: 'white'
 	},
 	searchBoxView: {
 		backgroundColor: '#eee'
@@ -292,23 +285,10 @@ class SelectedUsersView extends LoggedView {
 			keyboardShouldPersistTaps='always'
 		/>
 	);
-	renderCreateButton = () => {
-		if (this.props.users.length === 0 || Platform.OS === 'ios') {
-			return null;
-		}
-		return (
-			<ActionButton
-				buttonColor='rgba(67, 165, 71, 1)'
-				onPress={() => this.nextAction()}
-				renderIcon={() => <Icon name='md-arrow-forward' style={styles.actionButtonIcon} />}
-			/>
-		);
-	};
 	render = () => (
 		<View style={styles.container} testID='select-users-view'>
 			<SafeAreaView style={styles.safeAreaView}>
 				{this.renderList()}
-				{/* {this.renderCreateButton()} */}
 				<Loading visible={this.props.loading} />
 			</SafeAreaView>
 		</View>
