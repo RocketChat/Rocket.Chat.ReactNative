@@ -1,7 +1,7 @@
-import { AsyncStorage, Linking } from 'react-native';
+import { Component } from 'react';
+import { Linking } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 
-import RocketChat from './lib/rocketchat';
 import store from './lib/createStore';
 import { appInit } from './actions';
 import database from './lib/realm';
@@ -48,30 +48,41 @@ const handleOpenURL = ({ url }) => {
 		if (url.match(regex)) {
 			url = url.replace(regex, '');
 			const params = parseQuery(url);
-			// console.warn(props)
 			store.dispatch(deepLinkingOpen(params));
 		}
 	}
 };
 
-export async function start() {
-	registerScreens(store);
-	store.dispatch(appInit());
-	await iconsLoaded();
+registerScreens(store);
+iconsLoaded();
 
-	Linking
-		.getInitialURL()
-		.then(url => handleOpenURL({ url }))
-		.catch(e => console.warn(e));
-	Linking.addEventListener('url', handleOpenURL);
+export default class App extends Component {
+	constructor(props) {
+		super(props);
+		store.dispatch(appInit());
+		store.subscribe(this.onStoreUpdate.bind(this));
 
-	const token = await AsyncStorage.getItem(RocketChat.TOKEN_KEY);
-	if (token) {
-		return startLogged();
+		Linking
+			.getInitialURL()
+			.then(url => handleOpenURL({ url }))
+			.catch(e => console.warn(e));
+		Linking.addEventListener('url', handleOpenURL);
 	}
-	if (hasServers()) {
-		startNotLogged('ListServerView');
-	} else {
-		startNotLogged('NewServerView');
+
+	onStoreUpdate = () => {
+		const { root } = store.getState().app;
+
+		if (this.currentRoot !== root) {
+			this.currentRoot = root;
+			if (root === 'outside') {
+				if (hasServers()) {
+					startNotLogged('ListServerView');
+				} else {
+					startNotLogged('NewServerView');
+				}
+			} else if (root === 'inside') {
+				startLogged();
+			}
+		}
 	}
 }

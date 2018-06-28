@@ -3,6 +3,7 @@ import { takeLatest, take, select, put } from 'redux-saga/effects';
 import { Navigation } from 'react-native-navigation';
 
 import * as types from '../actions/actionsTypes';
+import { appStart } from '../actions';
 import { selectServer, addServer } from '../actions/server';
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
@@ -11,18 +12,7 @@ import I18n from '../i18n';
 
 const navigate = function* go({ params, sameServer = true }) {
 	if (!sameServer) {
-		yield Navigation.startSingleScreenApp({
-			screen: {
-				screen: 'RoomsListView',
-				title: I18n.t('Messages')
-			},
-			drawer: {
-				left: {
-					screen: 'Sidebar'
-				}
-			},
-			animationType: Platform.OS === 'ios' ? 'none' : 'slide-down'
-		});
+		yield put(appStart('inside'));
 	}
 	if (params.rid) {
 		const canOpenRoom = yield RocketChat.canOpenRoom(params);
@@ -59,7 +49,6 @@ const handleOpen = function* handleOpen({ params }) {
 
 	const token = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ host }`);
 
-
 	// TODO: needs better test
 	// if deep link is from same server
 	if (server === host) {
@@ -72,12 +61,7 @@ const handleOpen = function* handleOpen({ params }) {
 		if (servers.length) {
 			const deepLinkServer = servers[0].id;
 			if (!token) {
-				Navigation.startSingleScreenApp({
-					screen: {
-						screen: 'ListServerView',
-						title: I18n.t('Servers')
-					}
-				});
+				yield put(appStart('outside'));
 				yield put(selectServer(deepLinkServer));
 			} else {
 				yield put(selectServer(deepLinkServer));

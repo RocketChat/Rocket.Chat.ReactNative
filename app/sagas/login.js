@@ -1,9 +1,9 @@
-import { AsyncStorage, Platform } from 'react-native';
+import { AsyncStorage } from 'react-native';
 import { delay } from 'redux-saga';
 import { put, call, take, takeLatest, select, all } from 'redux-saga/effects';
-import { Navigation } from 'react-native-navigation';
 
 import * as types from '../actions/actionsTypes';
+import { appStart } from '../actions';
 import {
 	// loginRequest,
 	// loginSubmit,
@@ -37,7 +37,7 @@ const forgotPasswordCall = args => RocketChat.forgotPassword(args);
 const handleLoginSuccess = function* handleLoginSuccess() {
 	try {
 		const [server, user] = yield all([select(getServer), select(getUser)]);
-		const prevToken = yield AsyncStorage.getItem(RocketChat.TOKEN_KEY);
+		// const prevToken = yield AsyncStorage.getItem(RocketChat.TOKEN_KEY) || '';
 		yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
 		yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
 		const token = yield AsyncStorage.getItem('pushId');
@@ -46,19 +46,8 @@ const handleLoginSuccess = function* handleLoginSuccess() {
 		}
 		if (!user.user.username || user.isRegistering) {
 			yield put(registerIncomplete());
-		} else if (prevToken !== user.token) {
-			Navigation.startSingleScreenApp({
-				screen: {
-					screen: 'RoomsListView',
-					title: I18n.t('Messages')
-				},
-				drawer: {
-					left: {
-						screen: 'Sidebar'
-					}
-				},
-				animationType: Platform.OS === 'ios' ? 'none' : 'slide-down'
-			});
+		} else {
+			yield put(appStart('inside'));
 		}
 	} catch (e) {
 		log('handleLoginSuccess', e);
@@ -107,12 +96,7 @@ const handleLogout = function* handleLogout() {
 	const server = yield select(getServer);
 	if (server) {
 		try {
-			Navigation.startSingleScreenApp({
-				screen: {
-					screen: 'ListServerView',
-					title: I18n.t('Servers')
-				}
-			});
+			yield put(appStart('outside'));
 			yield delay(300);
 			yield call(logoutCall, { server });
 		} catch (e) {

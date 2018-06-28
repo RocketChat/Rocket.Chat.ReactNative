@@ -142,7 +142,7 @@ class ListServerView extends LoggedView {
 		if (this.props.server && !this.props.login.isRegistering) {
 			setTimeout(() => {
 				this.openLogin(this.props.server);
-			}, 500);
+			}, 1000);
 		}
 	}
 

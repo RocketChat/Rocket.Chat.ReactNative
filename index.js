@@ -3,7 +3,8 @@ import 'regenerator-runtime/runtime';
 
 import './app/ReactotronConfig';
 import './app/push';
+import App from './app/index';
 
-const { start } = require('./app/index');
+// eslint-disable-next-line
+const app = new App();
 
-start();

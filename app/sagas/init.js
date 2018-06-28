@@ -12,7 +12,10 @@ const restore = function* restore() {
 	try {
 		const token = yield call([AsyncStorage, 'getItem'], RocketChat.TOKEN_KEY);
 		if (token) {
+			yield put(actions.appStart('inside'));
 			yield put(restoreToken(token));
+		} else {
+			yield put(actions.appStart('outside'));
 		}
 
 		const currentServer = yield call([AsyncStorage, 'getItem'], 'currentServer');

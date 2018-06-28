@@ -9,6 +9,7 @@ import { Navigation } from 'react-native-navigation';
 import database from '../lib/realm';
 import { selectServer } from '../actions/server';
 import { logout } from '../actions/login';
+import { appStart } from '../actions';
 import Avatar from '../containers/Avatar';
 import Status from '../containers/status';
 import Touch from '../utils/touch';
@@ -84,7 +85,8 @@ class Sidebar extends Component {
 		server: PropTypes.string.isRequired,
 		selectServer: PropTypes.func.isRequired,
 		user: PropTypes.object,
-		logout: PropTypes.func.isRequired
+		logout: PropTypes.func.isRequired,
+		appStart: PropTypes.func
 	}
 
 	constructor(props) {
@@ -218,12 +220,7 @@ class Sidebar extends Component {
 					this.props.selectServer(item.id);
 					const token = await AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ item.id }`);
 					if (!token) {
-						return Navigation.startSingleScreenApp({
-							screen: {
-								screen: 'ListServerView',
-								title: I18n.t('Servers')
-							}
-						});
+						this.props.appStart();
 					}
 				}
 			},
@@ -349,7 +346,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	selectServer: server => dispatch(selectServer(server)),
-	logout: () => dispatch(logout())
+	logout: () => dispatch(logout()),
+	appStart: () => dispatch(appStart('outside'))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
