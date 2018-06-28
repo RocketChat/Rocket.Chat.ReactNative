@@ -14,7 +14,6 @@ import I18n from '../../i18n';
 class RoomFilesView extends LoggedView {
 	static propTypes = {
 		rid: PropTypes.string,
-		navigator: PropTypes.object,
 		messages: PropTypes.array,
 		ready: PropTypes.bool,
 		user: PropTypes.object,

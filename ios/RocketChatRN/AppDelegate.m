@@ -12,7 +12,6 @@
 #import <React/RCTPushNotificationManager.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-//#import "SplashScreen.h"
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 #import <React/RCTLinkingManager.h>
@@ -49,8 +48,7 @@
 //  rootViewController.view = rootView;
 //  self.window.rootViewController = rootViewController;
 //  [self.window makeKeyAndVisible];
-//  [SplashScreen show];
-//  [Fabric with:@[[Crashlytics class]]];
+  [Fabric with:@[[Crashlytics class]]];
   return YES;
 }
 

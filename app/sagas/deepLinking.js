@@ -1,6 +1,5 @@
-import { AsyncStorage, Platform } from 'react-native';
+import { AsyncStorage } from 'react-native';
 import { takeLatest, take, select, put } from 'redux-saga/effects';
-import { Navigation } from 'react-native-navigation';
 
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions';
@@ -8,7 +7,6 @@ import { selectServer, addServer } from '../actions/server';
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import { NavigationActions } from '../Navigation';
-import I18n from '../i18n';
 
 const navigate = function* go({ params, sameServer = true }) {
 	if (!sameServer) {

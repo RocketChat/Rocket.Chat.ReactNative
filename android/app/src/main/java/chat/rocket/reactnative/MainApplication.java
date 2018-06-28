@@ -25,7 +25,6 @@ import com.reactnativenavigation.NavigationApplication;
 
 import java.util.Arrays;
 import java.util.List;
-// import org.devio.rn.splashscreen.SplashScreenReactPackage;
 
 import io.fabric.sdk.android.Fabric;
 import com.crashlytics.android.Crashlytics;
@@ -61,7 +60,6 @@ public class MainApplication extends NavigationApplication {
       new RealmReactPackage(),
       new ReactNativePushNotificationPackage(),
       new ReactVideoPackage(),
-      // new SplashScreenReactPackage(),
       new RCTToastPackage(),
       new ReactNativeAudioPackage(),
       new KeyboardInputPackage(MainApplication.this),
@@ -71,42 +69,6 @@ public class MainApplication extends NavigationApplication {
       new RNI18nPackage()
 		);
 	}
-
-
-  // private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
-  //   @Override
-  //   public boolean getUseDeveloperSupport() {
-  //     return BuildConfig.DEBUG;
-  //   }
-
-  //   @Override
-  //   protected List<ReactPackage> getPackages() {
-  //     return Arrays.<ReactPackage>asList(
-	// 		  new MainReactPackage(),
-  //       new SvgPackage(),
-  //       new ImagePickerPackage(),
-  //       new VectorIconsPackage(),
-  //       new RNFetchBlobPackage(),
-  //       new ZeroconfReactPackage(),
-  //       new RealmReactPackage(),
-  //       new ReactNativePushNotificationPackage(),
-  //       new ReactVideoPackage(),
-  //       new SplashScreenReactPackage(),
-  //       new RCTToastPackage(),
-  //       new ReactNativeAudioPackage(),
-  //       new KeyboardInputPackage(MainApplication.this),
-  //       new RocketChatNativePackage(),
-  //       new FabricPackage(),
-  //       new FastImageViewPackage(),
-  //       new RNI18nPackage()
-  //     );
-  //   }
-  // };
-
-  // @Override
-  // public ReactNativeHost getReactNativeHost() {
-  //     return mReactNativeHost;
-  // }
 
 	@Override
  	public void onCreate() {

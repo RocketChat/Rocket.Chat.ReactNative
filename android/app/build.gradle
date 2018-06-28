@@ -182,7 +182,6 @@ dependencies {
     implementation project(':react-native-fabric')
     implementation project(':react-native-audio')
     implementation project(":reactnativekeyboardinput")
-    implementation project(':react-native-splash-screen')
     implementation project(':react-native-video')
     implementation project(':react-native-push-notification')
     implementation project(':react-native-svg')

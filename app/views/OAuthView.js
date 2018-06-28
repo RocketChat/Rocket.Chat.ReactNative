@@ -56,7 +56,6 @@ class TermsServiceView extends React.PureComponent {
 					if (this.redirectRegex.test(url)) {
 						const parts = url.split('#');
 						const credentials = JSON.parse(parts[1]);
-						console.warn(credentials)
 						this.login({ oauth: { ...credentials } });
 						this.props.navigator.dismissModal();
 					}

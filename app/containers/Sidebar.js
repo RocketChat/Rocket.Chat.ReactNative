@@ -4,7 +4,6 @@ import { ScrollView, Text, View, StyleSheet, FlatList, LayoutAnimation, AsyncSto
 import { connect } from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Navigation } from 'react-native-navigation';
 
 import database from '../lib/realm';
 import { selectServer } from '../actions/server';
