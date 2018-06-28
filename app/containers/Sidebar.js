@@ -341,7 +341,13 @@ class Sidebar extends Component {
 
 const mapStateToProps = state => ({
 	server: state.server.server,
-	user: state.login.user
+	user: {
+		id: state.login.user.id,
+		language: state.login.user.language,
+		server: state.login.user.server,
+		status: state.login.user.status,
+		username: state.login.user.username
+	}
 });
 
 const mapDispatchToProps = dispatch => ({

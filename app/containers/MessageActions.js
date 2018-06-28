@@ -21,7 +21,6 @@ import I18n from '../i18n';
 @connect(
 	state => ({
 		actionMessage: state.messages.actionMessage,
-		user: state.login.user,
 		Message_AllowDeleting: state.settings.Message_AllowDeleting,
 		Message_AllowDeleting_BlockDeleteInMinutes: state.settings.Message_AllowDeleting_BlockDeleteInMinutes,
 		Message_AllowEditing: state.settings.Message_AllowEditing,
@@ -42,9 +41,9 @@ import I18n from '../i18n';
 export default class MessageActions extends React.Component {
 	static propTypes = {
 		actionsHide: PropTypes.func.isRequired,
-		room: PropTypes.object,
+		room: PropTypes.object.isRequired,
 		actionMessage: PropTypes.object,
-		user: PropTypes.object,
+		user: PropTypes.object.isRequired,
 		deleteRequest: PropTypes.func.isRequired,
 		editInit: PropTypes.func.isRequired,
 		toggleStarRequest: PropTypes.func.isRequired,

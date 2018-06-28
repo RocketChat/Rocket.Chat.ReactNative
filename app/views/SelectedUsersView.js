@@ -64,7 +64,7 @@ class SelectedUsersView extends LoggedView {
 		navigator: PropTypes.object,
 		rid: PropTypes.string,
 		nextAction: PropTypes.string.isRequired,
-		user: PropTypes.object,
+		userId: PropTypes.string,
 		Site_Url: PropTypes.string,
 		addUser: PropTypes.func.isRequired,
 		removeUser: PropTypes.func.isRequired,
@@ -266,7 +266,7 @@ class SelectedUsersView extends LoggedView {
 			type={item.t}
 			baseUrl={this.props.Site_Url}
 			onPress={() => this._onPressItem(item._id, item)}
-			id={item.rid.replace(this.props.user.id, '').trim()}
+			id={item.rid.replace(this.props.userId, '').trim()}
 			showLastMessage={false}
 			avatarSize={30}
 			statusStyle={styles.status}
@@ -296,7 +296,7 @@ class SelectedUsersView extends LoggedView {
 }
 
 const mapStateToProps = state => ({
-	user: state.login.user,
+	userId: state.login.user.id,
 	Site_Url: state.settings.Site_Url,
 	users: state.selectedUsers.users,
 	loading: state.selectedUsers.loading

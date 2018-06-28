@@ -17,7 +17,7 @@ import I18n from '../../i18n';
 class RoomsListView extends LoggedView {
 	static propTypes = {
 		navigator: PropTypes.object,
-		user: PropTypes.object,
+		userId: PropTypes.string,
 		Site_Url: PropTypes.string,
 		server: PropTypes.string,
 		searchText: PropTypes.string
@@ -248,7 +248,7 @@ class RoomsListView extends LoggedView {
 	);
 
 	renderItem = ({ item }) => {
-		const id = item.rid.replace(this.props.user.id, '').trim();
+		const id = item.rid.replace(this.props.userId, '').trim();
 		return (<RoomItem
 			alert={item.alert}
 			unread={item.unread}
@@ -289,7 +289,7 @@ class RoomsListView extends LoggedView {
 }
 
 const mapStateToProps = state => ({
-	user: state.login.user,
+	userId: state.login.user.id,
 	server: state.server.server,
 	Site_Url: state.settings.Site_Url,
 	searchText: state.rooms.searchText

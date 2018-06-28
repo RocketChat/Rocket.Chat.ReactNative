@@ -22,7 +22,7 @@ import { iconsMap } from '../../Icons';
 class SettingsView extends LoggedView {
 	static propTypes = {
 		navigator: PropTypes.object,
-		user: PropTypes.object,
+		language: PropTypes.string,
 		setUser: PropTypes.func
 	}
 
@@ -30,7 +30,7 @@ class SettingsView extends LoggedView {
 		super('SettingsView', props);
 		this.state = {
 			placeholder: {},
-			language: props.user ? props.user.language : 'en',
+			language: props.language ? props.language : 'en',
 			languages: [{
 				label: 'English',
 				value: 'en'
@@ -70,8 +70,7 @@ class SettingsView extends LoggedView {
 
 	formIsChanged = () => {
 		const { language } = this.state;
-		const { user } = this.props;
-		return !(user.language === language);
+		return !(this.props.language === language);
 	}
 
 	submit = async() => {
@@ -160,7 +159,7 @@ class SettingsView extends LoggedView {
 }
 
 const mapStateToProps = state => ({
-	user: state.login.user
+	language: state.login.user.language
 });
 
 const mapDispatchToProps = dispatch => ({

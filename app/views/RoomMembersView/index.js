@@ -6,11 +6,9 @@ import ActionSheet from 'react-native-actionsheet';
 
 import LoggedView from '../View';
 import styles from './styles';
-// import sharedStyles from '../Styles';
 import RoomItem from '../../presentation/RoomItem';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
-// import { goRoom } from '../../containers/routes/NavigationService';
 import database from '../../lib/realm';
 import { showToast } from '../../utils/info';
 import log from '../../utils/log';
@@ -226,7 +224,6 @@ class RoomMembersView extends LoggedView {
 }
 
 const mapStateToProps = state => ({
-	user: state.login.user,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 });
 

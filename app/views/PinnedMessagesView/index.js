@@ -140,7 +140,11 @@ class PinnedMessagesView extends LoggedView {
 const mapStateToProps = state => ({
 	messages: state.pinnedMessages.messages,
 	ready: state.pinnedMessages.ready,
-	user: state.login.user,
+	user: {
+		id: state.login.user.id,
+		username: state.login.user.username,
+		token: state.login.user.token
+	},
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 });
 

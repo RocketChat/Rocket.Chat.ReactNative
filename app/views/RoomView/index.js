@@ -27,7 +27,11 @@ class RoomView extends LoggedView {
 		navigator: PropTypes.object,
 		openRoom: PropTypes.func.isRequired,
 		setLastOpen: PropTypes.func.isRequired,
-		user: PropTypes.object.isRequired,
+		user: PropTypes.shape({
+			id: PropTypes.string.isRequired,
+			username: PropTypes.string.isRequired,
+			token: PropTypes.string.isRequired
+		}),
 		rid: PropTypes.string,
 		showActions: PropTypes.bool,
 		showErrorActions: PropTypes.bool,
@@ -63,15 +67,15 @@ class RoomView extends LoggedView {
 				icon: iconsMap.starOutline
 			}]
 		});
-		this.props.navigator.setDrawerEnabled({
-			side: 'left',
-			enabled: false
-		});
 	}
 
 	componentDidMount() {
 		this.updateRoom();
 		this.rooms.addListener(this.updateRoom);
+		this.props.navigator.setDrawerEnabled({
+			side: 'left',
+			enabled: false
+		});
 	}
 	shouldComponentUpdate(nextProps, nextState) {
 		return !(equal(this.props, nextProps) && equal(this.state, nextState) && this.state.room.ro === nextState.room.ro);
@@ -264,7 +268,9 @@ class RoomView extends LoggedView {
 					renderRow={this.renderItem}
 				/>
 				{this.renderFooter()}
-				{this.state.room._id && this.props.showActions ? <MessageActions room={this.state.room} /> : null}
+				{this.state.room._id && this.props.showActions ?
+					<MessageActions room={this.state.room} user={this.props.user} /> :
+					null}
 				{this.props.showErrorActions ? <MessageErrorActions /> : null}
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
 			</View>
@@ -273,7 +279,11 @@ class RoomView extends LoggedView {
 }
 
 const mapStateToProps = state => ({
-	user: state.login.user,
+	user: {
+		id: state.login.user.id,
+		username: state.login.user.username,
+		token: state.login.user.token
+	},
 	actionMessage: state.messages.actionMessage,
 	showActions: state.messages.showActions,
 	showErrorActions: state.messages.showErrorActions

@@ -462,8 +462,13 @@ class ProfileView extends LoggedView {
 }
 
 const mapStateToProps = state => ({
-	user: state.login.user,
+	user: {
+		name: state.login.user.name,
+		username: state.login.user.username,
+		customFields: state.login.user.customFields,
+		emails: state.login.user.emails
+	},
 	Accounts_CustomFields: state.settings.Accounts_CustomFields
 });
 
-export default connect(mapStateToProps, null)(ProfileView);
+export default connect(mapStateToProps)(ProfileView);

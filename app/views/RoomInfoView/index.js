@@ -33,7 +33,7 @@ class RoomInfoView extends LoggedView {
 	static propTypes = {
 		navigator: PropTypes.object,
 		rid: PropTypes.string,
-		user: PropTypes.object,
+		userId: PropTypes.string,
 		activeUsers: PropTypes.object,
 		Message_TimeFormat: PropTypes.string,
 		roles: PropTypes.object
@@ -62,7 +62,7 @@ class RoomInfoView extends LoggedView {
 		if (this.state.room) {
 			if (this.state.room.t === 'd') {
 				try {
-					const roomUser = await RocketChat.getRoomMember(this.state.room.rid, this.props.user.id);
+					const roomUser = await RocketChat.getRoomMember(this.state.room.rid, this.props.userId);
 					this.setState({ roomUser });
 					const username = this.state.room.name;
 
@@ -84,7 +84,6 @@ class RoomInfoView extends LoggedView {
 					log('RoomInfoView.componentDidMount', e);
 				}
 			} else {
-				// TODO: permission!
 				const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], this.state.room.rid);
 				if (permissions[PERMISSION_EDIT_ROOM]) {
 					this.props.navigator.setButtons({
@@ -167,7 +166,6 @@ class RoomInfoView extends LoggedView {
 			if (!utcOffset) {
 				return null;
 			}
-			// TODO: translate
 			return (
 				<View style={styles.item}>
 					<Text style={styles.itemLabel}>{I18n.t('Timezone')}</Text>
@@ -224,7 +222,7 @@ class RoomInfoView extends LoggedView {
 
 const mapStateToProps = state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	user: state.login.user,
+	userId: state.login.user.id,
 	activeUsers: state.activeUsers,
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	roles: state.roles
