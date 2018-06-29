@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, SafeAreaView } from 'react-native';
+import { View, ScrollView, SafeAreaView, Platform } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
 
@@ -16,35 +16,66 @@ import Loading from '../../containers/Loading';
 import { showErrorAlert, showToast } from '../../utils/info';
 import log from '../../utils/log';
 import { setUser } from '../../actions/login';
+import { iconsMap } from '../../Icons';
 
 @connect(state => ({
-	user: state.login.user
+	language: state.login.user.language
 }), dispatch => ({
 	setUser: params => dispatch(setUser(params))
 }))
+/** @extends React.Component */
 export default class SettingsView extends LoggedView {
 	static propTypes = {
-		user: PropTypes.object,
+		navigator: PropTypes.object,
+		language: PropTypes.string,
 		setUser: PropTypes.func
-	};
+	}
 
 	constructor(props) {
 		super('SettingsView', props);
 		this.state = {
 			placeholder: {},
-			language: props.user ? props.user.language : 'en',
+			language: props.language ? props.language : 'en',
 			languages: [{
 				label: 'English',
 				value: 'en'
 			}],
 			saving: false
 		};
+		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+	}
+
+	componentWillMount() {
+		this.props.navigator.setButtons({
+			leftButtons: [{
+				id: 'sideMenu',
+				icon: Platform.OS === 'ios' ? iconsMap.menu : undefined
+			}]
+		});
+	}
+
+	componentDidMount() {
+		this.props.navigator.setDrawerEnabled({
+			side: 'left',
+			enabled: true
+		});
+	}
+
+	onNavigatorEvent(event) {
+		if (event.type === 'NavBarButtonPress') {
+			if (event.id === 'sideMenu' && Platform.OS === 'ios') {
+				this.props.navigator.toggleDrawer({
+					side: 'left',
+					animated: true,
+					to: 'missing'
+				});
+			}
+		}
 	}
 
 	formIsChanged = () => {
 		const { language } = this.state;
-		const { user } = this.props;
-		return !(user.language === language);
+		return !(this.props.language === language);
 	}
 
 	submit = async() => {
@@ -69,7 +100,6 @@ export default class SettingsView extends LoggedView {
 		try {
 			await RocketChat.saveUserPreferences(params);
 			this.props.setUser({ language: params.language });
-			this.props.navigation.setParams({ title: I18n.t('Settings') });
 
 			this.setState({ saving: false });
 			setTimeout(() => {

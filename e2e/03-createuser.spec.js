@@ -2,7 +2,7 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
-const { logout } = require('./helpers/app');
+const { logout, sleep } = require('./helpers/app');
 const data = require('./data');
 
 async function navigateToRegister() {
@@ -50,24 +50,13 @@ describe('Create user screen', () => {
 			await expect(element(by.id('register-view-submit'))).toBeVisible();
 		});
 
-		it('should have close modal', async() => {
-			await expect(element(by.id('close-modal-button'))).toBeVisible();
-		});
-
 		after(async() => {
 			takeScreenshot();
 		});
 	});
 
 	describe('Usage', () => {
-		it('should navigate to welcome', async() => {
-			await element(by.id('close-modal-button')).tap();
-			await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(2000);
-			await expect(element(by.id('welcome-view'))).toBeVisible();
-		});
-
 		it('should submit empty form and raise error', async() => {
-			await navigateToRegister();
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.text('Some field is invalid or empty'))).toBeVisible().withTimeout(10000);
 			await expect(element(by.text('Some field is invalid or empty'))).toBeVisible();
@@ -129,6 +118,7 @@ describe('Create user screen', () => {
 		});
 
 		it('should finish register', async() => {
+			await sleep(2000);
 			await element(by.id('register-view-username')).replaceText(data.user);
 			await element(by.id('register-view-submit-username')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);

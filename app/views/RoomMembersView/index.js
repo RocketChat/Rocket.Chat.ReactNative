@@ -1,57 +1,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, Text, View, TextInput, Vibration, TouchableOpacity } from 'react-native';
+import { FlatList, View, TextInput, Vibration } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
 
 import LoggedView from '../View';
 import styles from './styles';
-import sharedStyles from '../Styles';
 import RoomItem from '../../presentation/RoomItem';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
-import { goRoom } from '../../containers/routes/NavigationService';
 import database from '../../lib/realm';
 import { showToast } from '../../utils/info';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 
+
 @connect(state => ({
-	user: state.login.user,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }))
-export default class MentionedMessagesView extends LoggedView {
-	static propTypes = {
-		navigation: PropTypes.object
-	}
-
-	static navigationOptions = ({ navigation }) => {
-		const params = navigation.state.params || {};
-		const label = params.allUsers ? I18n.t('All') : I18n.t('Online');
-		if (params.allUsers === undefined) {
-			return;
-		}
-		return {
-			headerRight: (
-				<TouchableOpacity
-					onPress={params.onPressToogleStatus}
-					accessibilityLabel={label}
-					accessibilityTraits='button'
-					style={[sharedStyles.headerButton, styles.headerButton]}
-					testID='room-members-view-toggle-status'
-				>
-					<Text>{label}</Text>
-				</TouchableOpacity>
-			)
-		};
+/** @extends React.Component */
+export default class RoomMembersView extends LoggedView {
+	static navigatorButtons = {
+		rightButtons: [{
+			title: 'All',
+			id: 'toggleOnline',
+			testID: 'room-members-view-toggle-status'
+		}]
 	};
+
+	static propTypes = {
+		navigator: PropTypes.object,
+		rid: PropTypes.string,
+		members: PropTypes.array,
+		baseUrl: PropTypes.string
+	}
 
 	constructor(props) {
 		super('MentionedMessagesView', props);
 		this.CANCEL_INDEX = 0;
 		this.MUTE_INDEX = 1;
 		this.actionSheetOptions = [''];
-		const { rid, members } = props.navigation.state.params;
+		const { rid, members } = props;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.permissions = RocketChat.hasPermission(['mute-user'], rid);
 		this.state = {
@@ -63,13 +52,10 @@ export default class MentionedMessagesView extends LoggedView {
 			userLongPressed: {},
 			room: {}
 		};
+		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
 
 	componentDidMount() {
-		this.props.navigation.setParams({
-			onPressToogleStatus: this.onPressToogleStatus,
-			allUsers: this.state.allUsers
-		});
 		this.rooms.addListener(this.updateRoom);
 	}
 
@@ -77,9 +63,26 @@ export default class MentionedMessagesView extends LoggedView {
 		this.rooms.removeAllListeners();
 	}
 
-	updateRoom = async() => {
-		const [room] = this.rooms;
-		await this.setState({ room });
+	async onNavigatorEvent(event) {
+		if (event.type === 'NavBarButtonPress') {
+			if (event.id === 'toggleOnline') {
+				try {
+					const allUsers = !this.state.allUsers;
+					const membersResult = await RocketChat.getRoomMembers(this.state.rid, allUsers);
+					const members = membersResult.records;
+					this.setState({ allUsers, members });
+					this.props.navigator.setButtons({
+						rightButtons: [{
+							title: this.state.allUsers ? 'Online' : 'All',
+							id: 'toggleOnline',
+							testID: 'room-members-view-toggle-status'
+						}]
+					});
+				} catch (e) {
+					log('RoomMembers.onNavigationButtonPressed', e);
+				}
+			}
+		}
 	}
 
 	onSearchChangeText = (text) => {
@@ -90,26 +93,14 @@ export default class MentionedMessagesView extends LoggedView {
 		this.setState({ filtering: !!text, membersFiltered });
 	}
 
-	onPressToogleStatus = async() => {
-		try {
-			const allUsers = !this.state.allUsers;
-			this.props.navigation.setParams({ allUsers });
-			const membersResult = await RocketChat.getRoomMembers(this.state.rid, allUsers);
-			const members = membersResult.records;
-			this.setState({ allUsers, members });
-		} catch (e) {
-			log('onPressToogleStatus', e);
-		}
-	}
-
 	onPressUser = async(item) => {
 		try {
 			const subscriptions = database.objects('subscriptions').filtered('name = $0', item.username);
 			if (subscriptions.length) {
-				goRoom({ rid: subscriptions[0].rid, name: subscriptions[0].name });
+				this.goRoom({ rid: subscriptions[0].rid, name: subscriptions[0].name });
 			} else {
 				const room = await RocketChat.createDirectMessage(item.username);
-				goRoom({ rid: room.rid, name: item.username });
+				this.goRoom({ rid: room.rid, name: item.username });
 			}
 		} catch (e) {
 			log('onPressUser', e);
@@ -132,6 +123,26 @@ export default class MentionedMessagesView extends LoggedView {
 		this.setState({ userLongPressed: user });
 		Vibration.vibrate(50);
 		this.ActionSheet.show();
+	}
+
+	updateRoom = async() => {
+		const [room] = this.rooms;
+		await this.setState({ room });
+	}
+
+	goRoom = ({ rid, name }) => {
+		this.props.navigator.popToRoot();
+		setTimeout(() => {
+			this.props.navigator.push({
+				screen: 'RoomView',
+				title: name,
+				passProps: {
+					room: { rid, name },
+					rid,
+					name
+				}
+			});
+		}, 1000);
 	}
 
 	handleMute = async() => {

@@ -12,41 +12,33 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(state => ({
-	activeUsers: state.activeUsers,
-	user: state.login.user,
-	offline: !state.meteor.connected
-}))
+@connect((state, ownProps) => {
+	if (state.login.user && ownProps.id === state.login.user.id) {
+		return {
+			status: state.login.user && state.login.user.status,
+			offline: !state.meteor.connected
+		};
+	}
 
-export default class Status extends React.Component {
+	const user = state.activeUsers[ownProps.id];
+	return {
+		status: (user && user.status) || 'offline'
+	};
+})
+
+export default class Status extends React.PureComponent {
 	static propTypes = {
 		style: ViewPropTypes.style,
-		id: PropTypes.string,
-		activeUsers: PropTypes.object,
-		user: PropTypes.object,
+		status: PropTypes.string,
 		offline: PropTypes.bool
 	};
 
-	shouldComponentUpdate(nextProps) {
-		const { id: userId, user } = this.props;
-		if (user.id === userId) {
-			if (nextProps.offline !== this.props.offline) {
-				return true;
-			}
-			return (nextProps.user && nextProps.user.status !== user.status);
-		}
-		return (nextProps.activeUsers[userId] && nextProps.activeUsers[userId].status) !== this.status;
-	}
-
 	get status() {
-		const { id: userId, user, offline } = this.props;
-		if (user.id === userId) {
-			if (offline) {
-				return 'offline';
-			}
-			return user.status || 'offline';
+		const { offline, status } = this.props;
+		if (offline) {
+			return 'offline';
 		}
-		return (this.props.activeUsers && this.props.activeUsers[userId] && this.props.activeUsers[userId].status) || 'offline';
+		return status;
 	}
 
 	render() {

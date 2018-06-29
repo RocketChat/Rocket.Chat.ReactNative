@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, ScrollView, View, SafeAreaView, Keyboard } from 'react-native';
+import { Text, ScrollView, View, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 
 import { serverRequest, addServer } from '../actions/server';
@@ -21,14 +21,15 @@ import I18n from '../i18n';
 	validateServer: url => dispatch(serverRequest(url)),
 	addServer: url => dispatch(addServer(url))
 }))
+/** @extends React.Component */
 export default class NewServerView extends LoggedView {
 	static propTypes = {
+		navigator: PropTypes.object,
 		validateServer: PropTypes.func.isRequired,
 		addServer: PropTypes.func.isRequired,
 		validating: PropTypes.bool.isRequired,
 		validInstance: PropTypes.bool.isRequired,
-		addingServer: PropTypes.bool.isRequired,
-		navigation: PropTypes.object.isRequired
+		addingServer: PropTypes.bool.isRequired
 	}
 
 	constructor(props) {
@@ -36,11 +37,7 @@ export default class NewServerView extends LoggedView {
 		this.state = {
 			defaultServer: 'https://open.rocket.chat'
 		};
-		this.props.validateServer(this.state.defaultServer); // Need to call because in case of submit with empty field
-	}
-
-	componentDidMount() {
-		this.input.focus();
+		props.validateServer(this.state.defaultServer); // Need to call because in case of submit with empty field
 	}
 
 	onChangeText = (text) => {
@@ -109,7 +106,7 @@ export default class NewServerView extends LoggedView {
 				keyboardVerticalOffset={128}
 			>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
-					<SafeAreaView testID='new-server-view'>
+					<View testID='new-server-view'>
 						<Text style={[styles.loginText, styles.loginTitle]}>{I18n.t('Sign_in_your_server')}</Text>
 						<TextInput
 							inputRef={e => this.input = e}
@@ -132,7 +129,7 @@ export default class NewServerView extends LoggedView {
 							/>
 						</View>
 						<Loading visible={this.props.addingServer} />
-					</SafeAreaView>
+					</View>
 				</ScrollView>
 			</KeyboardView>
 		);

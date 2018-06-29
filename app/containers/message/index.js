@@ -99,7 +99,11 @@ export default class Message extends React.Component {
 		Message_GroupingPeriod: PropTypes.number.isRequired,
 		customTimeFormat: PropTypes.string,
 		message: PropTypes.object.isRequired,
-		user: PropTypes.object.isRequired,
+		user: PropTypes.shape({
+			id: PropTypes.string.isRequired,
+			username: PropTypes.string.isRequired,
+			token: PropTypes.string.isRequired
+		}),
 		editing: PropTypes.bool,
 		errorActionsShow: PropTypes.func,
 		toggleReactionPicker: PropTypes.func,
@@ -109,7 +113,8 @@ export default class Message extends React.Component {
 		onLongPress: PropTypes.func,
 		_updatedAt: PropTypes.instanceOf(Date),
 		archived: PropTypes.bool,
-		broadcast: PropTypes.bool
+		broadcast: PropTypes.bool,
+		previousItem: PropTypes.object
 	}
 
 	static defaultProps = {
