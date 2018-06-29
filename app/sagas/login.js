@@ -37,7 +37,6 @@ const forgotPasswordCall = args => RocketChat.forgotPassword(args);
 const handleLoginSuccess = function* handleLoginSuccess() {
 	try {
 		const [server, user] = yield all([select(getServer), select(getUser)]);
-		// const prevToken = yield AsyncStorage.getItem(RocketChat.TOKEN_KEY) || '';
 		yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
 		yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
 		const token = yield AsyncStorage.getItem('pushId');
@@ -47,6 +46,7 @@ const handleLoginSuccess = function* handleLoginSuccess() {
 		if (!user.user.username || user.isRegistering) {
 			yield put(registerIncomplete());
 		} else {
+			yield delay(300);
 			yield put(appStart('inside'));
 		}
 	} catch (e) {
@@ -105,9 +105,9 @@ const handleLogout = function* handleLogout() {
 	}
 };
 
-// const handleRegisterIncomplete = function* handleRegisterIncomplete() {
-// 	yield call(NavigationService.navigate, 'Register');
-// };
+const handleRegisterIncomplete = function* handleRegisterIncomplete() {
+	yield put(appStart('outside'));
+};
 
 const handleForgotPasswordRequest = function* handleForgotPasswordRequest({ email }) {
 	try {
@@ -149,7 +149,7 @@ const root = function* root() {
 	yield takeLatest(types.LOGIN.REGISTER_REQUEST, handleRegisterRequest);
 	yield takeLatest(types.LOGIN.REGISTER_SUBMIT, handleRegisterSubmit);
 	yield takeLatest(types.LOGIN.REGISTER_SUCCESS, handleRegisterSuccess);
-	// yield takeLatest(types.LOGIN.REGISTER_INCOMPLETE, handleRegisterIncomplete);
+	yield takeLatest(types.LOGIN.REGISTER_INCOMPLETE, handleRegisterIncomplete);
 	yield takeLatest(types.LOGIN.SET_USERNAME_SUBMIT, handleSetUsernameSubmit);
 	yield takeLatest(types.LOGIN.SET_USERNAME_REQUEST, handleSetUsernameRequest);
 	yield takeLatest(types.LOGOUT, handleLogout);

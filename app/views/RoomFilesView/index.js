@@ -10,8 +10,20 @@ import Message from '../../containers/message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 
+@connect(state => ({
+	messages: state.roomFiles.messages,
+	ready: state.roomFiles.ready,
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	}
+}), dispatch => ({
+	openRoomFiles: (rid, limit) => dispatch(openRoomFiles(rid, limit)),
+	closeRoomFiles: () => dispatch(closeRoomFiles())
+}))
 /** @extends React.Component */
-class RoomFilesView extends LoggedView {
+export default class RoomFilesView extends LoggedView {
 	static propTypes = {
 		rid: PropTypes.string,
 		messages: PropTypes.array,
@@ -102,20 +114,3 @@ class RoomFilesView extends LoggedView {
 		);
 	}
 }
-
-const mapStateToProps = state => ({
-	messages: state.roomFiles.messages,
-	ready: state.roomFiles.ready,
-	user: {
-		id: state.login.user.id,
-		username: state.login.user.username,
-		token: state.login.user.token
-	}
-});
-
-const mapDispatchToProps = dispatch => ({
-	openRoomFiles: (rid, limit) => dispatch(openRoomFiles(rid, limit)),
-	closeRoomFiles: () => dispatch(closeRoomFiles())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(RoomFilesView);

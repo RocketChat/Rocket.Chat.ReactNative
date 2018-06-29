@@ -28,8 +28,15 @@ const getRoomTitle = room => (room.t === 'd' ?
 	]
 );
 
+@connect(state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	userId: state.login.user && state.login.user.id,
+	activeUsers: state.activeUsers,
+	Message_TimeFormat: state.settings.Message_TimeFormat,
+	roles: state.roles
+}))
 /** @extends React.Component */
-class RoomInfoView extends LoggedView {
+export default class RoomInfoView extends LoggedView {
 	static propTypes = {
 		navigator: PropTypes.object,
 		rid: PropTypes.string,
@@ -219,13 +226,3 @@ class RoomInfoView extends LoggedView {
 		);
 	}
 }
-
-const mapStateToProps = state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	userId: state.login.user.id,
-	activeUsers: state.activeUsers,
-	Message_TimeFormat: state.settings.Message_TimeFormat,
-	roles: state.roles
-});
-
-export default connect(mapStateToProps, null)(RoomInfoView);

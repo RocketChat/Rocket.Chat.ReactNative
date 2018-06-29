@@ -10,8 +10,21 @@ import Message from '../../containers/message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 
+@connect(state => ({
+	messages: state.mentionedMessages.messages,
+	ready: state.mentionedMessages.ready,
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	},
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+}), dispatch => ({
+	openMentionedMessages: (rid, limit) => dispatch(openMentionedMessages(rid, limit)),
+	closeMentionedMessages: () => dispatch(closeMentionedMessages())
+}))
 /** @extends React.Component */
-class MentionedMessagesView extends LoggedView {
+export default class MentionedMessagesView extends LoggedView {
 	static propTypes = {
 		rid: PropTypes.string,
 		messages: PropTypes.array,
@@ -105,20 +118,3 @@ class MentionedMessagesView extends LoggedView {
 		);
 	}
 }
-const mapStateToProps = state => ({
-	messages: state.mentionedMessages.messages,
-	ready: state.mentionedMessages.ready,
-	user: {
-		id: state.login.user.id,
-		username: state.login.user.username,
-		token: state.login.user.token
-	},
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-});
-
-const mapDispatchToProps = dispatch => ({
-	openMentionedMessages: (rid, limit) => dispatch(openMentionedMessages(rid, limit)),
-	closeMentionedMessages: () => dispatch(closeMentionedMessages())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(MentionedMessagesView);

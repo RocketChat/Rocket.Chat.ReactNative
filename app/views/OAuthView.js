@@ -9,7 +9,10 @@ import I18n from '../i18n';
 const userAgentAndroid = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1';
 const userAgent = Platform.OS === 'ios' ? 'UserAgent' : userAgentAndroid;
 
-class TermsServiceView extends React.PureComponent {
+@connect(state => ({
+	server: state.server.server
+}))
+export default class TermsServiceView extends React.PureComponent {
 	static navigatorButtons = {
 		leftButtons: [{
 			id: 'close',
@@ -64,9 +67,3 @@ class TermsServiceView extends React.PureComponent {
 		);
 	}
 }
-
-const mapStateToProps = state => ({
-	server: state.server.server
-});
-
-export default connect(mapStateToProps, null)(TermsServiceView);

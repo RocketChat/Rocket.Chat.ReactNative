@@ -43,13 +43,30 @@ const styles = StyleSheet.create({
 	}
 });
 
+@connect(state => ({
+	server: state.server.server,
+	isFetching: state.login.isFetching,
+	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
+	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
+	Accounts_OAuth_Facebook: state.settings.Accounts_OAuth_Facebook,
+	Accounts_OAuth_Github: state.settings.Accounts_OAuth_Github,
+	Accounts_OAuth_Gitlab: state.settings.Accounts_OAuth_Gitlab,
+	Accounts_OAuth_Google: state.settings.Accounts_OAuth_Google,
+	Accounts_OAuth_Linkedin: state.settings.Accounts_OAuth_Linkedin,
+	Accounts_OAuth_Meteor: state.settings.Accounts_OAuth_Meteor,
+	Accounts_OAuth_Twitter: state.settings.Accounts_OAuth_Twitter,
+	services: state.login.services
+}), dispatch => ({
+	open: () => dispatch(open()),
+	close: () => dispatch(close())
+}))
 /** @extends React.Component */
-class LoginSignupView extends LoggedView {
+export default class LoginSignupView extends LoggedView {
 	static propTypes = {
 		navigator: PropTypes.object,
 		open: PropTypes.func.isRequired,
 		close: PropTypes.func.isRequired,
-		login: PropTypes.object,
+		isFetching: PropTypes.bool,
 		server: PropTypes.string,
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.bool,
 		Accounts_PasswordPlaceholder: PropTypes.string,
@@ -289,31 +306,9 @@ class LoginSignupView extends LoggedView {
 						/>
 						{this.renderServices()}
 					</View>
-					<Loading visible={this.props.login.isFetching} />
+					<Loading visible={this.props.isFetching} />
 				</View>
 			</ScrollView>
 		);
 	}
 }
-
-const mapStateToProps = state => ({
-	server: state.server.server,
-	login: state.login,
-	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
-	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
-	Accounts_OAuth_Facebook: state.settings.Accounts_OAuth_Facebook,
-	Accounts_OAuth_Github: state.settings.Accounts_OAuth_Github,
-	Accounts_OAuth_Gitlab: state.settings.Accounts_OAuth_Gitlab,
-	Accounts_OAuth_Google: state.settings.Accounts_OAuth_Google,
-	Accounts_OAuth_Linkedin: state.settings.Accounts_OAuth_Linkedin,
-	Accounts_OAuth_Meteor: state.settings.Accounts_OAuth_Meteor,
-	Accounts_OAuth_Twitter: state.settings.Accounts_OAuth_Twitter,
-	services: state.login.services
-});
-
-const mapDispatchToProps = dispatch => ({
-	open: () => dispatch(open()),
-	close: () => dispatch(close())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoginSignupView);

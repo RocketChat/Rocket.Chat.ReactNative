@@ -58,8 +58,19 @@ const styles = StyleSheet.create({
 	}
 });
 
+@connect(state => ({
+	userId: state.login.user && state.login.user.id,
+	Site_Url: state.settings.Site_Url,
+	users: state.selectedUsers.users,
+	loading: state.selectedUsers.loading
+}), dispatch => ({
+	addUser: user => dispatch(addUser(user)),
+	removeUser: user => dispatch(removeUser(user)),
+	reset: () => dispatch(reset()),
+	setLoadingInvite: loading => dispatch(setLoading(loading))
+}))
 /** @extends React.Component */
-class SelectedUsersView extends LoggedView {
+export default class SelectedUsersView extends LoggedView {
 	static propTypes = {
 		navigator: PropTypes.object,
 		rid: PropTypes.string,
@@ -294,19 +305,3 @@ class SelectedUsersView extends LoggedView {
 		</View>
 	);
 }
-
-const mapStateToProps = state => ({
-	userId: state.login.user.id,
-	Site_Url: state.settings.Site_Url,
-	users: state.selectedUsers.users,
-	loading: state.selectedUsers.loading
-});
-
-const mapDispatchToProps = dispatch => ({
-	addUser: user => dispatch(addUser(user)),
-	removeUser: user => dispatch(removeUser(user)),
-	reset: () => dispatch(reset()),
-	setLoadingInvite: loading => dispatch(setLoading(loading))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SelectedUsersView);

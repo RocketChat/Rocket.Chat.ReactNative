@@ -13,8 +13,14 @@ import LoggedView from '../View';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 
+@connect(state => ({
+	userId: state.login.user && state.login.user.id,
+	server: state.server.server,
+	Site_Url: state.settings.Site_Url,
+	searchText: state.rooms.searchText
+}))
 /** @extends React.Component */
-class RoomsListView extends LoggedView {
+export default class RoomsListView extends LoggedView {
 	static propTypes = {
 		navigator: PropTypes.object,
 		userId: PropTypes.string,
@@ -287,12 +293,3 @@ class RoomsListView extends LoggedView {
 			{this.renderList()}
 		</View>)
 }
-
-const mapStateToProps = state => ({
-	userId: state.login.user.id,
-	server: state.server.server,
-	Site_Url: state.settings.Site_Url,
-	searchText: state.rooms.searchText
-});
-
-export default connect(mapStateToProps, null)(RoomsListView);

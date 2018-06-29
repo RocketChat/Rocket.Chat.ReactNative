@@ -14,8 +14,12 @@ import { showToast } from '../../utils/info';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 
+
+@connect(state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+}))
 /** @extends React.Component */
-class RoomMembersView extends LoggedView {
+export default class RoomMembersView extends LoggedView {
 	static navigatorButtons = {
 		rightButtons: [{
 			title: 'All',
@@ -222,9 +226,3 @@ class RoomMembersView extends LoggedView {
 		);
 	}
 }
-
-const mapStateToProps = state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-});
-
-export default connect(mapStateToProps, null)(RoomMembersView);

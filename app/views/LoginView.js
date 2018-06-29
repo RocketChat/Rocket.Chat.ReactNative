@@ -16,8 +16,17 @@ import { COLOR_BUTTON_PRIMARY } from '../constants/colors';
 import LoggedView from './View';
 import I18n from '../i18n';
 
+@connect(state => ({
+	server: state.server.server,
+	failure: state.login.failure,
+	isFetching: state.login.isFetching,
+	reason: state.login.error && state.login.error.reason,
+	error: state.login.error && state.login.error.error
+}), () => ({
+	loginSubmit: params => RocketChat.loginWithPassword(params)
+}))
 /** @extends React.Component */
-class LoginView extends LoggedView {
+export default class LoginView extends LoggedView {
 	static propTypes = {
 		navigator: PropTypes.object,
 		loginSubmit: PropTypes.func.isRequired,
@@ -155,17 +164,3 @@ class LoginView extends LoggedView {
 		);
 	}
 }
-
-const mapStateToProps = state => ({
-	server: state.server.server,
-	failure: state.login.failure,
-	isFetching: state.login.isFetching,
-	reason: state.login.error && state.login.error.reason,
-	error: state.login.error && state.login.error.error
-});
-
-const mapDispatchToProps = () => ({
-	loginSubmit: params => RocketChat.loginWithPassword(params)
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoginView);

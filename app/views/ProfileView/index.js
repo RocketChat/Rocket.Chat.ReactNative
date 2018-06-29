@@ -24,8 +24,17 @@ import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
 import { iconsMap } from '../../Icons';
 
+@connect(state => ({
+	user: {
+		name: state.login.user && state.login.user.name,
+		username: state.login.user && state.login.user.username,
+		customFields: state.login.user && state.login.user.customFields,
+		emails: state.login.user && state.login.user.emails
+	},
+	Accounts_CustomFields: state.settings.Accounts_CustomFields
+}))
 /** @extends React.Component */
-class ProfileView extends LoggedView {
+export default class ProfileView extends LoggedView {
 	static propTypes = {
 		navigator: PropTypes.object,
 		user: PropTypes.object,
@@ -460,15 +469,3 @@ class ProfileView extends LoggedView {
 		);
 	}
 }
-
-const mapStateToProps = state => ({
-	user: {
-		name: state.login.user.name,
-		username: state.login.user.username,
-		customFields: state.login.user.customFields,
-		emails: state.login.user.emails
-	},
-	Accounts_CustomFields: state.settings.Accounts_CustomFields
-});
-
-export default connect(mapStateToProps)(ProfileView);

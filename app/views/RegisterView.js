@@ -14,8 +14,19 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import LoggedView from './View';
 import I18n from '../i18n';
 
+@connect(state => ({
+	server: state.server.server,
+	Accounts_NamePlaceholder: state.settings.Accounts_NamePlaceholder,
+	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
+	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
+	Accounts_RepeatPasswordPlaceholder: state.settings.Accounts_RepeatPasswordPlaceholder,
+	login: state.login
+}), dispatch => ({
+	registerSubmit: params => dispatch(registerSubmit(params)),
+	setUsernameSubmit: params => dispatch(setUsernameSubmit(params))
+}))
 /** @extends React.Component */
-class RegisterView extends LoggedView {
+export default class RegisterView extends LoggedView {
 	static propTypes = {
 		navigator: PropTypes.object,
 		server: PropTypes.string,
@@ -218,19 +229,3 @@ class RegisterView extends LoggedView {
 		);
 	}
 }
-
-const mapStateToProps = state => ({
-	server: state.server.server,
-	Accounts_NamePlaceholder: state.settings.Accounts_NamePlaceholder,
-	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
-	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
-	Accounts_RepeatPasswordPlaceholder: state.settings.Accounts_RepeatPasswordPlaceholder,
-	login: state.login
-});
-
-const mapDispatchToProps = dispatch => ({
-	registerSubmit: params => dispatch(registerSubmit(params)),
-	setUsernameSubmit: params => dispatch(setUsernameSubmit(params))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterView);

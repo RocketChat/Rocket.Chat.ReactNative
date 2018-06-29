@@ -16,8 +16,16 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 
+@connect(state => ({
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	},
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+}))
 /** @extends React.Component */
-class SearchMessagesView extends LoggedView {
+export default class SearchMessagesView extends LoggedView {
 	static propTypes = {
 		rid: PropTypes.string,
 		navigator: PropTypes.object,
@@ -136,14 +144,3 @@ class SearchMessagesView extends LoggedView {
 		);
 	}
 }
-
-const mapStateToProps = state => ({
-	user: {
-		id: state.login.user.id,
-		username: state.login.user.username,
-		token: state.login.user.token
-	},
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-});
-
-export default connect(mapStateToProps, null)(SearchMessagesView);

@@ -14,8 +14,14 @@ import { showErrorAlert } from '../utils/info';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 
+@connect(state => ({
+	login: state.login
+}), dispatch => ({
+	forgotPasswordInit: () => dispatch(forgotPasswordInit()),
+	forgotPasswordRequest: email => dispatch(forgotPasswordRequest(email))
+}))
 /** @extends React.Component */
-class ForgotPasswordView extends LoggedView {
+export default class ForgotPasswordView extends LoggedView {
 	static propTypes = {
 		navigator: PropTypes.object,
 		forgotPasswordInit: PropTypes.func.isRequired,
@@ -102,14 +108,3 @@ class ForgotPasswordView extends LoggedView {
 		);
 	}
 }
-
-const mapStateToProps = state => ({
-	login: state.login
-});
-
-const dispatchToProps = dispatch => ({
-	forgotPasswordInit: () => dispatch(forgotPasswordInit()),
-	forgotPasswordRequest: email => dispatch(forgotPasswordRequest(email))
-});
-
-export default connect(mapStateToProps, dispatchToProps)(ForgotPasswordView);

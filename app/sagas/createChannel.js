@@ -5,7 +5,6 @@ import { NavigationActions } from '../Navigation';
 import { CREATE_CHANNEL, LOGIN } from '../actions/actionsTypes';
 import { createChannelSuccess, createChannelFailure } from '../actions/createChannel';
 import RocketChat from '../lib/rocketchat';
-// import { goRoom } from '../containers/routes/NavigationService';
 
 const create = function* create(data) {
 	return yield RocketChat.createChannel(data);

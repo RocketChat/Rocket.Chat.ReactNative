@@ -21,8 +21,24 @@ import I18n from '../../i18n';
 import debounce from '../../utils/debounce';
 import { iconsMap } from '../../Icons';
 
+@connect(state => ({
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	},
+	actionMessage: state.messages.actionMessage,
+	showActions: state.messages.showActions,
+	showErrorActions: state.messages.showErrorActions
+}), dispatch => ({
+	openRoom: room => dispatch(openRoom(room)),
+	setLastOpen: date => dispatch(setLastOpen(date)),
+	toggleReactionPicker: message => dispatch(toggleReactionPicker(message)),
+	actionsShow: actionMessage => dispatch(actionsShow(actionMessage)),
+	close: () => dispatch(closeRoom())
+}))
 /** @extends React.Component */
-class RoomView extends LoggedView {
+export default class RoomView extends LoggedView {
 	static propTypes = {
 		navigator: PropTypes.object,
 		openRoom: PropTypes.func.isRequired,
@@ -123,8 +139,8 @@ class RoomView extends LoggedView {
 		}
 	}
 
-	onEndReached = debounce((lastRowData, length) => {
-		if (!lastRowData || length < 20) {
+	onEndReached = debounce((lastRowData) => {
+		if (!lastRowData) {
 			this.setState({ end: true });
 			return;
 		}
@@ -277,24 +293,3 @@ class RoomView extends LoggedView {
 		);
 	}
 }
-
-const mapStateToProps = state => ({
-	user: {
-		id: state.login.user.id,
-		username: state.login.user.username,
-		token: state.login.user.token
-	},
-	actionMessage: state.messages.actionMessage,
-	showActions: state.messages.showActions,
-	showErrorActions: state.messages.showErrorActions
-});
-
-const mapDispatchToProps = dispatch => ({
-	openRoom: room => dispatch(openRoom(room)),
-	setLastOpen: date => dispatch(setLastOpen(date)),
-	toggleReactionPicker: message => dispatch(toggleReactionPicker(message)),
-	actionsShow: actionMessage => dispatch(actionsShow(actionMessage)),
-	close: () => dispatch(closeRoom())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(RoomView);

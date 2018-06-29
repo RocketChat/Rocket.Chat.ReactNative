@@ -10,8 +10,21 @@ import Message from '../../containers/message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 
+@connect(state => ({
+	messages: state.snippetedMessages.messages,
+	ready: state.snippetedMessages.ready,
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	},
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+}), dispatch => ({
+	openSnippetedMessages: (rid, limit) => dispatch(openSnippetedMessages(rid, limit)),
+	closeSnippetedMessages: () => dispatch(closeSnippetedMessages())
+}))
 /** @extends React.Component */
-class SnippetedMessagesView extends LoggedView {
+export default class SnippetedMessagesView extends LoggedView {
 	static propTypes = {
 		rid: PropTypes.string,
 		messages: PropTypes.array,
@@ -105,21 +118,3 @@ class SnippetedMessagesView extends LoggedView {
 		);
 	}
 }
-
-const mapStateToProps = state => ({
-	messages: state.snippetedMessages.messages,
-	ready: state.snippetedMessages.ready,
-	user: {
-		id: state.login.user.id,
-		username: state.login.user.username,
-		token: state.login.user.token
-	},
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-});
-
-const mapDispatchToProps = dispatch => ({
-	openSnippetedMessages: (rid, limit) => dispatch(openSnippetedMessages(rid, limit)),
-	closeSnippetedMessages: () => dispatch(closeSnippetedMessages())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SnippetedMessagesView);

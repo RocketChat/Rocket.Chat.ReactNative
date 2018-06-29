@@ -54,6 +54,7 @@ const validateServer = function* validateServer({ server }) {
 
 const addServer = function* addServer({ server }) {
 	try {
+		yield put(actions.appStart('outside'));
 		yield call(NavigationActions.resetTo, { screen: 'ListServerView', title: I18n.t('Servers') });
 		database.databases.serversDB.write(() => {
 			database.databases.serversDB.create('servers', { id: server, current: false }, true);

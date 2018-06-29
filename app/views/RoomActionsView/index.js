@@ -21,13 +21,19 @@ import I18n from '../../i18n';
 const renderSeparator = () => <View style={styles.separator} />;
 const getRoomTitle = room => (room.t === 'd' ? <Text>{room.fname}</Text> : <Text><RoomTypeIcon type={room.t} />&nbsp;{room.name}</Text>);
 
+@connect(state => ({
+	userId: state.login.user && state.login.user.id,
+	username: state.login.user && state.login.user.username
+}), dispatch => ({
+	leaveRoom: rid => dispatch(leaveRoom(rid))
+}))
 /** @extends React.Component */
-class RoomActionsView extends LoggedView {
+export default class RoomActionsView extends LoggedView {
 	static propTypes = {
 		rid: PropTypes.string,
 		navigator: PropTypes.object,
-		user_id: PropTypes.string,
-		user_username: PropTypes.string,
+		userId: PropTypes.string,
+		username: PropTypes.string,
 		leaveRoom: PropTypes.func
 	}
 
@@ -73,7 +79,7 @@ class RoomActionsView extends LoggedView {
 		} = this.room;
 		const { allMembers } = this.state;
 		// TODO: same test joined
-		const userInRoom = !!allMembers.find(m => m.username === this.props.user_username);
+		const userInRoom = !!allMembers.find(m => m.username === this.props.username);
 		const permissions = RocketChat.hasPermission(['add-user-to-joined-room', 'add-user-to-any-c-room', 'add-user-to-any-p-room'], rid);
 
 		if (userInRoom && permissions['add-user-to-joined-room']) {
@@ -275,7 +281,7 @@ class RoomActionsView extends LoggedView {
 			return {};
 		}
 		try {
-			const member = await RocketChat.getRoomMember(this.state.room.rid, this.props.user_id);
+			const member = await RocketChat.getRoomMember(this.state.room.rid, this.props.userId);
 			return { member };
 		} catch (e) {
 			log('RoomActions updateRoomMember', e);
@@ -402,14 +408,3 @@ class RoomActionsView extends LoggedView {
 		);
 	}
 }
-
-const mapStateToProps = state => ({
-	user_id: state.login.user.id,
-	user_username: state.login.user.username
-});
-
-const mapDispatchToProps = dispatch => ({
-	leaveRoom: rid => dispatch(leaveRoom(rid))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(RoomActionsView);

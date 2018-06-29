@@ -13,8 +13,16 @@ import Loading from '../containers/Loading';
 import LoggedView from './View';
 import I18n from '../i18n';
 
+@connect(state => ({
+	validInstance: !state.server.failure && !state.server.connecting,
+	validating: state.server.connecting,
+	addingServer: state.server.adding
+}), dispatch => ({
+	validateServer: url => dispatch(serverRequest(url)),
+	addServer: url => dispatch(addServer(url))
+}))
 /** @extends React.Component */
-class NewServerView extends LoggedView {
+export default class NewServerView extends LoggedView {
 	static propTypes = {
 		navigator: PropTypes.object,
 		validateServer: PropTypes.func.isRequired,
@@ -127,16 +135,3 @@ class NewServerView extends LoggedView {
 		);
 	}
 }
-
-const mapStateToProps = state => ({
-	validInstance: !state.server.failure && !state.server.connecting,
-	validating: state.server.connecting,
-	addingServer: state.server.adding
-});
-
-const mapDispatchToProps = dispatch => ({
-	validateServer: url => dispatch(serverRequest(url)),
-	addServer: (url, componentId) => dispatch(addServer(url, componentId))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(NewServerView);

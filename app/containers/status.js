@@ -13,9 +13,9 @@ const styles = StyleSheet.create({
 });
 
 @connect((state, ownProps) => {
-	if (ownProps.id === state.login.user.id) {
+	if (state.login.user && ownProps.id === state.login.user.id) {
 		return {
-			status: state.login.user.status,
+			status: state.login.user && state.login.user.status,
 			offline: !state.meteor.connected
 		};
 	}

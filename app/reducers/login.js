@@ -19,6 +19,7 @@ export default function login(state = initialState, action) {
 				...state,
 				isFetching: true,
 				isAuthenticated: false,
+				isRegistering: false,
 				failure: false,
 				error: ''
 			};

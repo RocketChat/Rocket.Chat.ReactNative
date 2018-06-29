@@ -78,7 +78,21 @@ const styles = StyleSheet.create({
 });
 const keyExtractor = item => item.id;
 
-class Sidebar extends Component {
+@connect(state => ({
+	server: state.server.server,
+	user: {
+		id: state.login.user && state.login.user.id,
+		language: state.login.user && state.login.user.language,
+		server: state.login.user && state.login.user.server,
+		status: state.login.user && state.login.user.status,
+		username: state.login.user && state.login.user.username
+	}
+}), dispatch => ({
+	selectServer: server => dispatch(selectServer(server)),
+	logout: () => dispatch(logout()),
+	appStart: () => dispatch(appStart('outside'))
+}))
+export default class Sidebar extends Component {
 	static propTypes = {
 		navigator: PropTypes.object,
 		server: PropTypes.string.isRequired,
@@ -338,22 +352,3 @@ class Sidebar extends Component {
 		);
 	}
 }
-
-const mapStateToProps = state => ({
-	server: state.server.server,
-	user: {
-		id: state.login.user.id,
-		language: state.login.user.language,
-		server: state.login.user.server,
-		status: state.login.user.status,
-		username: state.login.user.username
-	}
-});
-
-const mapDispatchToProps = dispatch => ({
-	selectServer: server => dispatch(selectServer(server)),
-	logout: () => dispatch(logout()),
-	appStart: () => dispatch(appStart('outside'))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

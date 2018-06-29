@@ -16,8 +16,22 @@ const PIN_INDEX = 0;
 const CANCEL_INDEX = 1;
 const options = [I18n.t('Unpin'), I18n.t('Cancel')];
 
+@connect(state => ({
+	messages: state.pinnedMessages.messages,
+	ready: state.pinnedMessages.ready,
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	},
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+}), dispatch => ({
+	openPinnedMessages: (rid, limit) => dispatch(openPinnedMessages(rid, limit)),
+	closePinnedMessages: () => dispatch(closePinnedMessages()),
+	togglePinRequest: message => dispatch(togglePinRequest(message))
+}))
 /** @extends React.Component */
-class PinnedMessagesView extends LoggedView {
+export default class PinnedMessagesView extends LoggedView {
 	static propTypes = {
 		rid: PropTypes.string,
 		messages: PropTypes.array,
@@ -136,22 +150,3 @@ class PinnedMessagesView extends LoggedView {
 		);
 	}
 }
-
-const mapStateToProps = state => ({
-	messages: state.pinnedMessages.messages,
-	ready: state.pinnedMessages.ready,
-	user: {
-		id: state.login.user.id,
-		username: state.login.user.username,
-		token: state.login.user.token
-	},
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-});
-
-const mapDispatchToProps = dispatch => ({
-	openPinnedMessages: (rid, limit) => dispatch(openPinnedMessages(rid, limit)),
-	closePinnedMessages: () => dispatch(closePinnedMessages()),
-	togglePinRequest: message => dispatch(togglePinRequest(message))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(PinnedMessagesView);

@@ -18,8 +18,13 @@ import log from '../../utils/log';
 import { setUser } from '../../actions/login';
 import { iconsMap } from '../../Icons';
 
+@connect(state => ({
+	language: state.login.user.language
+}), dispatch => ({
+	setUser: params => dispatch(setUser(params))
+}))
 /** @extends React.Component */
-class SettingsView extends LoggedView {
+export default class SettingsView extends LoggedView {
 	static propTypes = {
 		navigator: PropTypes.object,
 		language: PropTypes.string,
@@ -157,13 +162,3 @@ class SettingsView extends LoggedView {
 		);
 	}
 }
-
-const mapStateToProps = state => ({
-	language: state.login.user.language
-});
-
-const mapDispatchToProps = dispatch => ({
-	setUser: params => dispatch(setUser(params))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsView);

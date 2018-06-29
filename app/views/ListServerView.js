@@ -62,8 +62,15 @@ const styles = StyleSheet.create({
 	}
 });
 
+@connect(state => ({
+	server: state.server.server,
+	login: state.login,
+	connected: state.meteor.connected
+}), dispatch => ({
+	selectServer: server => dispatch(selectServer(server))
+}))
 /** @extends React.Component */
-class ListServerView extends LoggedView {
+export default class ListServerView extends LoggedView {
 	static propTypes = {
 		navigator: PropTypes.object,
 		login: PropTypes.object.isRequired,
@@ -199,15 +206,3 @@ class ListServerView extends LoggedView {
 		);
 	}
 }
-
-const mapStateToProps = state => ({
-	server: state.server.server,
-	login: state.login,
-	connected: state.meteor.connected
-});
-
-const mapDispatchToProps = dispatch => ({
-	selectServer: server => dispatch(selectServer(server))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ListServerView);
