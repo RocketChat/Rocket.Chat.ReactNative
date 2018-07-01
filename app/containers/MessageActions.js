@@ -122,7 +122,7 @@ export default class MessageActions extends React.Component {
 			this.DELETE_INDEX = this.options.length - 1;
 		}
 		setTimeout(() => {
-			this.ActionSheet.show();
+			this.showActionSheet();
 			Vibration.vibrate(50);
 		});
 	}

@@ -30,7 +30,7 @@ export default class MessageErrorActions extends React.Component {
 		this.CANCEL_INDEX = 0;
 		this.DELETE_INDEX = 1;
 		this.RESEND_INDEX = 2;
-		this.ActionSheet.show();
+		this.showActionSheet();
 	}
 
 	handleResend = protectedFunction(() => RocketChat.resendMessage(this.props.actionMessage._id));
