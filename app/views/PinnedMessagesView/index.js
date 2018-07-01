@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
-import ActionSheet from 'react-native-actionsheet';
+import ActionSheet from '@yfuks/react-native-action-sheet';
 
 import LoggedView from '../View';
 import { openPinnedMessages, closePinnedMessages } from '../../actions/pinnedMessages';
@@ -67,7 +67,7 @@ export default class PinnedMessagesView extends LoggedView {
 
 	onLongPress = (message) => {
 		this.setState({ message });
-		this.actionSheet.show();
+		this.showActionSheet();
 	}
 
 	handleActionPress = (actionIndex) => {
@@ -79,6 +79,19 @@ export default class PinnedMessagesView extends LoggedView {
 				break;
 		}
 	}
+
+	showActionSheet = () => {
+
+		ActionSheet.showActionSheetWithOptions ({
+			options: {this.options},
+			cancelButtonIndex: {this.CANCEL_INDEX},
+			destructiveButtonIndex: {this.DELETE_INDEX},
+			title: {I18n.t('Message_actions')},
+		}
+		(actionIndex) => {
+			this.handleActionPress(actionIndex) }
+		});
+	};
 
 	load = () => {
 		this.props.openPinnedMessages(this.props.navigation.state.params.rid, this.limit);
@@ -136,14 +149,7 @@ export default class PinnedMessagesView extends LoggedView {
 					ListHeaderComponent={loading ? <RCActivityIndicator /> : null}
 					ListFooterComponent={loadingMore ? <RCActivityIndicator /> : null}
 				/>,
-				<ActionSheet
-					key='pinned-messages-view-action-sheet'
-					ref={o => this.actionSheet = o}
-					title={I18n.t('Actions')}
-					options={options}
-					cancelButtonIndex={CANCEL_INDEX}
-					onPress={this.handleActionPress}
-				/>
+				{this.showActionSheet}
 			]
 		);
 	}

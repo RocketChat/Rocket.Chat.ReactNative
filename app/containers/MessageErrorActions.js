@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import ActionSheet from 'react-native-actionsheet';
+import ActionSheet from '@yfuks/react-native-action-sheet';
 
 import { errorActionsHide } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
@@ -30,7 +30,7 @@ export default class MessageErrorActions extends React.Component {
 		this.CANCEL_INDEX = 0;
 		this.DELETE_INDEX = 1;
 		this.RESEND_INDEX = 2;
-		this.ActionSheet.show();
+		this.showActionSheet();
 	}
 
 	handleResend = protectedFunction(() => RocketChat.resendMessage(this.props.actionMessage._id));
@@ -41,6 +41,19 @@ export default class MessageErrorActions extends React.Component {
 			database.delete(msg);
 		});
 	})
+
+	showActionSheet = () => {
+
+		ActionSheet.showActionSheetWithOptions ({
+			options: {this.options},
+			cancelButtonIndex: {this.CANCEL_INDEX},
+			destructiveButtonIndex: {this.DELETE_INDEX},
+			title: {I18n.t('Message_actions')},
+		}
+		(actionIndex) => {
+			this.handleActionPress(actionIndex) }
+		});
+	};
 
 	handleActionPress = (actionIndex) => {
 		switch (actionIndex) {
@@ -58,14 +71,7 @@ export default class MessageErrorActions extends React.Component {
 
 	render() {
 		return (
-			<ActionSheet
-				ref={o => this.ActionSheet = o}
-				title={I18n.t('Message_actions')}
-				options={this.options}
-				cancelButtonIndex={this.CANCEL_INDEX}
-				destructiveButtonIndex={this.DELETE_INDEX}
-				onPress={this.handleActionPress}
-			/>
+			{this.showActionSheet}
 		);
 	}
 }

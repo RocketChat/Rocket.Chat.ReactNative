@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Alert, Clipboard, Vibration, Share } from 'react-native';
 import { connect } from 'react-redux';
-import ActionSheet from 'react-native-actionsheet';
 import * as moment from 'moment';
+import ActionSheet from '@yfuks/react-native-action-sheet';
 
 import {
 	deleteRequest,
@@ -122,10 +122,23 @@ export default class MessageActions extends React.Component {
 			this.DELETE_INDEX = this.options.length - 1;
 		}
 		setTimeout(() => {
-			this.ActionSheet.show();
+			this.showActionSheet();
 			Vibration.vibrate(50);
 		});
 	}
+
+	showActionSheet = () => {
+
+		ActionSheet.showActionSheetWithOptions ({
+			options: {this.options},
+			cancelButtonIndex: {this.CANCEL_INDEX},
+			destructiveButtonIndex: {this.DELETE_INDEX},
+			title: {I18n.t('Message_actions')},
+		}
+		(actionIndex) => {
+			this.handleActionPress(actionIndex) }
+		});
+	};
 
 	setPermissions() {
 		const permissions = ['edit-message', 'delete-message', 'force-delete-message'];
@@ -310,15 +323,7 @@ export default class MessageActions extends React.Component {
 
 	render() {
 		return (
-			<ActionSheet
-				ref={o => this.ActionSheet = o}
-				title={I18n.t('Message_actions')}
-				testID='message-actions'
-				options={this.options}
-				cancelButtonIndex={this.CANCEL_INDEX}
-				destructiveButtonIndex={this.DELETE_INDEX}
-				onPress={this.handleActionPress}
-			/>
+			{this.showActionSheet}
 		);
 	}
 }

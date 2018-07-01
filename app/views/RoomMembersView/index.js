@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, Text, View, TextInput, Vibration, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import ActionSheet from 'react-native-actionsheet';
+import ActionSheet from '@yfuks/react-native-action-sheet';
 
 import LoggedView from '../View';
 import styles from './styles';
@@ -154,6 +154,19 @@ export default class MentionedMessagesView extends LoggedView {
 		}
 	}
 
+	showActionSheet = () => {
+
+		ActionSheet.showActionSheetWithOptions ({
+			options: {this.options},
+			cancelButtonIndex: {this.CANCEL_INDEX},
+			destructiveButtonIndex: {this.DELETE_INDEX},
+			title: {I18n.t('Message_actions')},
+		}
+		(actionIndex) => {
+			this.handleActionPress(actionIndex) }
+		});
+	};
+
 	renderSearchBar = () => (
 		<View style={styles.searchBoxView}>
 			<TextInput
@@ -203,14 +216,8 @@ export default class MentionedMessagesView extends LoggedView {
 					ListHeaderComponent={this.renderSearchBar}
 					{...scrollPersistTaps}
 				/>,
-				<ActionSheet
-					key='room-members-actionsheet'
-					ref={o => this.ActionSheet = o}
-					title={I18n.t('Actions')}
-					options={this.actionSheetOptions}
-					cancelButtonIndex={this.CANCEL_INDEX}
-					onPress={this.handleActionPress}
-				/>
+				{this.showActionSheet}
+				
 			]
 		);
 	}
