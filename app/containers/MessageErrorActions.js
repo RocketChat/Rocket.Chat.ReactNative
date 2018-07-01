@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import ActionSheet from 'react-native-actionsheet';
 
 import { errorActionsHide } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
