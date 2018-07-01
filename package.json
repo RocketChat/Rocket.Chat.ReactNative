@@ -27,6 +27,7 @@
     "@remobile/react-native-toast": "^1.0.7",
     "@storybook/addons": "^3.4.7",
     "@storybook/react-native": "^3.4.7",
+    "@yfuks/react-native-action-sheet": "0.0.5",
     "babel-plugin-transform-decorators-legacy": "^1.3.5",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "babel-polyfill": "^6.26.0",

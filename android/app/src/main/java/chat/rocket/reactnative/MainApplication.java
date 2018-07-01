@@ -3,6 +3,8 @@ package chat.rocket.reactnative;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.actionsheet.ActionSheetPackage;
+import com.remobile.toast.RCTToastPackage;
 import com.horcrux.svg.SvgPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -38,6 +40,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
 			  new MainReactPackage(),
+            new ActionSheetPackage(),
+            new RCTToastPackage(),
         new SvgPackage(),
         new ImagePickerPackage(),
         new VectorIconsPackage(),

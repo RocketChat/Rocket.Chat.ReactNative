@@ -172,6 +172,8 @@ repositories {
 }
 
 dependencies {
+    compile project(':@yfuks/react-native-action-sheet')
+    compile project(':@remobile/react-native-toast')
     compile project(':react-native-i18n')
     compile project(':react-native-fabric')
     compile project(':react-native-audio')
