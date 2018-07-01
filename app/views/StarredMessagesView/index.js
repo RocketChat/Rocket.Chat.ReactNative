@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
+import ActionSheet from '@yfuks/react-native-action-sheet';
 
 import LoggedView from '../View';
 import { openStarredMessages, closeStarredMessages } from '../../actions/starredMessages';
@@ -79,6 +80,19 @@ export default class StarredMessagesView extends LoggedView {
 		}
 	}
 
+	showActionSheet = () => {
+
+		ActionSheet.showActionSheetWithOptions ({
+			options: {this.options},
+			cancelButtonIndex: {this.CANCEL_INDEX},
+			destructiveButtonIndex: {this.DELETE_INDEX},
+			title: {I18n.t('Message_actions')},
+		}
+		(actionIndex) => {
+			this.handleActionPress(actionIndex) }
+		});
+	};
+
 	load = () => {
 		this.props.openStarredMessages(this.props.navigation.state.params.rid, this.limit);
 	}
@@ -135,14 +149,7 @@ export default class StarredMessagesView extends LoggedView {
 					ListHeaderComponent={loading ? <RCActivityIndicator /> : null}
 					ListFooterComponent={loadingMore ? <RCActivityIndicator /> : null}
 				/>,
-				<ActionSheet
-					key='starred-messages-view-action-sheet'
-					ref={o => this.actionSheet = o}
-					title={I18n.t('Actions')}
-					options={options}
-					cancelButtonIndex={CANCEL_INDEX}
-					onPress={this.handleActionPress}
-				/>
+				{this.showActionSheet}
 			]
 		);
 	}
