@@ -13,7 +13,7 @@
     "android": "react-native run-android",
     "storybook": "storybook start -p 7007",
     "snyk-protect": "snyk protect",
-    "prepare": "exit 0",
+    "prepare": "npm run snyk-protect; exit 0",
     "fabric-ios": "./scripts/fabric-ios.sh",
     "fabric-android": "./scripts/fabric-android.sh",
     "postinstall": "cp ./temp/react.gradle ./node_modules/react-native"
@@ -80,7 +80,7 @@
     "redux-immutable-state-invariant": "^2.1.0",
     "redux-saga": "^0.16.0",
     "regenerator-runtime": "^0.11.1",
-    "snyk": "^1.82.2",
+    "snyk": "^1.88.0",
     "strip-ansi": "^4.0.0"
   },
   "devDependencies": {
