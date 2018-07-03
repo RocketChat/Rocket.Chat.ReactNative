@@ -183,7 +183,6 @@ dependencies {
     implementation project(':react-native-audio')
     implementation project(":reactnativekeyboardinput")
     implementation project(':react-native-video')
-    implementation project(':react-native-push-notification')
     implementation project(':react-native-svg')
     implementation project(':react-native-image-picker')
     implementation project(':react-native-vector-icons')

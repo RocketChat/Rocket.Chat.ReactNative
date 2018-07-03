@@ -37,7 +37,14 @@ const handleOpen = function* handleOpen({ params }) {
 		return;
 	}
 
-	const host = `https://${ params.host }`;
+	let { host } = params;
+	if (!/^(http|https)/.test(host)) {
+		host = `https://${ params.host }`;
+	}
+	// remove last "/" from host
+	if (host.slice(-1) === '/') {
+		host = host.slice(0, host.length - 1);
+	}
 
 	try {
 		yield RocketChat.testServer(host);
@@ -60,7 +67,6 @@ const handleOpen = function* handleOpen({ params }) {
 			const deepLinkServer = servers[0].id;
 			if (!token) {
 				yield put(appStart('outside'));
-				yield put(selectServer(deepLinkServer));
 			} else {
 				yield put(selectServer(deepLinkServer));
 				yield take(types.METEOR.REQUEST);

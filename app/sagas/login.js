@@ -39,10 +39,11 @@ const handleLoginSuccess = function* handleLoginSuccess() {
 		const [server, user] = yield all([select(getServer), select(getUser)]);
 		yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
 		yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
-		const token = yield AsyncStorage.getItem('pushId');
-		if (token) {
-			yield RocketChat.registerPushToken(user.user.id, token);
-		}
+		// const token = yield AsyncStorage.getItem('pushId');
+		// if (token) {
+		// 	yield RocketChat.registerPushToken(user.user.id, token);
+		// }
+		yield RocketChat.registerPushToken(user.user.id);
 		if (!user.user.username || user.isRegistering) {
 			yield put(registerIncomplete());
 		} else {

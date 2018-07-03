@@ -10,6 +10,7 @@ import { registerScreens } from './views';
 import { deepLinkingOpen } from './actions/deepLinking';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import I18n from './i18n';
+import { initializePushNotifications } from './push';
 
 const startLogged = () => {
 	Navigation.startSingleScreenApp({
@@ -61,6 +62,7 @@ export default class App extends Component {
 		super(props);
 		store.dispatch(appInit());
 		store.subscribe(this.onStoreUpdate.bind(this));
+		initializePushNotifications();
 
 		Linking
 			.getInitialURL()
@@ -84,5 +86,9 @@ export default class App extends Component {
 				startLogged();
 			}
 		}
+	}
+
+	setDeviceToken(deviceToken) {
+		this.deviceToken = deviceToken;
 	}
 }

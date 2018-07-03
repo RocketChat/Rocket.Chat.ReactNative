@@ -49,6 +49,7 @@
 		70A8D9B456894EFFAF027CAB /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A30DA4B2D474348824CD05B /* FontAwesome.ttf */; };
 		74815BBCB91147C08C8F7B3D /* libRNAudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1142E3442BA94B19BCF52814 /* libRNAudio.a */; };
 		77C35F50C01C43668188886C /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A0EEFAF8AB14F5B9E796CDD /* libRNVectorIcons.a */; };
+		7A1C241320E6D34A00775776 /* libRNNotifications.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A1C240B20E6D33D00775776 /* libRNNotifications.a */; };
 		7A2D202320726F1400D0AA04 /* libSMXCrashlytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2D201F20726EF600D0AA04 /* libSMXCrashlytics.a */; };
 		7A309C9C20724870000C6B13 /* Fabric.sh in Resources */ = {isa = PBXBuildFile; fileRef = 7A309C9B20724870000C6B13 /* Fabric.sh */; };
 		7A32C246206D791D001C80E9 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A32C20F206D791D001C80E9 /* Fabric.framework */; };
@@ -308,6 +309,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RCTLinking;
 		};
+		7A1C240A20E6D33D00775776 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7A1C23D420E6D33D00775776 /* RNNotifications.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNNotifications;
+		};
 		7A2D201E20726EF600D0AA04 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7A2D1FE620726EF600D0AA04 /* SMXCrashlytics.xcodeproj */;
@@ -535,6 +543,7 @@
 		60B2A6A31FC4588700BD58E5 /* RocketChatRN.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = RocketChatRN.entitlements; path = RocketChatRN/RocketChatRN.entitlements; sourceTree = "<group>"; };
 		6533FB90166345D29F1B91C0 /* libRNFetchBlob.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFetchBlob.a; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
+		7A1C23D420E6D33D00775776 /* RNNotifications.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNNotifications.xcodeproj; path = "../node_modules/react-native-notifications/RNNotifications/RNNotifications.xcodeproj"; sourceTree = "<group>"; };
 		7A2D1FE620726EF600D0AA04 /* SMXCrashlytics.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SMXCrashlytics.xcodeproj; path = "../node_modules/react-native-fabric/ios/SMXCrashlytics.xcodeproj"; sourceTree = "<group>"; };
 		7A309C9B20724870000C6B13 /* Fabric.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = Fabric.sh; path = RocketChatRN/Fabric.sh; sourceTree = "<group>"; };
 		7A30DA4B2D474348824CD05B /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
@@ -579,6 +588,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A1C241320E6D34A00775776 /* libRNNotifications.a in Frameworks */,
 				7A3562E620E1569000A4CF66 /* libReactNativeNavigation.a in Frameworks */,
 				7A2D202320726F1400D0AA04 /* libSMXCrashlytics.a in Frameworks */,
 				7AFB806E205AE65700D004E7 /* libRCTToast.a in Frameworks */,
@@ -800,6 +810,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		7A1C23D520E6D33D00775776 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7A1C240B20E6D33D00775776 /* libRNNotifications.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		7A2D1FE720726EF600D0AA04 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -862,6 +880,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				7A1C23D420E6D33D00775776 /* RNNotifications.xcodeproj */,
 				7A3562E020E1567900A4CF66 /* ReactNativeNavigation.xcodeproj */,
 				7A2D1FE620726EF600D0AA04 /* SMXCrashlytics.xcodeproj */,
 				7AFB8035205AE63000D004E7 /* RCTToast.xcodeproj */,
@@ -1252,6 +1271,10 @@
 					ProjectRef = 4B38C7E37A8748E0BC665078 /* RNImagePicker.xcodeproj */;
 				},
 				{
+					ProductGroup = 7A1C23D520E6D33D00775776 /* Products */;
+					ProjectRef = 7A1C23D420E6D33D00775776 /* RNNotifications.xcodeproj */;
+				},
+				{
 					ProductGroup = B8E79AC41F3CCCA7005B464F /* Products */;
 					ProjectRef = C23AEF1D9EBE4A38A1A6B97B /* RNSVG.xcodeproj */;
 				},
@@ -1498,6 +1521,13 @@
 			fileType = archive.ar;
 			path = libRCTLinking.a;
 			remoteRef = 78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7A1C240B20E6D33D00775776 /* libRNNotifications.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNNotifications.a;
+			remoteRef = 7A1C240A20E6D33D00775776 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		7A2D201F20726EF600D0AA04 /* libSMXCrashlytics.a */ = {
@@ -1969,7 +1999,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative;
 				PRODUCT_NAME = RocketChatRN;
-				PROVISIONING_PROFILE = "407d153d-67a5-4dde-9d17-372484b83cc1";
+				PROVISIONING_PROFILE = "573947ae-c3f2-425e-aa82-0181297becf9";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development chat.rocket.reactnative";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -2016,7 +2046,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative;
 				PRODUCT_NAME = RocketChatRN;
-				PROVISIONING_PROFILE = "4215f8b9-b4d1-4531-8a64-a1b044835516";
+				PROVISIONING_PROFILE = "d729c69a-801c-440b-90b8-6414082c5339";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.reactnative";
 				VERSIONING_SYSTEM = "apple-generic";
 			};

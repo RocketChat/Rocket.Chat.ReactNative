@@ -8,7 +8,6 @@ import com.RNFetchBlob.RNFetchBlobPackage;
 import com.balthazargronon.RCTZeroconf.ZeroconfReactPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.crashlytics.android.Crashlytics;
-import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -64,7 +63,6 @@ public class MainApplication extends NavigationApplication implements INotificat
                 new RNFetchBlobPackage(),
                 new ZeroconfReactPackage(),
                 new RealmReactPackage(),
-                new ReactNativePushNotificationPackage(),
                 new ReactVideoPackage(),
                 new RCTToastPackage(),
                 new ReactNativeAudioPackage(),

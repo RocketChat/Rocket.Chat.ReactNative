@@ -40,6 +40,8 @@ import loadMissedMessages from './methods/loadMissedMessages';
 
 import sendMessage, { getMessage, _sendMessageCall } from './methods/sendMessage';
 
+import { getDeviceToken } from '../push';
+
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const call = (method, ...params) => RocketChat.ddp.call(method, ...params); // eslint-disable-line
 const returnAnArray = obj => obj || [];
@@ -556,21 +558,24 @@ const RocketChat = {
 		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
 	},
 
-	registerPushToken(id, token) {
-		const key = Platform.OS === 'ios' ? 'apn' : 'gcm';
-		const data = {
-			id: `RocketChatRN${ id }`,
-			token: { [key]: token },
-			appName: 'chat.rocket.reactnative', // TODO: try to get from config file
-			userId: id,
-			metadata: {}
-		};
-		return call('raix:push-update', data);
+	registerPushToken(userId) {
+		const deviceToken = getDeviceToken();
+		if (deviceToken) {
+			const key = Platform.OS === 'ios' ? 'apn' : 'gcm';
+			const data = {
+				id: `RocketChatRN${ userId }`,
+				token: { [key]: deviceToken },
+				appName: 'chat.rocket.reactnative', // TODO: try to get from config file
+				userId,
+				metadata: {}
+			};
+			return call('raix:push-update', data);
+		}
 	},
 
-	updatePushToken(pushId) {
-		return call('raix:push-setuser', pushId);
-	},
+	// updatePushToken(pushId) {
+	// 	return call('raix:push-setuser', pushId);
+	// },
 	loadMissedMessages,
 	loadMessagesForRoom,
 	getMessage,
