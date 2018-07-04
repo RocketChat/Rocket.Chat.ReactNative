@@ -42,7 +42,7 @@
     "react": "^16.4.0",
     "react-clone-referenced-element": "^1.0.1",
     "react-emojione": "^5.0.0",
-    "react-native": "^0.55.4",
+    "react-native": "^0.56.0",
     "react-native-action-button": "^2.8.3",
     "react-native-actionsheet": "^2.4.2",
     "react-native-audio": "^4.1.3",
