@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.7.1
+version: v1.12.0
 ignore: {}
 # patches apply the minimum changes required to fix a vulnerability
 patch:
@@ -24,3 +24,6 @@ patch:
         patched: '2017-09-29T23:29:20.238Z'
     - realm > extract-zip > debug:
         patched: '2017-09-29T23:29:20.238Z'
+  'npm:lodash:20180130':
+    - react-native > plist > xmlbuilder > lodash:
+        patched: '2018-07-02T23:20:39.933Z'

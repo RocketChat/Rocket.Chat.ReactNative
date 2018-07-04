@@ -13,7 +13,7 @@
     "android": "react-native run-android",
     "storybook": "storybook start -p 7007",
     "snyk-protect": "snyk protect",
-    "prepare": "exit 0",
+    "prepare": "npm run snyk-protect; exit 0",
     "fabric-ios": "./scripts/fabric-ios.sh",
     "fabric-android": "./scripts/fabric-android.sh",
     "postinstall": "cp ./temp/react.gradle ./node_modules/react-native"
