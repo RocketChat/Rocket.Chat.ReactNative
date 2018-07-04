@@ -216,8 +216,6 @@ export default class SelectedUsersView extends LoggedView {
 
 	_onPressSelectedItem = item => this.toggleUser(item);
 
-	teste = () => {}
-
 	renderHeader = () => (
 		<View style={styles.container}>
 			{this.renderSearchBar()}
@@ -241,6 +239,7 @@ export default class SelectedUsersView extends LoggedView {
 			/>
 		</View>
 	);
+
 	renderSelected = () => {
 		if (this.props.users.length === 0) {
 			return null;
@@ -257,6 +256,7 @@ export default class SelectedUsersView extends LoggedView {
 			/>
 		);
 	};
+
 	renderSelectedItem = ({ item }) => (
 		<TouchableOpacity
 			key={item._id}
