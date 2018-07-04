@@ -27,3 +27,20 @@ patch:
   'npm:lodash:20180130':
     - react-native > plist > xmlbuilder > lodash:
         patched: '2018-07-02T23:20:39.933Z'
+  'npm:hoek:20180212':
+    - realm > node-pre-gyp > hawk > hoek:
+        patched: '2018-06-22T03:39:40.096Z'
+    - realm > node-pre-gyp > hawk > boom > hoek:
+        patched: '2018-06-22T03:39:40.096Z'
+    - realm > node-pre-gyp > hawk > sntp > hoek:
+        patched: '2018-06-22T03:39:40.096Z'
+    - realm > node-pre-gyp > hawk > cryptiles > boom > hoek:
+        patched: '2018-06-22T03:39:40.096Z'
+    - realm > node-pre-gyp > request > hawk > hoek:
+        patched: '2018-06-22T03:39:40.096Z'
+    - realm > node-pre-gyp > request > hawk > boom > hoek:
+        patched: '2018-06-22T03:39:40.096Z'
+    - realm > node-pre-gyp > request > hawk > sntp > hoek:
+        patched: '2018-06-22T03:39:40.096Z'
+    - realm > node-pre-gyp > request > hawk > cryptiles > boom > hoek:
+        patched: '2018-06-22T03:39:40.096Z'
