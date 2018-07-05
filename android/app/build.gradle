@@ -102,6 +102,7 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+        vectorDrawables.useSupportLibrary = true
     }
 
     signingConfigs {
@@ -172,6 +173,7 @@ repositories {
 }
 
 dependencies {
+    compile project(':react-native-image-crop-picker')
     compile project(':react-native-i18n')
     compile project(':react-native-fabric')
     compile project(':react-native-audio')

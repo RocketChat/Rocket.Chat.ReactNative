@@ -51,6 +51,7 @@
     "react-native-fast-image": "^4.0.14",
     "react-native-fetch-blob": "^0.10.8",
     "react-native-i18n": "^2.0.12",
+    "react-native-image-crop-picker": "git+https://github.com/RocketChat/react-native-image-crop-picker.git",
     "react-native-image-picker": "^0.26.10",
     "react-native-keyboard-aware-scroll-view": "^0.5.0",
     "react-native-keyboard-input": "git+https://github.com/RocketChat/react-native-keyboard-input.git",

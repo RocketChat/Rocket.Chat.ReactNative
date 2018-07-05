@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, TextInput, FlatList, Text, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import ImagePicker from 'react-native-image-picker';
+// import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
+import ImagePicker from 'react-native-image-crop-picker';
 
 import { userTyping } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
@@ -167,31 +168,24 @@ export default class MessageBox extends React.PureComponent {
 	}
 
 	addFile = () => {
-		const options = {
-			maxHeight: 1960,
-			maxWidth: 1960,
-			quality: 0.8
-		};
-		ImagePicker.showImagePicker(options, async(response) => {
-			if (response.didCancel) {
-				console.warn('User cancelled image picker');
-			} else if (response.error) {
-				log('ImagePicker Error', response.error);
-			} else {
-				const fileInfo = {
-					name: response.fileName,
-					size: response.fileSize,
-					type: response.type || 'image/jpeg',
-					// description: '',
-					store: 'Uploads'
-				};
-				try {
-					await RocketChat.sendFileMessage(this.props.rid, fileInfo, response.data);
-				} catch (e) {
-					log('addFile', e);
-				}
+		ImagePicker.openPicker({
+			cropping: true,
+			compressImageQuality: 0.8,
+			cropperAvoidEmptySpaceAroundImage: false
+		}).then(async(image) => {
+			const fileInfo = {
+				name: image.filename || image.path,
+				size: image.size,
+				type: image.mime || 'image/jpeg',
+				store: 'Uploads',
+				path: image.path
+			};
+			try {
+				await RocketChat.sendFileMessage(this.props.rid, fileInfo, image.data);
+			} catch (e) {
+				log('addFile', e);
 			}
-		});
+		}).catch(e => console.warn(e));
 	}
 	editCancel() {
 		this.props.editCancel();
