@@ -114,7 +114,7 @@ export default class Socket extends EventEmitter {
 		this.on('result', data => this.ddp.emit(data.id, { id: data.id, result: data.result, error: data.error }));
 		this.on('ready', data => this.ddp.emit(data.subs[0], data));
 		this.on('unsub', data => this.ddp.emit(data.id, data));
-		this.on('nosub', data => this.ddp.emit(data.id, { ...data, error: 'No sub found for ' + data.id }));
+		this.on('nosub', data => this.ddp.emit(data.id, { ...data, error: `No sub found for ${data.id}` }));
 		// this.on('error', () => this.reconnect());
 		this.on('disconnected', debounce(() => this.reconnect(), 300));
 
