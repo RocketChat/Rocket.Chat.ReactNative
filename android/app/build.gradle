@@ -103,6 +103,7 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
         missingDimensionStrategy "RNN.reactNativeVersion", "reactNative55"
+        vectorDrawables.useSupportLibrary = true
     }
 
     compileOptions {
@@ -178,6 +179,7 @@ repositories {
 }
 
 dependencies {
+    implementation project(':react-native-image-crop-picker')
     implementation project(':react-native-i18n')
     implementation project(':react-native-fabric')
     implementation project(':react-native-audio')
