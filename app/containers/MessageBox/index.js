@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, TextInput, FlatList, Text, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-// import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
@@ -18,6 +17,7 @@ import Avatar from '../Avatar';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import { emojis } from '../../emojis';
 import Recording from './Recording';
+import FilesActions from './FilesActions';
 import './EmojiKeyboard';
 import log from '../../utils/log';
 import I18n from '../../i18n';
@@ -59,6 +59,7 @@ export default class MessageBox extends React.PureComponent {
 			text: '',
 			mentions: [],
 			showEmojiKeyboard: false,
+			showFilesAction: false,
 			recording: false
 		};
 		this.users = [];
@@ -161,13 +162,42 @@ export default class MessageBox extends React.PureComponent {
 			key='fileIcon'
 			accessibilityLabel={I18n.t('Message actions')}
 			accessibilityTraits='button'
-			onPress={() => this.addFile()}
+			onPress={this.toggleFilesActions}
 			testID='messagebox-actions'
 		/>);
 		return icons;
 	}
 
-	addFile = () => {
+	toggleFilesActions = () => {
+		this.setState(prevState => ({ showFilesAction: !prevState.showFilesAction }))
+	}
+
+	sendFileMessage = async(file) => {
+		const fileInfo = {
+			name: file.filename || file.path,
+			size: file.size,
+			type: file.mime,
+			store: 'Uploads',
+			path: file.path
+		};
+		try {
+			await RocketChat.sendFileMessage(this.props.rid, fileInfo, file.data);
+		} catch (e) {
+			log('sendFileMessage', e);
+		}
+	}
+
+	takePhoto = async() => {
+		ImagePicker.openCamera({
+			// width: 300,
+			// height: 400,
+			cropping: true
+		}).then((image) => {
+			this.sendFileMessage(image);
+		}).catch(e => console.warn(e));
+	}
+
+	chooseFromLibrary = async() => {
 		ImagePicker.openPicker({
 			cropping: true,
 			compressImageQuality: 0.8,
@@ -176,21 +206,23 @@ export default class MessageBox extends React.PureComponent {
 			const fileInfo = {
 				name: image.filename || image.path,
 				size: image.size,
-				type: image.mime || 'image/jpeg',
+				type: image.mime,
 				store: 'Uploads',
 				path: image.path
 			};
 			try {
-				await RocketChat.sendFileMessage(this.props.rid, fileInfo, image.data);
+				await RocketChat.sendFileMessage(this.props.rid, fileInfo);
 			} catch (e) {
-				log('addFile', e);
+				log('sendFileMessage', e);
 			}
 		}).catch(e => console.warn(e));
 	}
+
 	editCancel() {
 		this.props.editCancel();
 		this.setState({ text: '' });
 	}
+
 	async openEmoji() {
 		await this.setState({
 			showEmojiKeyboard: true
@@ -483,6 +515,20 @@ export default class MessageBox extends React.PureComponent {
 		);
 	};
 
+	renderFilesActions = () => {
+		if (!this.state.showFilesAction) {
+			return null;
+		}
+		return (
+			<FilesActions
+				key='files-actions'
+				hideActions={this.toggleFilesActions}
+				takePhoto={this.takePhoto}
+				chooseFromLibrary={this.chooseFromLibrary}
+			/>
+		);
+	}
+
 	renderContent() {
 		if (this.state.recording) {
 			return (<Recording onFinish={this.finishAudioMessage} />);
@@ -519,18 +565,21 @@ export default class MessageBox extends React.PureComponent {
 
 	render() {
 		return (
-			<KeyboardAccessoryView
-				key='input'
-				renderContent={() => this.renderContent()}
-				kbInputRef={this.component}
-				kbComponent={this.state.showEmojiKeyboard ? 'EmojiKeyboard' : null}
-				onKeyboardResigned={() => this.onKeyboardResigned()}
-				onItemSelected={this._onEmojiSelected}
-				trackInteractive
-				// revealKeyboardInteractive
-				requiresSameParentToManageScrollView
-				addBottomView
-			/>
+			[
+				<KeyboardAccessoryView
+					key='input'
+					renderContent={() => this.renderContent()}
+					kbInputRef={this.component}
+					kbComponent={this.state.showEmojiKeyboard ? 'EmojiKeyboard' : null}
+					onKeyboardResigned={() => this.onKeyboardResigned()}
+					onItemSelected={this._onEmojiSelected}
+					trackInteractive
+					// revealKeyboardInteractive
+					requiresSameParentToManageScrollView
+					addBottomView
+				/>,
+				this.renderFilesActions()
+			]
 		);
 	}
 }
