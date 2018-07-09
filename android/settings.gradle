@@ -1,4 +1,8 @@
 rootProject.name = 'RocketChatRN'
+include ':@remobile/react-native-toast'
+project(':@remobile/react-native-toast').projectDir = new File(rootProject.projectDir, '../node_modules/@remobile/react-native-toast/android')
+include ':rn-fetch-blob'
+project(':rn-fetch-blob').projectDir = new File(rootProject.projectDir, '../node_modules/rn-fetch-blob/android')
 include ':react-native-image-crop-picker'
 project(':react-native-image-crop-picker').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-image-crop-picker/android')
 include ':react-native-i18n'
@@ -21,14 +25,10 @@ include ':react-native-image-picker'
 project(':react-native-image-picker').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-image-picker/android')
 include ':react-native-vector-icons'
 project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
-include ':react-native-fetch-blob'
-project(':react-native-fetch-blob').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fetch-blob/android')
 include ':react-native-zeroconf'
 project(':react-native-zeroconf').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-zeroconf/android')
 include ':realm'
 project(':realm').projectDir = new File(rootProject.projectDir, '../node_modules/realm/android')
 include ':react-native-push-notification'
 project(':react-native-push-notification').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-push-notification/android')
-include ':react-native-toast'
-project(':react-native-toast').projectDir = new File(settingsDir, '../node_modules/@remobile/react-native-toast/android')
 include ':app'

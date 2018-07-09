@@ -49,7 +49,6 @@
     "react-native-dialog": "^4.0.0",
     "react-native-fabric": "^0.5.1",
     "react-native-fast-image": "^4.0.14",
-    "react-native-fetch-blob": "^0.10.8",
     "react-native-i18n": "^2.0.12",
     "react-native-image-crop-picker": "git+https://github.com/RocketChat/react-native-image-crop-picker.git",
     "react-native-image-picker": "^0.26.10",
@@ -81,6 +80,7 @@
     "redux-immutable-state-invariant": "^2.1.0",
     "redux-saga": "^0.16.0",
     "regenerator-runtime": "^0.11.1",
+    "rn-fetch-blob": "^0.10.11",
     "snyk": "^1.82.2",
     "strip-ansi": "^4.0.0"
   },

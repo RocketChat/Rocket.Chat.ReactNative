@@ -173,6 +173,8 @@ repositories {
 }
 
 dependencies {
+    compile project(':@remobile/react-native-toast')
+    compile project(':rn-fetch-blob')
     compile project(':react-native-image-crop-picker')
     compile project(':react-native-i18n')
     compile project(':react-native-fabric')
@@ -184,9 +186,7 @@ dependencies {
     compile project(':react-native-svg')
     compile project(':react-native-image-picker')
     compile project(':react-native-vector-icons')
-    compile project(':react-native-fetch-blob')
     compile project(':react-native-zeroconf')
-    compile project(':react-native-toast')
     compile project(':react-native-fast-image')
     compile project(':realm')
     compile fileTree(dir: "libs", include: ["*.jar"])

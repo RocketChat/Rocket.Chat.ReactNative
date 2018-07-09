@@ -110,6 +110,7 @@ export default {
 	Channel_Name: 'Channel Name',
 	Chats: 'Chats',
 	Close_emoji_selector: 'Close emoji selector',
+	Choose: 'Choose',
 	Choose_from_library: 'Choose from library',
 	Code: 'Code',
 	Colaborative: 'Colaborative',

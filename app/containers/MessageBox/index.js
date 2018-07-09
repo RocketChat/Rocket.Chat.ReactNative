@@ -29,6 +29,14 @@ const onlyUnique = function onlyUnique(value, index, self) {
 	return self.indexOf(({ _id }) => value._id === _id) === index;
 };
 
+const imagePickerConfig = {
+	cropping: true,
+	compressImageQuality: 0.8,
+	cropperAvoidEmptySpaceAroundImage: false,
+	cropperChooseText: I18n.t('Choose'),
+	cropperCancelText: I18n.t('Cancel')
+};
+
 @connect(state => ({
 	room: state.room,
 	message: state.messages.message,
@@ -188,21 +196,13 @@ export default class MessageBox extends React.PureComponent {
 	}
 
 	takePhoto = async() => {
-		ImagePicker.openCamera({
-			// width: 300,
-			// height: 400,
-			cropping: true
-		}).then((image) => {
+		ImagePicker.openCamera(imagePickerConfig).then((image) => {
 			this.sendFileMessage(image);
 		}).catch(e => console.warn(e));
 	}
 
 	chooseFromLibrary = async() => {
-		ImagePicker.openPicker({
-			cropping: true,
-			compressImageQuality: 0.8,
-			cropperAvoidEmptySpaceAroundImage: false
-		}).then(async(image) => {
+		ImagePicker.openPicker(imagePickerConfig).then(async(image) => {
 			const fileInfo = {
 				name: image.filename || image.path,
 				size: image.size,
