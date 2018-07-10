@@ -19,6 +19,7 @@ import MessageBox from '../../containers/MessageBox';
 import Header from '../../containers/Header';
 import RoomsHeader from './Header';
 import ReactionPicker from './ReactionPicker';
+import UploadProgress from './UploadProgress';
 import styles from './styles';
 import log from '../../utils/log';
 import I18n from '../../i18n';
@@ -237,6 +238,7 @@ export default class RoomView extends LoggedView {
 				{this.state.room._id && this.props.showActions ? <MessageActions room={this.state.room} /> : null}
 				{this.props.showErrorActions ? <MessageErrorActions /> : null}
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
+				<UploadProgress />
 			</View>
 		);
 	}
