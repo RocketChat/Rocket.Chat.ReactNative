@@ -80,28 +80,21 @@ const RocketChat = {
 			console.warn(`AsyncStorage error: ${ error.message }`);
 		}
 	},
+	_hasInstanceId(headers) {
+		return (headers['x-instance-id'] != null && headers['x-instance-id'].length > 0) || (headers['X-Instance-ID'] != null && headers['X-Instance-ID'].length > 0);
+	},
 	async testServer(url) {
 		if (/^(https?:\/\/)?(((\w|[0-9-_])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
 			try {
 				let response = await RNFetchBlob.fetch('HEAD', url);
 				response = response.respInfo;
-				if (response.status === 200 && response.headers['x-instance-id'] != null && response.headers['x-instance-id'].length) {
+				if (response.status === 200 && RocketChat._hasInstanceId(response.headers)) {
 					return url;
 				}
 			} catch (e) {
 				log('testServer', e);
 			}
 		}
-		// if (/^(https?:\/\/)?(((\w|[0-9-_])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
-		// 	try {
-		// 		const response = await fetch(url, { method: 'HEAD' });
-		// 		if (response.status === 200 && response.headers.get('x-instance-id') != null && response.headers.get('x-instance-id').length) {
-		// 			return url;
-		// 		}
-		// 	} catch (error) {
-		// 		console.log(error)
-		// 	}
-		// }
 		throw new Error({ error: 'invalid server' });
 	},
 	_setUser(ddpMessage) {
