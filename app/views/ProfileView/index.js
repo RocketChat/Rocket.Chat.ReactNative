@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, SafeAreaView, Keyboard } from 'react-native';
+import { View, ScrollView, SafeAreaView, Keyboard, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
 import SHA256 from 'js-sha256';
@@ -22,17 +22,24 @@ import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
+import { iconsMap } from '../../Icons';
 
 @connect(state => ({
-	user: state.login.user,
+	user: {
+		name: state.login.user && state.login.user.name,
+		username: state.login.user && state.login.user.username,
+		customFields: state.login.user && state.login.user.customFields,
+		emails: state.login.user && state.login.user.emails
+	},
 	Accounts_CustomFields: state.settings.Accounts_CustomFields
 }))
+/** @extends React.Component */
 export default class ProfileView extends LoggedView {
 	static propTypes = {
-		navigation: PropTypes.object,
+		navigator: PropTypes.object,
 		user: PropTypes.object,
 		Accounts_CustomFields: PropTypes.string
-	};
+	}
 
 	constructor(props) {
 		super('ProfileView', props);
@@ -49,10 +56,25 @@ export default class ProfileView extends LoggedView {
 			avatarSuggestions: {},
 			customFields: {}
 		};
+		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+	}
+
+	componentWillMount() {
+		this.props.navigator.setButtons({
+			leftButtons: [{
+				id: 'sideMenu',
+				icon: Platform.OS === 'ios' ? iconsMap.menu : undefined
+			}]
+		});
 	}
 
 	async componentDidMount() {
 		this.init();
+
+		this.props.navigator.setDrawerEnabled({
+			side: 'left',
+			enabled: true
+		});
 
 		try {
 			const result = await RocketChat.getAvatarSuggestion();
@@ -66,6 +88,22 @@ export default class ProfileView extends LoggedView {
 		if (this.props.user !== nextProps.user) {
 			this.init(nextProps.user);
 		}
+	}
+
+	onNavigatorEvent(event) {
+		if (event.type === 'NavBarButtonPress') {
+			if (event.id === 'sideMenu' && Platform.OS === 'ios') {
+				this.props.navigator.toggleDrawer({
+					side: 'left',
+					animated: true,
+					to: 'missing'
+				});
+			}
+		}
+	}
+
+	setAvatar = (avatar) => {
+		this.setState({ avatar });
 	}
 
 	init = (user) => {
@@ -193,10 +231,6 @@ export default class ProfileView extends LoggedView {
 				this.handleError(e, 'saveUserProfile', 'saving_profile');
 			}, 300);
 		}
-	}
-
-	setAvatar = (avatar) => {
-		this.setState({ avatar });
 	}
 
 	resetAvatar = async() => {

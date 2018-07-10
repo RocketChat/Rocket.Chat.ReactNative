@@ -1,5 +1,6 @@
 import { delay } from 'redux-saga';
 import { takeLatest, put, call, select } from 'redux-saga/effects';
+
 import { MESSAGES } from '../actions/actionsTypes';
 import {
 	messagesSuccess,
@@ -16,8 +17,8 @@ import {
 } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
-import { goRoom } from '../containers/routes/NavigationService';
 import log from '../utils/log';
+import { NavigationActions } from '../Navigation';
 
 const deleteMessage = message => RocketChat.deleteMessage(message);
 const editMessage = message => RocketChat.editMessage(message);
@@ -74,17 +75,30 @@ const handleTogglePinRequest = function* handleTogglePinRequest({ message }) {
 	}
 };
 
+const goRoom = function* goRoom({ rid, name }) {
+	NavigationActions.popToRoot();
+	yield delay(1000);
+	NavigationActions.push({
+		screen: 'RoomView',
+		passProps: {
+			room: { rid, name },
+			rid,
+			name
+		}
+	});
+};
+
 const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 	try {
 		const { username } = message.u;
 		const subscriptions = database.objects('subscriptions').filtered('name = $0', username);
 		if (subscriptions.length) {
-			goRoom({ rid: subscriptions[0].rid, name: subscriptions[0].name });
+			yield goRoom({ rid: subscriptions[0].rid, name: subscriptions[0].name });
 		} else {
 			const room = yield RocketChat.createDirectMessage(username);
-			goRoom({ rid: room.rid, name: username });
+			yield goRoom({ rid: room.rid, name: username });
 		}
-		yield delay(100);
+		yield delay(500);
 		const server = yield select(state => state.server.server);
 		const msg = `[ ](${ server }/direct/${ username }?msg=${ message._id }) `;
 		yield put(setInput({ msg }));

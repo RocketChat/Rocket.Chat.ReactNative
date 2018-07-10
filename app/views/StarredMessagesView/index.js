@@ -16,22 +16,24 @@ const STAR_INDEX = 0;
 const CANCEL_INDEX = 1;
 const options = [I18n.t('Unstar'), I18n.t('Cancel')];
 
-@connect(
-	state => ({
-		messages: state.starredMessages.messages,
-		ready: state.starredMessages.ready,
-		user: state.login.user,
-		baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-	}),
-	dispatch => ({
-		openStarredMessages: (rid, limit) => dispatch(openStarredMessages(rid, limit)),
-		closeStarredMessages: () => dispatch(closeStarredMessages()),
-		toggleStarRequest: message => dispatch(toggleStarRequest(message))
-	})
-)
+@connect(state => ({
+	messages: state.starredMessages.messages,
+	ready: state.starredMessages.ready,
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	},
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+}), dispatch => ({
+	openStarredMessages: (rid, limit) => dispatch(openStarredMessages(rid, limit)),
+	closeStarredMessages: () => dispatch(closeStarredMessages()),
+	toggleStarRequest: message => dispatch(toggleStarRequest(message))
+}))
+/** @extends React.Component */
 export default class StarredMessagesView extends LoggedView {
 	static propTypes = {
-		navigation: PropTypes.object,
+		rid: PropTypes.string,
 		messages: PropTypes.array,
 		ready: PropTypes.bool,
 		user: PropTypes.object,
@@ -81,7 +83,7 @@ export default class StarredMessagesView extends LoggedView {
 	}
 
 	load = () => {
-		this.props.openStarredMessages(this.props.navigation.state.params.rid, this.limit);
+		this.props.openStarredMessages(this.props.rid, this.limit);
 	}
 
 	moreData = () => {

@@ -14,7 +14,7 @@ if (__DEV__) {
 	/* eslint-disable global-require */
 	const reduxImmutableStateInvariant = require('redux-immutable-state-invariant').default();
 	sagaMiddleware = createSagaMiddleware({
-		sagaMonitor: Reactotron.createSagaMonitor()
+		// sagaMonitor: Reactotron.createSagaMonitor()
 	});
 
 	enhancers = compose(

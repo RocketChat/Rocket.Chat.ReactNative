@@ -618,7 +618,7 @@ exports[`render unread +999 1`] = `
                 undefined,
               ],
               Object {
-                "backgroundColor": "#cbced1",
+                "backgroundColor": undefined,
               },
             ]
           }
@@ -868,7 +868,7 @@ exports[`render unread 1`] = `
                 undefined,
               ],
               Object {
-                "backgroundColor": "#cbced1",
+                "backgroundColor": undefined,
               },
             ]
           }
@@ -1118,7 +1118,7 @@ exports[`renders correctly 1`] = `
                 undefined,
               ],
               Object {
-                "backgroundColor": "#cbced1",
+                "backgroundColor": undefined,
               },
             ]
           }

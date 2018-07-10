@@ -1,24 +1,26 @@
 import { AsyncStorage } from 'react-native';
-import { delay } from 'redux-saga';
-import { takeLatest, take, select, call, put } from 'redux-saga/effects';
+import { takeLatest, take, select, put } from 'redux-saga/effects';
+
 import * as types from '../actions/actionsTypes';
-import { setServer, addServer } from '../actions/server';
-import * as NavigationService from '../containers/routes/NavigationService';
+import { appStart } from '../actions';
+import { selectServer, addServer } from '../actions/server';
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
+import { NavigationActions } from '../Navigation';
 
-const navigate = function* go({ server, params, sameServer = true }) {
-	const user = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
-	if (user) {
-		const { rid, path } = params;
-		if (rid) {
-			const canOpenRoom = yield RocketChat.canOpenRoom({ rid, path });
-			if (canOpenRoom) {
-				return yield call(NavigationService.goRoom, { rid: params.rid });
-			}
-		}
-		if (!sameServer) {
-			yield call(NavigationService.goRoomsList);
+const navigate = function* go({ params, sameServer = true }) {
+	if (!sameServer) {
+		yield put(appStart('inside'));
+	}
+	if (params.rid) {
+		const canOpenRoom = yield RocketChat.canOpenRoom(params);
+		if (canOpenRoom) {
+			return NavigationActions.push({
+				screen: 'RoomView',
+				passProps: {
+					rid: params.rid
+				}
+			});
 		}
 	}
 };
@@ -35,7 +37,14 @@ const handleOpen = function* handleOpen({ params }) {
 		return;
 	}
 
-	const host = `https://${ params.host }`;
+	let { host } = params;
+	if (!/^(http|https)/.test(host)) {
+		host = `https://${ params.host }`;
+	}
+	// remove last "/" from host
+	if (host.slice(-1) === '/') {
+		host = host.slice(0, host.length - 1);
+	}
 
 	try {
 		yield RocketChat.testServer(host);
@@ -43,18 +52,26 @@ const handleOpen = function* handleOpen({ params }) {
 		return;
 	}
 
+	const token = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ host }`);
+
 	// TODO: needs better test
 	// if deep link is from same server
 	if (server === host) {
-		yield navigate({ server, params });
+		if (token) {
+			yield navigate({ params });
+		}
 	} else { // if deep link is from a different server
 		// search if deep link's server already exists
 		const servers = yield database.databases.serversDB.objects('servers').filtered('id = $0', host); // TODO: need better test
 		if (servers.length) {
-			// if server exists, select it
-			yield put(setServer(servers[0].id));
-			yield delay(2000);
-			yield navigate({ server: servers[0].id, params, sameServer: false });
+			const deepLinkServer = servers[0].id;
+			if (!token) {
+				yield put(appStart('outside'));
+			} else {
+				yield put(selectServer(deepLinkServer));
+				yield take(types.METEOR.REQUEST);
+				yield navigate({ params, sameServer: false });
+			}
 		} else {
 			yield put(addServer(host));
 		}

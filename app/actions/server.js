@@ -1,6 +1,6 @@
 import { SERVER } from './actionsTypes';
 
-export function setServer(server) {
+export function selectServer(server) {
 	return {
 		type: SERVER.SELECT,
 		server

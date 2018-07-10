@@ -32,7 +32,7 @@ export default class Typing extends React.Component {
 	}
 	get usersTyping() {
 		const users = this.props.usersTyping.filter(_username => this.props.username !== _username);
-		return users.length ? `${ users.join(' ,') } ${ users.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing') }` : '';
+		return users.length ? `${ users.join(', ') } ${ users.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing') }` : '';
 	}
 	render() {
 		const { usersTyping } = this;
