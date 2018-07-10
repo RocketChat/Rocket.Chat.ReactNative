@@ -10,25 +10,25 @@ import Message from '../../containers/message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 
-@connect(
-	state => ({
-		messages: state.roomFiles.messages,
-		ready: state.roomFiles.ready,
-		user: state.login.user
-		// baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-	}),
-	dispatch => ({
-		openRoomFiles: (rid, limit) => dispatch(openRoomFiles(rid, limit)),
-		closeRoomFiles: () => dispatch(closeRoomFiles())
-	})
-)
+@connect(state => ({
+	messages: state.roomFiles.messages,
+	ready: state.roomFiles.ready,
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	}
+}), dispatch => ({
+	openRoomFiles: (rid, limit) => dispatch(openRoomFiles(rid, limit)),
+	closeRoomFiles: () => dispatch(closeRoomFiles())
+}))
+/** @extends React.Component */
 export default class RoomFilesView extends LoggedView {
 	static propTypes = {
-		navigation: PropTypes.object,
+		rid: PropTypes.string,
 		messages: PropTypes.array,
 		ready: PropTypes.bool,
 		user: PropTypes.object,
-		baseUrl: PropTypes.string,
 		openRoomFiles: PropTypes.func,
 		closeRoomFiles: PropTypes.func
 	}
@@ -57,7 +57,7 @@ export default class RoomFilesView extends LoggedView {
 	}
 
 	load = () => {
-		this.props.openRoomFiles(this.props.navigation.state.params.rid, this.limit);
+		this.props.openRoomFiles(this.props.rid, this.limit);
 	}
 
 	moreData = () => {

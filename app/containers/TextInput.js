@@ -66,7 +66,10 @@ export default class RCTextInput extends React.PureComponent {
 		secureTextEntry: PropTypes.bool,
 		containerStyle: ViewPropTypes.style,
 		inputStyle: PropTypes.object,
-		inputRef: PropTypes.func
+		inputRef: PropTypes.func,
+		testID: PropTypes.string,
+		iconLeft: PropTypes.string,
+		placeholder: PropTypes.string
 	}
 	static defaultProps = {
 		error: {}

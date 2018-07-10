@@ -20,12 +20,13 @@ import I18n from '../i18n';
 	forgotPasswordInit: () => dispatch(forgotPasswordInit()),
 	forgotPasswordRequest: email => dispatch(forgotPasswordRequest(email))
 }))
+/** @extends React.Component */
 export default class ForgotPasswordView extends LoggedView {
 	static propTypes = {
+		navigator: PropTypes.object,
 		forgotPasswordInit: PropTypes.func.isRequired,
 		forgotPasswordRequest: PropTypes.func.isRequired,
-		login: PropTypes.object,
-		navigation: PropTypes.object.isRequired
+		login: PropTypes.object
 	}
 
 	constructor(props) {
@@ -44,7 +45,7 @@ export default class ForgotPasswordView extends LoggedView {
 	componentDidUpdate() {
 		const { login } = this.props;
 		if (login.success) {
-			this.props.navigation.goBack();
+			this.props.navigator.pop();
 			setTimeout(() => {
 				showErrorAlert(I18n.t('Forgot_password_If_this_email_is_registered'), I18n.t('Alert'));
 			});

@@ -40,6 +40,8 @@ import loadMissedMessages from './methods/loadMissedMessages';
 
 import sendMessage, { getMessage, _sendMessageCall } from './methods/sendMessage';
 
+import { getDeviceToken } from '../push';
+
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const call = (method, ...params) => RocketChat.ddp.call(method, ...params); // eslint-disable-line
 const returnAnArray = obj => obj || [];
@@ -119,7 +121,7 @@ const RocketChat = {
 			reduxStore.dispatch(setActiveUser(this.activeUsers));
 			this._setUserTimer = null;
 			return this.activeUsers = {};
-		}, 5000);
+		}, 2000);
 
 		const activeUser = reduxStore.getState().activeUsers[ddpMessage.id];
 		if (!ddpMessage.fields) {
@@ -175,8 +177,8 @@ const RocketChat = {
 			this.ddp.on('disconnected', () => console.log('disconnected'));
 
 			this.ddp.on('logged', protectedFunction((user) => {
-				this.getRooms().catch(e => log('logged getRooms', e));
 				this.loginSuccess(user);
+				this.getRooms().catch(e => log('logged getRooms', e));
 			}));
 			this.ddp.once('logged', protectedFunction(({ id }) => {
 				this.subscribeRooms(id);
@@ -556,21 +558,24 @@ const RocketChat = {
 		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
 	},
 
-	registerPushToken(id, token) {
-		const key = Platform.OS === 'ios' ? 'apn' : 'gcm';
-		const data = {
-			id: `RocketChatRN${ id }`,
-			token: { [key]: token },
-			appName: 'chat.rocket.reactnative', // TODO: try to get from config file
-			userId: id,
-			metadata: {}
-		};
-		return call('raix:push-update', data);
+	registerPushToken(userId) {
+		const deviceToken = getDeviceToken();
+		if (deviceToken) {
+			const key = Platform.OS === 'ios' ? 'apn' : 'gcm';
+			const data = {
+				id: `RocketChatRN${ userId }`,
+				token: { [key]: deviceToken },
+				appName: 'chat.rocket.reactnative', // TODO: try to get from config file
+				userId,
+				metadata: {}
+			};
+			return call('raix:push-update', data);
+		}
 	},
 
-	updatePushToken(pushId) {
-		return call('raix:push-setuser', pushId);
-	},
+	// updatePushToken(pushId) {
+	// 	return call('raix:push-setuser', pushId);
+	// },
 	loadMissedMessages,
 	loadMessagesForRoom,
 	getMessage,

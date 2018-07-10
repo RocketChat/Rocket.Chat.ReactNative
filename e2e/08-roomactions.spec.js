@@ -3,6 +3,7 @@ const {
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
+const { tapBack } = require('./helpers/app');
 
 const scrollDown = 200;
 
@@ -21,14 +22,14 @@ async function navigateToRoomActions(type) {
 }
 
 async function backToActions() {
-	await element(by.id('header-back')).atIndex(0).tap();
+	await tapBack('Actions');
 	await waitFor(element(by.id('rooms-actions-view'))).toBeVisible().withTimeout(2000);
 }
 
-async function backToRoomsList() {
-	await element(by.id('header-back')).atIndex(0).tap();
+async function backToRoomsList(room) {
+	await tapBack(room);
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(2000);
-	await element(by.id('header-back')).atIndex(0).tap();
+	await tapBack('Messages');
 	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 }
 
@@ -97,7 +98,7 @@ describe('Room actions screen', () => {
 			});
 
 			after(async() => {
-				await backToRoomsList();
+				await backToRoomsList('rocket.cat');
 			});
 		});
 
@@ -299,8 +300,6 @@ describe('Room actions screen', () => {
 					await waitFor(element(by.id(`selected-user-${ user }`))).toBeVisible().withTimeout(5000);
 					await expect(element(by.id(`selected-user-${ user }`))).toBeVisible();
 					await element(by.id('selected-users-view-submit')).tap();
-					await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
-					await element(by.id('room-view-header-actions')).tap();
 					await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
 					await element(by.id('room-actions-members')).tap();
 					await element(by.id('room-members-view-toggle-status')).tap();
@@ -322,17 +321,13 @@ describe('Room actions screen', () => {
 					await expect(element(by.id('room-members-view'))).toExist();
 				});
 
-				it('should show/hide all users', async() => {
+				it('should show all users', async() => {
 					await element(by.id('room-members-view-toggle-status')).tap();
 					await waitFor(element(by.id(`room-members-view-item-${ user }`))).toBeVisible().withTimeout(60000);
 					await expect(element(by.id(`room-members-view-item-${ user }`))).toBeVisible();
-					await element(by.id('room-members-view-toggle-status')).tap();
-					await waitFor(element(by.id(`room-members-view-item-${ user }`))).toBeNotVisible().withTimeout(60000);
-					await expect(element(by.id(`room-members-view-item-${ user }`))).toBeNotVisible();
 				});
 
 				it('should filter user', async() => {
-					await element(by.id('room-members-view-toggle-status')).tap();
 					await waitFor(element(by.id(`room-members-view-item-${ user }`))).toBeVisible().withTimeout(60000);
 					await expect(element(by.id(`room-members-view-item-${ user }`))).toBeVisible();
 					await element(by.id('room-members-view-search')).replaceText('rocket');
@@ -368,9 +363,9 @@ describe('Room actions screen', () => {
 					await element(by.id(`room-members-view-item-${ user }`)).tap();
 					await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
 					await expect(element(by.id('room-view'))).toBeVisible();
-					await waitFor(element(by.id('room-view-title'))).toHaveText(user).withTimeout(60000);
-					await expect(element(by.id('room-view-title'))).toHaveText(user);
-					await element(by.id('header-back')).atIndex(0).tap();
+					await waitFor(element(by.text(user))).toBeVisible().withTimeout(60000);
+				await expect(element(by.text(user))).toBeVisible();
+					await tapBack('Messages');
 					await waitFor(element(by.id('room-list-view'))).toBeVisible().withTimeout(2000);
 				});
 

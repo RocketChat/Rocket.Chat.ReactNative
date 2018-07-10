@@ -13,21 +13,19 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import Button from '../containers/Button';
 import I18n from '../i18n';
 
-@connect(
-	state => ({
-		createChannel: state.createChannel,
-		users: state.selectedUsers.users
-	}),
-	dispatch => ({
-		create: data => dispatch(createChannelRequest(data))
-	})
-)
+@connect(state => ({
+	createChannel: state.createChannel,
+	users: state.selectedUsers.users
+}), dispatch => ({
+	create: data => dispatch(createChannelRequest(data))
+}))
+/** @extends React.Component */
 export default class CreateChannelView extends LoggedView {
 	static propTypes = {
+		navigator: PropTypes.object,
 		create: PropTypes.func.isRequired,
 		createChannel: PropTypes.object.isRequired,
-		users: PropTypes.array.isRequired,
-		navigation: PropTypes.object.isRequired
+		users: PropTypes.array.isRequired
 	};
 
 	constructor(props) {

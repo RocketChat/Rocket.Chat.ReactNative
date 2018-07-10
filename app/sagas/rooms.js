@@ -9,8 +9,8 @@ import { addUserTyping, removeUserTyping, setLastOpen } from '../actions/room';
 import { messagesRequest, editCancel } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
-import * as NavigationService from '../containers/routes/NavigationService';
 import log from '../utils/log';
+import { NavigationActions } from '../Navigation';
 
 const leaveRoom = rid => RocketChat.leaveRoom(rid);
 const eraseRoom = rid => RocketChat.eraseRoom(rid);
@@ -139,7 +139,7 @@ const updateLastOpen = function* updateLastOpen() {
 };
 
 const goRoomsListAndDelete = function* goRoomsListAndDelete(rid) {
-	NavigationService.goRoomsList();
+	NavigationActions.popToRoot();
 	yield delay(1000);
 	try {
 		database.write(() => {

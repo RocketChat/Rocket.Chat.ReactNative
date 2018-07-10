@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import { WebView } from 'react-native';
 import { connect } from 'react-redux';
 
-class PrivacyPolicyView extends React.PureComponent {
+@connect(state => ({
+	privacyPolicy: state.settings.Layout_Privacy_Policy
+}))
+export default class PrivacyPolicyView extends React.PureComponent {
 	static propTypes = {
 		privacyPolicy: PropTypes.string
 	}
@@ -14,11 +17,3 @@ class PrivacyPolicyView extends React.PureComponent {
 		);
 	}
 }
-
-function mapStateToProps(state) {
-	return {
-		privacyPolicy: state.settings.Layout_Privacy_Policy
-	};
-}
-
-export default connect(mapStateToProps)(PrivacyPolicyView);

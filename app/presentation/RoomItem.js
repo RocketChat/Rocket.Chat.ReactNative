@@ -121,7 +121,7 @@ const renderNumber = (unread, userMentions) => {
 
 const attrs = ['name', 'unread', 'userMentions', 'alert', 'showLastMessage', 'type'];
 @connect(state => ({
-	user: state.login && state.login.user,
+	username: state.login.user && state.login.user.username,
 	StoreLastMessage: state.settings.Store_Last_Message
 }))
 export default class RoomItem extends React.Component {
@@ -139,7 +139,7 @@ export default class RoomItem extends React.Component {
 		id: PropTypes.string,
 		onPress: PropTypes.func,
 		onLongPress: PropTypes.func,
-		user: PropTypes.object,
+		username: PropTypes.string,
 		avatarSize: PropTypes.number,
 		statusStyle: ViewPropTypes.style,
 		testID: PropTypes.string
@@ -182,7 +182,7 @@ export default class RoomItem extends React.Component {
 
 		let prefix = '';
 
-		if (lastMessage.u.username === this.props.user.username) {
+		if (lastMessage.u.username === this.props.username) {
 			prefix = I18n.t('You_colon');
 		}	else if (type !== 'd') {
 			prefix = `${ lastMessage.u.username }: `;

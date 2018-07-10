@@ -95,13 +95,19 @@ android {
 
     defaultConfig {
         applicationId "chat.rocket.reactnative"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 27
         versionCode VERSIONCODE as Integer
         versionName "1"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative55"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     signingConfigs {
@@ -172,29 +178,30 @@ repositories {
 }
 
 dependencies {
-    compile project(':react-native-i18n')
-    compile project(':react-native-fabric')
-    compile project(':react-native-audio')
-    compile project(":reactnativekeyboardinput")
-    compile project(':react-native-splash-screen')
-    compile project(':react-native-video')
-    compile project(':react-native-push-notification')
-    compile project(':react-native-svg')
-    compile project(':react-native-image-picker')
-    compile project(':react-native-vector-icons')
-    compile project(':react-native-fetch-blob')
-    compile project(':react-native-zeroconf')
-    compile project(':react-native-toast')
-    compile project(':react-native-fast-image')
-    compile project(':realm')
-    compile fileTree(dir: "libs", include: ["*.jar"])
-    compile "com.android.support:appcompat-v7:27.1.0"
-    compile "com.android.support:support-v4:27.1.0"
-    compile 'com.android.support:customtabs:27.1.0'
-    compile "com.facebook.react:react-native:+"  // From node_modules
-    compile 'com.facebook.fresco:fresco:1.7.1'
-    compile 'com.facebook.fresco:animated-gif:1.7.1'
-    compile('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') {
+    implementation project(':react-native-i18n')
+    implementation project(':react-native-fabric')
+    implementation project(':react-native-audio')
+    implementation project(":reactnativekeyboardinput")
+    implementation project(':react-native-video')
+    implementation project(':react-native-svg')
+    implementation project(':react-native-image-picker')
+    implementation project(':react-native-vector-icons')
+    implementation project(':react-native-fetch-blob')
+    implementation project(':react-native-zeroconf')
+    implementation project(':react-native-toast')
+    implementation project(':react-native-fast-image')
+    implementation project(':realm')
+    implementation project(':react-native-navigation')
+    implementation project(':reactnativenotifications')
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "com.android.support:appcompat-v7:27.1.0"
+    implementation "com.android.support:support-v4:27.1.0"
+    implementation 'com.android.support:customtabs:27.1.0'
+    implementation 'com.android.support:design:27.1.0'
+    implementation "com.facebook.react:react-native:+"  // From node_modules
+    implementation 'com.facebook.fresco:fresco:1.7.1'
+    implementation 'com.facebook.fresco:animated-gif:1.7.1'
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') {
         transitive = true;
     }
 }
