@@ -65,6 +65,7 @@ export default class extends React.PureComponent {
 				<PhotoModal
 					key='modal'
 					title={this.props.file.title}
+					description={this.props.file.description}
 					image={img}
 					isVisible={this.state.modalVisible}
 					onClose={() => this.setState({ modalVisible: false })}

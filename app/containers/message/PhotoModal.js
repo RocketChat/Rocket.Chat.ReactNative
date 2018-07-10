@@ -22,19 +22,26 @@ const styles = {
 		textAlign: 'center',
 		fontSize: 16,
 		fontWeight: '600'
+	},
+	description: {
+		color: '#ffffff',
+		textAlign: 'center',
+		fontSize: 14,
+		fontWeight: '500'
 	}
 };
 
 export default class PhotoModal extends React.PureComponent {
 	static propTypes = {
 		title: PropTypes.string.isRequired,
+		description: PropTypes.string,
 		image: PropTypes.string.isRequired,
 		isVisible: PropTypes.bool,
 		onClose: PropTypes.func.isRequired
 	}
 	render() {
 		const {
-			image, isVisible, onClose, title
+			image, isVisible, onClose, title, description
 		} = this.props;
 		return (
 			<Modal
@@ -45,6 +52,7 @@ export default class PhotoModal extends React.PureComponent {
 				<TouchableWithoutFeedback onPress={onClose}>
 					<View style={styles.titleContainer}>
 						<Text style={styles.title}>{title}</Text>
+						<Text style={styles.description}>{description}</Text>
 					</View>
 				</TouchableWithoutFeedback>
 				<View style={styles.imageWrapper}>
