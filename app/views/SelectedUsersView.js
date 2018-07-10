@@ -1,10 +1,9 @@
-import ActionButton from 'react-native-action-button';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { View, StyleSheet, TextInput, Text, TouchableOpacity, SafeAreaView, FlatList, LayoutAnimation, Platform } from 'react-native';
+import { View, StyleSheet, TextInput, Text, TouchableOpacity, SafeAreaView, FlatList, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
-import { addUser, removeUser, reset } from '../actions/selectedUsers';
+
+import { addUser, removeUser, reset, setLoading } from '../actions/selectedUsers';
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import RoomItem from '../presentation/RoomItem';
@@ -13,6 +12,8 @@ import Loading from '../containers/Loading';
 import debounce from '../utils/debounce';
 import LoggedView from './View';
 import I18n from '../i18n';
+import log from '../utils/log';
+import { iconsMap } from '../Icons';
 
 const styles = StyleSheet.create({
 	container: {
@@ -27,11 +28,6 @@ const styles = StyleSheet.create({
 	list: {
 		width: '100%',
 		backgroundColor: '#FFFFFF'
-	},
-	actionButtonIcon: {
-		fontSize: 20,
-		height: 22,
-		color: 'white'
 	},
 	searchBoxView: {
 		backgroundColor: '#eee'
@@ -62,59 +58,31 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(
-	state => ({
-		user: state.login.user,
-		Site_Url: state.settings.Site_Url,
-		users: state.selectedUsers.users,
-		loading: state.selectedUsers.loading
-	}),
-	dispatch => ({
-		addUser: user => dispatch(addUser(user)),
-		removeUser: user => dispatch(removeUser(user)),
-		reset: () => dispatch(reset())
-	})
-)
+@connect(state => ({
+	userId: state.login.user && state.login.user.id,
+	Site_Url: state.settings.Site_Url,
+	users: state.selectedUsers.users,
+	loading: state.selectedUsers.loading
+}), dispatch => ({
+	addUser: user => dispatch(addUser(user)),
+	removeUser: user => dispatch(removeUser(user)),
+	reset: () => dispatch(reset()),
+	setLoadingInvite: loading => dispatch(setLoading(loading))
+}))
+/** @extends React.Component */
 export default class SelectedUsersView extends LoggedView {
 	static propTypes = {
-		navigation: PropTypes.object.isRequired,
-		user: PropTypes.object,
+		navigator: PropTypes.object,
+		rid: PropTypes.string,
+		nextAction: PropTypes.string.isRequired,
+		userId: PropTypes.string,
 		Site_Url: PropTypes.string,
 		addUser: PropTypes.func.isRequired,
 		removeUser: PropTypes.func.isRequired,
 		reset: PropTypes.func.isRequired,
 		users: PropTypes.array,
-		loading: PropTypes.bool
-	};
-
-	static navigationOptions = ({ navigation }) => {
-		const params = navigation.state.params || {};
-
-		return {
-			headerRight: (
-				params.showCreateiOS && Platform.OS === 'ios' ?
-					<TouchableOpacity
-						style={{
-							backgroundColor: 'transparent',
-							height: 44,
-							width: 44,
-							alignItems: 'center',
-							justifyContent: 'center'
-						}}
-						onPress={() => params.nextAction()}
-						accessibilityLabel={I18n.t('Submit')}
-						accessibilityTraits='button'
-						testID='selected-users-view-submit'
-					>
-						<Icon
-							name='ios-add'
-							color='#292E35'
-							size={24}
-							backgroundColor='transparent'
-						/>
-					</TouchableOpacity> : null
-			)
-		};
+		loading: PropTypes.bool,
+		setLoadingInvite: PropTypes.func
 	};
 
 	constructor(props) {
@@ -124,13 +92,28 @@ export default class SelectedUsersView extends LoggedView {
 			search: []
 		};
 		this.data.addListener(this.updateState);
+		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+	}
+
+	componentDidMount() {
+		this.props.navigator.setDrawerEnabled({
+			side: 'left',
+			enabled: false
+		});
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.users.length !== this.props.users.length) {
-			this.props.navigation.setParams({
-				showCreateiOS: nextProps.users.length > 0
-			});
+			const { length } = nextProps.users;
+			const rightButtons = [];
+			if (length > 0) {
+				rightButtons.push({
+					id: 'create',
+					testID: 'selected-users-view-submit',
+					icon: iconsMap.add
+				});
+			}
+			this.props.navigator.setButtons({ rightButtons });
 		}
 	}
 
@@ -138,6 +121,30 @@ export default class SelectedUsersView extends LoggedView {
 		this.updateState.stop();
 		this.data.removeAllListeners();
 		this.props.reset();
+	}
+
+	async onNavigatorEvent(event) {
+		if (event.type === 'NavBarButtonPress') {
+			if (event.id === 'create') {
+				const { nextAction, setLoadingInvite, navigator } = this.props;
+				if (nextAction === 'CREATE_CHANNEL') {
+					this.props.navigator.push({
+						screen: 'CreateChannelView',
+						title: I18n.t('Create_Channel')
+					});
+				} else {
+					try {
+						setLoadingInvite(true);
+						await RocketChat.addUsersToRoom(this.props.rid);
+						navigator.pop();
+					} catch (e) {
+						log('RoomActions Add User', e);
+					} finally {
+						setLoadingInvite(false);
+					}
+				}
+			}
+		}
 	}
 
 	onSearchChangeText(text) {
@@ -209,11 +216,6 @@ export default class SelectedUsersView extends LoggedView {
 
 	_onPressSelectedItem = item => this.toggleUser(item);
 
-	nextAction = () => {
-		const params = this.props.navigation.state.params || {};
-		params.nextAction();
-	};
-
 	renderHeader = () => (
 		<View style={styles.container}>
 			{this.renderSearchBar()}
@@ -237,6 +239,7 @@ export default class SelectedUsersView extends LoggedView {
 			/>
 		</View>
 	);
+
 	renderSelected = () => {
 		if (this.props.users.length === 0) {
 			return null;
@@ -253,6 +256,7 @@ export default class SelectedUsersView extends LoggedView {
 			/>
 		);
 	};
+
 	renderSelectedItem = ({ item }) => (
 		<TouchableOpacity
 			key={item._id}
@@ -273,7 +277,7 @@ export default class SelectedUsersView extends LoggedView {
 			type={item.t}
 			baseUrl={this.props.Site_Url}
 			onPress={() => this._onPressItem(item._id, item)}
-			id={item.rid.replace(this.props.user.id, '').trim()}
+			id={item.rid.replace(this.props.userId, '').trim()}
 			showLastMessage={false}
 			avatarSize={30}
 			statusStyle={styles.status}
@@ -292,23 +296,10 @@ export default class SelectedUsersView extends LoggedView {
 			keyboardShouldPersistTaps='always'
 		/>
 	);
-	renderCreateButton = () => {
-		if (this.props.users.length === 0 || Platform.OS === 'ios') {
-			return null;
-		}
-		return (
-			<ActionButton
-				buttonColor='rgba(67, 165, 71, 1)'
-				onPress={() => this.nextAction()}
-				renderIcon={() => <Icon name='md-arrow-forward' style={styles.actionButtonIcon} />}
-			/>
-		);
-	};
 	render = () => (
 		<View style={styles.container} testID='select-users-view'>
 			<SafeAreaView style={styles.safeAreaView}>
 				{this.renderList()}
-				{this.renderCreateButton()}
 				<Loading visible={this.props.loading} />
 			</SafeAreaView>
 		</View>

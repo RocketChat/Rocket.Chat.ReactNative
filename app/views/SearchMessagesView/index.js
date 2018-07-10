@@ -17,19 +17,26 @@ import log from '../../utils/log';
 import I18n from '../../i18n';
 
 @connect(state => ({
-	user: state.login.user,
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	},
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }))
+/** @extends React.Component */
 export default class SearchMessagesView extends LoggedView {
 	static propTypes = {
-		navigation: PropTypes.object
-	};
+		rid: PropTypes.string,
+		navigator: PropTypes.object,
+		user: PropTypes.object,
+		baseUrl: PropTypes.string
+	}
 
 	constructor(props) {
 		super('SearchMessagesView', props);
 		this.limit = 0;
 		this.state = {
-			search: '',
 			messages: [],
 			searching: false,
 			loadingMore: false
@@ -44,6 +51,15 @@ export default class SearchMessagesView extends LoggedView {
 		this.onChangeSearch.stop();
 	}
 
+	onChangeSearch = debounce((search) => {
+		this.searchText = search;
+		this.limit = 0;
+		if (!this.state.searching) {
+			this.setState({ searching: true });
+		}
+		this.search();
+	}, 1000)
+
 	search = async() => {
 		if (this._cancel) {
 			this._cancel('cancel');
@@ -51,7 +67,7 @@ export default class SearchMessagesView extends LoggedView {
 		const cancel = new Promise((r, reject) => this._cancel = reject);
 		let messages = [];
 		try {
-			const result = await Promise.race([RocketChat.messageSearch(this.searchText, this.props.navigation.state.params.rid, this.limit), cancel]);
+			const result = await Promise.race([RocketChat.messageSearch(this.searchText, this.props.rid, this.limit), cancel]);
 			messages = result.message.docs.map(message => buildMessage(message));
 			this.setState({ messages, searching: false, loadingMore: false });
 		} catch (e) {
@@ -62,15 +78,6 @@ export default class SearchMessagesView extends LoggedView {
 			log('SearchMessagesView.search', e);
 		}
 	}
-
-	onChangeSearch = debounce((search) => {
-		this.searchText = search;
-		this.limit = 0;
-		if (!this.state.searching) {
-			this.setState({ searching: true });
-		}
-		this.search();
-	}, 1000)
 
 	moreData = () => {
 		const { loadingMore, messages } = this.state;

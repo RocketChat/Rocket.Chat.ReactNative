@@ -14,7 +14,6 @@ import Touch from '../../utils/touch';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import { leaveRoom } from '../../actions/room';
-import { setLoading } from '../../actions/selectedUsers';
 import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
@@ -23,24 +22,24 @@ const renderSeparator = () => <View style={styles.separator} />;
 const getRoomTitle = room => (room.t === 'd' ? <Text>{room.fname}</Text> : <Text><RoomTypeIcon type={room.t} />&nbsp;{room.name}</Text>);
 
 @connect(state => ({
-	user_id: state.login.user.id,
-	user_username: state.login.user.username
+	userId: state.login.user && state.login.user.id,
+	username: state.login.user && state.login.user.username
 }), dispatch => ({
-	leaveRoom: rid => dispatch(leaveRoom(rid)),
-	setLoadingInvite: loading => dispatch(setLoading(loading))
+	leaveRoom: rid => dispatch(leaveRoom(rid))
 }))
-
+/** @extends React.Component */
 export default class RoomActionsView extends LoggedView {
 	static propTypes = {
-		baseUrl: PropTypes.string,
-		user: PropTypes.object,
-		navigation: PropTypes.object,
+		rid: PropTypes.string,
+		navigator: PropTypes.object,
+		userId: PropTypes.string,
+		username: PropTypes.string,
 		leaveRoom: PropTypes.func
 	}
 
 	constructor(props) {
 		super('RoomActionsView', props);
-		const { rid } = props.navigation.state.params;
+		const { rid } = props;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		[this.room] = this.rooms;
 		this.state = {
@@ -63,59 +62,24 @@ export default class RoomActionsView extends LoggedView {
 
 	onPressTouchable = (item) => {
 		if (item.route) {
-			return this.props.navigation.navigate({ key: item.route, routeName: item.route, params: item.params });
+			this.props.navigator.push({
+				screen: item.route,
+				title: item.name,
+				passProps: item.params
+			});
 		}
 		if (item.event) {
 			return item.event();
 		}
 	}
 
-	updateRoomMembers = async() => {
-		const { t } = this.state.room;
-
-		if (!this.canViewMembers) {
-			return {};
-		}
-
-		if (t === 'c' || t === 'p') {
-			let onlineMembers = [];
-			let allMembers = [];
-			try {
-				const onlineMembersCall = RocketChat.getRoomMembers(this.state.room.rid, false);
-				const allMembersCall = RocketChat.getRoomMembers(this.state.room.rid, true);
-				const [onlineMembersResult, allMembersResult] = await Promise.all([onlineMembersCall, allMembersCall]);
-				onlineMembers = onlineMembersResult.records;
-				allMembers = allMembersResult.records;
-				return { onlineMembers, allMembers };
-			} catch (error) {
-				return {};
-			}
-		}
-	}
-
-	updateRoomMember = async() => {
-		if (this.state.room.t !== 'd') {
-			return {};
-		}
-		try {
-			const member = await RocketChat.getRoomMember(this.state.room.rid, this.props.user_id);
-			return { member };
-		} catch (e) {
-			log('RoomActions updateRoomMember', e);
-			return {};
-		}
-	}
-
-	updateRoom = () => {
-		this.setState({ room: this.room });
-	}
 	get canAddUser() { // Invite user
 		const {
 			rid, t
 		} = this.room;
 		const { allMembers } = this.state;
 		// TODO: same test joined
-		const userInRoom = !!allMembers.find(m => m.username === this.props.user_username);
+		const userInRoom = !!allMembers.find(m => m.username === this.props.username);
 		const permissions = RocketChat.hasPermission(['add-user-to-joined-room', 'add-user-to-any-c-room', 'add-user-to-any-p-room'], rid);
 
 		if (userInRoom && permissions['add-user-to-joined-room']) {
@@ -149,8 +113,8 @@ export default class RoomActionsView extends LoggedView {
 		const sections = [{
 			data: [{
 				icon: 'ios-star',
-				name: 'USER',
-				route: 'RoomInfo',
+				name: I18n.t('Room_Info'),
+				route: 'RoomInfoView',
 				params: { rid },
 				testID: 'room-actions-info'
 			}],
@@ -176,28 +140,28 @@ export default class RoomActionsView extends LoggedView {
 				{
 					icon: 'ios-attach',
 					name: I18n.t('Files'),
-					route: 'RoomFiles',
+					route: 'RoomFilesView',
 					params: { rid },
 					testID: 'room-actions-files'
 				},
 				{
 					icon: 'ios-at-outline',
 					name: I18n.t('Mentions'),
-					route: 'MentionedMessages',
+					route: 'MentionedMessagesView',
 					params: { rid },
 					testID: 'room-actions-mentioned'
 				},
 				{
 					icon: 'ios-star-outline',
 					name: I18n.t('Starred'),
-					route: 'StarredMessages',
+					route: 'StarredMessagesView',
 					params: { rid },
 					testID: 'room-actions-starred'
 				},
 				{
 					icon: 'ios-search',
 					name: I18n.t('Search'),
-					route: 'SearchMessages',
+					route: 'SearchMessagesView',
 					params: { rid },
 					testID: 'room-actions-search'
 				},
@@ -210,14 +174,14 @@ export default class RoomActionsView extends LoggedView {
 				{
 					icon: 'ios-pin',
 					name: I18n.t('Pinned'),
-					route: 'PinnedMessages',
+					route: 'PinnedMessagesView',
 					params: { rid },
 					testID: 'room-actions-pinned'
 				},
 				{
 					icon: 'ios-code',
 					name: I18n.t('Snippets'),
-					route: 'SnippetedMessages',
+					route: 'SnippetedMessagesView',
 					params: { rid },
 					testID: 'room-actions-snippeted'
 				},
@@ -254,7 +218,7 @@ export default class RoomActionsView extends LoggedView {
 					description: (onlineMembers.length === 1 ?
 						I18n.t('1_online_member') :
 						I18n.t('N_online_members', { n: onlineMembers.length })),
-					route: 'RoomMembers',
+					route: 'RoomMembersView',
 					params: { rid, members: onlineMembers },
 					testID: 'room-actions-members'
 				});
@@ -264,19 +228,10 @@ export default class RoomActionsView extends LoggedView {
 				actions.push({
 					icon: 'ios-person-add',
 					name: I18n.t('Add_user'),
-					route: 'SelectedUsers',
+					route: 'SelectedUsersView',
 					params: {
-						nextAction: async() => {
-							try {
-								this.props.setLoadingInvite(true);
-								await RocketChat.addUsersToRoom(rid);
-								this.props.navigation.goBack();
-							} catch (e) {
-								log('RoomActions Add User', e);
-							} finally {
-								this.props.setLoadingInvite(false);
-							}
-						}
+						nextAction: 'ADD_USER',
+						rid
 					},
 					testID: 'room-actions-add-user'
 				});
@@ -296,6 +251,46 @@ export default class RoomActionsView extends LoggedView {
 			});
 		}
 		return sections;
+	}
+
+	updateRoomMembers = async() => {
+		const { t } = this.state.room;
+
+		if (!this.canViewMembers) {
+			return {};
+		}
+
+		if (t === 'c' || t === 'p') {
+			let onlineMembers = [];
+			let allMembers = [];
+			try {
+				const onlineMembersCall = RocketChat.getRoomMembers(this.state.room.rid, false);
+				const allMembersCall = RocketChat.getRoomMembers(this.state.room.rid, true);
+				const [onlineMembersResult, allMembersResult] = await Promise.all([onlineMembersCall, allMembersCall]);
+				onlineMembers = onlineMembersResult.records;
+				allMembers = allMembersResult.records;
+				return { onlineMembers, allMembers };
+			} catch (error) {
+				return {};
+			}
+		}
+	}
+
+	updateRoomMember = async() => {
+		if (this.state.room.t !== 'd') {
+			return {};
+		}
+		try {
+			const member = await RocketChat.getRoomMember(this.state.room.rid, this.props.userId);
+			return { member };
+		} catch (e) {
+			log('RoomActions updateRoomMember', e);
+			return {};
+		}
+	}
+
+	updateRoom = () => {
+		this.setState({ room: this.room });
 	}
 
 	toggleBlockUser = async() => {

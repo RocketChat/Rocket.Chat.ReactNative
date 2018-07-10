@@ -10,21 +10,23 @@ import Message from '../../containers/message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 
-@connect(
-	state => ({
-		messages: state.snippetedMessages.messages,
-		ready: state.snippetedMessages.ready,
-		user: state.login.user,
-		baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-	}),
-	dispatch => ({
-		openSnippetedMessages: (rid, limit) => dispatch(openSnippetedMessages(rid, limit)),
-		closeSnippetedMessages: () => dispatch(closeSnippetedMessages())
-	})
-)
+@connect(state => ({
+	messages: state.snippetedMessages.messages,
+	ready: state.snippetedMessages.ready,
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	},
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+}), dispatch => ({
+	openSnippetedMessages: (rid, limit) => dispatch(openSnippetedMessages(rid, limit)),
+	closeSnippetedMessages: () => dispatch(closeSnippetedMessages())
+}))
+/** @extends React.Component */
 export default class SnippetedMessagesView extends LoggedView {
 	static propTypes = {
-		navigation: PropTypes.object,
+		rid: PropTypes.string,
 		messages: PropTypes.array,
 		ready: PropTypes.bool,
 		user: PropTypes.object,
@@ -57,7 +59,7 @@ export default class SnippetedMessagesView extends LoggedView {
 	}
 
 	load() {
-		this.props.openSnippetedMessages(this.props.navigation.state.params.rid, this.limit);
+		this.props.openSnippetedMessages(this.props.rid, this.limit);
 	}
 
 	moreData = () => {

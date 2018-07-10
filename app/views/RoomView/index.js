@@ -1,14 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Button, LayoutAnimation } from 'react-native';
+import { Text, View, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
-// import { bindActionCreators } from 'redux';
 import equal from 'deep-equal';
 
 import LoggedView from '../View';
 import { List } from './ListView';
-// import * as actions from '../../actions';
-import { openRoom, setLastOpen } from '../../actions/room';
+import { openRoom, closeRoom, setLastOpen } from '../../actions/room';
 import { toggleReactionPicker, actionsShow } from '../../actions/messages';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
@@ -16,59 +14,52 @@ import Message from '../../containers/message';
 import MessageActions from '../../containers/MessageActions';
 import MessageErrorActions from '../../containers/MessageErrorActions';
 import MessageBox from '../../containers/MessageBox';
-import Header from '../../containers/Header';
-import RoomsHeader from './Header';
 import ReactionPicker from './ReactionPicker';
 import styles from './styles';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import debounce from '../../utils/debounce';
+import { iconsMap } from '../../Icons';
 
-@connect(
-	state => ({
-		// Site_Url: state.settings.Site_Url || state.server ? state.server.server : '',
-		// Message_TimeFormat: state.settings.Message_TimeFormat,
-		loading: state.messages.isFetching,
-		user: state.login.user,
-		actionMessage: state.messages.actionMessage,
-		showActions: state.messages.showActions,
-		showErrorActions: state.messages.showErrorActions
-	}),
-	dispatch => ({
-		// actions: bindActionCreators(actions, dispatch),
-		openRoom: room => dispatch(openRoom(room)),
-		// editCancel: () => dispatch(editCancel()),
-		setLastOpen: date => dispatch(setLastOpen(date)),
-		toggleReactionPicker: message => dispatch(toggleReactionPicker(message)),
-		actionsShow: actionMessage => dispatch(actionsShow(actionMessage))
-	})
-)
+@connect(state => ({
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	},
+	actionMessage: state.messages.actionMessage,
+	showActions: state.messages.showActions,
+	showErrorActions: state.messages.showErrorActions
+}), dispatch => ({
+	openRoom: room => dispatch(openRoom(room)),
+	setLastOpen: date => dispatch(setLastOpen(date)),
+	toggleReactionPicker: message => dispatch(toggleReactionPicker(message)),
+	actionsShow: actionMessage => dispatch(actionsShow(actionMessage)),
+	close: () => dispatch(closeRoom())
+}))
+/** @extends React.Component */
 export default class RoomView extends LoggedView {
 	static propTypes = {
-		navigation: PropTypes.object.isRequired,
+		navigator: PropTypes.object,
 		openRoom: PropTypes.func.isRequired,
 		setLastOpen: PropTypes.func.isRequired,
-		user: PropTypes.object.isRequired,
-		// editCancel: PropTypes.func,
+		user: PropTypes.shape({
+			id: PropTypes.string.isRequired,
+			username: PropTypes.string.isRequired,
+			token: PropTypes.string.isRequired
+		}),
 		rid: PropTypes.string,
-		name: PropTypes.string,
-		// Site_Url: PropTypes.string,
-		// Message_TimeFormat: PropTypes.string,
-		loading: PropTypes.bool,
+		showActions: PropTypes.bool,
+		showErrorActions: PropTypes.bool,
 		actionMessage: PropTypes.object,
 		toggleReactionPicker: PropTypes.func.isRequired,
-		actionsShow: PropTypes.func
+		actionsShow: PropTypes.func,
+		close: PropTypes.func
 	};
-
-	static navigationOptions = ({ navigation }) => ({
-		header: <Header subview={<RoomsHeader navigation={navigation} />} />
-	});
 
 	constructor(props) {
 		super('RoomView', props);
-		this.rid =
-			props.rid ||
-			props.navigation.state.params.room.rid;
+		this.rid = props.rid;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			loaded: true,
@@ -77,22 +68,79 @@ export default class RoomView extends LoggedView {
 			end: false
 		};
 		this.onReactionPress = this.onReactionPress.bind(this);
+		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+	}
+
+	async componentWillMount() {
+		this.props.navigator.setButtons({
+			rightButtons: [{
+				id: 'more',
+				testID: 'room-view-header-actions',
+				icon: iconsMap.more
+			}, {
+				id: 'star',
+				testID: 'room-view-header-star',
+				icon: iconsMap.starOutline
+			}]
+		});
 	}
 
 	componentDidMount() {
 		this.updateRoom();
 		this.rooms.addListener(this.updateRoom);
+		this.props.navigator.setDrawerEnabled({
+			side: 'left',
+			enabled: false
+		});
 	}
 	shouldComponentUpdate(nextProps, nextState) {
 		return !(equal(this.props, nextProps) && equal(this.state, nextState) && this.state.room.ro === nextState.room.ro);
 	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (prevState.room.f !== this.state.room.f) {
+			this.props.navigator.setButtons({
+				rightButtons: [{
+					id: 'more',
+					testID: 'room-view-header-actions',
+					icon: iconsMap.more
+				}, {
+					id: 'star',
+					testID: 'room-view-header-star',
+					icon: this.state.room.f ? iconsMap.star : iconsMap.starOutline
+				}]
+			});
+		}
+	}
+
 	componentWillUnmount() {
 		this.rooms.removeAllListeners();
 		this.onEndReached.stop();
+		this.props.close();
 	}
 
-	onEndReached = debounce((lastRowData, length) => {
-		if (!lastRowData || length < 20) {
+	onNavigatorEvent(event) {
+		if (event.type === 'NavBarButtonPress') {
+			if (event.id === 'more') {
+				this.props.navigator.push({
+					screen: 'RoomActionsView',
+					title: I18n.t('Actions'),
+					passProps: {
+						rid: this.state.room.rid
+					}
+				});
+			} else if (event.id === 'star') {
+				try {
+					RocketChat.toggleFavorite(this.state.room.rid, this.state.room.f);
+				} catch (e) {
+					log('toggleFavorite', e);
+				}
+			}
+		}
+	}
+
+	onEndReached = debounce((lastRowData) => {
+		if (!lastRowData) {
 			this.setState({ end: true });
 			return;
 		}
@@ -128,6 +176,7 @@ export default class RoomView extends LoggedView {
 			const { room: prevRoom } = this.state;
 			await this.setState({ room: JSON.parse(JSON.stringify(this.rooms[0])) });
 			if (!prevRoom.rid) {
+				this.props.navigator.setTitle({ title: this.state.room.name });
 				await this.props.openRoom({
 					...this.state.room
 				});
@@ -191,14 +240,15 @@ export default class RoomView extends LoggedView {
 	);
 
 	renderFooter = () => {
-		if (!this.state.joined) {
-			return (
-				<View>
-					<Text>{I18n.t('You_are_in_preview_mode')}</Text>
-					<Button title='Join' onPress={this.joinRoom} />
-				</View>
-			);
-		}
+		// TODO: fix it
+		// if (!this.state.joined) {
+		// 	return (
+		// 		<View>
+		// 			<Text>{I18n.t('You_are_in_preview_mode')}</Text>
+		// 			<Button title='Join' onPress={this.joinRoom} />
+		// 		</View>
+		// 	);
+		// }
 		if (this.state.room.archived || this.isReadOnly()) {
 			return (
 				<View style={styles.readOnly}>
@@ -234,7 +284,9 @@ export default class RoomView extends LoggedView {
 					renderRow={this.renderItem}
 				/>
 				{this.renderFooter()}
-				{this.state.room._id && this.props.showActions ? <MessageActions room={this.state.room} /> : null}
+				{this.state.room._id && this.props.showActions ?
+					<MessageActions room={this.state.room} user={this.props.user} /> :
+					null}
 				{this.props.showErrorActions ? <MessageErrorActions /> : null}
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
 			</View>

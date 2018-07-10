@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Keyboard, Text, View, SafeAreaView, ScrollView } from 'react-native';
+import { Keyboard, Text, View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 
 import { registerSubmit, setUsernameSubmit } from '../actions/login';
@@ -10,7 +10,6 @@ import Loading from '../containers/Loading';
 import KeyboardView from '../presentation/KeyboardView';
 import styles from './Styles';
 import { showToast } from '../utils/info';
-import CloseModalButton from '../containers/CloseModalButton';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import LoggedView from './View';
 import I18n from '../i18n';
@@ -26,8 +25,11 @@ import I18n from '../i18n';
 	registerSubmit: params => dispatch(registerSubmit(params)),
 	setUsernameSubmit: params => dispatch(setUsernameSubmit(params))
 }))
+/** @extends React.Component */
 export default class RegisterView extends LoggedView {
 	static propTypes = {
+		navigator: PropTypes.object,
+		server: PropTypes.string,
 		registerSubmit: PropTypes.func.isRequired,
 		setUsernameSubmit: PropTypes.func,
 		Accounts_UsernamePlaceholder: PropTypes.string,
@@ -88,11 +90,19 @@ export default class RegisterView extends LoggedView {
 	}
 
 	termsService = () => {
-		this.props.navigation.navigate({ key: 'TermsService', routeName: 'TermsService' });
+		this.props.navigator.push({
+			screen: 'TermsServiceView',
+			title: I18n.t('Terms_of_Service'),
+			backButtonTitle: I18n.t('Sign_Up')
+		});
 	}
 
 	privacyPolicy = () => {
-		this.props.navigation.navigate({ key: 'PrivacyPolicy', routeName: 'PrivacyPolicy' });
+		this.props.navigator.push({
+			screen: 'PrivacyPolicyView',
+			title: I18n.t('Privacy_Policy'),
+			backButtonTitle: I18n.t('Sign_Up')
+		});
 	}
 
 	_renderRegister() {
@@ -202,8 +212,7 @@ export default class RegisterView extends LoggedView {
 		return (
 			<KeyboardView contentContainerStyle={styles.container}>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
-					<SafeAreaView testID='register-view'>
-						<CloseModalButton navigation={this.props.navigation} />
+					<View testID='register-view'>
 						<Text style={[styles.loginText, styles.loginTitle]}>{I18n.t('Sign_Up')}</Text>
 						{this._renderRegister()}
 						{this._renderUsername()}
@@ -214,7 +223,7 @@ export default class RegisterView extends LoggedView {
 							: null
 						}
 						<Loading visible={this.props.login.isFetching} />
-					</SafeAreaView>
+					</View>
 				</ScrollView>
 			</KeyboardView>
 		);

@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Keyboard, Text, ScrollView, SafeAreaView, View } from 'react-native';
+import { Keyboard, Text, ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Answers } from 'react-native-fabric';
 
 import RocketChat from '../lib/rocketchat';
 import KeyboardView from '../presentation/KeyboardView';
 import TextInput from '../containers/TextInput';
-import CloseModalButton from '../containers/CloseModalButton';
 import Button from '../containers/Button';
 import Loading from '../containers/Loading';
 import styles from './Styles';
@@ -26,12 +25,19 @@ import I18n from '../i18n';
 }), () => ({
 	loginSubmit: params => RocketChat.loginWithPassword(params)
 }))
+/** @extends React.Component */
 export default class LoginView extends LoggedView {
 	static propTypes = {
+		navigator: PropTypes.object,
 		loginSubmit: PropTypes.func.isRequired,
-		navigation: PropTypes.object.isRequired,
 		login: PropTypes.object,
-		server: PropTypes.string
+		server: PropTypes.string,
+		error: PropTypes.string,
+		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
+		Accounts_PasswordPlaceholder: PropTypes.string,
+		failure: PropTypes.bool,
+		isFetching: PropTypes.bool,
+		reason: PropTypes.string
 	}
 
 	constructor(props) {
@@ -56,6 +62,22 @@ export default class LoginView extends LoggedView {
 		} catch (error) {
 			console.warn('LoginView submit', error);
 		}
+	}
+
+	register = () => {
+		this.props.navigator.push({
+			screen: 'RegisterView',
+			title: this.props.server,
+			backButtonTitle: I18n.t('Login')
+		});
+	}
+
+	forgotPassword = () => {
+		this.props.navigator.push({
+			screen: 'ForgotPasswordView',
+			title: I18n.t('Forgot_Password'),
+			backButtonTitle: I18n.t('Login')
+		});
 	}
 
 	renderTOTP = () => {
@@ -84,8 +106,7 @@ export default class LoginView extends LoggedView {
 				key='login-view'
 			>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
-					<SafeAreaView testID='login-view'>
-						<CloseModalButton navigation={this.props.navigation} />
+					<View testID='login-view'>
 						<Text style={[styles.loginText, styles.loginTitle]}>Login</Text>
 						<TextInput
 							label={I18n.t('Username')}
@@ -122,14 +143,14 @@ export default class LoginView extends LoggedView {
 							<Text
 								style={[styles.loginText, { marginTop: 10 }]}
 								testID='login-view-register'
-								onPress={() => this.props.navigation.navigate('Register')}
+								onPress={() => this.register()}
 							>{I18n.t('New_in_RocketChat_question_mark')} &nbsp;
 								<Text style={{ color: COLOR_BUTTON_PRIMARY }}>{I18n.t('Sign_Up')}
 								</Text>
 							</Text>
 							<Text
 								style={[styles.loginText, { marginTop: 20, fontSize: 13 }]}
-								onPress={() => this.props.navigation.navigate('ForgotPassword')}
+								onPress={() => this.forgotPassword()}
 								testID='login-view-forgot-password'
 							>{I18n.t('Forgot_password')}
 							</Text>
@@ -137,7 +158,7 @@ export default class LoginView extends LoggedView {
 
 						{this.props.failure ? <Text style={styles.error}>{this.props.reason}</Text> : null}
 						<Loading visible={this.props.isFetching} />
-					</SafeAreaView>
+					</View>
 				</ScrollView>
 			</KeyboardView>
 		);

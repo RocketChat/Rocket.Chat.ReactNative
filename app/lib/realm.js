@@ -139,7 +139,7 @@ const attachment = {
 		video_url: { type: 'string', optional: true },
 		title: { type: 'string', optional: true },
 		title_link: { type: 'string', optional: true },
-		title_link_download: { type: 'bool', optional: true },
+		// title_link_download: { type: 'bool', optional: true },
 		type: { type: 'string', optional: true },
 		author_icon: { type: 'string', optional: true },
 		author_name: { type: 'string', optional: true },

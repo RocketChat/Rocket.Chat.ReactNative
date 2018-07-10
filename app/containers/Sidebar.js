@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView, Text, View, StyleSheet, FlatList, LayoutAnimation } from 'react-native';
+import { ScrollView, Text, View, StyleSheet, FlatList, LayoutAnimation, AsyncStorage, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
-import { DrawerActions, SafeAreaView } from 'react-navigation';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import database from '../lib/realm';
-import { setServer } from '../actions/server';
+import { selectServer } from '../actions/server';
 import { logout } from '../actions/login';
+import { appStart } from '../actions';
 import Avatar from '../containers/Avatar';
 import Status from '../containers/status';
 import Touch from '../utils/touch';
@@ -16,6 +16,7 @@ import { STATUS_COLORS } from '../constants/colors';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import I18n from '../i18n';
+import { NavigationActions } from '../Navigation';
 
 const styles = StyleSheet.create({
 	selected: {
@@ -76,19 +77,29 @@ const styles = StyleSheet.create({
 	}
 });
 const keyExtractor = item => item.id;
+
 @connect(state => ({
 	server: state.server.server,
-	user: state.login.user
+	user: {
+		id: state.login.user && state.login.user.id,
+		language: state.login.user && state.login.user.language,
+		server: state.login.user && state.login.user.server,
+		status: state.login.user && state.login.user.status,
+		username: state.login.user && state.login.user.username
+	}
 }), dispatch => ({
-	selectServer: server => dispatch(setServer(server)),
-	logout: () => dispatch(logout())
+	selectServer: server => dispatch(selectServer(server)),
+	logout: () => dispatch(logout()),
+	appStart: () => dispatch(appStart('outside'))
 }))
 export default class Sidebar extends Component {
 	static propTypes = {
+		navigator: PropTypes.object,
 		server: PropTypes.string.isRequired,
 		selectServer: PropTypes.func.isRequired,
-		navigation: PropTypes.object.isRequired,
-		logout: PropTypes.func.isRequired
+		user: PropTypes.object,
+		logout: PropTypes.func.isRequired,
+		appStart: PropTypes.func
 	}
 
 	constructor(props) {
@@ -117,7 +128,6 @@ export default class Sidebar extends Component {
 
 	onPressItem = (item) => {
 		this.props.selectServer(item.id);
-		this.closeDrawer();
 	}
 
 	setStatus = () => {
@@ -149,7 +159,11 @@ export default class Sidebar extends Component {
 	}
 
 	closeDrawer = () => {
-		this.props.navigation.dispatch(DrawerActions.closeDrawer());
+		this.props.navigator.toggleDrawer({
+			side: 'left',
+			animated: true,
+			to: 'close'
+		});
 	}
 
 	toggleServers = () => {
@@ -157,25 +171,15 @@ export default class Sidebar extends Component {
 		this.setState({ showServers: !this.state.showServers });
 	}
 
-	isRouteFocused = (route) => {
-		const { state } = this.props.navigation;
-		const activeItemKey = state.routes[state.index] ? state.routes[state.index].key : null;
-		return activeItemKey === route;
-	}
-
-	sidebarNavigate = (route) => {
-		const { navigate } = this.props.navigation;
-		if (!this.isRouteFocused(route)) {
-			navigate(route);
-		} else {
-			this.closeDrawer();
-		}
+	sidebarNavigate = (screen, title) => {
+		this.closeDrawer();
+		NavigationActions.resetTo({ screen, title });
 	}
 
 	renderSeparator = key => <View key={key} style={styles.separator} />;
 
 	renderItem = ({
-		text, left, selected, onPress, testID
+		text, left, onPress, testID
 	}) => (
 		<Touch
 			key={text}
@@ -184,8 +188,8 @@ export default class Sidebar extends Component {
 			activeOpacity={0.3}
 			testID={testID}
 		>
-			<View style={[styles.item, selected && styles.selected]}>
-				<View style={[styles.itemLeft, !selected && styles.itemLeftOpacity]}>
+			<View style={styles.item}>
+				<View style={styles.itemLeft}>
 					{left}
 				</View>
 				<Text style={styles.itemText}>
@@ -222,12 +226,15 @@ export default class Sidebar extends Component {
 				source={{ uri: encodeURI(`${ item.id }/assets/favicon_32.png`) }}
 			/>,
 			selected: this.props.server === item.id,
-			onPress: () => {
+			onPress: async() => {
 				this.closeDrawer();
 				this.toggleServers();
 				if (this.props.server !== item.id) {
 					this.props.selectServer(item.id);
-					this.props.navigation.navigate('RoomsList');
+					const token = await AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ item.id }`);
+					if (!token) {
+						this.props.appStart();
+					}
 				}
 			},
 			testID: `sidebar-${ item.id }`
@@ -239,31 +246,25 @@ export default class Sidebar extends Component {
 			this.renderItem({
 				text: I18n.t('Chats'),
 				left: <Icon name='chat-bubble' size={20} />,
-				onPress: () => this.sidebarNavigate('Chats'),
-				selected: this.isRouteFocused('Chats'),
+				onPress: () => this.sidebarNavigate('RoomsListView', I18n.t('Messages')),
 				testID: 'sidebar-chats'
 			}),
 			this.renderItem({
 				text: I18n.t('Profile'),
 				left: <Icon name='person' size={20} />,
-				onPress: () => this.sidebarNavigate('ProfileView'),
-				selected: this.isRouteFocused('ProfileView'),
+				onPress: () => this.sidebarNavigate('ProfileView', I18n.t('Profile')),
 				testID: 'sidebar-profile'
 			}),
 			this.renderItem({
 				text: I18n.t('Settings'),
 				left: <Icon name='settings' size={20} />,
-				onPress: () => this.sidebarNavigate('SettingsView'),
-				selected: this.isRouteFocused('SettingsView'),
+				onPress: () => this.sidebarNavigate('SettingsView', I18n.t('Settings')),
 				testID: 'sidebar-settings'
 			}),
 			this.renderSeparator('separator-logout'),
 			this.renderItem({
 				text: I18n.t('Logout'),
-				left: <Icon
-					name='exit-to-app'
-					size={20}
-				/>,
+				left: <Icon name='exit-to-app' size={20} />,
 				onPress: () => this.props.logout(),
 				testID: 'sidebar-logout'
 			})
@@ -297,7 +298,10 @@ export default class Sidebar extends Component {
 				onPress: () => {
 					this.closeDrawer();
 					this.toggleServers();
-					this.props.navigation.navigate('AddServer');
+					NavigationActions.push({
+						screen: 'NewServerView',
+						title: I18n.t('Add_Server')
+					});
 				},
 				testID: 'sidebar-add-server'
 			})
@@ -306,13 +310,12 @@ export default class Sidebar extends Component {
 
 	render() {
 		const { user, server } = this.props;
+		if (!user) {
+			return null;
+		}
 		return (
-			<ScrollView>
-				<SafeAreaView
-					style={styles.container}
-					forceInset={{ top: 'always', horizontal: 'never' }}
-					testID='sidebar'
-				>
+			<ScrollView style={{ backgroundColor: '#fff' }}>
+				<SafeAreaView testID='sidebar'>
 					<Touch
 						onPress={() => this.toggleServers()}
 						underlayColor='rgba(255, 255, 255, 0.5)'
@@ -335,6 +338,7 @@ export default class Sidebar extends Component {
 							<Icon
 								name={this.state.showServers ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
 								size={30}
+								style={{ paddingHorizontal: 10 }}
 							/>
 						</View>
 					</Touch>
