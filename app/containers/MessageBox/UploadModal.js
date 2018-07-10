@@ -52,7 +52,8 @@ export default class UploadModal extends PureComponent {
 		isVisible: PropTypes.bool,
 		file: PropTypes.object,
 		close: PropTypes.func,
-		submit: PropTypes.func
+		submit: PropTypes.func,
+		window: PropTypes.object
 	}
 
 	state = {
