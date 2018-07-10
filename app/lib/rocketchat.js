@@ -648,11 +648,11 @@ const RocketChat = {
 	_sendFileMessage(rid, data, msg = {}) {
 		return call('sendFileMessage', rid, null, data, msg);
 	},
-	async sendFileMessage(rid, fileInfo, data) {
+	async sendFileMessage(rid, fileInfo) {
 		let placeholder;
 		try {
-			if (!data) {
-				data = await RNFetchBlob.wrap(fileInfo.path);
+			const data = await RNFetchBlob.wrap(fileInfo.path);
+			if (!fileInfo.size) {
 				const fileStat = await RNFetchBlob.fs.stat(fileInfo.path);
 				fileInfo.size = fileStat.size;
 				fileInfo.name = fileStat.filename;
@@ -672,14 +672,15 @@ const RocketChat = {
 				'Content-Type': 'application/octet-stream'
 			}, data);
 
-			const completeRresult = await RocketChat._ufsComplete(result.fileId, fileInfo.store, result.token);
+			const completeResult = await RocketChat._ufsComplete(result.fileId, fileInfo.store, result.token);
 
-			return await RocketChat._sendFileMessage(completeRresult.rid, {
-				_id: completeRresult._id,
-				type: completeRresult.type,
-				size: completeRresult.size,
-				name: completeRresult.name,
-				url: completeRresult.path
+			return await RocketChat._sendFileMessage(completeResult.rid, {
+				_id: completeResult._id,
+				type: completeResult.type,
+				size: completeResult.size,
+				name: completeResult.name,
+				description: completeResult.description,
+				url: completeResult.path
 			});
 		} catch (e) {
 			return e;

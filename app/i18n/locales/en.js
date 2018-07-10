@@ -248,6 +248,7 @@ export default {
 	Search: 'Search',
 	Select_Avatar: 'Select Avatar',
 	Select_Users: 'Select Users',
+	Send: 'Send',
 	Send_audio_message: 'Send audio message',
 	Send_message: 'Send message',
 	Servers: 'Servers',

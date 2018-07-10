@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, FlatList, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, TextInput, FlatList, Text, TouchableOpacity, Alert, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
+import Modal from 'react-native-modal';
+import { responsive } from 'react-native-responsive-ui';
 
 import { userTyping } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
@@ -18,6 +20,7 @@ import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import { emojis } from '../../emojis';
 import Recording from './Recording';
 import FilesActions from './FilesActions';
+import UploadModal from './UploadModal';
 import './EmojiKeyboard';
 import log from '../../utils/log';
 import I18n from '../../i18n';
@@ -68,7 +71,10 @@ export default class MessageBox extends React.PureComponent {
 			mentions: [],
 			showEmojiKeyboard: false,
 			showFilesAction: false,
-			recording: false
+			recording: false,
+			file: {
+				isVisible: false
+			}
 		};
 		this.users = [];
 		this.rooms = [];
@@ -180,9 +186,11 @@ export default class MessageBox extends React.PureComponent {
 		this.setState(prevState => ({ showFilesAction: !prevState.showFilesAction }))
 	}
 
-	sendFileMessage = async(file) => {
+	sendImageMessage = async(file) => {
+		this.setState({ file: { isVisible: false } });
 		const fileInfo = {
-			name: file.filename || file.path,
+			name: file.name,
+			description: file.description,
 			size: file.size,
 			type: file.mime,
 			store: 'Uploads',
@@ -191,31 +199,24 @@ export default class MessageBox extends React.PureComponent {
 		try {
 			await RocketChat.sendFileMessage(this.props.rid, fileInfo, file.data);
 		} catch (e) {
-			log('sendFileMessage', e);
+			log('sendImageMessage', e);
 		}
 	}
 
 	takePhoto = async() => {
 		ImagePicker.openCamera(imagePickerConfig).then((image) => {
-			this.sendFileMessage(image);
+			this.sendImageMessage(image);
 		}).catch(e => console.warn(e));
 	}
 
 	chooseFromLibrary = async() => {
 		ImagePicker.openPicker(imagePickerConfig).then(async(image) => {
-			const fileInfo = {
-				name: image.filename || image.path,
-				size: image.size,
-				type: image.mime,
-				store: 'Uploads',
-				path: image.path
-			};
-			try {
-				await RocketChat.sendFileMessage(this.props.rid, fileInfo);
-			} catch (e) {
-				log('sendFileMessage', e);
-			}
+			this.showUploadModal(image);
 		}).catch(e => console.warn(e));
+	}
+
+	showUploadModal = (file) => {
+		this.setState({ file: { ...file, isVisible: true } });
 	}
 
 	editCancel() {
@@ -578,7 +579,14 @@ export default class MessageBox extends React.PureComponent {
 					requiresSameParentToManageScrollView
 					addBottomView
 				/>,
-				this.renderFilesActions()
+				this.renderFilesActions(),
+				<UploadModal
+					key='upload-modal'
+					isVisible={(this.state.file && this.state.file.isVisible)}
+					file={this.state.file}
+					close={() => this.setState({ file: {} })}
+					submit={this.sendImageMessage}
+				/>
 			]
 		);
 	}
