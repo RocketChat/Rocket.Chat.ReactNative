@@ -649,26 +649,6 @@ const RocketChat = {
 		return call('sendFileMessage', rid, null, data, msg);
 	},
 	async sendFileMessage(rid, fileInfo) {
-		// RNFetchBlob.fetch('GET', 'https://images.pexels.com/photos/1146134/pexels-photo-1146134.jpeg?cs=srgb&dl=4k-wallpaper-android-wallpaper-astro-1146134.jpg&fm=jpg')
-		// 	.progress({ count : 10 }, (received, total) => {
-		// 		console.warn('progress ' + Math.floor(received/total*100) + '%')
-		// 	})
-		// 	.then(() => {
-		// 		console.warn('finished')
-		// 	})
-
-		// let fetchobj = RNFetchBlob.fetch('GET', 'https://images.pexels.com/photos/1146134/pexels-photo-1146134.jpeg?cs=srgb&dl=4k-wallpaper-android-wallpaper-astro-1146134.jpg&fm=jpg')
-		// setTimeout(() => {
-		// 	fetchobj.progress({ interval: 250 },(resive,total)=>{
-		// 		console.warn("progress", resive/total)
-		// 	})
-		// });
-		// fetchobj.then((res)=>{
-		// 	console.warn("finished")
-		// })
-
-
-		let placeholder;
 		try {
 			const data = await RNFetchBlob.wrap(fileInfo.path);
 			if (!fileInfo.size) {
@@ -690,51 +670,12 @@ const RocketChat = {
 				database.create('uploads', fileInfo, true);
 			});
 
-			// placeholder = RocketChat.getMessage(rid, 'Sending a file');
-
 			const result = await RocketChat._ufsCreate(fileInfo);
-
-			// RNFetchBlob
-			// 	.fetch('GET', 'https://images.pexels.com/photos/1146134/pexels-photo-1146134.jpeg?cs=srgb&dl=4k-wallpaper-android-wallpaper-astro-1146134.jpg&fm=jpg')
-			// 	.uploadProgress({ interval : 10 },(written, total) => {
-			// 		console.warn('uploaded', written / total)
-			// 	})
-			// 	// listen to download progress event
-			// 	.progress({ count : 10 }, (received, total) => {
-			// 		console.warn('progress', received / total)
-			// 	})
-			// 	.then((resp) => {
-			// 		console.warn('finished')
-			// 		// console.warn(resp)
-			// 	})
-			// 	.catch((err) => {
-			// 		console.warn(err)
-			// 	})
-
-			// let promise = RNFetchBlob.fetch('GET', 'https://images.pexels.com/photos/1146134/pexels-photo-1146134.jpeg?cs=srgb&dl=4k-wallpaper-android-wallpaper-astro-1146134.jpg&fm=jpg')
-
-			// // attach listeners
-			// promise.progress((loaded, total )=> { console.warn(`${Math.floor(loaded/total*100)}% downloaded`) })
-			// promise.uploadProgress((loaded, total )=> { console.warn(`${Math.floor(loaded/total*100)}% uploaded`) })
-
-			// // completion handler
-			// promise.then(() => { console.warn('OK') })
-
-			// await RNFetchBlob
-			// 	.fetch('POST', result.url, {
-			// 		'Content-Type': 'octet-stream'
-			// 	}, data)
-			// 	.uploadProgress({ interval : 10 },(written, total) => {
-			// 		console.warn('uploaded', written / total)
-			// 	})
-			// 	// listen to download progress event
-			// 	.progress({ count : 10 }, (received, total) => {
-			// 		console.warn('progress', received / total)
-			// 	});
 
 			const promise = RNFetchBlob.fetch('POST', result.url, {
 				'Content-Type': 'octet-stream'
 			}, data);
+			// Workaround for https://github.com/joltup/rn-fetch-blob/issues/96
 			setTimeout(() => {
 				promise.uploadProgress({ interval: 250 }, (loaded, total) => {
 					database.write(() => {
@@ -747,7 +688,7 @@ const RocketChat = {
 
 			const completeResult = await RocketChat._ufsComplete(result.fileId, fileInfo.store, result.token);
 
-			return await RocketChat._sendFileMessage(completeResult.rid, {
+			await RocketChat._sendFileMessage(completeResult.rid, {
 				_id: completeResult._id,
 				type: completeResult.type,
 				size: completeResult.size,
@@ -755,21 +696,18 @@ const RocketChat = {
 				description: completeResult.description,
 				url: completeResult.path
 			});
+
+			database.write(() => {
+				const upload = database.objects('uploads').filtered('path = $0', fileInfo.path);
+				database.delete(upload);
+			});
 		} catch (e) {
 			database.write(() => {
 				fileInfo.error = true;
 				database.create('uploads', fileInfo, true);
 			});
-			return e;
-		} finally {
-			try {
-				database.write(() => {
-					const upload = database.objects('uploads').filtered('path = $0', fileInfo.path);
-					database.delete(upload);
-				});
-			} catch (e) {
-				console.warn(e);
-			}
+			console.warn(e)
+			// return e;
 		}
 	},
 	getSettings,

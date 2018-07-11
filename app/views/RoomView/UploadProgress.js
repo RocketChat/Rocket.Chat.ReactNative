@@ -5,6 +5,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { responsive } from 'react-native-responsive-ui';
 
 import database from '../../lib/realm';
+import RocketChat from '../../lib/rocketchat';
+import log from '../../utils/log';
 
 const styles = StyleSheet.create({
 	container: {
@@ -49,39 +51,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Item = ({
-	item, i, width, cancel
-}) => {
-	if (!item.error) {
-		return (
-			<View style={[styles.item, i !== 0 ? { marginTop: 10 } : {}]}>
-				<View style={styles.row}>
-					<Icon name='image' size={20} color='#9EA2A8' />
-					<Text style={[styles.descriptionContainer, styles.descriptionText]} ellipsizeMode='tail' numberOfLines={1}>
-						Uploading {item.name}
-					</Text>
-					<Icon name='close' size={20} color='#9EA2A8' onPress={() => cancel(item)} />
-				</View>
-				<View style={[styles.progress, { width: (width * item.progress) / 100 }]} />
-			</View>
-		);
-	}
-	return (
-		<View style={[styles.item, i !== 0 ? { marginTop: 10 } : {}]}>
-			<View style={styles.row}>
-				<Icon name='warning' size={20} color='#FF5050' />
-				<View style={styles.descriptionContainer}>
-					<Text style={styles.descriptionText}>Error to upload image</Text>
-					<TouchableOpacity>
-						<Text style={styles.tryAgainButtonText}>Try again</Text>
-					</TouchableOpacity>
-				</View>
-				<Icon name='close' size={20} color='#9EA2A8' onPress={() => {}} />
-			</View>
-		</View>
-	);
-};
-
 @responsive
 export default class UploadProgress extends Component {
 	static propTypes = {
@@ -98,22 +67,69 @@ export default class UploadProgress extends Component {
 		this.uploads.addListener(this.updateUploads);
 	}
 
+	componentWillUnmount() {
+		this.uploads.removeAllListeners();
+	}
+
 	cancel = (item) => {
 		database.write(() => database.delete(item));
+	}
+
+	tryAgain = async(item) => {
+		try {
+			database.write(() => {
+				item.error = false;
+			});
+			await RocketChat.sendFileMessage(this.props.rid, JSON.parse(JSON.stringify(item)));
+		} catch (e) {
+			log('UploadProgess.tryAgain', e);
+		}
 	}
 
 	updateUploads = () => {
 		this.setState({ uploads: this.uploads });
 	}
 
+	renderItemContent = (item) => {
+		if (!item.error) {
+			return (
+				[
+					<View key='row' style={styles.row}>
+						<Icon name='image' size={20} color='#9EA2A8' />
+						<Text style={[styles.descriptionContainer, styles.descriptionText]} ellipsizeMode='tail' numberOfLines={1}>
+							Uploading {item.name}
+						</Text>
+						<Icon name='close' size={20} color='#9EA2A8' onPress={() => this.cancel(item)} />
+					</View>,
+					<View key='progress' style={[styles.progress, { width: (this.props.window.width * item.progress) / 100 }]} />
+				]
+			);
+		}
+		return (
+			<View style={styles.row}>
+				<Icon name='warning' size={20} color='#FF5050' />
+				<View style={styles.descriptionContainer}>
+					<Text style={styles.descriptionText}>Error to upload image</Text>
+					<TouchableOpacity onPress={() => this.tryAgain(item)}>
+						<Text style={styles.tryAgainButtonText}>Try again</Text>
+					</TouchableOpacity>
+				</View>
+				<Icon name='close' size={20} color='#9EA2A8' onPress={() => this.cancel(item)} />
+			</View>
+		);
+	}
+
+	renderItem = (item, index) => (
+		<View key={item.path} style={[styles.item, index !== 0 ? { marginTop: 10 } : {}]}>
+			{this.renderItemContent(item)}
+		</View>
+	);
+
 	render() {
 		const { uploads } = this.state;
-		const { window } = this.props;
 		return (
 			<ScrollView style={styles.container}>
-				{uploads.map((item, i) => (
-					<Item key={item.path} item={item} i={i} width={window.width} cancel={this.cancel} />
-				))}
+				{uploads.map((item, i) => this.renderItem(item, i))}
 			</ScrollView>
 		);
 	}
