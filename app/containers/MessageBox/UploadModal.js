@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
 });
 
 @responsive
-export default class UploadModal extends PureComponent {
+export default class UploadModal extends Component {
 	static propTypes = {
 		isVisible: PropTypes.bool,
 		file: PropTypes.object,
@@ -63,10 +63,10 @@ export default class UploadModal extends PureComponent {
 	};
 
 	static getDerivedStateFromProps(props, state) {
-		if (!equal(props.file, state.file) && props.file && props.file.filename) {
+		if (!equal(props.file, state.file) && props.file && props.file.path) {
 			return {
 				file: props.file,
-				name: props.file.filename,
+				name: props.file.filename || 'Filename',
 				description: ''
 			};
 		}

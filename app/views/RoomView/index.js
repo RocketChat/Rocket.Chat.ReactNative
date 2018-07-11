@@ -238,7 +238,7 @@ export default class RoomView extends LoggedView {
 				{this.state.room._id && this.props.showActions ? <MessageActions room={this.state.room} /> : null}
 				{this.props.showErrorActions ? <MessageErrorActions /> : null}
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
-				<UploadProgress />
+				<UploadProgress rid={this.rid} />
 			</View>
 		);
 	}
