@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { responsive } from 'react-native-responsive-ui';
+
+import database from '../../lib/realm';
 
 const styles = StyleSheet.create({
 	container: {
 		position: 'absolute',
 		top: 0,
-		width: '100%'
+		width: '100%',
+		maxHeight: 246
 	},
 	item: {
 		backgroundColor: '#F1F2F4',
@@ -46,18 +49,20 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Item = ({ item, i, width }) => {
-	if (item === 'uploading') {
+const Item = ({
+	item, i, width, cancel
+}) => {
+	if (!item.error) {
 		return (
 			<View style={[styles.item, i !== 0 ? { marginTop: 10 } : {}]}>
 				<View style={styles.row}>
 					<Icon name='image' size={20} color='#9EA2A8' />
 					<Text style={[styles.descriptionContainer, styles.descriptionText]} ellipsizeMode='tail' numberOfLines={1}>
-						Uploading layout.png
+						Uploading {item.name}
 					</Text>
-					<Icon name='close' size={20} color='#9EA2A8' onPress={() => {}} />
+					<Icon name='close' size={20} color='#9EA2A8' onPress={() => cancel(item)} />
 				</View>
-				<View style={[styles.progress, { width: (width * 50) / 100 }]} />
+				<View style={[styles.progress, { width: (width * item.progress) / 100 }]} />
 			</View>
 		);
 	}
@@ -77,19 +82,39 @@ const Item = ({ item, i, width }) => {
 	);
 };
 
-const items = ['uploading', 'error'];
-
 @responsive
 export default class UploadProgress extends Component {
 	static propTypes = {
-		window: PropTypes.object
+		window: PropTypes.object,
+		rid: PropTypes.string
+	}
+
+	constructor(props) {
+		super(props);
+		this.state = {
+			uploads: []
+		};
+		this.uploads = database.objects('uploads').filtered('rid = $0', this.props.rid);
+		this.uploads.addListener(this.updateUploads);
+	}
+
+	cancel = (item) => {
+		database.write(() => database.delete(item));
+	}
+
+	updateUploads = () => {
+		this.setState({ uploads: this.uploads });
 	}
 
 	render() {
+		const { uploads } = this.state;
+		const { window } = this.props;
 		return (
-			<View style={styles.container}>
-				{items.map((item, i) => <Item key={item} item={item} i={i} width={this.props.window.width} />)}
-			</View>
+			<ScrollView style={styles.container}>
+				{uploads.map((item, i) => (
+					<Item key={item.path} item={item} i={i} width={window.width} cancel={this.cancel} />
+				))}
+			</ScrollView>
 		);
 	}
 }

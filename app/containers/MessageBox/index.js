@@ -8,6 +8,7 @@ import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import Modal from 'react-native-modal';
 import { responsive } from 'react-native-responsive-ui';
+import RNFetchBlob from 'rn-fetch-blob';
 
 import { userTyping } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
@@ -183,7 +184,7 @@ export default class MessageBox extends React.PureComponent {
 	}
 
 	toggleFilesActions = () => {
-		this.setState(prevState => ({ showFilesAction: !prevState.showFilesAction }))
+		this.setState(prevState => ({ showFilesAction: !prevState.showFilesAction }));
 	}
 
 	sendImageMessage = async(file) => {
@@ -197,7 +198,7 @@ export default class MessageBox extends React.PureComponent {
 			path: file.path
 		};
 		try {
-			await RocketChat.sendFileMessage(this.props.rid, fileInfo, file.data);
+			await RocketChat.sendFileMessage(this.props.rid, fileInfo);
 		} catch (e) {
 			log('sendImageMessage', e);
 		}
@@ -209,7 +210,7 @@ export default class MessageBox extends React.PureComponent {
 		}).catch(e => console.warn(e));
 	}
 
-	chooseFromLibrary = async() => {
+	chooseFromLibrary = () => {
 		ImagePicker.openPicker(imagePickerConfig).then(async(image) => {
 			this.showUploadModal(image);
 		}).catch(e => console.warn(e));
