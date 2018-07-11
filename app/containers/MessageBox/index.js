@@ -1,14 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, FlatList, Text, TouchableOpacity, Alert, Platform } from 'react-native';
+import { View, TextInput, FlatList, Text, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
-import Modal from 'react-native-modal';
-import { responsive } from 'react-native-responsive-ui';
-import RNFetchBlob from 'rn-fetch-blob';
 
 import { userTyping } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
@@ -205,15 +202,21 @@ export default class MessageBox extends React.PureComponent {
 	}
 
 	takePhoto = async() => {
-		ImagePicker.openCamera(imagePickerConfig).then((image) => {
-			this.sendImageMessage(image);
-		}).catch(e => console.warn(e));
+		try {
+			const image = await ImagePicker.openCamera(imagePickerConfig);
+			this.showUploadModal(image);
+		} catch (e) {
+			log('takePhoto', e);
+		}
 	}
 
-	chooseFromLibrary = () => {
-		ImagePicker.openPicker(imagePickerConfig).then(async(image) => {
+	chooseFromLibrary = async() => {
+		try {
+			const image = await ImagePicker.openPicker(imagePickerConfig);
 			this.showUploadModal(image);
-		}).catch(e => console.warn(e));
+		} catch (e) {
+			log('chooseFromLibrary', e);
+		}
 	}
 
 	showUploadModal = (file) => {

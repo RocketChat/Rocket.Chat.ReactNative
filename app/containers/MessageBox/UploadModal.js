@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import { responsive } from 'react-native-responsive-ui';
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold'
 	},
 	container: {
-		height: 404,
+		height: Platform.OS === 'ios' ? 404 : 430,
 		backgroundColor: '#ffffff',
 		flexDirection: 'column'
 	},
