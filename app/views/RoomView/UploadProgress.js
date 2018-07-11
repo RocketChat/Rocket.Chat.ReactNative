@@ -71,8 +71,16 @@ export default class UploadProgress extends Component {
 		this.uploads.removeAllListeners();
 	}
 
-	cancel = (item) => {
+	deleteUpload = (item) => {
 		database.write(() => database.delete(item));
+	}
+
+	cancelUpload = async(item) => {
+		try {
+			await RocketChat.cancelUpload(item.path);
+		} catch (e) {
+			log('UploadProgess.cancelUpload', e);
+		}
 	}
 
 	tryAgain = async(item) => {
@@ -99,7 +107,7 @@ export default class UploadProgress extends Component {
 						<Text style={[styles.descriptionContainer, styles.descriptionText]} ellipsizeMode='tail' numberOfLines={1}>
 							Uploading {item.name}
 						</Text>
-						<Icon name='close' size={20} color='#9EA2A8' onPress={() => this.cancel(item)} />
+						<Icon name='close' size={20} color='#9EA2A8' onPress={() => this.cancelUpload(item)} />
 					</View>,
 					<View key='progress' style={[styles.progress, { width: (this.props.window.width * item.progress) / 100 }]} />
 				]
@@ -109,12 +117,12 @@ export default class UploadProgress extends Component {
 			<View style={styles.row}>
 				<Icon name='warning' size={20} color='#FF5050' />
 				<View style={styles.descriptionContainer}>
-					<Text style={styles.descriptionText}>Error to upload image</Text>
+					<Text style={styles.descriptionText}>Error uploading {item.name}</Text>
 					<TouchableOpacity onPress={() => this.tryAgain(item)}>
 						<Text style={styles.tryAgainButtonText}>Try again</Text>
 					</TouchableOpacity>
 				</View>
-				<Icon name='close' size={20} color='#9EA2A8' onPress={() => this.cancel(item)} />
+				<Icon name='close' size={20} color='#9EA2A8' onPress={() => this.deleteUpload(item)} />
 			</View>
 		);
 	}

@@ -39,6 +39,7 @@ import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import loadMissedMessages from './methods/loadMissedMessages';
 
 import sendMessage, { getMessage, _sendMessageCall } from './methods/sendMessage';
+import { sendFileMessage, cancelUpload } from './methods/sendFileMessage';
 
 import { getDeviceToken } from '../push';
 
@@ -615,101 +616,8 @@ const RocketChat = {
 	joinRoom(rid) {
 		return call('joinRoom', rid);
 	},
-
-
-	/*
-		"name":"yXfExLErmNR5eNPx7.png"
-		"size":961
-		"type":"image/png"
-		"rid":"GENERAL"
-		"description":""
-		"store":"fileSystem"
-	*/
-	_ufsCreate(fileInfo) {
-		// return call('ufsCreate', fileInfo);
-		return call('ufsCreate', fileInfo);
-	},
-
-	// ["ZTE8CKHJt7LATv7Me","fileSystem","e8E96b2819"
-	_ufsComplete(fileId, store, token) {
-		return call('ufsComplete', fileId, store, token);
-	},
-
-	/*
-		- "GENERAL"
-		- {
-			"type":"image/png",
-			"size":961,
-			"name":"yXfExLErmNR5eNPx7.png",
-			"description":"",
-			"url":"/ufs/fileSystem/ZTE8CKHJt7LATv7Me/yXfExLErmNR5eNPx7.png"
-		}
-	*/
-	_sendFileMessage(rid, data, msg = {}) {
-		return call('sendFileMessage', rid, null, data, msg);
-	},
-	async sendFileMessage(rid, fileInfo) {
-		try {
-			const data = await RNFetchBlob.wrap(fileInfo.path);
-			if (!fileInfo.size) {
-				const fileStat = await RNFetchBlob.fs.stat(fileInfo.path);
-				fileInfo.size = fileStat.size;
-				fileInfo.name = fileStat.filename;
-			}
-
-			const { FileUpload_MaxFileSize } = reduxStore.getState().settings;
-
-			// -1 maxFileSize means there is no limit
-			if (FileUpload_MaxFileSize > -1 && fileInfo.size > FileUpload_MaxFileSize) {
-				return Promise.reject({ error: 'error-file-too-large' }); // eslint-disable-line
-			}
-
-			fileInfo.rid = rid;
-
-			database.write(() => {
-				database.create('uploads', fileInfo, true);
-			});
-
-			const result = await RocketChat._ufsCreate(fileInfo);
-
-			const promise = RNFetchBlob.fetch('POST', result.url, {
-				'Content-Type': 'octet-stream'
-			}, data);
-			// Workaround for https://github.com/joltup/rn-fetch-blob/issues/96
-			setTimeout(() => {
-				promise.uploadProgress({ interval: 250 }, (loaded, total) => {
-					database.write(() => {
-						fileInfo.progress = Math.floor((loaded / total) * 100);
-						database.create('uploads', fileInfo, true);
-					});
-				});
-			});
-			await promise;
-
-			const completeResult = await RocketChat._ufsComplete(result.fileId, fileInfo.store, result.token);
-
-			await RocketChat._sendFileMessage(completeResult.rid, {
-				_id: completeResult._id,
-				type: completeResult.type,
-				size: completeResult.size,
-				name: completeResult.name,
-				description: completeResult.description,
-				url: completeResult.path
-			});
-
-			database.write(() => {
-				const upload = database.objects('uploads').filtered('path = $0', fileInfo.path);
-				database.delete(upload);
-			});
-		} catch (e) {
-			database.write(() => {
-				fileInfo.error = true;
-				database.create('uploads', fileInfo, true);
-			});
-			console.warn(e)
-			// return e;
-		}
-	},
+	sendFileMessage,
+	cancelUpload,
 	getSettings,
 	getPermissions,
 	getCustomEmoji,
