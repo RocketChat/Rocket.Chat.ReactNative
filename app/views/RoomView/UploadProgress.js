@@ -7,6 +7,7 @@ import { responsive } from 'react-native-responsive-ui';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
+import I18n from '../../i18n';
 
 const styles = StyleSheet.create({
 	container: {
@@ -77,7 +78,7 @@ export default class UploadProgress extends Component {
 					}
 				});
 			}
-		})
+		});
 	}
 
 	componentWillUnmount() {
@@ -118,7 +119,7 @@ export default class UploadProgress extends Component {
 					<View key='row' style={styles.row}>
 						<Icon name='image' size={20} color='#9EA2A8' />
 						<Text style={[styles.descriptionContainer, styles.descriptionText]} ellipsizeMode='tail' numberOfLines={1}>
-							Uploading {item.name}
+							{I18n.t('Uploading')} {item.name}
 						</Text>
 						<Icon name='close' size={20} color='#9EA2A8' onPress={() => this.cancelUpload(item)} />
 					</View>,
@@ -130,9 +131,9 @@ export default class UploadProgress extends Component {
 			<View style={styles.row}>
 				<Icon name='warning' size={20} color='#FF5050' />
 				<View style={styles.descriptionContainer}>
-					<Text style={styles.descriptionText}>Error uploading {item.name}</Text>
+					<Text style={styles.descriptionText}>{I18n.t('Error_uploading')} {item.name}</Text>
 					<TouchableOpacity onPress={() => this.tryAgain(item)}>
-						<Text style={styles.tryAgainButtonText}>Try again</Text>
+						<Text style={styles.tryAgainButtonText}>{I18n.t('Try_again')}</Text>
 					</TouchableOpacity>
 				</View>
 				<Icon name='close' size={20} color='#9EA2A8' onPress={() => this.deleteUpload(item)} />
