@@ -39,7 +39,7 @@ import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import loadMissedMessages from './methods/loadMissedMessages';
 
 import sendMessage, { getMessage, _sendMessageCall } from './methods/sendMessage';
-import { sendFileMessage, cancelUpload } from './methods/sendFileMessage';
+import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFileMessage';
 
 import { getDeviceToken } from '../push';
 
@@ -618,6 +618,7 @@ const RocketChat = {
 	},
 	sendFileMessage,
 	cancelUpload,
+	isUploadActive,
 	getSettings,
 	getPermissions,
 	getCustomEmoji,

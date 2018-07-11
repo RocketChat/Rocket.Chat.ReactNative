@@ -17,6 +17,10 @@ function _sendFileMessage(rid, data, msg = {}) {
 	return this.ddp.call('sendFileMessage', rid, null, data, msg);
 }
 
+export function isUploadActive(path) {
+	return !!promises[path];
+}
+
 export async function cancelUpload(path) {
 	if (promises[path]) {
 		await promises[path].cancel();
@@ -52,7 +56,7 @@ export async function sendFileMessage(rid, fileInfo) {
 		}, data);
 		// Workaround for https://github.com/joltup/rn-fetch-blob/issues/96
 		setTimeout(() => {
-			promises[fileInfo.path].uploadProgress({ interval: 250 }, (loaded, total) => {
+			promises[fileInfo.path].uploadProgress((loaded, total) => {
 				database.write(() => {
 					fileInfo.progress = Math.floor((loaded / total) * 100);
 					database.create('uploads', fileInfo, true);

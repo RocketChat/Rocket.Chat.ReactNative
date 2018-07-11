@@ -67,6 +67,19 @@ export default class UploadProgress extends Component {
 		this.uploads.addListener(this.updateUploads);
 	}
 
+	componentDidMount() {
+		this.uploads.forEach((u) => {
+			if (!RocketChat.isUploadActive(u.path)) {
+				database.write(() => {
+					const [upload] = database.objects('uploads').filtered('path = $0', u.path);
+					if (upload) {
+						upload.error = true;
+					}
+				});
+			}
+		})
+	}
+
 	componentWillUnmount() {
 		this.uploads.removeAllListeners();
 	}
