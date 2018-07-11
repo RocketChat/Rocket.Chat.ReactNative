@@ -39,7 +39,7 @@ import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import loadMissedMessages from './methods/loadMissedMessages';
 
 import sendMessage, { getMessage, _sendMessageCall } from './methods/sendMessage';
-import { sendFileMessage, cancelUpload } from './methods/sendFileMessage';
+import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFileMessage';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const call = (method, ...params) => RocketChat.ddp.call(method, ...params); // eslint-disable-line
@@ -620,6 +620,7 @@ const RocketChat = {
 	},
 	sendFileMessage,
 	cancelUpload,
+	isUploadActive,
 	getSettings,
 	getPermissions,
 	getCustomEmoji,
