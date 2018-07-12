@@ -260,6 +260,22 @@ const rolesSchema = {
 	}
 };
 
+const uploadsSchema = {
+	name: 'uploads',
+	primaryKey: 'path',
+	properties: {
+		path: 'string',
+		rid: 'string',
+		name: { type: 'string', optional: true },
+		description: { type: 'string', optional: true },
+		size: { type: 'int', optional: true },
+		type: { type: 'string', optional: true },
+		store: { type: 'string', optional: true },
+		progress: { type: 'int', default: 1 },
+		error: { type: 'bool', default: false }
+	}
+};
+
 const schema = [
 	settingsSchema,
 	subscriptionSchema,
@@ -279,7 +295,8 @@ const schema = [
 	messagesReactionsSchema,
 	messagesReactionsUsernamesSchema,
 	rolesSchema,
-	userMutedInRoomSchema
+	userMutedInRoomSchema,
+	uploadsSchema
 ];
 
 // class DebouncedDb {

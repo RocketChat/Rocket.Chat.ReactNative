@@ -16,8 +16,7 @@ const colors = {
 const styles = StyleSheet.create({
 	container: {
 		paddingHorizontal: 15,
-		paddingVertical: 10,
-		borderRadius: 2
+		paddingVertical: 10
 	},
 	text: {
 		textAlign: 'center',
@@ -40,6 +39,9 @@ const styles = StyleSheet.create({
 	},
 	disabled: {
 		opacity: 0.5
+	},
+	border: {
+		borderRadius: 2
 	}
 });
 
@@ -48,7 +50,9 @@ export default class Button extends React.PureComponent {
 		title: PropTypes.string,
 		type: PropTypes.string,
 		onPress: PropTypes.func,
-		disabled: PropTypes.bool
+		disabled: PropTypes.bool,
+		margin: PropTypes.any,
+		backgroundColor: PropTypes.string
 	}
 
 	static defaultProps = {
@@ -60,21 +64,22 @@ export default class Button extends React.PureComponent {
 
 	render() {
 		const {
-			title, type, onPress, disabled, ...otherProps
+			title, type, onPress, disabled, margin, backgroundColor, ...otherProps
 		} = this.props;
 		return (
 			<Touch
 				onPress={onPress}
 				accessibilityTraits='button'
-				style={Platform.OS === 'ios' && styles.margin}
+				style={Platform.OS === 'ios' && [(margin || styles.margin), styles.border]}
 				disabled={disabled}
 				{...otherProps}
 			>
 				<View
 					style={[
 						styles.container,
-						styles[`background_${ type }`],
-						Platform.OS === 'android' && styles.margin,
+						styles.border,
+						backgroundColor ? { backgroundColor } : styles[`background_${ type }`],
+						Platform.OS === 'android' && (margin || styles.margin),
 						disabled && styles.disabled
 					]}
 				>
