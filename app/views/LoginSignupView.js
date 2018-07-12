@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, ScrollView, TouchableOpacity, SafeAreaView, WebView, Platform, LayoutAnimation, Image, StyleSheet } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, LayoutAnimation, Image, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Base64 } from 'js-base64';
-import Modal from 'react-native-modal';
 
-import RocketChat from '../lib/rocketchat';
 import { open, close } from '../actions/login';
 import LoggedView from './View';
 import sharedStyles from './Styles';
@@ -16,9 +14,6 @@ import random from '../utils/random';
 import Button from '../containers/Button';
 import Loading from '../containers/Loading';
 import I18n from '../i18n';
-
-const userAgentAndroid = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1';
-const userAgent = Platform.OS === 'ios' ? 'UserAgent' : userAgentAndroid;
 
 const styles = StyleSheet.create({
 	container: {
@@ -44,14 +39,13 @@ const styles = StyleSheet.create({
 	planetImage: {
 		width: 200,
 		height: 162,
-		marginVertical: 20,
-		opacity: 0.6
+		marginVertical: 20
 	}
 });
 
 @connect(state => ({
 	server: state.server.server,
-	login: state.login,
+	isFetching: state.login.isFetching,
 	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
 	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
 	Accounts_OAuth_Facebook: state.settings.Accounts_OAuth_Facebook,
@@ -63,17 +57,16 @@ const styles = StyleSheet.create({
 	Accounts_OAuth_Twitter: state.settings.Accounts_OAuth_Twitter,
 	services: state.login.services
 }), dispatch => ({
-	loginOAuth: params => RocketChat.login(params),
 	open: () => dispatch(open()),
 	close: () => dispatch(close())
 }))
+/** @extends React.Component */
 export default class LoginSignupView extends LoggedView {
 	static propTypes = {
-		loginOAuth: PropTypes.func.isRequired,
+		navigator: PropTypes.object,
 		open: PropTypes.func.isRequired,
 		close: PropTypes.func.isRequired,
-		navigation: PropTypes.object.isRequired,
-		login: PropTypes.object,
+		isFetching: PropTypes.bool,
 		server: PropTypes.string,
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.bool,
 		Accounts_PasswordPlaceholder: PropTypes.string,
@@ -89,13 +82,6 @@ export default class LoginSignupView extends LoggedView {
 
 	constructor(props) {
 		super('LoginSignupView', props);
-
-		this.state = {
-			modalVisible: false,
-			oAuthUrl: '',
-			showSocialButtons: false
-		};
-		this.redirectRegex = new RegExp(`(?=.*(${ this.props.server }))(?=.*(credentialToken))(?=.*(credentialSecret))`, 'g');
 	}
 
 	componentDidMount() {
@@ -183,19 +169,29 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	openOAuth = (oAuthUrl) => {
-		this.setState({ oAuthUrl, modalVisible: true });
+		this.props.navigator.showModal({
+			screen: 'OAuthView',
+			title: 'OAuth',
+			passProps: {
+				oAuthUrl
+			}
+		});
+	}
+
+	login = () => {
+		this.props.navigator.push({
+			screen: 'LoginView',
+			title: this.props.server,
+			backButtonTitle: I18n.t('Welcome')
+		});
 	}
 
 	register = () => {
-		this.props.navigation.navigate({ key: 'Register', routeName: 'Register' });
-	}
-
-	closeOAuth = () => {
-		this.setState({ modalVisible: false });
-	}
-
-	toggleSocialButtons = () => {
-		this.setState({ showSocialButtons: !this.state.showSocialButtons });
+		this.props.navigator.push({
+			screen: 'RegisterView',
+			title: this.props.server,
+			backButtonTitle: I18n.t('Welcome')
+		});
 	}
 
 	renderServices = () => {
@@ -279,66 +275,40 @@ export default class LoginSignupView extends LoggedView {
 
 	render() {
 		return (
-			[
-				<ScrollView
-					key='login-view'
-					style={[sharedStyles.container, sharedStyles.containerScrollView]}
-					{...scrollPersistTaps}
-				>
-					<SafeAreaView testID='welcome-view'>
-						<View style={styles.container}>
-							<Image
-								source={require('../static/images/logo.png')}
-								style={sharedStyles.loginLogo}
-								resizeMode='center'
-							/>
-							<Text style={[sharedStyles.loginText, styles.header, { color: '#81848A' }]}>{I18n.t('Welcome_title_pt_1')}</Text>
-							<Text style={[sharedStyles.loginText, styles.header]}>{I18n.t('Welcome_title_pt_2')}</Text>
-							<Image
-								style={styles.planetImage}
-								source={require('../static/images/planet.png')}
-							/>
-							<Button
-								title={I18n.t('I_have_an_account')}
-								type='primary'
-								onPress={() => this.props.navigation.navigate({ key: 'Login', routeName: 'Login' })}
-								testID='welcome-view-login'
-							/>
-							<Button
-								title={I18n.t('Create_account')}
-								type='secondary'
-								onPress={() => this.props.navigation.navigate({ key: 'Register', routeName: 'Register' })}
-								testID='welcome-view-register'
-							/>
-							{this.renderServices()}
-						</View>
-						<Loading visible={this.props.login.isFetching} />
-					</SafeAreaView>
-				</ScrollView>,
-				<Modal
-					key='modal-oauth'
-					visible={this.state.modalVisible}
-					animationType='slide'
-					style={sharedStyles.oAuthModal}
-					onBackButtonPress={this.closeOAuth}
-					useNativeDriver
-				>
-					<WebView
-						source={{ uri: this.state.oAuthUrl }}
-						userAgent={userAgent}
-						onNavigationStateChange={(webViewState) => {
-							const url = decodeURIComponent(webViewState.url);
-							if (this.redirectRegex.test(url)) {
-								const parts = url.split('#');
-								const credentials = JSON.parse(parts[1]);
-								this.props.loginOAuth({ oauth: { ...credentials } });
-								this.setState({ modalVisible: false });
-							}
-						}}
-					/>
-					<Icon name='close' size={30} style={sharedStyles.closeOAuth} onPress={this.closeOAuth} />
-				</Modal>
-			]
+			<ScrollView
+				style={[sharedStyles.container, sharedStyles.containerScrollView]}
+				{...scrollPersistTaps}
+			>
+				<View testID='welcome-view'>
+					<View style={styles.container}>
+						<Image
+							source={require('../static/images/logo.png')}
+							style={sharedStyles.loginLogo}
+							resizeMode='center'
+						/>
+						<Text style={[sharedStyles.loginText, styles.header, { color: '#81848A' }]}>{I18n.t('Welcome_title_pt_1')}</Text>
+						<Text style={[sharedStyles.loginText, styles.header]}>{I18n.t('Welcome_title_pt_2')}</Text>
+						<Image
+							style={styles.planetImage}
+							source={require('../static/images/planet.png')}
+						/>
+						<Button
+							title={I18n.t('I_have_an_account')}
+							type='primary'
+							onPress={() => this.login()}
+							testID='welcome-view-login'
+						/>
+						<Button
+							title={I18n.t('Create_account')}
+							type='secondary'
+							onPress={() => this.register()}
+							testID='welcome-view-register'
+						/>
+						{this.renderServices()}
+					</View>
+					<Loading visible={this.props.isFetching} />
+				</View>
+			</ScrollView>
 		);
 	}
 }

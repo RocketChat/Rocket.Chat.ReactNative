@@ -1,4 +1,4 @@
-import { call, takeLatest, select, put, all } from 'redux-saga/effects';
+import { call, takeLatest, select, put } from 'redux-saga/effects';
 import { AsyncStorage } from 'react-native';
 import { METEOR } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
@@ -31,7 +31,8 @@ const test = function* test() {
 		const server = yield select(getServer);
 		const user = yield call(getToken);
 		// const response =
-		yield all([call(connect, server, user && user.token ? { resume: user.token, ...user.user } : undefined)]);// , put(loginRequest({ resume: user.token }))]);
+		// yield all([call(connect, server, user && user.token ? { resume: user.token, ...user.user } : undefined)]);// , put(loginRequest({ resume: user.token }))]);
+		yield call(connect, server, user && user.token ? { resume: user.token, ...user.user } : undefined);
 	// yield put(connectSuccess(response));
 	} catch (err) {
 		console.warn('test', err);

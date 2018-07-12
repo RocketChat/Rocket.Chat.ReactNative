@@ -54,5 +54,6 @@ export default async function canOpenRoom({ rid, path }) {
 		return data;
 	} catch (e) {
 		log('canOpenRoom', e);
+		return false;
 	}
 }

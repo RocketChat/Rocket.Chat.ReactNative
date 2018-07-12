@@ -44,7 +44,7 @@ export const ROOM = createRequestTypes('ROOM', [
 	'MESSAGE_RECEIVED',
 	'SET_LAST_OPEN'
 ]);
-export const APP = createRequestTypes('APP', ['READY', 'INIT']);
+export const APP = createRequestTypes('APP', ['START', 'READY', 'INIT']);
 export const MESSAGES = createRequestTypes('MESSAGES', [
 	...defaultTypes,
 	'ACTIONS_SHOW',

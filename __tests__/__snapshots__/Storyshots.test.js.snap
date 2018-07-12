@@ -426,7 +426,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   undefined,
                 ],
                 Object {
-                  "backgroundColor": "#cbced1",
+                  "backgroundColor": undefined,
                 },
               ]
             }
@@ -648,7 +648,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   undefined,
                 ],
                 Object {
-                  "backgroundColor": "#cbced1",
+                  "backgroundColor": undefined,
                 },
               ]
             }
@@ -874,7 +874,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   undefined,
                 ],
                 Object {
-                  "backgroundColor": "#cbced1",
+                  "backgroundColor": undefined,
                 },
               ]
             }
@@ -1119,7 +1119,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   undefined,
                 ],
                 Object {
-                  "backgroundColor": "#cbced1",
+                  "backgroundColor": undefined,
                 },
               ]
             }
@@ -1368,7 +1368,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   undefined,
                 ],
                 Object {
-                  "backgroundColor": "#cbced1",
+                  "backgroundColor": undefined,
                 },
               ]
             }
@@ -1613,7 +1613,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   undefined,
                 ],
                 Object {
-                  "backgroundColor": "#cbced1",
+                  "backgroundColor": undefined,
                 },
               ]
             }
@@ -1858,7 +1858,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   undefined,
                 ],
                 Object {
-                  "backgroundColor": "#cbced1",
+                  "backgroundColor": undefined,
                 },
               ]
             }
@@ -2103,7 +2103,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   undefined,
                 ],
                 Object {
-                  "backgroundColor": "#cbced1",
+                  "backgroundColor": undefined,
                 },
               ]
             }
@@ -2348,7 +2348,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   undefined,
                 ],
                 Object {
-                  "backgroundColor": "#cbced1",
+                  "backgroundColor": undefined,
                 },
               ]
             }
@@ -2570,7 +2570,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   undefined,
                 ],
                 Object {
-                  "backgroundColor": "#cbced1",
+                  "backgroundColor": undefined,
                 },
               ]
             }
@@ -2792,7 +2792,7 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                   undefined,
                 ],
                 Object {
-                  "backgroundColor": "#cbced1",
+                  "backgroundColor": undefined,
                 },
               ]
             }

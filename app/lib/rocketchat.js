@@ -41,6 +41,8 @@ import loadMissedMessages from './methods/loadMissedMessages';
 import sendMessage, { getMessage, _sendMessageCall } from './methods/sendMessage';
 import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFileMessage';
 
+import { getDeviceToken } from '../push';
+
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const call = (method, ...params) => RocketChat.ddp.call(method, ...params); // eslint-disable-line
 const returnAnArray = obj => obj || [];
@@ -79,28 +81,21 @@ const RocketChat = {
 			console.warn(`AsyncStorage error: ${ error.message }`);
 		}
 	},
+	_hasInstanceId(headers) {
+		return (headers['x-instance-id'] != null && headers['x-instance-id'].length > 0) || (headers['X-Instance-ID'] != null && headers['X-Instance-ID'].length > 0);
+	},
 	async testServer(url) {
 		if (/^(https?:\/\/)?(((\w|[0-9-_])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
 			try {
 				let response = await RNFetchBlob.fetch('HEAD', url);
 				response = response.respInfo;
-				if (response.status === 200 && response.headers['x-instance-id'] != null && response.headers['x-instance-id'].length) {
+				if (response.status === 200 && RocketChat._hasInstanceId(response.headers)) {
 					return url;
 				}
 			} catch (e) {
 				log('testServer', e);
 			}
 		}
-		// if (/^(https?:\/\/)?(((\w|[0-9-_])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
-		// 	try {
-		// 		const response = await fetch(url, { method: 'HEAD' });
-		// 		if (response.status === 200 && response.headers.get('x-instance-id') != null && response.headers.get('x-instance-id').length) {
-		// 			return url;
-		// 		}
-		// 	} catch (error) {
-		// 		console.log(error)
-		// 	}
-		// }
 		throw new Error({ error: 'invalid server' });
 	},
 	_setUser(ddpMessage) {
@@ -120,7 +115,7 @@ const RocketChat = {
 			reduxStore.dispatch(setActiveUser(this.activeUsers));
 			this._setUserTimer = null;
 			return this.activeUsers = {};
-		}, 5000);
+		}, 2000);
 
 		const activeUser = reduxStore.getState().activeUsers[ddpMessage.id];
 		if (!ddpMessage.fields) {
@@ -176,8 +171,8 @@ const RocketChat = {
 			this.ddp.on('disconnected', () => console.log('disconnected'));
 
 			this.ddp.on('logged', protectedFunction((user) => {
-				this.getRooms().catch(e => log('logged getRooms', e));
 				this.loginSuccess(user);
+				this.getRooms().catch(e => log('logged getRooms', e));
 			}));
 			this.ddp.once('logged', protectedFunction(({ id }) => {
 				this.subscribeRooms(id);
@@ -557,21 +552,24 @@ const RocketChat = {
 		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
 	},
 
-	registerPushToken(id, token) {
-		const key = Platform.OS === 'ios' ? 'apn' : 'gcm';
-		const data = {
-			id: `RocketChatRN${ id }`,
-			token: { [key]: token },
-			appName: 'chat.rocket.reactnative', // TODO: try to get from config file
-			userId: id,
-			metadata: {}
-		};
-		return call('raix:push-update', data);
+	registerPushToken(userId) {
+		const deviceToken = getDeviceToken();
+		if (deviceToken) {
+			const key = Platform.OS === 'ios' ? 'apn' : 'gcm';
+			const data = {
+				id: `RocketChatRN${ userId }`,
+				token: { [key]: deviceToken },
+				appName: 'chat.rocket.reactnative', // TODO: try to get from config file
+				userId,
+				metadata: {}
+			};
+			return call('raix:push-update', data);
+		}
 	},
 
-	updatePushToken(pushId) {
-		return call('raix:push-setuser', pushId);
-	},
+	// updatePushToken(pushId) {
+	// 	return call('raix:push-setuser', pushId);
+	// },
 	loadMissedMessages,
 	loadMessagesForRoom,
 	getMessage,
