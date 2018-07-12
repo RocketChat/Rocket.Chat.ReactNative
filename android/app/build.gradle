@@ -186,7 +186,6 @@ dependencies {
     implementation project(':react-native-fast-image')
     implementation project(':react-native-i18n')
     implementation project(':react-native-image-crop-picker')
-    implementation project(':react-native-image-picker')
     implementation project(':react-native-navigation')
     implementation project(':react-native-svg')
     implementation project(':react-native-vector-icons')
