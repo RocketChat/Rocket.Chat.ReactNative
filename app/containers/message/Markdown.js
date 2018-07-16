@@ -64,6 +64,7 @@ export default class Markdown extends React.Component {
 						}
 						return null;
 					},
+					blocklink: () => {},
 					...rules
 				}}
 				style={{

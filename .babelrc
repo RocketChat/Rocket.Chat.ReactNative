@@ -1,6 +1,6 @@
 {
   "presets": ["react-native"],
-  "plugins": ["transform-decorators-legacy"],
+  "plugins": [["@babel/plugin-proposal-decorators", { "legacy": true }]],
   "env": {
     "production": {
       "plugins": ["transform-remove-console"]
