@@ -1,7 +1,7 @@
 import { AsyncStorage, Platform } from 'react-native';
 import { hashPassword } from 'react-native-meteor/lib/utils';
 import foreach from 'lodash/forEach';
-import RNFetchBlob from 'react-native-fetch-blob';
+import RNFetchBlob from 'rn-fetch-blob';
 
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
@@ -39,6 +39,7 @@ import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import loadMissedMessages from './methods/loadMissedMessages';
 
 import sendMessage, { getMessage, _sendMessageCall } from './methods/sendMessage';
+import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFileMessage';
 
 import { getDeviceToken } from '../push';
 
@@ -615,88 +616,9 @@ const RocketChat = {
 	joinRoom(rid) {
 		return call('joinRoom', rid);
 	},
-
-
-	/*
-		"name":"yXfExLErmNR5eNPx7.png"
-		"size":961
-		"type":"image/png"
-		"rid":"GENERAL"
-		"description":""
-		"store":"fileSystem"
-	*/
-	_ufsCreate(fileInfo) {
-		// return call('ufsCreate', fileInfo);
-		return call('ufsCreate', fileInfo);
-	},
-
-	// ["ZTE8CKHJt7LATv7Me","fileSystem","e8E96b2819"
-	_ufsComplete(fileId, store, token) {
-		return call('ufsComplete', fileId, store, token);
-	},
-
-	/*
-		- "GENERAL"
-		- {
-			"type":"image/png",
-			"size":961,
-			"name":"yXfExLErmNR5eNPx7.png",
-			"description":"",
-			"url":"/ufs/fileSystem/ZTE8CKHJt7LATv7Me/yXfExLErmNR5eNPx7.png"
-		}
-	*/
-	_sendFileMessage(rid, data, msg = {}) {
-		return call('sendFileMessage', rid, null, data, msg);
-	},
-	async sendFileMessage(rid, fileInfo, data) {
-		let placeholder;
-		try {
-			if (!data) {
-				data = await RNFetchBlob.wrap(fileInfo.path);
-				const fileStat = await RNFetchBlob.fs.stat(fileInfo.path);
-				fileInfo.size = fileStat.size;
-				fileInfo.name = fileStat.filename;
-			}
-
-			const { FileUpload_MaxFileSize } = reduxStore.getState().settings;
-
-			// -1 maxFileSize means there is no limit
-			if (FileUpload_MaxFileSize > -1 && fileInfo.size > FileUpload_MaxFileSize) {
-				return Promise.reject({ error: 'error-file-too-large' }); // eslint-disable-line
-			}
-
-			placeholder = RocketChat.getMessage(rid, 'Sending a file');
-
-			const result = await RocketChat._ufsCreate({ ...fileInfo, rid });
-			await RNFetchBlob.fetch('POST', result.url, {
-				'Content-Type': 'application/octet-stream'
-			}, data);
-
-			const completeRresult = await RocketChat._ufsComplete(result.fileId, fileInfo.store, result.token);
-
-			return await RocketChat._sendFileMessage(completeRresult.rid, {
-				_id: completeRresult._id,
-				type: completeRresult.type,
-				size: completeRresult.size,
-				name: completeRresult.name,
-				url: completeRresult.path
-			});
-		} catch (e) {
-			return e;
-		} finally {
-			// TODO: fix that
-			try {
-				if (placeholder) {
-					database.write(() => {
-						const msg = database.objects('messages').filtered('_id = $0', placeholder._id);
-						database.delete(msg);
-					});
-				}
-			} catch (e) {
-				console.error(e);
-			}
-		}
-	},
+	sendFileMessage,
+	cancelUpload,
+	isUploadActive,
 	getSettings,
 	getPermissions,
 	getCustomEmoji,

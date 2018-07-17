@@ -103,6 +103,7 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
         missingDimensionStrategy "RNN.reactNativeVersion", "reactNative55"
+        vectorDrawables.useSupportLibrary = true
     }
 
     compileOptions {
@@ -178,17 +179,17 @@ repositories {
 }
 
 dependencies {
+    implementation project(':react-native-image-crop-picker')
     implementation project(':react-native-i18n')
     implementation project(':react-native-fabric')
     implementation project(':react-native-audio')
     implementation project(":reactnativekeyboardinput")
     implementation project(':react-native-video')
     implementation project(':react-native-svg')
-    implementation project(':react-native-image-picker')
     implementation project(':react-native-vector-icons')
-    implementation project(':react-native-fetch-blob')
+    implementation project(':rn-fetch-blob')
     implementation project(':react-native-zeroconf')
-    implementation project(':react-native-toast')
+    implementation project(':@remobile/react-native-toast')
     implementation project(':react-native-fast-image')
     implementation project(':realm')
     implementation project(':react-native-navigation')
