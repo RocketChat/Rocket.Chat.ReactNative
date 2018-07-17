@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
 import SHA256 from 'js-sha256';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import ImagePicker from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
 
 import LoggedView from '../View';
@@ -243,19 +243,21 @@ export default class ProfileView extends LoggedView {
 		}
 	}
 
-	pickImage = () => {
+	pickImage = async() => {
 		const options = {
-			title: I18n.t('Select_Avatar')
+			cropping: true,
+			compressImageQuality: 0.8,
+			cropperAvoidEmptySpaceAroundImage: false,
+			cropperChooseText: I18n.t('Choose'),
+			cropperCancelText: I18n.t('Cancel'),
+			includeBase64: true
 		};
-		ImagePicker.showImagePicker(options, async(response) => {
-			if (response.didCancel) {
-				console.warn('User cancelled image picker');
-			} else if (response.error) {
-				log('ImagePicker Error', response.error);
-			} else {
-				this.setAvatar({ url: response.uri, data: `data:image/jpeg;base64,${ response.data }`, service: 'upload' });
-			}
-		});
+		try {
+			const response = await ImagePicker.openPicker(options);
+			this.setAvatar({ url: response.path, data: `data:image/jpeg;base64,${ response.data }`, service: 'upload' });
+		} catch (error) {
+			console.warn(error);
+		}
 	}
 
 	renderAvatarButton = ({

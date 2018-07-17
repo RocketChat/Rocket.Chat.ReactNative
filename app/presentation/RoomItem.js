@@ -254,7 +254,7 @@ export default class RoomItem extends React.Component {
 							<Markdown
 								msg={this.lastMessage}
 								style={{
-									view: {
+									root: {
 										flex: 1
 									}
 								}}

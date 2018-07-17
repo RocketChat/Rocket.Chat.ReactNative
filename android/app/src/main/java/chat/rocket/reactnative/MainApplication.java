@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.balthazargronon.RCTZeroconf.ZeroconfReactPackage;
 import com.brentvatne.react.ReactVideoPackage;
@@ -12,7 +13,6 @@ import com.dylanvann.fastimage.FastImageViewPackage;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.horcrux.svg.SvgPackage;
-import com.imagepicker.ImagePickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.reactnativenavigation.NavigationApplication;
 import com.remobile.toast.RCTToastPackage;
@@ -57,8 +57,8 @@ public class MainApplication extends NavigationApplication implements INotificat
     public List<ReactPackage> createAdditionalReactPackages() {
         return Arrays.<ReactPackage>asList(
                 new MainReactPackage(),
+                new PickerPackage(),
                 new SvgPackage(),
-                new ImagePickerPackage(),
                 new VectorIconsPackage(),
                 new RNFetchBlobPackage(),
                 new ZeroconfReactPackage(),
