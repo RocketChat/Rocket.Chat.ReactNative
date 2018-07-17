@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, TextInput, FlatList, Text, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
+import ImagePicker from 'react-native-image-crop-picker';
 
 import { userTyping } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
@@ -17,6 +17,8 @@ import Avatar from '../Avatar';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import { emojis } from '../../emojis';
 import Recording from './Recording';
+import FilesActions from './FilesActions';
+import UploadModal from './UploadModal';
 import './EmojiKeyboard';
 import log from '../../utils/log';
 import I18n from '../../i18n';
@@ -26,6 +28,14 @@ const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
 
 const onlyUnique = function onlyUnique(value, index, self) {
 	return self.indexOf(({ _id }) => value._id === _id) === index;
+};
+
+const imagePickerConfig = {
+	cropping: true,
+	compressImageQuality: 0.8,
+	cropperAvoidEmptySpaceAroundImage: false,
+	cropperChooseText: I18n.t('Choose'),
+	cropperCancelText: I18n.t('Cancel')
 };
 
 @connect(state => ({
@@ -58,7 +68,11 @@ export default class MessageBox extends React.PureComponent {
 			text: '',
 			mentions: [],
 			showEmojiKeyboard: false,
-			recording: false
+			showFilesAction: false,
+			recording: false,
+			file: {
+				isVisible: false
+			}
 		};
 		this.users = [];
 		this.rooms = [];
@@ -160,43 +174,60 @@ export default class MessageBox extends React.PureComponent {
 			key='fileIcon'
 			accessibilityLabel={I18n.t('Message actions')}
 			accessibilityTraits='button'
-			onPress={() => this.addFile()}
+			onPress={this.toggleFilesActions}
 			testID='messagebox-actions'
 		/>);
 		return icons;
 	}
 
-	addFile = () => {
-		const options = {
-			maxHeight: 1960,
-			maxWidth: 1960,
-			quality: 0.8
-		};
-		ImagePicker.showImagePicker(options, async(response) => {
-			if (response.didCancel) {
-				console.warn('User cancelled image picker');
-			} else if (response.error) {
-				log('ImagePicker Error', response.error);
-			} else {
-				const fileInfo = {
-					name: response.fileName,
-					size: response.fileSize,
-					type: response.type || 'image/jpeg',
-					// description: '',
-					store: 'Uploads'
-				};
-				try {
-					await RocketChat.sendFileMessage(this.props.rid, fileInfo, response.data);
-				} catch (e) {
-					log('addFile', e);
-				}
-			}
-		});
+	toggleFilesActions = () => {
+		this.setState(prevState => ({ showFilesAction: !prevState.showFilesAction }));
 	}
+
+	sendImageMessage = async(file) => {
+		this.setState({ file: { isVisible: false } });
+		const fileInfo = {
+			name: file.name,
+			description: file.description,
+			size: file.size,
+			type: file.mime,
+			store: 'Uploads',
+			path: file.path
+		};
+		try {
+			await RocketChat.sendFileMessage(this.props.rid, fileInfo);
+		} catch (e) {
+			log('sendImageMessage', e);
+		}
+	}
+
+	takePhoto = async() => {
+		try {
+			const image = await ImagePicker.openCamera(imagePickerConfig);
+			this.showUploadModal(image);
+		} catch (e) {
+			log('takePhoto', e);
+		}
+	}
+
+	chooseFromLibrary = async() => {
+		try {
+			const image = await ImagePicker.openPicker(imagePickerConfig);
+			this.showUploadModal(image);
+		} catch (e) {
+			log('chooseFromLibrary', e);
+		}
+	}
+
+	showUploadModal = (file) => {
+		this.setState({ file: { ...file, isVisible: true } });
+	}
+
 	editCancel() {
 		this.props.editCancel();
 		this.setState({ text: '' });
 	}
+
 	async openEmoji() {
 		await this.setState({
 			showEmojiKeyboard: true
@@ -489,6 +520,20 @@ export default class MessageBox extends React.PureComponent {
 		);
 	};
 
+	renderFilesActions = () => {
+		if (!this.state.showFilesAction) {
+			return null;
+		}
+		return (
+			<FilesActions
+				key='files-actions'
+				hideActions={this.toggleFilesActions}
+				takePhoto={this.takePhoto}
+				chooseFromLibrary={this.chooseFromLibrary}
+			/>
+		);
+	}
+
 	renderContent() {
 		if (this.state.recording) {
 			return (<Recording onFinish={this.finishAudioMessage} />);
@@ -525,18 +570,28 @@ export default class MessageBox extends React.PureComponent {
 
 	render() {
 		return (
-			<KeyboardAccessoryView
-				key='input'
-				renderContent={() => this.renderContent()}
-				kbInputRef={this.component}
-				kbComponent={this.state.showEmojiKeyboard ? 'EmojiKeyboard' : null}
-				onKeyboardResigned={() => this.onKeyboardResigned()}
-				onItemSelected={this._onEmojiSelected}
-				trackInteractive
-				// revealKeyboardInteractive
-				requiresSameParentToManageScrollView
-				addBottomView
-			/>
+			[
+				<KeyboardAccessoryView
+					key='input'
+					renderContent={() => this.renderContent()}
+					kbInputRef={this.component}
+					kbComponent={this.state.showEmojiKeyboard ? 'EmojiKeyboard' : null}
+					onKeyboardResigned={() => this.onKeyboardResigned()}
+					onItemSelected={this._onEmojiSelected}
+					trackInteractive
+					// revealKeyboardInteractive
+					requiresSameParentToManageScrollView
+					addBottomView
+				/>,
+				this.renderFilesActions(),
+				<UploadModal
+					key='upload-modal'
+					isVisible={(this.state.file && this.state.file.isVisible)}
+					file={this.state.file}
+					close={() => this.setState({ file: {} })}
+					submit={this.sendImageMessage}
+				/>
+			]
 		);
 	}
 }
