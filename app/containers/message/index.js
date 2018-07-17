@@ -312,7 +312,7 @@ export default class Message extends React.Component {
 					onPress={() => this.props.toggleReactionPicker(this.parseMessage())}
 					key='message-add-reaction'
 					testID='message-add-reaction'
-					style={styles.reactionContainer}
+					style={[styles.reactionContainer, styles.addReactionContainer]}
 				>
 					<Icon name='insert-emoticon' color='#aaaaaa' size={15} />
 				</TouchableOpacity>

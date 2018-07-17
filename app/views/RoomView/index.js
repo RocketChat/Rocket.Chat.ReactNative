@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, LayoutAnimation } from 'react-native';
+import { Text, View, LayoutAnimation, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
 
@@ -63,7 +63,7 @@ export default class RoomView extends LoggedView {
 		this.rid = props.rid;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
-			loaded: true,
+			loaded: false,
 			joined: typeof props.rid === 'undefined',
 			room: {},
 			end: false
@@ -93,6 +93,7 @@ export default class RoomView extends LoggedView {
 			side: 'left',
 			enabled: false
 		});
+		this.setState({ loaded: true });
 	}
 	shouldComponentUpdate(nextProps, nextState) {
 		return !(equal(this.props, nextProps) && equal(this.state, nextState) && this.state.room.ro === nextState.room.ro);
@@ -274,6 +275,9 @@ export default class RoomView extends LoggedView {
 		return <Text style={styles.loadingMore}>{I18n.t('Loading_messages_ellipsis')}</Text>;
 	}
 	render() {
+		if (!this.state.loaded) {
+			return <ActivityIndicator style={styles.loading} />;
+		}
 		return (
 			<View style={styles.container} testID='room-view'>
 				<List

@@ -42,33 +42,36 @@ export default StyleSheet.create({
 	reactionsContainer: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		marginTop: 6
+		marginTop: 15
 	},
 	reactionContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
-		padding: 3,
-		borderWidth: 1,
+		paddingHorizontal: 10,
+		paddingVertical: 5,
+		borderWidth: StyleSheet.hairlineWidth,
 		borderColor: '#cccccc',
 		borderRadius: 4,
-		marginRight: 5,
-		marginBottom: 5,
-		height: 23,
-		width: 35
+		marginRight: 10,
+		marginBottom: 10,
+		maxHeight: 28
+	},
+	addReactionContainer: {
+		paddingHorizontal: 15
 	},
 	reactionCount: {
-		fontSize: 12,
-		marginLeft: 2,
+		fontSize: 14,
+		marginLeft: 3,
 		fontWeight: '600',
 		color: '#aaaaaa'
 	},
 	reactionEmoji: {
-		fontSize: 12
+		fontSize: 14
 	},
 	reactionCustomEmoji: {
-		width: 15,
-		height: 15
+		width: 20,
+		height: 20
 	},
 	avatar: {
 		marginRight: 10
