@@ -32,3 +32,15 @@ allprojects {
         }
     }
 }
+
+subprojects {
+    afterEvaluate {
+        android {
+            compileSdkVersion 27
+            buildToolsVersion "27.0.3"
+            defaultConfig {
+                targetSdkVersion 27
+            }
+        }
+    }
+}

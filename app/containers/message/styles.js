@@ -42,43 +42,42 @@ export default StyleSheet.create({
 	reactionsContainer: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		marginTop: 6
+		marginTop: 10
 	},
 	reactionContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
-		padding: 3,
-		borderWidth: 1,
-		borderColor: '#cccccc',
+		paddingHorizontal: 10,
+		paddingVertical: 5,
 		borderRadius: 4,
-		marginRight: 5,
-		marginBottom: 5,
-		height: 23,
-		width: 35
+		marginRight: 10,
+		marginBottom: 10,
+		maxHeight: 28,
+		backgroundColor: '#E8F2FF'
+	},
+	addReactionContainer: {
+		paddingHorizontal: 15
 	},
 	reactionCount: {
-		fontSize: 12,
-		marginLeft: 2,
+		fontSize: 14,
+		marginLeft: 3,
 		fontWeight: '600',
-		color: '#aaaaaa'
+		color: '#1D74F5'
 	},
 	reactionEmoji: {
-		fontSize: 12
+		fontSize: 14
 	},
 	reactionCustomEmoji: {
-		width: 15,
-		height: 15
+		width: 20,
+		height: 20
 	},
 	avatar: {
 		marginRight: 10
 	},
 	reactedContainer: {
-		borderColor: '#bde1fe',
-		backgroundColor: '#f3f9ff'
-	},
-	reactedCountText: {
-		color: '#4fb0fc'
+		borderWidth: 0,
+		backgroundColor: '#D1DAE6'
 	},
 	errorIcon: {
 		padding: 10,
