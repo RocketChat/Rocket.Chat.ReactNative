@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16,
 		paddingVertical: 12,
 		alignItems: 'center',
-		borderBottomWidth: 0.5,
+		borderBottomWidth: StyleSheet.hairlineWidth,
 		borderBottomColor: '#ddd'
 	},
 	number: {

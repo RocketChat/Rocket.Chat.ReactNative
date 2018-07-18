@@ -43,7 +43,7 @@ export default function(md) {
 		const { delimiters } = state;
 		const max = delimiters.length;
 
-		for (const i = 0; i < max; i++) { // eslint-disable-line
+		for (let i = 0; i < max; i += 1) {
 			startDelim = delimiters[i];
 
 			// :

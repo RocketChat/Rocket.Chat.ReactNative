@@ -107,7 +107,7 @@ describe('Broadcast room', () => {
 
 	after(async() => {
 		// log back as main test user and left screen on RoomsListView
-		await tapBack();
+		await tapBack('Messages');
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 		await logout();
 		await navigateToLogin();

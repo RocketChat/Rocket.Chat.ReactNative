@@ -104,6 +104,7 @@ android {
         }
         missingDimensionStrategy "RNN.reactNativeVersion", "reactNative55"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
 
     compileOptions {
@@ -200,8 +201,9 @@ dependencies {
     implementation 'com.android.support:customtabs:27.1.0'
     implementation 'com.android.support:design:27.1.0'
     implementation "com.facebook.react:react-native:+"  // From node_modules
-    implementation 'com.facebook.fresco:fresco:1.7.1'
-    implementation 'com.facebook.fresco:animated-gif:1.7.1'
+    implementation 'com.facebook.fresco:animated-gif:1.9.0'
+    implementation 'com.facebook.fresco:animated-webp:1.9.0'
+    implementation 'com.facebook.fresco:webpsupport:1.9.0'
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') {
         transitive = true;
     }
