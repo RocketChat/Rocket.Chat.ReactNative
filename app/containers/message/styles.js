@@ -42,7 +42,7 @@ export default StyleSheet.create({
 	reactionsContainer: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		marginTop: 15
+		marginTop: 10
 	},
 	reactionContainer: {
 		flexDirection: 'row',
@@ -50,12 +50,11 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		paddingHorizontal: 10,
 		paddingVertical: 5,
-		borderWidth: StyleSheet.hairlineWidth,
-		borderColor: '#cccccc',
 		borderRadius: 4,
 		marginRight: 10,
 		marginBottom: 10,
-		maxHeight: 28
+		maxHeight: 28,
+		backgroundColor: '#E8F2FF'
 	},
 	addReactionContainer: {
 		paddingHorizontal: 15
@@ -64,7 +63,7 @@ export default StyleSheet.create({
 		fontSize: 14,
 		marginLeft: 3,
 		fontWeight: '600',
-		color: '#aaaaaa'
+		color: '#1D74F5'
 	},
 	reactionEmoji: {
 		fontSize: 14
@@ -77,11 +76,8 @@ export default StyleSheet.create({
 		marginRight: 10
 	},
 	reactedContainer: {
-		borderColor: '#bde1fe',
-		backgroundColor: '#f3f9ff'
-	},
-	reactedCountText: {
-		color: '#4fb0fc'
+		borderWidth: 0,
+		backgroundColor: '#D1DAE6'
 	},
 	errorIcon: {
 		padding: 10,
