@@ -48,9 +48,7 @@ exports[`render channel 1`] = `
         }
       >
         <Text
-          accessible={true}
           allowFontScaling={false}
-          ellipsizeMode="tail"
           style={
             Array [
               Object {
@@ -88,9 +86,7 @@ exports[`render channel 1`] = `
           }
         >
           <Text
-            accessible={true}
             allowFontScaling={false}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -112,8 +108,6 @@ exports[`render channel 1`] = `
             
           </Text>
           <Text
-            accessible={true}
-            allowFontScaling={true}
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
@@ -131,8 +125,6 @@ exports[`render channel 1`] = `
             general
           </Text>
           <Text
-            accessible={true}
-            allowFontScaling={true}
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
@@ -213,9 +205,7 @@ exports[`render no icon 1`] = `
         }
       >
         <Text
-          accessible={true}
           allowFontScaling={false}
-          ellipsizeMode="tail"
           style={
             Array [
               Object {
@@ -253,9 +243,7 @@ exports[`render no icon 1`] = `
           }
         >
           <Text
-            accessible={true}
             allowFontScaling={false}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -277,8 +265,6 @@ exports[`render no icon 1`] = `
             
           </Text>
           <Text
-            accessible={true}
-            allowFontScaling={true}
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
@@ -296,8 +282,6 @@ exports[`render no icon 1`] = `
             name
           </Text>
           <Text
-            accessible={true}
-            allowFontScaling={true}
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
@@ -378,9 +362,7 @@ exports[`render private group 1`] = `
         }
       >
         <Text
-          accessible={true}
           allowFontScaling={false}
-          ellipsizeMode="tail"
           style={
             Array [
               Object {
@@ -418,9 +400,7 @@ exports[`render private group 1`] = `
           }
         >
           <Text
-            accessible={true}
             allowFontScaling={false}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -442,8 +422,6 @@ exports[`render private group 1`] = `
             
           </Text>
           <Text
-            accessible={true}
-            allowFontScaling={true}
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
@@ -461,8 +439,6 @@ exports[`render private group 1`] = `
             private-group
           </Text>
           <Text
-            accessible={true}
-            allowFontScaling={true}
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
@@ -544,9 +520,7 @@ exports[`render unread +999 1`] = `
         }
       >
         <Text
-          accessible={true}
           allowFontScaling={false}
-          ellipsizeMode="tail"
           style={
             Array [
               Object {
@@ -646,9 +620,7 @@ exports[`render unread +999 1`] = `
           }
         >
           <Text
-            accessible={true}
             allowFontScaling={false}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -670,8 +642,6 @@ exports[`render unread +999 1`] = `
             
           </Text>
           <Text
-            accessible={true}
-            allowFontScaling={true}
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
@@ -689,8 +659,6 @@ exports[`render unread +999 1`] = `
             name
           </Text>
           <Text
-            accessible={true}
-            allowFontScaling={true}
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
@@ -718,9 +686,6 @@ exports[`render unread +999 1`] = `
           }
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Object {
                 "alignItems": "center",
@@ -794,9 +759,7 @@ exports[`render unread 1`] = `
         }
       >
         <Text
-          accessible={true}
           allowFontScaling={false}
-          ellipsizeMode="tail"
           style={
             Array [
               Object {
@@ -896,9 +859,7 @@ exports[`render unread 1`] = `
           }
         >
           <Text
-            accessible={true}
             allowFontScaling={false}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -920,8 +881,6 @@ exports[`render unread 1`] = `
             
           </Text>
           <Text
-            accessible={true}
-            allowFontScaling={true}
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
@@ -939,8 +898,6 @@ exports[`render unread 1`] = `
             name
           </Text>
           <Text
-            accessible={true}
-            allowFontScaling={true}
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
@@ -968,9 +925,6 @@ exports[`render unread 1`] = `
           }
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Object {
                 "alignItems": "center",
@@ -1044,9 +998,7 @@ exports[`renders correctly 1`] = `
         }
       >
         <Text
-          accessible={true}
           allowFontScaling={false}
-          ellipsizeMode="tail"
           style={
             Array [
               Object {
@@ -1146,9 +1098,7 @@ exports[`renders correctly 1`] = `
           }
         >
           <Text
-            accessible={true}
             allowFontScaling={false}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -1170,8 +1120,6 @@ exports[`renders correctly 1`] = `
             
           </Text>
           <Text
-            accessible={true}
-            allowFontScaling={true}
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
@@ -1189,8 +1137,6 @@ exports[`renders correctly 1`] = `
             name
           </Text>
           <Text
-            accessible={true}
-            allowFontScaling={true}
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
