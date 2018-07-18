@@ -276,20 +276,27 @@ export default class RoomView extends LoggedView {
 		}
 		return <Text style={styles.loadingMore}>{I18n.t('Loading_messages_ellipsis')}</Text>;
 	}
-	render() {
+
+	renderList = () => {
 		if (!this.state.loaded) {
 			return <ActivityIndicator style={styles.loading} />;
 		}
 		return (
+			<List
+				key='room-view-messages'
+				end={this.state.end}
+				room={this.rid}
+				renderFooter={this.renderHeader}
+				onEndReached={this.onEndReached}
+				renderRow={this.renderItem}
+			/>
+		);
+	}
+
+	render() {
+		return (
 			<View style={styles.container} testID='room-view'>
-				<List
-					key='room-view-messages'
-					end={this.state.end}
-					room={this.rid}
-					renderFooter={this.renderHeader}
-					onEndReached={this.onEndReached}
-					renderRow={this.renderItem}
-				/>
+				{this.renderList()}
 				{this.renderFooter()}
 				{this.state.room._id && this.props.showActions ?
 					<MessageActions room={this.state.room} user={this.props.user} /> :
