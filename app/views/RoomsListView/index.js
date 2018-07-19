@@ -36,8 +36,6 @@ export default class RoomsListView extends LoggedView {
 			search: [],
 			rooms: []
 		};
-		this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
-		this.data.addListener(this.updateState);
 		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
 
@@ -45,11 +43,13 @@ export default class RoomsListView extends LoggedView {
 		this.initDefaultHeader();
 	}
 
+	componentDidMount() {
+		this.getSubscriptions();
+	}
+
 	componentWillReceiveProps(props) {
-		if (this.props.server !== props.server) {
-			this.data.removeListener(this.updateState);
-			this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
-			this.data.addListener(this.updateState);
+		if (this.props.server !== props.server && props.server) {
+			this.getSubscriptions();
 		} else if (this.props.searchText !== props.searchText) {
 			this.search(props.searchText);
 		}
@@ -96,6 +96,16 @@ export default class RoomsListView extends LoggedView {
 		this.search(text);
 	}
 
+	getSubscriptions = () => {
+		if (this.data && this.data.removeListener) {
+			this.data.removeListener(this.updateState);
+		}
+		if (this.props.server && this.hasActiveDB()) {
+			this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
+			this.data.addListener(this.updateState);
+		}
+	}
+
 	initDefaultHeader = () => {
 		const { navigator } = this.props;
 		const rightButtons = [{
@@ -136,6 +146,9 @@ export default class RoomsListView extends LoggedView {
 		});
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
+
+	// this is necessary during development (enables Cmd + r)
+	hasActiveDB = () => database && database.databases && database.databases.activeDB;
 
 	cancelSearchingAndroid = () => {
 		if (Platform.OS === 'android') {

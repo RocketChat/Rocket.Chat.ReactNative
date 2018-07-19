@@ -74,7 +74,7 @@ export class List extends React.Component {
 			onEndReached={() => this.props.onEndReached(this.data[this.data.length - 1])}
 			dataSource={this.dataSource}
 			renderRow={(item, previousItem) => this.props.renderRow(item, previousItem)}
-			initialListSize={20}
+			initialListSize={1}
 			pageSize={20}
 			testID='room-view-messages'
 			{...scrollPersistTaps}

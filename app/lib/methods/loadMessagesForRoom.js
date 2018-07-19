@@ -37,7 +37,8 @@ export default async function loadMessagesForRoom(...args) {
 	return new Promise(async(resolve, reject) => {
 		try {
 			// eslint-disable-next-line
-			const data = (await (false && this.ddp.status ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args))).map(buildMessage);
+			const data = (await (this.ddp.status ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args))).map(buildMessage);
+
 			if (data && data.length) {
 				InteractionManager.runAfterInteractions(() => {
 					db.write(() => data.forEach(message => db.create('messages', message, true)));

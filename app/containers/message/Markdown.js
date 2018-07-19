@@ -54,8 +54,8 @@ export default class Markdown extends React.Component {
 						</Text>
 					),
 					emoji: (node) => {
-						if (node.children && node.children.length && node.children[0].children && node.children[0].children.length) {
-							const { content } = node.children[0].children[0];
+						if (node.children && node.children.length && node.children[0].content) {
+							const { content } = node.children[0];
 							const emojiExtension = customEmojis[content];
 							if (emojiExtension) {
 								const emoji = { extension: emojiExtension, content };
