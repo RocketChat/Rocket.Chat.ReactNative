@@ -1,5 +1,5 @@
 import { delay } from 'redux-saga';
-import { takeLatest, put, call, select } from 'redux-saga/effects';
+import { takeLatest, put, call } from 'redux-saga/effects';
 
 import { MESSAGES } from '../actions/actionsTypes';
 import {
@@ -13,7 +13,7 @@ import {
 	toggleStarFailure,
 	togglePinSuccess,
 	togglePinFailure,
-	setInput
+	replyInit
 } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
@@ -99,9 +99,7 @@ const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 			yield goRoom({ rid: room.rid, name: username });
 		}
 		yield delay(500);
-		const server = yield select(state => state.server.server);
-		const msg = `[ ](${ server }/direct/${ username }?msg=${ message._id }) `;
-		yield put(setInput({ msg }));
+		yield put(replyInit(message, false));
 	} catch (e) {
 		log('handleReplyBroadcast', e);
 	}

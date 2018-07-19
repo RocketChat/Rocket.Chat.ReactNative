@@ -32,6 +32,7 @@ export default class Markdown extends React.Component {
 		}
 		let m = formatText(msg);
 		m = emojify(m, { output: 'unicode' });
+		m = m.replace(/^\[([^\]]*)\]\(([^)]*)\)/, '').trim();
 		return (
 			<MarkdownRenderer
 				rules={{
