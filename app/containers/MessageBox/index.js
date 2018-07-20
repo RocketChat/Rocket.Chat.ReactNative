@@ -9,7 +9,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 
 import { userTyping } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
-import { editRequest, editCancel, clearInput } from '../../actions/messages';
+import { editRequest, editCancel, replyCancel } from '../../actions/messages';
 import styles from './styles';
 import MyIcon from '../icons';
 import database from '../../lib/realm';
@@ -22,6 +22,7 @@ import UploadModal from './UploadModal';
 import './EmojiKeyboard';
 import log from '../../utils/log';
 import I18n from '../../i18n';
+import ReplyPreview from './ReplyPreview';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
@@ -39,27 +40,34 @@ const imagePickerConfig = {
 };
 
 @connect(state => ({
-	room: state.room,
+	roomType: state.room.t,
 	message: state.messages.message,
+	replyMessage: state.messages.replyMessage,
+	replying: state.messages.replyMessage && !!state.messages.replyMessage.msg,
 	editing: state.messages.editing,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	username: state.login.user && state.login.user.username
 }), dispatch => ({
 	editCancel: () => dispatch(editCancel()),
 	editRequest: message => dispatch(editRequest(message)),
 	typing: status => dispatch(userTyping(status)),
-	clearInput: () => dispatch(clearInput())
+	closeReply: () => dispatch(replyCancel())
 }))
 export default class MessageBox extends React.PureComponent {
 	static propTypes = {
-		onSubmit: PropTypes.func.isRequired,
 		rid: PropTypes.string.isRequired,
-		editCancel: PropTypes.func.isRequired,
-		editRequest: PropTypes.func.isRequired,
 		baseUrl: PropTypes.string.isRequired,
 		message: PropTypes.object,
+		replyMessage: PropTypes.object,
+		replying: PropTypes.bool,
 		editing: PropTypes.bool,
+		username: PropTypes.string,
+		roomType: PropTypes.string,
+		editCancel: PropTypes.func.isRequired,
+		editRequest: PropTypes.func.isRequired,
+		onSubmit: PropTypes.func.isRequired,
 		typing: PropTypes.func,
-		clearInput: PropTypes.func
+		closeReply: PropTypes.func
 	}
 
 	constructor(props) {
@@ -83,6 +91,8 @@ export default class MessageBox extends React.PureComponent {
 	componentWillReceiveProps(nextProps) {
 		if (this.props.message !== nextProps.message && nextProps.message.msg) {
 			this.setState({ text: nextProps.message.msg });
+			this.component.focus();
+		} else if (this.props.replyMessage !== nextProps.replyMessage && nextProps.replyMessage.msg) {
 			this.component.focus();
 		} else if (!nextProps.message) {
 			this.setState({ text: '' });
@@ -180,6 +190,14 @@ export default class MessageBox extends React.PureComponent {
 		return icons;
 	}
 
+	getPermalink = async(message) => {
+		try {
+			return await RocketChat.getPermalink(message);
+		} catch (error) {
+			return null;
+		}
+	}
+
 	toggleFilesActions = () => {
 		this.setState(prevState => ({ showFilesAction: !prevState.showFilesAction }));
 	}
@@ -259,7 +277,7 @@ export default class MessageBox extends React.PureComponent {
 		this.setState({ showEmojiKeyboard: false });
 	}
 
-	submit(message) {
+	async submit(message) {
 		this.setState({ text: '' });
 		this.closeEmoji();
 		this.stopTrackingMention();
@@ -268,15 +286,32 @@ export default class MessageBox extends React.PureComponent {
 			return;
 		}
 		// if is editing a message
-		const { editing } = this.props;
+		const {
+			editing, replying
+		} = this.props;
+
 		if (editing) {
 			const { _id, rid } = this.props.message;
 			this.props.editRequest({ _id, msg: message, rid });
+		} else if (replying) {
+			const {
+				username, replyMessage, roomType, closeReply
+			} = this.props;
+			const permalink = await this.getPermalink(replyMessage);
+			let msg = `[ ](${ permalink }) `;
+
+			// if original message wasn't sent by current user and neither from a direct room
+			if (username !== replyMessage.u.username && roomType !== 'd' && replyMessage.mention) {
+				msg += `@${ replyMessage.u.username } `;
+			}
+
+			msg = `${ msg } ${ message }`;
+			this.props.onSubmit(msg);
+			closeReply();
 		} else {
 			// if is submiting a new message
 			this.props.onSubmit(message);
 		}
-		this.props.clearInput();
 	}
 
 	_getFixedMentions(keyword) {
@@ -520,6 +555,14 @@ export default class MessageBox extends React.PureComponent {
 		);
 	};
 
+	renderReplyPreview = () => {
+		const { replyMessage, replying, closeReply } = this.props;
+		if (!replying) {
+			return null;
+		}
+		return <ReplyPreview key='reply-preview' message={replyMessage} close={closeReply} />;
+	};
+
 	renderFilesActions = () => {
 		if (!this.state.showFilesAction) {
 			return null;
@@ -541,6 +584,7 @@ export default class MessageBox extends React.PureComponent {
 		return (
 			[
 				this.renderMentions(),
+				this.renderReplyPreview(),
 				<View
 					key='messagebox'
 					style={[styles.textArea, this.props.editing && styles.editing]}
