@@ -10,9 +10,9 @@ import {
 	editInit,
 	toggleStarRequest,
 	togglePinRequest,
-	setInput,
 	actionsHide,
-	toggleReactionPicker
+	toggleReactionPicker,
+	replyInit
 } from '../actions/messages';
 import { showToast } from '../utils/info';
 import RocketChat from '../lib/rocketchat';
@@ -34,8 +34,8 @@ import I18n from '../i18n';
 		editInit: message => dispatch(editInit(message)),
 		toggleStarRequest: message => dispatch(toggleStarRequest(message)),
 		togglePinRequest: message => dispatch(togglePinRequest(message)),
-		setInput: message => dispatch(setInput(message)),
-		toggleReactionPicker: message => dispatch(toggleReactionPicker(message))
+		toggleReactionPicker: message => dispatch(toggleReactionPicker(message)),
+		replyInit: (message, mention) => dispatch(replyInit(message, mention))
 	})
 )
 export default class MessageActions extends React.Component {
@@ -43,13 +43,13 @@ export default class MessageActions extends React.Component {
 		actionsHide: PropTypes.func.isRequired,
 		room: PropTypes.object.isRequired,
 		actionMessage: PropTypes.object,
-		user: PropTypes.object.isRequired,
+		// user: PropTypes.object.isRequired,
 		deleteRequest: PropTypes.func.isRequired,
 		editInit: PropTypes.func.isRequired,
 		toggleStarRequest: PropTypes.func.isRequired,
 		togglePinRequest: PropTypes.func.isRequired,
-		setInput: PropTypes.func.isRequired,
 		toggleReactionPicker: PropTypes.func.isRequired,
+		replyInit: PropTypes.func.isRequired,
 		Message_AllowDeleting: PropTypes.bool,
 		Message_AllowDeleting_BlockDeleteInMinutes: PropTypes.number,
 		Message_AllowEditing: PropTypes.bool,
@@ -248,21 +248,12 @@ export default class MessageActions extends React.Component {
 		this.props.togglePinRequest(this.props.actionMessage);
 	}
 
-	async handleReply() {
-		const permalink = await this.getPermalink(this.props.actionMessage);
-		let msg = `[ ](${ permalink }) `;
-
-		// if original message wasn't sent by current user and neither from a direct room
-		if (this.props.user.username !== this.props.actionMessage.u.username && this.props.room.t !== 'd') {
-			msg += `@${ this.props.actionMessage.u.username } `;
-		}
-		this.props.setInput({ msg });
+	handleReply() {
+		this.props.replyInit(this.props.actionMessage, true);
 	}
 
-	async handleQuote() {
-		const permalink = await this.getPermalink(this.props.actionMessage);
-		const msg = `[ ](${ permalink }) `;
-		this.props.setInput({ msg });
+	handleQuote() {
+		this.props.replyInit(this.props.actionMessage, false);
 	}
 
 	handleReaction() {
