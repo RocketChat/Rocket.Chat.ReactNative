@@ -137,16 +137,17 @@ export function togglePinFailure(err) {
 	};
 }
 
-export function setInput(message) {
+export function replyInit(message, mention) {
 	return {
-		type: types.MESSAGES.SET_INPUT,
-		message
+		type: types.MESSAGES.REPLY_INIT,
+		message,
+		mention
 	};
 }
 
-export function clearInput() {
+export function replyCancel() {
 	return {
-		type: types.MESSAGES.CLEAR_INPUT
+		type: types.MESSAGES.REPLY_CANCEL
 	};
 }
 
