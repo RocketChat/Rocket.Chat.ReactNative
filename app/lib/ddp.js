@@ -187,7 +187,7 @@ export default class Socket extends EventEmitter {
 		try {
 			// this.connection && this.connection.readyState > 1 && this.connection.close && this.connection.close(300, 'disconnect');
 			if (this.connection && this.connection.close) {
-				this.connection.close(300, 'disconnect');
+				this.connection.close();
 				delete this.connection;
 			}
 		} catch (e) {
