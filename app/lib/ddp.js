@@ -40,10 +40,10 @@ class EventEmitter {
 		}
 	}
 	removeAllForEvent(event) {
-    		if (typeof this.events[event] === 'object') {
-      			delete this.events[event];
-    		}
-  	}
+		if (typeof this.events[event] === 'object') {
+			delete this.events[event];
+		}
+	}
 	emit(event, ...args) {
 		if (typeof this.events[event] === 'object') {
 			this.events[event].forEach((listener) => {
@@ -298,9 +298,9 @@ export default class Socket extends EventEmitter {
 				params,
 				unsubscribe: () => {
 					// Also remove the events attached to the subscription of the collection
-          				this.removeAllForEvent(name)
-          				return this.unsubscribe(id)
-        			}
+					this.removeAllForEvent(name);
+					return this.unsubscribe(id);
+				}
 			};
 			this.subscriptions[id] = args;
 			// console.log(args);
