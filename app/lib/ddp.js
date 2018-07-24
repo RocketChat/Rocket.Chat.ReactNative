@@ -37,6 +37,9 @@ class EventEmitter {
 			if (idx > -1) {
 				this.events[event].splice(idx, 1);
 			}
+			if (this.events[event].length === 0) {
+				delete this.events[event];
+			}
 		}
 	}
 	emit(event, ...args) {
@@ -51,11 +54,10 @@ class EventEmitter {
 		}
 	}
 	once(event, listener) {
-		this.on(event, function g(...args) {
+		return this.on(event, function g(...args) {
 			this.removeListener(event, g);
 			listener.apply(this, args);
 		});
-		return listener;
 	}
 }
 
@@ -175,7 +177,7 @@ export default class Socket extends EventEmitter {
 			this.ddp.once(id, (data) => {
 				// console.log(data);
 				this.lastping = new Date();
-				this.ddp.removeListener(id, cancel);
+				this.ddp.removeListener('disconnected', cancel);
 				return (data.error ? reject(data.error) : resolve({ id, ...data }));
 			});
 		});
@@ -187,7 +189,7 @@ export default class Socket extends EventEmitter {
 		try {
 			// this.connection && this.connection.readyState > 1 && this.connection.close && this.connection.close(300, 'disconnect');
 			if (this.connection && this.connection.close) {
-				this.connection.close(300, 'disconnect');
+				this.connection.close();
 				delete this.connection;
 			}
 		} catch (e) {
