@@ -99,7 +99,11 @@ export default class Message extends React.Component {
 		Message_GroupingPeriod: PropTypes.number.isRequired,
 		customTimeFormat: PropTypes.string,
 		message: PropTypes.object.isRequired,
-		user: PropTypes.object.isRequired,
+		user: PropTypes.shape({
+			id: PropTypes.string.isRequired,
+			username: PropTypes.string.isRequired,
+			token: PropTypes.string.isRequired
+		}),
 		editing: PropTypes.bool,
 		errorActionsShow: PropTypes.func,
 		toggleReactionPicker: PropTypes.func,
@@ -109,7 +113,8 @@ export default class Message extends React.Component {
 		onLongPress: PropTypes.func,
 		_updatedAt: PropTypes.instanceOf(Date),
 		archived: PropTypes.bool,
-		broadcast: PropTypes.bool
+		broadcast: PropTypes.bool,
+		previousItem: PropTypes.object
 	}
 
 	static defaultProps = {
@@ -207,7 +212,7 @@ export default class Message extends React.Component {
 		}
 
 		return (
-			<View style={styles.flex}>
+			<View style={[styles.flex, { marginTop: 5 }]}>
 				<Avatar
 					style={styles.avatar}
 					text={item.avatar ? '' : username}
@@ -276,7 +281,6 @@ export default class Message extends React.Component {
 	renderReaction = (reaction) => {
 		const reacted = reaction.usernames.findIndex(item => item.value === this.props.user.username) !== -1;
 		const reactedContainerStyle = reacted && styles.reactedContainer;
-		const reactedCount = reacted && styles.reactedCountText;
 		return (
 			<TouchableOpacity
 				onPress={() => this.onReactionPress(reaction.emoji)}
@@ -290,7 +294,7 @@ export default class Message extends React.Component {
 						standardEmojiStyle={styles.reactionEmoji}
 						customEmojiStyle={styles.reactionCustomEmoji}
 					/>
-					<Text style={[styles.reactionCount, reactedCount]}>{ reaction.usernames.length }</Text>
+					<Text style={styles.reactionCount}>{ reaction.usernames.length }</Text>
 				</View>
 			</TouchableOpacity>
 		);
@@ -307,9 +311,9 @@ export default class Message extends React.Component {
 					onPress={() => this.props.toggleReactionPicker(this.parseMessage())}
 					key='message-add-reaction'
 					testID='message-add-reaction'
-					style={styles.reactionContainer}
+					style={[styles.reactionContainer, styles.addReactionContainer]}
 				>
-					<Icon name='insert-emoticon' color='#aaaaaa' size={15} />
+					<Icon name='insert-emoticon' color='#1D74F5' size={18} />
 				</TouchableOpacity>
 			</View>
 		);

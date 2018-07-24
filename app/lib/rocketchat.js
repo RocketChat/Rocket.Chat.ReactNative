@@ -1,7 +1,7 @@
 import { AsyncStorage, Platform } from 'react-native';
 import { hashPassword } from 'react-native-meteor/lib/utils';
 import foreach from 'lodash/forEach';
-import RNFetchBlob from 'react-native-fetch-blob';
+import RNFetchBlob from 'rn-fetch-blob';
 
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
@@ -39,6 +39,9 @@ import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import loadMissedMessages from './methods/loadMissedMessages';
 
 import sendMessage, { getMessage, _sendMessageCall } from './methods/sendMessage';
+import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFileMessage';
+
+import { getDeviceToken } from '../push';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const call = (method, ...params) => RocketChat.ddp.call(method, ...params); // eslint-disable-line
@@ -78,28 +81,21 @@ const RocketChat = {
 			console.warn(`AsyncStorage error: ${ error.message }`);
 		}
 	},
+	_hasInstanceId(headers) {
+		return (headers['x-instance-id'] != null && headers['x-instance-id'].length > 0) || (headers['X-Instance-ID'] != null && headers['X-Instance-ID'].length > 0);
+	},
 	async testServer(url) {
 		if (/^(https?:\/\/)?(((\w|[0-9-_])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
 			try {
 				let response = await RNFetchBlob.fetch('HEAD', url);
 				response = response.respInfo;
-				if (response.status === 200 && response.headers['x-instance-id'] != null && response.headers['x-instance-id'].length) {
+				if (response.status === 200 && RocketChat._hasInstanceId(response.headers)) {
 					return url;
 				}
 			} catch (e) {
 				log('testServer', e);
 			}
 		}
-		// if (/^(https?:\/\/)?(((\w|[0-9-_])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
-		// 	try {
-		// 		const response = await fetch(url, { method: 'HEAD' });
-		// 		if (response.status === 200 && response.headers.get('x-instance-id') != null && response.headers.get('x-instance-id').length) {
-		// 			return url;
-		// 		}
-		// 	} catch (error) {
-		// 		console.log(error)
-		// 	}
-		// }
 		throw new Error({ error: 'invalid server' });
 	},
 	_setUser(ddpMessage) {
@@ -119,7 +115,7 @@ const RocketChat = {
 			reduxStore.dispatch(setActiveUser(this.activeUsers));
 			this._setUserTimer = null;
 			return this.activeUsers = {};
-		}, 5000);
+		}, 2000);
 
 		const activeUser = reduxStore.getState().activeUsers[ddpMessage.id];
 		if (!ddpMessage.fields) {
@@ -175,8 +171,8 @@ const RocketChat = {
 			this.ddp.on('disconnected', () => console.log('disconnected'));
 
 			this.ddp.on('logged', protectedFunction((user) => {
-				this.getRooms().catch(e => log('logged getRooms', e));
 				this.loginSuccess(user);
+				this.getRooms().catch(e => log('logged getRooms', e));
 			}));
 			this.ddp.once('logged', protectedFunction(({ id }) => {
 				this.subscribeRooms(id);
@@ -556,21 +552,24 @@ const RocketChat = {
 		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
 	},
 
-	registerPushToken(id, token) {
-		const key = Platform.OS === 'ios' ? 'apn' : 'gcm';
-		const data = {
-			id: `RocketChatRN${ id }`,
-			token: { [key]: token },
-			appName: 'chat.rocket.reactnative', // TODO: try to get from config file
-			userId: id,
-			metadata: {}
-		};
-		return call('raix:push-update', data);
+	registerPushToken(userId) {
+		const deviceToken = getDeviceToken();
+		if (deviceToken) {
+			const key = Platform.OS === 'ios' ? 'apn' : 'gcm';
+			const data = {
+				id: `RocketChatRN${ userId }`,
+				token: { [key]: deviceToken },
+				appName: 'chat.rocket.reactnative', // TODO: try to get from config file
+				userId,
+				metadata: {}
+			};
+			return call('raix:push-update', data);
+		}
 	},
 
-	updatePushToken(pushId) {
-		return call('raix:push-setuser', pushId);
-	},
+	// updatePushToken(pushId) {
+	// 	return call('raix:push-setuser', pushId);
+	// },
 	loadMissedMessages,
 	loadMessagesForRoom,
 	getMessage,
@@ -617,88 +616,9 @@ const RocketChat = {
 	joinRoom(rid) {
 		return call('joinRoom', rid);
 	},
-
-
-	/*
-		"name":"yXfExLErmNR5eNPx7.png"
-		"size":961
-		"type":"image/png"
-		"rid":"GENERAL"
-		"description":""
-		"store":"fileSystem"
-	*/
-	_ufsCreate(fileInfo) {
-		// return call('ufsCreate', fileInfo);
-		return call('ufsCreate', fileInfo);
-	},
-
-	// ["ZTE8CKHJt7LATv7Me","fileSystem","e8E96b2819"
-	_ufsComplete(fileId, store, token) {
-		return call('ufsComplete', fileId, store, token);
-	},
-
-	/*
-		- "GENERAL"
-		- {
-			"type":"image/png",
-			"size":961,
-			"name":"yXfExLErmNR5eNPx7.png",
-			"description":"",
-			"url":"/ufs/fileSystem/ZTE8CKHJt7LATv7Me/yXfExLErmNR5eNPx7.png"
-		}
-	*/
-	_sendFileMessage(rid, data, msg = {}) {
-		return call('sendFileMessage', rid, null, data, msg);
-	},
-	async sendFileMessage(rid, fileInfo, data) {
-		let placeholder;
-		try {
-			if (!data) {
-				data = await RNFetchBlob.wrap(fileInfo.path);
-				const fileStat = await RNFetchBlob.fs.stat(fileInfo.path);
-				fileInfo.size = fileStat.size;
-				fileInfo.name = fileStat.filename;
-			}
-
-			const { FileUpload_MaxFileSize } = reduxStore.getState().settings;
-
-			// -1 maxFileSize means there is no limit
-			if (FileUpload_MaxFileSize > -1 && fileInfo.size > FileUpload_MaxFileSize) {
-				return Promise.reject({ error: 'error-file-too-large' }); // eslint-disable-line
-			}
-
-			placeholder = RocketChat.getMessage(rid, 'Sending a file');
-
-			const result = await RocketChat._ufsCreate({ ...fileInfo, rid });
-			await RNFetchBlob.fetch('POST', result.url, {
-				'Content-Type': 'application/octet-stream'
-			}, data);
-
-			const completeRresult = await RocketChat._ufsComplete(result.fileId, fileInfo.store, result.token);
-
-			return await RocketChat._sendFileMessage(completeRresult.rid, {
-				_id: completeRresult._id,
-				type: completeRresult.type,
-				size: completeRresult.size,
-				name: completeRresult.name,
-				url: completeRresult.path
-			});
-		} catch (e) {
-			return e;
-		} finally {
-			// TODO: fix that
-			try {
-				if (placeholder) {
-					database.write(() => {
-						const msg = database.objects('messages').filtered('_id = $0', placeholder._id);
-						database.delete(msg);
-					});
-				}
-			} catch (e) {
-				console.error(e);
-			}
-		}
-	},
+	sendFileMessage,
+	cancelUpload,
+	isUploadActive,
 	getSettings,
 	getPermissions,
 	getCustomEmoji,

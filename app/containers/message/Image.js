@@ -28,7 +28,8 @@ export default class extends React.PureComponent {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
-		user: PropTypes.object.isRequired
+		user: PropTypes.object.isRequired,
+		customEmojis: PropTypes.object
 	}
 
 	state = { modalVisible: false };
@@ -65,6 +66,7 @@ export default class extends React.PureComponent {
 				<PhotoModal
 					key='modal'
 					title={this.props.file.title}
+					description={this.props.file.description}
 					image={img}
 					isVisible={this.state.modalVisible}
 					onClose={() => this.setState({ modalVisible: false })}

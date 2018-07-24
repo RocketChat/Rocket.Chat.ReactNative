@@ -6,7 +6,7 @@ def config = project.hasProperty("react") ? project.react : [];
 
 def cliPath = config.cliPath ?: "node_modules/react-native/local-cli/cli.js"
 def bundleAssetName = config.bundleAssetName ?: "index.android.bundle"
-def entryFile = config.entryFile ?: "index.android.js"
+def entryFile = config.entryFile ?: "index.js"
 def bundleCommand = config.bundleCommand ?: "bundle"
 
 // because elvis operator

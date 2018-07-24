@@ -18,9 +18,9 @@ export default (msg) => {
 	msg.reactions = msg.reactions || [];
 	// TODO: api problems
 	if (Array.isArray(msg.reactions)) {
-		msg.reactions = msg.reactions.map((value, key) => ({ teste: 1, emoji: key, usernames: value.usernames.map(username => ({ value: username })) }));
+		msg.reactions = msg.reactions.map((value, key) => ({ emoji: key, usernames: value.usernames.map(username => ({ value: username })) }));
 	} else {
-		msg.reactions = Object.keys(msg.reactions).map(key => ({ teste: 1, emoji: key, usernames: msg.reactions[key].usernames.map(username => ({ value: username })) }));
+		msg.reactions = Object.keys(msg.reactions).map(key => ({ emoji: key, usernames: msg.reactions[key].usernames.map(username => ({ value: username })) }));
 	}
 	msg.urls = msg.urls ? parseUrls(msg.urls) : [];
 	msg._updatedAt = new Date();

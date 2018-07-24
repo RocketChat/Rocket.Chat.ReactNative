@@ -1,22 +1,23 @@
-import { put, call, takeLatest, take } from 'redux-saga/effects';
+import { put, call, takeLatest } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { AsyncStorage } from 'react-native';
 
-import { SERVER, LOGIN } from '../actions/actionsTypes';
+import { NavigationActions } from '../Navigation';
+import { SERVER } from '../actions/actionsTypes';
 import * as actions from '../actions';
 import { connectRequest } from '../actions/connect';
-import { serverSuccess, serverFailure, setServer } from '../actions/server';
+import { serverSuccess, serverFailure, selectServer } from '../actions/server';
 import { setRoles } from '../actions/roles';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
-import { navigate } from '../containers/routes/NavigationService';
 import log from '../utils/log';
+import I18n from '../i18n';
 
 const validate = function* validate(server) {
 	return yield RocketChat.testServer(server);
 };
 
-const selectServer = function* selectServer({ server }) {
+const handleSelectServer = function* handleSelectServer({ server }) {
 	try {
 		yield database.setActiveDB(server);
 
@@ -36,7 +37,7 @@ const selectServer = function* selectServer({ server }) {
 
 		yield put(connectRequest());
 	} catch (e) {
-		log('selectServer', e);
+		log('handleSelectServer', e);
 	}
 };
 
@@ -53,12 +54,12 @@ const validateServer = function* validateServer({ server }) {
 
 const addServer = function* addServer({ server }) {
 	try {
+		yield put(actions.appStart('outside'));
+		yield call(NavigationActions.resetTo, { screen: 'ListServerView', title: I18n.t('Servers') });
 		database.databases.serversDB.write(() => {
 			database.databases.serversDB.create('servers', { id: server, current: false }, true);
 		});
-		yield put(setServer(server));
-		yield take(LOGIN.SET_TOKEN);
-		navigate('LoginSignup');
+		yield put(selectServer(server));
 	} catch (e) {
 		log('addServer', e);
 	}
@@ -66,7 +67,7 @@ const addServer = function* addServer({ server }) {
 
 const root = function* root() {
 	yield takeLatest(SERVER.REQUEST, validateServer);
-	yield takeLatest(SERVER.SELECT, selectServer);
+	yield takeLatest(SERVER.SELECT, handleSelectServer);
 	yield takeLatest(SERVER.ADD, addServer);
 };
 export default root;

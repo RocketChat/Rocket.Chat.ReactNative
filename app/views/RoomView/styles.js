@@ -44,5 +44,8 @@ export default StyleSheet.create({
 		backgroundColor: '#F7F7F7',
 		borderRadius: 4,
 		flexDirection: 'column'
+	},
+	loading: {
+		flex: 1
 	}
 });

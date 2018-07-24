@@ -43,7 +43,7 @@ export default async function(...args) {
 	return new Promise(async(resolve, reject) => {
 		try {
 			// eslint-disable-next-line
-			const data = (await (false && this.ddp.status ? loadMissedMessagesDDP.call(this, ...args) : loadMissedMessagesRest.call(this, ...args)));
+			const data = (await (this.ddp.status ? loadMissedMessagesDDP.call(this, ...args) : loadMissedMessagesRest.call(this, ...args)));
 
 			if (data) {
 				data.forEach(buildMessage);

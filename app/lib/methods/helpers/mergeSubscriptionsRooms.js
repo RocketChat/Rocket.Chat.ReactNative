@@ -33,6 +33,10 @@ export const merge = (subscription, room) => {
 		subscription.notifications = false;
 	}
 
+	if (!subscription.name) {
+		subscription.name = subscription.fname;
+	}
+
 	subscription.blocker = !!subscription.blocker;
 	subscription.blocked = !!subscription.blocked;
 	return subscription;

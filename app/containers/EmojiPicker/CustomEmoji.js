@@ -1,7 +1,6 @@
 import React from 'react';
-import { ViewPropTypes } from 'react-native';
+import { ViewPropTypes, Image } from 'react-native';
 import PropTypes from 'prop-types';
-import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 
 @connect(state => ({
@@ -19,7 +18,7 @@ export default class CustomEmoji extends React.Component {
 	render() {
 		const { baseUrl, emoji, style } = this.props;
 		return (
-			<FastImage
+			<Image
 				style={style}
 				source={{ uri: `${ baseUrl }/emoji-custom/${ encodeURIComponent(emoji.content || emoji.name) }.${ emoji.extension }` }}
 			/>

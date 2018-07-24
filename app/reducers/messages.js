@@ -5,6 +5,7 @@ const initialState = {
 	failure: false,
 	message: {},
 	actionMessage: {},
+	replyMessage: {},
 	editing: false,
 	showActions: false,
 	showErrorActions: false,
@@ -75,6 +76,19 @@ export default function messages(state = initialState, action) {
 				...state,
 				message: {},
 				editing: false
+			};
+		case types.MESSAGES.REPLY_INIT:
+			return {
+				...state,
+				replyMessage: {
+					...action.message,
+					mention: action.mention
+				}
+			};
+		case types.MESSAGES.REPLY_CANCEL:
+			return {
+				...state,
+				replyMessage: {}
 			};
 		case types.MESSAGES.SET_INPUT:
 			return {

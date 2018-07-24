@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, SafeAreaView, Keyboard } from 'react-native';
+import { View, ScrollView, SafeAreaView, Keyboard, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
 import SHA256 from 'js-sha256';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import ImagePicker from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
 
 import LoggedView from '../View';
@@ -22,17 +22,24 @@ import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
+import { iconsMap } from '../../Icons';
 
 @connect(state => ({
-	user: state.login.user,
+	user: {
+		name: state.login.user && state.login.user.name,
+		username: state.login.user && state.login.user.username,
+		customFields: state.login.user && state.login.user.customFields,
+		emails: state.login.user && state.login.user.emails
+	},
 	Accounts_CustomFields: state.settings.Accounts_CustomFields
 }))
+/** @extends React.Component */
 export default class ProfileView extends LoggedView {
 	static propTypes = {
-		navigation: PropTypes.object,
+		navigator: PropTypes.object,
 		user: PropTypes.object,
 		Accounts_CustomFields: PropTypes.string
-	};
+	}
 
 	constructor(props) {
 		super('ProfileView', props);
@@ -49,10 +56,25 @@ export default class ProfileView extends LoggedView {
 			avatarSuggestions: {},
 			customFields: {}
 		};
+		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+	}
+
+	componentWillMount() {
+		this.props.navigator.setButtons({
+			leftButtons: [{
+				id: 'sideMenu',
+				icon: Platform.OS === 'ios' ? iconsMap.menu : undefined
+			}]
+		});
 	}
 
 	async componentDidMount() {
 		this.init();
+
+		this.props.navigator.setDrawerEnabled({
+			side: 'left',
+			enabled: true
+		});
 
 		try {
 			const result = await RocketChat.getAvatarSuggestion();
@@ -66,6 +88,22 @@ export default class ProfileView extends LoggedView {
 		if (this.props.user !== nextProps.user) {
 			this.init(nextProps.user);
 		}
+	}
+
+	onNavigatorEvent(event) {
+		if (event.type === 'NavBarButtonPress') {
+			if (event.id === 'sideMenu' && Platform.OS === 'ios') {
+				this.props.navigator.toggleDrawer({
+					side: 'left',
+					animated: true,
+					to: 'missing'
+				});
+			}
+		}
+	}
+
+	setAvatar = (avatar) => {
+		this.setState({ avatar });
 	}
 
 	init = (user) => {
@@ -195,10 +233,6 @@ export default class ProfileView extends LoggedView {
 		}
 	}
 
-	setAvatar = (avatar) => {
-		this.setState({ avatar });
-	}
-
 	resetAvatar = async() => {
 		try {
 			await RocketChat.resetAvatar();
@@ -209,19 +243,21 @@ export default class ProfileView extends LoggedView {
 		}
 	}
 
-	pickImage = () => {
+	pickImage = async() => {
 		const options = {
-			title: I18n.t('Select_Avatar')
+			cropping: true,
+			compressImageQuality: 0.8,
+			cropperAvoidEmptySpaceAroundImage: false,
+			cropperChooseText: I18n.t('Choose'),
+			cropperCancelText: I18n.t('Cancel'),
+			includeBase64: true
 		};
-		ImagePicker.showImagePicker(options, async(response) => {
-			if (response.didCancel) {
-				console.warn('User cancelled image picker');
-			} else if (response.error) {
-				log('ImagePicker Error', response.error);
-			} else {
-				this.setAvatar({ url: response.uri, data: `data:image/jpeg;base64,${ response.data }`, service: 'upload' });
-			}
-		});
+		try {
+			const response = await ImagePicker.openPicker(options);
+			this.setAvatar({ url: response.path, data: `data:image/jpeg;base64,${ response.data }`, service: 'upload' });
+		} catch (error) {
+			console.warn(error);
+		}
 	}
 
 	renderAvatarButton = ({

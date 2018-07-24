@@ -1,15 +1,12 @@
-import ActionButton from 'react-native-action-button';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { Platform, View, TextInput, FlatList } from 'react-native';
+import { Platform, View, TextInput, FlatList, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 
+import { iconsMap } from '../../Icons';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem from '../../presentation/RoomItem';
-import Header from '../../containers/Header';
-import RoomsListHeader from './Header';
 import styles from './styles';
 import debounce from '../../utils/debounce';
 import LoggedView from '../View';
@@ -17,23 +14,20 @@ import log from '../../utils/log';
 import I18n from '../../i18n';
 
 @connect(state => ({
-	user: state.login.user,
+	userId: state.login.user && state.login.user.id,
 	server: state.server.server,
 	Site_Url: state.settings.Site_Url,
 	searchText: state.rooms.searchText
 }))
+/** @extends React.Component */
 export default class RoomsListView extends LoggedView {
 	static propTypes = {
-		navigation: PropTypes.object.isRequired,
-		user: PropTypes.object,
+		navigator: PropTypes.object,
+		userId: PropTypes.string,
 		Site_Url: PropTypes.string,
 		server: PropTypes.string,
 		searchText: PropTypes.string
 	}
-
-	static navigationOptions = ({ navigation }) => ({
-		header: <Header subview={<RoomsListHeader navigation={navigation} />} />
-	});
 
 	constructor(props) {
 		super('RoomsListView', props);
@@ -42,19 +36,20 @@ export default class RoomsListView extends LoggedView {
 			search: [],
 			rooms: []
 		};
-		this._keyExtractor = this._keyExtractor.bind(this);
-		this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
+		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+	}
+
+	async componentWillMount() {
+		this.initDefaultHeader();
 	}
 
 	componentDidMount() {
-		this.data.addListener(this.updateState);
+		this.getSubscriptions();
 	}
 
 	componentWillReceiveProps(props) {
-		if (this.props.server !== props.server) {
-			this.data.removeListener(this.updateState);
-			this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
-			this.data.addListener(this.updateState);
+		if (this.props.server !== props.server && props.server) {
+			this.getSubscriptions();
 		} else if (this.props.searchText !== props.searchText) {
 			this.search(props.searchText);
 		}
@@ -62,15 +57,116 @@ export default class RoomsListView extends LoggedView {
 
 	componentWillUnmount() {
 		this.updateState.stop();
-		this.data.removeAllListeners();
+		if (this.data) {
+			this.data.removeAllListeners();
+		}
+	}
+
+	onNavigatorEvent(event) {
+		const { navigator } = this.props;
+		if (event.type === 'NavBarButtonPress') {
+			if (event.id === 'createChannel') {
+				navigator.push({
+					screen: 'SelectedUsersView',
+					title: I18n.t('Select_Users'),
+					passProps: {
+						nextAction: 'CREATE_CHANNEL'
+					}
+				});
+			} else if (event.id === 'sideMenu' && Platform.OS === 'ios') {
+				navigator.toggleDrawer({
+					side: 'left',
+					animated: true,
+					to: 'missing'
+				});
+			} else if (event.id === 'search') {
+				this.initSearchingAndroid();
+			} else if (event.id === 'cancelSearch') {
+				this.cancelSearchingAndroid();
+			}
+		} else if (event.type === 'ScreenChangedEvent' && event.id === 'didAppear') {
+			this.props.navigator.setDrawerEnabled({
+				side: 'left',
+				enabled: true
+			});
+		}
 	}
 
 	onSearchChangeText(text) {
 		this.search(text);
 	}
 
+	getSubscriptions = () => {
+		if (this.data && this.data.removeListener) {
+			this.data.removeListener(this.updateState);
+		}
+		if (this.props.server && this.hasActiveDB()) {
+			this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
+			this.data.addListener(this.updateState);
+		}
+	}
+
+	initDefaultHeader = () => {
+		const { navigator } = this.props;
+		const rightButtons = [{
+			id: 'createChannel',
+			icon: iconsMap.add,
+			testID: 'rooms-list-view-create-channel'
+		}];
+
+		if (Platform.OS === 'android') {
+			rightButtons.push({
+				id: 'search',
+				icon: iconsMap.search
+			});
+		}
+
+		navigator.setButtons({
+			leftButtons: [{
+				id: 'sideMenu',
+				icon: Platform.OS === 'ios' ? iconsMap.menu : undefined,
+				testID: 'rooms-list-view-sidebar'
+			}],
+			rightButtons
+		});
+	}
+
+	initSearchingAndroid = () => {
+		const { navigator } = this.props;
+		navigator.setButtons({
+			leftButtons: [{
+				id: 'cancelSearch',
+				icon: iconsMap['md-arrow-back']
+			}],
+			rightButtons: []
+		});
+		navigator.setStyle({
+			navBarCustomView: 'RoomsListSearchView',
+			navBarComponentAlignment: 'fill'
+		});
+		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+	}
+
+	// this is necessary during development (enables Cmd + r)
+	hasActiveDB = () => database && database.databases && database.databases.activeDB;
+
+	cancelSearchingAndroid = () => {
+		if (Platform.OS === 'android') {
+			this.props.navigator.setStyle({
+				navBarCustomView: ''
+			});
+			this.setState({ search: [] });
+			this.initDefaultHeader();
+			BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+		}
+	}
+
+	handleBackPress = () => {
+		this.cancelSearchingAndroid();
+		return true;
+	}
+
 	updateState = debounce(() => {
-		// LayoutAnimation.easeInEaseOut();
 		this.setState({ rooms: this.data.slice() });
 	})
 
@@ -120,11 +216,16 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	goRoom = (rid, name) => {
-		this.props.navigation.navigate({
-			key: `Room-${ rid }`,
-			routeName: 'Room',
-			params: { room: { rid, name }, rid, name }
+		this.props.navigator.push({
+			screen: 'RoomView',
+			title: name,
+			passProps: {
+				room: { rid, name },
+				rid,
+				name
+			}
 		});
+		this.cancelSearchingAndroid();
 	}
 
 	_onPressItem = async(item = {}) => {
@@ -148,18 +249,6 @@ export default class RoomsListView extends LoggedView {
 		}
 	}
 
-	createChannel() {
-		this.props.navigation.navigate({
-			key: 'SelectedUsers',
-			routeName: 'SelectedUsers',
-			params: { nextAction: () => this.props.navigation.navigate('CreateChannel') }
-		});
-	}
-
-	_keyExtractor(item) {
-		return item.rid.replace(this.props.user.id, '').trim();
-	}
-
 	renderSearchBar = () => (
 		<View style={styles.searchBoxView}>
 			<TextInput
@@ -178,7 +267,7 @@ export default class RoomsListView extends LoggedView {
 	);
 
 	renderItem = ({ item }) => {
-		const id = item.rid.replace(this.props.user.id, '').trim();
+		const id = item.rid.replace(this.props.userId, '').trim();
 		return (<RoomItem
 			alert={item.alert}
 			unread={item.unread}
@@ -200,7 +289,7 @@ export default class RoomsListView extends LoggedView {
 		<FlatList
 			data={this.state.search.length > 0 ? this.state.search : this.state.rooms}
 			extraData={this.state.search.length > 0 ? this.state.search : this.state.rooms}
-			keyExtractor={this._keyExtractor}
+			keyExtractor={item => item.rid}
 			style={styles.list}
 			renderItem={this.renderItem}
 			ListHeaderComponent={Platform.OS === 'ios' ? this.renderSearchBar : null}
@@ -212,17 +301,8 @@ export default class RoomsListView extends LoggedView {
 		/>
 	)
 
-	renderCreateButtons = () => (
-		<ActionButton buttonColor='rgba(231,76,60,1)'>
-			<ActionButton.Item buttonColor='#9b59b6' title={I18n.t('Create_Channel')} onPress={() => { this.createChannel(); }} >
-				<Icon name='md-chatbubbles' style={styles.actionButtonIcon} />
-			</ActionButton.Item>
-		</ActionButton>
-	);
-
 	render = () => (
 		<View style={styles.container} testID='rooms-list-view'>
 			{this.renderList()}
-			{Platform.OS === 'android' ? this.renderCreateButtons() : null}
 		</View>)
 }
