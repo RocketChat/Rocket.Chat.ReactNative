@@ -39,6 +39,11 @@ class EventEmitter {
 			}
 		}
 	}
+	removeAllForEvent(event) {
+    		if (typeof this.events[event] === 'object') {
+      			delete this.events[event];
+    		}
+  	}
 	emit(event, ...args) {
 		if (typeof this.events[event] === 'object') {
 			this.events[event].forEach((listener) => {
@@ -113,8 +118,7 @@ export default class Socket extends EventEmitter {
 
 		this.on('result', data => this.ddp.emit(data.id, { id: data.id, result: data.result, error: data.error }));
 		this.on('ready', data => this.ddp.emit(data.subs[0], data));
-		this.on('unsub', data => this.ddp.emit(data.id, data));
-		this.on('nosub', data => this.ddp.emit(data.id, { ...data, error: `No sub found for ${ data.id }` }));
+		this.on('nosub', data => this.ddp.emit(data.id, data));
 		// this.on('error', () => this.reconnect());
 		this.on('disconnected', debounce(() => this.reconnect(), 300));
 
@@ -292,9 +296,12 @@ export default class Socket extends EventEmitter {
 				id,
 				name,
 				params,
-				unsubscribe: () => this.unsubscribe(id)
+				unsubscribe: () => {
+					// Also remove the events attached to the subscription of the collection
+          				this.removeAllForEvent(name)
+          				return this.unsubscribe(id)
+        			}
 			};
-
 			this.subscriptions[id] = args;
 			// console.log(args);
 			return args;
