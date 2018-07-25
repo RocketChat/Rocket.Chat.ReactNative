@@ -19,7 +19,7 @@ import { setUser } from '../../actions/login';
 import { iconsMap } from '../../Icons';
 
 @connect(state => ({
-	language: state.login.user.language
+	userLanguage: state.login.user && state.login.user.language
 }), dispatch => ({
 	setUser: params => dispatch(setUser(params))
 }))
@@ -27,7 +27,7 @@ import { iconsMap } from '../../Icons';
 export default class SettingsView extends LoggedView {
 	static propTypes = {
 		navigator: PropTypes.object,
-		language: PropTypes.string,
+		userLanguage: PropTypes.string,
 		setUser: PropTypes.func
 	}
 
@@ -35,10 +35,13 @@ export default class SettingsView extends LoggedView {
 		super('SettingsView', props);
 		this.state = {
 			placeholder: {},
-			language: props.language ? props.language : 'en',
+			language: props.userLanguage ? props.userLanguage : 'en',
 			languages: [{
 				label: 'English',
 				value: 'en'
+			}, {
+				label: 'Russian',
+				value: 'ru'
 			}],
 			saving: false
 		};
@@ -75,7 +78,7 @@ export default class SettingsView extends LoggedView {
 
 	formIsChanged = () => {
 		const { language } = this.state;
-		return !(this.props.language === language);
+		return !(this.props.userLanguage === language);
 	}
 
 	submit = async() => {
@@ -84,7 +87,7 @@ export default class SettingsView extends LoggedView {
 		const {
 			language
 		} = this.state;
-		const { user } = this.props;
+		const { userLanguage } = this.props;
 
 		if (!this.formIsChanged()) {
 			return;
@@ -93,7 +96,7 @@ export default class SettingsView extends LoggedView {
 		const params = {};
 
 		// language
-		if (user.language !== language) {
+		if (userLanguage !== language) {
 			params.language = language;
 		}
 
@@ -142,7 +145,7 @@ export default class SettingsView extends LoggedView {
 								inputRef={(e) => { this.name = e; }}
 								label={I18n.t('Language')}
 								placeholder={I18n.t('Language')}
-								value={language}
+								value={languages.find(i => i.value === language).label}
 								testID='settings-view-language'
 							/>
 						</RNPickerSelect>
