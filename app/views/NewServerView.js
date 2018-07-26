@@ -40,6 +40,12 @@ export default class NewServerView extends LoggedView {
 		props.validateServer(this.state.defaultServer); // Need to call because in case of submit with empty field
 	}
 
+	componentDidMount() {
+		setTimeout(() => {
+			this.input.focus();
+		}, 600);
+	}
+
 	onChangeText = (text) => {
 		this.setState({ text });
 		this.props.validateServer(this.completeUrl(text));
