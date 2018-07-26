@@ -15,9 +15,6 @@ const styles = StyleSheet.create({
 		width: 320,
 		height: 200
 		// resizeMode: 'cover'
-	},
-	labelContainer: {
-		alignItems: 'flex-start'
 	}
 });
 

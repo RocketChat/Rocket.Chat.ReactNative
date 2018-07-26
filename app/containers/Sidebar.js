@@ -19,9 +19,6 @@ import I18n from '../i18n';
 import { NavigationActions } from '../Navigation';
 
 const styles = StyleSheet.create({
-	selected: {
-		backgroundColor: 'rgba(0, 0, 0, .04)'
-	},
 	item: {
 		flexDirection: 'row',
 		alignItems: 'center'
@@ -30,9 +27,6 @@ const styles = StyleSheet.create({
 		marginHorizontal: 10,
 		width: 30,
 		alignItems: 'center'
-	},
-	itemLeftOpacity: {
-		opacity: 0.62
 	},
 	itemText: {
 		marginVertical: 16,

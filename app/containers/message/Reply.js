@@ -17,13 +17,6 @@ const styles = StyleSheet.create({
 		marginTop: 2,
 		alignSelf: 'flex-end'
 	},
-	quoteSign: {
-		borderWidth: 2,
-		borderRadius: 4,
-		borderColor: '#a0a0a0',
-		height: '100%',
-		marginRight: 5
-	},
 	attachmentContainer: {
 		flex: 1,
 		flexDirection: 'column'

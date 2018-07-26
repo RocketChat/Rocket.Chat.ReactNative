@@ -35,11 +35,6 @@ const styles = StyleSheet.create({
 		lineHeight: 16,
 		marginLeft: 5
 	},
-	content: {
-		color: '#0C0D0F',
-		fontSize: 16,
-		lineHeight: 20
-	},
 	close: {
 		marginRight: 15
 	}

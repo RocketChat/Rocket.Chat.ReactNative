@@ -47,16 +47,6 @@ const styles = StyleSheet.create({
 		color: '#444',
 		marginRight: 8
 	},
-	lastMessage: {
-		flex: 1,
-		flexShrink: 1,
-		marginRight: 8,
-		maxHeight: 20,
-		overflow: 'hidden',
-		flexDirection: 'row',
-		alignItems: 'flex-start',
-		justifyContent: 'flex-start'
-	},
 	alert: {
 		fontWeight: 'bold'
 	},

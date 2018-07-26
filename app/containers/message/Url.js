@@ -12,13 +12,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginVertical: 2
 	},
-	quoteSign: {
-		borderWidth: 2,
-		borderRadius: 4,
-		borderColor: '#a0a0a0',
-		height: '100%',
-		marginRight: 5
-	},
 	image: {
 		height: 80,
 		width: 80,

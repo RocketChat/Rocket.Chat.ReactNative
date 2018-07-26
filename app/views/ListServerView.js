@@ -21,21 +21,6 @@ const styles = StyleSheet.create({
 		alignItems: 'stretch',
 		backgroundColor: '#fff'
 	},
-	input: {
-		height: 40,
-		borderColor: '#aaa',
-		margin: 20,
-		padding: 5,
-		borderWidth: 0,
-		backgroundColor: '#f8f8f8'
-	},
-	text: {
-		textAlign: 'center',
-		color: '#888'
-	},
-	container: {
-		flex: 1
-	},
 	separator: {
 		height: 1,
 		backgroundColor: '#eee'
