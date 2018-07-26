@@ -1,0 +1,1 @@
+../../../QBImagePickerController/QBImagePicker/QBVideoIndicatorView.h
