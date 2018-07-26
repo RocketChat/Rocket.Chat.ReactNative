@@ -54,14 +54,14 @@ platform :ios do
       type: "appstore"
     ) # more information: https://codesigning.guide
     pem()
-    gym(scheme: "RocketChatRN") # Build your app - more options available
+    gym(scheme: "RocketChatRN", workspace: "RocketChatRN.xcworkspace") # Build your app - more options available
     # frameit
   end
 
   desc "Build App for development"
   lane :build do |options|
     xcodebuild(
-      project: "RocketChatRN.xcodeproj",
+      workspace: "RocketChatRN.xcworkspace",
       scheme: "RocketChatRN",
       configuration: "Debug",
       clean: options[:clean],
