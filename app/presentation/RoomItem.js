@@ -268,6 +268,11 @@ export default class RoomItem extends React.Component {
 										<Text key={node.key}>
 											#{node.content}
 										</Text>
+									),
+									link: (node, children) => (
+										<Text key={node.key}>
+											{children}
+										</Text>
 									)
 								}}
 							/>

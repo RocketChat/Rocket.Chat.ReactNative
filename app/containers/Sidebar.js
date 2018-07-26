@@ -331,9 +331,9 @@ export default class Sidebar extends Component {
 							<View style={styles.headerTextContainer}>
 								<View style={styles.headerUsername}>
 									<Status style={styles.status} id={user.id} />
-									<Text>{user.username}</Text>
+									<Text numberOfLines={1}>{user.username}</Text>
 								</View>
-								<Text style={styles.currentServerText}>{server}</Text>
+								<Text style={styles.currentServerText} numberOfLines={1}>{server}</Text>
 							</View>
 							<Icon
 								name={this.state.showServers ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
