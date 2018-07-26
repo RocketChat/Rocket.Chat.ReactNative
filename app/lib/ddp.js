@@ -274,11 +274,15 @@ export default class Socket extends EventEmitter {
 			return Promise.reject(err);
 		});
 	}
-	unsubscribe(id) {
+	unsubscribe(id, subscriptionName = null) {
 		if (!this.subscriptions[id]) {
 			return Promise.reject(id);
 		}
 		delete this.subscriptions[id];
+		if (subscriptionName) {
+			// Also remove the events attached to the subscription of the collection
+			this.removeAllForEvent(subscriptionName);
+		}
 		return this.send({
 			msg: 'unsub',
 			id
@@ -297,9 +301,7 @@ export default class Socket extends EventEmitter {
 				name,
 				params,
 				unsubscribe: () => {
-					// Also remove the events attached to the subscription of the collection
-					this.removeAllForEvent(name);
-					return this.unsubscribe(id);
+					return this.unsubscribe(id, name);
 				}
 			};
 			this.subscriptions[id] = args;
