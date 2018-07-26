@@ -13,6 +13,8 @@ import LoggedView from '../View';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 
+const ROW_HEIGHT = 70.5;
+
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
 	server: state.server.server,
@@ -294,6 +296,7 @@ export default class RoomsListView extends LoggedView {
 			renderItem={this.renderItem}
 			ListHeaderComponent={Platform.OS === 'ios' ? this.renderSearchBar : null}
 			contentOffset={Platform.OS === 'ios' ? { x: 0, y: 38 } : {}}
+			getItemLayout={(data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index })}
 			enableEmptySections
 			removeClippedSubviews
 			keyboardShouldPersistTaps='always'
