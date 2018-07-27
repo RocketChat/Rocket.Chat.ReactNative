@@ -6,7 +6,7 @@ import { View, Text, SectionList, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
 import LoggedView from './View';
-import { selectServer } from '../actions/server';
+import { selectServerRequest } from '../actions/server';
 import database from '../lib/realm';
 import Fade from '../animations/fade';
 import Touch from '../utils/touch';
@@ -52,19 +52,20 @@ const styles = StyleSheet.create({
 	login: state.login,
 	connected: state.meteor.connected
 }), dispatch => ({
-	selectServer: server => dispatch(selectServer(server))
+	selectServerRequest: server => dispatch(selectServerRequest(server))
 }))
 /** @extends React.Component */
 export default class ListServerView extends LoggedView {
 	static propTypes = {
 		navigator: PropTypes.object,
 		login: PropTypes.object.isRequired,
-		selectServer: PropTypes.func.isRequired,
+		selectServerRequest: PropTypes.func.isRequired,
 		server: PropTypes.string
 	}
 
 	constructor(props) {
 		super('ListServerView', props);
+		this.focused = true;
 		this.state = {
 			sections: []
 		};
@@ -87,8 +88,19 @@ export default class ListServerView extends LoggedView {
 		this.jumpToSelectedServer();
 	}
 
+	componentWillReceiveProps(nextProps) {
+		if (this.props.server !== nextProps.server && nextProps.server && !this.props.login.isRegistering) {
+			this.timeout = setTimeout(() => {
+				this.openLogin(nextProps.server);
+			}, 1000);
+		}
+	}
+
 	componentWillUnmount() {
 		this.data.removeAllListeners();
+		if (this.timeout) {
+			clearTimeout(this.timeout);
+		}
 	}
 
 	onNavigatorEvent(event) {
@@ -99,6 +111,8 @@ export default class ListServerView extends LoggedView {
 					title: I18n.t('New_Server')
 				});
 			}
+		} else if (event.type === 'ScreenChangedEvent') {
+			this.focused = event.id === 'didAppear';
 		}
 	}
 
@@ -119,14 +133,16 @@ export default class ListServerView extends LoggedView {
 	};
 
 	openLogin = (server) => {
-		this.props.navigator.push({
-			screen: 'LoginSignupView',
-			title: server
-		});
+		if (this.focused) {
+			this.props.navigator.push({
+				screen: 'LoginSignupView',
+				title: server
+			});
+		}
 	}
 
 	selectAndNavigateTo = (server) => {
-		this.props.selectServer(server);
+		this.props.selectServerRequest(server);
 		this.openLogin(server);
 	}
 

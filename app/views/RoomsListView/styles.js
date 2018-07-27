@@ -37,5 +37,8 @@ export default StyleSheet.create({
 		padding: 5,
 		paddingLeft: 10,
 		color: '#aaa'
+	},
+	loading: {
+		flex: 1
 	}
 });

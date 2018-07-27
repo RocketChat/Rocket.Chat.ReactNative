@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Platform, View, TextInput, FlatList, BackHandler } from 'react-native';
+import { Platform, View, TextInput, FlatList, BackHandler, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 
 import { iconsMap } from '../../Icons';
@@ -19,7 +19,8 @@ const ROW_HEIGHT = 70.5;
 	userId: state.login.user && state.login.user.id,
 	server: state.server.server,
 	Site_Url: state.settings.Site_Url,
-	searchText: state.rooms.searchText
+	searchText: state.rooms.searchText,
+	loading: state.server.loading
 }))
 /** @extends React.Component */
 export default class RoomsListView extends LoggedView {
@@ -28,7 +29,8 @@ export default class RoomsListView extends LoggedView {
 		userId: PropTypes.string,
 		Site_Url: PropTypes.string,
 		server: PropTypes.string,
-		searchText: PropTypes.string
+		searchText: PropTypes.string,
+		loading: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -287,22 +289,27 @@ export default class RoomsListView extends LoggedView {
 		/>);
 	}
 
-	renderList = () => (
-		<FlatList
-			data={this.state.search.length > 0 ? this.state.search : this.state.rooms}
-			extraData={this.state.search.length > 0 ? this.state.search : this.state.rooms}
-			keyExtractor={item => item.rid}
-			style={styles.list}
-			renderItem={this.renderItem}
-			ListHeaderComponent={Platform.OS === 'ios' ? this.renderSearchBar : null}
-			contentOffset={Platform.OS === 'ios' ? { x: 0, y: 38 } : {}}
-			getItemLayout={(data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index })}
-			enableEmptySections
-			removeClippedSubviews
-			keyboardShouldPersistTaps='always'
-			testID='rooms-list-view-list'
-		/>
-	)
+	renderList = () => {
+		if (this.props.loading) {
+			return <ActivityIndicator style={styles.loading} />;
+		}
+		return (
+			<FlatList
+				data={this.state.search.length > 0 ? this.state.search : this.state.rooms}
+				extraData={this.state.search.length > 0 ? this.state.search : this.state.rooms}
+				keyExtractor={item => item.rid}
+				style={styles.list}
+				renderItem={this.renderItem}
+				ListHeaderComponent={Platform.OS === 'ios' ? this.renderSearchBar : null}
+				contentOffset={Platform.OS === 'ios' ? { x: 0, y: 38 } : {}}
+				getItemLayout={(data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index })}
+				enableEmptySections
+				removeClippedSubviews
+				keyboardShouldPersistTaps='always'
+				testID='rooms-list-view-list'
+			/>
+		);
+	}
 
 	render = () => (
 		<View style={styles.container} testID='rooms-list-view'>

@@ -2,7 +2,7 @@ import { AsyncStorage } from 'react-native';
 import { call, put, takeLatest } from 'redux-saga/effects';
 
 import * as actions from '../actions';
-import { selectServer } from '../actions/server';
+import { selectServerRequest } from '../actions/server';
 import { restoreToken, setUser } from '../actions/login';
 import { APP } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
@@ -19,10 +19,7 @@ const restore = function* restore() {
 
 		const currentServer = yield call([AsyncStorage, 'getItem'], 'currentServer');
 		if (currentServer) {
-			yield put(selectServer(currentServer));
-			if (token) {
-				yield put(actions.appStart('inside'));
-			}
+			yield put(selectServerRequest(currentServer));
 
 			const login = yield call([AsyncStorage, 'getItem'], `${ RocketChat.TOKEN_KEY }-${ currentServer }`);
 			if (login) {
