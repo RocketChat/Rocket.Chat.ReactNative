@@ -141,6 +141,7 @@ const RocketChat = {
 				const userInfo = await this.userInfo({ token: user.token, userId: user.id });
 				user = { ...user, ...userInfo.user };
 			}
+			RocketChat.registerPushToken(user.id);
 			return reduxStore.dispatch(loginSuccess(user));
 		} catch (e) {
 			log('rocketchat.loginSuccess', e);
@@ -154,9 +155,9 @@ const RocketChat = {
 			}
 
 			this.ddp = new Ddp(url, login);
-			if (login) {
-				protectedFunction(() => RocketChat.getRooms());
-			}
+			// if (login) {
+			// 	protectedFunction(() => RocketChat.getRooms());
+			// }
 
 			this.ddp.on('login', protectedFunction(() => reduxStore.dispatch(loginRequest())));
 

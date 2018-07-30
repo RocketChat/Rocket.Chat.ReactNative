@@ -40,7 +40,6 @@ const handleLoginSuccess = function* handleLoginSuccess() {
 		const user = yield select(getUser);
 		yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
 		yield put(setUser(user));
-		yield RocketChat.registerPushToken(user.id);
 		if (!user.username || user.isRegistering) {
 			yield put(registerIncomplete());
 		} else {
