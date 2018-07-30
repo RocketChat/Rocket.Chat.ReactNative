@@ -112,7 +112,7 @@ export default class ListServerView extends LoggedView {
 				});
 			}
 		} else if (event.type === 'ScreenChangedEvent') {
-			this.focused = event.id === 'didAppear';
+			this.focused = event.id === 'didAppear' || event.id === 'onActivityResumed';
 		}
 	}
 

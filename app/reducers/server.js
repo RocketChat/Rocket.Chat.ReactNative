@@ -7,7 +7,7 @@ const initialState = {
 	failure: false,
 	server: '',
 	adding: false,
-	loading: false
+	loading: true
 };
 
 
