@@ -122,7 +122,9 @@ export default class RoomMembersView extends LoggedView {
 		}
 		this.setState({ userLongPressed: user });
 		Vibration.vibrate(50);
-		this.ActionSheet.show();
+		if (this.actionSheet && this.actionSheet.show) {
+			this.actionSheet.show();
+		}
 	}
 
 	updateRoom = async() => {
@@ -216,7 +218,7 @@ export default class RoomMembersView extends LoggedView {
 				/>,
 				<ActionSheet
 					key='room-members-actionsheet'
-					ref={o => this.ActionSheet = o}
+					ref={o => this.actionSheet = o}
 					title={I18n.t('Actions')}
 					options={this.actionSheetOptions}
 					cancelButtonIndex={this.CANCEL_INDEX}

@@ -69,7 +69,9 @@ export default class StarredMessagesView extends LoggedView {
 
 	onLongPress = (message) => {
 		this.setState({ message });
-		this.actionSheet.show();
+		if (this.actionSheet && this.actionSheet.show) {
+			this.actionSheet.show();
+		}
 	}
 
 	handleActionPress = (actionIndex) => {
