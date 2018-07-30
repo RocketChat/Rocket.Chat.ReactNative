@@ -46,9 +46,12 @@ public class CustomPushNotification extends PushNotification {
             .setContentText(message)
             .setStyle(new Notification.BigTextStyle().bigText(message))
             .setPriority(Notification.PRIORITY_HIGH)
-            .setColor(mContext.getColor(R.color.notification_text))
             .setDefaults(Notification.DEFAULT_ALL)
             .setAutoCancel(true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            notification.setColor(mContext.getColor(R.color.notification_text));
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
