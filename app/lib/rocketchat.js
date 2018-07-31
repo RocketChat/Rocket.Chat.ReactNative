@@ -85,16 +85,14 @@ const RocketChat = {
 		return (headers['x-instance-id'] != null && headers['x-instance-id'].length > 0) || (headers['X-Instance-ID'] != null && headers['X-Instance-ID'].length > 0);
 	},
 	async testServer(url) {
-		if (/^(https?:\/\/)?(((\w|[0-9-_])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
-			try {
-				let response = await RNFetchBlob.fetch('HEAD', url);
-				response = response.respInfo;
-				if (response.status === 200 && RocketChat._hasInstanceId(response.headers)) {
-					return url;
-				}
-			} catch (e) {
-				log('testServer', e);
+		try {
+			let response = await RNFetchBlob.fetch('HEAD', url);
+			response = response.respInfo;
+			if (response.status === 200 && RocketChat._hasInstanceId(response.headers)) {
+				return url;
 			}
+		} catch (e) {
+			log('testServer', e);
 		}
 		throw new Error({ error: 'invalid server' });
 	},
