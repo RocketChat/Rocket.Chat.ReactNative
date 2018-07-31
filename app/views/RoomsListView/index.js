@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Platform, View, TextInput, FlatList, BackHandler, ActivityIndicator } from 'react-native';
+import { Platform, View, TextInput, FlatList, BackHandler, ActivityIndicator, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 
 import { iconsMap } from '../../Icons';
@@ -321,7 +321,8 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	render = () => (
-		<View style={styles.container} testID='rooms-list-view'>
+		<SafeAreaView style={styles.container} testID='rooms-list-view'>
 			{this.renderList()}
-		</View>)
+		</SafeAreaView>
+	)
 }

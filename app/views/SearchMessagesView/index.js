@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 
 import LoggedView from '../View';
@@ -115,10 +115,7 @@ export default class SearchMessagesView extends LoggedView {
 	render() {
 		const { searching, loadingMore } = this.state;
 		return (
-			<View
-				style={styles.container}
-				testID='search-messages-view'
-			>
+			<SafeAreaView style={styles.container} testID='search-messages-view'>
 				<View style={styles.searchContainer}>
 					<RCTextInput
 						inputRef={(e) => { this.name = e; }}
@@ -140,7 +137,7 @@ export default class SearchMessagesView extends LoggedView {
 					ListFooterComponent={loadingMore ? <RCActivityIndicator /> : null}
 					{...scrollPersistTaps}
 				/>
-			</View>
+			</SafeAreaView>
 		);
 	}
 }

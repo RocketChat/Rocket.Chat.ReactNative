@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, ScrollView, View, Keyboard } from 'react-native';
+import { Text, ScrollView, View, Keyboard, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 
 import { serverRequest, addServer } from '../actions/server';
@@ -112,7 +112,7 @@ export default class NewServerView extends LoggedView {
 				keyboardVerticalOffset={128}
 			>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
-					<View testID='new-server-view'>
+					<SafeAreaView style={styles.container} testID='new-server-view'>
 						<Text style={[styles.loginText, styles.loginTitle]}>{I18n.t('Sign_in_your_server')}</Text>
 						<TextInput
 							inputRef={e => this.input = e}
@@ -135,7 +135,7 @@ export default class NewServerView extends LoggedView {
 							/>
 						</View>
 						<Loading visible={this.props.addingServer} />
-					</View>
+					</SafeAreaView>
 				</ScrollView>
 			</KeyboardView>
 		);

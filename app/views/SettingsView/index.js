@@ -145,7 +145,7 @@ export default class SettingsView extends LoggedView {
 					testID='settings-view-list'
 					{...scrollPersistTaps}
 				>
-					<SafeAreaView testID='settings-view'>
+					<SafeAreaView style={sharedStyles.container} testID='settings-view'>
 						<RNPickerSelect
 							items={languages}
 							onValueChange={(value) => {

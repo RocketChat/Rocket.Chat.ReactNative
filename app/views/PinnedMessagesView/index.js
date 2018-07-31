@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, Text } from 'react-native';
+import { FlatList, View, Text, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
 
@@ -128,10 +128,8 @@ export default class PinnedMessagesView extends LoggedView {
 		}
 
 		return (
-			[
+			<SafeAreaView style={styles.list} testID='pinned-messages-view'>
 				<FlatList
-					key='pinned-messages-view-list'
-					testID='pinned-messages-view'
 					data={messages}
 					renderItem={this.renderItem}
 					style={styles.list}
@@ -139,16 +137,15 @@ export default class PinnedMessagesView extends LoggedView {
 					onEndReached={this.moreData}
 					ListHeaderComponent={loading ? <RCActivityIndicator /> : null}
 					ListFooterComponent={loadingMore ? <RCActivityIndicator /> : null}
-				/>,
+				/>
 				<ActionSheet
-					key='pinned-messages-view-action-sheet'
 					ref={o => this.actionSheet = o}
 					title={I18n.t('Actions')}
 					options={options}
 					cancelButtonIndex={CANCEL_INDEX}
 					onPress={this.handleActionPress}
 				/>
-			]
+			</SafeAreaView>
 		);
 	}
 }

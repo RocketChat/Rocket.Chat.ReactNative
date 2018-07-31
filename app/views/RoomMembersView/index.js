@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, TextInput, Vibration } from 'react-native';
+import { FlatList, View, TextInput, Vibration, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
 
@@ -204,10 +204,8 @@ export default class RoomMembersView extends LoggedView {
 	render() {
 		const { filtering, members, membersFiltered } = this.state;
 		return (
-			[
+			<SafeAreaView style={styles.list} testID='room-members-view'>
 				<FlatList
-					key='room-members-view-list'
-					testID='room-members-view'
 					data={filtering ? membersFiltered : members}
 					renderItem={this.renderItem}
 					style={styles.list}
@@ -215,16 +213,15 @@ export default class RoomMembersView extends LoggedView {
 					ItemSeparatorComponent={this.renderSeparator}
 					ListHeaderComponent={this.renderSearchBar}
 					{...scrollPersistTaps}
-				/>,
+				/>
 				<ActionSheet
-					key='room-members-actionsheet'
 					ref={o => this.actionSheet = o}
 					title={I18n.t('Actions')}
 					options={this.actionSheetOptions}
 					cancelButtonIndex={this.CANCEL_INDEX}
 					onPress={this.handleActionPress}
 				/>
-			]
+			</SafeAreaView>
 		);
 	}
 }

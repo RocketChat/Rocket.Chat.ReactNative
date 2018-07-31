@@ -18,6 +18,10 @@ import I18n from '../i18n';
 import { NavigationActions } from '../Navigation';
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: '#fff'
+	},
 	item: {
 		flexDirection: 'row',
 		alignItems: 'center'
@@ -301,8 +305,8 @@ export default class Sidebar extends Component {
 			return null;
 		}
 		return (
-			<ScrollView style={{ backgroundColor: '#fff', flex: 1 }}>
-				<SafeAreaView testID='sidebar'>
+			<ScrollView style={styles.container}>
+				<SafeAreaView testID='sidebar' style={styles.container}>
 					<Touch
 						onPress={() => this.toggleServers()}
 						underlayColor='rgba(255, 255, 255, 0.5)'

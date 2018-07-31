@@ -1,8 +1,7 @@
 import React from 'react';
-
 import Icon from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
-import { View, Text, SectionList, StyleSheet } from 'react-native';
+import { View, Text, SectionList, StyleSheet, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 
 import LoggedView from './View';
@@ -14,11 +13,8 @@ import I18n from '../i18n';
 import { iconsMap } from '../Icons';
 
 const styles = StyleSheet.create({
-	view: {
+	container: {
 		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'center',
-		alignItems: 'stretch',
 		backgroundColor: '#fff'
 	},
 	separator: {
@@ -194,7 +190,7 @@ export default class ListServerView extends LoggedView {
 
 	render() {
 		return (
-			<View style={styles.view} testID='list-server-view'>
+			<SafeAreaView style={styles.container} testID='list-server-view'>
 				<SectionList
 					style={styles.list}
 					sections={this.state.sections}
@@ -203,7 +199,7 @@ export default class ListServerView extends LoggedView {
 					keyExtractor={item => item.id}
 					ItemSeparatorComponent={this.renderSeparator}
 				/>
-			</View>
+			</SafeAreaView>
 		);
 	}
 }

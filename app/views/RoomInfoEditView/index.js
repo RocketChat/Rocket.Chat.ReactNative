@@ -34,8 +34,11 @@ const PERMISSIONS_ARRAY = [
 	PERMISSION_DELETE_P
 ];
 
+@connect(null, dispatch => ({
+	eraseRoom: rid => dispatch(eraseRoom(rid))
+}))
 /** @extends React.Component */
-class RoomInfoEditView extends LoggedView {
+export default class RoomInfoEditView extends LoggedView {
 	static propTypes = {
 		rid: PropTypes.string,
 		eraseRoom: PropTypes.func
@@ -263,7 +266,7 @@ class RoomInfoEditView extends LoggedView {
 					testID='room-info-edit-view-list'
 					{...scrollPersistTaps}
 				>
-					<SafeAreaView testID='room-info-edit-view'>
+					<SafeAreaView style={sharedStyles.container} testID='room-info-edit-view'>
 						<RCTextInput
 							inputRef={(e) => { this.name = e; }}
 							label={I18n.t('Name')}
@@ -398,9 +401,3 @@ class RoomInfoEditView extends LoggedView {
 		);
 	}
 }
-
-const mapDispatchToProps = dispatch => ({
-	eraseRoom: rid => dispatch(eraseRoom(rid))
-});
-
-export default connect(null, mapDispatchToProps)(RoomInfoEditView);

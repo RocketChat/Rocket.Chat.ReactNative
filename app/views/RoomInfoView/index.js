@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
@@ -211,17 +211,19 @@ export default class RoomInfoView extends LoggedView {
 			return <View />;
 		}
 		return (
-			<ScrollView style={styles.container}>
-				<View style={styles.avatarContainer} testID='room-info-view'>
-					{this.renderAvatar(room, roomUser)}
-					<View style={styles.roomTitleContainer}>{ getRoomTitle(room) }</View>
-				</View>
-				{!this.isDirect() ? this.renderItem('description', room) : null}
-				{!this.isDirect() ? this.renderItem('topic', room) : null}
-				{!this.isDirect() ? this.renderItem('announcement', room) : null}
-				{this.isDirect() ? this.renderRoles() : null}
-				{this.isDirect() ? this.renderTimezone(roomUser._id) : null}
-				{room.broadcast ? this.renderBroadcast() : null}
+			<ScrollView style={styles.scroll}>
+				<SafeAreaView style={styles.container} testID='room-info-view'>
+					<View style={styles.avatarContainer}>
+						{this.renderAvatar(room, roomUser)}
+						<View style={styles.roomTitleContainer}>{ getRoomTitle(room) }</View>
+					</View>
+					{!this.isDirect() ? this.renderItem('description', room) : null}
+					{!this.isDirect() ? this.renderItem('topic', room) : null}
+					{!this.isDirect() ? this.renderItem('announcement', room) : null}
+					{this.isDirect() ? this.renderRoles() : null}
+					{this.isDirect() ? this.renderTimezone(roomUser._id) : null}
+					{room.broadcast ? this.renderBroadcast() : null}
+				</SafeAreaView>
 			</ScrollView>
 		);
 	}
