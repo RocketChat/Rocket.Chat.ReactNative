@@ -8,7 +8,6 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import database from '../lib/realm';
 import { selectServerRequest } from '../actions/server';
 import { logout } from '../actions/login';
-import { appStart } from '../actions';
 import Avatar from '../containers/Avatar';
 import Status from '../containers/status';
 import Touch from '../utils/touch';
