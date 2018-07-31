@@ -168,6 +168,9 @@ export default class Socket extends EventEmitter {
 	async send(obj, ignore) {
 		console.log('send', obj);
 		return new Promise((resolve, reject) => {
+			if (!this.connected) {
+				return reject();
+			}
 			this.id += 1;
 			const id = obj.id || `ddp-react-native-${ this.id }`;
 			// console.log('send', { ...obj, id });

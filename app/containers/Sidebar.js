@@ -302,7 +302,7 @@ export default class Sidebar extends Component {
 			return null;
 		}
 		return (
-			<ScrollView style={{ backgroundColor: '#fff' }}>
+			<ScrollView style={{ backgroundColor: '#fff', flex: 1 }}>
 				<SafeAreaView testID='sidebar'>
 					<Touch
 						onPress={() => this.toggleServers()}

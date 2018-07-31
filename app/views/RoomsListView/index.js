@@ -20,7 +20,7 @@ const ROW_HEIGHT = 70.5;
 	server: state.server.server,
 	Site_Url: state.settings.Site_Url,
 	searchText: state.rooms.searchText,
-	loading: state.server.loading
+	loadingServer: state.server.loading
 }))
 /** @extends React.Component */
 export default class RoomsListView extends LoggedView {
@@ -30,7 +30,7 @@ export default class RoomsListView extends LoggedView {
 		Site_Url: PropTypes.string,
 		server: PropTypes.string,
 		searchText: PropTypes.string,
-		loading: PropTypes.bool
+		loadingServer: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -38,7 +38,8 @@ export default class RoomsListView extends LoggedView {
 
 		this.state = {
 			search: [],
-			rooms: []
+			rooms: [],
+			loading: true
 		};
 		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
@@ -52,7 +53,9 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	componentWillReceiveProps(props) {
-		if (this.props.server !== props.server && props.server) {
+		if (props.server && props.loadingServer) {
+			this.setState({ loading: true });
+		} else if (props.server && !props.loadingServer) {
 			this.getSubscriptions();
 		} else if (this.props.searchText !== props.searchText) {
 			this.search(props.searchText);
@@ -63,6 +66,9 @@ export default class RoomsListView extends LoggedView {
 		this.updateState.stop();
 		if (this.data) {
 			this.data.removeAllListeners();
+		}
+		if (this.timeout) {
+			clearTimeout(this.timeout);
 		}
 	}
 
@@ -108,6 +114,9 @@ export default class RoomsListView extends LoggedView {
 			this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
 			this.data.addListener(this.updateState);
 		}
+		this.timeout = setTimeout(() => {
+			this.setState({ loading: false });
+		}, 200);
 	}
 
 	initDefaultHeader = () => {
@@ -290,7 +299,7 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	renderList = () => {
-		if (this.props.loading) {
+		if (this.state.loading) {
 			return <ActivityIndicator style={styles.loading} />;
 		}
 		return (
