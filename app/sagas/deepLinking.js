@@ -3,7 +3,7 @@ import { takeLatest, take, select, put } from 'redux-saga/effects';
 
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions';
-import { selectServer, addServer } from '../actions/server';
+import { selectServerRequest, addServer } from '../actions/server';
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import { NavigationActions } from '../Navigation';
@@ -68,7 +68,7 @@ const handleOpen = function* handleOpen({ params }) {
 			if (!token) {
 				yield put(appStart('outside'));
 			} else {
-				yield put(selectServer(deepLinkServer));
+				yield put(selectServerRequest(deepLinkServer));
 				yield take(types.METEOR.REQUEST);
 				yield navigate({ params, sameServer: false });
 			}

@@ -299,44 +299,6 @@ const schema = [
 	uploadsSchema
 ];
 
-// class DebouncedDb {
-// 	constructor(db) {
-// 		this.database = db;
-// 	}
-// 	deleteAll(...args) {
-// 		return this.database.write(() => this.database.deleteAll(...args));
-// 	}
-// 	delete(...args) {
-// 		return this.database.delete(...args);
-// 	}
-// 	write(fn) {
-// 		return fn();
-// 	}
-// 	create(...args) {
-// 		this.queue = this.queue || [];
-// 		if (this.timer) {
-// 			clearTimeout(this.timer);
-// 			this.timer = null;
-// 		}
-// 		this.timer = setTimeout(() => {
-// 			alert(this.queue.length);
-// 			this.database.write(() => {
-// 				this.queue.forEach(({ db, args }) => this.database.create(...args));
-// 			});
-//
-// 			this.timer = null;
-// 			return this.roles = [];
-// 		}, 1000);
-//
-// 		this.queue.push({
-// 			db: this.database,
-// 			args
-// 		});
-// 	}
-// 	objects(...args) {
-// 		return this.database.objects(...args);
-// 	}
-// }
 class DB {
 	databases = {
 		serversDB: new Realm({
@@ -376,9 +338,3 @@ class DB {
 	}
 }
 export default new DB();
-
-// realm.write(() => {
-// 	realm.create('servers', { id: 'https://open.rocket.chat', current: false }, true);
-// 	realm.create('servers', { id: 'http://localhost:3000', current: false }, true);
-// 	realm.create('servers', { id: 'http://10.0.2.2:3000', current: false }, true);
-// });

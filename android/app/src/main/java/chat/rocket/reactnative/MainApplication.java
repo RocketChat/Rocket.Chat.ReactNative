@@ -43,7 +43,7 @@ public class MainApplication extends NavigationApplication implements INotificat
 
     @Override
     public String getJSMainModuleName() {
-        return "index";
+        return "index.android";
     }
 
     protected List<ReactPackage> getPackages() {

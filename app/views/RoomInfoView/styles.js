@@ -3,6 +3,10 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
 	container: {
 		flex: 1,
+		backgroundColor: '#ffffff'
+	},
+	scroll: {
+		flex: 1,
 		flexDirection: 'column',
 		backgroundColor: '#ffffff',
 		padding: 10

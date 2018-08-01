@@ -76,6 +76,15 @@ export default class SettingsView extends LoggedView {
 		}
 	}
 
+	getLabel = (language) => {
+		const { languages } = this.state;
+		const l = languages.find(i => i.value === language);
+		if (l && l.label) {
+			return l.label;
+		}
+		return null;
+	}
+
 	formIsChanged = () => {
 		const { language } = this.state;
 		return !(this.props.userLanguage === language);
@@ -107,6 +116,10 @@ export default class SettingsView extends LoggedView {
 			this.setState({ saving: false });
 			setTimeout(() => {
 				showToast(I18n.t('Preferences_saved'));
+
+				if (params.language) {
+					this.props.navigator.setTitle({ title: I18n.t('Settings') });
+				}
 			}, 300);
 		} catch (e) {
 			this.setState({ saving: false });
@@ -132,7 +145,7 @@ export default class SettingsView extends LoggedView {
 					testID='settings-view-list'
 					{...scrollPersistTaps}
 				>
-					<SafeAreaView testID='settings-view'>
+					<SafeAreaView style={sharedStyles.container} testID='settings-view'>
 						<RNPickerSelect
 							items={languages}
 							onValueChange={(value) => {
@@ -145,7 +158,7 @@ export default class SettingsView extends LoggedView {
 								inputRef={(e) => { this.name = e; }}
 								label={I18n.t('Language')}
 								placeholder={I18n.t('Language')}
-								value={languages.find(i => i.value === language).label}
+								value={this.getLabel(language)}
 								testID='settings-view-language'
 							/>
 						</RNPickerSelect>

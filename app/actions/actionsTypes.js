@@ -75,7 +75,8 @@ export const SELECTED_USERS = createRequestTypes('SELECTED_USERS', ['ADD_USER', 
 export const NAVIGATION = createRequestTypes('NAVIGATION', ['SET']);
 export const SERVER = createRequestTypes('SERVER', [
 	...defaultTypes,
-	'SELECT',
+	'SELECT_SUCCESS',
+	'SELECT_REQUEST',
 	'CHANGED',
 	'ADD'
 ]);

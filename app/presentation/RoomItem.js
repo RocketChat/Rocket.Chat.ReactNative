@@ -47,16 +47,6 @@ const styles = StyleSheet.create({
 		color: '#444',
 		marginRight: 8
 	},
-	lastMessage: {
-		flex: 1,
-		flexShrink: 1,
-		marginRight: 8,
-		maxHeight: 20,
-		overflow: 'hidden',
-		flexDirection: 'row',
-		alignItems: 'flex-start',
-		justifyContent: 'flex-start'
-	},
 	alert: {
 		fontWeight: 'bold'
 	},
@@ -267,6 +257,11 @@ export default class RoomItem extends React.Component {
 									hashtag: node => (
 										<Text key={node.key}>
 											#{node.content}
+										</Text>
+									),
+									link: (node, children) => (
+										<Text key={node.key}>
+											{children}
 										</Text>
 									)
 								}}

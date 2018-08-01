@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import parseUrls from './parseUrls';
 
 function normalizeAttachments(msg) {
@@ -6,6 +8,9 @@ function normalizeAttachments(msg) {
 	}
 	msg.attachments = msg.attachments.map((att) => {
 		att.fields = att.fields || [];
+		if (att.ts) {
+			att.ts = moment(att.ts).toDate();
+		}
 		att = normalizeAttachments(att);
 		return att;
 	});

@@ -38,6 +38,12 @@ export default class CreateChannelView extends LoggedView {
 		};
 	}
 
+	componentDidMount() {
+		setTimeout(() => {
+			this.channelNameRef.focus();
+		}, 600);
+	}
+
 	submit = () => {
 		if (!this.state.channelName.trim() || this.props.createChannel.isFetching) {
 			return;
@@ -138,12 +144,12 @@ export default class CreateChannelView extends LoggedView {
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
 					<SafeAreaView testID='create-channel-view'>
 						<RCTextInput
+							inputRef={ref => this.channelNameRef = ref}
 							label={I18n.t('Channel_Name')}
 							value={this.state.channelName}
 							onChangeText={channelName => this.setState({ channelName })}
 							placeholder={I18n.t('Type_the_channel_name_here')}
 							returnKeyType='done'
-							autoFocus
 							testID='create-channel-name'
 						/>
 						{this.renderChannelNameError()}
