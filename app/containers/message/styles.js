@@ -107,5 +107,19 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'flex-start',
 		justifyContent: 'flex-start'
+	},
+	imageContainer: {
+		flex: 1,
+		flexDirection: 'column'
+	},
+	image: {
+		width: '100%',
+		maxWidth: 400,
+		height: 300
+	},
+	inlineImage: {
+		width: 300,
+		height: 300,
+		resizeMode: 'contain'
 	}
 });

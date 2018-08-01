@@ -15,6 +15,9 @@ const getLastMessage = () => {
 
 export default async function() {
 	try {
+		if (!this.ddp.status) {
+			return;
+		}
 		const lastMessage = getLastMessage();
 		let emojis = await this.ddp.call('listEmojiCustom');
 		emojis = emojis.filter(emoji => !lastMessage || emoji._updatedAt > lastMessage);

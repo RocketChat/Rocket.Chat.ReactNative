@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, Text } from 'react-native';
+import { FlatList, View, Text, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 
 import LoggedView from '../View';
@@ -102,10 +102,8 @@ export default class SnippetedMessagesView extends LoggedView {
 		}
 
 		return (
-			[
+			<SafeAreaView style={styles.list} testID='snippeted-messages-view'>
 				<FlatList
-					key='snippeted-messages-view-list'
-					testID='snippeted-messages-view'
 					data={messages}
 					renderItem={this.renderItem}
 					style={styles.list}
@@ -114,7 +112,7 @@ export default class SnippetedMessagesView extends LoggedView {
 					ListHeaderComponent={loading ? <RCActivityIndicator /> : null}
 					ListFooterComponent={loadingMore ? <RCActivityIndicator /> : null}
 				/>
-			]
+			</SafeAreaView>
 		);
 	}
 }

@@ -77,8 +77,8 @@ export default class ForgotPasswordView extends LoggedView {
 				keyboardVerticalOffset={128}
 			>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
-					<SafeAreaView testID='forgot-password-view'>
-						<View style={styles.loginView}>
+					<SafeAreaView style={styles.container} testID='forgot-password-view'>
+						<View>
 							<TextInput
 								inputStyle={this.state.invalidEmail ? { borderColor: 'red' } : {}}
 								label={I18n.t('Email')}

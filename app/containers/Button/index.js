@@ -13,6 +13,7 @@ const colors = {
 	textColorSecondary: COLOR_TEXT
 };
 
+/* eslint-disable react-native/no-unused-styles */
 const styles = StyleSheet.create({
 	container: {
 		paddingHorizontal: 15,

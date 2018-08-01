@@ -1,25 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
+
 import PhotoModal from './PhotoModal';
 import Markdown from './Markdown';
-
-const styles = StyleSheet.create({
-	button: {
-		flex: 1,
-		flexDirection: 'column'
-	},
-	image: {
-		width: 320,
-		height: 200
-		// resizeMode: 'cover'
-	},
-	labelContainer: {
-		alignItems: 'flex-start'
-	}
-});
+import styles from './styles';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
@@ -55,7 +42,7 @@ export default class extends React.PureComponent {
 				<TouchableOpacity
 					key='image'
 					onPress={() => this._onPressButton()}
-					style={styles.button}
+					style={styles.imageContainer}
 				>
 					<FastImage
 						style={styles.image}

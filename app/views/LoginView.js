@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Keyboard, Text, ScrollView, View } from 'react-native';
+import { Keyboard, Text, ScrollView, View, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import { Answers } from 'react-native-fabric';
 
@@ -106,7 +106,7 @@ export default class LoginView extends LoggedView {
 				key='login-view'
 			>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
-					<View testID='login-view'>
+					<SafeAreaView style={styles.container} testID='login-view'>
 						<Text style={[styles.loginText, styles.loginTitle]}>Login</Text>
 						<TextInput
 							label={I18n.t('Username')}
@@ -158,7 +158,7 @@ export default class LoginView extends LoggedView {
 
 						{this.props.failure ? <Text style={styles.error}>{this.props.reason}</Text> : null}
 						<Loading visible={this.props.isFetching} />
-					</View>
+					</SafeAreaView>
 				</ScrollView>
 			</KeyboardView>
 		);

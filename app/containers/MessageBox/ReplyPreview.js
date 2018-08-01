@@ -9,7 +9,6 @@ import Markdown from '../message/Markdown';
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
 		flexDirection: 'row'
 	},
 	messageContainer: {
@@ -34,11 +33,6 @@ const styles = StyleSheet.create({
 		fontSize: 12,
 		lineHeight: 16,
 		marginLeft: 5
-	},
-	content: {
-		color: '#0C0D0F',
-		fontSize: 16,
-		lineHeight: 20
 	},
 	close: {
 		marginRight: 15

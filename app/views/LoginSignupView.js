@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, ScrollView, TouchableOpacity, LayoutAnimation, Image, StyleSheet } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, LayoutAnimation, Image, StyleSheet, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -279,7 +279,7 @@ export default class LoginSignupView extends LoggedView {
 				style={[sharedStyles.container, sharedStyles.containerScrollView]}
 				{...scrollPersistTaps}
 			>
-				<View testID='welcome-view'>
+				<SafeAreaView style={sharedStyles.container} testID='welcome-view'>
 					<View style={styles.container}>
 						<Image
 							source={require('../static/images/logo.png')}
@@ -307,7 +307,7 @@ export default class LoginSignupView extends LoggedView {
 						{this.renderServices()}
 					</View>
 					<Loading visible={this.props.isFetching} />
-				</View>
+				</SafeAreaView>
 			</ScrollView>
 		);
 	}

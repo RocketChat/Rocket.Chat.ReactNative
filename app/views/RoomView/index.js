@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, LayoutAnimation, ActivityIndicator } from 'react-native';
+import { Text, View, LayoutAnimation, ActivityIndicator, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
 
@@ -295,7 +295,7 @@ export default class RoomView extends LoggedView {
 
 	render() {
 		return (
-			<View style={styles.container} testID='room-view'>
+			<SafeAreaView style={styles.container} testID='room-view'>
 				{this.renderList()}
 				{this.renderFooter()}
 				{this.state.room._id && this.props.showActions ?
@@ -304,7 +304,7 @@ export default class RoomView extends LoggedView {
 				{this.props.showErrorActions ? <MessageErrorActions /> : null}
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
 				<UploadProgress rid={this.rid} />
-			</View>
+			</SafeAreaView>
 		);
 	}
 }

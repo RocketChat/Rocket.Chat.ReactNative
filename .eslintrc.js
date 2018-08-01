@@ -124,7 +124,8 @@ module.exports = {
 		"prefer-const": 2,
 		"object-shorthand": 2,
 		"consistent-return": 0,
-		"global-require": "off"
+		"global-require": "off",
+		"react-native/no-unused-styles": 2
 	},
 	"globals": {
 		"__DEV__": true

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Platform, View, TextInput, FlatList, BackHandler } from 'react-native';
+import { Platform, View, TextInput, FlatList, BackHandler, ActivityIndicator, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 
 import { iconsMap } from '../../Icons';
@@ -13,11 +13,14 @@ import LoggedView from '../View';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 
+const ROW_HEIGHT = 70.5;
+
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
 	server: state.server.server,
 	Site_Url: state.settings.Site_Url,
-	searchText: state.rooms.searchText
+	searchText: state.rooms.searchText,
+	loadingServer: state.server.loading
 }))
 /** @extends React.Component */
 export default class RoomsListView extends LoggedView {
@@ -26,7 +29,8 @@ export default class RoomsListView extends LoggedView {
 		userId: PropTypes.string,
 		Site_Url: PropTypes.string,
 		server: PropTypes.string,
-		searchText: PropTypes.string
+		searchText: PropTypes.string,
+		loadingServer: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -34,7 +38,8 @@ export default class RoomsListView extends LoggedView {
 
 		this.state = {
 			search: [],
-			rooms: []
+			rooms: [],
+			loading: true
 		};
 		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
@@ -48,7 +53,9 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	componentWillReceiveProps(props) {
-		if (this.props.server !== props.server && props.server) {
+		if (props.server && props.loadingServer) {
+			this.setState({ loading: true });
+		} else if (props.server && !props.loadingServer) {
 			this.getSubscriptions();
 		} else if (this.props.searchText !== props.searchText) {
 			this.search(props.searchText);
@@ -59,6 +66,9 @@ export default class RoomsListView extends LoggedView {
 		this.updateState.stop();
 		if (this.data) {
 			this.data.removeAllListeners();
+		}
+		if (this.timeout) {
+			clearTimeout(this.timeout);
 		}
 	}
 
@@ -104,6 +114,9 @@ export default class RoomsListView extends LoggedView {
 			this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
 			this.data.addListener(this.updateState);
 		}
+		this.timeout = setTimeout(() => {
+			this.setState({ loading: false });
+		}, 200);
 	}
 
 	initDefaultHeader = () => {
@@ -285,24 +298,31 @@ export default class RoomsListView extends LoggedView {
 		/>);
 	}
 
-	renderList = () => (
-		<FlatList
-			data={this.state.search.length > 0 ? this.state.search : this.state.rooms}
-			extraData={this.state.search.length > 0 ? this.state.search : this.state.rooms}
-			keyExtractor={item => item.rid}
-			style={styles.list}
-			renderItem={this.renderItem}
-			ListHeaderComponent={Platform.OS === 'ios' ? this.renderSearchBar : null}
-			contentOffset={Platform.OS === 'ios' ? { x: 0, y: 38 } : {}}
-			enableEmptySections
-			removeClippedSubviews
-			keyboardShouldPersistTaps='always'
-			testID='rooms-list-view-list'
-		/>
-	)
+	renderList = () => {
+		if (this.state.loading) {
+			return <ActivityIndicator style={styles.loading} />;
+		}
+		return (
+			<FlatList
+				data={this.state.search.length > 0 ? this.state.search : this.state.rooms}
+				extraData={this.state.search.length > 0 ? this.state.search : this.state.rooms}
+				keyExtractor={item => item.rid}
+				style={styles.list}
+				renderItem={this.renderItem}
+				ListHeaderComponent={Platform.OS === 'ios' ? this.renderSearchBar : null}
+				contentOffset={Platform.OS === 'ios' ? { x: 0, y: 38 } : {}}
+				getItemLayout={(data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index })}
+				enableEmptySections
+				removeClippedSubviews
+				keyboardShouldPersistTaps='always'
+				testID='rooms-list-view-list'
+			/>
+		);
+	}
 
 	render = () => (
-		<View style={styles.container} testID='rooms-list-view'>
+		<SafeAreaView style={styles.container} testID='rooms-list-view'>
 			{this.renderList()}
-		</View>)
+		</SafeAreaView>
+	)
 }

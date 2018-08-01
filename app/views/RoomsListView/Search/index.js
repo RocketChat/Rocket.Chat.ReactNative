@@ -7,7 +7,10 @@ import { setSearch } from '../../../actions/rooms';
 import styles from './styles';
 import I18n from '../../../i18n';
 
-class RoomsListSearchView extends React.Component {
+@connect(null, dispatch => ({
+	setSearch: searchText => dispatch(setSearch(searchText))
+}))
+export default class RoomsListSearchView extends React.Component {
 	static propTypes = {
 		setSearch: PropTypes.func
 	}
@@ -39,9 +42,3 @@ class RoomsListSearchView extends React.Component {
 		);
 	}
 }
-
-const mapDispatchToProps = dispatch => ({
-	setSearch: searchText => dispatch(setSearch(searchText))
-});
-
-export default connect(null, mapDispatchToProps)(RoomsListSearchView);
