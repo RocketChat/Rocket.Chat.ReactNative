@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, SectionList, Text, Alert } from 'react-native';
+import { View, SectionList, Text, Alert, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
@@ -394,7 +394,7 @@ export default class RoomActionsView extends LoggedView {
 
 	render() {
 		return (
-			<View testID='room-actions-view'>
+			<SafeAreaView style={styles.container} testID='room-actions-view'>
 				<SectionList
 					style={styles.container}
 					stickySectionHeadersEnabled={false}
@@ -404,7 +404,7 @@ export default class RoomActionsView extends LoggedView {
 					keyExtractor={item => item.name}
 					testID='room-actions-list'
 				/>
-			</View>
+			</SafeAreaView>
 		);
 	}
 }

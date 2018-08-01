@@ -6,7 +6,8 @@ const initialState = {
 	errorMessage: '',
 	failure: false,
 	server: '',
-	adding: false
+	adding: false,
+	loading: true
 };
 
 
@@ -38,11 +39,18 @@ export default function server(state = initialState, action) {
 				...state,
 				adding: true
 			};
-		case SERVER.SELECT:
+		case SERVER.SELECT_REQUEST:
 			return {
 				...state,
 				server: action.server,
-				adding: false
+				loading: true
+			};
+		case SERVER.SELECT_SUCCESS:
+			return {
+				...state,
+				server: action.server,
+				adding: false,
+				loading: false
 			};
 		default:
 			return state;

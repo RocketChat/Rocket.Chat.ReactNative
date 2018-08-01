@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Platform } from 'react-native';
+import { Text, Platform, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import { emojify } from 'react-emojione';
 import { connect } from 'react-redux';
@@ -66,6 +66,10 @@ export default class Markdown extends React.Component {
 						return null;
 					},
 					blocklink: () => {},
+					image: node => (
+						// TODO: should use Image component
+						<Image key={node.key} style={styles.inlineImage} source={{ uri: node.attributes.src }} />
+					),
 					...rules
 				}}
 				style={{

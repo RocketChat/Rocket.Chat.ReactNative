@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Keyboard, Text, View, ScrollView } from 'react-native';
+import { Keyboard, Text, View, ScrollView, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 
 import { registerSubmit, setUsernameSubmit } from '../actions/login';
@@ -212,7 +212,7 @@ export default class RegisterView extends LoggedView {
 		return (
 			<KeyboardView contentContainerStyle={styles.container}>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
-					<View testID='register-view'>
+					<SafeAreaView style={styles.container} testID='register-view'>
 						<Text style={[styles.loginText, styles.loginTitle]}>{I18n.t('Sign_Up')}</Text>
 						{this._renderRegister()}
 						{this._renderUsername()}
@@ -223,7 +223,7 @@ export default class RegisterView extends LoggedView {
 							: null
 						}
 						<Loading visible={this.props.login.isFetching} />
-					</View>
+					</SafeAreaView>
 				</ScrollView>
 			</KeyboardView>
 		);

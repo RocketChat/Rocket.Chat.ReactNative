@@ -5,6 +5,10 @@ import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
+	const appRoot = yield select(state => state.app.root);
+	if (appRoot === 'outside') {
+		return;
+	}
 	const auth = yield select(state => state.login.isAuthenticated);
 	if (!auth) {
 		return;
@@ -17,6 +21,10 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 };
 
 const appHasComeBackToBackground = function* appHasComeBackToBackground() {
+	const appRoot = yield select(state => state.app.root);
+	if (appRoot === 'outside') {
+		return;
+	}
 	const auth = yield select(state => state.login.isAuthenticated);
 	if (!auth) {
 		return;
