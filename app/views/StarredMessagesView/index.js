@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, Text } from 'react-native';
+import { FlatList, View, Text, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
 
@@ -69,7 +69,9 @@ export default class StarredMessagesView extends LoggedView {
 
 	onLongPress = (message) => {
 		this.setState({ message });
-		this.actionSheet.show();
+		if (this.actionSheet && this.actionSheet.show) {
+			this.actionSheet.show();
+		}
 	}
 
 	handleActionPress = (actionIndex) => {
@@ -126,10 +128,8 @@ export default class StarredMessagesView extends LoggedView {
 		}
 
 		return (
-			[
+			<SafeAreaView style={styles.list} testID='starred-messages-view'>
 				<FlatList
-					key='starred-messages-view-list'
-					testID='starred-messages-view'
 					data={messages}
 					renderItem={this.renderItem}
 					style={styles.list}
@@ -137,16 +137,15 @@ export default class StarredMessagesView extends LoggedView {
 					onEndReached={this.moreData}
 					ListHeaderComponent={loading ? <RCActivityIndicator /> : null}
 					ListFooterComponent={loadingMore ? <RCActivityIndicator /> : null}
-				/>,
+				/>
 				<ActionSheet
-					key='starred-messages-view-action-sheet'
 					ref={o => this.actionSheet = o}
 					title={I18n.t('Actions')}
 					options={options}
 					cancelButtonIndex={CANCEL_INDEX}
 					onPress={this.handleActionPress}
 				/>
-			]
+			</SafeAreaView>
 		);
 	}
 }

@@ -66,13 +66,21 @@ export default class Loading extends React.PureComponent {
 	}
 
 	componentWillUnmount() {
-		this.opacityAnimation.stop();
-		this.scaleAnimation.stop();
+		if (this.opacityAnimation && this.opacityAnimation.stop) {
+			this.opacityAnimation.stop();
+		}
+		if (this.scaleAnimation && this.scaleAnimation.stop) {
+			this.scaleAnimation.stop();
+		}
 	}
 
 	startAnimations() {
-		this.opacityAnimation.start();
-		this.scaleAnimation.start();
+		if (this.opacityAnimation && this.opacityAnimation.start) {
+			this.opacityAnimation.start();
+		}
+		if (this.scaleAnimation && this.scaleAnimation.start) {
+			this.scaleAnimation.start();
+		}
 	}
 
 	render() {

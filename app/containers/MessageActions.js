@@ -121,7 +121,9 @@ export default class MessageActions extends React.Component {
 			this.DELETE_INDEX = this.options.length - 1;
 		}
 		setTimeout(() => {
-			this.ActionSheet.show();
+			if (this.actionSheet && this.actionSheet.show) {
+				this.actionSheet.show();
+			}
 			Vibration.vibrate(50);
 		});
 	}
@@ -301,7 +303,7 @@ export default class MessageActions extends React.Component {
 	render() {
 		return (
 			<ActionSheet
-				ref={o => this.ActionSheet = o}
+				ref={o => this.actionSheet = o}
 				title={I18n.t('Message_actions')}
 				testID='message-actions'
 				options={this.options}

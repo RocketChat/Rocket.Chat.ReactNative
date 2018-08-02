@@ -27,7 +27,9 @@ export default class FilesActions extends Component {
 		this.LIBRARY_INDEX = 2;
 
 		setTimeout(() => {
-			this.ActionSheet.show();
+			if (this.actionSheet && this.actionSheet.show) {
+				this.actionSheet.show();
+			}
 		});
 	}
 
@@ -49,7 +51,7 @@ export default class FilesActions extends Component {
 	render() {
 		return (
 			<ActionSheet
-				ref={o => this.ActionSheet = o}
+				ref={o => this.actionSheet = o}
 				options={this.options}
 				cancelButtonIndex={this.CANCEL_INDEX}
 				onPress={this.handleActionPress}

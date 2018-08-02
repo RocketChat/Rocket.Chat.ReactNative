@@ -297,11 +297,9 @@ export default class SelectedUsersView extends LoggedView {
 		/>
 	);
 	render = () => (
-		<View style={styles.container} testID='select-users-view'>
-			<SafeAreaView style={styles.safeAreaView}>
-				{this.renderList()}
-				<Loading visible={this.props.loading} />
-			</SafeAreaView>
-		</View>
+		<SafeAreaView style={styles.safeAreaView} testID='select-users-view'>
+			{this.renderList()}
+			<Loading visible={this.props.loading} />
+		</SafeAreaView>
 	);
 }

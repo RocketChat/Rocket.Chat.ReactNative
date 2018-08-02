@@ -6,7 +6,7 @@ import { NavigationActions } from '../Navigation';
 import { SERVER } from '../actions/actionsTypes';
 import * as actions from '../actions';
 import { connectRequest } from '../actions/connect';
-import { serverSuccess, serverFailure, selectServer } from '../actions/server';
+import { serverSuccess, serverFailure, selectServerRequest, selectServerSuccess } from '../actions/server';
 import { setRoles } from '../actions/roles';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
@@ -20,11 +20,14 @@ const validate = function* validate(server) {
 const handleSelectServer = function* handleSelectServer({ server }) {
 	try {
 		yield database.setActiveDB(server);
-
-		// yield RocketChat.disconnect();
-
 		yield call([AsyncStorage, 'setItem'], 'currentServer', server);
-		// yield AsyncStorage.removeItem(RocketChat.TOKEN_KEY);
+		const token = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		if (token) {
+			yield put(actions.appStart('inside'));
+		} else {
+			yield put(actions.appStart('outside'));
+		}
+
 		const settings = database.objects('settings');
 		yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
 		const emojis = database.objects('customEmojis');
@@ -36,6 +39,7 @@ const handleSelectServer = function* handleSelectServer({ server }) {
 		}, {})));
 
 		yield put(connectRequest());
+		yield put(selectServerSuccess(server));
 	} catch (e) {
 		log('handleSelectServer', e);
 	}
@@ -59,7 +63,7 @@ const addServer = function* addServer({ server }) {
 		database.databases.serversDB.write(() => {
 			database.databases.serversDB.create('servers', { id: server, current: false }, true);
 		});
-		yield put(selectServer(server));
+		yield put(selectServerRequest(server));
 	} catch (e) {
 		log('addServer', e);
 	}
@@ -67,7 +71,7 @@ const addServer = function* addServer({ server }) {
 
 const root = function* root() {
 	yield takeLatest(SERVER.REQUEST, validateServer);
-	yield takeLatest(SERVER.SELECT, handleSelectServer);
+	yield takeLatest(SERVER.SELECT_REQUEST, handleSelectServer);
 	yield takeLatest(SERVER.ADD, addServer);
 };
 export default root;

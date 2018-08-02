@@ -17,13 +17,14 @@ import {
 	setUsernameRequest,
 	setUsernameSuccess,
 	forgotPasswordSuccess,
-	forgotPasswordFailure
+	forgotPasswordFailure,
+	setUser
 } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import I18n from '../i18n';
 
-const getUser = state => state.login;
+const getUser = state => state.login.user;
 const getServer = state => state.server.server;
 const getIsConnected = state => state.meteor.connected;
 
@@ -36,15 +37,10 @@ const forgotPasswordCall = args => RocketChat.forgotPassword(args);
 
 const handleLoginSuccess = function* handleLoginSuccess() {
 	try {
-		const [server, user] = yield all([select(getServer), select(getUser)]);
+		const user = yield select(getUser);
 		yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
-		yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
-		// const token = yield AsyncStorage.getItem('pushId');
-		// if (token) {
-		// 	yield RocketChat.registerPushToken(user.user.id, token);
-		// }
-		yield RocketChat.registerPushToken(user.user.id);
-		if (!user.user.username || user.isRegistering) {
+		yield put(setUser(user));
+		if (!user.username || user.isRegistering) {
 			yield put(registerIncomplete());
 		} else {
 			yield delay(300);
@@ -127,17 +123,22 @@ const watchLoginOpen = function* watchLoginOpen() {
 		}
 		const sub = yield RocketChat.subscribe('meteor.loginServiceConfiguration');
 		yield take(types.LOGIN.CLOSE);
-		yield sub.unsubscribe().catch(err => console.warn(err));
+		if (sub) {
+			yield sub.unsubscribe().catch(err => console.warn(err));
+		}
 	} catch (e) {
 		log('watchLoginOpen', e);
 	}
 };
 
-// eslint-disable-next-line require-yield
-const handleSetUser = function* handleSetUser(params) {
+const handleSetUser = function* handleSetUser() {
 	const [server, user] = yield all([select(getServer), select(getUser)]);
-	if (params.language) {
-		I18n.locale = params.language;
+	if (user) {
+		// TODO: temporary... remove in future releases
+		delete user.user;
+		if (user.language) {
+			I18n.locale = user.language;
+		}
 	}
 	yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
 };

@@ -73,6 +73,8 @@ export default class Socket extends EventEmitter {
 		this.subscriptions = {};
 		this.ddp = new EventEmitter();
 		this._logged = false;
+		this.forceDisconnect = false;
+		this.connected = false;
 		const waitTimeout = () => setTimeout(() => {
 			// this.connection.ping();
 			this.send({ msg: 'ping' }).catch(e => log('ping', e));
@@ -164,8 +166,11 @@ export default class Socket extends EventEmitter {
 		}
 	}
 	async send(obj, ignore) {
-		console.log('send');
+		console.log('send', obj);
 		return new Promise((resolve, reject) => {
+			if (!this.connected) {
+				return reject();
+			}
 			this.id += 1;
 			const id = obj.id || `ddp-react-native-${ this.id }`;
 			// console.log('send', { ...obj, id });
@@ -209,15 +214,19 @@ export default class Socket extends EventEmitter {
 			this.connection = new WebSocket(`${ this.url }/websocket`, null);
 
 			this.connection.onopen = async() => {
+				this.connected = true;
+				this.forceDisconnect = false;
 				this.emit('open');
 				resolve();
 				this.ddp.emit('open');
+				console.log(`Connected to: ${ this.url }`);
 				if (this._login) {
 					return this.login(this._login).catch(e => console.warn(e));
 				}
 			};
 			this.connection.onclose = debounce((e) => {
 				this.emit('disconnected', e);
+				this.connected = false;
 			}, 300);
 			this.connection.onmessage = (e) => {
 				try {
@@ -238,13 +247,17 @@ export default class Socket extends EventEmitter {
 			.finally(() => this.subscriptions = {});
 	}
 	disconnect() {
-		this._close();
 		this._logged = false;
 		this._login = null;
 		this.subscriptions = {};
+		this.forceDisconnect = true;
+		this._close();
+		if (this.timeout) {
+			clearTimeout(this.timeout);
+		}
 	}
 	async reconnect() {
-		if (this._timer) {
+		if (this._timer || this.forceDisconnect) {
 			return;
 		}
 		this._close();

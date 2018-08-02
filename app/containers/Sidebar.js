@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView, Text, View, StyleSheet, FlatList, LayoutAnimation, AsyncStorage, SafeAreaView } from 'react-native';
+import { ScrollView, Text, View, StyleSheet, FlatList, LayoutAnimation, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import database from '../lib/realm';
-import { selectServer } from '../actions/server';
+import { selectServerRequest } from '../actions/server';
 import { logout } from '../actions/login';
-import { appStart } from '../actions';
 import Avatar from '../containers/Avatar';
 import Status from '../containers/status';
 import Touch from '../utils/touch';
@@ -19,8 +18,9 @@ import I18n from '../i18n';
 import { NavigationActions } from '../Navigation';
 
 const styles = StyleSheet.create({
-	selected: {
-		backgroundColor: 'rgba(0, 0, 0, .04)'
+	container: {
+		flex: 1,
+		backgroundColor: '#fff'
 	},
 	item: {
 		flexDirection: 'row',
@@ -30,9 +30,6 @@ const styles = StyleSheet.create({
 		marginHorizontal: 10,
 		width: 30,
 		alignItems: 'center'
-	},
-	itemLeftOpacity: {
-		opacity: 0.62
 	},
 	itemText: {
 		marginVertical: 16,
@@ -88,18 +85,16 @@ const keyExtractor = item => item.id;
 		username: state.login.user && state.login.user.username
 	}
 }), dispatch => ({
-	selectServer: server => dispatch(selectServer(server)),
-	logout: () => dispatch(logout()),
-	appStart: () => dispatch(appStart('outside'))
+	selectServerRequest: server => dispatch(selectServerRequest(server)),
+	logout: () => dispatch(logout())
 }))
 export default class Sidebar extends Component {
 	static propTypes = {
 		navigator: PropTypes.object,
 		server: PropTypes.string.isRequired,
-		selectServer: PropTypes.func.isRequired,
+		selectServerRequest: PropTypes.func.isRequired,
 		user: PropTypes.object,
-		logout: PropTypes.func.isRequired,
-		appStart: PropTypes.func
+		logout: PropTypes.func.isRequired
 	}
 
 	constructor(props) {
@@ -127,7 +122,7 @@ export default class Sidebar extends Component {
 	}
 
 	onPressItem = (item) => {
-		this.props.selectServer(item.id);
+		this.props.selectServerRequest(item.id);
 	}
 
 	setStatus = () => {
@@ -230,11 +225,7 @@ export default class Sidebar extends Component {
 				this.closeDrawer();
 				this.toggleServers();
 				if (this.props.server !== item.id) {
-					this.props.selectServer(item.id);
-					const token = await AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ item.id }`);
-					if (!token) {
-						this.props.appStart();
-					}
+					this.props.selectServerRequest(item.id);
 				}
 			},
 			testID: `sidebar-${ item.id }`
@@ -314,8 +305,8 @@ export default class Sidebar extends Component {
 			return null;
 		}
 		return (
-			<ScrollView style={{ backgroundColor: '#fff' }}>
-				<SafeAreaView testID='sidebar'>
+			<ScrollView style={styles.container}>
+				<SafeAreaView testID='sidebar' style={styles.container}>
 					<Touch
 						onPress={() => this.toggleServers()}
 						underlayColor='rgba(255, 255, 255, 0.5)'
@@ -331,9 +322,9 @@ export default class Sidebar extends Component {
 							<View style={styles.headerTextContainer}>
 								<View style={styles.headerUsername}>
 									<Status style={styles.status} id={user.id} />
-									<Text>{user.username}</Text>
+									<Text numberOfLines={1}>{user.username}</Text>
 								</View>
-								<Text style={styles.currentServerText}>{server}</Text>
+								<Text style={styles.currentServerText} numberOfLines={1}>{server}</Text>
 							</View>
 							<Icon
 								name={this.state.showServers ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}

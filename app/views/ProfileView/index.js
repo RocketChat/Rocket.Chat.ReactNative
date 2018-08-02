@@ -378,7 +378,7 @@ export default class ProfileView extends LoggedView {
 					testID='profile-view-list'
 					{...scrollPersistTaps}
 				>
-					<SafeAreaView testID='profile-view'>
+					<SafeAreaView style={sharedStyles.container} testID='profile-view'>
 						<View style={styles.avatarContainer} testID='profile-view-avatar'>
 							<Avatar
 								text={username}
