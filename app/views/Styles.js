@@ -8,7 +8,7 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	containerScrollView: {
-		padding: 20
+		padding: 15
 	},
 	label: {
 		lineHeight: 40,

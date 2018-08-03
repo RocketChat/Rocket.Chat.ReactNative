@@ -23,6 +23,7 @@ import {
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import I18n from '../i18n';
+import { NavigationActions } from '../Navigation';
 
 const getUser = state => state.login.user;
 const getServer = state => state.server.server;
@@ -43,6 +44,7 @@ const handleLoginSuccess = function* handleLoginSuccess() {
 		if (!user.username || user.isRegistering) {
 			yield put(registerIncomplete());
 		} else {
+			NavigationActions.dismissModal();
 			yield delay(300);
 			yield put(appStart('inside'));
 		}
@@ -103,7 +105,10 @@ const handleLogout = function* handleLogout() {
 };
 
 const handleRegisterIncomplete = function* handleRegisterIncomplete() {
-	yield put(appStart('outside'));
+	const server = yield select(state => state.server);
+	if (!server.adding) {
+		yield put(appStart('outside'));
+	}
 };
 
 const handleForgotPasswordRequest = function* handleForgotPasswordRequest({ email }) {

@@ -12,7 +12,8 @@ const icons = {
 	[`${ prefix }-star-outline`]: [30, Ionicons, 'starOutline'],
 	[isIOS ? 'ios-create-outline' : 'md-create']: [30, Ionicons, 'create'],
 	[`${ prefix }-more`]: [30, Ionicons, 'more'],
-	[`${ prefix }-add`]: [30, Ionicons, 'add']
+	[`${ prefix }-add`]: [30, Ionicons, 'add'],
+	[`${ prefix }-close`]: [30, Ionicons, 'close']
 };
 
 const iconsMap = {};

@@ -17,6 +17,7 @@ import { leaveRoom } from '../../actions/room';
 import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
+import scrollPersistTaps from '../../utils/scrollPersistTaps';
 
 const renderSeparator = () => <View style={styles.separator} />;
 const getRoomTitle = room => (room.t === 'd' ? <Text>{room.fname}</Text> : <Text><RoomTypeIcon type={room.t} />&nbsp;{room.name}</Text>);
@@ -403,6 +404,7 @@ export default class RoomActionsView extends LoggedView {
 					ItemSeparatorComponent={renderSeparator}
 					keyExtractor={item => item.name}
 					testID='room-actions-list'
+					{...scrollPersistTaps}
 				/>
 			</SafeAreaView>
 		);

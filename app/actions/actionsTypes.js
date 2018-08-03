@@ -76,9 +76,7 @@ export const NAVIGATION = createRequestTypes('NAVIGATION', ['SET']);
 export const SERVER = createRequestTypes('SERVER', [
 	...defaultTypes,
 	'SELECT_SUCCESS',
-	'SELECT_REQUEST',
-	'CHANGED',
-	'ADD'
+	'SELECT_REQUEST'
 ]);
 export const METEOR = createRequestTypes('METEOR_CONNECT', [...defaultTypes, 'DISCONNECT', 'DISCONNECT_BY_USER']);
 export const LOGOUT = 'LOGOUT'; // logout is always success

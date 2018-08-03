@@ -89,8 +89,8 @@ describe('Broadcast room', () => {
 
 	it('should tap on reply button and navigate to direct room', async() => {
 		await element(by.text('Reply')).tap();
-		await waitFor(element(by.text(data.user))).toBeVisible().withTimeout(60000);
-		await expect(element(by.text(data.user))).toBeVisible();
+		await waitFor(element(by.text(data.user)).atIndex(0)).toBeVisible().withTimeout(60000);
+		await expect(element(by.text(data.user)).atIndex(0)).toBeVisible();
 	});
 
 	it('should reply broadcasted message', async() => {

@@ -72,7 +72,7 @@ export default class RoomView extends LoggedView {
 		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
 
-	async componentWillMount() {
+	componentWillMount() {
 		this.props.navigator.setButtons({
 			rightButtons: [{
 				id: 'more',
