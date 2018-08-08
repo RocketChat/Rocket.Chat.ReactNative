@@ -63,7 +63,7 @@
     "react-native-slider": "^0.11.0",
     "react-native-svg": "^6.4.1",
     "react-native-svg-image": "^2.0.1",
-    "react-native-vector-icons": "^4.6.0",
+    "react-native-vector-icons": "^5.0.0",
     "react-native-video": "^3.0.0",
     "react-native-video-controls": "^2.2.3",
     "react-native-zeroconf": "^0.9.0",
