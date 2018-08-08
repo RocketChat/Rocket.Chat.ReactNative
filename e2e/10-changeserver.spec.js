@@ -7,6 +7,7 @@ const data = require('./data');
 describe('Change server', () => {
 	before(async() => {
 		await device.reloadReactNative();
+		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 	});
 
 	it('should add server and create new user', async() => {

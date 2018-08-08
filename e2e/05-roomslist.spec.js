@@ -6,9 +6,9 @@ const { login, navigateToLogin, tapBack } = require('./helpers/app');
 const data = require('./data');
 
 describe('Rooms list screen', () => {
-	before(async() => {
-		await device.reloadReactNative(); // TODO: remove this after fix logout subscription
-	});
+	// before(async() => {
+	// 	await device.reloadReactNative(); // TODO: remove this after fix logout subscription
+	// });
 
 	describe('Render', async() => {
 		it('should have rooms list screen', async() => {

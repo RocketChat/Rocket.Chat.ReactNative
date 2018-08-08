@@ -10,7 +10,7 @@ const icons = {
 	[`${ prefix }-menu`]: [30, Ionicons, 'menu'],
 	[`${ prefix }-star`]: [30, Ionicons, 'star'],
 	[`${ prefix }-star-outline`]: [30, Ionicons, 'starOutline'],
-	[isIOS ? 'ios-create-outline' : 'md-create']: [30, Ionicons, 'create'],
+	[isIOS ? 'ios-create' : 'md-create']: [30, Ionicons, 'create'],
 	[`${ prefix }-more`]: [30, Ionicons, 'more'],
 	[`${ prefix }-add`]: [30, Ionicons, 'add'],
 	[`${ prefix }-close`]: [30, Ionicons, 'close']

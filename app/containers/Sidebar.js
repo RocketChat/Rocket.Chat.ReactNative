@@ -327,8 +327,8 @@ export default class Sidebar extends Component {
 			return null;
 		}
 		return (
-			<ScrollView style={styles.container} {...scrollPersistTaps}>
-				<SafeAreaView testID='sidebar' style={styles.container}>
+			<SafeAreaView testID='sidebar' style={styles.container}>
+				<ScrollView style={styles.container} {...scrollPersistTaps}>
 					<Touch
 						onPress={() => this.toggleServers()}
 						underlayColor='rgba(255, 255, 255, 0.5)'
@@ -360,8 +360,8 @@ export default class Sidebar extends Component {
 
 					{!this.state.showServers ? this.renderNavigation() : null}
 					{this.state.showServers ? this.renderServers() : null}
-				</SafeAreaView>
-			</ScrollView>
+				</ScrollView>
+			</SafeAreaView>
 		);
 	}
 }

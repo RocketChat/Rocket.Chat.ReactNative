@@ -44,8 +44,8 @@ const handleLoginSuccess = function* handleLoginSuccess() {
 		if (!user.username || user.isRegistering) {
 			yield put(registerIncomplete());
 		} else {
-			NavigationActions.dismissModal();
 			yield delay(300);
+			NavigationActions.dismissModal();
 			yield put(appStart('inside'));
 		}
 	} catch (e) {

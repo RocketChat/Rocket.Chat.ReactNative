@@ -123,13 +123,13 @@ export default class RoomActionsView extends LoggedView {
 		}, {
 			data: [
 				{
-					icon: 'ios-call-outline',
+					icon: 'ios-call',
 					name: I18n.t('Voice_call'),
 					disabled: true,
 					testID: 'room-actions-voice'
 				},
 				{
-					icon: 'ios-videocam-outline',
+					icon: 'ios-videocam',
 					name: I18n.t('Video_call'),
 					disabled: true,
 					testID: 'room-actions-video'
@@ -146,14 +146,14 @@ export default class RoomActionsView extends LoggedView {
 					testID: 'room-actions-files'
 				},
 				{
-					icon: 'ios-at-outline',
+					icon: 'ios-at',
 					name: I18n.t('Mentions'),
 					route: 'MentionedMessagesView',
 					params: { rid },
 					testID: 'room-actions-mentioned'
 				},
 				{
-					icon: 'ios-star-outline',
+					icon: 'ios-star',
 					name: I18n.t('Starred'),
 					route: 'StarredMessagesView',
 					params: { rid },
@@ -167,7 +167,7 @@ export default class RoomActionsView extends LoggedView {
 					testID: 'room-actions-search'
 				},
 				{
-					icon: 'ios-share-outline',
+					icon: 'ios-share',
 					name: I18n.t('Share'),
 					disabled: true,
 					testID: 'room-actions-share'
@@ -187,7 +187,7 @@ export default class RoomActionsView extends LoggedView {
 					testID: 'room-actions-snippeted'
 				},
 				{
-					icon: `ios-notifications${ notifications ? '' : '-off' }-outline`,
+					icon: `ios-notifications${ notifications ? '' : '-off' }`,
 					name: I18n.t(`${ notifications ? 'Enable' : 'Disable' }_notifications`),
 					event: () => this.toggleNotifications(),
 					testID: 'room-actions-notifications'

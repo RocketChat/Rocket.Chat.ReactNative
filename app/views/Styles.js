@@ -191,11 +191,6 @@ export default StyleSheet.create({
 		fontSize: 20,
 		marginBottom: 20
 	},
-	loginLogo: {
-		width: 50,
-		height: 50,
-		marginVertical: 25
-	},
 	headerButton: {
 		backgroundColor: 'transparent',
 		height: 44,

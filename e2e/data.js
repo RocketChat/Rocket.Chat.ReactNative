@@ -5,9 +5,9 @@ const data = {
     alternateServer: 'https://open.rocket.chat',
     user: `user${ value }`,
     password: `password${ value }`,
-    alternateUser: 'detoxrn',
+    alternateUser: 'detox',
     alternateUserPassword: '123',
-    email: `detoxrn+${ value }@rocket.chat`,
+    email: `diego.mello+e2e${ value }@rocket.chat`,
     random: value
 }
 module.exports = data;
