@@ -1,8 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, ViewPropTypes } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { connect } from 'react-redux';
 
 import Avatar from '../containers/Avatar';
@@ -15,77 +14,81 @@ import I18n from '../i18n';
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
-		paddingHorizontal: 16,
-		paddingVertical: 12,
-		alignItems: 'center',
-		borderBottomWidth: StyleSheet.hairlineWidth,
-		borderBottomColor: '#ddd'
+		alignItems: 'center'
 	},
-	number: {
-		minWidth: 25,
+	centerContainer: {
+		flex: 1,
+		height: '100%',
+		marginRight: 4
+	},
+	title: {
+		flex: 1,
+		fontSize: 18,
+		color: '#0C0D0F',
+		fontWeight: '400',
+		marginRight: 5,
+		paddingTop: 0,
+		paddingBottom: 0
+	},
+	alert: {
+		fontWeight: '600'
+	},
+	row: {
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'flex-start'
+	},
+	titleContainer: {
+		width: '100%',
+		marginTop: 5,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	date: {
+		fontSize: 14,
+		color: '#9EA2A8',
+		fontWeight: 'normal',
+		paddingTop: 0,
+		paddingBottom: 0
+	},
+	updateAlert: {
+		color: '#1D74F5'
+	},
+	unreadNumberContainer: {
+		padding: 3,
 		borderRadius: 4,
-		backgroundColor: '#1d74f5',
+		backgroundColor: '#1D74F5',
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	unreadNumberText: {
 		color: '#fff',
 		overflow: 'hidden',
 		fontSize: 14,
-		paddingVertical: 4,
-		paddingHorizontal: 5,
-
-		textAlign: 'center',
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	roomNameView: {
-		flex: 1,
-		height: '100%',
-		marginLeft: 16,
-		marginRight: 4
-	},
-	roomName: {
-		flex: 1,
-		fontSize: 18,
-		color: '#444',
-		marginRight: 8
-	},
-	alert: {
-		fontWeight: 'bold'
-	},
-	favorite: {
-		// backgroundColor: '#eee'
-	},
-	row: {
-		// width: '100%',
-		flex: 1,
-		flexDirection: 'row',
-		alignItems: 'center'
-		// justifyContent: 'flex-end'
-	},
-	firstRow: {
-		width: '100%',
-		flex: 1,
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	update: {
-		fontSize: 10,
-		color: '#888',
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	updateAlert: {
-		color: '#1d74f5'
+		fontWeight: '500',
+		letterSpacing: 0.56
 	},
 	status: {
-		position: 'absolute',
-		bottom: -3,
-		right: -3,
-		borderWidth: 3,
-		borderColor: '#fff'
-	},
-	type: {
-		marginRight: 5,
+		borderRadius: 10,
+		width: 10,
+		height: 10,
+		marginRight: 7,
 		marginTop: 3
+	},
+	disclosureContainer: {
+		height: '100%',
+		width: 32,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	markdownRoot: {
+		flex: 1
+	},
+	markdownText: {
+		color: '#9EA2A8',
+		fontSize: 15,
+		fontWeight: 'normal'
 	}
 });
 
@@ -103,9 +106,9 @@ const renderNumber = (unread, userMentions) => {
 	}
 
 	return (
-		<Text style={styles.number}>
-			{ unread }
-		</Text>
+		<View style={styles.unreadNumberContainer}>
+			<Text style={styles.unreadNumberText}>{ unread }</Text>
+		</View>
 	);
 };
 
@@ -131,13 +134,13 @@ export default class RoomItem extends React.Component {
 		onLongPress: PropTypes.func,
 		username: PropTypes.string,
 		avatarSize: PropTypes.number,
-		statusStyle: ViewPropTypes.style,
-		testID: PropTypes.string
+		testID: PropTypes.string,
+		height: PropTypes.number
 	}
 
 	static defaultProps = {
 		showLastMessage: true,
-		avatarSize: 46
+		avatarSize: 48
 	}
 	shouldComponentUpdate(nextProps) {
 		const oldlastMessage = this.props.lastMessage;
@@ -151,11 +154,9 @@ export default class RoomItem extends React.Component {
 		}
 		return attrs.some(key => nextProps[key] !== this.props[key]);
 	}
-	get icon() {
-		const {
-			type, name, id, avatarSize, statusStyle
-		} = this.props;
-		return (<Avatar text={name} size={avatarSize} type={type}>{type === 'd' ? <Status style={[styles.status, statusStyle]} id={id} /> : null }</Avatar>);
+	get avatar() {
+		const { type, name, avatarSize } = this.props;
+		return <Avatar text={name} size={avatarSize} type={type} style={{ marginHorizontal: 15 }} />;
 	}
 
 	get lastMessage() {
@@ -179,18 +180,16 @@ export default class RoomItem extends React.Component {
 		}
 
 		const msg = `${ prefix }${ lastMessage.msg.replace(/[\n\t\r]/igm, '') }`;
-		const maxChars = 35;
+		const maxChars = 60;
 		return `${ msg.slice(0, maxChars) }${ msg.replace(/:[a-z0-9]+:/gi, ':::').length > maxChars ? '...' : '' }`;
 	}
 
 	get type() {
-		const icon = {
-			c: 'pound',
-			p: 'lock',
-			l: 'account',
-			d: 'at'
-		}[this.props.type];
-		return <Icon name={icon} size={15} style={styles.type} />;
+		const { type, id } = this.props;
+		if (type === 'd') {
+			return <Status style={[styles.status]} id={id} />;
+		}
+		return <RoomTypeIcon type={type} />;
 	}
 
 	formatDate = date => moment(date).calendar(null, {
@@ -202,7 +201,7 @@ export default class RoomItem extends React.Component {
 
 	render() {
 		const {
-			favorite, unread, userMentions, name, _updatedAt, alert, type, testID
+			favorite, unread, userMentions, name, _updatedAt, alert, testID, height
 		} = this.props;
 
 		const date = this.formatDate(_updatedAt);
@@ -232,21 +231,20 @@ export default class RoomItem extends React.Component {
 				accessibilityTraits='selected'
 				testID={testID}
 			>
-				<View style={[styles.container, favorite && styles.favorite]}>
-					{this.icon}
-					<View style={styles.roomNameView}>
-						<View style={styles.firstRow}>
-							<RoomTypeIcon type={type} />
-							<Text style={[styles.roomName, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
-							{_updatedAt ? <Text style={[styles.update, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
+				<View style={[styles.container, favorite && styles.favorite, height && { height }]}>
+					{this.avatar}
+					<View style={styles.centerContainer}>
+						<View style={styles.titleContainer}>
+							{this.type}
+							<Text style={[styles.title, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
+							{_updatedAt ? <Text style={[styles.date, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
 						</View>
 						<View style={styles.row}>
 							<Markdown
 								msg={this.lastMessage}
 								style={{
-									root: {
-										flex: 1
-									}
+									root: styles.markdownRoot,
+									text: styles.markdownText
 								}}
 								rules={{
 									mention: node => (
@@ -268,6 +266,9 @@ export default class RoomItem extends React.Component {
 							/>
 							{renderNumber(unread, userMentions)}
 						</View>
+					</View>
+					<View style={styles.disclosureContainer}>
+						<Image source={require('../static/images/disclosureIndicator.png')} />
 					</View>
 				</View>
 			</Touch>

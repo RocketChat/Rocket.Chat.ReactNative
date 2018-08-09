@@ -13,7 +13,7 @@ import LoggedView from '../View';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 
-const ROW_HEIGHT = 70.5;
+const ROW_HEIGHT = 70;
 
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
@@ -295,8 +295,11 @@ export default class RoomsListView extends LoggedView {
 			baseUrl={this.props.Site_Url}
 			onPress={() => this._onPressItem(item)}
 			testID={`rooms-list-view-item-${ item.name }`}
+			height={ROW_HEIGHT}
 		/>);
 	}
+
+	renderSeparator = () => <View style={styles.separator} />;
 
 	renderList = () => {
 		if (this.state.loading) {
@@ -309,6 +312,7 @@ export default class RoomsListView extends LoggedView {
 				keyExtractor={item => item.rid}
 				style={styles.list}
 				renderItem={this.renderItem}
+				ItemSeparatorComponent={this.renderSeparator}
 				ListHeaderComponent={Platform.OS === 'ios' ? this.renderSearchBar : null}
 				contentOffset={Platform.OS === 'ios' ? { x: 0, y: 38 } : {}}
 				getItemLayout={(data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index })}

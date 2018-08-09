@@ -5,8 +5,9 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	separator: {
-		height: 1,
-		backgroundColor: '#E7E7E7'
+		height: StyleSheet.hairlineWidth,
+		backgroundColor: '#E1E5E8',
+		marginLeft: 78
 	},
 	list: {
 		width: '100%',
