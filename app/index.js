@@ -4,7 +4,6 @@ import { Navigation } from 'react-native-navigation';
 
 import store from './lib/createStore';
 import { appInit } from './actions';
-import database from './lib/realm';
 import { iconsLoaded } from './Icons';
 import { registerScreens } from './views';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -27,19 +26,19 @@ const startLogged = () => {
 	});
 };
 
-const startNotLogged = (route) => {
+const startNotLogged = () => {
 	Navigation.startSingleScreenApp({
 		screen: {
-			screen: route,
-			title: route === 'NewServerView' ? I18n.t('New_Server') : I18n.t('Servers')
+			screen: 'OnboardingView',
+			navigatorStyle: {
+				navBarHidden: true
+			}
 		},
-		animationType: 'fade'
+		animationType: 'fade',
+		appStyle: {
+			orientation: 'portrait'
+		}
 	});
-};
-
-const hasServers = () => {
-	const db = database.databases.serversDB.objects('servers');
-	return db.length > 0;
 };
 
 const handleOpenURL = ({ url }) => {
@@ -77,11 +76,7 @@ export default class App extends Component {
 		if (this.currentRoot !== root) {
 			this.currentRoot = root;
 			if (root === 'outside') {
-				if (hasServers()) {
-					startNotLogged('ListServerView');
-				} else {
-					startNotLogged('NewServerView');
-				}
+				startNotLogged();
 			} else if (root === 'inside') {
 				startLogged();
 			}

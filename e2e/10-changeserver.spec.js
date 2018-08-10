@@ -7,6 +7,7 @@ const data = require('./data');
 describe('Change server', () => {
 	before(async() => {
 		await device.reloadReactNative();
+		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 	});
 
 	it('should add server and create new user', async() => {
@@ -16,10 +17,9 @@ describe('Change server', () => {
 		await element(by.id('sidebar-toggle-server')).tap();
 		await waitFor(element(by.id('sidebar-add-server'))).toBeVisible().withTimeout(2000);
 		await element(by.id('sidebar-add-server')).tap();
-		await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(2000);
-		// Add server
+		//  Add server
+		await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
 		await element(by.id('new-server-view-input')).replaceText(data.alternateServer);
-		await waitFor(element(by.text(' is a valid Rocket.Chat instance'))).toBeVisible().withTimeout(60000);
 		await element(by.id('new-server-view-button')).tap();
 		// Navigate to register
 		await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(2000);
@@ -36,7 +36,6 @@ describe('Change server', () => {
 		await element(by.id('register-view-submit-username')).tap();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
 		await expect(element(by.id('rooms-list-view'))).toBeVisible();
-		// await expect(element(by.id('rooms-list-view-sidebar'))).toHaveLabel(`Connected to ${ data.alternateServer }. Tap to view servers list.`);
 		// For a sanity test, to make sure roomslist is showing correct rooms
 		// app CANNOT show public room created on previous tests
 		await waitFor(element(by.id(`rooms-list-view-item-public${ data.random }`))).toBeNotVisible().withTimeout(60000);

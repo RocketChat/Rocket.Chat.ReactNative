@@ -1,48 +1,53 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, View, Text, Platform } from 'react-native';
+import { StyleSheet, View, Text, Platform, ActivityIndicator } from 'react-native';
 
 import { COLOR_BUTTON_PRIMARY, COLOR_TEXT } from '../../constants/colors';
 import Touch from '../../utils/touch';
+import { scale, moderateScale, verticalScale } from '../../utils/scaling';
 
 const colors = {
-	backgroundPrimary: COLOR_BUTTON_PRIMARY,
-	backgroundSecondary: 'white',
+	background_primary: COLOR_BUTTON_PRIMARY,
+	background_secondary: 'white',
 
-	textColorPrimary: 'white',
-	textColorSecondary: COLOR_TEXT
+	text_color_primary: 'white',
+	text_color_secondary: COLOR_TEXT
 };
 
 /* eslint-disable react-native/no-unused-styles */
 const styles = StyleSheet.create({
 	container: {
-		paddingHorizontal: 15,
-		paddingVertical: 10
+		paddingHorizontal: scale(15),
+		justifyContent: 'center',
+		height: scale(48)
 	},
 	text: {
+		fontSize: moderateScale(18),
+		height: verticalScale(20),
+		lineHeight: verticalScale(20),
 		textAlign: 'center',
-		fontWeight: '700'
+		fontWeight: '500'
 	},
 	background_primary: {
-		backgroundColor: colors.backgroundPrimary
+		backgroundColor: colors.background_primary
 	},
 	background_secondary: {
-		backgroundColor: colors.backgroundSecondary
+		backgroundColor: colors.background_secondary
 	},
 	text_color_primary: {
-		color: colors.textColorPrimary
+		color: colors.text_color_primary
 	},
 	text_color_secondary: {
-		color: colors.textColorSecondary
+		color: colors.text_color_secondary
 	},
 	margin: {
-		marginBottom: 10
+		marginBottom: verticalScale(10)
 	},
 	disabled: {
 		opacity: 0.5
 	},
 	border: {
-		borderRadius: 2
+		borderRadius: scale(2)
 	}
 });
 
@@ -53,26 +58,28 @@ export default class Button extends React.PureComponent {
 		onPress: PropTypes.func,
 		disabled: PropTypes.bool,
 		margin: PropTypes.any,
-		backgroundColor: PropTypes.string
+		backgroundColor: PropTypes.string,
+		loading: PropTypes.bool
 	}
 
 	static defaultProps = {
 		title: 'Press me!',
 		type: 'primary',
 		onPress: () => alert('It works!'),
-		disabled: false
+		disabled: false,
+		loading: false
 	}
 
 	render() {
 		const {
-			title, type, onPress, disabled, margin, backgroundColor, ...otherProps
+			title, type, onPress, disabled, margin, backgroundColor, loading, ...otherProps
 		} = this.props;
 		return (
 			<Touch
 				onPress={onPress}
 				accessibilityTraits='button'
 				style={Platform.OS === 'ios' && [(margin || styles.margin), styles.border]}
-				disabled={disabled}
+				disabled={disabled || loading}
 				{...otherProps}
 			>
 				<View
@@ -84,7 +91,11 @@ export default class Button extends React.PureComponent {
 						disabled && styles.disabled
 					]}
 				>
-					<Text style={[styles.text, styles[`text_color_${ type }`]]}>{title}</Text>
+					{
+						loading ?
+							<ActivityIndicator color={colors[`text_color_${ type }`]} /> :
+							<Text style={[styles.text, styles[`text_color_${ type }`]]}>{title}</Text>
+					}
 				</View>
 			</Touch>
 		);
