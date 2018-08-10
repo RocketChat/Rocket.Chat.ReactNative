@@ -1,7 +1,6 @@
 import { ListView as OldList } from 'realm/react-native';
 import React from 'react';
-import cloneReferencedElement from 'react-clone-referenced-element';
-import { ScrollView, ListView as OldList2 } from 'react-native';
+import { ScrollView, ListView as OldList2, ImageBackground } from 'react-native';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -63,22 +62,24 @@ export class List extends React.Component {
 	}, 1000);
 
 	render() {
-		return (<ListView
-			enableEmptySections
-			style={styles.list}
-			data={this.data}
-			keyExtractor={item => item._id}
-			onEndReachedThreshold={100}
-			renderFooter={this.props.renderFooter}
-			renderHeader={() => <Typing />}
-			onEndReached={() => this.props.onEndReached(this.data[this.data.length - 1])}
-			dataSource={this.dataSource}
-			renderRow={(item, previousItem) => this.props.renderRow(item, previousItem)}
-			initialListSize={1}
-			pageSize={20}
-			testID='room-view-messages'
-			{...scrollPersistTaps}
-		/>);
+		return (
+			<ListView
+				enableEmptySections
+				style={styles.list}
+				data={this.data}
+				keyExtractor={item => item._id}
+				onEndReachedThreshold={100}
+				renderFooter={this.props.renderFooter}
+				renderHeader={() => <Typing />}
+				onEndReached={() => this.props.onEndReached(this.data[this.data.length - 1])}
+				dataSource={this.dataSource}
+				renderRow={(item, previousItem) => this.props.renderRow(item, previousItem)}
+				initialListSize={1}
+				pageSize={20}
+				testID='room-view-messages'
+				{...scrollPersistTaps}
+			/>
+		);
 	}
 }
 
@@ -170,16 +171,22 @@ export class ListView extends OldList2 {
 			onKeyboardDidHide: undefined
 		});
 
-		return cloneReferencedElement(
-			<ScrollView {...props} />,
-			{
-				ref: this._setScrollComponentRef,
-				onContentSizeChange: this._onContentSizeChange,
-				onLayout: this._onLayout
-			},
-			header,
-			bodyComponents,
-			footer,
+		const image = data.length === 0 ? require('../../static/images/message_empty.png') : null;
+		return (
+			[
+				<ImageBackground key='listview-background' source={image} style={styles.imageBackground} />,
+				<ScrollView
+					key='listview-scroll'
+					ref={this._setScrollComponentRef}
+					onContentSizeChange={this._onContentSizeChange}
+					onLayout={this._onLayout}
+					{...props}
+				>
+					{header}
+					{bodyComponents}
+					{footer}
+				</ScrollView>
+			]
 		);
 	}
 }
