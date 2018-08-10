@@ -3,12 +3,12 @@ import { Provider } from 'react-redux';
 
 import CreateChannelView from './CreateChannelView';
 import ForgotPasswordView from './ForgotPasswordView';
-import ListServerView from './ListServerView';
 import LoginSignupView from './LoginSignupView';
 import LoginView from './LoginView';
 import MentionedMessagesView from './MentionedMessagesView';
 import NewServerView from './NewServerView';
 import OAuthView from './OAuthView';
+import OnboardingView from './OnboardingView';
 import PinnedMessagesView from './PinnedMessagesView';
 import PrivacyPolicyView from './PrivacyPolicyView';
 import ProfileView from './ProfileView';
@@ -32,12 +32,12 @@ import TermsServiceView from './TermsServiceView';
 export const registerScreens = (store) => {
 	Navigation.registerComponent('CreateChannelView', () => CreateChannelView, store, Provider);
 	Navigation.registerComponent('ForgotPasswordView', () => ForgotPasswordView, store, Provider);
-	Navigation.registerComponent('ListServerView', () => ListServerView, store, Provider);
 	Navigation.registerComponent('LoginSignupView', () => LoginSignupView, store, Provider);
 	Navigation.registerComponent('LoginView', () => LoginView, store, Provider);
 	Navigation.registerComponent('MentionedMessagesView', () => MentionedMessagesView, store, Provider);
 	Navigation.registerComponent('NewServerView', () => NewServerView, store, Provider);
 	Navigation.registerComponent('OAuthView', () => OAuthView, store, Provider);
+	Navigation.registerComponent('OnboardingView', () => OnboardingView, store, Provider);
 	Navigation.registerComponent('PinnedMessagesView', () => PinnedMessagesView, store, Provider);
 	Navigation.registerComponent('PrivacyPolicyView', () => PrivacyPolicyView, store, Provider);
 	Navigation.registerComponent('ProfileView', () => ProfileView, store, Provider);

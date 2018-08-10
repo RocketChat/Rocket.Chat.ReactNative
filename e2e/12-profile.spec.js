@@ -86,7 +86,7 @@ describe('Profile screen', () => {
 		});
 
 		it('should change email and password', async() => {
-			await element(by.id('profile-view-email')).replaceText(`test${ data.email }`);
+			await element(by.id('profile-view-email')).replaceText(`diego.mello+e2e${ data.random }test@rocket.chat`);
 			await element(by.id('profile-view-new-password')).replaceText(`${ data.password }new`);
 			await element(by.id('profile-view-submit')).tap();
 			await waitFor(element(by.id('profile-view-typed-password'))).toBeVisible().withTimeout(10000);

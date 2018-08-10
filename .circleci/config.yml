@@ -71,12 +71,12 @@ jobs:
       - run:
           name: Build
           command: |
-            detox build
+            detox build --configuration ios.sim.release
 
       - run:
           name: Test
           command: |
-            detox test
+            detox test --configuration ios.sim.release --cleanup
 
       - store_artifacts:
           path: /tmp/screenshots

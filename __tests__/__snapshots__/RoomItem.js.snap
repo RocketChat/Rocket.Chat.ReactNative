@@ -102,6 +102,7 @@ exports[`render channel 1`] = `
                   "fontStyle": "normal",
                   "fontWeight": "normal",
                 },
+                Object {},
               ]
             }
           >
@@ -259,6 +260,7 @@ exports[`render no icon 1`] = `
                   "fontStyle": "normal",
                   "fontWeight": "normal",
                 },
+                Object {},
               ]
             }
           >
@@ -416,6 +418,7 @@ exports[`render private group 1`] = `
                   "fontStyle": "normal",
                   "fontWeight": "normal",
                 },
+                Object {},
               ]
             }
           >
@@ -636,6 +639,7 @@ exports[`render unread +999 1`] = `
                   "fontStyle": "normal",
                   "fontWeight": "normal",
                 },
+                Object {},
               ]
             }
           >
@@ -875,6 +879,7 @@ exports[`render unread 1`] = `
                   "fontStyle": "normal",
                   "fontWeight": "normal",
                 },
+                Object {},
               ]
             }
           >
@@ -1114,6 +1119,7 @@ exports[`renders correctly 1`] = `
                   "fontStyle": "normal",
                   "fontWeight": "normal",
                 },
+                Object {},
               ]
             }
           >
