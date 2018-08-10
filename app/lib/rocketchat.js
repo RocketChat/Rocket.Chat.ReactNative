@@ -140,7 +140,8 @@ const RocketChat = {
 				user = { ...user, ...userInfo.user };
 			}
 			RocketChat.registerPushToken(user.id);
-			return reduxStore.dispatch(loginSuccess(user));
+			reduxStore.dispatch(loginSuccess(user));
+			this.ddp.subscribe('userData');
 		} catch (e) {
 			log('rocketchat.loginSuccess', e);
 		}

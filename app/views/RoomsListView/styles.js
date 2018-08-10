@@ -41,5 +41,74 @@ export default StyleSheet.create({
 	},
 	loading: {
 		flex: 1
+	},
+	sortToggleContainer: {
+		height: 41,
+		borderBottomWidth: StyleSheet.hairlineWidth,
+		borderColor: '#E1E5E8',
+		alignItems: 'center',
+		backgroundColor: '#fff',
+		flexDirection: 'row'
+	},
+	sortToggleContainerClose: {
+		position: 'absolute',
+		top: 0,
+		width: '100%'
+	},
+	sortToggleText: {
+		color: '#9EA2A8',
+		fontSize: 15,
+		fontWeight: 'normal',
+		flex: 1,
+		marginLeft: 15
+	},
+	sortContainer: {
+		backgroundColor: '#fff',
+		width: '100%',
+		position: 'absolute',
+		top: 0
+	},
+	sortItemButton: {
+		height: 57,
+		justifyContent: 'center'
+	},
+	sortItemContainer: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+	sortItemText: {
+		color: '#54585E',
+		fontSize: 18,
+		fontWeight: 'normal',
+		flex: 1
+	},
+	sortBackdrop: {
+		...StyleSheet.absoluteFill,
+		backgroundColor: '#000000'
+	},
+	sortSeparator: {
+		height: StyleSheet.hairlineWidth,
+		backgroundColor: '#CBCED1',
+		marginHorizontal: 15,
+		flex: 1
+	},
+	sortIconLeft: {
+		width: 50,
+		paddingHorizontal: 15,
+		resizeMode: 'contain',
+		justifyContent: 'center'
+	},
+	groupTitleContainer: {
+		paddingHorizontal: 15,
+		paddingTop: 17,
+		backgroundColor: '#fff'
+	},
+	groupTitle: {
+		color: '#2F343D',
+		fontSize: 22,
+		fontWeight: 'bold',
+		letterSpacing: 0.27,
+		flex: 1,
+		lineHeight: 41
 	}
 });

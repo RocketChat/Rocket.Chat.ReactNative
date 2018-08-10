@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
 		color: '#1D74F5'
 	},
 	unreadNumberContainer: {
+		minWidth: 23,
 		padding: 3,
 		borderRadius: 4,
 		backgroundColor: '#1D74F5',

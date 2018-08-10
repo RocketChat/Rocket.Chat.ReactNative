@@ -39,7 +39,6 @@ const handleLoginSuccess = function* handleLoginSuccess() {
 	try {
 		const user = yield select(getUser);
 		yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
-		yield put(setUser(user));
 		if (!user.username || user.isRegistering) {
 			yield put(registerIncomplete());
 		} else {
@@ -132,10 +131,11 @@ const watchLoginOpen = function* watchLoginOpen() {
 };
 
 const handleSetUser = function* handleSetUser() {
+	yield delay(2000);
 	const [server, user] = yield all([select(getServer), select(getUser)]);
 	if (user) {
 		// TODO: temporary... remove in future releases
-		delete user.user;
+		// delete user.user;
 		if (user.language) {
 			I18n.locale = user.language;
 		}

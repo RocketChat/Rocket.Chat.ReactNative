@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Platform, View, TextInput, FlatList, BackHandler, ActivityIndicator, SafeAreaView } from 'react-native';
+import { Platform, View, TextInput, FlatList, BackHandler, ActivityIndicator, SafeAreaView, Text, Image, SectionList } from 'react-native';
 import { connect } from 'react-redux';
+import equal from 'deep-equal';
 
 import { iconsMap } from '../../Icons';
 import database from '../../lib/realm';
@@ -12,16 +13,34 @@ import debounce from '../../utils/debounce';
 import LoggedView from '../View';
 import log from '../../utils/log';
 import I18n from '../../i18n';
+import Sort from './Sort';
+import Touch from './touch';
 
 const ROW_HEIGHT = 70;
 
-@connect(state => ({
-	userId: state.login.user && state.login.user.id,
-	server: state.server.server,
-	Site_Url: state.settings.Site_Url,
-	searchText: state.rooms.searchText,
-	loadingServer: state.server.loading
-}))
+@connect((state) => {
+	let result = {
+		userId: state.login.user && state.login.user.id,
+		server: state.server.server,
+		Site_Url: state.settings.Site_Url,
+		searchText: state.rooms.searchText,
+		loadingServer: state.server.loading,
+		sidebarSortby: null,
+		sidebarGroupByType: null,
+		sidebarShowFavorites: null,
+		sidebarShowUnread: null
+	};
+	if (state.login && state.login.user && state.login.user.settings && state.login.user.settings.preferences) {
+		result = {
+			...result,
+			sidebarSortby: state.login.user.settings.preferences.sidebarSortby,
+			sidebarGroupByType: state.login.user.settings.preferences.sidebarGroupByType,
+			sidebarShowFavorites: state.login.user.settings.preferences.sidebarShowFavorites,
+			sidebarShowUnread: state.login.user.settings.preferences.sidebarShowUnread
+		};
+	}
+	return result;
+})
 /** @extends React.Component */
 export default class RoomsListView extends LoggedView {
 	static propTypes = {
@@ -30,7 +49,11 @@ export default class RoomsListView extends LoggedView {
 		Site_Url: PropTypes.string,
 		server: PropTypes.string,
 		searchText: PropTypes.string,
-		loadingServer: PropTypes.bool
+		loadingServer: PropTypes.bool,
+		sidebarSortby: PropTypes.string,
+		sidebarGroupByType: PropTypes.bool,
+		sidebarShowFavorites: PropTypes.bool,
+		sidebarShowUnread: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -39,7 +62,8 @@ export default class RoomsListView extends LoggedView {
 		this.state = {
 			search: [],
 			rooms: [],
-			loading: true
+			loading: true,
+			showSort: false
 		};
 		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
@@ -59,6 +83,20 @@ export default class RoomsListView extends LoggedView {
 			this.getSubscriptions();
 		} else if (this.props.searchText !== props.searchText) {
 			this.search(props.searchText);
+		}
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		return !(equal(this.props, nextProps) && equal(this.state, nextState));
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.sidebarSortby !== this.props.sidebarSortby) {
+			if (this.props.sidebarSortby === 'alphabetical') {
+				this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('name', false);
+			} else {
+				this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
+			}
 		}
 	}
 
@@ -111,7 +149,11 @@ export default class RoomsListView extends LoggedView {
 			this.data.removeListener(this.updateState);
 		}
 		if (this.props.server && this.hasActiveDB()) {
-			this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
+			if (this.props.sidebarSortby === 'alphabetical') {
+				this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('name', false);
+			} else {
+				this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
+			}
 			this.data.addListener(this.updateState);
 		}
 		this.timeout = setTimeout(() => {
@@ -262,6 +304,25 @@ export default class RoomsListView extends LoggedView {
 		}
 	}
 
+	toggleSort = () => this.setState(prevState => ({ showSort: !prevState.showSort }))
+
+	renderHeader = () => {
+		// Platform.OS === 'ios' ? this.renderSearchBar : null
+		return this.renderSort();
+	}
+
+	renderSort = () => (
+		<Touch
+			onPress={this.toggleSort}
+			style={styles.sortToggleContainer}
+		>
+			<View style={styles.sortItemContainer}>
+				<Text style={styles.sortToggleText}>Sorting by {this.props.sidebarSortby === 'alphabetical' ? 'name' : 'activity'}</Text>
+				<Image style={styles.sortIconLeft} source={require('../../static/images/group_type.png')} />
+			</View>
+		</Touch>
+	)
+
 	renderSearchBar = () => (
 		<View style={styles.searchBoxView}>
 			<TextInput
@@ -306,15 +367,24 @@ export default class RoomsListView extends LoggedView {
 			return <ActivityIndicator style={styles.loading} />;
 		}
 		return (
-			<FlatList
-				data={this.state.search.length > 0 ? this.state.search : this.state.rooms}
+			<SectionList
+				// data={this.state.search.length > 0 ? this.state.search : this.state.rooms}
+				sections={[
+					{ title: 'Unread', data: this.state.rooms.slice(0, 10) },
+					{ title: 'Chats', data: this.state.rooms }
+				]}
 				extraData={this.state.search.length > 0 ? this.state.search : this.state.rooms}
 				keyExtractor={item => item.rid}
 				style={styles.list}
 				renderItem={this.renderItem}
 				ItemSeparatorComponent={this.renderSeparator}
-				ListHeaderComponent={Platform.OS === 'ios' ? this.renderSearchBar : null}
-				contentOffset={Platform.OS === 'ios' ? { x: 0, y: 38 } : {}}
+				ListHeaderComponent={this.renderHeader}
+				renderSectionHeader={({ section: { title } }) => (
+					<View style={styles.groupTitleContainer}>
+						<Text style={styles.groupTitle}>{title}</Text>
+					</View>
+				)}
+				// contentOffset={Platform.OS === 'ios' ? { x: 0, y: 38 } : {}}
 				getItemLayout={(data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index })}
 				enableEmptySections
 				removeClippedSubviews
@@ -322,11 +392,42 @@ export default class RoomsListView extends LoggedView {
 				testID='rooms-list-view-list'
 			/>
 		);
+		// return (
+		// 	<FlatList
+		// 		data={this.state.search.length > 0 ? this.state.search : this.state.rooms}
+		// 		extraData={this.state.search.length > 0 ? this.state.search : this.state.rooms}
+		// 		keyExtractor={item => item.rid}
+		// 		style={styles.list}
+		// 		renderItem={this.renderItem}
+		// 		ItemSeparatorComponent={this.renderSeparator}
+		// 		ListHeaderComponent={this.renderHeader}
+		// 		// contentOffset={Platform.OS === 'ios' ? { x: 0, y: 38 } : {}}
+		// 		getItemLayout={(data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index })}
+		// 		enableEmptySections
+		// 		removeClippedSubviews
+		// 		keyboardShouldPersistTaps='always'
+		// 		testID='rooms-list-view-list'
+		// 	/>
+		// );
 	}
 
-	render = () => (
-		<SafeAreaView style={styles.container} testID='rooms-list-view'>
-			{this.renderList()}
-		</SafeAreaView>
-	)
+	render = () => {
+		const {
+			sidebarSortby, sidebarGroupByType, sidebarShowFavorites, sidebarShowUnread
+		} = this.props;
+		return (
+			<SafeAreaView style={styles.container} testID='rooms-list-view'>
+				{this.renderList()}
+				{this.state.showSort ?
+					<Sort
+						close={this.toggleSort}
+						sidebarSortby={sidebarSortby}
+						sidebarGroupByType={sidebarGroupByType}
+						sidebarShowFavorites={sidebarShowFavorites}
+						sidebarShowUnread={sidebarShowUnread}
+					/> :
+					null}
+			</SafeAreaView>
+		);
+	}
 }
