@@ -3,7 +3,7 @@ import { takeLatest, take, select, put } from 'redux-saga/effects';
 
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions';
-import { selectServerRequest, addServer } from '../actions/server';
+import { selectServerRequest } from '../actions/server';
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import { NavigationActions } from '../Navigation';
@@ -73,7 +73,7 @@ const handleOpen = function* handleOpen({ params }) {
 				yield navigate({ params, sameServer: false });
 			}
 		} else {
-			yield put(addServer(host));
+			yield put(selectServerRequest(host));
 		}
 	}
 };

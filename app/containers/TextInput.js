@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Text, TextInput, ViewPropTypes, Platform } from 'react-native';
 import PropTypes from 'prop-types';
-
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import sharedStyles from '../views/Styles';
@@ -21,13 +20,11 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		paddingTop: 12,
 		paddingBottom: 12,
-		// paddingTop: 5,
-		// paddingBottom: 5,
 		paddingHorizontal: 10,
-		borderWidth: 2,
-		borderRadius: 4,
+		borderWidth: 1.5,
+		borderRadius: 2,
 		backgroundColor: 'white',
-		borderColor: 'rgba(0,0,0,.15)',
+		borderColor: '#E7EBF2',
 		color: 'black'
 	},
 	labelError: {

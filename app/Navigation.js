@@ -8,6 +8,7 @@ class NavigationActionsClass {
 	popToRoot = params => this.navigator && this.navigator.popToRoot(params);
 	resetTo = params => this.navigator && this.navigator.resetTo(params);
 	toggleDrawer = params => this.navigator && this.navigator.toggleDrawer(params);
+	dismissModal = params => this.navigator && this.navigator.dismissModal(params);
 }
 
 export const NavigationActions = new NavigationActionsClass();

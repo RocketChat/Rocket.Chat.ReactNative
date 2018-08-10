@@ -7,7 +7,7 @@ const { tapBack } = require('./helpers/app');
 
 describe('Create room screen', () => {
 	before(async() => {
-		await device.reloadReactNative(); // TODO: remove this after fix logout subscription
+		// await device.reloadReactNative(); // TODO: remove this after fix logout subscription
 		await element(by.id('rooms-list-view-create-channel')).tap();
 		await waitFor(element(by.id('select-users-view'))).toBeVisible().withTimeout(2000);
 	});
