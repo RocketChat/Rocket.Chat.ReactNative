@@ -271,10 +271,10 @@ export default class RoomView extends LoggedView {
 	};
 
 	renderHeader = () => {
-		if (this.state.end) {
-			return <Text style={styles.loadingMore}>{I18n.t('Start_of_conversation')}</Text>;
+		if (!this.state.end) {
+			return <Text style={styles.loadingMore}>{I18n.t('Loading_messages_ellipsis')}</Text>;
 		}
-		return <Text style={styles.loadingMore}>{I18n.t('Loading_messages_ellipsis')}</Text>;
+		return null;
 	}
 
 	renderList = () => {
