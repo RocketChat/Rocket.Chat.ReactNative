@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView, Text, View, StyleSheet, FlatList, LayoutAnimation, SafeAreaView } from 'react-native';
+import { ScrollView, Text, View, StyleSheet, FlatList, LayoutAnimation, SafeAreaView, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import database from '../lib/realm';
 import { selectServerRequest } from '../actions/server';
+import { appStart } from '../actions';
 import { logout } from '../actions/login';
 import Avatar from '../containers/Avatar';
 import Status from '../containers/status';
@@ -16,6 +17,7 @@ import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import I18n from '../i18n';
 import { NavigationActions } from '../Navigation';
+import scrollPersistTaps from '../utils/scrollPersistTaps';
 
 const styles = StyleSheet.create({
 	container: {
@@ -86,7 +88,8 @@ const keyExtractor = item => item.id;
 	}
 }), dispatch => ({
 	selectServerRequest: server => dispatch(selectServerRequest(server)),
-	logout: () => dispatch(logout())
+	logout: () => dispatch(logout()),
+	appStart: () => dispatch(appStart('outside'))
 }))
 export default class Sidebar extends Component {
 	static propTypes = {
@@ -94,7 +97,8 @@ export default class Sidebar extends Component {
 		server: PropTypes.string.isRequired,
 		selectServerRequest: PropTypes.func.isRequired,
 		user: PropTypes.object,
-		logout: PropTypes.func.isRequired
+		logout: PropTypes.func.isRequired,
+		appStart: PropTypes.func
 	}
 
 	constructor(props) {
@@ -206,7 +210,7 @@ export default class Sidebar extends Component {
 					try {
 						RocketChat.setUserPresenceDefaultStatus(item.id);
 					} catch (e) {
-						log('onPressModalButton', e);
+						log('setUserPresenceDefaultStatus', e);
 					}
 				}
 			}
@@ -226,6 +230,21 @@ export default class Sidebar extends Component {
 				this.toggleServers();
 				if (this.props.server !== item.id) {
 					this.props.selectServerRequest(item.id);
+					const token = await AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ item.id }`);
+					if (!token) {
+						this.props.appStart();
+						setTimeout(() => {
+							NavigationActions.push({
+								screen: 'NewServerView',
+								passProps: {
+									server: item.id
+								},
+								navigatorStyle: {
+									navBarHidden: true
+								}
+							});
+						}, 1000);
+					}
 				}
 			},
 			testID: `sidebar-${ item.id }`
@@ -289,9 +308,12 @@ export default class Sidebar extends Component {
 				onPress: () => {
 					this.closeDrawer();
 					this.toggleServers();
-					NavigationActions.push({
+					this.props.navigator.showModal({
 						screen: 'NewServerView',
-						title: I18n.t('Add_Server')
+						title: I18n.t('Add_Server'),
+						passProps: {
+							previousServer: this.props.server
+						}
 					});
 				},
 				testID: 'sidebar-add-server'
@@ -305,8 +327,8 @@ export default class Sidebar extends Component {
 			return null;
 		}
 		return (
-			<ScrollView style={styles.container}>
-				<SafeAreaView testID='sidebar' style={styles.container}>
+			<SafeAreaView testID='sidebar' style={styles.container}>
+				<ScrollView style={styles.container} {...scrollPersistTaps}>
 					<Touch
 						onPress={() => this.toggleServers()}
 						underlayColor='rgba(255, 255, 255, 0.5)'
@@ -338,8 +360,8 @@ export default class Sidebar extends Component {
 
 					{!this.state.showServers ? this.renderNavigation() : null}
 					{this.state.showServers ? this.renderServers() : null}
-				</SafeAreaView>
-			</ScrollView>
+				</ScrollView>
+			</SafeAreaView>
 		);
 	}
 }

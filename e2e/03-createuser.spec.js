@@ -5,16 +5,17 @@ const { takeScreenshot } = require('./helpers/screenshot');
 const { logout, sleep } = require('./helpers/app');
 const data = require('./data');
 
-async function navigateToRegister() {
-    await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(2000);
-    await element(by.id('welcome-view-register')).tap();
-    await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
-}
-
 describe('Create user screen', () => {
 	before(async() => {
 		await device.reloadReactNative();
-		await navigateToRegister();
+		await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(2000);
+		await element(by.id('connect-server-button')).tap();
+		await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
+		await element(by.id('new-server-view-input')).replaceText(data.server);
+		await element(by.id('new-server-view-button')).tap();
+		await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(60000);
+		await element(by.id('welcome-view-register')).tap();
+    	await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
 	});
 
 	describe('Render', () => {

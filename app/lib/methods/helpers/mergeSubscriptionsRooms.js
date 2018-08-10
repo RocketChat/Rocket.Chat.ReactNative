@@ -2,6 +2,9 @@ import normalizeMessage from './normalizeMessage';
 // TODO: delete and update
 
 export const merge = (subscription, room) => {
+	if (!subscription) {
+		return;
+	}
 	if (room) {
 		if (room.rid) {
 			subscription.rid = room.rid;
