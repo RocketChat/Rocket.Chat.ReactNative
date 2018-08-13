@@ -3,11 +3,11 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { connect } from 'react-redux';
+import { emojify } from 'react-emojione';
 
 import Avatar from '../containers/Avatar';
 import Status from '../containers/status';
 import Touch from '../utils/touch/index'; //eslint-disable-line
-import Markdown from '../containers/message/Markdown';
 import RoomTypeIcon from '../containers/RoomTypeIcon';
 import I18n from '../i18n';
 
@@ -83,10 +83,8 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
-	markdownRoot: {
-		flex: 1
-	},
 	markdownText: {
+		flex: 1,
 		color: '#9EA2A8',
 		fontSize: 15,
 		fontWeight: 'normal'
@@ -180,9 +178,9 @@ export default class RoomItem extends React.Component {
 			prefix = `${ lastMessage.u.username }: `;
 		}
 
-		const msg = `${ prefix }${ lastMessage.msg.replace(/[\n\t\r]/igm, '') }`;
-		const maxChars = 60;
-		return `${ msg.slice(0, maxChars) }${ msg.replace(/:[a-z0-9]+:/gi, ':::').length > maxChars ? '...' : '' }`;
+		let msg = `${ prefix }${ lastMessage.msg.replace(/[\n\t\r]/igm, '') }`;
+		msg = emojify(msg, { output: 'unicode' });
+		return msg;
 	}
 
 	get type() {
@@ -241,30 +239,9 @@ export default class RoomItem extends React.Component {
 							{_updatedAt ? <Text style={[styles.date, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
 						</View>
 						<View style={styles.row}>
-							<Markdown
-								msg={this.lastMessage}
-								style={{
-									root: styles.markdownRoot,
-									text: styles.markdownText
-								}}
-								rules={{
-									mention: node => (
-										<Text key={node.key}>
-											@{node.content}
-										</Text>
-									),
-									hashtag: node => (
-										<Text key={node.key}>
-											#{node.content}
-										</Text>
-									),
-									link: (node, children) => (
-										<Text key={node.key}>
-											{children}
-										</Text>
-									)
-								}}
-							/>
+							<Text style={styles.markdownText} numberOfLines={2}>
+								{this.lastMessage}
+							</Text>
 							{renderNumber(unread, userMentions)}
 						</View>
 					</View>

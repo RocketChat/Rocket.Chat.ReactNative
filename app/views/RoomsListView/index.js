@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Platform, View, TextInput, FlatList, BackHandler, ActivityIndicator, SafeAreaView, Text, Image, SectionList } from 'react-native';
 import { connect } from 'react-redux';
-import equal from 'deep-equal';
+import { isEqual } from 'lodash';
 
 import { iconsMap } from '../../Icons';
 import database from '../../lib/realm';
@@ -63,7 +63,8 @@ export default class RoomsListView extends LoggedView {
 			search: [],
 			rooms: [],
 			loading: true,
-			showSort: false
+			showSort: false,
+			showGroup: false
 		};
 		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
@@ -87,7 +88,7 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		return !(equal(this.props, nextProps) && equal(this.state, nextState));
+		return !(isEqual(this.props, nextProps) && isEqual(this.state, nextState));
 	}
 
 	componentDidUpdate(prevProps) {
@@ -221,8 +222,75 @@ export default class RoomsListView extends LoggedView {
 		return true;
 	}
 
+	_isUnread = item => item.unread > 0 || item.alert
+
 	updateState = debounce(() => {
-		this.setState({ rooms: this.data.slice() });
+		const { sidebarGroupByType, sidebarShowFavorites, sidebarShowUnread } = this.props;
+		if (!(sidebarGroupByType || sidebarShowFavorites || sidebarShowUnread)) {
+			return this.setState({ rooms: this.data.slice(), showGroup: false });
+		}
+
+		const unread = { title: 'Unread', data: [] };
+		const fav = { title: 'Favorites', data: [] };
+		const chats = { title: 'Chats', data: [] };
+		const channel = { title: 'Channels', data: [] };
+		const privateGroup = { title: 'Private Groups', data: [] };
+		const direct = { title: 'Direct Messages', data: [] };
+		const livechat = { title: 'Livechat', data: [] };
+		this.data.forEach((item) => {
+			// Unread
+			if (sidebarShowUnread && this._isUnread(item)) {
+				unread.data.push(item);
+			}
+			// Favorites
+			if (sidebarShowFavorites && item.f) {
+				fav.data.push(item);
+			} else {
+				// eslint-disable-next-line
+				if (!(sidebarShowUnread && this._isUnread(item))) {
+					if (sidebarGroupByType) {
+						switch (item.t) {
+							case 'c':
+								channel.data.push(item);
+								break;
+							case 'p':
+								privateGroup.data.push(item);
+								break;
+							case 'd':
+								direct.data.push(item);
+								break;
+							case 'l':
+								livechat.data.push(item);
+								break;
+							default:
+								break;
+						}
+					} else {
+						chats.data.push(item);
+					}
+				}
+			}
+		});
+		const rooms = unread.data.length ? [unread] : [];
+		if (fav.data.length) {
+			rooms.push(fav);
+		}
+		if (channel.data.length) {
+			rooms.push(channel);
+		}
+		if (privateGroup.data.length) {
+			rooms.push(privateGroup);
+		}
+		if (direct.data.length) {
+			rooms.push(direct);
+		}
+		if (livechat.data.length) {
+			rooms.push(livechat);
+		}
+		if (!sidebarGroupByType) {
+			rooms.push(chats);
+		}
+		this.setState({ rooms, showGroup: true });
 	})
 
 	async search(text) {
@@ -363,16 +431,35 @@ export default class RoomsListView extends LoggedView {
 	renderSeparator = () => <View style={styles.separator} />;
 
 	renderList = () => {
-		if (this.state.loading) {
+		const {
+			loading, search, rooms, showGroup
+		} = this.state;
+		if (loading) {
 			return <ActivityIndicator style={styles.loading} />;
+		}
+		if (!showGroup) {
+			return (
+				<FlatList
+					data={search.length > 0 ? search : rooms}
+					extraData={search.length > 0 ? search : rooms}
+					keyExtractor={item => item.rid}
+					style={styles.list}
+					renderItem={this.renderItem}
+					ItemSeparatorComponent={this.renderSeparator}
+					ListHeaderComponent={this.renderHeader}
+					// contentOffset={Platform.OS === 'ios' ? { x: 0, y: 38 } : {}}
+					getItemLayout={(data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index })}
+					enableEmptySections
+					removeClippedSubviews
+					keyboardShouldPersistTaps='always'
+					testID='rooms-list-view-list'
+				/>
+			);
 		}
 		return (
 			<SectionList
 				// data={this.state.search.length > 0 ? this.state.search : this.state.rooms}
-				sections={[
-					{ title: 'Unread', data: this.state.rooms.slice(0, 10) },
-					{ title: 'Chats', data: this.state.rooms }
-				]}
+				sections={this.state.rooms}
 				extraData={this.state.search.length > 0 ? this.state.search : this.state.rooms}
 				keyExtractor={item => item.rid}
 				style={styles.list}
@@ -392,23 +479,6 @@ export default class RoomsListView extends LoggedView {
 				testID='rooms-list-view-list'
 			/>
 		);
-		// return (
-		// 	<FlatList
-		// 		data={this.state.search.length > 0 ? this.state.search : this.state.rooms}
-		// 		extraData={this.state.search.length > 0 ? this.state.search : this.state.rooms}
-		// 		keyExtractor={item => item.rid}
-		// 		style={styles.list}
-		// 		renderItem={this.renderItem}
-		// 		ItemSeparatorComponent={this.renderSeparator}
-		// 		ListHeaderComponent={this.renderHeader}
-		// 		// contentOffset={Platform.OS === 'ios' ? { x: 0, y: 38 } : {}}
-		// 		getItemLayout={(data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index })}
-		// 		enableEmptySections
-		// 		removeClippedSubviews
-		// 		keyboardShouldPersistTaps='always'
-		// 		testID='rooms-list-view-list'
-		// 	/>
-		// );
 	}
 
 	render = () => {
