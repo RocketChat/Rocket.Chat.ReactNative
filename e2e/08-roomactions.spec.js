@@ -289,22 +289,21 @@ describe('Room actions screen', () => {
 
 			describe('Add User', async() => {
 				it('should add user to the room', async() => {
-					const user = 'detoxrn';
 					await waitFor(element(by.id('room-actions-add-user'))).toBeVisible().whileElement(by.id('room-actions-list')).scroll(scrollDown, 'up');
 					await element(by.id('room-actions-add-user')).tap();
 					await element(by.id('select-users-view-search')).tap();
-					await element(by.id('select-users-view-search')).replaceText(user);
-					await waitFor(element(by.id(`select-users-view-item-${ user }`))).toBeVisible().withTimeout(60000);
-					await expect(element(by.id(`select-users-view-item-${ user }`))).toBeVisible();
-					await element(by.id(`select-users-view-item-${ user }`)).tap();
-					await waitFor(element(by.id(`selected-user-${ user }`))).toBeVisible().withTimeout(5000);
-					await expect(element(by.id(`selected-user-${ user }`))).toBeVisible();
+					await element(by.id('select-users-view-search')).replaceText(data.alternateUser);
+					await waitFor(element(by.id(`select-users-view-item-${ data.alternateUser }`))).toBeVisible().withTimeout(60000);
+					await expect(element(by.id(`select-users-view-item-${ data.alternateUser }`))).toBeVisible();
+					await element(by.id(`select-users-view-item-${ data.alternateUser }`)).tap();
+					await waitFor(element(by.id(`selected-user-${ data.alternateUser }`))).toBeVisible().withTimeout(5000);
+					await expect(element(by.id(`selected-user-${ data.alternateUser }`))).toBeVisible();
 					await element(by.id('selected-users-view-submit')).tap();
 					await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
 					await element(by.id('room-actions-members')).tap();
 					await element(by.id('room-members-view-toggle-status')).tap();
-					await waitFor(element(by.id(`room-members-view-item-${ user }`))).toBeVisible().withTimeout(60000);
-					await expect(element(by.id(`room-members-view-item-${ user }`))).toBeVisible();
+					await waitFor(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toBeVisible().withTimeout(60000);
+					await expect(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toBeVisible();
 					await backToActions();
 				});
 
@@ -314,7 +313,6 @@ describe('Room actions screen', () => {
 			});
 
 			describe('Room Members', async() => {
-				const user = 'detoxrn';
 				before(async() => {
 					await element(by.id('room-actions-members')).tap();
 					await waitFor(element(by.id('room-members-view'))).toExist().withTimeout(2000);
@@ -323,24 +321,24 @@ describe('Room actions screen', () => {
 
 				it('should show all users', async() => {
 					await element(by.id('room-members-view-toggle-status')).tap();
-					await waitFor(element(by.id(`room-members-view-item-${ user }`))).toBeVisible().withTimeout(60000);
-					await expect(element(by.id(`room-members-view-item-${ user }`))).toBeVisible();
+					await waitFor(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toBeVisible().withTimeout(60000);
+					await expect(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toBeVisible();
 				});
 
 				it('should filter user', async() => {
-					await waitFor(element(by.id(`room-members-view-item-${ user }`))).toBeVisible().withTimeout(60000);
-					await expect(element(by.id(`room-members-view-item-${ user }`))).toBeVisible();
+					await waitFor(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toBeVisible().withTimeout(60000);
+					await expect(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toBeVisible();
 					await element(by.id('room-members-view-search')).replaceText('rocket');
-					await waitFor(element(by.id(`room-members-view-item-${ user }`))).toBeNotVisible().withTimeout(60000);
-					await expect(element(by.id(`room-members-view-item-${ user }`))).toBeNotVisible();
+					await waitFor(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toBeNotVisible().withTimeout(60000);
+					await expect(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toBeNotVisible();
 					await element(by.id('room-members-view-search')).tap();
 					await element(by.id('room-members-view-search')).clearText('');
-					await waitFor(element(by.id(`room-members-view-item-${ user }`))).toBeVisible().withTimeout(60000);
-					await expect(element(by.id(`room-members-view-item-${ user }`))).toBeVisible();
+					await waitFor(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toBeVisible().withTimeout(60000);
+					await expect(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toBeVisible();
 				});
 
 				it('should mute user', async() => {
-					await element(by.id(`room-members-view-item-${ user }`)).longPress();
+					await element(by.id(`room-members-view-item-${ data.alternateUser }`)).longPress();
 					await waitFor(element(by.text('Mute'))).toBeVisible().withTimeout(5000);
 					await expect(element(by.text('Mute'))).toBeVisible();
 					await element(by.text('Mute')).tap();
@@ -348,7 +346,7 @@ describe('Room actions screen', () => {
 					await expect(element(by.text('User has been muted!'))).toBeVisible();
 					await waitFor(element(by.text('User has been muted!'))).toBeNotVisible().withTimeout(60000);
 					await expect(element(by.text('User has been muted!'))).toBeNotVisible();
-					await element(by.id(`room-members-view-item-${ user }`)).longPress();
+					await element(by.id(`room-members-view-item-${ data.alternateUser }`)).longPress();
 					await waitFor(element(by.text('Unmute'))).toBeVisible().withTimeout(2000);
 					await expect(element(by.text('Unmute'))).toBeVisible();
 					await element(by.text('Unmute')).tap();
@@ -359,12 +357,12 @@ describe('Room actions screen', () => {
 				});
 
 				it('should navigate to direct room', async() => {
-					await waitFor(element(by.id(`room-members-view-item-${ user }`))).toExist().withTimeout(5000);
-					await element(by.id(`room-members-view-item-${ user }`)).tap();
+					await waitFor(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toExist().withTimeout(5000);
+					await element(by.id(`room-members-view-item-${ data.alternateUser }`)).tap();
 					await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
 					await expect(element(by.id('room-view'))).toBeVisible();
-					await waitFor(element(by.text(user))).toBeVisible().withTimeout(60000);
-				await expect(element(by.text(user))).toBeVisible();
+					await waitFor(element(by.text(data.alternateUser))).toBeVisible().withTimeout(60000);
+					await expect(element(by.text(data.alternateUser))).toBeVisible();
 					await tapBack('Messages');
 					await waitFor(element(by.id('room-list-view'))).toBeVisible().withTimeout(2000);
 				});

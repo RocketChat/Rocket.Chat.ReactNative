@@ -63,7 +63,8 @@ describe('Login screen', () => {
 			await tapBack('Welcome');
 			await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('welcome-view'))).toBeVisible();
-			await navigateToLogin();
+			await element(by.id('welcome-view-login')).tap();
+			await expect(element(by.id('login-view'))).toBeVisible();
 		});
 	
 		it('should insert wrong password and get error', async() => {

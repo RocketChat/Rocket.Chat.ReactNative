@@ -65,7 +65,8 @@ export default class Markdown extends React.Component {
 						}
 						return null;
 					},
-					blocklink: () => {},
+					hardbreak: () => null,
+					blocklink: () => null,
 					image: node => (
 						<Image key={node.key} style={styles.inlineImage} source={{ uri: node.attributes.src }} />
 					),

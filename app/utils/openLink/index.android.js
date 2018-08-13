@@ -1,4 +1,4 @@
-import CustomTabsAndroid from '../nativeModules/CustomTabsAndroid';
+import CustomTabsAndroid from '../../nativeModules/CustomTabsAndroid';
 
 const openLink = url => CustomTabsAndroid.openURL(url);
 

@@ -281,16 +281,11 @@ export default class LoginSignupView extends LoggedView {
 			>
 				<SafeAreaView style={sharedStyles.container} testID='welcome-view'>
 					<View style={styles.container}>
-						<Image
-							source={require('../static/images/logo.png')}
-							style={sharedStyles.loginLogo}
-							resizeMode='center'
-						/>
 						<Text style={[sharedStyles.loginText, styles.header, { color: '#81848A' }]}>{I18n.t('Welcome_title_pt_1')}</Text>
 						<Text style={[sharedStyles.loginText, styles.header]}>{I18n.t('Welcome_title_pt_2')}</Text>
 						<Image
 							style={styles.planetImage}
-							source={require('../static/images/planet.png')}
+							source={require('../static/images/server.png')}
 						/>
 						<Button
 							title={I18n.t('I_have_an_account')}

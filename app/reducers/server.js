@@ -3,11 +3,10 @@ import { SERVER } from '../actions/actionsTypes';
 const initialState = {
 	connecting: false,
 	connected: false,
-	errorMessage: '',
 	failure: false,
 	server: '',
-	adding: false,
-	loading: true
+	loading: true,
+	adding: true
 };
 
 
@@ -17,14 +16,8 @@ export default function server(state = initialState, action) {
 			return {
 				...state,
 				connecting: true,
-				failure: false
-			};
-		case SERVER.SUCCESS:
-			return {
-				...state,
-				connecting: false,
-				connected: true,
-				failure: false
+				failure: false,
+				adding: true
 			};
 		case SERVER.FAILURE:
 			return {
@@ -32,24 +25,22 @@ export default function server(state = initialState, action) {
 				connecting: false,
 				connected: false,
 				failure: true,
-				errorMessage: action.err
-			};
-		case SERVER.ADD:
-			return {
-				...state,
-				adding: true
+				adding: false
 			};
 		case SERVER.SELECT_REQUEST:
 			return {
 				...state,
 				server: action.server,
+				connecting: true,
+				connected: false,
 				loading: true
 			};
 		case SERVER.SELECT_SUCCESS:
 			return {
 				...state,
 				server: action.server,
-				adding: false,
+				connecting: false,
+				connected: true,
 				loading: false
 			};
 		default:

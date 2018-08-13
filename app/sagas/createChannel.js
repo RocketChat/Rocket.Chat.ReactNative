@@ -12,7 +12,7 @@ const create = function* create(data) {
 
 const handleRequest = function* handleRequest({ data }) {
 	try {
-		yield delay(1000);
+		// yield delay(1000);
 		const auth = yield select(state => state.login.isAuthenticated);
 		if (!auth) {
 			yield take(LOGIN.SUCCESS);

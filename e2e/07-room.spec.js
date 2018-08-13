@@ -149,7 +149,7 @@ describe('Room screen', () => {
 				await element(by.id('messagebox-input')).typeText('#general');
 				await waitFor(element(by.id('messagebox-container'))).toBeVisible().withTimeout(60000);
 				await expect(element(by.id('messagebox-container'))).toBeVisible();
-				await element(by.id('mention-item-general')).tap();
+				await element(by.id('mention-item-general')).atIndex(0).tap();
 				await expect(element(by.id('messagebox-input'))).toHaveText('#general ');
 				await element(by.id('messagebox-input')).clearText();
 			});

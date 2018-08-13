@@ -8,7 +8,7 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	containerScrollView: {
-		padding: 20
+		padding: 15
 	},
 	label: {
 		lineHeight: 40,
@@ -190,11 +190,6 @@ export default StyleSheet.create({
 	loginTitle: {
 		fontSize: 20,
 		marginBottom: 20
-	},
-	loginLogo: {
-		width: 50,
-		height: 50,
-		marginVertical: 25
 	},
 	headerButton: {
 		backgroundColor: 'transparent',

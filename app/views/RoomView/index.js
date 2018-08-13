@@ -72,7 +72,7 @@ export default class RoomView extends LoggedView {
 		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
 
-	async componentWillMount() {
+	componentWillMount() {
 		this.props.navigator.setButtons({
 			rightButtons: [{
 				id: 'more',
@@ -267,14 +267,14 @@ export default class RoomView extends LoggedView {
 				</View>
 			);
 		}
-		return <MessageBox onSubmit={this.sendMessage} rid={this.rid} />;
+		return <MessageBox key='room-view-messagebox' onSubmit={this.sendMessage} rid={this.rid} />;
 	};
 
 	renderHeader = () => {
-		if (this.state.end) {
-			return <Text style={styles.loadingMore}>{I18n.t('Start_of_conversation')}</Text>;
+		if (!this.state.end) {
+			return <Text style={styles.loadingMore}>{I18n.t('Loading_messages_ellipsis')}</Text>;
 		}
-		return <Text style={styles.loadingMore}>{I18n.t('Loading_messages_ellipsis')}</Text>;
+		return null;
 	}
 
 	renderList = () => {
@@ -282,14 +282,17 @@ export default class RoomView extends LoggedView {
 			return <ActivityIndicator style={styles.loading} />;
 		}
 		return (
-			<List
-				key='room-view-messages'
-				end={this.state.end}
-				room={this.rid}
-				renderFooter={this.renderHeader}
-				onEndReached={this.onEndReached}
-				renderRow={this.renderItem}
-			/>
+			[
+				<List
+					key='room-view-messages'
+					end={this.state.end}
+					room={this.rid}
+					renderFooter={this.renderHeader}
+					onEndReached={this.onEndReached}
+					renderRow={this.renderItem}
+				/>,
+				this.renderFooter()
+			]
 		);
 	}
 
@@ -297,7 +300,6 @@ export default class RoomView extends LoggedView {
 		return (
 			<SafeAreaView style={styles.container} testID='room-view'>
 				{this.renderList()}
-				{this.renderFooter()}
 				{this.state.room._id && this.props.showActions ?
 					<MessageActions room={this.state.room} user={this.props.user} /> :
 					null}

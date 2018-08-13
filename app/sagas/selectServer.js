@@ -1,17 +1,15 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
 import { AsyncStorage } from 'react-native';
 
 import { NavigationActions } from '../Navigation';
 import { SERVER } from '../actions/actionsTypes';
 import * as actions from '../actions';
 import { connectRequest } from '../actions/connect';
-import { serverSuccess, serverFailure, selectServerRequest, selectServerSuccess } from '../actions/server';
+import { serverFailure, selectServerRequest, selectServerSuccess } from '../actions/server';
 import { setRoles } from '../actions/roles';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import log from '../utils/log';
-import I18n from '../i18n';
 
 const validate = function* validate(server) {
 	return yield RocketChat.testServer(server);
@@ -24,8 +22,6 @@ const handleSelectServer = function* handleSelectServer({ server }) {
 		const token = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
 		if (token) {
 			yield put(actions.appStart('inside'));
-		} else {
-			yield put(actions.appStart('outside'));
 		}
 
 		const settings = database.objects('settings');
@@ -45,33 +41,22 @@ const handleSelectServer = function* handleSelectServer({ server }) {
 	}
 };
 
-const validateServer = function* validateServer({ server }) {
+const handleServerRequest = function* handleServerRequest({ server }) {
 	try {
-		yield delay(1000);
 		yield call(validate, server);
-		yield put(serverSuccess());
-	} catch (e) {
-		console.warn('validateServer', e);
-		yield put(serverFailure(e));
-	}
-};
-
-const addServer = function* addServer({ server }) {
-	try {
-		yield put(actions.appStart('outside'));
-		yield call(NavigationActions.resetTo, { screen: 'ListServerView', title: I18n.t('Servers') });
+		yield call(NavigationActions.push, { screen: 'LoginSignupView', title: server });
 		database.databases.serversDB.write(() => {
 			database.databases.serversDB.create('servers', { id: server, current: false }, true);
 		});
 		yield put(selectServerRequest(server));
 	} catch (e) {
-		log('addServer', e);
+		yield put(serverFailure());
+		log('handleServerRequest', e);
 	}
 };
 
 const root = function* root() {
-	yield takeLatest(SERVER.REQUEST, validateServer);
 	yield takeLatest(SERVER.SELECT_REQUEST, handleSelectServer);
-	yield takeLatest(SERVER.ADD, addServer);
+	yield takeLatest(SERVER.REQUEST, handleServerRequest);
 };
 export default root;
