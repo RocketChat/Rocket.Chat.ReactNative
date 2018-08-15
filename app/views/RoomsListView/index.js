@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Platform, View, TextInput, FlatList, BackHandler, ActivityIndicator, SafeAreaView, Text, Image, SectionList } from 'react-native';
+import { Platform, View, TextInput, FlatList, BackHandler, ActivityIndicator, SafeAreaView, Text, Image, SectionList, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
 
@@ -43,6 +43,11 @@ const ROW_HEIGHT = 70;
 })
 /** @extends React.Component */
 export default class RoomsListView extends LoggedView {
+	static navigatorStyle = {
+		navBarBackgroundColor: Platform.OS === 'android' ? '#2F343D' : undefined,
+		navBarTextColor: Platform.OS === 'android' ? '#FFF' : undefined
+	}
+
 	static propTypes = {
 		navigator: PropTypes.object,
 		userId: PropTypes.string,
@@ -166,21 +171,24 @@ export default class RoomsListView extends LoggedView {
 		const { navigator } = this.props;
 		const rightButtons = [{
 			id: 'createChannel',
-			icon: iconsMap.add,
+			// icon: iconsMap.add,
+			icon: { uri: 'new_channel', scale: Dimensions.get('window').scale },
 			testID: 'rooms-list-view-create-channel'
 		}];
 
 		if (Platform.OS === 'android') {
 			rightButtons.push({
 				id: 'search',
-				icon: iconsMap.search
+				icon: { uri: 'search', scale: Dimensions.get('window').scale }
 			});
 		}
 
 		navigator.setButtons({
 			leftButtons: [{
 				id: 'sideMenu',
-				icon: Platform.OS === 'ios' ? iconsMap.menu : undefined,
+				// icon: Platform.OS === 'ios' ? iconsMap.menu : undefined,
+				icon: { uri: 'settings', scale: Dimensions.get('window').scale },
+				// icon: require('settings'),
 				testID: 'rooms-list-view-sidebar'
 			}],
 			rightButtons
