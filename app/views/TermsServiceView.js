@@ -4,13 +4,19 @@ import { WebView, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 
 import styles from './Styles';
+import LoggedView from './View';
 
 @connect(state => ({
 	termsService: state.settings.Layout_Terms_of_Service
 }))
-export default class TermsServiceView extends React.PureComponent {
+/** @extends React.Component */
+export default class TermsServiceView extends LoggedView {
 	static propTypes = {
 		termsService: PropTypes.string
+	}
+
+	constructor(props) {
+		super('TermsServiceView', props);
 	}
 
 	render() {

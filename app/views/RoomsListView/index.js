@@ -43,11 +43,6 @@ const ROW_HEIGHT = 70;
 })
 /** @extends React.Component */
 export default class RoomsListView extends LoggedView {
-	static navigatorStyle = {
-		navBarBackgroundColor: Platform.OS === 'android' ? '#2F343D' : undefined,
-		navBarTextColor: Platform.OS === 'android' ? '#FFF' : undefined
-	}
-
 	static propTypes = {
 		navigator: PropTypes.object,
 		userId: PropTypes.string,
