@@ -23,7 +23,7 @@
     ]
   },
   "dependencies": {
-    "@babel/polyfill": "^7.0.0-beta.47",
+    "@babel/polyfill": "^7.0.0-rc.1",
     "@remobile/react-native-toast": "^1.0.7",
     "@storybook/addons": "^3.4.10",
     "@storybook/react-native": "^3.4.10",
