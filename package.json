@@ -79,7 +79,7 @@
     "strip-ansi": "^4.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.0.0-beta.47",
+    "@babel/core": "7.0.0-rc.1",
     "@babel/plugin-proposal-decorators": "7.0.0-beta.47",
     "@storybook/addon-storyshots": "^3.4.10",
     "babel-core": "^7.0.0-beta.47",
