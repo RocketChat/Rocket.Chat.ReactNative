@@ -42,7 +42,7 @@ export default StyleSheet.create({
 	loading: {
 		flex: 1
 	},
-	sortToggleContainer: {
+	dropdownContainerHeader: {
 		height: 41,
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		borderColor: '#E1E5E8',
@@ -62,7 +62,7 @@ export default StyleSheet.create({
 		flex: 1,
 		marginLeft: 15
 	},
-	sortContainer: {
+	dropdownContainer: {
 		backgroundColor: '#fff',
 		width: '100%',
 		position: 'absolute',
@@ -82,7 +82,7 @@ export default StyleSheet.create({
 		fontWeight: 'normal',
 		flex: 1
 	},
-	sortBackdrop: {
+	backdrop: {
 		...StyleSheet.absoluteFill,
 		backgroundColor: '#000000'
 	},
@@ -92,9 +92,10 @@ export default StyleSheet.create({
 		marginHorizontal: 15,
 		flex: 1
 	},
-	sortIconLeft: {
-		width: 50,
-		paddingHorizontal: 15,
+	sortIcon: {
+		width: 20,
+		height: 20,
+		marginHorizontal: 15,
 		resizeMode: 'contain',
 		justifyContent: 'center'
 	},
@@ -110,5 +111,58 @@ export default StyleSheet.create({
 		letterSpacing: 0.27,
 		flex: 1,
 		lineHeight: 41
+	},
+	serverHeader: {
+		justifyContent: 'space-between'
+	},
+	serverHeaderText: {
+		color: '#9EA2A8',
+		fontSize: 15,
+		fontWeight: 'normal',
+		marginLeft: 15
+	},
+	serverHeaderAdd: {
+		color: '#1D74F5',
+		fontSize: 15,
+		fontWeight: 'normal',
+		marginRight: 15
+	},
+	serverItem: {
+		height: 68
+	},
+	serverItemContainer: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+	serverIcon: {
+		width: 42,
+		height: 42,
+		marginHorizontal: 15,
+		marginVertical: 13,
+		borderRadius: 4,
+		resizeMode: 'contain'
+	},
+	serverTextContainer: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'center'
+	},
+	serverName: {
+		fontSize: 18, fontWeight: '600', color: '#0C0D0F'
+	},
+	serverUrl: {
+		fontSize: 15,
+		color: '#9EA2A8'
+	},
+	checkIcon: {
+		width: 20,
+		height: 20,
+		marginHorizontal: 15,
+		resizeMode: 'contain'
+	},
+	serverSeparator: {
+		height: StyleSheet.hairlineWidth,
+		backgroundColor: '#E1E5E8',
+		marginLeft: 72
 	}
 });

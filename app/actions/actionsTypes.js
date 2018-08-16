@@ -32,7 +32,7 @@ export const FORGOT_PASSWORD = createRequestTypes('FORGOT_PASSWORD', [
 	'INIT'
 ]);
 export const USER = createRequestTypes('USER', ['SET']);
-export const ROOMS = createRequestTypes('ROOMS', [...defaultTypes, 'SET_SEARCH']);
+export const ROOMS = createRequestTypes('ROOMS', [...defaultTypes, 'SET_SEARCH', 'CLOSE_SERVER_DROPDOWN', 'TOGGLE_SERVER_DROPDOWN']);
 export const ROOM = createRequestTypes('ROOM', [
 	'ADD_USER_TYPING',
 	'REMOVE_USER_TYPING',

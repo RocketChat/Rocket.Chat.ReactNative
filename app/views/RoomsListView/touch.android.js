@@ -2,7 +2,9 @@ import React from 'react';
 import { TouchableNativeFeedback, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-const Touch = ({ children, style, onPress, ...props }) => (
+const Touch = ({
+	children, style, onPress, ...props
+}) => (
 	<TouchableNativeFeedback
 		onPress={onPress}
 		{...props}

@@ -33,6 +33,7 @@ export default class RoomsListSearchView extends React.Component {
 					onChangeText={text => this.onSearchChangeText(text)}
 					returnKeyType='search'
 					placeholder={I18n.t('Search')}
+					placeholderTextColor='#eee'
 					clearButtonMode='while-editing'
 					blurOnSubmit
 					autoCorrect={false}

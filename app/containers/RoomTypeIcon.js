@@ -1,36 +1,33 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const styles = StyleSheet.create({
-	type: {
-		marginRight: 5,
+	style: {
+		marginRight: 7,
 		marginTop: 3
 	}
 });
 
-const RoomTypeIcon = ({ type, size }) => {
+const RoomTypeIcon = ({ type, size, style }) => {
 	if (!type) {
 		return null;
 	}
 
-	const icon = {
-		c: 'pound',
-		p: 'lock',
-		l: 'account',
-		d: 'at'
-	}[type];
-	return <Icon name={icon} size={size} style={styles.type} />;
+	if (type === 'c') {
+		return <Image source={{ uri: 'subscription_hashtag' }} style={[styles.style, style, { width: size, height: size }]} />;
+	}
+	return <Image source={{ uri: 'subscription_lock' }} style={[styles.style, style, { width: size, height: size }]} />;
 };
 
 RoomTypeIcon.propTypes = {
 	type: PropTypes.string,
-	size: PropTypes.number
+	size: PropTypes.number,
+	style: PropTypes.object
 };
 
 RoomTypeIcon.defaultProps = {
-	size: 15
+	size: 10
 };
 
 export default RoomTypeIcon;

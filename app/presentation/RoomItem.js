@@ -79,7 +79,8 @@ const styles = StyleSheet.create({
 	},
 	disclosureContainer: {
 		height: '100%',
-		width: 32,
+		marginLeft: 6,
+		marginRight: 9,
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
@@ -246,7 +247,7 @@ export default class RoomItem extends React.Component {
 						</View>
 					</View>
 					<View style={styles.disclosureContainer}>
-						<Image source={require('../static/images/disclosureIndicator.png')} />
+						<Image source={{ uri: 'disclosure_indicator' }} style={{ width: 20, height: 20 }} />
 					</View>
 				</View>
 			</Touch>

@@ -13,7 +13,8 @@ import debounce from '../../utils/debounce';
 import LoggedView from '../View';
 import log from '../../utils/log';
 import I18n from '../../i18n';
-import Sort from './Sort';
+import SortDropdown from './SortDropdown';
+import ServerDropdown from './ServerDropdown';
 import Touch from './touch';
 
 const ROW_HEIGHT = 70;
@@ -25,6 +26,7 @@ const ROW_HEIGHT = 70;
 		Site_Url: state.settings.Site_Url,
 		searchText: state.rooms.searchText,
 		loadingServer: state.server.loading,
+		showServerDropdown: state.rooms.showServerDropdown,
 		sidebarSortby: null,
 		sidebarGroupByType: null,
 		sidebarShowFavorites: null,
@@ -50,6 +52,7 @@ export default class RoomsListView extends LoggedView {
 		server: PropTypes.string,
 		searchText: PropTypes.string,
 		loadingServer: PropTypes.bool,
+		showServerDropdown: PropTypes.bool,
 		sidebarSortby: PropTypes.string,
 		sidebarGroupByType: PropTypes.bool,
 		sidebarShowFavorites: PropTypes.bool,
@@ -63,13 +66,14 @@ export default class RoomsListView extends LoggedView {
 			search: [],
 			rooms: [],
 			loading: true,
-			showSort: false,
-			showGroup: false
+			showSortDropdown: false,
+			showGroup: false,
+			showServerDropdown: false
 		};
 		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
 
-	async componentWillMount() {
+	componentWillMount() {
 		this.initDefaultHeader();
 	}
 
@@ -115,18 +119,16 @@ export default class RoomsListView extends LoggedView {
 		const { navigator } = this.props;
 		if (event.type === 'NavBarButtonPress') {
 			if (event.id === 'createChannel') {
-				navigator.push({
+				this.props.navigator.push({
 					screen: 'SelectedUsersView',
 					title: I18n.t('Select_Users'),
 					passProps: {
 						nextAction: 'CREATE_CHANNEL'
 					}
 				});
-			} else if (event.id === 'sideMenu' && Platform.OS === 'ios') {
+			} else if (event.id === 'settings') {
 				navigator.toggleDrawer({
-					side: 'left',
-					animated: true,
-					to: 'missing'
+					side: 'left'
 				});
 			} else if (event.id === 'search') {
 				this.initSearchingAndroid();
@@ -134,7 +136,7 @@ export default class RoomsListView extends LoggedView {
 				this.cancelSearchingAndroid();
 			}
 		} else if (event.type === 'ScreenChangedEvent' && event.id === 'didAppear') {
-			this.props.navigator.setDrawerEnabled({
+			navigator.setDrawerEnabled({
 				side: 'left',
 				enabled: true
 			});
@@ -166,7 +168,6 @@ export default class RoomsListView extends LoggedView {
 		const { navigator } = this.props;
 		const rightButtons = [{
 			id: 'createChannel',
-			// icon: iconsMap.add,
 			icon: { uri: 'new_channel', scale: Dimensions.get('window').scale },
 			testID: 'rooms-list-view-create-channel'
 		}];
@@ -180,13 +181,14 @@ export default class RoomsListView extends LoggedView {
 
 		navigator.setButtons({
 			leftButtons: [{
-				id: 'sideMenu',
-				// icon: Platform.OS === 'ios' ? iconsMap.menu : undefined,
+				id: 'settings',
 				icon: { uri: 'settings', scale: Dimensions.get('window').scale },
-				// icon: require('settings'),
 				testID: 'rooms-list-view-sidebar'
 			}],
 			rightButtons
+		});
+		navigator.setStyle({
+			navBarCustomView: 'RoomsListHeaderView'
 		});
 	}
 
@@ -211,9 +213,6 @@ export default class RoomsListView extends LoggedView {
 
 	cancelSearchingAndroid = () => {
 		if (Platform.OS === 'android') {
-			this.props.navigator.setStyle({
-				navBarCustomView: ''
-			});
 			this.setState({ search: [] });
 			this.initDefaultHeader();
 			BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
@@ -233,13 +232,13 @@ export default class RoomsListView extends LoggedView {
 			return this.setState({ rooms: this.data.slice(), showGroup: false });
 		}
 
-		const unread = { title: 'Unread', data: [] };
-		const fav = { title: 'Favorites', data: [] };
-		const chats = { title: 'Chats', data: [] };
-		const channel = { title: 'Channels', data: [] };
-		const privateGroup = { title: 'Private Groups', data: [] };
-		const direct = { title: 'Direct Messages', data: [] };
-		const livechat = { title: 'Livechat', data: [] };
+		const unread = { title: I18n.t('Unread'), data: [] };
+		const fav = { title: I18n.t('Favorites'), data: [] };
+		const chats = { title: I18n.t('Chats'), data: [] };
+		const channel = { title: I18n.t('Channels'), data: [] };
+		const privateGroup = { title: I18n.t('Private_Groups'), data: [] };
+		const direct = { title: I18n.t('Direct_Messages'), data: [] };
+		const livechat = { title: I18n.t('Livechat'), data: [] };
 		this.data.forEach((item) => {
 			// Unread
 			if (sidebarShowUnread && this._isUnread(item)) {
@@ -375,21 +374,22 @@ export default class RoomsListView extends LoggedView {
 		}
 	}
 
-	toggleSort = () => this.setState(prevState => ({ showSort: !prevState.showSort }))
+	toggleSort = () => this.setState(prevState => ({ showSortDropdown: !prevState.showSortDropdown }))
 
-	renderHeader = () => {
-		// Platform.OS === 'ios' ? this.renderSearchBar : null
-		return this.renderSort();
-	}
+	// renderHeader = () => {
+	// 	// Platform.OS === 'ios' ? this.renderSearchBar : null
+	// 	return this.renderSort();
+	// }
+	renderHeader = () => this.renderSort();
 
 	renderSort = () => (
 		<Touch
 			onPress={this.toggleSort}
-			style={styles.sortToggleContainer}
+			style={styles.dropdownContainerHeader}
 		>
 			<View style={styles.sortItemContainer}>
-				<Text style={styles.sortToggleText}>Sorting by {this.props.sidebarSortby === 'alphabetical' ? 'name' : 'activity'}</Text>
-				<Image style={styles.sortIconLeft} source={require('../../static/images/group_type.png')} />
+				<Text style={styles.sortToggleText}>{I18n.t('Sorting_by', { key: I18n.t(this.props.sidebarSortby === 'alphabetical' ? 'name' : 'activity') })}</Text>
+				<Image style={styles.sortIcon} source={{ uri: 'group_type' }} />
 			</View>
 		</Touch>
 	)
@@ -486,13 +486,13 @@ export default class RoomsListView extends LoggedView {
 
 	render = () => {
 		const {
-			sidebarSortby, sidebarGroupByType, sidebarShowFavorites, sidebarShowUnread
+			sidebarSortby, sidebarGroupByType, sidebarShowFavorites, sidebarShowUnread, showServerDropdown
 		} = this.props;
 		return (
 			<SafeAreaView style={styles.container} testID='rooms-list-view'>
 				{this.renderList()}
-				{this.state.showSort ?
-					<Sort
+				{this.state.showSortDropdown ?
+					<SortDropdown
 						close={this.toggleSort}
 						sidebarSortby={sidebarSortby}
 						sidebarGroupByType={sidebarGroupByType}
@@ -500,6 +500,7 @@ export default class RoomsListView extends LoggedView {
 						sidebarShowUnread={sidebarShowUnread}
 					/> :
 					null}
+				{showServerDropdown ? <ServerDropdown navigator={this.props.navigator} close={this.toggleSort} /> : null}
 			</SafeAreaView>
 		);
 	}

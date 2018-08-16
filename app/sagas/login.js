@@ -17,8 +17,7 @@ import {
 	setUsernameRequest,
 	setUsernameSuccess,
 	forgotPasswordSuccess,
-	forgotPasswordFailure,
-	setUser
+	forgotPasswordFailure
 } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';

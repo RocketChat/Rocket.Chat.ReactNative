@@ -47,7 +47,7 @@ const defaultServer = 'https://open.rocket.chat';
 	failure: state.server.failure,
 	currentServer: state.server.server
 }), dispatch => ({
-	connectServer: (url, adding) => dispatch(serverRequest(url, adding))
+	connectServer: url => dispatch(serverRequest(url))
 }))
 /** @extends React.Component */
 export default class NewServerView extends LoggedView {

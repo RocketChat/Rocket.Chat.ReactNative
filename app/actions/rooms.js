@@ -26,3 +26,15 @@ export function setSearch(searchText) {
 		searchText
 	};
 }
+
+export function closeServerDropdown() {
+	return {
+		type: types.ROOMS.CLOSE_SERVER_DROPDOWN
+	};
+}
+
+export function toggleServerDropdown() {
+	return {
+		type: types.ROOMS.TOGGLE_SERVER_DROPDOWN
+	};
+}
