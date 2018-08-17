@@ -16,6 +16,7 @@ import I18n from '../../i18n';
 import SortDropdown from './SortDropdown';
 import ServerDropdown from './ServerDropdown';
 import Touch from './touch';
+import { toggleSortDropdown } from '../../actions/rooms';
 
 const ROW_HEIGHT = 70;
 
@@ -27,6 +28,7 @@ const ROW_HEIGHT = 70;
 		searchText: state.rooms.searchText,
 		loadingServer: state.server.loading,
 		showServerDropdown: state.rooms.showServerDropdown,
+		showSortDropdown: state.rooms.showSortDropdown,
 		sidebarSortby: null,
 		sidebarGroupByType: null,
 		sidebarShowFavorites: null,
@@ -42,7 +44,9 @@ const ROW_HEIGHT = 70;
 		};
 	}
 	return result;
-})
+}, dispatch => ({
+	toggleSortDropdown: () => dispatch(toggleSortDropdown())
+}))
 /** @extends React.Component */
 export default class RoomsListView extends LoggedView {
 	static propTypes = {
@@ -53,10 +57,12 @@ export default class RoomsListView extends LoggedView {
 		searchText: PropTypes.string,
 		loadingServer: PropTypes.bool,
 		showServerDropdown: PropTypes.bool,
+		showSortDropdown: PropTypes.bool,
 		sidebarSortby: PropTypes.string,
 		sidebarGroupByType: PropTypes.bool,
 		sidebarShowFavorites: PropTypes.bool,
-		sidebarShowUnread: PropTypes.bool
+		sidebarShowUnread: PropTypes.bool,
+		toggleSortDropdown: PropTypes.func
 	}
 
 	constructor(props) {
@@ -66,9 +72,7 @@ export default class RoomsListView extends LoggedView {
 			search: [],
 			rooms: [],
 			loading: true,
-			showSortDropdown: false,
-			showGroup: false,
-			showServerDropdown: false
+			showGroup: false
 		};
 		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
@@ -374,7 +378,8 @@ export default class RoomsListView extends LoggedView {
 		}
 	}
 
-	toggleSort = () => this.setState(prevState => ({ showSortDropdown: !prevState.showSortDropdown }))
+	// toggleSort = () => this.setState(prevState => ({ showSortDropdown: !prevState.showSortDropdown }))
+	toggleSort = () => this.props.toggleSortDropdown();
 
 	// renderHeader = () => {
 	// 	// Platform.OS === 'ios' ? this.renderSearchBar : null
@@ -486,12 +491,12 @@ export default class RoomsListView extends LoggedView {
 
 	render = () => {
 		const {
-			sidebarSortby, sidebarGroupByType, sidebarShowFavorites, sidebarShowUnread, showServerDropdown
+			sidebarSortby, sidebarGroupByType, sidebarShowFavorites, sidebarShowUnread, showServerDropdown, showSortDropdown
 		} = this.props;
 		return (
 			<SafeAreaView style={styles.container} testID='rooms-list-view'>
 				{this.renderList()}
-				{this.state.showSortDropdown ?
+				{showSortDropdown ?
 					<SortDropdown
 						close={this.toggleSort}
 						sidebarSortby={sidebarSortby}
@@ -500,7 +505,7 @@ export default class RoomsListView extends LoggedView {
 						sidebarShowUnread={sidebarShowUnread}
 					/> :
 					null}
-				{showServerDropdown ? <ServerDropdown navigator={this.props.navigator} close={this.toggleSort} /> : null}
+				{showServerDropdown ? <ServerDropdown navigator={this.props.navigator} /> : null}
 			</SafeAreaView>
 		);
 	}

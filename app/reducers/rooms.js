@@ -5,7 +5,8 @@ const initialState = {
 	failure: false,
 	searchText: '',
 	showServerDropdown: false,
-	closeServerDropdown: false
+	closeServerDropdown: false,
+	showSortDropdown: false
 };
 
 export default function login(state = initialState, action) {
@@ -41,6 +42,16 @@ export default function login(state = initialState, action) {
 			return {
 				...state,
 				showServerDropdown: !state.showServerDropdown
+			};
+		case types.ROOMS.CLOSE_SORT_DROPDOWN:
+			return {
+				...state,
+				closeSortDropdown: !state.closeSortDropdown
+			};
+		case types.ROOMS.TOGGLE_SORT_DROPDOWN:
+			return {
+				...state,
+				showSortDropdown: !state.showSortDropdown
 			};
 		default:
 			return state;

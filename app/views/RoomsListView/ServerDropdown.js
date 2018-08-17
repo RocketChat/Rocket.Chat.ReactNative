@@ -12,6 +12,8 @@ import Touch from './touch';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 
+const ROW_HEIGHT = 68;
+
 @connect(state => ({
 	closeServerDropdown: state.rooms.closeServerDropdown,
 	server: state.server.server
@@ -23,7 +25,7 @@ import I18n from '../../i18n';
 export default class ServerDropdown extends Component {
 	static propTypes = {
 		navigator: PropTypes.object,
-		closeServerDropdown: PropTypes.string,
+		closeServerDropdown: PropTypes.bool,
 		server: PropTypes.string,
 		toggleServerDropdown: PropTypes.func,
 		selectServerRequest: PropTypes.func,
@@ -126,9 +128,11 @@ export default class ServerDropdown extends Component {
 	)
 
 	render() {
+		const maxRows = 4;
+		const initialTop = 41 + (Math.min(this.state.servers.length, maxRows) * ROW_HEIGHT);
 		const translateY = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [-400, 0]
+			outputRange: [-initialTop, 0]
 		});
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
@@ -150,6 +154,7 @@ export default class ServerDropdown extends Component {
 						</TouchableOpacity>
 					</View>
 					<FlatList
+						style={{ maxHeight: maxRows * ROW_HEIGHT }}
 						data={this.state.servers}
 						keyExtractor={item => item.id}
 						renderItem={this.renderServer}
@@ -160,3 +165,5 @@ export default class ServerDropdown extends Component {
 		);
 	}
 }
+
+console.disableYellowBox = true;

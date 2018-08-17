@@ -10,12 +10,15 @@ import { setPreference } from '../../actions/login';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 
-@connect(null, dispatch => ({
+@connect(state => ({
+	closeSortDropdown: state.rooms.closeSortDropdown
+}), dispatch => ({
 	setPreference: preference => dispatch(setPreference(preference))
 }))
 export default class Sort extends Component {
 	static propTypes = {
-		close: PropTypes.func.isRequired,
+		closeSortDropdown: PropTypes.bool,
+		close: PropTypes.func,
 		sidebarSortby: PropTypes.string,
 		sidebarGroupByType: PropTypes.bool,
 		sidebarShowFavorites: PropTypes.bool,
@@ -38,6 +41,12 @@ export default class Sort extends Component {
 				useNativeDriver: true
 			},
 		).start();
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.closeSortDropdown !== this.props.closeSortDropdown) {
+			this.close();
+		}
 	}
 
 	saveUserPreference = async(param) => {
@@ -85,7 +94,7 @@ export default class Sort extends Component {
 	render() {
 		const translateY = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [-250, 41]
+			outputRange: [-245, 41]
 		});
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
