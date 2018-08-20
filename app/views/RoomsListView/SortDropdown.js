@@ -3,7 +3,7 @@ import { View, Text, Animated, Easing, Image, TouchableWithoutFeedback } from 'r
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import Touch from './touch';
+import Touch from '../../utils/touch';
 import styles from './styles';
 import RocketChat from '../../lib/rocketchat';
 import { setPreference } from '../../actions/login';

@@ -84,6 +84,13 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
+	disclosureIndicator: {
+		width: 20,
+		height: 20
+	},
+	emptyDisclosureAndroid: {
+		width: 15
+	},
 	markdownText: {
 		flex: 1,
 		color: '#9EA2A8',
@@ -199,6 +206,17 @@ export default class RoomItem extends React.Component {
 		sameElse: 'MMM D'
 	})
 
+	renderDisclosureIndicator = () => {
+		if (Platform.OS === 'ios') {
+			return (
+				<View style={styles.disclosureContainer}>
+					<Image source={{ uri: 'disclosure_indicator' }} style={styles.disclosureIndicator} />
+				</View>
+			);
+		}
+		return <View style={styles.emptyDisclosureAndroid} />;
+	}
+
 	render() {
 		const {
 			favorite, unread, userMentions, name, _updatedAt, alert, testID, height
@@ -246,9 +264,7 @@ export default class RoomItem extends React.Component {
 							{renderNumber(unread, userMentions)}
 						</View>
 					</View>
-					<View style={styles.disclosureContainer}>
-						<Image source={{ uri: 'disclosure_indicator' }} style={{ width: 20, height: 20 }} />
-					</View>
+					{this.renderDisclosureIndicator()}
 				</View>
 			</Touch>
 		);

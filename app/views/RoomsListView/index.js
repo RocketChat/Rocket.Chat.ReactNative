@@ -14,7 +14,7 @@ import log from '../../utils/log';
 import I18n from '../../i18n';
 import SortDropdown from './SortDropdown';
 import ServerDropdown from './ServerDropdown';
-import Touch from './touch';
+import Touch from '../../utils/touch';
 import { toggleSortDropdown } from '../../actions/rooms';
 
 const ROW_HEIGHT = 70;

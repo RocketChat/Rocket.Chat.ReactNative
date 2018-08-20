@@ -8,7 +8,7 @@ import { toggleServerDropdown } from '../../actions/rooms';
 import { selectServerRequest } from '../../actions/server';
 import { appStart } from '../../actions';
 import database from '../../lib/realm';
-import Touch from './touch';
+import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 

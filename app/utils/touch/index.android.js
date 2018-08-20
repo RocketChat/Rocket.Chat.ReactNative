@@ -17,7 +17,7 @@ const Touch = ({
 
 Touch.propTypes = {
 	children: PropTypes.node.isRequired,
-	style: PropTypes.object.isRequired,
+	style: PropTypes.any,
 	onPress: PropTypes.func.isRequired
 };
 
