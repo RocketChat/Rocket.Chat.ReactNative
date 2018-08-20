@@ -82,7 +82,7 @@ export default class ServerDropdown extends Component {
 		setTimeout(() => {
 			this.props.navigator.showModal({
 				screen: 'NewServerView',
-				title: 'Add_Server',
+				title: I18n.t('Add_Server'),
 				passProps: {
 					previousServer: this.props.server
 				}
@@ -115,7 +115,7 @@ export default class ServerDropdown extends Component {
 	renderSeparator = () => <View style={styles.serverSeparator} />;
 
 	renderServer = ({ item }) => (
-		<Touch onPress={() => this.select(item.id)} style={styles.serverItem}>
+		<Touch onPress={() => this.select(item.id)} style={styles.serverItem} testID={`rooms-list-header-server-${ item.id }`}>
 			<View style={styles.serverItemContainer}>
 				<Image source={{ uri: item.iconURL }} defaultSource={{ uri: 'logo' }} style={styles.serverIcon} />
 				<View style={styles.serverTextContainer}>
@@ -146,10 +146,11 @@ export default class ServerDropdown extends Component {
 				<Animated.View
 					key='sort-container'
 					style={[styles.dropdownContainer, { transform: [{ translateY }] }]}
+					testID='rooms-list-header-server-dropdown'
 				>
 					<View style={[styles.dropdownContainerHeader, styles.serverHeader]}>
 						<Text style={styles.serverHeaderText}>{I18n.t('Server')}</Text>
-						<TouchableOpacity onPress={this.addServer}>
+						<TouchableOpacity onPress={this.addServer} testID='rooms-list-header-server-add'>
 							<Text style={styles.serverHeaderAdd}>{I18n.t('Add_Server')}</Text>
 						</TouchableOpacity>
 					</View>
@@ -165,5 +166,3 @@ export default class ServerDropdown extends Component {
 		);
 	}
 }
-
-console.disableYellowBox = true;

@@ -263,26 +263,13 @@ export default class SelectedUsersView extends LoggedView {
 			</Text>
 		</TouchableOpacity>
 	);
-	// renderItem = ({ item }) => (
-	// 	<RoomItem
-	// 		key={item._id}
-	// 		name={item.name}
-	// 		type={item.t}
-	// 		baseUrl={this.props.Site_Url}
-	// 		onPress={() => this._onPressItem(item._id, item)}
-	// 		id={item.rid.replace(this.props.userId, '').trim()}
-	// 		showLastMessage={false}
-	// 		avatarSize={30}
-	// 		statusStyle={styles.status}
-	// 		testID={`select-users-view-item-${ item.name }`}
-	// 	/>
-	// );
 
 	renderSeparator = () => <View style={styles.separator} />;
 
 	renderItem = ({ item }) => (
 		<UserItem
-			user={item}
+			name={item.fname ? item.fname : item.name}
+			username={item.fname ? item.name : item.username}
 			onPress={() => this._onPressItem(item._id, item)}
 			testID={`select-users-view-item-${ item.name }`}
 		/>

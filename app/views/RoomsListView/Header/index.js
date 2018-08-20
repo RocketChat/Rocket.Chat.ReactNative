@@ -42,6 +42,12 @@ export default class RoomsListHeaderView extends Component {
 
 	render() {
 		const { serverName, showServerDropdown } = this.props;
-		return <Header onPress={this.onPress} serverName={serverName} showServerDropdown={showServerDropdown} />;
+		return (
+			<Header
+				onPress={this.onPress}
+				serverName={serverName}
+				showServerDropdown={showServerDropdown}
+			/>
+		);
 	}
 }

@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 
 const Header = ({ onPress, serverName, showServerDropdown }) => (
 	<View style={styles.container}>
-		<TouchableOpacity onPress={onPress}>
+		<TouchableOpacity onPress={onPress} testID='rooms-list-header-server-dropdown-button'>
 			<View style={styles.button}>
 				<Text style={styles.server}>{serverName}</Text>
 				<Image style={[styles.disclosure, showServerDropdown && styles.upsideDown]} source={{ uri: 'disclosure_indicator_server' }} />

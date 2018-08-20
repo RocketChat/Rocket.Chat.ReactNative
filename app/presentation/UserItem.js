@@ -33,22 +33,24 @@ const styles = StyleSheet.create({
 });
 
 const UserItem = ({
-	user, onPress, onLongPress
+	name, username, onPress, testID, onLongPress
 }) => (
-	<Touch onPress={onPress} onLongPress={onLongPress} style={styles.button}>
+	<Touch onPress={onPress} onLongPress={onLongPress} style={styles.button} testID={testID}>
 		<View style={styles.container}>
-			<Avatar text={user.name} size={30} type={user.type} style={styles.avatar} />
+			<Avatar text={username} size={30} type='d' style={styles.avatar} />
 			<View style={styles.textContainer}>
-				<Text style={styles.name}>{user.fname}</Text>
-				<Text style={styles.username}>@{user.name}</Text>
+				<Text style={styles.name}>{name}</Text>
+				<Text style={styles.username}>@{username}</Text>
 			</View>
 		</View>
 	</Touch>
 );
 
 UserItem.propTypes = {
-	user: PropTypes.object.isRequired,
+	name: PropTypes.string.isRequired,
+	username: PropTypes.string.isRequired,
 	onPress: PropTypes.func.isRequired,
+	testID: PropTypes.string.isRequired,
 	onLongPress: PropTypes.func
 };
 

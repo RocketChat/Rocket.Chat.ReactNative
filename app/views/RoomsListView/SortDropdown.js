@@ -51,6 +51,7 @@ export default class Sort extends Component {
 
 	saveUserPreference = async(param) => {
 		try {
+			this.props.setPreference(param);
 			await RocketChat.saveUserPreferences(param);
 		} catch (e) {
 			log('RoomsListView.saveUserPreference', e);
@@ -58,12 +59,10 @@ export default class Sort extends Component {
 	}
 
 	sortByName = () => {
-		this.props.setPreference({ sidebarSortby: 'alphabetical' });
 		this.saveUserPreference({ sidebarSortby: 'alphabetical' });
 	}
 
 	sortByActivity = () => {
-		this.props.setPreference({ sidebarSortby: 'activity' });
 		this.saveUserPreference({ sidebarSortby: 'activity' });
 	}
 
@@ -112,7 +111,7 @@ export default class Sort extends Component {
 					key='sort-container'
 					style={[styles.dropdownContainer, { transform: [{ translateY }] }]}
 				>
-					<Touch key='sort-alphabetical' style={styles.sortItemButton} onPress={() => this.saveUserPreference({ sidebarSortby: 'alphabetical' })}>
+					<Touch key='sort-alphabetical' style={styles.sortItemButton} onPress={this.sortByName}>
 						<View style={styles.sortItemContainer}>
 							<Image style={styles.sortIcon} source={{ uri: 'sort_alphabetically' }} />
 							<Text style={styles.sortItemText}>{I18n.t('Alphabetical')}</Text>
