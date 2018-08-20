@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 	},
 	titleContainer: {
 		width: '100%',
-		marginTop: 5,
+		marginTop: Platform.OS === 'ios' ? 5 : 2,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center'
