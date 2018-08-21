@@ -241,19 +241,20 @@ export default class Message extends React.Component {
 			return null;
 		}
 
-		const file = this.props.item.attachments[0];
-		const { user } = this.props;
-		if (file.image_url) {
-			return <Image file={file} user={user} />;
-		}
-		if (file.audio_url) {
-			return <Audio file={file} user={user} />;
-		}
-		if (file.video_url) {
-			return <Video file={file} user={user} />;
-		}
+		return this.props.item.attachments.map((file) => {
+			const { user } = this.props;
+			if (file.image_url) {
+				return <Image file={file} user={user} />;
+			}
+			if (file.audio_url) {
+				return <Audio file={file} user={user} />;
+			}
+			if (file.video_url) {
+				return <Video file={file} user={user} />;
+			}
 
-		return <Reply attachment={file} timeFormat={this.timeFormat} />;
+			return <Reply attachment={file} timeFormat={this.timeFormat} />;
+		});
 	}
 
 	renderUrl = () => {
