@@ -45,8 +45,12 @@ const Header = ({ onPress, serverName, showServerDropdown }) => (
 
 Header.propTypes = {
 	onPress: PropTypes.func.isRequired,
-	serverName: PropTypes.string.isRequired,
+	serverName: PropTypes.string,
 	showServerDropdown: PropTypes.bool.isRequired
+};
+
+Header.defaultProps = {
+	serverName: 'Rocket.Chat'
 };
 
 export default Header;

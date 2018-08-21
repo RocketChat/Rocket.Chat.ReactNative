@@ -4,7 +4,8 @@ const isIOS = () => Platform.OS === 'ios';
 
 export default StyleSheet.create({
 	container: {
-		flex: 1
+		flex: 1,
+		backgroundColor: isIOS() ? '#FFF' : '#E1E5E8'
 	},
 	separator: {
 		height: StyleSheet.hairlineWidth,

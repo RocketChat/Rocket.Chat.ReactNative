@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Platform, View, TextInput, FlatList, BackHandler, ActivityIndicator, SafeAreaView, Text, Image, SectionList, Dimensions, ScrollView } from 'react-native';
+import { Platform, View, TextInput, FlatList, BackHandler, ActivityIndicator, SafeAreaView, Text, Image, Dimensions, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
 
@@ -71,9 +71,14 @@ export default class RoomsListView extends LoggedView {
 
 		this.state = {
 			search: [],
-			rooms: [],
 			loading: true,
-			showGroup: false
+			chats: [],
+			unread: [],
+			favorites: [],
+			channels: [],
+			privateGroup: [],
+			direct: [],
+			livechat: []
 		};
 		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
@@ -103,19 +108,13 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (prevProps.sidebarSortby !== this.props.sidebarSortby) {
-			if (this.props.sidebarSortby === 'alphabetical') {
-				this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('name', false);
-			} else {
-				this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
-			}
-			this.updateState();
-		} else if (!(
+		if (!(
+			(prevProps.sidebarSortby === this.props.sidebarSortby) &&
 			(prevProps.sidebarGroupByType === this.props.sidebarGroupByType) &&
 			(prevProps.sidebarShowFavorites === this.props.sidebarShowFavorites) &&
 			(prevProps.sidebarShowUnread === this.props.sidebarShowUnread)
 		)) {
-			this.updateState();
+			this.getSubscriptions();
 		}
 	}
 
@@ -162,20 +161,85 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	getSubscriptions = () => {
-		if (this.data && this.data.removeListener) {
-			this.data.removeListener(this.updateState);
-		}
 		if (this.props.server && this.hasActiveDB()) {
 			if (this.props.sidebarSortby === 'alphabetical') {
 				this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('name', false);
 			} else {
 				this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
 			}
-			this.data.addListener(this.updateState);
+
+			let chats = [];
+			let unread = [];
+			let favorites = [];
+			let channels = [];
+			let privateGroup = [];
+			let direct = [];
+			let livechat = [];
+
+			// unread
+			if (this.props.sidebarShowUnread) {
+				this.unread = this.data.filtered('archived != true && open == true').sorted('name', false).filtered('(unread > 0 || alert == true)');
+				unread = this.unread.slice();
+				setTimeout(() => {
+					this.unread.addListener(() => this.updateState({ unread: this.unread.slice() }));
+				});
+			} else if (this.unread && this.unread.removeAllListeners) {
+				this.unread.removeAllListeners();
+			}
+			// favorites
+			if (this.props.sidebarShowFavorites) {
+				this.favorites = this.data.filtered('f == true');
+				favorites = this.favorites.slice();
+				setTimeout(() => {
+					// this.favorites.addListener(() => this.updateState(favorites));
+				});
+			} else if (this.favorites && this.favorites.removeAllListeners) {
+				this.favorites.removeAllListeners();
+			}
+			// type
+			if (this.props.sidebarGroupByType) {
+				// channels
+				this.channels = this.data.filtered('t == $0', 'c');
+				channels = this.channels.slice();
+				// private
+				this.privateGroup = this.data.filtered('t == $0', 'p');
+				privateGroup = this.privateGroup.slice();
+				// direct
+				this.direct = this.data.filtered('t == $0', 'd');
+				direct = this.direct.slice();
+				// livechat
+				this.livechat = this.data.filtered('t == $0', 'l');
+				livechat = this.livechat.slice();
+				setTimeout(() => {
+					// this.channels.addListener(() => this.updateState(channels));
+					// this.privateGroup.addListener(() => this.updateState(privateGroup));
+					// this.direct.addListener(() => this.updateState({ direct: this.direct }));
+					// this.livechat.addListener(() => this.updateState(livechat));
+				});
+				this.removeListener(this.chats);
+			} else {
+				// chats
+				this.chats = this.data.filtered('(unread == 0 && alert == false)');
+				chats = this.chats.slice();
+				setTimeout(() => {
+					// this.chats.addListener(() => this.updateState(chats));
+				});
+			}
+
+			// updateState
+			this.updateState({
+				chats, unread, favorites, channels, privateGroup, direct, livechat
+			});
 		}
 		this.timeout = setTimeout(() => {
 			this.setState({ loading: false });
 		}, 200);
+	}
+
+	removeListener = (data) => {
+		if (data && data.removeAllListeners) {
+			data.removeAllListeners();
+		}
 	}
 
 	initDefaultHeader = () => {
@@ -240,75 +304,9 @@ export default class RoomsListView extends LoggedView {
 
 	_isUnread = item => item.unread > 0 || item.alert
 
-	updateState = debounce(() => {
-		const { sidebarGroupByType, sidebarShowFavorites, sidebarShowUnread } = this.props;
-		if (!(sidebarGroupByType || sidebarShowFavorites || sidebarShowUnread)) {
-			return this.setState({ rooms: this.data.slice(), showGroup: false, loading: false });
-		}
-
-		this.setState({ loading: true });
-		const unread = { title: I18n.t('Unread'), data: [] };
-		const fav = { title: I18n.t('Favorites'), data: [] };
-		const chats = { title: I18n.t('Chats'), data: [] };
-		const channel = { title: I18n.t('Channels'), data: [] };
-		const privateGroup = { title: I18n.t('Private_Groups'), data: [] };
-		const direct = { title: I18n.t('Direct_Messages'), data: [] };
-		const livechat = { title: I18n.t('Livechat'), data: [] };
-		this.data.forEach((item) => {
-			// Unread
-			if (sidebarShowUnread && this._isUnread(item)) {
-				unread.data.push(item);
-			}
-			// Favorites
-			if (sidebarShowFavorites && item.f) {
-				fav.data.push(item);
-			} else {
-				// eslint-disable-next-line
-				if (!(sidebarShowUnread && this._isUnread(item))) {
-					if (sidebarGroupByType) {
-						switch (item.t) {
-							case 'c':
-								channel.data.push(item);
-								break;
-							case 'p':
-								privateGroup.data.push(item);
-								break;
-							case 'd':
-								direct.data.push(item);
-								break;
-							case 'l':
-								livechat.data.push(item);
-								break;
-							default:
-								break;
-						}
-					} else {
-						chats.data.push(item);
-					}
-				}
-			}
-		});
-		const rooms = unread.data.length ? [unread] : [];
-		if (fav.data.length) {
-			rooms.push(fav);
-		}
-		if (channel.data.length) {
-			rooms.push(channel);
-		}
-		if (privateGroup.data.length) {
-			rooms.push(privateGroup);
-		}
-		if (direct.data.length) {
-			rooms.push(direct);
-		}
-		if (livechat.data.length) {
-			rooms.push(livechat);
-		}
-		if (!sidebarGroupByType) {
-			rooms.push(chats);
-		}
-		this.setState({ rooms, showGroup: true, loading: false });
-	});
+	updateState = debounce((data) => {
+		this.setState(data);
+	})
 
 	async search(text) {
 		const searchText = text.trim();
@@ -453,23 +451,45 @@ export default class RoomsListView extends LoggedView {
 
 	renderSeparator = () => <View style={styles.separator} />;
 
-	renderList = () => {
-		const {
-			loading, search, rooms, showGroup
-		} = this.state;
-		if (loading) {
-			return <ActivityIndicator style={styles.loading} />;
-		}
-		if (!showGroup || search.length > 0) {
+	renderSection = (data, header) => {
+		if (data.length > 0) {
 			return (
 				<FlatList
-					data={search.length > 0 ? search : rooms}
-					extraData={search.length > 0 ? search : rooms}
+					data={data}
+					extraData={data}
 					keyExtractor={item => item.rid}
 					style={styles.list}
 					renderItem={this.renderItem}
 					ItemSeparatorComponent={this.renderSeparator}
-					ListHeaderComponent={this.renderHeader}
+					ListHeaderComponent={() => (
+						<View style={styles.groupTitleContainer}>
+							<Text style={styles.groupTitle}>{I18n.t(header)}</Text>
+						</View>
+					)}
+					getItemLayout={getItemLayout}
+					enableEmptySections
+					removeClippedSubviews
+					keyboardShouldPersistTaps='always'
+				/>
+			);
+		}
+		return null;
+	}
+
+	renderList = () => {
+		const {
+			search, chats, unread, favorites, channels, direct, privateGroup, livechat
+		} = this.state;
+
+		if (search.length > 0) {
+			return (
+				<FlatList
+					data={search}
+					extraData={search}
+					keyExtractor={item => item.rid}
+					style={styles.list}
+					renderItem={this.renderItem}
+					ItemSeparatorComponent={this.renderSeparator}
 					getItemLayout={getItemLayout}
 					enableEmptySections
 					removeClippedSubviews
@@ -478,26 +498,35 @@ export default class RoomsListView extends LoggedView {
 				/>
 			);
 		}
+
 		return (
-			<SectionList
-				sections={this.state.rooms}
-				extraData={this.state.rooms}
-				keyExtractor={item => item.rid}
-				style={styles.list}
-				renderItem={this.renderItem}
-				ItemSeparatorComponent={this.renderSeparator}
-				ListHeaderComponent={this.renderHeader}
-				renderSectionHeader={({ section: { title } }) => (
-					<View style={styles.groupTitleContainer}>
-						<Text style={styles.groupTitle}>{title}</Text>
-					</View>
-				)}
-				getItemLayout={getItemLayout}
-				enableEmptySections
-				removeClippedSubviews
+			<View style={styles.container}>
+				{this.renderSection(unread, 'Unread')}
+				{this.renderSection(favorites, 'Favorites')}
+				{this.renderSection(channels, 'Channels')}
+				{this.renderSection(direct, 'Direct_Messages')}
+				{this.renderSection(privateGroup, 'Private_Groups')}
+				{this.renderSection(livechat, 'Livechat')}
+				{this.renderSection(chats, 'Chats')}
+			</View>
+		);
+	}
+
+	renderScroll = () => {
+		if (this.state.loading) {
+			return <ActivityIndicator style={styles.loading} />;
+		}
+
+		return (
+			<ScrollView
+				contentOffset={Platform.OS === 'ios' ? { x: 0, y: 37 } : {}}
 				keyboardShouldPersistTaps='always'
 				testID='rooms-list-view-list'
-			/>
+			>
+				{this.renderSearchBar()}
+				{this.renderHeader()}
+				{this.renderList()}
+			</ScrollView>
 		);
 	}
 
@@ -505,15 +534,10 @@ export default class RoomsListView extends LoggedView {
 		const {
 			sidebarSortby, sidebarGroupByType, sidebarShowFavorites, sidebarShowUnread, showServerDropdown, showSortDropdown
 		} = this.props;
+
 		return (
 			<SafeAreaView style={styles.container} testID='rooms-list-view'>
-				<ScrollView
-					contentOffset={Platform.OS === 'ios' ? { x: 0, y: 37 } : {}}
-					keyboardShouldPersistTaps='always'
-				>
-					{this.renderSearchBar()}
-					{this.renderList()}
-				</ScrollView>
+				{this.renderScroll()}
 				{showSortDropdown ?
 					<SortDropdown
 						close={this.toggleSort}
