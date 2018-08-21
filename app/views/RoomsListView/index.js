@@ -191,7 +191,7 @@ export default class RoomsListView extends LoggedView {
 				this.favorites = this.data.filtered('f == true');
 				favorites = this.favorites.slice();
 				setTimeout(() => {
-					// this.favorites.addListener(() => this.updateState(favorites));
+					this.favorites.addListener(() => this.updateState({ favorites: this.favorites.slice() }));
 				});
 			} else if (this.favorites && this.favorites.removeAllListeners) {
 				this.favorites.removeAllListeners();
@@ -211,10 +211,10 @@ export default class RoomsListView extends LoggedView {
 				this.livechat = this.data.filtered('t == $0', 'l');
 				livechat = this.livechat.slice();
 				setTimeout(() => {
-					// this.channels.addListener(() => this.updateState(channels));
-					// this.privateGroup.addListener(() => this.updateState(privateGroup));
-					// this.direct.addListener(() => this.updateState({ direct: this.direct }));
-					// this.livechat.addListener(() => this.updateState(livechat));
+					this.channels.addListener(() => this.updateState({ channels: this.channels.slice() }));
+					this.privateGroup.addListener(() => this.updateState({ privateGroup: this.privateGroup.slice() }));
+					this.direct.addListener(() => this.updateState({ direct: this.direct.slice() }));
+					this.livechat.addListener(() => this.updateState({ livechat: this.livechat.slice() }));
 				});
 				this.removeListener(this.chats);
 			} else {
@@ -222,7 +222,7 @@ export default class RoomsListView extends LoggedView {
 				this.chats = this.data.filtered('(unread == 0 && alert == false)');
 				chats = this.chats.slice();
 				setTimeout(() => {
-					// this.chats.addListener(() => this.updateState(chats));
+					this.chats.addListener(() => this.updateState({ chats: this.chats.slice() }));
 				});
 			}
 
@@ -494,7 +494,6 @@ export default class RoomsListView extends LoggedView {
 					enableEmptySections
 					removeClippedSubviews
 					keyboardShouldPersistTaps='always'
-					testID='rooms-list-view-list'
 				/>
 			);
 		}

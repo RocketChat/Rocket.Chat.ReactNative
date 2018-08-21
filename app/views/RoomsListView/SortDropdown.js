@@ -10,6 +10,8 @@ import { setPreference } from '../../actions/login';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 
+const ANIMATION_DURATION = 200;
+
 @connect(state => ({
 	closeSortDropdown: state.rooms.closeSortDropdown
 }), dispatch => ({
@@ -36,7 +38,7 @@ export default class Sort extends Component {
 			this.animatedValue,
 			{
 				toValue: 1,
-				duration: 300,
+				duration: ANIMATION_DURATION,
 				easing: Easing.ease,
 				useNativeDriver: true
 			},
@@ -83,7 +85,7 @@ export default class Sort extends Component {
 			this.animatedValue,
 			{
 				toValue: 0,
-				duration: 300,
+				duration: ANIMATION_DURATION,
 				easing: Easing.ease,
 				useNativeDriver: true
 			},

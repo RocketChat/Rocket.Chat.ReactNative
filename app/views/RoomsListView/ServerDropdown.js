@@ -13,6 +13,7 @@ import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 
 const ROW_HEIGHT = 68;
+const ANIMATION_DURATION = 200;
 
 @connect(state => ({
 	closeServerDropdown: state.rooms.closeServerDropdown,
@@ -45,7 +46,7 @@ export default class ServerDropdown extends Component {
 			this.animatedValue,
 			{
 				toValue: 1,
-				duration: 300,
+				duration: ANIMATION_DURATION,
 				easing: Easing.ease,
 				useNativeDriver: true
 			},
@@ -70,7 +71,7 @@ export default class ServerDropdown extends Component {
 			this.animatedValue,
 			{
 				toValue: 0,
-				duration: 300,
+				duration: ANIMATION_DURATION,
 				easing: Easing.ease,
 				useNativeDriver: true
 			}
@@ -87,7 +88,7 @@ export default class ServerDropdown extends Component {
 					previousServer: this.props.server
 				}
 			});
-		}, 300);
+		}, ANIMATION_DURATION);
 	}
 
 	select = async(server) => {
