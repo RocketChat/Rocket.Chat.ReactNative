@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Platform, View, TextInput, FlatList, BackHandler, ActivityIndicator, SafeAreaView, Text, Image, Dimensions, ScrollView } from 'react-native';
+import { Platform, View, TextInput, FlatList, BackHandler, ActivityIndicator, SafeAreaView, Text, Image, Dimensions, ScrollView, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
 
@@ -8,7 +8,6 @@ import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem from '../../presentation/RoomItem';
 import styles from './styles';
-import debounce from '../../utils/debounce';
 import LoggedView from '../View';
 import log from '../../utils/log';
 import I18n from '../../i18n';
@@ -19,7 +18,26 @@ import { toggleSortDropdown } from '../../actions/rooms';
 
 const ROW_HEIGHT = 70;
 
+const isAndroid = () => Platform.OS === 'android';
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
+const leftButtons = [{
+	id: 'settings',
+	icon: { uri: 'settings', scale: Dimensions.get('window').scale },
+	testID: 'rooms-list-view-sidebar'
+}];
+const rightButtons = [{
+	id: 'createChannel',
+	icon: { uri: 'new_channel', scale: Dimensions.get('window').scale },
+	testID: 'rooms-list-view-create-channel'
+}];
+
+if (Platform.OS === 'android') {
+	rightButtons.push({
+		id: 'search',
+		icon: { uri: 'search', scale: Dimensions.get('window').scale }
+	});
+}
+
 
 @connect((state) => {
 	let result = {
@@ -50,6 +68,18 @@ const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT
 }))
 /** @extends React.Component */
 export default class RoomsListView extends LoggedView {
+	static navigatorButtons = {
+		leftButtons, rightButtons
+	}
+
+	static navigatorStyle = {
+		navBarCustomView: 'RoomsListHeaderView',
+		navBarComponentAlignment: 'fill',
+		navBarBackgroundColor: isAndroid() ? '#2F343D' : undefined,
+		navBarTextColor: isAndroid() ? '#FFF' : undefined,
+		navBarButtonColor: isAndroid() ? '#FFF' : undefined
+	}
+
 	static propTypes = {
 		navigator: PropTypes.object,
 		userId: PropTypes.string,
@@ -119,10 +149,14 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	componentWillUnmount() {
-		this.updateState.stop();
-		if (this.data) {
-			this.data.removeAllListeners();
-		}
+		this.removeListener(this.data);
+		this.removeListener(this.unread);
+		this.removeListener(this.favorites);
+		this.removeListener(this.channels);
+		this.removeListener(this.privateGroup);
+		this.removeListener(this.direct);
+		this.removeListener(this.livechat);
+
 		if (this.timeout) {
 			clearTimeout(this.timeout);
 		}
@@ -181,20 +215,20 @@ export default class RoomsListView extends LoggedView {
 				this.unread = this.data.filtered('archived != true && open == true').sorted('name', false).filtered('(unread > 0 || alert == true)');
 				unread = this.unread.slice();
 				setTimeout(() => {
-					this.unread.addListener(() => this.updateState({ unread: this.unread.slice() }));
+					this.unread.addListener(() => this.setState({ unread: this.unread.slice() }));
 				});
-			} else if (this.unread && this.unread.removeAllListeners) {
-				this.unread.removeAllListeners();
+			} else {
+				this.removeListener(unread);
 			}
 			// favorites
 			if (this.props.sidebarShowFavorites) {
 				this.favorites = this.data.filtered('f == true');
 				favorites = this.favorites.slice();
 				setTimeout(() => {
-					this.favorites.addListener(() => this.updateState({ favorites: this.favorites.slice() }));
+					this.favorites.addListener(() => this.setState({ favorites: this.favorites.slice() }));
 				});
-			} else if (this.favorites && this.favorites.removeAllListeners) {
-				this.favorites.removeAllListeners();
+			} else {
+				this.removeListener(favorites);
 			}
 			// type
 			if (this.props.sidebarGroupByType) {
@@ -211,10 +245,10 @@ export default class RoomsListView extends LoggedView {
 				this.livechat = this.data.filtered('t == $0', 'l');
 				livechat = this.livechat.slice();
 				setTimeout(() => {
-					this.channels.addListener(() => this.updateState({ channels: this.channels.slice() }));
-					this.privateGroup.addListener(() => this.updateState({ privateGroup: this.privateGroup.slice() }));
-					this.direct.addListener(() => this.updateState({ direct: this.direct.slice() }));
-					this.livechat.addListener(() => this.updateState({ livechat: this.livechat.slice() }));
+					this.channels.addListener(() => this.setState({ channels: this.channels.slice() }));
+					this.privateGroup.addListener(() => this.setState({ privateGroup: this.privateGroup.slice() }));
+					this.direct.addListener(() => this.setState({ direct: this.direct.slice() }));
+					this.livechat.addListener(() => this.setState({ livechat: this.livechat.slice() }));
 				});
 				this.removeListener(this.chats);
 			} else {
@@ -222,12 +256,16 @@ export default class RoomsListView extends LoggedView {
 				this.chats = this.data.filtered('(unread == 0 && alert == false)');
 				chats = this.chats.slice();
 				setTimeout(() => {
-					this.chats.addListener(() => this.updateState({ chats: this.chats.slice() }));
+					this.chats.addListener(() => this.setState({ chats: this.chats.slice() }));
 				});
+				this.removeListener(this.channels);
+				this.removeListener(this.privateGroup);
+				this.removeListener(this.direct);
+				this.removeListener(this.livechat);
 			}
 
-			// updateState
-			this.updateState({
+			// setState
+			this.setState({
 				chats, unread, favorites, channels, privateGroup, direct, livechat
 			});
 		}
@@ -244,29 +282,13 @@ export default class RoomsListView extends LoggedView {
 
 	initDefaultHeader = () => {
 		const { navigator } = this.props;
-		const rightButtons = [{
-			id: 'createChannel',
-			icon: { uri: 'new_channel', scale: Dimensions.get('window').scale },
-			testID: 'rooms-list-view-create-channel'
-		}];
-
-		if (Platform.OS === 'android') {
-			rightButtons.push({
-				id: 'search',
-				icon: { uri: 'search', scale: Dimensions.get('window').scale }
-			});
-		}
-
-		navigator.setButtons({
-			leftButtons: [{
-				id: 'settings',
-				icon: { uri: 'settings', scale: Dimensions.get('window').scale },
-				testID: 'rooms-list-view-sidebar'
-			}],
-			rightButtons
-		});
+		navigator.setButtons({ leftButtons, rightButtons });
 		navigator.setStyle({
-			navBarCustomView: 'RoomsListHeaderView'
+			navBarCustomView: 'RoomsListHeaderView',
+			navBarComponentAlignment: 'fill',
+			navBarBackgroundColor: isAndroid() ? '#2F343D' : undefined,
+			navBarTextColor: isAndroid() ? '#FFF' : undefined,
+			navBarButtonColor: isAndroid() ? '#FFF' : undefined
 		});
 	}
 
@@ -293,6 +315,7 @@ export default class RoomsListView extends LoggedView {
 		if (Platform.OS === 'android') {
 			this.setState({ search: [] });
 			this.initDefaultHeader();
+			Keyboard.dismiss();
 			BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
 		}
 	}
@@ -303,10 +326,6 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	_isUnread = item => item.unread > 0 || item.alert
-
-	updateState = debounce((data) => {
-		this.setState(data);
-	})
 
 	async search(text) {
 		const searchText = text.trim();
