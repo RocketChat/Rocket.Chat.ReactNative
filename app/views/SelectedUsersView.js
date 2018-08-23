@@ -1,57 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, TextInput, Text, TouchableOpacity, SafeAreaView, FlatList, LayoutAnimation } from 'react-native';
+import { View, StyleSheet, SafeAreaView, FlatList, LayoutAnimation, Platform, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 
 import { addUser, removeUser, reset, setLoading } from '../actions/selectedUsers';
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
-import Avatar from '../containers/Avatar';
 import Loading from '../containers/Loading';
 import debounce from '../utils/debounce';
 import LoggedView from './View';
 import I18n from '../i18n';
 import log from '../utils/log';
-import { iconsMap } from '../Icons';
+import SearchBox from '../containers/SearchBox';
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		alignItems: 'stretch',
-		justifyContent: 'center'
-	},
 	safeAreaView: {
 		flex: 1,
-		backgroundColor: '#FFFFFF'
+		backgroundColor: Platform.OS === 'ios' ? '#F7F8FA' : '#E1E5E8'
 	},
 	list: {
 		width: '100%',
 		backgroundColor: '#FFFFFF'
 	},
-	searchBoxView: {
-		backgroundColor: '#eee'
-	},
-	searchBox: {
-		backgroundColor: '#fff',
-		margin: 5,
-		borderRadius: 5,
-		padding: 5,
-		paddingLeft: 10,
-		color: '#aaa'
-	},
-	selectItemView: {
-		width: 80,
-		height: 80,
-		padding: 8,
-		flexDirection: 'column',
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
 	separator: {
 		height: StyleSheet.hairlineWidth,
 		backgroundColor: '#E1E5E8',
 		marginLeft: 60
+	},
+	borderVertical: {
+		borderTopWidth: StyleSheet.hairlineWidth,
+		borderBottomWidth: StyleSheet.hairlineWidth,
+		borderColor: '#CBCED1'
 	}
 });
 
@@ -100,11 +80,12 @@ export default class SelectedUsersView extends LoggedView {
 			const { length } = nextProps.users;
 			const rightButtons = [];
 			if (length > 0) {
-				rightButtons.push({
+				const next = {
 					id: 'create',
-					testID: 'selected-users-view-submit',
-					icon: iconsMap.add
-				});
+					title: 'Next',
+					testID: 'selected-users-view-submit'
+				};
+				rightButtons.push(next);
 			}
 			this.props.navigator.setButtons({ rightButtons });
 		}
@@ -123,7 +104,8 @@ export default class SelectedUsersView extends LoggedView {
 				if (nextAction === 'CREATE_CHANNEL') {
 					this.props.navigator.push({
 						screen: 'CreateChannelView',
-						title: I18n.t('Create_Channel')
+						title: I18n.t('Create_Channel'),
+						backButtonTitle: ''
 					});
 				} else {
 					try {
@@ -189,49 +171,33 @@ export default class SelectedUsersView extends LoggedView {
 		}
 	}
 
+	isChecked = username => this.props.users.findIndex(el => el.name === username) !== -1;
+
 	toggleUser = (user) => {
 		LayoutAnimation.easeInEaseOut();
-		const index = this.props.users.findIndex(el => el.name === user.name);
-		if (index === -1) {
+		if (!this.isChecked(user.name)) {
 			this.props.addUser(user);
 		} else {
 			this.props.removeUser(user);
 		}
-	};
+	}
 
 	_onPressItem = (id, item = {}) => {
 		if (item.search) {
-			this.toggleUser({ _id: item._id, name: item.username });
+			this.toggleUser({ _id: item._id, name: item.username, fname: item.name });
 		} else {
-			this.toggleUser({ _id: item._id, name: item.name });
+			this.toggleUser({ _id: item._id, name: item.name, fname: item.fname });
 		}
-	};
+	}
 
 	_onPressSelectedItem = item => this.toggleUser(item);
 
 	renderHeader = () => (
-		<View style={styles.container}>
-			{this.renderSearchBar()}
+		<View>
+			<SearchBox onChangeText={text => this.onSearchChangeText(text)} />
 			{this.renderSelected()}
 		</View>
-	);
-
-	renderSearchBar = () => (
-		<View style={styles.searchBoxView}>
-			<TextInput
-				underlineColorAndroid='transparent'
-				style={styles.searchBox}
-				onChangeText={text => this.onSearchChangeText(text)}
-				returnKeyType='search'
-				placeholder={I18n.t('Search')}
-				clearButtonMode='while-editing'
-				blurOnSubmit
-				testID='select-users-view-search'
-				autoCorrect={false}
-				autoCapitalize='none'
-			/>
-		</View>
-	);
+	)
 
 	renderSelected = () => {
 		if (this.props.users.length === 0) {
@@ -241,57 +207,62 @@ export default class SelectedUsersView extends LoggedView {
 			<FlatList
 				data={this.props.users}
 				keyExtractor={item => item._id}
-				style={styles.list}
+				style={[styles.list, styles.borderVertical]}
+				contentContainerStyle={{ marginVertical: 5 }}
 				renderItem={this.renderSelectedItem}
 				enableEmptySections
 				keyboardShouldPersistTaps='always'
 				horizontal
 			/>
 		);
-	};
+	}
 
 	renderSelectedItem = ({ item }) => (
-		<TouchableOpacity
-			key={item._id}
-			style={styles.selectItemView}
+		<UserItem
+			name={item.fname}
+			username={item.name}
 			onPress={() => this._onPressSelectedItem(item)}
 			testID={`selected-user-${ item.name }`}
-		>
-			<Avatar text={item.name} size={40} />
-			<Text ellipsizeMode='tail' numberOfLines={1} style={{ fontSize: 10 }}>
-				{item.name}
-			</Text>
-		</TouchableOpacity>
-	);
+			style={{ paddingRight: 15 }}
+		/>
+	)
 
 	renderSeparator = () => <View style={styles.separator} />;
 
-	renderItem = ({ item }) => (
-		<UserItem
-			name={item.fname ? item.fname : item.name}
-			username={item.fname ? item.name : item.username}
-			onPress={() => this._onPressItem(item._id, item)}
-			testID={`select-users-view-item-${ item.name }`}
-		/>
-	)
+	renderItem = ({ item }) => {
+		const name = item.search ? item.name : item.fname;
+		const username = item.search ? item.username : item.name;
+		return (
+			<UserItem
+				name={name}
+				username={username}
+				onPress={() => this._onPressItem(item._id, item)}
+				testID={`select-users-view-item-${ item.name }`}
+				icon={this.isChecked(username) ? 'check' : null}
+			/>
+		);
+	}
 
 	renderList = () => (
 		<FlatList
 			data={this.state.search.length > 0 ? this.state.search : this.data}
 			extraData={this.props}
 			keyExtractor={item => item._id}
-			style={styles.list}
+			style={[styles.list]}
 			renderItem={this.renderItem}
-			ListHeaderComponent={this.renderHeader}
 			ItemSeparatorComponent={this.renderSeparator}
 			enableEmptySections
 			keyboardShouldPersistTaps='always'
 		/>
-	);
+	)
+
 	render = () => (
 		<SafeAreaView style={styles.safeAreaView} testID='select-users-view'>
-			{this.renderList()}
+			<ScrollView keyboardShouldPersistTaps='always'>
+				{this.renderHeader()}
+				{this.renderList()}
+			</ScrollView>
 			<Loading visible={this.props.loading} />
 		</SafeAreaView>
-	);
+	)
 }

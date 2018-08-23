@@ -132,6 +132,7 @@ export default class RoomMembersView extends LoggedView {
 			this.props.navigator.push({
 				screen: 'RoomView',
 				title: name,
+				backButtonTitle: '',
 				passProps: {
 					room: { rid, name },
 					rid,

@@ -24,6 +24,7 @@ const handleRequest = function* handleRequest({ data }) {
 		NavigationActions.push({
 			screen: 'RoomView',
 			title: name,
+			backButtonTitle: '',
 			passProps: {
 				room: { rid, name },
 				rid,

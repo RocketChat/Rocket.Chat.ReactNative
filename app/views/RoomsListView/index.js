@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Platform, View, TextInput, FlatList, BackHandler, ActivityIndicator, SafeAreaView, Text, Image, Dimensions, ScrollView, Keyboard } from 'react-native';
+import { Platform, View, FlatList, BackHandler, ActivityIndicator, SafeAreaView, Text, Image, Dimensions, ScrollView, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
 
+import SearchBox from '../../containers/SearchBox';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem from '../../presentation/RoomItem';
@@ -26,7 +27,7 @@ const leftButtons = [{
 	testID: 'rooms-list-view-sidebar'
 }];
 const rightButtons = [{
-	id: 'createChannel',
+	id: 'newMessage',
 	icon: { uri: 'new_channel', scale: Dimensions.get('window').scale },
 	testID: 'rooms-list-view-create-channel'
 }];
@@ -37,7 +38,6 @@ if (Platform.OS === 'android') {
 		icon: { uri: 'search', scale: Dimensions.get('window').scale }
 	});
 }
-
 
 @connect((state) => {
 	let result = {
@@ -74,7 +74,6 @@ export default class RoomsListView extends LoggedView {
 
 	static navigatorStyle = {
 		navBarCustomView: 'RoomsListHeaderView',
-		navBarComponentAlignment: 'fill',
 		navBarBackgroundColor: isAndroid() ? '#2F343D' : undefined,
 		navBarTextColor: isAndroid() ? '#FFF' : undefined,
 		navBarButtonColor: isAndroid() ? '#FFF' : undefined
@@ -165,12 +164,12 @@ export default class RoomsListView extends LoggedView {
 	onNavigatorEvent(event) {
 		const { navigator } = this.props;
 		if (event.type === 'NavBarButtonPress') {
-			if (event.id === 'createChannel') {
-				this.props.navigator.push({
-					screen: 'SelectedUsersView',
-					title: I18n.t('Select_Users'),
+			if (event.id === 'newMessage') {
+				this.props.navigator.showModal({
+					screen: 'NewMessageView',
+					title: I18n.t('New_Message'),
 					passProps: {
-						nextAction: 'CREATE_CHANNEL'
+						onPressItem: this._onPressItem
 					}
 				});
 			} else if (event.id === 'settings') {
@@ -285,7 +284,6 @@ export default class RoomsListView extends LoggedView {
 		navigator.setButtons({ leftButtons, rightButtons });
 		navigator.setStyle({
 			navBarCustomView: 'RoomsListHeaderView',
-			navBarComponentAlignment: 'fill',
 			navBarBackgroundColor: isAndroid() ? '#2F343D' : undefined,
 			navBarTextColor: isAndroid() ? '#FFF' : undefined,
 			navBarButtonColor: isAndroid() ? '#FFF' : undefined
@@ -376,6 +374,7 @@ export default class RoomsListView extends LoggedView {
 		this.props.navigator.push({
 			screen: 'RoomView',
 			title: name,
+			backButtonTitle: '',
 			passProps: {
 				room: { rid, name },
 				rid,
@@ -429,22 +428,7 @@ export default class RoomsListView extends LoggedView {
 
 	renderSearchBar = () => {
 		if (Platform.OS === 'ios') {
-			return (
-				<View style={styles.searchBoxView}>
-					<TextInput
-						underlineColorAndroid='transparent'
-						style={styles.searchBox}
-						onChangeText={text => this.onSearchChangeText(text)}
-						returnKeyType='search'
-						placeholder={I18n.t('Search')}
-						clearButtonMode='while-editing'
-						blurOnSubmit
-						autoCorrect={false}
-						autoCapitalize='none'
-						testID='rooms-list-view-search'
-					/>
-				</View>
-			);
+			return <SearchBox onChangeText={text => this.onSearchChangeText(text)} />;
 		}
 	}
 
@@ -537,7 +521,7 @@ export default class RoomsListView extends LoggedView {
 
 		return (
 			<ScrollView
-				contentOffset={Platform.OS === 'ios' ? { x: 0, y: 37 } : {}}
+				contentOffset={Platform.OS === 'ios' ? { x: 0, y: 56 } : {}}
 				keyboardShouldPersistTaps='always'
 				testID='rooms-list-view-list'
 			>

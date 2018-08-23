@@ -101,6 +101,7 @@ export default class ServerDropdown extends Component {
 				setTimeout(() => {
 					this.props.navigator.push({
 						screen: 'NewServerView',
+						backButtonTitle: '',
 						passProps: {
 							server
 						},
