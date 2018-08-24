@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
 		backgroundColor: Platform.OS === 'ios' ? '#F7F8FA' : '#E1E5E8'
 	},
 	list: {
-		width: '100%',
 		backgroundColor: '#FFFFFF'
 	},
 	separator: {
@@ -127,45 +126,11 @@ export default class SelectedUsersView extends LoggedView {
 		this.forceUpdate();
 	}, 1000);
 
-	async search(text) {
-		const searchText = text.trim();
-		if (searchText === '') {
-			delete this.oldPromise;
-			return this.setState({
-				search: []
-			});
-		}
-
-		let data = this.data.filtered('name CONTAINS[c] $0 AND t = $1', searchText, 'd').slice(0, 7);
-
-		const usernames = data.map(sub => sub.map);
-		try {
-			if (data.length < 7) {
-				if (this.oldPromise) {
-					this.oldPromise('cancel');
-				}
-
-				const { users } = await Promise.race([
-					RocketChat.spotlight(searchText, usernames, { users: true, rooms: false }),
-					new Promise((resolve, reject) => this.oldPromise = reject)
-				]);
-
-				data = users.map(user => ({
-					...user,
-					rid: user.username,
-					name: user.username,
-					t: 'd',
-					search: true
-				}));
-
-				delete this.oldPromise;
-			}
-			this.setState({
-				search: data
-			});
-		} catch (e) {
-			// alert(JSON.stringify(e));
-		}
+	search = async(text) => {
+		const result = await RocketChat.search({ text, filterRooms: false });
+		this.setState({
+			search: result
+		});
 	}
 
 	isChecked = username => this.props.users.findIndex(el => el.name === username) !== -1;
@@ -191,7 +156,7 @@ export default class SelectedUsersView extends LoggedView {
 
 	renderHeader = () => (
 		<View>
-			<SearchBox onChangeText={text => this.onSearchChangeText(text)} />
+			<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='select-users-view-search' />
 			{this.renderSelected()}
 		</View>
 	)

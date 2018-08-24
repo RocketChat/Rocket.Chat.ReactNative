@@ -189,10 +189,6 @@ export default class RoomsListView extends LoggedView {
 		}
 	}
 
-	onSearchChangeText(text) {
-		this.search(text);
-	}
-
 	getSubscriptions = () => {
 		if (this.props.server && this.hasActiveDB()) {
 			if (this.props.sidebarSortby === 'alphabetical') {
@@ -325,49 +321,11 @@ export default class RoomsListView extends LoggedView {
 
 	_isUnread = item => item.unread > 0 || item.alert
 
-	async search(text) {
-		const searchText = text.trim();
-		if (searchText === '') {
-			delete this.oldPromise;
-			return this.setState({
-				search: []
-			});
-		}
-
-		let data = database.objects('subscriptions').filtered('name CONTAINS[c] $0', searchText).slice(0, 7);
-
-		const usernames = data.map(sub => sub.name);
-		try {
-			if (data.length < 7) {
-				if (this.oldPromise) {
-					this.oldPromise('cancel');
-				}
-
-				const { users, rooms } = await Promise.race([
-					RocketChat.spotlight(searchText, usernames, { users: true, rooms: true }),
-					new Promise((resolve, reject) => this.oldPromise = reject)
-				]);
-
-				data = data.concat(users.map(user => ({
-					...user,
-					rid: user.username,
-					name: user.username,
-					t: 'd',
-					search: true
-				})), rooms.map(room => ({
-					rid: room._id,
-					...room,
-					search: true
-				})));
-
-				delete this.oldPromise;
-			}
-			this.setState({
-				search: data
-			});
-		} catch (e) {
-			// alert(JSON.stringify(e));
-		}
+	search = async(text) => {
+		const result = await RocketChat.search({ text });
+		this.setState({
+			search: result
+		});
 	}
 
 	goRoom = (rid, name) => {
@@ -428,7 +386,7 @@ export default class RoomsListView extends LoggedView {
 
 	renderSearchBar = () => {
 		if (Platform.OS === 'ios') {
-			return <SearchBox onChangeText={text => this.onSearchChangeText(text)} />;
+			return <SearchBox onChangeText={text => this.search(text)} testID='rooms-list-view-search' />;
 		}
 	}
 

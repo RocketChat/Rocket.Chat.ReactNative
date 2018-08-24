@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const SearchBox = ({ onChangeText }) => (
+const SearchBox = ({ onChangeText, testID }) => (
 	<View style={styles.container}>
 		<View style={styles.searchBox}>
 			<Image source={{ uri: 'textinput_search' }} style={styles.icon} />
@@ -46,7 +46,7 @@ const SearchBox = ({ onChangeText }) => (
 				placeholder={I18n.t('Search')}
 				returnKeyType='search'
 				style={styles.input}
-				testID='rooms-list-view-search'
+				testID={testID}
 				underlineColorAndroid='transparent'
 				onChangeText={onChangeText}
 			/>
@@ -55,7 +55,8 @@ const SearchBox = ({ onChangeText }) => (
 );
 
 SearchBox.propTypes = {
-	onChangeText: PropTypes.func.isRequired
+	onChangeText: PropTypes.func.isRequired,
+	testID: PropTypes.string
 };
 
 export default SearchBox;

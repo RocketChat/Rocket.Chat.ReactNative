@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, ScrollView, Keyboard, SafeAreaView, Image, Alert, StyleSheet, Platform } from 'react-native';
+import { Text, ScrollView, Keyboard, SafeAreaView, Image, Alert, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
 import { serverRequest } from '../actions/server';
@@ -12,7 +12,6 @@ import LoggedView from './View';
 import I18n from '../i18n';
 import { scale, verticalScale, moderateScale } from '../utils/scaling';
 import KeyboardView from '../presentation/KeyboardView';
-import { iconsMap } from '../Icons';
 
 const styles = StyleSheet.create({
 	image: {
@@ -69,23 +68,6 @@ export default class NewServerView extends LoggedView {
 		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
 
-	componentWillMount() {
-		// if previousServer exists, New Server View is a modal
-		if (this.props.previousServer) {
-			const closeButton = {
-				id: 'close',
-				testID: 'new-server-close',
-				title: I18n.t('Close')
-			};
-			if (Platform.OS === 'android') {
-				closeButton.icon = iconsMap.close;
-			}
-			this.props.navigator.setButtons({
-				leftButtons: [closeButton]
-			});
-		}
-	}
-
 	componentDidMount() {
 		const { server } = this.props;
 		if (server) {
@@ -106,7 +88,7 @@ export default class NewServerView extends LoggedView {
 
 	onNavigatorEvent(event) {
 		if (event.type === 'NavBarButtonPress') {
-			if (event.id === 'close') {
+			if (event.id === 'cancel') {
 				const {
 					navigator, connectServer, previousServer, currentServer
 				} = this.props;

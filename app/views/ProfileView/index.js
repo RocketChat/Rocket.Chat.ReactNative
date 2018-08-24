@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, SafeAreaView, Keyboard, Platform, Dimensions } from 'react-native';
+import { View, ScrollView, SafeAreaView, Keyboard, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
 import SHA256 from 'js-sha256';
