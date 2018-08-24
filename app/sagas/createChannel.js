@@ -12,15 +12,16 @@ const create = function* create(data) {
 
 const handleRequest = function* handleRequest({ data }) {
 	try {
-		// yield delay(1000);
 		const auth = yield select(state => state.login.isAuthenticated);
 		if (!auth) {
 			yield take(LOGIN.SUCCESS);
 		}
 		const result = yield call(create, data);
+		yield put(createChannelSuccess(result));
+		yield delay(300);
 		const { rid, name } = result;
-		NavigationActions.popToRoot();
-		yield delay(1000);
+		NavigationActions.dismissModal();
+		yield delay(600);
 		NavigationActions.push({
 			screen: 'RoomView',
 			title: name,
@@ -31,7 +32,6 @@ const handleRequest = function* handleRequest({ data }) {
 				name
 			}
 		});
-		yield put(createChannelSuccess(result));
 	} catch (err) {
 		yield put(createChannelFailure(err));
 	}

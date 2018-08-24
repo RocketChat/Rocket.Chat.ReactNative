@@ -7,6 +7,7 @@ import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
 import debounce from '../utils/debounce';
 import LoggedView from './View';
+import sharedStyles from './Styles';
 import I18n from '../i18n';
 import Touch from '../utils/touch';
 import SearchBox from '../containers/SearchBox';
@@ -21,14 +22,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff'
 	},
 	separator: {
-		height: StyleSheet.hairlineWidth,
-		backgroundColor: '#CBCED1',
 		marginLeft: 60
-	},
-	borderVertical: {
-		borderTopWidth: StyleSheet.hairlineWidth,
-		borderBottomWidth: StyleSheet.hairlineWidth,
-		borderColor: '#CBCED1'
 	},
 	createChannelButton: {
 		marginVertical: 25
@@ -154,7 +148,7 @@ export default class SelectedUsersView extends LoggedView {
 		});
 	}
 
-	renderSeparator = () => <View style={styles.separator} />;
+	renderSeparator = () => <View style={[sharedStyles.separator, styles.separator]} />;
 
 	renderItem = ({ item }) => (
 		<UserItem
@@ -170,7 +164,7 @@ export default class SelectedUsersView extends LoggedView {
 			data={this.state.search.length > 0 ? this.state.search : this.data}
 			extraData={this.state.search.length > 0 ? this.state.search : this.data}
 			keyExtractor={item => item._id}
-			style={[styles.list, styles.borderVertical]}
+			style={[styles.list, sharedStyles.separatorVertical]}
 			renderItem={this.renderItem}
 			ItemSeparatorComponent={this.renderSeparator}
 			keyboardShouldPersistTaps='always'
@@ -182,7 +176,7 @@ export default class SelectedUsersView extends LoggedView {
 			<ScrollView keyboardShouldPersistTaps='always'>
 				<SearchBox onChangeText={text => this.onSearchChangeText(text)} />
 				<Touch onPress={this.createChannel} style={styles.createChannelButton}>
-					<View style={[styles.borderVertical, styles.createChannelContainer]}>
+					<View style={[sharedStyles.separatorVertical, styles.createChannelContainer]}>
 						<Image style={styles.createChannelIcon} source={{ uri: 'plus' }} />
 						<Text style={styles.createChannelText}>{I18n.t('Create_Channel')}</Text>
 					</View>

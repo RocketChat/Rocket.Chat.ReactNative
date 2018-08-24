@@ -13,6 +13,7 @@ import LoggedView from './View';
 import I18n from '../i18n';
 import log from '../utils/log';
 import SearchBox from '../containers/SearchBox';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -24,14 +25,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#FFFFFF'
 	},
 	separator: {
-		height: StyleSheet.hairlineWidth,
-		backgroundColor: '#E1E5E8',
 		marginLeft: 60
-	},
-	borderVertical: {
-		borderTopWidth: StyleSheet.hairlineWidth,
-		borderBottomWidth: StyleSheet.hairlineWidth,
-		borderColor: '#CBCED1'
 	}
 });
 
@@ -75,17 +69,20 @@ export default class SelectedUsersView extends LoggedView {
 		});
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.users.length !== this.props.users.length) {
-			const { length } = nextProps.users;
+	async componentDidUpdate(prevProps) {
+		const isVisible = await this.props.navigator.screenIsCurrentlyVisible();
+		if (!isVisible) {
+			return;
+		}
+		if (prevProps.users.length !== this.props.users.length) {
+			const { length } = this.props.users;
 			const rightButtons = [];
 			if (length > 0) {
-				const next = {
+				rightButtons.push({
 					id: 'create',
 					title: 'Next',
 					testID: 'selected-users-view-submit'
-				};
-				rightButtons.push(next);
+				});
 			}
 			this.props.navigator.setButtons({ rightButtons });
 		}
@@ -207,7 +204,7 @@ export default class SelectedUsersView extends LoggedView {
 			<FlatList
 				data={this.props.users}
 				keyExtractor={item => item._id}
-				style={[styles.list, styles.borderVertical]}
+				style={[styles.list, sharedStyles.separatorTop]}
 				contentContainerStyle={{ marginVertical: 5 }}
 				renderItem={this.renderSelectedItem}
 				enableEmptySections
@@ -227,7 +224,7 @@ export default class SelectedUsersView extends LoggedView {
 		/>
 	)
 
-	renderSeparator = () => <View style={styles.separator} />;
+	renderSeparator = () => <View style={[sharedStyles.separator, styles.separator]} />;
 
 	renderItem = ({ item }) => {
 		const name = item.search ? item.name : item.fname;
@@ -248,7 +245,7 @@ export default class SelectedUsersView extends LoggedView {
 			data={this.state.search.length > 0 ? this.state.search : this.data}
 			extraData={this.props}
 			keyExtractor={item => item._id}
-			style={[styles.list]}
+			style={[styles.list, sharedStyles.separatorVertical]}
 			renderItem={this.renderItem}
 			ItemSeparatorComponent={this.renderSeparator}
 			enableEmptySections

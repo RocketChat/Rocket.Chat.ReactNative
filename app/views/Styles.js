@@ -1,6 +1,6 @@
 import { StyleSheet, Platform } from 'react-native';
 
-import { COLOR_DANGER, COLOR_BUTTON_PRIMARY, COLOR_TEXT } from '../constants/colors';
+import { COLOR_DANGER, COLOR_BUTTON_PRIMARY, COLOR_TEXT, COLOR_SEPARATOR } from '../constants/colors';
 
 export default StyleSheet.create({
 	container: {
@@ -197,5 +197,22 @@ export default StyleSheet.create({
 		width: 44,
 		alignItems: 'center',
 		justifyContent: 'center'
+	},
+	separator: {
+		height: StyleSheet.hairlineWidth,
+		backgroundColor: COLOR_SEPARATOR
+	},
+	separatorTop: {
+		borderColor: COLOR_SEPARATOR,
+		borderTopWidth: StyleSheet.hairlineWidth
+	},
+	separatorBottom: {
+		borderColor: COLOR_SEPARATOR,
+		borderBottomWidth: StyleSheet.hairlineWidth
+	},
+	separatorVertical: {
+		borderColor: COLOR_SEPARATOR,
+		borderTopWidth: StyleSheet.hairlineWidth,
+		borderBottomWidth: StyleSheet.hairlineWidth
 	}
 });
