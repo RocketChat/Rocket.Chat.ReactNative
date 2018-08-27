@@ -44,7 +44,7 @@ const handleSelectServer = function* handleSelectServer({ server }) {
 const handleServerRequest = function* handleServerRequest({ server }) {
 	try {
 		yield call(validate, server);
-		yield call(NavigationActions.push, { screen: 'LoginSignupView', title: server });
+		yield call(NavigationActions.push, { screen: 'LoginSignupView', title: server, backButtonTitle: '' });
 		database.databases.serversDB.write(() => {
 			database.databases.serversDB.create('servers', { id: server, current: false }, true);
 		});
