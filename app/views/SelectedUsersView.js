@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, SafeAreaView, FlatList, LayoutAnimation, Platform, ScrollView } from 'react-native';
+import { View, StyleSheet, SafeAreaView, FlatList, LayoutAnimation, Platform } from 'react-native';
 import { connect } from 'react-redux';
 
 import { addUser, removeUser, reset, setLoading } from '../actions/selectedUsers';
@@ -20,8 +20,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: Platform.OS === 'ios' ? '#F7F8FA' : '#E1E5E8'
 	},
-	list: {
-		backgroundColor: '#FFFFFF'
+	header: {
+		backgroundColor: '#fff'
 	},
 	separator: {
 		marginLeft: 60
@@ -79,7 +79,7 @@ export default class SelectedUsersView extends LoggedView {
 			if (length > 0) {
 				rightButtons.push({
 					id: 'create',
-					title: 'Next',
+					title: I18n.t('Next'),
 					testID: 'selected-users-view-submit'
 				});
 			}
@@ -155,7 +155,7 @@ export default class SelectedUsersView extends LoggedView {
 	_onPressSelectedItem = item => this.toggleUser(item);
 
 	renderHeader = () => (
-		<View>
+		<View style={styles.header}>
 			<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='select-users-view-search' />
 			{this.renderSelected()}
 		</View>
@@ -189,11 +189,21 @@ export default class SelectedUsersView extends LoggedView {
 		/>
 	)
 
-	renderSeparator = () => <View style={[sharedStyles.separator, styles.separator]} />;
+	renderSeparator = () => <View style={[sharedStyles.separator, styles.separator]} />
 
-	renderItem = ({ item }) => {
+	renderItem = ({ item, index }) => {
 		const name = item.search ? item.name : item.fname;
 		const username = item.search ? item.username : item.name;
+		let style = {};
+		if (index === 0) {
+			style = { ...sharedStyles.separatorTop };
+		}
+		if (this.state.search.length > 0 && index === this.state.search.length - 1) {
+			style = { ...style, ...sharedStyles.separatorBottom };
+		}
+		if (this.state.search.length === 0 && index === this.data.length - 1) {
+			style = { ...style, ...sharedStyles.separatorBottom };
+		}
 		return (
 			<UserItem
 				name={name}
@@ -201,6 +211,7 @@ export default class SelectedUsersView extends LoggedView {
 				onPress={() => this._onPressItem(item._id, item)}
 				testID={`select-users-view-item-${ item.name }`}
 				icon={this.isChecked(username) ? 'check' : null}
+				style={style}
 			/>
 		);
 	}
@@ -210,9 +221,9 @@ export default class SelectedUsersView extends LoggedView {
 			data={this.state.search.length > 0 ? this.state.search : this.data}
 			extraData={this.props}
 			keyExtractor={item => item._id}
-			style={[styles.list, sharedStyles.separatorVertical]}
 			renderItem={this.renderItem}
 			ItemSeparatorComponent={this.renderSeparator}
+			ListHeaderComponent={this.renderHeader}
 			enableEmptySections
 			keyboardShouldPersistTaps='always'
 		/>
@@ -220,10 +231,7 @@ export default class SelectedUsersView extends LoggedView {
 
 	render = () => (
 		<SafeAreaView style={styles.safeAreaView} testID='select-users-view'>
-			<ScrollView keyboardShouldPersistTaps='always'>
-				{this.renderHeader()}
-				{this.renderList()}
-			</ScrollView>
+			{this.renderList()}
 			<Loading visible={this.props.loading} />
 		</SafeAreaView>
 	)

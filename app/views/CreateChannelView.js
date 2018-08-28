@@ -12,6 +12,7 @@ import KeyboardView from '../presentation/KeyboardView';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import UserItem from '../presentation/UserItem';
+import { showErrorAlert } from '../utils/info';
 
 const styles = StyleSheet.create({
 	container: {
@@ -98,6 +99,15 @@ export default class CreateChannelView extends LoggedView {
 		setTimeout(() => {
 			this.channelNameRef.focus();
 		}, 600);
+	}
+
+	componentDidUpdate(prevProps) {
+		if (this.props.createChannel.error && prevProps.createChannel.error !== this.props.createChannel.error) {
+			setTimeout(() => {
+				const msg = this.props.createChannel.error.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_channel') });
+				showErrorAlert(msg);
+			}, 300);
+		}
 	}
 
 	onChangeText = (channelName) => {
@@ -207,7 +217,7 @@ export default class CreateChannelView extends LoggedView {
 			name={item.fname}
 			username={item.name}
 			onPress={() => this.removeUser(item)}
-			testID={`select-users-view-item-${ item.name }`}
+			testID={`create-channel-view-item-${ item.name }`}
 		/>
 	)
 
@@ -231,8 +241,8 @@ export default class CreateChannelView extends LoggedView {
 				contentContainerStyle={[sharedStyles.container, styles.container]}
 				keyboardVerticalOffset={128}
 			>
-				<ScrollView {...scrollPersistTaps}>
-					<SafeAreaView testID='create-channel-view'>
+				<SafeAreaView testID='create-channel-view'>
+					<ScrollView {...scrollPersistTaps}>
 						<View style={sharedStyles.separatorVertical}>
 							<TextInput
 								ref={ref => this.channelNameRef = ref}
@@ -255,13 +265,13 @@ export default class CreateChannelView extends LoggedView {
 							{this.renderBroadcast()}
 						</View>
 						<View style={styles.invitedHeader}>
-							<Text style={styles.invitedTitle}>Invite</Text>
-							<Text style={styles.invitedCount}>{userCount === 1 ? '1 user' : `${ userCount } users`}</Text>
+							<Text style={styles.invitedTitle}>{I18n.t('Invite')}</Text>
+							<Text style={styles.invitedCount}>{userCount === 1 ? I18n.t('1_user') : I18n.t('N_users', { n: userCount })}</Text>
 						</View>
 						{this.renderInvitedList()}
 						<Loading visible={this.props.createChannel.isFetching} />
-					</SafeAreaView>
-				</ScrollView>
+					</ScrollView>
+				</SafeAreaView>
 			</KeyboardView>
 		);
 	}

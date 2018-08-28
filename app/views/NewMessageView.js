@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, SafeAreaView, FlatList, Text, Platform, Image, ScrollView } from 'react-native';
+import { View, StyleSheet, SafeAreaView, FlatList, Text, Platform, Image } from 'react-native';
 
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
@@ -16,10 +16,6 @@ const styles = StyleSheet.create({
 	safeAreaView: {
 		flex: 1,
 		backgroundColor: Platform.OS === 'ios' ? '#F7F8FA' : '#E1E5E8'
-	},
-	list: {
-		width: '100%',
-		backgroundColor: '#fff'
 	},
 	separator: {
 		marginLeft: 60
@@ -114,23 +110,48 @@ export default class SelectedUsersView extends LoggedView {
 		});
 	}
 
+	renderHeader = () => (
+		<View>
+			<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='new-message-view-search' />
+			<Touch onPress={this.createChannel} style={styles.createChannelButton} testID='new-message-view-create-channel'>
+				<View style={[sharedStyles.separatorVertical, styles.createChannelContainer]}>
+					<Image style={styles.createChannelIcon} source={{ uri: 'plus' }} />
+					<Text style={styles.createChannelText}>{I18n.t('Create_Channel')}</Text>
+				</View>
+			</Touch>
+		</View>
+	)
+
 	renderSeparator = () => <View style={[sharedStyles.separator, styles.separator]} />;
 
-	renderItem = ({ item }) => (
-		<UserItem
-			name={item.search ? item.name : item.fname}
-			username={item.search ? item.username : item.name}
-			onPress={() => this.onPressItem(item)}
-			testID={`new-message-view-item-${ item.name }`}
-		/>
-	)
+	renderItem = ({ item, index }) => {
+		let style = {};
+		if (index === 0) {
+			style = { ...sharedStyles.separatorTop };
+		}
+		if (this.state.search.length > 0 && index === this.state.search.length - 1) {
+			style = { ...style, ...sharedStyles.separatorBottom };
+		}
+		if (this.state.search.length === 0 && index === this.data.length - 1) {
+			style = { ...style, ...sharedStyles.separatorBottom };
+		}
+		return (
+			<UserItem
+				name={item.search ? item.name : item.fname}
+				username={item.search ? item.username : item.name}
+				onPress={() => this.onPressItem(item)}
+				testID={`new-message-view-item-${ item.name }`}
+				style={style}
+			/>
+		);
+	}
 
 	renderList = () => (
 		<FlatList
 			data={this.state.search.length > 0 ? this.state.search : this.data}
-			extraData={this.state.search.length > 0 ? this.state.search : this.data}
+			extraData={this.state}
 			keyExtractor={item => item._id}
-			style={[styles.list, sharedStyles.separatorVertical]}
+			ListHeaderComponent={this.renderHeader}
 			renderItem={this.renderItem}
 			ItemSeparatorComponent={this.renderSeparator}
 			keyboardShouldPersistTaps='always'
@@ -139,16 +160,7 @@ export default class SelectedUsersView extends LoggedView {
 
 	render = () => (
 		<SafeAreaView style={styles.safeAreaView} testID='new-message-view'>
-			<ScrollView keyboardShouldPersistTaps='always'>
-				<SearchBox onChangeText={text => this.onSearchChangeText(text)} />
-				<Touch onPress={this.createChannel} style={styles.createChannelButton}>
-					<View style={[sharedStyles.separatorVertical, styles.createChannelContainer]}>
-						<Image style={styles.createChannelIcon} source={{ uri: 'plus' }} />
-						<Text style={styles.createChannelText}>{I18n.t('Create_Channel')}</Text>
-					</View>
-				</Touch>
-				{this.renderList()}
-			</ScrollView>
+			{this.renderList()}
 		</SafeAreaView>
 	);
 }
