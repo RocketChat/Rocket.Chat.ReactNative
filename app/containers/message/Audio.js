@@ -4,7 +4,7 @@ import { View, StyleSheet, TouchableOpacity, Text, Easing } from 'react-native';
 import Video from 'react-native-video';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Slider from 'react-native-slider';
-import { connect } from 'react-redux';
+
 import Markdown from './Markdown';
 
 const styles = StyleSheet.create({
@@ -61,14 +61,12 @@ const formatTime = (t = 0, duration = 0) => {
 	return `${ formattedMinutes }:${ formattedSeconds }`;
 };
 
-@connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-}))
 export default class Audio extends React.PureComponent {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
-		user: PropTypes.object.isRequired
+		user: PropTypes.object.isRequired,
+		customEmojis: PropTypes.object.isRequired
 	}
 
 	constructor(props) {
@@ -116,7 +114,10 @@ export default class Audio extends React.PureComponent {
 
 	render() {
 		const { uri, paused } = this.state;
-		const { description } = this.props.file;
+		const {
+			user, baseUrl, customEmojis, file
+		} = this.props;
+		const { description } = file;
 		return (
 			[
 				<View key='audio' style={styles.audioContainer}>
@@ -158,7 +159,7 @@ export default class Audio extends React.PureComponent {
 						/>
 					</View>
 				</View>,
-				<Markdown key='description' msg={description} />
+				<Markdown key='description' msg={description} baseUrl={baseUrl} customEmojis={customEmojis} username={user.username} />
 			]
 		);
 	}

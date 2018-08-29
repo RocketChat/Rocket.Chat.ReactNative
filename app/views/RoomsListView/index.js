@@ -20,7 +20,8 @@ const ROW_HEIGHT = 70.5;
 	server: state.server.server,
 	Site_Url: state.settings.Site_Url,
 	searchText: state.rooms.searchText,
-	loadingServer: state.server.loading
+	loadingServer: state.server.loading,
+	customEmojis: state.customEmojis
 }))
 /** @extends React.Component */
 export default class RoomsListView extends LoggedView {
@@ -30,7 +31,8 @@ export default class RoomsListView extends LoggedView {
 		Site_Url: PropTypes.string,
 		server: PropTypes.string,
 		searchText: PropTypes.string,
-		loadingServer: PropTypes.bool
+		loadingServer: PropTypes.bool,
+		customEmojis: PropTypes.object
 	}
 
 	constructor(props) {
@@ -295,6 +297,7 @@ export default class RoomsListView extends LoggedView {
 			baseUrl={this.props.Site_Url}
 			onPress={() => this._onPressItem(item)}
 			testID={`rooms-list-view-item-${ item.name }`}
+			customEmojis={this.props.customEmojis}
 		/>);
 	}
 

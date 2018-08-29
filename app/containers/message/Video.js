@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { StyleSheet, TouchableOpacity, Image, Platform } from 'react-native';
 import Modal from 'react-native-modal';
 import VideoPlayer from 'react-native-video-controls';
-import { connect } from 'react-redux';
 import Markdown from './Markdown';
 import openLink from '../../utils/openLink';
 
@@ -28,14 +27,12 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-}))
 export default class Video extends React.PureComponent {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
-		user: PropTypes.object.isRequired
+		user: PropTypes.object.isRequired,
+		customEmojis: PropTypes.object.isRequired
 	}
 
 	state = { isVisible: false };
@@ -56,7 +53,7 @@ export default class Video extends React.PureComponent {
 	render() {
 		const { isVisible } = this.state;
 		const { video_url, description } = this.props.file;
-		const { baseUrl, user } = this.props;
+		const { baseUrl, user, customEmojis } = this.props;
 		const uri = `${ baseUrl }${ video_url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
 		return (
 			[
@@ -69,7 +66,7 @@ export default class Video extends React.PureComponent {
 						source={require('../../static/images/logo.png')}
 						style={styles.image}
 					/>
-					<Markdown msg={description} />
+					<Markdown msg={description} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} />
 				</TouchableOpacity>,
 				<Modal
 					key='modal'

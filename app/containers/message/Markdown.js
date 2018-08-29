@@ -2,7 +2,6 @@ import React from 'react';
 import { Text, Platform, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import { emojify } from 'react-emojione';
-import { connect } from 'react-redux';
 import MarkdownRenderer, { PluginContainer } from 'react-native-markdown-renderer';
 import MarkdownFlowdock from 'markdown-it-flowdock';
 import styles from './styles';
@@ -16,16 +15,13 @@ const formatText = text =>
 		(match, url, title) => `[${ title }](${ url })`
 	);
 
-@connect(state => ({
-	customEmojis: state.customEmojis
-}))
 export default class Markdown extends React.Component {
 	shouldComponentUpdate(nextProps) {
 		return nextProps.msg !== this.props.msg;
 	}
 	render() {
 		const {
-			msg, customEmojis, style, rules
+			msg, customEmojis, style, rules, baseUrl, username
 		} = this.props;
 		if (!msg) {
 			return null;
@@ -43,14 +39,33 @@ export default class Markdown extends React.Component {
 							</Text>
 						)
 					},
-					mention: node => (
-						<Text key={node.key} onPress={() => alert(`Username @${ node.content }`)} style={styles.mention}>
-							@{node.content}
-						</Text>
-					),
+					mention: (node) => {
+						const { content, key } = node;
+						let mentionStyle = styles.mention;
+						if (content === 'all' || content === 'here') {
+							mentionStyle = {
+								...mentionStyle,
+								...styles.mentionAll
+							};
+						} else if (content === username) {
+							mentionStyle = {
+								...mentionStyle,
+								...styles.mentionLoggedUser
+							};
+						}
+						return (
+							<Text
+								key={key}
+								onPress={() => alert(`Username ${ content }`)}
+								style={mentionStyle}
+							>
+								&nbsp;{content}&nbsp;
+							</Text>
+						);
+					},
 					hashtag: node => (
 						<Text key={node.key} onPress={() => alert(`Room #${ node.content }`)} style={styles.mention}>
-							#{node.content}
+							&nbsp;{node.content}&nbsp;
 						</Text>
 					),
 					emoji: (node) => {
@@ -59,7 +74,7 @@ export default class Markdown extends React.Component {
 							const emojiExtension = customEmojis[content];
 							if (emojiExtension) {
 								const emoji = { extension: emojiExtension, content };
-								return <CustomEmoji key={node.key} style={styles.customEmoji} emoji={emoji} />;
+								return <CustomEmoji key={node.key} baseUrl={baseUrl} style={styles.customEmoji} emoji={emoji} />;
 							}
 							return <Text key={node.key}>:{content}:</Text>;
 						}
@@ -75,6 +90,12 @@ export default class Markdown extends React.Component {
 				}}
 				style={{
 					paragraph: styles.paragraph,
+					text: {
+						color: '#0C0D0F',
+						fontSize: 16,
+						lineHeight: 20,
+						letterSpacing: 0.1
+					},
 					codeInline: {
 						borderWidth: 1,
 						borderColor: '#CCCCCC',
@@ -96,7 +117,9 @@ export default class Markdown extends React.Component {
 
 Markdown.propTypes = {
 	msg: PropTypes.string,
-	customEmojis: PropTypes.object,
+	username: PropTypes.string.isRequired,
+	baseUrl: PropTypes.string.isRequired,
+	customEmojis: PropTypes.object.isRequired,
 	style: PropTypes.any,
 	rules: PropTypes.object
 };

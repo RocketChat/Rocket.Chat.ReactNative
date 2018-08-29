@@ -112,12 +112,15 @@ const renderNumber = (unread, userMentions) => {
 const attrs = ['name', 'unread', 'userMentions', 'alert', 'showLastMessage', 'type'];
 @connect(state => ({
 	username: state.login.user && state.login.user.username,
-	StoreLastMessage: state.settings.Store_Last_Message
+	StoreLastMessage: state.settings.Store_Last_Message,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }))
 export default class RoomItem extends React.Component {
 	static propTypes = {
 		type: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
+		customEmojis: PropTypes.object.isRequired,
+		baseUrl: PropTypes.string.isRequired,
 		StoreLastMessage: PropTypes.bool,
 		_updatedAt: PropTypes.instanceOf(Date),
 		lastMessage: PropTypes.object,
@@ -153,9 +156,9 @@ export default class RoomItem extends React.Component {
 	}
 	get icon() {
 		const {
-			type, name, id, avatarSize, statusStyle
+			type, name, id, avatarSize, statusStyle, baseUrl
 		} = this.props;
-		return (<Avatar text={name} size={avatarSize} type={type}>{type === 'd' ? <Status style={[styles.status, statusStyle]} id={id} /> : null }</Avatar>);
+		return (<Avatar text={name} size={avatarSize} type={type} baseUrl={baseUrl}>{type === 'd' ? <Status style={[styles.status, statusStyle]} id={id} /> : null }</Avatar>);
 	}
 
 	get lastMessage() {
@@ -202,7 +205,7 @@ export default class RoomItem extends React.Component {
 
 	render() {
 		const {
-			favorite, unread, userMentions, name, _updatedAt, alert, type, testID
+			favorite, unread, userMentions, name, _updatedAt, alert, type, testID, customEmojis, baseUrl, username
 		} = this.props;
 
 		const date = this.formatDate(_updatedAt);
@@ -243,6 +246,9 @@ export default class RoomItem extends React.Component {
 						<View style={styles.row}>
 							<Markdown
 								msg={this.lastMessage}
+								customEmojis={customEmojis}
+								baseUrl={baseUrl}
+								username={username}
 								style={{
 									root: {
 										flex: 1

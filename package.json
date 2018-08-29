@@ -104,7 +104,12 @@
     "react-test-renderer": "^16.4.2",
     "reactotron-react-native": "^2.0.0",
     "reactotron-redux": "^2.0.0",
-    "reactotron-redux-saga": "^2.0.0"
+    "reactotron-redux-saga": "^2.0.0",
+    "@storybook/react-native": "^3.4.10",
+    "@storybook/addon-actions": "^3.4.10",
+    "@storybook/addon-links": "^3.4.10",
+    "@storybook/addons": "^3.4.10",
+    "babel-runtime": "^6.26.0"
   },
   "jest": {
     "testPathIgnorePatterns": [

@@ -31,11 +31,13 @@ import { iconsMap } from '../../Icons';
 		customFields: state.login.user && state.login.user.customFields,
 		emails: state.login.user && state.login.user.emails
 	},
-	Accounts_CustomFields: state.settings.Accounts_CustomFields
+	Accounts_CustomFields: state.settings.Accounts_CustomFields,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }))
 /** @extends React.Component */
 export default class ProfileView extends LoggedView {
 	static propTypes = {
+		baseUrl: PropTypes.string,
 		navigator: PropTypes.object,
 		user: PropTypes.object,
 		Accounts_CustomFields: PropTypes.string
@@ -282,7 +284,7 @@ export default class ProfileView extends LoggedView {
 	renderAvatarButtons = () => (
 		<View style={styles.avatarButtons}>
 			{this.renderAvatarButton({
-				child: <Avatar text={this.props.user.username} size={50} forceInitials />,
+				child: <Avatar text={this.props.user.username} size={50} baseUrl={this.props.baseUrl} forceInitials />,
 				onPress: () => this.resetAvatar(),
 				key: 'profile-view-reset-avatar'
 			})}
@@ -301,7 +303,7 @@ export default class ProfileView extends LoggedView {
 				const { url, blob, contentType } = this.state.avatarSuggestions[service];
 				return this.renderAvatarButton({
 					key: `profile-view-avatar-${ service }`,
-					child: <Avatar avatar={url} size={50} />,
+					child: <Avatar avatar={url} size={50} baseUrl={this.props.baseUrl} />,
 					onPress: () => this.setAvatar({
 						url, data: blob, service, contentType
 					})
@@ -384,6 +386,7 @@ export default class ProfileView extends LoggedView {
 								text={username}
 								avatar={this.state.avatar && this.state.avatar.url}
 								size={100}
+								baseUrl={this.props.baseUrl}
 							/>
 						</View>
 						<RCTextInput

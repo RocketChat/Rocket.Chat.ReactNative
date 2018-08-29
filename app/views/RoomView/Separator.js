@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginVertical: 10
+		marginBottom: 30
 	},
 	line: {
 		borderTopColor: '#eaeaea',

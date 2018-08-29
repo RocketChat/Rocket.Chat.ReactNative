@@ -8,7 +8,6 @@ import QuoteMark from './QuoteMark';
 import Avatar from '../Avatar';
 import openLink from '../../utils/openLink';
 
-
 const styles = StyleSheet.create({
 	button: {
 		flex: 1,
@@ -58,7 +57,9 @@ const onPress = (attachment) => {
 	openLink(attachment.title_link || attachment.author_link);
 };
 
-const Reply = ({ attachment, timeFormat }) => {
+const Reply = ({
+	attachment, timeFormat, baseUrl, customEmojis, user
+}) => {
 	if (!attachment) {
 		return null;
 	}
@@ -71,6 +72,7 @@ const Reply = ({ attachment, timeFormat }) => {
 			<Avatar
 				text={attachment.author_name}
 				size={16}
+				baseUrl={baseUrl}
 			/>
 		);
 	};
@@ -98,7 +100,7 @@ const Reply = ({ attachment, timeFormat }) => {
 	};
 
 	const renderText = () => (
-		attachment.text ? <Markdown msg={attachment.text} /> : null
+		attachment.text ? <Markdown msg={attachment.text} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} /> : null
 	);
 
 	const renderFields = () => {
@@ -130,7 +132,8 @@ const Reply = ({ attachment, timeFormat }) => {
 				{renderFields()}
 				{attachment.attachments ?
 					attachment.attachments
-						.map(attach => <Reply key={attach.text} attachment={attach} timeFormat={timeFormat} />)
+						.map(attach =>
+							<Reply key={attach.text} attachment={attach} timeFormat={timeFormat} baseUrl={baseUrl} customEmojis={customEmojis} user={user} />)
 					: null
 				}
 			</View>
@@ -140,7 +143,10 @@ const Reply = ({ attachment, timeFormat }) => {
 
 Reply.propTypes = {
 	attachment: PropTypes.object.isRequired,
-	timeFormat: PropTypes.string.isRequired
+	timeFormat: PropTypes.string.isRequired,
+	baseUrl: PropTypes.string.isRequired,
+	customEmojis: PropTypes.object.isRequired,
+	user: PropTypes.object.isRequired
 };
 
 export default Reply;

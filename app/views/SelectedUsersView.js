@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
 
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
-	Site_Url: state.settings.Site_Url,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	users: state.selectedUsers.users,
 	loading: state.selectedUsers.loading
 }), dispatch => ({
@@ -76,7 +76,7 @@ export default class SelectedUsersView extends LoggedView {
 		rid: PropTypes.string,
 		nextAction: PropTypes.string.isRequired,
 		userId: PropTypes.string,
-		Site_Url: PropTypes.string,
+		baseUrl: PropTypes.string,
 		addUser: PropTypes.func.isRequired,
 		removeUser: PropTypes.func.isRequired,
 		reset: PropTypes.func.isRequired,
@@ -275,7 +275,7 @@ export default class SelectedUsersView extends LoggedView {
 			key={item._id}
 			name={item.name}
 			type={item.t}
-			baseUrl={this.props.Site_Url}
+			baseUrl={this.props.baseUrl}
 			onPress={() => this._onPressItem(item._id, item)}
 			id={item.rid.replace(this.props.userId, '').trim()}
 			showLastMessage={false}

@@ -530,6 +530,7 @@ export default class MessageBox extends React.PureComponent {
 							text={item.username || item.name}
 							size={30}
 							type={item.username ? 'd' : 'c'}
+							baseUrl={this.props.baseUrl}
 						/>,
 						<Text key='mention-item-name'>{ item.username || item.name }</Text>
 					]
@@ -556,11 +557,13 @@ export default class MessageBox extends React.PureComponent {
 	};
 
 	renderReplyPreview = () => {
-		const { replyMessage, replying, closeReply } = this.props;
+		const {
+			replyMessage, replying, closeReply, username
+		} = this.props;
 		if (!replying) {
 			return null;
 		}
-		return <ReplyPreview key='reply-preview' message={replyMessage} close={closeReply} />;
+		return <ReplyPreview key='reply-preview' message={replyMessage} close={closeReply} username={username} />;
 	};
 
 	renderFilesActions = () => {

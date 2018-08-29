@@ -124,7 +124,7 @@ export default class SearchMessagesView extends LoggedView {
 						placeholder={I18n.t('Search_Messages')}
 						testID='search-message-view-input'
 					/>
-					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} />
+					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} username='' baseUrl='' customEmojis={{}} />
 					<View style={styles.divider} />
 				</View>
 				<FlatList

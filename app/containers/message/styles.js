@@ -3,15 +3,18 @@ import { StyleSheet, Platform } from 'react-native';
 export default StyleSheet.create({
 	messageContent: {
 		flex: 1,
-		marginLeft: 30
+		marginLeft: 51
+	},
+	hasHeader: {
+		marginLeft: 15
 	},
 	flex: {
 		flexDirection: 'row',
 		flex: 1
 	},
 	message: {
-		paddingHorizontal: 12,
-		paddingVertical: 3,
+		paddingLeft: 10,
+		paddingRight: 15,
 		flexDirection: 'column',
 		transform: [{ scaleY: -1 }],
 		flex: 1
@@ -24,8 +27,8 @@ export default StyleSheet.create({
 		backgroundColor: '#fff5df'
 	},
 	customEmoji: {
-		width: 16,
-		height: 16
+		width: 20,
+		height: 20
 	},
 	temp: { opacity: 0.3 },
 	codeStyle: {
@@ -48,36 +51,37 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
-		paddingHorizontal: 10,
-		paddingVertical: 5,
 		borderRadius: 4,
+		borderWidth: 1.5,
+		borderColor: '#e1e5e8',
 		marginRight: 10,
 		marginBottom: 10,
-		maxHeight: 28,
-		backgroundColor: '#E8F2FF'
-	},
-	addReactionContainer: {
-		paddingHorizontal: 15
+		height: 28,
+		minWidth: 46,
+		backgroundColor: '#FFF'
 	},
 	reactionCount: {
 		fontSize: 14,
 		marginLeft: 3,
+		marginRight: 8.5,
 		fontWeight: '600',
 		color: '#1D74F5'
 	},
 	reactionEmoji: {
-		fontSize: 14
+		fontSize: 13,
+		marginLeft: 7
 	},
 	reactionCustomEmoji: {
-		width: 20,
-		height: 20
+		width: 19,
+		height: 19,
+		marginLeft: 7
 	},
 	avatar: {
-		marginRight: 10
+		marginTop: 5
 	},
 	reactedContainer: {
-		borderWidth: 0,
-		backgroundColor: '#D1DAE6'
+		borderColor: '#1d74f580',
+		backgroundColor: '#e8f2ff'
 	},
 	errorIcon: {
 		padding: 10,
@@ -98,7 +102,18 @@ export default StyleSheet.create({
 		color: '#1d74f5'
 	},
 	mention: {
-		color: '#13679a'
+		color: '#0072FE',
+		fontWeight: '500',
+		padding: 5,
+		backgroundColor: '#E8F2FF'
+	},
+	mentionLoggedUser: {
+		color: '#fff',
+		backgroundColor: '#1D74F5'
+	},
+	mentionAll: {
+		color: '#fff',
+		backgroundColor: '#FF5B5A'
 	},
 	paragraph: {
 		marginTop: 0,

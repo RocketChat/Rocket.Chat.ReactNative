@@ -7,9 +7,10 @@ import Avatar from '../Avatar';
 
 const styles = StyleSheet.create({
 	username: {
-		color: '#000',
-		fontWeight: '400',
-		fontSize: 14
+		color: '#0C0D0F',
+		fontWeight: '600',
+		fontSize: 16,
+		lineHeight: 22
 	},
 	usernameView: {
 		flexDirection: 'row',
@@ -17,18 +18,20 @@ const styles = StyleSheet.create({
 		marginBottom: 2
 	},
 	alias: {
-		fontSize: 10,
-		color: '#888',
-		paddingLeft: 5
+		fontSize: 14,
+		color: '#9EA2A8',
+		paddingLeft: 6,
+		lineHeight: 16
 	},
 	time: {
-		fontSize: 10,
-		color: '#888',
-		paddingLeft: 5,
-		fontWeight: '400'
+		fontSize: 14,
+		color: '#9EA2A8',
+		paddingLeft: 10,
+		fontWeight: '300',
+		lineHeight: 16
 	},
 	edited: {
-		marginLeft: 5,
+		marginLeft: 6,
 		flexDirection: 'row',
 		alignItems: 'center'
 	}
@@ -36,48 +39,54 @@ const styles = StyleSheet.create({
 
 export default class User extends React.PureComponent {
 	static propTypes = {
-		item: PropTypes.object.isRequired,
-		Message_TimeFormat: PropTypes.string.isRequired,
+		timeFormat: PropTypes.string.isRequired,
+		baseUrl: PropTypes.string.isRequired,
+		username: PropTypes.string,
+		alias: PropTypes.string,
+		ts: PropTypes.instanceOf(Date),
+		editedBy: PropTypes.string,
+		temp: PropTypes.bool,
 		onPress: PropTypes.func
 	}
 
-	renderEdited = (item) => {
-		if (!item.editedBy) {
+	renderEdited = (editedBy) => {
+		if (!editedBy) {
 			return null;
 		}
 		return (
 			<View style={styles.edited}>
-				<Icon name='pencil-square-o' color='#888' size={10} />
+				<Icon name='pencil-square-o' color='#888' size={12} />
 				<Avatar
-					style={{ marginLeft: 5 }}
-					text={item.editedBy.username}
+					style={{ marginLeft: 6 }}
+					text={editedBy}
 					size={20}
-					avatar={item.avatar}
+					baseUrl={this.props.baseUrl}
 				/>
 			</View>
 		);
 	}
 
 	render() {
-		const { item } = this.props;
+		const {
+			username, alias, ts, editedBy, temp
+		} = this.props;
 
 		const extraStyle = {};
-		if (item.temp) {
+		if (temp) {
 			extraStyle.opacity = 0.3;
 		}
 
-		const username = item.alias || item.u.username;
-		const aliasUsername = item.alias ? (<Text style={styles.alias}>@{item.u.username}</Text>) : null;
-		const time = moment(item.ts).format(this.props.Message_TimeFormat);
+		const aliasUsername = alias ? (<Text style={styles.alias}>@{username}</Text>) : null;
+		const time = moment(ts).format(this.props.timeFormat);
 
 		return (
 			<View style={styles.usernameView}>
 				<Text onPress={this.props.onPress} style={styles.username}>
-					{username}
+					{alias || username}
 				</Text>
 				{aliasUsername}
 				<Text style={styles.time}>{time}</Text>
-				{this.renderEdited(item)}
+				{this.renderEdited(editedBy)}
 			</View>
 		);
 	}

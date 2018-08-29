@@ -19,6 +19,7 @@ const scrollProps = {
 
 export default class EmojiPicker extends Component {
 	static propTypes = {
+		baseUrl: PropTypes.string.isRequired,
 		onEmojiSelected: PropTypes.func,
 		tabEmojiStyle: PropTypes.object,
 		emojisPerRow: PropTypes.number,
@@ -110,6 +111,7 @@ export default class EmojiPicker extends Component {
 				style={styles.categoryContainer}
 				size={this.props.emojisPerRow}
 				width={this.props.width}
+				baseUrl={this.props.baseUrl}
 			/>
 		);
 	}
