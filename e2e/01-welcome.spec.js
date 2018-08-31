@@ -30,14 +30,14 @@ describe('Welcome screen', () => {
 			await element(by.id('welcome-view-login')).tap();
 			await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('login-view'))).toBeVisible();
-			await tapBack('Welcome');
+			await tapBack();
 		});
 		
 		it('should navigate to register', async() => {
 			await element(by.id('welcome-view-register')).tap();
 			await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('register-view'))).toBeVisible();
-			await tapBack('Welcome');
+			await tapBack();
 		});
 
 		afterEach(async() => {

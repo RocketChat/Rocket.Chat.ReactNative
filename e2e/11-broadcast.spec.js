@@ -12,6 +12,8 @@ describe('Broadcast room', () => {
 
 	it('should create broadcast room', async() => {
 		await element(by.id('rooms-list-view-create-channel')).tap();
+		await waitFor(element(by.id('new-message-view'))).toBeVisible().withTimeout(2000);
+		await element(by.id('new-message-view-create-channel')).tap();
 		await waitFor(element(by.id('select-users-view'))).toBeVisible().withTimeout(2000);
 		await element(by.id(`select-users-view-item-${ data.alternateUser }`)).tap();
 		await waitFor(element(by.id(`selected-user-${ data.alternateUser }`))).toBeVisible().withTimeout(5000);
@@ -30,14 +32,14 @@ describe('Broadcast room', () => {
 		await waitFor(element(by.id('room-info-view'))).toBeVisible().withTimeout(2000);
 		await waitFor(element(by.id('room-info-view-broadcast'))).toBeVisible().withTimeout(2000);
 		await expect(element(by.id('room-info-view-broadcast'))).toBeVisible();
-		await tapBack('Actions');
+		await tapBack(1);
 		await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
-		await tapBack(`broadcast${ data.random }`);
+		await tapBack();
 		await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(2000);
-		await tapBack('Messages');
+		await tapBack(2);
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
-		await waitFor(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toBeVisible().withTimeout(60000);
-		await expect(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toBeVisible();
+		await waitFor(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toExist().withTimeout(60000);
+		await expect(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toExist();
 	});
 
 	it('should send message', async() => {
@@ -51,7 +53,7 @@ describe('Broadcast room', () => {
 	});
 
 	it('should login as user without write message authorization and enter room', async() => {
-		await tapBack('Messages');
+		await tapBack(2);
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 		await expect(element(by.id('rooms-list-view'))).toBeVisible();
 		await logout();
@@ -61,7 +63,8 @@ describe('Broadcast room', () => {
 		await element(by.id('login-view-submit')).tap();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 		// await device.reloadReactNative(); // remove after fix logout
-		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);		
+		// await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
+		await element(by.id('rooms-list-view-search')).replaceText(`broadcast${ data.random }`);
 		await waitFor(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toBeVisible().withTimeout(60000);
 		await expect(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toBeVisible();
 		await element(by.id(`rooms-list-view-item-broadcast${ data.random }`)).tap();
@@ -107,7 +110,7 @@ describe('Broadcast room', () => {
 
 	after(async() => {
 		// log back as main test user and left screen on RoomsListView
-		await tapBack('Messages');
+		await tapBack(2);
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 		await logout();
 		await navigateToLogin();

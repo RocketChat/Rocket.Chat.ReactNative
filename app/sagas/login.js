@@ -4,6 +4,7 @@ import { put, call, take, takeLatest, select, all } from 'redux-saga/effects';
 
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions';
+import { serverFinishAdd } from '../actions/server';
 import {
 	// loginRequest,
 	// loginSubmit,
@@ -38,13 +39,18 @@ const forgotPasswordCall = args => RocketChat.forgotPassword(args);
 const handleLoginSuccess = function* handleLoginSuccess() {
 	try {
 		const user = yield select(getUser);
+		const adding = yield select(state => state.server.adding);
 		yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
 		if (!user.username || user.isRegistering) {
 			yield put(registerIncomplete());
 		} else {
 			yield delay(300);
-			NavigationActions.dismissModal();
-			yield put(appStart('inside'));
+			if (adding) {
+				NavigationActions.dismissModal();
+			} else {
+				yield put(appStart('inside'));
+			}
+			yield put(serverFinishAdd());
 		}
 	} catch (e) {
 		log('handleLoginSuccess', e);

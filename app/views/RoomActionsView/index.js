@@ -65,7 +65,8 @@ export default class RoomActionsView extends LoggedView {
 			this.props.navigator.push({
 				screen: item.route,
 				title: item.name,
-				passProps: item.params
+				passProps: item.params,
+				backButtonTitle: ''
 			});
 		}
 		if (item.event) {

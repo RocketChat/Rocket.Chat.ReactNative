@@ -33,3 +33,15 @@ export function serverFailure(err) {
 		err
 	};
 }
+
+export function serverInitAdd() {
+	return {
+		type: SERVER.INIT_ADD
+	};
+}
+
+export function serverFinishAdd() {
+	return {
+		type: SERVER.FINISH_ADD
+	};
+}
