@@ -9,6 +9,8 @@ const serversSchema = {
 	primaryKey: 'id',
 	properties: {
 		id: 'string',
+		name: { type: 'string', optional: true },
+		iconURL: { type: 'string', optional: true },
 		current: 'bool'
 	}
 };

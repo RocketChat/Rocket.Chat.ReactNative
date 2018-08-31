@@ -24,14 +24,22 @@ export const LOGIN = createRequestTypes('LOGIN', [
 	'OPEN',
 	'CLOSE',
 	'SET_SERVICES',
-	'REMOVE_SERVICES'
+	'REMOVE_SERVICES',
+	'SET_PREFERENCE'
 ]);
 export const FORGOT_PASSWORD = createRequestTypes('FORGOT_PASSWORD', [
 	...defaultTypes,
 	'INIT'
 ]);
 export const USER = createRequestTypes('USER', ['SET']);
-export const ROOMS = createRequestTypes('ROOMS', [...defaultTypes, 'SET_SEARCH']);
+export const ROOMS = createRequestTypes('ROOMS', [
+	...defaultTypes,
+	'SET_SEARCH',
+	'CLOSE_SERVER_DROPDOWN',
+	'TOGGLE_SERVER_DROPDOWN',
+	'CLOSE_SORT_DROPDOWN',
+	'TOGGLE_SORT_DROPDOWN'
+]);
 export const ROOM = createRequestTypes('ROOM', [
 	'ADD_USER_TYPING',
 	'REMOVE_USER_TYPING',

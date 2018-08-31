@@ -6,10 +6,6 @@ const { login, navigateToLogin, tapBack } = require('./helpers/app');
 const data = require('./data');
 
 describe('Rooms list screen', () => {
-	// before(async() => {
-	// 	await device.reloadReactNative(); // TODO: remove this after fix logout subscription
-	// });
-
 	describe('Render', async() => {
 		it('should have rooms list screen', async() => {
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
@@ -64,11 +60,11 @@ describe('Rooms list screen', () => {
 		// Usage - Sidebar
 		describe('Sidebar', async() => {
 			it('should navigate to add server', async() => {
-				await element(by.id('rooms-list-view-sidebar')).tap();
-				await waitFor(element(by.id('sidebar'))).toBeVisible().withTimeout(2000);
-				await element(by.id('sidebar-toggle-server')).tap();
-				await waitFor(element(by.id('sidebar-add-server'))).toBeVisible().withTimeout(2000);
-				await element(by.id('sidebar-add-server')).tap();
+				await element(by.id('rooms-list-header-server-dropdown-button')).tap();
+				await waitFor(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible().withTimeout(2000);
+				await expect(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible();
+				await expect(element(by.id('rooms-list-header-server-add'))).toBeVisible();
+				await element(by.id('rooms-list-header-server-add')).tap();
 				await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('new-server-view'))).toBeVisible();
 				await element(by.text('Close')).tap();
@@ -93,6 +89,6 @@ describe('Rooms list screen', () => {
 		after(async() => {
 			await navigateToLogin();
 			await login();
-		})
+		});
 	});
 });
