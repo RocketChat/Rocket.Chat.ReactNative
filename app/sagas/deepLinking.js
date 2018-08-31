@@ -17,6 +17,7 @@ const navigate = function* go({ params, sameServer = true }) {
 		if (canOpenRoom) {
 			return NavigationActions.push({
 				screen: 'RoomView',
+				backButtonTitle: '',
 				passProps: {
 					rid: params.rid
 				}

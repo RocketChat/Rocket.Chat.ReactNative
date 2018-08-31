@@ -76,7 +76,9 @@ export default StyleSheet.create({
 		justifyContent: 'center'
 	},
 	buttonIcon: {
-		marginHorizontal: scale(20)
+		marginHorizontal: scale(10),
+		width: 20,
+		height: 20
 	},
 	buttonActive: {
 		opacity: 0.5

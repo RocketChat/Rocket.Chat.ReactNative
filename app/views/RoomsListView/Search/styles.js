@@ -10,6 +10,6 @@ export default StyleSheet.create({
 	inputSearch: {
 		flex: 1,
 		fontSize: 18,
-		color: '#444'
+		color: '#fff'
 	}
 });

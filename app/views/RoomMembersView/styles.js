@@ -24,7 +24,8 @@ export default StyleSheet.create({
 	},
 	separator: {
 		height: StyleSheet.hairlineWidth,
-		backgroundColor: '#ddd'
+		backgroundColor: '#E1E5E8',
+		marginLeft: 60
 	},
 	username: {
 		flex: 1,

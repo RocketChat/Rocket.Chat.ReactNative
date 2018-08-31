@@ -140,7 +140,8 @@ const RocketChat = {
 				user = { ...user, ...userInfo.user };
 			}
 			RocketChat.registerPushToken(user.id);
-			return reduxStore.dispatch(loginSuccess(user));
+			reduxStore.dispatch(loginSuccess(user));
+			this.ddp.subscribe('userData');
 		} catch (e) {
 			log('rocketchat.loginSuccess', e);
 		}
@@ -468,7 +469,7 @@ const RocketChat = {
 				log('rocketchat.logout', e);
 			}
 		}
-		database.deleteAll();
+		// database.deleteAll();
 		AsyncStorage.removeItem(TOKEN_KEY);
 		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
 	},
@@ -525,6 +526,56 @@ const RocketChat = {
 			database.create('messages', message, true);
 		});
 		return _sendMessageCall(JSON.parse(JSON.stringify(message)));
+	},
+
+	async search({ text, filterUsers = true, filterRooms = true }) {
+		const searchText = text.trim();
+		if (searchText === '') {
+			delete this.oldPromise;
+			return [];
+		}
+
+		let data = database.objects('subscriptions').filtered('name CONTAINS[c] $0', searchText);
+
+		if (filterUsers && !filterRooms) {
+			data = data.filtered('t = $0', 'd');
+		} else if (!filterUsers && filterRooms) {
+			data = data.filtered('t != $0', 'd');
+		}
+		data = data.slice(0, 7);
+
+		const usernames = data.map(sub => sub.name);
+		try {
+			if (data.length < 7) {
+				if (this.oldPromise) {
+					this.oldPromise('cancel');
+				}
+
+				const { users, rooms } = await Promise.race([
+					RocketChat.spotlight(searchText, usernames, { users: filterUsers, rooms: filterRooms }),
+					new Promise((resolve, reject) => this.oldPromise = reject)
+				]);
+
+				data = data.concat(users.map(user => ({
+					...user,
+					rid: user.username,
+					name: user.username,
+					t: 'd',
+					search: true
+				})), rooms.map(room => ({
+					rid: room._id,
+					...room,
+					search: true
+				})));
+
+				delete this.oldPromise;
+			}
+
+			return data;
+		} catch (e) {
+			console.warn(e);
+			return [];
+		}
 	},
 
 	spotlight(search, usernames, type) {

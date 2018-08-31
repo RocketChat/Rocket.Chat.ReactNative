@@ -1,23 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, TextInput, Vibration, SafeAreaView } from 'react-native';
-import { connect } from 'react-redux';
+import { FlatList, View, Vibration, SafeAreaView } from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
 
 import LoggedView from '../View';
 import styles from './styles';
-import RoomItem from '../../presentation/RoomItem';
+import UserItem from '../../presentation/UserItem';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
 import database from '../../lib/realm';
 import { showToast } from '../../utils/info';
 import log from '../../utils/log';
 import I18n from '../../i18n';
+import SearchBox from '../../containers/SearchBox';
 
-
-@connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-}))
 /** @extends React.Component */
 export default class RoomMembersView extends LoggedView {
 	static navigatorButtons = {
@@ -31,8 +27,7 @@ export default class RoomMembersView extends LoggedView {
 	static propTypes = {
 		navigator: PropTypes.object,
 		rid: PropTypes.string,
-		members: PropTypes.array,
-		baseUrl: PropTypes.string
+		members: PropTypes.array
 	}
 
 	constructor(props) {
@@ -138,6 +133,7 @@ export default class RoomMembersView extends LoggedView {
 			this.props.navigator.push({
 				screen: 'RoomView',
 				title: name,
+				backButtonTitle: '',
 				passProps: {
 					room: { rid, name },
 					rid,
@@ -168,35 +164,17 @@ export default class RoomMembersView extends LoggedView {
 	}
 
 	renderSearchBar = () => (
-		<View style={styles.searchBoxView}>
-			<TextInput
-				underlineColorAndroid='transparent'
-				style={styles.searchBox}
-				onChangeText={text => this.onSearchChangeText(text)}
-				returnKeyType='search'
-				placeholder={I18n.t('Search')}
-				clearButtonMode='while-editing'
-				blurOnSubmit
-				autoCorrect={false}
-				autoCapitalize='none'
-				testID='room-members-view-search'
-			/>
-		</View>
+		<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='room-members-view-search' />
 	)
 
 	renderSeparator = () => <View style={styles.separator} />;
 
 	renderItem = ({ item }) => (
-		<RoomItem
-			name={item.username}
-			type='d'
-			baseUrl={this.props.baseUrl}
+		<UserItem
+			name={item.name}
+			username={item.username}
 			onPress={() => this.onPressUser(item)}
 			onLongPress={() => this.onLongPressUser(item)}
-			id={item._id}
-			showLastMessage={false}
-			avatarSize={30}
-			statusStyle={styles.status}
 			testID={`room-members-view-item-${ item.username }`}
 		/>
 	)

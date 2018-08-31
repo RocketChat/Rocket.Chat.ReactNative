@@ -23,8 +23,10 @@ const camelize = str => str.replace(/^(.)/, (match, chr) => chr.toUpperCase());
 const getRoomTitle = room => (room.t === 'd' ?
 	<Text testID='room-info-view-name' style={styles.roomTitle}>{room.fname}</Text> :
 	[
-		<RoomTypeIcon type={room.t} key='room-info-type' />,
-		<Text testID='room-info-view-name' style={styles.roomTitle} key='room-info-name'>{room.name}</Text>
+		<View style={styles.roomTitleRow}>
+			<RoomTypeIcon type={room.t} key='room-info-type' />
+			<Text testID='room-info-view-name' style={styles.roomTitle} key='room-info-name'>{room.name}</Text>
+		</View>
 	]
 );
 
@@ -116,6 +118,7 @@ export default class RoomInfoView extends LoggedView {
 				this.props.navigator.push({
 					screen: 'RoomInfoEditView',
 					title: I18n.t('Room_Info_Edit'),
+					backButtonTitle: '',
 					passProps: {
 						rid: this.props.rid
 					}

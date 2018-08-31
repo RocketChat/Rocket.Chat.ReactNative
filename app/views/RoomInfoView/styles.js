@@ -38,6 +38,10 @@ export default StyleSheet.create({
 		color: '#ccc',
 		paddingTop: 10
 	},
+	roomTitleRow: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
 	status: {
 		borderRadius: 24,
 		width: 24,

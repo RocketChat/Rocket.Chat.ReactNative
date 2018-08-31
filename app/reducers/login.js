@@ -28,7 +28,10 @@ export default function login(state = initialState, action) {
 				...state,
 				isFetching: false,
 				isAuthenticated: true,
-				user: { ...state.user, ...action.user },
+				user: {
+					...state.user,
+					...action.user
+				},
 				token: action.user.token,
 				failure: false,
 				error: ''
@@ -129,6 +132,20 @@ export default function login(state = initialState, action) {
 			return {
 				...state,
 				services: {}
+			};
+		case types.LOGIN.SET_PREFERENCE:
+			return {
+				...state,
+				user: {
+					...state.user,
+					settings: {
+						...state.user.settings,
+						preferences: {
+							...state.user.settings.preferences,
+							...action.preference
+						}
+					}
+				}
 			};
 		default:
 			return state;

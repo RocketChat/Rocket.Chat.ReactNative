@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, SafeAreaView, Keyboard, Platform } from 'react-native';
+import { View, ScrollView, SafeAreaView, Keyboard, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
 import SHA256 from 'js-sha256';
@@ -22,7 +22,6 @@ import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
-import { iconsMap } from '../../Icons';
 
 @connect(state => ({
 	user: {
@@ -62,8 +61,8 @@ export default class ProfileView extends LoggedView {
 	componentWillMount() {
 		this.props.navigator.setButtons({
 			leftButtons: [{
-				id: 'sideMenu',
-				icon: Platform.OS === 'ios' ? iconsMap.menu : undefined
+				id: 'settings',
+				icon: { uri: 'settings', scale: Dimensions.get('window').scale }
 			}]
 		});
 	}
@@ -92,11 +91,9 @@ export default class ProfileView extends LoggedView {
 
 	onNavigatorEvent(event) {
 		if (event.type === 'NavBarButtonPress') {
-			if (event.id === 'sideMenu' && Platform.OS === 'ios') {
+			if (event.id === 'settings') {
 				this.props.navigator.toggleDrawer({
-					side: 'left',
-					animated: true,
-					to: 'missing'
+					side: 'left'
 				});
 			}
 		}

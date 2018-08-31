@@ -21,6 +21,7 @@ export default class OnboardingView extends LoggedView {
 	connectServer = () => {
 		this.props.navigator.push({
 			screen: 'NewServerView',
+			backButtonTitle: '',
 			navigatorStyle: {
 				navBarHidden: true
 			}
@@ -30,6 +31,7 @@ export default class OnboardingView extends LoggedView {
 	joinCommunity = () => {
 		this.props.navigator.push({
 			screen: 'NewServerView',
+			backButtonTitle: '',
 			passProps: {
 				server: 'https://open.rocket.chat'
 			},
