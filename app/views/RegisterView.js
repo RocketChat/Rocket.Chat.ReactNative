@@ -93,7 +93,7 @@ export default class RegisterView extends LoggedView {
 		this.props.navigator.push({
 			screen: 'TermsServiceView',
 			title: I18n.t('Terms_of_Service'),
-			backButtonTitle: I18n.t('Sign_Up')
+			backButtonTitle: ''
 		});
 	}
 
@@ -101,7 +101,7 @@ export default class RegisterView extends LoggedView {
 		this.props.navigator.push({
 			screen: 'PrivacyPolicyView',
 			title: I18n.t('Privacy_Policy'),
-			backButtonTitle: I18n.t('Sign_Up')
+			backButtonTitle: ''
 		});
 	}
 

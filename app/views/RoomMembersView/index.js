@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, TextInput, Vibration, SafeAreaView } from 'react-native';
+import { FlatList, View, Vibration, SafeAreaView } from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
 
 import LoggedView from '../View';
@@ -12,6 +12,7 @@ import database from '../../lib/realm';
 import { showToast } from '../../utils/info';
 import log from '../../utils/log';
 import I18n from '../../i18n';
+import SearchBox from '../../containers/SearchBox';
 
 /** @extends React.Component */
 export default class RoomMembersView extends LoggedView {
@@ -132,6 +133,7 @@ export default class RoomMembersView extends LoggedView {
 			this.props.navigator.push({
 				screen: 'RoomView',
 				title: name,
+				backButtonTitle: '',
 				passProps: {
 					room: { rid, name },
 					rid,
@@ -162,20 +164,7 @@ export default class RoomMembersView extends LoggedView {
 	}
 
 	renderSearchBar = () => (
-		<View style={styles.searchBoxView}>
-			<TextInput
-				underlineColorAndroid='transparent'
-				style={styles.searchBox}
-				onChangeText={text => this.onSearchChangeText(text)}
-				returnKeyType='search'
-				placeholder={I18n.t('Search')}
-				clearButtonMode='while-editing'
-				blurOnSubmit
-				autoCorrect={false}
-				autoCapitalize='none'
-				testID='room-members-view-search'
-			/>
-		</View>
+		<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='room-members-view-search' />
 	)
 
 	renderSeparator = () => <View style={styles.separator} />;

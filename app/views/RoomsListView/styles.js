@@ -31,17 +31,6 @@ export default StyleSheet.create({
 		height: 22,
 		color: 'white'
 	},
-	searchBoxView: {
-		backgroundColor: '#eee'
-	},
-	searchBox: {
-		backgroundColor: '#fff',
-		margin: 5,
-		borderRadius: 5,
-		padding: 5,
-		paddingLeft: 10,
-		color: '#aaa'
-	},
 	loading: {
 		flex: 1
 	},

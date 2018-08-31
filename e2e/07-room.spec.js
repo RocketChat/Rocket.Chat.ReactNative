@@ -74,7 +74,7 @@ describe('Room screen', () => {
 	describe('Usage', async() => {
 		describe('Header', async() => {
 			it('should back to rooms list', async() => {
-				await tapBack('Messages');
+				await tapBack(2);
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('rooms-list-view'))).toBeVisible();
 				await navigateToRoom();
@@ -84,7 +84,7 @@ describe('Room screen', () => {
 				await element(by.id('room-view-header-actions')).tap();
 				await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('room-actions-view'))).toBeVisible();
-				await tapBack(`private${ data.random }`);
+				await tapBack();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			});
 		});
@@ -287,7 +287,8 @@ describe('Room screen', () => {
 		});
 
 		after(async() => {
-			await tapBack('Messages');
+			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
+			await tapBack(2);
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
 		});

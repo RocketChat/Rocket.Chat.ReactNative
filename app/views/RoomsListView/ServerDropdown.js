@@ -86,6 +86,13 @@ export default class ServerDropdown extends Component {
 				title: I18n.t('Add_Server'),
 				passProps: {
 					previousServer: this.props.server
+				},
+				navigatorButtons: {
+					leftButtons: [{
+						id: 'cancel',
+						testID: 'new-server-close',
+						title: I18n.t('Close')
+					}]
 				}
 			});
 		}, ANIMATION_DURATION);
@@ -101,6 +108,7 @@ export default class ServerDropdown extends Component {
 				setTimeout(() => {
 					this.props.navigator.push({
 						screen: 'NewServerView',
+						backButtonTitle: '',
 						passProps: {
 							server
 						},

@@ -118,6 +118,7 @@ export default class RoomInfoView extends LoggedView {
 				this.props.navigator.push({
 					screen: 'RoomInfoEditView',
 					title: I18n.t('Room_Info_Edit'),
+					backButtonTitle: '',
 					passProps: {
 						rid: this.props.rid
 					}

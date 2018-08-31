@@ -6,6 +6,7 @@ import ForgotPasswordView from './ForgotPasswordView';
 import LoginSignupView from './LoginSignupView';
 import LoginView from './LoginView';
 import MentionedMessagesView from './MentionedMessagesView';
+import NewMessageView from './NewMessageView';
 import NewServerView from './NewServerView';
 import OAuthView from './OAuthView';
 import OnboardingView from './OnboardingView';
@@ -36,6 +37,7 @@ export const registerScreens = (store) => {
 	Navigation.registerComponent('LoginSignupView', () => LoginSignupView, store, Provider);
 	Navigation.registerComponent('LoginView', () => LoginView, store, Provider);
 	Navigation.registerComponent('MentionedMessagesView', () => MentionedMessagesView, store, Provider);
+	Navigation.registerComponent('NewMessageView', () => NewMessageView, store, Provider);
 	Navigation.registerComponent('NewServerView', () => NewServerView, store, Provider);
 	Navigation.registerComponent('OAuthView', () => OAuthView, store, Provider);
 	Navigation.registerComponent('OnboardingView', () => OnboardingView, store, Provider);

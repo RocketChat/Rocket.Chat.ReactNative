@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, ScrollView, Keyboard, SafeAreaView, Image, Alert, StyleSheet, Platform } from 'react-native';
+import { Text, ScrollView, Keyboard, SafeAreaView, Image, Alert, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
-import { serverRequest } from '../actions/server';
+import { serverRequest, selectServerRequest, serverInitAdd, serverFinishAdd } from '../actions/server';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import Button from '../containers/Button';
@@ -12,7 +12,6 @@ import LoggedView from './View';
 import I18n from '../i18n';
 import { scale, verticalScale, moderateScale } from '../utils/scaling';
 import KeyboardView from '../presentation/KeyboardView';
-import { iconsMap } from '../Icons';
 
 const styles = StyleSheet.create({
 	image: {
@@ -45,9 +44,13 @@ const defaultServer = 'https://open.rocket.chat';
 @connect(state => ({
 	connecting: state.server.connecting,
 	failure: state.server.failure,
-	currentServer: state.server.server
+	currentServer: state.server.server,
+	adding: state.server.adding
 }), dispatch => ({
-	connectServer: url => dispatch(serverRequest(url))
+	initAdd: () => dispatch(serverInitAdd()),
+	finishAdd: () => dispatch(serverFinishAdd()),
+	connectServer: server => dispatch(serverRequest(server)),
+	selectServer: server => dispatch(selectServerRequest(server))
 }))
 /** @extends React.Component */
 export default class NewServerView extends LoggedView {
@@ -55,10 +58,14 @@ export default class NewServerView extends LoggedView {
 		navigator: PropTypes.object,
 		server: PropTypes.string,
 		connecting: PropTypes.bool.isRequired,
+		adding: PropTypes.bool,
 		failure: PropTypes.bool.isRequired,
 		connectServer: PropTypes.func.isRequired,
+		selectServer: PropTypes.func.isRequired,
 		previousServer: PropTypes.string,
-		currentServer: PropTypes.string
+		currentServer: PropTypes.string,
+		initAdd: PropTypes.func,
+		finishAdd: PropTypes.func
 	}
 
 	constructor(props) {
@@ -69,25 +76,8 @@ export default class NewServerView extends LoggedView {
 		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
 
-	componentWillMount() {
-		// if previousServer exists, New Server View is a modal
-		if (this.props.previousServer) {
-			const closeButton = {
-				id: 'close',
-				testID: 'new-server-close',
-				title: I18n.t('Close')
-			};
-			if (Platform.OS === 'android') {
-				closeButton.icon = iconsMap.close;
-			}
-			this.props.navigator.setButtons({
-				leftButtons: [closeButton]
-			});
-		}
-	}
-
 	componentDidMount() {
-		const { server } = this.props;
+		const { server, previousServer } = this.props;
 		if (server) {
 			this.props.connectServer(server);
 			this.setState({ text: server });
@@ -95,6 +85,9 @@ export default class NewServerView extends LoggedView {
 			setTimeout(() => {
 				this.input.focus();
 			}, 600);
+		}
+		if (previousServer) {
+			this.props.initAdd();
 		}
 	}
 
@@ -104,16 +97,22 @@ export default class NewServerView extends LoggedView {
 		}
 	}
 
+	componentWillUnmount() {
+		const {
+			selectServer, previousServer, currentServer, adding, finishAdd
+		} = this.props;
+		if (adding) {
+			if (previousServer !== currentServer) {
+				selectServer(previousServer);
+			}
+			finishAdd();
+		}
+	}
+
 	onNavigatorEvent(event) {
 		if (event.type === 'NavBarButtonPress') {
-			if (event.id === 'close') {
-				const {
-					navigator, connectServer, previousServer, currentServer
-				} = this.props;
-				navigator.dismissModal();
-				if (previousServer !== currentServer) {
-					connectServer(previousServer);
-				}
+			if (event.id === 'cancel') {
+				this.props.navigator.dismissModal();
 			}
 		}
 	}

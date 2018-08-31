@@ -182,7 +182,7 @@ export default class LoginSignupView extends LoggedView {
 		this.props.navigator.push({
 			screen: 'LoginView',
 			title: this.props.server,
-			backButtonTitle: I18n.t('Welcome')
+			backButtonTitle: ''
 		});
 	}
 
@@ -190,7 +190,7 @@ export default class LoginSignupView extends LoggedView {
 		this.props.navigator.push({
 			screen: 'RegisterView',
 			title: this.props.server,
-			backButtonTitle: I18n.t('Welcome')
+			backButtonTitle: ''
 		});
 	}
 
