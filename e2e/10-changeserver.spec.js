@@ -12,11 +12,9 @@ describe('Change server', () => {
 
 	it('should add server and create new user', async() => {
 		// Navigate to add server
-		await element(by.id('rooms-list-view-sidebar')).tap();
-		await waitFor(element(by.id('sidebar'))).toBeVisible().withTimeout(2000);
-		await element(by.id('sidebar-toggle-server')).tap();
-		await waitFor(element(by.id('sidebar-add-server'))).toBeVisible().withTimeout(2000);
-		await element(by.id('sidebar-add-server')).tap();
+		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
+		await waitFor(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible().withTimeout(2000);
+		await element(by.id('rooms-list-header-server-add')).tap();
 		//  Add server
 		await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
 		await element(by.id('new-server-view-input')).replaceText(data.alternateServer);
@@ -43,15 +41,10 @@ describe('Change server', () => {
 	});
 
 	it('should change server', async() => {
-		await element(by.id('rooms-list-view-sidebar')).tap();
-		await waitFor(element(by.id('sidebar'))).toBeVisible().withTimeout(2000);
-		await element(by.id('sidebar-toggle-server')).tap();
-		await waitFor(element(by.id(`sidebar-${ data.server }`))).toBeVisible().withTimeout(2000);
-		// await expect(element(by.id(`sidebar-${ data.server }`))).toBeVisible();
-		await element(by.id(`sidebar-${ data.server }`)).tap();
+		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
+		await waitFor(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible().withTimeout(2000);
+		await element(by.id(`rooms-list-header-server-${ data.server }`)).tap();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
-		// await waitFor(element(by.id('rooms-list-view-sidebar').and(by.label(`Connected to ${ data.server }. Tap to view servers list.`)))).toBeVisible().withTimeout(60000);
-		// await expect(element(by.id('rooms-list-view-sidebar'))).toHaveLabel(`Connected to ${ data.server }. Tap to view servers list.`);
 		// For a sanity test, to make sure roomslist is showing correct rooms
 		// app MUST show public room created on previous tests
 		await waitFor(element(by.id(`rooms-list-view-item-public${ data.random }`))).toBeVisible().withTimeout(60000);

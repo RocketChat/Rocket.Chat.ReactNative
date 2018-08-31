@@ -24,14 +24,22 @@ export const LOGIN = createRequestTypes('LOGIN', [
 	'OPEN',
 	'CLOSE',
 	'SET_SERVICES',
-	'REMOVE_SERVICES'
+	'REMOVE_SERVICES',
+	'SET_PREFERENCE'
 ]);
 export const FORGOT_PASSWORD = createRequestTypes('FORGOT_PASSWORD', [
 	...defaultTypes,
 	'INIT'
 ]);
 export const USER = createRequestTypes('USER', ['SET']);
-export const ROOMS = createRequestTypes('ROOMS', [...defaultTypes, 'SET_SEARCH']);
+export const ROOMS = createRequestTypes('ROOMS', [
+	...defaultTypes,
+	'SET_SEARCH',
+	'CLOSE_SERVER_DROPDOWN',
+	'TOGGLE_SERVER_DROPDOWN',
+	'CLOSE_SORT_DROPDOWN',
+	'TOGGLE_SORT_DROPDOWN'
+]);
 export const ROOM = createRequestTypes('ROOM', [
 	'ADD_USER_TYPING',
 	'REMOVE_USER_TYPING',
@@ -76,7 +84,9 @@ export const NAVIGATION = createRequestTypes('NAVIGATION', ['SET']);
 export const SERVER = createRequestTypes('SERVER', [
 	...defaultTypes,
 	'SELECT_SUCCESS',
-	'SELECT_REQUEST'
+	'SELECT_REQUEST',
+	'INIT_ADD',
+	'FINISH_ADD'
 ]);
 export const METEOR = createRequestTypes('METEOR_CONNECT', [...defaultTypes, 'DISCONNECT', 'DISCONNECT_BY_USER']);
 export const LOGOUT = 'LOGOUT'; // logout is always success

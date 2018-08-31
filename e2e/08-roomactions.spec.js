@@ -21,15 +21,16 @@ async function navigateToRoomActions(type) {
 	await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(5000);
 }
 
-async function backToActions() {
-	await tapBack('Actions');
-	await waitFor(element(by.id('rooms-actions-view'))).toBeVisible().withTimeout(2000);
+async function backToActions(index = 0) {
+	await tapBack(index);
+	await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
+	await expect(element(by.id('room-actions-view'))).toBeVisible();
 }
 
-async function backToRoomsList(room) {
-	await tapBack(room);
+async function backToRoomsList() {
+	await tapBack();
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(2000);
-	await tapBack('Messages');
+	await tapBack(2);
 	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 }
 
@@ -98,7 +99,7 @@ describe('Room actions screen', () => {
 			});
 
 			after(async() => {
-				await backToRoomsList('rocket.cat');
+				await backToRoomsList();
 			});
 		});
 
@@ -247,10 +248,10 @@ describe('Room actions screen', () => {
 				await element(by.id('room-actions-search')).tap();
 				await waitFor(element(by.id('search-messages-view'))).toExist().withTimeout(2000);
 				await expect(element(by.id('search-message-view-input'))).toBeVisible();
-				await element(by.id('search-message-view-input')).tap();
 				await element(by.id('search-message-view-input')).replaceText(`/${ data.random }message/`);
 				await waitFor(element(by.text(`${ data.random }message`).withAncestor(by.id('search-messages-view'))).atIndex(0)).toBeVisible().withTimeout(60000);
 				await expect(element(by.text(`${ data.random }message`).withAncestor(by.id('search-messages-view'))).atIndex(0)).toBeVisible();
+				await element(by.traits(['button'])).atIndex(0).tap();
 				await backToActions();
 			});
 
@@ -284,7 +285,7 @@ describe('Room actions screen', () => {
 				await expect(element(by.text('You are the last owner. Please set new owner before leaving the room.'))).toBeVisible();
 				await takeScreenshot();
 				await element(by.text('OK')).tap();
-				await waitFor(element(by.id('rooms-actions-view'))).toBeVisible().withTimeout(2000);
+				await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
 			});
 
 			describe('Add User', async() => {
@@ -304,7 +305,7 @@ describe('Room actions screen', () => {
 					await element(by.id('room-members-view-toggle-status')).tap();
 					await waitFor(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toBeVisible().withTimeout(60000);
 					await expect(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toBeVisible();
-					await backToActions();
+					await backToActions(1);
 				});
 
 				after(async() => {
@@ -363,8 +364,8 @@ describe('Room actions screen', () => {
 					await expect(element(by.id('room-view'))).toBeVisible();
 					await waitFor(element(by.text(data.alternateUser))).toBeVisible().withTimeout(60000);
 					await expect(element(by.text(data.alternateUser))).toBeVisible();
-					await tapBack('Messages');
-					await waitFor(element(by.id('room-list-view'))).toBeVisible().withTimeout(2000);
+					await tapBack(2);
+					await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 				});
 
 				afterEach(async() => {

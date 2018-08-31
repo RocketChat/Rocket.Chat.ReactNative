@@ -238,6 +238,7 @@ export default class Sidebar extends Component {
 						setTimeout(() => {
 							NavigationActions.push({
 								screen: 'NewServerView',
+								backButtonTitle: '',
 								passProps: {
 									server: item.id
 								},

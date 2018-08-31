@@ -20,7 +20,6 @@ import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 
 const renderSeparator = () => <View style={styles.separator} />;
-const getRoomTitle = room => (room.t === 'd' ? <Text>{room.fname}</Text> : <Text><RoomTypeIcon type={room.t} />&nbsp;{room.name}</Text>);
 
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
@@ -68,7 +67,8 @@ export default class RoomActionsView extends LoggedView {
 			this.props.navigator.push({
 				screen: item.route,
 				title: item.name,
-				passProps: item.params
+				passProps: item.params,
+				backButtonTitle: ''
 			});
 		}
 		if (item.event) {
@@ -350,7 +350,13 @@ export default class RoomActionsView extends LoggedView {
 					{t === 'd' ? <Status style={sharedStyles.status} id={member._id} /> : null }
 				</Avatar>,
 				<View key='name' style={styles.roomTitleContainer}>
-					<Text style={styles.roomTitle}>{ getRoomTitle(room) }</Text>
+					{room.t === 'd' ?
+						<Text style={styles.roomTitle}>{room.fname}</Text> :
+						<View style={styles.roomTitleRow}>
+							<RoomTypeIcon type={room.t} />
+							<Text style={styles.roomTitle}>{room.name}</Text>
+						</View>
+					}
 					<Text style={styles.roomDescription} ellipsizeMode='tail' numberOfLines={1}>{t === 'd' ? `@${ name }` : topic}</Text>
 				</View>,
 				<Icon key='icon' name='ios-arrow-forward' size={20} style={styles.sectionItemIcon} color='#ccc' />

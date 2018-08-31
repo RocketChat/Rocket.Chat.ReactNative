@@ -34,7 +34,7 @@ export default class Avatar extends React.PureComponent {
 		text: '',
 		size: 25,
 		type: 'd',
-		borderRadius: 2,
+		borderRadius: 4,
 		forceInitials: false
 	};
 	state = { showInitials: true };

@@ -158,7 +158,7 @@ describe('Room info screen', () => {
 				await expect(element(by.text('Settings succesfully changed!'))).toBeVisible();
 				await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
 				await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
-				await tapBack('Room Info');
+				await tapBack();
 				await waitFor(element(by.id('room-info-view'))).toBeVisible().withTimeout(2000);
 				await waitFor(element(by.id('room-info-view-name'))).toHaveText(`${ room }new`).withTimeout(60000);
 				await expect(element(by.id('room-info-view-name'))).toHaveText(`${ room }new`);
@@ -206,7 +206,7 @@ describe('Room info screen', () => {
 				await expect(element(by.text('Settings succesfully changed!'))).toBeVisible();
 				await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
 				await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
-				await tapBack('Room Info');
+				await tapBack();
 				await waitFor(element(by.id('room-info-view'))).toBeVisible().withTimeout(2000);
 				await waitFor(element(by.id('room-info-view-description'))).toHaveText('new description').withTimeout(60000);
 				await expect(element(by.id('room-info-view-description'))).toHaveText('new description');
@@ -223,7 +223,7 @@ describe('Room info screen', () => {
 				await expect(element(by.text('Settings succesfully changed!'))).toBeVisible();
 				await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
 				await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
-				await tapBack('Room Info');
+				await tapBack();
 				await waitFor(element(by.id('room-info-view'))).toBeVisible().withTimeout(2000);
 				await waitFor(element(by.id('room-info-view-topic'))).toHaveText('new topic').withTimeout(60000);
 				await expect(element(by.id('room-info-view-topic'))).toHaveText('new topic');
@@ -240,7 +240,7 @@ describe('Room info screen', () => {
 				await expect(element(by.text('Settings succesfully changed!'))).toBeVisible();
 				await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
 				await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
-				await tapBack('Room Info');
+				await tapBack();
 				await waitFor(element(by.id('room-info-view'))).toBeVisible().withTimeout(2000);
 				await waitFor(element(by.id('room-info-view-announcement'))).toHaveText('new announcement').withTimeout(60000);
 				await expect(element(by.id('room-info-view-announcement'))).toHaveText('new announcement');

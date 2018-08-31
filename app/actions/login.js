@@ -151,3 +151,10 @@ export function removeLoginServices() {
 		type: types.LOGIN.REMOVE_SERVICES
 	};
 }
+
+export function setPreference(preference) {
+	return {
+		type: types.LOGIN.SET_PREFERENCE,
+		preference
+	};
+}
