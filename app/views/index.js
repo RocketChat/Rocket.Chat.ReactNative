@@ -18,6 +18,7 @@ import RoomFilesView from './RoomFilesView';
 import RoomInfoEditView from './RoomInfoEditView';
 import RoomInfoView from './RoomInfoView';
 import RoomMembersView from './RoomMembersView';
+import RoomsListHeaderView from './RoomsListView/Header';
 import RoomsListSearchView from './RoomsListView/Search';
 import RoomsListView from './RoomsListView';
 import RoomView from './RoomView';
@@ -47,6 +48,7 @@ export const registerScreens = (store) => {
 	Navigation.registerComponent('RoomInfoEditView', () => RoomInfoEditView, store, Provider);
 	Navigation.registerComponent('RoomInfoView', () => RoomInfoView, store, Provider);
 	Navigation.registerComponent('RoomMembersView', () => RoomMembersView, store, Provider);
+	Navigation.registerComponent('RoomsListHeaderView', () => RoomsListHeaderView, store, Provider);
 	Navigation.registerComponent('RoomsListSearchView', () => RoomsListSearchView, store, Provider);
 	Navigation.registerComponent('RoomsListView', () => RoomsListView, store, Provider);
 	Navigation.registerComponent('RoomView', () => RoomView, store, Provider);

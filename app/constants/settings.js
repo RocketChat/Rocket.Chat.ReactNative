@@ -71,6 +71,9 @@ export default {
 	Message_TimeFormat: {
 		type: 'valueAsString'
 	},
+	Site_Name: {
+		type: 'valueAsString'
+	},
 	Site_Url: {
 		type: 'valueAsString'
 	},

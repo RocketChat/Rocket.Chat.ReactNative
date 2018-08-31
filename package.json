@@ -53,7 +53,7 @@
     "react-native-markdown-renderer": "^3.2.8",
     "react-native-meteor": "^1.4.0",
     "react-native-modal": "^6.5.0",
-    "react-native-navigation": "^1.1.479",
+    "react-native-navigation": "git+https://github.com/RocketChat/react-native-navigation.git",
     "react-native-notifications": "git+https://github.com/RocketChat/react-native-notifications.git",
     "react-native-optimized-flatlist": "^1.0.4",
     "react-native-picker-select": "^4.2.0",

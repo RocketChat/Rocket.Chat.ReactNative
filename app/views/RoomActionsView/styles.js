@@ -51,5 +51,9 @@ export default StyleSheet.create({
 	roomDescription: {
 		fontSize: 12,
 		color: '#ccc'
+	},
+	roomTitleRow: {
+		flexDirection: 'row',
+		alignItems: 'center'
 	}
 });
