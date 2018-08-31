@@ -13,7 +13,7 @@ const userAgent = Platform.OS === 'ios' ? 'UserAgent' : userAgentAndroid;
 @connect(state => ({
 	server: state.server.server
 }))
-export default class TermsServiceView extends React.PureComponent {
+export default class OAuthView extends React.PureComponent {
 	static navigatorButtons = {
 		leftButtons: [{
 			id: 'close',
