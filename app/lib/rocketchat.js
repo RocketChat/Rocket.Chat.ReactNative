@@ -140,7 +140,8 @@ const RocketChat = {
 				user = { ...user, ...userInfo.user };
 			}
 			RocketChat.registerPushToken(user.id);
-			return reduxStore.dispatch(loginSuccess(user));
+			reduxStore.dispatch(loginSuccess(user));
+			this.ddp.subscribe('userData');
 		} catch (e) {
 			log('rocketchat.loginSuccess', e);
 		}
@@ -468,7 +469,7 @@ const RocketChat = {
 				log('rocketchat.logout', e);
 			}
 		}
-		database.deleteAll();
+		// database.deleteAll();
 		AsyncStorage.removeItem(TOKEN_KEY);
 		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
 	},

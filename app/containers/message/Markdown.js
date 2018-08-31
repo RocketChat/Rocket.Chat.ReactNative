@@ -68,7 +68,6 @@ export default class Markdown extends React.Component {
 					hardbreak: () => null,
 					blocklink: () => null,
 					image: node => (
-						// TODO: should use Image component
 						<Image key={node.key} style={styles.inlineImage} source={{ uri: node.attributes.src }} />
 					),
 					...rules

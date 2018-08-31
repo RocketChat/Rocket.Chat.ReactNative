@@ -20,12 +20,9 @@ exports[`render channel 1`] = `
         Array [
           Object {
             "alignItems": "center",
-            "borderBottomColor": "#ddd",
-            "borderBottomWidth": 0.5,
             "flexDirection": "row",
-            "paddingHorizontal": 16,
-            "paddingVertical": 12,
           },
+          undefined,
           undefined,
         ]
       }
@@ -39,11 +36,13 @@ exports[`render channel 1`] = `
             },
             Object {
               "backgroundColor": "#00BCD4",
-              "borderRadius": 2,
-              "height": 46,
-              "width": 46,
+              "borderRadius": 4,
+              "height": 48,
+              "width": 48,
             },
-            undefined,
+            Object {
+              "marginHorizontal": 15,
+            },
           ]
         }
       >
@@ -55,7 +54,7 @@ exports[`render channel 1`] = `
                 "color": "#ffffff",
               },
               Object {
-                "fontSize": 28.75,
+                "fontSize": 30,
                 "fontWeight": "800",
               },
             ]
@@ -69,7 +68,6 @@ exports[`render channel 1`] = `
           Object {
             "flex": 1,
             "height": "100%",
-            "marginLeft": 16,
             "marginRight": 4,
           }
         }
@@ -78,46 +76,46 @@ exports[`render channel 1`] = `
           style={
             Object {
               "alignItems": "center",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "center",
+              "marginTop": 5,
               "width": "100%",
             }
           }
         >
-          <Text
-            allowFontScaling={false}
+          <Image
+            source={
+              Object {
+                "uri": "subscription_hashtag",
+              }
+            }
             style={
               Array [
                 Object {
-                  "color": undefined,
-                  "fontSize": 15,
-                },
-                Object {
-                  "marginRight": 5,
+                  "marginRight": 7,
                   "marginTop": 3,
                 },
+                undefined,
                 Object {
-                  "fontFamily": "Material Design Icons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 10,
+                  "width": 10,
                 },
-                Object {},
               ]
             }
-          >
-            
-          </Text>
+          />
           <Text
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
               Array [
                 Object {
-                  "color": "#444",
+                  "color": "#0C0D0F",
                   "flex": 1,
                   "fontSize": 18,
-                  "marginRight": 8,
+                  "fontWeight": "400",
+                  "marginRight": 5,
+                  "paddingBottom": 0,
+                  "paddingTop": 0,
                 },
                 undefined,
               ]
@@ -131,10 +129,11 @@ exports[`render channel 1`] = `
             style={
               Array [
                 Object {
-                  "alignItems": "center",
-                  "color": "#888",
-                  "fontSize": 10,
-                  "justifyContent": "center",
+                  "color": "#9EA2A8",
+                  "fontSize": 14,
+                  "fontWeight": "normal",
+                  "paddingBottom": 0,
+                  "paddingTop": 0,
                 },
                 undefined,
               ]
@@ -146,9 +145,48 @@ exports[`render channel 1`] = `
         <View
           style={
             Object {
-              "alignItems": "center",
+              "alignItems": "flex-start",
               "flex": 1,
               "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            numberOfLines={2}
+            style={
+              Object {
+                "color": "#9EA2A8",
+                "flex": 1,
+                "fontSize": 15,
+                "fontWeight": "normal",
+              }
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "height": "100%",
+            "justifyContent": "center",
+            "marginLeft": 6,
+            "marginRight": 9,
+          }
+        }
+      >
+        <Image
+          source={
+            Object {
+              "uri": "disclosure_indicator",
+            }
+          }
+          style={
+            Object {
+              "height": 20,
+              "width": 20,
             }
           }
         />
@@ -178,12 +216,9 @@ exports[`render no icon 1`] = `
         Array [
           Object {
             "alignItems": "center",
-            "borderBottomColor": "#ddd",
-            "borderBottomWidth": 0.5,
             "flexDirection": "row",
-            "paddingHorizontal": 16,
-            "paddingVertical": 12,
           },
+          undefined,
           undefined,
         ]
       }
@@ -197,11 +232,13 @@ exports[`render no icon 1`] = `
             },
             Object {
               "backgroundColor": "#3F51B5",
-              "borderRadius": 2,
-              "height": 46,
-              "width": 46,
+              "borderRadius": 4,
+              "height": 48,
+              "width": 48,
             },
-            undefined,
+            Object {
+              "marginHorizontal": 15,
+            },
           ]
         }
       >
@@ -213,7 +250,7 @@ exports[`render no icon 1`] = `
                 "color": "#ffffff",
               },
               Object {
-                "fontSize": 28.75,
+                "fontSize": 30,
                 "fontWeight": "800",
               },
             ]
@@ -227,7 +264,6 @@ exports[`render no icon 1`] = `
           Object {
             "flex": 1,
             "height": "100%",
-            "marginLeft": 16,
             "marginRight": 4,
           }
         }
@@ -236,46 +272,46 @@ exports[`render no icon 1`] = `
           style={
             Object {
               "alignItems": "center",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "center",
+              "marginTop": 5,
               "width": "100%",
             }
           }
         >
-          <Text
-            allowFontScaling={false}
+          <Image
+            source={
+              Object {
+                "uri": "subscription_lock",
+              }
+            }
             style={
               Array [
                 Object {
-                  "color": undefined,
-                  "fontSize": 15,
-                },
-                Object {
-                  "marginRight": 5,
+                  "marginRight": 7,
                   "marginTop": 3,
                 },
+                undefined,
                 Object {
-                  "fontFamily": "Material Design Icons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 10,
+                  "width": 10,
                 },
-                Object {},
               ]
             }
-          >
-            
-          </Text>
+          />
           <Text
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
               Array [
                 Object {
-                  "color": "#444",
+                  "color": "#0C0D0F",
                   "flex": 1,
                   "fontSize": 18,
-                  "marginRight": 8,
+                  "fontWeight": "400",
+                  "marginRight": 5,
+                  "paddingBottom": 0,
+                  "paddingTop": 0,
                 },
                 undefined,
               ]
@@ -289,10 +325,11 @@ exports[`render no icon 1`] = `
             style={
               Array [
                 Object {
-                  "alignItems": "center",
-                  "color": "#888",
-                  "fontSize": 10,
-                  "justifyContent": "center",
+                  "color": "#9EA2A8",
+                  "fontSize": 14,
+                  "fontWeight": "normal",
+                  "paddingBottom": 0,
+                  "paddingTop": 0,
                 },
                 undefined,
               ]
@@ -304,9 +341,48 @@ exports[`render no icon 1`] = `
         <View
           style={
             Object {
-              "alignItems": "center",
+              "alignItems": "flex-start",
               "flex": 1,
               "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            numberOfLines={2}
+            style={
+              Object {
+                "color": "#9EA2A8",
+                "flex": 1,
+                "fontSize": 15,
+                "fontWeight": "normal",
+              }
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "height": "100%",
+            "justifyContent": "center",
+            "marginLeft": 6,
+            "marginRight": 9,
+          }
+        }
+      >
+        <Image
+          source={
+            Object {
+              "uri": "disclosure_indicator",
+            }
+          }
+          style={
+            Object {
+              "height": 20,
+              "width": 20,
             }
           }
         />
@@ -336,12 +412,9 @@ exports[`render private group 1`] = `
         Array [
           Object {
             "alignItems": "center",
-            "borderBottomColor": "#ddd",
-            "borderBottomWidth": 0.5,
             "flexDirection": "row",
-            "paddingHorizontal": 16,
-            "paddingVertical": 12,
           },
+          undefined,
           undefined,
         ]
       }
@@ -355,11 +428,13 @@ exports[`render private group 1`] = `
             },
             Object {
               "backgroundColor": "#FF9800",
-              "borderRadius": 2,
-              "height": 46,
-              "width": 46,
+              "borderRadius": 4,
+              "height": 48,
+              "width": 48,
             },
-            undefined,
+            Object {
+              "marginHorizontal": 15,
+            },
           ]
         }
       >
@@ -371,7 +446,7 @@ exports[`render private group 1`] = `
                 "color": "#ffffff",
               },
               Object {
-                "fontSize": 28.75,
+                "fontSize": 30,
                 "fontWeight": "800",
               },
             ]
@@ -385,7 +460,6 @@ exports[`render private group 1`] = `
           Object {
             "flex": 1,
             "height": "100%",
-            "marginLeft": 16,
             "marginRight": 4,
           }
         }
@@ -394,46 +468,46 @@ exports[`render private group 1`] = `
           style={
             Object {
               "alignItems": "center",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "center",
+              "marginTop": 5,
               "width": "100%",
             }
           }
         >
-          <Text
-            allowFontScaling={false}
+          <Image
+            source={
+              Object {
+                "uri": "subscription_lock",
+              }
+            }
             style={
               Array [
                 Object {
-                  "color": undefined,
-                  "fontSize": 15,
-                },
-                Object {
-                  "marginRight": 5,
+                  "marginRight": 7,
                   "marginTop": 3,
                 },
+                undefined,
                 Object {
-                  "fontFamily": "Material Design Icons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 10,
+                  "width": 10,
                 },
-                Object {},
               ]
             }
-          >
-            
-          </Text>
+          />
           <Text
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
               Array [
                 Object {
-                  "color": "#444",
+                  "color": "#0C0D0F",
                   "flex": 1,
                   "fontSize": 18,
-                  "marginRight": 8,
+                  "fontWeight": "400",
+                  "marginRight": 5,
+                  "paddingBottom": 0,
+                  "paddingTop": 0,
                 },
                 undefined,
               ]
@@ -447,10 +521,11 @@ exports[`render private group 1`] = `
             style={
               Array [
                 Object {
-                  "alignItems": "center",
-                  "color": "#888",
-                  "fontSize": 10,
-                  "justifyContent": "center",
+                  "color": "#9EA2A8",
+                  "fontSize": 14,
+                  "fontWeight": "normal",
+                  "paddingBottom": 0,
+                  "paddingTop": 0,
                 },
                 undefined,
               ]
@@ -462,9 +537,48 @@ exports[`render private group 1`] = `
         <View
           style={
             Object {
-              "alignItems": "center",
+              "alignItems": "flex-start",
               "flex": 1,
               "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            numberOfLines={2}
+            style={
+              Object {
+                "color": "#9EA2A8",
+                "flex": 1,
+                "fontSize": 15,
+                "fontWeight": "normal",
+              }
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "height": "100%",
+            "justifyContent": "center",
+            "marginLeft": 6,
+            "marginRight": 9,
+          }
+        }
+      >
+        <Image
+          source={
+            Object {
+              "uri": "disclosure_indicator",
+            }
+          }
+          style={
+            Object {
+              "height": 20,
+              "width": 20,
             }
           }
         />
@@ -495,12 +609,9 @@ exports[`render unread +999 1`] = `
         Array [
           Object {
             "alignItems": "center",
-            "borderBottomColor": "#ddd",
-            "borderBottomWidth": 0.5,
             "flexDirection": "row",
-            "paddingHorizontal": 16,
-            "paddingVertical": 12,
           },
+          undefined,
           undefined,
         ]
       }
@@ -514,11 +625,13 @@ exports[`render unread +999 1`] = `
             },
             Object {
               "backgroundColor": "#3F51B5",
-              "borderRadius": 2,
-              "height": 46,
-              "width": 46,
+              "borderRadius": 4,
+              "height": 48,
+              "width": 48,
             },
-            undefined,
+            Object {
+              "marginHorizontal": 15,
+            },
           ]
         }
       >
@@ -530,7 +643,7 @@ exports[`render unread +999 1`] = `
                 "color": "#ffffff",
               },
               Object {
-                "fontSize": 28.75,
+                "fontSize": 30,
                 "fontWeight": "800",
               },
             ]
@@ -546,9 +659,9 @@ exports[`render unread +999 1`] = `
                   "position": "absolute",
                 },
                 Object {
-                  "borderRadius": 2,
-                  "height": 46,
-                  "width": 46,
+                  "borderRadius": 4,
+                  "height": 48,
+                  "width": 48,
                 },
               ],
               Object {
@@ -576,37 +689,12 @@ exports[`render unread +999 1`] = `
             }
           />
         </View>
-        <View
-          style={
-            Array [
-              Object {
-                "borderRadius": 16,
-                "height": 16,
-                "width": 16,
-              },
-              Array [
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
-                undefined,
-              ],
-              Object {
-                "backgroundColor": undefined,
-              },
-            ]
-          }
-        />
       </View>
       <View
         style={
           Object {
             "flex": 1,
             "height": "100%",
-            "marginLeft": 16,
             "marginRight": 4,
           }
         }
@@ -615,46 +703,49 @@ exports[`render unread +999 1`] = `
           style={
             Object {
               "alignItems": "center",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "center",
+              "marginTop": 5,
               "width": "100%",
             }
           }
         >
-          <Text
-            allowFontScaling={false}
+          <View
             style={
               Array [
                 Object {
-                  "color": undefined,
-                  "fontSize": 15,
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
                 },
+                Array [
+                  Object {
+                    "borderRadius": 10,
+                    "height": 10,
+                    "marginRight": 7,
+                    "marginTop": 3,
+                    "width": 10,
+                  },
+                ],
                 Object {
-                  "marginRight": 5,
-                  "marginTop": 3,
+                  "backgroundColor": undefined,
                 },
-                Object {
-                  "fontFamily": "Material Design Icons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
               ]
             }
-          >
-            
-          </Text>
+          />
           <Text
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
               Array [
                 Object {
-                  "color": "#444",
+                  "color": "#0C0D0F",
                   "flex": 1,
                   "fontSize": 18,
-                  "marginRight": 8,
+                  "fontWeight": "400",
+                  "marginRight": 5,
+                  "paddingBottom": 0,
+                  "paddingTop": 0,
                 },
                 undefined,
               ]
@@ -668,10 +759,11 @@ exports[`render unread +999 1`] = `
             style={
               Array [
                 Object {
-                  "alignItems": "center",
-                  "color": "#888",
-                  "fontSize": 10,
-                  "justifyContent": "center",
+                  "color": "#9EA2A8",
+                  "fontSize": 14,
+                  "fontWeight": "normal",
+                  "paddingBottom": 0,
+                  "paddingTop": 0,
                 },
                 undefined,
               ]
@@ -683,32 +775,77 @@ exports[`render unread +999 1`] = `
         <View
           style={
             Object {
-              "alignItems": "center",
+              "alignItems": "flex-start",
               "flex": 1,
               "flexDirection": "row",
             }
           }
         >
           <Text
+            numberOfLines={2}
             style={
               Object {
-                "alignItems": "center",
-                "backgroundColor": "#1d74f5",
-                "borderRadius": 4,
-                "color": "#fff",
-                "fontSize": 14,
-                "justifyContent": "center",
-                "minWidth": 25,
-                "overflow": "hidden",
-                "paddingHorizontal": 5,
-                "paddingVertical": 4,
-                "textAlign": "center",
+                "color": "#9EA2A8",
+                "flex": 1,
+                "fontSize": 15,
+                "fontWeight": "normal",
               }
             }
           >
-            999+
+            
           </Text>
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "#1D74F5",
+                "borderRadius": 4,
+                "justifyContent": "center",
+                "minWidth": 23,
+                "padding": 3,
+              }
+            }
+          >
+            <Text
+              style={
+                Object {
+                  "color": "#fff",
+                  "fontSize": 14,
+                  "fontWeight": "500",
+                  "letterSpacing": 0.56,
+                  "overflow": "hidden",
+                }
+              }
+            >
+              999+
+            </Text>
+          </View>
         </View>
+      </View>
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "height": "100%",
+            "justifyContent": "center",
+            "marginLeft": 6,
+            "marginRight": 9,
+          }
+        }
+      >
+        <Image
+          source={
+            Object {
+              "uri": "disclosure_indicator",
+            }
+          }
+          style={
+            Object {
+              "height": 20,
+              "width": 20,
+            }
+          }
+        />
       </View>
     </View>
   </View>
@@ -735,12 +872,9 @@ exports[`render unread 1`] = `
         Array [
           Object {
             "alignItems": "center",
-            "borderBottomColor": "#ddd",
-            "borderBottomWidth": 0.5,
             "flexDirection": "row",
-            "paddingHorizontal": 16,
-            "paddingVertical": 12,
           },
+          undefined,
           undefined,
         ]
       }
@@ -754,11 +888,13 @@ exports[`render unread 1`] = `
             },
             Object {
               "backgroundColor": "#3F51B5",
-              "borderRadius": 2,
-              "height": 46,
-              "width": 46,
+              "borderRadius": 4,
+              "height": 48,
+              "width": 48,
             },
-            undefined,
+            Object {
+              "marginHorizontal": 15,
+            },
           ]
         }
       >
@@ -770,7 +906,7 @@ exports[`render unread 1`] = `
                 "color": "#ffffff",
               },
               Object {
-                "fontSize": 28.75,
+                "fontSize": 30,
                 "fontWeight": "800",
               },
             ]
@@ -786,9 +922,9 @@ exports[`render unread 1`] = `
                   "position": "absolute",
                 },
                 Object {
-                  "borderRadius": 2,
-                  "height": 46,
-                  "width": 46,
+                  "borderRadius": 4,
+                  "height": 48,
+                  "width": 48,
                 },
               ],
               Object {
@@ -816,37 +952,12 @@ exports[`render unread 1`] = `
             }
           />
         </View>
-        <View
-          style={
-            Array [
-              Object {
-                "borderRadius": 16,
-                "height": 16,
-                "width": 16,
-              },
-              Array [
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
-                undefined,
-              ],
-              Object {
-                "backgroundColor": undefined,
-              },
-            ]
-          }
-        />
       </View>
       <View
         style={
           Object {
             "flex": 1,
             "height": "100%",
-            "marginLeft": 16,
             "marginRight": 4,
           }
         }
@@ -855,46 +966,49 @@ exports[`render unread 1`] = `
           style={
             Object {
               "alignItems": "center",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "center",
+              "marginTop": 5,
               "width": "100%",
             }
           }
         >
-          <Text
-            allowFontScaling={false}
+          <View
             style={
               Array [
                 Object {
-                  "color": undefined,
-                  "fontSize": 15,
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
                 },
+                Array [
+                  Object {
+                    "borderRadius": 10,
+                    "height": 10,
+                    "marginRight": 7,
+                    "marginTop": 3,
+                    "width": 10,
+                  },
+                ],
                 Object {
-                  "marginRight": 5,
-                  "marginTop": 3,
+                  "backgroundColor": undefined,
                 },
-                Object {
-                  "fontFamily": "Material Design Icons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
               ]
             }
-          >
-            
-          </Text>
+          />
           <Text
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
               Array [
                 Object {
-                  "color": "#444",
+                  "color": "#0C0D0F",
                   "flex": 1,
                   "fontSize": 18,
-                  "marginRight": 8,
+                  "fontWeight": "400",
+                  "marginRight": 5,
+                  "paddingBottom": 0,
+                  "paddingTop": 0,
                 },
                 undefined,
               ]
@@ -908,10 +1022,11 @@ exports[`render unread 1`] = `
             style={
               Array [
                 Object {
-                  "alignItems": "center",
-                  "color": "#888",
-                  "fontSize": 10,
-                  "justifyContent": "center",
+                  "color": "#9EA2A8",
+                  "fontSize": 14,
+                  "fontWeight": "normal",
+                  "paddingBottom": 0,
+                  "paddingTop": 0,
                 },
                 undefined,
               ]
@@ -923,32 +1038,77 @@ exports[`render unread 1`] = `
         <View
           style={
             Object {
-              "alignItems": "center",
+              "alignItems": "flex-start",
               "flex": 1,
               "flexDirection": "row",
             }
           }
         >
           <Text
+            numberOfLines={2}
             style={
               Object {
-                "alignItems": "center",
-                "backgroundColor": "#1d74f5",
-                "borderRadius": 4,
-                "color": "#fff",
-                "fontSize": 14,
-                "justifyContent": "center",
-                "minWidth": 25,
-                "overflow": "hidden",
-                "paddingHorizontal": 5,
-                "paddingVertical": 4,
-                "textAlign": "center",
+                "color": "#9EA2A8",
+                "flex": 1,
+                "fontSize": 15,
+                "fontWeight": "normal",
               }
             }
           >
-            1
+            
           </Text>
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "#1D74F5",
+                "borderRadius": 4,
+                "justifyContent": "center",
+                "minWidth": 23,
+                "padding": 3,
+              }
+            }
+          >
+            <Text
+              style={
+                Object {
+                  "color": "#fff",
+                  "fontSize": 14,
+                  "fontWeight": "500",
+                  "letterSpacing": 0.56,
+                  "overflow": "hidden",
+                }
+              }
+            >
+              1
+            </Text>
+          </View>
         </View>
+      </View>
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "height": "100%",
+            "justifyContent": "center",
+            "marginLeft": 6,
+            "marginRight": 9,
+          }
+        }
+      >
+        <Image
+          source={
+            Object {
+              "uri": "disclosure_indicator",
+            }
+          }
+          style={
+            Object {
+              "height": 20,
+              "width": 20,
+            }
+          }
+        />
       </View>
     </View>
   </View>
@@ -975,12 +1135,9 @@ exports[`renders correctly 1`] = `
         Array [
           Object {
             "alignItems": "center",
-            "borderBottomColor": "#ddd",
-            "borderBottomWidth": 0.5,
             "flexDirection": "row",
-            "paddingHorizontal": 16,
-            "paddingVertical": 12,
           },
+          undefined,
           undefined,
         ]
       }
@@ -994,11 +1151,13 @@ exports[`renders correctly 1`] = `
             },
             Object {
               "backgroundColor": "#3F51B5",
-              "borderRadius": 2,
-              "height": 46,
-              "width": 46,
+              "borderRadius": 4,
+              "height": 48,
+              "width": 48,
             },
-            undefined,
+            Object {
+              "marginHorizontal": 15,
+            },
           ]
         }
       >
@@ -1010,7 +1169,7 @@ exports[`renders correctly 1`] = `
                 "color": "#ffffff",
               },
               Object {
-                "fontSize": 28.75,
+                "fontSize": 30,
                 "fontWeight": "800",
               },
             ]
@@ -1026,9 +1185,9 @@ exports[`renders correctly 1`] = `
                   "position": "absolute",
                 },
                 Object {
-                  "borderRadius": 2,
-                  "height": 46,
-                  "width": 46,
+                  "borderRadius": 4,
+                  "height": 48,
+                  "width": 48,
                 },
               ],
               Object {
@@ -1056,37 +1215,12 @@ exports[`renders correctly 1`] = `
             }
           />
         </View>
-        <View
-          style={
-            Array [
-              Object {
-                "borderRadius": 16,
-                "height": 16,
-                "width": 16,
-              },
-              Array [
-                Object {
-                  "borderColor": "#fff",
-                  "borderWidth": 3,
-                  "bottom": -3,
-                  "position": "absolute",
-                  "right": -3,
-                },
-                undefined,
-              ],
-              Object {
-                "backgroundColor": undefined,
-              },
-            ]
-          }
-        />
       </View>
       <View
         style={
           Object {
             "flex": 1,
             "height": "100%",
-            "marginLeft": 16,
             "marginRight": 4,
           }
         }
@@ -1095,46 +1229,49 @@ exports[`renders correctly 1`] = `
           style={
             Object {
               "alignItems": "center",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "center",
+              "marginTop": 5,
               "width": "100%",
             }
           }
         >
-          <Text
-            allowFontScaling={false}
+          <View
             style={
               Array [
                 Object {
-                  "color": undefined,
-                  "fontSize": 15,
+                  "borderRadius": 16,
+                  "height": 16,
+                  "width": 16,
                 },
+                Array [
+                  Object {
+                    "borderRadius": 10,
+                    "height": 10,
+                    "marginRight": 7,
+                    "marginTop": 3,
+                    "width": 10,
+                  },
+                ],
                 Object {
-                  "marginRight": 5,
-                  "marginTop": 3,
+                  "backgroundColor": undefined,
                 },
-                Object {
-                  "fontFamily": "Material Design Icons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
               ]
             }
-          >
-            
-          </Text>
+          />
           <Text
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
               Array [
                 Object {
-                  "color": "#444",
+                  "color": "#0C0D0F",
                   "flex": 1,
                   "fontSize": 18,
-                  "marginRight": 8,
+                  "fontWeight": "400",
+                  "marginRight": 5,
+                  "paddingBottom": 0,
+                  "paddingTop": 0,
                 },
                 undefined,
               ]
@@ -1148,10 +1285,11 @@ exports[`renders correctly 1`] = `
             style={
               Array [
                 Object {
-                  "alignItems": "center",
-                  "color": "#888",
-                  "fontSize": 10,
-                  "justifyContent": "center",
+                  "color": "#9EA2A8",
+                  "fontSize": 14,
+                  "fontWeight": "normal",
+                  "paddingBottom": 0,
+                  "paddingTop": 0,
                 },
                 undefined,
               ]
@@ -1163,9 +1301,48 @@ exports[`renders correctly 1`] = `
         <View
           style={
             Object {
-              "alignItems": "center",
+              "alignItems": "flex-start",
               "flex": 1,
               "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            numberOfLines={2}
+            style={
+              Object {
+                "color": "#9EA2A8",
+                "flex": 1,
+                "fontSize": 15,
+                "fontWeight": "normal",
+              }
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "height": "100%",
+            "justifyContent": "center",
+            "marginLeft": 6,
+            "marginRight": 9,
+          }
+        }
+      >
+        <Image
+          source={
+            Object {
+              "uri": "disclosure_indicator",
+            }
+          }
+          style={
+            Object {
+              "height": 20,
+              "width": 20,
             }
           }
         />

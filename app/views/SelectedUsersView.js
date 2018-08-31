@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { addUser, removeUser, reset, setLoading } from '../actions/selectedUsers';
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
-import RoomItem from '../presentation/RoomItem';
+import UserItem from '../presentation/UserItem';
 import Avatar from '../containers/Avatar';
 import Loading from '../containers/Loading';
 import debounce from '../utils/debounce';
@@ -48,19 +48,14 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
-	status: {
-		bottom: -2,
-		right: -2,
-		borderWidth: 2,
-		borderRadius: 12,
-		width: 12,
-		height: 12
+	separator: {
+		height: StyleSheet.hairlineWidth,
+		backgroundColor: '#E1E5E8',
+		marginLeft: 60
 	}
 });
 
 @connect(state => ({
-	userId: state.login.user && state.login.user.id,
-	Site_Url: state.settings.Site_Url,
 	users: state.selectedUsers.users,
 	loading: state.selectedUsers.loading
 }), dispatch => ({
@@ -75,8 +70,6 @@ export default class SelectedUsersView extends LoggedView {
 		navigator: PropTypes.object,
 		rid: PropTypes.string,
 		nextAction: PropTypes.string.isRequired,
-		userId: PropTypes.string,
-		Site_Url: PropTypes.string,
 		addUser: PropTypes.func.isRequired,
 		removeUser: PropTypes.func.isRequired,
 		reset: PropTypes.func.isRequired,
@@ -270,20 +263,18 @@ export default class SelectedUsersView extends LoggedView {
 			</Text>
 		</TouchableOpacity>
 	);
+
+	renderSeparator = () => <View style={styles.separator} />;
+
 	renderItem = ({ item }) => (
-		<RoomItem
-			key={item._id}
-			name={item.name}
-			type={item.t}
-			baseUrl={this.props.Site_Url}
+		<UserItem
+			name={item.fname ? item.fname : item.name}
+			username={item.fname ? item.name : item.username}
 			onPress={() => this._onPressItem(item._id, item)}
-			id={item.rid.replace(this.props.userId, '').trim()}
-			showLastMessage={false}
-			avatarSize={30}
-			statusStyle={styles.status}
 			testID={`select-users-view-item-${ item.name }`}
 		/>
-	);
+	)
+
 	renderList = () => (
 		<FlatList
 			data={this.state.search.length > 0 ? this.state.search : this.data}
@@ -292,6 +283,7 @@ export default class SelectedUsersView extends LoggedView {
 			style={styles.list}
 			renderItem={this.renderItem}
 			ListHeaderComponent={this.renderHeader}
+			ItemSeparatorComponent={this.renderSeparator}
 			enableEmptySections
 			keyboardShouldPersistTaps='always'
 		/>

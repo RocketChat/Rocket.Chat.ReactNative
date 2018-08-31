@@ -4,13 +4,19 @@ import { WebView, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 
 import styles from './Styles';
+import LoggedView from './View';
 
 @connect(state => ({
 	privacyPolicy: state.settings.Layout_Privacy_Policy
 }))
-export default class PrivacyPolicyView extends React.PureComponent {
+/** @extends React.Component */
+export default class PrivacyPolicyView extends LoggedView {
 	static propTypes = {
 		privacyPolicy: PropTypes.string
+	}
+
+	constructor(props) {
+		super('PrivacyPolicyView', props);
 	}
 
 	render() {

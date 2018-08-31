@@ -45,7 +45,7 @@ export default class Button extends React.PureComponent {
 						<Text style={[styles.buttonTitle, styles[`button_text_${ type }`], activeStyle]}>{title}</Text>
 						{subtitle ? <Text style={[styles.buttonSubtitle, activeStyle]}>{subtitle}</Text> : null}
 					</View>
-					{type === 'secondary' ? <Image source={require('../../static/images/disclosureIndicator.png')} style={styles.buttonIcon} /> : null}
+					{type === 'secondary' ? <Image source={{ uri: 'disclosure_indicator' }} style={styles.buttonIcon} /> : null}
 				</View>
 			</TouchableWithoutFeedback>
 		);
