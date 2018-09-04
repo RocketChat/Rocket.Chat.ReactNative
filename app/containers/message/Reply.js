@@ -1,38 +1,42 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import Markdown from './Markdown';
-import QuoteMark from './QuoteMark';
-import Avatar from '../Avatar';
 import openLink from '../../utils/openLink';
+import Touch from '../../utils/touch';
+import I18n from '../../i18n';
 
 const styles = StyleSheet.create({
 	button: {
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginTop: 2,
-		alignSelf: 'flex-end'
+		marginTop: 15,
+		alignSelf: 'flex-end',
+		borderRadius: 2
 	},
 	attachmentContainer: {
 		flex: 1,
-		flexDirection: 'column'
+		flexDirection: 'column',
+		backgroundColor: '#f3f4f5',
+		padding: 15
 	},
 	authorContainer: {
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
 	author: {
-		fontWeight: 'bold',
-		marginHorizontal: 5,
-		flex: 1
+		color: '#1d74f5',
+		fontSize: 18,
+		fontWeight: '500',
+		marginRight: 10
 	},
 	time: {
-		fontSize: 10,
+		fontSize: 14,
 		fontWeight: 'normal',
-		color: '#888',
+		color: '#9ea2a8',
 		marginLeft: 5
 	},
 	fieldsContainer: {
@@ -46,6 +50,11 @@ const styles = StyleSheet.create({
 	},
 	fieldTitle: {
 		fontWeight: 'bold'
+	},
+	repliedFrom: {
+		color: '#9ea2a8',
+		fontSize: 14,
+		marginBottom: 6
 	}
 });
 
@@ -64,19 +73,6 @@ const Reply = ({
 		return null;
 	}
 
-	const renderAvatar = () => {
-		if (!attachment.author_icon && !attachment.author_name) {
-			return null;
-		}
-		return (
-			<Avatar
-				text={attachment.author_name}
-				size={16}
-				baseUrl={baseUrl}
-			/>
-		);
-	};
-
 	const renderAuthor = () => (
 		attachment.author_name ? <Text style={styles.author}>{attachment.author_name}</Text> : null
 	);
@@ -92,7 +88,6 @@ const Reply = ({
 		}
 		return (
 			<View style={styles.authorContainer}>
-				{renderAvatar()}
 				{renderAuthor()}
 				{renderTime()}
 			</View>
@@ -121,23 +116,17 @@ const Reply = ({
 	};
 
 	return (
-		<TouchableOpacity
+		<Touch
 			onPress={() => onPress(attachment)}
 			style={styles.button}
 		>
-			<QuoteMark color={attachment.color} />
 			<View style={styles.attachmentContainer}>
+				<Text style={styles.repliedFrom}>{I18n.t('Replied_from')}</Text>
 				{renderTitle()}
 				{renderText()}
 				{renderFields()}
-				{attachment.attachments ?
-					attachment.attachments
-						.map(attach =>
-							<Reply key={attach.text} attachment={attach} timeFormat={timeFormat} baseUrl={baseUrl} customEmojis={customEmojis} user={user} />)
-					: null
-				}
 			</View>
-		</TouchableOpacity>
+		</Touch>
 	);
 };
 
