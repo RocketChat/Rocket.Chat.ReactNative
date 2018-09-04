@@ -173,7 +173,6 @@ export default {
 	Leave_channel: 'Leave channel',
 	leave: 'leave',
 	Livechat: 'Livechat',
-	Loading_messages_ellipsis: 'Loading messages...',
 	Login: 'Login',
 	Logout: 'Logout',
 	Members: 'Members',

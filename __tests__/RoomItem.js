@@ -9,9 +9,6 @@ const store = createStore(reducers);
 import React from 'react';
 import RoomItem from '../app/presentation/RoomItem';
 
-// jest.mock('react-native-video', () => 'Video');
-// jest.mock('react-native-video-controls', () => 'VideoControls');
-
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
 

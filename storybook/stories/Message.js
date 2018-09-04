@@ -178,14 +178,14 @@ export default (
 		/>
 		<Separator title='With video' />
 
-		{/* <Message
+		<Message
 			attachments={[{
 				title: 'This is a title',
 				description: 'This is a description',
 				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
 			}]}
 		/>
-		<Separator title='With audio' /> */}
+		<Separator title='With audio' />
 
 		<Message
 			urls={[{

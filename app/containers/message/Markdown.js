@@ -92,7 +92,6 @@ export default class Markdown extends React.Component {
 					text: {
 						color: '#0C0D0F',
 						fontSize: 16,
-						lineHeight: 20,
 						letterSpacing: 0.1
 					},
 					codeInline: {

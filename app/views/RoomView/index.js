@@ -273,7 +273,7 @@ export default class RoomView extends LoggedView {
 
 	renderHeader = () => {
 		if (!this.state.end) {
-			return <Text style={styles.loadingMore}>{I18n.t('Loading_messages_ellipsis')}</Text>;
+			return <ActivityIndicator style={[styles.loading, { transform: [{ scaleY: -1 }] }]} />;
 		}
 		return null;
 	}

@@ -21,7 +21,8 @@ export default StyleSheet.create({
 	},
 	textInfo: {
 		fontStyle: 'italic',
-		color: '#a0a0a0'
+		color: '#a0a0a0',
+		fontSize: 16
 	},
 	editing: {
 		backgroundColor: '#fff5df'
