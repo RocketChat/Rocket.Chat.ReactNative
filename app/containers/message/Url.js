@@ -50,7 +50,7 @@ const Url = ({ url, index }) => {
 			<View style={styles.textContainer}>
 				<Text style={styles.title}>{url.title}</Text>
 				<Text style={styles.description} numberOfLines={3}>{url.description}</Text>
-				<Text style={styles.url}>{url.url}</Text>
+				<Text style={styles.url} numberOfLines={1}>{url.url}</Text>
 			</View>
 		</Touch>
 	);

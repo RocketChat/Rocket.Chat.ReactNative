@@ -19,9 +19,9 @@ const loggedUser = {
 	username: 'diego.mello',
 	token: '79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz'
 };
-
 const baseUrl = 'https://open.rocket.chat';
 const customEmojis = { react_rocket: 'png', nyan_rocket: 'png', marioparty: 'gif' };
+const date = new Date(2017, 10, 10, 10);
 
 const Message = props => (
 	<MessageComponent
@@ -29,7 +29,7 @@ const Message = props => (
 		customEmojis={customEmojis}
 		loggedUser={loggedUser}
 		username='diego.mello'
-		ts={new Date()}
+		ts={date}
 		timeFormat='LT'
 		header
 		{...props}
@@ -132,17 +132,13 @@ export default (
 		<Message
 			msg='Fourth message'
 			username='rocket.cat'
-			ts={new Date()}
 			header
-			timeFormat='LT'
 		/>
 		<Message msg='Third message' />
 		<Message
 			msg='Second message'
 			username='rocket.cat'
-			ts={new Date()}
 			header
-			timeFormat='LT'
 		/>
 		<Message msg='First message' />
 		<Separator title='Intercalated users' />
@@ -150,21 +146,17 @@ export default (
 		<Message
 			msg='Fourth message'
 			username='rocket.cat'
-			ts={new Date()}
 			header
-			timeFormat='LT'
 		/>
-		<MessageSeparator ts={new Date()} unread />
+		<MessageSeparator ts={date} unread />
 		<Message msg='Third message' />
 		<MessageSeparator unread />
 		<Message
 			msg='Second message'
 			username='rocket.cat'
-			ts={new Date()}
 			header
-			timeFormat='LT'
 		/>
-		<MessageSeparator ts={new Date()} />
+		<MessageSeparator ts={date} />
 		<Message msg='First message' />
 		<Separator title='Date and Unread separators' />
 
@@ -213,7 +205,7 @@ export default (
 			msg='Message'
 			attachments={[{
 				author_name: 'rocket.cat',
-				ts: new Date(),
+				ts: date,
 				timeFormat: 'LT',
 				text: 'Custom fields',
 				fields: [{
@@ -240,7 +232,7 @@ export default (
 			msg='Message'
 			attachments={[{
 				author_name: 'rocket.cat',
-				ts: new Date(),
+				ts: date,
 				timeFormat: 'LT',
 				text: 'Custom fields',
 				fields: [{
@@ -254,7 +246,7 @@ export default (
 				}]
 			}, {
 				author_name: 'rocket.cat',
-				ts: new Date(),
+				ts: date,
 				timeFormat: 'LT',
 				text: 'Custom fields 2',
 				fields: [{
@@ -299,7 +291,7 @@ export default (
 			type='message_pinned'
 			attachments={[{
 				author_name: 'rocket.cat',
-				ts: new Date(),
+				ts: date,
 				timeFormat: 'LT',
 				text: 'First message'
 			}]}
