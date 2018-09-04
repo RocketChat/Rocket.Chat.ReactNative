@@ -6,7 +6,6 @@ import moment from 'moment';
 import Markdown from './Markdown';
 import openLink from '../../utils/openLink';
 import Touch from '../../utils/touch';
-import I18n from '../../i18n';
 
 const styles = StyleSheet.create({
 	button: {
@@ -51,10 +50,8 @@ const styles = StyleSheet.create({
 	fieldTitle: {
 		fontWeight: 'bold'
 	},
-	repliedFrom: {
-		color: '#9ea2a8',
-		fontSize: 14,
-		marginBottom: 6
+	marginTop: {
+		marginTop: 4
 	}
 });
 
@@ -67,7 +64,7 @@ const onPress = (attachment) => {
 };
 
 const Reply = ({
-	attachment, timeFormat, baseUrl, customEmojis, user
+	attachment, timeFormat, baseUrl, customEmojis, user, index
 }) => {
 	if (!attachment) {
 		return null;
@@ -118,10 +115,9 @@ const Reply = ({
 	return (
 		<Touch
 			onPress={() => onPress(attachment)}
-			style={styles.button}
+			style={[styles.button, index > 0 && styles.marginTop]}
 		>
 			<View style={styles.attachmentContainer}>
-				<Text style={styles.repliedFrom}>{I18n.t('Replied_from')}</Text>
 				{renderTitle()}
 				{renderText()}
 				{renderFields()}
@@ -135,7 +131,8 @@ Reply.propTypes = {
 	timeFormat: PropTypes.string.isRequired,
 	baseUrl: PropTypes.string.isRequired,
 	customEmojis: PropTypes.object.isRequired,
-	user: PropTypes.object.isRequired
+	user: PropTypes.object.isRequired,
+	index: PropTypes.number
 };
 
 export default Reply;

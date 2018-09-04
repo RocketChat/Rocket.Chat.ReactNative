@@ -218,7 +218,7 @@ export default class Message extends PureComponent {
 			}
 
 			// eslint-disable-next-line react/no-array-index-key
-			return <Reply key={index} attachment={file} timeFormat={timeFormat} user={loggedUser} baseUrl={baseUrl} customEmojis={customEmojis} />;
+			return <Reply key={index} index={index} attachment={file} timeFormat={timeFormat} user={loggedUser} baseUrl={baseUrl} customEmojis={customEmojis} />;
 		});
 	}
 
@@ -228,8 +228,8 @@ export default class Message extends PureComponent {
 			return null;
 		}
 
-		return urls.map(url => (
-			<Url url={url} key={url.url} />
+		return urls.map((url, index) => (
+			<Url url={url} key={url.url} index={index} />
 		));
 	}
 

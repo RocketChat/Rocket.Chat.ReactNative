@@ -210,34 +210,6 @@ export default (
 		<Separator title='URL' />
 
 		<Message
-			msg='This is a reply'
-			attachments={[{
-				author_name: 'rocket.cat',
-				ts: new Date(),
-				timeFormat: 'LT',
-				text: 'First message'
-			}]}
-		/>
-		<Separator title='Reply' />
-
-		<Message
-			msg='Third message'
-			attachments={[{
-				author_name: 'rocket.cat',
-				ts: new Date(),
-				timeFormat: 'LT',
-				text: 'Second message',
-				attachments: [{
-					author_name: 'rocket.cat',
-					ts: new Date(),
-					timeFormat: 'LT',
-					text: 'First message'
-				}]
-			}]}
-		/>
-		<Separator title='Nested Replies' />
-
-		<Message
 			msg='Message'
 			attachments={[{
 				author_name: 'rocket.cat',
@@ -263,6 +235,40 @@ export default (
 			}]}
 		/>
 		<Separator title='Custom fields' />
+
+		<Message
+			msg='Message'
+			attachments={[{
+				author_name: 'rocket.cat',
+				ts: new Date(),
+				timeFormat: 'LT',
+				text: 'Custom fields',
+				fields: [{
+					title: 'Field 1',
+					value: 'Value 1',
+					short: true
+				}, {
+					title: 'Field 2',
+					value: 'Value 2',
+					short: true
+				}]
+			}, {
+				author_name: 'rocket.cat',
+				ts: new Date(),
+				timeFormat: 'LT',
+				text: 'Custom fields 2',
+				fields: [{
+					title: 'Field 1',
+					value: 'Value 1',
+					short: true
+				}, {
+					title: 'Field 2',
+					value: 'Value 2',
+					short: true
+				}]
+			}]}
+		/>
+		<Separator title='Two short custom fields' />
 
 		<Message msg='Broadcasted message' broadcast />
 		<Separator title='Broadcast' />

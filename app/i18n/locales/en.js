@@ -245,7 +245,6 @@ export default {
 	Read_Only: 'Read Only',
 	Register: 'Register',
 	Repeat_Password: 'Repeat Password',
-	Replied_from: 'Replied from',
 	Reply: 'Reply',
 	Resend: 'Resend',
 	Reset_password: 'Reset password',
