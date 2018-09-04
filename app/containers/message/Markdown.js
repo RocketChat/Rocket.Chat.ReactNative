@@ -65,7 +65,7 @@ export default class Markdown extends React.Component {
 					},
 					hashtag: node => (
 						<Text key={node.key} onPress={() => alert(`Room #${ node.content }`)} style={styles.mention}>
-							&nbsp;{node.content}&nbsp;
+							&nbsp;#{node.content}&nbsp;
 						</Text>
 					),
 					emoji: (node) => {
