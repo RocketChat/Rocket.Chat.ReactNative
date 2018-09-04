@@ -84,7 +84,7 @@ jobs:
   android-build:
     <<: *defaults
     docker:
-      - image: circleci/android:api-26-alpha
+      - image: circleci/android:api-27-node8-alpha
 
     environment:
       GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"
@@ -95,12 +95,12 @@ jobs:
     steps:
       - checkout
 
-      - run:
-          name: Install Node 8
-          command: |
-            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
-            source ~/.nvm/nvm.sh
-            nvm install 8
+      # - run:
+      #     name: Install Node 8
+      #     command: |
+      #       curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+      #       source ~/.nvm/nvm.sh
+      #       nvm install 8
 
       - restore_cache:
           key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "package.json" }}
