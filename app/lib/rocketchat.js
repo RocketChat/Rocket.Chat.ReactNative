@@ -44,6 +44,7 @@ import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFil
 import { getDeviceToken } from '../push';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
+const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
 const call = (method, ...params) => RocketChat.ddp.call(method, ...params); // eslint-disable-line
 const returnAnArray = obj => obj || [];
 
@@ -772,6 +773,19 @@ const RocketChat = {
 	},
 	setAvatarFromService({ data, contentType = '', service = null }) {
 		return call('setAvatarFromService', data, contentType, service);
+	},
+	async getSortPreferences() {
+		const prefs = await AsyncStorage.getItem(SORT_PREFS_KEY);
+		return JSON.parse(prefs);
+	},
+	async saveSortPreference(param) {
+		try {
+			let prefs = await RocketChat.getSortPreferences();
+			prefs = { ...prefs, ...param };
+			return await AsyncStorage.setItem(SORT_PREFS_KEY, JSON.stringify(prefs));
+		} catch (error) {
+			console.warn(error);
+		}
 	}
 };
 

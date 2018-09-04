@@ -39,31 +39,19 @@ if (Platform.OS === 'android') {
 	});
 }
 
-@connect((state) => {
-	let result = {
-		userId: state.login.user && state.login.user.id,
-		server: state.server.server,
-		Site_Url: state.settings.Site_Url,
-		searchText: state.rooms.searchText,
-		loadingServer: state.server.loading,
-		showServerDropdown: state.rooms.showServerDropdown,
-		showSortDropdown: state.rooms.showSortDropdown,
-		sidebarSortby: null,
-		sidebarGroupByType: null,
-		sidebarShowFavorites: null,
-		sidebarShowUnread: null
-	};
-	if (state.login && state.login.user && state.login.user.settings && state.login.user.settings.preferences) {
-		result = {
-			...result,
-			sidebarSortby: state.login.user.settings.preferences.sidebarSortby,
-			sidebarGroupByType: state.login.user.settings.preferences.sidebarGroupByType,
-			sidebarShowFavorites: state.login.user.settings.preferences.sidebarShowFavorites,
-			sidebarShowUnread: state.login.user.settings.preferences.sidebarShowUnread
-		};
-	}
-	return result;
-}, dispatch => ({
+@connect(state => ({
+	userId: state.login.user && state.login.user.id,
+	server: state.server.server,
+	Site_Url: state.settings.Site_Url,
+	searchText: state.rooms.searchText,
+	loadingServer: state.server.loading,
+	showServerDropdown: state.rooms.showServerDropdown,
+	showSortDropdown: state.rooms.showSortDropdown,
+	sortBy: state.sortPreferences.sortBy,
+	groupByType: state.sortPreferences.groupByType,
+	showFavorites: state.sortPreferences.showFavorites,
+	showUnread: state.sortPreferences.showUnread
+}), dispatch => ({
 	toggleSortDropdown: () => dispatch(toggleSortDropdown())
 }))
 /** @extends React.Component */
@@ -88,10 +76,10 @@ export default class RoomsListView extends LoggedView {
 		loadingServer: PropTypes.bool,
 		showServerDropdown: PropTypes.bool,
 		showSortDropdown: PropTypes.bool,
-		sidebarSortby: PropTypes.string,
-		sidebarGroupByType: PropTypes.bool,
-		sidebarShowFavorites: PropTypes.bool,
-		sidebarShowUnread: PropTypes.bool,
+		sortBy: PropTypes.string,
+		groupByType: PropTypes.bool,
+		showFavorites: PropTypes.bool,
+		showUnread: PropTypes.bool,
 		toggleSortDropdown: PropTypes.func
 	}
 
@@ -138,10 +126,10 @@ export default class RoomsListView extends LoggedView {
 
 	componentDidUpdate(prevProps) {
 		if (!(
-			(prevProps.sidebarSortby === this.props.sidebarSortby) &&
-			(prevProps.sidebarGroupByType === this.props.sidebarGroupByType) &&
-			(prevProps.sidebarShowFavorites === this.props.sidebarShowFavorites) &&
-			(prevProps.sidebarShowUnread === this.props.sidebarShowUnread)
+			(prevProps.sortBy === this.props.sortBy) &&
+			(prevProps.groupByType === this.props.groupByType) &&
+			(prevProps.showFavorites === this.props.showFavorites) &&
+			(prevProps.showUnread === this.props.showUnread)
 		)) {
 			this.getSubscriptions();
 		}
@@ -195,7 +183,7 @@ export default class RoomsListView extends LoggedView {
 
 	getSubscriptions = () => {
 		if (this.props.server && this.hasActiveDB()) {
-			if (this.props.sidebarSortby === 'alphabetical') {
+			if (this.props.sortBy === 'alphabetical') {
 				this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('name', false);
 			} else {
 				this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
@@ -210,7 +198,7 @@ export default class RoomsListView extends LoggedView {
 			let livechat = [];
 
 			// unread
-			if (this.props.sidebarShowUnread) {
+			if (this.props.showUnread) {
 				this.unread = this.data.filtered('archived != true && open == true').sorted('name', false).filtered('(unread > 0 || alert == true)');
 				unread = this.unread.slice();
 				setTimeout(() => {
@@ -220,7 +208,7 @@ export default class RoomsListView extends LoggedView {
 				this.removeListener(unread);
 			}
 			// favorites
-			if (this.props.sidebarShowFavorites) {
+			if (this.props.showFavorites) {
 				this.favorites = this.data.filtered('f == true');
 				favorites = this.favorites.slice();
 				setTimeout(() => {
@@ -230,7 +218,7 @@ export default class RoomsListView extends LoggedView {
 				this.removeListener(favorites);
 			}
 			// type
-			if (this.props.sidebarGroupByType) {
+			if (this.props.groupByType) {
 				// channels
 				this.channels = this.data.filtered('t == $0', 'c');
 				channels = this.channels.slice();
@@ -382,7 +370,7 @@ export default class RoomsListView extends LoggedView {
 			style={styles.dropdownContainerHeader}
 		>
 			<View style={styles.sortItemContainer}>
-				<Text style={styles.sortToggleText}>{I18n.t('Sorting_by', { key: I18n.t(this.props.sidebarSortby === 'alphabetical' ? 'name' : 'activity') })}</Text>
+				<Text style={styles.sortToggleText}>{I18n.t('Sorting_by', { key: I18n.t(this.props.sortBy === 'alphabetical' ? 'name' : 'activity') })}</Text>
 				<Image style={styles.sortIcon} source={{ uri: 'group_type' }} />
 			</View>
 		</Touch>
@@ -496,7 +484,7 @@ export default class RoomsListView extends LoggedView {
 
 	render = () => {
 		const {
-			sidebarSortby, sidebarGroupByType, sidebarShowFavorites, sidebarShowUnread, showServerDropdown, showSortDropdown
+			sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown
 		} = this.props;
 
 		return (
@@ -505,10 +493,10 @@ export default class RoomsListView extends LoggedView {
 				{showSortDropdown ?
 					<SortDropdown
 						close={this.toggleSort}
-						sidebarSortby={sidebarSortby}
-						sidebarGroupByType={sidebarGroupByType}
-						sidebarShowFavorites={sidebarShowFavorites}
-						sidebarShowUnread={sidebarShowUnread}
+						sortBy={sortBy}
+						groupByType={groupByType}
+						showFavorites={showFavorites}
+						showUnread={showUnread}
 					/> :
 					null}
 				{showServerDropdown ? <ServerDropdown navigator={this.props.navigator} /> : null}
