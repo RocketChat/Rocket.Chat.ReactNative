@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Touch from '../../utils/touch';
 import styles from './styles';
 import RocketChat from '../../lib/rocketchat';
-import { setPreference } from '../../actions/login';
+import { setPreference } from '../../actions/sortPreferences';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 
@@ -15,17 +15,17 @@ const ANIMATION_DURATION = 200;
 @connect(state => ({
 	closeSortDropdown: state.rooms.closeSortDropdown
 }), dispatch => ({
-	setPreference: preference => dispatch(setPreference(preference))
+	setSortPreference: preference => dispatch(setPreference(preference))
 }))
 export default class Sort extends Component {
 	static propTypes = {
 		closeSortDropdown: PropTypes.bool,
 		close: PropTypes.func,
-		sidebarSortby: PropTypes.string,
-		sidebarGroupByType: PropTypes.bool,
-		sidebarShowFavorites: PropTypes.bool,
-		sidebarShowUnread: PropTypes.bool,
-		setPreference: PropTypes.func
+		sortBy: PropTypes.string,
+		groupByType: PropTypes.bool,
+		showFavorites: PropTypes.bool,
+		showUnread: PropTypes.bool,
+		setSortPreference: PropTypes.func
 	}
 
 	constructor(props) {
@@ -51,33 +51,33 @@ export default class Sort extends Component {
 		}
 	}
 
-	saveUserPreference = async(param) => {
+	setSortPreference = async(param) => {
 		try {
-			this.props.setPreference(param);
-			await RocketChat.saveUserPreferences(param);
+			this.props.setSortPreference(param);
+			RocketChat.saveSortPreference(param);
 		} catch (e) {
-			log('RoomsListView.saveUserPreference', e);
+			log('RoomsListView.setSortPreference', e);
 		}
 	}
 
 	sortByName = () => {
-		this.saveUserPreference({ sidebarSortby: 'alphabetical' });
+		this.setSortPreference({ sortBy: 'alphabetical' });
 	}
 
 	sortByActivity = () => {
-		this.saveUserPreference({ sidebarSortby: 'activity' });
+		this.setSortPreference({ sortBy: 'activity' });
 	}
 
 	toggleGroupByType = () => {
-		this.saveUserPreference({ sidebarGroupByType: !this.props.sidebarGroupByType });
+		this.setSortPreference({ groupByType: !this.props.groupByType });
 	}
 
 	toggleGroupByFavorites = () => {
-		this.saveUserPreference({ sidebarShowFavorites: !this.props.sidebarShowFavorites });
+		this.setSortPreference({ showFavorites: !this.props.showFavorites });
 	}
 
 	toggleUnread = () => {
-		this.saveUserPreference({ sidebarShowUnread: !this.props.sidebarShowUnread });
+		this.setSortPreference({ showUnread: !this.props.showUnread });
 	}
 
 	close = () => {
@@ -102,7 +102,7 @@ export default class Sort extends Component {
 			outputRange: [0, 0.3]
 		});
 		const {
-			sidebarSortby, sidebarGroupByType, sidebarShowFavorites, sidebarShowUnread
+			sortBy, groupByType, showFavorites, showUnread
 		} = this.props;
 		return (
 			[
@@ -117,14 +117,14 @@ export default class Sort extends Component {
 						<View style={styles.sortItemContainer}>
 							<Image style={styles.sortIcon} source={{ uri: 'sort_alphabetically' }} />
 							<Text style={styles.sortItemText}>{I18n.t('Alphabetical')}</Text>
-							{sidebarSortby === 'alphabetical' ? <Image style={styles.sortIcon} source={{ uri: 'check' }} /> : null}
+							{sortBy === 'alphabetical' ? <Image style={styles.sortIcon} source={{ uri: 'check' }} /> : null}
 						</View>
 					</Touch>
 					<Touch key='sort-activity' style={styles.sortItemButton} onPress={this.sortByActivity}>
 						<View style={styles.sortItemContainer}>
 							<Image style={styles.sortIcon} source={{ uri: 'sort_activity' }} />
 							<Text style={styles.sortItemText}>{I18n.t('Activity')}</Text>
-							{sidebarSortby === 'activity' ? <Image style={styles.sortIcon} source={{ uri: 'check' }} /> : null}
+							{sortBy === 'activity' ? <Image style={styles.sortIcon} source={{ uri: 'check' }} /> : null}
 						</View>
 					</Touch>
 					<View style={styles.sortSeparator} />
@@ -132,21 +132,21 @@ export default class Sort extends Component {
 						<View style={styles.sortItemContainer}>
 							<Image style={styles.sortIcon} source={{ uri: 'group_type' }} />
 							<Text style={styles.sortItemText}>{I18n.t('Group_by_type')}</Text>
-							{sidebarGroupByType ? <Image style={styles.sortIcon} source={{ uri: 'check' }} /> : null}
+							{groupByType ? <Image style={styles.sortIcon} source={{ uri: 'check' }} /> : null}
 						</View>
 					</Touch>
 					<Touch key='group-favorites' style={styles.sortItemButton} onPress={this.toggleGroupByFavorites}>
 						<View style={styles.sortItemContainer}>
 							<Image style={styles.sortIcon} source={{ uri: 'group_favorites' }} />
 							<Text style={styles.sortItemText}>{I18n.t('Group_by_favorites')}</Text>
-							{sidebarShowFavorites ? <Image style={styles.sortIcon} source={{ uri: 'check' }} /> : null}
+							{showFavorites ? <Image style={styles.sortIcon} source={{ uri: 'check' }} /> : null}
 						</View>
 					</Touch>
 					<Touch key='group-unread' style={styles.sortItemButton} onPress={this.toggleUnread}>
 						<View style={styles.sortItemContainer}>
 							<Image style={styles.sortIcon} source={{ uri: 'group_unread' }} />
 							<Text style={styles.sortItemText}>{I18n.t('Unread_on_top')}</Text>
-							{sidebarShowUnread ? <Image style={styles.sortIcon} source={{ uri: 'check' }} /> : null}
+							{showUnread ? <Image style={styles.sortIcon} source={{ uri: 'check' }} /> : null}
 						</View>
 					</Touch>
 				</Animated.View>,
@@ -156,7 +156,7 @@ export default class Sort extends Component {
 					style={[styles.dropdownContainerHeader, styles.sortToggleContainerClose]}
 				>
 					<View style={styles.sortItemContainer}>
-						<Text style={styles.sortToggleText}>{I18n.t('Sorting_by', { key: I18n.t(this.props.sidebarSortby === 'alphabetical' ? 'name' : 'activity') })}</Text>
+						<Text style={styles.sortToggleText}>{I18n.t('Sorting_by', { key: I18n.t(this.props.sortBy === 'alphabetical' ? 'name' : 'activity') })}</Text>
 						<Image style={styles.sortIcon} source={{ uri: 'group_type' }} />
 					</View>
 				</Touch>

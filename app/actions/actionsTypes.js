@@ -25,7 +25,8 @@ export const LOGIN = createRequestTypes('LOGIN', [
 	'CLOSE',
 	'SET_SERVICES',
 	'REMOVE_SERVICES',
-	'SET_PREFERENCE'
+	'SET_PREFERENCE',
+	'SET_SORT_PREFERENCE'
 ]);
 export const FORGOT_PASSWORD = createRequestTypes('FORGOT_PASSWORD', [
 	...defaultTypes,
@@ -98,6 +99,7 @@ export const MENTIONED_MESSAGES = createRequestTypes('MENTIONED_MESSAGES', ['OPE
 export const SNIPPETED_MESSAGES = createRequestTypes('SNIPPETED_MESSAGES', ['OPEN', 'READY', 'CLOSE', 'MESSAGES_RECEIVED']);
 export const ROOM_FILES = createRequestTypes('ROOM_FILES', ['OPEN', 'READY', 'CLOSE', 'MESSAGES_RECEIVED']);
 export const DEEP_LINKING = createRequestTypes('DEEP_LINKING', ['OPEN']);
+export const SORT_PREFERENCES = createRequestTypes('SORT_PREFERENCES', ['SET_ALL', 'SET']);
 
 export const INCREMENT = 'INCREMENT';
 export const DECREMENT = 'DECREMENT';
