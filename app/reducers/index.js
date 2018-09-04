@@ -18,6 +18,7 @@ import pinnedMessages from './pinnedMessages';
 import mentionedMessages from './mentionedMessages';
 import snippetedMessages from './snippetedMessages';
 import roomFiles from './roomFiles';
+import sortPreferences from './sortPreferences';
 
 export default combineReducers({
 	settings,
@@ -38,5 +39,6 @@ export default combineReducers({
 	pinnedMessages,
 	mentionedMessages,
 	snippetedMessages,
-	roomFiles
+	roomFiles,
+	sortPreferences
 });

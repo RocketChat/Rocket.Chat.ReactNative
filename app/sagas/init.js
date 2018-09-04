@@ -4,6 +4,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import * as actions from '../actions';
 import { selectServerRequest } from '../actions/server';
 import { restoreToken, setUser } from '../actions/login';
+import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
@@ -26,6 +27,9 @@ const restore = function* restore() {
 				yield put(setUser(JSON.parse(login)));
 			}
 		}
+
+		const sortPreferences = yield RocketChat.getSortPreferences();
+		yield put(setAllPreferences(sortPreferences));
 
 		yield put(actions.appReady({}));
 	} catch (e) {
