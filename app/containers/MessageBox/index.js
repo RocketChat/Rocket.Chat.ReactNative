@@ -587,29 +587,31 @@ export default class MessageBox extends React.PureComponent {
 		return (
 			[
 				this.renderMentions(),
-				this.renderReplyPreview(),
-				<View
-					key='messagebox'
-					style={[styles.textArea, this.props.editing && styles.editing]}
-					testID='messagebox'
-				>
-					{this.leftButtons}
-					<TextInput
-						ref={component => this.component = component}
-						style={styles.textBoxInput}
-						returnKeyType='default'
-						keyboardType='twitter'
-						blurOnSubmit={false}
-						placeholder={I18n.t('New_Message')}
-						onChangeText={text => this.onChangeText(text)}
-						value={this.state.text}
-						underlineColorAndroid='transparent'
-						defaultValue=''
-						multiline
-						placeholderTextColor='#9EA2A8'
-						testID='messagebox-input'
-					/>
-					{this.rightButtons}
+				<View style={styles.composer}>
+					{this.renderReplyPreview()}
+					<View
+						key='messagebox'
+						style={[styles.textArea, this.props.editing && styles.editing]}
+						testID='messagebox'
+					>
+						{this.leftButtons}
+						<TextInput
+							ref={component => this.component = component}
+							style={styles.textBoxInput}
+							returnKeyType='default'
+							keyboardType='twitter'
+							blurOnSubmit={false}
+							placeholder={I18n.t('New_Message')}
+							onChangeText={text => this.onChangeText(text)}
+							value={this.state.text}
+							underlineColorAndroid='transparent'
+							defaultValue=''
+							multiline
+							placeholderTextColor='#9EA2A8'
+							testID='messagebox-input'
+						/>
+						{this.rightButtons}
+					</View>
 				</View>
 			]
 		);

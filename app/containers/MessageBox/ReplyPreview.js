@@ -9,15 +9,16 @@ import Markdown from '../message/Markdown';
 
 const styles = StyleSheet.create({
 	container: {
-		flexDirection: 'row'
+		flexDirection: 'row',
+		marginTop: 10
 	},
 	messageContainer: {
 		flex: 1,
-		marginHorizontal: 15,
+		marginHorizontal: 10,
 		backgroundColor: '#F3F4F5',
 		paddingHorizontal: 15,
 		paddingVertical: 10,
-		borderRadius: 2
+		borderRadius: 4
 	},
 	header: {
 		flexDirection: 'row',
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
 		marginLeft: 5
 	},
 	close: {
-		marginRight: 15
+		marginRight: 10
 	}
 });
 
@@ -72,7 +73,7 @@ export default class ReplyPreview extends Component {
 					</View>
 					<Markdown msg={message.msg} customEmojis={customEmojis} baseUrl={baseUrl} username={username} />
 				</View>
-				<Icon name='close' size={20} style={styles.close} onPress={this.close} />
+				<Icon name='close' color='#9ea2a8' size={20} style={styles.close} onPress={this.close} />
 			</View>
 		);
 	}

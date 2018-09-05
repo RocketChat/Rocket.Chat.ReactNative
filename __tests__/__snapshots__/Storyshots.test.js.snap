@@ -3048,9 +3048,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -3271,9 +3276,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -3484,6 +3494,508 @@ exports[`Storyshots Message list 1`] = `
       Long message
     </Text>
     <View
+      accessibilityLabel="Message from diego.mello at 10:00 AM: ..."
+      accessible={true}
+      isTVSelectable={true}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingLeft": 10,
+              "paddingRight": 15,
+              "transform": Array [
+                Object {
+                  "scaleY": -1,
+                },
+              ],
+            },
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                },
+                Object {
+                  "backgroundColor": "#CDDC39",
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+                Object {
+                  "marginTop": 5,
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": "#ffffff",
+                  },
+                  Object {
+                    "fontSize": 22.5,
+                    "fontWeight": "800",
+                  },
+                ]
+              }
+            >
+              D
+            </Text>
+            <View
+              style={
+                Array [
+                  Array [
+                    Object {
+                      "position": "absolute",
+                    },
+                    Object {
+                      "borderRadius": 4,
+                      "height": 36,
+                      "width": 36,
+                    },
+                  ],
+                  Object {
+                    "overflow": "hidden",
+                  },
+                ]
+              }
+            >
+              <FastImageView
+                resizeMode="cover"
+                source={
+                  Object {
+                    "priority": "high",
+                    "uri": "https://open.rocket.chat/avatar/diego.mello",
+                  }
+                }
+                style={
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  }
+                }
+              />
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 51,
+                },
+                Object {
+                  "marginLeft": 15,
+                },
+                false,
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "marginBottom": 2,
+                }
+              }
+            >
+              <Text
+                style={
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                    "fontWeight": "600",
+                    "lineHeight": 22,
+                  }
+                }
+              >
+                diego.mello
+              </Text>
+              <Text
+                style={
+                  Object {
+                    "color": "#9EA2A8",
+                    "fontSize": 14,
+                    "fontWeight": "300",
+                    "lineHeight": 16,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                10:00 AM
+              </Text>
+            </View>
+            <View
+              style={Object {}}
+            >
+              <Text
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "justifyContent": "flex-start",
+                    "marginBottom": 0,
+                    "marginTop": 0,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "letterSpacing": 0.1,
+                    }
+                  }
+                >
+                  <Text>
+                    …
+                  </Text>
+                </Text>
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      accessibilityLabel="Message from rocket.cat at 10:00 AM: Different user"
+      accessible={true}
+      isTVSelectable={true}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingLeft": 10,
+              "paddingRight": 15,
+              "transform": Array [
+                Object {
+                  "scaleY": -1,
+                },
+              ],
+            },
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                },
+                Object {
+                  "backgroundColor": "#8BC34A",
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+                Object {
+                  "marginTop": 5,
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": "#ffffff",
+                  },
+                  Object {
+                    "fontSize": 22.5,
+                    "fontWeight": "800",
+                  },
+                ]
+              }
+            >
+              R
+            </Text>
+            <View
+              style={
+                Array [
+                  Array [
+                    Object {
+                      "position": "absolute",
+                    },
+                    Object {
+                      "borderRadius": 4,
+                      "height": 36,
+                      "width": 36,
+                    },
+                  ],
+                  Object {
+                    "overflow": "hidden",
+                  },
+                ]
+              }
+            >
+              <FastImageView
+                resizeMode="cover"
+                source={
+                  Object {
+                    "priority": "high",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat",
+                  }
+                }
+                style={
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  }
+                }
+              />
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 51,
+                },
+                Object {
+                  "marginLeft": 15,
+                },
+                false,
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "marginBottom": 2,
+                }
+              }
+            >
+              <Text
+                style={
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                    "fontWeight": "600",
+                    "lineHeight": 22,
+                  }
+                }
+              >
+                rocket.cat
+              </Text>
+              <Text
+                style={
+                  Object {
+                    "color": "#9EA2A8",
+                    "fontSize": 14,
+                    "fontWeight": "300",
+                    "lineHeight": 16,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                10:00 AM
+              </Text>
+            </View>
+            <View
+              style={Object {}}
+            >
+              <Text
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "justifyContent": "flex-start",
+                    "marginBottom": 0,
+                    "marginTop": 0,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "letterSpacing": 0.1,
+                    }
+                  }
+                >
+                  <Text>
+                    Different user
+                  </Text>
+                </Text>
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      accessibilityLabel="Message from diego.mello at 10:00 AM: This is the third message"
+      accessible={true}
+      isTVSelectable={true}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          false,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingLeft": 10,
+              "paddingRight": 15,
+              "transform": Array [
+                Object {
+                  "scaleY": -1,
+                },
+              ],
+            },
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 51,
+                },
+                false,
+                false,
+              ]
+            }
+          >
+            <View
+              style={Object {}}
+            >
+              <Text
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "justifyContent": "flex-start",
+                    "marginBottom": 0,
+                    "marginTop": 0,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "letterSpacing": 0.1,
+                    }
+                  }
+                >
+                  <Text>
+                    This is the third message
+                  </Text>
+                </Text>
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
       accessibilityLabel="Message from diego.mello at 10:00 AM: This is the second message"
       accessible={true}
       isTVSelectable={true}
@@ -3494,9 +4006,12 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 20,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          false,
+        ]
       }
     >
       <View
@@ -3583,9 +4098,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -3806,9 +4326,12 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 20,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          false,
+        ]
       }
     >
       <View
@@ -3918,9 +4441,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -4154,9 +4682,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -4481,9 +5014,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -4808,9 +5346,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -5031,9 +5574,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -5338,9 +5886,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -5561,9 +6114,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -5826,9 +6384,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -6049,9 +6612,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -6516,9 +7084,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -7290,9 +7863,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -7490,9 +8068,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -7690,9 +8273,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -7890,9 +8478,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -8113,9 +8706,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -8308,7 +8906,13 @@ exports[`Storyshots Message list 1`] = `
           "alignItems": "center",
           "flex": 1,
           "flexDirection": "row",
-          "marginBottom": 30,
+          "marginBottom": 25,
+          "marginTop": 15,
+          "transform": Array [
+            Object {
+              "scaleY": -1,
+            },
+          ],
         }
       }
     >
@@ -8319,11 +8923,6 @@ exports[`Storyshots Message list 1`] = `
               "color": "#9ea2a8",
               "fontSize": 14,
               "fontWeight": "600",
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
             },
             Object {
               "color": "#f5455c",
@@ -8360,11 +8959,6 @@ exports[`Storyshots Message list 1`] = `
               "color": "#9ea2a8",
               "fontSize": 14,
               "fontWeight": "600",
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
             },
             Object {
               "color": "#f5455c",
@@ -8389,9 +8983,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -8584,7 +9183,13 @@ exports[`Storyshots Message list 1`] = `
           "alignItems": "center",
           "flex": 1,
           "flexDirection": "row",
-          "marginBottom": 30,
+          "marginBottom": 25,
+          "marginTop": 15,
+          "transform": Array [
+            Object {
+              "scaleY": -1,
+            },
+          ],
         }
       }
     >
@@ -8612,11 +9217,6 @@ exports[`Storyshots Message list 1`] = `
               "color": "#9ea2a8",
               "fontSize": 14,
               "fontWeight": "600",
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
             },
             Object {
               "color": "#f5455c",
@@ -8658,9 +9258,106 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          false,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingLeft": 10,
+              "paddingRight": 15,
+              "transform": Array [
+                Object {
+                  "scaleY": -1,
+                },
+              ],
+            },
+            undefined,
+            undefined,
+          ]
         }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 51,
+                },
+                false,
+                false,
+              ]
+            }
+          >
+            <View
+              style={Object {}}
+            >
+              <Text
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "justifyContent": "flex-start",
+                    "marginBottom": 0,
+                    "marginTop": 0,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "letterSpacing": 0.1,
+                    }
+                  }
+                >
+                  <Text>
+                    Second message
+                  </Text>
+                </Text>
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      accessibilityLabel="Message from rocket.cat at 10:00 AM: Second message"
+      accessible={true}
+      isTVSelectable={true}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -8853,7 +9550,13 @@ exports[`Storyshots Message list 1`] = `
           "alignItems": "center",
           "flex": 1,
           "flexDirection": "row",
-          "marginBottom": 30,
+          "marginBottom": 25,
+          "marginTop": 15,
+          "transform": Array [
+            Object {
+              "scaleY": -1,
+            },
+          ],
         }
       }
     >
@@ -8878,11 +9581,6 @@ exports[`Storyshots Message list 1`] = `
               "color": "#9ea2a8",
               "fontSize": 14,
               "fontWeight": "600",
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
             },
             Object {
               "marginHorizontal": 10,
@@ -8918,9 +9616,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -9141,9 +9844,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -9318,8 +10026,7 @@ exports[`Storyshots Message list 1`] = `
                   Array [
                     Object {
                       "borderRadius": 4,
-                      "marginBottom": 12,
-                      "marginTop": 9,
+                      "marginBottom": 10,
                       "maxWidth": 400,
                       "minHeight": 200,
                       "width": "100%",
@@ -9706,9 +10413,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -9883,8 +10595,7 @@ exports[`Storyshots Message list 1`] = `
                   Array [
                     Object {
                       "borderRadius": 4,
-                      "marginBottom": 12,
-                      "marginTop": 9,
+                      "marginBottom": 10,
                       "maxWidth": 400,
                       "minHeight": 200,
                       "width": "100%",
@@ -10294,9 +11005,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -10467,7 +11183,7 @@ exports[`Storyshots Message list 1`] = `
                     "flex": 1,
                     "height": 150,
                     "justifyContent": "center",
-                    "marginVertical": 10,
+                    "marginBottom": 10,
                     "opacity": 1,
                   }
                 }
@@ -10627,9 +11343,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -10791,6 +11512,7 @@ exports[`Storyshots Message list 1`] = `
                   "flex": 1,
                   "flexDirection": "row",
                   "height": 56,
+                  "marginBottom": 10,
                 }
               }
             >
@@ -11021,9 +11743,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -11407,9 +12134,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -11868,9 +12600,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -12413,9 +13150,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -12692,9 +13434,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -12915,9 +13662,12 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 20,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          false,
+        ]
       }
     >
       <View
@@ -13031,9 +13781,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -13281,9 +14036,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -13506,9 +14266,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -13731,9 +14496,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -13935,9 +14705,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -14139,9 +14914,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -14343,9 +15123,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -14645,9 +15430,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -14849,9 +15639,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -15053,9 +15848,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -15257,9 +16057,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -15461,9 +16266,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -15665,9 +16475,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -15869,9 +16684,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -16073,9 +16893,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -16277,9 +17102,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -16481,9 +17311,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -16685,9 +17520,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -16889,9 +17729,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -17117,9 +17962,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -17412,9 +18262,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -17735,9 +18590,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -17988,9 +18848,14 @@ exports[`Storyshots Message list 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -18215,9 +19080,14 @@ Code block
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -18484,9 +19354,14 @@ Code block
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
@@ -18721,9 +19596,14 @@ Content in the first column | Content in the second column"
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "marginBottom": 30,
-        }
+        Array [
+          Object {
+            "paddingVertical": 5,
+          },
+          Object {
+            "marginBottom": 10,
+          },
+        ]
       }
     >
       <View
