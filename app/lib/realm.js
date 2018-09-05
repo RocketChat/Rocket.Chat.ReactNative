@@ -10,8 +10,7 @@ const serversSchema = {
 	properties: {
 		id: 'string',
 		name: { type: 'string', optional: true },
-		iconURL: { type: 'string', optional: true },
-		current: 'bool'
+		iconURL: { type: 'string', optional: true }
 	}
 };
 

@@ -126,7 +126,17 @@ export default class ServerDropdown extends Component {
 	renderServer = ({ item }) => (
 		<Touch onPress={() => this.select(item.id)} style={styles.serverItem} testID={`rooms-list-header-server-${ item.id }`}>
 			<View style={styles.serverItemContainer}>
-				<Image source={{ uri: item.iconURL }} defaultSource={{ uri: 'logo' }} style={styles.serverIcon} />
+				{item.iconURL ?
+					<Image
+						source={{ uri: item.iconURL }}
+						defaultSource={{ uri: 'logo' }}
+						style={styles.serverIcon}
+					/> :
+					<Image
+						source={{ uri: 'logo' }}
+						style={styles.serverIcon}
+					/>
+				}
 				<View style={styles.serverTextContainer}>
 					<Text style={styles.serverName}>{item.name || item.id}</Text>
 					<Text style={styles.serverUrl}>{item.id}</Text>
