@@ -359,7 +359,11 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	toggleSort = () => {
-		this.scroll.scrollTo({ x: 0, y: SCROLL_OFFSET, animated: true });
+		if (Platform.OS === 'ios') {
+			this.scroll.scrollTo({ x: 0, y: SCROLL_OFFSET, animated: true });
+		} else {
+			this.scroll.scrollTo({ x: 0, y: 0, animated: true });
+		}
 		setTimeout(() => {
 			this.props.toggleSortDropdown();
 		}, 100);
