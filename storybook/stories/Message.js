@@ -262,13 +262,14 @@ export default (
 		/>
 		<Separator title='Two short custom fields' />
 
-		<Message msg='Broadcasted message' broadcast />
+		<Message msg='Broadcasted message' broadcast replyBroadcast={() => alert('broadcast!')} />
 		<Separator title='Broadcast' />
 
 		<Message msg='This message is inside an archived room' archived />
 		<Separator title='Archived' />
 
-		<Message msg='This message has error' status={messagesStatus.ERROR} />
+		<Message msg='This message has error too' status={messagesStatus.ERROR} onErrorPress={() => alert('Error pressed')} header={false} />
+		<Message msg='This message has error' status={messagesStatus.ERROR} onErrorPress={() => alert('Error pressed')} />
 		<Separator title='Error' />
 
 		<Message msg='Temp message' status={messagesStatus.TEMP} />

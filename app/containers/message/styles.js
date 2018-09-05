@@ -85,22 +85,32 @@ export default StyleSheet.create({
 		backgroundColor: '#e8f2ff'
 	},
 	errorIcon: {
-		padding: 10,
 		paddingRight: 12,
-		paddingLeft: 0
+		paddingLeft: 0,
+		alignSelf: 'center'
 	},
 	broadcastButton: {
-		borderColor: '#1d74f5',
-		borderWidth: 2,
-		borderRadius: 2,
-		paddingVertical: 10,
-		width: 100,
+		width: 107,
+		height: 44,
+		marginTop: 15
+	},
+	broadcastButtonContainer: {
+		flex: 1,
+		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginTop: 6
+		backgroundColor: '#1d74f5',
+		borderRadius: 4
+	},
+	broadcastButtonIcon: {
+		width: 14,
+		height: 12,
+		marginRight: 11
 	},
 	broadcastButtonText: {
-		color: '#1d74f5'
+		color: '#fff',
+		fontSize: 14,
+		fontWeight: '500'
 	},
 	mention: {
 		color: '#0072FE',

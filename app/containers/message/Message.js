@@ -113,6 +113,7 @@ export default class Message extends PureComponent {
 		msg: PropTypes.string,
 		onReactionLongPress: PropTypes.func,
 		onClose: PropTypes.func,
+		onErrorPress: PropTypes.func,
 		baseUrl: PropTypes.string.isRequired,
 		customEmojis: PropTypes.object.isRequired
 	}
@@ -237,11 +238,7 @@ export default class Message extends PureComponent {
 		if (!this.hasError()) {
 			return null;
 		}
-		return (
-			<TouchableOpacity onPress={this.onErrorPress}>
-				<Icon name='error-outline' color='red' size={20} style={styles.errorIcon} />
-			</TouchableOpacity>
-		);
+		return <Icon name='error-outline' color='red' size={20} style={styles.errorIcon} onPress={this.props.onErrorPress} />;
 	}
 
 	renderReaction = (reaction) => {
@@ -291,12 +288,15 @@ export default class Message extends PureComponent {
 	renderBroadcastReply() {
 		if (this.props.broadcast && !this.isOwn()) {
 			return (
-				<TouchableOpacity
-					style={styles.broadcastButton}
+				<Touch
 					onPress={this.props.replyBroadcast}
+					style={styles.broadcastButton}
 				>
-					<Text style={styles.broadcastButtonText}>Reply</Text>
-				</TouchableOpacity>
+					<View style={styles.broadcastButtonContainer}>
+						<ImageRN source={{ uri: 'reply' }} style={styles.broadcastButtonIcon} />
+						<Text style={styles.broadcastButtonText}>Reply</Text>
+					</View>
+				</Touch>
 			);
 		}
 		return null;
