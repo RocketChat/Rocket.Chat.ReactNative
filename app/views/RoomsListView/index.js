@@ -63,6 +63,7 @@ export default class RoomsListView extends LoggedView {
 
 	static navigatorStyle = {
 		navBarCustomView: 'RoomsListHeaderView',
+		navBarComponentAlignment: 'fill',
 		navBarBackgroundColor: isAndroid() ? '#2F343D' : undefined,
 		navBarTextColor: isAndroid() ? '#FFF' : undefined,
 		navBarButtonColor: isAndroid() ? '#FFF' : undefined
@@ -273,6 +274,7 @@ export default class RoomsListView extends LoggedView {
 		navigator.setButtons({ leftButtons, rightButtons });
 		navigator.setStyle({
 			navBarCustomView: 'RoomsListHeaderView',
+			navBarComponentAlignment: 'fill',
 			navBarBackgroundColor: isAndroid() ? '#2F343D' : undefined,
 			navBarTextColor: isAndroid() ? '#FFF' : undefined,
 			navBarButtonColor: isAndroid() ? '#FFF' : undefined
