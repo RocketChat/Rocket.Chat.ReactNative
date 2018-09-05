@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, TouchableOpacity, Text, Easing, Image } from 'react-native';
 import Video from 'react-native-video';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import Slider from 'react-native-slider';
 import moment from 'moment';
 
@@ -15,7 +14,8 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		height: 56,
 		backgroundColor: '#f7f8fa',
-		borderRadius: 4
+		borderRadius: 4,
+		marginBottom: 10
 	},
 	playPauseButton: {
 		width: 56,

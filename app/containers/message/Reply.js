@@ -13,11 +13,11 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginTop: 15,
-		alignSelf: 'flex-end',
-		borderRadius: 2
+		alignSelf: 'flex-end'
 	},
 	attachmentContainer: {
 		flex: 1,
+		borderRadius: 4,
 		flexDirection: 'column',
 		backgroundColor: '#f3f4f5',
 		padding: 15

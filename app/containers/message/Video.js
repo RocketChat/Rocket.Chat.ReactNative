@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, TouchableOpacity, Image, Platform } from 'react-native';
+import { StyleSheet, TouchableOpacity, Image, Platform, View } from 'react-native';
 import Modal from 'react-native-modal';
 import VideoPlayer from 'react-native-video-controls';
 import Markdown from './Markdown';
@@ -10,20 +10,22 @@ const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(Platform.OS === 'io
 const isTypeSupported = type => SUPPORTED_TYPES.indexOf(type) !== -1;
 
 const styles = StyleSheet.create({
-	container: {
+	button: {
 		flex: 1,
-		height: 100,
-		margin: 5
+		borderRadius: 4,
+		height: 150,
+		backgroundColor: '#1f2329',
+		marginBottom: 10,
+		alignItems: 'center',
+		justifyContent: 'center'
 	},
 	modal: {
 		margin: 0,
 		backgroundColor: '#000'
 	},
 	image: {
-		flex: 1,
-		width: null,
-		height: null,
-		resizeMode: 'contain'
+		width: 54,
+		height: 54
 	}
 });
 
@@ -62,17 +64,18 @@ export default class Video extends React.PureComponent {
 		const { baseUrl, user, customEmojis } = this.props;
 		return (
 			[
-				<TouchableOpacity
-					key='button'
-					style={styles.container}
-					onPress={() => this.open()}
-				>
-					<Image
-						source={require('../../static/images/logo.png')}
-						style={styles.image}
-					/>
+				<View key='button'>
+					<TouchableOpacity
+						style={styles.button}
+						onPress={() => this.open()}
+					>
+						<Image
+							source={{ uri: 'play_video' }}
+							style={styles.image}
+						/>
+					</TouchableOpacity>
 					<Markdown msg={description} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} />
-				</TouchableOpacity>,
+				</View>,
 				<Modal
 					key='modal'
 					isVisible={isVisible}

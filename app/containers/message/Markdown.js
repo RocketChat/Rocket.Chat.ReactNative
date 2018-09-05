@@ -101,6 +101,9 @@ export default class Markdown extends React.Component {
 						padding: 2,
 						borderRadius: 4
 					},
+					link: {
+						color: '#1D74F5'
+					},
 					...style
 				}}
 				plugins={[

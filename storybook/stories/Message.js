@@ -48,6 +48,13 @@ export default (
 		<Message msg='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum' />
 		<Separator title='Long message' />
 
+		<Message msg='...' />
+		<Message
+			msg='Different user'
+			username='rocket.cat'
+			header
+		/>
+		<Message msg='This is the third message' header={false} />
 		<Message msg='This is the second message' header={false} />
 		<Message msg='This is the first message' />
 		<Separator title='Grouped messages' />
@@ -132,13 +139,11 @@ export default (
 		<Message
 			msg='Fourth message'
 			username='rocket.cat'
-			header
 		/>
 		<Message msg='Third message' />
 		<Message
 			msg='Second message'
 			username='rocket.cat'
-			header
 		/>
 		<Message msg='First message' />
 		<Separator title='Intercalated users' />
@@ -146,7 +151,6 @@ export default (
 		<Message
 			msg='Fourth message'
 			username='rocket.cat'
-			header
 		/>
 		<MessageSeparator ts={date} unread />
 		<Message msg='Third message' />
@@ -154,12 +158,23 @@ export default (
 		<Message
 			msg='Second message'
 			username='rocket.cat'
-			header
+			header={false}
+		/>
+		<Message
+			msg='Second message'
+			username='rocket.cat'
 		/>
 		<MessageSeparator ts={date} />
 		<Message msg='First message' />
 		<Separator title='Date and Unread separators' />
 
+		<Message
+			attachments={[{
+				title: 'This is a title',
+				description: 'This is a description',
+				image_url: '/file-upload/2ZrxuwcGeTrsoh376/Clipboard%20-%20September%205,%202018%204:10%20PM'
+			}]}
+		/>
 		<Message
 			attachments={[{
 				title: 'This is a title',

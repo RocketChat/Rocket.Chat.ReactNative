@@ -9,7 +9,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginBottom: 30
+		marginBottom: 25,
+		marginTop: 15,
+		transform: [{ scaleY: -1 }]
 	},
 	line: {
 		backgroundColor: '#9ea2a8',
@@ -19,8 +21,7 @@ const styles = StyleSheet.create({
 	text: {
 		color: '#9ea2a8',
 		fontSize: 14,
-		fontWeight: '600',
-		transform: [{ scaleY: -1 }]
+		fontWeight: '600'
 	},
 	unreadLine: {
 		backgroundColor: '#f5455c'

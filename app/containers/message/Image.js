@@ -48,6 +48,7 @@ export default class extends React.PureComponent {
 					<FastImage
 						style={styles.image}
 						source={{ uri: encodeURI(img) }}
+						resizeMode={FastImage.resizeMode.cover}
 					/>
 					{this.getDescription()}
 				</TouchableOpacity>,

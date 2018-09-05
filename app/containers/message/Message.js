@@ -313,10 +313,8 @@ export default class Message extends PureComponent {
 				onPress={this.onPress}
 				onLongPress={onLongPress}
 				disabled={this.isInfoMessage() || this.hasError() || archived}
-				underlayColor='#FFF'
-				activeOpacity={0.3}
 				accessibilityLabel={accessibilityLabel}
-				style={header ? { marginBottom: 30 } : { marginBottom: 20 }}
+				style={[styles.container, header && { marginBottom: 10 }]}
 			>
 				<View style={[styles.message, editing && styles.editing, style]}>
 					<View style={styles.flex}>

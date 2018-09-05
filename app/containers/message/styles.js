@@ -1,6 +1,9 @@
 import { StyleSheet, Platform } from 'react-native';
 
 export default StyleSheet.create({
+	container: {
+		paddingVertical: 5
+	},
 	messageContent: {
 		flex: 1,
 		marginLeft: 51
@@ -141,7 +144,9 @@ export default StyleSheet.create({
 	image: {
 		width: '100%',
 		maxWidth: 400,
-		height: 300
+		minHeight: 200,
+		borderRadius: 4,
+		marginBottom: 10
 	},
 	inlineImage: {
 		width: 300,
