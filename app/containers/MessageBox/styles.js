@@ -12,6 +12,7 @@ export default StyleSheet.create({
 		zIndex: 2
 	},
 	composer: {
+		backgroundColor: '#fff',
 		flexDirection: 'column',
 		borderTopColor: '#e1e5e8',
 		borderTopWidth: 1

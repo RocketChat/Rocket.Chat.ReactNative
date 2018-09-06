@@ -97,9 +97,7 @@ export default class SearchMessagesView extends LoggedView {
 			style={styles.message}
 			reactions={item.reactions}
 			user={this.props.user}
-			baseUrl={this.props.baseUrl}
 			customTimeFormat='MMMM Do YYYY, h:mm:ss a'
-			onLongPress={() => {}}
 			onReactionPress={async(emoji) => {
 				try {
 					await RocketChat.setReaction(emoji, item._id);

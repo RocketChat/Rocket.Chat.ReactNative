@@ -16,7 +16,7 @@ describe('Rooms list screen', () => {
 		// });
 
         it('should have room item', async() => {
-			await expect(element(by.id('rooms-list-view-item-general'))).toExist();
+			await expect(element(by.id('rooms-list-view-item-general')).atIndex(0)).toExist();
 		});
 		
 		// Render - Header

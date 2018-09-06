@@ -9,10 +9,11 @@ async function mockMessage(message) {
 	await element(by.id('messagebox-input')).tap();
 	await element(by.id('messagebox-input')).typeText(`${ data.random }${ message }`);
 	await element(by.id('messagebox-send-message')).tap();
-	await waitFor(element(by.text(`${ data.random }${ message }`))).toBeVisible().withTimeout(60000);
+	await waitFor(element(by.text(`${ data.random }${ message }`))).toExist().withTimeout(60000);
 };
 
 async function navigateToRoom() {
+	await element(by.id('rooms-list-view-search')).replaceText(`private${ data.random }`);
     await waitFor(element(by.id(`rooms-list-view-item-private${ data.random }`))).toBeVisible().withTimeout(60000);
     await element(by.id(`rooms-list-view-item-private${ data.random }`)).tap();
     await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
@@ -92,8 +93,7 @@ describe('Room screen', () => {
 		describe('Messagebox', async() => {
 			it('should send message', async() => {
 				await mockMessage('message');
-				await waitFor(element(by.text(`${ data.random }message`))).toBeVisible().withTimeout(60000);
-				await expect(element(by.text(`${ data.random }message`))).toBeVisible();
+				await expect(element(by.text(`${ data.random }message`))).toExist();
 			});
 	
 			it('should show/hide emoji keyboard', async() => {
@@ -139,9 +139,9 @@ describe('Room screen', () => {
 				await element(by.id(`mention-item-${ data.user }`)).tap();
 				await expect(element(by.id('messagebox-input'))).toHaveText(`@${ data.user } `);
 				await element(by.id('messagebox-input')).tap();
-				await element(by.id('messagebox-input')).typeText('test');
+				await element(by.id('messagebox-input')).typeText(`${ data.random }mention`);
 				await element(by.id('messagebox-send-message')).tap();
-				await waitFor(element(by.text(`@${ data.user } test`))).toBeVisible().withTimeout(60000);
+				await waitFor(element(by.text(`@${ data.user } ${ data.random }mention`))).toBeVisible().withTimeout(60000);
 			});
 	
 			it('should show and tap on room autocomplete', async() => {
@@ -250,8 +250,8 @@ describe('Room screen', () => {
 				await element(by.text('Edit')).tap();
 				await element(by.id('messagebox-input')).typeText('ed');
 				await element(by.id('messagebox-send-message')).tap();
-				await waitFor(element(by.text(`${ data.random }edited`))).toBeVisible().withTimeout(60000);
-				await expect(element(by.text(`${ data.random }edited`))).toBeVisible();
+				await waitFor(element(by.text(`${ data.random }edited (edited)`))).toBeVisible().withTimeout(60000);
+				await expect(element(by.text(`${ data.random }edited (edited)`))).toBeVisible();
 			});
 
 			it('should quote message', async() => {
@@ -266,13 +266,15 @@ describe('Room screen', () => {
 			});
 
 			it('should pin message', async() => {
-				await element(by.text(`${ data.random }edited`)).longPress();
+				await waitFor(element(by.text(`${ data.random }edited (edited)`))).toBeVisible().whileElement(by.id('room-view-messages')).scroll(200, 'up');
+				await element(by.text(`${ data.random }edited (edited)`)).longPress();
 				await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
 				await expect(element(by.text('Message actions'))).toBeVisible();
 				await element(by.text('Pin')).tap();
 				await waitFor(element(by.text('Message actions'))).toBeNotVisible().withTimeout(5000);
-				await waitFor(element(by.text(`${ data.random }edited`)).atIndex(1)).toBeVisible().withTimeout(60000);
-				await element(by.text(`${ data.random }edited`)).atIndex(0).longPress();
+				await waitFor(element(by.text(`${ data.random }edited (edited)`))).toBeVisible().whileElement(by.id('room-view-messages')).scroll(200, 'up');
+				await waitFor(element(by.text(`${ data.random }edited (edited)`)).atIndex(1)).toBeVisible().withTimeout(60000);
+				await element(by.text(`${ data.random }edited (edited)`)).atIndex(0).longPress();
 				await waitFor(element(by.text('Unpin'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.text('Unpin'))).toBeVisible();
 				await element(by.text('Cancel')).tap();

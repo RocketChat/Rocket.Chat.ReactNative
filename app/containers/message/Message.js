@@ -20,8 +20,6 @@ import Touch from '../../utils/touch';
 import I18n from '../../i18n';
 import messagesStatus from '../../constants/messagesStatus';
 
-import CustomEmoji from '../EmojiPicker/CustomEmoji';
-
 const SYSTEM_MESSAGES = [
 	'r',
 	'au',
@@ -41,8 +39,9 @@ const SYSTEM_MESSAGES = [
 ];
 
 const getInfoMessage = ({
-	type, role, msg, username
+	type, role, msg, user
 }) => {
+	const { username } = user;
 	if (type === 'rm') {
 		return I18n.t('Message_removed');
 	} else if (type === 'uj') {
@@ -79,31 +78,33 @@ const getInfoMessage = ({
 
 export default class Message extends PureComponent {
 	static propTypes = {
-		status: PropTypes.any,
-		reactions: PropTypes.any,
-		loggedUser: PropTypes.shape({
+		baseUrl: PropTypes.string.isRequired,
+		customEmojis: PropTypes.object.isRequired,
+		timeFormat: PropTypes.string.isRequired,
+		msg: PropTypes.string,
+		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
 			username: PropTypes.string.isRequired,
 			token: PropTypes.string.isRequired
 		}),
+		author: PropTypes.shape({
+			_id: PropTypes.string.isRequired,
+			username: PropTypes.string.isRequired,
+			name: PropTypes.string
+		}),
+		status: PropTypes.any,
+		reactions: PropTypes.any,
 		editing: PropTypes.bool,
-		toggleReactionPicker: PropTypes.func,
-		replyBroadcast: PropTypes.func,
-		onReactionPress: PropTypes.func,
 		style: ViewPropTypes.style,
-		onLongPress: PropTypes.func,
 		archived: PropTypes.bool,
 		broadcast: PropTypes.bool,
 		reactionsModal: PropTypes.bool,
 		type: PropTypes.string,
-		userId: PropTypes.string,
 		header: PropTypes.bool,
-		username: PropTypes.string,
 		avatar: PropTypes.string,
 		alias: PropTypes.string,
 		ts: PropTypes.instanceOf(Date),
 		edited: PropTypes.bool,
-		timeFormat: PropTypes.string.isRequired,
 		attachments: PropTypes.oneOfType([
 			PropTypes.array,
 			PropTypes.object
@@ -112,21 +113,24 @@ export default class Message extends PureComponent {
 			PropTypes.array,
 			PropTypes.object
 		]),
-		msg: PropTypes.string,
-		onReactionLongPress: PropTypes.func,
-		onClose: PropTypes.func,
+		useRealName: PropTypes.bool,
+		// methods
+		closeReactions: PropTypes.func,
 		onErrorPress: PropTypes.func,
-		baseUrl: PropTypes.string.isRequired,
-		customEmojis: PropTypes.object.isRequired
+		onLongPress: PropTypes.func,
+		onReactionLongPress: PropTypes.func,
+		onReactionPress: PropTypes.func,
+		replyBroadcast: PropTypes.func,
+		toggleReactionPicker: PropTypes.func
 	}
 
 	static defaultProps = {
-		onLongPress: () => {},
 		archived: false,
 		broadcast: false,
 		attachments: [],
 		urls: [],
-		reactions: []
+		reactions: [],
+		onLongPress: () => {}
 	}
 
 	onPress = () => {
@@ -137,7 +141,7 @@ export default class Message extends PureComponent {
 		return SYSTEM_MESSAGES.includes(this.props.type);
 	}
 
-	isOwn = () => this.props.userId === this.props.loggedUser.id;
+	isOwn = () => this.props.author._id === this.props.user.id;
 
 	isDeleted() {
 		return this.props.type === 'rm';
@@ -153,13 +157,13 @@ export default class Message extends PureComponent {
 
 	renderAvatar = () => {
 		const {
-			header, avatar, username, baseUrl
+			header, avatar, author, baseUrl
 		} = this.props;
 		if (header) {
 			return (
 				<Avatar
 					style={styles.avatar}
-					text={avatar ? '' : username}
+					text={avatar ? '' : author.username}
 					size={36}
 					borderRadius={4}
 					avatar={avatar}
@@ -172,14 +176,14 @@ export default class Message extends PureComponent {
 
 	renderUsername = () => {
 		const {
-			header, timeFormat, username, alias, ts
+			header, timeFormat, author, alias, ts, useRealName
 		} = this.props;
 		if (header) {
 			return (
 				<User
 					onPress={this._onPress}
 					timeFormat={timeFormat}
-					username={username}
+					username={(useRealName && author.name) || author.username}
 					alias={alias}
 					ts={ts}
 					temp={this.isTemp()}
@@ -194,9 +198,9 @@ export default class Message extends PureComponent {
 			return <Text style={styles.textInfo}>{getInfoMessage({ ...this.props })}</Text>;
 		}
 		const {
-			customEmojis, msg, baseUrl, loggedUser, edited
+			customEmojis, msg, baseUrl, user, edited
 		} = this.props;
-		return <Markdown msg={msg} customEmojis={customEmojis} baseUrl={baseUrl} username={loggedUser.username} edited={edited} />;
+		return <Markdown msg={msg} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} edited={edited} />;
 	}
 
 	renderAttachment() {
@@ -207,19 +211,19 @@ export default class Message extends PureComponent {
 		}
 
 		return attachments.map((file, index) => {
-			const { loggedUser, baseUrl, customEmojis } = this.props;
+			const { user, baseUrl, customEmojis } = this.props;
 			if (file.image_url) {
-				return <Image key={file.image_url} file={file} user={loggedUser} baseUrl={baseUrl} customEmojis={customEmojis} />;
+				return <Image key={file.image_url} file={file} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
 			}
 			if (file.audio_url) {
-				return <Audio key={file.audio_url} file={file} user={loggedUser} baseUrl={baseUrl} customEmojis={customEmojis} />;
+				return <Audio key={file.audio_url} file={file} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
 			}
 			if (file.video_url) {
-				return <Video key={file.video_url} file={file} user={loggedUser} baseUrl={baseUrl} customEmojis={customEmojis} />;
+				return <Video key={file.video_url} file={file} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
 			}
 
 			// eslint-disable-next-line react/no-array-index-key
-			return <Reply key={index} index={index} attachment={file} timeFormat={timeFormat} user={loggedUser} baseUrl={baseUrl} customEmojis={customEmojis} />;
+			return <Reply key={index} index={index} attachment={file} timeFormat={timeFormat} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
 		});
 	}
 
@@ -242,7 +246,7 @@ export default class Message extends PureComponent {
 	}
 
 	renderReaction = (reaction) => {
-		const reacted = reaction.usernames.findIndex(item => item.value === this.props.loggedUser.username) !== -1;
+		const reacted = reaction.usernames.findIndex(item => item.value === this.props.user.username) !== -1;
 		const reactedContainerStyle = reacted && styles.reactedContainer;
 		return (
 			<TouchableOpacity
@@ -304,9 +308,9 @@ export default class Message extends PureComponent {
 
 	render() {
 		const {
-			editing, style, header, archived, onLongPress, reactionsModal, onClose, msg, ts, reactions, username, loggedUser, timeFormat, customEmojis, baseUrl
+			editing, style, header, archived, onLongPress, reactionsModal, closeReactions, msg, ts, reactions, author, user, timeFormat, customEmojis, baseUrl
 		} = this.props;
-		const accessibilityLabel = I18n.t('Message_accessibility', { user: username, time: moment(ts).format(timeFormat), message: msg });
+		const accessibilityLabel = I18n.t('Message_accessibility', { user: author.username, time: moment(ts).format(timeFormat), message: msg });
 
 		return (
 			<Touch
@@ -332,11 +336,11 @@ export default class Message extends PureComponent {
 					{reactionsModal ?
 						<ReactionsModal
 							isVisible={reactionsModal}
-							onClose={onClose}
 							reactions={reactions}
-							user={loggedUser}
+							user={user}
 							customEmojis={customEmojis}
 							baseUrl={baseUrl}
+							close={closeReactions}
 						/>
 						: null
 					}

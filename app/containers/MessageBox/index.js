@@ -587,10 +587,9 @@ export default class MessageBox extends React.PureComponent {
 		return (
 			[
 				this.renderMentions(),
-				<View style={styles.composer}>
+				<View style={styles.composer} key='messagebox'>
 					{this.renderReplyPreview()}
 					<View
-						key='messagebox'
 						style={[styles.textArea, this.props.editing && styles.editing]}
 						testID='messagebox'
 					>

@@ -57,7 +57,7 @@ const customEmojiStyle = { width: 20, height: 20 };
 export default class ReactionsModal extends React.PureComponent {
 	static propTypes = {
 		isVisible: PropTypes.bool.isRequired,
-		onClose: PropTypes.func.isRequired,
+		close: PropTypes.func.isRequired,
 		reactions: PropTypes.object.isRequired,
 		user: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
@@ -98,22 +98,22 @@ export default class ReactionsModal extends React.PureComponent {
 
 	render() {
 		const {
-			isVisible, onClose, reactions
+			isVisible, close, reactions
 		} = this.props;
 		return (
 			<Modal
 				isVisible={isVisible}
-				onBackdropPress={onClose}
-				onBackButtonPress={onClose}
+				onBackdropPress={close}
+				onBackButtonPress={close}
 				backdropOpacity={0.9}
 			>
-				<TouchableWithoutFeedback onPress={onClose}>
+				<TouchableWithoutFeedback onPress={close}>
 					<View style={styles.titleContainer}>
 						<Icon
 							style={styles.closeButton}
 							name='close'
 							size={20}
-							onPress={onClose}
+							onPress={close}
 						/>
 						<Text style={styles.title}>{I18n.t('Reactions')}</Text>
 					</View>

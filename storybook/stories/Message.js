@@ -14,10 +14,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-const loggedUser = {
+const user = {
 	id: 'y8bd77ptZswPj3EW8',
 	username: 'diego.mello',
 	token: '79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz'
+};
+const author = {
+	_id: 'userid',
+	username: 'diego.mello'
 };
 const baseUrl = 'https://open.rocket.chat';
 const customEmojis = { react_rocket: 'png', nyan_rocket: 'png', marioparty: 'gif' };
@@ -27,8 +31,8 @@ const Message = props => (
 	<MessageComponent
 		baseUrl={baseUrl}
 		customEmojis={customEmojis}
-		loggedUser={loggedUser}
-		username='diego.mello'
+		user={user}
+		author={author}
 		ts={date}
 		timeFormat='LT'
 		header
@@ -51,8 +55,10 @@ export default (
 		<Message msg='...' />
 		<Message
 			msg='Different user'
-			username='rocket.cat'
-			header
+			author={{
+				...author,
+				username: 'rocket.cat'
+			}}
 		/>
 		<Message msg='This is the third message' header={false} />
 		<Message msg='This is the second message' header={false} />
@@ -70,9 +76,20 @@ export default (
 
 		<Message
 			msg='Message'
-			avatar='https://pbs.twimg.com/profile_images/826381429831585793/ixRQBLU4_400x400.jpg'
+			avatar='https://pbs.twimg.com/profile_images/1016397063649660929/14EIApTi_400x400.jpg'
 		/>
 		<Separator title='Static avatar' />
+
+		<Message
+			msg='Message'
+			author={{
+				...author,
+				username: 'diego.mello',
+				name: 'Diego Mello'
+			}}
+			useRealName
+		/>
+		<Separator title='Full name' />
 
 		<Message msg='@rocket.cat @diego.mello @all @here #general' />
 		<Separator title='Mentions' />
@@ -135,31 +152,46 @@ export default (
 
 		<Message
 			msg='Fourth message'
-			username='rocket.cat'
+			author={{
+				...author,
+				username: 'rocket.cat'
+			}}
 		/>
 		<Message msg='Third message' />
 		<Message
 			msg='Second message'
-			username='rocket.cat'
+			author={{
+				...author,
+				username: 'rocket.cat'
+			}}
 		/>
 		<Message msg='First message' />
 		<Separator title='Intercalated users' />
 
 		<Message
 			msg='Fourth message'
-			username='rocket.cat'
+			author={{
+				...author,
+				username: 'rocket.cat'
+			}}
 		/>
 		<MessageSeparator ts={date} unread />
 		<Message msg='Third message' />
 		<MessageSeparator unread />
 		<Message
 			msg='Second message'
-			username='rocket.cat'
+			author={{
+				...author,
+				username: 'rocket.cat'
+			}}
 			header={false}
 		/>
 		<Message
 			msg='Second message'
-			username='rocket.cat'
+			author={{
+				...author,
+				username: 'rocket.cat'
+			}}
 		/>
 		<MessageSeparator ts={date} />
 		<Message msg='First message' />

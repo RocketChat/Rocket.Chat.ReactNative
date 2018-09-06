@@ -10,7 +10,8 @@ import Markdown from '../message/Markdown';
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
-		marginTop: 10
+		marginTop: 10,
+		backgroundColor: '#fff'
 	},
 	messageContainer: {
 		flex: 1,

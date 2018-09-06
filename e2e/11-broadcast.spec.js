@@ -36,14 +36,14 @@ describe('Broadcast room', () => {
 		await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
 		await tapBack();
 		await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(2000);
-		await tapBack(2);
-		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
-		await waitFor(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toExist().withTimeout(60000);
-		await expect(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toExist();
+		// await tapBack(2);
+		// await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
+		// await waitFor(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toExist().withTimeout(60000);
+		// await expect(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toExist();
 	});
 
 	it('should send message', async() => {
-		await element(by.id(`rooms-list-view-item-broadcast${ data.random }`)).tap();
+		// await element(by.id(`rooms-list-view-item-broadcast${ data.random }`)).tap();
 		await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 		await element(by.id('messagebox-input')).tap();
 		await element(by.id('messagebox-input')).typeText(`${ data.random }message`);

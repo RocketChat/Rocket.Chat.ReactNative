@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Platform, Image } from 'react-native';
+import { Text, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import { emojify } from 'react-emojione';
 import MarkdownRenderer, { PluginContainer } from 'react-native-markdown-renderer';
@@ -34,7 +34,7 @@ export default class Markdown extends React.Component {
 				rules={{
 					paragraph: (node, children) => (
 						<Text key={node.key} style={styles.paragraph}>
-							{children} {edited ? <Text style={styles.edited}>(edited)</Text> : null}
+							{children}{edited ? <Text style={styles.edited}> (edited)</Text> : null}
 						</Text>
 					),
 					mention: (node) => {

@@ -5,51 +5,52 @@ import { connect } from 'react-redux';
 import equal from 'deep-equal';
 
 import Message from './Message';
-import { actionsShow, errorActionsShow, toggleReactionPicker, replyBroadcast } from '../../actions/messages';
+import { errorActionsShow, toggleReactionPicker, replyBroadcast } from '../../actions/messages';
 
 @connect(state => ({
-	message: state.messages.message,
-	editing: state.messages.editing,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	customEmojis: state.customEmojis,
-	Message_TimeFormat: state.settings.Message_TimeFormat,
+	editing: state.messages.editing,
 	Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	Message_TimeFormat: state.settings.Message_TimeFormat,
+	message: state.messages.message,
+	useRealName: state.settings.UI_Use_Real_Name
 }), dispatch => ({
-	actionsShow: actionMessage => dispatch(actionsShow(actionMessage)),
 	errorActionsShow: actionMessage => dispatch(errorActionsShow(actionMessage)),
-	toggleReactionPicker: message => dispatch(toggleReactionPicker(message)),
-	replyBroadcast: message => dispatch(replyBroadcast(message))
+	replyBroadcast: message => dispatch(replyBroadcast(message)),
+	toggleReactionPicker: message => dispatch(toggleReactionPicker(message))
 }))
 export default class MessageContainer extends React.Component {
 	static propTypes = {
-		status: PropTypes.any,
 		item: PropTypes.object.isRequired,
 		reactions: PropTypes.any.isRequired,
-		Message_TimeFormat: PropTypes.string.isRequired,
-		Message_GroupingPeriod: PropTypes.number.isRequired,
-		customTimeFormat: PropTypes.string,
-		message: PropTypes.object.isRequired,
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
 			username: PropTypes.string.isRequired,
 			token: PropTypes.string.isRequired
 		}),
-		editing: PropTypes.bool,
-		errorActionsShow: PropTypes.func,
-		toggleReactionPicker: PropTypes.func,
-		replyBroadcast: PropTypes.func,
-		onReactionPress: PropTypes.func,
+		customTimeFormat: PropTypes.string,
 		style: ViewPropTypes.style,
-		onLongPress: PropTypes.func,
-		_updatedAt: PropTypes.instanceOf(Date),
+		status: PropTypes.bool,
 		archived: PropTypes.bool,
 		broadcast: PropTypes.bool,
 		previousItem: PropTypes.object,
+		_updatedAt: PropTypes.instanceOf(Date),
+		// redux
 		baseUrl: PropTypes.string,
-		customEmojis: PropTypes.oneOfType([
-			PropTypes.array,
-			PropTypes.object
-		])
+		customEmojis: PropTypes.object,
+		editing: PropTypes.bool,
+		Message_GroupingPeriod: PropTypes.number,
+		Message_TimeFormat: PropTypes.string,
+		message: PropTypes.object,
+		useRealName: PropTypes.bool,
+		// methods - props
+		onLongPress: PropTypes.func,
+		onReactionPress: PropTypes.func,
+		// methods - redux
+		errorActionsShow: PropTypes.func,
+		replyBroadcast: PropTypes.func,
+		toggleReactionPicker: PropTypes.func
 	}
 
 	static defaultProps = {
@@ -62,7 +63,7 @@ export default class MessageContainer extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { reactionsModal: false };
-		this.onClose = this.onClose.bind(this);
+		this.closeReactions = this.closeReactions.bind(this);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -101,9 +102,6 @@ export default class MessageContainer extends React.Component {
 		this.props.onReactionPress(emoji, this.props.item._id);
 	}
 
-	onClose = () => {
-		this.setState({ reactionsModal: false });
-	}
 
 	onReactionLongPress = () => {
 		this.setState({ reactionsModal: true });
@@ -113,6 +111,10 @@ export default class MessageContainer extends React.Component {
 	get timeFormat() {
 		const { customTimeFormat, Message_TimeFormat } = this.props;
 		return customTimeFormat || Message_TimeFormat;
+	}
+
+	closeReactions = () => {
+		this.setState({ reactionsModal: false });
 	}
 
 	isHeader = () => {
@@ -141,7 +143,7 @@ export default class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, message, editing, user, style, archived, baseUrl, customEmojis
+			item, message, editing, user, style, archived, baseUrl, customEmojis, useRealName, broadcast
 		} = this.props;
 		const {
 			msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy
@@ -150,34 +152,34 @@ export default class MessageContainer extends React.Component {
 		return (
 			<Message
 				msg={msg}
+				author={u}
 				ts={ts}
 				type={t}
 				status={status}
 				attachments={attachments}
 				urls={urls}
 				reactions={reactions}
-				userId={u && u._id}
-				username={u.username}
 				alias={alias}
 				editing={isEditing}
 				header={this.isHeader()}
 				avatar={avatar}
-				loggedUser={user}
+				user={user}
 				edited={editedBy && !!editedBy.username}
 				timeFormat={this.timeFormat}
-				onClose={this.onClose}
-				onErrorPress={this.onErrorPress}
-				onLongPress={this.onLongPress}
-				onPress={this.onPress}
-				onReactionLongPress={this.onReactionLongPress}
-				onReactionPress={this.onReactionPress}
-				toggleReactionPicker={this.toggleReactionPicker}
-				replyBroadcast={this.replyBroadcast}
 				style={style}
 				archived={archived}
+				broadcast={broadcast}
 				baseUrl={baseUrl}
 				customEmojis={customEmojis}
 				reactionsModal={this.state.reactionsModal}
+				useRealName={useRealName}
+				closeReactions={this.closeReactions}
+				onErrorPress={this.onErrorPress}
+				onLongPress={this.onLongPress}
+				onReactionLongPress={this.onReactionLongPress}
+				onReactionPress={this.onReactionPress}
+				replyBroadcast={this.replyBroadcast}
+				toggleReactionPicker={this.toggleReactionPicker}
 			/>
 		);
 	}
