@@ -163,7 +163,7 @@ export default class MessageContainer extends React.Component {
 				header={this.isHeader()}
 				avatar={avatar}
 				loggedUser={user}
-				editedBy={editedBy && editedBy.username}
+				edited={editedBy && !!editedBy.username}
 				timeFormat={this.timeFormat}
 				onClose={this.onClose}
 				onErrorPress={this.onErrorPress}

@@ -20,6 +20,8 @@ import Touch from '../../utils/touch';
 import I18n from '../../i18n';
 import messagesStatus from '../../constants/messagesStatus';
 
+import CustomEmoji from '../EmojiPicker/CustomEmoji';
+
 const SYSTEM_MESSAGES = [
 	'r',
 	'au',
@@ -100,7 +102,7 @@ export default class Message extends PureComponent {
 		avatar: PropTypes.string,
 		alias: PropTypes.string,
 		ts: PropTypes.instanceOf(Date),
-		editedBy: PropTypes.string,
+		edited: PropTypes.bool,
 		timeFormat: PropTypes.string.isRequired,
 		attachments: PropTypes.oneOfType([
 			PropTypes.array,
@@ -170,7 +172,7 @@ export default class Message extends PureComponent {
 
 	renderUsername = () => {
 		const {
-			header, timeFormat, username, alias, ts, editedBy, baseUrl
+			header, timeFormat, username, alias, ts
 		} = this.props;
 		if (header) {
 			return (
@@ -180,9 +182,7 @@ export default class Message extends PureComponent {
 					username={username}
 					alias={alias}
 					ts={ts}
-					editedBy={editedBy}
 					temp={this.isTemp()}
-					baseUrl={baseUrl}
 				/>
 			);
 		}
@@ -194,9 +194,9 @@ export default class Message extends PureComponent {
 			return <Text style={styles.textInfo}>{getInfoMessage({ ...this.props })}</Text>;
 		}
 		const {
-			customEmojis, msg, baseUrl, loggedUser
+			customEmojis, msg, baseUrl, loggedUser, edited
 		} = this.props;
-		return <Markdown msg={msg} customEmojis={customEmojis} baseUrl={baseUrl} username={loggedUser.username} />;
+		return <Markdown msg={msg} customEmojis={customEmojis} baseUrl={baseUrl} username={loggedUser.username} edited={edited} />;
 	}
 
 	renderAttachment() {
@@ -279,7 +279,7 @@ export default class Message extends PureComponent {
 					testID='message-add-reaction'
 					style={styles.reactionContainer}
 				>
-					<ImageRN source={{ uri: 'add_reaction' }} style={{ width: 17, height: 17 }} />
+					<ImageRN source={{ uri: 'add_reaction' }} style={styles.addReaction} />
 				</TouchableOpacity>
 			</View>
 		);

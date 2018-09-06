@@ -87,6 +87,10 @@ export default StyleSheet.create({
 		borderColor: '#1d74f580',
 		backgroundColor: '#e8f2ff'
 	},
+	addReaction: {
+		width: 17,
+		height: 17
+	},
 	errorIcon: {
 		paddingRight: 12,
 		paddingLeft: 0,
@@ -152,5 +156,9 @@ export default StyleSheet.create({
 		width: 300,
 		height: 300,
 		resizeMode: 'contain'
+	},
+	edited: {
+		fontSize: 14,
+		color: '#9EA2A8'
 	}
 });

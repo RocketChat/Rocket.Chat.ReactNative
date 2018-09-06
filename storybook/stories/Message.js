@@ -65,11 +65,8 @@ export default (
 		<Message msg='Message' alias='Diego Mello' />
 		<Separator title='With alias' />
 
-		<Message msg='Message' editedBy='diego.mello' />
+		<Message msg='Message' edited />
 		<Separator title='Edited' />
-
-		<Message msg='Message' editedBy='rocket.cat' />
-		<Separator title='Edited by a different user' />
 
 		<Message
 			msg='Message'

@@ -21,7 +21,7 @@ export default class Markdown extends React.Component {
 	}
 	render() {
 		const {
-			msg, customEmojis, style, rules, baseUrl, username
+			msg, customEmojis, style, rules, baseUrl, username, edited
 		} = this.props;
 		if (!msg) {
 			return null;
@@ -32,13 +32,11 @@ export default class Markdown extends React.Component {
 		return (
 			<MarkdownRenderer
 				rules={{
-					...Platform.OS === 'android' ? {} : {
-						paragraph: (node, children) => (
-							<Text key={node.key} style={styles.paragraph}>
-								{children}
-							</Text>
-						)
-					},
+					paragraph: (node, children) => (
+						<Text key={node.key} style={styles.paragraph}>
+							{children} {edited ? <Text style={styles.edited}>(edited)</Text> : null}
+						</Text>
+					),
 					mention: (node) => {
 						const { content, key } = node;
 						let mentionStyle = styles.mention;
@@ -122,5 +120,6 @@ Markdown.propTypes = {
 	baseUrl: PropTypes.string.isRequired,
 	customEmojis: PropTypes.object.isRequired,
 	style: PropTypes.any,
-	rules: PropTypes.object
+	rules: PropTypes.object,
+	edited: PropTypes.bool
 };
