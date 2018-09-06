@@ -18,6 +18,7 @@ import Touch from '../../utils/touch';
 import { toggleSortDropdown } from '../../actions/rooms';
 
 const ROW_HEIGHT = 70;
+const SCROLL_OFFSET = 56;
 
 const isAndroid = () => Platform.OS === 'android';
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
@@ -62,6 +63,7 @@ export default class RoomsListView extends LoggedView {
 
 	static navigatorStyle = {
 		navBarCustomView: 'RoomsListHeaderView',
+		navBarComponentAlignment: 'fill',
 		navBarBackgroundColor: isAndroid() ? '#2F343D' : undefined,
 		navBarTextColor: isAndroid() ? '#FFF' : undefined,
 		navBarButtonColor: isAndroid() ? '#FFF' : undefined
@@ -272,6 +274,7 @@ export default class RoomsListView extends LoggedView {
 		navigator.setButtons({ leftButtons, rightButtons });
 		navigator.setStyle({
 			navBarCustomView: 'RoomsListHeaderView',
+			navBarComponentAlignment: 'fill',
 			navBarBackgroundColor: isAndroid() ? '#2F343D' : undefined,
 			navBarTextColor: isAndroid() ? '#FFF' : undefined,
 			navBarButtonColor: isAndroid() ? '#FFF' : undefined
@@ -355,7 +358,16 @@ export default class RoomsListView extends LoggedView {
 		}
 	}
 
-	toggleSort = () => this.props.toggleSortDropdown();
+	toggleSort = () => {
+		if (Platform.OS === 'ios') {
+			this.scroll.scrollTo({ x: 0, y: SCROLL_OFFSET, animated: true });
+		} else {
+			this.scroll.scrollTo({ x: 0, y: 0, animated: true });
+		}
+		setTimeout(() => {
+			this.props.toggleSortDropdown();
+		}, 100);
+	}
 
 	renderHeader = () => {
 		if (this.state.search.length > 0) {
@@ -471,7 +483,8 @@ export default class RoomsListView extends LoggedView {
 
 		return (
 			<ScrollView
-				contentOffset={Platform.OS === 'ios' ? { x: 0, y: 56 } : {}}
+				ref={ref => this.scroll = ref}
+				contentOffset={Platform.OS === 'ios' ? { x: 0, y: SCROLL_OFFSET } : {}}
 				keyboardShouldPersistTaps='always'
 				testID='rooms-list-view-list'
 			>
