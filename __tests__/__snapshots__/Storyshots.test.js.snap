@@ -10121,6 +10121,7 @@ exports[`Storyshots Message list 1`] = `
                                 }
                               >
                                 <View
+                                  renderToHardwareTextureAndroid={true}
                                   style={
                                     Object {
                                       "transform": Array [
@@ -10690,6 +10691,7 @@ exports[`Storyshots Message list 1`] = `
                                 }
                               >
                                 <View
+                                  renderToHardwareTextureAndroid={true}
                                   style={
                                     Object {
                                       "transform": Array [
