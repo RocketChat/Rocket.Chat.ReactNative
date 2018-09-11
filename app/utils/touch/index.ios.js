@@ -15,7 +15,7 @@ const Touch = ({ children, onPress, ...props }) => (
 
 Touch.propTypes = {
 	children: PropTypes.node.isRequired,
-	onPress: PropTypes.func.isRequired
+	onPress: PropTypes.func
 };
 
 export default Touch;

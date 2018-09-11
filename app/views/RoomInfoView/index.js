@@ -43,6 +43,7 @@ export default class RoomInfoView extends LoggedView {
 		navigator: PropTypes.object,
 		rid: PropTypes.string,
 		userId: PropTypes.string,
+		baseUrl: PropTypes.string,
 		activeUsers: PropTypes.object,
 		Message_TimeFormat: PropTypes.string,
 		roles: PropTypes.object
@@ -192,6 +193,7 @@ export default class RoomInfoView extends LoggedView {
 			size={100}
 			style={styles.avatar}
 			type={room.t}
+			baseUrl={this.props.baseUrl}
 		>
 			{room.t === 'd' ? <Status style={[sharedStyles.status, styles.status]} id={roomUser._id} /> : null}
 		</Avatar>

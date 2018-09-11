@@ -85,7 +85,8 @@ const keyExtractor = item => item.id;
 		server: state.login.user && state.login.user.server,
 		status: state.login.user && state.login.user.status,
 		username: state.login.user && state.login.user.username
-	}
+	},
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }), dispatch => ({
 	selectServerRequest: server => dispatch(selectServerRequest(server)),
 	logout: () => dispatch(logout()),
@@ -93,6 +94,7 @@ const keyExtractor = item => item.id;
 }))
 export default class Sidebar extends Component {
 	static propTypes = {
+		baseUrl: PropTypes.string,
 		navigator: PropTypes.object,
 		server: PropTypes.string.isRequired,
 		selectServerRequest: PropTypes.func.isRequired,
@@ -323,7 +325,7 @@ export default class Sidebar extends Component {
 	)
 
 	render() {
-		const { user, server } = this.props;
+		const { user, server, baseUrl } = this.props;
 		if (!user) {
 			return null;
 		}
@@ -341,6 +343,7 @@ export default class Sidebar extends Component {
 								text={user.username}
 								size={30}
 								style={styles.avatar}
+								baseUrl={baseUrl}
 							/>
 							<View style={styles.headerTextContainer}>
 								<View style={styles.headerUsername}>

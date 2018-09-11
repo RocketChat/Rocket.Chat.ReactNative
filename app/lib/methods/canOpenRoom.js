@@ -50,7 +50,7 @@ export default async function canOpenRoom({ rid, path }) {
 
 	try {
 		// eslint-disable-next-line
-		const data = await (this.ddp && this.ddp.status ? canOpenRoomDDP.call(this, { rid, type, name }) : canOpenRoomREST.call(this, { type, rid }));
+		const data = await (this.ddp && this.ddp.status && false ? canOpenRoomDDP.call(this, { rid, type, name }) : canOpenRoomREST.call(this, { type, rid }));
 		return data;
 	} catch (e) {
 		log('canOpenRoom', e);

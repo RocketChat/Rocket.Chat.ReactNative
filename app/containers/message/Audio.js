@@ -1,74 +1,55 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, TouchableOpacity, Text, Easing } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, Easing, Image } from 'react-native';
 import Video from 'react-native-video';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import Slider from 'react-native-slider';
-import { connect } from 'react-redux';
+import moment from 'moment';
+
 import Markdown from './Markdown';
 
 const styles = StyleSheet.create({
 	audioContainer: {
 		flex: 1,
 		flexDirection: 'row',
-		justifyContent: 'center',
 		alignItems: 'center',
-		height: 50,
-		margin: 5,
-		backgroundColor: '#eee',
-		borderRadius: 6
+		height: 56,
+		backgroundColor: '#f7f8fa',
+		borderRadius: 4,
+		marginBottom: 10
 	},
 	playPauseButton: {
-		width: 50,
+		width: 56,
 		alignItems: 'center',
-		backgroundColor: 'transparent',
-		borderRightColor: '#ccc',
-		borderRightWidth: 1
-	},
-	playPauseIcon: {
-		color: '#ccc',
 		backgroundColor: 'transparent'
 	},
-	progressContainer: {
+	playPauseImage: {
+		width: 30,
+		height: 30
+	},
+	slider: {
 		flex: 1,
-		justifyContent: 'center',
-		height: '100%',
-		marginHorizontal: 10
-	},
-	label: {
-		color: '#888',
-		fontSize: 10
-	},
-	currentTime: {
-		position: 'absolute',
-		left: 0,
-		bottom: 2
+		marginRight: 10
 	},
 	duration: {
-		position: 'absolute',
-		right: 0,
-		bottom: 2
+		marginRight: 16,
+		fontSize: 14,
+		fontWeight: '500',
+		color: '#54585e'
+	},
+	thumbStyle: {
+		width: 12,
+		height: 12
 	}
 });
 
-const formatTime = (t = 0, duration = 0) => {
-	const time = Math.min(
-		Math.max(t, 0),
-		duration
-	);
-	const formattedMinutes = Math.floor(time / 60).toFixed(0).padStart(2, 0);
-	const formattedSeconds = Math.floor(time % 60).toFixed(0).padStart(2, 0);
-	return `${ formattedMinutes }:${ formattedSeconds }`;
-};
+const formatTime = seconds => moment.utc(seconds * 1000).format('mm:ss');
 
-@connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-}))
 export default class Audio extends React.PureComponent {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
-		user: PropTypes.object.isRequired
+		user: PropTypes.object.isRequired,
+		customEmojis: PropTypes.object.isRequired
 	}
 
 	constructor(props) {
@@ -90,7 +71,7 @@ export default class Audio extends React.PureComponent {
 	}
 
 	onProgress(data) {
-		if (data.currentTime < this.state.duration) {
+		if (data.currentTime <= this.state.duration) {
 			this.setState({ currentTime: data.currentTime });
 		}
 	}
@@ -100,10 +81,6 @@ export default class Audio extends React.PureComponent {
 		requestAnimationFrame(() => {
 			this.player.seek(0);
 		});
-	}
-
-	getCurrentTime() {
-		return formatTime(this.state.currentTime, this.state.duration);
 	}
 
 	getDuration() {
@@ -116,7 +93,10 @@ export default class Audio extends React.PureComponent {
 
 	render() {
 		const { uri, paused } = this.state;
-		const { description } = this.props.file;
+		const {
+			user, baseUrl, customEmojis, file
+		} = this.props;
+		const { description } = file;
 		return (
 			[
 				<View key='audio' style={styles.audioContainer}>
@@ -136,29 +116,30 @@ export default class Audio extends React.PureComponent {
 						onPress={() => this.togglePlayPause()}
 					>
 						{
-							paused ? <Icon name='play-arrow' size={50} style={styles.playPauseIcon} />
-								: <Icon name='pause' size={47} style={styles.playPauseIcon} />
+							paused ?
+								<Image source={{ uri: 'play' }} style={styles.playPauseImage} /> :
+								<Image source={{ uri: 'pause' }} style={styles.playPauseImage} />
 						}
 					</TouchableOpacity>
-					<View style={styles.progressContainer}>
-						<Text style={[styles.label, styles.currentTime]}>{this.getCurrentTime()}</Text>
-						<Text style={[styles.label, styles.duration]}>{this.getDuration()}</Text>
-						<Slider
-							value={this.state.currentTime}
-							maximumValue={this.state.duration}
-							minimumValue={0}
-							animateTransitions
-							animationConfig={{
-								duration: 250,
-								easing: Easing.linear,
-								delay: 0
-							}}
-							thumbTintColor='#ccc'
-							onValueChange={value => this.setState({ currentTime: value })}
-						/>
-					</View>
+					<Slider
+						style={styles.slider}
+						value={this.state.currentTime}
+						maximumValue={this.state.duration}
+						minimumValue={0}
+						animateTransitions
+						animationConfig={{
+							duration: 250,
+							easing: Easing.linear,
+							delay: 0
+						}}
+						thumbTintColor='#1d74f5'
+						minimumTrackTintColor='#1d74f5'
+						onValueChange={value => this.setState({ currentTime: value })}
+						thumbStyle={styles.thumbStyle}
+					/>
+					<Text style={styles.duration}>{this.getDuration()}</Text>
 				</View>,
-				<Markdown key='description' msg={description} />
+				<Markdown key='description' msg={description} baseUrl={baseUrl} customEmojis={customEmojis} username={user.username} />
 			]
 		);
 	}

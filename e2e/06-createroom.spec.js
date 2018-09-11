@@ -88,8 +88,8 @@ describe('Create room screen', () => {
 
 		it('should navigate to create channel view', async() => {
 			await element(by.id('selected-users-view-submit')).tap();
-			await waitFor(element(by.id('create-channel-view'))).toBeVisible().withTimeout(5000);
-			await expect(element(by.id('create-channel-view'))).toBeVisible();
+			await waitFor(element(by.id('create-channel-view'))).toExist().withTimeout(5000);
+			await expect(element(by.id('create-channel-view'))).toExist();
 		});
 	})
 
@@ -145,6 +145,7 @@ describe('Create room screen', () => {
 				await expect(element(by.text(`private${ data.random }`))).toBeVisible();
 				await tapBack(2);
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
+				await element(by.id('rooms-list-view-search')).replaceText(`private${ data.random }`);
 				await waitFor(element(by.id(`rooms-list-view-item-private${ data.random }`))).toBeVisible().withTimeout(60000);
 				await expect(element(by.id(`rooms-list-view-item-private${ data.random }`))).toBeVisible();
 			});

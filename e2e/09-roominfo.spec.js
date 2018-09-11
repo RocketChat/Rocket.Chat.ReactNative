@@ -12,6 +12,7 @@ async function navigateToRoomInfo(type) {
 	} else {
 		room = `private${ data.random }`;
 	}
+	await element(by.id('rooms-list-view-search')).replaceText(room);
     await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible().withTimeout(2000);
     await element(by.id(`rooms-list-view-item-${ room }`)).tap();
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(2000);
@@ -310,6 +311,7 @@ describe('Room info screen', () => {
 				await expect(element(by.text('Yes, delete it!'))).toBeVisible();
 				await element(by.text('Yes, delete it!')).tap();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
+				await element(by.id('rooms-list-view-search')).replaceText('');
 				await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible().withTimeout(60000);
 				await expect(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible();
 			});
