@@ -19,6 +19,7 @@ const scrollProps = {
 
 export default class EmojiPicker extends Component {
 	static propTypes = {
+		baseUrl: PropTypes.string.isRequired,
 		onEmojiSelected: PropTypes.func,
 		tabEmojiStyle: PropTypes.object,
 		emojisPerRow: PropTypes.number,
@@ -110,6 +111,7 @@ export default class EmojiPicker extends Component {
 				style={styles.categoryContainer}
 				size={this.props.emojisPerRow}
 				width={this.props.width}
+				baseUrl={this.props.baseUrl}
 			/>
 		);
 	}
@@ -123,12 +125,14 @@ export default class EmojiPicker extends Component {
 			<ScrollableTabView
 				renderTabBar={() => <TabBar tabEmojiStyle={this.props.tabEmojiStyle} />}
 				contentProps={scrollProps}
+				style={styles.background}
 			>
 				{
 					categories.tabs.map((tab, i) => (
 						<ScrollView
 							key={tab.category}
 							tabLabel={tab.tabLabel}
+							style={styles.background}
 							{...scrollProps}
 						>
 							{this.renderCategory(tab.category, i)}

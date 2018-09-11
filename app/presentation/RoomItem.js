@@ -122,12 +122,14 @@ const renderNumber = (unread, userMentions) => {
 const attrs = ['name', 'unread', 'userMentions', 'alert', 'showLastMessage', 'type'];
 @connect(state => ({
 	username: state.login.user && state.login.user.username,
-	StoreLastMessage: state.settings.Store_Last_Message
+	StoreLastMessage: state.settings.Store_Last_Message,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }))
 export default class RoomItem extends React.Component {
 	static propTypes = {
 		type: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
+		baseUrl: PropTypes.string.isRequired,
 		StoreLastMessage: PropTypes.bool,
 		_updatedAt: PropTypes.instanceOf(Date),
 		lastMessage: PropTypes.object,
@@ -162,8 +164,10 @@ export default class RoomItem extends React.Component {
 		return attrs.some(key => nextProps[key] !== this.props[key]);
 	}
 	get avatar() {
-		const { type, name, avatarSize } = this.props;
-		return <Avatar text={name} size={avatarSize} type={type} style={{ marginHorizontal: 15 }} />;
+		const {
+			type, name, avatarSize, baseUrl
+		} = this.props;
+		return <Avatar text={name} size={avatarSize} type={type} baseUrl={baseUrl} style={{ marginHorizontal: 15 }} />;
 	}
 
 	get lastMessage() {

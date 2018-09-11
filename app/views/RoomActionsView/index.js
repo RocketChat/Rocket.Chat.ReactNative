@@ -23,13 +23,15 @@ const renderSeparator = () => <View style={styles.separator} />;
 
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
-	username: state.login.user && state.login.user.username
+	username: state.login.user && state.login.user.username,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }), dispatch => ({
 	leaveRoom: rid => dispatch(leaveRoom(rid))
 }))
 /** @extends React.Component */
 export default class RoomActionsView extends LoggedView {
 	static propTypes = {
+		baseUrl: PropTypes.string,
 		rid: PropTypes.string,
 		navigator: PropTypes.object,
 		userId: PropTypes.string,
@@ -343,6 +345,7 @@ export default class RoomActionsView extends LoggedView {
 					size={50}
 					style={styles.avatar}
 					type={t}
+					baseUrl={this.props.baseUrl}
 				>
 					{t === 'd' ? <Status style={sharedStyles.status} id={member._id} /> : null }
 				</Avatar>,

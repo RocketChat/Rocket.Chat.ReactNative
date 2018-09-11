@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, SafeAreaView, FlatList, Text, Platform, Image } from 'react-native';
+import { connect } from 'react-redux';
 
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
@@ -40,8 +41,11 @@ const styles = StyleSheet.create({
 	}
 });
 
+@connect(state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+}))
 /** @extends React.Component */
-export default class SelectedUsersView extends LoggedView {
+export default class NewMessageView extends LoggedView {
 	static navigatorButtons = {
 		leftButtons: [{
 			id: 'cancel',
@@ -51,6 +55,7 @@ export default class SelectedUsersView extends LoggedView {
 
 	static propTypes = {
 		navigator: PropTypes.object,
+		baseUrl: PropTypes.string,
 		onPressItem: PropTypes.func.isRequired
 	};
 
@@ -140,6 +145,7 @@ export default class SelectedUsersView extends LoggedView {
 				name={item.search ? item.name : item.fname}
 				username={item.search ? item.username : item.name}
 				onPress={() => this.onPressItem(item)}
+				baseUrl={this.props.baseUrl}
 				testID={`new-message-view-item-${ item.name }`}
 				style={style}
 			/>

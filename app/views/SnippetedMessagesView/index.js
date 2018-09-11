@@ -17,8 +17,7 @@ import I18n from '../../i18n';
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token
-	},
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	}
 }), dispatch => ({
 	openSnippetedMessages: (rid, limit) => dispatch(openSnippetedMessages(rid, limit)),
 	closeSnippetedMessages: () => dispatch(closeSnippetedMessages())
@@ -30,7 +29,6 @@ export default class SnippetedMessagesView extends LoggedView {
 		messages: PropTypes.array,
 		ready: PropTypes.bool,
 		user: PropTypes.object,
-		baseUrl: PropTypes.string,
 		openSnippetedMessages: PropTypes.func,
 		closeSnippetedMessages: PropTypes.func
 	}
@@ -87,9 +85,7 @@ export default class SnippetedMessagesView extends LoggedView {
 			style={styles.message}
 			reactions={item.reactions}
 			user={this.props.user}
-			baseUrl={this.props.baseUrl}
 			customTimeFormat='MMMM Do YYYY, h:mm:ss a'
-			onLongPress={() => {}}
 		/>
 	);
 

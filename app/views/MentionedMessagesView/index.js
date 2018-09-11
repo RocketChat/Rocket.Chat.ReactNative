@@ -17,8 +17,7 @@ import I18n from '../../i18n';
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token
-	},
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	}
 }), dispatch => ({
 	openMentionedMessages: (rid, limit) => dispatch(openMentionedMessages(rid, limit)),
 	closeMentionedMessages: () => dispatch(closeMentionedMessages())
@@ -30,7 +29,6 @@ export default class MentionedMessagesView extends LoggedView {
 		messages: PropTypes.array,
 		ready: PropTypes.bool,
 		user: PropTypes.object,
-		baseUrl: PropTypes.string,
 		openMentionedMessages: PropTypes.func,
 		closeMentionedMessages: PropTypes.func
 	}
@@ -87,9 +85,7 @@ export default class MentionedMessagesView extends LoggedView {
 			style={styles.message}
 			reactions={item.reactions}
 			user={this.props.user}
-			baseUrl={this.props.baseUrl}
 			customTimeFormat='MMMM Do YYYY, h:mm:ss a'
-			onLongPress={() => {}}
 		/>
 	)
 

@@ -232,15 +232,15 @@ export default class RoomView extends LoggedView {
 		<Message
 			key={item._id}
 			item={item}
-			_updatedAt={item._updatedAt}
 			status={item.status}
 			reactions={JSON.parse(JSON.stringify(item.reactions))}
 			user={this.props.user}
-			onReactionPress={this.onReactionPress}
-			onLongPress={this.onMessageLongPress}
 			archived={this.state.room.archived}
 			broadcast={this.state.room.broadcast}
 			previousItem={previousItem}
+			_updatedAt={item._updatedAt}
+			onReactionPress={this.onReactionPress}
+			onLongPress={this.onMessageLongPress}
 		/>
 	);
 
@@ -273,7 +273,7 @@ export default class RoomView extends LoggedView {
 
 	renderHeader = () => {
 		if (!this.state.end) {
-			return <Text style={styles.loadingMore}>{I18n.t('Loading_messages_ellipsis')}</Text>;
+			return <ActivityIndicator style={[styles.loading, { transform: [{ scaleY: -1 }] }]} />;
 		}
 		return null;
 	}

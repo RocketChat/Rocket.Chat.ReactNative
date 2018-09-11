@@ -9,15 +9,17 @@ import Markdown from '../message/Markdown';
 
 const styles = StyleSheet.create({
 	container: {
-		flexDirection: 'row'
+		flexDirection: 'row',
+		marginTop: 10,
+		backgroundColor: '#fff'
 	},
 	messageContainer: {
 		flex: 1,
-		marginHorizontal: 15,
+		marginHorizontal: 10,
 		backgroundColor: '#F3F4F5',
 		paddingHorizontal: 15,
 		paddingVertical: 10,
-		borderRadius: 2
+		borderRadius: 4
 	},
 	header: {
 		flexDirection: 'row',
@@ -35,18 +37,23 @@ const styles = StyleSheet.create({
 		marginLeft: 5
 	},
 	close: {
-		marginRight: 15
+		marginRight: 10
 	}
 });
 
 @connect(state => ({
-	Message_TimeFormat: state.settings.Message_TimeFormat
+	Message_TimeFormat: state.settings.Message_TimeFormat,
+	customEmojis: state.customEmojis,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }))
 export default class ReplyPreview extends Component {
 	static propTypes = {
 		message: PropTypes.object.isRequired,
 		Message_TimeFormat: PropTypes.string.isRequired,
-		close: PropTypes.func.isRequired
+		close: PropTypes.func.isRequired,
+		customEmojis: PropTypes.object.isRequired,
+		baseUrl: PropTypes.string.isRequired,
+		username: PropTypes.string.isRequired
 	}
 
 	close = () => {
@@ -54,7 +61,9 @@ export default class ReplyPreview extends Component {
 	}
 
 	render() {
-		const { message, Message_TimeFormat } = this.props;
+		const {
+			message, Message_TimeFormat, customEmojis, baseUrl, username
+		} = this.props;
 		const time = moment(message.ts).format(Message_TimeFormat);
 		return (
 			<View style={styles.container}>
@@ -63,9 +72,9 @@ export default class ReplyPreview extends Component {
 						<Text style={styles.username}>{message.u.username}</Text>
 						<Text style={styles.time}>{time}</Text>
 					</View>
-					<Markdown msg={message.msg} />
+					<Markdown msg={message.msg} customEmojis={customEmojis} baseUrl={baseUrl} username={username} />
 				</View>
-				<Icon name='close' size={20} style={styles.close} onPress={this.close} />
+				<Icon name='close' color='#9ea2a8' size={20} style={styles.close} onPress={this.close} />
 			</View>
 		);
 	}

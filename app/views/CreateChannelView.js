@@ -16,7 +16,8 @@ import { showErrorAlert } from '../utils/info';
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: '#f7f8fa'
+		backgroundColor: '#f7f8fa',
+		flex: 1
 	},
 	list: {
 		width: '100%',
@@ -68,6 +69,7 @@ const styles = StyleSheet.create({
 });
 
 @connect(state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	createChannel: state.createChannel,
 	users: state.selectedUsers.users
 }), dispatch => ({
@@ -78,6 +80,7 @@ const styles = StyleSheet.create({
 export default class CreateChannelView extends LoggedView {
 	static propTypes = {
 		navigator: PropTypes.object,
+		baseUrl: PropTypes.string,
 		create: PropTypes.func.isRequired,
 		removeUser: PropTypes.func.isRequired,
 		createChannel: PropTypes.object.isRequired,
@@ -218,6 +221,7 @@ export default class CreateChannelView extends LoggedView {
 			username={item.name}
 			onPress={() => this.removeUser(item)}
 			testID={`create-channel-view-item-${ item.name }`}
+			baseUrl={this.props.baseUrl}
 		/>
 	)
 
@@ -241,7 +245,7 @@ export default class CreateChannelView extends LoggedView {
 				contentContainerStyle={[sharedStyles.container, styles.container]}
 				keyboardVerticalOffset={128}
 			>
-				<SafeAreaView testID='create-channel-view'>
+				<SafeAreaView testID='create-channel-view' style={styles.container}>
 					<ScrollView {...scrollPersistTaps}>
 						<View style={sharedStyles.separatorVertical}>
 							<TextInput

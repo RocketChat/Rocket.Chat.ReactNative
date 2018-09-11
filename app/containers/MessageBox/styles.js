@@ -11,13 +11,17 @@ export default StyleSheet.create({
 		borderTopColor: '#D8D8D8',
 		zIndex: 2
 	},
+	composer: {
+		backgroundColor: '#fff',
+		flexDirection: 'column',
+		borderTopColor: '#e1e5e8',
+		borderTopWidth: 1
+	},
 	textArea: {
 		flexDirection: 'row',
 		alignItems: 'center',
 		flexGrow: 0,
-		backgroundColor: '#fff',
-		borderTopColor: '#ECECEC',
-		borderTopWidth: 1
+		backgroundColor: '#fff'
 	},
 	textBoxInput: {
 		textAlignVertical: 'center',

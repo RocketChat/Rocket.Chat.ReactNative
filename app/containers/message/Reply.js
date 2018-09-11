@@ -1,39 +1,41 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import Markdown from './Markdown';
-import QuoteMark from './QuoteMark';
-import Avatar from '../Avatar';
 import openLink from '../../utils/openLink';
-
+import Touch from '../../utils/touch';
 
 const styles = StyleSheet.create({
 	button: {
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginTop: 2,
+		marginTop: 15,
 		alignSelf: 'flex-end'
 	},
 	attachmentContainer: {
 		flex: 1,
-		flexDirection: 'column'
+		borderRadius: 4,
+		flexDirection: 'column',
+		backgroundColor: '#f3f4f5',
+		padding: 15
 	},
 	authorContainer: {
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
 	author: {
-		fontWeight: 'bold',
-		marginHorizontal: 5,
-		flex: 1
+		color: '#1d74f5',
+		fontSize: 18,
+		fontWeight: '500',
+		marginRight: 10
 	},
 	time: {
-		fontSize: 10,
+		fontSize: 14,
 		fontWeight: 'normal',
-		color: '#888',
+		color: '#9ea2a8',
 		marginLeft: 5
 	},
 	fieldsContainer: {
@@ -47,6 +49,9 @@ const styles = StyleSheet.create({
 	},
 	fieldTitle: {
 		fontWeight: 'bold'
+	},
+	marginTop: {
+		marginTop: 4
 	}
 });
 
@@ -58,22 +63,12 @@ const onPress = (attachment) => {
 	openLink(attachment.title_link || attachment.author_link);
 };
 
-const Reply = ({ attachment, timeFormat }) => {
+const Reply = ({
+	attachment, timeFormat, baseUrl, customEmojis, user, index
+}) => {
 	if (!attachment) {
 		return null;
 	}
-
-	const renderAvatar = () => {
-		if (!attachment.author_icon && !attachment.author_name) {
-			return null;
-		}
-		return (
-			<Avatar
-				text={attachment.author_name}
-				size={16}
-			/>
-		);
-	};
 
 	const renderAuthor = () => (
 		attachment.author_name ? <Text style={styles.author}>{attachment.author_name}</Text> : null
@@ -90,7 +85,6 @@ const Reply = ({ attachment, timeFormat }) => {
 		}
 		return (
 			<View style={styles.authorContainer}>
-				{renderAvatar()}
 				{renderAuthor()}
 				{renderTime()}
 			</View>
@@ -98,7 +92,7 @@ const Reply = ({ attachment, timeFormat }) => {
 	};
 
 	const renderText = () => (
-		attachment.text ? <Markdown msg={attachment.text} /> : null
+		attachment.text ? <Markdown msg={attachment.text} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} /> : null
 	);
 
 	const renderFields = () => {
@@ -119,28 +113,26 @@ const Reply = ({ attachment, timeFormat }) => {
 	};
 
 	return (
-		<TouchableOpacity
+		<Touch
 			onPress={() => onPress(attachment)}
-			style={styles.button}
+			style={[styles.button, index > 0 && styles.marginTop]}
 		>
-			<QuoteMark color={attachment.color} />
 			<View style={styles.attachmentContainer}>
 				{renderTitle()}
 				{renderText()}
 				{renderFields()}
-				{attachment.attachments ?
-					attachment.attachments
-						.map(attach => <Reply key={attach.text} attachment={attach} timeFormat={timeFormat} />)
-					: null
-				}
 			</View>
-		</TouchableOpacity>
+		</Touch>
 	);
 };
 
 Reply.propTypes = {
 	attachment: PropTypes.object.isRequired,
-	timeFormat: PropTypes.string.isRequired
+	timeFormat: PropTypes.string.isRequired,
+	baseUrl: PropTypes.string.isRequired,
+	customEmojis: PropTypes.object.isRequired,
+	user: PropTypes.object.isRequired,
+	index: PropTypes.number
 };
 
 export default Reply;

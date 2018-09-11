@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { StyleSheet, Text, View, ViewPropTypes } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import avatarInitialsAndColor from '../utils/avatarInitialsAndColor';
@@ -19,13 +18,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-}))
 export default class Avatar extends React.PureComponent {
 	static propTypes = {
+		baseUrl: PropTypes.string.isRequired,
 		style: ViewPropTypes.style,
-		baseUrl: PropTypes.string,
 		text: PropTypes.string,
 		avatar: PropTypes.string,
 		size: PropTypes.number,

@@ -97,9 +97,7 @@ export default class SearchMessagesView extends LoggedView {
 			style={styles.message}
 			reactions={item.reactions}
 			user={this.props.user}
-			baseUrl={this.props.baseUrl}
 			customTimeFormat='MMMM Do YYYY, h:mm:ss a'
-			onLongPress={() => {}}
 			onReactionPress={async(emoji) => {
 				try {
 					await RocketChat.setReaction(emoji, item._id);
@@ -124,7 +122,7 @@ export default class SearchMessagesView extends LoggedView {
 						placeholder={I18n.t('Search_Messages')}
 						testID='search-message-view-input'
 					/>
-					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} />
+					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} username='' baseUrl='' customEmojis={{}} />
 					<View style={styles.divider} />
 				</View>
 				<FlatList

@@ -79,5 +79,9 @@ export default {
 	},
 	Store_Last_Message: {
 		type: 'valueAsBoolean'
+	},
+	UI_Use_Real_Name: {
+		type: 'valueAsBoolean'
 	}
 };
+export const settingsUpdatedAt = new Date('2018-09-10');

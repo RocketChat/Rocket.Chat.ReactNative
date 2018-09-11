@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
 });
 
 @connect(state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	users: state.selectedUsers.users,
 	loading: state.selectedUsers.loading
 }), dispatch => ({
@@ -43,6 +44,7 @@ export default class SelectedUsersView extends LoggedView {
 		navigator: PropTypes.object,
 		rid: PropTypes.string,
 		nextAction: PropTypes.string.isRequired,
+		baseUrl: PropTypes.string,
 		addUser: PropTypes.func.isRequired,
 		removeUser: PropTypes.func.isRequired,
 		reset: PropTypes.func.isRequired,
@@ -185,6 +187,7 @@ export default class SelectedUsersView extends LoggedView {
 			username={item.name}
 			onPress={() => this._onPressSelectedItem(item)}
 			testID={`selected-user-${ item.name }`}
+			baseUrl={this.props.baseUrl}
 			style={{ paddingRight: 15 }}
 		/>
 	)
@@ -211,6 +214,7 @@ export default class SelectedUsersView extends LoggedView {
 				onPress={() => this._onPressItem(item._id, item)}
 				testID={`select-users-view-item-${ item.name }`}
 				icon={this.isChecked(username) ? 'check' : null}
+				baseUrl={this.props.baseUrl}
 				style={style}
 			/>
 		);
