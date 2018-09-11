@@ -10,9 +10,9 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 
 const emojisPerRow = Platform.OS === 'ios' ? 8 : 9;
 
-const renderEmoji = (emoji, size) => {
+const renderEmoji = (emoji, size, baseUrl) => {
 	if (emoji.isCustom) {
-		return <CustomEmoji style={[styles.customCategoryEmoji, { height: size - 8, width: size - 8 }]} emoji={emoji} />;
+		return <CustomEmoji style={[styles.customCategoryEmoji, { height: size - 8, width: size - 8 }]} emoji={emoji} baseUrl={baseUrl} />;
 	}
 	return (
 		<Text style={[styles.categoryEmoji, { height: size, width: size, fontSize: size - 14 }]}>
@@ -25,6 +25,7 @@ const renderEmoji = (emoji, size) => {
 @responsive
 export default class EmojiCategory extends React.Component {
 	static propTypes = {
+		baseUrl: PropTypes.string.isRequired,
 		emojis: PropTypes.any,
 		window: PropTypes.any,
 		onEmojiSelected: PropTypes.func,
@@ -44,6 +45,7 @@ export default class EmojiCategory extends React.Component {
 	}
 
 	renderItem(emoji, size) {
+		const { baseUrl } = this.props;
 		return (
 			<TouchableOpacity
 				activeOpacity={0.7}
@@ -51,7 +53,7 @@ export default class EmojiCategory extends React.Component {
 				onPress={() => this.props.onEmojiSelected(emoji)}
 				testID={`reaction-picker-${ emoji.isCustom ? emoji.content : emoji }`}
 			>
-				{renderEmoji(emoji, size)}
+				{renderEmoji(emoji, size, baseUrl)}
 			</TouchableOpacity>);
 	}
 

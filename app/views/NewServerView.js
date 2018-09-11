@@ -32,10 +32,10 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		color: '#9EA2A8',
-		fontSize: moderateScale(17),
-		paddingTop: scale(14),
-		paddingBottom: scale(14),
-		paddingHorizontal: scale(16)
+		fontSize: 17,
+		paddingTop: 14,
+		paddingBottom: 14,
+		paddingHorizontal: 16
 	}
 });
 

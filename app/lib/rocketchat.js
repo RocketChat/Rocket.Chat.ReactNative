@@ -155,9 +155,9 @@ const RocketChat = {
 			}
 
 			this.ddp = new Ddp(url, login);
-			// if (login) {
-			// 	protectedFunction(() => RocketChat.getRooms());
-			// }
+			if (login) {
+				protectedFunction(() => RocketChat.getRooms());
+			}
 
 			this.ddp.on('login', protectedFunction(() => reduxStore.dispatch(loginRequest())));
 

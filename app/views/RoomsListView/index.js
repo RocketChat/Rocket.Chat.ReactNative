@@ -43,7 +43,7 @@ if (Platform.OS === 'android') {
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
 	server: state.server.server,
-	Site_Url: state.settings.Site_Url,
+	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
 	searchText: state.rooms.searchText,
 	loadingServer: state.server.loading,
 	showServerDropdown: state.rooms.showServerDropdown,
@@ -51,7 +51,8 @@ if (Platform.OS === 'android') {
 	sortBy: state.sortPreferences.sortBy,
 	groupByType: state.sortPreferences.groupByType,
 	showFavorites: state.sortPreferences.showFavorites,
-	showUnread: state.sortPreferences.showUnread
+	showUnread: state.sortPreferences.showUnread,
+	useRealName: state.settings.UI_Use_Real_Name
 }), dispatch => ({
 	toggleSortDropdown: () => dispatch(toggleSortDropdown())
 }))
@@ -72,7 +73,7 @@ export default class RoomsListView extends LoggedView {
 	static propTypes = {
 		navigator: PropTypes.object,
 		userId: PropTypes.string,
-		Site_Url: PropTypes.string,
+		baseUrl: PropTypes.string,
 		server: PropTypes.string,
 		searchText: PropTypes.string,
 		loadingServer: PropTypes.bool,
@@ -82,12 +83,14 @@ export default class RoomsListView extends LoggedView {
 		groupByType: PropTypes.bool,
 		showFavorites: PropTypes.bool,
 		showUnread: PropTypes.bool,
-		toggleSortDropdown: PropTypes.func
+		toggleSortDropdown: PropTypes.func,
+		useRealName: PropTypes.bool
 	}
 
 	constructor(props) {
 		super('RoomsListView', props);
 
+		this.data = [];
 		this.state = {
 			search: [],
 			loading: true,
@@ -396,18 +399,19 @@ export default class RoomsListView extends LoggedView {
 
 	renderItem = ({ item }) => {
 		const id = item.rid.replace(this.props.userId, '').trim();
+		const { useRealName } = this.props;
 		return (<RoomItem
 			alert={item.alert}
 			unread={item.unread}
 			userMentions={item.userMentions}
 			favorite={item.f}
 			lastMessage={item.lastMessage}
-			name={item.name}
+			name={(useRealName && item.fname) || item.name}
 			_updatedAt={item.roomUpdatedAt}
 			key={item._id}
 			id={id}
 			type={item.t}
-			baseUrl={this.props.Site_Url}
+			baseUrl={this.props.baseUrl}
 			onPress={() => this._onPressItem(item)}
 			testID={`rooms-list-view-item-${ item.name }`}
 			height={ROW_HEIGHT}
@@ -417,6 +421,15 @@ export default class RoomsListView extends LoggedView {
 	renderSeparator = () => <View style={styles.separator} />;
 
 	renderSection = (data, header) => {
+		if (header === 'Unread' && !this.props.showUnread) {
+			return null;
+		} else if (header === 'Favorites' && !this.props.showFavorites) {
+			return null;
+		} else if (['Channels', 'Direct_Messages', 'Private_Groups', 'Livechat'].includes(header) && !this.props.groupByType) {
+			return null;
+		} else if (header === 'Chats' && this.props.groupByType) {
+			return null;
+		}
 		if (data.length > 0) {
 			return (
 				<FlatList

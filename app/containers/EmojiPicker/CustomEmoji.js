@@ -1,11 +1,7 @@
 import React from 'react';
 import { ViewPropTypes, Image } from 'react-native';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
-@connect(state => ({
-	baseUrl: state.settings.Site_Url
-}))
 export default class CustomEmoji extends React.Component {
 	static propTypes = {
 		baseUrl: PropTypes.string.isRequired,

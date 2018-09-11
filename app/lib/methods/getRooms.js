@@ -39,7 +39,7 @@ export default async function() {
 	return new Promise(async(resolve, reject) => {
 		try {
 			// eslint-disable-next-line
-			const { subscriptions, rooms } = await (this.ddp.status ? getRoomDpp.apply(this) : getRoomRest.apply(this));
+			const { subscriptions, rooms } = await (this.ddp.status && false ? getRoomDpp.apply(this) : getRoomRest.apply(this));
 
 			const data = rooms.map(room => ({ room, sub: database.objects('subscriptions').filtered('rid == $0', room._id) }));
 

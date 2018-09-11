@@ -12,13 +12,15 @@ const margin = Platform.OS === 'android' ? 40 : 20;
 const tabEmojiStyle = { fontSize: 15 };
 
 @connect(state => ({
-	showReactionPicker: state.messages.showReactionPicker
+	showReactionPicker: state.messages.showReactionPicker,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }), dispatch => ({
 	toggleReactionPicker: message => dispatch(toggleReactionPicker(message))
 }))
 @responsive
 export default class ReactionPicker extends React.Component {
 	static propTypes = {
+		baseUrl: PropTypes.string.isRequired,
 		window: PropTypes.any,
 		showReactionPicker: PropTypes.bool,
 		toggleReactionPicker: PropTypes.func,
@@ -37,7 +39,7 @@ export default class ReactionPicker extends React.Component {
 	}
 
 	render() {
-		const { window: { width, height }, showReactionPicker } = this.props;
+		const { window: { width, height }, showReactionPicker, baseUrl } = this.props;
 
 		return (showReactionPicker ?
 			<Modal
@@ -56,6 +58,7 @@ export default class ReactionPicker extends React.Component {
 						tabEmojiStyle={tabEmojiStyle}
 						width={Math.min(width, height) - margin}
 						onEmojiSelected={(emoji, shortname) => this.onEmojiSelected(emoji, shortname)}
+						baseUrl={baseUrl}
 					/>
 				</View>
 			</Modal> : null

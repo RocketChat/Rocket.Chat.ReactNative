@@ -5,6 +5,7 @@ import reduxStore from '../createStore';
 import database from '../realm';
 import * as actions from '../../actions';
 import log from '../../utils/log';
+import { settingsUpdatedAt } from '../../constants/settings';
 
 const getLastUpdate = () => {
 	const [setting] = database.objects('settings').sorted('_updatedAt', true);
@@ -20,7 +21,8 @@ function updateServer(param) {
 export default async function() {
 	try {
 		const lastUpdate = getLastUpdate();
-		const result = await (!lastUpdate ? this.ddp.call('public-settings/get') : this.ddp.call('public-settings/get', new Date(lastUpdate)));
+		const fetchNewSettings = lastUpdate < settingsUpdatedAt;
+		const result = await ((!lastUpdate || fetchNewSettings) ? this.ddp.call('public-settings/get') : this.ddp.call('public-settings/get', new Date(lastUpdate)));
 		const data = result.update || result || [];
 
 		const filteredSettings = this._prepareSettings(this._filterSettings(data));

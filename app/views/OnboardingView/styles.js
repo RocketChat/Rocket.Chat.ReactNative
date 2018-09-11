@@ -23,7 +23,7 @@ export default StyleSheet.create({
 		alignSelf: 'center',
 		paddingHorizontal: scale(45),
 		marginTop: verticalScale(30),
-		marginBottom: verticalScale(50),
+		marginBottom: verticalScale(35),
 		maxHeight: verticalScale(250),
 		resizeMode: 'contain'
 	},
@@ -48,13 +48,13 @@ export default StyleSheet.create({
 		marginTop: verticalScale(30)
 	},
 	buttonContainer: {
-		marginHorizontal: scale(15),
-		marginVertical: scale(5),
+		marginHorizontal: 15,
+		marginVertical: 5,
 		flexDirection: 'row',
-		height: verticalScale(60),
+		height: 60,
 		alignItems: 'center',
-		borderWidth: StyleSheet.hairlineWidth,
-		borderRadius: moderateScale(2)
+		borderWidth: 1,
+		borderRadius: 2
 	},
 	buttonCenter: {
 		flex: 1,
@@ -62,13 +62,13 @@ export default StyleSheet.create({
 		justifyContent: 'center'
 	},
 	buttonTitle: {
-		fontSize: moderateScale(16),
+		fontSize: 16,
 		fontWeight: '600'
 	},
 	buttonSubtitle: {
 		color: '#9EA2A8',
-		fontSize: moderateScale(14),
-		height: moderateScale(18)
+		fontSize: 14,
+		height: 18
 	},
 	buttonIconContainer: {
 		width: 65,
@@ -76,7 +76,7 @@ export default StyleSheet.create({
 		justifyContent: 'center'
 	},
 	buttonIcon: {
-		marginHorizontal: scale(10),
+		marginHorizontal: 10,
 		width: 20,
 		height: 20
 	},

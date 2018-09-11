@@ -23,8 +23,7 @@ const options = [I18n.t('Unstar'), I18n.t('Cancel')];
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token
-	},
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	}
 }), dispatch => ({
 	openStarredMessages: (rid, limit) => dispatch(openStarredMessages(rid, limit)),
 	closeStarredMessages: () => dispatch(closeStarredMessages()),
@@ -37,7 +36,6 @@ export default class StarredMessagesView extends LoggedView {
 		messages: PropTypes.array,
 		ready: PropTypes.bool,
 		user: PropTypes.object,
-		baseUrl: PropTypes.string,
 		openStarredMessages: PropTypes.func,
 		closeStarredMessages: PropTypes.func,
 		toggleStarRequest: PropTypes.func
@@ -113,7 +111,6 @@ export default class StarredMessagesView extends LoggedView {
 			style={styles.message}
 			reactions={item.reactions}
 			user={this.props.user}
-			baseUrl={this.props.baseUrl}
 			customTimeFormat='MMMM Do YYYY, h:mm:ss a'
 			onLongPress={this.onLongPress}
 		/>

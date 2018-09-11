@@ -2,29 +2,30 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import { TouchableOpacity } from 'react-native';
-import { connect } from 'react-redux';
 
 import PhotoModal from './PhotoModal';
 import Markdown from './Markdown';
 import styles from './styles';
 
-@connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-}))
 export default class extends React.PureComponent {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
 		user: PropTypes.object.isRequired,
-		customEmojis: PropTypes.object
+		customEmojis: PropTypes.oneOfType([
+			PropTypes.array,
+			PropTypes.object
+		])
 	}
 
 	state = { modalVisible: false };
 
 	getDescription() {
-		const { file, customEmojis } = this.props;
+		const {
+			file, customEmojis, baseUrl, user
+		} = this.props;
 		if (file.description) {
-			return <Markdown msg={file.description} customEmojis={customEmojis} />;
+			return <Markdown msg={file.description} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} />;
 		}
 	}
 
@@ -47,13 +48,14 @@ export default class extends React.PureComponent {
 					<FastImage
 						style={styles.image}
 						source={{ uri: encodeURI(img) }}
+						resizeMode={FastImage.resizeMode.cover}
 					/>
 					{this.getDescription()}
 				</TouchableOpacity>,
 				<PhotoModal
 					key='modal'
-					title={this.props.file.title}
-					description={this.props.file.description}
+					title={file.title}
+					description={file.description}
 					image={img}
 					isVisible={this.state.modalVisible}
 					onClose={() => this.setState({ modalVisible: false })}
