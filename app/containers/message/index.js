@@ -31,7 +31,7 @@ export default class MessageContainer extends React.Component {
 		}),
 		customTimeFormat: PropTypes.string,
 		style: ViewPropTypes.style,
-		status: PropTypes.bool,
+		status: PropTypes.number,
 		archived: PropTypes.bool,
 		broadcast: PropTypes.bool,
 		previousItem: PropTypes.object,

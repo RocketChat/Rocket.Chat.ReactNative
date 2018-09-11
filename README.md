@@ -50,37 +50,35 @@ Readme will guide you on how to config.
 
 ### Current priorities
 
-1) Onboarding ([#392][i392])
-2) Splash screen ([#399][i399])
-3) Add empty chat background ([#398][i398])
-4) Rooms list layout ([#395][i395])
-5) Create channel layout ([#401][i401])
+1) Open PDF and other file types ([#341][i341])
+2) [NEW] Commands ([#405][i405])
+3) Better message actions ([#329][i329])
+4) [NEW] Login/Register/Forgot Password layout ([#400][i400])
 
 ### To do
 |    Task              | Status |
 |--------------------|-----|
 | [NEW] Reply Preview ([#311][i311]) |  ✅  |
 | Image upload improvements ([#368][i368]) |  ✅  |
-| [NEW] Onboarding ([#392][i392])             |    WIP  |
-| [NEW] Contextual bar layout ([#402][i402])             |    ❌  |
-| [NEW] Create channel layout ([#401][i401])             |    ❌  |
-| [NEW] Login/Register/Forgot Password layout ([#400][i400])             |    ❌  |
-| [NEW] Splash screen ([#399][i399])             |    ❌  |
-| [NEW] Add empty chat background ([#398][i398])             |    ❌  |
-| [NEW] Message layout ([#397][i397])             |    ❌  |
+| [NEW] Onboarding ([#392][i392])             |    ✅  |
+| [NEW] Create channel layout ([#401][i401])             |    ✅  |
+| [NEW] Splash screen ([#399][i399])             |    ✅  |
+| [NEW] Add empty chat background ([#398][i398])             |    ✅  |
+| [NEW] Message layout ([#397][i397])             |    ✅  |
+| [NEW] Rooms list layout ([#395][i395])             |    ✅  |
+| Add components to Storybook ([#38][i38])            |    WIP  |
+| Open PDF and other file types ([#341][i341])            |    WIP  |
+| Better message actions ([#329][i329])             |    ❌  |
 | [NEW] Settings layout ([#396][i396])             |    ❌  |
-| [NEW] Rooms list layout ([#395][i395])             |    ❌  |
+| [NEW] Contextual bar layout ([#402][i402])             |    ❌  |
+| [NEW] Login/Register/Forgot Password layout ([#400][i400])             |    ❌  |
 | [NEW] Commands ([#405][i405])   |  ❌  |
 | [Android] Add Fastlane ([#404][i404]) |   ❌   |
-| [Android] Adaptive icons ([#403][i403])     |   ❌   |
 | [NEW] Auto versioning app on Circle CI ([#393][i393])             |    ❌  |
 | [Android] Group notifications by room ([#391][i391])             |    ❌  |
-| Open PDF and other file types ([#341][i341])            |    ❌  |
-| Better message actions ([#329][i329])             |    ❌  |
 | Integrate project with code push ([#233][i233])           |    ❌  |
 | Custom icons ([#210][i210])             |    ❌  |
 | Share Extension ([#69][i69])          |    ❌  |
-| Add components to Storybook ([#38][i38])            |    ❌  |
 | Upload files ([#2][i2])             |    ❌  |
 
 [i2]: https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/2
@@ -124,10 +122,10 @@ Readme will guide you on how to config.
 | Messages list: load more on scroll                            	| ✅             	|
 | Messages list: receive new messages via subscription          	| ✅             	|
 | Subscriptions list                                            	| ✅             	|
-| Segmented subscriptions list: Favorites                       	|  ❌            	|
-| Segmented subscriptions list: Unreads                         	|  ❌            	|
-| Segmented subscriptions list: DMs                             	|  ❌            	|
-| Segmented subscriptions list: Channels                        	|  ❌            	|
+| Segmented subscriptions list: Favorites                       	|  ✅            	|
+| Segmented subscriptions list: Unreads                         	|  ✅            	|
+| Segmented subscriptions list: DMs                             	|  ✅            	|
+| Segmented subscriptions list: Channels                        	|  ✅            	|
 | Subscriptions list: update user status via subscription       	| ✅             	|
 | Numbers os messages unread in the Subscriptions list          	| ✅             	|
 | Status change                                                 	| ✅             	|
@@ -205,7 +203,7 @@ Readme will guide you on how to config.
 | Localized in Portuguese (pt-BR)                               	|  ❌            	|
 | Localized in Russian                                          	| ✅             	|
 | Localized in English                                          	| ✅                 |
-| Full name setting                                             	|  ❌            	|
+| Full name setting                                             	|  ✅            	|
 | Read only rooms                                               	| ✅             	|
 | Typing status                                                 	| ✅             	|
 | Create channel/group                                          	| ✅             	|
