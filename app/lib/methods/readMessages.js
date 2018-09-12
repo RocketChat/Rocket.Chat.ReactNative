@@ -20,7 +20,7 @@ export default async function readMessages(rid) {
 	const { database: db } = database;
 	try {
 		// eslint-disable-next-line
-		const data = await (this.ddp.status ? readMessagesDDP.call(this, rid) : readMessagesREST.call(this, rid));
+		const data = await (this.ddp.status && false ? readMessagesDDP.call(this, rid) : readMessagesREST.call(this, rid));
 		const [subscription] = db.objects('subscriptions').filtered('rid = $0', rid);
 		db.write(() => {
 			subscription.open = true;

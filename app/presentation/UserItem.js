@@ -1,5 +1,7 @@
 import React from 'react';
-import { Text, View, StyleSheet, Platform, ViewPropTypes, Image } from 'react-native';
+import {
+	Text, View, StyleSheet, Platform, ViewPropTypes, Image
+} from 'react-native';
 import PropTypes from 'prop-types';
 
 import Avatar from '../containers/Avatar';

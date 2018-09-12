@@ -1,9 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, SafeAreaView, FlatList, LayoutAnimation, Platform } from 'react-native';
+import {
+	View, StyleSheet, SafeAreaView, FlatList, LayoutAnimation, Platform
+} from 'react-native';
 import { connect } from 'react-redux';
 
-import { addUser, removeUser, reset, setLoading } from '../actions/selectedUsers';
+import {
+	addUser as addUserAction, removeUser as removeUserAction, reset as resetAction, setLoading as setLoadingAction
+} from '../actions/selectedUsers';
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
@@ -33,10 +37,10 @@ const styles = StyleSheet.create({
 	users: state.selectedUsers.users,
 	loading: state.selectedUsers.loading
 }), dispatch => ({
-	addUser: user => dispatch(addUser(user)),
-	removeUser: user => dispatch(removeUser(user)),
-	reset: () => dispatch(reset()),
-	setLoadingInvite: loading => dispatch(setLoading(loading))
+	addUser: user => dispatch(addUserAction(user)),
+	removeUser: user => dispatch(removeUserAction(user)),
+	reset: () => dispatch(resetAction()),
+	setLoadingInvite: loading => dispatch(setLoadingAction(loading))
 }))
 /** @extends React.Component */
 export default class SelectedUsersView extends LoggedView {
@@ -64,19 +68,22 @@ export default class SelectedUsersView extends LoggedView {
 	}
 
 	componentDidMount() {
-		this.props.navigator.setDrawerEnabled({
+		const { navigator } = this.props;
+		navigator.setDrawerEnabled({
 			side: 'left',
 			enabled: false
 		});
 	}
 
 	async componentDidUpdate(prevProps) {
-		const isVisible = await this.props.navigator.screenIsCurrentlyVisible();
+		const { navigator, users } = this.props;
+		const isVisible = await navigator.screenIsCurrentlyVisible();
+
 		if (!isVisible) {
 			return;
 		}
-		if (prevProps.users.length !== this.props.users.length) {
-			const { length } = this.props.users;
+		if (prevProps.users.length !== users.length) {
+			const { length } = users;
 			const rightButtons = [];
 			if (length > 0) {
 				rightButtons.push({
@@ -85,14 +92,15 @@ export default class SelectedUsersView extends LoggedView {
 					testID: 'selected-users-view-submit'
 				});
 			}
-			this.props.navigator.setButtons({ rightButtons });
+			navigator.setButtons({ rightButtons });
 		}
 	}
 
 	componentWillUnmount() {
+		const { reset } = this.props;
 		this.updateState.stop();
 		this.data.removeAllListeners();
-		this.props.reset();
+		reset();
 	}
 
 	async onNavigatorEvent(event) {
@@ -100,15 +108,16 @@ export default class SelectedUsersView extends LoggedView {
 			if (event.id === 'create') {
 				const { nextAction, setLoadingInvite, navigator } = this.props;
 				if (nextAction === 'CREATE_CHANNEL') {
-					this.props.navigator.push({
+					navigator.push({
 						screen: 'CreateChannelView',
 						title: I18n.t('Create_Channel'),
 						backButtonTitle: ''
 					});
 				} else {
+					const { rid } = this.props;
 					try {
 						setLoadingInvite(true);
-						await RocketChat.addUsersToRoom(this.props.rid);
+						await RocketChat.addUsersToRoom(rid);
 						navigator.pop();
 					} catch (e) {
 						log('RoomActions Add User', e);
@@ -124,6 +133,7 @@ export default class SelectedUsersView extends LoggedView {
 		this.search(text);
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	updateState = debounce(() => {
 		this.forceUpdate();
 	}, 1000);
@@ -135,14 +145,19 @@ export default class SelectedUsersView extends LoggedView {
 		});
 	}
 
-	isChecked = username => this.props.users.findIndex(el => el.name === username) !== -1;
+	isChecked = (username) => {
+		const { users } = this.props;
+		return users.findIndex(el => el.name === username) !== -1;
+	}
 
 	toggleUser = (user) => {
+		const { addUser, removeUser } = this.props;
+
 		LayoutAnimation.easeInEaseOut();
 		if (!this.isChecked(user.name)) {
-			this.props.addUser(user);
+			addUser(user);
 		} else {
-			this.props.removeUser(user);
+			removeUser(user);
 		}
 	}
 
@@ -164,12 +179,14 @@ export default class SelectedUsersView extends LoggedView {
 	)
 
 	renderSelected = () => {
-		if (this.props.users.length === 0) {
+		const { users } = this.props;
+
+		if (users.length === 0) {
 			return null;
 		}
 		return (
 			<FlatList
-				data={this.props.users}
+				data={users}
 				keyExtractor={item => item._id}
 				style={[styles.list, sharedStyles.separatorTop]}
 				contentContainerStyle={{ marginVertical: 5 }}
@@ -181,30 +198,36 @@ export default class SelectedUsersView extends LoggedView {
 		);
 	}
 
-	renderSelectedItem = ({ item }) => (
-		<UserItem
-			name={item.fname}
-			username={item.name}
-			onPress={() => this._onPressSelectedItem(item)}
-			testID={`selected-user-${ item.name }`}
-			baseUrl={this.props.baseUrl}
-			style={{ paddingRight: 15 }}
-		/>
-	)
+	renderSelectedItem = ({ item }) => {
+		const { baseUrl } = this.props;
+		return (
+			<UserItem
+				name={item.fname}
+				username={item.name}
+				onPress={() => this._onPressSelectedItem(item)}
+				testID={`selected-user-${ item.name }`}
+				baseUrl={baseUrl}
+				style={{ paddingRight: 15 }}
+			/>
+		);
+	}
 
 	renderSeparator = () => <View style={[sharedStyles.separator, styles.separator]} />
 
 	renderItem = ({ item, index }) => {
+		const { search } = this.state;
+		const { baseUrl } = this.props;
+
 		const name = item.search ? item.name : item.fname;
 		const username = item.search ? item.username : item.name;
 		let style = {};
 		if (index === 0) {
 			style = { ...sharedStyles.separatorTop };
 		}
-		if (this.state.search.length > 0 && index === this.state.search.length - 1) {
+		if (search.length > 0 && index === search.length - 1) {
 			style = { ...style, ...sharedStyles.separatorBottom };
 		}
-		if (this.state.search.length === 0 && index === this.data.length - 1) {
+		if (search.length === 0 && index === this.data.length - 1) {
 			style = { ...style, ...sharedStyles.separatorBottom };
 		}
 		return (
@@ -214,29 +237,35 @@ export default class SelectedUsersView extends LoggedView {
 				onPress={() => this._onPressItem(item._id, item)}
 				testID={`select-users-view-item-${ item.name }`}
 				icon={this.isChecked(username) ? 'check' : null}
-				baseUrl={this.props.baseUrl}
+				baseUrl={baseUrl}
 				style={style}
 			/>
 		);
 	}
 
-	renderList = () => (
-		<FlatList
-			data={this.state.search.length > 0 ? this.state.search : this.data}
-			extraData={this.props}
-			keyExtractor={item => item._id}
-			renderItem={this.renderItem}
-			ItemSeparatorComponent={this.renderSeparator}
-			ListHeaderComponent={this.renderHeader}
-			enableEmptySections
-			keyboardShouldPersistTaps='always'
-		/>
-	)
+	renderList = () => {
+		const { search } = this.state;
+		return (
+			<FlatList
+				data={search.length > 0 ? search : this.data}
+				extraData={this.props}
+				keyExtractor={item => item._id}
+				renderItem={this.renderItem}
+				ItemSeparatorComponent={this.renderSeparator}
+				ListHeaderComponent={this.renderHeader}
+				enableEmptySections
+				keyboardShouldPersistTaps='always'
+			/>
+		);
+	}
 
-	render = () => (
-		<SafeAreaView style={styles.safeAreaView} testID='select-users-view'>
-			{this.renderList()}
-			<Loading visible={this.props.loading} />
-		</SafeAreaView>
-	)
+	render = () => {
+		const { loading } = this.props;
+		return (
+			<SafeAreaView style={styles.safeAreaView} testID='select-users-view'>
+				{this.renderList()}
+				<Loading visible={loading} />
+			</SafeAreaView>
+		);
+	}
 }

@@ -34,7 +34,7 @@ export default class FilesActions extends Component {
 	}
 
 	handleActionPress = (actionIndex) => {
-		const { takePhoto, chooseFromLibrary } = this.props;
+		const { takePhoto, chooseFromLibrary, hideActions } = this.props;
 		switch (actionIndex) {
 			case this.PHOTO_INDEX:
 				takePhoto();
@@ -45,7 +45,7 @@ export default class FilesActions extends Component {
 			default:
 				break;
 		}
-		this.props.hideActions();
+		hideActions();
 	}
 
 	render() {

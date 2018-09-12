@@ -1,7 +1,9 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, Image, Platform } from 'react-native';
+import {
+	View, Text, StyleSheet, Image, Platform
+} from 'react-native';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 
@@ -151,18 +153,22 @@ export default class RoomItem extends React.Component {
 		showLastMessage: true,
 		avatarSize: 48
 	}
+
 	shouldComponentUpdate(nextProps) {
-		const oldlastMessage = this.props.lastMessage;
+		const { lastMessage, _updatedAt } = this.props;
+		const oldlastMessage = lastMessage;
 		const newLastmessage = nextProps.lastMessage;
 
 		if (oldlastMessage && newLastmessage && oldlastMessage.ts.toGMTString() !== newLastmessage.ts.toGMTString()) {
 			return true;
 		}
-		if (this.props._updatedAt && nextProps._updatedAt && nextProps._updatedAt.toGMTString() !== this.props._updatedAt.toGMTString()) {
+		if (_updatedAt && nextProps._updatedAt && nextProps._updatedAt.toGMTString() !== _updatedAt.toGMTString()) {
 			return true;
 		}
+		// eslint-disable-next-line react/destructuring-assignment
 		return attrs.some(key => nextProps[key] !== this.props[key]);
 	}
+
 	get avatar() {
 		const {
 			type, name, avatarSize, baseUrl
@@ -172,10 +178,10 @@ export default class RoomItem extends React.Component {
 
 	get lastMessage() {
 		const {
-			lastMessage, type, showLastMessage
+			lastMessage, type, showLastMessage, StoreLastMessage, username
 		} = this.props;
 
-		if (!this.props.StoreLastMessage || !showLastMessage) {
+		if (!StoreLastMessage || !showLastMessage) {
 			return '';
 		}
 		if (!lastMessage) {
@@ -184,7 +190,7 @@ export default class RoomItem extends React.Component {
 
 		let prefix = '';
 
-		if (lastMessage.u.username === this.props.username) {
+		if (lastMessage.u.username === username) {
 			prefix = I18n.t('You_colon');
 		}	else if (type !== 'd') {
 			prefix = `${ lastMessage.u.username }: `;
@@ -223,7 +229,7 @@ export default class RoomItem extends React.Component {
 
 	render() {
 		const {
-			favorite, unread, userMentions, name, _updatedAt, alert, testID, height
+			favorite, unread, userMentions, name, _updatedAt, alert, testID, height, onPress, onLongPress
 		} = this.props;
 
 		const date = this.formatDate(_updatedAt);
@@ -245,8 +251,8 @@ export default class RoomItem extends React.Component {
 
 		return (
 			<Touch
-				onPress={this.props.onPress}
-				onLongPress={this.props.onLongPress}
+				onPress={onPress}
+				onLongPress={onLongPress}
 				underlayColor='#FFFFFF'
 				activeOpacity={0.5}
 				accessibilityLabel={accessibilityLabel}

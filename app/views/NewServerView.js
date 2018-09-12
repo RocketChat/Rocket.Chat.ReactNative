@@ -1,9 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, ScrollView, Keyboard, SafeAreaView, Image, Alert, StyleSheet } from 'react-native';
+import {
+	Text, ScrollView, Keyboard, SafeAreaView, Image, Alert, StyleSheet
+} from 'react-native';
 import { connect } from 'react-redux';
 
-import { serverRequest, selectServerRequest, serverInitAdd, serverFinishAdd } from '../actions/server';
+import {
+	serverRequest as serverRequestAction,
+	selectServerRequest as selectServerRequestAction,
+	serverInitAdd as serverInitAddAction,
+	serverFinishAdd as serverFinishAddAction
+} from '../actions/server';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import Button from '../containers/Button';
@@ -47,10 +54,10 @@ const defaultServer = 'https://open.rocket.chat';
 	currentServer: state.server.server,
 	adding: state.server.adding
 }), dispatch => ({
-	initAdd: () => dispatch(serverInitAdd()),
-	finishAdd: () => dispatch(serverFinishAdd()),
-	connectServer: server => dispatch(serverRequest(server)),
-	selectServer: server => dispatch(selectServerRequest(server))
+	initAdd: () => dispatch(serverInitAddAction()),
+	finishAdd: () => dispatch(serverFinishAddAction()),
+	connectServer: server => dispatch(serverRequestAction(server)),
+	selectServer: server => dispatch(selectServerRequestAction(server))
 }))
 /** @extends React.Component */
 export default class NewServerView extends LoggedView {
@@ -77,9 +84,11 @@ export default class NewServerView extends LoggedView {
 	}
 
 	componentDidMount() {
-		const { server, previousServer } = this.props;
+		const {
+			server, previousServer, connectServer, initAdd
+		} = this.props;
 		if (server) {
-			this.props.connectServer(server);
+			connectServer(server);
 			this.setState({ text: server });
 		} else {
 			setTimeout(() => {
@@ -87,12 +96,13 @@ export default class NewServerView extends LoggedView {
 			}, 600);
 		}
 		if (previousServer) {
-			this.props.initAdd();
+			initAdd();
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.failure && nextProps.failure !== this.props.failure) {
+		const { failure } = this.props;
+		if (nextProps.failure && nextProps.failure !== failure) {
 			Alert.alert(I18n.t('Oops'), I18n.t('The_URL_is_invalid'));
 		}
 	}
@@ -110,9 +120,10 @@ export default class NewServerView extends LoggedView {
 	}
 
 	onNavigatorEvent(event) {
+		const { navigator } = this.props;
 		if (event.type === 'NavBarButtonPress') {
 			if (event.id === 'cancel') {
-				this.props.navigator.dismissModal();
+				navigator.dismissModal();
 			}
 		}
 	}
@@ -122,17 +133,20 @@ export default class NewServerView extends LoggedView {
 	}
 
 	submit = () => {
-		if (this.state.text) {
+		const { text } = this.state;
+		const { connectServer } = this.props;
+
+		if (text) {
 			Keyboard.dismiss();
-			this.props.connectServer(this.completeUrl(this.state.text));
+			connectServer(this.completeUrl(text));
 		}
 	}
 
 	completeUrl = (url) => {
 		url = url && url.trim();
 
-		if (/^(\w|[0-9-_]){3,}$/.test(url) &&
-				/^(htt(ps?)?)|(loca((l)?|(lh)?|(lho)?|(lhos)?|(lhost:?\d*)?)$)/.test(url) === false) {
+		if (/^(\w|[0-9-_]){3,}$/.test(url)
+			&& /^(htt(ps?)?)|(loca((l)?|(lh)?|(lho)?|(lhos)?|(lhost:?\d*)?)$)/.test(url) === false) {
 			url = `${ url }.rocket.chat`;
 		}
 

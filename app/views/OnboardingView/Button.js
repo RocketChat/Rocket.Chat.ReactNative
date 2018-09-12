@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, TouchableWithoutFeedback, Image } from 'react-native';
+import {
+	View, Text, TouchableWithoutFeedback, Image
+} from 'react-native';
 
 import styles from './styles';
 

@@ -52,22 +52,26 @@ export default class SearchMessagesView extends LoggedView {
 	}
 
 	onChangeSearch = debounce((search) => {
+		const { searching } = this.state;
+
 		this.searchText = search;
 		this.limit = 0;
-		if (!this.state.searching) {
+		if (!searching) {
 			this.setState({ searching: true });
 		}
 		this.search();
 	}, 1000)
 
 	search = async() => {
+		const { rid } = this.props;
+
 		if (this._cancel) {
 			this._cancel('cancel');
 		}
 		const cancel = new Promise((r, reject) => this._cancel = reject);
 		let messages = [];
 		try {
-			const result = await Promise.race([RocketChat.messageSearch(this.searchText, this.props.rid, this.limit), cancel]);
+			const result = await Promise.race([RocketChat.messageSearch(this.searchText, rid, this.limit), cancel]);
 			messages = result.message.docs.map(message => buildMessage(message));
 			this.setState({ messages, searching: false, loadingMore: false });
 		} catch (e) {
@@ -91,27 +95,30 @@ export default class SearchMessagesView extends LoggedView {
 		}
 	}
 
-	renderItem = ({ item }) => (
-		<Message
-			item={item}
-			style={styles.message}
-			reactions={item.reactions}
-			user={this.props.user}
-			customTimeFormat='MMMM Do YYYY, h:mm:ss a'
-			onReactionPress={async(emoji) => {
-				try {
-					await RocketChat.setReaction(emoji, item._id);
-					this.search();
-					this.forceUpdate();
-				} catch (e) {
-					log('SearchMessagesView.onReactionPress', e);
-				}
-			}}
-		/>
-	);
+	renderItem = ({ item }) => {
+		const { user } = this.props;
+		return (
+			<Message
+				item={item}
+				style={styles.message}
+				reactions={item.reactions}
+				user={user}
+				customTimeFormat='MMMM Do YYYY, h:mm:ss a'
+				onReactionPress={async(emoji) => {
+					try {
+						await RocketChat.setReaction(emoji, item._id);
+						this.search();
+						this.forceUpdate();
+					} catch (e) {
+						log('SearchMessagesView.onReactionPress', e);
+					}
+				}}
+			/>
+		);
+	}
 
 	render() {
-		const { searching, loadingMore } = this.state;
+		const { searching, loadingMore, messages } = this.state;
 		return (
 			<SafeAreaView style={styles.container} testID='search-messages-view'>
 				<View style={styles.searchContainer}>
@@ -126,7 +133,7 @@ export default class SearchMessagesView extends LoggedView {
 					<View style={styles.divider} />
 				</View>
 				<FlatList
-					data={this.state.messages}
+					data={messages}
 					renderItem={this.renderItem}
 					style={styles.list}
 					keyExtractor={item => item._id}

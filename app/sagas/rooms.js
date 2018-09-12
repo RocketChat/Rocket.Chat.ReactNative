@@ -1,5 +1,7 @@
 import { Alert } from 'react-native';
-import { put, call, takeLatest, take, select, race, fork, cancel, takeEvery } from 'redux-saga/effects';
+import {
+	put, call, takeLatest, take, select, race, fork, cancel, takeEvery
+} from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { BACKGROUND } from 'redux-enhancer-react-native-appstate';
 

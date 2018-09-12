@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, TouchableOpacity, Image, Platform, View } from 'react-native';
+import {
+	StyleSheet, TouchableOpacity, Image, Platform, View
+} from 'react-native';
 import Modal from 'react-native-modal';
 import VideoPlayer from 'react-native-video-controls';
 import Markdown from './Markdown';
@@ -40,19 +42,20 @@ export default class Video extends React.PureComponent {
 	state = { isVisible: false };
 
 	get uri() {
-		const { video_url } = this.props.file;
-		const { baseUrl, user } = this.props;
+		const { baseUrl, user, file } = this.props;
+		const { video_url } = file;
 		return `${ baseUrl }${ video_url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
 	}
 
 	toggleModal() {
-		this.setState({
-			isVisible: !this.state.isVisible
-		});
+		this.setState(prevState => ({
+			isVisible: !prevState.isVisible
+		}));
 	}
 
 	open() {
-		if (isTypeSupported(this.props.file.video_type)) {
+		const { file } = this.props;
+		if (isTypeSupported(file.video_type)) {
 			return this.toggleModal();
 		}
 		openLink(this.uri);
@@ -60,8 +63,10 @@ export default class Video extends React.PureComponent {
 
 	render() {
 		const { isVisible } = this.state;
-		const { description } = this.props.file;
-		const { baseUrl, user, customEmojis } = this.props;
+		const {
+			baseUrl, user, customEmojis, file
+		} = this.props;
+		const { description } = file;
 		return (
 			[
 				<View key='button'>

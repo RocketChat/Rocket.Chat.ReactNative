@@ -49,36 +49,41 @@ export default class EmojiPicker extends Component {
 		this.updateFrequentlyUsed();
 		this.updateCustomEmojis();
 	}
+
 	componentWillUnmount() {
 		this.frequentlyUsed.removeAllListeners();
 		this.customEmojis.removeAllListeners();
 	}
 
 	onEmojiSelected(emoji) {
+		const { onEmojiSelected } = this.props;
 		if (emoji.isCustom) {
 			const count = this._getFrequentlyUsedCount(emoji.content);
 			this._addFrequentlyUsed({
 				content: emoji.content, extension: emoji.extension, count, isCustom: true
 			});
-			this.props.onEmojiSelected(`:${ emoji.content }:`);
+			onEmojiSelected(`:${ emoji.content }:`);
 		} else {
 			const content = emoji;
 			const count = this._getFrequentlyUsedCount(content);
 			this._addFrequentlyUsed({ content, count, isCustom: false });
 			const shortname = `:${ emoji }:`;
-			this.props.onEmojiSelected(emojify(shortname, { output: 'unicode' }), shortname);
+			onEmojiSelected(emojify(shortname, { output: 'unicode' }), shortname);
 		}
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	_addFrequentlyUsed = protectedFunction((emoji) => {
 		database.write(() => {
 			database.create('frequentlyUsedEmoji', emoji, true);
 		});
 	})
+
 	_getFrequentlyUsedCount = (content) => {
 		const emojiRow = this.frequentlyUsed.filtered('content == $0', content);
 		return emojiRow.length ? emojiRow[0].count + 1 : 1;
 	}
+
 	updateFrequentlyUsed() {
 		const frequentlyUsed = map(this.frequentlyUsed.slice(), (item) => {
 			if (item.isCustom) {
@@ -90,17 +95,19 @@ export default class EmojiPicker extends Component {
 	}
 
 	updateCustomEmojis() {
-		const customEmojis = map(this.customEmojis.slice(), item =>
-			({ content: item.name, extension: item.extension, isCustom: true }));
+		const customEmojis = map(this.customEmojis.slice(), item => ({ content: item.name, extension: item.extension, isCustom: true }));
 		this.setState({ customEmojis });
 	}
 
 	renderCategory(category, i) {
+		const { frequentlyUsed, customEmojis } = this.state;
+		const { emojisPerRow, width, baseUrl } = this.props;
+
 		let emojis = [];
 		if (i === 0) {
-			emojis = this.state.frequentlyUsed;
+			emojis = frequentlyUsed;
 		} else if (i === 1) {
-			emojis = this.state.customEmojis;
+			emojis = customEmojis;
 		} else {
 			emojis = emojisByCategory[category];
 		}
@@ -109,21 +116,23 @@ export default class EmojiPicker extends Component {
 				emojis={emojis}
 				onEmojiSelected={emoji => this.onEmojiSelected(emoji)}
 				style={styles.categoryContainer}
-				size={this.props.emojisPerRow}
-				width={this.props.width}
-				baseUrl={this.props.baseUrl}
+				size={emojisPerRow}
+				width={width}
+				baseUrl={baseUrl}
 			/>
 		);
 	}
 
 	render() {
-		if (!this.state.show) {
+		const { show } = this.state;
+		const { tabEmojiStyle } = this.props;
+
+		if (!show) {
 			return null;
 		}
 		return (
-			// <View style={styles.container}>
 			<ScrollableTabView
-				renderTabBar={() => <TabBar tabEmojiStyle={this.props.tabEmojiStyle} />}
+				renderTabBar={() => <TabBar tabEmojiStyle={tabEmojiStyle} />}
 				contentProps={scrollProps}
 				style={styles.background}
 			>
@@ -140,7 +149,6 @@ export default class EmojiPicker extends Component {
 					))
 				}
 			</ScrollableTabView>
-			// </View>
 		);
 	}
 }

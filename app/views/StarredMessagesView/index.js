@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, Text, SafeAreaView } from 'react-native';
+import {
+	FlatList, View, Text, SafeAreaView
+} from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
 
+import { openStarredMessages as openStarredMessagesAction, closeStarredMessages as closeStarredMessagesAction } from '../../actions/starredMessages';
+import { toggleStarRequest as toggleStarRequestAction } from '../../actions/messages';
 import LoggedView from '../View';
-import { openStarredMessages, closeStarredMessages } from '../../actions/starredMessages';
 import styles from './styles';
 import Message from '../../containers/message';
-import { toggleStarRequest } from '../../actions/messages';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 
@@ -25,9 +27,9 @@ const options = [I18n.t('Unstar'), I18n.t('Cancel')];
 		token: state.login.user && state.login.user.token
 	}
 }), dispatch => ({
-	openStarredMessages: (rid, limit) => dispatch(openStarredMessages(rid, limit)),
-	closeStarredMessages: () => dispatch(closeStarredMessages()),
-	toggleStarRequest: message => dispatch(toggleStarRequest(message))
+	openStarredMessages: (rid, limit) => dispatch(openStarredMessagesAction(rid, limit)),
+	closeStarredMessages: () => dispatch(closeStarredMessagesAction()),
+	toggleStarRequest: message => dispatch(toggleStarRequestAction(message))
 }))
 /** @extends React.Component */
 export default class StarredMessagesView extends LoggedView {
@@ -56,13 +58,15 @@ export default class StarredMessagesView extends LoggedView {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.ready && nextProps.ready !== this.props.ready) {
+		const { ready } = this.props;
+		if (nextProps.ready && nextProps.ready !== ready) {
 			this.setState({ loading: false, loadingMore: false });
 		}
 	}
 
 	componentWillUnmount() {
-		this.props.closeStarredMessages();
+		const { closeStarredMessages } = this.props;
+		closeStarredMessages();
 	}
 
 	onLongPress = (message) => {
@@ -73,9 +77,12 @@ export default class StarredMessagesView extends LoggedView {
 	}
 
 	handleActionPress = (actionIndex) => {
+		const { message } = this.state;
+		const { toggleStarRequest } = this.props;
+
 		switch (actionIndex) {
 			case STAR_INDEX:
-				this.props.toggleStarRequest(this.state.message);
+				toggleStarRequest(message);
 				break;
 			default:
 				break;
@@ -83,7 +90,8 @@ export default class StarredMessagesView extends LoggedView {
 	}
 
 	load = () => {
-		this.props.openStarredMessages(this.props.rid, this.limit);
+		const { rid, openStarredMessages } = this.props;
+		openStarredMessages(rid, this.limit);
 	}
 
 	moreData = () => {
@@ -105,16 +113,19 @@ export default class StarredMessagesView extends LoggedView {
 		</View>
 	)
 
-	renderItem = ({ item }) => (
-		<Message
-			item={item}
-			style={styles.message}
-			reactions={item.reactions}
-			user={this.props.user}
-			customTimeFormat='MMMM Do YYYY, h:mm:ss a'
-			onLongPress={this.onLongPress}
-		/>
-	)
+	renderItem = ({ item }) => {
+		const { user } = this.props;
+		return (
+			<Message
+				item={item}
+				style={styles.message}
+				reactions={item.reactions}
+				user={user}
+				customTimeFormat='MMMM Do YYYY, h:mm:ss a'
+				onLongPress={this.onLongPress}
+			/>
+		);
+	}
 
 	render() {
 		const { loading, loadingMore } = this.state;

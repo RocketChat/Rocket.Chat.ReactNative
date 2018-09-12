@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Text, Image, SafeAreaView } from 'react-native';
+import {
+	View, Text, Image, SafeAreaView
+} from 'react-native';
 import PropTypes from 'prop-types';
 
 import I18n from '../../i18n';
@@ -19,7 +21,8 @@ export default class OnboardingView extends LoggedView {
 	}
 
 	connectServer = () => {
-		this.props.navigator.push({
+		const { navigator } = this.props;
+		navigator.push({
 			screen: 'NewServerView',
 			backButtonTitle: '',
 			navigatorStyle: {
@@ -29,7 +32,8 @@ export default class OnboardingView extends LoggedView {
 	}
 
 	joinCommunity = () => {
-		this.props.navigator.push({
+		const { navigator } = this.props;
+		navigator.push({
 			screen: 'NewServerView',
 			backButtonTitle: '',
 			passProps: {

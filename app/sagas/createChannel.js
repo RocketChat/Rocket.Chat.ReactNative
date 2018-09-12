@@ -1,5 +1,7 @@
 import { delay } from 'redux-saga';
-import { select, put, call, take, takeLatest } from 'redux-saga/effects';
+import {
+	select, put, call, take, takeLatest
+} from 'redux-saga/effects';
 import { NavigationActions } from '../Navigation';
 
 import { CREATE_CHANNEL, LOGIN } from '../actions/actionsTypes';

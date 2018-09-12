@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, Image, TextInput, Platform } from 'react-native';
+import {
+	View, StyleSheet, Image, TextInput, Platform
+} from 'react-native';
 import PropTypes from 'prop-types';
 
 import I18n from '../i18n';

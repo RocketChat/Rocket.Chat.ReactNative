@@ -42,7 +42,7 @@ export default class User extends React.PureComponent {
 
 	render() {
 		const {
-			username, alias, ts, temp
+			username, alias, ts, temp, timeFormat, onPress
 		} = this.props;
 
 		const extraStyle = {};
@@ -51,11 +51,11 @@ export default class User extends React.PureComponent {
 		}
 
 		const aliasUsername = alias ? (<Text style={styles.alias}>@{username}</Text>) : null;
-		const time = moment(ts).format(this.props.timeFormat);
+		const time = moment(ts).format(timeFormat);
 
 		return (
 			<View style={styles.usernameView}>
-				<Text onPress={this.props.onPress} style={styles.username}>
+				<Text onPress={onPress} style={styles.username}>
 					{alias || username}
 				</Text>
 				{aliasUsername}

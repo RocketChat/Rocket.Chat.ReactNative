@@ -1,18 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Alert, Clipboard, Vibration, Share } from 'react-native';
+import {
+	Alert, Clipboard, Vibration, Share
+} from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
 import * as moment from 'moment';
 
 import {
-	deleteRequest,
-	editInit,
-	toggleStarRequest,
-	togglePinRequest,
-	actionsHide,
-	toggleReactionPicker,
-	replyInit
+	actionsHide as actionsHideAction,
+	deleteRequest as deleteRequestAction,
+	editInit as editInitAction,
+	replyInit as replyInitAction,
+	togglePinRequest as togglePinRequestAction,
+	toggleReactionPicker as toggleReactionPickerAction,
+	toggleStarRequest as toggleStarRequestAction
 } from '../actions/messages';
 import { showToast } from '../utils/info';
 import RocketChat from '../lib/rocketchat';
@@ -29,13 +31,13 @@ import I18n from '../i18n';
 		Message_AllowStarring: state.settings.Message_AllowStarring
 	}),
 	dispatch => ({
-		actionsHide: () => dispatch(actionsHide()),
-		deleteRequest: message => dispatch(deleteRequest(message)),
-		editInit: message => dispatch(editInit(message)),
-		toggleStarRequest: message => dispatch(toggleStarRequest(message)),
-		togglePinRequest: message => dispatch(togglePinRequest(message)),
-		toggleReactionPicker: message => dispatch(toggleReactionPicker(message)),
-		replyInit: (message, mention) => dispatch(replyInit(message, mention))
+		actionsHide: () => dispatch(actionsHideAction()),
+		deleteRequest: message => dispatch(deleteRequestAction(message)),
+		editInit: message => dispatch(editInitAction(message)),
+		toggleStarRequest: message => dispatch(toggleStarRequestAction(message)),
+		togglePinRequest: message => dispatch(togglePinRequestAction(message)),
+		toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
+		replyInit: (message, mention) => dispatch(replyInitAction(message, mention))
 	})
 )
 export default class MessageActions extends React.Component {
@@ -62,6 +64,8 @@ export default class MessageActions extends React.Component {
 		super(props);
 		this.handleActionPress = this.handleActionPress.bind(this);
 		this.setPermissions();
+
+		const { Message_AllowStarring, Message_AllowPinning } = this.props;
 
 		// Cancel
 		this.options = [I18n.t('Cancel')];
@@ -98,13 +102,13 @@ export default class MessageActions extends React.Component {
 		}
 
 		// Star
-		if (this.props.Message_AllowStarring) {
+		if (Message_AllowStarring) {
 			this.options.push(I18n.t(props.actionMessage.starred ? 'Unstar' : 'Star'));
 			this.STAR_INDEX = this.options.length - 1;
 		}
 
 		// Pin
-		if (this.props.Message_AllowPinning) {
+		if (Message_AllowPinning) {
 			this.options.push(I18n.t(props.actionMessage.pinned ? 'Unpin' : 'Pin'));
 			this.PIN_INDEX = this.options.length - 1;
 		}
@@ -129,8 +133,9 @@ export default class MessageActions extends React.Component {
 	}
 
 	setPermissions() {
+		const { room } = this.props;
 		const permissions = ['edit-message', 'delete-message', 'force-delete-message'];
-		const result = RocketChat.hasPermission(permissions, this.props.room.rid);
+		const result = RocketChat.hasPermission(permissions, room.rid);
 		this.hasEditPermission = result[permissions[0]];
 		this.hasDeletePermission = result[permissions[1]];
 		this.hasForceDeletePermission = result[permissions[2]];
@@ -146,20 +151,27 @@ export default class MessageActions extends React.Component {
 
 	isOwn = props => props.actionMessage.u && props.actionMessage.u._id === props.user.id;
 
-	isRoomReadOnly = () => this.props.room.ro;
+	isRoomReadOnly = () => {
+		const { room } = this.props;
+		return room.ro;
+	}
 
-	canReactWhenReadOnly = () => this.props.room.reactWhenReadOnly;
+	canReactWhenReadOnly = () => {
+		const { room } = this.props;
+		return room.reactWhenReadOnly;
+	}
 
 	allowEdit = (props) => {
 		if (this.isRoomReadOnly()) {
 			return false;
 		}
 		const editOwn = this.isOwn(props);
-		const { Message_AllowEditing: isEditAllowed } = this.props;
+		const { Message_AllowEditing: isEditAllowed, Message_AllowEditing_BlockEditInMinutes } = this.props;
+
 		if (!(this.hasEditPermission || (isEditAllowed && editOwn))) {
 			return false;
 		}
-		const blockEditInMinutes = this.props.Message_AllowEditing_BlockEditInMinutes;
+		const blockEditInMinutes = Message_AllowEditing_BlockEditInMinutes;
 		if (blockEditInMinutes) {
 			let msgTs;
 			if (props.actionMessage.ts != null) {
@@ -179,14 +191,14 @@ export default class MessageActions extends React.Component {
 			return false;
 		}
 		const deleteOwn = this.isOwn(props);
-		const { Message_AllowDeleting: isDeleteAllowed } = this.props;
+		const { Message_AllowDeleting: isDeleteAllowed, Message_AllowDeleting_BlockDeleteInMinutes } = this.props;
 		if (!(this.hasDeletePermission || (isDeleteAllowed && deleteOwn) || this.hasForceDeletePermission)) {
 			return false;
 		}
 		if (this.hasForceDeletePermission) {
 			return true;
 		}
-		const blockDeleteInMinutes = this.props.Message_AllowDeleting_BlockDeleteInMinutes;
+		const blockDeleteInMinutes = Message_AllowDeleting_BlockDeleteInMinutes;
 		if (blockDeleteInMinutes != null && blockDeleteInMinutes !== 0) {
 			let msgTs;
 			if (props.actionMessage.ts != null) {
@@ -201,7 +213,8 @@ export default class MessageActions extends React.Component {
 		return true;
 	}
 
-	handleDelete() {
+	handleDelete = () => {
+		const { deleteRequest, actionMessage } = this.props;
 		Alert.alert(
 			I18n.t('Are_you_sure_question_mark'),
 			I18n.t('You_will_not_be_able_to_recover_this_message'),
@@ -213,56 +226,66 @@ export default class MessageActions extends React.Component {
 				{
 					text: I18n.t('Yes_action_it', { action: 'delete' }),
 					style: 'destructive',
-					onPress: () => this.props.deleteRequest(this.props.actionMessage)
+					onPress: () => deleteRequest(actionMessage)
 				}
 			],
 			{ cancelable: false }
 		);
 	}
 
-	handleEdit() {
-		const { _id, msg, rid } = this.props.actionMessage;
-		this.props.editInit({ _id, msg, rid });
+	handleEdit = () => {
+		const { actionMessage, editInit } = this.props;
+		const { _id, msg, rid } = actionMessage;
+		editInit({ _id, msg, rid });
 	}
 
 	handleCopy = async() => {
-		await Clipboard.setString(this.props.actionMessage.msg);
+		const { actionMessage } = this.props;
+		await Clipboard.setString(actionMessage.msg);
 		showToast(I18n.t('Copied_to_clipboard'));
 	}
 
 	handleShare = async() => {
+		const { actionMessage } = this.props;
 		Share.share({
-			message: this.props.actionMessage.msg.content.replace(/<(?:.|\n)*?>/gm, '')
+			message: actionMessage.msg.content.replace(/<(?:.|\n)*?>/gm, '')
 		});
 	};
 
-	handleStar() {
-		this.props.toggleStarRequest(this.props.actionMessage);
+	handleStar = () => {
+		const { actionMessage, toggleStarRequest } = this.props;
+		toggleStarRequest(actionMessage);
 	}
 
-	async handlePermalink() {
-		const permalink = await this.getPermalink(this.props.actionMessage);
+	handlePermalink = async() => {
+		const { actionMessage } = this.props;
+		const permalink = await this.getPermalink(actionMessage);
 		Clipboard.setString(permalink);
 		showToast(I18n.t('Permalink_copied_to_clipboard'));
 	}
 
-	handlePin() {
-		this.props.togglePinRequest(this.props.actionMessage);
+	handlePin = () => {
+		const { actionMessage, togglePinRequest } = this.props;
+		togglePinRequest(actionMessage);
 	}
 
-	handleReply() {
-		this.props.replyInit(this.props.actionMessage, true);
+	handleReply = () => {
+		const { actionMessage, replyInit } = this.props;
+		replyInit(actionMessage, true);
 	}
 
-	handleQuote() {
-		this.props.replyInit(this.props.actionMessage, false);
+	handleQuote = () => {
+		const { actionMessage, replyInit } = this.props;
+		replyInit(actionMessage, false);
 	}
 
-	handleReaction() {
-		this.props.toggleReactionPicker(this.props.actionMessage);
+	handleReaction = () => {
+		const { actionMessage, toggleReactionPicker } = this.props;
+		toggleReactionPicker(actionMessage);
 	}
 
 	handleActionPress = (actionIndex) => {
+		const { actionsHide } = this.props;
 		switch (actionIndex) {
 			case this.REPLY_INDEX:
 				this.handleReply();
@@ -297,7 +320,7 @@ export default class MessageActions extends React.Component {
 			default:
 				break;
 		}
-		this.props.actionsHide();
+		actionsHide();
 	}
 
 	render() {

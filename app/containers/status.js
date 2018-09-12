@@ -42,6 +42,7 @@ export default class Status extends React.PureComponent {
 	}
 
 	render() {
-		return (<View style={[styles.status, this.props.style, { backgroundColor: STATUS_COLORS[this.status] }]} />);
+		const { style } = this.props;
+		return (<View style={[styles.status, style, { backgroundColor: STATUS_COLORS[this.status] }]} />);
 	}
 }

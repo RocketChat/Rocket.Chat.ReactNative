@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, Text, SafeAreaView } from 'react-native';
+import {
+	FlatList, View, Text, SafeAreaView
+} from 'react-native';
 import { connect } from 'react-redux';
 
+import { openSnippetedMessages as openSnippetedMessagesAction, closeSnippetedMessages as closeSnippetedMessagesAction } from '../../actions/snippetedMessages';
 import LoggedView from '../View';
-import { openSnippetedMessages, closeSnippetedMessages } from '../../actions/snippetedMessages';
 import styles from './styles';
 import Message from '../../containers/message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
@@ -19,8 +21,8 @@ import I18n from '../../i18n';
 		token: state.login.user && state.login.user.token
 	}
 }), dispatch => ({
-	openSnippetedMessages: (rid, limit) => dispatch(openSnippetedMessages(rid, limit)),
-	closeSnippetedMessages: () => dispatch(closeSnippetedMessages())
+	openSnippetedMessages: (rid, limit) => dispatch(openSnippetedMessagesAction(rid, limit)),
+	closeSnippetedMessages: () => dispatch(closeSnippetedMessagesAction())
 }))
 /** @extends React.Component */
 export default class SnippetedMessagesView extends LoggedView {
@@ -47,17 +49,20 @@ export default class SnippetedMessagesView extends LoggedView {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.ready && nextProps.ready !== this.props.ready) {
+		const { ready } = this.props;
+		if (nextProps.ready && nextProps.ready !== ready) {
 			this.setState({ loading: false, loadingMore: false });
 		}
 	}
 
 	componentWillUnmount() {
-		this.props.closeSnippetedMessages();
+		const { closeSnippetedMessages } = this.props;
+		closeSnippetedMessages();
 	}
 
-	load() {
-		this.props.openSnippetedMessages(this.props.rid, this.limit);
+	load = () => {
+		const { rid, openSnippetedMessages } = this.props;
+		openSnippetedMessages(rid, this.limit);
 	}
 
 	moreData = () => {
@@ -79,15 +84,18 @@ export default class SnippetedMessagesView extends LoggedView {
 		</View>
 	)
 
-	renderItem = ({ item }) => (
-		<Message
-			item={item}
-			style={styles.message}
-			reactions={item.reactions}
-			user={this.props.user}
-			customTimeFormat='MMMM Do YYYY, h:mm:ss a'
-		/>
-	);
+	renderItem = ({ item }) => {
+		const { user } = this.props;
+		return (
+			<Message
+				item={item}
+				style={styles.message}
+				reactions={item.reactions}
+				user={user}
+				customTimeFormat='MMMM Do YYYY, h:mm:ss a'
+			/>
+		);
+	}
 
 	render() {
 		const { loading, loadingMore } = this.state;

@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Text, TouchableWithoutFeedback, ActivityIndicator, StyleSheet } from 'react-native';
+import {
+	View, Text, TouchableWithoutFeedback, ActivityIndicator, StyleSheet
+} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
@@ -45,6 +47,7 @@ export default class PhotoModal extends React.PureComponent {
 		onClose: PropTypes.func.isRequired,
 		window: PropTypes.object
 	}
+
 	render() {
 		const {
 			image, isVisible, onClose, title, description, window: { width, height }

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, Platform } from 'react-native';
+import {
+	View, Text, StyleSheet, Image, ScrollView, Platform
+} from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import { responsive } from 'react-native-responsive-ui';
@@ -85,9 +87,9 @@ export default class UploadModal extends Component {
 		return (
 			<Modal
 				isVisible={isVisible}
-				style={{ alignItems: 'center' }} // TODO: need this?
-				onBackdropPress={() => this.props.close()}
-				onBackButtonPress={() => this.props.close()}
+				style={{ alignItems: 'center' }}
+				onBackdropPress={() => close()}
+				onBackButtonPress={() => close()}
 				animationIn='fadeIn'
 				animationOut='fadeOut'
 				useNativeDriver

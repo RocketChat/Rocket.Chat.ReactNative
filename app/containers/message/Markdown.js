@@ -9,16 +9,17 @@ import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import MarkdownEmojiPlugin from './MarkdownEmojiPlugin';
 
 // Support <http://link|Text>
-const formatText = text =>
-	text.replace(
-		new RegExp('(?:<|<)((?:https|http):\\/\\/[^\\|]+)\\|(.+?)(?=>|>)(?:>|>)', 'gm'),
-		(match, url, title) => `[${ title }](${ url })`
-	);
+const formatText = text => text.replace(
+	new RegExp('(?:<|<)((?:https|http):\\/\\/[^\\|]+)\\|(.+?)(?=>|>)(?:>|>)', 'gm'),
+	(match, url, title) => `[${ title }](${ url })`
+);
 
 export default class Markdown extends React.Component {
 	shouldComponentUpdate(nextProps) {
-		return nextProps.msg !== this.props.msg;
+		const { msg } = this.props;
+		return nextProps.msg !== msg;
 	}
+
 	render() {
 		const {
 			msg, customEmojis, style, rules, baseUrl, username, edited
@@ -33,8 +34,10 @@ export default class Markdown extends React.Component {
 			<MarkdownRenderer
 				rules={{
 					paragraph: (node, children) => (
+						// eslint-disable-next-line
 						<Text key={node.key} style={styles.paragraph}>
-							{children}{edited ? <Text style={styles.edited}> (edited)</Text> : null}
+							{children}
+							{edited ? <Text style={styles.edited}> (edited)</Text> : null}
 						</Text>
 					),
 					mention: (node) => {

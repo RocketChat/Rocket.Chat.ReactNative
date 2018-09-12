@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Text, TouchableWithoutFeedback, FlatList, StyleSheet } from 'react-native';
+import {
+	View, Text, TouchableWithoutFeedback, FlatList, StyleSheet
+} from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -66,10 +68,12 @@ export default class ReactionsModal extends React.PureComponent {
 			PropTypes.object
 		])
 	}
+
 	renderItem = (item) => {
+		const { user, customEmojis, baseUrl } = this.props;
 		const count = item.usernames.length;
 		let usernames = item.usernames.slice(0, 3)
-			.map(username => (username.value === this.props.user.username ? I18n.t('you') : username.value)).join(', ');
+			.map(username => (username.value === user.username ? I18n.t('you') : username.value)).join(', ');
 		if (count > 3) {
 			usernames = `${ usernames } ${ I18n.t('and_more') } ${ count - 3 }`;
 		} else {
@@ -82,8 +86,8 @@ export default class ReactionsModal extends React.PureComponent {
 						content={item.emoji}
 						standardEmojiStyle={standardEmojiStyle}
 						customEmojiStyle={customEmojiStyle}
-						customEmojis={this.props.customEmojis}
-						baseUrl={this.props.baseUrl}
+						customEmojis={customEmojis}
+						baseUrl={baseUrl}
 					/>
 				</View>
 				<View style={styles.peopleItemContainer}>
