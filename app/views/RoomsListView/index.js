@@ -149,10 +149,6 @@ export default class RoomsListView extends LoggedView {
 		this.removeListener(this.direct);
 		this.removeListener(this.livechat);
 
-		if (database && database.deleteAll) {
-			database.deleteAll();
-		}
-
 		if (this.timeout) {
 			clearTimeout(this.timeout);
 		}
