@@ -97,6 +97,11 @@ export default class Audio extends React.PureComponent {
 			user, baseUrl, customEmojis, file
 		} = this.props;
 		const { description } = file;
+
+		if (!baseUrl) {
+			return null;
+		}
+
 		return (
 			[
 				<View key='audio' style={styles.audioContainer}>
