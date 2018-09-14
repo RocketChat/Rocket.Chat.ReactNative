@@ -38,6 +38,11 @@ export default class extends React.PureComponent {
 	render() {
 		const { baseUrl, file, user } = this.props;
 		const img = `${ baseUrl }${ file.image_url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
+
+		if (!baseUrl) {
+			return null;
+		}
+
 		return (
 			[
 				<TouchableOpacity

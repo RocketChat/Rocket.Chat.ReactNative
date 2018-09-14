@@ -60,9 +60,6 @@ const Url = ({ url, index }) => {
 	return (
 		<Touch onPress={() => onPress(url.url)} style={[styles.button, index > 0 && styles.marginTop]}>
 			<View style={styles.container}>
-				{/* <View style={{ backgroundColor: 'red', height: 150, borderTopLeftRadius: 5, borderTopRightRadius: 5 }}>
-					{url.image ? <FastImage source={{ uri: url.image }} /> : null}
-				</View> */}
 				{url.image ? <FastImage source={{ uri: url.image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} /> : null}
 				<View style={styles.textContainer}>
 					<Text style={styles.url} numberOfLines={1}>{url.url}</Text>
