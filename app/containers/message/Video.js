@@ -62,6 +62,11 @@ export default class Video extends React.PureComponent {
 		const { isVisible } = this.state;
 		const { description } = this.props.file;
 		const { baseUrl, user, customEmojis } = this.props;
+
+		if (!baseUrl) {
+			return null;
+		}
+
 		return (
 			[
 				<View key='button'>
