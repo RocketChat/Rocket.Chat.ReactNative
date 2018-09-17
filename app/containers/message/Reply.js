@@ -55,12 +55,15 @@ const styles = StyleSheet.create({
 	}
 });
 
-const onPress = (attachment) => {
-	const url = attachment.title_link || attachment.author_link;
+const onPress = (attachment, baseUrl, user) => {
+	let url = attachment.title_link || attachment.author_link;
 	if (!url) {
 		return;
 	}
-	openLink(attachment.title_link || attachment.author_link);
+	if (attachment.type === 'file') {
+		url = `${ baseUrl }${ url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
+	}
+	openLink(url);
 };
 
 const Reply = ({
@@ -91,9 +94,19 @@ const Reply = ({
 		);
 	};
 
-	const renderText = () => (
-		attachment.text ? <Markdown msg={attachment.text} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} /> : null
-	);
+	const renderText = () => {
+		const text = attachment.text || attachment.title;
+		if (text) {
+			return (
+				<Markdown
+					msg={text}
+					customEmojis={customEmojis}
+					baseUrl={baseUrl}
+					username={user.username}
+				/>
+			);
+		}
+	};
 
 	const renderFields = () => {
 		if (!attachment.fields) {
@@ -114,7 +127,7 @@ const Reply = ({
 
 	return (
 		<RectButton
-			onPress={() => onPress(attachment)}
+			onPress={() => onPress(attachment, baseUrl, user)}
 			style={[styles.button, index > 0 && styles.marginTop]}
 			activeOpacity={0.5}
 			underlayColor='#fff'
