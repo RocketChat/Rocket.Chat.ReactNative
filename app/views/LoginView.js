@@ -58,7 +58,7 @@ export default class LoginView extends LoggedView {
 
 		try {
 			await this.props.loginSubmit({ username, password, code });
-			Answers.logLogin('Email', true, { server: this.props.server });
+			Answers.logLogin('Email', true);
 		} catch (error) {
 			console.warn('LoginView submit', error);
 		}
