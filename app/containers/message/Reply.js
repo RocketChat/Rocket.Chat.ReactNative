@@ -2,10 +2,10 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { RectButton } from 'react-native-gesture-handler';
 
 import Markdown from './Markdown';
 import openLink from '../../utils/openLink';
-import Touch from '../../utils/touch';
 
 const styles = StyleSheet.create({
 	button: {
@@ -13,13 +13,13 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginTop: 15,
-		alignSelf: 'flex-end'
+		alignSelf: 'flex-end',
+		backgroundColor: '#f3f4f5'
 	},
 	attachmentContainer: {
 		flex: 1,
 		borderRadius: 4,
 		flexDirection: 'column',
-		backgroundColor: '#f3f4f5',
 		padding: 15
 	},
 	authorContainer: {
@@ -113,16 +113,18 @@ const Reply = ({
 	};
 
 	return (
-		<Touch
+		<RectButton
 			onPress={() => onPress(attachment)}
 			style={[styles.button, index > 0 && styles.marginTop]}
+			activeOpacity={0.5}
+			underlayColor='#fff'
 		>
 			<View style={styles.attachmentContainer}>
 				{renderTitle()}
 				{renderText()}
 				{renderFields()}
 			</View>
-		</Touch>
+		</RectButton>
 	);
 };
 

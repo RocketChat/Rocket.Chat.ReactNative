@@ -44,6 +44,7 @@
     "react-native-dialog": "^5.1.0",
     "react-native-fabric": "^0.5.1",
     "react-native-fast-image": "^4.0.14",
+    "react-native-gesture-handler": "^1.0.7",
     "react-native-i18n": "^2.0.15",
     "react-native-image-crop-picker": "git+https://github.com/RocketChat/react-native-image-crop-picker.git",
     "react-native-image-zoom-viewer": "^2.2.14",

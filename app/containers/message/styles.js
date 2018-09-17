@@ -51,6 +51,11 @@ export default StyleSheet.create({
 		flexWrap: 'wrap',
 		marginTop: 10
 	},
+	reactionButton: {
+		marginRight: 10,
+		marginBottom: 10,
+		borderRadius: 4
+	},
 	reactionContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center',
@@ -58,11 +63,11 @@ export default StyleSheet.create({
 		borderRadius: 4,
 		borderWidth: 1.5,
 		borderColor: '#e1e5e8',
-		marginRight: 10,
-		marginBottom: 10,
 		height: 28,
-		minWidth: 46,
-		backgroundColor: '#FFF'
+		minWidth: 46
+	},
+	reactedContainer: {
+		borderColor: '#1d74f580'
 	},
 	reactionCount: {
 		fontSize: 14,
@@ -82,10 +87,6 @@ export default StyleSheet.create({
 	},
 	avatar: {
 		marginTop: 5
-	},
-	reactedContainer: {
-		borderColor: '#1d74f580',
-		backgroundColor: '#e8f2ff'
 	},
 	addReaction: {
 		width: 17,

@@ -7,6 +7,7 @@ import MarkdownFlowdock from 'markdown-it-flowdock';
 import styles from './styles';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import MarkdownEmojiPlugin from './MarkdownEmojiPlugin';
+import { BorderlessButton } from 'react-native-gesture-handler';
 
 // Support <http://link|Text>
 const formatText = text =>
@@ -52,17 +53,13 @@ export default class Markdown extends React.Component {
 							};
 						}
 						return (
-							<Text
-								key={key}
-								onPress={() => alert(`Username ${ content }`)}
-								style={mentionStyle}
-							>
+							<Text style={mentionStyle} key={key}>
 								&nbsp;{content}&nbsp;
 							</Text>
 						);
 					},
 					hashtag: node => (
-						<Text key={node.key} onPress={() => alert(`Room #${ node.content }`)} style={styles.mention}>
+						<Text key={node.key} style={styles.mention}>
 							&nbsp;#{node.content}&nbsp;
 						</Text>
 					),
