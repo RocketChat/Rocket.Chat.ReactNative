@@ -80,12 +80,9 @@ const goRoom = function* goRoom({ rid, name }) {
 	yield delay(1000);
 	NavigationActions.push({
 		screen: 'RoomView',
+		title: name,
 		backButtonTitle: '',
-		passProps: {
-			room: { rid, name },
-			rid,
-			name
-		}
+		passProps: { rid }
 	});
 };
 
