@@ -100,9 +100,7 @@ export default StyleSheet.create({
 	broadcastButton: {
 		width: 107,
 		height: 44,
-		marginTop: 15
-	},
-	broadcastButtonContainer: {
+		marginTop: 15,
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',

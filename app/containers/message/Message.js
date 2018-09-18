@@ -304,12 +304,12 @@ export default class Message extends PureComponent {
 			return (
 				<RectButton
 					onPress={this.props.replyBroadcast}
-					style={[styles.broadcastButton, styles.broadcastButtonContainer]}
+					style={styles.broadcastButton}
 					activeOpacity={0.5}
 					underlayColor='#fff'
 				>
 					<ImageRN source={{ uri: 'reply' }} style={styles.broadcastButtonIcon} />
-					<Text style={styles.broadcastButtonText}>Reply</Text>
+					<Text style={styles.broadcastButtonText}>{I18n.t('Reply')}</Text>
 				</RectButton>
 			);
 		}
