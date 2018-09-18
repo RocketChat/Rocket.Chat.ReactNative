@@ -167,6 +167,7 @@ export default {
 	is_not_a_valid_RocketChat_instance: 'is not a valid Rocket.Chat instance',
 	is_typing: 'is typing',
 	Join_the_community: 'Join the community',
+	Join: 'Join',
 	Just_invited_people_can_access_this_channel: 'Just invited people can access this channel',
 	Language: 'Language',
 	last_message: 'last message',
