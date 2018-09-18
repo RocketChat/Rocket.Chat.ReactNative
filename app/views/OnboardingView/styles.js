@@ -96,5 +96,9 @@ export default StyleSheet.create({
 	},
 	button_text_secondary: {
 		color: colors.textColorSecondary
+	},
+	closeModal: {
+		position: 'absolute',
+		left: 15
 	}
 });

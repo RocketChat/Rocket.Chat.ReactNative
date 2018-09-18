@@ -1,21 +1,63 @@
 import React from 'react';
-import { View, Text, Image, SafeAreaView } from 'react-native';
+import { View, Text, Image, SafeAreaView, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { connect } from 'react-redux';
+import { BorderlessButton } from 'react-native-gesture-handler';
 
+import { selectServerRequest, serverInitAdd, serverFinishAdd } from '../../actions/server';
 import I18n from '../../i18n';
 import openLink from '../../utils/openLink';
 import Button from './Button';
 import styles from './styles';
 import LoggedView from '../View';
+import DeviceInfo from '../../utils/deviceInfo';
 
+@connect(state => ({
+	currentServer: state.server.server,
+	adding: state.server.adding
+}), dispatch => ({
+	initAdd: () => dispatch(serverInitAdd()),
+	finishAdd: () => dispatch(serverFinishAdd()),
+	selectServer: server => dispatch(selectServerRequest(server))
+}))
 /** @extends React.Component */
 export default class OnboardingView extends LoggedView {
 	static propTypes = {
-		navigator: PropTypes.object
+		navigator: PropTypes.object,
+		previousServer: PropTypes.string,
+		adding: PropTypes.bool,
+		selectServer: PropTypes.func.isRequired,
+		currentServer: PropTypes.string,
+		initAdd: PropTypes.func,
+		finishAdd: PropTypes.func
 	}
 
 	constructor(props) {
 		super('CreateChannelView', props);
+	}
+
+	componentDidMount() {
+		const { previousServer, initAdd } = this.props;
+		if (previousServer) {
+			initAdd();
+		}
+	}
+
+	componentWillUnmount() {
+		const {
+			selectServer, previousServer, currentServer, adding, finishAdd
+		} = this.props;
+		if (adding) {
+			if (previousServer !== currentServer) {
+				selectServer(previousServer);
+			}
+			finishAdd();
+		}
+	}
+
+	close = () => {
+		this.props.navigator.dismissModal();
 	}
 
 	connectServer = () => {
@@ -43,6 +85,28 @@ export default class OnboardingView extends LoggedView {
 
 	createWorkspace = () => {
 		openLink('https://cloud.rocket.chat/trial');
+	}
+
+	renderClose = () => {
+		if (this.props.previousServer) {
+			let top = 15;
+			if (DeviceInfo.getBrand() === 'Apple') {
+				top = DeviceInfo.isNotch() ? 45 : 30;
+			}
+			return (
+				<TouchableOpacity
+					style={[styles.closeModal, { top }]}
+					onPress={this.close}
+				>
+					<Icon
+						name='close'
+						size={30}
+						color='#1D74F5'
+					/>
+				</TouchableOpacity>
+			);
+		}
+		return null;
 	}
 
 	render() {
@@ -75,6 +139,7 @@ export default class OnboardingView extends LoggedView {
 						testID='create-workspace-button'
 					/>
 				</View>
+				{this.renderClose()}
 			</SafeAreaView>
 		);
 	}
