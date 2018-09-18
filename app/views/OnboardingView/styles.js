@@ -25,7 +25,9 @@ export default StyleSheet.create({
 		marginTop: verticalScale(30),
 		marginBottom: verticalScale(35),
 		maxHeight: verticalScale(250),
-		resizeMode: 'contain'
+		resizeMode: 'contain',
+		width: 309,
+		height: 250
 	},
 	title: {
 		alignSelf: 'center',

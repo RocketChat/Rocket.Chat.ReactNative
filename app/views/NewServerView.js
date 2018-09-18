@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Text, ScrollView, Keyboard, SafeAreaView, Image, Alert, StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { BorderlessButton } from 'react-native-gesture-handler';
 
 import { serverRequest } from '../actions/server';
 import sharedStyles from './Styles';
@@ -19,7 +18,9 @@ import DeviceInfo from '../utils/deviceInfo';
 const styles = StyleSheet.create({
 	image: {
 		alignSelf: 'center',
-		marginVertical: verticalScale(20)
+		marginVertical: verticalScale(20),
+		width: 210,
+		height: 171
 	},
 	title: {
 		alignSelf: 'center',
@@ -42,6 +43,7 @@ const styles = StyleSheet.create({
 	},
 	backButton: {
 		position: 'absolute',
+		paddingHorizontal: 9,
 		left: 15
 	}
 });
@@ -150,7 +152,7 @@ export default class NewServerView extends LoggedView {
 			>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 					<SafeAreaView style={sharedStyles.container} testID='new-server-view'>
-						<Image style={styles.image} source={require('../static/images/server.png')} />
+						<Image style={styles.image} source={{ uri: 'new_server' }} />
 						<Text style={styles.title}>{I18n.t('Sign_in_your_server')}</Text>
 						<TextInput
 							inputRef={e => this.input = e}

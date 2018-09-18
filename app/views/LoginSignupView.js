@@ -37,8 +37,8 @@ const styles = StyleSheet.create({
 		fontWeight: '700'
 	},
 	planetImage: {
-		width: 200,
-		height: 162,
+		width: 210,
+		height: 171,
 		marginVertical: 20
 	}
 });
@@ -283,10 +283,7 @@ export default class LoginSignupView extends LoggedView {
 					<View style={styles.container}>
 						<Text style={[sharedStyles.loginText, styles.header, { color: '#81848A' }]}>{I18n.t('Welcome_title_pt_1')}</Text>
 						<Text style={[sharedStyles.loginText, styles.header]}>{I18n.t('Welcome_title_pt_2')}</Text>
-						<Image
-							style={styles.planetImage}
-							source={require('../static/images/server.png')}
-						/>
+						<Image style={styles.planetImage} source={{ uri: 'new_server' }} />
 						<Button
 							title={I18n.t('I_have_an_account')}
 							type='primary'
