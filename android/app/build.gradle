@@ -99,7 +99,7 @@ android {
 
     defaultConfig {
         applicationId "chat.rocket.reactnative"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 27
         versionCode VERSIONCODE as Integer
         versionName "1.2.1"
