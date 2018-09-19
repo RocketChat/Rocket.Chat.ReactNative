@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, TouchableOpacity, ViewPropTypes, Image as ImageRN } from 'react-native';
+import { View, Text, ViewPropTypes, Image as ImageRN } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
 import { KeyboardUtils } from 'react-native-keyboard-input';
+import { State, RectButton, LongPressGestureHandler } from 'react-native-gesture-handler';
 
 import Image from './Image';
 import User from './User';
@@ -16,7 +17,6 @@ import Reply from './Reply';
 import ReactionsModal from './ReactionsModal';
 import Emoji from './Emoji';
 import styles from './styles';
-import Touch from '../../utils/touch';
 import I18n from '../../i18n';
 import messagesStatus from '../../constants/messagesStatus';
 
@@ -247,25 +247,31 @@ export default class Message extends PureComponent {
 
 	renderReaction = (reaction) => {
 		const reacted = reaction.usernames.findIndex(item => item.value === this.props.user.username) !== -1;
-		const reactedContainerStyle = reacted && styles.reactedContainer;
+		const underlayColor = reacted ? '#fff' : '#e1e5e8';
 		return (
-			<TouchableOpacity
-				onPress={() => this.props.onReactionPress(reaction.emoji)}
-				onLongPress={this.props.onReactionLongPress}
+			<LongPressGestureHandler
 				key={reaction.emoji}
-				testID={`message-reaction-${ reaction.emoji }`}
+				onHandlerStateChange={({ nativeEvent }) => nativeEvent.state === State.ACTIVE && this.props.onReactionLongPress()}
 			>
-				<View style={[styles.reactionContainer, reactedContainerStyle]}>
-					<Emoji
-						content={reaction.emoji}
-						customEmojis={this.props.customEmojis}
-						standardEmojiStyle={styles.reactionEmoji}
-						customEmojiStyle={styles.reactionCustomEmoji}
-						baseUrl={this.props.baseUrl}
-					/>
-					<Text style={styles.reactionCount}>{ reaction.usernames.length }</Text>
-				</View>
-			</TouchableOpacity>
+				<RectButton
+					onPress={() => this.props.onReactionPress(reaction.emoji)}
+					testID={`message-reaction-${ reaction.emoji }`}
+					style={[styles.reactionButton, reacted && { backgroundColor: '#e8f2ff' }]}
+					activeOpacity={0.8}
+					underlayColor={underlayColor}
+				>
+					<View style={[styles.reactionContainer, reacted && styles.reactedContainer]}>
+						<Emoji
+							content={reaction.emoji}
+							customEmojis={this.props.customEmojis}
+							standardEmojiStyle={styles.reactionEmoji}
+							customEmojiStyle={styles.reactionCustomEmoji}
+							baseUrl={this.props.baseUrl}
+						/>
+						<Text style={styles.reactionCount}>{ reaction.usernames.length }</Text>
+					</View>
+				</RectButton>
+			</LongPressGestureHandler>
 		);
 	}
 
@@ -277,14 +283,18 @@ export default class Message extends PureComponent {
 		return (
 			<View style={styles.reactionsContainer}>
 				{reactions.map(this.renderReaction)}
-				<TouchableOpacity
+				<RectButton
 					onPress={this.props.toggleReactionPicker}
 					key='message-add-reaction'
 					testID='message-add-reaction'
-					style={styles.reactionContainer}
+					style={styles.reactionButton}
+					activeOpacity={0.8}
+					underlayColor='#e1e5e8'
 				>
-					<ImageRN source={{ uri: 'add_reaction' }} style={styles.addReaction} />
-				</TouchableOpacity>
+					<View style={styles.reactionContainer}>
+						<ImageRN source={{ uri: 'add_reaction' }} style={styles.addReaction} />
+					</View>
+				</RectButton>
 			</View>
 		);
 	}
@@ -292,15 +302,15 @@ export default class Message extends PureComponent {
 	renderBroadcastReply() {
 		if (this.props.broadcast && !this.isOwn()) {
 			return (
-				<Touch
+				<RectButton
 					onPress={this.props.replyBroadcast}
 					style={styles.broadcastButton}
+					activeOpacity={0.5}
+					underlayColor='#fff'
 				>
-					<View style={styles.broadcastButtonContainer}>
-						<ImageRN source={{ uri: 'reply' }} style={styles.broadcastButtonIcon} />
-						<Text style={styles.broadcastButtonText}>Reply</Text>
-					</View>
-				</Touch>
+					<ImageRN source={{ uri: 'reply' }} style={styles.broadcastButtonIcon} />
+					<Text style={styles.broadcastButtonText}>{I18n.t('Reply')}</Text>
+				</RectButton>
 			);
 		}
 		return null;
@@ -313,39 +323,46 @@ export default class Message extends PureComponent {
 		const accessibilityLabel = I18n.t('Message_accessibility', { user: author.username, time: moment(ts).format(timeFormat), message: msg });
 
 		return (
-			<Touch
-				onPress={this.onPress}
-				onLongPress={onLongPress}
-				disabled={this.isInfoMessage() || this.hasError() || archived}
-				accessibilityLabel={accessibilityLabel}
-				style={[styles.container, header && { marginBottom: 10 }]}
+			<LongPressGestureHandler
+				onHandlerStateChange={({ nativeEvent }) => nativeEvent.state === State.ACTIVE && onLongPress()}
 			>
-				<View style={[styles.message, editing && styles.editing, style]}>
-					<View style={styles.flex}>
-						{this.renderError()}
-						{this.renderAvatar()}
-						<View style={[styles.messageContent, header && styles.hasHeader, this.isTemp() && styles.temp]}>
-							{this.renderUsername()}
-							{this.renderContent()}
-							{this.renderAttachment()}
-							{this.renderUrl()}
-							{this.renderReactions()}
-							{this.renderBroadcastReply()}
+				<RectButton
+					enabled={!(this.isInfoMessage() || this.hasError() || archived)}
+					style={[styles.container, header && { marginBottom: 10 }]}
+					onPress={this.onPress}
+					activeOpacity={0.8}
+					underlayColor='#e1e5e8'
+				>
+					<View
+						style={[styles.message, editing && styles.editing, style]}
+						accessibilityLabel={accessibilityLabel}
+					>
+						<View style={styles.flex}>
+							{this.renderError()}
+							{this.renderAvatar()}
+							<View style={[styles.messageContent, header && styles.hasHeader, this.isTemp() && styles.temp]}>
+								{this.renderUsername()}
+								{this.renderContent()}
+								{this.renderAttachment()}
+								{this.renderUrl()}
+								{this.renderReactions()}
+								{this.renderBroadcastReply()}
+							</View>
 						</View>
+						{reactionsModal ?
+							<ReactionsModal
+								isVisible={reactionsModal}
+								reactions={reactions}
+								user={user}
+								customEmojis={customEmojis}
+								baseUrl={baseUrl}
+								close={closeReactions}
+							/>
+							: null
+						}
 					</View>
-					{reactionsModal ?
-						<ReactionsModal
-							isVisible={reactionsModal}
-							reactions={reactions}
-							user={user}
-							customEmojis={customEmojis}
-							baseUrl={baseUrl}
-							close={closeReactions}
-						/>
-						: null
-					}
-				</View>
-			</Touch>
+				</RectButton>
+			</LongPressGestureHandler>
 		);
 	}
 }

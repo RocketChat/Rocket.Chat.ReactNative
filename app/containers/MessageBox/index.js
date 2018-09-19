@@ -266,7 +266,7 @@ export default class MessageBox extends React.PureComponent {
 				await RocketChat.sendFileMessage(this.props.rid, fileInfo);
 			} catch (e) {
 				if (e && e.error === 'error-file-too-large') {
-					return Alert.alert('File is too large!');
+					return Alert.alert(I18n.t(e.error));
 				}
 				log('finishAudioMessage', e);
 			}

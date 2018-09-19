@@ -2,10 +2,10 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { RectButton } from 'react-native-gesture-handler';
 
 import Markdown from './Markdown';
 import openLink from '../../utils/openLink';
-import Touch from '../../utils/touch';
 
 const styles = StyleSheet.create({
 	button: {
@@ -13,13 +13,13 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginTop: 15,
-		alignSelf: 'flex-end'
+		alignSelf: 'flex-end',
+		backgroundColor: '#f3f4f5'
 	},
 	attachmentContainer: {
 		flex: 1,
 		borderRadius: 4,
 		flexDirection: 'column',
-		backgroundColor: '#f3f4f5',
 		padding: 15
 	},
 	authorContainer: {
@@ -55,12 +55,15 @@ const styles = StyleSheet.create({
 	}
 });
 
-const onPress = (attachment) => {
-	const url = attachment.title_link || attachment.author_link;
+const onPress = (attachment, baseUrl, user) => {
+	let url = attachment.title_link || attachment.author_link;
 	if (!url) {
 		return;
 	}
-	openLink(attachment.title_link || attachment.author_link);
+	if (attachment.type === 'file') {
+		url = `${ baseUrl }${ url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
+	}
+	openLink(url);
 };
 
 const Reply = ({
@@ -91,9 +94,19 @@ const Reply = ({
 		);
 	};
 
-	const renderText = () => (
-		attachment.text ? <Markdown msg={attachment.text} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} /> : null
-	);
+	const renderText = () => {
+		const text = attachment.text || attachment.title;
+		if (text) {
+			return (
+				<Markdown
+					msg={text}
+					customEmojis={customEmojis}
+					baseUrl={baseUrl}
+					username={user.username}
+				/>
+			);
+		}
+	};
 
 	const renderFields = () => {
 		if (!attachment.fields) {
@@ -113,16 +126,18 @@ const Reply = ({
 	};
 
 	return (
-		<Touch
-			onPress={() => onPress(attachment)}
+		<RectButton
+			onPress={() => onPress(attachment, baseUrl, user)}
 			style={[styles.button, index > 0 && styles.marginTop]}
+			activeOpacity={0.5}
+			underlayColor='#fff'
 		>
 			<View style={styles.attachmentContainer}>
 				{renderTitle()}
 				{renderText()}
 				{renderFields()}
 			</View>
-		</Touch>
+		</RectButton>
 	);
 };
 

@@ -470,9 +470,11 @@ const RocketChat = {
 				log('rocketchat.logout', e);
 			}
 		}
-		// database.deleteAll();
 		AsyncStorage.removeItem(TOKEN_KEY);
 		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
+		setTimeout(() => {
+			database.deleteAll();
+		}, 1000);
 	},
 
 	registerPushToken(userId) {
@@ -750,7 +752,7 @@ const RocketChat = {
 		// transform room roles to array
 		const roomRoles = Array.from(Object.keys(roles), i => roles[i].value);
 		// get user roles on the server from redux
-		const userRoles = reduxStore.getState().login.user.roles || [];
+		const userRoles = (reduxStore.getState().login.user && reduxStore.getState().login.user.roles) || [];
 		// merge both roles
 		const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
 

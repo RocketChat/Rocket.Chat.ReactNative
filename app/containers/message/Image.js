@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
-import { TouchableOpacity } from 'react-native';
+import { RectButton } from 'react-native-gesture-handler';
 
 import PhotoModal from './PhotoModal';
 import Markdown from './Markdown';
@@ -20,6 +20,12 @@ export default class extends React.PureComponent {
 
 	state = { modalVisible: false };
 
+	onPressButton() {
+		this.setState({
+			modalVisible: true
+		});
+	}
+
 	getDescription() {
 		const {
 			file, customEmojis, baseUrl, user
@@ -29,13 +35,12 @@ export default class extends React.PureComponent {
 		}
 	}
 
-	_onPressButton() {
-		this.setState({
-			modalVisible: true
-		});
+	isPressed = (state) => {
+		this.setState({ isPressed: state });
 	}
 
 	render() {
+		const { isPressed } = this.state;
 		const { baseUrl, file, user } = this.props;
 		const img = `${ baseUrl }${ file.image_url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
 
@@ -45,18 +50,20 @@ export default class extends React.PureComponent {
 
 		return (
 			[
-				<TouchableOpacity
+				<RectButton
 					key='image'
-					onPress={() => this._onPressButton()}
+					onPress={() => this.onPressButton()}
+					onActiveStateChange={this.isPressed}
 					style={styles.imageContainer}
+					underlayColor='#fff'
 				>
 					<FastImage
-						style={styles.image}
+						style={[styles.image, isPressed && { opacity: 0.5 }]}
 						source={{ uri: encodeURI(img) }}
 						resizeMode={FastImage.resizeMode.cover}
 					/>
 					{this.getDescription()}
-				</TouchableOpacity>,
+				</RectButton>,
 				<PhotoModal
 					key='modal'
 					title={file.title}

@@ -26,11 +26,7 @@ const handleRequest = function* handleRequest({ data }) {
 			screen: 'RoomView',
 			title: name,
 			backButtonTitle: '',
-			passProps: {
-				room: { rid, name },
-				rid,
-				name
-			}
+			passProps: { rid }
 		});
 	} catch (err) {
 		yield put(createChannelFailure(err));

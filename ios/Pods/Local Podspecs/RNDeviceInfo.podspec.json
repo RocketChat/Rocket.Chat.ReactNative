@@ -1,0 +1,23 @@
+{
+  "name": "RNDeviceInfo",
+  "version": "0.21.5",
+  "summary": "Device Information for react-native",
+  "homepage": "https://github.com/rebeccahughes/react-native-device-info",
+  "license": "MIT",
+  "authors": {
+    "Rebecca Hughes": "rebecca@learnium.net"
+  },
+  "platforms": {
+    "ios": "8.0",
+    "tvos": "10.0"
+  },
+  "source": {
+    "git": "https://github.com/rebeccahughes/react-native-device-info.git"
+  },
+  "source_files": "ios/RNDeviceInfo/*.{h,m}",
+  "dependencies": {
+    "React": [
+
+    ]
+  }
+}

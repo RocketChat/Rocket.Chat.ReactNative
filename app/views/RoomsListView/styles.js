@@ -118,7 +118,8 @@ export default StyleSheet.create({
 		color: isIOS() ? '#1D74F5' : '#FFF',
 		fontSize: 15,
 		fontWeight: 'normal',
-		marginRight: 15
+		marginRight: 15,
+		paddingVertical: 10
 	},
 	serverItem: {
 		height: 68

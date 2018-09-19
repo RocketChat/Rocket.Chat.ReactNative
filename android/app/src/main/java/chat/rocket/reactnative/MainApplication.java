@@ -25,6 +25,8 @@ import com.wix.reactnativenotifications.core.AppLifecycleFacade;
 import com.wix.reactnativenotifications.core.JsIOHelper;
 import com.wix.reactnativenotifications.core.notification.INotificationsApplication;
 import com.wix.reactnativenotifications.core.notification.IPushNotification;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 
 import java.util.Arrays;
 import java.util.List;
@@ -57,6 +59,8 @@ public class MainApplication extends NavigationApplication implements INotificat
     public List<ReactPackage> createAdditionalReactPackages() {
         return Arrays.<ReactPackage>asList(
                 new MainReactPackage(),
+                new RNDeviceInfo(),
+                new RNGestureHandlerPackage(),
                 new PickerPackage(),
                 new SvgPackage(),
                 new VectorIconsPackage(),
