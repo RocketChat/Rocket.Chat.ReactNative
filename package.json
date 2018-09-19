@@ -89,7 +89,7 @@
     "babel-plugin-transform-remove-console": "^6.9.4",
     "babel-preset-react-native": "^5.0.2",
     "codecov": "^3.0.4",
-    "detox": "^8.1.4",
+    "detox": "^9.0.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.13.0",
