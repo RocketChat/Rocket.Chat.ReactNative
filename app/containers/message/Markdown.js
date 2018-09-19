@@ -7,7 +7,6 @@ import MarkdownFlowdock from 'markdown-it-flowdock';
 import styles from './styles';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import MarkdownEmojiPlugin from './MarkdownEmojiPlugin';
-import { BorderlessButton } from 'react-native-gesture-handler';
 
 // Support <http://link|Text>
 const formatText = text =>

@@ -1,6 +1,6 @@
 import { Navigation } from 'react-native-navigation';
 import { Provider } from 'react-redux';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler'
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import CreateChannelView from './CreateChannelView';
 import ForgotPasswordView from './ForgotPasswordView';

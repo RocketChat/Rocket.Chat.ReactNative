@@ -363,6 +363,6 @@ export default class Message extends PureComponent {
 					</View>
 				</RectButton>
 			</LongPressGestureHandler>
-		)
+		);
 	}
 }
