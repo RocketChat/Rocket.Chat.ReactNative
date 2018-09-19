@@ -1,6 +1,6 @@
 {
   "name": "RNImageCropPicker",
-  "version": "0.20.3",
+  "version": "0.21.1",
   "summary": "Select single or multiple images, with cropping option",
   "requires_arc": true,
   "license": "MIT",

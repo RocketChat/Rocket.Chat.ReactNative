@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, TouchableOpacity, Image, Platform, View } from 'react-native';
+import { StyleSheet, Image, Platform, View } from 'react-native';
 import Modal from 'react-native-modal';
 import VideoPlayer from 'react-native-video-controls';
+import { RectButton } from 'react-native-gesture-handler';
+
 import Markdown from './Markdown';
 import openLink from '../../utils/openLink';
 
@@ -70,15 +72,17 @@ export default class Video extends React.PureComponent {
 		return (
 			[
 				<View key='button'>
-					<TouchableOpacity
+					<RectButton
 						style={styles.button}
 						onPress={() => this.open()}
+						activeOpacity={0.5}
+						underlayColor='#fff'
 					>
 						<Image
 							source={{ uri: 'play_video' }}
 							style={styles.image}
 						/>
-					</TouchableOpacity>
+					</RectButton>
 					<Markdown msg={description} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} />
 				</View>,
 				<Modal

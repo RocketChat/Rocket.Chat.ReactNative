@@ -327,11 +327,7 @@ export default class RoomsListView extends LoggedView {
 			screen: 'RoomView',
 			title: name,
 			backButtonTitle: '',
-			passProps: {
-				room: { rid, name },
-				rid,
-				name
-			}
+			passProps: { rid }
 		});
 		this.cancelSearchingAndroid();
 	}

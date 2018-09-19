@@ -36,8 +36,7 @@ export default class User extends React.PureComponent {
 		username: PropTypes.string,
 		alias: PropTypes.string,
 		ts: PropTypes.instanceOf(Date),
-		temp: PropTypes.bool,
-		onPress: PropTypes.func
+		temp: PropTypes.bool
 	}
 
 	render() {
@@ -55,7 +54,7 @@ export default class User extends React.PureComponent {
 
 		return (
 			<View style={styles.usernameView}>
-				<Text onPress={this.props.onPress} style={styles.username}>
+				<Text style={styles.username}>
 					{alias || username}
 				</Text>
 				{aliasUsername}

@@ -85,8 +85,6 @@
 		<string>icomoon.ttf</string>
 		<string>Feather.ttf</string>
 	</array>
-	
-	
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
