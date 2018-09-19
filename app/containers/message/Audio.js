@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, Text, Easing, Image } from 'react-native';
+import {
+	View, StyleSheet, Text, Easing, Image
+} from 'react-native';
 import Video from 'react-native-video';
 import Slider from 'react-native-slider';
 import moment from 'moment';

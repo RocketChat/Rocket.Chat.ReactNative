@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Image, Platform, View } from 'react-native';
+import {
+	StyleSheet, Image, Platform, View
+} from 'react-native';
 import Modal from 'react-native-modal';
 import VideoPlayer from 'react-native-video-controls';
 import { RectButton } from 'react-native-gesture-handler';
@@ -63,8 +65,10 @@ export default class Video extends React.PureComponent {
 
 	render() {
 		const { isVisible } = this.state;
-		const { description } = this.props.file;
-		const { baseUrl, user, customEmojis } = this.props;
+		const {
+			baseUrl, user, customEmojis, file
+		} = this.props;
+		const { description } = file;
 
 		if (!baseUrl) {
 			return null;

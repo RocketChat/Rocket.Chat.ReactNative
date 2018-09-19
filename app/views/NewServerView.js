@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, ScrollView, Keyboard, SafeAreaView, Image, Alert, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+	Text, ScrollView, Keyboard, SafeAreaView, Image, Alert, StyleSheet, TouchableOpacity
+} from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -74,7 +76,7 @@ export default class NewServerView extends LoggedView {
 	}
 
 	componentDidMount() {
-		const { server } = this.props;
+		const { server, connectServer } = this.props;
 		if (server) {
 			connectServer(server);
 			this.setState({ text: server });
@@ -126,6 +128,8 @@ export default class NewServerView extends LoggedView {
 	}
 
 	renderBack = () => {
+		const { navigator } = this.props;
+
 		let top = 15;
 		if (DeviceInfo.getBrand() === 'Apple') {
 			top = DeviceInfo.isNotch() ? 45 : 30;
@@ -134,7 +138,7 @@ export default class NewServerView extends LoggedView {
 		return (
 			<TouchableOpacity
 				style={[styles.backButton, { top }]}
-				onPress={() => this.props.navigator.pop()}
+				onPress={() => navigator.pop()}
 			>
 				<Icon
 					name='ios-arrow-back'

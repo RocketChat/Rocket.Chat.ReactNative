@@ -253,7 +253,7 @@ export default class RoomsListView extends LoggedView {
 				this.removeListener(this.chats);
 			} else {
 				// chats
-				if (this.props.showUnread) {
+				if (showUnread) {
 					this.chats = this.data.filtered('(unread == 0 && alert == false)');
 				} else {
 					this.chats = this.data;

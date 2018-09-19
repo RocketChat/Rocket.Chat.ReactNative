@@ -87,7 +87,7 @@ export default class ServerDropdown extends Component {
 
 		this.close();
 		setTimeout(() => {
-			this.props.navigator.showModal({
+			navigator.showModal({
 				screen: 'OnboardingView',
 				passProps: {
 					previousServer: server

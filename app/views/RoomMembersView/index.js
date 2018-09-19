@@ -182,16 +182,20 @@ export default class RoomMembersView extends LoggedView {
 
 	renderSeparator = () => <View style={styles.separator} />;
 
-	renderItem = ({ item }) => (
-		<UserItem
-			name={item.name}
-			username={item.username}
-			onPress={() => this.onPressUser(item)}
-			onLongPress={() => this.onLongPressUser(item)}
-			baseUrl={this.props.baseUrl}
-			testID={`room-members-view-item-${ item.username }`}
-		/>
-	)
+	renderItem = ({ item }) => {
+		const { baseUrl } = this.props;
+
+		return (
+			<UserItem
+				name={item.name}
+				username={item.username}
+				onPress={() => this.onPressUser(item)}
+				onLongPress={() => this.onLongPressUser(item)}
+				baseUrl={baseUrl}
+				testID={`room-members-view-item-${ item.username }`}
+			/>
+		);
+	}
 
 	render() {
 		const { filtering, members, membersFiltered } = this.state;

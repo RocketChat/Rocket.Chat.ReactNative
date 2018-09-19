@@ -41,7 +41,7 @@ export default class User extends React.PureComponent {
 
 	render() {
 		const {
-			username, alias, ts, temp, timeFormat, onPress
+			username, alias, ts, temp, timeFormat
 		} = this.props;
 
 		const extraStyle = {};

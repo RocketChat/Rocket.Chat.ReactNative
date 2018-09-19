@@ -52,7 +52,7 @@ export default class LoginView extends LoggedView {
 
 	submit = async() => {
 		const {	username, password, code } = this.state;
-		const { loginSubmit, server } = this.props;
+		const { loginSubmit } = this.props;
 
 		if (username.trim() === '' || password.trim() === '') {
 			showToast(I18n.t('Email_or_password_field_is_empty'));
@@ -61,7 +61,7 @@ export default class LoginView extends LoggedView {
 		Keyboard.dismiss();
 
 		try {
-			await this.props.loginSubmit({ username, password, code });
+			await loginSubmit({ username, password, code });
 			Answers.logLogin('Email', true);
 		} catch (error) {
 			console.warn('LoginView submit', error);

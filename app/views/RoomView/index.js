@@ -63,7 +63,7 @@ export default class RoomView extends LoggedView {
 
 	constructor(props) {
 		super('RoomView', props);
-		this.rid = this.props.rid;
+		this.rid = props.rid;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			loaded: false,
@@ -214,7 +214,7 @@ export default class RoomView extends LoggedView {
 				}
 			}
 		} else {
-			this.props.openRoom({ rid: this.rid });
+			openRoom({ rid: this.rid });
 			this.setState({ joined: false });
 		}
 	}
@@ -289,7 +289,9 @@ export default class RoomView extends LoggedView {
 	}
 
 	renderFooter = () => {
-		if (!this.state.joined) {
+		const { joined, room } = this.state;
+
+		if (!joined) {
 			return (
 				<View style={styles.joinRoomContainer} key='room-view-join'>
 					<Text style={styles.previewMode}>{I18n.t('You_are_in_preview_mode')}</Text>
@@ -304,7 +306,7 @@ export default class RoomView extends LoggedView {
 				</View>
 			);
 		}
-		if (this.state.room.archived || this.isReadOnly()) {
+		if (room.archived || this.isReadOnly()) {
 			return (
 				<View style={styles.readOnly}>
 					<Text>{I18n.t('This_room_is_read_only')}</Text>
