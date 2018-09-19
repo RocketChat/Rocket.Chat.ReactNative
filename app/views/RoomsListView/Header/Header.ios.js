@@ -23,12 +23,13 @@ const styles = StyleSheet.create({
 	},
 	disclosure: {
 		marginLeft: 3,
-		marginTop: 2,
+		marginTop: 1,
 		width: 12,
 		height: 9
 	},
 	upsideDown: {
-		transform: [{ scaleY: -1 }]
+		transform: [{ scaleY: -1 }],
+		marginTop: 4
 	}
 });
 

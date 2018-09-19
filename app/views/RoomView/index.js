@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Text, View, LayoutAnimation, ActivityIndicator, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
+import { RectButton } from 'react-native-gesture-handler';
 
 import LoggedView from '../View';
 import { List } from './ListView';
@@ -60,11 +61,11 @@ export default class RoomView extends LoggedView {
 
 	constructor(props) {
 		super('RoomView', props);
-		this.rid = props.rid;
+		this.rid = this.props.rid;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			loaded: false,
-			joined: typeof props.rid === 'undefined',
+			joined: this.rooms.length > 0,
 			room: {},
 			end: false
 		};
@@ -95,6 +96,7 @@ export default class RoomView extends LoggedView {
 		});
 		this.setState({ loaded: true });
 	}
+
 	shouldComponentUpdate(nextProps, nextState) {
 		return !(equal(this.props, nextProps) && equal(this.state, nextState) && this.state.room.ro === nextState.room.ro);
 	}
@@ -191,6 +193,9 @@ export default class RoomView extends LoggedView {
 					this.props.setLastOpen(null);
 				}
 			}
+		} else {
+			this.props.openRoom({ rid: this.rid });
+			this.setState({ joined: false });
 		}
 	}
 
@@ -204,9 +209,7 @@ export default class RoomView extends LoggedView {
 	joinRoom = async() => {
 		try {
 			await RocketChat.joinRoom(this.props.rid);
-			this.setState({
-				joined: true
-			});
+			this.setState({ joined: true });
 		} catch (e) {
 			log('joinRoom', e);
 		}
@@ -245,15 +248,21 @@ export default class RoomView extends LoggedView {
 	);
 
 	renderFooter = () => {
-		// TODO: fix it
-		// if (!this.state.joined) {
-		// 	return (
-		// 		<View>
-		// 			<Text>{I18n.t('You_are_in_preview_mode')}</Text>
-		// 			<Button title='Join' onPress={this.joinRoom} />
-		// 		</View>
-		// 	);
-		// }
+		if (!this.state.joined) {
+			return (
+				<View style={styles.joinRoomContainer} key='room-view-join'>
+					<Text style={styles.previewMode}>{I18n.t('You_are_in_preview_mode')}</Text>
+					<RectButton
+						onPress={this.joinRoom}
+						style={styles.joinRoomButton}
+						activeOpacity={0.5}
+						underlayColor='#fff'
+					>
+						<Text style={styles.joinRoomText}>{I18n.t('Join')}</Text>
+					</RectButton>
+				</View>
+			);
+		}
 		if (this.state.room.archived || this.isReadOnly()) {
 			return (
 				<View style={styles.readOnly}>
