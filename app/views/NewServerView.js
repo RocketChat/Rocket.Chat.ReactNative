@@ -1,16 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	Text, ScrollView, Keyboard, SafeAreaView, Image, Alert, StyleSheet
-} from 'react-native';
+import { Text, ScrollView, Keyboard, SafeAreaView, Image, Alert, StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-import {
-	serverRequest as serverRequestAction,
-	selectServerRequest as selectServerRequestAction,
-	serverInitAdd as serverInitAddAction,
-	serverFinishAdd as serverFinishAddAction
-} from '../actions/server';
+import { serverRequest } from '../actions/server';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import Button from '../containers/Button';
@@ -19,11 +13,14 @@ import LoggedView from './View';
 import I18n from '../i18n';
 import { scale, verticalScale, moderateScale } from '../utils/scaling';
 import KeyboardView from '../presentation/KeyboardView';
+import DeviceInfo from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	image: {
 		alignSelf: 'center',
-		marginVertical: verticalScale(20)
+		marginVertical: verticalScale(20),
+		width: 210,
+		height: 171
 	},
 	title: {
 		alignSelf: 'center',
@@ -43,6 +40,11 @@ const styles = StyleSheet.create({
 		paddingTop: 14,
 		paddingBottom: 14,
 		paddingHorizontal: 16
+	},
+	backButton: {
+		position: 'absolute',
+		paddingHorizontal: 9,
+		left: 15
 	}
 });
 
@@ -50,14 +52,9 @@ const defaultServer = 'https://open.rocket.chat';
 
 @connect(state => ({
 	connecting: state.server.connecting,
-	failure: state.server.failure,
-	currentServer: state.server.server,
-	adding: state.server.adding
+	failure: state.server.failure
 }), dispatch => ({
-	initAdd: () => dispatch(serverInitAddAction()),
-	finishAdd: () => dispatch(serverFinishAddAction()),
-	connectServer: server => dispatch(serverRequestAction(server)),
-	selectServer: server => dispatch(selectServerRequestAction(server))
+	connectServer: server => dispatch(serverRequest(server))
 }))
 /** @extends React.Component */
 export default class NewServerView extends LoggedView {
@@ -65,14 +62,8 @@ export default class NewServerView extends LoggedView {
 		navigator: PropTypes.object,
 		server: PropTypes.string,
 		connecting: PropTypes.bool.isRequired,
-		adding: PropTypes.bool,
 		failure: PropTypes.bool.isRequired,
-		connectServer: PropTypes.func.isRequired,
-		selectServer: PropTypes.func.isRequired,
-		previousServer: PropTypes.string,
-		currentServer: PropTypes.string,
-		initAdd: PropTypes.func,
-		finishAdd: PropTypes.func
+		connectServer: PropTypes.func.isRequired
 	}
 
 	constructor(props) {
@@ -80,13 +71,10 @@ export default class NewServerView extends LoggedView {
 		this.state = {
 			text: ''
 		};
-		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
 
 	componentDidMount() {
-		const {
-			server, previousServer, connectServer, initAdd
-		} = this.props;
+		const { server } = this.props;
 		if (server) {
 			connectServer(server);
 			this.setState({ text: server });
@@ -95,36 +83,12 @@ export default class NewServerView extends LoggedView {
 				this.input.focus();
 			}, 600);
 		}
-		if (previousServer) {
-			initAdd();
-		}
 	}
 
 	componentWillReceiveProps(nextProps) {
 		const { failure } = this.props;
 		if (nextProps.failure && nextProps.failure !== failure) {
 			Alert.alert(I18n.t('Oops'), I18n.t('The_URL_is_invalid'));
-		}
-	}
-
-	componentWillUnmount() {
-		const {
-			selectServer, previousServer, currentServer, adding, finishAdd
-		} = this.props;
-		if (adding) {
-			if (previousServer !== currentServer) {
-				selectServer(previousServer);
-			}
-			finishAdd();
-		}
-	}
-
-	onNavigatorEvent(event) {
-		const { navigator } = this.props;
-		if (event.type === 'NavBarButtonPress') {
-			if (event.id === 'cancel') {
-				navigator.dismissModal();
-			}
 		}
 	}
 
@@ -161,6 +125,26 @@ export default class NewServerView extends LoggedView {
 		return url.replace(/\/+$/, '');
 	}
 
+	renderBack = () => {
+		let top = 15;
+		if (DeviceInfo.getBrand() === 'Apple') {
+			top = DeviceInfo.isNotch() ? 45 : 30;
+		}
+
+		return (
+			<TouchableOpacity
+				style={[styles.backButton, { top }]}
+				onPress={() => this.props.navigator.pop()}
+			>
+				<Icon
+					name='ios-arrow-back'
+					size={30}
+					color='#1D74F5'
+				/>
+			</TouchableOpacity>
+		);
+	}
+
 	render() {
 		const { connecting } = this.props;
 		const { text } = this.state;
@@ -172,7 +156,7 @@ export default class NewServerView extends LoggedView {
 			>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 					<SafeAreaView style={sharedStyles.container} testID='new-server-view'>
-						<Image style={styles.image} source={require('../static/images/server.png')} />
+						<Image style={styles.image} source={{ uri: 'new_server' }} />
 						<Text style={styles.title}>{I18n.t('Sign_in_your_server')}</Text>
 						<TextInput
 							inputRef={e => this.input = e}
@@ -196,6 +180,7 @@ export default class NewServerView extends LoggedView {
 						/>
 					</SafeAreaView>
 				</ScrollView>
+				{this.renderBack()}
 			</KeyboardView>
 		);
 	}

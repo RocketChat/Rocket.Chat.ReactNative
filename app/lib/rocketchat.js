@@ -472,9 +472,11 @@ const RocketChat = {
 				log('rocketchat.logout', e);
 			}
 		}
-		// database.deleteAll();
 		AsyncStorage.removeItem(TOKEN_KEY);
 		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
+		setTimeout(() => {
+			database.deleteAll();
+		}, 1000);
 	},
 
 	registerPushToken(userId) {

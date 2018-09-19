@@ -166,7 +166,7 @@ export default class MessageContainer extends React.Component {
 			item, message, editing, user, style, archived, baseUrl, customEmojis, useRealName, broadcast
 		} = this.props;
 		const {
-			msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy
+			msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy, role
 		} = item;
 		const isEditing = message._id === item._id && editing;
 		return (
@@ -193,6 +193,7 @@ export default class MessageContainer extends React.Component {
 				customEmojis={customEmojis}
 				reactionsModal={reactionsModal}
 				useRealName={useRealName}
+				role={role}
 				closeReactions={this.closeReactions}
 				onErrorPress={this.onErrorPress}
 				onLongPress={this.onLongPress}

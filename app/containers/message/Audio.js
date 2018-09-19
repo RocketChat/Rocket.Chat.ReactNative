@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, StyleSheet, TouchableOpacity, Text, Easing, Image
-} from 'react-native';
+import { View, StyleSheet, Text, Easing, Image } from 'react-native';
 import Video from 'react-native-video';
 import Slider from 'react-native-slider';
 import moment from 'moment';
+import { BorderlessButton } from 'react-native-gesture-handler';
 
 import Markdown from './Markdown';
 
@@ -104,6 +103,11 @@ export default class Audio extends React.PureComponent {
 			user, baseUrl, customEmojis, file
 		} = this.props;
 		const { description } = file;
+
+		if (!baseUrl) {
+			return null;
+		}
+
 		return (
 			[
 				<View key='audio' style={styles.audioContainer}>
@@ -118,7 +122,7 @@ export default class Audio extends React.PureComponent {
 						paused={paused}
 						repeat={false}
 					/>
-					<TouchableOpacity
+					<BorderlessButton
 						style={styles.playPauseButton}
 						onPress={() => this.togglePlayPause()}
 					>
@@ -127,7 +131,7 @@ export default class Audio extends React.PureComponent {
 								? <Image source={{ uri: 'play' }} style={styles.playPauseImage} />
 								: <Image source={{ uri: 'pause' }} style={styles.playPauseImage} />
 						}
-					</TouchableOpacity>
+					</BorderlessButton>
 					<Slider
 						style={styles.slider}
 						value={currentTime}

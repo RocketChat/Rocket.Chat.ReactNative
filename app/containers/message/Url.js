@@ -2,9 +2,9 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
+import { RectButton } from 'react-native-gesture-handler';
 
 import openLink from '../../utils/openLink';
-import Touch from '../../utils/touch';
 
 const styles = StyleSheet.create({
 	button: {
@@ -58,19 +58,19 @@ const Url = ({ url, index }) => {
 		return null;
 	}
 	return (
-		<Touch onPress={() => onPress(url.url)} style={[styles.button, index > 0 && styles.marginTop]}>
-			<View style={styles.container}>
-				{/* <View style={{ backgroundColor: 'red', height: 150, borderTopLeftRadius: 5, borderTopRightRadius: 5 }}>
-					{url.image ? <FastImage source={{ uri: url.image }} /> : null}
-				</View> */}
-				{url.image ? <FastImage source={{ uri: url.image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} /> : null}
-				<View style={styles.textContainer}>
-					<Text style={styles.url} numberOfLines={1}>{url.url}</Text>
-					<Text style={styles.title} numberOfLines={2}>{url.title}</Text>
-					<Text style={styles.description} numberOfLines={2}>{url.description}</Text>
-				</View>
+		<RectButton
+			onPress={() => onPress(url.url)}
+			style={[styles.button, index > 0 && styles.marginTop, styles.container]}
+			activeOpacity={0.5}
+			underlayColor='#fff'
+		>
+			{url.image ? <FastImage source={{ uri: url.image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} /> : null}
+			<View style={styles.textContainer}>
+				<Text style={styles.url} numberOfLines={1}>{url.url}</Text>
+				<Text style={styles.title} numberOfLines={2}>{url.title}</Text>
+				<Text style={styles.description} numberOfLines={2}>{url.description}</Text>
 			</View>
-		</Touch>
+		</RectButton>
 	);
 };
 

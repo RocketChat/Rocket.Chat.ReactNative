@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
+import { RectButton } from 'react-native-gesture-handler';
 
 import { openRoom as openRoomAction, closeRoom as closeRoomAction, setLastOpen as setLastOpenAction } from '../../actions/room';
 import { toggleReactionPicker as toggleReactionPickerAction, actionsShow as actionsShowAction } from '../../actions/messages';
@@ -62,11 +63,11 @@ export default class RoomView extends LoggedView {
 
 	constructor(props) {
 		super('RoomView', props);
-		this.rid = props.rid;
+		this.rid = this.props.rid;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			loaded: false,
-			joined: typeof props.rid === 'undefined',
+			joined: this.rooms.length > 0,
 			room: {},
 			end: false
 		};
@@ -212,6 +213,9 @@ export default class RoomView extends LoggedView {
 					setLastOpen(null);
 				}
 			}
+		} else {
+			this.props.openRoom({ rid: this.rid });
+			this.setState({ joined: false });
 		}
 	}
 
@@ -285,18 +289,22 @@ export default class RoomView extends LoggedView {
 	}
 
 	renderFooter = () => {
-		const { room } = this.state;
-
-		// TODO: fix it
-		// if (!this.state.joined) {
-		// 	return (
-		// 		<View>
-		// 			<Text>{I18n.t('You_are_in_preview_mode')}</Text>
-		// 			<Button title='Join' onPress={this.joinRoom} />
-		// 		</View>
-		// 	);
-		// }
-		if (room.archived || this.isReadOnly()) {
+		if (!this.state.joined) {
+			return (
+				<View style={styles.joinRoomContainer} key='room-view-join'>
+					<Text style={styles.previewMode}>{I18n.t('You_are_in_preview_mode')}</Text>
+					<RectButton
+						onPress={this.joinRoom}
+						style={styles.joinRoomButton}
+						activeOpacity={0.5}
+						underlayColor='#fff'
+					>
+						<Text style={styles.joinRoomText}>{I18n.t('Join')}</Text>
+					</RectButton>
+				</View>
+			);
+		}
+		if (this.state.room.archived || this.isReadOnly()) {
 			return (
 				<View style={styles.readOnly}>
 					<Text>{I18n.t('This_room_is_read_only')}</Text>
