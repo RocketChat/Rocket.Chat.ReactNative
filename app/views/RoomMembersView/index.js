@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, View, Vibration, SafeAreaView } from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
+import { connect } from 'react-redux';
 
 import LoggedView from '../View';
 import styles from './styles';
@@ -14,6 +15,9 @@ import log from '../../utils/log';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
 
+@connect(state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+}))
 /** @extends React.Component */
 export default class RoomMembersView extends LoggedView {
 	static navigatorButtons = {
@@ -27,7 +31,8 @@ export default class RoomMembersView extends LoggedView {
 	static propTypes = {
 		navigator: PropTypes.object,
 		rid: PropTypes.string,
-		members: PropTypes.array
+		members: PropTypes.array,
+		baseUrl: PropTypes.string
 	}
 
 	constructor(props) {
@@ -134,11 +139,7 @@ export default class RoomMembersView extends LoggedView {
 				screen: 'RoomView',
 				title: name,
 				backButtonTitle: '',
-				passProps: {
-					room: { rid, name },
-					rid,
-					name
-				}
+				passProps: { rid }
 			});
 		}, 1000);
 	}
@@ -175,6 +176,7 @@ export default class RoomMembersView extends LoggedView {
 			username={item.username}
 			onPress={() => this.onPressUser(item)}
 			onLongPress={() => this.onLongPressUser(item)}
+			baseUrl={this.props.baseUrl}
 			testID={`room-members-view-item-${ item.username }`}
 		/>
 	)

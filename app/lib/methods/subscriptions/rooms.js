@@ -6,7 +6,7 @@ import messagesStatus from '../../../constants/messagesStatus';
 import log from '../../../utils/log';
 
 export default async function subscribeRooms(id) {
-	const subscriptions = Promise.all([
+	const promises = Promise.all([
 		this.ddp.subscribe('stream-notify-user', `${ id }/subscriptions-changed`, false),
 		this.ddp.subscribe('stream-notify-user', `${ id }/rooms-changed`, false),
 		this.ddp.subscribe('stream-notify-user', `${ id }/message`, false)
@@ -51,12 +51,25 @@ export default async function subscribeRooms(id) {
 			const [type, data] = ddpMessage.fields.args;
 			const [, ev] = ddpMessage.fields.eventName.split('/');
 			if (/subscriptions/.test(ev)) {
-				const rooms = database.objects('rooms').filtered('_id == $0', data.rid);
-				const tpm = merge(data, rooms[0]);
-				database.write(() => {
-					database.create('subscriptions', tpm, true);
-					database.delete(rooms);
-				});
+				if (type === 'removed') {
+					let messages = [];
+					const [subscription] = database.objects('subscriptions').filtered('_id == $0', data._id);
+
+					if (subscription) {
+						messages = database.objects('messages').filtered('rid == $0', subscription.rid);
+					}
+					database.write(() => {
+						database.delete(messages);
+						database.delete(subscription);
+					});
+				} else {
+					const rooms = database.objects('rooms').filtered('_id == $0', data.rid);
+					const tpm = merge(data, rooms[0]);
+					database.write(() => {
+						database.create('subscriptions', tpm, true);
+						database.delete(rooms);
+					});
+				}
 			}
 			if (/rooms/.test(ev)) {
 				if (type === 'updated') {
@@ -93,9 +106,8 @@ export default async function subscribeRooms(id) {
 	}
 
 	try {
-		await subscriptions;
+		await promises;
 	} catch (e) {
 		log('subscribeRooms', e);
 	}
-	// console.log(this.ddp.subscriptions);
 }

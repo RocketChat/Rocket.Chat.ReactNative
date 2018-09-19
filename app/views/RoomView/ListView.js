@@ -171,7 +171,7 @@ export class ListView extends OldList2 {
 			onKeyboardDidHide: undefined
 		});
 
-		const image = data.length === 0 ? require('../../static/images/message_empty.png') : null;
+		const image = data.length === 0 ? { uri: 'message_empty' } : null;
 		return (
 			[
 				<ImageBackground key='listview-background' source={image} style={styles.imageBackground} />,

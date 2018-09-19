@@ -53,5 +53,30 @@ export default StyleSheet.create({
 		width: '100%',
 		height: '100%',
 		position: 'absolute'
+	},
+	joinRoomContainer: {
+		justifyContent: 'flex-end',
+		alignItems: 'center',
+		marginVertical: 15
+	},
+	joinRoomButton: {
+		width: 107,
+		height: 44,
+		marginTop: 15,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+		backgroundColor: '#1d74f5',
+		borderRadius: 4
+	},
+	joinRoomText: {
+		color: '#fff',
+		fontSize: 14,
+		fontWeight: '500'
+	},
+	previewMode: {
+		fontSize: 16,
+		fontWeight: '500',
+		color: '#0C0D0F'
 	}
 });

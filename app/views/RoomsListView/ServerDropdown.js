@@ -82,17 +82,13 @@ export default class ServerDropdown extends Component {
 		this.close();
 		setTimeout(() => {
 			this.props.navigator.showModal({
-				screen: 'NewServerView',
-				title: I18n.t('Add_Server'),
+				screen: 'OnboardingView',
 				passProps: {
 					previousServer: this.props.server
 				},
-				navigatorButtons: {
-					leftButtons: [{
-						id: 'cancel',
-						testID: 'new-server-close',
-						title: I18n.t('Close')
-					}]
+				navigatorStyle: {
+					navBarHidden: true,
+					orientation: 'portrait'
 				}
 			});
 		}, ANIMATION_DURATION);

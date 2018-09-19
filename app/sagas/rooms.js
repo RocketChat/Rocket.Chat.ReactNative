@@ -10,6 +10,7 @@ import { messagesRequest, editCancel, replyCancel } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import log from '../utils/log';
+import I18n from '../i18n';
 import { NavigationActions } from '../Navigation';
 
 const leaveRoom = rid => RocketChat.leaveRoom(rid);
@@ -63,41 +64,40 @@ const handleMessageReceived = function* handleMessageReceived({ message }) {
 				database.create('messages', message, true);
 			});
 
-			RocketChat.readMessages(room.rid);
+			if (room._id) {
+				RocketChat.readMessages(room.rid);
+			}
 		}
 	} catch (e) {
 		console.warn('handleMessageReceived', e);
 	}
 };
 
+let opened = false;
+
 const watchRoomOpen = function* watchRoomOpen({ room }) {
 	try {
-		yield put(messagesRequest({ ...room }));
-		// const { open } = yield race({
-		// 	messages: take(types.MESSAGES.SUCCESS),
-		// 	open: take(types.ROOM.OPEN)
-		// });
-		//
-		// if (open) {
-		// 	return;
-		// }
+		if (opened) {
+			return;
+		}
+		opened = true;
 
-		RocketChat.readMessages(room.rid);
+		yield put(messagesRequest({ ...room }));
+
+		if (room._id) {
+			RocketChat.readMessages(room.rid);
+		}
 		sub = yield RocketChat.subscribeRoom(room);
-		// const subscriptions = yield Promise.all([RocketChat.subscribe('stream-room-messages', room.rid, false), RocketChat.subscribe('stream-notify-room', `${ room.rid }/typing`, false)]);
 		thread = yield fork(usersTyping, { rid: room.rid });
 		yield race({
 			open: take(types.ROOM.OPEN),
 			close: take(types.ROOM.CLOSE)
 		});
+		opened = false;
 		cancel(thread);
 		sub.stop();
 		yield put(editCancel());
 		yield put(replyCancel());
-
-		// subscriptions.forEach((sub) => {
-		// 	sub.unsubscribe().catch(e => alert(e));
-		// });
 	} catch (e) {
 		log('watchRoomOpen', e);
 	}
@@ -161,9 +161,9 @@ const handleLeaveRoom = function* handleLeaveRoom({ rid }) {
 		yield goRoomsListAndDelete(rid);
 	} catch (e) {
 		if (e.error === 'error-you-are-last-owner') {
-			Alert.alert('You are the last owner. Please set new owner before leaving the room.');
+			Alert.alert(e.error);
 		} else {
-			Alert.alert('Something happened when leaving room!');
+			Alert.alert(I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_room') }));
 		}
 	}
 };
@@ -174,7 +174,7 @@ const handleEraseRoom = function* handleEraseRoom({ rid }) {
 		yield call(eraseRoom, rid);
 		yield goRoomsListAndDelete(rid);
 	} catch (e) {
-		Alert.alert('Something happened when erasing room!');
+		Alert.alert(I18n.t('There_was_an_error_while_action', { action: I18n.t('erasing_room') }));
 	}
 };
 
