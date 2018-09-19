@@ -10,6 +10,7 @@ import { messagesRequest, editCancel, replyCancel } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import log from '../utils/log';
+import I18n from '../i18n';
 import { NavigationActions } from '../Navigation';
 
 const leaveRoom = rid => RocketChat.leaveRoom(rid);
@@ -160,9 +161,9 @@ const handleLeaveRoom = function* handleLeaveRoom({ rid }) {
 		yield goRoomsListAndDelete(rid);
 	} catch (e) {
 		if (e.error === 'error-you-are-last-owner') {
-			Alert.alert('You are the last owner. Please set new owner before leaving the room.');
+			Alert.alert(e.error);
 		} else {
-			Alert.alert('Something happened when leaving room!');
+			Alert.alert(I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_room') }));
 		}
 	}
 };
@@ -173,7 +174,7 @@ const handleEraseRoom = function* handleEraseRoom({ rid }) {
 		yield call(eraseRoom, rid);
 		yield goRoomsListAndDelete(rid);
 	} catch (e) {
-		Alert.alert('Something happened when erasing room!');
+		Alert.alert(I18n.t('There_was_an_error_while_action', { action: I18n.t('erasing_room') }));
 	}
 };
 
