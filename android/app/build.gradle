@@ -183,6 +183,12 @@ repositories {
   maven { url 'https://maven.fabric.io/public' }
 }
 
+configurations.all {
+    resolutionStrategy {
+        force 'org.webkit:android-jsc:r224109'
+    }
+}
+
 dependencies {
     implementation project(':react-native-device-info')
     implementation project(':react-native-gesture-handler')
