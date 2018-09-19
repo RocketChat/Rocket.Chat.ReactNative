@@ -194,6 +194,7 @@ export default class RoomView extends LoggedView {
 				}
 			}
 		} else {
+			this.props.openRoom({ rid: this.rid });
 			this.setState({ joined: false });
 		}
 	}
@@ -249,7 +250,7 @@ export default class RoomView extends LoggedView {
 	renderFooter = () => {
 		if (!this.state.joined) {
 			return (
-				<View style={styles.joinRoomContainer}>
+				<View style={styles.joinRoomContainer} key='room-view-join'>
 					<Text style={styles.previewMode}>{I18n.t('You_are_in_preview_mode')}</Text>
 					<RectButton
 						onPress={this.joinRoom}
