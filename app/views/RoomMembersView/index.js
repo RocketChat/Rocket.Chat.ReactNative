@@ -73,7 +73,7 @@ export default class RoomMembersView extends LoggedView {
 					this.setState({ allUsers, members });
 					this.props.navigator.setButtons({
 						rightButtons: [{
-							title: this.state.allUsers ? 'Online' : 'All',
+							title: this.state.allUsers ? I18n.t('Online') : I18n.t('All'),
 							id: 'toggleOnline',
 							testID: 'room-members-view-toggle-status'
 						}]
