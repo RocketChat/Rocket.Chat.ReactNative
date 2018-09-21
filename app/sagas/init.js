@@ -8,6 +8,7 @@ import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
+import I18n from '../i18n';
 
 const restore = function* restore() {
 	try {
@@ -22,9 +23,13 @@ const restore = function* restore() {
 		if (currentServer) {
 			yield put(selectServerRequest(currentServer));
 
-			const login = yield call([AsyncStorage, 'getItem'], `${ RocketChat.TOKEN_KEY }-${ currentServer }`);
-			if (login) {
-				yield put(setUser(JSON.parse(login)));
+			const user = yield call([AsyncStorage, 'getItem'], `${ RocketChat.TOKEN_KEY }-${ currentServer }`);
+			if (user) {
+				const userParsed = JSON.parse(user);
+				if (userParsed.language) {
+					I18n.locale = userParsed.language;
+				}
+				yield put(setUser(userParsed));
 			}
 		}
 
