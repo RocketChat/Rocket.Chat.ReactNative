@@ -15,6 +15,7 @@ import log from '../utils/log';
 import I18n from '../i18n';
 import { NavigationActions } from '../Navigation';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
+import DeviceInfo from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	container: {
@@ -65,6 +66,13 @@ const styles = StyleSheet.create({
 	},
 	currentServerText: {
 		fontWeight: 'bold'
+	},
+	version: {
+		marginHorizontal: 5,
+		marginBottom: 5,
+		fontWeight: '600',
+		color: '#292E35',
+		fontSize: 13
 	}
 });
 const keyExtractor = item => item.id;
@@ -270,6 +278,9 @@ export default class Sidebar extends Component {
 					{!this.state.showStatus ? this.renderNavigation() : null}
 					{this.state.showStatus ? this.renderStatus() : null}
 				</ScrollView>
+				<Text style={styles.version}>
+					{DeviceInfo.getReadableVersion()}
+				</Text>
 			</SafeAreaView>
 		);
 	}
