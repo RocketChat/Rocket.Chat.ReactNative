@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	ScrollView, Text, View, StyleSheet, FlatList, LayoutAnimation, SafeAreaView, AsyncStorage
+	ScrollView, Text, View, StyleSheet, FlatList, LayoutAnimation, SafeAreaView
 } from 'react-native';
 import { connect } from 'react-redux';
-import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import database from '../lib/realm';
-import { selectServerRequest as selectServerRequestAction } from '../actions/server';
 import { appStart as appStartAction } from '../actions';
 import { logout as logoutAction } from '../actions/login';
 import Avatar from './Avatar';
@@ -20,6 +17,7 @@ import log from '../utils/log';
 import I18n from '../i18n';
 import { NavigationActions } from '../Navigation';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
+import DeviceInfo from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	container: {
@@ -44,11 +42,6 @@ const styles = StyleSheet.create({
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		borderColor: '#ddd',
 		marginVertical: 4
-	},
-	serverImage: {
-		width: 24,
-		height: 24,
-		borderRadius: 4
 	},
 	header: {
 		paddingVertical: 16,
@@ -75,6 +68,13 @@ const styles = StyleSheet.create({
 	},
 	currentServerText: {
 		fontWeight: 'bold'
+	},
+	version: {
+		marginHorizontal: 5,
+		marginBottom: 5,
+		fontWeight: '600',
+		color: '#292E35',
+		fontSize: 13
 	}
 });
 const keyExtractor = item => item.id;
@@ -84,13 +84,11 @@ const keyExtractor = item => item.id;
 	user: {
 		id: state.login.user && state.login.user.id,
 		language: state.login.user && state.login.user.language,
-		server: state.login.user && state.login.user.server,
 		status: state.login.user && state.login.user.status,
 		username: state.login.user && state.login.user.username
 	},
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }), dispatch => ({
-	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
 	logout: () => dispatch(logoutAction()),
 	appStart: () => dispatch(appStartAction('outside'))
 }))
@@ -99,7 +97,6 @@ export default class Sidebar extends Component {
 		baseUrl: PropTypes.string,
 		navigator: PropTypes.object,
 		server: PropTypes.string.isRequired,
-		selectServerRequest: PropTypes.func.isRequired,
 		user: PropTypes.object,
 		logout: PropTypes.func.isRequired,
 		appStart: PropTypes.func
@@ -108,15 +105,12 @@ export default class Sidebar extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			servers: [],
-			showServers: false
+			showStatus: false
 		};
 	}
 
 	componentDidMount() {
-		this.setState(this.getState());
 		this.setStatus();
-		database.databases.serversDB.addListener('change', this.updateState);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -124,15 +118,6 @@ export default class Sidebar extends Component {
 		if (nextProps.user && user && user.language !== nextProps.user.language) {
 			this.setStatus();
 		}
-	}
-
-	componentWillUnmount() {
-		database.databases.serversDB.removeListener('change', this.updateState);
-	}
-
-	onPressItem = (item) => {
-		const { selectServerRequest } = this.props;
-		selectServerRequest(item.id);
 	}
 
 	setStatus = () => {
@@ -155,14 +140,6 @@ export default class Sidebar extends Component {
 		});
 	}
 
-	getState = () => ({
-		servers: database.databases.serversDB.objects('servers')
-	})
-
-	updateState = () => {
-		this.setState(this.getState());
-	}
-
 	closeDrawer = () => {
 		const { navigator } = this.props;
 		navigator.toggleDrawer({
@@ -172,10 +149,9 @@ export default class Sidebar extends Component {
 		});
 	}
 
-	toggleServers = () => {
-		const { showServers } = this.state;
+	toggleStatus = () => {
 		LayoutAnimation.easeInEaseOut();
-		this.setState({ showServers: !showServers });
+		this.setState(prevState => ({ showStatus: !prevState.showStatus }));
 	}
 
 	sidebarNavigate = (screen, title) => {
@@ -215,7 +191,7 @@ export default class Sidebar extends Component {
 				selected: user.status === item.id,
 				onPress: () => {
 					this.closeDrawer();
-					this.toggleServers();
+					this.toggleStatus();
 					if (user.status !== item.id) {
 						try {
 							RocketChat.setUserPresenceDefaultStatus(item.id);
@@ -224,44 +200,6 @@ export default class Sidebar extends Component {
 						}
 					}
 				}
-			})
-		);
-	}
-
-	renderServer = ({ item }) => {
-		const { server, selectServerRequest, appStart } = this.props;
-		return (
-			this.renderItem({
-				text: item.id,
-				left: <FastImage
-					style={styles.serverImage}
-					source={{ uri: encodeURI(`${ item.id }/assets/favicon_32.png`) }}
-				/>,
-				selected: server === item.id,
-				onPress: async() => {
-					this.closeDrawer();
-					this.toggleServers();
-					if (server !== item.id) {
-						selectServerRequest(item.id);
-						const token = await AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ item.id }`);
-						if (!token) {
-							appStart();
-							setTimeout(() => {
-								NavigationActions.push({
-									screen: 'NewServerView',
-									backButtonTitle: '',
-									passProps: {
-										server: item.id
-									},
-									navigatorStyle: {
-										navBarHidden: true
-									}
-								});
-							}, 1000);
-						}
-					}
-				},
-				testID: `sidebar-${ item.id }`
 			})
 		);
 	}
@@ -299,53 +237,22 @@ export default class Sidebar extends Component {
 		);
 	}
 
-	renderServers = () => {
-		const { status, servers } = this.state;
-		const { user, server, navigator } = this.props;
-
+	renderStatus = () => {
+		const { status } = this.state;
+		const { user } = this.props;
 		return (
-			[
-				<FlatList
-					key='status-list'
-					data={status}
-					extraData={user}
-					renderItem={this.renderStatusItem}
-					keyExtractor={keyExtractor}
-				/>,
-				this.renderSeparator('separator-status'),
-				<FlatList
-					key='servers-list'
-					data={servers}
-					extraData={server}
-					renderItem={this.renderServer}
-					keyExtractor={keyExtractor}
-				/>,
-				this.renderSeparator('separator-add-server'),
-				this.renderItem({
-					text: I18n.t('Add_Server'),
-					left: <Icon
-						name='add'
-						size={20}
-					/>,
-					onPress: () => {
-						this.closeDrawer();
-						this.toggleServers();
-						navigator.showModal({
-							screen: 'NewServerView',
-							title: I18n.t('Add_Server'),
-							passProps: {
-								previousServer: server
-							}
-						});
-					},
-					testID: 'sidebar-add-server'
-				})
-			]
+			<FlatList
+				key='status-list'
+				data={status}
+				extraData={user}
+				renderItem={this.renderStatusItem}
+				keyExtractor={keyExtractor}
+			/>
 		);
 	}
 
 	render() {
-		const { showServers } = this.state;
+		const { showStatus } = this.state;
 		const { user, server, baseUrl } = this.props;
 
 		if (!user) {
@@ -355,10 +262,10 @@ export default class Sidebar extends Component {
 			<SafeAreaView testID='sidebar' style={styles.container}>
 				<ScrollView style={styles.container} {...scrollPersistTaps}>
 					<Touch
-						onPress={() => this.toggleServers()}
+						onPress={() => this.toggleStatus()}
 						underlayColor='rgba(255, 255, 255, 0.5)'
 						activeOpacity={0.3}
-						testID='sidebar-toggle-server'
+						testID='sidebar-toggle-status'
 					>
 						<View style={styles.header}>
 							<Avatar
@@ -375,7 +282,7 @@ export default class Sidebar extends Component {
 								<Text style={styles.currentServerText} numberOfLines={1}>{server}</Text>
 							</View>
 							<Icon
-								name={showServers ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
+								name={showStatus ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
 								size={30}
 								style={{ paddingHorizontal: 10 }}
 							/>
@@ -384,9 +291,12 @@ export default class Sidebar extends Component {
 
 					{this.renderSeparator('separator-header')}
 
-					{!showServers ? this.renderNavigation() : null}
-					{showServers ? this.renderServers() : null}
+					{!showStatus ? this.renderNavigation() : null}
+					{showStatus ? this.renderStatus() : null}
 				</ScrollView>
+				<Text style={styles.version}>
+					{DeviceInfo.getReadableVersion()}
+				</Text>
 			</SafeAreaView>
 		);
 	}

@@ -37,7 +37,7 @@ jobs:
 
   e2e-test:
     macos:
-      xcode: "10"
+      xcode: "10.0.0"
 
     environment:
       BASH_ENV: "~/.nvm/nvm.sh"
@@ -171,7 +171,7 @@ jobs:
 
   ios-build:
     macos:
-      xcode: "10"
+      xcode: "10.0.0"
 
     environment:
       BASH_ENV: "~/.nvm/nvm.sh"
@@ -237,7 +237,7 @@ jobs:
 
   ios-testflight:
     macos:
-      xcode: "10"
+      xcode: "10.0.0"
 
     steps:
       - checkout
