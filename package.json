@@ -63,7 +63,7 @@
     "react-native-safari-view": "^2.1.0",
     "react-native-scrollable-tab-view": "git+https://github.com/skv-headless/react-native-scrollable-tab-view.git",
     "react-native-slider": "^0.11.0",
-    "react-native-svg": "^6.5.2",
+    "react-native-svg": "^7.0.3",
     "react-native-svg-image": "^2.0.1",
     "react-native-vector-icons": "^5.0.0",
     "react-native-video": "^3.2.0",
