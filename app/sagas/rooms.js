@@ -163,7 +163,7 @@ const handleLeaveRoom = function* handleLeaveRoom({ rid }) {
 		yield goRoomsListAndDelete(rid);
 	} catch (e) {
 		if (e.error === 'error-you-are-last-owner') {
-			Alert.alert(e.error);
+			Alert.alert(I18n.t(e.error));
 		} else {
 			Alert.alert(I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_room') }));
 		}

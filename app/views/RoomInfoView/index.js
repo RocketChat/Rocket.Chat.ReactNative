@@ -108,6 +108,7 @@ export default class RoomInfoView extends LoggedView {
 
 	updateRoom = async() => {
 		const { userId, activeUsers, navigator } = this.props;
+
 		const [room] = this.rooms;
 		this.setState({ room });
 
@@ -137,6 +138,11 @@ export default class RoomInfoView extends LoggedView {
 					log('RoomInfoView.componentDidMount', e);
 				}
 			} else {
+				const isVisible = await navigator.screenIsCurrentlyVisible();
+
+				if (!isVisible) {
+					return;
+				}
 				const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
 				if (permissions[PERMISSION_EDIT_ROOM]) {
 					navigator.setButtons({

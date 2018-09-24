@@ -5,8 +5,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import { connect, Provider } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
+import { connect } from 'react-redux';
 
 import { leaveRoom as leaveRoomAction } from '../../actions/room';
 import LoggedView from '../View';
@@ -21,12 +20,8 @@ import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import store from '../../lib/createStore';
 
 const renderSeparator = () => <View style={styles.separator} />;
-
-let RoomInfoView = null;
-let Snippeted = null;
 
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
@@ -63,15 +58,6 @@ export default class RoomActionsView extends LoggedView {
 		this.rooms.addListener(this.updateRoom);
 		const [members, member] = await Promise.all([this.updateRoomMembers(), this.updateRoomMember()]);
 		this.setState({ ...members, ...member });
-
-		if (Snippeted == null) {
-			Snippeted = require('../SnippetedMessagesView').default;
-		}
-		if (RoomInfoView == null) {
-			RoomInfoView = require('../RoomInfoView').default;
-		}
-		Navigation.registerComponent('RoomInfoView', () => RoomInfoView, store, Provider);
-		Navigation.registerComponent('SnippetedMessagesView', () => Snippeted, store, Provider);
 	}
 
 	componentWillUnmount() {

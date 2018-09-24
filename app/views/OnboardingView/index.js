@@ -103,6 +103,7 @@ export default class OnboardingView extends LoggedView {
 				<TouchableOpacity
 					style={[styles.closeModal, { top }]}
 					onPress={this.close}
+					testID='onboarding-close'
 				>
 					<Icon
 						name='close'
