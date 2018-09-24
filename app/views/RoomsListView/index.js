@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import {
 	Platform, View, FlatList, BackHandler, ActivityIndicator, SafeAreaView, Text, Image, Dimensions, ScrollView, Keyboard
 } from 'react-native';
-import { connect } from 'react-redux';
+import { connect, Provider } from 'react-redux';
 import { isEqual } from 'lodash';
+import { Navigation } from 'react-native-navigation';
 
 import SearchBox from '../../containers/SearchBox';
 import database from '../../lib/realm';
@@ -18,6 +19,7 @@ import SortDropdown from './SortDropdown';
 import ServerDropdown from './ServerDropdown';
 import Touch from '../../utils/touch';
 import { toggleSortDropdown as toggleSortDropdownAction } from '../../actions/rooms';
+import store from '../../lib/createStore';
 
 const ROW_HEIGHT = 70;
 const SCROLL_OFFSET = 56;
@@ -41,6 +43,8 @@ if (Platform.OS === 'android') {
 		icon: { uri: 'search', scale: Dimensions.get('window').scale }
 	});
 }
+
+let NewMessageView = null;
 
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
@@ -166,6 +170,11 @@ export default class RoomsListView extends LoggedView {
 		const { navigator } = this.props;
 		if (event.type === 'NavBarButtonPress') {
 			if (event.id === 'newMessage') {
+				if (NewMessageView == null) {
+					NewMessageView = require('../NewMessageView').default;
+					Navigation.registerComponent('NewMessageView', () => NewMessageView, store, Provider);
+				}
+
 				navigator.showModal({
 					screen: 'NewMessageView',
 					title: I18n.t('New_Message'),

@@ -5,7 +5,8 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import { connect } from 'react-redux';
+import { connect, Provider } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import { leaveRoom as leaveRoomAction } from '../../actions/room';
 import LoggedView from '../View';
@@ -20,8 +21,11 @@ import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import store from '../../lib/createStore';
 
 const renderSeparator = () => <View style={styles.separator} />;
+
+const modules = {};
 
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
@@ -68,6 +72,10 @@ export default class RoomActionsView extends LoggedView {
 		const { navigator } = this.props;
 
 		if (item.route) {
+			if (modules[item.route] == null) {
+				modules[item.route] = item.require();
+				Navigation.registerComponent(item.route, () => modules[item.route], store, Provider);
+			}
 			navigator.push({
 				screen: item.route,
 				title: item.name,
@@ -80,7 +88,7 @@ export default class RoomActionsView extends LoggedView {
 		}
 	}
 
-	get canAddUser() { // Invite user
+	get canAddUser() {
 		const {
 			rid, t
 		} = this.room;
@@ -128,7 +136,8 @@ export default class RoomActionsView extends LoggedView {
 				name: I18n.t('Room_Info'),
 				route: 'RoomInfoView',
 				params: { rid },
-				testID: 'room-actions-info'
+				testID: 'room-actions-info',
+				require: () => require('../RoomInfoView').default
 			}],
 			renderItem: this.renderRoomInfo
 		}, {
@@ -154,28 +163,32 @@ export default class RoomActionsView extends LoggedView {
 					name: I18n.t('Files'),
 					route: 'RoomFilesView',
 					params: { rid },
-					testID: 'room-actions-files'
+					testID: 'room-actions-files',
+					require: () => require('../RoomFilesView').default
 				},
 				{
 					icon: 'ios-at',
 					name: I18n.t('Mentions'),
 					route: 'MentionedMessagesView',
 					params: { rid },
-					testID: 'room-actions-mentioned'
+					testID: 'room-actions-mentioned',
+					require: () => require('../MentionedMessagesView').default
 				},
 				{
 					icon: 'ios-star',
 					name: I18n.t('Starred'),
 					route: 'StarredMessagesView',
 					params: { rid },
-					testID: 'room-actions-starred'
+					testID: 'room-actions-starred',
+					require: () => require('../StarredMessagesView').default
 				},
 				{
 					icon: 'ios-search',
 					name: I18n.t('Search'),
 					route: 'SearchMessagesView',
 					params: { rid },
-					testID: 'room-actions-search'
+					testID: 'room-actions-search',
+					require: () => require('../SearchMessagesView').default
 				},
 				{
 					icon: 'ios-share',
@@ -188,14 +201,16 @@ export default class RoomActionsView extends LoggedView {
 					name: I18n.t('Pinned'),
 					route: 'PinnedMessagesView',
 					params: { rid },
-					testID: 'room-actions-pinned'
+					testID: 'room-actions-pinned',
+					require: () => require('../PinnedMessagesView').default
 				},
 				{
 					icon: 'ios-code',
 					name: I18n.t('Snippets'),
 					route: 'SnippetedMessagesView',
 					params: { rid },
-					testID: 'room-actions-snippeted'
+					testID: 'room-actions-snippeted',
+					require: () => require('../SnippetedMessagesView').default
 				},
 				{
 					icon: `ios-notifications${ notifications ? '' : '-off' }`,
@@ -232,7 +247,8 @@ export default class RoomActionsView extends LoggedView {
 						: I18n.t('N_online_members', { n: onlineMembers.length })),
 					route: 'RoomMembersView',
 					params: { rid, members: onlineMembers },
-					testID: 'room-actions-members'
+					testID: 'room-actions-members',
+					require: () => require('../RoomMembersView').default
 				});
 			}
 
@@ -245,7 +261,8 @@ export default class RoomActionsView extends LoggedView {
 						nextAction: 'ADD_USER',
 						rid
 					},
-					testID: 'room-actions-add-user'
+					testID: 'room-actions-add-user',
+					require: () => require('../SelectedUsersView').default
 				});
 			}
 			sections[2].data = [...actions, ...sections[2].data];

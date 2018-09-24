@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import {
 	Keyboard, Text, ScrollView, View, SafeAreaView
 } from 'react-native';
-import { connect } from 'react-redux';
+import { connect, Provider } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 import { Answers } from 'react-native-fabric';
 
 import RocketChat from '../lib/rocketchat';
@@ -17,6 +18,10 @@ import { showToast } from '../utils/info';
 import { COLOR_BUTTON_PRIMARY } from '../constants/colors';
 import LoggedView from './View';
 import I18n from '../i18n';
+import store from '../lib/createStore';
+
+let RegisterView = null;
+let ForgotPasswordView = null;
 
 @connect(state => ({
 	server: state.server.server,
@@ -69,6 +74,11 @@ export default class LoginView extends LoggedView {
 	}
 
 	register = () => {
+		if (RegisterView == null) {
+			RegisterView = require('./RegisterView').default;
+			Navigation.registerComponent('RegisterView', () => RegisterView, store, Provider);
+		}
+
 		const { navigator, server } = this.props;
 		navigator.push({
 			screen: 'RegisterView',
@@ -78,6 +88,11 @@ export default class LoginView extends LoggedView {
 	}
 
 	forgotPassword = () => {
+		if (ForgotPasswordView == null) {
+			ForgotPasswordView = require('./ForgotPasswordView').default;
+			Navigation.registerComponent('ForgotPasswordView', () => ForgotPasswordView, store, Provider);
+		}
+
 		const { navigator } = this.props;
 		navigator.push({
 			screen: 'ForgotPasswordView',

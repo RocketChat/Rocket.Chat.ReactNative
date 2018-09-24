@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import {
 	View, StyleSheet, SafeAreaView, FlatList, Text, Platform, Image
 } from 'react-native';
-import { connect } from 'react-redux';
+import { connect, Provider } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
@@ -14,6 +15,7 @@ import sharedStyles from './Styles';
 import I18n from '../i18n';
 import Touch from '../utils/touch';
 import SearchBox from '../containers/SearchBox';
+import store from '../lib/createStore';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -42,6 +44,8 @@ const styles = StyleSheet.create({
 		fontSize: 18
 	}
 });
+
+let SelectedUsersView = null;
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
@@ -110,6 +114,11 @@ export default class NewMessageView extends LoggedView {
 	}
 
 	createChannel = () => {
+		if (SelectedUsersView == null) {
+			SelectedUsersView = require('./SelectedUsersView').default;
+			Navigation.registerComponent('SelectedUsersView', () => SelectedUsersView, store, Provider);
+		}
+
 		const { navigator } = this.props;
 		navigator.push({
 			screen: 'SelectedUsersView',
