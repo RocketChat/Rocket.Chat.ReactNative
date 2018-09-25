@@ -4,7 +4,6 @@ import {
 	Text, View, LayoutAnimation, ActivityIndicator, SafeAreaView
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
-import equal from 'deep-equal';
 import { RectButton } from 'react-native-gesture-handler';
 import { Navigation } from 'react-native-navigation';
 
