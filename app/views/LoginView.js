@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Keyboard, Text, ScrollView, View, SafeAreaView } from 'react-native';
+import {
+	Keyboard, Text, ScrollView, View, SafeAreaView
+} from 'react-native';
 import { connect } from 'react-redux';
 import { Answers } from 'react-native-fabric';
 
@@ -50,6 +52,8 @@ export default class LoginView extends LoggedView {
 
 	submit = async() => {
 		const {	username, password, code } = this.state;
+		const { loginSubmit } = this.props;
+
 		if (username.trim() === '' || password.trim() === '') {
 			showToast(I18n.t('Email_or_password_field_is_empty'));
 			return;
@@ -57,7 +61,7 @@ export default class LoginView extends LoggedView {
 		Keyboard.dismiss();
 
 		try {
-			await this.props.loginSubmit({ username, password, code });
+			await loginSubmit({ username, password, code });
 			Answers.logLogin('Email', true);
 		} catch (error) {
 			console.warn('LoginView submit', error);
@@ -65,15 +69,17 @@ export default class LoginView extends LoggedView {
 	}
 
 	register = () => {
-		this.props.navigator.push({
+		const { navigator, server } = this.props;
+		navigator.push({
 			screen: 'RegisterView',
-			title: this.props.server,
+			title: server,
 			backButtonTitle: ''
 		});
 	}
 
 	forgotPassword = () => {
-		this.props.navigator.push({
+		const { navigator } = this.props;
+		navigator.push({
 			screen: 'ForgotPasswordView',
 			title: I18n.t('Forgot_Password'),
 			backButtonTitle: ''
@@ -81,7 +87,8 @@ export default class LoginView extends LoggedView {
 	}
 
 	renderTOTP = () => {
-		if (/totp/ig.test(this.props.error)) {
+		const { error } = this.props;
+		if (/totp/ig.test(error)) {
 			return (
 				<TextInput
 					inputRef={ref => this.codeInput = ref}
@@ -99,6 +106,10 @@ export default class LoginView extends LoggedView {
 	}
 
 	render() {
+		const {
+			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, failure, reason, isFetching
+		} = this.props;
+
 		return (
 			<KeyboardView
 				contentContainerStyle={styles.container}
@@ -110,7 +121,7 @@ export default class LoginView extends LoggedView {
 						<Text style={[styles.loginText, styles.loginTitle]}>Login</Text>
 						<TextInput
 							label={I18n.t('Username')}
-							placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || I18n.t('Username')}
+							placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username')}
 							keyboardType='email-address'
 							returnKeyType='next'
 							iconLeft='at'
@@ -122,7 +133,7 @@ export default class LoginView extends LoggedView {
 						<TextInput
 							inputRef={(e) => { this.password = e; }}
 							label={I18n.t('Password')}
-							placeholder={this.props.Accounts_PasswordPlaceholder || I18n.t('Password')}
+							placeholder={Accounts_PasswordPlaceholder || I18n.t('Password')}
 							returnKeyType='done'
 							iconLeft='key-variant'
 							secureTextEntry
@@ -156,8 +167,8 @@ export default class LoginView extends LoggedView {
 							</Text>
 						</View>
 
-						{this.props.failure ? <Text style={styles.error}>{this.props.reason}</Text> : null}
-						<Loading visible={this.props.isFetching} />
+						{failure ? <Text style={styles.error}>{reason}</Text> : null}
+						<Loading visible={isFetching} />
 					</SafeAreaView>
 				</ScrollView>
 			</KeyboardView>

@@ -20,9 +20,11 @@ export default class PrivacyPolicyView extends LoggedView {
 	}
 
 	render() {
+		const { privacyPolicy } = this.props;
+
 		return (
 			<SafeAreaView style={styles.container}>
-				<WebView originWhitelist={['*']} source={{ html: this.props.privacyPolicy, baseUrl: '' }} />
+				<WebView originWhitelist={['*']} source={{ html: privacyPolicy, baseUrl: '' }} />
 			</SafeAreaView>
 		);
 	}

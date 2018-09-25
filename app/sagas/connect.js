@@ -1,4 +1,6 @@
-import { call, takeLatest, select, put } from 'redux-saga/effects';
+import {
+	call, takeLatest, select, put
+} from 'redux-saga/effects';
 import { AsyncStorage } from 'react-native';
 import { METEOR } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';

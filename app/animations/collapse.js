@@ -9,6 +9,7 @@ export default class Panel extends React.Component {
 		children: PropTypes.node.isRequired,
 		style: PropTypes.object
 	}
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -18,15 +19,22 @@ export default class Panel extends React.Component {
 		this.open = false;
 		this.opacity = 0;
 	}
+
 	componentDidMount() {
-		const initialValue = !this.props.open ? this.height : 0;
-		this.state.animation.setValue(initialValue);
+		const { animation } = this.state;
+		const { open } = this.props;
+		const initialValue = !open ? this.height : 0;
+		animation.setValue(initialValue);
 	}
+
 	componentWillReceiveProps(nextProps) {
+		const { animation } = this.state;
+		const { open } = this.props;
+
 		if (this.first) {
 			this.first = false;
-			if (!this.props.open) {
-				this.state.animation.setValue(0);
+			if (!open) {
+				animation.setValue(0);
 				return;
 			}
 		}
@@ -37,9 +45,9 @@ export default class Panel extends React.Component {
 		const initialValue = !nextProps.open ? this.height : 0;
 		const finalValue = !nextProps.open ? 0 : this.height;
 
-		this.state.animation.setValue(initialValue);
+		animation.setValue(initialValue);
 		Animated.timing(
-			this.state.animation,
+			animation,
 			{
 				toValue: finalValue,
 				duration: 150,
@@ -47,16 +55,21 @@ export default class Panel extends React.Component {
 			}
 		).start();
 	}
+
 	set _height(h) {
 		this.height = h || this.height;
 	}
+
 	render() {
+		const { animation } = this.state;
+		const { style, children } = this.props;
+
 		return (
 			<Animated.View
-				style={[{ height: this.state.animation }, this.props.style]}
+				style={[{ height: animation }, style]}
 			>
 				<View onLayout={({ nativeEvent }) => this._height = nativeEvent.layout.height} style={{ position: !this.first ? 'relative' : 'absolute' }}>
-					{this.props.children}
+					{children}
 				</View>
 			</Animated.View>
 		);

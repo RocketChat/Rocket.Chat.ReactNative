@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, SafeAreaView, ScrollView } from 'react-native';
+import {
+	Text, View, SafeAreaView, ScrollView
+} from 'react-native';
 import { connect } from 'react-redux';
 
 import LoggedView from './View';
-import { forgotPasswordInit, forgotPasswordRequest } from '../actions/login';
+import { forgotPasswordInit as forgotPasswordInitAction, forgotPasswordRequest as forgotPasswordRequestAction } from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
@@ -17,8 +19,8 @@ import I18n from '../i18n';
 @connect(state => ({
 	login: state.login
 }), dispatch => ({
-	forgotPasswordInit: () => dispatch(forgotPasswordInit()),
-	forgotPasswordRequest: email => dispatch(forgotPasswordRequest(email))
+	forgotPasswordInit: () => dispatch(forgotPasswordInitAction()),
+	forgotPasswordRequest: email => dispatch(forgotPasswordRequestAction(email))
 }))
 /** @extends React.Component */
 export default class ForgotPasswordView extends LoggedView {
@@ -39,13 +41,14 @@ export default class ForgotPasswordView extends LoggedView {
 	}
 
 	componentDidMount() {
-		this.props.forgotPasswordInit();
+		const { forgotPasswordInit } = this.props;
+		forgotPasswordInit();
 	}
 
 	componentDidUpdate() {
-		const { login } = this.props;
+		const { login, navigator } = this.props;
 		if (login.success) {
-			this.props.navigator.pop();
+			navigator.pop();
 			setTimeout(() => {
 				showErrorAlert(I18n.t('Forgot_password_If_this_email_is_registered'), I18n.t('Alert'));
 			});
@@ -64,13 +67,17 @@ export default class ForgotPasswordView extends LoggedView {
 
 	resetPassword = () => {
 		const { email, invalidEmail } = this.state;
+		const { forgotPasswordRequest } = this.props;
 		if (invalidEmail || !email) {
 			return;
 		}
-		this.props.forgotPasswordRequest(email);
+		forgotPasswordRequest(email);
 	}
 
 	render() {
+		const { invalidEmail } = this.state;
+		const { login } = this.props;
+
 		return (
 			<KeyboardView
 				contentContainerStyle={styles.container}
@@ -80,7 +87,7 @@ export default class ForgotPasswordView extends LoggedView {
 					<SafeAreaView style={styles.container} testID='forgot-password-view'>
 						<View>
 							<TextInput
-								inputStyle={this.state.invalidEmail ? { borderColor: 'red' } : {}}
+								inputStyle={invalidEmail ? { borderColor: 'red' } : {}}
 								label={I18n.t('Email')}
 								placeholder={I18n.t('Email')}
 								keyboardType='email-address'
@@ -99,8 +106,8 @@ export default class ForgotPasswordView extends LoggedView {
 								/>
 							</View>
 
-							{this.props.login.failure ? <Text style={styles.error}>{this.props.login.error.reason}</Text> : null}
-							<Loading visible={this.props.login.isFetching} />
+							{login.failure ? <Text style={styles.error}>{login.error.reason}</Text> : null}
+							<Loading visible={login.isFetching} />
 						</View>
 					</SafeAreaView>
 				</ScrollView>

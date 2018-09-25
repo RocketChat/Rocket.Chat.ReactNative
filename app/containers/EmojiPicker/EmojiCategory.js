@@ -8,7 +8,7 @@ import styles from './styles';
 import CustomEmoji from './CustomEmoji';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 
-const emojisPerRow = Platform.OS === 'ios' ? 8 : 9;
+const EMOJIS_PER_ROW = Platform.OS === 'ios' ? 8 : 9;
 
 const renderEmoji = (emoji, size, baseUrl) => {
 	if (emoji.isCustom) {
@@ -31,12 +31,14 @@ export default class EmojiCategory extends React.Component {
 		onEmojiSelected: PropTypes.func,
 		emojisPerRow: PropTypes.number,
 		width: PropTypes.number
-	};
+	}
+
 	constructor(props) {
 		super(props);
-		const { width, height } = this.props.window;
+		const { window, width, emojisPerRow } = this.props;
+		const { width: widthWidth, height: windowHeight } = window;
 
-		this.size = Math.min(this.props.width || width, height) / (this.props.emojisPerRow || emojisPerRow);
+		this.size = Math.min(width || widthWidth, windowHeight) / (emojisPerRow || EMOJIS_PER_ROW);
 		this.emojis = props.emojis;
 	}
 
@@ -45,12 +47,12 @@ export default class EmojiCategory extends React.Component {
 	}
 
 	renderItem(emoji, size) {
-		const { baseUrl } = this.props;
+		const { baseUrl, onEmojiSelected } = this.props;
 		return (
 			<TouchableOpacity
 				activeOpacity={0.7}
 				key={emoji.isCustom ? emoji.content : emoji}
-				onPress={() => this.props.onEmojiSelected(emoji)}
+				onPress={() => onEmojiSelected(emoji)}
 				testID={`reaction-picker-${ emoji.isCustom ? emoji.content : emoji }`}
 			>
 				{renderEmoji(emoji, size, baseUrl)}
@@ -58,12 +60,14 @@ export default class EmojiCategory extends React.Component {
 	}
 
 	render() {
+		const { emojis } = this.props;
+
 		return (
 			<OptimizedFlatList
 				keyExtractor={item => (item.isCustom && item.content) || item}
-				data={this.props.emojis}
+				data={emojis}
 				renderItem={({ item }) => this.renderItem(item, this.size)}
-				numColumns={emojisPerRow}
+				numColumns={EMOJIS_PER_ROW}
 				initialNumToRender={45}
 				getItemLayout={(data, index) => ({ length: this.size, offset: this.size * index, index })}
 				removeClippedSubviews

@@ -10,7 +10,9 @@ import database from './realm';
 import log from '../utils/log';
 // import * as actions from '../actions';
 
-import { setUser, setLoginServices, removeLoginServices, loginRequest, loginSuccess, loginFailure, logout } from '../actions/login';
+import {
+	setUser, setLoginServices, removeLoginServices, loginRequest, loginSuccess, loginFailure, logout
+} from '../actions/login';
 import { disconnect, connectSuccess, connectFailure } from '../actions/connect';
 import { setActiveUser } from '../actions/activeUsers';
 import { starredMessagesReceived, starredMessageUnstarred } from '../actions/starredMessages';
@@ -598,8 +600,8 @@ const RocketChat = {
 	getPermissions,
 	getCustomEmoji,
 	parseSettings: settings => settings.reduce((ret, item) => {
-		ret[item._id] = item[defaultSettings[item._id].type] || item.valueAsString || item.valueAsNumber ||
-			item.valueAsBoolean || item.value;
+		ret[item._id] = item[defaultSettings[item._id].type] || item.valueAsString || item.valueAsNumber
+			|| item.valueAsBoolean || item.value;
 		return ret;
 	}, {}),
 	_prepareSettings(settings) {

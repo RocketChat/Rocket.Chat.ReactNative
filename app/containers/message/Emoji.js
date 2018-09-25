@@ -14,7 +14,8 @@ export default class Emoji extends React.PureComponent {
 			PropTypes.array,
 			PropTypes.object
 		])
-	};
+	}
+
 	render() {
 		const {
 			content, standardEmojiStyle, customEmojiStyle, customEmojis, baseUrl

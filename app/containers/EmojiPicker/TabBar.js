@@ -12,18 +12,22 @@ export default class TabBar extends React.PureComponent {
 	}
 
 	render() {
+		const {
+			tabs, goToPage, tabEmojiStyle, activeTab
+		} = this.props;
+
 		return (
 			<View style={styles.tabsContainer}>
-				{this.props.tabs.map((tab, i) => (
+				{tabs.map((tab, i) => (
 					<TouchableOpacity
 						activeOpacity={0.7}
 						key={tab}
-						onPress={() => this.props.goToPage(i)}
+						onPress={() => goToPage(i)}
 						style={styles.tab}
 						testID={`reaction-picker-${ tab }`}
 					>
-						<Text style={[styles.tabEmoji, this.props.tabEmojiStyle]}>{tab}</Text>
-						{this.props.activeTab === i ? <View style={styles.activeTabLine} /> : <View style={styles.tabLine} />}
+						<Text style={[styles.tabEmoji, tabEmojiStyle]}>{tab}</Text>
+						{activeTab === i ? <View style={styles.activeTabLine} /> : <View style={styles.tabLine} />}
 					</TouchableOpacity>
 				))}
 			</View>

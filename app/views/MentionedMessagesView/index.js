@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, Text, SafeAreaView } from 'react-native';
+import {
+	FlatList, View, Text, SafeAreaView
+} from 'react-native';
 import { connect } from 'react-redux';
 
+import { openMentionedMessages as openMentionedMessagesAction, closeMentionedMessages as closeMentionedMessagesAction } from '../../actions/mentionedMessages';
 import LoggedView from '../View';
-import { openMentionedMessages, closeMentionedMessages } from '../../actions/mentionedMessages';
 import styles from './styles';
 import Message from '../../containers/message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
@@ -19,8 +21,8 @@ import I18n from '../../i18n';
 		token: state.login.user && state.login.user.token
 	}
 }), dispatch => ({
-	openMentionedMessages: (rid, limit) => dispatch(openMentionedMessages(rid, limit)),
-	closeMentionedMessages: () => dispatch(closeMentionedMessages())
+	openMentionedMessages: (rid, limit) => dispatch(openMentionedMessagesAction(rid, limit)),
+	closeMentionedMessages: () => dispatch(closeMentionedMessagesAction())
 }))
 /** @extends React.Component */
 export default class MentionedMessagesView extends LoggedView {
@@ -47,17 +49,20 @@ export default class MentionedMessagesView extends LoggedView {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.ready && nextProps.ready !== this.props.ready) {
+		const { ready } = this.props;
+		if (nextProps.ready && nextProps.ready !== ready) {
 			this.setState({ loading: false, loadingMore: false });
 		}
 	}
 
 	componentWillUnmount() {
-		this.props.closeMentionedMessages();
+		const { closeMentionedMessages } = this.props;
+		closeMentionedMessages();
 	}
 
 	load = () => {
-		this.props.openMentionedMessages(this.props.rid, this.limit);
+		const { openMentionedMessages, rid } = this.props;
+		openMentionedMessages(rid, this.limit);
 	}
 
 	moreData = () => {
@@ -79,15 +84,18 @@ export default class MentionedMessagesView extends LoggedView {
 		</View>
 	)
 
-	renderItem = ({ item }) => (
-		<Message
-			item={item}
-			style={styles.message}
-			reactions={item.reactions}
-			user={this.props.user}
-			customTimeFormat='MMMM Do YYYY, h:mm:ss a'
-		/>
-	)
+	renderItem = ({ item }) => {
+		const { user } = this.props;
+		return (
+			<Message
+				item={item}
+				style={styles.message}
+				reactions={item.reactions}
+				user={user}
+				customTimeFormat='MMMM Do YYYY, h:mm:ss a'
+			/>
+		);
+	}
 
 	render() {
 		const { loading, loadingMore } = this.state;

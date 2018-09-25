@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ViewPropTypes, Image as ImageRN } from 'react-native';
+import {
+	View, Text, ViewPropTypes, Image as ImageRN
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
 import { KeyboardUtils } from 'react-native-keyboard-input';
@@ -137,22 +139,29 @@ export default class Message extends PureComponent {
 		KeyboardUtils.dismiss();
 	}
 
-	isInfoMessage() {
-		return SYSTEM_MESSAGES.includes(this.props.type);
+	isInfoMessage = () => {
+		const { type } = this.props;
+		return SYSTEM_MESSAGES.includes(type);
 	}
 
-	isOwn = () => this.props.author._id === this.props.user.id;
+	isOwn = () => {
+		const { author, user } = this.props;
+		return author._id === user.id;
+	}
 
 	isDeleted() {
-		return this.props.type === 'rm';
+		const { type } = this.props;
+		return type === 'rm';
 	}
 
 	isTemp() {
-		return this.props.status === messagesStatus.TEMP || this.props.status === messagesStatus.ERROR;
+		const { status } = this.props;
+		return status === messagesStatus.TEMP || status === messagesStatus.ERROR;
 	}
 
 	hasError() {
-		return this.props.status === messagesStatus.ERROR;
+		const { status } = this.props;
+		return status === messagesStatus.ERROR;
 	}
 
 	renderAvatar = () => {
@@ -242,19 +251,23 @@ export default class Message extends PureComponent {
 		if (!this.hasError()) {
 			return null;
 		}
-		return <Icon name='error-outline' color='red' size={20} style={styles.errorIcon} onPress={this.props.onErrorPress} />;
+		const { onErrorPress } = this.props;
+		return <Icon name='error-outline' color='red' size={20} style={styles.errorIcon} onPress={onErrorPress} />;
 	}
 
 	renderReaction = (reaction) => {
-		const reacted = reaction.usernames.findIndex(item => item.value === this.props.user.username) !== -1;
+		const {
+			user, onReactionLongPress, onReactionPress, customEmojis, baseUrl
+		} = this.props;
+		const reacted = reaction.usernames.findIndex(item => item.value === user.username) !== -1;
 		const underlayColor = reacted ? '#fff' : '#e1e5e8';
 		return (
 			<LongPressGestureHandler
 				key={reaction.emoji}
-				onHandlerStateChange={({ nativeEvent }) => nativeEvent.state === State.ACTIVE && this.props.onReactionLongPress()}
+				onHandlerStateChange={({ nativeEvent }) => nativeEvent.state === State.ACTIVE && onReactionLongPress()}
 			>
 				<RectButton
-					onPress={() => this.props.onReactionPress(reaction.emoji)}
+					onPress={() => onReactionPress(reaction.emoji)}
 					testID={`message-reaction-${ reaction.emoji }`}
 					style={[styles.reactionButton, reacted && { backgroundColor: '#e8f2ff' }]}
 					activeOpacity={0.8}
@@ -263,10 +276,10 @@ export default class Message extends PureComponent {
 					<View style={[styles.reactionContainer, reacted && styles.reactedContainer]}>
 						<Emoji
 							content={reaction.emoji}
-							customEmojis={this.props.customEmojis}
+							customEmojis={customEmojis}
 							standardEmojiStyle={styles.reactionEmoji}
 							customEmojiStyle={styles.reactionCustomEmoji}
-							baseUrl={this.props.baseUrl}
+							baseUrl={baseUrl}
 						/>
 						<Text style={styles.reactionCount}>{ reaction.usernames.length }</Text>
 					</View>
@@ -276,7 +289,7 @@ export default class Message extends PureComponent {
 	}
 
 	renderReactions() {
-		const { reactions } = this.props;
+		const { reactions, toggleReactionPicker } = this.props;
 		if (reactions.length === 0) {
 			return null;
 		}
@@ -284,7 +297,7 @@ export default class Message extends PureComponent {
 			<View style={styles.reactionsContainer}>
 				{reactions.map(this.renderReaction)}
 				<RectButton
-					onPress={this.props.toggleReactionPicker}
+					onPress={toggleReactionPicker}
 					key='message-add-reaction'
 					testID='message-add-reaction'
 					style={styles.reactionButton}
@@ -300,10 +313,11 @@ export default class Message extends PureComponent {
 	}
 
 	renderBroadcastReply() {
-		if (this.props.broadcast && !this.isOwn()) {
+		const { broadcast, replyBroadcast } = this.props;
+		if (broadcast && !this.isOwn()) {
 			return (
 				<RectButton
-					onPress={this.props.replyBroadcast}
+					onPress={replyBroadcast}
 					style={styles.broadcastButton}
 					activeOpacity={0.5}
 					underlayColor='#fff'
@@ -349,15 +363,17 @@ export default class Message extends PureComponent {
 								{this.renderBroadcastReply()}
 							</View>
 						</View>
-						{reactionsModal ?
-							<ReactionsModal
-								isVisible={reactionsModal}
-								reactions={reactions}
-								user={user}
-								customEmojis={customEmojis}
-								baseUrl={baseUrl}
-								close={closeReactions}
-							/>
+						{reactionsModal
+							? (
+								<ReactionsModal
+									isVisible={reactionsModal}
+									reactions={reactions}
+									user={user}
+									customEmojis={customEmojis}
+									baseUrl={baseUrl}
+									close={closeReactions}
+								/>
+							)
 							: null
 						}
 					</View>

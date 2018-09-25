@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, View, Text, Platform, ActivityIndicator } from 'react-native';
+import {
+	StyleSheet, View, Text, Platform, ActivityIndicator
+} from 'react-native';
 
 import { COLOR_BUTTON_PRIMARY, COLOR_TEXT } from '../../constants/colors';
 import Touch from '../../utils/touch';
@@ -92,9 +94,9 @@ export default class Button extends React.PureComponent {
 					]}
 				>
 					{
-						loading ?
-							<ActivityIndicator color={colors[`text_color_${ type }`]} /> :
-							<Text style={[styles.text, styles[`text_color_${ type }`]]}>{title}</Text>
+						loading
+							? <ActivityIndicator color={colors[`text_color_${ type }`]} />
+							: <Text style={[styles.text, styles[`text_color_${ type }`]]}>{title}</Text>
 					}
 				</View>
 			</Touch>

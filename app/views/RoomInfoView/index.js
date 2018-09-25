@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ScrollView, SafeAreaView } from 'react-native';
+import {
+	View, Text, ScrollView, SafeAreaView
+} from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
@@ -20,14 +22,14 @@ import { iconsMap } from '../../Icons';
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
 const camelize = str => str.replace(/^(.)/, (match, chr) => chr.toUpperCase());
-const getRoomTitle = room => (room.t === 'd' ?
-	<Text testID='room-info-view-name' style={styles.roomTitle}>{room.fname}</Text> :
-	[
+const getRoomTitle = room => (room.t === 'd'
+	? <Text testID='room-info-view-name' style={styles.roomTitle}>{room.fname}</Text>
+	: (
 		<View style={styles.roomTitleRow}>
 			<RoomTypeIcon type={room.t} key='room-info-type' />
 			<Text testID='room-info-view-name' style={styles.roomTitle} key='room-info-name'>{room.name}</Text>
 		</View>
-	]
+	)
 );
 
 @connect(state => ({
@@ -35,7 +37,7 @@ const getRoomTitle = room => (room.t === 'd' ?
 	userId: state.login.user && state.login.user.id,
 	activeUsers: state.activeUsers,
 	Message_TimeFormat: state.settings.Message_TimeFormat,
-	roles: state.roles
+	allRoles: state.roles
 }))
 /** @extends React.Component */
 export default class RoomInfoView extends LoggedView {
@@ -46,7 +48,7 @@ export default class RoomInfoView extends LoggedView {
 		baseUrl: PropTypes.string,
 		activeUsers: PropTypes.object,
 		Message_TimeFormat: PropTypes.string,
-		roles: PropTypes.object
+		allRoles: PropTypes.object
 	}
 
 	constructor(props) {
@@ -64,19 +66,61 @@ export default class RoomInfoView extends LoggedView {
 		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
 
-	async componentDidMount() {
-		await this.updateRoom();
+	componentDidMount() {
+		this.updateRoom();
 		this.rooms.addListener(this.updateRoom);
+	}
+
+	componentWillUnmount() {
+		this.rooms.removeAllListeners();
+		this.sub.unsubscribe();
+	}
+
+	onNavigatorEvent(event) {
+		const { rid, navigator } = this.props;
+		if (event.type === 'NavBarButtonPress') {
+			if (event.id === 'edit') {
+				navigator.push({
+					screen: 'RoomInfoEditView',
+					title: I18n.t('Room_Info_Edit'),
+					backButtonTitle: '',
+					passProps: {
+						rid
+					}
+				});
+			}
+		}
+	}
+
+	getFullUserData = async(username) => {
+		try {
+			const result = await RocketChat.subscribe('fullUserData', username);
+			this.sub = result;
+		} catch (e) {
+			log('getFullUserData', e);
+		}
+	}
+
+	isDirect = () => {
+		const { room: { t } } = this.state;
+		return t === 'd';
+	}
+
+	updateRoom = async() => {
+		const { userId, activeUsers, navigator } = this.props;
+
+		const [room] = this.rooms;
+		this.setState({ room });
 
 		// get user of room
-		if (this.state.room) {
-			if (this.state.room.t === 'd') {
+		if (room) {
+			if (room.t === 'd') {
 				try {
-					const roomUser = await RocketChat.getRoomMember(this.state.room.rid, this.props.userId);
+					const roomUser = await RocketChat.getRoomMember(room.rid, userId);
 					this.setState({ roomUser });
-					const username = this.state.room.name;
+					const username = room.name;
 
-					const activeUser = this.props.activeUsers[roomUser._id];
+					const activeUser = activeUsers[roomUser._id];
 					if (!activeUser || !activeUser.utcOffset) {
 						// get full user data looking for utcOffset
 						// will be catched by .on('users) and saved on activeUsers reducer
@@ -94,9 +138,14 @@ export default class RoomInfoView extends LoggedView {
 					log('RoomInfoView.componentDidMount', e);
 				}
 			} else {
-				const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], this.state.room.rid);
+				const isVisible = await navigator.screenIsCurrentlyVisible();
+
+				if (!isVisible) {
+					return;
+				}
+				const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
 				if (permissions[PERMISSION_EDIT_ROOM]) {
-					this.props.navigator.setButtons({
+					navigator.setButtons({
 						rightButtons: [{
 							id: 'edit',
 							icon: iconsMap.create,
@@ -106,42 +155,6 @@ export default class RoomInfoView extends LoggedView {
 				}
 			}
 		}
-	}
-
-	componentWillUnmount() {
-		this.rooms.removeAllListeners();
-		this.sub.unsubscribe();
-	}
-
-	onNavigatorEvent(event) {
-		if (event.type === 'NavBarButtonPress') {
-			if (event.id === 'edit') {
-				this.props.navigator.push({
-					screen: 'RoomInfoEditView',
-					title: I18n.t('Room_Info_Edit'),
-					backButtonTitle: '',
-					passProps: {
-						rid: this.props.rid
-					}
-				});
-			}
-		}
-	}
-
-	getFullUserData = async(username) => {
-		try {
-			const result = await RocketChat.subscribe('fullUserData', username);
-			this.sub = result;
-		} catch (e) {
-			log('getFullUserData', e);
-		}
-	}
-
-	isDirect = () => this.state.room.t === 'd';
-
-	updateRoom = async() => {
-		const [room] = this.rooms;
-		this.setState({ room });
 	}
 
 	renderItem = (key, room) => (
@@ -155,24 +168,33 @@ export default class RoomInfoView extends LoggedView {
 		</View>
 	);
 
-	renderRoles = () => (
-		this.state.roles.length > 0 ?
-			<View style={styles.item}>
-				<Text style={styles.itemLabel}>{I18n.t('Roles')}</Text>
-				<View style={styles.rolesContainer}>
-					{this.state.roles.map(role => (
-						<View style={styles.roleBadge} key={role}>
-							<Text>{ this.props.roles[role] }</Text>
+	renderRoles = () => {
+		const { roles } = this.state;
+		const { allRoles } = this.props;
+
+		return (
+			roles.length > 0
+				? (
+					<View style={styles.item}>
+						<Text style={styles.itemLabel}>{I18n.t('Roles')}</Text>
+						<View style={styles.rolesContainer}>
+							{roles.map(role => (
+								<View style={styles.roleBadge} key={role}>
+									<Text>{ allRoles[role] }</Text>
+								</View>
+							))}
 						</View>
-					))}
-				</View>
-			</View>
-			: null
-	)
+					</View>
+				)
+				: null
+		);
+	}
 
 	renderTimezone = (userId) => {
-		if (this.props.activeUsers[userId]) {
-			const { utcOffset } = this.props.activeUsers[userId];
+		const { activeUsers, Message_TimeFormat } = this.props;
+
+		if (activeUsers[userId]) {
+			const { utcOffset } = activeUsers[userId];
 
 			if (!utcOffset) {
 				return null;
@@ -180,24 +202,28 @@ export default class RoomInfoView extends LoggedView {
 			return (
 				<View style={styles.item}>
 					<Text style={styles.itemLabel}>{I18n.t('Timezone')}</Text>
-					<Text style={styles.itemContent}>{moment().utcOffset(utcOffset).format(this.props.Message_TimeFormat)} (UTC { utcOffset })</Text>
+					<Text style={styles.itemContent}>{moment().utcOffset(utcOffset).format(Message_TimeFormat)} (UTC { utcOffset })</Text>
 				</View>
 			);
 		}
 		return null;
 	}
 
-	renderAvatar = (room, roomUser) => (
-		<Avatar
-			text={room.name}
-			size={100}
-			style={styles.avatar}
-			type={room.t}
-			baseUrl={this.props.baseUrl}
-		>
-			{room.t === 'd' ? <Status style={[sharedStyles.status, styles.status]} id={roomUser._id} /> : null}
-		</Avatar>
-	)
+	renderAvatar = (room, roomUser) => {
+		const { baseUrl } = this.props;
+
+		return (
+			<Avatar
+				text={room.name}
+				size={100}
+				style={styles.avatar}
+				type={room.t}
+				baseUrl={baseUrl}
+			>
+				{room.t === 'd' ? <Status style={[sharedStyles.status, styles.status]} id={roomUser._id} /> : null}
+			</Avatar>
+		);
+	}
 
 	renderBroadcast = () => (
 		<View style={styles.item}>

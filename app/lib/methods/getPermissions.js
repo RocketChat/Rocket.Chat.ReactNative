@@ -21,9 +21,11 @@ export default async function() {
 				return permission;
 			});
 
-		InteractionManager.runAfterInteractions(() =>
-			database.write(() =>
-				permissions.forEach(permission => database.create('permissions', permission, true))));
+		InteractionManager.runAfterInteractions(
+			() => database.write(
+				() => permissions.forEach(permission => database.create('permissions', permission, true))
+			)
+		);
 	} catch (e) {
 		log('getPermissions', e);
 	}

@@ -300,7 +300,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
   <View>
     <View
       accessibilityLabel="rocket.cat, last message Nov 10"
-      accessibilityTraits="selected"
       accessible={true}
       isTVSelectable={true}
       onResponderGrant={[Function]}
@@ -532,7 +531,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
     </View>
     <View
       accessibilityLabel="rocket.cat, last message Nov 10"
-      accessibilityTraits="selected"
       accessible={true}
       isTVSelectable={true}
       onResponderGrant={[Function]}
@@ -768,7 +766,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
     </View>
     <View
       accessibilityLabel="rocket.cat, 1 alert, last message Nov 10"
-      accessibilityTraits="selected"
       accessible={true}
       isTVSelectable={true}
       onResponderGrant={[Function]}
@@ -1026,7 +1023,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
     </View>
     <View
       accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, 9 alerts, last message Nov 10"
-      accessibilityTraits="selected"
       accessible={true}
       isTVSelectable={true}
       onResponderGrant={[Function]}
@@ -1288,7 +1284,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
     </View>
     <View
       accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, 99 alerts, last message Nov 10"
-      accessibilityTraits="selected"
       accessible={true}
       isTVSelectable={true}
       onResponderGrant={[Function]}
@@ -1546,7 +1541,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
     </View>
     <View
       accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, 100 alerts, last message Nov 10"
-      accessibilityTraits="selected"
       accessible={true}
       isTVSelectable={true}
       onResponderGrant={[Function]}
@@ -1804,7 +1798,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
     </View>
     <View
       accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, 100000 alerts, last message Nov 10"
-      accessibilityTraits="selected"
       accessible={true}
       isTVSelectable={true}
       onResponderGrant={[Function]}
@@ -2062,7 +2055,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
     </View>
     <View
       accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, 100000 alerts, you were mentioned, last message Nov 10"
-      accessibilityTraits="selected"
       accessible={true}
       isTVSelectable={true}
       onResponderGrant={[Function]}
@@ -2320,7 +2312,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
     </View>
     <View
       accessibilityLabel="W, last message Nov 10"
-      accessibilityTraits="selected"
       accessible={true}
       isTVSelectable={true}
       onResponderGrant={[Function]}
@@ -2552,7 +2543,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
     </View>
     <View
       accessibilityLabel="WW, last message Nov 10"
-      accessibilityTraits="selected"
       accessible={true}
       isTVSelectable={true}
       onResponderGrant={[Function]}
@@ -2784,7 +2774,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
     </View>
     <View
       accessibilityLabel=", last message Nov 10"
-      accessibilityTraits="selected"
       accessible={true}
       isTVSelectable={true}
       onResponderGrant={[Function]}

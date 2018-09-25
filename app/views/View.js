@@ -13,14 +13,17 @@ export default class extends React.Component {
 		navBarTextColor: isAndroid() ? '#FFF' : undefined,
 		navBarButtonColor: isAndroid() ? '#FFF' : undefined
 	}
+
 	static propTypes = {
 		navigator: PropTypes.object
 	}
+
 	constructor(name, props) {
 		super(props);
 		NavigationActions.setNavigator(props.navigator);
 		Answers.logContentView(name);
 	}
+
 	componentDidCatch = (error, info) => {
 		Answers.logCustom(error, info);
 	}

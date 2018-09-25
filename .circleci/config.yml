@@ -37,7 +37,7 @@ jobs:
 
   e2e-test:
     macos:
-      xcode: "9.0"
+      xcode: "10.0.0"
 
     environment:
       BASH_ENV: "~/.nvm/nvm.sh"
@@ -87,7 +87,8 @@ jobs:
       - image: circleci/android:api-27-node8-alpha
 
     environment:
-      GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"
+      # GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"
+      GRADLE_OPTS: -Xmx2048m -Dorg.gradle.daemon=false
       JVM_OPTS: -Xmx4096m
       TERM: dumb
       BASH_ENV: "~/.nvm/nvm.sh"
@@ -170,7 +171,7 @@ jobs:
 
   ios-build:
     macos:
-      xcode: "9.0"
+      xcode: "10.0.0"
 
     environment:
       BASH_ENV: "~/.nvm/nvm.sh"
@@ -236,7 +237,7 @@ jobs:
 
   ios-testflight:
     macos:
-      xcode: "9.0"
+      xcode: "10.0.0"
 
     steps:
       - checkout

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, SafeAreaView, Dimensions } from 'react-native';
+import {
+	View, ScrollView, SafeAreaView, Dimensions
+} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
 
@@ -15,12 +17,12 @@ import Button from '../../containers/Button';
 import Loading from '../../containers/Loading';
 import { showErrorAlert, showToast } from '../../utils/info';
 import log from '../../utils/log';
-import { setUser } from '../../actions/login';
+import { setUser as setUserAction } from '../../actions/login';
 
 @connect(state => ({
 	userLanguage: state.login.user && state.login.user.language
 }), dispatch => ({
-	setUser: params => dispatch(setUser(params))
+	setUser: params => dispatch(setUserAction(params))
 }))
 /** @extends React.Component */
 export default class SettingsView extends LoggedView {
@@ -51,7 +53,8 @@ export default class SettingsView extends LoggedView {
 	}
 
 	componentWillMount() {
-		this.props.navigator.setButtons({
+		const { navigator } = this.props;
+		navigator.setButtons({
 			leftButtons: [{
 				id: 'settings',
 				icon: { uri: 'settings', scale: Dimensions.get('window').scale }
@@ -60,16 +63,18 @@ export default class SettingsView extends LoggedView {
 	}
 
 	componentDidMount() {
-		this.props.navigator.setDrawerEnabled({
+		const { navigator } = this.props;
+		navigator.setDrawerEnabled({
 			side: 'left',
 			enabled: true
 		});
 	}
 
 	onNavigatorEvent(event) {
+		const { navigator } = this.props;
 		if (event.type === 'NavBarButtonPress') {
 			if (event.id === 'settings') {
-				this.props.navigator.toggleDrawer({
+				navigator.toggleDrawer({
 					side: 'left'
 				});
 			}
@@ -86,17 +91,16 @@ export default class SettingsView extends LoggedView {
 	}
 
 	formIsChanged = () => {
+		const { userLanguage } = this.props;
 		const { language } = this.state;
-		return !(this.props.userLanguage === language);
+		return !(userLanguage === language);
 	}
 
 	submit = async() => {
 		this.setState({ saving: true });
 
-		const {
-			language
-		} = this.state;
-		const { userLanguage } = this.props;
+		const { language } = this.state;
+		const { userLanguage, setUser, navigator } = this.props;
 
 		if (!this.formIsChanged()) {
 			return;
@@ -111,14 +115,14 @@ export default class SettingsView extends LoggedView {
 
 		try {
 			await RocketChat.saveUserPreferences(params);
-			this.props.setUser({ language: params.language });
+			setUser({ language: params.language });
 
 			this.setState({ saving: false });
 			setTimeout(() => {
 				showToast(I18n.t('Preferences_saved'));
 
 				if (params.language) {
-					this.props.navigator.setTitle({ title: I18n.t('Settings') });
+					navigator.setTitle({ title: I18n.t('Settings') });
 				}
 			}, 300);
 		} catch (e) {
@@ -134,7 +138,9 @@ export default class SettingsView extends LoggedView {
 	}
 
 	render() {
-		const { language, languages, placeholder } = this.state;
+		const {
+			language, languages, placeholder, saving
+		} = this.state;
 		return (
 			<KeyboardView
 				contentContainerStyle={sharedStyles.container}
@@ -171,7 +177,7 @@ export default class SettingsView extends LoggedView {
 								testID='settings-view-button'
 							/>
 						</View>
-						<Loading visible={this.state.saving} />
+						<Loading visible={saving} />
 					</SafeAreaView>
 				</ScrollView>
 			</KeyboardView>

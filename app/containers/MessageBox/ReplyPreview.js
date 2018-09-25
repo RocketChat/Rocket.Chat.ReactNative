@@ -57,7 +57,8 @@ export default class ReplyPreview extends Component {
 	}
 
 	close = () => {
-		this.props.close();
+		const { close } = this.props;
+		close();
 	}
 
 	render() {
