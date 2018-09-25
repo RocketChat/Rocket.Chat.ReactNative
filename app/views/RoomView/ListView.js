@@ -35,6 +35,7 @@ export class List extends React.Component {
 		room: PropTypes.string,
 		end: PropTypes.bool
 	};
+
 	constructor(props) {
 		super(props);
 		this.data = database
@@ -43,16 +44,22 @@ export class List extends React.Component {
 			.sorted('ts', true);
 		this.dataSource = ds.cloneWithRows(this.data);
 	}
+
 	componentDidMount() {
 		this.data.addListener(this.updateState);
 	}
+
 	shouldComponentUpdate(nextProps) {
-		return this.props.end !== nextProps.end;
+		const { end } = this.props;
+		return end !== nextProps.end;
 	}
+
 	componentWillUnmount() {
 		this.data.removeAllListeners();
 		this.updateState.stop();
 	}
+
+	// eslint-disable-next-line react/sort-comp
 	updateState = throttle(() => {
 		// this.setState({
 		this.dataSource = this.dataSource.cloneWithRows(this.data);
@@ -62,6 +69,8 @@ export class List extends React.Component {
 	}, 1000);
 
 	render() {
+		const { renderFooter, onEndReached, renderRow } = this.props;
+
 		return (
 			<ListView
 				enableEmptySections
@@ -69,11 +78,11 @@ export class List extends React.Component {
 				data={this.data}
 				keyExtractor={item => item._id}
 				onEndReachedThreshold={100}
-				renderFooter={this.props.renderFooter}
+				renderFooter={renderFooter}
 				renderHeader={() => <Typing />}
-				onEndReached={() => this.props.onEndReached(this.data[this.data.length - 1])}
+				onEndReached={() => onEndReached(this.data[this.data.length - 1])}
 				dataSource={this.dataSource}
-				renderRow={(item, previousItem) => this.props.renderRow(item, previousItem)}
+				renderRow={(item, previousItem) => renderRow(item, previousItem)}
 				initialListSize={1}
 				pageSize={20}
 				testID='room-view-messages'
@@ -106,7 +115,9 @@ export class ListView extends OldList2 {
 	setNativeProps(props) {
 		this.refs.listView.setNativeProps(props);
 	}
+
 	static DataSource = DataSource;
+
 	render() {
 		const bodyComponents = [];
 
@@ -132,9 +143,9 @@ export class ListView extends OldList2 {
 				continue; // eslint-disable-line
 			}
 
-			const showUnreadSeparator = this.props.lastOpen &&
-				moment(message.ts).isAfter(this.props.lastOpen) &&
-				moment(previousMessage.ts).isBefore(this.props.lastOpen);
+			const showUnreadSeparator = this.props.lastOpen
+				&& moment(message.ts).isAfter(this.props.lastOpen)
+				&& moment(previousMessage.ts).isBefore(this.props.lastOpen);
 			const showDateSeparator = !moment(message.ts).isSame(previousMessage.ts, 'day');
 
 			if (showUnreadSeparator || showDateSeparator) {

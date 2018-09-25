@@ -9,10 +9,9 @@ const subscribe = (ddp, rid) => Promise.all([
 	ddp.subscribe('stream-room-messages', rid, false),
 	ddp.subscribe('stream-notify-room', `${ rid }/typing`, false)
 ]);
-const unsubscribe = subscriptions =>
-	subscriptions.forEach(sub => sub.unsubscribe().catch((e) => {
-		log('unsubscribeRoom', e);
-	}));
+const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch((e) => {
+	log('unsubscribeRoom', e);
+}));
 
 let timer = null;
 let promises;

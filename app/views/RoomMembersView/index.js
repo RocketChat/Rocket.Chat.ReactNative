@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, Vibration, SafeAreaView } from 'react-native';
+import {
+	FlatList, View, Vibration, SafeAreaView
+} from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
 import { connect } from 'react-redux';
 
@@ -37,6 +39,8 @@ export default class RoomMembersView extends LoggedView {
 
 	constructor(props) {
 		super('MentionedMessagesView', props);
+		const { navigator } = this.props;
+
 		this.CANCEL_INDEX = 0;
 		this.MUTE_INDEX = 1;
 		this.actionSheetOptions = [''];
@@ -52,7 +56,7 @@ export default class RoomMembersView extends LoggedView {
 			userLongPressed: {},
 			room: {}
 		};
-		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+		navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
 
 	componentDidMount() {
@@ -64,16 +68,19 @@ export default class RoomMembersView extends LoggedView {
 	}
 
 	async onNavigatorEvent(event) {
+		const { rid, allUsers } = this.state;
+		const { navigator } = this.props;
+
 		if (event.type === 'NavBarButtonPress') {
 			if (event.id === 'toggleOnline') {
 				try {
-					const allUsers = !this.state.allUsers;
-					const membersResult = await RocketChat.getRoomMembers(this.state.rid, allUsers);
+					const allUsersFilter = !allUsers;
+					const membersResult = await RocketChat.getRoomMembers(rid, allUsersFilter);
 					const members = membersResult.records;
-					this.setState({ allUsers, members });
-					this.props.navigator.setButtons({
+					this.setState({ allUsers: allUsersFilter, members });
+					navigator.setButtons({
 						rightButtons: [{
-							title: this.state.allUsers ? I18n.t('Online') : I18n.t('All'),
+							title: allUsers ? I18n.t('Online') : I18n.t('All'),
 							id: 'toggleOnline',
 							testID: 'room-members-view-toggle-status'
 						}]
@@ -86,9 +93,11 @@ export default class RoomMembersView extends LoggedView {
 	}
 
 	onSearchChangeText = (text) => {
+		const { members } = this.state;
+
 		let membersFiltered = [];
 		if (text) {
-			membersFiltered = this.state.members.filter(m => m.username.toLowerCase().match(text.toLowerCase()));
+			membersFiltered = members.filter(m => m.username.toLowerCase().match(text.toLowerCase()));
 		}
 		this.setState({ filtering: !!text, membersFiltered });
 	}
@@ -111,8 +120,10 @@ export default class RoomMembersView extends LoggedView {
 		if (!this.permissions['mute-user']) {
 			return;
 		}
+		const { room } = this.state;
+		const { muted } = room;
+
 		this.actionSheetOptions = [I18n.t('Cancel')];
-		const { muted } = this.state.room;
 		const userIsMuted = !!muted.find(m => m.value === user.username);
 		user.muted = userIsMuted;
 		if (userIsMuted) {
@@ -133,9 +144,10 @@ export default class RoomMembersView extends LoggedView {
 	}
 
 	goRoom = ({ rid, name }) => {
-		this.props.navigator.popToRoot();
+		const { navigator } = this.props;
+		navigator.popToRoot();
 		setTimeout(() => {
-			this.props.navigator.push({
+			navigator.push({
 				screen: 'RoomView',
 				title: name,
 				backButtonTitle: '',
@@ -170,16 +182,20 @@ export default class RoomMembersView extends LoggedView {
 
 	renderSeparator = () => <View style={styles.separator} />;
 
-	renderItem = ({ item }) => (
-		<UserItem
-			name={item.name}
-			username={item.username}
-			onPress={() => this.onPressUser(item)}
-			onLongPress={() => this.onLongPressUser(item)}
-			baseUrl={this.props.baseUrl}
-			testID={`room-members-view-item-${ item.username }`}
-		/>
-	)
+	renderItem = ({ item }) => {
+		const { baseUrl } = this.props;
+
+		return (
+			<UserItem
+				name={item.name}
+				username={item.username}
+				onPress={() => this.onPressUser(item)}
+				onLongPress={() => this.onLongPressUser(item)}
+				baseUrl={baseUrl}
+				testID={`room-members-view-item-${ item.username }`}
+			/>
+		);
+	}
 
 	render() {
 		const { filtering, members, membersFiltered } = this.state;

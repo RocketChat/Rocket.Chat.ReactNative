@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView, Text, View, StyleSheet, FlatList, LayoutAnimation, SafeAreaView } from 'react-native';
+import {
+	ScrollView, Text, View, StyleSheet, FlatList, LayoutAnimation, SafeAreaView
+} from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import { appStart } from '../actions';
-import { logout } from '../actions/login';
-import Avatar from '../containers/Avatar';
-import Status from '../containers/status';
+import { appStart as appStartAction } from '../actions';
+import { logout as logoutAction } from '../actions/login';
+import Avatar from './Avatar';
+import Status from './status';
 import Touch from '../utils/touch';
 import { STATUS_COLORS } from '../constants/colors';
 import RocketChat from '../lib/rocketchat';
@@ -87,8 +89,8 @@ const keyExtractor = item => item.id;
 	},
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }), dispatch => ({
-	logout: () => dispatch(logout()),
-	appStart: () => dispatch(appStart('outside'))
+	logout: () => dispatch(logoutAction()),
+	appStart: () => dispatch(appStartAction('outside'))
 }))
 export default class Sidebar extends Component {
 	static propTypes = {
@@ -112,7 +114,8 @@ export default class Sidebar extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.user && this.props.user && this.props.user.language !== nextProps.user.language) {
+		const { user } = this.props;
+		if (nextProps.user && user && user.language !== nextProps.user.language) {
 			this.setStatus();
 		}
 	}
@@ -138,7 +141,8 @@ export default class Sidebar extends Component {
 	}
 
 	closeDrawer = () => {
-		this.props.navigator.toggleDrawer({
+		const { navigator } = this.props;
+		navigator.toggleDrawer({
 			side: 'left',
 			animated: true,
 			to: 'close'
@@ -147,7 +151,7 @@ export default class Sidebar extends Component {
 
 	toggleStatus = () => {
 		LayoutAnimation.easeInEaseOut();
-		this.setState({ showStatus: !this.state.showStatus });
+		this.setState(prevState => ({ showStatus: !prevState.showStatus }));
 	}
 
 	sidebarNavigate = (screen, title) => {
@@ -178,67 +182,79 @@ export default class Sidebar extends Component {
 		</Touch>
 	)
 
-	renderStatusItem = ({ item }) => (
-		this.renderItem({
-			text: item.name,
-			left: <View style={[styles.status, { backgroundColor: STATUS_COLORS[item.id] }]} />,
-			selected: this.props.user.status === item.id,
-			onPress: () => {
-				this.closeDrawer();
-				this.toggleStatus();
-				if (this.props.user.status !== item.id) {
-					try {
-						RocketChat.setUserPresenceDefaultStatus(item.id);
-					} catch (e) {
-						log('setUserPresenceDefaultStatus', e);
+	renderStatusItem = ({ item }) => {
+		const { user } = this.props;
+		return (
+			this.renderItem({
+				text: item.name,
+				left: <View style={[styles.status, { backgroundColor: STATUS_COLORS[item.id] }]} />,
+				selected: user.status === item.id,
+				onPress: () => {
+					this.closeDrawer();
+					this.toggleStatus();
+					if (user.status !== item.id) {
+						try {
+							RocketChat.setUserPresenceDefaultStatus(item.id);
+						} catch (e) {
+							log('setUserPresenceDefaultStatus', e);
+						}
 					}
 				}
-			}
-		})
-	)
-
-	renderNavigation = () => (
-		[
-			this.renderItem({
-				text: I18n.t('Chats'),
-				left: <Icon name='chat-bubble' size={20} />,
-				onPress: () => this.sidebarNavigate('RoomsListView', I18n.t('Messages')),
-				testID: 'sidebar-chats'
-			}),
-			this.renderItem({
-				text: I18n.t('Profile'),
-				left: <Icon name='person' size={20} />,
-				onPress: () => this.sidebarNavigate('ProfileView', I18n.t('Profile')),
-				testID: 'sidebar-profile'
-			}),
-			this.renderItem({
-				text: I18n.t('Settings'),
-				left: <Icon name='settings' size={20} />,
-				onPress: () => this.sidebarNavigate('SettingsView', I18n.t('Settings')),
-				testID: 'sidebar-settings'
-			}),
-			this.renderSeparator('separator-logout'),
-			this.renderItem({
-				text: I18n.t('Logout'),
-				left: <Icon name='exit-to-app' size={20} />,
-				onPress: () => this.props.logout(),
-				testID: 'sidebar-logout'
 			})
-		]
-	)
+		);
+	}
 
-	renderStatus = () => (
-		<FlatList
-			key='status-list'
-			data={this.state.status}
-			extraData={this.props.user}
-			renderItem={this.renderStatusItem}
-			keyExtractor={keyExtractor}
-		/>
-	)
+	renderNavigation = () => {
+		const { logout } = this.props;
+		return (
+			[
+				this.renderItem({
+					text: I18n.t('Chats'),
+					left: <Icon name='chat-bubble' size={20} />,
+					onPress: () => this.sidebarNavigate('RoomsListView', I18n.t('Messages')),
+					testID: 'sidebar-chats'
+				}),
+				this.renderItem({
+					text: I18n.t('Profile'),
+					left: <Icon name='person' size={20} />,
+					onPress: () => this.sidebarNavigate('ProfileView', I18n.t('Profile')),
+					testID: 'sidebar-profile'
+				}),
+				this.renderItem({
+					text: I18n.t('Settings'),
+					left: <Icon name='settings' size={20} />,
+					onPress: () => this.sidebarNavigate('SettingsView', I18n.t('Settings')),
+					testID: 'sidebar-settings'
+				}),
+				this.renderSeparator('separator-logout'),
+				this.renderItem({
+					text: I18n.t('Logout'),
+					left: <Icon name='exit-to-app' size={20} />,
+					onPress: () => logout(),
+					testID: 'sidebar-logout'
+				})
+			]
+		);
+	}
+
+	renderStatus = () => {
+		const { status } = this.state;
+		const { user } = this.props;
+		return (
+			<FlatList
+				key='status-list'
+				data={status}
+				extraData={user}
+				renderItem={this.renderStatusItem}
+				keyExtractor={keyExtractor}
+			/>
+		);
+	}
 
 	render() {
+		const { showStatus } = this.state;
 		const { user, server, baseUrl } = this.props;
+
 		if (!user) {
 			return null;
 		}
@@ -266,7 +282,7 @@ export default class Sidebar extends Component {
 								<Text style={styles.currentServerText} numberOfLines={1}>{server}</Text>
 							</View>
 							<Icon
-								name={this.state.showStatus ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
+								name={showStatus ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
 								size={30}
 								style={{ paddingHorizontal: 10 }}
 							/>
@@ -275,8 +291,8 @@ export default class Sidebar extends Component {
 
 					{this.renderSeparator('separator-header')}
 
-					{!this.state.showStatus ? this.renderNavigation() : null}
-					{this.state.showStatus ? this.renderStatus() : null}
+					{!showStatus ? this.renderNavigation() : null}
+					{showStatus ? this.renderStatus() : null}
 				</ScrollView>
 				<Text style={styles.version}>
 					{DeviceInfo.getReadableVersion()}

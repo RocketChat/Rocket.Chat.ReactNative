@@ -3,7 +3,7 @@ import { View, Text, Switch } from 'react-native';
 import PropTypes from 'prop-types';
 
 import styles from './styles';
-import sharedStyles from '../../views/Styles';
+import sharedStyles from '../Styles';
 
 export default class SwitchContainer extends React.PureComponent {
 	static propTypes = {

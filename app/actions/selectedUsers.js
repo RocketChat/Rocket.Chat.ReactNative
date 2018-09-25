@@ -26,4 +26,3 @@ export function setLoading(loading) {
 		loading
 	};
 }
-

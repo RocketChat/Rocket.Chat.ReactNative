@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, Text, SafeAreaView } from 'react-native';
+import {
+	FlatList, View, Text, SafeAreaView
+} from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
 
+import { openPinnedMessages as openPinnedMessagesAction, closePinnedMessages as closePinnedMessagesAction } from '../../actions/pinnedMessages';
+import { togglePinRequest as togglePinRequestAction } from '../../actions/messages';
 import LoggedView from '../View';
-import { openPinnedMessages, closePinnedMessages } from '../../actions/pinnedMessages';
 import styles from './styles';
 import Message from '../../containers/message';
-import { togglePinRequest } from '../../actions/messages';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 
@@ -25,9 +27,9 @@ const options = [I18n.t('Unpin'), I18n.t('Cancel')];
 		token: state.login.user && state.login.user.token
 	}
 }), dispatch => ({
-	openPinnedMessages: (rid, limit) => dispatch(openPinnedMessages(rid, limit)),
-	closePinnedMessages: () => dispatch(closePinnedMessages()),
-	togglePinRequest: message => dispatch(togglePinRequest(message))
+	openPinnedMessages: (rid, limit) => dispatch(openPinnedMessagesAction(rid, limit)),
+	closePinnedMessages: () => dispatch(closePinnedMessagesAction()),
+	togglePinRequest: message => dispatch(togglePinRequestAction(message))
 }))
 /** @extends React.Component */
 export default class PinnedMessagesView extends LoggedView {
@@ -56,13 +58,15 @@ export default class PinnedMessagesView extends LoggedView {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.ready && nextProps.ready !== this.props.ready) {
+		const { ready } = this.props;
+		if (nextProps.ready && nextProps.ready !== ready) {
 			this.setState({ loading: false, loadingMore: false });
 		}
 	}
 
 	componentWillUnmount() {
-		this.props.closePinnedMessages();
+		const { closePinnedMessages } = this.props;
+		closePinnedMessages();
 	}
 
 	onLongPress = (message) => {
@@ -73,9 +77,12 @@ export default class PinnedMessagesView extends LoggedView {
 	}
 
 	handleActionPress = (actionIndex) => {
+		const { message } = this.state;
+		const { togglePinRequest } = this.props;
+
 		switch (actionIndex) {
 			case PIN_INDEX:
-				this.props.togglePinRequest(this.state.message);
+				togglePinRequest(message);
 				break;
 			default:
 				break;
@@ -83,7 +90,8 @@ export default class PinnedMessagesView extends LoggedView {
 	}
 
 	load = () => {
-		this.props.openPinnedMessages(this.props.rid, this.limit);
+		const { openPinnedMessages, rid } = this.props;
+		openPinnedMessages(rid, this.limit);
 	}
 
 	moreData = () => {
@@ -105,16 +113,19 @@ export default class PinnedMessagesView extends LoggedView {
 		</View>
 	)
 
-	renderItem = ({ item }) => (
-		<Message
-			item={item}
-			style={styles.message}
-			reactions={item.reactions}
-			user={this.props.user}
-			customTimeFormat='MMMM Do YYYY, h:mm:ss a'
-			onLongPress={this.onLongPress}
-		/>
-	)
+	renderItem = ({ item }) => {
+		const { user } = this.props;
+		return (
+			<Message
+				item={item}
+				style={styles.message}
+				reactions={item.reactions}
+				user={user}
+				customTimeFormat='MMMM Do YYYY, h:mm:ss a'
+				onLongPress={this.onLongPress}
+			/>
+		);
+	}
 
 	render() {
 		const { loading, loadingMore } = this.state;

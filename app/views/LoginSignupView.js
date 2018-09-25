@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, ScrollView, TouchableOpacity, LayoutAnimation, Image, StyleSheet, SafeAreaView } from 'react-native';
+import {
+	Text, View, ScrollView, TouchableOpacity, LayoutAnimation, Image, StyleSheet, SafeAreaView
+} from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Base64 } from 'js-base64';
 
-import { open, close } from '../actions/login';
+import { open as openAction, close as closeAction } from '../actions/login';
 import LoggedView from './View';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
@@ -57,8 +59,8 @@ const styles = StyleSheet.create({
 	Accounts_OAuth_Twitter: state.settings.Accounts_OAuth_Twitter,
 	services: state.login.services
 }), dispatch => ({
-	open: () => dispatch(open()),
-	close: () => dispatch(close())
+	open: () => dispatch(openAction()),
+	close: () => dispatch(closeAction())
 }))
 /** @extends React.Component */
 export default class LoginSignupView extends LoggedView {
@@ -85,23 +87,27 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	componentDidMount() {
-		this.props.open();
+		const { open } = this.props;
+		open();
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (this.props.services !== nextProps.services) {
+		const { services } = this.props;
+		if (services !== nextProps.services) {
 			LayoutAnimation.easeInEaseOut();
 		}
 	}
 
 	componentWillUnmount() {
-		this.props.close();
+		const { close } = this.props;
+		close();
 	}
 
 	onPressFacebook = () => {
-		const { appId } = this.props.services.facebook;
+		const { services, server } = this.props;
+		const { appId } = services.facebook;
 		const endpoint = 'https://m.facebook.com/v2.9/dialog/oauth';
-		const redirect_uri = `${ this.props.server }/_oauth/facebook?close`;
+		const redirect_uri = `${ server }/_oauth/facebook?close`;
 		const scope = 'email';
 		const state = this.getOAuthState();
 		const params = `?client_id=${ appId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&display=touch`;
@@ -109,9 +115,10 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	onPressGithub = () => {
-		const { clientId } = this.props.services.github;
+		const { services, server } = this.props;
+		const { clientId } = services.github;
 		const endpoint = `https://github.com/login?client_id=${ clientId }&return_to=${ encodeURIComponent('/login/oauth/authorize') }`;
-		const redirect_uri = `${ this.props.server }/_oauth/github?close`;
+		const redirect_uri = `${ server }/_oauth/github?close`;
 		const scope = 'user:email';
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }`;
@@ -119,9 +126,10 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	onPressGitlab = () => {
-		const { clientId } = this.props.services.gitlab;
+		const { services, server } = this.props;
+		const { clientId } = services.gitlab;
 		const endpoint = 'https://gitlab.com/oauth/authorize';
-		const redirect_uri = `${ this.props.server }/_oauth/gitlab?close`;
+		const redirect_uri = `${ server }/_oauth/gitlab?close`;
 		const scope = 'read_user';
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&response_type=code`;
@@ -129,9 +137,10 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	onPressGoogle = () => {
-		const { clientId } = this.props.services.google;
+		const { services, server } = this.props;
+		const { clientId } = services.google;
 		const endpoint = 'https://accounts.google.com/o/oauth2/auth';
-		const redirect_uri = `${ this.props.server }/_oauth/google?close`;
+		const redirect_uri = `${ server }/_oauth/google?close`;
 		const scope = 'email';
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&response_type=code`;
@@ -139,9 +148,10 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	onPressLinkedin = () => {
-		const { clientId } = this.props.services.linkedin;
+		const { services, server } = this.props;
+		const { clientId } = services.linkedin;
 		const endpoint = 'https://www.linkedin.com/uas/oauth2/authorization';
-		const redirect_uri = `${ this.props.server }/_oauth/linkedin?close`;
+		const redirect_uri = `${ server }/_oauth/linkedin?close`;
 		const scope = 'r_emailaddress';
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&response_type=code`;
@@ -149,17 +159,19 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	onPressMeteor = () => {
-		const { clientId } = this.props.services['meteor-developer'];
+		const { services, server } = this.props;
+		const { clientId } = services['meteor-developer'];
 		const endpoint = 'https://www.meteor.com/oauth2/authorize';
-		const redirect_uri = `${ this.props.server }/_oauth/meteor-developer`;
+		const redirect_uri = `${ server }/_oauth/meteor-developer`;
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&state=${ state }&response_type=code`;
 		this.openOAuth(`${ endpoint }${ params }`);
 	}
 
 	onPressTwitter = () => {
+		const { server } = this.props;
 		const state = this.getOAuthState();
-		const url = `${ this.props.server }/_oauth/twitter/?requestTokenAndRedirect=true&state=${ state }`;
+		const url = `${ server }/_oauth/twitter/?requestTokenAndRedirect=true&state=${ state }`;
 		this.openOAuth(url);
 	}
 
@@ -169,7 +181,8 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	openOAuth = (oAuthUrl) => {
-		this.props.navigator.showModal({
+		const { navigator } = this.props;
+		navigator.showModal({
 			screen: 'OAuthView',
 			title: 'OAuth',
 			passProps: {
@@ -179,93 +192,113 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	login = () => {
-		this.props.navigator.push({
+		const { navigator, server } = this.props;
+		navigator.push({
 			screen: 'LoginView',
-			title: this.props.server,
+			title: server,
 			backButtonTitle: ''
 		});
 	}
 
 	register = () => {
-		this.props.navigator.push({
+		const { navigator, server } = this.props;
+		navigator.push({
 			screen: 'RegisterView',
-			title: this.props.server,
+			title: server,
 			backButtonTitle: ''
 		});
 	}
 
 	renderServices = () => {
-		const { services } = this.props;
+		const {
+			services, Accounts_OAuth_Facebook, Accounts_OAuth_Github, Accounts_OAuth_Gitlab, Accounts_OAuth_Google, Accounts_OAuth_Linkedin, Accounts_OAuth_Meteor, Accounts_OAuth_Twitter
+		} = this.props;
+
 		if (!Object.keys(services).length) {
 			return null;
 		}
+
 		return (
 			<View style={styles.servicesContainer}>
 				<Text style={styles.servicesTitle}>
 					{I18n.t('Or_continue_using_social_accounts')}
 				</Text>
 				<View style={sharedStyles.loginOAuthButtons} key='services'>
-					{this.props.Accounts_OAuth_Facebook && this.props.services.facebook ?
-						<TouchableOpacity
-							style={[sharedStyles.oauthButton, sharedStyles.facebookButton]}
-							onPress={this.onPressFacebook}
-						>
-							<Icon name='facebook' size={20} color='#ffffff' />
-						</TouchableOpacity>
+					{Accounts_OAuth_Facebook && services.facebook
+						? (
+							<TouchableOpacity
+								style={[sharedStyles.oauthButton, sharedStyles.facebookButton]}
+								onPress={this.onPressFacebook}
+							>
+								<Icon name='facebook' size={20} color='#ffffff' />
+							</TouchableOpacity>
+						)
 						: null
 					}
-					{this.props.Accounts_OAuth_Github && this.props.services.github ?
-						<TouchableOpacity
-							style={[sharedStyles.oauthButton, sharedStyles.githubButton]}
-							onPress={this.onPressGithub}
-						>
-							<Icon name='github' size={20} color='#ffffff' />
-						</TouchableOpacity>
+					{Accounts_OAuth_Github && services.github
+						? (
+							<TouchableOpacity
+								style={[sharedStyles.oauthButton, sharedStyles.githubButton]}
+								onPress={this.onPressGithub}
+							>
+								<Icon name='github' size={20} color='#ffffff' />
+							</TouchableOpacity>
+						)
 						: null
 					}
-					{this.props.Accounts_OAuth_Gitlab && this.props.services.gitlab ?
-						<TouchableOpacity
-							style={[sharedStyles.oauthButton, sharedStyles.gitlabButton]}
-							onPress={this.onPressGitlab}
-						>
-							<Icon name='gitlab' size={20} color='#ffffff' />
-						</TouchableOpacity>
+					{Accounts_OAuth_Gitlab && services.gitlab
+						? (
+							<TouchableOpacity
+								style={[sharedStyles.oauthButton, sharedStyles.gitlabButton]}
+								onPress={this.onPressGitlab}
+							>
+								<Icon name='gitlab' size={20} color='#ffffff' />
+							</TouchableOpacity>
+						)
 						: null
 					}
-					{this.props.Accounts_OAuth_Google && this.props.services.google ?
-						<TouchableOpacity
-							style={[sharedStyles.oauthButton, sharedStyles.googleButton]}
-							onPress={this.onPressGoogle}
-						>
-							<Icon name='google' size={20} color='#ffffff' />
-						</TouchableOpacity>
+					{Accounts_OAuth_Google && services.google
+						? (
+							<TouchableOpacity
+								style={[sharedStyles.oauthButton, sharedStyles.googleButton]}
+								onPress={this.onPressGoogle}
+							>
+								<Icon name='google' size={20} color='#ffffff' />
+							</TouchableOpacity>
+						)
 						: null
 					}
-					{this.props.Accounts_OAuth_Linkedin && this.props.services.linkedin ?
-						<TouchableOpacity
-							style={[sharedStyles.oauthButton, sharedStyles.linkedinButton]}
-							onPress={this.onPressLinkedin}
-						>
-							<Icon name='linkedin' size={20} color='#ffffff' />
-						</TouchableOpacity>
+					{Accounts_OAuth_Linkedin && services.linkedin
+						? (
+							<TouchableOpacity
+								style={[sharedStyles.oauthButton, sharedStyles.linkedinButton]}
+								onPress={this.onPressLinkedin}
+							>
+								<Icon name='linkedin' size={20} color='#ffffff' />
+							</TouchableOpacity>
+						)
 						: null
 					}
-					{this.props.Accounts_OAuth_Meteor && this.props.services['meteor-developer'] ?
-						<TouchableOpacity
-							style={[sharedStyles.oauthButton, sharedStyles.meteorButton]}
-							onPress={this.onPressMeteor}
-						>
-							<MaterialCommunityIcons name='meteor' size={25} color='#ffffff' />
-						</TouchableOpacity>
+					{Accounts_OAuth_Meteor && services['meteor-developer']
+						? (
+							<TouchableOpacity
+								style={[sharedStyles.oauthButton, sharedStyles.meteorButton]}
+								onPress={this.onPressMeteor}
+							>
+								<MaterialCommunityIcons name='meteor' size={25} color='#ffffff' />
+							</TouchableOpacity>
+						)
 						: null
 					}
-					{this.props.Accounts_OAuth_Twitter && this.props.services.twitter ?
-						<TouchableOpacity
-							style={[sharedStyles.oauthButton, sharedStyles.twitterButton]}
-							onPress={this.onPressTwitter}
-						>
-							<Icon name='twitter' size={20} color='#ffffff' />
-						</TouchableOpacity>
+					{Accounts_OAuth_Twitter && services.twitter
+						? (
+							<TouchableOpacity
+								style={[sharedStyles.oauthButton, sharedStyles.twitterButton]}
+								onPress={this.onPressTwitter}
+							>
+								<Icon name='twitter' size={20} color='#ffffff' />
+							</TouchableOpacity>
+						)
 						: null
 					}
 				</View>
@@ -274,6 +307,8 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	render() {
+		const { isFetching } = this.props;
+
 		return (
 			<ScrollView
 				style={[sharedStyles.container, sharedStyles.containerScrollView]}
@@ -298,7 +333,7 @@ export default class LoginSignupView extends LoggedView {
 						/>
 						{this.renderServices()}
 					</View>
-					<Loading visible={this.props.isFetching} />
+					<Loading visible={isFetching} />
 				</SafeAreaView>
 			</ScrollView>
 		);

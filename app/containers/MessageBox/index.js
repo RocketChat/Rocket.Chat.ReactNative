@@ -1,15 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, FlatList, Text, TouchableOpacity, Alert } from 'react-native';
+import {
+	View, TextInput, FlatList, Text, TouchableOpacity, Alert
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 
-import { userTyping } from '../../actions/room';
+import { userTyping as userTypingAction } from '../../actions/room';
+import {
+	editRequest as editRequestAction,
+	editCancel as editCancelAction,
+	replyCancel as replyCancelAction
+} from '../../actions/messages';
 import RocketChat from '../../lib/rocketchat';
-import { editRequest, editCancel, replyCancel } from '../../actions/messages';
 import styles from './styles';
 import MyIcon from '../icons';
 import database from '../../lib/realm';
@@ -48,10 +54,10 @@ const imagePickerConfig = {
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	username: state.login.user && state.login.user.username
 }), dispatch => ({
-	editCancel: () => dispatch(editCancel()),
-	editRequest: message => dispatch(editRequest(message)),
-	typing: status => dispatch(userTyping(status)),
-	closeReply: () => dispatch(replyCancel())
+	editCancel: () => dispatch(editCancelAction()),
+	editRequest: message => dispatch(editRequestAction(message)),
+	typing: status => dispatch(userTypingAction(status)),
+	closeReply: () => dispatch(replyCancelAction())
 }))
 export default class MessageBox extends React.PureComponent {
 	static propTypes = {
@@ -86,13 +92,15 @@ export default class MessageBox extends React.PureComponent {
 		this.rooms = [];
 		this.emojis = [];
 		this.customEmojis = [];
-		this._onEmojiSelected = this._onEmojiSelected.bind(this);
+		this.onEmojiSelected = this.onEmojiSelected.bind(this);
 	}
+
 	componentWillReceiveProps(nextProps) {
-		if (this.props.message !== nextProps.message && nextProps.message.msg) {
+		const { message, replyMessage } = this.props;
+		if (message !== nextProps.message && nextProps.message.msg) {
 			this.setState({ text: nextProps.message.msg });
 			this.component.focus();
-		} else if (this.props.replyMessage !== nextProps.replyMessage && nextProps.replyMessage.msg) {
+		} else if (replyMessage !== nextProps.replyMessage && nextProps.replyMessage.msg) {
 			this.component.focus();
 		} else if (!nextProps.message) {
 			this.setState({ text: '' });
@@ -100,8 +108,10 @@ export default class MessageBox extends React.PureComponent {
 	}
 
 	onChangeText(text) {
+		const { typing } = this.props;
+
 		this.setState({ text });
-		this.props.typing(text.length > 0);
+		typing(text.length > 0);
 
 		requestAnimationFrame(() => {
 			const { start, end } = this.component._lastNativeSelection;
@@ -126,45 +136,95 @@ export default class MessageBox extends React.PureComponent {
 		this.closeEmoji();
 	}
 
-	get leftButtons() {
-		const { editing } = this.props;
-		if (editing) {
-			return (<Icon
-				style={styles.actionButtons}
-				name='close'
-				accessibilityLabel={I18n.t('Cancel_editing')}
-				accessibilityTraits='button'
-				onPress={() => this.editCancel()}
-				testID='messagebox-cancel-editing'
-			/>);
-		}
-		return !this.state.showEmojiKeyboard ? (<Icon
-			style={styles.actionButtons}
-			onPress={() => this.openEmoji()}
-			accessibilityLabel={I18n.t('Open_emoji_selector')}
-			accessibilityTraits='button'
-			name='mood'
-			testID='messagebox-open-emoji'
-		/>) : (<Icon
-			onPress={() => this.closeEmoji()}
-			style={styles.actionButtons}
-			accessibilityLabel={I18n.t('Close_emoji_selector')}
-			accessibilityTraits='button'
-			name='keyboard'
-			testID='messagebox-close-emoji'
-		/>);
+	onPressMention(item) {
+		const { trackingType } = this.state;
+
+		const msg = this.component._lastNativeText;
+
+		const { start, end } = this.component._lastNativeSelection;
+
+		const cursor = Math.max(start, end);
+
+		const regexp = /([a-z0-9._-]+)$/im;
+
+		const result = msg.substr(0, cursor).replace(regexp, '');
+		const mentionName = trackingType === MENTIONS_TRACKING_TYPE_EMOJIS
+			? `${ item.name || item }:`
+			: (item.username || item.name);
+		const text = `${ result }${ mentionName } ${ msg.slice(cursor) }`;
+		this.component.setNativeProps({ text });
+		this.setState({ text });
+		this.component.focus();
+		requestAnimationFrame(() => this.stopTrackingMention());
 	}
+
+	onEmojiSelected(keyboardId, params) {
+		const { text } = this.state;
+		const { emoji } = params;
+		let newText = '';
+
+		// if messagebox has an active cursor
+		if (this.component._lastNativeSelection) {
+			const { start, end } = this.component._lastNativeSelection;
+			const cursor = Math.max(start, end);
+			newText = `${ text.substr(0, cursor) }${ emoji }${ text.substr(cursor) }`;
+		} else {
+			// if messagebox doesn't have a cursor, just append selected emoji
+			newText = `${ text }${ emoji }`;
+		}
+		this.component.setNativeProps({ text: newText });
+		this.setState({ text: newText });
+	}
+
+	get leftButtons() {
+		const { showEmojiKeyboard } = this.state;
+		const { editing } = this.props;
+
+		if (editing) {
+			return (
+				<Icon
+					style={styles.actionButtons}
+					name='close'
+					accessibilityLabel={I18n.t('Cancel_editing')}
+					accessibilityTraits='button'
+					onPress={() => this.editCancel()}
+					testID='messagebox-cancel-editing'
+				/>
+			);
+		}
+		return !showEmojiKeyboard
+			? (
+				<Icon
+					style={styles.actionButtons}
+					onPress={() => this.openEmoji()}
+					accessibilityLabel={I18n.t('Open_emoji_selector')}
+					accessibilityTraits='button'
+					name='mood'
+					testID='messagebox-open-emoji'
+				/>)
+			: (
+				<Icon
+					onPress={() => this.closeEmoji()}
+					style={styles.actionButtons}
+					accessibilityLabel={I18n.t('Close_emoji_selector')}
+					accessibilityTraits='button'
+					name='keyboard'
+					testID='messagebox-close-emoji'
+				/>);
+	}
+
 	get rightButtons() {
+		const { text } = this.state;
 		const icons = [];
 
-		if (this.state.text) {
+		if (text) {
 			icons.push(<MyIcon
 				style={[styles.actionButtons, { color: '#1D74F5' }]}
 				name='send'
 				key='sendIcon'
 				accessibilityLabel={I18n.t('Send message')}
 				accessibilityTraits='button'
-				onPress={() => this.submit(this.state.text)}
+				onPress={() => this.submit(text)}
 				testID='messagebox-send-message'
 			/>);
 			return icons;
@@ -198,123 +258,7 @@ export default class MessageBox extends React.PureComponent {
 		}
 	}
 
-	toggleFilesActions = () => {
-		this.setState(prevState => ({ showFilesAction: !prevState.showFilesAction }));
-	}
-
-	sendImageMessage = async(file) => {
-		this.setState({ file: { isVisible: false } });
-		const fileInfo = {
-			name: file.name,
-			description: file.description,
-			size: file.size,
-			type: file.mime,
-			store: 'Uploads',
-			path: file.path
-		};
-		try {
-			await RocketChat.sendFileMessage(this.props.rid, fileInfo);
-		} catch (e) {
-			log('sendImageMessage', e);
-		}
-	}
-
-	takePhoto = async() => {
-		try {
-			const image = await ImagePicker.openCamera(imagePickerConfig);
-			this.showUploadModal(image);
-		} catch (e) {
-			log('takePhoto', e);
-		}
-	}
-
-	chooseFromLibrary = async() => {
-		try {
-			const image = await ImagePicker.openPicker(imagePickerConfig);
-			this.showUploadModal(image);
-		} catch (e) {
-			log('chooseFromLibrary', e);
-		}
-	}
-
-	showUploadModal = (file) => {
-		this.setState({ file: { ...file, isVisible: true } });
-	}
-
-	editCancel() {
-		this.props.editCancel();
-		this.setState({ text: '' });
-	}
-
-	async openEmoji() {
-		await this.setState({
-			showEmojiKeyboard: true
-		});
-	}
-
-	async recordAudioMessage() {
-		const recording = await Recording.permission();
-		this.setState({ recording });
-	}
-
-	finishAudioMessage = async(fileInfo) => {
-		this.setState({
-			recording: false
-		});
-		if (fileInfo) {
-			try {
-				await RocketChat.sendFileMessage(this.props.rid, fileInfo);
-			} catch (e) {
-				if (e && e.error === 'error-file-too-large') {
-					return Alert.alert(I18n.t(e.error));
-				}
-				log('finishAudioMessage', e);
-			}
-		}
-	}
-
-	closeEmoji() {
-		this.setState({ showEmojiKeyboard: false });
-	}
-
-	async submit(message) {
-		this.setState({ text: '' });
-		this.closeEmoji();
-		this.stopTrackingMention();
-		this.props.typing(false);
-		if (message.trim() === '') {
-			return;
-		}
-		// if is editing a message
-		const {
-			editing, replying
-		} = this.props;
-
-		if (editing) {
-			const { _id, rid } = this.props.message;
-			this.props.editRequest({ _id, msg: message, rid });
-		} else if (replying) {
-			const {
-				username, replyMessage, roomType, closeReply
-			} = this.props;
-			const permalink = await this.getPermalink(replyMessage);
-			let msg = `[ ](${ permalink }) `;
-
-			// if original message wasn't sent by current user and neither from a direct room
-			if (username !== replyMessage.u.username && roomType !== 'd' && replyMessage.mention) {
-				msg += `@${ replyMessage.u.username } `;
-			}
-
-			msg = `${ msg } ${ message }`;
-			this.props.onSubmit(msg);
-			closeReply();
-		} else {
-			// if is submiting a new message
-			this.props.onSubmit(message);
-		}
-	}
-
-	_getFixedMentions(keyword) {
+	getFixedMentions(keyword) {
 		if ('all'.indexOf(keyword) !== -1) {
 			this.users = [{ _id: -1, username: 'all' }, ...this.users];
 		}
@@ -323,12 +267,12 @@ export default class MessageBox extends React.PureComponent {
 		}
 	}
 
-	async _getUsers(keyword) {
+	async getUsers(keyword) {
 		this.users = database.objects('users');
 		if (keyword) {
 			this.users = this.users.filtered('username CONTAINS[c] $0', keyword);
 		}
-		this._getFixedMentions(keyword);
+		this.getFixedMentions(keyword);
 		this.setState({ mentions: this.users.slice() });
 
 		const usernames = [];
@@ -359,12 +303,12 @@ export default class MessageBox extends React.PureComponent {
 		} finally {
 			delete this.oldPromise;
 			this.users = database.objects('users').filtered('username CONTAINS[c] $0', keyword).slice();
-			this._getFixedMentions(keyword);
+			this.getFixedMentions(keyword);
 			this.setState({ mentions: this.users });
 		}
 	}
 
-	async _getRooms(keyword = '') {
+	async getRooms(keyword = '') {
 		this.roomsCache = this.roomsCache || [];
 		this.rooms = database.objects('subscriptions')
 			.filtered('t != $0', 'd');
@@ -406,13 +350,156 @@ export default class MessageBox extends React.PureComponent {
 		}
 	}
 
-	_getEmojis(keyword) {
+	getEmojis(keyword) {
 		if (keyword) {
 			this.customEmojis = database.objects('customEmojis').filtered('name CONTAINS[c] $0', keyword).slice(0, 4);
 			this.emojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, 4);
 			const mergedEmojis = [...this.customEmojis, ...this.emojis];
 			this.setState({ mentions: mergedEmojis });
 		}
+	}
+
+	toggleFilesActions = () => {
+		this.setState(prevState => ({ showFilesAction: !prevState.showFilesAction }));
+	}
+
+	sendImageMessage = async(file) => {
+		const { rid } = this.props;
+
+		this.setState({ file: { isVisible: false } });
+		const fileInfo = {
+			name: file.name,
+			description: file.description,
+			size: file.size,
+			type: file.mime,
+			store: 'Uploads',
+			path: file.path
+		};
+		try {
+			await RocketChat.sendFileMessage(rid, fileInfo);
+		} catch (e) {
+			log('sendImageMessage', e);
+		}
+	}
+
+	takePhoto = async() => {
+		try {
+			const image = await ImagePicker.openCamera(imagePickerConfig);
+			this.showUploadModal(image);
+		} catch (e) {
+			log('takePhoto', e);
+		}
+	}
+
+	chooseFromLibrary = async() => {
+		try {
+			const image = await ImagePicker.openPicker(imagePickerConfig);
+			this.showUploadModal(image);
+		} catch (e) {
+			log('chooseFromLibrary', e);
+		}
+	}
+
+	showUploadModal = (file) => {
+		this.setState({ file: { ...file, isVisible: true } });
+	}
+
+	editCancel = () => {
+		const { editCancel } = this.props;
+		editCancel();
+		this.setState({ text: '' });
+	}
+
+	openEmoji = async() => {
+		await this.setState({
+			showEmojiKeyboard: true
+		});
+	}
+
+	recordAudioMessage = async() => {
+		const recording = await Recording.permission();
+		this.setState({ recording });
+	}
+
+	finishAudioMessage = async(fileInfo) => {
+		const { rid } = this.props;
+
+		this.setState({
+			recording: false
+		});
+		if (fileInfo) {
+			try {
+				await RocketChat.sendFileMessage(rid, fileInfo);
+			} catch (e) {
+				if (e && e.error === 'error-file-too-large') {
+					return Alert.alert(I18n.t(e.error));
+				}
+				log('finishAudioMessage', e);
+			}
+		}
+	}
+
+	closeEmoji = () => {
+		this.setState({ showEmojiKeyboard: false });
+	}
+
+	submit = async(message) => {
+		const {
+			typing, message: editingMessage, editRequest, onSubmit
+		} = this.props;
+
+		this.setState({ text: '' });
+		this.closeEmoji();
+		this.stopTrackingMention();
+		typing(false);
+		if (message.trim() === '') {
+			return;
+		}
+		// if is editing a message
+		const {
+			editing, replying
+		} = this.props;
+
+		if (editing) {
+			const { _id, rid } = editingMessage;
+			editRequest({ _id, msg: message, rid });
+		} else if (replying) {
+			const {
+				username, replyMessage, roomType, closeReply
+			} = this.props;
+			const permalink = await this.getPermalink(replyMessage);
+			let msg = `[ ](${ permalink }) `;
+
+			// if original message wasn't sent by current user and neither from a direct room
+			if (username !== replyMessage.u.username && roomType !== 'd' && replyMessage.mention) {
+				msg += `@${ replyMessage.u.username } `;
+			}
+
+			msg = `${ msg } ${ message }`;
+			onSubmit(msg);
+			closeReply();
+		} else {
+			// if is submiting a new message
+			onSubmit(message);
+		}
+	}
+
+	updateMentions = (keyword, type) => {
+		if (type === MENTIONS_TRACKING_TYPE_USERS) {
+			this.getUsers(keyword);
+		} else if (type === MENTIONS_TRACKING_TYPE_EMOJIS) {
+			this.getEmojis(keyword);
+		} else {
+			this.getRooms(keyword);
+		}
+	}
+
+	identifyMentionKeyword(keyword, type) {
+		this.setState({
+			showEmojiKeyboard: false,
+			trackingType: type
+		});
+		this.updateMentions(keyword, type);
 	}
 
 	stopTrackingMention() {
@@ -426,76 +513,26 @@ export default class MessageBox extends React.PureComponent {
 		this.emojis = [];
 	}
 
-	identifyMentionKeyword(keyword, type) {
-		this.setState({
-			showEmojiKeyboard: false,
-			trackingType: type
-		});
-		this.updateMentions(keyword, type);
-	}
-
-	updateMentions = (keyword, type) => {
-		if (type === MENTIONS_TRACKING_TYPE_USERS) {
-			this._getUsers(keyword);
-		} else if (type === MENTIONS_TRACKING_TYPE_EMOJIS) {
-			this._getEmojis(keyword);
-		} else {
-			this._getRooms(keyword);
-		}
-	}
-
-	_onPressMention(item) {
-		const msg = this.component._lastNativeText;
-
-		const { start, end } = this.component._lastNativeSelection;
-
-		const cursor = Math.max(start, end);
-
-		const regexp = /([a-z0-9._-]+)$/im;
-
-		const result = msg.substr(0, cursor).replace(regexp, '');
-		const mentionName = this.state.trackingType === MENTIONS_TRACKING_TYPE_EMOJIS ?
-			`${ item.name || item }:` : (item.username || item.name);
-		const text = `${ result }${ mentionName } ${ msg.slice(cursor) }`;
-		this.component.setNativeProps({ text });
-		this.setState({ text });
-		this.component.focus();
-		requestAnimationFrame(() => this.stopTrackingMention());
-	}
-	_onEmojiSelected(keyboardId, params) {
-		const { text } = this.state;
-		const { emoji } = params;
-		let newText = '';
-
-		// if messagebox has an active cursor
-		if (this.component._lastNativeSelection) {
-			const { start, end } = this.component._lastNativeSelection;
-			const cursor = Math.max(start, end);
-			newText = `${ text.substr(0, cursor) }${ emoji }${ text.substr(cursor) }`;
-		} else {
-			// if messagebox doesn't have a cursor, just append selected emoji
-			newText = `${ text }${ emoji }`;
-		}
-		this.component.setNativeProps({ text: newText });
-		this.setState({ text: newText });
-	}
 	renderFixedMentionItem = item => (
 		<TouchableOpacity
 			style={styles.mentionItem}
-			onPress={() => this._onPressMention(item)}
+			onPress={() => this.onPressMention(item)}
 		>
 			<Text style={styles.fixedMentionAvatar}>{item.username}</Text>
 			<Text>{item.username === 'here' ? I18n.t('Notify_active_in_this_room') : I18n.t('Notify_all_in_this_room')}</Text>
 		</TouchableOpacity>
 	)
+
 	renderMentionEmoji = (item) => {
+		const { baseUrl } = this.props;
+
 		if (item.name) {
 			return (
 				<CustomEmoji
 					key='mention-item-avatar'
 					style={styles.mentionItemCustomEmoji}
 					emoji={item}
-					baseUrl={this.props.baseUrl}
+					baseUrl={baseUrl}
 				/>
 			);
 		}
@@ -508,18 +545,22 @@ export default class MessageBox extends React.PureComponent {
 			</Text>
 		);
 	}
+
 	renderMentionItem = (item) => {
+		const { trackingType } = this.state;
+		const { baseUrl } = this.props;
+
 		if (item.username === 'all' || item.username === 'here') {
 			return this.renderFixedMentionItem(item);
 		}
 		return (
 			<TouchableOpacity
 				style={styles.mentionItem}
-				onPress={() => this._onPressMention(item)}
-				testID={`mention-item-${ this.state.trackingType === MENTIONS_TRACKING_TYPE_EMOJIS ? item.name || item : item.username || item.name }`}
+				onPress={() => this.onPressMention(item)}
+				testID={`mention-item-${ trackingType === MENTIONS_TRACKING_TYPE_EMOJIS ? item.name || item : item.username || item.name }`}
 			>
-				{this.state.trackingType === MENTIONS_TRACKING_TYPE_EMOJIS ?
-					[
+				{trackingType === MENTIONS_TRACKING_TYPE_EMOJIS
+					? [
 						this.renderMentionEmoji(item),
 						<Text key='mention-item-name'>:{ item.name || item }:</Text>
 					]
@@ -530,7 +571,7 @@ export default class MessageBox extends React.PureComponent {
 							text={item.username || item.name}
 							size={30}
 							type={item.username ? 'd' : 'c'}
-							baseUrl={this.props.baseUrl}
+							baseUrl={baseUrl}
 						/>,
 						<Text key='mention-item-name'>{ item.username || item.name }</Text>
 					]
@@ -538,6 +579,7 @@ export default class MessageBox extends React.PureComponent {
 			</TouchableOpacity>
 		);
 	}
+
 	renderMentions = () => {
 		const { mentions, trackingType } = this.state;
 		if (!trackingType) {
@@ -567,7 +609,9 @@ export default class MessageBox extends React.PureComponent {
 	};
 
 	renderFilesActions = () => {
-		if (!this.state.showFilesAction) {
+		const { showFilesAction } = this.state;
+
+		if (!showFilesAction) {
 			return null;
 		}
 		return (
@@ -581,7 +625,10 @@ export default class MessageBox extends React.PureComponent {
 	}
 
 	renderContent() {
-		if (this.state.recording) {
+		const { recording, text } = this.state;
+		const { editing } = this.props;
+
+		if (recording) {
 			return (<Recording onFinish={this.finishAudioMessage} />);
 		}
 		return (
@@ -590,7 +637,7 @@ export default class MessageBox extends React.PureComponent {
 				<View style={styles.composer} key='messagebox'>
 					{this.renderReplyPreview()}
 					<View
-						style={[styles.textArea, this.props.editing && styles.editing]}
+						style={[styles.textArea, editing && styles.editing]}
 						testID='messagebox'
 					>
 						{this.leftButtons}
@@ -601,8 +648,8 @@ export default class MessageBox extends React.PureComponent {
 							keyboardType='twitter'
 							blurOnSubmit={false}
 							placeholder={I18n.t('New_Message')}
-							onChangeText={text => this.onChangeText(text)}
-							value={this.state.text}
+							onChangeText={t => this.onChangeText(t)}
+							value={text}
 							underlineColorAndroid='transparent'
 							defaultValue=''
 							multiline
@@ -617,15 +664,16 @@ export default class MessageBox extends React.PureComponent {
 	}
 
 	render() {
+		const { showEmojiKeyboard, file } = this.state;
 		return (
 			[
 				<KeyboardAccessoryView
 					key='input'
 					renderContent={() => this.renderContent()}
 					kbInputRef={this.component}
-					kbComponent={this.state.showEmojiKeyboard ? 'EmojiKeyboard' : null}
+					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
 					onKeyboardResigned={() => this.onKeyboardResigned()}
-					onItemSelected={this._onEmojiSelected}
+					onItemSelected={this.onEmojiSelected}
 					trackInteractive
 					// revealKeyboardInteractive
 					requiresSameParentToManageScrollView
@@ -634,8 +682,8 @@ export default class MessageBox extends React.PureComponent {
 				this.renderFilesActions(),
 				<UploadModal
 					key='upload-modal'
-					isVisible={(this.state.file && this.state.file.isVisible)}
-					file={this.state.file}
+					isVisible={(file && file.isVisible)}
+					file={file}
 					close={() => this.setState({ file: {} })}
 					submit={this.sendImageMessage}
 				/>

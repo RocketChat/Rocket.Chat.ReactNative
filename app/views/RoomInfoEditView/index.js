@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, ScrollView, TouchableOpacity, SafeAreaView, Keyboard, Alert } from 'react-native';
+import {
+	Text, View, ScrollView, TouchableOpacity, SafeAreaView, Keyboard, Alert
+} from 'react-native';
 import { connect } from 'react-redux';
 
+import { eraseRoom as eraseRoomAction } from '../../actions/room';
 import LoggedView from '../View';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
@@ -11,7 +14,6 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert, showToast } from '../../utils/info';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
-import { eraseRoom } from '../../actions/room';
 import RCTextInput from '../../containers/TextInput';
 import Loading from '../../containers/Loading';
 import SwitchContainer from './SwitchContainer';
@@ -35,7 +37,7 @@ const PERMISSIONS_ARRAY = [
 ];
 
 @connect(null, dispatch => ({
-	eraseRoom: rid => dispatch(eraseRoom(rid))
+	eraseRoom: rid => dispatch(eraseRoomAction(rid))
 }))
 /** @extends React.Component */
 export default class RoomInfoEditView extends LoggedView {
@@ -66,10 +68,11 @@ export default class RoomInfoEditView extends LoggedView {
 
 
 	async componentDidMount() {
+		const { room } = this.state;
 		await this.updateRoom();
 		this.init();
 		this.rooms.addListener(this.updateRoom);
-		this.permissions = RocketChat.hasPermission(PERMISSIONS_ARRAY, this.state.room.rid);
+		this.permissions = RocketChat.hasPermission(PERMISSIONS_ARRAY, room.rid);
 	}
 
 	componentWillUnmount() {
@@ -82,9 +85,10 @@ export default class RoomInfoEditView extends LoggedView {
 	}
 
 	init = () => {
+		const { room } = this.state;
 		const {
 			name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired
-		} = this.state.room;
+		} = room;
 		// fake password just to user knows about it
 		this.randomValue = random(15);
 		this.setState({
@@ -114,14 +118,14 @@ export default class RoomInfoEditView extends LoggedView {
 		const {
 			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode
 		} = this.state;
-		return !(room.name === name &&
-			room.description === description &&
-			room.topic === topic &&
-			room.announcement === announcement &&
-			this.randomValue === joinCode &&
-			room.t === 'p' === t &&
-			room.ro === ro &&
-			room.reactWhenReadOnly === reactWhenReadOnly
+		return !(room.name === name
+			&& room.description === description
+			&& room.topic === topic
+			&& room.announcement === announcement
+			&& this.randomValue === joinCode
+			&& room.t === 'p' === t
+			&& room.ro === ro
+			&& room.reactWhenReadOnly === reactWhenReadOnly
 		);
 	}
 
@@ -199,6 +203,9 @@ export default class RoomInfoEditView extends LoggedView {
 	}
 
 	delete = () => {
+		const { room } = this.state;
+		const { eraseRoom } = this.props;
+
 		Alert.alert(
 			I18n.t('Are_you_sure_question_mark'),
 			I18n.t('Delete_Room_Warning'),
@@ -210,7 +217,7 @@ export default class RoomInfoEditView extends LoggedView {
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
-					onPress: () => this.props.eraseRoom(this.state.room.rid)
+					onPress: () => eraseRoom(room.rid)
 				}
 			],
 			{ cancelable: false }
@@ -218,7 +225,9 @@ export default class RoomInfoEditView extends LoggedView {
 	}
 
 	toggleArchive = () => {
-		const { archived } = this.state.room;
+		const { room } = this.state;
+		const { rid, archived } = room;
+
 		const action = I18n.t(`${ archived ? 'un' : '' }archive`);
 		Alert.alert(
 			I18n.t('Are_you_sure_question_mark'),
@@ -233,7 +242,7 @@ export default class RoomInfoEditView extends LoggedView {
 					style: 'destructive',
 					onPress: () => {
 						try {
-							RocketChat.toggleArchiveRoom(this.state.room.rid, !archived);
+							RocketChat.toggleArchiveRoom(rid, !archived);
 						} catch (e) {
 							log('toggleArchive', e);
 						}
@@ -244,9 +253,12 @@ export default class RoomInfoEditView extends LoggedView {
 		);
 	}
 
-	hasDeletePermission = () => (
-		this.state.room.t === 'p' ? this.permissions[PERMISSION_DELETE_P] : this.permissions[PERMISSION_DELETE_C]
-	);
+	hasDeletePermission = () => {
+		const { room } = this.state;
+		return (
+			room.t === 'p' ? this.permissions[PERMISSION_DELETE_P] : this.permissions[PERMISSION_DELETE_C]
+		);
+	}
 
 	hasArchivePermission = () => (
 		this.permissions[PERMISSION_ARCHIVE] || this.permissions[PERMISSION_UNARCHIVE]
@@ -254,7 +266,7 @@ export default class RoomInfoEditView extends LoggedView {
 
 	render() {
 		const {
-			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode
+			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving
 		} = this.state;
 		return (
 			<KeyboardView
@@ -328,21 +340,23 @@ export default class RoomInfoEditView extends LoggedView {
 							disabled={!this.permissions[PERMISSION_SET_READONLY] || room.broadcast}
 							testID='room-info-edit-view-ro'
 						/>
-						{ro && !room.broadcast ?
-							<SwitchContainer
-								value={reactWhenReadOnly}
-								leftLabelPrimary={I18n.t('No_Reactions')}
-								leftLabelSecondary={I18n.t('Reactions_are_disabled')}
-								rightLabelPrimary={I18n.t('Allow_Reactions')}
-								rightLabelSecondary={I18n.t('Reactions_are_enabled')}
-								onValueChange={value => this.setState({ reactWhenReadOnly: value })}
-								disabled={!this.permissions[PERMISSION_SET_REACT_WHEN_READONLY]}
-								testID='room-info-edit-view-react-when-ro'
-							/>
+						{ro && !room.broadcast
+							? (
+								<SwitchContainer
+									value={reactWhenReadOnly}
+									leftLabelPrimary={I18n.t('No_Reactions')}
+									leftLabelSecondary={I18n.t('Reactions_are_disabled')}
+									rightLabelPrimary={I18n.t('Allow_Reactions')}
+									rightLabelSecondary={I18n.t('Reactions_are_enabled')}
+									onValueChange={value => this.setState({ reactWhenReadOnly: value })}
+									disabled={!this.permissions[PERMISSION_SET_REACT_WHEN_READONLY]}
+									testID='room-info-edit-view-react-when-ro'
+								/>
+							)
 							: null
 						}
-						{room.broadcast ?
-							[
+						{room.broadcast
+							? [
 								<Text style={styles.broadcast}>{I18n.t('Broadcast_Channel')}</Text>,
 								<View style={styles.divider} />
 							]
@@ -394,7 +408,7 @@ export default class RoomInfoEditView extends LoggedView {
 						>
 							<Text style={[sharedStyles.button_inverted, styles.colorDanger]} accessibilityTraits='button'>{I18n.t('DELETE')}</Text>
 						</TouchableOpacity>
-						<Loading visible={this.state.saving} />
+						<Loading visible={saving} />
 					</SafeAreaView>
 				</ScrollView>
 			</KeyboardView>

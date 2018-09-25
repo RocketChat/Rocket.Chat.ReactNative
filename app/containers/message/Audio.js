@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, Text, Easing, Image } from 'react-native';
+import {
+	View, StyleSheet, Text, Easing, Image
+} from 'react-native';
 import Video from 'react-native-video';
 import Slider from 'react-native-slider';
 import moment from 'moment';
@@ -72,7 +74,8 @@ export default class Audio extends React.PureComponent {
 	}
 
 	onProgress(data) {
-		if (data.currentTime <= this.state.duration) {
+		const { duration } = this.state;
+		if (data.currentTime <= duration) {
 			this.setState({ currentTime: data.currentTime });
 		}
 	}
@@ -85,15 +88,19 @@ export default class Audio extends React.PureComponent {
 	}
 
 	getDuration() {
-		return formatTime(this.state.duration);
+		const { duration } = this.state;
+		return formatTime(duration);
 	}
 
 	togglePlayPause() {
-		this.setState({ paused: !this.state.paused });
+		const { paused } = this.state;
+		this.setState({ paused: !paused });
 	}
 
 	render() {
-		const { uri, paused } = this.state;
+		const {
+			uri, paused, currentTime, duration
+		} = this.state;
 		const {
 			user, baseUrl, customEmojis, file
 		} = this.props;
@@ -122,15 +129,15 @@ export default class Audio extends React.PureComponent {
 						onPress={() => this.togglePlayPause()}
 					>
 						{
-							paused ?
-								<Image source={{ uri: 'play' }} style={styles.playPauseImage} /> :
-								<Image source={{ uri: 'pause' }} style={styles.playPauseImage} />
+							paused
+								? <Image source={{ uri: 'play' }} style={styles.playPauseImage} />
+								: <Image source={{ uri: 'pause' }} style={styles.playPauseImage} />
 						}
 					</BorderlessButton>
 					<Slider
 						style={styles.slider}
-						value={this.state.currentTime}
-						maximumValue={this.state.duration}
+						value={currentTime}
+						maximumValue={duration}
 						minimumValue={0}
 						animateTransitions
 						animationConfig={{

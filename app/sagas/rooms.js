@@ -1,5 +1,7 @@
 import { Alert } from 'react-native';
-import { put, call, takeLatest, take, select, race, fork, cancel, takeEvery } from 'redux-saga/effects';
+import {
+	put, call, takeLatest, take, select, race, fork, cancel, takeEvery
+} from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { BACKGROUND } from 'redux-enhancer-react-native-appstate';
 
@@ -161,7 +163,7 @@ const handleLeaveRoom = function* handleLeaveRoom({ rid }) {
 		yield goRoomsListAndDelete(rid);
 	} catch (e) {
 		if (e.error === 'error-you-are-last-owner') {
-			Alert.alert(e.error);
+			Alert.alert(I18n.t(e.error));
 		} else {
 			Alert.alert(I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_room') }));
 		}

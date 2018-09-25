@@ -15,6 +15,8 @@ describe('Change server', () => {
 		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
 		await waitFor(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible().withTimeout(2000);
 		await element(by.id('rooms-list-header-server-add')).tap();
+		await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(60000);
+		await element(by.id('connect-server-button')).tap();
 		//  Add server
 		await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
 		await element(by.id('new-server-view-input')).replaceText(data.alternateServer);

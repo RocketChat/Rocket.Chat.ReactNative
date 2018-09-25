@@ -4,8 +4,9 @@ import { View, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 import { responsive } from 'react-native-responsive-ui';
+
 import EmojiPicker from '../../containers/EmojiPicker';
-import { toggleReactionPicker } from '../../actions/messages';
+import { toggleReactionPicker as toggleReactionPickerAction } from '../../actions/messages';
 import styles from './styles';
 
 const margin = Platform.OS === 'android' ? 40 : 20;
@@ -15,7 +16,7 @@ const tabEmojiStyle = { fontSize: 15 };
 	showReactionPicker: state.messages.showReactionPicker,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }), dispatch => ({
-	toggleReactionPicker: message => dispatch(toggleReactionPicker(message))
+	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message))
 }))
 @responsive
 export default class ReactionPicker extends React.Component {
@@ -28,40 +29,47 @@ export default class ReactionPicker extends React.Component {
 	};
 
 	shouldComponentUpdate(nextProps) {
-		return nextProps.showReactionPicker !== this.props.showReactionPicker || this.props.window.width !== nextProps.window.width;
+		const { showReactionPicker, window } = this.props;
+		return nextProps.showReactionPicker !== showReactionPicker || window.width !== nextProps.window.width;
 	}
 
 	onEmojiSelected(emoji, shortname) {
 		// standard emojis: `emoji` is unicode and `shortname` is :joy:
 		// custom emojis: only `emoji` is returned with shortname type (:joy:)
 		// to set reactions, we need shortname type
-		this.props.onEmojiSelected(shortname || emoji);
+		const { onEmojiSelected } = this.props;
+		onEmojiSelected(shortname || emoji);
 	}
 
 	render() {
-		const { window: { width, height }, showReactionPicker, baseUrl } = this.props;
+		const {
+			window: { width, height }, showReactionPicker, baseUrl, toggleReactionPicker
+		} = this.props;
 
-		return (showReactionPicker ?
-			<Modal
-				isVisible={this.props.showReactionPicker}
-				style={{ alignItems: 'center' }}
-				onBackdropPress={() => this.props.toggleReactionPicker()}
-				onBackButtonPress={() => this.props.toggleReactionPicker()}
-				animationIn='fadeIn'
-				animationOut='fadeOut'
-			>
-				<View
-					style={[styles.reactionPickerContainer, { width: width - margin, height: Math.min(width, height) - (margin * 2) }]}
-					testID='reaction-picker'
+		return (showReactionPicker
+			? (
+				<Modal
+					isVisible={showReactionPicker}
+					style={{ alignItems: 'center' }}
+					onBackdropPress={() => toggleReactionPicker()}
+					onBackButtonPress={() => toggleReactionPicker()}
+					animationIn='fadeIn'
+					animationOut='fadeOut'
 				>
-					<EmojiPicker
-						tabEmojiStyle={tabEmojiStyle}
-						width={Math.min(width, height) - margin}
-						onEmojiSelected={(emoji, shortname) => this.onEmojiSelected(emoji, shortname)}
-						baseUrl={baseUrl}
-					/>
-				</View>
-			</Modal> : null
+					<View
+						style={[styles.reactionPickerContainer, { width: width - margin, height: Math.min(width, height) - (margin * 2) }]}
+						testID='reaction-picker'
+					>
+						<EmojiPicker
+							tabEmojiStyle={tabEmojiStyle}
+							width={Math.min(width, height) - margin}
+							onEmojiSelected={(emoji, shortname) => this.onEmojiSelected(emoji, shortname)}
+							baseUrl={baseUrl}
+						/>
+					</View>
+				</Modal>
+			)
+			: null
 		);
 	}
 }

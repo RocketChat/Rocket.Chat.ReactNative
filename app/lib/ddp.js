@@ -24,6 +24,7 @@ class EventEmitter {
 	constructor() {
 		this.events = {};
 	}
+
 	on(event, listener) {
 		if (typeof this.events[event] !== 'object') {
 			this.events[event] = [];
@@ -31,6 +32,7 @@ class EventEmitter {
 		this.events[event].push(listener);
 		return listener;
 	}
+
 	removeListener(event, listener) {
 		if (typeof this.events[event] === 'object') {
 			const idx = this.events[event].indexOf(listener);
@@ -42,6 +44,7 @@ class EventEmitter {
 			}
 		}
 	}
+
 	emit(event, ...args) {
 		if (typeof this.events[event] === 'object') {
 			this.events[event].forEach((listener) => {
@@ -53,6 +56,7 @@ class EventEmitter {
 			});
 		}
 	}
+
 	once(event, listener) {
 		return this.on(event, function g(...args) {
 			this.removeListener(event, g);
@@ -135,6 +139,7 @@ export default class Socket extends EventEmitter {
 
 		this._connect().catch(e => log('ddp.constructor._connect', e));
 	}
+
 	check() {
 		if (!this.lastping) {
 			return false;
@@ -144,6 +149,7 @@ export default class Socket extends EventEmitter {
 		}
 		return true;
 	}
+
 	async login(params) {
 		try {
 			this.emit('login', params);
@@ -165,6 +171,7 @@ export default class Socket extends EventEmitter {
 			return Promise.reject(error);
 		}
 	}
+
 	async send(obj, ignore) {
 		console.log('send', obj);
 		return new Promise((resolve, reject) => {
@@ -187,9 +194,11 @@ export default class Socket extends EventEmitter {
 			});
 		});
 	}
+
 	get status() {
 		return this.connection && this.connection.readyState === 1 && this.check() && !!this._logged;
 	}
+
 	_close() {
 		try {
 			// this.connection && this.connection.readyState > 1 && this.connection.close && this.connection.close(300, 'disconnect');
@@ -201,6 +210,7 @@ export default class Socket extends EventEmitter {
 			// console.log(e);
 		}
 	}
+
 	_connect() {
 		return new Promise((resolve) => {
 			this.lastping = new Date();
@@ -240,12 +250,14 @@ export default class Socket extends EventEmitter {
 			};
 		});
 	}
+
 	logout() {
 		this._login = null;
 		return this.call('logout')
 			.catch(e => log('logout', e))
 			.finally(() => this.subscriptions = {});
 	}
+
 	disconnect() {
 		this._logged = false;
 		this._login = null;
@@ -256,6 +268,7 @@ export default class Socket extends EventEmitter {
 			clearTimeout(this.timeout);
 		}
 	}
+
 	async reconnect() {
 		if (this._timer || this.forceDisconnect) {
 			return;
@@ -272,6 +285,7 @@ export default class Socket extends EventEmitter {
 			}
 		}, 1000);
 	}
+
 	call(method, ...params) {
 		return this.send({
 			msg: 'method', method, params
@@ -283,6 +297,7 @@ export default class Socket extends EventEmitter {
 			return Promise.reject(err);
 		});
 	}
+
 	unsubscribe(id) {
 		if (!this.subscriptions[id]) {
 			return Promise.reject(id);
@@ -296,6 +311,7 @@ export default class Socket extends EventEmitter {
 			return Promise.reject(err);
 		});
 	}
+
 	subscribe(name, ...params) {
 		console.log(name, params);
 		return this.send({

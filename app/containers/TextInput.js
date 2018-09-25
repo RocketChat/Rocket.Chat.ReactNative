@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, Text, TextInput, ViewPropTypes, Platform } from 'react-native';
+import {
+	View, StyleSheet, Text, TextInput, ViewPropTypes, Platform
+} from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -68,9 +70,11 @@ export default class RCTextInput extends React.PureComponent {
 		iconLeft: PropTypes.string,
 		placeholder: PropTypes.string
 	}
+
 	static defaultProps = {
 		error: {}
 	}
+
 	state = {
 		showPassword: false
 	}
@@ -82,21 +86,30 @@ export default class RCTextInput extends React.PureComponent {
 		testID
 	}) => <Icon name={name} style={[styles.icon, style]} size={20} onPress={onPress} testID={testID} />
 
-	iconLeft = name => this.icon({
-		name,
-		onPress: null,
-		style: { left: 0 },
-		testID: this.props.testID ? `${ this.props.testID }-icon-left` : null
-	});
+	iconLeft = (name) => {
+		const { testID } = this.props;
+		return this.icon({
+			name,
+			onPress: null,
+			style: { left: 0 },
+			testID: testID ? `${ testID }-icon-left` : null
+		});
+	}
 
-	iconPassword = name => this.icon({
-		name,
-		onPress: () => this.tooglePassword(),
-		style: { right: 0 },
-		testID: this.props.testID ? `${ this.props.testID }-icon-right` : null
-	});
+	iconPassword = (name) => {
+		const { testID } = this.props;
+		return this.icon({
+			name,
+			onPress: () => this.tooglePassword(),
+			style: { right: 0 },
+			testID: testID ? `${ testID }-icon-right` : null
+		});
+	}
 
-	tooglePassword = () => this.setState({ showPassword: !this.state.showPassword });
+	tooglePassword = () => {
+		const { showPassword } = this.state;
+		this.setState({ showPassword: !showPassword });
+	}
 
 	render() {
 		const {

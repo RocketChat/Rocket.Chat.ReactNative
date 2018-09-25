@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Text, Image, SafeAreaView, TouchableOpacity } from 'react-native';
+import {
+	View, Text, Image, SafeAreaView, TouchableOpacity
+} from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
@@ -56,11 +58,13 @@ export default class OnboardingView extends LoggedView {
 	}
 
 	close = () => {
-		this.props.navigator.dismissModal();
+		const { navigator } = this.props;
+		navigator.dismissModal();
 	}
 
 	connectServer = () => {
-		this.props.navigator.push({
+		const { navigator } = this.props;
+		navigator.push({
 			screen: 'NewServerView',
 			backButtonTitle: '',
 			navigatorStyle: {
@@ -70,7 +74,8 @@ export default class OnboardingView extends LoggedView {
 	}
 
 	joinCommunity = () => {
-		this.props.navigator.push({
+		const { navigator } = this.props;
+		navigator.push({
 			screen: 'NewServerView',
 			backButtonTitle: '',
 			passProps: {
@@ -87,7 +92,9 @@ export default class OnboardingView extends LoggedView {
 	}
 
 	renderClose = () => {
-		if (this.props.previousServer) {
+		const { previousServer } = this.props;
+
+		if (previousServer) {
 			let top = 15;
 			if (DeviceInfo.getBrand() === 'Apple') {
 				top = DeviceInfo.isNotch() ? 45 : 30;
@@ -96,6 +103,7 @@ export default class OnboardingView extends LoggedView {
 				<TouchableOpacity
 					style={[styles.closeModal, { top }]}
 					onPress={this.close}
+					testID='onboarding-close'
 				>
 					<Icon
 						name='close'

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Platform, View, FlatList, BackHandler, ActivityIndicator, SafeAreaView, Text, Image, Dimensions, ScrollView, Keyboard } from 'react-native';
+import {
+	Platform, View, FlatList, BackHandler, ActivityIndicator, SafeAreaView, Text, Image, Dimensions, ScrollView, Keyboard
+} from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
 
@@ -15,7 +17,7 @@ import I18n from '../../i18n';
 import SortDropdown from './SortDropdown';
 import ServerDropdown from './ServerDropdown';
 import Touch from '../../utils/touch';
-import { toggleSortDropdown } from '../../actions/rooms';
+import { toggleSortDropdown as toggleSortDropdownAction } from '../../actions/rooms';
 
 const ROW_HEIGHT = 70;
 const SCROLL_OFFSET = 56;
@@ -54,7 +56,7 @@ if (Platform.OS === 'android') {
 	showUnread: state.sortPreferences.showUnread,
 	useRealName: state.settings.UI_Use_Real_Name
 }), dispatch => ({
-	toggleSortDropdown: () => dispatch(toggleSortDropdown())
+	toggleSortDropdown: () => dispatch(toggleSortDropdownAction())
 }))
 /** @extends React.Component */
 export default class RoomsListView extends LoggedView {
@@ -114,13 +116,15 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.server && this.props.loadingServer !== nextProps.loadingServer) {
+		const { loadingServer, searchText } = this.props;
+
+		if (nextProps.server && loadingServer !== nextProps.loadingServer) {
 			if (nextProps.loadingServer) {
 				this.setState({ loading: true });
 			} else {
 				this.getSubscriptions();
 			}
-		} else if (this.props.searchText !== nextProps.searchText) {
+		} else if (searchText !== nextProps.searchText) {
 			this.search(nextProps.searchText);
 		}
 	}
@@ -130,11 +134,15 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	componentDidUpdate(prevProps) {
+		const {
+			sortBy, groupByType, showFavorites, showUnread
+		} = this.props;
+
 		if (!(
-			(prevProps.sortBy === this.props.sortBy) &&
-			(prevProps.groupByType === this.props.groupByType) &&
-			(prevProps.showFavorites === this.props.showFavorites) &&
-			(prevProps.showUnread === this.props.showUnread)
+			(prevProps.sortBy === sortBy)
+			&& (prevProps.groupByType === groupByType)
+			&& (prevProps.showFavorites === showFavorites)
+			&& (prevProps.showUnread === showUnread)
 		)) {
 			this.getSubscriptions();
 		}
@@ -158,7 +166,7 @@ export default class RoomsListView extends LoggedView {
 		const { navigator } = this.props;
 		if (event.type === 'NavBarButtonPress') {
 			if (event.id === 'newMessage') {
-				this.props.navigator.showModal({
+				navigator.showModal({
 					screen: 'NewMessageView',
 					title: I18n.t('New_Message'),
 					passProps: {
@@ -183,8 +191,12 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	getSubscriptions = () => {
-		if (this.props.server && this.hasActiveDB()) {
-			if (this.props.sortBy === 'alphabetical') {
+		const {
+			server, sortBy, showUnread, showFavorites, groupByType
+		} = this.props;
+
+		if (server && this.hasActiveDB()) {
+			if (sortBy === 'alphabetical') {
 				this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('name', false);
 			} else {
 				this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
@@ -199,7 +211,7 @@ export default class RoomsListView extends LoggedView {
 			let livechat = [];
 
 			// unread
-			if (this.props.showUnread) {
+			if (showUnread) {
 				this.unread = this.data.filtered('archived != true && open == true').sorted('name', false).filtered('(unread > 0 || alert == true)');
 				unread = this.unread.slice();
 				setTimeout(() => {
@@ -209,7 +221,7 @@ export default class RoomsListView extends LoggedView {
 				this.removeListener(unread);
 			}
 			// favorites
-			if (this.props.showFavorites) {
+			if (showFavorites) {
 				this.favorites = this.data.filtered('f == true');
 				favorites = this.favorites.slice();
 				setTimeout(() => {
@@ -219,7 +231,7 @@ export default class RoomsListView extends LoggedView {
 				this.removeListener(favorites);
 			}
 			// type
-			if (this.props.groupByType) {
+			if (groupByType) {
 				// channels
 				this.channels = this.data.filtered('t == $0', 'c');
 				channels = this.channels.slice();
@@ -241,7 +253,7 @@ export default class RoomsListView extends LoggedView {
 				this.removeListener(this.chats);
 			} else {
 				// chats
-				if (this.props.showUnread) {
+				if (showUnread) {
 					this.chats = this.data.filtered('(unread == 0 && alert == false)');
 				} else {
 					this.chats = this.data;
@@ -327,7 +339,8 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	goRoom = (rid, name) => {
-		this.props.navigator.push({
+		const { navigator } = this.props;
+		navigator.push({
 			screen: 'RoomView',
 			title: name,
 			backButtonTitle: '',
@@ -358,34 +371,41 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	toggleSort = () => {
+		const { toggleSortDropdown } = this.props;
+
 		if (Platform.OS === 'ios') {
 			this.scroll.scrollTo({ x: 0, y: SCROLL_OFFSET, animated: true });
 		} else {
 			this.scroll.scrollTo({ x: 0, y: 0, animated: true });
 		}
 		setTimeout(() => {
-			this.props.toggleSortDropdown();
+			toggleSortDropdown();
 		}, 100);
 	}
 
 	renderHeader = () => {
-		if (this.state.search.length > 0) {
+		const { search } = this.state;
+		if (search.length > 0) {
 			return null;
 		}
 		return this.renderSort();
 	}
 
-	renderSort = () => (
-		<Touch
-			onPress={this.toggleSort}
-			style={styles.dropdownContainerHeader}
-		>
-			<View style={styles.sortItemContainer}>
-				<Text style={styles.sortToggleText}>{I18n.t('Sorting_by', { key: I18n.t(this.props.sortBy === 'alphabetical' ? 'name' : 'activity') })}</Text>
-				<Image style={styles.sortIcon} source={{ uri: 'group_type' }} />
-			</View>
-		</Touch>
-	)
+	renderSort = () => {
+		const { sortBy } = this.props;
+
+		return (
+			<Touch
+				onPress={this.toggleSort}
+				style={styles.dropdownContainerHeader}
+			>
+				<View style={styles.sortItemContainer}>
+					<Text style={styles.sortToggleText}>{I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') })}</Text>
+					<Image style={styles.sortIcon} source={{ uri: 'group_type' }} />
+				</View>
+			</Touch>
+		);
+	}
 
 	renderSearchBar = () => {
 		if (Platform.OS === 'ios') {
@@ -394,36 +414,41 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	renderItem = ({ item }) => {
-		const id = item.rid.replace(this.props.userId, '').trim();
-		const { useRealName } = this.props;
-		return (<RoomItem
-			alert={item.alert}
-			unread={item.unread}
-			userMentions={item.userMentions}
-			favorite={item.f}
-			lastMessage={item.lastMessage}
-			name={(useRealName && item.fname) || item.name}
-			_updatedAt={item.roomUpdatedAt}
-			key={item._id}
-			id={id}
-			type={item.t}
-			baseUrl={this.props.baseUrl}
-			onPress={() => this._onPressItem(item)}
-			testID={`rooms-list-view-item-${ item.name }`}
-			height={ROW_HEIGHT}
-		/>);
+		const { useRealName, userId, baseUrl } = this.props;
+		const id = item.rid.replace(userId, '').trim();
+
+		return (
+			<RoomItem
+				alert={item.alert}
+				unread={item.unread}
+				userMentions={item.userMentions}
+				favorite={item.f}
+				lastMessage={item.lastMessage}
+				name={(useRealName && item.fname) || item.name}
+				_updatedAt={item.roomUpdatedAt}
+				key={item._id}
+				id={id}
+				type={item.t}
+				baseUrl={baseUrl}
+				onPress={() => this._onPressItem(item)}
+				testID={`rooms-list-view-item-${ item.name }`}
+				height={ROW_HEIGHT}
+			/>
+		);
 	}
 
 	renderSeparator = () => <View style={styles.separator} />;
 
 	renderSection = (data, header) => {
-		if (header === 'Unread' && !this.props.showUnread) {
+		const { showUnread, showFavorites, groupByType } = this.props;
+
+		if (header === 'Unread' && !showUnread) {
 			return null;
-		} else if (header === 'Favorites' && !this.props.showFavorites) {
+		} else if (header === 'Favorites' && !showFavorites) {
 			return null;
-		} else if (['Channels', 'Direct_Messages', 'Private_Groups', 'Livechat'].includes(header) && !this.props.groupByType) {
+		} else if (['Channels', 'Direct_Messages', 'Private_Groups', 'Livechat'].includes(header) && !groupByType) {
 			return null;
-		} else if (header === 'Chats' && this.props.groupByType) {
+		} else if (header === 'Chats' && groupByType) {
 			return null;
 		}
 		if (data.length > 0) {
@@ -486,7 +511,9 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	renderScroll = () => {
-		if (this.state.loading) {
+		const { loading } = this.state;
+
+		if (loading) {
 			return <ActivityIndicator style={styles.loading} />;
 		}
 
@@ -506,22 +533,25 @@ export default class RoomsListView extends LoggedView {
 
 	render = () => {
 		const {
-			sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown
+			sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown, navigator
 		} = this.props;
 
 		return (
 			<SafeAreaView style={styles.container} testID='rooms-list-view'>
 				{this.renderScroll()}
-				{showSortDropdown ?
-					<SortDropdown
-						close={this.toggleSort}
-						sortBy={sortBy}
-						groupByType={groupByType}
-						showFavorites={showFavorites}
-						showUnread={showUnread}
-					/> :
-					null}
-				{showServerDropdown ? <ServerDropdown navigator={this.props.navigator} /> : null}
+				{showSortDropdown
+					? (
+						<SortDropdown
+							close={this.toggleSort}
+							sortBy={sortBy}
+							groupByType={groupByType}
+							showFavorites={showFavorites}
+							showUnread={showUnread}
+						/>
+					)
+					: null
+				}
+				{showServerDropdown ? <ServerDropdown navigator={navigator} /> : null}
 			</SafeAreaView>
 		);
 	}

@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList, Image, AsyncStorage } from 'react-native';
+import {
+	View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList, Image, AsyncStorage
+} from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
+import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
+import { appStart as appStartAction } from '../../actions';
 import styles from './styles';
-import { toggleServerDropdown } from '../../actions/rooms';
-import { selectServerRequest } from '../../actions/server';
-import { appStart } from '../../actions';
 import database from '../../lib/realm';
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
@@ -19,9 +21,9 @@ const ANIMATION_DURATION = 200;
 	closeServerDropdown: state.rooms.closeServerDropdown,
 	server: state.server.server
 }), dispatch => ({
-	toggleServerDropdown: () => dispatch(toggleServerDropdown()),
-	selectServerRequest: server => dispatch(selectServerRequest(server)),
-	appStart: () => dispatch(appStart('outside'))
+	toggleServerDropdown: () => dispatch(toggleServerDropdownAction()),
+	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
+	appStart: () => dispatch(appStartAction('outside'))
 }))
 export default class ServerDropdown extends Component {
 	static propTypes = {
@@ -56,7 +58,8 @@ export default class ServerDropdown extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (prevProps.closeServerDropdown !== this.props.closeServerDropdown) {
+		const { closeServerDropdown } = this.props;
+		if (prevProps.closeServerDropdown !== closeServerDropdown) {
 			this.close();
 		}
 	}
@@ -67,6 +70,7 @@ export default class ServerDropdown extends Component {
 	}
 
 	close = () => {
+		const { toggleServerDropdown } = this.props;
 		Animated.timing(
 			this.animatedValue,
 			{
@@ -75,16 +79,18 @@ export default class ServerDropdown extends Component {
 				easing: Easing.ease,
 				useNativeDriver: true
 			}
-		).start(() => this.props.toggleServerDropdown());
+		).start(() => toggleServerDropdown());
 	}
 
 	addServer = () => {
+		const { navigator, server } = this.props;
+
 		this.close();
 		setTimeout(() => {
-			this.props.navigator.showModal({
+			navigator.showModal({
 				screen: 'OnboardingView',
 				passProps: {
-					previousServer: this.props.server
+					previousServer: server
 				},
 				navigatorStyle: {
 					navBarHidden: true,
@@ -95,14 +101,18 @@ export default class ServerDropdown extends Component {
 	}
 
 	select = async(server) => {
+		const {
+			server: serverProp, selectServerRequest, appStart, navigator
+		} = this.props;
+
 		this.close();
-		if (this.props.server !== server) {
-			this.props.selectServerRequest(server);
+		if (serverProp !== server) {
+			selectServerRequest(server);
 			const token = await AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
 			if (!token) {
-				this.props.appStart();
+				appStart();
 				setTimeout(() => {
-					this.props.navigator.push({
+					navigator.push({
 						screen: 'NewServerView',
 						backButtonTitle: '',
 						passProps: {
@@ -119,32 +129,41 @@ export default class ServerDropdown extends Component {
 
 	renderSeparator = () => <View style={styles.serverSeparator} />;
 
-	renderServer = ({ item }) => (
-		<Touch onPress={() => this.select(item.id)} style={styles.serverItem} testID={`rooms-list-header-server-${ item.id }`}>
-			<View style={styles.serverItemContainer}>
-				{item.iconURL ?
-					<Image
-						source={{ uri: item.iconURL }}
-						defaultSource={{ uri: 'logo' }}
-						style={styles.serverIcon}
-					/> :
-					<Image
-						source={{ uri: 'logo' }}
-						style={styles.serverIcon}
-					/>
-				}
-				<View style={styles.serverTextContainer}>
-					<Text style={styles.serverName}>{item.name || item.id}</Text>
-					<Text style={styles.serverUrl}>{item.id}</Text>
+	renderServer = ({ item }) => {
+		const { server } = this.props;
+
+		return (
+			<Touch onPress={() => this.select(item.id)} style={styles.serverItem} testID={`rooms-list-header-server-${ item.id }`}>
+				<View style={styles.serverItemContainer}>
+					{item.iconURL
+						? (
+							<Image
+								source={{ uri: item.iconURL }}
+								defaultSource={{ uri: 'logo' }}
+								style={styles.serverIcon}
+							/>
+						)
+						: (
+							<Image
+								source={{ uri: 'logo' }}
+								style={styles.serverIcon}
+							/>
+						)
+					}
+					<View style={styles.serverTextContainer}>
+						<Text style={styles.serverName}>{item.name || item.id}</Text>
+						<Text style={styles.serverUrl}>{item.id}</Text>
+					</View>
+					{item.id === server ? <Image style={styles.checkIcon} source={{ uri: 'check' }} /> : null}
 				</View>
-				{item.id === this.props.server ? <Image style={styles.checkIcon} source={{ uri: 'check' }} /> : null}
-			</View>
-		</Touch>
-	)
+			</Touch>
+		);
+	}
 
 	render() {
+		const { servers } = this.state;
 		const maxRows = 4;
-		const initialTop = 41 + (Math.min(this.state.servers.length, maxRows) * ROW_HEIGHT);
+		const initialTop = 41 + (Math.min(servers.length, maxRows) * ROW_HEIGHT);
 		const translateY = this.animatedValue.interpolate({
 			inputRange: [0, 1],
 			outputRange: [-initialTop, 0]
@@ -171,7 +190,7 @@ export default class ServerDropdown extends Component {
 					</View>
 					<FlatList
 						style={{ maxHeight: maxRows * ROW_HEIGHT }}
-						data={this.state.servers}
+						data={servers}
 						keyExtractor={item => item.id}
 						renderItem={this.renderServer}
 						ItemSeparatorComponent={this.renderSeparator}

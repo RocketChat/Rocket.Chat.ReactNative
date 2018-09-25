@@ -40,7 +40,7 @@ export default class extends React.PureComponent {
 	}
 
 	render() {
-		const { isPressed } = this.state;
+		const { modalVisible, isPressed } = this.state;
 		const { baseUrl, file, user } = this.props;
 		const img = `${ baseUrl }${ file.image_url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
 
@@ -69,7 +69,7 @@ export default class extends React.PureComponent {
 					title={file.title}
 					description={file.description}
 					image={img}
-					isVisible={this.state.modalVisible}
+					isVisible={modalVisible}
 					onClose={() => this.setState({ modalVisible: false })}
 				/>
 			]

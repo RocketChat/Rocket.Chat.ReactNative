@@ -12,9 +12,11 @@ export default class EmojiKeyboard extends React.PureComponent {
 		const state = store.getState();
 		this.baseUrl = state.settings.Site_Url || state.server ? state.server.server : '';
 	}
+
 	onEmojiSelected = (emoji) => {
 		KeyboardRegistry.onItemSelected('EmojiKeyboard', { emoji });
 	}
+
 	render() {
 		return (
 			<View style={styles.emojiKeyboardContainer} testID='messagebox-keyboard-emoji'>

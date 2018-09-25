@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, Animated, Easing, Image, TouchableWithoutFeedback } from 'react-native';
+import {
+	View, Text, Animated, Easing, Image, TouchableWithoutFeedback
+} from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -46,14 +48,17 @@ export default class Sort extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (prevProps.closeSortDropdown !== this.props.closeSortDropdown) {
+		const { closeSortDropdown } = this.props;
+		if (prevProps.closeSortDropdown !== closeSortDropdown) {
 			this.close();
 		}
 	}
 
 	setSortPreference = async(param) => {
+		const { setSortPreference } = this.props;
+
 		try {
-			this.props.setSortPreference(param);
+			setSortPreference(param);
 			RocketChat.saveSortPreference(param);
 		} catch (e) {
 			log('RoomsListView.setSortPreference', e);
@@ -69,18 +74,22 @@ export default class Sort extends Component {
 	}
 
 	toggleGroupByType = () => {
-		this.setSortPreference({ groupByType: !this.props.groupByType });
+		const { groupByType } = this.props;
+		this.setSortPreference({ groupByType: !groupByType });
 	}
 
 	toggleGroupByFavorites = () => {
-		this.setSortPreference({ showFavorites: !this.props.showFavorites });
+		const { showFavorites } = this.props;
+		this.setSortPreference({ showFavorites: !showFavorites });
 	}
 
 	toggleUnread = () => {
-		this.setSortPreference({ showUnread: !this.props.showUnread });
+		const { showUnread } = this.props;
+		this.setSortPreference({ showUnread: !showUnread });
 	}
 
 	close = () => {
+		const { close } = this.props;
 		Animated.timing(
 			this.animatedValue,
 			{
@@ -89,7 +98,7 @@ export default class Sort extends Component {
 				easing: Easing.ease,
 				useNativeDriver: true
 			},
-		).start(() => this.props.close());
+		).start(() => close());
 	}
 
 	render() {
@@ -104,6 +113,7 @@ export default class Sort extends Component {
 		const {
 			sortBy, groupByType, showFavorites, showUnread
 		} = this.props;
+
 		return (
 			[
 				<TouchableWithoutFeedback key='sort-backdrop' onPress={this.close}>
@@ -156,7 +166,7 @@ export default class Sort extends Component {
 					style={[styles.dropdownContainerHeader, styles.sortToggleContainerClose]}
 				>
 					<View style={styles.sortItemContainer}>
-						<Text style={styles.sortToggleText}>{I18n.t('Sorting_by', { key: I18n.t(this.props.sortBy === 'alphabetical' ? 'name' : 'activity') })}</Text>
+						<Text style={styles.sortToggleText}>{I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') })}</Text>
 						<Image style={styles.sortIcon} source={{ uri: 'group_type' }} />
 					</View>
 				</Touch>
