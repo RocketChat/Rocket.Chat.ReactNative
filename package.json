@@ -14,8 +14,7 @@
     "storybook": "storybook start -p 7007",
     "snyk-protect": "snyk protect",
     "fabric-ios": "./scripts/fabric-ios.sh",
-    "fabric-android": "./scripts/fabric-android.sh",
-    "postinstall": "cp ./temp/react.gradle ./node_modules/react-native"
+    "fabric-android": "./scripts/fabric-android.sh"
   },
   "rnpm": {
     "assets": [
