@@ -26,6 +26,8 @@ const SCROLL_OFFSET = 56;
 
 const isAndroid = () => Platform.OS === 'android';
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
+const keyExtractor = item => item.rid;
+
 const leftButtons = [{
 	id: 'settings',
 	icon: { uri: 'settings', scale: Dimensions.get('window').scale },
@@ -392,6 +394,8 @@ export default class RoomsListView extends LoggedView {
 		}, 100);
 	}
 
+	getScrollRef = ref => this.scroll = ref
+
 	renderHeader = () => {
 		const { search } = this.state;
 		if (search.length > 0) {
@@ -465,7 +469,7 @@ export default class RoomsListView extends LoggedView {
 				<FlatList
 					data={data}
 					extraData={data}
-					keyExtractor={item => item.rid}
+					keyExtractor={keyExtractor}
 					style={styles.list}
 					renderItem={this.renderItem}
 					ItemSeparatorComponent={this.renderSeparator}
@@ -494,7 +498,7 @@ export default class RoomsListView extends LoggedView {
 				<FlatList
 					data={search}
 					extraData={search}
-					keyExtractor={item => item.rid}
+					keyExtractor={keyExtractor}
 					style={styles.list}
 					renderItem={this.renderItem}
 					ItemSeparatorComponent={this.renderSeparator}
@@ -528,7 +532,7 @@ export default class RoomsListView extends LoggedView {
 
 		return (
 			<ScrollView
-				ref={ref => this.scroll = ref}
+				ref={this.getScrollRef}
 				contentOffset={Platform.OS === 'ios' ? { x: 0, y: SCROLL_OFFSET } : {}}
 				keyboardShouldPersistTaps='always'
 				testID='rooms-list-view-list'

@@ -108,8 +108,23 @@ export default class RoomView extends LoggedView {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { room } = this.state;
-		return !(equal(this.props, nextProps) && equal(this.state, nextState) && room.ro === nextState.room.ro);
+		const {
+			room, loaded, joined, end
+		} = this.state;
+		const { showActions } = this.props;
+
+		if (room.ro !== nextState.room.ro) {
+			return true;
+		} else if (loaded !== nextState.loaded) {
+			return true;
+		} else if (joined !== nextState.joined) {
+			return true;
+		} else if (end !== nextState.end) {
+			return true;
+		} else if (showActions !== nextProps.showActions) {
+			return true;
+		}
+		return false;
 	}
 
 	componentDidUpdate(prevProps, prevState) {
