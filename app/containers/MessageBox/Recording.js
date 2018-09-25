@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, SafeAreaView, Platform, PermissionsAndroid, Text } from 'react-native';
+import {
+	View, SafeAreaView, Platform, PermissionsAndroid, Text
+} from 'react-native';
 import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import styles from './styles';
@@ -61,7 +63,7 @@ export default class extends React.PureComponent {
 		//
 		AudioRecorder.onFinished = (data) => {
 			if (!this.recordingCanceled && Platform.OS === 'ios') {
-				this._finishRecording(data.status === 'OK', data.audioFileURL);
+				this.finishRecording(data.status === 'OK', data.audioFileURL);
 			}
 		};
 		AudioRecorder.startRecording();
@@ -73,9 +75,10 @@ export default class extends React.PureComponent {
 		}
 	}
 
-	_finishRecording(didSucceed, filePath) {
+	finishRecording = (didSucceed, filePath) => {
+		const { onFinish } = this.props;
 		if (!didSucceed) {
-			return this.props.onFinish && this.props.onFinish(didSucceed);
+			return onFinish && onFinish(didSucceed);
 		}
 
 		const path = filePath.startsWith('file://') ? filePath.split('file://')[1] : filePath;
@@ -84,7 +87,7 @@ export default class extends React.PureComponent {
 			store: 'Uploads',
 			path
 		};
-		return this.props.onFinish && this.props.onFinish(fileInfo);
+		return onFinish && onFinish(fileInfo);
 	}
 
 	finishAudioMessage = async() => {
@@ -92,10 +95,10 @@ export default class extends React.PureComponent {
 			this.recording = false;
 			const filePath = await AudioRecorder.stopRecording();
 			if (Platform.OS === 'android') {
-				this._finishRecording(true, filePath);
+				this.finishRecording(true, filePath);
 			}
 		} catch (err) {
-			this._finishRecording(false);
+			this.finishRecording(false);
 			console.error(err);
 		}
 	}
@@ -104,10 +107,12 @@ export default class extends React.PureComponent {
 		this.recording = false;
 		this.recordingCanceled = true;
 		await AudioRecorder.stopRecording();
-		return this._finishRecording(false);
+		return this.finishRecording(false);
 	}
 
 	render() {
+		const { currentTime } = this.state;
+
 		return (
 			<SafeAreaView
 				key='messagebox-recording'
@@ -123,7 +128,7 @@ export default class extends React.PureComponent {
 						accessibilityTraits='button'
 						onPress={this.cancelAudioMessage}
 					/>
-					<Text key='currentTime' style={styles.textBoxInput}>{this.state.currentTime}</Text>
+					<Text key='currentTime' style={styles.textBoxInput}>{currentTime}</Text>
 					<Icon
 						style={[styles.actionButtons, { color: 'green' }]}
 						name='check'

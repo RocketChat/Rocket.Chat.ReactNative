@@ -14,10 +14,11 @@ export default class Fade extends React.Component {
 
 	constructor(props) {
 		super(props);
+		const { visible } = this.props;
 		this.state = {
-			visible: props.visible
+			visible
 		};
-		this._visibility = new Animated.Value(this.props.visible ? 1 : 0);
+		this._visibility = new Animated.Value(visible ? 1 : 0);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -34,6 +35,7 @@ export default class Fade extends React.Component {
 	}
 
 	render() {
+		const { visible } = this.state;
 		const { style, children, ...rest } = this.props;
 
 		const containerStyle = {
@@ -53,8 +55,8 @@ export default class Fade extends React.Component {
 
 		const combinedStyle = [containerStyle, style];
 		return (
-			<Animated.View style={this.state.visible ? combinedStyle : containerStyle} {...rest}>
-				<Text>{this.state.visible ? children : null}</Text>
+			<Animated.View style={visible ? combinedStyle : containerStyle} {...rest}>
+				<Text>{visible ? children : null}</Text>
 			</Animated.View>
 		);
 	}

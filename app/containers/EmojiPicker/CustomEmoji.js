@@ -8,9 +8,11 @@ export default class CustomEmoji extends React.Component {
 		emoji: PropTypes.object.isRequired,
 		style: ViewPropTypes.style
 	}
+
 	shouldComponentUpdate() {
 		return false;
 	}
+
 	render() {
 		const { baseUrl, emoji, style } = this.props;
 		return (

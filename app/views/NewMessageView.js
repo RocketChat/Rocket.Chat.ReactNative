@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, SafeAreaView, FlatList, Text, Platform, Image } from 'react-native';
+import {
+	View, StyleSheet, SafeAreaView, FlatList, Text, Platform, Image
+} from 'react-native';
 import { connect } from 'react-redux';
 
 import database from '../lib/realm';
@@ -75,9 +77,10 @@ export default class NewMessageView extends LoggedView {
 	}
 
 	async onNavigatorEvent(event) {
+		const { navigator } = this.props;
 		if (event.type === 'NavBarButtonPress') {
 			if (event.id === 'cancel') {
-				this.props.navigator.dismissModal();
+				navigator.dismissModal();
 			}
 		}
 	}
@@ -87,12 +90,14 @@ export default class NewMessageView extends LoggedView {
 	}
 
 	onPressItem = (item) => {
-		this.props.navigator.dismissModal();
+		const { navigator, onPressItem } = this.props;
+		navigator.dismissModal();
 		setTimeout(() => {
-			this.props.onPressItem(item);
+			onPressItem(item);
 		}, 600);
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	updateState = debounce(() => {
 		this.forceUpdate();
 	}, 1000);
@@ -105,7 +110,8 @@ export default class NewMessageView extends LoggedView {
 	}
 
 	createChannel = () => {
-		this.props.navigator.push({
+		const { navigator } = this.props;
+		navigator.push({
 			screen: 'SelectedUsersView',
 			title: I18n.t('Select_Users'),
 			backButtonTitle: '',
@@ -130,14 +136,17 @@ export default class NewMessageView extends LoggedView {
 	renderSeparator = () => <View style={[sharedStyles.separator, styles.separator]} />;
 
 	renderItem = ({ item, index }) => {
+		const { search } = this.state;
+		const { baseUrl } = this.props;
+
 		let style = {};
 		if (index === 0) {
 			style = { ...sharedStyles.separatorTop };
 		}
-		if (this.state.search.length > 0 && index === this.state.search.length - 1) {
+		if (search.length > 0 && index === search.length - 1) {
 			style = { ...style, ...sharedStyles.separatorBottom };
 		}
-		if (this.state.search.length === 0 && index === this.data.length - 1) {
+		if (search.length === 0 && index === this.data.length - 1) {
 			style = { ...style, ...sharedStyles.separatorBottom };
 		}
 		return (
@@ -145,24 +154,27 @@ export default class NewMessageView extends LoggedView {
 				name={item.search ? item.name : item.fname}
 				username={item.search ? item.username : item.name}
 				onPress={() => this.onPressItem(item)}
-				baseUrl={this.props.baseUrl}
+				baseUrl={baseUrl}
 				testID={`new-message-view-item-${ item.name }`}
 				style={style}
 			/>
 		);
 	}
 
-	renderList = () => (
-		<FlatList
-			data={this.state.search.length > 0 ? this.state.search : this.data}
-			extraData={this.state}
-			keyExtractor={item => item._id}
-			ListHeaderComponent={this.renderHeader}
-			renderItem={this.renderItem}
-			ItemSeparatorComponent={this.renderSeparator}
-			keyboardShouldPersistTaps='always'
-		/>
-	)
+	renderList = () => {
+		const { search } = this.state;
+		return (
+			<FlatList
+				data={search.length > 0 ? search : this.data}
+				extraData={this.state}
+				keyExtractor={item => item._id}
+				ListHeaderComponent={this.renderHeader}
+				renderItem={this.renderItem}
+				ItemSeparatorComponent={this.renderSeparator}
+				keyboardShouldPersistTaps='always'
+			/>
+		);
+	}
 
 	render = () => (
 		<SafeAreaView style={styles.safeAreaView} testID='new-message-view'>

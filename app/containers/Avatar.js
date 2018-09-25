@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, ViewPropTypes } from 'react-native';
+import {
+	StyleSheet, Text, View, ViewPropTypes
+} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import avatarInitialsAndColor from '../utils/avatarInitialsAndColor';
 
@@ -29,14 +31,16 @@ export default class Avatar extends React.PureComponent {
 		type: PropTypes.string,
 		children: PropTypes.object,
 		forceInitials: PropTypes.bool
-	};
+	}
+
 	static defaultProps = {
 		text: '',
 		size: 25,
 		type: 'd',
 		borderRadius: 4,
 		forceInitials: false
-	};
+	}
+
 	state = { showInitials: true };
 
 	// componentDidMount() {
@@ -93,8 +97,9 @@ export default class Avatar extends React.PureComponent {
 	// }
 
 	render() {
+		const { showInitials } = this.state;
 		const {
-			text, size, baseUrl, borderRadius, style, avatar, type, forceInitials
+			text, size, baseUrl, borderRadius, style, avatar, type, forceInitials, children
 		} = this.props;
 		const { initials, color } = avatarInitialsAndColor(`${ text }`);
 
@@ -133,17 +138,19 @@ export default class Avatar extends React.PureComponent {
 
 		return (
 			<View style={[styles.iconContainer, iconContainerStyle, style]}>
-				{this.state.showInitials ?
-					<Text
-						style={[styles.avatarInitials, avatarInitialsStyle]}
-						allowFontScaling={false}
-					>
-						{initials}
-					</Text>
+				{showInitials
+					? (
+						<Text
+							style={[styles.avatarInitials, avatarInitialsStyle]}
+							allowFontScaling={false}
+						>
+							{initials}
+						</Text>
+					)
 					: null
 				}
 				{image}
-				{this.props.children}
+				{children}
 			</View>
 		);
 	}

@@ -27,15 +27,17 @@ export default async function() {
 
 		const filteredSettings = this._prepareSettings(this._filterSettings(data));
 
-		InteractionManager.runAfterInteractions(() =>
-			database.write(() =>
-				filteredSettings.forEach((setting) => {
+		InteractionManager.runAfterInteractions(
+			() => database.write(
+				() => filteredSettings.forEach((setting) => {
 					database.create('settings', { ...setting, _updatedAt: new Date() }, true);
 
 					if (setting._id === 'Site_Name') {
 						updateServer.call(this, { name: setting.valueAsString });
 					}
-				})));
+				})
+			)
+		);
 		reduxStore.dispatch(actions.addSettings(this.parseSettings(filteredSettings)));
 
 		const iconSetting = data.find(item => item._id === 'Assets_favicon_512');

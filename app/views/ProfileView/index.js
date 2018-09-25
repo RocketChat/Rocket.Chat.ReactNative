@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, SafeAreaView, Keyboard, Dimensions } from 'react-native';
+import {
+	View, ScrollView, SafeAreaView, Keyboard, Dimensions
+} from 'react-native';
 import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
 import SHA256 from 'js-sha256';
@@ -61,7 +63,8 @@ export default class ProfileView extends LoggedView {
 	}
 
 	componentWillMount() {
-		this.props.navigator.setButtons({
+		const { navigator } = this.props;
+		navigator.setButtons({
 			leftButtons: [{
 				id: 'settings',
 				icon: { uri: 'settings', scale: Dimensions.get('window').scale }
@@ -70,9 +73,11 @@ export default class ProfileView extends LoggedView {
 	}
 
 	async componentDidMount() {
+		const { navigator } = this.props;
+
 		this.init();
 
-		this.props.navigator.setDrawerEnabled({
+		navigator.setDrawerEnabled({
 			side: 'left',
 			enabled: true
 		});
@@ -86,15 +91,18 @@ export default class ProfileView extends LoggedView {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (this.props.user !== nextProps.user) {
+		const { user } = this.props;
+		if (user !== nextProps.user) {
 			this.init(nextProps.user);
 		}
 	}
 
 	onNavigatorEvent(event) {
+		const { navigator } = this.props;
+
 		if (event.type === 'NavBarButtonPress') {
 			if (event.id === 'settings') {
-				this.props.navigator.toggleDrawer({
+				navigator.toggleDrawer({
 					side: 'left'
 				});
 			}
@@ -106,9 +114,11 @@ export default class ProfileView extends LoggedView {
 	}
 
 	init = (user) => {
+		const { user: userProps } = this.props;
 		const {
 			name, username, emails, customFields
-		} = user || this.props.user;
+		} = user || userProps;
+
 		this.setState({
 			name,
 			username,
@@ -137,12 +147,12 @@ export default class ProfileView extends LoggedView {
 			});
 		}
 
-		return !(user.name === name &&
-			user.username === username &&
-			!newPassword &&
-			(user.emails && user.emails[0].address === email) &&
-			!avatar.data &&
-			!customFieldsChanged
+		return !(user.name === name
+			&& user.username === username
+			&& !newPassword
+			&& (user.emails && user.emails[0].address === email)
+			&& !avatar.data
+			&& !customFieldsChanged
 		);
 	}
 
@@ -278,43 +288,50 @@ export default class ProfileView extends LoggedView {
 		</Touch>
 	)
 
-	renderAvatarButtons = () => (
-		<View style={styles.avatarButtons}>
-			{this.renderAvatarButton({
-				child: <Avatar text={this.props.user.username} size={50} baseUrl={this.props.baseUrl} forceInitials />,
-				onPress: () => this.resetAvatar(),
-				key: 'profile-view-reset-avatar'
-			})}
-			{this.renderAvatarButton({
-				child: <Icon name='file-upload' size={30} />,
-				onPress: () => this.pickImage(),
-				key: 'profile-view-upload-avatar'
-			})}
-			{this.renderAvatarButton({
-				child: <Icon name='link' size={30} />,
-				onPress: () => this.setAvatar({ url: this.state.avatarUrl, data: this.state.avatarUrl, service: 'url' }),
-				disabled: !this.state.avatarUrl,
-				key: 'profile-view-avatar-url-button'
-			})}
-			{Object.keys(this.state.avatarSuggestions).map((service) => {
-				const { url, blob, contentType } = this.state.avatarSuggestions[service];
-				return this.renderAvatarButton({
-					key: `profile-view-avatar-${ service }`,
-					child: <Avatar avatar={url} size={50} baseUrl={this.props.baseUrl} />,
-					onPress: () => this.setAvatar({
-						url, data: blob, service, contentType
-					})
-				});
-			})}
-		</View>
-	);
+	renderAvatarButtons = () => {
+		const { avatarUrl, avatarSuggestions } = this.state;
+		const { user, baseUrl } = this.props;
+
+		return (
+			<View style={styles.avatarButtons}>
+				{this.renderAvatarButton({
+					child: <Avatar text={user.username} size={50} baseUrl={baseUrl} forceInitials />,
+					onPress: () => this.resetAvatar(),
+					key: 'profile-view-reset-avatar'
+				})}
+				{this.renderAvatarButton({
+					child: <Icon name='file-upload' size={30} />,
+					onPress: () => this.pickImage(),
+					key: 'profile-view-upload-avatar'
+				})}
+				{this.renderAvatarButton({
+					child: <Icon name='link' size={30} />,
+					onPress: () => this.setAvatar({ url: avatarUrl, data: avatarUrl, service: 'url' }),
+					disabled: !avatarUrl,
+					key: 'profile-view-avatar-url-button'
+				})}
+				{Object.keys(avatarSuggestions).map((service) => {
+					const { url, blob, contentType } = avatarSuggestions[service];
+					return this.renderAvatarButton({
+						key: `profile-view-avatar-${ service }`,
+						child: <Avatar avatar={url} size={50} baseUrl={baseUrl} />,
+						onPress: () => this.setAvatar({
+							url, data: blob, service, contentType
+						})
+					});
+				})}
+			</View>
+		);
+	}
 
 	renderCustomFields = () => {
 		const { customFields } = this.state;
-		if (!this.props.Accounts_CustomFields) {
+		const { Accounts_CustomFields } = this.props;
+
+		if (!Accounts_CustomFields) {
 			return null;
 		}
-		const parsedCustomFields = JSON.parse(this.props.Accounts_CustomFields);
+		const parsedCustomFields = JSON.parse(Accounts_CustomFields);
 		return Object.keys(parsedCustomFields).map((key, index, array) => {
 			if (parsedCustomFields[key].type === 'select') {
 				const options = parsedCustomFields[key].options.map(option => ({ label: option, value: option }));
@@ -325,7 +342,7 @@ export default class ProfileView extends LoggedView {
 						onValueChange={(value) => {
 							const newValue = {};
 							newValue[key] = value;
-							this.setState({ customFields: { ...this.state.customFields, ...newValue } });
+							this.setState({ customFields: { ...customFields, ...newValue } });
 						}}
 						value={customFields[key]}
 					>
@@ -350,7 +367,7 @@ export default class ProfileView extends LoggedView {
 					onChangeText={(value) => {
 						const newValue = {};
 						newValue[key] = value;
-						this.setState({ customFields: { ...this.state.customFields, ...newValue } });
+						this.setState({ customFields: { ...customFields, ...newValue } });
 					}}
 					onSubmitEditing={() => {
 						if (array.length - 1 > index) {
@@ -365,8 +382,10 @@ export default class ProfileView extends LoggedView {
 
 	render() {
 		const {
-			name, username, email, newPassword, avatarUrl, customFields
+			name, username, email, newPassword, avatarUrl, customFields, avatar, saving, showPasswordAlert
 		} = this.state;
+		const { baseUrl } = this.props;
+
 		return (
 			<KeyboardView
 				contentContainerStyle={sharedStyles.container}
@@ -381,9 +400,9 @@ export default class ProfileView extends LoggedView {
 						<View style={styles.avatarContainer} testID='profile-view-avatar'>
 							<Avatar
 								text={username}
-								avatar={this.state.avatar && this.state.avatar.url}
+								avatar={avatar && avatar.url}
 								size={100}
-								baseUrl={this.props.baseUrl}
+								baseUrl={baseUrl}
 							/>
 						</View>
 						<RCTextInput
@@ -448,8 +467,8 @@ export default class ProfileView extends LoggedView {
 								testID='profile-view-submit'
 							/>
 						</View>
-						<Loading visible={this.state.saving} />
-						<Dialog.Container visible={this.state.showPasswordAlert}>
+						<Loading visible={saving} />
+						<Dialog.Container visible={showPasswordAlert}>
 							<Dialog.Title>
 								{I18n.t('Please_enter_your_password')}
 							</Dialog.Title>

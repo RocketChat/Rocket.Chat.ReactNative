@@ -103,4 +103,3 @@ export const SORT_PREFERENCES = createRequestTypes('SORT_PREFERENCES', ['SET_ALL
 
 export const INCREMENT = 'INCREMENT';
 export const DECREMENT = 'DECREMENT';
-

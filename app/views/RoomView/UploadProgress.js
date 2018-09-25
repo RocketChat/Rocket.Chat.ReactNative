@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import {
+	View, Text, StyleSheet, TouchableOpacity, ScrollView
+} from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { responsive } from 'react-native-responsive-ui';
@@ -64,7 +66,8 @@ export default class UploadProgress extends Component {
 		this.state = {
 			uploads: []
 		};
-		this.uploads = database.objects('uploads').filtered('rid = $0', this.props.rid);
+		const { rid } = this.props;
+		this.uploads = database.objects('uploads').filtered('rid = $0', rid);
 		this.uploads.addListener(this.updateUploads);
 	}
 
@@ -98,11 +101,13 @@ export default class UploadProgress extends Component {
 	}
 
 	tryAgain = async(item) => {
+		const { rid } = this.props;
+
 		try {
 			database.write(() => {
 				item.error = false;
 			});
-			await RocketChat.sendFileMessage(this.props.rid, JSON.parse(JSON.stringify(item)));
+			await RocketChat.sendFileMessage(rid, JSON.parse(JSON.stringify(item)));
 		} catch (e) {
 			log('UploadProgess.tryAgain', e);
 		}
@@ -113,6 +118,8 @@ export default class UploadProgress extends Component {
 	}
 
 	renderItemContent = (item) => {
+		const { window } = this.props;
+
 		if (!item.error) {
 			return (
 				[
@@ -123,7 +130,7 @@ export default class UploadProgress extends Component {
 						</Text>
 						<Icon name='close' size={20} color='#9EA2A8' onPress={() => this.cancelUpload(item)} />
 					</View>,
-					<View key='progress' style={[styles.progress, { width: (this.props.window.width * item.progress) / 100 }]} />
+					<View key='progress' style={[styles.progress, { width: (window.width * item.progress) / 100 }]} />
 				]
 			);
 		}

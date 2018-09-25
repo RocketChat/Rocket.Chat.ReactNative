@@ -1,7 +1,7 @@
 import Random from 'react-native-meteor/lib/Random';
 
 import messagesStatus from '../../constants/messagesStatus';
-import buildMessage from '../methods/helpers/buildMessage';
+import buildMessage from './helpers/buildMessage';
 import { post } from './helpers/rest';
 import database from '../realm';
 import reduxStore from '../createStore';
@@ -46,7 +46,7 @@ function sendMessageByDDP(message) {
 export async function _sendMessageCall(message) {
 	try {
 		// eslint-disable-next-line
-		const data = await (this.ddp.status ? sendMessageByDDP.call(this, message) : sendMessageByRest.call(this, message));
+		const data = await (this.ddp.status && false ? sendMessageByDDP.call(this, message) : sendMessageByRest.call(this, message));
 		return data;
 	} catch (e) {
 		database.write(() => {

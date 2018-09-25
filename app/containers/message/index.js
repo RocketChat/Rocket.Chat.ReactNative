@@ -5,7 +5,11 @@ import { connect } from 'react-redux';
 import equal from 'deep-equal';
 
 import Message from './Message';
-import { errorActionsShow, toggleReactionPicker, replyBroadcast } from '../../actions/messages';
+import {
+	errorActionsShow as errorActionsShowAction,
+	toggleReactionPicker as toggleReactionPickerAction,
+	replyBroadcast as replyBroadcastAction
+} from '../../actions/messages';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -16,9 +20,9 @@ import { errorActionsShow, toggleReactionPicker, replyBroadcast } from '../../ac
 	message: state.messages.message,
 	useRealName: state.settings.UI_Use_Real_Name
 }), dispatch => ({
-	errorActionsShow: actionMessage => dispatch(errorActionsShow(actionMessage)),
-	replyBroadcast: message => dispatch(replyBroadcast(message)),
-	toggleReactionPicker: message => dispatch(toggleReactionPicker(message))
+	errorActionsShow: actionMessage => dispatch(errorActionsShowAction(actionMessage)),
+	replyBroadcast: message => dispatch(replyBroadcastAction(message)),
+	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message))
 }))
 export default class MessageContainer extends React.Component {
 	static propTypes = {
@@ -67,39 +71,47 @@ export default class MessageContainer extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		if (this.state.reactionsModal !== nextState.reactionsModal) {
+		const { reactionsModal } = this.state;
+		const {
+			status, reactions, broadcast, editing, _updatedAt
+		} = this.props;
+
+		if (reactionsModal !== nextState.reactionsModal) {
 			return true;
 		}
-		if (this.props.status !== nextProps.status) {
+		if (status !== nextProps.status) {
 			return true;
 		}
 		// eslint-disable-next-line
-		if (!!this.props._updatedAt ^ !!nextProps._updatedAt) {
+		if (!!_updatedAt ^ !!nextProps._updatedAt) {
 			return true;
 		}
-		if (!equal(this.props.reactions, nextProps.reactions)) {
+		if (!equal(reactions, nextProps.reactions)) {
 			return true;
 		}
-		if (this.props.broadcast !== nextProps.broadcast) {
+		if (broadcast !== nextProps.broadcast) {
 			return true;
 		}
-		if (this.props.editing !== nextProps.editing) {
+		if (editing !== nextProps.editing) {
 			return true;
 		}
-		return this.props._updatedAt.toGMTString() !== nextProps._updatedAt.toGMTString();
+		return _updatedAt.toGMTString() !== nextProps._updatedAt.toGMTString();
 	}
 
 
 	onLongPress = () => {
-		this.props.onLongPress(this.parseMessage());
+		const { onLongPress } = this.props;
+		onLongPress(this.parseMessage());
 	}
 
 	onErrorPress = () => {
-		this.props.errorActionsShow(this.parseMessage());
+		const { errorActionsShow } = this.props;
+		errorActionsShow(this.parseMessage());
 	}
 
 	onReactionPress = (emoji) => {
-		this.props.onReactionPress(emoji, this.props.item._id);
+		const { onReactionPress, item } = this.props;
+		onReactionPress(emoji, item._id);
 	}
 
 
@@ -118,30 +130,38 @@ export default class MessageContainer extends React.Component {
 	}
 
 	isHeader = () => {
-		const { item, previousItem } = this.props;
+		const {
+			item, previousItem, broadcast, Message_GroupingPeriod
+		} = this.props;
 		if (previousItem && (
-			(previousItem.ts.toDateString() === item.ts.toDateString()) &&
-			(previousItem.u.username === item.u.username) &&
-			!(previousItem.groupable === false || item.groupable === false || this.props.broadcast === true) &&
-			(previousItem.status === item.status) &&
-			(item.ts - previousItem.ts < this.props.Message_GroupingPeriod * 1000)
+			(previousItem.ts.toDateString() === item.ts.toDateString())
+			&& (previousItem.u.username === item.u.username)
+			&& !(previousItem.groupable === false || item.groupable === false || broadcast === true)
+			&& (previousItem.status === item.status)
+			&& (item.ts - previousItem.ts < Message_GroupingPeriod * 1000)
 		)) {
 			return false;
 		}
 		return true;
 	}
 
-	parseMessage = () => JSON.parse(JSON.stringify(this.props.item));
+	parseMessage = () => {
+		const { item } = this.props;
+		return JSON.parse(JSON.stringify(item));
+	}
 
 	toggleReactionPicker = () => {
-		this.props.toggleReactionPicker(this.parseMessage());
+		const { toggleReactionPicker } = this.props;
+		toggleReactionPicker(this.parseMessage());
 	}
 
 	replyBroadcast = () => {
-		this.props.replyBroadcast(this.parseMessage());
+		const { replyBroadcast } = this.props;
+		replyBroadcast(this.parseMessage());
 	}
 
 	render() {
+		const { reactionsModal } = this.state;
 		const {
 			item, message, editing, user, style, archived, baseUrl, customEmojis, useRealName, broadcast
 		} = this.props;
@@ -171,7 +191,7 @@ export default class MessageContainer extends React.Component {
 				broadcast={broadcast}
 				baseUrl={baseUrl}
 				customEmojis={customEmojis}
-				reactionsModal={this.state.reactionsModal}
+				reactionsModal={reactionsModal}
 				useRealName={useRealName}
 				role={role}
 				closeReactions={this.closeReactions}

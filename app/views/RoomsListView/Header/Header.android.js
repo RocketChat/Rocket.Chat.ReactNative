@@ -1,5 +1,7 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import {
+	Text, View, TouchableOpacity, Image, StyleSheet
+} from 'react-native';
 import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({

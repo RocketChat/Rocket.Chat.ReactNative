@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, SectionList, Text, Alert, SafeAreaView } from 'react-native';
+import {
+	View, SectionList, Text, Alert, SafeAreaView
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 
+import { leaveRoom as leaveRoomAction } from '../../actions/room';
 import LoggedView from '../View';
 import styles from './styles';
 import sharedStyles from '../Styles';
@@ -13,7 +16,6 @@ import Status from '../../containers/status';
 import Touch from '../../utils/touch';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
-import { leaveRoom } from '../../actions/room';
 import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
@@ -26,7 +28,7 @@ const renderSeparator = () => <View style={styles.separator} />;
 	username: state.login.user && state.login.user.username,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }), dispatch => ({
-	leaveRoom: rid => dispatch(leaveRoom(rid))
+	leaveRoom: rid => dispatch(leaveRoomAction(rid))
 }))
 /** @extends React.Component */
 export default class RoomActionsView extends LoggedView {
@@ -63,8 +65,10 @@ export default class RoomActionsView extends LoggedView {
 	}
 
 	onPressTouchable = (item) => {
+		const { navigator } = this.props;
+
 		if (item.route) {
-			this.props.navigator.push({
+			navigator.push({
 				screen: item.route,
 				title: item.name,
 				passProps: item.params,
@@ -81,8 +85,10 @@ export default class RoomActionsView extends LoggedView {
 			rid, t
 		} = this.room;
 		const { allMembers } = this.state;
+		const { username } = this.props;
+
 		// TODO: same test joined
-		const userInRoom = !!allMembers.find(m => m.username === this.props.username);
+		const userInRoom = !!allMembers.find(m => m.username === username);
 		const permissions = RocketChat.hasPermission(['add-user-to-joined-room', 'add-user-to-any-c-room', 'add-user-to-any-p-room'], rid);
 
 		if (userInRoom && permissions['add-user-to-joined-room']) {
@@ -96,8 +102,10 @@ export default class RoomActionsView extends LoggedView {
 		}
 		return false;
 	}
+
 	get canViewMembers() {
-		const { rid, t, broadcast } = this.state.room;
+		const { room } = this.state;
+		const { rid, t, broadcast } = room;
 		if (broadcast) {
 			const viewBroadcastMemberListPermission = 'view-broadcast-member-list';
 			const permissions = RocketChat.hasPermission([viewBroadcastMemberListPermission], rid);
@@ -107,6 +115,7 @@ export default class RoomActionsView extends LoggedView {
 		}
 		return (t === 'c' || t === 'p');
 	}
+
 	get sections() {
 		const {
 			rid, t, blocker, notifications
@@ -218,9 +227,9 @@ export default class RoomActionsView extends LoggedView {
 				actions.push({
 					icon: 'ios-people',
 					name: I18n.t('Members'),
-					description: (onlineMembers.length === 1 ?
-						I18n.t('1_online_member') :
-						I18n.t('N_online_members', { n: onlineMembers.length })),
+					description: (onlineMembers.length === 1
+						? I18n.t('1_online_member')
+						: I18n.t('N_online_members', { n: onlineMembers.length })),
 					route: 'RoomMembersView',
 					params: { rid, members: onlineMembers },
 					testID: 'room-actions-members'
@@ -257,7 +266,8 @@ export default class RoomActionsView extends LoggedView {
 	}
 
 	updateRoomMembers = async() => {
-		const { t } = this.state.room;
+		const { room } = this.state;
+		const { rid, t } = room;
 
 		if (!this.canViewMembers) {
 			return {};
@@ -267,8 +277,8 @@ export default class RoomActionsView extends LoggedView {
 			let onlineMembers = [];
 			let allMembers = [];
 			try {
-				const onlineMembersCall = RocketChat.getRoomMembers(this.state.room.rid, false);
-				const allMembersCall = RocketChat.getRoomMembers(this.state.room.rid, true);
+				const onlineMembersCall = RocketChat.getRoomMembers(rid, false);
+				const allMembersCall = RocketChat.getRoomMembers(rid, true);
 				const [onlineMembersResult, allMembersResult] = await Promise.all([onlineMembersCall, allMembersCall]);
 				onlineMembers = onlineMembersResult.records;
 				allMembers = allMembersResult.records;
@@ -280,11 +290,15 @@ export default class RoomActionsView extends LoggedView {
 	}
 
 	updateRoomMember = async() => {
-		if (this.state.room.t !== 'd') {
+		const { room } = this.state;
+		const { rid, t } = room;
+		const { userId } = this.props;
+
+		if (t !== 'd') {
 			return {};
 		}
 		try {
-			const member = await RocketChat.getRoomMember(this.state.room.rid, this.props.userId);
+			const member = await RocketChat.getRoomMember(rid, userId);
 			return { member };
 		} catch (e) {
 			log('RoomActions updateRoomMember', e);
@@ -297,7 +311,8 @@ export default class RoomActionsView extends LoggedView {
 	}
 
 	toggleBlockUser = async() => {
-		const { rid, blocker } = this.state.room;
+		const { room } = this.state;
+		const { rid, blocker } = room;
 		const { member } = this.state;
 		try {
 			RocketChat.toggleBlockUser(rid, member._id, !blocker);
@@ -308,6 +323,8 @@ export default class RoomActionsView extends LoggedView {
 
 	leaveChannel = () => {
 		const { room } = this.state;
+		const { leaveRoom } = this.props;
+
 		Alert.alert(
 			I18n.t('Are_you_sure_question_mark'),
 			I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: room.t === 'd' ? room.fname : room.name }),
@@ -319,7 +336,7 @@ export default class RoomActionsView extends LoggedView {
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
 					style: 'destructive',
-					onPress: () => this.props.leaveRoom(room.rid)
+					onPress: () => leaveRoom(room.rid)
 				}
 			]
 		);
@@ -337,6 +354,8 @@ export default class RoomActionsView extends LoggedView {
 	renderRoomInfo = ({ item }) => {
 		const { room, member } = this.state;
 		const { name, t, topic } = room;
+		const { baseUrl } = this.props;
+
 		return (
 			this.renderTouchableItem([
 				<Avatar
@@ -345,17 +364,19 @@ export default class RoomActionsView extends LoggedView {
 					size={50}
 					style={styles.avatar}
 					type={t}
-					baseUrl={this.props.baseUrl}
+					baseUrl={baseUrl}
 				>
 					{t === 'd' ? <Status style={sharedStyles.status} id={member._id} /> : null }
 				</Avatar>,
 				<View key='name' style={styles.roomTitleContainer}>
-					{room.t === 'd' ?
-						<Text style={styles.roomTitle}>{room.fname}</Text> :
-						<View style={styles.roomTitleRow}>
-							<RoomTypeIcon type={room.t} />
-							<Text style={styles.roomTitle}>{room.name}</Text>
-						</View>
+					{room.t === 'd'
+						? <Text style={styles.roomTitle}>{room.fname}</Text>
+						: (
+							<View style={styles.roomTitleRow}>
+								<RoomTypeIcon type={room.t} />
+								<Text style={styles.roomTitle}>{room.name}</Text>
+							</View>
+						)
 					}
 					<Text style={styles.roomDescription} ellipsizeMode='tail' numberOfLines={1}>{t === 'd' ? `@${ name }` : topic}</Text>
 				</View>,

@@ -1,6 +1,8 @@
 import { AsyncStorage } from 'react-native';
 import { delay } from 'redux-saga';
-import { put, call, take, takeLatest, select, all } from 'redux-saga/effects';
+import {
+	put, call, take, takeLatest, select, all
+} from 'redux-saga/effects';
 
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions';

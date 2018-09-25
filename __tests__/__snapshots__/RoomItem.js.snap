@@ -4,7 +4,6 @@ exports[`render channel 1`] = `
 <View>
   <View
     accessibilityLabel="general, last message Nov 10"
-    accessibilityTraits="selected"
     accessible={true}
     isTVSelectable={true}
     onResponderGrant={[Function]}
@@ -200,7 +199,6 @@ exports[`render no icon 1`] = `
 <View>
   <View
     accessibilityLabel="name, last message Nov 10"
-    accessibilityTraits="selected"
     accessible={true}
     isTVSelectable={true}
     onResponderGrant={[Function]}
@@ -396,7 +394,6 @@ exports[`render private group 1`] = `
 <View>
   <View
     accessibilityLabel="private-group, last message Nov 10"
-    accessibilityTraits="selected"
     accessible={true}
     isTVSelectable={true}
     onResponderGrant={[Function]}
@@ -593,7 +590,6 @@ exports[`render unread +999 1`] = `
 <View>
   <View
     accessibilityLabel="name, 1000 alerts, last message Nov 10"
-    accessibilityTraits="selected"
     accessible={true}
     isTVSelectable={true}
     onResponderGrant={[Function]}
@@ -856,7 +852,6 @@ exports[`render unread 1`] = `
 <View>
   <View
     accessibilityLabel="name, 1 alert, last message Nov 10"
-    accessibilityTraits="selected"
     accessible={true}
     isTVSelectable={true}
     onResponderGrant={[Function]}
@@ -1119,7 +1114,6 @@ exports[`renders correctly 1`] = `
 <View>
   <View
     accessibilityLabel="name, last message Nov 10"
-    accessibilityTraits="selected"
     accessible={true}
     isTVSelectable={true}
     onResponderGrant={[Function]}

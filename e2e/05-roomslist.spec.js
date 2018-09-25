@@ -68,9 +68,9 @@ describe('Rooms list screen', () => {
 				await expect(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible();
 				await expect(element(by.id('rooms-list-header-server-add'))).toBeVisible();
 				await element(by.id('rooms-list-header-server-add')).tap();
-				await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('new-server-view'))).toBeVisible();
-				await element(by.text('Close')).tap();
+				await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(2000);
+				await expect(element(by.id('onboarding-view'))).toBeVisible();
+				await element(by.id('onboarding-close')).tap();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('rooms-list-view'))).toBeVisible();
 			});

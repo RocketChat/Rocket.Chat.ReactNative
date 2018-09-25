@@ -3,12 +3,12 @@ import { View, TextInput } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { setSearch } from '../../../actions/rooms';
+import { setSearch as setSearchAction } from '../../../actions/rooms';
 import styles from './styles';
 import I18n from '../../../i18n';
 
 @connect(null, dispatch => ({
-	setSearch: searchText => dispatch(setSearch(searchText))
+	setSearch: searchText => dispatch(setSearchAction(searchText))
 }))
 export default class RoomsListSearchView extends React.Component {
 	static propTypes = {
@@ -20,7 +20,8 @@ export default class RoomsListSearchView extends React.Component {
 	}
 
 	onSearchChangeText(text) {
-		this.props.setSearch(text.trim());
+		const { setSearch } = this.props;
+		setSearch(text.trim());
 	}
 
 	render() {

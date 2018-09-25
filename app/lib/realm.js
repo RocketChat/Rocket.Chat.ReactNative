@@ -309,22 +309,28 @@ class DB {
 			],
 			deleteRealmIfMigrationNeeded: true
 		})
-	};
+	}
+
 	deleteAll(...args) {
 		return this.database.write(() => this.database.deleteAll(...args));
 	}
+
 	delete(...args) {
 		return this.database.delete(...args);
 	}
+
 	write(...args) {
 		return this.database.write(...args);
 	}
+
 	create(...args) {
 		return this.database.create(...args);
 	}
+
 	objects(...args) {
 		return this.database.objects(...args);
 	}
+
 	get database() {
 		return this.databases.activeDB;
 	}

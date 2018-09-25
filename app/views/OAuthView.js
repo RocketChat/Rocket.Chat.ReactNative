@@ -52,9 +52,10 @@ export default class OAuthView extends React.PureComponent {
 	}
 
 	render() {
+		const { oAuthUrl, navigator } = this.props;
 		return (
 			<WebView
-				source={{ uri: this.props.oAuthUrl }}
+				source={{ uri: oAuthUrl }}
 				userAgent={userAgent}
 				onNavigationStateChange={(webViewState) => {
 					const url = decodeURIComponent(webViewState.url);
@@ -62,7 +63,7 @@ export default class OAuthView extends React.PureComponent {
 						const parts = url.split('#');
 						const credentials = JSON.parse(parts[1]);
 						this.login({ oauth: { ...credentials } });
-						this.props.navigator.dismissModal();
+						navigator.dismissModal();
 					}
 				}}
 			/>
