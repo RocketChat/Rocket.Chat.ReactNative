@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import {
 	Text, View, ScrollView, TouchableOpacity, LayoutAnimation, Image, StyleSheet, SafeAreaView
 } from 'react-native';
-import { connect } from 'react-redux';
+import { connect, Provider } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Base64 } from 'js-base64';
@@ -16,6 +17,7 @@ import random from '../utils/random';
 import Button from '../containers/Button';
 import Loading from '../containers/Loading';
 import I18n from '../i18n';
+import store from '../lib/createStore';
 
 const styles = StyleSheet.create({
 	container: {
@@ -44,6 +46,10 @@ const styles = StyleSheet.create({
 		marginVertical: 20
 	}
 });
+
+let OAuthView = null;
+let LoginView = null;
+let RegisterView = null;
 
 @connect(state => ({
 	server: state.server.server,
@@ -181,6 +187,11 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	openOAuth = (oAuthUrl) => {
+		if (OAuthView == null) {
+			OAuthView = require('./OAuthView').default;
+			Navigation.registerComponent('OAuthView', () => OAuthView, store, Provider);
+		}
+
 		const { navigator } = this.props;
 		navigator.showModal({
 			screen: 'OAuthView',
@@ -192,6 +203,11 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	login = () => {
+		if (LoginView == null) {
+			LoginView = require('./LoginView').default;
+			Navigation.registerComponent('LoginView', () => LoginView, store, Provider);
+		}
+
 		const { navigator, server } = this.props;
 		navigator.push({
 			screen: 'LoginView',
@@ -201,6 +217,11 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	register = () => {
+		if (RegisterView == null) {
+			RegisterView = require('./RegisterView').default;
+			Navigation.registerComponent('RegisterView', () => RegisterView, store, Provider);
+		}
+
 		const { navigator, server } = this.props;
 		navigator.push({
 			screen: 'RegisterView',

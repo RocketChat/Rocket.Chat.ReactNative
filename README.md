@@ -169,7 +169,7 @@ Readme will guide you on how to config.
 | Channel Info screen -> Members                                	| ✅             	|
 | Channel Info screen -> Pinned                                 	| ✅             	|
 | Channel Info screen -> Starred                                	| ✅             	|
-| Channel Info screen -> Uploads                                	|  ❌            	|
+| Channel Info screen -> Uploads                                	| ✅            	    |
 | Star message                                                  	| ✅             	|
 | Unstar message                                                	| ✅             	|
 | Channel Info screen -> Topic                                  	| ✅             	|
@@ -200,7 +200,7 @@ Readme will guide you on how to config.
 | Deep links: Authentication                                    	| ✅             	|
 | Deep links: Rooms                                             	| ✅             	|
 | Draft per room                                                	|  ❌            	|
-| Localized in Portuguese (pt-BR)                               	|  ❌            	|
+| Localized in Portuguese (pt-BR)                               	| ✅             	|
 | Localized in Russian                                          	| ✅             	|
 | Localized in English                                          	| ✅                 |
 | Full name setting                                             	|  ✅            	|

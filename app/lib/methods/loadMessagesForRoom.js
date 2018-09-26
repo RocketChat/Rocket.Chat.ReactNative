@@ -14,6 +14,9 @@ async function loadMessagesForRoomRest({ rid: roomId, latest, t }) {
 	const { token, id } = this.ddp._login;
 	const server = this.ddp.url.replace('ws', 'http');
 	const data = await get({ token, id, server }, `${ types[t] }.history`, { roomId, latest });
+	if (!data || data.status === 'error') {
+		return [];
+	}
 	return data.messages;
 }
 
