@@ -25,25 +25,26 @@ export default StyleSheet.create({
 	},
 	textBoxInput: {
 		textAlignVertical: 'center',
-		maxHeight: 120,
+		maxHeight: 242,
 		flexGrow: 1,
 		width: 1,
 		// paddingVertical: 12, needs to be paddingTop/paddingBottom because of iOS/Android's TextInput differences on rendering
 		paddingTop: 12,
 		paddingBottom: 12,
 		paddingLeft: 0,
-		paddingRight: 0
+		paddingRight: 0,
+		fontSize: 17,
+		letterSpacing: 0,
+		color: '#2f343d'
 	},
 	editing: {
 		backgroundColor: '#fff5df'
 	},
-	actionButtons: {
-		color: '#2F343D',
-		fontSize: 20,
-		textAlign: 'center',
-		padding: 15,
-		paddingHorizontal: 12,
-		flex: 0
+	actionButton: {
+		alignItems: 'center',
+		justifyContent: 'center',
+		width: 60,
+		height: 56
 	},
 	mentionList: {
 		maxHeight: MENTION_HEIGHT * 4

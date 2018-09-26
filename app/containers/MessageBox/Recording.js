@@ -4,6 +4,8 @@ import {
 	View, SafeAreaView, Platform, PermissionsAndroid, Text
 } from 'react-native';
 import { AudioRecorder, AudioUtils } from 'react-native-audio';
+import { BorderlessButton } from 'react-native-gesture-handler';
+
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import styles from './styles';
 import I18n from '../../i18n';
@@ -119,24 +121,32 @@ export default class extends React.PureComponent {
 				testID='messagebox-recording'
 				style={styles.textBox}
 			>
-				<View style={[styles.textArea, { backgroundColor: '#F6F7F9' }]}>
-					<Icon
-						style={[styles.actionButtons, { color: 'red' }]}
-						name='clear'
-						key='clear'
+				<View style={styles.textArea}>
+					<BorderlessButton
+						onPress={this.cancelAudioMessage}
 						accessibilityLabel={I18n.t('Cancel_recording')}
 						accessibilityTraits='button'
-						onPress={this.cancelAudioMessage}
-					/>
+						style={styles.actionButton}
+					>
+						<Icon
+							size={22}
+							color='#f5455c'
+							name='clear'
+						/>
+					</BorderlessButton>
 					<Text key='currentTime' style={styles.textBoxInput}>{currentTime}</Text>
-					<Icon
-						style={[styles.actionButtons, { color: 'green' }]}
-						name='check'
-						key='check'
+					<BorderlessButton
+						onPress={this.finishAudioMessage}
 						accessibilityLabel={I18n.t('Finish_recording')}
 						accessibilityTraits='button'
-						onPress={this.finishAudioMessage}
-					/>
+						style={styles.actionButton}
+					>
+						<Icon
+							size={22}
+							color='#2de0a5'
+							name='check'
+						/>
+					</BorderlessButton>
 				</View>
 			</SafeAreaView>);
 	}
