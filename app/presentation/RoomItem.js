@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
+import { RectButton } from 'react-native-gesture-handler';
 
 import Avatar from '../containers/Avatar';
 import Status from '../containers/status';
@@ -142,7 +143,6 @@ export default class RoomItem extends React.Component {
 		userMentions: PropTypes.number,
 		id: PropTypes.string,
 		onPress: PropTypes.func,
-		onLongPress: PropTypes.func,
 		username: PropTypes.string,
 		avatarSize: PropTypes.number,
 		testID: PropTypes.string,
@@ -229,7 +229,7 @@ export default class RoomItem extends React.Component {
 
 	render() {
 		const {
-			favorite, unread, userMentions, name, _updatedAt, alert, testID, height, onPress, onLongPress
+			favorite, unread, userMentions, name, _updatedAt, alert, testID, height, onPress
 		} = this.props;
 
 		const date = this.formatDate(_updatedAt);
@@ -250,16 +250,16 @@ export default class RoomItem extends React.Component {
 		}
 
 		return (
-			<Touch
+			<RectButton
 				onPress={onPress}
-				onLongPress={onLongPress}
-				underlayColor='#FFFFFF'
-				activeOpacity={0.5}
-				accessibilityLabel={accessibilityLabel}
-				accessibilityTraits='selected'
+				activeOpacity={0.8}
+				underlayColor='#e1e5e8'
 				testID={testID}
 			>
-				<View style={[styles.container, favorite && styles.favorite, height && { height }]}>
+				<View
+					style={[styles.container, favorite && styles.favorite, height && { height }]}
+					accessibilityLabel={accessibilityLabel}
+				>
 					{this.avatar}
 					<View style={styles.centerContainer}>
 						<View style={styles.titleContainer}>
@@ -276,7 +276,7 @@ export default class RoomItem extends React.Component {
 					</View>
 					{this.renderDisclosureIndicator()}
 				</View>
-			</Touch>
+			</RectButton>
 		);
 	}
 }

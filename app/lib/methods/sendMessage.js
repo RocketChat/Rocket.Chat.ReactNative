@@ -33,7 +33,7 @@ export const getMessage = (rid, msg = {}) => {
 
 function sendMessageByRest(message) {
 	const { token, id } = this.ddp._login;
-	const server = this.ddp.url.replace('ws', 'http');
+	const server = this.ddp.url.replace(/^ws/, 'http');
 	const { _id, rid, msg } = message;
 	return post({ token, id, server }, 'chat.sendMessage', { message: { _id, rid, msg } });
 }

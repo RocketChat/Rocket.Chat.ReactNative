@@ -7,7 +7,7 @@ import log from '../../utils/log';
 
 async function loadMissedMessagesRest({ rid: roomId, lastOpen: lastUpdate }) {
 	const { token, id } = this.ddp._login;
-	const server = this.ddp.url.replace('ws', 'http');
+	const server = this.ddp.url.replace(/^ws/, 'http');
 	const { result } = await get({ token, id, server }, 'chat.syncMessages', { roomId, lastUpdate });
 	// TODO: api fix
 	if (!result) {
