@@ -13,7 +13,7 @@ const restTypes = {
 async function canOpenRoomREST({ type, rid }) {
 	try {
 		const { token, id } = this.ddp._login;
-		const server = this.ddp.url.replace('ws', 'http');
+		const server = this.ddp.url.replace(/^ws/, 'http');
 		await post({ token, id, server }, `${ restTypes[type] }.open`, { roomId: rid });
 		return true;
 	} catch (error) {

@@ -17,7 +17,7 @@ const getRoomRest = async function() {
 	const { ddp } = this;
 	const updatedSince = lastMessage();
 	const { token, id } = ddp._login;
-	const server = this.ddp.url.replace('ws', 'http');
+	const server = this.ddp.url.replace(/^ws/, 'http');
 	const [subscriptions, rooms] = await Promise.all([get({ token, id, server }, 'subscriptions.get', { updatedSince }), get({ token, id, server }, 'rooms.get', { updatedSince })]);
 	return mergeSubscriptionsRooms(subscriptions, rooms);
 };
