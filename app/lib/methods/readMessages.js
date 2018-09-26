@@ -4,7 +4,7 @@ import log from '../../utils/log';
 
 const	readMessagesREST = function readMessagesREST(rid) {
 	const { token, id } = this.ddp._login;
-	const server = this.ddp.url.replace('ws', 'http');
+	const server = this.ddp.url.replace(/^ws/, 'http');
 	return post({ token, id, server }, 'subscriptions.read', { rid });
 };
 

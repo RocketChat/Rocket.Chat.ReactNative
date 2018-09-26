@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import { leaveRoom as leaveRoomAction } from '../../actions/room';
 import LoggedView from '../View';
@@ -74,7 +75,7 @@ export default class RoomActionsView extends LoggedView {
 		if (item.route) {
 			if (modules[item.route] == null) {
 				modules[item.route] = item.require();
-				Navigation.registerComponent(item.route, () => modules[item.route], store, Provider);
+				Navigation.registerComponent(item.route, () => gestureHandlerRootHOC(modules[item.route]), store, Provider);
 			}
 			navigator.push({
 				screen: item.route,

@@ -14,10 +14,9 @@ import {
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	customEmojis: state.customEmojis,
-	editing: state.messages.editing,
 	Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
 	Message_TimeFormat: state.settings.Message_TimeFormat,
-	message: state.messages.message,
+	editingMessage: state.messages.message,
 	useRealName: state.settings.UI_Use_Real_Name
 }), dispatch => ({
 	errorActionsShow: actionMessage => dispatch(errorActionsShowAction(actionMessage)),
@@ -43,10 +42,9 @@ export default class MessageContainer extends React.Component {
 		// redux
 		baseUrl: PropTypes.string,
 		customEmojis: PropTypes.object,
-		editing: PropTypes.bool,
 		Message_GroupingPeriod: PropTypes.number,
 		Message_TimeFormat: PropTypes.string,
-		message: PropTypes.object,
+		editingMessage: PropTypes.object,
 		useRealName: PropTypes.bool,
 		// methods - props
 		onLongPress: PropTypes.func,
@@ -73,7 +71,7 @@ export default class MessageContainer extends React.Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { reactionsModal } = this.state;
 		const {
-			status, reactions, broadcast, editing, _updatedAt
+			status, reactions, broadcast, _updatedAt, editingMessage, item
 		} = this.props;
 
 		if (reactionsModal !== nextState.reactionsModal) {
@@ -92,8 +90,12 @@ export default class MessageContainer extends React.Component {
 		if (broadcast !== nextProps.broadcast) {
 			return true;
 		}
-		if (editing !== nextProps.editing) {
-			return true;
+		if (!equal(editingMessage, nextProps.editingMessage)) {
+			if (nextProps.editingMessage && nextProps.editingMessage._id === item._id) {
+				return true;
+			} else if (!nextProps.editingMessage._id !== item._id && editingMessage._id === item._id) {
+				return true;
+			}
 		}
 		return _updatedAt.toGMTString() !== nextProps._updatedAt.toGMTString();
 	}
@@ -163,12 +165,12 @@ export default class MessageContainer extends React.Component {
 	render() {
 		const { reactionsModal } = this.state;
 		const {
-			item, message, editing, user, style, archived, baseUrl, customEmojis, useRealName, broadcast
+			item, editingMessage, user, style, archived, baseUrl, customEmojis, useRealName, broadcast
 		} = this.props;
 		const {
 			msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy, role
 		} = item;
-		const isEditing = message._id === item._id && editing;
+		const isEditing = editingMessage._id === item._id;
 		return (
 			<Message
 				msg={msg}

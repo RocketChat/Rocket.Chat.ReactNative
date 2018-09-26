@@ -41,9 +41,9 @@ const SYSTEM_MESSAGES = [
 ];
 
 const getInfoMessage = ({
-	type, role, msg, user
+	type, role, msg, author
 }) => {
-	const { username } = user;
+	const { username } = author;
 	if (type === 'rm') {
 		return I18n.t('Message_removed');
 	} else if (type === 'uj') {
