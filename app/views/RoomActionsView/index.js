@@ -22,6 +22,7 @@ import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import store from '../../lib/createStore';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 const renderSeparator = () => <View style={styles.separator} />;
 
@@ -74,7 +75,7 @@ export default class RoomActionsView extends LoggedView {
 		if (item.route) {
 			if (modules[item.route] == null) {
 				modules[item.route] = item.require();
-				Navigation.registerComponent(item.route, () => modules[item.route], store, Provider);
+				Navigation.registerComponent(item.route, () => gestureHandlerRootHOC(modules[item.route]), store, Provider);
 			}
 			navigator.push({
 				screen: item.route,
