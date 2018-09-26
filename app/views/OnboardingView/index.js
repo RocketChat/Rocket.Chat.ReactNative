@@ -4,7 +4,8 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { connect } from 'react-redux';
+import { connect, Provider } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import { selectServerRequest, serverInitAdd, serverFinishAdd } from '../../actions/server';
 import I18n from '../../i18n';
@@ -13,6 +14,9 @@ import Button from './Button';
 import styles from './styles';
 import LoggedView from '../View';
 import DeviceInfo from '../../utils/deviceInfo';
+import store from '../../lib/createStore';
+
+let NewServerView = null;
 
 @connect(state => ({
 	currentServer: state.server.server,
@@ -63,6 +67,11 @@ export default class OnboardingView extends LoggedView {
 	}
 
 	connectServer = () => {
+		if (NewServerView == null) {
+			NewServerView = require('../NewServerView').default;
+			Navigation.registerComponent('NewServerView', () => NewServerView, store, Provider);
+		}
+
 		const { navigator } = this.props;
 		navigator.push({
 			screen: 'NewServerView',
@@ -74,6 +83,11 @@ export default class OnboardingView extends LoggedView {
 	}
 
 	joinCommunity = () => {
+		if (NewServerView == null) {
+			NewServerView = require('../NewServerView').default;
+			Navigation.registerComponent('NewServerView', () => NewServerView, store, Provider);
+		}
+
 		const { navigator } = this.props;
 		navigator.push({
 			screen: 'NewServerView',

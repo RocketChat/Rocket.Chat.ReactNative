@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import {
 	View, Text, ScrollView, SafeAreaView
 } from 'react-native';
-import { connect } from 'react-redux';
+import { connect, Provider } from 'react-redux';
 import moment from 'moment';
+import { Navigation } from 'react-native-navigation';
 
 import LoggedView from '../View';
 import Status from '../../containers/status';
@@ -18,6 +19,7 @@ import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import { iconsMap } from '../../Icons';
+import store from '../../lib/createStore';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
@@ -31,6 +33,8 @@ const getRoomTitle = room => (room.t === 'd'
 		</View>
 	)
 );
+
+let RoomInfoEditView = null;
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -80,6 +84,11 @@ export default class RoomInfoView extends LoggedView {
 		const { rid, navigator } = this.props;
 		if (event.type === 'NavBarButtonPress') {
 			if (event.id === 'edit') {
+				if (RoomInfoEditView == null) {
+					RoomInfoEditView = require('../RoomInfoEditView').default;
+					Navigation.registerComponent('RoomInfoEditView', () => RoomInfoEditView, store, Provider);
+				}
+
 				navigator.push({
 					screen: 'RoomInfoEditView',
 					title: I18n.t('Room_Info_Edit'),

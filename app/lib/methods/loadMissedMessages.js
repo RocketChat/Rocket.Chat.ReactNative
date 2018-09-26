@@ -10,6 +10,9 @@ async function loadMissedMessagesRest({ rid: roomId, lastOpen: lastUpdate }) {
 	const server = this.ddp.url.replace('ws', 'http');
 	const { result } = await get({ token, id, server }, 'chat.syncMessages', { roomId, lastUpdate });
 	// TODO: api fix
+	if (!result) {
+		return [];
+	}
 	return result.updated || result.messages;
 }
 

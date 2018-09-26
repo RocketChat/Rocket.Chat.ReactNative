@@ -14,8 +14,7 @@
     "storybook": "storybook start -p 7007",
     "snyk-protect": "snyk protect",
     "fabric-ios": "./scripts/fabric-ios.sh",
-    "fabric-android": "./scripts/fabric-android.sh",
-    "postinstall": "cp ./temp/react.gradle ./node_modules/react-native"
+    "fabric-android": "./scripts/fabric-android.sh"
   },
   "rnpm": {
     "assets": [
@@ -38,10 +37,10 @@
     "react-native": "^0.57.1",
     "react-native-actionsheet": "^2.4.2",
     "react-native-audio": "^4.2.0",
-    "react-native-device-info": "^0.22.5",
+    "react-native-device-info": "^0.22.6",
     "react-native-dialog": "^5.1.0",
     "react-native-fabric": "^0.5.1",
-    "react-native-fast-image": "^5.0.3",
+    "react-native-fast-image": "^5.0.10",
     "react-native-gesture-handler": "^1.0.7",
     "react-native-i18n": "^2.0.15",
     "react-native-image-crop-picker": "git+https://github.com/RocketChat/react-native-image-crop-picker.git",
@@ -87,7 +86,7 @@
     "babel-plugin-transform-remove-console": "^6.9.4",
     "babel-runtime": "^6.26.0",
     "codecov": "^3.1.0",
-    "detox": "^9.0.1",
+    "detox": "^9.0.2",
     "eslint": "^5.6.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",

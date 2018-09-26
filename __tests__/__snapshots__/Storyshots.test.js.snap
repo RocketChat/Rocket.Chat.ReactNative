@@ -39,6 +39,9 @@ exports[`Storyshots Avatar avatar 1`] = `
       <View
         style={
           Array [
+            Object {
+              "overflow": "hidden",
+            },
             Array [
               Object {
                 "position": "absolute",
@@ -49,9 +52,6 @@ exports[`Storyshots Avatar avatar 1`] = `
                 "width": 25,
               },
             ],
-            Object {
-              "overflow": "hidden",
-            },
           ]
         }
       >
@@ -111,6 +111,9 @@ exports[`Storyshots Avatar avatar 1`] = `
       <View
         style={
           Array [
+            Object {
+              "overflow": "hidden",
+            },
             Array [
               Object {
                 "position": "absolute",
@@ -121,9 +124,6 @@ exports[`Storyshots Avatar avatar 1`] = `
                 "width": 40,
               },
             ],
-            Object {
-              "overflow": "hidden",
-            },
           ]
         }
       >
@@ -183,6 +183,9 @@ exports[`Storyshots Avatar avatar 1`] = `
       <View
         style={
           Array [
+            Object {
+              "overflow": "hidden",
+            },
             Array [
               Object {
                 "position": "absolute",
@@ -193,9 +196,6 @@ exports[`Storyshots Avatar avatar 1`] = `
                 "width": 30,
               },
             ],
-            Object {
-              "overflow": "hidden",
-            },
           ]
         }
       >
@@ -255,6 +255,9 @@ exports[`Storyshots Avatar avatar 1`] = `
       <View
         style={
           Array [
+            Object {
+              "overflow": "hidden",
+            },
             Array [
               Object {
                 "position": "absolute",
@@ -265,9 +268,6 @@ exports[`Storyshots Avatar avatar 1`] = `
                 "width": 25,
               },
             ],
-            Object {
-              "overflow": "hidden",
-            },
           ]
         }
       >
@@ -360,6 +360,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Array [
+                Object {
+                  "overflow": "hidden",
+                },
                 Array [
                   Object {
                     "position": "absolute",
@@ -370,9 +373,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                     "width": 48,
                   },
                 ],
-                Object {
-                  "overflow": "hidden",
-                },
               ]
             }
           >
@@ -591,6 +591,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Array [
+                Object {
+                  "overflow": "hidden",
+                },
                 Array [
                   Object {
                     "position": "absolute",
@@ -601,9 +604,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                     "width": 48,
                   },
                 ],
-                Object {
-                  "overflow": "hidden",
-                },
               ]
             }
           >
@@ -826,6 +826,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Array [
+                Object {
+                  "overflow": "hidden",
+                },
                 Array [
                   Object {
                     "position": "absolute",
@@ -836,9 +839,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                     "width": 48,
                   },
                 ],
-                Object {
-                  "overflow": "hidden",
-                },
               ]
             }
           >
@@ -1083,6 +1083,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Array [
+                Object {
+                  "overflow": "hidden",
+                },
                 Array [
                   Object {
                     "position": "absolute",
@@ -1093,9 +1096,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                     "width": 48,
                   },
                 ],
-                Object {
-                  "overflow": "hidden",
-                },
               ]
             }
           >
@@ -1344,6 +1344,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Array [
+                Object {
+                  "overflow": "hidden",
+                },
                 Array [
                   Object {
                     "position": "absolute",
@@ -1354,9 +1357,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                     "width": 48,
                   },
                 ],
-                Object {
-                  "overflow": "hidden",
-                },
               ]
             }
           >
@@ -1601,6 +1601,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Array [
+                Object {
+                  "overflow": "hidden",
+                },
                 Array [
                   Object {
                     "position": "absolute",
@@ -1611,9 +1614,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                     "width": 48,
                   },
                 ],
-                Object {
-                  "overflow": "hidden",
-                },
               ]
             }
           >
@@ -1858,6 +1858,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Array [
+                Object {
+                  "overflow": "hidden",
+                },
                 Array [
                   Object {
                     "position": "absolute",
@@ -1868,9 +1871,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                     "width": 48,
                   },
                 ],
-                Object {
-                  "overflow": "hidden",
-                },
               ]
             }
           >
@@ -2115,6 +2115,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Array [
+                Object {
+                  "overflow": "hidden",
+                },
                 Array [
                   Object {
                     "position": "absolute",
@@ -2125,9 +2128,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                     "width": 48,
                   },
                 ],
-                Object {
-                  "overflow": "hidden",
-                },
               ]
             }
           >
@@ -2372,6 +2372,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Array [
+                Object {
+                  "overflow": "hidden",
+                },
                 Array [
                   Object {
                     "position": "absolute",
@@ -2382,9 +2385,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                     "width": 48,
                   },
                 ],
-                Object {
-                  "overflow": "hidden",
-                },
               ]
             }
           >
@@ -2603,6 +2603,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Array [
+                Object {
+                  "overflow": "hidden",
+                },
                 Array [
                   Object {
                     "position": "absolute",
@@ -2613,9 +2616,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                     "width": 48,
                   },
                 ],
-                Object {
-                  "overflow": "hidden",
-                },
               ]
             }
           >
@@ -2834,6 +2834,9 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
           <View
             style={
               Array [
+                Object {
+                  "overflow": "hidden",
+                },
                 Array [
                   Object {
                     "position": "absolute",
@@ -2844,9 +2847,6 @@ exports[`Storyshots Channel Cell Direct Messages 1`] = `
                     "width": 48,
                   },
                 ],
-                Object {
-                  "overflow": "hidden",
-                },
               ]
             }
           >
