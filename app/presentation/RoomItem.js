@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
-import { State, RectButton } from 'react-native-gesture-handler';
+import { RectButton } from 'react-native-gesture-handler';
 
 import Avatar from '../containers/Avatar';
 import Status from '../containers/status';

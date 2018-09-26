@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import { leaveRoom as leaveRoomAction } from '../../actions/room';
 import LoggedView from '../View';
@@ -22,7 +23,6 @@ import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import store from '../../lib/createStore';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 const renderSeparator = () => <View style={styles.separator} />;
 
