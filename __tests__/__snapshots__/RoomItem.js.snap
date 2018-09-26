@@ -650,6 +650,9 @@ exports[`render unread +999 1`] = `
         <View
           style={
             Array [
+              Object {
+                "overflow": "hidden",
+              },
               Array [
                 Object {
                   "position": "absolute",
@@ -660,9 +663,6 @@ exports[`render unread +999 1`] = `
                   "width": 48,
                 },
               ],
-              Object {
-                "overflow": "hidden",
-              },
             ]
           }
         >
@@ -912,6 +912,9 @@ exports[`render unread 1`] = `
         <View
           style={
             Array [
+              Object {
+                "overflow": "hidden",
+              },
               Array [
                 Object {
                   "position": "absolute",
@@ -922,9 +925,6 @@ exports[`render unread 1`] = `
                   "width": 48,
                 },
               ],
-              Object {
-                "overflow": "hidden",
-              },
             ]
           }
         >
@@ -1174,6 +1174,9 @@ exports[`renders correctly 1`] = `
         <View
           style={
             Array [
+              Object {
+                "overflow": "hidden",
+              },
               Array [
                 Object {
                   "position": "absolute",
@@ -1184,9 +1187,6 @@ exports[`renders correctly 1`] = `
                   "width": 48,
                 },
               ],
-              Object {
-                "overflow": "hidden",
-              },
             ]
           }
         >
