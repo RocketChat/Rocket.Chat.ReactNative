@@ -2,3 +2,5 @@ __tests__
 node_modules
 coverage
 e2e
+android
+ios

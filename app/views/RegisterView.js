@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import {
 	Keyboard, Text, View, ScrollView, SafeAreaView
 } from 'react-native';
-import { connect } from 'react-redux';
+import { connect, Provider } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import { registerSubmit as registerSubmitAction, setUsernameSubmit as setUsernameSubmitAction } from '../actions/login';
 import TextInput from '../containers/TextInput';
@@ -15,6 +16,10 @@ import { showToast } from '../utils/info';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import LoggedView from './View';
 import I18n from '../i18n';
+import store from '../lib/createStore';
+
+let TermsServiceView = null;
+let PrivacyPolicyView = null;
 
 @connect(state => ({
 	server: state.server.server,
@@ -97,6 +102,11 @@ export default class RegisterView extends LoggedView {
 	}
 
 	termsService = () => {
+		if (TermsServiceView == null) {
+			TermsServiceView = require('./TermsServiceView').default;
+			Navigation.registerComponent('TermsServiceView', () => TermsServiceView, store, Provider);
+		}
+
 		const { navigator } = this.props;
 		navigator.push({
 			screen: 'TermsServiceView',
@@ -106,6 +116,11 @@ export default class RegisterView extends LoggedView {
 	}
 
 	privacyPolicy = () => {
+		if (PrivacyPolicyView == null) {
+			PrivacyPolicyView = require('./PrivacyPolicyView').default;
+			Navigation.registerComponent('PrivacyPolicyView', () => PrivacyPolicyView, store, Provider);
+		}
+
 		const { navigator } = this.props;
 		navigator.push({
 			screen: 'PrivacyPolicyView',

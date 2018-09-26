@@ -1,5 +1,7 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
 import { AsyncStorage } from 'react-native';
+import { Navigation } from 'react-native-navigation';
+import { Provider } from 'react-redux';
 
 import { NavigationActions } from '../Navigation';
 import { SERVER } from '../actions/actionsTypes';
@@ -10,6 +12,9 @@ import { setRoles } from '../actions/roles';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import log from '../utils/log';
+import store from '../lib/createStore';
+
+let LoginSignupView = null;
 
 const validate = function* validate(server) {
 	return yield RocketChat.testServer(server);
@@ -43,6 +48,11 @@ const handleSelectServer = function* handleSelectServer({ server }) {
 
 const handleServerRequest = function* handleServerRequest({ server }) {
 	try {
+		if (LoginSignupView == null) {
+			LoginSignupView = require('../views/LoginSignupView').default;
+			Navigation.registerComponent('LoginSignupView', () => LoginSignupView, store, Provider);
+		}
+
 		yield call(validate, server);
 		yield call(NavigationActions.push, { screen: 'LoginSignupView', title: server, backButtonTitle: '' });
 		database.databases.serversDB.write(() => {

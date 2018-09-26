@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import {
 	View, StyleSheet, SafeAreaView, FlatList, LayoutAnimation, Platform
 } from 'react-native';
-import { connect } from 'react-redux';
+import { connect, Provider } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import {
 	addUser as addUserAction, removeUser as removeUserAction, reset as resetAction, setLoading as setLoadingAction
@@ -18,6 +19,7 @@ import I18n from '../i18n';
 import log from '../utils/log';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
+import store from '../lib/createStore';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -31,6 +33,8 @@ const styles = StyleSheet.create({
 		marginLeft: 60
 	}
 });
+
+let CreateChannelView = null;
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -108,6 +112,11 @@ export default class SelectedUsersView extends LoggedView {
 			if (event.id === 'create') {
 				const { nextAction, setLoadingInvite, navigator } = this.props;
 				if (nextAction === 'CREATE_CHANNEL') {
+					if (CreateChannelView == null) {
+						CreateChannelView = require('./CreateChannelView').default;
+						Navigation.registerComponent('CreateChannelView', () => CreateChannelView, store, Provider);
+					}
+
 					navigator.push({
 						screen: 'CreateChannelView',
 						title: I18n.t('Create_Channel'),

@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import {
 	Text, View, LayoutAnimation, ActivityIndicator, SafeAreaView
 } from 'react-native';
-import { connect } from 'react-redux';
-import equal from 'deep-equal';
+import { connect, Provider } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
+import { Navigation } from 'react-native-navigation';
 
 import { openRoom as openRoomAction, closeRoom as closeRoomAction, setLastOpen as setLastOpenAction } from '../../actions/room';
 import { toggleReactionPicker as toggleReactionPickerAction, actionsShow as actionsShowAction } from '../../actions/messages';
@@ -24,6 +24,9 @@ import log from '../../utils/log';
 import I18n from '../../i18n';
 import debounce from '../../utils/debounce';
 import { iconsMap } from '../../Icons';
+import store from '../../lib/createStore';
+
+let RoomActionsView = null;
 
 @connect(state => ({
 	user: {
@@ -104,8 +107,23 @@ export default class RoomView extends LoggedView {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { room } = this.state;
-		return !(equal(this.props, nextProps) && equal(this.state, nextState) && room.ro === nextState.room.ro);
+		const {
+			room, loaded, joined, end
+		} = this.state;
+		const { showActions } = this.props;
+
+		if (room.ro !== nextState.room.ro) {
+			return true;
+		} else if (loaded !== nextState.loaded) {
+			return true;
+		} else if (joined !== nextState.joined) {
+			return true;
+		} else if (end !== nextState.end) {
+			return true;
+		} else if (showActions !== nextProps.showActions) {
+			return true;
+		}
+		return false;
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -141,6 +159,11 @@ export default class RoomView extends LoggedView {
 
 		if (event.type === 'NavBarButtonPress') {
 			if (event.id === 'more') {
+				if (RoomActionsView == null) {
+					RoomActionsView = require('../RoomActionsView').default;
+					Navigation.registerComponent('RoomActionsView', () => RoomActionsView, store, Provider);
+				}
+
 				navigator.push({
 					screen: 'RoomActionsView',
 					title: I18n.t('Actions'),
