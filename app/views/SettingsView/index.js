@@ -128,9 +128,6 @@ export default class SettingsView extends LoggedView {
 		} catch (e) {
 			this.setState({ saving: false });
 			setTimeout(() => {
-				if (e && e.error) {
-					return showErrorAlert(I18n.t(e.error, e.details));
-				}
 				showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_preferences') }));
 				log('saveUserPreferences', e);
 			}, 300);

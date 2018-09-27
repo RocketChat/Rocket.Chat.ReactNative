@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, TextInput, FlatList, Text, TouchableOpacity, Alert
+	View, TextInput, FlatList, Text, TouchableOpacity, Alert, Image
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
+import { BorderlessButton } from 'react-native-gesture-handler';
 
 import { userTyping as userTypingAction } from '../../actions/room';
 import {
@@ -17,7 +18,6 @@ import {
 } from '../../actions/messages';
 import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
-import MyIcon from '../icons';
 import database from '../../lib/realm';
 import Avatar from '../Avatar';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
@@ -182,35 +182,52 @@ export default class MessageBox extends React.PureComponent {
 
 		if (editing) {
 			return (
-				<Icon
-					style={styles.actionButtons}
-					name='close'
+				<BorderlessButton
+					onPress={this.editCancel}
 					accessibilityLabel={I18n.t('Cancel_editing')}
 					accessibilityTraits='button'
-					onPress={() => this.editCancel()}
+					style={styles.actionButton}
 					testID='messagebox-cancel-editing'
-				/>
+				>
+					<Icon
+						size={22}
+						color='#1d74f5'
+						name='close'
+					/>
+				</BorderlessButton>
 			);
 		}
 		return !showEmojiKeyboard
 			? (
-				<Icon
-					style={styles.actionButtons}
-					onPress={() => this.openEmoji()}
+				<BorderlessButton
+					onPress={this.openEmoji}
 					accessibilityLabel={I18n.t('Open_emoji_selector')}
 					accessibilityTraits='button'
-					name='mood'
+					style={styles.actionButton}
 					testID='messagebox-open-emoji'
-				/>)
+				>
+					<Icon
+						size={22}
+						color='#1d74f5'
+						name='mood'
+					/>
+				</BorderlessButton>
+			)
 			: (
-				<Icon
-					onPress={() => this.closeEmoji()}
-					style={styles.actionButtons}
+				<BorderlessButton
+					onPress={this.closeEmoji}
 					accessibilityLabel={I18n.t('Close_emoji_selector')}
 					accessibilityTraits='button'
-					name='keyboard'
+					style={styles.actionButton}
 					testID='messagebox-close-emoji'
-				/>);
+				>
+					<Icon
+						size={22}
+						color='#1d74f5'
+						name='keyboard'
+					/>
+				</BorderlessButton>
+			);
 	}
 
 	get rightButtons() {
@@ -218,35 +235,44 @@ export default class MessageBox extends React.PureComponent {
 		const icons = [];
 
 		if (text) {
-			icons.push(<MyIcon
-				style={[styles.actionButtons, { color: '#1D74F5' }]}
-				name='send'
-				key='sendIcon'
-				accessibilityLabel={I18n.t('Send message')}
-				accessibilityTraits='button'
-				onPress={() => this.submit(text)}
-				testID='messagebox-send-message'
-			/>);
+			icons.push(
+				<BorderlessButton
+					key='send-message'
+					onPress={() => this.submit(text)}
+					style={styles.actionButton}
+					testID='messagebox-send-message'
+					accessibilityLabel={I18n.t('Send message')}
+					accessibilityTraits='button'
+				>
+					<Image source={{ uri: 'composer_send' }} style={{ width: 23, height: 23 }} />
+				</BorderlessButton>
+			);
 			return icons;
 		}
-		icons.push(<Icon
-			style={[styles.actionButtons, { color: '#1D74F5', paddingHorizontal: 10 }]}
-			name='mic'
-			key='micIcon'
-			accessibilityLabel={I18n.t('Send audio message')}
-			accessibilityTraits='button'
-			onPress={() => this.recordAudioMessage()}
-			testID='messagebox-send-audio'
-		/>);
-		icons.push(<MyIcon
-			style={[styles.actionButtons, { color: '#2F343D', fontSize: 16 }]}
-			name='plus'
-			key='fileIcon'
-			accessibilityLabel={I18n.t('Message actions')}
-			accessibilityTraits='button'
-			onPress={this.toggleFilesActions}
-			testID='messagebox-actions'
-		/>);
+		icons.push(
+			<BorderlessButton
+				key='audio-message'
+				onPress={this.recordAudioMessage}
+				style={styles.actionButton}
+				testID='messagebox-send-audio'
+				accessibilityLabel={I18n.t('Send audio message')}
+				accessibilityTraits='button'
+			>
+				<Image source={{ uri: 'composer_mic' }} style={{ width: 16, height: 23 }} />
+			</BorderlessButton>
+		);
+		icons.push(
+			<BorderlessButton
+				key='file-message'
+				onPress={this.toggleFilesActions}
+				style={styles.actionButton}
+				testID='messagebox-actions'
+				accessibilityLabel={I18n.t('Message actions')}
+				accessibilityTraits='button'
+			>
+				<Image source={{ uri: 'composer_plus' }} style={{ width: 18, height: 18 }} />
+			</BorderlessButton>
+		);
 		return icons;
 	}
 
@@ -653,7 +679,7 @@ export default class MessageBox extends React.PureComponent {
 							underlineColorAndroid='transparent'
 							defaultValue=''
 							multiline
-							placeholderTextColor='#9EA2A8'
+							placeholderTextColor='#9ea2a8'
 							testID='messagebox-input'
 						/>
 						{this.rightButtons}
