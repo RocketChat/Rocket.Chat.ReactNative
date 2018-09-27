@@ -36,10 +36,8 @@ async function loadMessagesForRoomDDP(...args) {
 
 export default async function loadMessagesForRoom(...args) {
 	const { database: db } = database;
-
 	return new Promise(async(resolve, reject) => {
 		try {
-			// eslint-disable-next-line
 			const data = (await (this.ddp.status ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args))).map(buildMessage);
 
 			if (data && data.length) {

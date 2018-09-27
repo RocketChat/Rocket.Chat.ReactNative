@@ -195,10 +195,17 @@ const RocketChat = {
 
 			this.ddp.on('stream-notify-room', protectedFunction((ddpMessage) => {
 				const [_rid, ev] = ddpMessage.fields.eventName.split('/');
-				if (ev !== 'typing') {
-					return;
+				if (ev === 'typing') {
+					reduxStore.dispatch(someoneTyping({ _rid, username: ddpMessage.fields.args[0], typing: ddpMessage.fields.args[1] }));
+				} else if (ev === 'deleteMessage') {
+					database.write(() => {
+						if (ddpMessage && ddpMessage.fields && ddpMessage.fields.args.length > 0) {
+							const { _id } = ddpMessage.fields.args[0];
+							const message = database.objects('messages').filtered('_id = $0', _id);
+							database.delete(message);
+						}
+					});
 				}
-				return reduxStore.dispatch(someoneTyping({ _rid, username: ddpMessage.fields.args[0], typing: ddpMessage.fields.args[1] }));
 			}));
 
 			this.ddp.on('rocketchat_starred_message', protectedFunction((ddpMessage) => {
