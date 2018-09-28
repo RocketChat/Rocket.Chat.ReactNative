@@ -185,11 +185,14 @@ export default class Socket extends EventEmitter {
 			if (ignore) {
 				return;
 			}
-			const cancel = this.ddp.once('disconnected', reject);
+			const cancel = this.once('disconnected', () => {
+				this.removeListener('disconnected', cancel);
+				reject();
+			});
 			this.ddp.once(id, (data) => {
 				// console.log(data);
 				this.lastping = new Date();
-				this.ddp.removeListener('disconnected', cancel);
+				this.removeListener('disconnected', cancel);
 				return (data.error ? reject(data.error) : resolve({ id, ...data }));
 			});
 		});
@@ -273,7 +276,7 @@ export default class Socket extends EventEmitter {
 		if (this._timer || this.forceDisconnect) {
 			return;
 		}
-		this._close();
+		// this._close();
 		this._logged = false;
 
 		this._timer = setTimeout(async() => {

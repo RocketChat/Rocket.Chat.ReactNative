@@ -29,7 +29,7 @@ export default async function loadMissedMessages(...args) {
 	const { database: db } = database;
 	return new Promise(async(resolve, reject) => {
 		try {
-			const data = (await (this.ddp.status ? loadMissedMessagesDDP.call(this, ...args) : loadMissedMessagesRest.call(this, ...args)));
+			const data = (await (this.ddp && this.ddp.status ? loadMissedMessagesDDP.call(this, ...args) : loadMissedMessagesRest.call(this, ...args)));
 
 			if (data) {
 				if (data.updated && data.updated.length) {

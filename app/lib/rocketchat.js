@@ -171,8 +171,6 @@ const RocketChat = {
 
 			this.ddp.on('background', () => this.getRooms().catch(e => log('background getRooms', e)));
 
-			this.ddp.on('disconnected', () => console.log('disconnected'));
-
 			this.ddp.on('logged', protectedFunction((user) => {
 				this.loginSuccess(user);
 				this.getRooms().catch(e => log('logged getRooms', e));
@@ -184,7 +182,7 @@ const RocketChat = {
 
 			this.ddp.on('disconnected', protectedFunction(() => {
 				reduxStore.dispatch(disconnect());
-				console.warn(this.ddp);
+				console.log('disconnected', this.ddp);
 			}));
 
 			this.ddp.on('stream-room-messages', (ddpMessage) => {

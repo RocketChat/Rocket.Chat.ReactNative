@@ -40,7 +40,7 @@ export default async function loadMessagesForRoom(...args) {
 	const { database: db } = database;
 	return new Promise(async(resolve, reject) => {
 		try {
-			const data = (await (this.ddp.status ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args))).map(buildMessage);
+			const data = (await (this.ddp && this.ddp.status ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args))).map(buildMessage);
 
 			if (data && data.length) {
 				InteractionManager.runAfterInteractions(() => {
