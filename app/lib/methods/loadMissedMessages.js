@@ -4,9 +4,11 @@ import { get } from './helpers/rest';
 import buildMessage from './helpers/buildMessage';
 import database from '../realm';
 import log from '../../utils/log';
+import store from '../createStore';
 
 async function loadMissedMessagesRest({ rid: roomId, lastOpen: lastUpdate }) {
-	const { token, id } = this.ddp._login;
+	const { user } = store.getState().login;
+	const { token, id } = user;
 	const server = this.ddp.url.replace(/^ws/, 'http');
 	const { result } = await get({ token, id, server }, 'chat.syncMessages', { roomId, lastUpdate });
 	return result;

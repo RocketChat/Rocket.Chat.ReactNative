@@ -1,6 +1,7 @@
 import { post } from './helpers/rest';
 import database from '../realm';
 import log from '../../utils/log';
+import store from '../createStore';
 
 // TODO: api fix
 const ddpTypes = {
@@ -12,7 +13,8 @@ const restTypes = {
 
 async function canOpenRoomREST({ type, rid }) {
 	try {
-		const { token, id } = this.ddp._login;
+		const { user } = store.getState().login;
+		const { token, id } = user;
 		const server = this.ddp.url.replace(/^ws/, 'http');
 		await post({ token, id, server }, `${ restTypes[type] }.open`, { roomId: rid });
 		return true;
@@ -50,7 +52,7 @@ export default async function canOpenRoom({ rid, path }) {
 
 	try {
 		// eslint-disable-next-line
-		const data = await (this.ddp && this.ddp.status && false ? canOpenRoomDDP.call(this, { rid, type, name }) : canOpenRoomREST.call(this, { type, rid }));
+		const data = await (this.ddp && this.ddp.status ? canOpenRoomDDP.call(this, { rid, type, name }) : canOpenRoomREST.call(this, { type, rid }));
 		return data;
 	} catch (e) {
 		log('canOpenRoom', e);
