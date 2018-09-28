@@ -20,6 +20,11 @@ function updateServer(param) {
 
 export default async function() {
 	try {
+		if (!this.ddp) {
+			// TODO: should implement loop or get from rest?
+			return;
+		}
+
 		const lastUpdate = getLastUpdate();
 		const fetchNewSettings = lastUpdate < settingsUpdatedAt;
 		const result = await ((!lastUpdate || fetchNewSettings) ? this.ddp.call('public-settings/get') : this.ddp.call('public-settings/get', new Date(lastUpdate)));

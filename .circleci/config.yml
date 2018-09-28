@@ -59,7 +59,7 @@ jobs:
           command: |
             brew update
             brew tap wix/brew
-            brew install applesimutils
+            brew install wix/brew/applesimutils
 
       - run:
           name: Install NPM modules

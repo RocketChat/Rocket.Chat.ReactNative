@@ -7,7 +7,8 @@ import log from '../../../utils/log';
 
 const subscribe = (ddp, rid) => Promise.all([
 	ddp.subscribe('stream-room-messages', rid, false),
-	ddp.subscribe('stream-notify-room', `${ rid }/typing`, false)
+	ddp.subscribe('stream-notify-room', `${ rid }/typing`, false),
+	ddp.subscribe('stream-notify-room', `${ rid }/deleteMessage`, false)
 ]);
 const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch((e) => {
 	log('unsubscribeRoom', e);

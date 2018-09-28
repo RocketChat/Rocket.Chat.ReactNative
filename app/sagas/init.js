@@ -21,14 +21,13 @@ const restore = function* restore() {
 
 		const currentServer = yield call([AsyncStorage, 'getItem'], 'currentServer');
 		if (currentServer) {
-			yield put(selectServerRequest(currentServer));
-
 			const user = yield call([AsyncStorage, 'getItem'], `${ RocketChat.TOKEN_KEY }-${ currentServer }`);
 			if (user) {
 				const userParsed = JSON.parse(user);
 				if (userParsed.language) {
 					I18n.locale = userParsed.language;
 				}
+				yield put(selectServerRequest(currentServer));
 				yield put(setUser(userParsed));
 			}
 		}

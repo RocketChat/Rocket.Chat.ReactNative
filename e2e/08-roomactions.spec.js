@@ -14,6 +14,7 @@ async function navigateToRoomActions(type) {
 	} else {
 		room = `private${ data.random }`;
 	}
+	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 	await element(by.id('rooms-list-view-search')).replaceText(room);
     await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toExist().withTimeout(60000);
     await element(by.id(`rooms-list-view-item-${ room }`)).tap();

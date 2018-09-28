@@ -3,7 +3,8 @@ import {
 	View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList, Image, AsyncStorage
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, Provider } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
@@ -13,9 +14,12 @@ import database from '../../lib/realm';
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
+import store from '../../lib/createStore';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
+
+let NewServerView = null;
 
 @connect(state => ({
 	closeServerDropdown: state.rooms.closeServerDropdown,
@@ -111,6 +115,10 @@ export default class ServerDropdown extends Component {
 			const token = await AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
 			if (!token) {
 				appStart();
+				if (NewServerView == null) {
+					NewServerView = require('../NewServerView').default;
+					Navigation.registerComponent('NewServerView', () => NewServerView, store, Provider);
+				}
 				setTimeout(() => {
 					navigator.push({
 						screen: 'NewServerView',

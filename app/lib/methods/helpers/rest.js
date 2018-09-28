@@ -2,7 +2,7 @@ import toQuery from './toQuery';
 
 
 const handleSuccess = (msg) => {
-	if (msg.success !== undefined && !msg.success) {
+	if ((msg.success !== undefined && !msg.success) || (msg.status && msg.status === 'error')) {
 		return Promise.reject(msg);
 	}
 	return msg;
