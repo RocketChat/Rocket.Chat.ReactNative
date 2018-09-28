@@ -46,8 +46,7 @@ export default StyleSheet.create({
 		flexDirection: 'column'
 	},
 	loading: {
-		flex: 1,
-		marginVertical: 15
+		flex: 1
 	},
 	imageBackground: {
 		width: '100%',

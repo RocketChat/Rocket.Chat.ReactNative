@@ -4,6 +4,7 @@ import { get } from './helpers/rest';
 import buildMessage from './helpers/buildMessage';
 import database from '../realm';
 import log from '../../utils/log';
+import store from '../createStore';
 
 // TODO: api fix
 const types = {
@@ -11,7 +12,8 @@ const types = {
 };
 
 async function loadMessagesForRoomRest({ rid: roomId, latest, t }) {
-	const { token, id } = this.ddp._login;
+	const { user } = store.getState().login;
+	const { token, id } = user;
 	const server = this.ddp.url.replace(/^ws/, 'http');
 	const data = await get({ token, id, server }, `${ types[t] }.history`, { roomId, latest });
 	if (!data || data.status === 'error') {
@@ -36,11 +38,9 @@ async function loadMessagesForRoomDDP(...args) {
 
 export default async function loadMessagesForRoom(...args) {
 	const { database: db } = database;
-
 	return new Promise(async(resolve, reject) => {
 		try {
-			// eslint-disable-next-line
-			const data = (await (this.ddp.status ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args))).map(buildMessage);
+			const data = (await (this.ddp && this.ddp.status ? loadMessagesForRoomDDP.call(this, ...args) : loadMessagesForRoomRest.call(this, ...args))).map(buildMessage);
 
 			if (data && data.length) {
 				InteractionManager.runAfterInteractions(() => {
