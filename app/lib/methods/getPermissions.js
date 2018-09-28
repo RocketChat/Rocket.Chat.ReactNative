@@ -11,6 +11,11 @@ const getLastUpdate = () => {
 
 export default async function() {
 	try {
+		if (!this.ddp) {
+			// TODO: should implement loop or get from rest?
+			return;
+		}
+
 		const lastUpdate = getLastUpdate();
 		const result = await (!lastUpdate ? this.ddp.call('permissions/get') : this.ddp.call('permissions/get', new Date(lastUpdate)));
 		const permissions = (result.update || result).filter(permission => defaultPermissions.includes(permission._id));
