@@ -540,6 +540,11 @@ const RocketChat = {
 
 	async search({ text, filterUsers = true, filterRooms = true }) {
 		const searchText = text.trim();
+
+		if (this.oldPromise) {
+			this.oldPromise('cancel');
+		}
+
 		if (searchText === '') {
 			delete this.oldPromise;
 			return [];
@@ -557,10 +562,6 @@ const RocketChat = {
 		const usernames = data.map(sub => sub.name);
 		try {
 			if (data.length < 7) {
-				if (this.oldPromise) {
-					this.oldPromise('cancel');
-				}
-
 				const { users, rooms } = await Promise.race([
 					RocketChat.spotlight(searchText, usernames, { users: filterUsers, rooms: filterRooms }),
 					new Promise((resolve, reject) => this.oldPromise = reject)
@@ -577,14 +578,13 @@ const RocketChat = {
 					...room,
 					search: true
 				})));
-
-				delete this.oldPromise;
 			}
-
+			delete this.oldPromise;
 			return data;
 		} catch (e) {
 			console.warn(e);
-			return [];
+			return data;
+			// return [];
 		}
 	},
 
