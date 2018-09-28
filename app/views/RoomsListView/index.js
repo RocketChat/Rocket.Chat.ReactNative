@@ -422,7 +422,7 @@ export default class RoomsListView extends LoggedView {
 
 	renderSearchBar = () => {
 		if (Platform.OS === 'ios') {
-			return <SearchBox onChangeText={text => this.search(text)} testID='rooms-list-view-search' />;
+			return <SearchBox onChangeText={this.search} testID='rooms-list-view-search' />;
 		}
 	}
 
