@@ -70,7 +70,7 @@
     "redux-saga": "^0.16.0",
     "rn-fetch-blob": "^0.10.13",
     "snyk": "^1.97.0",
-    "strip-ansi": "^4.0.0"
+    "strip-ansi": "^5.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",
