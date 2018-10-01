@@ -26,6 +26,16 @@ import I18n from '../../i18n';
 }))
 /** @extends React.Component */
 export default class MentionedMessagesView extends LoggedView {
+	static options() {
+		return {
+			topBar: {
+				title: {
+					text: I18n.t('Mentions')
+				}
+			}
+		};
+	}
+
 	static propTypes = {
 		rid: PropTypes.string,
 		messages: PropTypes.array,

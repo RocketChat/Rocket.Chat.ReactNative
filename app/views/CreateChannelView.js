@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {
 	View, Text, Switch, SafeAreaView, ScrollView, TextInput, StyleSheet, FlatList, Platform
 } from 'react-native';
+import { Navigation } from 'react-native-navigation';
 
 import Loading from '../containers/Loading';
 import LoggedView from './View';
@@ -15,6 +16,7 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import UserItem from '../presentation/UserItem';
 import { showErrorAlert } from '../utils/info';
+import EventEmitter from '../utils/events';
 
 const styles = StyleSheet.create({
 	container: {
@@ -72,7 +74,10 @@ const styles = StyleSheet.create({
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	createChannel: state.createChannel,
+	error: state.createChannel.error,
+	failure: state.createChannel.failure,
+	isFetching: state.createChannel.isFetching,
+	result: state.createChannel.result,
 	users: state.selectedUsers.users
 }), dispatch => ({
 	create: data => dispatch(createChannelRequestAction(data)),
@@ -81,11 +86,14 @@ const styles = StyleSheet.create({
 /** @extends React.Component */
 export default class CreateChannelView extends LoggedView {
 	static propTypes = {
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		baseUrl: PropTypes.string,
 		create: PropTypes.func.isRequired,
 		removeUser: PropTypes.func.isRequired,
-		createChannel: PropTypes.object.isRequired,
+		error: PropTypes.object,
+		failure: PropTypes.bool,
+		isFetching: PropTypes.bool,
+		result: PropTypes.object,
 		users: PropTypes.array.isRequired
 	};
 
@@ -97,7 +105,7 @@ export default class CreateChannelView extends LoggedView {
 			readOnly: false,
 			broadcast: false
 		};
-		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+		Navigation.events().bindComponent(this);
 	}
 
 	componentDidMount() {
@@ -107,36 +115,45 @@ export default class CreateChannelView extends LoggedView {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { createChannel } = this.props;
+		const { isFetching, failure, error, result, componentId } = this.props;
 
-		if (createChannel.error && prevProps.createChannel.error !== createChannel.error) {
+		if (!isFetching && isFetching !== prevProps.isFetching) {
 			setTimeout(() => {
-				const msg = createChannel.error.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_channel') });
-				showErrorAlert(msg);
+				if (failure) {
+					const msg = error.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_channel') });
+					showErrorAlert(msg);
+				} else {
+					const { rid, name } = result;
+					Navigation.dismissModal(componentId);
+					setTimeout(() => {
+						EventEmitter.emit('DeepLink', { rid, name });
+					}, 300);
+				}
 			}, 300);
 		}
 	}
 
 	onChangeText = (channelName) => {
-		const { navigator } = this.props;
-
+		const { componentId } = this.props;
 		const rightButtons = [];
 		if (channelName.trim().length > 0) {
 			rightButtons.push({
 				id: 'create',
-				title: 'Create',
+				text: 'Create',
 				testID: 'create-channel-submit'
 			});
 		}
-		navigator.setButtons({ rightButtons });
+		Navigation.mergeOptions(componentId, {
+			topBar: {
+				rightButtons
+			}
+		});
 		this.setState({ channelName });
 	}
 
-	async onNavigatorEvent(event) {
-		if (event.type === 'NavBarButtonPress') {
-			if (event.id === 'create') {
-				this.submit();
-			}
+	navigationButtonPressed = ({ buttonId }) => {
+		if (buttonId === 'create') {
+			this.submit();
 		}
 	}
 
@@ -144,9 +161,9 @@ export default class CreateChannelView extends LoggedView {
 		const {
 			channelName, type, readOnly, broadcast
 		} = this.state;
-		const { users: usersProps, createChannel, create } = this.props;
+		const { users: usersProps, isFetching, create } = this.props;
 
-		if (!channelName.trim() || createChannel.isFetching) {
+		if (!channelName.trim() || isFetching) {
 			return;
 		}
 
@@ -256,7 +273,7 @@ export default class CreateChannelView extends LoggedView {
 
 	render() {
 		const { channelName } = this.state;
-		const { users, createChannel } = this.props;
+		const { users, isFetching } = this.props;
 		const userCount = users.length;
 
 		return (
@@ -292,7 +309,7 @@ export default class CreateChannelView extends LoggedView {
 							<Text style={styles.invitedCount}>{userCount === 1 ? I18n.t('1_user') : I18n.t('N_users', { n: userCount })}</Text>
 						</View>
 						{this.renderInvitedList()}
-						<Loading visible={createChannel.isFetching} />
+						<Loading visible={isFetching} />
 					</ScrollView>
 				</SafeAreaView>
 			</KeyboardView>

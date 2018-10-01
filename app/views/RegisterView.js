@@ -35,7 +35,7 @@ let PrivacyPolicyView = null;
 /** @extends React.Component */
 export default class RegisterView extends LoggedView {
 	static propTypes = {
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		server: PropTypes.string,
 		registerSubmit: PropTypes.func.isRequired,
 		setUsernameSubmit: PropTypes.func,
@@ -104,28 +104,42 @@ export default class RegisterView extends LoggedView {
 	termsService = () => {
 		if (TermsServiceView == null) {
 			TermsServiceView = require('./TermsServiceView').default;
-			Navigation.registerComponent('TermsServiceView', () => TermsServiceView, store, Provider);
+			Navigation.registerComponentWithRedux('TermsServiceView', () => TermsServiceView, Provider, store);
 		}
 
-		const { navigator } = this.props;
-		navigator.push({
-			screen: 'TermsServiceView',
-			title: I18n.t('Terms_of_Service'),
-			backButtonTitle: ''
+		const { componentId } = this.props;
+		Navigation.push(componentId, {
+			component: {
+				name: 'TermsServiceView',
+				options: {
+					topBar: {
+						title: {
+							text: I18n.t('Terms_of_Service')
+						}
+					}
+				}
+			}
 		});
 	}
 
 	privacyPolicy = () => {
 		if (PrivacyPolicyView == null) {
 			PrivacyPolicyView = require('./PrivacyPolicyView').default;
-			Navigation.registerComponent('PrivacyPolicyView', () => PrivacyPolicyView, store, Provider);
+			Navigation.registerComponentWithRedux('PrivacyPolicyView', () => PrivacyPolicyView, Provider, store);
 		}
 
-		const { navigator } = this.props;
-		navigator.push({
-			screen: 'PrivacyPolicyView',
-			title: I18n.t('Privacy_Policy'),
-			backButtonTitle: ''
+		const { componentId } = this.props;
+		Navigation.push(componentId, {
+			component: {
+				name: 'PrivacyPolicyView',
+				options: {
+					topBar: {
+						title: {
+							text: I18n.t('Privacy_Policy')
+						}
+					}
+				}
+			}
 		});
 	}
 

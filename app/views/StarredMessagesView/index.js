@@ -33,6 +33,16 @@ const options = [I18n.t('Unstar'), I18n.t('Cancel')];
 }))
 /** @extends React.Component */
 export default class StarredMessagesView extends LoggedView {
+	static options() {
+		return {
+			topBar: {
+				title: {
+					text: I18n.t('Starred')
+				}
+			}
+		};
+	}
+
 	static propTypes = {
 		rid: PropTypes.string,
 		messages: PropTypes.array,

@@ -35,7 +35,7 @@ let ForgotPasswordView = null;
 /** @extends React.Component */
 export default class LoginView extends LoggedView {
 	static propTypes = {
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		loginSubmit: PropTypes.func.isRequired,
 		login: PropTypes.object,
 		server: PropTypes.string,
@@ -76,28 +76,42 @@ export default class LoginView extends LoggedView {
 	register = () => {
 		if (RegisterView == null) {
 			RegisterView = require('./RegisterView').default;
-			Navigation.registerComponent('RegisterView', () => RegisterView, store, Provider);
+			Navigation.registerComponentWithRedux('RegisterView', () => RegisterView, Provider, store);
 		}
 
-		const { navigator, server } = this.props;
-		navigator.push({
-			screen: 'RegisterView',
-			title: server,
-			backButtonTitle: ''
+		const { componentId, server } = this.props;
+		Navigation.push(componentId, {
+			component: {
+				name: 'RegisterView',
+				options: {
+					topBar: {
+						title: {
+							text: server
+						}
+					}
+				}
+			}
 		});
 	}
 
 	forgotPassword = () => {
 		if (ForgotPasswordView == null) {
 			ForgotPasswordView = require('./ForgotPasswordView').default;
-			Navigation.registerComponent('ForgotPasswordView', () => ForgotPasswordView, store, Provider);
+			Navigation.registerComponentWithRedux('ForgotPasswordView', () => ForgotPasswordView, Provider, store);
 		}
 
-		const { navigator } = this.props;
-		navigator.push({
-			screen: 'ForgotPasswordView',
-			title: I18n.t('Forgot_Password'),
-			backButtonTitle: ''
+		const { componentId } = this.props;
+		Navigation.push(componentId, {
+			component: {
+				name: 'ForgotPasswordView',
+				options: {
+					topBar: {
+						title: {
+							text: I18n.t('Forgot_Password')
+						}
+					}
+				}
+			}
 		});
 	}
 

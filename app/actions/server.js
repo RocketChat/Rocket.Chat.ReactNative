@@ -14,10 +14,11 @@ export function selectServerSuccess(server) {
 	};
 }
 
-export function serverRequest(server) {
+export function serverRequest(server, componentId) {
 	return {
 		type: SERVER.REQUEST,
-		server
+		server,
+		componentId
 	};
 }
 

@@ -46,8 +46,24 @@ let RoomActionsView = null;
 }))
 /** @extends React.Component */
 export default class RoomView extends LoggedView {
+	static options() {
+		return {
+			topBar: {
+				rightButtons: [{
+					id: 'more',
+					testID: 'room-view-header-actions',
+					icon: iconsMap.more
+				}, {
+					id: 'star',
+					testID: 'room-view-header-star',
+					icon: iconsMap.starOutline
+				}]
+			}
+		};
+	}
+
 	static propTypes = {
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		openRoom: PropTypes.func.isRequired,
 		setLastOpen: PropTypes.func.isRequired,
 		user: PropTypes.shape({
@@ -75,34 +91,18 @@ export default class RoomView extends LoggedView {
 			end: false
 		};
 		this.onReactionPress = this.onReactionPress.bind(this);
-		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
-	}
-
-	componentWillMount() {
-		const { navigator } = this.props;
-
-		navigator.setButtons({
-			rightButtons: [{
-				id: 'more',
-				testID: 'room-view-header-actions',
-				icon: iconsMap.more
-			}, {
-				id: 'star',
-				testID: 'room-view-header-star',
-				icon: iconsMap.starOutline
-			}]
-		});
+		Navigation.events().bindComponent(this);
 	}
 
 	componentDidMount() {
-		const { navigator } = this.props;
+		// const { navigator } = this.props;
 
 		this.updateRoom();
 		this.rooms.addListener(this.updateRoom);
-		navigator.setDrawerEnabled({
-			side: 'left',
-			enabled: false
-		});
+		// navigator.setDrawerEnabled({
+		// 	side: 'left',
+		// 	enabled: false
+		// });
 		this.setState({ loaded: true });
 	}
 
@@ -128,19 +128,21 @@ export default class RoomView extends LoggedView {
 
 	componentDidUpdate(prevProps, prevState) {
 		const { room } = this.state;
-		const { navigator } = this.props;
+		const { componentId } = this.props;
 
 		if (prevState.room.f !== room.f) {
-			navigator.setButtons({
-				rightButtons: [{
-					id: 'more',
-					testID: 'room-view-header-actions',
-					icon: iconsMap.more
-				}, {
-					id: 'star',
-					testID: 'room-view-header-star',
-					icon: room.f ? iconsMap.star : iconsMap.starOutline
-				}]
+			Navigation.mergeOptions(componentId, {
+				topBar: {
+					rightButtons: [{
+						id: 'more',
+						testID: 'room-view-header-actions',
+						icon: iconsMap.more
+					}, {
+						id: 'star',
+						testID: 'room-view-header-star',
+						icon: room.f ? iconsMap.star : iconsMap.starOutline
+					}]
+				}
 			});
 		}
 	}
@@ -152,35 +154,35 @@ export default class RoomView extends LoggedView {
 		closeRoom();
 	}
 
-	onNavigatorEvent(event) {
-		const { room } = this.state;
-		const { rid, f } = room;
-		const { navigator } = this.props;
+	// onNavigatorEvent(event) {
+	// 	const { room } = this.state;
+	// 	const { rid, f } = room;
+	// 	const { navigator } = this.props;
 
-		if (event.type === 'NavBarButtonPress') {
-			if (event.id === 'more') {
-				if (RoomActionsView == null) {
-					RoomActionsView = require('../RoomActionsView').default;
-					Navigation.registerComponent('RoomActionsView', () => RoomActionsView, store, Provider);
-				}
+	// 	if (event.type === 'NavBarButtonPress') {
+	// 		if (event.id === 'more') {
+	// 			if (RoomActionsView == null) {
+	// 				RoomActionsView = require('../RoomActionsView').default;
+	// 				Navigation.registerComponent('RoomActionsView', () => RoomActionsView, store, Provider);
+	// 			}
 
-				navigator.push({
-					screen: 'RoomActionsView',
-					title: I18n.t('Actions'),
-					backButtonTitle: '',
-					passProps: {
-						rid
-					}
-				});
-			} else if (event.id === 'star') {
-				try {
-					RocketChat.toggleFavorite(rid, f);
-				} catch (e) {
-					log('toggleFavorite', e);
-				}
-			}
-		}
-	}
+	// 			navigator.push({
+	// 				screen: 'RoomActionsView',
+	// 				title: I18n.t('Actions'),
+	// 				backButtonTitle: '',
+	// 				passProps: {
+	// 					rid
+	// 				}
+	// 			});
+	// 		} else if (event.id === 'star') {
+	// 			try {
+	// 				RocketChat.toggleFavorite(rid, f);
+	// 			} catch (e) {
+	// 				log('toggleFavorite', e);
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 	onEndReached = debounce((lastRowData) => {
 		if (!lastRowData) {
@@ -217,8 +219,36 @@ export default class RoomView extends LoggedView {
 		}
 	};
 
+	navigationButtonPressed = ({ buttonId }) => {
+		const { room } = this.state;
+		const { rid, f } = room;
+		const { componentId } = this.props;
+
+		if (buttonId === 'more') {
+			if (RoomActionsView == null) {
+				RoomActionsView = require('../RoomActionsView').default;
+				Navigation.registerComponentWithRedux('RoomActionsView', () => RoomActionsView, Provider, store);
+			}
+
+			Navigation.push(componentId, {
+				component: {
+					name: 'RoomActionsView',
+					passProps: {
+						rid
+					}
+				}
+			});
+		} else if (buttonId === 'star') {
+			try {
+				RocketChat.toggleFavorite(rid, f);
+			} catch (e) {
+				log('toggleFavorite', e);
+			}
+		}
+	}
+
 	updateRoom = async() => {
-		const { navigator, openRoom, setLastOpen } = this.props;
+		const { componentId, openRoom, setLastOpen } = this.props;
 
 		if (this.rooms.length > 0) {
 			const { room: prevRoom } = this.state;
@@ -226,7 +256,13 @@ export default class RoomView extends LoggedView {
 			this.setState({ room });
 
 			if (!prevRoom.rid) {
-				navigator.setTitle({ title: room.name });
+				Navigation.mergeOptions(componentId, {
+					topBar: {
+						title: {
+							text: room.name
+						}
+					}
+				});
 				openRoom({
 					...room
 				});

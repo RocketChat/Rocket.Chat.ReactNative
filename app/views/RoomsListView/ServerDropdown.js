@@ -15,11 +15,14 @@ import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import store from '../../lib/createStore';
+import EventEmitter from '../../utils/events';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
 
 let NewServerView = null;
+
+console.disableYellowBox = true;
 
 @connect(state => ({
 	closeServerDropdown: state.rooms.closeServerDropdown,
@@ -31,7 +34,7 @@ let NewServerView = null;
 }))
 export default class ServerDropdown extends Component {
 	static propTypes = {
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		closeServerDropdown: PropTypes.bool,
 		server: PropTypes.string,
 		toggleServerDropdown: PropTypes.func,
@@ -106,30 +109,19 @@ export default class ServerDropdown extends Component {
 
 	select = async(server) => {
 		const {
-			server: serverProp, selectServerRequest, appStart, navigator
+			server: serverProp, selectServerRequest, appStart
 		} = this.props;
 
 		this.close();
 		if (serverProp !== server) {
-			selectServerRequest(server);
 			const token = await AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
-			if (!token) {
+			console.warn(token)
+			if (token) {
+				selectServerRequest(server);
+			} else {
 				appStart();
-				if (NewServerView == null) {
-					NewServerView = require('../NewServerView').default;
-					Navigation.registerComponent('NewServerView', () => NewServerView, store, Provider);
-				}
 				setTimeout(() => {
-					navigator.push({
-						screen: 'NewServerView',
-						backButtonTitle: '',
-						passProps: {
-							server
-						},
-						navigatorStyle: {
-							navBarHidden: true
-						}
-					});
+					EventEmitter.emit('NewServer', { server });
 				}, 1000);
 			}
 		}

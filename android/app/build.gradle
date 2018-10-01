@@ -106,7 +106,7 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
-        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative55"
+        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative56"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
     }

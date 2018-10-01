@@ -41,6 +41,16 @@ const PERMISSIONS_ARRAY = [
 }))
 /** @extends React.Component */
 export default class RoomInfoEditView extends LoggedView {
+	static options() {
+		return {
+			topBar: {
+				title: {
+					text: I18n.t('Room_Info_Edit')
+				}
+			}
+		};
+	}
+
 	static propTypes = {
 		rid: PropTypes.string,
 		eraseRoom: PropTypes.func

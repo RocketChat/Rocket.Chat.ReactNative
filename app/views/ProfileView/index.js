@@ -39,7 +39,7 @@ import Touch from '../../utils/touch';
 export default class ProfileView extends LoggedView {
 	static propTypes = {
 		baseUrl: PropTypes.string,
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		user: PropTypes.object,
 		Accounts_CustomFields: PropTypes.string
 	}
@@ -59,7 +59,7 @@ export default class ProfileView extends LoggedView {
 			avatarSuggestions: {},
 			customFields: {}
 		};
-		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+		Navigation.events().bindComponent(this);
 	}
 
 	componentWillMount() {

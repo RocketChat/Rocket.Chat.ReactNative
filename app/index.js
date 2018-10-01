@@ -12,31 +12,34 @@ import I18n from './i18n';
 import { initializePushNotifications } from './push';
 
 const startLogged = () => {
-	Navigation.startSingleScreenApp({
-		screen: {
-			screen: 'RoomsListView',
-			title: I18n.t('Messages')
-		},
-		drawer: {
-			left: {
-				screen: 'Sidebar'
+	Navigation.setRoot({
+		root: {
+			stack: {
+				children: [{
+					component: {
+						name: 'RoomsListView'
+					}
+				}]
 			}
-		},
-		animationType: 'fade'
+		}
 	});
 };
 
 const startNotLogged = () => {
-	Navigation.startSingleScreenApp({
-		screen: {
-			screen: 'OnboardingView',
-			navigatorStyle: {
-				navBarHidden: true
+	Navigation.setRoot({
+		root: {
+			stack: {
+				children: [{
+					component: {
+						name: 'OnboardingView'
+					}
+				}],
+				options: {
+					layout: {
+						orientation: ['portrait']
+					}
+				}
 			}
-		},
-		animationType: 'fade',
-		appStyle: {
-			orientation: 'portrait'
 		}
 	});
 };
@@ -59,15 +62,33 @@ iconsLoaded();
 export default class App extends Component {
 	constructor(props) {
 		super(props);
-		store.dispatch(appInit());
-		store.subscribe(this.onStoreUpdate.bind(this));
-		initializePushNotifications();
+		// store.dispatch(appInit());
+		// store.subscribe(this.onStoreUpdate.bind(this));
+		// initializePushNotifications();
 
-		Linking
-			.getInitialURL()
-			.then(url => handleOpenURL({ url }))
-			.catch(e => console.warn(e));
-		Linking.addEventListener('url', handleOpenURL);
+		Navigation.events().registerAppLaunchedListener(() => {
+			Navigation.setDefaultOptions({
+				topBar: {
+					// title: {
+					// 	color: '#FFF'
+					// },
+					// buttonColor: '#FFF',
+					backButton: {
+						title: ''
+					},
+					// background: {
+					// 	color: '#2F343D'
+					// }
+				}
+			});
+			store.dispatch(appInit());
+			store.subscribe(this.onStoreUpdate.bind(this));
+		});
+		// Linking
+		// 	.getInitialURL()
+		// 	.then(url => handleOpenURL({ url }))
+		// 	.catch(e => console.warn(e));
+		// Linking.addEventListener('url', handleOpenURL);
 	}
 
 	onStoreUpdate = () => {

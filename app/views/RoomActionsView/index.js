@@ -37,10 +37,20 @@ const modules = {};
 }))
 /** @extends React.Component */
 export default class RoomActionsView extends LoggedView {
+	static options() {
+		return {
+			topBar: {
+				title: {
+					text: I18n.t('Actions')
+				}
+			}
+		};
+	}
+
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		rid: PropTypes.string,
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		userId: PropTypes.string,
 		username: PropTypes.string,
 		leaveRoom: PropTypes.func
@@ -70,18 +80,22 @@ export default class RoomActionsView extends LoggedView {
 	}
 
 	onPressTouchable = (item) => {
-		const { navigator } = this.props;
-
 		if (item.route) {
 			if (modules[item.route] == null) {
 				modules[item.route] = item.require();
-				Navigation.registerComponent(item.route, () => gestureHandlerRootHOC(modules[item.route]), store, Provider);
+				Navigation.registerComponentWithRedux(item.route, () => gestureHandlerRootHOC(modules[item.route]), Provider, store);
 			}
-			navigator.push({
-				screen: item.route,
-				title: item.name,
-				passProps: item.params,
-				backButtonTitle: ''
+
+			const { componentId } = this.props;
+			Navigation.push(componentId, {
+				component: {
+					name: item.route,
+					passProps: item.params
+				}
+				// screen: item.route,
+				// title: item.name,
+				// passProps: item.params,
+				// backButtonTitle: ''
 			});
 		}
 		if (item.event) {

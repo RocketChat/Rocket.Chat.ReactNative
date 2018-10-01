@@ -27,7 +27,7 @@ import { setUser as setUserAction } from '../../actions/login';
 /** @extends React.Component */
 export default class SettingsView extends LoggedView {
 	static propTypes = {
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		userLanguage: PropTypes.string,
 		setUser: PropTypes.func
 	}
@@ -49,7 +49,7 @@ export default class SettingsView extends LoggedView {
 			}],
 			saving: false
 		};
-		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+		Navigation.events().bindComponent(this);
 	}
 
 	componentWillMount() {

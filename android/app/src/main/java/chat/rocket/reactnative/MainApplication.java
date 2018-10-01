@@ -12,10 +12,13 @@ import com.dylanvann.fastimage.FastImageViewPackage;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.reactnativenavigation.NavigationApplication;
+// import com.reactnativenavigation.NavigationApplication;
+import com.facebook.react.ReactNativeHost;
 import com.remobile.toast.RCTToastPackage;
 import com.rnim.rn.audio.ReactNativeAudioPackage;
 import com.smixx.fabric.FabricPackage;
+import com.reactnativenavigation.react.NavigationReactNativeHost;
+import com.reactnativenavigation.react.ReactGateway;
 import com.wix.reactnativekeyboardinput.KeyboardInputPackage;
 import com.wix.reactnativenotifications.RNNotificationsPackage;
 import com.wix.reactnativenotifications.core.AppLaunchHelper;
@@ -32,19 +35,31 @@ import java.util.List;
 import io.fabric.sdk.android.Fabric;
 import io.realm.react.RealmReactPackage;
 
-public class MainApplication extends NavigationApplication implements INotificationsApplication {
+// public class MainApplication extends NavigationApplication implements INotificationsApplication {
+public class MainApplication extends NavigationApplication {
 
-    private NotificationsLifecycleFacade notificationsLifecycleFacade;
+    // private NotificationsLifecycleFacade notificationsLifecycleFacade;
 
     @Override
     public boolean isDebug() {
         return BuildConfig.DEBUG;
     }
 
-    @Override
-    public String getJSMainModuleName() {
-        return "index.android";
+    // @Override
+    // public String getJSMainModuleName() {
+    //     return "index.android";
+    // }
+
+    protected ReactGateway createReactGateway() {
+        ReactNativeHost host = new NavigationReactNativeHost(this, isDebug(), createAdditionalReactPackages()) {
+            @Override
+            protected String getJSMainModuleName() {
+                return "index.android";
+            }
+        };
+        return new ReactGateway(this, isDebug(), host);
     }
+
 
     protected List<ReactPackage> getPackages() {
         // Add additional packages you require here
@@ -70,8 +85,8 @@ public class MainApplication extends NavigationApplication implements INotificat
                 new RocketChatNativePackage(),
                 new FabricPackage(),
                 new FastImageViewPackage(),
-                new RNI18nPackage(),
-                new RNNotificationsPackage(MainApplication.this)
+                new RNI18nPackage()
+                // new RNNotificationsPackage(MainApplication.this)
         );
     }
 
@@ -81,19 +96,19 @@ public class MainApplication extends NavigationApplication implements INotificat
         Fabric.with(this, new Crashlytics());
 
         // Create an object of the custom facade impl
-        notificationsLifecycleFacade = new NotificationsLifecycleFacade();
+        // notificationsLifecycleFacade = new NotificationsLifecycleFacade();
         // Attach it to react-native-navigation
-        setActivityCallbacks(notificationsLifecycleFacade);
+        // setActivityCallbacks(notificationsLifecycleFacade);
     }
 
-    @Override
-    public IPushNotification getPushNotification(Context context, Bundle bundle, AppLifecycleFacade defaultFacade, AppLaunchHelper defaultAppLaunchHelper) {
-        return new CustomPushNotification(
-                context,
-                bundle,
-                notificationsLifecycleFacade, // Instead of defaultFacade!!!
-                defaultAppLaunchHelper,
-                new JsIOHelper()
-        );
-    }
+    // @Override
+    // public IPushNotification getPushNotification(Context context, Bundle bundle, AppLifecycleFacade defaultFacade, AppLaunchHelper defaultAppLaunchHelper) {
+    //     return new CustomPushNotification(
+    //             context,
+    //             bundle,
+    //             notificationsLifecycleFacade, // Instead of defaultFacade!!!
+    //             defaultAppLaunchHelper,
+    //             new JsIOHelper()
+    //     );
+    // }
 }

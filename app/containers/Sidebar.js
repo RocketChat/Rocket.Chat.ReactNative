@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Navigation } from 'react-native-navigation';
 
 import { appStart as appStartAction } from '../actions';
 import { logout as logoutAction } from '../actions/login';
@@ -93,9 +94,20 @@ const keyExtractor = item => item.id;
 	appStart: () => dispatch(appStartAction('outside'))
 }))
 export default class Sidebar extends Component {
+	static options() {
+		return {
+			topBar: {
+				leftButtons: [{
+					id: 'cancel',
+					text: I18n.t('Cancel')
+				}]
+			}
+		};
+	}
+
 	static propTypes = {
 		baseUrl: PropTypes.string,
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		server: PropTypes.string.isRequired,
 		user: PropTypes.object,
 		logout: PropTypes.func.isRequired,
@@ -107,6 +119,7 @@ export default class Sidebar extends Component {
 		this.state = {
 			showStatus: false
 		};
+		Navigation.events().bindComponent(this);
 	}
 
 	componentDidMount() {
@@ -117,6 +130,13 @@ export default class Sidebar extends Component {
 		const { user } = this.props;
 		if (nextProps.user && user && user.language !== nextProps.user.language) {
 			this.setStatus();
+		}
+	}
+
+	navigationButtonPressed = ({ buttonId }) => {
+		if (buttonId === 'cancel') {
+			const { componentId } = this.props;
+			Navigation.dismissModal(componentId);
 		}
 	}
 

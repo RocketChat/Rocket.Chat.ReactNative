@@ -71,7 +71,7 @@ let RegisterView = null;
 /** @extends React.Component */
 export default class LoginSignupView extends LoggedView {
 	static propTypes = {
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		open: PropTypes.func.isRequired,
 		close: PropTypes.func.isRequired,
 		isFetching: PropTypes.bool,
@@ -189,15 +189,26 @@ export default class LoginSignupView extends LoggedView {
 	openOAuth = (oAuthUrl) => {
 		if (OAuthView == null) {
 			OAuthView = require('./OAuthView').default;
-			Navigation.registerComponent('OAuthView', () => OAuthView, store, Provider);
+			Navigation.registerComponentWithRedux('OAuthView', () => OAuthView, Provider, store);
 		}
 
-		const { navigator } = this.props;
-		navigator.showModal({
-			screen: 'OAuthView',
-			title: 'OAuth',
-			passProps: {
-				oAuthUrl
+		Navigation.showModal({
+			stack: {
+				children: [{
+					component: {
+						name: 'OAuthView',
+						passProps: {
+							oAuthUrl
+						},
+						options: {
+							topBar: {
+								title: {
+									text: 'OAuth'
+								}
+							}
+						}
+					}
+				}]
 			}
 		});
 	}
@@ -205,28 +216,42 @@ export default class LoginSignupView extends LoggedView {
 	login = () => {
 		if (LoginView == null) {
 			LoginView = require('./LoginView').default;
-			Navigation.registerComponent('LoginView', () => LoginView, store, Provider);
+			Navigation.registerComponentWithRedux('LoginView', () => LoginView, Provider, store);
 		}
 
-		const { navigator, server } = this.props;
-		navigator.push({
-			screen: 'LoginView',
-			title: server,
-			backButtonTitle: ''
+		const { componentId, server } = this.props;
+		Navigation.push(componentId, {
+			component: {
+				name: 'LoginView',
+				options: {
+					topBar: {
+						title: {
+							text: server
+						}
+					}
+				}
+			}
 		});
 	}
 
 	register = () => {
 		if (RegisterView == null) {
 			RegisterView = require('./RegisterView').default;
-			Navigation.registerComponent('RegisterView', () => RegisterView, store, Provider);
+			Navigation.registerComponentWithRedux('RegisterView', () => RegisterView, Provider, store);
 		}
 
-		const { navigator, server } = this.props;
-		navigator.push({
-			screen: 'RegisterView',
-			title: server,
-			backButtonTitle: ''
+		const { componentId, server } = this.props;
+		Navigation.push(componentId, {
+			component: {
+				name: 'RegisterView',
+				options: {
+					topBar: {
+						title: {
+							text: server
+						}
+					}
+				}
+			}
 		});
 	}
 

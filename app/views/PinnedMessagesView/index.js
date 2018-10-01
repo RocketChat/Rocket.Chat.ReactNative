@@ -33,6 +33,16 @@ const options = [I18n.t('Unpin'), I18n.t('Cancel')];
 }))
 /** @extends React.Component */
 export default class PinnedMessagesView extends LoggedView {
+	static options() {
+		return {
+			topBar: {
+				title: {
+					text: I18n.t('Pinned')
+				}
+			}
+		};
+	}
+
 	static propTypes = {
 		rid: PropTypes.string,
 		messages: PropTypes.array,

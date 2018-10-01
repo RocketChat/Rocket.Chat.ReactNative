@@ -20,6 +20,7 @@ import ServerDropdown from './ServerDropdown';
 import Touch from '../../utils/touch';
 import { toggleSortDropdown as toggleSortDropdownAction } from '../../actions/rooms';
 import store from '../../lib/createStore';
+import EventEmitter from '../../utils/events';
 
 const ROW_HEIGHT = 70;
 const SCROLL_OFFSET = 56;
@@ -66,20 +67,23 @@ let NewMessageView = null;
 }))
 /** @extends React.Component */
 export default class RoomsListView extends LoggedView {
-	static navigatorButtons = {
-		leftButtons, rightButtons
-	}
-
-	static navigatorStyle = {
-		navBarCustomView: 'RoomsListHeaderView',
-		navBarComponentAlignment: 'fill',
-		navBarBackgroundColor: isAndroid() ? '#2F343D' : undefined,
-		navBarTextColor: isAndroid() ? '#FFF' : undefined,
-		navBarButtonColor: isAndroid() ? '#FFF' : undefined
+	static options() {
+		return {
+			topBar: {
+				leftButtons,
+				rightButtons,
+				title: {
+					component: {
+						name: 'RoomsListHeaderView',
+						alignment: 'center'
+					}
+				}
+			}
+		};
 	}
 
 	static propTypes = {
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		userId: PropTypes.string,
 		baseUrl: PropTypes.string,
 		server: PropTypes.string,
@@ -110,15 +114,17 @@ export default class RoomsListView extends LoggedView {
 			direct: [],
 			livechat: []
 		};
-		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+		Navigation.events().bindComponent(this);
 	}
 
-	componentWillMount() {
-		this.initDefaultHeader();
-	}
+	// componentWillMount() {
+	// TODO: Only in android
+	// 	this.initDefaultHeader();
+	// }
 
 	componentDidMount() {
 		this.getSubscriptions();
+		EventEmitter.addEventListener('DeepLink', this.handleDeepLink);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -155,6 +161,7 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	componentWillUnmount() {
+		EventEmitter.removeListener('Deeplink', this.handleDeepLink);
 		this.removeListener(this.data);
 		this.removeListener(this.unread);
 		this.removeListener(this.favorites);
@@ -168,37 +175,64 @@ export default class RoomsListView extends LoggedView {
 		}
 	}
 
-	onNavigatorEvent(event) {
-		const { navigator } = this.props;
-		if (event.type === 'NavBarButtonPress') {
-			if (event.id === 'newMessage') {
-				if (NewMessageView == null) {
-					NewMessageView = require('../NewMessageView').default;
-					Navigation.registerComponent('NewMessageView', () => NewMessageView, store, Provider);
-				}
-
-				navigator.showModal({
-					screen: 'NewMessageView',
-					title: I18n.t('New_Message'),
-					passProps: {
-						onPressItem: this._onPressItem
-					}
-				});
-			} else if (event.id === 'settings') {
-				navigator.toggleDrawer({
-					side: 'left'
-				});
-			} else if (event.id === 'search') {
-				this.initSearchingAndroid();
-			} else if (event.id === 'cancelSearch' || event.id === 'back') {
-				this.cancelSearchingAndroid();
+	navigationButtonPressed = ({ buttonId }) => {
+		if (buttonId === 'newMessage') {
+			if (NewMessageView == null) {
+				NewMessageView = require('../NewMessageView').default;
+				Navigation.registerComponentWithRedux('NewMessageView', () => NewMessageView, Provider, store);
 			}
-		} else if (event.type === 'ScreenChangedEvent' && event.id === 'didAppear') {
-			navigator.setDrawerEnabled({
-				side: 'left',
-				enabled: true
+
+			Navigation.showModal({
+				stack: {
+					children: [{
+						component: {
+							name: 'NewMessageView',
+							passProps: {
+								onPressItem: this._onPressItem
+							},
+							options: {
+								topBar: {
+									title: {
+										text: I18n.t('New_Message')
+									}
+								}
+							}
+						}
+					}]
+				}
 			});
+		} else if (buttonId === 'settings') {
+			// Drawer.toggle(this.props.componentId);
+			// TODO: open modal
+			Navigation.showModal({
+				stack: {
+					children: [{
+						component: {
+							name: 'Sidebar',
+							// passProps: {
+							// 	onPressItem: this._onPressItem
+							// },
+							// options: {
+							// 	topBar: {
+							// 		title: {
+							// 			text: I18n.t('New_Message')
+							// 		}
+							// 	}
+							// }
+						}
+					}]
+				}
+			});
+		} else if (buttonId === 'search') {
+			this.initSearchingAndroid();
+		} else if (buttonId === 'cancelSearch' || buttonId === 'back') {
+			this.cancelSearchingAndroid();
 		}
+	}
+
+	handleDeepLink = (event) => {
+		const { rid, name } = event;
+		this.goRoom(rid, name);
 	}
 
 	getSubscriptions = () => {
@@ -327,12 +361,13 @@ export default class RoomsListView extends LoggedView {
 	hasActiveDB = () => database && database.databases && database.databases.activeDB;
 
 	cancelSearchingAndroid = () => {
-		if (Platform.OS === 'android') {
-			this.setState({ search: [] });
-			this.initDefaultHeader();
-			Keyboard.dismiss();
-			BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
-		}
+		// if (Platform.OS === 'android') {
+		// 	this.setState({ search: [] });
+		// 	this.initDefaultHeader();
+		// 	Keyboard.dismiss();
+		// 	BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+		// }
+		console.warn('cancelSearchingAndroid')
 	}
 
 	handleBackPress = () => {
@@ -350,12 +385,21 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	goRoom = (rid, name) => {
-		const { navigator } = this.props;
-		navigator.push({
-			screen: 'RoomView',
-			title: name,
-			backButtonTitle: '',
-			passProps: { rid }
+		const { componentId } = this.props;
+		Navigation.push(componentId, {
+			component: {
+				name: 'RoomView',
+				passProps: {
+					rid
+				},
+				options: {
+					topBar: {
+						title: {
+							text: name
+						}
+					}
+				}
+			}
 		});
 		this.cancelSearchingAndroid();
 	}

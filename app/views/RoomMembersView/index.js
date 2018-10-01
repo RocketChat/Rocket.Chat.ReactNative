@@ -22,6 +22,16 @@ import SearchBox from '../../containers/SearchBox';
 }))
 /** @extends React.Component */
 export default class RoomMembersView extends LoggedView {
+	static options() {
+		return {
+			topBar: {
+				title: {
+					text: I18n.t('Members')
+				}
+			}
+		};
+	}
+
 	static navigatorButtons = {
 		rightButtons: [{
 			title: 'All',
@@ -31,7 +41,7 @@ export default class RoomMembersView extends LoggedView {
 	};
 
 	static propTypes = {
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		rid: PropTypes.string,
 		members: PropTypes.array,
 		baseUrl: PropTypes.string

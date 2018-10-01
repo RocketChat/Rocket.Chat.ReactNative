@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { Navigation } from 'react-native-navigation';
 
 import { serverRequest } from '../actions/server';
 import sharedStyles from './Styles';
@@ -56,12 +57,12 @@ const defaultServer = 'https://open.rocket.chat';
 	connecting: state.server.connecting,
 	failure: state.server.failure
 }), dispatch => ({
-	connectServer: server => dispatch(serverRequest(server))
+	connectServer: (server, componentId) => dispatch(serverRequest(server, componentId))
 }))
 /** @extends React.Component */
 export default class NewServerView extends LoggedView {
 	static propTypes = {
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		server: PropTypes.string,
 		connecting: PropTypes.bool.isRequired,
 		failure: PropTypes.bool.isRequired,
@@ -73,12 +74,13 @@ export default class NewServerView extends LoggedView {
 		this.state = {
 			text: ''
 		};
+		Navigation.events().bindComponent(this);
 	}
 
 	componentDidMount() {
-		const { server, connectServer } = this.props;
+		const { server, connectServer, componentId } = this.props;
 		if (server) {
-			connectServer(server);
+			connectServer(server, componentId);
 			this.setState({ text: server });
 		} else {
 			setTimeout(() => {
@@ -100,11 +102,11 @@ export default class NewServerView extends LoggedView {
 
 	submit = () => {
 		const { text } = this.state;
-		const { connectServer } = this.props;
+		const { connectServer, componentId } = this.props;
 
 		if (text) {
 			Keyboard.dismiss();
-			connectServer(this.completeUrl(text));
+			connectServer(this.completeUrl(text), componentId);
 		}
 	}
 
