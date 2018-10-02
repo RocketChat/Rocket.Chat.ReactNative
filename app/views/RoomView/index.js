@@ -25,6 +25,7 @@ import I18n from '../../i18n';
 import debounce from '../../utils/debounce';
 import { iconsMap } from '../../Icons';
 import store from '../../lib/createStore';
+import ConnectionBadge from '../../containers/ConnectionBadge';
 
 let RoomActionsView = null;
 
@@ -388,6 +389,7 @@ export default class RoomView extends LoggedView {
 				{showErrorActions ? <MessageErrorActions /> : null}
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
 				<UploadProgress rid={this.rid} />
+				<ConnectionBadge />
 			</SafeAreaView>
 		);
 	}
