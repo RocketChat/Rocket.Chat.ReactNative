@@ -37,7 +37,7 @@
     "react-native": "^0.57.1",
     "react-native-actionsheet": "^2.4.2",
     "react-native-audio": "^4.2.0",
-    "react-native-device-info": "^0.22.6",
+    "react-native-device-info": "^0.23.0",
     "react-native-dialog": "^5.1.0",
     "react-native-fabric": "^0.5.1",
     "react-native-fast-image": "^5.0.10",
