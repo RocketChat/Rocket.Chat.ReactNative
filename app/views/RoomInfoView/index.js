@@ -247,7 +247,6 @@ export default class RoomInfoView extends LoggedView {
 
 	renderCustomFields = (userId) => {
 		const { activeUsers } = this.props;
-
 		if (activeUsers[userId]) {
 			const { customFields } = activeUsers[userId];
 
@@ -256,12 +255,16 @@ export default class RoomInfoView extends LoggedView {
 			}
 
 			return (
-				Object.keys(customFields).map(title => (
-					<View style={styles.item}>
-						<Text style={styles.itemLabel}>{title}</Text>
-						<Text style={styles.itemContent}>{customFields[title]}</Text>
-					</View>
-				))
+				Object.keys(customFields).map((title) => {
+					if (customFields[title]) {
+						return (
+							<View style={styles.item} key={title}>
+								<Text style={styles.itemLabel}>{title}</Text>
+								<Text style={styles.itemContent}>{customFields[title]}</Text>
+							</View>
+						);
+					}
+				})
 			);
 		}
 		return null;
@@ -284,7 +287,7 @@ export default class RoomInfoView extends LoggedView {
 					{!this.isDirect() ? this.renderItem('announcement', room) : null}
 					{this.isDirect() ? this.renderRoles() : null}
 					{this.isDirect() ? this.renderTimezone(roomUser._id) : null}
-					{this.isDirect() ? this.renderCustomFields() : null}
+					{this.isDirect() ? this.renderCustomFields(roomUser._id) : null}
 					{room.broadcast ? this.renderBroadcast() : null}
 				</SafeAreaView>
 			</ScrollView>
