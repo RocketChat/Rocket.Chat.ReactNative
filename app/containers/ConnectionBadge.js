@@ -65,6 +65,15 @@ class ConnectionBadge extends Component {
 		if (connecting || disconnected) {
 			this.animate(1);
 		}
+		this.timeout = setTimeout(() => {
+			const { connected } = this.props;
+			if (connected) {
+				this.timeout = setTimeout(() => {
+					this.animatedValue.stopAnimation();
+					this.animate(0);
+				}, 1000);
+			}
+		}, 1000);
 	}
 
 	componentDidUpdate(prevProps) {
@@ -73,14 +82,25 @@ class ConnectionBadge extends Component {
 
 		if ((connecting && connecting !== prevProps.connecting) || (disconnected && disconnected !== prevProps.disconnected)) {
 			if (!visible) {
+				this.animatedValue.stopAnimation();
 				this.animate(1);
 			}
 		} else if (connected && connected !== prevProps.connected) {
 			if (visible) {
-				setTimeout(() => {
+				if (this.timeout) {
+					clearTimeout(this.timeout);
+				}
+				this.timeout = setTimeout(() => {
+					this.animatedValue.stopAnimation();
 					this.animate(0);
 				}, 1000);
 			}
+		}
+	}
+
+	componentWillUnmount() {
+		if (this.timeout) {
+			clearTimeout(this.timeout);
 		}
 	}
 
