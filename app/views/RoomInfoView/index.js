@@ -284,7 +284,7 @@ export default class RoomInfoView extends LoggedView {
 					{!this.isDirect() ? this.renderItem('announcement', room) : null}
 					{this.isDirect() ? this.renderRoles() : null}
 					{this.isDirect() ? this.renderTimezone(roomUser._id) : null}
-					{this.isDirect() ? this.renderCustomFields() : null}
+					{this.isDirect() ? this.renderCustomFields(roomUser._id) : null}
 					{room.broadcast ? this.renderBroadcast() : null}
 				</SafeAreaView>
 			</ScrollView>
