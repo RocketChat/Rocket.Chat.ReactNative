@@ -256,14 +256,15 @@ export default class RoomInfoView extends LoggedView {
 
 			return (
 				Object.keys(customFields).map((title) => {
-					if (customFields[title]) {
-						return (
-							<View style={styles.item} key={title}>
-								<Text style={styles.itemLabel}>{title}</Text>
-								<Text style={styles.itemContent}>{customFields[title]}</Text>
-							</View>
-						);
+					if (!customFields[title]) {
+						return;
 					}
+					return (
+						<View style={styles.item} key={title}>
+							<Text style={styles.itemLabel}>{title}</Text>
+							<Text style={styles.itemContent}>{customFields[title]}</Text>
+						</View>
+					);
 				})
 			);
 		}
