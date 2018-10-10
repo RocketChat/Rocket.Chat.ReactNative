@@ -149,6 +149,7 @@ export default class ServerDropdown extends Component {
 								source={{ uri: item.iconURL }}
 								defaultSource={{ uri: 'logo' }}
 								style={styles.serverIcon}
+								onError={() => console.warn('error loading serverIcon')}
 							/>
 						)
 						: (

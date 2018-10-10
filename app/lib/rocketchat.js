@@ -2,6 +2,7 @@ import { AsyncStorage, Platform } from 'react-native';
 import { hashPassword } from 'react-native-meteor/lib/utils';
 import foreach from 'lodash/forEach';
 import RNFetchBlob from 'rn-fetch-blob';
+import * as SDK from '@rocket.chat/sdk';
 
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
@@ -22,7 +23,6 @@ import { snippetedMessagesReceived } from '../actions/snippetedMessages';
 import { roomFilesReceived } from '../actions/roomFiles';
 import { someoneTyping, roomMessageReceived } from '../actions/room';
 import { setRoles } from '../actions/roles';
-import Ddp from './ddp';
 
 import subscribeRooms from './methods/subscriptions/rooms';
 import subscribeRoom from './methods/subscriptions/room';
@@ -47,7 +47,7 @@ import { getDeviceToken } from '../push';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
-const call = (method, ...params) => RocketChat.ddp.call(method, ...params); // eslint-disable-line
+const call = (method, ...params) => SDK.driver.asyncCall(method, ...params);
 const returnAnArray = obj => obj || [];
 
 const RocketChat = {
@@ -135,63 +135,85 @@ const RocketChat = {
 			// TODO: one api call
 			// call /me only one time
 			if (!user.username) {
-				const me = await this.me({ token: user.token, userId: user.id });
+				const me = await SDK.api.get('me');
 				user = { ...user, ...me };
 			}
 			if (user.username) {
-				const userInfo = await this.userInfo({ token: user.token, userId: user.id });
+				const userInfo = await SDK.api.get('users.info', { userId: user.id });
 				user = { ...user, ...userInfo.user };
 			}
+
 			RocketChat.registerPushToken(user.id);
+			reduxStore.dispatch(setUser(user));
 			reduxStore.dispatch(loginSuccess(user));
-			this.ddp.subscribe('userData');
+			// TODO: need this?
+			// this.ddp.subscribe('userData');
 		} catch (e) {
-			log('rocketchat.loginSuccess', e);
+			log('SDK.loginSuccess', e);
 		}
 	},
 	connect(url, login) {
-		return new Promise((resolve) => {
-			if (this.ddp) {
-				this.ddp.disconnect();
-				delete this.ddp;
-			}
+		return new Promise(async(resolve) => {
+			// if (this.ddp) {
+			// 	this.ddp.disconnect();
+			// }
 
-			this.ddp = new Ddp(url, login);
-			if (login) {
-				protectedFunction(() => RocketChat.getRooms());
-			}
+			// this.ddp = new Ddp(url, login);
+			SDK.driver.connect({ host: url, useSsl: true })
+				.then(() => {
+					SDK.api.setHost(url);
+					if (login) {
+						SDK.driver.ddp.login(login);
+					}
+				})
+				.catch(err => console.warn(err));
+			// if (login) {
+			// 	protectedFunction(() => RocketChat.getRooms());
+			// }
 
-			this.ddp.on('login', protectedFunction(() => reduxStore.dispatch(loginRequest())));
+			SDK.driver.events.on('connected', () => {
+				reduxStore.dispatch(connectSuccess());
+				SDK.driver.subscribe('meteor.loginServiceConfiguration');
+				SDK.driver.subscribe('activeUsers');
+				SDK.driver.subscribe('roles');
+				RocketChat.getSettings();
+				RocketChat.getPermissions();
+				RocketChat.getCustomEmoji();
+			});
 
-			this.ddp.on('loginError', protectedFunction(err => reduxStore.dispatch(loginFailure(err))));
+			SDK.driver.events.on('login', protectedFunction(() => reduxStore.dispatch(loginRequest())));
 
-			this.ddp.on('forbidden', protectedFunction(() => reduxStore.dispatch(logout())));
+			SDK.driver.events.on('loginError', protectedFunction(err => reduxStore.dispatch(loginFailure(err))));
 
-			this.ddp.on('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
+			// SDK.driver.events.on('forbidden', protectedFunction(() => reduxStore.dispatch(logout())));
 
-			this.ddp.on('background', () => this.getRooms().catch(e => log('background getRooms', e)));
+			SDK.driver.events.on('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 
-			this.ddp.on('logged', protectedFunction((user) => {
+			// SDK.driver.events.on('background', () => this.getRooms().catch(e => log('background getRooms', e)));
+
+			SDK.driver.events.on('logged', protectedFunction((user) => {
+				SDK.api.setAuth({ authToken: user.token, userId: user.id });
+				SDK.api.currentLogin = {
+					username: user.username,
+					userId: user.id,
+					authToken: user.token
+				};
 				this.loginSuccess(user);
 				this.getRooms().catch(e => log('logged getRooms', e));
-			}));
-			this.ddp.once('logged', protectedFunction(({ id }) => {
-				this.subscribeRooms(id);
-				// this.ddp.subscribe('stream-notify-logged', 'updateAvatar', false);
+				this.subscribeRooms(user.id);
 			}));
 
-			this.ddp.on('disconnected', protectedFunction(() => {
+			SDK.driver.events.on('disconnected', protectedFunction(() => {
 				reduxStore.dispatch(disconnect());
-				console.log('disconnected', this.ddp);
 			}));
 
-			this.ddp.on('stream-room-messages', (ddpMessage) => {
+			SDK.driver.events.on('stream-room-messages', (ddpMessage) => {
 				// TODO: debounce
 				const message = _buildMessage(ddpMessage.fields.args[0]);
 				requestAnimationFrame(() => reduxStore.dispatch(roomMessageReceived(message)));
 			});
 
-			this.ddp.on('stream-notify-room', protectedFunction((ddpMessage) => {
+			SDK.driver.events.on('stream-notify-room', protectedFunction((ddpMessage) => {
 				const [_rid, ev] = ddpMessage.fields.eventName.split('/');
 				if (ev === 'typing') {
 					reduxStore.dispatch(someoneTyping({ _rid, username: ddpMessage.fields.args[0], typing: ddpMessage.fields.args[1] }));
@@ -206,7 +228,7 @@ const RocketChat = {
 				}
 			}));
 
-			this.ddp.on('rocketchat_starred_message', protectedFunction((ddpMessage) => {
+			SDK.driver.events.on('rocketchat_starred_message', protectedFunction((ddpMessage) => {
 				if (ddpMessage.msg === 'added') {
 					this.starredMessages = this.starredMessages || [];
 
@@ -232,7 +254,7 @@ const RocketChat = {
 				}
 			}));
 
-			this.ddp.on('rocketchat_pinned_message', protectedFunction((ddpMessage) => {
+			SDK.driver.events.on('rocketchat_pinned_message', protectedFunction((ddpMessage) => {
 				if (ddpMessage.msg === 'added') {
 					this.pinnedMessages = this.pinnedMessages || [];
 
@@ -258,7 +280,7 @@ const RocketChat = {
 				}
 			}));
 
-			this.ddp.on('rocketchat_mentioned_message', protectedFunction((ddpMessage) => {
+			SDK.driver.events.on('rocketchat_mentioned_message', protectedFunction((ddpMessage) => {
 				if (ddpMessage.msg === 'added') {
 					this.mentionedMessages = this.mentionedMessages || [];
 
@@ -279,7 +301,7 @@ const RocketChat = {
 				}
 			}));
 
-			this.ddp.on('rocketchat_snippeted_message', protectedFunction((ddpMessage) => {
+			SDK.driver.events.on('rocketchat_snippeted_message', protectedFunction((ddpMessage) => {
 				if (ddpMessage.msg === 'added') {
 					this.snippetedMessages = this.snippetedMessages || [];
 
@@ -300,7 +322,7 @@ const RocketChat = {
 				}
 			}));
 
-			this.ddp.on('room_files', protectedFunction((ddpMessage) => {
+			SDK.driver.events.on('room_files', protectedFunction((ddpMessage) => {
 				if (ddpMessage.msg === 'added') {
 					this.roomFiles = this.roomFiles || [];
 
@@ -344,7 +366,7 @@ const RocketChat = {
 				}
 			}));
 
-			this.ddp.on('meteor_accounts_loginServiceConfiguration', protectedFunction((ddpMessage) => {
+			SDK.driver.events.on('meteor_accounts_loginServiceConfiguration', (ddpMessage) => {
 				if (ddpMessage.msg === 'added') {
 					this.loginServices = this.loginServices || {};
 					if (this.loginServiceTimer) {
@@ -364,9 +386,9 @@ const RocketChat = {
 					}
 					this.loginServiceTimer = setTimeout(() => reduxStore.dispatch(removeLoginServices()), 1000);
 				}
-			}));
+			});
 
-			this.ddp.on('rocketchat_roles', protectedFunction((ddpMessage) => {
+			SDK.driver.events.on('rocketchat_roles', protectedFunction((ddpMessage) => {
 				this.roles = this.roles || {};
 
 				if (this.roleTimer) {
@@ -388,27 +410,25 @@ const RocketChat = {
 				this.roles[ddpMessage.id] = (ddpMessage.fields && ddpMessage.fields.description) || undefined;
 			}));
 
-			this.ddp.on('error', (err) => {
-				log('rocketchat.onerror', err);
-				reduxStore.dispatch(connectFailure());
-			});
+			// SDK.driver.events.on('error', (err) => {
+			// 	log('SDK.onerror', err);
+			// 	reduxStore.dispatch(connectFailure());
+			// });
 
-			// TODO: fix api (get emojis by date/version....)
+			// SDK.driver.events.on('open', protectedFunction(() => {
+			// 	RocketChat.getSettings();
+			// 	RocketChat.getPermissions();
+			// 	reduxStore.dispatch(connectSuccess());
+			// 	resolve();
+			// }));
 
-			this.ddp.on('open', protectedFunction(() => {
-				RocketChat.getSettings();
-				RocketChat.getPermissions();
-				reduxStore.dispatch(connectSuccess());
-				resolve();
-			}));
-
-			this.ddp.once('open', protectedFunction(() => {
-				this.ddp.subscribe('activeUsers');
-				this.ddp.subscribe('roles');
-				RocketChat.getCustomEmoji();
-			}));
+			// this.ddp.once('open', protectedFunction(() => {
+			// 	this.ddp.subscribe('activeUsers');
+			// 	this.ddp.subscribe('roles');
+			// 	RocketChat.getCustomEmoji();
+			// }));
 		}).catch((e) => {
-			log('rocketchat.connect catch', e);
+			log('SDK.connect catch', e);
 		});
 	},
 
@@ -424,7 +444,7 @@ const RocketChat = {
 		return call('sendForgotPasswordEmail', email);
 	},
 
-	loginWithPassword({ username, password, code }, callback) {
+	async loginWithPassword({ username, password, code }) {
 		let params = {};
 		const state = reduxStore.getState();
 
@@ -443,14 +463,11 @@ const RocketChat = {
 			};
 		} else {
 			params = {
-				password: hashPassword(password),
-				user: {
-					username
-				}
+				username, password
 			};
 
 			if (typeof username === 'string' && username.indexOf('@') !== -1) {
-				params.user = { email: username };
+				params.email = username;
 			}
 		}
 
@@ -463,20 +480,32 @@ const RocketChat = {
 			};
 		}
 
-		return this.login(params, callback);
+		// return this.login(params, callback);
+		try {
+			return await this.login(params);
+			// console.warn(credentials);
+			// return this.loginSuccess();
+		} catch (error) {
+			throw error;
+		}
+
+		// await SDK.api.login({ username, password });
+		// const mockInfo = await api.get('users.info', { username: mockUser.username })
 	},
 
 	login(params) {
-		return this.ddp.login(params);
+		// return this.ddp.login(params);
+		return SDK.driver.login(params);
 	},
 	logout({ server }) {
-		if (this.ddp) {
-			try {
-				this.ddp.logout();
-			} catch (e) {
-				log('rocketchat.logout', e);
-			}
-		}
+		// if (this.ddp) {
+		// 	try {
+		// 		this.ddp.logout();
+		// 	} catch (e) {
+		// 		log('SDK.logout', e);
+		// 	}
+		// }
+		SDK.driver.logout();
 		AsyncStorage.removeItem(TOKEN_KEY);
 		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
 		setTimeout(() => {
@@ -508,27 +537,6 @@ const RocketChat = {
 	sendMessage,
 	getRooms,
 	readMessages,
-	me({ server = reduxStore.getState().server.server, token, userId }) {
-		return fetch(`${ server }/api/v1/me`, {
-			method: 'get',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-Auth-Token': token,
-				'X-User-Id': userId
-			}
-		}).then(response => response.json());
-	},
-
-	userInfo({ server = reduxStore.getState().server.server, token, userId }) {
-		return fetch(`${ server }/api/v1/users.info?userId=${ userId }`, {
-			method: 'get',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-Auth-Token': token,
-				'X-User-Id': userId
-			}
-		}).then(response => response.json());
-	},
 	async resendMessage(messageId) {
 		const message = await database.objects('messages').filtered('_id = $0', messageId)[0];
 		database.write(() => {
@@ -657,7 +665,7 @@ const RocketChat = {
 		try {
 			room = await RocketChat.getRoom(message.rid);
 		} catch (e) {
-			log('rocketchat.getPermalink', e);
+			log('SDK.getPermalink', e);
 			return null;
 		}
 		const { server } = reduxStore.getState().server;
@@ -669,7 +677,10 @@ const RocketChat = {
 		return `${ server }/${ roomType }/${ room.name }?msg=${ message._id }`;
 	},
 	subscribe(...args) {
-		return this.ddp.subscribe(...args);
+		return SDK.driver.subscribe(...args);
+	},
+	unsubscribe(subscription) {
+		return SDK.driver.unsubscribe(subscription);
 	},
 	emitTyping(room, t = true) {
 		const { login } = reduxStore.getState();
