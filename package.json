@@ -14,7 +14,8 @@
     "storybook": "storybook start -p 7007",
     "snyk-protect": "snyk protect",
     "fabric-ios": "./scripts/fabric-ios.sh",
-    "fabric-android": "./scripts/fabric-android.sh"
+    "fabric-android": "./scripts/fabric-android.sh",
+    "prepare": "npm run snyk-protect"
   },
   "rnpm": {
     "assets": [
@@ -69,7 +70,7 @@
     "redux-immutable-state-invariant": "^2.1.0",
     "redux-saga": "^0.16.0",
     "rn-fetch-blob": "^0.10.13",
-    "snyk": "^1.97.0",
+    "snyk": "^1.103.1",
     "strip-ansi": "^4.0.0"
   },
   "devDependencies": {

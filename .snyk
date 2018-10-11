@@ -44,3 +44,51 @@ patch:
         patched: '2018-06-22T03:39:40.096Z'
     - realm > node-pre-gyp > request > hawk > cryptiles > boom > hoek:
         patched: '2018-06-22T03:39:40.096Z'
+    - react-native > metro > metro-core > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > sntp > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
+    - react-native > metro > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
+    - react-native > metro > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > sntp > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
+    - react-native > metro > metro-core > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
+    - react-native > metro-core > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > boom > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
+    - react-native > metro > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > boom > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
+    - react-native > metro-core > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > sntp > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
+    - react-native > metro > metro-core > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > boom > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
+    - react-native > metro > metro-config > metro-core > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
+    - react-native > metro-core > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > cryptiles > boom > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
+    - react-native > metro > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > cryptiles > boom > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
+    - react-native > metro > metro-cache > metro-core > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
+    - react-native > metro-core > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
+    - react-native > metro > metro-cache > metro-core > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > boom > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
+    - react-native > metro > metro-config > metro-core > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > boom > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
+    - react-native > metro > metro-cache > metro-core > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > sntp > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
+    - react-native > metro > metro-config > metro-core > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > sntp > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
+    - react-native > metro > metro-core > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > cryptiles > boom > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
+    - react-native > metro > metro-config > metro-cache > metro-core > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
+    - react-native > metro > metro-config > metro-cache > metro-core > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > sntp > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
+    - react-native > metro > metro-config > metro-cache > metro-core > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > boom > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
+    - react-native > metro > metro-config > metro-core > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > cryptiles > boom > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
+    - react-native > metro > metro-cache > metro-core > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > cryptiles > boom > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
+    - react-native > metro > metro-config > metro-cache > metro-core > jest-haste-map > sane > fsevents > node-pre-gyp > hawk > cryptiles > boom > hoek:
+        patched: '2018-10-11T00:20:40.554Z'
