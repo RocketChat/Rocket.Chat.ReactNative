@@ -11,6 +11,9 @@ const types = {
 };
 
 async function loadMessagesForRoomRest({ rid: roomId, latest, t }) {
+	if (latest) {
+		latest = new Date(latest).toISOString();
+	}
 	const data = await SDK.api.get(`${ types[t] }.history`, { roomId, latest });
 	if (!data || data.status === 'error') {
 		return [];

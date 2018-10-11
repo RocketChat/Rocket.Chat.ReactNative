@@ -159,42 +159,51 @@ const RocketChat = {
 			// }
 
 			// this.ddp = new Ddp(url, login);
-			SDK.driver.connect({ host: url, useSsl: true })
-				.then(() => {
-					SDK.api.setHost(url);
-					if (login) {
-						SDK.driver.ddp.login(login);
-					}
-				})
-				.catch(err => console.warn(err));
+			SDK.api.setBaseUrl(url);
+			SDK.driver.connect({ host: url, useSsl: true }, (err, ddp) => {
+				if (err) {
+					console.warn(err);
+				}
+				if (login) {
+					SDK.driver.ddp.login(login);
+				}
+			});
+			// .then(() => {
+			// 	console.warn(url)
+			// 	SDK.api.setBaseUrl(url);
+			// 	if (login) {
+			// 		SDK.driver.ddp.login(login);
+			// 	}
+			// })
+			// .catch(err => console.warn(err));
 			// if (login) {
 			// 	protectedFunction(() => RocketChat.getRooms());
 			// }
 
-			SDK.driver.events.on('connected', () => {
+			SDK.driver.on('connected', () => {
 				reduxStore.dispatch(connectSuccess());
 				SDK.driver.subscribe('meteor.loginServiceConfiguration');
 				SDK.driver.subscribe('activeUsers');
 				SDK.driver.subscribe('roles');
 				RocketChat.getSettings();
 				RocketChat.getPermissions();
-				RocketChat.getCustomEmoji();
+				// RocketChat.getCustomEmoji();
 			});
 
-			SDK.driver.events.on('login', protectedFunction(() => reduxStore.dispatch(loginRequest())));
+			SDK.driver.on('login', protectedFunction(() => reduxStore.dispatch(loginRequest())));
 
-			SDK.driver.events.on('loginError', protectedFunction(err => reduxStore.dispatch(loginFailure(err))));
+			SDK.driver.on('loginError', protectedFunction(err => reduxStore.dispatch(loginFailure(err))));
 
-			// SDK.driver.events.on('forbidden', protectedFunction(() => reduxStore.dispatch(logout())));
+			// SDK.driver.on('forbidden', protectedFunction(() => reduxStore.dispatch(logout())));
 
-			SDK.driver.events.on('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
+			// SDK.driver.on('users', protectedFunction((error, ddpMessage) => RocketChat._setUser(ddpMessage)));
 
-			// SDK.driver.events.on('background', () => this.getRooms().catch(e => log('background getRooms', e)));
+			// SDK.driver.on('background', () => this.getRooms().catch(e => log('background getRooms', e)));
 
-			SDK.driver.events.on('logged', protectedFunction((user) => {
+			SDK.driver.on('logged', protectedFunction((error, user) => {
+				console.warn('logged')
 				SDK.api.setAuth({ authToken: user.token, userId: user.id });
 				SDK.api.currentLogin = {
-					username: user.username,
 					userId: user.id,
 					authToken: user.token
 				};
@@ -203,17 +212,17 @@ const RocketChat = {
 				this.subscribeRooms(user.id);
 			}));
 
-			SDK.driver.events.on('disconnected', protectedFunction(() => {
+			SDK.driver.on('disconnected', protectedFunction(() => {
 				reduxStore.dispatch(disconnect());
 			}));
 
-			SDK.driver.events.on('stream-room-messages', (ddpMessage) => {
+			SDK.driver.on('stream-room-messages', (error, ddpMessage) => {
 				// TODO: debounce
 				const message = _buildMessage(ddpMessage.fields.args[0]);
 				requestAnimationFrame(() => reduxStore.dispatch(roomMessageReceived(message)));
 			});
 
-			SDK.driver.events.on('stream-notify-room', protectedFunction((ddpMessage) => {
+			SDK.driver.on('stream-notify-room', protectedFunction((error, ddpMessage) => {
 				const [_rid, ev] = ddpMessage.fields.eventName.split('/');
 				if (ev === 'typing') {
 					reduxStore.dispatch(someoneTyping({ _rid, username: ddpMessage.fields.args[0], typing: ddpMessage.fields.args[1] }));
@@ -228,7 +237,7 @@ const RocketChat = {
 				}
 			}));
 
-			SDK.driver.events.on('rocketchat_starred_message', protectedFunction((ddpMessage) => {
+			SDK.driver.on('rocketchat_starred_message', protectedFunction((error, ddpMessage) => {
 				if (ddpMessage.msg === 'added') {
 					this.starredMessages = this.starredMessages || [];
 
@@ -254,7 +263,7 @@ const RocketChat = {
 				}
 			}));
 
-			SDK.driver.events.on('rocketchat_pinned_message', protectedFunction((ddpMessage) => {
+			SDK.driver.on('rocketchat_pinned_message', protectedFunction((error, ddpMessage) => {
 				if (ddpMessage.msg === 'added') {
 					this.pinnedMessages = this.pinnedMessages || [];
 
@@ -280,7 +289,7 @@ const RocketChat = {
 				}
 			}));
 
-			SDK.driver.events.on('rocketchat_mentioned_message', protectedFunction((ddpMessage) => {
+			SDK.driver.on('rocketchat_mentioned_message', protectedFunction((error, ddpMessage) => {
 				if (ddpMessage.msg === 'added') {
 					this.mentionedMessages = this.mentionedMessages || [];
 
@@ -301,7 +310,7 @@ const RocketChat = {
 				}
 			}));
 
-			SDK.driver.events.on('rocketchat_snippeted_message', protectedFunction((ddpMessage) => {
+			SDK.driver.on('rocketchat_snippeted_message', protectedFunction((error, ddpMessage) => {
 				if (ddpMessage.msg === 'added') {
 					this.snippetedMessages = this.snippetedMessages || [];
 
@@ -322,7 +331,7 @@ const RocketChat = {
 				}
 			}));
 
-			SDK.driver.events.on('room_files', protectedFunction((ddpMessage) => {
+			SDK.driver.on('room_files', protectedFunction((error, ddpMessage) => {
 				if (ddpMessage.msg === 'added') {
 					this.roomFiles = this.roomFiles || [];
 
@@ -366,7 +375,7 @@ const RocketChat = {
 				}
 			}));
 
-			SDK.driver.events.on('meteor_accounts_loginServiceConfiguration', (ddpMessage) => {
+			SDK.driver.on('meteor_accounts_loginServiceConfiguration', (error, ddpMessage) => {
 				if (ddpMessage.msg === 'added') {
 					this.loginServices = this.loginServices || {};
 					if (this.loginServiceTimer) {
@@ -388,7 +397,7 @@ const RocketChat = {
 				}
 			});
 
-			SDK.driver.events.on('rocketchat_roles', protectedFunction((ddpMessage) => {
+			SDK.driver.on('rocketchat_roles', protectedFunction((error, ddpMessage) => {
 				this.roles = this.roles || {};
 
 				if (this.roleTimer) {
@@ -410,12 +419,12 @@ const RocketChat = {
 				this.roles[ddpMessage.id] = (ddpMessage.fields && ddpMessage.fields.description) || undefined;
 			}));
 
-			// SDK.driver.events.on('error', (err) => {
+			// SDK.driver.on('error', (err) => {
 			// 	log('SDK.onerror', err);
 			// 	reduxStore.dispatch(connectFailure());
 			// });
 
-			// SDK.driver.events.on('open', protectedFunction(() => {
+			// SDK.driver.on('open', protectedFunction(() => {
 			// 	RocketChat.getSettings();
 			// 	RocketChat.getPermissions();
 			// 	reduxStore.dispatch(connectSuccess());
@@ -508,9 +517,10 @@ const RocketChat = {
 		SDK.driver.logout();
 		AsyncStorage.removeItem(TOKEN_KEY);
 		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
+		// database.deleteAll();
 		setTimeout(() => {
 			database.deleteAll();
-		}, 1000);
+		}, 300);
 	},
 
 	registerPushToken(userId) {

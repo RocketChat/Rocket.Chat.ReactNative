@@ -33,23 +33,23 @@ export default async function subscribeRooms(id) {
 	if (!SDK.driver.ddp && SDK.driver.userId) {
 		loop();
 	} else {
-		SDK.driver.events.on('logged', () => {
+		SDK.driver.on('logged', () => {
 			clearTimeout(timer);
 			timer = false;
 		});
 
-		SDK.driver.events.on('logout', () => {
+		SDK.driver.on('logout', () => {
 			clearTimeout(timer);
 			timer = true;
 		});
 
-		SDK.driver.events.on('disconnected', () => {
+		SDK.driver.on('disconnected', () => {
 			if (this._login) {
 				loop();
 			}
 		});
 
-		SDK.driver.events.on('stream-notify-user', protectedFunction((ddpMessage) => {
+		SDK.driver.on('stream-notify-user', protectedFunction((e, ddpMessage) => {
 			if (ddpMessage.msg === 'added') {
 				return;
 			}

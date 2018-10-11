@@ -9,7 +9,7 @@ const lastMessage = () => {
 	const message = database
 		.objects('subscriptions')
 		.sorted('roomUpdatedAt', true)[0];
-	return message && new Date(message.roomUpdatedAt);
+	return message && new Date(message.roomUpdatedAt).toISOString();
 };
 
 const getRoomRest = async function() {
@@ -24,7 +24,7 @@ const getRoomRest = async function() {
 const getRoomDpp = async function() {
 	try {
 		const updatedSince = lastMessage();
-		const [subscriptions, rooms] = await Promise.all([SDK.driver.cacheCall('subscriptions/get', updatedSince), SDK.driver.cacheCall('rooms/get', updatedSince)]);
+		const [subscriptions, rooms] = await Promise.all([SDK.driver.asyncCall('subscriptions/get', updatedSince), SDK.driver.asyncCall('rooms/get', updatedSince)]);
 		return mergeSubscriptionsRooms(subscriptions, rooms);
 	} catch (e) {
 		return getRoomRest.apply(this);

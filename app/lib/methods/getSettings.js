@@ -2,7 +2,6 @@ import { InteractionManager } from 'react-native';
 import * as SDK from '@rocket.chat/sdk';
 
 import reduxStore from '../createStore';
-// import { get } from './helpers/rest';
 import database from '../realm';
 import * as actions from '../../actions';
 import log from '../../utils/log';
@@ -29,8 +28,8 @@ export default async function() {
 		const lastUpdate = getLastUpdate();
 		const fetchNewSettings = lastUpdate < settingsUpdatedAt;
 		const result = await ((!lastUpdate || fetchNewSettings)
-			? SDK.driver.cacheCall('public-settings/get')
-			: SDK.driver.cacheCall('public-settings/get', new Date(lastUpdate)));
+			? SDK.driver.asyncCall('public-settings/get')
+			: SDK.driver.asyncCall('public-settings/get', new Date(lastUpdate)));
 		const data = result.update || result || [];
 
 		const filteredSettings = this._prepareSettings(this._filterSettings(data));

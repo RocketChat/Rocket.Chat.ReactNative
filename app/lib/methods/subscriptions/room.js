@@ -13,20 +13,12 @@ const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscrib
 
 let timer = null;
 let promises;
-let logged;
-let disconnected;
 
 const stop = () => {
 	if (promises) {
 		promises.then(unsubscribe);
 		promises = false;
 	}
-
-	// SDK.driver.events.removeListener('logged', logged);
-	// SDK.driver.events.removeListener('disconnected', disconnected);
-
-	logged = false;
-	disconnected = false;
 
 	clearTimeout(timer);
 };
@@ -54,12 +46,12 @@ export default async function subscribeRoom({ rid, t }) {
 	if (!SDK.driver.ddp && SDK.driver.userId) {
 		loop();
 	} else {
-		logged = SDK.driver.events.on('logged', () => {
+		SDK.driver.on('logged', () => {
 			clearTimeout(timer);
 			timer = false;
 		});
 
-		disconnected = SDK.driver.events.on('disconnected', () => {
+		SDK.driver.on('disconnected', () => {
 			if (SDK.driver.userId) {
 				loop();
 			}

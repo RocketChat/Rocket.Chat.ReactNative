@@ -5,7 +5,11 @@ import buildMessage from './helpers/buildMessage';
 import database from '../realm';
 import log from '../../utils/log';
 
-async function loadMissedMessagesRest({ rid: roomId, lastOpen: lastUpdate }) {
+async function loadMissedMessagesRest({ rid: roomId, lastOpen }) {
+	let lastUpdate;
+	if (lastOpen) {
+		lastUpdate = new Date(lastOpen).toISOString();
+	}
 	const { result } = await SDK.api.get('chat.syncMessages', { roomId, lastUpdate });
 	return result;
 }

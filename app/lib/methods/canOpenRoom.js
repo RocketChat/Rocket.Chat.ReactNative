@@ -27,7 +27,7 @@ async function canOpenRoomREST({ type, rid }) {
 async function canOpenRoomDDP(...args) {
 	try {
 		const [{ type, name }] = args;
-		await SDK.driver.cacheCall('getRoomByTypeAndName', ddpTypes[type], name);
+		await SDK.driver.asyncCall('getRoomByTypeAndName', ddpTypes[type], name);
 		return true;
 	} catch (error) {
 		if (error.isClientSafe) {

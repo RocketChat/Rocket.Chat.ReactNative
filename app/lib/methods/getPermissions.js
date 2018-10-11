@@ -14,8 +14,8 @@ export default async function() {
 	try {
 		const lastUpdate = getLastUpdate();
 		const result = await (!lastUpdate
-			? SDK.driver.cacheCall('permissions/get')
-			: SDK.driver.cacheCall('permissions/get', new Date(lastUpdate)));
+			? SDK.driver.asyncCall('permissions/get')
+			: SDK.driver.asyncCall('permissions/get', new Date(lastUpdate)));
 		const permissions = (result.update || result).filter(permission => defaultPermissions.includes(permission._id));
 		permissions
 			.map((permission) => {
@@ -25,7 +25,13 @@ export default async function() {
 			});
 
 		InteractionManager.runAfterInteractions(
-			() => database.write(() => permissions.forEach(permission => database.create('permissions', permission, true)))
+			() => database.write(() => permissions.forEach((permission) => {
+				try {
+					database.create('permissions', permission, true);
+				} catch (e) {
+					log('getPermissions create', e);
+				}
+			}))
 		);
 	} catch (e) {
 		log('getPermissions', e);

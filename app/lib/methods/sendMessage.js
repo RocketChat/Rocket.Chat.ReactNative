@@ -33,12 +33,12 @@ export const getMessage = (rid, msg = {}) => {
 
 function sendMessageByRest(message) {
 	const { _id, rid, msg } = message;
-	return SDK.api.get('chat.sendMessage', { message: { _id, rid, msg } });
+	return SDK.api.post('chat.sendMessage', { message: { _id, rid, msg } });
 }
 
 function sendMessageByDDP(message) {
 	const { _id, rid, msg } = message;
-	return SDK.driver.cacheCall('sendMessage', { _id, rid, msg });
+	return SDK.driver.asyncCall('sendMessage', { _id, rid, msg });
 }
 
 export async function _sendMessageCall(message) {

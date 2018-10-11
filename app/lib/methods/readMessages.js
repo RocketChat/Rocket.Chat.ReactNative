@@ -9,7 +9,7 @@ const readMessagesREST = function readMessagesREST(rid) {
 
 const readMessagesDDP = function readMessagesDDP(rid) {
 	try {
-		return SDK.driver.cacheCall('readMessages', rid);
+		return SDK.driver.asyncCall('readMessages', rid);
 	} catch (e) {
 		return readMessagesREST.call(this, rid);
 	}
