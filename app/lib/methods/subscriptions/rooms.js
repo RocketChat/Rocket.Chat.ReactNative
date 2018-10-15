@@ -1,4 +1,6 @@
 import Random from 'react-native-meteor/lib/Random';
+import * as SDK from '@rocket.chat/sdk';
+
 import database from '../../realm';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
 import protectedFunction from '../helpers/protectedFunction';
@@ -7,9 +9,9 @@ import log from '../../../utils/log';
 
 export default async function subscribeRooms(id) {
 	const promises = Promise.all([
-		this.ddp.subscribe('stream-notify-user', `${ id }/subscriptions-changed`, false),
-		this.ddp.subscribe('stream-notify-user', `${ id }/rooms-changed`, false),
-		this.ddp.subscribe('stream-notify-user', `${ id }/message`, false)
+		SDK.driver.subscribe('stream-notify-user', `${ id }/subscriptions-changed`, false),
+		SDK.driver.subscribe('stream-notify-user', `${ id }/rooms-changed`, false),
+		SDK.driver.subscribe('stream-notify-user', `${ id }/message`, false)
 	]);
 
 	let timer = null;
@@ -28,26 +30,29 @@ export default async function subscribeRooms(id) {
 		}, 5000);
 	};
 
-	if (!this.ddp && this._login) {
+	if (!SDK.driver.ddp && SDK.driver.userId) {
 		loop();
 	} else {
-		this.ddp.on('logged', () => {
+		SDK.driver.on('logged', () => {
 			clearTimeout(timer);
 			timer = false;
 		});
 
-		this.ddp.on('logout', () => {
+		SDK.driver.on('logout', () => {
 			clearTimeout(timer);
 			timer = true;
 		});
 
-		this.ddp.on('disconnected', () => {
+		SDK.driver.on('disconnected', () => {
 			if (this._login) {
 				loop();
 			}
 		});
 
-		this.ddp.on('stream-notify-user', protectedFunction((ddpMessage) => {
+		SDK.driver.on('stream-notify-user', protectedFunction((e, ddpMessage) => {
+			if (ddpMessage.msg === 'added') {
+				return;
+			}
 			const [type, data] = ddpMessage.fields.args;
 			const [, ev] = ddpMessage.fields.eventName.split('/');
 			if (/subscriptions/.test(ev)) {

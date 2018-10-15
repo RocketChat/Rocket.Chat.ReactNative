@@ -1,7 +1,7 @@
-import { post } from './helpers/rest';
+import * as SDK from '@rocket.chat/sdk';
+
 import database from '../realm';
 import log from '../../utils/log';
-import store from '../createStore';
 
 // TODO: api fix
 const ddpTypes = {
@@ -13,10 +13,7 @@ const restTypes = {
 
 async function canOpenRoomREST({ type, rid }) {
 	try {
-		const { user } = store.getState().login;
-		const { token, id } = user;
-		const server = this.ddp.url.replace(/^ws/, 'http');
-		await post({ token, id, server }, `${ restTypes[type] }.open`, { roomId: rid });
+		await SDK.api.post(`${ restTypes[type] }.open`, { roomId: rid });
 		return true;
 	} catch (error) {
 		// TODO: workround for 'already open for the sender' error
@@ -30,7 +27,7 @@ async function canOpenRoomREST({ type, rid }) {
 async function canOpenRoomDDP(...args) {
 	try {
 		const [{ type, name }] = args;
-		await this.ddp.call('getRoomByTypeAndName', ddpTypes[type], name);
+		await SDK.driver.asyncCall('getRoomByTypeAndName', ddpTypes[type], name);
 		return true;
 	} catch (error) {
 		if (error.isClientSafe) {
@@ -51,8 +48,7 @@ export default async function canOpenRoom({ rid, path }) {
 	const [type, name] = path.split('/');
 
 	try {
-		// eslint-disable-next-line
-		const data = await (this.ddp && this.ddp.status ? canOpenRoomDDP.call(this, { rid, type, name }) : canOpenRoomREST.call(this, { type, rid }));
+		const data = await (SDK.driver.ddp ? canOpenRoomDDP.call(this, { rid, type, name }) : canOpenRoomREST.call(this, { type, rid }));
 		return data;
 	} catch (e) {
 		log('canOpenRoom', e);

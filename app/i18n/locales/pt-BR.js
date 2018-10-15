@@ -97,7 +97,7 @@ export default {
 	Allow_Reactions: 'Permitir reagir',
 	Alphabetical: 'Alfabético',
 	and_more: 'e mais',
-	and: 'a',
+	and: 'e',
 	announcement: 'anúncio',
 	Announcement: 'Anúncio',
 	ARCHIVE: 'ARQUIVAR',
