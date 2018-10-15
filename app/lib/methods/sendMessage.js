@@ -1,8 +1,8 @@
 import Random from 'react-native-meteor/lib/Random';
+import * as SDK from '@rocket.chat/sdk';
 
 import messagesStatus from '../../constants/messagesStatus';
 import buildMessage from './helpers/buildMessage';
-import { post } from './helpers/rest';
 import database from '../realm';
 import reduxStore from '../createStore';
 import log from '../../utils/log';
@@ -32,21 +32,18 @@ export const getMessage = (rid, msg = {}) => {
 };
 
 function sendMessageByRest(message) {
-	const { token, id } = this.ddp._login;
-	const server = this.ddp.url.replace(/^ws/, 'http');
 	const { _id, rid, msg } = message;
-	return post({ token, id, server }, 'chat.sendMessage', { message: { _id, rid, msg } });
+	return SDK.api.post('chat.sendMessage', { message: { _id, rid, msg } });
 }
 
 function sendMessageByDDP(message) {
 	const { _id, rid, msg } = message;
-	return this.ddp.call('sendMessage', { _id, rid, msg });
+	return SDK.driver.asyncCall('sendMessage', { _id, rid, msg });
 }
 
 export async function _sendMessageCall(message) {
 	try {
-		// eslint-disable-next-line
-		const data = await (this.ddp && this.ddp.status ? sendMessageByDDP.call(this, message) : sendMessageByRest.call(this, message));
+		const data = await (SDK.driver.ddp ? sendMessageByDDP.call(this, message) : sendMessageByRest.call(this, message));
 		return data;
 	} catch (e) {
 		database.write(() => {

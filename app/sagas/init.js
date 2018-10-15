@@ -29,7 +29,11 @@ const restore = function* restore() {
 				}
 				yield put(selectServerRequest(currentServer));
 				yield put(setUser(userParsed));
+			} else {
+				yield put(actions.appStart('outside'));
 			}
+		} else {
+			yield put(actions.appStart('outside'));
 		}
 
 		const sortPreferences = yield RocketChat.getSortPreferences();

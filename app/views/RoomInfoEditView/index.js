@@ -68,10 +68,10 @@ export default class RoomInfoEditView extends LoggedView {
 
 
 	async componentDidMount() {
-		const { room } = this.state;
 		await this.updateRoom();
 		this.init();
 		this.rooms.addListener(this.updateRoom);
+		const { room } = this.state;
 		this.permissions = RocketChat.hasPermission(PERMISSIONS_ARRAY, room.rid);
 	}
 

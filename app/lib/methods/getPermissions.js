@@ -1,4 +1,5 @@
 import { InteractionManager } from 'react-native';
+import * as SDK from '@rocket.chat/sdk';
 
 import database from '../realm';
 import log from '../../utils/log';
@@ -11,13 +12,10 @@ const getLastUpdate = () => {
 
 export default async function() {
 	try {
-		if (!this.ddp) {
-			// TODO: should implement loop or get from rest?
-			return;
-		}
-
 		const lastUpdate = getLastUpdate();
-		const result = await (!lastUpdate ? this.ddp.call('permissions/get') : this.ddp.call('permissions/get', new Date(lastUpdate)));
+		const result = await (!lastUpdate
+			? SDK.driver.asyncCall('permissions/get')
+			: SDK.driver.asyncCall('permissions/get', new Date(lastUpdate)));
 		const permissions = (result.update || result).filter(permission => defaultPermissions.includes(permission._id));
 		permissions
 			.map((permission) => {
@@ -27,9 +25,13 @@ export default async function() {
 			});
 
 		InteractionManager.runAfterInteractions(
-			() => database.write(
-				() => permissions.forEach(permission => database.create('permissions', permission, true))
-			)
+			() => database.write(() => permissions.forEach((permission) => {
+				try {
+					database.create('permissions', permission, true);
+				} catch (e) {
+					log('getPermissions create', e);
+				}
+			}))
 		);
 	} catch (e) {
 		log('getPermissions', e);
