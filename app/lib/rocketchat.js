@@ -1,5 +1,4 @@
 import { AsyncStorage, Platform } from 'react-native';
-import { hashPassword } from 'react-native-meteor/lib/utils';
 import foreach from 'lodash/forEach';
 import RNFetchBlob from 'rn-fetch-blob';
 import * as SDK from '@rocket.chat/sdk';
@@ -14,7 +13,7 @@ import log from '../utils/log';
 import {
 	setUser, setLoginServices, removeLoginServices, loginRequest, loginSuccess, loginFailure, logout
 } from '../actions/login';
-import { disconnect, connectSuccess, connectFailure } from '../actions/connect';
+import { disconnect, connectSuccess } from '../actions/connect';
 import { setActiveUser } from '../actions/activeUsers';
 import { starredMessagesReceived, starredMessageUnstarred } from '../actions/starredMessages';
 import { pinnedMessagesReceived, pinnedMessageUnpinned } from '../actions/pinnedMessages';
@@ -146,39 +145,32 @@ const RocketChat = {
 			RocketChat.registerPushToken(user.id);
 			reduxStore.dispatch(setUser(user));
 			reduxStore.dispatch(loginSuccess(user));
-			// TODO: need this?
-			// this.ddp.subscribe('userData');
+			this.ddp.subscribe('userData');
 		} catch (e) {
 			log('SDK.loginSuccess', e);
 		}
 	},
 	connect(url, login) {
-		return new Promise(async(resolve) => {
-			// if (this.ddp) {
-			// 	this.ddp.disconnect();
-			// }
+		return new Promise(async() => {
+			if (this.ddp) {
+				RocketChat.disconnect();
+				this.ddp = null;
+			}
 
-			// this.ddp = new Ddp(url, login);
+			if (login) {
+				SDK.api.setAuth({ authToken: login.token, userId: login.id });
+			}
+
 			SDK.api.setBaseUrl(url);
 			SDK.driver.connect({ host: url, useSsl: true }, (err, ddp) => {
 				if (err) {
-					console.warn(err);
+					return console.warn(err);
 				}
+				this.ddp = ddp;
 				if (login) {
-					SDK.driver.ddp.login(login);
+					SDK.driver.ddp.login({ resume: login.resume });
 				}
 			});
-			// .then(() => {
-			// 	console.warn(url)
-			// 	SDK.api.setBaseUrl(url);
-			// 	if (login) {
-			// 		SDK.driver.ddp.login(login);
-			// 	}
-			// })
-			// .catch(err => console.warn(err));
-			// if (login) {
-			// 	protectedFunction(() => RocketChat.getRooms());
-			// }
 
 			SDK.driver.on('connected', () => {
 				reduxStore.dispatch(connectSuccess());
@@ -187,21 +179,18 @@ const RocketChat = {
 				SDK.driver.subscribe('roles');
 				RocketChat.getSettings();
 				RocketChat.getPermissions();
-				// RocketChat.getCustomEmoji();
+				RocketChat.getCustomEmoji();
 			});
 
 			SDK.driver.on('login', protectedFunction(() => reduxStore.dispatch(loginRequest())));
 
-			SDK.driver.on('loginError', protectedFunction(err => reduxStore.dispatch(loginFailure(err))));
+			SDK.driver.on('forbidden', protectedFunction(() => reduxStore.dispatch(logout())));
 
-			// SDK.driver.on('forbidden', protectedFunction(() => reduxStore.dispatch(logout())));
-
-			// SDK.driver.on('users', protectedFunction((error, ddpMessage) => RocketChat._setUser(ddpMessage)));
+			SDK.driver.on('users', protectedFunction((error, ddpMessage) => RocketChat._setUser(ddpMessage)));
 
 			// SDK.driver.on('background', () => this.getRooms().catch(e => log('background getRooms', e)));
 
 			SDK.driver.on('logged', protectedFunction((error, user) => {
-				console.warn('logged')
 				SDK.api.setAuth({ authToken: user.token, userId: user.id });
 				SDK.api.currentLogin = {
 					userId: user.id,
@@ -477,6 +466,7 @@ const RocketChat = {
 
 			if (typeof username === 'string' && username.indexOf('@') !== -1) {
 				params.email = username;
+				delete params.username;
 			}
 		}
 
@@ -489,38 +479,45 @@ const RocketChat = {
 			};
 		}
 
-		// return this.login(params, callback);
 		try {
 			return await this.login(params);
-			// console.warn(credentials);
-			// return this.loginSuccess();
 		} catch (error) {
 			throw error;
 		}
-
-		// await SDK.api.login({ username, password });
-		// const mockInfo = await api.get('users.info', { username: mockUser.username })
 	},
 
-	login(params) {
-		// return this.ddp.login(params);
-		return SDK.driver.login(params);
+	async login(params) {
+		try {
+			await SDK.driver.login(params);
+		} catch (e) {
+			reduxStore.dispatch(loginFailure(e));
+			throw e;
+		}
 	},
 	logout({ server }) {
-		// if (this.ddp) {
-		// 	try {
-		// 		this.ddp.logout();
-		// 	} catch (e) {
-		// 		log('SDK.logout', e);
-		// 	}
-		// }
-		SDK.driver.logout();
+		try {
+			RocketChat.disconnect();
+			SDK.driver.logout();
+		} catch (error) {
+			console.warn(error);
+		}
 		AsyncStorage.removeItem(TOKEN_KEY);
 		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
-		// database.deleteAll();
 		setTimeout(() => {
 			database.deleteAll();
 		}, 300);
+	},
+	disconnect() {
+		try {
+			SDK.driver.unsubscribeAll();
+		} catch (error) {
+			console.warn(error);
+		}
+		SDK.api.setAuth({ authToken: null, userId: null });
+		SDK.api.currentLogin = {
+			userId: null,
+			authToken: null
+		};
 	},
 
 	registerPushToken(userId) {
