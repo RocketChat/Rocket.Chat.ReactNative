@@ -1,33 +1,30 @@
 import { InteractionManager } from 'react-native';
+import * as SDK from '@rocket.chat/sdk';
 
-// import { showToast } from '../../utils/info';
-import { get } from './helpers/rest';
 import mergeSubscriptionsRooms, { merge } from './helpers/mergeSubscriptionsRooms';
 import database from '../realm';
 import log from '../../utils/log';
-import store from '../createStore';
 
 const lastMessage = () => {
 	const message = database
 		.objects('subscriptions')
 		.sorted('roomUpdatedAt', true)[0];
-	return message && new Date(message.roomUpdatedAt);
+	return message && new Date(message.roomUpdatedAt).toISOString();
 };
 
 const getRoomRest = async function() {
 	const updatedSince = lastMessage();
-	const { user } = store.getState().login;
-	const { token, id } = user;
-	const server = this.ddp.url.replace(/^ws/, 'http');
-	const [subscriptions, rooms] = await Promise.all([get({ token, id, server }, 'subscriptions.get', { updatedSince }), get({ token, id, server }, 'rooms.get', { updatedSince })]);
+	const [subscriptions, rooms] = await (updatedSince
+		? Promise.all([SDK.api.get('subscriptions.get', { updatedSince }), SDK.api.get('rooms.get', { updatedSince })])
+		: Promise.all([SDK.api.get('subscriptions.get'), SDK.api.get('rooms.get')])
+	);
 	return mergeSubscriptionsRooms(subscriptions, rooms);
 };
 
 const getRoomDpp = async function() {
 	try {
-		const { ddp } = this;
 		const updatedSince = lastMessage();
-		const [subscriptions, rooms] = await Promise.all([ddp.call('subscriptions/get', updatedSince), ddp.call('rooms/get', updatedSince)]);
+		const [subscriptions, rooms] = await Promise.all([SDK.driver.asyncCall('subscriptions/get', updatedSince), SDK.driver.asyncCall('rooms/get', updatedSince)]);
 		return mergeSubscriptionsRooms(subscriptions, rooms);
 	} catch (e) {
 		return getRoomRest.apply(this);
@@ -39,8 +36,7 @@ export default async function() {
 
 	return new Promise(async(resolve, reject) => {
 		try {
-			// eslint-disable-next-line
-			const { subscriptions, rooms } = await (this.ddp && this.ddp.status ? getRoomDpp.apply(this) : getRoomRest.apply(this));
+			const { subscriptions, rooms } = await (SDK.driver.ddp ? getRoomDpp.apply(this) : getRoomRest.apply(this));
 
 			const data = rooms.map(room => ({ room, sub: database.objects('subscriptions').filtered('rid == $0', room._id) }));
 

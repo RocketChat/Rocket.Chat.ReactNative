@@ -10,7 +10,7 @@ let newSub;
 
 const openRoomFiles = function* openRoomFiles({ rid, limit }) {
 	try {
-		newSub = yield RocketChat.subscribe('roomFiles', rid, limit);
+		sub = yield RocketChat.subscribe('roomFiles', rid, limit);
 		yield put(readyRoomFiles());
 		if (sub) {
 			sub.unsubscribe().catch(err => console.warn(err));
@@ -23,6 +23,8 @@ const openRoomFiles = function* openRoomFiles({ rid, limit }) {
 
 const closeRoomFiles = function* closeRoomFiles() {
 	try {
+		// yield sub.unsubscribe(sub);
+		// sub = null;
 		if (sub) {
 			yield sub.unsubscribe();
 		}

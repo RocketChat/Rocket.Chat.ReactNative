@@ -177,8 +177,9 @@ const messagesReactionsUsernamesSchema = {
 
 const messagesReactionsSchema = {
 	name: 'messagesReactions',
-	primaryKey: 'emoji',
+	primaryKey: '_id',
 	properties: {
+		_id: 'string',
 		emoji: 'string',
 		usernames: { type: 'list', objectType: 'messagesReactionsUsernames' }
 	}
