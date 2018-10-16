@@ -224,7 +224,7 @@ export default class RoomsListView extends LoggedView {
 
 			// unread
 			if (showUnread) {
-				this.unread = this.data.filtered('archived != true && open == true').sorted('name', false).filtered('(unread > 0 || alert == true)');
+				this.unread = this.data.filtered('archived != true && open == true').filtered('(unread > 0 || alert == true)');
 				unread = this.unread.slice();
 				setTimeout(() => {
 					this.unread.addListener(() => this.setState({ unread: this.unread.slice() }));
