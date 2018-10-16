@@ -139,7 +139,6 @@ export default class MessageContainer extends React.Component {
 			(previousItem.ts.toDateString() === item.ts.toDateString())
 			&& (previousItem.u.username === item.u.username)
 			&& !(previousItem.groupable === false || item.groupable === false || broadcast === true)
-			&& (previousItem.status === item.status)
 			&& (item.ts - previousItem.ts < Message_GroupingPeriod * 1000)
 		)) {
 			return false;
