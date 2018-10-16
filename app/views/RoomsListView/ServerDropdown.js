@@ -5,6 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
+import * as SDK from '@rocket.chat/sdk';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
@@ -106,15 +107,19 @@ export default class ServerDropdown extends Component {
 
 	select = async(server) => {
 		const {
-			server: serverProp, selectServerRequest, appStart, navigator
+			server: currentServer, selectServerRequest, appStart, navigator
 		} = this.props;
 
 		this.close();
-		if (serverProp !== server) {
-			selectServerRequest(server);
+		if (currentServer !== server) {
 			const token = await AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
 			if (!token) {
 				appStart();
+				try {
+					SDK.driver.disconnect();
+				} catch (error) {
+					console.warn(error);
+				}
 				if (NewServerView == null) {
 					NewServerView = require('../NewServerView').default;
 					Navigation.registerComponent('NewServerView', () => NewServerView, store, Provider);
@@ -131,6 +136,8 @@ export default class ServerDropdown extends Component {
 						}
 					});
 				}, 1000);
+			} else {
+				selectServerRequest(server);
 			}
 		}
 	}
@@ -149,6 +156,7 @@ export default class ServerDropdown extends Component {
 								source={{ uri: item.iconURL }}
 								defaultSource={{ uri: 'logo' }}
 								style={styles.serverIcon}
+								onError={() => console.warn('error loading serverIcon')}
 							/>
 						)
 						: (

@@ -1,7 +1,7 @@
 import { InteractionManager } from 'react-native';
+import * as SDK from '@rocket.chat/sdk';
 
 import reduxStore from '../createStore';
-// import { get } from './helpers/rest';
 
 import database from '../realm';
 import * as actions from '../../actions';
@@ -12,16 +12,11 @@ const getLastMessage = () => {
 	return setting && setting._updatedAt;
 };
 
-
+// TODO: fix api (get emojis by date/version....)
 export default async function() {
 	try {
-		if (!this.ddp) {
-			// TODO: should implement loop or get from rest?
-			return;
-		}
-
 		const lastMessage = getLastMessage();
-		let emojis = await this.ddp.call('listEmojiCustom');
+		let emojis = await SDK.driver.asyncCall('listEmojiCustom');
 		emojis = emojis.filter(emoji => !lastMessage || emoji._updatedAt > lastMessage);
 		emojis = this._prepareEmojis(emojis);
 		InteractionManager.runAfterInteractions(() => database.write(() => {

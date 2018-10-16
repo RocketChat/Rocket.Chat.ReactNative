@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@remobile/react-native-toast": "^1.0.7",
+    "@rocket.chat/sdk": "git+https://github.com/RocketChat/Rocket.Chat.js.SDK.git#ddp",
     "deep-equal": "^1.0.1",
     "ejson": "^2.1.2",
     "js-base64": "^2.4.9",

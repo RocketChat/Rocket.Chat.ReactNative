@@ -128,7 +128,8 @@ module.exports = {
 		"consistent-return": 0,
 		"global-require": "off",
 		"react-native/no-unused-styles": 2,
-		"react/jsx-one-expression-per-line": 0
+		"react/jsx-one-expression-per-line": 0,
+		"func-names": 0
 	},
 	"globals": {
 		"__DEV__": true

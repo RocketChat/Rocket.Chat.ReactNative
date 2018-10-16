@@ -34,7 +34,7 @@ const test = function* test() {
 		const user = yield call(getToken);
 		// const response =
 		// yield all([call(connect, server, user && user.token ? { resume: user.token, ...user.user } : undefined)]);// , put(loginRequest({ resume: user.token }))]);
-		yield call(connect, server, user && user.token ? { resume: user.token, ...user.user } : undefined);
+		yield call(connect, server, user && user.token ? { resume: user.token, ...user } : null);
 	// yield put(connectSuccess(response));
 	} catch (err) {
 		console.warn('test', err);
