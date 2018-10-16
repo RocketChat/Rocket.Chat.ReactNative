@@ -223,7 +223,7 @@ export default class RoomView extends LoggedView {
 
 		if (this.rooms.length > 0) {
 			const { room: prevRoom } = this.state;
-			const room = JSON.parse(JSON.stringify(this.rooms[0]));
+			const room = JSON.parse(JSON.stringify(this.rooms[0] || {}));
 			this.setState({ room });
 
 			if (!prevRoom.rid) {
