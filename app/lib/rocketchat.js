@@ -168,7 +168,7 @@ const RocketChat = {
 				}
 				this.ddp = ddp;
 				if (login) {
-					SDK.driver.ddp.login({ resume: login.resume });
+					SDK.driver.login({ resume: login.resume });
 				}
 			});
 
@@ -443,39 +443,30 @@ const RocketChat = {
 	},
 
 	async loginWithPassword({ username, password, code }) {
-		let params = {};
+		let params = { username, password };
 		const state = reduxStore.getState();
 
 		if (state.settings.LDAP_Enable) {
 			params = {
+				...params,
 				ldap: true,
-				username,
-				ldapPass: password,
 				ldapOptions: {}
 			};
 		} else if (state.settings.CROWD_Enable) {
 			params = {
-				crowd: true,
-				username,
-				crowdPassword: password
+				...params,
+				crowd: true
 			};
-		} else {
-			params = {
-				username, password
-			};
-
-			if (typeof username === 'string' && username.indexOf('@') !== -1) {
-				params.email = username;
-				delete params.username;
-			}
+		} else if (typeof username === 'string' && username.indexOf('@') !== -1) {
+			params.email = username;
+			delete params.username;
 		}
 
 		if (code) {
 			params = {
-				totp: {
-					login: params,
-					code
-				}
+				...params,
+				code,
+				totp: true
 			};
 		}
 
