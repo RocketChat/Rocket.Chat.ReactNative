@@ -52,7 +52,7 @@ export default class RoomInfoEditView extends LoggedView {
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.permissions = {};
 		this.state = {
-			room: {},
+			room: this.rooms[0] || {},
 			name: '',
 			description: '',
 			topic: '',
@@ -67,8 +67,8 @@ export default class RoomInfoEditView extends LoggedView {
 	}
 
 
-	async componentDidMount() {
-		await this.updateRoom();
+	componentDidMount() {
+		this.updateRoom();
 		this.init();
 		this.rooms.addListener(this.updateRoom);
 		const { room } = this.state;
@@ -79,9 +79,8 @@ export default class RoomInfoEditView extends LoggedView {
 		this.rooms.removeAllListeners();
 	}
 
-	updateRoom = async() => {
-		const [room] = this.rooms;
-		await this.setState({ room });
+	updateRoom = () => {
+		this.setState({ room: this.rooms[0] || {} });
 	}
 
 	init = () => {
