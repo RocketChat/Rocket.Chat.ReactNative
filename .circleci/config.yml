@@ -104,7 +104,7 @@ jobs:
       #       nvm install 8
 
       - restore_cache:
-          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "package.json" }}
+          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "package-lock.json" }}
 
       - run:
           name: Install NPM modules
