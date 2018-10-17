@@ -12,7 +12,7 @@ import com.dylanvann.fastimage.FastImageViewPackage;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-// import com.reactnativenavigation.NavigationApplication;
+import com.reactnativenavigation.NavigationApplication;
 import com.facebook.react.ReactNativeHost;
 import com.remobile.toast.RCTToastPackage;
 import com.rnim.rn.audio.ReactNativeAudioPackage;
