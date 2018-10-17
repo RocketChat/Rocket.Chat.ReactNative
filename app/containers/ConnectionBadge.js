@@ -129,7 +129,7 @@ class ConnectionBadge extends Component {
 
 		const translateY = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [-41, 0]
+			outputRange: [-42, 0]
 		});
 
 		if (connecting) {
