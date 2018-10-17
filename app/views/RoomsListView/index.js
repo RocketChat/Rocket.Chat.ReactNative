@@ -8,6 +8,7 @@ import { isEqual } from 'lodash';
 import { Navigation } from 'react-native-navigation';
 
 import SearchBox from '../../containers/SearchBox';
+import ConnectionBadge from '../../containers/ConnectionBadge';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem from '../../presentation/RoomItem';
@@ -95,8 +96,8 @@ export default class RoomsListView extends LoggedView {
 		groupByType: PropTypes.bool,
 		showFavorites: PropTypes.bool,
 		showUnread: PropTypes.bool,
-		toggleSortDropdown: PropTypes.func,
-		useRealName: PropTypes.bool
+		useRealName: PropTypes.bool,
+		toggleSortDropdown: PropTypes.func
 	}
 
 	constructor(props) {
@@ -257,7 +258,7 @@ export default class RoomsListView extends LoggedView {
 
 			// unread
 			if (showUnread) {
-				this.unread = this.data.filtered('archived != true && open == true').sorted('name', false).filtered('(unread > 0 || alert == true)');
+				this.unread = this.data.filtered('archived != true && open == true').filtered('(unread > 0 || alert == true)');
 				unread = this.unread.slice();
 				setTimeout(() => {
 					this.unread.addListener(() => this.setState({ unread: this.unread.slice() }));
@@ -609,6 +610,7 @@ export default class RoomsListView extends LoggedView {
 					: null
 				}
 				{showServerDropdown ? <ServerDropdown navigator={navigator} /> : null}
+				<ConnectionBadge />
 			</SafeAreaView>
 		);
 	}

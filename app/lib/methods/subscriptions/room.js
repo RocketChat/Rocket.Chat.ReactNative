@@ -1,14 +1,11 @@
-// import database from '../../realm';
-// import reduxStore from '../../createStore';
-// import normalizeMessage from '../helpers/normalizeMessage';
-// import _buildMessage from '../helpers/buildMessage';
-// import protectedFunction from '../helpers/protectedFunction';
+import * as SDK from '@rocket.chat/sdk';
+
 import log from '../../../utils/log';
 
-const subscribe = (ddp, rid) => Promise.all([
-	ddp.subscribe('stream-room-messages', rid, false),
-	ddp.subscribe('stream-notify-room', `${ rid }/typing`, false),
-	ddp.subscribe('stream-notify-room', `${ rid }/deleteMessage`, false)
+const subscribe = rid => Promise.all([
+	SDK.driver.subscribe('stream-room-messages', rid, false),
+	SDK.driver.subscribe('stream-notify-room', `${ rid }/typing`, false),
+	SDK.driver.subscribe('stream-notify-room', `${ rid }/deleteMessage`, false)
 ]);
 const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch((e) => {
 	log('unsubscribeRoom', e);
@@ -16,22 +13,12 @@ const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscrib
 
 let timer = null;
 let promises;
-let logged;
-let disconnected;
 
-const stop = (ddp) => {
+const stop = () => {
 	if (promises) {
 		promises.then(unsubscribe);
 		promises = false;
 	}
-
-	if (ddp) {
-		ddp.removeListener('logged', logged);
-		ddp.removeListener('disconnected', disconnected);
-	}
-
-	logged = false;
-	disconnected = false;
 
 	clearTimeout(timer);
 };
@@ -47,7 +34,7 @@ export default async function subscribeRoom({ rid, t }) {
 		}
 		timer = setTimeout(async() => {
 			try {
-				await this.loadMissedMessages({ rid, t, lastOpen: timer });
+				await this.loadMissedMessages({ rid, t });
 				timer = false;
 				loop();
 			} catch (e) {
@@ -56,29 +43,28 @@ export default async function subscribeRoom({ rid, t }) {
 		}, 5000);
 	};
 
-	if (!this.ddp || !this.ddp.status) {
+	if (!SDK.driver.ddp && SDK.driver.userId) {
 		loop();
 	} else {
-		logged = this.ddp.on('logged', () => {
+		SDK.driver.on('logged', () => {
 			clearTimeout(timer);
 			timer = false;
-			// promises = subscribe(this.ddp, rid);
 		});
 
-		disconnected = this.ddp.on('disconnected', () => {
-			if (this._login) {
+		SDK.driver.on('disconnected', () => {
+			if (SDK.driver.userId) {
 				loop();
 			}
 		});
 
 		try {
-			promises = subscribe(this.ddp, rid);
+			promises = subscribe(rid);
 		} catch (e) {
 			log('subscribeRoom', e);
 		}
 	}
 
 	return {
-		stop: () => stop(this.ddp)
+		stop: () => stop()
 	};
 }

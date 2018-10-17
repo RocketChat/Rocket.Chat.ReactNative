@@ -129,7 +129,8 @@ module.exports = {
 		"global-require": "off",
 		"react-native/no-unused-styles": 2,
 		"react/jsx-one-expression-per-line": 0,
-		"require-await": 2
+		"require-await": 2,
+		"func-names": 0
 	},
 	"globals": {
 		"__DEV__": true

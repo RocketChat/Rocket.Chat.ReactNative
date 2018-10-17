@@ -60,9 +60,8 @@ export default class RoomActionsView extends LoggedView {
 		super('RoomActionsView', props);
 		const { rid } = props;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
-		[this.room] = this.rooms;
 		this.state = {
-			room: this.room,
+			room: this.rooms[0] || {},
 			onlineMembers: [],
 			allMembers: [],
 			member: {}
@@ -104,11 +103,9 @@ export default class RoomActionsView extends LoggedView {
 	}
 
 	get canAddUser() {
-		const {
-			rid, t
-		} = this.room;
-		const { allMembers } = this.state;
+		const { allMembers, room } = this.state;
 		const { username } = this.props;
+		const { rid, t } = room;
 
 		// TODO: same test joined
 		const userInRoom = !!allMembers.find(m => m.username === username);
@@ -140,10 +137,10 @@ export default class RoomActionsView extends LoggedView {
 	}
 
 	get sections() {
+		const { onlineMembers, room } = this.state;
 		const {
 			rid, t, blocker, notifications
-		} = this.room;
-		const { onlineMembers } = this.state;
+		} = room;
 
 		const sections = [{
 			data: [{
@@ -339,7 +336,7 @@ export default class RoomActionsView extends LoggedView {
 	}
 
 	updateRoom = () => {
-		this.setState({ room: this.room });
+		this.setState({ room: this.rooms[0] || {} });
 	}
 
 	toggleBlockUser = async() => {
