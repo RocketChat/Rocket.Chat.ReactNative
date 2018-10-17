@@ -14,12 +14,23 @@ import { initializePushNotifications } from './push';
 const startLogged = () => {
 	Navigation.setRoot({
 		root: {
-			stack: {
-				children: [{
+			sideMenu: {
+				left: {
+					id: 'Sidebar',
 					component: {
-						name: 'RoomsListView'
+						name: 'Sidebar'
 					}
-				}]
+				},
+				center: {
+					stack: {
+						id: 'AppRoot',
+						children: [{
+							component: {
+								name: 'RoomsListView'
+							}
+						}]
+					}
+				}
 			}
 		}
 	});
@@ -79,6 +90,11 @@ export default class App extends Component {
 					// background: {
 					// 	color: '#2F343D'
 					// }
+				},
+				sideMenu: {
+					left: {
+						enabled: false
+					}
 				}
 			});
 			store.dispatch(appInit());

@@ -22,6 +22,7 @@ import Touch from '../../utils/touch';
 import { toggleSortDropdown as toggleSortDropdownAction } from '../../actions/rooms';
 import store from '../../lib/createStore';
 import EventEmitter from '../../utils/events';
+import Drawer from '../../Drawer';
 
 const ROW_HEIGHT = 70;
 const SCROLL_OFFSET = 56;
@@ -78,6 +79,11 @@ export default class RoomsListView extends LoggedView {
 						name: 'RoomsListHeaderView',
 						alignment: 'center'
 					}
+				}
+			},
+			sideMenu: {
+				left: {
+					enabled: true
 				}
 			}
 		};
@@ -203,27 +209,7 @@ export default class RoomsListView extends LoggedView {
 				}
 			});
 		} else if (buttonId === 'settings') {
-			// Drawer.toggle(this.props.componentId);
-			// TODO: open modal
-			Navigation.showModal({
-				stack: {
-					children: [{
-						component: {
-							name: 'Sidebar',
-							// passProps: {
-							// 	onPressItem: this._onPressItem
-							// },
-							// options: {
-							// 	topBar: {
-							// 		title: {
-							// 			text: I18n.t('New_Message')
-							// 		}
-							// 	}
-							// }
-						}
-					}]
-				}
-			});
+			Drawer.toggle();
 		} else if (buttonId === 'search') {
 			this.initSearchingAndroid();
 		} else if (buttonId === 'cancelSearch' || buttonId === 'back') {

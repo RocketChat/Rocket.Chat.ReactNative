@@ -9,6 +9,7 @@ import SHA256 from 'js-sha256';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
+import { Navigation } from 'react-native-navigation';
 
 import LoggedView from '../View';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -24,6 +25,7 @@ import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
+import Drawer from '../../Drawer';
 
 @connect(state => ({
 	user: {
@@ -37,6 +39,26 @@ import Touch from '../../utils/touch';
 }))
 /** @extends React.Component */
 export default class ProfileView extends LoggedView {
+	static options() {
+		return {
+			topBar: {
+				leftButtons: [{
+					id: 'settings',
+					icon: { uri: 'settings', scale: Dimensions.get('window').scale },
+					testID: 'rooms-list-view-sidebar'
+				}],
+				title: {
+					text: I18n.t('Profile')
+				}
+			},
+			sideMenu: {
+				left: {
+					enabled: true
+				}
+			}
+		};
+	}
+
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		componentId: PropTypes.string,
@@ -62,25 +84,8 @@ export default class ProfileView extends LoggedView {
 		Navigation.events().bindComponent(this);
 	}
 
-	componentWillMount() {
-		const { navigator } = this.props;
-		navigator.setButtons({
-			leftButtons: [{
-				id: 'settings',
-				icon: { uri: 'settings', scale: Dimensions.get('window').scale }
-			}]
-		});
-	}
-
 	async componentDidMount() {
-		const { navigator } = this.props;
-
 		this.init();
-
-		navigator.setDrawerEnabled({
-			side: 'left',
-			enabled: true
-		});
 
 		try {
 			const result = await RocketChat.getAvatarSuggestion();
@@ -97,15 +102,9 @@ export default class ProfileView extends LoggedView {
 		}
 	}
 
-	onNavigatorEvent(event) {
-		const { navigator } = this.props;
-
-		if (event.type === 'NavBarButtonPress') {
-			if (event.id === 'settings') {
-				navigator.toggleDrawer({
-					side: 'left'
-				});
-			}
+	navigationButtonPressed = ({ buttonId }) => {
+		if (buttonId === 'settings') {
+			Drawer.toggle();
 		}
 	}
 

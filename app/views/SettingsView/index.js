@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import LoggedView from '../View';
 import RocketChat from '../../lib/rocketchat';
@@ -18,6 +19,7 @@ import Loading from '../../containers/Loading';
 import { showErrorAlert, showToast } from '../../utils/info';
 import log from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
+import Drawer from '../../Drawer';
 
 @connect(state => ({
 	userLanguage: state.login.user && state.login.user.language
@@ -26,6 +28,26 @@ import { setUser as setUserAction } from '../../actions/login';
 }))
 /** @extends React.Component */
 export default class SettingsView extends LoggedView {
+	static options() {
+		return {
+			topBar: {
+				leftButtons: [{
+					id: 'settings',
+					icon: { uri: 'settings', scale: Dimensions.get('window').scale },
+					testID: 'rooms-list-view-sidebar'
+				}],
+				title: {
+					text: I18n.t('Settings')
+				}
+			},
+			sideMenu: {
+				left: {
+					enabled: true
+				}
+			}
+		};
+	}
+
 	static propTypes = {
 		componentId: PropTypes.string,
 		userLanguage: PropTypes.string,
@@ -52,32 +74,9 @@ export default class SettingsView extends LoggedView {
 		Navigation.events().bindComponent(this);
 	}
 
-	componentWillMount() {
-		const { navigator } = this.props;
-		navigator.setButtons({
-			leftButtons: [{
-				id: 'settings',
-				icon: { uri: 'settings', scale: Dimensions.get('window').scale }
-			}]
-		});
-	}
-
-	componentDidMount() {
-		const { navigator } = this.props;
-		navigator.setDrawerEnabled({
-			side: 'left',
-			enabled: true
-		});
-	}
-
-	onNavigatorEvent(event) {
-		const { navigator } = this.props;
-		if (event.type === 'NavBarButtonPress') {
-			if (event.id === 'settings') {
-				navigator.toggleDrawer({
-					side: 'left'
-				});
-			}
+	navigationButtonPressed = ({ buttonId }) => {
+		if (buttonId === 'settings') {
+			Drawer.toggle();
 		}
 	}
 
@@ -100,7 +99,7 @@ export default class SettingsView extends LoggedView {
 		this.setState({ saving: true });
 
 		const { language } = this.state;
-		const { userLanguage, setUser, navigator } = this.props;
+		const { userLanguage, setUser } = this.props;
 
 		if (!this.formIsChanged()) {
 			return;
@@ -122,7 +121,14 @@ export default class SettingsView extends LoggedView {
 				showToast(I18n.t('Preferences_saved'));
 
 				if (params.language) {
-					navigator.setTitle({ title: I18n.t('Settings') });
+					const { componentId } = this.props;
+					Navigation.mergeOptions(componentId, {
+						topBar: {
+							title: {
+								text: I18n.t('Settings')
+							}
+						}
+					});
 				}
 			}, 300);
 		} catch (e) {

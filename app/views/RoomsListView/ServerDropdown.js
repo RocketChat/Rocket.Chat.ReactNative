@@ -3,7 +3,7 @@ import {
 	View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList, Image, AsyncStorage
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { connect, Provider } from 'react-redux';
+import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import * as SDK from '@rocket.chat/sdk';
 
@@ -15,15 +15,10 @@ import database from '../../lib/realm';
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
-import store from '../../lib/createStore';
 import EventEmitter from '../../utils/events';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
-
-let NewServerView = null;
-
-console.disableYellowBox = true;
 
 @connect(state => ({
 	closeServerDropdown: state.rooms.closeServerDropdown,
@@ -35,7 +30,6 @@ console.disableYellowBox = true;
 }))
 export default class ServerDropdown extends Component {
 	static propTypes = {
-		componentId: PropTypes.string,
 		closeServerDropdown: PropTypes.bool,
 		server: PropTypes.string,
 		toggleServerDropdown: PropTypes.func,
@@ -91,18 +85,28 @@ export default class ServerDropdown extends Component {
 	}
 
 	addServer = () => {
-		const { navigator, server } = this.props;
+		const { server } = this.props;
 
 		this.close();
 		setTimeout(() => {
-			navigator.showModal({
-				screen: 'OnboardingView',
-				passProps: {
-					previousServer: server
-				},
-				navigatorStyle: {
-					navBarHidden: true,
-					orientation: 'portrait'
+			Navigation.showModal({
+				stack: {
+					children: [{
+						component: {
+							name: 'OnboardingView',
+							passProps: {
+								previousServer: server
+							},
+							options: {
+								topBar: {
+									visible: false
+								},
+								layout: {
+									orientation: 'portrait'
+								}
+							}
+						}
+					}]
 				}
 			});
 		}, ANIMATION_DURATION);
@@ -110,7 +114,7 @@ export default class ServerDropdown extends Component {
 
 	select = async(server) => {
 		const {
-			server: currentServer, selectServerRequest, appStart, navigator
+			server: currentServer, selectServerRequest, appStart
 		} = this.props;
 
 		this.close();

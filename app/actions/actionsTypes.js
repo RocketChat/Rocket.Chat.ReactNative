@@ -81,7 +81,6 @@ export const MESSAGES = createRequestTypes('MESSAGES', [
 ]);
 export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [...defaultTypes]);
 export const SELECTED_USERS = createRequestTypes('SELECTED_USERS', ['ADD_USER', 'REMOVE_USER', 'RESET', 'SET_LOADING']);
-export const NAVIGATION = createRequestTypes('NAVIGATION', ['SET']);
 export const SERVER = createRequestTypes('SERVER', [
 	...defaultTypes,
 	'SELECT_SUCCESS',

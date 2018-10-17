@@ -16,9 +16,9 @@ import { STATUS_COLORS } from '../constants/colors';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import I18n from '../i18n';
-import { NavigationActions } from '../Navigation';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import DeviceInfo from '../utils/deviceInfo';
+import Drawer from '../Drawer';
 
 const styles = StyleSheet.create({
 	container: {
@@ -38,6 +38,9 @@ const styles = StyleSheet.create({
 		marginVertical: 16,
 		fontWeight: 'bold',
 		color: '#292E35'
+	},
+	itemSelected: {
+		backgroundColor: '#F7F8FA'
 	},
 	separator: {
 		borderBottomWidth: StyleSheet.hairlineWidth,
@@ -117,7 +120,8 @@ export default class Sidebar extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			showStatus: false
+			showStatus: false,
+			currentStack: 'RoomsListView'
 		};
 		Navigation.events().bindComponent(this);
 	}
@@ -161,12 +165,7 @@ export default class Sidebar extends Component {
 	}
 
 	closeDrawer = () => {
-		const { navigator } = this.props;
-		navigator.toggleDrawer({
-			side: 'left',
-			animated: true,
-			to: 'close'
-		});
+		Drawer.toggle();
 	}
 
 	toggleStatus = () => {
@@ -174,15 +173,23 @@ export default class Sidebar extends Component {
 		this.setState(prevState => ({ showStatus: !prevState.showStatus }));
 	}
 
-	sidebarNavigate = (screen, title) => {
+	sidebarNavigate = (stack) => {
+		const { currentStack } = this.state;
 		this.closeDrawer();
-		NavigationActions.resetTo({ screen, title });
+		if (currentStack !== stack) {
+			Navigation.setStackRoot('AppRoot', {
+				component: {
+					name: stack
+				}
+			});
+			this.setState({ currentStack: stack });
+		}
 	}
 
 	renderSeparator = key => <View key={key} style={styles.separator} />;
 
 	renderItem = ({
-		text, left, onPress, testID
+		text, left, onPress, testID, current
 	}) => (
 		<Touch
 			key={text}
@@ -191,7 +198,7 @@ export default class Sidebar extends Component {
 			activeOpacity={0.3}
 			testID={testID}
 		>
-			<View style={styles.item}>
+			<View style={[styles.item, current && styles.itemSelected]}>
 				<View style={styles.itemLeft}>
 					{left}
 				</View>
@@ -208,7 +215,7 @@ export default class Sidebar extends Component {
 			this.renderItem({
 				text: item.name,
 				left: <View style={[styles.status, { backgroundColor: STATUS_COLORS[item.id] }]} />,
-				selected: user.status === item.id,
+				current: user.status === item.id,
 				onPress: () => {
 					this.closeDrawer();
 					this.toggleStatus();
@@ -225,26 +232,30 @@ export default class Sidebar extends Component {
 	}
 
 	renderNavigation = () => {
+		const { currentStack } = this.state;
 		const { logout } = this.props;
 		return (
 			[
 				this.renderItem({
 					text: I18n.t('Chats'),
 					left: <Icon name='chat-bubble' size={20} />,
-					onPress: () => this.sidebarNavigate('RoomsListView', I18n.t('Messages')),
-					testID: 'sidebar-chats'
+					onPress: () => this.sidebarNavigate('RoomsListView'),
+					testID: 'sidebar-chats',
+					current: currentStack === 'RoomsListView'
 				}),
 				this.renderItem({
 					text: I18n.t('Profile'),
 					left: <Icon name='person' size={20} />,
-					onPress: () => this.sidebarNavigate('ProfileView', I18n.t('Profile')),
-					testID: 'sidebar-profile'
+					onPress: () => this.sidebarNavigate('ProfileView'),
+					testID: 'sidebar-profile',
+					current: currentStack === 'ProfileView'
 				}),
 				this.renderItem({
 					text: I18n.t('Settings'),
 					left: <Icon name='settings' size={20} />,
-					onPress: () => this.sidebarNavigate('SettingsView', I18n.t('Settings')),
-					testID: 'sidebar-settings'
+					onPress: () => this.sidebarNavigate('SettingsView'),
+					testID: 'sidebar-settings',
+					current: currentStack === 'SettingsView'
 				}),
 				this.renderSeparator('separator-logout'),
 				this.renderItem({
