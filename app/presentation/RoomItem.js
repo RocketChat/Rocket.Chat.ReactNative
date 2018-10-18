@@ -159,10 +159,10 @@ export default class RoomItem extends React.Component {
 		const oldlastMessage = lastMessage;
 		const newLastmessage = nextProps.lastMessage;
 
-		if (oldlastMessage && newLastmessage && oldlastMessage.ts.toGMTString() !== newLastmessage.ts.toGMTString()) {
+		if (oldlastMessage && newLastmessage && oldlastMessage.ts !== newLastmessage.ts) {
 			return true;
 		}
-		if (_updatedAt && nextProps._updatedAt && nextProps._updatedAt.toGMTString() !== _updatedAt.toGMTString()) {
+		if (_updatedAt && nextProps._updatedAt && nextProps._updatedAt !== _updatedAt) {
 			return true;
 		}
 		// eslint-disable-next-line react/destructuring-assignment

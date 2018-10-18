@@ -102,7 +102,8 @@ const handleLogout = function* handleLogout() {
 	if (server) {
 		try {
 			yield put(appStart('outside'));
-			// yield delay(300);
+			console.log('after outside')
+			// yield delay(500);
 			yield call(logoutCall, { server });
 		} catch (e) {
 			log('handleLogout', e);
