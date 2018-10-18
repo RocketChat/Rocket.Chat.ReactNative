@@ -6,7 +6,6 @@ import { Navigation } from 'react-native-navigation';
 
 import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
-import { iconsMap } from '../Icons';
 
 const userAgentAndroid = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1';
 const userAgent = Platform.OS === 'ios' ? 'UserAgent' : userAgentAndroid;
@@ -19,8 +18,7 @@ export default class OAuthView extends React.PureComponent {
 		return {
 			topBar: {
 				leftButtons: {
-					title: I18n.t('Close'),
-					icon: Platform.OS === 'android' ? iconsMap.close : undefined
+					title: I18n.t('Cancel')
 				}
 			}
 		};
