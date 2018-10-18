@@ -6,9 +6,9 @@ const prefix = isIOS ? 'ios' : 'md';
 
 // icon name from provider: [ size of the uri, icon provider, name to be used later ]
 const icons = {
-	[`${ prefix }-star`]: [30, Ionicons, 'star'],
-	[`${ prefix }-star-outline`]: [30, Ionicons, 'starOutline'],
-	[`${ prefix }-more`]: [30, Ionicons, 'more'],
+	[`${ prefix }-star`]: [25, Ionicons, 'star'],
+	[`${ prefix }-star-outline`]: [25, Ionicons, 'starOutline'],
+	[`${ prefix }-more`]: [25, Ionicons, 'more'],
 	[isIOS ? 'ios-create' : 'md-create']: [30, Ionicons, 'create'],
 	[`${ prefix }-close`]: [30, Ionicons, 'close']
 };
