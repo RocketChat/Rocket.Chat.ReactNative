@@ -156,7 +156,6 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	componentWillUnmount() {
-		console.log('componentWillUnmount')
 		this.removeListener(this.data);
 		this.removeListener(this.unread);
 		this.removeListener(this.favorites);
@@ -168,7 +167,6 @@ export default class RoomsListView extends LoggedView {
 		if (this.timeout) {
 			clearTimeout(this.timeout);
 		}
-		console.log('componentWillUnmount finished')
 	}
 
 	onNavigatorEvent(event) {
@@ -223,20 +221,13 @@ export default class RoomsListView extends LoggedView {
 			let privateGroup = [];
 			let direct = [];
 			let livechat = [];
-			let chatsArray = [];
-			let unreadArray = [];
-			let favoritesArray = [];
-			let channelsArray = [];
-			let privateGroupArray = [];
-			let directArray = [];
-			let livechatArray = [];
 
 			// unread
 			if (showUnread) {
 				this.unread = this.data.filtered('archived != true && open == true').filtered('(unread > 0 || alert == true)');
-				unread = JSON.parse(JSON.stringify(this.unread));
+				unread = this.removeRealmInstance(this.unread);
 				setTimeout(() => {
-					this.unread.addListener(() => this.setState({ unread: JSON.parse(JSON.stringify(this.unread)) }));
+					this.unread.addListener(() => this.setState({ unread: this.removeRealmInstance(this.unread) }));
 				});
 			} else {
 				this.removeListener(unread);
@@ -244,11 +235,9 @@ export default class RoomsListView extends LoggedView {
 			// favorites
 			if (showFavorites) {
 				this.favorites = this.data.filtered('f == true');
-				// favorites = JSON.parse(JSON.stringify(this.favorites));
-				favoritesArray = Array.from(this.favorites);
-				favorites = JSON.parse(JSON.stringify(favoritesArray));
+				favorites = this.removeRealmInstance(this.favorites);
 				setTimeout(() => {
-					this.favorites.addListener(() => this.setState({ favorites: JSON.parse(JSON.stringify(this.favorites)) }));
+					this.favorites.addListener(() => this.setState({ favorites: this.removeRealmInstance(this.favorites) }));
 				});
 			} else {
 				this.removeListener(favorites);
@@ -257,30 +246,25 @@ export default class RoomsListView extends LoggedView {
 			if (groupByType) {
 				// channels
 				this.channels = this.data.filtered('t == $0', 'c');
-				// channels = JSON.parse(JSON.stringify(this.channels));
-				channelsArray = Array.from(this.channels);
-				channels = JSON.parse(JSON.stringify(channelsArray));
+				channels = this.removeRealmInstance(this.channels);
+
 				// private
 				this.privateGroup = this.data.filtered('t == $0', 'p');
-				// privateGroup = JSON.parse(JSON.stringify(this.privateGroup));
-				privateGroupArray = Array.from(this.privateGroup);
-				privateGroup = JSON.parse(JSON.stringify(privateGroupArray));
+				privateGroup = this.removeRealmInstance(this.privateGroup);
 
 				// direct
 				this.direct = this.data.filtered('t == $0', 'd');
-				// direct = JSON.parse(JSON.stringify(this.direct));
-				directArray = Array.from(this.direct);
-				direct = JSON.parse(JSON.stringify(directArray));
+				direct = this.removeRealmInstance(this.direct);
+
 				// livechat
 				this.livechat = this.data.filtered('t == $0', 'l');
-				// livechat = JSON.parse(JSON.stringify(this.livechat));
-				livechatArray = Array.from(this.livechat);
-				livechat = JSON.parse(JSON.stringify(livechatArray));
+				livechat = this.removeRealmInstance(this.livechat);
+
 				setTimeout(() => {
-					this.channels.addListener(() => this.setState({ channels: JSON.parse(JSON.stringify(this.channels)) }));
-					this.privateGroup.addListener(() => this.setState({ privateGroup: JSON.parse(JSON.stringify(this.privateGroup)) }));
-					this.direct.addListener(() => this.setState({ direct: JSON.parse(JSON.stringify(this.direct)) }));
-					this.livechat.addListener(() => this.setState({ livechat: JSON.parse(JSON.stringify(this.livechat)) }));
+					this.channels.addListener(() => this.setState({ channels: this.removeRealmInstance(this.channels) }));
+					this.privateGroup.addListener(() => this.setState({ privateGroup: this.removeRealmInstance(this.privateGroup) }));
+					this.direct.addListener(() => this.setState({ direct: this.removeRealmInstance(this.direct) }));
+					this.livechat.addListener(() => this.setState({ livechat: this.removeRealmInstance(this.livechat) }));
 				});
 				this.removeListener(this.chats);
 			} else {
@@ -290,14 +274,11 @@ export default class RoomsListView extends LoggedView {
 				} else {
 					this.chats = this.data;
 				}
-				chatsArray = Array.from(this.chats);
-				chats = JSON.parse(JSON.stringify(chatsArray));
+				chats = this.removeRealmInstance(this.chats);
 
 				setTimeout(() => {
 					this.chats.addListener(() => {
-						chatsArray = Array.from(this.chats);
-						chats = JSON.parse(JSON.stringify(chatsArray));
-						this.setState({ chats });
+						this.setState({ chats: this.removeRealmInstance(this.chats) });
 					});
 				});
 				this.removeListener(this.channels);
@@ -314,6 +295,11 @@ export default class RoomsListView extends LoggedView {
 		this.timeout = setTimeout(() => {
 			this.setState({ loading: false });
 		}, 200);
+	}
+
+	removeRealmInstance = (data) => {
+		const array = Array.from(data);
+		return JSON.parse(JSON.stringify(array));
 	}
 
 	removeListener = (data) => {

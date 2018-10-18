@@ -488,21 +488,17 @@ const RocketChat = {
 	logout({ server }) {
 		try {
 			RocketChat.disconnect();
-			console.log('RocketChat.disconnect()')
 			SDK.driver.logout();
-			console.log('SDK.driver.logout()')
 		} catch (error) {
 			console.warn(error);
 		}
 		AsyncStorage.removeItem(TOKEN_KEY);
 		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
-		console.log('AsyncStorage.removeItem')
-		database.deleteAll();
-		console.log('database.deleteAll')
-		// setTimeout(() => {
-		// 	database.deleteAll();
-		// 	console.log('database.deleteAll')
-		// }, 1000);
+		try {
+			database.deleteAll();
+		} catch (error) {
+			console.warn(error);
+		}
 	},
 	disconnect() {
 		try {
