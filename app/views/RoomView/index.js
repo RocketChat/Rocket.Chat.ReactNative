@@ -96,14 +96,8 @@ export default class RoomView extends LoggedView {
 	}
 
 	componentDidMount() {
-		// const { navigator } = this.props;
-
 		this.updateRoom();
 		this.rooms.addListener(this.updateRoom);
-		// navigator.setDrawerEnabled({
-		// 	side: 'left',
-		// 	enabled: false
-		// });
 		this.setState({ loaded: true });
 	}
 
@@ -155,36 +149,6 @@ export default class RoomView extends LoggedView {
 		closeRoom();
 	}
 
-	// onNavigatorEvent(event) {
-	// 	const { room } = this.state;
-	// 	const { rid, f } = room;
-	// 	const { navigator } = this.props;
-
-	// 	if (event.type === 'NavBarButtonPress') {
-	// 		if (event.id === 'more') {
-	// 			if (RoomActionsView == null) {
-	// 				RoomActionsView = require('../RoomActionsView').default;
-	// 				Navigation.registerComponent('RoomActionsView', () => RoomActionsView, store, Provider);
-	// 			}
-
-	// 			navigator.push({
-	// 				screen: 'RoomActionsView',
-	// 				title: I18n.t('Actions'),
-	// 				backButtonTitle: '',
-	// 				passProps: {
-	// 					rid
-	// 				}
-	// 			});
-	// 		} else if (event.id === 'star') {
-	// 			try {
-	// 				RocketChat.toggleFavorite(rid, f);
-	// 			} catch (e) {
-	// 				log('toggleFavorite', e);
-	// 			}
-	// 		}
-	// 	}
-	// }
-
 	onEndReached = debounce((lastRowData) => {
 		if (!lastRowData) {
 			this.setState({ end: true });
@@ -233,6 +197,7 @@ export default class RoomView extends LoggedView {
 
 			Navigation.push(componentId, {
 				component: {
+					id: 'RoomActionsView',
 					name: 'RoomActionsView',
 					passProps: {
 						rid

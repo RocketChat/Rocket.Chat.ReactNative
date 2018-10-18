@@ -4,6 +4,7 @@ import {
 } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { BACKGROUND } from 'redux-enhancer-react-native-appstate';
+import { Navigation } from 'react-native-navigation';
 
 import * as types from '../actions/actionsTypes';
 // import { roomsSuccess, roomsFailure } from '../actions/rooms';
@@ -13,7 +14,6 @@ import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import log from '../utils/log';
 import I18n from '../i18n';
-import { NavigationActions } from '../Navigation';
 
 const leaveRoom = rid => RocketChat.leaveRoom(rid);
 const eraseRoom = rid => RocketChat.eraseRoom(rid);
@@ -141,9 +141,8 @@ const updateLastOpen = function* updateLastOpen() {
 	yield put(setLastOpen());
 };
 
-const goRoomsListAndDelete = function* goRoomsListAndDelete(rid) {
-	NavigationActions.popToRoot();
-	yield delay(1000);
+const goRoomsListAndDelete = function* goRoomsListAndDelete(rid, type) {
+	yield Navigation.popToRoot(type === 'erase' ? 'RoomActionsView' : 'RoomInfoEditView');
 	try {
 		database.write(() => {
 			const messages = database.objects('messages').filtered('rid = $0', rid);
@@ -160,7 +159,7 @@ const handleLeaveRoom = function* handleLeaveRoom({ rid }) {
 	try {
 		sub.stop();
 		yield call(leaveRoom, rid);
-		yield goRoomsListAndDelete(rid);
+		yield goRoomsListAndDelete(rid, 'delete');
 	} catch (e) {
 		if (e.error === 'error-you-are-last-owner') {
 			Alert.alert(I18n.t(e.error));
@@ -174,7 +173,7 @@ const handleEraseRoom = function* handleEraseRoom({ rid }) {
 	try {
 		sub.stop();
 		yield call(eraseRoom, rid);
-		yield goRoomsListAndDelete(rid);
+		yield goRoomsListAndDelete(rid, 'erase');
 	} catch (e) {
 		Alert.alert(I18n.t('There_was_an_error_while_action', { action: I18n.t('erasing_room') }));
 	}

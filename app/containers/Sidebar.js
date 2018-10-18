@@ -179,6 +179,7 @@ export default class Sidebar extends Component {
 		if (currentStack !== stack) {
 			Navigation.setStackRoot('AppRoot', {
 				component: {
+					id: stack,
 					name: stack
 				}
 			});

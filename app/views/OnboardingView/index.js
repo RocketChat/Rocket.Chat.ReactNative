@@ -86,9 +86,15 @@ export default class OnboardingView extends LoggedView {
 		const { componentId } = this.props;
 		Navigation.push(componentId, {
 			component: {
+				id: 'NewServerView',
 				name: 'NewServerView',
 				passProps: {
 					server
+				},
+				options: {
+					topBar: {
+						visible: false
+					}
 				}
 			}
 		});

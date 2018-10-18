@@ -115,6 +115,7 @@ export default class RoomInfoView extends LoggedView {
 
 			Navigation.push(componentId, {
 				component: {
+					id: 'RoomInfoEditView',
 					name: 'RoomInfoEditView',
 					passProps: {
 						rid
@@ -139,7 +140,7 @@ export default class RoomInfoView extends LoggedView {
 	}
 
 	updateRoom = async() => {
-		const { userId, activeUsers, navigator, componentId } = this.props;
+		const { userId, activeUsers } = this.props;
 
 		const [room] = this.rooms;
 		this.setState({ room });

@@ -151,7 +151,6 @@ const handleSetUser = function* handleSetUser() {
 			I18n.locale = user.language;
 		}
 	}
-	console.warn(user)
 	yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
 };
 

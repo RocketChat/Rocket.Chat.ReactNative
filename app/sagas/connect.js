@@ -11,7 +11,6 @@ const getToken = function* getToken() {
 	const currentServer = yield select(getServer);
 	const user = yield call([AsyncStorage, 'getItem'], `${ RocketChat.TOKEN_KEY }-${ currentServer }`);
 	if (user) {
-		console.warn(user)
 		yield put(setToken(JSON.parse(user)));
 		try {
 			yield call([AsyncStorage, 'setItem'], RocketChat.TOKEN_KEY, JSON.parse(user).token || '');

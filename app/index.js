@@ -16,8 +16,8 @@ const startLogged = () => {
 		root: {
 			sideMenu: {
 				left: {
-					id: 'Sidebar',
 					component: {
+						id: 'Sidebar',
 						name: 'Sidebar'
 					}
 				},
@@ -26,6 +26,7 @@ const startLogged = () => {
 						id: 'AppRoot',
 						children: [{
 							component: {
+								id: 'RoomsListView',
 								name: 'RoomsListView'
 							}
 						}]

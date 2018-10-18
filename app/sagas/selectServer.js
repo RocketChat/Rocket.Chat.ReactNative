@@ -3,7 +3,6 @@ import { AsyncStorage } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { Provider } from 'react-redux';
 
-// import { NavigationActions } from '../Navigation';
 import { SERVER } from '../actions/actionsTypes';
 import * as actions from '../actions';
 import { connectRequest } from '../actions/connect';
@@ -25,7 +24,6 @@ const handleSelectServer = function* handleSelectServer({ server }) {
 		yield database.setActiveDB(server);
 		yield call([AsyncStorage, 'setItem'], 'currentServer', server);
 		const token = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
-		console.warn(token)
 		if (token) {
 			yield put(actions.appStart('inside'));
 		}
@@ -47,7 +45,7 @@ const handleSelectServer = function* handleSelectServer({ server }) {
 	}
 };
 
-const handleServerRequest = function* handleServerRequest({ server, componentId }) {
+const handleServerRequest = function* handleServerRequest({ server }) {
 	try {
 		if (LoginSignupView == null) {
 			LoginSignupView = require('../views/LoginSignupView').default;
@@ -55,7 +53,7 @@ const handleServerRequest = function* handleServerRequest({ server, componentId 
 		}
 
 		yield call(validate, server);
-		yield Navigation.push(componentId, {
+		yield Navigation.push('NewServerView', {
 			component: {
 				name: 'LoginSignupView',
 				options: {

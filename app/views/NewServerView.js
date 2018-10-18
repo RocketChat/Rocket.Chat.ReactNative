@@ -57,7 +57,7 @@ const defaultServer = 'https://open.rocket.chat';
 	connecting: state.server.connecting,
 	failure: state.server.failure
 }), dispatch => ({
-	connectServer: (server, componentId) => dispatch(serverRequest(server, componentId))
+	connectServer: server => dispatch(serverRequest(server))
 }))
 /** @extends React.Component */
 export default class NewServerView extends LoggedView {
@@ -78,9 +78,9 @@ export default class NewServerView extends LoggedView {
 	}
 
 	componentDidMount() {
-		const { server, connectServer, componentId } = this.props;
+		const { server, connectServer } = this.props;
 		if (server) {
-			connectServer(server, componentId);
+			connectServer(server);
 			this.setState({ text: server });
 		} else {
 			setTimeout(() => {
@@ -102,11 +102,11 @@ export default class NewServerView extends LoggedView {
 
 	submit = () => {
 		const { text } = this.state;
-		const { connectServer, componentId } = this.props;
+		const { connectServer } = this.props;
 
 		if (text) {
 			Keyboard.dismiss();
-			connectServer(this.completeUrl(text), componentId);
+			connectServer(this.completeUrl(text));
 		}
 	}
 
@@ -130,7 +130,7 @@ export default class NewServerView extends LoggedView {
 	}
 
 	renderBack = () => {
-		const { navigator } = this.props;
+		const { componentId } = this.props;
 
 		let top = 15;
 		if (DeviceInfo.getBrand() === 'Apple') {
@@ -140,7 +140,7 @@ export default class NewServerView extends LoggedView {
 		return (
 			<TouchableOpacity
 				style={[styles.backButton, { top }]}
-				onPress={() => navigator.pop()}
+				onPress={() => Navigation.pop(componentId)}
 			>
 				<Icon
 					name='ios-arrow-back'

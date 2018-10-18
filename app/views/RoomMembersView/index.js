@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
 import { connect } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import LoggedView from '../View';
 import styles from './styles';
@@ -27,18 +28,15 @@ export default class RoomMembersView extends LoggedView {
 			topBar: {
 				title: {
 					text: I18n.t('Members')
-				}
+				},
+				rightButtons: [{
+					id: 'toggleOnline',
+					text: I18n.t('Online'),
+					testID: 'room-members-view-toggle-status'
+				}]
 			}
 		};
 	}
-
-	static navigatorButtons = {
-		rightButtons: [{
-			title: 'All',
-			id: 'toggleOnline',
-			testID: 'room-members-view-toggle-status'
-		}]
-	};
 
 	static propTypes = {
 		componentId: PropTypes.string,
@@ -49,7 +47,6 @@ export default class RoomMembersView extends LoggedView {
 
 	constructor(props) {
 		super('MentionedMessagesView', props);
-		const { navigator } = this.props;
 
 		this.CANCEL_INDEX = 0;
 		this.MUTE_INDEX = 1;
@@ -66,7 +63,7 @@ export default class RoomMembersView extends LoggedView {
 			userLongPressed: {},
 			room: {}
 		};
-		navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+		Navigation.events().bindComponent(this);
 	}
 
 	componentDidMount() {
@@ -77,27 +74,27 @@ export default class RoomMembersView extends LoggedView {
 		this.rooms.removeAllListeners();
 	}
 
-	async onNavigatorEvent(event) {
+	navigationButtonPressed = async({ buttonId }) => {
 		const { rid, allUsers } = this.state;
-		const { navigator } = this.props;
+		const { componentId } = this.props;
 
-		if (event.type === 'NavBarButtonPress') {
-			if (event.id === 'toggleOnline') {
-				try {
-					const allUsersFilter = !allUsers;
-					const membersResult = await RocketChat.getRoomMembers(rid, allUsersFilter);
-					const members = membersResult.records;
-					this.setState({ allUsers: allUsersFilter, members });
-					navigator.setButtons({
+		if (buttonId === 'toggleOnline') {
+			try {
+				Navigation.mergeOptions(componentId, {
+					topBar: {
 						rightButtons: [{
-							title: allUsers ? I18n.t('Online') : I18n.t('All'),
 							id: 'toggleOnline',
+							text: allUsers ? I18n.t('Online') : I18n.t('All'),
 							testID: 'room-members-view-toggle-status'
 						}]
-					});
-				} catch (e) {
-					log('RoomMembers.onNavigationButtonPressed', e);
-				}
+					}
+				});
+				const allUsersFilter = !allUsers;
+				const membersResult = await RocketChat.getRoomMembers(rid, allUsersFilter);
+				const members = membersResult.records;
+				this.setState({ allUsers: allUsersFilter, members });
+			} catch (e) {
+				log('RoomMembers.onNavigationButtonPressed', e);
 			}
 		}
 	}
@@ -153,17 +150,25 @@ export default class RoomMembersView extends LoggedView {
 		await this.setState({ room });
 	}
 
-	goRoom = ({ rid, name }) => {
-		const { navigator } = this.props;
-		navigator.popToRoot();
-		setTimeout(() => {
-			navigator.push({
-				screen: 'RoomView',
-				title: name,
-				backButtonTitle: '',
-				passProps: { rid }
-			});
-		}, 1000);
+	goRoom = async({ rid, name }) => {
+		const { componentId } = this.props;
+		await Navigation.popToRoot(componentId);
+		Navigation.push('RoomsListView', {
+			component: {
+				id: 'RoomView',
+				name: 'RoomView',
+				passProps: {
+					rid
+				},
+				options: {
+					topBar: {
+						title: {
+							text: name
+						}
+					}
+				}
+			}
+		});
 	}
 
 	handleMute = async() => {
