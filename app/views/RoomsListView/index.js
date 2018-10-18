@@ -225,9 +225,9 @@ export default class RoomsListView extends LoggedView {
 			// unread
 			if (showUnread) {
 				this.unread = this.data.filtered('archived != true && open == true').filtered('(unread > 0 || alert == true)');
-				unread = this.unread.slice();
+				unread = this.removeRealmInstance(this.unread);
 				setTimeout(() => {
-					this.unread.addListener(() => this.setState({ unread: this.unread.slice() }));
+					this.unread.addListener(() => this.setState({ unread: this.removeRealmInstance(this.unread) }));
 				});
 			} else {
 				this.removeListener(unread);
@@ -235,9 +235,9 @@ export default class RoomsListView extends LoggedView {
 			// favorites
 			if (showFavorites) {
 				this.favorites = this.data.filtered('f == true');
-				favorites = this.favorites.slice();
+				favorites = this.removeRealmInstance(this.favorites);
 				setTimeout(() => {
-					this.favorites.addListener(() => this.setState({ favorites: this.favorites.slice() }));
+					this.favorites.addListener(() => this.setState({ favorites: this.removeRealmInstance(this.favorites) }));
 				});
 			} else {
 				this.removeListener(favorites);
@@ -246,21 +246,25 @@ export default class RoomsListView extends LoggedView {
 			if (groupByType) {
 				// channels
 				this.channels = this.data.filtered('t == $0', 'c');
-				channels = this.channels.slice();
+				channels = this.removeRealmInstance(this.channels);
+
 				// private
 				this.privateGroup = this.data.filtered('t == $0', 'p');
-				privateGroup = this.privateGroup.slice();
+				privateGroup = this.removeRealmInstance(this.privateGroup);
+
 				// direct
 				this.direct = this.data.filtered('t == $0', 'd');
-				direct = this.direct.slice();
+				direct = this.removeRealmInstance(this.direct);
+
 				// livechat
 				this.livechat = this.data.filtered('t == $0', 'l');
-				livechat = this.livechat.slice();
+				livechat = this.removeRealmInstance(this.livechat);
+
 				setTimeout(() => {
-					this.channels.addListener(() => this.setState({ channels: this.channels.slice() }));
-					this.privateGroup.addListener(() => this.setState({ privateGroup: this.privateGroup.slice() }));
-					this.direct.addListener(() => this.setState({ direct: this.direct.slice() }));
-					this.livechat.addListener(() => this.setState({ livechat: this.livechat.slice() }));
+					this.channels.addListener(() => this.setState({ channels: this.removeRealmInstance(this.channels) }));
+					this.privateGroup.addListener(() => this.setState({ privateGroup: this.removeRealmInstance(this.privateGroup) }));
+					this.direct.addListener(() => this.setState({ direct: this.removeRealmInstance(this.direct) }));
+					this.livechat.addListener(() => this.setState({ livechat: this.removeRealmInstance(this.livechat) }));
 				});
 				this.removeListener(this.chats);
 			} else {
@@ -270,9 +274,12 @@ export default class RoomsListView extends LoggedView {
 				} else {
 					this.chats = this.data;
 				}
-				chats = this.chats.slice();
+				chats = this.removeRealmInstance(this.chats);
+
 				setTimeout(() => {
-					this.chats.addListener(() => this.setState({ chats: this.chats.slice() }));
+					this.chats.addListener(() => {
+						this.setState({ chats: this.removeRealmInstance(this.chats) });
+					});
 				});
 				this.removeListener(this.channels);
 				this.removeListener(this.privateGroup);
@@ -288,6 +295,11 @@ export default class RoomsListView extends LoggedView {
 		this.timeout = setTimeout(() => {
 			this.setState({ loading: false });
 		}, 200);
+	}
+
+	removeRealmInstance = (data) => {
+		const array = Array.from(data);
+		return JSON.parse(JSON.stringify(array));
 	}
 
 	removeListener = (data) => {
