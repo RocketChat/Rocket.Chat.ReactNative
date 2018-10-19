@@ -61,6 +61,15 @@ const defaultServer = 'https://open.rocket.chat';
 }))
 /** @extends React.Component */
 export default class NewServerView extends LoggedView {
+	static options() {
+		return {
+			topBar: {
+				visible: false,
+				drawBehind: true
+			}
+		};
+	}
+
 	static propTypes = {
 		componentId: PropTypes.string,
 		server: PropTypes.string,

@@ -32,7 +32,8 @@ export default class OnboardingView extends LoggedView {
 	static options() {
 		return {
 			topBar: {
-				visible: false
+				visible: false,
+				drawBehind: true
 			}
 		};
 	}

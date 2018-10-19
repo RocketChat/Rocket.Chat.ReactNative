@@ -77,7 +77,7 @@ export default class RoomsListView extends LoggedView {
 				title: {
 					component: {
 						name: 'RoomsListHeaderView',
-						alignment: 'center'
+						alignment: isAndroid() ? 'left' : 'center'
 					}
 				}
 			},

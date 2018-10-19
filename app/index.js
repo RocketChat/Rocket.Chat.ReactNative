@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Linking } from 'react-native';
+import { Linking, Platform, Dimensions } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 
 import store from './lib/createStore';
@@ -10,6 +10,8 @@ import { deepLinkingOpen } from './actions/deepLinking';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import I18n from './i18n';
 import { initializePushNotifications } from './push';
+
+const isAndroid = () => Platform.OS === 'android';
 
 const startLogged = () => {
 	Navigation.setRoot({
@@ -81,16 +83,16 @@ export default class App extends Component {
 		Navigation.events().registerAppLaunchedListener(() => {
 			Navigation.setDefaultOptions({
 				topBar: {
-					// title: {
-					// 	color: '#FFF'
-					// },
-					// buttonColor: '#FFF',
 					backButton: {
-						title: ''
+						icon: { uri: 'back', scale: Dimensions.get('window').scale }
 					},
-					// background: {
-					// 	color: '#2F343D'
-					// }
+					title: {
+						color: isAndroid() ? '#FFF' : undefined
+					},
+					background: {
+						color: isAndroid() ? '#2F343D' : undefined
+					},
+					buttonColor: '#FFF'
 				},
 				sideMenu: {
 					left: {
