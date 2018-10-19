@@ -55,7 +55,7 @@
     "react-native-navigation": "git+https://github.com/RocketChat/react-native-navigation.git",
     "react-native-notifications": "^1.1.20",
     "react-native-optimized-flatlist": "^1.0.4",
-    "react-native-picker-select": "^4.4.0",
+    "react-native-picker-select": "^5.0.0",
     "react-native-responsive-ui": "^1.1.1",
     "react-native-safari-view": "^2.1.0",
     "react-native-scrollable-tab-view": "git+https://github.com/skv-headless/react-native-scrollable-tab-view.git",
