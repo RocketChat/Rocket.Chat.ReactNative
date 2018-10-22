@@ -563,6 +563,8 @@ const RocketChat = {
 			data = data.filtered('t != $0', 'd');
 		}
 		data = data.slice(0, 7);
+		const array = Array.from(data);
+		data = JSON.parse(JSON.stringify(array));
 
 		const usernames = data.map(sub => sub.name);
 		try {
