@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { WebView, Platform } from 'react-native';
+import { WebView, Platform, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
@@ -17,9 +17,11 @@ export default class OAuthView extends React.PureComponent {
 	static options() {
 		return {
 			topBar: {
-				leftButtons: {
-					title: I18n.t('Cancel')
-				}
+				leftButtons: [{
+					id: 'cancel',
+					icon: Platform.OS === 'android' ? { uri: 'back', scale: Dimensions.get('window').scale } : undefined,
+					text: Platform.OS === 'ios' ? I18n.t('Cancel') : undefined
+				}]
 			}
 		};
 	}
@@ -37,7 +39,7 @@ export default class OAuthView extends React.PureComponent {
 	}
 
 	navigationButtonPressed = ({ buttonId }) => {
-		if (buttonId === 'close') {
+		if (buttonId === 'cancel') {
 			this.dismiss();
 		}
 	}
