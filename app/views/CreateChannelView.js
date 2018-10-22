@@ -115,19 +115,33 @@ export default class CreateChannelView extends LoggedView {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { isFetching, failure, error, result, componentId } = this.props;
+		const {
+			isFetching, failure, error, result, componentId
+		} = this.props;
 
 		if (!isFetching && isFetching !== prevProps.isFetching) {
-			setTimeout(() => {
+			setTimeout(async() => {
 				if (failure) {
 					const msg = error.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_channel') });
 					showErrorAlert(msg);
 				} else {
 					const { rid, name } = result;
-					Navigation.dismissModal(componentId);
-					setTimeout(() => {
-						EventEmitter.emit('DeepLink', { rid, name });
-					}, 300);
+					await Navigation.dismissModal(componentId);
+					Navigation.push('RoomsListView', {
+						component: {
+							name: 'RoomView',
+							passProps: {
+								rid
+							},
+							options: {
+								topBar: {
+									title: {
+										text: name
+									}
+								}
+							}
+						}
+					});
 				}
 			}, 300);
 		}

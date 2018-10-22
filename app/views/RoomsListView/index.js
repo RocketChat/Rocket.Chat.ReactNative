@@ -21,7 +21,6 @@ import ServerDropdown from './ServerDropdown';
 import Touch from '../../utils/touch';
 import { toggleSortDropdown as toggleSortDropdownAction } from '../../actions/rooms';
 import store from '../../lib/createStore';
-import EventEmitter from '../../utils/events';
 import Drawer from '../../Drawer';
 
 const ROW_HEIGHT = 70;
@@ -90,7 +89,6 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	static propTypes = {
-		componentId: PropTypes.string,
 		userId: PropTypes.string,
 		baseUrl: PropTypes.string,
 		server: PropTypes.string,
@@ -131,7 +129,6 @@ export default class RoomsListView extends LoggedView {
 
 	componentDidMount() {
 		this.getSubscriptions();
-		EventEmitter.addEventListener('DeepLink', this.handleDeepLink);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -168,7 +165,6 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	componentWillUnmount() {
-		EventEmitter.removeListener('Deeplink', this.handleDeepLink);
 		this.removeListener(this.data);
 		this.removeListener(this.unread);
 		this.removeListener(this.favorites);
@@ -215,11 +211,6 @@ export default class RoomsListView extends LoggedView {
 		} else if (buttonId === 'cancelSearch' || buttonId === 'back') {
 			this.cancelSearchingAndroid();
 		}
-	}
-
-	handleDeepLink = (event) => {
-		const { rid, name } = event;
-		this.goRoom(rid, name);
 	}
 
 	getSubscriptions = () => {
@@ -384,8 +375,7 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	goRoom = (rid, name) => {
-		const { componentId } = this.props;
-		Navigation.push(componentId, {
+		Navigation.push('RoomsListView', {
 			component: {
 				name: 'RoomView',
 				passProps: {
