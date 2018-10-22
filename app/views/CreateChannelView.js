@@ -16,7 +16,6 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import UserItem from '../presentation/UserItem';
 import { showErrorAlert } from '../utils/info';
-import EventEmitter from '../utils/events';
 
 const styles = StyleSheet.create({
 	container: {

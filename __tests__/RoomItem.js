@@ -12,7 +12,7 @@ import RoomItem from '../app/presentation/RoomItem';
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
 
-const date = new Date(2017, 10, 10, 10);
+const date = '2017-10-10T10:00:00Z';
 const onPress = () => {};
 
 it('renders correctly', () => {

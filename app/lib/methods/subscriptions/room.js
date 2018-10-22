@@ -23,7 +23,7 @@ const stop = () => {
 	clearTimeout(timer);
 };
 
-export default async function subscribeRoom({ rid, t }) {
+export default function subscribeRoom({ rid, t }) {
 	if (promises) {
 		promises.then(unsubscribe);
 		promises = false;

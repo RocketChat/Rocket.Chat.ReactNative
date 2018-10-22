@@ -339,7 +339,7 @@ export default class RoomActionsView extends LoggedView {
 		this.setState({ room: this.rooms[0] || {} });
 	}
 
-	toggleBlockUser = async() => {
+	toggleBlockUser = () => {
 		const { room } = this.state;
 		const { rid, blocker } = room;
 		const { member } = this.state;

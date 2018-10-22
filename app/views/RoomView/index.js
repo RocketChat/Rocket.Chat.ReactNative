@@ -213,7 +213,7 @@ export default class RoomView extends LoggedView {
 		}
 	}
 
-	updateRoom = async() => {
+	updateRoom = () => {
 		const { componentId, openRoom, setLastOpen } = this.props;
 
 		if (this.rooms.length > 0) {

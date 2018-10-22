@@ -31,7 +31,7 @@ const getRoomDpp = async function() {
 	}
 };
 
-export default async function() {
+export default function() {
 	const { database: db } = database;
 
 	return new Promise(async(resolve, reject) => {

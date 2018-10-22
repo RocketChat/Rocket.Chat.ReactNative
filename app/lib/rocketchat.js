@@ -151,7 +151,7 @@ const RocketChat = {
 		}
 	},
 	connect(url, login) {
-		return new Promise(async() => {
+		return new Promise(() => {
 			if (this.ddp) {
 				RocketChat.disconnect();
 				this.ddp = null;

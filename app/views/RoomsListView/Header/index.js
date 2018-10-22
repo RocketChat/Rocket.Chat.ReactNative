@@ -22,10 +22,12 @@ export default class RoomsListHeaderView extends Component {
 	static propTypes = {
 		showServerDropdown: PropTypes.bool,
 		showSortDropdown: PropTypes.bool,
+		showSearchHeader: PropTypes.bool,
 		serverName: PropTypes.string,
 		open: PropTypes.func,
 		close: PropTypes.func,
-		closeSort: PropTypes.func
+		closeSort: PropTypes.func,
+		setSearch: PropTypes.func
 	}
 
 	componentDidUpdate(prevProps) {

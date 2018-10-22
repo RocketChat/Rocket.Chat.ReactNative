@@ -25,7 +25,7 @@ async function loadMissedMessagesDDP(...args) {
 	}
 }
 
-export default async function loadMissedMessages(...args) {
+export default function loadMissedMessages(...args) {
 	const { database: db } = database;
 	return new Promise(async(resolve, reject) => {
 		try {
