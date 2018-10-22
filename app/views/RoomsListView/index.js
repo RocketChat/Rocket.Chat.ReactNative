@@ -19,7 +19,7 @@ import I18n from '../../i18n';
 import SortDropdown from './SortDropdown';
 import ServerDropdown from './ServerDropdown';
 import Touch from '../../utils/touch';
-import { toggleSortDropdown as toggleSortDropdownAction } from '../../actions/rooms';
+import { toggleSortDropdown as toggleSortDropdownAction, openSearchHeader as openSearchHeaderAction, closeSearchHeader as closeSearchHeaderAction } from '../../actions/rooms';
 import store from '../../lib/createStore';
 import Drawer from '../../Drawer';
 
@@ -64,7 +64,9 @@ let NewMessageView = null;
 	showUnread: state.sortPreferences.showUnread,
 	useRealName: state.settings.UI_Use_Real_Name
 }), dispatch => ({
-	toggleSortDropdown: () => dispatch(toggleSortDropdownAction())
+	toggleSortDropdown: () => dispatch(toggleSortDropdownAction()),
+	openSearchHeader: () => dispatch(openSearchHeaderAction()),
+	closeSearchHeader: () => dispatch(closeSearchHeaderAction())
 }))
 /** @extends React.Component */
 export default class RoomsListView extends LoggedView {
@@ -101,7 +103,9 @@ export default class RoomsListView extends LoggedView {
 		showFavorites: PropTypes.bool,
 		showUnread: PropTypes.bool,
 		useRealName: PropTypes.bool,
-		toggleSortDropdown: PropTypes.func
+		toggleSortDropdown: PropTypes.func,
+		openSearchHeader: PropTypes.func,
+		closeSearchHeader: PropTypes.func
 	}
 
 	constructor(props) {
@@ -121,11 +125,6 @@ export default class RoomsListView extends LoggedView {
 		};
 		Navigation.events().bindComponent(this);
 	}
-
-	// componentWillMount() {
-	// TODO: Only in android
-	// 	this.initDefaultHeader();
-	// }
 
 	componentDidMount() {
 		this.getSubscriptions();
@@ -208,7 +207,7 @@ export default class RoomsListView extends LoggedView {
 			Drawer.toggle();
 		} else if (buttonId === 'search') {
 			this.initSearchingAndroid();
-		} else if (buttonId === 'cancelSearch' || buttonId === 'back') {
+		} else if (buttonId === 'back') {
 			this.cancelSearchingAndroid();
 		}
 	}
@@ -319,46 +318,40 @@ export default class RoomsListView extends LoggedView {
 		}
 	}
 
-	initDefaultHeader = () => {
-		const { navigator } = this.props;
-		navigator.setButtons({ leftButtons, rightButtons });
-		navigator.setStyle({
-			navBarCustomView: 'RoomsListHeaderView',
-			navBarComponentAlignment: 'fill',
-			navBarBackgroundColor: isAndroid() ? '#2F343D' : undefined,
-			navBarTextColor: isAndroid() ? '#FFF' : undefined,
-			navBarButtonColor: isAndroid() ? '#FFF' : undefined
-		});
-	}
-
 	initSearchingAndroid = () => {
-		const { navigator } = this.props;
-		navigator.setButtons({
-			leftButtons: [{
-				id: 'cancelSearch',
-				icon: { uri: 'back', scale: Dimensions.get('window').scale }
-			}],
-			rightButtons: []
-		});
-		navigator.setStyle({
-			navBarCustomView: 'RoomsListSearchView',
-			navBarComponentAlignment: 'fill'
+		const { openSearchHeader } = this.props;
+		openSearchHeader();
+		Navigation.mergeOptions('RoomsListView', {
+			topBar: {
+				leftButtons: [{
+					id: 'back',
+					icon: { uri: 'back', scale: Dimensions.get('window').scale },
+					testID: 'rooms-list-view-cancel-search'
+				}],
+				rightButtons: []
+			}
 		});
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
+	cancelSearchingAndroid = () => {
+		if (Platform.OS === 'android') {
+			const { closeSearchHeader } = this.props;
+			closeSearchHeader();
+			Navigation.mergeOptions('RoomsListView', {
+				topBar: {
+					leftButtons,
+					rightButtons
+				}
+			});
+			this.setState({ search: [] });
+			Keyboard.dismiss();
+			BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+		}
+	}
+
 	// this is necessary during development (enables Cmd + r)
 	hasActiveDB = () => database && database.databases && database.databases.activeDB;
-
-	cancelSearchingAndroid = () => {
-		// if (Platform.OS === 'android') {
-		// 	this.setState({ search: [] });
-		// 	this.initDefaultHeader();
-		// 	Keyboard.dismiss();
-		// 	BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
-		// }
-		console.warn('cancelSearchingAndroid')
-	}
 
 	handleBackPress = () => {
 		this.cancelSearchingAndroid();
@@ -579,7 +572,7 @@ export default class RoomsListView extends LoggedView {
 
 	render = () => {
 		const {
-			sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown, navigator
+			sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown
 		} = this.props;
 
 		return (

@@ -98,17 +98,6 @@ const keyExtractor = item => item.id;
 	appStart: () => dispatch(appStartAction('outside'))
 }))
 export default class Sidebar extends Component {
-	static options() {
-		return {
-			topBar: {
-				leftButtons: [{
-					id: 'cancel',
-					text: I18n.t('Cancel')
-				}]
-			}
-		};
-	}
-
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		componentId: PropTypes.string,

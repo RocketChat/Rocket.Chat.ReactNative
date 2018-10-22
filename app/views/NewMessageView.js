@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, SafeAreaView, FlatList, Text, Platform, Image
+	View, StyleSheet, SafeAreaView, FlatList, Text, Platform, Image, Dimensions
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
@@ -57,7 +57,8 @@ export default class NewMessageView extends LoggedView {
 			topBar: {
 				leftButtons: [{
 					id: 'cancel',
-					text: I18n.t('Cancel')
+					icon: Platform.OS === 'android' ? { uri: 'back', scale: Dimensions.get('window').scale } : undefined,
+					text: Platform.OS === 'ios' ? I18n.t('Cancel') : undefined
 				}]
 			}
 		};
