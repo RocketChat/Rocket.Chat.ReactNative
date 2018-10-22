@@ -8,7 +8,6 @@ import { iconsLoaded } from './Icons';
 import { registerScreens } from './views';
 import { deepLinkingOpen } from './actions/deepLinking';
 import parseQuery from './lib/methods/helpers/parseQuery';
-import I18n from './i18n';
 import { initializePushNotifications } from './push';
 
 const isAndroid = () => Platform.OS === 'android';
@@ -78,7 +77,7 @@ export default class App extends Component {
 		super(props);
 		store.dispatch(appInit());
 		store.subscribe(this.onStoreUpdate.bind(this));
-		// initializePushNotifications();
+		initializePushNotifications();
 
 		Navigation.events().registerAppLaunchedListener(() => {
 			Navigation.setDefaultOptions({

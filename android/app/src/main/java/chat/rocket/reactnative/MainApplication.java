@@ -35,8 +35,7 @@ import java.util.List;
 import io.fabric.sdk.android.Fabric;
 import io.realm.react.RealmReactPackage;
 
-// public class MainApplication extends NavigationApplication implements INotificationsApplication {
-public class MainApplication extends NavigationApplication {
+public class MainApplication extends NavigationApplication implements INotificationsApplication {
 
     // private NotificationsLifecycleFacade notificationsLifecycleFacade;
 
@@ -85,8 +84,8 @@ public class MainApplication extends NavigationApplication {
                 new RocketChatNativePackage(),
                 new FabricPackage(),
                 new FastImageViewPackage(),
-                new RNI18nPackage()
-                // new RNNotificationsPackage(MainApplication.this)
+                new RNI18nPackage(),
+                new RNNotificationsPackage(MainApplication.this)
         );
     }
 
@@ -94,21 +93,16 @@ public class MainApplication extends NavigationApplication {
     public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
-
-        // Create an object of the custom facade impl
-        // notificationsLifecycleFacade = new NotificationsLifecycleFacade();
-        // Attach it to react-native-navigation
-        // setActivityCallbacks(notificationsLifecycleFacade);
     }
 
-    // @Override
-    // public IPushNotification getPushNotification(Context context, Bundle bundle, AppLifecycleFacade defaultFacade, AppLaunchHelper defaultAppLaunchHelper) {
-    //     return new CustomPushNotification(
-    //             context,
-    //             bundle,
-    //             notificationsLifecycleFacade, // Instead of defaultFacade!!!
-    //             defaultAppLaunchHelper,
-    //             new JsIOHelper()
-    //     );
-    // }
+    @Override
+    public IPushNotification getPushNotification(Context context, Bundle bundle, AppLifecycleFacade defaultFacade, AppLaunchHelper defaultAppLaunchHelper) {
+        return new CustomPushNotification(
+                context,
+                bundle,
+                defaultFacade,
+                defaultAppLaunchHelper,
+                new JsIOHelper()
+        );
+    }
 }
