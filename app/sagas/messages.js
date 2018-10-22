@@ -76,10 +76,9 @@ const handleTogglePinRequest = function* handleTogglePinRequest({ message }) {
 };
 
 const goRoom = function* goRoom({ rid, name }) {
-	yield Navigation.popToRoot('RoomView');
+	yield Navigation.popToRoot('RoomsListView');
 	Navigation.push('RoomsListView', {
 		component: {
-			id: 'RoomView',
 			name: 'RoomView',
 			passProps: {
 				rid

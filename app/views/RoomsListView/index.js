@@ -387,7 +387,6 @@ export default class RoomsListView extends LoggedView {
 		const { componentId } = this.props;
 		Navigation.push(componentId, {
 			component: {
-				id: 'RoomView',
 				name: 'RoomView',
 				passProps: {
 					rid

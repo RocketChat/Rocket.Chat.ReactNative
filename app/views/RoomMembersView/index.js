@@ -155,7 +155,6 @@ export default class RoomMembersView extends LoggedView {
 		await Navigation.popToRoot(componentId);
 		Navigation.push('RoomsListView', {
 			component: {
-				id: 'RoomView',
 				name: 'RoomView',
 				passProps: {
 					rid

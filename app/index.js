@@ -76,8 +76,8 @@ iconsLoaded();
 export default class App extends Component {
 	constructor(props) {
 		super(props);
-		// store.dispatch(appInit());
-		// store.subscribe(this.onStoreUpdate.bind(this));
+		store.dispatch(appInit());
+		store.subscribe(this.onStoreUpdate.bind(this));
 		// initializePushNotifications();
 
 		Navigation.events().registerAppLaunchedListener(() => {
@@ -103,11 +103,11 @@ export default class App extends Component {
 			store.dispatch(appInit());
 			store.subscribe(this.onStoreUpdate.bind(this));
 		});
-		// Linking
-		// 	.getInitialURL()
-		// 	.then(url => handleOpenURL({ url }))
-		// 	.catch(e => console.warn(e));
-		// Linking.addEventListener('url', handleOpenURL);
+		Linking
+			.getInitialURL()
+			.then(url => handleOpenURL({ url }))
+			.catch(e => console.warn(e));
+		Linking.addEventListener('url', handleOpenURL);
 	}
 
 	onStoreUpdate = () => {

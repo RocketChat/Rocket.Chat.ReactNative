@@ -19,6 +19,7 @@ import I18n from '../i18n';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import DeviceInfo from '../utils/deviceInfo';
 import Drawer from '../Drawer';
+import EventEmitter from '../utils/events';
 
 const styles = StyleSheet.create({
 	container: {
@@ -128,6 +129,7 @@ export default class Sidebar extends Component {
 
 	componentDidMount() {
 		this.setStatus();
+		EventEmitter.addEventListener('ChangeStack', this.handleChangeStack);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -135,6 +137,15 @@ export default class Sidebar extends Component {
 		if (nextProps.user && user && user.language !== nextProps.user.language) {
 			this.setStatus();
 		}
+	}
+
+	componentWillUnmount() {
+		EventEmitter.removeListener('ChangeStack', this.handleChangeStack);
+	}
+
+	handleChangeStack = (event) => {
+		const { stack } = event;
+		this.setStack(stack);
 	}
 
 	navigationButtonPressed = ({ buttonId }) => {
@@ -164,6 +175,19 @@ export default class Sidebar extends Component {
 		});
 	}
 
+	setStack = (stack) => {
+		const { currentStack } = this.state;
+		if (currentStack !== stack) {
+			Navigation.setStackRoot('AppRoot', {
+				component: {
+					id: stack,
+					name: stack
+				}
+			});
+			this.setState({ currentStack: stack });
+		}
+	}
+
 	closeDrawer = () => {
 		Drawer.toggle();
 	}
@@ -174,17 +198,8 @@ export default class Sidebar extends Component {
 	}
 
 	sidebarNavigate = (stack) => {
-		const { currentStack } = this.state;
 		this.closeDrawer();
-		if (currentStack !== stack) {
-			Navigation.setStackRoot('AppRoot', {
-				component: {
-					id: stack,
-					name: stack
-				}
-			});
-			this.setState({ currentStack: stack });
-		}
+		this.setStack(stack);
 	}
 
 	renderSeparator = key => <View key={key} style={styles.separator} />;
