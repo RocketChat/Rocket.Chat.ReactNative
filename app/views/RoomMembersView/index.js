@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, Vibration } from 'react-native';
+import {
+	FlatList, View, Vibration, Platform
+} from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
@@ -31,7 +33,8 @@ export default class RoomMembersView extends LoggedView {
 				rightButtons: [{
 					id: 'toggleOnline',
 					text: I18n.t('Online'),
-					testID: 'room-members-view-toggle-status'
+					testID: 'room-members-view-toggle-status',
+					color: Platform.OS === 'android' ? '#FFF' : undefined
 				}]
 			}
 		};

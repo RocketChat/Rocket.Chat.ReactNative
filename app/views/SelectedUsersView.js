@@ -81,7 +81,8 @@ export default class SelectedUsersView extends LoggedView {
 				rightButtons.push({
 					id: 'create',
 					text: I18n.t('Next'),
-					testID: 'selected-users-view-submit'
+					testID: 'selected-users-view-submit',
+					color: Platform.OS === 'android' ? '#FFF' : undefined
 				});
 			}
 			Navigation.mergeOptions(componentId, {

@@ -154,7 +154,8 @@ export default class CreateChannelView extends LoggedView {
 			rightButtons.push({
 				id: 'create',
 				text: 'Create',
-				testID: 'create-channel-submit'
+				testID: 'create-channel-submit',
+				color: Platform.OS === 'android' ? '#FFF' : undefined
 			});
 		}
 		Navigation.mergeOptions(componentId, {
