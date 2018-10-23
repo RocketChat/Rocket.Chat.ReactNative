@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Platform, View, FlatList, BackHandler, ActivityIndicator, Text, Image, Dimensions, ScrollView, Keyboard
+	Platform, View, FlatList, BackHandler, ActivityIndicator, Text, Image, Dimensions, ScrollView, Keyboard, LayoutAnimation
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { isEqual } from 'lodash';
@@ -136,7 +136,7 @@ export default class RoomsListView extends LoggedView {
 
 		if (nextProps.server && loadingServer !== nextProps.loadingServer) {
 			if (nextProps.loadingServer) {
-				this.setState({ loading: true });
+				this.internalSetState({ loading: true });
 			} else {
 				this.getSubscriptions();
 			}
@@ -213,6 +213,11 @@ export default class RoomsListView extends LoggedView {
 		}
 	}
 
+	internalSetState = (...args) => {
+		LayoutAnimation.easeInEaseOut();
+		this.setState(...args);
+	}
+
 	getSubscriptions = () => {
 		const {
 			server, sortBy, showUnread, showFavorites, groupByType
@@ -238,7 +243,7 @@ export default class RoomsListView extends LoggedView {
 				this.unread = this.data.filtered('archived != true && open == true').filtered('(unread > 0 || alert == true)');
 				unread = this.removeRealmInstance(this.unread);
 				setTimeout(() => {
-					this.unread.addListener(() => this.setState({ unread: this.removeRealmInstance(this.unread) }));
+					this.unread.addListener(() => this.internalSetState({ unread: this.removeRealmInstance(this.unread) }));
 				});
 			} else {
 				this.removeListener(unread);
@@ -248,7 +253,7 @@ export default class RoomsListView extends LoggedView {
 				this.favorites = this.data.filtered('f == true');
 				favorites = this.removeRealmInstance(this.favorites);
 				setTimeout(() => {
-					this.favorites.addListener(() => this.setState({ favorites: this.removeRealmInstance(this.favorites) }));
+					this.favorites.addListener(() => this.internalSetState({ favorites: this.removeRealmInstance(this.favorites) }));
 				});
 			} else {
 				this.removeListener(favorites);
@@ -272,10 +277,10 @@ export default class RoomsListView extends LoggedView {
 				livechat = this.removeRealmInstance(this.livechat);
 
 				setTimeout(() => {
-					this.channels.addListener(() => this.setState({ channels: this.removeRealmInstance(this.channels) }));
-					this.privateGroup.addListener(() => this.setState({ privateGroup: this.removeRealmInstance(this.privateGroup) }));
-					this.direct.addListener(() => this.setState({ direct: this.removeRealmInstance(this.direct) }));
-					this.livechat.addListener(() => this.setState({ livechat: this.removeRealmInstance(this.livechat) }));
+					this.channels.addListener(() => this.internalSetState({ channels: this.removeRealmInstance(this.channels) }));
+					this.privateGroup.addListener(() => this.internalSetState({ privateGroup: this.removeRealmInstance(this.privateGroup) }));
+					this.direct.addListener(() => this.internalSetState({ direct: this.removeRealmInstance(this.direct) }));
+					this.livechat.addListener(() => this.internalSetState({ livechat: this.removeRealmInstance(this.livechat) }));
 				});
 				this.removeListener(this.chats);
 			} else {
@@ -289,7 +294,7 @@ export default class RoomsListView extends LoggedView {
 
 				setTimeout(() => {
 					this.chats.addListener(() => {
-						this.setState({ chats: this.removeRealmInstance(this.chats) });
+						this.internalSetState({ chats: this.removeRealmInstance(this.chats) });
 					});
 				});
 				this.removeListener(this.channels);
@@ -299,12 +304,12 @@ export default class RoomsListView extends LoggedView {
 			}
 
 			// setState
-			this.setState({
+			this.internalSetState({
 				chats, unread, favorites, channels, privateGroup, direct, livechat
 			});
 		}
 		this.timeout = setTimeout(() => {
-			this.setState({ loading: false });
+			this.internalSetState({ loading: false });
 		}, 200);
 	}
 
@@ -345,7 +350,7 @@ export default class RoomsListView extends LoggedView {
 					rightButtons
 				}
 			});
-			this.setState({ search: [] });
+			this.internalSetState({ search: [] });
 			Keyboard.dismiss();
 			BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
 		}
@@ -363,7 +368,7 @@ export default class RoomsListView extends LoggedView {
 
 	search = async(text) => {
 		const result = await RocketChat.search({ text });
-		this.setState({
+		this.internalSetState({
 			search: result
 		});
 	}

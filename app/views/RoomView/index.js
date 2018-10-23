@@ -99,7 +99,7 @@ export default class RoomView extends LoggedView {
 	componentDidMount() {
 		this.updateRoom();
 		this.rooms.addListener(this.updateRoom);
-		this.setState({ loaded: true });
+		this.internalSetState({ loaded: true });
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -154,7 +154,7 @@ export default class RoomView extends LoggedView {
 
 	onEndReached = debounce((lastRowData) => {
 		if (!lastRowData) {
-			this.setState({ end: true });
+			this.internalSetState({ end: true });
 			return;
 		}
 
@@ -162,7 +162,7 @@ export default class RoomView extends LoggedView {
 			const { room } = this.state;
 			try {
 				const result = await RocketChat.loadMessagesForRoom({ rid: this.rid, t: room.t, latest: lastRowData.ts });
-				this.setState({ end: result < 20 });
+				this.internalSetState({ end: result < 20 });
 			} catch (e) {
 				log('RoomView.onEndReached', e);
 			}
@@ -186,6 +186,11 @@ export default class RoomView extends LoggedView {
 			log('RoomView.onReactionPress', e);
 		}
 	};
+
+	internalSetState = (...args) => {
+		LayoutAnimation.easeInEaseOut();
+		this.setState(...args);
+	}
 
 	navigationButtonPressed = ({ buttonId }) => {
 		const { room } = this.state;
@@ -222,7 +227,8 @@ export default class RoomView extends LoggedView {
 		if (this.rooms.length > 0) {
 			const { room: prevRoom } = this.state;
 			const room = JSON.parse(JSON.stringify(this.rooms[0] || {}));
-			this.setState({ room });
+			LayoutAnimation.easeInEaseOut();
+			this.internalSetState({ room });
 
 			if (!prevRoom.rid) {
 				Navigation.mergeOptions(componentId, {
@@ -243,7 +249,7 @@ export default class RoomView extends LoggedView {
 			}
 		} else {
 			openRoom({ rid: this.rid });
-			this.setState({ joined: false });
+			this.internalSetState({ joined: false });
 		}
 	}
 
@@ -259,7 +265,7 @@ export default class RoomView extends LoggedView {
 		const { rid } = this.props;
 		try {
 			await RocketChat.joinRoom(rid);
-			this.setState({
+			this.internalSetState({
 				joined: true
 			});
 		} catch (e) {
