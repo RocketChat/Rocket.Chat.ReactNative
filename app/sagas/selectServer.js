@@ -3,7 +3,6 @@ import { AsyncStorage } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { Provider } from 'react-redux';
 
-import { NavigationActions } from '../Navigation';
 import { SERVER } from '../actions/actionsTypes';
 import * as actions from '../actions';
 import { connectRequest } from '../actions/connect';
@@ -50,11 +49,23 @@ const handleServerRequest = function* handleServerRequest({ server }) {
 	try {
 		if (LoginSignupView == null) {
 			LoginSignupView = require('../views/LoginSignupView').default;
-			Navigation.registerComponent('LoginSignupView', () => LoginSignupView, store, Provider);
+			Navigation.registerComponentWithRedux('LoginSignupView', () => LoginSignupView, Provider, store);
 		}
 
 		yield call(validate, server);
-		yield call(NavigationActions.push, { screen: 'LoginSignupView', title: server, backButtonTitle: '' });
+		yield Navigation.push('NewServerView', {
+			component: {
+				name: 'LoginSignupView',
+				options: {
+					topBar: {
+						title: {
+							text: server
+						}
+					}
+				}
+			}
+		});
+
 		database.databases.serversDB.write(() => {
 			database.databases.serversDB.create('servers', { id: server }, true);
 		});

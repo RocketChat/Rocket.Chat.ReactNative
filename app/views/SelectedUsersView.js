@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, SafeAreaView, FlatList, LayoutAnimation, Platform
+	View, StyleSheet, FlatList, LayoutAnimation, Platform
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import {
 	addUser as addUserAction, removeUser as removeUserAction, reset as resetAction, setLoading as setLoadingAction
@@ -49,7 +50,7 @@ let CreateChannelView = null;
 /** @extends React.Component */
 export default class SelectedUsersView extends LoggedView {
 	static propTypes = {
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		rid: PropTypes.string,
 		nextAction: PropTypes.string.isRequired,
 		baseUrl: PropTypes.string,
@@ -68,35 +69,27 @@ export default class SelectedUsersView extends LoggedView {
 			search: []
 		};
 		this.data.addListener(this.updateState);
-		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+		Navigation.events().bindComponent(this);
 	}
 
-	componentDidMount() {
-		const { navigator } = this.props;
-		navigator.setDrawerEnabled({
-			side: 'left',
-			enabled: false
-		});
-	}
-
-	async componentDidUpdate(prevProps) {
-		const { navigator, users } = this.props;
-		const isVisible = await navigator.screenIsCurrentlyVisible();
-
-		if (!isVisible) {
-			return;
-		}
+	componentDidUpdate(prevProps) {
+		const { componentId, users } = this.props;
 		if (prevProps.users.length !== users.length) {
 			const { length } = users;
 			const rightButtons = [];
 			if (length > 0) {
 				rightButtons.push({
 					id: 'create',
-					title: I18n.t('Next'),
-					testID: 'selected-users-view-submit'
+					text: I18n.t('Next'),
+					testID: 'selected-users-view-submit',
+					color: Platform.OS === 'android' ? '#FFF' : undefined
 				});
 			}
-			navigator.setButtons({ rightButtons });
+			Navigation.mergeOptions(componentId, {
+				topBar: {
+					rightButtons
+				}
+			});
 		}
 	}
 
@@ -107,39 +100,46 @@ export default class SelectedUsersView extends LoggedView {
 		reset();
 	}
 
-	async onNavigatorEvent(event) {
-		if (event.type === 'NavBarButtonPress') {
-			if (event.id === 'create') {
-				const { nextAction, setLoadingInvite, navigator } = this.props;
-				if (nextAction === 'CREATE_CHANNEL') {
-					if (CreateChannelView == null) {
-						CreateChannelView = require('./CreateChannelView').default;
-						Navigation.registerComponent('CreateChannelView', () => CreateChannelView, store, Provider);
-					}
+	onSearchChangeText(text) {
+		this.search(text);
+	}
 
-					navigator.push({
-						screen: 'CreateChannelView',
-						title: I18n.t('Create_Channel'),
-						backButtonTitle: ''
-					});
-				} else {
-					const { rid } = this.props;
-					try {
-						setLoadingInvite(true);
-						await RocketChat.addUsersToRoom(rid);
-						navigator.pop();
-					} catch (e) {
-						log('RoomActions Add User', e);
-					} finally {
-						setLoadingInvite(false);
+	navigationButtonPressed = async({ buttonId }) => {
+		if (buttonId === 'create') {
+			const { nextAction, setLoadingInvite } = this.props;
+			if (nextAction === 'CREATE_CHANNEL') {
+				const { componentId } = this.props;
+
+				if (CreateChannelView == null) {
+					CreateChannelView = require('./CreateChannelView').default;
+					Navigation.registerComponentWithRedux('CreateChannelView', () => CreateChannelView, Provider, store);
+				}
+
+				Navigation.push(componentId, {
+					component: {
+						name: 'CreateChannelView',
+						options: {
+							topBar: {
+								title: {
+									text: I18n.t('Create_Channel')
+								}
+							}
+						}
 					}
+				});
+			} else {
+				const { rid, componentId } = this.props;
+				try {
+					setLoadingInvite(true);
+					await RocketChat.addUsersToRoom(rid);
+					Navigation.pop(componentId);
+				} catch (e) {
+					log('RoomActions Add User', e);
+				} finally {
+					setLoadingInvite(false);
 				}
 			}
 		}
-	}
-
-	onSearchChangeText(text) {
-		this.search(text);
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -271,7 +271,7 @@ export default class SelectedUsersView extends LoggedView {
 	render = () => {
 		const { loading } = this.props;
 		return (
-			<SafeAreaView style={styles.safeAreaView} testID='select-users-view'>
+			<SafeAreaView style={styles.safeAreaView} testID='select-users-view' forceInset={{ bottom: 'never' }}>
 				{this.renderList()}
 				<Loading visible={loading} />
 			</SafeAreaView>

@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, ScrollView, TouchableOpacity, SafeAreaView, Keyboard, Alert
+	Text, View, ScrollView, TouchableOpacity, Keyboard, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import { eraseRoom as eraseRoomAction } from '../../actions/room';
 import LoggedView from '../View';
@@ -41,6 +42,16 @@ const PERMISSIONS_ARRAY = [
 }))
 /** @extends React.Component */
 export default class RoomInfoEditView extends LoggedView {
+	static options() {
+		return {
+			topBar: {
+				title: {
+					text: I18n.t('Room_Info_Edit')
+				}
+			}
+		};
+	}
+
 	static propTypes = {
 		rid: PropTypes.string,
 		eraseRoom: PropTypes.func
@@ -277,7 +288,7 @@ export default class RoomInfoEditView extends LoggedView {
 					testID='room-info-edit-view-list'
 					{...scrollPersistTaps}
 				>
-					<SafeAreaView style={sharedStyles.container} testID='room-info-edit-view'>
+					<SafeAreaView style={sharedStyles.container} testID='room-info-edit-view' forceInset={{ bottom: 'never' }}>
 						<RCTextInput
 							inputRef={(e) => { this.name = e; }}
 							label={I18n.t('Name')}

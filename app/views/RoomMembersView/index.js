@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	FlatList, View, Vibration, SafeAreaView
+	FlatList, View, Vibration, Platform
 } from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
 import { connect } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import LoggedView from '../View';
 import styles from './styles';
@@ -22,16 +24,24 @@ import SearchBox from '../../containers/SearchBox';
 }))
 /** @extends React.Component */
 export default class RoomMembersView extends LoggedView {
-	static navigatorButtons = {
-		rightButtons: [{
-			title: 'All',
-			id: 'toggleOnline',
-			testID: 'room-members-view-toggle-status'
-		}]
-	};
+	static options() {
+		return {
+			topBar: {
+				title: {
+					text: I18n.t('Members')
+				},
+				rightButtons: [{
+					id: 'toggleOnline',
+					text: I18n.t('Online'),
+					testID: 'room-members-view-toggle-status',
+					color: Platform.OS === 'android' ? '#FFF' : undefined
+				}]
+			}
+		};
+	}
 
 	static propTypes = {
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		rid: PropTypes.string,
 		members: PropTypes.array,
 		baseUrl: PropTypes.string
@@ -39,7 +49,6 @@ export default class RoomMembersView extends LoggedView {
 
 	constructor(props) {
 		super('MentionedMessagesView', props);
-		const { navigator } = this.props;
 
 		this.CANCEL_INDEX = 0;
 		this.MUTE_INDEX = 1;
@@ -56,7 +65,7 @@ export default class RoomMembersView extends LoggedView {
 			userLongPressed: {},
 			room: {}
 		};
-		navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+		Navigation.events().bindComponent(this);
 	}
 
 	componentDidMount() {
@@ -67,27 +76,27 @@ export default class RoomMembersView extends LoggedView {
 		this.rooms.removeAllListeners();
 	}
 
-	async onNavigatorEvent(event) {
+	navigationButtonPressed = async({ buttonId }) => {
 		const { rid, allUsers } = this.state;
-		const { navigator } = this.props;
+		const { componentId } = this.props;
 
-		if (event.type === 'NavBarButtonPress') {
-			if (event.id === 'toggleOnline') {
-				try {
-					const allUsersFilter = !allUsers;
-					const membersResult = await RocketChat.getRoomMembers(rid, allUsersFilter);
-					const members = membersResult.records;
-					this.setState({ allUsers: allUsersFilter, members });
-					navigator.setButtons({
+		if (buttonId === 'toggleOnline') {
+			try {
+				Navigation.mergeOptions(componentId, {
+					topBar: {
 						rightButtons: [{
-							title: allUsers ? I18n.t('Online') : I18n.t('All'),
 							id: 'toggleOnline',
+							text: allUsers ? I18n.t('Online') : I18n.t('All'),
 							testID: 'room-members-view-toggle-status'
 						}]
-					});
-				} catch (e) {
-					log('RoomMembers.onNavigationButtonPressed', e);
-				}
+					}
+				});
+				const allUsersFilter = !allUsers;
+				const membersResult = await RocketChat.getRoomMembers(rid, allUsersFilter);
+				const members = membersResult.records;
+				this.setState({ allUsers: allUsersFilter, members });
+			} catch (e) {
+				log('RoomMembers.onNavigationButtonPressed', e);
 			}
 		}
 	}
@@ -143,17 +152,24 @@ export default class RoomMembersView extends LoggedView {
 		await this.setState({ room });
 	}
 
-	goRoom = ({ rid, name }) => {
-		const { navigator } = this.props;
-		navigator.popToRoot();
-		setTimeout(() => {
-			navigator.push({
-				screen: 'RoomView',
-				title: name,
-				backButtonTitle: '',
-				passProps: { rid }
-			});
-		}, 1000);
+	goRoom = async({ rid, name }) => {
+		const { componentId } = this.props;
+		await Navigation.popToRoot(componentId);
+		Navigation.push('RoomsListView', {
+			component: {
+				name: 'RoomView',
+				passProps: {
+					rid
+				},
+				options: {
+					topBar: {
+						title: {
+							text: name
+						}
+					}
+				}
+			}
+		});
 	}
 
 	handleMute = async() => {
@@ -200,7 +216,7 @@ export default class RoomMembersView extends LoggedView {
 	render() {
 		const { filtering, members, membersFiltered } = this.state;
 		return (
-			<SafeAreaView style={styles.list} testID='room-members-view'>
+			<SafeAreaView style={styles.list} testID='room-members-view' forceInset={{ bottom: 'never' }}>
 				<FlatList
 					data={filtering ? membersFiltered : members}
 					renderItem={this.renderItem}

@@ -1,11 +1,12 @@
 import React from 'react';
 import {
-	View, Text, Image, SafeAreaView, TouchableOpacity
+	View, Text, Image, TouchableOpacity
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import { selectServerRequest, serverInitAdd, serverFinishAdd } from '../../actions/server';
 import I18n from '../../i18n';
@@ -15,6 +16,7 @@ import styles from './styles';
 import LoggedView from '../View';
 import DeviceInfo from '../../utils/deviceInfo';
 import store from '../../lib/createStore';
+import EventEmitter from '../../utils/events';
 
 let NewServerView = null;
 
@@ -28,8 +30,17 @@ let NewServerView = null;
 }))
 /** @extends React.Component */
 export default class OnboardingView extends LoggedView {
+	static options() {
+		return {
+			topBar: {
+				visible: false,
+				drawBehind: true
+			}
+		};
+	}
+
 	static propTypes = {
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		previousServer: PropTypes.string,
 		adding: PropTypes.bool,
 		selectServer: PropTypes.func.isRequired,
@@ -39,7 +50,7 @@ export default class OnboardingView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('CreateChannelView', props);
+		super('OnboardingView', props);
 	}
 
 	componentDidMount() {
@@ -47,6 +58,7 @@ export default class OnboardingView extends LoggedView {
 		if (previousServer) {
 			initAdd();
 		}
+		EventEmitter.addEventListener('NewServer', this.handleNewServerEvent);
 	}
 
 	componentWillUnmount() {
@@ -59,46 +71,48 @@ export default class OnboardingView extends LoggedView {
 			}
 			finishAdd();
 		}
+		EventEmitter.removeListener('NewServer', this.handleNewServerEvent);
 	}
 
 	close = () => {
-		const { navigator } = this.props;
-		navigator.dismissModal();
+		const { componentId } = this.props;
+		Navigation.dismissModal(componentId);
+	}
+
+	newServer = (server) => {
+		if (NewServerView == null) {
+			NewServerView = require('../NewServerView').default;
+			Navigation.registerComponentWithRedux('NewServerView', () => NewServerView, Provider, store);
+		}
+
+		const { componentId } = this.props;
+		Navigation.push(componentId, {
+			component: {
+				id: 'NewServerView',
+				name: 'NewServerView',
+				passProps: {
+					server
+				},
+				options: {
+					topBar: {
+						visible: false
+					}
+				}
+			}
+		});
+	}
+
+	handleNewServerEvent = (event) => {
+		const { server } = event;
+		this.newServer(server);
 	}
 
 	connectServer = () => {
-		if (NewServerView == null) {
-			NewServerView = require('../NewServerView').default;
-			Navigation.registerComponent('NewServerView', () => NewServerView, store, Provider);
-		}
-
-		const { navigator } = this.props;
-		navigator.push({
-			screen: 'NewServerView',
-			backButtonTitle: '',
-			navigatorStyle: {
-				navBarHidden: true
-			}
-		});
+		this.newServer();
 	}
 
 	joinCommunity = () => {
-		if (NewServerView == null) {
-			NewServerView = require('../NewServerView').default;
-			Navigation.registerComponent('NewServerView', () => NewServerView, store, Provider);
-		}
-
-		const { navigator } = this.props;
-		navigator.push({
-			screen: 'NewServerView',
-			backButtonTitle: '',
-			passProps: {
-				server: 'https://open.rocket.chat'
-			},
-			navigatorStyle: {
-				navBarHidden: true
-			}
-		});
+		this.newServer('https://open.rocket.chat');
 	}
 
 	createWorkspace = () => {
@@ -132,7 +146,7 @@ export default class OnboardingView extends LoggedView {
 
 	render() {
 		return (
-			<SafeAreaView style={styles.container} testID='onboarding-view'>
+			<SafeAreaView style={styles.container} testID='onboarding-view' forceInset={{ bottom: 'never' }}>
 				<Image style={styles.onboarding} source={{ uri: 'onboarding' }} />
 				<Text style={styles.title}>{I18n.t('Welcome_to_RocketChat')}</Text>
 				<Text style={styles.subtitle}>{I18n.t('Open_Source_Communication')}</Text>

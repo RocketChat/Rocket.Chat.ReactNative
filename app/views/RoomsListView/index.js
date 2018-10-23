@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Platform, View, FlatList, BackHandler, ActivityIndicator, SafeAreaView, Text, Image, Dimensions, ScrollView, Keyboard
+	Platform, View, FlatList, BackHandler, ActivityIndicator, Text, Image, Dimensions, ScrollView, Keyboard, LayoutAnimation
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { isEqual } from 'lodash';
 import { Navigation } from 'react-native-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import SearchBox from '../../containers/SearchBox';
 import ConnectionBadge from '../../containers/ConnectionBadge';
@@ -19,8 +20,9 @@ import I18n from '../../i18n';
 import SortDropdown from './SortDropdown';
 import ServerDropdown from './ServerDropdown';
 import Touch from '../../utils/touch';
-import { toggleSortDropdown as toggleSortDropdownAction } from '../../actions/rooms';
+import { toggleSortDropdown as toggleSortDropdownAction, openSearchHeader as openSearchHeaderAction, closeSearchHeader as closeSearchHeaderAction } from '../../actions/rooms';
 import store from '../../lib/createStore';
+import Drawer from '../../Drawer';
 
 const ROW_HEIGHT = 70;
 const SCROLL_OFFSET = 56;
@@ -63,24 +65,33 @@ let NewMessageView = null;
 	showUnread: state.sortPreferences.showUnread,
 	useRealName: state.settings.UI_Use_Real_Name
 }), dispatch => ({
-	toggleSortDropdown: () => dispatch(toggleSortDropdownAction())
+	toggleSortDropdown: () => dispatch(toggleSortDropdownAction()),
+	openSearchHeader: () => dispatch(openSearchHeaderAction()),
+	closeSearchHeader: () => dispatch(closeSearchHeaderAction())
 }))
 /** @extends React.Component */
 export default class RoomsListView extends LoggedView {
-	static navigatorButtons = {
-		leftButtons, rightButtons
-	}
-
-	static navigatorStyle = {
-		navBarCustomView: 'RoomsListHeaderView',
-		navBarComponentAlignment: 'fill',
-		navBarBackgroundColor: isAndroid() ? '#2F343D' : undefined,
-		navBarTextColor: isAndroid() ? '#FFF' : undefined,
-		navBarButtonColor: isAndroid() ? '#FFF' : undefined
+	static options() {
+		return {
+			topBar: {
+				leftButtons,
+				rightButtons,
+				title: {
+					component: {
+						name: 'RoomsListHeaderView',
+						alignment: isAndroid() ? 'left' : 'center'
+					}
+				}
+			},
+			sideMenu: {
+				left: {
+					enabled: true
+				}
+			}
+		};
 	}
 
 	static propTypes = {
-		navigator: PropTypes.object,
 		userId: PropTypes.string,
 		baseUrl: PropTypes.string,
 		server: PropTypes.string,
@@ -93,7 +104,9 @@ export default class RoomsListView extends LoggedView {
 		showFavorites: PropTypes.bool,
 		showUnread: PropTypes.bool,
 		useRealName: PropTypes.bool,
-		toggleSortDropdown: PropTypes.func
+		toggleSortDropdown: PropTypes.func,
+		openSearchHeader: PropTypes.func,
+		closeSearchHeader: PropTypes.func
 	}
 
 	constructor(props) {
@@ -111,11 +124,7 @@ export default class RoomsListView extends LoggedView {
 			direct: [],
 			livechat: []
 		};
-		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
-	}
-
-	componentWillMount() {
-		this.initDefaultHeader();
+		Navigation.events().bindComponent(this);
 	}
 
 	componentDidMount() {
@@ -127,7 +136,7 @@ export default class RoomsListView extends LoggedView {
 
 		if (nextProps.server && loadingServer !== nextProps.loadingServer) {
 			if (nextProps.loadingServer) {
-				this.setState({ loading: true });
+				this.internalSetState({ loading: true });
 			} else {
 				this.getSubscriptions();
 			}
@@ -169,37 +178,44 @@ export default class RoomsListView extends LoggedView {
 		}
 	}
 
-	onNavigatorEvent(event) {
-		const { navigator } = this.props;
-		if (event.type === 'NavBarButtonPress') {
-			if (event.id === 'newMessage') {
-				if (NewMessageView == null) {
-					NewMessageView = require('../NewMessageView').default;
-					Navigation.registerComponent('NewMessageView', () => NewMessageView, store, Provider);
-				}
-
-				navigator.showModal({
-					screen: 'NewMessageView',
-					title: I18n.t('New_Message'),
-					passProps: {
-						onPressItem: this._onPressItem
-					}
-				});
-			} else if (event.id === 'settings') {
-				navigator.toggleDrawer({
-					side: 'left'
-				});
-			} else if (event.id === 'search') {
-				this.initSearchingAndroid();
-			} else if (event.id === 'cancelSearch' || event.id === 'back') {
-				this.cancelSearchingAndroid();
+	navigationButtonPressed = ({ buttonId }) => {
+		if (buttonId === 'newMessage') {
+			if (NewMessageView == null) {
+				NewMessageView = require('../NewMessageView').default;
+				Navigation.registerComponentWithRedux('NewMessageView', () => NewMessageView, Provider, store);
 			}
-		} else if (event.type === 'ScreenChangedEvent' && event.id === 'didAppear') {
-			navigator.setDrawerEnabled({
-				side: 'left',
-				enabled: true
+
+			Navigation.showModal({
+				stack: {
+					children: [{
+						component: {
+							name: 'NewMessageView',
+							passProps: {
+								onPressItem: this._onPressItem
+							},
+							options: {
+								topBar: {
+									title: {
+										text: I18n.t('New_Message')
+									}
+								}
+							}
+						}
+					}]
+				}
 			});
+		} else if (buttonId === 'settings') {
+			Drawer.toggle();
+		} else if (buttonId === 'search') {
+			this.initSearchingAndroid();
+		} else if (buttonId === 'back') {
+			this.cancelSearchingAndroid();
 		}
+	}
+
+	internalSetState = (...args) => {
+		LayoutAnimation.easeInEaseOut();
+		this.setState(...args);
 	}
 
 	getSubscriptions = () => {
@@ -227,7 +243,7 @@ export default class RoomsListView extends LoggedView {
 				this.unread = this.data.filtered('archived != true && open == true').filtered('(unread > 0 || alert == true)');
 				unread = this.removeRealmInstance(this.unread);
 				setTimeout(() => {
-					this.unread.addListener(() => this.setState({ unread: this.removeRealmInstance(this.unread) }));
+					this.unread.addListener(() => this.internalSetState({ unread: this.removeRealmInstance(this.unread) }));
 				});
 			} else {
 				this.removeListener(unread);
@@ -237,7 +253,7 @@ export default class RoomsListView extends LoggedView {
 				this.favorites = this.data.filtered('f == true');
 				favorites = this.removeRealmInstance(this.favorites);
 				setTimeout(() => {
-					this.favorites.addListener(() => this.setState({ favorites: this.removeRealmInstance(this.favorites) }));
+					this.favorites.addListener(() => this.internalSetState({ favorites: this.removeRealmInstance(this.favorites) }));
 				});
 			} else {
 				this.removeListener(favorites);
@@ -261,10 +277,10 @@ export default class RoomsListView extends LoggedView {
 				livechat = this.removeRealmInstance(this.livechat);
 
 				setTimeout(() => {
-					this.channels.addListener(() => this.setState({ channels: this.removeRealmInstance(this.channels) }));
-					this.privateGroup.addListener(() => this.setState({ privateGroup: this.removeRealmInstance(this.privateGroup) }));
-					this.direct.addListener(() => this.setState({ direct: this.removeRealmInstance(this.direct) }));
-					this.livechat.addListener(() => this.setState({ livechat: this.removeRealmInstance(this.livechat) }));
+					this.channels.addListener(() => this.internalSetState({ channels: this.removeRealmInstance(this.channels) }));
+					this.privateGroup.addListener(() => this.internalSetState({ privateGroup: this.removeRealmInstance(this.privateGroup) }));
+					this.direct.addListener(() => this.internalSetState({ direct: this.removeRealmInstance(this.direct) }));
+					this.livechat.addListener(() => this.internalSetState({ livechat: this.removeRealmInstance(this.livechat) }));
 				});
 				this.removeListener(this.chats);
 			} else {
@@ -278,7 +294,7 @@ export default class RoomsListView extends LoggedView {
 
 				setTimeout(() => {
 					this.chats.addListener(() => {
-						this.setState({ chats: this.removeRealmInstance(this.chats) });
+						this.internalSetState({ chats: this.removeRealmInstance(this.chats) });
 					});
 				});
 				this.removeListener(this.channels);
@@ -288,12 +304,12 @@ export default class RoomsListView extends LoggedView {
 			}
 
 			// setState
-			this.setState({
+			this.internalSetState({
 				chats, unread, favorites, channels, privateGroup, direct, livechat
 			});
 		}
 		this.timeout = setTimeout(() => {
-			this.setState({ loading: false });
+			this.internalSetState({ loading: false });
 		}, 200);
 	}
 
@@ -308,45 +324,40 @@ export default class RoomsListView extends LoggedView {
 		}
 	}
 
-	initDefaultHeader = () => {
-		const { navigator } = this.props;
-		navigator.setButtons({ leftButtons, rightButtons });
-		navigator.setStyle({
-			navBarCustomView: 'RoomsListHeaderView',
-			navBarComponentAlignment: 'fill',
-			navBarBackgroundColor: isAndroid() ? '#2F343D' : undefined,
-			navBarTextColor: isAndroid() ? '#FFF' : undefined,
-			navBarButtonColor: isAndroid() ? '#FFF' : undefined
-		});
-	}
-
 	initSearchingAndroid = () => {
-		const { navigator } = this.props;
-		navigator.setButtons({
-			leftButtons: [{
-				id: 'cancelSearch',
-				icon: { uri: 'back', scale: Dimensions.get('window').scale }
-			}],
-			rightButtons: []
-		});
-		navigator.setStyle({
-			navBarCustomView: 'RoomsListSearchView',
-			navBarComponentAlignment: 'fill'
+		const { openSearchHeader } = this.props;
+		openSearchHeader();
+		Navigation.mergeOptions('RoomsListView', {
+			topBar: {
+				leftButtons: [{
+					id: 'back',
+					icon: { uri: 'back', scale: Dimensions.get('window').scale },
+					testID: 'rooms-list-view-cancel-search'
+				}],
+				rightButtons: []
+			}
 		});
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
-	// this is necessary during development (enables Cmd + r)
-	hasActiveDB = () => database && database.databases && database.databases.activeDB;
-
 	cancelSearchingAndroid = () => {
 		if (Platform.OS === 'android') {
-			this.setState({ search: [] });
-			this.initDefaultHeader();
+			const { closeSearchHeader } = this.props;
+			closeSearchHeader();
+			Navigation.mergeOptions('RoomsListView', {
+				topBar: {
+					leftButtons,
+					rightButtons
+				}
+			});
+			this.internalSetState({ search: [] });
 			Keyboard.dismiss();
 			BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
 		}
 	}
+
+	// this is necessary during development (enables Cmd + r)
+	hasActiveDB = () => database && database.databases && database.databases.activeDB;
 
 	handleBackPress = () => {
 		this.cancelSearchingAndroid();
@@ -357,18 +368,26 @@ export default class RoomsListView extends LoggedView {
 
 	search = async(text) => {
 		const result = await RocketChat.search({ text });
-		this.setState({
+		this.internalSetState({
 			search: result
 		});
 	}
 
 	goRoom = (rid, name) => {
-		const { navigator } = this.props;
-		navigator.push({
-			screen: 'RoomView',
-			title: name,
-			backButtonTitle: '',
-			passProps: { rid }
+		Navigation.push('RoomsListView', {
+			component: {
+				name: 'RoomView',
+				passProps: {
+					rid
+				},
+				options: {
+					topBar: {
+						title: {
+							text: name
+						}
+					}
+				}
+			}
 		});
 		this.cancelSearchingAndroid();
 	}
@@ -559,11 +578,11 @@ export default class RoomsListView extends LoggedView {
 
 	render = () => {
 		const {
-			sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown, navigator
+			sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown
 		} = this.props;
 
 		return (
-			<SafeAreaView style={styles.container} testID='rooms-list-view'>
+			<SafeAreaView style={styles.container} testID='rooms-list-view' forceInset={{ bottom: 'never' }}>
 				{this.renderScroll()}
 				{showSortDropdown
 					? (

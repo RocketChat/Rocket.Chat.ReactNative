@@ -245,7 +245,7 @@ export default class MessageActions extends React.Component {
 		showToast(I18n.t('Copied_to_clipboard'));
 	}
 
-	handleShare = async() => {
+	handleShare = () => {
 		const { actionMessage } = this.props;
 		Share.share({
 			message: actionMessage.msg.content.replace(/<(?:.|\n)*?>/gm, '')

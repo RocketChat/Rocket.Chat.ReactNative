@@ -106,7 +106,7 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
-        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative55"
+        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative57"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
     }
@@ -215,7 +215,7 @@ dependencies {
     implementation 'com.facebook.fresco:animated-gif:1.10.0'
     implementation 'com.facebook.fresco:animated-webp:1.10.0'
     implementation 'com.facebook.fresco:webpsupport:1.10.0'
-    implementation('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') {
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.5@aar') {
         transitive = true;
     }
 }

@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, FlatList, SafeAreaView } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import LoggedView from '../View';
 import RCTextInput from '../../containers/TextInput';
@@ -26,9 +27,19 @@ import I18n from '../../i18n';
 }))
 /** @extends React.Component */
 export default class SearchMessagesView extends LoggedView {
+	static options() {
+		return {
+			topBar: {
+				title: {
+					text: I18n.t('Search')
+				}
+			}
+		};
+	}
+
 	static propTypes = {
 		rid: PropTypes.string,
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		user: PropTypes.object,
 		baseUrl: PropTypes.string
 	}
@@ -120,7 +131,7 @@ export default class SearchMessagesView extends LoggedView {
 	render() {
 		const { searching, loadingMore, messages } = this.state;
 		return (
-			<SafeAreaView style={styles.container} testID='search-messages-view'>
+			<SafeAreaView style={styles.container} testID='search-messages-view' forceInset={{ bottom: 'never' }}>
 				<View style={styles.searchContainer}>
 					<RCTextInput
 						inputRef={(e) => { this.name = e; }}

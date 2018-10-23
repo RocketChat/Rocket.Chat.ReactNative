@@ -3,6 +3,7 @@ import { delay } from 'redux-saga';
 import {
 	put, call, take, takeLatest, select, all
 } from 'redux-saga/effects';
+import { Navigation } from 'react-native-navigation';
 
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions';
@@ -25,7 +26,6 @@ import {
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import I18n from '../i18n';
-import { NavigationActions } from '../Navigation';
 
 const getUser = state => state.login.user;
 const getServer = state => state.server.server;
@@ -48,7 +48,7 @@ const handleLoginSuccess = function* handleLoginSuccess() {
 		} else {
 			yield delay(300);
 			if (adding) {
-				NavigationActions.dismissModal();
+				yield Navigation.dismissAllModals();
 			} else {
 				yield put(appStart('inside'));
 			}
