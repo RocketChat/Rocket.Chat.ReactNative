@@ -20,7 +20,6 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
-        jcenter()
         google()
         maven {
             url 'https://maven.google.com'
@@ -34,6 +33,7 @@ allprojects {
             // Local Maven repo containing AARs with JSC library built for Android
             url "$rootDir/../node_modules/jsc-android/dist"
         }
+        jcenter()
     }
 }
 
@@ -41,14 +41,18 @@ subprojects { subproject ->
     afterEvaluate {
         if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
             android {
+                compileSdkVersion 27
+                buildToolsVersion "27.0.3"
+                defaultConfig {
+                    targetSdkVersion 27
+                }
                 variantFilter { variant ->
                     def names = variant.flavors*.name
-                    if (names.contains("reactNative51") || names.contains("reactNative55") || names.contains("reactNative56")) {
+                    if (names.contains("reactNative51") || names.contains("reactNative55") || names.contains("reactNative56") || names.contains("reactNative57WixFork")) {
                         setIgnore(true)
                     }
                 }
             }
         }
-
     }
 }
