@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, SafeAreaView, FlatList, Text, Platform, Image, Dimensions
+	View, StyleSheet, FlatList, Text, Platform, Image, Dimensions
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
@@ -200,7 +201,7 @@ export default class NewMessageView extends LoggedView {
 	}
 
 	render = () => (
-		<SafeAreaView style={styles.safeAreaView} testID='new-message-view'>
+		<SafeAreaView style={styles.safeAreaView} testID='new-message-view' forceInset={{ bottom: 'never' }}>
 			{this.renderList()}
 		</SafeAreaView>
 	);

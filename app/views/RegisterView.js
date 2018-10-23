@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Keyboard, Text, View, ScrollView, SafeAreaView
+	Keyboard, Text, View, ScrollView
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import { registerSubmit as registerSubmitAction, setUsernameSubmit as setUsernameSubmitAction } from '../actions/login';
 import TextInput from '../containers/TextInput';
@@ -258,7 +259,7 @@ export default class RegisterView extends LoggedView {
 		return (
 			<KeyboardView contentContainerStyle={styles.container}>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
-					<SafeAreaView style={styles.container} testID='register-view'>
+					<SafeAreaView style={styles.container} testID='register-view' forceInset={{ bottom: 'never' }}>
 						<Text style={[styles.loginText, styles.loginTitle]}>{I18n.t('Sign_Up')}</Text>
 						{this._renderRegister()}
 						{this._renderUsername()}

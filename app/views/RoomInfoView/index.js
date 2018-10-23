@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, Text, ScrollView, SafeAreaView
-} from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import moment from 'moment';
 import { Navigation } from 'react-native-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import LoggedView from '../View';
 import Status from '../../containers/status';
@@ -286,7 +285,7 @@ export default class RoomInfoView extends LoggedView {
 		}
 		return (
 			<ScrollView style={styles.scroll}>
-				<SafeAreaView style={styles.container} testID='room-info-view'>
+				<SafeAreaView style={styles.container} testID='room-info-view' forceInset={{ bottom: 'never' }}>
 					<View style={styles.avatarContainer}>
 						{this.renderAvatar(room, roomUser)}
 						<View style={styles.roomTitleContainer}>{ getRoomTitle(room) }</View>

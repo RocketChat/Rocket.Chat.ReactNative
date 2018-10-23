@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Platform, View, FlatList, BackHandler, ActivityIndicator, SafeAreaView, Text, Image, Dimensions, ScrollView, Keyboard
+	Platform, View, FlatList, BackHandler, ActivityIndicator, Text, Image, Dimensions, ScrollView, Keyboard
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { isEqual } from 'lodash';
 import { Navigation } from 'react-native-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import SearchBox from '../../containers/SearchBox';
 import ConnectionBadge from '../../containers/ConnectionBadge';
@@ -576,7 +577,7 @@ export default class RoomsListView extends LoggedView {
 		} = this.props;
 
 		return (
-			<SafeAreaView style={styles.container} testID='rooms-list-view'>
+			<SafeAreaView style={styles.container} testID='rooms-list-view' forceInset={{ bottom: 'never' }}>
 				{this.renderScroll()}
 				{showSortDropdown
 					? (

@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, ScrollView, TouchableOpacity, LayoutAnimation, Image, StyleSheet, SafeAreaView
+	Text, View, ScrollView, TouchableOpacity, LayoutAnimation, Image, StyleSheet
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Base64 } from 'js-base64';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import { open as openAction, close as closeAction } from '../actions/login';
 import LoggedView from './View';
@@ -360,7 +361,7 @@ export default class LoginSignupView extends LoggedView {
 				style={[sharedStyles.container, sharedStyles.containerScrollView]}
 				{...scrollPersistTaps}
 			>
-				<SafeAreaView style={sharedStyles.container} testID='welcome-view'>
+				<SafeAreaView style={sharedStyles.container} testID='welcome-view' forceInset={{ bottom: 'never' }}>
 					<View style={styles.container}>
 						<Text style={[sharedStyles.loginText, styles.header, { color: '#81848A' }]}>{I18n.t('Welcome_title_pt_1')}</Text>
 						<Text style={[sharedStyles.loginText, styles.header]}>{I18n.t('Welcome_title_pt_2')}</Text>

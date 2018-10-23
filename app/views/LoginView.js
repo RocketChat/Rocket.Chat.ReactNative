@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Keyboard, Text, ScrollView, View, SafeAreaView
+	Keyboard, Text, ScrollView, View
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import { Answers } from 'react-native-fabric';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import RocketChat from '../lib/rocketchat';
 import KeyboardView from '../presentation/KeyboardView';
@@ -146,7 +147,7 @@ export default class LoginView extends LoggedView {
 				key='login-view'
 			>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
-					<SafeAreaView style={styles.container} testID='login-view'>
+					<SafeAreaView style={styles.container} testID='login-view' forceInset={{ bottom: 'never' }}>
 						<Text style={[styles.loginText, styles.loginTitle]}>Login</Text>
 						<TextInput
 							label={I18n.t('Username')}

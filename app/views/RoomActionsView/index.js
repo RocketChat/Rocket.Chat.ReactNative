@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, SectionList, Text, Alert, SafeAreaView
+	View, SectionList, Text, Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import { leaveRoom as leaveRoomAction } from '../../actions/room';
 import LoggedView from '../View';
@@ -454,7 +455,7 @@ export default class RoomActionsView extends LoggedView {
 
 	render() {
 		return (
-			<SafeAreaView style={styles.container} testID='room-actions-view'>
+			<SafeAreaView style={styles.container} testID='room-actions-view' forceInset={{ bottom: 'never' }}>
 				<SectionList
 					style={styles.container}
 					stickySectionHeadersEnabled={false}

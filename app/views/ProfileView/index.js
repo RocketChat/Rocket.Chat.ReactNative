@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, ScrollView, SafeAreaView, Keyboard, Dimensions
+	View, ScrollView, Keyboard, Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
@@ -10,6 +10,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import { Navigation } from 'react-native-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import LoggedView from '../View';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -395,7 +396,7 @@ export default class ProfileView extends LoggedView {
 					testID='profile-view-list'
 					{...scrollPersistTaps}
 				>
-					<SafeAreaView style={sharedStyles.container} testID='profile-view'>
+					<SafeAreaView style={sharedStyles.container} testID='profile-view' forceInset={{ bottom: 'never' }}>
 						<View style={styles.avatarContainer} testID='profile-view-avatar'>
 							<Avatar
 								text={username}

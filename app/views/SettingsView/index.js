@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, ScrollView, SafeAreaView, Dimensions
-} from 'react-native';
+import { View, ScrollView, Dimensions } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import LoggedView from '../View';
 import RocketChat from '../../lib/rocketchat';
@@ -154,7 +153,7 @@ export default class SettingsView extends LoggedView {
 					testID='settings-view-list'
 					{...scrollPersistTaps}
 				>
-					<SafeAreaView style={sharedStyles.container} testID='settings-view'>
+					<SafeAreaView style={sharedStyles.container} testID='settings-view' forceInset={{ bottom: 'never' }}>
 						<RNPickerSelect
 							items={languages}
 							onValueChange={(value) => {

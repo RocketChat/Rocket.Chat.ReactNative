@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, SafeAreaView, FlatList, LayoutAnimation, Platform
+	View, StyleSheet, FlatList, LayoutAnimation, Platform
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import {
 	addUser as addUserAction, removeUser as removeUserAction, reset as resetAction, setLoading as setLoadingAction
@@ -269,7 +270,7 @@ export default class SelectedUsersView extends LoggedView {
 	render = () => {
 		const { loading } = this.props;
 		return (
-			<SafeAreaView style={styles.safeAreaView} testID='select-users-view'>
+			<SafeAreaView style={styles.safeAreaView} testID='select-users-view' forceInset={{ bottom: 'never' }}>
 				{this.renderList()}
 				<Loading visible={loading} />
 			</SafeAreaView>

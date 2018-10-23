@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	Text, View, SafeAreaView, ScrollView
-} from 'react-native';
+import { Text, View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import LoggedView from './View';
 import { forgotPasswordInit as forgotPasswordInitAction, forgotPasswordRequest as forgotPasswordRequestAction } from '../actions/login';
@@ -85,7 +84,7 @@ export default class ForgotPasswordView extends LoggedView {
 				keyboardVerticalOffset={128}
 			>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
-					<SafeAreaView style={styles.container} testID='forgot-password-view'>
+					<SafeAreaView style={styles.container} testID='forgot-password-view' forceInset={{ bottom: 'never' }}>
 						<View>
 							<TextInput
 								inputStyle={invalidEmail ? { borderColor: 'red' } : {}}

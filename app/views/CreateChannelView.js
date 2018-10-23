@@ -2,9 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
-	View, Text, Switch, SafeAreaView, ScrollView, TextInput, StyleSheet, FlatList, Platform
+	View, Text, Switch, ScrollView, TextInput, StyleSheet, FlatList, Platform
 } from 'react-native';
 import { Navigation } from 'react-native-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import Loading from '../containers/Loading';
 import LoggedView from './View';
@@ -294,7 +295,7 @@ export default class CreateChannelView extends LoggedView {
 				contentContainerStyle={[sharedStyles.container, styles.container]}
 				keyboardVerticalOffset={128}
 			>
-				<SafeAreaView testID='create-channel-view' style={styles.container}>
+				<SafeAreaView testID='create-channel-view' style={styles.container} forceInset={{ bottom: 'never' }}>
 					<ScrollView {...scrollPersistTaps}>
 						<View style={sharedStyles.separatorVertical}>
 							<TextInput

@@ -58,6 +58,7 @@
     "react-native-picker-select": "^4.4.0",
     "react-native-responsive-ui": "^1.1.1",
     "react-native-safari-view": "^2.1.0",
+    "react-native-safe-area-view": "^0.11.0",
     "react-native-scrollable-tab-view": "git+https://github.com/skv-headless/react-native-scrollable-tab-view.git",
     "react-native-slider": "^0.11.0",
     "react-native-vector-icons": "^5.0.0",

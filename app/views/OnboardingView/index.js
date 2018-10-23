@@ -1,11 +1,12 @@
 import React from 'react';
 import {
-	View, Text, Image, SafeAreaView, TouchableOpacity
+	View, Text, Image, TouchableOpacity
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import { selectServerRequest, serverInitAdd, serverFinishAdd } from '../../actions/server';
 import I18n from '../../i18n';
@@ -145,7 +146,7 @@ export default class OnboardingView extends LoggedView {
 
 	render() {
 		return (
-			<SafeAreaView style={styles.container} testID='onboarding-view'>
+			<SafeAreaView style={styles.container} testID='onboarding-view' forceInset={{ bottom: 'never' }}>
 				<Image style={styles.onboarding} source={{ uri: 'onboarding' }} />
 				<Text style={styles.title}>{I18n.t('Welcome_to_RocketChat')}</Text>
 				<Text style={styles.subtitle}>{I18n.t('Open_Source_Communication')}</Text>

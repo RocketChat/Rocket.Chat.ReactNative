@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, LayoutAnimation, ActivityIndicator, SafeAreaView
+	Text, View, LayoutAnimation, ActivityIndicator
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
 import { Navigation } from 'react-native-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import { openRoom as openRoomAction, closeRoom as closeRoomAction, setLastOpen as setLastOpenAction } from '../../actions/room';
 import { toggleReactionPicker as toggleReactionPickerAction, actionsShow as actionsShowAction } from '../../actions/messages';
@@ -381,7 +382,7 @@ export default class RoomView extends LoggedView {
 		const { user, showActions, showErrorActions } = this.props;
 
 		return (
-			<SafeAreaView style={styles.container} testID='room-view'>
+			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ bottom: 'never' }}>
 				{this.renderList()}
 				{room._id && showActions
 					? <MessageActions room={room} user={user} />

@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	FlatList, View, Text, SafeAreaView
-} from 'react-native';
+import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import { openMentionedMessages as openMentionedMessagesAction, closeMentionedMessages as closeMentionedMessagesAction } from '../../actions/mentionedMessages';
 import LoggedView from '../View';
@@ -116,7 +115,7 @@ export default class MentionedMessagesView extends LoggedView {
 		}
 
 		return (
-			<SafeAreaView style={styles.list} testID='mentioned-messages-view'>
+			<SafeAreaView style={styles.list} testID='mentioned-messages-view' forceInset={{ bottom: 'never' }}>
 				<FlatList
 					data={messages}
 					renderItem={this.renderItem}

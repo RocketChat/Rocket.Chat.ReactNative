@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	FlatList, View, Vibration, SafeAreaView
-} from 'react-native';
+import { FlatList, View, Vibration } from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import LoggedView from '../View';
 import styles from './styles';
@@ -214,7 +213,7 @@ export default class RoomMembersView extends LoggedView {
 	render() {
 		const { filtering, members, membersFiltered } = this.state;
 		return (
-			<SafeAreaView style={styles.list} testID='room-members-view'>
+			<SafeAreaView style={styles.list} testID='room-members-view' forceInset={{ bottom: 'never' }}>
 				<FlatList
 					data={filtering ? membersFiltered : members}
 					renderItem={this.renderItem}
