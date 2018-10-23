@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { WebView, Platform } from 'react-native';
+import { WebView, Platform, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
@@ -13,15 +14,20 @@ const userAgent = Platform.OS === 'ios' ? 'UserAgent' : userAgentAndroid;
 	server: state.server.server
 }))
 export default class OAuthView extends React.PureComponent {
-	static navigatorButtons = {
-		leftButtons: [{
-			id: 'cancel',
-			title: I18n.t('Cancel')
-		}]
+	static options() {
+		return {
+			topBar: {
+				leftButtons: [{
+					id: 'cancel',
+					icon: Platform.OS === 'android' ? { uri: 'back', scale: Dimensions.get('window').scale } : undefined,
+					text: Platform.OS === 'ios' ? I18n.t('Cancel') : undefined
+				}]
+			}
+		};
 	}
 
 	static propTypes = {
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		oAuthUrl: PropTypes.string,
 		server: PropTypes.string
 	}
@@ -29,16 +35,18 @@ export default class OAuthView extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.redirectRegex = new RegExp(`(?=.*(${ props.server }))(?=.*(credentialToken))(?=.*(credentialSecret))`, 'g');
-		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+		Navigation.events().bindComponent(this);
 	}
 
-	onNavigatorEvent(event) {
-		const { navigator } = this.props;
-		if (event.type === 'NavBarButtonPress') {
-			if (event.id === 'close') {
-				navigator.dismissModal();
-			}
+	navigationButtonPressed = ({ buttonId }) => {
+		if (buttonId === 'cancel') {
+			this.dismiss();
 		}
+	}
+
+	dismiss = () => {
+		const { componentId } = this.props;
+		Navigation.dismissModal(componentId);
 	}
 
 	login = async(params) => {
@@ -50,7 +58,7 @@ export default class OAuthView extends React.PureComponent {
 	}
 
 	render() {
-		const { oAuthUrl, navigator } = this.props;
+		const { oAuthUrl } = this.props;
 		return (
 			<WebView
 				source={{ uri: oAuthUrl }}
@@ -61,7 +69,7 @@ export default class OAuthView extends React.PureComponent {
 						const parts = url.split('#');
 						const credentials = JSON.parse(parts[1]);
 						this.login({ oauth: { ...credentials } });
-						navigator.dismissModal();
+						this.dismiss();
 					}
 				}}
 			/>

@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Linking } from 'react-native';
+import { Linking, Platform, Dimensions } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 
 import store from './lib/createStore';
@@ -8,35 +8,51 @@ import { iconsLoaded } from './Icons';
 import { registerScreens } from './views';
 import { deepLinkingOpen } from './actions/deepLinking';
 import parseQuery from './lib/methods/helpers/parseQuery';
-import I18n from './i18n';
 import { initializePushNotifications } from './push';
 
+const isAndroid = () => Platform.OS === 'android';
+
 const startLogged = () => {
-	Navigation.startSingleScreenApp({
-		screen: {
-			screen: 'RoomsListView',
-			title: I18n.t('Messages')
-		},
-		drawer: {
-			left: {
-				screen: 'Sidebar'
+	Navigation.setRoot({
+		root: {
+			sideMenu: {
+				left: {
+					component: {
+						id: 'Sidebar',
+						name: 'Sidebar'
+					}
+				},
+				center: {
+					stack: {
+						id: 'AppRoot',
+						children: [{
+							component: {
+								id: 'RoomsListView',
+								name: 'RoomsListView'
+							}
+						}]
+					}
+				}
 			}
-		},
-		animationType: 'fade'
+		}
 	});
 };
 
 const startNotLogged = () => {
-	Navigation.startSingleScreenApp({
-		screen: {
-			screen: 'OnboardingView',
-			navigatorStyle: {
-				navBarHidden: true
+	Navigation.setRoot({
+		root: {
+			stack: {
+				children: [{
+					component: {
+						name: 'OnboardingView'
+					}
+				}],
+				options: {
+					layout: {
+						orientation: ['portrait']
+					}
+				}
 			}
-		},
-		animationType: 'fade',
-		appStyle: {
-			orientation: 'portrait'
 		}
 	});
 };
@@ -63,6 +79,29 @@ export default class App extends Component {
 		store.subscribe(this.onStoreUpdate.bind(this));
 		initializePushNotifications();
 
+		Navigation.events().registerAppLaunchedListener(() => {
+			Navigation.setDefaultOptions({
+				topBar: {
+					backButton: {
+						icon: { uri: 'back', scale: Dimensions.get('window').scale }
+					},
+					title: {
+						color: isAndroid() ? '#FFF' : undefined
+					},
+					background: {
+						color: isAndroid() ? '#2F343D' : undefined
+					},
+					buttonColor: '#FFF'
+				},
+				sideMenu: {
+					left: {
+						enabled: false
+					}
+				}
+			});
+			store.dispatch(appInit());
+			store.subscribe(this.onStoreUpdate.bind(this));
+		});
 		Linking
 			.getInitialURL()
 			.then(url => handleOpenURL({ url }))

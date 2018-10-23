@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, SafeAreaView, FlatList, Text, Platform, Image
+	View, StyleSheet, FlatList, Text, Platform, Image, Dimensions
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
@@ -52,15 +53,20 @@ let SelectedUsersView = null;
 }))
 /** @extends React.Component */
 export default class NewMessageView extends LoggedView {
-	static navigatorButtons = {
-		leftButtons: [{
-			id: 'cancel',
-			title: I18n.t('Cancel')
-		}]
+	static options() {
+		return {
+			topBar: {
+				leftButtons: [{
+					id: 'cancel',
+					icon: Platform.OS === 'android' ? { uri: 'back', scale: Dimensions.get('window').scale } : undefined,
+					text: Platform.OS === 'ios' ? I18n.t('Cancel') : undefined
+				}]
+			}
+		};
 	}
 
 	static propTypes = {
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		baseUrl: PropTypes.string,
 		onPressItem: PropTypes.func.isRequired
 	};
@@ -72,7 +78,7 @@ export default class NewMessageView extends LoggedView {
 			search: []
 		};
 		this.data.addListener(this.updateState);
-		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+		Navigation.events().bindComponent(this);
 	}
 
 	componentWillUnmount() {
@@ -80,25 +86,27 @@ export default class NewMessageView extends LoggedView {
 		this.data.removeAllListeners();
 	}
 
-	async onNavigatorEvent(event) {
-		const { navigator } = this.props;
-		if (event.type === 'NavBarButtonPress') {
-			if (event.id === 'cancel') {
-				navigator.dismissModal();
-			}
-		}
-	}
-
 	onSearchChangeText(text) {
 		this.search(text);
 	}
 
 	onPressItem = (item) => {
-		const { navigator, onPressItem } = this.props;
-		navigator.dismissModal();
+		const { onPressItem } = this.props;
+		this.dismiss();
 		setTimeout(() => {
 			onPressItem(item);
 		}, 600);
+	}
+
+	navigationButtonPressed = ({ buttonId }) => {
+		if (buttonId === 'cancel') {
+			this.dismiss();
+		}
+	}
+
+	dismiss = () => {
+		const { componentId } = this.props;
+		Navigation.dismissModal(componentId);
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -116,16 +124,23 @@ export default class NewMessageView extends LoggedView {
 	createChannel = () => {
 		if (SelectedUsersView == null) {
 			SelectedUsersView = require('./SelectedUsersView').default;
-			Navigation.registerComponent('SelectedUsersView', () => SelectedUsersView, store, Provider);
+			Navigation.registerComponentWithRedux('SelectedUsersView', () => SelectedUsersView, Provider, store);
 		}
 
-		const { navigator } = this.props;
-		navigator.push({
-			screen: 'SelectedUsersView',
-			title: I18n.t('Select_Users'),
-			backButtonTitle: '',
-			passProps: {
-				nextAction: 'CREATE_CHANNEL'
+		const { componentId } = this.props;
+		Navigation.push(componentId, {
+			component: {
+				name: 'SelectedUsersView',
+				passProps: {
+					nextAction: 'CREATE_CHANNEL'
+				},
+				options: {
+					topBar: {
+						title: {
+							text: I18n.t('Select_Users')
+						}
+					}
+				}
 			}
 		});
 	}
@@ -186,7 +201,7 @@ export default class NewMessageView extends LoggedView {
 	}
 
 	render = () => (
-		<SafeAreaView style={styles.safeAreaView} testID='new-message-view'>
+		<SafeAreaView style={styles.safeAreaView} testID='new-message-view' forceInset={{ bottom: 'never' }}>
 			{this.renderList()}
 		</SafeAreaView>
 	);

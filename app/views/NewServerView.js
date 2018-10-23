@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, ScrollView, Keyboard, SafeAreaView, Image, Alert, StyleSheet, TouchableOpacity
+	Text, ScrollView, Keyboard, Image, Alert, StyleSheet, TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { Navigation } from 'react-native-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import { serverRequest } from '../actions/server';
 import sharedStyles from './Styles';
@@ -60,8 +62,17 @@ const defaultServer = 'https://open.rocket.chat';
 }))
 /** @extends React.Component */
 export default class NewServerView extends LoggedView {
+	static options() {
+		return {
+			topBar: {
+				visible: false,
+				drawBehind: true
+			}
+		};
+	}
+
 	static propTypes = {
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		server: PropTypes.string,
 		connecting: PropTypes.bool.isRequired,
 		failure: PropTypes.bool.isRequired,
@@ -73,6 +84,7 @@ export default class NewServerView extends LoggedView {
 		this.state = {
 			text: ''
 		};
+		Navigation.events().bindComponent(this);
 	}
 
 	componentDidMount() {
@@ -128,7 +140,7 @@ export default class NewServerView extends LoggedView {
 	}
 
 	renderBack = () => {
-		const { navigator } = this.props;
+		const { componentId } = this.props;
 
 		let top = 15;
 		if (DeviceInfo.getBrand() === 'Apple') {
@@ -138,7 +150,7 @@ export default class NewServerView extends LoggedView {
 		return (
 			<TouchableOpacity
 				style={[styles.backButton, { top }]}
-				onPress={() => navigator.pop()}
+				onPress={() => Navigation.pop(componentId)}
 			>
 				<Icon
 					name='ios-arrow-back'
@@ -159,7 +171,7 @@ export default class NewServerView extends LoggedView {
 				key='login-view'
 			>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
-					<SafeAreaView style={sharedStyles.container} testID='new-server-view'>
+					<SafeAreaView style={sharedStyles.container} testID='new-server-view' forceInset={{ bottom: 'never' }}>
 						<Image style={styles.image} source={{ uri: 'new_server' }} />
 						<Text style={styles.title}>{I18n.t('Sign_in_your_server')}</Text>
 						<TextInput

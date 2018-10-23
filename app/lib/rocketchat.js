@@ -151,17 +151,19 @@ const RocketChat = {
 		}
 	},
 	connect(url, login) {
-		return new Promise(async() => {
+		return new Promise(() => {
 			if (this.ddp) {
 				RocketChat.disconnect();
 				this.ddp = null;
 			}
 
+			SDK.api.setBaseUrl(url);
+
 			if (login) {
 				SDK.api.setAuth({ authToken: login.token, userId: login.id });
+				RocketChat.setApiUser({ userId: login.id, authToken: login.token });
 			}
 
-			SDK.api.setBaseUrl(url);
 			SDK.driver.connect({ host: url, useSsl: true }, (err, ddp) => {
 				if (err) {
 					return console.warn(err);
@@ -191,11 +193,7 @@ const RocketChat = {
 			// SDK.driver.on('background', () => this.getRooms().catch(e => log('background getRooms', e)));
 
 			SDK.driver.on('logged', protectedFunction((error, user) => {
-				SDK.api.setAuth({ authToken: user.token, userId: user.id });
-				SDK.api.currentLogin = {
-					userId: user.id,
-					authToken: user.token
-				};
+				RocketChat.setApiUser({ userId: user.id, authToken: user.token });
 				this.loginSuccess(user);
 				this.getRooms().catch(e => log('logged getRooms', e));
 				this.subscribeRooms(user.id);
@@ -506,13 +504,12 @@ const RocketChat = {
 		} catch (error) {
 			console.warn(error);
 		}
-		SDK.api.setAuth({ authToken: null, userId: null });
-		SDK.api.currentLogin = {
-			userId: null,
-			authToken: null
-		};
+		RocketChat.setApiUser({ userId: null, authToken: null });
 	},
-
+	setApiUser({ userId, authToken }) {
+		SDK.api.setAuth({ userId, authToken });
+		SDK.api.currentLogin = { userId, authToken };
+	},
 	registerPushToken(userId) {
 		const deviceToken = getDeviceToken();
 		if (deviceToken) {
@@ -566,6 +563,8 @@ const RocketChat = {
 			data = data.filtered('t != $0', 'd');
 		}
 		data = data.slice(0, 7);
+		const array = Array.from(data);
+		data = JSON.parse(JSON.stringify(array));
 
 		const usernames = data.map(sub => sub.name);
 		try {
