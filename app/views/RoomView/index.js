@@ -110,6 +110,8 @@ export default class RoomView extends LoggedView {
 
 		if (room.ro !== nextState.room.ro) {
 			return true;
+		} else if (room.f !== nextState.room.f) {
+			return true;
 		} else if (loaded !== nextState.loaded) {
 			return true;
 		} else if (joined !== nextState.joined) {
