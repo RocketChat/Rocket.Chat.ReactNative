@@ -32,11 +32,11 @@ describe('Broadcast room', () => {
 		await waitFor(element(by.id('room-info-view'))).toBeVisible().withTimeout(2000);
 		await waitFor(element(by.id('room-info-view-broadcast'))).toBeVisible().withTimeout(2000);
 		await expect(element(by.id('room-info-view-broadcast'))).toBeVisible();
-		await tapBack(1);
+		await tapBack();
 		await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
 		await tapBack();
 		await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(2000);
-		// await tapBack(2);
+		// await tapBack();
 		// await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 		// await waitFor(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toExist().withTimeout(60000);
 		// await expect(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toExist();
@@ -53,7 +53,7 @@ describe('Broadcast room', () => {
 	});
 
 	it('should login as user without write message authorization and enter room', async() => {
-		await tapBack(2);
+		await tapBack();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 		await expect(element(by.id('rooms-list-view'))).toBeVisible();
 		await logout();
@@ -110,7 +110,7 @@ describe('Broadcast room', () => {
 
 	after(async() => {
 		// log back as main test user and left screen on RoomsListView
-		await tapBack(2);
+		await tapBack();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 		await logout();
 		await navigateToLogin();

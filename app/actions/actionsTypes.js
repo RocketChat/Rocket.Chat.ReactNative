@@ -39,7 +39,9 @@ export const ROOMS = createRequestTypes('ROOMS', [
 	'CLOSE_SERVER_DROPDOWN',
 	'TOGGLE_SERVER_DROPDOWN',
 	'CLOSE_SORT_DROPDOWN',
-	'TOGGLE_SORT_DROPDOWN'
+	'TOGGLE_SORT_DROPDOWN',
+	'OPEN_SEARCH_HEADER',
+	'CLOSE_SEARCH_HEADER'
 ]);
 export const ROOM = createRequestTypes('ROOM', [
 	'ADD_USER_TYPING',
@@ -81,7 +83,6 @@ export const MESSAGES = createRequestTypes('MESSAGES', [
 ]);
 export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [...defaultTypes]);
 export const SELECTED_USERS = createRequestTypes('SELECTED_USERS', ['ADD_USER', 'REMOVE_USER', 'RESET', 'SET_LOADING']);
-export const NAVIGATION = createRequestTypes('NAVIGATION', ['SET']);
 export const SERVER = createRequestTypes('SERVER', [
 	...defaultTypes,
 	'SELECT_SUCCESS',

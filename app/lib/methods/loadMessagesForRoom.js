@@ -34,7 +34,7 @@ async function loadMessagesForRoomDDP(...args) {
 	}
 }
 
-export default async function loadMessagesForRoom(...args) {
+export default function loadMessagesForRoom(...args) {
 	const { database: db } = database;
 	return new Promise(async(resolve, reject) => {
 		try {

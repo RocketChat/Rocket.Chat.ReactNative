@@ -3,8 +3,8 @@ import { CREATE_CHANNEL } from '../actions/actionsTypes';
 const initialState = {
 	isFetching: false,
 	failure: false,
-	result: '',
-	error: ''
+	result: {},
+	error: {}
 };
 
 export default function messages(state = initialState, action) {
@@ -14,7 +14,7 @@ export default function messages(state = initialState, action) {
 				...state,
 				isFetching: true,
 				failure: false,
-				error: ''
+				error: {}
 			};
 		case CREATE_CHANNEL.SUCCESS:
 			return {

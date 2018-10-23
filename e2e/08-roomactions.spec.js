@@ -23,8 +23,8 @@ async function navigateToRoomActions(type) {
 	await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(5000);
 }
 
-async function backToActions(index = 0) {
-	await tapBack(index);
+async function backToActions() {
+	await tapBack();
 	await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
 	await expect(element(by.id('room-actions-view'))).toBeVisible();
 }
@@ -32,7 +32,7 @@ async function backToActions(index = 0) {
 async function backToRoomsList() {
 	await tapBack();
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(2000);
-	await tapBack(2);
+	await tapBack();
 	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 }
 
@@ -367,7 +367,7 @@ describe('Room actions screen', () => {
 					await expect(element(by.id('room-view'))).toBeVisible();
 					await waitFor(element(by.text(data.alternateUser))).toBeVisible().withTimeout(60000);
 					await expect(element(by.text(data.alternateUser))).toBeVisible();
-					await tapBack(2);
+					await tapBack();
 					await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 				});
 

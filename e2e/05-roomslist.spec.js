@@ -52,7 +52,7 @@ describe('Rooms list screen', () => {
 			await expect(element(by.id('room-view'))).toBeVisible();
 			await waitFor(element(by.text('rocket.cat'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.text('rocket.cat'))).toBeVisible();
-			await tapBack(2);
+			await tapBack();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
 			await element(by.id('rooms-list-view-search')).replaceText('');

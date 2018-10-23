@@ -32,7 +32,7 @@ describe('Create room screen', () => {
 
 		describe('Usage', async() => {
 			it('should back to rooms list', async() => {
-				await tapBack();
+				await element(by.text('Cancel')).tap();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('rooms-list-view'))).toBeVisible();
 				await element(by.id('rooms-list-view-create-channel')).tap();
@@ -48,7 +48,7 @@ describe('Create room screen', () => {
 				await expect(element(by.id('room-view'))).toBeVisible();
 				await waitFor(element(by.text('rocket.cat'))).toBeVisible().withTimeout(60000);
 				await expect(element(by.text('rocket.cat'))).toBeVisible();
-				await tapBack(2);
+				await tapBack();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 				await element(by.id('rooms-list-view-create-channel')).tap();
 			});
@@ -120,7 +120,7 @@ describe('Create room screen', () => {
 				await expect(element(by.id('room-view'))).toBeVisible();
 				await waitFor(element(by.text(`public${ data.random }`))).toBeVisible().withTimeout(60000);
 				await expect(element(by.text(`public${ data.random }`))).toBeVisible();
-				await tapBack(2);
+				await tapBack();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 				await waitFor(element(by.id(`rooms-list-view-item-public${ data.random }`))).toBeVisible().withTimeout(60000);
 				await expect(element(by.id(`rooms-list-view-item-public${ data.random }`))).toBeVisible();
@@ -143,7 +143,7 @@ describe('Create room screen', () => {
 				await expect(element(by.id('room-view'))).toBeVisible();
 				await waitFor(element(by.text(`private${ data.random }`))).toBeVisible().withTimeout(60000);
 				await expect(element(by.text(`private${ data.random }`))).toBeVisible();
-				await tapBack(2);
+				await tapBack();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 				await element(by.id('rooms-list-view-search')).replaceText(`private${ data.random }`);
 				await waitFor(element(by.id(`rooms-list-view-item-private${ data.random }`))).toBeVisible().withTimeout(60000);

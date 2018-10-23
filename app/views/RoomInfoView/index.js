@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, Text, ScrollView, SafeAreaView
-} from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import moment from 'moment';
 import { Navigation } from 'react-native-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import LoggedView from '../View';
 import Status from '../../containers/status';
@@ -45,8 +44,18 @@ let RoomInfoEditView = null;
 }))
 /** @extends React.Component */
 export default class RoomInfoView extends LoggedView {
+	static options() {
+		return {
+			topBar: {
+				title: {
+					text: I18n.t('Room_Info')
+				}
+			}
+		};
+	}
+
 	static propTypes = {
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		rid: PropTypes.string,
 		userId: PropTypes.string,
 		baseUrl: PropTypes.string,
@@ -67,12 +76,27 @@ export default class RoomInfoView extends LoggedView {
 			roomUser: {},
 			roles: []
 		};
-		props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+		Navigation.events().bindComponent(this);
 	}
 
 	componentDidMount() {
 		this.updateRoom();
 		this.rooms.addListener(this.updateRoom);
+
+		const [room] = this.rooms;
+		const { componentId } = this.props;
+		const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
+		if (permissions[PERMISSION_EDIT_ROOM]) {
+			Navigation.mergeOptions(componentId, {
+				topBar: {
+					rightButtons: [{
+						id: 'edit',
+						icon: iconsMap.create,
+						testID: 'room-info-view-edit-button'
+					}]
+				}
+			});
+		}
 	}
 
 	componentWillUnmount() {
@@ -80,24 +104,23 @@ export default class RoomInfoView extends LoggedView {
 		this.sub.unsubscribe();
 	}
 
-	onNavigatorEvent(event) {
-		const { rid, navigator } = this.props;
-		if (event.type === 'NavBarButtonPress') {
-			if (event.id === 'edit') {
-				if (RoomInfoEditView == null) {
-					RoomInfoEditView = require('../RoomInfoEditView').default;
-					Navigation.registerComponent('RoomInfoEditView', () => RoomInfoEditView, store, Provider);
-				}
+	navigationButtonPressed = ({ buttonId }) => {
+		const { rid, componentId } = this.props;
+		if (buttonId === 'edit') {
+			if (RoomInfoEditView == null) {
+				RoomInfoEditView = require('../RoomInfoEditView').default;
+				Navigation.registerComponentWithRedux('RoomInfoEditView', () => RoomInfoEditView, Provider, store);
+			}
 
-				navigator.push({
-					screen: 'RoomInfoEditView',
-					title: I18n.t('Room_Info_Edit'),
-					backButtonTitle: '',
+			Navigation.push(componentId, {
+				component: {
+					id: 'RoomInfoEditView',
+					name: 'RoomInfoEditView',
 					passProps: {
 						rid
 					}
-				});
-			}
+				}
+			});
 		}
 	}
 
@@ -116,7 +139,7 @@ export default class RoomInfoView extends LoggedView {
 	}
 
 	updateRoom = async() => {
-		const { userId, activeUsers, navigator } = this.props;
+		const { userId, activeUsers } = this.props;
 
 		const [room] = this.rooms;
 		this.setState({ room });
@@ -145,22 +168,6 @@ export default class RoomInfoView extends LoggedView {
 					}
 				} catch (e) {
 					log('RoomInfoView.componentDidMount', e);
-				}
-			} else {
-				const isVisible = await navigator.screenIsCurrentlyVisible();
-
-				if (!isVisible) {
-					return;
-				}
-				const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
-				if (permissions[PERMISSION_EDIT_ROOM]) {
-					navigator.setButtons({
-						rightButtons: [{
-							id: 'edit',
-							icon: iconsMap.create,
-							testID: 'room-info-view-edit-button'
-						}]
-					});
 				}
 			}
 		}
@@ -278,7 +285,7 @@ export default class RoomInfoView extends LoggedView {
 		}
 		return (
 			<ScrollView style={styles.scroll}>
-				<SafeAreaView style={styles.container} testID='room-info-view'>
+				<SafeAreaView style={styles.container} testID='room-info-view' forceInset={{ bottom: 'never' }}>
 					<View style={styles.avatarContainer}>
 						{this.renderAvatar(room, roomUser)}
 						<View style={styles.roomTitleContainer}>{ getRoomTitle(room) }</View>

@@ -6,7 +6,8 @@ const initialState = {
 	searchText: '',
 	showServerDropdown: false,
 	closeServerDropdown: false,
-	showSortDropdown: false
+	showSortDropdown: false,
+	showSearchHeader: false
 };
 
 export default function login(state = initialState, action) {
@@ -52,6 +53,16 @@ export default function login(state = initialState, action) {
 			return {
 				...state,
 				showSortDropdown: !state.showSortDropdown
+			};
+		case types.ROOMS.OPEN_SEARCH_HEADER:
+			return {
+				...state,
+				showSearchHeader: true
+			};
+		case types.ROOMS.CLOSE_SEARCH_HEADER:
+			return {
+				...state,
+				showSearchHeader: false
 			};
 		default:
 			return state;
