@@ -218,7 +218,10 @@ jobs:
             cd ios
             agvtool new-version -all $CIRCLE_BUILD_NUM
             /usr/libexec/PlistBuddy -c "Set Fabric:APIKey $FABRIC_KEY" ./RocketChatRN/Info.plist
-            echo -e "./Fabric.framework/run $FABRIC_KEY $FABRIC_SECRET" > ./RocketChatRN/Fabric.sh
+
+            if [[ $FABRIC_KEY ]]; then
+              echo -e > "./Fabric.framework/run $FABRIC_KEY $FABRIC_SECRET" > ./RocketChatRN/Fabric.sh
+            fi
 
             if [[ $MATCH_KEYCHAIN_NAME ]]; then
               fastlane ios release
