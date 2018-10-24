@@ -28,11 +28,6 @@ Follow the [React Native Getting Started Guide](https://facebook.github.io/react
     $ npm install -g react-native-cli
     $ npm install
     ```
-- Configuration
-	```bash
-    $ npm run fabric-ios --key="YOUR_API_KEY" --secret="YOUR_API_SECRET"
-    $ npm run fabric-android --key="YOUR_API_KEY" --secret="YOUR_API_SECRET"
-    ```
 
 - Run application
     ```bash
