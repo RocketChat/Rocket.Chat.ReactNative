@@ -263,6 +263,29 @@ jobs:
             cd ios
             fastlane pilot upload --ipa ios/RocketChatRN.ipa --changelog "$(sh ../.circleci/changelog.sh)"
 
+  ios-appstore:
+    macos:
+      xcode: "10.0.0"
+
+    steps:
+      - checkout
+
+      - attach_workspace:
+          at: ios
+
+      - run:
+          name: Update Fastlane
+          command: |
+            brew update
+            brew install ruby
+            sudo gem install fastlane
+
+      - run:
+          name: Fastlane AppStore Upload
+          command: |
+            cd ios
+            fastlane deliver --ipa ios/RocketChatRN.ipa --release_notes "$(sh ../.circleci/changelog.sh)" --force
+
 workflows:
   version: 2
   build-and-test:
@@ -284,9 +307,13 @@ workflows:
                 - beta
                 - develop
                 - master
-      # - ios-testflight:
-      #     requires:
-      #       - ios-hold-testflight
+      - ios-appstore:
+          requires:
+            - ios-build
+          filters:
+            branches:
+              only:
+                - ios-release
 
       - android-build:
           requires:
