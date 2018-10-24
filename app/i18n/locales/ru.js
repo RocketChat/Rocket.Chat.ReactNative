@@ -114,7 +114,7 @@ export default {
 	Choose: 'Выбрать',
 	Choose_from_library: 'Выбрать из библиотеки',
 	Code: 'Код',
-	Colaborative: 'Совместный',
+	Collaborative: 'Совместный',
 	Connect: 'Соединение',
 	Connected_to: 'Подключен к',
 	Connecting: 'Соединение',

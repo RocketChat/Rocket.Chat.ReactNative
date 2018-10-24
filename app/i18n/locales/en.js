@@ -120,7 +120,7 @@ export default {
 	Choose: 'Choose',
 	Choose_from_library: 'Choose from library',
 	Code: 'Code',
-	Colaborative: 'Colaborative',
+	Collaborative: 'Collaborative',
 	Connect: 'Connect',
 	Connect_to_a_server: 'Connect to a server',
 	Connected: 'Connected',
