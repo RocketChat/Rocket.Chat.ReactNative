@@ -132,9 +132,11 @@ jobs:
 
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
 
-            echo -e "" > ./app/fabric.properties
-            echo -e "apiKey=$FABRIC_KEY" >> ./app/fabric.properties
-            echo -e "apiSecret=$FABRIC_SECRET" >> ./app/fabric.properties
+            if [[ $FABRIC_KEY ]]; then
+              echo -e "" > ./app/fabric.properties
+              echo -e "apiKey=$FABRIC_KEY" >> ./app/fabric.properties
+              echo -e "apiSecret=$FABRIC_SECRET" >> ./app/fabric.properties
+            fi
 
       - run:
           name: Install Android Depedencies
