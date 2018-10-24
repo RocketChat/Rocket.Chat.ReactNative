@@ -36,8 +36,8 @@ async function logout() {
     await expect(element(by.id('onboarding-view'))).toBeVisible();
 }
 
-async function tapBack(index) {
-    await element(by.type('_UIModernBarButton')).atIndex(index || 0).tap();
+async function tapBack() {
+    await element(by.type('_UIModernBarButton').withAncestor(by.type('_UIBackButtonContainerView'))).tap();
 }
 
 async function sleep(ms) {

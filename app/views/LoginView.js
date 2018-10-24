@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Keyboard, Text, ScrollView, View, SafeAreaView
+	Keyboard, Text, ScrollView, View
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import { Answers } from 'react-native-fabric';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import RocketChat from '../lib/rocketchat';
 import KeyboardView from '../presentation/KeyboardView';
@@ -35,7 +36,7 @@ let ForgotPasswordView = null;
 /** @extends React.Component */
 export default class LoginView extends LoggedView {
 	static propTypes = {
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		loginSubmit: PropTypes.func.isRequired,
 		login: PropTypes.object,
 		server: PropTypes.string,
@@ -76,28 +77,42 @@ export default class LoginView extends LoggedView {
 	register = () => {
 		if (RegisterView == null) {
 			RegisterView = require('./RegisterView').default;
-			Navigation.registerComponent('RegisterView', () => RegisterView, store, Provider);
+			Navigation.registerComponentWithRedux('RegisterView', () => RegisterView, Provider, store);
 		}
 
-		const { navigator, server } = this.props;
-		navigator.push({
-			screen: 'RegisterView',
-			title: server,
-			backButtonTitle: ''
+		const { componentId, server } = this.props;
+		Navigation.push(componentId, {
+			component: {
+				name: 'RegisterView',
+				options: {
+					topBar: {
+						title: {
+							text: server
+						}
+					}
+				}
+			}
 		});
 	}
 
 	forgotPassword = () => {
 		if (ForgotPasswordView == null) {
 			ForgotPasswordView = require('./ForgotPasswordView').default;
-			Navigation.registerComponent('ForgotPasswordView', () => ForgotPasswordView, store, Provider);
+			Navigation.registerComponentWithRedux('ForgotPasswordView', () => ForgotPasswordView, Provider, store);
 		}
 
-		const { navigator } = this.props;
-		navigator.push({
-			screen: 'ForgotPasswordView',
-			title: I18n.t('Forgot_Password'),
-			backButtonTitle: ''
+		const { componentId } = this.props;
+		Navigation.push(componentId, {
+			component: {
+				name: 'ForgotPasswordView',
+				options: {
+					topBar: {
+						title: {
+							text: I18n.t('Forgot_Password')
+						}
+					}
+				}
+			}
 		});
 	}
 
@@ -132,7 +147,7 @@ export default class LoginView extends LoggedView {
 				key='login-view'
 			>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
-					<SafeAreaView style={styles.container} testID='login-view'>
+					<SafeAreaView style={styles.container} testID='login-view' forceInset={{ bottom: 'never' }}>
 						<Text style={[styles.loginText, styles.loginTitle]}>Login</Text>
 						<TextInput
 							label={I18n.t('Username')}

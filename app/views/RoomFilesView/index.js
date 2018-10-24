@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	FlatList, View, Text, SafeAreaView
-} from 'react-native';
+import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import { openRoomFiles as openRoomFilesAction, closeRoomFiles as closeRoomFilesAction } from '../../actions/roomFiles';
 import LoggedView from '../View';
@@ -26,6 +25,16 @@ import I18n from '../../i18n';
 }))
 /** @extends React.Component */
 export default class RoomFilesView extends LoggedView {
+	static options() {
+		return {
+			topBar: {
+				title: {
+					text: I18n.t('Files')
+				}
+			}
+		};
+	}
+
 	static propTypes = {
 		rid: PropTypes.string,
 		messages: PropTypes.array,
@@ -106,7 +115,7 @@ export default class RoomFilesView extends LoggedView {
 
 		const { loading, loadingMore } = this.state;
 		return (
-			<SafeAreaView style={styles.list} testID='room-files-view'>
+			<SafeAreaView style={styles.list} testID='room-files-view' forceInset={{ bottom: 'never' }}>
 				<FlatList
 					data={messages}
 					renderItem={this.renderItem}

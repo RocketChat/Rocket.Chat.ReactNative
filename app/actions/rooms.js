@@ -50,3 +50,15 @@ export function toggleSortDropdown() {
 		type: types.ROOMS.TOGGLE_SORT_DROPDOWN
 	};
 }
+
+export function openSearchHeader() {
+	return {
+		type: types.ROOMS.OPEN_SEARCH_HEADER
+	};
+}
+
+export function closeSearchHeader() {
+	return {
+		type: types.ROOMS.CLOSE_SEARCH_HEADER
+	};
+}

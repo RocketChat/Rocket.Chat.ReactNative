@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	FlatList, View, Text, SafeAreaView
-} from 'react-native';
+import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import { openStarredMessages as openStarredMessagesAction, closeStarredMessages as closeStarredMessagesAction } from '../../actions/starredMessages';
 import { toggleStarRequest as toggleStarRequestAction } from '../../actions/messages';
@@ -33,6 +32,16 @@ const options = [I18n.t('Unstar'), I18n.t('Cancel')];
 }))
 /** @extends React.Component */
 export default class StarredMessagesView extends LoggedView {
+	static options() {
+		return {
+			topBar: {
+				title: {
+					text: I18n.t('Starred')
+				}
+			}
+		};
+	}
+
 	static propTypes = {
 		rid: PropTypes.string,
 		messages: PropTypes.array,
@@ -136,7 +145,7 @@ export default class StarredMessagesView extends LoggedView {
 		}
 
 		return (
-			<SafeAreaView style={styles.list} testID='starred-messages-view'>
+			<SafeAreaView style={styles.list} testID='starred-messages-view' forceInset={{ bottom: 'never' }}>
 				<FlatList
 					data={messages}
 					renderItem={this.renderItem}

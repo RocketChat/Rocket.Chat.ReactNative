@@ -54,7 +54,7 @@ export default class Sort extends Component {
 		}
 	}
 
-	setSortPreference = async(param) => {
+	setSortPreference = (param) => {
 		const { setSortPreference } = this.props;
 
 		try {

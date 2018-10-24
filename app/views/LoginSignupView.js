@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, ScrollView, TouchableOpacity, LayoutAnimation, Image, StyleSheet, SafeAreaView
+	Text, View, ScrollView, TouchableOpacity, LayoutAnimation, Image, StyleSheet
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Base64 } from 'js-base64';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import { open as openAction, close as closeAction } from '../actions/login';
 import LoggedView from './View';
@@ -71,7 +72,7 @@ let RegisterView = null;
 /** @extends React.Component */
 export default class LoginSignupView extends LoggedView {
 	static propTypes = {
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		open: PropTypes.func.isRequired,
 		close: PropTypes.func.isRequired,
 		isFetching: PropTypes.bool,
@@ -189,15 +190,26 @@ export default class LoginSignupView extends LoggedView {
 	openOAuth = (oAuthUrl) => {
 		if (OAuthView == null) {
 			OAuthView = require('./OAuthView').default;
-			Navigation.registerComponent('OAuthView', () => OAuthView, store, Provider);
+			Navigation.registerComponentWithRedux('OAuthView', () => OAuthView, Provider, store);
 		}
 
-		const { navigator } = this.props;
-		navigator.showModal({
-			screen: 'OAuthView',
-			title: 'OAuth',
-			passProps: {
-				oAuthUrl
+		Navigation.showModal({
+			stack: {
+				children: [{
+					component: {
+						name: 'OAuthView',
+						passProps: {
+							oAuthUrl
+						},
+						options: {
+							topBar: {
+								title: {
+									text: 'OAuth'
+								}
+							}
+						}
+					}
+				}]
 			}
 		});
 	}
@@ -205,28 +217,42 @@ export default class LoginSignupView extends LoggedView {
 	login = () => {
 		if (LoginView == null) {
 			LoginView = require('./LoginView').default;
-			Navigation.registerComponent('LoginView', () => LoginView, store, Provider);
+			Navigation.registerComponentWithRedux('LoginView', () => LoginView, Provider, store);
 		}
 
-		const { navigator, server } = this.props;
-		navigator.push({
-			screen: 'LoginView',
-			title: server,
-			backButtonTitle: ''
+		const { componentId, server } = this.props;
+		Navigation.push(componentId, {
+			component: {
+				name: 'LoginView',
+				options: {
+					topBar: {
+						title: {
+							text: server
+						}
+					}
+				}
+			}
 		});
 	}
 
 	register = () => {
 		if (RegisterView == null) {
 			RegisterView = require('./RegisterView').default;
-			Navigation.registerComponent('RegisterView', () => RegisterView, store, Provider);
+			Navigation.registerComponentWithRedux('RegisterView', () => RegisterView, Provider, store);
 		}
 
-		const { navigator, server } = this.props;
-		navigator.push({
-			screen: 'RegisterView',
-			title: server,
-			backButtonTitle: ''
+		const { componentId, server } = this.props;
+		Navigation.push(componentId, {
+			component: {
+				name: 'RegisterView',
+				options: {
+					topBar: {
+						title: {
+							text: server
+						}
+					}
+				}
+			}
 		});
 	}
 
@@ -335,7 +361,7 @@ export default class LoginSignupView extends LoggedView {
 				style={[sharedStyles.container, sharedStyles.containerScrollView]}
 				{...scrollPersistTaps}
 			>
-				<SafeAreaView style={sharedStyles.container} testID='welcome-view'>
+				<SafeAreaView style={sharedStyles.container} testID='welcome-view' forceInset={{ bottom: 'never' }}>
 					<View style={styles.container}>
 						<Text style={[sharedStyles.loginText, styles.header, { color: '#81848A' }]}>{I18n.t('Welcome_title_pt_1')}</Text>
 						<Text style={[sharedStyles.loginText, styles.header]}>{I18n.t('Welcome_title_pt_2')}</Text>

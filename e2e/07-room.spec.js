@@ -75,7 +75,7 @@ describe('Room screen', () => {
 	describe('Usage', async() => {
 		describe('Header', async() => {
 			it('should back to rooms list', async() => {
-				await tapBack(2);
+				await tapBack();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('rooms-list-view'))).toBeVisible();
 				await navigateToRoom();
@@ -290,7 +290,7 @@ describe('Room screen', () => {
 
 		after(async() => {
 			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
-			await tapBack(2);
+			await tapBack();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
 		});

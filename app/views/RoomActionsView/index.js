@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, SectionList, Text, Alert, SafeAreaView
+	View, SectionList, Text, Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import { leaveRoom as leaveRoomAction } from '../../actions/room';
 import LoggedView from '../View';
@@ -37,10 +38,20 @@ const modules = {};
 }))
 /** @extends React.Component */
 export default class RoomActionsView extends LoggedView {
+	static options() {
+		return {
+			topBar: {
+				title: {
+					text: I18n.t('Actions')
+				}
+			}
+		};
+	}
+
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		rid: PropTypes.string,
-		navigator: PropTypes.object,
+		componentId: PropTypes.string,
 		userId: PropTypes.string,
 		username: PropTypes.string,
 		leaveRoom: PropTypes.func
@@ -69,18 +80,22 @@ export default class RoomActionsView extends LoggedView {
 	}
 
 	onPressTouchable = (item) => {
-		const { navigator } = this.props;
-
 		if (item.route) {
 			if (modules[item.route] == null) {
 				modules[item.route] = item.require();
-				Navigation.registerComponent(item.route, () => gestureHandlerRootHOC(modules[item.route]), store, Provider);
+				Navigation.registerComponentWithRedux(item.route, () => gestureHandlerRootHOC(modules[item.route]), Provider, store);
 			}
-			navigator.push({
-				screen: item.route,
-				title: item.name,
-				passProps: item.params,
-				backButtonTitle: ''
+
+			const { componentId } = this.props;
+			Navigation.push(componentId, {
+				component: {
+					name: item.route,
+					passProps: item.params
+				}
+				// screen: item.route,
+				// title: item.name,
+				// passProps: item.params,
+				// backButtonTitle: ''
 			});
 		}
 		if (item.event) {
@@ -325,7 +340,7 @@ export default class RoomActionsView extends LoggedView {
 		this.setState({ room: this.rooms[0] || {} });
 	}
 
-	toggleBlockUser = async() => {
+	toggleBlockUser = () => {
 		const { room } = this.state;
 		const { rid, blocker } = room;
 		const { member } = this.state;
@@ -440,7 +455,7 @@ export default class RoomActionsView extends LoggedView {
 
 	render() {
 		return (
-			<SafeAreaView style={styles.container} testID='room-actions-view'>
+			<SafeAreaView style={styles.container} testID='room-actions-view' forceInset={{ bottom: 'never' }}>
 				<SectionList
 					style={styles.container}
 					stickySectionHeadersEnabled={false}

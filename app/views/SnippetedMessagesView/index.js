@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	FlatList, View, Text, SafeAreaView
-} from 'react-native';
+import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import { openSnippetedMessages as openSnippetedMessagesAction, closeSnippetedMessages as closeSnippetedMessagesAction } from '../../actions/snippetedMessages';
 import LoggedView from '../View';
@@ -26,6 +25,16 @@ import I18n from '../../i18n';
 }))
 /** @extends React.Component */
 export default class SnippetedMessagesView extends LoggedView {
+	static options() {
+		return {
+			topBar: {
+				title: {
+					text: I18n.t('Snippets')
+				}
+			}
+		};
+	}
+
 	static propTypes = {
 		rid: PropTypes.string,
 		messages: PropTypes.array,
@@ -106,7 +115,7 @@ export default class SnippetedMessagesView extends LoggedView {
 		}
 
 		return (
-			<SafeAreaView style={styles.list} testID='snippeted-messages-view'>
+			<SafeAreaView style={styles.list} testID='snippeted-messages-view' forceInset={{ bottom: 'never' }}>
 				<FlatList
 					data={messages}
 					renderItem={this.renderItem}
