@@ -342,7 +342,7 @@ export default class RoomInfoEditView extends LoggedView {
 						/>
 						<SwitchContainer
 							value={ro}
-							leftLabelPrimary={I18n.t('Colaborative')}
+							leftLabelPrimary={I18n.t('Collaborative')}
 							leftLabelSecondary={I18n.t('All_users_in_the_channel_can_write_new_messages')}
 							rightLabelPrimary={I18n.t('Read_Only')}
 							rightLabelSecondary={I18n.t('Only_authorized_users_can_write_new_messages')}

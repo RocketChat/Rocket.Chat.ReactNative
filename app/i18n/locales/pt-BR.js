@@ -127,7 +127,7 @@ export default {
 	Choose: 'Escolher',
 	Choose_from_library: 'Escolha da biblioteca',
 	Code: 'Código',
-	Colaborative: 'Colaborativo',
+	Collaborative: 'Colaborativo',
 	Connect: 'Conectar',
 	Connect_to_a_server: 'Conectar a um servidor',
 	Connected: 'Conectado',
