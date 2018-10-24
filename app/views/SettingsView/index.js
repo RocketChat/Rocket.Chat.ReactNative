@@ -46,6 +46,9 @@ export default class SettingsView extends LoggedView {
 			}, {
 				label: 'Russian',
 				value: 'ru'
+			}, {
+				label: '简体中文',
+				value: 'zh-CN'
 			}],
 			saving: false
 		};
