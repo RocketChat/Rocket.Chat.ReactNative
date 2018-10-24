@@ -100,7 +100,7 @@
     "jest-cli": "^23.6.0",
     "metro-react-native-babel-preset": "^0.45.6",
     "mocha": "^5.2.0",
-    "react-dom": "16.6.0-alpha.8af6728",
+    "react-dom": "16.6.0",
     "react-test-renderer": "16.6.0-alpha.8af6728",
     "reactotron-react-native": "^2.1.0",
     "reactotron-redux": "^2.1.0",
