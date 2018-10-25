@@ -96,6 +96,9 @@ export default class App extends Component {
 				sideMenu: {
 					left: {
 						enabled: false
+					},
+					right: {
+						enabled: false
 					}
 				}
 			});
