@@ -325,6 +325,7 @@ export default {
 	User_is_no_longer_role_by_: '{{user}} is no longer {{role}} by {{userBy}}',
 	User_muted_by: 'User {{userMuted}} muted by {{userBy}}',
 	User_removed_by: 'User {{userRemoved}} removed by {{userBy}}',
+	User_sent_an_attachment: '{{user}} sent an attachment',
 	User_unmuted_by: 'User {{userUnmuted}} unmuted by {{userBy}}',
 	User_was_set_role_by_: '{{user}} was set {{role}} by {{userBy}}',
 	Username_is_empty: 'Username is empty',
@@ -343,7 +344,7 @@ export default {
 	You_can_search_using_RegExp_eg: 'You can search using RegExp. e.g. `/^text$/i`',
 	You_colon: 'You: ',
 	you_were_mentioned: 'you were mentioned',
-	You_will_not_be_able_to_recover_this_message: 'You will not be able to recover this message!',
 	you: 'you',
-	Your_server: 'Your server'
+	You: 'You',
+	You_will_not_be_able_to_recover_this_message: 'You will not be able to recover this message!'
 };
