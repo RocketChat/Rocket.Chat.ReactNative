@@ -323,6 +323,7 @@ export default {
 	User_is_no_longer_role_by_: '{{user}} não pertence mais à {{role}} por {{userBy}}',
 	User_muted_by: 'User {{userMuted}} muted por {{userBy}}',
 	User_removed_by: 'Usuário {{userRemoved}} removido por {{userBy}}',
+	User_sent_an_attachment: '{{user}} enviou um anexo',
 	User_unmuted_by: '{{userBy}} permitiu que {{userUnmuted}} fale na sala',
 	User_was_set_role_by_: '{{user}} foi definido como {{role}} por {{userBy}}',
 	Username_is_empty: 'Usuário está vazio',
@@ -340,6 +341,7 @@ export default {
 	You_can_search_using_RegExp_eg: 'Você pode pesquisar usando expressões regulares, por exemplo `/^text$/i`',
 	You_colon: 'Você: ',
 	you_were_mentioned: 'você foi mencionado',
-	You_will_not_be_able_to_recover_this_message: 'Você não será capaz de recuperar essa mensagem!',
-	you: 'você'
+	you: 'você',
+	You: 'Você',
+	You_will_not_be_able_to_recover_this_message: 'Você não será capaz de recuperar essa mensagem!'
 };
