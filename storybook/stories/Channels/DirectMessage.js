@@ -3,7 +3,8 @@ import { ScrollView } from 'react-native';
 
 import RoomItem from '../../../app/presentation/RoomItem';
 
-const date = new Date(2017, 10, 10, 10);
+const date = '2017-10-10T10:00:00Z';
+const baseUrl = 'https://open.rocket.chat';
 
 export default (
 	<ScrollView>
@@ -11,7 +12,7 @@ export default (
 			type='d'
 			name='rocket.cat'
 			_updatedAt={date}
-			baseUrl='https://demo.rocket.chat'
+			baseUrl={baseUrl}
 		/>
 		<RoomItem
 			type='d'
@@ -19,14 +20,14 @@ export default (
 			alert
 			_updatedAt={date}
 			name='rocket.cat'
-			baseUrl='https://demo.rocket.chat'
+			baseUrl={baseUrl}
 		/>
 		<RoomItem
 			type='d'
 			unread={1}
 			_updatedAt={date}
 			name='rocket.cat'
-			baseUrl='https://demo.rocket.chat'
+			baseUrl={baseUrl}
 		/>
 		<RoomItem
 			type='d'
@@ -34,14 +35,14 @@ export default (
 			alert
 			_updatedAt={date}
 			name="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-			baseUrl='https://demo.rocket.chat'
+			baseUrl={baseUrl}
 		/>
 		<RoomItem
 			type='d'
 			unread={99}
 			_updatedAt={date}
 			name="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-			baseUrl='https://demo.rocket.chat'
+			baseUrl={baseUrl}
 		/>
 		<RoomItem
 			type='d'
@@ -49,7 +50,7 @@ export default (
 			userMentions={0}
 			_updatedAt={date}
 			name="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-			baseUrl='https://demo.rocket.chat'
+			baseUrl={baseUrl}
 		/>
 		<RoomItem
 			type='d'
@@ -57,7 +58,7 @@ export default (
 			userMentions={0}
 			_updatedAt={date}
 			name="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-			baseUrl='https://demo.rocket.chat'
+			baseUrl={baseUrl}
 		/>
 		<RoomItem
 			type='d'
@@ -65,7 +66,7 @@ export default (
 			userMentions={1}
 			_updatedAt={date}
 			name="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-			baseUrl='https://demo.rocket.chat'
+			baseUrl={baseUrl}
 		/>
 		<RoomItem
 			type='d'
