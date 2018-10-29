@@ -40,8 +40,7 @@ export default class Avatar extends React.PureComponent {
 				style={avatarStyle}
 				source={{
 					uri,
-					priority: FastImage.priority.high,
-					cache: 'web'
+					priority: FastImage.priority.high
 				}}
 			/>
 		);
