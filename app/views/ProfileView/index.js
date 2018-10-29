@@ -295,7 +295,7 @@ export default class ProfileView extends LoggedView {
 		return (
 			<View style={styles.avatarButtons}>
 				{this.renderAvatarButton({
-					child: <Avatar text={user.username} size={50} baseUrl={baseUrl} forceInitials />,
+					child: <Avatar text={`@${ user.username }`} size={50} baseUrl={baseUrl} />,
 					onPress: () => this.resetAvatar(),
 					key: 'profile-view-reset-avatar'
 				})}

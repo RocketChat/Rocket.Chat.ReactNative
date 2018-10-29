@@ -7,11 +7,6 @@ exports[`Storyshots Avatar avatar 1`] = `
       style={
         Array [
           Object {
-            "alignItems": "center",
-            "justifyContent": "center",
-          },
-          Object {
-            "backgroundColor": "#3F51B5",
             "borderRadius": 4,
             "height": 25,
             "width": 25,
@@ -20,38 +15,17 @@ exports[`Storyshots Avatar avatar 1`] = `
         ]
       }
     >
-      <Text
-        allowFontScaling={false}
-        style={
-          Array [
-            Object {
-              "color": "#ffffff",
-            },
-            Object {
-              "fontSize": 15.625,
-              "fontWeight": "800",
-            },
-          ]
-        }
-      >
-        T
-      </Text>
       <View
         style={
           Array [
             Object {
               "overflow": "hidden",
             },
-            Array [
-              Object {
-                "position": "absolute",
-              },
-              Object {
-                "borderRadius": 4,
-                "height": 25,
-                "width": 25,
-              },
-            ],
+            Object {
+              "borderRadius": 4,
+              "height": 25,
+              "width": 25,
+            },
           ]
         }
       >
@@ -59,8 +33,9 @@ exports[`Storyshots Avatar avatar 1`] = `
           resizeMode="cover"
           source={
             Object {
+              "cache": "web",
               "priority": "high",
-              "uri": "baseUrl/avatar/test",
+              "uri": "baseUrl/avatar/test?format=png&size=50",
             }
           }
           style={
@@ -79,11 +54,6 @@ exports[`Storyshots Avatar avatar 1`] = `
       style={
         Array [
           Object {
-            "alignItems": "center",
-            "justifyContent": "center",
-          },
-          Object {
-            "backgroundColor": "#9C27B0",
             "borderRadius": 4,
             "height": 40,
             "width": 40,
@@ -92,38 +62,17 @@ exports[`Storyshots Avatar avatar 1`] = `
         ]
       }
     >
-      <Text
-        allowFontScaling={false}
-        style={
-          Array [
-            Object {
-              "color": "#ffffff",
-            },
-            Object {
-              "fontSize": 25,
-              "fontWeight": "800",
-            },
-          ]
-        }
-      >
-        A
-      </Text>
       <View
         style={
           Array [
             Object {
               "overflow": "hidden",
             },
-            Array [
-              Object {
-                "position": "absolute",
-              },
-              Object {
-                "borderRadius": 4,
-                "height": 40,
-                "width": 40,
-              },
-            ],
+            Object {
+              "borderRadius": 4,
+              "height": 40,
+              "width": 40,
+            },
           ]
         }
       >
@@ -131,8 +80,9 @@ exports[`Storyshots Avatar avatar 1`] = `
           resizeMode="cover"
           source={
             Object {
+              "cache": "web",
               "priority": "high",
-              "uri": "baseUrl/avatar/aa",
+              "uri": "baseUrl/avatar/aa?format=png&size=50",
             }
           }
           style={
@@ -151,11 +101,6 @@ exports[`Storyshots Avatar avatar 1`] = `
       style={
         Array [
           Object {
-            "alignItems": "center",
-            "justifyContent": "center",
-          },
-          Object {
-            "backgroundColor": "#9C27B0",
             "borderRadius": 4,
             "height": 30,
             "width": 30,
@@ -164,38 +109,17 @@ exports[`Storyshots Avatar avatar 1`] = `
         ]
       }
     >
-      <Text
-        allowFontScaling={false}
-        style={
-          Array [
-            Object {
-              "color": "#ffffff",
-            },
-            Object {
-              "fontSize": 18.75,
-              "fontWeight": "800",
-            },
-          ]
-        }
-      >
-        B
-      </Text>
       <View
         style={
           Array [
             Object {
               "overflow": "hidden",
             },
-            Array [
-              Object {
-                "position": "absolute",
-              },
-              Object {
-                "borderRadius": 4,
-                "height": 30,
-                "width": 30,
-              },
-            ],
+            Object {
+              "borderRadius": 4,
+              "height": 30,
+              "width": 30,
+            },
           ]
         }
       >
@@ -203,8 +127,9 @@ exports[`Storyshots Avatar avatar 1`] = `
           resizeMode="cover"
           source={
             Object {
+              "cache": "web",
               "priority": "high",
-              "uri": "baseUrl/avatar/bb",
+              "uri": "baseUrl/avatar/bb?format=png&size=50",
             }
           }
           style={
@@ -223,11 +148,6 @@ exports[`Storyshots Avatar avatar 1`] = `
       style={
         Array [
           Object {
-            "alignItems": "center",
-            "justifyContent": "center",
-          },
-          Object {
-            "backgroundColor": "#3F51B5",
             "borderRadius": 2,
             "height": 25,
             "width": 25,
@@ -236,38 +156,17 @@ exports[`Storyshots Avatar avatar 1`] = `
         ]
       }
     >
-      <Text
-        allowFontScaling={false}
-        style={
-          Array [
-            Object {
-              "color": "#ffffff",
-            },
-            Object {
-              "fontSize": 15.625,
-              "fontWeight": "800",
-            },
-          ]
-        }
-      >
-        T
-      </Text>
       <View
         style={
           Array [
             Object {
               "overflow": "hidden",
             },
-            Array [
-              Object {
-                "position": "absolute",
-              },
-              Object {
-                "borderRadius": 2,
-                "height": 25,
-                "width": 25,
-              },
-            ],
+            Object {
+              "borderRadius": 2,
+              "height": 25,
+              "width": 25,
+            },
           ]
         }
       >
@@ -275,8 +174,9 @@ exports[`Storyshots Avatar avatar 1`] = `
           resizeMode="cover"
           source={
             Object {
+              "cache": "web",
               "priority": "high",
-              "uri": "baseUrl/avatar/test",
+              "uri": "baseUrl/avatar/test?format=png&size=50",
             }
           }
           style={
