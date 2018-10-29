@@ -42,6 +42,9 @@ export default class SettingsView extends LoggedView {
 			sideMenu: {
 				left: {
 					enabled: true
+				},
+				right: {
+					enabled: true
 				}
 			}
 		};
