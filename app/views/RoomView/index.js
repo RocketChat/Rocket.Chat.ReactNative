@@ -162,7 +162,7 @@ export default class RoomView extends LoggedView {
 			const { room } = this.state;
 			try {
 				const result = await RocketChat.loadMessagesForRoom({ rid: this.rid, t: room.t, latest: lastRowData.ts });
-				this.internalSetState({ end: result < 20 });
+				this.internalSetState({ end: result < 50 });
 			} catch (e) {
 				log('RoomView.onEndReached', e);
 			}
