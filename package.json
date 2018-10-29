@@ -79,7 +79,7 @@
     "@babel/plugin-proposal-decorators": "^7.1.0",
     "@storybook/addon-actions": "^4.0.0",
     "@storybook/addon-links": "^4.0.0",
-    "@storybook/addon-storyshots": "^3.4.11",
+    "@storybook/addon-storyshots": "^4.0.0",
     "@storybook/addons": "^4.0.0",
     "@storybook/react-native": "^3.4.11",
     "babel-core": "^6.26.3",
