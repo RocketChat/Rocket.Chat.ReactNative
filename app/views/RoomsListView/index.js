@@ -86,6 +86,9 @@ export default class RoomsListView extends LoggedView {
 			sideMenu: {
 				left: {
 					enabled: true
+				},
+				right: {
+					enabled: true
 				}
 			}
 		};
@@ -214,7 +217,9 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	internalSetState = (...args) => {
-		LayoutAnimation.easeInEaseOut();
+		if (Platform.OS === 'ios') {
+			LayoutAnimation.easeInEaseOut();
+		}
 		this.setState(...args);
 	}
 
