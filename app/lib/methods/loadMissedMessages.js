@@ -10,7 +10,7 @@ async function loadMissedMessagesRest({ rid: roomId, lastOpen }) {
 	if (lastOpen) {
 		lastUpdate = new Date(lastOpen).toISOString();
 	}
-	const { result } = await SDK.api.get('chat.syncMessages', { roomId, lastUpdate });
+	const { result } = await SDK.api.get('chat.syncMessages', { roomId, lastUpdate, count: 50 });
 	return result;
 }
 
@@ -18,7 +18,7 @@ async function loadMissedMessagesDDP(...args) {
 	const [{ rid, lastOpen: lastUpdate }] = args;
 
 	try {
-		const result = await SDK.driver.asyncCall('messages/get', rid, { lastUpdate: new Date(lastUpdate) });
+		const result = await SDK.driver.asyncCall('messages/get', rid, { lastUpdate: new Date(lastUpdate), count: 50 });
 		return result;
 	} catch (e) {
 		return loadMissedMessagesRest.call(this, ...args);
