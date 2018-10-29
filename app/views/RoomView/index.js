@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, LayoutAnimation, ActivityIndicator
+	Text, View, LayoutAnimation, ActivityIndicator, Platform
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
@@ -188,7 +188,9 @@ export default class RoomView extends LoggedView {
 	};
 
 	internalSetState = (...args) => {
-		LayoutAnimation.easeInEaseOut();
+		if (Platform.OS === 'ios') {
+			LayoutAnimation.easeInEaseOut();
+		}
 		this.setState(...args);
 	}
 

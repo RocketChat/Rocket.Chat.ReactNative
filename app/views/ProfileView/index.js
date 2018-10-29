@@ -55,6 +55,9 @@ export default class ProfileView extends LoggedView {
 			sideMenu: {
 				left: {
 					enabled: true
+				},
+				right: {
+					enabled: true
 				}
 			}
 		};
