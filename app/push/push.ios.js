@@ -21,6 +21,10 @@ class PushNotification {
 		return this.deviceToken;
 	}
 
+	setBadgeCount = (count = 0) => {
+		NotificationsIOS.setBadgesCount(count);
+	}
+
 	configure(params) {
 		this.onRegister = params.onRegister;
 		this.onNotification = params.onNotification;

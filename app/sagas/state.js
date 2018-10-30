@@ -3,6 +3,7 @@ import { FOREGROUND, BACKGROUND, INACTIVE } from 'redux-enhancer-react-native-ap
 
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
+import { setBadgeCount } from '../push';
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	const appRoot = yield select(state => state.app.root);
@@ -14,6 +15,7 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 		return;
 	}
 	try {
+		setBadgeCount();
 		return yield RocketChat.setUserPresenceOnline();
 	} catch (e) {
 		log('appHasComeBackToForeground', e);

@@ -31,12 +31,13 @@ const onNotification = (notification) => {
 	}
 };
 
+const getDeviceToken = () => PushNotification.getDeviceToken();
+const setBadgeCount = count => PushNotification.setBadgeCount(count);
 const initializePushNotifications = () => {
 	PushNotification.configure({
 		onNotification
 	});
+	setBadgeCount();
 };
 
-const getDeviceToken = () => PushNotification.getDeviceToken();
-
-export { initializePushNotifications, getDeviceToken };
+export { initializePushNotifications, getDeviceToken, setBadgeCount };
