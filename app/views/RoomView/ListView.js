@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 
 import Separator from './Separator';
 import styles from './styles';
-import Typing from '../../containers/Typing';
 import database from '../../lib/realm';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import throttle from '../../utils/throttle';
@@ -79,7 +78,6 @@ export class List extends React.Component {
 				keyExtractor={item => item._id}
 				onEndReachedThreshold={100}
 				renderFooter={renderFooter}
-				renderHeader={() => <Typing />}
 				onEndReached={() => onEndReached(this.data[this.data.length - 1])}
 				dataSource={this.dataSource}
 				renderRow={(item, previousItem) => renderRow(item, previousItem)}
