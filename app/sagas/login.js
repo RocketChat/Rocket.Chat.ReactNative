@@ -48,11 +48,11 @@ const handleLoginSuccess = function* handleLoginSuccess() {
 		} else {
 			yield delay(300);
 			if (adding) {
+				yield put(serverFinishAdd());
 				yield Navigation.dismissAllModals();
 			} else {
 				yield put(appStart('inside'));
 			}
-			yield put(serverFinishAdd());
 		}
 	} catch (e) {
 		log('handleLoginSuccess', e);
