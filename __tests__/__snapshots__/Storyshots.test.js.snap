@@ -33,7 +33,6 @@ exports[`Storyshots Avatar avatar 1`] = `
           resizeMode="cover"
           source={
             Object {
-              "cache": "web",
               "priority": "high",
               "uri": "baseUrl/avatar/test?format=png&size=50",
             }
@@ -80,7 +79,6 @@ exports[`Storyshots Avatar avatar 1`] = `
           resizeMode="cover"
           source={
             Object {
-              "cache": "web",
               "priority": "high",
               "uri": "baseUrl/avatar/aa?format=png&size=50",
             }
@@ -127,7 +125,6 @@ exports[`Storyshots Avatar avatar 1`] = `
           resizeMode="cover"
           source={
             Object {
-              "cache": "web",
               "priority": "high",
               "uri": "baseUrl/avatar/bb?format=png&size=50",
             }
@@ -174,7 +171,6 @@ exports[`Storyshots Avatar avatar 1`] = `
           resizeMode="cover"
           source={
             Object {
-              "cache": "web",
               "priority": "high",
               "uri": "baseUrl/avatar/test?format=png&size=50",
             }
