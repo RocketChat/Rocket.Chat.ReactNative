@@ -125,20 +125,13 @@ export default class CreateChannelView extends LoggedView {
 					const msg = error.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_channel') });
 					showErrorAlert(msg);
 				} else {
-					const { rid, name } = result;
+					const { rid } = result;
 					await Navigation.dismissModal(componentId);
 					Navigation.push('RoomsListView', {
 						component: {
 							name: 'RoomView',
 							passProps: {
 								rid
-							},
-							options: {
-								topBar: {
-									title: {
-										text: name
-									}
-								}
 							}
 						}
 					});

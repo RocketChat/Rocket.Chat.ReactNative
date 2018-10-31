@@ -378,19 +378,12 @@ export default class RoomsListView extends LoggedView {
 		});
 	}
 
-	goRoom = (rid, name) => {
+	goRoom = (rid) => {
 		Navigation.push('RoomsListView', {
 			component: {
 				name: 'RoomView',
 				passProps: {
 					rid
-				},
-				options: {
-					topBar: {
-						title: {
-							text: name
-						}
-					}
 				}
 			}
 		});
@@ -399,8 +392,8 @@ export default class RoomsListView extends LoggedView {
 
 	_onPressItem = async(item = {}) => {
 		if (!item.search) {
-			const { rid, name } = item;
-			return this.goRoom(rid, name);
+			const { rid } = item;
+			return this.goRoom(rid);
 		}
 		if (item.t === 'd') {
 			// if user is using the search we need first to join/create room
@@ -408,13 +401,13 @@ export default class RoomsListView extends LoggedView {
 				const { username } = item;
 				const sub = await RocketChat.createDirectMessage(username);
 				const { rid } = sub;
-				return this.goRoom(rid, username);
+				return this.goRoom(rid);
 			} catch (e) {
 				log('RoomsListView._onPressItem', e);
 			}
 		} else {
-			const { rid, name } = item;
-			return this.goRoom(rid, name);
+			const { rid } = item;
+			return this.goRoom(rid);
 		}
 	}
 
