@@ -15,9 +15,9 @@ const RoomTypeIcon = ({ type, size, style }) => {
 	}
 
 	if (type === 'c') {
-		return <Image source={{ uri: 'subscription_hashtag' }} style={[styles.style, style, { width: size, height: size }]} />;
+		return <Image source={{ uri: 'hashtag' }} style={[styles.style, style, { width: size, height: size }]} />;
 	}
-	return <Image source={{ uri: 'subscription_lock' }} style={[styles.style, style, { width: size, height: size }]} />;
+	return <Image source={{ uri: 'lock' }} style={[styles.style, style, { width: size, height: size }]} />;
 };
 
 RoomTypeIcon.propTypes = {

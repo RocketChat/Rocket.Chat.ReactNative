@@ -1,0 +1,162 @@
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import {
+	View, Text, StyleSheet, Image, Platform, LayoutAnimation
+} from 'react-native';
+import { connect } from 'react-redux';
+import { responsive } from 'react-native-responsive-ui';
+import equal from 'deep-equal';
+
+import I18n from '../../../i18n';
+import { STATUS_COLORS } from '../../../constants/colors';
+
+const isIOS = () => Platform.OS === 'ios';
+const TITLE_SIZE = 18;
+const ICON_SIZE = 16;
+const styles = StyleSheet.create({
+	container: {
+		justifyContent: 'center',
+		backgroundColor: isIOS() ? 'transparent' : '#2F343D',
+		height: 44
+	},
+	titleContainer: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+	title: {
+		color: isIOS() ? '#0C0D0F' : '#fff',
+		fontSize: TITLE_SIZE,
+		fontWeight: '500'
+	},
+	type: {
+		width: ICON_SIZE,
+		height: ICON_SIZE,
+		marginRight: 5,
+		tintColor: isIOS() ? '#9EA2A8' : '#fff'
+	},
+	typing: {
+		color: isIOS() ? '#9EA2A8' : '#fff',
+		fontSize: 12
+	},
+	typingUsers: {
+		fontWeight: '600'
+	},
+	alignItemsFlexStart: {
+		alignItems: 'flex-start'
+	},
+	alignItemsCenter: {
+		alignItems: 'center'
+	}
+});
+
+@responsive
+@connect((state) => {
+	let status = '';
+	let title = '';
+	if (state.room.t === 'd') {
+		const { id: loggedUserId } = state.login.user;
+		const userId = state.room.rid.replace(loggedUserId, '').trim();
+		if (userId === loggedUserId) {
+			status = state.login.user.status; // eslint-disable-line
+		} else {
+			const user = state.activeUsers[userId];
+			status = (user && user.status) || 'offline';
+		}
+		title = state.settings.UI_Use_Real_Name ? state.room.fname : state.room.name;
+	} else {
+		title = state.room.name;
+	}
+
+	const { username } = state.login.user;
+	const { usersTyping } = state.room;
+	const otherUsersTyping = usersTyping.filter(_username => _username !== username);
+
+	return {
+		usersTyping: otherUsersTyping,
+		type: state.room.t,
+		title,
+		status
+	};
+})
+export default class RoomHeaderView extends PureComponent {
+	static propTypes = {
+		title: PropTypes.string,
+		type: PropTypes.string,
+		window: PropTypes.object,
+		usersTyping: PropTypes.array,
+		status: PropTypes.string
+	};
+
+	componentDidUpdate(prevProps) {
+		const { usersTyping } = this.props;
+		if (!equal(prevProps.usersTyping, usersTyping)) {
+			LayoutAnimation.easeInEaseOut();
+		}
+	}
+
+	get typing() {
+		const { usersTyping } = this.props;
+		let usersText;
+		if (!usersTyping.length) {
+			return null;
+		} else if (usersTyping.length === 2) {
+			usersText = usersTyping.join(` ${ I18n.t('and') } `);
+		} else {
+			usersText = usersTyping.join(', ');
+		}
+		return (
+			<Text style={styles.typing} numberOfLines={1}>
+				<Text style={styles.typingUsers}>{usersText} </Text>
+				{ usersTyping.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing') }
+			</Text>
+		);
+	}
+
+	render() {
+		const {
+			window, title, type, status, usersTyping
+		} = this.props;
+		const icon = {
+			d: 'mention',
+			c: 'hashtag'
+		}[type] || 'lock';
+		const portrait = window.height > window.width;
+		let height = 44;
+		let scale = 1;
+
+		if (!portrait) {
+			if (isIOS()) {
+				height = 32;
+			}
+			if (usersTyping.length > 0) {
+				scale = 0.8;
+			}
+		}
+
+		return (
+			<View
+				style={[
+					styles.container,
+					portrait ? styles.alignItemsFlexStart : styles.alignItemsCenter,
+					{ maxWidth: window.width - 150, height }
+				]}
+			>
+				<View style={styles.titleContainer}>
+					<Image
+						source={{ uri: icon }}
+						style={[
+							styles.type,
+							{
+								width: ICON_SIZE * scale,
+								height: ICON_SIZE * scale
+							},
+							type === 'd' && { tintColor: STATUS_COLORS[status] }
+						]}
+					/>
+					<Text style={[styles.title, { fontSize: TITLE_SIZE * scale }]} numberOfLines={1}>{title}</Text>
+				</View>
+				{this.typing}
+			</View>
+		);
+	}
+}
