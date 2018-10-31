@@ -51,6 +51,13 @@ export default class RoomView extends LoggedView {
 	static options() {
 		return {
 			topBar: {
+				animate: true,
+				title: {
+					component: {
+						name: 'RoomHeaderView',
+						alignment: 'fill'
+					}
+				},
 				rightButtons: [{
 					id: 'more',
 					testID: 'room-view-header-actions',
@@ -224,22 +231,14 @@ export default class RoomView extends LoggedView {
 	}
 
 	updateRoom = () => {
-		const { componentId, openRoom, setLastOpen } = this.props;
+		const { openRoom, setLastOpen } = this.props;
 
 		if (this.rooms.length > 0) {
 			const { room: prevRoom } = this.state;
 			const room = JSON.parse(JSON.stringify(this.rooms[0] || {}));
-			LayoutAnimation.easeInEaseOut();
 			this.internalSetState({ room });
 
 			if (!prevRoom.rid) {
-				Navigation.mergeOptions(componentId, {
-					topBar: {
-						title: {
-							text: room.name
-						}
-					}
-				});
 				openRoom({
 					...room
 				});

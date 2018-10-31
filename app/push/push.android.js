@@ -19,6 +19,8 @@ class PushNotification {
 		return this.deviceToken;
 	}
 
+	setBadgeCount = () => {}
+
 	configure(params) {
 		this.onRegister = params.onRegister;
 		this.onNotification = params.onNotification;
