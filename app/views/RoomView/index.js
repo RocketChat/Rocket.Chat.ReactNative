@@ -67,7 +67,8 @@ export default class RoomView extends LoggedView {
 					testID: 'room-view-header-star',
 					icon: iconsMap.starOutline
 				}]
-			}
+			},
+			blurOnUnmount: true
 		};
 	}
 
