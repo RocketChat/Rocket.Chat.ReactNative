@@ -79,10 +79,10 @@ export default class MessageBox extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			text: '',
 			mentions: [],
 			showEmojiKeyboard: false,
 			showFilesAction: false,
+			showSend: false,
 			recording: false,
 			file: {
 				isVisible: false
@@ -93,41 +93,37 @@ export default class MessageBox extends React.PureComponent {
 		this.emojis = [];
 		this.customEmojis = [];
 		this.onEmojiSelected = this.onEmojiSelected.bind(this);
+		this.text = '';
 	}
 
 	componentWillReceiveProps(nextProps) {
 		const { message, replyMessage } = this.props;
 		if (message !== nextProps.message && nextProps.message.msg) {
-			this.setState({ text: nextProps.message.msg });
+			this.setInput(nextProps.message.msg);
 			this.component.focus();
 		} else if (replyMessage !== nextProps.replyMessage && nextProps.replyMessage.msg) {
 			this.component.focus();
 		} else if (!nextProps.message) {
-			this.setState({ text: '' });
+			this.clearInput();
 		}
 	}
 
 	onChangeText(text) {
 		const { typing } = this.props;
 
-		this.setState({ text });
+		this.setInput(text);
 		typing(text.length > 0);
 
 		requestAnimationFrame(() => {
 			const { start, end } = this.component._lastNativeSelection;
-
 			const cursor = Math.max(start, end);
-
 			const lastNativeText = this.component._lastNativeText;
-
 			const regexp = /(#|@|:)([a-z0-9._-]+)$/im;
-
 			const result = lastNativeText.substr(0, cursor).match(regexp);
 			if (!result) {
 				return this.stopTrackingMention();
 			}
 			const [, lastChar, name] = result;
-
 			this.identifyMentionKeyword(name, lastChar);
 		});
 	}
@@ -138,28 +134,22 @@ export default class MessageBox extends React.PureComponent {
 
 	onPressMention(item) {
 		const { trackingType } = this.state;
-
-		const msg = this.component._lastNativeText;
-
+		const msg = this.text;
 		const { start, end } = this.component._lastNativeSelection;
-
 		const cursor = Math.max(start, end);
-
 		const regexp = /([a-z0-9._-]+)$/im;
-
 		const result = msg.substr(0, cursor).replace(regexp, '');
 		const mentionName = trackingType === MENTIONS_TRACKING_TYPE_EMOJIS
 			? `${ item.name || item }:`
 			: (item.username || item.name);
 		const text = `${ result }${ mentionName } ${ msg.slice(cursor) }`;
-		this.component.setNativeProps({ text });
-		this.setState({ text });
+		this.setInput(text);
 		this.component.focus();
 		requestAnimationFrame(() => this.stopTrackingMention());
 	}
 
 	onEmojiSelected(keyboardId, params) {
-		const { text } = this.state;
+		const { text } = this;
 		const { emoji } = params;
 		let newText = '';
 
@@ -172,8 +162,7 @@ export default class MessageBox extends React.PureComponent {
 			// if messagebox doesn't have a cursor, just append selected emoji
 			newText = `${ text }${ emoji }`;
 		}
-		this.component.setNativeProps({ text: newText });
-		this.setState({ text: newText });
+		this.setInput(newText);
 	}
 
 	get leftButtons() {
@@ -231,14 +220,14 @@ export default class MessageBox extends React.PureComponent {
 	}
 
 	get rightButtons() {
-		const { text } = this.state;
+		const { showSend } = this.state;
 		const icons = [];
 
-		if (text) {
+		if (showSend) {
 			icons.push(
 				<BorderlessButton
 					key='send-message'
-					onPress={() => this.submit(text)}
+					onPress={() => this.submit()}
 					style={styles.actionButton}
 					testID='messagebox-send-message'
 					accessibilityLabel={I18n.t('Send message')}
@@ -385,6 +374,16 @@ export default class MessageBox extends React.PureComponent {
 		}
 	}
 
+	setInput = (text) => {
+		this.text = text;
+		this.component.setNativeProps({ text });
+		this.setState({ showSend: text.length > 0 });
+	}
+
+	clearInput = () => {
+		this.setInput('');
+	}
+
 	toggleFilesActions = () => {
 		this.setState(prevState => ({ showFilesAction: !prevState.showFilesAction }));
 	}
@@ -433,7 +432,7 @@ export default class MessageBox extends React.PureComponent {
 	editCancel = () => {
 		const { editCancel } = this.props;
 		editCancel();
-		this.setState({ text: '' });
+		this.clearInput();
 	}
 
 	openEmoji = async() => {
@@ -469,12 +468,13 @@ export default class MessageBox extends React.PureComponent {
 		this.setState({ showEmojiKeyboard: false });
 	}
 
-	submit = async(message) => {
+	submit = async() => {
 		const {
 			typing, message: editingMessage, editRequest, onSubmit
 		} = this.props;
+		const message = this.text;
 
-		this.setState({ text: '' });
+		this.clearInput();
 		this.closeEmoji();
 		this.stopTrackingMention();
 		typing(false);
@@ -529,6 +529,11 @@ export default class MessageBox extends React.PureComponent {
 	}
 
 	stopTrackingMention() {
+		const { trackingType } = this.state;
+		if (!trackingType) {
+			return;
+		}
+
 		this.setState({
 			mentions: [],
 			trackingType: ''
@@ -651,7 +656,7 @@ export default class MessageBox extends React.PureComponent {
 	}
 
 	renderContent() {
-		const { recording, text } = this.state;
+		const { recording } = this.state;
 		const { editing } = this.props;
 
 		if (recording) {
@@ -675,7 +680,6 @@ export default class MessageBox extends React.PureComponent {
 							blurOnSubmit={false}
 							placeholder={I18n.t('New_Message')}
 							onChangeText={t => this.onChangeText(t)}
-							value={text}
 							underlineColorAndroid='transparent'
 							defaultValue=''
 							multiline
