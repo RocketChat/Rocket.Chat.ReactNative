@@ -53,27 +53,33 @@ const styles = StyleSheet.create({
 @connect((state) => {
 	let status = '';
 	let title = '';
-	if (state.room.t === 'd') {
-		const { id: loggedUserId } = state.login.user;
-		const userId = state.room.rid.replace(loggedUserId, '').trim();
-		if (userId === loggedUserId) {
-			status = state.login.user.status; // eslint-disable-line
-		} else {
-			const user = state.activeUsers[userId];
-			status = (user && user.status) || 'offline';
+	const roomType = state.room.t;
+	if (roomType === 'd') {
+		if (state.login.user && state.login.user.id) {
+			const { id: loggedUserId } = state.login.user;
+			const userId = state.room.rid.replace(loggedUserId, '').trim();
+			if (userId === loggedUserId) {
+				status = state.login.user.status; // eslint-disable-line
+			} else {
+				const user = state.activeUsers[userId];
+				status = (user && user.status) || 'offline';
+			}
 		}
 		title = state.settings.UI_Use_Real_Name ? state.room.fname : state.room.name;
 	} else {
 		title = state.room.name;
 	}
 
-	const { username } = state.login.user;
-	const { usersTyping } = state.room;
-	const otherUsersTyping = usersTyping.filter(_username => _username !== username);
+	let otherUsersTyping = [];
+	if (state.login.user && state.login.user.username) {
+		const { username } = state.login.user;
+		const { usersTyping } = state.room;
+		otherUsersTyping = usersTyping.filter(_username => _username !== username);
+	}
 
 	return {
 		usersTyping: otherUsersTyping,
-		type: state.room.t,
+		type: roomType,
 		title,
 		status
 	};
