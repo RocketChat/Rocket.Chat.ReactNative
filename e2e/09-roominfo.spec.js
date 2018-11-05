@@ -311,7 +311,7 @@ describe('Room info screen', () => {
 				await waitFor(element(by.text('Yes, delete it!'))).toBeVisible().withTimeout(5000);
 				await expect(element(by.text('Yes, delete it!'))).toBeVisible();
 				await element(by.text('Yes, delete it!')).tap();
-				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
+				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 				await element(by.id('rooms-list-view-search')).replaceText('');
 				await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible().withTimeout(60000);
 				await expect(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible();
