@@ -90,7 +90,8 @@ export default class RoomsListView extends LoggedView {
 				right: {
 					enabled: true
 				}
-			}
+			},
+			blurOnUnmount: true
 		};
 	}
 
@@ -379,6 +380,7 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	goRoom = (rid) => {
+		this.cancelSearchingAndroid();
 		Navigation.push('RoomsListView', {
 			component: {
 				name: 'RoomView',
@@ -387,7 +389,6 @@ export default class RoomsListView extends LoggedView {
 				}
 			}
 		});
-		this.cancelSearchingAndroid();
 	}
 
 	_onPressItem = async(item = {}) => {
