@@ -427,6 +427,9 @@ const RocketChat = {
 			log('SDK.connect catch', e);
 		});
 	},
+	connected() {
+		return SDK.driver.ddp && SDK.driver.ddp._logged;
+	},
 
 	register({ credentials }) {
 		return call('registerUser', credentials);
@@ -540,7 +543,7 @@ const RocketChat = {
 			message.status = messagesStatus.TEMP;
 			database.create('messages', message, true);
 		});
-		return _sendMessageCall(JSON.parse(JSON.stringify(message)));
+		return _sendMessageCall.call(this, JSON.parse(JSON.stringify(message)));
 	},
 
 	async search({ text, filterUsers = true, filterRooms = true }) {
