@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import I18n from '../i18n';
+import debounce from '../utils/debounce';
 
 const styles = StyleSheet.create({
 	container: {
@@ -49,62 +50,20 @@ class ConnectionBadge extends Component {
 	static propTypes = {
 		connecting: PropTypes.bool,
 		connected: PropTypes.bool,
-		disconnected: PropTypes.bool
+		disconnected: PropTypes.bool // eslint-disable-line
 	}
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			visible: false
-		};
 		this.animatedValue = new Animated.Value(0);
 	}
 
-	componentDidMount() {
-		const { connecting, disconnected } = this.props;
-		if (connecting || disconnected) {
-			this.animate(1);
-		}
-		this.timeout = setTimeout(() => {
-			const { connected } = this.props;
-			if (connected) {
-				this.timeout = setTimeout(() => {
-					this.animatedValue.stopAnimation();
-					this.animate(0);
-				}, 1000);
-			}
-		}, 1000);
+	componentDidUpdate() {
+		this.show();
 	}
 
-	componentDidUpdate(prevProps) {
-		const { visible } = this.state;
-		const { connecting, connected, disconnected } = this.props;
-
-		if ((connecting && connecting !== prevProps.connecting) || (disconnected && disconnected !== prevProps.disconnected)) {
-			if (!visible) {
-				this.animatedValue.stopAnimation();
-				this.animate(1);
-			}
-		} else if (connected && connected !== prevProps.connected) {
-			if (visible) {
-				if (this.timeout) {
-					clearTimeout(this.timeout);
-				}
-				this.timeout = setTimeout(() => {
-					this.animatedValue.stopAnimation();
-					this.animate(0);
-				}, 1000);
-			}
-		}
-	}
-
-	componentWillUnmount() {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-		}
-	}
-
-	animate = (toValue) => {
+	// eslint-disable-next-line react/sort-comp
+	animate = debounce((toValue) => {
 		Animated.timing(
 			this.animatedValue,
 			{
@@ -113,8 +72,17 @@ class ConnectionBadge extends Component {
 				easing: Easing.ease,
 				useNativeDriver: true
 			},
-		).start(() => this.setState({ visible: toValue === 1 }));
-	}
+		).start(() => {
+			if (toValue === 1) {
+				if (this.timeout) {
+					clearTimeout(this.timeout);
+				}
+				this.timeout = setTimeout(() => {
+					this.hide();
+				}, 1000);
+			}
+		});
+	}, 300);
 
 	show = () => {
 		this.animate(1);
