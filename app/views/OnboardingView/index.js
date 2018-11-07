@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import { selectServerRequest, serverInitAdd, serverFinishAdd } from '../../actions/server';
 import I18n from '../../i18n';
@@ -17,6 +18,7 @@ import LoggedView from '../View';
 import DeviceInfo from '../../utils/deviceInfo';
 import store from '../../lib/createStore';
 import EventEmitter from '../../utils/events';
+import { LIGHT_HEADER } from '../../constants/headerOptions';
 
 let NewServerView = null;
 
@@ -32,6 +34,7 @@ let NewServerView = null;
 export default class OnboardingView extends LoggedView {
 	static options() {
 		return {
+			...LIGHT_HEADER,
 			topBar: {
 				visible: false,
 				drawBehind: true
@@ -82,7 +85,7 @@ export default class OnboardingView extends LoggedView {
 	newServer = (server) => {
 		if (NewServerView == null) {
 			NewServerView = require('../NewServerView').default;
-			Navigation.registerComponentWithRedux('NewServerView', () => NewServerView, Provider, store);
+			Navigation.registerComponentWithRedux('NewServerView', () => gestureHandlerRootHOC(NewServerView), Provider, store);
 		}
 
 		const { componentId } = this.props;

@@ -7,6 +7,7 @@ import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import { Answers } from 'react-native-fabric';
 import SafeAreaView from 'react-native-safe-area-view';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import RocketChat from '../lib/rocketchat';
 import KeyboardView from '../presentation/KeyboardView';
@@ -20,6 +21,7 @@ import { COLOR_BUTTON_PRIMARY } from '../constants/colors';
 import LoggedView from './View';
 import I18n from '../i18n';
 import store from '../lib/createStore';
+import { DARK_HEADER } from '../constants/headerOptions';
 
 let RegisterView = null;
 let ForgotPasswordView = null;
@@ -35,6 +37,12 @@ let ForgotPasswordView = null;
 }))
 /** @extends React.Component */
 export default class LoginView extends LoggedView {
+	static options() {
+		return {
+			...DARK_HEADER
+		};
+	}
+
 	static propTypes = {
 		componentId: PropTypes.string,
 		loginSubmit: PropTypes.func.isRequired,
@@ -77,7 +85,7 @@ export default class LoginView extends LoggedView {
 	register = () => {
 		if (RegisterView == null) {
 			RegisterView = require('./RegisterView').default;
-			Navigation.registerComponentWithRedux('RegisterView', () => RegisterView, Provider, store);
+			Navigation.registerComponentWithRedux('RegisterView', () => gestureHandlerRootHOC(RegisterView), Provider, store);
 		}
 
 		const { componentId, server } = this.props;
@@ -98,7 +106,7 @@ export default class LoginView extends LoggedView {
 	forgotPassword = () => {
 		if (ForgotPasswordView == null) {
 			ForgotPasswordView = require('./ForgotPasswordView').default;
-			Navigation.registerComponentWithRedux('ForgotPasswordView', () => ForgotPasswordView, Provider, store);
+			Navigation.registerComponentWithRedux('ForgotPasswordView', () => gestureHandlerRootHOC(ForgotPasswordView), Provider, store);
 		}
 
 		const { componentId } = this.props;

@@ -15,6 +15,7 @@ import styles from './Styles';
 import { showErrorAlert } from '../utils/info';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
+import { DARK_HEADER } from '../constants/headerOptions';
 
 @connect(state => ({
 	login: state.login
@@ -24,6 +25,12 @@ import I18n from '../i18n';
 }))
 /** @extends React.Component */
 export default class ForgotPasswordView extends LoggedView {
+	static options() {
+		return {
+			...DARK_HEADER
+		};
+	}
+
 	static propTypes = {
 		componentId: PropTypes.string,
 		forgotPasswordInit: PropTypes.func.isRequired,

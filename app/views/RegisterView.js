@@ -6,6 +6,7 @@ import {
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import { registerSubmit as registerSubmitAction, setUsernameSubmit as setUsernameSubmitAction } from '../actions/login';
 import TextInput from '../containers/TextInput';
@@ -18,6 +19,7 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import LoggedView from './View';
 import I18n from '../i18n';
 import store from '../lib/createStore';
+import { DARK_HEADER } from '../constants/headerOptions';
 
 let TermsServiceView = null;
 let PrivacyPolicyView = null;
@@ -35,6 +37,12 @@ let PrivacyPolicyView = null;
 }))
 /** @extends React.Component */
 export default class RegisterView extends LoggedView {
+	static options() {
+		return {
+			...DARK_HEADER
+		};
+	}
+
 	static propTypes = {
 		componentId: PropTypes.string,
 		server: PropTypes.string,
@@ -105,7 +113,7 @@ export default class RegisterView extends LoggedView {
 	termsService = () => {
 		if (TermsServiceView == null) {
 			TermsServiceView = require('./TermsServiceView').default;
-			Navigation.registerComponentWithRedux('TermsServiceView', () => TermsServiceView, Provider, store);
+			Navigation.registerComponentWithRedux('TermsServiceView', () => gestureHandlerRootHOC(TermsServiceView), Provider, store);
 		}
 
 		const { componentId } = this.props;
@@ -126,7 +134,7 @@ export default class RegisterView extends LoggedView {
 	privacyPolicy = () => {
 		if (PrivacyPolicyView == null) {
 			PrivacyPolicyView = require('./PrivacyPolicyView').default;
-			Navigation.registerComponentWithRedux('PrivacyPolicyView', () => PrivacyPolicyView, Provider, store);
+			Navigation.registerComponentWithRedux('PrivacyPolicyView', () => gestureHandlerRootHOC(PrivacyPolicyView), Provider, store);
 		}
 
 		const { componentId } = this.props;

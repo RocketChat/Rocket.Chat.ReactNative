@@ -6,12 +6,19 @@ import SafeAreaView from 'react-native-safe-area-view';
 
 import styles from './Styles';
 import LoggedView from './View';
+import { DARK_HEADER } from '../constants/headerOptions';
 
 @connect(state => ({
 	privacyPolicy: state.settings.Layout_Privacy_Policy
 }))
 /** @extends React.Component */
 export default class PrivacyPolicyView extends LoggedView {
+	static options() {
+		return {
+			...DARK_HEADER
+		};
+	}
+
 	static propTypes = {
 		privacyPolicy: PropTypes.string
 	}

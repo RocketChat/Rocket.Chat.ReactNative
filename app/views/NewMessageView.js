@@ -6,6 +6,7 @@ import {
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
@@ -17,6 +18,7 @@ import I18n from '../i18n';
 import Touch from '../utils/touch';
 import SearchBox from '../containers/SearchBox';
 import store from '../lib/createStore';
+import { DEFAULT_HEADER } from '../constants/headerOptions';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -55,7 +57,9 @@ let SelectedUsersView = null;
 export default class NewMessageView extends LoggedView {
 	static options() {
 		return {
+			...DEFAULT_HEADER,
 			topBar: {
+				...DEFAULT_HEADER.topBar,
 				leftButtons: [{
 					id: 'cancel',
 					icon: Platform.OS === 'android' ? { uri: 'back', scale: Dimensions.get('window').scale } : undefined,
@@ -124,7 +128,7 @@ export default class NewMessageView extends LoggedView {
 	createChannel = () => {
 		if (SelectedUsersView == null) {
 			SelectedUsersView = require('./SelectedUsersView').default;
-			Navigation.registerComponentWithRedux('SelectedUsersView', () => SelectedUsersView, Provider, store);
+			Navigation.registerComponentWithRedux('SelectedUsersView', () => gestureHandlerRootHOC(SelectedUsersView), Provider, store);
 		}
 
 		const { componentId } = this.props;

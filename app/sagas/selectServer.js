@@ -2,6 +2,7 @@ import { put, call, takeLatest } from 'redux-saga/effects';
 import { AsyncStorage } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { Provider } from 'react-redux';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import { SERVER } from '../actions/actionsTypes';
 import * as actions from '../actions';
@@ -49,7 +50,7 @@ const handleServerRequest = function* handleServerRequest({ server }) {
 	try {
 		if (LoginSignupView == null) {
 			LoginSignupView = require('../views/LoginSignupView').default;
-			Navigation.registerComponentWithRedux('LoginSignupView', () => LoginSignupView, Provider, store);
+			Navigation.registerComponentWithRedux('LoginSignupView', () => gestureHandlerRootHOC(LoginSignupView), Provider, store);
 		}
 
 		yield call(validate, server);

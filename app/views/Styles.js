@@ -216,5 +216,61 @@ export default StyleSheet.create({
 		borderColor: COLOR_SEPARATOR,
 		borderTopWidth: StyleSheet.hairlineWidth,
 		borderBottomWidth: StyleSheet.hairlineWidth
+	},
+	textRegular: {
+		backgroundColor: 'transparent',
+		...Platform.select({
+			ios: {
+				fontFamily: 'System',
+				fontWeight: '400'
+			},
+			android: {
+				includeFontPadding: false,
+				fontFamily: 'sans-serif',
+				fontWeight: 'normal'
+			}
+		})
+	},
+	textMedium: {
+		backgroundColor: 'transparent',
+		...Platform.select({
+			ios: {
+				fontFamily: 'System',
+				fontWeight: '500'
+			},
+			android: {
+				includeFontPadding: false,
+				fontFamily: 'sans-serif-medium',
+				fontWeight: 'normal'
+			}
+		})
+	},
+	textSemibold: {
+		backgroundColor: 'transparent',
+		...Platform.select({
+			ios: {
+				fontFamily: 'System',
+				fontWeight: '600'
+			},
+			android: {
+				includeFontPadding: false,
+				fontFamily: 'sans-serif',
+				fontWeight: 'bold'
+			}
+		})
+	},
+	textBold: {
+		backgroundColor: 'transparent',
+		...Platform.select({
+			ios: {
+				fontFamily: 'System',
+				fontWeight: '700'
+			},
+			android: {
+				includeFontPadding: false,
+				fontFamily: 'sans-serif',
+				fontWeight: 'bold'
+			}
+		})
 	}
 });

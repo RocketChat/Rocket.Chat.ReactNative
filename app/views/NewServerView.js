@@ -15,9 +15,10 @@ import Button from '../containers/Button';
 import TextInput from '../containers/TextInput';
 import LoggedView from './View';
 import I18n from '../i18n';
-import { scale, verticalScale, moderateScale } from '../utils/scaling';
+import { verticalScale, moderateScale } from '../utils/scaling';
 import KeyboardView from '../presentation/KeyboardView';
 import DeviceInfo from '../utils/deviceInfo';
+import { LIGHT_HEADER } from '../constants/headerOptions';
 
 const styles = StyleSheet.create({
 	image: {
@@ -27,23 +28,25 @@ const styles = StyleSheet.create({
 		height: 171
 	},
 	title: {
-		alignSelf: 'center',
-		color: '#2F343D',
+		...sharedStyles.textBold,
 		fontSize: moderateScale(22),
-		fontWeight: 'bold',
-		height: verticalScale(28),
-		lineHeight: verticalScale(28)
+		letterSpacing: 0,
+		color: '#2F343D',
+		alignSelf: 'center'
 	},
 	inputContainer: {
-		marginTop: scale(20),
-		marginBottom: scale(20)
+		marginTop: 25,
+		marginBottom: 15
 	},
 	input: {
-		color: '#9EA2A8',
+		...sharedStyles.textRegular,
 		fontSize: 17,
+		letterSpacing: 0,
+		color: '#9EA2A8',
 		paddingTop: 14,
 		paddingBottom: 14,
-		paddingHorizontal: 16
+		paddingLeft: 16,
+		paddingRight: 16
 	},
 	backButton: {
 		position: 'absolute',
@@ -64,6 +67,7 @@ const defaultServer = 'https://open.rocket.chat';
 export default class NewServerView extends LoggedView {
 	static options() {
 		return {
+			...LIGHT_HEADER,
 			topBar: {
 				visible: false,
 				drawBehind: true

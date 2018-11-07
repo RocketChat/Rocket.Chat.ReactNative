@@ -6,6 +6,7 @@ import {
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import {
 	addUser as addUserAction, removeUser as removeUserAction, reset as resetAction, setLoading as setLoadingAction
@@ -21,6 +22,7 @@ import log from '../utils/log';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
 import store from '../lib/createStore';
+import { DEFAULT_HEADER } from '../constants/headerOptions';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -49,6 +51,12 @@ let CreateChannelView = null;
 }))
 /** @extends React.Component */
 export default class SelectedUsersView extends LoggedView {
+	static options() {
+		return {
+			...DEFAULT_HEADER
+		};
+	}
+
 	static propTypes = {
 		componentId: PropTypes.string,
 		rid: PropTypes.string,
@@ -112,19 +120,12 @@ export default class SelectedUsersView extends LoggedView {
 
 				if (CreateChannelView == null) {
 					CreateChannelView = require('./CreateChannelView').default;
-					Navigation.registerComponentWithRedux('CreateChannelView', () => CreateChannelView, Provider, store);
+					Navigation.registerComponentWithRedux('CreateChannelView', () => gestureHandlerRootHOC(CreateChannelView), Provider, store);
 				}
 
 				Navigation.push(componentId, {
 					component: {
-						name: 'CreateChannelView',
-						options: {
-							topBar: {
-								title: {
-									text: I18n.t('Create_Channel')
-								}
-							}
-						}
+						name: 'CreateChannelView'
 					}
 				});
 			} else {

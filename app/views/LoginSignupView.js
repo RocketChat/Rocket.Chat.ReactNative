@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Base64 } from 'js-base64';
 import SafeAreaView from 'react-native-safe-area-view';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import { open as openAction, close as closeAction } from '../actions/login';
 import LoggedView from './View';
@@ -19,6 +20,7 @@ import Button from '../containers/Button';
 import Loading from '../containers/Loading';
 import I18n from '../i18n';
 import store from '../lib/createStore';
+import { DARK_HEADER } from '../constants/headerOptions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -71,6 +73,12 @@ let RegisterView = null;
 }))
 /** @extends React.Component */
 export default class LoginSignupView extends LoggedView {
+	static options() {
+		return {
+			...DARK_HEADER
+		};
+	}
+
 	static propTypes = {
 		componentId: PropTypes.string,
 		open: PropTypes.func.isRequired,
@@ -190,7 +198,7 @@ export default class LoginSignupView extends LoggedView {
 	openOAuth = (oAuthUrl) => {
 		if (OAuthView == null) {
 			OAuthView = require('./OAuthView').default;
-			Navigation.registerComponentWithRedux('OAuthView', () => OAuthView, Provider, store);
+			Navigation.registerComponentWithRedux('OAuthView', () => gestureHandlerRootHOC(OAuthView), Provider, store);
 		}
 
 		Navigation.showModal({
@@ -217,7 +225,7 @@ export default class LoginSignupView extends LoggedView {
 	login = () => {
 		if (LoginView == null) {
 			LoginView = require('./LoginView').default;
-			Navigation.registerComponentWithRedux('LoginView', () => LoginView, Provider, store);
+			Navigation.registerComponentWithRedux('LoginView', () => gestureHandlerRootHOC(LoginView), Provider, store);
 		}
 
 		const { componentId, server } = this.props;
@@ -238,7 +246,7 @@ export default class LoginSignupView extends LoggedView {
 	register = () => {
 		if (RegisterView == null) {
 			RegisterView = require('./RegisterView').default;
-			Navigation.registerComponentWithRedux('RegisterView', () => RegisterView, Provider, store);
+			Navigation.registerComponentWithRedux('RegisterView', () => gestureHandlerRootHOC(RegisterView), Provider, store);
 		}
 
 		const { componentId, server } = this.props;

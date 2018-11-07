@@ -10,6 +10,7 @@ import styles from './styles';
 import Message from '../../containers/message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
+import { DEFAULT_HEADER } from '../../constants/headerOptions';
 
 @connect(state => ({
 	messages: state.snippetedMessages.messages,
@@ -27,8 +28,11 @@ import I18n from '../../i18n';
 export default class SnippetedMessagesView extends LoggedView {
 	static options() {
 		return {
+			...DEFAULT_HEADER,
 			topBar: {
+				...DEFAULT_HEADER.topBar,
 				title: {
+					...DEFAULT_HEADER.topBar.title,
 					text: I18n.t('Snippets')
 				}
 			}

@@ -6,12 +6,19 @@ import SafeAreaView from 'react-native-safe-area-view';
 
 import styles from './Styles';
 import LoggedView from './View';
+import { DARK_HEADER } from '../constants/headerOptions';
 
 @connect(state => ({
 	termsService: state.settings.Layout_Terms_of_Service
 }))
 /** @extends React.Component */
 export default class TermsServiceView extends LoggedView {
+	static options() {
+		return {
+			...DARK_HEADER
+		};
+	}
+
 	static propTypes = {
 		termsService: PropTypes.string
 	}
