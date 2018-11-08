@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import { StyleSheet, Text, ActivityIndicator } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
-import { COLOR_BUTTON_PRIMARY, COLOR_TEXT } from '../../constants/colors';
+import { COLOR_BUTTON_PRIMARY } from '../../constants/colors';
+import sharedStyles from '../../views/Styles';
 
 const colors = {
 	background_primary: COLOR_BUTTON_PRIMARY,
 	background_secondary: 'white',
 
 	text_color_primary: 'white',
-	text_color_secondary: COLOR_TEXT
+	text_color_secondary: COLOR_BUTTON_PRIMARY
 };
 
 /* eslint-disable react-native/no-unused-styles */
@@ -33,10 +34,12 @@ const styles = StyleSheet.create({
 	background_secondary: {
 		backgroundColor: colors.background_secondary
 	},
-	text_color_primary: {
+	text_primary: {
+		...sharedStyles.textMedium,
 		color: colors.text_color_primary
 	},
-	text_color_secondary: {
+	text_secondary: {
+		...sharedStyles.textBold,
 		color: colors.text_color_secondary
 	},
 	disabled: {
@@ -81,7 +84,7 @@ export default class Button extends React.PureComponent {
 				{
 					loading
 						? <ActivityIndicator color={colors[`text_color_${ type }`]} />
-						: <Text style={[styles.text, styles[`text_color_${ type }`]]}>{title}</Text>
+						: <Text style={[styles.text, styles[`text_${ type }`]]}>{title}</Text>
 				}
 			</RectButton>
 		);

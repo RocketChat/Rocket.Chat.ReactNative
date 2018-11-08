@@ -181,7 +181,6 @@ export default class NewServerView extends LoggedView {
 						<TextInput
 							inputRef={e => this.input = e}
 							containerStyle={styles.inputContainer}
-							inputStyle={styles.input}
 							placeholder={defaultServer}
 							value={text}
 							returnKeyType='done'

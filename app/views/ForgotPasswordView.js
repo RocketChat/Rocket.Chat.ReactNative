@@ -50,6 +50,10 @@ export default class ForgotPasswordView extends LoggedView {
 	componentDidMount() {
 		const { forgotPasswordInit } = this.props;
 		forgotPasswordInit();
+
+		setTimeout(() => {
+			this.emailInput.focus();
+		}, 600);
 	}
 
 	componentDidUpdate() {
@@ -94,6 +98,7 @@ export default class ForgotPasswordView extends LoggedView {
 					<SafeAreaView style={styles.container} testID='forgot-password-view' forceInset={{ bottom: 'never' }}>
 						<View>
 							<TextInput
+								inputRef={(e) => { this.emailInput = e; }}
 								inputStyle={invalidEmail ? { borderColor: 'red' } : {}}
 								label={I18n.t('Email')}
 								placeholder={I18n.t('Email')}

@@ -388,7 +388,7 @@ export default class LoginSignupView extends LoggedView {
 						/>
 						{this.renderServices()}
 					</View>
-					<Loading visible={isFetching} />
+					{/* <Loading visible={isFetching} /> */}
 				</SafeAreaView>
 			</ScrollView>
 		);

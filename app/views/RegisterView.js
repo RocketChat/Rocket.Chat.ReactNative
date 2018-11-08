@@ -67,6 +67,12 @@ export default class RegisterView extends LoggedView {
 		};
 	}
 
+	componentDidMount() {
+		setTimeout(() => {
+			this.nameInput.focus();
+		}, 600);
+	}
+
 	valid = () => {
 		const {
 			name, email, password, confirmPassword
@@ -164,40 +170,40 @@ export default class RegisterView extends LoggedView {
 		return (
 			<View>
 				<TextInput
-					inputRef={(e) => { this.name = e; }}
+					inputRef={(e) => { this.nameInput = e; }}
 					label={Accounts_NamePlaceholder || I18n.t('Name')}
 					placeholder={Accounts_NamePlaceholder || I18n.t('Name')}
 					returnKeyType='next'
-					iconLeft='account'
+					iconLeft='user'
 					onChangeText={name => this.setState({ name })}
-					onSubmitEditing={() => { this.email.focus(); }}
+					onSubmitEditing={() => { this.emailInput.focus(); }}
 					testID='register-view-name'
 				/>
 				<TextInput
-					inputRef={(e) => { this.email = e; }}
+					inputRef={(e) => { this.emailInput = e; }}
 					label={Accounts_EmailOrUsernamePlaceholder || I18n.t('Email')}
 					placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Email')}
 					returnKeyType='next'
 					keyboardType='email-address'
-					iconLeft='email'
+					iconLeft='mail'
 					onChangeText={email => this.setState({ email })}
-					onSubmitEditing={() => { this.password.focus(); }}
+					onSubmitEditing={() => { this.passwordInput.focus(); }}
 					error={this.invalidEmail()}
 					testID='register-view-email'
 				/>
 				<TextInput
-					inputRef={(e) => { this.password = e; }}
+					inputRef={(e) => { this.passwordInput = e; }}
 					label={Accounts_PasswordPlaceholder || I18n.t('Password')}
 					placeholder={Accounts_PasswordPlaceholder || I18n.t('Password')}
 					returnKeyType='next'
-					iconLeft='key-variant'
+					iconLeft='key'
 					secureTextEntry
 					onChangeText={value => this.setState({ password: value })}
-					onSubmitEditing={() => { this.confirmPassword.focus(); }}
+					onSubmitEditing={() => { this.confirmPasswordInput.focus(); }}
 					testID='register-view-password'
 				/>
 				<TextInput
-					inputRef={(e) => { this.confirmPassword = e; }}
+					inputRef={(e) => { this.confirmPasswordInput = e; }}
 					inputStyle={
 						password
 						&& confirmPassword
@@ -206,7 +212,7 @@ export default class RegisterView extends LoggedView {
 					label={Accounts_RepeatPasswordPlaceholder || I18n.t('Repeat_Password')}
 					placeholder={Accounts_RepeatPasswordPlaceholder || I18n.t('Repeat_Password')}
 					returnKeyType='done'
-					iconLeft='key-variant'
+					iconLeft='key'
 					secureTextEntry
 					onChangeText={value => this.setState({ confirmPassword: value })}
 					onSubmitEditing={this.submit}

@@ -184,14 +184,16 @@ export default StyleSheet.create({
 	opacity5: {
 		opacity: 0.5
 	},
-
-	loginText: {
-		fontWeight: '700',
-		color: COLOR_TEXT
-	},
 	loginTitle: {
 		fontSize: 20,
-		marginBottom: 20
+		marginVertical: 15,
+		color: '#2f343d',
+		lineHeight: 28
+	},
+	loginSubtitle: {
+		fontSize: 16,
+		color: '#54585e',
+		lineHeight: 20
 	},
 	headerButton: {
 		backgroundColor: 'transparent',

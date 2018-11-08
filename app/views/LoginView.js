@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Keyboard, Text, ScrollView, View
+	Keyboard, Text, ScrollView, View, StyleSheet, Alert, LayoutAnimation
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
@@ -13,11 +13,9 @@ import RocketChat from '../lib/rocketchat';
 import KeyboardView from '../presentation/KeyboardView';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
-import Loading from '../containers/Loading';
-import styles from './Styles';
+import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { showToast } from '../utils/info';
-import { COLOR_BUTTON_PRIMARY } from '../constants/colors';
 import LoggedView from './View';
 import I18n from '../i18n';
 import store from '../lib/createStore';
@@ -25,6 +23,35 @@ import { DARK_HEADER } from '../constants/headerOptions';
 
 let RegisterView = null;
 let ForgotPasswordView = null;
+
+const styles = StyleSheet.create({
+	buttonsContainer: {
+		flexDirection: 'column',
+		marginTop: 5
+	},
+	bottomContainer: {
+		flexDirection: 'column',
+		alignItems: 'center',
+		marginTop: 10
+	},
+	dontHaveAccount: {
+		...sharedStyles.textRegular,
+		color: '#9ea2a8',
+		fontSize: 13
+	},
+	createAccount: {
+		...sharedStyles.textSemibold,
+		color: '#1d74f5',
+		fontSize: 13
+	},
+	loginTitle: {
+		marginVertical: 0,
+		marginTop: 15
+	},
+	loginSubtitle: {
+		marginBottom: 15
+	}
+});
 
 @connect(state => ({
 	server: state.server.server,
@@ -48,7 +75,7 @@ export default class LoginView extends LoggedView {
 		loginSubmit: PropTypes.func.isRequired,
 		login: PropTypes.object,
 		server: PropTypes.string,
-		error: PropTypes.string,
+		error: PropTypes.any,
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
 		Accounts_PasswordPlaceholder: PropTypes.string,
 		failure: PropTypes.bool,
@@ -60,8 +87,16 @@ export default class LoginView extends LoggedView {
 		super('LoginView', props);
 		this.state = {
 			username: '',
-			password: ''
+			password: '',
+			code: '',
+			showTOTP: false
 		};
+	}
+
+	componentDidMount() {
+		setTimeout(() => {
+			this.usernameInput.focus();
+		}, 600);
 	}
 
 	submit = async() => {
@@ -77,8 +112,18 @@ export default class LoginView extends LoggedView {
 		try {
 			await loginSubmit({ username, password, code });
 			Answers.logLogin('Email', true);
-		} catch (error) {
-			console.warn('LoginView submit', error);
+		} catch (e) {
+			if (e && e.error === 'totp-required') {
+				LayoutAnimation.easeInEaseOut();
+				this.setState({ showTOTP: true });
+				setTimeout(() => {
+					if (this.codeInput && this.codeInput.focus) {
+						this.codeInput.focus();
+					}
+				}, 300);
+				return;
+			}
+			Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
 		}
 	}
 
@@ -125,89 +170,101 @@ export default class LoginView extends LoggedView {
 	}
 
 	renderTOTP = () => {
-		const { error } = this.props;
-		if (/totp/ig.test(error)) {
-			return (
+		const { isFetching } = this.props;
+		return (
+			<SafeAreaView style={sharedStyles.container} testID='login-view' forceInset={{ bottom: 'never' }}>
+				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle]}>{I18n.t('Two_Factor_Authentication')}</Text>
+				<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular, styles.loginSubtitle]}>{I18n.t('Whats_your_2fa')}</Text>
 				<TextInput
 					inputRef={ref => this.codeInput = ref}
-					label={I18n.t('Code')}
 					onChangeText={code => this.setState({ code })}
-					placeholder={I18n.t('Code')}
 					keyboardType='numeric'
 					returnKeyType='done'
 					autoCapitalize='none'
 					onSubmitEditing={this.submit}
 				/>
-			);
-		}
-		return null;
+				<View style={styles.buttonsContainer}>
+					<Button
+						title={I18n.t('Confirm')}
+						type='primary'
+						onPress={this.submit}
+						testID='login-view-submit'
+						loading={isFetching}
+					/>
+				</View>
+			</SafeAreaView>
+		);
+	}
+
+	renderUserForm = () => {
+		const {
+			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, isFetching
+		} = this.props;
+		return (
+			<SafeAreaView style={sharedStyles.container} testID='login-view' forceInset={{ bottom: 'never' }}>
+				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Login')}</Text>
+				<TextInput
+					inputRef={(e) => { this.usernameInput = e; }}
+					placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username_or_email')}
+					keyboardType='email-address'
+					returnKeyType='next'
+					iconLeft='mention'
+					onChangeText={username => this.setState({ username })}
+					onSubmitEditing={() => { this.passwordInput.focus(); }}
+					testID='login-view-email'
+				/>
+				<TextInput
+					inputRef={(e) => { this.passwordInput = e; }}
+					placeholder={Accounts_PasswordPlaceholder || I18n.t('Password')}
+					returnKeyType='done'
+					iconLeft='key'
+					secureTextEntry
+					onSubmitEditing={this.submit}
+					onChangeText={password => this.setState({ password })}
+					testID='login-view-password'
+				/>
+				<View style={styles.buttonsContainer}>
+					<Button
+						title={I18n.t('Login')}
+						type='primary'
+						onPress={this.submit}
+						testID='login-view-submit'
+						loading={isFetching}
+					/>
+					<Button
+						title={I18n.t('Forgot_password')}
+						type='secondary'
+						onPress={this.forgotPassword}
+						testID='welcome-view-register'
+					/>
+				</View>
+				<View style={styles.bottomContainer}>
+					<Text
+						style={styles.dontHaveAccount}
+						testID='login-view-register'
+					>{I18n.t('Dont_Have_An_Account')}
+					</Text>
+					<Text
+						style={styles.createAccount}
+						onPress={this.register}
+					>{I18n.t('Create_account')}
+					</Text>
+				</View>
+			</SafeAreaView>
+		);
 	}
 
 	render() {
-		const {
-			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, failure, reason, isFetching
-		} = this.props;
-
+		const { showTOTP } = this.state;
 		return (
 			<KeyboardView
-				contentContainerStyle={styles.container}
+				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 				key='login-view'
 			>
-				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
-					<SafeAreaView style={styles.container} testID='login-view' forceInset={{ bottom: 'never' }}>
-						<Text style={[styles.loginText, styles.loginTitle]}>Login</Text>
-						<TextInput
-							label={I18n.t('Username')}
-							placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username')}
-							keyboardType='email-address'
-							returnKeyType='next'
-							iconLeft='at'
-							onChangeText={username => this.setState({ username })}
-							onSubmitEditing={() => { this.password.focus(); }}
-							testID='login-view-email'
-						/>
-
-						<TextInput
-							inputRef={(e) => { this.password = e; }}
-							label={I18n.t('Password')}
-							placeholder={Accounts_PasswordPlaceholder || I18n.t('Password')}
-							returnKeyType='done'
-							iconLeft='key-variant'
-							secureTextEntry
-							onSubmitEditing={this.submit}
-							onChangeText={password => this.setState({ password })}
-							testID='login-view-password'
-						/>
-
-						{this.renderTOTP()}
-
-						<View style={styles.alignItemsFlexStart}>
-							<Button
-								title={I18n.t('Login')}
-								type='primary'
-								onPress={this.submit}
-								testID='login-view-submit'
-							/>
-							<Text
-								style={[styles.loginText, { marginTop: 10 }]}
-								testID='login-view-register'
-								onPress={() => this.register()}
-							>{I18n.t('New_in_RocketChat_question_mark')} &nbsp;
-								<Text style={{ color: COLOR_BUTTON_PRIMARY }}>{I18n.t('Sign_Up')}
-								</Text>
-							</Text>
-							<Text
-								style={[styles.loginText, { marginTop: 20, fontSize: 13 }]}
-								onPress={() => this.forgotPassword()}
-								testID='login-view-forgot-password'
-							>{I18n.t('Forgot_password')}
-							</Text>
-						</View>
-
-						{failure ? <Text style={styles.error}>{reason}</Text> : null}
-						<Loading visible={isFetching} />
-					</SafeAreaView>
+				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
+					{!showTOTP ? this.renderUserForm() : null}
+					{showTOTP ? this.renderTOTP() : null}
 				</ScrollView>
 			</KeyboardView>
 		);
