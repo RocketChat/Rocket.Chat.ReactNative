@@ -133,6 +133,7 @@ export default {
 	Connect_to_a_server: 'Conectar a um servidor',
 	Connected: 'Conectado',
 	Connecting: 'Conectando...',
+	Continue_with: 'Entrar com',
 	Copied_to_clipboard: 'Copiado para a área de transferência!',
 	Copy_Message: 'Copiar Mensagem',
 	Copy_Permalink: 'Copiar Link-Permanente',

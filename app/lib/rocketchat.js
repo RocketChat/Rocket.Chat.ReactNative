@@ -362,27 +362,27 @@ const RocketChat = {
 				}
 			}));
 
-			SDK.driver.on('meteor_accounts_loginServiceConfiguration', (error, ddpMessage) => {
-				if (ddpMessage.msg === 'added') {
-					this.loginServices = this.loginServices || {};
-					if (this.loginServiceTimer) {
-						clearTimeout(this.loginServiceTimer);
-						this.loginServiceTimer = null;
-					}
-					this.loginServiceTimer = setTimeout(() => {
-						reduxStore.dispatch(setLoginServices(this.loginServices));
-						this.loginServiceTimer = null;
-						return this.loginServices = {};
-					}, 1000);
-					this.loginServices[ddpMessage.fields.service] = { ...ddpMessage.fields };
-					delete this.loginServices[ddpMessage.fields.service].service;
-				} else if (ddpMessage.msg === 'removed') {
-					if (this.loginServiceTimer) {
-						clearTimeout(this.loginServiceTimer);
-					}
-					this.loginServiceTimer = setTimeout(() => reduxStore.dispatch(removeLoginServices()), 1000);
-				}
-			});
+			// SDK.driver.on('meteor_accounts_loginServiceConfiguration', (error, ddpMessage) => {
+			// 	if (ddpMessage.msg === 'added') {
+			// 		this.loginServices = this.loginServices || {};
+			// 		if (this.loginServiceTimer) {
+			// 			clearTimeout(this.loginServiceTimer);
+			// 			this.loginServiceTimer = null;
+			// 		}
+			// 		this.loginServiceTimer = setTimeout(() => {
+			// 			reduxStore.dispatch(setLoginServices(this.loginServices));
+			// 			this.loginServiceTimer = null;
+			// 			return this.loginServices = {};
+			// 		}, 1000);
+			// 		this.loginServices[ddpMessage.fields.service] = { ...ddpMessage.fields };
+			// 		delete this.loginServices[ddpMessage.fields.service].service;
+			// 	} else if (ddpMessage.msg === 'removed') {
+			// 		if (this.loginServiceTimer) {
+			// 			clearTimeout(this.loginServiceTimer);
+			// 		}
+			// 		this.loginServiceTimer = setTimeout(() => reduxStore.dispatch(removeLoginServices()), 1000);
+			// 	}
+			// });
 
 			SDK.driver.on('rocketchat_roles', protectedFunction((error, ddpMessage) => {
 				this.roles = this.roles || {};
@@ -804,6 +804,27 @@ const RocketChat = {
 			return await AsyncStorage.setItem(SORT_PREFS_KEY, JSON.stringify(prefs));
 		} catch (error) {
 			console.warn(error);
+		}
+	},
+	async getLoginServices(server) {
+		try {
+			let loginServicesFilter = [];
+			const loginServicesResult = await fetch(`${ server }/api/v1/settings.oauth`).then(response => response.json());
+			// TODO: remove this after SAML and custom oauth
+			const availableOAuth = ['facebook', 'github', 'gitlab', 'google', 'linkedin', 'meteor-developer', 'twitter'];
+			if (loginServicesResult.success && loginServicesResult.services.length > 0) {
+				const { services } = loginServicesResult;
+				loginServicesFilter = services.filter(item => availableOAuth.includes(item.name));
+				const loginServicesReducer = loginServicesFilter.reduce((ret, item) => {
+					ret[item.name] = item;
+					return ret;
+				}, {});
+				reduxStore.dispatch(setLoginServices(loginServicesReducer));
+			}
+			return Promise.resolve(loginServicesFilter.length);
+		} catch (error) {
+			console.warn(error);
+			return Promise.reject();
 		}
 	}
 };

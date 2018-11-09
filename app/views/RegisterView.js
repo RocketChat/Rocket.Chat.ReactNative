@@ -90,10 +90,13 @@ export default class RegisterView extends LoggedView {
 				Navigation.registerComponentWithRedux('LegalView', () => gestureHandlerRootHOC(LegalView), Provider, store);
 			}
 
-			const { componentId } = this.props;
-			Navigation.push(componentId, {
-				component: {
-					name: 'LegalView'
+			Navigation.showModal({
+				stack: {
+					children: [{
+						component: {
+							name: 'LegalView'
+						}
+					}]
 				}
 			});
 		}

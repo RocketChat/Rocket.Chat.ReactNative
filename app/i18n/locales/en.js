@@ -126,6 +126,7 @@ export default {
 	Connect_to_a_server: 'Connect to a server',
 	Connected: 'Connected',
 	Connecting: 'Connecting...',
+	Continue_with: 'Continue with',
 	Copied_to_clipboard: 'Copied to clipboard!',
 	Copy_Message: 'Copy Message',
 	Copy_Permalink: 'Copy Permalink',

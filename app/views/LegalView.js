@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, ScrollView, View, StyleSheet, Image
+	Text, ScrollView, View, StyleSheet, Image, Platform, Dimensions
 } from 'react-native';
 import { Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
 	},
 	item: {
 		width: '100%',
-		height: 52,
+		height: 48,
 		backgroundColor: '#fff',
 		paddingLeft: 20,
 		paddingRight: 10,
@@ -69,7 +69,12 @@ export default class LegalView extends LoggedView {
 				title: {
 					...DARK_HEADER.topBar.title,
 					text: I18n.t('Legal')
-				}
+				},
+				leftButtons: [{
+					id: 'cancel',
+					icon: Platform.OS === 'android' ? { uri: 'back', scale: Dimensions.get('window').scale } : undefined,
+					text: Platform.OS === 'ios' ? I18n.t('Close') : undefined
+				}]
 			}
 		};
 	}
@@ -80,6 +85,14 @@ export default class LegalView extends LoggedView {
 
 	constructor(props) {
 		super('LegalView', props);
+		Navigation.events().bindComponent(this);
+	}
+
+	navigationButtonPressed = ({ buttonId }) => {
+		if (buttonId === 'cancel') {
+			const { componentId } = this.props;
+			Navigation.dismissModal(componentId);
+		}
 	}
 
 	onPressItem = ({ route }) => {
