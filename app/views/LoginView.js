@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Keyboard, Text, ScrollView, View, StyleSheet, Alert, LayoutAnimation
+	Keyboard, Text, ScrollView, View, StyleSheet, Alert, LayoutAnimation, Dimensions
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
@@ -23,6 +23,7 @@ import { DARK_HEADER } from '../constants/headerOptions';
 
 let RegisterView = null;
 let ForgotPasswordView = null;
+let LegalView = null;
 
 const styles = StyleSheet.create({
 	buttonsContainer: {
@@ -66,7 +67,15 @@ const styles = StyleSheet.create({
 export default class LoginView extends LoggedView {
 	static options() {
 		return {
-			...DARK_HEADER
+			...DARK_HEADER,
+			topBar: {
+				...DARK_HEADER.topBar,
+				rightButtons: [{
+					id: 'more',
+					icon: { uri: 'more', scale: Dimensions.get('window').scale },
+					testID: 'login-view-more'
+				}]
+			}
 		};
 	}
 
@@ -91,12 +100,29 @@ export default class LoginView extends LoggedView {
 			code: '',
 			showTOTP: false
 		};
+		Navigation.events().bindComponent(this);
 	}
 
 	componentDidMount() {
 		setTimeout(() => {
 			this.usernameInput.focus();
 		}, 600);
+	}
+
+	navigationButtonPressed = ({ buttonId }) => {
+		if (buttonId === 'more') {
+			if (LegalView == null) {
+				LegalView = require('./LegalView').default;
+				Navigation.registerComponentWithRedux('LegalView', () => gestureHandlerRootHOC(LegalView), Provider, store);
+			}
+
+			const { componentId } = this.props;
+			Navigation.push(componentId, {
+				component: {
+					name: 'LegalView'
+				}
+			});
+		}
 	}
 
 	submit = async() => {

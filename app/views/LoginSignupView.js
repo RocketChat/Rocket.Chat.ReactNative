@@ -275,120 +275,107 @@ export default class LoginSignupView extends LoggedView {
 
 		return (
 			<View style={styles.servicesContainer}>
-				<Text style={styles.servicesTitle}>
-					{I18n.t('Or_continue_using_social_accounts')}
-				</Text>
-				<View style={sharedStyles.loginOAuthButtons} key='services'>
-					{Accounts_OAuth_Facebook && services.facebook
-						? (
-							<TouchableOpacity
-								style={[sharedStyles.oauthButton, sharedStyles.facebookButton]}
-								onPress={this.onPressFacebook}
-							>
-								<Icon name='facebook' size={20} color='#ffffff' />
-							</TouchableOpacity>
-						)
-						: null
-					}
-					{Accounts_OAuth_Github && services.github
-						? (
-							<TouchableOpacity
-								style={[sharedStyles.oauthButton, sharedStyles.githubButton]}
-								onPress={this.onPressGithub}
-							>
-								<Icon name='github' size={20} color='#ffffff' />
-							</TouchableOpacity>
-						)
-						: null
-					}
-					{Accounts_OAuth_Gitlab && services.gitlab
-						? (
-							<TouchableOpacity
-								style={[sharedStyles.oauthButton, sharedStyles.gitlabButton]}
-								onPress={this.onPressGitlab}
-							>
-								<Icon name='gitlab' size={20} color='#ffffff' />
-							</TouchableOpacity>
-						)
-						: null
-					}
-					{Accounts_OAuth_Google && services.google
-						? (
-							<TouchableOpacity
-								style={[sharedStyles.oauthButton, sharedStyles.googleButton]}
-								onPress={this.onPressGoogle}
-							>
-								<Icon name='google' size={20} color='#ffffff' />
-							</TouchableOpacity>
-						)
-						: null
-					}
-					{Accounts_OAuth_Linkedin && services.linkedin
-						? (
-							<TouchableOpacity
-								style={[sharedStyles.oauthButton, sharedStyles.linkedinButton]}
-								onPress={this.onPressLinkedin}
-							>
-								<Icon name='linkedin' size={20} color='#ffffff' />
-							</TouchableOpacity>
-						)
-						: null
-					}
-					{Accounts_OAuth_Meteor && services['meteor-developer']
-						? (
-							<TouchableOpacity
-								style={[sharedStyles.oauthButton, sharedStyles.meteorButton]}
-								onPress={this.onPressMeteor}
-							>
-								<MaterialCommunityIcons name='meteor' size={25} color='#ffffff' />
-							</TouchableOpacity>
-						)
-						: null
-					}
-					{Accounts_OAuth_Twitter && services.twitter
-						? (
-							<TouchableOpacity
-								style={[sharedStyles.oauthButton, sharedStyles.twitterButton]}
-								onPress={this.onPressTwitter}
-							>
-								<Icon name='twitter' size={20} color='#ffffff' />
-							</TouchableOpacity>
-						)
-						: null
-					}
-				</View>
+				{Accounts_OAuth_Facebook && services.facebook
+					? (
+						<TouchableOpacity
+							style={[sharedStyles.oauthButton, sharedStyles.facebookButton]}
+							onPress={this.onPressFacebook}
+						>
+							<Icon name='facebook' size={20} color='#ffffff' />
+						</TouchableOpacity>
+					)
+					: null
+				}
+				{Accounts_OAuth_Github && services.github
+					? (
+						<TouchableOpacity
+							style={[sharedStyles.oauthButton, sharedStyles.githubButton]}
+							onPress={this.onPressGithub}
+						>
+							<Icon name='github' size={20} color='#ffffff' />
+						</TouchableOpacity>
+					)
+					: null
+				}
+				{Accounts_OAuth_Gitlab && services.gitlab
+					? (
+						<TouchableOpacity
+							style={[sharedStyles.oauthButton, sharedStyles.gitlabButton]}
+							onPress={this.onPressGitlab}
+						>
+							<Icon name='gitlab' size={20} color='#ffffff' />
+						</TouchableOpacity>
+					)
+					: null
+				}
+				{Accounts_OAuth_Google && services.google
+					? (
+						<TouchableOpacity
+							style={[sharedStyles.oauthButton, sharedStyles.googleButton]}
+							onPress={this.onPressGoogle}
+						>
+							<Icon name='google' size={20} color='#ffffff' />
+						</TouchableOpacity>
+					)
+					: null
+				}
+				{Accounts_OAuth_Linkedin && services.linkedin
+					? (
+						<TouchableOpacity
+							style={[sharedStyles.oauthButton, sharedStyles.linkedinButton]}
+							onPress={this.onPressLinkedin}
+						>
+							<Icon name='linkedin' size={20} color='#ffffff' />
+						</TouchableOpacity>
+					)
+					: null
+				}
+				{Accounts_OAuth_Meteor && services['meteor-developer']
+					? (
+						<TouchableOpacity
+							style={[sharedStyles.oauthButton, sharedStyles.meteorButton]}
+							onPress={this.onPressMeteor}
+						>
+							<MaterialCommunityIcons name='meteor' size={25} color='#ffffff' />
+						</TouchableOpacity>
+					)
+					: null
+				}
+				{Accounts_OAuth_Twitter && services.twitter
+					? (
+						<TouchableOpacity
+							style={[sharedStyles.oauthButton, sharedStyles.twitterButton]}
+							onPress={this.onPressTwitter}
+						>
+							<Icon name='twitter' size={20} color='#ffffff' />
+						</TouchableOpacity>
+					)
+					: null
+				}
 			</View>
 		);
 	}
 
 	render() {
-		const { isFetching } = this.props;
-
 		return (
 			<ScrollView
 				style={[sharedStyles.container, sharedStyles.containerScrollView]}
 				{...scrollPersistTaps}
 			>
 				<SafeAreaView style={sharedStyles.container} testID='welcome-view' forceInset={{ bottom: 'never' }}>
-					<View style={styles.container}>
-						<Text style={[sharedStyles.loginText, styles.header, { color: '#81848A' }]}>{I18n.t('Welcome_title_pt_1')}</Text>
-						<Text style={[sharedStyles.loginText, styles.header]}>{I18n.t('Welcome_title_pt_2')}</Text>
-						<Image style={styles.planetImage} source={{ uri: 'new_server' }} />
-						<Button
-							title={I18n.t('I_have_an_account')}
-							type='primary'
-							onPress={() => this.login()}
-							testID='welcome-view-login'
-						/>
-						<Button
-							title={I18n.t('Create_account')}
-							type='secondary'
-							onPress={() => this.register()}
-							testID='welcome-view-register'
-						/>
-						{this.renderServices()}
-					</View>
-					{/* <Loading visible={isFetching} /> */}
+					{this.renderServices()}
+					<Button
+						title={<Text>{I18n.t('Login_with')} <Text style={{ ...sharedStyles.textBold }}>{I18n.t('email')}</Text></Text>}
+						type='primary'
+						onPress={() => this.login()}
+						testID='welcome-view-login'
+					/>
+					<Button
+						title={I18n.t('Create_account')}
+						type='secondary'
+						onPress={() => this.register()}
+						testID='welcome-view-register'
+					/>
 				</SafeAreaView>
 			</ScrollView>
 		);

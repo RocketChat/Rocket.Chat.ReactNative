@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 
 export default class Button extends React.PureComponent {
 	static propTypes = {
-		title: PropTypes.string,
+		title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 		type: PropTypes.string,
 		onPress: PropTypes.func,
 		disabled: PropTypes.bool,

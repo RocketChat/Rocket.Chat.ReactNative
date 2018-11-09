@@ -110,11 +110,6 @@ export default StyleSheet.create({
 		fontSize: 13,
 		fontWeight: '700'
 	},
-	loginOAuthButtons: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		justifyContent: 'center'
-	},
 	validText: {
 		color: 'green'
 	},
