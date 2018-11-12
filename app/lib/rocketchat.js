@@ -622,7 +622,7 @@ const RocketChat = {
 			return setting;
 		});
 	},
-	_filterSettings: settings => settings.filter(setting => defaultSettings[setting._id] && setting.value),
+	_filterSettings: settings => settings.filter(setting => defaultSettings[setting._id] && (setting.value || setting.valueAsString || setting.valueAsNumber || setting.valueAsBoolean)),
 	parseEmojis: emojis => emojis.reduce((ret, item) => {
 		ret[item.name] = item.extension;
 		item.aliases.forEach((alias) => {

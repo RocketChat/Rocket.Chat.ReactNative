@@ -97,13 +97,7 @@ let LegalView = null;
 	isFetching: state.login.isFetching,
 	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
 	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
-	Accounts_OAuth_Facebook: state.settings.Accounts_OAuth_Facebook,
-	Accounts_OAuth_Github: state.settings.Accounts_OAuth_Github,
-	Accounts_OAuth_Gitlab: state.settings.Accounts_OAuth_Gitlab,
-	Accounts_OAuth_Google: state.settings.Accounts_OAuth_Google,
-	Accounts_OAuth_Linkedin: state.settings.Accounts_OAuth_Linkedin,
-	Accounts_OAuth_Meteor: state.settings.Accounts_OAuth_Meteor,
-	Accounts_OAuth_Twitter: state.settings.Accounts_OAuth_Twitter,
+	Site_Name: state.settings.Site_Name,
 	services: state.login.services
 }), dispatch => ({
 	open: () => dispatch(openAction()),
@@ -147,24 +141,26 @@ export default class LoginSignupView extends LoggedView {
 		super('LoginSignupView', props);
 		this.state = { collapsed: true };
 		Navigation.events().bindComponent(this);
+		const { componentId, Site_Name } = this.props;
+		this.setTitle(componentId, Site_Name);
 	}
 
-	// componentDidMount() {
-	// 	const { open } = this.props;
-	// 	open();
-	// }
+	componentDidUpdate(prevProps) {
+		const { componentId, Site_Name } = this.props;
+		if (Site_Name && prevProps.Site_Name !== Site_Name) {
+			this.setTitle(componentId, Site_Name);
+		}
+	}
 
-	// componentWillReceiveProps(nextProps) {
-	// 	const { services } = this.props;
-	// 	if (services !== nextProps.services) {
-	// 		LayoutAnimation.easeInEaseOut();
-	// 	}
-	// }
-
-	// componentWillUnmount() {
-	// 	const { close } = this.props;
-	// 	close();
-	// }
+	setTitle = (componentId, title) => {
+		Navigation.mergeOptions(componentId, {
+			topBar: {
+				title: {
+					text: title
+				}
+			}
+		});
+	}
 
 	navigationButtonPressed = ({ buttonId }) => {
 		if (buttonId === 'more') {
@@ -295,14 +291,14 @@ export default class LoginSignupView extends LoggedView {
 			Navigation.registerComponentWithRedux('LoginView', () => gestureHandlerRootHOC(LoginView), Provider, store);
 		}
 
-		const { componentId, server } = this.props;
+		const { componentId, Site_Name } = this.props;
 		Navigation.push(componentId, {
 			component: {
 				name: 'LoginView',
 				options: {
 					topBar: {
 						title: {
-							text: server
+							text: Site_Name
 						}
 					}
 				}
@@ -316,14 +312,14 @@ export default class LoginSignupView extends LoggedView {
 			Navigation.registerComponentWithRedux('RegisterView', () => gestureHandlerRootHOC(RegisterView), Provider, store);
 		}
 
-		const { componentId, server } = this.props;
+		const { componentId, Site_Name } = this.props;
 		Navigation.push(componentId, {
 			component: {
 				name: 'RegisterView',
 				options: {
 					topBar: {
 						title: {
-							text: server
+							text: Site_Name
 						}
 					}
 				}

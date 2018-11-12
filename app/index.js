@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Linking, Platform } from 'react-native';
+import { Linking } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 
 import store from './lib/createStore';
@@ -48,11 +48,6 @@ const startNotLogged = () => {
 				options: {
 					layout: {
 						orientation: ['portrait']
-					},
-					topBar: {
-						backButton: {
-							color: '#FFF'
-						}
 					}
 				}
 			}
@@ -88,7 +83,12 @@ export default class App extends Component {
 					backButton: {
 						showTitle: false
 					},
-					buttonColor: '#FFF'
+					leftButtonStyle: {
+						color: '#FFF'
+					},
+					rightButtonStyle: {
+						color: '#FFF'
+					}
 				},
 				sideMenu: {
 					left: {

@@ -54,14 +54,7 @@ const handleServerRequest = function* handleServerRequest({ server }) {
 			}
 			yield Navigation.push('NewServerView', {
 				component: {
-					name: 'LoginView',
-					options: {
-						topBar: {
-							title: {
-								text: server
-							}
-						}
-					}
+					name: 'LoginView'
 				}
 			});
 		} else {
@@ -71,14 +64,7 @@ const handleServerRequest = function* handleServerRequest({ server }) {
 			}
 			yield Navigation.push('NewServerView', {
 				component: {
-					name: 'LoginSignupView',
-					options: {
-						topBar: {
-							title: {
-								text: server
-							}
-						}
-					}
+					name: 'LoginSignupView'
 				}
 			});
 		}

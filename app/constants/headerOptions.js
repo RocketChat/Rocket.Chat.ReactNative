@@ -7,12 +7,18 @@ export const DARK_HEADER = {
 	},
 	topBar: {
 		backButton: {
-			color: '#FFF'
+			color: '#fff'
 		},
 		background: {
 			color: '#2F343D'
 		},
 		title: {
+			color: '#FFF'
+		},
+		leftButtonStyle: {
+			color: '#FFF'
+		},
+		rightButtonStyle: {
 			color: '#FFF'
 		}
 	}
@@ -25,13 +31,19 @@ export const LIGHT_HEADER = {
 	},
 	topBar: {
 		backButton: {
-			color: undefined
+			color: '#1d74f5'
 		},
 		background: {
 			color: undefined
 		},
 		title: {
 			color: '#0C0D0F'
+		},
+		leftButtonStyle: {
+			color: '#1d74f5'
+		},
+		rightButtonStyle: {
+			color: '#1d74f5'
 		}
 	}
 };

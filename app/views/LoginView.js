@@ -59,7 +59,8 @@ const styles = StyleSheet.create({
 	failure: state.login.failure,
 	isFetching: state.login.isFetching,
 	reason: state.login.error && state.login.error.reason,
-	error: state.login.error && state.login.error.error
+	error: state.login.error && state.login.error.error,
+	Site_Name: state.settings.Site_Name,
 }), () => ({
 	loginSubmit: params => RocketChat.loginWithPassword(params)
 }))
@@ -101,12 +102,31 @@ export default class LoginView extends LoggedView {
 			showTOTP: false
 		};
 		Navigation.events().bindComponent(this);
+		const { componentId, Site_Name } = this.props;
+		this.setTitle(componentId, Site_Name);
 	}
 
 	componentDidMount() {
 		setTimeout(() => {
 			this.usernameInput.focus();
 		}, 600);
+	}
+
+	componentDidUpdate(prevProps) {
+		const { componentId, Site_Name } = this.props;
+		if (Site_Name && prevProps.Site_Name !== Site_Name) {
+			this.setTitle(componentId, Site_Name);
+		}
+	}
+
+	setTitle = (componentId, title) => {
+		Navigation.mergeOptions(componentId, {
+			topBar: {
+				title: {
+					text: title
+				}
+			}
+		});
 	}
 
 	navigationButtonPressed = ({ buttonId }) => {
@@ -162,14 +182,14 @@ export default class LoginView extends LoggedView {
 			Navigation.registerComponentWithRedux('RegisterView', () => gestureHandlerRootHOC(RegisterView), Provider, store);
 		}
 
-		const { componentId, server } = this.props;
+		const { componentId, Site_Name } = this.props;
 		Navigation.push(componentId, {
 			component: {
 				name: 'RegisterView',
 				options: {
 					topBar: {
 						title: {
-							text: server
+							text: Site_Name
 						}
 					}
 				}
