@@ -9,14 +9,9 @@ import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions';
 import { serverFinishAdd } from '../actions/server';
 import {
-	// loginRequest,
-	// loginSubmit,
 	registerRequest,
 	registerIncomplete,
-	// loginSuccess,
 	loginFailure,
-	// logout,
-	// setToken,
 	registerSuccess,
 	setUsernameRequest,
 	setUsernameSuccess,
@@ -29,7 +24,6 @@ import I18n from '../i18n';
 
 const getUser = state => state.login.user;
 const getServer = state => state.server.server;
-const getIsConnected = state => state.meteor.connected;
 
 const loginCall = args => RocketChat.loginWithPassword(args);
 const registerCall = args => RocketChat.register(args);
@@ -42,8 +36,9 @@ const handleLoginSuccess = function* handleLoginSuccess() {
 	try {
 		const user = yield select(getUser);
 		const adding = yield select(state => state.server.adding);
+		const isRegisterIncomplete = yield select(state => state.login.registerIncomplete);
 		yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
-		if (!user.username || user.isRegistering) {
+		if (!user.username && !isRegisterIncomplete) {
 			yield put(registerIncomplete());
 		} else {
 			yield delay(300);
@@ -66,22 +61,27 @@ const handleRegisterSubmit = function* handleRegisterSubmit({ credentials }) {
 const handleRegisterRequest = function* handleRegisterRequest({ credentials }) {
 	try {
 		yield call(registerCall, { credentials });
+		yield call(loginCall, {
+			username: credentials.email,
+			password: credentials.pass
+		});
+		yield call(setUsernameCall, { credentials });
 		yield put(registerSuccess(credentials));
 	} catch (err) {
 		yield put(loginFailure(err));
 	}
 };
 
-const handleRegisterSuccess = function* handleRegisterSuccess({ credentials }) {
-	try {
-		yield call(loginCall, {
-			username: credentials.email,
-			password: credentials.pass
-		});
-	} catch (err) {
-		yield put(loginFailure(err));
-	}
-};
+// const handleRegisterSuccess = function* handleRegisterSuccess({ credentials }) {
+// 	try {
+// 		yield call(loginCall, {
+// 			username: credentials.email,
+// 			password: credentials.pass
+// 		});
+// 	} catch (err) {
+// 		yield put(loginFailure(err));
+// 	}
+// };
 
 const handleSetUsernameSubmit = function* handleSetUsernameSubmit({ credentials }) {
 	yield put(setUsernameRequest(credentials));
@@ -125,21 +125,21 @@ const handleForgotPasswordRequest = function* handleForgotPasswordRequest({ emai
 	}
 };
 
-const watchLoginOpen = function* watchLoginOpen() {
-	try {
-		const isConnected = yield select(getIsConnected);
-		if (!isConnected) {
-			yield take(types.METEOR.SUCCESS);
-		}
-		const sub = yield RocketChat.subscribe('meteor.loginServiceConfiguration');
-		yield take(types.LOGIN.CLOSE);
-		if (sub) {
-			yield sub.unsubscribe().catch(err => console.warn(err));
-		}
-	} catch (e) {
-		log('watchLoginOpen', e);
-	}
-};
+// const watchLoginOpen = function* watchLoginOpen() {
+// 	try {
+// 		const isConnected = yield select(getIsConnected);
+// 		if (!isConnected) {
+// 			yield take(types.METEOR.SUCCESS);
+// 		}
+// 		const sub = yield RocketChat.subscribe('meteor.loginServiceConfiguration');
+// 		yield take(types.LOGIN.CLOSE);
+// 		if (sub) {
+// 			yield sub.unsubscribe().catch(err => console.warn(err));
+// 		}
+// 	} catch (e) {
+// 		log('watchLoginOpen', e);
+// 	}
+// };
 
 const handleSetUser = function* handleSetUser() {
 	yield delay(2000);
@@ -161,13 +161,13 @@ const root = function* root() {
 	// yield takeLatest(types.LOGIN.SUBMIT, handleLoginSubmit);
 	yield takeLatest(types.LOGIN.REGISTER_REQUEST, handleRegisterRequest);
 	yield takeLatest(types.LOGIN.REGISTER_SUBMIT, handleRegisterSubmit);
-	yield takeLatest(types.LOGIN.REGISTER_SUCCESS, handleRegisterSuccess);
+	// yield takeLatest(types.LOGIN.REGISTER_SUCCESS, handleRegisterSuccess);
 	yield takeLatest(types.LOGIN.REGISTER_INCOMPLETE, handleRegisterIncomplete);
 	yield takeLatest(types.LOGIN.SET_USERNAME_SUBMIT, handleSetUsernameSubmit);
 	yield takeLatest(types.LOGIN.SET_USERNAME_REQUEST, handleSetUsernameRequest);
 	yield takeLatest(types.LOGOUT, handleLogout);
 	yield takeLatest(types.FORGOT_PASSWORD.REQUEST, handleForgotPasswordRequest);
-	yield takeLatest(types.LOGIN.OPEN, watchLoginOpen);
+	// yield takeLatest(types.LOGIN.OPEN, watchLoginOpen);
 	yield takeLatest(types.USER.SET, handleSetUser);
 };
 export default root;

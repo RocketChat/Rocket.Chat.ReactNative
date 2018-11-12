@@ -3,7 +3,7 @@ import * as types from '../actions/actionsTypes';
 const initialState = {
 	isAuthenticated: false,
 	isFetching: false,
-	isRegistering: false,
+	registerIncomplete: false,
 	token: '',
 	user: {},
 	error: '',
@@ -19,7 +19,7 @@ export default function login(state = initialState, action) {
 				...state,
 				isFetching: true,
 				isAuthenticated: false,
-				isRegistering: false,
+				// registerIncomplete: false,
 				failure: false,
 				error: ''
 			};
@@ -61,8 +61,7 @@ export default function login(state = initialState, action) {
 			return {
 				...state,
 				isFetching: true,
-				isAuthenticated: false,
-				isRegistering: true,
+				registerIncomplete: true,
 				failure: false,
 				error: ''
 			};
@@ -70,7 +69,7 @@ export default function login(state = initialState, action) {
 			return {
 				...state,
 				isFetching: false,
-				isAuthenticated: false,
+				registerIncomplete: false,
 				failure: false,
 				error: ''
 			};
@@ -83,12 +82,12 @@ export default function login(state = initialState, action) {
 			return {
 				...state,
 				isFetching: false,
-				isRegistering: false
+				registerIncomplete: false
 			};
 		case types.LOGIN.REGISTER_INCOMPLETE:
 			return {
 				...state,
-				isRegistering: true
+				registerIncomplete: true
 			};
 		case types.FORGOT_PASSWORD.INIT:
 			return initialState;

@@ -1,19 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Keyboard, Text, View, ScrollView, Dimensions
+	Keyboard, Text, View, ScrollView, Dimensions, Alert
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
+import equal from 'deep-equal';
 
 import { registerSubmit as registerSubmitAction, setUsernameSubmit as setUsernameSubmitAction } from '../actions/login';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
 import Loading from '../containers/Loading';
 import KeyboardView from '../presentation/KeyboardView';
-import styles from './Styles';
+import sharedStyles from './Styles';
 import { showToast } from '../utils/info';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import LoggedView from './View';
@@ -61,7 +62,6 @@ export default class RegisterView extends LoggedView {
 		Accounts_NamePlaceholder: PropTypes.string,
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
 		Accounts_PasswordPlaceholder: PropTypes.string,
-		Accounts_RepeatPasswordPlaceholder: PropTypes.string,
 		login: PropTypes.object
 	}
 
@@ -71,7 +71,6 @@ export default class RegisterView extends LoggedView {
 			name: '',
 			email: '',
 			password: '',
-			confirmPassword: '',
 			username: ''
 		};
 		Navigation.events().bindComponent(this);
@@ -81,6 +80,14 @@ export default class RegisterView extends LoggedView {
 		setTimeout(() => {
 			this.nameInput.focus();
 		}, 600);
+	}
+
+	componentDidUpdate(prevProps) {
+		const { login } = this.props;
+		if (login && login.failure && login.error && !equal(login.error, prevProps.login.error)) {
+			console.warn(login)
+			Alert.alert(I18n.t('Oops'), login.error.reason);
+		}
 	}
 
 	navigationButtonPressed = ({ buttonId }) => {
@@ -104,10 +111,9 @@ export default class RegisterView extends LoggedView {
 
 	valid = () => {
 		const {
-			name, email, password, confirmPassword
+			name, email, password, username
 		} = this.state;
-		return name.trim() && email.trim()
-			&& password && confirmPassword && password === confirmPassword;
+		return name.trim() && email.trim() && password.trim() && username.trim();
 	}
 
 	invalidEmail = () => {
@@ -117,17 +123,11 @@ export default class RegisterView extends LoggedView {
 
 	submit = () => {
 		const {
-			name, email, password, code
+			name, email, password, username
 		} = this.state;
 		const { registerSubmit } = this.props;
-
-		if (!this.valid()) {
-			showToast(I18n.t('Some_field_is_invalid_or_empty'));
-			return;
-		}
-
 		registerSubmit({
-			name, email, pass: password, code
+			name, email, pass: password, username
 		});
 		Keyboard.dismiss();
 	}
@@ -135,12 +135,6 @@ export default class RegisterView extends LoggedView {
 	usernameSubmit = () => {
 		const { username } = this.state;
 		const { setUsernameSubmit } = this.props;
-
-		if (!username) {
-			showToast(I18n.t('Username_is_empty'));
-			return;
-		}
-
 		setUsernameSubmit({ username });
 		Keyboard.dismiss();
 	}
@@ -187,30 +181,36 @@ export default class RegisterView extends LoggedView {
 		});
 	}
 
-	_renderRegister() {
-		const { password, confirmPassword } = this.state;
+	renderRegister() {
 		const {
-			login, Accounts_NamePlaceholder, Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, Accounts_RepeatPasswordPlaceholder
+			login, Accounts_NamePlaceholder, Accounts_UsernamePlaceholder, Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder
 		} = this.props;
 
-		if (login.token) {
+		if (login.isRegisterIncomplete) {
 			return null;
 		}
 		return (
 			<View>
 				<TextInput
 					inputRef={(e) => { this.nameInput = e; }}
-					label={Accounts_NamePlaceholder || I18n.t('Name')}
 					placeholder={Accounts_NamePlaceholder || I18n.t('Name')}
 					returnKeyType='next'
 					iconLeft='user'
 					onChangeText={name => this.setState({ name })}
+					onSubmitEditing={() => { this.usernameInput.focus(); }}
+					testID='register-view-name'
+				/>
+				<TextInput
+					inputRef={(e) => { this.usernameInput = e; }}
+					placeholder={Accounts_UsernamePlaceholder || I18n.t('Username')}
+					returnKeyType='next'
+					iconLeft='user'
+					onChangeText={username => this.setState({ username })}
 					onSubmitEditing={() => { this.emailInput.focus(); }}
 					testID='register-view-name'
 				/>
 				<TextInput
 					inputRef={(e) => { this.emailInput = e; }}
-					label={Accounts_EmailOrUsernamePlaceholder || I18n.t('Email')}
 					placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Email')}
 					returnKeyType='next'
 					keyboardType='email-address'
@@ -222,54 +222,33 @@ export default class RegisterView extends LoggedView {
 				/>
 				<TextInput
 					inputRef={(e) => { this.passwordInput = e; }}
-					label={Accounts_PasswordPlaceholder || I18n.t('Password')}
 					placeholder={Accounts_PasswordPlaceholder || I18n.t('Password')}
 					returnKeyType='next'
 					iconLeft='key'
 					secureTextEntry
 					onChangeText={value => this.setState({ password: value })}
-					onSubmitEditing={() => { this.confirmPasswordInput.focus(); }}
-					testID='register-view-password'
-				/>
-				<TextInput
-					inputRef={(e) => { this.confirmPasswordInput = e; }}
-					inputStyle={
-						password
-						&& confirmPassword
-						&& confirmPassword !== password ? { borderColor: 'red' } : {}
-					}
-					label={Accounts_RepeatPasswordPlaceholder || I18n.t('Repeat_Password')}
-					placeholder={Accounts_RepeatPasswordPlaceholder || I18n.t('Repeat_Password')}
-					returnKeyType='done'
-					iconLeft='key'
-					secureTextEntry
-					onChangeText={value => this.setState({ confirmPassword: value })}
 					onSubmitEditing={this.submit}
-					testID='register-view-repeat-password'
+					testID='register-view-password'
+					containerStyle={{ marginBottom: 15 }}
 				/>
 
-				<View style={styles.alignItemsFlexStart}>
-					<Text style={styles.loginTermsText}>
-						{I18n.t('By_proceeding_you_are_agreeing')}
-						<Text style={styles.link} onPress={this.termsService}>{I18n.t('Terms_of_Service')}</Text>
-						{I18n.t('and')}
-						<Text style={styles.link} onPress={this.privacyPolicy}>{I18n.t('Privacy_Policy')}</Text>
-					</Text>
-					<Button
-						title={I18n.t('Register')}
-						type='primary'
-						onPress={this.submit}
-						testID='register-view-submit'
-					/>
-				</View>
+				<Button
+					title={I18n.t('Register')}
+					type='primary'
+					onPress={this.submit}
+					testID='register-view-submit'
+					disabled={!this.valid()}
+					loading={login.isFetching}
+				/>
 			</View>
 		);
 	}
 
-	_renderUsername() {
+	renderUsername() {
+		const { username } = this.state;
 		const { login, Accounts_UsernamePlaceholder } = this.props;
 
-		if (!login.token) {
+		if (!login.isRegisterIncomplete) {
 			return null;
 		}
 		return (
@@ -279,42 +258,31 @@ export default class RegisterView extends LoggedView {
 					label={Accounts_UsernamePlaceholder || I18n.t('Username')}
 					placeholder={Accounts_UsernamePlaceholder || I18n.t('Username')}
 					returnKeyType='done'
-					iconLeft='at'
-					onChangeText={username => this.setState({ username })}
+					iconLeft='user'
+					onChangeText={value => this.setState({ username: value })}
 					onSubmitEditing={() => { this.usernameSubmit(); }}
 					testID='register-view-username'
 				/>
-
-				<View style={styles.alignItemsFlexStart}>
-					<Button
-						title={I18n.t('Register')}
-						type='primary'
-						onPress={this.usernameSubmit}
-						testID='register-view-submit-username'
-					/>
-				</View>
+				<Button
+					title={I18n.t('Register')}
+					type='primary'
+					onPress={this.usernameSubmit}
+					testID='register-view-submit-username'
+					disabled={!username}
+					loading={login.isFetching}
+				/>
 			</View>
 		);
 	}
 
 	render() {
-		const { login } = this.props;
 		return (
-			<KeyboardView contentContainerStyle={styles.container}>
-				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
-					<SafeAreaView style={styles.container} testID='register-view' forceInset={{ bottom: 'never' }}>
-						<Text style={[styles.loginText, styles.loginTitle]}>{I18n.t('Sign_Up')}</Text>
-						{this._renderRegister()}
-						{this._renderUsername()}
-						{login.failure
-							? (
-								<Text style={styles.error} testID='register-view-error'>
-									{login.error.reason}
-								</Text>
-							)
-							: null
-						}
-						<Loading visible={login.isFetching} />
+			<KeyboardView contentContainerStyle={sharedStyles.container}>
+				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
+					<SafeAreaView style={sharedStyles.container} testID='register-view' forceInset={{ bottom: 'never' }}>
+						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Sign_Up')}</Text>
+						{this.renderRegister()}
+						{this.renderUsername()}
 					</SafeAreaView>
 				</ScrollView>
 			</KeyboardView>

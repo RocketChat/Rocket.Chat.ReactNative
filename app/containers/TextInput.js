@@ -143,6 +143,7 @@ export default class RCTextInput extends React.PureComponent {
 						testID={testID}
 						accessibilityLabel={placeholder}
 						placeholder={placeholder}
+						placeholderTextColor='#9ea2a8'
 						contentDescription={placeholder}
 						{...inputProps}
 					/>
