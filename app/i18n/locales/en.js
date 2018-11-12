@@ -281,6 +281,7 @@ export default {
 	Send_message: 'Send message',
 	Server: 'Server',
 	Servers: 'Servers',
+	Set_username_subtitle: 'The username is used to allow others to mention you in messages',
 	Settings: 'Settings',
 	Settings_succesfully_changed: 'Settings succesfully changed!',
 	Share_Message: 'Share Message',

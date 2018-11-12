@@ -188,7 +188,8 @@ export default StyleSheet.create({
 	loginSubtitle: {
 		fontSize: 16,
 		color: '#54585e',
-		lineHeight: 20
+		lineHeight: 20,
+		marginBottom: 15
 	},
 	headerButton: {
 		backgroundColor: 'transparent',
@@ -269,5 +270,8 @@ export default StyleSheet.create({
 				fontWeight: 'bold'
 			}
 		})
+	},
+	inputLastChild: {
+		marginBottom: 15
 	}
 });

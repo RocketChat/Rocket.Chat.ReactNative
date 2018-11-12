@@ -1,6 +1,8 @@
 import { Component } from 'react';
 import { Linking } from 'react-native';
 import { Navigation } from 'react-native-navigation';
+import { Provider } from 'react-redux';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import store from './lib/createStore';
 import { appInit } from './actions';
@@ -43,6 +45,30 @@ const startNotLogged = () => {
 				children: [{
 					component: {
 						name: 'OnboardingView'
+					}
+				}],
+				options: {
+					layout: {
+						orientation: ['portrait']
+					}
+				}
+			}
+		}
+	});
+};
+
+let SetUsernameView = null;
+const startSetUsername = () => {
+	if (SetUsernameView == null) {
+		SetUsernameView = require('./views/SetUsernameView').default;
+		Navigation.registerComponentWithRedux('SetUsernameView', () => gestureHandlerRootHOC(SetUsernameView), Provider, store);
+	}
+	Navigation.setRoot({
+		root: {
+			stack: {
+				children: [{
+					component: {
+						name: 'SetUsernameView'
 					}
 				}],
 				options: {
@@ -118,6 +144,8 @@ export default class App extends Component {
 				startNotLogged();
 			} else if (root === 'inside') {
 				startLogged();
+			} else if (root === 'setUsername') {
+				startSetUsername();
 			}
 		}
 	}

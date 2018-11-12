@@ -48,9 +48,6 @@ const styles = StyleSheet.create({
 	loginTitle: {
 		marginVertical: 0,
 		marginTop: 15
-	},
-	loginSubtitle: {
-		marginBottom: 15
 	}
 });
 
@@ -223,7 +220,7 @@ export default class LoginView extends LoggedView {
 		return (
 			<SafeAreaView style={sharedStyles.container} testID='login-view' forceInset={{ bottom: 'never' }}>
 				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle]}>{I18n.t('Two_Factor_Authentication')}</Text>
-				<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular, styles.loginSubtitle]}>{I18n.t('Whats_your_2fa')}</Text>
+				<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular]}>{I18n.t('Whats_your_2fa')}</Text>
 				<TextInput
 					inputRef={ref => this.codeInput = ref}
 					onChangeText={code => this.setState({ code })}
@@ -265,7 +262,7 @@ export default class LoginView extends LoggedView {
 				<TextInput
 					inputRef={(e) => { this.passwordInput = e; }}
 					placeholder={Accounts_PasswordPlaceholder || I18n.t('Password')}
-					returnKeyType='done'
+					returnKeyType='send'
 					iconLeft='key'
 					secureTextEntry
 					onSubmitEditing={this.submit}

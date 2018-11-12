@@ -3,11 +3,11 @@ import * as types from '../actions/actionsTypes';
 const initialState = {
 	isAuthenticated: false,
 	isFetching: false,
-	registerIncomplete: false,
 	token: '',
 	user: {},
 	error: '',
-	services: {}
+	services: {},
+	credentials: {}
 };
 
 export default function login(state = initialState, action) {
@@ -19,7 +19,6 @@ export default function login(state = initialState, action) {
 				...state,
 				isFetching: true,
 				isAuthenticated: false,
-				// registerIncomplete: false,
 				failure: false,
 				error: ''
 			};
@@ -34,7 +33,8 @@ export default function login(state = initialState, action) {
 				},
 				token: action.user.token,
 				failure: false,
-				error: ''
+				error: '',
+				credentials: {}
 			};
 		case types.LOGIN.FAILURE:
 			return {
@@ -61,33 +61,28 @@ export default function login(state = initialState, action) {
 			return {
 				...state,
 				isFetching: true,
-				registerIncomplete: true,
 				failure: false,
-				error: ''
+				error: '',
+				credentials: action.credentials
 			};
 		case types.LOGIN.REGISTER_SUCCESS:
 			return {
 				...state,
 				isFetching: false,
-				registerIncomplete: false,
 				failure: false,
-				error: ''
+				error: '',
+				credentials: {}
 			};
 		case types.LOGIN.SET_USERNAME_SUBMIT:
 			return {
 				...state,
-				isFetching: true
+				isFetching: true,
+				credentials: action.credentials
 			};
 		case types.LOGIN.SET_USERNAME_SUCCESS:
 			return {
 				...state,
-				isFetching: false,
-				registerIncomplete: false
-			};
-		case types.LOGIN.REGISTER_INCOMPLETE:
-			return {
-				...state,
-				registerIncomplete: true
+				isFetching: false
 			};
 		case types.FORGOT_PASSWORD.INIT:
 			return initialState;
@@ -126,11 +121,6 @@ export default function login(state = initialState, action) {
 					...state.services,
 					...action.data
 				}
-			};
-		case types.LOGIN.REMOVE_SERVICES:
-			return {
-				...state,
-				services: {}
 			};
 		case types.LOGIN.SET_PREFERENCE:
 			return {

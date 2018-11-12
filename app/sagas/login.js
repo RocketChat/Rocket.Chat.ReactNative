@@ -1,7 +1,7 @@
 import { AsyncStorage } from 'react-native';
 import { delay } from 'redux-saga';
 import {
-	put, call, take, takeLatest, select, all
+	put, call, takeLatest, select, all
 } from 'redux-saga/effects';
 import { Navigation } from 'react-native-navigation';
 
@@ -10,9 +10,7 @@ import { appStart } from '../actions';
 import { serverFinishAdd } from '../actions/server';
 import {
 	registerRequest,
-	registerIncomplete,
 	loginFailure,
-	registerSuccess,
 	setUsernameRequest,
 	setUsernameSuccess,
 	forgotPasswordSuccess,
@@ -36,18 +34,17 @@ const handleLoginSuccess = function* handleLoginSuccess() {
 	try {
 		const user = yield select(getUser);
 		const adding = yield select(state => state.server.adding);
-		const isRegisterIncomplete = yield select(state => state.login.registerIncomplete);
 		yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
-		if (!user.username && !isRegisterIncomplete) {
-			yield put(registerIncomplete());
+
+		if (!user.username) {
+			return yield put(appStart('setUsername'));
+		}
+
+		if (adding) {
+			yield put(serverFinishAdd());
+			yield Navigation.dismissAllModals();
 		} else {
-			yield delay(300);
-			if (adding) {
-				yield put(serverFinishAdd());
-				yield Navigation.dismissAllModals();
-			} else {
-				yield put(appStart('inside'));
-			}
+			yield put(appStart('inside'));
 		}
 	} catch (e) {
 		log('handleLoginSuccess', e);
@@ -65,23 +62,10 @@ const handleRegisterRequest = function* handleRegisterRequest({ credentials }) {
 			username: credentials.email,
 			password: credentials.pass
 		});
-		yield call(setUsernameCall, { credentials });
-		yield put(registerSuccess(credentials));
 	} catch (err) {
 		yield put(loginFailure(err));
 	}
 };
-
-// const handleRegisterSuccess = function* handleRegisterSuccess({ credentials }) {
-// 	try {
-// 		yield call(loginCall, {
-// 			username: credentials.email,
-// 			password: credentials.pass
-// 		});
-// 	} catch (err) {
-// 		yield put(loginFailure(err));
-// 	}
-// };
 
 const handleSetUsernameSubmit = function* handleSetUsernameSubmit({ credentials }) {
 	yield put(setUsernameRequest(credentials));
@@ -89,7 +73,7 @@ const handleSetUsernameSubmit = function* handleSetUsernameSubmit({ credentials 
 
 const handleSetUsernameRequest = function* handleSetUsernameRequest({ credentials }) {
 	try {
-		yield call(setUsernameCall, { credentials });
+		yield call(setUsernameCall, credentials);
 		yield put(setUsernameSuccess());
 		yield call(loginSuccessCall);
 	} catch (err) {
@@ -109,13 +93,6 @@ const handleLogout = function* handleLogout() {
 	}
 };
 
-const handleRegisterIncomplete = function* handleRegisterIncomplete() {
-	const server = yield select(state => state.server);
-	if (!server.adding) {
-		yield put(appStart('outside'));
-	}
-};
-
 const handleForgotPasswordRequest = function* handleForgotPasswordRequest({ email }) {
 	try {
 		yield call(forgotPasswordCall, email);
@@ -124,22 +101,6 @@ const handleForgotPasswordRequest = function* handleForgotPasswordRequest({ emai
 		yield put(forgotPasswordFailure(err));
 	}
 };
-
-// const watchLoginOpen = function* watchLoginOpen() {
-// 	try {
-// 		const isConnected = yield select(getIsConnected);
-// 		if (!isConnected) {
-// 			yield take(types.METEOR.SUCCESS);
-// 		}
-// 		const sub = yield RocketChat.subscribe('meteor.loginServiceConfiguration');
-// 		yield take(types.LOGIN.CLOSE);
-// 		if (sub) {
-// 			yield sub.unsubscribe().catch(err => console.warn(err));
-// 		}
-// 	} catch (e) {
-// 		log('watchLoginOpen', e);
-// 	}
-// };
 
 const handleSetUser = function* handleSetUser() {
 	yield delay(2000);
@@ -155,14 +116,9 @@ const handleSetUser = function* handleSetUser() {
 };
 
 const root = function* root() {
-	// yield takeLatest(types.METEOR.SUCCESS, handleLoginWhenServerChanges);
-	// yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
 	yield takeLatest(types.LOGIN.SUCCESS, handleLoginSuccess);
-	// yield takeLatest(types.LOGIN.SUBMIT, handleLoginSubmit);
 	yield takeLatest(types.LOGIN.REGISTER_REQUEST, handleRegisterRequest);
 	yield takeLatest(types.LOGIN.REGISTER_SUBMIT, handleRegisterSubmit);
-	// yield takeLatest(types.LOGIN.REGISTER_SUCCESS, handleRegisterSuccess);
-	yield takeLatest(types.LOGIN.REGISTER_INCOMPLETE, handleRegisterIncomplete);
 	yield takeLatest(types.LOGIN.SET_USERNAME_SUBMIT, handleSetUsernameSubmit);
 	yield takeLatest(types.LOGIN.SET_USERNAME_REQUEST, handleSetUsernameRequest);
 	yield takeLatest(types.LOGOUT, handleLogout);

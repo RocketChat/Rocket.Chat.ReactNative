@@ -283,6 +283,7 @@ export default {
 	Send_audio_message: 'Enviar mensagem de áudio',
 	Send_message: 'Enviar mensagem',
 	Server: 'Servidor',
+	Set_username_subtitle: 'O usuário é utilizado para permitir que você seja mencionado em mensagens',
 	Settings: 'Configurações',
 	Settings_succesfully_changed: 'Configurações salvas com sucesso!',
 	Share_Message: 'Compartilhar Mensagem',
