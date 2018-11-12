@@ -183,7 +183,7 @@ export default class NewServerView extends LoggedView {
 							containerStyle={styles.inputContainer}
 							placeholder={defaultServer}
 							value={text}
-							returnKeyType='done'
+							returnKeyType='send'
 							onChangeText={this.onChangeText}
 							testID='new-server-view-input'
 							onSubmitEditing={this.submit}

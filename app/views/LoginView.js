@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
 	isFetching: state.login.isFetching,
 	reason: state.login.error && state.login.error.reason,
 	error: state.login.error && state.login.error.error,
-	Site_Name: state.settings.Site_Name,
+	Site_Name: state.settings.Site_Name
 }), () => ({
 	loginSubmit: params => RocketChat.loginWithPassword(params)
 }))
@@ -82,6 +82,7 @@ export default class LoginView extends LoggedView {
 		loginSubmit: PropTypes.func.isRequired,
 		login: PropTypes.object,
 		server: PropTypes.string,
+		Site_Name: PropTypes.string,
 		error: PropTypes.any,
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
 		Accounts_PasswordPlaceholder: PropTypes.string,
@@ -200,14 +201,14 @@ export default class LoginView extends LoggedView {
 			Navigation.registerComponentWithRedux('ForgotPasswordView', () => gestureHandlerRootHOC(ForgotPasswordView), Provider, store);
 		}
 
-		const { componentId } = this.props;
+		const { componentId, Site_Name } = this.props;
 		Navigation.push(componentId, {
 			component: {
 				name: 'ForgotPasswordView',
 				options: {
 					topBar: {
 						title: {
-							text: I18n.t('Forgot_Password')
+							text: Site_Name
 						}
 					}
 				}
@@ -216,6 +217,7 @@ export default class LoginView extends LoggedView {
 	}
 
 	renderTOTP = () => {
+		const { code } = this.state;
 		const { isFetching } = this.props;
 		return (
 			<SafeAreaView style={sharedStyles.container} testID='login-view' forceInset={{ bottom: 'never' }}>
@@ -223,26 +225,27 @@ export default class LoginView extends LoggedView {
 				<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular]}>{I18n.t('Whats_your_2fa')}</Text>
 				<TextInput
 					inputRef={ref => this.codeInput = ref}
-					onChangeText={code => this.setState({ code })}
+					onChangeText={value => this.setState({ code: value })}
 					keyboardType='numeric'
 					returnKeyType='done'
 					autoCapitalize='none'
 					onSubmitEditing={this.submit}
+					containerStyle={sharedStyles.inputLastChild}
 				/>
-				<View style={styles.buttonsContainer}>
-					<Button
-						title={I18n.t('Confirm')}
-						type='primary'
-						onPress={this.submit}
-						testID='login-view-submit'
-						loading={isFetching}
-					/>
-				</View>
+				<Button
+					title={I18n.t('Confirm')}
+					type='primary'
+					onPress={this.submit}
+					testID='login-view-submit'
+					loading={isFetching}
+					disabled={!code}
+				/>
 			</SafeAreaView>
 		);
 	}
 
 	renderUserForm = () => {
+		const { username, password } = this.state;
 		const {
 			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, isFetching
 		} = this.props;
@@ -255,7 +258,7 @@ export default class LoginView extends LoggedView {
 					keyboardType='email-address'
 					returnKeyType='next'
 					iconLeft='mention'
-					onChangeText={username => this.setState({ username })}
+					onChangeText={value => this.setState({ username: value })}
 					onSubmitEditing={() => { this.passwordInput.focus(); }}
 					testID='login-view-email'
 				/>
@@ -266,24 +269,24 @@ export default class LoginView extends LoggedView {
 					iconLeft='key'
 					secureTextEntry
 					onSubmitEditing={this.submit}
-					onChangeText={password => this.setState({ password })}
+					onChangeText={value => this.setState({ password: value })}
 					testID='login-view-password'
+					containerStyle={sharedStyles.inputLastChild}
 				/>
-				<View style={styles.buttonsContainer}>
-					<Button
-						title={I18n.t('Login')}
-						type='primary'
-						onPress={this.submit}
-						testID='login-view-submit'
-						loading={isFetching}
-					/>
-					<Button
-						title={I18n.t('Forgot_password')}
-						type='secondary'
-						onPress={this.forgotPassword}
-						testID='welcome-view-register'
-					/>
-				</View>
+				<Button
+					title={I18n.t('Login')}
+					type='primary'
+					onPress={this.submit}
+					testID='login-view-submit'
+					loading={isFetching}
+					disabled={!username || !password}
+				/>
+				<Button
+					title={I18n.t('Forgot_password')}
+					type='secondary'
+					onPress={this.forgotPassword}
+					testID='welcome-view-register'
+				/>
 				<View style={styles.bottomContainer}>
 					<Text
 						style={styles.dontHaveAccount}

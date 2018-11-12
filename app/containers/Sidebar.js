@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
 const keyExtractor = item => item.id;
 
 @connect(state => ({
-	server: state.server.server,
+	Site_Name: state.settings.Site_Name,
 	user: {
 		id: state.login.user && state.login.user.id,
 		language: state.login.user && state.login.user.language,
@@ -101,7 +101,7 @@ export default class Sidebar extends Component {
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		componentId: PropTypes.string,
-		server: PropTypes.string.isRequired,
+		Site_Name: PropTypes.string.isRequired,
 		user: PropTypes.object,
 		logout: PropTypes.func.isRequired,
 		appStart: PropTypes.func
@@ -289,7 +289,7 @@ export default class Sidebar extends Component {
 
 	render() {
 		const { showStatus } = this.state;
-		const { user, server, baseUrl } = this.props;
+		const { user, Site_Name, baseUrl } = this.props;
 
 		if (!user) {
 			return null;
@@ -315,7 +315,7 @@ export default class Sidebar extends Component {
 									<Status style={styles.status} id={user.id} />
 									<Text numberOfLines={1}>{user.username}</Text>
 								</View>
-								<Text style={styles.currentServerText} numberOfLines={1}>{server}</Text>
+								<Text style={styles.currentServerText} numberOfLines={1}>{Site_Name}</Text>
 							</View>
 							<Icon
 								name={showStatus ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}

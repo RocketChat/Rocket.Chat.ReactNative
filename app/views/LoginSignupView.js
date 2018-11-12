@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, ScrollView, TouchableOpacity, LayoutAnimation, Image, StyleSheet, Dimensions
+	Text, View, ScrollView, Image, StyleSheet, Dimensions
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Base64 } from 'js-base64';
 import SafeAreaView from 'react-native-safe-area-view';
 import { gestureHandlerRootHOC, RectButton, BorderlessButton } from 'react-native-gesture-handler';
@@ -18,7 +16,6 @@ import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import random from '../utils/random';
 import Button from '../containers/Button';
-import Loading from '../containers/Loading';
 import I18n from '../i18n';
 import store from '../lib/createStore';
 import { DARK_HEADER } from '../constants/headerOptions';
@@ -410,91 +407,6 @@ export default class LoginSignupView extends LoggedView {
 				{Object.values(services).map(service => this.renderItem(service))}
 			</View>
 		);
-
-
-		// return (
-		// 	<Collapsible collapsed={this.state.collapsed} collapsedHeight={50} enablePointerEvents>
-		// 		<View style={styles.servicesContainer}>
-		// 			{Accounts_OAuth_Facebook && services.facebook
-		// 				? (
-		// 					<TouchableOpacity
-		// 						style={[sharedStyles.oauthButton, sharedStyles.facebookButton]}
-		// 						onPress={this.onPressFacebook}
-		// 					>
-		// 						<Icon name='facebook' size={20} color='#ffffff' />
-		// 					</TouchableOpacity>
-		// 				)
-		// 				: null
-		// 			}
-		// 			{Accounts_OAuth_Github && services.github
-		// 				? (
-		// 					<TouchableOpacity
-		// 						style={[sharedStyles.oauthButton, sharedStyles.githubButton]}
-		// 						onPress={this.onPressGithub}
-		// 					>
-		// 						<Icon name='github' size={20} color='#ffffff' />
-		// 					</TouchableOpacity>
-		// 				)
-		// 				: null
-		// 			}
-		// 			{Accounts_OAuth_Gitlab && services.gitlab
-		// 				? (
-		// 					<TouchableOpacity
-		// 						style={[sharedStyles.oauthButton, sharedStyles.gitlabButton]}
-		// 						onPress={this.onPressGitlab}
-		// 					>
-		// 						<Icon name='gitlab' size={20} color='#ffffff' />
-		// 					</TouchableOpacity>
-		// 				)
-		// 				: null
-		// 			}
-		// 			{Accounts_OAuth_Google && services.google
-		// 				? (
-		// 					<TouchableOpacity
-		// 						style={[sharedStyles.oauthButton, sharedStyles.googleButton]}
-		// 						onPress={this.onPressGoogle}
-		// 					>
-		// 						<Icon name='google' size={20} color='#ffffff' />
-		// 					</TouchableOpacity>
-		// 				)
-		// 				: null
-		// 			}
-		// 			{Accounts_OAuth_Linkedin && services.linkedin
-		// 				? (
-		// 					<TouchableOpacity
-		// 						style={[sharedStyles.oauthButton, sharedStyles.linkedinButton]}
-		// 						onPress={this.onPressLinkedin}
-		// 					>
-		// 						<Icon name='linkedin' size={20} color='#ffffff' />
-		// 					</TouchableOpacity>
-		// 				)
-		// 				: null
-		// 			}
-		// 			{Accounts_OAuth_Meteor && services['meteor-developer']
-		// 				? (
-		// 					<TouchableOpacity
-		// 						style={[sharedStyles.oauthButton, sharedStyles.meteorButton]}
-		// 						onPress={this.onPressMeteor}
-		// 					>
-		// 						<MaterialCommunityIcons name='meteor' size={25} color='#ffffff' />
-		// 					</TouchableOpacity>
-		// 				)
-		// 				: null
-		// 			}
-		// 			{Accounts_OAuth_Twitter && services.twitter
-		// 				? (
-		// 					<TouchableOpacity
-		// 						style={[sharedStyles.oauthButton, sharedStyles.twitterButton]}
-		// 						onPress={this.onPressTwitter}
-		// 					>
-		// 						<Icon name='twitter' size={20} color='#ffffff' />
-		// 					</TouchableOpacity>
-		// 				)
-		// 				: null
-		// 			}
-		// 		</View>
-		// 	</Collapsible>
-		// );
 	}
 
 	render() {

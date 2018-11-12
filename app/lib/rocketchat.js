@@ -427,7 +427,6 @@ const RocketChat = {
 	},
 
 	setUsername({ username }) {
-		console.warn(username)
 		return call('setUsername', username);
 	},
 

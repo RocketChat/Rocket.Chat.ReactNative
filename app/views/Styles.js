@@ -1,7 +1,7 @@
 import { StyleSheet, Platform } from 'react-native';
 
 import {
-	COLOR_DANGER, COLOR_BUTTON_PRIMARY, COLOR_TEXT, COLOR_SEPARATOR
+	COLOR_DANGER, COLOR_BUTTON_PRIMARY, COLOR_SEPARATOR
 } from '../constants/colors';
 
 export default StyleSheet.create({
