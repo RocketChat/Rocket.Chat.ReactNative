@@ -12,9 +12,10 @@ import { STATUS_COLORS } from '../../../constants/colors';
 
 const isIOS = () => Platform.OS === 'ios';
 const TITLE_SIZE = 18;
-const ICON_SIZE = 16;
+const ICON_SIZE = 20;
 const styles = StyleSheet.create({
 	container: {
+		flex: 1,
 		justifyContent: 'center',
 		backgroundColor: isIOS() ? 'transparent' : '#2F343D',
 		height: 44

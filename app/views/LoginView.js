@@ -15,7 +15,6 @@ import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
-import { showToast } from '../utils/info';
 import LoggedView from './View';
 import I18n from '../i18n';
 import store from '../lib/createStore';
@@ -146,14 +145,23 @@ export default class LoginView extends LoggedView {
 		}
 	}
 
-	submit = async() => {
-		const {	username, password, code } = this.state;
-		const { loginSubmit } = this.props;
+	valid = () => {
+		const {
+			username, password, code, showTOTP
+		} = this.state;
+		if (showTOTP) {
+			return code.trim();
+		}
+		return username.trim() && password.trim();
+	}
 
-		if (username.trim() === '' || password.trim() === '') {
-			showToast(I18n.t('Email_or_password_field_is_empty'));
+	submit = async() => {
+		if (!this.valid()) {
 			return;
 		}
+
+		const {	username, password, code } = this.state;
+		const { loginSubmit } = this.props;
 		Keyboard.dismiss();
 
 		try {
@@ -217,7 +225,6 @@ export default class LoginView extends LoggedView {
 	}
 
 	renderTOTP = () => {
-		const { code } = this.state;
 		const { isFetching } = this.props;
 		return (
 			<SafeAreaView style={sharedStyles.container} testID='login-view' forceInset={{ bottom: 'never' }}>
@@ -227,7 +234,7 @@ export default class LoginView extends LoggedView {
 					inputRef={ref => this.codeInput = ref}
 					onChangeText={value => this.setState({ code: value })}
 					keyboardType='numeric'
-					returnKeyType='done'
+					returnKeyType='send'
 					autoCapitalize='none'
 					onSubmitEditing={this.submit}
 					containerStyle={sharedStyles.inputLastChild}
@@ -238,14 +245,13 @@ export default class LoginView extends LoggedView {
 					onPress={this.submit}
 					testID='login-view-submit'
 					loading={isFetching}
-					disabled={!code}
+					disabled={!this.valid()}
 				/>
 			</SafeAreaView>
 		);
 	}
 
 	renderUserForm = () => {
-		const { username, password } = this.state;
 		const {
 			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, isFetching
 		} = this.props;
@@ -279,13 +285,13 @@ export default class LoginView extends LoggedView {
 					onPress={this.submit}
 					testID='login-view-submit'
 					loading={isFetching}
-					disabled={!username || !password}
+					disabled={!this.valid()}
 				/>
 				<Button
 					title={I18n.t('Forgot_password')}
 					type='secondary'
 					onPress={this.forgotPassword}
-					testID='welcome-view-register'
+					testID='login-view-register'
 				/>
 				<View style={styles.bottomContainer}>
 					<Text

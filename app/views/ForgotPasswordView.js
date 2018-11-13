@@ -42,7 +42,7 @@ export default class ForgotPasswordView extends LoggedView {
 
 		this.state = {
 			email: '',
-			invalidEmail: false
+			invalidEmail: true
 		};
 	}
 
@@ -85,6 +85,7 @@ export default class ForgotPasswordView extends LoggedView {
 	}
 
 	render() {
+		const { invalidEmail } = this.state;
 		const { login } = this.props;
 
 		return (
@@ -102,7 +103,7 @@ export default class ForgotPasswordView extends LoggedView {
 							iconLeft='mail'
 							returnKeyType='send'
 							onChangeText={email => this.validate(email)}
-							onSubmitEditing={() => this.resetPassword()}
+							onSubmitEditing={this.resetPassword}
 							testID='forgot-password-view-email'
 							containerStyle={sharedStyles.inputLastChild}
 						/>
@@ -112,6 +113,7 @@ export default class ForgotPasswordView extends LoggedView {
 							onPress={this.resetPassword}
 							testID='forgot-password-view-submit'
 							loading={login.isFetching}
+							disabled={invalidEmail}
 						/>
 					</SafeAreaView>
 				</ScrollView>

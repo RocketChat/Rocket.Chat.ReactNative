@@ -215,7 +215,7 @@ export default class RoomItem extends React.Component {
 		if (type === 'd') {
 			return <Status style={[styles.status]} id={id} />;
 		}
-		return <RoomTypeIcon type={type} />;
+		return <RoomTypeIcon type={type} size={12} />;
 	}
 
 	formatDate = date => moment(date).calendar(null, {

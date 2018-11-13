@@ -22,7 +22,10 @@ import { DARK_HEADER } from '../constants/headerOptions';
 
 const styles = StyleSheet.create({
 	container: {
-		paddingTop: 30
+		paddingVertical: 30
+	},
+	safeArea: {
+		paddingBottom: 30
 	},
 	serviceButton: {
 		borderRadius: 2,
@@ -412,7 +415,7 @@ export default class LoginSignupView extends LoggedView {
 	render() {
 		return (
 			<ScrollView style={[sharedStyles.containerScrollView, sharedStyles.container, styles.container]} {...scrollPersistTaps}>
-				<SafeAreaView testID='welcome-view' forceInset={{ bottom: 'never' }}>
+				<SafeAreaView testID='welcome-view' forceInset={{ bottom: 'never' }} style={styles.safeArea}>
 					{this.renderServices()}
 					{this.renderServicesSeparator()}
 					<Button

@@ -57,7 +57,7 @@ export default class RoomView extends LoggedView {
 				title: {
 					component: {
 						name: 'RoomHeaderView',
-						alignment: 'fill'
+						alignment: 'left'
 					}
 				},
 				rightButtons: [{
