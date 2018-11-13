@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Linking } from 'react-native';
+import { Linking, Platform } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { Provider } from 'react-redux';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
@@ -114,6 +114,9 @@ export default class App extends Component {
 					},
 					rightButtonStyle: {
 						color: '#FFF'
+					},
+					title: {
+						fontFamily: Platform.OS === 'ios' ? 'System' : 'sans-serif-medium'
 					}
 				},
 				sideMenu: {
