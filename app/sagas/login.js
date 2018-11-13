@@ -123,7 +123,6 @@ const root = function* root() {
 	yield takeLatest(types.LOGIN.SET_USERNAME_REQUEST, handleSetUsernameRequest);
 	yield takeLatest(types.LOGOUT, handleLogout);
 	yield takeLatest(types.FORGOT_PASSWORD.REQUEST, handleForgotPasswordRequest);
-	// yield takeLatest(types.LOGIN.OPEN, watchLoginOpen);
 	yield takeLatest(types.USER.SET, handleSetUser);
 };
 export default root;

@@ -1,16 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, ScrollView, Image, StyleSheet, Dimensions
+	Text, View, ScrollView, Image, StyleSheet, Dimensions, Animated, Easing
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import { Base64 } from 'js-base64';
 import SafeAreaView from 'react-native-safe-area-view';
 import { gestureHandlerRootHOC, RectButton, BorderlessButton } from 'react-native-gesture-handler';
-import Collapsible from 'react-native-collapsible';
 
-import { open as openAction, close as closeAction } from '../actions/login';
 import LoggedView from './View';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
@@ -91,6 +89,8 @@ let OAuthView = null;
 let LoginView = null;
 let RegisterView = null;
 let LegalView = null;
+const SERVICE_HEIGHT = 58;
+const SERVICES_COLLAPSED_HEIGHT = 174;
 
 @connect(state => ({
 	server: state.server.server,
@@ -99,9 +99,6 @@ let LegalView = null;
 	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
 	Site_Name: state.settings.Site_Name,
 	services: state.login.services
-}), dispatch => ({
-	open: () => dispatch(openAction()),
-	close: () => dispatch(closeAction())
 }))
 /** @extends React.Component */
 export default class LoginSignupView extends LoggedView {
@@ -121,8 +118,6 @@ export default class LoginSignupView extends LoggedView {
 
 	static propTypes = {
 		componentId: PropTypes.string,
-		open: PropTypes.func.isRequired,
-		close: PropTypes.func.isRequired,
 		isFetching: PropTypes.bool,
 		server: PropTypes.string,
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.bool,
@@ -139,7 +134,10 @@ export default class LoginSignupView extends LoggedView {
 
 	constructor(props) {
 		super('LoginSignupView', props);
-		this.state = { collapsed: true };
+		this.state = {
+			collapsed: true,
+			servicesHeight: new Animated.Value(SERVICES_COLLAPSED_HEIGHT)
+		};
 		Navigation.events().bindComponent(this);
 		const { componentId, Site_Name } = this.props;
 		this.setTitle(componentId, Site_Name);
@@ -327,6 +325,30 @@ export default class LoginSignupView extends LoggedView {
 		});
 	}
 
+	transitionServicesTo = (height) => {
+		const { servicesHeight } = this.state;
+		if (this._animation) {
+			this._animation.stop();
+		}
+		this._animation = Animated.timing(servicesHeight, {
+			toValue: height,
+			duration: 300,
+			easing: Easing.easeOutCubic
+		}).start();
+	}
+
+	toggleServices = () => {
+		const { collapsed } = this.state;
+		const { services } = this.props;
+		const { length } = Object.values(services);
+		if (collapsed) {
+			this.transitionServicesTo(SERVICE_HEIGHT * length);
+		} else {
+			this.transitionServicesTo(SERVICES_COLLAPSED_HEIGHT);
+		}
+		this.setState(prevState => ({ collapsed: !prevState.collapsed }));
+	}
+
 	renderServicesSeparator = () => {
 		const { collapsed } = this.state;
 		const { services } = this.props;
@@ -336,7 +358,7 @@ export default class LoginSignupView extends LoggedView {
 			return (
 				<View style={styles.servicesTogglerContainer}>
 					<View style={[styles.separatorLine, styles.separatorLineLeft]} />
-					<BorderlessButton onPress={() => this.setState(prevState => ({ collapsed: !prevState.collapsed }))}>
+					<BorderlessButton onPress={this.toggleServices}>
 						<Image source={{ uri: 'options' }} style={[styles.servicesToggler, !collapsed && styles.inverted]} />
 					</BorderlessButton>
 					<View style={[styles.separatorLine, styles.separatorLineRight]} />
@@ -394,15 +416,20 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	renderServices = () => {
-		const { collapsed } = this.state;
+		const { servicesHeight } = this.state;
 		const { services } = this.props;
 		const { length } = Object.values(services);
+		const style = {
+			overflow: 'hidden',
+			height: servicesHeight
+		};
+
 
 		if (length > 3) {
 			return (
-				<Collapsible collapsed={collapsed} collapsedHeight={174} enablePointerEvents>
+				<Animated.View style={style}>
 					{Object.values(services).map(service => this.renderItem(service))}
-				</Collapsible>
+				</Animated.View>
 			);
 		}
 		return (

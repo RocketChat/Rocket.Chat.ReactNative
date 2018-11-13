@@ -84,8 +84,6 @@ export default function login(state = initialState, action) {
 				...state,
 				isFetching: false
 			};
-		case types.FORGOT_PASSWORD.INIT:
-			return initialState;
 		case types.FORGOT_PASSWORD.REQUEST:
 			return {
 				...state,

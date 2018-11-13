@@ -6,7 +6,7 @@ import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 
 import LoggedView from './View';
-import { forgotPasswordInit as forgotPasswordInitAction, forgotPasswordRequest as forgotPasswordRequestAction } from '../actions/login';
+import { forgotPasswordRequest as forgotPasswordRequestAction } from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
@@ -19,7 +19,6 @@ import { DARK_HEADER } from '../constants/headerOptions';
 @connect(state => ({
 	login: state.login
 }), dispatch => ({
-	forgotPasswordInit: () => dispatch(forgotPasswordInitAction()),
 	forgotPasswordRequest: email => dispatch(forgotPasswordRequestAction(email))
 }))
 /** @extends React.Component */
@@ -32,7 +31,6 @@ export default class ForgotPasswordView extends LoggedView {
 
 	static propTypes = {
 		componentId: PropTypes.string,
-		forgotPasswordInit: PropTypes.func.isRequired,
 		forgotPasswordRequest: PropTypes.func.isRequired,
 		login: PropTypes.object
 	}
@@ -47,9 +45,6 @@ export default class ForgotPasswordView extends LoggedView {
 	}
 
 	componentDidMount() {
-		const { forgotPasswordInit } = this.props;
-		forgotPasswordInit();
-
 		setTimeout(() => {
 			this.emailInput.focus();
 		}, 600);

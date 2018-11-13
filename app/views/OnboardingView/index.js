@@ -150,14 +150,14 @@ export default class OnboardingView extends LoggedView {
 	render() {
 		return (
 			<SafeAreaView style={styles.container} testID='onboarding-view' forceInset={{ bottom: 'never' }}>
-				<Image style={styles.onboarding} source={{ uri: 'onboarding' }} />
+				<Image style={styles.onboarding} source={{ uri: 'onboarding' }} fadeDuration={0} />
 				<Text style={styles.title}>{I18n.t('Welcome_to_RocketChat')}</Text>
 				<Text style={styles.subtitle}>{I18n.t('Open_Source_Communication')}</Text>
 				<View style={styles.buttonsContainer}>
 					<Button
 						type='secondary'
 						title={I18n.t('Connect_to_a_server')}
-						icon={<Image source={{ uri: 'connect_server' }} style={{ width: 30, height: 30 }} />}
+						icon={<Image source={{ uri: 'connect_server' }} style={{ width: 30, height: 30 }} fadeDuration={0} />}
 						onPress={this.connectServer}
 						testID='connect-server-button'
 					/>
@@ -165,14 +165,14 @@ export default class OnboardingView extends LoggedView {
 						type='secondary'
 						title={I18n.t('Join_the_community')}
 						subtitle='open.rocket.chat'
-						icon={<Image source={{ uri: 'logo_onboarding' }} style={{ width: 32, height: 27 }} />}
+						icon={<Image source={{ uri: 'logo_onboarding' }} style={{ width: 32, height: 27 }} fadeDuration={0} />}
 						onPress={this.joinCommunity}
 						testID='join-community-button'
 					/>
 					<Button
 						type='primary'
 						title={I18n.t('Create_a_new_workspace')}
-						icon={<Image source={{ uri: 'plus_onboarding' }} style={{ width: 24, height: 24 }} />}
+						icon={<Image source={{ uri: 'plus_onboarding' }} style={{ width: 24, height: 24 }} fadeDuration={0} />}
 						onPress={this.createWorkspace}
 						testID='create-workspace-button'
 					/>

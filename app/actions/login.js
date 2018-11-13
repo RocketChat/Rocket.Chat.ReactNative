@@ -117,18 +117,6 @@ export function setUser(action) {
 	};
 }
 
-export function open() {
-	return {
-		type: types.LOGIN.OPEN
-	};
-}
-
-export function close() {
-	return {
-		type: types.LOGIN.CLOSE
-	};
-}
-
 export function setLoginServices(data) {
 	return {
 		type: types.LOGIN.SET_SERVICES,
