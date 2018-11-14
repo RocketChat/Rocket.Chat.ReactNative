@@ -64,7 +64,6 @@
 		AE5D35882AE04CC29630FB3D /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DC6EE17B5550465E98C70FF0 /* Entypo.ttf */; };
 		B88F586F1FBF57F600B352B8 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B88F58461FBF55E200B352B8 /* libRCTPushNotification.a */; };
 		B8971BB2202A093B0000D245 /* libKeyboardTrackingView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B8971BB1202A091D0000D245 /* libKeyboardTrackingView.a */; };
-		B8C682A81FD850F4003A12C8 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B8C682611FD84CEF003A12C8 /* icomoon.ttf */; };
 		B8C682AC1FD8511D003A12C8 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1B0746E708284151B8AD1198 /* Ionicons.ttf */; };
 		B8C682AD1FD8511E003A12C8 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1B0746E708284151B8AD1198 /* Ionicons.ttf */; };
 		B8C682AE1FD8511F003A12C8 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1B0746E708284151B8AD1198 /* Ionicons.ttf */; };
@@ -564,7 +563,6 @@
 		B37C79D9BD0742CE936B6982 /* libc++.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		B88F58361FBF55E200B352B8 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		B8971BAC202A091D0000D245 /* KeyboardTrackingView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KeyboardTrackingView.xcodeproj; path = "../node_modules/react-native-keyboard-tracking-view/lib/KeyboardTrackingView.xcodeproj"; sourceTree = "<group>"; };
-		B8C682611FD84CEF003A12C8 /* icomoon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = icomoon.ttf; path = ../resources/fonts/icomoon.ttf; sourceTree = "<group>"; };
 		BAAE4B947F5D44959F0A9D5A /* libRNZeroconf.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNZeroconf.a; sourceTree = "<group>"; };
 		C01CD6D4653143EEB5100C3A /* libRNI18n-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNI18n-tvOS.a"; sourceTree = "<group>"; };
 		C21010507E5B4B37BA0E4C9D /* RNAudio.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNAudio.xcodeproj; path = "../node_modules/react-native-audio/ios/RNAudio.xcodeproj"; sourceTree = "<group>"; };
@@ -971,7 +969,6 @@
 		AF5E16F0398347E6A80C8CBE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				B8C682611FD84CEF003A12C8 /* icomoon.ttf */,
 				DC6EE17B5550465E98C70FF0 /* Entypo.ttf */,
 				A18EFC3B0CFE40E0918A8F0C /* EvilIcons.ttf */,
 				7A30DA4B2D474348824CD05B /* FontAwesome.ttf */,
@@ -1706,7 +1703,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B8C682A81FD850F4003A12C8 /* icomoon.ttf in Resources */,
 				7A309C9C20724870000C6B13 /* Fabric.sh in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,

@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
-import { verticalScale, scale, moderateScale } from '../../utils/scaling';
+import { verticalScale, moderateScale } from '../../utils/scaling';
+import sharedStyles from '../Styles';
 
 const colors = {
 	backgroundPrimary: '#1D74F5',
@@ -21,29 +22,26 @@ export default StyleSheet.create({
 	},
 	onboarding: {
 		alignSelf: 'center',
-		paddingHorizontal: scale(45),
 		marginTop: verticalScale(30),
 		marginBottom: verticalScale(35),
-		maxHeight: verticalScale(250),
+		maxHeight: verticalScale(150),
 		resizeMode: 'contain',
 		width: 309,
 		height: 250
 	},
 	title: {
-		alignSelf: 'center',
-		color: '#2F343D',
+		...sharedStyles.textBold,
+		letterSpacing: 0,
 		fontSize: moderateScale(24),
-		height: moderateScale(28),
-		lineHeight: moderateScale(28),
-		fontWeight: 'bold'
+		color: '#2F343D',
+		alignSelf: 'center',
+		marginBottom: verticalScale(8)
 	},
 	subtitle: {
-		alignSelf: 'center',
-		color: '#54585E',
+		...sharedStyles.textRegular,
 		fontSize: moderateScale(16),
-		height: moderateScale(20),
-		lineHeight: moderateScale(20),
-		fontWeight: 'normal'
+		color: '#54585E',
+		alignSelf: 'center'
 	},
 	buttonsContainer: {
 		marginBottom: verticalScale(10),
@@ -64,13 +62,13 @@ export default StyleSheet.create({
 		justifyContent: 'center'
 	},
 	buttonTitle: {
-		fontSize: 16,
-		fontWeight: '600'
+		...sharedStyles.textSemibold,
+		fontSize: 17
 	},
 	buttonSubtitle: {
+		...sharedStyles.textRegular,
 		color: '#9EA2A8',
-		fontSize: 14,
-		height: 18
+		fontSize: 15
 	},
 	buttonIconContainer: {
 		width: 65,

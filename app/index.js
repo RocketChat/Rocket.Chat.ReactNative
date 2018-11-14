@@ -1,6 +1,8 @@
 import { Component } from 'react';
-import { Linking, Platform, Dimensions } from 'react-native';
+import { Linking, Platform } from 'react-native';
 import { Navigation } from 'react-native-navigation';
+import { Provider } from 'react-redux';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import store from './lib/createStore';
 import { appInit } from './actions';
@@ -9,8 +11,6 @@ import { registerScreens } from './views';
 import { deepLinkingOpen } from './actions/deepLinking';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications } from './push';
-
-const isAndroid = () => Platform.OS === 'android';
 
 const startLogged = () => {
 	Navigation.setRoot({
@@ -57,6 +57,30 @@ const startNotLogged = () => {
 	});
 };
 
+let SetUsernameView = null;
+const startSetUsername = () => {
+	if (SetUsernameView == null) {
+		SetUsernameView = require('./views/SetUsernameView').default;
+		Navigation.registerComponentWithRedux('SetUsernameView', () => gestureHandlerRootHOC(SetUsernameView), Provider, store);
+	}
+	Navigation.setRoot({
+		root: {
+			stack: {
+				children: [{
+					component: {
+						name: 'SetUsernameView'
+					}
+				}],
+				options: {
+					layout: {
+						orientation: ['portrait']
+					}
+				}
+			}
+		}
+	});
+};
+
 const handleOpenURL = ({ url }) => {
 	if (url) {
 		url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
@@ -83,15 +107,17 @@ export default class App extends Component {
 			Navigation.setDefaultOptions({
 				topBar: {
 					backButton: {
-						icon: { uri: 'back', scale: Dimensions.get('window').scale }
+						showTitle: false
+					},
+					leftButtonStyle: {
+						color: '#FFF'
+					},
+					rightButtonStyle: {
+						color: '#FFF'
 					},
 					title: {
-						color: isAndroid() ? '#FFF' : undefined
-					},
-					background: {
-						color: isAndroid() ? '#2F343D' : undefined
-					},
-					buttonColor: '#FFF'
+						fontFamily: Platform.OS === 'ios' ? 'System' : 'sans-serif-medium'
+					}
 				},
 				sideMenu: {
 					left: {
@@ -121,6 +147,8 @@ export default class App extends Component {
 				startNotLogged();
 			} else if (root === 'inside') {
 				startLogged();
+			} else if (root === 'setUsername') {
+				startSetUsername();
 			}
 		}
 	}

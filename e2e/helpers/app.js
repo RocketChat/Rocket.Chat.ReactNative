@@ -14,9 +14,16 @@ async function addServer() {
 
 async function navigateToLogin() {
     await addServer();
-    await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(2000);
-    await element(by.id('welcome-view-login')).tap();
-    await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
+    try {
+        await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
+        await expect(element(by.id('login-view'))).toBeVisible();
+    } catch (error) {
+        await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(2000);
+        await expect(element(by.id('welcome-view'))).toBeVisible();
+        await element(by.id('welcome-view-login')).tap();
+        await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
+        await expect(element(by.id('login-view'))).toBeVisible();
+    }
 }
 
 async function login() {

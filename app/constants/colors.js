@@ -1,5 +1,5 @@
 export const COLOR_DANGER = '#f5455c';
-export const COLOR_BUTTON_PRIMARY = '#2D6AEA';
+export const COLOR_BUTTON_PRIMARY = '#1d74f5';
 export const COLOR_TEXT = '#292E35';
 export const COLOR_SEPARATOR = '#CBCED1';
 export const STATUS_COLORS = {
