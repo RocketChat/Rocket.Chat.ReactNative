@@ -8,31 +8,7 @@ export default {
 	Accounts_NamePlaceholder: {
 		type: 'valueAsString'
 	},
-	Accounts_OAuth_Facebook: {
-		type: 'valueAsBoolean'
-	},
-	Accounts_OAuth_Github: {
-		type: 'valueAsBoolean'
-	},
-	Accounts_OAuth_Gitlab: {
-		type: 'valueAsBoolean'
-	},
-	Accounts_OAuth_Google: {
-		type: 'valueAsBoolean'
-	},
-	Accounts_OAuth_Linkedin: {
-		type: 'valueAsBoolean'
-	},
-	Accounts_OAuth_Meteor: {
-		type: 'valueAsBoolean'
-	},
-	Accounts_OAuth_Twitter: {
-		type: 'valueAsBoolean'
-	},
 	Accounts_PasswordPlaceholder: {
-		type: 'valueAsString'
-	},
-	Accounts_RepeatPasswordPlaceholder: {
 		type: 'valueAsString'
 	},
 	CROWD_Enable: {
@@ -84,4 +60,4 @@ export default {
 		type: 'valueAsBoolean'
 	}
 };
-export const settingsUpdatedAt = new Date('2018-09-10');
+export const settingsUpdatedAt = new Date('2018-11-14');

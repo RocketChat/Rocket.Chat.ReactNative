@@ -5,6 +5,12 @@ const { takeScreenshot } = require('./helpers/screenshot');
 const { tapBack } = require('./helpers/app');
 
 describe('Welcome screen', () => {
+	before(async() => {
+		await device.reloadReactNative();
+		await element(by.id('join-community-button')).tap();
+		await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(60000);
+	})
+
 	describe('Render', async() => {
 		it('should have welcome screen', async() => {
 			await expect(element(by.id('welcome-view'))).toBeVisible();
@@ -30,14 +36,20 @@ describe('Welcome screen', () => {
 			await element(by.id('welcome-view-login')).tap();
 			await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('login-view'))).toBeVisible();
-			await tapBack();
 		});
 		
 		it('should navigate to register', async() => {
+			await tapBack();
 			await element(by.id('welcome-view-register')).tap();
 			await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('register-view'))).toBeVisible();
+		});
+
+		it('should navigate to legal', async() => {
 			await tapBack();
+			await element(by.id('welcome-view-more')).tap();
+			await waitFor(element(by.id('legal-view'))).toBeVisible().withTimeout(2000);
+			await expect(element(by.id('legal-view'))).toBeVisible();
 		});
 
 		afterEach(async() => {
