@@ -12,6 +12,7 @@ import styles from './styles';
 import Message from '../../containers/message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
+import { DEFAULT_HEADER } from '../../constants/headerOptions';
 
 const PIN_INDEX = 0;
 const CANCEL_INDEX = 1;
@@ -34,8 +35,11 @@ const options = [I18n.t('Unpin'), I18n.t('Cancel')];
 export default class PinnedMessagesView extends LoggedView {
 	static options() {
 		return {
+			...DEFAULT_HEADER,
 			topBar: {
+				...DEFAULT_HEADER.topBar,
 				title: {
+					...DEFAULT_HEADER.topBar.title,
 					text: I18n.t('Pinned')
 				}
 			}

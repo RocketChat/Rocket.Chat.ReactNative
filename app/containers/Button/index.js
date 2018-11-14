@@ -1,32 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	StyleSheet, View, Text, Platform, ActivityIndicator
-} from 'react-native';
+import { StyleSheet, Text, ActivityIndicator } from 'react-native';
+import { RectButton } from 'react-native-gesture-handler';
 
-import { COLOR_BUTTON_PRIMARY, COLOR_TEXT } from '../../constants/colors';
-import Touch from '../../utils/touch';
-import { scale, moderateScale, verticalScale } from '../../utils/scaling';
+import { COLOR_BUTTON_PRIMARY } from '../../constants/colors';
+import sharedStyles from '../../views/Styles';
 
 const colors = {
 	background_primary: COLOR_BUTTON_PRIMARY,
 	background_secondary: 'white',
 
 	text_color_primary: 'white',
-	text_color_secondary: COLOR_TEXT
+	text_color_secondary: COLOR_BUTTON_PRIMARY
 };
 
 /* eslint-disable react-native/no-unused-styles */
 const styles = StyleSheet.create({
 	container: {
-		paddingHorizontal: scale(15),
+		paddingHorizontal: 15,
 		justifyContent: 'center',
-		height: scale(48)
+		height: 48,
+		borderRadius: 2,
+		marginBottom: 10
 	},
 	text: {
-		fontSize: moderateScale(18),
-		height: verticalScale(20),
-		lineHeight: verticalScale(20),
+		fontSize: 18,
 		textAlign: 'center',
 		fontWeight: '500'
 	},
@@ -36,30 +34,25 @@ const styles = StyleSheet.create({
 	background_secondary: {
 		backgroundColor: colors.background_secondary
 	},
-	text_color_primary: {
+	text_primary: {
+		...sharedStyles.textMedium,
 		color: colors.text_color_primary
 	},
-	text_color_secondary: {
+	text_secondary: {
+		...sharedStyles.textBold,
 		color: colors.text_color_secondary
 	},
-	margin: {
-		marginBottom: verticalScale(10)
-	},
 	disabled: {
-		opacity: 0.5
-	},
-	border: {
-		borderRadius: scale(2)
+		backgroundColor: '#e1e5e8'
 	}
 });
 
 export default class Button extends React.PureComponent {
 	static propTypes = {
-		title: PropTypes.string,
+		title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 		type: PropTypes.string,
 		onPress: PropTypes.func,
 		disabled: PropTypes.bool,
-		margin: PropTypes.any,
 		backgroundColor: PropTypes.string,
 		loading: PropTypes.bool
 	}
@@ -74,32 +67,26 @@ export default class Button extends React.PureComponent {
 
 	render() {
 		const {
-			title, type, onPress, disabled, margin, backgroundColor, loading, ...otherProps
+			title, type, onPress, disabled, backgroundColor, loading, ...otherProps
 		} = this.props;
 		return (
-			<Touch
+			<RectButton
 				onPress={onPress}
-				accessibilityTraits='button'
-				style={Platform.OS === 'ios' && [(margin || styles.margin), styles.border]}
-				disabled={disabled || loading}
+				enabled={!(disabled || loading)}
+				style={[
+					styles.container,
+					styles.border,
+					backgroundColor ? { backgroundColor } : styles[`background_${ type }`],
+					disabled && styles.disabled
+				]}
 				{...otherProps}
 			>
-				<View
-					style={[
-						styles.container,
-						styles.border,
-						backgroundColor ? { backgroundColor } : styles[`background_${ type }`],
-						Platform.OS === 'android' && (margin || styles.margin),
-						disabled && styles.disabled
-					]}
-				>
-					{
-						loading
-							? <ActivityIndicator color={colors[`text_color_${ type }`]} />
-							: <Text style={[styles.text, styles[`text_color_${ type }`]]}>{title}</Text>
-					}
-				</View>
-			</Touch>
+				{
+					loading
+						? <ActivityIndicator color={colors[`text_color_${ type }`]} />
+						: <Text style={[styles.text, styles[`text_${ type }`]]}>{title}</Text>
+				}
+			</RectButton>
 		);
 	}
 }

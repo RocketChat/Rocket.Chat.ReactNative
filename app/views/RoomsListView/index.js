@@ -7,6 +7,7 @@ import { connect, Provider } from 'react-redux';
 import { isEqual } from 'lodash';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import SearchBox from '../../containers/SearchBox';
 import ConnectionBadge from '../../containers/ConnectionBadge';
@@ -23,6 +24,7 @@ import Touch from '../../utils/touch';
 import { toggleSortDropdown as toggleSortDropdownAction, openSearchHeader as openSearchHeaderAction, closeSearchHeader as closeSearchHeaderAction } from '../../actions/rooms';
 import store from '../../lib/createStore';
 import Drawer from '../../Drawer';
+import { DEFAULT_HEADER } from '../../constants/headerOptions';
 
 const ROW_HEIGHT = 70;
 const SCROLL_OFFSET = 56;
@@ -73,7 +75,9 @@ let NewMessageView = null;
 export default class RoomsListView extends LoggedView {
 	static options() {
 		return {
+			...DEFAULT_HEADER,
 			topBar: {
+				...DEFAULT_HEADER.topBar,
 				leftButtons,
 				rightButtons,
 				title: {
@@ -186,7 +190,7 @@ export default class RoomsListView extends LoggedView {
 		if (buttonId === 'newMessage') {
 			if (NewMessageView == null) {
 				NewMessageView = require('../NewMessageView').default;
-				Navigation.registerComponentWithRedux('NewMessageView', () => NewMessageView, Provider, store);
+				Navigation.registerComponentWithRedux('NewMessageView', () => gestureHandlerRootHOC(NewMessageView), Provider, store);
 			}
 
 			Navigation.showModal({

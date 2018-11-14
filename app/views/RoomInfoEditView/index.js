@@ -21,6 +21,7 @@ import SwitchContainer from './SwitchContainer';
 import random from '../../utils/random';
 import log from '../../utils/log';
 import I18n from '../../i18n';
+import { DEFAULT_HEADER } from '../../constants/headerOptions';
 
 const PERMISSION_SET_READONLY = 'set-readonly';
 const PERMISSION_SET_REACT_WHEN_READONLY = 'set-react-when-readonly';
@@ -44,8 +45,11 @@ const PERMISSIONS_ARRAY = [
 export default class RoomInfoEditView extends LoggedView {
 	static options() {
 		return {
+			...DEFAULT_HEADER,
 			topBar: {
+				...DEFAULT_HEADER.topBar,
 				title: {
+					...DEFAULT_HEADER.topBar.title,
 					text: I18n.t('Room_Info_Edit')
 				}
 			}
