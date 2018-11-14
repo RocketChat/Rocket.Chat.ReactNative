@@ -123,7 +123,7 @@ export default class CreateChannelView extends LoggedView {
 	}
 
 	componentDidMount() {
-		setTimeout(() => {
+		this.timeout = setTimeout(() => {
 			this.channelNameRef.focus();
 		}, 600);
 	}
@@ -151,6 +151,12 @@ export default class CreateChannelView extends LoggedView {
 					});
 				}
 			}, 300);
+		}
+	}
+
+	componentWillUnmount() {
+		if (this.timeout) {
+			clearTimeout(this.timeout);
 		}
 	}
 

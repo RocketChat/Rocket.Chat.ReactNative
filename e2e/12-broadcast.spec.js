@@ -1,6 +1,8 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
+const OTP = require('otp.js');
+const GA = OTP.googleAuthenticator;
 const { takeScreenshot } = require('./helpers/screenshot');
 const { logout, navigateToLogin, login, tapBack } = require('./helpers/app');
 const data = require('./data');
@@ -58,15 +60,19 @@ describe('Broadcast room', () => {
 		await expect(element(by.id('rooms-list-view'))).toBeVisible();
 		await logout();
 		await navigateToLogin();
+		// 2FA login in stable:detox
 		await element(by.id('login-view-email')).replaceText(data.alternateUser);
 		await element(by.id('login-view-password')).replaceText(data.alternateUserPassword);
+		await element(by.id('login-view-submit')).tap();
+		const code = GA.gen(data.alternateUserTOTPSecret);
+		await element(by.id('login-view-totp')).replaceText(code);
 		await element(by.id('login-view-submit')).tap();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 		// await device.reloadReactNative(); // remove after fix logout
 		// await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 		await element(by.id('rooms-list-view-search')).replaceText(`broadcast${ data.random }`);
-		await waitFor(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toBeVisible().withTimeout(60000);
-		await expect(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toBeVisible();
+		await waitFor(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toExist().withTimeout(60000);
+		await expect(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toExist();
 		await element(by.id(`rooms-list-view-item-broadcast${ data.random }`)).tap();
 		await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 		await waitFor(element(by.text(`broadcast${ data.random }`))).toBeVisible().withTimeout(60000);

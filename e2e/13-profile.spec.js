@@ -24,15 +24,15 @@ describe('Profile screen', () => {
 		});
 
 		it('should have avatar', async() => {
-			await expect(element(by.id('profile-view-avatar')).atIndex(0)).toBeVisible();
+			await expect(element(by.id('profile-view-avatar')).atIndex(0)).toExist();
 		});
 
 		it('should have name', async() => {
-			await expect(element(by.id('profile-view-name'))).toBeVisible();
+			await expect(element(by.id('profile-view-name'))).toExist();
 		});
 
 		it('should have username', async() => {
-			await expect(element(by.id('profile-view-username'))).toBeVisible();
+			await expect(element(by.id('profile-view-username'))).toExist();
 		});
 
 		it('should have email', async() => {
@@ -40,31 +40,31 @@ describe('Profile screen', () => {
 		});
 
 		it('should have new password', async() => {
-			await expect(element(by.id('profile-view-new-password'))).toBeVisible();
+			await expect(element(by.id('profile-view-new-password'))).toExist();
 		});
 
 		it('should have avatar url', async() => {
-			await expect(element(by.id('profile-view-avatar-url'))).toBeVisible();
+			await expect(element(by.id('profile-view-avatar-url'))).toExist();
 		});
 		
 		it('should have reset avatar button', async() => {
-			await waitFor(element(by.id('profile-view-reset-avatar'))).toBeVisible().whileElement(by.id('profile-view-list')).scroll(scrollDown, 'down');
-			await expect(element(by.id('profile-view-reset-avatar'))).toBeVisible();
+			await waitFor(element(by.id('profile-view-reset-avatar'))).toExist().whileElement(by.id('profile-view-list')).scroll(scrollDown, 'down');
+			await expect(element(by.id('profile-view-reset-avatar'))).toExist();
 		});
 
 		it('should have upload avatar button', async() => {
-			await waitFor(element(by.id('profile-view-upload-avatar'))).toBeVisible().whileElement(by.id('profile-view-list')).scroll(scrollDown, 'down');
-			await expect(element(by.id('profile-view-upload-avatar'))).toBeVisible();
+			await waitFor(element(by.id('profile-view-upload-avatar'))).toExist().whileElement(by.id('profile-view-list')).scroll(scrollDown, 'down');
+			await expect(element(by.id('profile-view-upload-avatar'))).toExist();
 		});
 
 		it('should have avatar url button', async() => {
-			await waitFor(element(by.id('profile-view-avatar-url-button'))).toBeVisible().whileElement(by.id('profile-view-list')).scroll(scrollDown, 'down');
-			await expect(element(by.id('profile-view-avatar-url-button'))).toBeVisible();
+			await waitFor(element(by.id('profile-view-avatar-url-button'))).toExist().whileElement(by.id('profile-view-list')).scroll(scrollDown, 'down');
+			await expect(element(by.id('profile-view-avatar-url-button'))).toExist();
 		});
 
 		it('should have submit button', async() => {
-			await waitFor(element(by.id('profile-view-submit'))).toBeVisible().whileElement(by.id('profile-view-list')).scroll(scrollDown, 'down');
-			await expect(element(by.id('profile-view-submit'))).toBeVisible();
+			await waitFor(element(by.id('profile-view-submit'))).toExist().whileElement(by.id('profile-view-list')).scroll(scrollDown, 'down');
+			await expect(element(by.id('profile-view-submit'))).toExist();
 		});
 
 		after(async() => {

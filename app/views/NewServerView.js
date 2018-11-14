@@ -97,7 +97,7 @@ export default class NewServerView extends LoggedView {
 			connectServer(server);
 			this.setState({ text: server });
 		} else {
-			setTimeout(() => {
+			this.timeout = setTimeout(() => {
 				this.input.focus();
 			}, 600);
 		}
@@ -107,6 +107,12 @@ export default class NewServerView extends LoggedView {
 		const { failure } = this.props;
 		if (nextProps.failure && nextProps.failure !== failure) {
 			Alert.alert(I18n.t('Oops'), I18n.t('The_URL_is_invalid'));
+		}
+	}
+
+	componentWillUnmount() {
+		if (this.timeout) {
+			clearTimeout(this.timeout);
 		}
 	}
 

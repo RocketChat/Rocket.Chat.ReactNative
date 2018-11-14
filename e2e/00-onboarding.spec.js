@@ -40,8 +40,8 @@ describe('Onboarding', () => {
 			await element(by.id('join-community-button')).tap();
 			await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('welcome-view'))).toBeVisible();
-			await waitFor(element(by.text('https://open.rocket.chat'))).toBeVisible().withTimeout(60000);
-			await expect(element(by.text('https://open.rocket.chat'))).toBeVisible();
+			await waitFor(element(by.text('Rocket.Chat'))).toBeVisible().withTimeout(60000);
+			await expect(element(by.text('Rocket.Chat'))).toBeVisible();
 		});
 
 		it('should navigate to new server', async() => {
@@ -60,12 +60,23 @@ describe('Onboarding', () => {
 			await expect(element(by.text(errorText))).toBeVisible();
 		});
 
-		it('should enter a valid server and navigate to welcome', async() => {
+		it('should enter a valid server with login services and navigate to welcome', async() => {
 			await element(by.text('OK')).tap();
-			await element(by.id('new-server-view-input')).replaceText(data.server);
+			await element(by.id('new-server-view-input')).replaceText('open');
 			await element(by.id('new-server-view-button')).tap();
 			await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('welcome-view'))).toBeVisible();
+		});
+
+		it('should enter a valid server without login services and navigate to login', async() => {
+			await device.reloadReactNative();
+			await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(2000);
+			await element(by.id('connect-server-button')).tap();
+			await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
+			await element(by.id('new-server-view-input')).replaceText(data.server);
+			await element(by.id('new-server-view-button')).tap();
+			await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(60000);
+			await expect(element(by.id('login-view'))).toBeVisible();
 		});
 
 

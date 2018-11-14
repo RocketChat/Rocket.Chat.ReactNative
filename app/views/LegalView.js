@@ -71,9 +71,10 @@ export default class LegalView extends LoggedView {
 					text: I18n.t('Legal')
 				},
 				leftButtons: [{
-					id: 'cancel',
+					id: 'close',
 					icon: Platform.OS === 'android' ? { uri: 'back', scale: Dimensions.get('window').scale } : undefined,
-					text: Platform.OS === 'ios' ? I18n.t('Close') : undefined
+					text: Platform.OS === 'ios' ? I18n.t('Close') : undefined,
+					testID: 'legal-view-close'
 				}]
 			}
 		};
@@ -89,7 +90,7 @@ export default class LegalView extends LoggedView {
 	}
 
 	navigationButtonPressed = ({ buttonId }) => {
-		if (buttonId === 'cancel') {
+		if (buttonId === 'close') {
 			const { componentId } = this.props;
 			Navigation.dismissModal(componentId);
 		}
@@ -113,8 +114,8 @@ export default class LegalView extends LoggedView {
 		});
 	}
 
-	renderItem = ({ text, route }) => (
-		<RectButton style={styles.item} onPress={() => this.onPressItem({ route })}>
+	renderItem = ({ text, route, testID }) => (
+		<RectButton style={styles.item} onPress={() => this.onPressItem({ route })} testID={testID}>
 			<Text style={styles.text}>{I18n.t(text)}</Text>
 			<Image source={{ uri: 'disclosure_indicator' }} style={styles.disclosureIndicator} />
 		</RectButton>
@@ -124,9 +125,9 @@ export default class LegalView extends LoggedView {
 		return (
 			<SafeAreaView style={styles.container} testID='legal-view' forceInset={{ bottom: 'never' }}>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.scroll}>
-					{this.renderItem({ text: 'Terms_of_Service', route: 'TermsServiceView' })}
+					{this.renderItem({ text: 'Terms_of_Service', route: 'TermsServiceView', testID: 'legal-terms-button' })}
 					<Separator />
-					{this.renderItem({ text: 'Privacy_Policy', route: 'PrivacyPolicyView' })}
+					{this.renderItem({ text: 'Privacy_Policy', route: 'PrivacyPolicyView', testID: 'legal-privacy-button' })}
 				</ScrollView>
 			</SafeAreaView>
 		);

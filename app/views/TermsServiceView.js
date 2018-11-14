@@ -38,7 +38,7 @@ export default class TermsServiceView extends LoggedView {
 	render() {
 		const { termsService } = this.props;
 		return (
-			<SafeAreaView style={styles.container}>
+			<SafeAreaView style={styles.container} testID='terms-view'>
 				<WebView originWhitelist={['*']} source={{ html: termsService, baseUrl: '' }} />
 			</SafeAreaView>
 		);

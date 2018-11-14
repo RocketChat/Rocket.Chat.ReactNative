@@ -51,12 +51,10 @@ const styles = StyleSheet.create({
 });
 
 @connect(state => ({
-	server: state.server.server,
-	failure: state.login.failure,
 	isFetching: state.login.isFetching,
-	reason: state.login.error && state.login.error.reason,
-	error: state.login.error && state.login.error.error,
-	Site_Name: state.settings.Site_Name
+	Site_Name: state.settings.Site_Name,
+	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
+	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder
 }), () => ({
 	loginSubmit: params => RocketChat.loginWithPassword(params)
 }))
@@ -80,14 +78,10 @@ export default class LoginView extends LoggedView {
 		componentId: PropTypes.string,
 		loginSubmit: PropTypes.func.isRequired,
 		login: PropTypes.object,
-		server: PropTypes.string,
 		Site_Name: PropTypes.string,
-		error: PropTypes.any,
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
 		Accounts_PasswordPlaceholder: PropTypes.string,
-		failure: PropTypes.bool,
-		isFetching: PropTypes.bool,
-		reason: PropTypes.string
+		isFetching: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -104,7 +98,7 @@ export default class LoginView extends LoggedView {
 	}
 
 	componentDidMount() {
-		setTimeout(() => {
+		this.timeout = setTimeout(() => {
 			this.usernameInput.focus();
 		}, 600);
 	}
@@ -113,6 +107,12 @@ export default class LoginView extends LoggedView {
 		const { componentId, Site_Name } = this.props;
 		if (Site_Name && prevProps.Site_Name !== Site_Name) {
 			this.setTitle(componentId, Site_Name);
+		}
+	}
+
+	componentWillUnmount() {
+		if (this.timeout) {
+			clearTimeout(this.timeout);
 		}
 	}
 
@@ -237,6 +237,7 @@ export default class LoginView extends LoggedView {
 					returnKeyType='send'
 					autoCapitalize='none'
 					onSubmitEditing={this.submit}
+					testID='login-view-totp'
 					containerStyle={sharedStyles.inputLastChild}
 				/>
 				<Button
@@ -291,17 +292,14 @@ export default class LoginView extends LoggedView {
 					title={I18n.t('Forgot_password')}
 					type='secondary'
 					onPress={this.forgotPassword}
-					testID='login-view-register'
+					testID='login-view-forgot-password'
 				/>
 				<View style={styles.bottomContainer}>
-					<Text
-						style={styles.dontHaveAccount}
-						testID='login-view-register'
-					>{I18n.t('Dont_Have_An_Account')}
-					</Text>
+					<Text style={styles.dontHaveAccount}>{I18n.t('Dont_Have_An_Account')}</Text>
 					<Text
 						style={styles.createAccount}
 						onPress={this.register}
+						testID='login-view-register'
 					>{I18n.t('Create_account')}
 					</Text>
 				</View>

@@ -11,9 +11,6 @@ export default {
 	Accounts_PasswordPlaceholder: {
 		type: 'valueAsString'
 	},
-	Accounts_RepeatPasswordPlaceholder: {
-		type: 'valueAsString'
-	},
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},
@@ -63,4 +60,4 @@ export default {
 		type: 'valueAsBoolean'
 	}
 };
-export const settingsUpdatedAt = new Date('2018-11-09');
+export const settingsUpdatedAt = new Date('2018-11-14');

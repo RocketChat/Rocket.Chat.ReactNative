@@ -110,7 +110,7 @@ export default class LoginSignupView extends LoggedView {
 				rightButtons: [{
 					id: 'more',
 					icon: { uri: 'more', scale: Dimensions.get('window').scale },
-					testID: 'login-view-more'
+					testID: 'welcome-view-more'
 				}]
 			}
 		};

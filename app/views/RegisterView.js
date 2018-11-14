@@ -26,10 +26,6 @@ let LegalView = null;
 
 @connect(state => ({
 	server: state.server.server,
-	Accounts_NamePlaceholder: state.settings.Accounts_NamePlaceholder,
-	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
-	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
-	Accounts_RepeatPasswordPlaceholder: state.settings.Accounts_RepeatPasswordPlaceholder,
 	login: state.login
 }), dispatch => ({
 	registerSubmit: params => dispatch(registerSubmitAction(params))
@@ -73,16 +69,34 @@ export default class RegisterView extends LoggedView {
 	}
 
 	componentDidMount() {
-		setTimeout(() => {
+		this.timeout = setTimeout(() => {
 			this.nameInput.focus();
 		}, 600);
 	}
 
 	componentDidUpdate(prevProps) {
-		const { login } = this.props;
+		const { login, componentId, Site_Name } = this.props;
 		if (login && login.failure && login.error && !equal(login.error, prevProps.login.error)) {
 			Alert.alert(I18n.t('Oops'), login.error.reason);
+		} else if (Site_Name && prevProps.Site_Name !== Site_Name) {
+			this.setTitle(componentId, Site_Name);
 		}
+	}
+
+	componentWillUnmount() {
+		if (this.timeout) {
+			clearTimeout(this.timeout);
+		}
+	}
+
+	setTitle = (componentId, title) => {
+		Navigation.mergeOptions(componentId, {
+			topBar: {
+				title: {
+					text: title
+				}
+			}
+		});
 	}
 
 	navigationButtonPressed = ({ buttonId }) => {
@@ -173,9 +187,7 @@ export default class RegisterView extends LoggedView {
 	}
 
 	render() {
-		const {
-			login, Accounts_NamePlaceholder, Accounts_UsernamePlaceholder, Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder
-		} = this.props;
+		const { login } = this.props;
 		return (
 			<KeyboardView contentContainerStyle={sharedStyles.container}>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
@@ -183,7 +195,7 @@ export default class RegisterView extends LoggedView {
 						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Sign_Up')}</Text>
 						<TextInput
 							inputRef={(e) => { this.nameInput = e; }}
-							placeholder={Accounts_NamePlaceholder || I18n.t('Name')}
+							placeholder={I18n.t('Name')}
 							returnKeyType='next'
 							iconLeft='user'
 							onChangeText={name => this.setState({ name })}
@@ -192,16 +204,16 @@ export default class RegisterView extends LoggedView {
 						/>
 						<TextInput
 							inputRef={(e) => { this.usernameInput = e; }}
-							placeholder={Accounts_UsernamePlaceholder || I18n.t('Username')}
+							placeholder={I18n.t('Username')}
 							returnKeyType='next'
 							iconLeft='mention'
 							onChangeText={username => this.setState({ username })}
 							onSubmitEditing={() => { this.emailInput.focus(); }}
-							testID='register-view-name'
+							testID='register-view-username'
 						/>
 						<TextInput
 							inputRef={(e) => { this.emailInput = e; }}
-							placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Email')}
+							placeholder={I18n.t('Email')}
 							returnKeyType='next'
 							keyboardType='email-address'
 							iconLeft='mail'
@@ -212,7 +224,7 @@ export default class RegisterView extends LoggedView {
 						/>
 						<TextInput
 							inputRef={(e) => { this.passwordInput = e; }}
-							placeholder={Accounts_PasswordPlaceholder || I18n.t('Password')}
+							placeholder={I18n.t('Password')}
 							returnKeyType='send'
 							iconLeft='key'
 							secureTextEntry

@@ -45,7 +45,7 @@ export default class ForgotPasswordView extends LoggedView {
 	}
 
 	componentDidMount() {
-		setTimeout(() => {
+		this.timeout = setTimeout(() => {
 			this.emailInput.focus();
 		}, 600);
 	}
@@ -57,6 +57,12 @@ export default class ForgotPasswordView extends LoggedView {
 			setTimeout(() => {
 				showErrorAlert(I18n.t('Forgot_password_If_this_email_is_registered'), I18n.t('Alert'));
 			});
+		}
+	}
+
+	componentWillUnmount() {
+		if (this.timeout) {
+			clearTimeout(this.timeout);
 		}
 	}
 

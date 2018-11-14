@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
 
 @connect(state => ({
 	server: state.server.server,
-	Accounts_UsernamePlaceholder: state.settings.Accounts_UsernamePlaceholder,
 	login: state.login
 }), dispatch => ({
 	setUsernameSubmit: params => dispatch(setUsernameSubmitAction(params))
@@ -65,7 +64,7 @@ export default class SetUsernameView extends LoggedView {
 	}
 
 	async componentDidMount() {
-		setTimeout(() => {
+		this.timeout = setTimeout(() => {
 			this.usernameInput.focus();
 		}, 600);
 		const suggestion = await RocketChat.getUsernameSuggestion();
@@ -79,6 +78,12 @@ export default class SetUsernameView extends LoggedView {
 		}
 	}
 
+	componentWillUnmount() {
+		if (this.timeout) {
+			clearTimeout(this.timeout);
+		}
+	}
+
 	submit = () => {
 		const { username } = this.state;
 		const { setUsernameSubmit } = this.props;
@@ -87,21 +92,22 @@ export default class SetUsernameView extends LoggedView {
 
 	render() {
 		const { username } = this.state;
-		const { login, Accounts_UsernamePlaceholder } = this.props;
+		const { login } = this.props;
 		return (
 			<KeyboardView contentContainerStyle={sharedStyles.container}>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
-					<SafeAreaView style={sharedStyles.container} testID='register-view' forceInset={{ bottom: 'never' }}>
+					<SafeAreaView style={sharedStyles.container} testID='set-username-view' forceInset={{ bottom: 'never' }}>
 						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle]}>{I18n.t('Username')}</Text>
 						<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular]}>{I18n.t('Set_username_subtitle')}</Text>
 						<TextInput
-							inputRef={(e) => { this.usernameInput = e; }}
-							placeholder={Accounts_UsernamePlaceholder || I18n.t('Username')}
+							inputRef={e => this.usernameInput = e}
+							placeholder={I18n.t('Username')}
 							returnKeyType='send'
 							iconLeft='mention'
 							onChangeText={value => this.setState({ username: value })}
 							value={username}
 							onSubmitEditing={this.submit}
+							testID='set-username-view-input'
 							clearButtonMode='while-editing'
 							containerStyle={sharedStyles.inputLastChild}
 						/>
@@ -109,7 +115,7 @@ export default class SetUsernameView extends LoggedView {
 							title={I18n.t('Register')}
 							type='primary'
 							onPress={this.submit}
-							testID='register-view-submit'
+							testID='set-username-view-submit'
 							disabled={!username}
 							loading={login.isFetching}
 						/>
