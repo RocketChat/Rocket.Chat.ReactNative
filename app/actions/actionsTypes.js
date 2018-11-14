@@ -16,22 +16,14 @@ export const LOGIN = createRequestTypes('LOGIN', [
 	'SUBMIT',
 	'REGISTER_SUBMIT',
 	'REGISTER_REQUEST',
-	'REGISTER_SUCCESS',
-	'REGISTER_INCOMPLETE',
 	'SET_USERNAME_SUBMIT',
 	'SET_USERNAME_REQUEST',
 	'SET_USERNAME_SUCCESS',
-	'OPEN',
-	'CLOSE',
 	'SET_SERVICES',
-	'REMOVE_SERVICES',
 	'SET_PREFERENCE',
 	'SET_SORT_PREFERENCE'
 ]);
-export const FORGOT_PASSWORD = createRequestTypes('FORGOT_PASSWORD', [
-	...defaultTypes,
-	'INIT'
-]);
+export const FORGOT_PASSWORD = createRequestTypes('FORGOT_PASSWORD');
 export const USER = createRequestTypes('USER', ['SET']);
 export const ROOMS = createRequestTypes('ROOMS', [
 	...defaultTypes,

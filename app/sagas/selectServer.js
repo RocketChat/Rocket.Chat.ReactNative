@@ -2,6 +2,7 @@ import { put, call, takeLatest } from 'redux-saga/effects';
 import { AsyncStorage } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { Provider } from 'react-redux';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import { SERVER } from '../actions/actionsTypes';
 import * as actions from '../actions';
@@ -14,10 +15,7 @@ import log from '../utils/log';
 import store from '../lib/createStore';
 
 let LoginSignupView = null;
-
-const validate = function* validate(server) {
-	return yield RocketChat.testServer(server);
-};
+let LoginView = null;
 
 const handleSelectServer = function* handleSelectServer({ server }) {
 	try {
@@ -29,7 +27,7 @@ const handleSelectServer = function* handleSelectServer({ server }) {
 		}
 
 		const settings = database.objects('settings');
-		yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
+		yield put(actions.setAllSettings(RocketChat.parseSettings(RocketChat._filterSettings(settings.slice(0, settings.length)))));
 		const emojis = database.objects('customEmojis');
 		yield put(actions.setCustomEmojis(RocketChat.parseEmojis(emojis.slice(0, emojis.length))));
 		const roles = database.objects('roles');
@@ -47,24 +45,29 @@ const handleSelectServer = function* handleSelectServer({ server }) {
 
 const handleServerRequest = function* handleServerRequest({ server }) {
 	try {
-		if (LoginSignupView == null) {
-			LoginSignupView = require('../views/LoginSignupView').default;
-			Navigation.registerComponentWithRedux('LoginSignupView', () => LoginSignupView, Provider, store);
-		}
-
-		yield call(validate, server);
-		yield Navigation.push('NewServerView', {
-			component: {
-				name: 'LoginSignupView',
-				options: {
-					topBar: {
-						title: {
-							text: server
-						}
-					}
-				}
+		yield RocketChat.testServer(server);
+		const loginServicesLength = yield RocketChat.getLoginServices(server);
+		if (loginServicesLength === 0) {
+			if (LoginView == null) {
+				LoginView = require('../views/LoginView').default;
+				Navigation.registerComponentWithRedux('LoginView', () => gestureHandlerRootHOC(LoginView), Provider, store);
 			}
-		});
+			yield Navigation.push('NewServerView', {
+				component: {
+					name: 'LoginView'
+				}
+			});
+		} else {
+			if (LoginSignupView == null) {
+				LoginSignupView = require('../views/LoginSignupView').default;
+				Navigation.registerComponentWithRedux('LoginSignupView', () => gestureHandlerRootHOC(LoginSignupView), Provider, store);
+			}
+			yield Navigation.push('NewServerView', {
+				component: {
+					name: 'LoginSignupView'
+				}
+			});
+		}
 
 		database.databases.serversDB.write(() => {
 			database.databases.serversDB.create('servers', { id: server }, true);

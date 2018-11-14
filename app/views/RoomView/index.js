@@ -4,7 +4,7 @@ import {
 	Text, View, LayoutAnimation, ActivityIndicator, Platform
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
-import { RectButton } from 'react-native-gesture-handler';
+import { RectButton, gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 
@@ -27,6 +27,7 @@ import debounce from '../../utils/debounce';
 import { iconsMap } from '../../Icons';
 import store from '../../lib/createStore';
 import ConnectionBadge from '../../containers/ConnectionBadge';
+import { DEFAULT_HEADER } from '../../constants/headerOptions';
 
 let RoomActionsView = null;
 
@@ -50,12 +51,13 @@ let RoomActionsView = null;
 export default class RoomView extends LoggedView {
 	static options() {
 		return {
+			...DEFAULT_HEADER,
 			topBar: {
-				animate: true,
+				...DEFAULT_HEADER.topBar,
 				title: {
 					component: {
 						name: 'RoomHeaderView',
-						alignment: 'fill'
+						alignment: 'left'
 					}
 				},
 				rightButtons: [{
@@ -210,7 +212,7 @@ export default class RoomView extends LoggedView {
 		if (buttonId === 'more') {
 			if (RoomActionsView == null) {
 				RoomActionsView = require('../RoomActionsView').default;
-				Navigation.registerComponentWithRedux('RoomActionsView', () => RoomActionsView, Provider, store);
+				Navigation.registerComponentWithRedux('RoomActionsView', () => gestureHandlerRootHOC(RoomActionsView), Provider, store);
 			}
 
 			Navigation.push(componentId, {

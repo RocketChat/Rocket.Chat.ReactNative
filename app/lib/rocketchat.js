@@ -11,7 +11,7 @@ import log from '../utils/log';
 // import * as actions from '../actions';
 
 import {
-	setUser, setLoginServices, removeLoginServices, loginRequest, loginSuccess, loginFailure, logout
+	setUser, setLoginServices, loginRequest, loginSuccess, loginFailure, logout
 } from '../actions/login';
 import { disconnect, connectSuccess } from '../actions/connect';
 import { setActiveUser } from '../actions/activeUsers';
@@ -125,18 +125,34 @@ const RocketChat = {
 		}
 	},
 	async loginSuccess(user) {
-		try {
-			if (!user) {
-				const { user: u } = reduxStore.getState().login;
-				user = Object.assign({}, u);
-			}
+		if (!user) {
+			const { user: u } = reduxStore.getState().login;
+			user = Object.assign({}, u);
+		}
 
-			// TODO: one api call
-			// call /me only one time
+		// TODO: one api call
+		// call /me only one time
+		try {
 			if (!user.username) {
-				const me = await SDK.api.get('me');
+				// get me from api
+				let me = await SDK.api.get('me');
+				// if server didn't found username
+				if (!me.username) {
+					// search username from credentials (sent during registerSubmit)
+					const { username } = reduxStore.getState().login.credentials;
+					if (username) {
+						// set username
+						await RocketChat.setUsername({ username });
+						me = { ...me, username };
+					}
+				}
 				user = { ...user, ...me };
 			}
+		} catch (e) {
+			log('SDK.loginSuccess set username', e);
+		}
+
+		try {
 			if (user.username) {
 				const userInfo = await SDK.api.get('users.info', { userId: user.id });
 				user = { ...user, ...userInfo.user };
@@ -362,28 +378,6 @@ const RocketChat = {
 				}
 			}));
 
-			SDK.driver.on('meteor_accounts_loginServiceConfiguration', (error, ddpMessage) => {
-				if (ddpMessage.msg === 'added') {
-					this.loginServices = this.loginServices || {};
-					if (this.loginServiceTimer) {
-						clearTimeout(this.loginServiceTimer);
-						this.loginServiceTimer = null;
-					}
-					this.loginServiceTimer = setTimeout(() => {
-						reduxStore.dispatch(setLoginServices(this.loginServices));
-						this.loginServiceTimer = null;
-						return this.loginServices = {};
-					}, 1000);
-					this.loginServices[ddpMessage.fields.service] = { ...ddpMessage.fields };
-					delete this.loginServices[ddpMessage.fields.service].service;
-				} else if (ddpMessage.msg === 'removed') {
-					if (this.loginServiceTimer) {
-						clearTimeout(this.loginServiceTimer);
-					}
-					this.loginServiceTimer = setTimeout(() => reduxStore.dispatch(removeLoginServices()), 1000);
-				}
-			});
-
 			SDK.driver.on('rocketchat_roles', protectedFunction((error, ddpMessage) => {
 				this.roles = this.roles || {};
 
@@ -432,8 +426,8 @@ const RocketChat = {
 		return call('registerUser', credentials);
 	},
 
-	setUsername({ credentials }) {
-		return call('setUsername', credentials.username);
+	setUsername({ username }) {
+		return call('setUsername', username);
 	},
 
 	forgotPassword(email) {
@@ -622,7 +616,7 @@ const RocketChat = {
 			return setting;
 		});
 	},
-	_filterSettings: settings => settings.filter(setting => defaultSettings[setting._id] && setting.value),
+	_filterSettings: settings => settings.filter(setting => defaultSettings[setting._id] && (setting.value || setting.valueAsString || setting.valueAsNumber || setting.valueAsBoolean)),
 	parseEmojis: emojis => emojis.reduce((ret, item) => {
 		ret[item.name] = item.extension;
 		item.aliases.forEach((alias) => {
@@ -805,6 +799,30 @@ const RocketChat = {
 		} catch (error) {
 			console.warn(error);
 		}
+	},
+	async getLoginServices(server) {
+		try {
+			let loginServicesFilter = [];
+			const loginServicesResult = await fetch(`${ server }/api/v1/settings.oauth`).then(response => response.json());
+			// TODO: remove this after SAML and custom oauth
+			const availableOAuth = ['facebook', 'github', 'gitlab', 'google', 'linkedin', 'meteor-developer', 'twitter'];
+			if (loginServicesResult.success && loginServicesResult.services.length > 0) {
+				const { services } = loginServicesResult;
+				loginServicesFilter = services.filter(item => availableOAuth.includes(item.name));
+				const loginServicesReducer = loginServicesFilter.reduce((ret, item) => {
+					ret[item.name] = item;
+					return ret;
+				}, {});
+				reduxStore.dispatch(setLoginServices(loginServicesReducer));
+			}
+			return Promise.resolve(loginServicesFilter.length);
+		} catch (error) {
+			console.warn(error);
+			return Promise.reject();
+		}
+	},
+	getUsernameSuggestion() {
+		return SDK.driver.asyncCall('getUsernameSuggestion');
 	}
 };
 
