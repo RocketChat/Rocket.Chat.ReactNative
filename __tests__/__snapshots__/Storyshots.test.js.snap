@@ -228,7 +228,15 @@ exports[`Storyshots Message list 1`] = `
   }
 >
   <View>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -252,7 +260,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Simple
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -276,11 +292,51 @@ exports[`Storyshots Message list 1`] = `
     >
       Long message
     </Text>
-    View
-    View
-    View
-    View
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -304,7 +360,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Grouped messages
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -328,7 +392,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Without header
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -352,7 +424,15 @@ exports[`Storyshots Message list 1`] = `
     >
       With alias
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -376,7 +456,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Edited
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -400,7 +488,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Static avatar
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -424,7 +520,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Full name
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -448,7 +552,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Mentions
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -472,7 +584,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Emojis
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -496,7 +616,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Custom Emojis
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -520,7 +648,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Time format
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -544,7 +680,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Reactions
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -568,10 +712,42 @@ exports[`Storyshots Message list 1`] = `
     >
       Multiple reactions
     </Text>
-    View
-    View
-    View
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -595,7 +771,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Intercalated users
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <View
       style={
         Object {
@@ -668,7 +852,15 @@ exports[`Storyshots Message list 1`] = `
         unread messages
       </Text>
     </View>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <View
       style={
         Object {
@@ -739,8 +931,24 @@ exports[`Storyshots Message list 1`] = `
         }
       />
     </View>
-    View
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <View
       style={
         Object {
@@ -802,7 +1010,15 @@ exports[`Storyshots Message list 1`] = `
         }
       />
     </View>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -826,8 +1042,24 @@ exports[`Storyshots Message list 1`] = `
     >
       Date and Unread separators
     </Text>
-    View
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -851,7 +1083,15 @@ exports[`Storyshots Message list 1`] = `
     >
       With image
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -875,7 +1115,15 @@ exports[`Storyshots Message list 1`] = `
     >
       With video
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -899,7 +1147,15 @@ exports[`Storyshots Message list 1`] = `
     >
       With audio
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -923,7 +1179,15 @@ exports[`Storyshots Message list 1`] = `
     >
       URL
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -947,7 +1211,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Custom fields
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -971,7 +1243,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Two short custom fields
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -995,7 +1275,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Broadcast
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1019,8 +1307,26 @@ exports[`Storyshots Message list 1`] = `
     >
       Archived
     </Text>
-    View
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+      View
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1044,7 +1350,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Error
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1068,7 +1382,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Temp
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1092,7 +1414,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Editing
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1116,7 +1446,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Removed
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1140,7 +1478,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Joined
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1164,7 +1510,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Room name changed
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1188,7 +1542,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Message pinned
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1212,7 +1574,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Has left the channel
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1236,7 +1606,15 @@ exports[`Storyshots Message list 1`] = `
     >
       User removed
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1260,7 +1638,15 @@ exports[`Storyshots Message list 1`] = `
     >
       User added
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1284,7 +1670,15 @@ exports[`Storyshots Message list 1`] = `
     >
       User muted
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1308,7 +1702,15 @@ exports[`Storyshots Message list 1`] = `
     >
       User unmuted
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1332,7 +1734,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Role added
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1356,7 +1766,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Role removed
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1380,7 +1798,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Changed description
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1404,7 +1830,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Changed announcement
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1428,7 +1862,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Changed topic
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1452,7 +1894,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Changed type
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1476,7 +1926,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Custom style
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1500,7 +1958,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Markdown emphasis
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1524,7 +1990,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Markdown headers
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1548,7 +2022,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Markdown links
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1572,7 +2054,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Markdown image
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1596,7 +2086,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Markdown code
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
@@ -1620,7 +2118,15 @@ exports[`Storyshots Message list 1`] = `
     >
       Markdown quote
     </Text>
-    View
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [
