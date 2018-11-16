@@ -20,6 +20,7 @@ let LoginView = null;
 const handleSelectServer = function* handleSelectServer({ server }) {
 	try {
 		yield database.setActiveDB(server);
+		yield put(connectRequest());
 		yield call([AsyncStorage, 'setItem'], 'currentServer', server);
 		const token = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
 		if (token) {
@@ -36,7 +37,6 @@ const handleSelectServer = function* handleSelectServer({ server }) {
 			return result;
 		}, {})));
 
-		yield put(connectRequest());
 		yield put(selectServerSuccess(server));
 	} catch (e) {
 		log('handleSelectServer', e);

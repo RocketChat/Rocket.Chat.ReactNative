@@ -9,6 +9,8 @@ async function loadMissedMessagesRest({ rid: roomId, lastOpen }) {
 	let lastUpdate;
 	if (lastOpen) {
 		lastUpdate = new Date(lastOpen).toISOString();
+	} else {
+		return [];
 	}
 	const { result } = await SDK.api.get('chat.syncMessages', { roomId, lastUpdate, count: 50 });
 	return result;
@@ -29,7 +31,7 @@ export default function loadMissedMessages(...args) {
 	const { database: db } = database;
 	return new Promise(async(resolve, reject) => {
 		try {
-			const data = (await (SDK.driver.ddp ? loadMissedMessagesDDP.call(this, ...args) : loadMissedMessagesRest.call(this, ...args)));
+			const data = (await (this.connected() ? loadMissedMessagesDDP.call(this, ...args) : loadMissedMessagesRest.call(this, ...args)));
 
 			if (data) {
 				if (data.updated && data.updated.length) {
