@@ -48,7 +48,7 @@ export default async function canOpenRoom({ rid, path }) {
 	const [type, name] = path.split('/');
 
 	try {
-		const data = await (SDK.driver.ddp ? canOpenRoomDDP.call(this, { rid, type, name }) : canOpenRoomREST.call(this, { type, rid }));
+		const data = await (this.connected() ? canOpenRoomDDP.call(this, { rid, type, name }) : canOpenRoomREST.call(this, { type, rid }));
 		return data;
 	} catch (e) {
 		log('canOpenRoom', e);

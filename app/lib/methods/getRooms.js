@@ -36,7 +36,7 @@ export default function() {
 
 	return new Promise(async(resolve, reject) => {
 		try {
-			const { subscriptions, rooms } = await (SDK.driver.ddp ? getRoomDpp.apply(this) : getRoomRest.apply(this));
+			const { subscriptions, rooms } = await (this.connected() ? getRoomDpp.apply(this) : getRoomRest.apply(this));
 
 			const data = rooms.map(room => ({ room, sub: database.objects('subscriptions').filtered('rid == $0', room._id) }));
 

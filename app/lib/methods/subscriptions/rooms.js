@@ -30,7 +30,7 @@ export default async function subscribeRooms(id) {
 		}, 5000);
 	};
 
-	if (!SDK.driver.ddp && SDK.driver.userId) {
+	if (!this.connected()) {
 		loop();
 	} else {
 		SDK.driver.on('logged', () => {
@@ -44,13 +44,13 @@ export default async function subscribeRooms(id) {
 		});
 
 		SDK.driver.on('disconnected', () => {
-			if (this._login) {
+			if (SDK.driver.userId) {
 				loop();
 			}
 		});
 
 		SDK.driver.on('stream-notify-user', protectedFunction((e, ddpMessage) => {
-			if (ddpMessage.msg === 'added') {
+			if (!this.ddp || ddpMessage.msg === 'added') {
 				return;
 			}
 			const [type, data] = ddpMessage.fields.args;

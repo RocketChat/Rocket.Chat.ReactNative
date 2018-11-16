@@ -31,26 +31,22 @@ export const getMessage = (rid, msg = {}) => {
 	return message;
 };
 
-function sendMessageByRest(message) {
-	const { _id, rid, msg } = message;
-	return SDK.api.post('chat.sendMessage', { message: { _id, rid, msg } });
+function sendMessageByRest(args) {
+	return SDK.api.post('chat.sendMessage', { message: args });
 }
 
-function sendMessageByDDP(message) {
-	const { _id, rid, msg } = message;
-	return SDK.driver.asyncCall('sendMessage', { _id, rid, msg });
+function sendMessageByDDP(...args) {
+	try {
+		return SDK.driver.asyncCall('sendMessage', ...args);
+	} catch (error) {
+		return sendMessageByRest.call(this, ...args);
+	}
 }
 
 export async function _sendMessageCall(message) {
-	try {
-		const data = await (SDK.driver.ddp ? sendMessageByDDP.call(this, message) : sendMessageByRest.call(this, message));
-		return data;
-	} catch (e) {
-		database.write(() => {
-			message.status = messagesStatus.ERROR;
-			database.create('messages', message, true);
-		});
-	}
+	const { _id, rid, msg } = message;
+	const data = await (this.connected() ? sendMessageByDDP.call(this, { _id, rid, msg }) : sendMessageByRest.call(this, { _id, rid, msg }));
+	return data;
 }
 
 export default async function(rid, msg) {
@@ -63,11 +59,17 @@ export default async function(rid, msg) {
 			room.lastMessage = message;
 		});
 
-		const ret = await _sendMessageCall.call(this, message);
-		// TODO: maybe I have created a bug in the future here <3
-		db.write(() => {
-			db.create('messages', buildMessage({ ...message, ...ret }), true);
-		});
+		try {
+			const ret = await _sendMessageCall.call(this, message);
+			db.write(() => {
+				db.create('messages', buildMessage({ ...message, ...ret }), true);
+			});
+		} catch (e) {
+			database.write(() => {
+				message.status = messagesStatus.ERROR;
+				database.create('messages', message, true);
+			});
+		}
 	} catch (e) {
 		log('sendMessage', e);
 	}

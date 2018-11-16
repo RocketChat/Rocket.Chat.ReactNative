@@ -116,7 +116,7 @@ export default class RoomView extends LoggedView {
 		const {
 			room, loaded, joined, end
 		} = this.state;
-		const { showActions } = this.props;
+		const { showActions, showErrorActions } = this.props;
 
 		if (room.ro !== nextState.room.ro) {
 			return true;
@@ -129,6 +129,8 @@ export default class RoomView extends LoggedView {
 		} else if (end !== nextState.end) {
 			return true;
 		} else if (showActions !== nextProps.showActions) {
+			return true;
+		} else if (showErrorActions !== nextProps.showErrorActions) {
 			return true;
 		}
 		return false;

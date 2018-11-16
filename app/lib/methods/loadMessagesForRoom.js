@@ -38,7 +38,7 @@ export default function loadMessagesForRoom(...args) {
 	const { database: db } = database;
 	return new Promise(async(resolve, reject) => {
 		try {
-			const data = (await (SDK.driver.ddp
+			const data = (await (this.connected()
 				? loadMessagesForRoomDDP.call(this, ...args)
 				: loadMessagesForRoomRest.call(this, ...args))).map(buildMessage);
 
