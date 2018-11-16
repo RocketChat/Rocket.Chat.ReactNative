@@ -54,7 +54,8 @@ export default class Button extends React.PureComponent {
 		onPress: PropTypes.func,
 		disabled: PropTypes.bool,
 		backgroundColor: PropTypes.string,
-		loading: PropTypes.bool
+		loading: PropTypes.bool,
+		style: PropTypes.any
 	}
 
 	static defaultProps = {
@@ -67,7 +68,7 @@ export default class Button extends React.PureComponent {
 
 	render() {
 		const {
-			title, type, onPress, disabled, backgroundColor, loading, ...otherProps
+			title, type, onPress, disabled, backgroundColor, style, loading, ...otherProps
 		} = this.props;
 		return (
 			<RectButton
@@ -75,9 +76,9 @@ export default class Button extends React.PureComponent {
 				enabled={!(disabled || loading)}
 				style={[
 					styles.container,
-					styles.border,
 					backgroundColor ? { backgroundColor } : styles[`background_${ type }`],
-					disabled && styles.disabled
+					disabled && styles.disabled,
+					style
 				]}
 				{...otherProps}
 			>

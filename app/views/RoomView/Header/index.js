@@ -12,13 +12,12 @@ import { STATUS_COLORS } from '../../../constants/colors';
 
 const isIOS = () => Platform.OS === 'ios';
 const TITLE_SIZE = 18;
-const ICON_SIZE = 20;
+const ICON_SIZE = 18;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: 'center',
-		backgroundColor: isIOS() ? 'transparent' : '#2F343D',
-		height: 44
+		backgroundColor: isIOS() ? 'transparent' : '#2F343D'
 	},
 	titleContainer: {
 		flexDirection: 'row',
@@ -36,17 +35,12 @@ const styles = StyleSheet.create({
 		tintColor: isIOS() ? '#9EA2A8' : '#fff'
 	},
 	typing: {
+		flex: 1,
 		color: isIOS() ? '#9EA2A8' : '#fff',
 		fontSize: 12
 	},
 	typingUsers: {
 		fontWeight: '600'
-	},
-	alignItemsFlexStart: {
-		alignItems: 'flex-start'
-	},
-	alignItemsCenter: {
-		alignItems: 'center'
 	}
 });
 
@@ -144,8 +138,7 @@ export default class RoomHeaderView extends PureComponent {
 			<View
 				style={[
 					styles.container,
-					portrait ? styles.alignItemsFlexStart : styles.alignItemsCenter,
-					{ maxWidth: window.width - 150, height }
+					{ width: window.width - 150, height }
 				]}
 			>
 				<View style={styles.titleContainer}>

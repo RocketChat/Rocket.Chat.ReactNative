@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#f7f8fa'
 	},
 	buttonMargin: {
-		margin: 0
+		marginBottom: 0
 	}
 });
 
@@ -118,13 +118,13 @@ export default class UploadModal extends Component {
 							title={I18n.t('Cancel')}
 							type='secondary'
 							backgroundColor={cancelButtonColor}
-							margin={styles.buttonMargin}
+							style={styles.buttonMargin}
 							onPress={close}
 						/>
 						<Button
 							title={I18n.t('Send')}
 							type='primary'
-							margin={styles.buttonMargin}
+							style={styles.buttonMargin}
 							onPress={this._submit}
 						/>
 					</View>
