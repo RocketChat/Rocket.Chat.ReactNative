@@ -1,7 +1,7 @@
 import { StyleSheet, Platform } from 'react-native';
 
 import {
-	COLOR_DANGER, COLOR_BUTTON_PRIMARY, COLOR_TEXT, COLOR_SEPARATOR
+	COLOR_DANGER, COLOR_BUTTON_PRIMARY, COLOR_SEPARATOR
 } from '../constants/colors';
 
 export default StyleSheet.create({
@@ -110,11 +110,6 @@ export default StyleSheet.create({
 		fontSize: 13,
 		fontWeight: '700'
 	},
-	loginOAuthButtons: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		justifyContent: 'center'
-	},
 	validText: {
 		color: 'green'
 	},
@@ -184,14 +179,17 @@ export default StyleSheet.create({
 	opacity5: {
 		opacity: 0.5
 	},
-
-	loginText: {
-		fontWeight: '700',
-		color: COLOR_TEXT
-	},
 	loginTitle: {
 		fontSize: 20,
-		marginBottom: 20
+		marginVertical: 15,
+		color: '#2f343d',
+		lineHeight: 28
+	},
+	loginSubtitle: {
+		fontSize: 16,
+		color: '#54585e',
+		lineHeight: 20,
+		marginBottom: 15
 	},
 	headerButton: {
 		backgroundColor: 'transparent',
@@ -216,5 +214,64 @@ export default StyleSheet.create({
 		borderColor: COLOR_SEPARATOR,
 		borderTopWidth: StyleSheet.hairlineWidth,
 		borderBottomWidth: StyleSheet.hairlineWidth
+	},
+	textRegular: {
+		backgroundColor: 'transparent',
+		...Platform.select({
+			ios: {
+				fontFamily: 'System',
+				fontWeight: '400'
+			},
+			android: {
+				includeFontPadding: false,
+				fontFamily: 'sans-serif',
+				fontWeight: 'normal'
+			}
+		})
+	},
+	textMedium: {
+		backgroundColor: 'transparent',
+		...Platform.select({
+			ios: {
+				fontFamily: 'System',
+				fontWeight: '500'
+			},
+			android: {
+				includeFontPadding: false,
+				fontFamily: 'sans-serif-medium',
+				fontWeight: 'normal'
+			}
+		})
+	},
+	textSemibold: {
+		backgroundColor: 'transparent',
+		...Platform.select({
+			ios: {
+				fontFamily: 'System',
+				fontWeight: '600'
+			},
+			android: {
+				includeFontPadding: false,
+				fontFamily: 'sans-serif',
+				fontWeight: 'bold'
+			}
+		})
+	},
+	textBold: {
+		backgroundColor: 'transparent',
+		...Platform.select({
+			ios: {
+				fontFamily: 'System',
+				fontWeight: '700'
+			},
+			android: {
+				includeFontPadding: false,
+				fontFamily: 'sans-serif',
+				fontWeight: 'bold'
+			}
+		})
+	},
+	inputLastChild: {
+		marginBottom: 15
 	}
 });

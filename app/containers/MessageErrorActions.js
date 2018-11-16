@@ -31,9 +31,11 @@ export default class MessageErrorActions extends React.Component {
 		this.CANCEL_INDEX = 0;
 		this.DELETE_INDEX = 1;
 		this.RESEND_INDEX = 2;
-		if (this.actionSheet && this.actionSheet.show) {
-			this.actionSheet.show();
-		}
+		setTimeout(() => {
+			if (this.actionSheet && this.actionSheet.show) {
+				this.actionSheet.show();
+			}
+		});
 	}
 
 	handleResend = protectedFunction(() => {

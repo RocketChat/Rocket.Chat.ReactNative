@@ -1,15 +1,23 @@
 import { StyleSheet, Platform } from 'react-native';
 
 export default StyleSheet.create({
+	root: {
+		flexDirection: 'row'
+	},
 	container: {
-		paddingVertical: 5
+		paddingVertical: 5,
+		flexDirection: 'row',
+		width: '100%'
 	},
 	messageContent: {
 		flex: 1,
 		marginLeft: 51
 	},
-	hasHeader: {
+	messageContentWithHeader: {
 		marginLeft: 15
+	},
+	messageContentWithError: {
+		marginLeft: 0
 	},
 	flex: {
 		flexDirection: 'row',
@@ -35,6 +43,9 @@ export default StyleSheet.create({
 		height: 20
 	},
 	temp: { opacity: 0.3 },
+	marginBottom: {
+		marginBottom: 10
+	},
 	codeStyle: {
 		...Platform.select({
 			ios: { fontFamily: 'Courier New' },
@@ -92,10 +103,9 @@ export default StyleSheet.create({
 		width: 17,
 		height: 17
 	},
-	errorIcon: {
-		paddingRight: 12,
-		paddingLeft: 0,
-		alignSelf: 'center'
+	errorButton: {
+		paddingHorizontal: 15,
+		paddingVertical: 5
 	},
 	broadcastButton: {
 		width: 107,

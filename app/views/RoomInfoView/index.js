@@ -5,6 +5,7 @@ import { connect, Provider } from 'react-redux';
 import moment from 'moment';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import LoggedView from '../View';
 import Status from '../../containers/status';
@@ -19,6 +20,7 @@ import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import { iconsMap } from '../../Icons';
 import store from '../../lib/createStore';
+import { DEFAULT_HEADER } from '../../constants/headerOptions';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
@@ -46,8 +48,11 @@ let RoomInfoEditView = null;
 export default class RoomInfoView extends LoggedView {
 	static options() {
 		return {
+			...DEFAULT_HEADER,
 			topBar: {
+				...DEFAULT_HEADER.topBar,
 				title: {
+					...DEFAULT_HEADER.topBar.title,
 					text: I18n.t('Room_Info')
 				}
 			}
@@ -109,7 +114,7 @@ export default class RoomInfoView extends LoggedView {
 		if (buttonId === 'edit') {
 			if (RoomInfoEditView == null) {
 				RoomInfoEditView = require('../RoomInfoEditView').default;
-				Navigation.registerComponentWithRedux('RoomInfoEditView', () => RoomInfoEditView, Provider, store);
+				Navigation.registerComponentWithRedux('RoomInfoEditView', () => gestureHandlerRootHOC(RoomInfoEditView), Provider, store);
 			}
 
 			Navigation.push(componentId, {

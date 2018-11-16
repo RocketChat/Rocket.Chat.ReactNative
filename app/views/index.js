@@ -12,12 +12,12 @@ import SettingsView from './SettingsView';
 import Sidebar from '../containers/Sidebar';
 
 export const registerScreens = (store) => {
-	Navigation.registerComponentWithRedux('OnboardingView', () => OnboardingView, Provider, store);
-	Navigation.registerComponentWithRedux('ProfileView', () => ProfileView, Provider, store);
-	Navigation.registerComponentWithRedux('RoomsListHeaderView', () => RoomsListHeaderView, Provider, store);
+	Navigation.registerComponentWithRedux('OnboardingView', () => gestureHandlerRootHOC(OnboardingView), Provider, store);
+	Navigation.registerComponentWithRedux('ProfileView', () => gestureHandlerRootHOC(ProfileView), Provider, store);
+	Navigation.registerComponentWithRedux('RoomsListHeaderView', () => gestureHandlerRootHOC(RoomsListHeaderView), Provider, store);
 	Navigation.registerComponentWithRedux('RoomsListView', () => gestureHandlerRootHOC(RoomsListView), Provider, store);
 	Navigation.registerComponentWithRedux('RoomView', () => gestureHandlerRootHOC(RoomView), Provider, store);
-	Navigation.registerComponentWithRedux('RoomHeaderView', () => RoomHeaderView, Provider, store);
-	Navigation.registerComponentWithRedux('SettingsView', () => SettingsView, Provider, store);
-	Navigation.registerComponentWithRedux('Sidebar', () => Sidebar, Provider, store);
+	Navigation.registerComponentWithRedux('RoomHeaderView', () => gestureHandlerRootHOC(RoomHeaderView), Provider, store);
+	Navigation.registerComponentWithRedux('SettingsView', () => gestureHandlerRootHOC(SettingsView), Provider, store);
+	Navigation.registerComponentWithRedux('Sidebar', () => gestureHandlerRootHOC(Sidebar), Provider, store);
 };

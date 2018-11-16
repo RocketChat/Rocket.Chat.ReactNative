@@ -19,7 +19,7 @@ export default async function readMessages(rid) {
 	const ls = new Date();
 	const { database: db } = database;
 	try {
-		const data = await (SDK.driver.ddp ? readMessagesDDP.call(this, rid) : readMessagesREST.call(this, rid));
+		const data = await (this.connected() ? readMessagesDDP.call(this, rid) : readMessagesREST.call(this, rid));
 		const [subscription] = db.objects('subscriptions').filtered('rid = $0', rid);
 		db.write(() => {
 			subscription.open = true;

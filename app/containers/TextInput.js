@@ -1,16 +1,16 @@
 import React from 'react';
 import {
-	View, StyleSheet, Text, TextInput, ViewPropTypes, Platform
+	View, StyleSheet, Text, TextInput, ViewPropTypes, Image
 } from 'react-native';
 import PropTypes from 'prop-types';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { BorderlessButton } from 'react-native-gesture-handler';
 
 import sharedStyles from '../views/Styles';
 import { COLOR_DANGER, COLOR_TEXT } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	inputContainer: {
-		marginBottom: 15
+		marginBottom: 10
 	},
 	label: {
 		marginBottom: 10,
@@ -19,15 +19,23 @@ const styles = StyleSheet.create({
 		fontWeight: '700'
 	},
 	input: {
-		fontSize: 14,
-		paddingTop: 12,
-		paddingBottom: 12,
-		paddingHorizontal: 10,
+		...sharedStyles.textRegular,
+		height: 48,
+		fontSize: 17,
+		color: '#9EA2A8',
+		letterSpacing: 0,
+		paddingLeft: 14,
+		paddingRight: 14,
 		borderWidth: 1.5,
 		borderRadius: 2,
 		backgroundColor: 'white',
-		borderColor: '#E7EBF2',
-		color: 'black'
+		borderColor: '#E7EBF2'
+	},
+	inputIconLeft: {
+		paddingLeft: 45
+	},
+	inputIconRight: {
+		paddingRight: 45
 	},
 	labelError: {
 		color: COLOR_DANGER
@@ -39,21 +47,23 @@ const styles = StyleSheet.create({
 	wrap: {
 		position: 'relative'
 	},
-	icon: {
+	iconContainer: {
 		position: 'absolute',
-		color: 'rgba(0,0,0,.45)',
-		height: 45,
-		textAlignVertical: 'center',
-		...Platform.select({
-			ios: {
-				padding: 12
-			},
-			android: {
-				paddingHorizontal: 12,
-				paddingTop: 18,
-				paddingBottom: 6
-			}
-		})
+		top: 14
+	},
+	iconLeft: {
+		left: 15
+	},
+	iconRight: {
+		right: 15
+	},
+	icon: {
+		tintColor: '#2F343D',
+		width: 20,
+		height: 20
+	},
+	password: {
+		tintColor: '#9ea2a8'
 	}
 });
 
@@ -79,54 +89,51 @@ export default class RCTextInput extends React.PureComponent {
 		showPassword: false
 	}
 
-	icon = ({
-		name,
-		onPress,
-		style,
-		testID
-	}) => <Icon name={name} style={[styles.icon, style]} size={20} onPress={onPress} testID={testID} />
-
-	iconLeft = (name) => {
-		const { testID } = this.props;
-		return this.icon({
-			name,
-			onPress: null,
-			style: { left: 0 },
-			testID: testID ? `${ testID }-icon-left` : null
-		});
+	get iconLeft() {
+		const { testID, iconLeft } = this.props;
+		return (
+			<Image
+				source={{ uri: iconLeft }}
+				testID={testID ? `${ testID }-icon-left` : null}
+				style={[styles.iconContainer, styles.iconLeft, styles.icon]}
+			/>
+		);
 	}
 
-	iconPassword = (name) => {
+	get iconPassword() {
+		const { showPassword } = this.state;
 		const { testID } = this.props;
-		return this.icon({
-			name,
-			onPress: () => this.tooglePassword(),
-			style: { right: 0 },
-			testID: testID ? `${ testID }-icon-right` : null
-		});
+		return (
+			<BorderlessButton onPress={this.tooglePassword} style={[styles.iconContainer, styles.iconRight]}>
+				<Image
+					source={{ uri: showPassword ? 'eye' : 'eye_slash' }}
+					testID={testID ? `${ testID }-icon-right` : null}
+					style={[styles.icon, styles.password]}
+				/>
+			</BorderlessButton>
+		);
 	}
 
 	tooglePassword = () => {
-		const { showPassword } = this.state;
-		this.setState({ showPassword: !showPassword });
+		this.setState(prevState => ({ showPassword: !prevState.showPassword }));
 	}
 
 	render() {
+		const { showPassword } = this.state;
 		const {
 			label, error, secureTextEntry, containerStyle, inputRef, iconLeft, inputStyle, testID, placeholder, ...inputProps
 		} = this.props;
-		const { showPassword } = this.state;
 		return (
 			<View style={[styles.inputContainer, containerStyle]}>
-				{label ? <Text contentDescription={null} accessibilityLabel={null} style={[styles.label, error.error && styles.labelError]}>{label}</Text> : null }
+				{label ? <Text contentDescription={null} accessibilityLabel={null} style={[styles.label, error.error && styles.labelError]}>{label}</Text> : null}
 				<View style={styles.wrap}>
 					<TextInput
 						style={[
 							styles.input,
 							error.error && styles.inputError,
 							inputStyle,
-							iconLeft && { paddingLeft: 40 },
-							secureTextEntry && { paddingRight: 40 }
+							iconLeft && styles.inputIconLeft,
+							secureTextEntry && styles.inputIconRight
 						]}
 						ref={inputRef}
 						autoCorrect={false}
@@ -136,11 +143,12 @@ export default class RCTextInput extends React.PureComponent {
 						testID={testID}
 						accessibilityLabel={placeholder}
 						placeholder={placeholder}
+						placeholderTextColor='#9ea2a8'
 						contentDescription={placeholder}
 						{...inputProps}
 					/>
-					{iconLeft ? this.iconLeft(iconLeft) : null}
-					{secureTextEntry ? this.iconPassword(showPassword ? 'eye-off' : 'eye') : null}
+					{iconLeft ? this.iconLeft : null}
+					{secureTextEntry ? this.iconPassword : null}
 				</View>
 				{error.error ? <Text style={sharedStyles.error}>{error.reason}</Text> : null}
 			</View>

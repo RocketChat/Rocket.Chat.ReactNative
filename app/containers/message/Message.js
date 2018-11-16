@@ -6,7 +6,9 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
 import { KeyboardUtils } from 'react-native-keyboard-input';
-import { State, RectButton, LongPressGestureHandler } from 'react-native-gesture-handler';
+import {
+	State, RectButton, LongPressGestureHandler, BorderlessButton
+} from 'react-native-gesture-handler';
 
 import Image from './Image';
 import User from './User';
@@ -252,7 +254,11 @@ export default class Message extends PureComponent {
 			return null;
 		}
 		const { onErrorPress } = this.props;
-		return <Icon name='error-outline' color='red' size={20} style={styles.errorIcon} onPress={onErrorPress} />;
+		return (
+			<BorderlessButton onPress={onErrorPress} style={styles.errorButton}>
+				<Icon name='error-outline' color='red' size={20} />
+			</BorderlessButton>
+		);
 	}
 
 	renderReaction = (reaction) => {
@@ -337,48 +343,58 @@ export default class Message extends PureComponent {
 		const accessibilityLabel = I18n.t('Message_accessibility', { user: author.username, time: moment(ts).format(timeFormat), message: msg });
 
 		return (
-			<LongPressGestureHandler
-				onHandlerStateChange={({ nativeEvent }) => nativeEvent.state === State.ACTIVE && onLongPress()}
-			>
-				<RectButton
-					enabled={!(this.isInfoMessage() || this.hasError() || archived)}
-					style={[styles.container, header && { marginBottom: 10 }]}
-					onPress={this.onPress}
-					activeOpacity={0.8}
-					underlayColor='#e1e5e8'
+			<View style={styles.root}>
+				{this.renderError()}
+				<LongPressGestureHandler
+					onHandlerStateChange={({ nativeEvent }) => nativeEvent.state === State.ACTIVE && onLongPress()}
 				>
-					<View
-						style={[styles.message, editing && styles.editing, style]}
-						accessibilityLabel={accessibilityLabel}
+					<RectButton
+						enabled={!(this.isInfoMessage() || this.hasError() || archived)}
+						style={[styles.container, header && styles.marginBottom]}
+						onPress={this.onPress}
+						activeOpacity={0.8}
+						underlayColor='#e1e5e8'
 					>
-						<View style={styles.flex}>
-							{this.renderError()}
-							{this.renderAvatar()}
-							<View style={[styles.messageContent, header && styles.hasHeader, this.isTemp() && styles.temp]}>
-								{this.renderUsername()}
-								{this.renderContent()}
-								{this.renderAttachment()}
-								{this.renderUrl()}
-								{this.renderReactions()}
-								{this.renderBroadcastReply()}
+						<View
+							style={[styles.message, editing && styles.editing, style]}
+							accessibilityLabel={accessibilityLabel}
+						>
+							<View style={styles.flex}>
+								{this.renderAvatar()}
+								<View
+									style={[
+										styles.messageContent,
+										header && styles.messageContentWithHeader,
+										this.hasError() && header && styles.messageContentWithHeader,
+										this.hasError() && !header && styles.messageContentWithError,
+										this.isTemp() && styles.temp
+									]}
+								>
+									{this.renderUsername()}
+									{this.renderContent()}
+									{this.renderAttachment()}
+									{this.renderUrl()}
+									{this.renderReactions()}
+									{this.renderBroadcastReply()}
+								</View>
 							</View>
+							{reactionsModal
+								? (
+									<ReactionsModal
+										isVisible={reactionsModal}
+										reactions={reactions}
+										user={user}
+										customEmojis={customEmojis}
+										baseUrl={baseUrl}
+										close={closeReactions}
+									/>
+								)
+								: null
+							}
 						</View>
-						{reactionsModal
-							? (
-								<ReactionsModal
-									isVisible={reactionsModal}
-									reactions={reactions}
-									user={user}
-									customEmojis={customEmojis}
-									baseUrl={baseUrl}
-									close={closeReactions}
-								/>
-							)
-							: null
-						}
-					</View>
-				</RectButton>
-			</LongPressGestureHandler>
+					</RectButton>
+				</LongPressGestureHandler>
+			</View>
 		);
 	}
 }

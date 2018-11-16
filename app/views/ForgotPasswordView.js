@@ -1,32 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, ScrollView } from 'react-native';
+import { Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 
 import LoggedView from './View';
-import { forgotPasswordInit as forgotPasswordInitAction, forgotPasswordRequest as forgotPasswordRequestAction } from '../actions/login';
+import { forgotPasswordRequest as forgotPasswordRequestAction } from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
-import Loading from '../containers/Loading';
-import styles from './Styles';
+import sharedStyles from './Styles';
 import { showErrorAlert } from '../utils/info';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
+import { DARK_HEADER } from '../constants/headerOptions';
 
 @connect(state => ({
 	login: state.login
 }), dispatch => ({
-	forgotPasswordInit: () => dispatch(forgotPasswordInitAction()),
 	forgotPasswordRequest: email => dispatch(forgotPasswordRequestAction(email))
 }))
 /** @extends React.Component */
 export default class ForgotPasswordView extends LoggedView {
+	static options() {
+		return {
+			...DARK_HEADER
+		};
+	}
+
 	static propTypes = {
 		componentId: PropTypes.string,
-		forgotPasswordInit: PropTypes.func.isRequired,
 		forgotPasswordRequest: PropTypes.func.isRequired,
 		login: PropTypes.object
 	}
@@ -36,13 +40,14 @@ export default class ForgotPasswordView extends LoggedView {
 
 		this.state = {
 			email: '',
-			invalidEmail: false
+			invalidEmail: true
 		};
 	}
 
 	componentDidMount() {
-		const { forgotPasswordInit } = this.props;
-		forgotPasswordInit();
+		this.timeout = setTimeout(() => {
+			this.emailInput.focus();
+		}, 600);
 	}
 
 	componentDidUpdate() {
@@ -52,6 +57,12 @@ export default class ForgotPasswordView extends LoggedView {
 			setTimeout(() => {
 				showErrorAlert(I18n.t('Forgot_password_If_this_email_is_registered'), I18n.t('Alert'));
 			});
+		}
+	}
+
+	componentWillUnmount() {
+		if (this.timeout) {
+			clearTimeout(this.timeout);
 		}
 	}
 
@@ -80,35 +91,31 @@ export default class ForgotPasswordView extends LoggedView {
 
 		return (
 			<KeyboardView
-				contentContainerStyle={styles.container}
+				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>
-				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.containerScrollView}>
-					<SafeAreaView style={styles.container} testID='forgot-password-view' forceInset={{ bottom: 'never' }}>
-						<View>
-							<TextInput
-								inputStyle={invalidEmail ? { borderColor: 'red' } : {}}
-								label={I18n.t('Email')}
-								placeholder={I18n.t('Email')}
-								keyboardType='email-address'
-								returnKeyType='next'
-								onChangeText={email => this.validate(email)}
-								onSubmitEditing={() => this.resetPassword()}
-								testID='forgot-password-view-email'
-							/>
-
-							<View style={styles.alignItemsFlexStart}>
-								<Button
-									title={I18n.t('Reset_password')}
-									type='primary'
-									onPress={this.resetPassword}
-									testID='forgot-password-view-submit'
-								/>
-							</View>
-
-							{login.failure ? <Text style={styles.error}>{login.error.reason}</Text> : null}
-							<Loading visible={login.isFetching} />
-						</View>
+				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
+					<SafeAreaView style={sharedStyles.container} testID='forgot-password-view' forceInset={{ bottom: 'never' }}>
+						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Forgot_password')}</Text>
+						<TextInput
+							inputRef={(e) => { this.emailInput = e; }}
+							placeholder={I18n.t('Email')}
+							keyboardType='email-address'
+							iconLeft='mail'
+							returnKeyType='send'
+							onChangeText={email => this.validate(email)}
+							onSubmitEditing={this.resetPassword}
+							testID='forgot-password-view-email'
+							containerStyle={sharedStyles.inputLastChild}
+						/>
+						<Button
+							title={I18n.t('Reset_password')}
+							type='primary'
+							onPress={this.resetPassword}
+							testID='forgot-password-view-submit'
+							loading={login.isFetching}
+							disabled={invalidEmail}
+						/>
 					</SafeAreaView>
 				</ScrollView>
 			</KeyboardView>

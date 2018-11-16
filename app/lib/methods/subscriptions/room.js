@@ -43,7 +43,7 @@ export default function subscribeRoom({ rid, t }) {
 		}, 5000);
 	};
 
-	if (!SDK.driver.ddp && SDK.driver.userId) {
+	if (!this.connected()) {
 		loop();
 	} else {
 		SDK.driver.on('logged', () => {

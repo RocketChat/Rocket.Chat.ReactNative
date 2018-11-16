@@ -24,6 +24,7 @@ import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import store from '../../lib/createStore';
+import { DEFAULT_HEADER } from '../../constants/headerOptions';
 
 const renderSeparator = () => <View style={styles.separator} />;
 
@@ -40,8 +41,11 @@ const modules = {};
 export default class RoomActionsView extends LoggedView {
 	static options() {
 		return {
+			...DEFAULT_HEADER,
 			topBar: {
+				...DEFAULT_HEADER.topBar,
 				title: {
+					...DEFAULT_HEADER.topBar.title,
 					text: I18n.t('Actions')
 				}
 			}

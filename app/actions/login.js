@@ -19,21 +19,11 @@ export function registerSubmit(credentials) {
 		credentials
 	};
 }
+
 export function registerRequest(credentials) {
 	return {
 		type: types.LOGIN.REGISTER_REQUEST,
 		credentials
-	};
-}
-export function registerSuccess(credentials) {
-	return {
-		type: types.LOGIN.REGISTER_SUCCESS,
-		credentials
-	};
-}
-export function registerIncomplete() {
-	return {
-		type: types.LOGIN.REGISTER_INCOMPLETE
 	};
 }
 
@@ -127,28 +117,10 @@ export function setUser(action) {
 	};
 }
 
-export function open() {
-	return {
-		type: types.LOGIN.OPEN
-	};
-}
-
-export function close() {
-	return {
-		type: types.LOGIN.CLOSE
-	};
-}
-
 export function setLoginServices(data) {
 	return {
 		type: types.LOGIN.SET_SERVICES,
 		data
-	};
-}
-
-export function removeLoginServices() {
-	return {
-		type: types.LOGIN.REMOVE_SERVICES
 	};
 }
 
