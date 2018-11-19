@@ -9,44 +9,40 @@ import equal from 'deep-equal';
 
 import I18n from '../../../i18n';
 import { STATUS_COLORS } from '../../../constants/colors';
+import sharedStyles from '../../Styles';
 
 const isIOS = () => Platform.OS === 'ios';
 const TITLE_SIZE = 18;
-const ICON_SIZE = 20;
+const ICON_SIZE = 18;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: 'center',
-		backgroundColor: isIOS() ? 'transparent' : '#2F343D',
-		height: 44
+		backgroundColor: isIOS() ? 'transparent' : '#2F343D'
 	},
 	titleContainer: {
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
 	title: {
+		...sharedStyles.textSemibold,
 		color: isIOS() ? '#0C0D0F' : '#fff',
-		fontSize: TITLE_SIZE,
-		fontWeight: '500'
+		fontSize: TITLE_SIZE
 	},
 	type: {
 		width: ICON_SIZE,
 		height: ICON_SIZE,
-		marginRight: 5,
+		marginRight: 8,
 		tintColor: isIOS() ? '#9EA2A8' : '#fff'
 	},
 	typing: {
+		...sharedStyles.textRegular,
 		color: isIOS() ? '#9EA2A8' : '#fff',
 		fontSize: 12
 	},
 	typingUsers: {
+		...sharedStyles.textSemibold,
 		fontWeight: '600'
-	},
-	alignItemsFlexStart: {
-		alignItems: 'flex-start'
-	},
-	alignItemsCenter: {
-		alignItems: 'center'
 	}
 });
 
@@ -114,7 +110,7 @@ export default class RoomHeaderView extends PureComponent {
 		return (
 			<Text style={styles.typing} numberOfLines={1}>
 				<Text style={styles.typingUsers}>{usersText} </Text>
-				{ usersTyping.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing') }
+				{ usersTyping.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing') }...
 			</Text>
 		);
 	}
@@ -124,11 +120,11 @@ export default class RoomHeaderView extends PureComponent {
 			window, title, type, status, usersTyping
 		} = this.props;
 		const icon = {
-			d: 'mention',
+			d: 'mention_header',
 			c: 'hashtag'
 		}[type] || 'lock';
 		const portrait = window.height > window.width;
-		let height = 44;
+		let height = isIOS ? 44 : 60;
 		let scale = 1;
 
 		if (!portrait) {
@@ -144,8 +140,7 @@ export default class RoomHeaderView extends PureComponent {
 			<View
 				style={[
 					styles.container,
-					portrait ? styles.alignItemsFlexStart : styles.alignItemsCenter,
-					{ maxWidth: window.width - 150, height }
+					{ width: window.width - 150, height }
 				]}
 			>
 				<View style={styles.titleContainer}>
