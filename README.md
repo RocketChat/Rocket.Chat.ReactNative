@@ -8,13 +8,13 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/rocketchat/rocket.chat.reactnative/badge)](https://www.codefactor.io/repository/github/rocketchat/rocket.chat.reactnative)
 [![Known Vulnerabilities](https://snyk.io/test/github/rocketchat/rocket.chat.reactnative/badge.svg)](https://snyk.io/test/github/rocketchat/rocket.chat.reactnative)
 
-**Supported Server Versions:** 0.58.0+ (We are working to support earlier versions)
-
 ## Download
-[![Rocket.Chat.ReactNative on Google Play](https://play.google.com/intl/en_us/badges/images/badge_new.png)](https://play.google.com/store/apps/details?id=chat.rocket.reactnative)
-
-Note: If you want to try iOS version, send us an email to testflight@rocket.chat and we'll add you to TestFlight users.
-
+<a href="https://play.google.com/store/apps/details?id=chat.rocket.reactnative">
+  <img alt="Download on Google Play" src="https://play.google.com/intl/en_us/badges/images/badge_new.png" height=43>
+</a>
+<a href="https://itunes.apple.com/us/app/rocket-chat-experimental/id1272915472">
+  <img alt="Download on App Store" src="https://user-images.githubusercontent.com/7317008/43209852-4ca39622-904b-11e8-8ce1-cdc3aee76ae9.png" height=43>
+</a>
 
 ## Installing dependencies
 
@@ -44,32 +44,21 @@ Readme will guide you on how to config.
 ## Roadmap
 
 ### Current priorities
-
-1) Open PDF and other file types ([#341][i341])
+1) Better message actions ([#329][i329])
 2) [NEW] Commands ([#405][i405])
-3) Better message actions ([#329][i329])
-4) [NEW] Login/Register/Forgot Password layout ([#400][i400])
+3) [NEW] Read receipt ([#542][i542])
+4) [Android] Group notifications by room ([#391][i391])
 
 ### To do
 |    Task              | Status |
 |--------------------|-----|
-| [NEW] Reply Preview ([#311][i311]) |  ✅  |
-| Image upload improvements ([#368][i368]) |  ✅  |
-| [NEW] Onboarding ([#392][i392])             |    ✅  |
-| [NEW] Create channel layout ([#401][i401])             |    ✅  |
-| [NEW] Splash screen ([#399][i399])             |    ✅  |
-| [NEW] Add empty chat background ([#398][i398])             |    ✅  |
-| [NEW] Message layout ([#397][i397])             |    ✅  |
-| [NEW] Rooms list layout ([#395][i395])             |    ✅  |
 | Add components to Storybook ([#38][i38])            |    WIP  |
 | Open PDF and other file types ([#341][i341])            |    WIP  |
 | Better message actions ([#329][i329])             |    ❌  |
 | [NEW] Settings layout ([#396][i396])             |    ❌  |
 | [NEW] Contextual bar layout ([#402][i402])             |    ❌  |
-| [NEW] Login/Register/Forgot Password layout ([#400][i400])             |    ❌  |
 | [NEW] Commands ([#405][i405])   |  ❌  |
 | [Android] Add Fastlane ([#404][i404]) |   ❌   |
-| [NEW] Auto versioning app on Circle CI ([#393][i393])             |    ❌  |
 | [Android] Group notifications by room ([#391][i391])             |    ❌  |
 | Integrate project with code push ([#233][i233])           |    ❌  |
 | Custom icons ([#210][i210])             |    ❌  |
@@ -99,6 +88,7 @@ Readme will guide you on how to config.
 [i392]: https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/392
 [i368]: https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/368
 [i311]: https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/311
+[i542]: https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/542
 
 ## Features
 | Feature                                                           | Status             |
