@@ -325,6 +325,7 @@ export default {
 	Unread_on_top: 'Não lidas no topo',
 	Unstar: 'Remover favorito',
 	Uploading: 'Subindo arquivo',
+	Upload_file_question_mark: 'Enviar arquivo?',
 	User_added_by: 'Usuário {{userAdded}} adicionado por {{userBy}}',
 	User_has_been_key: 'Usuário foi {{key}}!',
 	User_is_no_longer_role_by_: '{{user}} não pertence mais à {{role}} por {{userBy}}',

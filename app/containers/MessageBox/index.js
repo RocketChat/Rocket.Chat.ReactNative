@@ -40,7 +40,7 @@ const onlyUnique = function onlyUnique(value, index, self) {
 const imagePickerConfig = {
 	cropping: true,
 	compressImageQuality: 0.8,
-	cropperAvoidEmptySpaceAroundImage: false,
+	avoidEmptySpaceAroundImage: false,
 	cropperChooseText: I18n.t('Choose'),
 	cropperCancelText: I18n.t('Cancel')
 };

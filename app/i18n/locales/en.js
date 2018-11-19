@@ -326,6 +326,7 @@ export default {
 	Unread_on_top: 'Unread on top',
 	Unstar: 'Unstar',
 	Uploading: 'Uploading',
+	Upload_file_question_mark: 'Upload file?',
 	User_added_by: 'User {{userAdded}} added by {{userBy}}',
 	User_has_been_key: 'User has been {{key}}!',
 	User_is_no_longer_role_by_: '{{user}} is no longer {{role}} by {{userBy}}',
