@@ -3,6 +3,7 @@ import { APP } from '../actions/actionsTypes';
 
 const initialState = {
 	root: null,
+	stackRoot: 'RoomsListView',
 	starting: true,
 	ready: false,
 	inactive: false,
@@ -36,6 +37,11 @@ export default function app(state = initialState, action) {
 			return {
 				...state,
 				root: action.root
+			};
+		case APP.SET_STACK_ROOT:
+			return {
+				...state,
+				stackRoot: action.stackRoot
 			};
 		case APP.INIT:
 			return {
