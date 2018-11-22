@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Navigation } from 'react-native-navigation';
 
-import { appStart as appStartAction } from '../actions';
+import { appStart as appStartAction, setStackRoot as setStackRootAction } from '../actions';
 import { logout as logoutAction } from '../actions/login';
 import Avatar from './Avatar';
 import Status from './status';
@@ -19,7 +19,6 @@ import I18n from '../i18n';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import DeviceInfo from '../utils/deviceInfo';
 import Drawer from '../Drawer';
-import EventEmitter from '../utils/events';
 
 const styles = StyleSheet.create({
 	container: {
@@ -86,6 +85,7 @@ const keyExtractor = item => item.id;
 
 @connect(state => ({
 	Site_Name: state.settings.Site_Name,
+	stackRoot: state.app.stackRoot,
 	user: {
 		id: state.login.user && state.login.user.id,
 		language: state.login.user && state.login.user.language,
@@ -95,30 +95,31 @@ const keyExtractor = item => item.id;
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }), dispatch => ({
 	logout: () => dispatch(logoutAction()),
-	appStart: () => dispatch(appStartAction('outside'))
+	appStart: () => dispatch(appStartAction('outside')),
+	setStackRoot: stackRoot => dispatch(setStackRootAction(stackRoot))
 }))
 export default class Sidebar extends Component {
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		componentId: PropTypes.string,
 		Site_Name: PropTypes.string.isRequired,
+		stackRoot: PropTypes.string.isRequired,
 		user: PropTypes.object,
 		logout: PropTypes.func.isRequired,
-		appStart: PropTypes.func
+		appStart: PropTypes.func,
+		setStackRoot: PropTypes.func
 	}
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			showStatus: false,
-			currentStack: 'RoomsListView'
+			showStatus: false
 		};
 		Navigation.events().bindComponent(this);
 	}
 
 	componentDidMount() {
 		this.setStatus();
-		EventEmitter.addEventListener('ChangeStack', this.handleChangeStack);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -126,10 +127,6 @@ export default class Sidebar extends Component {
 		if (nextProps.user && user && user.language !== nextProps.user.language) {
 			this.setStatus();
 		}
-	}
-
-	componentWillUnmount() {
-		EventEmitter.removeListener('ChangeStack', this.handleChangeStack);
 	}
 
 	handleChangeStack = (event) => {
@@ -164,16 +161,16 @@ export default class Sidebar extends Component {
 		});
 	}
 
-	setStack = (stack) => {
-		const { currentStack } = this.state;
-		if (currentStack !== stack) {
-			Navigation.setStackRoot('AppRoot', {
+	setStack = async(stack) => {
+		const { stackRoot, setStackRoot } = this.props;
+		if (stackRoot !== stack) {
+			await Navigation.setStackRoot('AppRoot', {
 				component: {
 					id: stack,
 					name: stack
 				}
 			});
-			this.setState({ currentStack: stack });
+			setStackRoot(stack);
 		}
 	}
 
@@ -237,7 +234,7 @@ export default class Sidebar extends Component {
 	}
 
 	renderNavigation = () => {
-		const { currentStack } = this.state;
+		const { stackRoot } = this.props;
 		const { logout } = this.props;
 		return (
 			[
@@ -246,21 +243,21 @@ export default class Sidebar extends Component {
 					left: <Icon name='chat-bubble' size={20} />,
 					onPress: () => this.sidebarNavigate('RoomsListView'),
 					testID: 'sidebar-chats',
-					current: currentStack === 'RoomsListView'
+					current: stackRoot === 'RoomsListView'
 				}),
 				this.renderItem({
 					text: I18n.t('Profile'),
 					left: <Icon name='person' size={20} />,
 					onPress: () => this.sidebarNavigate('ProfileView'),
 					testID: 'sidebar-profile',
-					current: currentStack === 'ProfileView'
+					current: stackRoot === 'ProfileView'
 				}),
 				this.renderItem({
 					text: I18n.t('Settings'),
 					left: <Icon name='settings' size={20} />,
 					onPress: () => this.sidebarNavigate('SettingsView'),
 					testID: 'sidebar-settings',
-					current: currentStack === 'SettingsView'
+					current: stackRoot === 'SettingsView'
 				}),
 				this.renderSeparator('separator-logout'),
 				this.renderItem({

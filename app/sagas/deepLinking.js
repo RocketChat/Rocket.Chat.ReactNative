@@ -6,23 +6,38 @@ import {
 import { Navigation } from 'react-native-navigation';
 
 import * as types from '../actions/actionsTypes';
-import { appStart } from '../actions';
+import { appStart, setStackRoot } from '../actions';
 import { selectServerRequest } from '../actions/server';
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
 
-const navigate = function* go({ params, sameServer = true }) {
+const navigate = function* navigate({ params, sameServer = true }) {
 	if (!sameServer) {
 		yield put(appStart('inside'));
 	}
 	if (params.rid) {
 		const canOpenRoom = yield RocketChat.canOpenRoom(params);
 		if (canOpenRoom) {
+			const stack = 'RoomsListView';
+			const stackRoot = yield select(state => state.app.stackRoot);
+
 			// Make sure current stack is RoomsListView before navigate to RoomView
-			EventEmitter.emit('ChangeStack', { stack: 'RoomsListView' });
-			yield Navigation.popToRoot('RoomsListView');
-			Navigation.push('RoomsListView', {
+			if (stackRoot !== stack) {
+				yield Navigation.setStackRoot('AppRoot', {
+					component: {
+						id: stack,
+						name: stack
+					}
+				});
+				yield put(setStackRoot(stack));
+			}
+			try {
+				yield Navigation.popToRoot(stack);
+			} catch (error) {
+				console.log(error);
+			}
+			Navigation.push(stack, {
 				component: {
 					name: 'RoomView',
 					passProps: {
