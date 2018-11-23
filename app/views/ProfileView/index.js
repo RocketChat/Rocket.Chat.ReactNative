@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, ScrollView, Keyboard, Dimensions
+	View, ScrollView, Keyboard, Dimensions, BackHandler
 } from 'react-native';
 import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
@@ -28,6 +28,7 @@ import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
 import Drawer from '../../Drawer';
 import { DEFAULT_HEADER } from '../../constants/headerOptions';
+import { appStart as appStartAction } from '../../actions';
 
 @connect(state => ({
 	user: {
@@ -38,6 +39,8 @@ import { DEFAULT_HEADER } from '../../constants/headerOptions';
 	},
 	Accounts_CustomFields: state.settings.Accounts_CustomFields,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+}), dispatch => ({
+	appStart: () => dispatch(appStartAction())
 }))
 /** @extends React.Component */
 export default class ProfileView extends LoggedView {
@@ -71,7 +74,8 @@ export default class ProfileView extends LoggedView {
 		baseUrl: PropTypes.string,
 		componentId: PropTypes.string,
 		user: PropTypes.object,
-		Accounts_CustomFields: PropTypes.string
+		Accounts_CustomFields: PropTypes.string,
+		appStart: PropTypes.func
 	}
 
 	constructor(props) {
@@ -90,6 +94,7 @@ export default class ProfileView extends LoggedView {
 			customFields: {}
 		};
 		Navigation.events().bindComponent(this);
+		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
 	async componentDidMount() {
@@ -110,10 +115,20 @@ export default class ProfileView extends LoggedView {
 		}
 	}
 
+	componentWillUnmount() {
+		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+	}
+
 	navigationButtonPressed = ({ buttonId }) => {
 		if (buttonId === 'settings') {
 			Drawer.toggle();
 		}
+	}
+
+	handleBackPress = () => {
+		const { appStart } = this.props;
+		appStart('background');
+		return false;
 	}
 
 	setAvatar = (avatar) => {

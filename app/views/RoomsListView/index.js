@@ -22,6 +22,7 @@ import SortDropdown from './SortDropdown';
 import ServerDropdown from './ServerDropdown';
 import Touch from '../../utils/touch';
 import { toggleSortDropdown as toggleSortDropdownAction, openSearchHeader as openSearchHeaderAction, closeSearchHeader as closeSearchHeaderAction } from '../../actions/rooms';
+import { appStart as appStartAction } from '../../actions';
 import store from '../../lib/createStore';
 import Drawer from '../../Drawer';
 import { DEFAULT_HEADER } from '../../constants/headerOptions';
@@ -69,7 +70,8 @@ let NewMessageView = null;
 }), dispatch => ({
 	toggleSortDropdown: () => dispatch(toggleSortDropdownAction()),
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
-	closeSearchHeader: () => dispatch(closeSearchHeaderAction())
+	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
+	appStart: () => dispatch(appStartAction())
 }))
 /** @extends React.Component */
 export default class RoomsListView extends LoggedView {
@@ -114,7 +116,8 @@ export default class RoomsListView extends LoggedView {
 		useRealName: PropTypes.bool,
 		toggleSortDropdown: PropTypes.func,
 		openSearchHeader: PropTypes.func,
-		closeSearchHeader: PropTypes.func
+		closeSearchHeader: PropTypes.func,
+		appStart: PropTypes.func
 	}
 
 	constructor(props) {
@@ -122,6 +125,7 @@ export default class RoomsListView extends LoggedView {
 
 		this.data = [];
 		this.state = {
+			searching: false,
 			search: [],
 			loading: true,
 			chats: [],
@@ -133,6 +137,7 @@ export default class RoomsListView extends LoggedView {
 			livechat: []
 		};
 		Navigation.events().bindComponent(this);
+		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
 	componentDidMount() {
@@ -180,6 +185,7 @@ export default class RoomsListView extends LoggedView {
 		this.removeListener(this.privateGroup);
 		this.removeListener(this.direct);
 		this.removeListener(this.livechat);
+		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
 
 		if (this.timeout) {
 			clearTimeout(this.timeout);
@@ -336,6 +342,7 @@ export default class RoomsListView extends LoggedView {
 
 	initSearchingAndroid = () => {
 		const { openSearchHeader } = this.props;
+		this.setState({ searching: true });
 		openSearchHeader();
 		Navigation.mergeOptions('RoomsListView', {
 			topBar: {
@@ -347,12 +354,12 @@ export default class RoomsListView extends LoggedView {
 				rightButtons: []
 			}
 		});
-		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
 	cancelSearchingAndroid = () => {
 		if (Platform.OS === 'android') {
 			const { closeSearchHeader } = this.props;
+			this.setState({ searching: false });
 			closeSearchHeader();
 			Navigation.mergeOptions('RoomsListView', {
 				topBar: {
@@ -362,7 +369,6 @@ export default class RoomsListView extends LoggedView {
 			});
 			this.internalSetState({ search: [] });
 			Keyboard.dismiss();
-			BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
 		}
 	}
 
@@ -370,8 +376,14 @@ export default class RoomsListView extends LoggedView {
 	hasActiveDB = () => database && database.databases && database.databases.activeDB;
 
 	handleBackPress = () => {
-		this.cancelSearchingAndroid();
-		return true;
+		const { searching } = this.state;
+		const { appStart } = this.props;
+		if (searching) {
+			this.cancelSearchingAndroid();
+			return true;
+		}
+		appStart('background');
+		return false;
 	}
 
 	_isUnread = item => item.unread > 0 || item.alert
