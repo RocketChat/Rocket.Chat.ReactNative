@@ -187,6 +187,7 @@ const RocketChat = {
 		}
 
 		this.getRooms().catch(e => console.log(e));
+		this.getPermissions();
 
 		console.log('get rooms')
 		console.log('get settings')
@@ -204,7 +205,7 @@ const RocketChat = {
 			// if (this.sdk) {
 			// 	this.sdk = null;
 			// }
-			this.sdk = new SDK({ host: server, useSsl: true, protocol: 'ddp', resume: token });
+			this.sdk = new SDK({ host: server, useSsl: false, protocol: 'ddp', resume: token });
 			console.log("​start -> this.sdk", this.sdk);
 			this.sdk.client.headers = {
 				'X-Auth-Token': user.token,
@@ -212,8 +213,10 @@ const RocketChat = {
 			}
 			this.loginSuccess({ user });
 		} else {
-			this.sdk = new SDK({ host: server, useSsl: true, protocol: 'ddp' });
+			this.sdk = new SDK({ host: server, useSsl: false, protocol: 'ddp' });
 		}
+
+		this.getSettings();
 		// else {
 		// 	this.sdk = new SDK({ host: server, useSsl: true, protocol: 'ddp' });
 		// }
@@ -535,7 +538,6 @@ const RocketChat = {
 		try {
 			// await SDK.driver.login(params);
 			// console.log("​login -> this.sdk", this.sdk);
-			this.sdk = new SDK({ host: 'https://open.rocket.chat', useSsl: true, protocol: 'ddp' });
 			return await this.sdk.login(params);
 		} catch (e) {
 			reduxStore.dispatch(loginFailure(e));
@@ -681,7 +683,6 @@ const RocketChat = {
 			return setting;
 		});
 	},
-	_filterSettings: settings => settings.filter(setting => defaultSettings[setting._id] && (setting.value || setting.valueAsString || setting.valueAsNumber || setting.valueAsBoolean)),
 	parseEmojis: emojis => emojis.reduce((ret, item) => {
 		ret[item.name] = item.extension;
 		item.aliases.forEach((alias) => {

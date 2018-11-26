@@ -60,4 +60,4 @@ export default {
 		type: 'valueAsBoolean'
 	}
 };
-export const settingsUpdatedAt = new Date('2018-11-14');
+export const settingsUpdatedAt = new Date('2018-11-26');
