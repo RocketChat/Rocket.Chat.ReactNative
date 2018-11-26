@@ -1,5 +1,5 @@
 import Random from 'react-native-meteor/lib/Random';
-import * as SDK from '@rocket.chat/sdk';
+const SDK = {}
 
 import database from '../../realm';
 import { merge } from '../helpers/mergeSubscriptionsRooms';

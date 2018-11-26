@@ -1,5 +1,5 @@
 import { InteractionManager } from 'react-native';
-import * as SDK from '@rocket.chat/sdk';
+const SDK = {}
 
 import buildMessage from './helpers/buildMessage';
 import database from '../realm';

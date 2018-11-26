@@ -1,4 +1,4 @@
-import * as SDK from '@rocket.chat/sdk';
+const SDK = {}
 
 import database from '../realm';
 import log from '../../utils/log';

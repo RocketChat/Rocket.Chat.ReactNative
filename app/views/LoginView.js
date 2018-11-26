@@ -19,6 +19,7 @@ import LoggedView from './View';
 import I18n from '../i18n';
 import store from '../lib/createStore';
 import { DARK_HEADER } from '../constants/headerOptions';
+import { loginRequest as loginRequestAction } from '../actions/login';
 
 let RegisterView = null;
 let ForgotPasswordView = null;
@@ -55,8 +56,8 @@ const styles = StyleSheet.create({
 	Site_Name: state.settings.Site_Name,
 	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
 	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder
-}), () => ({
-	loginSubmit: params => RocketChat.loginWithPassword(params)
+}), dispatch => ({
+	loginRequest: params => dispatch(loginRequestAction(params))
 }))
 /** @extends React.Component */
 export default class LoginView extends LoggedView {
@@ -76,7 +77,7 @@ export default class LoginView extends LoggedView {
 
 	static propTypes = {
 		componentId: PropTypes.string,
-		loginSubmit: PropTypes.func.isRequired,
+		loginRequest: PropTypes.func.isRequired,
 		login: PropTypes.object,
 		Site_Name: PropTypes.string,
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
@@ -161,11 +162,11 @@ export default class LoginView extends LoggedView {
 		}
 
 		const {	username, password, code } = this.state;
-		const { loginSubmit } = this.props;
+		const { loginRequest } = this.props;
 		Keyboard.dismiss();
 
 		try {
-			await loginSubmit({ username, password, code });
+			await loginRequest({ username, password, code });
 			Answers.logLogin('Email', true);
 		} catch (e) {
 			if (e && e.error === 'totp-required') {

@@ -1,5 +1,5 @@
 import Random from 'react-native-meteor/lib/Random';
-import * as SDK from '@rocket.chat/sdk';
+const SDK = {}
 
 import messagesStatus from '../../constants/messagesStatus';
 import buildMessage from './helpers/buildMessage';

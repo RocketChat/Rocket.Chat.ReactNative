@@ -27,11 +27,8 @@ export default function login(state = initialState, action) {
 				...state,
 				isFetching: false,
 				isAuthenticated: true,
-				user: {
-					...state.user,
-					...action.user
-				},
-				token: action.user.token,
+				user: action.user.me,
+				token: action.user.authToken,
 				failure: false,
 				error: '',
 				credentials: {}
@@ -46,12 +43,12 @@ export default function login(state = initialState, action) {
 			};
 		case types.LOGOUT:
 			return initialState;
-		case types.LOGIN.SET_TOKEN:
-			return {
-				...state,
-				token: action.token,
-				user: action.user
-			};
+		// case types.LOGIN.SET_TOKEN:
+		// 	return {
+		// 		...state,
+		// 		token: action.token,
+		// 		user: action.user
+		// 	};
 		case types.LOGIN.RESTORE_TOKEN:
 			return {
 				...state,
@@ -109,7 +106,7 @@ export default function login(state = initialState, action) {
 				...state,
 				user: {
 					...state.user,
-					...action
+					...action.user
 				}
 			};
 		case types.LOGIN.SET_SERVICES:

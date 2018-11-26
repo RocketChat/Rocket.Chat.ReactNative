@@ -1,4 +1,4 @@
-import * as SDK from '@rocket.chat/sdk';
+const SDK = {}
 
 import log from '../../../utils/log';
 

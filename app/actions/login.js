@@ -13,6 +13,20 @@ export function loginRequest(credentials) {
 	};
 }
 
+export function loginSuccess(user) {
+	return {
+		type: types.LOGIN.SUCCESS,
+		user
+	};
+}
+
+export function loginFailure(err) {
+	return {
+		type: types.LOGIN.FAILURE,
+		err
+	};
+}
+
 export function registerSubmit(credentials) {
 	return {
 		type: types.LOGIN.REGISTER_SUBMIT,
@@ -44,21 +58,6 @@ export function setUsernameRequest(credentials) {
 export function setUsernameSuccess() {
 	return {
 		type: types.LOGIN.SET_USERNAME_SUCCESS
-	};
-}
-
-export function loginSuccess(user) {
-	return {
-		type: types.LOGIN.SUCCESS,
-		user,
-		token: user.token
-	};
-}
-
-export function loginFailure(err) {
-	return {
-		type: types.LOGIN.FAILURE,
-		err
 	};
 }
 
@@ -108,12 +107,10 @@ export function forgotPasswordFailure(err) {
 	};
 }
 
-export function setUser(action) {
+export function setUser(user) {
 	return {
-		// do not change this params order
-		// since we use spread operator, sometimes `type` is overriden
-		...action,
-		type: types.USER.SET
+		type: types.USER.SET,
+		user
 	};
 }
 

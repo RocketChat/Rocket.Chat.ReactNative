@@ -6,7 +6,7 @@ import { METEOR } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import { setToken } from '../actions/login';
 
-const getServer = ({ server }) => server.server;
+const getServer = state => state.server.server;
 const getToken = function* getToken() {
 	const currentServer = yield select(getServer);
 	const user = yield call([AsyncStorage, 'getItem'], `${ RocketChat.TOKEN_KEY }-${ currentServer }`);
@@ -28,23 +28,27 @@ const getToken = function* getToken() {
 
 const connect = (...args) => RocketChat.connect(...args);
 
-const test = function* test() {
+const handleMeteorRequest = function* handleMeteorRequest() {
 	try {
 		const server = yield select(getServer);
-		const user = yield call(getToken);
-		// const response =
-		// yield all([call(connect, server, user && user.token ? { resume: user.token, ...user.user } : undefined)]);// , put(loginRequest({ resume: user.token }))]);
-		yield call(connect, server, user && user.token ? { resume: user.token, ...user } : null);
-	// yield put(connectSuccess(response));
+		const user = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		let parsedUser;
+		if (user) {
+			parsedUser = JSON.parse(user);
+			console.log("​handleMeteorRequest -> parsedUser", parsedUser);
+			if (parsedUser.token) {
+				yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, parsedUser.token);
+			}
+		}
+		// const user = yield call(getToken);
+		yield call(connect, server, parsedUser && parsedUser.token ? { resume: parsedUser.token } : null);
+		// yield call(connect, server);
 	} catch (err) {
-		console.warn('test', err);
-	// yield put(connectFailure(err.status));
+		console.warn('handleMeteorRequest', err);
 	}
 };
 
 const root = function* root() {
-	yield takeLatest(METEOR.REQUEST, test);
-	// yield take(METEOR.SUCCESS, watchConnect);
-	// yield takeLatest(METEOR.SUCCESS, watchConnect);
+	yield takeLatest(METEOR.REQUEST, handleMeteorRequest);
 };
 export default root;

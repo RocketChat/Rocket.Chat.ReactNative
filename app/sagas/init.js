@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native';
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest, all } from 'redux-saga/effects';
 
 import * as actions from '../actions';
 import { selectServerRequest } from '../actions/server';
@@ -12,36 +12,38 @@ import I18n from '../i18n';
 
 const restore = function* restore() {
 	try {
-		const token = yield call([AsyncStorage, 'getItem'], RocketChat.TOKEN_KEY);
-		if (token) {
-			yield put(restoreToken(token));
-		} else {
+		const { token, server } = yield all({
+			token: AsyncStorage.getItem(RocketChat.TOKEN_KEY),
+			server: AsyncStorage.getItem('currentServer')
+		});
+
+		if (!token || !server) {
 			yield put(actions.appStart('outside'));
+			yield RocketChat.clearAsyncStorage();
+			return yield put(actions.appReady({}));
 		}
 
-		const currentServer = yield call([AsyncStorage, 'getItem'], 'currentServer');
-		if (currentServer) {
-			const user = yield call([AsyncStorage, 'getItem'], `${ RocketChat.TOKEN_KEY }-${ currentServer }`);
-			if (user) {
-				const userParsed = JSON.parse(user);
-				if (userParsed.language) {
-					I18n.locale = userParsed.language;
-				}
-				yield put(selectServerRequest(currentServer));
-				yield put(setUser(userParsed));
-			} else {
-				yield put(actions.appStart('outside'));
-			}
-		} else {
-			yield put(actions.appStart('outside'));
-		}
+		yield put(selectServerRequest(server));
 
-		const sortPreferences = yield RocketChat.getSortPreferences();
-		yield put(setAllPreferences(sortPreferences));
+		// const userStringified = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		// if (userStringified) {
+		// 	const user = JSON.parse(userStringified);
+		// 	yield put(restoreToken(token));
+		// 	// yield put(setUser(JSON.parse(user)));
+		// 	yield put(actions.appStart('inside'));
+		// 	yield put(selectServerRequest(server));
+		// 	// RocketChat.start({ server, token, user });
+		// 	// const sortPreferences = yield RocketChat.getSortPreferences();
+		// 	// yield put(setAllPreferences(sortPreferences));
+		// } else {
+		// 	yield put(actions.appStart('outside'));
+		// 	yield RocketChat.clearAsyncStorage(server);
+		// }
 
 		yield put(actions.appReady({}));
 	} catch (e) {
-		log('restore', e);
+		alert(e)
+		// log('restore', e);
 	}
 };
 
