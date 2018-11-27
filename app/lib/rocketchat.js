@@ -192,7 +192,6 @@ const RocketChat = {
 
 			SDK.driver.on('connected', () => {
 				reduxStore.dispatch(connectSuccess());
-				SDK.driver.subscribe('meteor.loginServiceConfiguration');
 				SDK.driver.subscribe('activeUsers');
 				SDK.driver.subscribe('roles');
 				RocketChat.getSettings();
