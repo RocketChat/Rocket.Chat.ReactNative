@@ -37,14 +37,14 @@ const handleSelectServer = function* handleSelectServer({ server }) {
 		if (userStringified) {
 			const user = JSON.parse(userStringified);
 			yield put(restoreToken(token));
-			// yield put(setUser(JSON.parse(user)));
+			yield put(setUser(user));
 			yield put(actions.appStart('inside'));
 			// yield put(selectServerRequest(server));
 			RocketChat.connect({ server, token, user });
 			// const sortPreferences = yield RocketChat.getSortPreferences();
 			// yield put(setAllPreferences(sortPreferences));
 		} else {
-			RocketChat.connect({ server })
+			RocketChat.connect({ server });
 			// yield put(actions.appStart('outside'));
 			// TODO: should redirect to currentServer
 			// yield RocketChat.clearAsyncStorage();

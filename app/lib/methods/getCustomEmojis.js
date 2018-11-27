@@ -1,5 +1,4 @@
 import { InteractionManager } from 'react-native';
-const SDK = {}
 
 import reduxStore from '../createStore';
 
@@ -16,7 +15,8 @@ const getLastMessage = () => {
 export default async function() {
 	try {
 		const lastMessage = getLastMessage();
-		let emojis = await SDK.driver.asyncCall('listEmojiCustom');
+		const result = await this.sdk.get('emoji-custom');
+		let { emojis } = result;
 		emojis = emojis.filter(emoji => !lastMessage || emoji._updatedAt > lastMessage);
 		emojis = this._prepareEmojis(emojis);
 		InteractionManager.runAfterInteractions(() => database.write(() => {

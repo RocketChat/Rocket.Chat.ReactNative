@@ -166,60 +166,47 @@ const RocketChat = {
 	// 		log('SDK.loginSuccess', e);
 	// 	}
 	// },
-	async loginSuccess({ user }) {
+	loginSuccess({ user }) {
 		console.log("​loginSuccess -> user", user);
 		reduxStore.dispatch(setUser(user));
 		RocketChat.registerPushToken(user._id);
-		console.log("​start -> user._id", user._id);
 
-		try {
-			const oauth = await this.sdk.get('settings.oauth')
-			console.log("​start -> oauth", oauth);
-		} catch (error) {
-			console.log("​​start -> oauth -> error", error);
-		}
+		// try {
+		// 	const oauth = await this.sdk.get('settings.oauth')
+		// } catch (error) {
+		// 	console.log("​​start -> oauth -> error", error);
+		// }
 
-		try {
-			const roles = await this.sdk.get('roles.list')
-			console.log("​start -> roles", roles);
-		} catch (error) {
-			console.log("​​start -> roles -> error", error);
-		}
+		// try {
+		// 	const roles = await this.sdk.get('roles.list')
+		// } catch (error) {
+		// 	console.log("​​start -> roles -> error", error);
+		// }
 
 		this.getRooms().catch(e => console.log(e));
 		this.getPermissions();
+		this.getCustomEmoji();
+		// this.sdk.subscribeNotifyUser().then(res => console.log(res)).catch(e => alert(e))
+		// this.sdk.onNotifyUser(r => console.log(r))
 
-		console.log('get rooms')
-		console.log('get settings')
-		console.log('get permissions')
-		console.log('get emojis')
 		console.log('get activeusers')
 	},
-	connect({ server, token, user }) {
+	async connect({ server, token, user }) {
 		console.log("​start -> server, token, user", server, token, user);
 		database.setActiveDB(server);
 
 		// TODO: remove old this.sdk when changing servers
 
+		this.sdk = new SDK({ host: server, useSsl: true, protocol: 'ddp' });
+		this.sdk.connect().then(res => console.log(res)).catch(e => alert(e))
+
 		if (token) {
-			// if (this.sdk) {
-			// 	this.sdk = null;
-			// }
-			this.sdk = new SDK({ host: server, useSsl: false, protocol: 'ddp', resume: token });
-			console.log("​start -> this.sdk", this.sdk);
-			this.sdk.client.headers = {
-				'X-Auth-Token': user.token,
-				'X-User-Id': user._id
-			}
-			this.loginSuccess({ user });
-		} else {
-			this.sdk = new SDK({ host: server, useSsl: false, protocol: 'ddp' });
+			const result = await this.login({ resume: token });
+			console.log("​connect -> this.sdk", this.sdk);
+			this.loginSuccess({ user: result.me });
 		}
 
 		this.getSettings();
-		// else {
-		// 	this.sdk = new SDK({ host: server, useSsl: true, protocol: 'ddp' });
-		// }
 	},
 	// connect(url, login) {
 	// 	console.log("​connect -> url", url);
@@ -228,7 +215,6 @@ const RocketChat = {
 	// 	// console.log("​connect -> login", login);
 	// 	// return new Promise(async () => {
 	// 	// 	this.sdk = new SDK({ host: url, useSsl: true, protocol: 'ddp' });
-			
 
 	// 		// if (this.ddp) {
 	// 		// 	RocketChat.disconnect();
