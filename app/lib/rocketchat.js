@@ -84,7 +84,7 @@ const RocketChat = {
 		}
 	},
 	_hasInstanceId(headers) {
-		return !!Object.keys(headers).findIndex(item => item.toLowerCase() === 'x-instance-id');
+		return !!headers[Object.keys(headers).find(item => item.toLowerCase() === 'x-instance-id')];
 	},
 	async testServer(url) {
 		try {
