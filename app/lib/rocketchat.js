@@ -1,7 +1,7 @@
 import { AsyncStorage, Platform } from 'react-native';
 import foreach from 'lodash/forEach';
 import RNFetchBlob from 'rn-fetch-blob';
-import { Rocketchat as SDK } from '@rocket.chat/sdk';
+import * as SDK from '@rocket.chat/sdk';
 
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
@@ -191,22 +191,42 @@ const RocketChat = {
 
 		console.log('get activeusers')
 	},
-	async connect({ server, token, user }) {
+	connect({ server, token, user }) {
 		console.log("​start -> server, token, user", server, token, user);
 		database.setActiveDB(server);
 
 		// TODO: remove old this.sdk when changing servers
 
-		this.sdk = new SDK({ host: server, useSsl: true, protocol: 'ddp' });
-		this.sdk.connect().then(res => console.log(res)).catch(e => alert(e))
+		SDK.api.setBaseUrl(server);
+		this.getSettings();
 
 		if (token) {
-			const result = await this.login({ resume: token });
-			console.log("​connect -> this.sdk", this.sdk);
-			this.loginSuccess({ user: result.me });
+			reduxStore.dispatch(loginRequest({ resume: token }));
 		}
 
-		this.getSettings();
+		SDK.driver.connect({ host: server, useSsl: true }, (err, ddp) => {
+			if (err) {
+				return console.warn(err);
+			}
+			// this.ddp = ddp;
+			if (token) {
+				SDK.driver.login({ resume: token });
+			}
+		});
+
+		SDK.driver.on('connected', () => {
+			reduxStore.dispatch(connectSuccess());
+		});
+
+		SDK.driver.on('logged', protectedFunction((error, u) => {
+			this.subscribeRooms(u.id);
+			SDK.driver.subscribe('activeUsers');
+			SDK.driver.subscribe('roles');
+		}));
+
+		SDK.driver.on('forbidden', protectedFunction(() => reduxStore.dispatch(logout())));
+
+		SDK.driver.on('users', protectedFunction((error, ddpMessage) => RocketChat._setUser(ddpMessage)));
 	},
 	connected() {
 		return SDK.driver.ddp && SDK.driver.ddp._logged;
@@ -263,7 +283,7 @@ const RocketChat = {
 		try {
 			// await SDK.driver.login(params);
 			// console.log("​login -> this.sdk", this.sdk);
-			return await this.sdk.login(params);
+			return await SDK.api.login(params);
 		} catch (e) {
 			reduxStore.dispatch(loginFailure(e));
 			throw e;

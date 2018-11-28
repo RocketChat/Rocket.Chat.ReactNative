@@ -1,4 +1,5 @@
 import { InteractionManager } from 'react-native';
+import * as SDK from '@rocket.chat/sdk';
 
 import mergeSubscriptionsRooms, { merge } from './helpers/mergeSubscriptionsRooms';
 import database from '../realm';
@@ -18,8 +19,8 @@ export default function() {
 		try {
 			const updatedSince = lastMessage();
 			const [subscriptionsResult, roomsResult] = await (updatedSince
-				? Promise.all([this.sdk.get('subscriptions.get', { updatedSince }), this.sdk.get('rooms.get', { updatedSince })])
-				: Promise.all([this.sdk.get('subscriptions.get'), this.sdk.get('rooms.get')])
+				? Promise.all([SDK.api.get('subscriptions.get', { updatedSince }), SDK.api.get('rooms.get', { updatedSince })])
+				: Promise.all([SDK.api.get('subscriptions.get'), SDK.api.get('rooms.get')])
 			);
 			const { subscriptions, rooms } = mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
 

@@ -1,4 +1,5 @@
 import { InteractionManager } from 'react-native';
+import * as SDK from '@rocket.chat/sdk';
 
 import reduxStore from '../createStore';
 
@@ -15,7 +16,7 @@ const getLastMessage = () => {
 export default async function() {
 	try {
 		const lastMessage = getLastMessage();
-		const result = await this.sdk.get('emoji-custom');
+		const result = await SDK.api.get('emoji-custom');
 		let { emojis } = result;
 		emojis = emojis.filter(emoji => !lastMessage || emoji._updatedAt > lastMessage);
 		emojis = this._prepareEmojis(emojis);

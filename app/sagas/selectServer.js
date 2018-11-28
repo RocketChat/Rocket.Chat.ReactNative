@@ -33,6 +33,7 @@ const handleSelectServer = function* handleSelectServer({ server }) {
 			token: AsyncStorage.getItem(RocketChat.TOKEN_KEY),
 			userStringified: AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`)
 		});
+		console.log("​handleSelectServer -> token, userStringified", token, userStringified);
 
 		if (userStringified) {
 			const user = JSON.parse(userStringified);

@@ -29,23 +29,24 @@ const getToken = function* getToken() {
 const connect = (...args) => RocketChat.connect(...args);
 
 const handleMeteorRequest = function* handleMeteorRequest() {
-	try {
-		const server = yield select(getServer);
-		const user = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
-		let parsedUser;
-		if (user) {
-			parsedUser = JSON.parse(user);
-			console.log("​handleMeteorRequest -> parsedUser", parsedUser);
-			if (parsedUser.token) {
-				yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, parsedUser.token);
-			}
-		}
-		// const user = yield call(getToken);
-		yield call(connect, server, parsedUser && parsedUser.token ? { resume: parsedUser.token } : null);
-		// yield call(connect, server);
-	} catch (err) {
-		console.warn('handleMeteorRequest', err);
-	}
+	console.warn('handleMeteorRequest')
+	// try {
+	// 	const server = yield select(getServer);
+	// 	const user = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
+	// 	let parsedUser;
+	// 	if (user) {
+	// 		parsedUser = JSON.parse(user);
+	// 		console.log("​handleMeteorRequest -> parsedUser", parsedUser);
+	// 		if (parsedUser.token) {
+	// 			yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, parsedUser.token);
+	// 		}
+	// 	}
+	// 	// const user = yield call(getToken);
+	// 	yield call(connect, server, parsedUser && parsedUser.token ? { resume: parsedUser.token } : null);
+	// 	// yield call(connect, server);
+	// } catch (err) {
+	// 	console.warn('handleMeteorRequest', err);
+	// }
 };
 
 const root = function* root() {

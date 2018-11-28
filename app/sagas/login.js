@@ -25,7 +25,8 @@ import I18n from '../i18n';
 const getServer = state => state.server.server;
 const getToken = state => state.login.token;
 
-const loginCall = args => RocketChat.loginWithPassword(args);
+const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
+const loginCall = args => RocketChat.login(args);
 const registerCall = args => RocketChat.register(args);
 const setUsernameCall = args => RocketChat.setUsername(args);
 const loginSuccessCall = () => RocketChat.loginSuccess();
@@ -34,8 +35,16 @@ const forgotPasswordCall = args => RocketChat.forgotPassword(args);
 
 const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 	try {
-		const result = yield call(loginCall, credentials);
-		yield put(loginSuccess(result));
+		let result;
+		if (credentials.resume) {
+			result = yield call(loginCall, credentials);			
+		} else {
+			result = yield call(loginWithPasswordCall, credentials);
+		}
+		console.log("​handleLoginRequest -> result", result);
+		if (result.status && result.status === 'success') {
+			return yield put(loginSuccess(result.data));
+		}
 	} catch (error) {
 		alert(error);
 		yield put(loginFailure(error));
@@ -194,12 +203,17 @@ const handleForgotPasswordRequest = function* handleForgotPasswordRequest({ emai
 const handleSetUser = function* handleSetUser({ user }) {
 	yield delay(2000);
 	const [server, token] = yield all([select(getServer), select(getToken)]);
-	if (user && user.id) {
-		if (user.language) {
-			I18n.locale = user.language;
-		}
-		yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify({ ...user, token }));
+	// if (user && user.id) {
+	// 	if (user.language) {
+	// 		I18n.locale = user.language;
+	// 	}
+	// 	yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify({ ...user, token }));
+	// }
+	// TODO: check better way
+	if (user.language) {
+		I18n.locale = user.language;
 	}
+	yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify({ ...user, token }));
 };
 
 const root = function* root() {
