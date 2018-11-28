@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, Text, Image, TouchableOpacity
+	View, Text, Image, TouchableOpacity, BackHandler
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -10,6 +10,7 @@ import SafeAreaView from 'react-native-safe-area-view';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import { selectServerRequest, serverInitAdd, serverFinishAdd } from '../../actions/server';
+import { appStart as appStartAction } from '../../actions';
 import I18n from '../../i18n';
 import openLink from '../../utils/openLink';
 import Button from './Button';
@@ -28,7 +29,8 @@ let NewServerView = null;
 }), dispatch => ({
 	initAdd: () => dispatch(serverInitAdd()),
 	finishAdd: () => dispatch(serverFinishAdd()),
-	selectServer: server => dispatch(selectServerRequest(server))
+	selectServer: server => dispatch(selectServerRequest(server)),
+	appStart: () => dispatch(appStartAction())
 }))
 /** @extends React.Component */
 export default class OnboardingView extends LoggedView {
@@ -49,11 +51,13 @@ export default class OnboardingView extends LoggedView {
 		selectServer: PropTypes.func.isRequired,
 		currentServer: PropTypes.string,
 		initAdd: PropTypes.func,
-		finishAdd: PropTypes.func
+		finishAdd: PropTypes.func,
+		appStart: PropTypes.func
 	}
 
 	constructor(props) {
 		super('OnboardingView', props);
+		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
 	componentDidMount() {
@@ -75,6 +79,13 @@ export default class OnboardingView extends LoggedView {
 			finishAdd();
 		}
 		EventEmitter.removeListener('NewServer', this.handleNewServerEvent);
+		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+	}
+
+	handleBackPress = () => {
+		const { appStart } = this.props;
+		appStart('background');
+		return false;
 	}
 
 	close = () => {

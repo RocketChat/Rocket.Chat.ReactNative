@@ -20,6 +20,13 @@ export function appInit() {
 	};
 }
 
+export function setStackRoot(stackRoot) {
+	return {
+		type: APP.SET_STACK_ROOT,
+		stackRoot
+	};
+}
+
 export function setCurrentServer(server) {
 	return {
 		type: types.SET_CURRENT_SERVER,

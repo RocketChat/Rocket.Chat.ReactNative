@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, Dimensions } from 'react-native';
+import {
+	View, ScrollView, Dimensions, BackHandler
+} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
@@ -18,13 +20,15 @@ import Loading from '../../containers/Loading';
 import { showErrorAlert, showToast } from '../../utils/info';
 import log from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
+import { appStart as appStartAction } from '../../actions';
 import Drawer from '../../Drawer';
 import { DEFAULT_HEADER } from '../../constants/headerOptions';
 
 @connect(state => ({
 	userLanguage: state.login.user && state.login.user.language
 }), dispatch => ({
-	setUser: params => dispatch(setUserAction(params))
+	setUser: params => dispatch(setUserAction(params)),
+	appStart: () => dispatch(appStartAction())
 }))
 /** @extends React.Component */
 export default class SettingsView extends LoggedView {
@@ -57,7 +61,8 @@ export default class SettingsView extends LoggedView {
 	static propTypes = {
 		componentId: PropTypes.string,
 		userLanguage: PropTypes.string,
-		setUser: PropTypes.func
+		setUser: PropTypes.func,
+		appStart: PropTypes.func
 	}
 
 	constructor(props) {
@@ -81,12 +86,23 @@ export default class SettingsView extends LoggedView {
 			saving: false
 		};
 		Navigation.events().bindComponent(this);
+		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+	}
+
+	componentWillUnmount() {
+		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
 	navigationButtonPressed = ({ buttonId }) => {
 		if (buttonId === 'settings') {
 			Drawer.toggle();
 		}
+	}
+
+	handleBackPress = () => {
+		const { appStart } = this.props;
+		appStart('background');
+		return false;
 	}
 
 	getLabel = (language) => {

@@ -194,10 +194,12 @@ const handleForgotPasswordRequest = function* handleForgotPasswordRequest({ emai
 const handleSetUser = function* handleSetUser({ user }) {
 	yield delay(2000);
 	const [server, token] = yield all([select(getServer), select(getToken)]);
-	if (user.language) {
-		I18n.locale = user.language;
+	if (user && user.id) {
+		if (user.language) {
+			I18n.locale = user.language;
+		}
+		yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify({ ...user, token }));
 	}
-	yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify({ ...user, token }));
 };
 
 const root = function* root() {
