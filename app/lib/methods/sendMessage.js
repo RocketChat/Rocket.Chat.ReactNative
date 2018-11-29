@@ -1,5 +1,5 @@
 import Random from 'react-native-meteor/lib/Random';
-const SDK = {}
+import * as SDK from '@rocket.chat/sdk';
 
 import messagesStatus from '../../constants/messagesStatus';
 import buildMessage from './helpers/buildMessage';
@@ -31,21 +31,9 @@ export const getMessage = (rid, msg = {}) => {
 	return message;
 };
 
-function sendMessageByRest(args) {
-	return SDK.api.post('chat.sendMessage', { message: args });
-}
-
-function sendMessageByDDP(...args) {
-	try {
-		return SDK.driver.asyncCall('sendMessage', ...args);
-	} catch (error) {
-		return sendMessageByRest.call(this, ...args);
-	}
-}
-
-export async function _sendMessageCall(message) {
+export async function sendMessageCall(message) {
 	const { _id, rid, msg } = message;
-	const data = await (this.connected() ? sendMessageByDDP.call(this, { _id, rid, msg }) : sendMessageByRest.call(this, { _id, rid, msg }));
+	const data = await SDK.api.post('chat.sendMessage', { message: { _id, rid, msg } });
 	return data;
 }
 
@@ -55,12 +43,13 @@ export default async function(rid, msg) {
 		const message = getMessage(rid, msg);
 		const room = db.objects('subscriptions').filtered('rid == $0', rid);
 
+		// TODO: do we need this?
 		db.write(() => {
 			room.lastMessage = message;
 		});
 
 		try {
-			const ret = await _sendMessageCall.call(this, message);
+			const ret = await sendMessageCall.call(this, message);
 			db.write(() => {
 				db.create('messages', buildMessage({ ...message, ...ret }), true);
 			});
