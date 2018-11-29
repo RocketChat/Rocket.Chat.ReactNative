@@ -531,7 +531,7 @@ const RocketChat = {
 	},
 
 	createDirectMessage(username) {
-		return call('createDirectMessage', username);
+		return SDK.api.post('im.create', { username });
 	},
 	joinRoom(rid) {
 		return call('joinRoom', rid);
@@ -588,6 +588,9 @@ const RocketChat = {
 			return Promise.reject(new Error('Room not found'));
 		}
 		return Promise.resolve(result);
+	},
+	getRoomInfo(roomId) {
+		return SDK.api.get('rooms.info', { roomId });
 	},
 	async getPermalink(message) {
 		let room;

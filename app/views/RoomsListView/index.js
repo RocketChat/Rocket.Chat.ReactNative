@@ -416,9 +416,10 @@ export default class RoomsListView extends LoggedView {
 			// if user is using the search we need first to join/create room
 			try {
 				const { username } = item;
-				const sub = await RocketChat.createDirectMessage(username);
-				const { rid } = sub;
-				return this.goRoom(rid);
+				const result = await RocketChat.createDirectMessage(username);
+				if (result.success) {
+					return this.goRoom(result.room._id);
+				}
 			} catch (e) {
 				log('RoomsListView._onPressItem', e);
 			}
