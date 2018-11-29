@@ -98,7 +98,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
-    "metro-react-native-babel-preset": "^0.45.6",
+    "metro-react-native-babel-preset": "^0.50.0",
     "mocha": "^5.2.0",
     "otp.js": "^1.1.0",
     "react-dom": "16.6.1",
