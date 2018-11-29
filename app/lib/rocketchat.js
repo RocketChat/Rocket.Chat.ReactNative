@@ -196,6 +196,10 @@ const RocketChat = {
 		database.setActiveDB(server);
 
 		// TODO: remove old this.sdk when changing servers
+		if (this.ddp) {
+			RocketChat.disconnect();
+			this.ddp = null;
+		}
 
 		SDK.api.setBaseUrl(server);
 		this.getSettings();
@@ -204,11 +208,11 @@ const RocketChat = {
 			reduxStore.dispatch(loginRequest({ resume: token }));
 		}
 
-		SDK.driver.connect({ host: server, useSsl: true }, (err, ddp) => {
+		SDK.driver.connect({ host: server, useSsl: false }, (err, ddp) => {
 			if (err) {
 				return console.warn(err);
 			}
-			// this.ddp = ddp;
+			this.ddp = ddp;
 			if (token) {
 				SDK.driver.login({ resume: token });
 			}
@@ -280,9 +284,10 @@ const RocketChat = {
 	},
 
 	async login(params) {
+		console.log("​login -> params", params);
+		console.log("​login -> SDK.api", SDK.api);
 		try {
 			// await SDK.driver.login(params);
-			// console.log("​login -> this.sdk", this.sdk);
 			return await SDK.api.login(params);
 		} catch (e) {
 			reduxStore.dispatch(loginFailure(e));

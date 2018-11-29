@@ -1,4 +1,4 @@
-const SDK = {}
+import * as SDK from '@rocket.chat/sdk';
 
 import log from '../../../utils/log';
 
@@ -43,26 +43,26 @@ export default function subscribeRoom({ rid, t }) {
 		}, 5000);
 	};
 
-	if (!this.connected()) {
-		loop();
-	} else {
-		SDK.driver.on('logged', () => {
-			clearTimeout(timer);
-			timer = false;
-		});
+	// if (!this.connected()) {
+	// 	loop();
+	// } else {
+	SDK.driver.on('logged', () => {
+		clearTimeout(timer);
+		timer = false;
+	});
 
-		SDK.driver.on('disconnected', () => {
-			if (SDK.driver.userId) {
-				loop();
-			}
-		});
-
-		try {
-			promises = subscribe(rid);
-		} catch (e) {
-			log('subscribeRoom', e);
+	SDK.driver.on('disconnected', () => {
+		if (SDK.driver.userId) {
+			loop();
 		}
+	});
+
+	try {
+		promises = subscribe(rid);
+	} catch (e) {
+		log('subscribeRoom', e);
 	}
+	// }
 
 	return {
 		stop: () => stop()

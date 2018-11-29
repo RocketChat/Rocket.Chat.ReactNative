@@ -89,7 +89,13 @@ const watchRoomOpen = function* watchRoomOpen({ room }) {
 		if (room._id) {
 			RocketChat.readMessages(room.rid);
 		}
+
+		const auth = yield select(state => state.login.isAuthenticated);
+		if (!auth) {
+			yield take(types.LOGIN.SUCCESS);
+		}
 		sub = yield RocketChat.subscribeRoom(room);
+
 		thread = yield fork(usersTyping, { rid: room.rid });
 		yield race({
 			open: take(types.ROOM.OPEN),
@@ -101,6 +107,7 @@ const watchRoomOpen = function* watchRoomOpen({ room }) {
 		yield put(editCancel());
 		yield put(replyCancel());
 	} catch (e) {
+		alert(e)
 		log('watchRoomOpen', e);
 	}
 };
