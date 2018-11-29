@@ -124,79 +124,17 @@ const RocketChat = {
 			this.activeUsers[ddpMessage.id] = { ...this.activeUsers[ddpMessage.id], ...activeUser, ...ddpMessage.fields };
 		}
 	},
-	// async loginSuccess(user) {
-	// 	if (!user) {
-	// 		const { user: u } = reduxStore.getState().login;
-	// 		user = Object.assign({}, u);
-	// 	}
-
-	// 	// TODO: one api call
-	// 	// call /me only one time
-	// 	try {
-	// 		if (!user.username) {
-	// 			// get me from api
-	// 			let me = await SDK.api.get('me');
-	// 			// if server didn't found username
-	// 			if (!me.username) {
-	// 				// search username from credentials (sent during registerSubmit)
-	// 				const { username } = reduxStore.getState().login.credentials;
-	// 				if (username) {
-	// 					// set username
-	// 					await RocketChat.setUsername({ username });
-	// 					me = { ...me, username };
-	// 				}
-	// 			}
-	// 			user = { ...user, ...me };
-	// 		}
-	// 	} catch (e) {
-	// 		log('SDK.loginSuccess set username', e);
-	// 	}
-
-	// 	try {
-	// 		if (user.username) {
-	// 			const userInfo = await SDK.api.get('users.info', { userId: user.id });
-	// 			user = { ...user, ...userInfo.user };
-	// 		}
-
-	// 		RocketChat.registerPushToken(user.id);
-	// 		reduxStore.dispatch(setUser(user));
-	// 		reduxStore.dispatch(loginSuccess(user));
-	// 		this.ddp.subscribe('userData');
-	// 	} catch (e) {
-	// 		log('SDK.loginSuccess', e);
-	// 	}
-	// },
 	loginSuccess({ user }) {
-		console.log("​loginSuccess -> user", user);
-		user.id = user._id;
 		reduxStore.dispatch(setUser(user));
 		RocketChat.registerPushToken(user.id);
-
-		// try {
-		// 	const oauth = await this.sdk.get('settings.oauth')
-		// } catch (error) {
-		// 	console.log("​​start -> oauth -> error", error);
-		// }
-
-		// try {
-		// 	const roles = await this.sdk.get('roles.list')
-		// } catch (error) {
-		// 	console.log("​​start -> roles -> error", error);
-		// }
-
 		this.getRooms().catch(e => console.log(e));
 		this.getPermissions();
 		this.getCustomEmoji();
-		// this.sdk.subscribeNotifyUser().then(res => console.log(res)).catch(e => alert(e))
-		// this.sdk.onNotifyUser(r => console.log(r))
-
-		console.log('get activeusers')
 	},
 	connect({ server, token, user }) {
 		console.log("​start -> server, token, user", server, token, user);
 		database.setActiveDB(server);
 
-		// TODO: remove old this.sdk when changing servers
 		if (this.ddp) {
 			RocketChat.disconnect();
 			this.ddp = null;
