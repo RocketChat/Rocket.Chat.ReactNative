@@ -67,12 +67,13 @@ export default class RoomMembersView extends LoggedView {
 			members,
 			membersFiltered: [],
 			userLongPressed: {},
-			room: {}
+			room: this.rooms[0] || {}
 		};
 		Navigation.events().bindComponent(this);
 	}
 
 	componentDidMount() {
+		this.fetchMembers();
 		this.rooms.addListener(this.updateRoom);
 	}
 
@@ -149,6 +150,13 @@ export default class RoomMembersView extends LoggedView {
 		if (this.actionSheet && this.actionSheet.show) {
 			this.actionSheet.show();
 		}
+	}
+
+	fetchMembers = async(status) => {
+		const { rid } = this.state;
+		const membersResult = await RocketChat.getRoomMembers(rid, status);
+		const members = membersResult.records;
+		this.setState({ allUsers: status, members });
 	}
 
 	updateRoom = async() => {

@@ -511,10 +511,7 @@ const RocketChat = {
 		return call('toggleFavorite', rid, !f);
 	},
 	getRoomMembers(rid, allUsers) {
-		// return call('getUsersOfRoom', rid, allUsers);
-		const data = SDK.api.get('channels.members');
-		console.log("​getRoomMembers -> data", data);
-		return data;
+		return call('getUsersOfRoom', rid, allUsers);
 	},
 	getUserRoles() {
 		return call('getUserRoles');
