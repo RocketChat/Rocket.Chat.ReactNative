@@ -15,7 +15,6 @@ import database from '../lib/realm';
 import log from '../utils/log';
 import I18n from '../i18n';
 
-const leaveRoom = rid => RocketChat.leaveRoom(rid);
 const eraseRoom = rid => RocketChat.eraseRoom(rid);
 
 let sub;
@@ -148,8 +147,8 @@ const updateLastOpen = function* updateLastOpen() {
 	yield put(setLastOpen());
 };
 
-const goRoomsListAndDelete = function* goRoomsListAndDelete(rid, type) {
-	yield Navigation.popToRoot(type === 'erase' ? 'RoomActionsView' : 'RoomInfoEditView');
+const goRoomsListAndDelete = function* goRoomsListAndDelete(rid) {
+	yield Navigation.popToRoot('RoomsListView');
 	try {
 		database.write(() => {
 			const messages = database.objects('messages').filtered('rid = $0', rid);
@@ -162,14 +161,14 @@ const goRoomsListAndDelete = function* goRoomsListAndDelete(rid, type) {
 	}
 };
 
-const handleLeaveRoom = function* handleLeaveRoom({ rid }) {
+const handleLeaveRoom = function* handleLeaveRoom({ rid, t }) {
 	try {
 		sub.stop();
-		yield call(leaveRoom, rid);
-		yield goRoomsListAndDelete(rid, 'delete');
+		yield RocketChat.leaveRoom(rid, t);
+		yield goRoomsListAndDelete(rid);
 	} catch (e) {
-		if (e.error === 'error-you-are-last-owner') {
-			Alert.alert(I18n.t(e.error));
+		if (e.data && e.data.errorType === 'error-you-are-last-owner') {
+			Alert.alert(I18n.t(e.data.error));
 		} else {
 			Alert.alert(I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_room') }));
 		}
@@ -179,7 +178,7 @@ const handleLeaveRoom = function* handleLeaveRoom({ rid }) {
 const handleEraseRoom = function* handleEraseRoom({ rid }) {
 	try {
 		sub.stop();
-		yield call(eraseRoom, rid);
+		yield eraseRoom(rid, t);
 		yield goRoomsListAndDelete(rid, 'erase');
 	} catch (e) {
 		Alert.alert(I18n.t('There_was_an_error_while_action', { action: I18n.t('erasing_room') }));

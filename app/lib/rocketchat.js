@@ -208,7 +208,7 @@ const RocketChat = {
 			reduxStore.dispatch(loginRequest({ resume: token }));
 		}
 
-		SDK.driver.connect({ host: server, useSsl: false }, (err, ddp) => {
+		SDK.driver.connect({ host: server, useSsl: true }, (err, ddp) => {
 			if (err) {
 				return console.warn(err);
 			}
@@ -511,10 +511,16 @@ const RocketChat = {
 		return call('toggleFavorite', rid, !f);
 	},
 	getRoomMembers(rid, allUsers) {
-		return call('getUsersOfRoom', rid, allUsers);
+		// return call('getUsersOfRoom', rid, allUsers);
+		const data = SDK.api.get('channels.members');
+		console.log("​getRoomMembers -> data", data);
+		return data;
 	},
 	getUserRoles() {
 		return call('getUserRoles');
+	},
+	getRoomCounters(roomId, t) {
+		return SDK.api.get(`${ this.roomTypeToApiType(t) }.counters`, { roomId });
 	},
 	async getRoomMember(rid, currentUserId) {
 		try {
@@ -530,8 +536,10 @@ const RocketChat = {
 		}
 		return call('unblockUser', { rid, blocked });
 	},
-	leaveRoom(rid) {
-		return call('leaveRoom', rid);
+	leaveRoom(roomId, t) {
+		console.log("​leaveRoom -> roomId, t", roomId, t);
+		return SDK.api.post(`${ this.roomTypeToApiType(t) }.leave`, { roomId });
+		// return call('leaveRoom', rid);
 	},
 	eraseRoom(rid) {
 		return call('eraseRoom', rid);
@@ -557,8 +565,8 @@ const RocketChat = {
 	saveUserPreferences(params) {
 		return call('saveUserPreferences', params);
 	},
-	saveNotificationSettings(rid, param, value) {
-		return call('saveNotificationSettings', rid, param, value);
+	saveNotificationSettings(roomId, notifications) {
+		return SDK.api.post('rooms.saveNotification', { roomId, notifications });
 	},
 	messageSearch(text, rid, limit) {
 		return call('messageSearch', text, rid, limit);
@@ -650,6 +658,12 @@ const RocketChat = {
 			promises.push(AsyncStorage.removeItem(`${ RocketChat.TOKEN_KEY }-${ server }`));
 		}
 		return Promise.all(promises);
+	},
+	roomTypeToApiType(t) {
+		const types = {
+			c: 'channels', d: 'im', p: 'groups'
+		};
+		return types[t];
 	}
 };
 

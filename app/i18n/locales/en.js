@@ -184,6 +184,7 @@ export default {
 	Login_error: 'Your credentials were rejected! Please try again.',
 	Login_with: 'Login with',
 	Logout: 'Logout',
+	members: 'members',
 	Members: 'Members',
 	Mentioned_Messages: 'Mentioned Messages',
 	mentioned: 'mentioned',
