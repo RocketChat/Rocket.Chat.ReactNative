@@ -629,10 +629,10 @@ const RocketChat = {
 		return call('UserPresence:setDefaultStatus', status);
 	},
 	setReaction(emoji, messageId) {
-		return call('setReaction', emoji, messageId);
+		return SDK.api.post('chat.react', { emoji, messageId });
 	},
-	toggleFavorite(rid, f) {
-		return call('toggleFavorite', rid, !f);
+	toggleFavorite(roomId, favorite) {
+		return SDK.api.post('rooms.favorite', { roomId, favorite });
 	},
 	getRoomMembers(rid, allUsers) {
 		return call('getUsersOfRoom', rid, allUsers);

@@ -171,11 +171,13 @@ export default class RoomView extends LoggedView {
 	componentWillUnmount() {
 		const { closeRoom } = this.props;
 		this.rooms.removeAllListeners();
-		this.onEndReached.stop();
+		if (this.onEndReached && this.onEndReached.stop) {
+			this.onEndReached.stop();
+		}
 		closeRoom();
 	}
 
-	onEndReached = (lastRowData) => {
+	onEndReached = async(lastRowData) => {
 		if (!lastRowData) {
 			return;
 		}
@@ -186,16 +188,13 @@ export default class RoomView extends LoggedView {
 		}
 
 		this.setState({ loadingMore: true });
-
-		requestAnimationFrame(async() => {
-			const { room } = this.state;
-			try {
-				const result = await RocketChat.loadMessagesForRoom({ rid: this.rid, t: room.t, latest: lastRowData.ts });
-				this.internalSetState({ end: result.length < 50, loadingMore: false });
-			} catch (e) {
-				log('RoomView.onEndReached', e);
-			}
-		});
+		const { room } = this.state;
+		try {
+			const result = await RocketChat.loadMessagesForRoom({ rid: this.rid, t: room.t, latest: lastRowData.ts });
+			this.internalSetState({ end: result.length < 50, loadingMore: false });
+		} catch (e) {
+			log('RoomView.onEndReached', e);
+		}
 	}
 
 	onMessageLongPress = (message) => {
@@ -245,7 +244,7 @@ export default class RoomView extends LoggedView {
 			});
 		} else if (buttonId === 'star') {
 			try {
-				RocketChat.toggleFavorite(rid, f);
+				RocketChat.toggleFavorite(rid, !f);
 			} catch (e) {
 				log('toggleFavorite', e);
 			}
