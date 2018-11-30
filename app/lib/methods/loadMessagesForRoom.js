@@ -5,16 +5,12 @@ import buildMessage from './helpers/buildMessage';
 import database from '../realm';
 import log from '../../utils/log';
 
-// TODO: api fix
-const types = {
-	c: 'channels', d: 'im', p: 'groups'
-};
-
 async function load({ rid: roomId, latest, t }) {
+	let params = { roomId, count: 50 };
 	if (latest) {
-		latest = new Date(latest).toISOString();
+		params = { ...params, latest: new Date(latest).toISOString() };
 	}
-	const data = await SDK.api.get(`${ types[t] }.history`, { roomId, latest, count: 50 });
+	const data = await SDK.api.get(`${ this.roomTypeToApiType(t) }.history`, params);
 	if (!data || data.status === 'error') {
 		return [];
 	}

@@ -533,8 +533,9 @@ const RocketChat = {
 	createDirectMessage(username) {
 		return SDK.api.post('im.create', { username });
 	},
-	joinRoom(rid) {
-		return call('joinRoom', rid);
+	joinRoom(roomId) {
+		// TODO: join code
+		return SDK.api.post('channels.join', { roomId });
 	},
 	sendFileMessage,
 	cancelUpload,

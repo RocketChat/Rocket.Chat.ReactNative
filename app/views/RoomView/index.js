@@ -23,7 +23,6 @@ import UploadProgress from './UploadProgress';
 import styles from './styles';
 import log from '../../utils/log';
 import I18n from '../../i18n';
-import debounce from '../../utils/debounce';
 import { iconsMap } from '../../Icons';
 import store from '../../lib/createStore';
 import ConnectionBadge from '../../containers/ConnectionBadge';
@@ -100,21 +99,31 @@ export default class RoomView extends LoggedView {
 			loaded: false,
 			joined: this.rooms.length > 0,
 			room: {},
-			end: false
+			end: false,
+			loadingMore: false
 		};
 		this.onReactionPress = this.onReactionPress.bind(this);
 		Navigation.events().bindComponent(this);
 	}
 
-	componentDidMount() {
-		this.updateRoom();
+	async componentDidMount() {
+		if (this.rooms.length === 0) {
+			const result = await RocketChat.getRoomInfo(this.rid);
+			if (result.success) {
+				const { room } = result;
+				this.setState(
+					{ room: { rid: room._id, t: room.t, name: room.name } },
+					() => this.updateRoom()
+				);
+			}
+		}
 		this.rooms.addListener(this.updateRoom);
 		this.internalSetState({ loaded: true });
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			room, loaded, joined, end
+			room, loaded, joined, end, loadingMore
 		} = this.state;
 		const { showActions, showErrorActions } = this.props;
 
@@ -127,6 +136,8 @@ export default class RoomView extends LoggedView {
 		} else if (joined !== nextState.joined) {
 			return true;
 		} else if (end !== nextState.end) {
+			return true;
+		} else if (loadingMore !== nextState.loadingMore) {
 			return true;
 		} else if (showActions !== nextProps.showActions) {
 			return true;
@@ -164,22 +175,28 @@ export default class RoomView extends LoggedView {
 		closeRoom();
 	}
 
-	onEndReached = debounce((lastRowData) => {
+	onEndReached = (lastRowData) => {
 		if (!lastRowData) {
-			this.internalSetState({ end: true });
 			return;
 		}
+
+		const { loadingMore, end } = this.state;
+		if (loadingMore || end) {
+			return;
+		}
+
+		this.setState({ loadingMore: true });
 
 		requestAnimationFrame(async() => {
 			const { room } = this.state;
 			try {
 				const result = await RocketChat.loadMessagesForRoom({ rid: this.rid, t: room.t, latest: lastRowData.ts });
-				this.internalSetState({ end: result < 50 });
+				this.internalSetState({ end: result.length < 50, loadingMore: false });
 			} catch (e) {
 				log('RoomView.onEndReached', e);
 			}
 		});
-	})
+	}
 
 	onMessageLongPress = (message) => {
 		const { actionsShow } = this.props;
@@ -254,7 +271,8 @@ export default class RoomView extends LoggedView {
 				}
 			}
 		} else {
-			openRoom({ rid: this.rid });
+			const { room } = this.state;
+			openRoom(room);
 			this.internalSetState({ joined: false });
 		}
 	}
@@ -270,10 +288,12 @@ export default class RoomView extends LoggedView {
 	joinRoom = async() => {
 		const { rid } = this.props;
 		try {
-			await RocketChat.joinRoom(rid);
-			this.internalSetState({
-				joined: true
-			});
+			const result = await RocketChat.joinRoom(rid);
+			if (result.success) {
+				this.internalSetState({
+					joined: true
+				});
+			}
 		} catch (e) {
 			log('joinRoom', e);
 		}
@@ -364,15 +384,15 @@ export default class RoomView extends LoggedView {
 	};
 
 	renderHeader = () => {
-		const { end } = this.state;
-		if (!end) {
-			return <ActivityIndicator style={[styles.loading, { transform: [{ scaleY: -1 }] }]} />;
+		const { loadingMore } = this.state;
+		if (loadingMore) {
+			return <ActivityIndicator style={styles.loadingMore} />;
 		}
 		return null;
 	}
 
 	renderList = () => {
-		const { loaded, end } = this.state;
+		const { loaded, end, loadingMore } = this.state;
 		if (!loaded) {
 			return <ActivityIndicator style={styles.loading} />;
 		}
@@ -381,6 +401,7 @@ export default class RoomView extends LoggedView {
 				<List
 					key='room-view-messages'
 					end={end}
+					loadingMore={loadingMore}
 					room={this.rid}
 					renderFooter={this.renderHeader}
 					onEndReached={this.onEndReached}
