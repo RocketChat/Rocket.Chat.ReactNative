@@ -5,7 +5,7 @@ const initialState = {
 	isFetching: false,
 	token: '',
 	user: {},
-	error: '',
+	error: {},
 	services: {},
 	credentials: {}
 };
@@ -20,7 +20,7 @@ export default function login(state = initialState, action) {
 				isFetching: true,
 				isAuthenticated: false,
 				failure: false,
-				error: ''
+				error: {}
 			};
 		case types.LOGIN.SUCCESS:
 			return {
@@ -30,7 +30,7 @@ export default function login(state = initialState, action) {
 				user: action.user.me,
 				token: action.user.authToken,
 				failure: false,
-				error: '',
+				error: {},
 				credentials: {}
 			};
 		case types.LOGIN.FAILURE:
@@ -43,12 +43,6 @@ export default function login(state = initialState, action) {
 			};
 		case types.LOGOUT:
 			return initialState;
-		// case types.LOGIN.SET_TOKEN:
-		// 	return {
-		// 		...state,
-		// 		token: action.token,
-		// 		user: action.user
-		// 	};
 		case types.LOGIN.RESTORE_TOKEN:
 			return {
 				...state,
@@ -59,7 +53,7 @@ export default function login(state = initialState, action) {
 				...state,
 				isFetching: true,
 				failure: false,
-				error: '',
+				error: {},
 				credentials: action.credentials
 			};
 		case types.LOGIN.REGISTER_SUCCESS:
@@ -67,7 +61,7 @@ export default function login(state = initialState, action) {
 				...state,
 				isFetching: false,
 				failure: false,
-				error: '',
+				error: {},
 				credentials: {}
 			};
 		case types.LOGIN.SET_USERNAME_SUBMIT:

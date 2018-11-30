@@ -131,8 +131,7 @@ const RocketChat = {
 		this.getPermissions();
 		this.getCustomEmoji();
 	},
-	connect({ server, token, user }) {
-		console.log("​start -> server, token, user", server, token, user);
+	connect({ server, user }) {
 		database.setActiveDB(server);
 
 		if (this.ddp) {
@@ -143,8 +142,8 @@ const RocketChat = {
 		SDK.api.setBaseUrl(server);
 		this.getSettings();
 
-		if (token) {
-			reduxStore.dispatch(loginRequest({ resume: token }));
+		if (user && user.token) {
+			reduxStore.dispatch(loginRequest({ resume: user.token }));
 		}
 
 		SDK.driver.connect({ host: server, useSsl: true }, (err, ddp) => {
@@ -152,8 +151,8 @@ const RocketChat = {
 				return console.warn(err);
 			}
 			this.ddp = ddp;
-			if (token) {
-				SDK.driver.login({ resume: token });
+			if (user && user.token) {
+				SDK.driver.login({ resume: user.token });
 			}
 		});
 
@@ -368,8 +367,8 @@ const RocketChat = {
 		return call('sendForgotPasswordEmail', email);
 	},
 
-	async loginWithPassword({ username, password, code }) {
-		let params = { username, password };
+	async loginWithPassword({ user, password, code }) {
+		let params = { user, password };
 		const state = reduxStore.getState();
 
 		if (state.settings.LDAP_Enable) {
@@ -383,16 +382,12 @@ const RocketChat = {
 				...params,
 				crowd: true
 			};
-		} else if (typeof username === 'string' && username.indexOf('@') !== -1) {
-			params.email = username;
-			delete params.username;
 		}
 
 		if (code) {
 			params = {
 				...params,
-				code,
-				totp: true
+				code
 			};
 		}
 
@@ -404,25 +399,28 @@ const RocketChat = {
 	},
 
 	async login(params) {
-		console.log("​login -> params", params);
-		console.log("​login -> SDK.api", SDK.api);
 		try {
-			// await SDK.driver.login(params);
 			return await SDK.api.login(params);
 		} catch (e) {
 			reduxStore.dispatch(loginFailure(e));
 			throw e;
 		}
 	},
-	logout({ server }) {
+	async logout({ server }) {
+		SDK.api.logout().catch(error => console.warn(error));
+
 		try {
-			RocketChat.disconnect();
-			SDK.driver.logout();
+			await RocketChat.disconnect();
+			this.ddp = null;
 		} catch (error) {
 			console.warn(error);
 		}
-		AsyncStorage.removeItem(TOKEN_KEY);
-		AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`);
+
+		Promise.all([
+			AsyncStorage.removeItem(TOKEN_KEY),
+			AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`)
+		]).catch(error => console.warn(error));
+
 		try {
 			database.deleteAll();
 		} catch (error) {
@@ -439,7 +437,7 @@ const RocketChat = {
 	},
 	setApiUser({ userId, authToken }) {
 		SDK.api.setAuth({ userId, authToken });
-		SDK.api.currentLogin = { userId, authToken };
+		SDK.api.currentLogin = null;
 	},
 	registerPushToken(userId) {
 		const deviceToken = getDeviceToken();

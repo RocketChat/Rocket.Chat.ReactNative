@@ -8,8 +8,8 @@ import { Navigation } from 'react-native-navigation';
 import { Answers } from 'react-native-fabric';
 import SafeAreaView from 'react-native-safe-area-view';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
+import equal from 'deep-equal';
 
-import RocketChat from '../lib/rocketchat';
 import KeyboardView from '../presentation/KeyboardView';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
@@ -53,6 +53,8 @@ const styles = StyleSheet.create({
 
 @connect(state => ({
 	isFetching: state.login.isFetching,
+	failure: state.login.failure,
+	error: state.login.error,
 	Site_Name: state.settings.Site_Name,
 	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
 	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder
@@ -78,17 +80,18 @@ export default class LoginView extends LoggedView {
 	static propTypes = {
 		componentId: PropTypes.string,
 		loginRequest: PropTypes.func.isRequired,
-		login: PropTypes.object,
+		error: PropTypes.object,
 		Site_Name: PropTypes.string,
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
 		Accounts_PasswordPlaceholder: PropTypes.string,
-		isFetching: PropTypes.bool
+		isFetching: PropTypes.bool,
+		failure: PropTypes.bool
 	}
 
 	constructor(props) {
 		super('LoginView', props);
 		this.state = {
-			username: '',
+			user: '',
 			password: '',
 			code: '',
 			showTOTP: false
@@ -104,10 +107,22 @@ export default class LoginView extends LoggedView {
 		}, 600);
 	}
 
-	componentDidUpdate(prevProps) {
-		const { componentId, Site_Name } = this.props;
-		if (Site_Name && prevProps.Site_Name !== Site_Name) {
-			this.setTitle(componentId, Site_Name);
+	componentWillReceiveProps(nextProps) {
+		const { componentId, Site_Name, error } = this.props;
+		if (Site_Name && nextProps.Site_Name !== Site_Name) {
+			this.setTitle(componentId, nextProps.Site_Name);
+		} else if (nextProps.failure && !equal(error, nextProps.error)) {
+			if (nextProps.error && nextProps.error.error === 'totp-required') {
+				LayoutAnimation.easeInEaseOut();
+				this.setState({ showTOTP: true });
+				setTimeout(() => {
+					if (this.codeInput && this.codeInput.focus) {
+						this.codeInput.focus();
+					}
+				}, 300);
+				return;
+			}
+			Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
 		}
 	}
 
@@ -148,12 +163,12 @@ export default class LoginView extends LoggedView {
 
 	valid = () => {
 		const {
-			username, password, code, showTOTP
+			user, password, code, showTOTP
 		} = this.state;
 		if (showTOTP) {
 			return code.trim();
 		}
-		return username.trim() && password.trim();
+		return user.trim() && password.trim();
 	}
 
 	submit = async() => {
@@ -161,12 +176,12 @@ export default class LoginView extends LoggedView {
 			return;
 		}
 
-		const {	username, password, code } = this.state;
+		const { user, password, code } = this.state;
 		const { loginRequest } = this.props;
 		Keyboard.dismiss();
 
 		try {
-			await loginRequest({ username, password, code });
+			await loginRequest({ user, password, code });
 			Answers.logLogin('Email', true);
 		} catch (e) {
 			if (e && e.error === 'totp-required') {
@@ -266,7 +281,7 @@ export default class LoginView extends LoggedView {
 					keyboardType='email-address'
 					returnKeyType='next'
 					iconLeft='mention'
-					onChangeText={value => this.setState({ username: value })}
+					onChangeText={value => this.setState({ user: value })}
 					onSubmitEditing={() => { this.passwordInput.focus(); }}
 					testID='login-view-email'
 				/>
