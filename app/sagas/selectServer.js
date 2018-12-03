@@ -71,15 +71,15 @@ const handleSelectServer = function* handleSelectServer({ server }) {
 		// // 	yield put(actions.appStart('inside'));
 		// // }
 
-		// const settings = database.objects('settings');
-		// yield put(actions.setAllSettings(RocketChat.parseSettings(RocketChat._filterSettings(settings.slice(0, settings.length)))));
-		// const emojis = database.objects('customEmojis');
-		// yield put(actions.setCustomEmojis(RocketChat.parseEmojis(emojis.slice(0, emojis.length))));
-		// const roles = database.objects('roles');
-		// yield put(setRoles(roles.reduce((result, role) => {
-		// 	result[role._id] = role.description;
-		// 	return result;
-		// }, {})));
+		const settings = database.objects('settings');
+		yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
+		const emojis = database.objects('customEmojis');
+		yield put(actions.setCustomEmojis(RocketChat.parseEmojis(emojis.slice(0, emojis.length))));
+		const roles = database.objects('roles');
+		yield put(setRoles(roles.reduce((result, role) => {
+			result[role._id] = role.description;
+			return result;
+		}, {})));
 
 		yield put(selectServerSuccess(server));
 	} catch (e) {

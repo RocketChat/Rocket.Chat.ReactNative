@@ -545,8 +545,7 @@ const RocketChat = {
 	getPermissions,
 	getCustomEmoji,
 	parseSettings: settings => settings.reduce((ret, item) => {
-		ret[item._id] = item[defaultSettings[item._id].type] || item.valueAsString || item.valueAsNumber
-			|| item.valueAsBoolean || item.value;
+		ret[item._id] = item[defaultSettings[item._id].type];
 		return ret;
 	}, {}),
 	_prepareSettings(settings) {
