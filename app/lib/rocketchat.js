@@ -364,7 +364,7 @@ const RocketChat = {
 	},
 
 	forgotPassword(email) {
-		return call('sendForgotPasswordEmail', email);
+		return SDK.api.post('users.forgotPassword', { email }, false);
 	},
 
 	async loginWithPassword({ user, password, code }) {

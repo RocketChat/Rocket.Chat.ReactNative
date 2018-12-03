@@ -12,9 +12,7 @@ import {
 	loginFailure,
 	loginSuccess,
 	setUsernameRequest,
-	setUsernameSuccess,
-	forgotPasswordSuccess,
-	forgotPasswordFailure
+	setUsernameSuccess
 } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
@@ -28,7 +26,6 @@ const registerCall = args => RocketChat.register(args);
 const setUsernameCall = args => RocketChat.setUsername(args);
 const loginSuccessCall = () => RocketChat.loginSuccess();
 const logoutCall = args => RocketChat.logout(args);
-const forgotPasswordCall = args => RocketChat.forgotPassword(args);
 
 const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 	try {
@@ -119,15 +116,6 @@ const handleLogout = function* handleLogout() {
 	}
 };
 
-const handleForgotPasswordRequest = function* handleForgotPasswordRequest({ email }) {
-	try {
-		yield call(forgotPasswordCall, email);
-		yield put(forgotPasswordSuccess());
-	} catch (err) {
-		yield put(forgotPasswordFailure(err));
-	}
-};
-
 const handleSetUser = function handleSetUser({ user }) {
 	if (user && user.language) {
 		I18n.locale = user.language;
@@ -142,7 +130,6 @@ const root = function* root() {
 	yield takeLatest(types.LOGIN.SET_USERNAME_SUBMIT, handleSetUsernameSubmit);
 	yield takeLatest(types.LOGIN.SET_USERNAME_REQUEST, handleSetUsernameRequest);
 	yield takeLatest(types.LOGOUT, handleLogout);
-	yield takeLatest(types.FORGOT_PASSWORD.REQUEST, handleForgotPasswordRequest);
 	yield takeLatest(types.USER.SET, handleSetUser);
 };
 export default root;

@@ -23,7 +23,6 @@ export const LOGIN = createRequestTypes('LOGIN', [
 	'SET_PREFERENCE',
 	'SET_SORT_PREFERENCE'
 ]);
-export const FORGOT_PASSWORD = createRequestTypes('FORGOT_PASSWORD');
 export const USER = createRequestTypes('USER', ['SET']);
 export const ROOMS = createRequestTypes('ROOMS', [
 	...defaultTypes,

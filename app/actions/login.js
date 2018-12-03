@@ -81,32 +81,6 @@ export function logout() {
 	};
 }
 
-export function forgotPasswordInit() {
-	return {
-		type: types.FORGOT_PASSWORD.INIT
-	};
-}
-
-export function forgotPasswordRequest(email) {
-	return {
-		type: types.FORGOT_PASSWORD.REQUEST,
-		email
-	};
-}
-
-export function forgotPasswordSuccess() {
-	return {
-		type: types.FORGOT_PASSWORD.SUCCESS
-	};
-}
-
-export function forgotPasswordFailure(err) {
-	return {
-		type: types.FORGOT_PASSWORD.FAILURE,
-		err
-	};
-}
-
 export function setUser(user) {
 	return {
 		type: types.USER.SET,

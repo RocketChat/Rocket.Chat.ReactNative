@@ -255,6 +255,7 @@ export default {
 	Reply: 'Reply',
 	Resend: 'Resend',
 	Reset_password: 'Reset password',
+	resetting_password: 'resetting password',
 	RESET: 'RESET',
 	Roles: 'Roles',
 	Room_actions: 'Room actions',

@@ -95,8 +95,6 @@ const SERVICES_COLLAPSED_HEIGHT = 174;
 @connect(state => ({
 	server: state.server.server,
 	isFetching: state.login.isFetching,
-	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
-	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
 	Site_Name: state.settings.Site_Name,
 	services: state.login.services
 }))
@@ -120,16 +118,8 @@ export default class LoginSignupView extends LoggedView {
 		componentId: PropTypes.string,
 		isFetching: PropTypes.bool,
 		server: PropTypes.string,
-		Accounts_EmailOrUsernamePlaceholder: PropTypes.bool,
-		Accounts_PasswordPlaceholder: PropTypes.string,
-		Accounts_OAuth_Facebook: PropTypes.bool,
-		Accounts_OAuth_Github: PropTypes.bool,
-		Accounts_OAuth_Gitlab: PropTypes.bool,
-		Accounts_OAuth_Google: PropTypes.bool,
-		Accounts_OAuth_Linkedin: PropTypes.bool,
-		Accounts_OAuth_Meteor: PropTypes.bool,
-		Accounts_OAuth_Twitter: PropTypes.bool,
-		services: PropTypes.object
+		services: PropTypes.object,
+		Site_Name: PropTypes.string
 	}
 
 	constructor(props) {

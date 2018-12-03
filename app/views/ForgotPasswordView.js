@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, ScrollView } from 'react-native';
-import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 
 import LoggedView from './View';
-import { forgotPasswordRequest as forgotPasswordRequestAction } from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
@@ -15,12 +13,8 @@ import { showErrorAlert } from '../utils/info';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import { DARK_HEADER } from '../constants/headerOptions';
+import RocketChat from '../lib/rocketchat';
 
-@connect(state => ({
-	login: state.login
-}), dispatch => ({
-	forgotPasswordRequest: email => dispatch(forgotPasswordRequestAction(email))
-}))
 /** @extends React.Component */
 export default class ForgotPasswordView extends LoggedView {
 	static options() {
@@ -30,9 +24,7 @@ export default class ForgotPasswordView extends LoggedView {
 	}
 
 	static propTypes = {
-		componentId: PropTypes.string,
-		forgotPasswordRequest: PropTypes.func.isRequired,
-		login: PropTypes.object
+		componentId: PropTypes.string
 	}
 
 	constructor(props) {
@@ -40,7 +32,8 @@ export default class ForgotPasswordView extends LoggedView {
 
 		this.state = {
 			email: '',
-			invalidEmail: true
+			invalidEmail: true,
+			isFetching: false
 		};
 	}
 
@@ -48,16 +41,6 @@ export default class ForgotPasswordView extends LoggedView {
 		this.timeout = setTimeout(() => {
 			this.emailInput.focus();
 		}, 600);
-	}
-
-	componentDidUpdate() {
-		const { login, componentId } = this.props;
-		if (login.success) {
-			Navigation.pop(componentId);
-			setTimeout(() => {
-				showErrorAlert(I18n.t('Forgot_password_If_this_email_is_registered'), I18n.t('Alert'));
-			});
-		}
 	}
 
 	componentWillUnmount() {
@@ -76,18 +59,28 @@ export default class ForgotPasswordView extends LoggedView {
 		this.setState({ email, invalidEmail: false });
 	}
 
-	resetPassword = () => {
+	resetPassword = async() => {
 		const { email, invalidEmail } = this.state;
-		const { forgotPasswordRequest } = this.props;
 		if (invalidEmail || !email) {
 			return;
 		}
-		forgotPasswordRequest(email);
+		try {
+			this.setState({ isFetching: true });
+			const result = await RocketChat.forgotPassword(email);
+			if (result.success) {
+				const { componentId } = this.props;
+				Navigation.pop(componentId);
+				showErrorAlert(I18n.t('Forgot_password_If_this_email_is_registered'), I18n.t('Alert'));
+			}
+		} catch (e) {
+			const msg = (e.data && e.data.error) || I18n.t('There_was_an_error_while_action', I18n.t('resetting_password'));
+			showErrorAlert(msg, I18n.t('Alert'));
+		}
+		this.setState({ isFetching: false });
 	}
 
 	render() {
-		const { invalidEmail } = this.state;
-		const { login } = this.props;
+		const { invalidEmail, isFetching } = this.state;
 
 		return (
 			<KeyboardView
@@ -113,7 +106,7 @@ export default class ForgotPasswordView extends LoggedView {
 							type='primary'
 							onPress={this.resetPassword}
 							testID='forgot-password-view-submit'
-							loading={login.isFetching}
+							loading={isFetching}
 							disabled={invalidEmail}
 						/>
 					</SafeAreaView>
