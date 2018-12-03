@@ -146,7 +146,10 @@ const RocketChat = {
 			reduxStore.dispatch(loginRequest({ resume: user.token }));
 		}
 
-		SDK.driver.connect({ host: server, useSsl: true }, (err, ddp) => {
+		// Use useSsl: false only if server url starts with http://
+		const useSsl = !/http:\/\//.test(server);
+
+		SDK.driver.connect({ host: server, useSsl }, (err, ddp) => {
 			if (err) {
 				return console.warn(err);
 			}
