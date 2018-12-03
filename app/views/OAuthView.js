@@ -37,6 +37,9 @@ export default class OAuthView extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			logging: false
+		};
 		this.redirectRegex = new RegExp(`(?=.*(${ props.server }))(?=.*(credentialToken))(?=.*(credentialSecret))`, 'g');
 		Navigation.events().bindComponent(this);
 	}
@@ -53,11 +56,20 @@ export default class OAuthView extends React.PureComponent {
 	}
 
 	login = async(params) => {
+		const { logging } = this.state;
+		if (logging) {
+			return;
+		}
+
+		this.setState({ logging: true });
+
 		try {
-			await RocketChat.login(params);
+			await RocketChat.loginOAuth(params);
 		} catch (e) {
 			console.warn(e);
 		}
+		this.setState({ logging: false });
+		this.dismiss();
 	}
 
 	render() {
@@ -72,7 +84,6 @@ export default class OAuthView extends React.PureComponent {
 						const parts = url.split('#');
 						const credentials = JSON.parse(parts[1]);
 						this.login({ oauth: { ...credentials } });
-						this.dismiss();
 					}
 				}}
 			/>

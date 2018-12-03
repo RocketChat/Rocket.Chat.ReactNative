@@ -398,6 +398,15 @@ const RocketChat = {
 		}
 	},
 
+	async loginOAuth(params) {
+		try {
+			const result = await SDK.driver.login(params);
+			reduxStore.dispatch(loginRequest({ resume: result.token }));
+		} catch (error) {
+			throw error;
+		}
+	},
+
 	async login(params) {
 		try {
 			return await SDK.api.login(params);
@@ -406,15 +415,9 @@ const RocketChat = {
 			throw e;
 		}
 	},
-	async logout({ server }) {
+	logout({ server }) {
 		SDK.api.logout().catch(error => console.warn(error));
-
-		try {
-			await RocketChat.disconnect();
-			this.ddp = null;
-		} catch (error) {
-			console.warn(error);
-		}
+		this.ddp = null;
 
 		Promise.all([
 			AsyncStorage.removeItem(TOKEN_KEY),
@@ -566,20 +569,24 @@ const RocketChat = {
 		return emojis;
 	},
 	deleteMessage(message) {
-		return call('deleteMessage', { _id: message._id });
+		const { _id, rid } = message;
+		return SDK.api.post('chat.delete', { roomId: rid, msgId: _id });
 	},
 	editMessage(message) {
 		const { _id, msg, rid } = message;
-		return call('updateMessage', { _id, msg, rid });
+		return SDK.api.post('chat.update', { roomId: rid, msgId: _id, text: msg });
 	},
 	toggleStarMessage(message) {
-		return call('starMessage', { _id: message._id, rid: message.rid, starred: !message.starred });
+		if (message.starred) {
+			return SDK.api.post('chat.unStarMessage', { messageId: message._id });
+		}
+		return SDK.api.post('chat.starMessage', { messageId: message._id });
 	},
 	togglePinMessage(message) {
 		if (message.pinned) {
-			return call('unpinMessage', message);
+			return SDK.api.post('chat.unpinMessage', { messageId: message._id });
 		}
-		return call('pinMessage', message);
+		return SDK.api.post('chat.pinMessage', { messageId: message._id });
 	},
 	getRoom(rid) {
 		const [result] = database.objects('subscriptions').filtered('rid = $0', rid);

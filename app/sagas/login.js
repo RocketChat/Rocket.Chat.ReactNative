@@ -111,8 +111,8 @@ const handleLogout = function* handleLogout() {
 	const server = yield select(getServer);
 	if (server) {
 		try {
-			yield put(appStart('outside'));
 			yield call(logoutCall, { server });
+			yield put(appStart('outside'));
 		} catch (e) {
 			log('handleLogout', e);
 		}
