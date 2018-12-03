@@ -7,11 +7,6 @@ import * as actions from '../../actions';
 import log from '../../utils/log';
 import settings from '../../constants/settings';
 
-// const getLastUpdate = () => {
-// 	const [setting] = database.objects('settings').sorted('_updatedAt', true);
-// 	return setting && setting._updatedAt;
-// };
-
 function updateServer(param) {
 	database.databases.serversDB.write(() => {
 		database.databases.serversDB.create('servers', { id: reduxStore.getState().server.server, ...param }, true);
@@ -27,7 +22,7 @@ export default async function() {
 			return;
 		}
 		const data = result.settings || [];
-		const filteredSettings = this._prepareSettings(data);
+		const filteredSettings = this._prepareSettings(data.filter(item => item._id !== 'Assets_favicon_512'));
 
 		InteractionManager.runAfterInteractions(
 			() => database.write(
@@ -42,13 +37,12 @@ export default async function() {
 		);
 		reduxStore.dispatch(actions.addSettings(this.parseSettings(filteredSettings)));
 
-		// TODO: test icon
-		// const iconSetting = data.find(item => item._id === 'Assets_favicon_512');
-		// if (iconSetting) {
-		// 	const baseUrl = reduxStore.getState().server.server;
-		// 	const iconURL = `${ baseUrl }/${ iconSetting.value.url || iconSetting.value.defaultUrl }`;
-		// 	updateServer.call(this, { iconURL });
-		// }
+		const iconSetting = data.find(item => item._id === 'Assets_favicon_512');
+		if (iconSetting) {
+			const baseUrl = reduxStore.getState().server.server;
+			const iconURL = `${ baseUrl }/${ iconSetting.value.url || iconSetting.value.defaultUrl }`;
+			updateServer.call(this, { iconURL });
+		}
 	} catch (e) {
 		log('getSettings', e);
 	}
