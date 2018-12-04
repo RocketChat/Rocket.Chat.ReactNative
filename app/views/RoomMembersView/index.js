@@ -92,7 +92,8 @@ export default class RoomMembersView extends LoggedView {
 						rightButtons: [{
 							id: 'toggleOnline',
 							text: allUsers ? I18n.t('Online') : I18n.t('All'),
-							testID: 'room-members-view-toggle-status'
+							testID: 'room-members-view-toggle-status',
+							color: Platform.OS === 'android' ? '#FFF' : undefined
 						}]
 					}
 				});

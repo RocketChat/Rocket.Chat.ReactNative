@@ -52,7 +52,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		I18n.locale = user.language;
 		yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
 	} catch (error) {
-		console.log("​loginSuccess saga -> error", error);
+		console.log('loginSuccess saga -> error', error);
 	}
 
 	if (!user.username) {

@@ -93,7 +93,7 @@ export default class RoomView extends LoggedView {
 
 	constructor(props) {
 		super('RoomView', props);
-		this.rid = this.props.rid;
+		this.rid = props.rid;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			loaded: false,
@@ -193,6 +193,7 @@ export default class RoomView extends LoggedView {
 			const result = await RocketChat.loadMessagesForRoom({ rid: this.rid, t: room.t, latest: lastRowData.ts });
 			this.internalSetState({ end: result.length < 50, loadingMore: false });
 		} catch (e) {
+			this.internalSetState({ loadingMore: false });
 			log('RoomView.onEndReached', e);
 		}
 	}

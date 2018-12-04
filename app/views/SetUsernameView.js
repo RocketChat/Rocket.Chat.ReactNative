@@ -92,7 +92,7 @@ export default class SetUsernameView extends LoggedView {
 			RocketChat.setApiUser({ userId: null, authToken: null });
 			await loginRequest({ resume: token });
 		} catch (e) {
-			console.log("​SetUsernameView -> catch -> e", e);
+			console.log('SetUsernameView -> catch -> e', e);
 		}
 		this.setState({ saving: false });
 	}

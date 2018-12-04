@@ -34,8 +34,7 @@ const get = function* get({ room }) {
 		}
 		yield put(messagesSuccess());
 	} catch (err) {
-		console.warn('messagesFailure', err);
-		yield put(messagesFailure(err.status));
+		yield put(messagesFailure(err));
 	}
 };
 

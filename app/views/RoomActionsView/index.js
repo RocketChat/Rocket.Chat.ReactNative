@@ -82,7 +82,7 @@ export default class RoomActionsView extends LoggedView {
 					this.setState({ membersCount: counters.members, joined: counters.joined });
 				}
 			} catch (error) {
-				console.log("​RoomActionsView -> getRoomCounters -> error", error);
+				console.log('RoomActionsView -> getRoomCounters -> error', error);
 			}
 		}
 

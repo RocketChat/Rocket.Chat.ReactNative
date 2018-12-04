@@ -1,5 +1,5 @@
 import RNFetchBlob from 'rn-fetch-blob';
-const SDK = {}
+import * as SDK from '@rocket.chat/sdk';
 
 import reduxStore from '../createStore';
 import database from '../realm';
