@@ -8,10 +8,9 @@ import defaultSettings from '../constants/settings';
 import messagesStatus from '../constants/messagesStatus';
 import database from './realm';
 import log from '../utils/log';
-// import * as actions from '../actions';
 
 import {
-	setUser, setLoginServices, loginRequest, loginSuccess, loginFailure, logout
+	setUser, setLoginServices, loginRequest, loginFailure, logout
 } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
 import { setActiveUser } from '../actions/activeUsers';
@@ -476,11 +475,18 @@ const RocketChat = {
 	readMessages,
 	async resendMessage(messageId) {
 		const message = await database.objects('messages').filtered('_id = $0', messageId)[0];
-		database.write(() => {
-			message.status = messagesStatus.TEMP;
-			database.create('messages', message, true);
-		});
-		return sendMessageCall.call(this, JSON.parse(JSON.stringify(message)));
+		try {
+			database.write(() => {
+				message.status = messagesStatus.TEMP;
+				database.create('messages', message, true);
+			});
+			await sendMessageCall.call(this, JSON.parse(JSON.stringify(message)));
+		} catch (error) {
+			database.write(() => {
+				message.status = messagesStatus.ERROR;
+				database.create('messages', message, true);
+			});
+		}
 	},
 
 	async search({ text, filterUsers = true, filterRooms = true }) {

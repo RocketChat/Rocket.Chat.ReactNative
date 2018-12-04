@@ -1,5 +1,5 @@
 import { takeLatest, select } from 'redux-saga/effects';
-import { FOREGROUND, BACKGROUND, INACTIVE } from 'redux-enhancer-react-native-appstate';
+import { FOREGROUND, BACKGROUND } from 'redux-enhancer-react-native-appstate';
 
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';

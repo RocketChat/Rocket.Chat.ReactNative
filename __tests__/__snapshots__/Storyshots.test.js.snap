@@ -34,7 +34,7 @@ exports[`Storyshots Avatar avatar 1`] = `
           source={
             Object {
               "priority": "high",
-              "uri": "baseUrl/avatar/test?format=png&size=50",
+              "uri": "baseUrl/avatar/test?format=png&width=50&height=50",
             }
           }
           style={
@@ -80,7 +80,7 @@ exports[`Storyshots Avatar avatar 1`] = `
           source={
             Object {
               "priority": "high",
-              "uri": "baseUrl/avatar/aa?format=png&size=50",
+              "uri": "baseUrl/avatar/aa?format=png&width=50&height=50",
             }
           }
           style={
@@ -126,7 +126,7 @@ exports[`Storyshots Avatar avatar 1`] = `
           source={
             Object {
               "priority": "high",
-              "uri": "baseUrl/avatar/bb?format=png&size=50",
+              "uri": "baseUrl/avatar/bb?format=png&width=50&height=50",
             }
           }
           style={
@@ -172,7 +172,7 @@ exports[`Storyshots Avatar avatar 1`] = `
           source={
             Object {
               "priority": "high",
-              "uri": "baseUrl/avatar/test?format=png&size=50",
+              "uri": "baseUrl/avatar/test?format=png&width=50&height=50",
             }
           }
           style={
