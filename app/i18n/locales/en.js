@@ -1,5 +1,4 @@
 export default {
-	'1_online_member': '1 online member',
 	'1_person_reacted': '1 person reacted',
 	'1_user': '1 user',
 	'error-action-not-allowed': '{{action}} is not allowed',
@@ -199,7 +198,6 @@ export default {
 	Mute: 'Mute',
 	muted: 'muted',
 	My_servers: 'My servers',
-	N_online_members: '{{n}} online members',
 	N_people_reacted: '{{n}} people reacted',
 	N_users: '{{n}} users',
 	name: 'name',

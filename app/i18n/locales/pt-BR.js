@@ -1,5 +1,4 @@
 export default {
-	'1_online_member': '1 membro online',
 	'1_person_reacted': '1 pessoa reagiu',
 	'1_user': '1 usuário',
 	'error-action-not-allowed': '{{action}} não é permitido',
@@ -202,7 +201,6 @@ export default {
 	Microphone_Permission: 'Acesso ao Microfone',
 	Mute: 'Mudo',
 	muted: 'mudo',
-	N_online_members: '{{n}} membros online',
 	N_people_reacted: '{{n}} pessoas reagiram',
 	N_users: '{{n}} usuários',
 	name: 'nome',

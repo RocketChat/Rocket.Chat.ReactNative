@@ -13,7 +13,7 @@ import log from '../utils/log';
 import {
 	setUser, setLoginServices, loginRequest, loginSuccess, loginFailure, logout
 } from '../actions/login';
-import { disconnect, connectSuccess } from '../actions/connect';
+import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
 import { setActiveUser } from '../actions/activeUsers';
 import { starredMessagesReceived, starredMessageUnstarred } from '../actions/starredMessages';
 import { pinnedMessagesReceived, pinnedMessageUnpinned } from '../actions/pinnedMessages';
@@ -150,6 +150,7 @@ const RocketChat = {
 		// Use useSsl: false only if server url starts with http://
 		const useSsl = !/http:\/\//.test(server);
 
+		reduxStore.dispatch(connectRequest());
 		SDK.driver.connect({ host: server, useSsl }, (err, ddp) => {
 			if (err) {
 				return console.warn(err);
@@ -163,6 +164,10 @@ const RocketChat = {
 		SDK.driver.on('connected', () => {
 			reduxStore.dispatch(connectSuccess());
 		});
+
+		SDK.driver.on('disconnected', protectedFunction(() => {
+			reduxStore.dispatch(disconnect());
+		}));
 
 		SDK.driver.on('logged', protectedFunction((error, u) => {
 			this.subscribeRooms(u.id);
@@ -354,9 +359,6 @@ const RocketChat = {
 			}, 1000);
 			this.roles[ddpMessage.id] = (ddpMessage.fields && ddpMessage.fields.description) || undefined;
 		}));
-	},
-	connected() {
-		return SDK.driver.ddp && SDK.driver.ddp._logged;
 	},
 
 	register(credentials) {
@@ -774,17 +776,6 @@ const RocketChat = {
 	},
 	getUsernameSuggestion() {
 		return SDK.api.get('users.getUsernameSuggestion');
-	},
-	clearAsyncStorage(server) {
-		const promises = [
-			AsyncStorage.removeItem(RocketChat.TOKEN_KEY),
-			AsyncStorage.removeItem('currentServer')
-		];
-		// TODO: need this?
-		if (server) {
-			promises.push(AsyncStorage.removeItem(`${ RocketChat.TOKEN_KEY }-${ server }`));
-		}
-		return Promise.all(promises);
 	},
 	roomTypeToApiType(t) {
 		const types = {

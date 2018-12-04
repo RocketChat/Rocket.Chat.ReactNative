@@ -16,8 +16,10 @@ const restore = function* restore() {
 		});
 
 		if (!token || !server) {
-			yield put(actions.appStart('outside'));
-			yield RocketChat.clearAsyncStorage();
+			yield all([
+				AsyncStorage.removeItem(RocketChat.TOKEN_KEY),
+				AsyncStorage.removeItem('currentServer')
+			]);
 			return yield put(actions.appReady({}));
 		}
 
