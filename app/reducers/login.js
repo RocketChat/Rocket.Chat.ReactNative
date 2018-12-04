@@ -3,11 +3,9 @@ import * as types from '../actions/actionsTypes';
 const initialState = {
 	isAuthenticated: false,
 	isFetching: false,
-	token: '',
 	user: {},
 	error: {},
-	services: {},
-	credentials: {}
+	services: {}
 };
 
 export default function login(state = initialState, action) {
@@ -28,10 +26,8 @@ export default function login(state = initialState, action) {
 				isFetching: false,
 				isAuthenticated: true,
 				user: action.user,
-				token: action.user.token,
 				failure: false,
-				error: {},
-				credentials: {}
+				error: {}
 			};
 		case types.LOGIN.FAILURE:
 			return {
@@ -43,11 +39,6 @@ export default function login(state = initialState, action) {
 			};
 		case types.LOGOUT:
 			return initialState;
-		case types.LOGIN.RESTORE_TOKEN:
-			return {
-				...state,
-				token: action.token
-			};
 		case types.USER.SET:
 			return {
 				...state,

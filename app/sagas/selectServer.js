@@ -37,7 +37,6 @@ const handleSelectServer = function* handleSelectServer({ server }) {
 
 		if (userStringified) {
 			const user = JSON.parse(userStringified);
-			yield put(restoreToken(user.token));
 			yield put(setUser(user));
 			yield put(actions.appStart('inside'));
 			// yield put(selectServerRequest(server));

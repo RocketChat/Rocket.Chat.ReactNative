@@ -11,9 +11,6 @@ function createRequestTypes(base, types = defaultTypes) {
 // Login events
 export const LOGIN = createRequestTypes('LOGIN', [
 	...defaultTypes,
-	'SET_TOKEN',
-	'RESTORE_TOKEN',
-	'SUBMIT',
 	'SET_SERVICES',
 	'SET_PREFERENCE',
 	'SET_SORT_PREFERENCE'
