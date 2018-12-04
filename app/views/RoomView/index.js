@@ -93,7 +93,7 @@ export default class RoomView extends LoggedView {
 
 	constructor(props) {
 		super('RoomView', props);
-		this.rid = props.rid;
+		this.rid = this.props.rid;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			loaded: false,
@@ -107,7 +107,7 @@ export default class RoomView extends LoggedView {
 	}
 
 	async componentDidMount() {
-		if (this.rooms.length === 0) {
+		if (this.rooms.length === 0 && this.rid) {
 			const result = await RocketChat.getRoomInfo(this.rid);
 			if (result.success) {
 				const { room } = result;

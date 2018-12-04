@@ -122,8 +122,10 @@ export default class RoomMembersView extends LoggedView {
 			if (subscriptions.length) {
 				this.goRoom({ rid: subscriptions[0].rid });
 			} else {
-				const room = await RocketChat.createDirectMessage(item.username);
-				this.goRoom({ rid: room.rid });
+				const result = await RocketChat.createDirectMessage(item.username);
+				if (result.success) {
+					this.goRoom({ rid: result.room._id });
+				}
 			}
 		} catch (e) {
 			log('onPressUser', e);

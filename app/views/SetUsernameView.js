@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, ScrollView, Alert, StyleSheet
+	Text, ScrollView, StyleSheet
 } from 'react-native';
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
-import equal from 'deep-equal';
 import { Navigation } from 'react-native-navigation';
 
 import { loginRequest as loginRequestAction } from '../actions/login';
@@ -70,13 +69,6 @@ export default class SetUsernameView extends LoggedView {
 		const suggestion = await RocketChat.getUsernameSuggestion();
 		if (suggestion.success) {
 			this.setState({ username: suggestion.result });
-		}
-	}
-
-	componentDidUpdate(prevProps) {
-		const { login } = this.props;
-		if (login && login.failure && login.error && !equal(login.error, prevProps.login.error)) {
-			Alert.alert(I18n.t('Oops'), login.error.reason);
 		}
 	}
 

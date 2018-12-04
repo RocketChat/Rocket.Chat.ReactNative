@@ -308,7 +308,6 @@ export default class RoomActionsView extends LoggedView {
 
 	updateRoom = () => {
 		this.setState({ room: this.rooms[0] || {} });
-		console.log("​RoomActionsView -> updateRoom -> this.rooms[0]", this.rooms[0]);
 	}
 
 	toggleBlockUser = () => {

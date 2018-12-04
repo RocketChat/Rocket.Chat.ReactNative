@@ -15,17 +15,19 @@ const restore = function* restore() {
 			server: AsyncStorage.getItem('currentServer')
 		});
 
+		const sortPreferences = yield RocketChat.getSortPreferences();
+		yield put(setAllPreferences(sortPreferences));
+
 		if (!token || !server) {
 			yield all([
 				AsyncStorage.removeItem(RocketChat.TOKEN_KEY),
 				AsyncStorage.removeItem('currentServer')
 			]);
-			return yield put(actions.appReady({}));
+			yield put(actions.appStart('outside'));
+		} else if (server) {
+			yield put(selectServerRequest(server));
 		}
 
-		yield put(selectServerRequest(server));
-		const sortPreferences = yield RocketChat.getSortPreferences();
-		yield put(setAllPreferences(sortPreferences));
 		yield put(actions.appReady({}));
 	} catch (e) {
 		log('restore', e);

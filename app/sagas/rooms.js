@@ -106,7 +106,6 @@ const watchRoomOpen = function* watchRoomOpen({ room }) {
 		yield put(editCancel());
 		yield put(replyCancel());
 	} catch (e) {
-		alert(e)
 		log('watchRoomOpen', e);
 	}
 };
@@ -168,9 +167,9 @@ const handleLeaveRoom = function* handleLeaveRoom({ rid, t }) {
 		yield goRoomsListAndDelete(rid);
 	} catch (e) {
 		if (e.data && e.data.errorType === 'error-you-are-last-owner') {
-			Alert.alert(I18n.t(e.data.error));
+			Alert.alert(I18n.t('Oops'), I18n.t(e.data.errorType));
 		} else {
-			Alert.alert(I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_room') }));
+			Alert.alert(I18n.t('Oops'), I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_room') }));
 		}
 	}
 };
@@ -178,10 +177,10 @@ const handleLeaveRoom = function* handleLeaveRoom({ rid, t }) {
 const handleEraseRoom = function* handleEraseRoom({ rid }) {
 	try {
 		sub.stop();
-		yield eraseRoom(rid, t);
+		yield eraseRoom(rid);
 		yield goRoomsListAndDelete(rid, 'erase');
 	} catch (e) {
-		Alert.alert(I18n.t('There_was_an_error_while_action', { action: I18n.t('erasing_room') }));
+		Alert.alert(I18n.t('Oops'), I18n.t('There_was_an_error_while_action', { action: I18n.t('erasing_room') }));
 	}
 };
 

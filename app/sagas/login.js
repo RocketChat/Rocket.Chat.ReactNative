@@ -32,7 +32,8 @@ const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 				token: data.authToken,
 				username: data.me.username,
 				name: data.me.name,
-				language: data.me.language
+				language: data.me.language,
+				status: data.me.status
 			};
 			return yield put(loginSuccess(user));
 		}

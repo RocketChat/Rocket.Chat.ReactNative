@@ -47,10 +47,10 @@ const root = function* root() {
 		BACKGROUND,
 		appHasComeBackToBackground
 	);
-	yield takeLatest(
-		INACTIVE,
-		appHasComeBackToBackground
-	);
+	// yield takeLatest(
+	// 	INACTIVE,
+	// 	appHasComeBackToBackground
+	// );
 };
 
 export default root;

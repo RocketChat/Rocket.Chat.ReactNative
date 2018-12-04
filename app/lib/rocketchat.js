@@ -423,9 +423,11 @@ const RocketChat = {
 	},
 	logout({ server }) {
 		SDK.api.logout().catch(error => console.warn(error));
+		SDK.driver.ddp.disconnect();
 		this.ddp = null;
 
 		Promise.all([
+			AsyncStorage.removeItem('currentServer'),
 			AsyncStorage.removeItem(TOKEN_KEY),
 			AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`)
 		]).catch(error => console.warn(error));
@@ -589,7 +591,7 @@ const RocketChat = {
 	},
 	togglePinMessage(message) {
 		if (message.pinned) {
-			return SDK.api.post('chat.unpinMessage', { messageId: message._id });
+			return SDK.api.post('chat.unPinMessage', { messageId: message._id });
 		}
 		return SDK.api.post('chat.pinMessage', { messageId: message._id });
 	},
