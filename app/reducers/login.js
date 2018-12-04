@@ -27,8 +27,8 @@ export default function login(state = initialState, action) {
 				...state,
 				isFetching: false,
 				isAuthenticated: true,
-				user: action.user.me,
-				token: action.user.authToken,
+				user: action.user,
+				token: action.user.token,
 				failure: false,
 				error: {},
 				credentials: {}
@@ -47,22 +47,6 @@ export default function login(state = initialState, action) {
 			return {
 				...state,
 				token: action.token
-			};
-		case types.LOGIN.REGISTER_SUBMIT:
-			return {
-				...state,
-				isFetching: true,
-				failure: false,
-				error: {},
-				credentials: action.credentials
-			};
-		case types.LOGIN.REGISTER_SUCCESS:
-			return {
-				...state,
-				isFetching: false,
-				failure: false,
-				error: {},
-				credentials: {}
 			};
 		case types.LOGIN.SET_USERNAME_SUBMIT:
 			return {

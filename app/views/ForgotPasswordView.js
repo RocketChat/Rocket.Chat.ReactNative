@@ -10,6 +10,7 @@ import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
 import sharedStyles from './Styles';
 import { showErrorAlert } from '../utils/info';
+import isValidEmail from '../utils/isValidEmail';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import { DARK_HEADER } from '../constants/headerOptions';
@@ -50,9 +51,7 @@ export default class ForgotPasswordView extends LoggedView {
 	}
 
 	validate = (email) => {
-		/* eslint-disable no-useless-escape */
-		const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		if (!reg.test(email)) {
+		if (!isValidEmail(email)) {
 			this.setState({ invalidEmail: true });
 			return;
 		}

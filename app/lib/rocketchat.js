@@ -125,6 +125,7 @@ const RocketChat = {
 		}
 	},
 	loginSuccess({ user }) {
+		SDK.driver.login({ resume: user.token });
 		reduxStore.dispatch(setUser(user));
 		RocketChat.registerPushToken(user.id);
 		this.getRooms().catch(e => console.log(e));
@@ -358,12 +359,12 @@ const RocketChat = {
 		return SDK.driver.ddp && SDK.driver.ddp._logged;
 	},
 
-	register({ credentials }) {
-		return call('registerUser', credentials);
+	register(credentials) {
+		return SDK.api.post('users.register', credentials, false);
 	},
 
-	setUsername({ username }) {
-		return call('setUsername', username);
+	setUsername({ userId, username }) {
+		return SDK.api.post('users.update', { userId, data: { username } });
 	},
 
 	forgotPassword(email) {

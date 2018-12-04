@@ -27,20 +27,6 @@ export function loginFailure(err) {
 	};
 }
 
-export function registerSubmit(credentials) {
-	return {
-		type: types.LOGIN.REGISTER_SUBMIT,
-		credentials
-	};
-}
-
-export function registerRequest(credentials) {
-	return {
-		type: types.LOGIN.REGISTER_REQUEST,
-		credentials
-	};
-}
-
 export function setUsernameSubmit(credentials) {
 	return {
 		type: types.LOGIN.SET_USERNAME_SUBMIT,
