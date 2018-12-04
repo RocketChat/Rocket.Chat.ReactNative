@@ -7,12 +7,7 @@ import { Navigation } from 'react-native-navigation';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions';
 import { serverFinishAdd } from '../actions/server';
-import {
-	loginFailure,
-	loginSuccess,
-	setUsernameRequest,
-	setUsernameSuccess
-} from '../actions/login';
+import { loginFailure, loginSuccess } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import I18n from '../i18n';
@@ -20,7 +15,6 @@ import I18n from '../i18n';
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
 const loginCall = args => RocketChat.login(args);
-const setUsernameCall = args => RocketChat.setUsername(args);
 const logoutCall = args => RocketChat.logout(args);
 
 const handleLoginRequest = function* handleLoginRequest({ credentials }) {
@@ -51,16 +45,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	const adding = yield select(state => state.server.adding);
 	yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
 
-	if (!user.username) {
-		return yield put(appStart('setUsername'));
-	}
-
-	if (adding) {
-		yield put(serverFinishAdd());
-		yield Navigation.dismissAllModals();
-	} else {
-		yield put(appStart('inside'));
-	}
 	const server = yield select(getServer);
 	try {
 		RocketChat.loginSuccess({ user });
@@ -69,19 +53,15 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	} catch (error) {
 		console.log("​loginSuccess saga -> error", error);
 	}
-};
 
-const handleSetUsernameSubmit = function* handleSetUsernameSubmit({ credentials }) {
-	yield put(setUsernameRequest(credentials));
-};
-
-const handleSetUsernameRequest = function* handleSetUsernameRequest({ credentials }) {
-	try {
-		yield call(setUsernameCall, credentials);
-		yield put(setUsernameSuccess());
-		// yield call(loginSuccessCall);
-	} catch (err) {
-		yield put(loginFailure(err));
+	if (!user.username) {
+		RocketChat.loginSuccess({ user });
+		yield put(appStart('setUsername'));
+	} else if (adding) {
+		yield put(serverFinishAdd());
+		yield Navigation.dismissAllModals();
+	} else {
+		yield put(appStart('inside'));
 	}
 };
 
@@ -106,8 +86,6 @@ const handleSetUser = function handleSetUser({ user }) {
 const root = function* root() {
 	yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
 	yield takeLatest(types.LOGIN.SUCCESS, handleLoginSuccess);
-	yield takeLatest(types.LOGIN.SET_USERNAME_SUBMIT, handleSetUsernameSubmit);
-	yield takeLatest(types.LOGIN.SET_USERNAME_REQUEST, handleSetUsernameRequest);
 	yield takeLatest(types.LOGOUT, handleLogout);
 	yield takeLatest(types.USER.SET, handleSetUser);
 };

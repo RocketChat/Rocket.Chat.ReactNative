@@ -27,26 +27,6 @@ export function loginFailure(err) {
 	};
 }
 
-export function setUsernameSubmit(credentials) {
-	return {
-		type: types.LOGIN.SET_USERNAME_SUBMIT,
-		credentials
-	};
-}
-
-export function setUsernameRequest(credentials) {
-	return {
-		type: types.LOGIN.SET_USERNAME_REQUEST,
-		credentials
-	};
-}
-
-export function setUsernameSuccess() {
-	return {
-		type: types.LOGIN.SET_USERNAME_SUCCESS
-	};
-}
-
 export function setToken(user = {}) {
 	return {
 		type: types.LOGIN.SET_TOKEN,

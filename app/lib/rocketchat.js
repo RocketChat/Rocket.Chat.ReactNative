@@ -363,8 +363,8 @@ const RocketChat = {
 		return SDK.api.post('users.register', credentials, false);
 	},
 
-	setUsername({ userId, username }) {
-		return SDK.api.post('users.update', { userId, data: { username } });
+	setUsername(username) {
+		return call('setUsername', username);
 	},
 
 	forgotPassword(email) {
@@ -773,7 +773,7 @@ const RocketChat = {
 		}
 	},
 	getUsernameSuggestion() {
-		return SDK.driver.asyncCall('getUsernameSuggestion');
+		return SDK.api.get('users.getUsernameSuggestion');
 	},
 	clearAsyncStorage(server) {
 		const promises = [

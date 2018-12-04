@@ -48,17 +48,6 @@ export default function login(state = initialState, action) {
 				...state,
 				token: action.token
 			};
-		case types.LOGIN.SET_USERNAME_SUBMIT:
-			return {
-				...state,
-				isFetching: true,
-				credentials: action.credentials
-			};
-		case types.LOGIN.SET_USERNAME_SUCCESS:
-			return {
-				...state,
-				isFetching: false
-			};
 		case types.USER.SET:
 			return {
 				...state,
