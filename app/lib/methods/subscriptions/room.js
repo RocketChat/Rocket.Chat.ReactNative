@@ -7,9 +7,7 @@ const subscribe = rid => Promise.all([
 	SDK.driver.subscribe('stream-notify-room', `${ rid }/typing`, false),
 	SDK.driver.subscribe('stream-notify-room', `${ rid }/deleteMessage`, false)
 ]);
-const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch((e) => {
-	log('unsubscribeRoom', e);
-}));
+const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
 
 let timer = null;
 let promises;

@@ -126,10 +126,10 @@ const RocketChat = {
 	loginSuccess({ user }) {
 		SDK.driver.login({ resume: user.token });
 		reduxStore.dispatch(setUser(user));
-		RocketChat.registerPushToken(user.id);
 		this.getRooms().catch(e => console.log(e));
 		this.getPermissions();
 		this.getCustomEmoji();
+		this.registerPushToken().then(result => console.log(result)).catch(e => alert(e));
 	},
 	connect({ server, user }) {
 		database.setActiveDB(server);
@@ -420,8 +420,18 @@ const RocketChat = {
 			throw e;
 		}
 	},
-	logout({ server }) {
-		SDK.api.logout().catch(error => console.warn(error));
+	async logout({ server }) {
+		// this.removePushToken().catch(error => console.log(error));
+		try {
+			await this.removePushToken();
+		} catch (error) {
+			console.log('logout -> removePushToken -> catch -> error', error);
+		}
+		try {
+			await SDK.api.logout();
+		} catch (error) {
+			console.log('​logout -> api logout -> catch -> error', error);
+		}
 		SDK.driver.ddp.disconnect();
 		this.ddp = null;
 
@@ -429,19 +439,19 @@ const RocketChat = {
 			AsyncStorage.removeItem('currentServer'),
 			AsyncStorage.removeItem(TOKEN_KEY),
 			AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`)
-		]).catch(error => console.warn(error));
+		]).catch(error => console.log(error));
 
 		try {
 			database.deleteAll();
 		} catch (error) {
-			console.warn(error);
+			console.log(error);
 		}
 	},
 	disconnect() {
 		try {
 			SDK.driver.unsubscribeAll();
 		} catch (error) {
-			console.warn(error);
+			console.log(error);
 		}
 		RocketChat.setApiUser({ userId: null, authToken: null });
 	},
@@ -449,24 +459,28 @@ const RocketChat = {
 		SDK.api.setAuth({ userId, authToken });
 		SDK.api.currentLogin = null;
 	},
-	registerPushToken(userId) {
-		const deviceToken = getDeviceToken();
-		if (deviceToken) {
-			const key = Platform.OS === 'ios' ? 'apn' : 'gcm';
-			const data = {
-				id: `RocketChatRN${ userId }`,
-				token: { [key]: deviceToken },
-				appName: 'chat.rocket.reactnative', // TODO: try to get from config file
-				userId,
-				metadata: {}
-			};
-			return call('raix:push-update', data);
-		}
+	registerPushToken() {
+		return new Promise((resolve) => {
+			const token = getDeviceToken();
+			if (token) {
+				const type = Platform.OS === 'ios' ? 'apn' : 'gcm';
+				const data = {
+					value: token,
+					type,
+					appName: 'chat.rocket.reactnative' // TODO: try to get from config file
+				};
+				return SDK.api.post('push.token', data);
+			}
+			return resolve();
+		});
 	},
-
-	// updatePushToken(pushId) {
-	// 	return call('raix:push-setuser', pushId);
-	// },
+	removePushToken() {
+		const token = getDeviceToken();
+		if (token) {
+			return SDK.api.del('push.token', { token });
+		}
+		return Promise.resolve();
+	},
 	loadMissedMessages,
 	loadMessagesForRoom,
 	getMessage,
