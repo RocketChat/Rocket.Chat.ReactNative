@@ -7,9 +7,7 @@ const subscribe = rid => Promise.all([
 	SDK.driver.subscribe('stream-notify-room', `${ rid }/typing`, false),
 	SDK.driver.subscribe('stream-notify-room', `${ rid }/deleteMessage`, false)
 ]);
-const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch((e) => {
-	log('unsubscribeRoom', e);
-}));
+const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
 
 let timer = null;
 let promises;
@@ -43,26 +41,26 @@ export default function subscribeRoom({ rid, t }) {
 		}, 5000);
 	};
 
-	if (!this.connected()) {
-		loop();
-	} else {
-		SDK.driver.on('logged', () => {
-			clearTimeout(timer);
-			timer = false;
-		});
+	// if (!this.connected()) {
+	// 	loop();
+	// } else {
+	SDK.driver.on('logged', () => {
+		clearTimeout(timer);
+		timer = false;
+	});
 
-		SDK.driver.on('disconnected', () => {
-			if (SDK.driver.userId) {
-				loop();
-			}
-		});
-
-		try {
-			promises = subscribe(rid);
-		} catch (e) {
-			log('subscribeRoom', e);
+	SDK.driver.on('disconnected', () => {
+		if (SDK.driver.userId) {
+			loop();
 		}
+	});
+
+	try {
+		promises = subscribe(rid);
+	} catch (e) {
+		log('subscribeRoom', e);
 	}
+	// }
 
 	return {
 		stop: () => stop()

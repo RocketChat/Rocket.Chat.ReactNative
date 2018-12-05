@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Navigation } from 'react-native-navigation';
 
-import { appStart as appStartAction, setStackRoot as setStackRootAction } from '../actions';
+import { setStackRoot as setStackRootAction } from '../actions';
 import { logout as logoutAction } from '../actions/login';
 import Avatar from './Avatar';
 import Status from './status';
@@ -95,7 +95,6 @@ const keyExtractor = item => item.id;
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }), dispatch => ({
 	logout: () => dispatch(logoutAction()),
-	appStart: () => dispatch(appStartAction('outside')),
 	setStackRoot: stackRoot => dispatch(setStackRootAction(stackRoot))
 }))
 export default class Sidebar extends Component {
@@ -106,7 +105,6 @@ export default class Sidebar extends Component {
 		stackRoot: PropTypes.string.isRequired,
 		user: PropTypes.object,
 		logout: PropTypes.func.isRequired,
-		appStart: PropTypes.func,
 		setStackRoot: PropTypes.func
 	}
 

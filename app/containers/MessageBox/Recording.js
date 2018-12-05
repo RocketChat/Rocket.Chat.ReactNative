@@ -101,7 +101,6 @@ export default class extends React.PureComponent {
 			}
 		} catch (err) {
 			this.finishRecording(false);
-			console.error(err);
 		}
 	}
 

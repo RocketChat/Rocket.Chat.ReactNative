@@ -1,5 +1,4 @@
 export default {
-	'1_online_member': '1 人在线',
 	'1_person_reacted': '1 人回复了',
 	'1_user': '1 位用户',
 	'error-action-not-allowed': '不允许 {{action}}',
@@ -199,7 +198,6 @@ export default {
 	Mute: '静音',
 	muted: '被静音',
 	My_servers: '我的服务器',
-	N_online_members: '{{n}} 位会员在线',
 	N_people_reacted: '{{n}} 人回复',
 	N_users: '{{n}} 位用户',
 	name: '名字',

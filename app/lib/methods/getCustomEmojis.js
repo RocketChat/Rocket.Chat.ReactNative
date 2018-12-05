@@ -16,7 +16,8 @@ const getLastMessage = () => {
 export default async function() {
 	try {
 		const lastMessage = getLastMessage();
-		let emojis = await SDK.driver.asyncCall('listEmojiCustom');
+		const result = await SDK.api.get('emoji-custom');
+		let { emojis } = result;
 		emojis = emojis.filter(emoji => !lastMessage || emoji._updatedAt > lastMessage);
 		emojis = this._prepareEmojis(emojis);
 		InteractionManager.runAfterInteractions(() => database.write(() => {

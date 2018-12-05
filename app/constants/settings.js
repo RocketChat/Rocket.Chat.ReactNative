@@ -58,6 +58,8 @@ export default {
 	},
 	UI_Use_Real_Name: {
 		type: 'valueAsBoolean'
+	},
+	Assets_favicon_512: {
+		type: null
 	}
 };
-export const settingsUpdatedAt = new Date('2018-11-14');

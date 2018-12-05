@@ -5,12 +5,7 @@ import reduxStore from '../createStore';
 import database from '../realm';
 import * as actions from '../../actions';
 import log from '../../utils/log';
-import { settingsUpdatedAt } from '../../constants/settings';
-
-const getLastUpdate = () => {
-	const [setting] = database.objects('settings').sorted('_updatedAt', true);
-	return setting && setting._updatedAt;
-};
+import settings from '../../constants/settings';
 
 function updateServer(param) {
 	database.databases.serversDB.write(() => {
@@ -20,19 +15,14 @@ function updateServer(param) {
 
 export default async function() {
 	try {
-		// if (!SDK.driver.dd) {
-		// 	// TODO: should implement loop or get from rest?
-		// 	return;
-		// }
+		const settingsParams = JSON.stringify(Object.keys(settings));
+		const result = await fetch(`${ SDK.api.url }settings.public?query={"_id":{"$in":${ settingsParams }}}`).then(response => response.json());
 
-		const lastUpdate = getLastUpdate();
-		const fetchNewSettings = lastUpdate < settingsUpdatedAt;
-		const result = await ((!lastUpdate || fetchNewSettings)
-			? SDK.driver.asyncCall('public-settings/get')
-			: SDK.driver.asyncCall('public-settings/get', new Date(lastUpdate)));
-		const data = result.update || result || [];
-
-		const filteredSettings = this._prepareSettings(this._filterSettings(data));
+		if (!result.success) {
+			return;
+		}
+		const data = result.settings || [];
+		const filteredSettings = this._prepareSettings(data.filter(item => item._id !== 'Assets_favicon_512'));
 
 		InteractionManager.runAfterInteractions(
 			() => database.write(
