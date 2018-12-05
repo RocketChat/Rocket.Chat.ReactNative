@@ -3,12 +3,10 @@ import {
 	put, call, takeLatest, take, select, race, fork, cancel, takeEvery
 } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
-import { BACKGROUND } from 'redux-enhancer-react-native-appstate';
 import { Navigation } from 'react-native-navigation';
 
 import * as types from '../actions/actionsTypes';
-// import { roomsSuccess, roomsFailure } from '../actions/rooms';
-import { addUserTyping, removeUserTyping, setLastOpen } from '../actions/room';
+import { addUserTyping, removeUserTyping } from '../actions/room';
 import { messagesRequest, editCancel, replyCancel } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
@@ -19,19 +17,6 @@ const eraseRoom = rid => RocketChat.eraseRoom(rid);
 
 let sub;
 let thread;
-
-// const getRooms = function* getRooms() {
-// 	return yield RocketChat.getRooms();
-// };
-
-// const watchRoomsRequest = function* watchRoomsRequest() {
-// 	try {
-// 		yield call(getRooms);
-// 		yield put(roomsSuccess());
-// 	} catch (err) {
-// 		yield put(roomsFailure(err.status));
-// 	}
-// };
 
 const cancelTyping = function* cancelTyping(username) {
 	while (true) {
@@ -134,18 +119,6 @@ const watchuserTyping = function* watchuserTyping({ status }) {
 	}
 };
 
-// const updateRoom = function* updateRoom() {
-// 	const room = yield select(state => state.room);
-// 	if (!room || !room.rid) {
-// 		return;
-// 	}
-// 	yield put(messagesRequest({ rid: room.rid }));
-// };
-
-const updateLastOpen = function* updateLastOpen() {
-	yield put(setLastOpen());
-};
-
 const goRoomsListAndDelete = function* goRoomsListAndDelete(rid) {
 	yield Navigation.popToRoot('RoomsListView');
 	try {
@@ -188,9 +161,6 @@ const root = function* root() {
 	yield takeLatest(types.ROOM.USER_TYPING, watchuserTyping);
 	yield takeLatest(types.ROOM.OPEN, watchRoomOpen);
 	yield takeEvery(types.ROOM.MESSAGE_RECEIVED, handleMessageReceived);
-	// yield takeLatest(FOREGROUND, updateRoom);
-	// yield takeLatest(FOREGROUND, watchRoomsRequest);
-	yield takeLatest(BACKGROUND, updateLastOpen);
 	yield takeLatest(types.ROOM.LEAVE, handleLeaveRoom);
 	yield takeLatest(types.ROOM.ERASE, handleEraseRoom);
 };
