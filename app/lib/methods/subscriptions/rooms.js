@@ -1,4 +1,3 @@
-import Random from 'react-native-meteor/lib/Random';
 import * as SDK from '@rocket.chat/sdk';
 
 import database from '../../realm';
@@ -6,6 +5,7 @@ import { merge } from '../helpers/mergeSubscriptionsRooms';
 import protectedFunction from '../helpers/protectedFunction';
 import messagesStatus from '../../../constants/messagesStatus';
 import log from '../../../utils/log';
+import random from '../../../utils/random';
 
 export default async function subscribeRooms(id) {
 	const promises = Promise.all([
@@ -87,7 +87,7 @@ export default async function subscribeRooms(id) {
 		}
 		if (/message/.test(ev)) {
 			const [args] = ddpMessage.fields.args;
-			const _id = Random.id();
+			const _id = random(17);
 			const message = {
 				_id,
 				rid: args.rid,

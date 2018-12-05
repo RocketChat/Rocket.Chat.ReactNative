@@ -50,7 +50,6 @@
     "react-native-keyboard-input": "^5.3.1",
     "react-native-keyboard-tracking-view": "^5.5.0",
     "react-native-markdown-renderer": "^3.2.8",
-    "react-native-meteor": "^1.4.0",
     "react-native-modal": "^7.0.0",
     "react-native-navigation": "^2.1.3",
     "react-native-notifications": "^1.1.21",

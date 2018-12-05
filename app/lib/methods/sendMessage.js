@@ -1,4 +1,3 @@
-import Random from 'react-native-meteor/lib/Random';
 import * as SDK from '@rocket.chat/sdk';
 
 import messagesStatus from '../../constants/messagesStatus';
@@ -6,9 +5,10 @@ import buildMessage from './helpers/buildMessage';
 import database from '../realm';
 import reduxStore from '../createStore';
 import log from '../../utils/log';
+import random from '../../utils/random';
 
 export const getMessage = (rid, msg = {}) => {
-	const _id = Random.id();
+	const _id = random(17);
 	const message = {
 		_id,
 		rid,
