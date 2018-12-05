@@ -154,7 +154,7 @@ export default class RoomInfoView extends LoggedView {
 			if (room.t === 'd') {
 				try {
 					const roomUser = await RocketChat.getRoomMember(room.rid, userId);
-					this.setState({ roomUser });
+					this.setState({ roomUser: roomUser || {} });
 					const username = room.name;
 
 					const activeUser = activeUsers[roomUser._id];

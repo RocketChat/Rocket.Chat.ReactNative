@@ -4,7 +4,6 @@ import { APP } from '../actions/actionsTypes';
 const initialState = {
 	root: null,
 	stackRoot: 'RoomsListView',
-	starting: true,
 	ready: false,
 	inactive: false,
 	background: false
@@ -46,14 +45,12 @@ export default function app(state = initialState, action) {
 		case APP.INIT:
 			return {
 				...state,
-				ready: false,
-				starting: true
+				ready: false
 			};
 		case APP.READY:
 			return {
 				...state,
-				ready: true,
-				starting: false
+				ready: true
 			};
 		default:
 			return state;

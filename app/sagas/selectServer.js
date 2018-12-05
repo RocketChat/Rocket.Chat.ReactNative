@@ -1,4 +1,4 @@
-import { put, call, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 import { AsyncStorage } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { Provider } from 'react-redux';
@@ -6,9 +6,9 @@ import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import { SERVER } from '../actions/actionsTypes';
 import * as actions from '../actions';
-import { connectRequest } from '../actions/connect';
 import { serverFailure, selectServerRequest, selectServerSuccess } from '../actions/server';
 import { setRoles } from '../actions/roles';
+import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import log from '../utils/log';
@@ -19,16 +19,20 @@ let LoginView = null;
 
 const handleSelectServer = function* handleSelectServer({ server }) {
 	try {
-		yield database.setActiveDB(server);
-		yield put(connectRequest());
-		yield call([AsyncStorage, 'setItem'], 'currentServer', server);
-		const token = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
-		if (token) {
+		yield AsyncStorage.setItem('currentServer', server);
+		const userStringified = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
+
+		if (userStringified) {
+			const user = JSON.parse(userStringified);
+			yield put(setUser(user));
 			yield put(actions.appStart('inside'));
+			RocketChat.connect({ server, user });
+		} else {
+			RocketChat.connect({ server });
 		}
 
 		const settings = database.objects('settings');
-		yield put(actions.setAllSettings(RocketChat.parseSettings(RocketChat._filterSettings(settings.slice(0, settings.length)))));
+		yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
 		const emojis = database.objects('customEmojis');
 		yield put(actions.setCustomEmojis(RocketChat.parseEmojis(emojis.slice(0, emojis.length))));
 		const roles = database.objects('roles');

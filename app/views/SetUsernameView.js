@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, ScrollView, Alert, StyleSheet
+	Text, ScrollView, StyleSheet
 } from 'react-native';
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
-import equal from 'deep-equal';
 import { Navigation } from 'react-native-navigation';
 
-import { setUsernameSubmit as setUsernameSubmitAction } from '../actions/login';
+import { loginRequest as loginRequestAction } from '../actions/login';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
 import KeyboardView from '../presentation/KeyboardView';
@@ -28,9 +27,9 @@ const styles = StyleSheet.create({
 
 @connect(state => ({
 	server: state.server.server,
-	login: state.login
+	token: state.login.user && state.login.user.token
 }), dispatch => ({
-	setUsernameSubmit: params => dispatch(setUsernameSubmitAction(params))
+	loginRequest: params => dispatch(loginRequestAction(params))
 }))
 /** @extends React.Component */
 export default class SetUsernameView extends LoggedView {
@@ -43,15 +42,15 @@ export default class SetUsernameView extends LoggedView {
 	static propTypes = {
 		componentId: PropTypes.string,
 		server: PropTypes.string,
-		setUsernameSubmit: PropTypes.func.isRequired,
-		Accounts_UsernamePlaceholder: PropTypes.string,
-		login: PropTypes.object
+		userId: PropTypes.string,
+		loginRequest: PropTypes.func
 	}
 
 	constructor(props) {
 		super('SetUsernameView', props);
 		this.state = {
-			username: ''
+			username: '',
+			saving: false
 		};
 		const { componentId, server } = this.props;
 		Navigation.mergeOptions(componentId, {
@@ -68,13 +67,8 @@ export default class SetUsernameView extends LoggedView {
 			this.usernameInput.focus();
 		}, 600);
 		const suggestion = await RocketChat.getUsernameSuggestion();
-		this.setState({ username: suggestion });
-	}
-
-	componentDidUpdate(prevProps) {
-		const { login } = this.props;
-		if (login && login.failure && login.error && !equal(login.error, prevProps.login.error)) {
-			Alert.alert(I18n.t('Oops'), login.error.reason);
+		if (suggestion.success) {
+			this.setState({ username: suggestion.result });
 		}
 	}
 
@@ -84,15 +78,27 @@ export default class SetUsernameView extends LoggedView {
 		}
 	}
 
-	submit = () => {
+	submit = async() => {
 		const { username } = this.state;
-		const { setUsernameSubmit } = this.props;
-		setUsernameSubmit({ username });
+		const { loginRequest, token } = this.props;
+
+		if (!username.trim()) {
+			return;
+		}
+
+		this.setState({ saving: true });
+		try {
+			await RocketChat.setUsername(username);
+			RocketChat.setApiUser({ userId: null, authToken: null });
+			await loginRequest({ resume: token });
+		} catch (e) {
+			console.log('SetUsernameView -> catch -> e', e);
+		}
+		this.setState({ saving: false });
 	}
 
 	render() {
-		const { username } = this.state;
-		const { login } = this.props;
+		const { username, saving } = this.state;
 		return (
 			<KeyboardView contentContainerStyle={sharedStyles.container}>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
@@ -117,7 +123,7 @@ export default class SetUsernameView extends LoggedView {
 							onPress={this.submit}
 							testID='set-username-view-submit'
 							disabled={!username}
-							loading={login.isFetching}
+							loading={saving}
 						/>
 					</SafeAreaView>
 				</ScrollView>

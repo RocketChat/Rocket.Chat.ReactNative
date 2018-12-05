@@ -99,8 +99,6 @@ iconsLoaded();
 export default class App extends Component {
 	constructor(props) {
 		super(props);
-		store.dispatch(appInit());
-		store.subscribe(this.onStoreUpdate.bind(this));
 		initializePushNotifications();
 
 		Navigation.events().registerAppLaunchedListener(() => {

@@ -1,8 +1,7 @@
 import { takeLatest, select } from 'redux-saga/effects';
-import { FOREGROUND, BACKGROUND, INACTIVE } from 'redux-enhancer-react-native-appstate';
+import { FOREGROUND, BACKGROUND } from 'redux-enhancer-react-native-appstate';
 
 import RocketChat from '../lib/rocketchat';
-import log from '../utils/log';
 import { setBadgeCount } from '../push';
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
@@ -18,7 +17,7 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 		setBadgeCount();
 		return yield RocketChat.setUserPresenceOnline();
 	} catch (e) {
-		log('appHasComeBackToForeground', e);
+		console.log('appHasComeBackToForeground', e);
 	}
 };
 
@@ -34,7 +33,7 @@ const appHasComeBackToBackground = function* appHasComeBackToBackground() {
 	try {
 		return yield RocketChat.setUserPresenceAway();
 	} catch (e) {
-		log('appHasComeBackToBackground', e);
+		console.log('appHasComeBackToBackground', e);
 	}
 };
 
@@ -47,10 +46,10 @@ const root = function* root() {
 		BACKGROUND,
 		appHasComeBackToBackground
 	);
-	yield takeLatest(
-		INACTIVE,
-		appHasComeBackToBackground
-	);
+	// yield takeLatest(
+	// 	INACTIVE,
+	// 	appHasComeBackToBackground
+	// );
 };
 
 export default root;

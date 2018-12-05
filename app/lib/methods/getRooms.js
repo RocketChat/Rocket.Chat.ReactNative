@@ -12,31 +12,17 @@ const lastMessage = () => {
 	return message && new Date(message.roomUpdatedAt).toISOString();
 };
 
-const getRoomRest = async function() {
-	const updatedSince = lastMessage();
-	const [subscriptions, rooms] = await (updatedSince
-		? Promise.all([SDK.api.get('subscriptions.get', { updatedSince }), SDK.api.get('rooms.get', { updatedSince })])
-		: Promise.all([SDK.api.get('subscriptions.get'), SDK.api.get('rooms.get')])
-	);
-	return mergeSubscriptionsRooms(subscriptions, rooms);
-};
-
-const getRoomDpp = async function() {
-	try {
-		const updatedSince = lastMessage();
-		const [subscriptions, rooms] = await Promise.all([SDK.driver.asyncCall('subscriptions/get', updatedSince), SDK.driver.asyncCall('rooms/get', updatedSince)]);
-		return mergeSubscriptionsRooms(subscriptions, rooms);
-	} catch (e) {
-		return getRoomRest.apply(this);
-	}
-};
-
 export default function() {
 	const { database: db } = database;
 
 	return new Promise(async(resolve, reject) => {
 		try {
-			const { subscriptions, rooms } = await (this.connected() ? getRoomDpp.apply(this) : getRoomRest.apply(this));
+			const updatedSince = lastMessage();
+			const [subscriptionsResult, roomsResult] = await (updatedSince
+				? Promise.all([SDK.api.get('subscriptions.get', { updatedSince }), SDK.api.get('rooms.get', { updatedSince })])
+				: Promise.all([SDK.api.get('subscriptions.get'), SDK.api.get('rooms.get')])
+			);
+			const { subscriptions, rooms } = mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
 
 			const data = rooms.map(room => ({ room, sub: database.objects('subscriptions').filtered('rid == $0', room._id) }));
 

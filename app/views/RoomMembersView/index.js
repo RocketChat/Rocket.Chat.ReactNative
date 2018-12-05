@@ -67,12 +67,13 @@ export default class RoomMembersView extends LoggedView {
 			members,
 			membersFiltered: [],
 			userLongPressed: {},
-			room: {}
+			room: this.rooms[0] || {}
 		};
 		Navigation.events().bindComponent(this);
 	}
 
 	componentDidMount() {
+		this.fetchMembers();
 		this.rooms.addListener(this.updateRoom);
 	}
 
@@ -91,7 +92,8 @@ export default class RoomMembersView extends LoggedView {
 						rightButtons: [{
 							id: 'toggleOnline',
 							text: allUsers ? I18n.t('Online') : I18n.t('All'),
-							testID: 'room-members-view-toggle-status'
+							testID: 'room-members-view-toggle-status',
+							color: Platform.OS === 'android' ? '#FFF' : undefined
 						}]
 					}
 				});
@@ -121,8 +123,10 @@ export default class RoomMembersView extends LoggedView {
 			if (subscriptions.length) {
 				this.goRoom({ rid: subscriptions[0].rid });
 			} else {
-				const room = await RocketChat.createDirectMessage(item.username);
-				this.goRoom({ rid: room.rid });
+				const result = await RocketChat.createDirectMessage(item.username);
+				if (result.success) {
+					this.goRoom({ rid: result.room._id });
+				}
 			}
 		} catch (e) {
 			log('onPressUser', e);
@@ -149,6 +153,13 @@ export default class RoomMembersView extends LoggedView {
 		if (this.actionSheet && this.actionSheet.show) {
 			this.actionSheet.show();
 		}
+	}
+
+	fetchMembers = async(status) => {
+		const { rid } = this.state;
+		const membersResult = await RocketChat.getRoomMembers(rid, status);
+		const members = membersResult.records;
+		this.setState({ allUsers: status, members });
 	}
 
 	updateRoom = async() => {
