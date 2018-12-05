@@ -38,7 +38,8 @@ let RoomActionsView = null;
 	},
 	actionMessage: state.messages.actionMessage,
 	showActions: state.messages.showActions,
-	showErrorActions: state.messages.showErrorActions
+	showErrorActions: state.messages.showErrorActions,
+	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background'
 }), dispatch => ({
 	openRoom: room => dispatch(openRoomAction(room)),
 	setLastOpen: date => dispatch(setLastOpenAction(date)),
@@ -86,6 +87,7 @@ export default class RoomView extends LoggedView {
 		showActions: PropTypes.bool,
 		showErrorActions: PropTypes.bool,
 		actionMessage: PropTypes.object,
+		appState: PropTypes.string,
 		toggleReactionPicker: PropTypes.func.isRequired,
 		actionsShow: PropTypes.func,
 		closeRoom: PropTypes.func
@@ -125,7 +127,7 @@ export default class RoomView extends LoggedView {
 		const {
 			room, loaded, joined, end, loadingMore
 		} = this.state;
-		const { showActions, showErrorActions } = this.props;
+		const { showActions, showErrorActions, appState } = this.props;
 
 		if (room.ro !== nextState.room.ro) {
 			return true;
@@ -143,13 +145,15 @@ export default class RoomView extends LoggedView {
 			return true;
 		} else if (showErrorActions !== nextProps.showErrorActions) {
 			return true;
+		} else if (appState !== nextProps.appState) {
+			return true;
 		}
 		return false;
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		const { room } = this.state;
-		const { componentId } = this.props;
+		const { componentId, appState } = this.props;
 
 		if (prevState.room.f !== room.f) {
 			Navigation.mergeOptions(componentId, {
@@ -165,6 +169,9 @@ export default class RoomView extends LoggedView {
 					}]
 				}
 			});
+		} else if (appState === 'foreground' && appState !== prevProps.appState) {
+			RocketChat.loadMissedMessages(room).catch(e => console.log(e));
+			RocketChat.readMessages(room.rid).catch(e => console.log(e));
 		}
 	}
 

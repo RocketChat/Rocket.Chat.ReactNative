@@ -66,7 +66,8 @@ let NewMessageView = null;
 	groupByType: state.sortPreferences.groupByType,
 	showFavorites: state.sortPreferences.showFavorites,
 	showUnread: state.sortPreferences.showUnread,
-	useRealName: state.settings.UI_Use_Real_Name
+	useRealName: state.settings.UI_Use_Real_Name,
+	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background'
 }), dispatch => ({
 	toggleSortDropdown: () => dispatch(toggleSortDropdownAction()),
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
@@ -114,6 +115,7 @@ export default class RoomsListView extends LoggedView {
 		showFavorites: PropTypes.bool,
 		showUnread: PropTypes.bool,
 		useRealName: PropTypes.bool,
+		appState: PropTypes.string,
 		toggleSortDropdown: PropTypes.func,
 		openSearchHeader: PropTypes.func,
 		closeSearchHeader: PropTypes.func,
@@ -164,7 +166,7 @@ export default class RoomsListView extends LoggedView {
 
 	componentDidUpdate(prevProps) {
 		const {
-			sortBy, groupByType, showFavorites, showUnread
+			sortBy, groupByType, showFavorites, showUnread, appState
 		} = this.props;
 
 		if (!(
@@ -174,6 +176,8 @@ export default class RoomsListView extends LoggedView {
 			&& (prevProps.showUnread === showUnread)
 		)) {
 			this.getSubscriptions();
+		} else if (appState === 'foreground' && appState !== prevProps.appState) {
+			RocketChat.getRooms().catch(e => console.log(e));
 		}
 	}
 
