@@ -7,9 +7,7 @@ import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
-import equal from 'deep-equal';
 
-import { registerSubmit as registerSubmitAction } from '../actions/login';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
 import KeyboardView from '../presentation/KeyboardView';
@@ -19,16 +17,16 @@ import LoggedView from './View';
 import I18n from '../i18n';
 import store from '../lib/createStore';
 import { DARK_HEADER } from '../constants/headerOptions';
+import RocketChat from '../lib/rocketchat';
+import { loginRequest as loginRequestAction } from '../actions/login';
+import isValidEmail from '../utils/isValidEmail';
 
 let TermsServiceView = null;
 let PrivacyPolicyView = null;
 let LegalView = null;
 
-@connect(state => ({
-	server: state.server.server,
-	login: state.login
-}), dispatch => ({
-	registerSubmit: params => dispatch(registerSubmitAction(params))
+@connect(null, dispatch => ({
+	loginRequest: params => dispatch(loginRequestAction(params))
 }))
 /** @extends React.Component */
 export default class RegisterView extends LoggedView {
@@ -48,13 +46,7 @@ export default class RegisterView extends LoggedView {
 
 	static propTypes = {
 		componentId: PropTypes.string,
-		server: PropTypes.string,
-		registerSubmit: PropTypes.func.isRequired,
-		Accounts_UsernamePlaceholder: PropTypes.string,
-		Accounts_NamePlaceholder: PropTypes.string,
-		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
-		Accounts_PasswordPlaceholder: PropTypes.string,
-		login: PropTypes.object
+		loginRequest: PropTypes.func
 	}
 
 	constructor(props) {
@@ -63,7 +55,8 @@ export default class RegisterView extends LoggedView {
 			name: '',
 			email: '',
 			password: '',
-			username: ''
+			username: '',
+			saving: false
 		};
 		Navigation.events().bindComponent(this);
 	}
@@ -75,10 +68,8 @@ export default class RegisterView extends LoggedView {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { login, componentId, Site_Name } = this.props;
-		if (login && login.failure && login.error && !equal(login.error, prevProps.login.error)) {
-			Alert.alert(I18n.t('Oops'), login.error.reason);
-		} else if (Site_Name && prevProps.Site_Name !== Site_Name) {
+		const { componentId, Site_Name } = this.props;
+		if (Site_Name && prevProps.Site_Name !== Site_Name) {
 			this.setTitle(componentId, Site_Name);
 		}
 	}
@@ -122,26 +113,30 @@ export default class RegisterView extends LoggedView {
 		const {
 			name, email, password, username
 		} = this.state;
-		return name.trim() && email.trim() && password.trim() && username.trim();
+		return name.trim() && email.trim() && password.trim() && username.trim() && isValidEmail(email);
 	}
 
-	invalidEmail = () => {
-		const { login } = this.props;
-		return login.failure && /Email/.test(login.error && login.error.reason) ? login.error : {};
-	}
-
-	submit = () => {
+	submit = async() => {
 		if (!this.valid()) {
 			return;
 		}
+		this.setState({ saving: true });
+		Keyboard.dismiss();
+
 		const {
 			name, email, password, username
 		} = this.state;
-		const { registerSubmit } = this.props;
-		registerSubmit({
-			name, email, pass: password, username
-		});
-		Keyboard.dismiss();
+		const { loginRequest } = this.props;
+
+		try {
+			await RocketChat.register({
+				name, email, pass: password, username
+			});
+			await loginRequest({ user: email, password });
+		} catch (e) {
+			Alert.alert(I18n.t('Oops'), e.data.error);
+		}
+		this.setState({ saving: false });
 	}
 
 	termsService = () => {
@@ -187,7 +182,7 @@ export default class RegisterView extends LoggedView {
 	}
 
 	render() {
-		const { login } = this.props;
+		const { saving } = this.state;
 		return (
 			<KeyboardView contentContainerStyle={sharedStyles.container}>
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
@@ -219,7 +214,6 @@ export default class RegisterView extends LoggedView {
 							iconLeft='mail'
 							onChangeText={email => this.setState({ email })}
 							onSubmitEditing={() => { this.passwordInput.focus(); }}
-							error={this.invalidEmail()}
 							testID='register-view-email'
 						/>
 						<TextInput
@@ -240,7 +234,7 @@ export default class RegisterView extends LoggedView {
 							onPress={this.submit}
 							testID='register-view-submit'
 							disabled={!this.valid()}
-							loading={login.isFetching}
+							loading={saving}
 						/>
 					</SafeAreaView>
 				</ScrollView>

@@ -2,9 +2,9 @@ import { SORT_PREFERENCES } from '../actions/actionsTypes';
 
 const initialState = {
 	sortBy: 'activity',
-	groupByType: true,
-	showFavorites: true,
-	showUnread: true
+	groupByType: false,
+	showFavorites: false,
+	showUnread: false
 };
 
 

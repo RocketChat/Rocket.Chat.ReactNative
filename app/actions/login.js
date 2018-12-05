@@ -1,11 +1,5 @@
 import * as types from './actionsTypes';
 
-export function loginSubmit(credentials) {
-	return {
-		type: types.LOGIN.SUBMIT,
-		credentials
-	};
-}
 export function loginRequest(credentials) {
 	return {
 		type: types.LOGIN.REQUEST,
@@ -13,45 +7,10 @@ export function loginRequest(credentials) {
 	};
 }
 
-export function registerSubmit(credentials) {
-	return {
-		type: types.LOGIN.REGISTER_SUBMIT,
-		credentials
-	};
-}
-
-export function registerRequest(credentials) {
-	return {
-		type: types.LOGIN.REGISTER_REQUEST,
-		credentials
-	};
-}
-
-export function setUsernameSubmit(credentials) {
-	return {
-		type: types.LOGIN.SET_USERNAME_SUBMIT,
-		credentials
-	};
-}
-
-export function setUsernameRequest(credentials) {
-	return {
-		type: types.LOGIN.SET_USERNAME_REQUEST,
-		credentials
-	};
-}
-
-export function setUsernameSuccess() {
-	return {
-		type: types.LOGIN.SET_USERNAME_SUCCESS
-	};
-}
-
 export function loginSuccess(user) {
 	return {
 		type: types.LOGIN.SUCCESS,
-		user,
-		token: user.token
+		user
 	};
 }
 
@@ -62,58 +21,16 @@ export function loginFailure(err) {
 	};
 }
 
-export function setToken(user = {}) {
-	return {
-		type: types.LOGIN.SET_TOKEN,
-		...user
-	};
-}
-
-export function restoreToken(token) {
-	return {
-		type: types.LOGIN.RESTORE_TOKEN,
-		token
-	};
-}
-
 export function logout() {
 	return {
 		type: types.LOGOUT
 	};
 }
 
-export function forgotPasswordInit() {
+export function setUser(user) {
 	return {
-		type: types.FORGOT_PASSWORD.INIT
-	};
-}
-
-export function forgotPasswordRequest(email) {
-	return {
-		type: types.FORGOT_PASSWORD.REQUEST,
-		email
-	};
-}
-
-export function forgotPasswordSuccess() {
-	return {
-		type: types.FORGOT_PASSWORD.SUCCESS
-	};
-}
-
-export function forgotPasswordFailure(err) {
-	return {
-		type: types.FORGOT_PASSWORD.FAILURE,
-		err
-	};
-}
-
-export function setUser(action) {
-	return {
-		// do not change this params order
-		// since we use spread operator, sometimes `type` is overriden
-		...action,
-		type: types.USER.SET
+		type: types.USER.SET,
+		user
 	};
 }
 

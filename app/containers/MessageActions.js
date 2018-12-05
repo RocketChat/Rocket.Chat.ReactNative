@@ -245,10 +245,11 @@ export default class MessageActions extends React.Component {
 		showToast(I18n.t('Copied_to_clipboard'));
 	}
 
-	handleShare = () => {
+	handleShare = async() => {
 		const { actionMessage } = this.props;
+		const permalink = await this.getPermalink(actionMessage);
 		Share.share({
-			message: actionMessage.msg.content.replace(/<(?:.|\n)*?>/gm, '')
+			message: permalink
 		});
 	};
 

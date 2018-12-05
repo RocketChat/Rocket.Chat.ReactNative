@@ -32,7 +32,8 @@ export class List extends React.Component {
 		renderFooter: PropTypes.func,
 		renderRow: PropTypes.func,
 		room: PropTypes.string,
-		end: PropTypes.bool
+		end: PropTypes.bool,
+		loadingMore: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -49,8 +50,8 @@ export class List extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		const { end } = this.props;
-		return end !== nextProps.end;
+		const { end, loadingMore } = this.props;
+		return end !== nextProps.end || loadingMore !== nextProps.loadingMore;
 	}
 
 	componentWillUnmount() {

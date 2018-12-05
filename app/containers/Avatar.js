@@ -33,8 +33,15 @@ export default class Avatar extends React.PureComponent {
 			borderRadius
 		};
 
+		if (!text && !avatar) {
+			return null;
+		}
+
 		const room = type === 'd' ? text : `@${ text }`;
-		const uri = avatar || `${ baseUrl }/avatar/${ room }?format=png&size=${ size === 100 ? 100 : 50 }`;
+		// Avoid requesting several sizes by having only two sizes on cache
+		const uriSize = size === 100 ? 100 : 50;
+		const uri = avatar || `${ baseUrl }/avatar/${ room }?format=png&width=${ uriSize }&height=${ uriSize }`;
+
 		const image = (
 			<FastImage
 				style={avatarStyle}

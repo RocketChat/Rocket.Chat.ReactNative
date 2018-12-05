@@ -3,25 +3,12 @@ import * as SDK from '@rocket.chat/sdk';
 import database from '../realm';
 import log from '../../utils/log';
 
-const readMessagesREST = function readMessagesREST(rid) {
-	return SDK.api.post('subscriptions.read', { rid });
-};
-
-const readMessagesDDP = function readMessagesDDP(rid) {
-	try {
-		return SDK.driver.asyncCall('readMessages', rid);
-	} catch (e) {
-		return readMessagesREST.call(this, rid);
-	}
-};
-
 export default async function readMessages(rid) {
 	const ls = new Date();
-	const { database: db } = database;
 	try {
-		const data = await (this.connected() ? readMessagesDDP.call(this, rid) : readMessagesREST.call(this, rid));
-		const [subscription] = db.objects('subscriptions').filtered('rid = $0', rid);
-		db.write(() => {
+		const data = await SDK.api.post('subscriptions.read', { rid });
+		const [subscription] = database.objects('subscriptions').filtered('rid = $0', rid);
+		database.write(() => {
 			subscription.open = true;
 			subscription.alert = false;
 			subscription.unread = 0;

@@ -1,5 +1,4 @@
 export default {
-	'1_online_member': '1 участник онлайн',
 	'1_person_reacted': '1 человек отреагировал',
 	'error-action-not-allowed': '{{action}} не допускается',
 	'error-application-not-found': 'Приложение не найдено',
@@ -175,7 +174,6 @@ export default {
 	Mute: 'Заглушить',
 	muted: 'Заглушен',
 	My_servers: 'Мои серверы',
-	N_online_members: '{{n}} пользователей онлайн',
 	N_person_reacted: '{{n}} людей отреагировало',
 	Name: 'Имя',
 	New_in_RocketChat_question_mark: 'Новичок в Rocket.Chat?',
