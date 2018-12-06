@@ -107,7 +107,10 @@ export default class Message extends PureComponent {
 		header: PropTypes.bool,
 		avatar: PropTypes.string,
 		alias: PropTypes.string,
-		ts: PropTypes.instanceOf(Date),
+		ts: PropTypes.oneOfType([
+			PropTypes.instanceOf(Date),
+			PropTypes.string
+		]),
 		edited: PropTypes.bool,
 		attachments: PropTypes.oneOfType([
 			PropTypes.array,

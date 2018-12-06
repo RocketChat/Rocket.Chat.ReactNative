@@ -18,7 +18,6 @@ import { starredMessagesReceived, starredMessageUnstarred } from '../actions/sta
 import { pinnedMessagesReceived, pinnedMessageUnpinned } from '../actions/pinnedMessages';
 import { mentionedMessagesReceived } from '../actions/mentionedMessages';
 import { snippetedMessagesReceived } from '../actions/snippetedMessages';
-import { roomFilesReceived } from '../actions/roomFiles';
 import { someoneTyping, roomMessageReceived } from '../actions/room';
 import { setRoles } from '../actions/roles';
 
@@ -290,50 +289,6 @@ const RocketChat = {
 				message._id = ddpMessage.id;
 				const snippetedMessage = _buildMessage(message);
 				this.snippetedMessages = [...this.snippetedMessages, snippetedMessage];
-			}
-		}));
-
-		SDK.driver.on('room_files', protectedFunction((error, ddpMessage) => {
-			if (ddpMessage.msg === 'added') {
-				this.roomFiles = this.roomFiles || [];
-
-				if (this.roomFilesTimer) {
-					clearTimeout(this.roomFilesTimer);
-					this.roomFilesTimer = null;
-				}
-
-				this.roomFilesTimer = setTimeout(() => {
-					reduxStore.dispatch(roomFilesReceived(this.roomFiles));
-					this.roomFilesTimer = null;
-					return this.roomFiles = [];
-				}, 1000);
-				const { fields } = ddpMessage;
-				const message = {
-					_id: ddpMessage.id,
-					ts: fields.uploadedAt,
-					msg: fields.description,
-					status: 0,
-					attachments: [{
-						title: fields.name
-					}],
-					urls: [],
-					reactions: [],
-					u: {
-						username: fields.user.username
-					}
-				};
-				const fileUrl = `/file-upload/${ ddpMessage.id }/${ fields.name }`;
-				if (/image/.test(fields.type)) {
-					message.attachments[0].image_type = fields.type;
-					message.attachments[0].image_url = fileUrl;
-				} else if (/audio/.test(fields.type)) {
-					message.attachments[0].audio_type = fields.type;
-					message.attachments[0].audio_url = fileUrl;
-				} else if (/video/.test(fields.type)) {
-					message.attachments[0].video_type = fields.type;
-					message.attachments[0].video_url = fileUrl;
-				}
-				this.roomFiles = [...this.roomFiles, message];
 			}
 		}));
 
@@ -804,6 +759,16 @@ const RocketChat = {
 			c: 'channels', d: 'im', p: 'groups'
 		};
 		return types[t];
+	},
+	getFiles(roomId, type, offset) {
+		return SDK.api.get(`${ this.roomTypeToApiType(type) }.files`, {
+			roomId,
+			offset,
+			sort: { uploadedAt: -1 },
+			fields: {
+				name: 1, description: 1, size: 1, type: 1, uploadedAt: 1, url: 1, userId: 1
+			}
+		});
 	}
 };
 

@@ -81,6 +81,5 @@ export const STARRED_MESSAGES = createRequestTypes('STARRED_MESSAGES', ['OPEN', 
 export const PINNED_MESSAGES = createRequestTypes('PINNED_MESSAGES', ['OPEN', 'READY', 'CLOSE', 'MESSAGES_RECEIVED', 'MESSAGE_UNPINNED']);
 export const MENTIONED_MESSAGES = createRequestTypes('MENTIONED_MESSAGES', ['OPEN', 'READY', 'CLOSE', 'MESSAGES_RECEIVED']);
 export const SNIPPETED_MESSAGES = createRequestTypes('SNIPPETED_MESSAGES', ['OPEN', 'READY', 'CLOSE', 'MESSAGES_RECEIVED']);
-export const ROOM_FILES = createRequestTypes('ROOM_FILES', ['OPEN', 'READY', 'CLOSE', 'MESSAGES_RECEIVED']);
 export const DEEP_LINKING = createRequestTypes('DEEP_LINKING', ['OPEN']);
 export const SORT_PREFERENCES = createRequestTypes('SORT_PREFERENCES', ['SET_ALL', 'SET']);
