@@ -1,4 +1,4 @@
-package chat.rocket.reactnative;
+package com.steadymd.chat;
 
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
@@ -12,7 +12,6 @@ import com.facebook.react.bridge.ReactMethod;
 
 import java.util.List;
 
-import chat.rocket.reactnative.R;
 
 /**
  * Launches custom tabs.

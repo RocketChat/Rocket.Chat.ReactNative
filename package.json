@@ -11,6 +11,7 @@
     "ios": "react-native run-ios",
     "log-android": "react-native log-android",
     "android": "react-native run-android",
+    "android:clean": "cd android && ./gradlew clean && cd ..",
     "storybook": "storybook start -p 7007",
     "snyk-protect": "snyk protect",
     "fabric-ios": "./scripts/fabric-ios.sh",

@@ -1,4 +1,4 @@
-package chat.rocket.reactnative;
+package com.steadymd.chat;
 
 import android.content.Context;
 import android.content.Intent;

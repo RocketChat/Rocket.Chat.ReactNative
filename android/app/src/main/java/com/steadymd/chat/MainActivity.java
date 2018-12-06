@@ -1,10 +1,8 @@
-package chat.rocket.reactnative;
+package com.steadymd.chat;
 
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
-import android.widget.LinearLayout;
 // import com.reactnativenavigation.controllers.SplashActivity;
 import com.reactnativenavigation.NavigationActivity;
+
 import android.view.View;
 import android.content.Intent;
 import android.os.Bundle;

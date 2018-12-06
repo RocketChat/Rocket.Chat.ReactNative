@@ -1,4 +1,4 @@
-package chat.rocket.reactnative;
+package com.steadymd.chat;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -8,12 +8,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.AudioManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings.System;
-import android.media.RingtoneManager;
 
 import com.wix.reactnativenotifications.core.AppLaunchHelper;
 import com.wix.reactnativenotifications.core.AppLifecycleFacade;
