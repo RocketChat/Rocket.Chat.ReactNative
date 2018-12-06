@@ -502,7 +502,19 @@ export default class RoomsListView extends LoggedView {
 		);
 	}
 
-	renderSeparator = () => <View style={styles.separator} />;
+	renderSeparator = () => <View style={styles.separator} />
+
+	renderSectionHeader = (header) => {
+		const { showUnread, showFavorites, groupByType } = this.props;
+		if (!(showUnread || showFavorites || groupByType)) {
+			return null;
+		}
+		return (
+			<View style={styles.groupTitleContainer}>
+				<Text style={styles.groupTitle}>{I18n.t(header)}</Text>
+			</View>
+		);
+	}
 
 	renderSection = (data, header) => {
 		const { showUnread, showFavorites, groupByType } = this.props;
@@ -525,11 +537,7 @@ export default class RoomsListView extends LoggedView {
 					style={styles.list}
 					renderItem={this.renderItem}
 					ItemSeparatorComponent={this.renderSeparator}
-					ListHeaderComponent={() => (
-						<View style={styles.groupTitleContainer}>
-							<Text style={styles.groupTitle}>{I18n.t(header)}</Text>
-						</View>
-					)}
+					ListHeaderComponent={() => this.renderSectionHeader(header)}
 					getItemLayout={getItemLayout}
 					enableEmptySections
 					removeClippedSubviews
