@@ -124,7 +124,7 @@ export default class RoomFilesView extends LoggedView {
 					description: item.description,
 					...url
 				}]}
-				timeFormat='MMMM Do YYYY, h:mm:ss a'
+				timeFormat='MMM Do YYYY, h:mm:ss a'
 				header
 			/>
 		);

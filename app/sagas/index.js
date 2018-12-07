@@ -7,7 +7,6 @@ import createChannel from './createChannel';
 import init from './init';
 import state from './state';
 import starredMessages from './starredMessages';
-import pinnedMessages from './pinnedMessages';
 import mentionedMessages from './mentionedMessages';
 import snippetedMessages from './snippetedMessages';
 import deepLinking from './deepLinking';
@@ -22,7 +21,6 @@ const root = function* root() {
 		selectServer(),
 		state(),
 		starredMessages(),
-		pinnedMessages(),
 		mentionedMessages(),
 		snippetedMessages(),
 		deepLinking()

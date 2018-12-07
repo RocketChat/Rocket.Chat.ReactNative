@@ -134,7 +134,7 @@ export default class StarredMessagesView extends LoggedView {
 				style={styles.message}
 				reactions={item.reactions}
 				user={user}
-				customTimeFormat='MMMM Do YYYY, h:mm:ss a'
+				customTimeFormat='MMM Do YYYY, h:mm:ss a'
 				onLongPress={this.onLongPress}
 			/>
 		);

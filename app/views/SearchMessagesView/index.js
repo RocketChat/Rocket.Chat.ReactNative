@@ -118,7 +118,7 @@ export default class SearchMessagesView extends LoggedView {
 				style={styles.message}
 				reactions={item.reactions}
 				user={user}
-				customTimeFormat='MMMM Do YYYY, h:mm:ss a'
+				customTimeFormat='MMM Do YYYY, h:mm:ss a'
 				onReactionPress={async(emoji) => {
 					try {
 						await RocketChat.setReaction(emoji, item._id);

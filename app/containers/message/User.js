@@ -35,7 +35,10 @@ export default class User extends React.PureComponent {
 		timeFormat: PropTypes.string.isRequired,
 		username: PropTypes.string,
 		alias: PropTypes.string,
-		ts: PropTypes.instanceOf(Date),
+		ts: PropTypes.oneOfType([
+			PropTypes.instanceOf(Date),
+			PropTypes.string
+		]),
 		temp: PropTypes.bool
 	}
 

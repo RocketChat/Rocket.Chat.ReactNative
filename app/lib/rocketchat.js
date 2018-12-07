@@ -15,7 +15,6 @@ import {
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
 import { setActiveUser } from '../actions/activeUsers';
 import { starredMessagesReceived, starredMessageUnstarred } from '../actions/starredMessages';
-import { pinnedMessagesReceived, pinnedMessageUnpinned } from '../actions/pinnedMessages';
 import { mentionedMessagesReceived } from '../actions/mentionedMessages';
 import { snippetedMessagesReceived } from '../actions/snippetedMessages';
 import { someoneTyping, roomMessageReceived } from '../actions/room';
@@ -220,32 +219,6 @@ const RocketChat = {
 			if (ddpMessage.msg === 'removed') {
 				if (reduxStore.getState().starredMessages.isOpen) {
 					return reduxStore.dispatch(starredMessageUnstarred(ddpMessage.id));
-				}
-			}
-		}));
-
-		SDK.driver.on('rocketchat_pinned_message', protectedFunction((error, ddpMessage) => {
-			if (ddpMessage.msg === 'added') {
-				this.pinnedMessages = this.pinnedMessages || [];
-
-				if (this.pinnedMessagesTimer) {
-					clearTimeout(this.pinnedMessagesTimer);
-					this.pinnedMessagesTimer = null;
-				}
-
-				this.pinnedMessagesTimer = setTimeout(() => {
-					reduxStore.dispatch(pinnedMessagesReceived(this.pinnedMessages));
-					this.pinnedMessagesTimer = null;
-					return this.pinnedMessages = [];
-				}, 1000);
-				const message = ddpMessage.fields;
-				message._id = ddpMessage.id;
-				const pinnedMessage = _buildMessage(message);
-				this.pinnedMessages = [...this.pinnedMessages, pinnedMessage];
-			}
-			if (ddpMessage.msg === 'removed') {
-				if (reduxStore.getState().pinnedMessages.isOpen) {
-					return reduxStore.dispatch(pinnedMessageUnpinned(ddpMessage.id));
 				}
 			}
 		}));
@@ -768,6 +741,14 @@ const RocketChat = {
 			fields: {
 				name: 1, description: 1, size: 1, type: 1, uploadedAt: 1, url: 1, userId: 1
 			}
+		});
+	},
+	getMessages(roomId, type, query, offset) {
+		return SDK.api.get(`${ this.roomTypeToApiType(type) }.messages`, {
+			roomId,
+			query,
+			offset,
+			sort: { ts: -1 }
 		});
 	}
 };
