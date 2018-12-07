@@ -24,9 +24,9 @@ const handleSelectServer = function* handleSelectServer({ server }) {
 
 		if (userStringified) {
 			const user = JSON.parse(userStringified);
+			RocketChat.connect({ server, user });
 			yield put(setUser(user));
 			yield put(actions.appStart('inside'));
-			RocketChat.connect({ server, user });
 		} else {
 			RocketChat.connect({ server });
 		}
