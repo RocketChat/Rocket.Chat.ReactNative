@@ -1,7 +1,7 @@
 import { AsyncStorage } from 'react-native';
 import { delay } from 'redux-saga';
 import {
-	takeLatest, take, select, put
+	takeLatest, take, select, put, all
 } from 'redux-saga/effects';
 import { Navigation } from 'react-native-navigation';
 
@@ -51,7 +51,6 @@ const navigate = function* navigate({ params, sameServer = true }) {
 
 const handleOpen = function* handleOpen({ params }) {
 	const isReady = yield select(state => state.app.ready);
-	const server = yield select(state => state.server.server);
 
 	if (!isReady) {
 		yield take(types.APP.READY);
@@ -70,26 +69,31 @@ const handleOpen = function* handleOpen({ params }) {
 		host = host.slice(0, host.length - 1);
 	}
 
-	try {
-		yield RocketChat.testServer(host);
-	} catch (error) {
-		return;
-	}
-
-	const token = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ host }`);
+	const [server, user] = yield all([
+		AsyncStorage.getItem('currentServer'),
+		AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ host }`)
+	]);
 
 	// TODO: needs better test
 	// if deep link is from same server
 	if (server === host) {
-		if (token) {
+		if (user) {
+			yield take(types.SERVER.SELECT_SUCCESS);
 			yield navigate({ params });
 		}
-	} else { // if deep link is from a different server
+	} else {
+		// if deep link is from a different server
+		try {
+			// Verify if server is real
+			yield RocketChat.testServer(host);
+		} catch (error) {
+			return;
+		}
+
 		// search if deep link's server already exists
 		const servers = yield database.databases.serversDB.objects('servers').filtered('id = $0', host); // TODO: need better test
-		if (servers.length && token) {
+		if (servers.length && user) {
 			yield put(selectServerRequest(host));
-			yield take(types.METEOR.REQUEST);
 			yield navigate({ params, sameServer: false });
 		} else {
 			yield put(appStart('outside'));

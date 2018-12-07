@@ -68,16 +68,17 @@ const watchRoomOpen = function* watchRoomOpen({ room }) {
 		}
 		opened = true;
 
+		const auth = yield select(state => state.login.isAuthenticated);
+		if (!auth) {
+			yield take(types.LOGIN.SUCCESS);
+		}
+
 		yield put(messagesRequest({ ...room }));
 
 		if (room._id) {
 			RocketChat.readMessages(room.rid);
 		}
 
-		const auth = yield select(state => state.login.isAuthenticated);
-		if (!auth) {
-			yield take(types.LOGIN.SUCCESS);
-		}
 		sub = yield RocketChat.subscribeRoom(room);
 
 		thread = yield fork(usersTyping, { rid: room.rid });
