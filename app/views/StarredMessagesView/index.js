@@ -126,7 +126,7 @@ export default class StarredMessagesView extends LoggedView {
 			}
 		} catch (error) {
 			this.setState({ loading: false });
-			console.log('StarredMessagesView -> catch -> error', error);
+			console.log('StarredMessagesView -> load -> catch -> error', error);
 		}
 	}
 
