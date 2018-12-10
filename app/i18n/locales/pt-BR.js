@@ -138,6 +138,7 @@ export default {
 	Copy_Permalink: 'Copiar Link-Permanente',
 	Create_account: 'Criar conta',
 	Create_Channel: 'Criar Canal',
+	Created_snippet: 'Criou um snippet',
 	Create_a_new_workspace: 'Criar nova área de trabalho',
 	Create: 'Criar',
 	Delete_Room_Warning: 'A exclusão de uma sala irá apagar todas as mensagens postadas na sala. Isso não pode ser desfeito.',

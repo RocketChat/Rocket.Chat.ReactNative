@@ -14,7 +14,6 @@ import {
 } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
 import { setActiveUser } from '../actions/activeUsers';
-import { mentionedMessagesReceived } from '../actions/mentionedMessages';
 import { snippetedMessagesReceived } from '../actions/snippetedMessages';
 import { someoneTyping, roomMessageReceived } from '../actions/room';
 import { setRoles } from '../actions/roles';
@@ -193,27 +192,6 @@ const RocketChat = {
 						database.delete(message);
 					}
 				});
-			}
-		}));
-
-		SDK.driver.on('rocketchat_mentioned_message', protectedFunction((error, ddpMessage) => {
-			if (ddpMessage.msg === 'added') {
-				this.mentionedMessages = this.mentionedMessages || [];
-
-				if (this.mentionedMessagesTimer) {
-					clearTimeout(this.mentionedMessagesTimer);
-					this.mentionedMessagesTimer = null;
-				}
-
-				this.mentionedMessagesTimer = setTimeout(() => {
-					reduxStore.dispatch(mentionedMessagesReceived(this.mentionedMessages));
-					this.mentionedMessagesTimer = null;
-					return this.mentionedMessages = [];
-				}, 1000);
-				const message = ddpMessage.fields;
-				message._id = ddpMessage.id;
-				const mentionedMessage = _buildMessage(message);
-				this.mentionedMessages = [...this.mentionedMessages, mentionedMessage];
 			}
 		}));
 

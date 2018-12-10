@@ -131,6 +131,7 @@ export default {
 	Copy_Permalink: 'Copy Permalink',
 	Create_account: 'Create an account',
 	Create_Channel: 'Create Channel',
+	Created_snippet: 'Created a snippet',
 	Create_a_new_workspace: 'Create a new workspace',
 	Create: 'Create',
 	Delete_Room_Warning: 'Deleting a room will delete all messages posted within the room. This cannot be undone.',
