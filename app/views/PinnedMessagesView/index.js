@@ -95,7 +95,7 @@ export default class PinnedMessagesView extends LoggedView {
 				}));
 			}
 		} catch (error) {
-			console.log('PinnedMessagesView -> catch -> error', error);
+			console.log('PinnedMessagesView -> unPin -> catch -> error', error);
 		}
 	}
 

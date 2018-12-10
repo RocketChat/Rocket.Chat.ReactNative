@@ -12,7 +12,6 @@ import app from './app';
 import customEmojis from './customEmojis';
 import activeUsers from './activeUsers';
 import roles from './roles';
-import starredMessages from './starredMessages';
 import mentionedMessages from './mentionedMessages';
 import snippetedMessages from './snippetedMessages';
 import sortPreferences from './sortPreferences';
@@ -31,7 +30,6 @@ export default combineReducers({
 	customEmojis,
 	activeUsers,
 	roles,
-	starredMessages,
 	mentionedMessages,
 	snippetedMessages,
 	sortPreferences

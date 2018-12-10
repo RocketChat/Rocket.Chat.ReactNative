@@ -14,7 +14,6 @@ import {
 } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
 import { setActiveUser } from '../actions/activeUsers';
-import { starredMessagesReceived, starredMessageUnstarred } from '../actions/starredMessages';
 import { mentionedMessagesReceived } from '../actions/mentionedMessages';
 import { snippetedMessagesReceived } from '../actions/snippetedMessages';
 import { someoneTyping, roomMessageReceived } from '../actions/room';
@@ -194,32 +193,6 @@ const RocketChat = {
 						database.delete(message);
 					}
 				});
-			}
-		}));
-
-		SDK.driver.on('rocketchat_starred_message', protectedFunction((error, ddpMessage) => {
-			if (ddpMessage.msg === 'added') {
-				this.starredMessages = this.starredMessages || [];
-
-				if (this.starredMessagesTimer) {
-					clearTimeout(this.starredMessagesTimer);
-					this.starredMessagesTimer = null;
-				}
-
-				this.starredMessagesTimer = setTimeout(protectedFunction(() => {
-					reduxStore.dispatch(starredMessagesReceived(this.starredMessages));
-					this.starredMessagesTimer = null;
-					return this.starredMessages = [];
-				}), 1000);
-				const message = ddpMessage.fields;
-				message._id = ddpMessage.id;
-				const starredMessage = _buildMessage(message);
-				this.starredMessages = [...this.starredMessages, starredMessage];
-			}
-			if (ddpMessage.msg === 'removed') {
-				if (reduxStore.getState().starredMessages.isOpen) {
-					return reduxStore.dispatch(starredMessageUnstarred(ddpMessage.id));
-				}
 			}
 		}));
 
