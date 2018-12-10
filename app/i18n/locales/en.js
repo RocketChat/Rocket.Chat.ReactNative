@@ -209,6 +209,7 @@ export default {
 	No_files: 'No files',
 	No_mentioned_messages: 'No mentioned messages',
 	No_pinned_messages: 'No pinned messages',
+	No_results_found: 'No results found',
 	No_snippeted_messages: 'No snippeted messages',
 	No_starred_messages: 'No starred messages',
 	No_announcement_provided: 'No announcement provided.',

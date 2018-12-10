@@ -723,6 +723,12 @@ const RocketChat = {
 			offset,
 			sort: { ts: -1 }
 		});
+	},
+	searchMessages(roomId, searchText) {
+		return SDK.api.get('chat.search', {
+			roomId,
+			searchText
+		});
 	}
 };
 

@@ -212,6 +212,7 @@ export default {
 	No_files: 'Não há arquivos',
 	No_mentioned_messages: 'Não há menções',
 	No_pinned_messages: 'Não há mensagens fixadas',
+	No_results_found: 'Nenhum resultado encontrado',
 	No_snippeted_messages: 'Não há trechos de mensagens',
 	No_starred_messages: 'Não há mensagens favoritas',
 	No_announcement_provided: 'Sem anúncio.',
