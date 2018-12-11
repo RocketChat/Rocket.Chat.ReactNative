@@ -36,7 +36,7 @@
     "react": "16.6.1",
     "react-emojione": "^5.0.0",
     "react-native": "^0.57.5",
-    "react-native-actionsheet": "^2.4.2",
+    "react-native-action-sheet": "^2.1.0",
     "react-native-audio": "^4.2.2",
     "react-native-device-info": "^0.24.3",
     "react-native-dialog": "^5.4.0",

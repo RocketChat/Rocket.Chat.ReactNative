@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
-import ActionSheet from 'react-native-actionsheet';
+import ActionSheet from 'react-native-action-sheet';
 import SafeAreaView from 'react-native-safe-area-view';
 
 import { openPinnedMessages as openPinnedMessagesAction, closePinnedMessages as closePinnedMessagesAction } from '../../actions/pinnedMessages';
@@ -84,9 +84,17 @@ export default class PinnedMessagesView extends LoggedView {
 
 	onLongPress = (message) => {
 		this.setState({ message });
-		if (this.actionSheet && this.actionSheet.show) {
-			this.actionSheet.show();
-		}
+		this.showActionSheet();
+	}
+
+	showActionSheet = () => {
+		ActionSheet.showActionSheetWithOptions({
+			options: options,
+			cancelButtonIndex: CANCEL_INDEX,
+			title: I18n.t('Actions')
+		}, (actionIndex) => {
+			this.handleActionPress(actionIndex);
+		});
 	}
 
 	handleActionPress = (actionIndex) => {
@@ -158,13 +166,6 @@ export default class PinnedMessagesView extends LoggedView {
 					onEndReached={this.moreData}
 					ListHeaderComponent={loading ? <RCActivityIndicator /> : null}
 					ListFooterComponent={loadingMore ? <RCActivityIndicator /> : null}
-				/>
-				<ActionSheet
-					ref={o => this.actionSheet = o}
-					title={I18n.t('Actions')}
-					options={options}
-					cancelButtonIndex={CANCEL_INDEX}
-					onPress={this.handleActionPress}
 				/>
 			</SafeAreaView>
 		);

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
 	FlatList, View, Vibration, Platform
 } from 'react-native';
-import ActionSheet from 'react-native-actionsheet';
+import ActionSheet from 'react-native-action-sheet';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -150,9 +150,17 @@ export default class RoomMembersView extends LoggedView {
 		}
 		this.setState({ userLongPressed: user });
 		Vibration.vibrate(50);
-		if (this.actionSheet && this.actionSheet.show) {
-			this.actionSheet.show();
-		}
+		this.showActionSheet();
+	}
+
+	showActionSheet = () => {
+		ActionSheet.showActionSheetWithOptions({
+			options: this.actionSheetOptions,
+			cancelButtonIndex: this.CANCEL_INDEX,
+			title: I18n.t('Actions')
+		}, (actionIndex) => {
+			this.handleActionPress(actionIndex);
+		});
 	}
 
 	fetchMembers = async(status) => {
@@ -233,13 +241,6 @@ export default class RoomMembersView extends LoggedView {
 					ItemSeparatorComponent={this.renderSeparator}
 					ListHeaderComponent={this.renderSearchBar}
 					{...scrollPersistTaps}
-				/>
-				<ActionSheet
-					ref={o => this.actionSheet = o}
-					title={I18n.t('Actions')}
-					options={this.actionSheetOptions}
-					cancelButtonIndex={this.CANCEL_INDEX}
-					onPress={this.handleActionPress}
 				/>
 			</SafeAreaView>
 		);

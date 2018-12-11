@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import ActionSheet from 'react-native-actionsheet';
+import ActionSheet from 'react-native-action-sheet';
 
 import { errorActionsHide as errorActionsHideAction } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
@@ -32,9 +32,18 @@ export default class MessageErrorActions extends React.Component {
 		this.DELETE_INDEX = 1;
 		this.RESEND_INDEX = 2;
 		setTimeout(() => {
-			if (this.actionSheet && this.actionSheet.show) {
-				this.actionSheet.show();
-			}
+			this.showActionSheet();
+		});
+	}
+
+	showActionSheet = () => {
+		ActionSheet.showActionSheetWithOptions({
+			options: this.options,
+			cancelButtonIndex: this.CANCEL_INDEX,
+			destructiveButtonIndex: this.DELETE_INDEX,
+			title: I18n.t('Message_actions')
+		}, (actionIndex) => {
+			this.handleActionPress(actionIndex);
 		});
 	}
 
@@ -68,14 +77,7 @@ export default class MessageErrorActions extends React.Component {
 
 	render() {
 		return (
-			<ActionSheet
-				ref={o => this.actionSheet = o}
-				title={I18n.t('Message_actions')}
-				options={this.options}
-				cancelButtonIndex={this.CANCEL_INDEX}
-				destructiveButtonIndex={this.DELETE_INDEX}
-				onPress={this.handleActionPress}
-			/>
+			null
 		);
 	}
 }
