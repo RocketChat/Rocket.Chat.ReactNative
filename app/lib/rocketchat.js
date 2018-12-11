@@ -589,8 +589,8 @@ const RocketChat = {
 	saveRoomSettings(rid, params) {
 		return call('saveRoomSettings', rid, params);
 	},
-	saveUserProfile(params, customFields) {
-		return call('saveUserProfile', params, customFields);
+	saveUserProfile(data) {
+		return SDK.api.post('users.updateOwnBasicInfo', { data });
 	},
 	saveUserPreferences(params) {
 		return call('saveUserPreferences', params);
@@ -635,8 +635,8 @@ const RocketChat = {
 	getAvatarSuggestion() {
 		return call('getAvatarSuggestion');
 	},
-	resetAvatar() {
-		return call('resetAvatar');
+	resetAvatar(userId) {
+		return SDK.api.post('users.resetAvatar', { userId });
 	},
 	setAvatarFromService({ data, contentType = '', service = null }) {
 		return call('setAvatarFromService', data, contentType, service);
