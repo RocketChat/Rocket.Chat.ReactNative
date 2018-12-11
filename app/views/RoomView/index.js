@@ -156,17 +156,21 @@ export default class RoomView extends LoggedView {
 		const { componentId, appState } = this.props;
 
 		if (prevState.room.f !== room.f) {
+			const rightButtons = [{
+				id: 'star',
+				testID: 'room-view-header-star',
+				icon: room.f ? iconsMap.star : iconsMap.starOutline
+			}];
+			if (room.t !== 'l') {
+				rightButtons.unshift({
+					id: 'more',
+					testID: 'room-view-header-actions',
+					icon: iconsMap.more
+				});
+			}
 			Navigation.mergeOptions(componentId, {
 				topBar: {
-					rightButtons: [{
-						id: 'more',
-						testID: 'room-view-header-actions',
-						icon: iconsMap.more
-					}, {
-						id: 'star',
-						testID: 'room-view-header-star',
-						icon: room.f ? iconsMap.star : iconsMap.starOutline
-					}]
+					rightButtons
 				}
 			});
 		} else if (appState === 'foreground' && appState !== prevProps.appState) {
