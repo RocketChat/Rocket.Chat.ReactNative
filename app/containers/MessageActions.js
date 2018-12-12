@@ -130,6 +130,15 @@ export default class MessageActions extends React.Component {
 		});
 	}
 
+	setPermissions() {
+		const { room } = this.props;
+		const permissions = ['edit-message', 'delete-message', 'force-delete-message'];
+		const result = RocketChat.hasPermission(permissions, room.rid);
+		this.hasEditPermission = result[permissions[0]];
+		this.hasDeletePermission = result[permissions[1]];
+		this.hasForceDeletePermission = result[permissions[2]];
+	}
+
 	showActionSheet = () => {
 		ActionSheet.showActionSheetWithOptions({
 			options: this.options,
@@ -139,15 +148,6 @@ export default class MessageActions extends React.Component {
 		}, (actionIndex) => {
 			this.handleActionPress(actionIndex);
 		});
-	}
-
-	setPermissions() {
-		const { room } = this.props;
-		const permissions = ['edit-message', 'delete-message', 'force-delete-message'];
-		const result = RocketChat.hasPermission(permissions, room.rid);
-		this.hasEditPermission = result[permissions[0]];
-		this.hasDeletePermission = result[permissions[1]];
-		this.hasForceDeletePermission = result[permissions[2]];
 	}
 
 	getPermalink = async(message) => {

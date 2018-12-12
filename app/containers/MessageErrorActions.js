@@ -23,6 +23,19 @@ export default class MessageErrorActions extends React.Component {
 		actionMessage: PropTypes.object
 	};
 
+	handleResend = protectedFunction(() => {
+		const { actionMessage } = this.props;
+		RocketChat.resendMessage(actionMessage._id);
+	});
+
+	handleDelete = protectedFunction(() => {
+		const { actionMessage } = this.props;
+		database.write(() => {
+			const msg = database.objects('messages').filtered('_id = $0', actionMessage._id);
+			database.delete(msg);
+		});
+	})
+
 	// eslint-disable-next-line react/sort-comp
 	constructor(props) {
 		super(props);
@@ -46,19 +59,6 @@ export default class MessageErrorActions extends React.Component {
 			this.handleActionPress(actionIndex);
 		});
 	}
-
-	handleResend = protectedFunction(() => {
-		const { actionMessage } = this.props;
-		RocketChat.resendMessage(actionMessage._id);
-	});
-
-	handleDelete = protectedFunction(() => {
-		const { actionMessage } = this.props;
-		database.write(() => {
-			const msg = database.objects('messages').filtered('_id = $0', actionMessage._id);
-			database.delete(msg);
-		});
-	})
 
 	handleActionPress = (actionIndex) => {
 		const { errorActionsHide } = this.props;

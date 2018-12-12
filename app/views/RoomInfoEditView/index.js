@@ -39,7 +39,7 @@ const PERMISSIONS_ARRAY = [
 ];
 
 @connect(null, dispatch => ({
-	eraseRoom: rid => dispatch(eraseRoomAction(rid))
+	eraseRoom: (rid, t) => dispatch(eraseRoomAction(rid, t))
 }))
 /** @extends React.Component */
 export default class RoomInfoEditView extends LoggedView {
@@ -231,7 +231,7 @@ export default class RoomInfoEditView extends LoggedView {
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
-					onPress: () => eraseRoom(room.rid)
+					onPress: () => eraseRoom(room.rid, room.t)
 				}
 			],
 			{ cancelable: false }
@@ -240,7 +240,7 @@ export default class RoomInfoEditView extends LoggedView {
 
 	toggleArchive = () => {
 		const { room } = this.state;
-		const { rid, archived } = room;
+		const { rid, archived, t } = room;
 
 		const action = I18n.t(`${ archived ? 'un' : '' }archive`);
 		Alert.alert(
@@ -254,9 +254,9 @@ export default class RoomInfoEditView extends LoggedView {
 				{
 					text: I18n.t('Yes_action_it', { action }),
 					style: 'destructive',
-					onPress: () => {
+					onPress: async() => {
 						try {
-							RocketChat.toggleArchiveRoom(rid, !archived);
+							await RocketChat.toggleArchiveRoom(rid, t, !archived);
 						} catch (e) {
 							log('toggleArchive', e);
 						}

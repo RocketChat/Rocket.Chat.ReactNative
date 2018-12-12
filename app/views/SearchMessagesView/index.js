@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Text } from 'react-native';
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
 
@@ -11,20 +11,20 @@ import styles from './styles';
 import Markdown from '../../containers/message/Markdown';
 import debounce from '../../utils/debounce';
 import RocketChat from '../../lib/rocketchat';
-import buildMessage from '../../lib/methods/helpers/buildMessage';
-import Message from '../../containers/message';
+import Message from '../../containers/message/Message';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import log from '../../utils/log';
 import I18n from '../../i18n';
 import { DEFAULT_HEADER } from '../../constants/headerOptions';
+import database from '../../lib/realm';
 
 @connect(state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	customEmojis: state.customEmojis,
 	user: {
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token
-	},
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	}
 }))
 /** @extends React.Component */
 export default class SearchMessagesView extends LoggedView {
@@ -43,18 +43,19 @@ export default class SearchMessagesView extends LoggedView {
 
 	static propTypes = {
 		rid: PropTypes.string,
-		componentId: PropTypes.string,
 		user: PropTypes.object,
-		baseUrl: PropTypes.string
+		baseUrl: PropTypes.string,
+		customEmojis: PropTypes.object
 	}
 
 	constructor(props) {
 		super('SearchMessagesView', props);
-		this.limit = 0;
+		this.rooms = database.objects('subscriptions').filtered('rid = $0', props.rid);
 		this.state = {
+			loading: false,
+			room: this.rooms[0],
 			messages: [],
-			searching: false,
-			loadingMore: false
+			searchText: ''
 		};
 	}
 
@@ -63,100 +64,88 @@ export default class SearchMessagesView extends LoggedView {
 	}
 
 	componentWillUnmount() {
-		this.onChangeSearch.stop();
+		this.search.stop();
 	}
 
-	onChangeSearch = debounce((search) => {
-		const { searching } = this.state;
+	// eslint-disable-next-line react/sort-comp
+	search = debounce(async(searchText) => {
+		const { room } = this.state;
+		this.setState({ searchText, loading: true, messages: [] });
 
-		this.searchText = search;
-		this.limit = 0;
-		if (!searching) {
-			this.setState({ searching: true });
+		try {
+			const result = await RocketChat.searchMessages(room.rid, searchText);
+			if (result.success) {
+				this.setState({
+					messages: result.messages || [],
+					loading: false
+				});
+			}
+		} catch (error) {
+			this.setState({ loading: false });
+			console.log('SearchMessagesView -> search -> catch -> error', error);
 		}
-		this.search();
 	}, 1000)
 
-	search = async() => {
-		const { rid } = this.props;
-
-		if (this._cancel) {
-			this._cancel('cancel');
-		}
-		const cancel = new Promise((r, reject) => this._cancel = reject);
-		let messages = [];
-		try {
-			const result = await Promise.race([RocketChat.messageSearch(this.searchText, rid, this.limit), cancel]);
-			messages = result.message.docs.map(message => buildMessage(message));
-			this.setState({ messages, searching: false, loadingMore: false });
-		} catch (e) {
-			this._cancel = null;
-			if (e !== 'cancel') {
-				return this.setState({ searching: false, loadingMore: false });
-			}
-			log('SearchMessagesView.search', e);
-		}
-	}
-
-	moreData = () => {
-		const { loadingMore, messages } = this.state;
-		if (messages.length < this.limit) {
-			return;
-		}
-		if (this.searchText && !loadingMore) {
-			this.setState({ loadingMore: true });
-			this.limit += 20;
-			this.search();
-		}
-	}
+	renderEmpty = () => (
+		<View style={styles.listEmptyContainer}>
+			<Text>{I18n.t('No_results_found')}</Text>
+		</View>
+	)
 
 	renderItem = ({ item }) => {
-		const { user } = this.props;
+		const { user, customEmojis, baseUrl } = this.props;
 		return (
 			<Message
-				item={item}
 				style={styles.message}
-				reactions={item.reactions}
+				customEmojis={customEmojis}
+				baseUrl={baseUrl}
 				user={user}
-				customTimeFormat='MMMM Do YYYY, h:mm:ss a'
-				onReactionPress={async(emoji) => {
-					try {
-						await RocketChat.setReaction(emoji, item._id);
-						this.search();
-						this.forceUpdate();
-					} catch (e) {
-						log('SearchMessagesView.onReactionPress', e);
-					}
-				}}
+				author={item.u}
+				ts={item.ts}
+				msg={item.msg}
+				attachments={item.attachments || []}
+				timeFormat='MMM Do YYYY, h:mm:ss a'
+				edited={!!item.editedAt}
+				header
+			/>
+		);
+	}
+
+	renderList = () => {
+		const { messages, loading, searchText } = this.state;
+
+		if (!loading && messages.length === 0 && searchText.length) {
+			return this.renderEmpty();
+		}
+
+		return (
+			<FlatList
+				data={messages}
+				renderItem={this.renderItem}
+				style={styles.list}
+				keyExtractor={item => item._id}
+				onEndReached={this.load}
+				ListFooterComponent={loading ? <RCActivityIndicator /> : null}
+				{...scrollPersistTaps}
 			/>
 		);
 	}
 
 	render() {
-		const { searching, loadingMore, messages } = this.state;
 		return (
 			<SafeAreaView style={styles.container} testID='search-messages-view' forceInset={{ bottom: 'never' }}>
 				<View style={styles.searchContainer}>
 					<RCTextInput
 						inputRef={(e) => { this.name = e; }}
 						label={I18n.t('Search')}
-						onChangeText={this.onChangeSearch}
+						onChangeText={this.search}
 						placeholder={I18n.t('Search_Messages')}
 						testID='search-message-view-input'
 					/>
 					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} username='' baseUrl='' customEmojis={{}} />
 					<View style={styles.divider} />
 				</View>
-				<FlatList
-					data={messages}
-					renderItem={this.renderItem}
-					style={styles.list}
-					keyExtractor={item => item._id}
-					onEndReached={this.moreData}
-					ListHeaderComponent={searching ? <RCActivityIndicator /> : null}
-					ListFooterComponent={loadingMore ? <RCActivityIndicator /> : null}
-					{...scrollPersistTaps}
-				/>
+				{this.renderList()}
 			</SafeAreaView>
 		);
 	}

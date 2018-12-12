@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import ActionSheet from 'react-native-action-sheet';
 
@@ -34,7 +34,7 @@ export default class FilesActions extends Component {
 	showActionSheet = () => {
 		ActionSheet.showActionSheetWithOptions({
 			options: this.options,
-			cancelButtonIndex: this.CANCEL_INDEX,
+			cancelButtonIndex: this.CANCEL_INDEX
 		}, (actionIndex) => {
 			this.handleActionPress(actionIndex);
 		});

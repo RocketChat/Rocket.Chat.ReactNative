@@ -20,7 +20,6 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert, showToast } from '../../utils/info';
 import RocketChat from '../../lib/rocketchat';
 import RCTextInput from '../../containers/TextInput';
-import Loading from '../../containers/Loading';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
@@ -29,9 +28,11 @@ import Touch from '../../utils/touch';
 import Drawer from '../../Drawer';
 import { DEFAULT_HEADER } from '../../constants/headerOptions';
 import { appStart as appStartAction } from '../../actions';
+import { setUser as setUserAction } from '../../actions/login';
 
 @connect(state => ({
 	user: {
+		id: state.login.user && state.login.user.id,
 		name: state.login.user && state.login.user.name,
 		username: state.login.user && state.login.user.username,
 		customFields: state.login.user && state.login.user.customFields,
@@ -40,7 +41,8 @@ import { appStart as appStartAction } from '../../actions';
 	Accounts_CustomFields: state.settings.Accounts_CustomFields,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }), dispatch => ({
-	appStart: () => dispatch(appStartAction())
+	appStart: () => dispatch(appStartAction()),
+	setUser: params => dispatch(setUserAction(params))
 }))
 /** @extends React.Component */
 export default class ProfileView extends LoggedView {
@@ -75,7 +77,8 @@ export default class ProfileView extends LoggedView {
 		componentId: PropTypes.string,
 		user: PropTypes.object,
 		Accounts_CustomFields: PropTypes.string,
-		appStart: PropTypes.func
+		appStart: PropTypes.func,
+		setUser: PropTypes.func
 	}
 
 	constructor(props) {
@@ -87,7 +90,7 @@ export default class ProfileView extends LoggedView {
 			username: null,
 			email: null,
 			newPassword: null,
-			typedPassword: null,
+			currentPassword: null,
 			avatarUrl: null,
 			avatar: {},
 			avatarSuggestions: {},
@@ -146,7 +149,7 @@ export default class ProfileView extends LoggedView {
 			username,
 			email: emails ? emails[0].address : null,
 			newPassword: null,
-			typedPassword: null,
+			currentPassword: null,
 			avatarUrl: null,
 			avatar: {},
 			customFields: customFields || {}
@@ -163,7 +166,7 @@ export default class ProfileView extends LoggedView {
 		const customFieldsKeys = Object.keys(customFields);
 		if (customFieldsKeys.length) {
 			customFieldsKeys.forEach((key) => {
-				if (user.customFields[key] !== customFields[key]) {
+				if (!user.customFields || user.customFields[key] !== customFields[key]) {
 					customFieldsChanged = true;
 				}
 			});
@@ -183,13 +186,8 @@ export default class ProfileView extends LoggedView {
 	}
 
 	handleError = (e, func, action) => {
-		if (e && e.error && e.error !== 500) {
-			if (e.details && e.details.timeToReset) {
-				return showErrorAlert(I18n.t('error-too-many-requests', {
-					seconds: parseInt(e.details.timeToReset / 1000, 10)
-				}));
-			}
-			return showErrorAlert(I18n.t(e.error, e.details));
+		if (e.data && e.data.errorType === 'error-too-many-requests') {
+			return showErrorAlert(e.data.error);
 		}
 		showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
 		log(func, e);
@@ -205,14 +203,14 @@ export default class ProfileView extends LoggedView {
 		this.setState({ saving: true, showPasswordAlert: false });
 
 		const {
-			name, username, email, newPassword, typedPassword, avatar, customFields
+			name, username, email, newPassword, currentPassword, avatar, customFields
 		} = this.state;
-		const { user } = this.props;
+		const { user, setUser } = this.props;
 		const params = {};
 
 		// Name
 		if (user.name !== name) {
-			params.realname = name;
+			params.name = name;
 		}
 
 		// Username
@@ -230,13 +228,13 @@ export default class ProfileView extends LoggedView {
 			params.newPassword = newPassword;
 		}
 
-		// typedPassword
-		if (typedPassword) {
-			params.typedPassword = SHA256(typedPassword);
+		// currentPassword
+		if (currentPassword) {
+			params.currentPassword = SHA256(currentPassword);
 		}
 
 		const requirePassword = !!params.email || newPassword;
-		if (requirePassword && !params.typedPassword) {
+		if (requirePassword && !params.currentPassword) {
 			return this.setState({ showPasswordAlert: true, saving: false });
 		}
 
@@ -245,28 +243,32 @@ export default class ProfileView extends LoggedView {
 				try {
 					await RocketChat.setAvatarFromService(avatar);
 				} catch (e) {
-					this.setState({ saving: false, typedPassword: null });
-					return setTimeout(() => this.handleError(e, 'setAvatarFromService', 'changing_avatar'), 300);
+					this.setState({ saving: false, currentPassword: null });
+					return this.handleError(e, 'setAvatarFromService', 'changing_avatar');
 				}
 			}
 
-			await RocketChat.saveUserProfile(params, customFields);
-			this.setState({ saving: false });
-			setTimeout(() => {
+			params.customFields = customFields;
+
+			const result = await RocketChat.saveUserProfile(params);
+			if (result.success) {
+				if (params.customFields) {
+					setUser({ customFields });
+				}
+				this.setState({ saving: false });
 				showToast(I18n.t('Profile_saved_successfully'));
 				this.init();
-			}, 300);
+			}
 		} catch (e) {
-			this.setState({ saving: false, typedPassword: null });
-			setTimeout(() => {
-				this.handleError(e, 'saveUserProfile', 'saving_profile');
-			}, 300);
+			this.setState({ saving: false, currentPassword: null });
+			this.handleError(e, 'saveUserProfile', 'saving_profile');
 		}
 	}
 
 	resetAvatar = async() => {
 		try {
-			await RocketChat.resetAvatar();
+			const { user } = this.props;
+			await RocketChat.resetAvatar(user.id);
 			showToast(I18n.t('Avatar_changed_successfully'));
 			this.init();
 		} catch (e) {
@@ -353,53 +355,57 @@ export default class ProfileView extends LoggedView {
 		if (!Accounts_CustomFields) {
 			return null;
 		}
-		const parsedCustomFields = JSON.parse(Accounts_CustomFields);
-		return Object.keys(parsedCustomFields).map((key, index, array) => {
-			if (parsedCustomFields[key].type === 'select') {
-				const options = parsedCustomFields[key].options.map(option => ({ label: option, value: option }));
+		try {
+			const parsedCustomFields = JSON.parse(Accounts_CustomFields);
+			return Object.keys(parsedCustomFields).map((key, index, array) => {
+				if (parsedCustomFields[key].type === 'select') {
+					const options = parsedCustomFields[key].options.map(option => ({ label: option, value: option }));
+					return (
+						<RNPickerSelect
+							key={key}
+							items={options}
+							onValueChange={(value) => {
+								const newValue = {};
+								newValue[key] = value;
+								this.setState({ customFields: { ...customFields, ...newValue } });
+							}}
+							value={customFields[key]}
+						>
+							<RCTextInput
+								inputRef={(e) => { this[key] = e; }}
+								label={key}
+								placeholder={key}
+								value={customFields[key]}
+								testID='settings-view-language'
+							/>
+						</RNPickerSelect>
+					);
+				}
+
 				return (
-					<RNPickerSelect
+					<RCTextInput
+						inputRef={(e) => { this[key] = e; }}
 						key={key}
-						items={options}
-						onValueChange={(value) => {
+						label={key}
+						placeholder={key}
+						value={customFields[key]}
+						onChangeText={(value) => {
 							const newValue = {};
 							newValue[key] = value;
 							this.setState({ customFields: { ...customFields, ...newValue } });
 						}}
-						value={customFields[key]}
-					>
-						<RCTextInput
-							inputRef={(e) => { this[key] = e; }}
-							label={key}
-							placeholder={key}
-							value={customFields[key]}
-							testID='settings-view-language'
-						/>
-					</RNPickerSelect>
+						onSubmitEditing={() => {
+							if (array.length - 1 > index) {
+								return this[array[index + 1]].focus();
+							}
+							this.avatarUrl.focus();
+						}}
+					/>
 				);
-			}
-
-			return (
-				<RCTextInput
-					inputRef={(e) => { this[key] = e; }}
-					key={key}
-					label={key}
-					placeholder={key}
-					value={customFields[key]}
-					onChangeText={(value) => {
-						const newValue = {};
-						newValue[key] = value;
-						this.setState({ customFields: { ...customFields, ...newValue } });
-					}}
-					onSubmitEditing={() => {
-						if (array.length - 1 > index) {
-							return this[array[index + 1]].focus();
-						}
-						this.avatarUrl.focus();
-					}}
-				/>
-			);
-		});
+			});
+		} catch (error) {
+			return null;
+		}
 	}
 
 	render() {
@@ -480,16 +486,14 @@ export default class ProfileView extends LoggedView {
 							testID='profile-view-avatar-url'
 						/>
 						{this.renderAvatarButtons()}
-						<View style={sharedStyles.alignItemsFlexStart}>
-							<Button
-								title={I18n.t('Save_Changes')}
-								type='primary'
-								onPress={this.submit}
-								disabled={!this.formIsChanged()}
-								testID='profile-view-submit'
-							/>
-						</View>
-						<Loading visible={saving} />
+						<Button
+							title={I18n.t('Save_Changes')}
+							type='primary'
+							onPress={this.submit}
+							disabled={!this.formIsChanged()}
+							testID='profile-view-submit'
+							loading={saving}
+						/>
 						<Dialog.Container visible={showPasswordAlert}>
 							<Dialog.Title>
 								{I18n.t('Please_enter_your_password')}
@@ -498,7 +502,7 @@ export default class ProfileView extends LoggedView {
 								{I18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
 							</Dialog.Description>
 							<Dialog.Input
-								onChangeText={value => this.setState({ typedPassword: value })}
+								onChangeText={value => this.setState({ currentPassword: value })}
 								secureTextEntry
 								testID='profile-view-typed-password'
 								style={styles.dialogInput}
