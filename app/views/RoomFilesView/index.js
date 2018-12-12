@@ -3,26 +3,25 @@ import PropTypes from 'prop-types';
 import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
+import equal from 'deep-equal';
 
-import { openRoomFiles as openRoomFilesAction, closeRoomFiles as closeRoomFilesAction } from '../../actions/roomFiles';
 import LoggedView from '../View';
 import styles from './styles';
-import Message from '../../containers/message';
+import Message from '../../containers/message/Message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import { DEFAULT_HEADER } from '../../constants/headerOptions';
+import database from '../../lib/realm';
+import RocketChat from '../../lib/rocketchat';
 
 @connect(state => ({
-	messages: state.roomFiles.messages,
-	ready: state.roomFiles.ready,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	customEmojis: state.customEmojis,
 	user: {
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token
 	}
-}), dispatch => ({
-	openRoomFiles: (rid, limit) => dispatch(openRoomFilesAction(rid, limit)),
-	closeRoomFiles: () => dispatch(closeRoomFilesAction())
 }))
 /** @extends React.Component */
 export default class RoomFilesView extends LoggedView {
@@ -41,53 +40,51 @@ export default class RoomFilesView extends LoggedView {
 
 	static propTypes = {
 		rid: PropTypes.string,
-		messages: PropTypes.array,
-		ready: PropTypes.bool,
 		user: PropTypes.object,
-		openRoomFiles: PropTypes.func,
-		closeRoomFiles: PropTypes.func
+		baseUrl: PropTypes.string,
+		customEmojis: PropTypes.object
 	}
 
 	constructor(props) {
 		super('RoomFilesView', props);
+		this.rooms = database.objects('subscriptions').filtered('rid = $0', props.rid);
 		this.state = {
-			loading: true,
-			loadingMore: false
+			loading: false,
+			room: this.rooms[0],
+			messages: []
 		};
 	}
 
 	componentDidMount() {
-		this.limit = 20;
 		this.load();
 	}
 
-	componentWillReceiveProps(nextProps) {
-		const { ready } = this.props;
-		if (nextProps.ready && nextProps.ready !== ready) {
-			this.setState({ loading: false, loadingMore: false });
-		}
+	shouldComponentUpdate(nextProps, nextState) {
+		return !equal(this.state, nextState);
 	}
 
-	componentWillUnmount() {
-		const { closeRoomFiles } = this.props;
-		closeRoomFiles();
-	}
-
-	load = () => {
-		const { openRoomFiles, rid } = this.props;
-		openRoomFiles(rid, this.limit);
-	}
-
-	moreData = () => {
-		const { loadingMore } = this.state;
-		const { messages } = this.props;
-		if (messages.length < this.limit) {
+	load = async() => {
+		const {
+			messages, total, loading, room
+		} = this.state;
+		if (messages.length === total || loading) {
 			return;
 		}
-		if (!loadingMore) {
-			this.setState({ loadingMore: true });
-			this.limit += 20;
-			this.load();
+
+		this.setState({ loading: true });
+
+		try {
+			const result = await RocketChat.getFiles(room.rid, room.t, messages.length);
+			if (result.success) {
+				this.setState(prevState => ({
+					messages: [...prevState.messages, ...result.files],
+					total: result.total,
+					loading: false
+				}));
+			}
+		} catch (error) {
+			this.setState({ loading: false });
+			console.log('RoomFilesView -> catch -> error', error);
 		}
 	}
 
@@ -98,26 +95,49 @@ export default class RoomFilesView extends LoggedView {
 	)
 
 	renderItem = ({ item }) => {
-		const { user } = this.props;
+		const { user, baseUrl, customEmojis } = this.props;
+
+		let url = {};
+		if (/image/.test(item.type)) {
+			url = { image_url: item.url };
+		} else if (/audio/.test(item.type)) {
+			url = { audio_url: item.url };
+		} else if (/video/.test(item.type)) {
+			url = { video_url: item.url };
+		} else {
+			url = {
+				title_link: item.url,
+				type: 'file'
+			};
+		}
 
 		return (
 			<Message
-				item={item}
 				style={styles.message}
-				reactions={item.reactions}
+				customEmojis={customEmojis}
+				baseUrl={baseUrl}
 				user={user}
-				customTimeFormat='MMMM Do YYYY, h:mm:ss a'
+				author={item.user}
+				ts={item.uploadedAt}
+				attachments={[{
+					title: item.name,
+					description: item.description,
+					...url
+				}]}
+				timeFormat='MMM Do YYYY, h:mm:ss a'
+				edited={!!item.editedAt}
+				header
 			/>
 		);
 	}
 
 	render() {
-		const { messages, ready } = this.props;
-		if (ready && messages.length === 0) {
+		const { messages, loading } = this.state;
+
+		if (!loading && messages.length === 0) {
 			return this.renderEmpty();
 		}
 
-		const { loading, loadingMore } = this.state;
 		return (
 			<SafeAreaView style={styles.list} testID='room-files-view' forceInset={{ bottom: 'never' }}>
 				<FlatList
@@ -125,9 +145,8 @@ export default class RoomFilesView extends LoggedView {
 					renderItem={this.renderItem}
 					style={styles.list}
 					keyExtractor={item => item._id}
-					onEndReached={this.moreData}
-					ListHeaderComponent={loading ? <RCActivityIndicator /> : null}
-					ListFooterComponent={loadingMore ? <RCActivityIndicator /> : null}
+					onEndReached={this.load}
+					ListFooterComponent={loading ? <RCActivityIndicator /> : null}
 				/>
 			</SafeAreaView>
 		);

@@ -68,7 +68,9 @@ export default class RoomActionsView extends LoggedView {
 		this.state = {
 			room: this.rooms[0] || {},
 			membersCount: 0,
-			member: {}
+			member: {},
+			joined: false,
+			canViewMembers: false
 		};
 	}
 
@@ -86,6 +88,9 @@ export default class RoomActionsView extends LoggedView {
 			}
 		}
 
+		if (room.t === 'd') {
+			this.updateRoomMember();
+		}
 		this.rooms.addListener(this.updateRoom);
 	}
 
@@ -308,6 +313,20 @@ export default class RoomActionsView extends LoggedView {
 
 	updateRoom = () => {
 		this.setState({ room: this.rooms[0] || {} });
+	}
+
+	updateRoomMember = async() => {
+		const { room } = this.state;
+		const { rid } = room;
+		const { userId } = this.props;
+
+		try {
+			const member = await RocketChat.getRoomMember(rid, userId);
+			this.setState({ member });
+		} catch (e) {
+			log('RoomActions updateRoomMember', e);
+			return {};
+		}
 	}
 
 	toggleBlockUser = () => {
