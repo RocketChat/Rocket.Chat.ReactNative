@@ -32,10 +32,9 @@ export default StyleSheet.create({
 		color: '#ccc'
 	},
 	readOnly: {
-		padding: 10
-	},
-	blockedOrBlocker: {
-		padding: 10
+		justifyContent: 'flex-end',
+		alignItems: 'center',
+		marginVertical: 15
 	},
 	reactionPickerContainer: {
 		// width: width - 20,

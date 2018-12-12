@@ -133,6 +133,10 @@ export default class RoomView extends LoggedView {
 			return true;
 		} else if (room.f !== nextState.room.f) {
 			return true;
+		} else if (room.blocked !== nextState.room.blocked) {
+			return true;
+		} else if (room.blocker !== nextState.room.blocker) {
+			return true;
 		} else if (loaded !== nextState.loaded) {
 			return true;
 		} else if (joined !== nextState.joined) {
@@ -379,14 +383,14 @@ export default class RoomView extends LoggedView {
 		}
 		if (room.archived || this.isReadOnly()) {
 			return (
-				<View style={styles.readOnly}>
+				<View style={styles.readOnly} key='room-view-read-only'>
 					<Text>{I18n.t('This_room_is_read_only')}</Text>
 				</View>
 			);
 		}
 		if (this.isBlocked()) {
 			return (
-				<View style={styles.blockedOrBlocker}>
+				<View style={styles.readOnly} key='room-view-block'>
 					<Text>{I18n.t('This_room_is_blocked')}</Text>
 				</View>
 			);

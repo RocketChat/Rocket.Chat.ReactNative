@@ -557,7 +557,7 @@ const RocketChat = {
 	async getRoomMember(rid, currentUserId) {
 		try {
 			const membersResult = await RocketChat.getRoomMembers(rid, true);
-			return Promise.resolve(membersResult.records.find(m => m.id !== currentUserId));
+			return Promise.resolve(membersResult.records.find(m => m._id !== currentUserId));
 		} catch (error) {
 			return Promise.reject(error);
 		}
