@@ -571,8 +571,8 @@ const RocketChat = {
 	leaveRoom(roomId, t) {
 		return SDK.api.post(`${ this.roomTypeToApiType(t) }.leave`, { roomId });
 	},
-	eraseRoom(rid) {
-		return call('eraseRoom', rid);
+	eraseRoom(roomId, t) {
+		return SDK.api.post(`${ this.roomTypeToApiType(t) }.delete`, { roomId });
 	},
 	toggleMuteUserInRoom(rid, username, mute) {
 		if (mute) {

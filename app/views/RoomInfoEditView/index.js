@@ -39,7 +39,7 @@ const PERMISSIONS_ARRAY = [
 ];
 
 @connect(null, dispatch => ({
-	eraseRoom: rid => dispatch(eraseRoomAction(rid))
+	eraseRoom: (rid, t) => dispatch(eraseRoomAction(rid, t))
 }))
 /** @extends React.Component */
 export default class RoomInfoEditView extends LoggedView {
@@ -231,7 +231,7 @@ export default class RoomInfoEditView extends LoggedView {
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
-					onPress: () => eraseRoom(room.rid)
+					onPress: () => eraseRoom(room.rid, room.t)
 				}
 			],
 			{ cancelable: false }
