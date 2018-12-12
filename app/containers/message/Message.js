@@ -39,7 +39,8 @@ const SYSTEM_MESSAGES = [
 	'room_changed_description',
 	'room_changed_announcement',
 	'room_changed_topic',
-	'room_changed_privacy'
+	'room_changed_privacy',
+	'message_snippeted'
 ];
 
 const getInfoMessage = ({
@@ -76,6 +77,8 @@ const getInfoMessage = ({
 		return I18n.t('Room_changed_topic', { topic: msg, userBy: username });
 	} else if (type === 'room_changed_privacy') {
 		return I18n.t('Room_changed_privacy', { type: msg, userBy: username });
+	} else if (type === 'message_snippeted') {
+		return I18n.t('Created_snippet');
 	}
 	return '';
 };
@@ -107,7 +110,10 @@ export default class Message extends PureComponent {
 		header: PropTypes.bool,
 		avatar: PropTypes.string,
 		alias: PropTypes.string,
-		ts: PropTypes.instanceOf(Date),
+		ts: PropTypes.oneOfType([
+			PropTypes.instanceOf(Date),
+			PropTypes.string
+		]),
 		edited: PropTypes.bool,
 		attachments: PropTypes.oneOfType([
 			PropTypes.array,

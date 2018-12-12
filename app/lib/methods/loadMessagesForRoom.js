@@ -6,6 +6,19 @@ import database from '../realm';
 import log from '../../utils/log';
 
 async function load({ rid: roomId, latest, t }) {
+	if (t === 'l') {
+		try {
+			const data = await SDK.driver.asyncCall('loadHistory', roomId, null, 50, latest);
+			if (!data || data.status === 'error') {
+				return [];
+			}
+			return data.messages;
+		} catch (error) {
+			console.log(error);
+			return [];
+		}
+	}
+
 	let params = { roomId, count: 50 };
 	if (latest) {
 		params = { ...params, latest: new Date(latest).toISOString() };

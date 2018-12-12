@@ -17,9 +17,9 @@ export default StyleSheet.create({
 		transform: [{ scaleY: 1 }]
 	},
 	divider: {
+		width: '100%',
 		height: StyleSheet.hairlineWidth,
-		borderColor: '#ddd',
-		borderBottomWidth: StyleSheet.hairlineWidth,
+		backgroundColor: '#E7EBF2',
 		marginVertical: 20
 	}
 });

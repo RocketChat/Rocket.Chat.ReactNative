@@ -133,6 +133,12 @@ export default class RoomView extends LoggedView {
 			return true;
 		} else if (room.f !== nextState.room.f) {
 			return true;
+		} else if (room.blocked !== nextState.room.blocked) {
+			return true;
+		} else if (room.blocker !== nextState.room.blocker) {
+			return true;
+		} else if (room.archived !== nextState.room.archived) {
+			return true;
 		} else if (loaded !== nextState.loaded) {
 			return true;
 		} else if (joined !== nextState.joined) {
@@ -156,17 +162,21 @@ export default class RoomView extends LoggedView {
 		const { componentId, appState } = this.props;
 
 		if (prevState.room.f !== room.f) {
+			const rightButtons = [{
+				id: 'star',
+				testID: 'room-view-header-star',
+				icon: room.f ? iconsMap.star : iconsMap.starOutline
+			}];
+			if (room.t !== 'l') {
+				rightButtons.unshift({
+					id: 'more',
+					testID: 'room-view-header-actions',
+					icon: iconsMap.more
+				});
+			}
 			Navigation.mergeOptions(componentId, {
 				topBar: {
-					rightButtons: [{
-						id: 'more',
-						testID: 'room-view-header-actions',
-						icon: iconsMap.more
-					}, {
-						id: 'star',
-						testID: 'room-view-header-star',
-						icon: room.f ? iconsMap.star : iconsMap.starOutline
-					}]
+					rightButtons
 				}
 			});
 		} else if (appState === 'foreground' && appState !== prevProps.appState) {
@@ -375,14 +385,14 @@ export default class RoomView extends LoggedView {
 		}
 		if (room.archived || this.isReadOnly()) {
 			return (
-				<View style={styles.readOnly}>
+				<View style={styles.readOnly} key='room-view-read-only'>
 					<Text>{I18n.t('This_room_is_read_only')}</Text>
 				</View>
 			);
 		}
 		if (this.isBlocked()) {
 			return (
-				<View style={styles.blockedOrBlocker}>
+				<View style={styles.readOnly} key='room-view-block'>
 					<Text>{I18n.t('This_room_is_blocked')}</Text>
 				</View>
 			);
