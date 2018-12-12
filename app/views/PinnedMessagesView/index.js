@@ -144,6 +144,7 @@ export default class PinnedMessagesView extends LoggedView {
 				attachments={item.attachments || []}
 				timeFormat='MMM Do YYYY, h:mm:ss a'
 				header
+				edited={!!item.editedAt}
 				onLongPress={() => this.onLongPress(item)}
 			/>
 		);

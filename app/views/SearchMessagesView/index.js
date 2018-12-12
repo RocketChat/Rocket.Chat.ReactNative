@@ -105,6 +105,7 @@ export default class SearchMessagesView extends LoggedView {
 				msg={item.msg}
 				attachments={item.attachments || []}
 				timeFormat='MMM Do YYYY, h:mm:ss a'
+				edited={!!item.editedAt}
 				header
 			/>
 		);

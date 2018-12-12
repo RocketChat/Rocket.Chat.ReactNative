@@ -125,6 +125,7 @@ export default class RoomFilesView extends LoggedView {
 					...url
 				}]}
 				timeFormat='MMM Do YYYY, h:mm:ss a'
+				edited={!!item.editedAt}
 				header
 			/>
 		);

@@ -149,6 +149,7 @@ export default class StarredMessagesView extends LoggedView {
 				msg={item.msg}
 				attachments={item.attachments || []}
 				timeFormat='MMM Do YYYY, h:mm:ss a'
+				edited={!!item.editedAt}
 				header
 				onLongPress={() => this.onLongPress(item)}
 			/>
