@@ -598,9 +598,6 @@ const RocketChat = {
 	saveNotificationSettings(roomId, notifications) {
 		return SDK.api.post('rooms.saveNotification', { roomId, notifications });
 	},
-	messageSearch(text, rid, limit) {
-		return call('messageSearch', text, rid, limit);
-	},
 	addUsersToRoom(rid) {
 		let { users } = reduxStore.getState().selectedUsers;
 		users = users.map(u => u.name);
