@@ -137,6 +137,8 @@ export default class RoomView extends LoggedView {
 			return true;
 		} else if (room.blocker !== nextState.room.blocker) {
 			return true;
+		} else if (room.archived !== nextState.room.archived) {
+			return true;
 		} else if (loaded !== nextState.loaded) {
 			return true;
 		} else if (joined !== nextState.joined) {

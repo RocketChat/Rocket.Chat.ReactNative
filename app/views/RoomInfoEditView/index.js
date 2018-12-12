@@ -240,7 +240,7 @@ export default class RoomInfoEditView extends LoggedView {
 
 	toggleArchive = () => {
 		const { room } = this.state;
-		const { rid, archived } = room;
+		const { rid, archived, t } = room;
 
 		const action = I18n.t(`${ archived ? 'un' : '' }archive`);
 		Alert.alert(
@@ -254,9 +254,9 @@ export default class RoomInfoEditView extends LoggedView {
 				{
 					text: I18n.t('Yes_action_it', { action }),
 					style: 'destructive',
-					onPress: () => {
+					onPress: async() => {
 						try {
-							RocketChat.toggleArchiveRoom(rid, !archived);
+							await RocketChat.toggleArchiveRoom(rid, t, !archived);
 						} catch (e) {
 							log('toggleArchive', e);
 						}

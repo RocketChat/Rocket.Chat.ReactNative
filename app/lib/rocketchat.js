@@ -580,11 +580,11 @@ const RocketChat = {
 		}
 		return call('unmuteUserInRoom', { rid, username });
 	},
-	toggleArchiveRoom(rid, archive) {
+	toggleArchiveRoom(roomId, t, archive) {
 		if (archive) {
-			return call('archiveRoom', rid);
+			return SDK.api.post(`${ this.roomTypeToApiType(t) }.archive`, { roomId });
 		}
-		return call('unarchiveRoom', rid);
+		return SDK.api.post(`${ this.roomTypeToApiType(t) }.unarchive`, { roomId });
 	},
 	saveRoomSettings(rid, params) {
 		return call('saveRoomSettings', rid, params);
