@@ -81,8 +81,8 @@ export default class RoomMembersView extends LoggedView {
 		this.rooms.removeAllListeners();
 	}
 
-	navigationButtonPressed = async({ buttonId }) => {
-		const { rid, allUsers } = this.state;
+	navigationButtonPressed = ({ buttonId }) => {
+		const { allUsers } = this.state;
 		const { componentId } = this.props;
 
 		if (buttonId === 'toggleOnline') {
@@ -97,10 +97,7 @@ export default class RoomMembersView extends LoggedView {
 						}]
 					}
 				});
-				const allUsersFilter = !allUsers;
-				const membersResult = await RocketChat.getRoomMembers(rid, allUsersFilter);
-				const members = membersResult.records;
-				this.setState({ allUsers: allUsersFilter, members });
+				this.fetchMembers(!allUsers);
 			} catch (e) {
 				log('RoomMembers.onNavigationButtonPressed', e);
 			}

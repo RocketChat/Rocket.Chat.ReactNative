@@ -13,8 +13,6 @@ import database from '../lib/realm';
 import log from '../utils/log';
 import I18n from '../i18n';
 
-const eraseRoom = rid => RocketChat.eraseRoom(rid);
-
 let sub;
 let thread;
 
@@ -120,25 +118,13 @@ const watchuserTyping = function* watchuserTyping({ status }) {
 	}
 };
 
-const goRoomsListAndDelete = function* goRoomsListAndDelete(rid) {
-	yield Navigation.popToRoot('RoomsListView');
-	try {
-		database.write(() => {
-			const messages = database.objects('messages').filtered('rid = $0', rid);
-			database.delete(messages);
-			const subscription = database.objects('subscriptions').filtered('rid = $0', rid);
-			database.delete(subscription);
-		});
-	} catch (error) {
-		console.warn('goRoomsListAndDelete', error);
-	}
-};
-
 const handleLeaveRoom = function* handleLeaveRoom({ rid, t }) {
 	try {
 		sub.stop();
-		yield RocketChat.leaveRoom(rid, t);
-		yield goRoomsListAndDelete(rid);
+		const result = yield RocketChat.leaveRoom(rid, t);
+		if (result.success) {
+			yield Navigation.popToRoot('RoomsListView');
+		}
 	} catch (e) {
 		if (e.data && e.data.errorType === 'error-you-are-last-owner') {
 			Alert.alert(I18n.t('Oops'), I18n.t(e.data.errorType));
@@ -148,11 +134,13 @@ const handleLeaveRoom = function* handleLeaveRoom({ rid, t }) {
 	}
 };
 
-const handleEraseRoom = function* handleEraseRoom({ rid }) {
+const handleEraseRoom = function* handleEraseRoom({ rid, t }) {
 	try {
 		sub.stop();
-		yield eraseRoom(rid);
-		yield goRoomsListAndDelete(rid, 'erase');
+		const result = yield RocketChat.eraseRoom(rid, t);
+		if (result.success) {
+			yield Navigation.popToRoot('RoomsListView');
+		}
 	} catch (e) {
 		Alert.alert(I18n.t('Oops'), I18n.t('There_was_an_error_while_action', { action: I18n.t('erasing_room') }));
 	}
