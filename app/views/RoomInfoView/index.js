@@ -6,6 +6,7 @@ import moment from 'moment';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
+import equal from 'deep-equal';
 
 import LoggedView from '../View';
 import Status from '../../containers/status';
@@ -40,7 +41,7 @@ let RoomInfoEditView = null;
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	userId: state.login.user && state.login.user.id,
-	activeUsers: state.activeUsers,
+	activeUsers: state.activeUsers, // TODO: remove it
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	allRoles: state.roles
 }))
@@ -103,6 +104,29 @@ export default class RoomInfoView extends LoggedView {
 			});
 		}
 	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const {
+			room, roomUser, roles
+		} = this.state;
+		const { activeUsers } = this.props;
+		if (!equal(nextState.room, room)) {
+			return true;
+		}
+		if (!equal(nextState.roomUser, roomUser)) {
+			return true;
+		}
+		if (!equal(nextState.roles, roles)) {
+			return true;
+		}
+		if (roomUser._id) {
+			if (nextProps.activeUsers[roomUser._id] !== activeUsers[roomUser._id]) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 
 	componentWillUnmount() {
 		this.rooms.removeAllListeners();

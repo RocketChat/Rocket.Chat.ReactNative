@@ -27,7 +27,6 @@ import { iconsMap } from '../../Icons';
 import store from '../../lib/createStore';
 import ConnectionBadge from '../../containers/ConnectionBadge';
 import { DEFAULT_HEADER } from '../../constants/headerOptions';
-import debounce from '../../utils/debounce';
 
 let RoomActionsView = null;
 
