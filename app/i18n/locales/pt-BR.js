@@ -162,6 +162,8 @@ export default {
 	Error_uploading: 'Erro subindo',
 	Favorites: 'Favoritos',
 	Files: 'Arquivos',
+	File_description: 'Descrição do arquivo',
+	File_name: 'Nome do arquivo',
 	Finish_recording: 'Encerrar gravação',
 	For_your_security_you_must_enter_your_current_password_to_continue: 'Para sua segurança, você precisa digitar sua senha',
 	Forgot_my_password: 'Esqueci minha senha',

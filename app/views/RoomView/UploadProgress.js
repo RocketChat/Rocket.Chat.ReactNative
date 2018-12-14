@@ -120,14 +120,15 @@ export default class UploadProgress extends Component {
 			database.write(() => {
 				item.error = false;
 			});
-			await RocketChat.sendFileMessage(rid, JSON.parse(JSON.stringify(item)));
+			await RocketChat.sendFileMessage(rid, item);
 		} catch (e) {
 			log('UploadProgess.tryAgain', e);
 		}
 	}
 
 	updateUploads = () => {
-		this.setState({ uploads: this.uploads });
+		const uploads = this.uploads.map(item => JSON.parse(JSON.stringify(item)));
+		this.setState({ uploads });
 	}
 
 	renderItemContent = (item) => {

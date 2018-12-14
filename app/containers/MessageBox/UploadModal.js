@@ -90,6 +90,28 @@ export default class UploadModal extends Component {
 		return null;
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		const { name, description, file } = this.state;
+		const { window, isVisible } = this.props;
+
+		if (nextState.name !== name) {
+			return true;
+		}
+		if (nextState.description !== description) {
+			return true;
+		}
+		if (nextProps.isVisible !== isVisible) {
+			return true;
+		}
+		if (nextProps.window.width !== window.width) {
+			return true;
+		}
+		if (!equal(nextState.file, file)) {
+			return true;
+		}
+		return false;
+	}
+
 	submit = () => {
 		const { file, submit } = this.props;
 		const { name, description } = this.state;
@@ -162,12 +184,12 @@ export default class UploadModal extends Component {
 					<ScrollView style={styles.scrollView}>
 						<Image source={{ isStatic: true, uri: file.path }} style={styles.image} />
 						<TextInput
-							placeholder='File name'
+							placeholder={I18n.t('File_name')}
 							value={name}
 							onChangeText={value => this.setState({ name: value })}
 						/>
 						<TextInput
-							placeholder='File description'
+							placeholder={I18n.t('File_description')}
 							value={description}
 							onChangeText={value => this.setState({ description: value })}
 						/>

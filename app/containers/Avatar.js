@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, ViewPropTypes } from 'react-native';
 import FastImage from 'react-native-fast-image';
+import equal from 'deep-equal';
 
-export default class Avatar extends React.PureComponent {
+export default class Avatar extends Component {
 	static propTypes = {
 		baseUrl: PropTypes.string.isRequired,
 		style: ViewPropTypes.style,
@@ -20,6 +21,14 @@ export default class Avatar extends React.PureComponent {
 		size: 25,
 		type: 'd',
 		borderRadius: 4
+	}
+
+	shouldComponentUpdate(nextProps) {
+		const { children } = this.props;
+		if (!equal(nextProps.children, children)) {
+			return true;
+		}
+		return false;
 	}
 
 	render() {

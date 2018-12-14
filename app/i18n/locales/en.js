@@ -155,6 +155,8 @@ export default {
 	Error_uploading: 'Error uploading',
 	Favorites: 'Favorites',
 	Files: 'Files',
+	File_description: 'File description',
+	File_name: 'File name',
 	Finish_recording: 'Finish recording',
 	For_your_security_you_must_enter_your_current_password_to_continue: 'For your security, you must enter your current password to continue',
 	Forgot_my_password: 'Forgot my password',
