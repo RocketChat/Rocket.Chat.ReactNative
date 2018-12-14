@@ -54,7 +54,7 @@ export default class ServerDropdown extends Component {
 			{
 				toValue: 1,
 				duration: ANIMATION_DURATION,
-				easing: Easing.ease,
+				easing: Easing.inOut(Easing.quad),
 				useNativeDriver: true
 			},
 		).start();
@@ -94,7 +94,7 @@ export default class ServerDropdown extends Component {
 			{
 				toValue: 0,
 				duration: ANIMATION_DURATION,
-				easing: Easing.ease,
+				easing: Easing.inOut(Easing.quad),
 				useNativeDriver: true
 			}
 		).start(() => toggleServerDropdown());

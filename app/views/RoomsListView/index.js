@@ -475,10 +475,11 @@ export default class RoomsListView extends LoggedView {
 	toggleSort = () => {
 		const { toggleSortDropdown } = this.props;
 
-		if (Platform.OS === 'ios') {
-			this.scroll.scrollTo({ x: 0, y: SCROLL_OFFSET, animated: true });
-		} else {
-			this.scroll.scrollTo({ x: 0, y: 0, animated: true });
+		const offset = isAndroid() ? 0 : SCROLL_OFFSET;
+		if (this.scroll.scrollTo) {
+			this.scroll.scrollTo({ x: 0, y: offset, animated: true });
+		} else if (this.scroll.scrollToOffset) {
+			this.scroll.scrollToOffset({ offset });
 		}
 		setTimeout(() => {
 			toggleSortDropdown();
@@ -500,6 +501,7 @@ export default class RoomsListView extends LoggedView {
 
 		return (
 			<Touch
+				key='rooms-list-view-sort'
 				onPress={this.toggleSort}
 				style={styles.dropdownContainerHeader}
 			>
@@ -513,9 +515,16 @@ export default class RoomsListView extends LoggedView {
 
 	renderSearchBar = () => {
 		if (Platform.OS === 'ios') {
-			return <SearchBox onChangeText={this.search} testID='rooms-list-view-search' />;
+			return <SearchBox onChangeText={this.search} testID='rooms-list-view-search' key='rooms-list-view-search' />;
 		}
 	}
+
+	renderListHeader = () => (
+		[
+			this.renderSearchBar(),
+			this.renderHeader()
+		]
+	)
 
 	renderItem = ({ item }) => {
 		const { useRealName, userId, baseUrl } = this.props;
@@ -543,17 +552,11 @@ export default class RoomsListView extends LoggedView {
 
 	renderSeparator = () => <View style={styles.separator} />
 
-	renderSectionHeader = (header) => {
-		const { showUnread, showFavorites, groupByType } = this.props;
-		if (!(showUnread || showFavorites || groupByType)) {
-			return null;
-		}
-		return (
-			<View style={styles.groupTitleContainer}>
-				<Text style={styles.groupTitle}>{I18n.t(header)}</Text>
-			</View>
-		);
-	}
+	renderSectionHeader = header => (
+		<View style={styles.groupTitleContainer}>
+			<Text style={styles.groupTitle}>{I18n.t(header)}</Text>
+		</View>
+	)
 
 	renderSection = (data, header) => {
 		const { showUnread, showFavorites, groupByType } = this.props;
@@ -633,6 +636,30 @@ export default class RoomsListView extends LoggedView {
 			return <ActivityIndicator style={styles.loading} />;
 		}
 
+		const { showUnread, showFavorites, groupByType } = this.props;
+		if (!(showUnread || showFavorites || groupByType)) {
+			const { chats, search } = this.state;
+			return (
+				<FlatList
+					ref={this.getScrollRef}
+					data={search.length ? search : chats}
+					extraData={search.length ? search : chats}
+					contentOffset={Platform.OS === 'ios' ? { x: 0, y: SCROLL_OFFSET } : {}}
+					keyExtractor={keyExtractor}
+					style={styles.list}
+					renderItem={this.renderItem}
+					ItemSeparatorComponent={this.renderSeparator}
+					ListHeaderComponent={this.renderListHeader}
+					getItemLayout={getItemLayout}
+					enableEmptySections
+					removeClippedSubviews
+					keyboardShouldPersistTaps='always'
+					initialNumToRender={12}
+					windowSize={7}
+				/>
+			);
+		}
+
 		return (
 			<ScrollView
 				ref={this.getScrollRef}
@@ -640,8 +667,7 @@ export default class RoomsListView extends LoggedView {
 				keyboardShouldPersistTaps='always'
 				testID='rooms-list-view-list'
 			>
-				{this.renderSearchBar()}
-				{this.renderHeader()}
+				{this.renderListHeader()}
 				{this.renderList()}
 			</ScrollView>
 		);

@@ -41,7 +41,7 @@ export default class Sort extends PureComponent {
 			{
 				toValue: 1,
 				duration: ANIMATION_DURATION,
-				easing: Easing.ease,
+				easing: Easing.inOut(Easing.quad),
 				useNativeDriver: true
 			},
 		).start();
