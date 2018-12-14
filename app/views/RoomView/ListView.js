@@ -9,7 +9,7 @@ import Separator from './Separator';
 import styles from './styles';
 import database from '../../lib/realm';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import throttle from '../../utils/throttle';
+import debounce from '../../utils/debounce';
 
 const DEFAULT_SCROLL_CALLBACK_THROTTLE = 100;
 
@@ -24,7 +24,7 @@ export class DataSource extends OldList.DataSource {
 	}
 }
 
-const ds = new DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id || r1._updatedAt.toISOString() !== r2._updatedAt.toISOString() });
+const ds = new DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id });
 
 export class List extends React.Component {
 	static propTypes = {
@@ -60,13 +60,13 @@ export class List extends React.Component {
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	updateState = throttle(() => {
+	updateState = debounce(() => {
 		// this.setState({
 		this.dataSource = this.dataSource.cloneWithRows(this.data);
 		// LayoutAnimation.easeInEaseOut();
 		this.forceUpdate();
 		// });
-	}, 1000);
+	}, 300);
 
 	render() {
 		const { renderFooter, onEndReached, renderRow } = this.props;

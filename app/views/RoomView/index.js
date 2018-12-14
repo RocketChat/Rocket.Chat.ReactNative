@@ -27,6 +27,7 @@ import { iconsMap } from '../../Icons';
 import store from '../../lib/createStore';
 import ConnectionBadge from '../../containers/ConnectionBadge';
 import { DEFAULT_HEADER } from '../../constants/headerOptions';
+import debounce from '../../utils/debounce';
 
 let RoomActionsView = null;
 
@@ -269,6 +270,7 @@ export default class RoomView extends LoggedView {
 		}
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	updateRoom = () => {
 		const { openRoom, setLastOpen } = this.props;
 
