@@ -9,6 +9,7 @@ import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import SafeAreaView from 'react-native-safe-area-view';
+import equal from 'deep-equal';
 
 import { leaveRoom as leaveRoomAction } from '../../actions/room';
 import LoggedView from '../View';
@@ -92,6 +93,28 @@ export default class RoomActionsView extends LoggedView {
 			this.updateRoomMember();
 		}
 		this.rooms.addListener(this.updateRoom);
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const {
+			room, membersCount, member, joined, canViewMembers
+		} = this.state;
+		if (nextState.membersCount !== membersCount) {
+			return true;
+		}
+		if (nextState.joined !== joined) {
+			return true;
+		}
+		if (nextState.canViewMembers !== canViewMembers) {
+			return true;
+		}
+		if (!equal(nextState.room, room)) {
+			return true;
+		}
+		if (!equal(nextState.member, member)) {
+			return true;
+		}
+		return false;
 	}
 
 	componentWillUnmount() {
