@@ -171,7 +171,7 @@ export default class RoomInfoView extends LoggedView {
 		const { userId, activeUsers } = this.props;
 
 		const [room] = this.rooms;
-		this.setState({ room });
+		this.setState({ room: JSON.parse(JSON.stringify(room || {})) });
 
 		// get user of room
 		if (room) {

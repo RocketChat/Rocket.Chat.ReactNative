@@ -67,7 +67,7 @@ export default class RoomActionsView extends LoggedView {
 		const { rid } = props;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.state = {
-			room: this.rooms[0] || {},
+			room: JSON.parse(JSON.stringify(this.rooms[0] || {})),
 			membersCount: 0,
 			member: {},
 			joined: false,
@@ -335,7 +335,7 @@ export default class RoomActionsView extends LoggedView {
 	}
 
 	updateRoom = () => {
-		this.setState({ room: this.rooms[0] || {} });
+		this.setState({ room: JSON.parse(JSON.stringify(this.rooms[0] || {})) });
 	}
 
 	updateRoomMember = async() => {
