@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
+import equal from 'deep-equal';
 
 import Loading from '../containers/Loading';
 import LoggedView from './View';
@@ -126,6 +127,43 @@ export default class CreateChannelView extends LoggedView {
 		this.timeout = setTimeout(() => {
 			this.channelNameRef.focus();
 		}, 600);
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const {
+			channelName, type, readOnly, broadcast
+		} = this.state;
+		const {
+			error, failure, isFetching, result, users
+		} = this.props;
+		if (nextState.channelName !== channelName) {
+			return true;
+		}
+		if (nextState.type !== type) {
+			return true;
+		}
+		if (nextState.readOnly !== readOnly) {
+			return true;
+		}
+		if (nextState.broadcast !== broadcast) {
+			return true;
+		}
+		if (nextProps.failure !== failure) {
+			return true;
+		}
+		if (nextProps.isFetching !== isFetching) {
+			return true;
+		}
+		if (!equal(nextProps.error, error)) {
+			return true;
+		}
+		if (!equal(nextProps.result, result)) {
+			return true;
+		}
+		if (!equal(nextProps.users, users)) {
+			return true;
+		}
+		return false;
 	}
 
 	componentDidUpdate(prevProps) {

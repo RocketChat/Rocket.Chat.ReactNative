@@ -7,6 +7,7 @@ import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
+import equal from 'deep-equal';
 
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
@@ -83,6 +84,14 @@ export default class NewMessageView extends LoggedView {
 		};
 		this.data.addListener(this.updateState);
 		Navigation.events().bindComponent(this);
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const { search } = this.state;
+		if (!equal(nextState.search, search)) {
+			return true;
+		}
+		return false;
 	}
 
 	componentWillUnmount() {

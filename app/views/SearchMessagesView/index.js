@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { View, FlatList, Text } from 'react-native';
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
+import equal from 'deep-equal';
 
 import LoggedView from '../View';
 import RCTextInput from '../../containers/TextInput';
@@ -61,6 +62,20 @@ export default class SearchMessagesView extends LoggedView {
 
 	componentDidMount() {
 		this.name.focus();
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const { loading, searchText, messages } = this.state;
+		if (nextState.loading !== loading) {
+			return true;
+		}
+		if (nextState.searchText !== searchText) {
+			return true;
+		}
+		if (!equal(nextState.messages, messages)) {
+			return true;
+		}
+		return false;
 	}
 
 	componentWillUnmount() {

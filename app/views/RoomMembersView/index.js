@@ -7,6 +7,7 @@ import ActionSheet from 'react-native-actionsheet';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
+import equal from 'deep-equal';
 
 import LoggedView from '../View';
 import styles from './styles';
@@ -75,6 +76,28 @@ export default class RoomMembersView extends LoggedView {
 	componentDidMount() {
 		this.fetchMembers();
 		this.rooms.addListener(this.updateRoom);
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const {
+			allUsers, filtering, members, membersFiltered, userLongPressed
+		} = this.state;
+		if (nextState.allUsers !== allUsers) {
+			return true;
+		}
+		if (nextState.filtering !== filtering) {
+			return true;
+		}
+		if (!equal(nextState.members, members)) {
+			return true;
+		}
+		if (!equal(nextState.membersFiltered, membersFiltered)) {
+			return true;
+		}
+		if (!equal(nextState.userLongPressed, userLongPressed)) {
+			return true;
+		}
+		return false;
 	}
 
 	componentWillUnmount() {

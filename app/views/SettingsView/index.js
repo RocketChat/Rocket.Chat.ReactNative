@@ -89,6 +89,21 @@ export default class SettingsView extends LoggedView {
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		const { language, saving } = this.state;
+		const { userLanguage } = this.props;
+		if (nextState.language !== language) {
+			return true;
+		}
+		if (nextState.saving !== saving) {
+			return true;
+		}
+		if (nextProps.userLanguage !== userLanguage) {
+			return true;
+		}
+		return false;
+	}
+
 	componentWillUnmount() {
 		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
 	}

@@ -44,6 +44,20 @@ export default class ForgotPasswordView extends LoggedView {
 		}, 600);
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		const { email, invalidEmail, isFetching } = this.state;
+		if (nextState.email !== email) {
+			return true;
+		}
+		if (nextState.invalidEmail !== invalidEmail) {
+			return true;
+		}
+		if (nextState.isFetching !== isFetching) {
+			return true;
+		}
+		return false;
+	}
+
 	componentWillUnmount() {
 		if (this.timeout) {
 			clearTimeout(this.timeout);

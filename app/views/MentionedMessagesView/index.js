@@ -60,7 +60,14 @@ export default class MentionedMessagesView extends LoggedView {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		return !equal(this.state, nextState);
+		const { loading, messages } = this.state;
+		if (nextState.loading !== loading) {
+			return true;
+		}
+		if (!equal(nextState.messages, messages)) {
+			return true;
+		}
+		return false;
 	}
 
 	load = async() => {

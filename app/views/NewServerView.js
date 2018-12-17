@@ -110,6 +110,21 @@ export default class NewServerView extends LoggedView {
 		}
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		const { text } = this.state;
+		const { connecting, failure } = this.props;
+		if (nextState.text !== text) {
+			return true;
+		}
+		if (nextProps.connecting !== connecting) {
+			return true;
+		}
+		if (nextProps.failure !== failure) {
+			return true;
+		}
+		return false;
+	}
+
 	componentWillUnmount() {
 		if (this.timeout) {
 			clearTimeout(this.timeout);

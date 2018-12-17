@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
+import equal from 'deep-equal';
 
 import { eraseRoom as eraseRoomAction } from '../../actions/room';
 import LoggedView from '../View';
@@ -88,6 +89,16 @@ export default class RoomInfoEditView extends LoggedView {
 		this.rooms.addListener(this.updateRoom);
 		const { room } = this.state;
 		this.permissions = RocketChat.hasPermission(PERMISSIONS_ARRAY, room.rid);
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		if (!equal(nextState, this.state)) {
+			return true;
+		}
+		if (!equal(nextProps, this.props)) {
+			return true;
+		}
+		return false;
 	}
 
 	componentWillUnmount() {
