@@ -345,10 +345,10 @@ export default class RoomActionsView extends LoggedView {
 
 		try {
 			const member = await RocketChat.getRoomMember(rid, userId);
-			this.setState({ member });
+			this.setState({ member: member || {} });
 		} catch (e) {
 			log('RoomActions updateRoomMember', e);
-			return {};
+			this.setState({ member: {} });
 		}
 	}
 

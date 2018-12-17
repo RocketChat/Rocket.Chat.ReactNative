@@ -68,7 +68,7 @@ export default class RoomInfoEditView extends LoggedView {
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.permissions = {};
 		this.state = {
-			room: this.rooms[0] || {},
+			room: JSON.parse(JSON.stringify(this.rooms[0] || {})),
 			name: '',
 			description: '',
 			topic: '',
@@ -92,7 +92,11 @@ export default class RoomInfoEditView extends LoggedView {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
+		const { room } = this.state;
 		if (!equal(nextState, this.state)) {
+			return true;
+		}
+		if (!equal(nextState.room, room)) {
 			return true;
 		}
 		if (!equal(nextProps, this.props)) {
@@ -106,7 +110,7 @@ export default class RoomInfoEditView extends LoggedView {
 	}
 
 	updateRoom = () => {
-		this.setState({ room: this.rooms[0] || {} });
+		this.setState({ room: JSON.parse(JSON.stringify(this.rooms[0] || {})) });
 	}
 
 	init = () => {

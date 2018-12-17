@@ -68,7 +68,8 @@ export default class RoomMembersView extends LoggedView {
 			members,
 			membersFiltered: [],
 			userLongPressed: {},
-			room: this.rooms[0] || {}
+			room: this.rooms[0] || {},
+			options: []
 		};
 		Navigation.events().bindComponent(this);
 	}
@@ -80,7 +81,7 @@ export default class RoomMembersView extends LoggedView {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			allUsers, filtering, members, membersFiltered, userLongPressed
+			allUsers, filtering, members, membersFiltered, userLongPressed, room, options
 		} = this.state;
 		if (nextState.allUsers !== allUsers) {
 			return true;
@@ -91,10 +92,16 @@ export default class RoomMembersView extends LoggedView {
 		if (!equal(nextState.members, members)) {
 			return true;
 		}
+		if (!equal(nextState.options, options)) {
+			return true;
+		}
 		if (!equal(nextState.membersFiltered, membersFiltered)) {
 			return true;
 		}
 		if (!equal(nextState.userLongPressed, userLongPressed)) {
+			return true;
+		}
+		if (!equal(nextState.room.muted, room.muted)) {
 			return true;
 		}
 		return false;
@@ -160,15 +167,15 @@ export default class RoomMembersView extends LoggedView {
 		const { room } = this.state;
 		const { muted } = room;
 
-		this.actionSheetOptions = [I18n.t('Cancel')];
+		const options = [I18n.t('Cancel')];
 		const userIsMuted = !!muted.find(m => m.value === user.username);
 		user.muted = userIsMuted;
 		if (userIsMuted) {
-			this.actionSheetOptions.push(I18n.t('Unmute'));
+			options.push(I18n.t('Unmute'));
 		} else {
-			this.actionSheetOptions.push(I18n.t('Mute'));
+			options.push(I18n.t('Mute'));
 		}
-		this.setState({ userLongPressed: user });
+		this.setState({ userLongPressed: user, options });
 		Vibration.vibrate(50);
 		if (this.actionSheet && this.actionSheet.show) {
 			this.actionSheet.show();
@@ -242,7 +249,9 @@ export default class RoomMembersView extends LoggedView {
 	}
 
 	render() {
-		const { filtering, members, membersFiltered } = this.state;
+		const {
+			filtering, members, membersFiltered, options
+		} = this.state;
 		return (
 			<SafeAreaView style={styles.list} testID='room-members-view' forceInset={{ bottom: 'never' }}>
 				<FlatList
@@ -257,7 +266,7 @@ export default class RoomMembersView extends LoggedView {
 				<ActionSheet
 					ref={o => this.actionSheet = o}
 					title={I18n.t('Actions')}
-					options={this.actionSheetOptions}
+					options={options}
 					cancelButtonIndex={this.CANCEL_INDEX}
 					onPress={this.handleActionPress}
 				/>
