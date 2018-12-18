@@ -100,9 +100,7 @@ export default class RoomView extends LoggedView {
 		this.state = {
 			loaded: false,
 			joined: this.rooms.length > 0,
-			room: {},
-			end: false,
-			loadingMore: false
+			room: {}
 		};
 		this.onReactionPress = this.onReactionPress.bind(this);
 		Navigation.events().bindComponent(this);
@@ -125,7 +123,7 @@ export default class RoomView extends LoggedView {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			room, loaded, joined, end, loadingMore
+			room, loaded, joined
 		} = this.state;
 		const { showActions, showErrorActions, appState } = this.props;
 
@@ -142,10 +140,6 @@ export default class RoomView extends LoggedView {
 		} else if (loaded !== nextState.loaded) {
 			return true;
 		} else if (joined !== nextState.joined) {
-			return true;
-		} else if (end !== nextState.end) {
-			return true;
-		} else if (loadingMore !== nextState.loadingMore) {
 			return true;
 		} else if (showActions !== nextProps.showActions) {
 			return true;
@@ -192,27 +186,6 @@ export default class RoomView extends LoggedView {
 			this.onEndReached.stop();
 		}
 		closeRoom();
-	}
-
-	onEndReached = async(lastRowData) => {
-		if (!lastRowData) {
-			return;
-		}
-
-		const { loadingMore, end } = this.state;
-		if (loadingMore || end) {
-			return;
-		}
-
-		this.setState({ loadingMore: true });
-		const { room } = this.state;
-		try {
-			const result = await RocketChat.loadMessagesForRoom({ rid: this.rid, t: room.t, latest: lastRowData.ts });
-			this.internalSetState({ end: result.length < 50, loadingMore: false });
-		} catch (e) {
-			this.internalSetState({ loadingMore: false });
-			log('RoomView.onEndReached', e);
-		}
 	}
 
 	onMessageLongPress = (message) => {
@@ -401,28 +374,16 @@ export default class RoomView extends LoggedView {
 		return <MessageBox key='room-view-messagebox' onSubmit={this.sendMessage} rid={this.rid} />;
 	};
 
-	renderHeader = () => {
-		const { loadingMore } = this.state;
-		if (loadingMore) {
-			return <ActivityIndicator style={styles.loadingMore} />;
-		}
-		return null;
-	}
-
 	renderList = () => {
-		const { loaded, end, loadingMore } = this.state;
-		if (!loaded) {
+		const { loaded, room } = this.state;
+		if (!loaded || !room._id) {
 			return <ActivityIndicator style={styles.loading} />;
 		}
 		return (
 			[
 				<List
 					key='room-view-messages'
-					end={end}
-					loadingMore={loadingMore}
-					room={this.rid}
-					renderFooter={this.renderHeader}
-					onEndReached={this.onEndReached}
+					room={room}
 					renderRow={this.renderItem}
 				/>,
 				this.renderFooter()
