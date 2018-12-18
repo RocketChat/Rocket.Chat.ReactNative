@@ -1,6 +1,5 @@
 import { AsyncStorage, Platform } from 'react-native';
 import foreach from 'lodash/forEach';
-import RNFetchBlob from 'rn-fetch-blob';
 import * as SDK from '@rocket.chat/sdk';
 
 import reduxStore from './createStore';
@@ -78,15 +77,11 @@ const RocketChat = {
 			console.warn(`AsyncStorage error: ${ error.message }`);
 		}
 	},
-	_hasInstanceId(headers) {
-		return !!headers[Object.keys(headers).find(item => item.toLowerCase() === 'x-instance-id')];
-	},
-	async testServer(url) {
+	async testServer(server) {
 		try {
-			let response = await RNFetchBlob.fetch('HEAD', url);
-			response = response.respInfo;
-			if (response.status === 200 && RocketChat._hasInstanceId(response.headers)) {
-				return url;
+			const result = await fetch(`${ server }/api/v1/info`).then(response => response.json());
+			if (result.success && result.info) {
+				return server;
 			}
 		} catch (e) {
 			log('testServer', e);
