@@ -1,7 +1,7 @@
 import { AsyncStorage } from 'react-native';
 import { delay } from 'redux-saga';
 import {
-	takeLatest, take, select, put, all
+	takeLatest, take, select, put, all, race
 } from 'redux-saga/effects';
 import { Navigation } from 'react-native-navigation';
 
@@ -78,7 +78,10 @@ const handleOpen = function* handleOpen({ params }) {
 	// if deep link is from same server
 	if (server === host) {
 		if (user) {
-			yield take(types.SERVER.SELECT_SUCCESS);
+			yield race({
+				typing: take(types.SERVER.SELECT_SUCCESS),
+				timeout: delay(3000)
+			});
 			yield navigate({ params });
 		}
 	} else {
