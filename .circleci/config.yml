@@ -275,18 +275,13 @@ workflows:
       - ios-build:
           requires:
             - lint-testunit
-      - ios-testflight:
+      - ios-hold-testflight:
+          type: approval
           requires:
             - ios-build
-          filters:
-            branches:
-              only:
-                - beta
-                - develop
-                - master
-      # - ios-testflight:
-      #     requires:
-      #       - ios-hold-testflight
+      - ios-testflight:
+          requires:
+            - ios-hold-testflight
 
       - android-build:
           requires:
