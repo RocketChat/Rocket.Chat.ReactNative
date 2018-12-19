@@ -602,13 +602,18 @@ const RocketChat = {
 		return call('addUsersToRoom', { rid, users });
 	},
 	hasPermission(permissions, rid) {
-		// get the room from realm
-		const room = database.objects('subscriptions').filtered('rid = $0', rid)[0];
+		let roles = [];
+		try {
+			// get the room from realm
+			const room = database.objects('subscriptions').filtered('rid = $0', rid)[0];
+			// get room roles
+			roles = room.roles; // eslint-disable-line prefer-destructuring
+		} catch (error) {
+			console.log('hasPermission -> error', error);
+		}
 		// get permissions from realm
 		const permissionsFiltered = database.objects('permissions')
 			.filter(permission => permissions.includes(permission._id));
-		// get room roles
-		const { roles } = room;
 		// transform room roles to array
 		const roomRoles = Array.from(Object.keys(roles), i => roles[i].value);
 		// get user roles on the server from redux

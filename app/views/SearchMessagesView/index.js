@@ -16,7 +16,6 @@ import Message from '../../containers/message/Message';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
 import { DEFAULT_HEADER } from '../../constants/headerOptions';
-import database from '../../lib/realm';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -51,10 +50,8 @@ export default class SearchMessagesView extends LoggedView {
 
 	constructor(props) {
 		super('SearchMessagesView', props);
-		this.rooms = database.objects('subscriptions').filtered('rid = $0', props.rid);
 		this.state = {
 			loading: false,
-			room: this.rooms[0],
 			messages: [],
 			searchText: ''
 		};
@@ -84,11 +81,11 @@ export default class SearchMessagesView extends LoggedView {
 
 	// eslint-disable-next-line react/sort-comp
 	search = debounce(async(searchText) => {
-		const { room } = this.state;
+		const { rid } = this.props;
 		this.setState({ searchText, loading: true, messages: [] });
 
 		try {
-			const result = await RocketChat.searchMessages(room.rid, searchText);
+			const result = await RocketChat.searchMessages(rid, searchText);
 			if (result.success) {
 				this.setState({
 					messages: result.messages || [],

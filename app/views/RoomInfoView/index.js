@@ -43,7 +43,8 @@ let RoomInfoEditView = null;
 	userId: state.login.user && state.login.user.id,
 	activeUsers: state.activeUsers, // TODO: remove it
 	Message_TimeFormat: state.settings.Message_TimeFormat,
-	allRoles: state.roles
+	allRoles: state.roles,
+	room: state.room
 }))
 /** @extends React.Component */
 export default class RoomInfoView extends LoggedView {
@@ -67,29 +68,34 @@ export default class RoomInfoView extends LoggedView {
 		baseUrl: PropTypes.string,
 		activeUsers: PropTypes.object,
 		Message_TimeFormat: PropTypes.string,
-		allRoles: PropTypes.object
+		allRoles: PropTypes.object,
+		room: PropTypes.object
 	}
 
 	constructor(props) {
 		super('RoomInfoView', props);
-		const { rid } = props;
+		const { rid, room } = props;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.sub = {
 			unsubscribe: () => {}
 		};
 		this.state = {
-			room: {},
+			room,
 			roomUser: {},
 			roles: []
 		};
 		Navigation.events().bindComponent(this);
 	}
 
-	componentDidMount() {
-		this.updateRoom();
+	async componentDidMount() {
 		this.rooms.addListener(this.updateRoom);
 
-		const [room] = this.rooms;
+		let room = {};
+		if (this.rooms.length > 0) {
+			room = this.rooms[0]; // eslint-disable-line prefer-destructuring
+		} else {
+			room = this.state.room; // eslint-disable-line
+		}
 		const { componentId } = this.props;
 		const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
 		if (permissions[PERMISSION_EDIT_ROOM]) {
@@ -102,6 +108,35 @@ export default class RoomInfoView extends LoggedView {
 					}]
 				}
 			});
+		}
+
+		// get user of room
+		if (room) {
+			if (room.t === 'd') {
+				try {
+					const { userId, activeUsers } = this.props;
+					const roomUser = await RocketChat.getRoomMember(room.rid, userId);
+					this.setState({ roomUser: roomUser || {} });
+					const username = room.name;
+
+					const activeUser = activeUsers[roomUser._id];
+					if (!activeUser || !activeUser.utcOffset) {
+						// get full user data looking for utcOffset
+						// will be catched by .on('users) and saved on activeUsers reducer
+						this.getFullUserData(username);
+					}
+
+					// get all users roles
+					// needs to be changed by a better method
+					const allUsersRoles = await RocketChat.getUserRoles();
+					const userRoles = allUsersRoles.find(user => user.username === username);
+					if (userRoles) {
+						this.setState({ roles: userRoles.roles || [] });
+					}
+				} catch (e) {
+					log('RoomInfoView.componentDidMount', e);
+				}
+			}
 		}
 	}
 
@@ -126,7 +161,6 @@ export default class RoomInfoView extends LoggedView {
 		}
 		return false;
 	}
-
 
 	componentWillUnmount() {
 		this.rooms.removeAllListeners();
@@ -167,38 +201,9 @@ export default class RoomInfoView extends LoggedView {
 		return t === 'd';
 	}
 
-	updateRoom = async() => {
-		const { userId, activeUsers } = this.props;
-
-		const [room] = this.rooms;
-		this.setState({ room: JSON.parse(JSON.stringify(room || {})) });
-
-		// get user of room
-		if (room) {
-			if (room.t === 'd') {
-				try {
-					const roomUser = await RocketChat.getRoomMember(room.rid, userId);
-					this.setState({ roomUser: roomUser || {} });
-					const username = room.name;
-
-					const activeUser = activeUsers[roomUser._id];
-					if (!activeUser || !activeUser.utcOffset) {
-						// get full user data looking for utcOffset
-						// will be catched by .on('users) and saved on activeUsers reducer
-						this.getFullUserData(username);
-					}
-
-					// get all users roles
-					// needs to be changed by a better method
-					const allUsersRoles = await RocketChat.getUserRoles();
-					const userRoles = allUsersRoles.find(user => user.username === username);
-					if (userRoles) {
-						this.setState({ roles: userRoles.roles || [] });
-					}
-				} catch (e) {
-					log('RoomInfoView.componentDidMount', e);
-				}
-			}
+	updateRoom = () => {
+		if (this.rooms.length > 0) {
+			this.setState({ room: JSON.parse(JSON.stringify(this.rooms[0])) });
 		}
 	}
 

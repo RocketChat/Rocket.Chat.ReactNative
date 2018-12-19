@@ -22,7 +22,8 @@ import SearchBox from '../../containers/SearchBox';
 import { DEFAULT_HEADER } from '../../constants/headerOptions';
 
 @connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	room: state.room
 }))
 /** @extends React.Component */
 export default class RoomMembersView extends LoggedView {
@@ -49,7 +50,8 @@ export default class RoomMembersView extends LoggedView {
 		componentId: PropTypes.string,
 		rid: PropTypes.string,
 		members: PropTypes.array,
-		baseUrl: PropTypes.string
+		baseUrl: PropTypes.string,
+		room: PropTypes.object
 	}
 
 	constructor(props) {
@@ -58,7 +60,7 @@ export default class RoomMembersView extends LoggedView {
 		this.CANCEL_INDEX = 0;
 		this.MUTE_INDEX = 1;
 		this.actionSheetOptions = [''];
-		const { rid, members } = props;
+		const { rid, members, room } = props;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.permissions = RocketChat.hasPermission(['mute-user'], rid);
 		this.state = {
@@ -68,7 +70,7 @@ export default class RoomMembersView extends LoggedView {
 			members,
 			membersFiltered: [],
 			userLongPressed: {},
-			room: this.rooms[0] || {},
+			room,
 			options: []
 		};
 		Navigation.events().bindComponent(this);
@@ -164,21 +166,25 @@ export default class RoomMembersView extends LoggedView {
 		if (!this.permissions['mute-user']) {
 			return;
 		}
-		const { room } = this.state;
-		const { muted } = room;
+		try {
+			const { room } = this.state;
+			const { muted } = room;
 
-		const options = [I18n.t('Cancel')];
-		const userIsMuted = !!muted.find(m => m.value === user.username);
-		user.muted = userIsMuted;
-		if (userIsMuted) {
-			options.push(I18n.t('Unmute'));
-		} else {
-			options.push(I18n.t('Mute'));
-		}
-		this.setState({ userLongPressed: user, options });
-		Vibration.vibrate(50);
-		if (this.actionSheet && this.actionSheet.show) {
-			this.actionSheet.show();
+			const options = [I18n.t('Cancel')];
+			const userIsMuted = !!muted.find(m => m.value === user.username);
+			user.muted = userIsMuted;
+			if (userIsMuted) {
+				options.push(I18n.t('Unmute'));
+			} else {
+				options.push(I18n.t('Mute'));
+			}
+			this.setState({ userLongPressed: user, options });
+			Vibration.vibrate(50);
+			if (this.actionSheet && this.actionSheet.show) {
+				this.actionSheet.show();
+			}
+		} catch (error) {
+			console.log('onLongPressUser -> catch -> error', error);
 		}
 	}
 
@@ -189,9 +195,11 @@ export default class RoomMembersView extends LoggedView {
 		this.setState({ allUsers: status, members });
 	}
 
-	updateRoom = async() => {
-		const [room] = this.rooms;
-		await this.setState({ room });
+	updateRoom = () => {
+		if (this.rooms.length > 0) {
+			const [room] = this.rooms;
+			this.setState({ room });
+		}
 	}
 
 	goRoom = async({ rid }) => {

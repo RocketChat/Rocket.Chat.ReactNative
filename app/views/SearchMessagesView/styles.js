@@ -21,5 +21,11 @@ export default StyleSheet.create({
 		height: StyleSheet.hairlineWidth,
 		backgroundColor: '#E7EBF2',
 		marginVertical: 20
+	},
+	listEmptyContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'flex-start',
+		backgroundColor: '#ffffff'
 	}
 });
