@@ -376,7 +376,7 @@ export default class RoomView extends LoggedView {
 
 	renderList = () => {
 		const { loaded, room } = this.state;
-		if (!loaded || !room._id) {
+		if (!loaded || !room.rid) {
 			return <ActivityIndicator style={styles.loading} />;
 		}
 		return (
