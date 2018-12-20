@@ -51,6 +51,7 @@ const RocketChat = {
 	createChannel({
 		name, users, type, readOnly, broadcast
 	}) {
+		// RC 0.51.0
 		return call(type ? 'createPrivateGroup' : 'createChannel', name, users, readOnly, {}, { broadcast });
 	},
 	async createDirectMessageAndWait(username) {
@@ -240,6 +241,7 @@ const RocketChat = {
 	},
 
 	setUsername(username) {
+		// RC 0.51.0
 		return call('setUsername', username);
 	},
 
@@ -436,6 +438,7 @@ const RocketChat = {
 	},
 
 	spotlight(search, usernames, type) {
+		// RC 0.51.0
 		return call('spotlight', search, usernames, type);
 	},
 
@@ -554,9 +557,11 @@ const RocketChat = {
 		return SDK.api.post('rooms.favorite', { roomId, favorite });
 	},
 	getRoomMembers(rid, allUsers) {
+		// RC 0.42.0
 		return call('getUsersOfRoom', rid, allUsers);
 	},
 	getUserRoles() {
+		// RC 0.27.0
 		return call('getUserRoles');
 	},
 	getRoomCounters(roomId, t) {
@@ -576,8 +581,10 @@ const RocketChat = {
 	},
 	toggleBlockUser(rid, blocked, block) {
 		if (block) {
+			// RC 0.49.0
 			return call('blockUser', { rid, blocked });
 		}
+		// RC 0.49.0
 		return call('unblockUser', { rid, blocked });
 	},
 	leaveRoom(roomId, t) {
@@ -590,8 +597,10 @@ const RocketChat = {
 	},
 	toggleMuteUserInRoom(rid, username, mute) {
 		if (mute) {
+			// RC 0.51.0
 			return call('muteUserInRoom', { rid, username });
 		}
+		// RC 0.51.0
 		return call('unmuteUserInRoom', { rid, username });
 	},
 	toggleArchiveRoom(roomId, t, archive) {
@@ -603,6 +612,7 @@ const RocketChat = {
 		return SDK.api.post(`${ this.roomTypeToApiType(t) }.unarchive`, { roomId });
 	},
 	saveRoomSettings(rid, params) {
+		// RC 0.55.0
 		return call('saveRoomSettings', rid, params);
 	},
 	saveUserProfile(data) {
@@ -610,6 +620,7 @@ const RocketChat = {
 		return SDK.api.post('users.updateOwnBasicInfo', { data });
 	},
 	saveUserPreferences(params) {
+		// RC 0.51.0
 		return call('saveUserPreferences', params);
 	},
 	saveNotificationSettings(roomId, notifications) {
@@ -619,6 +630,7 @@ const RocketChat = {
 	addUsersToRoom(rid) {
 		let { users } = reduxStore.getState().selectedUsers;
 		users = users.map(u => u.name);
+		// RC 0.51.0
 		return call('addUsersToRoom', { rid, users });
 	},
 	hasPermission(permissions, rid) {
@@ -653,6 +665,7 @@ const RocketChat = {
 		}, {});
 	},
 	getAvatarSuggestion() {
+		// RC 0.51.0
 		return call('getAvatarSuggestion');
 	},
 	resetAvatar(userId) {
@@ -660,6 +673,7 @@ const RocketChat = {
 		return SDK.api.post('users.resetAvatar', { userId });
 	},
 	setAvatarFromService({ data, contentType = '', service = null }) {
+		// RC 0.51.0
 		return call('setAvatarFromService', data, contentType, service);
 	},
 	async getSortPreferences() {

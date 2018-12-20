@@ -8,6 +8,7 @@ import log from '../../utils/log';
 async function load({ rid: roomId, latest, t }) {
 	if (t === 'l') {
 		try {
+			// RC 0.51.0
 			const data = await SDK.driver.asyncCall('loadHistory', roomId, null, 50, latest);
 			if (!data || data.status === 'error') {
 				return [];
