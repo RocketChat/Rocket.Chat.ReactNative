@@ -1,6 +1,7 @@
 import { AsyncStorage, Platform } from 'react-native';
 import foreach from 'lodash/forEach';
 import * as SDK from '@rocket.chat/sdk';
+import semver from 'semver';
 
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
@@ -42,6 +43,7 @@ const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
 const call = (method, ...params) => SDK.driver.asyncCall(method, ...params);
 const returnAnArray = obj => obj || [];
+const MIN_ROCKETCHAT_VERSION = '0.66.0';
 
 const RocketChat = {
 	TOKEN_KEY,
@@ -82,12 +84,27 @@ const RocketChat = {
 		try {
 			const result = await fetch(`${ server }/api/v1/info`).then(response => response.json());
 			if (result.success && result.info) {
-				return server;
+				if (semver.lt(result.info.version, MIN_ROCKETCHAT_VERSION)) {
+					return {
+						success: false,
+						message: 'Invalid_server_version',
+						messageOptions: {
+							currentVersion: result.info.version,
+							minVersion: MIN_ROCKETCHAT_VERSION
+						}
+					};
+				}
+				return {
+					success: true
+				};
 			}
 		} catch (e) {
 			log('testServer', e);
 		}
-		throw new Error({ error: 'invalid server' });
+		return {
+			success: false,
+			message: 'The_URL_is_invalid'
+		};
 	},
 	_setUser(ddpMessage) {
 		this.activeUsers = this.activeUsers || {};

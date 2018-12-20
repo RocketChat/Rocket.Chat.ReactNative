@@ -91,10 +91,8 @@ const handleOpen = function* handleOpen({ params }) {
 		}
 	} else {
 		// if deep link is from a different server
-		try {
-			// Verify if server is real
-			yield RocketChat.testServer(host);
-		} catch (error) {
+		const result = yield RocketChat.testServer(server);
+		if (!result.success) {
 			return;
 		}
 

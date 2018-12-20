@@ -177,6 +177,7 @@ export default {
 	Invisible: 'Invisível',
 	Invite: 'Convidar',
 	is_typing: 'está digitando',
+	Invalid_server_version: 'O servidor que você está conectando não é suportado mais por esta versão do aplicativo: {{currentVersion}}.\n\nEsta versão do aplicativo requer a versão {{minVersion}} do servidor para funcionar corretamente.',
 	Join_the_community: 'Junte-se à comunidade',
 	Join: 'Entrar',
 	Just_invited_people_can_access_this_channel: 'Apenas as pessoas convidadas podem acessar este canal',

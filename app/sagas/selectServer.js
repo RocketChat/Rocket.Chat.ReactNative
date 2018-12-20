@@ -1,5 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, Alert } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { Provider } from 'react-redux';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
@@ -13,6 +13,7 @@ import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import log from '../utils/log';
 import store from '../lib/createStore';
+import I18n from '../i18n';
 
 let LoginSignupView = null;
 let LoginView = null;
@@ -49,7 +50,13 @@ const handleSelectServer = function* handleSelectServer({ server }) {
 
 const handleServerRequest = function* handleServerRequest({ server }) {
 	try {
-		yield RocketChat.testServer(server);
+		const result = yield RocketChat.testServer(server);
+		if (!result.success) {
+			Alert.alert(I18n.t('Oops'), I18n.t(result.message, result.messageOptions));
+			yield put(serverFailure());
+			return;
+		}
+
 		const loginServicesLength = yield RocketChat.getLoginServices(server);
 		if (loginServicesLength === 0) {
 			if (LoginView == null) {
