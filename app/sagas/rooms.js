@@ -120,7 +120,6 @@ const watchuserTyping = function* watchuserTyping({ status }) {
 
 const handleLeaveRoom = function* handleLeaveRoom({ rid, t }) {
 	try {
-		sub.stop();
 		const result = yield RocketChat.leaveRoom(rid, t);
 		if (result.success) {
 			yield Navigation.popToRoot('RoomsListView');
@@ -136,7 +135,6 @@ const handleLeaveRoom = function* handleLeaveRoom({ rid, t }) {
 
 const handleEraseRoom = function* handleEraseRoom({ rid, t }) {
 	try {
-		sub.stop();
 		const result = yield RocketChat.eraseRoom(rid, t);
 		if (result.success) {
 			yield Navigation.popToRoot('RoomsListView');
@@ -148,7 +146,7 @@ const handleEraseRoom = function* handleEraseRoom({ rid, t }) {
 
 const root = function* root() {
 	yield takeLatest(types.ROOM.USER_TYPING, watchuserTyping);
-	yield takeLatest(types.ROOM.OPEN, watchRoomOpen);
+	yield takeEvery(types.ROOM.OPEN, watchRoomOpen);
 	yield takeEvery(types.ROOM.MESSAGE_RECEIVED, handleMessageReceived);
 	yield takeLatest(types.ROOM.LEAVE, handleLeaveRoom);
 	yield takeLatest(types.ROOM.ERASE, handleEraseRoom);

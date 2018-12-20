@@ -102,6 +102,7 @@ export default class RoomView extends LoggedView {
 			joined: this.rooms.length > 0,
 			room: {}
 		};
+		this.focused = true;
 		this.onReactionPress = this.onReactionPress.bind(this);
 		Navigation.events().bindComponent(this);
 	}
@@ -181,11 +182,18 @@ export default class RoomView extends LoggedView {
 
 	componentWillUnmount() {
 		const { closeRoom } = this.props;
-		this.rooms.removeAllListeners();
-		if (this.onEndReached && this.onEndReached.stop) {
-			this.onEndReached.stop();
-		}
 		closeRoom();
+		this.rooms.removeAllListeners();
+	}
+
+	// eslint-disable-next-line
+	componentDidAppear() {
+		this.focused = true;
+	}
+
+	// eslint-disable-next-line
+	componentDidDisappear() {
+		this.focused = false;
 	}
 
 	onMessageLongPress = (message) => {
@@ -246,12 +254,15 @@ export default class RoomView extends LoggedView {
 	updateRoom = () => {
 		const { openRoom, setLastOpen } = this.props;
 
+		if (!this.focused) {
+			return;
+		}
 		if (this.rooms.length > 0) {
 			const { room: prevRoom } = this.state;
 			const room = JSON.parse(JSON.stringify(this.rooms[0] || {}));
 			this.internalSetState({ room });
 
-			if (!prevRoom.rid) {
+			if (!prevRoom._id) {
 				openRoom({
 					...room
 				});
@@ -263,8 +274,10 @@ export default class RoomView extends LoggedView {
 			}
 		} else {
 			const { room } = this.state;
-			openRoom(room);
-			this.internalSetState({ joined: false });
+			if (room.rid) {
+				openRoom(room);
+				this.internalSetState({ joined: false });
+			}
 		}
 	}
 
@@ -344,7 +357,7 @@ export default class RoomView extends LoggedView {
 
 		if (!joined) {
 			return (
-				<View style={styles.joinRoomContainer} key='room-view-join'>
+				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
 					<Text style={styles.previewMode}>{I18n.t('You_are_in_preview_mode')}</Text>
 					<RectButton
 						onPress={this.joinRoom}
@@ -352,7 +365,7 @@ export default class RoomView extends LoggedView {
 						activeOpacity={0.5}
 						underlayColor='#fff'
 					>
-						<Text style={styles.joinRoomText}>{I18n.t('Join')}</Text>
+						<Text style={styles.joinRoomText} testID='room-view-join-button'>{I18n.t('Join')}</Text>
 					</RectButton>
 				</View>
 			);
