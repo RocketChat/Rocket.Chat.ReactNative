@@ -235,6 +235,7 @@ const RocketChat = {
 	},
 
 	register(credentials) {
+		// RC 0.50.0
 		return SDK.api.post('users.register', credentials, false);
 	},
 
@@ -243,6 +244,7 @@ const RocketChat = {
 	},
 
 	forgotPassword(email) {
+		// RC 0.64.0
 		return SDK.api.post('users.forgotPassword', { email }, false);
 	},
 
@@ -288,6 +290,7 @@ const RocketChat = {
 
 	async login(params) {
 		try {
+			// RC 0.64.0
 			return await SDK.api.login(params);
 		} catch (e) {
 			reduxStore.dispatch(loginFailure(e));
@@ -302,6 +305,7 @@ const RocketChat = {
 			console.log('logout -> removePushToken -> catch -> error', error);
 		}
 		try {
+			// RC 0.60.0
 			await SDK.api.logout();
 		} catch (error) {
 			console.log('​logout -> api logout -> catch -> error', error);
@@ -343,6 +347,7 @@ const RocketChat = {
 					type,
 					appName: 'chat.rocket.reactnative' // TODO: try to get from config file
 				};
+				// RC 0.60.0
 				return SDK.api.post('push.token', data);
 			}
 			return resolve();
@@ -351,6 +356,7 @@ const RocketChat = {
 	removePushToken() {
 		const token = getDeviceToken();
 		if (token) {
+			// RC 0.60.0
 			return SDK.api.del('push.token', { token });
 		}
 		return Promise.resolve();
@@ -434,10 +440,12 @@ const RocketChat = {
 	},
 
 	createDirectMessage(username) {
+		// RC 0.59.0
 		return SDK.api.post('im.create', { username });
 	},
 	joinRoom(roomId) {
 		// TODO: join code
+		// RC 0.48.0
 		return SDK.api.post('channels.join', { roomId });
 	},
 	sendFileMessage,
@@ -471,22 +479,28 @@ const RocketChat = {
 	},
 	deleteMessage(message) {
 		const { _id, rid } = message;
+		// RC 0.48.0
 		return SDK.api.post('chat.delete', { roomId: rid, msgId: _id });
 	},
 	editMessage(message) {
 		const { _id, msg, rid } = message;
+		// RC 0.49.0
 		return SDK.api.post('chat.update', { roomId: rid, msgId: _id, text: msg });
 	},
 	toggleStarMessage(message) {
 		if (message.starred) {
+			// RC 0.59.0
 			return SDK.api.post('chat.unStarMessage', { messageId: message._id });
 		}
+		// RC 0.59.0
 		return SDK.api.post('chat.starMessage', { messageId: message._id });
 	},
 	togglePinMessage(message) {
 		if (message.pinned) {
+			// RC 0.59.0
 			return SDK.api.post('chat.unPinMessage', { messageId: message._id });
 		}
+		// RC 0.59.0
 		return SDK.api.post('chat.pinMessage', { messageId: message._id });
 	},
 	getRoom(rid) {
@@ -495,9 +509,6 @@ const RocketChat = {
 			return Promise.reject(new Error('Room not found'));
 		}
 		return Promise.resolve(result);
-	},
-	getRoomInfo(roomId) {
-		return SDK.api.get('rooms.info', { roomId });
 	},
 	async getPermalink(message) {
 		let room;
@@ -535,9 +546,11 @@ const RocketChat = {
 		return call('UserPresence:setDefaultStatus', status);
 	},
 	setReaction(emoji, messageId) {
+		// RC 0.62.2
 		return SDK.api.post('chat.react', { emoji, messageId });
 	},
 	toggleFavorite(roomId, favorite) {
+		// RC 0.64.0
 		return SDK.api.post('rooms.favorite', { roomId, favorite });
 	},
 	getRoomMembers(rid, allUsers) {
@@ -547,6 +560,7 @@ const RocketChat = {
 		return call('getUserRoles');
 	},
 	getRoomCounters(roomId, t) {
+		// RC 0.65.0
 		return SDK.api.get(`${ this.roomTypeToApiType(t) }.counters`, { roomId });
 	},
 	async getRoomMember(rid, currentUserId) {
@@ -567,9 +581,11 @@ const RocketChat = {
 		return call('unblockUser', { rid, blocked });
 	},
 	leaveRoom(roomId, t) {
+		// RC 0.48.0
 		return SDK.api.post(`${ this.roomTypeToApiType(t) }.leave`, { roomId });
 	},
 	eraseRoom(roomId, t) {
+		// RC 0.49.0
 		return SDK.api.post(`${ this.roomTypeToApiType(t) }.delete`, { roomId });
 	},
 	toggleMuteUserInRoom(rid, username, mute) {
@@ -580,20 +596,24 @@ const RocketChat = {
 	},
 	toggleArchiveRoom(roomId, t, archive) {
 		if (archive) {
+			// RC 0.48.0
 			return SDK.api.post(`${ this.roomTypeToApiType(t) }.archive`, { roomId });
 		}
+		// RC 0.48.0
 		return SDK.api.post(`${ this.roomTypeToApiType(t) }.unarchive`, { roomId });
 	},
 	saveRoomSettings(rid, params) {
 		return call('saveRoomSettings', rid, params);
 	},
 	saveUserProfile(data) {
+		// RC 0.62.2
 		return SDK.api.post('users.updateOwnBasicInfo', { data });
 	},
 	saveUserPreferences(params) {
 		return call('saveUserPreferences', params);
 	},
 	saveNotificationSettings(roomId, notifications) {
+		// RC 0.63.0
 		return SDK.api.post('rooms.saveNotification', { roomId, notifications });
 	},
 	addUsersToRoom(rid) {
@@ -636,6 +656,7 @@ const RocketChat = {
 		return call('getAvatarSuggestion');
 	},
 	resetAvatar(userId) {
+		// RC 0.55.0
 		return SDK.api.post('users.resetAvatar', { userId });
 	},
 	setAvatarFromService({ data, contentType = '', service = null }) {
@@ -676,6 +697,7 @@ const RocketChat = {
 		}
 	},
 	getUsernameSuggestion() {
+		// RC 0.65.0
 		return SDK.api.get('users.getUsernameSuggestion');
 	},
 	roomTypeToApiType(t) {
@@ -685,6 +707,7 @@ const RocketChat = {
 		return types[t];
 	},
 	getFiles(roomId, type, offset) {
+		// RC 0.59.0
 		return SDK.api.get(`${ this.roomTypeToApiType(type) }.files`, {
 			roomId,
 			offset,
@@ -695,6 +718,7 @@ const RocketChat = {
 		});
 	},
 	getMessages(roomId, type, query, offset) {
+		// RC 0.59.0
 		return SDK.api.get(`${ this.roomTypeToApiType(type) }.messages`, {
 			roomId,
 			query,
@@ -703,6 +727,7 @@ const RocketChat = {
 		});
 	},
 	searchMessages(roomId, searchText) {
+		// RC 0.60.0
 		return SDK.api.get('chat.search', {
 			roomId,
 			searchText

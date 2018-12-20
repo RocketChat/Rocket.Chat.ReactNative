@@ -150,11 +150,11 @@ export default class RoomMembersView extends LoggedView {
 		try {
 			const subscriptions = database.objects('subscriptions').filtered('name = $0', item.username);
 			if (subscriptions.length) {
-				this.goRoom({ rid: subscriptions[0].rid });
+				this.goRoom({ rid: subscriptions[0].rid, name: item.username });
 			} else {
 				const result = await RocketChat.createDirectMessage(item.username);
 				if (result.success) {
-					this.goRoom({ rid: result.room._id });
+					this.goRoom({ rid: result.room._id, name: item.username });
 				}
 			}
 		} catch (e) {
@@ -202,14 +202,14 @@ export default class RoomMembersView extends LoggedView {
 		}
 	}
 
-	goRoom = async({ rid }) => {
+	goRoom = async({ rid, name }) => {
 		const { componentId } = this.props;
 		await Navigation.popToRoot(componentId);
 		Navigation.push('RoomsListView', {
 			component: {
 				name: 'RoomView',
 				passProps: {
-					rid
+					rid, name, t: 'd'
 				}
 			}
 		});

@@ -84,6 +84,8 @@ export default class RoomView extends LoggedView {
 			token: PropTypes.string.isRequired
 		}),
 		rid: PropTypes.string,
+		name: PropTypes.string,
+		t: PropTypes.string,
 		showActions: PropTypes.bool,
 		showErrorActions: PropTypes.bool,
 		actionMessage: PropTypes.object,
@@ -107,16 +109,13 @@ export default class RoomView extends LoggedView {
 		Navigation.events().bindComponent(this);
 	}
 
-	async componentDidMount() {
+	componentDidMount() {
 		if (this.rooms.length === 0 && this.rid) {
-			const result = await RocketChat.getRoomInfo(this.rid);
-			if (result.success) {
-				const { room } = result;
-				this.setState(
-					{ room: { rid: room._id, t: room.t, name: room.name } },
-					() => this.updateRoom()
-				);
-			}
+			const { rid, name, t } = this.props;
+			this.setState(
+				{ room: { rid, name, t } },
+				() => this.updateRoom()
+			);
 		}
 		this.rooms.addListener(this.updateRoom);
 		this.internalSetState({ loaded: true });

@@ -103,12 +103,10 @@ export default class NewMessageView extends LoggedView {
 		this.search(text);
 	}
 
-	onPressItem = (item) => {
+	onPressItem = async(item) => {
 		const { onPressItem } = this.props;
-		this.dismiss();
-		setTimeout(() => {
-			onPressItem(item);
-		}, 600);
+		await this.dismiss();
+		onPressItem(item);
 	}
 
 	navigationButtonPressed = ({ buttonId }) => {
@@ -119,7 +117,7 @@ export default class NewMessageView extends LoggedView {
 
 	dismiss = () => {
 		const { componentId } = this.props;
-		Navigation.dismissModal(componentId);
+		return Navigation.dismissModal(componentId);
 	}
 
 	// eslint-disable-next-line react/sort-comp

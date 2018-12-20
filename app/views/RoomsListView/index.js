@@ -438,13 +438,13 @@ export default class RoomsListView extends LoggedView {
 		});
 	}
 
-	goRoom = (rid) => {
+	goRoom = ({ rid, name, t }) => {
 		this.cancelSearchingAndroid();
 		Navigation.push('RoomsListView', {
 			component: {
 				name: 'RoomView',
 				passProps: {
-					rid
+					rid, name, t
 				}
 			}
 		});
@@ -452,8 +452,8 @@ export default class RoomsListView extends LoggedView {
 
 	_onPressItem = async(item = {}) => {
 		if (!item.search) {
-			const { rid } = item;
-			return this.goRoom(rid);
+			const { rid, name, t } = item;
+			return this.goRoom({ rid, name, t });
 		}
 		if (item.t === 'd') {
 			// if user is using the search we need first to join/create room
@@ -461,14 +461,14 @@ export default class RoomsListView extends LoggedView {
 				const { username } = item;
 				const result = await RocketChat.createDirectMessage(username);
 				if (result.success) {
-					return this.goRoom(result.room._id);
+					return this.goRoom({ rid: result.room._id, name: username, t: 'd' });
 				}
 			} catch (e) {
 				log('RoomsListView._onPressItem', e);
 			}
 		} else {
-			const { rid } = item;
-			return this.goRoom(rid);
+			const { rid, name, t } = item;
+			return this.goRoom({ rid, name, t });
 		}
 	}
 

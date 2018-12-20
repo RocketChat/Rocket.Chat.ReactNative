@@ -12,6 +12,10 @@ import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
 
+const roomTypes = {
+	channel: 'c', direct: 'd', group: 'p'
+};
+
 const navigate = function* navigate({ params, sameServer = true }) {
 	if (!sameServer) {
 		yield put(appStart('inside'));
@@ -37,11 +41,12 @@ const navigate = function* navigate({ params, sameServer = true }) {
 			} catch (error) {
 				console.log(error);
 			}
+			const [type, name] = params.path.split('/');
 			Navigation.push(stack, {
 				component: {
 					name: 'RoomView',
 					passProps: {
-						rid: params.rid
+						rid: params.rid, name, t: roomTypes[type]
 					}
 				}
 			});

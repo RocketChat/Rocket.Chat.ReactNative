@@ -7,6 +7,7 @@ import defaultPermissions from '../../constants/permissions';
 
 export default async function() {
 	try {
+		// RC 0.66.0
 		const result = await SDK.api.get('permissions.list');
 
 		if (!result.success) {

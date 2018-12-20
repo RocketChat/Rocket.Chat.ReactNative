@@ -23,6 +23,7 @@ async function load({ rid: roomId, latest, t }) {
 	if (latest) {
 		params = { ...params, latest: new Date(latest).toISOString() };
 	}
+	// RC 0.48.0
 	const data = await SDK.api.get(`${ this.roomTypeToApiType(t) }.history`, params);
 	if (!data || data.status === 'error') {
 		return [];
