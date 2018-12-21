@@ -13,7 +13,6 @@ import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import { DEFAULT_HEADER } from '../../constants/headerOptions';
 import RocketChat from '../../lib/rocketchat';
-import database from '../../lib/realm';
 
 const STAR_INDEX = 0;
 const CANCEL_INDEX = 1;
@@ -22,6 +21,7 @@ const options = [I18n.t('Unstar'), I18n.t('Cancel')];
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	customEmojis: state.customEmojis,
+	room: state.room,
 	user: {
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
@@ -44,18 +44,16 @@ export default class StarredMessagesView extends LoggedView {
 	}
 
 	static propTypes = {
-		rid: PropTypes.string,
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
-		customEmojis: PropTypes.object
+		customEmojis: PropTypes.object,
+		room: PropTypes.object
 	}
 
 	constructor(props) {
 		super('StarredMessagesView', props);
-		this.rooms = database.objects('subscriptions').filtered('rid = $0', props.rid);
 		this.state = {
 			loading: false,
-			room: this.rooms[0],
 			messages: []
 		};
 	}
@@ -65,7 +63,14 @@ export default class StarredMessagesView extends LoggedView {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		return !equal(this.state, nextState);
+		const { loading, messages } = this.state;
+		if (nextState.loading !== loading) {
+			return true;
+		}
+		if (!equal(nextState.messages, messages)) {
+			return true;
+		}
+		return false;
 	}
 
 	onLongPress = (message) => {
@@ -101,7 +106,7 @@ export default class StarredMessagesView extends LoggedView {
 
 	load = async() => {
 		const {
-			messages, total, loading, room
+			messages, total, loading
 		} = this.state;
 		const { user } = this.props;
 		if (messages.length === total || loading) {
@@ -111,6 +116,7 @@ export default class StarredMessagesView extends LoggedView {
 		this.setState({ loading: true });
 
 		try {
+			const { room } = this.props;
 			const result = await RocketChat.getMessages(
 				room.rid,
 				room.t,

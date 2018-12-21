@@ -12,6 +12,7 @@ async function load({ rid: roomId, lastOpen }) {
 	} else {
 		return [];
 	}
+	// RC 0.60.0
 	const { result } = await SDK.api.get('chat.syncMessages', { roomId, lastUpdate, count: 50 });
 	return result;
 }

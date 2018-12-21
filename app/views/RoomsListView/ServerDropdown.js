@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import * as SDK from '@rocket.chat/sdk';
+import equal from 'deep-equal';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
@@ -39,10 +40,12 @@ export default class ServerDropdown extends Component {
 
 	constructor(props) {
 		super(props);
+		this.servers = database.databases.serversDB.objects('servers');
 		this.state = {
-			servers: []
+			servers: this.servers
 		};
 		this.animatedValue = new Animated.Value(0);
+		this.servers.addListener(this.updateState);
 	}
 
 	componentDidMount() {
@@ -51,12 +54,25 @@ export default class ServerDropdown extends Component {
 			{
 				toValue: 1,
 				duration: ANIMATION_DURATION,
-				easing: Easing.ease,
+				easing: Easing.inOut(Easing.quad),
 				useNativeDriver: true
 			},
 		).start();
-		this.servers = database.databases.serversDB.objects('servers');
-		this.servers.addListener(this.updateState);
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const { servers } = this.state;
+		const { closeServerDropdown, server } = this.props;
+		if (nextProps.closeServerDropdown !== closeServerDropdown) {
+			return true;
+		}
+		if (nextProps.server !== server) {
+			return true;
+		}
+		if (!equal(nextState.servers, servers)) {
+			return true;
+		}
+		return false;
 	}
 
 	componentDidUpdate(prevProps) {
@@ -78,7 +94,7 @@ export default class ServerDropdown extends Component {
 			{
 				toValue: 0,
 				duration: ANIMATION_DURATION,
-				easing: Easing.ease,
+				easing: Easing.inOut(Easing.quad),
 				useNativeDriver: true
 			}
 		).start(() => toggleServerDropdown());

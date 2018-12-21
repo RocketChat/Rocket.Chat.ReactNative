@@ -6,6 +6,7 @@ import {
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Navigation } from 'react-native-navigation';
+import equal from 'deep-equal';
 
 import { setStackRoot as setStackRootAction } from '../actions';
 import { logout as logoutAction } from '../actions/login';
@@ -111,7 +112,8 @@ export default class Sidebar extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			showStatus: false
+			showStatus: false,
+			status: []
 		};
 		Navigation.events().bindComponent(this);
 	}
@@ -127,6 +129,43 @@ export default class Sidebar extends Component {
 		}
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		const { status, showStatus } = this.state;
+		const {
+			Site_Name, stackRoot, user, baseUrl
+		} = this.props;
+		if (nextState.showStatus !== showStatus) {
+			return true;
+		}
+		if (nextProps.Site_Name !== Site_Name) {
+			return true;
+		}
+		if (nextProps.stackRoot !== stackRoot) {
+			return true;
+		}
+		if (nextProps.Site_Name !== Site_Name) {
+			return true;
+		}
+		if (nextProps.baseUrl !== baseUrl) {
+			return true;
+		}
+		if (nextProps.user && user) {
+			if (nextProps.user.language !== user.language) {
+				return true;
+			}
+			if (nextProps.user.status !== user.status) {
+				return true;
+			}
+			if (nextProps.user.username !== user.username) {
+				return true;
+			}
+		}
+		if (!equal(nextState.status, status)) {
+			return true;
+		}
+		return false;
+	}
+
 	handleChangeStack = (event) => {
 		const { stack } = event;
 		this.setStack(stack);
@@ -140,22 +179,20 @@ export default class Sidebar extends Component {
 	}
 
 	setStatus = () => {
-		setTimeout(() => {
-			this.setState({
-				status: [{
-					id: 'online',
-					name: I18n.t('Online')
-				}, {
-					id: 'busy',
-					name: I18n.t('Busy')
-				}, {
-					id: 'away',
-					name: I18n.t('Away')
-				}, {
-					id: 'offline',
-					name: I18n.t('Invisible')
-				}]
-			});
+		this.setState({
+			status: [{
+				id: 'online',
+				name: I18n.t('Online')
+			}, {
+				id: 'busy',
+				name: I18n.t('Busy')
+			}, {
+				id: 'away',
+				name: I18n.t('Away')
+			}, {
+				id: 'offline',
+				name: I18n.t('Invisible')
+			}]
 		});
 	}
 

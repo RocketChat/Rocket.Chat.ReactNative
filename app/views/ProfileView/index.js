@@ -11,6 +11,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
+import equal from 'deep-equal';
 
 import LoggedView from '../View';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -116,6 +117,16 @@ export default class ProfileView extends LoggedView {
 		if (user !== nextProps.user) {
 			this.init(nextProps.user);
 		}
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		if (!equal(nextState, this.state)) {
+			return true;
+		}
+		if (!equal(nextProps, this.props)) {
+			return true;
+		}
+		return false;
 	}
 
 	componentWillUnmount() {

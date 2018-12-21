@@ -72,6 +72,17 @@ export default class SetUsernameView extends LoggedView {
 		}
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		const { username, saving } = this.state;
+		if (nextState.username !== username) {
+			return true;
+		}
+		if (nextState.saving !== saving) {
+			return true;
+		}
+		return false;
+	}
+
 	componentWillUnmount() {
 		if (this.timeout) {
 			clearTimeout(this.timeout);

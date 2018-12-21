@@ -68,6 +68,10 @@ export default class OnboardingView extends LoggedView {
 		EventEmitter.addEventListener('NewServer', this.handleNewServerEvent);
 	}
 
+	shouldComponentUpdate() {
+		return false;
+	}
+
 	componentWillUnmount() {
 		const {
 			selectServer, previousServer, currentServer, adding, finishAdd

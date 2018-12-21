@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -18,7 +18,7 @@ import Header from './Header';
 	closeSort: () => dispatch(closeSortDropdown()),
 	setSearch: searchText => dispatch(setSearchAction(searchText))
 }))
-export default class RoomsListHeaderView extends Component {
+export default class RoomsListHeaderView extends PureComponent {
 	static propTypes = {
 		showServerDropdown: PropTypes.bool,
 		showSortDropdown: PropTypes.bool,

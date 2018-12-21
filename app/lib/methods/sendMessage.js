@@ -33,6 +33,7 @@ export const getMessage = (rid, msg = {}) => {
 
 export async function sendMessageCall(message) {
 	const { _id, rid, msg } = message;
+	// RC 0.60.0
 	const data = await SDK.api.post('chat.sendMessage', { message: { _id, rid, msg } });
 	return data;
 }

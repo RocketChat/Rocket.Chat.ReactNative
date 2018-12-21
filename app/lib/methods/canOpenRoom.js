@@ -8,6 +8,7 @@ const restTypes = {
 
 async function open({ type, rid }) {
 	try {
+		// RC 0.61.0
 		await SDK.api.post(`${ restTypes[type] }.open`, { roomId: rid });
 		return true;
 	} catch (e) {

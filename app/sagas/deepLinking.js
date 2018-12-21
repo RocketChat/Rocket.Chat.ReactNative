@@ -1,7 +1,7 @@
 import { AsyncStorage } from 'react-native';
 import { delay } from 'redux-saga';
 import {
-	takeLatest, take, select, put, all
+	takeLatest, take, select, put, all, race
 } from 'redux-saga/effects';
 import { Navigation } from 'react-native-navigation';
 
@@ -11,6 +11,10 @@ import { selectServerRequest } from '../actions/server';
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
+
+const roomTypes = {
+	channel: 'c', direct: 'd', group: 'p'
+};
 
 const navigate = function* navigate({ params, sameServer = true }) {
 	if (!sameServer) {
@@ -37,11 +41,12 @@ const navigate = function* navigate({ params, sameServer = true }) {
 			} catch (error) {
 				console.log(error);
 			}
+			const [type, name] = params.path.split('/');
 			Navigation.push(stack, {
 				component: {
 					name: 'RoomView',
 					passProps: {
-						rid: params.rid
+						rid: params.rid, name, t: roomTypes[type]
 					}
 				}
 			});
@@ -78,15 +83,16 @@ const handleOpen = function* handleOpen({ params }) {
 	// if deep link is from same server
 	if (server === host) {
 		if (user) {
-			yield take(types.SERVER.SELECT_SUCCESS);
+			yield race({
+				typing: take(types.SERVER.SELECT_SUCCESS),
+				timeout: delay(3000)
+			});
 			yield navigate({ params });
 		}
 	} else {
 		// if deep link is from a different server
-		try {
-			// Verify if server is real
-			yield RocketChat.testServer(host);
-		} catch (error) {
+		const result = yield RocketChat.testServer(server);
+		if (!result.success) {
 			return;
 		}
 

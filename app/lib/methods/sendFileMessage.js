@@ -15,6 +15,7 @@ function _ufsComplete(fileId, store, token) {
 }
 
 function _sendFileMessage(rid, data, msg = {}) {
+	// RC 0.22.0
 	return SDK.driver.asyncCall('sendFileMessage', rid, null, data, msg);
 }
 
