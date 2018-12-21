@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
 	View, Text, Animated, Easing, Image, TouchableWithoutFeedback
 } from 'react-native';
@@ -19,7 +19,7 @@ const ANIMATION_DURATION = 200;
 }), dispatch => ({
 	setSortPreference: preference => dispatch(setPreference(preference))
 }))
-export default class Sort extends Component {
+export default class Sort extends PureComponent {
 	static propTypes = {
 		closeSortDropdown: PropTypes.bool,
 		close: PropTypes.func,
@@ -41,7 +41,7 @@ export default class Sort extends Component {
 			{
 				toValue: 1,
 				duration: ANIMATION_DURATION,
-				easing: Easing.ease,
+				easing: Easing.inOut(Easing.quad),
 				useNativeDriver: true
 			},
 		).start();
@@ -95,7 +95,7 @@ export default class Sort extends Component {
 			{
 				toValue: 0,
 				duration: ANIMATION_DURATION,
-				easing: Easing.ease,
+				easing: Easing.inOut(Easing.quad),
 				useNativeDriver: true
 			},
 		).start(() => close());

@@ -11,12 +11,12 @@ import Message from '../../containers/message/Message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import { DEFAULT_HEADER } from '../../constants/headerOptions';
-import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	customEmojis: state.customEmojis,
+	room: state.room,
 	user: {
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
@@ -39,18 +39,16 @@ export default class RoomFilesView extends LoggedView {
 	}
 
 	static propTypes = {
-		rid: PropTypes.string,
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
-		customEmojis: PropTypes.object
+		customEmojis: PropTypes.object,
+		room: PropTypes.object
 	}
 
 	constructor(props) {
 		super('RoomFilesView', props);
-		this.rooms = database.objects('subscriptions').filtered('rid = $0', props.rid);
 		this.state = {
 			loading: false,
-			room: this.rooms[0],
 			messages: []
 		};
 	}
@@ -60,12 +58,19 @@ export default class RoomFilesView extends LoggedView {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		return !equal(this.state, nextState);
+		const { loading, messages } = this.state;
+		if (nextState.loading !== loading) {
+			return true;
+		}
+		if (!equal(nextState.messages, messages)) {
+			return true;
+		}
+		return false;
 	}
 
 	load = async() => {
 		const {
-			messages, total, loading, room
+			messages, total, loading
 		} = this.state;
 		if (messages.length === total || loading) {
 			return;
@@ -74,6 +79,7 @@ export default class RoomFilesView extends LoggedView {
 		this.setState({ loading: true });
 
 		try {
+			const { room } = this.props;
 			const result = await RocketChat.getFiles(room.rid, room.t, messages.length);
 			if (result.success) {
 				this.setState(prevState => ({

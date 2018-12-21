@@ -16,6 +16,7 @@ const getLastMessage = () => {
 export default async function() {
 	try {
 		const lastMessage = getLastMessage();
+		// RC 0.61.0
 		const result = await SDK.api.get('emoji-custom');
 		let { emojis } = result;
 		emojis = emojis.filter(emoji => !lastMessage || emoji._updatedAt > lastMessage);

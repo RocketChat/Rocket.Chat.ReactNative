@@ -18,6 +18,8 @@ export default function() {
 	return new Promise(async(resolve, reject) => {
 		try {
 			const updatedSince = lastMessage();
+			// subscriptions.get: Since RC 0.60.0
+			// rooms.get: Since RC 0.62.0
 			const [subscriptionsResult, roomsResult] = await (updatedSince
 				? Promise.all([SDK.api.get('subscriptions.get', { updatedSince }), SDK.api.get('rooms.get', { updatedSince })])
 				: Promise.all([SDK.api.get('subscriptions.get'), SDK.api.get('rooms.get')])

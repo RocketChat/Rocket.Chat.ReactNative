@@ -1,6 +1,7 @@
 import { AsyncStorage, Platform } from 'react-native';
 import foreach from 'lodash/forEach';
 import * as SDK from '@rocket.chat/sdk';
+import semver from 'semver';
 
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
@@ -42,6 +43,7 @@ const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
 const call = (method, ...params) => SDK.driver.asyncCall(method, ...params);
 const returnAnArray = obj => obj || [];
+const MIN_ROCKETCHAT_VERSION = '0.66.0';
 
 const RocketChat = {
 	TOKEN_KEY,
@@ -51,6 +53,7 @@ const RocketChat = {
 	createChannel({
 		name, users, type, readOnly, broadcast
 	}) {
+		// RC 0.51.0
 		return call(type ? 'createPrivateGroup' : 'createChannel', name, users, readOnly, {}, { broadcast });
 	},
 	async createDirectMessageAndWait(username) {
@@ -81,12 +84,27 @@ const RocketChat = {
 		try {
 			const result = await fetch(`${ server }/api/v1/info`).then(response => response.json());
 			if (result.success && result.info) {
-				return server;
+				if (semver.lt(result.info.version, MIN_ROCKETCHAT_VERSION)) {
+					return {
+						success: false,
+						message: 'Invalid_server_version',
+						messageOptions: {
+							currentVersion: result.info.version,
+							minVersion: MIN_ROCKETCHAT_VERSION
+						}
+					};
+				}
+				return {
+					success: true
+				};
 			}
 		} catch (e) {
 			log('testServer', e);
 		}
-		throw new Error({ error: 'invalid server' });
+		return {
+			success: false,
+			message: 'The_URL_is_invalid'
+		};
 	},
 	_setUser(ddpMessage) {
 		this.activeUsers = this.activeUsers || {};
@@ -235,14 +253,17 @@ const RocketChat = {
 	},
 
 	register(credentials) {
+		// RC 0.50.0
 		return SDK.api.post('users.register', credentials, false);
 	},
 
 	setUsername(username) {
+		// RC 0.51.0
 		return call('setUsername', username);
 	},
 
 	forgotPassword(email) {
+		// RC 0.64.0
 		return SDK.api.post('users.forgotPassword', { email }, false);
 	},
 
@@ -288,6 +309,7 @@ const RocketChat = {
 
 	async login(params) {
 		try {
+			// RC 0.64.0
 			return await SDK.api.login(params);
 		} catch (e) {
 			reduxStore.dispatch(loginFailure(e));
@@ -302,6 +324,7 @@ const RocketChat = {
 			console.log('logout -> removePushToken -> catch -> error', error);
 		}
 		try {
+			// RC 0.60.0
 			await SDK.api.logout();
 		} catch (error) {
 			console.log('​logout -> api logout -> catch -> error', error);
@@ -343,6 +366,7 @@ const RocketChat = {
 					type,
 					appName: 'chat.rocket.reactnative' // TODO: try to get from config file
 				};
+				// RC 0.60.0
 				return SDK.api.post('push.token', data);
 			}
 			return resolve();
@@ -351,6 +375,7 @@ const RocketChat = {
 	removePushToken() {
 		const token = getDeviceToken();
 		if (token) {
+			// RC 0.60.0
 			return SDK.api.del('push.token', { token });
 		}
 		return Promise.resolve();
@@ -430,14 +455,17 @@ const RocketChat = {
 	},
 
 	spotlight(search, usernames, type) {
+		// RC 0.51.0
 		return call('spotlight', search, usernames, type);
 	},
 
 	createDirectMessage(username) {
+		// RC 0.59.0
 		return SDK.api.post('im.create', { username });
 	},
 	joinRoom(roomId) {
 		// TODO: join code
+		// RC 0.48.0
 		return SDK.api.post('channels.join', { roomId });
 	},
 	sendFileMessage,
@@ -471,22 +499,28 @@ const RocketChat = {
 	},
 	deleteMessage(message) {
 		const { _id, rid } = message;
+		// RC 0.48.0
 		return SDK.api.post('chat.delete', { roomId: rid, msgId: _id });
 	},
 	editMessage(message) {
 		const { _id, msg, rid } = message;
+		// RC 0.49.0
 		return SDK.api.post('chat.update', { roomId: rid, msgId: _id, text: msg });
 	},
 	toggleStarMessage(message) {
 		if (message.starred) {
+			// RC 0.59.0
 			return SDK.api.post('chat.unStarMessage', { messageId: message._id });
 		}
+		// RC 0.59.0
 		return SDK.api.post('chat.starMessage', { messageId: message._id });
 	},
 	togglePinMessage(message) {
 		if (message.pinned) {
+			// RC 0.59.0
 			return SDK.api.post('chat.unPinMessage', { messageId: message._id });
 		}
+		// RC 0.59.0
 		return SDK.api.post('chat.pinMessage', { messageId: message._id });
 	},
 	getRoom(rid) {
@@ -495,9 +529,6 @@ const RocketChat = {
 			return Promise.reject(new Error('Room not found'));
 		}
 		return Promise.resolve(result);
-	},
-	getRoomInfo(roomId) {
-		return SDK.api.get('rooms.info', { roomId });
 	},
 	async getPermalink(message) {
 		let room;
@@ -535,22 +566,30 @@ const RocketChat = {
 		return call('UserPresence:setDefaultStatus', status);
 	},
 	setReaction(emoji, messageId) {
+		// RC 0.62.2
 		return SDK.api.post('chat.react', { emoji, messageId });
 	},
 	toggleFavorite(roomId, favorite) {
+		// RC 0.64.0
 		return SDK.api.post('rooms.favorite', { roomId, favorite });
 	},
 	getRoomMembers(rid, allUsers) {
+		// RC 0.42.0
 		return call('getUsersOfRoom', rid, allUsers);
 	},
 	getUserRoles() {
+		// RC 0.27.0
 		return call('getUserRoles');
 	},
 	getRoomCounters(roomId, t) {
+		// RC 0.65.0
 		return SDK.api.get(`${ this.roomTypeToApiType(t) }.counters`, { roomId });
 	},
 	async getRoomMember(rid, currentUserId) {
 		try {
+			if (rid === `${ currentUserId }${ currentUserId }`) {
+				return Promise.resolve(currentUserId);
+			}
 			const membersResult = await RocketChat.getRoomMembers(rid, true);
 			return Promise.resolve(membersResult.records.find(m => m._id !== currentUserId));
 		} catch (error) {
@@ -559,53 +598,71 @@ const RocketChat = {
 	},
 	toggleBlockUser(rid, blocked, block) {
 		if (block) {
+			// RC 0.49.0
 			return call('blockUser', { rid, blocked });
 		}
+		// RC 0.49.0
 		return call('unblockUser', { rid, blocked });
 	},
 	leaveRoom(roomId, t) {
+		// RC 0.48.0
 		return SDK.api.post(`${ this.roomTypeToApiType(t) }.leave`, { roomId });
 	},
 	eraseRoom(roomId, t) {
+		// RC 0.49.0
 		return SDK.api.post(`${ this.roomTypeToApiType(t) }.delete`, { roomId });
 	},
 	toggleMuteUserInRoom(rid, username, mute) {
 		if (mute) {
+			// RC 0.51.0
 			return call('muteUserInRoom', { rid, username });
 		}
+		// RC 0.51.0
 		return call('unmuteUserInRoom', { rid, username });
 	},
 	toggleArchiveRoom(roomId, t, archive) {
 		if (archive) {
+			// RC 0.48.0
 			return SDK.api.post(`${ this.roomTypeToApiType(t) }.archive`, { roomId });
 		}
+		// RC 0.48.0
 		return SDK.api.post(`${ this.roomTypeToApiType(t) }.unarchive`, { roomId });
 	},
 	saveRoomSettings(rid, params) {
+		// RC 0.55.0
 		return call('saveRoomSettings', rid, params);
 	},
 	saveUserProfile(data) {
+		// RC 0.62.2
 		return SDK.api.post('users.updateOwnBasicInfo', { data });
 	},
 	saveUserPreferences(params) {
+		// RC 0.51.0
 		return call('saveUserPreferences', params);
 	},
 	saveNotificationSettings(roomId, notifications) {
+		// RC 0.63.0
 		return SDK.api.post('rooms.saveNotification', { roomId, notifications });
 	},
 	addUsersToRoom(rid) {
 		let { users } = reduxStore.getState().selectedUsers;
 		users = users.map(u => u.name);
+		// RC 0.51.0
 		return call('addUsersToRoom', { rid, users });
 	},
 	hasPermission(permissions, rid) {
-		// get the room from realm
-		const room = database.objects('subscriptions').filtered('rid = $0', rid)[0];
+		let roles = [];
+		try {
+			// get the room from realm
+			const room = database.objects('subscriptions').filtered('rid = $0', rid)[0];
+			// get room roles
+			roles = room.roles; // eslint-disable-line prefer-destructuring
+		} catch (error) {
+			console.log('hasPermission -> error', error);
+		}
 		// get permissions from realm
 		const permissionsFiltered = database.objects('permissions')
 			.filter(permission => permissions.includes(permission._id));
-		// get room roles
-		const { roles } = room;
 		// transform room roles to array
 		const roomRoles = Array.from(Object.keys(roles), i => roles[i].value);
 		// get user roles on the server from redux
@@ -625,12 +682,15 @@ const RocketChat = {
 		}, {});
 	},
 	getAvatarSuggestion() {
+		// RC 0.51.0
 		return call('getAvatarSuggestion');
 	},
 	resetAvatar(userId) {
+		// RC 0.55.0
 		return SDK.api.post('users.resetAvatar', { userId });
 	},
 	setAvatarFromService({ data, contentType = '', service = null }) {
+		// RC 0.51.0
 		return call('setAvatarFromService', data, contentType, service);
 	},
 	async getSortPreferences() {
@@ -668,6 +728,7 @@ const RocketChat = {
 		}
 	},
 	getUsernameSuggestion() {
+		// RC 0.65.0
 		return SDK.api.get('users.getUsernameSuggestion');
 	},
 	roomTypeToApiType(t) {
@@ -677,6 +738,7 @@ const RocketChat = {
 		return types[t];
 	},
 	getFiles(roomId, type, offset) {
+		// RC 0.59.0
 		return SDK.api.get(`${ this.roomTypeToApiType(type) }.files`, {
 			roomId,
 			offset,
@@ -687,6 +749,7 @@ const RocketChat = {
 		});
 	},
 	getMessages(roomId, type, query, offset) {
+		// RC 0.59.0
 		return SDK.api.get(`${ this.roomTypeToApiType(type) }.messages`, {
 			roomId,
 			query,
@@ -695,6 +758,7 @@ const RocketChat = {
 		});
 	},
 	searchMessages(roomId, searchText) {
+		// RC 0.60.0
 		return SDK.api.get('chat.search', {
 			roomId,
 			searchText

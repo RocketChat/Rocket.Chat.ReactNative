@@ -4,6 +4,8 @@ import { ScrollView } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import map from 'lodash/map';
 import { emojify } from 'react-emojione';
+import equal from 'deep-equal';
+
 import TabBar from './TabBar';
 import EmojiCategory from './EmojiCategory';
 import styles from './styles';
@@ -28,26 +30,41 @@ export default class EmojiPicker extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			frequentlyUsed: [],
-			customEmojis: []
-		};
 		this.frequentlyUsed = database.objects('frequentlyUsedEmoji').sorted('count', true);
 		this.customEmojis = database.objects('customEmojis');
+		this.state = {
+			frequentlyUsed: [],
+			customEmojis: [],
+			show: false
+		};
 		this.updateFrequentlyUsed = this.updateFrequentlyUsed.bind(this);
 		this.updateCustomEmojis = this.updateCustomEmojis.bind(this);
 	}
-	//
-	// shouldComponentUpdate(nextProps) {
-	// 	return false;
-	// }
 
 	componentDidMount() {
+		this.updateFrequentlyUsed();
+		this.updateCustomEmojis();
 		requestAnimationFrame(() => this.setState({ show: true }));
 		this.frequentlyUsed.addListener(this.updateFrequentlyUsed);
 		this.customEmojis.addListener(this.updateCustomEmojis);
-		this.updateFrequentlyUsed();
-		this.updateCustomEmojis();
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const { frequentlyUsed, customEmojis, show } = this.state;
+		const { width } = this.props;
+		if (nextState.show !== show) {
+			return true;
+		}
+		if (nextProps.width !== width) {
+			return true;
+		}
+		if (!equal(nextState.frequentlyUsed, frequentlyUsed)) {
+			return true;
+		}
+		if (!equal(nextState.customEmojis, customEmojis)) {
+			return true;
+		}
+		return false;
 	}
 
 	componentWillUnmount() {

@@ -7,6 +7,7 @@ import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
+import equal from 'deep-equal';
 
 import {
 	addUser as addUserAction, removeUser as removeUserAction, reset as resetAction, setLoading as setLoadingAction
@@ -78,6 +79,21 @@ export default class SelectedUsersView extends LoggedView {
 		};
 		this.data.addListener(this.updateState);
 		Navigation.events().bindComponent(this);
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const { search } = this.state;
+		const { users, loading } = this.props;
+		if (nextProps.loading !== loading) {
+			return true;
+		}
+		if (!equal(nextProps.users, users)) {
+			return true;
+		}
+		if (!equal(nextState.search, search)) {
+			return true;
+		}
+		return false;
 	}
 
 	componentDidUpdate(prevProps) {
