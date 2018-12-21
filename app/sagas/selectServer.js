@@ -63,9 +63,21 @@ const handleServerRequest = function* handleServerRequest({ server }) {
 				LoginView = require('../views/LoginView').default;
 				Navigation.registerComponentWithRedux('LoginView', () => gestureHandlerRootHOC(LoginView), Provider, store);
 			}
-			yield Navigation.push('NewServerView', {
-				component: {
-					name: 'LoginView'
+			Navigation.setRoot({
+				root: {
+					stack: {
+						children: [{
+							component: {
+								id: 'LoginView',
+								name: 'LoginView'
+							}
+						}],
+						options: {
+							layout: {
+								orientation: ['portrait']
+							}
+						}
+					}
 				}
 			});
 		} else {
@@ -73,9 +85,21 @@ const handleServerRequest = function* handleServerRequest({ server }) {
 				LoginSignupView = require('../views/LoginSignupView').default;
 				Navigation.registerComponentWithRedux('LoginSignupView', () => gestureHandlerRootHOC(LoginSignupView), Provider, store);
 			}
-			yield Navigation.push('NewServerView', {
-				component: {
-					name: 'LoginSignupView'
+			Navigation.setRoot({
+				root: {
+					stack: {
+						children: [{
+							component: {
+								id: 'LoginSignupView',
+								name: 'LoginSignupView'
+							}
+						}],
+						options: {
+							layout: {
+								orientation: ['portrait']
+							}
+						}
+					}
 				}
 			});
 		}

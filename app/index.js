@@ -6,11 +6,13 @@ import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import store from './lib/createStore';
 import { appInit } from './actions';
+import { serverRequest } from './actions/server';
 import { iconsLoaded } from './Icons';
 import { registerScreens } from './views';
 import { deepLinkingOpen } from './actions/deepLinking';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications } from './push';
+import appConfig from '../app.json';
 
 const startLogged = () => {
 	Navigation.setRoot({
@@ -39,22 +41,7 @@ const startLogged = () => {
 };
 
 const startNotLogged = () => {
-	Navigation.setRoot({
-		root: {
-			stack: {
-				children: [{
-					component: {
-						name: 'OnboardingView'
-					}
-				}],
-				options: {
-					layout: {
-						orientation: ['portrait']
-					}
-				}
-			}
-		}
-	});
+	store.dispatch(serverRequest(appConfig.server));
 };
 
 let SetUsernameView = null;

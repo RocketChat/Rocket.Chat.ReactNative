@@ -31,6 +31,8 @@ Follow the [React Native Getting Started Guide](https://facebook.github.io/react
     $ npm install
     ```
 
+- Add your server url in `app.json`
+
 - Run application
     ```bash
     $ npm run ios
@@ -38,10 +40,6 @@ Follow the [React Native Getting Started Guide](https://facebook.github.io/react
     ```bash
     $ npm run android
     ```
-
-### Running single server
-If you don't need multiple servers, there is a branch `single-server` just for that.
-Readme will guide you on how to config.
 
 ## Roadmap
 

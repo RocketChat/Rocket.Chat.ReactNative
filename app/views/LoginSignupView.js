@@ -10,6 +10,7 @@ import SafeAreaView from 'react-native-safe-area-view';
 import { gestureHandlerRootHOC, RectButton, BorderlessButton } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
 
+import { serverRequest } from '../actions/server';
 import LoggedView from './View';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
@@ -97,6 +98,8 @@ const SERVICES_COLLAPSED_HEIGHT = 174;
 	server: state.server.server,
 	Site_Name: state.settings.Site_Name,
 	services: state.login.services
+}), dispatch => ({
+	connectServer: server => dispatch(serverRequest(server))
 }))
 /** @extends React.Component */
 export default class LoginSignupView extends LoggedView {
