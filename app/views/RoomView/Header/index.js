@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
 	View, Text, StyleSheet, Image, Platform, LayoutAnimation
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
 		status
 	};
 })
-export default class RoomHeaderView extends PureComponent {
+export default class RoomHeaderView extends Component {
 	static propTypes = {
 		title: PropTypes.string,
 		type: PropTypes.string,
@@ -90,10 +90,37 @@ export default class RoomHeaderView extends PureComponent {
 		status: PropTypes.string
 	};
 
+	shouldComponentUpdate(nextProps) {
+		const {
+			type, title, status, usersTyping, window
+		} = this.props;
+		if (nextProps.type !== type) {
+			return true;
+		}
+		if (nextProps.title !== title) {
+			return true;
+		}
+		if (nextProps.status !== status) {
+			return true;
+		}
+		if (nextProps.window.width !== window.width) {
+			return true;
+		}
+		if (nextProps.window.height !== window.height) {
+			return true;
+		}
+		if (!equal(nextProps.usersTyping, usersTyping)) {
+			return true;
+		}
+		return false;
+	}
+
 	componentDidUpdate(prevProps) {
-		const { usersTyping } = this.props;
-		if (!equal(prevProps.usersTyping, usersTyping)) {
-			LayoutAnimation.easeInEaseOut();
+		if (isIOS()) {
+			const { usersTyping } = this.props;
+			if (!equal(prevProps.usersTyping, usersTyping)) {
+				LayoutAnimation.easeInEaseOut();
+			}
 		}
 	}
 

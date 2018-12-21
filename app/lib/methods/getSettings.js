@@ -16,6 +16,7 @@ function updateServer(param) {
 export default async function() {
 	try {
 		const settingsParams = JSON.stringify(Object.keys(settings));
+		// RC 0.60.0
 		const result = await fetch(`${ SDK.api.url }settings.public?query={"_id":{"$in":${ settingsParams }}}`).then(response => response.json());
 
 		if (!result.success) {

@@ -5,6 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { responsive } from 'react-native-responsive-ui';
+import equal from 'deep-equal';
 
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
@@ -84,6 +85,18 @@ export default class UploadProgress extends Component {
 		});
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		const { uploads } = this.state;
+		const { window } = this.props;
+		if (nextProps.window.width !== window.width) {
+			return true;
+		}
+		if (!equal(nextState.uploads, uploads)) {
+			return true;
+		}
+		return false;
+	}
+
 	componentWillUnmount() {
 		this.uploads.removeAllListeners();
 	}
@@ -107,14 +120,15 @@ export default class UploadProgress extends Component {
 			database.write(() => {
 				item.error = false;
 			});
-			await RocketChat.sendFileMessage(rid, JSON.parse(JSON.stringify(item)));
+			await RocketChat.sendFileMessage(rid, item);
 		} catch (e) {
 			log('UploadProgess.tryAgain', e);
 		}
 	}
 
 	updateUploads = () => {
-		this.setState({ uploads: this.uploads });
+		const uploads = this.uploads.map(item => JSON.parse(JSON.stringify(item)));
+		this.setState({ uploads });
 	}
 
 	renderItemContent = (item) => {

@@ -8,6 +8,7 @@ import { Navigation } from 'react-native-navigation';
 import { Base64 } from 'js-base64';
 import SafeAreaView from 'react-native-safe-area-view';
 import { gestureHandlerRootHOC, RectButton, BorderlessButton } from 'react-native-gesture-handler';
+import equal from 'deep-equal';
 
 import LoggedView from './View';
 import sharedStyles from './Styles';
@@ -94,7 +95,6 @@ const SERVICES_COLLAPSED_HEIGHT = 174;
 
 @connect(state => ({
 	server: state.server.server,
-	isFetching: state.login.isFetching,
 	Site_Name: state.settings.Site_Name,
 	services: state.login.services
 }))
@@ -116,7 +116,6 @@ export default class LoginSignupView extends LoggedView {
 
 	static propTypes = {
 		componentId: PropTypes.string,
-		isFetching: PropTypes.bool,
 		server: PropTypes.string,
 		services: PropTypes.object,
 		Site_Name: PropTypes.string
@@ -131,6 +130,27 @@ export default class LoginSignupView extends LoggedView {
 		Navigation.events().bindComponent(this);
 		const { componentId, Site_Name } = this.props;
 		this.setTitle(componentId, Site_Name);
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const { collapsed, servicesHeight } = this.state;
+		const { server, Site_Name, services } = this.props;
+		if (nextState.collapsed !== collapsed) {
+			return true;
+		}
+		if (nextState.servicesHeight !== servicesHeight) {
+			return true;
+		}
+		if (nextProps.server !== server) {
+			return true;
+		}
+		if (nextProps.Site_Name !== Site_Name) {
+			return true;
+		}
+		if (!equal(nextProps.services, services)) {
+			return true;
+		}
+		return false;
 	}
 
 	componentDidUpdate(prevProps) {

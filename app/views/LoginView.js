@@ -126,6 +126,46 @@ export default class LoginView extends LoggedView {
 		}
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		const {
+			user, password, code, showTOTP
+		} = this.state;
+		const {
+			isFetching, failure, error, Site_Name, Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder
+		} = this.props;
+		if (nextState.user !== user) {
+			return true;
+		}
+		if (nextState.password !== password) {
+			return true;
+		}
+		if (nextState.code !== code) {
+			return true;
+		}
+		if (nextState.showTOTP !== showTOTP) {
+			return true;
+		}
+		if (nextProps.isFetching !== isFetching) {
+			return true;
+		}
+		if (nextProps.failure !== failure) {
+			return true;
+		}
+		if (nextProps.Site_Name !== Site_Name) {
+			return true;
+		}
+		if (nextProps.Accounts_EmailOrUsernamePlaceholder !== Accounts_EmailOrUsernamePlaceholder) {
+			return true;
+		}
+		if (nextProps.Accounts_PasswordPlaceholder !== Accounts_PasswordPlaceholder) {
+			return true;
+		}
+		if (!equal(nextProps.error, error)) {
+			return true;
+		}
+		return false;
+	}
+
 	componentWillUnmount() {
 		if (this.timeout) {
 			clearTimeout(this.timeout);

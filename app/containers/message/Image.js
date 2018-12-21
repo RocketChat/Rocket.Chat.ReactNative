@@ -1,13 +1,14 @@
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import React from 'react';
 import FastImage from 'react-native-fast-image';
 import { RectButton } from 'react-native-gesture-handler';
+import equal from 'deep-equal';
 
 import PhotoModal from './PhotoModal';
 import Markdown from './Markdown';
 import styles from './styles';
 
-export default class extends React.PureComponent {
+export default class extends Component {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
@@ -18,7 +19,22 @@ export default class extends React.PureComponent {
 		])
 	}
 
-	state = { modalVisible: false };
+	state = { modalVisible: false, isPressed: false };
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const { modalVisible, isPressed } = this.state;
+		const { file } = this.props;
+		if (nextState.modalVisible !== modalVisible) {
+			return true;
+		}
+		if (nextState.isPressed !== isPressed) {
+			return true;
+		}
+		if (!equal(nextProps.file, file)) {
+			return true;
+		}
+		return false;
+	}
 
 	onPressButton() {
 		this.setState({

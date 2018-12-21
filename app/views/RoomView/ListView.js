@@ -1,6 +1,8 @@
 import { ListView as OldList } from 'realm/react-native';
 import React from 'react';
-import { ScrollView, ListView as OldList2, ImageBackground } from 'react-native';
+import {
+	ScrollView, ListView as OldList2, ImageBackground, ActivityIndicator
+} from 'react-native';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -9,7 +11,9 @@ import Separator from './Separator';
 import styles from './styles';
 import database from '../../lib/realm';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import throttle from '../../utils/throttle';
+import debounce from '../../utils/debounce';
+import RocketChat from '../../lib/rocketchat';
+import log from '../../utils/log';
 
 const DEFAULT_SCROLL_CALLBACK_THROTTLE = 100;
 
@@ -24,34 +28,38 @@ export class DataSource extends OldList.DataSource {
 	}
 }
 
-const ds = new DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id || r1._updatedAt.toISOString() !== r2._updatedAt.toISOString() });
+const ds = new DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id });
 
 export class List extends React.Component {
 	static propTypes = {
 		onEndReached: PropTypes.func,
 		renderFooter: PropTypes.func,
 		renderRow: PropTypes.func,
-		room: PropTypes.string,
-		end: PropTypes.bool,
-		loadingMore: PropTypes.bool
+		room: PropTypes.object
 	};
 
 	constructor(props) {
 		super(props);
 		this.data = database
 			.objects('messages')
-			.filtered('rid = $0', props.room)
+			.filtered('rid = $0', props.room.rid)
 			.sorted('ts', true);
+		this.state = {
+			loading: true,
+			loadingMore: false,
+			end: false
+		};
 		this.dataSource = ds.cloneWithRows(this.data);
 	}
 
 	componentDidMount() {
+		this.updateState();
 		this.data.addListener(this.updateState);
 	}
 
-	shouldComponentUpdate(nextProps) {
-		const { end, loadingMore } = this.props;
-		return end !== nextProps.end || loadingMore !== nextProps.loadingMore;
+	shouldComponentUpdate(nextProps, nextState) {
+		const { loadingMore, loading, end } = this.state;
+		return end !== nextState.end || loadingMore !== nextState.loadingMore || loading !== nextState.loading;
 	}
 
 	componentWillUnmount() {
@@ -60,16 +68,39 @@ export class List extends React.Component {
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	updateState = throttle(() => {
-		// this.setState({
+	updateState = debounce(() => {
+		this.setState({ loading: true });
 		this.dataSource = this.dataSource.cloneWithRows(this.data);
-		// LayoutAnimation.easeInEaseOut();
-		this.forceUpdate();
-		// });
-	}, 1000);
+		this.setState({ loading: false });
+	}, 300);
+
+	onEndReached = async() => {
+		const { loadingMore, end } = this.state;
+		if (loadingMore || end || this.data.length < 50) {
+			return;
+		}
+
+		this.setState({ loadingMore: true });
+		const { room } = this.props;
+		try {
+			const result = await RocketChat.loadMessagesForRoom({ rid: room.rid, t: room.t, latest: this.data[this.data.length - 1].ts });
+			this.setState({ end: result.length < 50, loadingMore: false });
+		} catch (e) {
+			this.setState({ loadingMore: false });
+			log('ListView.onEndReached', e);
+		}
+	}
+
+	renderFooter = () => {
+		const { loadingMore, loading } = this.state;
+		if (loadingMore || loading) {
+			return <ActivityIndicator style={styles.loadingMore} />;
+		}
+		return null;
+	}
 
 	render() {
-		const { renderFooter, onEndReached, renderRow } = this.props;
+		const { renderRow } = this.props;
 
 		return (
 			<ListView
@@ -78,8 +109,8 @@ export class List extends React.Component {
 				data={this.data}
 				keyExtractor={item => item._id}
 				onEndReachedThreshold={100}
-				renderFooter={renderFooter}
-				onEndReached={() => onEndReached(this.data[this.data.length - 1])}
+				renderFooter={this.renderFooter}
+				onEndReached={this.onEndReached}
 				dataSource={this.dataSource}
 				renderRow={(item, previousItem) => renderRow(item, previousItem)}
 				initialListSize={1}

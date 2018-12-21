@@ -7,6 +7,7 @@ import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
+import equal from 'deep-equal';
 
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
@@ -85,6 +86,14 @@ export default class NewMessageView extends LoggedView {
 		Navigation.events().bindComponent(this);
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		const { search } = this.state;
+		if (!equal(nextState.search, search)) {
+			return true;
+		}
+		return false;
+	}
+
 	componentWillUnmount() {
 		this.updateState.stop();
 		this.data.removeAllListeners();
@@ -94,12 +103,10 @@ export default class NewMessageView extends LoggedView {
 		this.search(text);
 	}
 
-	onPressItem = (item) => {
+	onPressItem = async(item) => {
 		const { onPressItem } = this.props;
-		this.dismiss();
-		setTimeout(() => {
-			onPressItem(item);
-		}, 600);
+		await this.dismiss();
+		onPressItem(item);
 	}
 
 	navigationButtonPressed = ({ buttonId }) => {
@@ -110,7 +117,7 @@ export default class NewMessageView extends LoggedView {
 
 	dismiss = () => {
 		const { componentId } = this.props;
-		Navigation.dismissModal(componentId);
+		return Navigation.dismissModal(componentId);
 	}
 
 	// eslint-disable-next-line react/sort-comp
