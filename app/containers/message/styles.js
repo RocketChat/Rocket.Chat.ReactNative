@@ -148,7 +148,11 @@ export default StyleSheet.create({
 		flexWrap: 'wrap',
 		flexDirection: 'row',
 		alignItems: 'flex-start',
-		justifyContent: 'flex-start'
+		justifyContent: 'flex-start',
+		paddingTop:5,
+		paddingBottom:6,
+		paddingLeft:8,
+		paddingRight:8,
 	},
 	imageContainer: {
 		flex: 1,
@@ -169,5 +173,44 @@ export default StyleSheet.create({
 	edited: {
 		fontSize: 14,
 		color: '#9EA2A8'
+	},
+
+	OwnMessageContent: {
+		alignItems:'flex-end', 
+		marginRight:51,
+		marginLeft:5,
+		flex:1
+	},
+	OwnmessageContentWithHeader:{
+		marginRight:15
+	},
+	FlexReverse:{
+		flexDirection:'row-reverse',
+		flex:1
+	},
+	OwnContent: {
+		backgroundColor:'#3578e5',
+		alignContent:'flex-end',
+		justifyContent:'flex-end',
+		flexWrap:'wrap-reverse',
+		alignSelf:'flex-end',
+		direction:'rtl',
+		borderBottomLeftRadius:20,
+		borderBottomRightRadius:20,
+		borderTopLeftRadius:20,
+		borderTopRightRadius:20,
+	},
+	
+	Content:{
+		backgroundColor:'#f1f0f0',
+		alignContent:'flex-start',
+		justifyContent:'flex-start',
+		flexWrap:'wrap',
+		alignSelf:'flex-start',
+		borderBottomLeftRadius:20,
+		borderBottomRightRadius:20,
+		borderTopLeftRadius:20,
+		borderTopRightRadius:20,
 	}
+
 });

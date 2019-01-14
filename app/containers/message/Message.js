@@ -214,6 +214,13 @@ export default class Message extends PureComponent {
 		if (this.isInfoMessage()) {
 			return <Text style={styles.textInfo}>{getInfoMessage({ ...this.props })}</Text>;
 		}
+		if (this.isOwn()) {
+			const {
+				customEmojis, msg, baseUrl, user, edited
+			} = this.props;
+			return <Markdown msg={msg} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} edited={edited} style={{ text:{color:'#fff', fontSize: 16, letterSpacing: 0.1}, link:{color:'#fff'}}}
+			        />;
+		}	
 		const {
 			customEmojis, msg, baseUrl, user, edited
 		} = this.props;
@@ -365,7 +372,7 @@ export default class Message extends PureComponent {
 							style={[styles.message, editing && styles.editing, style]}
 							accessibilityLabel={accessibilityLabel}
 						>
-							<View style={styles.flex}>
+							<View style={[styles.flex,this.isOwn() && styles.FlexReverse]}>
 								{this.renderAvatar()}
 								<View
 									style={[
@@ -373,15 +380,25 @@ export default class Message extends PureComponent {
 										header && styles.messageContentWithHeader,
 										this.hasError() && header && styles.messageContentWithHeader,
 										this.hasError() && !header && styles.messageContentWithError,
-										this.isTemp() && styles.temp
+										this.isTemp() && styles.temp,
+										this.isOwn() && styles.messageContent && styles.OwnMessageContent,
+										this.isOwn() && header && styles.messageContentWithHeader && styles.OwnmessageContentWithHeader
 									]}
 								>
 									{this.renderUsername()}
-									{this.renderContent()}
-									{this.renderAttachment()}
+									
+                                <View style={[styles.Content,this.isOwn() && styles.FlexReverse && styles.OwnContent]}>
+                                      {this.renderContent()}
+								</View>
+
+								<View style={[this.isOwn()&& styles.FlexReverse]}>
+								    {this.renderAttachment()}
 									{this.renderUrl()}
+								</View>
+									
 									{this.renderReactions()}
 									{this.renderBroadcastReply()}
+									
 								</View>
 							</View>
 							{reactionsModal
