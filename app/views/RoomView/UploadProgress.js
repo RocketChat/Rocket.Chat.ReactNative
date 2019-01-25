@@ -101,6 +101,7 @@ export default class UploadProgress extends Component {
 		this.uploads.removeAllListeners();
 	}
 
+	// Pass the right variable in order to delete the database
 	deleteUpload = (item) => {
 		database.write(() => database.delete(item));
 	}
@@ -157,7 +158,7 @@ export default class UploadProgress extends Component {
 						<Text style={styles.tryAgainButtonText}>{I18n.t('Try_again')}</Text>
 					</TouchableOpacity>
 				</View>
-				<Icon name='close' size={20} color='#9EA2A8' onPress={() => this.deleteUpload(item)} />
+				<Icon name='close' size={20} color='#9EA2A8' onPress={() => this.deleteUpload(this.uploads)} />
 			</View>
 		);
 	}

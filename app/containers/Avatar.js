@@ -26,7 +26,7 @@ export default class Avatar extends PureComponent {
 		const {
 			text, size, baseUrl, borderRadius, style, avatar, type, children
 		} = this.props;
-
+		const timeStamp = Math.floor(Date.now() / 1000);
 		const avatarStyle = {
 			width: size,
 			height: size,
@@ -40,7 +40,7 @@ export default class Avatar extends PureComponent {
 		const room = type === 'd' ? text : `@${ text }`;
 		// Avoid requesting several sizes by having only two sizes on cache
 		const uriSize = size === 100 ? 100 : 50;
-		const uri = avatar || `${ baseUrl }/avatar/${ room }?format=png&width=${ uriSize }&height=${ uriSize }`;
+		const uri = avatar || `${ baseUrl }/avatar/${ room }?format=png&width=${ uriSize }&height=${ uriSize }&ts=${ timeStamp }`;
 
 		const image = (
 			<FastImage
