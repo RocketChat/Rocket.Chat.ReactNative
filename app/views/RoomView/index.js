@@ -26,7 +26,6 @@ import I18n from '../../i18n';
 import { iconsMap } from '../../Icons';
 import store from '../../lib/createStore';
 import ConnectionBadge from '../../containers/ConnectionBadge';
-import { DEFAULT_HEADER } from '../../constants/headerOptions';
 
 let RoomActionsView = null;
 
@@ -51,9 +50,7 @@ let RoomActionsView = null;
 export default class RoomView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				title: {
 					component: {
 						name: 'RoomHeaderView',

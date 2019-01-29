@@ -25,7 +25,6 @@ import { toggleSortDropdown as toggleSortDropdownAction, openSearchHeader as ope
 import { appStart as appStartAction } from '../../actions';
 import store from '../../lib/createStore';
 import Drawer from '../../Drawer';
-import { DEFAULT_HEADER } from '../../constants/headerOptions';
 import debounce from '../../utils/debounce';
 
 const ROW_HEIGHT = 70;
@@ -80,9 +79,7 @@ let NewMessageView = null;
 export default class RoomsListView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				leftButtons,
 				rightButtons,
 				title: {

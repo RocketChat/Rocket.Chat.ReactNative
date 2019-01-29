@@ -19,7 +19,6 @@ import { showToast } from '../../utils/info';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
-import { DEFAULT_HEADER } from '../../constants/headerOptions';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -29,11 +28,8 @@ import { DEFAULT_HEADER } from '../../constants/headerOptions';
 export default class RoomMembersView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				title: {
-					...DEFAULT_HEADER.topBar.title,
 					text: I18n.t('Members')
 				},
 				rightButtons: [{

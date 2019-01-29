@@ -19,7 +19,6 @@ import I18n from '../i18n';
 import Touch from '../utils/touch';
 import SearchBox from '../containers/SearchBox';
 import store from '../lib/createStore';
-import { DEFAULT_HEADER } from '../constants/headerOptions';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -58,9 +57,7 @@ let SelectedUsersView = null;
 export default class NewMessageView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				leftButtons: [{
 					id: 'cancel',
 					icon: Platform.OS === 'android' ? { uri: 'back', scale: Dimensions.get('window').scale } : undefined,

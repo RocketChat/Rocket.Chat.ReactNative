@@ -7,6 +7,7 @@ export const DARK_HEADER = {
 	},
 	topBar: {
 		backButton: {
+			showTitle: false,
 			color: '#fff'
 		},
 		background: {
@@ -31,6 +32,7 @@ export const LIGHT_HEADER = {
 	},
 	topBar: {
 		backButton: {
+			showTitle: false,
 			color: '#1d74f5'
 		},
 		background: {

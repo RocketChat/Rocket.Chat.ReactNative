@@ -23,7 +23,6 @@ import log from '../utils/log';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
 import store from '../lib/createStore';
-import { DEFAULT_HEADER } from '../constants/headerOptions';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -52,12 +51,6 @@ let CreateChannelView = null;
 }))
 /** @extends React.Component */
 export default class SelectedUsersView extends LoggedView {
-	static options() {
-		return {
-			...DEFAULT_HEADER
-		};
-	}
-
 	static propTypes = {
 		componentId: PropTypes.string,
 		rid: PropTypes.string,
