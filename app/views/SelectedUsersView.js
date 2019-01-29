@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, FlatList, LayoutAnimation, Platform
+	View, StyleSheet, FlatList, LayoutAnimation
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
@@ -20,6 +20,7 @@ import debounce from '../utils/debounce';
 import LoggedView from './View';
 import I18n from '../i18n';
 import log from '../utils/log';
+import { isIOS, isAndroid } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
 import store from '../lib/createStore';
@@ -27,7 +28,7 @@ import store from '../lib/createStore';
 const styles = StyleSheet.create({
 	safeAreaView: {
 		flex: 1,
-		backgroundColor: Platform.OS === 'ios' ? '#F7F8FA' : '#E1E5E8'
+		backgroundColor: isIOS ? '#F7F8FA' : '#E1E5E8'
 	},
 	header: {
 		backgroundColor: '#fff'
@@ -99,7 +100,7 @@ export default class SelectedUsersView extends LoggedView {
 					id: 'create',
 					text: I18n.t('Next'),
 					testID: 'selected-users-view-submit',
-					color: Platform.OS === 'android' ? '#FFF' : undefined
+					color: isAndroid ? '#FFF' : undefined
 				});
 			}
 			Navigation.mergeOptions(componentId, {

@@ -1,7 +1,6 @@
-import { Platform } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { isIOS } from './utils/deviceInfo';
 
-const isIOS = Platform.OS === 'ios';
 const prefix = isIOS ? 'ios' : 'md';
 
 // icon name from provider: [ size of the uri, icon provider, name to be used later ]

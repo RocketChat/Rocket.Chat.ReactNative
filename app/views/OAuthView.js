@@ -1,15 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { WebView, Platform, Dimensions } from 'react-native';
+import { WebView, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
 import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
 import { DARK_HEADER } from '../constants/headerOptions';
+import { isIOS, isAndroid } from '../utils/deviceInfo';
 
 const userAgentAndroid = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1';
-const userAgent = Platform.OS === 'ios' ? 'UserAgent' : userAgentAndroid;
+const userAgent = isIOS ? 'UserAgent' : userAgentAndroid;
 
 @connect(state => ({
 	server: state.server.server
@@ -22,8 +23,8 @@ export default class OAuthView extends React.PureComponent {
 				...DARK_HEADER.topBar,
 				leftButtons: [{
 					id: 'cancel',
-					icon: Platform.OS === 'android' ? { uri: 'back', scale: Dimensions.get('window').scale } : undefined,
-					text: Platform.OS === 'ios' ? I18n.t('Cancel') : undefined
+					icon: isAndroid ? { uri: 'back', scale: Dimensions.get('window').scale } : undefined,
+					text: isIOS ? I18n.t('Cancel') : undefined
 				}]
 			}
 		};

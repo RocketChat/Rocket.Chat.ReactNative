@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, SafeAreaView, Platform, PermissionsAndroid, Text
+	View, SafeAreaView, PermissionsAndroid, Text
 } from 'react-native';
 import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import { BorderlessButton } from 'react-native-gesture-handler';
-
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
 import styles from './styles';
 import I18n from '../../i18n';
+import { isIOS, isAndroid } from '../../utils/deviceInfo';
 
 export const _formatTime = function(seconds) {
 	let minutes = Math.floor(seconds / 60);
@@ -20,7 +21,7 @@ export const _formatTime = function(seconds) {
 
 export default class extends React.PureComponent {
 	static async permission() {
-		if (Platform.OS !== 'android') {
+		if (!isAndroid) {
 			return true;
 		}
 
@@ -64,7 +65,7 @@ export default class extends React.PureComponent {
 		};
 		//
 		AudioRecorder.onFinished = (data) => {
-			if (!this.recordingCanceled && Platform.OS === 'ios') {
+			if (!this.recordingCanceled && isIOS) {
 				this.finishRecording(data.status === 'OK', data.audioFileURL);
 			}
 		};
@@ -96,7 +97,7 @@ export default class extends React.PureComponent {
 		try {
 			this.recording = false;
 			const filePath = await AudioRecorder.stopRecording();
-			if (Platform.OS === 'android') {
+			if (isAndroid) {
 				this.finishRecording(true, filePath);
 			}
 		} catch (err) {

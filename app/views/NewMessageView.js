@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, FlatList, Text, Platform, Image, Dimensions
+	View, StyleSheet, FlatList, Text, Image, Dimensions
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
@@ -17,13 +17,14 @@ import LoggedView from './View';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
 import Touch from '../utils/touch';
+import { isIOS, isAndroid } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
 import store from '../lib/createStore';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
 		flex: 1,
-		backgroundColor: Platform.OS === 'ios' ? '#F7F8FA' : '#E1E5E8'
+		backgroundColor: isIOS ? '#F7F8FA' : '#E1E5E8'
 	},
 	separator: {
 		marginLeft: 60
@@ -60,8 +61,8 @@ export default class NewMessageView extends LoggedView {
 			topBar: {
 				leftButtons: [{
 					id: 'cancel',
-					icon: Platform.OS === 'android' ? { uri: 'back', scale: Dimensions.get('window').scale } : undefined,
-					text: Platform.OS === 'ios' ? I18n.t('Cancel') : undefined
+					icon: isAndroid ? { uri: 'back', scale: Dimensions.get('window').scale } : undefined,
+					text: isIOS ? I18n.t('Cancel') : undefined
 				}]
 			}
 		};
