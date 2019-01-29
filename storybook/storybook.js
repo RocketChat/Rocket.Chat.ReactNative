@@ -21,11 +21,14 @@ class StorybookUIHMRRoot extends Component {
 }
 
 Navigation.registerComponent('storybook.UI', () => StorybookUIHMRRoot);
-Navigation.startSingleScreenApp({
-	screen: {
-		screen: 'storybook.UI',
-		title: 'Storybook'
-	}
+Navigation.events().registerAppLaunchedListener(() => {
+	Navigation.setRoot({
+		root: {
+			component: {
+				name: 'storybook.UI'
+			}
+		}
+	});
 });
 
 export default StorybookUIHMRRoot;

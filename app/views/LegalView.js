@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, ScrollView, View, StyleSheet, Image, Platform, Dimensions
+	Text, ScrollView, View, StyleSheet, Image, Dimensions
 } from 'react-native';
 import { Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
@@ -10,6 +10,7 @@ import { gestureHandlerRootHOC, RectButton } from 'react-native-gesture-handler'
 
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
+import { isIOS, isAndroid } from '../utils/deviceInfo';
 import LoggedView from './View';
 import I18n from '../i18n';
 import store from '../lib/createStore';
@@ -72,8 +73,8 @@ export default class LegalView extends LoggedView {
 				},
 				leftButtons: [{
 					id: 'close',
-					icon: Platform.OS === 'android' ? { uri: 'back', scale: Dimensions.get('window').scale } : undefined,
-					text: Platform.OS === 'ios' ? I18n.t('Close') : undefined,
+					icon: isAndroid ? { uri: 'back', scale: Dimensions.get('window').scale } : undefined,
+					text: isIOS ? I18n.t('Close') : undefined,
 					testID: 'legal-view-close'
 				}]
 			}

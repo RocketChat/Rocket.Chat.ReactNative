@@ -15,13 +15,11 @@ import styles from './styles';
 import sharedStyles from '../Styles';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
-
 import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import { iconsMap } from '../../Icons';
 import store from '../../lib/createStore';
-import { DEFAULT_HEADER } from '../../constants/headerOptions';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
@@ -50,11 +48,8 @@ let RoomInfoEditView = null;
 export default class RoomInfoView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				title: {
-					...DEFAULT_HEADER.topBar.title,
 					text: I18n.t('Room_Info')
 				}
 			}

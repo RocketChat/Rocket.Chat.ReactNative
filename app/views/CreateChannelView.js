@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
-	View, Text, Switch, ScrollView, TextInput, StyleSheet, FlatList, Platform
+	View, Text, Switch, ScrollView, TextInput, StyleSheet, FlatList
 } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -18,7 +18,7 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import UserItem from '../presentation/UserItem';
 import { showErrorAlert } from '../utils/info';
-import { DEFAULT_HEADER } from '../constants/headerOptions';
+import { isAndroid } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	container: {
@@ -89,11 +89,8 @@ const styles = StyleSheet.create({
 export default class CreateChannelView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				title: {
-					...DEFAULT_HEADER.topBar.title,
 					text: I18n.t('Create_Channel')
 				}
 			}
@@ -207,7 +204,7 @@ export default class CreateChannelView extends LoggedView {
 				id: 'create',
 				text: 'Create',
 				testID: 'create-channel-submit',
-				color: Platform.OS === 'android' ? '#FFF' : undefined
+				color: isAndroid ? '#FFF' : undefined
 			});
 		}
 		Navigation.mergeOptions(componentId, {
@@ -261,7 +258,7 @@ export default class CreateChannelView extends LoggedView {
 				onValueChange={onValueChange}
 				testID={`create-channel-${ id }`}
 				onTintColor='#2de0a5'
-				tintColor={Platform.OS === 'android' ? '#f5455c' : null}
+				tintColor={isAndroid ? '#f5455c' : null}
 				disabled={disabled}
 			/>
 		</View>

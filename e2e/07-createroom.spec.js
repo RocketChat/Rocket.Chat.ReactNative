@@ -146,6 +146,7 @@ describe('Create room screen', () => {
 				await tapBack();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 				await element(by.id('rooms-list-view-search')).replaceText(`private${ data.random }`);
+				await sleep(2000);
 				await waitFor(element(by.id(`rooms-list-view-item-private${ data.random }`))).toBeVisible().withTimeout(60000);
 				await expect(element(by.id(`rooms-list-view-item-private${ data.random }`))).toBeVisible();
 			});

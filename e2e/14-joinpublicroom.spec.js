@@ -3,7 +3,7 @@ const {
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
-const { tapBack } = require('./helpers/app');
+const { tapBack, sleep } = require('./helpers/app');
 
 const room = 'detox-public';
 
@@ -16,6 +16,7 @@ async function mockMessage(message) {
 
 async function navigateToRoom() {
 	await element(by.id('rooms-list-view-search')).replaceText(room);
+	await sleep(2000);
     await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible().withTimeout(60000);
     await element(by.id(`rooms-list-view-item-${ room }`)).tap();
     await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
@@ -183,6 +184,7 @@ describe('Join public room', () => {
 			await element(by.text('Yes, leave it!')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 			await element(by.id('rooms-list-view-search')).replaceText('');
+			await sleep(2000);
 			await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible().withTimeout(60000);
 			await expect(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible();
 		});

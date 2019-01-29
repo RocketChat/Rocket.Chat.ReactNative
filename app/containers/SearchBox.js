@@ -1,14 +1,15 @@
 import React from 'react';
 import {
-	View, StyleSheet, Image, TextInput, Platform
+	View, StyleSheet, Image, TextInput
 } from 'react-native';
 import PropTypes from 'prop-types';
 
 import I18n from '../i18n';
+import { isIOS } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: Platform.OS === 'ios' ? '#F7F8FA' : '#54585E'
+		backgroundColor: isIOS ? '#F7F8FA' : '#54585E'
 	},
 	searchBox: {
 		alignItems: 'center',

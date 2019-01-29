@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	FlatList, View, Vibration, Platform
-} from 'react-native';
+import { FlatList, View, Vibration } from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
@@ -17,9 +15,9 @@ import RocketChat from '../../lib/rocketchat';
 import database from '../../lib/realm';
 import { showToast } from '../../utils/info';
 import log from '../../utils/log';
+import { isAndroid } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
-import { DEFAULT_HEADER } from '../../constants/headerOptions';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -29,18 +27,15 @@ import { DEFAULT_HEADER } from '../../constants/headerOptions';
 export default class RoomMembersView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				title: {
-					...DEFAULT_HEADER.topBar.title,
 					text: I18n.t('Members')
 				},
 				rightButtons: [{
 					id: 'toggleOnline',
 					text: I18n.t('Online'),
 					testID: 'room-members-view-toggle-status',
-					color: Platform.OS === 'android' ? '#FFF' : undefined
+					color: isAndroid ? '#FFF' : undefined
 				}]
 			}
 		};
@@ -125,7 +120,7 @@ export default class RoomMembersView extends LoggedView {
 							id: 'toggleOnline',
 							text: allUsers ? I18n.t('Online') : I18n.t('All'),
 							testID: 'room-members-view-toggle-status',
-							color: Platform.OS === 'android' ? '#FFF' : undefined
+							color: isAndroid ? '#FFF' : undefined
 						}]
 					}
 				});
