@@ -11,7 +11,7 @@
     "ios": "react-native run-ios",
     "log-android": "react-native log-android",
     "android": "react-native run-android",
-    "storybook": "storybook start -p 7007",
+    "storybook": "storybook start -p 7007 | react-native start --projectRoot storybook",
     "snyk-protect": "snyk protect",
     "fabric-ios": "./scripts/fabric-ios.sh",
     "fabric-android": "./scripts/fabric-android.sh"
@@ -77,11 +77,11 @@
   "devDependencies": {
     "@babel/core": "^7.1.0",
     "@babel/plugin-proposal-decorators": "^7.1.0",
-    "@storybook/addon-actions": "^3.4.11",
-    "@storybook/addon-links": "^3.4.11",
-    "@storybook/addon-storyshots": "^3.4.11",
-    "@storybook/addons": "^3.4.11",
-    "@storybook/react-native": "^3.4.11",
+    "@storybook/addon-actions": "^4.1.11",
+    "@storybook/addon-links": "^4.1.11",
+    "@storybook/addon-storyshots": "^4.1.11",
+    "@storybook/addons": "^4.1.11",
+    "@storybook/react-native": "^4.1.11",
     "babel-core": "^6.26.3",
     "babel-eslint": "^9.0.0",
     "babel-jest": "^23.6.0",
@@ -105,7 +105,8 @@
     "react-test-renderer": "16.6.3",
     "reactotron-react-native": "^2.1.5",
     "reactotron-redux": "^2.1.3",
-    "reactotron-redux-saga": "^2.1.4"
+    "reactotron-redux-saga": "^2.1.4",
+    "regenerator-runtime": "^0.13.1"
   },
   "jest": {
     "testPathIgnorePatterns": [
