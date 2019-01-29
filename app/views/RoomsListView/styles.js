@@ -1,11 +1,10 @@
-import { StyleSheet, Platform } from 'react-native';
-
-const isIOS = () => Platform.OS === 'ios';
+import { StyleSheet } from 'react-native';
+import { isIOS } from '../../utils/deviceInfo';
 
 export default StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: isIOS() ? '#FFF' : '#E1E5E8'
+		backgroundColor: isIOS ? '#FFF' : '#E1E5E8'
 	},
 	separator: {
 		height: StyleSheet.hairlineWidth,
@@ -39,7 +38,7 @@ export default StyleSheet.create({
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		borderColor: '#E1E5E8',
 		alignItems: 'center',
-		backgroundColor: isIOS() ? '#fff' : '#54585E',
+		backgroundColor: isIOS ? '#fff' : '#54585E',
 		flexDirection: 'row'
 	},
 	sortToggleContainerClose: {
@@ -95,15 +94,15 @@ export default StyleSheet.create({
 		paddingHorizontal: 15,
 		paddingTop: 17,
 		paddingBottom: 10,
-		backgroundColor: isIOS() ? '#fff' : '#E1E5E8'
+		backgroundColor: isIOS ? '#fff' : '#E1E5E8'
 	},
 	groupTitle: {
-		color: isIOS() ? '#2F343D' : '#54585E',
-		fontSize: isIOS() ? 22 : 15,
+		color: isIOS ? '#2F343D' : '#54585E',
+		fontSize: isIOS ? 22 : 15,
 		fontWeight: 'bold',
 		letterSpacing: 0.27,
 		flex: 1,
-		lineHeight: isIOS() ? 41 : 24
+		lineHeight: isIOS ? 41 : 24
 	},
 	serverHeader: {
 		justifyContent: 'space-between'
@@ -115,7 +114,7 @@ export default StyleSheet.create({
 		marginLeft: 15
 	},
 	serverHeaderAdd: {
-		color: isIOS() ? '#1D74F5' : '#FFF',
+		color: isIOS ? '#1D74F5' : '#FFF',
 		fontSize: 15,
 		fontWeight: 'normal',
 		marginRight: 15,

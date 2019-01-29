@@ -10,7 +10,6 @@ import styles from './styles';
 import Message from '../../containers/message/Message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
-import { DEFAULT_HEADER } from '../../constants/headerOptions';
 import RocketChat from '../../lib/rocketchat';
 
 @connect(state => ({
@@ -27,11 +26,8 @@ import RocketChat from '../../lib/rocketchat';
 export default class RoomFilesView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				title: {
-					...DEFAULT_HEADER.topBar.title,
 					text: I18n.t('Files')
 				}
 			}

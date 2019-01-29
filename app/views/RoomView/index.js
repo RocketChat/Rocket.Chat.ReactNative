@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, LayoutAnimation, ActivityIndicator, Platform
+	Text, View, LayoutAnimation, ActivityIndicator
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { RectButton, gestureHandlerRootHOC } from 'react-native-gesture-handler';
@@ -22,11 +22,11 @@ import ReactionPicker from './ReactionPicker';
 import UploadProgress from './UploadProgress';
 import styles from './styles';
 import log from '../../utils/log';
+import { isIOS } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import { iconsMap } from '../../Icons';
 import store from '../../lib/createStore';
 import ConnectionBadge from '../../containers/ConnectionBadge';
-import { DEFAULT_HEADER } from '../../constants/headerOptions';
 
 let RoomActionsView = null;
 
@@ -51,9 +51,7 @@ let RoomActionsView = null;
 export default class RoomView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				title: {
 					component: {
 						name: 'RoomHeaderView',
@@ -214,7 +212,7 @@ export default class RoomView extends LoggedView {
 	};
 
 	internalSetState = (...args) => {
-		if (Platform.OS === 'ios') {
+		if (isIOS) {
 			LayoutAnimation.easeInEaseOut();
 		}
 		this.setState(...args);

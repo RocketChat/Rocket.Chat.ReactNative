@@ -1,4 +1,6 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
+
+import { isIOS } from '../../utils/deviceInfo';
 
 const MENTION_HEIGHT = 50;
 
@@ -66,7 +68,7 @@ export default StyleSheet.create({
 	mentionItemEmoji: {
 		width: 46,
 		height: 36,
-		fontSize: Platform.OS === 'ios' ? 30 : 25,
+		fontSize: isIOS ? 30 : 25,
 		textAlign: 'center'
 	},
 	fixedMentionAvatar: {

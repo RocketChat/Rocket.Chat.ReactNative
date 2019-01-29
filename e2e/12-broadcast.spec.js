@@ -4,7 +4,7 @@ const {
 const OTP = require('otp.js');
 const GA = OTP.googleAuthenticator;
 const { takeScreenshot } = require('./helpers/screenshot');
-const { logout, navigateToLogin, login, tapBack } = require('./helpers/app');
+const { logout, navigateToLogin, login, tapBack, sleep } = require('./helpers/app');
 const data = require('./data');
 
 describe('Broadcast room', () => {
@@ -71,6 +71,7 @@ describe('Broadcast room', () => {
 		// await device.reloadReactNative(); // remove after fix logout
 		// await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 		await element(by.id('rooms-list-view-search')).replaceText(`broadcast${ data.random }`);
+		await sleep(2000);
 		await waitFor(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toExist().withTimeout(60000);
 		await expect(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toExist();
 		await element(by.id(`rooms-list-view-item-broadcast${ data.random }`)).tap();

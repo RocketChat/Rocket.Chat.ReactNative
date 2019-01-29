@@ -18,7 +18,7 @@ import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import I18n from '../i18n';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
-import DeviceInfo from '../utils/deviceInfo';
+import { getReadableVersion } from '../utils/deviceInfo';
 import Drawer from '../Drawer';
 
 const styles = StyleSheet.create({
@@ -363,7 +363,7 @@ export default class Sidebar extends Component {
 					{showStatus ? this.renderStatus() : null}
 				</ScrollView>
 				<Text style={styles.version}>
-					{DeviceInfo.getReadableVersion()}
+					{getReadableVersion}
 				</Text>
 			</SafeAreaView>
 		);

@@ -1,11 +1,12 @@
 import React from 'react';
 import {
-	Text, View, StyleSheet, Platform, ViewPropTypes, Image
+	Text, View, StyleSheet, ViewPropTypes, Image
 } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Avatar from '../containers/Avatar';
 import Touch from '../utils/touch';
+import { isIOS } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	button: {
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
 	name: {
 		fontSize: 18,
 		color: '#0C0D0F',
-		marginTop: Platform.OS === 'ios' ? 6 : 3,
+		marginTop: isIOS ? 6 : 3,
 		marginBottom: 1,
 		textAlign: 'left'
 	},

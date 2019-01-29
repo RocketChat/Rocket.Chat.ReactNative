@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Linking, Platform } from 'react-native';
+import { Linking } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { Provider } from 'react-redux';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
@@ -11,6 +11,7 @@ import { registerScreens } from './views';
 import { deepLinkingOpen } from './actions/deepLinking';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications } from './push';
+import { DEFAULT_HEADER } from './constants/headerOptions';
 
 const startLogged = () => {
 	Navigation.setRoot({
@@ -103,20 +104,7 @@ export default class App extends Component {
 
 		Navigation.events().registerAppLaunchedListener(() => {
 			Navigation.setDefaultOptions({
-				topBar: {
-					backButton: {
-						showTitle: false
-					},
-					leftButtonStyle: {
-						color: '#FFF'
-					},
-					rightButtonStyle: {
-						color: '#FFF'
-					},
-					title: {
-						fontFamily: Platform.OS === 'ios' ? 'System' : 'sans-serif-medium'
-					}
-				},
+				...DEFAULT_HEADER,
 				sideMenu: {
 					left: {
 						enabled: false
