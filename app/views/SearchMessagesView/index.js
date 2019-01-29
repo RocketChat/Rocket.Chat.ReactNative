@@ -15,7 +15,6 @@ import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message/Message';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
-import { DEFAULT_HEADER } from '../../constants/headerOptions';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -30,11 +29,8 @@ import { DEFAULT_HEADER } from '../../constants/headerOptions';
 export default class SearchMessagesView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				title: {
-					...DEFAULT_HEADER.topBar.title,
 					text: I18n.t('Search')
 				}
 			}

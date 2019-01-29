@@ -27,7 +27,6 @@ import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
 import Drawer from '../../Drawer';
-import { DEFAULT_HEADER } from '../../constants/headerOptions';
 import { appStart as appStartAction } from '../../actions';
 import { setUser as setUserAction } from '../../actions/login';
 
@@ -49,16 +48,13 @@ import { setUser as setUserAction } from '../../actions/login';
 export default class ProfileView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				leftButtons: [{
 					id: 'settings',
 					icon: { uri: 'settings', scale: Dimensions.get('window').scale },
 					testID: 'rooms-list-view-sidebar'
 				}],
 				title: {
-					...DEFAULT_HEADER.topBar.title,
 					text: I18n.t('Profile')
 				}
 			},

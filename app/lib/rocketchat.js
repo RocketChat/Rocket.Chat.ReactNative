@@ -1,4 +1,4 @@
-import { AsyncStorage, Platform } from 'react-native';
+import { AsyncStorage } from 'react-native';
 import foreach from 'lodash/forEach';
 import * as SDK from '@rocket.chat/sdk';
 import semver from 'semver';
@@ -8,6 +8,7 @@ import defaultSettings from '../constants/settings';
 import messagesStatus from '../constants/messagesStatus';
 import database from './realm';
 import log from '../utils/log';
+import { isIOS } from '../utils/deviceInfo';
 
 import {
 	setUser, setLoginServices, loginRequest, loginFailure, logout
@@ -360,7 +361,7 @@ const RocketChat = {
 		return new Promise((resolve) => {
 			const token = getDeviceToken();
 			if (token) {
-				const type = Platform.OS === 'ios' ? 'apn' : 'gcm';
+				const type = isIOS ? 'apn' : 'gcm';
 				const data = {
 					value: token,
 					type,

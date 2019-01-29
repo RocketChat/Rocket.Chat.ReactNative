@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, TouchableOpacity, Platform } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import { emojify } from 'react-emojione';
 import { responsive } from 'react-native-responsive-ui';
 import { OptimizedFlatList } from 'react-native-optimized-flatlist';
+
 import styles from './styles';
 import CustomEmoji from './CustomEmoji';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import { isIOS } from '../../utils/deviceInfo';
 
-const EMOJIS_PER_ROW = Platform.OS === 'ios' ? 8 : 9;
+const EMOJIS_PER_ROW = isIOS ? 8 : 9;
 
 const renderEmoji = (emoji, size, baseUrl) => {
 	if (emoji.isCustom) {

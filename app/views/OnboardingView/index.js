@@ -16,7 +16,7 @@ import openLink from '../../utils/openLink';
 import Button from './Button';
 import styles from './styles';
 import LoggedView from '../View';
-import DeviceInfo from '../../utils/deviceInfo';
+import { isIOS, isNotch } from '../../utils/deviceInfo';
 import store from '../../lib/createStore';
 import EventEmitter from '../../utils/events';
 import { LIGHT_HEADER } from '../../constants/headerOptions';
@@ -142,8 +142,8 @@ export default class OnboardingView extends LoggedView {
 
 		if (previousServer) {
 			let top = 15;
-			if (DeviceInfo.getBrand() === 'Apple') {
-				top = DeviceInfo.isNotch() ? 45 : 30;
+			if (isIOS) {
+				top = isNotch ? 45 : 30;
 			}
 			return (
 				<TouchableOpacity

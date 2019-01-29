@@ -17,7 +17,7 @@ import LoggedView from './View';
 import I18n from '../i18n';
 import { verticalScale, moderateScale } from '../utils/scaling';
 import KeyboardView from '../presentation/KeyboardView';
-import DeviceInfo from '../utils/deviceInfo';
+import { isIOS, isNotch } from '../utils/deviceInfo';
 import { LIGHT_HEADER } from '../constants/headerOptions';
 
 const styles = StyleSheet.create({
@@ -156,8 +156,8 @@ export default class NewServerView extends LoggedView {
 		const { componentId } = this.props;
 
 		let top = 15;
-		if (DeviceInfo.getBrand() === 'Apple') {
-			top = DeviceInfo.isNotch() ? 45 : 30;
+		if (isIOS) {
+			top = isNotch ? 45 : 30;
 		}
 
 		return (
