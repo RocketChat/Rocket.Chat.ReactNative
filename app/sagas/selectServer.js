@@ -1,7 +1,7 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import { AsyncStorage, Alert } from 'react-native';
 
-import Navigation from '../Navigation';
+import Navigation from '../lib/Navigation';
 import { SERVER } from '../actions/actionsTypes';
 import * as actions from '../actions';
 import { serverFailure, selectServerRequest, selectServerSuccess } from '../actions/server';

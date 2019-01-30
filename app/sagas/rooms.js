@@ -4,7 +4,7 @@ import {
 } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 
-import Navigation from '../Navigation';
+import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
 import { addUserTyping, removeUserTyping } from '../actions/room';
 import { messagesRequest, editCancel, replyCancel } from '../actions/messages';

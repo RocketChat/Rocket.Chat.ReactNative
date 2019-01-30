@@ -6,7 +6,7 @@ import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import store from './lib/createStore';
 import { appInit } from './actions';
 import { iconsLoaded } from './Icons';
-import Navigation from './Navigation';
+import Navigation from './lib/Navigation';
 import { deepLinkingOpen } from './actions/deepLinking';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications } from './push';

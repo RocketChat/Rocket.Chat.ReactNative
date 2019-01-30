@@ -7,7 +7,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
 
-import Navigation from '../../Navigation';
+import Navigation from '../../lib/Navigation';
 import LoggedView from '../View';
 import RocketChat from '../../lib/rocketchat';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -21,7 +21,6 @@ import { showErrorAlert, showToast } from '../../utils/info';
 import log from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
 import { appStart as appStartAction } from '../../actions';
-import Drawer from '../../Drawer';
 
 @connect(state => ({
 	userLanguage: state.login.user && state.login.user.language
@@ -106,7 +105,7 @@ export default class SettingsView extends LoggedView {
 
 	navigationButtonPressed = ({ buttonId }) => {
 		if (buttonId === 'settings') {
-			Drawer.toggle();
+			Navigation.toggleDrawer();
 		}
 	}
 

@@ -9,7 +9,7 @@ import SafeAreaView from 'react-native-safe-area-view';
 import { RectButton, BorderlessButton } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
 
-import Navigation from '../Navigation';
+import Navigation from '../lib/Navigation';
 import LoggedView from './View';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';

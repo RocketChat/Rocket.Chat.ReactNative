@@ -7,7 +7,7 @@ import {
 import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
 
-import Navigation from '../Navigation';
+import Navigation from '../lib/Navigation';
 import Loading from '../containers/Loading';
 import LoggedView from './View';
 import { createChannelRequest as createChannelRequestAction } from '../actions/createChannel';

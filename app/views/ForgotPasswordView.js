@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Text, ScrollView } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 
-import Navigation from '../Navigation';
+import Navigation from '../lib/Navigation';
 import LoggedView from './View';
 import KeyboardView from '../presentation/KeyboardView';
 import TextInput from '../containers/TextInput';

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { WebView, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 
-import Navigation from '../Navigation';
+import Navigation from '../lib/Navigation';
 import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
 import { DARK_HEADER } from '../constants/headerOptions';

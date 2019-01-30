@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
 import SafeAreaView from 'react-native-safe-area-view';
 
-import Navigation from '../../Navigation';
+import Navigation from '../../lib/Navigation';
 import SearchBox from '../../containers/SearchBox';
 import ConnectionBadge from '../../containers/ConnectionBadge';
 import database from '../../lib/realm';
@@ -22,7 +22,6 @@ import ServerDropdown from './ServerDropdown';
 import Touch from '../../utils/touch';
 import { toggleSortDropdown as toggleSortDropdownAction, openSearchHeader as openSearchHeaderAction, closeSearchHeader as closeSearchHeaderAction } from '../../actions/rooms';
 import { appStart as appStartAction } from '../../actions';
-import Drawer from '../../Drawer';
 import debounce from '../../utils/debounce';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
 
@@ -263,7 +262,7 @@ export default class RoomsListView extends LoggedView {
 				}
 			});
 		} else if (buttonId === 'settings') {
-			Drawer.toggle();
+			Navigation.toggleDrawer();
 		} else if (buttonId === 'search') {
 			this.initSearchingAndroid();
 		} else if (buttonId === 'back') {

@@ -4,7 +4,7 @@ import {
 	takeLatest, take, select, put, all, race
 } from 'redux-saga/effects';
 
-import Navigation from '../Navigation';
+import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
 import { appStart, setStackRoot } from '../actions';
 import { selectServerRequest } from '../actions/server';

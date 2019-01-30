@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import SafeAreaView from 'react-native-safe-area-view';
 
-import Navigation from '../Navigation';
+import Navigation from '../lib/Navigation';
 import { serverRequest } from '../actions/server';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';

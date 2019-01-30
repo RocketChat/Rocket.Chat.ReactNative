@@ -6,7 +6,7 @@ import moment from 'moment';
 import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
 
-import Navigation from '../../Navigation';
+import Navigation from '../../lib/Navigation';
 import LoggedView from '../View';
 import Status from '../../containers/status';
 import Avatar from '../../containers/Avatar';

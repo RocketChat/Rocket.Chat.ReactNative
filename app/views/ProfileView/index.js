@@ -12,7 +12,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
 
-import Navigation from '../../Navigation';
+import Navigation from '../../lib/Navigation';
 import LoggedView from '../View';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
@@ -26,7 +26,6 @@ import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
-import Drawer from '../../Drawer';
 import { appStart as appStartAction } from '../../actions';
 import { setUser as setUserAction } from '../../actions/login';
 
@@ -131,7 +130,7 @@ export default class ProfileView extends LoggedView {
 
 	navigationButtonPressed = ({ buttonId }) => {
 		if (buttonId === 'settings') {
-			Drawer.toggle();
+			Navigation.toggleDrawer();
 		}
 	}
 

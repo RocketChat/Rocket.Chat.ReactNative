@@ -3,7 +3,7 @@ import {
 	put, call, takeLatest, select
 } from 'redux-saga/effects';
 
-import Navigation from '../Navigation';
+import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions';
 import { serverFinishAdd } from '../actions/server';

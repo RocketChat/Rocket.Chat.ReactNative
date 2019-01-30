@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
 
-import Navigation from '../../Navigation';
+import Navigation from '../../lib/Navigation';
 import LoggedView from '../View';
 import styles from './styles';
 import UserItem from '../../presentation/UserItem';

@@ -6,7 +6,7 @@ import {
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
 
-import Navigation from '../Navigation';
+import Navigation from '../lib/Navigation';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
 import KeyboardView from '../presentation/KeyboardView';

@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
 import SafeAreaView from 'react-native-safe-area-view';
 
-import Navigation from '../../Navigation';
+import Navigation from '../../lib/Navigation';
 import { openRoom as openRoomAction, closeRoom as closeRoomAction, setLastOpen as setLastOpenAction } from '../../actions/room';
 import { toggleReactionPicker as toggleReactionPickerAction, actionsShow as actionsShowAction } from '../../actions/messages';
 import LoggedView from '../View';

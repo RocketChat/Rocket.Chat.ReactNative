@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
 
-import Navigation from '../Navigation';
+import Navigation from '../lib/Navigation';
 import {
 	addUser as addUserAction, removeUser as removeUserAction, reset as resetAction, setLoading as setLoadingAction
 } from '../actions/selectedUsers';

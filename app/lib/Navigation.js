@@ -2,7 +2,9 @@ import { Navigation } from 'react-native-navigation';
 import { Provider } from 'react-redux';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
-import store from './lib/createStore';
+import store from './createStore';
+
+const DRAWER_ID = 'SidebarView';
 
 class NavigationManager {
 	constructor() {
@@ -10,162 +12,176 @@ class NavigationManager {
 			OnboardingView: {
 				name: 'OnboardingView',
 				loaded: false,
-				require: () => require('./views/OnboardingView').default
+				require: () => require('../views/OnboardingView').default
 			},
 			ProfileView: {
 				name: 'ProfileView',
 				loaded: false,
-				require: () => require('./views/ProfileView').default
+				require: () => require('../views/ProfileView').default
 			},
 			RoomsListHeaderView: {
 				name: 'RoomsListHeaderView',
 				loaded: false,
-				require: () => require('./views/RoomsListView/Header').default
+				require: () => require('../views/RoomsListView/Header').default
 			},
 			RoomsListView: {
 				name: 'RoomsListView',
 				loaded: false,
-				require: () => require('./views/RoomsListView').default
+				require: () => require('../views/RoomsListView').default
 			},
 			RoomView: {
 				name: 'RoomView',
 				loaded: false,
-				require: () => require('./views/RoomView').default
+				require: () => require('../views/RoomView').default
 			},
 			RoomHeaderView: {
 				name: 'RoomHeaderView',
 				loaded: false,
-				require: () => require('./views/RoomView/Header').default
+				require: () => require('../views/RoomView/Header').default
 			},
 			SettingsView: {
 				name: 'SettingsView',
 				loaded: false,
-				require: () => require('./views/SettingsView').default
+				require: () => require('../views/SettingsView').default
 			},
 			SidebarView: {
 				name: 'SidebarView',
 				loaded: false,
-				require: () => require('./views/SidebarView').default
+				require: () => require('../views/SidebarView').default
 			},
 			NewServerView: {
 				name: 'NewServerView',
 				loaded: false,
-				require: () => require('./views/NewServerView').default
+				require: () => require('../views/NewServerView').default
 			},
 			CreateChannelView: {
 				name: 'CreateChannelView',
 				loaded: false,
-				require: () => require('./views/CreateChannelView').default
+				require: () => require('../views/CreateChannelView').default
 			},
 			ForgotPasswordView: {
 				name: 'ForgotPasswordView',
 				loaded: false,
-				require: () => require('./views/ForgotPasswordView').default
+				require: () => require('../views/ForgotPasswordView').default
 			},
 			LegalView: {
 				name: 'LegalView',
 				loaded: false,
-				require: () => require('./views/LegalView').default
+				require: () => require('../views/LegalView').default
 			},
 			LoginSignupView: {
 				name: 'LoginSignupView',
 				loaded: false,
-				require: () => require('./views/LoginSignupView').default
+				require: () => require('../views/LoginSignupView').default
 			},
 			LoginView: {
 				name: 'LoginView',
 				loaded: false,
-				require: () => require('./views/LoginView').default
+				require: () => require('../views/LoginView').default
 			},
 			NewMessageView: {
 				name: 'NewMessageView',
 				loaded: false,
-				require: () => require('./views/NewMessageView').default
+				require: () => require('../views/NewMessageView').default
 			},
 			OAuthView: {
 				name: 'OAuthView',
 				loaded: false,
-				require: () => require('./views/OAuthView').default
+				require: () => require('../views/OAuthView').default
 			},
 			PrivacyPolicyView: {
 				name: 'PrivacyPolicyView',
 				loaded: false,
-				require: () => require('./views/PrivacyPolicyView').default
+				require: () => require('../views/PrivacyPolicyView').default
 			},
 			RegisterView: {
 				name: 'RegisterView',
 				loaded: false,
-				require: () => require('./views/RegisterView').default
+				require: () => require('../views/RegisterView').default
 			},
 			SelectedUsersView: {
 				name: 'SelectedUsersView',
 				loaded: false,
-				require: () => require('./views/SelectedUsersView').default
+				require: () => require('../views/SelectedUsersView').default
 			},
 			SetUsernameView: {
 				name: 'SetUsernameView',
 				loaded: false,
-				require: () => require('./views/SetUsernameView').default
+				require: () => require('../views/SetUsernameView').default
 			},
 			TermsServiceView: {
 				name: 'TermsServiceView',
 				loaded: false,
-				require: () => require('./views/TermsServiceView').default
+				require: () => require('../views/TermsServiceView').default
 			},
 			MentionedMessagesView: {
 				name: 'MentionedMessagesView',
 				loaded: false,
-				require: () => require('./views/MentionedMessagesView').default
+				require: () => require('../views/MentionedMessagesView').default
 			},
 			PinnedMessagesView: {
 				name: 'PinnedMessagesView',
 				loaded: false,
-				require: () => require('./views/PinnedMessagesView').default
+				require: () => require('../views/PinnedMessagesView').default
 			},
 			RoomActionsView: {
 				name: 'RoomActionsView',
 				loaded: false,
-				require: () => require('./views/RoomActionsView').default
+				require: () => require('../views/RoomActionsView').default
 			},
 			RoomFilesView: {
 				name: 'RoomFilesView',
 				loaded: false,
-				require: () => require('./views/RoomFilesView').default
+				require: () => require('../views/RoomFilesView').default
 			},
 			RoomInfoEditView: {
 				name: 'RoomInfoEditView',
 				loaded: false,
-				require: () => require('./views/RoomInfoEditView').default
+				require: () => require('../views/RoomInfoEditView').default
 			},
 			RoomInfoView: {
 				name: 'RoomInfoView',
 				loaded: false,
-				require: () => require('./views/RoomInfoView').default
+				require: () => require('../views/RoomInfoView').default
 			},
 			RoomMembersView: {
 				name: 'RoomMembersView',
 				loaded: false,
-				require: () => require('./views/RoomMembersView').default
+				require: () => require('../views/RoomMembersView').default
 			},
 			SearchMessagesView: {
 				name: 'SearchMessagesView',
 				loaded: false,
-				require: () => require('./views/SearchMessagesView').default
+				require: () => require('../views/SearchMessagesView').default
 			},
 			SnippetedMessagesView: {
 				name: 'SnippetedMessagesView',
 				loaded: false,
-				require: () => require('./views/SnippetedMessagesView').default
+				require: () => require('../views/SnippetedMessagesView').default
 			},
 			StarredMessagesView: {
 				name: 'StarredMessagesView',
 				loaded: false,
-				require: () => require('./views/StarredMessagesView').default
+				require: () => require('../views/StarredMessagesView').default
 			}
 		};
+
+		this.isDrawerVisible = false;
+
+		Navigation.events().registerComponentDidAppearListener(({ componentId }) => {
+			if (componentId === DRAWER_ID) {
+				this.visible = true;
+			}
+		});
+
+		Navigation.events().registerComponentDidDisappearListener(({ componentId }) => {
+			if (componentId === DRAWER_ID) {
+				this.visible = false;
+			}
+		});
 	}
 
-	configure() {
+	configure = () => {
 		this.loadView('OnboardingView');
 		this.loadView('ProfileView');
 		this.loadView('RoomsListHeaderView');
@@ -185,7 +201,7 @@ class NavigationManager {
 	loadView = (componentName) => {
 		const view = this.registeredViews[componentName];
 		if (!view) {
-			return console.log('TCL: NavigationManager -> loadView -> view', view);
+			return console.error('view not found');
 		}
 		if (!view.loaded) {
 			console.log(`Loading ${ view.name }`);
@@ -235,6 +251,22 @@ class NavigationManager {
 	setRoot = (...args) => Navigation.setRoot(...args);
 
 	setStackRoot = (...args) => Navigation.setStackRoot(...args);
+
+	toggleDrawer = () => {
+		try {
+			const visibility = !this.isDrawerVisible;
+			Navigation.mergeOptions(DRAWER_ID, {
+				sideMenu: {
+					left: {
+						visible: visibility
+					}
+				}
+			});
+			this.isDrawerVisible = visibility;
+		} catch (error) {
+			console.warn(error);
+		}
+	}
 }
 
 export default new NavigationManager();

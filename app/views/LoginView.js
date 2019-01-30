@@ -8,7 +8,7 @@ import { Answers } from 'react-native-fabric';
 import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
 
-import Navigation from '../Navigation';
+import Navigation from '../lib/Navigation';
 import KeyboardView from '../presentation/KeyboardView';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';

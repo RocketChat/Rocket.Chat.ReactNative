@@ -6,7 +6,7 @@ import {
 import SafeAreaView from 'react-native-safe-area-view';
 import { RectButton } from 'react-native-gesture-handler';
 
-import Navigation from '../Navigation';
+import Navigation from '../lib/Navigation';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { isIOS, isAndroid } from '../utils/deviceInfo';

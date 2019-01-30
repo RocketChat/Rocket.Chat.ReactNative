@@ -17,7 +17,7 @@ import LoggedView from '../View';
 import { isIOS, isNotch } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
 import { LIGHT_HEADER } from '../../constants/headerOptions';
-import Navigation from '../../Navigation';
+import Navigation from '../../lib/Navigation';
 
 @connect(state => ({
 	currentServer: state.server.server,

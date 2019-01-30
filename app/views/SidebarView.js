@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import equal from 'deep-equal';
 
-import Navigation from '../Navigation';
+import Navigation from '../lib/Navigation';
 import { setStackRoot as setStackRootAction } from '../actions';
 import { logout as logoutAction } from '../actions/login';
 import Avatar from '../containers/Avatar';
@@ -19,7 +19,6 @@ import log from '../utils/log';
 import I18n from '../i18n';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { getReadableVersion } from '../utils/deviceInfo';
-import Drawer from '../Drawer';
 
 const styles = StyleSheet.create({
 	container: {
@@ -210,7 +209,7 @@ export default class Sidebar extends Component {
 	}
 
 	closeDrawer = () => {
-		Drawer.toggle();
+		Navigation.toggleDrawer();
 	}
 
 	toggleStatus = () => {
