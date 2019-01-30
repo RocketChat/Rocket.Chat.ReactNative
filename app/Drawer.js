@@ -1,6 +1,6 @@
 import { Navigation } from 'react-native-navigation';
 
-const DRAWER_ID = 'Sidebar';
+const DRAWER_ID = 'SidebarView';
 
 class Drawer {
 	constructor() {

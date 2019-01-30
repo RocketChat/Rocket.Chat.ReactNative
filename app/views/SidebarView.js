@@ -5,13 +5,13 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Navigation } from 'react-native-navigation';
 import equal from 'deep-equal';
 
+import Navigation from '../Navigation';
 import { setStackRoot as setStackRootAction } from '../actions';
 import { logout as logoutAction } from '../actions/login';
-import Avatar from './Avatar';
-import Status from './status';
+import Avatar from '../containers/Avatar';
+import Status from '../containers/status';
 import Touch from '../utils/touch';
 import { STATUS_COLORS } from '../constants/colors';
 import RocketChat from '../lib/rocketchat';
@@ -327,7 +327,7 @@ export default class Sidebar extends Component {
 			return null;
 		}
 		return (
-			<SafeAreaView testID='sidebar' style={styles.container}>
+			<SafeAreaView testID='sidebar-view' style={styles.container}>
 				<ScrollView style={styles.container} {...scrollPersistTaps}>
 					<Touch
 						onPress={() => this.toggleStatus()}

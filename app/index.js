@@ -1,13 +1,12 @@
 import { Component } from 'react';
 import { Linking } from 'react-native';
-import { Navigation } from 'react-native-navigation';
 import { Provider } from 'react-redux';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import store from './lib/createStore';
 import { appInit } from './actions';
 import { iconsLoaded } from './Icons';
-import { registerScreens } from './views';
+import Navigation from './Navigation';
 import { deepLinkingOpen } from './actions/deepLinking';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications } from './push';
@@ -19,8 +18,8 @@ const startLogged = () => {
 			sideMenu: {
 				left: {
 					component: {
-						id: 'Sidebar',
-						name: 'Sidebar'
+						id: 'SidebarView',
+						name: 'SidebarView'
 					}
 				},
 				center: {
@@ -94,7 +93,7 @@ const handleOpenURL = ({ url }) => {
 	}
 };
 
-registerScreens(store);
+Navigation.configure();
 iconsLoaded();
 
 export default class App extends Component {
