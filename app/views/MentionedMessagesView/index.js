@@ -10,13 +10,12 @@ import styles from './styles';
 import Message from '../../containers/message/Message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
-import { DEFAULT_HEADER } from '../../constants/headerOptions';
 import RocketChat from '../../lib/rocketchat';
-import database from '../../lib/realm';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	customEmojis: state.customEmojis,
+	room: state.room,
 	user: {
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
@@ -27,11 +26,8 @@ import database from '../../lib/realm';
 export default class MentionedMessagesView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				title: {
-					...DEFAULT_HEADER.topBar.title,
 					text: I18n.t('Mentions')
 				}
 			}
@@ -39,18 +35,16 @@ export default class MentionedMessagesView extends LoggedView {
 	}
 
 	static propTypes = {
-		rid: PropTypes.string,
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
-		customEmojis: PropTypes.object
+		customEmojis: PropTypes.object,
+		room: PropTypes.object
 	}
 
 	constructor(props) {
 		super('StarredMessagesView', props);
-		this.rooms = database.objects('subscriptions').filtered('rid = $0', props.rid);
 		this.state = {
 			loading: false,
-			room: this.rooms[0],
 			messages: []
 		};
 	}
@@ -60,12 +54,19 @@ export default class MentionedMessagesView extends LoggedView {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		return !equal(this.state, nextState);
+		const { loading, messages } = this.state;
+		if (nextState.loading !== loading) {
+			return true;
+		}
+		if (!equal(nextState.messages, messages)) {
+			return true;
+		}
+		return false;
 	}
 
 	load = async() => {
 		const {
-			messages, total, loading, room
+			messages, total, loading
 		} = this.state;
 		const { user } = this.props;
 		if (messages.length === total || loading) {
@@ -75,6 +76,7 @@ export default class MentionedMessagesView extends LoggedView {
 		this.setState({ loading: true });
 
 		try {
+			const { room } = this.props;
 			const result = await RocketChat.getMessages(
 				room.rid,
 				room.t,

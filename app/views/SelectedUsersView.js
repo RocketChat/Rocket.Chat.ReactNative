@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, FlatList, LayoutAnimation, Platform
+	View, StyleSheet, FlatList, LayoutAnimation
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
+import equal from 'deep-equal';
 
 import {
 	addUser as addUserAction, removeUser as removeUserAction, reset as resetAction, setLoading as setLoadingAction
@@ -19,15 +20,15 @@ import debounce from '../utils/debounce';
 import LoggedView from './View';
 import I18n from '../i18n';
 import log from '../utils/log';
+import { isIOS, isAndroid } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
 import store from '../lib/createStore';
-import { DEFAULT_HEADER } from '../constants/headerOptions';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
 		flex: 1,
-		backgroundColor: Platform.OS === 'ios' ? '#F7F8FA' : '#E1E5E8'
+		backgroundColor: isIOS ? '#F7F8FA' : '#E1E5E8'
 	},
 	header: {
 		backgroundColor: '#fff'
@@ -51,12 +52,6 @@ let CreateChannelView = null;
 }))
 /** @extends React.Component */
 export default class SelectedUsersView extends LoggedView {
-	static options() {
-		return {
-			...DEFAULT_HEADER
-		};
-	}
-
 	static propTypes = {
 		componentId: PropTypes.string,
 		rid: PropTypes.string,
@@ -80,6 +75,21 @@ export default class SelectedUsersView extends LoggedView {
 		Navigation.events().bindComponent(this);
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		const { search } = this.state;
+		const { users, loading } = this.props;
+		if (nextProps.loading !== loading) {
+			return true;
+		}
+		if (!equal(nextProps.users, users)) {
+			return true;
+		}
+		if (!equal(nextState.search, search)) {
+			return true;
+		}
+		return false;
+	}
+
 	componentDidUpdate(prevProps) {
 		const { componentId, users } = this.props;
 		if (prevProps.users.length !== users.length) {
@@ -90,7 +100,7 @@ export default class SelectedUsersView extends LoggedView {
 					id: 'create',
 					text: I18n.t('Next'),
 					testID: 'selected-users-view-submit',
-					color: Platform.OS === 'android' ? '#FFF' : undefined
+					color: isAndroid ? '#FFF' : undefined
 				});
 			}
 			Navigation.mergeOptions(componentId, {

@@ -1,10 +1,10 @@
-import { Component } from 'react';
+import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ActionSheet from 'react-native-action-sheet';
 
 import I18n from '../../i18n';
 
-export default class FilesActions extends Component {
+export default class FilesActions extends PureComponent {
 	static propTypes = {
 		hideActions: PropTypes.func.isRequired,
 		takePhoto: PropTypes.func.isRequired,

@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, FlatList, Text, Platform, Image, Dimensions
+	View, StyleSheet, FlatList, Text, Image, Dimensions
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
+import equal from 'deep-equal';
 
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
@@ -16,14 +17,14 @@ import LoggedView from './View';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
 import Touch from '../utils/touch';
+import { isIOS, isAndroid } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
 import store from '../lib/createStore';
-import { DEFAULT_HEADER } from '../constants/headerOptions';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
 		flex: 1,
-		backgroundColor: Platform.OS === 'ios' ? '#F7F8FA' : '#E1E5E8'
+		backgroundColor: isIOS ? '#F7F8FA' : '#E1E5E8'
 	},
 	separator: {
 		marginLeft: 60
@@ -57,13 +58,11 @@ let SelectedUsersView = null;
 export default class NewMessageView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				leftButtons: [{
 					id: 'cancel',
-					icon: Platform.OS === 'android' ? { uri: 'back', scale: Dimensions.get('window').scale } : undefined,
-					text: Platform.OS === 'ios' ? I18n.t('Cancel') : undefined
+					icon: isAndroid ? { uri: 'back', scale: Dimensions.get('window').scale } : undefined,
+					text: isIOS ? I18n.t('Cancel') : undefined
 				}]
 			}
 		};
@@ -85,6 +84,14 @@ export default class NewMessageView extends LoggedView {
 		Navigation.events().bindComponent(this);
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		const { search } = this.state;
+		if (!equal(nextState.search, search)) {
+			return true;
+		}
+		return false;
+	}
+
 	componentWillUnmount() {
 		this.updateState.stop();
 		this.data.removeAllListeners();
@@ -94,12 +101,10 @@ export default class NewMessageView extends LoggedView {
 		this.search(text);
 	}
 
-	onPressItem = (item) => {
+	onPressItem = async(item) => {
 		const { onPressItem } = this.props;
-		this.dismiss();
-		setTimeout(() => {
-			onPressItem(item);
-		}, 600);
+		await this.dismiss();
+		onPressItem(item);
 	}
 
 	navigationButtonPressed = ({ buttonId }) => {
@@ -110,7 +115,7 @@ export default class NewMessageView extends LoggedView {
 
 	dismiss = () => {
 		const { componentId } = this.props;
-		Navigation.dismissModal(componentId);
+		return Navigation.dismissModal(componentId);
 	}
 
 	// eslint-disable-next-line react/sort-comp

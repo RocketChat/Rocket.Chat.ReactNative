@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, ScrollView, Keyboard, Image, Alert, StyleSheet, TouchableOpacity
+	Text, ScrollView, Keyboard, Image, StyleSheet, TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -17,7 +17,7 @@ import LoggedView from './View';
 import I18n from '../i18n';
 import { verticalScale, moderateScale } from '../utils/scaling';
 import KeyboardView from '../presentation/KeyboardView';
-import DeviceInfo from '../utils/deviceInfo';
+import { isIOS, isNotch } from '../utils/deviceInfo';
 import { LIGHT_HEADER } from '../constants/headerOptions';
 
 const styles = StyleSheet.create({
@@ -58,8 +58,7 @@ const styles = StyleSheet.create({
 const defaultServer = 'https://open.rocket.chat';
 
 @connect(state => ({
-	connecting: state.server.connecting,
-	failure: state.server.failure
+	connecting: state.server.connecting
 }), dispatch => ({
 	connectServer: server => dispatch(serverRequest(server))
 }))
@@ -79,7 +78,6 @@ export default class NewServerView extends LoggedView {
 		componentId: PropTypes.string,
 		server: PropTypes.string,
 		connecting: PropTypes.bool.isRequired,
-		failure: PropTypes.bool.isRequired,
 		connectServer: PropTypes.func.isRequired
 	}
 
@@ -103,11 +101,16 @@ export default class NewServerView extends LoggedView {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
-		const { failure } = this.props;
-		if (nextProps.failure && nextProps.failure !== failure) {
-			Alert.alert(I18n.t('Oops'), I18n.t('The_URL_is_invalid'));
+	shouldComponentUpdate(nextProps, nextState) {
+		const { text } = this.state;
+		const { connecting } = this.props;
+		if (nextState.text !== text) {
+			return true;
 		}
+		if (nextProps.connecting !== connecting) {
+			return true;
+		}
+		return false;
 	}
 
 	componentWillUnmount() {
@@ -153,8 +156,8 @@ export default class NewServerView extends LoggedView {
 		const { componentId } = this.props;
 
 		let top = 15;
-		if (DeviceInfo.getBrand() === 'Apple') {
-			top = DeviceInfo.isNotch() ? 45 : 30;
+		if (isIOS) {
+			top = isNotch ? 45 : 30;
 		}
 
 		return (

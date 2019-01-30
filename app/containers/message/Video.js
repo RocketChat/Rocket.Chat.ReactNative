@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	StyleSheet, Image, Platform, View
+	StyleSheet, Image, View
 } from 'react-native';
 import Modal from 'react-native-modal';
 import VideoPlayer from 'react-native-video-controls';
@@ -9,8 +9,9 @@ import { RectButton } from 'react-native-gesture-handler';
 
 import Markdown from './Markdown';
 import openLink from '../../utils/openLink';
+import { isIOS } from '../../utils/deviceInfo';
 
-const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(Platform.OS === 'ios' ? [] : ['video/webm', 'video/3gp', 'video/mkv'])];
+const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/webm', 'video/3gp', 'video/mkv'])];
 const isTypeSupported = type => SUPPORTED_TYPES.indexOf(type) !== -1;
 
 const styles = StyleSheet.create({

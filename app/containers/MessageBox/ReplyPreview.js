@@ -56,6 +56,10 @@ export default class ReplyPreview extends Component {
 		username: PropTypes.string.isRequired
 	}
 
+	shouldComponentUpdate() {
+		return false;
+	}
+
 	close = () => {
 		const { close } = this.props;
 		close();

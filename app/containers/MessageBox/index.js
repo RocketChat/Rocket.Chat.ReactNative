@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
 	View, TextInput, FlatList, Text, TouchableOpacity, Alert, Image
@@ -9,6 +9,7 @@ import { emojify } from 'react-emojione';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import equal from 'deep-equal';
 
 import { userTyping as userTypingAction } from '../../actions/room';
 import {
@@ -59,7 +60,7 @@ const imagePickerConfig = {
 	typing: status => dispatch(userTypingAction(status)),
 	closeReply: () => dispatch(replyCancelAction())
 }))
-export default class MessageBox extends React.PureComponent {
+export default class MessageBox extends Component {
 	static propTypes = {
 		rid: PropTypes.string.isRequired,
 		baseUrl: PropTypes.string.isRequired,
@@ -106,6 +107,43 @@ export default class MessageBox extends React.PureComponent {
 		} else if (!nextProps.message) {
 			this.clearInput();
 		}
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const {
+			showEmojiKeyboard, showFilesAction, showSend, recording, mentions, file
+		} = this.state;
+		const {
+			roomType, replying, editing
+		} = this.props;
+		if (nextProps.roomType !== roomType) {
+			return true;
+		}
+		if (nextProps.replying !== replying) {
+			return true;
+		}
+		if (nextProps.editing !== editing) {
+			return true;
+		}
+		if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
+			return true;
+		}
+		if (nextState.showFilesAction !== showFilesAction) {
+			return true;
+		}
+		if (nextState.showSend !== showSend) {
+			return true;
+		}
+		if (nextState.recording !== recording) {
+			return true;
+		}
+		if (!equal(nextState.mentions, mentions)) {
+			return true;
+		}
+		if (!equal(nextState.file, file)) {
+			return true;
+		}
+		return false;
 	}
 
 	onChangeText(text) {

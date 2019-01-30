@@ -7,6 +7,7 @@ import Video from 'react-native-video';
 import Slider from 'react-native-slider';
 import moment from 'moment';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import equal from 'deep-equal';
 
 import Markdown from './Markdown';
 
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
 
 const formatTime = seconds => moment.utc(seconds * 1000).format('mm:ss');
 
-export default class Audio extends React.PureComponent {
+export default class Audio extends React.Component {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
@@ -67,6 +68,29 @@ export default class Audio extends React.PureComponent {
 			paused: true,
 			uri: `${ baseUrl }${ file.audio_url }?rc_uid=${ user.id }&rc_token=${ user.token }`
 		};
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const {
+			currentTime, duration, paused, uri
+		} = this.state;
+		const { file } = this.props;
+		if (nextState.currentTime !== currentTime) {
+			return true;
+		}
+		if (nextState.duration !== duration) {
+			return true;
+		}
+		if (nextState.paused !== paused) {
+			return true;
+		}
+		if (nextState.uri !== uri) {
+			return true;
+		}
+		if (!equal(nextProps.file, file)) {
+			return true;
+		}
+		return false;
 	}
 
 	onLoad(data) {

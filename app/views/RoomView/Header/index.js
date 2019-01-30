@@ -1,7 +1,7 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, StyleSheet, Image, Platform, LayoutAnimation
+	View, Text, StyleSheet, Image, LayoutAnimation
 } from 'react-native';
 import { connect } from 'react-redux';
 import { responsive } from 'react-native-responsive-ui';
@@ -10,15 +10,15 @@ import equal from 'deep-equal';
 import I18n from '../../../i18n';
 import { STATUS_COLORS } from '../../../constants/colors';
 import sharedStyles from '../../Styles';
+import { isIOS } from '../../../utils/deviceInfo';
 
-const isIOS = () => Platform.OS === 'ios';
 const TITLE_SIZE = 18;
 const ICON_SIZE = 18;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: 'center',
-		backgroundColor: isIOS() ? 'transparent' : '#2F343D'
+		backgroundColor: isIOS ? 'transparent' : '#2F343D'
 	},
 	titleContainer: {
 		flexDirection: 'row',
@@ -26,18 +26,18 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		...sharedStyles.textSemibold,
-		color: isIOS() ? '#0C0D0F' : '#fff',
+		color: isIOS ? '#0C0D0F' : '#fff',
 		fontSize: TITLE_SIZE
 	},
 	type: {
 		width: ICON_SIZE,
 		height: ICON_SIZE,
 		marginRight: 8,
-		tintColor: isIOS() ? '#9EA2A8' : '#fff'
+		tintColor: isIOS ? '#9EA2A8' : '#fff'
 	},
 	typing: {
 		...sharedStyles.textRegular,
-		color: isIOS() ? '#9EA2A8' : '#fff',
+		color: isIOS ? '#9EA2A8' : '#fff',
 		fontSize: 12
 	},
 	typingUsers: {
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
 		status
 	};
 })
-export default class RoomHeaderView extends PureComponent {
+export default class RoomHeaderView extends Component {
 	static propTypes = {
 		title: PropTypes.string,
 		type: PropTypes.string,
@@ -90,10 +90,37 @@ export default class RoomHeaderView extends PureComponent {
 		status: PropTypes.string
 	};
 
+	shouldComponentUpdate(nextProps) {
+		const {
+			type, title, status, usersTyping, window
+		} = this.props;
+		if (nextProps.type !== type) {
+			return true;
+		}
+		if (nextProps.title !== title) {
+			return true;
+		}
+		if (nextProps.status !== status) {
+			return true;
+		}
+		if (nextProps.window.width !== window.width) {
+			return true;
+		}
+		if (nextProps.window.height !== window.height) {
+			return true;
+		}
+		if (!equal(nextProps.usersTyping, usersTyping)) {
+			return true;
+		}
+		return false;
+	}
+
 	componentDidUpdate(prevProps) {
-		const { usersTyping } = this.props;
-		if (!equal(prevProps.usersTyping, usersTyping)) {
-			LayoutAnimation.easeInEaseOut();
+		if (isIOS) {
+			const { usersTyping } = this.props;
+			if (!equal(prevProps.usersTyping, usersTyping)) {
+				LayoutAnimation.easeInEaseOut();
+			}
 		}
 	}
 
@@ -128,7 +155,7 @@ export default class RoomHeaderView extends PureComponent {
 		let scale = 1;
 
 		if (!portrait) {
-			if (isIOS()) {
+			if (isIOS) {
 				height = 32;
 			}
 			if (usersTyping.length > 0) {

@@ -3,6 +3,7 @@ import { StyleSheet, Platform } from 'react-native';
 import {
 	COLOR_DANGER, COLOR_BUTTON_PRIMARY, COLOR_SEPARATOR
 } from '../constants/colors';
+import { isIOS } from '../utils/deviceInfo';
 
 export default StyleSheet.create({
 	container: {
@@ -151,7 +152,7 @@ export default StyleSheet.create({
 	closeOAuth: {
 		position: 'absolute',
 		left: 5,
-		top: Platform.OS === 'ios' ? 20 : 0,
+		top: isIOS ? 20 : 0,
 		backgroundColor: 'transparent'
 	},
 	oAuthModal: {

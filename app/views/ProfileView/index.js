@@ -11,6 +11,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
+import equal from 'deep-equal';
 
 import LoggedView from '../View';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -26,7 +27,6 @@ import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
 import Drawer from '../../Drawer';
-import { DEFAULT_HEADER } from '../../constants/headerOptions';
 import { appStart as appStartAction } from '../../actions';
 import { setUser as setUserAction } from '../../actions/login';
 
@@ -48,16 +48,13 @@ import { setUser as setUserAction } from '../../actions/login';
 export default class ProfileView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				leftButtons: [{
 					id: 'settings',
 					icon: { uri: 'settings', scale: Dimensions.get('window').scale },
 					testID: 'rooms-list-view-sidebar'
 				}],
 				title: {
-					...DEFAULT_HEADER.topBar.title,
 					text: I18n.t('Profile')
 				}
 			},
@@ -116,6 +113,16 @@ export default class ProfileView extends LoggedView {
 		if (user !== nextProps.user) {
 			this.init(nextProps.user);
 		}
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		if (!equal(nextState, this.state)) {
+			return true;
+		}
+		if (!equal(nextProps, this.props)) {
+			return true;
+		}
+		return false;
 	}
 
 	componentWillUnmount() {

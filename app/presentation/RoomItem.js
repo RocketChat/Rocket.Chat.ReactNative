@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import {
-	View, Text, StyleSheet, Image, Platform
+	View, Text, StyleSheet, Image
 } from 'react-native';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
@@ -13,6 +13,7 @@ import Status from '../containers/status';
 import Touch from '../utils/touch/index'; //eslint-disable-line
 import RoomTypeIcon from '../containers/RoomTypeIcon';
 import I18n from '../i18n';
+import { isIOS } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	container: {
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
 	},
 	titleContainer: {
 		width: '100%',
-		marginTop: Platform.OS === 'ios' ? 5 : 2,
+		marginTop: isIOS ? 5 : 2,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center'
@@ -226,7 +227,7 @@ export default class RoomItem extends React.Component {
 	})
 
 	renderDisclosureIndicator = () => {
-		if (Platform.OS === 'ios') {
+		if (isIOS) {
 			return (
 				<View style={styles.disclosureContainer}>
 					<Image source={{ uri: 'disclosure_indicator' }} style={styles.disclosureIndicator} />

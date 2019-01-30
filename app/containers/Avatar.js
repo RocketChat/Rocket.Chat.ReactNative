@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, ViewPropTypes } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-export default class Avatar extends React.PureComponent {
+export default class Avatar extends PureComponent {
 	static propTypes = {
 		baseUrl: PropTypes.string.isRequired,
 		style: ViewPropTypes.style,

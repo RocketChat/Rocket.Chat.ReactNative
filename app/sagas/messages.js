@@ -74,13 +74,13 @@ const handleTogglePinRequest = function* handleTogglePinRequest({ message }) {
 	}
 };
 
-const goRoom = function* goRoom({ rid }) {
+const goRoom = function* goRoom({ rid, name }) {
 	yield Navigation.popToRoot('RoomsListView');
 	Navigation.push('RoomsListView', {
 		component: {
 			name: 'RoomView',
 			passProps: {
-				rid
+				rid, name, t: 'd'
 			}
 		}
 	});
@@ -91,10 +91,10 @@ const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 		const { username } = message.u;
 		const subscriptions = database.objects('subscriptions').filtered('name = $0', username);
 		if (subscriptions.length) {
-			yield goRoom({ rid: subscriptions[0].rid });
+			yield goRoom({ rid: subscriptions[0].rid, name: username });
 		} else {
 			const room = yield RocketChat.createDirectMessage(username);
-			yield goRoom({ rid: room.rid });
+			yield goRoom({ rid: room.rid, name: username });
 		}
 		yield delay(500);
 		yield put(replyInit(message, false));

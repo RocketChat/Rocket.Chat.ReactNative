@@ -25,6 +25,8 @@ let TermsServiceView = null;
 let PrivacyPolicyView = null;
 let LegalView = null;
 
+const shouldUpdateState = ['name', 'email', 'password', 'username', 'saving'];
+
 @connect(null, dispatch => ({
 	loginRequest: params => dispatch(loginRequestAction(params))
 }))
@@ -65,6 +67,11 @@ export default class RegisterView extends LoggedView {
 		this.timeout = setTimeout(() => {
 			this.nameInput.focus();
 		}, 600);
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		// eslint-disable-next-line react/destructuring-assignment
+		return shouldUpdateState.some(key => nextState[key] !== this.state[key]);
 	}
 
 	componentDidUpdate(prevProps) {

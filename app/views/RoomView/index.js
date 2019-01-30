@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, LayoutAnimation, ActivityIndicator, Platform
+	Text, View, LayoutAnimation, ActivityIndicator
 } from 'react-native';
 import { connect, Provider } from 'react-redux';
 import { RectButton, gestureHandlerRootHOC } from 'react-native-gesture-handler';
@@ -22,11 +22,11 @@ import ReactionPicker from './ReactionPicker';
 import UploadProgress from './UploadProgress';
 import styles from './styles';
 import log from '../../utils/log';
+import { isIOS } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import { iconsMap } from '../../Icons';
 import store from '../../lib/createStore';
 import ConnectionBadge from '../../containers/ConnectionBadge';
-import { DEFAULT_HEADER } from '../../constants/headerOptions';
 
 let RoomActionsView = null;
 
@@ -51,9 +51,7 @@ let RoomActionsView = null;
 export default class RoomView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				title: {
 					component: {
 						name: 'RoomHeaderView',
@@ -84,6 +82,8 @@ export default class RoomView extends LoggedView {
 			token: PropTypes.string.isRequired
 		}),
 		rid: PropTypes.string,
+		name: PropTypes.string,
+		t: PropTypes.string,
 		showActions: PropTypes.bool,
 		showErrorActions: PropTypes.bool,
 		actionMessage: PropTypes.object,
@@ -100,24 +100,20 @@ export default class RoomView extends LoggedView {
 		this.state = {
 			loaded: false,
 			joined: this.rooms.length > 0,
-			room: {},
-			end: false,
-			loadingMore: false
+			room: {}
 		};
+		this.focused = true;
 		this.onReactionPress = this.onReactionPress.bind(this);
 		Navigation.events().bindComponent(this);
 	}
 
-	async componentDidMount() {
+	componentDidMount() {
 		if (this.rooms.length === 0 && this.rid) {
-			const result = await RocketChat.getRoomInfo(this.rid);
-			if (result.success) {
-				const { room } = result;
-				this.setState(
-					{ room: { rid: room._id, t: room.t, name: room.name } },
-					() => this.updateRoom()
-				);
-			}
+			const { rid, name, t } = this.props;
+			this.setState(
+				{ room: { rid, name, t } },
+				() => this.updateRoom()
+			);
 		}
 		this.rooms.addListener(this.updateRoom);
 		this.internalSetState({ loaded: true });
@@ -125,7 +121,7 @@ export default class RoomView extends LoggedView {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			room, loaded, joined, end, loadingMore
+			room, loaded, joined
 		} = this.state;
 		const { showActions, showErrorActions, appState } = this.props;
 
@@ -142,10 +138,6 @@ export default class RoomView extends LoggedView {
 		} else if (loaded !== nextState.loaded) {
 			return true;
 		} else if (joined !== nextState.joined) {
-			return true;
-		} else if (end !== nextState.end) {
-			return true;
-		} else if (loadingMore !== nextState.loadingMore) {
 			return true;
 		} else if (showActions !== nextProps.showActions) {
 			return true;
@@ -187,32 +179,18 @@ export default class RoomView extends LoggedView {
 
 	componentWillUnmount() {
 		const { closeRoom } = this.props;
-		this.rooms.removeAllListeners();
-		if (this.onEndReached && this.onEndReached.stop) {
-			this.onEndReached.stop();
-		}
 		closeRoom();
+		this.rooms.removeAllListeners();
 	}
 
-	onEndReached = async(lastRowData) => {
-		if (!lastRowData) {
-			return;
-		}
+	// eslint-disable-next-line
+	componentDidAppear() {
+		this.focused = true;
+	}
 
-		const { loadingMore, end } = this.state;
-		if (loadingMore || end) {
-			return;
-		}
-
-		this.setState({ loadingMore: true });
-		const { room } = this.state;
-		try {
-			const result = await RocketChat.loadMessagesForRoom({ rid: this.rid, t: room.t, latest: lastRowData.ts });
-			this.internalSetState({ end: result.length < 50, loadingMore: false });
-		} catch (e) {
-			this.internalSetState({ loadingMore: false });
-			log('RoomView.onEndReached', e);
-		}
+	// eslint-disable-next-line
+	componentDidDisappear() {
+		this.focused = false;
 	}
 
 	onMessageLongPress = (message) => {
@@ -234,7 +212,7 @@ export default class RoomView extends LoggedView {
 	};
 
 	internalSetState = (...args) => {
-		if (Platform.OS === 'ios') {
+		if (isIOS) {
 			LayoutAnimation.easeInEaseOut();
 		}
 		this.setState(...args);
@@ -269,15 +247,19 @@ export default class RoomView extends LoggedView {
 		}
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	updateRoom = () => {
 		const { openRoom, setLastOpen } = this.props;
 
+		if (!this.focused) {
+			return;
+		}
 		if (this.rooms.length > 0) {
 			const { room: prevRoom } = this.state;
 			const room = JSON.parse(JSON.stringify(this.rooms[0] || {}));
 			this.internalSetState({ room });
 
-			if (!prevRoom.rid) {
+			if (!prevRoom._id) {
 				openRoom({
 					...room
 				});
@@ -289,8 +271,10 @@ export default class RoomView extends LoggedView {
 			}
 		} else {
 			const { room } = this.state;
-			openRoom(room);
-			this.internalSetState({ joined: false });
+			if (room.rid) {
+				openRoom(room);
+				this.internalSetState({ joined: false });
+			}
 		}
 	}
 
@@ -370,7 +354,7 @@ export default class RoomView extends LoggedView {
 
 		if (!joined) {
 			return (
-				<View style={styles.joinRoomContainer} key='room-view-join'>
+				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
 					<Text style={styles.previewMode}>{I18n.t('You_are_in_preview_mode')}</Text>
 					<RectButton
 						onPress={this.joinRoom}
@@ -378,7 +362,7 @@ export default class RoomView extends LoggedView {
 						activeOpacity={0.5}
 						underlayColor='#fff'
 					>
-						<Text style={styles.joinRoomText}>{I18n.t('Join')}</Text>
+						<Text style={styles.joinRoomText} testID='room-view-join-button'>{I18n.t('Join')}</Text>
 					</RectButton>
 				</View>
 			);
@@ -400,28 +384,16 @@ export default class RoomView extends LoggedView {
 		return <MessageBox key='room-view-messagebox' onSubmit={this.sendMessage} rid={this.rid} />;
 	};
 
-	renderHeader = () => {
-		const { loadingMore } = this.state;
-		if (loadingMore) {
-			return <ActivityIndicator style={styles.loadingMore} />;
-		}
-		return null;
-	}
-
 	renderList = () => {
-		const { loaded, end, loadingMore } = this.state;
-		if (!loaded) {
+		const { loaded, room } = this.state;
+		if (!loaded || !room.rid) {
 			return <ActivityIndicator style={styles.loading} />;
 		}
 		return (
 			[
 				<List
 					key='room-view-messages'
-					end={end}
-					loadingMore={loadingMore}
-					room={this.rid}
-					renderFooter={this.renderHeader}
-					onEndReached={this.onEndReached}
+					room={room}
 					renderRow={this.renderItem}
 				/>,
 				this.renderFooter()

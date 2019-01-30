@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
-	View, Text, Switch, ScrollView, TextInput, StyleSheet, FlatList, Platform
+	View, Text, Switch, ScrollView, TextInput, StyleSheet, FlatList
 } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
+import equal from 'deep-equal';
 
 import Loading from '../containers/Loading';
 import LoggedView from './View';
@@ -17,7 +18,7 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import UserItem from '../presentation/UserItem';
 import { showErrorAlert } from '../utils/info';
-import { DEFAULT_HEADER } from '../constants/headerOptions';
+import { isAndroid } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	container: {
@@ -88,11 +89,8 @@ const styles = StyleSheet.create({
 export default class CreateChannelView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				title: {
-					...DEFAULT_HEADER.topBar.title,
 					text: I18n.t('Create_Channel')
 				}
 			}
@@ -128,6 +126,43 @@ export default class CreateChannelView extends LoggedView {
 		}, 600);
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		const {
+			channelName, type, readOnly, broadcast
+		} = this.state;
+		const {
+			error, failure, isFetching, result, users
+		} = this.props;
+		if (nextState.channelName !== channelName) {
+			return true;
+		}
+		if (nextState.type !== type) {
+			return true;
+		}
+		if (nextState.readOnly !== readOnly) {
+			return true;
+		}
+		if (nextState.broadcast !== broadcast) {
+			return true;
+		}
+		if (nextProps.failure !== failure) {
+			return true;
+		}
+		if (nextProps.isFetching !== isFetching) {
+			return true;
+		}
+		if (!equal(nextProps.error, error)) {
+			return true;
+		}
+		if (!equal(nextProps.result, result)) {
+			return true;
+		}
+		if (!equal(nextProps.users, users)) {
+			return true;
+		}
+		return false;
+	}
+
 	componentDidUpdate(prevProps) {
 		const {
 			isFetching, failure, error, result, componentId
@@ -139,13 +174,14 @@ export default class CreateChannelView extends LoggedView {
 					const msg = error.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_channel') });
 					showErrorAlert(msg);
 				} else {
-					const { rid } = result;
+					const { type } = this.state;
+					const { rid, name } = result;
 					await Navigation.dismissModal(componentId);
 					Navigation.push('RoomsListView', {
 						component: {
 							name: 'RoomView',
 							passProps: {
-								rid
+								rid, name, t: type ? 'p' : 'c'
 							}
 						}
 					});
@@ -168,7 +204,7 @@ export default class CreateChannelView extends LoggedView {
 				id: 'create',
 				text: 'Create',
 				testID: 'create-channel-submit',
-				color: Platform.OS === 'android' ? '#FFF' : undefined
+				color: isAndroid ? '#FFF' : undefined
 			});
 		}
 		Navigation.mergeOptions(componentId, {
@@ -222,7 +258,7 @@ export default class CreateChannelView extends LoggedView {
 				onValueChange={onValueChange}
 				testID={`create-channel-${ id }`}
 				onTintColor='#2de0a5'
-				tintColor={Platform.OS === 'android' ? '#f5455c' : null}
+				tintColor={isAndroid ? '#f5455c' : null}
 				disabled={disabled}
 			/>
 		</View>

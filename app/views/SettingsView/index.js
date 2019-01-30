@@ -22,7 +22,6 @@ import log from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
 import { appStart as appStartAction } from '../../actions';
 import Drawer from '../../Drawer';
-import { DEFAULT_HEADER } from '../../constants/headerOptions';
 
 @connect(state => ({
 	userLanguage: state.login.user && state.login.user.language
@@ -34,16 +33,13 @@ import { DEFAULT_HEADER } from '../../constants/headerOptions';
 export default class SettingsView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				leftButtons: [{
 					id: 'settings',
 					icon: { uri: 'settings', scale: Dimensions.get('window').scale },
 					testID: 'rooms-list-view-sidebar'
 				}],
 				title: {
-					...DEFAULT_HEADER.topBar.title,
 					text: I18n.t('Settings')
 				}
 			},
@@ -87,6 +83,21 @@ export default class SettingsView extends LoggedView {
 		};
 		Navigation.events().bindComponent(this);
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const { language, saving } = this.state;
+		const { userLanguage } = this.props;
+		if (nextState.language !== language) {
+			return true;
+		}
+		if (nextState.saving !== saving) {
+			return true;
+		}
+		if (nextProps.userLanguage !== userLanguage) {
+			return true;
+		}
+		return false;
 	}
 
 	componentWillUnmount() {
