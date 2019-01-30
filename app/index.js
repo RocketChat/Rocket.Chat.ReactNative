@@ -1,7 +1,5 @@
 import { Component } from 'react';
 import { Linking } from 'react-native';
-import { Provider } from 'react-redux';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import store from './lib/createStore';
 import { appInit } from './actions';
@@ -13,6 +11,13 @@ import { initializePushNotifications } from './push';
 import { DEFAULT_HEADER } from './constants/headerOptions';
 
 const startLogged = () => {
+	Navigation.loadView('ProfileView');
+	Navigation.loadView('RoomsListHeaderView');
+	Navigation.loadView('RoomsListView');
+	Navigation.loadView('RoomView');
+	Navigation.loadView('RoomHeaderView');
+	Navigation.loadView('SettingsView');
+	Navigation.loadView('SidebarView');
 	Navigation.setRoot({
 		root: {
 			sideMenu: {
@@ -39,6 +44,7 @@ const startLogged = () => {
 };
 
 const startNotLogged = () => {
+	Navigation.loadView('OnboardingView');
 	Navigation.setRoot({
 		root: {
 			stack: {
@@ -57,12 +63,8 @@ const startNotLogged = () => {
 	});
 };
 
-let SetUsernameView = null;
 const startSetUsername = () => {
-	if (SetUsernameView == null) {
-		SetUsernameView = require('./views/SetUsernameView').default;
-		Navigation.registerComponentWithRedux('SetUsernameView', () => gestureHandlerRootHOC(SetUsernameView), Provider, store);
-	}
+	Navigation.loadView('SetUsernameView');
 	Navigation.setRoot({
 		root: {
 			stack: {
@@ -93,7 +95,6 @@ const handleOpenURL = ({ url }) => {
 	}
 };
 
-Navigation.configure();
 iconsLoaded();
 
 export default class App extends Component {

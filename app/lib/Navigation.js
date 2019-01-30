@@ -8,7 +8,7 @@ const DRAWER_ID = 'SidebarView';
 
 class NavigationManager {
 	constructor() {
-		this.registeredViews = {
+		this.views = {
 			OnboardingView: {
 				name: 'OnboardingView',
 				loaded: false,
@@ -165,31 +165,19 @@ class NavigationManager {
 				require: () => require('../views/StarredMessagesView').default
 			}
 		};
-
 		this.isDrawerVisible = false;
 
 		Navigation.events().registerComponentDidAppearListener(({ componentId }) => {
 			if (componentId === DRAWER_ID) {
-				this.visible = true;
+				this.isDrawerVisible = true;
 			}
 		});
 
 		Navigation.events().registerComponentDidDisappearListener(({ componentId }) => {
 			if (componentId === DRAWER_ID) {
-				this.visible = false;
+				this.isDrawerVisible = false;
 			}
 		});
-	}
-
-	configure = () => {
-		this.loadView('OnboardingView');
-		this.loadView('ProfileView');
-		this.loadView('RoomsListHeaderView');
-		this.loadView('RoomsListView');
-		this.loadView('RoomView');
-		this.loadView('RoomHeaderView');
-		this.loadView('SettingsView');
-		this.loadView('SidebarView');
 	}
 
 	handleComponentName = (componentName) => {
@@ -199,12 +187,11 @@ class NavigationManager {
 	}
 
 	loadView = (componentName) => {
-		const view = this.registeredViews[componentName];
+		const view = this.views[componentName];
 		if (!view) {
 			return console.error('view not found');
 		}
 		if (!view.loaded) {
-			console.log(`Loading ${ view.name }`);
 			Navigation.registerComponentWithRedux(view.name, () => gestureHandlerRootHOC(view.require()), Provider, store);
 			view.loaded = true;
 		}
