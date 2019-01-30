@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, Vibration } from 'react-native';
-import ActionSheet from 'react-native-actionsheet';
+import {
+	FlatList, View, Vibration
+} from 'react-native';
+import ActionSheet from 'react-native-action-sheet';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -161,26 +163,30 @@ export default class RoomMembersView extends LoggedView {
 		if (!this.permissions['mute-user']) {
 			return;
 		}
-		try {
-			const { room } = this.state;
-			const { muted } = room;
+		const { room } = this.state;
+		const { muted } = room;
 
-			const options = [I18n.t('Cancel')];
-			const userIsMuted = !!muted.find(m => m.value === user.username);
-			user.muted = userIsMuted;
-			if (userIsMuted) {
-				options.push(I18n.t('Unmute'));
-			} else {
-				options.push(I18n.t('Mute'));
-			}
-			this.setState({ userLongPressed: user, options });
-			Vibration.vibrate(50);
-			if (this.actionSheet && this.actionSheet.show) {
-				this.actionSheet.show();
-			}
-		} catch (error) {
-			console.log('onLongPressUser -> catch -> error', error);
+		this.actionSheetOptions = [I18n.t('Cancel')];
+		const userIsMuted = !!muted.find(m => m.value === user.username);
+		user.muted = userIsMuted;
+		if (userIsMuted) {
+			this.actionSheetOptions.push(I18n.t('Unmute'));
+		} else {
+			this.actionSheetOptions.push(I18n.t('Mute'));
 		}
+		this.setState({ userLongPressed: user });
+		Vibration.vibrate(50);
+		this.showActionSheet();
+	}
+
+	showActionSheet = () => {
+		ActionSheet.showActionSheetWithOptions({
+			options: this.actionSheetOptions,
+			cancelButtonIndex: this.CANCEL_INDEX,
+			title: I18n.t('Actions')
+		}, (actionIndex) => {
+			this.handleActionPress(actionIndex);
+		});
 	}
 
 	fetchMembers = async(status) => {
@@ -253,7 +259,7 @@ export default class RoomMembersView extends LoggedView {
 
 	render() {
 		const {
-			filtering, members, membersFiltered, options
+			filtering, members, membersFiltered
 		} = this.state;
 		return (
 			<SafeAreaView style={styles.list} testID='room-members-view' forceInset={{ bottom: 'never' }}>
@@ -265,13 +271,6 @@ export default class RoomMembersView extends LoggedView {
 					ItemSeparatorComponent={this.renderSeparator}
 					ListHeaderComponent={this.renderSearchBar}
 					{...scrollPersistTaps}
-				/>
-				<ActionSheet
-					ref={o => this.actionSheet = o}
-					title={I18n.t('Actions')}
-					options={options}
-					cancelButtonIndex={this.CANCEL_INDEX}
-					onPress={this.handleActionPress}
 				/>
 			</SafeAreaView>
 		);

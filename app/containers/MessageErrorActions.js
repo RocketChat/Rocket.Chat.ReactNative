@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import ActionSheet from 'react-native-actionsheet';
+import ActionSheet from 'react-native-action-sheet';
 
 import { errorActionsHide as errorActionsHideAction } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
@@ -23,21 +23,6 @@ export default class MessageErrorActions extends React.Component {
 		actionMessage: PropTypes.object
 	};
 
-	// eslint-disable-next-line react/sort-comp
-	constructor(props) {
-		super(props);
-		this.handleActionPress = this.handleActionPress.bind(this);
-		this.options = [I18n.t('Cancel'), I18n.t('Delete'), I18n.t('Resend')];
-		this.CANCEL_INDEX = 0;
-		this.DELETE_INDEX = 1;
-		this.RESEND_INDEX = 2;
-		setTimeout(() => {
-			if (this.actionSheet && this.actionSheet.show) {
-				this.actionSheet.show();
-			}
-		});
-	}
-
 	handleResend = protectedFunction(() => {
 		const { actionMessage } = this.props;
 		RocketChat.resendMessage(actionMessage._id);
@@ -50,6 +35,30 @@ export default class MessageErrorActions extends React.Component {
 			database.delete(msg);
 		});
 	})
+
+	// eslint-disable-next-line react/sort-comp
+	constructor(props) {
+		super(props);
+		this.handleActionPress = this.handleActionPress.bind(this);
+		this.options = [I18n.t('Cancel'), I18n.t('Delete'), I18n.t('Resend')];
+		this.CANCEL_INDEX = 0;
+		this.DELETE_INDEX = 1;
+		this.RESEND_INDEX = 2;
+		setTimeout(() => {
+			this.showActionSheet();
+		});
+	}
+
+	showActionSheet = () => {
+		ActionSheet.showActionSheetWithOptions({
+			options: this.options,
+			cancelButtonIndex: this.CANCEL_INDEX,
+			destructiveButtonIndex: this.DELETE_INDEX,
+			title: I18n.t('Message_actions')
+		}, (actionIndex) => {
+			this.handleActionPress(actionIndex);
+		});
+	}
 
 	handleActionPress = (actionIndex) => {
 		const { errorActionsHide } = this.props;
@@ -68,14 +77,7 @@ export default class MessageErrorActions extends React.Component {
 
 	render() {
 		return (
-			<ActionSheet
-				ref={o => this.actionSheet = o}
-				title={I18n.t('Message_actions')}
-				options={this.options}
-				cancelButtonIndex={this.CANCEL_INDEX}
-				destructiveButtonIndex={this.DELETE_INDEX}
-				onPress={this.handleActionPress}
-			/>
+			null
 		);
 	}
 }

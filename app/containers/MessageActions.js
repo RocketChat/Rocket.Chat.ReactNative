@@ -4,7 +4,7 @@ import {
 	Alert, Clipboard, Vibration, Share
 } from 'react-native';
 import { connect } from 'react-redux';
-import ActionSheet from 'react-native-actionsheet';
+import ActionSheet from 'react-native-action-sheet';
 import * as moment from 'moment';
 
 import {
@@ -125,9 +125,7 @@ export default class MessageActions extends React.Component {
 			this.DELETE_INDEX = this.options.length - 1;
 		}
 		setTimeout(() => {
-			if (this.actionSheet && this.actionSheet.show) {
-				this.actionSheet.show();
-			}
+			this.showActionSheet();
 			Vibration.vibrate(50);
 		});
 	}
@@ -139,6 +137,17 @@ export default class MessageActions extends React.Component {
 		this.hasEditPermission = result[permissions[0]];
 		this.hasDeletePermission = result[permissions[1]];
 		this.hasForceDeletePermission = result[permissions[2]];
+	}
+
+	showActionSheet = () => {
+		ActionSheet.showActionSheetWithOptions({
+			options: this.options,
+			cancelButtonIndex: this.CANCEL_INDEX,
+			destructiveButtonIndex: this.DELETE_INDEX,
+			title: I18n.t('Message_actions')
+		}, (actionIndex) => {
+			this.handleActionPress(actionIndex);
+		});
 	}
 
 	getPermalink = async(message) => {
@@ -326,15 +335,7 @@ export default class MessageActions extends React.Component {
 
 	render() {
 		return (
-			<ActionSheet
-				ref={o => this.actionSheet = o}
-				title={I18n.t('Message_actions')}
-				testID='message-actions'
-				options={this.options}
-				cancelButtonIndex={this.CANCEL_INDEX}
-				destructiveButtonIndex={this.DELETE_INDEX}
-				onPress={this.handleActionPress}
-			/>
+			null
 		);
 	}
 }
