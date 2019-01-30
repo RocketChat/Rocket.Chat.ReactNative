@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react';
+import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import ActionSheet from 'react-native-actionsheet';
+import ActionSheet from 'react-native-action-sheet';
 
 import I18n from '../../i18n';
 
@@ -27,9 +27,16 @@ export default class FilesActions extends PureComponent {
 		this.LIBRARY_INDEX = 2;
 
 		setTimeout(() => {
-			if (this.actionSheet && this.actionSheet.show) {
-				this.actionSheet.show();
-			}
+			this.showActionSheet();
+		});
+	}
+
+	showActionSheet = () => {
+		ActionSheet.showActionSheetWithOptions({
+			options: this.options,
+			cancelButtonIndex: this.CANCEL_INDEX
+		}, (actionIndex) => {
+			this.handleActionPress(actionIndex);
 		});
 	}
 
@@ -50,12 +57,7 @@ export default class FilesActions extends PureComponent {
 
 	render() {
 		return (
-			<ActionSheet
-				ref={o => this.actionSheet = o}
-				options={this.options}
-				cancelButtonIndex={this.CANCEL_INDEX}
-				onPress={this.handleActionPress}
-			/>
+			null
 		);
 	}
 }
