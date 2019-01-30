@@ -295,41 +295,43 @@ export default class MessageActions extends React.Component {
 	}
 
 	handleActionPress = (actionIndex) => {
-		const { actionsHide } = this.props;
-		switch (actionIndex) {
-			case this.REPLY_INDEX:
-				this.handleReply();
-				break;
-			case this.EDIT_INDEX:
-				this.handleEdit();
-				break;
-			case this.PERMALINK_INDEX:
-				this.handlePermalink();
-				break;
-			case this.COPY_INDEX:
-				this.handleCopy();
-				break;
-			case this.SHARE_INDEX:
-				this.handleShare();
-				break;
-			case this.QUOTE_INDEX:
-				this.handleQuote();
-				break;
-			case this.STAR_INDEX:
-				this.handleStar();
-				break;
-			case this.PIN_INDEX:
-				this.handlePin();
-				break;
-			case this.REACTION_INDEX:
-				this.handleReaction();
-				break;
-			case this.DELETE_INDEX:
-				this.handleDelete();
-				break;
-			default:
-				break;
+		if (actionIndex) {
+			switch (actionIndex) {
+				case this.REPLY_INDEX:
+					this.handleReply();
+					break;
+				case this.EDIT_INDEX:
+					this.handleEdit();
+					break;
+				case this.PERMALINK_INDEX:
+					this.handlePermalink();
+					break;
+				case this.COPY_INDEX:
+					this.handleCopy();
+					break;
+				case this.SHARE_INDEX:
+					this.handleShare();
+					break;
+				case this.QUOTE_INDEX:
+					this.handleQuote();
+					break;
+				case this.STAR_INDEX:
+					this.handleStar();
+					break;
+				case this.PIN_INDEX:
+					this.handlePin();
+					break;
+				case this.REACTION_INDEX:
+					this.handleReaction();
+					break;
+				case this.DELETE_INDEX:
+					this.handleDelete();
+					break;
+				default:
+					break;
+			}
 		}
+		const { actionsHide } = this.props;
 		actionsHide();
 	}
 
