@@ -63,7 +63,7 @@ describe('Rooms list screen', () => {
 		});
 
 		// Usage - Sidebar
-		describe('Sidebar', async() => {
+		describe('SidebarView', async() => {
 			it('should navigate to add server', async() => {
 				await element(by.id('rooms-list-header-server-dropdown-button')).tap();
 				await waitFor(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible().withTimeout(2000);
@@ -79,7 +79,7 @@ describe('Rooms list screen', () => {
 	
 			it('should logout', async() => {
 				await element(by.id('rooms-list-view-sidebar')).tap();
-				await waitFor(element(by.id('sidebar'))).toBeVisible().withTimeout(2000);
+				await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
 				await waitFor(element(by.id('sidebar-logout'))).toBeVisible().withTimeout(2000);
 				await element(by.id('sidebar-logout')).tap();
 				await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(60000);

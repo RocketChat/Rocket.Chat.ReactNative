@@ -4,10 +4,8 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { connect, Provider } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
+import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import { selectServerRequest, serverInitAdd, serverFinishAdd } from '../../actions/server';
 import { appStart as appStartAction } from '../../actions';
@@ -17,11 +15,9 @@ import Button from './Button';
 import styles from './styles';
 import LoggedView from '../View';
 import { isIOS, isNotch } from '../../utils/deviceInfo';
-import store from '../../lib/createStore';
 import EventEmitter from '../../utils/events';
 import { LIGHT_HEADER } from '../../constants/headerOptions';
-
-let NewServerView = null;
+import Navigation from '../../lib/Navigation';
 
 @connect(state => ({
 	currentServer: state.server.server,
@@ -98,11 +94,6 @@ export default class OnboardingView extends LoggedView {
 	}
 
 	newServer = (server) => {
-		if (NewServerView == null) {
-			NewServerView = require('../NewServerView').default;
-			Navigation.registerComponentWithRedux('NewServerView', () => gestureHandlerRootHOC(NewServerView), Provider, store);
-		}
-
 		const { componentId } = this.props;
 		Navigation.push(componentId, {
 			component: {

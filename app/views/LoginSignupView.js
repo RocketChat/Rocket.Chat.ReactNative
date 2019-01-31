@@ -3,20 +3,19 @@ import PropTypes from 'prop-types';
 import {
 	Text, View, ScrollView, Image, StyleSheet, Dimensions, Animated, Easing
 } from 'react-native';
-import { connect, Provider } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
+import { connect } from 'react-redux';
 import { Base64 } from 'js-base64';
 import SafeAreaView from 'react-native-safe-area-view';
-import { gestureHandlerRootHOC, RectButton, BorderlessButton } from 'react-native-gesture-handler';
+import { RectButton, BorderlessButton } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
 
+import Navigation from '../lib/Navigation';
 import LoggedView from './View';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import random from '../utils/random';
 import Button from '../containers/Button';
 import I18n from '../i18n';
-import store from '../lib/createStore';
 import { DARK_HEADER } from '../constants/headerOptions';
 
 const styles = StyleSheet.create({
@@ -86,10 +85,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-let OAuthView = null;
-let LoginView = null;
-let RegisterView = null;
-let LegalView = null;
 const SERVICE_HEIGHT = 58;
 const SERVICES_COLLAPSED_HEIGHT = 174;
 
@@ -172,11 +167,6 @@ export default class LoginSignupView extends LoggedView {
 
 	navigationButtonPressed = ({ buttonId }) => {
 		if (buttonId === 'more') {
-			if (LegalView == null) {
-				LegalView = require('./LegalView').default;
-				Navigation.registerComponentWithRedux('LegalView', () => gestureHandlerRootHOC(LegalView), Provider, store);
-			}
-
 			Navigation.showModal({
 				stack: {
 					children: [{
@@ -267,11 +257,6 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	openOAuth = (oAuthUrl) => {
-		if (OAuthView == null) {
-			OAuthView = require('./OAuthView').default;
-			Navigation.registerComponentWithRedux('OAuthView', () => gestureHandlerRootHOC(OAuthView), Provider, store);
-		}
-
 		Navigation.showModal({
 			stack: {
 				children: [{
@@ -294,11 +279,6 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	login = () => {
-		if (LoginView == null) {
-			LoginView = require('./LoginView').default;
-			Navigation.registerComponentWithRedux('LoginView', () => gestureHandlerRootHOC(LoginView), Provider, store);
-		}
-
 		const { componentId, Site_Name } = this.props;
 		Navigation.push(componentId, {
 			component: {
@@ -315,11 +295,6 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	register = () => {
-		if (RegisterView == null) {
-			RegisterView = require('./RegisterView').default;
-			Navigation.registerComponentWithRedux('RegisterView', () => gestureHandlerRootHOC(RegisterView), Provider, store);
-		}
-
 		const { componentId, Site_Name } = this.props;
 		Navigation.push(componentId, {
 			component: {
