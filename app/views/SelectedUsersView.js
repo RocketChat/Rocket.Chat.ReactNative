@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import {
 	View, StyleSheet, FlatList, LayoutAnimation
 } from 'react-native';
-import { connect, Provider } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
+import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
 
+import Navigation from '../lib/Navigation';
 import {
 	addUser as addUserAction, removeUser as removeUserAction, reset as resetAction, setLoading as setLoadingAction
 } from '../actions/selectedUsers';
@@ -23,7 +22,6 @@ import log from '../utils/log';
 import { isIOS, isAndroid } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
-import store from '../lib/createStore';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -37,8 +35,6 @@ const styles = StyleSheet.create({
 		marginLeft: 60
 	}
 });
-
-let CreateChannelView = null;
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -127,12 +123,6 @@ export default class SelectedUsersView extends LoggedView {
 			const { nextAction, setLoadingInvite } = this.props;
 			if (nextAction === 'CREATE_CHANNEL') {
 				const { componentId } = this.props;
-
-				if (CreateChannelView == null) {
-					CreateChannelView = require('./CreateChannelView').default;
-					Navigation.registerComponentWithRedux('CreateChannelView', () => gestureHandlerRootHOC(CreateChannelView), Provider, store);
-				}
-
 				Navigation.push(componentId, {
 					component: {
 						name: 'CreateChannelView'

@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import {
 	View, Text, Switch, ScrollView, TextInput, StyleSheet, FlatList
 } from 'react-native';
-import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
 
+import Navigation from '../lib/Navigation';
 import Loading from '../containers/Loading';
 import LoggedView from './View';
 import { createChannelRequest as createChannelRequestAction } from '../actions/createChannel';

@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, ScrollView } from 'react-native';
-import { connect, Provider } from 'react-redux';
+import { connect } from 'react-redux';
 import moment from 'moment';
-import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
 
+import Navigation from '../../lib/Navigation';
 import LoggedView from '../View';
 import Status from '../../containers/status';
 import Avatar from '../../containers/Avatar';
@@ -19,7 +18,6 @@ import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import { iconsMap } from '../../Icons';
-import store from '../../lib/createStore';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
@@ -33,8 +31,6 @@ const getRoomTitle = room => (room.t === 'd'
 		</View>
 	)
 );
-
-let RoomInfoEditView = null;
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -165,11 +161,6 @@ export default class RoomInfoView extends LoggedView {
 	navigationButtonPressed = ({ buttonId }) => {
 		const { rid, componentId } = this.props;
 		if (buttonId === 'edit') {
-			if (RoomInfoEditView == null) {
-				RoomInfoEditView = require('../RoomInfoEditView').default;
-				Navigation.registerComponentWithRedux('RoomInfoEditView', () => gestureHandlerRootHOC(RoomInfoEditView), Provider, store);
-			}
-
 			Navigation.push(componentId, {
 				component: {
 					id: 'RoomInfoEditView',

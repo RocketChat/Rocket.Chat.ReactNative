@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import {
 	View, StyleSheet, FlatList, Text, Image, Dimensions
 } from 'react-native';
-import { connect, Provider } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
+import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
 
+import Navigation from '../lib/Navigation';
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
@@ -19,7 +18,6 @@ import I18n from '../i18n';
 import Touch from '../utils/touch';
 import { isIOS, isAndroid } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
-import store from '../lib/createStore';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -48,8 +46,6 @@ const styles = StyleSheet.create({
 		fontSize: 18
 	}
 });
-
-let SelectedUsersView = null;
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
@@ -131,11 +127,6 @@ export default class NewMessageView extends LoggedView {
 	}
 
 	createChannel = () => {
-		if (SelectedUsersView == null) {
-			SelectedUsersView = require('./SelectedUsersView').default;
-			Navigation.registerComponentWithRedux('SelectedUsersView', () => gestureHandlerRootHOC(SelectedUsersView), Provider, store);
-		}
-
 		const { componentId } = this.props;
 		Navigation.push(componentId, {
 			component: {

@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import {
 	Text, View, LayoutAnimation, ActivityIndicator
 } from 'react-native';
-import { connect, Provider } from 'react-redux';
-import { RectButton, gestureHandlerRootHOC } from 'react-native-gesture-handler';
-import { Navigation } from 'react-native-navigation';
+import { connect } from 'react-redux';
+import { RectButton } from 'react-native-gesture-handler';
 import SafeAreaView from 'react-native-safe-area-view';
 
+import Navigation from '../../lib/Navigation';
 import { openRoom as openRoomAction, closeRoom as closeRoomAction, setLastOpen as setLastOpenAction } from '../../actions/room';
 import { toggleReactionPicker as toggleReactionPickerAction, actionsShow as actionsShowAction } from '../../actions/messages';
 import LoggedView from '../View';
@@ -25,10 +25,7 @@ import log from '../../utils/log';
 import { isIOS } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import { iconsMap } from '../../Icons';
-import store from '../../lib/createStore';
 import ConnectionBadge from '../../containers/ConnectionBadge';
-
-let RoomActionsView = null;
 
 @connect(state => ({
 	user: {
@@ -224,11 +221,6 @@ export default class RoomView extends LoggedView {
 		const { componentId } = this.props;
 
 		if (buttonId === 'more') {
-			if (RoomActionsView == null) {
-				RoomActionsView = require('../RoomActionsView').default;
-				Navigation.registerComponentWithRedux('RoomActionsView', () => gestureHandlerRootHOC(RoomActionsView), Provider, store);
-			}
-
 			Navigation.push(componentId, {
 				component: {
 					id: 'RoomActionsView',

@@ -1,7 +1,7 @@
 import { delay } from 'redux-saga';
 import { takeLatest, put, call } from 'redux-saga/effects';
-import { Navigation } from 'react-native-navigation';
 
+import Navigation from '../lib/Navigation';
 import { MESSAGES } from '../actions/actionsTypes';
 import {
 	messagesSuccess,
