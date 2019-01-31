@@ -5,12 +5,11 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import { connect, Provider } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
+import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
 
+import Navigation from '../../lib/Navigation';
 import { leaveRoom as leaveRoomAction } from '../../actions/room';
 import LoggedView from '../View';
 import styles from './styles';
@@ -24,11 +23,8 @@ import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import store from '../../lib/createStore';
 
 const renderSeparator = () => <View style={styles.separator} />;
-
-const modules = {};
 
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
@@ -119,11 +115,6 @@ export default class RoomActionsView extends LoggedView {
 
 	onPressTouchable = (item) => {
 		if (item.route) {
-			if (modules[item.route] == null) {
-				modules[item.route] = item.require();
-				Navigation.registerComponentWithRedux(item.route, () => gestureHandlerRootHOC(modules[item.route]), Provider, store);
-			}
-
 			const { componentId } = this.props;
 			Navigation.push(componentId, {
 				component: {
@@ -196,8 +187,7 @@ export default class RoomActionsView extends LoggedView {
 				name: I18n.t('Room_Info'),
 				route: 'RoomInfoView',
 				params: { rid },
-				testID: 'room-actions-info',
-				require: () => require('../RoomInfoView').default
+				testID: 'room-actions-info'
 			}],
 			renderItem: this.renderRoomInfo
 		}, {
@@ -222,30 +212,26 @@ export default class RoomActionsView extends LoggedView {
 					icon: 'ios-attach',
 					name: I18n.t('Files'),
 					route: 'RoomFilesView',
-					testID: 'room-actions-files',
-					require: () => require('../RoomFilesView').default
+					testID: 'room-actions-files'
 				},
 				{
 					icon: 'ios-at',
 					name: I18n.t('Mentions'),
 					route: 'MentionedMessagesView',
-					testID: 'room-actions-mentioned',
-					require: () => require('../MentionedMessagesView').default
+					testID: 'room-actions-mentioned'
 				},
 				{
 					icon: 'ios-star',
 					name: I18n.t('Starred'),
 					route: 'StarredMessagesView',
-					testID: 'room-actions-starred',
-					require: () => require('../StarredMessagesView').default
+					testID: 'room-actions-starred'
 				},
 				{
 					icon: 'ios-search',
 					name: I18n.t('Search'),
 					route: 'SearchMessagesView',
 					params: { rid },
-					testID: 'room-actions-search',
-					require: () => require('../SearchMessagesView').default
+					testID: 'room-actions-search'
 				},
 				{
 					icon: 'ios-share',
@@ -257,16 +243,14 @@ export default class RoomActionsView extends LoggedView {
 					icon: 'ios-pin',
 					name: I18n.t('Pinned'),
 					route: 'PinnedMessagesView',
-					testID: 'room-actions-pinned',
-					require: () => require('../PinnedMessagesView').default
+					testID: 'room-actions-pinned'
 				},
 				{
 					icon: 'ios-code',
 					name: I18n.t('Snippets'),
 					route: 'SnippetedMessagesView',
 					params: { rid },
-					testID: 'room-actions-snippeted',
-					require: () => require('../SnippetedMessagesView').default
+					testID: 'room-actions-snippeted'
 				}
 			],
 			renderItem: this.renderItem
@@ -296,8 +280,7 @@ export default class RoomActionsView extends LoggedView {
 					description: membersCount > 0 ? `${ membersCount } ${ I18n.t('members') }` : null,
 					route: 'RoomMembersView',
 					params: { rid },
-					testID: 'room-actions-members',
-					require: () => require('../RoomMembersView').default
+					testID: 'room-actions-members'
 				});
 			}
 
@@ -317,8 +300,7 @@ export default class RoomActionsView extends LoggedView {
 							}
 						}
 					},
-					testID: 'room-actions-add-user',
-					require: () => require('../SelectedUsersView').default
+					testID: 'room-actions-add-user'
 				});
 			}
 			sections[2].data = [...actions, ...sections[2].data];

@@ -5,10 +5,10 @@ import {
 } from 'react-native';
 import ActionSheet from 'react-native-action-sheet';
 import { connect } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
 
+import Navigation from '../../lib/Navigation';
 import LoggedView from '../View';
 import styles from './styles';
 import UserItem from '../../presentation/UserItem';

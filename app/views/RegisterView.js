@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import {
 	Keyboard, Text, ScrollView, Dimensions, Alert
 } from 'react-native';
-import { connect, Provider } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
+import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
+import Navigation from '../lib/Navigation';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
 import KeyboardView from '../presentation/KeyboardView';
@@ -15,15 +14,10 @@ import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import LoggedView from './View';
 import I18n from '../i18n';
-import store from '../lib/createStore';
 import { DARK_HEADER } from '../constants/headerOptions';
 import RocketChat from '../lib/rocketchat';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import isValidEmail from '../utils/isValidEmail';
-
-let TermsServiceView = null;
-let PrivacyPolicyView = null;
-let LegalView = null;
 
 const shouldUpdateState = ['name', 'email', 'password', 'username', 'saving'];
 
@@ -99,11 +93,6 @@ export default class RegisterView extends LoggedView {
 
 	navigationButtonPressed = ({ buttonId }) => {
 		if (buttonId === 'more') {
-			if (LegalView == null) {
-				LegalView = require('./LegalView').default;
-				Navigation.registerComponentWithRedux('LegalView', () => gestureHandlerRootHOC(LegalView), Provider, store);
-			}
-
 			Navigation.showModal({
 				stack: {
 					children: [{
@@ -147,11 +136,6 @@ export default class RegisterView extends LoggedView {
 	}
 
 	termsService = () => {
-		if (TermsServiceView == null) {
-			TermsServiceView = require('./TermsServiceView').default;
-			Navigation.registerComponentWithRedux('TermsServiceView', () => gestureHandlerRootHOC(TermsServiceView), Provider, store);
-		}
-
 		const { componentId } = this.props;
 		Navigation.push(componentId, {
 			component: {
@@ -168,11 +152,6 @@ export default class RegisterView extends LoggedView {
 	}
 
 	privacyPolicy = () => {
-		if (PrivacyPolicyView == null) {
-			PrivacyPolicyView = require('./PrivacyPolicyView').default;
-			Navigation.registerComponentWithRedux('PrivacyPolicyView', () => gestureHandlerRootHOC(PrivacyPolicyView), Provider, store);
-		}
-
 		const { componentId } = this.props;
 		Navigation.push(componentId, {
 			component: {

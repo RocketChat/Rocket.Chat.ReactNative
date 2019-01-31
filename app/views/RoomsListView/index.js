@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import {
 	View, FlatList, BackHandler, ActivityIndicator, Text, Image, Dimensions, ScrollView, Keyboard, LayoutAnimation
 } from 'react-native';
-import { connect, Provider } from 'react-redux';
+import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
-import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
+import Navigation from '../../lib/Navigation';
 import SearchBox from '../../containers/SearchBox';
 import ConnectionBadge from '../../containers/ConnectionBadge';
 import database from '../../lib/realm';
@@ -23,8 +22,6 @@ import ServerDropdown from './ServerDropdown';
 import Touch from '../../utils/touch';
 import { toggleSortDropdown as toggleSortDropdownAction, openSearchHeader as openSearchHeaderAction, closeSearchHeader as closeSearchHeaderAction } from '../../actions/rooms';
 import { appStart as appStartAction } from '../../actions';
-import store from '../../lib/createStore';
-import Drawer from '../../Drawer';
 import debounce from '../../utils/debounce';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
 
@@ -52,8 +49,6 @@ if (isAndroid) {
 		icon: { uri: 'search', scale: Dimensions.get('window').scale }
 	});
 }
-
-let NewMessageView = null;
 
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
@@ -247,11 +242,6 @@ export default class RoomsListView extends LoggedView {
 
 	navigationButtonPressed = ({ buttonId }) => {
 		if (buttonId === 'newMessage') {
-			if (NewMessageView == null) {
-				NewMessageView = require('../NewMessageView').default;
-				Navigation.registerComponentWithRedux('NewMessageView', () => gestureHandlerRootHOC(NewMessageView), Provider, store);
-			}
-
 			Navigation.showModal({
 				stack: {
 					children: [{
@@ -272,7 +262,7 @@ export default class RoomsListView extends LoggedView {
 				}
 			});
 		} else if (buttonId === 'settings') {
-			Drawer.toggle();
+			Navigation.toggleDrawer();
 		} else if (buttonId === 'search') {
 			this.initSearchingAndroid();
 		} else if (buttonId === 'back') {

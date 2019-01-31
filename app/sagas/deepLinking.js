@@ -3,8 +3,8 @@ import { delay } from 'redux-saga';
 import {
 	takeLatest, take, select, put, all, race
 } from 'redux-saga/effects';
-import { Navigation } from 'react-native-navigation';
 
+import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
 import { appStart, setStackRoot } from '../actions';
 import { selectServerRequest } from '../actions/server';

@@ -3,21 +3,16 @@ import PropTypes from 'prop-types';
 import {
 	Text, ScrollView, View, StyleSheet, Image, Dimensions
 } from 'react-native';
-import { Provider } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
-import { gestureHandlerRootHOC, RectButton } from 'react-native-gesture-handler';
+import { RectButton } from 'react-native-gesture-handler';
 
+import Navigation from '../lib/Navigation';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { isIOS, isAndroid } from '../utils/deviceInfo';
 import LoggedView from './View';
 import I18n from '../i18n';
-import store from '../lib/createStore';
 import { DARK_HEADER } from '../constants/headerOptions';
-
-let TermsServiceView = null;
-let PrivacyPolicyView = null;
 
 const styles = StyleSheet.create({
 	container: {
@@ -98,15 +93,6 @@ export default class LegalView extends LoggedView {
 	}
 
 	onPressItem = ({ route }) => {
-		if (route === 'TermsServiceView' && TermsServiceView == null) {
-			TermsServiceView = require('./TermsServiceView').default;
-			Navigation.registerComponentWithRedux('TermsServiceView', () => gestureHandlerRootHOC(TermsServiceView), Provider, store);
-		}
-		if (route === 'PrivacyPolicyView' && PrivacyPolicyView == null) {
-			PrivacyPolicyView = require('./PrivacyPolicyView').default;
-			Navigation.registerComponentWithRedux('PrivacyPolicyView', () => gestureHandlerRootHOC(PrivacyPolicyView), Provider, store);
-		}
-
 		const { componentId } = this.props;
 		Navigation.push(componentId, {
 			component: {
