@@ -274,7 +274,8 @@ const RocketChat = {
 
 		if (state.settings.LDAP_Enable) {
 			params = {
-				...params,
+				username: user,
+				ldapPass: password,
 				ldap: true,
 				ldapOptions: {}
 			};
