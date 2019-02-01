@@ -65,11 +65,11 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Upload images from camera</string>
+	<string>Take photos to share with other users</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>This app uses the microphone to record audio message.</string>
+	<string>Use your microphone to record audio messages</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Upload images from library</string>
+	<string>Upload photos to share with other users or to change your avatar</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
