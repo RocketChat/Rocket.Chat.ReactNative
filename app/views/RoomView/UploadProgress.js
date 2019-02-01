@@ -102,7 +102,12 @@ export default class UploadProgress extends Component {
 	}
 
 	deleteUpload = (item) => {
-		database.write(() => database.delete(item));
+		const uploadItem = this.uploads.filtered('path = $0', item.path);
+		try {
+			database.write(() => database.delete(uploadItem[0]));
+		} catch (e) {
+			log('UploadProgess.deleteUpload', e);
+		}
 	}
 
 	cancelUpload = async(item) => {
