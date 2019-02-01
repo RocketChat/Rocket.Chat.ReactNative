@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as SDK from '@rocket.chat/sdk';
+const SDK = {}; // import * as SDK from '@rocket.chat/sdk';
 import equal from 'deep-equal';
 
 import Navigation from '../../lib/Navigation';

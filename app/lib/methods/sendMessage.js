@@ -1,4 +1,4 @@
-import * as SDK from '@rocket.chat/sdk';
+const SDK = {}; // import * as SDK from '@rocket.chat/sdk';
 
 import messagesStatus from '../../constants/messagesStatus';
 import buildMessage from './helpers/buildMessage';

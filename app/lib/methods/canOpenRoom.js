@@ -1,4 +1,4 @@
-import * as SDK from '@rocket.chat/sdk';
+const SDK = {}; // import * as SDK from '@rocket.chat/sdk';
 
 import database from '../realm';
 

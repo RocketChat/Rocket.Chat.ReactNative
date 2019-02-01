@@ -1,5 +1,5 @@
 import { InteractionManager } from 'react-native';
-import * as SDK from '@rocket.chat/sdk';
+const SDK = {}; // import * as SDK from '@rocket.chat/sdk';
 
 import reduxStore from '../createStore';
 
