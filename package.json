@@ -14,7 +14,8 @@
     "storybook": "storybook start -p 7007 | react-native start --projectRoot storybook",
     "snyk-protect": "snyk protect",
     "fabric-ios": "./scripts/fabric-ios.sh",
-    "fabric-android": "./scripts/fabric-android.sh"
+    "fabric-android": "./scripts/fabric-android.sh",
+    "prepare": "npm run snyk-protect"
   },
   "rnpm": {
     "assets": [
@@ -71,7 +72,7 @@
     "redux-saga": "^0.16.2",
     "rn-fetch-blob": "^0.10.15",
     "semver": "^5.6.0",
-    "snyk": "^1.122.3",
+    "snyk": "^1.124.0",
     "strip-ansi": "^4.0.0"
   },
   "devDependencies": {
