@@ -41,7 +41,7 @@
     "react-native-device-info": "^0.25.1",
     "react-native-dialog": "^5.5.0",
     "react-native-fabric": "github:corymsmith/react-native-fabric#523a4edab3b2bf55ea9eeea2cf0dde82c5c29dd4",
-    "react-native-fast-image": "^5.1.2",
+    "react-native-fast-image": "^5.0.11",
     "react-native-gesture-handler": "^1.0.15",
     "react-native-i18n": "^2.0.15",
     "react-native-image-crop-picker": "git+https://github.com/RocketChat/react-native-image-crop-picker.git",
