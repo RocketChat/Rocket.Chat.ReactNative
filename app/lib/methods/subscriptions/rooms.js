@@ -1,5 +1,3 @@
-const SDK = {}; // import * as SDK from '@rocket.chat/sdk';
-
 import database from '../../realm';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
 import protectedFunction from '../helpers/protectedFunction';
@@ -7,13 +5,7 @@ import messagesStatus from '../../../constants/messagesStatus';
 import log from '../../../utils/log';
 import random from '../../../utils/random';
 
-export default async function subscribeRooms(id) {
-	const promises = Promise.all([
-		SDK.driver.subscribe('stream-notify-user', `${ id }/subscriptions-changed`, false),
-		SDK.driver.subscribe('stream-notify-user', `${ id }/rooms-changed`, false),
-		SDK.driver.subscribe('stream-notify-user', `${ id }/message`, false)
-	]);
-
+export default async function subscribeRooms() {
 	let timer = null;
 	const loop = (time = new Date()) => {
 		if (timer) {
@@ -30,23 +22,23 @@ export default async function subscribeRooms(id) {
 		}, 5000);
 	};
 
-	SDK.driver.on('logged', () => {
+	this.sdk.onStreamData('logged', () => {
 		clearTimeout(timer);
 		timer = false;
 	});
 
-	SDK.driver.on('logout', () => {
+	this.sdk.onStreamData('logout', () => {
 		clearTimeout(timer);
 		timer = true;
 	});
 
-	SDK.driver.on('disconnected', () => {
-		if (SDK.driver.userId) {
+	this.sdk.onStreamData('disconnected', () => {
+		if (this.sdk.userId) {
 			loop();
 		}
 	});
 
-	SDK.driver.on('stream-notify-user', protectedFunction((e, ddpMessage) => {
+	this.sdk.onStreamData('stream-notify-user', protectedFunction((ddpMessage) => {
 		if (ddpMessage.msg === 'added') {
 			return;
 		}
@@ -107,7 +99,7 @@ export default async function subscribeRooms(id) {
 	}));
 
 	try {
-		await promises;
+		await this.sdk.subscribeNotifyUser();
 	} catch (e) {
 		log('subscribeRooms', e);
 	}

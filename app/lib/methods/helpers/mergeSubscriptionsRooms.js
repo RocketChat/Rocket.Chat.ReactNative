@@ -1,7 +1,12 @@
+import EJSON from 'ejson';
+
 import normalizeMessage from './normalizeMessage';
 // TODO: delete and update
 
 export const merge = (subscription, room) => {
+	subscription = EJSON.fromJSONValue(subscription);
+	room = EJSON.fromJSONValue(room);
+	console.log('TCL: merge -> subscription, room', subscription, room);
 	if (!subscription) {
 		return;
 	}

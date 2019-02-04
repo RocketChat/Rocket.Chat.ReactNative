@@ -39,20 +39,19 @@ export async function sendMessageCall(message) {
 }
 
 export default async function(rid, msg) {
-	const { database: db } = database;
 	try {
 		const message = getMessage(rid, msg);
-		const room = db.objects('subscriptions').filtered('rid == $0', rid);
+		const room = database.objects('subscriptions').filtered('rid == $0', rid);
 
 		// TODO: do we need this?
-		db.write(() => {
+		database.write(() => {
 			room.lastMessage = message;
 		});
 
 		try {
 			const ret = await sendMessageCall.call(this, message);
-			db.write(() => {
-				db.create('messages', buildMessage({ ...message, ...ret }), true);
+			database.write(() => {
+				database.create('messages', buildMessage({ ...message, ...ret }), true);
 			});
 		} catch (e) {
 			database.write(() => {

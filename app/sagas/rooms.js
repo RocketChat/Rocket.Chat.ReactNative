@@ -3,6 +3,7 @@ import {
 	put, call, takeLatest, take, select, race, fork, cancel, takeEvery
 } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
+import EJSON from 'ejson';
 
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
@@ -45,7 +46,7 @@ const handleMessageReceived = function* handleMessageReceived({ message }) {
 
 		if (message.rid === room.rid) {
 			database.write(() => {
-				database.create('messages', message, true);
+				database.create('messages', EJSON.fromJSONValue(message), true);
 			});
 
 			if (room._id) {

@@ -135,20 +135,18 @@ const RocketChat = {
 		}
 	},
 	loginSuccess({ user }) {
-		this.sdk.resume({ token: user.token });
 		reduxStore.dispatch(setUser(user));
-		// this.getRooms().catch(e => console.log(e));
-		// this.getPermissions();
-		// this.getCustomEmoji();
-		// this.registerPushToken().then(result => console.log(result)).catch(e => alert(e));
+		this.getRooms().catch(e => console.log(e));
+		this.subscribeRooms();
+		this.sdk.subscribe('activeUsers');
+		this.sdk.subscribe('roles');
+		this.getPermissions();
+		this.getCustomEmoji();
+		this.registerPushToken().then(result => console.log(result)).catch(e => console.log(e));
 	},
 	connect({ server, user }) {
 		database.setActiveDB(server);
-
-		// this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
-		// const connectResult = await this.sdk.connect();
-		// const loginResult = await this.sdk.login({ user: 'diego.mello2', password: '123' });
-		// const subResult = await this.sdk.subscribeRoom('bMvbehmLppt3BzeMcy8bd77ptZswPj3EW8');
+		reduxStore.dispatch(connectRequest());
 
 		// if (this.ddp) {
 		// 	RocketChat.disconnect();
@@ -156,24 +154,17 @@ const RocketChat = {
 		// }
 
 		// SDK.api.setBaseUrl(server);
-		// this.getSettings();
-
-		// if (user && user.token) {
-		// 	reduxStore.dispatch(loginRequest({ resume: user.token }));
-		// }
 
 		// Use useSsl: false only if server url starts with http://
 		const useSsl = !/http:\/\//.test(server);
 
-		reduxStore.dispatch(connectRequest());
 		this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
+		this.getSettings();
 
 		this.sdk.connect()
-			.then(async(res) => {
-				console.log('TCL: connect -> res', res);
+			.then(() => {
 				if (user && user.token) {
-					const resumeRes = await this.sdk.resume({ token: user.token });
-					console.log('TCL: connect -> resumeRes', resumeRes);
+					reduxStore.dispatch(loginRequest({ resume: user.token }));
 				}
 			})
 			.catch((err) => {
@@ -188,36 +179,30 @@ const RocketChat = {
 			reduxStore.dispatch(disconnect());
 		});
 
-		this.sdk.onStreamData('login', protectedFunction((u) => {
-			// this.subscribeRooms(u.id);
-			this.sdk.subscribe('activeUsers');
-			this.sdk.subscribe('roles');
-		}));
-
 		this.sdk.onStreamData('forbidden', protectedFunction(() => reduxStore.dispatch(logout())));
 
 		this.sdk.onStreamData('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 
-		// this.sdk.onStreamData('stream-room-messages', (error, ddpMessage) => {
-		// 	// TODO: debounce
-		// 	const message = _buildMessage(ddpMessage.fields.args[0]);
-		// 	requestAnimationFrame(() => reduxStore.dispatch(roomMessageReceived(message)));
-		// });
+		this.sdk.onStreamData('stream-room-messages', (ddpMessage) => {
+			// TODO: debounce
+			const message = _buildMessage(ddpMessage.fields.args[0]);
+			requestAnimationFrame(() => reduxStore.dispatch(roomMessageReceived(message)));
+		});
 
-		// this.sdk.onStreamData('stream-notify-room', protectedFunction((error, ddpMessage) => {
-		// 	const [_rid, ev] = ddpMessage.fields.eventName.split('/');
-		// 	if (ev === 'typing') {
-		// 		reduxStore.dispatch(someoneTyping({ _rid, username: ddpMessage.fields.args[0], typing: ddpMessage.fields.args[1] }));
-		// 	} else if (ev === 'deleteMessage') {
-		// 		database.write(() => {
-		// 			if (ddpMessage && ddpMessage.fields && ddpMessage.fields.args.length > 0) {
-		// 				const { _id } = ddpMessage.fields.args[0];
-		// 				const message = database.objects('messages').filtered('_id = $0', _id);
-		// 				database.delete(message);
-		// 			}
-		// 		});
-		// 	}
-		// }));
+		this.sdk.onStreamData('stream-notify-room', protectedFunction((ddpMessage) => {
+			const [_rid, ev] = ddpMessage.fields.eventName.split('/');
+			if (ev === 'typing') {
+				reduxStore.dispatch(someoneTyping({ _rid, username: ddpMessage.fields.args[0], typing: ddpMessage.fields.args[1] }));
+			} else if (ev === 'deleteMessage') {
+				database.write(() => {
+					if (ddpMessage && ddpMessage.fields && ddpMessage.fields.args.length > 0) {
+						const { _id } = ddpMessage.fields.args[0];
+						const message = database.objects('messages').filtered('_id = $0', _id);
+						database.delete(message);
+					}
+				});
+			}
+		}));
 
 		// this.sdk.onStreamData('rocketchat_snippeted_message', protectedFunction((error, ddpMessage) => {
 		// 	if (ddpMessage.msg === 'added') {
@@ -389,7 +374,7 @@ const RocketChat = {
 					appName: 'chat.rocket.reactnative' // TODO: try to get from config file
 				};
 				// RC 0.60.0
-				return SDK.api.post('push.token', data);
+				return this.sdk.post('push.token', data);
 			}
 			return resolve();
 		});
