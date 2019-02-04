@@ -6,6 +6,7 @@ import {
 import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
 import SafeAreaView from 'react-native-safe-area-view';
+import equal from 'deep-equal';
 
 import Navigation from '../../lib/Navigation';
 import { openRoom as openRoomAction, closeRoom as closeRoomAction, setLastOpen as setLastOpenAction } from '../../actions/room';
@@ -141,6 +142,8 @@ export default class RoomView extends LoggedView {
 		} else if (showErrorActions !== nextProps.showErrorActions) {
 			return true;
 		} else if (appState !== nextProps.appState) {
+			return true;
+		} else if (!equal(room.muted, nextState.room.muted)) {
 			return true;
 		}
 		return false;
@@ -300,12 +303,12 @@ export default class RoomView extends LoggedView {
 	isMuted = () => {
 		const { room } = this.state;
 		const { user } = this.props;
-		return room && room.muted && Array.from(Object.keys(room.muted), i => room.muted[i].value).includes(user.username);
+		return room && room.muted && !!Array.from(Object.keys(room.muted), i => room.muted[i].value).includes(user.username);
 	}
 
 	isReadOnly = () => {
 		const { room } = this.state;
-		return room.ro && this.isMuted() && !this.isOwner();
+		return room.ro || this.isMuted() || room.archived;
 	}
 
 	isBlocked = () => {
@@ -342,7 +345,7 @@ export default class RoomView extends LoggedView {
 	}
 
 	renderFooter = () => {
-		const { joined, room } = this.state;
+		const { joined } = this.state;
 
 		if (!joined) {
 			return (
@@ -359,7 +362,7 @@ export default class RoomView extends LoggedView {
 				</View>
 			);
 		}
-		if (room.archived || this.isReadOnly()) {
+		if (this.isReadOnly()) {
 			return (
 				<View style={styles.readOnly} key='room-view-read-only'>
 					<Text>{I18n.t('This_room_is_read_only')}</Text>

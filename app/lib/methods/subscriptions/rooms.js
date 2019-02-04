@@ -69,7 +69,8 @@ export default async function subscribeRooms() {
 			if (type === 'updated') {
 				const [sub] = database.objects('subscriptions').filtered('rid == $0', data._id);
 				database.write(() => {
-					merge(sub, data);
+					const tmp = merge(sub, data);
+					database.create('subscriptions', tmp, true);
 				});
 			} else if (type === 'inserted') {
 				database.write(() => {

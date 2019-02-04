@@ -6,7 +6,7 @@ import normalizeMessage from './normalizeMessage';
 export const merge = (subscription, room) => {
 	subscription = EJSON.fromJSONValue(subscription);
 	room = EJSON.fromJSONValue(room);
-	console.log('TCL: merge -> subscription, room', subscription, room);
+
 	if (!subscription) {
 		return;
 	}
@@ -33,6 +33,8 @@ export const merge = (subscription, room) => {
 	}
 	if (subscription.roles && subscription.roles.length) {
 		subscription.roles = subscription.roles.map(role => (role.value ? role : { value: role }));
+	} else {
+		subscription.roles = [];
 	}
 
 	if (subscription.mobilePushNotifications === 'nothing') {

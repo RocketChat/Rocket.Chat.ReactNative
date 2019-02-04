@@ -1,6 +1,6 @@
 import { InteractionManager } from 'react-native';
 
-import mergeSubscriptionsRooms, { merge } from './helpers/mergeSubscriptionsRooms';
+import mergeSubscriptionsRooms from './helpers/mergeSubscriptionsRooms';
 import database from '../realm';
 import log from '../../utils/log';
 
@@ -21,16 +21,13 @@ export default function() {
 				? Promise.all([this.sdk.get('subscriptions.get', { updatedSince }), this.sdk.get('rooms.get', { updatedSince })])
 				: Promise.all([this.sdk.get('subscriptions.get'), this.sdk.get('rooms.get')])
 			);
-			const { subscriptions, rooms } = mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
-
-			const data = rooms.map(room => ({ room, sub: database.objects('subscriptions').filtered('rid == $0', room._id) }));
+			const { subscriptions } = mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
 
 			InteractionManager.runAfterInteractions(() => {
 				database.write(() => {
 					subscriptions.forEach(subscription => database.create('subscriptions', subscription, true));
-					data.forEach(({ sub, room }) => sub[0] && merge(sub[0], room));
 				});
-				resolve(data);
+				resolve(subscriptions);
 			});
 		} catch (e) {
 			log('getRooms', e);
