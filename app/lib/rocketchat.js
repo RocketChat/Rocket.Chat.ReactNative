@@ -137,10 +137,10 @@ const RocketChat = {
 	loginSuccess({ user }) {
 		this.sdk.resume({ token: user.token });
 		reduxStore.dispatch(setUser(user));
-		this.getRooms().catch(e => console.log(e));
-		this.getPermissions();
-		this.getCustomEmoji();
-		this.registerPushToken().then(result => console.log(result)).catch(e => alert(e));
+		// this.getRooms().catch(e => console.log(e));
+		// this.getPermissions();
+		// this.getCustomEmoji();
+		// this.registerPushToken().then(result => console.log(result)).catch(e => alert(e));
 	},
 	connect({ server, user }) {
 		database.setActiveDB(server);
@@ -189,7 +189,7 @@ const RocketChat = {
 		});
 
 		this.sdk.onStreamData('login', protectedFunction((u) => {
-			this.subscribeRooms(u.id);
+			// this.subscribeRooms(u.id);
 			this.sdk.subscribe('activeUsers');
 			this.sdk.subscribe('roles');
 		}));
@@ -322,14 +322,24 @@ const RocketChat = {
 	async login(params) {
 		try {
 			// RC 0.64.0
-			return await SDK.api.login(params);
+			await this.sdk.login(params);
+			const { result } = this.sdk.currentLogin;
+			const user = {
+				id: result.userId,
+				token: result.authToken,
+				username: result.me.username,
+				name: result.me.name,
+				language: result.me.language,
+				status: result.me.status,
+				customFields: result.me.customFields
+			};
+			return user;
 		} catch (e) {
 			reduxStore.dispatch(loginFailure(e));
 			throw e;
 		}
 	},
 	async logout({ server }) {
-		// this.removePushToken().catch(error => console.log(error));
 		try {
 			await this.removePushToken();
 		} catch (error) {
@@ -337,12 +347,12 @@ const RocketChat = {
 		}
 		try {
 			// RC 0.60.0
-			await SDK.api.logout();
+			await this.sdk.logout();
 		} catch (error) {
 			console.log('​logout -> api logout -> catch -> error', error);
 		}
-		SDK.driver.ddp.disconnect();
-		this.ddp = null;
+		// SDK.driver.ddp.disconnect();
+		this.sdk = null;
 
 		Promise.all([
 			AsyncStorage.removeItem('currentServer'),
@@ -388,7 +398,7 @@ const RocketChat = {
 		const token = getDeviceToken();
 		if (token) {
 			// RC 0.60.0
-			return SDK.api.del('push.token', { token });
+			return this.sdk.del('push.token', { token });
 		}
 		return Promise.resolve();
 	},

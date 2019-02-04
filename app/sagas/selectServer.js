@@ -44,33 +44,32 @@ const handleSelectServer = function* handleSelectServer({ server }) {
 
 const handleServerRequest = function* handleServerRequest({ server }) {
 	try {
-		yield RocketChat.connect({ server });
-		// const result = yield RocketChat.testServer(server);
-		// if (!result.success) {
-		// 	Alert.alert(I18n.t('Oops'), I18n.t(result.message, result.messageOptions));
-		// 	yield put(serverFailure());
-		// 	return;
-		// }
+		const result = yield RocketChat.testServer(server);
+		if (!result.success) {
+			Alert.alert(I18n.t('Oops'), I18n.t(result.message, result.messageOptions));
+			yield put(serverFailure());
+			return;
+		}
 
-		// const loginServicesLength = yield RocketChat.getLoginServices(server);
-		// if (loginServicesLength === 0) {
-		// 	yield Navigation.push('NewServerView', {
-		// 		component: {
-		// 			name: 'LoginView'
-		// 		}
-		// 	});
-		// } else {
-		// 	yield Navigation.push('NewServerView', {
-		// 		component: {
-		// 			name: 'LoginSignupView'
-		// 		}
-		// 	});
-		// }
+		const loginServicesLength = yield RocketChat.getLoginServices(server);
+		if (loginServicesLength === 0) {
+			yield Navigation.push('NewServerView', {
+				component: {
+					name: 'LoginView'
+				}
+			});
+		} else {
+			yield Navigation.push('NewServerView', {
+				component: {
+					name: 'LoginSignupView'
+				}
+			});
+		}
 
-		// database.databases.serversDB.write(() => {
-		// 	database.databases.serversDB.create('servers', { id: server }, true);
-		// });
-		// yield put(selectServerRequest(server));
+		database.databases.serversDB.write(() => {
+			database.databases.serversDB.create('servers', { id: server }, true);
+		});
+		yield put(selectServerRequest(server));
 	} catch (e) {
 		yield put(serverFailure());
 		log('handleServerRequest', e);
