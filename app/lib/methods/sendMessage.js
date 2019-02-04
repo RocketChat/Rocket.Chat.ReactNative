@@ -1,5 +1,3 @@
-const SDK = {}; // import * as SDK from '@rocket.chat/sdk';
-
 import messagesStatus from '../../constants/messagesStatus';
 import buildMessage from './helpers/buildMessage';
 import database from '../realm';
@@ -34,7 +32,7 @@ export const getMessage = (rid, msg = {}) => {
 export async function sendMessageCall(message) {
 	const { _id, rid, msg } = message;
 	// RC 0.60.0
-	const data = await SDK.api.post('chat.sendMessage', { message: { _id, rid, msg } });
+	const data = await this.sdk.post('chat.sendMessage', { message: { _id, rid, msg } });
 	return data;
 }
 

@@ -1,10 +1,5 @@
 import log from '../../../utils/log';
 
-// const subscribe = rid => Promise.all([
-// 	SDK.driver.subscribe('stream-room-messages', rid, false),
-// 	SDK.driver.subscribe('stream-notify-room', `${ rid }/typing`, false),
-// 	SDK.driver.subscribe('stream-notify-room', `${ rid }/deleteMessage`, false)
-// ]);
 const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
 
 let timer = null;
@@ -15,12 +10,11 @@ const stop = () => {
 		promises.then(unsubscribe);
 		promises = false;
 	}
-	console.log('TCL: stop -> promises', promises);
 
 	clearTimeout(timer);
 };
 
-export default async function subscribeRoom({ rid, t }) {
+export default function subscribeRoom({ rid, t }) {
 	if (promises) {
 		promises.then(unsubscribe);
 		promises = false;
@@ -52,9 +46,7 @@ export default async function subscribeRoom({ rid, t }) {
 	});
 
 	try {
-		// promises = subscribe(rid);
-		promises = await this.sdk.subscribeRoom(rid);
-		console.log('TCL: subscribeRoom -> promises', promises);
+		promises = this.sdk.subscribeRoom(rid);
 	} catch (e) {
 		log('subscribeRoom', e);
 	}
