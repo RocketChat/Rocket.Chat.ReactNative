@@ -71,7 +71,7 @@
     "redux-saga": "^0.16.2",
     "rn-fetch-blob": "^0.10.15",
     "semver": "^5.6.0",
-    "snyk": "^1.122.3",
+    "snyk": "^1.124.1",
     "strip-ansi": "^4.0.0"
   },
   "devDependencies": {
