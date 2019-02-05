@@ -2,8 +2,8 @@ import log from '../../../utils/log';
 
 const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
 
-let timer = null;
 let promises;
+let timer = null;
 
 const stop = () => {
 	if (promises) {
@@ -14,32 +14,37 @@ const stop = () => {
 	clearTimeout(timer);
 };
 
-export default function subscribeRoom({ rid, t }) {
+export default function subscribeRoom({ rid }) {
+	console.log('subscribeRoom')
 	if (promises) {
 		promises.then(unsubscribe);
 		promises = false;
 	}
-	const loop = (time = new Date()) => {
+	const loop = () => {
 		if (timer) {
 			return;
 		}
 		timer = setTimeout(async() => {
 			try {
-				await this.loadMissedMessages({ rid, t });
+				clearTimeout(timer);
 				timer = false;
+				await this.loadMissedMessages({ rid });
 				loop();
 			} catch (e) {
-				loop(time);
+				loop();
 			}
 		}, 5000);
 	};
 
-	this.sdk.onStreamData('logged', () => {
-		clearTimeout(timer);
-		timer = false;
+	this.sdk.onStreamData('connected', () => {
+		if (this.sdk.userId) {
+			this.loadMissedMessages({ rid });
+			clearTimeout(timer);
+			timer = false;
+		}
 	});
 
-	this.sdk.onStreamData('disconnected', () => {
+	this.sdk.onStreamData('close', () => {
 		if (this.sdk.userId) {
 			loop();
 		}

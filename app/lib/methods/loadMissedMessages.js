@@ -4,12 +4,19 @@ import buildMessage from './helpers/buildMessage';
 import database from '../realm';
 import log from '../../utils/log';
 
+const getLastUpdate = (rid) => {
+	const sub = database
+		.objects('subscriptions')
+		.filtered('rid == $0', rid)[0];
+	return sub && new Date(sub.lastOpen).toISOString();
+};
+
 async function load({ rid: roomId, lastOpen }) {
 	let lastUpdate;
 	if (lastOpen) {
 		lastUpdate = new Date(lastOpen).toISOString();
 	} else {
-		return [];
+		lastUpdate = getLastUpdate(roomId);
 	}
 	// RC 0.60.0
 	const { result } = await this.sdk.get('chat.syncMessages', { roomId, lastUpdate, count: 50 });

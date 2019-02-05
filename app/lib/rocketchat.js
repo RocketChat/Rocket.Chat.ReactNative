@@ -146,13 +146,6 @@ const RocketChat = {
 		database.setActiveDB(server);
 		reduxStore.dispatch(connectRequest());
 
-		// if (this.ddp) {
-		// 	RocketChat.disconnect();
-		// 	this.ddp = null;
-		// }
-
-		// this.sdk.setBaseUrl(server);
-
 		// Use useSsl: false only if server url starts with http://
 		const useSsl = !/http:\/\//.test(server);
 
@@ -173,7 +166,7 @@ const RocketChat = {
 			reduxStore.dispatch(connectSuccess());
 		});
 
-		this.sdk.onStreamData('disconnected', () => {
+		this.sdk.onStreamData('close', () => {
 			reduxStore.dispatch(disconnect());
 		});
 
@@ -292,13 +285,12 @@ const RocketChat = {
 	},
 
 	async loginOAuth(params) {
-		// try {
-		// 	const result = await SDK.driver.login(params);
-		// 	reduxStore.dispatch(loginRequest({ resume: result.token }));
-		// } catch (error) {
-		// 	throw error;
-		// }
-		alert('TODO')
+		try {
+			const result = await this.login(params);
+			reduxStore.dispatch(loginRequest({ resume: result.token }));
+		} catch (error) {
+			throw error;
+		}
 	},
 
 	async login(params) {
@@ -338,7 +330,6 @@ const RocketChat = {
 		} catch (error) {
 			console.log('​logout -> api logout -> catch -> error', error);
 		}
-		// SDK.driver.ddp.disconnect();
 		this.sdk = null;
 
 		Promise.all([
@@ -353,14 +344,6 @@ const RocketChat = {
 			console.log(error);
 		}
 	},
-	// disconnect() {
-	// 	try {
-	// 		SDK.driver.unsubscribeAll();
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
-	// 	RocketChat.setApiUser({ userId: null, authToken: null });
-	// },
 	setApiUser({ userId, authToken }) {
 		this.sdk.setAuth({ userId, authToken });
 		this.sdk.currentLogin = null;

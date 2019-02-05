@@ -7,32 +7,31 @@ import random from '../../../utils/random';
 
 export default async function subscribeRooms() {
 	let timer = null;
-	const loop = (time = new Date()) => {
+	const loop = () => {
 		if (timer) {
 			return;
 		}
 		timer = setTimeout(async() => {
 			try {
-				await this.getRooms(time);
+				clearTimeout(timer);
 				timer = false;
+				await this.getRooms();
 				loop();
 			} catch (e) {
-				loop(time);
+				loop();
 			}
 		}, 5000);
 	};
 
-	this.sdk.onStreamData('logged', () => {
-		clearTimeout(timer);
-		timer = false;
+	this.sdk.onStreamData('connected', () => {
+		if (this.sdk.userId) {
+			this.getRooms();
+			clearTimeout(timer);
+			timer = false;
+		}
 	});
 
-	this.sdk.onStreamData('logout', () => {
-		clearTimeout(timer);
-		timer = true;
-	});
-
-	this.sdk.onStreamData('disconnected', () => {
+	this.sdk.onStreamData('close', () => {
 		if (this.sdk.userId) {
 			loop();
 		}
