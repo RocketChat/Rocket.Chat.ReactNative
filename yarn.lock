@@ -10323,10 +10323,10 @@ react-native-navigation@^2.8.0:
     react-lifecycles-compat "2.0.0"
     tslib "1.9.3"
 
-react-native-notifications@^1.1.23:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/react-native-notifications/-/react-native-notifications-1.2.2.tgz#2f215fb67506046f7918d45e3fd732001e9f5f1c"
-  integrity sha512-qEyiLuBaM+mcYrkHcc894/nKXpLfkglRsTRdLVPgMTcqHfiK735zpMx7tPhCGMV3IqPSb9C/OSTCtr0HtMa8Hg==
+react-native-notifications@1.1.23:
+  version "1.1.23"
+  resolved "https://registry.yarnpkg.com/react-native-notifications/-/react-native-notifications-1.1.23.tgz#06313aea5d1d9e5ab2716e09ffb76391aaf0ebe2"
+  integrity sha512-AVWhPZJ4+pHH7dEvphH2593wv2D+Xp9whNRftVm5xpP7h8XLOuObQBlfZniJDlXd34GLMuYXmtJ44gAg+HwIMQ==
   dependencies:
     core-js "^1.0.0"
     uuid "^2.0.3"
