@@ -17,23 +17,22 @@ jobs:
       - run:
           name: Install NPM modules
           command: |
-            npm install
-            # npm install codecov
+            yarn
 
       - run:
           name: Lint
           command: |
-            npm run lint
+            yarn lint
 
       - run:
           name: Test
           command: |
-            npm run test
+            yarn test
 
       - run:
           name: Codecov
           command: |
-            npx codecov
+            yarn codecov
 
   e2e-test:
     macos:
@@ -64,9 +63,8 @@ jobs:
       - run:
           name: Install NPM modules
           command: |
-            rm -rf node_modules
-            npm install
-            npm install -g detox-cli
+            yarn global add detox-cli
+            yarn
 
       - run:
           name: Build
@@ -96,20 +94,13 @@ jobs:
     steps:
       - checkout
 
-      # - run:
-      #     name: Install Node 8
-      #     command: |
-      #       curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
-      #       source ~/.nvm/nvm.sh
-      #       nvm install 8
-
       - restore_cache:
-          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "package-lock.json" }}
+          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install NPM modules
           command: |
-            npm install
+            yarn
 
       - restore_cache:
           key: android-{{ checksum ".circleci/config.yml" }}-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
@@ -162,7 +153,7 @@ jobs:
           path: /tmp/build/outputs
 
       - save_cache:
-          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "package.json" }}
+          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
 
@@ -200,8 +191,7 @@ jobs:
       - run:
           name: Install NPM modules
           command: |
-            rm -rf node_modules
-            npm install
+            yarn
 
       - run:
           name: Fix known build error
