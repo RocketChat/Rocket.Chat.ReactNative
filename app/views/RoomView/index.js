@@ -100,7 +100,6 @@ export default class RoomView extends LoggedView {
 			joined: this.rooms.length > 0,
 			room: {}
 		};
-		this.focused = true;
 		this.onReactionPress = this.onReactionPress.bind(this);
 		Navigation.events().bindComponent(this);
 	}
@@ -183,16 +182,6 @@ export default class RoomView extends LoggedView {
 		this.rooms.removeAllListeners();
 	}
 
-	// eslint-disable-next-line
-	componentDidAppear() {
-		this.focused = true;
-	}
-
-	// eslint-disable-next-line
-	componentDidDisappear() {
-		this.focused = false;
-	}
-
 	onMessageLongPress = (message) => {
 		const { actionsShow } = this.props;
 		actionsShow(message);
@@ -246,9 +235,6 @@ export default class RoomView extends LoggedView {
 	updateRoom = () => {
 		const { openRoom, setLastOpen } = this.props;
 
-		if (!this.focused) {
-			return;
-		}
 		if (this.rooms.length > 0) {
 			const { room: prevRoom } = this.state;
 			const room = JSON.parse(JSON.stringify(this.rooms[0] || {}));

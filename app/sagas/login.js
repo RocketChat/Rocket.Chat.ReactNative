@@ -18,7 +18,6 @@ const loginCall = args => RocketChat.login(args);
 const logoutCall = args => RocketChat.logout(args);
 
 const handleLoginRequest = function* handleLoginRequest({ credentials }) {
-	console.log('TCL: handleLoginRequest -> credentials', credentials);
 	try {
 		let result;
 		if (credentials.resume) {
