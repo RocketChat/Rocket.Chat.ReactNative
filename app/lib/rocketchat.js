@@ -8,7 +8,7 @@ import defaultSettings from '../constants/settings';
 import messagesStatus from '../constants/messagesStatus';
 import database from './realm';
 import log from '../utils/log';
-import { isIOS } from '../utils/deviceInfo';
+import { isIOS, getBundleId } from '../utils/deviceInfo';
 
 import {
 	setUser, setLoginServices, loginRequest, loginFailure, logout
@@ -356,7 +356,7 @@ const RocketChat = {
 				const data = {
 					value: token,
 					type,
-					appName: 'chat.rocket.reactnative' // TODO: try to get from config file
+					appName: getBundleId
 				};
 				// RC 0.60.0
 				return this.sdk.post('push.token', data);
