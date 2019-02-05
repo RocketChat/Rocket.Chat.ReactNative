@@ -177,8 +177,6 @@ const RocketChat = {
 			reduxStore.dispatch(disconnect());
 		});
 
-		this.sdk.onStreamData('forbidden', protectedFunction(() => reduxStore.dispatch(logout())));
-
 		this.sdk.onStreamData('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 
 		this.sdk.onStreamData('stream-room-messages', (ddpMessage) => {
@@ -315,11 +313,16 @@ const RocketChat = {
 				name: result.me.name,
 				language: result.me.language,
 				status: result.me.status,
-				customFields: result.me.customFields
+				customFields: result.me.customFields,
+				emails: result.me.emails
 			};
 			return user;
 		} catch (e) {
-			reduxStore.dispatch(loginFailure(e));
+			if (e.data && e.data.message && /you've been logged out by the server/i.test(e.data.message)) {
+				reduxStore.dispatch(logout({ server: this.sdk.client.host }));
+			} else {
+				reduxStore.dispatch(loginFailure(e));
+			}
 			throw e;
 		}
 	},
