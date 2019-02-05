@@ -308,7 +308,7 @@ export default class RoomView extends LoggedView {
 
 	isReadOnly = () => {
 		const { room } = this.state;
-		return room.ro || this.isMuted() || room.archived;
+		return (room.ro && !room.broadcast) || this.isMuted() || room.archived;
 	}
 
 	isBlocked = () => {
