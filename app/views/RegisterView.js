@@ -42,7 +42,8 @@ export default class RegisterView extends LoggedView {
 
 	static propTypes = {
 		componentId: PropTypes.string,
-		loginRequest: PropTypes.func
+		loginRequest: PropTypes.func,
+		Site_Name: PropTypes.string
 	}
 
 	constructor(props) {

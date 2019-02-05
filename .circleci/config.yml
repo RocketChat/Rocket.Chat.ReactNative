@@ -14,6 +14,9 @@ jobs:
     steps:
       - checkout
 
+      - restore_cache:
+          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+
       - run:
           name: Install NPM modules
           command: |
@@ -33,6 +36,11 @@ jobs:
           name: Codecov
           command: |
             yarn codecov
+
+      - save_cache:
+          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
 
   e2e-test:
     macos:

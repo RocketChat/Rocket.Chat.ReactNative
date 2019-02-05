@@ -148,6 +148,7 @@ export default class extends React.PureComponent {
 						/>
 					</BorderlessButton>
 				</View>
-			</SafeAreaView>);
+			</SafeAreaView>
+		);
 	}
 }

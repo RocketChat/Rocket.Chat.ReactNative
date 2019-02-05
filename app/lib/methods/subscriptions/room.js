@@ -15,7 +15,6 @@ const stop = () => {
 };
 
 export default function subscribeRoom({ rid }) {
-	console.log('subscribeRoom')
 	if (promises) {
 		promises.then(unsubscribe);
 		promises = false;

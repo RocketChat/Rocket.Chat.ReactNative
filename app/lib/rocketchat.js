@@ -344,10 +344,6 @@ const RocketChat = {
 			console.log(error);
 		}
 	},
-	setApiUser({ userId, authToken }) {
-		this.sdk.setAuth({ userId, authToken });
-		this.sdk.currentLogin = null;
-	},
 	registerPushToken() {
 		return new Promise((resolve) => {
 			const token = getDeviceToken();

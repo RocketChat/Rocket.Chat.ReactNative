@@ -12,9 +12,7 @@
     "log-android": "react-native log-android",
     "android": "react-native run-android",
     "storybook": "storybook start -p 7007 | react-native start --projectRoot storybook",
-    "snyk-protect": "snyk protect",
-    "fabric-ios": "./scripts/fabric-ios.sh",
-    "fabric-android": "./scripts/fabric-android.sh"
+    "snyk-protect": "snyk protect"
   },
   "rnpm": {
     "assets": [
