@@ -4,6 +4,8 @@ import protectedFunction from '../helpers/protectedFunction';
 import messagesStatus from '../../../constants/messagesStatus';
 import log from '../../../utils/log';
 import random from '../../../utils/random';
+import store from '../../createStore';
+import { roomsRequest } from '../../../actions/rooms';
 
 export default async function subscribeRooms() {
 	let timer = null;
@@ -11,15 +13,11 @@ export default async function subscribeRooms() {
 		if (timer) {
 			return;
 		}
-		timer = setTimeout(async() => {
-			try {
-				clearTimeout(timer);
-				timer = false;
-				if (this.sdk.userId) {
-					await this.getRooms();
-					loop();
-				}
-			} catch (e) {
+		timer = setTimeout(() => {
+			clearTimeout(timer);
+			timer = false;
+			if (this.sdk.userId) {
+				store.dispatch(roomsRequest());
 				loop();
 			}
 		}, 5000);
@@ -27,7 +25,7 @@ export default async function subscribeRooms() {
 
 	this.sdk.onStreamData('connected', () => {
 		if (this.sdk.userId) {
-			this.getRooms();
+			store.dispatch(roomsRequest());
 		}
 		clearTimeout(timer);
 		timer = false;
