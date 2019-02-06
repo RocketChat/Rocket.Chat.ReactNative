@@ -1,5 +1,3 @@
-import * as SDK from '@rocket.chat/sdk';
-
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, ViewPropTypes } from 'react-native';
@@ -14,7 +12,11 @@ export default class Avatar extends PureComponent {
 		size: PropTypes.number,
 		borderRadius: PropTypes.number,
 		type: PropTypes.string,
-		children: PropTypes.object
+		children: PropTypes.object,
+		user: PropTypes.shape({
+			id: PropTypes.string,
+			token: PropTypes.string
+		})
 	}
 
 	static defaultProps = {
@@ -26,7 +28,7 @@ export default class Avatar extends PureComponent {
 
 	render() {
 		const {
-			text, size, baseUrl, borderRadius, style, avatar, type, children
+			text, size, baseUrl, borderRadius, style, avatar, type, children, user
 		} = this.props;
 
 		const avatarStyle = {
@@ -45,9 +47,8 @@ export default class Avatar extends PureComponent {
 		const uriSize = size === 100 ? 100 : 50;
 
 		let avatarAuthURLFragment = '';
-		if (SDK.api.currentLogin) {
-			const { authToken, userId } = SDK.api.currentLogin.result.data;
-			avatarAuthURLFragment = `&rc_token=${ authToken }&rc_uid=${ userId }`;
+		if (user && user.id && user.token) {
+			avatarAuthURLFragment = `&rc_token=${ user.token }&rc_uid=${ user.id }`;
 		}
 
 		const uri = avatar || `${ baseUrl }/avatar/${ room }?format=png&width=${ uriSize }&height=${ uriSize }${ avatarAuthURLFragment }`;

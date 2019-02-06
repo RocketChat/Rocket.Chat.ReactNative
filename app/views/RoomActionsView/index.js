@@ -27,8 +27,10 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 const renderSeparator = () => <View style={styles.separator} />;
 
 @connect(state => ({
-	userId: state.login.user && state.login.user.id,
-	username: state.login.user && state.login.user.username,
+	user: {
+		id: state.login.user && state.login.user.id,
+		token: state.login.user && state.login.user.token
+	},
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	room: state.room
 }), dispatch => ({
@@ -50,8 +52,10 @@ export default class RoomActionsView extends LoggedView {
 		baseUrl: PropTypes.string,
 		rid: PropTypes.string,
 		componentId: PropTypes.string,
-		userId: PropTypes.string,
-		username: PropTypes.string,
+		user: PropTypes.shape({
+			id: PropTypes.string,
+			token: PropTypes.string
+		}),
 		room: PropTypes.object,
 		leaveRoom: PropTypes.func
 	}
@@ -333,10 +337,10 @@ export default class RoomActionsView extends LoggedView {
 	updateRoomMember = async() => {
 		const { room } = this.state;
 		const { rid } = room;
-		const { userId } = this.props;
+		const { user } = this.props;
 
 		try {
-			const member = await RocketChat.getRoomMember(rid, userId);
+			const member = await RocketChat.getRoomMember(rid, user.id);
 			this.setState({ member: member || {} });
 		} catch (e) {
 			log('RoomActions updateRoomMember', e);
@@ -391,7 +395,7 @@ export default class RoomActionsView extends LoggedView {
 	renderRoomInfo = ({ item }) => {
 		const { room, member } = this.state;
 		const { name, t, topic } = room;
-		const { baseUrl } = this.props;
+		const { baseUrl, user } = this.props;
 
 		return (
 			this.renderTouchableItem([
@@ -402,6 +406,7 @@ export default class RoomActionsView extends LoggedView {
 					style={styles.avatar}
 					type={t}
 					baseUrl={baseUrl}
+					user={user}
 				>
 					{t === 'd' ? <Status style={sharedStyles.status} id={member._id} /> : null }
 				</Avatar>,
