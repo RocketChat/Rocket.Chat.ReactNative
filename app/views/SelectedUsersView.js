@@ -235,7 +235,7 @@ export default class SelectedUsersView extends LoggedView {
 
 	renderItem = ({ item, index }) => {
 		const { search } = this.state;
-		const { baseUrl } = this.props;
+		const { baseUrl, user } = this.props;
 
 		const name = item.search ? item.name : item.fname;
 		const username = item.search ? item.username : item.name;
