@@ -146,6 +146,10 @@ const RocketChat = {
 		database.setActiveDB(server);
 		reduxStore.dispatch(connectRequest());
 
+		if (this.connectTimeout) {
+			clearTimeout(this.connectTimeout);
+		}
+
 		// Use useSsl: false only if server url starts with http://
 		const useSsl = !/http:\/\//.test(server);
 
@@ -160,6 +164,11 @@ const RocketChat = {
 			})
 			.catch((err) => {
 				console.log('connect error', err);
+
+				// when `connect` raises an error, we try again in 10 seconds
+				this.connectTimeout = setTimeout(() => {
+					this.connect({ server, user });
+				}, 10000);
 			});
 
 		this.sdk.onStreamData('connected', () => {
