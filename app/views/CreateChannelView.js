@@ -80,7 +80,11 @@ const styles = StyleSheet.create({
 	failure: state.createChannel.failure,
 	isFetching: state.createChannel.isFetching,
 	result: state.createChannel.result,
-	users: state.selectedUsers.users
+	users: state.selectedUsers.users,
+	user: {
+		id: state.login.user && state.login.user.id,
+		token: state.login.user && state.login.user.token
+	}
 }), dispatch => ({
 	create: data => dispatch(createChannelRequestAction(data)),
 	removeUser: user => dispatch(removeUserAction(user))
@@ -106,7 +110,11 @@ export default class CreateChannelView extends LoggedView {
 		failure: PropTypes.bool,
 		isFetching: PropTypes.bool,
 		result: PropTypes.object,
-		users: PropTypes.array.isRequired
+		users: PropTypes.array.isRequired,
+		user: PropTypes.shape({
+			id: PropTypes.string,
+			token: PropTypes.string
+		})
 	};
 
 	constructor(props) {
@@ -305,7 +313,7 @@ export default class CreateChannelView extends LoggedView {
 	renderFormSeparator = () => <View style={[sharedStyles.separator, styles.formSeparator]} />
 
 	renderItem = ({ item }) => {
-		const { baseUrl } = this.props;
+		const { baseUrl, user } = this.props;
 
 		return (
 			<UserItem
@@ -314,6 +322,7 @@ export default class CreateChannelView extends LoggedView {
 				onPress={() => this.removeUser(item)}
 				testID={`create-channel-view-item-${ item.name }`}
 				baseUrl={baseUrl}
+				user={user}
 			/>
 		);
 	}
