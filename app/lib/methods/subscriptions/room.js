@@ -27,8 +27,10 @@ export default function subscribeRoom({ rid }) {
 			try {
 				clearTimeout(timer);
 				timer = false;
-				await this.loadMissedMessages({ rid });
-				loop();
+				if (this.sdk.userId) {
+					await this.loadMissedMessages({ rid });
+					loop();
+				}
 			} catch (e) {
 				loop();
 			}
@@ -38,15 +40,13 @@ export default function subscribeRoom({ rid }) {
 	this.sdk.onStreamData('connected', () => {
 		if (this.sdk.userId) {
 			this.loadMissedMessages({ rid });
-			clearTimeout(timer);
-			timer = false;
 		}
+		clearTimeout(timer);
+		timer = false;
 	});
 
 	this.sdk.onStreamData('close', () => {
-		if (this.sdk.userId) {
-			loop();
-		}
+		loop();
 	});
 
 	try {

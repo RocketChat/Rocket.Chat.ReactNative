@@ -15,8 +15,10 @@ export default async function subscribeRooms() {
 			try {
 				clearTimeout(timer);
 				timer = false;
-				await this.getRooms();
-				loop();
+				if (this.sdk.userId) {
+					await this.getRooms();
+					loop();
+				}
 			} catch (e) {
 				loop();
 			}
@@ -26,15 +28,13 @@ export default async function subscribeRooms() {
 	this.sdk.onStreamData('connected', () => {
 		if (this.sdk.userId) {
 			this.getRooms();
-			clearTimeout(timer);
-			timer = false;
 		}
+		clearTimeout(timer);
+		timer = false;
 	});
 
 	this.sdk.onStreamData('close', () => {
-		if (this.sdk.userId) {
-			loop();
-		}
+		loop();
 	});
 
 	this.sdk.onStreamData('stream-notify-user', protectedFunction((ddpMessage) => {
