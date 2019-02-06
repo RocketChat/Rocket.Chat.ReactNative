@@ -678,12 +678,12 @@ export default class MessageBox extends Component {
 
 	renderReplyPreview = () => {
 		const {
-			replyMessage, replying, closeReply, username
+			replyMessage, replying, closeReply, user
 		} = this.props;
 		if (!replying) {
 			return null;
 		}
-		return <ReplyPreview key='reply-preview' message={replyMessage} close={closeReply} username={username} />;
+		return <ReplyPreview key='reply-preview' message={replyMessage} close={closeReply} username={user.username} />;
 	};
 
 	renderFilesActions = () => {
