@@ -330,6 +330,7 @@ export default {
 	Unread: 'Unread',
 	Unread_on_top: 'Unread on top',
 	Unstar: 'Unstar',
+	Updating: 'Updating...',
 	Uploading: 'Uploading',
 	Upload_file_question_mark: 'Upload file?',
 	User_added_by: 'User {{userAdded}} added by {{userBy}}',

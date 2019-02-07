@@ -1,24 +1,29 @@
 import { InteractionManager } from 'react-native';
-import * as SDK from '@rocket.chat/sdk';
 
 import buildMessage from './helpers/buildMessage';
 import database from '../realm';
 import log from '../../utils/log';
+
+const getLastUpdate = (rid) => {
+	const sub = database
+		.objects('subscriptions')
+		.filtered('rid == $0', rid)[0];
+	return sub && new Date(sub.lastOpen).toISOString();
+};
 
 async function load({ rid: roomId, lastOpen }) {
 	let lastUpdate;
 	if (lastOpen) {
 		lastUpdate = new Date(lastOpen).toISOString();
 	} else {
-		return [];
+		lastUpdate = getLastUpdate(roomId);
 	}
 	// RC 0.60.0
-	const { result } = await SDK.api.get('chat.syncMessages', { roomId, lastUpdate, count: 50 });
+	const { result } = await this.sdk.get('chat.syncMessages', { roomId, lastUpdate, count: 50 });
 	return result;
 }
 
 export default function loadMissedMessages(...args) {
-	const { database: db } = database;
 	return new Promise(async(resolve, reject) => {
 		try {
 			const data = (await load.call(this, ...args));
@@ -28,14 +33,14 @@ export default function loadMissedMessages(...args) {
 					const { updated } = data;
 					updated.forEach(buildMessage);
 					InteractionManager.runAfterInteractions(() => {
-						db.write(() => updated.forEach(message => db.create('messages', message, true)));
+						database.write(() => updated.forEach(message => database.create('messages', message, true)));
 						resolve(updated);
 					});
 				}
 				if (data.deleted && data.deleted.length) {
 					const { deleted } = data;
 					InteractionManager.runAfterInteractions(() => {
-						db.write(() => {
+						database.write(() => {
 							deleted.forEach((m) => {
 								const message = database.objects('messages').filtered('_id = $0', m._id);
 								database.delete(message);

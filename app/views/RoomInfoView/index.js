@@ -17,7 +17,7 @@ import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
-import { iconsMap } from '../../Icons';
+import Icons from '../../lib/Icons';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
@@ -100,7 +100,7 @@ export default class RoomInfoView extends LoggedView {
 				topBar: {
 					rightButtons: [{
 						id: 'edit',
-						icon: iconsMap.create,
+						icon: Icons.getSource('create', false),
 						testID: 'room-info-view-edit-button'
 					}]
 				}
