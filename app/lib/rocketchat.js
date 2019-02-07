@@ -282,7 +282,8 @@ const RocketChat = {
 
 		if (code) {
 			params = {
-				...params,
+				user,
+				password,
 				code
 			};
 		}
