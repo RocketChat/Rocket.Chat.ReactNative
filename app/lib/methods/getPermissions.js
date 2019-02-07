@@ -1,5 +1,4 @@
 import { InteractionManager } from 'react-native';
-import * as SDK from '@rocket.chat/sdk';
 
 import database from '../realm';
 import log from '../../utils/log';
@@ -8,7 +7,7 @@ import defaultPermissions from '../../constants/permissions';
 export default async function() {
 	try {
 		// RC 0.66.0
-		const result = await SDK.api.get('permissions.list');
+		const result = await this.sdk.get('permissions.list');
 
 		if (!result.success) {
 			return;

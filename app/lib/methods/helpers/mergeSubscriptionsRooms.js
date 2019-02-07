@@ -1,7 +1,12 @@
+import EJSON from 'ejson';
+
 import normalizeMessage from './normalizeMessage';
 // TODO: delete and update
 
 export const merge = (subscription, room) => {
+	subscription = EJSON.fromJSONValue(subscription);
+	room = EJSON.fromJSONValue(room);
+
 	if (!subscription) {
 		return;
 	}
@@ -28,6 +33,8 @@ export const merge = (subscription, room) => {
 	}
 	if (subscription.roles && subscription.roles.length) {
 		subscription.roles = subscription.roles.map(role => (role.value ? role : { value: role }));
+	} else {
+		subscription.roles = [];
 	}
 
 	if (subscription.mobilePushNotifications === 'nothing') {
