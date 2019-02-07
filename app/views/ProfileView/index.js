@@ -35,7 +35,8 @@ import { setUser as setUserAction } from '../../actions/login';
 		name: state.login.user && state.login.user.name,
 		username: state.login.user && state.login.user.username,
 		customFields: state.login.user && state.login.user.customFields,
-		emails: state.login.user && state.login.user.emails
+		emails: state.login.user && state.login.user.emails,
+		token: state.login.user && state.login.user.token
 	},
 	Accounts_CustomFields: state.settings.Accounts_CustomFields,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
