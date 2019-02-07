@@ -4,7 +4,6 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as SDK from '@rocket.chat/sdk';
 import equal from 'deep-equal';
 
 import Navigation from '../../lib/Navigation';
@@ -139,7 +138,7 @@ export default class ServerDropdown extends Component {
 			if (!token) {
 				appStart();
 				try {
-					SDK.driver.disconnect();
+					this.sdk.disconnect();
 				} catch (error) {
 					console.warn(error);
 				}
