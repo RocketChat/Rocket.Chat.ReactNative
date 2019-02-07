@@ -39,6 +39,7 @@ import sendMessage, { getMessage, sendMessageCall } from './methods/sendMessage'
 import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFileMessage';
 
 import { getDeviceToken } from '../push';
+import { roomsRequest } from '../actions/rooms';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
@@ -134,7 +135,7 @@ const RocketChat = {
 	},
 	loginSuccess({ user }) {
 		reduxStore.dispatch(setUser(user));
-		this.getRooms().catch(e => console.log(e));
+		reduxStore.dispatch(roomsRequest());
 		this.subscribeRooms();
 		this.sdk.subscribe('activeUsers');
 		this.sdk.subscribe('roles');

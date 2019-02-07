@@ -1,8 +1,9 @@
 import * as types from '../actions/actionsTypes';
 
 const initialState = {
-	isFetching: false,
+	isFetching: true,
 	failure: false,
+	errorMessage: {},
 	searchText: '',
 	showServerDropdown: false,
 	closeServerDropdown: false,
@@ -15,7 +16,9 @@ export default function login(state = initialState, action) {
 		case types.ROOMS.REQUEST:
 			return {
 				...state,
-				isFetching: true
+				isFetching: true,
+				failure: false,
+				errorMessage: {}
 			};
 		case types.ROOMS.SUCCESS:
 			return {
