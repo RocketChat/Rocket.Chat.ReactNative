@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, ScrollView, View, StyleSheet, Image, Dimensions
+	Text, ScrollView, View, StyleSheet, Image
 } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import { RectButton } from 'react-native-gesture-handler';
@@ -13,6 +13,7 @@ import { isIOS, isAndroid } from '../utils/deviceInfo';
 import LoggedView from './View';
 import I18n from '../i18n';
 import { DARK_HEADER } from '../constants/headerOptions';
+import Icons from '../lib/Icons';
 
 const styles = StyleSheet.create({
 	container: {
@@ -68,7 +69,7 @@ export default class LegalView extends LoggedView {
 				},
 				leftButtons: [{
 					id: 'close',
-					icon: isAndroid ? { uri: 'back', scale: Dimensions.get('window').scale } : undefined,
+					icon: isAndroid ? Icons.getSource('back') : undefined,
 					text: isIOS ? I18n.t('Close') : undefined,
 					testID: 'legal-view-close'
 				}]

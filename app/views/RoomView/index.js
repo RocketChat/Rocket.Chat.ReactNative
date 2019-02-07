@@ -25,7 +25,7 @@ import styles from './styles';
 import log from '../../utils/log';
 import { isIOS } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
-import { iconsMap } from '../../Icons';
+import Icons from '../../lib/Icons';
 import ConnectionBadge from '../../containers/ConnectionBadge';
 
 @connect(state => ({
@@ -59,11 +59,11 @@ export default class RoomView extends LoggedView {
 				rightButtons: [{
 					id: 'more',
 					testID: 'room-view-header-actions',
-					icon: iconsMap.more
+					icon: Icons.getSource('more', false)
 				}, {
 					id: 'star',
 					testID: 'room-view-header-star',
-					icon: iconsMap.starOutline
+					icon: Icons.getSource('starOutline', false)
 				}]
 			},
 			blurOnUnmount: true
@@ -156,13 +156,13 @@ export default class RoomView extends LoggedView {
 			const rightButtons = [{
 				id: 'star',
 				testID: 'room-view-header-star',
-				icon: room.f ? iconsMap.star : iconsMap.starOutline
+				icon: room.f ? Icons.getSource('star', false) : Icons.getSource('starOutline', false)
 			}];
 			if (room.t !== 'l') {
 				rightButtons.unshift({
 					id: 'more',
 					testID: 'room-view-header-actions',
-					icon: iconsMap.more
+					icon: Icons.getSource('more', false)
 				});
 			}
 			Navigation.mergeOptions(componentId, {
