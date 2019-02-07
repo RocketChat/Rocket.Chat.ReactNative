@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, FlatList, Text, Image, Dimensions
+	View, StyleSheet, FlatList, Text, Image
 } from 'react-native';
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -18,6 +18,7 @@ import I18n from '../i18n';
 import Touch from '../utils/touch';
 import { isIOS, isAndroid } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
+import Icons from '../lib/Icons';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -57,7 +58,7 @@ export default class NewMessageView extends LoggedView {
 			topBar: {
 				leftButtons: [{
 					id: 'cancel',
-					icon: isAndroid ? { uri: 'back', scale: Dimensions.get('window').scale } : undefined,
+					icon: isAndroid ? Icons.getSource('back') : undefined,
 					text: isIOS ? I18n.t('Cancel') : undefined
 				}]
 			}

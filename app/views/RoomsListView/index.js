@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, FlatList, BackHandler, ActivityIndicator, Text, Image, Dimensions, ScrollView, Keyboard, LayoutAnimation
+	View, FlatList, BackHandler, ActivityIndicator, Text, Image, ScrollView, Keyboard, LayoutAnimation
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
@@ -29,6 +29,7 @@ import {
 import { appStart as appStartAction } from '../../actions';
 import debounce from '../../utils/debounce';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
+import Icons from '../../lib/Icons';
 
 const ROW_HEIGHT = 70;
 const SCROLL_OFFSET = 56;
@@ -39,19 +40,19 @@ const keyExtractor = item => item.rid;
 
 const leftButtons = [{
 	id: 'settings',
-	icon: { uri: 'settings', scale: Dimensions.get('window').scale },
+	icon: Icons.getSource('settings'),
 	testID: 'rooms-list-view-sidebar'
 }];
 const rightButtons = [{
 	id: 'newMessage',
-	icon: { uri: 'new_channel', scale: Dimensions.get('window').scale },
+	icon: Icons.getSource('new_channel'),
 	testID: 'rooms-list-view-create-channel'
 }];
 
 if (isAndroid) {
 	rightButtons.push({
 		id: 'search',
-		icon: { uri: 'search', scale: Dimensions.get('window').scale }
+		icon: Icons.getSource('search')
 	});
 }
 
@@ -385,7 +386,7 @@ export default class RoomsListView extends LoggedView {
 			topBar: {
 				leftButtons: [{
 					id: 'back',
-					icon: { uri: 'back', scale: Dimensions.get('window').scale },
+					icon: Icons.getSource('back'),
 					testID: 'rooms-list-view-cancel-search'
 				}],
 				rightButtons: []

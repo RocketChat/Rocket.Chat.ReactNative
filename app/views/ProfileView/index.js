@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, ScrollView, Keyboard, Dimensions, BackHandler
+	View, ScrollView, Keyboard, BackHandler
 } from 'react-native';
 import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
@@ -28,6 +28,7 @@ import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
 import { appStart as appStartAction } from '../../actions';
 import { setUser as setUserAction } from '../../actions/login';
+import Icons from '../../lib/Icons';
 
 @connect(state => ({
 	user: {
@@ -50,7 +51,7 @@ export default class ProfileView extends LoggedView {
 			topBar: {
 				leftButtons: [{
 					id: 'settings',
-					icon: { uri: 'settings', scale: Dimensions.get('window').scale },
+					icon: Icons.getSource('settings'),
 					testID: 'rooms-list-view-sidebar'
 				}],
 				title: {

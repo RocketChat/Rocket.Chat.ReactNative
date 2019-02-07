@@ -988,10 +988,10 @@
   resolved "https://registry.yarnpkg.com/@remobile/react-native-toast/-/react-native-toast-1.0.7.tgz#b2e3684cdb13e1c9d9b4ed08e667157d4ad0fab2"
   integrity sha512-iOD1PRnTSVr9sDWQdesIpfRrwJhHfeEQe5BpalQxC5OhM9thpiE6cu2NlW1KBWl0RJG4ZiJaF1xLlCo9YxU6dA==
 
-"@rocket.chat/sdk@1.0.0-alpha.22":
-  version "1.0.0-alpha.22"
-  resolved "https://registry.yarnpkg.com/@rocket.chat/sdk/-/sdk-1.0.0-alpha.22.tgz#e1ea41c9760566c6293842c61ed035986e61c186"
-  integrity sha512-AjEs4lhIrh/hgPlKaTAcOslHfjV2qjr1jRQE60s9CmDlwxvzy8fJB9OcrW19P6cr5bapjXqUtnQBpS77lddjZw==
+"@rocket.chat/sdk@1.0.0-alpha.24":
+  version "1.0.0-alpha.24"
+  resolved "https://registry.yarnpkg.com/@rocket.chat/sdk/-/sdk-1.0.0-alpha.24.tgz#8a6d3ff869c050b34f62bb7ef972d14c1a4d4f79"
+  integrity sha512-5EXVWkzQLGyKB5EdLZdpH86/gQ2rYY12OZ1ClRpAqYZs8svBKOn9pGBEWBW9i0C6ZowedFm8SdQjX4VHw+60hg==
   dependencies:
     "@types/event-emitter" "^0.3.2"
     "@types/eventemitter3" "^2.0.2"
@@ -9352,7 +9352,7 @@ pad-component@0.0.1:
   resolved "https://registry.yarnpkg.com/pad-component/-/pad-component-0.0.1.tgz#ad1f22ce1bf0fdc0d6ddd908af17f351a404b8ac"
   integrity sha1-rR8izhvw/cDW3dkIrxfzUaQEuKw=
 
-paho-mqtt@eclipse/paho.mqtt.javascript#master:
+"paho-mqtt@github:eclipse/paho.mqtt.javascript#master":
   version "1.1.0"
   resolved "https://codeload.github.com/eclipse/paho.mqtt.javascript/tar.gz/9b761defeeb4a627db31d92ae1b0ca91b44b226e"
 

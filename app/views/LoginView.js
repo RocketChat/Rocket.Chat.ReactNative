@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Keyboard, Text, ScrollView, View, StyleSheet, Alert, LayoutAnimation, Dimensions
+	Keyboard, Text, ScrollView, View, StyleSheet, Alert, LayoutAnimation
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Answers } from 'react-native-fabric';
@@ -18,6 +18,7 @@ import LoggedView from './View';
 import I18n from '../i18n';
 import { DARK_HEADER } from '../constants/headerOptions';
 import { loginRequest as loginRequestAction } from '../actions/login';
+import Icons from '../lib/Icons';
 
 const styles = StyleSheet.create({
 	buttonsContainer: {
@@ -64,7 +65,7 @@ export default class LoginView extends LoggedView {
 				...DARK_HEADER.topBar,
 				rightButtons: [{
 					id: 'more',
-					icon: { uri: 'more', scale: Dimensions.get('window').scale },
+					icon: Icons.getSource('more'),
 					testID: 'login-view-more'
 				}]
 			}
