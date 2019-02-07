@@ -35,14 +35,23 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Header = ({ onPress, serverName, showServerDropdown }) => (
+const HeaderTitle = ({ isFetching }) => {
+	if (isFetching) {
+		return <Text style={styles.title}>{I18n.t('Updating')}</Text>;
+	}
+	return <Text style={styles.title}>{I18n.t('Messages')}</Text>;
+};
+
+const Header = ({
+	isFetching, serverName, showServerDropdown, onPress
+}) => (
 	<View style={styles.container}>
 		<TouchableOpacity
 			onPress={onPress}
 			testID='rooms-list-header-server-dropdown-button'
 			style={styles.container}
 		>
-			<Text style={styles.title}>{I18n.t('Messages')}</Text>
+			<HeaderTitle isFetching={isFetching} />
 			<View style={styles.button}>
 				<Text style={styles.server}>{serverName}</Text>
 				<Image style={[styles.disclosure, showServerDropdown && styles.upsideDown]} source={{ uri: 'disclosure_indicator_server' }} />
@@ -52,13 +61,18 @@ const Header = ({ onPress, serverName, showServerDropdown }) => (
 );
 
 Header.propTypes = {
-	onPress: PropTypes.func.isRequired,
+	isFetching: PropTypes.bool,
 	serverName: PropTypes.string,
-	showServerDropdown: PropTypes.bool.isRequired
+	showServerDropdown: PropTypes.bool.isRequired,
+	onPress: PropTypes.func.isRequired
 };
 
 Header.defaultProps = {
 	serverName: 'Rocket.Chat'
+};
+
+HeaderTitle.propTypes = {
+	isFetching: PropTypes.bool
 };
 
 export default Header;

@@ -20,7 +20,12 @@ import I18n from '../../i18n';
 import SortDropdown from './SortDropdown';
 import ServerDropdown from './ServerDropdown';
 import Touch from '../../utils/touch';
-import { toggleSortDropdown as toggleSortDropdownAction, openSearchHeader as openSearchHeaderAction, closeSearchHeader as closeSearchHeaderAction } from '../../actions/rooms';
+import {
+	toggleSortDropdown as toggleSortDropdownAction,
+	openSearchHeader as openSearchHeaderAction,
+	closeSearchHeader as closeSearchHeaderAction,
+	roomsRequest as roomsRequestAction
+} from '../../actions/rooms';
 import { appStart as appStartAction } from '../../actions';
 import debounce from '../../utils/debounce';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
@@ -69,7 +74,8 @@ if (isAndroid) {
 	toggleSortDropdown: () => dispatch(toggleSortDropdownAction()),
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
-	appStart: () => dispatch(appStartAction())
+	appStart: () => dispatch(appStartAction()),
+	roomsRequest: () => dispatch(roomsRequestAction())
 }))
 /** @extends React.Component */
 export default class RoomsListView extends LoggedView {
@@ -114,7 +120,8 @@ export default class RoomsListView extends LoggedView {
 		toggleSortDropdown: PropTypes.func,
 		openSearchHeader: PropTypes.func,
 		closeSearchHeader: PropTypes.func,
-		appStart: PropTypes.func
+		appStart: PropTypes.func,
+		roomsRequest: PropTypes.func
 	}
 
 	constructor(props) {
@@ -215,7 +222,7 @@ export default class RoomsListView extends LoggedView {
 
 	componentDidUpdate(prevProps) {
 		const {
-			sortBy, groupByType, showFavorites, showUnread, appState
+			sortBy, groupByType, showFavorites, showUnread, appState, roomsRequest
 		} = this.props;
 
 		if (!(
@@ -226,7 +233,7 @@ export default class RoomsListView extends LoggedView {
 		)) {
 			this.getSubscriptions();
 		} else if (appState === 'foreground' && appState !== prevProps.appState) {
-			RocketChat.getRooms().catch(e => console.log(e));
+			roomsRequest();
 		}
 	}
 
