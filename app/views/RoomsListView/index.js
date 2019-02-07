@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, FlatList, BackHandler, ActivityIndicator, Text, Image, Dimensions, ScrollView, Keyboard, LayoutAnimation
+	View, FlatList, BackHandler, ActivityIndicator, Text, Image, ScrollView, Keyboard, LayoutAnimation
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
@@ -20,10 +20,16 @@ import I18n from '../../i18n';
 import SortDropdown from './SortDropdown';
 import ServerDropdown from './ServerDropdown';
 import Touch from '../../utils/touch';
-import { toggleSortDropdown as toggleSortDropdownAction, openSearchHeader as openSearchHeaderAction, closeSearchHeader as closeSearchHeaderAction } from '../../actions/rooms';
+import {
+	toggleSortDropdown as toggleSortDropdownAction,
+	openSearchHeader as openSearchHeaderAction,
+	closeSearchHeader as closeSearchHeaderAction,
+	roomsRequest as roomsRequestAction
+} from '../../actions/rooms';
 import { appStart as appStartAction } from '../../actions';
 import debounce from '../../utils/debounce';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
+import Icons from '../../lib/Icons';
 
 const ROW_HEIGHT = 70;
 const SCROLL_OFFSET = 56;
@@ -34,19 +40,19 @@ const keyExtractor = item => item.rid;
 
 const leftButtons = [{
 	id: 'settings',
-	icon: { uri: 'settings', scale: Dimensions.get('window').scale },
+	icon: Icons.getSource('settings'),
 	testID: 'rooms-list-view-sidebar'
 }];
 const rightButtons = [{
 	id: 'newMessage',
-	icon: { uri: 'new_channel', scale: Dimensions.get('window').scale },
+	icon: Icons.getSource('new_channel'),
 	testID: 'rooms-list-view-create-channel'
 }];
 
 if (isAndroid) {
 	rightButtons.push({
 		id: 'search',
-		icon: { uri: 'search', scale: Dimensions.get('window').scale }
+		icon: Icons.getSource('search')
 	});
 }
 
@@ -68,7 +74,8 @@ if (isAndroid) {
 	toggleSortDropdown: () => dispatch(toggleSortDropdownAction()),
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
-	appStart: () => dispatch(appStartAction())
+	appStart: () => dispatch(appStartAction()),
+	roomsRequest: () => dispatch(roomsRequestAction())
 }))
 /** @extends React.Component */
 export default class RoomsListView extends LoggedView {
@@ -113,7 +120,8 @@ export default class RoomsListView extends LoggedView {
 		toggleSortDropdown: PropTypes.func,
 		openSearchHeader: PropTypes.func,
 		closeSearchHeader: PropTypes.func,
-		appStart: PropTypes.func
+		appStart: PropTypes.func,
+		roomsRequest: PropTypes.func
 	}
 
 	constructor(props) {
@@ -214,7 +222,7 @@ export default class RoomsListView extends LoggedView {
 
 	componentDidUpdate(prevProps) {
 		const {
-			sortBy, groupByType, showFavorites, showUnread, appState
+			sortBy, groupByType, showFavorites, showUnread, appState, roomsRequest
 		} = this.props;
 
 		if (!(
@@ -225,7 +233,7 @@ export default class RoomsListView extends LoggedView {
 		)) {
 			this.getSubscriptions();
 		} else if (appState === 'foreground' && appState !== prevProps.appState) {
-			RocketChat.getRooms().catch(e => console.log(e));
+			roomsRequest();
 		}
 	}
 
@@ -378,7 +386,7 @@ export default class RoomsListView extends LoggedView {
 			topBar: {
 				leftButtons: [{
 					id: 'back',
-					icon: { uri: 'back', scale: Dimensions.get('window').scale },
+					icon: Icons.getSource('back'),
 					testID: 'rooms-list-view-cancel-search'
 				}],
 				rightButtons: []

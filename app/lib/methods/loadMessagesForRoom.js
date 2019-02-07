@@ -1,5 +1,4 @@
 import { InteractionManager } from 'react-native';
-import * as SDK from '@rocket.chat/sdk';
 
 import buildMessage from './helpers/buildMessage';
 import database from '../realm';
@@ -9,7 +8,7 @@ async function load({ rid: roomId, latest, t }) {
 	if (t === 'l') {
 		try {
 			// RC 0.51.0
-			const data = await SDK.driver.asyncCall('loadHistory', roomId, null, 50, latest);
+			const data = await this.sdk.methodCall('loadHistory', roomId, null, 50, latest);
 			if (!data || data.status === 'error') {
 				return [];
 			}
@@ -25,7 +24,7 @@ async function load({ rid: roomId, latest, t }) {
 		params = { ...params, latest: new Date(latest).toISOString() };
 	}
 	// RC 0.48.0
-	const data = await SDK.api.get(`${ this.roomTypeToApiType(t) }.history`, params);
+	const data = await this.sdk.get(`${ this.roomTypeToApiType(t) }.history`, params);
 	if (!data || data.status === 'error') {
 		return [];
 	}
@@ -33,15 +32,14 @@ async function load({ rid: roomId, latest, t }) {
 }
 
 export default function loadMessagesForRoom(...args) {
-	const { database: db } = database;
 	return new Promise(async(resolve, reject) => {
 		try {
 			const data = await load.call(this, ...args);
 
 			if (data && data.length) {
 				InteractionManager.runAfterInteractions(() => {
-					db.write(() => data.forEach((message) => {
-						db.create('messages', buildMessage(message), true);
+					database.write(() => data.forEach((message) => {
+						database.create('messages', buildMessage(message), true);
 					}));
 					return resolve(data);
 				});

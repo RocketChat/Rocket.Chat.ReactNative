@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, ScrollView, Dimensions, BackHandler
-} from 'react-native';
+import { View, ScrollView, BackHandler } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -21,6 +19,7 @@ import { showErrorAlert, showToast } from '../../utils/info';
 import log from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
 import { appStart as appStartAction } from '../../actions';
+import Icons from '../../lib/Icons';
 
 @connect(state => ({
 	userLanguage: state.login.user && state.login.user.language
@@ -35,7 +34,7 @@ export default class SettingsView extends LoggedView {
 			topBar: {
 				leftButtons: [{
 					id: 'settings',
-					icon: { uri: 'settings', scale: Dimensions.get('window').scale },
+					icon: Icons.getSource('settings'),
 					testID: 'rooms-list-view-sidebar'
 				}],
 				title: {

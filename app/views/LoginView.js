@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Keyboard, Text, ScrollView, View, StyleSheet, Alert, LayoutAnimation, Dimensions
+	Keyboard, Text, ScrollView, View, StyleSheet, Alert, LayoutAnimation
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Answers } from 'react-native-fabric';
@@ -18,6 +18,7 @@ import LoggedView from './View';
 import I18n from '../i18n';
 import { DARK_HEADER } from '../constants/headerOptions';
 import { loginRequest as loginRequestAction } from '../actions/login';
+import Icons from '../lib/Icons';
 
 const styles = StyleSheet.create({
 	buttonsContainer: {
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
 @connect(state => ({
 	isFetching: state.login.isFetching,
 	failure: state.login.failure,
-	error: state.login.error,
+	error: state.login.error && state.login.error.data,
 	Site_Name: state.settings.Site_Name,
 	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
 	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder
@@ -64,7 +65,7 @@ export default class LoginView extends LoggedView {
 				...DARK_HEADER.topBar,
 				rightButtons: [{
 					id: 'more',
-					icon: { uri: 'more', scale: Dimensions.get('window').scale },
+					icon: Icons.getSource('more'),
 					testID: 'login-view-more'
 				}]
 			}
@@ -200,7 +201,7 @@ export default class LoginView extends LoggedView {
 		return user.trim() && password.trim();
 	}
 
-	submit = async() => {
+	submit = () => {
 		if (!this.valid()) {
 			return;
 		}
@@ -208,23 +209,8 @@ export default class LoginView extends LoggedView {
 		const { user, password, code } = this.state;
 		const { loginRequest } = this.props;
 		Keyboard.dismiss();
-
-		try {
-			await loginRequest({ user, password, code });
-			Answers.logLogin('Email', true);
-		} catch (e) {
-			if (e && e.error === 'totp-required') {
-				LayoutAnimation.easeInEaseOut();
-				this.setState({ showTOTP: true });
-				setTimeout(() => {
-					if (this.codeInput && this.codeInput.focus) {
-						this.codeInput.focus();
-					}
-				}, 300);
-				return;
-			}
-			Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
-		}
+		loginRequest({ user, password, code });
+		Answers.logLogin('Email', true);
 	}
 
 	register = () => {
