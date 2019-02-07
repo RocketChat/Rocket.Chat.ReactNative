@@ -18,7 +18,7 @@ import LoggedView from './View';
 import I18n from '../i18n';
 import { DARK_HEADER } from '../constants/headerOptions';
 import { loginRequest as loginRequestAction } from '../actions/login';
-import Icons from '../Icons';
+import Icons from '../lib/Icons';
 
 const styles = StyleSheet.create({
 	buttonsContainer: {

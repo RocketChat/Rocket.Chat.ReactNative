@@ -28,7 +28,7 @@ import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
 import { appStart as appStartAction } from '../../actions';
 import { setUser as setUserAction } from '../../actions/login';
-import Icons from '../../Icons';
+import Icons from '../../lib/Icons';
 
 @connect(state => ({
 	user: {

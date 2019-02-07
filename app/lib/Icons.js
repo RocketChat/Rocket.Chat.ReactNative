@@ -1,6 +1,6 @@
 import { Dimensions } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { isIOS, isAndroid } from './utils/deviceInfo';
+import { isIOS, isAndroid } from '../utils/deviceInfo';
 
 const prefix = isIOS ? 'ios' : 'md';
 

@@ -18,7 +18,7 @@ import { DARK_HEADER } from '../constants/headerOptions';
 import RocketChat from '../lib/rocketchat';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import isValidEmail from '../utils/isValidEmail';
-import Icons from '../Icons';
+import Icons from '../lib/Icons';
 
 const shouldUpdateState = ['name', 'email', 'password', 'username', 'saving'];
 

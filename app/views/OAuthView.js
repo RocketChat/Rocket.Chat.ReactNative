@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { WebView, Dimensions } from 'react-native';
+import { WebView } from 'react-native';
 import { connect } from 'react-redux';
 
 import Navigation from '../lib/Navigation';
@@ -8,7 +8,7 @@ import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
 import { DARK_HEADER } from '../constants/headerOptions';
 import { isIOS, isAndroid } from '../utils/deviceInfo';
-import Icons from '../Icons';
+import Icons from '../lib/Icons';
 
 const userAgentAndroid = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1';
 const userAgent = isIOS ? 'UserAgent' : userAgentAndroid;

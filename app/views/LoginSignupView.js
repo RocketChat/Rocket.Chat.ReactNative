@@ -17,7 +17,7 @@ import random from '../utils/random';
 import Button from '../containers/Button';
 import I18n from '../i18n';
 import { DARK_HEADER } from '../constants/headerOptions';
-import Icons from '../Icons';
+import Icons from '../lib/Icons';
 
 const styles = StyleSheet.create({
 	container: {

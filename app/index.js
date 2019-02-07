@@ -1,11 +1,11 @@
 import { Component } from 'react';
 import { Linking } from 'react-native';
 
-import store from './lib/createStore';
 import { appInit } from './actions';
-import Icons from './Icons';
-import Navigation from './lib/Navigation';
 import { deepLinkingOpen } from './actions/deepLinking';
+import store from './lib/createStore';
+import Icons from './lib/Icons';
+import Navigation from './lib/Navigation';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications } from './push';
 import { DEFAULT_HEADER } from './constants/headerOptions';

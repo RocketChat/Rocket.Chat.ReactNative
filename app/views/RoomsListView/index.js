@@ -24,7 +24,7 @@ import { toggleSortDropdown as toggleSortDropdownAction, openSearchHeader as ope
 import { appStart as appStartAction } from '../../actions';
 import debounce from '../../utils/debounce';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
-import Icons from '../../Icons';
+import Icons from '../../lib/Icons';
 
 const ROW_HEIGHT = 70;
 const SCROLL_OFFSET = 56;

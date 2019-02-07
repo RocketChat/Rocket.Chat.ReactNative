@@ -19,7 +19,7 @@ import { showErrorAlert, showToast } from '../../utils/info';
 import log from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
 import { appStart as appStartAction } from '../../actions';
-import Icons from '../../Icons';
+import Icons from '../../lib/Icons';
 
 @connect(state => ({
 	userLanguage: state.login.user && state.login.user.language

@@ -17,7 +17,7 @@ import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
-import Icons from '../../Icons';
+import Icons from '../../lib/Icons';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 

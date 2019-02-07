@@ -24,7 +24,7 @@ import styles from './styles';
 import log from '../../utils/log';
 import { isIOS } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
-import Icons from '../../Icons';
+import Icons from '../../lib/Icons';
 import ConnectionBadge from '../../containers/ConnectionBadge';
 
 @connect(state => ({
