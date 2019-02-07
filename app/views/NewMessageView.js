@@ -49,7 +49,11 @@ const styles = StyleSheet.create({
 });
 
 @connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	user: {
+		id: state.login.user && state.login.user.id,
+		token: state.login.user && state.login.user.token
+	}
 }))
 /** @extends React.Component */
 export default class NewMessageView extends LoggedView {
@@ -68,7 +72,11 @@ export default class NewMessageView extends LoggedView {
 	static propTypes = {
 		componentId: PropTypes.string,
 		baseUrl: PropTypes.string,
-		onPressItem: PropTypes.func.isRequired
+		onPressItem: PropTypes.func.isRequired,
+		user: PropTypes.shape({
+			id: PropTypes.string,
+			token: PropTypes.string
+		})
 	};
 
 	constructor(props) {
@@ -162,7 +170,7 @@ export default class NewMessageView extends LoggedView {
 
 	renderItem = ({ item, index }) => {
 		const { search } = this.state;
-		const { baseUrl } = this.props;
+		const { baseUrl, user } = this.props;
 
 		let style = {};
 		if (index === 0) {
@@ -182,6 +190,7 @@ export default class NewMessageView extends LoggedView {
 				baseUrl={baseUrl}
 				testID={`new-message-view-item-${ item.name }`}
 				style={style}
+				user={user}
 			/>
 		);
 	}

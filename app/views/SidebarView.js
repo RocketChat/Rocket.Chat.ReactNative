@@ -90,7 +90,8 @@ const keyExtractor = item => item.id;
 		id: state.login.user && state.login.user.id,
 		language: state.login.user && state.login.user.language,
 		status: state.login.user && state.login.user.status,
-		username: state.login.user && state.login.user.username
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
 	},
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }), dispatch => ({
@@ -340,6 +341,7 @@ export default class Sidebar extends Component {
 								size={30}
 								style={styles.avatar}
 								baseUrl={baseUrl}
+								user={user}
 							/>
 							<View style={styles.headerTextContainer}>
 								<View style={styles.headerUsername}>

@@ -12,7 +12,11 @@ export default class Avatar extends PureComponent {
 		size: PropTypes.number,
 		borderRadius: PropTypes.number,
 		type: PropTypes.string,
-		children: PropTypes.object
+		children: PropTypes.object,
+		user: PropTypes.shape({
+			id: PropTypes.string,
+			token: PropTypes.string
+		})
 	}
 
 	static defaultProps = {
@@ -24,7 +28,7 @@ export default class Avatar extends PureComponent {
 
 	render() {
 		const {
-			text, size, baseUrl, borderRadius, style, avatar, type, children
+			text, size, baseUrl, borderRadius, style, avatar, type, children, user
 		} = this.props;
 
 		const avatarStyle = {
@@ -38,9 +42,16 @@ export default class Avatar extends PureComponent {
 		}
 
 		const room = type === 'd' ? text : `@${ text }`;
+
 		// Avoid requesting several sizes by having only two sizes on cache
 		const uriSize = size === 100 ? 100 : 50;
-		const uri = avatar || `${ baseUrl }/avatar/${ room }?format=png&width=${ uriSize }&height=${ uriSize }`;
+
+		let avatarAuthURLFragment = '';
+		if (user && user.id && user.token) {
+			avatarAuthURLFragment = `&rc_token=${ user.token }&rc_uid=${ user.id }`;
+		}
+
+		const uri = avatar || `${ baseUrl }/avatar/${ room }?format=png&width=${ uriSize }&height=${ uriSize }${ avatarAuthURLFragment }`;
 
 		const image = (
 			<FastImage
