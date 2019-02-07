@@ -16,23 +16,21 @@ export default async function subscribeRooms() {
 		timer = setTimeout(() => {
 			clearTimeout(timer);
 			timer = false;
-			if (this.sdk.userId) {
-				store.dispatch(roomsRequest());
-				loop();
-			}
+			store.dispatch(roomsRequest());
+			loop();
 		}, 5000);
 	};
 
 	this.sdk.onStreamData('connected', () => {
-		if (this.sdk.userId) {
-			store.dispatch(roomsRequest());
-		}
+		store.dispatch(roomsRequest());
 		clearTimeout(timer);
 		timer = false;
 	});
 
 	this.sdk.onStreamData('close', () => {
-		loop();
+		if (this.sdk.userId) {
+			loop();
+		}
 	});
 
 	this.sdk.onStreamData('stream-notify-user', protectedFunction((ddpMessage) => {
