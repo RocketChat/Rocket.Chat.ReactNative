@@ -34,7 +34,10 @@ const getRoomTitle = room => (room.t === 'd'
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	userId: state.login.user && state.login.user.id,
+	user: {
+		id: state.login.user && state.login.user.id,
+		token: state.login.user && state.login.user.token
+	},
 	activeUsers: state.activeUsers, // TODO: remove it
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	allRoles: state.roles,
@@ -55,7 +58,10 @@ export default class RoomInfoView extends LoggedView {
 	static propTypes = {
 		componentId: PropTypes.string,
 		rid: PropTypes.string,
-		userId: PropTypes.string,
+		user: PropTypes.shape({
+			id: PropTypes.string,
+			token: PropTypes.string
+		}),
 		baseUrl: PropTypes.string,
 		activeUsers: PropTypes.object,
 		Message_TimeFormat: PropTypes.string,
@@ -105,8 +111,8 @@ export default class RoomInfoView extends LoggedView {
 		if (room) {
 			if (room.t === 'd') {
 				try {
-					const { userId, activeUsers } = this.props;
-					const roomUser = await RocketChat.getRoomMember(room.rid, userId);
+					const { user, activeUsers } = this.props;
+					const roomUser = await RocketChat.getRoomMember(room.rid, user.id);
 					this.setState({ roomUser: roomUser || {} });
 					const username = room.name;
 
@@ -120,7 +126,7 @@ export default class RoomInfoView extends LoggedView {
 					// get all users roles
 					// needs to be changed by a better method
 					const allUsersRoles = await RocketChat.getUserRoles();
-					const userRoles = allUsersRoles.find(user => user.username === username);
+					const userRoles = allUsersRoles.find(u => u.username === username);
 					if (userRoles) {
 						this.setState({ roles: userRoles.roles || [] });
 					}
@@ -246,7 +252,7 @@ export default class RoomInfoView extends LoggedView {
 	}
 
 	renderAvatar = (room, roomUser) => {
-		const { baseUrl } = this.props;
+		const { baseUrl, user } = this.props;
 
 		return (
 			<Avatar
@@ -255,6 +261,7 @@ export default class RoomInfoView extends LoggedView {
 				style={styles.avatar}
 				type={room.t}
 				baseUrl={baseUrl}
+				user={user}
 			>
 				{room.t === 'd' ? <Status style={[sharedStyles.status, styles.status]} id={roomUser._id} /> : null}
 			</Avatar>
