@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, ScrollView, Image, StyleSheet, Dimensions, Animated, Easing
+	Text, View, ScrollView, Image, StyleSheet, Animated, Easing
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Base64 } from 'js-base64';
@@ -17,6 +17,7 @@ import random from '../utils/random';
 import Button from '../containers/Button';
 import I18n from '../i18n';
 import { DARK_HEADER } from '../constants/headerOptions';
+import Icons from '../lib/Icons';
 
 const styles = StyleSheet.create({
 	container: {
@@ -102,7 +103,7 @@ export default class LoginSignupView extends LoggedView {
 				...DARK_HEADER.topBar,
 				rightButtons: [{
 					id: 'more',
-					icon: { uri: 'more', scale: Dimensions.get('window').scale },
+					icon: Icons.getSource('more'),
 					testID: 'welcome-view-more'
 				}]
 			}

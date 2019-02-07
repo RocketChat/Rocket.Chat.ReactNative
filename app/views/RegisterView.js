@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Keyboard, Text, ScrollView, Dimensions, Alert
+	Keyboard, Text, ScrollView, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -18,6 +18,7 @@ import { DARK_HEADER } from '../constants/headerOptions';
 import RocketChat from '../lib/rocketchat';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import isValidEmail from '../utils/isValidEmail';
+import Icons from '../lib/Icons';
 
 const shouldUpdateState = ['name', 'email', 'password', 'username', 'saving'];
 
@@ -33,7 +34,7 @@ export default class RegisterView extends LoggedView {
 				...DARK_HEADER.topBar,
 				rightButtons: [{
 					id: 'more',
-					icon: { uri: 'more', scale: Dimensions.get('window').scale },
+					icon: Icons.getSource('more'),
 					testID: 'register-view-more'
 				}]
 			}
