@@ -5,6 +5,8 @@ import {
 import PropTypes from 'prop-types';
 import { TextInput } from 'react-native-gesture-handler';
 
+import I18n from '../../../i18n';
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -16,6 +18,13 @@ const styles = StyleSheet.create({
 	},
 	server: {
 		fontSize: 20,
+		color: '#FFF'
+	},
+	serverSmall: {
+		fontSize: 16
+	},
+	updating: {
+		fontSize: 14,
 		color: '#FFF'
 	},
 	disclosure: {
@@ -30,7 +39,7 @@ const styles = StyleSheet.create({
 });
 
 const Header = ({
-	onPress, serverName, showServerDropdown, setSearchInputRef, showSearchHeader, onSearchChangeText
+	isFetching, serverName, showServerDropdown, width, setSearchInputRef, showSearchHeader, onSearchChangeText, onPress
 }) => {
 	if (showSearchHeader) {
 		return (
@@ -46,10 +55,11 @@ const Header = ({
 		);
 	}
 	return (
-		<View style={styles.container}>
+		<View style={[styles.container, { width: width - 150 }]}>
 			<TouchableOpacity onPress={onPress} testID='rooms-list-header-server-dropdown-button'>
+				{isFetching ? <Text style={styles.updating}>{I18n.t('Updating')}</Text> : null}
 				<View style={styles.button}>
-					<Text style={styles.server}>{serverName}</Text>
+					<Text style={[styles.server, isFetching && styles.serverSmall]}>{serverName}</Text>
 					<Image style={[styles.disclosure, showServerDropdown && styles.upsideDown]} source={{ uri: 'disclosure_indicator_server' }} />
 				</View>
 			</TouchableOpacity>
@@ -63,7 +73,9 @@ Header.propTypes = {
 	onPress: PropTypes.func.isRequired,
 	onSearchChangeText: PropTypes.func.isRequired,
 	setSearchInputRef: PropTypes.func.isRequired,
-	serverName: PropTypes.string
+	isFetching: PropTypes.bool,
+	serverName: PropTypes.string,
+	width: PropTypes.number
 };
 
 Header.defaultProps = {

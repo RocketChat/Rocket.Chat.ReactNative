@@ -1,6 +1,7 @@
 import { all } from 'redux-saga/effects';
 import login from './login';
 import rooms from './rooms';
+import room from './room';
 import messages from './messages';
 import selectServer from './selectServer';
 import createChannel from './createChannel';
@@ -14,6 +15,7 @@ const root = function* root() {
 		init(),
 		createChannel(),
 		rooms(),
+		room(),
 		login(),
 		messages(),
 		selectServer(),
