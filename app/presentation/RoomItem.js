@@ -125,7 +125,11 @@ const renderNumber = (unread, userMentions) => {
 
 const attrs = ['name', 'unread', 'userMentions', 'alert', 'showLastMessage', 'type'];
 @connect(state => ({
-	username: state.login.user && state.login.user.username,
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	},
 	StoreLastMessage: state.settings.Store_Last_Message,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }))
@@ -144,7 +148,11 @@ export default class RoomItem extends React.Component {
 		userMentions: PropTypes.number,
 		id: PropTypes.string,
 		onPress: PropTypes.func,
-		username: PropTypes.string,
+		user: PropTypes.shape({
+			id: PropTypes.string,
+			username: PropTypes.string,
+			token: PropTypes.string
+		}),
 		avatarSize: PropTypes.number,
 		testID: PropTypes.string,
 		height: PropTypes.number
@@ -172,14 +180,14 @@ export default class RoomItem extends React.Component {
 
 	get avatar() {
 		const {
-			type, name, avatarSize, baseUrl
+			type, name, avatarSize, baseUrl, user
 		} = this.props;
-		return <Avatar text={name} size={avatarSize} type={type} baseUrl={baseUrl} style={{ marginHorizontal: 15 }} />;
+		return <Avatar text={name} size={avatarSize} type={type} baseUrl={baseUrl} style={{ marginHorizontal: 15 }} user={user} />;
 	}
 
 	get lastMessage() {
 		const {
-			lastMessage, type, showLastMessage, StoreLastMessage, username
+			lastMessage, type, showLastMessage, StoreLastMessage, user
 		} = this.props;
 
 		if (!StoreLastMessage || !showLastMessage) {
@@ -190,7 +198,7 @@ export default class RoomItem extends React.Component {
 		}
 
 		let prefix = '';
-		const me = lastMessage.u.username === username;
+		const me = lastMessage.u.username === user.username;
 
 		if (!lastMessage.msg && Object.keys(lastMessage.attachments).length > 0) {
 			if (me) {
