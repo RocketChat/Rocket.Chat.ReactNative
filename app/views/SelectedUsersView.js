@@ -39,7 +39,11 @@ const styles = StyleSheet.create({
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	users: state.selectedUsers.users,
-	loading: state.selectedUsers.loading
+	loading: state.selectedUsers.loading,
+	user: {
+		id: state.login.user && state.login.user.id,
+		token: state.login.user && state.login.user.token
+	}
 }), dispatch => ({
 	addUser: user => dispatch(addUserAction(user)),
 	removeUser: user => dispatch(removeUserAction(user)),
@@ -58,7 +62,11 @@ export default class SelectedUsersView extends LoggedView {
 		reset: PropTypes.func.isRequired,
 		users: PropTypes.array,
 		loading: PropTypes.bool,
-		setLoadingInvite: PropTypes.func
+		setLoadingInvite: PropTypes.func,
+		user: PropTypes.shape({
+			id: PropTypes.string,
+			token: PropTypes.string
+		})
 	};
 
 	constructor(props) {
@@ -209,7 +217,7 @@ export default class SelectedUsersView extends LoggedView {
 	}
 
 	renderSelectedItem = ({ item }) => {
-		const { baseUrl } = this.props;
+		const { baseUrl, user } = this.props;
 		return (
 			<UserItem
 				name={item.fname}
@@ -218,6 +226,7 @@ export default class SelectedUsersView extends LoggedView {
 				testID={`selected-user-${ item.name }`}
 				baseUrl={baseUrl}
 				style={{ paddingRight: 15 }}
+				user={user}
 			/>
 		);
 	}
@@ -226,7 +235,7 @@ export default class SelectedUsersView extends LoggedView {
 
 	renderItem = ({ item, index }) => {
 		const { search } = this.state;
-		const { baseUrl } = this.props;
+		const { baseUrl, user } = this.props;
 
 		const name = item.search ? item.name : item.fname;
 		const username = item.search ? item.username : item.name;
@@ -249,6 +258,7 @@ export default class SelectedUsersView extends LoggedView {
 				icon={this.isChecked(username) ? 'check' : null}
 				baseUrl={baseUrl}
 				style={style}
+				user={user}
 			/>
 		);
 	}

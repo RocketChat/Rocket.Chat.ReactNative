@@ -23,7 +23,11 @@ import SearchBox from '../../containers/SearchBox';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	room: state.room
+	room: state.room,
+	user: {
+		id: state.login.user && state.login.user.id,
+		token: state.login.user && state.login.user.token
+	}
 }))
 /** @extends React.Component */
 export default class RoomMembersView extends LoggedView {
@@ -48,7 +52,11 @@ export default class RoomMembersView extends LoggedView {
 		rid: PropTypes.string,
 		members: PropTypes.array,
 		baseUrl: PropTypes.string,
-		room: PropTypes.object
+		room: PropTypes.object,
+		user: PropTypes.shape({
+			id: PropTypes.string,
+			token: PropTypes.string
+		})
 	}
 
 	constructor(props) {
@@ -243,7 +251,7 @@ export default class RoomMembersView extends LoggedView {
 	renderSeparator = () => <View style={styles.separator} />;
 
 	renderItem = ({ item }) => {
-		const { baseUrl } = this.props;
+		const { baseUrl, user } = this.props;
 
 		return (
 			<UserItem
@@ -253,6 +261,7 @@ export default class RoomMembersView extends LoggedView {
 				onLongPress={() => this.onLongPressUser(item)}
 				baseUrl={baseUrl}
 				testID={`room-members-view-item-${ item.username }`}
+				user={user}
 			/>
 		);
 	}
