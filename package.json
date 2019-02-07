@@ -12,9 +12,7 @@
     "log-android": "react-native log-android",
     "android": "react-native run-android",
     "storybook": "storybook start -p 7007 | react-native start --projectRoot storybook",
-    "snyk-protect": "snyk protect",
-    "fabric-ios": "./scripts/fabric-ios.sh",
-    "fabric-android": "./scripts/fabric-android.sh"
+    "snyk-protect": "snyk protect"
   },
   "rnpm": {
     "assets": [
@@ -23,7 +21,7 @@
   },
   "dependencies": {
     "@remobile/react-native-toast": "^1.0.7",
-    "@rocket.chat/sdk": "git+https://github.com/RocketChat/Rocket.Chat.js.SDK.git#temp-ddp",
+    "@rocket.chat/sdk": "1.0.0-alpha.24",
     "deep-equal": "^1.0.1",
     "ejson": "^2.1.2",
     "js-base64": "^2.5.1",
@@ -52,7 +50,7 @@
     "react-native-markdown-renderer": "^3.2.8",
     "react-native-modal": "^7.0.2",
     "react-native-navigation": "^2.8.0",
-    "react-native-notifications": "^1.1.23",
+    "react-native-notifications": "1.1.23",
     "react-native-optimized-flatlist": "^1.0.4",
     "react-native-picker-select": "^5.2.3",
     "react-native-responsive-ui": "^1.1.1",

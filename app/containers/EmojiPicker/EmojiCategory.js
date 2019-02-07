@@ -58,7 +58,8 @@ export default class EmojiCategory extends React.Component {
 				testID={`reaction-picker-${ emoji.isCustom ? emoji.content : emoji }`}
 			>
 				{renderEmoji(emoji, size, baseUrl)}
-			</TouchableOpacity>);
+			</TouchableOpacity>
+		);
 	}
 
 	render() {

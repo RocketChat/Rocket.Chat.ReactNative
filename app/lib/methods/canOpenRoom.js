@@ -1,5 +1,3 @@
-import * as SDK from '@rocket.chat/sdk';
-
 import database from '../realm';
 
 const restTypes = {
@@ -9,7 +7,7 @@ const restTypes = {
 async function open({ type, rid }) {
 	try {
 		// RC 0.61.0
-		await SDK.api.post(`${ restTypes[type] }.open`, { roomId: rid });
+		await this.sdk.post(`${ restTypes[type] }.open`, { roomId: rid });
 		return true;
 	} catch (e) {
 		if (e.data && /is already open/.test(e.data.error)) {

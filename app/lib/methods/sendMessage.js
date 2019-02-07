@@ -1,5 +1,3 @@
-import * as SDK from '@rocket.chat/sdk';
-
 import messagesStatus from '../../constants/messagesStatus';
 import buildMessage from './helpers/buildMessage';
 import database from '../realm';
@@ -34,25 +32,24 @@ export const getMessage = (rid, msg = {}) => {
 export async function sendMessageCall(message) {
 	const { _id, rid, msg } = message;
 	// RC 0.60.0
-	const data = await SDK.api.post('chat.sendMessage', { message: { _id, rid, msg } });
+	const data = await this.sdk.post('chat.sendMessage', { message: { _id, rid, msg } });
 	return data;
 }
 
 export default async function(rid, msg) {
-	const { database: db } = database;
 	try {
 		const message = getMessage(rid, msg);
-		const room = db.objects('subscriptions').filtered('rid == $0', rid);
+		const room = database.objects('subscriptions').filtered('rid == $0', rid);
 
 		// TODO: do we need this?
-		db.write(() => {
+		database.write(() => {
 			room.lastMessage = message;
 		});
 
 		try {
 			const ret = await sendMessageCall.call(this, message);
-			db.write(() => {
-				db.create('messages', buildMessage({ ...message, ...ret }), true);
+			database.write(() => {
+				database.create('messages', buildMessage({ ...message, ...ret }), true);
 			});
 		} catch (e) {
 			database.write(() => {
