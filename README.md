@@ -27,16 +27,16 @@ Follow the [React Native Getting Started Guide](https://facebook.github.io/react
     ```bash
     $ git clone git@github.com:RocketChat/Rocket.Chat.ReactNative.git
     $ cd Rocket.Chat.ReactNative
-    $ npm install -g react-native-cli
-    $ npm install
+    $ yarn global add react-native-cli
+    $ yarn
     ```
 
 - Run application
     ```bash
-    $ npm run ios
+    $ yarn ios
     ```
     ```bash
-    $ npm run android
+    $ yarn android
     ```
 
 ### Running single server
@@ -221,13 +221,13 @@ $ detox test
 - General requirements
     - Install storybook
         ```bash
-        $ npm i -g @storybook/cli
+        $ yarn global add @storybook/cli
         ```
 
 - Running storybook
     - Run storybook application
         ```bash
-        $ npm run storybook
+        $ yarn storybook
         ```
     - Run application in other shell
         ```bash

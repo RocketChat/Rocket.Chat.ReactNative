@@ -1,4 +1,5 @@
 export default {
 	getModel: () => '',
-	getReadableVersion: () => ''
+	getReadableVersion: () => '',
+	getBundleId: () => ''
 };

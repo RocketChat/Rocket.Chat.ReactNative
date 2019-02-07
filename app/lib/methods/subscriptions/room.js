@@ -1,16 +1,9 @@
-import * as SDK from '@rocket.chat/sdk';
-
 import log from '../../../utils/log';
 
-const subscribe = rid => Promise.all([
-	SDK.driver.subscribe('stream-room-messages', rid, false),
-	SDK.driver.subscribe('stream-notify-room', `${ rid }/typing`, false),
-	SDK.driver.subscribe('stream-notify-room', `${ rid }/deleteMessage`, false)
-]);
 const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
 
-let timer = null;
 let promises;
+let timer = null;
 
 const stop = () => {
 	if (promises) {
@@ -21,46 +14,46 @@ const stop = () => {
 	clearTimeout(timer);
 };
 
-export default function subscribeRoom({ rid, t }) {
+export default function subscribeRoom({ rid }) {
 	if (promises) {
 		promises.then(unsubscribe);
 		promises = false;
 	}
-	const loop = (time = new Date()) => {
+	const loop = () => {
 		if (timer) {
 			return;
 		}
 		timer = setTimeout(async() => {
 			try {
-				await this.loadMissedMessages({ rid, t });
+				clearTimeout(timer);
 				timer = false;
-				loop();
+				if (this.sdk.userId) {
+					await this.loadMissedMessages({ rid });
+					loop();
+				}
 			} catch (e) {
-				loop(time);
+				loop();
 			}
 		}, 5000);
 	};
 
-	// if (!this.connected()) {
-	// 	loop();
-	// } else {
-	SDK.driver.on('logged', () => {
+	this.sdk.onStreamData('connected', () => {
+		if (this.sdk.userId) {
+			this.loadMissedMessages({ rid });
+		}
 		clearTimeout(timer);
 		timer = false;
 	});
 
-	SDK.driver.on('disconnected', () => {
-		if (SDK.driver.userId) {
-			loop();
-		}
+	this.sdk.onStreamData('close', () => {
+		loop();
 	});
 
 	try {
-		promises = subscribe(rid);
+		promises = this.sdk.subscribeRoom(rid);
 	} catch (e) {
 		log('subscribeRoom', e);
 	}
-	// }
 
 	return {
 		stop: () => stop()

@@ -1,5 +1,4 @@
 import RNFetchBlob from 'rn-fetch-blob';
-import * as SDK from '@rocket.chat/sdk';
 
 import reduxStore from '../createStore';
 import database from '../realm';
@@ -7,16 +6,16 @@ import database from '../realm';
 const promises = {};
 
 function _ufsCreate(fileInfo) {
-	return SDK.driver.asyncCall('ufsCreate', fileInfo);
+	return this.sdk.methodCall('ufsCreate', fileInfo);
 }
 
 function _ufsComplete(fileId, store, token) {
-	return SDK.driver.asyncCall('ufsComplete', fileId, store, token);
+	return this.sdk.methodCall('ufsComplete', fileId, store, token);
 }
 
 function _sendFileMessage(rid, data, msg = {}) {
 	// RC 0.22.0
-	return SDK.driver.asyncCall('sendFileMessage', rid, null, data, msg);
+	return this.sdk.methodCall('sendFileMessage', rid, null, data, msg);
 }
 
 export function isUploadActive(path) {

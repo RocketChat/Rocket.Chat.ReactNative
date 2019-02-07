@@ -25,19 +25,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 		} else {
 			result = yield call(loginWithPasswordCall, credentials);
 		}
-		if (result.status === 'success') {
-			const { data } = result;
-			const user = {
-				id: data.userId,
-				token: data.authToken,
-				username: data.me.username,
-				name: data.me.name,
-				language: data.me.language,
-				status: data.me.status,
-				customFields: data.me.customFields
-			};
-			return yield put(loginSuccess(user));
-		}
+		return yield put(loginSuccess(result));
 	} catch (error) {
 		yield put(loginFailure(error));
 	}
