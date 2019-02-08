@@ -232,6 +232,26 @@ export default (
 		<Separator title='With audio' />
 
 		<Message
+			msg="I'm fine!"
+			attachments={[{
+				author_name: 'This is a long title and i\'ll break',
+				ts: date,
+				timeFormat: 'LT',
+				text: 'How are you?'
+			}]}
+		/>
+		<Message
+			msg="I'm fine!"
+			attachments={[{
+				author_name: 'rocket.cat',
+				ts: date,
+				timeFormat: 'LT',
+				text: 'How are you?'
+			}]}
+		/>
+		<Separator title='Message with reply' />
+
+		<Message
 			urls={[{
 				url: 'https://rocket.chat',
 				image: 'https://rocket.chat/images/blog/post.jpg',
