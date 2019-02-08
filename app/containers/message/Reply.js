@@ -23,10 +23,12 @@ const styles = StyleSheet.create({
 		padding: 15
 	},
 	authorContainer: {
+		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
 	author: {
+		flex: 1,
 		color: '#1d74f5',
 		fontSize: 18,
 		fontWeight: '500',
