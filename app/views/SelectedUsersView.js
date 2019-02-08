@@ -52,6 +52,19 @@ const styles = StyleSheet.create({
 }))
 /** @extends React.Component */
 export default class SelectedUsersView extends LoggedView {
+	static options() {
+		return {
+			topBar: {
+				rightButtons: [{
+					id: 'create',
+					text: I18n.t('Next'),
+					testID: 'selected-users-view-submit',
+					color: isAndroid ? '#FFF' : undefined
+				}]
+			}
+		};
+	}
+
 	static propTypes = {
 		componentId: PropTypes.string,
 		rid: PropTypes.string,
@@ -92,27 +105,6 @@ export default class SelectedUsersView extends LoggedView {
 			return true;
 		}
 		return false;
-	}
-
-	componentDidUpdate(prevProps) {
-		const { componentId, users } = this.props;
-		if (prevProps.users.length !== users.length) {
-			const { length } = users;
-			const rightButtons = [];
-			if (length > 0) {
-				rightButtons.push({
-					id: 'create',
-					text: I18n.t('Next'),
-					testID: 'selected-users-view-submit',
-					color: isAndroid ? '#FFF' : undefined
-				});
-			}
-			Navigation.mergeOptions(componentId, {
-				topBar: {
-					rightButtons
-				}
-			});
-		}
 	}
 
 	componentWillUnmount() {
