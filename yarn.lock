@@ -9352,7 +9352,7 @@ pad-component@0.0.1:
   resolved "https://registry.yarnpkg.com/pad-component/-/pad-component-0.0.1.tgz#ad1f22ce1bf0fdc0d6ddd908af17f351a404b8ac"
   integrity sha1-rR8izhvw/cDW3dkIrxfzUaQEuKw=
 
-"paho-mqtt@github:eclipse/paho.mqtt.javascript#master":
+paho-mqtt@eclipse/paho.mqtt.javascript#master:
   version "1.1.0"
   resolved "https://codeload.github.com/eclipse/paho.mqtt.javascript/tar.gz/9b761defeeb4a627db31d92ae1b0ca91b44b226e"
 
@@ -10594,16 +10594,10 @@ reactotron-react-native@^2.1.5:
     prop-types "^15.5.10"
     reactotron-core-client "^2.2.1"
 
-reactotron-redux-saga@^2.1.4:
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/reactotron-redux-saga/-/reactotron-redux-saga-2.1.4.tgz#6ec8dc997c45bc5d214615b422a231c8f51de7f0"
-  integrity sha512-IZFE9sN9lVLY2f/EbzqZ9Zq7jmc3bvWjgeIwKiDmepafrM5Gv7Ymii5vrwCsIX4zmrDX7yNJmZpoZbh36E4Qng==
-  dependencies:
-    ramda "^0.24.1"
-    ramdasauce "^2.0.0"
-    reactotron-core-client "^2.1.4"
-    redux "^3.7.1"
-    redux-saga "^0.16.1"
+reactotron-redux-saga@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/reactotron-redux-saga/-/reactotron-redux-saga-4.0.0.tgz#f893ed0bfe11717cbecf2b9ad2f7f355a97488ea"
+  integrity sha512-7WfvYPM/zfPIwcu70F3iSrB1F38Bhrrw08c9kzYRo7eDMxbcv2esmZi2cLu2Y2djepIOC4tnCXGvfIIA3fMm9w==
 
 reactotron-redux@^2.1.3:
   version "2.1.3"
@@ -10784,7 +10778,7 @@ redux-immutable-state-invariant@^2.1.0:
     invariant "^2.1.0"
     json-stringify-safe "^5.0.1"
 
-redux-saga@^0.16.1, redux-saga@^0.16.2:
+redux-saga@^0.16.2:
   version "0.16.2"
   resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-0.16.2.tgz#993662e86bc945d8509ac2b8daba3a8c615cc971"
   integrity sha512-iIjKnRThI5sKPEASpUvySemjzwqwI13e3qP7oLub+FycCRDysLSAOwt958niZW6LhxfmS6Qm1BzbU70w/Koc4w==
