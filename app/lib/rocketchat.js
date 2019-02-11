@@ -141,7 +141,7 @@ const RocketChat = {
 		this.sdk.subscribe('roles');
 		this.getPermissions();
 		this.getCustomEmoji();
-		this.registerPushToken().then(result => console.log(result)).catch(e => console.log(e));
+		this.registerPushToken().catch(e => console.log(e));
 	},
 	connect({ server, user }) {
 		database.setActiveDB(server);
@@ -149,6 +149,11 @@ const RocketChat = {
 
 		if (this.connectTimeout) {
 			clearTimeout(this.connectTimeout);
+		}
+
+		if (this.sdk) {
+			this.sdk.disconnect();
+			this.sdk = null;
 		}
 
 		// Use useSsl: false only if server url starts with http://
