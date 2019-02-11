@@ -9352,7 +9352,7 @@ pad-component@0.0.1:
   resolved "https://registry.yarnpkg.com/pad-component/-/pad-component-0.0.1.tgz#ad1f22ce1bf0fdc0d6ddd908af17f351a404b8ac"
   integrity sha1-rR8izhvw/cDW3dkIrxfzUaQEuKw=
 
-"paho-mqtt@github:eclipse/paho.mqtt.javascript#master":
+paho-mqtt@eclipse/paho.mqtt.javascript#master:
   version "1.1.0"
   resolved "https://codeload.github.com/eclipse/paho.mqtt.javascript/tar.gz/9b761defeeb4a627db31d92ae1b0ca91b44b226e"
 
@@ -10338,10 +10338,10 @@ react-native-optimized-flatlist@^1.0.4:
   dependencies:
     prop-types "^15.6.0"
 
-react-native-picker-select@^5.2.3:
-  version "5.2.4"
-  resolved "https://registry.yarnpkg.com/react-native-picker-select/-/react-native-picker-select-5.2.4.tgz#ce0307a8fa4c2b1e3f9756282f2056b0805f2f7e"
-  integrity sha512-x0NTsOBjFIO40XPc+UxQ5fjCRx7ghwMDejEUyhU7VRKViHxaaScvO0jxpnW/2L1kFcqbZWqWhjC1DuuDnE6jyA==
+react-native-picker-select@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-picker-select/-/react-native-picker-select-6.0.0.tgz#81b51022c31f5340e60d0f32c16da22db0ea711b"
+  integrity sha512-qvc3eisFvm6ZFZEZz3/by+yaAdWhlvWr/TKC19KZr27JZWm+TCOyo0647COCYs2zpO9LjANkSA3uhkuiinpqvQ==
   dependencies:
     lodash.isequal "^4.5.0"
 
