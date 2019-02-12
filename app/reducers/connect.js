@@ -10,7 +10,8 @@ export default function connect(state = initialState, action) {
 		case METEOR.REQUEST:
 			return {
 				...state,
-				connecting: true
+				connecting: true,
+				connected: false
 			};
 		case METEOR.SUCCESS:
 			return {

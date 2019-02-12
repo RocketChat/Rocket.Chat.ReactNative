@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-	Text, StyleSheet, ActivityIndicator, Animated, TouchableWithoutFeedback, Easing
+	Text, StyleSheet, ActivityIndicator, Animated, Easing
 } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -50,20 +50,30 @@ class ConnectionBadge extends Component {
 	static propTypes = {
 		connecting: PropTypes.bool,
 		connected: PropTypes.bool,
-		disconnected: PropTypes.bool // eslint-disable-line
+		disconnected: PropTypes.bool
 	}
 
 	constructor(props) {
 		super(props);
 		this.animatedValue = new Animated.Value(0);
+		if (props.connecting) {
+			this.show();
+		}
 	}
 
 	componentDidUpdate() {
-		this.show();
+		const { connected, disconnected } = this.props;
+		this.show(connected || disconnected);
+	}
+
+	componentWillUnmount() {
+		if (this.timeout) {
+			clearTimeout(this.timeout);
+		}
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	animate = debounce((toValue) => {
+	animate = debounce((toValue, autoHide) => {
 		Animated.timing(
 			this.animatedValue,
 			{
@@ -73,7 +83,7 @@ class ConnectionBadge extends Component {
 				useNativeDriver: true
 			},
 		).start(() => {
-			if (toValue === 1) {
+			if (toValue === 1 && autoHide) {
 				if (this.timeout) {
 					clearTimeout(this.timeout);
 				}
@@ -84,8 +94,8 @@ class ConnectionBadge extends Component {
 		});
 	}, 300);
 
-	show = () => {
-		this.animate(1);
+	show = (autoHide) => {
+		this.animate(1, autoHide);
 	}
 
 	hide = () => {
@@ -102,29 +112,23 @@ class ConnectionBadge extends Component {
 
 		if (connecting) {
 			return (
-				<TouchableWithoutFeedback onPress={this.hide}>
-					<Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
-						<ActivityIndicator color='#9EA2A8' style={styles.activityIndicator} />
-						<Text style={[styles.text, styles.textConnecting]}>{I18n.t('Connecting')}</Text>
-					</Animated.View>
-				</TouchableWithoutFeedback>
+				<Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
+					<ActivityIndicator color='#9EA2A8' style={styles.activityIndicator} />
+					<Text style={[styles.text, styles.textConnecting]}>{I18n.t('Connecting')}</Text>
+				</Animated.View>
 			);
 		} else if (connected) {
 			return (
-				<TouchableWithoutFeedback onPress={this.hide}>
-					<Animated.View style={[styles.container, styles.containerConnected, { transform: [{ translateY }] }]}>
-						<Text style={styles.text}>{I18n.t('Connected')}</Text>
-					</Animated.View>
-				</TouchableWithoutFeedback>
+				<Animated.View style={[styles.container, styles.containerConnected, { transform: [{ translateY }] }]}>
+					<Text style={styles.text}>{I18n.t('Connected')}</Text>
+				</Animated.View>
 			);
 		}
 
 		return (
-			<TouchableWithoutFeedback onPress={this.hide}>
-				<Animated.View style={[styles.container, styles.containerOffline, { transform: [{ translateY }] }]}>
-					<Text style={styles.text}>{I18n.t('Offline')}</Text>
-				</Animated.View>
-			</TouchableWithoutFeedback>
+			<Animated.View style={[styles.container, styles.containerOffline, { transform: [{ translateY }] }]}>
+				<Text style={styles.text}>{I18n.t('Offline')}</Text>
+			</Animated.View>
 		);
 	}
 }
