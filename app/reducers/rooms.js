@@ -1,7 +1,7 @@
 import * as types from '../actions/actionsTypes';
 
 const initialState = {
-	isFetching: true,
+	isFetching: false,
 	failure: false,
 	errorMessage: {},
 	searchText: '',
