@@ -18,6 +18,22 @@
   <img alt="Download on App Store" src="https://user-images.githubusercontent.com/7317008/43209852-4ca39622-904b-11e8-8ce1-cdc3aee76ae9.png" height=43>
 </a>
 
+## Beta Access
+
+### TestFlight
+
+You can signup to our TestFlight builds by acessing this link: https://testflight.apple.com/join/7I3dLCNT.
+
+### Android
+
+You can get the latest Android builds at [#react-native](https://open.rocket.chat/channel/react-native) channel.
+
+## Reporting an Issue
+
+[Github Issues](https://github.com/RocketChat/Rocket.Chat.ReactNative/issues) are used to track todos, bugs, feature requests, and more.
+
+Also check the community on [open.rocket.chat](https://open.rocket.chat/channel/react-native). We'd like to help.
+
 ## Installing dependencies
 
 Follow the [React Native Getting Started Guide](https://facebook.github.io/react-native/docs/getting-started.html) for detailed instructions on setting up your local machine for development.
@@ -46,23 +62,19 @@ Readme will guide you on how to config.
 ## Roadmap
 
 ### Current priorities
-1) Better message actions ([#329][i329])
-2) [NEW] Commands ([#405][i405])
+1) [NEW] Jitsi integration
+2) [NEW] Slash Commands ([#405][i405])
 3) [NEW] Read receipt ([#542][i542])
 4) [Android] Group notifications by room ([#391][i391])
 
 ### To do
 |    Task              | Status |
 |--------------------|-----|
-| Add components to Storybook ([#38][i38])            |    WIP  |
-| Open PDF and other file types ([#341][i341])            |    WIP  |
-| Better message actions ([#329][i329])             |    ❌  |
+| [NEW] Jitsi integration            |    WIP  | |
 | [NEW] Settings layout ([#396][i396])             |    ❌  |
 | [NEW] Contextual bar layout ([#402][i402])             |    ❌  |
-| [NEW] Commands ([#405][i405])   |  ❌  |
-| [Android] Add Fastlane ([#404][i404]) |   ❌   |
+| [NEW] Slash Commands ([#405][i405])   |  ❌  |
 | [Android] Group notifications by room ([#391][i391])             |    ❌  |
-| Integrate project with code push ([#233][i233])           |    ❌  |
 | Custom icons ([#210][i210])             |    ❌  |
 | Share Extension ([#69][i69])          |    ❌  |
 | Upload files ([#2][i2])             |    ❌  |
@@ -146,7 +158,7 @@ Readme will guide you on how to config.
 | Settings -> About us                                          	|  ❌            	|
 | Settings -> Contact us                                        	|  ❌            	|
 | Settings -> License                                           	|  ❌            	|
-| Settings -> App version                                       	|  ❌            	|
+| Settings -> App version                                       	|  ✅            	|
 | Autocomplete emoji                                            	| ✅             	|
 | Upload file (documents, PDFs, spreadsheets, zip files, etc)   	| ✅             	|
 | Report message                                                	|  ❌            	|
