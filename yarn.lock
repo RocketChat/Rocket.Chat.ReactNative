@@ -988,10 +988,10 @@
   resolved "https://registry.yarnpkg.com/@remobile/react-native-toast/-/react-native-toast-1.0.7.tgz#b2e3684cdb13e1c9d9b4ed08e667157d4ad0fab2"
   integrity sha512-iOD1PRnTSVr9sDWQdesIpfRrwJhHfeEQe5BpalQxC5OhM9thpiE6cu2NlW1KBWl0RJG4ZiJaF1xLlCo9YxU6dA==
 
-"@rocket.chat/sdk@1.0.0-alpha.24":
-  version "1.0.0-alpha.24"
-  resolved "https://registry.yarnpkg.com/@rocket.chat/sdk/-/sdk-1.0.0-alpha.24.tgz#8a6d3ff869c050b34f62bb7ef972d14c1a4d4f79"
-  integrity sha512-5EXVWkzQLGyKB5EdLZdpH86/gQ2rYY12OZ1ClRpAqYZs8svBKOn9pGBEWBW9i0C6ZowedFm8SdQjX4VHw+60hg==
+"@rocket.chat/sdk@1.0.0-alpha.25":
+  version "1.0.0-alpha.25"
+  resolved "https://registry.yarnpkg.com/@rocket.chat/sdk/-/sdk-1.0.0-alpha.25.tgz#7fd6fce64e29c2ab9eb77000f1a65bdd3b0379bb"
+  integrity sha512-/IfiLhTZooJQX1kimPZiY0FNSDw3kZcL/yquxD14kZbKRKm0ZSg5BJeWFpkinQq5Y9XjySX+k3mjmXX3Es97Cg==
   dependencies:
     "@types/event-emitter" "^0.3.2"
     "@types/eventemitter3" "^2.0.2"
