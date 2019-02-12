@@ -9352,7 +9352,7 @@ pad-component@0.0.1:
   resolved "https://registry.yarnpkg.com/pad-component/-/pad-component-0.0.1.tgz#ad1f22ce1bf0fdc0d6ddd908af17f351a404b8ac"
   integrity sha1-rR8izhvw/cDW3dkIrxfzUaQEuKw=
 
-"paho-mqtt@github:eclipse/paho.mqtt.javascript#master":
+paho-mqtt@eclipse/paho.mqtt.javascript#master:
   version "1.1.0"
   resolved "https://codeload.github.com/eclipse/paho.mqtt.javascript/tar.gz/9b761defeeb4a627db31d92ae1b0ca91b44b226e"
 
@@ -10215,10 +10215,10 @@ react-native-dialog@^5.5.0:
   version "0.5.2"
   resolved "https://codeload.github.com/corymsmith/react-native-fabric/tar.gz/523a4edab3b2bf55ea9eeea2cf0dde82c5c29dd4"
 
-react-native-fast-image@^5.0.11:
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-5.1.2.tgz#c9b909993e9304736c3d9806df80f7a9705ef829"
-  integrity sha512-NZsuW36I4fqnlOuxh0ZY31Q7wGWSqZMOC0wtp7ZcSG2dmjXSFaSFTdxX2vJx4Dhm0tMT3qG4yrn2ob3BiZEudA==
+react-native-fast-image@5.0.11:
+  version "5.0.11"
+  resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-5.0.11.tgz#a8f21864d379e6f566e4f68dd04f2c0f7de0dfec"
+  integrity sha512-5NNQwRniOfSBAvKldyPEs1xotWxrFcplOSQiVc78dv/EhH4G0IpdrLtsQmBdB91EMtPQfvoT269sKqj5MJCgyA==
 
 react-native-fit-image@^1.5.2:
   version "1.5.4"
