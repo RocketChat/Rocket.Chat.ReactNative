@@ -1,18 +1,12 @@
 import log from '../../../utils/log';
 
 const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
+const removeListener = listener => listener.stop();
 
 let promises;
 let timer = null;
-
-const stop = () => {
-	if (promises) {
-		promises.then(unsubscribe);
-		promises = false;
-	}
-
-	clearTimeout(timer);
-};
+let connectedListener;
+let disconnectedListener;
 
 export default function subscribeRoom({ rid }) {
 	if (promises) {
@@ -23,31 +17,48 @@ export default function subscribeRoom({ rid }) {
 		if (timer) {
 			return;
 		}
-		timer = setTimeout(async() => {
+		timer = setTimeout(() => {
 			try {
 				clearTimeout(timer);
 				timer = false;
-				if (this.sdk.userId) {
-					await this.loadMissedMessages({ rid });
-					loop();
-				}
+				this.loadMissedMessages({ rid });
+				loop();
 			} catch (e) {
 				loop();
 			}
 		}, 5000);
 	};
 
-	this.sdk.onStreamData('connected', () => {
-		if (this.sdk.userId) {
-			this.loadMissedMessages({ rid });
-		}
+	const handleConnected = () => {
+		this.loadMissedMessages({ rid });
 		clearTimeout(timer);
 		timer = false;
-	});
+	};
 
-	this.sdk.onStreamData('close', () => {
-		loop();
-	});
+	const handleDisconnected = () => {
+		if (this.sdk.userId) {
+			loop();
+		}
+	};
+
+	const stop = () => {
+		if (promises) {
+			promises.then(unsubscribe);
+			promises = false;
+		}
+		if (connectedListener) {
+			connectedListener.then(removeListener);
+			connectedListener = false;
+		}
+		if (disconnectedListener) {
+			disconnectedListener.then(removeListener);
+			disconnectedListener = false;
+		}
+		clearTimeout(timer);
+	};
+
+	connectedListener = this.sdk.onStreamData('connected', handleConnected);
+	disconnectedListener = this.sdk.onStreamData('close', handleDisconnected);
 
 	try {
 		promises = this.sdk.subscribeRoom(rid);
