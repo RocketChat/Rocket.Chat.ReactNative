@@ -3,7 +3,7 @@ const {
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
-const { tapBack } = require('./helpers/app');
+const { tapBack, sleep } = require('./helpers/app');
 
 async function mockMessage(message) {
 	await element(by.id('messagebox-input')).tap();
@@ -14,6 +14,7 @@ async function mockMessage(message) {
 
 async function navigateToRoom() {
 	await element(by.id('rooms-list-view-search')).replaceText(`private${ data.random }`);
+	await sleep(2000);
     await waitFor(element(by.id(`rooms-list-view-item-private${ data.random }`))).toBeVisible().withTimeout(60000);
     await element(by.id(`rooms-list-view-item-private${ data.random }`)).tap();
     await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);

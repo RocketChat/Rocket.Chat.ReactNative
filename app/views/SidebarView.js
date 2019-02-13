@@ -5,21 +5,20 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Navigation } from 'react-native-navigation';
 import equal from 'deep-equal';
 
+import Navigation from '../lib/Navigation';
 import { setStackRoot as setStackRootAction } from '../actions';
 import { logout as logoutAction } from '../actions/login';
-import Avatar from './Avatar';
-import Status from './status';
+import Avatar from '../containers/Avatar';
+import Status from '../containers/status';
 import Touch from '../utils/touch';
 import { STATUS_COLORS } from '../constants/colors';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import I18n from '../i18n';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
-import DeviceInfo from '../utils/deviceInfo';
-import Drawer from '../Drawer';
+import { getReadableVersion } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	container: {
@@ -91,7 +90,8 @@ const keyExtractor = item => item.id;
 		id: state.login.user && state.login.user.id,
 		language: state.login.user && state.login.user.language,
 		status: state.login.user && state.login.user.status,
-		username: state.login.user && state.login.user.username
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
 	},
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }), dispatch => ({
@@ -210,7 +210,7 @@ export default class Sidebar extends Component {
 	}
 
 	closeDrawer = () => {
-		Drawer.toggle();
+		Navigation.toggleDrawer();
 	}
 
 	toggleStatus = () => {
@@ -327,7 +327,7 @@ export default class Sidebar extends Component {
 			return null;
 		}
 		return (
-			<SafeAreaView testID='sidebar' style={styles.container}>
+			<SafeAreaView testID='sidebar-view' style={styles.container}>
 				<ScrollView style={styles.container} {...scrollPersistTaps}>
 					<Touch
 						onPress={() => this.toggleStatus()}
@@ -341,6 +341,7 @@ export default class Sidebar extends Component {
 								size={30}
 								style={styles.avatar}
 								baseUrl={baseUrl}
+								user={user}
 							/>
 							<View style={styles.headerTextContainer}>
 								<View style={styles.headerUsername}>
@@ -363,7 +364,7 @@ export default class Sidebar extends Component {
 					{showStatus ? this.renderStatus() : null}
 				</ScrollView>
 				<Text style={styles.version}>
-					{DeviceInfo.getReadableVersion()}
+					{getReadableVersion}
 				</Text>
 			</SafeAreaView>
 		);

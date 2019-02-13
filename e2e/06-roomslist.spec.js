@@ -2,7 +2,7 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
-const { login, navigateToLogin, tapBack } = require('./helpers/app');
+const { login, navigateToLogin, tapBack, sleep } = require('./helpers/app');
 const data = require('./data');
 
 describe('Rooms list screen', () => {
@@ -45,6 +45,7 @@ describe('Rooms list screen', () => {
 			await waitFor(element(by.id('rooms-list-view-search'))).toExist().withTimeout(2000);
 
 			await element(by.id('rooms-list-view-search')).replaceText('rocket.cat');
+			await sleep(2000);
 			await waitFor(element(by.id('rooms-list-view-item-rocket.cat'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('rooms-list-view-item-rocket.cat'))).toBeVisible();
 			await element(by.id('rooms-list-view-item-rocket.cat')).tap();
@@ -56,12 +57,13 @@ describe('Rooms list screen', () => {
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
 			await element(by.id('rooms-list-view-search')).replaceText('');
+			await sleep(2000);
 			await waitFor(element(by.id('rooms-list-view-item-rocket.cat'))).toExist().withTimeout(60000);
 			await expect(element(by.id('rooms-list-view-item-rocket.cat'))).toExist();
 		});
 
 		// Usage - Sidebar
-		describe('Sidebar', async() => {
+		describe('SidebarView', async() => {
 			it('should navigate to add server', async() => {
 				await element(by.id('rooms-list-header-server-dropdown-button')).tap();
 				await waitFor(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible().withTimeout(2000);
@@ -77,7 +79,7 @@ describe('Rooms list screen', () => {
 	
 			it('should logout', async() => {
 				await element(by.id('rooms-list-view-sidebar')).tap();
-				await waitFor(element(by.id('sidebar'))).toBeVisible().withTimeout(2000);
+				await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
 				await waitFor(element(by.id('sidebar-logout'))).toBeVisible().withTimeout(2000);
 				await element(by.id('sidebar-logout')).tap();
 				await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(60000);

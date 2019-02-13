@@ -1,52 +1,39 @@
-import * as SDK from '@rocket.chat/sdk';
-
 import database from '../../realm';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
 import protectedFunction from '../helpers/protectedFunction';
 import messagesStatus from '../../../constants/messagesStatus';
 import log from '../../../utils/log';
 import random from '../../../utils/random';
+import store from '../../createStore';
+import { roomsRequest } from '../../../actions/rooms';
 
-export default async function subscribeRooms(id) {
-	const promises = Promise.all([
-		SDK.driver.subscribe('stream-notify-user', `${ id }/subscriptions-changed`, false),
-		SDK.driver.subscribe('stream-notify-user', `${ id }/rooms-changed`, false),
-		SDK.driver.subscribe('stream-notify-user', `${ id }/message`, false)
-	]);
-
+export default async function subscribeRooms() {
 	let timer = null;
-	const loop = (time = new Date()) => {
+	const loop = () => {
 		if (timer) {
 			return;
 		}
-		timer = setTimeout(async() => {
-			try {
-				await this.getRooms(time);
-				timer = false;
-				loop();
-			} catch (e) {
-				loop(time);
-			}
+		timer = setTimeout(() => {
+			clearTimeout(timer);
+			timer = false;
+			store.dispatch(roomsRequest());
+			loop();
 		}, 5000);
 	};
 
-	SDK.driver.on('logged', () => {
+	this.sdk.onStreamData('connected', () => {
+		store.dispatch(roomsRequest());
 		clearTimeout(timer);
 		timer = false;
 	});
 
-	SDK.driver.on('logout', () => {
-		clearTimeout(timer);
-		timer = true;
-	});
-
-	SDK.driver.on('disconnected', () => {
-		if (SDK.driver.userId) {
+	this.sdk.onStreamData('close', () => {
+		if (this.sdk.userId) {
 			loop();
 		}
 	});
 
-	SDK.driver.on('stream-notify-user', protectedFunction((e, ddpMessage) => {
+	this.sdk.onStreamData('stream-notify-user', protectedFunction((ddpMessage) => {
 		if (ddpMessage.msg === 'added') {
 			return;
 		}
@@ -77,7 +64,8 @@ export default async function subscribeRooms(id) {
 			if (type === 'updated') {
 				const [sub] = database.objects('subscriptions').filtered('rid == $0', data._id);
 				database.write(() => {
-					merge(sub, data);
+					const tmp = merge(sub, data);
+					database.create('subscriptions', tmp, true);
 				});
 			} else if (type === 'inserted') {
 				database.write(() => {
@@ -107,7 +95,7 @@ export default async function subscribeRooms(id) {
 	}));
 
 	try {
-		await promises;
+		await this.sdk.subscribeNotifyUser();
 	} catch (e) {
 		log('subscribeRooms', e);
 	}

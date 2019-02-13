@@ -53,7 +53,11 @@ const imagePickerConfig = {
 	replying: state.messages.replyMessage && !!state.messages.replyMessage.msg,
 	editing: state.messages.editing,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	username: state.login.user && state.login.user.username
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	}
 }), dispatch => ({
 	editCancel: () => dispatch(editCancelAction()),
 	editRequest: message => dispatch(editRequestAction(message)),
@@ -68,7 +72,11 @@ export default class MessageBox extends Component {
 		replyMessage: PropTypes.object,
 		replying: PropTypes.bool,
 		editing: PropTypes.bool,
-		username: PropTypes.string,
+		user: PropTypes.shape({
+			id: PropTypes.string,
+			username: PropTypes.string,
+			token: PropTypes.string
+		}),
 		roomType: PropTypes.string,
 		editCancel: PropTypes.func.isRequired,
 		editRequest: PropTypes.func.isRequired,
@@ -529,13 +537,13 @@ export default class MessageBox extends Component {
 			editRequest({ _id, msg: message, rid });
 		} else if (replying) {
 			const {
-				username, replyMessage, roomType, closeReply
+				user, replyMessage, roomType, closeReply
 			} = this.props;
 			const permalink = await this.getPermalink(replyMessage);
 			let msg = `[ ](${ permalink }) `;
 
 			// if original message wasn't sent by current user and neither from a direct room
-			if (username !== replyMessage.u.username && roomType !== 'd' && replyMessage.mention) {
+			if (user.username !== replyMessage.u.username && roomType !== 'd' && replyMessage.mention) {
 				msg += `@${ replyMessage.u.username } `;
 			}
 
@@ -617,7 +625,7 @@ export default class MessageBox extends Component {
 
 	renderMentionItem = (item) => {
 		const { trackingType } = this.state;
-		const { baseUrl } = this.props;
+		const { baseUrl, user } = this.props;
 
 		if (item.username === 'all' || item.username === 'here') {
 			return this.renderFixedMentionItem(item);
@@ -641,6 +649,7 @@ export default class MessageBox extends Component {
 							size={30}
 							type={item.username ? 'd' : 'c'}
 							baseUrl={baseUrl}
+							user={user}
 						/>,
 						<Text key='mention-item-name'>{ item.username || item.name }</Text>
 					]
@@ -669,12 +678,12 @@ export default class MessageBox extends Component {
 
 	renderReplyPreview = () => {
 		const {
-			replyMessage, replying, closeReply, username
+			replyMessage, replying, closeReply, user
 		} = this.props;
 		if (!replying) {
 			return null;
 		}
-		return <ReplyPreview key='reply-preview' message={replyMessage} close={closeReply} username={username} />;
+		return <ReplyPreview key='reply-preview' message={replyMessage} close={closeReply} username={user.username} />;
 	};
 
 	renderFilesActions = () => {

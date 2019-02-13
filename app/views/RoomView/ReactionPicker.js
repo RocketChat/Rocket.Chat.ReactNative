@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Platform } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 import { responsive } from 'react-native-responsive-ui';
@@ -8,8 +8,9 @@ import { responsive } from 'react-native-responsive-ui';
 import EmojiPicker from '../../containers/EmojiPicker';
 import { toggleReactionPicker as toggleReactionPickerAction } from '../../actions/messages';
 import styles from './styles';
+import { isAndroid } from '../../utils/deviceInfo';
 
-const margin = Platform.OS === 'android' ? 40 : 20;
+const margin = isAndroid ? 40 : 20;
 const tabEmojiStyle = { fontSize: 15 };
 
 @connect(state => ({

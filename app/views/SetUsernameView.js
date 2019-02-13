@@ -5,8 +5,8 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
-import { Navigation } from 'react-native-navigation';
 
+import Navigation from '../lib/Navigation';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
@@ -43,7 +43,8 @@ export default class SetUsernameView extends LoggedView {
 		componentId: PropTypes.string,
 		server: PropTypes.string,
 		userId: PropTypes.string,
-		loginRequest: PropTypes.func
+		loginRequest: PropTypes.func,
+		token: PropTypes.string
 	}
 
 	constructor(props) {
@@ -100,7 +101,6 @@ export default class SetUsernameView extends LoggedView {
 		this.setState({ saving: true });
 		try {
 			await RocketChat.setUsername(username);
-			RocketChat.setApiUser({ userId: null, authToken: null });
 			await loginRequest({ resume: token });
 		} catch (e) {
 			console.log('SetUsernameView -> catch -> e', e);

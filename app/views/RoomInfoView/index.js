@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, ScrollView } from 'react-native';
-import { connect, Provider } from 'react-redux';
+import { connect } from 'react-redux';
 import moment from 'moment';
-import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
 
+import Navigation from '../../lib/Navigation';
 import LoggedView from '../View';
 import Status from '../../containers/status';
 import Avatar from '../../containers/Avatar';
@@ -15,13 +14,10 @@ import styles from './styles';
 import sharedStyles from '../Styles';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
-
 import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
-import { iconsMap } from '../../Icons';
-import store from '../../lib/createStore';
-import { DEFAULT_HEADER } from '../../constants/headerOptions';
+import Icons from '../../lib/Icons';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
@@ -36,11 +32,12 @@ const getRoomTitle = room => (room.t === 'd'
 	)
 );
 
-let RoomInfoEditView = null;
-
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	userId: state.login.user && state.login.user.id,
+	user: {
+		id: state.login.user && state.login.user.id,
+		token: state.login.user && state.login.user.token
+	},
 	activeUsers: state.activeUsers, // TODO: remove it
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	allRoles: state.roles,
@@ -50,11 +47,8 @@ let RoomInfoEditView = null;
 export default class RoomInfoView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				title: {
-					...DEFAULT_HEADER.topBar.title,
 					text: I18n.t('Room_Info')
 				}
 			}
@@ -64,7 +58,10 @@ export default class RoomInfoView extends LoggedView {
 	static propTypes = {
 		componentId: PropTypes.string,
 		rid: PropTypes.string,
-		userId: PropTypes.string,
+		user: PropTypes.shape({
+			id: PropTypes.string,
+			token: PropTypes.string
+		}),
 		baseUrl: PropTypes.string,
 		activeUsers: PropTypes.object,
 		Message_TimeFormat: PropTypes.string,
@@ -103,7 +100,7 @@ export default class RoomInfoView extends LoggedView {
 				topBar: {
 					rightButtons: [{
 						id: 'edit',
-						icon: iconsMap.create,
+						icon: Icons.getSource('create', false),
 						testID: 'room-info-view-edit-button'
 					}]
 				}
@@ -114,8 +111,8 @@ export default class RoomInfoView extends LoggedView {
 		if (room) {
 			if (room.t === 'd') {
 				try {
-					const { userId, activeUsers } = this.props;
-					const roomUser = await RocketChat.getRoomMember(room.rid, userId);
+					const { user, activeUsers } = this.props;
+					const roomUser = await RocketChat.getRoomMember(room.rid, user.id);
 					this.setState({ roomUser: roomUser || {} });
 					const username = room.name;
 
@@ -129,7 +126,7 @@ export default class RoomInfoView extends LoggedView {
 					// get all users roles
 					// needs to be changed by a better method
 					const allUsersRoles = await RocketChat.getUserRoles();
-					const userRoles = allUsersRoles.find(user => user.username === username);
+					const userRoles = allUsersRoles.find(u => u.username === username);
 					if (userRoles) {
 						this.setState({ roles: userRoles.roles || [] });
 					}
@@ -170,11 +167,6 @@ export default class RoomInfoView extends LoggedView {
 	navigationButtonPressed = ({ buttonId }) => {
 		const { rid, componentId } = this.props;
 		if (buttonId === 'edit') {
-			if (RoomInfoEditView == null) {
-				RoomInfoEditView = require('../RoomInfoEditView').default;
-				Navigation.registerComponentWithRedux('RoomInfoEditView', () => gestureHandlerRootHOC(RoomInfoEditView), Provider, store);
-			}
-
 			Navigation.push(componentId, {
 				component: {
 					id: 'RoomInfoEditView',
@@ -260,7 +252,7 @@ export default class RoomInfoView extends LoggedView {
 	}
 
 	renderAvatar = (room, roomUser) => {
-		const { baseUrl } = this.props;
+		const { baseUrl, user } = this.props;
 
 		return (
 			<Avatar
@@ -269,6 +261,7 @@ export default class RoomInfoView extends LoggedView {
 				style={styles.avatar}
 				type={room.t}
 				baseUrl={baseUrl}
+				user={user}
 			>
 				{room.t === 'd' ? <Status style={[sharedStyles.status, styles.status]} id={roomUser._id} /> : null}
 			</Avatar>

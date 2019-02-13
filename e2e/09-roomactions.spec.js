@@ -3,7 +3,7 @@ const {
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
-const { tapBack } = require('./helpers/app');
+const { tapBack, sleep } = require('./helpers/app');
 
 const scrollDown = 200;
 
@@ -16,6 +16,7 @@ async function navigateToRoomActions(type) {
 	}
 	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 	await element(by.id('rooms-list-view-search')).replaceText(room);
+	await sleep(2000);
     await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toExist().withTimeout(60000);
     await element(by.id(`rooms-list-view-item-${ room }`)).tap();
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(2000);

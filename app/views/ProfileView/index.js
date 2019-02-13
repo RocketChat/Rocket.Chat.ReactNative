@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, ScrollView, Keyboard, Dimensions, BackHandler
+	View, ScrollView, Keyboard, BackHandler
 } from 'react-native';
 import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
@@ -9,10 +9,10 @@ import SHA256 from 'js-sha256';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
-import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
 
+import Navigation from '../../lib/Navigation';
 import LoggedView from '../View';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
@@ -26,10 +26,9 @@ import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
-import Drawer from '../../Drawer';
-import { DEFAULT_HEADER } from '../../constants/headerOptions';
 import { appStart as appStartAction } from '../../actions';
 import { setUser as setUserAction } from '../../actions/login';
+import Icons from '../../lib/Icons';
 
 @connect(state => ({
 	user: {
@@ -37,7 +36,8 @@ import { setUser as setUserAction } from '../../actions/login';
 		name: state.login.user && state.login.user.name,
 		username: state.login.user && state.login.user.username,
 		customFields: state.login.user && state.login.user.customFields,
-		emails: state.login.user && state.login.user.emails
+		emails: state.login.user && state.login.user.emails,
+		token: state.login.user && state.login.user.token
 	},
 	Accounts_CustomFields: state.settings.Accounts_CustomFields,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
@@ -49,16 +49,13 @@ import { setUser as setUserAction } from '../../actions/login';
 export default class ProfileView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				leftButtons: [{
 					id: 'settings',
-					icon: { uri: 'settings', scale: Dimensions.get('window').scale },
+					icon: Icons.getSource('settings'),
 					testID: 'rooms-list-view-sidebar'
 				}],
 				title: {
-					...DEFAULT_HEADER.topBar.title,
 					text: I18n.t('Profile')
 				}
 			},
@@ -135,7 +132,7 @@ export default class ProfileView extends LoggedView {
 
 	navigationButtonPressed = ({ buttonId }) => {
 		if (buttonId === 'settings') {
-			Drawer.toggle();
+			Navigation.toggleDrawer();
 		}
 	}
 
@@ -330,7 +327,7 @@ export default class ProfileView extends LoggedView {
 		return (
 			<View style={styles.avatarButtons}>
 				{this.renderAvatarButton({
-					child: <Avatar text={`@${ user.username }`} size={50} baseUrl={baseUrl} />,
+					child: <Avatar text={`@${ user.username }`} size={50} baseUrl={baseUrl} user={user} />,
 					onPress: () => this.resetAvatar(),
 					key: 'profile-view-reset-avatar'
 				})}
@@ -349,7 +346,7 @@ export default class ProfileView extends LoggedView {
 					const { url, blob, contentType } = avatarSuggestions[service];
 					return this.renderAvatarButton({
 						key: `profile-view-avatar-${ service }`,
-						child: <Avatar avatar={url} size={50} baseUrl={baseUrl} />,
+						child: <Avatar avatar={url} size={50} baseUrl={baseUrl} user={user} />,
 						onPress: () => this.setAvatar({
 							url, data: blob, service, contentType
 						})
@@ -423,7 +420,7 @@ export default class ProfileView extends LoggedView {
 		const {
 			name, username, email, newPassword, avatarUrl, customFields, avatar, saving, showPasswordAlert
 		} = this.state;
-		const { baseUrl } = this.props;
+		const { baseUrl, user } = this.props;
 
 		return (
 			<KeyboardView
@@ -442,6 +439,7 @@ export default class ProfileView extends LoggedView {
 								avatar={avatar && avatar.url}
 								size={100}
 								baseUrl={baseUrl}
+								user={user}
 							/>
 						</View>
 						<RCTextInput

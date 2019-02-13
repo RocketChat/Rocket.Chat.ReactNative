@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, FlatList, Text, Platform, Image, Dimensions
+	View, StyleSheet, FlatList, Text, Image
 } from 'react-native';
-import { connect, Provider } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
+import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
 
+import Navigation from '../lib/Navigation';
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
@@ -17,14 +16,14 @@ import LoggedView from './View';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
 import Touch from '../utils/touch';
+import { isIOS, isAndroid } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
-import store from '../lib/createStore';
-import { DEFAULT_HEADER } from '../constants/headerOptions';
+import Icons from '../lib/Icons';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
 		flex: 1,
-		backgroundColor: Platform.OS === 'ios' ? '#F7F8FA' : '#E1E5E8'
+		backgroundColor: isIOS ? '#F7F8FA' : '#E1E5E8'
 	},
 	separator: {
 		marginLeft: 60
@@ -49,22 +48,22 @@ const styles = StyleSheet.create({
 	}
 });
 
-let SelectedUsersView = null;
-
 @connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	user: {
+		id: state.login.user && state.login.user.id,
+		token: state.login.user && state.login.user.token
+	}
 }))
 /** @extends React.Component */
 export default class NewMessageView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				leftButtons: [{
 					id: 'cancel',
-					icon: Platform.OS === 'android' ? { uri: 'back', scale: Dimensions.get('window').scale } : undefined,
-					text: Platform.OS === 'ios' ? I18n.t('Cancel') : undefined
+					icon: isAndroid ? Icons.getSource('back') : undefined,
+					text: isIOS ? I18n.t('Cancel') : undefined
 				}]
 			}
 		};
@@ -73,7 +72,11 @@ export default class NewMessageView extends LoggedView {
 	static propTypes = {
 		componentId: PropTypes.string,
 		baseUrl: PropTypes.string,
-		onPressItem: PropTypes.func.isRequired
+		onPressItem: PropTypes.func.isRequired,
+		user: PropTypes.shape({
+			id: PropTypes.string,
+			token: PropTypes.string
+		})
 	};
 
 	constructor(props) {
@@ -133,11 +136,6 @@ export default class NewMessageView extends LoggedView {
 	}
 
 	createChannel = () => {
-		if (SelectedUsersView == null) {
-			SelectedUsersView = require('./SelectedUsersView').default;
-			Navigation.registerComponentWithRedux('SelectedUsersView', () => gestureHandlerRootHOC(SelectedUsersView), Provider, store);
-		}
-
 		const { componentId } = this.props;
 		Navigation.push(componentId, {
 			component: {
@@ -172,7 +170,7 @@ export default class NewMessageView extends LoggedView {
 
 	renderItem = ({ item, index }) => {
 		const { search } = this.state;
-		const { baseUrl } = this.props;
+		const { baseUrl, user } = this.props;
 
 		let style = {};
 		if (index === 0) {
@@ -192,6 +190,7 @@ export default class NewMessageView extends LoggedView {
 				baseUrl={baseUrl}
 				testID={`new-message-view-item-${ item.name }`}
 				style={style}
+				user={user}
 			/>
 		);
 	}

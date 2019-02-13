@@ -1,11 +1,12 @@
 import React from 'react';
 import {
-	Text, View, StyleSheet, Platform, ViewPropTypes, Image
+	Text, View, StyleSheet, ViewPropTypes, Image
 } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Avatar from '../containers/Avatar';
 import Touch from '../utils/touch';
+import { isIOS } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	button: {
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
 	name: {
 		fontSize: 18,
 		color: '#0C0D0F',
-		marginTop: Platform.OS === 'ios' ? 6 : 3,
+		marginTop: isIOS ? 6 : 3,
 		marginBottom: 1,
 		textAlign: 'left'
 	},
@@ -44,11 +45,11 @@ const styles = StyleSheet.create({
 });
 
 const UserItem = ({
-	name, username, onPress, testID, onLongPress, style, icon, baseUrl
+	name, username, onPress, testID, onLongPress, style, icon, baseUrl, user
 }) => (
 	<Touch onPress={onPress} onLongPress={onLongPress} style={styles.button} testID={testID}>
 		<View style={[styles.container, style]}>
-			<Avatar text={username} size={30} type='d' style={styles.avatar} baseUrl={baseUrl} />
+			<Avatar text={username} size={30} type='d' style={styles.avatar} baseUrl={baseUrl} user={user} />
 			<View style={styles.textContainer}>
 				<Text style={styles.name}>{name}</Text>
 				<Text style={styles.username}>@{username}</Text>
@@ -61,6 +62,10 @@ const UserItem = ({
 UserItem.propTypes = {
 	name: PropTypes.string.isRequired,
 	username: PropTypes.string.isRequired,
+	user: PropTypes.shape({
+		id: PropTypes.string,
+		token: PropTypes.string
+	}),
 	baseUrl: PropTypes.string.isRequired,
 	onPress: PropTypes.func.isRequired,
 	testID: PropTypes.string.isRequired,

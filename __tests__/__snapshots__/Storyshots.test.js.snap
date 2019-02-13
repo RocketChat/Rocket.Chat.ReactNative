@@ -1156,6 +1156,47 @@ exports[`Storyshots Message list 1`] = `
     >
       View
     </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginTop": 30,
+          },
+          Object {
+            "marginBottom": 30,
+            "marginTop": 0,
+            "transform": Array [
+              Object {
+                "scaleY": -1,
+              },
+            ],
+          },
+        ]
+      }
+    >
+      Message with reply
+    </Text>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      View
+    </View>
     <Text
       style={
         Array [

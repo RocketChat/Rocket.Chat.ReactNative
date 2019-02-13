@@ -1,27 +1,32 @@
 import { Component } from 'react';
-import { Linking, Platform } from 'react-native';
-import { Navigation } from 'react-native-navigation';
-import { Provider } from 'react-redux';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
+import { Linking } from 'react-native';
 
-import store from './lib/createStore';
 import { appInit } from './actions';
 import { serverRequest } from './actions/server';
-import { iconsLoaded } from './Icons';
-import { registerScreens } from './views';
 import { deepLinkingOpen } from './actions/deepLinking';
+import store from './lib/createStore';
+import Icons from './lib/Icons';
+import Navigation from './lib/Navigation';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications } from './push';
 import appConfig from '../app.json';
+import { DEFAULT_HEADER } from './constants/headerOptions';
 
 const startLogged = () => {
+	Navigation.loadView('ProfileView');
+	Navigation.loadView('RoomsListHeaderView');
+	Navigation.loadView('RoomsListView');
+	Navigation.loadView('RoomView');
+	Navigation.loadView('RoomHeaderView');
+	Navigation.loadView('SettingsView');
+	Navigation.loadView('SidebarView');
 	Navigation.setRoot({
 		root: {
 			sideMenu: {
 				left: {
 					component: {
-						id: 'Sidebar',
-						name: 'Sidebar'
+						id: 'SidebarView',
+						name: 'SidebarView'
 					}
 				},
 				center: {
@@ -44,12 +49,8 @@ const startNotLogged = () => {
 	store.dispatch(serverRequest(appConfig.server));
 };
 
-let SetUsernameView = null;
 const startSetUsername = () => {
-	if (SetUsernameView == null) {
-		SetUsernameView = require('./views/SetUsernameView').default;
-		Navigation.registerComponentWithRedux('SetUsernameView', () => gestureHandlerRootHOC(SetUsernameView), Provider, store);
-	}
+	Navigation.loadView('SetUsernameView');
 	Navigation.setRoot({
 		root: {
 			stack: {
@@ -80,8 +81,7 @@ const handleOpenURL = ({ url }) => {
 	}
 };
 
-registerScreens(store);
-iconsLoaded();
+Icons.configure();
 
 export default class App extends Component {
 	constructor(props) {
@@ -90,20 +90,7 @@ export default class App extends Component {
 
 		Navigation.events().registerAppLaunchedListener(() => {
 			Navigation.setDefaultOptions({
-				topBar: {
-					backButton: {
-						showTitle: false
-					},
-					leftButtonStyle: {
-						color: '#FFF'
-					},
-					rightButtonStyle: {
-						color: '#FFF'
-					},
-					title: {
-						fontFamily: Platform.OS === 'ios' ? 'System' : 'sans-serif-medium'
-					}
-				},
+				...DEFAULT_HEADER,
 				sideMenu: {
 					left: {
 						enabled: false

@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, FlatList, LayoutAnimation, Platform
+	View, StyleSheet, FlatList, LayoutAnimation
 } from 'react-native';
-import { connect, Provider } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
+import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
 
+import Navigation from '../lib/Navigation';
 import {
 	addUser as addUserAction, removeUser as removeUserAction, reset as resetAction, setLoading as setLoadingAction
 } from '../actions/selectedUsers';
@@ -20,15 +19,14 @@ import debounce from '../utils/debounce';
 import LoggedView from './View';
 import I18n from '../i18n';
 import log from '../utils/log';
+import { isIOS, isAndroid } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
-import store from '../lib/createStore';
-import { DEFAULT_HEADER } from '../constants/headerOptions';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
 		flex: 1,
-		backgroundColor: Platform.OS === 'ios' ? '#F7F8FA' : '#E1E5E8'
+		backgroundColor: isIOS ? '#F7F8FA' : '#E1E5E8'
 	},
 	header: {
 		backgroundColor: '#fff'
@@ -38,12 +36,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-let CreateChannelView = null;
-
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	users: state.selectedUsers.users,
-	loading: state.selectedUsers.loading
+	loading: state.selectedUsers.loading,
+	user: {
+		id: state.login.user && state.login.user.id,
+		token: state.login.user && state.login.user.token
+	}
 }), dispatch => ({
 	addUser: user => dispatch(addUserAction(user)),
 	removeUser: user => dispatch(removeUserAction(user)),
@@ -54,7 +54,14 @@ let CreateChannelView = null;
 export default class SelectedUsersView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER
+			topBar: {
+				rightButtons: [{
+					id: 'create',
+					text: I18n.t('Next'),
+					testID: 'selected-users-view-submit',
+					color: isAndroid ? '#FFF' : undefined
+				}]
+			}
 		};
 	}
 
@@ -68,7 +75,11 @@ export default class SelectedUsersView extends LoggedView {
 		reset: PropTypes.func.isRequired,
 		users: PropTypes.array,
 		loading: PropTypes.bool,
-		setLoadingInvite: PropTypes.func
+		setLoadingInvite: PropTypes.func,
+		user: PropTypes.shape({
+			id: PropTypes.string,
+			token: PropTypes.string
+		})
 	};
 
 	constructor(props) {
@@ -96,27 +107,6 @@ export default class SelectedUsersView extends LoggedView {
 		return false;
 	}
 
-	componentDidUpdate(prevProps) {
-		const { componentId, users } = this.props;
-		if (prevProps.users.length !== users.length) {
-			const { length } = users;
-			const rightButtons = [];
-			if (length > 0) {
-				rightButtons.push({
-					id: 'create',
-					text: I18n.t('Next'),
-					testID: 'selected-users-view-submit',
-					color: Platform.OS === 'android' ? '#FFF' : undefined
-				});
-			}
-			Navigation.mergeOptions(componentId, {
-				topBar: {
-					rightButtons
-				}
-			});
-		}
-	}
-
 	componentWillUnmount() {
 		const { reset } = this.props;
 		this.updateState.stop();
@@ -133,12 +123,6 @@ export default class SelectedUsersView extends LoggedView {
 			const { nextAction, setLoadingInvite } = this.props;
 			if (nextAction === 'CREATE_CHANNEL') {
 				const { componentId } = this.props;
-
-				if (CreateChannelView == null) {
-					CreateChannelView = require('./CreateChannelView').default;
-					Navigation.registerComponentWithRedux('CreateChannelView', () => gestureHandlerRootHOC(CreateChannelView), Provider, store);
-				}
-
 				Navigation.push(componentId, {
 					component: {
 						name: 'CreateChannelView'
@@ -225,7 +209,7 @@ export default class SelectedUsersView extends LoggedView {
 	}
 
 	renderSelectedItem = ({ item }) => {
-		const { baseUrl } = this.props;
+		const { baseUrl, user } = this.props;
 		return (
 			<UserItem
 				name={item.fname}
@@ -234,6 +218,7 @@ export default class SelectedUsersView extends LoggedView {
 				testID={`selected-user-${ item.name }`}
 				baseUrl={baseUrl}
 				style={{ paddingRight: 15 }}
+				user={user}
 			/>
 		);
 	}
@@ -242,7 +227,7 @@ export default class SelectedUsersView extends LoggedView {
 
 	renderItem = ({ item, index }) => {
 		const { search } = this.state;
-		const { baseUrl } = this.props;
+		const { baseUrl, user } = this.props;
 
 		const name = item.search ? item.name : item.fname;
 		const username = item.search ? item.username : item.name;
@@ -265,6 +250,7 @@ export default class SelectedUsersView extends LoggedView {
 				icon={this.isChecked(username) ? 'check' : null}
 				baseUrl={baseUrl}
 				style={style}
+				user={user}
 			/>
 		);
 	}

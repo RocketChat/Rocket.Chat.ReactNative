@@ -2,12 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
-	View, Text, Switch, ScrollView, TextInput, StyleSheet, FlatList, Platform
+	View, Text, Switch, ScrollView, TextInput, StyleSheet, FlatList
 } from 'react-native';
-import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
 
+import Navigation from '../lib/Navigation';
 import Loading from '../containers/Loading';
 import LoggedView from './View';
 import { createChannelRequest as createChannelRequestAction } from '../actions/createChannel';
@@ -18,7 +18,7 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import UserItem from '../presentation/UserItem';
 import { showErrorAlert } from '../utils/info';
-import { DEFAULT_HEADER } from '../constants/headerOptions';
+import { isAndroid } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	container: {
@@ -80,7 +80,11 @@ const styles = StyleSheet.create({
 	failure: state.createChannel.failure,
 	isFetching: state.createChannel.isFetching,
 	result: state.createChannel.result,
-	users: state.selectedUsers.users
+	users: state.selectedUsers.users,
+	user: {
+		id: state.login.user && state.login.user.id,
+		token: state.login.user && state.login.user.token
+	}
 }), dispatch => ({
 	create: data => dispatch(createChannelRequestAction(data)),
 	removeUser: user => dispatch(removeUserAction(user))
@@ -89,11 +93,8 @@ const styles = StyleSheet.create({
 export default class CreateChannelView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				title: {
-					...DEFAULT_HEADER.topBar.title,
 					text: I18n.t('Create_Channel')
 				}
 			}
@@ -109,7 +110,11 @@ export default class CreateChannelView extends LoggedView {
 		failure: PropTypes.bool,
 		isFetching: PropTypes.bool,
 		result: PropTypes.object,
-		users: PropTypes.array.isRequired
+		users: PropTypes.array.isRequired,
+		user: PropTypes.shape({
+			id: PropTypes.string,
+			token: PropTypes.string
+		})
 	};
 
 	constructor(props) {
@@ -207,7 +212,7 @@ export default class CreateChannelView extends LoggedView {
 				id: 'create',
 				text: 'Create',
 				testID: 'create-channel-submit',
-				color: Platform.OS === 'android' ? '#FFF' : undefined
+				color: isAndroid ? '#FFF' : undefined
 			});
 		}
 		Navigation.mergeOptions(componentId, {
@@ -261,7 +266,7 @@ export default class CreateChannelView extends LoggedView {
 				onValueChange={onValueChange}
 				testID={`create-channel-${ id }`}
 				onTintColor='#2de0a5'
-				tintColor={Platform.OS === 'android' ? '#f5455c' : null}
+				tintColor={isAndroid ? '#f5455c' : null}
 				disabled={disabled}
 			/>
 		</View>
@@ -308,7 +313,7 @@ export default class CreateChannelView extends LoggedView {
 	renderFormSeparator = () => <View style={[sharedStyles.separator, styles.formSeparator]} />
 
 	renderItem = ({ item }) => {
-		const { baseUrl } = this.props;
+		const { baseUrl, user } = this.props;
 
 		return (
 			<UserItem
@@ -317,6 +322,7 @@ export default class CreateChannelView extends LoggedView {
 				onPress={() => this.removeUser(item)}
 				testID={`create-channel-view-item-${ item.name }`}
 				baseUrl={baseUrl}
+				user={user}
 			/>
 		);
 	}

@@ -174,7 +174,7 @@ export default class Message extends PureComponent {
 
 	renderAvatar = () => {
 		const {
-			header, avatar, author, baseUrl
+			header, avatar, author, baseUrl, user
 		} = this.props;
 		if (header) {
 			return (
@@ -185,6 +185,7 @@ export default class Message extends PureComponent {
 					borderRadius={4}
 					avatar={avatar}
 					baseUrl={baseUrl}
+					user={user}
 				/>
 			);
 		}

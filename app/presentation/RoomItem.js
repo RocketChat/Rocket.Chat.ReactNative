@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import {
-	View, Text, StyleSheet, Image, Platform
+	View, Text, StyleSheet, Image
 } from 'react-native';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
@@ -13,6 +13,7 @@ import Status from '../containers/status';
 import Touch from '../utils/touch/index'; //eslint-disable-line
 import RoomTypeIcon from '../containers/RoomTypeIcon';
 import I18n from '../i18n';
+import { isIOS } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	container: {
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
 	},
 	titleContainer: {
 		width: '100%',
-		marginTop: Platform.OS === 'ios' ? 5 : 2,
+		marginTop: isIOS ? 5 : 2,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center'
@@ -124,7 +125,11 @@ const renderNumber = (unread, userMentions) => {
 
 const attrs = ['name', 'unread', 'userMentions', 'alert', 'showLastMessage', 'type'];
 @connect(state => ({
-	username: state.login.user && state.login.user.username,
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	},
 	StoreLastMessage: state.settings.Store_Last_Message,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }))
@@ -143,7 +148,11 @@ export default class RoomItem extends React.Component {
 		userMentions: PropTypes.number,
 		id: PropTypes.string,
 		onPress: PropTypes.func,
-		username: PropTypes.string,
+		user: PropTypes.shape({
+			id: PropTypes.string,
+			username: PropTypes.string,
+			token: PropTypes.string
+		}),
 		avatarSize: PropTypes.number,
 		testID: PropTypes.string,
 		height: PropTypes.number
@@ -171,14 +180,14 @@ export default class RoomItem extends React.Component {
 
 	get avatar() {
 		const {
-			type, name, avatarSize, baseUrl
+			type, name, avatarSize, baseUrl, user
 		} = this.props;
-		return <Avatar text={name} size={avatarSize} type={type} baseUrl={baseUrl} style={{ marginHorizontal: 15 }} />;
+		return <Avatar text={name} size={avatarSize} type={type} baseUrl={baseUrl} style={{ marginHorizontal: 15 }} user={user} />;
 	}
 
 	get lastMessage() {
 		const {
-			lastMessage, type, showLastMessage, StoreLastMessage, username
+			lastMessage, type, showLastMessage, StoreLastMessage, user
 		} = this.props;
 
 		if (!StoreLastMessage || !showLastMessage) {
@@ -189,7 +198,7 @@ export default class RoomItem extends React.Component {
 		}
 
 		let prefix = '';
-		const me = lastMessage.u.username === username;
+		const me = lastMessage.u.username === user.username;
 
 		if (!lastMessage.msg && Object.keys(lastMessage.attachments).length > 0) {
 			if (me) {
@@ -226,7 +235,7 @@ export default class RoomItem extends React.Component {
 	})
 
 	renderDisclosureIndicator = () => {
-		if (Platform.OS === 'ios') {
+		if (isIOS) {
 			return (
 				<View style={styles.disclosureContainer}>
 					<Image source={{ uri: 'disclosure_indicator' }} style={styles.disclosureIndicator} />

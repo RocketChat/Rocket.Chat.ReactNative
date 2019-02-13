@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
-import ActionSheet from 'react-native-actionsheet';
+import ActionSheet from 'react-native-action-sheet';
 import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
 
@@ -11,7 +11,6 @@ import styles from './styles';
 import Message from '../../containers/message/Message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
-import { DEFAULT_HEADER } from '../../constants/headerOptions';
 import RocketChat from '../../lib/rocketchat';
 
 const STAR_INDEX = 0;
@@ -32,11 +31,8 @@ const options = [I18n.t('Unstar'), I18n.t('Cancel')];
 export default class StarredMessagesView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				title: {
-					...DEFAULT_HEADER.topBar.title,
 					text: I18n.t('Starred')
 				}
 			}
@@ -75,9 +71,17 @@ export default class StarredMessagesView extends LoggedView {
 
 	onLongPress = (message) => {
 		this.setState({ message });
-		if (this.actionSheet && this.actionSheet.show) {
-			this.actionSheet.show();
-		}
+		this.showActionSheet();
+	}
+
+	showActionSheet = () => {
+		ActionSheet.showActionSheetWithOptions({
+			options,
+			cancelButtonIndex: CANCEL_INDEX,
+			title: I18n.t('Actions')
+		}, (actionIndex) => {
+			this.handleActionPress(actionIndex);
+		});
 	}
 
 	handleActionPress = (actionIndex) => {
@@ -178,13 +182,6 @@ export default class StarredMessagesView extends LoggedView {
 					keyExtractor={item => item._id}
 					onEndReached={this.load}
 					ListFooterComponent={loading ? <RCActivityIndicator /> : null}
-				/>
-				<ActionSheet
-					ref={o => this.actionSheet = o}
-					title={I18n.t('Actions')}
-					options={options}
-					cancelButtonIndex={CANCEL_INDEX}
-					onPress={this.handleActionPress}
 				/>
 			</SafeAreaView>
 		);

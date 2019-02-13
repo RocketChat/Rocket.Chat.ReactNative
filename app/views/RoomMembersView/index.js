@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	FlatList, View, Vibration, Platform
+	FlatList, View, Vibration
 } from 'react-native';
-import ActionSheet from 'react-native-actionsheet';
+import ActionSheet from 'react-native-action-sheet';
 import { connect } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
 
+import Navigation from '../../lib/Navigation';
 import LoggedView from '../View';
 import styles from './styles';
 import UserItem from '../../presentation/UserItem';
@@ -17,30 +17,31 @@ import RocketChat from '../../lib/rocketchat';
 import database from '../../lib/realm';
 import { showToast } from '../../utils/info';
 import log from '../../utils/log';
+import { isAndroid } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
-import { DEFAULT_HEADER } from '../../constants/headerOptions';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	room: state.room
+	room: state.room,
+	user: {
+		id: state.login.user && state.login.user.id,
+		token: state.login.user && state.login.user.token
+	}
 }))
 /** @extends React.Component */
 export default class RoomMembersView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				title: {
-					...DEFAULT_HEADER.topBar.title,
 					text: I18n.t('Members')
 				},
 				rightButtons: [{
 					id: 'toggleOnline',
 					text: I18n.t('Online'),
 					testID: 'room-members-view-toggle-status',
-					color: Platform.OS === 'android' ? '#FFF' : undefined
+					color: isAndroid ? '#FFF' : undefined
 				}]
 			}
 		};
@@ -51,7 +52,11 @@ export default class RoomMembersView extends LoggedView {
 		rid: PropTypes.string,
 		members: PropTypes.array,
 		baseUrl: PropTypes.string,
-		room: PropTypes.object
+		room: PropTypes.object,
+		user: PropTypes.shape({
+			id: PropTypes.string,
+			token: PropTypes.string
+		})
 	}
 
 	constructor(props) {
@@ -125,7 +130,7 @@ export default class RoomMembersView extends LoggedView {
 							id: 'toggleOnline',
 							text: allUsers ? I18n.t('Online') : I18n.t('All'),
 							testID: 'room-members-view-toggle-status',
-							color: Platform.OS === 'android' ? '#FFF' : undefined
+							color: isAndroid ? '#FFF' : undefined
 						}]
 					}
 				});
@@ -166,26 +171,30 @@ export default class RoomMembersView extends LoggedView {
 		if (!this.permissions['mute-user']) {
 			return;
 		}
-		try {
-			const { room } = this.state;
-			const { muted } = room;
+		const { room } = this.state;
+		const { muted } = room;
 
-			const options = [I18n.t('Cancel')];
-			const userIsMuted = !!muted.find(m => m.value === user.username);
-			user.muted = userIsMuted;
-			if (userIsMuted) {
-				options.push(I18n.t('Unmute'));
-			} else {
-				options.push(I18n.t('Mute'));
-			}
-			this.setState({ userLongPressed: user, options });
-			Vibration.vibrate(50);
-			if (this.actionSheet && this.actionSheet.show) {
-				this.actionSheet.show();
-			}
-		} catch (error) {
-			console.log('onLongPressUser -> catch -> error', error);
+		this.actionSheetOptions = [I18n.t('Cancel')];
+		const userIsMuted = !!muted.find(m => m.value === user.username);
+		user.muted = userIsMuted;
+		if (userIsMuted) {
+			this.actionSheetOptions.push(I18n.t('Unmute'));
+		} else {
+			this.actionSheetOptions.push(I18n.t('Mute'));
 		}
+		this.setState({ userLongPressed: user });
+		Vibration.vibrate(50);
+		this.showActionSheet();
+	}
+
+	showActionSheet = () => {
+		ActionSheet.showActionSheetWithOptions({
+			options: this.actionSheetOptions,
+			cancelButtonIndex: this.CANCEL_INDEX,
+			title: I18n.t('Actions')
+		}, (actionIndex) => {
+			this.handleActionPress(actionIndex);
+		});
 	}
 
 	fetchMembers = async(status) => {
@@ -242,7 +251,7 @@ export default class RoomMembersView extends LoggedView {
 	renderSeparator = () => <View style={styles.separator} />;
 
 	renderItem = ({ item }) => {
-		const { baseUrl } = this.props;
+		const { baseUrl, user } = this.props;
 
 		return (
 			<UserItem
@@ -252,13 +261,14 @@ export default class RoomMembersView extends LoggedView {
 				onLongPress={() => this.onLongPressUser(item)}
 				baseUrl={baseUrl}
 				testID={`room-members-view-item-${ item.username }`}
+				user={user}
 			/>
 		);
 	}
 
 	render() {
 		const {
-			filtering, members, membersFiltered, options
+			filtering, members, membersFiltered
 		} = this.state;
 		return (
 			<SafeAreaView style={styles.list} testID='room-members-view' forceInset={{ bottom: 'never' }}>
@@ -270,13 +280,6 @@ export default class RoomMembersView extends LoggedView {
 					ItemSeparatorComponent={this.renderSeparator}
 					ListHeaderComponent={this.renderSearchBar}
 					{...scrollPersistTaps}
-				/>
-				<ActionSheet
-					ref={o => this.actionSheet = o}
-					title={I18n.t('Actions')}
-					options={options}
-					cancelButtonIndex={this.CANCEL_INDEX}
-					onPress={this.handleActionPress}
 				/>
 			</SafeAreaView>
 		);

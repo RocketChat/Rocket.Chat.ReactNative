@@ -4,10 +4,9 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
-import * as SDK from '@rocket.chat/sdk';
 import equal from 'deep-equal';
 
+import Navigation from '../../lib/Navigation';
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 import { appStart as appStartAction } from '../../actions';
@@ -139,7 +138,7 @@ export default class ServerDropdown extends Component {
 			if (!token) {
 				appStart();
 				try {
-					SDK.driver.disconnect();
+					this.sdk.disconnect();
 				} catch (error) {
 					console.warn(error);
 				}

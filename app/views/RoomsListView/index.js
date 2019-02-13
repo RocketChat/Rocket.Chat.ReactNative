@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Platform, View, FlatList, BackHandler, ActivityIndicator, Text, Image, Dimensions, ScrollView, Keyboard, LayoutAnimation
+	View, FlatList, BackHandler, ActivityIndicator, Text, Image, ScrollView, Keyboard, LayoutAnimation
 } from 'react-native';
-import { connect, Provider } from 'react-redux';
+import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
-import { Navigation } from 'react-native-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
+import Navigation from '../../lib/Navigation';
 import SearchBox from '../../containers/SearchBox';
 import ConnectionBadge from '../../containers/ConnectionBadge';
 import database from '../../lib/realm';
@@ -21,40 +20,41 @@ import I18n from '../../i18n';
 import SortDropdown from './SortDropdown';
 import ServerDropdown from './ServerDropdown';
 import Touch from '../../utils/touch';
-import { toggleSortDropdown as toggleSortDropdownAction, openSearchHeader as openSearchHeaderAction, closeSearchHeader as closeSearchHeaderAction } from '../../actions/rooms';
+import {
+	toggleSortDropdown as toggleSortDropdownAction,
+	openSearchHeader as openSearchHeaderAction,
+	closeSearchHeader as closeSearchHeaderAction,
+	roomsRequest as roomsRequestAction
+} from '../../actions/rooms';
 import { appStart as appStartAction } from '../../actions';
-import store from '../../lib/createStore';
-import Drawer from '../../Drawer';
-import { DEFAULT_HEADER } from '../../constants/headerOptions';
 import debounce from '../../utils/debounce';
+import { isIOS, isAndroid } from '../../utils/deviceInfo';
+import Icons from '../../lib/Icons';
 
 const ROW_HEIGHT = 70;
 const SCROLL_OFFSET = 56;
 
 const shouldUpdateProps = ['searchText', 'loadingServer', 'showServerDropdown', 'showSortDropdown', 'sortBy', 'groupByType', 'showFavorites', 'showUnread', 'useRealName', 'appState'];
-const isAndroid = () => Platform.OS === 'android';
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.rid;
 
 const leftButtons = [{
 	id: 'settings',
-	icon: { uri: 'settings', scale: Dimensions.get('window').scale },
+	icon: Icons.getSource('settings'),
 	testID: 'rooms-list-view-sidebar'
 }];
 const rightButtons = [{
 	id: 'newMessage',
-	icon: { uri: 'new_channel', scale: Dimensions.get('window').scale },
+	icon: Icons.getSource('new_channel'),
 	testID: 'rooms-list-view-create-channel'
 }];
 
-if (Platform.OS === 'android') {
+if (isAndroid) {
 	rightButtons.push({
 		id: 'search',
-		icon: { uri: 'search', scale: Dimensions.get('window').scale }
+		icon: Icons.getSource('search')
 	});
 }
-
-let NewMessageView = null;
 
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
@@ -74,21 +74,20 @@ let NewMessageView = null;
 	toggleSortDropdown: () => dispatch(toggleSortDropdownAction()),
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
-	appStart: () => dispatch(appStartAction())
+	appStart: () => dispatch(appStartAction()),
+	roomsRequest: () => dispatch(roomsRequestAction())
 }))
 /** @extends React.Component */
 export default class RoomsListView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				leftButtons,
 				rightButtons,
 				title: {
 					component: {
 						name: 'RoomsListHeaderView',
-						alignment: isAndroid() ? 'left' : 'center'
+						alignment: isAndroid ? 'left' : 'center'
 					}
 				}
 			},
@@ -121,7 +120,8 @@ export default class RoomsListView extends LoggedView {
 		toggleSortDropdown: PropTypes.func,
 		openSearchHeader: PropTypes.func,
 		closeSearchHeader: PropTypes.func,
-		appStart: PropTypes.func
+		appStart: PropTypes.func,
+		roomsRequest: PropTypes.func
 	}
 
 	constructor(props) {
@@ -222,7 +222,7 @@ export default class RoomsListView extends LoggedView {
 
 	componentDidUpdate(prevProps) {
 		const {
-			sortBy, groupByType, showFavorites, showUnread, appState
+			sortBy, groupByType, showFavorites, showUnread, appState, roomsRequest
 		} = this.props;
 
 		if (!(
@@ -233,7 +233,7 @@ export default class RoomsListView extends LoggedView {
 		)) {
 			this.getSubscriptions();
 		} else if (appState === 'foreground' && appState !== prevProps.appState) {
-			RocketChat.getRooms().catch(e => console.log(e));
+			roomsRequest();
 		}
 	}
 
@@ -250,11 +250,6 @@ export default class RoomsListView extends LoggedView {
 
 	navigationButtonPressed = ({ buttonId }) => {
 		if (buttonId === 'newMessage') {
-			if (NewMessageView == null) {
-				NewMessageView = require('../NewMessageView').default;
-				Navigation.registerComponentWithRedux('NewMessageView', () => gestureHandlerRootHOC(NewMessageView), Provider, store);
-			}
-
 			Navigation.showModal({
 				stack: {
 					children: [{
@@ -275,7 +270,7 @@ export default class RoomsListView extends LoggedView {
 				}
 			});
 		} else if (buttonId === 'settings') {
-			Drawer.toggle();
+			Navigation.toggleDrawer();
 		} else if (buttonId === 'search') {
 			this.initSearchingAndroid();
 		} else if (buttonId === 'back') {
@@ -284,7 +279,7 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	internalSetState = (...args) => {
-		if (Platform.OS === 'ios') {
+		if (isIOS) {
 			LayoutAnimation.easeInEaseOut();
 		}
 		this.setState(...args);
@@ -391,7 +386,7 @@ export default class RoomsListView extends LoggedView {
 			topBar: {
 				leftButtons: [{
 					id: 'back',
-					icon: { uri: 'back', scale: Dimensions.get('window').scale },
+					icon: Icons.getSource('back'),
 					testID: 'rooms-list-view-cancel-search'
 				}],
 				rightButtons: []
@@ -400,7 +395,7 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	cancelSearchingAndroid = () => {
-		if (Platform.OS === 'android') {
+		if (isAndroid) {
 			const { closeSearchHeader } = this.props;
 			this.setState({ searching: false });
 			closeSearchHeader();
@@ -475,7 +470,7 @@ export default class RoomsListView extends LoggedView {
 	toggleSort = () => {
 		const { toggleSortDropdown } = this.props;
 
-		const offset = isAndroid() ? 0 : SCROLL_OFFSET;
+		const offset = isAndroid ? 0 : SCROLL_OFFSET;
 		if (this.scroll.scrollTo) {
 			this.scroll.scrollTo({ x: 0, y: offset, animated: true });
 		} else if (this.scroll.scrollToOffset) {
@@ -514,7 +509,7 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	renderSearchBar = () => {
-		if (Platform.OS === 'ios') {
+		if (isIOS) {
 			return <SearchBox onChangeText={this.search} testID='rooms-list-view-search' key='rooms-list-view-search' />;
 		}
 	}
@@ -644,7 +639,7 @@ export default class RoomsListView extends LoggedView {
 					ref={this.getScrollRef}
 					data={search.length ? search : chats}
 					extraData={search.length ? search : chats}
-					contentOffset={Platform.OS === 'ios' ? { x: 0, y: SCROLL_OFFSET } : {}}
+					contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
 					keyExtractor={keyExtractor}
 					style={styles.list}
 					renderItem={this.renderItem}
@@ -663,7 +658,7 @@ export default class RoomsListView extends LoggedView {
 		return (
 			<ScrollView
 				ref={this.getScrollRef}
-				contentOffset={Platform.OS === 'ios' ? { x: 0, y: SCROLL_OFFSET } : {}}
+				contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
 				keyboardShouldPersistTaps='always'
 				testID='rooms-list-view-list'
 			>

@@ -1,13 +1,13 @@
 const random = require('./helpers/random');
 const value = random(20);
 const data = {
-    server: 'https://stable.rocket.chat',
+    server: 'http://localhost:3000',
     alternateServer: 'https://unstable.rocket.chat',
     user: `user${ value }`,
     password: `password${ value }`,
-    alternateUser: 'detox',
+    alternateUser: 'detoxrn',
     alternateUserPassword: '123',
-    alternateUserTOTPSecret: 'HJGECLDOH5RCKJSWMREXAKKENVZXKOJ6I5ZTKPSRIEQWGOK5K5KA',
+    alternateUserTOTPSecret: 'KESVIUCQMZWEYNBMJJAUW4LYKRBVWYZ7HBWTIWDPIAZUOURTF4WA',
     email: `diego.mello+e2e${ value }@rocket.chat`,
     random: value
 }

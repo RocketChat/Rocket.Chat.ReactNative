@@ -4,7 +4,7 @@ import {
 	Alert, Clipboard, Vibration, Share
 } from 'react-native';
 import { connect } from 'react-redux';
-import ActionSheet from 'react-native-actionsheet';
+import ActionSheet from 'react-native-action-sheet';
 import * as moment from 'moment';
 
 import {
@@ -125,9 +125,7 @@ export default class MessageActions extends React.Component {
 			this.DELETE_INDEX = this.options.length - 1;
 		}
 		setTimeout(() => {
-			if (this.actionSheet && this.actionSheet.show) {
-				this.actionSheet.show();
-			}
+			this.showActionSheet();
 			Vibration.vibrate(50);
 		});
 	}
@@ -139,6 +137,17 @@ export default class MessageActions extends React.Component {
 		this.hasEditPermission = result[permissions[0]];
 		this.hasDeletePermission = result[permissions[1]];
 		this.hasForceDeletePermission = result[permissions[2]];
+	}
+
+	showActionSheet = () => {
+		ActionSheet.showActionSheetWithOptions({
+			options: this.options,
+			cancelButtonIndex: this.CANCEL_INDEX,
+			destructiveButtonIndex: this.DELETE_INDEX,
+			title: I18n.t('Message_actions')
+		}, (actionIndex) => {
+			this.handleActionPress(actionIndex);
+		});
 	}
 
 	getPermalink = async(message) => {
@@ -286,55 +295,49 @@ export default class MessageActions extends React.Component {
 	}
 
 	handleActionPress = (actionIndex) => {
-		const { actionsHide } = this.props;
-		switch (actionIndex) {
-			case this.REPLY_INDEX:
-				this.handleReply();
-				break;
-			case this.EDIT_INDEX:
-				this.handleEdit();
-				break;
-			case this.PERMALINK_INDEX:
-				this.handlePermalink();
-				break;
-			case this.COPY_INDEX:
-				this.handleCopy();
-				break;
-			case this.SHARE_INDEX:
-				this.handleShare();
-				break;
-			case this.QUOTE_INDEX:
-				this.handleQuote();
-				break;
-			case this.STAR_INDEX:
-				this.handleStar();
-				break;
-			case this.PIN_INDEX:
-				this.handlePin();
-				break;
-			case this.REACTION_INDEX:
-				this.handleReaction();
-				break;
-			case this.DELETE_INDEX:
-				this.handleDelete();
-				break;
-			default:
-				break;
+		if (actionIndex) {
+			switch (actionIndex) {
+				case this.REPLY_INDEX:
+					this.handleReply();
+					break;
+				case this.EDIT_INDEX:
+					this.handleEdit();
+					break;
+				case this.PERMALINK_INDEX:
+					this.handlePermalink();
+					break;
+				case this.COPY_INDEX:
+					this.handleCopy();
+					break;
+				case this.SHARE_INDEX:
+					this.handleShare();
+					break;
+				case this.QUOTE_INDEX:
+					this.handleQuote();
+					break;
+				case this.STAR_INDEX:
+					this.handleStar();
+					break;
+				case this.PIN_INDEX:
+					this.handlePin();
+					break;
+				case this.REACTION_INDEX:
+					this.handleReaction();
+					break;
+				case this.DELETE_INDEX:
+					this.handleDelete();
+					break;
+				default:
+					break;
+			}
 		}
+		const { actionsHide } = this.props;
 		actionsHide();
 	}
 
 	render() {
 		return (
-			<ActionSheet
-				ref={o => this.actionSheet = o}
-				title={I18n.t('Message_actions')}
-				testID='message-actions'
-				options={this.options}
-				cancelButtonIndex={this.CANCEL_INDEX}
-				destructiveButtonIndex={this.DELETE_INDEX}
-				onPress={this.handleActionPress}
-			/>
+			null
 		);
 	}
 }

@@ -1,9 +1,7 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import { AsyncStorage, Alert } from 'react-native';
-import { Navigation } from 'react-native-navigation';
-import { Provider } from 'react-redux';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
+import Navigation from '../lib/Navigation';
 import { SERVER } from '../actions/actionsTypes';
 import * as actions from '../actions';
 import { serverFailure, selectServerRequest, selectServerSuccess } from '../actions/server';
@@ -12,11 +10,7 @@ import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import log from '../utils/log';
-import store from '../lib/createStore';
 import I18n from '../i18n';
-
-let LoginSignupView = null;
-let LoginView = null;
 
 const handleSelectServer = function* handleSelectServer({ server }) {
 	try {
@@ -59,10 +53,7 @@ const handleServerRequest = function* handleServerRequest({ server }) {
 
 		const loginServicesLength = yield RocketChat.getLoginServices(server);
 		if (loginServicesLength === 0) {
-			if (LoginView == null) {
-				LoginView = require('../views/LoginView').default;
-				Navigation.registerComponentWithRedux('LoginView', () => gestureHandlerRootHOC(LoginView), Provider, store);
-			}
+			Navigation.loadView('LoginView');
 			Navigation.setRoot({
 				root: {
 					stack: {
@@ -81,10 +72,7 @@ const handleServerRequest = function* handleServerRequest({ server }) {
 				}
 			});
 		} else {
-			if (LoginSignupView == null) {
-				LoginSignupView = require('../views/LoginSignupView').default;
-				Navigation.registerComponentWithRedux('LoginSignupView', () => gestureHandlerRootHOC(LoginSignupView), Provider, store);
-			}
+			Navigation.loadView('LoginSignupView');
 			Navigation.setRoot({
 				root: {
 					stack: {

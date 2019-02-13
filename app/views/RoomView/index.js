@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, LayoutAnimation, ActivityIndicator, Platform
+	Text, View, LayoutAnimation, ActivityIndicator
 } from 'react-native';
-import { connect, Provider } from 'react-redux';
-import { RectButton, gestureHandlerRootHOC } from 'react-native-gesture-handler';
-import { Navigation } from 'react-native-navigation';
+import { connect } from 'react-redux';
+import { RectButton } from 'react-native-gesture-handler';
 import SafeAreaView from 'react-native-safe-area-view';
+import equal from 'deep-equal';
 
+import Navigation from '../../lib/Navigation';
 import { openRoom as openRoomAction, closeRoom as closeRoomAction, setLastOpen as setLastOpenAction } from '../../actions/room';
 import { toggleReactionPicker as toggleReactionPickerAction, actionsShow as actionsShowAction } from '../../actions/messages';
 import LoggedView from '../View';
@@ -22,13 +23,10 @@ import ReactionPicker from './ReactionPicker';
 import UploadProgress from './UploadProgress';
 import styles from './styles';
 import log from '../../utils/log';
+import { isIOS } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
-import { iconsMap } from '../../Icons';
-import store from '../../lib/createStore';
+import Icons from '../../lib/Icons';
 import ConnectionBadge from '../../containers/ConnectionBadge';
-import { DEFAULT_HEADER } from '../../constants/headerOptions';
-
-let RoomActionsView = null;
 
 @connect(state => ({
 	user: {
@@ -51,9 +49,7 @@ let RoomActionsView = null;
 export default class RoomView extends LoggedView {
 	static options() {
 		return {
-			...DEFAULT_HEADER,
 			topBar: {
-				...DEFAULT_HEADER.topBar,
 				title: {
 					component: {
 						name: 'RoomHeaderView',
@@ -63,11 +59,11 @@ export default class RoomView extends LoggedView {
 				rightButtons: [{
 					id: 'more',
 					testID: 'room-view-header-actions',
-					icon: iconsMap.more
+					icon: Icons.getSource('more', false)
 				}, {
 					id: 'star',
 					testID: 'room-view-header-star',
-					icon: iconsMap.starOutline
+					icon: Icons.getSource('starOutline', false)
 				}]
 			},
 			blurOnUnmount: true
@@ -104,7 +100,6 @@ export default class RoomView extends LoggedView {
 			joined: this.rooms.length > 0,
 			room: {}
 		};
-		this.focused = true;
 		this.onReactionPress = this.onReactionPress.bind(this);
 		Navigation.events().bindComponent(this);
 	}
@@ -147,6 +142,8 @@ export default class RoomView extends LoggedView {
 			return true;
 		} else if (appState !== nextProps.appState) {
 			return true;
+		} else if (!equal(room.muted, nextState.room.muted)) {
+			return true;
 		}
 		return false;
 	}
@@ -159,13 +156,13 @@ export default class RoomView extends LoggedView {
 			const rightButtons = [{
 				id: 'star',
 				testID: 'room-view-header-star',
-				icon: room.f ? iconsMap.star : iconsMap.starOutline
+				icon: room.f ? Icons.getSource('star', false) : Icons.getSource('starOutline', false)
 			}];
 			if (room.t !== 'l') {
 				rightButtons.unshift({
 					id: 'more',
 					testID: 'room-view-header-actions',
-					icon: iconsMap.more
+					icon: Icons.getSource('more', false)
 				});
 			}
 			Navigation.mergeOptions(componentId, {
@@ -183,16 +180,6 @@ export default class RoomView extends LoggedView {
 		const { closeRoom } = this.props;
 		closeRoom();
 		this.rooms.removeAllListeners();
-	}
-
-	// eslint-disable-next-line
-	componentDidAppear() {
-		this.focused = true;
-	}
-
-	// eslint-disable-next-line
-	componentDidDisappear() {
-		this.focused = false;
 	}
 
 	onMessageLongPress = (message) => {
@@ -214,7 +201,7 @@ export default class RoomView extends LoggedView {
 	};
 
 	internalSetState = (...args) => {
-		if (Platform.OS === 'ios') {
+		if (isIOS) {
 			LayoutAnimation.easeInEaseOut();
 		}
 		this.setState(...args);
@@ -226,11 +213,6 @@ export default class RoomView extends LoggedView {
 		const { componentId } = this.props;
 
 		if (buttonId === 'more') {
-			if (RoomActionsView == null) {
-				RoomActionsView = require('../RoomActionsView').default;
-				Navigation.registerComponentWithRedux('RoomActionsView', () => gestureHandlerRootHOC(RoomActionsView), Provider, store);
-			}
-
 			Navigation.push(componentId, {
 				component: {
 					id: 'RoomActionsView',
@@ -253,9 +235,6 @@ export default class RoomView extends LoggedView {
 	updateRoom = () => {
 		const { openRoom, setLastOpen } = this.props;
 
-		if (!this.focused) {
-			return;
-		}
 		if (this.rooms.length > 0) {
 			const { room: prevRoom } = this.state;
 			const room = JSON.parse(JSON.stringify(this.rooms[0] || {}));
@@ -310,12 +289,12 @@ export default class RoomView extends LoggedView {
 	isMuted = () => {
 		const { room } = this.state;
 		const { user } = this.props;
-		return room && room.muted && Array.from(Object.keys(room.muted), i => room.muted[i].value).includes(user.username);
+		return room && room.muted && !!Array.from(Object.keys(room.muted), i => room.muted[i].value).includes(user.username);
 	}
 
 	isReadOnly = () => {
 		const { room } = this.state;
-		return room.ro && this.isMuted() && !this.isOwner();
+		return (room.ro && !room.broadcast) || this.isMuted() || room.archived;
 	}
 
 	isBlocked = () => {
@@ -352,7 +331,7 @@ export default class RoomView extends LoggedView {
 	}
 
 	renderFooter = () => {
-		const { joined, room } = this.state;
+		const { joined } = this.state;
 
 		if (!joined) {
 			return (
@@ -369,7 +348,7 @@ export default class RoomView extends LoggedView {
 				</View>
 			);
 		}
-		if (room.archived || this.isReadOnly()) {
+		if (this.isReadOnly()) {
 			return (
 				<View style={styles.readOnly} key='room-view-read-only'>
 					<Text>{I18n.t('This_room_is_read_only')}</Text>

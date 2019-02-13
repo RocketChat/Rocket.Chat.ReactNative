@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-	View, Text, StyleSheet, Image, ScrollView, Platform, TouchableHighlight
+	View, Text, StyleSheet, Image, ScrollView, TouchableHighlight
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
@@ -11,6 +11,7 @@ import TextInput from '../TextInput';
 import Button from '../Button';
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
+import { isIOS } from '../../utils/deviceInfo';
 
 const cancelButtonColor = '#f7f8fa';
 
@@ -120,7 +121,7 @@ export default class UploadModal extends Component {
 
 	renderButtons = () => {
 		const { close } = this.props;
-		if (Platform.OS === 'ios') {
+		if (isIOS) {
 			return (
 				<View style={styles.buttonContainer}>
 					<Button

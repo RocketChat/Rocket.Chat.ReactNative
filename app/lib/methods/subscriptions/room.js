@@ -1,66 +1,70 @@
-import * as SDK from '@rocket.chat/sdk';
-
 import log from '../../../utils/log';
 
-const subscribe = rid => Promise.all([
-	SDK.driver.subscribe('stream-room-messages', rid, false),
-	SDK.driver.subscribe('stream-notify-room', `${ rid }/typing`, false),
-	SDK.driver.subscribe('stream-notify-room', `${ rid }/deleteMessage`, false)
-]);
 const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
+const removeListener = listener => listener.stop();
 
-let timer = null;
 let promises;
+let timer = null;
+let connectedListener;
+let disconnectedListener;
 
-const stop = () => {
+export default function subscribeRoom({ rid }) {
 	if (promises) {
 		promises.then(unsubscribe);
 		promises = false;
 	}
-
-	clearTimeout(timer);
-};
-
-export default function subscribeRoom({ rid, t }) {
-	if (promises) {
-		promises.then(unsubscribe);
-		promises = false;
-	}
-	const loop = (time = new Date()) => {
+	const loop = () => {
 		if (timer) {
 			return;
 		}
-		timer = setTimeout(async() => {
+		timer = setTimeout(() => {
 			try {
-				await this.loadMissedMessages({ rid, t });
+				clearTimeout(timer);
 				timer = false;
+				this.loadMissedMessages({ rid });
 				loop();
 			} catch (e) {
-				loop(time);
+				loop();
 			}
 		}, 5000);
 	};
 
-	// if (!this.connected()) {
-	// 	loop();
-	// } else {
-	SDK.driver.on('logged', () => {
+	const handleConnected = () => {
+		this.loadMissedMessages({ rid });
 		clearTimeout(timer);
 		timer = false;
-	});
+	};
 
-	SDK.driver.on('disconnected', () => {
-		if (SDK.driver.userId) {
+	const handleDisconnected = () => {
+		if (this.sdk.userId) {
 			loop();
 		}
-	});
+	};
+
+	const stop = () => {
+		if (promises) {
+			promises.then(unsubscribe);
+			promises = false;
+		}
+		if (connectedListener) {
+			connectedListener.then(removeListener);
+			connectedListener = false;
+		}
+		if (disconnectedListener) {
+			disconnectedListener.then(removeListener);
+			disconnectedListener = false;
+		}
+		clearTimeout(timer);
+	};
+
+	connectedListener = this.sdk.onStreamData('connected', handleConnected);
+	disconnectedListener = this.sdk.onStreamData('close', handleDisconnected);
 
 	try {
-		promises = subscribe(rid);
+		promises = this.sdk.subscribeRoom(rid);
 	} catch (e) {
 		log('subscribeRoom', e);
 	}
-	// }
 
 	return {
 		stop: () => stop()
