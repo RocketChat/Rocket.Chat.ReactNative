@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: 'kotlin-android'
 
 import com.android.build.OutputFile
 
@@ -206,6 +207,7 @@ dependencies {
     implementation project(':realm')
     implementation project(':react-native-navigation')
     implementation project(':reactnativenotifications')
+    implementation project(':watermelondb')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:27.1.1"
     implementation "com.android.support:support-v4:27.1.1"

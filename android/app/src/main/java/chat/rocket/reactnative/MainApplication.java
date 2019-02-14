@@ -29,6 +29,7 @@ import com.wix.reactnativenotifications.core.notification.IPushNotification;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.actionsheet.ActionSheetPackage;
+import com.nozbe.watermelondb.WatermelonDBPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -87,7 +88,8 @@ public class MainApplication extends NavigationApplication implements INotificat
                 new FabricPackage(),
                 new FastImageViewPackage(),
                 new RNI18nPackage(),
-                new RNNotificationsPackage(MainApplication.this)
+                new RNNotificationsPackage(MainApplication.this),
+                new WatermelonDBPackage()
         );
     }
 
