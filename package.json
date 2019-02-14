@@ -99,7 +99,7 @@
     "metro-react-native-babel-preset": "^0.45.6",
     "mocha": "^5.2.0",
     "otp.js": "^1.1.0",
-    "react-dom": "16.6.3",
+    "react-dom": "16.8.2",
     "react-test-renderer": "16.6.3",
     "reactotron-react-native": "^2.1.5",
     "reactotron-redux": "^2.1.3",
