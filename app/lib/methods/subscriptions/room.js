@@ -55,6 +55,7 @@ export default function subscribeRoom({ rid }) {
 			disconnectedListener = false;
 		}
 		clearTimeout(timer);
+		timer = false;
 	};
 
 	connectedListener = this.sdk.onStreamData('connected', handleConnected);
