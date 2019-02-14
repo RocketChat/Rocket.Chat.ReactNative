@@ -9,6 +9,7 @@ import Navigation from './lib/Navigation';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications } from './push';
 import { DEFAULT_HEADER } from './constants/headerOptions';
+import { serverDatabase } from './lib/database';
 
 const startLogged = () => {
 	Navigation.loadView('ProfileView');
@@ -43,7 +44,7 @@ const startLogged = () => {
 	});
 };
 
-const startNotLogged = () => {
+const startNotLogged = async() => {
 	Navigation.loadView('OnboardingView');
 	Navigation.setRoot({
 		root: {
@@ -61,6 +62,11 @@ const startNotLogged = () => {
 			}
 		}
 	});
+
+	const serversCollection = serverDatabase.collections.get('servers');
+	const servers = await serversCollection.query().fetch();
+	console.log('TCL: startNotLogged -> servers', servers);
+
 };
 
 const startSetUsername = () => {

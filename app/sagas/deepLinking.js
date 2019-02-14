@@ -97,15 +97,15 @@ const handleOpen = function* handleOpen({ params }) {
 		}
 
 		// search if deep link's server already exists
-		const servers = yield database.databases.serversDB.objects('servers').filtered('id = $0', host); // TODO: need better test
-		if (servers.length && user) {
-			yield put(selectServerRequest(host));
-			yield navigate({ params, sameServer: false });
-		} else {
-			yield put(appStart('outside'));
-			yield delay(1000);
-			EventEmitter.emit('NewServer', { server: host });
-		}
+		// const servers = yield database.databases.serversDB.objects('servers').filtered('id = $0', host); // TODO: need better test
+		// if (servers.length && user) {
+		// 	yield put(selectServerRequest(host));
+		// 	yield navigate({ params, sameServer: false });
+		// } else {
+		// 	yield put(appStart('outside'));
+		// 	yield delay(1000);
+		// 	EventEmitter.emit('NewServer', { server: host });
+		// }
 	}
 };
 

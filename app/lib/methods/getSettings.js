@@ -2,14 +2,35 @@ import { InteractionManager } from 'react-native';
 
 import reduxStore from '../createStore';
 import database from '../realm';
+import { serverDatabase } from '../database';
 import * as actions from '../../actions';
 import log from '../../utils/log';
 import settings from '../../constants/settings';
 
-function updateServer(param) {
-	database.databases.serversDB.write(() => {
-		database.databases.serversDB.create('servers', { id: reduxStore.getState().server.server, ...param }, true);
-	});
+async function updateServer(param) {
+	// database.databases.serversDB.write(() => {
+	// 	database.databases.serversDB.create('servers', { id: reduxStore.getState().server.server, ...param }, true);
+	// });
+
+	const currentServer = reduxStore.getState().server.server;
+	const serversCollection = serverDatabase.collections.get('servers');
+
+	try {
+		await serverDatabase.action(async() => {
+			const server = await serversCollection.find(currentServer);
+			await server.update((s) => {
+				if (param.name) {
+					s.name = param.name;
+				}
+
+				if (param.iconUrl) {
+					s.iconUrl = param.iconUrl;
+				}
+			});
+		});
+	} catch (error) {
+		console.log('updateServer -> Server not found');
+	}
 }
 
 export default async function() {

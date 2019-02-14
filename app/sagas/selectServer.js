@@ -1,5 +1,8 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import { AsyncStorage, Alert } from 'react-native';
+import { Q } from '@nozbe/watermelondb';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+
 
 import Navigation from '../lib/Navigation';
 import { SERVER } from '../actions/actionsTypes';
@@ -8,9 +11,10 @@ import { serverFailure, selectServerRequest, selectServerSuccess } from '../acti
 import { setRoles } from '../actions/roles';
 import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
-import database from '../lib/realm';
+import realm from '../lib/realm';
 import log from '../utils/log';
 import I18n from '../i18n';
+import { serverDatabase } from '../lib/database';
 
 const handleSelectServer = function* handleSelectServer({ server }) {
 	try {
@@ -26,11 +30,11 @@ const handleSelectServer = function* handleSelectServer({ server }) {
 			RocketChat.connect({ server });
 		}
 
-		const settings = database.objects('settings');
+		const settings = realm.objects('settings');
 		yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
-		const emojis = database.objects('customEmojis');
+		const emojis = realm.objects('customEmojis');
 		yield put(actions.setCustomEmojis(RocketChat.parseEmojis(emojis.slice(0, emojis.length))));
-		const roles = database.objects('roles');
+		const roles = realm.objects('roles');
 		yield put(setRoles(roles.reduce((result, role) => {
 			result[role._id] = role.description;
 			return result;
@@ -51,6 +55,17 @@ const handleServerRequest = function* handleServerRequest({ server }) {
 			return;
 		}
 
+		const serversCollection = serverDatabase.collections.get('servers');
+		try {
+			yield serversCollection.find(server);
+		} catch (error) {
+			yield serverDatabase.action(async() => {
+				await serversCollection.create((newServer) => {
+					newServer._raw = sanitizedRaw({ id: server }, serversCollection.schema);
+				});
+			});
+		}
+
 		const loginServicesLength = yield RocketChat.getLoginServices(server);
 		if (loginServicesLength === 0) {
 			yield Navigation.push('NewServerView', {
@@ -66,9 +81,6 @@ const handleServerRequest = function* handleServerRequest({ server }) {
 			});
 		}
 
-		database.databases.serversDB.write(() => {
-			database.databases.serversDB.create('servers', { id: server }, true);
-		});
 		yield put(selectServerRequest(server));
 	} catch (e) {
 		yield put(serverFailure());

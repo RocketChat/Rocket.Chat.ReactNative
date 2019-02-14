@@ -5,17 +5,18 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
+import withObservables from '@nozbe/with-observables';
 
 import Navigation from '../../lib/Navigation';
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 import { appStart as appStartAction } from '../../actions';
 import styles from './styles';
-import database from '../../lib/realm';
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
+import { serverDatabase } from '../../lib/database';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -28,10 +29,11 @@ const ANIMATION_DURATION = 200;
 	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
 	appStart: () => dispatch(appStartAction('outside'))
 }))
-export default class ServerDropdown extends Component {
+class ServerDropdown extends Component {
 	static propTypes = {
 		closeServerDropdown: PropTypes.bool,
 		server: PropTypes.string,
+		servers: PropTypes.array,
 		toggleServerDropdown: PropTypes.func,
 		selectServerRequest: PropTypes.func,
 		appStart: PropTypes.func
@@ -39,12 +41,7 @@ export default class ServerDropdown extends Component {
 
 	constructor(props) {
 		super(props);
-		this.servers = database.databases.serversDB.objects('servers');
-		this.state = {
-			servers: this.servers
-		};
 		this.animatedValue = new Animated.Value(0);
-		this.servers.addListener(this.updateState);
 	}
 
 	componentDidMount() {
@@ -59,16 +56,15 @@ export default class ServerDropdown extends Component {
 		).start();
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const { servers } = this.state;
-		const { closeServerDropdown, server } = this.props;
+	shouldComponentUpdate(nextProps) {
+		const { closeServerDropdown, server, servers } = this.props;
 		if (nextProps.closeServerDropdown !== closeServerDropdown) {
 			return true;
 		}
 		if (nextProps.server !== server) {
 			return true;
 		}
-		if (!equal(nextState.servers, servers)) {
+		if (!equal(nextProps.servers, servers)) {
 			return true;
 		}
 		return false;
@@ -79,11 +75,6 @@ export default class ServerDropdown extends Component {
 		if (prevProps.closeServerDropdown !== closeServerDropdown) {
 			this.close();
 		}
-	}
-
-	updateState = () => {
-		const { servers } = this;
-		this.setState({ servers });
 	}
 
 	close = () => {
@@ -186,7 +177,7 @@ export default class ServerDropdown extends Component {
 	}
 
 	render() {
-		const { servers } = this.state;
+		const { servers } = this.props;
 		const maxRows = 4;
 		const initialTop = 41 + (Math.min(servers.length, maxRows) * ROW_HEIGHT);
 		const translateY = this.animatedValue.interpolate({
@@ -225,3 +216,10 @@ export default class ServerDropdown extends Component {
 		);
 	}
 }
+
+const enhance = withObservables([], () => ({
+	servers: serverDatabase.collections.get('servers').query().fetch()
+}));
+const EnhancedServerDropdown = enhance(ServerDropdown);
+
+export default EnhancedServerDropdown;

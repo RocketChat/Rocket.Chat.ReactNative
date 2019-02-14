@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@nozbe/watermelondb": "^0.10.1",
+    "@nozbe/with-observables": "^1.0.2",
     "@remobile/react-native-toast": "^1.0.7",
     "@rocket.chat/sdk": "1.0.0-alpha.25",
     "deep-equal": "^1.0.1",

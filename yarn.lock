@@ -940,6 +940,13 @@
     rxjs-compat "^6.3.2"
     sql-escape-string "^1.1.0"
 
+"@nozbe/with-observables@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@nozbe/with-observables/-/with-observables-1.0.2.tgz#9749b3b5d33a058f8aed92d75138a5778bead89b"
+  integrity sha512-p9WNGTUm0eKb28ylcMBayUgBbzGoZ2bVBxzqtS5SxRL3Hopwf1eSNF+fGbC8fX1YHxhQjma4nN4pkKAt+H6NLA==
+  dependencies:
+    rxjs "^6.2.2"
+
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@protobufjs/aspromise/-/aspromise-1.1.2.tgz#9b8b0cc663d669a7d8f6f5d0893a14d348f30fbf"
