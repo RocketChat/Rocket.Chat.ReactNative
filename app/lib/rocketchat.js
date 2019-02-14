@@ -133,10 +133,15 @@ const RocketChat = {
 			this.activeUsers[ddpMessage.id] = { ...this.activeUsers[ddpMessage.id], ...activeUser, ...ddpMessage.fields };
 		}
 	},
-	loginSuccess({ user }) {
+	async loginSuccess({ user }) {
 		reduxStore.dispatch(setUser(user));
 		reduxStore.dispatch(roomsRequest());
-		this.subscribeRooms();
+
+		if (this.roomsSub) {
+			this.roomsSub.stop();
+		}
+		this.roomsSub = await this.subscribeRooms();
+
 		this.sdk.subscribe('activeUsers');
 		this.sdk.subscribe('roles');
 		this.getPermissions();
@@ -335,6 +340,10 @@ const RocketChat = {
 		}
 	},
 	async logout({ server }) {
+		if (this.roomsSub) {
+			this.roomsSub.stop();
+		}
+
 		try {
 			await this.removePushToken();
 		} catch (error) {
