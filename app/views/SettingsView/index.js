@@ -76,7 +76,10 @@ export default class SettingsView extends LoggedView {
 			}, {
 				label: '简体中文',
 				value: 'zh-CN'
-			}],
+			},{
+				label: 'Français',
+				value: 'fr'
+			},],
 			saving: false
 		};
 		Navigation.events().bindComponent(this);
