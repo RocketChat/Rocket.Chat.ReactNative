@@ -1,8 +1,9 @@
 import { InteractionManager } from 'react-native';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import reduxStore from '../createStore';
-import database from '../realm';
-import { serverDatabase } from '../database';
+// import database from '../realm';
+import { serverDatabase, appDatabase } from '../database';
 import * as actions from '../../actions';
 import log from '../../utils/log';
 import settings from '../../constants/settings';
@@ -45,17 +46,32 @@ export default async function() {
 		const data = result.settings || [];
 		const filteredSettings = this._prepareSettings(data.filter(item => item._id !== 'Assets_favicon_512'));
 
-		InteractionManager.runAfterInteractions(
-			() => database.write(
-				() => filteredSettings.forEach((setting) => {
-					database.create('settings', { ...setting, _updatedAt: new Date() }, true);
-
-					if (setting._id === 'Site_Name') {
-						updateServer.call(this, { name: setting.valueAsString });
+		InteractionManager.runAfterInteractions(async() => {
+			const records = [];
+			const settingsCollection = appDatabase.collections.get('settings');
+			filteredSettings.forEach((setting) => {
+				records.push(serverDatabase.action(async() => {
+					try {
+						const settingQuery = await settingsCollection.find(setting._id);
+						settingQuery.update((s) => {
+							s.valueAsString = setting.valueAsString;
+							s.valueAsNumber = setting.valueAsNumber;
+							s.valueAsBoolean = setting.valueAsBoolean;
+						});
+					} catch (error) {
+						await settingsCollection.create((newSetting) => {
+							newSetting._raw = sanitizedRaw({
+								id: setting._id,
+								value_as_string: setting.valueAsString,
+								value_as_number: setting.valueAsNumber,
+								value_as_boolean: setting.valueAsBoolean
+							}, settingsCollection.schema);
+						});
 					}
-				})
-			)
-		);
+				}));
+			});
+			await Promise.all(records);
+		});
 		reduxStore.dispatch(actions.addSettings(this.parseSettings(filteredSettings)));
 
 		const iconSetting = data.find(item => item._id === 'Assets_favicon_512');

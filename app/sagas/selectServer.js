@@ -1,6 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import { AsyncStorage, Alert } from 'react-native';
-import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 
@@ -55,16 +54,16 @@ const handleServerRequest = function* handleServerRequest({ server }) {
 			return;
 		}
 
-		const serversCollection = serverDatabase.collections.get('servers');
-		try {
-			yield serversCollection.find(server);
-		} catch (error) {
-			yield serverDatabase.action(async() => {
+		yield serverDatabase.action(async() => {
+			const serversCollection = serverDatabase.collections.get('servers');
+			try {
+				await serversCollection.find(server);
+			} catch (error) {
 				await serversCollection.create((newServer) => {
 					newServer._raw = sanitizedRaw({ id: server }, serversCollection.schema);
 				});
-			});
-		}
+			}
+		});
 
 		const loginServicesLength = yield RocketChat.getLoginServices(server);
 		if (loginServicesLength === 0) {

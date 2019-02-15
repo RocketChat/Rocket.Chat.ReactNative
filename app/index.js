@@ -9,7 +9,8 @@ import Navigation from './lib/Navigation';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications } from './push';
 import { DEFAULT_HEADER } from './constants/headerOptions';
-import { serverDatabase } from './lib/database';
+import { serverDatabase, appDatabase } from './lib/database';
+// import database from './lib/database'
 
 const startLogged = () => {
 	Navigation.loadView('ProfileView');
@@ -66,6 +67,10 @@ const startNotLogged = async() => {
 	const serversCollection = serverDatabase.collections.get('servers');
 	const servers = await serversCollection.query().fetch();
 	console.log('TCL: startNotLogged -> servers', servers);
+
+	const settingsCollection2 = appDatabase.collections.get('settings');
+	const settings2 = await settingsCollection2.query().fetch();
+	console.log('TCL: startNotLogged -> settings2', settings2);
 
 };
 
