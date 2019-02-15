@@ -7,6 +7,7 @@ import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
 import messagesStatus from '../constants/messagesStatus';
 import database from './realm';
+import { appDatabase } from './database';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
 
@@ -40,6 +41,7 @@ import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFil
 
 import { getDeviceToken } from '../push';
 import { roomsRequest } from '../actions/rooms';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
@@ -236,14 +238,29 @@ const RocketChat = {
 				clearTimeout(this.roleTimer);
 				this.roleTimer = null;
 			}
-			this.roleTimer = setTimeout(() => {
-				reduxStore.dispatch(setRoles(this.roles));
+			this.roleTimer = setTimeout(async() => {
+				const records = [];
+				const rolesCollection = appDatabase.collections.get('roles');
 
-				database.write(() => {
-					foreach(this.roles, (description, _id) => {
-						database.create('roles', { _id, description }, true);
-					});
+				Object.keys(this.roles).forEach((key) => {
+					const description = this.roles[key];
+					records.push(appDatabase.action(async() => {
+						try {
+							const roleQuery = await rolesCollection.find(key);
+							roleQuery.update((s) => {
+								s.description = description;
+							});
+						} catch (error) {
+							await rolesCollection.create((newrole) => {
+								newrole._raw = sanitizedRaw({
+									id: key,
+									description
+								}, rolesCollection.schema);
+							});
+						}
+					}));
 				});
+				await Promise.all(records);
 
 				this.roleTimer = null;
 				return this.roles = {};

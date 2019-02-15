@@ -50,7 +50,7 @@ export default async function() {
 			const records = [];
 			const settingsCollection = appDatabase.collections.get('settings');
 			filteredSettings.forEach((setting) => {
-				records.push(serverDatabase.action(async() => {
+				records.push(appDatabase.action(async() => {
 					try {
 						const settingQuery = await settingsCollection.find(setting._id);
 						settingQuery.update((s) => {
