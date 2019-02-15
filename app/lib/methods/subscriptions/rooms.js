@@ -7,6 +7,12 @@ import random from '../../../utils/random';
 import store from '../../createStore';
 import { roomsRequest } from '../../../actions/rooms';
 
+const removeListener = listener => listener.stop();
+
+let connectedListener;
+let disconnectedListener;
+let streamListener;
+
 export default async function subscribeRooms() {
 	let timer = null;
 	const loop = () => {
@@ -21,19 +27,19 @@ export default async function subscribeRooms() {
 		}, 5000);
 	};
 
-	this.sdk.onStreamData('connected', () => {
+	const handleConnected = () => {
 		store.dispatch(roomsRequest());
 		clearTimeout(timer);
 		timer = false;
-	});
+	};
 
-	this.sdk.onStreamData('close', () => {
+	const handleDisconnected = () => {
 		if (this.sdk.userId) {
 			loop();
 		}
-	});
+	};
 
-	this.sdk.onStreamData('stream-notify-user', protectedFunction((ddpMessage) => {
+	const handleStreamMessageReceived = protectedFunction((ddpMessage) => {
 		if (ddpMessage.msg === 'added') {
 			return;
 		}
@@ -92,11 +98,36 @@ export default async function subscribeRooms() {
 				database.create('messages', message, true);
 			}));
 		}
-	}));
+	});
+
+	const stop = () => {
+		if (connectedListener) {
+			connectedListener.then(removeListener);
+			connectedListener = false;
+		}
+		if (disconnectedListener) {
+			disconnectedListener.then(removeListener);
+			disconnectedListener = false;
+		}
+		if (streamListener) {
+			streamListener.then(removeListener);
+			streamListener = false;
+		}
+		clearTimeout(timer);
+		timer = false;
+	};
+
+	connectedListener = this.sdk.onStreamData('connected', handleConnected);
+	disconnectedListener = this.sdk.onStreamData('close', handleDisconnected);
+	streamListener = this.sdk.onStreamData('stream-notify-user', handleStreamMessageReceived);
 
 	try {
 		await this.sdk.subscribeNotifyUser();
 	} catch (e) {
 		log('subscribeRooms', e);
 	}
+
+	return {
+		stop: () => stop()
+	};
 }
