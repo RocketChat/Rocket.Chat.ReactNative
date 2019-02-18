@@ -256,8 +256,8 @@ const RocketChat = {
 								s.description = description;
 							});
 						} catch (error) {
-							await rolesCollection.create((newrole) => {
-								newrole._raw = sanitizedRaw({
+							await rolesCollection.create((newRole) => {
+								newRole._raw = sanitizedRaw({
 									id: key,
 									description
 								}, rolesCollection.schema);

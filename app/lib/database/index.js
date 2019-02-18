@@ -2,7 +2,9 @@ import { Database } from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 
 import { serverSchema, appSchema } from './schemas';
-import { Server, Setting, Role } from './models';
+import {
+	Server, Setting, Role, Permission, PermissionRole
+} from './models';
 
 const serverAdapter = new SQLiteAdapter({
 	dbName: 'ServersDB',
@@ -21,7 +23,7 @@ const appAdapter = new SQLiteAdapter({
 
 export const appDatabase = new Database({
 	adapter: appAdapter,
-	modelClasses: [Setting, Role]
+	modelClasses: [Setting, Role, Permission, PermissionRole]
 });
 
 
