@@ -10,9 +10,8 @@ import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications } from './push';
 import { DEFAULT_HEADER } from './constants/headerOptions';
 import { serverDatabase, appDatabase } from './lib/database';
-// import database from './lib/database'
 
-const startLogged = () => {
+const startLogged = async() => {
 	Navigation.loadView('ProfileView');
 	Navigation.loadView('RoomsListHeaderView');
 	Navigation.loadView('RoomsListView');
@@ -43,9 +42,28 @@ const startLogged = () => {
 			}
 		}
 	});
+
+	// const serversCollection = serverDatabase.collections.get('servers');
+	// const servers = await serversCollection.query().fetch();
+	// console.log('TCL: startNotLogged -> servers', servers);
+
+	// const settingsCollection = appDatabase.collections.get('settings');
+	// const settings = await settingsCollection.query().fetch();
+	// console.log('TCL: startNotLogged -> settings', settings);
+
+	const permissionsCollection = appDatabase.collections.get('permissions');
+	const permissions = await permissionsCollection.query().fetch();
+	console.log('TCL: startNotLogged -> permissions', permissions);
+
+	const p = permissions[0];
+	console.log(p.roles)
+
+	// const rolesCollection = appDatabase.collections.get('roles');
+	// const roles = await rolesCollection.query().fetch();
+	// console.log('TCL: startNotLogged -> roles', roles);
 };
 
-const startNotLogged = async() => {
+const startNotLogged = () => {
 	Navigation.loadView('OnboardingView');
 	Navigation.setRoot({
 		root: {
@@ -63,15 +81,6 @@ const startNotLogged = async() => {
 			}
 		}
 	});
-
-	const serversCollection = serverDatabase.collections.get('servers');
-	const servers = await serversCollection.query().fetch();
-	console.log('TCL: startNotLogged -> servers', servers);
-
-	const settingsCollection2 = appDatabase.collections.get('settings');
-	const settings2 = await settingsCollection2.query().fetch();
-	console.log('TCL: startNotLogged -> settings2', settings2);
-
 };
 
 const startSetUsername = () => {

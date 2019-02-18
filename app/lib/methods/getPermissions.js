@@ -23,7 +23,11 @@ export default async function() {
 			const permissionsCollection = appDatabase.collections.get('permissions');
 			const permissionsRolesCollection = appDatabase.collections.get('permissions_roles');
 
-			const records = [permissionsRolesCollection.query().destroyAllPermanently()];
+			const records = [
+				appDatabase.action(async() => {
+					await permissionsRolesCollection.query().destroyAllPermanently();
+				})
+			];
 
 			permissions.forEach((permission) => {
 				records.push(appDatabase.action(async() => {

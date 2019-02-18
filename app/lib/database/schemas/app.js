@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 6,
+	version: 7,
 	tables: [
 		tableSchema({
 			name: 'settings',
@@ -30,6 +30,21 @@ export default appSchema({
 				{ name: 'permission_id', type: 'string', isIndexed: true },
 				{ name: 'role_id', type: 'string', isIndexed: true },
 				{ name: 'updated_at', type: 'number' }
+			]
+		}),
+		tableSchema({
+			name: 'custom_emojis',
+			columns: [
+				{ name: 'name', type: 'string', isIndexed: true },
+				{ name: 'extension', type: 'string' },
+				{ name: 'updated_at', type: 'number' }
+			]
+		}),
+		tableSchema({
+			name: 'custom_emojis_aliases',
+			columns: [
+				{ name: 'alias', type: 'string', isIndexed: true },
+				{ name: 'custom_emojis_id', type: 'string', isIndexed: true }
 			]
 		})
 	]
