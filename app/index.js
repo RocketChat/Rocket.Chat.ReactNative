@@ -51,12 +51,12 @@ const startLogged = async() => {
 	// const settings = await settingsCollection.query().fetch();
 	// console.log('TCL: startNotLogged -> settings', settings);
 
-	const permissionsCollection = appDatabase.collections.get('permissions');
-	const permissions = await permissionsCollection.query().fetch();
-	console.log('TCL: startNotLogged -> permissions', permissions);
+	// const permissionsCollection = appDatabase.collections.get('permissions');
+	// const permissions = await permissionsCollection.query().fetch();
+	// console.log('TCL: startNotLogged -> permissions', permissions);
 
-	const p = permissions[0];
-	console.log(p.roles)
+	// const p = permissions[0];
+	// console.log(p.roles)
 
 	// const rolesCollection = appDatabase.collections.get('roles');
 	// const roles = await rolesCollection.query().fetch();

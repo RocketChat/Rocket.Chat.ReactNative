@@ -14,15 +14,15 @@ export const merge = (subscription, room) => {
 		if (room.rid) {
 			subscription.rid = room.rid;
 		}
-		subscription.roomUpdatedAt = room._updatedAt;
-		subscription.lastMessage = normalizeMessage(room.lastMessage);
+		subscription.room_updated_at = room._updatedAt;
+		subscription.last_message = normalizeMessage(room.lastMessage);
 		subscription.ro = room.ro;
 		subscription.description = room.description;
 		subscription.topic = room.topic;
 		subscription.announcement = room.announcement;
-		subscription.reactWhenReadOnly = room.reactWhenReadOnly;
+		subscription.react_when_read_only = room.reactWhenReadOnly;
 		subscription.archived = room.archived;
-		subscription.joinCodeRequired = room.joinCodeRequired;
+		subscription.join_code_required = room.joinCodeRequired;
 		subscription.broadcast = room.broadcast;
 
 		if (room.muted && room.muted.length) {
@@ -47,6 +47,9 @@ export const merge = (subscription, room) => {
 		subscription.name = subscription.fname;
 	}
 
+	subscription.id = subscription._id;
+	subscription.user_mentions = subscription.userMentions;
+	subscription.last_open = subscription.lastOpen;
 	subscription.blocker = !!subscription.blocker;
 	subscription.blocked = !!subscription.blocked;
 	return subscription;

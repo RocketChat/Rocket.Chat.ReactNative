@@ -3,7 +3,14 @@ import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 
 import { serverSchema, appSchema } from './schemas';
 import {
-	Server, Setting, Role, Permission, PermissionRole, CustomEmoji, CustomEmojiAlias
+	Server,
+	Setting,
+	Role,
+	Permission,
+	PermissionRole,
+	CustomEmoji,
+	CustomEmojiAlias,
+	Subscription
 } from './models';
 
 const serverAdapter = new SQLiteAdapter({
@@ -23,7 +30,15 @@ const appAdapter = new SQLiteAdapter({
 
 export const appDatabase = new Database({
 	adapter: appAdapter,
-	modelClasses: [Setting, Role, Permission, PermissionRole, CustomEmoji, CustomEmojiAlias]
+	modelClasses: [
+		Setting,
+		Role,
+		Permission,
+		PermissionRole,
+		CustomEmoji,
+		CustomEmojiAlias,
+		Subscription
+	]
 });
 
 

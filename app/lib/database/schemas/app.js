@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 7,
+	version: 8,
 	tables: [
 		tableSchema({
 			name: 'settings',
@@ -45,6 +45,38 @@ export default appSchema({
 			columns: [
 				{ name: 'alias', type: 'string', isIndexed: true },
 				{ name: 'custom_emojis_id', type: 'string', isIndexed: true }
+			]
+		}),
+		tableSchema({
+			name: 'subscriptions',
+			columns: [
+				{ name: 'f', type: 'boolean' },
+				{ name: 't', type: 'string' },
+				{ name: 'ts', type: 'number', isOptional: true },
+				{ name: 'ls', type: 'number', isOptional: true },
+				{ name: 'name', type: 'string', isIndexed: true },
+				{ name: 'fname', type: 'string', isOptional: true },
+				{ name: 'rid', type: 'string', isIndexed: true },
+				{ name: 'open', type: 'boolean' },
+				{ name: 'alert', type: 'boolean' },
+				// roles: { type: 'list', objectType: 'subscriptionRolesSchema' },
+				{ name: 'unread', type: 'number', isOptional: true },
+				{ name: 'user_mentions', type: 'number', isOptional: true },
+				// roomUpdatedAt: { type: 'date', optional: true },
+				{ name: 'ro', type: 'boolean' },
+				{ name: 'last_open', type: 'number', isOptional: true },
+				// lastMessage: { type: 'messages', optional: true },
+				{ name: 'description', type: 'string', isOptional: true },
+				{ name: 'announcement', type: 'string', isOptional: true },
+				{ name: 'topic', type: 'string', isOptional: true },
+				{ name: 'blocked', type: 'boolean' },
+				{ name: 'blocker', type: 'boolean' },
+				{ name: 'react_when_read_only', type: 'boolean' },
+				{ name: 'archived', type: 'boolean' },
+				{ name: 'join_code_required', type: 'boolean' },
+				{ name: 'notifications', type: 'boolean' },
+				{ name: 'broadcast', type: 'boolean' },
+				// muted: { type: 'list', objectType: 'usersMuted' },
 			]
 		})
 	]

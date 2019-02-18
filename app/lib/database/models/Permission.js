@@ -1,5 +1,5 @@
 import { Model, Q } from '@nozbe/watermelondb';
-import { readonly, date, lazy, action } from '@nozbe/watermelondb/decorators';
+import { readonly, date, lazy } from '@nozbe/watermelondb/decorators';
 
 export default class Permission extends Model {
 	static table = 'permissions'
