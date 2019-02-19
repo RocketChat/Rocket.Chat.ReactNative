@@ -1,8 +1,14 @@
 import { Model, Q } from '@nozbe/watermelondb';
-import { readonly, date, lazy, field } from '@nozbe/watermelondb/decorators';
+import { date, field, children } from '@nozbe/watermelondb/decorators';
+import lazy from '@nozbe/watermelondb/decorators/lazy';
+import action from '@nozbe/watermelondb/decorators/action';
 
 export default class Subscription extends Model {
 	static table = 'subscriptions'
+
+	static associations = {
+		subscriptions_roles: { type: 'has_many', foreignKey: 'subscription_id' }
+	}
 
 	@field('f') f
 
@@ -28,7 +34,7 @@ export default class Subscription extends Model {
 
 	@field('ro') ro
 
-	@field('last_open') lastOpen
+	@date('last_open') lastOpen
 
 	@field('description') description
 
@@ -51,7 +57,24 @@ export default class Subscription extends Model {
 	@field('broadcast') broadcast
 
 	// // muted: { type: 'list', objectType: 'usersMuted' },
-	// // roomUpdatedAt: { type: 'date', optional: true },
+	@date('room_updated_at') roomUpdatedAt
 	// // lastMessage: { type: 'messages', optional: true },
-	// // roles: { type: 'list', objectType: 'subscriptionRolesSchema' },
+
+	@lazy
+	roles = this.collections
+		.get('roles')
+		.query(Q.on('subscriptions_roles', 'subscription_id', this.id));
+
+	@children('subscriptions_roles') subscriptions_roles
+
+	@action deleteRoles() {
+		this.subscriptions_roles.destroyAllPermanently();
+	}
+
+	@action addRole(roleId) {
+		return this.collections.get('subscriptions_roles').create((sr) => {
+			sr.subscriptionId = this.id;
+			sr.roleId = roleId;
+		});
+	}
 }

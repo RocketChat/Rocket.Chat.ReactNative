@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 8,
+	version: 11,
 	tables: [
 		tableSchema({
 			name: 'settings',
@@ -52,17 +52,16 @@ export default appSchema({
 			columns: [
 				{ name: 'f', type: 'boolean' },
 				{ name: 't', type: 'string' },
-				{ name: 'ts', type: 'number', isOptional: true },
+				{ name: 'ts', type: 'number' },
 				{ name: 'ls', type: 'number', isOptional: true },
 				{ name: 'name', type: 'string', isIndexed: true },
 				{ name: 'fname', type: 'string', isOptional: true },
 				{ name: 'rid', type: 'string', isIndexed: true },
 				{ name: 'open', type: 'boolean' },
 				{ name: 'alert', type: 'boolean' },
-				// roles: { type: 'list', objectType: 'subscriptionRolesSchema' },
 				{ name: 'unread', type: 'number', isOptional: true },
 				{ name: 'user_mentions', type: 'number', isOptional: true },
-				// roomUpdatedAt: { type: 'date', optional: true },
+				{ name: 'room_updated_at', type: 'number', isOptional: true },
 				{ name: 'ro', type: 'boolean' },
 				{ name: 'last_open', type: 'number', isOptional: true },
 				// lastMessage: { type: 'messages', optional: true },
@@ -77,6 +76,13 @@ export default appSchema({
 				{ name: 'notifications', type: 'boolean' },
 				{ name: 'broadcast', type: 'boolean' },
 				// muted: { type: 'list', objectType: 'usersMuted' },
+			]
+		}),
+		tableSchema({
+			name: 'subscriptions_roles',
+			columns: [
+				{ name: 'subscription_id', type: 'string', isIndexed: true },
+				{ name: 'role_id', type: 'string', isIndexed: true }
 			]
 		})
 	]

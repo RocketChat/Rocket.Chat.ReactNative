@@ -10,7 +10,8 @@ import {
 	PermissionRole,
 	CustomEmoji,
 	CustomEmojiAlias,
-	Subscription
+	Subscription,
+	SubscriptionRole
 } from './models';
 
 const serverAdapter = new SQLiteAdapter({
@@ -37,7 +38,8 @@ export const appDatabase = new Database({
 		PermissionRole,
 		CustomEmoji,
 		CustomEmojiAlias,
-		Subscription
+		Subscription,
+		SubscriptionRole
 	]
 });
 

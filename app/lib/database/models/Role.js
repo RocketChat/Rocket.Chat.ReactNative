@@ -5,7 +5,8 @@ export default class Role extends Model {
 	static table = 'roles'
 
 	static associations = {
-		role_permissions: { type: 'has_many', foreignKey: 'permission_id' }
+		permissions_roles: { type: 'has_many', foreignKey: 'permission_id' },
+		subscriptions_roles: { type: 'has_many', foreignKey: 'subscription_id' }
 	}
 
 	@field('description') description
@@ -13,5 +14,10 @@ export default class Role extends Model {
 	@lazy
 	permissions = this.collections
 		.get('permissions')
-		.query(Q.on('role_permissions', 'role_id', this.id));
+		.query(Q.on('permissions_roles', 'role_id', this.id));
+
+	@lazy
+	subscriptions = this.collections
+		.get('subscriptions')
+		.query(Q.on('subscriptions_roles', 'role_id', this.id));
 }

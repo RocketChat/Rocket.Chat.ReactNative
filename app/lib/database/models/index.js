@@ -6,6 +6,7 @@ import PermissionRole from './PermissionRole';
 import CustomEmoji from './CustomEmoji';
 import CustomEmojiAlias from './CustomEmojiAlias';
 import Subscription from './Subscription';
+import SubscriptionRole from './SubscriptionRole';
 
 export {
 	Server,
@@ -15,5 +16,6 @@ export {
 	PermissionRole,
 	CustomEmoji,
 	CustomEmojiAlias,
-	Subscription
+	Subscription,
+	SubscriptionRole
 };

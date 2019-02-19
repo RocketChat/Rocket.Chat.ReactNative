@@ -25,17 +25,17 @@ export const merge = (subscription, room) => {
 		subscription.join_code_required = room.joinCodeRequired;
 		subscription.broadcast = room.broadcast;
 
-		if (room.muted && room.muted.length) {
-			subscription.muted = room.muted.filter(user => user).map(user => ({ value: user }));
-		} else {
-			subscription.muted = [];
-		}
+		// if (room.muted && room.muted.length) {
+		// 	subscription.muted = room.muted.filter(user => user).map(user => ({ value: user }));
+		// } else {
+		// 	subscription.muted = [];
+		// }
 	}
-	if (subscription.roles && subscription.roles.length) {
-		subscription.roles = subscription.roles.map(role => (role.value ? role : { value: role }));
-	} else {
-		subscription.roles = [];
-	}
+	// if (subscription.roles && subscription.roles.length) {
+	// 	subscription.roles = subscription.roles.map(role => (role.value ? role : { value: role }));
+	// } else {
+	// 	subscription.roles = [];
+	// }
 
 	if (subscription.mobilePushNotifications === 'nothing') {
 		subscription.notifications = true;
@@ -49,7 +49,6 @@ export const merge = (subscription, room) => {
 
 	subscription.id = subscription._id;
 	subscription.user_mentions = subscription.userMentions;
-	subscription.last_open = subscription.lastOpen;
 	subscription.blocker = !!subscription.blocker;
 	subscription.blocked = !!subscription.blocked;
 	return subscription;
