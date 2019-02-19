@@ -145,7 +145,7 @@ const RocketChat = {
 		this.roomsSub = await this.subscribeRooms();
 
 		this.sdk.subscribe('activeUsers');
-		// this.sdk.subscribe('roles');
+		this.sdk.subscribe('roles');
 		// this.getPermissions();
 		// this.getCustomEmoji();
 		this.registerPushToken().catch(e => console.log(e));

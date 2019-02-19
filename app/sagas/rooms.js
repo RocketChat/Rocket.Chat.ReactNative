@@ -3,7 +3,6 @@ import { put, takeLatest } from 'redux-saga/effects';
 import * as types from '../actions/actionsTypes';
 import { roomsSuccess, roomsFailure } from '../actions/rooms';
 import RocketChat from '../lib/rocketchat';
-// import database from '../lib/realm';
 import log from '../utils/log';
 import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
 import { appDatabase } from '../lib/database';
@@ -14,15 +13,11 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 		const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms();
 		const { subscriptions } = mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
 
-		// database.write(() => {
-		// 	subscriptions.forEach(subscription => database.create('subscriptions', subscription, true));
-		// });
-
-		const records = [];
+		const dbActions = [];
 		subscriptions.forEach((subscription) => {
-			records.push(createSubscription(appDatabase, subscription));
+			dbActions.push(createSubscription(appDatabase, subscription));
 		});
-		yield Promise.all(records);
+		yield Promise.all(dbActions);
 
 		yield put(roomsSuccess());
 	} catch (e) {

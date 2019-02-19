@@ -37,3 +37,10 @@ export const createSubscription = (db, subscription) => {
 		}
 	});
 };
+
+export const getUpdatedSince = async(db) => {
+	const subscriptionsCollection = db.collections.get('subscriptions');
+	const subscriptions = await subscriptionsCollection.query().fetch();
+	const sorted = subscriptions.sort((a, b) => a.roomUpdatedAt < b.roomUpdatedAt);
+	return sorted[0] && sorted[0].roomUpdatedAt && sorted[0].roomUpdatedAt.toISOString();
+};
