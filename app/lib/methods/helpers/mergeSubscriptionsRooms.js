@@ -52,7 +52,6 @@ export const merge = (subscription, room) => {
 		// }
 	}
 	subscription = normalizeSubscription(subscription);
-	console.log('TCL: merge -> subscription', subscription);
 	return subscription;
 };
 

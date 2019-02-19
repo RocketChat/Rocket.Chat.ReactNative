@@ -1,4 +1,6 @@
 import EJSON from 'ejson';
+import { Q } from '@nozbe/watermelondb';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import database from '../../realm';
 import { merge, normalizeRoom } from '../helpers/mergeSubscriptionsRooms';
@@ -10,8 +12,6 @@ import store from '../../createStore';
 import { roomsRequest } from '../../../actions/rooms';
 import { appDatabase } from '../../database';
 import { createSubscription } from '../../database/helpers/subscriptions';
-import { Q } from '@nozbe/watermelondb';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 const removeListener = listener => listener.stop();
 
@@ -53,35 +53,28 @@ export default async function subscribeRooms() {
 		}
 		const [type, data] = ddpMessage.fields.args;
 		const [, ev] = ddpMessage.fields.eventName.split('/');
-		// if (/subscriptions/.test(ev)) {
-		// 	if (type === 'removed') {
-		// 		// let messages = [];
-		// 		// const [subscription] = database.objects('subscriptions').filtered('_id == $0', data._id);
+		if (/subscriptions/.test(ev)) {
+			if (type === 'removed') {
+				// TODO: remove subscription
+				// let messages = [];
+				// const [subscription] = database.objects('subscriptions').filtered('_id == $0', data._id);
 
-		// 		// if (subscription) {
-		// 		// 	messages = database.objects('messages').filtered('rid == $0', subscription.rid);
-		// 		// }
-		// 		// database.write(() => {
-		// 		// 	database.delete(messages);
-		// 		// 	database.delete(subscription);
-		// 		// });
-		// 	} else {
-		// 		// const rooms = database.objects('rooms').filtered('_id == $0', data.rid);
-		// 		// const tpm = merge(data, rooms[0]);
-		// 		// database.write(() => {
-		// 		// 	database.create('subscriptions', tpm, true);
-		// 		// 	database.delete(rooms);
-		// 		// });
-
-		// 		try {
-		// 			const tmp = merge(data);
-		// 			console.log('TCL: handleStreamMessageReceived -> tmp', tmp);
-		// 			await createSubscription(appDatabase, tmp);
-		// 		} catch (error) {
-		// 			console.log(error);
-		// 		}
-		// 	}
-		// }
+				// if (subscription) {
+				// 	messages = database.objects('messages').filtered('rid == $0', subscription.rid);
+				// }
+				// database.write(() => {
+				// 	database.delete(messages);
+				// 	database.delete(subscription);
+				// });
+			} else {
+				try {
+					const tmp = merge(EJSON.fromJSONValue(data));
+					await createSubscription(appDatabase, tmp);
+				} catch (error) {
+					console.log('subscribeRooms -> Error merging sub', error);
+				}
+			}
+		}
 		if (/rooms/.test(ev)) {
 			try {
 				const subs = await subscriptionsCollection.query(
@@ -97,21 +90,11 @@ export default async function subscribeRooms() {
 						}, subscriptionsCollection.schema);
 						s.roomUpdatedAt = normalizedRoom.room_updated_at;
 					});
+					// TODO: muted users
 				}
 			} catch (error) {
-				console.log(error);
+				console.log('subscribeRooms -> Error merging rooms', error);
 			}
-			// if (type === 'updated') {
-			// 	const [sub] = database.objects('subscriptions').filtered('rid == $0', data._id);
-			// 	database.write(() => {
-			// 		const tmp = merge(sub, data);
-			// 		database.create('subscriptions', tmp, true);
-			// 	});
-			// } else if (type === 'inserted') {
-			// 	database.write(() => {
-			// 		database.create('rooms', data, true);
-			// 	});
-			// }
 		}
 		if (/message/.test(ev)) {
 			const [args] = ddpMessage.fields.args;
