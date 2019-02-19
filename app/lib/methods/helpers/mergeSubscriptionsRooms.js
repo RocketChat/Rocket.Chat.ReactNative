@@ -3,35 +3,21 @@ import EJSON from 'ejson';
 import normalizeMessage from './normalizeMessage';
 // TODO: delete and update
 
-export const merge = (subscription, room) => {
-	subscription = EJSON.fromJSONValue(subscription);
-	room = EJSON.fromJSONValue(room);
+export const normalizeRoom = room => ({
+	rid: room._id,
+	room_updated_at: room._updatedAt,
+	last_message: normalizeMessage(room.lastMessage),
+	ro: room.ro,
+	description: room.description,
+	topic: room.topic,
+	announcement: room.announcement,
+	react_when_read_only: room.reactWhenReadOnly,
+	archived: room.archived,
+	join_code_required: room.joinCodeRequired,
+	broadcast: room.broadcast
+});
 
-	if (!subscription) {
-		return;
-	}
-	if (room) {
-		if (room.rid) {
-			subscription.rid = room.rid;
-		}
-		subscription.room_updated_at = room._updatedAt;
-		subscription.last_message = normalizeMessage(room.lastMessage);
-		subscription.ro = room.ro;
-		subscription.description = room.description;
-		subscription.topic = room.topic;
-		subscription.announcement = room.announcement;
-		subscription.react_when_read_only = room.reactWhenReadOnly;
-		subscription.archived = room.archived;
-		subscription.join_code_required = room.joinCodeRequired;
-		subscription.broadcast = room.broadcast;
-
-		// if (room.muted && room.muted.length) {
-		// 	subscription.muted = room.muted.filter(user => user).map(user => ({ value: user }));
-		// } else {
-		// 	subscription.muted = [];
-		// }
-	}
-
+export const normalizeSubscription = (subscription) => {
 	if (subscription.mobilePushNotifications === 'nothing') {
 		subscription.notifications = true;
 	} else {
@@ -49,6 +35,27 @@ export const merge = (subscription, room) => {
 	return subscription;
 };
 
+export const merge = (subscription, room) => {
+	if (!subscription) {
+		return;
+	}
+	if (room) {
+		subscription = {
+			...subscription,
+			...normalizeRoom(room)
+		};
+
+		// if (room.muted && room.muted.length) {
+		// 	subscription.muted = room.muted.filter(user => user).map(user => ({ value: user }));
+		// } else {
+		// 	subscription.muted = [];
+		// }
+	}
+	subscription = normalizeSubscription(subscription);
+	console.log('TCL: merge -> subscription', subscription);
+	return subscription;
+};
+
 export default (subscriptions = [], rooms = []) => {
 	if (subscriptions.update) {
 		subscriptions = subscriptions.update;
@@ -58,10 +65,10 @@ export default (subscriptions = [], rooms = []) => {
 		subscriptions: subscriptions.map((s) => {
 			const index = rooms.findIndex(({ _id }) => _id === s.rid);
 			if (index < 0) {
-				return merge(s);
+				return merge(EJSON.fromJSONValue(s));
 			}
 			const [room] = rooms.splice(index, 1);
-			return merge(s, room);
+			return merge(EJSON.fromJSONValue(s), EJSON.fromJSONValue(room));
 		}),
 		rooms
 	};
