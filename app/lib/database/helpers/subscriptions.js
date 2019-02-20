@@ -8,11 +8,14 @@ export const createSubscription = (db, subscription) => {
 			subscriptionRecord = await subscriptionsCollection.find(subscription.id);
 			await subscriptionRecord.update((s) => {
 				s._raw = sanitizedRaw({
+					...s._raw,
 					...subscription
 				}, subscriptionsCollection.schema);
 				s.ts = subscription.ts;
 				s.ls = subscription.ls;
-				s.roomUpdatedAt = subscription.room_updated_at;
+				if (subscription.room_updated_at) {
+					s.roomUpdatedAt = subscription.room_updated_at;
+				}
 			});
 			await action.subAction(() => subscriptionRecord.deleteRoles());
 		} catch (error) {

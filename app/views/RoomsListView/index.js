@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
 import SafeAreaView from 'react-native-safe-area-view';
 import withObservables from '@nozbe/with-observables';
+import _sortBy from 'lodash/sortBy';
+import { map } from 'rxjs/operators'
 
 import Navigation from '../../lib/Navigation';
 import SearchBox from '../../containers/SearchBox';
@@ -81,7 +83,7 @@ if (isAndroid) {
 	roomsRequest: () => dispatch(roomsRequestAction())
 }))
 /** @extends React.Component */
-class RoomsListView extends LoggedView {
+export default class RoomsListView extends LoggedView {
 	static options() {
 		return {
 			topBar: {
@@ -288,88 +290,115 @@ class RoomsListView extends LoggedView {
 		this.setState(...args);
 	}
 
-	getSubscriptions = () => {
+	getSubscriptions = async() => {
 		console.log('getSubscriptions')
-		console.log(this.props.subscriptions)
+		// console.log(this.props.subscriptions)
 		const {
 			server, sortBy, showUnread, showFavorites, groupByType
 		} = this.props;
 
-		if (server && this.hasActiveDB()) {
-			if (sortBy === 'alphabetical') {
-				this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('name', false);
-			} else {
-				this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
-			}
+		// this.data = await appDatabase.collections.get('subscriptions').query(
+		// 	Q.where('archived', false),
+		// 	Q.where('open', true)
+		// ).observe().pipe(map(
+		// 	item => {
+		// 		console.log(item)
+		// 		return item
+		// 	}
+		// ));
 
-			let chats = [];
-			let unread = [];
-			let favorites = [];
-			let channels = [];
-			let privateGroup = [];
-			let direct = [];
-			let livechat = [];
+		// console.log(this.data)
+		// this.data.subscribe(x => console.log(x))
 
-			// unread
-			if (showUnread) {
-				this.unread = this.data.filtered('archived != true && open == true').filtered('(unread > 0 || alert == true)');
-				unread = this.removeRealmInstance(this.unread);
-				this.unread.addListener(debounce(() => this.internalSetState({ unread: this.removeRealmInstance(this.unread) }), 300));
-			} else {
-				this.removeListener(unread);
-			}
-			// favorites
-			if (showFavorites) {
-				this.favorites = this.data.filtered('f == true');
-				favorites = this.removeRealmInstance(this.favorites);
-				this.favorites.addListener(debounce(() => this.internalSetState({ favorites: this.removeRealmInstance(this.favorites) }), 300));
-			} else {
-				this.removeListener(favorites);
-			}
-			// type
-			if (groupByType) {
-				// channels
-				this.channels = this.data.filtered('t == $0', 'c');
-				channels = this.removeRealmInstance(this.channels);
+		const query = await appDatabase.collections.get('subscriptions').query(
+			Q.where('archived', false),
+			Q.where('open', true)
+		);
+		const p = query.observeWithColumns('room_updated_at')
+			.pipe(map(data => data.sort((a, b) => a.roomUpdatedAt < b.roomUpdatedAt)));
+		this.setState({ chats: p });
 
-				// private
-				this.privateGroup = this.data.filtered('t == $0', 'p');
-				privateGroup = this.removeRealmInstance(this.privateGroup);
+		p.subscribe(chats => this.internalSetState({ chats }));
 
-				// direct
-				this.direct = this.data.filtered('t == $0', 'd');
-				direct = this.removeRealmInstance(this.direct);
 
-				// livechat
-				this.livechat = this.data.filtered('t == $0', 'l');
-				livechat = this.removeRealmInstance(this.livechat);
+		// if (server && this.hasActiveDB()) {
+		// if (sortBy === 'alphabetical') {
+		// 	this.data = _sortBy(this.data, item => item.name.toLowerCase());
+		// } else {
+		// 	this.data = _sortBy(this.data, item => -item.roomUpdatedAt);
+		// }
+		// this.data = _sortBy(this.data, item => item.roomUpdatedAt);
 
-				this.channels.addListener(debounce(() => this.internalSetState({ channels: this.removeRealmInstance(this.channels) }), 300));
-				this.privateGroup.addListener(debounce(() => this.internalSetState({ privateGroup: this.removeRealmInstance(this.privateGroup) }), 300));
-				this.direct.addListener(debounce(() => this.internalSetState({ direct: this.removeRealmInstance(this.direct) }), 300));
-				this.livechat.addListener(debounce(() => this.internalSetState({ livechat: this.removeRealmInstance(this.livechat) }), 300));
-				this.removeListener(this.chats);
-			} else {
-				// chats
-				if (showUnread) {
-					this.chats = this.data.filtered('(unread == 0 && alert == false)');
-				} else {
-					this.chats = this.data;
-				}
-				chats = this.removeRealmInstance(this.chats);
+		// this.setState({ chats: this.data });
 
-				this.chats.addListener(debounce(() => this.internalSetState({ chats: this.removeRealmInstance(this.chats) }), 300));
-				this.removeListener(this.channels);
-				this.removeListener(this.privateGroup);
-				this.removeListener(this.direct);
-				this.removeListener(this.livechat);
-			}
+		// 	let chats = [];
+		// 	let unread = [];
+		// 	let favorites = [];
+		// 	let channels = [];
+		// 	let privateGroup = [];
+		// 	let direct = [];
+		// 	let livechat = [];
 
-			// setState
-			this.internalSetState({
-				chats, unread, favorites, channels, privateGroup, direct, livechat, loading: false
-			});
-		}
+		// 	// unread
+		// 	if (showUnread) {
+		// 		this.unread = this.data.filtered('archived != true && open == true').filtered('(unread > 0 || alert == true)');
+		// 		unread = this.removeRealmInstance(this.unread);
+		// 		this.unread.addListener(debounce(() => this.internalSetState({ unread: this.removeRealmInstance(this.unread) }), 300));
+		// 	} else {
+		// 		this.removeListener(unread);
+		// 	}
+		// 	// favorites
+		// 	if (showFavorites) {
+		// 		this.favorites = this.data.filtered('f == true');
+		// 		favorites = this.removeRealmInstance(this.favorites);
+		// 		this.favorites.addListener(debounce(() => this.internalSetState({ favorites: this.removeRealmInstance(this.favorites) }), 300));
+		// 	} else {
+		// 		this.removeListener(favorites);
+		// 	}
+		// 	// type
+		// 	if (groupByType) {
+		// 		// channels
+		// 		this.channels = this.data.filtered('t == $0', 'c');
+		// 		channels = this.removeRealmInstance(this.channels);
+
+		// 		// private
+		// 		this.privateGroup = this.data.filtered('t == $0', 'p');
+		// 		privateGroup = this.removeRealmInstance(this.privateGroup);
+
+		// 		// direct
+		// 		this.direct = this.data.filtered('t == $0', 'd');
+		// 		direct = this.removeRealmInstance(this.direct);
+
+		// 		// livechat
+		// 		this.livechat = this.data.filtered('t == $0', 'l');
+		// 		livechat = this.removeRealmInstance(this.livechat);
+
+		// 		this.channels.addListener(debounce(() => this.internalSetState({ channels: this.removeRealmInstance(this.channels) }), 300));
+		// 		this.privateGroup.addListener(debounce(() => this.internalSetState({ privateGroup: this.removeRealmInstance(this.privateGroup) }), 300));
+		// 		this.direct.addListener(debounce(() => this.internalSetState({ direct: this.removeRealmInstance(this.direct) }), 300));
+		// 		this.livechat.addListener(debounce(() => this.internalSetState({ livechat: this.removeRealmInstance(this.livechat) }), 300));
+		// 		this.removeListener(this.chats);
+		// 	} else {
+		// 		// chats
+		// 		if (showUnread) {
+		// 			this.chats = this.data.filtered('(unread == 0 && alert == false)');
+		// 		} else {
+		// 			this.chats = this.data;
+		// 		}
+		// 		chats = this.removeRealmInstance(this.chats);
+
+		// 		this.chats.addListener(debounce(() => this.internalSetState({ chats: this.removeRealmInstance(this.chats) }), 300));
+		// 		this.removeListener(this.channels);
+		// 		this.removeListener(this.privateGroup);
+		// 		this.removeListener(this.direct);
+		// 		this.removeListener(this.livechat);
+		// 	}
+
+		// 	// setState
+		// 	this.internalSetState({
+		// 		chats, unread, favorites, channels, privateGroup, direct, livechat, loading: false
+		// 	});
+		// }
 	}
 
 	removeRealmInstance = (data) => {
@@ -700,8 +729,8 @@ class RoomsListView extends LoggedView {
 				// ref={this.getScrollRef}
 				// data={search.length ? search : chats}
 				// extraData={search.length ? search : chats}
-				data={this.props.subscriptions}
-				extraData={this.props.subscriptions}
+				data={this.state.chats}
+				// extraData={this.state.chats}
 				// contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
 				keyExtractor={keyExtractor}
 				// style={styles.list}
@@ -719,28 +748,12 @@ class RoomsListView extends LoggedView {
 	}
 }
 
-// const Sub = ({ subscription }) => {
-// 	console.log('Sub rererere')
-// 	return (
-// 		<View style={styles.comment}>
-// 			<Text>
-// 				{subscription.roomUpdatedAt.toISOString()}
-// 			</Text>
-// 		</View>
+// const enhance = withObservables([], () => ({
+// 	subscriptions: appDatabase.collections.get('subscriptions').query(
+// 		Q.where('archived', false),
+// 		Q.where('open', true)
 // 	)
-// }
-
-// const enhanceSub = withObservables(['subscription'], ({ subscription }) => ({
-// 	subscription: subscription.observe()
 // }));
-// const EnhancedSub = enhanceSub(Sub)
+// const EnhancedRoomsListView = enhance(RoomsListView);
 
-const enhance = withObservables([], () => ({
-	subscriptions: appDatabase.collections.get('subscriptions').query(
-		Q.where('archived', false),
-		Q.where('open', true)
-	)
-}));
-const EnhancedRoomsListView = enhance(RoomsListView);
-
-export default EnhancedRoomsListView;
+// export default EnhancedRoomsListView;
