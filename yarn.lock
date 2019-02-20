@@ -944,13 +944,6 @@
   version "1.0.2"
   resolved "https://codeload.github.com/RocketChat/withObservables/tar.gz/752c1a697909c4fa018e0a433777c04842f10aff"
   dependencies:
-    hoist-non-react-statics "^3.3.0"
-    rxjs "^6.2.2"
-
-"@nozbe/with-observables@diegolmello/withObservables#master":
-  version "1.0.2"
-  resolved "https://codeload.github.com/diegolmello/withObservables/tar.gz/58abe2bd51f069970104af3b7b207c444310554f"
-  dependencies:
     rxjs "^6.2.2"
 
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
@@ -6275,7 +6268,7 @@ hoist-non-react-statics@1.x.x, hoist-non-react-statics@^1.2.0:
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
   integrity sha1-qkSM8JhtVcxAdzsXF0t90GbLfPs=
 
-hoist-non-react-statics@3.x.x, hoist-non-react-statics@^3.2.1, hoist-non-react-statics@^3.3.0:
+hoist-non-react-statics@3.x.x, hoist-non-react-statics@^3.2.1:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.0.tgz#b09178f0122184fb95acf525daaecb4d8f45958b"
   integrity sha512-0XsbTXxgiaCDYDIWFcwkmerZPSwywfUqYmwT4jzewKTQSWoE6FCMoUVOeBJWK3E/CrWbxRG3m5GzY4lnIwGRBA==

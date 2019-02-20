@@ -20,7 +20,7 @@ const formatDate = date => moment(date).calendar(null, {
 	sameElse: 'MMM D'
 });
 
-const RoomItem = ({
+const RoomItem = React.memo(({
 	item, testID, height, onPress, showLastMessage, avatarSize, baseUrl, user, useRealName
 }) => {
 	const date = formatDate(item.roomUpdatedAt);
@@ -40,6 +40,8 @@ const RoomItem = ({
 	if (date) {
 		accessibilityLabel += `, ${ I18n.t('last_message') } ${ date }`;
 	}
+
+	console.log('Room Item rerererere')
 
 	return (
 		<RectButton
@@ -75,7 +77,7 @@ const RoomItem = ({
 			</View>
 		</RectButton>
 	);
-};
+});
 
 RoomItem.propTypes = {
 	item: PropTypes.object.isRequired,

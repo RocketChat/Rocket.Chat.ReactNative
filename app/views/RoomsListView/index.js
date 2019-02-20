@@ -41,7 +41,7 @@ const SCROLL_OFFSET = 56;
 
 const shouldUpdateProps = ['searchText', 'loadingServer', 'showServerDropdown', 'showSortDropdown', 'sortBy', 'groupByType', 'showFavorites', 'showUnread', 'useRealName', 'appState'];
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
-const keyExtractor = item => item.rid;
+const keyExtractor = item => item.id;
 
 const leftButtons = [{
 	id: 'settings',
@@ -251,6 +251,7 @@ export default class RoomsListView extends LoggedView {
 		// this.removeListener(this.direct);
 		// this.removeListener(this.livechat);
 		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+		this.sub.unsubscribe();
 	}
 
 	navigationButtonPressed = ({ buttonId }) => {
@@ -297,39 +298,24 @@ export default class RoomsListView extends LoggedView {
 			server, sortBy, showUnread, showFavorites, groupByType
 		} = this.props;
 
-		// this.data = await appDatabase.collections.get('subscriptions').query(
-		// 	Q.where('archived', false),
-		// 	Q.where('open', true)
-		// ).observe().pipe(map(
-		// 	item => {
-		// 		console.log(item)
-		// 		return item
-		// 	}
-		// ));
-
-		// console.log(this.data)
-		// this.data.subscribe(x => console.log(x))
-
+		// TODO: can be moved to constructor? (multiple servers may cause trouble)
 		const query = await appDatabase.collections.get('subscriptions').query(
 			Q.where('archived', false),
 			Q.where('open', true)
 		);
-		const p = query.observeWithColumns('room_updated_at')
-			.pipe(map(data => data.sort((a, b) => a.roomUpdatedAt < b.roomUpdatedAt)));
-		this.setState({ chats: p });
 
-		p.subscribe(chats => this.internalSetState({ chats }));
+		if (sortBy === 'alphabetical') {
+			// FIXME: check `useRealName`
+			this.data = query.observeWithColumns('name')
+				.pipe(map(data => data.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase())));
+		} else {
+			this.data = query.observeWithColumns('room_updated_at')
+				.pipe(map(data => data.sort((a, b) => a.roomUpdatedAt < b.roomUpdatedAt)));
+		}
 
-
-		// if (server && this.hasActiveDB()) {
-		// if (sortBy === 'alphabetical') {
-		// 	this.data = _sortBy(this.data, item => item.name.toLowerCase());
-		// } else {
-		// 	this.data = _sortBy(this.data, item => -item.roomUpdatedAt);
-		// }
-		// this.data = _sortBy(this.data, item => item.roomUpdatedAt);
-
-		// this.setState({ chats: this.data });
+		// FIXME: It's re-rendering everything. It should re-render only the order of chats
+		// https://github.com/Nozbe/WatermelonDB/issues/258
+		this.sub = this.data.subscribe(chats => this.internalSetState({ chats }));
 
 		// 	let chats = [];
 		// 	let unread = [];
@@ -561,15 +547,13 @@ export default class RoomsListView extends LoggedView {
 		return (
 			<RoomItem
 				item={item}
-				key={item._id}
+				key={item.id}
 				baseUrl={baseUrl}
 				onPress={() => this._onPressItem(item)}
 				testID={`rooms-list-view-item-${ item.name }`}
 				height={ROW_HEIGHT}
 			/>
 		);
-		// return <Text key={item.id}>{item.roomUpdatedAt.toISOString()}</Text>
-		// return <EnhancedSub subscription={item} />
 	}
 
 	renderSeparator = () => <View style={styles.separator} />
@@ -652,55 +636,78 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	renderScroll = () => {
-		const { loading } = this.state;
+		// const { loading } = this.state;
 
-		if (loading) {
-			return <ActivityIndicator style={styles.loading} />;
-		}
+		// if (loading) {
+		// 	return <ActivityIndicator style={styles.loading} />;
+		// }
 
-		const { showUnread, showFavorites, groupByType } = this.props;
-		if (!(showUnread || showFavorites || groupByType)) {
-			const { chats, search } = this.state;
-			return (
-				<FlatList
-					// ref={this.getScrollRef}
-					// data={search.length ? search : chats}
-					// extraData={search.length ? search : chats}
-					data={this.props.subscriptions}
-					extraData={this.props.subscriptions}
-					// contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
-					// keyExtractor={keyExtractor}
-					// style={styles.list}
-					// renderItem={this.renderItem}
-					// ItemSeparatorComponent={this.renderSeparator}
-					// ListHeaderComponent={this.renderListHeader}
-					// getItemLayout={getItemLayout}
-					// enableEmptySections
-					// removeClippedSubviews
-					// keyboardShouldPersistTaps='always'
-					// initialNumToRender={12}
-					// windowSize={7}
-				/>
-			);
-		}
+		// const { showUnread, showFavorites, groupByType } = this.props;
+		// if (!(showUnread || showFavorites || groupByType)) {
+		// 	const { chats, search } = this.state;
+		// 	return (
+		// 		<FlatList
+		// 			ref={this.getScrollRef}
+		// 			// data={search.length ? search : chats}
+		// 			// extraData={search.length ? search : chats}
+		// 			data={chats}
+		// 			extraData={chats}
+		// 			contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
+		// 			keyExtractor={keyExtractor}
+		// 			style={styles.list}
+		// 			renderItem={this.renderItem}
+		// 			ItemSeparatorComponent={this.renderSeparator}
+		// 			ListHeaderComponent={this.renderListHeader}
+		// 			getItemLayout={getItemLayout}
+		// 			enableEmptySections
+		// 			removeClippedSubviews
+		// 			keyboardShouldPersistTaps='always'
+		// 			initialNumToRender={12}
+		// 			windowSize={7}
+		// 		/>
+		// 	);
+		// }
 
+		const { chats, search } = this.state;
 		return (
-			<ScrollView
+			<FlatList
 				ref={this.getScrollRef}
+				// data={search.length ? search : chats}
+				// extraData={search.length ? search : chats}
+				data={chats}
+				// extraData={chats}
 				contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
+				// keyExtractor={keyExtractor}
+				style={styles.list}
+				renderItem={this.renderItem}
+				ItemSeparatorComponent={this.renderSeparator}
+				ListHeaderComponent={this.renderListHeader}
+				getItemLayout={getItemLayout}
+				enableEmptySections
+				removeClippedSubviews
 				keyboardShouldPersistTaps='always'
-				testID='rooms-list-view-list'
-			>
-				{this.renderListHeader()}
-				{this.renderList()}
-			</ScrollView>
+				initialNumToRender={12}
+				windowSize={7}
+			/>
 		);
+
+		// return (
+		// 	<ScrollView
+		// 		ref={this.getScrollRef}
+		// 		contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
+		// 		keyboardShouldPersistTaps='always'
+		// 		testID='rooms-list-view-list'
+		// 	>
+		// 		{this.renderListHeader()}
+		// 		{this.renderList()}
+		// 	</ScrollView>
+		// );
 	}
 
 	render = () => {
-		// const {
-		// 	sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown
-		// } = this.props;
+		const {
+			sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown
+		} = this.props;
 
 		// return (
 		// 	<SafeAreaView style={styles.container} testID='rooms-list-view' forceInset={{ bottom: 'never' }}>
@@ -722,29 +729,37 @@ export default class RoomsListView extends LoggedView {
 		// 	</SafeAreaView>
 		// );
 
-		console.log('RoomsList rererererererere')
-
 		return (
 			<FlatList
-				// ref={this.getScrollRef}
-				// data={search.length ? search : chats}
-				// extraData={search.length ? search : chats}
 				data={this.state.chats}
-				// extraData={this.state.chats}
-				// contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
-				keyExtractor={keyExtractor}
-				// style={styles.list}
 				renderItem={this.renderItem}
-				// ItemSeparatorComponent={this.renderSeparator}
-				// ListHeaderComponent={this.renderListHeader}
-				// getItemLayout={getItemLayout}
-				// enableEmptySections
-				// removeClippedSubviews
-				// keyboardShouldPersistTaps='always'
-				// initialNumToRender={12}
-				// windowSize={7}
+				keyExtractor={keyExtractor}
 			/>
 		);
+
+		// console.log('RoomsList rererererererere')
+
+		// return (
+		// 	<FlatList
+		// 		// ref={this.getScrollRef}
+		// 		// data={search.length ? search : chats}
+		// 		// extraData={search.length ? search : chats}
+		// 		data={this.state.chats}
+		// 		// extraData={this.state.chats}
+		// 		// contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
+		// 		keyExtractor={keyExtractor}
+		// 		// style={styles.list}
+		// 		renderItem={this.renderItem}
+		// 		// ItemSeparatorComponent={this.renderSeparator}
+		// 		// ListHeaderComponent={this.renderListHeader}
+		// 		// getItemLayout={getItemLayout}
+		// 		// enableEmptySections
+		// 		// removeClippedSubviews
+		// 		// keyboardShouldPersistTaps='always'
+		// 		// initialNumToRender={12}
+		// 		// windowSize={7}
+		// 	/>
+		// );
 	}
 }
 

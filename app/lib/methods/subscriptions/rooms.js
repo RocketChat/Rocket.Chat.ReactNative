@@ -88,7 +88,9 @@ export default async function subscribeRooms() {
 							...s._raw,
 							...normalizedRoom
 						}, subscriptionsCollection.schema);
-						s.roomUpdatedAt = normalizedRoom.room_updated_at;
+						if (normalizedRoom.room_updated_at) {
+							s.roomUpdatedAt = normalizedRoom.room_updated_at;
+						}
 					});
 					// TODO: muted users
 				}
