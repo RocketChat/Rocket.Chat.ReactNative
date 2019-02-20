@@ -527,22 +527,12 @@ class RoomsListView extends LoggedView {
 	)
 
 	renderItem = ({ item }) => {
-		const { useRealName, userId, baseUrl } = this.props;
-		const id = item.rid.replace(userId, '').trim();
+		const { baseUrl } = this.props;
 
 		return (
 			<RoomItem
 				item={item}
-				alert={item.alert}
-				unread={item.unread}
-				userMentions={item.userMentions}
-				favorite={item.f}
-				lastMessage={item.lastMessage}
-				name={(useRealName && item.fname) || item.name}
-				_updatedAt={item.roomUpdatedAt}
 				key={item._id}
-				id={id}
-				type={item.t}
 				baseUrl={baseUrl}
 				onPress={() => this._onPressItem(item)}
 				testID={`rooms-list-view-item-${ item.name }`}

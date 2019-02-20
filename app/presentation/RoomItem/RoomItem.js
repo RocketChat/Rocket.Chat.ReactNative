@@ -21,11 +21,12 @@ const formatDate = date => moment(date).calendar(null, {
 });
 
 const RoomItem = ({
-	item, testID, height, onPress, showLastMessage, avatarSize, baseUrl, user
+	item, testID, height, onPress, showLastMessage, avatarSize, baseUrl, user, useRealName
 }) => {
 	const date = formatDate(item.roomUpdatedAt);
+	const roomName = (useRealName && item.fname) || item.name;
 
-	let accessibilityLabel = item.name;
+	let accessibilityLabel = roomName;
 	if (item.unread === 1) {
 		accessibilityLabel += `, ${ item.unread } ${ I18n.t('alert') }`;
 	} else if (item.unread > 1) {
@@ -62,7 +63,7 @@ const RoomItem = ({
 				<View style={styles.centerContainer}>
 					<View style={styles.titleContainer}>
 						<Type rid={item.rid} t={item.t} userId={user.id} />
-						<Text style={[styles.title, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ item.name }</Text>
+						<Text style={[styles.title, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ roomName }</Text>
 						<UpdatedAt date={date} />
 					</View>
 					<View style={styles.row}>
@@ -77,18 +78,19 @@ const RoomItem = ({
 };
 
 RoomItem.propTypes = {
+	item: PropTypes.object.isRequired,
 	baseUrl: PropTypes.string.isRequired,
+	onPress: PropTypes.func.isRequired,
+	height: PropTypes.number.isRequired,
 	showLastMessage: PropTypes.bool,
-	onPress: PropTypes.func,
+	useRealName: PropTypes.bool,
 	user: PropTypes.shape({
 		id: PropTypes.string,
 		username: PropTypes.string,
 		token: PropTypes.string
 	}),
-	item: PropTypes.object,
 	avatarSize: PropTypes.number,
-	testID: PropTypes.string,
-	height: PropTypes.number
+	testID: PropTypes.string
 };
 
 RoomItem.defaultProps = {
