@@ -7,7 +7,7 @@ const reducers = combineReducers({login:() => ({user: {}}), settings:() => ({}),
 const store = createStore(reducers);
 
 import React from 'react';
-import RoomItem from '../app/presentation/RoomItem';
+import RoomItem from '../app/presentation/RoomItem/RoomItem';
 
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';

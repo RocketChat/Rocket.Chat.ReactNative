@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 
-import RoomItem from '../../../app/presentation/RoomItem';
+import RoomItem from '../../../app/presentation/RoomItem/RoomItem';
 
 const date = '2017-10-10T10:00:00Z';
 const baseUrl = 'https://open.rocket.chat';

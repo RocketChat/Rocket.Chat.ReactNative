@@ -6,6 +6,7 @@ import {
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
 import SafeAreaView from 'react-native-safe-area-view';
+import withObservables from '@nozbe/with-observables';
 
 import Navigation from '../../lib/Navigation';
 import SearchBox from '../../containers/SearchBox';
@@ -30,6 +31,8 @@ import { appStart as appStartAction } from '../../actions';
 import debounce from '../../utils/debounce';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import Icons from '../../lib/Icons';
+import { appDatabase } from '../../lib/database';
+import { Q } from '@nozbe/watermelondb';
 
 const ROW_HEIGHT = 70;
 const SCROLL_OFFSET = 56;
@@ -78,7 +81,7 @@ if (isAndroid) {
 	roomsRequest: () => dispatch(roomsRequestAction())
 }))
 /** @extends React.Component */
-export default class RoomsListView extends LoggedView {
+class RoomsListView extends LoggedView {
 	static options() {
 		return {
 			topBar: {
@@ -162,63 +165,63 @@ export default class RoomsListView extends LoggedView {
 		}
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		// eslint-disable-next-line react/destructuring-assignment
-		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
-		if (propsUpdated) {
-			return true;
-		}
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	// eslint-disable-next-line react/destructuring-assignment
+	// 	const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
+	// 	if (propsUpdated) {
+	// 		return true;
+	// 	}
 
-		const { loading, searching } = this.state;
-		if (nextState.loading !== loading) {
-			return true;
-		}
-		if (nextState.searching !== searching) {
-			return true;
-		}
+	// 	const { loading, searching } = this.state;
+	// 	if (nextState.loading !== loading) {
+	// 		return true;
+	// 	}
+	// 	if (nextState.searching !== searching) {
+	// 		return true;
+	// 	}
 
-		const { showUnread, showFavorites, groupByType } = this.props;
-		if (showUnread) {
-			const { unread } = this.state;
-			if (!isEqual(nextState.unread, unread)) {
-				return true;
-			}
-		}
-		if (showFavorites) {
-			const { favorites } = this.state;
-			if (!isEqual(nextState.favorites, favorites)) {
-				return true;
-			}
-		}
-		if (groupByType) {
-			const {
-				channels, privateGroup, direct, livechat
-			} = this.state;
-			if (!isEqual(nextState.channels, channels)) {
-				return true;
-			}
-			if (!isEqual(nextState.privateGroup, privateGroup)) {
-				return true;
-			}
-			if (!isEqual(nextState.direct, direct)) {
-				return true;
-			}
-			if (!isEqual(nextState.livechat, livechat)) {
-				return true;
-			}
-		} else {
-			const { chats } = this.state;
-			if (!isEqual(nextState.chats, chats)) {
-				return true;
-			}
-		}
+	// 	const { showUnread, showFavorites, groupByType } = this.props;
+	// 	if (showUnread) {
+	// 		const { unread } = this.state;
+	// 		if (!isEqual(nextState.unread, unread)) {
+	// 			return true;
+	// 		}
+	// 	}
+	// 	if (showFavorites) {
+	// 		const { favorites } = this.state;
+	// 		if (!isEqual(nextState.favorites, favorites)) {
+	// 			return true;
+	// 		}
+	// 	}
+	// 	if (groupByType) {
+	// 		const {
+	// 			channels, privateGroup, direct, livechat
+	// 		} = this.state;
+	// 		if (!isEqual(nextState.channels, channels)) {
+	// 			return true;
+	// 		}
+	// 		if (!isEqual(nextState.privateGroup, privateGroup)) {
+	// 			return true;
+	// 		}
+	// 		if (!isEqual(nextState.direct, direct)) {
+	// 			return true;
+	// 		}
+	// 		if (!isEqual(nextState.livechat, livechat)) {
+	// 			return true;
+	// 		}
+	// 	} else {
+	// 		const { chats } = this.state;
+	// 		if (!isEqual(nextState.chats, chats)) {
+	// 			return true;
+	// 		}
+	// 	}
 
-		const { search } = this.state;
-		if (!isEqual(nextState.search, search)) {
-			return true;
-		}
-		return false;
-	}
+	// 	const { search } = this.state;
+	// 	if (!isEqual(nextState.search, search)) {
+	// 		return true;
+	// 	}
+	// 	return false;
+	// }
 
 	componentDidUpdate(prevProps) {
 		const {
@@ -238,13 +241,13 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	componentWillUnmount() {
-		this.removeListener(this.data);
-		this.removeListener(this.unread);
-		this.removeListener(this.favorites);
-		this.removeListener(this.channels);
-		this.removeListener(this.privateGroup);
-		this.removeListener(this.direct);
-		this.removeListener(this.livechat);
+		// this.removeListener(this.data);
+		// this.removeListener(this.unread);
+		// this.removeListener(this.favorites);
+		// this.removeListener(this.channels);
+		// this.removeListener(this.privateGroup);
+		// this.removeListener(this.direct);
+		// this.removeListener(this.livechat);
 		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
@@ -286,6 +289,8 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	getSubscriptions = () => {
+		console.log('getSubscriptions')
+		console.log(this.props.subscriptions)
 		const {
 			server, sortBy, showUnread, showFavorites, groupByType
 		} = this.props;
@@ -527,6 +532,7 @@ export default class RoomsListView extends LoggedView {
 
 		return (
 			<RoomItem
+				item={item}
 				alert={item.alert}
 				unread={item.unread}
 				userMentions={item.userMentions}
@@ -543,6 +549,8 @@ export default class RoomsListView extends LoggedView {
 				height={ROW_HEIGHT}
 			/>
 		);
+		// return <Text key={item.id}>{item.roomUpdatedAt.toISOString()}</Text>
+		// return <EnhancedSub subscription={item} />
 	}
 
 	renderSeparator = () => <View style={styles.separator} />
@@ -636,21 +644,23 @@ export default class RoomsListView extends LoggedView {
 			const { chats, search } = this.state;
 			return (
 				<FlatList
-					ref={this.getScrollRef}
-					data={search.length ? search : chats}
-					extraData={search.length ? search : chats}
-					contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
-					keyExtractor={keyExtractor}
-					style={styles.list}
-					renderItem={this.renderItem}
-					ItemSeparatorComponent={this.renderSeparator}
-					ListHeaderComponent={this.renderListHeader}
-					getItemLayout={getItemLayout}
-					enableEmptySections
-					removeClippedSubviews
-					keyboardShouldPersistTaps='always'
-					initialNumToRender={12}
-					windowSize={7}
+					// ref={this.getScrollRef}
+					// data={search.length ? search : chats}
+					// extraData={search.length ? search : chats}
+					data={this.props.subscriptions}
+					extraData={this.props.subscriptions}
+					// contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
+					// keyExtractor={keyExtractor}
+					// style={styles.list}
+					// renderItem={this.renderItem}
+					// ItemSeparatorComponent={this.renderSeparator}
+					// ListHeaderComponent={this.renderListHeader}
+					// getItemLayout={getItemLayout}
+					// enableEmptySections
+					// removeClippedSubviews
+					// keyboardShouldPersistTaps='always'
+					// initialNumToRender={12}
+					// windowSize={7}
 				/>
 			);
 		}
@@ -669,28 +679,78 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	render = () => {
-		const {
-			sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown
-		} = this.props;
+		// const {
+		// 	sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown
+		// } = this.props;
+
+		// return (
+		// 	<SafeAreaView style={styles.container} testID='rooms-list-view' forceInset={{ bottom: 'never' }}>
+		// 		{this.renderScroll()}
+		// 		{showSortDropdown
+		// 			? (
+		// 				<SortDropdown
+		// 					close={this.toggleSort}
+		// 					sortBy={sortBy}
+		// 					groupByType={groupByType}
+		// 					showFavorites={showFavorites}
+		// 					showUnread={showUnread}
+		// 				/>
+		// 			)
+		// 			: null
+		// 		}
+		// 		{showServerDropdown ? <ServerDropdown navigator={navigator} /> : null}
+		// 		<ConnectionBadge />
+		// 	</SafeAreaView>
+		// );
+
+		console.log('RoomsList rererererererere')
 
 		return (
-			<SafeAreaView style={styles.container} testID='rooms-list-view' forceInset={{ bottom: 'never' }}>
-				{this.renderScroll()}
-				{showSortDropdown
-					? (
-						<SortDropdown
-							close={this.toggleSort}
-							sortBy={sortBy}
-							groupByType={groupByType}
-							showFavorites={showFavorites}
-							showUnread={showUnread}
-						/>
-					)
-					: null
-				}
-				{showServerDropdown ? <ServerDropdown navigator={navigator} /> : null}
-				<ConnectionBadge />
-			</SafeAreaView>
+			<FlatList
+				// ref={this.getScrollRef}
+				// data={search.length ? search : chats}
+				// extraData={search.length ? search : chats}
+				data={this.props.subscriptions}
+				extraData={this.props.subscriptions}
+				// contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
+				keyExtractor={keyExtractor}
+				// style={styles.list}
+				renderItem={this.renderItem}
+				// ItemSeparatorComponent={this.renderSeparator}
+				// ListHeaderComponent={this.renderListHeader}
+				// getItemLayout={getItemLayout}
+				// enableEmptySections
+				// removeClippedSubviews
+				// keyboardShouldPersistTaps='always'
+				// initialNumToRender={12}
+				// windowSize={7}
+			/>
 		);
 	}
 }
+
+// const Sub = ({ subscription }) => {
+// 	console.log('Sub rererere')
+// 	return (
+// 		<View style={styles.comment}>
+// 			<Text>
+// 				{subscription.roomUpdatedAt.toISOString()}
+// 			</Text>
+// 		</View>
+// 	)
+// }
+
+// const enhanceSub = withObservables(['subscription'], ({ subscription }) => ({
+// 	subscription: subscription.observe()
+// }));
+// const EnhancedSub = enhanceSub(Sub)
+
+const enhance = withObservables([], () => ({
+	subscriptions: appDatabase.collections.get('subscriptions').query(
+		Q.where('archived', false),
+		Q.where('open', true)
+	)
+}));
+const EnhancedRoomsListView = enhance(RoomsListView);
+
+export default EnhancedRoomsListView;
