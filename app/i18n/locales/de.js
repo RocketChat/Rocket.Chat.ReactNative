@@ -1,80 +1,80 @@
 export default {
-	'1_person_reacted': '1 Person hat reagiert'
-	'1_user': '1 Benutzer'
-	'error-action-not-allowed': '{{action}} ist nicht erlaubt'
-	'error-application-not-found': 'Anwendung nicht gefunden'
-	'error-archived-duplicate-name': 'Es gibt einen archivierten Kanal mit dem Namen {{room_name}}'
-	'error-avatar-invalid-url': 'Ungültige Avatar-URL: {{url}}'
-	'error-avatar-url-handling': 'Fehler beim Umgang mit der Avatar-Einstellung von einer URL ({{url}}) für {{username}}'
-	'error-cant-invite-for-direct-room': 'Benutzer können nicht zu Räumen eingeladen werden'
-	'error-could-not-change-email': 'E-Mail konnte nicht geändert werden'
-	'error-could-not-change-name': 'Name konnte nicht geändert werden'
-	'error-could-not-change-username': 'Benutzername konnte nicht geändert werden'
-	'error-delete-protected-role': 'Eine geschützte Rolle kann nicht gelöscht werden'
-	'error-department-not-found': 'Abteilung nicht gefunden'
-	'error-direct-message-file-upload-not-allowed': 'Dateifreigabe in direkten Nachrichten nicht zulässig'
-	'error-duplicate-channel-name': 'Ein Kanal mit dem Namen {{channel_name}} ist vorhanden'
-	'error-email-domain-blacklisted': 'Die E-Mail-Domain wird auf die schwarze Liste gesetzt'
-	'error-email-send-failed': '"Fehler beim Versuch, eine E-Mail zu senden: {{message}}"'
-	'error-field-unavailable': '{{field}} wird bereits verwendet :('
-	'error-file-too-large': 'Datei ist zu groß'
-	'error-importer-not-defined': '"Der Importeur wurde nicht korrekt definiert, es fehlt die Importklasse."'
-	'error-input-is-not-a-valid-field': '{{input}} ist kein gültiges {{field}}'
-	'error-invalid-actionlink': 'Ungültiger Aktionslink'
-	'error-invalid-arguments': 'Ungültige Argumente'
-	'error-invalid-asset': 'Ungültiges Asset'
-	'error-invalid-channel': 'Ungültiger Kanal'
-	'error-invalid-channel-start-with-chars': 'Ungültiger Kanal Beginnen Sie mit @ oder #'
-	'error-invalid-custom-field': 'Ungültiges benutzerdefiniertes Feld'
-	'error-invalid-custom-field-name': '"Ungültiger benutzerdefinierter Feldname Verwenden Sie nur Buchstaben, Zahlen, Bindestriche und Unterstriche."'
-	'error-invalid-date': 'Ungültiges Datum angegeben'
-	'error-invalid-description': 'Ungültige Beschreibung'
-	'error-invalid-domain': 'Ungültige Domain'
-	'error-invalid-email': 'Ungültige E-Mail {{emai}}'
-	'error-invalid-email-address': 'Ungültige E-Mail-Adresse'
-	'error-invalid-file-height': 'Ungültige Dateihöhe'
-	'error-invalid-file-type': 'ungültiger Dateityp'
-	'error-invalid-file-width': 'Ungültige Dateibreite'
-	'error-invalid-from-address': 'Sie haben eine ungültige FROM-Adresse mitgeteilt.'
-	'error-invalid-integration': 'Ungültige Integration'
-	'error-invalid-message': 'Ungültige Nachricht'
-	'error-invalid-method': 'Ungültige Methode'
-	'error-invalid-name': 'Ungültiger Name'
-	'error-invalid-password': 'Ungültiges Passwort'
-	'error-invalid-redirectUri': 'Ungültige Weiterleitung'
-	'error-invalid-role': 'Ungültige Rolle'
-	'error-invalid-room': 'Ungültiger Raum'
-	'error-invalid-room-name': '{{room_name}} ist kein gültiger Raumname'
-	'error-invalid-room-type': '{{type}} ist kein gültiger Raumtyp.'
-	'error-invalid-settings': 'Ungültige Einstellungen angegeben'
-	'error-invalid-subscription': 'Ungültiges Abonnement'
-	'error-invalid-token': 'Ungültiges Token'
-	'error-invalid-triggerWords': 'Ungültige TriggerWords'
-	'error-invalid-urls': 'Ungültige URLs'
-	'error-invalid-user': 'Ungültiger Benutzer'
-	'error-invalid-username': 'Ungültiger Benutzername'
-	'error-invalid-webhook-response': 'Die Webhook-URL antwortete mit einem anderen Status als 200'
-	'error-message-deleting-blocked': 'Das Löschen von Nachrichten ist gesperrt'
-	'error-message-editing-blocked': 'Die Bearbeitung von Nachrichten ist gesperrt'
-	'error-message-size-exceeded': 'Die Nachrichtengröße überschreitet Message_MaxAllowedSize'
-	'error-missing-unsubscribe-link': 'Sie müssen den Link [abbestellen] angeben.'
-	'error-no-tokens-for-this-user': 'Für diesen Benutzer gibt es keine Token'
-	'error-not-allowed': 'Nicht erlaubt'
-	'error-not-authorized': 'Nicht berechtigt'
-	'error-push-disabled': 'Push ist deaktiviert'
-	'error-remove-last-owner': '"Dies ist der letzte Besitzer. Bitte legen Sie einen neuen Besitzer fest, bevor Sie diesen entfernen."'
-	'error-role-in-use': '"Rolle kann nicht gelöscht werden, da sie gerade verwendet wird"'
-	'error-role-name-required': 'Der Rollenname ist erforderlich'
-	'error-the-field-is-required': 'Das Feld {{field}} ist erforderlich.'
-	'error-too-many-requests': '"Fehler, zu viele Anfragen. Bitte fahren Sie langsamer. Sie müssen {{Sekunden}} Sekunden warten, bevor Sie es erneut versuchen."'
-	'error-user-is-not-activated': 'Benutzer ist nicht aktiviert'
-	'error-user-has-no-roles': 'Benutzer hat keine Rollen'
-	'error-user-limit-exceeded': '"Die Anzahl der Benutzer, die Sie zu #channel_name einladen möchten, überschreitet die vom Administrator festgelegte Grenze"'
-	'error-user-not-in-room': 'Benutzer ist nicht in diesem Raum'
-	'error-user-registration-custom-field': 'error-user-registration-custom-field'
-	'error-user-registration-disabled': 'Die Benutzerregistrierung ist deaktiviert'
-	'error-user-registration-secret': 'Die Benutzerregistrierung ist nur über eine geheime URL möglich'
-	'error-you-are-last-owner': '"Du bist der letzte Besitzer. Bitte setzen Sie einen neuen Besitzer, bevor Sie den Raum verlassen."'
+	'1_person_reacted': '1 Person hat reagiert',
+	'1_user': '1 Benutzer',
+	'error-action-not-allowed': '{{action}} ist nicht erlaubt',
+	'error-application-not-found': 'Anwendung nicht gefunden',
+	'error-archived-duplicate-name': 'Es gibt einen archivierten Kanal mit dem Namen {{room_name}}',
+	'error-avatar-invalid-url': 'Ungültige Avatar-URL: {{url}}',
+	'error-avatar-url-handling': 'Fehler beim Umgang mit der Avatar-Einstellung von einer URL ({{url}}) für {{username}}',
+	'error-cant-invite-for-direct-room': 'Benutzer können nicht zu Räumen eingeladen werden',
+	'error-could-not-change-email': 'E-Mail konnte nicht geändert werden',
+	'error-could-not-change-name': 'Name konnte nicht geändert werden',
+	'error-could-not-change-username': 'Benutzername konnte nicht geändert werden',
+	'error-delete-protected-role': 'Eine geschützte Rolle kann nicht gelöscht werden',
+	'error-department-not-found': 'Abteilung nicht gefunden',
+	'error-direct-message-file-upload-not-allowed': 'Dateifreigabe in direkten Nachrichten nicht zulässig',
+	'error-duplicate-channel-name': 'Ein Kanal mit dem Namen {{channel_name}} ist vorhanden',
+	'error-email-domain-blacklisted': 'Die E-Mail-Domain wird auf die schwarze Liste gesetzt',
+	'error-email-send-failed': 'Fehler beim Versuch, eine E-Mail zu senden: {{message}}',
+	'error-field-unavailable': '{{field}} wird bereits verwendet :(',
+	'error-file-too-large': 'Datei ist zu groß',
+	'error-importer-not-defined': 'Der Importeur wurde nicht korrekt definiert, es fehlt die Importklasse.',
+	'error-input-is-not-a-valid-field': '{{input}} ist kein gültiges {{field}}',
+	'error-invalid-actionlink': 'Ungültiger Aktionslink',
+	'error-invalid-arguments': 'Ungültige Argumente',
+	'error-invalid-asset': 'Ungültiges Asset',
+	'error-invalid-channel': 'Ungültiger Kanal',
+	'error-invalid-channel-start-with-chars': 'Ungültiger Kanal Beginnen Sie mit @ oder #',
+	'error-invalid-custom-field': 'Ungültiges benutzerdefiniertes Feld',
+	'error-invalid-custom-field-name': 'Ungültiger benutzerdefinierter Feldname Verwenden Sie nur Buchstaben, Zahlen, Bindestriche und Unterstriche.',
+	'error-invalid-date': 'Ungültiges Datum angegeben',
+	'error-invalid-description': 'Ungültige Beschreibung',
+	'error-invalid-domain': 'Ungültige Domain',
+	'error-invalid-email': 'Ungültige E-Mail {{emai}}',
+	'error-invalid-email-address': 'Ungültige E-Mail-Adresse',
+	'error-invalid-file-height': 'Ungültige Dateihöhe',
+	'error-invalid-file-type': 'ungültiger Dateityp',
+	'error-invalid-file-width': 'Ungültige Dateibreite',
+	'error-invalid-from-address': 'Sie haben eine ungültige FROM-Adresse mitgeteilt.',
+	'error-invalid-integration': 'Ungültige Integration',
+	'error-invalid-message': 'Ungültige Nachricht',
+	'error-invalid-method': 'Ungültige Methode',
+	'error-invalid-name': 'Ungültiger Name',
+	'error-invalid-password': 'Ungültiges Passwort',
+	'error-invalid-redirectUri': 'Ungültige Weiterleitung',
+	'error-invalid-role': 'Ungültige Rolle',
+	'error-invalid-room': 'Ungültiger Raum',
+	'error-invalid-room-name': '{{room_name}} ist kein gültiger Raumname',
+	'error-invalid-room-type': '{{type}} ist kein gültiger Raumtyp.',
+	'error-invalid-settings': 'Ungültige Einstellungen angegeben',
+	'error-invalid-subscription': 'Ungültiges Abonnement',
+	'error-invalid-token': 'Ungültiges Token',
+	'error-invalid-triggerWords': 'Ungültige TriggerWords',
+	'error-invalid-urls': 'Ungültige URLs',
+	'error-invalid-user': 'Ungültiger Benutzer',
+	'error-invalid-username': 'Ungültiger Benutzername',
+	'error-invalid-webhook-response': 'Die Webhook-URL antwortete mit einem anderen Status als 200',
+	'error-message-deleting-blocked': 'Das Löschen von Nachrichten ist gesperrt',
+	'error-message-editing-blocked': 'Die Bearbeitung von Nachrichten ist gesperrt',
+	'error-message-size-exceeded': 'Die Nachrichtengröße überschreitet Message_MaxAllowedSize',
+	'error-missing-unsubscribe-link': 'Sie müssen den Link [abbestellen] angeben.',
+	'error-no-tokens-for-this-user': 'Für diesen Benutzer gibt es keine Token',
+	'error-not-allowed': 'Nicht erlaubt',
+	'error-not-authorized': 'Nicht berechtigt',
+	'error-push-disabled': 'Push ist deaktiviert',
+	'error-remove-last-owner': 'Dies ist der letzte Besitzer. Bitte legen Sie einen neuen Besitzer fest, bevor Sie diesen entfernen.',
+	'error-role-in-use': 'Rolle kann nicht gelöscht werden, da sie gerade verwendet wird',
+	'error-role-name-required': 'Der Rollenname ist erforderlich',
+	'error-the-field-is-required': 'Das Feld {{field}} ist erforderlich.',
+	'error-too-many-requests': 'Fehler, zu viele Anfragen. Bitte fahren Sie langsamer. Sie müssen {{Sekunden}} Sekunden warten, bevor Sie es erneut versuchen.',
+	'error-user-is-not-activated': 'Benutzer ist nicht aktiviert',
+	'error-user-has-no-roles': 'Benutzer hat keine Rollen',
+	'error-user-limit-exceeded': 'Die Anzahl der Benutzer, die Sie zu #channel_name einladen möchten, überschreitet die vom Administrator festgelegte Grenze',
+	'error-user-not-in-room': 'Benutzer ist nicht in diesem Raum',
+	'error-user-registration-custom-field': 'error-user-registration-custom-field',
+	'error-user-registration-disabled': 'Die Benutzerregistrierung ist deaktiviert',
+	'error-user-registration-secret': 'Die Benutzerregistrierung ist nur über eine geheime URL möglich',
+	'error-you-are-last-owner': 'Du bist der letzte Besitzer. Bitte setzen Sie einen neuen Besitzer, bevor Sie den Raum verlassen.',
 	Actions: 'Aktionen',
 	activity: 'Aktivität',
 	Activity: 'Aktivität',
@@ -102,10 +102,10 @@ export default {
 	Avatar_Url: 'Avatar-URL',
 	Away: 'Weg',
 	Block_user: 'Benutzer blockieren',
-	Broadcast_channel_Description: '"Nur autorisierte Benutzer können neue Nachrichten schreiben, die anderen Benutzer können jedoch antworten"',
+	Broadcast_channel_Description: 'Nur autorisierte Benutzer können neue Nachrichten schreiben, die anderen Benutzer können jedoch antworten',
 	Broadcast_Channel: 'Sendekanal',
 	Busy: 'Beschäftigt',
-	By_proceeding_you_are_agreeing: '"Indem Sie fortfahren, stimmen Sie unserem zu"',
+	By_proceeding_you_are_agreeing: 'Indem Sie fortfahren, stimmen Sie unserem zu',
 	Cancel_editing: 'Bearbeitung abbrechen',
 	Cancel_recording: 'Aufnahme abbrechen',
 	Cancel: 'Stornieren',
@@ -134,7 +134,7 @@ export default {
 	Created_snippet: 'Erstellt ein Snippet',
 	Create_a_new_workspace: 'Erstellen Sie einen neuen Arbeitsbereich',
 	Create: 'Erstellen',
-	Delete_Room_Warning: '"Durch das Löschen eines Raums werden alle Nachrichten gelöscht, die im Raum gepostet wurden. Das kann nicht rückgängig gemacht werden."',
+	Delete_Room_Warning: 'Durch das Löschen eines Raums werden alle Nachrichten gelöscht, die im Raum gepostet wurden. Das kann nicht rückgängig gemacht werden.',
 	delete: 'löschen',
 	Delete: 'Löschen',
 	DELETE: 'LÖSCHEN',
@@ -158,9 +158,9 @@ export default {
 	File_description: 'Dateibeschreibung',
 	File_name: 'Dateiname',
 	Finish_recording: 'Beenden Sie die Aufnahme',
-	For_your_security_you_must_enter_your_current_password_to_continue: '"Zu Ihrer Sicherheit müssen Sie Ihr aktuelles Passwort eingeben, um fortzufahren"',
+	For_your_security_you_must_enter_your_current_password_to_continue: 'Zu Ihrer Sicherheit müssen Sie Ihr aktuelles Passwort eingeben, um fortzufahren',
 	Forgot_my_password: 'Ich habe mein Passwort vergessen',
-	Forgot_password_If_this_email_is_registered: '"Wenn diese E-Mail registriert ist, senden wir Anweisungen zum Zurücksetzen Ihres Passworts. Wenn Sie in Kürze keine E-Mail erhalten, kommen Sie bitte zurück und versuchen Sie es erneut."',
+	Forgot_password_If_this_email_is_registered: 'Wenn diese E-Mail registriert ist, senden wir Anweisungen zum Zurücksetzen Ihres Passworts. Wenn Sie in Kürze keine E-Mail erhalten, kommen Sie bitte zurück und versuchen Sie es erneut.',
 	Forgot_password: 'Passwort vergessen',
 	Forgot_Password: 'Passwort vergessen',
 	Group_by_favorites: 'Nach Favoriten gruppieren',
@@ -172,7 +172,7 @@ export default {
 	is_a_valid_RocketChat_instance: 'ist eine gültige Rocket.Chat-Instanz',
 	is_not_a_valid_RocketChat_instance: 'ist keine gültige Rocket.Chat-Instanz',
 	is_typing: 'tippt',
-	Invalid_server_version: '"Der Server, zu dem Sie eine Verbindung herstellen möchten, verwendet eine Version, die von der App nicht mehr unterstützt wird: {{currentVersion}}. \ N \ nWir benötigen Version {{MinVersion}}."',
+	Invalid_server_version: 'Der Server, zu dem Sie eine Verbindung herstellen möchten, verwendet eine Version, die von der App nicht mehr unterstützt wird: {{currentVersion}}. \ N \ nWir benötigen Version {{MinVersion}}.',
 	Join_the_community: 'Trete der Community bei',
 	Join: 'Beitreten',
 	Just_invited_people_can_access_this_channel: 'Nur eingeladene Personen können auf diesen Kanal zugreifen',
@@ -197,7 +197,7 @@ export default {
 	Message_pinned: 'Nachricht gepinnt',
 	Message_removed: 'Nachricht entfernt',
 	Messages: 'Mitteilungen',
-	Microphone_Permission_Message: '"Rocket Chat benötigt Zugriff auf Ihr Mikrofon, damit Sie eine Audionachricht senden können."',
+	Microphone_Permission_Message: 'Rocket Chat benötigt Zugriff auf Ihr Mikrofon, damit Sie eine Audionachricht senden können.',
 	Microphone_Permission: 'Mikrofonberechtigung',
 	Mute: 'Stumm',
 	muted: 'stummgeschaltet',
@@ -286,7 +286,7 @@ export default {
 	Send_message: 'Nachricht senden',
 	Server: 'Server',
 	Servers: 'Server',
-	Set_username_subtitle: '"Der Benutzername wird verwendet, damit andere Personen Sie in Nachrichten erwähnen können"',
+	Set_username_subtitle: 'Der Benutzername wird verwendet, damit andere Personen Sie in Nachrichten erwähnen können',
 	Settings: 'die Einstellungen',
 	Settings_succesfully_changed: 'Einstellungen erfolgreich geändert!',
 	Share_Message: 'Nachricht teilen',
@@ -306,10 +306,10 @@ export default {
 	Start_of_conversation: 'Beginn des Gesprächs',
 	Submit: 'einreichen',
 	Take_a_photo: 'Mach ein Foto',
-	tap_to_change_status: '"Tippen Sie auf, um den Status zu ändern"',
-	Tap_to_view_servers_list: '"Tippen Sie hier, um die Serverliste anzuzeigen"',
+	tap_to_change_status: 'Tippen Sie auf, um den Status zu ändern',
+	Tap_to_view_servers_list: 'Tippen Sie hier, um die Serverliste anzuzeigen',
 	Terms_of_Service: ' Nutzungsbedingungen',
-	The_URL_is_invalid: '"Die eingegebene URL ist ungültig. Überprüfen Sie es und versuchen Sie es erneut, bitte!"',
+	The_URL_is_invalid: 'Die eingegebene URL ist ungültig. Überprüfen Sie es und versuchen Sie es erneut, bitte!',
 	There_was_an_error_while_action: 'Während {{action}} ist ein Fehler aufgetreten!',
 	This_room_is_blocked: 'Dieser Raum ist gesperrt',
 	This_room_is_read_only: 'Dieses Zimmer kann nur gelesen werden',
@@ -350,7 +350,7 @@ export default {
 	Welcome: 'Herzlich willkommen',
 	Welcome_to_RocketChat: 'Willkommen bei Rocket.Chat',
 	Whats_your_2fa: 'Was ist dein 2FA-Code?',
-	Yes_action_it: '"Ja, {{action}} es!"',
+	Yes_action_it: 'Ja, {{action}} es!',
 	Yesterday: 'Gestern',
 	You_are_in_preview_mode: 'Sie befinden sich im Vorschaumodus',
 	You_are_offline: 'Du bist offline',
