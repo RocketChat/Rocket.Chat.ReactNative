@@ -7,6 +7,7 @@ import CustomEmoji from './CustomEmoji';
 import CustomEmojiAlias from './CustomEmojiAlias';
 import Subscription from './Subscription';
 import SubscriptionRole from './SubscriptionRole';
+import Message from './Message';
 
 export {
 	Server,
@@ -17,5 +18,6 @@ export {
 	CustomEmoji,
 	CustomEmojiAlias,
 	Subscription,
-	SubscriptionRole
+	SubscriptionRole,
+	Message
 };

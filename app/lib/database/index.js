@@ -11,7 +11,8 @@ import {
 	CustomEmoji,
 	CustomEmojiAlias,
 	Subscription,
-	SubscriptionRole
+	SubscriptionRole,
+	Message
 } from './models';
 
 const serverAdapter = new SQLiteAdapter({
@@ -39,7 +40,8 @@ export const appDatabase = new Database({
 		CustomEmoji,
 		CustomEmojiAlias,
 		Subscription,
-		SubscriptionRole
+		SubscriptionRole,
+		Message
 	]
 });
 

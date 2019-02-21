@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 11,
+	version: 14,
 	tables: [
 		tableSchema({
 			name: 'settings',
@@ -83,6 +83,24 @@ export default appSchema({
 			columns: [
 				{ name: 'subscription_id', type: 'string', isIndexed: true },
 				{ name: 'role_id', type: 'string', isIndexed: true }
+			]
+		}),
+		tableSchema({
+			name: 'messages',
+			columns: [
+				{ name: 'msg', type: 'string', isOptional: true },
+				{ name: 't', type: 'string', isOptional: true },
+				// { name: 'subscription_id', type: 'string', isIndexed: true },
+				{ name: 'rid', type: 'string', isIndexed: true },
+				{ name: 'ts', type: 'number' },
+				{ name: 'alias', type: 'string', isOptional: true },
+				{ name: 'groupable', type: 'boolean', isOptional: true },
+				{ name: 'avatar', type: 'string', isOptional: true },
+				{ name: 'updated_at', type: 'number' },
+				{ name: 'status', type: 'number', isOptional: true },
+				{ name: 'pinned', type: 'boolean', isOptional: true },
+				{ name: 'starred', type: 'boolean', isOptional: true },
+				{ name: 'role', type: 'string', isOptional: true }
 			]
 		})
 	]

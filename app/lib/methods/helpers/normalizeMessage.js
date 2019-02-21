@@ -20,6 +20,7 @@ function normalizeAttachments(msg) {
 export default (msg) => {
 	if (!msg) { return; }
 	msg = normalizeAttachments(msg);
+	msg.id = msg._id || msg.id;
 	msg.reactions = msg.reactions || [];
 	// TODO: api problems
 	// if (Array.isArray(msg.reactions)) {
@@ -31,9 +32,9 @@ export default (msg) => {
 		msg.reactions = Object.keys(msg.reactions).map(key => ({ _id: `${ msg._id }${ key }`, emoji: key, usernames: msg.reactions[key].usernames.map(username => ({ value: username })) }));
 	}
 	msg.urls = msg.urls ? parseUrls(msg.urls) : [];
-	msg._updatedAt = new Date();
+	// msg._updatedAt = new Date();
 	// loadHistory returns msg.starred as object
 	// stream-room-msgs returns msg.starred as an array
-	msg.starred = msg.starred && (Array.isArray(msg.starred) ? msg.starred.length > 0 : !!msg.starred);
+	msg.starred = (msg.starred && (Array.isArray(msg.starred) ? msg.starred.length > 0 : !!msg.starred)) || false;
 	return msg;
 };
