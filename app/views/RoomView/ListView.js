@@ -6,6 +6,7 @@ import {
 import moment from 'moment';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import withObservables from '@nozbe/with-observables';
 
 import Separator from './Separator';
 import styles from './styles';
@@ -14,6 +15,8 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import debounce from '../../utils/debounce';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
+import { appDatabase } from '../../lib/database';
+import { Q } from '@nozbe/watermelondb';
 
 const DEFAULT_SCROLL_CALLBACK_THROTTLE = 100;
 
@@ -30,7 +33,7 @@ export class DataSource extends OldList.DataSource {
 
 const ds = new DataSource({ rowHasChanged: (r1, r2) => r1._id !== r2._id });
 
-export class List extends React.Component {
+class List extends React.Component {
 	static propTypes = {
 		onEndReached: PropTypes.func,
 		renderFooter: PropTypes.func,
@@ -40,50 +43,63 @@ export class List extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.data = database
-			.objects('messages')
-			.filtered('rid = $0', props.room.rid)
-			.sorted('ts', true);
+		// this.data = database
+		// 	.objects('messages')
+		// 	.filtered('rid = $0', props.room.rid)
+		// 	.sorted('ts', true);
 		this.state = {
-			loading: true,
+			loading: false,
 			loadingMore: false,
 			end: false
 		};
-		this.dataSource = ds.cloneWithRows(this.data);
+		this.dataSource = ds.cloneWithRows(this.props.messages);
 	}
 
-	componentDidMount() {
-		this.updateState();
-		this.data.addListener(this.updateState);
-	}
+	// componentDidMount() {
+	// 	this.updateState();
+	// 	this.data.addListener(this.updateState);
+	// }
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const { loadingMore, loading, end } = this.state;
-		return end !== nextState.end || loadingMore !== nextState.loadingMore || loading !== nextState.loading;
-	}
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	const { loadingMore, loading, end } = this.state;
+	// 	return end !== nextState.end || loadingMore !== nextState.loadingMore || loading !== nextState.loading;
+	// }
 
-	componentWillUnmount() {
-		this.data.removeAllListeners();
-		this.updateState.stop();
+	// componentWillUnmount() {
+	// 	this.data.removeAllListeners();
+	// 	this.updateState.stop();
+	// }
+
+	// componentDidUpdate() {
+	// 	this.updateState();
+	// }
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.messages.length !== this.props.messages.length) {
+			this.updateState();
+		}
 	}
 
 	// eslint-disable-next-line react/sort-comp
 	updateState = debounce(() => {
 		this.setState({ loading: true });
-		this.dataSource = this.dataSource.cloneWithRows(this.data);
+		// this.dataSource = this.dataSource.cloneWithRows(this.data);
+		this.dataSource = this.dataSource.cloneWithRows(this.props.messages);
 		this.setState({ loading: false });
 	}, 300);
 
 	onEndReached = async() => {
 		const { loadingMore, end } = this.state;
-		if (loadingMore || end || this.data.length < 50) {
+		const { messages } = this.props;
+		if (loadingMore || end || messages.length < 50) {
 			return;
 		}
 
 		this.setState({ loadingMore: true });
 		const { room } = this.props;
 		try {
-			const result = await RocketChat.loadMessagesForRoom({ rid: room.rid, t: room.t, latest: this.data[this.data.length - 1].ts });
+			const result = await RocketChat.loadMessagesForRoom({ rid: room.rid, t: room.t, latest: messages[messages.length - 1].ts });
+			console.log('TCL: List -> onEndReached -> result', result);
 			this.setState({ end: result.length < 50, loadingMore: false });
 		} catch (e) {
 			this.setState({ loadingMore: false });
@@ -100,13 +116,13 @@ export class List extends React.Component {
 	}
 
 	render() {
-		const { renderRow } = this.props;
+		const { renderRow, messages } = this.props;
 
 		return (
 			<ListView
 				enableEmptySections
 				style={styles.list}
-				data={this.data}
+				data={messages}
 				keyExtractor={item => item._id}
 				onEndReachedThreshold={100}
 				renderFooter={this.renderFooter}
@@ -121,6 +137,15 @@ export class List extends React.Component {
 		);
 	}
 }
+
+const enhance = withObservables(['room'], ({ room }) => ({
+	messages: appDatabase.collections.get('messages').query(
+		Q.where('rid', room.rid)
+	).observe()
+}));
+const EnhancedList = enhance(List);
+
+export default EnhancedList;
 
 @connect(state => ({
 	lastOpen: state.room.lastOpen

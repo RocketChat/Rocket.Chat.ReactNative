@@ -17,7 +17,7 @@ export const createSubscription = (db, subscription) => {
 					s.roomUpdatedAt = subscription.room_updated_at;
 				}
 			});
-			await action.subAction(() => subscriptionRecord.deleteRoles());
+			// await action.subAction(() => subscriptionRecord.deleteRoles());
 		} catch (error) {
 			subscriptionRecord = await subscriptionsCollection.create((s) => {
 				s._raw = sanitizedRaw({
@@ -29,15 +29,15 @@ export const createSubscription = (db, subscription) => {
 			});
 		}
 
-		if (subscription.roles) {
-			subscription.roles.forEach(async(role) => {
-				try {
-					await action.subAction(() => subscriptionRecord.addRole(role));
-				} catch (error) {
-					console.log('Error creating subscriptionRole -> error', error);
-				}
-			});
-		}
+		// if (subscription.roles) {
+		// 	subscription.roles.forEach(async(role) => {
+		// 		try {
+		// 			await action.subAction(() => subscriptionRecord.addRole(role));
+		// 		} catch (error) {
+		// 			console.log('Error creating subscriptionRole -> error', error);
+		// 		}
+		// 	});
+		// }
 	});
 };
 

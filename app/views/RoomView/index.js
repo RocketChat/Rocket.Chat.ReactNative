@@ -7,15 +7,17 @@ import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
 import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
+import withObservables from '@nozbe/with-observables';
 
 import Navigation from '../../lib/Navigation';
 import { openRoom as openRoomAction, closeRoom as closeRoomAction, setLastOpen as setLastOpenAction } from '../../actions/room';
 import { toggleReactionPicker as toggleReactionPickerAction, actionsShow as actionsShowAction } from '../../actions/messages';
 import LoggedView from '../View';
-import { List } from './ListView';
+import List from './ListView';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
+import MessageComponent from '../../containers/message/Message';
 import MessageActions from '../../containers/MessageActions';
 import MessageErrorActions from '../../containers/MessageErrorActions';
 import MessageBox from '../../containers/MessageBox';
@@ -27,6 +29,8 @@ import { isIOS } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import Icons from '../../lib/Icons';
 import ConnectionBadge from '../../containers/ConnectionBadge';
+import { appDatabase } from '../../lib/database';
+import { Q } from '@nozbe/watermelondb';
 
 @connect(state => ({
 	user: {
@@ -46,7 +50,7 @@ import ConnectionBadge from '../../containers/ConnectionBadge';
 	closeRoom: () => dispatch(closeRoomAction())
 }))
 /** @extends React.Component */
-export default class RoomView extends LoggedView {
+class RoomView extends LoggedView {
 	static options() {
 		return {
 			topBar: {
@@ -102,6 +106,7 @@ export default class RoomView extends LoggedView {
 		};
 		this.onReactionPress = this.onReactionPress.bind(this);
 		Navigation.events().bindComponent(this);
+		console.log(this.props.messages)
 	}
 
 	componentDidMount() {
@@ -311,23 +316,48 @@ export default class RoomView extends LoggedView {
 
 	renderItem = (item, previousItem) => {
 		const { room } = this.state;
-		const { user } = this.props;
+		// const { user } = this.props;
+
+		const user = {
+			id: 'y8bd77ptZswPj3EW8',
+			username: 'diego.mello',
+			token: '79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz'
+		};
+		const author = {
+			_id: 'userid',
+			username: 'diego.mello'
+		};
+		const baseUrl = 'https://open.rocket.chat';
+		const customEmojis = { react_rocket: 'png', nyan_rocket: 'png', marioparty: 'gif' };
+		const date = new Date(2017, 10, 10, 10);
 
 		return (
-			<Message
-				key={item._id}
-				item={item}
-				status={item.status}
-				reactions={JSON.parse(JSON.stringify(item.reactions))}
+			<MessageComponent
+				baseUrl={baseUrl}
+				customEmojis={customEmojis}
 				user={user}
-				archived={room.archived}
-				broadcast={room.broadcast}
-				previousItem={previousItem}
-				_updatedAt={item._updatedAt}
-				onReactionPress={this.onReactionPress}
-				onLongPress={this.onMessageLongPress}
+				author={author}
+				ts={date}
+				timeFormat='LT'
+				header
 			/>
 		);
+
+		// return (
+		// 	<Message
+		// 		key={item._id}
+		// 		item={item}
+		// 		status={item.status}
+		// 		// reactions={JSON.parse(JSON.stringify(item.reactions))}
+		// 		user={user}
+		// 		archived={room.archived}
+		// 		broadcast={room.broadcast}
+		// 		// previousItem={previousItem}
+		// 		_updatedAt={item._updatedAt}
+		// 		onReactionPress={this.onReactionPress}
+		// 		onLongPress={this.onMessageLongPress}
+		// 	/>
+		// );
 	}
 
 	renderFooter = () => {
@@ -401,3 +431,12 @@ export default class RoomView extends LoggedView {
 		);
 	}
 }
+
+const enhance = withObservables(['rid'], ({ rid }) => ({
+	messages: appDatabase.collections.get('messages').query(
+		Q.where('rid', rid)
+	).observe()
+}));
+const EnhancedRoomView = enhance(RoomView);
+
+export default EnhancedRoomView;

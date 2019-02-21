@@ -5,7 +5,6 @@ export const createMessage = (db, message) => {
 	db.action(async(action) => {
 		const messagesCollection = db.collections.get('messages');
 		message = buildMessage(message);
-		console.log('TCL: createMessage -> message', message);
 		let messageRecord;
 		try {
 			messageRecord = await messagesCollection.find(message.id);

@@ -1,8 +1,8 @@
 import Realm from 'realm';
 
-// import { AsyncStorage } from 'react-native';
-// Realm.clearTestState();
-// AsyncStorage.clear();
+import { AsyncStorage } from 'react-native';
+Realm.clearTestState();
+AsyncStorage.clear();
 
 const serversSchema = {
 	name: 'servers',

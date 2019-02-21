@@ -46,5 +46,5 @@ export const appDatabase = new Database({
 });
 
 
-// serverDatabase.unsafeResetDatabase();
-// appDatabase.unsafeResetDatabase();
+serverDatabase.unsafeResetDatabase();
+appDatabase.unsafeResetDatabase();

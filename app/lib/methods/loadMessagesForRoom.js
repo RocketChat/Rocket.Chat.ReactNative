@@ -22,9 +22,9 @@ async function load({ rid: roomId, latest, t }) {
 	}
 
 	let params = { roomId, count: 50 };
-	// if (latest) {
-	// 	params = { ...params, latest: new Date(latest).toISOString() };
-	// }
+	if (latest) {
+		params = { ...params, latest: new Date(latest).toISOString() };
+	}
 	// RC 0.48.0
 	const data = await this.sdk.get(`${ this.roomTypeToApiType(t) }.history`, params);
 	if (!data || data.status === 'error') {
@@ -50,9 +50,10 @@ export default function loadMessagesForRoom(...args) {
 						dbActions.push(createMessage(appDatabase, message));
 					});
 					await Promise.all(dbActions);
+					return resolve(data);
 				});
 			} else {
-				return resolve();
+				return resolve([]);
 			}
 		} catch (e) {
 			log('loadMessagesForRoom', e);
