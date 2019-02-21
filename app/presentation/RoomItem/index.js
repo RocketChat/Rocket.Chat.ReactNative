@@ -10,7 +10,8 @@ const mapStateToProps = state => ({
 		token: state.login.user && state.login.user.token
 	},
 	showLastMessage: state.settings.Store_Last_Message,
-	useRealName: state.settings.UI_Use_Real_Name
+	useRealName: state.settings.UI_Use_Real_Name,
+	baseUrl: state.settings.baseUrl || state.server ? state.server.server : ''
 });
 
 const enhance = withObservables(['item'], ({ item }) => ({

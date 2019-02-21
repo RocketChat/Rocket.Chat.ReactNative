@@ -8,7 +8,7 @@ import { isEqual } from 'lodash';
 import SafeAreaView from 'react-native-safe-area-view';
 import withObservables from '@nozbe/with-observables';
 import _sortBy from 'lodash/sortBy';
-import { map } from 'rxjs/operators'
+import { map, filter } from 'rxjs/operators'
 
 import Navigation from '../../lib/Navigation';
 import SearchBox from '../../containers/SearchBox';
@@ -136,7 +136,7 @@ export default class RoomsListView extends LoggedView {
 		this.state = {
 			searching: false,
 			search: [],
-			loading: true,
+			loading: false,
 			chats: [],
 			unread: [],
 			favorites: [],
@@ -147,6 +147,11 @@ export default class RoomsListView extends LoggedView {
 		};
 		Navigation.events().bindComponent(this);
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+
+		this.query = appDatabase.collections.get('subscriptions').query(
+			Q.where('archived', false),
+			Q.where('open', true)
+		)
 	}
 
 	componentDidMount() {
@@ -291,101 +296,121 @@ export default class RoomsListView extends LoggedView {
 		this.setState(...args);
 	}
 
-	getSubscriptions = async() => {
-		console.log('getSubscriptions')
-		// console.log(this.props.subscriptions)
-		const {
-			server, sortBy, showUnread, showFavorites, groupByType
-		} = this.props;
+	// getSubscriptions = async() => {
+	// 	console.log('getSubscriptions')
+	// 	// console.log(this.props.subscriptions)
+	// 	const {
+	// 		server, sortBy, showUnread, showFavorites, groupByType
+	// 	} = this.props;
 
-		// TODO: can be moved to constructor? (multiple servers may cause trouble)
-		const query = await appDatabase.collections.get('subscriptions').query(
-			Q.where('archived', false),
-			Q.where('open', true)
-		);
+	// 	// TODO: can be moved to constructor? (multiple servers may cause trouble)
+	// 	const query = await appDatabase.collections.get('subscriptions').query(
+	// 		Q.where('archived', false),
+	// 		Q.where('open', true)
+	// 	);
 
-		if (sortBy === 'alphabetical') {
-			// FIXME: check `useRealName`
-			this.data = query.observeWithColumns('name')
-				.pipe(map(data => data.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase())));
-		} else {
-			this.data = query.observeWithColumns('room_updated_at')
-				.pipe(map(data => data.sort((a, b) => a.roomUpdatedAt < b.roomUpdatedAt)));
-		}
+	// 	if (sortBy === 'alphabetical') {
+	// 		// FIXME: check `useRealName`
+	// 		this.data = query.observeWithColumns('name')
+	// 			.pipe(map(data => data.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase())));
+	// 	} else {
+	// 		this.data = query.observeWithColumns('room_updated_at')
+	// 			.pipe(filter(item => item.unread > 0));
+	// 			// .pipe(map(data => data.sort((a, b) => a.roomUpdatedAt < b.roomUpdatedAt)));
+	// 	}
 
-		// FIXME: It's re-rendering everything. It should re-render only the order of chats
-		// https://github.com/Nozbe/WatermelonDB/issues/258
-		this.sub = this.data.subscribe(chats => this.internalSetState({ chats }));
+	// 	this.internalSetState({ chats: this.data, loading: false });
 
-		// 	let chats = [];
-		// 	let unread = [];
-		// 	let favorites = [];
-		// 	let channels = [];
-		// 	let privateGroup = [];
-		// 	let direct = [];
-		// 	let livechat = [];
+	// 	let chats = [];
+	// 	let unread = [];
+	// 	// 	let favorites = [];
+	// 	// 	let channels = [];
+	// 	// 	let privateGroup = [];
+	// 	// 	let direct = [];
+	// 	// 	let livechat = [];
 
-		// 	// unread
-		// 	if (showUnread) {
-		// 		this.unread = this.data.filtered('archived != true && open == true').filtered('(unread > 0 || alert == true)');
-		// 		unread = this.removeRealmInstance(this.unread);
-		// 		this.unread.addListener(debounce(() => this.internalSetState({ unread: this.removeRealmInstance(this.unread) }), 300));
-		// 	} else {
-		// 		this.removeListener(unread);
-		// 	}
-		// 	// favorites
-		// 	if (showFavorites) {
-		// 		this.favorites = this.data.filtered('f == true');
-		// 		favorites = this.removeRealmInstance(this.favorites);
-		// 		this.favorites.addListener(debounce(() => this.internalSetState({ favorites: this.removeRealmInstance(this.favorites) }), 300));
-		// 	} else {
-		// 		this.removeListener(favorites);
-		// 	}
-		// 	// type
-		// 	if (groupByType) {
-		// 		// channels
-		// 		this.channels = this.data.filtered('t == $0', 'c');
-		// 		channels = this.removeRealmInstance(this.channels);
+	// 	// this.unread = query.observeWithColumns('room_updated_at')
+	// 	// 	.pipe(filter(item => item.unread > 0));
+	// 	// console.log('TCL: getSubscriptions -> this.unread', this.unread);
+	// 	// this.subUnread = this.unread.subscribe(v => console.log(v))
 
-		// 		// private
-		// 		this.privateGroup = this.data.filtered('t == $0', 'p');
-		// 		privateGroup = this.removeRealmInstance(this.privateGroup);
+	// 	// unread
+	// 	// if (showUnread) {
+	// 	// 	this.unread = query.observeWithColumns('room_updated_at')
+	// 	// 		.pipe(filter(item => item.unread > 0));
+	// 	// 	console.log('TCL: getSubscriptions -> this.unread', this.unread);
+	// 	// 	this.subUnread = this.unread.subscribe(v => console.log(v))
 
-		// 		// direct
-		// 		this.direct = this.data.filtered('t == $0', 'd');
-		// 		direct = this.removeRealmInstance(this.direct);
+			
+	// 	// 	// unread = this.data.pipe(filter(i => i.unread > 0))
+	// 	// 	// console.log('TCL: getSubscriptions -> unread', unread);
 
-		// 		// livechat
-		// 		this.livechat = this.data.filtered('t == $0', 'l');
-		// 		livechat = this.removeRealmInstance(this.livechat);
+	// 	// 	// this.unread = this.data.filtered('(unread > 0 || alert == true)');
+	// 	// 	// unread = this.removeRealmInstance(this.unread);
+	// 	// 	// this.unread.addListener(debounce(() => this.internalSetState({ unread: this.removeRealmInstance(this.unread) }), 300));
+	// 	// } else {
+	// 	// 	this.removeListener(unread);
+	// 	// }
+	// 	// 	// favorites
+	// 	// 	if (showFavorites) {
+	// 	// 		this.favorites = this.data.filtered('f == true');
+	// 	// 		favorites = this.removeRealmInstance(this.favorites);
+	// 	// 		this.favorites.addListener(debounce(() => this.internalSetState({ favorites: this.removeRealmInstance(this.favorites) }), 300));
+	// 	// 	} else {
+	// 	// 		this.removeListener(favorites);
+	// 	// 	}
+	// 	// 	// type
+	// 	// 	if (groupByType) {
+	// 	// 		// channels
+	// 	// 		this.channels = this.data.filtered('t == $0', 'c');
+	// 	// 		channels = this.removeRealmInstance(this.channels);
 
-		// 		this.channels.addListener(debounce(() => this.internalSetState({ channels: this.removeRealmInstance(this.channels) }), 300));
-		// 		this.privateGroup.addListener(debounce(() => this.internalSetState({ privateGroup: this.removeRealmInstance(this.privateGroup) }), 300));
-		// 		this.direct.addListener(debounce(() => this.internalSetState({ direct: this.removeRealmInstance(this.direct) }), 300));
-		// 		this.livechat.addListener(debounce(() => this.internalSetState({ livechat: this.removeRealmInstance(this.livechat) }), 300));
-		// 		this.removeListener(this.chats);
-		// 	} else {
-		// 		// chats
-		// 		if (showUnread) {
-		// 			this.chats = this.data.filtered('(unread == 0 && alert == false)');
-		// 		} else {
-		// 			this.chats = this.data;
-		// 		}
-		// 		chats = this.removeRealmInstance(this.chats);
+	// 	// 		// private
+	// 	// 		this.privateGroup = this.data.filtered('t == $0', 'p');
+	// 	// 		privateGroup = this.removeRealmInstance(this.privateGroup);
 
-		// 		this.chats.addListener(debounce(() => this.internalSetState({ chats: this.removeRealmInstance(this.chats) }), 300));
-		// 		this.removeListener(this.channels);
-		// 		this.removeListener(this.privateGroup);
-		// 		this.removeListener(this.direct);
-		// 		this.removeListener(this.livechat);
-		// 	}
+	// 	// 		// direct
+	// 	// 		this.direct = this.data.filtered('t == $0', 'd');
+	// 	// 		direct = this.removeRealmInstance(this.direct);
 
-		// 	// setState
-		// 	this.internalSetState({
-		// 		chats, unread, favorites, channels, privateGroup, direct, livechat, loading: false
-		// 	});
-		// }
-	}
+	// 	// 		// livechat
+	// 	// 		this.livechat = this.data.filtered('t == $0', 'l');
+	// 	// 		livechat = this.removeRealmInstance(this.livechat);
+
+	// 	// 		this.channels.addListener(debounce(() => this.internalSetState({ channels: this.removeRealmInstance(this.channels) }), 300));
+	// 	// 		this.privateGroup.addListener(debounce(() => this.internalSetState({ privateGroup: this.removeRealmInstance(this.privateGroup) }), 300));
+	// 	// 		this.direct.addListener(debounce(() => this.internalSetState({ direct: this.removeRealmInstance(this.direct) }), 300));
+	// 	// 		this.livechat.addListener(debounce(() => this.internalSetState({ livechat: this.removeRealmInstance(this.livechat) }), 300));
+	// 	// 		this.removeListener(this.chats);
+	// 	// 	} else {
+	// 	// 		// chats
+	// 	// 		if (showUnread) {
+	// 	// 			this.chats = this.data.filtered('(unread == 0 && alert == false)');
+	// 	// 		} else {
+	// 	// 			this.chats = this.data;
+	// 	// 		}
+	// 	// 		chats = this.removeRealmInstance(this.chats);
+
+	// 	// 		this.chats.addListener(debounce(() => this.internalSetState({ chats: this.removeRealmInstance(this.chats) }), 300));
+	// 	// 		this.removeListener(this.channels);
+	// 	// 		this.removeListener(this.privateGroup);
+	// 	// 		this.removeListener(this.direct);
+	// 	// 		this.removeListener(this.livechat);
+	// 	// 	}
+
+	// 	// 	// setState
+	// 	// 	this.internalSetState({
+	// 	// 		chats, unread, favorites, channels, privateGroup, direct, livechat, loading: false
+	// 	// 	});
+	// 	// }
+
+	// 	// FIXME: It's re-rendering everything. It should re-render only the order of chats
+	// 	// https://github.com/Nozbe/WatermelonDB/issues/258
+	// 	this.sub = this.data.subscribe(c => this.internalSetState({ chats: c, loading: false }));
+
+	// 	// this.setState({ loading: false });
+	// }
+	getSubscriptions = () => {}
 
 	removeRealmInstance = (data) => {
 		const array = Array.from(data);
@@ -431,7 +456,7 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	// this is necessary during development (enables Cmd + r)
-	hasActiveDB = () => database && database.databases && database.databases.activeDB;
+	// hasActiveDB = () => database && database.databases && database.databases.activeDB;
 
 	handleBackPress = () => {
 		const { searching } = this.state;
@@ -453,39 +478,39 @@ export default class RoomsListView extends LoggedView {
 		});
 	}
 
-	goRoom = ({ rid, name, t }) => {
-		this.cancelSearchingAndroid();
-		Navigation.push('RoomsListView', {
-			component: {
-				name: 'RoomView',
-				passProps: {
-					rid, name, t
-				}
-			}
-		});
-	}
+	// goRoom = ({ rid, name, t }) => {
+	// 	this.cancelSearchingAndroid();
+	// 	Navigation.push('RoomsListView', {
+	// 		component: {
+	// 			name: 'RoomView',
+	// 			passProps: {
+	// 				rid, name, t
+	// 			}
+	// 		}
+	// 	});
+	// }
 
-	_onPressItem = async(item = {}) => {
-		if (!item.search) {
-			const { rid, name, t } = item;
-			return this.goRoom({ rid, name, t });
-		}
-		if (item.t === 'd') {
-			// if user is using the search we need first to join/create room
-			try {
-				const { username } = item;
-				const result = await RocketChat.createDirectMessage(username);
-				if (result.success) {
-					return this.goRoom({ rid: result.room._id, name: username, t: 'd' });
-				}
-			} catch (e) {
-				log('RoomsListView._onPressItem', e);
-			}
-		} else {
-			const { rid, name, t } = item;
-			return this.goRoom({ rid, name, t });
-		}
-	}
+	// _onPressItem = async(item = {}) => {
+	// 	if (!item.search) {
+	// 		const { rid, name, t } = item;
+	// 		return this.goRoom({ rid, name, t });
+	// 	}
+	// 	if (item.t === 'd') {
+	// 		// if user is using the search we need first to join/create room
+	// 		try {
+	// 			const { username } = item;
+	// 			const result = await RocketChat.createDirectMessage(username);
+	// 			if (result.success) {
+	// 				return this.goRoom({ rid: result.room._id, name: username, t: 'd' });
+	// 			}
+	// 		} catch (e) {
+	// 			log('RoomsListView._onPressItem', e);
+	// 		}
+	// 	} else {
+	// 		const { rid, name, t } = item;
+	// 		return this.goRoom({ rid, name, t });
+	// 	}
+	// }
 
 	toggleSort = () => {
 		const { toggleSortDropdown } = this.props;
@@ -575,89 +600,53 @@ export default class RoomsListView extends LoggedView {
 			return null;
 		} else if (header === 'Chats' && groupByType) {
 			return null;
+		} else if (data === 'chats' && showUnread) {
+			data = 'read';
 		}
-		if (data.length > 0) {
-			return (
-				<FlatList
-					data={data}
-					extraData={data}
-					keyExtractor={keyExtractor}
-					style={styles.list}
-					renderItem={this.renderItem}
-					ItemSeparatorComponent={this.renderSeparator}
-					ListHeaderComponent={() => this.renderSectionHeader(header)}
-					getItemLayout={getItemLayout}
-					enableEmptySections
-					removeClippedSubviews
-					keyboardShouldPersistTaps='always'
-					initialNumToRender={12}
-					windowSize={7}
-				/>
-			);
-		}
-		return null;
-	}
-
-	renderList = () => {
-		const {
-			search, chats, unread, favorites, channels, direct, privateGroup, livechat
-		} = this.state;
-
-		if (search.length > 0) {
-			return (
-				<FlatList
-					data={search}
-					extraData={search}
-					keyExtractor={keyExtractor}
-					style={styles.list}
-					renderItem={this.renderItem}
-					ItemSeparatorComponent={this.renderSeparator}
-					getItemLayout={getItemLayout}
-					enableEmptySections
-					removeClippedSubviews
-					keyboardShouldPersistTaps='always'
-					initialNumToRender={12}
-					windowSize={7}
-				/>
-			);
-		}
-
-		return (
-			<View style={styles.container}>
-				{this.renderSection(unread, 'Unread')}
-				{this.renderSection(favorites, 'Favorites')}
-				{this.renderSection(channels, 'Channels')}
-				{this.renderSection(direct, 'Direct_Messages')}
-				{this.renderSection(privateGroup, 'Private_Groups')}
-				{this.renderSection(livechat, 'Livechat')}
-				{this.renderSection(chats, 'Chats')}
-			</View>
-		);
-	}
-
-	renderScroll = () => {
-		// const { loading } = this.state;
-
-		// if (loading) {
-		// 	return <ActivityIndicator style={styles.loading} />;
-		// }
-
-		// const { showUnread, showFavorites, groupByType } = this.props;
-		// if (!(showUnread || showFavorites || groupByType)) {
-		// 	const { chats, search } = this.state;
+		// if (data.length > 0) {
 		// 	return (
 		// 		<FlatList
-		// 			ref={this.getScrollRef}
-		// 			// data={search.length ? search : chats}
-		// 			// extraData={search.length ? search : chats}
-		// 			data={chats}
-		// 			extraData={chats}
-		// 			contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
+		// 			data={data}
+		// 			extraData={data}
 		// 			keyExtractor={keyExtractor}
 		// 			style={styles.list}
 		// 			renderItem={this.renderItem}
 		// 			ItemSeparatorComponent={this.renderSeparator}
-		// 			ListHeaderComponent={this.renderListHeader}
+		// 			ListHeaderComponent={() => this.renderSectionHeader(header)}
+		// 			getItemLayout={getItemLayout}
+		// 			enableEmptySections
+		// 			removeClippedSubviews
+		// 			keyboardShouldPersistTaps='always'
+		// 			initialNumToRender={12}
+		// 			windowSize={7}
+		// 		/>
+		// 	);
+		// }
+		// return null;
+		console.log(data)
+		return (
+			<EnhancedList
+				query={this.query}
+				listHeader={() => this.renderSectionHeader(header)}
+				content={data}
+			/>
+		);
+	}
+
+	renderList = () => {
+		// const {
+		// 	search, chats, unread, favorites, channels, direct, privateGroup, livechat
+		// } = this.state;
+
+		// if (search.length > 0) {
+		// 	return (
+		// 		<FlatList
+		// 			data={search}
+		// 			extraData={search}
+		// 			keyExtractor={keyExtractor}
+		// 			style={styles.list}
+		// 			renderItem={this.renderItem}
+		// 			ItemSeparatorComponent={this.renderSeparator}
 		// 			getItemLayout={getItemLayout}
 		// 			enableEmptySections
 		// 			removeClippedSubviews
@@ -668,40 +657,68 @@ export default class RoomsListView extends LoggedView {
 		// 	);
 		// }
 
-		const { chats, search } = this.state;
 		return (
-			<FlatList
-				ref={this.getScrollRef}
-				// data={search.length ? search : chats}
-				// extraData={search.length ? search : chats}
-				data={chats}
-				// extraData={chats}
-				contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
-				// keyExtractor={keyExtractor}
-				style={styles.list}
-				renderItem={this.renderItem}
-				ItemSeparatorComponent={this.renderSeparator}
-				ListHeaderComponent={this.renderListHeader}
-				getItemLayout={getItemLayout}
-				enableEmptySections
-				removeClippedSubviews
-				keyboardShouldPersistTaps='always'
-				initialNumToRender={12}
-				windowSize={7}
-			/>
+			<View style={styles.container}>
+				{this.renderSection('unread', 'Unread')}
+				{this.renderSection('favorites', 'Favorites')}
+				{this.renderSection('channels', 'Channels')}
+				{this.renderSection('direct', 'Direct_Messages')}
+				{this.renderSection('privateGroup', 'Private_Groups')}
+				{this.renderSection('livechat', 'Livechat')}
+				{this.renderSection('chats', 'Chats')}
+			</View>
 		);
+	}
 
+	renderScroll = () => {
+		const { loading } = this.state;
+
+		if (loading) {
+			return <ActivityIndicator style={styles.loading} />;
+		}
+
+		const { showUnread, showFavorites, groupByType } = this.props;
+		if (!(showUnread || showFavorites || groupByType)) {
+			// const { chats, search } = this.state;
+			return (
+				<EnhancedList query={this.query} />
+			);
+		}
+
+		// const { chats, search } = this.state;
 		// return (
-		// 	<ScrollView
+		// 	<FlatList
 		// 		ref={this.getScrollRef}
+		// 		// data={search.length ? search : chats}
+		// 		// extraData={search.length ? search : chats}
+		// 		data={chats}
+		// 		// extraData={chats}
 		// 		contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
+		// 		keyExtractor={keyExtractor}
+		// 		style={styles.list}
+		// 		renderItem={this.renderItem}
+		// 		ItemSeparatorComponent={this.renderSeparator}
+		// 		ListHeaderComponent={this.renderListHeader}
+		// 		getItemLayout={getItemLayout}
+		// 		enableEmptySections
+		// 		removeClippedSubviews
 		// 		keyboardShouldPersistTaps='always'
-		// 		testID='rooms-list-view-list'
-		// 	>
-		// 		{this.renderListHeader()}
-		// 		{this.renderList()}
-		// 	</ScrollView>
+		// 		initialNumToRender={12}
+		// 		windowSize={10}
+		// 	/>
 		// );
+
+		return (
+			<ScrollView
+				ref={this.getScrollRef}
+				contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
+				keyboardShouldPersistTaps='always'
+				testID='rooms-list-view-list'
+			>
+				{this.renderListHeader()}
+				{this.renderList()}
+			</ScrollView>
+		);
 	}
 
 	render = () => {
@@ -709,66 +726,119 @@ export default class RoomsListView extends LoggedView {
 			sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown
 		} = this.props;
 
-		// return (
-		// 	<SafeAreaView style={styles.container} testID='rooms-list-view' forceInset={{ bottom: 'never' }}>
-		// 		{this.renderScroll()}
-		// 		{showSortDropdown
-		// 			? (
-		// 				<SortDropdown
-		// 					close={this.toggleSort}
-		// 					sortBy={sortBy}
-		// 					groupByType={groupByType}
-		// 					showFavorites={showFavorites}
-		// 					showUnread={showUnread}
-		// 				/>
-		// 			)
-		// 			: null
-		// 		}
-		// 		{showServerDropdown ? <ServerDropdown navigator={navigator} /> : null}
-		// 		<ConnectionBadge />
-		// 	</SafeAreaView>
-		// );
-
 		return (
-			<FlatList
-				data={this.state.chats}
-				renderItem={this.renderItem}
-				keyExtractor={keyExtractor}
-			/>
+			<SafeAreaView style={styles.container} testID='rooms-list-view' forceInset={{ bottom: 'never' }}>
+				{this.renderScroll()}
+				{showSortDropdown
+					? (
+						<SortDropdown
+							close={this.toggleSort}
+							sortBy={sortBy}
+							groupByType={groupByType}
+							showFavorites={showFavorites}
+							showUnread={showUnread}
+						/>
+					)
+					: null
+				}
+				{showServerDropdown ? <ServerDropdown navigator={navigator} /> : null}
+				<ConnectionBadge />
+			</SafeAreaView>
 		);
-
-		// console.log('RoomsList rererererererere')
-
-		// return (
-		// 	<FlatList
-		// 		// ref={this.getScrollRef}
-		// 		// data={search.length ? search : chats}
-		// 		// extraData={search.length ? search : chats}
-		// 		data={this.state.chats}
-		// 		// extraData={this.state.chats}
-		// 		// contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
-		// 		keyExtractor={keyExtractor}
-		// 		// style={styles.list}
-		// 		renderItem={this.renderItem}
-		// 		// ItemSeparatorComponent={this.renderSeparator}
-		// 		// ListHeaderComponent={this.renderListHeader}
-		// 		// getItemLayout={getItemLayout}
-		// 		// enableEmptySections
-		// 		// removeClippedSubviews
-		// 		// keyboardShouldPersistTaps='always'
-		// 		// initialNumToRender={12}
-		// 		// windowSize={7}
-		// 	/>
-		// );
 	}
 }
 
-// const enhance = withObservables([], () => ({
-// 	subscriptions: appDatabase.collections.get('subscriptions').query(
-// 		Q.where('archived', false),
-// 		Q.where('open', true)
-// 	)
-// }));
-// const EnhancedRoomsListView = enhance(RoomsListView);
+const renderItem = ({ item }) => (
+	<RoomItem
+		item={item}
+		key={item.id}
+		onPress={() => onPressItem(item)}
+		testID={`rooms-list-view-item-${ item.name }`}
+		height={ROW_HEIGHT}
+	/>
+);
 
-// export default EnhancedRoomsListView;
+const goRoom = ({ rid, name, t }) => {
+	// this.cancelSearchingAndroid();
+	Navigation.push('RoomsListView', {
+		component: {
+			name: 'RoomView',
+			passProps: {
+				rid, name, t
+			}
+		}
+	});
+}
+
+const onPressItem = async(item = {}) => {
+	if (!item.search) {
+		const { rid, name, t } = item;
+		return goRoom({ rid, name, t });
+	}
+	if (item.t === 'd') {
+		// if user is using the search we need first to join/create room
+		try {
+			const { username } = item;
+			const result = await RocketChat.createDirectMessage(username);
+			if (result.success) {
+				return goRoom({ rid: result.room._id, name: username, t: 'd' });
+			}
+		} catch (e) {
+			log('RoomsListView._onPressItem', e);
+		}
+	} else {
+		const { rid, name, t } = item;
+		return goRoom({ rid, name, t });
+	}
+}
+
+const renderSeparator = () => <View style={styles.separator} />;
+
+// const sortSubscriptions = subscriptions => subscriptions.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase())
+const sortSubscriptions = subscriptions => subscriptions.sort((a, b) => a.roomUpdatedAt < b.roomUpdatedAt);
+const filterUnread = subscriptions => subscriptions.filter(sub => (sub.unread > 0 || sub.alert));
+const filterRead = subscriptions => subscriptions.filter(sub => (sub.unread === 0 && !sub.alert));
+const filterFavorites = subscriptions => subscriptions.filter(sub => sub.f);
+const filterChannels = subscriptions => subscriptions.filter(sub => sub.t === 'c');
+const filterDirects = subscriptions => subscriptions.filter(sub => sub.t === 'd');
+const filterGroups = subscriptions => subscriptions.filter(sub => sub.t === 'p');
+const filterLivechat = subscriptions => subscriptions.filter(sub => sub.t === 'l');
+
+const List = ({ subscriptions, listHeader, content }) => {
+	LayoutAnimation.easeInEaseOut();
+	let chats = sortSubscriptions(subscriptions);
+
+	if (content === 'unread') {
+		chats = filterUnread(chats);
+	} else if (content === 'read') {
+		chats = filterRead(chats);
+	}
+
+	return (
+		<FlatList
+			// ref={this.getScrollRef}
+			// data={search.length ? search : chats}
+			// extraData={search.length ? search : chats}
+			data={chats}
+			contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
+			keyExtractor={keyExtractor}
+			style={styles.list}
+			renderItem={renderItem}
+			ItemSeparatorComponent={renderSeparator}
+			ListHeaderComponent={listHeader}
+			getItemLayout={getItemLayout}
+			enableEmptySections
+			removeClippedSubviews
+			keyboardShouldPersistTaps='always'
+			initialNumToRender={12}
+			windowSize={10}
+		/>
+	);
+};
+
+const enhance = withObservables(['query'], ({ query }) => ({
+	subscriptions: query.observeWithColumns('room_updated_at')
+}));
+const EnhancedList = enhance(List);
+
+// console.disableYellowBox = true;

@@ -41,7 +41,7 @@ const RoomItem = React.memo(({
 		accessibilityLabel += `, ${ I18n.t('last_message') } ${ date }`;
 	}
 
-	console.log('Room Item rerererere')
+	// console.log('Room Item rerererere')
 
 	return (
 		<RectButton
