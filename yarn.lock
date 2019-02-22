@@ -10215,10 +10215,10 @@ react-native-dialog@^5.5.0:
   version "0.5.2"
   resolved "https://codeload.github.com/corymsmith/react-native-fabric/tar.gz/523a4edab3b2bf55ea9eeea2cf0dde82c5c29dd4"
 
-react-native-fast-image@5.0.11:
-  version "5.0.11"
-  resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-5.0.11.tgz#a8f21864d379e6f566e4f68dd04f2c0f7de0dfec"
-  integrity sha512-5NNQwRniOfSBAvKldyPEs1xotWxrFcplOSQiVc78dv/EhH4G0IpdrLtsQmBdB91EMtPQfvoT269sKqj5MJCgyA==
+react-native-fast-image@5.1.3:
+  version "5.1.3"
+  resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-5.1.3.tgz#ef599d8aebe44718111ee5073e625f995edb11ac"
+  integrity sha512-ohEbFeLeyNxN9eFBA31JkpJurlGeDO3JLEFYokNG84qAD1wmeFLQPf4PpXo+jRYyfetULF6jgQWM/A/uhxpdUQ==
 
 react-native-fit-image@^1.5.2:
   version "1.5.4"
