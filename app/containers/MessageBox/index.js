@@ -281,7 +281,7 @@ export default class MessageBox extends Component {
 					accessibilityLabel={I18n.t('Send message')}
 					accessibilityTraits='button'
 				>
-					<CustomIcon name='send' size={23} color={BLUE_COLOR} />
+					<CustomIcon name='send1' size={23} color={BLUE_COLOR} />
 				</BorderlessButton>
 			);
 			return icons;
