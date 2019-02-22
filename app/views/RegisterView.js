@@ -189,7 +189,7 @@ export default class RegisterView extends LoggedView {
 							inputRef={(e) => { this.usernameInput = e; }}
 							placeholder={I18n.t('Username')}
 							returnKeyType='next'
-							iconLeft='mention'
+							iconLeft='at'
 							onChangeText={username => this.setState({ username })}
 							onSubmitEditing={() => { this.emailInput.focus(); }}
 							testID='register-view-username'

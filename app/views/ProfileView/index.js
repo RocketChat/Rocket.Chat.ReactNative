@@ -6,7 +6,6 @@ import {
 import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
 import SHA256 from 'js-sha256';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -28,7 +27,7 @@ import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
 import { appStart as appStartAction } from '../../actions';
 import { setUser as setUserAction } from '../../actions/login';
-import Icons from '../../lib/Icons';
+import Icons, { CustomIcon } from '../../lib/Icons';
 
 @connect(state => ({
 	user: {
@@ -332,12 +331,12 @@ export default class ProfileView extends LoggedView {
 					key: 'profile-view-reset-avatar'
 				})}
 				{this.renderAvatarButton({
-					child: <Icon name='file-upload' size={30} />,
+					child: <CustomIcon name='upload' size={30} />,
 					onPress: () => this.pickImage(),
 					key: 'profile-view-upload-avatar'
 				})}
 				{this.renderAvatarButton({
-					child: <Icon name='link' size={30} />,
+					child: <CustomIcon name='permalink' size={30} />,
 					onPress: () => this.setAvatar({ url: avatarUrl, data: avatarUrl, service: 'url' }),
 					disabled: !avatarUrl,
 					key: 'profile-view-avatar-url-button'

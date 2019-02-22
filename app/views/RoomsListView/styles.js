@@ -84,11 +84,12 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	sortIcon: {
-		width: 20,
-		height: 20,
+		width: 22,
+		height: 22,
 		marginHorizontal: 15,
-		resizeMode: 'contain',
-		justifyContent: 'center'
+		// resizeMode: 'contain',
+		// justifyContent: 'center',
+		color: '#9ea2a8'
 	},
 	groupTitleContainer: {
 		paddingHorizontal: 15,
@@ -148,10 +149,8 @@ export default StyleSheet.create({
 		color: '#9EA2A8'
 	},
 	checkIcon: {
-		width: 20,
-		height: 20,
 		marginHorizontal: 15,
-		resizeMode: 'contain'
+		color: '#1d74f5'
 	},
 	serverSeparator: {
 		height: StyleSheet.hairlineWidth,

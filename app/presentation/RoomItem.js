@@ -1,9 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import {
-	View, Text, StyleSheet, Image
-} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 import { RectButton } from 'react-native-gesture-handler';
@@ -14,6 +12,7 @@ import Touch from '../utils/touch/index'; //eslint-disable-line
 import RoomTypeIcon from '../containers/RoomTypeIcon';
 import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
+import DisclosureIndicator from '../containers/DisclosureIndicator';
 
 const styles = StyleSheet.create({
 	container: {
@@ -80,17 +79,6 @@ const styles = StyleSheet.create({
 		height: 10,
 		marginRight: 7,
 		marginTop: 3
-	},
-	disclosureContainer: {
-		height: '100%',
-		marginLeft: 6,
-		marginRight: 9,
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	disclosureIndicator: {
-		width: 20,
-		height: 20
 	},
 	emptyDisclosureAndroid: {
 		width: 15
@@ -224,7 +212,7 @@ export default class RoomItem extends React.Component {
 		if (type === 'd') {
 			return <Status style={[styles.status]} id={id} />;
 		}
-		return <RoomTypeIcon type={type} size={12} />;
+		return <RoomTypeIcon type={type} />;
 	}
 
 	formatDate = date => moment(date).calendar(null, {
@@ -237,9 +225,7 @@ export default class RoomItem extends React.Component {
 	renderDisclosureIndicator = () => {
 		if (isIOS) {
 			return (
-				<View style={styles.disclosureContainer}>
-					<Image source={{ uri: 'disclosure_indicator' }} style={styles.disclosureIndicator} />
-				</View>
+				<DisclosureIndicator />
 			);
 		}
 		return <View style={styles.emptyDisclosureAndroid} />;

@@ -1,27 +1,26 @@
-import { Dimensions } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { isIOS, isAndroid } from '../utils/deviceInfo';
+import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
 
-const prefix = isIOS ? 'ios' : 'md';
+import icoMoonConfig from './selection.json';
+
+const CustomIcon = createIconSetFromIcoMoon(
+	icoMoonConfig,
+	'custom',
+	'custom.ttf'
+);
+
+export { CustomIcon };
 
 // icon name from provider: [ size of the uri, icon provider, name to be used later ]
 const icons = {
-	[`${ prefix }-star`]: [25, Ionicons, 'star'],
-	[`${ prefix }-star-outline`]: [25, Ionicons, 'starOutline'],
-	[`${ prefix }-more`]: [25, Ionicons, 'more'],
-	[`${ prefix }-create`]: [25, Ionicons, 'create'],
-	[`${ prefix }-close`]: [25, Ionicons, 'close']
+	'Star-filled': [25, CustomIcon, 'star'],
+	star: [25, CustomIcon, 'starOutline'],
+	menu: [25, CustomIcon, 'more'],
+	edit: [25, CustomIcon, 'edit'],
+	cross: [25, CustomIcon, 'close'],
+	customize: [25, CustomIcon, 'settings'],
+	magnifier: [25, CustomIcon, 'search'],
+	'edit-rounded': [25, CustomIcon, 'new_channel']
 };
-
-if (__DEV__) {
-	icons[`${ prefix }-settings`] = [25, Ionicons, 'settings'];
-	icons[`${ prefix }-add`] = [25, Ionicons, 'new_channel'];
-	icons[`${ prefix }-more`] = [25, Ionicons, 'more'];
-	if (isAndroid) {
-		icons[`${ prefix }-search`] = [25, Ionicons, 'search'];
-		icons[`${ prefix }-arrow-back`] = [25, Ionicons, 'back'];
-	}
-}
 
 class Icons {
 	constructor() {
@@ -37,13 +36,8 @@ class Icons {
 		Object.keys(icons).forEach((icon, i) => (this.icons[icons[icon][2]] = sources[i]));
 	}
 
-	isAndroidDev = () => __DEV__ && isAndroid
-
-	getSource(icon, native = true) {
-		if (this.isAndroidDev() || !native) {
-			return this.icons[icon];
-		}
-		return { uri: icon, scale: Dimensions.get('window').scale };
+	getSource(icon) {
+		return this.icons[icon];
 	}
 }
 

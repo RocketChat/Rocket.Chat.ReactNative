@@ -5,11 +5,11 @@ import {
 } from 'react-native';
 import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import { BorderlessButton } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import styles from './styles';
 import I18n from '../../i18n';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
+import { CustomIcon } from '../../lib/Icons';
 
 export const _formatTime = function(seconds) {
 	let minutes = Math.floor(seconds / 60);
@@ -128,10 +128,10 @@ export default class extends React.PureComponent {
 						accessibilityTraits='button'
 						style={styles.actionButton}
 					>
-						<Icon
+						<CustomIcon
 							size={22}
 							color='#f5455c'
-							name='clear'
+							name='cross'
 						/>
 					</BorderlessButton>
 					<Text key='currentTime' style={styles.textBoxInput}>{currentTime}</Text>
@@ -141,7 +141,7 @@ export default class extends React.PureComponent {
 						accessibilityTraits='button'
 						style={styles.actionButton}
 					>
-						<Icon
+						<CustomIcon
 							size={22}
 							color='#2de0a5'
 							name='check'

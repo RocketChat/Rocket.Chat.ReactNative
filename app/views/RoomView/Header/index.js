@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, StyleSheet, Image, LayoutAnimation
+	View, Text, StyleSheet, LayoutAnimation
 } from 'react-native';
 import { connect } from 'react-redux';
 import { responsive } from 'react-native-responsive-ui';
@@ -11,6 +11,7 @@ import I18n from '../../../i18n';
 import { STATUS_COLORS } from '../../../constants/colors';
 import sharedStyles from '../../Styles';
 import { isIOS } from '../../../utils/deviceInfo';
+import { CustomIcon } from '../../../lib/Icons';
 
 const TITLE_SIZE = 18;
 const ICON_SIZE = 18;
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
 		width: ICON_SIZE,
 		height: ICON_SIZE,
 		marginRight: 8,
-		tintColor: isIOS ? '#9EA2A8' : '#fff'
+		color: isIOS ? '#9EA2A8' : '#fff'
 	},
 	typing: {
 		...sharedStyles.textRegular,
@@ -147,7 +148,7 @@ export default class RoomHeaderView extends Component {
 			window, title, type, status, usersTyping
 		} = this.props;
 		const icon = {
-			d: 'mention_header',
+			d: 'at',
 			c: 'hashtag'
 		}[type] || 'lock';
 		const portrait = window.height > window.width;
@@ -171,15 +172,16 @@ export default class RoomHeaderView extends Component {
 				]}
 			>
 				<View style={styles.titleContainer}>
-					<Image
-						source={{ uri: icon }}
+					<CustomIcon
+						name={icon}
+						size={ICON_SIZE * scale}
 						style={[
 							styles.type,
 							{
 								width: ICON_SIZE * scale,
 								height: ICON_SIZE * scale
 							},
-							type === 'd' && { tintColor: STATUS_COLORS[status] }
+							type === 'd' && { color: STATUS_COLORS[status] }
 						]}
 					/>
 					<Text style={[styles.title, { fontSize: TITLE_SIZE * scale }]} numberOfLines={1}>{title}</Text>

@@ -100,8 +100,7 @@ export default StyleSheet.create({
 		marginTop: 5
 	},
 	addReaction: {
-		width: 17,
-		height: 17
+		color: '#1D74F5'
 	},
 	errorButton: {
 		paddingHorizontal: 15,
@@ -119,8 +118,7 @@ export default StyleSheet.create({
 		borderRadius: 4
 	},
 	broadcastButtonIcon: {
-		width: 14,
-		height: 12,
+		color: '#fff',
 		marginRight: 11
 	},
 	broadcastButtonText: {

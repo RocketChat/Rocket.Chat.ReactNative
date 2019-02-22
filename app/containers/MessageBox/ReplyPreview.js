@@ -3,9 +3,9 @@ import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Markdown from '../message/Markdown';
+import { CustomIcon } from '../../lib/Icons';
 
 const styles = StyleSheet.create({
 	container: {
@@ -79,7 +79,7 @@ export default class ReplyPreview extends Component {
 					</View>
 					<Markdown msg={message.msg} customEmojis={customEmojis} baseUrl={baseUrl} username={username} />
 				</View>
-				<Icon name='close' color='#9ea2a8' size={20} style={styles.close} onPress={this.close} />
+				<CustomIcon name='cross' color='#9ea2a8' size={20} style={styles.close} onPress={this.close} />
 			</View>
 		);
 	}

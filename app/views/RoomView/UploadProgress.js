@@ -3,7 +3,6 @@ import {
 	View, Text, StyleSheet, TouchableOpacity, ScrollView
 } from 'react-native';
 import PropTypes from 'prop-types';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { responsive } from 'react-native-responsive-ui';
 import equal from 'deep-equal';
 
@@ -11,6 +10,7 @@ import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import I18n from '../../i18n';
+import { CustomIcon } from '../../lib/Icons';
 
 const styles = StyleSheet.create({
 	container: {
@@ -143,11 +143,11 @@ export default class UploadProgress extends Component {
 			return (
 				[
 					<View key='row' style={styles.row}>
-						<Icon name='image' size={20} color='#9EA2A8' />
+						<CustomIcon name='file-generic' size={20} color='#9EA2A8' />
 						<Text style={[styles.descriptionContainer, styles.descriptionText]} ellipsizeMode='tail' numberOfLines={1}>
 							{I18n.t('Uploading')} {item.name}
 						</Text>
-						<Icon name='close' size={20} color='#9EA2A8' onPress={() => this.cancelUpload(item)} />
+						<CustomIcon name='cross' size={20} color='#9EA2A8' onPress={() => this.cancelUpload(item)} />
 					</View>,
 					<View key='progress' style={[styles.progress, { width: (window.width * item.progress) / 100 }]} />
 				]
@@ -155,14 +155,14 @@ export default class UploadProgress extends Component {
 		}
 		return (
 			<View style={styles.row}>
-				<Icon name='warning' size={20} color='#FF5050' />
+				<CustomIcon name='warning' size={20} color='#FF5050' />
 				<View style={styles.descriptionContainer}>
 					<Text style={styles.descriptionText}>{I18n.t('Error_uploading')} {item.name}</Text>
 					<TouchableOpacity onPress={() => this.tryAgain(item)}>
 						<Text style={styles.tryAgainButtonText}>{I18n.t('Try_again')}</Text>
 					</TouchableOpacity>
 				</View>
-				<Icon name='close' size={20} color='#9EA2A8' onPress={() => this.deleteUpload(item)} />
+				<CustomIcon name='cross' size={20} color='#9EA2A8' onPress={() => this.deleteUpload(item)} />
 			</View>
 		);
 	}

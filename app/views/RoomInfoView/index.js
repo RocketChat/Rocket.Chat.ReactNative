@@ -100,7 +100,7 @@ export default class RoomInfoView extends LoggedView {
 				topBar: {
 					rightButtons: [{
 						id: 'edit',
-						icon: Icons.getSource('create', false),
+						icon: Icons.getSource('edit'),
 						testID: 'room-info-view-edit-button'
 					}]
 				}

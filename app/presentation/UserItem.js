@@ -1,12 +1,13 @@
 import React from 'react';
 import {
-	Text, View, StyleSheet, ViewPropTypes, Image
+	Text, View, StyleSheet, ViewPropTypes
 } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Avatar from '../containers/Avatar';
 import Touch from '../utils/touch';
 import { isIOS } from '../utils/deviceInfo';
+import { CustomIcon } from '../lib/Icons';
 
 const styles = StyleSheet.create({
 	button: {
@@ -36,11 +37,9 @@ const styles = StyleSheet.create({
 		color: '#9EA2A8'
 	},
 	icon: {
-		width: 20,
-		height: 20,
 		marginHorizontal: 15,
-		resizeMode: 'contain',
-		alignSelf: 'center'
+		alignSelf: 'center',
+		color: '#1D74F5'
 	}
 });
 
@@ -54,7 +53,7 @@ const UserItem = ({
 				<Text style={styles.name}>{name}</Text>
 				<Text style={styles.username}>@{username}</Text>
 			</View>
-			{icon ? <Image source={{ uri: icon }} style={styles.icon} /> : null}
+			{icon ? <CustomIcon name={icon} size={22} style={styles.icon} /> : null}
 		</View>
 	</Touch>
 );

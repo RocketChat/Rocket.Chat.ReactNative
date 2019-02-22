@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const styles = StyleSheet.create({
 	style: {
 		marginRight: 7,
-		marginTop: 3
+		marginTop: 2
 	}
 });
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, ScrollView, View, StyleSheet, Image
+	Text, ScrollView, View, StyleSheet
 } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import { RectButton } from 'react-native-gesture-handler';
@@ -14,6 +14,7 @@ import LoggedView from './View';
 import I18n from '../i18n';
 import { DARK_HEADER } from '../constants/headerOptions';
 import Icons from '../lib/Icons';
+import DisclosureIndicator from '../containers/DisclosureIndicator';
 
 const styles = StyleSheet.create({
 	container: {
@@ -47,10 +48,6 @@ const styles = StyleSheet.create({
 		...sharedStyles.textMedium,
 		color: '#0c0d0f',
 		fontSize: 18
-	},
-	disclosureIndicator: {
-		width: 20,
-		height: 20
 	}
 });
 
@@ -69,7 +66,7 @@ export default class LegalView extends LoggedView {
 				},
 				leftButtons: [{
 					id: 'close',
-					icon: isAndroid ? Icons.getSource('back') : undefined,
+					icon: isAndroid ? Icons.getSource('close') : undefined,
 					text: isIOS ? I18n.t('Close') : undefined,
 					testID: 'legal-view-close'
 				}]
@@ -105,7 +102,7 @@ export default class LegalView extends LoggedView {
 	renderItem = ({ text, route, testID }) => (
 		<RectButton style={styles.item} onPress={() => this.onPressItem({ route })} testID={testID}>
 			<Text style={styles.text}>{I18n.t(text)}</Text>
-			<Image source={{ uri: 'disclosure_indicator' }} style={styles.disclosureIndicator} />
+			<DisclosureIndicator />
 		</RectButton>
 	)
 

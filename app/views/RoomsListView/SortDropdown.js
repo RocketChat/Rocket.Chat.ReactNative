@@ -11,6 +11,8 @@ import RocketChat from '../../lib/rocketchat';
 import { setPreference } from '../../actions/sortPreferences';
 import log from '../../utils/log';
 import I18n from '../../i18n';
+import { CustomIcon } from '../../lib/Icons';
+import Check from './Check';
 
 const ANIMATION_DURATION = 200;
 
@@ -125,38 +127,38 @@ export default class Sort extends PureComponent {
 				>
 					<Touch key='sort-alphabetical' style={styles.sortItemButton} onPress={this.sortByName}>
 						<View style={styles.sortItemContainer}>
-							<Image style={styles.sortIcon} source={{ uri: 'sort_alphabetically' }} />
+							<CustomIcon style={styles.sortIcon} size={22} name='sort' />
 							<Text style={styles.sortItemText}>{I18n.t('Alphabetical')}</Text>
-							{sortBy === 'alphabetical' ? <Image style={styles.sortIcon} source={{ uri: 'check' }} /> : null}
+							{sortBy === 'alphabetical' ? <Check /> : null}
 						</View>
 					</Touch>
 					<Touch key='sort-activity' style={styles.sortItemButton} onPress={this.sortByActivity}>
 						<View style={styles.sortItemContainer}>
 							<Image style={styles.sortIcon} source={{ uri: 'sort_activity' }} />
 							<Text style={styles.sortItemText}>{I18n.t('Activity')}</Text>
-							{sortBy === 'activity' ? <Image style={styles.sortIcon} source={{ uri: 'check' }} /> : null}
+							{sortBy === 'activity' ? <Check /> : null}
 						</View>
 					</Touch>
 					<View style={styles.sortSeparator} />
 					<Touch key='group-type' style={styles.sortItemButton} onPress={this.toggleGroupByType}>
 						<View style={styles.sortItemContainer}>
-							<Image style={styles.sortIcon} source={{ uri: 'group_type' }} />
+							<CustomIcon style={styles.sortIcon} size={22} name='sort1' />
 							<Text style={styles.sortItemText}>{I18n.t('Group_by_type')}</Text>
-							{groupByType ? <Image style={styles.sortIcon} source={{ uri: 'check' }} /> : null}
+							{groupByType ? <Check /> : null}
 						</View>
 					</Touch>
 					<Touch key='group-favorites' style={styles.sortItemButton} onPress={this.toggleGroupByFavorites}>
 						<View style={styles.sortItemContainer}>
-							<Image style={styles.sortIcon} source={{ uri: 'group_favorites' }} />
+							<CustomIcon style={styles.sortIcon} size={22} name='star' />
 							<Text style={styles.sortItemText}>{I18n.t('Group_by_favorites')}</Text>
-							{showFavorites ? <Image style={styles.sortIcon} source={{ uri: 'check' }} /> : null}
+							{showFavorites ? <Check /> : null}
 						</View>
 					</Touch>
 					<Touch key='group-unread' style={styles.sortItemButton} onPress={this.toggleUnread}>
 						<View style={styles.sortItemContainer}>
-							<Image style={styles.sortIcon} source={{ uri: 'group_unread' }} />
+							<CustomIcon style={styles.sortIcon} size={22} name='eye-off' />
 							<Text style={styles.sortItemText}>{I18n.t('Unread_on_top')}</Text>
-							{showUnread ? <Image style={styles.sortIcon} source={{ uri: 'check' }} /> : null}
+							{showUnread ? <Check /> : null}
 						</View>
 					</Touch>
 				</Animated.View>,
@@ -167,7 +169,7 @@ export default class Sort extends PureComponent {
 				>
 					<View style={styles.sortItemContainer}>
 						<Text style={styles.sortToggleText}>{I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') })}</Text>
-						<Image style={styles.sortIcon} source={{ uri: 'group_type' }} />
+						<CustomIcon style={styles.sortIcon} size={22} name='sort1' />
 					</View>
 				</Touch>
 			]

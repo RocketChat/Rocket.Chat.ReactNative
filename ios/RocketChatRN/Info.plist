@@ -72,6 +72,7 @@
 	<string>Upload photos to share with other users or to change your avatar</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>custom.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>EvilIcons.ttf</string>
 		<string>FontAwesome.ttf</string>

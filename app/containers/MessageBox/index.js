@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, TextInput, FlatList, Text, TouchableOpacity, Alert, Image
+	View, TextInput, FlatList, Text, TouchableOpacity, Alert
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
@@ -30,9 +29,12 @@ import './EmojiKeyboard';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
+import { CustomIcon } from '../../lib/Icons';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
+
+const BLUE_COLOR = '#1D74F5';
 
 const onlyUnique = function onlyUnique(value, index, self) {
 	return self.indexOf(({ _id }) => value._id === _id) === index;
@@ -224,10 +226,10 @@ export default class MessageBox extends Component {
 					style={styles.actionButton}
 					testID='messagebox-cancel-editing'
 				>
-					<Icon
+					<CustomIcon
 						size={22}
-						color='#1d74f5'
-						name='close'
+						color={BLUE_COLOR}
+						name='cross'
 					/>
 				</BorderlessButton>
 			);
@@ -241,10 +243,10 @@ export default class MessageBox extends Component {
 					style={styles.actionButton}
 					testID='messagebox-open-emoji'
 				>
-					<Icon
+					<CustomIcon
 						size={22}
-						color='#1d74f5'
-						name='mood'
+						color={BLUE_COLOR}
+						name='emoji'
 					/>
 				</BorderlessButton>
 			)
@@ -256,9 +258,9 @@ export default class MessageBox extends Component {
 					style={styles.actionButton}
 					testID='messagebox-close-emoji'
 				>
-					<Icon
+					<CustomIcon
 						size={22}
-						color='#1d74f5'
+						color={BLUE_COLOR}
 						name='keyboard'
 					/>
 				</BorderlessButton>
@@ -279,7 +281,7 @@ export default class MessageBox extends Component {
 					accessibilityLabel={I18n.t('Send message')}
 					accessibilityTraits='button'
 				>
-					<Image source={{ uri: 'composer_send' }} style={{ width: 23, height: 23 }} />
+					<CustomIcon name='send' size={23} color={BLUE_COLOR} />
 				</BorderlessButton>
 			);
 			return icons;
@@ -293,7 +295,7 @@ export default class MessageBox extends Component {
 				accessibilityLabel={I18n.t('Send audio message')}
 				accessibilityTraits='button'
 			>
-				<Image source={{ uri: 'composer_mic' }} style={{ width: 16, height: 23 }} />
+				<CustomIcon name='mic' size={23} color={BLUE_COLOR} />
 			</BorderlessButton>
 		);
 		icons.push(
@@ -305,7 +307,7 @@ export default class MessageBox extends Component {
 				accessibilityLabel={I18n.t('Message actions')}
 				accessibilityTraits='button'
 			>
-				<Image source={{ uri: 'composer_plus' }} style={{ width: 18, height: 18 }} />
+				<CustomIcon name='plus' size={23} color={BLUE_COLOR} />
 			</BorderlessButton>
 		);
 		return icons;

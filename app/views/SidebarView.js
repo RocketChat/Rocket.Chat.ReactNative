@@ -4,7 +4,6 @@ import {
 	ScrollView, Text, View, StyleSheet, FlatList, LayoutAnimation, SafeAreaView
 } from 'react-native';
 import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import equal from 'deep-equal';
 
 import Navigation from '../lib/Navigation';
@@ -19,6 +18,7 @@ import log from '../utils/log';
 import I18n from '../i18n';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { getReadableVersion } from '../utils/deviceInfo';
+import { CustomIcon } from '../lib/Icons';
 
 const styles = StyleSheet.create({
 	container: {
@@ -275,21 +275,21 @@ export default class Sidebar extends Component {
 			[
 				this.renderItem({
 					text: I18n.t('Chats'),
-					left: <Icon name='chat-bubble' size={20} />,
+					left: <CustomIcon name='chat' size={20} />,
 					onPress: () => this.sidebarNavigate('RoomsListView'),
 					testID: 'sidebar-chats',
 					current: stackRoot === 'RoomsListView'
 				}),
 				this.renderItem({
 					text: I18n.t('Profile'),
-					left: <Icon name='person' size={20} />,
+					left: <CustomIcon name='user' size={20} />,
 					onPress: () => this.sidebarNavigate('ProfileView'),
 					testID: 'sidebar-profile',
 					current: stackRoot === 'ProfileView'
 				}),
 				this.renderItem({
 					text: I18n.t('Settings'),
-					left: <Icon name='settings' size={20} />,
+					left: <CustomIcon name='cog' size={20} />,
 					onPress: () => this.sidebarNavigate('SettingsView'),
 					testID: 'sidebar-settings',
 					current: stackRoot === 'SettingsView'
@@ -297,7 +297,7 @@ export default class Sidebar extends Component {
 				this.renderSeparator('separator-logout'),
 				this.renderItem({
 					text: I18n.t('Logout'),
-					left: <Icon name='exit-to-app' size={20} />,
+					left: <CustomIcon name='sign-out' size={20} />,
 					onPress: () => logout(),
 					testID: 'sidebar-logout'
 				})
@@ -350,11 +350,6 @@ export default class Sidebar extends Component {
 								</View>
 								<Text style={styles.currentServerText} numberOfLines={1}>{Site_Name}</Text>
 							</View>
-							<Icon
-								name={showStatus ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
-								size={30}
-								style={{ paddingHorizontal: 10 }}
-							/>
 						</View>
 					</Touch>
 
