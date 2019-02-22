@@ -275,21 +275,21 @@ export default class Sidebar extends Component {
 			[
 				this.renderItem({
 					text: I18n.t('Chats'),
-					left: <CustomIcon name='chat' size={20} />,
+					left: <CustomIcon name='chat' size={20} color='#292E35' />,
 					onPress: () => this.sidebarNavigate('RoomsListView'),
 					testID: 'sidebar-chats',
 					current: stackRoot === 'RoomsListView'
 				}),
 				this.renderItem({
 					text: I18n.t('Profile'),
-					left: <CustomIcon name='user' size={20} />,
+					left: <CustomIcon name='user' size={20} color='#292E35' />,
 					onPress: () => this.sidebarNavigate('ProfileView'),
 					testID: 'sidebar-profile',
 					current: stackRoot === 'ProfileView'
 				}),
 				this.renderItem({
 					text: I18n.t('Settings'),
-					left: <CustomIcon name='cog' size={20} />,
+					left: <CustomIcon name='cog' size={20} color='#292E35' />,
 					onPress: () => this.sidebarNavigate('SettingsView'),
 					testID: 'sidebar-settings',
 					current: stackRoot === 'SettingsView'
@@ -297,7 +297,7 @@ export default class Sidebar extends Component {
 				this.renderSeparator('separator-logout'),
 				this.renderItem({
 					text: I18n.t('Logout'),
-					left: <CustomIcon name='sign-out' size={20} />,
+					left: <CustomIcon name='sign-out' size={20} color='#292E35' />,
 					onPress: () => logout(),
 					testID: 'sidebar-logout'
 				})
