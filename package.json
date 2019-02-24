@@ -48,7 +48,7 @@
     "react-native-keyboard-input": "^5.3.1",
     "react-native-keyboard-tracking-view": "^5.5.0",
     "react-native-markdown-renderer": "^3.2.8",
-    "react-native-modal": "^7.0.2",
+    "react-native-modal": "^9.0.0",
     "react-native-navigation": "^2.8.0",
     "react-native-notifications": "1.1.23",
     "react-native-optimized-flatlist": "^1.0.4",
