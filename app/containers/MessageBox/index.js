@@ -155,10 +155,8 @@ export default class MessageBox extends Component {
 	}
 
 	onChangeText(text) {
-		const { typing } = this.props;
-
 		this.setInput(text);
-		typing(text.length > 0);
+		this.handleTyping(text.length > 0);
 
 		requestAnimationFrame(() => {
 			const { start, end } = this.component._lastNativeSelection;
@@ -420,6 +418,27 @@ export default class MessageBox extends Component {
 		}
 	}
 
+	handleTyping = (isTyping) => {
+		const { typing } = this.props;
+		if (!isTyping) {
+			if (this.typingTimeout) {
+				clearTimeout(this.typingTimeout);
+				this.typingTimeout = false;
+			}
+			typing(false);
+			return;
+		}
+
+		if (this.typingTimeout) {
+			return;
+		}
+
+		this.typingTimeout = setTimeout(() => {
+			typing(true);
+			this.typingTimeout = false;
+		}, 1000);
+	}
+
 	setInput = (text) => {
 		this.text = text;
 		this.component.setNativeProps({ text });
@@ -516,14 +535,14 @@ export default class MessageBox extends Component {
 
 	submit = async() => {
 		const {
-			typing, message: editingMessage, editRequest, onSubmit
+			message: editingMessage, editRequest, onSubmit
 		} = this.props;
 		const message = this.text;
 
 		this.clearInput();
 		this.closeEmoji();
 		this.stopTrackingMention();
-		typing(false);
+		this.handleTyping(false);
 		if (message.trim() === '') {
 			return;
 		}
