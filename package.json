@@ -49,7 +49,7 @@
     "react-native-keyboard-tracking-view": "^5.5.0",
     "react-native-markdown-renderer": "^3.2.8",
     "react-native-modal": "^7.0.2",
-    "react-native-navigation": "^2.8.0",
+    "react-native-navigation": "2.12.0",
     "react-native-notifications": "1.1.23",
     "react-native-optimized-flatlist": "^1.0.4",
     "react-native-picker-select": "^5.2.3",
