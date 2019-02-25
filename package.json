@@ -26,7 +26,7 @@
     "ejson": "^2.1.2",
     "js-base64": "^2.5.1",
     "js-sha256": "^0.9.0",
-    "jsc-android": "225067.0.0",
+    "jsc-android": "^236355.1.1",
     "lodash": "^4.17.11",
     "markdown-it-flowdock": "^0.3.7",
     "moment": "^2.24.0",
