@@ -2,6 +2,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 
 import reduxStore from '../createStore';
 import database from '../realm';
+import log from '../../utils/log';
 
 const promises = {};
 
@@ -47,7 +48,11 @@ export async function sendFileMessage(rid, fileInfo) {
 		fileInfo.rid = rid;
 
 		database.write(() => {
-			database.create('uploads', fileInfo, true);
+			try {
+				database.create('uploads', fileInfo, true);
+			} catch (e) {
+				log('sendFileMessage -> create uploads 1', e);
+			}
 		});
 
 		const result = await _ufsCreate.call(this, fileInfo);
@@ -60,7 +65,11 @@ export async function sendFileMessage(rid, fileInfo) {
 			promises[fileInfo.path].uploadProgress((loaded, total) => {
 				database.write(() => {
 					fileInfo.progress = Math.floor((loaded / total) * 100);
-					database.create('uploads', fileInfo, true);
+					try {
+						database.create('uploads', fileInfo, true);
+					} catch (e) {
+						log('sendFileMessage -> create uploads 2', e);
+					}
 				});
 			});
 		});
@@ -79,12 +88,20 @@ export async function sendFileMessage(rid, fileInfo) {
 
 		database.write(() => {
 			const upload = database.objects('uploads').filtered('path = $0', fileInfo.path);
-			database.delete(upload);
+			try {
+				database.delete(upload);
+			} catch (e) {
+				log('sendFileMessage -> delete uploads', e);
+			}
 		});
 	} catch (e) {
 		database.write(() => {
 			fileInfo.error = true;
-			database.create('uploads', fileInfo, true);
+			try {
+				database.create('uploads', fileInfo, true);
+			} catch (err) {
+				log('sendFileMessage -> create uploads 3', err);
+			}
 		});
 	}
 }
