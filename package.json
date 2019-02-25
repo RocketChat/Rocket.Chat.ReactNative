@@ -97,7 +97,7 @@
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
     "metro-react-native-babel-preset": "^0.45.6",
-    "mocha": "^5.2.0",
+    "mocha": "^6.0.2",
     "otp.js": "^1.1.0",
     "react-dom": "16.6.3",
     "react-test-renderer": "16.6.3",
