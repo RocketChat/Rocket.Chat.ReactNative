@@ -33,19 +33,29 @@ export default function loadMissedMessages(...args) {
 					const { updated } = data;
 					updated.forEach(buildMessage);
 					InteractionManager.runAfterInteractions(() => {
-						database.write(() => updated.forEach(message => database.create('messages', message, true)));
+						database.write(() => updated.forEach((message) => {
+							try {
+								database.create('messages', message, true);
+							} catch (e) {
+								log('loadMissedMessages -> create messages', e);
+							}
+						}));
 						resolve(updated);
 					});
 				}
 				if (data.deleted && data.deleted.length) {
 					const { deleted } = data;
 					InteractionManager.runAfterInteractions(() => {
-						database.write(() => {
-							deleted.forEach((m) => {
-								const message = database.objects('messages').filtered('_id = $0', m._id);
-								database.delete(message);
+						try {
+							database.write(() => {
+								deleted.forEach((m) => {
+									const message = database.objects('messages').filtered('_id = $0', m._id);
+									database.delete(message);
+								});
 							});
-						});
+						} catch (e) {
+							log('loadMissedMessages -> delete message', e);
+						}
 					});
 				}
 			}

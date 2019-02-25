@@ -18,10 +18,21 @@ export default async function() {
 		const result = await this.sdk.get('emoji-custom');
 		let { emojis } = result;
 		emojis = emojis.filter(emoji => !lastMessage || emoji._updatedAt > lastMessage);
+		if (emojis.length === 0) {
+			return;
+		}
 		emojis = this._prepareEmojis(emojis);
-		InteractionManager.runAfterInteractions(() => database.write(() => {
-			emojis.forEach(emoji => database.create('customEmojis', emoji, true));
-		}));
+		InteractionManager.runAfterInteractions(() => {
+			database.write(() => {
+				emojis.forEach((emoji) => {
+					try {
+						database.create('customEmojis', emoji, true);
+					} catch (e) {
+						log('create custom emojis', e);
+					}
+				});
+			});
+		});
 		reduxStore.dispatch(actions.setCustomEmojis(this.parseEmojis(emojis)));
 	} catch (e) {
 		log('getCustomEmojis', e);
