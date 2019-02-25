@@ -18,26 +18,17 @@ const startLogged = () => {
 	Navigation.loadView('RoomHeaderView');
 	Navigation.loadView('SettingsView');
 	Navigation.loadView('SidebarView');
+
 	Navigation.setRoot({
 		root: {
-			sideMenu: {
-				left: {
+			stack: {
+				id: 'AppRoot',
+				children: [{
 					component: {
-						id: 'SidebarView',
-						name: 'SidebarView'
+						id: 'RoomsListView',
+						name: 'RoomsListView'
 					}
-				},
-				center: {
-					stack: {
-						id: 'AppRoot',
-						children: [{
-							component: {
-								id: 'RoomsListView',
-								name: 'RoomsListView'
-							}
-						}]
-					}
-				}
+				}]
 			}
 		}
 	});

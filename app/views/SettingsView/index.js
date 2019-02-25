@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, BackHandler } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -18,35 +18,19 @@ import Loading from '../../containers/Loading';
 import { showErrorAlert, showToast } from '../../utils/info';
 import log from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
-import { appStart as appStartAction } from '../../actions';
-import Icons from '../../lib/Icons';
 
 @connect(state => ({
 	userLanguage: state.login.user && state.login.user.language
 }), dispatch => ({
-	setUser: params => dispatch(setUserAction(params)),
-	appStart: () => dispatch(appStartAction())
+	setUser: params => dispatch(setUserAction(params))
 }))
 /** @extends React.Component */
 export default class SettingsView extends LoggedView {
 	static options() {
 		return {
 			topBar: {
-				leftButtons: [{
-					id: 'settings',
-					icon: Icons.getSource('settings'),
-					testID: 'rooms-list-view-sidebar'
-				}],
 				title: {
 					text: I18n.t('Settings')
-				}
-			},
-			sideMenu: {
-				left: {
-					enabled: true
-				},
-				right: {
-					enabled: true
 				}
 			}
 		};
@@ -55,8 +39,7 @@ export default class SettingsView extends LoggedView {
 	static propTypes = {
 		componentId: PropTypes.string,
 		userLanguage: PropTypes.string,
-		setUser: PropTypes.func,
-		appStart: PropTypes.func
+		setUser: PropTypes.func
 	}
 
 	constructor(props) {
@@ -85,8 +68,6 @@ export default class SettingsView extends LoggedView {
 			}],
 			saving: false
 		};
-		Navigation.events().bindComponent(this);
-		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -101,22 +82,6 @@ export default class SettingsView extends LoggedView {
 		if (nextProps.userLanguage !== userLanguage) {
 			return true;
 		}
-		return false;
-	}
-
-	componentWillUnmount() {
-		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
-	}
-
-	navigationButtonPressed = ({ buttonId }) => {
-		if (buttonId === 'settings') {
-			Navigation.toggleDrawer();
-		}
-	}
-
-	handleBackPress = () => {
-		const { appStart } = this.props;
-		appStart('background');
 		return false;
 	}
 
