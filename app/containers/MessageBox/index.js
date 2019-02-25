@@ -353,7 +353,11 @@ export default class MessageBox extends Component {
 			if (results.users && results.users.length) {
 				database.write(() => {
 					results.users.forEach((user) => {
-						database.create('users', user, true);
+						try {
+							database.create('users', user, true);
+						} catch (e) {
+							log('create users', e);
+						}
 					});
 				});
 			}

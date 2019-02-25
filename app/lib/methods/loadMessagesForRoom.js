@@ -39,7 +39,11 @@ export default function loadMessagesForRoom(...args) {
 			if (data && data.length) {
 				InteractionManager.runAfterInteractions(() => {
 					database.write(() => data.forEach((message) => {
-						database.create('messages', buildMessage(message), true);
+						try {
+							database.create('messages', buildMessage(message), true);
+						} catch (e) {
+							log('loadMessagesForRoom -> create messages', e);
+						}
 					}));
 					return resolve(data);
 				});

@@ -53,30 +53,46 @@ export default async function subscribeRooms() {
 				if (subscription) {
 					messages = database.objects('messages').filtered('rid == $0', subscription.rid);
 				}
-				database.write(() => {
-					database.delete(messages);
-					database.delete(subscription);
-				});
+				try {
+					database.write(() => {
+						database.delete(messages);
+						database.delete(subscription);
+					});
+				} catch (e) {
+					log('handleStreamMessageReceived -> subscriptions removed', e);
+				}
 			} else {
 				const rooms = database.objects('rooms').filtered('_id == $0', data.rid);
 				const tpm = merge(data, rooms[0]);
-				database.write(() => {
-					database.create('subscriptions', tpm, true);
-					database.delete(rooms);
-				});
+				try {
+					database.write(() => {
+						database.create('subscriptions', tpm, true);
+						database.delete(rooms);
+					});
+				} catch (e) {
+					log('handleStreamMessageReceived -> subscriptions updated', e);
+				}
 			}
 		}
 		if (/rooms/.test(ev)) {
 			if (type === 'updated') {
 				const [sub] = database.objects('subscriptions').filtered('rid == $0', data._id);
-				database.write(() => {
-					const tmp = merge(sub, data);
-					database.create('subscriptions', tmp, true);
-				});
+				try {
+					database.write(() => {
+						const tmp = merge(sub, data);
+						database.create('subscriptions', tmp, true);
+					});
+				} catch (e) {
+					log('handleStreamMessageReceived -> rooms updated', e);
+				}
 			} else if (type === 'inserted') {
-				database.write(() => {
-					database.create('rooms', data, true);
-				});
+				try {
+					database.write(() => {
+						database.create('rooms', data, true);
+					});
+				} catch (e) {
+					log('handleStreamMessageReceived -> rooms inserted', e);
+				}
 			}
 		}
 		if (/message/.test(ev)) {
@@ -94,9 +110,15 @@ export default async function subscribeRooms() {
 					username: 'rocket.cat'
 				}
 			};
-			requestAnimationFrame(() => database.write(() => {
-				database.create('messages', message, true);
-			}));
+			requestAnimationFrame(() => {
+				try {
+					database.write(() => {
+						database.create('messages', message, true);
+					});
+				} catch (e) {
+					log('handleStreamMessageReceived -> message', e);
+				}
+			});
 		}
 	});
 

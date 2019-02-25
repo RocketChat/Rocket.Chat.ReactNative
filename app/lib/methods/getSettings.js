@@ -8,7 +8,11 @@ import settings from '../../constants/settings';
 
 function updateServer(param) {
 	database.databases.serversDB.write(() => {
-		database.databases.serversDB.create('servers', { id: reduxStore.getState().server.server, ...param }, true);
+		try {
+			database.databases.serversDB.create('servers', { id: reduxStore.getState().server.server, ...param }, true);
+		} catch (e) {
+			log('updateServer', e);
+		}
 	});
 }
 
@@ -27,7 +31,11 @@ export default async function() {
 		InteractionManager.runAfterInteractions(
 			() => database.write(
 				() => filteredSettings.forEach((setting) => {
-					database.create('settings', { ...setting, _updatedAt: new Date() }, true);
+					try {
+						database.create('settings', { ...setting, _updatedAt: new Date() }, true);
+					} catch (e) {
+						log('create settings', e);
+					}
 
 					if (setting._id === 'Site_Name') {
 						updateServer.call(this, { name: setting.valueAsString });
