@@ -246,7 +246,11 @@ const RocketChat = {
 
 				database.write(() => {
 					foreach(this.roles, (description, _id) => {
-						database.create('roles', { _id, description }, true);
+						try {
+							database.create('roles', { _id, description }, true);
+						} catch (e) {
+							log('create roles', e);
+						}
 					});
 				});
 
@@ -408,10 +412,14 @@ const RocketChat = {
 			});
 			await sendMessageCall.call(this, JSON.parse(JSON.stringify(message)));
 		} catch (error) {
-			database.write(() => {
-				message.status = messagesStatus.ERROR;
-				database.create('messages', message, true);
-			});
+			try {
+				database.write(() => {
+					message.status = messagesStatus.ERROR;
+					database.create('messages', message, true);
+				});
+			} catch (e) {
+				log('resendMessage error', e);
+			}
 		}
 	},
 
