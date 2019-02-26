@@ -71,11 +71,14 @@ const handleLogout = function* handleLogout() {
 			});
 			// see if there's other logged in servers and selects first one
 			if (servers.length > 0) {
-				yield put(selectServerRequest(servers[0].id));
-			} else {
-				// if there's no servers, go outside
-				yield put(appStart('outside'));
+				const newServer = servers[0].id;
+				const token = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
+				if (token) {
+					return yield put(selectServerRequest(newServer));
+				}
 			}
+			// if there's no servers, go outside
+			yield put(appStart('outside'));
 		} catch (e) {
 			yield put(appStart('outside'));
 			log('handleLogout', e);
