@@ -20,6 +20,7 @@ import log from '../../utils/log';
 import { isAndroid } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
+import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -118,6 +119,16 @@ export default class RoomMembersView extends LoggedView {
 		this.rooms.removeAllListeners();
 	}
 
+	onSearchChangeText = protectedFunction((text) => {
+		const { members } = this.state;
+		let membersFiltered = [];
+
+		if (members && members.length > 0 && text) {
+			membersFiltered = members.filter(m => m.username.toLowerCase().match(text.toLowerCase()));
+		}
+		this.setState({ filtering: !!text, membersFiltered });
+	})
+
 	navigationButtonPressed = ({ buttonId }) => {
 		const { allUsers } = this.state;
 		const { componentId } = this.props;
@@ -139,16 +150,6 @@ export default class RoomMembersView extends LoggedView {
 				log('RoomMembers.onNavigationButtonPressed', e);
 			}
 		}
-	}
-
-	onSearchChangeText = (text) => {
-		const { members } = this.state;
-
-		let membersFiltered = [];
-		if (text) {
-			membersFiltered = members.filter(m => m.username.toLowerCase().match(text.toLowerCase()));
-		}
-		this.setState({ filtering: !!text, membersFiltered });
 	}
 
 	onPressUser = async(item) => {
