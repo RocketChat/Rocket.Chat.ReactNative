@@ -12,6 +12,7 @@ import { STATUS_COLORS } from '../../../constants/colors';
 import sharedStyles from '../../Styles';
 import { isIOS } from '../../../utils/deviceInfo';
 import { CustomIcon } from '../../../lib/Icons';
+import Status from '../../../containers/Status/Status';
 
 const TITLE_SIZE = 18;
 const ICON_SIZE = 18;
@@ -44,6 +45,9 @@ const styles = StyleSheet.create({
 	typingUsers: {
 		...sharedStyles.textSemibold,
 		fontWeight: '600'
+	},
+	status: {
+		marginRight: 8
 	}
 });
 
@@ -146,17 +150,7 @@ export default class RoomHeaderView extends Component {
 	renderIcon = () => {
 		const { type, status } = this.props;
 		if (type === 'd') {
-			return (
-				<View
-					style={{
-						borderRadius: 10,
-						width: 10,
-						height: 10,
-						marginRight: 8,
-						backgroundColor: STATUS_COLORS[status]
-					}}
-				/>
-			);
+			return <Status size={10} style={styles.status} status={status} />;
 		}
 
 		const icon = type === 'c' ? 'hashtag' : 'lock';

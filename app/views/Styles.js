@@ -163,10 +163,7 @@ export default StyleSheet.create({
 		bottom: -3,
 		right: -3,
 		borderWidth: 3,
-		borderColor: '#fff',
-		borderRadius: 16,
-		width: 16,
-		height: 16
+		borderColor: '#fff'
 	},
 	alignItemsFlexEnd: {
 		alignItems: 'flex-end'

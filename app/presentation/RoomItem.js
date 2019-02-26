@@ -7,7 +7,7 @@ import { emojify } from 'react-emojione';
 import { RectButton } from 'react-native-gesture-handler';
 
 import Avatar from '../containers/Avatar';
-import Status from '../containers/status';
+import Status from '../containers/Status';
 import RoomTypeIcon from '../containers/RoomTypeIcon';
 import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
@@ -73,9 +73,6 @@ const styles = StyleSheet.create({
 		letterSpacing: 0.56
 	},
 	status: {
-		borderRadius: 10,
-		width: 10,
-		height: 10,
 		marginRight: 7,
 		marginTop: 3
 	},
@@ -212,7 +209,7 @@ export default class RoomItem extends React.Component {
 	get type() {
 		const { type, id } = this.props;
 		if (type === 'd') {
-			return <Status style={[styles.status]} id={id} />;
+			return <Status style={styles.status} size={10} id={id} />;
 		}
 		return <RoomTypeIcon type={type} />;
 	}

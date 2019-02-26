@@ -13,7 +13,7 @@ import LoggedView from '../View';
 import styles from './styles';
 import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
-import Status from '../../containers/status';
+import Status from '../../containers/Status';
 import Touch from '../../utils/touch';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';

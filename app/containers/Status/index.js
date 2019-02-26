@@ -1,16 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { StyleSheet, View, ViewPropTypes } from 'react-native';
-import { STATUS_COLORS } from '../constants/colors';
+import { ViewPropTypes } from 'react-native';
 
-const styles = StyleSheet.create({
-	status: {
-		borderRadius: 16,
-		width: 16,
-		height: 16
-	}
-});
+import Status from './Status';
 
 @connect((state, ownProps) => {
 	if (state.login.user && ownProps.id === state.login.user.id) {
@@ -26,12 +19,19 @@ const styles = StyleSheet.create({
 	};
 })
 
-export default class Status extends React.PureComponent {
+export default class StatusContainer extends React.PureComponent {
 	static propTypes = {
+		// id is a prop, but it's used only inside @connect to find for current status
+		id: PropTypes.string, // eslint-disable-line
 		style: ViewPropTypes.style,
+		size: PropTypes.number,
 		status: PropTypes.string,
 		offline: PropTypes.bool
 	};
+
+	static defaultProps = {
+		size: 16
+	}
 
 	get status() {
 		const { offline, status } = this.props;
@@ -42,7 +42,7 @@ export default class Status extends React.PureComponent {
 	}
 
 	render() {
-		const { style } = this.props;
-		return (<View style={[styles.status, style, { backgroundColor: STATUS_COLORS[this.status] }]} />);
+		const { style, size } = this.props;
+		return <Status size={size} style={style} status={this.status} />;
 	}
 }

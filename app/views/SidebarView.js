@@ -10,7 +10,7 @@ import Navigation from '../lib/Navigation';
 import { setStackRoot as setStackRootAction } from '../actions';
 import { logout as logoutAction } from '../actions/login';
 import Avatar from '../containers/Avatar';
-import Status from '../containers/status';
+import Status from '../containers/Status';
 import Touch from '../utils/touch';
 import { STATUS_COLORS } from '../constants/colors';
 import RocketChat from '../lib/rocketchat';
@@ -65,9 +65,6 @@ const styles = StyleSheet.create({
 		marginHorizontal: 10
 	},
 	status: {
-		borderRadius: 12,
-		width: 12,
-		height: 12,
 		marginRight: 5
 	},
 	currentServerText: {
@@ -345,7 +342,7 @@ export default class Sidebar extends Component {
 							/>
 							<View style={styles.headerTextContainer}>
 								<View style={styles.headerUsername}>
-									<Status style={styles.status} id={user.id} />
+									<Status style={styles.status} size={12} id={user.id} />
 									<Text numberOfLines={1}>{user.username}</Text>
 								</View>
 								<Text style={styles.currentServerText} numberOfLines={1}>{Site_Name}</Text>
