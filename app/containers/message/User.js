@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 		lineHeight: 16
 	},
 	time: {
-		fontSize: 14,
+		fontSize: 12,
 		color: '#9EA2A8',
 		paddingLeft: 10,
 		fontWeight: '300',

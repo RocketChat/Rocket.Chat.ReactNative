@@ -8,13 +8,15 @@ import openLink from '../../utils/openLink';
 
 const styles = StyleSheet.create({
 	button: {
-		marginTop: 10
+		marginTop: 6
 	},
 	container: {
 		flex: 1,
 		flexDirection: 'column',
 		borderRadius: 4,
-		backgroundColor: '#F3F4F5'
+		backgroundColor: '#F3F4F5',
+		borderColor: '#F3F4F5',
+		borderWidth: 1
 	},
 	textContainer: {
 		flex: 1,
@@ -26,18 +28,12 @@ const styles = StyleSheet.create({
 	title: {
 		fontWeight: '500',
 		color: '#1D74F5',
-		fontSize: 16,
-		marginTop: 5
+		fontSize: 16
 	},
 	description: {
 		marginTop: 5,
 		fontSize: 16,
 		color: '#0C0D0F'
-	},
-	url: {
-		fontSize: 15,
-		fontWeight: '500',
-		color: '#9EA2A8'
 	},
 	marginTop: {
 		marginTop: 4
@@ -66,7 +62,6 @@ const Url = ({ url, index }) => {
 		>
 			{url.image ? <FastImage source={{ uri: url.image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} /> : null}
 			<View style={styles.textContainer}>
-				<Text style={styles.url} numberOfLines={1}>{url.url}</Text>
 				<Text style={styles.title} numberOfLines={2}>{url.title}</Text>
 				<Text style={styles.description} numberOfLines={2}>{url.description}</Text>
 			</View>

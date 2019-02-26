@@ -8,21 +8,19 @@ import { RectButton } from 'react-native-gesture-handler';
 
 import Avatar from '../containers/Avatar';
 import Status from '../containers/status';
-import Touch from '../utils/touch/index'; //eslint-disable-line
 import RoomTypeIcon from '../containers/RoomTypeIcon';
 import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
-import DisclosureIndicator from '../containers/DisclosureIndicator';
 
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		marginHorizontal: 15
 	},
 	centerContainer: {
 		flex: 1,
-		height: '100%',
-		marginRight: 4
+		height: '100%'
 	},
 	title: {
 		flex: 1,
@@ -56,7 +54,8 @@ const styles = StyleSheet.create({
 		paddingBottom: 0
 	},
 	updateAlert: {
-		color: '#1D74F5'
+		color: '#1D74F5',
+		fontWeight: '700'
 	},
 	unreadNumberContainer: {
 		minWidth: 23,
@@ -80,14 +79,17 @@ const styles = StyleSheet.create({
 		marginRight: 7,
 		marginTop: 3
 	},
-	emptyDisclosureAndroid: {
-		width: 15
-	},
 	markdownText: {
 		flex: 1,
 		color: '#9EA2A8',
 		fontSize: 15,
 		fontWeight: 'normal'
+	},
+	markdownTextAlert: {
+		color: '#0C0D0F'
+	},
+	avatar: {
+		marginRight: 15
 	}
 });
 
@@ -170,7 +172,7 @@ export default class RoomItem extends React.Component {
 		const {
 			type, name, avatarSize, baseUrl, user
 		} = this.props;
-		return <Avatar text={name} size={avatarSize} type={type} baseUrl={baseUrl} style={{ marginHorizontal: 15 }} user={user} />;
+		return <Avatar text={name} size={avatarSize} type={type} baseUrl={baseUrl} style={styles.avatar} user={user} />;
 	}
 
 	get lastMessage() {
@@ -222,15 +224,6 @@ export default class RoomItem extends React.Component {
 		sameElse: 'MMM D'
 	})
 
-	renderDisclosureIndicator = () => {
-		if (isIOS) {
-			return (
-				<DisclosureIndicator />
-			);
-		}
-		return <View style={styles.emptyDisclosureAndroid} />;
-	}
-
 	render() {
 		const {
 			favorite, unread, userMentions, name, _updatedAt, alert, testID, height, onPress
@@ -272,13 +265,12 @@ export default class RoomItem extends React.Component {
 							{_updatedAt ? <Text style={[styles.date, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
 						</View>
 						<View style={styles.row}>
-							<Text style={styles.markdownText} numberOfLines={2}>
+							<Text style={[styles.markdownText, alert && styles.markdownTextAlert]} numberOfLines={2}>
 								{this.lastMessage}
 							</Text>
 							{renderNumber(unread, userMentions)}
 						</View>
 					</View>
-					{this.renderDisclosureIndicator()}
 				</View>
 			</RectButton>
 		);

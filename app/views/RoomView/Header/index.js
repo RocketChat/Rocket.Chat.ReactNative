@@ -143,14 +143,43 @@ export default class RoomHeaderView extends Component {
 		);
 	}
 
+	renderIcon = () => {
+		const { type, status } = this.props;
+		if (type === 'd') {
+			return (
+				<View
+					style={{
+						borderRadius: 10,
+						width: 10,
+						height: 10,
+						marginRight: 8,
+						backgroundColor: STATUS_COLORS[status]
+					}}
+				/>
+			);
+		}
+
+		const icon = type === 'c' ? 'hashtag' : 'lock';
+		return (
+			<CustomIcon
+				name={icon}
+				size={ICON_SIZE * 1}
+				style={[
+					styles.type,
+					{
+						width: ICON_SIZE * 1,
+						height: ICON_SIZE * 1
+					},
+					type === 'd' && { color: STATUS_COLORS[status] }
+				]}
+			/>
+		);
+	}
+
 	render() {
 		const {
-			window, title, type, status, usersTyping
+			window, title, usersTyping
 		} = this.props;
-		const icon = {
-			d: 'at',
-			c: 'hashtag'
-		}[type] || 'lock';
 		const portrait = window.height > window.width;
 		let height = isIOS ? 44 : 60;
 		let scale = 1;
@@ -172,18 +201,7 @@ export default class RoomHeaderView extends Component {
 				]}
 			>
 				<View style={styles.titleContainer}>
-					<CustomIcon
-						name={icon}
-						size={ICON_SIZE * scale}
-						style={[
-							styles.type,
-							{
-								width: ICON_SIZE * scale,
-								height: ICON_SIZE * scale
-							},
-							type === 'd' && { color: STATUS_COLORS[status] }
-						]}
-					/>
+					{this.renderIcon()}
 					<Text style={[styles.title, { fontSize: TITLE_SIZE * scale }]} numberOfLines={1}>{title}</Text>
 				</View>
 				{this.typing}

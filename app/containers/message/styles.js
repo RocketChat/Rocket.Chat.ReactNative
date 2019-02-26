@@ -150,7 +150,10 @@ export default StyleSheet.create({
 	},
 	imageContainer: {
 		flex: 1,
-		flexDirection: 'column'
+		flexDirection: 'column',
+		borderColor: '#F3F4F5',
+		borderWidth: 1,
+		borderRadius: 4
 	},
 	image: {
 		width: '100%',

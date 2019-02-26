@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginTop: 15,
 		alignSelf: 'flex-end',
-		backgroundColor: '#f3f4f5'
+		backgroundColor: '#f3f4f5',
+		borderRadius: 4
 	},
 	attachmentContainer: {
 		flex: 1,
@@ -29,13 +30,13 @@ const styles = StyleSheet.create({
 	},
 	author: {
 		flex: 1,
-		color: '#1d74f5',
-		fontSize: 18,
+		color: '#0C0D0F',
+		fontSize: 16,
 		fontWeight: '500',
 		marginRight: 10
 	},
 	time: {
-		fontSize: 14,
+		fontSize: 12,
 		fontWeight: 'normal',
 		color: '#9ea2a8',
 		marginLeft: 5
