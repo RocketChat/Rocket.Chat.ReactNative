@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, ScrollView, Keyboard, BackHandler
-} from 'react-native';
+import { View, ScrollView, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
 import SHA256 from 'js-sha256';
@@ -12,7 +10,6 @@ import RNPickerSelect from 'react-native-picker-select';
 import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
 
-import Navigation from '../../lib/Navigation';
 import LoggedView from '../View';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
@@ -26,9 +23,7 @@ import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
-import { appStart as appStartAction } from '../../actions';
 import { setUser as setUserAction } from '../../actions/login';
-import Icons from '../../lib/Icons';
 
 @connect(state => ({
 	user: {
@@ -42,7 +37,6 @@ import Icons from '../../lib/Icons';
 	Accounts_CustomFields: state.settings.Accounts_CustomFields,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }), dispatch => ({
-	appStart: () => dispatch(appStartAction()),
 	setUser: params => dispatch(setUserAction(params))
 }))
 /** @extends React.Component */
@@ -50,21 +44,8 @@ export default class ProfileView extends LoggedView {
 	static options() {
 		return {
 			topBar: {
-				leftButtons: [{
-					id: 'settings',
-					icon: Icons.getSource('settings'),
-					testID: 'rooms-list-view-sidebar'
-				}],
 				title: {
 					text: I18n.t('Profile')
-				}
-			},
-			sideMenu: {
-				left: {
-					enabled: true
-				},
-				right: {
-					enabled: true
 				}
 			}
 		};
@@ -72,10 +53,8 @@ export default class ProfileView extends LoggedView {
 
 	static propTypes = {
 		baseUrl: PropTypes.string,
-		componentId: PropTypes.string,
 		user: PropTypes.object,
 		Accounts_CustomFields: PropTypes.string,
-		appStart: PropTypes.func,
 		setUser: PropTypes.func
 	}
 
@@ -94,8 +73,6 @@ export default class ProfileView extends LoggedView {
 			avatarSuggestions: {},
 			customFields: {}
 		};
-		Navigation.events().bindComponent(this);
-		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
 	async componentDidMount() {
@@ -123,22 +100,6 @@ export default class ProfileView extends LoggedView {
 		if (!equal(nextProps, this.props)) {
 			return true;
 		}
-		return false;
-	}
-
-	componentWillUnmount() {
-		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
-	}
-
-	navigationButtonPressed = ({ buttonId }) => {
-		if (buttonId === 'settings') {
-			Navigation.toggleDrawer();
-		}
-	}
-
-	handleBackPress = () => {
-		const { appStart } = this.props;
-		appStart('background');
 		return false;
 	}
 
