@@ -46,3 +46,5 @@ export default class StatusContainer extends React.PureComponent {
 		return <Status size={size} style={style} status={this.status} />;
 	}
 }
+
+export { Status };

@@ -9,9 +9,8 @@ import equal from 'deep-equal';
 import Navigation from '../lib/Navigation';
 import { logout as logoutAction } from '../actions/login';
 import Avatar from '../containers/Avatar';
-import Status from '../containers/Status';
+import StatusContainer, { Status } from '../containers/Status';
 import Touch from '../utils/touch';
-import { STATUS_COLORS } from '../constants/colors';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import I18n from '../i18n';
@@ -251,7 +250,7 @@ export default class Sidebar extends Component {
 		return (
 			this.renderItem({
 				text: item.name,
-				left: <View style={[styles.status, { backgroundColor: STATUS_COLORS[item.id] }]} />,
+				left: <Status style={styles.status} size={12} status={item.id} />,
 				current: user.status === item.id,
 				onPress: () => {
 					this.toggleStatus();
@@ -344,7 +343,7 @@ export default class Sidebar extends Component {
 							/>
 							<View style={styles.headerTextContainer}>
 								<View style={styles.headerUsername}>
-									<Status style={styles.status} size={12} id={user.id} />
+									<StatusContainer style={styles.status} size={12} id={user.id} />
 									<Text numberOfLines={1}>{user.username}</Text>
 								</View>
 								<Text style={styles.currentServerText} numberOfLines={1}>{Site_Name}</Text>
