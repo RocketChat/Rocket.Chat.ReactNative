@@ -270,7 +270,22 @@ export default class RoomsListView extends LoggedView {
 				}
 			});
 		} else if (buttonId === 'settings') {
-			Navigation.toggleDrawer();
+			Navigation.showModal({
+				stack: {
+					children: [{
+						component: {
+							name: 'SidebarView',
+							options: {
+								topBar: {
+									title: {
+										text: I18n.t('Settings')
+									}
+								}
+							}
+						}
+					}]
+				}
+			});
 		} else if (buttonId === 'search') {
 			this.initSearchingAndroid();
 		} else if (buttonId === 'back') {
