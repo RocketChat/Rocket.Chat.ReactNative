@@ -51,8 +51,8 @@ export default StyleSheet.create({
 		backgroundColor: '#f8f8f8',
 		borderColor: '#cccccc',
 		borderWidth: 1,
-		borderRadius: 5,
-		padding: 5
+		borderRadius: 4,
+		padding: 4
 	},
 	reactionsContainer: {
 		flexDirection: 'row',
@@ -62,7 +62,7 @@ export default StyleSheet.create({
 	reactionButton: {
 		marginRight: 10,
 		marginBottom: 10,
-		borderRadius: 4
+		borderRadius: 2
 	},
 	reactionContainer: {
 		flexDirection: 'row',

@@ -10,6 +10,9 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		lineHeight: 22
 	},
+	titleContainer: {
+		flex: 1
+	},
 	usernameView: {
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -57,10 +60,12 @@ export default class User extends React.PureComponent {
 
 		return (
 			<View style={styles.usernameView}>
-				<Text style={styles.username}>
-					{alias || username}
-				</Text>
-				{aliasUsername}
+				<View style={styles.titleContainer}>
+					<Text style={styles.username}>
+						{alias || username}
+					</Text>
+					{aliasUsername}
+				</View>
 				<Text style={styles.time}>{time}</Text>
 			</View>
 		);

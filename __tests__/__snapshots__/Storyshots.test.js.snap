@@ -347,18 +347,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -549,18 +557,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -751,18 +767,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -930,18 +954,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                rocket.cat
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  rocket.cat
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -1293,18 +1325,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -1610,31 +1650,39 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                Diego Mello
-              </Text>
-              <Text
-                style={
-                  Object {
-                    "color": "#9EA2A8",
-                    "fontSize": 14,
-                    "lineHeight": 16,
-                    "paddingLeft": 6,
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
                   }
-                }
-              >
-                @
-                diego.mello
-              </Text>
+                >
+                  Diego Mello
+                </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#9EA2A8",
+                      "fontSize": 14,
+                      "lineHeight": 16,
+                      "paddingLeft": 6,
+                    }
+                  }
+                >
+                  @
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -1825,18 +1873,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -2037,18 +2093,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -2239,18 +2303,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                Diego Mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  Diego Mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -2441,18 +2513,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -2722,18 +2802,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -2924,18 +3012,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -3168,18 +3264,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -3370,18 +3474,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -3586,18 +3698,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -3807,18 +3927,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                rocket.cat
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  rocket.cat
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -3986,18 +4114,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -4165,18 +4301,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                rocket.cat
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  rocket.cat
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -4344,18 +4488,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -4546,18 +4698,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                rocket.cat
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  rocket.cat
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -4797,18 +4957,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -5138,18 +5306,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                rocket.cat
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  rocket.cat
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -5378,18 +5554,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -5580,18 +5764,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -6045,18 +6237,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -6533,18 +6733,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -6810,18 +7018,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -7153,18 +7369,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -7333,18 +7557,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -7536,18 +7768,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -7710,18 +7950,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -7913,18 +8161,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -8117,18 +8373,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -8320,18 +8584,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -8624,18 +8896,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -8828,18 +9108,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -9032,18 +9320,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -9234,18 +9530,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -9417,18 +9721,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -9600,18 +9912,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -9783,18 +10103,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -9967,18 +10295,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -10150,18 +10486,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -10333,18 +10677,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -10516,18 +10868,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -10699,18 +11059,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -10882,18 +11250,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -11065,18 +11441,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -11248,18 +11632,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -11431,18 +11823,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -11614,18 +12014,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -11797,18 +12205,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -11985,18 +12401,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -12187,18 +12611,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -12456,18 +12888,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -12794,18 +13234,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -13026,18 +13474,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -13229,18 +13685,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -13477,18 +13941,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
@@ -13690,18 +14162,26 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "flex": 1,
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
