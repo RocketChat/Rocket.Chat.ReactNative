@@ -325,7 +325,7 @@ export default {
 	Unmute: 'Stummschaltung aufheben',
 	unmuted: 'ungedämpft',
 	Unpin: 'Unpin',
-	unread_messages: 'ungelesene Nachrichten',
+	unread_messages: 'ungelesene',
 	Unread: 'Ungelesen',
 	Unread_on_top: 'Ungelesen an der Spitze',
 	Unstar: 'Unstar',

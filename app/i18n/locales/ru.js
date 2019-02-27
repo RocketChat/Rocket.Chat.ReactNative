@@ -285,7 +285,7 @@ export default {
 	Unmute: 'Отменить заглушивание',
 	unmuted: 'Заглушивание отменено',
 	Unpin: 'Открепить',
-	unread_messages: 'непрочитанные сообщения',
+	unread_messages: 'непрочитанные',
 	Unstar: 'Снять отметку',
 	Uploading: 'Выгрузка',
 	User_added_by: 'Пользователь {{userAdded}} добавлен по решению {{userBy}}',

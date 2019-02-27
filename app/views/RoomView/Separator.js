@@ -45,9 +45,9 @@ const DateSeparator = ({ ts, unread }) => {
 	if (ts && unread) {
 		return (
 			<View style={styles.container}>
-				<Text style={[styles.text, styles.unreadText, styles.marginLeft]}>{date}</Text>
+				<Text style={[styles.text, styles.unreadText, styles.marginLeft]}>{I18n.t('unread_messages')}</Text>
 				<View style={[styles.line, styles.unreadLine, styles.marginHorizontal]} />
-				<Text style={[styles.text, styles.unreadText, styles.marginRight]}>{I18n.t('unread_messages')}</Text>
+				<Text style={[styles.text, styles.unreadText, styles.marginRight]}>{date}</Text>
 			</View>
 		);
 	}
@@ -56,13 +56,11 @@ const DateSeparator = ({ ts, unread }) => {
 			<View style={styles.container}>
 				<View style={[styles.line, styles.marginLeft]} />
 				<Text style={[styles.text, styles.marginHorizontal]}>{date}</Text>
-				<View style={[styles.line, styles.marginRight]} />
 			</View>
 		);
 	}
 	return (
 		<View style={styles.container}>
-			<View style={[styles.line, styles.unreadLine, styles.marginLeft]} />
 			<Text style={[styles.text, styles.unreadText, styles.marginHorizontal]}>{I18n.t('unread_messages')}</Text>
 			<View style={[styles.line, styles.unreadLine, styles.marginRight]} />
 		</View>

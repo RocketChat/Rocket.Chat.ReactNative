@@ -325,7 +325,7 @@ export default {
 	Unmute: 'Unmute',
 	unmuted: 'unmuted',
 	Unpin: 'Unpin',
-	unread_messages: 'unread messages',
+	unread_messages: 'unread',
 	Unread: 'Unread',
 	Unread_on_top: 'Unread on top',
 	Unstar: 'Unstar',

@@ -325,7 +325,7 @@ export default {
 	Unmute: 'Rendre La parole',
 	unmuted: 'Rendu la parole',
 	Unpin: 'Détacher',
-	unread_messages: 'messages non lus',
+	unread_messages: 'non lus',
 	Unread: 'Non lu',
 	Unread_on_top: 'Non lu sur le dessus',
 	Unstar: 'Unstar',

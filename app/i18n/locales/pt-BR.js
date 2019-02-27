@@ -323,7 +323,7 @@ export default {
 	Unmute: 'Permitir que o usuário fale',
 	unmuted: 'permitiu que o usuário fale',
 	Unpin: 'Desafixar Mensagem',
-	unread_messages: 'mensagens não lidas',
+	unread_messages: 'não lidas',
 	Unread: 'Não lidas',
 	Unread_on_top: 'Não lidas no topo',
 	Unstar: 'Remover favorito',
