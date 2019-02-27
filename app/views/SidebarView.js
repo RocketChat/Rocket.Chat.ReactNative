@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	ScrollView, Text, View, StyleSheet, FlatList, LayoutAnimation, SafeAreaView
+	ScrollView, Text, View, StyleSheet, FlatList, LayoutAnimation, SafeAreaView, Image
 } from 'react-native';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
 
 import Navigation from '../lib/Navigation';
-import { setStackRoot as setStackRootAction } from '../actions';
 import { logout as logoutAction } from '../actions/login';
 import Avatar from '../containers/Avatar';
 import Status from '../containers/Status';
@@ -17,8 +16,8 @@ import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import I18n from '../i18n';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
-import { getReadableVersion } from '../utils/deviceInfo';
-import { CustomIcon } from '../lib/Icons';
+import { getReadableVersion, isIOS, isAndroid } from '../utils/deviceInfo';
+import Icons, { CustomIcon } from '../lib/Icons';
 
 const styles = StyleSheet.create({
 	container: {
@@ -34,13 +33,13 @@ const styles = StyleSheet.create({
 		width: 30,
 		alignItems: 'center'
 	},
+	itemCenter: {
+		flex: 1
+	},
 	itemText: {
 		marginVertical: 16,
 		fontWeight: 'bold',
 		color: '#292E35'
-	},
-	itemSelected: {
-		backgroundColor: '#F7F8FA'
 	},
 	separator: {
 		borderBottomWidth: StyleSheet.hairlineWidth,
@@ -76,13 +75,22 @@ const styles = StyleSheet.create({
 		fontWeight: '600',
 		color: '#292E35',
 		fontSize: 13
+	},
+	disclosureContainer: {
+		marginLeft: 6,
+		marginRight: 9,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	disclosureIndicator: {
+		width: 20,
+		height: 20
 	}
 });
 const keyExtractor = item => item.id;
 
 @connect(state => ({
 	Site_Name: state.settings.Site_Name,
-	stackRoot: state.app.stackRoot,
 	user: {
 		id: state.login.user && state.login.user.id,
 		language: state.login.user && state.login.user.language,
@@ -92,18 +100,27 @@ const keyExtractor = item => item.id;
 	},
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }), dispatch => ({
-	logout: () => dispatch(logoutAction()),
-	setStackRoot: stackRoot => dispatch(setStackRootAction(stackRoot))
+	logout: () => dispatch(logoutAction())
 }))
 export default class Sidebar extends Component {
+	static options() {
+		return {
+			topBar: {
+				leftButtons: [{
+					id: 'cancel',
+					icon: isAndroid ? Icons.getSource('close', false) : undefined,
+					systemItem: 'cancel'
+				}]
+			}
+		};
+	}
+
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		componentId: PropTypes.string,
 		Site_Name: PropTypes.string.isRequired,
-		stackRoot: PropTypes.string.isRequired,
 		user: PropTypes.object,
-		logout: PropTypes.func.isRequired,
-		setStackRoot: PropTypes.func
+		logout: PropTypes.func.isRequired
 	}
 
 	constructor(props) {
@@ -128,16 +145,11 @@ export default class Sidebar extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { status, showStatus } = this.state;
-		const {
-			Site_Name, stackRoot, user, baseUrl
-		} = this.props;
+		const { Site_Name, user, baseUrl } = this.props;
 		if (nextState.showStatus !== showStatus) {
 			return true;
 		}
 		if (nextProps.Site_Name !== Site_Name) {
-			return true;
-		}
-		if (nextProps.stackRoot !== stackRoot) {
 			return true;
 		}
 		if (nextProps.Site_Name !== Site_Name) {
@@ -161,11 +173,6 @@ export default class Sidebar extends Component {
 			return true;
 		}
 		return false;
-	}
-
-	handleChangeStack = (event) => {
-		const { stack } = event;
-		this.setStack(stack);
 	}
 
 	navigationButtonPressed = ({ buttonId }) => {
@@ -193,37 +200,30 @@ export default class Sidebar extends Component {
 		});
 	}
 
-	setStack = async(stack) => {
-		const { stackRoot, setStackRoot } = this.props;
-		if (stackRoot !== stack) {
-			await Navigation.setStackRoot('AppRoot', {
-				component: {
-					id: stack,
-					name: stack
-				}
-			});
-			setStackRoot(stack);
-		}
-	}
-
-	closeDrawer = () => {
-		Navigation.toggleDrawer();
-	}
-
 	toggleStatus = () => {
 		LayoutAnimation.easeInEaseOut();
 		this.setState(prevState => ({ showStatus: !prevState.showStatus }));
 	}
 
-	sidebarNavigate = (stack) => {
-		this.closeDrawer();
-		this.setStack(stack);
+	sidebarNavigate = (route) => {
+		const { componentId } = this.props;
+		Navigation.push(componentId, {
+			component: {
+				name: route
+			}
+		});
+	}
+
+	logout = () => {
+		const { componentId, logout } = this.props;
+		Navigation.dismissModal(componentId);
+		logout();
 	}
 
 	renderSeparator = key => <View key={key} style={styles.separator} />;
 
 	renderItem = ({
-		text, left, onPress, testID, current
+		text, left, onPress, testID, disclosure
 	}) => (
 		<Touch
 			key={text}
@@ -232,13 +232,16 @@ export default class Sidebar extends Component {
 			activeOpacity={0.3}
 			testID={testID}
 		>
-			<View style={[styles.item, current && styles.itemSelected]}>
+			<View style={styles.item}>
 				<View style={styles.itemLeft}>
 					{left}
 				</View>
-				<Text style={styles.itemText}>
-					{text}
-				</Text>
+				<View style={styles.itemCenter}>
+					<Text style={styles.itemText}>
+						{text}
+					</Text>
+				</View>
+				{disclosure ? this.renderDisclosure() : null}
 			</View>
 		</Touch>
 	)
@@ -251,7 +254,6 @@ export default class Sidebar extends Component {
 				left: <View style={[styles.status, { backgroundColor: STATUS_COLORS[item.id] }]} />,
 				current: user.status === item.id,
 				onPress: () => {
-					this.closeDrawer();
 					this.toggleStatus();
 					if (user.status !== item.id) {
 						try {
@@ -265,42 +267,42 @@ export default class Sidebar extends Component {
 		);
 	}
 
-	renderNavigation = () => {
-		const { stackRoot } = this.props;
-		const { logout } = this.props;
-		return (
-			[
-				this.renderItem({
-					text: I18n.t('Chats'),
-					left: <CustomIcon name='chat' size={20} color='#292E35' />,
-					onPress: () => this.sidebarNavigate('RoomsListView'),
-					testID: 'sidebar-chats',
-					current: stackRoot === 'RoomsListView'
-				}),
-				this.renderItem({
-					text: I18n.t('Profile'),
-					left: <CustomIcon name='user' size={20} color='#292E35' />,
-					onPress: () => this.sidebarNavigate('ProfileView'),
-					testID: 'sidebar-profile',
-					current: stackRoot === 'ProfileView'
-				}),
-				this.renderItem({
-					text: I18n.t('Settings'),
-					left: <CustomIcon name='cog' size={20} color='#292E35' />,
-					onPress: () => this.sidebarNavigate('SettingsView'),
-					testID: 'sidebar-settings',
-					current: stackRoot === 'SettingsView'
-				}),
-				this.renderSeparator('separator-logout'),
-				this.renderItem({
-					text: I18n.t('Logout'),
-					left: <CustomIcon name='sign-out' size={20} color='#292E35' />,
-					onPress: () => logout(),
-					testID: 'sidebar-logout'
-				})
-			]
-		);
+	// Remove it after https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/643
+	renderDisclosure = () => {
+		if (isIOS) {
+			return (
+				<View style={styles.disclosureContainer}>
+					<Image source={{ uri: 'disclosure_indicator' }} style={styles.disclosureIndicator} />
+				</View>
+			);
+		}
 	}
+
+	renderNavigation = () => (
+		[
+			this.renderItem({
+				text: I18n.t('Profile'),
+				left: <CustomIcon name='user' size={20} color='#292E35' />,
+				onPress: () => this.sidebarNavigate('ProfileView'),
+				testID: 'sidebar-profile',
+				disclosure: true
+			}),
+			this.renderItem({
+				text: I18n.t('Settings'),
+				left: <CustomIcon name='cog' size={20} color='#292E35' />,
+				onPress: () => this.sidebarNavigate('SettingsView'),
+				testID: 'sidebar-settings',
+				disclosure: true
+			}),
+			this.renderSeparator('separator-logout'),
+			this.renderItem({
+				text: I18n.t('Logout'),
+				left: <CustomIcon name='sign-out' size={20} color='#292E35' />,
+				onPress: () => this.logout(),
+				testID: 'sidebar-logout'
+			})
+		]
+	)
 
 	renderStatus = () => {
 		const { status } = this.state;

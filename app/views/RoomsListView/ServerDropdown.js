@@ -82,6 +82,13 @@ export default class ServerDropdown extends Component {
 		}
 	}
 
+	componentWillUnmount() {
+		if (this.newServerTimeout) {
+			clearTimeout(this.newServerTimeout);
+			this.newServerTimeout = false;
+		}
+	}
+
 	updateState = () => {
 		const { servers } = this;
 		this.setState({ servers });
@@ -138,12 +145,7 @@ export default class ServerDropdown extends Component {
 			const token = await AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
 			if (!token) {
 				appStart();
-				try {
-					this.sdk.disconnect();
-				} catch (error) {
-					console.warn(error);
-				}
-				setTimeout(() => {
+				this.newServerTimeout = setTimeout(() => {
 					EventEmitter.emit('NewServer', { server });
 				}, 1000);
 			} else {

@@ -30,6 +30,7 @@ import log from '../../utils/log';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
 import { CustomIcon } from '../../lib/Icons';
+import debounce from '../../utils/debounce';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
@@ -95,6 +96,7 @@ export default class MessageBox extends Component {
 			showFilesAction: false,
 			showSend: false,
 			recording: false,
+			trackingType: '',
 			file: {
 				isVisible: false
 			}
@@ -156,9 +158,16 @@ export default class MessageBox extends Component {
 		return false;
 	}
 
-	onChangeText(text) {
+	onChangeText = (text) => {
+		const isTextEmpty = text.length === 0;
+		this.setShowSend(!isTextEmpty);
+		this.handleTyping(!isTextEmpty);
+		this.debouncedOnChangeText(text);
+	}
+
+	// eslint-disable-next-line react/sort-comp
+	debouncedOnChangeText = debounce((text) => {
 		this.setInput(text);
-		this.handleTyping(text.length > 0);
 
 		requestAnimationFrame(() => {
 			const { start, end } = this.component._lastNativeSelection;
@@ -172,13 +181,13 @@ export default class MessageBox extends Component {
 			const [, lastChar, name] = result;
 			this.identifyMentionKeyword(name, lastChar);
 		});
-	}
+	}, 100);
 
-	onKeyboardResigned() {
+	onKeyboardResigned = () => {
 		this.closeEmoji();
 	}
 
-	onPressMention(item) {
+	onPressMention = (item) => {
 		const { trackingType } = this.state;
 		const msg = this.text;
 		const { start, end } = this.component._lastNativeSelection;
@@ -194,7 +203,7 @@ export default class MessageBox extends Component {
 		requestAnimationFrame(() => this.stopTrackingMention());
 	}
 
-	onEmojiSelected(keyboardId, params) {
+	onEmojiSelected = (keyboardId, params) => {
 		const { text } = this;
 		const { emoji } = params;
 		let newText = '';
@@ -209,6 +218,7 @@ export default class MessageBox extends Component {
 			newText = `${ text }${ emoji }`;
 		}
 		this.setInput(newText);
+		this.showSend(true);
 	}
 
 	get leftButtons() {
@@ -273,7 +283,7 @@ export default class MessageBox extends Component {
 			icons.push(
 				<BorderlessButton
 					key='send-message'
-					onPress={() => this.submit()}
+					onPress={this.submit}
 					style={styles.actionButton}
 					testID='messagebox-send-message'
 					accessibilityLabel={I18n.t('Send message')}
@@ -319,7 +329,7 @@ export default class MessageBox extends Component {
 		}
 	}
 
-	getFixedMentions(keyword) {
+	getFixedMentions = (keyword) => {
 		if ('all'.indexOf(keyword) !== -1) {
 			this.users = [{ _id: -1, username: 'all' }, ...this.users];
 		}
@@ -328,7 +338,7 @@ export default class MessageBox extends Component {
 		}
 	}
 
-	async getUsers(keyword) {
+	getUsers = async(keyword) => {
 		this.users = database.objects('users');
 		if (keyword) {
 			this.users = this.users.filtered('username CONTAINS[c] $0', keyword);
@@ -373,7 +383,7 @@ export default class MessageBox extends Component {
 		}
 	}
 
-	async getRooms(keyword = '') {
+	getRooms = async(keyword = '') => {
 		this.roomsCache = this.roomsCache || [];
 		this.rooms = database.objects('subscriptions')
 			.filtered('t != $0', 'd');
@@ -415,7 +425,7 @@ export default class MessageBox extends Component {
 		}
 	}
 
-	getEmojis(keyword) {
+	getEmojis = (keyword) => {
 		if (keyword) {
 			this.customEmojis = database.objects('customEmojis').filtered('name CONTAINS[c] $0', keyword).slice(0, 4);
 			this.emojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, 4);
@@ -448,11 +458,15 @@ export default class MessageBox extends Component {
 	setInput = (text) => {
 		this.text = text;
 		this.component.setNativeProps({ text });
-		this.setState({ showSend: text.length > 0 });
+	}
+
+	setShowSend = (showSend) => {
+		this.setState({ showSend });
 	}
 
 	clearInput = () => {
 		this.setInput('');
+		this.setShowSend(false);
 	}
 
 	toggleFilesActions = () => {
@@ -545,7 +559,6 @@ export default class MessageBox extends Component {
 		} = this.props;
 		const message = this.text;
 
-		this.clearInput();
 		this.closeEmoji();
 		this.stopTrackingMention();
 		this.handleTyping(false);
@@ -579,6 +592,7 @@ export default class MessageBox extends Component {
 			// if is submiting a new message
 			onSubmit(message);
 		}
+		this.clearInput();
 	}
 
 	updateMentions = (keyword, type) => {
@@ -591,7 +605,7 @@ export default class MessageBox extends Component {
 		}
 	}
 
-	identifyMentionKeyword(keyword, type) {
+	identifyMentionKeyword = (keyword, type) => {
 		this.setState({
 			showEmojiKeyboard: false,
 			trackingType: type
@@ -599,7 +613,7 @@ export default class MessageBox extends Component {
 		this.updateMentions(keyword, type);
 	}
 
-	stopTrackingMention() {
+	stopTrackingMention = () => {
 		const { trackingType } = this.state;
 		if (!trackingType) {
 			return;
@@ -727,7 +741,7 @@ export default class MessageBox extends Component {
 		);
 	}
 
-	renderContent() {
+	renderContent = () => {
 		const { recording } = this.state;
 		const { editing } = this.props;
 
@@ -751,7 +765,7 @@ export default class MessageBox extends Component {
 							keyboardType='twitter'
 							blurOnSubmit={false}
 							placeholder={I18n.t('New_Message')}
-							onChangeText={t => this.onChangeText(t)}
+							onChangeText={this.onChangeText}
 							underlineColorAndroid='transparent'
 							defaultValue=''
 							multiline
@@ -771,10 +785,10 @@ export default class MessageBox extends Component {
 			[
 				<KeyboardAccessoryView
 					key='input'
-					renderContent={() => this.renderContent()}
+					renderContent={this.renderContent}
 					kbInputRef={this.component}
 					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
-					onKeyboardResigned={() => this.onKeyboardResigned()}
+					onKeyboardResigned={this.onKeyboardResigned}
 					onItemSelected={this.onEmojiSelected}
 					trackInteractive
 					// revealKeyboardInteractive

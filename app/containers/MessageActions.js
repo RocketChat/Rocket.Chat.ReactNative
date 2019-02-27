@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	Alert, Clipboard, Vibration, Share
-} from 'react-native';
+import { Alert, Clipboard, Share } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-action-sheet';
 import * as moment from 'moment';
@@ -17,6 +15,7 @@ import {
 	toggleStarRequest as toggleStarRequestAction
 } from '../actions/messages';
 import { showToast } from '../utils/info';
+import { vibrate } from '../utils/vibration';
 import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
 
@@ -84,15 +83,15 @@ export default class MessageActions extends React.Component {
 		}
 
 		// Permalink
-		this.options.push(I18n.t('Copy_Permalink'));
+		this.options.push(I18n.t('Permalink'));
 		this.PERMALINK_INDEX = this.options.length - 1;
 
 		// Copy
-		this.options.push(I18n.t('Copy_Message'));
+		this.options.push(I18n.t('Copy'));
 		this.COPY_INDEX = this.options.length - 1;
 
 		// Share
-		this.options.push(I18n.t('Share_Message'));
+		this.options.push(I18n.t('Share'));
 		this.SHARE_INDEX = this.options.length - 1;
 
 		// Quote
@@ -126,7 +125,7 @@ export default class MessageActions extends React.Component {
 		}
 		setTimeout(() => {
 			this.showActionSheet();
-			Vibration.vibrate(50);
+			vibrate();
 		});
 	}
 

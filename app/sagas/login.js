@@ -6,11 +6,12 @@ import {
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions';
-import { serverFinishAdd } from '../actions/server';
+import { serverFinishAdd, selectServerRequest } from '../actions/server';
 import { loginFailure, loginSuccess } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import I18n from '../i18n';
+import database from '../lib/realm';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -60,8 +61,26 @@ const handleLogout = function* handleLogout() {
 	if (server) {
 		try {
 			yield call(logoutCall, { server });
+			const { serversDB } = database.databases;
+			// all servers
+			const servers = yield serversDB.objects('servers');
+			// filter logging out server and delete it
+			const serverRecord = servers.filtered('id = $0', server);
+			serversDB.write(() => {
+				serversDB.delete(serverRecord);
+			});
+			// see if there's other logged in servers and selects first one
+			if (servers.length > 0) {
+				const newServer = servers[0].id;
+				const token = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
+				if (token) {
+					return yield put(selectServerRequest(newServer));
+				}
+			}
+			// if there's no servers, go outside
 			yield put(appStart('outside'));
 		} catch (e) {
+			yield put(appStart('outside'));
 			log('handleLogout', e);
 		}
 	}

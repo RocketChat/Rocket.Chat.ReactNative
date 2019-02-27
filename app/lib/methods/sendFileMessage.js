@@ -51,7 +51,7 @@ export async function sendFileMessage(rid, fileInfo) {
 			try {
 				database.create('uploads', fileInfo, true);
 			} catch (e) {
-				log('sendFileMessage -> create uploads 1', e);
+				return log('sendFileMessage -> create uploads 1', e);
 			}
 		});
 
@@ -62,16 +62,18 @@ export async function sendFileMessage(rid, fileInfo) {
 		}, data);
 		// Workaround for https://github.com/joltup/rn-fetch-blob/issues/96
 		setTimeout(() => {
-			promises[fileInfo.path].uploadProgress((loaded, total) => {
-				database.write(() => {
-					fileInfo.progress = Math.floor((loaded / total) * 100);
-					try {
-						database.create('uploads', fileInfo, true);
-					} catch (e) {
-						log('sendFileMessage -> create uploads 2', e);
-					}
+			if (promises[fileInfo.path] && promises[fileInfo.path].uploadProgress) {
+				promises[fileInfo.path].uploadProgress((loaded, total) => {
+					database.write(() => {
+						fileInfo.progress = Math.floor((loaded / total) * 100);
+						try {
+							database.create('uploads', fileInfo, true);
+						} catch (e) {
+							return log('sendFileMessage -> create uploads 2', e);
+						}
+					});
 				});
-			});
+			}
 		});
 		await promises[fileInfo.path];
 

@@ -6,8 +6,12 @@ export default StyleSheet.create({
 	},
 	container: {
 		paddingVertical: 5,
-		flexDirection: 'row',
-		width: '100%'
+		width: '100%',
+		paddingLeft: 10,
+		paddingRight: 15,
+		flexDirection: 'column',
+		transform: [{ scaleY: -1 }],
+		flex: 1
 	},
 	messageContent: {
 		flex: 1,
@@ -21,13 +25,6 @@ export default StyleSheet.create({
 	},
 	flex: {
 		flexDirection: 'row',
-		flex: 1
-	},
-	message: {
-		paddingLeft: 10,
-		paddingRight: 15,
-		flexDirection: 'column',
-		transform: [{ scaleY: -1 }],
 		flex: 1
 	},
 	textInfo: {
