@@ -444,7 +444,7 @@ export default class RoomActionsView extends LoggedView {
 
 	renderItem = ({ item }) => {
 		const subview = item.type === 'danger' ? [
-			<CustomIcon key='icon' name={item.icon} size={20} style={[styles.sectionItemIcon, styles.textColorDanger]} />,
+			<CustomIcon key='icon' name={item.icon} size={24} style={[styles.sectionItemIcon, styles.textColorDanger]} />,
 			<Text key='name' style={[styles.sectionItemName, styles.textColorDanger]}>{ item.name }</Text>
 		] : [
 			<CustomIcon key='left-icon' name={item.icon} size={24} style={styles.sectionItemIcon} />,
