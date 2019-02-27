@@ -342,6 +342,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -350,7 +351,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -552,6 +555,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -560,7 +564,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -762,6 +768,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -770,7 +777,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -949,6 +958,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -957,7 +967,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -1320,6 +1332,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -1328,7 +1341,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -1645,6 +1660,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -1653,7 +1669,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -1868,6 +1886,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -1876,7 +1895,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -2088,6 +2109,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -2096,7 +2118,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -2298,6 +2322,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -2306,7 +2331,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -2508,6 +2535,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -2516,7 +2544,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -2797,6 +2827,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -2805,7 +2836,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -3007,6 +3040,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -3015,7 +3049,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -3259,6 +3295,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -3267,7 +3304,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -3469,6 +3508,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -3477,7 +3517,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -3693,6 +3735,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -3701,7 +3744,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -3922,6 +3967,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -3930,7 +3976,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -4109,6 +4157,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -4117,7 +4166,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -4296,6 +4347,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -4304,7 +4356,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -4483,6 +4537,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -4491,7 +4546,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -4693,6 +4750,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -4701,7 +4759,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -4799,7 +4859,7 @@ exports[`Storyshots Message list 1`] = `
           ]
         }
       >
-        Nov 10, 2017
+        unread
       </Text>
       <View
         style={
@@ -4835,7 +4895,7 @@ exports[`Storyshots Message list 1`] = `
           ]
         }
       >
-        unread messages
+        Nov 10, 2017
       </Text>
     </View>
     <View
@@ -4952,6 +5012,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -4960,7 +5021,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -5041,23 +5104,6 @@ exports[`Storyshots Message list 1`] = `
         }
       }
     >
-      <View
-        style={
-          Array [
-            Object {
-              "backgroundColor": "#9ea2a8",
-              "flex": 1,
-              "height": 1,
-            },
-            Object {
-              "backgroundColor": "#f5455c",
-            },
-            Object {
-              "marginLeft": 10,
-            },
-          ]
-        }
-      />
       <Text
         style={
           Array [
@@ -5075,7 +5121,7 @@ exports[`Storyshots Message list 1`] = `
           ]
         }
       >
-        unread messages
+        unread
       </Text>
       <View
         style={
@@ -5301,6 +5347,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -5309,7 +5356,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -5420,20 +5469,6 @@ exports[`Storyshots Message list 1`] = `
       >
         Nov 10, 2017
       </Text>
-      <View
-        style={
-          Array [
-            Object {
-              "backgroundColor": "#9ea2a8",
-              "flex": 1,
-              "height": 1,
-            },
-            Object {
-              "marginRight": 10,
-            },
-          ]
-        }
-      />
     </View>
     <View
       style={
@@ -5549,6 +5584,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -5557,7 +5593,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -5759,6 +5797,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -5767,7 +5806,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -6232,6 +6273,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -6240,7 +6282,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -6728,6 +6772,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -6736,7 +6781,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -7013,6 +7060,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -7021,7 +7069,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -7364,6 +7414,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -7372,7 +7423,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -7552,6 +7605,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -7560,7 +7614,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -7763,6 +7819,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -7771,7 +7828,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -7945,6 +8004,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -7953,7 +8013,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -8156,6 +8218,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -8164,7 +8227,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -8368,6 +8433,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -8376,7 +8442,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -8579,6 +8647,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -8587,7 +8656,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -8891,6 +8962,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -8899,7 +8971,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -9103,6 +9177,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -9111,7 +9186,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -9315,6 +9392,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -9323,7 +9401,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -9525,6 +9605,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -9533,7 +9614,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -9716,6 +9799,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -9724,7 +9808,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -9907,6 +9993,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -9915,7 +10002,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -10098,6 +10187,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -10106,7 +10196,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -10290,6 +10382,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -10298,7 +10391,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -10481,6 +10576,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -10489,7 +10585,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -10672,6 +10770,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -10680,7 +10779,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -10863,6 +10964,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -10871,7 +10973,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -11054,6 +11158,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -11062,7 +11167,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -11245,6 +11352,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -11253,7 +11361,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -11436,6 +11546,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -11444,7 +11555,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -11627,6 +11740,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -11635,7 +11749,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -11818,6 +11934,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -11826,7 +11943,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -12009,6 +12128,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -12017,7 +12137,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -12200,6 +12322,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -12208,7 +12331,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -12396,6 +12521,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -12404,7 +12530,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -12606,6 +12734,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -12614,7 +12743,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -12883,6 +13014,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -12891,7 +13023,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -13229,6 +13363,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -13237,7 +13372,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -13469,6 +13606,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -13477,7 +13615,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -13680,6 +13820,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -13688,7 +13829,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -13749,11 +13892,10 @@ exports[`Storyshots Message list 1`] = `
                   <Text
                     style={
                       Object {
-                        "backgroundColor": "#f5f5f5",
-                        "borderColor": "#CCCCCC",
+                        "backgroundColor": "#f8f8f8",
                         "borderRadius": 4,
                         "borderWidth": 1,
-                        "padding": 2,
+                        "fontFamily": "Courier New",
                       }
                     }
                   >
@@ -13765,11 +13907,10 @@ exports[`Storyshots Message list 1`] = `
                   <Text
                     style={
                       Object {
-                        "backgroundColor": "#f5f5f5",
-                        "borderColor": "#CCCCCC",
+                        "backgroundColor": "#f8f8f8",
                         "borderRadius": 4,
                         "borderWidth": 1,
-                        "padding": 2,
+                        "fontFamily": "Courier New",
                       }
                     }
                   >
@@ -13783,11 +13924,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
-                    "backgroundColor": "#f5f5f5",
-                    "borderColor": "#CCCCCC",
+                    "backgroundColor": "#f8f8f8",
+                    "borderColor": "#cccccc",
                     "borderRadius": 4,
                     "borderWidth": 1,
-                    "padding": 10,
+                    "fontFamily": "Courier New",
+                    "padding": 4,
                   }
                 }
               >
@@ -13936,6 +14078,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -13944,7 +14087,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
@@ -14157,6 +14302,7 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
@@ -14165,7 +14311,9 @@ exports[`Storyshots Message list 1`] = `
               <View
                 style={
                   Object {
+                    "alignItems": "center",
                     "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
