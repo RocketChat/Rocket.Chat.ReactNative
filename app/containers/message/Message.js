@@ -147,6 +147,14 @@ export default class Message extends PureComponent {
 		KeyboardUtils.dismiss();
 	}
 
+	onLongPress = () => {
+		const { archived, onLongPress } = this.props;
+		if (this.isInfoMessage() || this.hasError() || archived) {
+			return;
+		}
+		onLongPress();
+	}
+
 	isInfoMessage = () => {
 		const { type } = this.props;
 		return SYSTEM_MESSAGES.includes(type);
@@ -345,16 +353,15 @@ export default class Message extends PureComponent {
 
 	render() {
 		const {
-			editing, style, header, archived, onLongPress, reactionsModal, closeReactions, msg, ts, reactions, author, user, timeFormat, customEmojis, baseUrl
+			editing, style, header, reactionsModal, closeReactions, msg, ts, reactions, author, user, timeFormat, customEmojis, baseUrl
 		} = this.props;
 		const accessibilityLabel = I18n.t('Message_accessibility', { user: author.username, time: moment(ts).format(timeFormat), message: msg });
-		const disabled = this.isInfoMessage() || this.hasError() || archived;
 
 		return (
 			<View style={styles.root}>
 				{this.renderError()}
 				<TouchableWithoutFeedback
-					onLongPress={!disabled && onLongPress}
+					onLongPress={this.onLongPress}
 					onPress={this.onPress}
 				>
 					<View
