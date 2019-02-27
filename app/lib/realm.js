@@ -10,7 +10,8 @@ const serversSchema = {
 	properties: {
 		id: 'string',
 		name: { type: 'string', optional: true },
-		iconURL: { type: 'string', optional: true }
+		iconURL: { type: 'string', optional: true },
+		roomsUpdatedAt: { type: 'date', optional: true }
 	}
 };
 
@@ -22,7 +23,6 @@ const settingsSchema = {
 		valueAsString: { type: 'string', optional: true },
 		valueAsBoolean: { type: 'bool', optional: true },
 		valueAsNumber: { type: 'int', optional: true },
-
 		_updatedAt: { type: 'date', optional: true }
 	}
 };
@@ -308,7 +308,7 @@ class DB {
 			schema: [
 				serversSchema
 			],
-			deleteRealmIfMigrationNeeded: true
+			schemaVersion: 1
 		})
 	}
 
@@ -341,7 +341,7 @@ class DB {
 		return this.databases.activeDB = new Realm({
 			path: `${ path }.realm`,
 			schema,
-			deleteRealmIfMigrationNeeded: true
+			schemaVersion: 1
 		});
 	}
 }
