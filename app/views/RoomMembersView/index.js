@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	FlatList, View, Vibration
-} from 'react-native';
+import { FlatList, View } from 'react-native';
 import ActionSheet from 'react-native-action-sheet';
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -18,6 +16,7 @@ import database from '../../lib/realm';
 import { showToast } from '../../utils/info';
 import log from '../../utils/log';
 import { isAndroid } from '../../utils/deviceInfo';
+import { vibrate } from '../../utils/vibration';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
@@ -184,7 +183,7 @@ export default class RoomMembersView extends LoggedView {
 			this.actionSheetOptions.push(I18n.t('Mute'));
 		}
 		this.setState({ userLongPressed: user });
-		Vibration.vibrate(50);
+		vibrate();
 		this.showActionSheet();
 	}
 

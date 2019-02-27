@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Vibration, ViewPropTypes } from 'react-native';
+import { ViewPropTypes } from 'react-native';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
 
@@ -10,6 +10,7 @@ import {
 	toggleReactionPicker as toggleReactionPickerAction,
 	replyBroadcast as replyBroadcastAction
 } from '../../actions/messages';
+import { vibrate } from '../../utils/vibration';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -119,7 +120,7 @@ export default class MessageContainer extends React.Component {
 
 	onReactionLongPress = () => {
 		this.setState({ reactionsModal: true });
-		Vibration.vibrate(50);
+		vibrate();
 	}
 
 	get timeFormat() {
