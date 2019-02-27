@@ -4,6 +4,12 @@ import { View, Text, StyleSheet } from 'react-native';
 import moment from 'moment';
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center',
+		marginBottom: 2
+	},
 	username: {
 		color: '#0C0D0F',
 		fontWeight: '600',
@@ -11,12 +17,9 @@ const styles = StyleSheet.create({
 		lineHeight: 22
 	},
 	titleContainer: {
-		flex: 1
-	},
-	usernameView: {
+		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'center',
-		marginBottom: 2
+		alignItems: 'center'
 	},
 	alias: {
 		fontSize: 14,
@@ -59,7 +62,7 @@ export default class User extends React.PureComponent {
 		const time = moment(ts).format(timeFormat);
 
 		return (
-			<View style={styles.usernameView}>
+			<View style={styles.container}>
 				<View style={styles.titleContainer}>
 					<Text style={styles.username}>
 						{alias || username}
