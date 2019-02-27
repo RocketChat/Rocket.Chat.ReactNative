@@ -55,7 +55,7 @@
     "react-native-picker-select": "^5.2.3",
     "react-native-responsive-ui": "^1.1.1",
     "react-native-safari-view": "^2.1.0",
-    "react-native-safe-area-view": "^0.12.0",
+    "react-native-safe-area-view": "^0.13.1",
     "react-native-scrollable-tab-view": "0.10.0",
     "react-native-slider": "^0.11.0",
     "react-native-vector-icons": "^6.2.0",
