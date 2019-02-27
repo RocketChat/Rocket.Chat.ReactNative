@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
 	root: {
@@ -42,17 +42,6 @@ export default StyleSheet.create({
 	temp: { opacity: 0.3 },
 	marginBottom: {
 		marginBottom: 10
-	},
-	codeStyle: {
-		...Platform.select({
-			ios: { fontFamily: 'Courier New' },
-			android: { fontFamily: 'monospace' }
-		}),
-		backgroundColor: '#f8f8f8',
-		borderColor: '#cccccc',
-		borderWidth: 1,
-		borderRadius: 4,
-		padding: 4
 	},
 	reactionsContainer: {
 		flexDirection: 'row',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Image } from 'react-native';
+import { Text, Image, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import { emojify } from 'react-emojione';
 import MarkdownRenderer, { PluginContainer } from 'react-native-markdown-renderer';
@@ -13,6 +13,11 @@ const formatText = text => text.replace(
 	new RegExp('(?:<|<)((?:https|http):\\/\\/[^\\|]+)\\|(.+?)(?=>|>)(?:>|>)', 'gm'),
 	(match, url, title) => `[${ title }](${ url })`
 );
+
+const codeFontFamily = Platform.select({
+	ios: { fontFamily: 'Courier New' },
+	android: { fontFamily: 'monospace' }
+});
 
 export default class Markdown extends React.Component {
 	shouldComponentUpdate(nextProps) {
@@ -92,11 +97,18 @@ export default class Markdown extends React.Component {
 						letterSpacing: 0.1
 					},
 					codeInline: {
+						...codeFontFamily,
 						borderWidth: 1,
-						borderColor: '#CCCCCC',
-						backgroundColor: '#f5f5f5',
-						padding: 2,
+						backgroundColor: '#f8f8f8',
 						borderRadius: 4
+					},
+					codeBlock: {
+						...codeFontFamily,
+						backgroundColor: '#f8f8f8',
+						borderColor: '#cccccc',
+						borderWidth: 1,
+						borderRadius: 4,
+						padding: 4
 					},
 					link: {
 						color: '#1D74F5'
