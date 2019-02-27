@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, ViewPropTypes, Image as ImageRN
+	View, Text, ViewPropTypes, Image as ImageRN, TouchableWithoutFeedback
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
@@ -199,7 +199,7 @@ export default class Message extends PureComponent {
 		if (header) {
 			return (
 				<User
-					onPress={this._onPress}
+					onPress={this.onPress}
 					timeFormat={timeFormat}
 					username={(useRealName && author.name) || author.username}
 					alias={alias}
@@ -348,59 +348,53 @@ export default class Message extends PureComponent {
 			editing, style, header, archived, onLongPress, reactionsModal, closeReactions, msg, ts, reactions, author, user, timeFormat, customEmojis, baseUrl
 		} = this.props;
 		const accessibilityLabel = I18n.t('Message_accessibility', { user: author.username, time: moment(ts).format(timeFormat), message: msg });
+		const disabled = this.isInfoMessage() || this.hasError() || archived;
 
 		return (
 			<View style={styles.root}>
 				{this.renderError()}
-				<LongPressGestureHandler
-					onHandlerStateChange={({ nativeEvent }) => nativeEvent.state === State.ACTIVE && onLongPress()}
+				<TouchableWithoutFeedback
+					onLongPress={!disabled && onLongPress}
+					onPress={this.onPress}
 				>
-					<RectButton
-						enabled={!(this.isInfoMessage() || this.hasError() || archived)}
-						style={[styles.container, header && styles.marginBottom]}
-						onPress={this.onPress}
-						activeOpacity={0.8}
-						underlayColor='#e1e5e8'
+					<View
+						style={[styles.container, header && styles.marginBottom, editing && styles.editing, style]}
+						accessibilityLabel={accessibilityLabel}
 					>
-						<View
-							style={[styles.message, editing && styles.editing, style]}
-							accessibilityLabel={accessibilityLabel}
-						>
-							<View style={styles.flex}>
-								{this.renderAvatar()}
-								<View
-									style={[
-										styles.messageContent,
-										header && styles.messageContentWithHeader,
-										this.hasError() && header && styles.messageContentWithHeader,
-										this.hasError() && !header && styles.messageContentWithError,
-										this.isTemp() && styles.temp
-									]}
-								>
-									{this.renderUsername()}
-									{this.renderContent()}
-									{this.renderAttachment()}
-									{this.renderUrl()}
-									{this.renderReactions()}
-									{this.renderBroadcastReply()}
-								</View>
+						<View style={styles.flex}>
+							{this.renderAvatar()}
+							<View
+								style={[
+									styles.messageContent,
+									header && styles.messageContentWithHeader,
+									this.hasError() && header && styles.messageContentWithHeader,
+									this.hasError() && !header && styles.messageContentWithError,
+									this.isTemp() && styles.temp
+								]}
+							>
+								{this.renderUsername()}
+								{this.renderContent()}
+								{this.renderAttachment()}
+								{this.renderUrl()}
+								{this.renderReactions()}
+								{this.renderBroadcastReply()}
 							</View>
-							{reactionsModal
-								? (
-									<ReactionsModal
-										isVisible={reactionsModal}
-										reactions={reactions}
-										user={user}
-										customEmojis={customEmojis}
-										baseUrl={baseUrl}
-										close={closeReactions}
-									/>
-								)
-								: null
-							}
 						</View>
-					</RectButton>
-				</LongPressGestureHandler>
+						{reactionsModal
+							? (
+								<ReactionsModal
+									isVisible={reactionsModal}
+									reactions={reactions}
+									user={user}
+									customEmojis={customEmojis}
+									baseUrl={baseUrl}
+									close={closeReactions}
+								/>
+							)
+							: null
+						}
+					</View>
+				</TouchableWithoutFeedback>
 			</View>
 		);
 	}
