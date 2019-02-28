@@ -216,7 +216,7 @@ export default class MessageBox extends Component {
 			newText = `${ text }${ emoji }`;
 		}
 		this.setInput(newText);
-		this.showSend(true);
+		this.setShowSend(true);
 	}
 
 	get leftButtons() {
