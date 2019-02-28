@@ -62,7 +62,7 @@
     "react-native-video": "^4.3.1",
     "react-native-video-controls": "^2.2.3",
     "react-redux": "^6.0.0",
-    "realm": "^2.22.0",
+    "realm": "2.24",
     "redux": "^4.0.1",
     "redux-enhancer-react-native-appstate": "^0.3.1",
     "redux-immutable-state-invariant": "^2.1.0",
