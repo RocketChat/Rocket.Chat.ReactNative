@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
 		color: '#0C0D0F'
 	},
 	avatar: {
-		marginRight: 15
+		marginRight: 10
 	}
 });
 
