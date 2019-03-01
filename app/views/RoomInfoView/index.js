@@ -8,7 +8,7 @@ import equal from 'deep-equal';
 
 import Navigation from '../../lib/Navigation';
 import LoggedView from '../View';
-import Status from '../../containers/status';
+import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
 import sharedStyles from '../Styles';
@@ -100,7 +100,7 @@ export default class RoomInfoView extends LoggedView {
 				topBar: {
 					rightButtons: [{
 						id: 'edit',
-						icon: Icons.getSource('create', false),
+						icon: Icons.getSource('edit'),
 						testID: 'room-info-view-edit-button'
 					}]
 				}
@@ -263,7 +263,7 @@ export default class RoomInfoView extends LoggedView {
 				baseUrl={baseUrl}
 				user={user}
 			>
-				{room.t === 'd' ? <Status style={[sharedStyles.status, styles.status]} id={roomUser._id} /> : null}
+				{room.t === 'd' ? <Status style={[sharedStyles.status, styles.status]} size={24} id={roomUser._id} /> : null}
 			</Avatar>
 		);
 	}

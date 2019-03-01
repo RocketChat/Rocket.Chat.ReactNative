@@ -320,7 +320,7 @@ export default {
 	Unmute: '取消静音',
 	unmuted: '静音状态',
 	Unpin: '拔掉',
-	unread_messages: '未读消息',
+	unread_messages: '未读',
 	Unread: '未读的',
 	Unread_on_top: '未读在上面',
 	Unstar: '取消星号标记',

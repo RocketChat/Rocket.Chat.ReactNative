@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	StyleSheet, Image, View
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Modal from 'react-native-modal';
 import VideoPlayer from 'react-native-video-controls';
 import { RectButton } from 'react-native-gesture-handler';
@@ -10,6 +8,7 @@ import { RectButton } from 'react-native-gesture-handler';
 import Markdown from './Markdown';
 import openLink from '../../utils/openLink';
 import { isIOS } from '../../utils/deviceInfo';
+import { CustomIcon } from '../../lib/Icons';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/webm', 'video/3gp', 'video/mkv'])];
 const isTypeSupported = type => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -29,8 +28,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#000'
 	},
 	image: {
-		width: 54,
-		height: 54
+		color: 'white'
 	}
 });
 
@@ -84,8 +82,9 @@ export default class Video extends React.PureComponent {
 						activeOpacity={0.5}
 						underlayColor='#fff'
 					>
-						<Image
-							source={{ uri: 'play_video' }}
+						<CustomIcon
+							name='play'
+							size={54}
 							style={styles.image}
 						/>
 					</RectButton>

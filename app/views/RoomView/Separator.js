@@ -6,11 +6,11 @@ import I18n from '../../i18n';
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginBottom: 25,
 		marginTop: 15,
+		marginHorizontal: 15,
 		transform: [{ scaleY: -1 }]
 	},
 	line: {
@@ -30,13 +30,13 @@ const styles = StyleSheet.create({
 		color: '#f5455c'
 	},
 	marginLeft: {
-		marginLeft: 10
+		marginLeft: 15
 	},
 	marginRight: {
-		marginRight: 10
+		marginRight: 15
 	},
 	marginHorizontal: {
-		marginHorizontal: 10
+		marginHorizontal: 15
 	}
 });
 
@@ -45,26 +45,24 @@ const DateSeparator = ({ ts, unread }) => {
 	if (ts && unread) {
 		return (
 			<View style={styles.container}>
-				<Text style={[styles.text, styles.unreadText, styles.marginLeft]}>{date}</Text>
+				<Text style={[styles.text, styles.unreadText]}>{I18n.t('unread_messages')}</Text>
 				<View style={[styles.line, styles.unreadLine, styles.marginHorizontal]} />
-				<Text style={[styles.text, styles.unreadText, styles.marginRight]}>{I18n.t('unread_messages')}</Text>
+				<Text style={[styles.text, styles.unreadText]}>{date}</Text>
 			</View>
 		);
 	}
 	if (ts) {
 		return (
 			<View style={styles.container}>
-				<View style={[styles.line, styles.marginLeft]} />
-				<Text style={[styles.text, styles.marginHorizontal]}>{date}</Text>
-				<View style={[styles.line, styles.marginRight]} />
+				<View style={styles.line} />
+				<Text style={[styles.text, styles.marginLeft]}>{date}</Text>
 			</View>
 		);
 	}
 	return (
 		<View style={styles.container}>
-			<View style={[styles.line, styles.unreadLine, styles.marginLeft]} />
-			<Text style={[styles.text, styles.unreadText, styles.marginHorizontal]}>{I18n.t('unread_messages')}</Text>
-			<View style={[styles.line, styles.unreadLine, styles.marginRight]} />
+			<Text style={[styles.text, styles.unreadText, styles.marginRight]}>{I18n.t('unread_messages')}</Text>
+			<View style={[styles.line, styles.unreadLine]} />
 		</View>
 	);
 };

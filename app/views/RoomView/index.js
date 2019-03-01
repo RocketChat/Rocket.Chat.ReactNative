@@ -59,11 +59,11 @@ export default class RoomView extends LoggedView {
 				rightButtons: [{
 					id: 'more',
 					testID: 'room-view-header-actions',
-					icon: Icons.getSource('more', false)
+					icon: Icons.getSource('more')
 				}, {
 					id: 'star',
 					testID: 'room-view-header-star',
-					icon: Icons.getSource('starOutline', false)
+					icon: Icons.getSource('starOutline')
 				}]
 			},
 			blurOnUnmount: true
@@ -156,13 +156,13 @@ export default class RoomView extends LoggedView {
 			const rightButtons = [{
 				id: 'star',
 				testID: 'room-view-header-star',
-				icon: room.f ? Icons.getSource('star', false) : Icons.getSource('starOutline', false)
+				icon: room.f ? Icons.getSource('star') : Icons.getSource('starOutline')
 			}];
 			if (room.t !== 'l') {
 				rightButtons.unshift({
 					id: 'more',
 					testID: 'room-view-header-actions',
-					icon: Icons.getSource('more', false)
+					icon: Icons.getSource('more')
 				});
 			}
 			Navigation.mergeOptions(componentId, {

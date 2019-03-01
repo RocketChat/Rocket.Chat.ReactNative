@@ -4,16 +4,22 @@ import { View, Text, StyleSheet } from 'react-native';
 import moment from 'moment';
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center',
+		marginBottom: 2
+	},
 	username: {
 		color: '#0C0D0F',
 		fontWeight: '600',
 		fontSize: 16,
 		lineHeight: 22
 	},
-	usernameView: {
+	titleContainer: {
+		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'center',
-		marginBottom: 2
+		alignItems: 'center'
 	},
 	alias: {
 		fontSize: 14,
@@ -22,7 +28,7 @@ const styles = StyleSheet.create({
 		lineHeight: 16
 	},
 	time: {
-		fontSize: 14,
+		fontSize: 12,
 		color: '#9EA2A8',
 		paddingLeft: 10,
 		fontWeight: '300',
@@ -56,11 +62,13 @@ export default class User extends React.PureComponent {
 		const time = moment(ts).format(timeFormat);
 
 		return (
-			<View style={styles.usernameView}>
-				<Text style={styles.username}>
-					{alias || username}
-				</Text>
-				{aliasUsername}
+			<View style={styles.container}>
+				<View style={styles.titleContainer}>
+					<Text style={styles.username}>
+						{alias || username}
+					</Text>
+					{aliasUsername}
+				</View>
 				<Text style={styles.time}>{time}</Text>
 			</View>
 		);

@@ -285,7 +285,7 @@ export default class LoginView extends LoggedView {
 					placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username_or_email')}
 					keyboardType='email-address'
 					returnKeyType='next'
-					iconLeft='mention'
+					iconLeft='at'
 					onChangeText={value => this.setState({ user: value })}
 					onSubmitEditing={() => { this.passwordInput.focus(); }}
 					testID='login-view-email'

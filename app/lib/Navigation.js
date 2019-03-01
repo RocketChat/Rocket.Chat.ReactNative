@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import store from './createStore';
+import debounce from '../utils/debounce';
 
 const DRAWER_ID = 'SidebarView';
 
@@ -197,7 +198,7 @@ class NavigationManager {
 		}
 	}
 
-	push = (...args) => {
+	push = debounce((...args) => {
 		let componentName;
 		try {
 			componentName = args[1].component.name;
@@ -207,9 +208,9 @@ class NavigationManager {
 		this.handleComponentName(componentName);
 		this.loadView(componentName);
 		Navigation.push(...args);
-	}
+	}, 300, true)
 
-	showModal = (...args) => {
+	showModal = debounce((...args) => {
 		let componentName;
 		try {
 			componentName = args[0].stack.children[0].component.name;
@@ -219,7 +220,7 @@ class NavigationManager {
 		this.handleComponentName(componentName);
 		this.loadView(componentName);
 		Navigation.showModal(...args);
-	}
+	}, 300, true)
 
 	pop = (...args) => Navigation.pop(...args);
 
