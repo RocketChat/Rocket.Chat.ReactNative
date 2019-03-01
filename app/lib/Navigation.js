@@ -1,4 +1,5 @@
-import { Navigation } from 'react-native-navigation';
+// import { Navigation } from 'react-native-navigation';
+const Navigation = {};
 import { Provider } from 'react-redux';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
@@ -168,17 +169,17 @@ class NavigationManager {
 		};
 		this.isDrawerVisible = false;
 
-		Navigation.events().registerComponentDidAppearListener(({ componentId }) => {
-			if (componentId === DRAWER_ID) {
-				this.isDrawerVisible = true;
-			}
-		});
+		// Navigation.events().registerComponentDidAppearListener(({ componentId }) => {
+		// 	if (componentId === DRAWER_ID) {
+		// 		this.isDrawerVisible = true;
+		// 	}
+		// });
 
-		Navigation.events().registerComponentDidDisappearListener(({ componentId }) => {
-			if (componentId === DRAWER_ID) {
-				this.isDrawerVisible = false;
-			}
-		});
+		// Navigation.events().registerComponentDidDisappearListener(({ componentId }) => {
+		// 	if (componentId === DRAWER_ID) {
+		// 		this.isDrawerVisible = false;
+		// 	}
+		// });
 	}
 
 	handleComponentName = (componentName) => {
@@ -230,7 +231,8 @@ class NavigationManager {
 
 	dismissAllModals = (...args) => Navigation.dismissAllModals(...args);
 
-	events = (...args) => Navigation.events(...args);
+	// events = (...args) => Navigation.events(...args);
+	events = () => {};
 
 	mergeOptions = (...args) => Navigation.mergeOptions(...args);
 
