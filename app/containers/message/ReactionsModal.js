@@ -4,9 +4,10 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+
 import Emoji from './Emoji';
 import I18n from '../../i18n';
+import { CustomIcon } from '../../lib/Icons';
 
 const styles = StyleSheet.create({
 	titleContainer: {
@@ -113,9 +114,9 @@ export default class ReactionsModal extends React.PureComponent {
 			>
 				<TouchableWithoutFeedback onPress={close}>
 					<View style={styles.titleContainer}>
-						<Icon
+						<CustomIcon
 							style={styles.closeButton}
-							name='close'
+							name='cross'
 							size={20}
 							onPress={close}
 						/>

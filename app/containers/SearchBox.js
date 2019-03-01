@@ -1,11 +1,10 @@
 import React from 'react';
-import {
-	View, StyleSheet, Image, TextInput
-} from 'react-native';
+import { View, StyleSheet, TextInput } from 'react-native';
 import PropTypes from 'prop-types';
 
 import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
+import { CustomIcon } from '../lib/Icons';
 
 const styles = StyleSheet.create({
 	container: {
@@ -23,10 +22,6 @@ const styles = StyleSheet.create({
 		marginVertical: 10,
 		paddingHorizontal: 10
 	},
-	icon: {
-		width: 14,
-		height: 14
-	},
 	input: {
 		color: '#8E8E93',
 		flex: 1,
@@ -40,7 +35,7 @@ const styles = StyleSheet.create({
 const SearchBox = ({ onChangeText, testID }) => (
 	<View style={styles.container}>
 		<View style={styles.searchBox}>
-			<Image source={{ uri: 'textinput_search' }} style={styles.icon} />
+			<CustomIcon name='magnifier' size={14} color='#8E8E93' />
 			<TextInput
 				autoCapitalize='none'
 				autoCorrect={false}

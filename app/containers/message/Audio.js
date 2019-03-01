@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, Text, Easing, Image
+	View, StyleSheet, Text, Easing
 } from 'react-native';
 import Video from 'react-native-video';
 import Slider from 'react-native-slider';
@@ -10,6 +10,7 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
 
 import Markdown from './Markdown';
+import { CustomIcon } from '../../lib/Icons';
 
 const styles = StyleSheet.create({
 	audioContainer: {
@@ -27,8 +28,7 @@ const styles = StyleSheet.create({
 		backgroundColor: 'transparent'
 	},
 	playPauseImage: {
-		width: 30,
-		height: 30
+		color: '#1D74F5'
 	},
 	slider: {
 		flex: 1,
@@ -154,8 +154,8 @@ export default class Audio extends React.Component {
 					>
 						{
 							paused
-								? <Image source={{ uri: 'play' }} style={styles.playPauseImage} />
-								: <Image source={{ uri: 'pause' }} style={styles.playPauseImage} />
+								? <CustomIcon name='play' size={30} style={styles.playPauseImage} />
+								: <CustomIcon name='pause' size={30} style={styles.playPauseImage} />
 						}
 					</BorderlessButton>
 					<Slider

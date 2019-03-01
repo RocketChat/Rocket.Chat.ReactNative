@@ -73,7 +73,8 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    entryFile: "index.android.js"
+    entryFile: "index.android.js",
+    iconFontNames: [ 'custom.ttf' ]
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"

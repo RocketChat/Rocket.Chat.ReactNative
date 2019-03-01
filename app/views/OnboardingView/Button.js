@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, Text, TouchableWithoutFeedback, Image
-} from 'react-native';
+import { View, Text, TouchableWithoutFeedback } from 'react-native';
 
 import styles from './styles';
+import DisclosureIndicator from '../../containers/DisclosureIndicator';
 
 export default class Button extends React.PureComponent {
 	static propTypes = {
@@ -47,7 +46,7 @@ export default class Button extends React.PureComponent {
 						<Text style={[styles.buttonTitle, styles[`button_text_${ type }`], activeStyle]}>{title}</Text>
 						{subtitle ? <Text style={[styles.buttonSubtitle, activeStyle]}>{subtitle}</Text> : null}
 					</View>
-					{type === 'secondary' ? <Image source={{ uri: 'disclosure_indicator' }} style={styles.buttonIcon} /> : null}
+					{type === 'secondary' ? <DisclosureIndicator /> : null}
 				</View>
 			</TouchableWithoutFeedback>
 		);

@@ -43,9 +43,6 @@ export default StyleSheet.create({
 		alignItems: 'center'
 	},
 	status: {
-		borderRadius: 24,
-		width: 24,
-		height: 24,
 		borderWidth: 4,
 		bottom: -4,
 		right: -4

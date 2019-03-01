@@ -1,16 +1,13 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import {
-	View, Text, StyleSheet, Image
-} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 import { RectButton } from 'react-native-gesture-handler';
 
 import Avatar from '../containers/Avatar';
-import Status from '../containers/status';
-import Touch from '../utils/touch/index'; //eslint-disable-line
+import Status from '../containers/Status';
 import RoomTypeIcon from '../containers/RoomTypeIcon';
 import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
@@ -18,12 +15,12 @@ import { isIOS } from '../utils/deviceInfo';
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		marginHorizontal: 15
 	},
 	centerContainer: {
 		flex: 1,
-		height: '100%',
-		marginRight: 4
+		height: '100%'
 	},
 	title: {
 		flex: 1,
@@ -57,7 +54,8 @@ const styles = StyleSheet.create({
 		paddingBottom: 0
 	},
 	updateAlert: {
-		color: '#1D74F5'
+		color: '#1D74F5',
+		fontWeight: '700'
 	},
 	unreadNumberContainer: {
 		minWidth: 23,
@@ -75,31 +73,20 @@ const styles = StyleSheet.create({
 		letterSpacing: 0.56
 	},
 	status: {
-		borderRadius: 10,
-		width: 10,
-		height: 10,
 		marginRight: 7,
 		marginTop: 3
-	},
-	disclosureContainer: {
-		height: '100%',
-		marginLeft: 6,
-		marginRight: 9,
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	disclosureIndicator: {
-		width: 20,
-		height: 20
-	},
-	emptyDisclosureAndroid: {
-		width: 15
 	},
 	markdownText: {
 		flex: 1,
 		color: '#9EA2A8',
 		fontSize: 15,
 		fontWeight: 'normal'
+	},
+	markdownTextAlert: {
+		color: '#0C0D0F'
+	},
+	avatar: {
+		marginRight: 10
 	}
 });
 
@@ -182,7 +169,7 @@ export default class RoomItem extends React.Component {
 		const {
 			type, name, avatarSize, baseUrl, user
 		} = this.props;
-		return <Avatar text={name} size={avatarSize} type={type} baseUrl={baseUrl} style={{ marginHorizontal: 15 }} user={user} />;
+		return <Avatar text={name} size={avatarSize} type={type} baseUrl={baseUrl} style={styles.avatar} user={user} />;
 	}
 
 	get lastMessage() {
@@ -222,9 +209,9 @@ export default class RoomItem extends React.Component {
 	get type() {
 		const { type, id } = this.props;
 		if (type === 'd') {
-			return <Status style={[styles.status]} id={id} />;
+			return <Status style={styles.status} size={10} id={id} />;
 		}
-		return <RoomTypeIcon type={type} size={12} />;
+		return <RoomTypeIcon type={type} />;
 	}
 
 	formatDate = date => moment(date).calendar(null, {
@@ -233,17 +220,6 @@ export default class RoomItem extends React.Component {
 		lastWeek: 'dddd',
 		sameElse: 'MMM D'
 	})
-
-	renderDisclosureIndicator = () => {
-		if (isIOS) {
-			return (
-				<View style={styles.disclosureContainer}>
-					<Image source={{ uri: 'disclosure_indicator' }} style={styles.disclosureIndicator} />
-				</View>
-			);
-		}
-		return <View style={styles.emptyDisclosureAndroid} />;
-	}
 
 	render() {
 		const {
@@ -286,13 +262,12 @@ export default class RoomItem extends React.Component {
 							{_updatedAt ? <Text style={[styles.date, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
 						</View>
 						<View style={styles.row}>
-							<Text style={styles.markdownText} numberOfLines={2}>
+							<Text style={[styles.markdownText, alert && styles.markdownTextAlert]} numberOfLines={2}>
 								{this.lastMessage}
 							</Text>
 							{renderNumber(unread, userMentions)}
 						</View>
 					</View>
-					{this.renderDisclosureIndicator()}
 				</View>
 			</RectButton>
 		);

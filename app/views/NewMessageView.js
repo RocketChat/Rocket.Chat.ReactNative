@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, FlatList, Text, Image
+	View, StyleSheet, FlatList, Text
 } from 'react-native';
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -18,7 +18,7 @@ import I18n from '../i18n';
 import Touch from '../utils/touch';
 import { isIOS, isAndroid } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
-import Icons from '../lib/Icons';
+import Icons, { CustomIcon } from '../lib/Icons';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -38,8 +38,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	createChannelIcon: {
-		width: 24,
-		height: 24,
+		color: '#1D74F5',
 		marginHorizontal: 18
 	},
 	createChannelText: {
@@ -62,7 +61,7 @@ export default class NewMessageView extends LoggedView {
 			topBar: {
 				leftButtons: [{
 					id: 'cancel',
-					icon: isAndroid ? Icons.getSource('back') : undefined,
+					icon: isAndroid ? Icons.getSource('close') : undefined,
 					text: isIOS ? I18n.t('Cancel') : undefined
 				}]
 			}
@@ -159,7 +158,7 @@ export default class NewMessageView extends LoggedView {
 			<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='new-message-view-search' />
 			<Touch onPress={this.createChannel} style={styles.createChannelButton} testID='new-message-view-create-channel'>
 				<View style={[sharedStyles.separatorVertical, styles.createChannelContainer]}>
-					<Image style={styles.createChannelIcon} source={{ uri: 'plus' }} />
+					<CustomIcon style={styles.createChannelIcon} size={24} name='plus' />
 					<Text style={styles.createChannelText}>{I18n.t('Create_Channel')}</Text>
 				</View>
 			</Touch>

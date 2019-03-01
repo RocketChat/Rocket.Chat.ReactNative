@@ -72,17 +72,7 @@
 	<string>Upload photos to share with other users or to change your avatar</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Entypo.ttf</string>
-		<string>EvilIcons.ttf</string>
-		<string>FontAwesome.ttf</string>
-		<string>Foundation.ttf</string>
-		<string>Ionicons.ttf</string>
-		<string>MaterialCommunityIcons.ttf</string>
-		<string>MaterialIcons.ttf</string>
-		<string>Octicons.ttf</string>
-		<string>SimpleLineIcons.ttf</string>
-		<string>Zocial.ttf</string>
-		<string>Feather.ttf</string>
+		<string>custom.ttf</string>
 	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>

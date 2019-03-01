@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, ViewPropTypes, Image as ImageRN, TouchableWithoutFeedback
+	View, Text, ViewPropTypes, TouchableWithoutFeedback
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
 import { KeyboardUtils } from 'react-native-keyboard-input';
 import {
@@ -23,6 +22,7 @@ import Emoji from './Emoji';
 import styles from './styles';
 import I18n from '../../i18n';
 import messagesStatus from '../../constants/messagesStatus';
+import { CustomIcon } from '../../lib/Icons';
 
 const SYSTEM_MESSAGES = [
 	'r',
@@ -271,7 +271,7 @@ export default class Message extends PureComponent {
 		const { onErrorPress } = this.props;
 		return (
 			<BorderlessButton onPress={onErrorPress} style={styles.errorButton}>
-				<Icon name='error-outline' color='red' size={20} />
+				<CustomIcon name='circle-cross' color='red' size={20} />
 			</BorderlessButton>
 		);
 	}
@@ -326,7 +326,7 @@ export default class Message extends PureComponent {
 					underlayColor='#e1e5e8'
 				>
 					<View style={styles.reactionContainer}>
-						<ImageRN source={{ uri: 'add_reaction' }} style={styles.addReaction} />
+						<CustomIcon name='add-reaction' size={21} style={styles.addReaction} />
 					</View>
 				</RectButton>
 			</View>
@@ -343,7 +343,7 @@ export default class Message extends PureComponent {
 					activeOpacity={0.5}
 					underlayColor='#fff'
 				>
-					<ImageRN source={{ uri: 'reply' }} style={styles.broadcastButtonIcon} />
+					<CustomIcon name='back' size={20} style={styles.broadcastButtonIcon} />
 					<Text style={styles.broadcastButtonText}>{I18n.t('Reply')}</Text>
 				</RectButton>
 			);

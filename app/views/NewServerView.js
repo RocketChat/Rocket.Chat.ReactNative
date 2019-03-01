@@ -4,7 +4,6 @@ import {
 	Text, ScrollView, Keyboard, Image, StyleSheet, TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/Ionicons';
 import SafeAreaView from 'react-native-safe-area-view';
 
 import Navigation from '../lib/Navigation';
@@ -19,6 +18,7 @@ import { verticalScale, moderateScale } from '../utils/scaling';
 import KeyboardView from '../presentation/KeyboardView';
 import { isIOS, isNotch } from '../utils/deviceInfo';
 import { LIGHT_HEADER } from '../constants/headerOptions';
+import { CustomIcon } from '../lib/Icons';
 
 const styles = StyleSheet.create({
 	image: {
@@ -165,8 +165,8 @@ export default class NewServerView extends LoggedView {
 				style={[styles.backButton, { top }]}
 				onPress={() => Navigation.pop(componentId)}
 			>
-				<Icon
-					name='ios-arrow-back'
+				<CustomIcon
+					name='back'
 					size={30}
 					color='#1D74F5'
 				/>

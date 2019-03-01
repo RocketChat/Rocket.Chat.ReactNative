@@ -4,21 +4,20 @@ import {
 	ScrollView, Text, View, StyleSheet, FlatList, LayoutAnimation, SafeAreaView, Image
 } from 'react-native';
 import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import equal from 'deep-equal';
 
 import Navigation from '../lib/Navigation';
 import { logout as logoutAction } from '../actions/login';
 import Avatar from '../containers/Avatar';
-import Status from '../containers/status';
+import StatusContainer from '../containers/Status';
+import Status from '../containers/Status/Status';
 import Touch from '../utils/touch';
-import { STATUS_COLORS } from '../constants/colors';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import I18n from '../i18n';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { getReadableVersion, isIOS, isAndroid } from '../utils/deviceInfo';
-import Icons from '../lib/Icons';
+import Icons, { CustomIcon } from '../lib/Icons';
 
 const styles = StyleSheet.create({
 	container: {
@@ -65,9 +64,6 @@ const styles = StyleSheet.create({
 		marginHorizontal: 10
 	},
 	status: {
-		borderRadius: 12,
-		width: 12,
-		height: 12,
 		marginRight: 5
 	},
 	currentServerText: {
@@ -255,7 +251,7 @@ export default class Sidebar extends Component {
 		return (
 			this.renderItem({
 				text: item.name,
-				left: <View style={[styles.status, { backgroundColor: STATUS_COLORS[item.id] }]} />,
+				left: <Status style={styles.status} size={12} status={item.id} />,
 				current: user.status === item.id,
 				onPress: () => {
 					this.toggleStatus();
@@ -286,14 +282,14 @@ export default class Sidebar extends Component {
 		[
 			this.renderItem({
 				text: I18n.t('Profile'),
-				left: <Icon name='person' size={20} />,
+				left: <CustomIcon name='user' size={20} color='#292E35' />,
 				onPress: () => this.sidebarNavigate('ProfileView'),
 				testID: 'sidebar-profile',
 				disclosure: true
 			}),
 			this.renderItem({
 				text: I18n.t('Settings'),
-				left: <Icon name='settings' size={20} />,
+				left: <CustomIcon name='cog' size={20} color='#292E35' />,
 				onPress: () => this.sidebarNavigate('SettingsView'),
 				testID: 'sidebar-settings',
 				disclosure: true
@@ -301,7 +297,7 @@ export default class Sidebar extends Component {
 			this.renderSeparator('separator-logout'),
 			this.renderItem({
 				text: I18n.t('Logout'),
-				left: <Icon name='exit-to-app' size={20} />,
+				left: <CustomIcon name='sign-out' size={20} color='#292E35' />,
 				onPress: () => this.logout(),
 				testID: 'sidebar-logout'
 			})
@@ -348,16 +344,11 @@ export default class Sidebar extends Component {
 							/>
 							<View style={styles.headerTextContainer}>
 								<View style={styles.headerUsername}>
-									<Status style={styles.status} id={user.id} />
+									<StatusContainer style={styles.status} size={12} id={user.id} />
 									<Text numberOfLines={1}>{user.username}</Text>
 								</View>
 								<Text style={styles.currentServerText} numberOfLines={1}>{Site_Name}</Text>
 							</View>
-							<Icon
-								name={showStatus ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
-								size={30}
-								style={{ paddingHorizontal: 10 }}
-							/>
 						</View>
 					</Touch>
 

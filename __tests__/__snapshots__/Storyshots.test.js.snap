@@ -248,8 +248,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -327,10 +326,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -342,28 +341,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -450,8 +460,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -529,10 +538,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -544,28 +553,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -652,8 +672,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -731,10 +750,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -746,28 +765,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -831,8 +861,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -910,10 +939,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -925,28 +954,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                rocket.cat
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  rocket.cat
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -1010,8 +1050,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -1039,7 +1078,7 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 false,
                 false,
@@ -1102,8 +1141,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -1131,7 +1169,7 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 false,
                 false,
@@ -1194,8 +1232,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -1273,10 +1310,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -1288,28 +1325,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -1396,8 +1444,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -1425,7 +1472,7 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 false,
                 false,
@@ -1511,8 +1558,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -1590,10 +1636,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -1605,41 +1651,52 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                Diego Mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  Diego Mello
+                </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#9EA2A8",
+                      "fontSize": 14,
+                      "lineHeight": 16,
+                      "paddingLeft": 6,
+                    }
+                  }
+                >
+                  @
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
-                    "lineHeight": 16,
-                    "paddingLeft": 6,
-                  }
-                }
-              >
-                @
-                diego.mello
-              </Text>
-              <Text
-                style={
-                  Object {
-                    "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -1726,8 +1783,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -1805,10 +1861,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -1820,28 +1876,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -1938,8 +2005,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -2017,10 +2083,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -2032,28 +2098,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -2140,8 +2217,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -2219,10 +2295,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -2234,28 +2310,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                Diego Mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  Diego Mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -2342,8 +2429,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -2421,10 +2507,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -2436,28 +2522,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -2623,8 +2720,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -2702,10 +2798,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -2717,28 +2813,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -2825,8 +2932,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -2904,10 +3010,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -2919,28 +3025,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -3069,8 +3186,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -3148,10 +3264,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -3163,28 +3279,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -3271,8 +3398,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -3350,10 +3476,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -3365,28 +3491,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -3487,8 +3624,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -3566,10 +3702,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -3581,28 +3717,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -3708,8 +3855,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -3787,10 +3933,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -3802,28 +3948,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                rocket.cat
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  rocket.cat
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -3887,8 +4044,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -3966,10 +4122,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -3981,28 +4137,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -4066,8 +4233,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -4145,10 +4311,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -4160,28 +4326,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                rocket.cat
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  rocket.cat
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -4245,8 +4422,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -4324,10 +4500,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -4339,28 +4515,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -4447,8 +4634,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -4526,10 +4712,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -4541,28 +4727,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                rocket.cat
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  rocket.cat
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -4610,9 +4807,9 @@ exports[`Storyshots Message list 1`] = `
       style={
         Object {
           "alignItems": "center",
-          "flex": 1,
           "flexDirection": "row",
           "marginBottom": 25,
+          "marginHorizontal": 15,
           "marginTop": 15,
           "transform": Array [
             Object {
@@ -4633,13 +4830,10 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "color": "#f5455c",
             },
-            Object {
-              "marginLeft": 10,
-            },
           ]
         }
       >
-        Nov 10, 2017
+        unread
       </Text>
       <View
         style={
@@ -4653,7 +4847,7 @@ exports[`Storyshots Message list 1`] = `
               "backgroundColor": "#f5455c",
             },
             Object {
-              "marginHorizontal": 10,
+              "marginHorizontal": 15,
             },
           ]
         }
@@ -4669,13 +4863,10 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "color": "#f5455c",
             },
-            Object {
-              "marginRight": 10,
-            },
           ]
         }
       >
-        unread messages
+        Nov 10, 2017
       </Text>
     </View>
     <View
@@ -4698,8 +4889,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -4777,10 +4967,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -4792,28 +4982,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -4861,9 +5062,9 @@ exports[`Storyshots Message list 1`] = `
       style={
         Object {
           "alignItems": "center",
-          "flex": 1,
           "flexDirection": "row",
           "marginBottom": 25,
+          "marginHorizontal": 15,
           "marginTop": 15,
           "transform": Array [
             Object {
@@ -4873,23 +5074,6 @@ exports[`Storyshots Message list 1`] = `
         }
       }
     >
-      <View
-        style={
-          Array [
-            Object {
-              "backgroundColor": "#9ea2a8",
-              "flex": 1,
-              "height": 1,
-            },
-            Object {
-              "backgroundColor": "#f5455c",
-            },
-            Object {
-              "marginLeft": 10,
-            },
-          ]
-        }
-      />
       <Text
         style={
           Array [
@@ -4902,12 +5086,12 @@ exports[`Storyshots Message list 1`] = `
               "color": "#f5455c",
             },
             Object {
-              "marginHorizontal": 10,
+              "marginRight": 15,
             },
           ]
         }
       >
-        unread messages
+        unread
       </Text>
       <View
         style={
@@ -4919,9 +5103,6 @@ exports[`Storyshots Message list 1`] = `
             },
             Object {
               "backgroundColor": "#f5455c",
-            },
-            Object {
-              "marginRight": 10,
             },
           ]
         }
@@ -4947,8 +5128,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -4976,7 +5156,7 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 false,
                 false,
@@ -5039,8 +5219,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -5118,10 +5297,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -5133,28 +5312,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                rocket.cat
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  rocket.cat
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -5202,9 +5392,9 @@ exports[`Storyshots Message list 1`] = `
       style={
         Object {
           "alignItems": "center",
-          "flex": 1,
           "flexDirection": "row",
           "marginBottom": 25,
+          "marginHorizontal": 15,
           "marginTop": 15,
           "transform": Array [
             Object {
@@ -5216,16 +5406,11 @@ exports[`Storyshots Message list 1`] = `
     >
       <View
         style={
-          Array [
-            Object {
-              "backgroundColor": "#9ea2a8",
-              "flex": 1,
-              "height": 1,
-            },
-            Object {
-              "marginLeft": 10,
-            },
-          ]
+          Object {
+            "backgroundColor": "#9ea2a8",
+            "flex": 1,
+            "height": 1,
+          }
         }
       />
       <Text
@@ -5237,27 +5422,13 @@ exports[`Storyshots Message list 1`] = `
               "fontWeight": "600",
             },
             Object {
-              "marginHorizontal": 10,
+              "marginLeft": 15,
             },
           ]
         }
       >
         Nov 10, 2017
       </Text>
-      <View
-        style={
-          Array [
-            Object {
-              "backgroundColor": "#9ea2a8",
-              "flex": 1,
-              "height": 1,
-            },
-            Object {
-              "marginRight": 10,
-            },
-          ]
-        }
-      />
     </View>
     <View
       style={
@@ -5279,8 +5450,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -5358,10 +5528,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -5373,28 +5543,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -5481,8 +5662,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -5560,10 +5740,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -5575,28 +5755,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -5946,8 +6137,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -6025,10 +6215,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -6040,28 +6230,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -6434,8 +6635,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -6513,10 +6713,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -6528,28 +6728,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -6711,8 +6922,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -6790,10 +7000,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -6805,28 +7015,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -7054,8 +7275,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -7133,10 +7353,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -7148,28 +7368,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -7234,8 +7465,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -7313,10 +7543,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -7328,28 +7558,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -7437,8 +7678,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -7516,10 +7756,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -7531,28 +7771,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -7611,8 +7862,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -7690,10 +7940,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -7705,28 +7955,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -7814,8 +8075,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -7893,10 +8153,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -7908,28 +8168,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -8018,8 +8289,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -8097,10 +8367,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -8112,28 +8382,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -8221,8 +8502,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -8300,10 +8580,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -8315,28 +8595,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -8424,8 +8715,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -8453,7 +8743,7 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 false,
                 false,
@@ -8521,8 +8811,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -8600,13 +8889,13 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 Object {
@@ -8619,28 +8908,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -8727,8 +9027,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -8806,10 +9105,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -8823,28 +9122,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -8931,8 +9241,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -9012,10 +9321,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -9027,28 +9336,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -9135,8 +9455,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -9214,10 +9533,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -9229,28 +9548,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -9318,8 +9648,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -9397,10 +9726,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -9412,28 +9741,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -9501,8 +9841,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -9580,10 +9919,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -9595,28 +9934,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -9684,8 +10034,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -9763,10 +10112,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -9778,28 +10127,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -9868,8 +10228,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -9947,10 +10306,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -9962,28 +10321,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -10051,8 +10421,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -10130,10 +10499,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -10145,28 +10514,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -10234,8 +10614,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -10313,10 +10692,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -10328,28 +10707,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -10417,8 +10807,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -10496,10 +10885,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -10511,28 +10900,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -10600,8 +11000,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -10679,10 +11078,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -10694,28 +11093,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -10783,8 +11193,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -10862,10 +11271,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -10877,28 +11286,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -10966,8 +11386,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -11045,10 +11464,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -11060,28 +11479,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -11149,8 +11579,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -11228,10 +11657,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -11243,28 +11672,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -11332,8 +11772,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -11411,10 +11850,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -11426,28 +11865,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -11515,8 +11965,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -11594,10 +12043,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -11609,28 +12058,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -11698,8 +12158,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -11777,10 +12236,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -11792,28 +12251,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -11881,8 +12351,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -11965,10 +12434,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -11980,28 +12449,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -12088,8 +12568,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -12167,10 +12646,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -12182,28 +12661,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -12357,8 +12847,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -12436,10 +12925,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -12451,28 +12940,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -12695,8 +13195,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -12774,10 +13273,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -12789,28 +13288,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -12927,8 +13437,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -13006,10 +13515,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -13021,28 +13530,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -13130,8 +13650,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -13209,10 +13728,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -13224,28 +13743,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -13285,11 +13815,10 @@ exports[`Storyshots Message list 1`] = `
                   <Text
                     style={
                       Object {
-                        "backgroundColor": "#f5f5f5",
-                        "borderColor": "#CCCCCC",
+                        "backgroundColor": "#f8f8f8",
                         "borderRadius": 4,
                         "borderWidth": 1,
-                        "padding": 2,
+                        "fontFamily": "Courier New",
                       }
                     }
                   >
@@ -13301,11 +13830,10 @@ exports[`Storyshots Message list 1`] = `
                   <Text
                     style={
                       Object {
-                        "backgroundColor": "#f5f5f5",
-                        "borderColor": "#CCCCCC",
+                        "backgroundColor": "#f8f8f8",
                         "borderRadius": 4,
                         "borderWidth": 1,
-                        "padding": 2,
+                        "fontFamily": "Courier New",
                       }
                     }
                   >
@@ -13319,11 +13847,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
-                    "backgroundColor": "#f5f5f5",
-                    "borderColor": "#CCCCCC",
+                    "backgroundColor": "#f8f8f8",
+                    "borderColor": "#cccccc",
                     "borderRadius": 4,
                     "borderWidth": 1,
-                    "padding": 10,
+                    "fontFamily": "Courier New",
+                    "padding": 4,
                   }
                 }
               >
@@ -13378,8 +13907,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -13457,10 +13985,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -13472,28 +14000,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
@@ -13591,8 +14130,7 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingLeft": 10,
-              "paddingRight": 15,
+              "paddingHorizontal": 15,
               "paddingVertical": 5,
               "transform": Array [
                 Object {
@@ -13670,10 +14208,10 @@ exports[`Storyshots Message list 1`] = `
               Array [
                 Object {
                   "flex": 1,
-                  "marginLeft": 51,
+                  "marginLeft": 46,
                 },
                 Object {
-                  "marginLeft": 15,
+                  "marginLeft": 10,
                 },
                 false,
                 false,
@@ -13685,28 +14223,39 @@ exports[`Storyshots Message list 1`] = `
               style={
                 Object {
                   "alignItems": "center",
+                  "flex": 1,
                   "flexDirection": "row",
                   "marginBottom": 2,
                 }
               }
             >
-              <Text
+              <View
                 style={
                   Object {
-                    "color": "#0C0D0F",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "lineHeight": 22,
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
                   }
                 }
               >
-                diego.mello
-              </Text>
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
               <Text
                 style={
                   Object {
                     "color": "#9EA2A8",
-                    "fontSize": 14,
+                    "fontSize": 12,
                     "fontWeight": "300",
                     "lineHeight": 16,
                     "paddingLeft": 10,
