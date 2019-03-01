@@ -6916,7 +6916,7 @@ exports[`Storyshots Message list 1`] = `
                 }
                 swipeThreshold={100}
               >
-                Video
+                View
               </View>
             </Modal>
           </View>
@@ -7115,7 +7115,7 @@ exports[`Storyshots Message list 1`] = `
                 }
               }
             >
-              Video
+              View
               View
               <View
                 animateTransitions={true}
