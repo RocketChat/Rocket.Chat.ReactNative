@@ -1,1 +1,1 @@
-export default () => 'Video';
+export default () => 'View';
