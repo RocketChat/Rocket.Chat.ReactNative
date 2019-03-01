@@ -2,7 +2,7 @@ const random = require('./helpers/random');
 const value = random(20);
 const data = {
     server: 'http://localhost:3000',
-    alternateServer: 'https://unstable.rocket.chat',
+    alternateServer: 'https://stable.rocket.chat',
     user: `user${ value }`,
     password: `password${ value }`,
     alternateUser: 'detoxrn',
