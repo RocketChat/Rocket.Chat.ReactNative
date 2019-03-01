@@ -90,7 +90,7 @@ jobs:
   android-build:
     <<: *defaults
     docker:
-      - image: circleci/android:api-27-node8-alpha
+      - image: circleci/android:api-28-node8-alpha
 
     environment:
       # GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"
@@ -201,13 +201,13 @@ jobs:
           command: |
             yarn
 
-      - run:
-          name: Fix known build error
-          command: |
-            # Fix error https://github.com/facebook/react-native/issues/14382
-            cd node_modules/react-native/scripts/
-            curl https://raw.githubusercontent.com/facebook/react-native/5c53f89dd86160301feee024bce4ce0c89e8c187/scripts/ios-configure-glog.sh > ios-configure-glog.sh
-            chmod +x ios-configure-glog.sh
+      # - run:
+      #     name: Fix known build error
+      #     command: |
+      #       # Fix error https://github.com/facebook/react-native/issues/14382
+      #       cd node_modules/react-native/scripts/
+      #       curl https://raw.githubusercontent.com/facebook/react-native/5c53f89dd86160301feee024bce4ce0c89e8c187/scripts/ios-configure-glog.sh > ios-configure-glog.sh
+      #       chmod +x ios-configure-glog.sh
 
       - run:
           name: Fastlane Build

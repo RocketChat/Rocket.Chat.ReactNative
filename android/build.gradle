@@ -41,14 +41,14 @@ subprojects { subproject ->
     afterEvaluate {
         if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
             android {
-                compileSdkVersion 27
-                buildToolsVersion "27.0.3"
+                compileSdkVersion 28
+                buildToolsVersion "28.0.3"
                 defaultConfig {
-                    targetSdkVersion 27
+                    targetSdkVersion 28
                 }
                 variantFilter { variant ->
                     def names = variant.flavors*.name
-                    if (names.contains("reactNative51") || names.contains("reactNative55") || names.contains("reactNative56") || names.contains("reactNative57WixFork")) {
+                    if (names.contains("reactNative51") || names.contains("reactNative55") || names.contains("reactNative56") || names.contains("reactNative57") || names.contains("reactNative57WixFork")) {
                         setIgnore(true)
                     }
                 }
