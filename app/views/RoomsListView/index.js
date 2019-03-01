@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, FlatList, BackHandler, ActivityIndicator, Text, Image, ScrollView, Keyboard, LayoutAnimation
+	View, FlatList, BackHandler, ActivityIndicator, Text, ScrollView, Keyboard, LayoutAnimation
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
@@ -29,7 +29,7 @@ import {
 import { appStart as appStartAction } from '../../actions';
 import debounce from '../../utils/debounce';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
-import Icons from '../../lib/Icons';
+import Icons, { CustomIcon } from '../../lib/Icons';
 
 const ROW_HEIGHT = 70;
 const SCROLL_OFFSET = 56;
@@ -401,7 +401,7 @@ export default class RoomsListView extends LoggedView {
 			topBar: {
 				leftButtons: [{
 					id: 'back',
-					icon: Icons.getSource('back'),
+					icon: Icons.getSource('close'),
 					testID: 'rooms-list-view-cancel-search'
 				}],
 				rightButtons: []
@@ -517,7 +517,7 @@ export default class RoomsListView extends LoggedView {
 			>
 				<View style={styles.sortItemContainer}>
 					<Text style={styles.sortToggleText}>{I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') })}</Text>
-					<Image style={styles.sortIcon} source={{ uri: 'group_type' }} />
+					<CustomIcon style={styles.sortIcon} size={22} name='sort1' />
 				</View>
 			</Touch>
 		);

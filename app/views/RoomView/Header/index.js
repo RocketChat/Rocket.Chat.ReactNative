@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, StyleSheet, Image, LayoutAnimation
+	View, Text, StyleSheet, LayoutAnimation
 } from 'react-native';
 import { connect } from 'react-redux';
 import { responsive } from 'react-native-responsive-ui';
@@ -11,6 +11,8 @@ import I18n from '../../../i18n';
 import { STATUS_COLORS } from '../../../constants/colors';
 import sharedStyles from '../../Styles';
 import { isIOS } from '../../../utils/deviceInfo';
+import { CustomIcon } from '../../../lib/Icons';
+import Status from '../../../containers/Status/Status';
 
 const TITLE_SIZE = 18;
 const ICON_SIZE = 18;
@@ -33,7 +35,7 @@ const styles = StyleSheet.create({
 		width: ICON_SIZE,
 		height: ICON_SIZE,
 		marginRight: 8,
-		tintColor: isIOS ? '#9EA2A8' : '#fff'
+		color: isIOS ? '#9EA2A8' : '#fff'
 	},
 	typing: {
 		...sharedStyles.textRegular,
@@ -43,6 +45,9 @@ const styles = StyleSheet.create({
 	typingUsers: {
 		...sharedStyles.textSemibold,
 		fontWeight: '600'
+	},
+	status: {
+		marginRight: 8
 	}
 });
 
@@ -142,14 +147,33 @@ export default class RoomHeaderView extends Component {
 		);
 	}
 
+	renderIcon = () => {
+		const { type, status } = this.props;
+		if (type === 'd') {
+			return <Status size={10} style={styles.status} status={status} />;
+		}
+
+		const icon = type === 'c' ? 'hashtag' : 'lock';
+		return (
+			<CustomIcon
+				name={icon}
+				size={ICON_SIZE * 1}
+				style={[
+					styles.type,
+					{
+						width: ICON_SIZE * 1,
+						height: ICON_SIZE * 1
+					},
+					type === 'd' && { color: STATUS_COLORS[status] }
+				]}
+			/>
+		);
+	}
+
 	render() {
 		const {
-			window, title, type, status, usersTyping
+			window, title, usersTyping
 		} = this.props;
-		const icon = {
-			d: 'mention_header',
-			c: 'hashtag'
-		}[type] || 'lock';
 		const portrait = window.height > window.width;
 		let height = isIOS ? 44 : 60;
 		let scale = 1;
@@ -171,17 +195,7 @@ export default class RoomHeaderView extends Component {
 				]}
 			>
 				<View style={styles.titleContainer}>
-					<Image
-						source={{ uri: icon }}
-						style={[
-							styles.type,
-							{
-								width: ICON_SIZE * scale,
-								height: ICON_SIZE * scale
-							},
-							type === 'd' && { tintColor: STATUS_COLORS[status] }
-						]}
-					/>
+					{this.renderIcon()}
 					<Text style={[styles.title, { fontSize: TITLE_SIZE * scale }]} numberOfLines={1}>{title}</Text>
 				</View>
 				{this.typing}

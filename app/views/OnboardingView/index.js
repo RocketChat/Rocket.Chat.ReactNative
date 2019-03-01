@@ -3,7 +3,6 @@ import {
 	View, Text, Image, TouchableOpacity, BackHandler
 } from 'react-native';
 import PropTypes from 'prop-types';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
 
@@ -18,6 +17,7 @@ import { isIOS, isNotch } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
 import { LIGHT_HEADER } from '../../constants/headerOptions';
 import Navigation from '../../lib/Navigation';
+import { CustomIcon } from '../../lib/Icons';
 
 @connect(state => ({
 	currentServer: state.server.server,
@@ -142,8 +142,8 @@ export default class OnboardingView extends LoggedView {
 					onPress={this.close}
 					testID='onboarding-close'
 				>
-					<Icon
-						name='close'
+					<CustomIcon
+						name='cross'
 						size={30}
 						color='#1D74F5'
 					/>
@@ -163,7 +163,7 @@ export default class OnboardingView extends LoggedView {
 					<Button
 						type='secondary'
 						title={I18n.t('Connect_to_a_server')}
-						icon={<Image source={{ uri: 'connect_server' }} style={{ width: 30, height: 30 }} fadeDuration={0} />}
+						icon={<CustomIcon name='permalink' size={30} color='#1D74F5' />}
 						onPress={this.connectServer}
 						testID='connect-server-button'
 					/>
@@ -178,7 +178,7 @@ export default class OnboardingView extends LoggedView {
 					<Button
 						type='primary'
 						title={I18n.t('Create_a_new_workspace')}
-						icon={<Image source={{ uri: 'plus_onboarding' }} style={{ width: 24, height: 24 }} fadeDuration={0} />}
+						icon={<CustomIcon name='plus' size={30} color='#fff' />}
 						onPress={this.createWorkspace}
 						testID='create-workspace-button'
 					/>

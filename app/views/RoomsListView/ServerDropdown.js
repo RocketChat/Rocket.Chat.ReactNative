@@ -16,6 +16,7 @@ import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
+import Check from './Check';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -181,7 +182,7 @@ export default class ServerDropdown extends Component {
 						<Text style={styles.serverName}>{item.name || item.id}</Text>
 						<Text style={styles.serverUrl}>{item.id}</Text>
 					</View>
-					{item.id === server ? <Image style={styles.checkIcon} source={{ uri: 'check' }} /> : null}
+					{item.id === server ? <Check /> : null}
 				</View>
 			</Touch>
 		);

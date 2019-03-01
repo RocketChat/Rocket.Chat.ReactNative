@@ -1,12 +1,13 @@
 import React from 'react';
 import {
-	View, StyleSheet, Text, TextInput, ViewPropTypes, Image
+	View, StyleSheet, Text, TextInput, ViewPropTypes
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 import sharedStyles from '../views/Styles';
 import { COLOR_DANGER, COLOR_TEXT } from '../constants/colors';
+import { CustomIcon } from '../lib/Icons';
 
 const styles = StyleSheet.create({
 	inputContainer: {
@@ -58,12 +59,10 @@ const styles = StyleSheet.create({
 		right: 15
 	},
 	icon: {
-		tintColor: '#2F343D',
-		width: 20,
-		height: 20
+		color: '#2F343D'
 	},
 	password: {
-		tintColor: '#9ea2a8'
+		color: '#9ea2a8'
 	}
 });
 
@@ -92,10 +91,11 @@ export default class RCTextInput extends React.PureComponent {
 	get iconLeft() {
 		const { testID, iconLeft } = this.props;
 		return (
-			<Image
-				source={{ uri: iconLeft }}
+			<CustomIcon
+				name={iconLeft}
 				testID={testID ? `${ testID }-icon-left` : null}
 				style={[styles.iconContainer, styles.iconLeft, styles.icon]}
+				size={20}
 			/>
 		);
 	}
@@ -105,10 +105,11 @@ export default class RCTextInput extends React.PureComponent {
 		const { testID } = this.props;
 		return (
 			<BorderlessButton onPress={this.tooglePassword} style={[styles.iconContainer, styles.iconRight]}>
-				<Image
-					source={{ uri: showPassword ? 'eye' : 'eye_slash' }}
+				<CustomIcon
+					name={showPassword ? 'Eye' : 'eye-off'}
 					testID={testID ? `${ testID }-icon-right` : null}
 					style={[styles.icon, styles.password]}
+					size={20}
 				/>
 			</BorderlessButton>
 		);

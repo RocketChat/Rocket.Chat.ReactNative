@@ -24,7 +24,7 @@ export default class OAuthView extends React.PureComponent {
 				...DARK_HEADER.topBar,
 				leftButtons: [{
 					id: 'cancel',
-					icon: isAndroid ? Icons.getSource('back') : undefined,
+					icon: isAndroid ? Icons.getSource('close') : undefined,
 					text: isIOS ? I18n.t('Cancel') : undefined
 				}]
 			}

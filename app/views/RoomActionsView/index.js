@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import {
 	View, SectionList, Text, Alert
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
@@ -15,7 +13,7 @@ import LoggedView from '../View';
 import styles from './styles';
 import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
-import Status from '../../containers/status';
+import Status from '../../containers/Status';
 import Touch from '../../utils/touch';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
@@ -23,6 +21,8 @@ import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import { CustomIcon } from '../../lib/Icons';
+import DisclosureIndicator from '../../containers/DisclosureIndicator';
 
 const renderSeparator = () => <View style={styles.separator} />;
 
@@ -179,7 +179,7 @@ export default class RoomActionsView extends LoggedView {
 		} = room;
 
 		const notificationsAction = {
-			icon: `ios-notifications${ notifications ? '' : '-off' }`,
+			icon: notifications ? 'bell' : 'Bell-off',
 			name: I18n.t(`${ notifications ? 'Enable' : 'Disable' }_notifications`),
 			event: () => this.toggleNotifications(),
 			testID: 'room-actions-notifications'
@@ -187,7 +187,7 @@ export default class RoomActionsView extends LoggedView {
 
 		const sections = [{
 			data: [{
-				icon: 'ios-star',
+				icon: 'star',
 				name: I18n.t('Room_Info'),
 				route: 'RoomInfoView',
 				params: { rid },
@@ -197,13 +197,13 @@ export default class RoomActionsView extends LoggedView {
 		}, {
 			data: [
 				{
-					icon: 'ios-call',
+					icon: 'livechat',
 					name: I18n.t('Voice_call'),
 					disabled: true,
 					testID: 'room-actions-voice'
 				},
 				{
-					icon: 'ios-videocam',
+					icon: 'video',
 					name: I18n.t('Video_call'),
 					disabled: true,
 					testID: 'room-actions-video'
@@ -213,44 +213,44 @@ export default class RoomActionsView extends LoggedView {
 		}, {
 			data: [
 				{
-					icon: 'ios-attach',
+					icon: 'file-generic',
 					name: I18n.t('Files'),
 					route: 'RoomFilesView',
 					testID: 'room-actions-files'
 				},
 				{
-					icon: 'ios-at',
+					icon: 'at',
 					name: I18n.t('Mentions'),
 					route: 'MentionedMessagesView',
 					testID: 'room-actions-mentioned'
 				},
 				{
-					icon: 'ios-star',
+					icon: 'star',
 					name: I18n.t('Starred'),
 					route: 'StarredMessagesView',
 					testID: 'room-actions-starred'
 				},
 				{
-					icon: 'ios-search',
+					icon: 'magnifier',
 					name: I18n.t('Search'),
 					route: 'SearchMessagesView',
 					params: { rid },
 					testID: 'room-actions-search'
 				},
 				{
-					icon: 'ios-share',
+					icon: 'share',
 					name: I18n.t('Share'),
 					disabled: true,
 					testID: 'room-actions-share'
 				},
 				{
-					icon: 'ios-pin',
+					icon: 'pin',
 					name: I18n.t('Pinned'),
 					route: 'PinnedMessagesView',
 					testID: 'room-actions-pinned'
 				},
 				{
-					icon: 'ios-code',
+					icon: 'code',
 					name: I18n.t('Snippets'),
 					route: 'SnippetedMessagesView',
 					params: { rid },
@@ -264,7 +264,7 @@ export default class RoomActionsView extends LoggedView {
 			sections.push({
 				data: [
 					{
-						icon: 'block',
+						icon: 'ban',
 						name: I18n.t(`${ blocker ? 'Unblock' : 'Block' }_user`),
 						type: 'danger',
 						event: () => this.toggleBlockUser(),
@@ -279,7 +279,7 @@ export default class RoomActionsView extends LoggedView {
 
 			if (canViewMembers) {
 				actions.push({
-					icon: 'ios-people',
+					icon: 'team',
 					name: I18n.t('Members'),
 					description: membersCount > 0 ? `${ membersCount } ${ I18n.t('members') }` : null,
 					route: 'RoomMembersView',
@@ -290,7 +290,7 @@ export default class RoomActionsView extends LoggedView {
 
 			if (this.canAddUser) {
 				actions.push({
-					icon: 'ios-person-add',
+					icon: 'user-plus',
 					name: I18n.t('Add_user'),
 					route: 'SelectedUsersView',
 					params: {
@@ -314,7 +314,7 @@ export default class RoomActionsView extends LoggedView {
 				sections.push({
 					data: [
 						{
-							icon: 'block',
+							icon: 'sign-out',
 							name: I18n.t('Leave_channel'),
 							type: 'danger',
 							event: () => this.leaveChannel(),
@@ -422,7 +422,7 @@ export default class RoomActionsView extends LoggedView {
 					}
 					<Text style={styles.roomDescription} ellipsizeMode='tail' numberOfLines={1}>{t === 'd' ? `@${ name }` : topic}</Text>
 				</View>,
-				<Icon key='icon' name='ios-arrow-forward' size={20} style={styles.sectionItemIcon} color='#ccc' />
+				<DisclosureIndicator key='disclosure-indicator' />
 			], item)
 		);
 	}
@@ -444,13 +444,13 @@ export default class RoomActionsView extends LoggedView {
 
 	renderItem = ({ item }) => {
 		const subview = item.type === 'danger' ? [
-			<MaterialIcon key='icon' name={item.icon} size={20} style={[styles.sectionItemIcon, styles.textColorDanger]} />,
+			<CustomIcon key='icon' name={item.icon} size={24} style={[styles.sectionItemIcon, styles.textColorDanger]} />,
 			<Text key='name' style={[styles.sectionItemName, styles.textColorDanger]}>{ item.name }</Text>
 		] : [
-			<Icon key='left-icon' name={item.icon} size={24} style={styles.sectionItemIcon} />,
+			<CustomIcon key='left-icon' name={item.icon} size={24} style={styles.sectionItemIcon} />,
 			<Text key='name' style={styles.sectionItemName}>{ item.name }</Text>,
 			item.description ? <Text key='description' style={styles.sectionItemDescription}>{ item.description }</Text> : null,
-			<Icon key='right-icon' name='ios-arrow-forward' size={20} style={styles.sectionItemIcon} color='#ccc' />
+			<DisclosureIndicator key='disclosure-indicator' />
 		];
 		return this.renderTouchableItem(subview, item);
 	}

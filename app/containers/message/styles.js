@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
 	root: {
@@ -7,18 +7,17 @@ export default StyleSheet.create({
 	container: {
 		paddingVertical: 5,
 		width: '100%',
-		paddingLeft: 10,
-		paddingRight: 15,
+		paddingHorizontal: 15,
 		flexDirection: 'column',
 		transform: [{ scaleY: -1 }],
 		flex: 1
 	},
 	messageContent: {
 		flex: 1,
-		marginLeft: 51
+		marginLeft: 46
 	},
 	messageContentWithHeader: {
-		marginLeft: 15
+		marginLeft: 10
 	},
 	messageContentWithError: {
 		marginLeft: 0
@@ -43,17 +42,6 @@ export default StyleSheet.create({
 	marginBottom: {
 		marginBottom: 10
 	},
-	codeStyle: {
-		...Platform.select({
-			ios: { fontFamily: 'Courier New' },
-			android: { fontFamily: 'monospace' }
-		}),
-		backgroundColor: '#f8f8f8',
-		borderColor: '#cccccc',
-		borderWidth: 1,
-		borderRadius: 5,
-		padding: 5
-	},
 	reactionsContainer: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
@@ -62,7 +50,7 @@ export default StyleSheet.create({
 	reactionButton: {
 		marginRight: 10,
 		marginBottom: 10,
-		borderRadius: 4
+		borderRadius: 2
 	},
 	reactionContainer: {
 		flexDirection: 'row',
@@ -97,8 +85,7 @@ export default StyleSheet.create({
 		marginTop: 5
 	},
 	addReaction: {
-		width: 17,
-		height: 17
+		color: '#1D74F5'
 	},
 	errorButton: {
 		paddingHorizontal: 15,
@@ -116,8 +103,7 @@ export default StyleSheet.create({
 		borderRadius: 4
 	},
 	broadcastButtonIcon: {
-		width: 14,
-		height: 12,
+		color: '#fff',
 		marginRight: 11
 	},
 	broadcastButtonText: {
@@ -149,7 +135,10 @@ export default StyleSheet.create({
 	},
 	imageContainer: {
 		flex: 1,
-		flexDirection: 'column'
+		flexDirection: 'column',
+		borderColor: '#F3F4F5',
+		borderWidth: 1,
+		borderRadius: 4
 	},
 	image: {
 		width: '100%',
