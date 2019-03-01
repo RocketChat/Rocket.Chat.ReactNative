@@ -123,7 +123,7 @@ export default class LoginSignupView extends LoggedView {
 			collapsed: true,
 			servicesHeight: new Animated.Value(SERVICES_COLLAPSED_HEIGHT)
 		};
-		Navigation.events().bindComponent(this);
+		// Navigation.events().bindComponent(this);
 		const { componentId, Site_Name } = this.props;
 		this.setTitle(componentId, Site_Name);
 	}

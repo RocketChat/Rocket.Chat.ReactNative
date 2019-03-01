@@ -6,7 +6,6 @@ import {
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
 
-// import Navigation from '../lib/Navigation';
 import { serverRequest } from '../actions/server';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
@@ -17,7 +16,7 @@ import I18n from '../i18n';
 import { verticalScale, moderateScale } from '../utils/scaling';
 import KeyboardView from '../presentation/KeyboardView';
 import { isIOS, isNotch } from '../utils/deviceInfo';
-import { LIGHT_HEADER } from '../constants/headerOptions';
+// import { LIGHT_HEADER } from '../constants/headerOptions';
 import { CustomIcon } from '../lib/Icons';
 
 const styles = StyleSheet.create({
@@ -64,18 +63,12 @@ const defaultServer = 'https://open.rocket.chat';
 }))
 /** @extends React.Component */
 export default class NewServerView extends LoggedView {
-	static options() {
-		return {
-			...LIGHT_HEADER,
-			topBar: {
-				visible: false,
-				drawBehind: true
-			}
-		};
-	}
+	static navigationOptions = () => ({
+		header: null
+	})
 
 	static propTypes = {
-		componentId: PropTypes.string,
+		navigation: PropTypes.object,
 		server: PropTypes.string,
 		connecting: PropTypes.bool.isRequired,
 		connectServer: PropTypes.func.isRequired
@@ -86,7 +79,6 @@ export default class NewServerView extends LoggedView {
 		this.state = {
 			text: ''
 		};
-		// Navigation.events().bindComponent(this);
 	}
 
 	componentDidMount() {
@@ -153,7 +145,7 @@ export default class NewServerView extends LoggedView {
 	}
 
 	renderBack = () => {
-		const { componentId } = this.props;
+		const { navigation } = this.props;
 
 		let top = 15;
 		if (isIOS) {
@@ -163,7 +155,7 @@ export default class NewServerView extends LoggedView {
 		return (
 			<TouchableOpacity
 				style={[styles.backButton, { top }]}
-				// onPress={() => Navigation.pop(componentId)}
+				onPress={() => navigation.pop()}
 			>
 				<CustomIcon
 					name='back'

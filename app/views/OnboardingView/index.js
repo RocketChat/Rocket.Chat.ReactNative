@@ -15,7 +15,7 @@ import styles from './styles';
 import LoggedView from '../View';
 import { isIOS, isNotch } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
-import { LIGHT_HEADER } from '../../constants/headerOptions';
+// import { LIGHT_HEADER } from '../../constants/headerOptions';
 // import Navigation from '../../lib/Navigation';
 import { CustomIcon } from '../../lib/Icons';
 
@@ -30,18 +30,12 @@ import { CustomIcon } from '../../lib/Icons';
 }))
 /** @extends React.Component */
 export default class OnboardingView extends LoggedView {
-	static options() {
-		return {
-			...LIGHT_HEADER,
-			topBar: {
-				visible: false,
-				drawBehind: true
-			}
-		};
-	}
+	static navigationOptions = () => ({
+		header: null
+	})
 
 	static propTypes = {
-		componentId: PropTypes.string,
+		navigation: PropTypes.object,
 		previousServer: PropTypes.string,
 		adding: PropTypes.bool,
 		selectServer: PropTypes.func.isRequired,
@@ -89,27 +83,18 @@ export default class OnboardingView extends LoggedView {
 	}
 
 	close = () => {
-		const { componentId } = this.props;
-		// Navigation.dismissModal(componentId);
+		const { navigation } = this.props;
+		navigation.pop();
 	}
 
 	newServer = (server) => {
 		const { navigation } = this.props;
-		navigation.navigate('NewServerView')
-		// Navigation.push(componentId, {
-		// 	component: {
-		// 		id: 'NewServerView',
-		// 		name: 'NewServerView',
-		// 		passProps: {
-		// 			server
-		// 		},
-		// 		options: {
-		// 			topBar: {
-		// 				visible: false
-		// 			}
-		// 		}
-		// 	}
-		// });
+		navigation.navigate({
+			routeName: 'NewServerView',
+			passProps: {
+				server
+			}
+		});
 	}
 
 	handleNewServerEvent = (event) => {
