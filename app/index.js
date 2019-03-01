@@ -1,136 +1,36 @@
-import { Component } from 'react';
-import { Linking } from 'react-native';
+import React from 'react';
+import { View, Text } from 'react-native';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { Provider } from 'react-redux';
+import { useScreens } from 'react-native-screens';
 
 import { appInit } from './actions';
-import { deepLinkingOpen } from './actions/deepLinking';
+import OnboardingView from './views/OnboardingView';
+import NewServerView from './views/NewServerView';
 import store from './lib/createStore';
-import Icons from './lib/Icons';
-import Navigation from './lib/Navigation';
-import parseQuery from './lib/methods/helpers/parseQuery';
-import { initializePushNotifications } from './push';
-import { DEFAULT_HEADER } from './constants/headerOptions';
 
-const startLogged = () => {
-	Navigation.loadView('ProfileView');
-	Navigation.loadView('RoomsListHeaderView');
-	Navigation.loadView('RoomsListView');
-	Navigation.loadView('RoomView');
-	Navigation.loadView('RoomHeaderView');
-	Navigation.loadView('SettingsView');
-	Navigation.loadView('SidebarView');
+useScreens();
 
-	Navigation.setRoot({
-		root: {
-			stack: {
-				id: 'AppRoot',
-				children: [{
-					component: {
-						id: 'RoomsListView',
-						name: 'RoomsListView'
-					}
-				}]
-			}
-		}
-	});
-};
+store.dispatch(appInit());
+// store.subscribe(this.onStoreUpdate.bind(this));
 
-const startNotLogged = () => {
-	Navigation.loadView('OnboardingView');
-	Navigation.setRoot({
-		root: {
-			stack: {
-				children: [{
-					component: {
-						name: 'OnboardingView'
-					}
-				}],
-				options: {
-					layout: {
-						orientation: ['portrait']
-					}
-				}
-			}
-		}
-	});
-};
+const AppNavigator = createStackNavigator({
+	OnboardingView,
+	NewServerView
+});
 
-const startSetUsername = () => {
-	Navigation.loadView('SetUsernameView');
-	Navigation.setRoot({
-		root: {
-			stack: {
-				children: [{
-					component: {
-						name: 'SetUsernameView'
-					}
-				}],
-				options: {
-					layout: {
-						orientation: ['portrait']
-					}
-				}
-			}
-		}
-	});
-};
+const App = createAppContainer(AppNavigator);
 
-const handleOpenURL = ({ url }) => {
-	if (url) {
-		url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
-		const regex = /^(room|auth)\?/;
-		if (url.match(regex)) {
-			url = url.replace(regex, '');
-			const params = parseQuery(url);
-			store.dispatch(deepLinkingOpen(params));
-		}
-	}
-};
-
-Icons.configure();
-
-export default class App extends Component {
-	constructor(props) {
-		super(props);
-		initializePushNotifications();
-
-		Navigation.events().registerAppLaunchedListener(() => {
-			Navigation.setDefaultOptions({
-				...DEFAULT_HEADER,
-				sideMenu: {
-					left: {
-						enabled: false
-					},
-					right: {
-						enabled: false
-					}
-				}
-			});
-			store.dispatch(appInit());
-			store.subscribe(this.onStoreUpdate.bind(this));
-		});
-		Linking
-			.getInitialURL()
-			.then(url => handleOpenURL({ url }))
-			.catch(e => console.warn(e));
-		Linking.addEventListener('url', handleOpenURL);
-	}
-
-	onStoreUpdate = () => {
-		const { root } = store.getState().app;
-
-		if (this.currentRoot !== root) {
-			this.currentRoot = root;
-			if (root === 'outside') {
-				startNotLogged();
-			} else if (root === 'inside') {
-				startLogged();
-			} else if (root === 'setUsername') {
-				startSetUsername();
-			}
-		}
-	}
-
-	setDeviceToken(deviceToken) {
-		this.deviceToken = deviceToken;
-	}
-}
+// export default createAppContainer(AppNavigator);
+// class App extends React.Component {
+//   render() {
+//     return (
+//       <AppNavigator />
+//     );
+//   }
+// }
+export default () => (
+	<Provider store={store}>
+		<App />
+	</Provider>
+);

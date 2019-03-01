@@ -72,6 +72,7 @@ public class MainApplication extends NavigationApplication implements INotificat
     public List<ReactPackage> createAdditionalReactPackages() {
         return Arrays.<ReactPackage>asList(
                 new MainReactPackage(),
+            new RNScreensPackage(),
                 new ActionSheetPackage(),
                 new RNDeviceInfo(),
                 new RNGestureHandlerPackage(),

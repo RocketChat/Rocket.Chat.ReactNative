@@ -6,7 +6,7 @@ import {
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
 
-import Navigation from '../lib/Navigation';
+// import Navigation from '../lib/Navigation';
 import { serverRequest } from '../actions/server';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
@@ -86,7 +86,7 @@ export default class NewServerView extends LoggedView {
 		this.state = {
 			text: ''
 		};
-		Navigation.events().bindComponent(this);
+		// Navigation.events().bindComponent(this);
 	}
 
 	componentDidMount() {
@@ -163,7 +163,7 @@ export default class NewServerView extends LoggedView {
 		return (
 			<TouchableOpacity
 				style={[styles.backButton, { top }]}
-				onPress={() => Navigation.pop(componentId)}
+				// onPress={() => Navigation.pop(componentId)}
 			>
 				<CustomIcon
 					name='back'

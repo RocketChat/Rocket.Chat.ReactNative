@@ -195,6 +195,7 @@ configurations.all {
 }
 
 dependencies {
+    implementation project(':react-native-screens')
     implementation project(':react-native-action-sheet')
     implementation project(':react-native-device-info')
     implementation project(':react-native-gesture-handler')

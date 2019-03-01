@@ -16,7 +16,7 @@ import LoggedView from '../View';
 import { isIOS, isNotch } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
 import { LIGHT_HEADER } from '../../constants/headerOptions';
-import Navigation from '../../lib/Navigation';
+// import Navigation from '../../lib/Navigation';
 import { CustomIcon } from '../../lib/Icons';
 
 @connect(state => ({
@@ -90,25 +90,26 @@ export default class OnboardingView extends LoggedView {
 
 	close = () => {
 		const { componentId } = this.props;
-		Navigation.dismissModal(componentId);
+		// Navigation.dismissModal(componentId);
 	}
 
 	newServer = (server) => {
-		const { componentId } = this.props;
-		Navigation.push(componentId, {
-			component: {
-				id: 'NewServerView',
-				name: 'NewServerView',
-				passProps: {
-					server
-				},
-				options: {
-					topBar: {
-						visible: false
-					}
-				}
-			}
-		});
+		const { navigation } = this.props;
+		navigation.navigate('NewServerView')
+		// Navigation.push(componentId, {
+		// 	component: {
+		// 		id: 'NewServerView',
+		// 		name: 'NewServerView',
+		// 		passProps: {
+		// 			server
+		// 		},
+		// 		options: {
+		// 			topBar: {
+		// 				visible: false
+		// 			}
+		// 		}
+		// 	}
+		// });
 	}
 
 	handleNewServerEvent = (event) => {
