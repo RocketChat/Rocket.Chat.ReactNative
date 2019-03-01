@@ -108,7 +108,7 @@
   },
   "jest": {
     "testPathIgnorePatterns": [
-      "e2e"
+      "e2e", "node_modules"
     ],
     "preset": "react-native",
     "coverageDirectory": "./coverage/",
