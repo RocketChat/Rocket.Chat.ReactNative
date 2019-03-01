@@ -94,19 +94,19 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
         applicationId "chat.rocket.reactnative"
         minSdkVersion 21
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode VERSIONCODE as Integer
         versionName "1.10.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
-        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative57"
+        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative57_5"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
     }
@@ -114,6 +114,10 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    packagingOptions {
+        pickFirst '**/libjsc.so'
     }
 
     signingConfigs {
@@ -185,7 +189,7 @@ repositories {
 
 configurations.all {
     resolutionStrategy {
-        force 'org.webkit:android-jsc:r236355'
+        force 'org.webkit:android-jsc:r225067'
     }
 }
 
