@@ -10516,16 +10516,10 @@ reactotron-react-native@^2.1.5:
     prop-types "^15.5.10"
     reactotron-core-client "^2.2.1"
 
-reactotron-redux-saga@^2.1.4:
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/reactotron-redux-saga/-/reactotron-redux-saga-2.1.4.tgz#6ec8dc997c45bc5d214615b422a231c8f51de7f0"
-  integrity sha512-IZFE9sN9lVLY2f/EbzqZ9Zq7jmc3bvWjgeIwKiDmepafrM5Gv7Ymii5vrwCsIX4zmrDX7yNJmZpoZbh36E4Qng==
-  dependencies:
-    ramda "^0.24.1"
-    ramdasauce "^2.0.0"
-    reactotron-core-client "^2.1.4"
-    redux "^3.7.1"
-    redux-saga "^0.16.1"
+reactotron-redux-saga@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/reactotron-redux-saga/-/reactotron-redux-saga-4.2.0.tgz#d37c9f136931a18833bcc70d32dde01ec8d6f98e"
+  integrity sha512-KN8WcWLBtvLpFd29i3MVPPr+sgeKyMWTRbfyeHG+yx1PpMy8IV/zaQR5QFBY3v2JZWLfym9AsILtsOCo+bTisQ==
 
 reactotron-redux@^2.1.3:
   version "2.1.3"
@@ -10701,7 +10695,7 @@ redux-immutable-state-invariant@^2.1.0:
     invariant "^2.1.0"
     json-stringify-safe "^5.0.1"
 
-redux-saga@^0.16.1, redux-saga@^0.16.2:
+redux-saga@^0.16.2:
   version "0.16.2"
   resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-0.16.2.tgz#993662e86bc945d8509ac2b8daba3a8c615cc971"
   integrity sha512-iIjKnRThI5sKPEASpUvySemjzwqwI13e3qP7oLub+FycCRDysLSAOwt958niZW6LhxfmS6Qm1BzbU70w/Koc4w==
