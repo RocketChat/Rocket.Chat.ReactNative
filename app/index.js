@@ -7,8 +7,13 @@ import { useScreens } from 'react-native-screens';
 import { appInit } from './actions';
 import OnboardingView from './views/OnboardingView';
 import NewServerView from './views/NewServerView';
+import LoginSignupView from './views/LoginSignupView';
 import AuthLoadingView from './views/AuthLoadingView';
+import RoomsListView from './views/RoomsListView';
+import RoomView from './views/RoomView';
+import LoginView from './views/LoginView';
 import store from './lib/createStore';
+import Navigation from './lib/NewNavigation';
 
 useScreens();
 
@@ -20,12 +25,14 @@ const OutsideNavigator = createStackNavigator({
 		screen: OnboardingView,
 		header: null
 	},
-	NewServerView
+	NewServerView,
+	LoginSignupView,
+	LoginView
 });
 
 const InsideNavigator = createStackNavigator({
-	OnboardingView,
-	// RoomsListView
+	RoomsListView,
+	RoomView
 });
 
 const App = createAppContainer(createSwitchNavigator(
@@ -41,6 +48,10 @@ const App = createAppContainer(createSwitchNavigator(
 
 export default () => (
 	<Provider store={store}>
-		<App />
+		<App
+			ref={(navigatorRef) => {
+				Navigation.setTopLevelNavigator(navigatorRef);
+			}}
+		/>
 	</Provider>
 );

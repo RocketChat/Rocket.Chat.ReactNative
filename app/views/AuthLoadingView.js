@@ -8,13 +8,13 @@ import {
 } from 'react-native';
 
 export default class AuthLoadingView extends React.Component {
-  constructor(props) {
-    super(props);
-	// this._bootstrapAsync();
-	setTimeout(() => {
-		this.props.navigation.navigate('OutsideStack');
-	}, 2000);
-  }
+  // constructor(props) {
+  //   super(props);
+	// // this._bootstrapAsync();
+	// setTimeout(() => {
+	// 	this.props.navigation.navigate('OutsideStack');
+	// }, 2000);
+  // }
 
   // Fetch the token from storage then navigate to our appropriate place
 //   _bootstrapAsync = async () => {

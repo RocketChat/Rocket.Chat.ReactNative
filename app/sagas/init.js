@@ -7,6 +7,7 @@ import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
+import Navigation from '../lib/NewNavigation';
 
 const restore = function* restore() {
 	try {
@@ -23,7 +24,8 @@ const restore = function* restore() {
 				AsyncStorage.removeItem(RocketChat.TOKEN_KEY),
 				AsyncStorage.removeItem('currentServer')
 			]);
-			yield put(actions.appStart('outside'));
+			// yield put(actions.appStart('outside'));
+			Navigation.navigate('OutsideStack');
 		} else if (server) {
 			yield put(selectServerRequest(server));
 		}

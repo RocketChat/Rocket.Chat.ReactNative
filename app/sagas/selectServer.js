@@ -1,7 +1,7 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import { AsyncStorage, Alert } from 'react-native';
 
-import Navigation from '../lib/Navigation';
+import Navigation from '../lib/NewNavigation';
 import { SERVER } from '../actions/actionsTypes';
 import * as actions from '../actions';
 import { serverFailure, selectServerRequest, selectServerSuccess } from '../actions/server';
@@ -53,17 +53,9 @@ const handleServerRequest = function* handleServerRequest({ server }) {
 
 		const loginServicesLength = yield RocketChat.getLoginServices(server);
 		if (loginServicesLength === 0) {
-			yield Navigation.push('NewServerView', {
-				component: {
-					name: 'LoginView'
-				}
-			});
+			Navigation.navigate('LoginView');
 		} else {
-			yield Navigation.push('NewServerView', {
-				component: {
-					name: 'LoginSignupView'
-				}
-			});
+			Navigation.navigate('LoginSignupView');
 		}
 
 		database.databases.serversDB.write(() => {

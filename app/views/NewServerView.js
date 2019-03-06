@@ -82,7 +82,8 @@ export default class NewServerView extends LoggedView {
 	}
 
 	componentDidMount() {
-		const { server, connectServer } = this.props;
+		const { navigation, connectServer } = this.props;
+		const server = navigation.getParam('server');
 		if (server) {
 			connectServer(server);
 			this.setState({ text: server });

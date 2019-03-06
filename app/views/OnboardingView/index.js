@@ -17,6 +17,7 @@ import { isIOS, isNotch } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
 // import { LIGHT_HEADER } from '../../constants/headerOptions';
 // import Navigation from '../../lib/Navigation';
+import NewNavigation from '../../lib/NewNavigation';
 import { CustomIcon } from '../../lib/Icons';
 
 @connect(state => ({
@@ -89,12 +90,7 @@ export default class OnboardingView extends LoggedView {
 
 	newServer = (server) => {
 		const { navigation } = this.props;
-		navigation.navigate({
-			routeName: 'NewServerView',
-			passProps: {
-				server
-			}
-		});
+		navigation.navigate('NewServerView', { server });
 	}
 
 	handleNewServerEvent = (event) => {

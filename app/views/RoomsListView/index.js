@@ -140,7 +140,7 @@ export default class RoomsListView extends LoggedView {
 			direct: [],
 			livechat: []
 		};
-		Navigation.events().bindComponent(this);
+		// Navigation.events().bindComponent(this);
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
@@ -410,19 +410,19 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	cancelSearchingAndroid = () => {
-		if (isAndroid) {
-			const { closeSearchHeader } = this.props;
-			this.setState({ searching: false });
-			closeSearchHeader();
-			Navigation.mergeOptions('RoomsListView', {
-				topBar: {
-					leftButtons,
-					rightButtons
-				}
-			});
-			this.internalSetState({ search: [] });
-			Keyboard.dismiss();
-		}
+		// if (isAndroid) {
+		// 	const { closeSearchHeader } = this.props;
+		// 	this.setState({ searching: false });
+		// 	closeSearchHeader();
+		// 	Navigation.mergeOptions('RoomsListView', {
+		// 		topBar: {
+		// 			leftButtons,
+		// 			rightButtons
+		// 		}
+		// 	});
+		// 	this.internalSetState({ search: [] });
+		// 	Keyboard.dismiss();
+		// }
 	}
 
 	// this is necessary during development (enables Cmd + r)
@@ -450,14 +450,16 @@ export default class RoomsListView extends LoggedView {
 
 	goRoom = ({ rid, name, t }) => {
 		this.cancelSearchingAndroid();
-		Navigation.push('RoomsListView', {
-			component: {
-				name: 'RoomView',
-				passProps: {
-					rid, name, t
-				}
-			}
-		});
+		const { navigation } = this.props;
+		navigation.navigate('RoomView', { rid, name, t });
+		// Navigation.push('RoomsListView', {
+		// 	component: {
+		// 		name: 'RoomView',
+		// 		passProps: {
+		// 			rid, name, t
+		// 		}
+		// 	}
+		// });
 	}
 
 	_onPressItem = async(item = {}) => {

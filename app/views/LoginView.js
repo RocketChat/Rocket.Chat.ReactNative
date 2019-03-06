@@ -58,19 +58,19 @@ const styles = StyleSheet.create({
 }))
 /** @extends React.Component */
 export default class LoginView extends LoggedView {
-	static options() {
-		return {
-			...DARK_HEADER,
-			topBar: {
-				...DARK_HEADER.topBar,
-				rightButtons: [{
-					id: 'more',
-					icon: Icons.getSource('more'),
-					testID: 'login-view-more'
-				}]
-			}
-		};
-	}
+	// static options() {
+	// 	return {
+	// 		...DARK_HEADER,
+	// 		topBar: {
+	// 			...DARK_HEADER.topBar,
+	// 			rightButtons: [{
+	// 				id: 'more',
+	// 				icon: Icons.getSource('more'),
+	// 				testID: 'login-view-more'
+	// 			}]
+	// 		}
+	// 	};
+	// }
 
 	static propTypes = {
 		componentId: PropTypes.string,
@@ -91,9 +91,9 @@ export default class LoginView extends LoggedView {
 			code: '',
 			showTOTP: false
 		};
-		Navigation.events().bindComponent(this);
-		const { componentId, Site_Name } = this.props;
-		this.setTitle(componentId, Site_Name);
+		// Navigation.events().bindComponent(this);
+		// const { componentId, Site_Name } = this.props;
+		// this.setTitle(componentId, Site_Name);
 	}
 
 	componentDidMount() {

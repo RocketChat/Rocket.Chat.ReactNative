@@ -47,28 +47,28 @@ import ConnectionBadge from '../../containers/ConnectionBadge';
 }))
 /** @extends React.Component */
 export default class RoomView extends LoggedView {
-	static options() {
-		return {
-			topBar: {
-				title: {
-					component: {
-						name: 'RoomHeaderView',
-						alignment: 'left'
-					}
-				},
-				rightButtons: [{
-					id: 'more',
-					testID: 'room-view-header-actions',
-					icon: Icons.getSource('more')
-				}, {
-					id: 'star',
-					testID: 'room-view-header-star',
-					icon: Icons.getSource('starOutline')
-				}]
-			},
-			blurOnUnmount: true
-		};
-	}
+	// static options() {
+	// 	return {
+	// 		topBar: {
+	// 			title: {
+	// 				component: {
+	// 					name: 'RoomHeaderView',
+	// 					alignment: 'left'
+	// 				}
+	// 			},
+	// 			rightButtons: [{
+	// 				id: 'more',
+	// 				testID: 'room-view-header-actions',
+	// 				icon: Icons.getSource('more')
+	// 			}, {
+	// 				id: 'star',
+	// 				testID: 'room-view-header-star',
+	// 				icon: Icons.getSource('starOutline')
+	// 			}]
+	// 		},
+	// 		blurOnUnmount: true
+	// 	};
+	// }
 
 	static propTypes = {
 		componentId: PropTypes.string,
@@ -79,9 +79,9 @@ export default class RoomView extends LoggedView {
 			username: PropTypes.string.isRequired,
 			token: PropTypes.string.isRequired
 		}),
-		rid: PropTypes.string,
-		name: PropTypes.string,
-		t: PropTypes.string,
+		// rid: PropTypes.string,
+		// name: PropTypes.string,
+		// t: PropTypes.string,
 		showActions: PropTypes.bool,
 		showErrorActions: PropTypes.bool,
 		actionMessage: PropTypes.object,
@@ -93,7 +93,8 @@ export default class RoomView extends LoggedView {
 
 	constructor(props) {
 		super('RoomView', props);
-		this.rid = props.rid;
+		// this.rid = props.rid;
+		this.rid = this.props.navigation.getParam('rid');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			loaded: false,
@@ -101,16 +102,16 @@ export default class RoomView extends LoggedView {
 			room: {}
 		};
 		this.onReactionPress = this.onReactionPress.bind(this);
-		Navigation.events().bindComponent(this);
+		// Navigation.events().bindComponent(this);
 	}
 
 	componentDidMount() {
 		if (this.rooms.length === 0 && this.rid) {
-			const { rid, name, t } = this.props;
-			this.setState(
-				{ room: { rid, name, t } },
-				() => this.updateRoom()
-			);
+			// const { rid, name, t } = this.props.navigation.state.params;
+			// this.setState(
+			// 	{ room: { rid, name, t } },
+			// 	() => this.updateRoom()
+			// );
 		}
 		this.rooms.addListener(this.updateRoom);
 		this.internalSetState({ loaded: true });
@@ -148,33 +149,33 @@ export default class RoomView extends LoggedView {
 		return false;
 	}
 
-	componentDidUpdate(prevProps, prevState) {
-		const { room } = this.state;
-		const { componentId, appState } = this.props;
+	// componentDidUpdate(prevProps, prevState) {
+	// 	const { room } = this.state;
+	// 	const { componentId, appState } = this.props;
 
-		if (prevState.room.f !== room.f) {
-			const rightButtons = [{
-				id: 'star',
-				testID: 'room-view-header-star',
-				icon: room.f ? Icons.getSource('star') : Icons.getSource('starOutline')
-			}];
-			if (room.t !== 'l') {
-				rightButtons.unshift({
-					id: 'more',
-					testID: 'room-view-header-actions',
-					icon: Icons.getSource('more')
-				});
-			}
-			Navigation.mergeOptions(componentId, {
-				topBar: {
-					rightButtons
-				}
-			});
-		} else if (appState === 'foreground' && appState !== prevProps.appState) {
-			RocketChat.loadMissedMessages(room).catch(e => console.log(e));
-			RocketChat.readMessages(room.rid).catch(e => console.log(e));
-		}
-	}
+	// 	if (prevState.room.f !== room.f) {
+	// 		const rightButtons = [{
+	// 			id: 'star',
+	// 			testID: 'room-view-header-star',
+	// 			icon: room.f ? Icons.getSource('star') : Icons.getSource('starOutline')
+	// 		}];
+	// 		if (room.t !== 'l') {
+	// 			rightButtons.unshift({
+	// 				id: 'more',
+	// 				testID: 'room-view-header-actions',
+	// 				icon: Icons.getSource('more')
+	// 			});
+	// 		}
+	// 		Navigation.mergeOptions(componentId, {
+	// 			topBar: {
+	// 				rightButtons
+	// 			}
+	// 		});
+	// 	} else if (appState === 'foreground' && appState !== prevProps.appState) {
+	// 		RocketChat.loadMissedMessages(room).catch(e => console.log(e));
+	// 		RocketChat.readMessages(room.rid).catch(e => console.log(e));
+	// 	}
+	// }
 
 	componentWillUnmount() {
 		const { closeRoom } = this.props;

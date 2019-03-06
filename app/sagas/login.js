@@ -3,7 +3,7 @@ import {
 	put, call, takeLatest, select
 } from 'redux-saga/effects';
 
-import Navigation from '../lib/Navigation';
+import Navigation from '../lib/NewNavigation';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions';
 import { serverFinishAdd, selectServerRequest } from '../actions/server';
@@ -52,7 +52,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield put(serverFinishAdd());
 		yield Navigation.dismissAllModals();
 	} else {
-		yield put(appStart('inside'));
+		// yield put(appStart('inside'));
+		Navigation.navigate('InsideStack');
 	}
 };
 

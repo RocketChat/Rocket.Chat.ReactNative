@@ -157,13 +157,13 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	setTitle = (componentId, title) => {
-		Navigation.mergeOptions(componentId, {
-			topBar: {
-				title: {
-					text: title
-				}
-			}
-		});
+		// Navigation.mergeOptions(componentId, {
+		// 	topBar: {
+		// 		title: {
+		// 			text: title
+		// 		}
+		// 	}
+		// });
 	}
 
 	navigationButtonPressed = ({ buttonId }) => {
@@ -280,19 +280,21 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	login = () => {
-		const { componentId, Site_Name } = this.props;
-		Navigation.push(componentId, {
-			component: {
-				name: 'LoginView',
-				options: {
-					topBar: {
-						title: {
-							text: Site_Name
-						}
-					}
-				}
-			}
-		});
+		// const { componentId, Site_Name } = this.props;
+		// Navigation.push(componentId, {
+		// 	component: {
+		// 		name: 'LoginView',
+		// 		options: {
+		// 			topBar: {
+		// 				title: {
+		// 					text: Site_Name
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+		// });
+		const { navigation } = this.props;
+		navigation.navigate('LoginView');
 	}
 
 	register = () => {
