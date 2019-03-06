@@ -1,9 +1,9 @@
 // import { Navigation } from 'react-native-navigation';
 const Navigation = {};
-import { Provider } from 'react-redux';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
+// import { Provider } from 'react-redux';
+// import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
-import store from './createStore';
+// import store from './createStore';
 import debounce from '../utils/debounce';
 
 const DRAWER_ID = 'SidebarView';

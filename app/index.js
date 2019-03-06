@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-import { createStackNavigator, createAppContainer, createSwitchNavigator, createDrawerNavigator } from 'react-navigation';
+import {
+	createStackNavigator, createAppContainer, createSwitchNavigator, createDrawerNavigator
+} from 'react-navigation';
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens';
 
@@ -16,7 +17,9 @@ import LoginView from './views/LoginView';
 import store from './lib/createStore';
 import Navigation from './lib/NewNavigation';
 import Sidebar from './views/SidebarView';
-import { HEADER_BACKGROUND, HEADER_TINT } from './constants/colors';
+import ProfileView from './views/ProfileView';
+import SettingsView from './views/SettingsView';
+import { HEADER_BACKGROUND, HEADER_TITLE } from './constants/colors';
 
 useScreens();
 
@@ -27,11 +30,13 @@ const defaultHeader = {
 	headerStyle: {
 		backgroundColor: HEADER_BACKGROUND
 	},
-	headerTintColor: HEADER_TINT,
+	headerTitleStyle: {
+		color: HEADER_TITLE
+	},
 	headerBackTitle: null
-}
+};
 
-const OutsideNavigator = createStackNavigator({
+const OutsideStack = createStackNavigator({
 	OnboardingView: {
 		screen: OnboardingView,
 		header: null
@@ -43,23 +48,35 @@ const OutsideNavigator = createStackNavigator({
 	defaultNavigationOptions: defaultHeader
 });
 
-const InsideNavigator = createStackNavigator({
+const ChatsStack = createStackNavigator({
 	RoomsListView,
 	RoomView
 }, {
 	defaultNavigationOptions: defaultHeader
 });
 
-const MyDrawerNavigator = createDrawerNavigator({
-	Chats: {
-		screen: InsideNavigator
-	}
+const ProfileStack = createStackNavigator({
+	ProfileView
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
+const SettingsStack = createStackNavigator({
+	SettingsView
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
+const ChatsModalStack = createDrawerNavigator({
+	ChatsStack,
+	ProfileStack,
+	SettingsStack
 }, {
 	contentComponent: Sidebar
 });
 
-const RootInsideNavigator = createStackNavigator({
-	Main: MyDrawerNavigator,
+const InsideStack = createStackNavigator({
+	Main: ChatsModalStack,
 	NewMessageView
 },
 {
@@ -69,8 +86,8 @@ const RootInsideNavigator = createStackNavigator({
 
 const App = createAppContainer(createSwitchNavigator(
 	{
-		OutsideStack: OutsideNavigator,
-		InsideStack: RootInsideNavigator,
+		OutsideStack,
+		InsideStack,
 		AuthLoading: AuthLoadingView
 	},
 	{

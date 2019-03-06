@@ -24,6 +24,7 @@ import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
 import { setUser as setUserAction } from '../../actions/login';
 import { CustomIcon } from '../../lib/Icons';
+import HeaderButton from '../../containers/HeaderButton';
 
 @connect(state => ({
 	user: {
@@ -41,15 +42,10 @@ import { CustomIcon } from '../../lib/Icons';
 }))
 /** @extends React.Component */
 export default class ProfileView extends LoggedView {
-	static options() {
-		return {
-			topBar: {
-				title: {
-					text: I18n.t('Profile')
-				}
-			}
-		};
-	}
+	static navigationOptions = ({ navigation }) => ({
+		headerLeft: <HeaderButton icon='customize' onPress={navigation.toggleDrawer} left />,
+		title: I18n.t('Profile')
+	})
 
 	static propTypes = {
 		baseUrl: PropTypes.string,

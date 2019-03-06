@@ -27,6 +27,8 @@ import { isIOS } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import Icons from '../../lib/Icons';
 import ConnectionBadge from '../../containers/ConnectionBadge';
+import HeaderButton from '../../containers/HeaderButton';
+import RoomHeaderView from './Header';
 
 @connect(state => ({
 	user: {
@@ -69,6 +71,12 @@ export default class RoomView extends LoggedView {
 	// 		blurOnUnmount: true
 	// 	};
 	// }
+
+	static navigationOptions = ({ navigation }) => ({
+		// headerLeft: <HeaderButton icon='customize' onPress={navigation.toggleDrawer} left />,
+		headerTitle: <RoomHeaderView />
+		// headerRight: <HeaderButton icon='edit-rounded' onPress={() => navigation.navigate('NewMessageView')} right />
+	})
 
 	static propTypes = {
 		componentId: PropTypes.string,

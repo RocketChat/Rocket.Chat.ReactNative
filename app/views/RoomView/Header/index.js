@@ -19,8 +19,8 @@ const ICON_SIZE = 18;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'center',
-		backgroundColor: isIOS ? 'transparent' : '#2F343D'
+		// justifyContent: 'center',
+		// backgroundColor: isIOS ? 'transparent' : '#2F343D'
 	},
 	titleContainer: {
 		flexDirection: 'row',
@@ -191,7 +191,7 @@ export default class RoomHeaderView extends Component {
 			<View
 				style={[
 					styles.container,
-					{ width: window.width - 150, height }
+					// { width: window.width - 150, height }
 				]}
 			>
 				<View style={styles.titleContainer}>

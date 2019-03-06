@@ -79,9 +79,9 @@ const handleLogout = function* handleLogout() {
 				}
 			}
 			// if there's no servers, go outside
-			yield put(appStart('outside'));
+			Navigation.navigate('OutsideStack');
 		} catch (e) {
-			yield put(appStart('outside'));
+			Navigation.navigate('OutsideStack');
 			log('handleLogout', e);
 		}
 	}
