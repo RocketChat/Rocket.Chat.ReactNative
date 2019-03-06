@@ -113,9 +113,9 @@ export default class MessageBox extends Component {
 		const { message, replyMessage } = this.props;
 		if (message !== nextProps.message && nextProps.message.msg) {
 			this.setInput(nextProps.message.msg);
-			this.component.focus();
+			this.focus();
 		} else if (replyMessage !== nextProps.replyMessage && nextProps.replyMessage.msg) {
-			this.component.focus();
+			this.focus();
 		} else if (!nextProps.message) {
 			this.clearInput();
 		}
@@ -169,18 +169,20 @@ export default class MessageBox extends Component {
 	debouncedOnChangeText = debounce((text) => {
 		this.setInput(text);
 
-		requestAnimationFrame(() => {
-			const { start, end } = this.component._lastNativeSelection;
-			const cursor = Math.max(start, end);
-			const lastNativeText = this.component._lastNativeText;
-			const regexp = /(#|@|:)([a-z0-9._-]+)$/im;
-			const result = lastNativeText.substr(0, cursor).match(regexp);
-			if (!result) {
-				return this.stopTrackingMention();
-			}
-			const [, lastChar, name] = result;
-			this.identifyMentionKeyword(name, lastChar);
-		});
+		if (this.component) {
+			requestAnimationFrame(() => {
+				const { start, end } = this.component._lastNativeSelection;
+				const cursor = Math.max(start, end);
+				const lastNativeText = this.component._lastNativeText;
+				const regexp = /(#|@|:)([a-z0-9._-]+)$/im;
+				const result = lastNativeText.substr(0, cursor).match(regexp);
+				if (!result) {
+					return this.stopTrackingMention();
+				}
+				const [, lastChar, name] = result;
+				this.identifyMentionKeyword(name, lastChar);
+			});
+		}
 	}, 100);
 
 	onKeyboardResigned = () => {
@@ -188,6 +190,9 @@ export default class MessageBox extends Component {
 	}
 
 	onPressMention = (item) => {
+		if (!this.component) {
+			return;
+		}
 		const { trackingType } = this.state;
 		const msg = this.text;
 		const { start, end } = this.component._lastNativeSelection;
@@ -199,7 +204,7 @@ export default class MessageBox extends Component {
 			: (item.username || item.name);
 		const text = `${ result }${ mentionName } ${ msg.slice(cursor) }`;
 		this.setInput(text);
-		this.component.focus();
+		this.focus();
 		requestAnimationFrame(() => this.stopTrackingMention());
 	}
 
@@ -209,7 +214,7 @@ export default class MessageBox extends Component {
 		let newText = '';
 
 		// if messagebox has an active cursor
-		if (this.component._lastNativeSelection) {
+		if (this.component && this.component._lastNativeSelection) {
 			const { start, end } = this.component._lastNativeSelection;
 			const cursor = Math.max(start, end);
 			newText = `${ text.substr(0, cursor) }${ emoji }${ text.substr(cursor) }`;
@@ -434,6 +439,12 @@ export default class MessageBox extends Component {
 		}
 	}
 
+	focus = () => {
+		if (this.component && this.component.focus) {
+			this.component.focus();
+		}
+	}
+
 	handleTyping = (isTyping) => {
 		const { typing } = this.props;
 		if (!isTyping) {
@@ -457,7 +468,9 @@ export default class MessageBox extends Component {
 
 	setInput = (text) => {
 		this.text = text;
-		this.component.setNativeProps({ text });
+		if (this.component && this.component.setNativeProps) {
+			this.component.setNativeProps({ text });
+		}
 	}
 
 	setShowSend = (showSend) => {
