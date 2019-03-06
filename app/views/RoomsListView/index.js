@@ -30,8 +30,8 @@ import { appStart as appStartAction } from '../../actions';
 import debounce from '../../utils/debounce';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import Icons, { CustomIcon } from '../../lib/Icons';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import RoomsListHeaderView from './Header';
+import HeaderButton from '../../containers/HeaderButton';
 
 const ROW_HEIGHT = 70;
 const SCROLL_OFFSET = 56;
@@ -105,17 +105,9 @@ export default class RoomsListView extends LoggedView {
 	// 	};
 	// }
 	static navigationOptions = ({ navigation }) => ({
-		headerLeft: (
-			<BorderlessButton onPress={navigation.toggleDrawer} style={{ marginLeft: 10 }}>
-				<CustomIcon name='customize' size={24} color='#1D74F5' style={{ padding: 4 }} />
-			</BorderlessButton>
-		),
+		headerLeft: <HeaderButton icon='customize' onPress={navigation.toggleDrawer} left />,
 		headerTitle: <RoomsListHeaderView />,
-		headerRight: (
-			<BorderlessButton onPress={() => navigation.navigate('NewMessageView')} style={{ marginRight: 10 }}>
-				<CustomIcon name='edit-rounded' size={24} color='#1D74F5' style={{ padding: 4 }} />
-			</BorderlessButton>
-		)
+		headerRight: <HeaderButton icon='edit-rounded' onPress={() => navigation.navigate('NewMessageView')} right />
 	})
 
 	static propTypes = {
