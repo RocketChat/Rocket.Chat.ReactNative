@@ -96,18 +96,21 @@ const SERVICES_COLLAPSED_HEIGHT = 174;
 }))
 /** @extends React.Component */
 export default class LoginSignupView extends LoggedView {
-	static options() {
-		return {
-			...DARK_HEADER,
-			topBar: {
-				...DARK_HEADER.topBar,
-				rightButtons: [{
-					id: 'more',
-					icon: Icons.getSource('more'),
-					testID: 'welcome-view-more'
-				}]
-			}
-		};
+	// static options() {
+	// 	return {
+	// 		...DARK_HEADER,
+	// 		topBar: {
+	// 			...DARK_HEADER.topBar,
+	// 			rightButtons: [{
+	// 				id: 'more',
+	// 				icon: Icons.getSource('more'),
+	// 				testID: 'welcome-view-more'
+	// 			}]
+	// 		}
+	// 	};
+	// }
+	static navigationOptions = {
+		title: 'TESTE'
 	}
 
 	static propTypes = {

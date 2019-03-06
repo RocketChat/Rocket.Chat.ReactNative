@@ -85,7 +85,7 @@ export default class NewMessageView extends LoggedView {
 			search: []
 		};
 		this.data.addListener(this.updateState);
-		Navigation.events().bindComponent(this);
+		// Navigation.events().bindComponent(this);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {

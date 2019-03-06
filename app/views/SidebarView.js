@@ -129,7 +129,7 @@ export default class Sidebar extends Component {
 			showStatus: false,
 			status: []
 		};
-		Navigation.events().bindComponent(this);
+		// Navigation.events().bindComponent(this);
 	}
 
 	componentDidMount() {

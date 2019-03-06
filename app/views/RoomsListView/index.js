@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, FlatList, BackHandler, ActivityIndicator, Text, ScrollView, Keyboard, LayoutAnimation
+	View, FlatList, BackHandler, ActivityIndicator, Text, ScrollView, Keyboard, LayoutAnimation, TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
@@ -30,6 +30,8 @@ import { appStart as appStartAction } from '../../actions';
 import debounce from '../../utils/debounce';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import Icons, { CustomIcon } from '../../lib/Icons';
+import { BorderlessButton } from 'react-native-gesture-handler';
+import RoomsListHeaderView from './Header';
 
 const ROW_HEIGHT = 70;
 const SCROLL_OFFSET = 56;
@@ -79,29 +81,42 @@ if (isAndroid) {
 }))
 /** @extends React.Component */
 export default class RoomsListView extends LoggedView {
-	static options() {
-		return {
-			topBar: {
-				leftButtons,
-				rightButtons,
-				title: {
-					component: {
-						name: 'RoomsListHeaderView',
-						alignment: isAndroid ? 'left' : 'center'
-					}
-				}
-			},
-			sideMenu: {
-				left: {
-					enabled: true
-				},
-				right: {
-					enabled: true
-				}
-			},
-			blurOnUnmount: true
-		};
-	}
+	// static options() {
+	// 	return {
+	// 		topBar: {
+	// 			leftButtons,
+	// 			rightButtons,
+	// 			title: {
+	// 				component: {
+	// 					name: 'RoomsListHeaderView',
+	// 					alignment: isAndroid ? 'left' : 'center'
+	// 				}
+	// 			}
+	// 		},
+	// 		sideMenu: {
+	// 			left: {
+	// 				enabled: true
+	// 			},
+	// 			right: {
+	// 				enabled: true
+	// 			}
+	// 		},
+	// 		blurOnUnmount: true
+	// 	};
+	// }
+	static navigationOptions = ({ navigation }) => ({
+		headerLeft: (
+			<BorderlessButton onPress={navigation.toggleDrawer} style={{ marginLeft: 10 }}>
+				<CustomIcon name='customize' size={24} color='#1D74F5' style={{ padding: 4 }} />
+			</BorderlessButton>
+		),
+		headerTitle: <RoomsListHeaderView />,
+		headerRight: (
+			<BorderlessButton onPress={() => navigation.navigate('NewMessageView')} style={{ marginRight: 10 }}>
+				<CustomIcon name='edit-rounded' size={24} color='#1D74F5' style={{ padding: 4 }} />
+			</BorderlessButton>
+		)
+	})
 
 	static propTypes = {
 		userId: PropTypes.string,
