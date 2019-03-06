@@ -87,7 +87,7 @@ export default class RoomsListView extends LoggedView {
 				title: {
 					component: {
 						name: 'RoomsListHeaderView',
-						alignment: isAndroid ? 'left' : 'center'
+						alignment: isAndroid ? 'left' : 'fill'
 					}
 				}
 			},
@@ -709,3 +709,5 @@ export default class RoomsListView extends LoggedView {
 		);
 	}
 }
+
+console.disableYellowBox = true;
