@@ -16,11 +16,20 @@ import LoginView from './views/LoginView';
 import store from './lib/createStore';
 import Navigation from './lib/NewNavigation';
 import Sidebar from './views/SidebarView';
+import { HEADER_BACKGROUND, HEADER_TINT } from './constants/colors';
 
 useScreens();
 
 store.dispatch(appInit());
 // store.subscribe(this.onStoreUpdate.bind(this));
+
+const defaultHeader = {
+	headerStyle: {
+		backgroundColor: HEADER_BACKGROUND
+	},
+	headerTintColor: HEADER_TINT,
+	headerBackTitle: null
+}
 
 const OutsideNavigator = createStackNavigator({
 	OnboardingView: {
@@ -31,26 +40,14 @@ const OutsideNavigator = createStackNavigator({
 	LoginSignupView,
 	LoginView
 }, {
-	defaultNavigationOptions: {
-		headerStyle: {
-			backgroundColor: '#fff'
-		},
-		headerTintColor: '#1D74F5',
-		headerBackTitle: null
-	}
+	defaultNavigationOptions: defaultHeader
 });
 
 const InsideNavigator = createStackNavigator({
 	RoomsListView,
 	RoomView
 }, {
-	defaultNavigationOptions: {
-		headerStyle: {
-			backgroundColor: '#fff'
-		},
-		headerTintColor: '#1D74F5',
-		headerBackTitle: null
-	}
+	defaultNavigationOptions: defaultHeader
 });
 
 const MyDrawerNavigator = createDrawerNavigator({
