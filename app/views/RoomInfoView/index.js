@@ -46,12 +46,13 @@ const getRoomTitle = room => (room.t === 'd'
 export default class RoomInfoView extends LoggedView {
 	static navigationOptions = ({ navigation }) => {
 		const showEdit = navigation.getParam('showEdit');
+		const rid = navigation.getParam('rid');
 		return {
 			title: I18n.t('Room_Info'),
 			headerRight: showEdit
 				? (
 					<CustomHeaderButtons>
-						<Item iconName='edit' onPress={() => navigation.navigate('RoomInfoEditView')} />
+						<Item iconName='edit' onPress={() => navigation.navigate('RoomInfoEditView', { rid })} />
 					</CustomHeaderButtons>
 				)
 				: null
@@ -60,7 +61,6 @@ export default class RoomInfoView extends LoggedView {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		rid: PropTypes.string,
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			token: PropTypes.string
@@ -68,19 +68,18 @@ export default class RoomInfoView extends LoggedView {
 		baseUrl: PropTypes.string,
 		activeUsers: PropTypes.object,
 		Message_TimeFormat: PropTypes.string,
-		allRoles: PropTypes.object,
-		room: PropTypes.object
+		allRoles: PropTypes.object
 	}
 
 	constructor(props) {
 		super('RoomInfoView', props);
-		const { rid, room } = props;
+		const rid = props.navigation.getParam('rid');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.sub = {
 			unsubscribe: () => {}
 		};
 		this.state = {
-			room,
+			room: this.rooms[0] || {},
 			roomUser: {},
 			roles: []
 		};
@@ -88,14 +87,7 @@ export default class RoomInfoView extends LoggedView {
 
 	async componentDidMount() {
 		this.rooms.addListener(this.updateRoom);
-
-		let room = {};
-		if (this.rooms.length > 0) {
-			room = this.rooms[0]; // eslint-disable-line prefer-destructuring
-		} else {
-			room = this.state.room; // eslint-disable-line
-		}
-		// const { componentId } = this.props;
+		const { room } = this.state;
 		const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
 		if (permissions[PERMISSION_EDIT_ROOM]) {
 			const { navigation } = this.props;
