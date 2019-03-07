@@ -18,7 +18,7 @@ import Touch from '../utils/touch';
 import { isIOS } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
 import { CustomIcon } from '../lib/Icons';
-import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
+import { CustomHeaderButtons, Item, CloseModalButton } from '../containers/HeaderButton';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -57,11 +57,7 @@ const styles = StyleSheet.create({
 /** @extends React.Component */
 export default class NewMessageView extends LoggedView {
 	static navigationOptions = ({ navigation }) => ({
-		headerLeft: (
-			<CustomHeaderButtons left>
-				<Item iconName='cross' onPress={() => navigation.pop()} />
-			</CustomHeaderButtons>
-		),
+		headerLeft: <CloseModalButton navigation={navigation} />,
 		title: I18n.t('New_Message')
 	})
 

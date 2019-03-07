@@ -6,7 +6,6 @@ import {
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
 
-import Navigation from '../lib/Navigation';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
 import KeyboardView from '../presentation/KeyboardView';
@@ -14,11 +13,10 @@ import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import LoggedView from './View';
 import I18n from '../i18n';
-import { DARK_HEADER } from '../constants/headerOptions';
 import RocketChat from '../lib/rocketchat';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import isValidEmail from '../utils/isValidEmail';
-import Icons from '../lib/Icons';
+import { LegalButton } from '../containers/HeaderButton';
 
 const shouldUpdateState = ['name', 'email', 'password', 'username', 'saving'];
 
@@ -27,22 +25,16 @@ const shouldUpdateState = ['name', 'email', 'password', 'username', 'saving'];
 }))
 /** @extends React.Component */
 export default class RegisterView extends LoggedView {
-	static options() {
+	static navigationOptions = ({ navigation }) => {
+		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
-			...DARK_HEADER,
-			topBar: {
-				...DARK_HEADER.topBar,
-				rightButtons: [{
-					id: 'more',
-					icon: Icons.getSource('more'),
-					testID: 'register-view-more'
-				}]
-			}
+			title,
+			headerRight: <LegalButton navigation={navigation} />
 		};
 	}
 
 	static propTypes = {
-		componentId: PropTypes.string,
+		navigation: PropTypes.object,
 		loginRequest: PropTypes.func,
 		Site_Name: PropTypes.string
 	}
@@ -56,7 +48,6 @@ export default class RegisterView extends LoggedView {
 			username: '',
 			saving: false
 		};
-		Navigation.events().bindComponent(this);
 	}
 
 	componentDidMount() {
@@ -71,9 +62,9 @@ export default class RegisterView extends LoggedView {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { componentId, Site_Name } = this.props;
+		const { Site_Name } = this.props;
 		if (Site_Name && prevProps.Site_Name !== Site_Name) {
-			this.setTitle(componentId, Site_Name);
+			this.setTitle(Site_Name);
 		}
 	}
 
@@ -83,28 +74,9 @@ export default class RegisterView extends LoggedView {
 		}
 	}
 
-	setTitle = (componentId, title) => {
-		Navigation.mergeOptions(componentId, {
-			topBar: {
-				title: {
-					text: title
-				}
-			}
-		});
-	}
-
-	navigationButtonPressed = ({ buttonId }) => {
-		if (buttonId === 'more') {
-			Navigation.showModal({
-				stack: {
-					children: [{
-						component: {
-							name: 'LegalView'
-						}
-					}]
-				}
-			});
-		}
+	setTitle = (title) => {
+		const { navigation } = this.props;
+		navigation.setParams({ title });
 	}
 
 	valid = () => {
@@ -135,38 +107,6 @@ export default class RegisterView extends LoggedView {
 			Alert.alert(I18n.t('Oops'), e.data.error);
 		}
 		this.setState({ saving: false });
-	}
-
-	termsService = () => {
-		const { componentId } = this.props;
-		Navigation.push(componentId, {
-			component: {
-				name: 'TermsServiceView',
-				options: {
-					topBar: {
-						title: {
-							text: I18n.t('Terms_of_Service')
-						}
-					}
-				}
-			}
-		});
-	}
-
-	privacyPolicy = () => {
-		const { componentId } = this.props;
-		Navigation.push(componentId, {
-			component: {
-				name: 'PrivacyPolicyView',
-				options: {
-					topBar: {
-						title: {
-							text: I18n.t('Privacy_Policy')
-						}
-					}
-				}
-			}
-		});
 	}
 
 	render() {

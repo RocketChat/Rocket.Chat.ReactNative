@@ -6,7 +6,6 @@ import SafeAreaView from 'react-native-safe-area-view';
 
 import styles from './Styles';
 import LoggedView from './View';
-import { DARK_HEADER } from '../constants/headerOptions';
 import I18n from '../i18n';
 
 @connect(state => ({
@@ -14,17 +13,8 @@ import I18n from '../i18n';
 }))
 /** @extends React.Component */
 export default class PrivacyPolicyView extends LoggedView {
-	static options() {
-		return {
-			...DARK_HEADER,
-			topBar: {
-				...DARK_HEADER.topBar,
-				title: {
-					...DARK_HEADER.topBar.title,
-					text: I18n.t('Privacy_Policy')
-				}
-			}
-		};
+	static navigationOptions = {
+		title: I18n.t('Privacy_Policy')
 	}
 
 	static propTypes = {

@@ -91,7 +91,7 @@ export default class RoomsListView extends LoggedView {
 					<Item iconName='edit-rounded' onPress={() => navigation.navigate('NewMessageView', { onPressItem })} />
 				</CustomHeaderButtons>
 			)
-		}
+		};
 	}
 
 	static propTypes = {

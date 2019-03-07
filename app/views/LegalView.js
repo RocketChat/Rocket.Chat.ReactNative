@@ -15,6 +15,7 @@ import I18n from '../i18n';
 import { DARK_HEADER } from '../constants/headerOptions';
 import Icons from '../lib/Icons';
 import DisclosureIndicator from '../containers/DisclosureIndicator';
+import { CloseModalButton } from '../containers/HeaderButton';
 
 const styles = StyleSheet.create({
 	container: {
@@ -55,48 +56,22 @@ const Separator = () => <View style={styles.separator} />;
 
 /** @extends React.Component */
 export default class LegalView extends LoggedView {
-	static options() {
-		return {
-			...DARK_HEADER,
-			topBar: {
-				...DARK_HEADER.topBar,
-				title: {
-					...DARK_HEADER.topBar.title,
-					text: I18n.t('Legal')
-				},
-				leftButtons: [{
-					id: 'close',
-					icon: isAndroid ? Icons.getSource('close') : undefined,
-					text: isIOS ? I18n.t('Close') : undefined,
-					testID: 'legal-view-close'
-				}]
-			}
-		};
-	}
+	static navigationOptions = ({ navigation }) => ({
+		headerLeft: <CloseModalButton testID='legal-view-close' navigation={navigation} />,
+		title: I18n.t('Legal')
+	})
 
 	static propTypes = {
-		componentId: PropTypes.string
+		navigation: PropTypes.object
 	}
 
 	constructor(props) {
 		super('LegalView', props);
-		Navigation.events().bindComponent(this);
-	}
-
-	navigationButtonPressed = ({ buttonId }) => {
-		if (buttonId === 'close') {
-			const { componentId } = this.props;
-			Navigation.dismissModal(componentId);
-		}
 	}
 
 	onPressItem = ({ route }) => {
-		const { componentId } = this.props;
-		Navigation.push(componentId, {
-			component: {
-				name: route
-			}
-		});
+		const { navigation } = this.props;
+		navigation.navigate(route);
 	}
 
 	renderItem = ({ text, route, testID }) => (

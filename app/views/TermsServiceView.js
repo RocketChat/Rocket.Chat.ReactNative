@@ -14,17 +14,8 @@ import I18n from '../i18n';
 }))
 /** @extends React.Component */
 export default class TermsServiceView extends LoggedView {
-	static options() {
-		return {
-			...DARK_HEADER,
-			topBar: {
-				...DARK_HEADER.topBar,
-				title: {
-					...DARK_HEADER.topBar.title,
-					text: I18n.t('Terms_of_Service')
-				}
-			}
-		};
+	static navigationOptions = {
+		title: I18n.t('Terms_of_Service')
 	}
 
 	static propTypes = {

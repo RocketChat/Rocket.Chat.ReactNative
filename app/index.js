@@ -30,6 +30,12 @@ import SearchMessagesView from './views/SearchMessagesView';
 import PinnedMessagesView from './views/PinnedMessagesView';
 import SelectedUsersView from './views/SelectedUsersView';
 import CreateChannelView from './views/CreateChannelView';
+import LegalView from './views/LegalView';
+import TermsServiceView from './views/TermsServiceView';
+import PrivacyPolicyView from './views/PrivacyPolicyView';
+import ForgotPasswordView from './views/ForgotPasswordView';
+import RegisterView from './views/RegisterView';
+import OAuthView from './views/OAuthView';
 import { HEADER_BACKGROUND, HEADER_TITLE } from './constants/colors';
 
 useScreens();
@@ -47,6 +53,7 @@ const defaultHeader = {
 	headerBackTitle: null
 };
 
+// Outside
 const OutsideStack = createStackNavigator({
 	OnboardingView: {
 		screen: OnboardingView,
@@ -54,11 +61,32 @@ const OutsideStack = createStackNavigator({
 	},
 	NewServerView,
 	LoginSignupView,
-	LoginView
+	LoginView,
+	ForgotPasswordView,
+	RegisterView
 }, {
 	defaultNavigationOptions: defaultHeader
 });
 
+const LegalStack = createStackNavigator({
+	LegalView,
+	TermsServiceView,
+	PrivacyPolicyView
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
+const OutsideStackModal = createStackNavigator({
+	OutsideStack,
+	LegalStack,
+	OAuthView
+},
+{
+	mode: 'modal',
+	headerMode: 'none'
+});
+
+// Inside
 const ChatsStack = createStackNavigator({
 	RoomsListView,
 	RoomView,
@@ -88,7 +116,7 @@ const SettingsStack = createStackNavigator({
 	defaultNavigationOptions: defaultHeader
 });
 
-const ChatsModalStack = createDrawerNavigator({
+const ChatsDrawer = createDrawerNavigator({
 	ChatsStack,
 	ProfileStack,
 	SettingsStack
@@ -102,8 +130,8 @@ const NewMessageStack = createStackNavigator({
 	CreateChannelView
 });
 
-const InsideStack = createStackNavigator({
-	Main: ChatsModalStack,
+const InsideStackModal = createStackNavigator({
+	Main: ChatsDrawer,
 	NewMessageStack
 },
 {
@@ -113,8 +141,8 @@ const InsideStack = createStackNavigator({
 
 const App = createAppContainer(createSwitchNavigator(
 	{
-		OutsideStack,
-		InsideStack,
+		OutsideStack: OutsideStackModal,
+		InsideStack: InsideStackModal,
 		AuthLoading: AuthLoadingView
 	},
 	{

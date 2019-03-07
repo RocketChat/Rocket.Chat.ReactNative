@@ -18,6 +18,7 @@ import Button from '../containers/Button';
 import I18n from '../i18n';
 import { DARK_HEADER } from '../constants/headerOptions';
 import Icons from '../lib/Icons';
+import { CustomHeaderButtons, Item, LegalButton } from '../containers/HeaderButton';
 
 const styles = StyleSheet.create({
 	container: {
@@ -96,25 +97,16 @@ const SERVICES_COLLAPSED_HEIGHT = 174;
 }))
 /** @extends React.Component */
 export default class LoginSignupView extends LoggedView {
-	// static options() {
-	// 	return {
-	// 		...DARK_HEADER,
-	// 		topBar: {
-	// 			...DARK_HEADER.topBar,
-	// 			rightButtons: [{
-	// 				id: 'more',
-	// 				icon: Icons.getSource('more'),
-	// 				testID: 'welcome-view-more'
-	// 			}]
-	// 		}
-	// 	};
-	// }
-	static navigationOptions = {
-		title: 'TESTE'
+	static navigationOptions = ({ navigation }) => {
+		const title = navigation.getParam('title', 'Rocket.Chat');
+		return {
+			title,
+			headerRight: <LegalButton navigation={navigation} />
+		};
 	}
 
 	static propTypes = {
-		componentId: PropTypes.string,
+		navigation: PropTypes.object,
 		server: PropTypes.string,
 		services: PropTypes.object,
 		Site_Name: PropTypes.string
@@ -126,9 +118,8 @@ export default class LoginSignupView extends LoggedView {
 			collapsed: true,
 			servicesHeight: new Animated.Value(SERVICES_COLLAPSED_HEIGHT)
 		};
-		// Navigation.events().bindComponent(this);
-		const { componentId, Site_Name } = this.props;
-		this.setTitle(componentId, Site_Name);
+		const { Site_Name } = this.props;
+		this.setTitle(Site_Name);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -153,34 +144,15 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { componentId, Site_Name } = this.props;
+		const { Site_Name } = this.props;
 		if (Site_Name && prevProps.Site_Name !== Site_Name) {
-			this.setTitle(componentId, Site_Name);
+			this.setTitle(Site_Name);
 		}
 	}
 
-	setTitle = (componentId, title) => {
-		// Navigation.mergeOptions(componentId, {
-		// 	topBar: {
-		// 		title: {
-		// 			text: title
-		// 		}
-		// 	}
-		// });
-	}
-
-	navigationButtonPressed = ({ buttonId }) => {
-		if (buttonId === 'more') {
-			Navigation.showModal({
-				stack: {
-					children: [{
-						component: {
-							name: 'LegalView'
-						}
-					}]
-				}
-			});
-		}
+	setTitle = (title) => {
+		const { navigation } = this.props;
+		navigation.setParams({ title });
 	}
 
 	onPressFacebook = () => {
@@ -283,37 +255,13 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	login = () => {
-		// const { componentId, Site_Name } = this.props;
-		// Navigation.push(componentId, {
-		// 	component: {
-		// 		name: 'LoginView',
-		// 		options: {
-		// 			topBar: {
-		// 				title: {
-		// 					text: Site_Name
-		// 				}
-		// 			}
-		// 		}
-		// 	}
-		// });
-		const { navigation } = this.props;
-		navigation.navigate('LoginView');
+		const { navigation, Site_Name } = this.props;
+		navigation.navigate('LoginView', { title: Site_Name });
 	}
 
 	register = () => {
-		const { componentId, Site_Name } = this.props;
-		Navigation.push(componentId, {
-			component: {
-				name: 'RegisterView',
-				options: {
-					topBar: {
-						title: {
-							text: Site_Name
-						}
-					}
-				}
-			}
-		});
+		const { navigation, Site_Name } = this.props;
+		navigation.navigate('RegisterView', { title: Site_Name });
 	}
 
 	transitionServicesTo = (height) => {
