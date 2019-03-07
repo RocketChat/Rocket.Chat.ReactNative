@@ -29,6 +29,7 @@ import StarredMessagesView from './views/StarredMessagesView';
 import SearchMessagesView from './views/SearchMessagesView';
 import PinnedMessagesView from './views/PinnedMessagesView';
 import SelectedUsersView from './views/SelectedUsersView';
+import CreateChannelView from './views/CreateChannelView';
 import { HEADER_BACKGROUND, HEADER_TITLE } from './constants/colors';
 
 useScreens();
@@ -95,9 +96,15 @@ const ChatsModalStack = createDrawerNavigator({
 	contentComponent: Sidebar
 });
 
+const NewMessageStack = createStackNavigator({
+	NewMessageView,
+	SelectedUsersViewCreateChannel: SelectedUsersView,
+	CreateChannelView
+});
+
 const InsideStack = createStackNavigator({
 	Main: ChatsModalStack,
-	NewMessageView
+	NewMessageStack
 },
 {
 	mode: 'modal',

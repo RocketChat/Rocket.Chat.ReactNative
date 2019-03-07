@@ -277,7 +277,7 @@ export default class RoomActionsView extends LoggedView {
 					name: I18n.t('Add_user'),
 					route: 'SelectedUsersView',
 					params: {
-						nextAction: 'ADD_USER',
+						nextActionID: 'ADD_USER',
 						rid,
 						title: I18n.t('Add_user')
 					},

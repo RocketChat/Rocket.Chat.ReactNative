@@ -81,17 +81,21 @@ if (isAndroid) {
 }))
 /** @extends React.Component */
 export default class RoomsListView extends LoggedView {
-	static navigationOptions = ({ navigation }) => ({
-		headerLeft: <DrawerButton navigation={navigation} />,
-		headerTitle: <RoomsListHeaderView />,
-		headerRight: (
-			<CustomHeaderButtons>
-				<Item iconName='edit-rounded' onPress={() => navigation.navigate('NewMessageView')} />
-			</CustomHeaderButtons>
-		)
-	})
+	static navigationOptions = ({ navigation }) => {
+		const onPressItem = navigation.getParam('onPressItem', () => {});
+		return {
+			headerLeft: <DrawerButton navigation={navigation} />,
+			headerTitle: <RoomsListHeaderView />,
+			headerRight: (
+				<CustomHeaderButtons>
+					<Item iconName='edit-rounded' onPress={() => navigation.navigate('NewMessageView', { onPressItem })} />
+				</CustomHeaderButtons>
+			)
+		}
+	}
 
 	static propTypes = {
+		navigation: PropTypes.object,
 		userId: PropTypes.string,
 		baseUrl: PropTypes.string,
 		server: PropTypes.string,
@@ -128,12 +132,13 @@ export default class RoomsListView extends LoggedView {
 			direct: [],
 			livechat: []
 		};
-		// Navigation.events().bindComponent(this);
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
 	componentDidMount() {
 		this.getSubscriptions();
+		const { navigation } = this.props;
+		navigation.setParams({ onPressItem: this._onPressItem });
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -236,50 +241,50 @@ export default class RoomsListView extends LoggedView {
 		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
-	navigationButtonPressed = ({ buttonId }) => {
-		if (buttonId === 'newMessage') {
-			Navigation.showModal({
-				stack: {
-					children: [{
-						component: {
-							name: 'NewMessageView',
-							passProps: {
-								onPressItem: this._onPressItem
-							},
-							options: {
-								topBar: {
-									title: {
-										text: I18n.t('New_Message')
-									}
-								}
-							}
-						}
-					}]
-				}
-			});
-		} else if (buttonId === 'settings') {
-			Navigation.showModal({
-				stack: {
-					children: [{
-						component: {
-							name: 'SidebarView',
-							options: {
-								topBar: {
-									title: {
-										text: I18n.t('Settings')
-									}
-								}
-							}
-						}
-					}]
-				}
-			});
-		} else if (buttonId === 'search') {
-			this.initSearchingAndroid();
-		} else if (buttonId === 'back') {
-			this.cancelSearchingAndroid();
-		}
-	}
+	// navigationButtonPressed = ({ buttonId }) => {
+	// 	if (buttonId === 'newMessage') {
+	// 		Navigation.showModal({
+	// 			stack: {
+	// 				children: [{
+	// 					component: {
+	// 						name: 'NewMessageView',
+	// 						passProps: {
+	// 							onPressItem: this._onPressItem
+	// 						},
+	// 						options: {
+	// 							topBar: {
+	// 								title: {
+	// 									text: I18n.t('New_Message')
+	// 								}
+	// 							}
+	// 						}
+	// 					}
+	// 				}]
+	// 			}
+	// 		});
+	// 	} else if (buttonId === 'settings') {
+	// 		Navigation.showModal({
+	// 			stack: {
+	// 				children: [{
+	// 					component: {
+	// 						name: 'SidebarView',
+	// 						options: {
+	// 							topBar: {
+	// 								title: {
+	// 									text: I18n.t('Settings')
+	// 								}
+	// 							}
+	// 						}
+	// 					}
+	// 				}]
+	// 			}
+	// 		});
+	// 	} else if (buttonId === 'search') {
+	// 		this.initSearchingAndroid();
+	// 	} else if (buttonId === 'back') {
+	// 		this.cancelSearchingAndroid();
+	// 	}
+	// }
 
 	internalSetState = (...args) => {
 		if (isIOS) {

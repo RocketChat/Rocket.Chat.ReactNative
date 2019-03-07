@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
 
-import Navigation from '../lib/Navigation';
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
@@ -16,9 +15,10 @@ import LoggedView from './View';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
 import Touch from '../utils/touch';
-import { isIOS, isAndroid } from '../utils/deviceInfo';
+import { isIOS } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
-import Icons, { CustomIcon } from '../lib/Icons';
+import { CustomIcon } from '../lib/Icons';
+import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -56,22 +56,18 @@ const styles = StyleSheet.create({
 }))
 /** @extends React.Component */
 export default class NewMessageView extends LoggedView {
-	static options() {
-		return {
-			topBar: {
-				leftButtons: [{
-					id: 'cancel',
-					icon: isAndroid ? Icons.getSource('close') : undefined,
-					text: isIOS ? I18n.t('Cancel') : undefined
-				}]
-			}
-		};
-	}
+	static navigationOptions = ({ navigation }) => ({
+		headerLeft: (
+			<CustomHeaderButtons left>
+				<Item iconName='cross' onPress={() => navigation.pop()} />
+			</CustomHeaderButtons>
+		),
+		title: I18n.t('New_Message')
+	})
 
 	static propTypes = {
-		componentId: PropTypes.string,
+		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
-		onPressItem: PropTypes.func.isRequired,
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			token: PropTypes.string
@@ -85,7 +81,6 @@ export default class NewMessageView extends LoggedView {
 			search: []
 		};
 		this.data.addListener(this.updateState);
-		// Navigation.events().bindComponent(this);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -105,21 +100,15 @@ export default class NewMessageView extends LoggedView {
 		this.search(text);
 	}
 
-	onPressItem = async(item) => {
-		const { onPressItem } = this.props;
-		await this.dismiss();
+	onPressItem = (item) => {
+		const { navigation } = this.props;
+		const onPressItem = navigation.getParam('onPressItem', () => {});
 		onPressItem(item);
 	}
 
-	navigationButtonPressed = ({ buttonId }) => {
-		if (buttonId === 'cancel') {
-			this.dismiss();
-		}
-	}
-
 	dismiss = () => {
-		const { componentId } = this.props;
-		return Navigation.dismissModal(componentId);
+		const { navigation } = this.props;
+		return navigation.pop();
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -135,22 +124,8 @@ export default class NewMessageView extends LoggedView {
 	}
 
 	createChannel = () => {
-		const { componentId } = this.props;
-		Navigation.push(componentId, {
-			component: {
-				name: 'SelectedUsersView',
-				passProps: {
-					nextAction: 'CREATE_CHANNEL'
-				},
-				options: {
-					topBar: {
-						title: {
-							text: I18n.t('Select_Users')
-						}
-					}
-				}
-			}
-		});
+		const { navigation } = this.props;
+		navigation.navigate('SelectedUsersViewCreateChannel', { nextActionID: 'CREATE_CHANNEL', title: I18n.t('Select_Users') });
 	}
 
 	renderHeader = () => (

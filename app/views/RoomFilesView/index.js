@@ -24,14 +24,8 @@ import RocketChat from '../../lib/rocketchat';
 }))
 /** @extends React.Component */
 export default class RoomFilesView extends LoggedView {
-	static options() {
-		return {
-			topBar: {
-				title: {
-					text: I18n.t('Files')
-				}
-			}
-		};
+	static navigationOptions = {
+		title: I18n.t('Files')
 	}
 
 	static propTypes = {

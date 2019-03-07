@@ -22,6 +22,7 @@ import log from '../utils/log';
 import { isIOS } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
+import { Item, CustomHeaderButtons } from '../containers/HeaderButton';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -54,15 +55,19 @@ const styles = StyleSheet.create({
 export default class SelectedUsersView extends LoggedView {
 	static navigationOptions = ({ navigation }) => {
 		const title = navigation.getParam('title');
+		const nextAction = navigation.getParam('nextAction', () => {});
 		return {
-			title
+			title,
+			headerRight: (
+				<CustomHeaderButtons>
+					<Item title={I18n.t('Next')} onPress={nextAction} />
+				</CustomHeaderButtons>
+			)
 		};
 	}
 
 	static propTypes = {
-		componentId: PropTypes.string,
-		rid: PropTypes.string,
-		// nextAction: PropTypes.string.isRequired,
+		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
 		addUser: PropTypes.func.isRequired,
 		removeUser: PropTypes.func.isRequired,
@@ -83,6 +88,11 @@ export default class SelectedUsersView extends LoggedView {
 			search: []
 		};
 		this.data.addListener(this.updateState);
+	}
+
+	componentDidMount() {
+		const { navigation } = this.props;
+		navigation.setParams({ nextAction: this.nextAction });
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -109,6 +119,27 @@ export default class SelectedUsersView extends LoggedView {
 
 	onSearchChangeText(text) {
 		this.search(text);
+	}
+
+	nextAction = async() => {
+		const { navigation, setLoadingInvite } = this.props;
+		const nextActionID = navigation.getParam('nextActionID');
+		if (nextActionID === 'CREATE_CHANNEL') {
+			navigation.navigate('CreateChannelView');
+		} else {
+			const rid = navigation.getParam('rid');
+			try {
+				setLoadingInvite(true);
+				await RocketChat.addUsersToRoom(rid);
+				navigation.pop();
+				// Navigation.pop(componentId);
+
+			} catch (e) {
+				log('RoomActions Add User', e);
+			} finally {
+				setLoadingInvite(false);
+			}
+		}
 	}
 
 	// navigationButtonPressed = async({ buttonId }) => {
