@@ -45,14 +45,8 @@ const getRoomTitle = room => (room.t === 'd'
 }))
 /** @extends React.Component */
 export default class RoomInfoView extends LoggedView {
-	static options() {
-		return {
-			topBar: {
-				title: {
-					text: I18n.t('Room_Info')
-				}
-			}
-		};
+	static navigationOptions = {
+		title: I18n.t('Room_Info')
 	}
 
 	static propTypes = {
@@ -81,7 +75,6 @@ export default class RoomInfoView extends LoggedView {
 			roomUser: {},
 			roles: []
 		};
-		Navigation.events().bindComponent(this);
 	}
 
 	async componentDidMount() {
@@ -164,20 +157,20 @@ export default class RoomInfoView extends LoggedView {
 		this.sub.unsubscribe();
 	}
 
-	navigationButtonPressed = ({ buttonId }) => {
-		const { rid, componentId } = this.props;
-		if (buttonId === 'edit') {
-			Navigation.push(componentId, {
-				component: {
-					id: 'RoomInfoEditView',
-					name: 'RoomInfoEditView',
-					passProps: {
-						rid
-					}
-				}
-			});
-		}
-	}
+	// navigationButtonPressed = ({ buttonId }) => {
+	// 	const { rid, componentId } = this.props;
+	// 	if (buttonId === 'edit') {
+	// 		Navigation.push(componentId, {
+	// 			component: {
+	// 				id: 'RoomInfoEditView',
+	// 				name: 'RoomInfoEditView',
+	// 				passProps: {
+	// 					rid
+	// 				}
+	// 			}
+	// 		});
+	// 	}
+	// }
 
 	getFullUserData = async(username) => {
 		try {

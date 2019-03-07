@@ -38,14 +38,8 @@ const renderSeparator = () => <View style={styles.separator} />;
 }))
 /** @extends React.Component */
 export default class RoomActionsView extends LoggedView {
-	static options() {
-		return {
-			topBar: {
-				title: {
-					text: I18n.t('Actions')
-				}
-			}
-		};
+	static navigationOptions = {
+		title: I18n.t('Actions')
 	}
 
 	static propTypes = {
@@ -119,14 +113,15 @@ export default class RoomActionsView extends LoggedView {
 
 	onPressTouchable = (item) => {
 		if (item.route) {
-			const { componentId } = this.props;
-			Navigation.push(componentId, {
-				component: {
-					name: item.route,
-					passProps: item.params,
-					options: item.navigationOptions
-				}
-			});
+			const { navigation } = this.props;
+			navigation.navigate(item.route, item.params);
+			// Navigation.push(componentId, {
+			// 	component: {
+			// 		name: item.route,
+			// 		passProps: item.params,
+			// 		options: item.navigationOptions
+			// 	}
+			// });
 		}
 		if (item.event) {
 			return item.event();

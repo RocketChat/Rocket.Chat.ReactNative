@@ -19,6 +19,15 @@ import Navigation from './lib/NewNavigation';
 import Sidebar from './views/SidebarView';
 import ProfileView from './views/ProfileView';
 import SettingsView from './views/SettingsView';
+import RoomActionsView from './views/RoomActionsView';
+import RoomInfoView from './views/RoomInfoView';
+import RoomInfoEditView from './views/RoomInfoEditView';
+import RoomMembersView from './views/RoomMembersView';
+import RoomFilesView from './views/RoomFilesView';
+import MentionedMessagesView from './views/MentionedMessagesView';
+import StarredMessagesView from './views/StarredMessagesView';
+import SearchMessagesView from './views/SearchMessagesView';
+import PinnedMessagesView from './views/PinnedMessagesView';
 import { HEADER_BACKGROUND, HEADER_TITLE } from './constants/colors';
 
 useScreens();
@@ -50,7 +59,16 @@ const OutsideStack = createStackNavigator({
 
 const ChatsStack = createStackNavigator({
 	RoomsListView,
-	RoomView
+	RoomView,
+	RoomActionsView,
+	RoomInfoView,
+	RoomInfoEditView,
+	RoomMembersView,
+	RoomFilesView,
+	MentionedMessagesView,
+	StarredMessagesView,
+	SearchMessagesView,
+	PinnedMessagesView
 }, {
 	defaultNavigationOptions: defaultHeader
 });

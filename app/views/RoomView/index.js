@@ -73,9 +73,8 @@ export default class RoomView extends LoggedView {
 	// }
 
 	static navigationOptions = ({ navigation }) => ({
-		// headerLeft: <HeaderButton icon='customize' onPress={navigation.toggleDrawer} left />,
-		headerTitle: <RoomHeaderView />
-		// headerRight: <HeaderButton icon='edit-rounded' onPress={() => navigation.navigate('NewMessageView')} right />
+		headerTitle: <RoomHeaderView />,
+		headerRight: <HeaderButton icon='menu' onPress={() => navigation.navigate('RoomActionsView')} right />
 	})
 
 	static propTypes = {
