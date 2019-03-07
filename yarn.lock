@@ -10247,6 +10247,11 @@ react-native-picker-select@^5.2.3:
   dependencies:
     lodash.isequal "^4.5.0"
 
+react-native-platform-touchable@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-platform-touchable/-/react-native-platform-touchable-1.1.1.tgz#fde4acc65eea585d28b164d0c3716a42129a68e4"
+  integrity sha1-/eSsxl7qWF0osWTQw3FqQhKaaOQ=
+
 react-native-responsive-ui@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-native-responsive-ui/-/react-native-responsive-ui-1.1.1.tgz#eb41839d4f3951ff025660185c36a9a9ce33759f"
@@ -10396,6 +10401,13 @@ react-navigation-drawer@1.2.0:
   integrity sha512-78idNMJpOGzn0jHej69yTIiqJWdCVdMy2sBtppcdnT+DHeZXQDamTuGurjluf/2WyNB2xAXipIk4N4NnvqRfvw==
   dependencies:
     react-native-tab-view "^1.2.0"
+
+react-navigation-header-buttons@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/react-navigation-header-buttons/-/react-navigation-header-buttons-2.1.2.tgz#1d8b3eb19aa0dd5367f0a39b7b3da5b334b92855"
+  integrity sha512-I2LyJnwQMlGZ6qYO3xWNt8hqS31RpJjas6PmISuP6xSUpuKcAUIrn4h2ouo3fivB+VfcpLwzuAZf/xSIIkeY2Q==
+  dependencies:
+    react-native-platform-touchable "^1.1.1"
 
 react-navigation-stack@1.0.10:
   version "1.0.10"

@@ -62,6 +62,7 @@
     "react-native-video": "^4.3.1",
     "react-native-video-controls": "^2.2.3",
     "react-navigation": "^3.3.2",
+    "react-navigation-header-buttons": "^2.1.2",
     "react-redux": "^6.0.0",
     "reactotron-react-native": "2.2",
     "realm": "2.24",

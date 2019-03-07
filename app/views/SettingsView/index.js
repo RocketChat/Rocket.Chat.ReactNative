@@ -18,7 +18,7 @@ import Loading from '../../containers/Loading';
 import { showErrorAlert, showToast } from '../../utils/info';
 import log from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
-import HeaderButton from '../../containers/HeaderButton';
+import { DrawerButton } from '../../containers/HeaderButton';
 
 @connect(state => ({
 	userLanguage: state.login.user && state.login.user.language
@@ -28,7 +28,7 @@ import HeaderButton from '../../containers/HeaderButton';
 /** @extends React.Component */
 export default class SettingsView extends LoggedView {
 	static navigationOptions = ({ navigation }) => ({
-		headerLeft: <HeaderButton icon='customize' onPress={navigation.toggleDrawer} left />,
+		headerLeft: <DrawerButton navigation={navigation} />,
 		title: I18n.t('Settings')
 	})
 

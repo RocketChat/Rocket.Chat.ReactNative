@@ -1,39 +1,34 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import { BorderlessButton } from 'react-native-gesture-handler';
+import { Text } from 'react-native';
+import HeaderButtons, { HeaderButton, Item } from 'react-navigation-header-buttons';
 
 import { CustomIcon } from '../lib/Icons';
 import { isIOS } from '../utils/deviceInfo';
 
-const margin = 10;
-const iconColor = isIOS ? '#1D74F5' : '#FFF';
+const color = isIOS ? '#1D74F5' : '#FFF';
 
-const styles = StyleSheet.create({
-	icon: {
-		padding: 4
-	},
-	left: {
-		marginLeft: margin
-	},
-	right: {
-		marginRight: margin
-	}
-});
-
-const HeaderButton = React.memo(({
-	icon, onPress, left, right
-}) => (
-	<BorderlessButton onPress={onPress} style={[left && styles.left, right && styles.right]}>
-		<CustomIcon name={icon} size={24} color={iconColor} style={styles.icon} />
-	</BorderlessButton>
+const CustomHeaderButton = React.memo(props => (
+	<HeaderButton {...props} IconComponent={CustomIcon} iconSize={23} color={color} />
 ));
 
-HeaderButton.propTypes = {
-	icon: PropTypes.string.isRequired,
-	onPress: PropTypes.func.isRequired,
-	left: PropTypes.bool,
-	right: PropTypes.bool
+export const CustomHeaderButtons = React.memo(props => (
+	<HeaderButtons
+		HeaderButtonComponent={CustomHeaderButton}
+		{...props}
+	/>
+));
+
+export const DrawerButton = React.memo(({ navigation }) => (
+	<CustomHeaderButtons left>
+		<Item iconName='customize' onPress={navigation.toggleDrawer} />
+	</CustomHeaderButtons>
+));
+
+DrawerButton.propTypes = {
+	navigation: PropTypes.object
 };
 
-export default HeaderButton;
+export { Item };
+
+export default () => <Text>a</Text>

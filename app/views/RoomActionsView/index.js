@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
 
-import Navigation from '../../lib/Navigation';
 import { leaveRoom as leaveRoomAction } from '../../actions/room';
 import LoggedView from '../View';
 import styles from './styles';
@@ -31,8 +30,7 @@ const renderSeparator = () => <View style={styles.separator} />;
 		id: state.login.user && state.login.user.id,
 		token: state.login.user && state.login.user.token
 	},
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	room: state.room
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }), dispatch => ({
 	leaveRoom: (rid, t) => dispatch(leaveRoomAction(rid, t))
 }))
@@ -44,22 +42,20 @@ export default class RoomActionsView extends LoggedView {
 
 	static propTypes = {
 		baseUrl: PropTypes.string,
-		rid: PropTypes.string,
-		componentId: PropTypes.string,
+		navigation: PropTypes.object,
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
-		room: PropTypes.object,
 		leaveRoom: PropTypes.func
 	}
 
 	constructor(props) {
 		super('RoomActionsView', props);
-		const { rid, room } = props;
-		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
+		this.rid = props.navigation.getParam('rid');
+		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
-			room,
+			room: this.rooms[0] || {},
 			membersCount: 0,
 			member: {},
 			joined: false,
@@ -70,9 +66,8 @@ export default class RoomActionsView extends LoggedView {
 	async componentDidMount() {
 		const { room } = this.state;
 		if (room && room.t !== 'd' && this.canViewMembers) {
-			const { rid } = this.props;
 			try {
-				const counters = await RocketChat.getRoomCounters(rid, room.t);
+				const counters = await RocketChat.getRoomCounters(room.rid, room.t);
 				if (counters.success) {
 					this.setState({ membersCount: counters.members, joined: counters.joined });
 				}
@@ -115,13 +110,6 @@ export default class RoomActionsView extends LoggedView {
 		if (item.route) {
 			const { navigation } = this.props;
 			navigation.navigate(item.route, item.params);
-			// Navigation.push(componentId, {
-			// 	component: {
-			// 		name: item.route,
-			// 		passProps: item.params,
-			// 		options: item.navigationOptions
-			// 	}
-			// });
 		}
 		if (item.event) {
 			return item.event();
@@ -176,7 +164,7 @@ export default class RoomActionsView extends LoggedView {
 		const notificationsAction = {
 			icon: notifications ? 'bell' : 'Bell-off',
 			name: I18n.t(`${ notifications ? 'Enable' : 'Disable' }_notifications`),
-			event: () => this.toggleNotifications(),
+			event: this.toggleNotifications,
 			testID: 'room-actions-notifications'
 		};
 
@@ -262,7 +250,7 @@ export default class RoomActionsView extends LoggedView {
 						icon: 'ban',
 						name: I18n.t(`${ blocker ? 'Unblock' : 'Block' }_user`),
 						type: 'danger',
-						event: () => this.toggleBlockUser(),
+						event: this.toggleBlockUser,
 						testID: 'room-actions-block-user'
 					}
 				],
@@ -290,14 +278,8 @@ export default class RoomActionsView extends LoggedView {
 					route: 'SelectedUsersView',
 					params: {
 						nextAction: 'ADD_USER',
-						rid
-					},
-					navigationOptions: {
-						topBar: {
-							title: {
-								text: I18n.t('Add_user')
-							}
-						}
+						rid,
+						title: I18n.t('Add_user')
 					},
 					testID: 'room-actions-add-user'
 				});
@@ -312,7 +294,7 @@ export default class RoomActionsView extends LoggedView {
 							icon: 'sign-out',
 							name: I18n.t('Leave_channel'),
 							type: 'danger',
-							event: () => this.leaveChannel(),
+							event: this.leaveChannel,
 							testID: 'room-actions-leave-channel'
 						}
 					],

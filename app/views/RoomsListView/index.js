@@ -31,7 +31,7 @@ import debounce from '../../utils/debounce';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import Icons, { CustomIcon } from '../../lib/Icons';
 import RoomsListHeaderView from './Header';
-import HeaderButton from '../../containers/HeaderButton';
+import { DrawerButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 
 const ROW_HEIGHT = 70;
 const SCROLL_OFFSET = 56;
@@ -81,33 +81,14 @@ if (isAndroid) {
 }))
 /** @extends React.Component */
 export default class RoomsListView extends LoggedView {
-	// static options() {
-	// 	return {
-	// 		topBar: {
-	// 			leftButtons,
-	// 			rightButtons,
-	// 			title: {
-	// 				component: {
-	// 					name: 'RoomsListHeaderView',
-	// 					alignment: isAndroid ? 'left' : 'center'
-	// 				}
-	// 			}
-	// 		},
-	// 		sideMenu: {
-	// 			left: {
-	// 				enabled: true
-	// 			},
-	// 			right: {
-	// 				enabled: true
-	// 			}
-	// 		},
-	// 		blurOnUnmount: true
-	// 	};
-	// }
 	static navigationOptions = ({ navigation }) => ({
-		headerLeft: <HeaderButton icon='customize' onPress={navigation.toggleDrawer} left />,
+		headerLeft: <DrawerButton navigation={navigation} />,
 		headerTitle: <RoomsListHeaderView />,
-		headerRight: <HeaderButton icon='edit-rounded' onPress={() => navigation.navigate('NewMessageView')} right />
+		headerRight: (
+			<CustomHeaderButtons>
+				<Item iconName='edit-rounded' onPress={() => navigation.navigate('NewMessageView')} />
+			</CustomHeaderButtons>
+		)
 	})
 
 	static propTypes = {

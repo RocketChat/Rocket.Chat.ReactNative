@@ -28,6 +28,7 @@ import MentionedMessagesView from './views/MentionedMessagesView';
 import StarredMessagesView from './views/StarredMessagesView';
 import SearchMessagesView from './views/SearchMessagesView';
 import PinnedMessagesView from './views/PinnedMessagesView';
+import SelectedUsersView from './views/SelectedUsersView';
 import { HEADER_BACKGROUND, HEADER_TITLE } from './constants/colors';
 
 useScreens();
@@ -68,7 +69,8 @@ const ChatsStack = createStackNavigator({
 	MentionedMessagesView,
 	StarredMessagesView,
 	SearchMessagesView,
-	PinnedMessagesView
+	PinnedMessagesView,
+	SelectedUsersView
 }, {
 	defaultNavigationOptions: defaultHeader
 });

@@ -19,7 +19,7 @@ import debounce from '../utils/debounce';
 import LoggedView from './View';
 import I18n from '../i18n';
 import log from '../utils/log';
-import { isIOS, isAndroid } from '../utils/deviceInfo';
+import { isIOS } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
 
@@ -52,23 +52,17 @@ const styles = StyleSheet.create({
 }))
 /** @extends React.Component */
 export default class SelectedUsersView extends LoggedView {
-	static options() {
+	static navigationOptions = ({ navigation }) => {
+		const title = navigation.getParam('title');
 		return {
-			topBar: {
-				rightButtons: [{
-					id: 'create',
-					text: I18n.t('Next'),
-					testID: 'selected-users-view-submit',
-					color: isAndroid ? '#FFF' : undefined
-				}]
-			}
+			title
 		};
 	}
 
 	static propTypes = {
 		componentId: PropTypes.string,
 		rid: PropTypes.string,
-		nextAction: PropTypes.string.isRequired,
+		// nextAction: PropTypes.string.isRequired,
 		baseUrl: PropTypes.string,
 		addUser: PropTypes.func.isRequired,
 		removeUser: PropTypes.func.isRequired,
@@ -89,7 +83,6 @@ export default class SelectedUsersView extends LoggedView {
 			search: []
 		};
 		this.data.addListener(this.updateState);
-		Navigation.events().bindComponent(this);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -118,30 +111,30 @@ export default class SelectedUsersView extends LoggedView {
 		this.search(text);
 	}
 
-	navigationButtonPressed = async({ buttonId }) => {
-		if (buttonId === 'create') {
-			const { nextAction, setLoadingInvite } = this.props;
-			if (nextAction === 'CREATE_CHANNEL') {
-				const { componentId } = this.props;
-				Navigation.push(componentId, {
-					component: {
-						name: 'CreateChannelView'
-					}
-				});
-			} else {
-				const { rid, componentId } = this.props;
-				try {
-					setLoadingInvite(true);
-					await RocketChat.addUsersToRoom(rid);
-					Navigation.pop(componentId);
-				} catch (e) {
-					log('RoomActions Add User', e);
-				} finally {
-					setLoadingInvite(false);
-				}
-			}
-		}
-	}
+	// navigationButtonPressed = async({ buttonId }) => {
+	// 	if (buttonId === 'create') {
+	// 		const { nextAction, setLoadingInvite } = this.props;
+	// 		if (nextAction === 'CREATE_CHANNEL') {
+	// 			const { componentId } = this.props;
+	// 			Navigation.push(componentId, {
+	// 				component: {
+	// 					name: 'CreateChannelView'
+	// 				}
+	// 			});
+	// 		} else {
+	// 			const { rid, componentId } = this.props;
+	// 			try {
+	// 				setLoadingInvite(true);
+	// 				await RocketChat.addUsersToRoom(rid);
+	// 				Navigation.pop(componentId);
+	// 			} catch (e) {
+	// 				log('RoomActions Add User', e);
+	// 			} finally {
+	// 				setLoadingInvite(false);
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 	// eslint-disable-next-line react/sort-comp
 	updateState = debounce(() => {

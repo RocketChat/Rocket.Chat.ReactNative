@@ -6,7 +6,6 @@ import moment from 'moment';
 import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
 
-import Navigation from '../../lib/Navigation';
 import LoggedView from '../View';
 import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
@@ -17,7 +16,7 @@ import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
-import Icons from '../../lib/Icons';
+import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
@@ -45,12 +44,22 @@ const getRoomTitle = room => (room.t === 'd'
 }))
 /** @extends React.Component */
 export default class RoomInfoView extends LoggedView {
-	static navigationOptions = {
-		title: I18n.t('Room_Info')
+	static navigationOptions = ({ navigation }) => {
+		const showEdit = navigation.getParam('showEdit');
+		return {
+			title: I18n.t('Room_Info'),
+			headerRight: showEdit
+				? (
+					<CustomHeaderButtons>
+						<Item iconName='edit' onPress={() => navigation.navigate('RoomInfoEditView')} />
+					</CustomHeaderButtons>
+				)
+				: null
+		};
 	}
 
 	static propTypes = {
-		componentId: PropTypes.string,
+		navigation: PropTypes.object,
 		rid: PropTypes.string,
 		user: PropTypes.shape({
 			id: PropTypes.string,
@@ -86,18 +95,11 @@ export default class RoomInfoView extends LoggedView {
 		} else {
 			room = this.state.room; // eslint-disable-line
 		}
-		const { componentId } = this.props;
+		// const { componentId } = this.props;
 		const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
 		if (permissions[PERMISSION_EDIT_ROOM]) {
-			Navigation.mergeOptions(componentId, {
-				topBar: {
-					rightButtons: [{
-						id: 'edit',
-						icon: Icons.getSource('edit'),
-						testID: 'room-info-view-edit-button'
-					}]
-				}
-			});
+			const { navigation } = this.props;
+			navigation.setParams({ showEdit: true });
 		}
 
 		// get user of room
@@ -156,21 +158,6 @@ export default class RoomInfoView extends LoggedView {
 		this.rooms.removeAllListeners();
 		this.sub.unsubscribe();
 	}
-
-	// navigationButtonPressed = ({ buttonId }) => {
-	// 	const { rid, componentId } = this.props;
-	// 	if (buttonId === 'edit') {
-	// 		Navigation.push(componentId, {
-	// 			component: {
-	// 				id: 'RoomInfoEditView',
-	// 				name: 'RoomInfoEditView',
-	// 				passProps: {
-	// 					rid
-	// 				}
-	// 			}
-	// 		});
-	// 	}
-	// }
 
 	getFullUserData = async(username) => {
 		try {

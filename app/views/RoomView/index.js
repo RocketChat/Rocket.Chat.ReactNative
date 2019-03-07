@@ -27,7 +27,7 @@ import { isIOS } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import Icons from '../../lib/Icons';
 import ConnectionBadge from '../../containers/ConnectionBadge';
-import HeaderButton from '../../containers/HeaderButton';
+import HeaderButton, { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import RoomHeaderView from './Header';
 
 @connect(state => ({
@@ -72,10 +72,20 @@ export default class RoomView extends LoggedView {
 	// 	};
 	// }
 
-	static navigationOptions = ({ navigation }) => ({
-		headerTitle: <RoomHeaderView />,
-		headerRight: <HeaderButton icon='menu' onPress={() => navigation.navigate('RoomActionsView')} right />
-	})
+	static navigationOptions = ({ navigation }) => {
+		const rid = navigation.getParam('rid');
+		return {
+			headerTitle: <RoomHeaderView />,
+			headerRight: rid
+				? (
+					<CustomHeaderButtons>
+						<Item iconName='star' onPress={() => alert('TODO FAV')} />
+						<Item iconName='menu' onPress={() => navigation.navigate('RoomActionsView', { rid })} />
+					</CustomHeaderButtons>
+				)
+				: null
+		};
+	}
 
 	static propTypes = {
 		componentId: PropTypes.string,
@@ -114,11 +124,11 @@ export default class RoomView extends LoggedView {
 
 	componentDidMount() {
 		if (this.rooms.length === 0 && this.rid) {
-			// const { rid, name, t } = this.props.navigation.state.params;
-			// this.setState(
-			// 	{ room: { rid, name, t } },
-			// 	() => this.updateRoom()
-			// );
+			const { rid, name, t } = this.props.navigation.state.params;
+			this.setState(
+				{ room: { rid, name, t } },
+				() => this.updateRoom()
+			);
 		}
 		this.rooms.addListener(this.updateRoom);
 		this.internalSetState({ loaded: true });
@@ -215,29 +225,29 @@ export default class RoomView extends LoggedView {
 		this.setState(...args);
 	}
 
-	navigationButtonPressed = ({ buttonId }) => {
-		const { room } = this.state;
-		const { rid, f } = room;
-		const { componentId } = this.props;
+	// navigationButtonPressed = ({ buttonId }) => {
+	// 	const { room } = this.state;
+	// 	const { rid, f } = room;
+	// 	const { componentId } = this.props;
 
-		if (buttonId === 'more') {
-			Navigation.push(componentId, {
-				component: {
-					id: 'RoomActionsView',
-					name: 'RoomActionsView',
-					passProps: {
-						rid
-					}
-				}
-			});
-		} else if (buttonId === 'star') {
-			try {
-				RocketChat.toggleFavorite(rid, !f);
-			} catch (e) {
-				log('toggleFavorite', e);
-			}
-		}
-	}
+	// 	if (buttonId === 'more') {
+	// 		Navigation.push(componentId, {
+	// 			component: {
+	// 				id: 'RoomActionsView',
+	// 				name: 'RoomActionsView',
+	// 				passProps: {
+	// 					rid
+	// 				}
+	// 			}
+	// 		});
+	// 	} else if (buttonId === 'star') {
+	// 		try {
+	// 			RocketChat.toggleFavorite(rid, !f);
+	// 		} catch (e) {
+	// 			log('toggleFavorite', e);
+	// 		}
+	// 	}
+	// }
 
 	// eslint-disable-next-line react/sort-comp
 	updateRoom = () => {
