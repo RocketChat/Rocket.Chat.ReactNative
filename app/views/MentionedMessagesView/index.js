@@ -24,14 +24,8 @@ import RocketChat from '../../lib/rocketchat';
 }))
 /** @extends React.Component */
 export default class MentionedMessagesView extends LoggedView {
-	static options() {
-		return {
-			topBar: {
-				title: {
-					text: I18n.t('Mentions')
-				}
-			}
-		};
+	static navigationOptions = {
+		title: I18n.t('Mentions')
 	}
 
 	static propTypes = {
@@ -42,7 +36,7 @@ export default class MentionedMessagesView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('StarredMessagesView', props);
+		super('MentionedMessagesView', props);
 		this.state = {
 			loading: false,
 			messages: []

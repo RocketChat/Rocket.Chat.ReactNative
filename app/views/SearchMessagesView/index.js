@@ -27,14 +27,8 @@ import I18n from '../../i18n';
 }))
 /** @extends React.Component */
 export default class SearchMessagesView extends LoggedView {
-	static options() {
-		return {
-			topBar: {
-				title: {
-					text: I18n.t('Search')
-				}
-			}
-		};
+	static navigationOptions = {
+		title: I18n.t('Search')
 	}
 
 	static propTypes = {
