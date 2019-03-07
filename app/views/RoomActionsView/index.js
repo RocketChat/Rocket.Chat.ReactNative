@@ -231,13 +231,6 @@ export default class RoomActionsView extends LoggedView {
 					name: I18n.t('Pinned'),
 					route: 'PinnedMessagesView',
 					testID: 'room-actions-pinned'
-				},
-				{
-					icon: 'code',
-					name: I18n.t('Snippets'),
-					route: 'SnippetedMessagesView',
-					params: { rid },
-					testID: 'room-actions-snippeted'
 				}
 			],
 			renderItem: this.renderItem

@@ -156,11 +156,6 @@ class NavigationManager {
 				loaded: false,
 				require: () => require('../views/SearchMessagesView').default
 			},
-			SnippetedMessagesView: {
-				name: 'SnippetedMessagesView',
-				loaded: false,
-				require: () => require('../views/SnippetedMessagesView').default
-			},
 			StarredMessagesView: {
 				name: 'StarredMessagesView',
 				loaded: false,

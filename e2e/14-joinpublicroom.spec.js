@@ -122,10 +122,6 @@ describe('Join public room', () => {
 				await expect(element(by.id('room-actions-pinned'))).toBeVisible();
 			});
 	
-			it('should have snippeted', async() => {
-				await expect(element(by.id('room-actions-snippeted'))).toBeVisible();
-			});
-	
 			it('should not have notifications', async() => {
 				await expect(element(by.id('room-actions-notifications'))).toBeNotVisible();
 			});
@@ -172,7 +168,6 @@ describe('Join public room', () => {
 			await element(by.id('room-actions-list')).swipe('up');
 			await expect(element(by.id('room-actions-share'))).toBeVisible();
 			await expect(element(by.id('room-actions-pinned'))).toBeVisible();
-			await expect(element(by.id('room-actions-snippeted'))).toBeVisible();
 			await expect(element(by.id('room-actions-notifications'))).toBeVisible();
 			await expect(element(by.id('room-actions-leave-channel'))).toBeVisible();
 		});
