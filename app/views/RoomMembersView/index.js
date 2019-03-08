@@ -168,7 +168,7 @@ export default class RoomMembersView extends LoggedView {
 			const { allUsers } = this.state;
 			this.fetchMembers(!allUsers);
 		} catch (e) {
-			log('RoomMembers.onNavigationButtonPressed', e);
+			log('RoomMembers.toggleStatus', e);
 		}
 	}
 

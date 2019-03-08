@@ -13,3 +13,4 @@ export const STATUS_COLORS = {
 
 export const HEADER_BACKGROUND = isIOS ? '#FFF' : '#2F343D';
 export const HEADER_TITLE = isIOS ? '#0C0D0F' : '#FFF';
+export const HEADER_BACK = isIOS ? '#1d74f5' : '#FFF';

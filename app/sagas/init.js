@@ -41,7 +41,7 @@ const start = function* start({ root }) {
 		yield Navigation.navigate('InsideStack');
 	} else if (root === 'setUsername') {
 		yield Navigation.navigate('SetUsernameView');
-	} else {
+	} else if (root === 'outside') {
 		yield Navigation.navigate('OutsideStack');
 	}
 	SplashScreen.hide();

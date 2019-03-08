@@ -37,7 +37,7 @@ import ForgotPasswordView from './views/ForgotPasswordView';
 import RegisterView from './views/RegisterView';
 import OAuthView from './views/OAuthView';
 import SetUsernameView from './views/SetUsernameView';
-import { HEADER_BACKGROUND, HEADER_TITLE } from './constants/colors';
+import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from './constants/colors';
 
 useScreens();
 
@@ -50,7 +50,8 @@ const defaultHeader = {
 	headerTitleStyle: {
 		color: HEADER_TITLE
 	},
-	headerBackTitle: null
+	headerBackTitle: null,
+	headerTintColor: HEADER_BACK
 };
 
 // Outside
@@ -134,6 +135,8 @@ const NewMessageStack = createStackNavigator({
 	NewMessageView,
 	SelectedUsersViewCreateChannel: SelectedUsersView,
 	CreateChannelView
+}, {
+	defaultNavigationOptions: defaultHeader
 });
 
 const InsideStackModal = createStackNavigator({

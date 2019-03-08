@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, FlatList, BackHandler, ActivityIndicator, Text, ScrollView, Keyboard, LayoutAnimation, TouchableOpacity
+	View, FlatList, BackHandler, ActivityIndicator, Text, ScrollView, Keyboard, LayoutAnimation
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
 import SafeAreaView from 'react-native-safe-area-view';
+import { NavigationEvents } from 'react-navigation';
 
-import Navigation from '../../lib/Navigation';
 import SearchBox from '../../containers/SearchBox';
 import ConnectionBadge from '../../containers/ConnectionBadge';
 import database from '../../lib/realm';
@@ -23,13 +23,13 @@ import Touch from '../../utils/touch';
 import {
 	toggleSortDropdown as toggleSortDropdownAction,
 	openSearchHeader as openSearchHeaderAction,
-	closeSearchHeader as closeSearchHeaderAction,
-	roomsRequest as roomsRequestAction
+	closeSearchHeader as closeSearchHeaderAction
+	// roomsRequest as roomsRequestAction
 } from '../../actions/rooms';
 import { appStart as appStartAction } from '../../actions';
 import debounce from '../../utils/debounce';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
-import Icons, { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../../lib/Icons';
 import RoomsListHeaderView from './Header';
 import { DrawerButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 
@@ -39,24 +39,6 @@ const SCROLL_OFFSET = 56;
 const shouldUpdateProps = ['searchText', 'loadingServer', 'showServerDropdown', 'showSortDropdown', 'sortBy', 'groupByType', 'showFavorites', 'showUnread', 'useRealName', 'appState'];
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.rid;
-
-const leftButtons = [{
-	id: 'settings',
-	icon: Icons.getSource('settings'),
-	testID: 'rooms-list-view-sidebar'
-}];
-const rightButtons = [{
-	id: 'newMessage',
-	icon: Icons.getSource('new_channel'),
-	testID: 'rooms-list-view-create-channel'
-}];
-
-if (isAndroid) {
-	rightButtons.push({
-		id: 'search',
-		icon: Icons.getSource('search')
-	});
-}
 
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
@@ -76,20 +58,37 @@ if (isAndroid) {
 	toggleSortDropdown: () => dispatch(toggleSortDropdownAction()),
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
-	appStart: () => dispatch(appStartAction()),
-	roomsRequest: () => dispatch(roomsRequestAction())
+	appStart: () => dispatch(appStartAction())
+	// roomsRequest: () => dispatch(roomsRequestAction())
 }))
 /** @extends React.Component */
 export default class RoomsListView extends LoggedView {
 	static navigationOptions = ({ navigation }) => {
+		const searching = navigation.getParam('searching');
+		const cancelSearchingAndroid = navigation.getParam('cancelSearchingAndroid');
 		const onPressItem = navigation.getParam('onPressItem', () => {});
+		const initSearchingAndroid = navigation.getParam('initSearchingAndroid', () => {});
+
 		return {
-			headerLeft: <DrawerButton navigation={navigation} />,
+			headerLeft: (
+				searching
+					? (
+						<CustomHeaderButtons left>
+							<Item title='cancel' iconName='cross' onPress={cancelSearchingAndroid} />
+						</CustomHeaderButtons>
+					)
+					: <DrawerButton navigation={navigation} />
+			),
 			headerTitle: <RoomsListHeaderView />,
 			headerRight: (
-				<CustomHeaderButtons>
-					<Item title='new' iconName='edit-rounded' onPress={() => navigation.navigate('NewMessageView', { onPressItem })} />
-				</CustomHeaderButtons>
+				searching
+					? null
+					: (
+						<CustomHeaderButtons>
+							{isAndroid ? <Item title='search' iconName='magnifier' onPress={initSearchingAndroid} /> : null}
+							<Item title='new' iconName='edit-rounded' onPress={() => navigation.navigate('NewMessageView', { onPressItem })} />
+						</CustomHeaderButtons>
+					)
 			)
 		};
 	}
@@ -108,12 +107,12 @@ export default class RoomsListView extends LoggedView {
 		showFavorites: PropTypes.bool,
 		showUnread: PropTypes.bool,
 		useRealName: PropTypes.bool,
-		appState: PropTypes.string,
+		// appState: PropTypes.string,
 		toggleSortDropdown: PropTypes.func,
 		openSearchHeader: PropTypes.func,
 		closeSearchHeader: PropTypes.func,
-		appStart: PropTypes.func,
-		roomsRequest: PropTypes.func
+		appStart: PropTypes.func
+		// roomsRequest: PropTypes.func
 	}
 
 	constructor(props) {
@@ -132,13 +131,14 @@ export default class RoomsListView extends LoggedView {
 			direct: [],
 			livechat: []
 		};
-		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
 	componentDidMount() {
 		this.getSubscriptions();
 		const { navigation } = this.props;
-		navigation.setParams({ onPressItem: this._onPressItem });
+		navigation.setParams({
+			onPressItem: this._onPressItem, initSearchingAndroid: this.initSearchingAndroid, cancelSearchingAndroid: this.cancelSearchingAndroid
+		});
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -240,53 +240,7 @@ export default class RoomsListView extends LoggedView {
 		this.removeListener(this.privateGroup);
 		this.removeListener(this.direct);
 		this.removeListener(this.livechat);
-		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
 	}
-
-	// navigationButtonPressed = ({ buttonId }) => {
-	// 	if (buttonId === 'newMessage') {
-	// 		Navigation.showModal({
-	// 			stack: {
-	// 				children: [{
-	// 					component: {
-	// 						name: 'NewMessageView',
-	// 						passProps: {
-	// 							onPressItem: this._onPressItem
-	// 						},
-	// 						options: {
-	// 							topBar: {
-	// 								title: {
-	// 									text: I18n.t('New_Message')
-	// 								}
-	// 							}
-	// 						}
-	// 					}
-	// 				}]
-	// 			}
-	// 		});
-	// 	} else if (buttonId === 'settings') {
-	// 		Navigation.showModal({
-	// 			stack: {
-	// 				children: [{
-	// 					component: {
-	// 						name: 'SidebarView',
-	// 						options: {
-	// 							topBar: {
-	// 								title: {
-	// 									text: I18n.t('Settings')
-	// 								}
-	// 							}
-	// 						}
-	// 					}
-	// 				}]
-	// 			}
-	// 		});
-	// 	} else if (buttonId === 'search') {
-	// 		this.initSearchingAndroid();
-	// 	} else if (buttonId === 'back') {
-	// 		this.cancelSearchingAndroid();
-	// 	}
-	// }
 
 	internalSetState = (...args) => {
 		if (isIOS) {
@@ -389,35 +343,21 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	initSearchingAndroid = () => {
-		const { openSearchHeader } = this.props;
+		const { openSearchHeader, navigation } = this.props;
 		this.setState({ searching: true });
+		navigation.setParams({ searching: true });
 		openSearchHeader();
-		Navigation.mergeOptions('RoomsListView', {
-			topBar: {
-				leftButtons: [{
-					id: 'back',
-					icon: Icons.getSource('close'),
-					testID: 'rooms-list-view-cancel-search'
-				}],
-				rightButtons: []
-			}
-		});
 	}
 
 	cancelSearchingAndroid = () => {
-		// if (isAndroid) {
-		// 	const { closeSearchHeader } = this.props;
-		// 	this.setState({ searching: false });
-		// 	closeSearchHeader();
-		// 	Navigation.mergeOptions('RoomsListView', {
-		// 		topBar: {
-		// 			leftButtons,
-		// 			rightButtons
-		// 		}
-		// 	});
-		// 	this.internalSetState({ search: [] });
-		// 	Keyboard.dismiss();
-		// }
+		if (isAndroid) {
+			const { closeSearchHeader, navigation } = this.props;
+			this.setState({ searching: false });
+			navigation.setParams({ searching: false });
+			closeSearchHeader();
+			this.internalSetState({ search: [] });
+			Keyboard.dismiss();
+		}
 	}
 
 	// this is necessary during development (enables Cmd + r)
@@ -446,7 +386,7 @@ export default class RoomsListView extends LoggedView {
 	goRoom = ({ rid, name, t }) => {
 		this.cancelSearchingAndroid();
 		const { navigation } = this.props;
-		navigation.navigate('RoomView', { rid, name, t });;
+		navigation.navigate('RoomView', { rid, name, t });
 	}
 
 	_onPressItem = async(item = {}) => {
@@ -694,6 +634,10 @@ export default class RoomsListView extends LoggedView {
 				}
 				{showServerDropdown ? <ServerDropdown navigator={navigator} /> : null}
 				<ConnectionBadge />
+				<NavigationEvents
+					onDidFocus={() => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)}
+					onWillBlur={() => BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)}
+				/>
 			</SafeAreaView>
 		);
 	}

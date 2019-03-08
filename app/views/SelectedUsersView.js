@@ -142,31 +142,6 @@ export default class SelectedUsersView extends LoggedView {
 		}
 	}
 
-	// navigationButtonPressed = async({ buttonId }) => {
-	// 	if (buttonId === 'create') {
-	// 		const { nextAction, setLoadingInvite } = this.props;
-	// 		if (nextAction === 'CREATE_CHANNEL') {
-	// 			const { componentId } = this.props;
-	// 			Navigation.push(componentId, {
-	// 				component: {
-	// 					name: 'CreateChannelView'
-	// 				}
-	// 			});
-	// 		} else {
-	// 			const { rid, componentId } = this.props;
-	// 			try {
-	// 				setLoadingInvite(true);
-	// 				await RocketChat.addUsersToRoom(rid);
-	// 				Navigation.pop(componentId);
-	// 			} catch (e) {
-	// 				log('RoomActions Add User', e);
-	// 			} finally {
-	// 				setLoadingInvite(false);
-	// 			}
-	// 		}
-	// 	}
-	// }
-
 	// eslint-disable-next-line react/sort-comp
 	updateState = debounce(() => {
 		this.forceUpdate();

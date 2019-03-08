@@ -166,20 +166,6 @@ export default class LoginView extends LoggedView {
 		navigation.setParams({ title });
 	}
 
-	navigationButtonPressed = ({ buttonId }) => {
-		if (buttonId === 'more') {
-			Navigation.showModal({
-				stack: {
-					children: [{
-						component: {
-							name: 'LegalView'
-						}
-					}]
-				}
-			});
-		}
-	}
-
 	valid = () => {
 		const {
 			user, password, code, showTOTP
