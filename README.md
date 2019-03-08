@@ -228,24 +228,3 @@ $ detox build
 ```bash
 $ detox test
 ```
-
-## Storybook
-- General requirements
-    - Install storybook
-        ```bash
-        $ yarn global add @storybook/cli
-        ```
-
-- Running storybook
-    - Run storybook application
-        ```bash
-        $ yarn storybook
-        ```
-    - Run application in other shell
-        ```bash
-        $ react-native run-ios
-        ```
-    - Running storybook on browser to help stories navigation
-        ```
-        open http://localhost:7007/
-        ```
