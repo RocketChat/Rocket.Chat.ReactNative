@@ -15,7 +15,6 @@ import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import LoggedView from './View';
 import I18n from '../i18n';
-import { DARK_HEADER } from '../constants/headerOptions';
 import RocketChat from '../lib/rocketchat';
 
 const styles = StyleSheet.create({
@@ -33,14 +32,15 @@ const styles = StyleSheet.create({
 }))
 /** @extends React.Component */
 export default class SetUsernameView extends LoggedView {
-	static options() {
+	static navigationOptions = ({ navigation }) => {
+		const title = navigation.getParam('title');
 		return {
-			...DARK_HEADER
+			title
 		};
 	}
 
 	static propTypes = {
-		componentId: PropTypes.string,
+		navigation: PropTypes.object,
 		server: PropTypes.string,
 		userId: PropTypes.string,
 		loginRequest: PropTypes.func,
@@ -53,14 +53,8 @@ export default class SetUsernameView extends LoggedView {
 			username: '',
 			saving: false
 		};
-		const { componentId, server } = this.props;
-		Navigation.mergeOptions(componentId, {
-			topBar: {
-				title: {
-					text: server
-				}
-			}
-		});
+		const { server } = this.props;
+		props.navigation.setParams({ title: server });
 	}
 
 	async componentDidMount() {
@@ -120,7 +114,7 @@ export default class SetUsernameView extends LoggedView {
 							inputRef={e => this.usernameInput = e}
 							placeholder={I18n.t('Username')}
 							returnKeyType='send'
-							iconLeft='mention'
+							iconLeft='at'
 							onChangeText={value => this.setState({ username: value })}
 							value={username}
 							onSubmitEditing={this.submit}

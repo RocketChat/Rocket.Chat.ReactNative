@@ -36,6 +36,7 @@ import PrivacyPolicyView from './views/PrivacyPolicyView';
 import ForgotPasswordView from './views/ForgotPasswordView';
 import RegisterView from './views/RegisterView';
 import OAuthView from './views/OAuthView';
+import SetUsernameView from './views/SetUsernameView';
 import { HEADER_BACKGROUND, HEADER_TITLE } from './constants/colors';
 
 useScreens();
@@ -138,11 +139,16 @@ const InsideStackModal = createStackNavigator({
 	headerMode: 'none'
 });
 
+const SetUsernameStack = createStackNavigator({
+	SetUsernameView
+});
+
 const App = createAppContainer(createSwitchNavigator(
 	{
 		OutsideStack: OutsideStackModal,
 		InsideStack: InsideStackModal,
-		AuthLoading: AuthLoadingView
+		AuthLoading: AuthLoadingView,
+		SetUsernameStack
 	},
 	{
 		initialRouteName: 'AuthLoading'

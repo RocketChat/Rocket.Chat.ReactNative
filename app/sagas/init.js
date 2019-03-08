@@ -37,9 +37,10 @@ const restore = function* restore() {
 };
 
 const start = function* start({ root }) {
-	console.log('TCL: start -> root', root);
 	if (root === 'inside') {
 		yield Navigation.navigate('InsideStack');
+	} else if (root === 'setUsername') {
+		yield Navigation.navigate('SetUsernameView');
 	} else {
 		yield Navigation.navigate('OutsideStack');
 	}
