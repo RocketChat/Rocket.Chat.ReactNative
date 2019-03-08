@@ -50,7 +50,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield put(appStart('setUsername'));
 	} else if (adding) {
 		yield put(serverFinishAdd());
-		yield Navigation.dismissAllModals();
+		yield put(appStart('inside'));
 	} else {
 		yield put(appStart('inside'));
 	}

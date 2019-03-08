@@ -41,7 +41,6 @@ import { HEADER_BACKGROUND, HEADER_TITLE } from './constants/colors';
 useScreens();
 
 store.dispatch(appInit());
-// store.subscribe(this.onStoreUpdate.bind(this));
 
 const defaultHeader = {
 	headerStyle: {

@@ -37,7 +37,6 @@ export default class OnboardingView extends LoggedView {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		previousServer: PropTypes.string,
 		adding: PropTypes.bool,
 		selectServer: PropTypes.func.isRequired,
 		currentServer: PropTypes.string,
@@ -49,11 +48,12 @@ export default class OnboardingView extends LoggedView {
 	constructor(props) {
 		super('OnboardingView', props);
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+		this.previousServer = props.navigation.getParam('previousServer');
 	}
 
 	componentDidMount() {
-		const { previousServer, initAdd } = this.props;
-		if (previousServer) {
+		const { initAdd } = this.props;
+		if (this.previousServer) {
 			initAdd();
 		}
 		EventEmitter.addEventListener('NewServer', this.handleNewServerEvent);
@@ -65,11 +65,11 @@ export default class OnboardingView extends LoggedView {
 
 	componentWillUnmount() {
 		const {
-			selectServer, previousServer, currentServer, adding, finishAdd
+			selectServer, currentServer, adding, finishAdd
 		} = this.props;
 		if (adding) {
-			if (previousServer !== currentServer) {
-				selectServer(previousServer);
+			if (this.previousServer !== currentServer) {
+				selectServer(this.previousServer);
 			}
 			finishAdd();
 		}
@@ -85,7 +85,7 @@ export default class OnboardingView extends LoggedView {
 
 	close = () => {
 		const { navigation } = this.props;
-		navigation.pop();
+		navigation.navigate('InsideStack');
 	}
 
 	newServer = (server) => {
@@ -111,9 +111,7 @@ export default class OnboardingView extends LoggedView {
 	}
 
 	renderClose = () => {
-		const { previousServer } = this.props;
-
-		if (previousServer) {
+		if (this.previousServer) {
 			let top = 15;
 			if (isIOS) {
 				top = isNotch ? 45 : 30;

@@ -215,7 +215,7 @@ export default class RoomsListView extends LoggedView {
 
 	componentDidUpdate(prevProps) {
 		const {
-			sortBy, groupByType, showFavorites, showUnread, appState, roomsRequest
+			sortBy, groupByType, showFavorites, showUnread
 		} = this.props;
 
 		if (!(
@@ -225,9 +225,11 @@ export default class RoomsListView extends LoggedView {
 			&& (prevProps.showUnread === showUnread)
 		)) {
 			this.getSubscriptions();
-		} else if (appState === 'foreground' && appState !== prevProps.appState) {
-			roomsRequest();
 		}
+		// removed for now... we may not need it anymore
+		// else if (appState === 'foreground' && appState !== prevProps.appState) {
+		// 	// roomsRequest();
+		// }
 	}
 
 	componentWillUnmount() {
@@ -444,15 +446,7 @@ export default class RoomsListView extends LoggedView {
 	goRoom = ({ rid, name, t }) => {
 		this.cancelSearchingAndroid();
 		const { navigation } = this.props;
-		navigation.navigate('RoomView', { rid, name, t });
-		// Navigation.push('RoomsListView', {
-		// 	component: {
-		// 		name: 'RoomView',
-		// 		passProps: {
-		// 			rid, name, t
-		// 		}
-		// 	}
-		// });
+		navigation.navigate('RoomView', { rid, name, t });;
 	}
 
 	_onPressItem = async(item = {}) => {
