@@ -1,5 +1,6 @@
 import { AsyncStorage } from 'react-native';
 import { put, takeLatest, all } from 'redux-saga/effects';
+import SplashScreen from 'react-native-splash-screen';
 
 import * as actions from '../actions';
 import { selectServerRequest } from '../actions/server';
@@ -24,8 +25,7 @@ const restore = function* restore() {
 				AsyncStorage.removeItem(RocketChat.TOKEN_KEY),
 				AsyncStorage.removeItem('currentServer')
 			]);
-			// yield put(actions.appStart('outside'));
-			Navigation.navigate('OutsideStack');
+			yield put(actions.appStart('outside'));
 		} else if (server) {
 			yield put(selectServerRequest(server));
 		}
@@ -36,7 +36,18 @@ const restore = function* restore() {
 	}
 };
 
+const start = function* start({ root }) {
+	console.log('TCL: start -> root', root);
+	if (root === 'inside') {
+		yield Navigation.navigate('InsideStack');
+	} else {
+		yield Navigation.navigate('OutsideStack');
+	}
+	SplashScreen.hide();
+};
+
 const root = function* root() {
 	yield takeLatest(APP.INIT, restore);
+	yield takeLatest(APP.START, start);
 };
 export default root;

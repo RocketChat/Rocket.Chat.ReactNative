@@ -28,6 +28,8 @@ target 'RocketChatRN' do
 
   pod 'RNScreens', :path => '../node_modules/react-native-screens'
 
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
 end
 
 post_install do |installer|

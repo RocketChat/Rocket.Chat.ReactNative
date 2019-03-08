@@ -18,6 +18,7 @@
 //#import "RCCManager.h"
  #import <ReactNativeNavigation/ReactNativeNavigation.h>
 #import "RNNotifications.h"
+#import "RNSplashScreen.h"
 
 
 @implementation AppDelegate
@@ -53,6 +54,9 @@
     rootViewController.view = rootView;
     self.window.rootViewController = rootViewController;
     [self.window makeKeyAndVisible];
+    
+    [RNSplashScreen show];
+    
     return YES;
 }
 

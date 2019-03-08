@@ -52,8 +52,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield put(serverFinishAdd());
 		yield Navigation.dismissAllModals();
 	} else {
-		// yield put(appStart('inside'));
-		Navigation.navigate('InsideStack');
+		yield put(appStart('inside'));
 	}
 };
 
