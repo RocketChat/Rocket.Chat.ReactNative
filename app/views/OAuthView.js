@@ -3,12 +3,8 @@ import PropTypes from 'prop-types';
 import { WebView } from 'react-native';
 import { connect } from 'react-redux';
 
-import Navigation from '../lib/Navigation';
 import RocketChat from '../lib/rocketchat';
-import I18n from '../i18n';
-import { DARK_HEADER } from '../constants/headerOptions';
-import { isIOS, isAndroid } from '../utils/deviceInfo';
-import Icons from '../lib/Icons';
+import { isIOS } from '../utils/deviceInfo';
 import { CloseModalButton } from '../containers/HeaderButton';
 
 const userAgentAndroid = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1';

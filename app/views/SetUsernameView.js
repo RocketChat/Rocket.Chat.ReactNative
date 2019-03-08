@@ -6,7 +6,6 @@ import {
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
 
-import Navigation from '../lib/Navigation';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';

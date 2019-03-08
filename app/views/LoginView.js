@@ -8,7 +8,6 @@ import { Answers } from 'react-native-fabric';
 import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
 
-import Navigation from '../lib/Navigation';
 import KeyboardView from '../presentation/KeyboardView';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
@@ -16,9 +15,7 @@ import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import LoggedView from './View';
 import I18n from '../i18n';
-import { DARK_HEADER } from '../constants/headerOptions';
 import { loginRequest as loginRequestAction } from '../actions/login';
-import Icons from '../lib/Icons';
 import { LegalButton } from '../containers/HeaderButton';
 
 const styles = StyleSheet.create({

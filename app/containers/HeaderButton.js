@@ -56,4 +56,4 @@ LegalButton.propTypes = {
 
 export { Item };
 
-export default () => <Text>a</Text>
+export default () => <Text>a</Text>;

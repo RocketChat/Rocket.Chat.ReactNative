@@ -6,14 +6,10 @@ import {
 import SafeAreaView from 'react-native-safe-area-view';
 import { RectButton } from 'react-native-gesture-handler';
 
-import Navigation from '../lib/Navigation';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
-import { isIOS, isAndroid } from '../utils/deviceInfo';
 import LoggedView from './View';
 import I18n from '../i18n';
-import { DARK_HEADER } from '../constants/headerOptions';
-import Icons from '../lib/Icons';
 import DisclosureIndicator from '../containers/DisclosureIndicator';
 import { CloseModalButton } from '../containers/HeaderButton';
 

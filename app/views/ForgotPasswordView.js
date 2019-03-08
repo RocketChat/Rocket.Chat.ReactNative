@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, ScrollView } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
+import PropTypes from 'prop-types';
 
-import Navigation from '../lib/Navigation';
 import LoggedView from './View';
 import KeyboardView from '../presentation/KeyboardView';
 import TextInput from '../containers/TextInput';
@@ -21,6 +21,10 @@ export default class ForgotPasswordView extends LoggedView {
 		return {
 			title
 		};
+	}
+
+	static propTypes = {
+		navigation: PropTypes.object
 	}
 
 	constructor(props) {
@@ -76,8 +80,8 @@ export default class ForgotPasswordView extends LoggedView {
 			this.setState({ isFetching: true });
 			const result = await RocketChat.forgotPassword(email);
 			if (result.success) {
-				const { componentId } = this.props;
-				Navigation.pop(componentId);
+				const { navigation } = this.props;
+				navigation.pop();
 				showErrorAlert(I18n.t('Forgot_password_If_this_email_is_registered'), I18n.t('Alert'));
 			}
 		} catch (e) {

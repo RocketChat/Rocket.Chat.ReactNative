@@ -74,8 +74,7 @@ Header.propTypes = {
 	onSearchChangeText: PropTypes.func.isRequired,
 	setSearchInputRef: PropTypes.func.isRequired,
 	isFetching: PropTypes.bool,
-	serverName: PropTypes.string,
-	width: PropTypes.number
+	serverName: PropTypes.string
 };
 
 Header.defaultProps = {

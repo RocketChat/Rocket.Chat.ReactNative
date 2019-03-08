@@ -3,7 +3,7 @@ import {
 	createStackNavigator, createAppContainer, createSwitchNavigator, createDrawerNavigator
 } from 'react-navigation';
 import { Provider } from 'react-redux';
-import { useScreens } from 'react-native-screens';
+import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 
 import { appInit } from './actions';
 import OnboardingView from './views/OnboardingView';

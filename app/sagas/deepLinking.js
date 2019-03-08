@@ -4,9 +4,9 @@ import {
 	takeLatest, take, select, put, all, race
 } from 'redux-saga/effects';
 
-import Navigation from '../lib/Navigation';
+import Navigation from '../lib/NewNavigation';
 import * as types from '../actions/actionsTypes';
-import { appStart, setStackRoot } from '../actions';
+import { appStart } from '../actions';
 import { selectServerRequest } from '../actions/server';
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
@@ -23,33 +23,8 @@ const navigate = function* navigate({ params, sameServer = true }) {
 	if (params.rid) {
 		const canOpenRoom = yield RocketChat.canOpenRoom(params);
 		if (canOpenRoom) {
-			const stack = 'RoomsListView';
-			const stackRoot = yield select(state => state.app.stackRoot);
-
-			// Make sure current stack is RoomsListView before navigate to RoomView
-			if (stackRoot !== stack) {
-				yield Navigation.setStackRoot('AppRoot', {
-					component: {
-						id: stack,
-						name: stack
-					}
-				});
-				yield put(setStackRoot(stack));
-			}
-			try {
-				yield Navigation.popToRoot(stack);
-			} catch (error) {
-				console.log(error);
-			}
 			const [type, name] = params.path.split('/');
-			Navigation.push(stack, {
-				component: {
-					name: 'RoomView',
-					passProps: {
-						rid: params.rid, name, t: roomTypes[type]
-					}
-				}
-			});
+			Navigation.navigate('RoomView', { rid: params.rid, name, t: roomTypes[type] });
 		}
 	}
 };

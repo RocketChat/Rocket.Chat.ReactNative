@@ -15,9 +15,6 @@ import styles from './styles';
 import LoggedView from '../View';
 import { isIOS, isNotch } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
-// import { LIGHT_HEADER } from '../../constants/headerOptions';
-// import Navigation from '../../lib/Navigation';
-import NewNavigation from '../../lib/NewNavigation';
 import { CustomIcon } from '../../lib/Icons';
 
 @connect(state => ({
@@ -84,8 +81,8 @@ export default class OnboardingView extends LoggedView {
 	}
 
 	close = () => {
-		const { navigation } = this.props;
-		navigation.navigate('InsideStack');
+		const { appStart } = this.props;
+		appStart('inside');
 	}
 
 	newServer = (server) => {

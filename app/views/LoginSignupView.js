@@ -9,16 +9,13 @@ import SafeAreaView from 'react-native-safe-area-view';
 import { RectButton, BorderlessButton } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
 
-import Navigation from '../lib/Navigation';
 import LoggedView from './View';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import random from '../utils/random';
 import Button from '../containers/Button';
 import I18n from '../i18n';
-import { DARK_HEADER } from '../constants/headerOptions';
-import Icons from '../lib/Icons';
-import { CustomHeaderButtons, Item, LegalButton } from '../containers/HeaderButton';
+import { LegalButton } from '../containers/HeaderButton';
 
 const styles = StyleSheet.create({
 	container: {

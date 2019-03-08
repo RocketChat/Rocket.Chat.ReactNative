@@ -8,7 +8,6 @@ import { RectButton } from 'react-native-gesture-handler';
 import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
 
-import Navigation from '../../lib/Navigation';
 import { openRoom as openRoomAction, closeRoom as closeRoomAction, setLastOpen as setLastOpenAction } from '../../actions/room';
 import { toggleReactionPicker as toggleReactionPickerAction, actionsShow as actionsShowAction } from '../../actions/messages';
 import LoggedView from '../View';
@@ -26,7 +25,7 @@ import log from '../../utils/log';
 import { isIOS } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import ConnectionBadge from '../../containers/ConnectionBadge';
-import { CustomHeaderButtons, Item, MoreButton } from '../../containers/HeaderButton';
+import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import RoomHeaderView from './Header';
 
 @connect(state => ({

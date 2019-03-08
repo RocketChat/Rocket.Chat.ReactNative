@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
 
-import Navigation from '../lib/Navigation';
 import {
 	addUser as addUserAction, removeUser as removeUserAction, reset as resetAction, setLoading as setLoadingAction
 } from '../actions/selectedUsers';
@@ -133,7 +132,6 @@ export default class SelectedUsersView extends LoggedView {
 				await RocketChat.addUsersToRoom(rid);
 				navigation.pop();
 				// Navigation.pop(componentId);
-
 			} catch (e) {
 				log('RoomActions Add User', e);
 			} finally {

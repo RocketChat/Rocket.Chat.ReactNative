@@ -5,7 +5,6 @@ import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
 
-import Navigation from '../../lib/Navigation';
 import LoggedView from '../View';
 import RocketChat from '../../lib/rocketchat';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -120,17 +119,6 @@ export default class SettingsView extends LoggedView {
 			this.setState({ saving: false });
 			setTimeout(() => {
 				showToast(I18n.t('Preferences_saved'));
-
-				if (params.language) {
-					const { componentId } = this.props;
-					Navigation.mergeOptions(componentId, {
-						topBar: {
-							title: {
-								text: I18n.t('Settings')
-							}
-						}
-					});
-				}
 			}, 300);
 		} catch (e) {
 			this.setState({ saving: false });

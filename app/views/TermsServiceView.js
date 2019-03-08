@@ -6,7 +6,6 @@ import SafeAreaView from 'react-native-safe-area-view';
 
 import styles from './Styles';
 import LoggedView from './View';
-import { DARK_HEADER } from '../constants/headerOptions';
 import I18n from '../i18n';
 
 @connect(state => ({

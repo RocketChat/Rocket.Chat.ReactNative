@@ -1,7 +1,7 @@
 import { delay } from 'redux-saga';
 import { takeLatest, put, call } from 'redux-saga/effects';
 
-import Navigation from '../lib/Navigation';
+import Navigation from '../lib/NewNavigation';
 import { MESSAGES } from '../actions/actionsTypes';
 import {
 	messagesSuccess,
@@ -75,15 +75,8 @@ const handleTogglePinRequest = function* handleTogglePinRequest({ message }) {
 };
 
 const goRoom = function* goRoom({ rid, name }) {
-	yield Navigation.popToRoot('RoomsListView');
-	Navigation.push('RoomsListView', {
-		component: {
-			name: 'RoomView',
-			passProps: {
-				rid, name, t: 'd'
-			}
-		}
-	});
+	yield Navigation.popToTop();
+	Navigation.navigate('RoomView', { rid, name, t: 'd' });
 };
 
 const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {

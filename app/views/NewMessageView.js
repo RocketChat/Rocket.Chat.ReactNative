@@ -18,7 +18,7 @@ import Touch from '../utils/touch';
 import { isIOS } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
 import { CustomIcon } from '../lib/Icons';
-import { CustomHeaderButtons, Item, CloseModalButton } from '../containers/HeaderButton';
+import { CloseModalButton } from '../containers/HeaderButton';
 
 const styles = StyleSheet.create({
 	safeAreaView: {

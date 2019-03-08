@@ -189,7 +189,6 @@ export default class RoomMembersView extends LoggedView {
 		const members = membersResult.records;
 		this.setState({ allUsers: status, members });
 		navigation.setParams({ allUsers: status });
-
 	}
 
 	updateRoom = () => {

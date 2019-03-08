@@ -3,7 +3,6 @@ import {
 	put, call, takeLatest, select
 } from 'redux-saga/effects';
 
-import Navigation from '../lib/NewNavigation';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions';
 import { serverFinishAdd, selectServerRequest } from '../actions/server';
@@ -78,9 +77,9 @@ const handleLogout = function* handleLogout() {
 				}
 			}
 			// if there's no servers, go outside
-			Navigation.navigate('OutsideStack');
+			yield put(appStart('outside'));
 		} catch (e) {
-			Navigation.navigate('OutsideStack');
+			yield put(appStart('outside'));
 			log('handleLogout', e);
 		}
 	}
