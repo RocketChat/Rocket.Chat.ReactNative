@@ -25,9 +25,8 @@ import styles from './styles';
 import log from '../../utils/log';
 import { isIOS } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
-import Icons from '../../lib/Icons';
 import ConnectionBadge from '../../containers/ConnectionBadge';
-import HeaderButton, { CustomHeaderButtons, Item, MoreButton } from '../../containers/HeaderButton';
+import { CustomHeaderButtons, Item, MoreButton } from '../../containers/HeaderButton';
 import RoomHeaderView from './Header';
 
 @connect(state => ({
@@ -61,8 +60,8 @@ export default class RoomView extends LoggedView {
 				? null
 				: (
 					<CustomHeaderButtons>
-						<Item iconName={starIcon} onPress={toggleFav} />
-						<MoreButton onPress={() => navigation.navigate('RoomActionsView', { rid })} />
+						<Item title='star' iconName={starIcon} onPress={toggleFav} />
+						<Item title='more' iconName='menu' onPress={() => navigation.navigate('RoomActionsView', { rid })} />
 					</CustomHeaderButtons>
 				)
 		};

@@ -88,7 +88,7 @@ export default class RoomsListView extends LoggedView {
 			headerTitle: <RoomsListHeaderView />,
 			headerRight: (
 				<CustomHeaderButtons>
-					<Item iconName='edit-rounded' onPress={() => navigation.navigate('NewMessageView', { onPressItem })} />
+					<Item title='new' iconName='edit-rounded' onPress={() => navigation.navigate('NewMessageView', { onPressItem })} />
 				</CustomHeaderButtons>
 			)
 		};

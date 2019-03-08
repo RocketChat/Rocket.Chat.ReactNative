@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Text, ScrollView } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 
@@ -13,19 +12,15 @@ import { showErrorAlert } from '../utils/info';
 import isValidEmail from '../utils/isValidEmail';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
-import { DARK_HEADER } from '../constants/headerOptions';
 import RocketChat from '../lib/rocketchat';
 
 /** @extends React.Component */
 export default class ForgotPasswordView extends LoggedView {
-	static options() {
+	static navigationOptions = ({ navigation }) => {
+		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
-			...DARK_HEADER
+			title
 		};
-	}
-
-	static propTypes = {
-		componentId: PropTypes.string
 	}
 
 	constructor(props) {

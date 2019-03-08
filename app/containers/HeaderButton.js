@@ -21,19 +21,19 @@ export const CustomHeaderButtons = React.memo(props => (
 
 export const DrawerButton = React.memo(({ navigation }) => (
 	<CustomHeaderButtons left>
-		<Item iconName='customize' onPress={navigation.toggleDrawer} />
+		<Item title='drawer' iconName='customize' onPress={navigation.toggleDrawer} />
 	</CustomHeaderButtons>
 ));
 
 export const CloseModalButton = React.memo(({ navigation }) => (
 	<CustomHeaderButtons left>
-		<Item iconName='cross' onPress={() => navigation.pop()} />
+		<Item title='close' iconName='cross' onPress={() => navigation.pop()} />
 	</CustomHeaderButtons>
 ));
 
 export const MoreButton = React.memo(({ onPress }) => (
 	<CustomHeaderButtons>
-		<Item iconName='menu' onPress={onPress} />
+		<Item title='more' iconName='menu' onPress={onPress} />
 	</CustomHeaderButtons>
 ));
 
