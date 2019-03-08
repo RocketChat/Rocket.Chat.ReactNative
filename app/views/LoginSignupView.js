@@ -233,25 +233,8 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	openOAuth = (oAuthUrl) => {
-		Navigation.showModal({
-			stack: {
-				children: [{
-					component: {
-						name: 'OAuthView',
-						passProps: {
-							oAuthUrl
-						},
-						options: {
-							topBar: {
-								title: {
-									text: 'OAuth'
-								}
-							}
-						}
-					}
-				}]
-			}
-		});
+		const { navigation } = this.props;
+		navigation.navigate('OAuthView', { oAuthUrl });
 	}
 
 	login = () => {

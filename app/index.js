@@ -76,10 +76,16 @@ const LegalStack = createStackNavigator({
 	defaultNavigationOptions: defaultHeader
 });
 
+const OAuthStack = createStackNavigator({
+	OAuthView
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
 const OutsideStackModal = createStackNavigator({
 	OutsideStack,
 	LegalStack,
-	OAuthView
+	OAuthStack
 },
 {
 	mode: 'modal',

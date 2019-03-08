@@ -9,6 +9,7 @@ import I18n from '../i18n';
 import { DARK_HEADER } from '../constants/headerOptions';
 import { isIOS, isAndroid } from '../utils/deviceInfo';
 import Icons from '../lib/Icons';
+import { CloseModalButton } from '../containers/HeaderButton';
 
 const userAgentAndroid = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1';
 const userAgent = isIOS ? 'UserAgent' : userAgentAndroid;
@@ -17,23 +18,13 @@ const userAgent = isIOS ? 'UserAgent' : userAgentAndroid;
 	server: state.server.server
 }))
 export default class OAuthView extends React.PureComponent {
-	static options() {
-		return {
-			...DARK_HEADER,
-			topBar: {
-				...DARK_HEADER.topBar,
-				leftButtons: [{
-					id: 'cancel',
-					icon: isAndroid ? Icons.getSource('close') : undefined,
-					text: isIOS ? I18n.t('Cancel') : undefined
-				}]
-			}
-		};
-	}
+	static navigationOptions = ({ navigation }) => ({
+		headerLeft: <CloseModalButton navigation={navigation} />,
+		title: 'OAuth'
+	})
 
 	static propTypes = {
-		componentId: PropTypes.string,
-		oAuthUrl: PropTypes.string,
+		navigation: PropTypes.object,
 		server: PropTypes.string
 	}
 
@@ -43,18 +34,11 @@ export default class OAuthView extends React.PureComponent {
 			logging: false
 		};
 		this.redirectRegex = new RegExp(`(?=.*(${ props.server }))(?=.*(credentialToken))(?=.*(credentialSecret))`, 'g');
-		Navigation.events().bindComponent(this);
-	}
-
-	navigationButtonPressed = ({ buttonId }) => {
-		if (buttonId === 'cancel') {
-			this.dismiss();
-		}
 	}
 
 	dismiss = () => {
-		const { componentId } = this.props;
-		Navigation.dismissModal(componentId);
+		const { navigation } = this.props;
+		navigation.pop();
 	}
 
 	login = async(params) => {
@@ -75,7 +59,8 @@ export default class OAuthView extends React.PureComponent {
 	}
 
 	render() {
-		const { oAuthUrl } = this.props;
+		const { navigation } = this.props;
+		const oAuthUrl = navigation.getParam('oAuthUrl');
 		return (
 			<WebView
 				source={{ uri: oAuthUrl }}
