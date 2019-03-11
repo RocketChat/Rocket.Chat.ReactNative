@@ -98,7 +98,7 @@ export default class LoginSignupView extends LoggedView {
 		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
 			title,
-			headerRight: <LegalButton navigation={navigation} />
+			headerRight: <LegalButton testID='welcome-view-more' navigation={navigation} />
 		};
 	}
 
