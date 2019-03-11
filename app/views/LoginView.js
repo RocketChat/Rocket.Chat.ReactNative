@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Answers } from 'react-native-fabric';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
 import KeyboardView from '../presentation/KeyboardView';

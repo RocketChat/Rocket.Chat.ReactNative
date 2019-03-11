@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, ScrollView } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 
 import LoggedView from '../View';
 import RocketChat from '../../lib/rocketchat';

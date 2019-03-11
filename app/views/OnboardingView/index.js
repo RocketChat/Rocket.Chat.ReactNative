@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 
 import { selectServerRequest, serverInitAdd, serverFinishAdd } from '../../actions/server';
 import { appStart as appStartAction } from '../../actions';

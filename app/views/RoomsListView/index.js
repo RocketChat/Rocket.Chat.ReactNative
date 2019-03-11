@@ -5,8 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
-import SafeAreaView from 'react-native-safe-area-view';
-import { NavigationEvents } from 'react-navigation';
+import { SafeAreaView, NavigationEvents } from 'react-navigation';
 
 import SearchBox from '../../containers/SearchBox';
 import ConnectionBadge from '../../containers/ConnectionBadge';

@@ -4,7 +4,7 @@ import {
 	Text, ScrollView, Keyboard, Image, StyleSheet, TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 
 import { serverRequest } from '../actions/server';
 import sharedStyles from './Styles';

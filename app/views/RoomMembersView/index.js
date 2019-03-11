@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FlatList, View } from 'react-native';
 import ActionSheet from 'react-native-action-sheet';
 import { connect } from 'react-redux';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
 import LoggedView from '../View';

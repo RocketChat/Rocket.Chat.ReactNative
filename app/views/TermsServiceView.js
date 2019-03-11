@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { WebView } from 'react-native';
 import { connect } from 'react-redux';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 
 import styles from './Styles';
 import LoggedView from './View';
