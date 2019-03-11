@@ -33,10 +33,13 @@ import io.fabric.sdk.android.Fabric;
 import io.realm.react.RealmReactPackage;
 import com.swmansion.rnscreens.RNScreensPackage;
 
+import android.content.Context;
+import android.os.Bundle;
+
 import java.util.Arrays;
 import java.util.List;
 
-public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends Application implements ReactApplication, INotificationsApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
@@ -85,5 +88,16 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
 		Fabric.with(this, new Crashlytics());
     SoLoader.init(this, /* native exopackage */ false);
+  }
+
+  @Override
+  public IPushNotification getPushNotification(Context context, Bundle bundle, AppLifecycleFacade defaultFacade, AppLaunchHelper defaultAppLaunchHelper) {
+      return new CustomPushNotification(
+              context,
+              bundle,
+              defaultFacade,
+              defaultAppLaunchHelper,
+              new JsIOHelper()
+      );
   }
 }

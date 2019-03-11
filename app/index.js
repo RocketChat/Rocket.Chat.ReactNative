@@ -41,10 +41,11 @@ import OAuthView from './views/OAuthView';
 import SetUsernameView from './views/SetUsernameView';
 import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from './constants/colors';
 import parseQuery from './lib/methods/helpers/parseQuery';
+import { initializePushNotifications } from './push';
 
 useScreens();
-
 store.dispatch(appInit());
+initializePushNotifications();
 
 const handleOpenURL = ({ url }) => {
 	if (url) {
