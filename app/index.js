@@ -4,8 +4,10 @@ import {
 } from 'react-navigation';
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
+import { Linking } from 'react-native';
 
 import { appInit } from './actions';
+import { deepLinkingOpen } from './actions/deepLinking';
 import OnboardingView from './views/OnboardingView';
 import NewServerView from './views/NewServerView';
 import LoginSignupView from './views/LoginSignupView';
@@ -38,10 +40,29 @@ import RegisterView from './views/RegisterView';
 import OAuthView from './views/OAuthView';
 import SetUsernameView from './views/SetUsernameView';
 import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from './constants/colors';
+import parseQuery from './lib/methods/helpers/parseQuery';
 
 useScreens();
 
 store.dispatch(appInit());
+
+const handleOpenURL = ({ url }) => {
+	if (url) {
+		url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
+		const regex = /^(room|auth)\?/;
+		if (url.match(regex)) {
+			url = url.replace(regex, '');
+			const params = parseQuery(url);
+			store.dispatch(deepLinkingOpen(params));
+		}
+	}
+};
+
+Linking
+	.getInitialURL()
+	.then(url => handleOpenURL({ url }))
+	.catch(e => console.warn(e));
+Linking.addEventListener('url', handleOpenURL);
 
 const defaultHeader = {
 	headerStyle: {

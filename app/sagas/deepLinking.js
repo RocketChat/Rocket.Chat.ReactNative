@@ -6,7 +6,6 @@ import {
 
 import Navigation from '../lib/NewNavigation';
 import * as types from '../actions/actionsTypes';
-import { appStart } from '../actions';
 import { selectServerRequest } from '../actions/server';
 import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
@@ -16,10 +15,7 @@ const roomTypes = {
 	channel: 'c', direct: 'd', group: 'p'
 };
 
-const navigate = function* navigate({ params, sameServer = true }) {
-	if (!sameServer) {
-		yield put(appStart('inside'));
-	}
+const navigate = function* navigate({ params }) {
 	if (params.rid) {
 		const canOpenRoom = yield RocketChat.canOpenRoom(params);
 		if (canOpenRoom) {
@@ -75,9 +71,13 @@ const handleOpen = function* handleOpen({ params }) {
 		const servers = yield database.databases.serversDB.objects('servers').filtered('id = $0', host); // TODO: need better test
 		if (servers.length && user) {
 			yield put(selectServerRequest(host));
-			yield navigate({ params, sameServer: false });
+			yield race({
+				typing: take(types.SERVER.SELECT_SUCCESS),
+				timeout: delay(3000)
+			});
+			yield navigate({ params });
 		} else {
-			yield put(appStart('outside'));
+			Navigation.navigate('OnboardingView', { previousServer: server });
 			yield delay(1000);
 			EventEmitter.emit('NewServer', { server: host });
 		}

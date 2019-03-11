@@ -24,7 +24,7 @@ import { CustomIcon } from '../../lib/Icons';
 	initAdd: () => dispatch(serverInitAdd()),
 	finishAdd: () => dispatch(serverFinishAdd()),
 	selectServer: server => dispatch(selectServerRequest(server)),
-	appStart: () => dispatch(appStartAction())
+	appStart: root => dispatch(appStartAction(root))
 }))
 /** @extends React.Component */
 export default class OnboardingView extends LoggedView {
