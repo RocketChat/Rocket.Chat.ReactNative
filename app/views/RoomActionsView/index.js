@@ -30,7 +30,8 @@ const renderSeparator = () => <View style={styles.separator} />;
 		id: state.login.user && state.login.user.id,
 		token: state.login.user && state.login.user.token
 	},
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	room: state.room
 }), dispatch => ({
 	leaveRoom: (rid, t) => dispatch(leaveRoomAction(rid, t))
 }))
@@ -47,6 +48,7 @@ export default class RoomActionsView extends LoggedView {
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
+		room: PropTypes.object,
 		leaveRoom: PropTypes.func
 	}
 
@@ -55,7 +57,7 @@ export default class RoomActionsView extends LoggedView {
 		this.rid = props.navigation.getParam('rid');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
-			room: this.rooms[0] || {},
+			room: this.rooms[0] || props.room,
 			membersCount: 0,
 			member: {},
 			joined: false,

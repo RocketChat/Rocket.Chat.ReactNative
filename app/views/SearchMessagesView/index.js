@@ -32,7 +32,7 @@ export default class SearchMessagesView extends LoggedView {
 	}
 
 	static propTypes = {
-		rid: PropTypes.string,
+		navigation: PropTypes.object,
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
 		customEmojis: PropTypes.object
@@ -71,7 +71,8 @@ export default class SearchMessagesView extends LoggedView {
 
 	// eslint-disable-next-line react/sort-comp
 	search = debounce(async(searchText) => {
-		const { rid } = this.props;
+		const { navigation } = this.props;
+		const rid = navigation.getParam('rid');
 		this.setState({ searchText, loading: true, messages: [] });
 
 		try {

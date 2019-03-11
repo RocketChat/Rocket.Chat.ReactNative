@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
 /** @extends React.Component */
 export default class NewMessageView extends LoggedView {
 	static navigationOptions = ({ navigation }) => ({
-		headerLeft: <CloseModalButton navigation={navigation} />,
+		headerLeft: <CloseModalButton navigation={navigation} testID='new-message-view-close' />,
 		title: I18n.t('New_Message')
 	})
 

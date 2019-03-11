@@ -74,8 +74,8 @@ const handleTogglePinRequest = function* handleTogglePinRequest({ message }) {
 	}
 };
 
-const goRoom = function* goRoom({ rid, name }) {
-	yield Navigation.popToTop();
+const goRoom = function goRoom({ rid, name }) {
+	Navigation.navigate('RoomsListView');
 	Navigation.navigate('RoomView', { rid, name, t: 'd' });
 };
 

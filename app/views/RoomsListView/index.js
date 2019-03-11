@@ -76,7 +76,7 @@ export default class RoomsListView extends LoggedView {
 							<Item title='cancel' iconName='cross' onPress={cancelSearchingAndroid} />
 						</CustomHeaderButtons>
 					)
-					: <DrawerButton navigation={navigation} />
+					: <DrawerButton navigation={navigation} testID='rooms-list-view-sidebar' />
 			),
 			headerTitle: <RoomsListHeaderView />,
 			headerRight: (
@@ -85,7 +85,7 @@ export default class RoomsListView extends LoggedView {
 					: (
 						<CustomHeaderButtons>
 							{isAndroid ? <Item title='search' iconName='magnifier' onPress={initSearchingAndroid} /> : null}
-							<Item title='new' iconName='edit-rounded' onPress={() => navigation.navigate('NewMessageView', { onPressItem })} />
+							<Item title='new' iconName='edit-rounded' onPress={() => navigation.navigate('NewMessageView', { onPressItem })} testID='rooms-list-view-create-channel' />
 						</CustomHeaderButtons>
 					)
 			)

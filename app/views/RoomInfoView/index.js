@@ -52,7 +52,7 @@ export default class RoomInfoView extends LoggedView {
 			headerRight: showEdit
 				? (
 					<CustomHeaderButtons>
-						<Item iconName='edit' onPress={() => navigation.navigate('RoomInfoEditView', { rid })} />
+						<Item iconName='edit' onPress={() => navigation.navigate('RoomInfoEditView', { rid })} testID='room-info-view-edit-button' />
 					</CustomHeaderButtons>
 				)
 				: null

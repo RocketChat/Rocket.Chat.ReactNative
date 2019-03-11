@@ -59,7 +59,7 @@ export default class SelectedUsersView extends LoggedView {
 			title,
 			headerRight: (
 				<CustomHeaderButtons>
-					<Item title={I18n.t('Next')} onPress={nextAction} />
+					<Item title={I18n.t('Next')} onPress={nextAction} testID='selected-users-view-submit' />
 				</CustomHeaderButtons>
 			)
 		};
