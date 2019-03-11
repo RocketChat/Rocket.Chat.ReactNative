@@ -25,6 +25,7 @@ import Touch from '../../utils/touch';
 import { setUser as setUserAction } from '../../actions/login';
 import { CustomIcon } from '../../lib/Icons';
 import { DrawerButton } from '../../containers/HeaderButton';
+import StatusBar from '../../containers/StatusBar';
 
 @connect(state => ({
 	user: {
@@ -384,6 +385,7 @@ export default class ProfileView extends LoggedView {
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>
+				<StatusBar />
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}
 					testID='profile-view-list'

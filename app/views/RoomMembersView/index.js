@@ -19,6 +19,7 @@ import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
+import StatusBar from '../../containers/StatusBar';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -252,6 +253,7 @@ export default class RoomMembersView extends LoggedView {
 		} = this.state;
 		return (
 			<SafeAreaView style={styles.list} testID='room-members-view' forceInset={{ bottom: 'never' }}>
+				<StatusBar />
 				<FlatList
 					data={filtering ? membersFiltered : members}
 					renderItem={this.renderItem}

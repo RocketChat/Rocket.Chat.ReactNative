@@ -31,6 +31,7 @@ import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
 import RoomsListHeaderView from './Header';
 import { DrawerButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
+import StatusBar from '../../containers/StatusBar';
 
 const ROW_HEIGHT = 70;
 const SCROLL_OFFSET = 56;
@@ -618,6 +619,7 @@ export default class RoomsListView extends LoggedView {
 
 		return (
 			<SafeAreaView style={styles.container} testID='rooms-list-view' forceInset={{ bottom: 'never' }}>
+				<StatusBar />
 				{this.renderScroll()}
 				{showSortDropdown
 					? (

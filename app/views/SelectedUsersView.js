@@ -22,6 +22,7 @@ import { isIOS } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
 import { Item, CustomHeaderButtons } from '../containers/HeaderButton';
+import StatusBar from '../containers/StatusBar';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -272,6 +273,7 @@ export default class SelectedUsersView extends LoggedView {
 		const { loading } = this.props;
 		return (
 			<SafeAreaView style={styles.safeAreaView} testID='select-users-view' forceInset={{ bottom: 'never' }}>
+				<StatusBar />
 				{this.renderList()}
 				<Loading visible={loading} />
 			</SafeAreaView>

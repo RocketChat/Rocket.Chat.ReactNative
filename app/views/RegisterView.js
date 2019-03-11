@@ -17,6 +17,7 @@ import RocketChat from '../lib/rocketchat';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import isValidEmail from '../utils/isValidEmail';
 import { LegalButton } from '../containers/HeaderButton';
+import StatusBar from '../containers/StatusBar';
 
 const shouldUpdateState = ['name', 'email', 'password', 'username', 'saving'];
 
@@ -113,6 +114,7 @@ export default class RegisterView extends LoggedView {
 		const { saving } = this.state;
 		return (
 			<KeyboardView contentContainerStyle={sharedStyles.container}>
+				<StatusBar />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 					<SafeAreaView style={sharedStyles.container} testID='register-view' forceInset={{ bottom: 'never' }}>
 						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Sign_Up')}</Text>

@@ -17,6 +17,7 @@ import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
+import StatusBar from '../../containers/StatusBar';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
@@ -284,6 +285,7 @@ export default class RoomInfoView extends LoggedView {
 		}
 		return (
 			<ScrollView style={styles.scroll}>
+				<StatusBar />
 				<SafeAreaView style={styles.container} testID='room-info-view' forceInset={{ bottom: 'never' }}>
 					<View style={styles.avatarContainer}>
 						{this.renderAvatar(room, roomUser)}

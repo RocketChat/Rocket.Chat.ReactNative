@@ -22,6 +22,7 @@ import SwitchContainer from './SwitchContainer';
 import random from '../../utils/random';
 import log from '../../utils/log';
 import I18n from '../../i18n';
+import StatusBar from '../../containers/StatusBar';
 
 const PERMISSION_SET_READONLY = 'set-readonly';
 const PERMISSION_SET_REACT_WHEN_READONLY = 'set-react-when-readonly';
@@ -292,6 +293,7 @@ export default class RoomInfoEditView extends LoggedView {
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>
+				<StatusBar />
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}
 					testID='room-info-edit-view-list'

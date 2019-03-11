@@ -13,6 +13,7 @@ import isValidEmail from '../utils/isValidEmail';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
+import StatusBar from '../containers/StatusBar';
 
 /** @extends React.Component */
 export default class ForgotPasswordView extends LoggedView {
@@ -99,6 +100,7 @@ export default class ForgotPasswordView extends LoggedView {
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>
+				<StatusBar />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 					<SafeAreaView style={sharedStyles.container} testID='forgot-password-view' forceInset={{ bottom: 'never' }}>
 						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Forgot_password')}</Text>

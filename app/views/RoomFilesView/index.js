@@ -11,6 +11,7 @@ import Message from '../../containers/message/Message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
+import StatusBar from '../../containers/StatusBar';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -136,6 +137,7 @@ export default class RoomFilesView extends LoggedView {
 
 		return (
 			<SafeAreaView style={styles.list} testID='room-files-view' forceInset={{ bottom: 'never' }}>
+				<StatusBar />
 				<FlatList
 					data={messages}
 					renderItem={this.renderItem}

@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-navigation';
 import styles from './Styles';
 import LoggedView from './View';
 import I18n from '../i18n';
+import StatusBar from '../containers/StatusBar';
 
 @connect(state => ({
 	privacyPolicy: state.settings.Layout_Privacy_Policy
@@ -30,6 +31,7 @@ export default class PrivacyPolicyView extends LoggedView {
 
 		return (
 			<SafeAreaView style={styles.container} testID='privacy-view'>
+				<StatusBar />
 				<WebView originWhitelist={['*']} source={{ html: privacyPolicy, baseUrl: '' }} />
 			</SafeAreaView>
 		);

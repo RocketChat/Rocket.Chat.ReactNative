@@ -12,6 +12,7 @@ import LoggedView from './View';
 import I18n from '../i18n';
 import DisclosureIndicator from '../containers/DisclosureIndicator';
 import { CloseModalButton } from '../containers/HeaderButton';
+import StatusBar from '../containers/StatusBar';
 
 const styles = StyleSheet.create({
 	container: {
@@ -80,6 +81,7 @@ export default class LegalView extends LoggedView {
 	render() {
 		return (
 			<SafeAreaView style={styles.container} testID='legal-view' forceInset={{ bottom: 'never' }}>
+				<StatusBar />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.scroll}>
 					{this.renderItem({ text: 'Terms_of_Service', route: 'TermsServiceView', testID: 'legal-terms-button' })}
 					<Separator />

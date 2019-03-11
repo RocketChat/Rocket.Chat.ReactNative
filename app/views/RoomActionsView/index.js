@@ -22,6 +22,7 @@ import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { CustomIcon } from '../../lib/Icons';
 import DisclosureIndicator from '../../containers/DisclosureIndicator';
+import StatusBar from '../../containers/StatusBar';
 
 const renderSeparator = () => <View style={styles.separator} />;
 
@@ -440,6 +441,7 @@ export default class RoomActionsView extends LoggedView {
 	render() {
 		return (
 			<SafeAreaView style={styles.container} testID='room-actions-view' forceInset={{ bottom: 'never' }}>
+				<StatusBar />
 				<SectionList
 					style={styles.container}
 					stickySectionHeadersEnabled={false}

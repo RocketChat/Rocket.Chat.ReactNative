@@ -27,6 +27,7 @@ import I18n from '../../i18n';
 import ConnectionBadge from '../../containers/ConnectionBadge';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import RoomHeaderView from './Header';
+import StatusBar from '../../containers/StatusBar';
 
 @connect(state => ({
 	user: {
@@ -352,6 +353,7 @@ export default class RoomView extends LoggedView {
 
 		return (
 			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ bottom: 'never' }}>
+				<StatusBar />
 				{this.renderList()}
 				{room._id && showActions
 					? <MessageActions room={room} user={user} />

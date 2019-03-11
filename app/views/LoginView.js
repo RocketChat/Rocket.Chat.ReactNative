@@ -17,6 +17,7 @@ import LoggedView from './View';
 import I18n from '../i18n';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import { LegalButton } from '../containers/HeaderButton';
+import StatusBar from '../containers/StatusBar';
 
 const styles = StyleSheet.create({
 	buttonsContainer: {
@@ -286,6 +287,7 @@ export default class LoginView extends LoggedView {
 				keyboardVerticalOffset={128}
 				key='login-view'
 			>
+				<StatusBar />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 					{!showTOTP ? this.renderUserForm() : null}
 					{showTOTP ? this.renderTOTP() : null}

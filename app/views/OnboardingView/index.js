@@ -16,6 +16,7 @@ import LoggedView from '../View';
 import { isIOS, isNotch } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
 import { CustomIcon } from '../../lib/Icons';
+import StatusBar from '../../containers/StatusBar';
 
 @connect(state => ({
 	currentServer: state.server.server,
@@ -133,6 +134,7 @@ export default class OnboardingView extends LoggedView {
 	render() {
 		return (
 			<SafeAreaView style={styles.container} testID='onboarding-view' forceInset={{ bottom: 'never' }}>
+				<StatusBar light />
 				<Image style={styles.onboarding} source={{ uri: 'onboarding' }} fadeDuration={0} />
 				<Text style={styles.title}>{I18n.t('Welcome_to_RocketChat')}</Text>
 				<Text style={styles.subtitle}>{I18n.t('Open_Source_Communication')}</Text>

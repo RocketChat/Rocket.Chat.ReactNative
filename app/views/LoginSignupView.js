@@ -16,6 +16,7 @@ import random from '../utils/random';
 import Button from '../containers/Button';
 import I18n from '../i18n';
 import { LegalButton } from '../containers/HeaderButton';
+import StatusBar from '../containers/StatusBar';
 
 const styles = StyleSheet.create({
 	container: {
@@ -361,6 +362,7 @@ export default class LoginSignupView extends LoggedView {
 	render() {
 		return (
 			<ScrollView style={[sharedStyles.containerScrollView, sharedStyles.container, styles.container]} {...scrollPersistTaps}>
+				<StatusBar />
 				<SafeAreaView testID='welcome-view' forceInset={{ bottom: 'never' }} style={styles.safeArea}>
 					{this.renderServices()}
 					{this.renderServicesSeparator()}

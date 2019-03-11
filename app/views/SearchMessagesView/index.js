@@ -15,6 +15,7 @@ import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message/Message';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
+import StatusBar from '../../containers/StatusBar';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -137,6 +138,7 @@ export default class SearchMessagesView extends LoggedView {
 	render() {
 		return (
 			<SafeAreaView style={styles.container} testID='search-messages-view' forceInset={{ bottom: 'never' }}>
+				<StatusBar />
 				<View style={styles.searchContainer}>
 					<RCTextInput
 						inputRef={(e) => { this.name = e; }}

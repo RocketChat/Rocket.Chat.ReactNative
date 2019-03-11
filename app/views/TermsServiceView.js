@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-navigation';
 import styles from './Styles';
 import LoggedView from './View';
 import I18n from '../i18n';
+import StatusBar from '../containers/StatusBar';
 
 @connect(state => ({
 	termsService: state.settings.Layout_Terms_of_Service
@@ -29,6 +30,7 @@ export default class TermsServiceView extends LoggedView {
 		const { termsService } = this.props;
 		return (
 			<SafeAreaView style={styles.container} testID='terms-view'>
+				<StatusBar />
 				<WebView originWhitelist={['*']} source={{ html: termsService, baseUrl: '' }} />
 			</SafeAreaView>
 		);

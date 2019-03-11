@@ -18,6 +18,7 @@ import { showErrorAlert, showToast } from '../../utils/info';
 import log from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
 import { DrawerButton } from '../../containers/HeaderButton';
+import StatusBar from '../../containers/StatusBar';
 
 @connect(state => ({
 	userLanguage: state.login.user && state.login.user.language
@@ -138,6 +139,7 @@ export default class SettingsView extends LoggedView {
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>
+				<StatusBar />
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}
 					testID='settings-view-list'

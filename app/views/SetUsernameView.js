@@ -15,6 +15,7 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import LoggedView from './View';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
+import StatusBar from '../containers/StatusBar';
 
 const styles = StyleSheet.create({
 	loginTitle: {
@@ -105,6 +106,7 @@ export default class SetUsernameView extends LoggedView {
 		const { username, saving } = this.state;
 		return (
 			<KeyboardView contentContainerStyle={sharedStyles.container}>
+				<StatusBar />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 					<SafeAreaView style={sharedStyles.container} testID='set-username-view' forceInset={{ bottom: 'never' }}>
 						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle]}>{I18n.t('Username')}</Text>

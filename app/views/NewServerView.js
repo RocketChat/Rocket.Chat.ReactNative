@@ -18,6 +18,7 @@ import KeyboardView from '../presentation/KeyboardView';
 import { isIOS, isNotch } from '../utils/deviceInfo';
 // import { LIGHT_HEADER } from '../constants/headerOptions';
 import { CustomIcon } from '../lib/Icons';
+import StatusBar from '../containers/StatusBar';
 
 const styles = StyleSheet.create({
 	image: {
@@ -176,6 +177,7 @@ export default class NewServerView extends LoggedView {
 				keyboardVerticalOffset={128}
 				key='login-view'
 			>
+				<StatusBar light />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 					<SafeAreaView style={sharedStyles.container} testID='new-server-view' forceInset={{ bottom: 'never' }}>
 						<Image style={styles.image} source={{ uri: 'new_server' }} />

@@ -19,6 +19,7 @@ import { isIOS } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
 import { CustomIcon } from '../lib/Icons';
 import { CloseModalButton } from '../containers/HeaderButton';
+import StatusBar from '../containers/StatusBar';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -182,6 +183,7 @@ export default class NewMessageView extends LoggedView {
 
 	render = () => (
 		<SafeAreaView style={styles.safeAreaView} testID='new-message-view' forceInset={{ bottom: 'never' }}>
+			<StatusBar />
 			{this.renderList()}
 		</SafeAreaView>
 	);

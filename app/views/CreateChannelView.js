@@ -19,6 +19,7 @@ import UserItem from '../presentation/UserItem';
 import { showErrorAlert } from '../utils/info';
 import { isAndroid } from '../utils/deviceInfo';
 import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
+import StatusBar from '../containers/StatusBar';
 
 const styles = StyleSheet.create({
 	container: {
@@ -335,6 +336,7 @@ export default class CreateChannelView extends LoggedView {
 				contentContainerStyle={[sharedStyles.container, styles.container]}
 				keyboardVerticalOffset={128}
 			>
+				<StatusBar />
 				<SafeAreaView testID='create-channel-view' style={styles.container} forceInset={{ bottom: 'never' }}>
 					<ScrollView {...scrollPersistTaps}>
 						<View style={sharedStyles.separatorVertical}>

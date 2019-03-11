@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import RocketChat from '../lib/rocketchat';
 import { isIOS } from '../utils/deviceInfo';
 import { CloseModalButton } from '../containers/HeaderButton';
+import StatusBar from '../containers/StatusBar';
 
 const userAgentAndroid = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1';
 const userAgent = isIOS ? 'UserAgent' : userAgentAndroid;
@@ -58,18 +59,21 @@ export default class OAuthView extends React.PureComponent {
 		const { navigation } = this.props;
 		const oAuthUrl = navigation.getParam('oAuthUrl');
 		return (
-			<WebView
-				source={{ uri: oAuthUrl }}
-				userAgent={userAgent}
-				onNavigationStateChange={(webViewState) => {
-					const url = decodeURIComponent(webViewState.url);
-					if (this.redirectRegex.test(url)) {
-						const parts = url.split('#');
-						const credentials = JSON.parse(parts[1]);
-						this.login({ oauth: { ...credentials } });
-					}
-				}}
-			/>
+			<React.Fragment>
+				<StatusBar />
+				<WebView
+					source={{ uri: oAuthUrl }}
+					userAgent={userAgent}
+					onNavigationStateChange={(webViewState) => {
+						const url = decodeURIComponent(webViewState.url);
+						if (this.redirectRegex.test(url)) {
+							const parts = url.split('#');
+							const credentials = JSON.parse(parts[1]);
+							this.login({ oauth: { ...credentials } });
+						}
+					}}
+				/>
+			</React.Fragment>
 		);
 	}
 }

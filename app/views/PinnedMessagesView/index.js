@@ -12,6 +12,7 @@ import Message from '../../containers/message/Message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
+import StatusBar from '../../containers/StatusBar';
 
 const PIN_INDEX = 0;
 const CANCEL_INDEX = 1;
@@ -163,6 +164,7 @@ export default class PinnedMessagesView extends LoggedView {
 
 		return (
 			<SafeAreaView style={styles.list} testID='pinned-messages-view' forceInset={{ bottom: 'never' }}>
+				<StatusBar />
 				<FlatList
 					data={messages}
 					renderItem={this.renderItem}
