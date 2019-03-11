@@ -15,8 +15,6 @@
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 #import <React/RCTLinkingManager.h>
-//#import "RCCManager.h"
- #import <ReactNativeNavigation/ReactNativeNavigation.h>
 #import "RNNotifications.h"
 #import "RNSplashScreen.h"
 
