@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
+import { CustomIcon } from '../lib/Icons';
 
 const styles = StyleSheet.create({
 	style: {
@@ -13,6 +14,10 @@ const styles = StyleSheet.create({
 const RoomTypeIcon = React.memo(({ type, size, style }) => {
 	if (!type) {
 		return null;
+	}
+
+	if (type === 'thread') {
+		return <CustomIcon name='thread' size={13} style={[styles.style, { marginRight: 6 }]} />;
 	}
 
 	if (type === 'c') {

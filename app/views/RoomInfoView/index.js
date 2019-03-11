@@ -26,8 +26,8 @@ const getRoomTitle = room => (room.t === 'd'
 	? <Text testID='room-info-view-name' style={styles.roomTitle}>{room.fname}</Text>
 	: (
 		<View style={styles.roomTitleRow}>
-			<RoomTypeIcon type={room.t} key='room-info-type' />
-			<Text testID='room-info-view-name' style={styles.roomTitle} key='room-info-name'>{room.name}</Text>
+			<RoomTypeIcon type={room.prid ? 'thread' : room.t} key='room-info-type' />
+			<Text testID='room-info-view-name' style={styles.roomTitle} key='room-info-name'>{room.prid ? room.fname : room.name}</Text>
 		</View>
 	)
 );
@@ -95,7 +95,7 @@ export default class RoomInfoView extends LoggedView {
 		}
 		const { componentId } = this.props;
 		const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
-		if (permissions[PERMISSION_EDIT_ROOM]) {
+		if (permissions[PERMISSION_EDIT_ROOM] && !room.prid) {
 			Navigation.mergeOptions(componentId, {
 				topBar: {
 					rightButtons: [{
