@@ -312,6 +312,7 @@ export default {
 	There_was_an_error_while_action: 'There was an error while {{action}}!',
 	This_room_is_blocked: 'This room is blocked',
 	This_room_is_read_only: 'This room is read only',
+	Thread_created: 'Started a new thread: "{{name}}"',
 	Timezone: 'Timezone',
 	Toggle_Drawer: 'Toggle_Drawer',
 	topic: 'topic',

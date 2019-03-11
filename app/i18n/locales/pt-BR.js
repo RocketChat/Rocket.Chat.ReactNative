@@ -311,6 +311,7 @@ export default {
 	There_was_an_error_while_action: 'Aconteceu um erro {{action}}!',
 	This_room_is_blocked: 'Este quarto está bloqueado',
 	This_room_is_read_only: 'Este quarto é apenas de leitura',
+	Thread_created: 'Iniciou uma thread: "{{name}}"',
 	Timezone: 'Fuso horário',
 	topic: 'tópico',
 	Topic: 'Tópico',

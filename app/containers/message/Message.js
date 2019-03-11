@@ -40,7 +40,8 @@ const SYSTEM_MESSAGES = [
 	'room_changed_announcement',
 	'room_changed_topic',
 	'room_changed_privacy',
-	'message_snippeted'
+	'message_snippeted',
+	'thread-created'
 ];
 
 const getInfoMessage = ({
@@ -79,6 +80,8 @@ const getInfoMessage = ({
 		return I18n.t('Room_changed_privacy', { type: msg, userBy: username });
 	} else if (type === 'message_snippeted') {
 		return I18n.t('Created_snippet');
+	} else if (type === 'thread-created') {
+		return I18n.t('Thread_created', { name: msg });
 	}
 	return '';
 };
