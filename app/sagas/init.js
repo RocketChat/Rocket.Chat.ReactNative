@@ -8,7 +8,7 @@ import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
-import Navigation from '../lib/NewNavigation';
+import Navigation from '../lib/Navigation';
 
 const restore = function* restore() {
 	try {

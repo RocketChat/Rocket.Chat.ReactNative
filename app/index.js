@@ -17,7 +17,7 @@ import RoomView from './views/RoomView';
 import NewMessageView from './views/NewMessageView';
 import LoginView from './views/LoginView';
 import store from './lib/createStore';
-import Navigation from './lib/NewNavigation';
+import Navigation from './lib/Navigation';
 import Sidebar from './views/SidebarView';
 import ProfileView from './views/ProfileView';
 import SettingsView from './views/SettingsView';

@@ -5,7 +5,7 @@ import {
 import { delay } from 'redux-saga';
 import EJSON from 'ejson';
 
-import Navigation from '../lib/NewNavigation';
+import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
 import { addUserTyping, removeUserTyping } from '../actions/room';
 import { messagesRequest, editCancel, replyCancel } from '../actions/messages';
