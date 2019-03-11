@@ -547,12 +547,13 @@ export default class RoomsListView extends LoggedView {
 				userMentions={item.userMentions}
 				favorite={item.f}
 				lastMessage={item.lastMessage}
-				name={(useRealName && item.fname) || item.name}
+				name={((item.prid || useRealName) && item.fname) || item.name}
 				_updatedAt={item.roomUpdatedAt}
 				key={item._id}
 				id={id}
 				type={item.t}
 				baseUrl={baseUrl}
+				prid={item.prid}
 				onPress={() => this._onPressItem(item)}
 				testID={`rooms-list-view-item-${ item.name }`}
 				height={ROW_HEIGHT}

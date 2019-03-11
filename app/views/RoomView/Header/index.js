@@ -67,9 +67,9 @@ const styles = StyleSheet.create({
 				status = (user && user.status) || 'offline';
 			}
 		}
-		title = state.settings.UI_Use_Real_Name ? state.room.fname : state.room.name;
+		title = state.room.prid || state.settings.UI_Use_Real_Name ? state.room.fname : state.room.name;
 	} else {
-		title = state.room.name;
+		title = state.room.prid ? state.room.fname : state.room.name;
 	}
 
 	let otherUsersTyping = [];
@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
 	return {
 		usersTyping: otherUsersTyping,
 		type: roomType,
+		prid: state.room.prid,
 		title,
 		status
 	};
@@ -90,6 +91,7 @@ export default class RoomHeaderView extends Component {
 	static propTypes = {
 		title: PropTypes.string,
 		type: PropTypes.string,
+		prid: PropTypes.string,
 		window: PropTypes.object,
 		usersTyping: PropTypes.array,
 		status: PropTypes.string
@@ -148,12 +150,20 @@ export default class RoomHeaderView extends Component {
 	}
 
 	renderIcon = () => {
-		const { type, status } = this.props;
+		const { type, status, prid } = this.props;
 		if (type === 'd') {
 			return <Status size={10} style={styles.status} status={status} />;
 		}
 
-		const icon = type === 'c' ? 'hashtag' : 'lock';
+		let icon;
+
+		if (prid) {
+			icon = 'thread';
+		} else if (type === 'c') {
+			icon = 'hashtag';
+		} else {
+			icon = 'lock';
+		}
 		return (
 			<CustomIcon
 				name={icon}
