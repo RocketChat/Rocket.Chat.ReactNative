@@ -342,7 +342,7 @@ class DB {
 		return this.databases.activeDB = new Realm({
 			path: `${ path }.realm`,
 			schema,
-			schemaVersion: 1
+			schemaVersion: 2
 		});
 	}
 }
