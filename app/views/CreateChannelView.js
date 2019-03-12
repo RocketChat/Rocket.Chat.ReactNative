@@ -4,10 +4,9 @@ import PropTypes from 'prop-types';
 import {
 	View, Text, Switch, ScrollView, TextInput, StyleSheet, FlatList
 } from 'react-native';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
-import Navigation from '../lib/Navigation';
 import Loading from '../containers/Loading';
 import LoggedView from './View';
 import { createChannelRequest as createChannelRequestAction } from '../actions/createChannel';
@@ -19,6 +18,8 @@ import I18n from '../i18n';
 import UserItem from '../presentation/UserItem';
 import { showErrorAlert } from '../utils/info';
 import { isAndroid } from '../utils/deviceInfo';
+import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
+import StatusBar from '../containers/StatusBar';
 
 const styles = StyleSheet.create({
 	container: {
@@ -91,18 +92,25 @@ const styles = StyleSheet.create({
 }))
 /** @extends React.Component */
 export default class CreateChannelView extends LoggedView {
-	static options() {
+	static navigationOptions = ({ navigation }) => {
+		const submit = navigation.getParam('submit', () => {});
+		const showSubmit = navigation.getParam('showSubmit');
 		return {
-			topBar: {
-				title: {
-					text: I18n.t('Create_Channel')
-				}
-			}
+			title: I18n.t('Create_Channel'),
+			headerRight: (
+				showSubmit
+					? (
+						<CustomHeaderButtons>
+							<Item title={I18n.t('Create')} onPress={submit} testID='create-channel-submit' />
+						</CustomHeaderButtons>
+					)
+					: null
+			)
 		};
 	}
 
 	static propTypes = {
-		componentId: PropTypes.string,
+		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
 		create: PropTypes.func.isRequired,
 		removeUser: PropTypes.func.isRequired,
@@ -125,10 +133,11 @@ export default class CreateChannelView extends LoggedView {
 			readOnly: false,
 			broadcast: false
 		};
-		Navigation.events().bindComponent(this);
 	}
 
 	componentDidMount() {
+		const { navigation } = this.props;
+		navigation.setParams({ submit: this.submit });
 		this.timeout = setTimeout(() => {
 			this.channelNameRef.focus();
 		}, 600);
@@ -173,26 +182,18 @@ export default class CreateChannelView extends LoggedView {
 
 	componentDidUpdate(prevProps) {
 		const {
-			isFetching, failure, error, result, componentId
+			isFetching, failure, error, result, navigation
 		} = this.props;
 
 		if (!isFetching && isFetching !== prevProps.isFetching) {
-			setTimeout(async() => {
+			setTimeout(() => {
 				if (failure) {
 					const msg = error.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_channel') });
 					showErrorAlert(msg);
 				} else {
 					const { type } = this.state;
 					const { rid, name } = result;
-					await Navigation.dismissModal(componentId);
-					Navigation.push('RoomsListView', {
-						component: {
-							name: 'RoomView',
-							passProps: {
-								rid, name, t: type ? 'p' : 'c'
-							}
-						}
-					});
+					navigation.navigate('RoomView', { rid, name, t: type ? 'p' : 'c' });
 				}
 			}, 300);
 		}
@@ -205,28 +206,9 @@ export default class CreateChannelView extends LoggedView {
 	}
 
 	onChangeText = (channelName) => {
-		const { componentId } = this.props;
-		const rightButtons = [];
-		if (channelName.trim().length > 0) {
-			rightButtons.push({
-				id: 'create',
-				text: 'Create',
-				testID: 'create-channel-submit',
-				color: isAndroid ? '#FFF' : undefined
-			});
-		}
-		Navigation.mergeOptions(componentId, {
-			topBar: {
-				rightButtons
-			}
-		});
+		const { navigation } = this.props;
+		navigation.setParams({ showSubmit: channelName.trim().length > 0 });
 		this.setState({ channelName });
-	}
-
-	navigationButtonPressed = ({ buttonId }) => {
-		if (buttonId === 'create') {
-			this.submit();
-		}
 	}
 
 	submit = () => {
@@ -354,6 +336,7 @@ export default class CreateChannelView extends LoggedView {
 				contentContainerStyle={[sharedStyles.container, styles.container]}
 				keyboardVerticalOffset={128}
 			>
+				<StatusBar />
 				<SafeAreaView testID='create-channel-view' style={styles.container} forceInset={{ bottom: 'never' }}>
 					<ScrollView {...scrollPersistTaps}>
 						<View style={sharedStyles.separatorVertical}>

@@ -32,7 +32,7 @@ describe('Create room screen', () => {
 
 		describe('Usage', async() => {
 			it('should back to rooms list', async() => {
-				await element(by.text('Cancel')).tap();
+				await element(by.id('new-message-view-close')).tap();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('rooms-list-view'))).toBeVisible();
 				await element(by.id('rooms-list-view-create-channel')).tap();

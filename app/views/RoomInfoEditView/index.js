@@ -4,7 +4,7 @@ import {
 	Text, View, ScrollView, TouchableOpacity, Keyboard, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
 import { eraseRoom as eraseRoomAction } from '../../actions/room';
@@ -22,6 +22,7 @@ import SwitchContainer from './SwitchContainer';
 import random from '../../utils/random';
 import log from '../../utils/log';
 import I18n from '../../i18n';
+import StatusBar from '../../containers/StatusBar';
 
 const PERMISSION_SET_READONLY = 'set-readonly';
 const PERMISSION_SET_REACT_WHEN_READONLY = 'set-react-when-readonly';
@@ -43,24 +44,18 @@ const PERMISSIONS_ARRAY = [
 }))
 /** @extends React.Component */
 export default class RoomInfoEditView extends LoggedView {
-	static options() {
-		return {
-			topBar: {
-				title: {
-					text: I18n.t('Room_Info_Edit')
-				}
-			}
-		};
+	static navigationOptions = {
+		title: I18n.t('Room_Info_Edit')
 	}
 
 	static propTypes = {
-		rid: PropTypes.string,
+		navigation: PropTypes.object,
 		eraseRoom: PropTypes.func
 	};
 
 	constructor(props) {
 		super('RoomInfoEditView', props);
-		const { rid } = props;
+		const rid = props.navigation.getParam('rid');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.permissions = {};
 		this.state = {
@@ -298,6 +293,7 @@ export default class RoomInfoEditView extends LoggedView {
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>
+				<StatusBar />
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}
 					testID='room-info-edit-view-list'

@@ -86,11 +86,6 @@ describe('Room actions screen', () => {
 				await expect(element(by.id('room-actions-pinned'))).toBeVisible();
 			});
 	
-			it('should have snippeted', async() => {
-				await waitFor(element(by.id('room-actions-snippeted'))).toBeVisible().whileElement(by.id('room-actions-list')).scroll(scrollDown, 'down');
-				await expect(element(by.id('room-actions-snippeted'))).toBeVisible();
-			});
-	
 			it('should have notifications', async() => {
 				await waitFor(element(by.id('room-actions-notifications'))).toBeVisible().whileElement(by.id('room-actions-list')).scroll(scrollDown, 'down');
 				await expect(element(by.id('room-actions-notifications'))).toBeVisible();
@@ -159,11 +154,6 @@ describe('Room actions screen', () => {
 			it('should have pinned', async() => {
 				await waitFor(element(by.id('room-actions-pinned'))).toBeVisible().whileElement(by.id('room-actions-list')).scroll(scrollDown, 'down');
 				await expect(element(by.id('room-actions-pinned'))).toBeVisible();
-			});
-	
-			it('should have snippeted', async() => {
-				await waitFor(element(by.id('room-actions-snippeted'))).toBeVisible().whileElement(by.id('room-actions-list')).scroll(scrollDown, 'down');
-				await expect(element(by.id('room-actions-snippeted'))).toBeVisible();
 			});
 	
 			it('should have notifications', async() => {

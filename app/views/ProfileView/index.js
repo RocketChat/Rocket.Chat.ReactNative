@@ -6,7 +6,7 @@ import Dialog from 'react-native-dialog';
 import SHA256 from 'js-sha256';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
 import LoggedView from '../View';
@@ -24,6 +24,8 @@ import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
 import { setUser as setUserAction } from '../../actions/login';
 import { CustomIcon } from '../../lib/Icons';
+import { DrawerButton } from '../../containers/HeaderButton';
+import StatusBar from '../../containers/StatusBar';
 
 @connect(state => ({
 	user: {
@@ -41,15 +43,10 @@ import { CustomIcon } from '../../lib/Icons';
 }))
 /** @extends React.Component */
 export default class ProfileView extends LoggedView {
-	static options() {
-		return {
-			topBar: {
-				title: {
-					text: I18n.t('Profile')
-				}
-			}
-		};
-	}
+	static navigationOptions = ({ navigation }) => ({
+		headerLeft: <DrawerButton navigation={navigation} />,
+		title: I18n.t('Profile')
+	})
 
 	static propTypes = {
 		baseUrl: PropTypes.string,
@@ -388,6 +385,7 @@ export default class ProfileView extends LoggedView {
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>
+				<StatusBar />
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}
 					testID='profile-view-list'
