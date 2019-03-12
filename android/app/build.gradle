@@ -96,7 +96,12 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    // buildToolsVersion "28.0.3"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     defaultConfig {
         applicationId "chat.rocket.reactnative"
@@ -104,15 +109,23 @@ android {
         targetSdkVersion 28
         versionCode VERSIONCODE as Integer
         versionName "1.10.0"
-        ndk {
-            abiFilters "armeabi-v7a", "x86"
-        }
+        // ndk {
+        //     abiFilters "armeabi-v7a", "x86"
+        // }
         vectorDrawables.useSupportLibrary = true
     }
-
-    packagingOptions {
-        pickFirst '**/libjsc.so'
+    splits {
+        abi {
+            reset()
+            enable enableSeparateBuildPerCPUArchitecture
+            universalApk false  // If true, also generate a universal APK
+            include "armeabi-v7a", "x86", "arm64-v8a", "x86-64"
+        }
     }
+
+    // packagingOptions {
+    //     pickFirst '**/libjsc.so'
+    // }
 
     signingConfigs {
         release {
@@ -124,30 +137,21 @@ android {
             }
         }
     }
-    splits {
-        abi {
-            reset()
-            enable enableSeparateBuildPerCPUArchitecture
-            universalApk false  // If true, also generate a universal APK
-            include "armeabi-v7a", "x86"
-        }
-    }
+
     buildTypes {
         release {
-            // shrinkResources enableProguardInReleaseBuilds
-            // zipAlignEnabled enableProguardInReleaseBuilds
-            // useProguard enableProguardInReleaseBuilds
             minifyEnabled enableProguardInReleaseBuilds
-            setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'])
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
         }
     }
+
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             // For each separate APK per architecture, set a unique version code as described here:
             // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
-            def versionCodes = ["armeabi-v7a":1, "x86":2]
+            def versionCodes = ["armeabi-v7a":1, "x86":2, "arm64-v8a": 3, "x86-64": 4]
             def abi = output.getFilter(OutputFile.ABI)
             if (abi != null) {  // null for the universal-debug, universal-release variants
                 output.versionCodeOverride =
@@ -157,32 +161,32 @@ android {
     }
 }
 
-buildscript {
-  repositories {
-    maven { url 'https://maven.fabric.io/public' }
-  }
+// buildscript {
+//   repositories {
+//     maven { url 'https://maven.fabric.io/public' }
+//   }
 
-  dependencies {
-    // These docs use an open ended version so that our plugin
-    // can be updated quickly in response to Android tooling updates
+//   dependencies {
+//     // These docs use an open ended version so that our plugin
+//     // can be updated quickly in response to Android tooling updates
 
-    // We recommend changing it to the latest version from our changelog:
-    // https://docs.fabric.io/android/changelog.html#fabric-gradle-plugin
-    classpath 'io.fabric.tools:gradle:1.+'
-  }
-}
+//     // We recommend changing it to the latest version from our changelog:
+//     // https://docs.fabric.io/android/changelog.html#fabric-gradle-plugin
+//     classpath 'io.fabric.tools:gradle:1.+'
+//   }
+// }
 
-apply plugin: 'io.fabric'
+// apply plugin: 'io.fabric'
 
-repositories {
-  maven { url 'https://maven.fabric.io/public' }
-}
+// repositories {
+//   maven { url 'https://maven.fabric.io/public' }
+// }
 
-configurations.all {
-    resolutionStrategy {
-        force 'org.webkit:android-jsc:r225067'
-    }
-}
+// configurations.all {
+//     resolutionStrategy {
+//         force 'org.webkit:android-jsc:r225067'
+//     }
+// }
 
 dependencies {
     implementation project(':react-native-orientation-locker')
@@ -193,7 +197,7 @@ dependencies {
     implementation project(':react-native-gesture-handler')
     implementation project(':react-native-image-crop-picker')
     implementation project(':react-native-i18n')
-    implementation project(':react-native-fabric')
+    // implementation project(':react-native-fabric')
     implementation project(':react-native-audio')
     implementation project(":reactnativekeyboardinput")
     implementation project(':react-native-video')
