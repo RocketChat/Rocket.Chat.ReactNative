@@ -16,6 +16,7 @@
 #import <React/RCTLinkingManager.h>
 #import "RNNotifications.h"
 #import "RNSplashScreen.h"
+#import "Orientation.h"
 
 
 @implementation AppDelegate
@@ -78,6 +79,11 @@
 {
   return [RCTLinkingManager application:application openURL:url
                       sourceApplication:sourceApplication annotation:annotation];
+}
+
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+{
+  return [Orientation getOrientation];
 }
 
 // Only if your app is using [Universal Links](https://developer.apple.com/library/prerelease/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html).

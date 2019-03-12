@@ -6,6 +6,8 @@ import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import android.os.Bundle;
 import com.facebook.react.ReactFragmentActivity;
 import org.devio.rn.splashscreen.SplashScreen;
+import android.content.Intent;
+import android.content.res.Configuration;
 
 public class MainActivity extends ReactFragmentActivity {
 
@@ -32,6 +34,14 @@ public class MainActivity extends ReactFragmentActivity {
          return new RNGestureHandlerEnabledRootView(MainActivity.this);
         }
       };
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Intent intent = new Intent("onConfigurationChanged");
+        intent.putExtra("newConfig", newConfig);
+        this.sendBroadcast(intent);
     }
 }
 

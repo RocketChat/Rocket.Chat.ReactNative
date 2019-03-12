@@ -10240,6 +10240,11 @@ react-native-optimized-flatlist@^1.0.4:
   dependencies:
     prop-types "^15.6.0"
 
+react-native-orientation-locker@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/react-native-orientation-locker/-/react-native-orientation-locker-1.1.3.tgz#c57a31181f0aa53256c8f6bddb76a175975b22db"
+  integrity sha512-vYx6/y/Cko7FUSBcNn0HzfMerxLc5o8qxXYK73WlUJh/ZQapOGLUFFe8A7bHkm06riz2isIHGvnNjn9xmoAlsA==
+
 react-native-picker-select@^5.2.3:
   version "5.2.4"
   resolved "https://registry.yarnpkg.com/react-native-picker-select/-/react-native-picker-select-5.2.4.tgz#ce0307a8fa4c2b1e3f9756282f2056b0805f2f7e"

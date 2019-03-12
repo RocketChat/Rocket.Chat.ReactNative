@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
+import Orientation from 'react-native-orientation-locker';
 
 import { loginRequest as loginRequestAction } from '../actions/login';
 import TextInput from '../containers/TextInput';
@@ -55,6 +56,7 @@ export default class SetUsernameView extends LoggedView {
 		};
 		const { server } = this.props;
 		props.navigation.setParams({ title: server });
+		Orientation.lockToPortrait();
 	}
 
 	async componentDidMount() {

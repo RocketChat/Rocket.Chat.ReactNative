@@ -5,6 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
+import Orientation from 'react-native-orientation-locker';
 
 import { selectServerRequest, serverInitAdd, serverFinishAdd } from '../../actions/server';
 import { appStart as appStartAction } from '../../actions';
@@ -47,6 +48,7 @@ export default class OnboardingView extends LoggedView {
 		super('OnboardingView', props);
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 		this.previousServer = props.navigation.getParam('previousServer');
+		Orientation.lockToPortrait();
 	}
 
 	componentDidMount() {

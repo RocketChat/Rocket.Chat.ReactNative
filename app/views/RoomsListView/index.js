@@ -6,6 +6,7 @@ import {
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
 import { SafeAreaView, NavigationEvents } from 'react-navigation';
+import Orientation from 'react-native-orientation-locker';
 
 import SearchBox from '../../containers/SearchBox';
 import ConnectionBadge from '../../containers/ConnectionBadge';
@@ -131,6 +132,7 @@ export default class RoomsListView extends LoggedView {
 			direct: [],
 			livechat: []
 		};
+		Orientation.unlockAllOrientations();
 	}
 
 	componentDidMount() {
