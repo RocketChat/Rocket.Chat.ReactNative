@@ -5,10 +5,9 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Answers } from 'react-native-fabric';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
-import Navigation from '../lib/Navigation';
 import KeyboardView from '../presentation/KeyboardView';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
@@ -16,9 +15,9 @@ import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import LoggedView from './View';
 import I18n from '../i18n';
-import { DARK_HEADER } from '../constants/headerOptions';
 import { loginRequest as loginRequestAction } from '../actions/login';
-import Icons from '../lib/Icons';
+import { LegalButton } from '../containers/HeaderButton';
+import StatusBar from '../containers/StatusBar';
 
 const styles = StyleSheet.create({
 	buttonsContainer: {
@@ -58,22 +57,16 @@ const styles = StyleSheet.create({
 }))
 /** @extends React.Component */
 export default class LoginView extends LoggedView {
-	static options() {
+	static navigationOptions = ({ navigation }) => {
+		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
-			...DARK_HEADER,
-			topBar: {
-				...DARK_HEADER.topBar,
-				rightButtons: [{
-					id: 'more',
-					icon: Icons.getSource('more'),
-					testID: 'login-view-more'
-				}]
-			}
+			title,
+			headerRight: <LegalButton navigation={navigation} testID='login-view-more' />
 		};
 	}
 
 	static propTypes = {
-		componentId: PropTypes.string,
+		navigation: PropTypes.object,
 		loginRequest: PropTypes.func.isRequired,
 		error: PropTypes.object,
 		Site_Name: PropTypes.string,
@@ -91,9 +84,8 @@ export default class LoginView extends LoggedView {
 			code: '',
 			showTOTP: false
 		};
-		Navigation.events().bindComponent(this);
-		const { componentId, Site_Name } = this.props;
-		this.setTitle(componentId, Site_Name);
+		const { Site_Name } = this.props;
+		this.setTitle(Site_Name);
 	}
 
 	componentDidMount() {
@@ -103,9 +95,9 @@ export default class LoginView extends LoggedView {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const { componentId, Site_Name, error } = this.props;
+		const { Site_Name, error } = this.props;
 		if (Site_Name && nextProps.Site_Name !== Site_Name) {
-			this.setTitle(componentId, nextProps.Site_Name);
+			this.setTitle(nextProps.Site_Name);
 		} else if (nextProps.failure && !equal(error, nextProps.error)) {
 			if (nextProps.error && nextProps.error.error === 'totp-required') {
 				LayoutAnimation.easeInEaseOut();
@@ -167,28 +159,9 @@ export default class LoginView extends LoggedView {
 		}
 	}
 
-	setTitle = (componentId, title) => {
-		Navigation.mergeOptions(componentId, {
-			topBar: {
-				title: {
-					text: title
-				}
-			}
-		});
-	}
-
-	navigationButtonPressed = ({ buttonId }) => {
-		if (buttonId === 'more') {
-			Navigation.showModal({
-				stack: {
-					children: [{
-						component: {
-							name: 'LegalView'
-						}
-					}]
-				}
-			});
-		}
+	setTitle = (title) => {
+		const { navigation } = this.props;
+		navigation.setParams({ title });
 	}
 
 	valid = () => {
@@ -214,35 +187,13 @@ export default class LoginView extends LoggedView {
 	}
 
 	register = () => {
-		const { componentId, Site_Name } = this.props;
-		Navigation.push(componentId, {
-			component: {
-				name: 'RegisterView',
-				options: {
-					topBar: {
-						title: {
-							text: Site_Name
-						}
-					}
-				}
-			}
-		});
+		const { navigation, Site_Name } = this.props;
+		navigation.navigate('RegisterView', { title: Site_Name });
 	}
 
 	forgotPassword = () => {
-		const { componentId, Site_Name } = this.props;
-		Navigation.push(componentId, {
-			component: {
-				name: 'ForgotPasswordView',
-				options: {
-					topBar: {
-						title: {
-							text: Site_Name
-						}
-					}
-				}
-			}
-		});
+		const { navigation, Site_Name } = this.props;
+		navigation.navigate('ForgotPasswordView', { title: Site_Name });
 	}
 
 	renderTOTP = () => {
@@ -336,6 +287,7 @@ export default class LoginView extends LoggedView {
 				keyboardVerticalOffset={128}
 				key='login-view'
 			>
+				<StatusBar />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 					{!showTOTP ? this.renderUserForm() : null}
 					{showTOTP ? this.renderTOTP() : null}

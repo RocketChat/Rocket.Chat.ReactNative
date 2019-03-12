@@ -15,7 +15,6 @@ import {
 } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
 import { setActiveUser } from '../actions/activeUsers';
-import { snippetedMessagesReceived } from '../actions/snippetedMessages';
 import { someoneTyping, roomMessageReceived } from '../actions/room';
 import { setRoles } from '../actions/roles';
 
@@ -210,27 +209,6 @@ const RocketChat = {
 						database.delete(message);
 					}
 				});
-			}
-		}));
-
-		this.sdk.onStreamData('rocketchat_snippeted_message', protectedFunction((ddpMessage) => {
-			if (ddpMessage.msg === 'added') {
-				this.snippetedMessages = this.snippetedMessages || [];
-
-				if (this.snippetedMessagesTimer) {
-					clearTimeout(this.snippetedMessagesTimer);
-					this.snippetedMessagesTimer = null;
-				}
-
-				this.snippetedMessagesTimer = setTimeout(() => {
-					reduxStore.dispatch(snippetedMessagesReceived(this.snippetedMessages));
-					this.snippetedMessagesTimer = null;
-					return this.snippetedMessages = [];
-				}, 1000);
-				const message = ddpMessage.fields;
-				message._id = ddpMessage.id;
-				const snippetedMessage = _buildMessage(message);
-				this.snippetedMessages = [...this.snippetedMessages, snippetedMessage];
 			}
 		}));
 

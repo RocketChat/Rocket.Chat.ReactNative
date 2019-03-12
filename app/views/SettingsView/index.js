@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import { View, ScrollView } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 
-import Navigation from '../../lib/Navigation';
 import LoggedView from '../View';
 import RocketChat from '../../lib/rocketchat';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -18,6 +17,8 @@ import Loading from '../../containers/Loading';
 import { showErrorAlert, showToast } from '../../utils/info';
 import log from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
+import { DrawerButton } from '../../containers/HeaderButton';
+import StatusBar from '../../containers/StatusBar';
 
 @connect(state => ({
 	userLanguage: state.login.user && state.login.user.language
@@ -26,15 +27,10 @@ import { setUser as setUserAction } from '../../actions/login';
 }))
 /** @extends React.Component */
 export default class SettingsView extends LoggedView {
-	static options() {
-		return {
-			topBar: {
-				title: {
-					text: I18n.t('Settings')
-				}
-			}
-		};
-	}
+	static navigationOptions = ({ navigation }) => ({
+		headerLeft: <DrawerButton navigation={navigation} />,
+		title: I18n.t('Settings')
+	})
 
 	static propTypes = {
 		componentId: PropTypes.string,
@@ -124,17 +120,6 @@ export default class SettingsView extends LoggedView {
 			this.setState({ saving: false });
 			setTimeout(() => {
 				showToast(I18n.t('Preferences_saved'));
-
-				if (params.language) {
-					const { componentId } = this.props;
-					Navigation.mergeOptions(componentId, {
-						topBar: {
-							title: {
-								text: I18n.t('Settings')
-							}
-						}
-					});
-				}
 			}, 300);
 		} catch (e) {
 			this.setState({ saving: false });
@@ -154,6 +139,7 @@ export default class SettingsView extends LoggedView {
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>
+				<StatusBar />
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}
 					testID='settings-view-list'

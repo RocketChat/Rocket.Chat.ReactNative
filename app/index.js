@@ -1,78 +1,49 @@
-import { Component } from 'react';
+import React from 'react';
+import {
+	createStackNavigator, createAppContainer, createSwitchNavigator, createDrawerNavigator
+} from 'react-navigation';
+import { Provider } from 'react-redux';
+import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import { Linking } from 'react-native';
 
-import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
-import store from './lib/createStore';
-import Icons from './lib/Icons';
+import OnboardingView from './views/OnboardingView';
+import NewServerView from './views/NewServerView';
+import LoginSignupView from './views/LoginSignupView';
+import AuthLoadingView from './views/AuthLoadingView';
+import RoomsListView from './views/RoomsListView';
+import RoomView from './views/RoomView';
+import NewMessageView from './views/NewMessageView';
+import LoginView from './views/LoginView';
 import Navigation from './lib/Navigation';
+import Sidebar from './views/SidebarView';
+import ProfileView from './views/ProfileView';
+import SettingsView from './views/SettingsView';
+import RoomActionsView from './views/RoomActionsView';
+import RoomInfoView from './views/RoomInfoView';
+import RoomInfoEditView from './views/RoomInfoEditView';
+import RoomMembersView from './views/RoomMembersView';
+import RoomFilesView from './views/RoomFilesView';
+import MentionedMessagesView from './views/MentionedMessagesView';
+import StarredMessagesView from './views/StarredMessagesView';
+import SearchMessagesView from './views/SearchMessagesView';
+import PinnedMessagesView from './views/PinnedMessagesView';
+import SelectedUsersView from './views/SelectedUsersView';
+import CreateChannelView from './views/CreateChannelView';
+import LegalView from './views/LegalView';
+import TermsServiceView from './views/TermsServiceView';
+import PrivacyPolicyView from './views/PrivacyPolicyView';
+import ForgotPasswordView from './views/ForgotPasswordView';
+import RegisterView from './views/RegisterView';
+import OAuthView from './views/OAuthView';
+import SetUsernameView from './views/SetUsernameView';
+import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from './constants/colors';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications } from './push';
-import { DEFAULT_HEADER } from './constants/headerOptions';
+import store from './lib/createStore';
 
-const startLogged = () => {
-	Navigation.loadView('ProfileView');
-	Navigation.loadView('RoomsListHeaderView');
-	Navigation.loadView('RoomsListView');
-	Navigation.loadView('RoomView');
-	Navigation.loadView('RoomHeaderView');
-	Navigation.loadView('SettingsView');
-	Navigation.loadView('SidebarView');
-
-	Navigation.setRoot({
-		root: {
-			stack: {
-				id: 'AppRoot',
-				children: [{
-					component: {
-						id: 'RoomsListView',
-						name: 'RoomsListView'
-					}
-				}]
-			}
-		}
-	});
-};
-
-const startNotLogged = () => {
-	Navigation.loadView('OnboardingView');
-	Navigation.setRoot({
-		root: {
-			stack: {
-				children: [{
-					component: {
-						name: 'OnboardingView'
-					}
-				}],
-				options: {
-					layout: {
-						orientation: ['portrait']
-					}
-				}
-			}
-		}
-	});
-};
-
-const startSetUsername = () => {
-	Navigation.loadView('SetUsernameView');
-	Navigation.setRoot({
-		root: {
-			stack: {
-				children: [{
-					component: {
-						name: 'SetUsernameView'
-					}
-				}],
-				options: {
-					layout: {
-						orientation: ['portrait']
-					}
-				}
-			}
-		}
-	});
-};
+useScreens();
+initializePushNotifications();
 
 const handleOpenURL = ({ url }) => {
 	if (url) {
@@ -86,51 +57,139 @@ const handleOpenURL = ({ url }) => {
 	}
 };
 
-Icons.configure();
+Linking
+	.getInitialURL()
+	.then(url => handleOpenURL({ url }))
+	.catch(e => console.warn(e));
+Linking.addEventListener('url', handleOpenURL);
 
-export default class App extends Component {
-	constructor(props) {
-		super(props);
-		initializePushNotifications();
+const defaultHeader = {
+	headerStyle: {
+		backgroundColor: HEADER_BACKGROUND
+	},
+	headerTitleStyle: {
+		color: HEADER_TITLE
+	},
+	headerBackTitle: null,
+	headerTintColor: HEADER_BACK
+};
 
-		Navigation.events().registerAppLaunchedListener(() => {
-			Navigation.setDefaultOptions({
-				...DEFAULT_HEADER,
-				sideMenu: {
-					left: {
-						enabled: false
-					},
-					right: {
-						enabled: false
-					}
-				}
-			});
-			store.dispatch(appInit());
-			store.subscribe(this.onStoreUpdate.bind(this));
-		});
-		Linking
-			.getInitialURL()
-			.then(url => handleOpenURL({ url }))
-			.catch(e => console.warn(e));
-		Linking.addEventListener('url', handleOpenURL);
+// Outside
+const OutsideStack = createStackNavigator({
+	OnboardingView: {
+		screen: OnboardingView,
+		header: null
+	},
+	NewServerView,
+	LoginSignupView,
+	LoginView,
+	ForgotPasswordView,
+	RegisterView
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
+const LegalStack = createStackNavigator({
+	LegalView,
+	TermsServiceView,
+	PrivacyPolicyView
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
+const OAuthStack = createStackNavigator({
+	OAuthView
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
+const OutsideStackModal = createStackNavigator({
+	OutsideStack,
+	LegalStack,
+	OAuthStack
+},
+{
+	mode: 'modal',
+	headerMode: 'none'
+});
+
+// Inside
+const ChatsStack = createStackNavigator({
+	RoomsListView,
+	RoomView,
+	RoomActionsView,
+	RoomInfoView,
+	RoomInfoEditView,
+	RoomMembersView,
+	RoomFilesView,
+	MentionedMessagesView,
+	StarredMessagesView,
+	SearchMessagesView,
+	PinnedMessagesView,
+	SelectedUsersView
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
+const ProfileStack = createStackNavigator({
+	ProfileView
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
+const SettingsStack = createStackNavigator({
+	SettingsView
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
+const ChatsDrawer = createDrawerNavigator({
+	ChatsStack,
+	ProfileStack,
+	SettingsStack
+}, {
+	contentComponent: Sidebar
+});
+
+const NewMessageStack = createStackNavigator({
+	NewMessageView,
+	SelectedUsersViewCreateChannel: SelectedUsersView,
+	CreateChannelView
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
+const InsideStackModal = createStackNavigator({
+	Main: ChatsDrawer,
+	NewMessageStack
+},
+{
+	mode: 'modal',
+	headerMode: 'none'
+});
+
+const SetUsernameStack = createStackNavigator({
+	SetUsernameView
+});
+
+const App = createAppContainer(createSwitchNavigator(
+	{
+		OutsideStack: OutsideStackModal,
+		InsideStack: InsideStackModal,
+		AuthLoading: AuthLoadingView,
+		SetUsernameStack
+	},
+	{
+		initialRouteName: 'AuthLoading'
 	}
+));
 
-	onStoreUpdate = () => {
-		const { root } = store.getState().app;
-
-		if (this.currentRoot !== root) {
-			this.currentRoot = root;
-			if (root === 'outside') {
-				startNotLogged();
-			} else if (root === 'inside') {
-				startLogged();
-			} else if (root === 'setUsername') {
-				startSetUsername();
-			}
-		}
-	}
-
-	setDeviceToken(deviceToken) {
-		this.deviceToken = deviceToken;
-	}
-}
+export default () => (
+	<Provider store={store}>
+		<App
+			ref={(navigatorRef) => {
+				Navigation.setTopLevelNavigator(navigatorRef);
+			}}
+		/>
+	</Provider>
+);

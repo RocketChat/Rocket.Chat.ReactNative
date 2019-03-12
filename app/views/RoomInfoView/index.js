@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
-import Navigation from '../../lib/Navigation';
 import LoggedView from '../View';
 import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
@@ -17,7 +16,8 @@ import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
-import Icons from '../../lib/Icons';
+import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
+import StatusBar from '../../containers/StatusBar';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
@@ -45,19 +45,23 @@ const getRoomTitle = room => (room.t === 'd'
 }))
 /** @extends React.Component */
 export default class RoomInfoView extends LoggedView {
-	static options() {
+	static navigationOptions = ({ navigation }) => {
+		const showEdit = navigation.getParam('showEdit');
+		const rid = navigation.getParam('rid');
 		return {
-			topBar: {
-				title: {
-					text: I18n.t('Room_Info')
-				}
-			}
+			title: I18n.t('Room_Info'),
+			headerRight: showEdit
+				? (
+					<CustomHeaderButtons>
+						<Item iconName='edit' onPress={() => navigation.navigate('RoomInfoEditView', { rid })} testID='room-info-view-edit-button' />
+					</CustomHeaderButtons>
+				)
+				: null
 		};
 	}
 
 	static propTypes = {
-		componentId: PropTypes.string,
-		rid: PropTypes.string,
+		navigation: PropTypes.object,
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			token: PropTypes.string
@@ -65,46 +69,30 @@ export default class RoomInfoView extends LoggedView {
 		baseUrl: PropTypes.string,
 		activeUsers: PropTypes.object,
 		Message_TimeFormat: PropTypes.string,
-		allRoles: PropTypes.object,
-		room: PropTypes.object
+		allRoles: PropTypes.object
 	}
 
 	constructor(props) {
 		super('RoomInfoView', props);
-		const { rid, room } = props;
+		const rid = props.navigation.getParam('rid');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.sub = {
 			unsubscribe: () => {}
 		};
 		this.state = {
-			room,
+			room: this.rooms[0] || {},
 			roomUser: {},
 			roles: []
 		};
-		Navigation.events().bindComponent(this);
 	}
 
 	async componentDidMount() {
 		this.rooms.addListener(this.updateRoom);
-
-		let room = {};
-		if (this.rooms.length > 0) {
-			room = this.rooms[0]; // eslint-disable-line prefer-destructuring
-		} else {
-			room = this.state.room; // eslint-disable-line
-		}
-		const { componentId } = this.props;
+		const { room } = this.state;
 		const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
 		if (permissions[PERMISSION_EDIT_ROOM]) {
-			Navigation.mergeOptions(componentId, {
-				topBar: {
-					rightButtons: [{
-						id: 'edit',
-						icon: Icons.getSource('edit'),
-						testID: 'room-info-view-edit-button'
-					}]
-				}
-			});
+			const { navigation } = this.props;
+			navigation.setParams({ showEdit: true });
 		}
 
 		// get user of room
@@ -162,21 +150,6 @@ export default class RoomInfoView extends LoggedView {
 	componentWillUnmount() {
 		this.rooms.removeAllListeners();
 		this.sub.unsubscribe();
-	}
-
-	navigationButtonPressed = ({ buttonId }) => {
-		const { rid, componentId } = this.props;
-		if (buttonId === 'edit') {
-			Navigation.push(componentId, {
-				component: {
-					id: 'RoomInfoEditView',
-					name: 'RoomInfoEditView',
-					passProps: {
-						rid
-					}
-				}
-			});
-		}
 	}
 
 	getFullUserData = async(username) => {
@@ -312,6 +285,7 @@ export default class RoomInfoView extends LoggedView {
 		}
 		return (
 			<ScrollView style={styles.scroll}>
+				<StatusBar />
 				<SafeAreaView style={styles.container} testID='room-info-view' forceInset={{ bottom: 'never' }}>
 					<View style={styles.avatarContainer}>
 						{this.renderAvatar(room, roomUser)}

@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Text, ScrollView } from 'react-native';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
+import PropTypes from 'prop-types';
 
-import Navigation from '../lib/Navigation';
 import LoggedView from './View';
 import KeyboardView from '../presentation/KeyboardView';
 import TextInput from '../containers/TextInput';
@@ -13,19 +12,20 @@ import { showErrorAlert } from '../utils/info';
 import isValidEmail from '../utils/isValidEmail';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
-import { DARK_HEADER } from '../constants/headerOptions';
 import RocketChat from '../lib/rocketchat';
+import StatusBar from '../containers/StatusBar';
 
 /** @extends React.Component */
 export default class ForgotPasswordView extends LoggedView {
-	static options() {
+	static navigationOptions = ({ navigation }) => {
+		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
-			...DARK_HEADER
+			title
 		};
 	}
 
 	static propTypes = {
-		componentId: PropTypes.string
+		navigation: PropTypes.object
 	}
 
 	constructor(props) {
@@ -81,8 +81,8 @@ export default class ForgotPasswordView extends LoggedView {
 			this.setState({ isFetching: true });
 			const result = await RocketChat.forgotPassword(email);
 			if (result.success) {
-				const { componentId } = this.props;
-				Navigation.pop(componentId);
+				const { navigation } = this.props;
+				navigation.pop();
 				showErrorAlert(I18n.t('Forgot_password_If_this_email_is_registered'), I18n.t('Alert'));
 			}
 		} catch (e) {
@@ -100,6 +100,7 @@ export default class ForgotPasswordView extends LoggedView {
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>
+				<StatusBar />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 					<SafeAreaView style={sharedStyles.container} testID='forgot-password-view' forceInset={{ bottom: 'never' }}>
 						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Forgot_password')}</Text>

@@ -124,7 +124,7 @@ const handleLeaveRoom = function* handleLeaveRoom({ rid, t }) {
 	try {
 		const result = yield RocketChat.leaveRoom(rid, t);
 		if (result.success) {
-			yield Navigation.popToRoot('RoomsListView');
+			yield Navigation.navigate('RoomsListView');
 		}
 	} catch (e) {
 		if (e.data && e.data.errorType === 'error-you-are-last-owner') {
@@ -139,7 +139,7 @@ const handleEraseRoom = function* handleEraseRoom({ rid, t }) {
 	try {
 		const result = yield RocketChat.eraseRoom(rid, t);
 		if (result.success) {
-			yield Navigation.popToRoot('RoomsListView');
+			yield Navigation.navigate('RoomsListView');
 		}
 	} catch (e) {
 		Alert.alert(I18n.t('Oops'), I18n.t('There_was_an_error_while_action', { action: I18n.t('erasing_room') }));

@@ -5,10 +5,9 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
-import Navigation from '../../lib/Navigation';
 import { openRoom as openRoomAction, closeRoom as closeRoomAction, setLastOpen as setLastOpenAction } from '../../actions/room';
 import { toggleReactionPicker as toggleReactionPickerAction, actionsShow as actionsShowAction } from '../../actions/messages';
 import LoggedView from '../View';
@@ -25,8 +24,10 @@ import styles from './styles';
 import log from '../../utils/log';
 import { isIOS } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
-import Icons from '../../lib/Icons';
 import ConnectionBadge from '../../containers/ConnectionBadge';
+import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
+import RoomHeaderView from './Header';
+import StatusBar from '../../containers/StatusBar';
 
 @connect(state => ({
 	user: {
@@ -47,31 +48,27 @@ import ConnectionBadge from '../../containers/ConnectionBadge';
 }))
 /** @extends React.Component */
 export default class RoomView extends LoggedView {
-	static options() {
+	static navigationOptions = ({ navigation }) => {
+		const rid = navigation.getParam('rid');
+		const t = navigation.getParam('t');
+		const f = navigation.getParam('f');
+		const toggleFav = navigation.getParam('toggleFav', () => {});
+		const starIcon = f ? 'Star-filled' : 'star';
 		return {
-			topBar: {
-				title: {
-					component: {
-						name: 'RoomHeaderView',
-						alignment: 'left'
-					}
-				},
-				rightButtons: [{
-					id: 'more',
-					testID: 'room-view-header-actions',
-					icon: Icons.getSource('more')
-				}, {
-					id: 'star',
-					testID: 'room-view-header-star',
-					icon: Icons.getSource('starOutline')
-				}]
-			},
-			blurOnUnmount: true
+			headerTitle: <RoomHeaderView />,
+			headerRight: t === 'l'
+				? null
+				: (
+					<CustomHeaderButtons>
+						<Item title='star' iconName={starIcon} onPress={toggleFav} testID='room-view-header-star' />
+						<Item title='more' iconName='menu' onPress={() => navigation.navigate('RoomActionsView', { rid })} testID='room-view-header-actions' />
+					</CustomHeaderButtons>
+				)
 		};
 	}
 
 	static propTypes = {
-		componentId: PropTypes.string,
+		navigation: PropTypes.object,
 		openRoom: PropTypes.func.isRequired,
 		setLastOpen: PropTypes.func.isRequired,
 		user: PropTypes.shape({
@@ -79,9 +76,6 @@ export default class RoomView extends LoggedView {
 			username: PropTypes.string.isRequired,
 			token: PropTypes.string.isRequired
 		}),
-		rid: PropTypes.string,
-		name: PropTypes.string,
-		t: PropTypes.string,
 		showActions: PropTypes.bool,
 		showErrorActions: PropTypes.bool,
 		actionMessage: PropTypes.object,
@@ -93,7 +87,7 @@ export default class RoomView extends LoggedView {
 
 	constructor(props) {
 		super('RoomView', props);
-		this.rid = props.rid;
+		this.rid = props.navigation.getParam('rid');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			loaded: false,
@@ -101,12 +95,14 @@ export default class RoomView extends LoggedView {
 			room: {}
 		};
 		this.onReactionPress = this.onReactionPress.bind(this);
-		Navigation.events().bindComponent(this);
 	}
 
 	componentDidMount() {
+		const { navigation } = this.props;
+		navigation.setParams({ toggleFav: this.toggleFav });
+
 		if (this.rooms.length === 0 && this.rid) {
-			const { rid, name, t } = this.props;
+			const { rid, name, t } = navigation.state.params;
 			this.setState(
 				{ room: { rid, name, t } },
 				() => this.updateRoom()
@@ -150,26 +146,10 @@ export default class RoomView extends LoggedView {
 
 	componentDidUpdate(prevProps, prevState) {
 		const { room } = this.state;
-		const { componentId, appState } = this.props;
+		const { appState, navigation } = this.props;
 
 		if (prevState.room.f !== room.f) {
-			const rightButtons = [{
-				id: 'star',
-				testID: 'room-view-header-star',
-				icon: room.f ? Icons.getSource('star') : Icons.getSource('starOutline')
-			}];
-			if (room.t !== 'l') {
-				rightButtons.unshift({
-					id: 'more',
-					testID: 'room-view-header-actions',
-					icon: Icons.getSource('more')
-				});
-			}
-			Navigation.mergeOptions(componentId, {
-				topBar: {
-					rightButtons
-				}
-			});
+			navigation.setParams({ f: room.f });
 		} else if (appState === 'foreground' && appState !== prevProps.appState) {
 			RocketChat.loadMissedMessages(room).catch(e => console.log(e));
 			RocketChat.readMessages(room.rid).catch(e => console.log(e));
@@ -207,30 +187,6 @@ export default class RoomView extends LoggedView {
 		this.setState(...args);
 	}
 
-	navigationButtonPressed = ({ buttonId }) => {
-		const { room } = this.state;
-		const { rid, f } = room;
-		const { componentId } = this.props;
-
-		if (buttonId === 'more') {
-			Navigation.push(componentId, {
-				component: {
-					id: 'RoomActionsView',
-					name: 'RoomActionsView',
-					passProps: {
-						rid
-					}
-				}
-			});
-		} else if (buttonId === 'star') {
-			try {
-				RocketChat.toggleFavorite(rid, !f);
-			} catch (e) {
-				log('toggleFavorite', e);
-			}
-		}
-	}
-
 	// eslint-disable-next-line react/sort-comp
 	updateRoom = () => {
 		const { openRoom, setLastOpen } = this.props;
@@ -259,6 +215,16 @@ export default class RoomView extends LoggedView {
 		}
 	}
 
+	toggleFav = () => {
+		try {
+			const { room } = this.state;
+			const { rid, f } = room;
+			RocketChat.toggleFavorite(rid, !f);
+		} catch (e) {
+			log('toggleFavorite', e);
+		}
+	}
+
 	sendMessage = (message) => {
 		const { setLastOpen } = this.props;
 		LayoutAnimation.easeInEaseOut();
@@ -268,9 +234,8 @@ export default class RoomView extends LoggedView {
 	};
 
 	joinRoom = async() => {
-		const { rid } = this.props;
 		try {
-			const result = await RocketChat.joinRoom(rid);
+			const result = await RocketChat.joinRoom(this.rid);
 			if (result.success) {
 				this.internalSetState({
 					joined: true
@@ -388,6 +353,7 @@ export default class RoomView extends LoggedView {
 
 		return (
 			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ bottom: 'never' }}>
+				<StatusBar />
 				{this.renderList()}
 				{room._id && showActions
 					? <MessageActions room={room} user={user} />
