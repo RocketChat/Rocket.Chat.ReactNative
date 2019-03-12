@@ -1,0 +1,44 @@
+{
+  "name": "ReactNativeFabric",
+  "version": "0.5.2",
+  "summary": "A React Native library for Fabric, Crashlytics and Answers",
+  "description": "A React Native library for Fabric, Crashlytics and Answers",
+  "homepage": "https://github.com/corymsmith/react-native-fabric",
+  "license": "MIT",
+  "authors": {
+    "name": "Cory Smith",
+    "email": "cory.m.smith@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/corymsmith/react-native-fabric.git",
+    "tag": "v0.5.2"
+  },
+  "platforms": {
+    "ios": "9.0",
+    "tvos": "9.0"
+  },
+  "dependencies": {
+    "React": [
+
+    ],
+    "Fabric": [
+
+    ],
+    "Crashlytics": [
+
+    ]
+  },
+  "ios": {
+    "xcconfig": {
+      "FRAMEWORK_SEARCH_PATHS": "\"${PODS_ROOT}/Crashlytics/iOS\" \"${PODS_ROOT}/Fabric/iOS\"",
+      "OTHER_LDFLAGS": "-framework Crashlytics -framework Fabric"
+    }
+  },
+  "preserve_paths": [
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
+  "source_files": "ios/**/*.{h,m}",
+  "exclude_files": "android/**/*"
+}

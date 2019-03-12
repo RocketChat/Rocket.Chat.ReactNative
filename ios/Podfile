@@ -31,6 +31,8 @@ target 'RocketChatRN' do
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
   pod 'react-native-orientation-locker', :path => '../node_modules/react-native-orientation-locker'
+  
+  pod 'ReactNativeFabric', :path => '../node_modules/react-native-fabric'
 
 end
 
