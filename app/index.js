@@ -6,7 +6,6 @@ import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import { Linking } from 'react-native';
 
-import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
 import OnboardingView from './views/OnboardingView';
 import NewServerView from './views/NewServerView';
@@ -16,7 +15,6 @@ import RoomsListView from './views/RoomsListView';
 import RoomView from './views/RoomView';
 import NewMessageView from './views/NewMessageView';
 import LoginView from './views/LoginView';
-import store from './lib/createStore';
 import Navigation from './lib/Navigation';
 import Sidebar from './views/SidebarView';
 import ProfileView from './views/ProfileView';
@@ -42,9 +40,9 @@ import SetUsernameView from './views/SetUsernameView';
 import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from './constants/colors';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications } from './push';
+import store from './lib/createStore';
 
 useScreens();
-store.dispatch(appInit());
 initializePushNotifications();
 
 const handleOpenURL = ({ url }) => {

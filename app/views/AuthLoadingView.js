@@ -1,19 +1,38 @@
 import React from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
 import StatusBar from '../containers/StatusBar';
+import { isAndroid } from '../utils/deviceInfo';
+import { appInit as appInitAction } from '../actions';
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#fff',
-		alignItems: 'center',
-		justifyContent: 'center'
+	image: {
+		width: '100%',
+		height: '100%'
 	}
 });
 
-export default React.memo(() => (
-	<View style={styles.container}>
-		<StatusBar />
-		<Image source={require('../static/images/logo.png')} resizeMode='center' />
-	</View>
-));
+@connect(null, dispatch => ({
+	appInit: () => dispatch(appInitAction())
+}))
+export default class Loading extends React.PureComponent {
+	static propTypes = {
+		appInit: PropTypes.func
+	}
+
+	constructor(props) {
+		super(props);
+		props.appInit();
+	}
+
+	render() {
+		return (
+			<React.Fragment>
+				<StatusBar />
+				{isAndroid ? <Image source={{ uri: 'launch_screen' }} style={styles.image} /> : null}
+			</React.Fragment>
+		);
+	}
+}
