@@ -4,7 +4,8 @@ import {
 	Keyboard, Text, ScrollView, View, StyleSheet, Alert, LayoutAnimation
 } from 'react-native';
 import { connect } from 'react-redux';
-import { Answers } from 'react-native-fabric';
+// import { Answers } from 'react-native-fabric';
+const Answers = {};
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
@@ -183,7 +184,7 @@ export default class LoginView extends LoggedView {
 		const { loginRequest } = this.props;
 		Keyboard.dismiss();
 		loginRequest({ user, password, code });
-		Answers.logLogin('Email', true);
+		// Answers.logLogin('Email', true);
 	}
 
 	register = () => {

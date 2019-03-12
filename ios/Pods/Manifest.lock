@@ -1,36 +1,36 @@
 PODS:
   - QBImagePickerController (3.4.0)
-  - React (0.58.6):
-    - React/Core (= 0.58.6)
+  - React (0.59.0):
+    - React/Core (= 0.59.0)
   - react-native-orientation-locker (1.1.3):
     - React
   - react-native-splash-screen (3.2.0):
     - React
-  - React/Core (0.58.6):
-    - yoga (= 0.58.6.React)
-  - React/fishhook (0.58.6)
-  - React/RCTActionSheet (0.58.6):
+  - React/Core (0.59.0):
+    - yoga (= 0.59.0.React)
+  - React/fishhook (0.59.0)
+  - React/RCTActionSheet (0.59.0):
     - React/Core
-  - React/RCTAnimation (0.58.6):
+  - React/RCTAnimation (0.59.0):
     - React/Core
-  - React/RCTBlob (0.58.6):
+  - React/RCTBlob (0.59.0):
     - React/Core
-  - React/RCTGeolocation (0.58.6):
+  - React/RCTGeolocation (0.59.0):
     - React/Core
-  - React/RCTImage (0.58.6):
+  - React/RCTImage (0.59.0):
     - React/Core
     - React/RCTNetwork
-  - React/RCTLinkingIOS (0.58.6):
+  - React/RCTLinkingIOS (0.59.0):
     - React/Core
-  - React/RCTNetwork (0.58.6):
+  - React/RCTNetwork (0.59.0):
     - React/Core
-  - React/RCTSettings (0.58.6):
+  - React/RCTSettings (0.59.0):
     - React/Core
-  - React/RCTText (0.58.6):
+  - React/RCTText (0.59.0):
     - React/Core
-  - React/RCTVibration (0.58.6):
+  - React/RCTVibration (0.59.0):
     - React/Core
-  - React/RCTWebSocket (0.58.6):
+  - React/RCTWebSocket (0.59.0):
     - React/Core
     - React/fishhook
     - React/RCTBlob
@@ -43,7 +43,7 @@ PODS:
   - RNScreens (1.0.0-alpha.22):
     - React
   - RSKImageCropper (2.2.1)
-  - yoga (0.58.6.React)
+  - yoga (0.59.0.React)
 
 DEPENDENCIES:
   - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
@@ -87,14 +87,14 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
-  React: 130b87b2d5e2baac646954282cab87be986d98fc
+  React: 0d6c719d9549bea0bd5676f8170b0e5c56e2c3c7
   react-native-orientation-locker: 8878845713f8d52f2a520ec3c3b0c9348e08e32c
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   RNDeviceInfo: e7c5fcde13d40e161d8a27f6c5dc69c638936002
   RNImageCropPicker: e608efe182652dc8690268cb99cb5a201f2b5ea3
   RNScreens: 720a9e6968beb73e8196239801e887d8401f86ed
   RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
-  yoga: 32d7ef1081951e9a35a4c72a7be797598b138a48
+  yoga: 26673abd38bbdf0c33e134ad9e690c5fbf16e8fc
 
 PODFILE CHECKSUM: ad284b28235f7bcda110a24095b5e2b5718cf7e2
 
