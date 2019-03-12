@@ -10704,10 +10704,10 @@ readdirp@^2.0.0:
     micromatch "^3.1.10"
     readable-stream "^2.0.2"
 
-realm@2.24:
-  version "2.24.0"
-  resolved "https://registry.yarnpkg.com/realm/-/realm-2.24.0.tgz#4c804bed23360b7d4f23964e708d142608f7a335"
-  integrity sha512-pIeZNoUfqrfo9WRdP3PtVVjh2aEde9l6T5tReN4as9MLn9sC/17tppatrl5S3gfakxvNQH3uJ9FdYI7lS6EspQ==
+realm@~2.25.0:
+  version "2.25.0"
+  resolved "https://registry.yarnpkg.com/realm/-/realm-2.25.0.tgz#bdd7c5c9d898e9b19b06be6947195e3c2427eced"
+  integrity sha512-FyZ4onOwJtOH70rszJxkICjZHrZW7yGfTNOT78Gc9unPW9l2QrePvUfg4vC9sXlMfT0upchnZg9i3u6Yvmzvng==
   dependencies:
     deepmerge "2.1.0"
     nan "^2.12.1"
