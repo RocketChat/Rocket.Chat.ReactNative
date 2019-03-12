@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-action-sheet';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
 import LoggedView from '../View';
@@ -12,6 +12,7 @@ import Message from '../../containers/message/Message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
+import StatusBar from '../../containers/StatusBar';
 
 const STAR_INDEX = 0;
 const CANCEL_INDEX = 1;
@@ -29,14 +30,8 @@ const options = [I18n.t('Unstar'), I18n.t('Cancel')];
 }))
 /** @extends React.Component */
 export default class StarredMessagesView extends LoggedView {
-	static options() {
-		return {
-			topBar: {
-				title: {
-					text: I18n.t('Starred')
-				}
-			}
-		};
+	static navigationOptions = {
+		title: I18n.t('Starred')
 	}
 
 	static propTypes = {
@@ -175,6 +170,7 @@ export default class StarredMessagesView extends LoggedView {
 
 		return (
 			<SafeAreaView style={styles.list} testID='starred-messages-view' forceInset={{ bottom: 'never' }}>
+				<StatusBar />
 				<FlatList
 					data={messages}
 					renderItem={this.renderItem}

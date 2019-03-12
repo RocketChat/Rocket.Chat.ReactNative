@@ -1,40 +1,47 @@
 package chat.rocket.reactnative;
 
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
-import android.widget.LinearLayout;
-// import com.reactnativenavigation.controllers.SplashActivity;
-import com.reactnativenavigation.NavigationActivity;
-import android.view.View;
-import android.content.Intent;
+import com.facebook.react.ReactActivityDelegate;
+import com.facebook.react.ReactRootView;
+import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import com.facebook.react.ReactFragmentActivity;
+import org.devio.rn.splashscreen.SplashScreen;
+import android.content.Intent;
+import android.content.res.Configuration;
 
-public class MainActivity extends NavigationActivity {
+public class MainActivity extends ReactFragmentActivity {
 
-	@Override
-    public void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        setIntent(intent);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        SplashScreen.show(this);
+        super.onCreate(null);
     }
 
-	@Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    /**
+     * Returns the name of the main component registered from JavaScript.
+     * This is used to schedule rendering of the component.
+     */
+    @Override
+    protected String getMainComponentName() {
+        return "RocketChatRN";
+    }
 
-        View view = new View(this);
-        view.setBackgroundResource(R.drawable.launch_screen_bitmap);
-        setContentView(view);
+    @Override
+    protected ReactActivityDelegate createReactActivityDelegate() {
+      return new ReactActivityDelegate(this, getMainComponentName()) {
+        @Override
+        protected ReactRootView createRootView() {
+         return new RNGestureHandlerEnabledRootView(MainActivity.this);
+        }
+      };
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Intent intent = new Intent("onConfigurationChanged");
+        intent.putExtra("newConfig", newConfig);
+        this.sendBroadcast(intent);
     }
 }
 
-// public class MainActivity extends SplashActivity {
-//     @Override
-//     public LinearLayout createSplashLayout() {
-//         LinearLayout splash = new LinearLayout(this);
-//         Drawable launch_screen_bitmap = ContextCompat.getDrawable(getApplicationContext(),R.drawable.launch_screen_bitmap);
-//         splash.setBackground(launch_screen_bitmap);
-
-//         return splash;
-//     }
-// }

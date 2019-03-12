@@ -4,9 +4,9 @@ import {
 	Text, ScrollView, StyleSheet
 } from 'react-native';
 import { connect } from 'react-redux';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
+import Orientation from 'react-native-orientation-locker';
 
-import Navigation from '../lib/Navigation';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
@@ -15,8 +15,8 @@ import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import LoggedView from './View';
 import I18n from '../i18n';
-import { DARK_HEADER } from '../constants/headerOptions';
 import RocketChat from '../lib/rocketchat';
+import StatusBar from '../containers/StatusBar';
 
 const styles = StyleSheet.create({
 	loginTitle: {
@@ -33,14 +33,15 @@ const styles = StyleSheet.create({
 }))
 /** @extends React.Component */
 export default class SetUsernameView extends LoggedView {
-	static options() {
+	static navigationOptions = ({ navigation }) => {
+		const title = navigation.getParam('title');
 		return {
-			...DARK_HEADER
+			title
 		};
 	}
 
 	static propTypes = {
-		componentId: PropTypes.string,
+		navigation: PropTypes.object,
 		server: PropTypes.string,
 		userId: PropTypes.string,
 		loginRequest: PropTypes.func,
@@ -53,14 +54,9 @@ export default class SetUsernameView extends LoggedView {
 			username: '',
 			saving: false
 		};
-		const { componentId, server } = this.props;
-		Navigation.mergeOptions(componentId, {
-			topBar: {
-				title: {
-					text: server
-				}
-			}
-		});
+		const { server } = this.props;
+		props.navigation.setParams({ title: server });
+		Orientation.lockToPortrait();
 	}
 
 	async componentDidMount() {
@@ -112,6 +108,7 @@ export default class SetUsernameView extends LoggedView {
 		const { username, saving } = this.state;
 		return (
 			<KeyboardView contentContainerStyle={sharedStyles.container}>
+				<StatusBar />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 					<SafeAreaView style={sharedStyles.container} testID='set-username-view' forceInset={{ bottom: 'never' }}>
 						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle]}>{I18n.t('Username')}</Text>
@@ -120,7 +117,7 @@ export default class SetUsernameView extends LoggedView {
 							inputRef={e => this.usernameInput = e}
 							placeholder={I18n.t('Username')}
 							returnKeyType='send'
-							iconLeft='mention'
+							iconLeft='at'
 							onChangeText={value => this.setState({ username: value })}
 							value={username}
 							onSubmitEditing={this.submit}

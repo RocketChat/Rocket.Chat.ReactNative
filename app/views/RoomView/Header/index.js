@@ -18,9 +18,7 @@ const TITLE_SIZE = 18;
 const ICON_SIZE = 18;
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		justifyContent: 'center',
-		backgroundColor: isIOS ? 'transparent' : '#2F343D'
+		flex: 1
 	},
 	titleContainer: {
 		flexDirection: 'row',
@@ -175,25 +173,16 @@ export default class RoomHeaderView extends Component {
 			window, title, usersTyping
 		} = this.props;
 		const portrait = window.height > window.width;
-		let height = isIOS ? 44 : 60;
 		let scale = 1;
 
 		if (!portrait) {
-			if (isIOS) {
-				height = 32;
-			}
 			if (usersTyping.length > 0) {
 				scale = 0.8;
 			}
 		}
 
 		return (
-			<View
-				style={[
-					styles.container,
-					{ width: window.width - 150, height }
-				]}
-			>
+			<View style={styles.container}>
 				<View style={styles.titleContainer}>
 					{this.renderIcon()}
 					<Text style={[styles.title, { fontSize: TITLE_SIZE * scale }]} numberOfLines={1}>{title}</Text>

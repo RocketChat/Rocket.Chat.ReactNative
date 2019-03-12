@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
 import LoggedView from '../View';
@@ -11,6 +11,7 @@ import Message from '../../containers/message/Message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
+import StatusBar from '../../containers/StatusBar';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -24,14 +25,8 @@ import RocketChat from '../../lib/rocketchat';
 }))
 /** @extends React.Component */
 export default class RoomFilesView extends LoggedView {
-	static options() {
-		return {
-			topBar: {
-				title: {
-					text: I18n.t('Files')
-				}
-			}
-		};
+	static navigationOptions = {
+		title: I18n.t('Files')
 	}
 
 	static propTypes = {
@@ -142,6 +137,7 @@ export default class RoomFilesView extends LoggedView {
 
 		return (
 			<SafeAreaView style={styles.list} testID='room-files-view' forceInset={{ bottom: 'never' }}>
+				<StatusBar />
 				<FlatList
 					data={messages}
 					renderItem={this.renderItem}

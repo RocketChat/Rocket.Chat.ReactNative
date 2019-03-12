@@ -46,12 +46,6 @@ subprojects { subproject ->
                 defaultConfig {
                     targetSdkVersion 28
                 }
-                variantFilter { variant ->
-                    def names = variant.flavors*.name
-                    if (names.contains("reactNative51") || names.contains("reactNative55") || names.contains("reactNative56") || names.contains("reactNative57") || names.contains("reactNative57WixFork")) {
-                        setIgnore(true)
-                    }
-                }
             }
         }
     }

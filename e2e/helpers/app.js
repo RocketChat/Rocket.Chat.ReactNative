@@ -44,7 +44,7 @@ async function logout() {
 }
 
 async function tapBack() {
-    await element(by.type('_UIModernBarButton').withAncestor(by.type('_UIBackButtonContainerView'))).tap();
+    await element(by.id('header-back')).atIndex(0).tap();
 }
 
 async function sleep(ms) {

@@ -1,14 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { responsive } from 'react-native-responsive-ui';
 
 import {
 	toggleServerDropdown, closeServerDropdown, closeSortDropdown, setSearch as setSearchAction
 } from '../../../actions/rooms';
 import Header from './Header';
 
-@responsive
 @connect(state => ({
 	showServerDropdown: state.rooms.showServerDropdown,
 	showSortDropdown: state.rooms.showSortDropdown,
@@ -31,8 +29,7 @@ export default class RoomsListHeaderView extends PureComponent {
 		open: PropTypes.func,
 		close: PropTypes.func,
 		closeSort: PropTypes.func,
-		setSearch: PropTypes.func,
-		window: PropTypes.object
+		setSearch: PropTypes.func
 	}
 
 	componentDidUpdate(prevProps) {
@@ -69,10 +66,9 @@ export default class RoomsListHeaderView extends PureComponent {
 		this.searchInputRef = ref;
 	}
 
-
 	render() {
 		const {
-			serverName, showServerDropdown, showSearchHeader, isFetching, window: { width }
+			serverName, showServerDropdown, showSearchHeader, isFetching
 		} = this.props;
 		return (
 			<Header
@@ -80,7 +76,6 @@ export default class RoomsListHeaderView extends PureComponent {
 				showServerDropdown={showServerDropdown}
 				showSearchHeader={showSearchHeader}
 				isFetching={isFetching}
-				width={width}
 				setSearchInputRef={this.setSearchInputRef}
 				onPress={this.onPress}
 				onSearchChangeText={text => this.onSearchChangeText(text)}
