@@ -167,12 +167,6 @@ repositories {
   maven { url 'https://maven.fabric.io/public' }
 }
 
-// configurations.all {
-//     resolutionStrategy {
-//         force 'org.webkit:android-jsc:r225067'
-//     }
-// }
-
 dependencies {
     implementation project(':react-native-orientation-locker')
     implementation project(':react-native-splash-screen')
