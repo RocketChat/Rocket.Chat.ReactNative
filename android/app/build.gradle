@@ -153,26 +153,19 @@ android {
     }
 }
 
-// buildscript {
-//   repositories {
-//     maven { url 'https://maven.fabric.io/public' }
-//   }
+buildscript {
+  repositories {
+    maven { url 'https://maven.fabric.io/public' }
+  }
 
-//   dependencies {
-//     // These docs use an open ended version so that our plugin
-//     // can be updated quickly in response to Android tooling updates
-
-//     // We recommend changing it to the latest version from our changelog:
-//     // https://docs.fabric.io/android/changelog.html#fabric-gradle-plugin
-//     classpath 'io.fabric.tools:gradle:1.+'
-//   }
-// }
-
-// apply plugin: 'io.fabric'
-
-// repositories {
-//   maven { url 'https://maven.fabric.io/public' }
-// }
+  dependencies {
+    classpath 'io.fabric.tools:gradle:1.+'
+  }
+}
+apply plugin: 'io.fabric'
+repositories {
+  maven { url 'https://maven.fabric.io/public' }
+}
 
 // configurations.all {
 //     resolutionStrategy {
@@ -189,7 +182,7 @@ dependencies {
     implementation project(':react-native-gesture-handler')
     implementation project(':react-native-image-crop-picker')
     implementation project(':react-native-i18n')
-    // implementation project(':react-native-fabric')
+    implementation project(':react-native-fabric')
     implementation project(':react-native-audio')
     implementation project(":reactnativekeyboardinput")
     implementation project(':react-native-video')

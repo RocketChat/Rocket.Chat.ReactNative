@@ -1,5 +1,4 @@
-// import { Answers } from 'react-native-fabric';
-const Answers = {};
+import { Answers } from 'react-native-fabric';
 
 export default fn => (...params) => {
 	try {
@@ -9,7 +8,7 @@ export default fn => (...params) => {
 		if (typeof error !== 'object') {
 			error = { error };
 		}
-		// Answers.logCustom('error', error);
+		Answers.logCustom('error', error);
 		if (__DEV__) {
 			alert(error);
 		}
