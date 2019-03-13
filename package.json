@@ -84,7 +84,6 @@
     "@storybook/addon-storyshots": "4.1.14",
     "@storybook/addons": "4.1.14",
     "@storybook/react-native": "4.1.14",
-    "babel-core": "^6.26.3",
     "babel-eslint": "^9.0.0",
     "babel-jest": "^24.4.0",
     "codecov": "^3.1.0",
@@ -112,15 +111,8 @@
       "node_modules"
     ],
     "preset": "react-native",
-    "coverageDirectory": "./coverage/",
-    "collectCoverage": true,
-    "moduleNameMapper": {
-      ".+\\.(css|styl|less|sass|scss)$": "identity-obj-proxy",
-      ".+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js"
-    },
-    "transform": {
-      "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
-    }
+    "coverageDirectory": "./coverage/",	
+    "collectCoverage": true
   },
   "snyk": true,
   "engines": {
