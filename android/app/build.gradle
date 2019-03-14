@@ -72,6 +72,11 @@ import com.android.build.OutputFile
  * ]
  */
 
+project.ext.react = [
+    entryFile: "index.js",
+    iconFontNames: [ 'custom.ttf' ]
+]
+
 apply from: "../../node_modules/react-native/react.gradle"
 
 /**
@@ -90,19 +95,25 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
         applicationId "chat.rocket.reactnative"
-        minSdkVersion 16
-        targetSdkVersion 22
+        minSdkVersion 21
+        targetSdkVersion 28
         versionCode VERSIONCODE as Integer
-        versionName "1.1"
+        versionName "1.10.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+        vectorDrawables.useSupportLibrary = true
     }
+
+    packagingOptions {
+        pickFirst '**/libjsc.so'
+    }
+
     signingConfigs {
         release {
             if (project.hasProperty('KEYSTORE')) {
@@ -123,8 +134,11 @@ android {
     }
     buildTypes {
         release {
+            // shrinkResources enableProguardInReleaseBuilds
+            // zipAlignEnabled enableProguardInReleaseBuilds
+            // useProguard enableProguardInReleaseBuilds
             minifyEnabled enableProguardInReleaseBuilds
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'])
             signingConfig signingConfigs.release
         }
     }
@@ -164,27 +178,43 @@ repositories {
   maven { url 'https://maven.fabric.io/public' }
 }
 
+configurations.all {
+    resolutionStrategy {
+        force 'org.webkit:android-jsc:r225067'
+    }
+}
+
 dependencies {
-    compile project(':react-native-fabric')
-    compile project(':react-native-audio')
-    compile project(":reactnativekeyboardinput")
-    compile project(':react-native-splash-screen')
-    compile project(':react-native-video')
-    compile project(':react-native-push-notification')
-    compile project(':react-native-svg')
-    compile project(':react-native-image-picker')
-    compile project(':react-native-vector-icons')
-    compile project(':react-native-fetch-blob')
-    compile project(':react-native-zeroconf')
-    compile project(':react-native-toast')
-    compile project(':realm')
-    compile fileTree(dir: "libs", include: ["*.jar"])
-    compile "com.android.support:appcompat-v7:23.0.1"
-    compile 'com.android.support:customtabs:23.0.1'
-    compile "com.facebook.react:react-native:+"  // From node_modules
-    compile 'com.facebook.fresco:fresco:1.7.1'
-    compile 'com.facebook.fresco:animated-gif:1.7.1'
-    compile('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
+    implementation project(':react-native-orientation-locker')
+    implementation project(':react-native-splash-screen')
+    implementation project(':react-native-screens')
+    implementation project(':react-native-action-sheet')
+    implementation project(':react-native-device-info')
+    implementation project(':react-native-gesture-handler')
+    implementation project(':react-native-image-crop-picker')
+    implementation project(':react-native-i18n')
+    implementation project(':react-native-fabric')
+    implementation project(':react-native-audio')
+    implementation project(":reactnativekeyboardinput")
+    implementation project(':react-native-video')
+    implementation project(':react-native-vector-icons')
+    implementation project(':rn-fetch-blob')
+    implementation project(':@remobile/react-native-toast')
+    implementation project(':react-native-fast-image')
+    implementation project(':realm')
+    implementation project(':reactnativenotifications')
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "com.android.support:appcompat-v7:27.1.1"
+    implementation "com.android.support:support-v4:27.1.1"
+    implementation 'com.android.support:customtabs:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
+    implementation "com.facebook.react:react-native:+"  // From node_modules
+    implementation 'com.facebook.fresco:fresco:1.10.0'
+    implementation 'com.facebook.fresco:animated-gif:1.10.0'
+    implementation 'com.facebook.fresco:animated-webp:1.10.0'
+    implementation 'com.facebook.fresco:webpsupport:1.10.0'
+    implementation 'com.google.android.gms:play-services-gcm:16.1.0'
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.5@aar') {
         transitive = true;
     }
 }
@@ -195,4 +225,3 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
-apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"

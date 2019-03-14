@@ -2,10 +2,14 @@
 
 buildscript {
     repositories {
+        mavenLocal()
+        google()
+        // mavenCentral()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
+        // classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.android.tools.build:gradle:3.1.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -15,10 +19,34 @@ buildscript {
 allprojects {
     repositories {
         mavenLocal()
+        // mavenCentral()
+        google()
         jcenter()
+        // maven {
+        //     url 'https://maven.google.com'
+        // }
+        maven { url "https://jitpack.io" }
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
+        }
+        maven {
+            // Local Maven repo containing AARs with JSC library built for Android
+            url "$rootDir/../node_modules/jsc-android/dist"
+        }
+    }
+}
+
+subprojects { subproject ->
+    afterEvaluate {
+        if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
+            android {
+                compileSdkVersion 28
+                buildToolsVersion "28.0.3"
+                defaultConfig {
+                    targetSdkVersion 28
+                }
+            }
         }
     }
 }

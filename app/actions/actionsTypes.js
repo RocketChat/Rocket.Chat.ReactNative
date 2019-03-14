@@ -11,27 +11,21 @@ function createRequestTypes(base, types = defaultTypes) {
 // Login events
 export const LOGIN = createRequestTypes('LOGIN', [
 	...defaultTypes,
-	'SET_TOKEN',
-	'RESTORE_TOKEN',
-	'SUBMIT',
-	'REGISTER_SUBMIT',
-	'REGISTER_REQUEST',
-	'REGISTER_SUCCESS',
-	'REGISTER_INCOMPLETE',
-	'SET_USERNAME_SUBMIT',
-	'SET_USERNAME_REQUEST',
-	'SET_USERNAME_SUCCESS',
-	'OPEN',
-	'CLOSE',
 	'SET_SERVICES',
-	'REMOVE_SERVICES'
-]);
-export const FORGOT_PASSWORD = createRequestTypes('FORGOT_PASSWORD', [
-	...defaultTypes,
-	'INIT'
+	'SET_PREFERENCE',
+	'SET_SORT_PREFERENCE'
 ]);
 export const USER = createRequestTypes('USER', ['SET']);
-export const ROOMS = createRequestTypes('ROOMS', [...defaultTypes, 'SET_SEARCH']);
+export const ROOMS = createRequestTypes('ROOMS', [
+	...defaultTypes,
+	'SET_SEARCH',
+	'CLOSE_SERVER_DROPDOWN',
+	'TOGGLE_SERVER_DROPDOWN',
+	'CLOSE_SORT_DROPDOWN',
+	'TOGGLE_SORT_DROPDOWN',
+	'OPEN_SEARCH_HEADER',
+	'CLOSE_SEARCH_HEADER'
+]);
 export const ROOM = createRequestTypes('ROOM', [
 	'ADD_USER_TYPING',
 	'REMOVE_USER_TYPING',
@@ -42,10 +36,9 @@ export const ROOM = createRequestTypes('ROOM', [
 	'ERASE',
 	'USER_TYPING',
 	'MESSAGE_RECEIVED',
-	'SET_LAST_OPEN',
-	'LAYOUT_ANIMATION'
+	'SET_LAST_OPEN'
 ]);
-export const APP = createRequestTypes('APP', ['READY', 'INIT']);
+export const APP = createRequestTypes('APP', ['START', 'READY', 'INIT']);
 export const MESSAGES = createRequestTypes('MESSAGES', [
 	...defaultTypes,
 	'ACTIONS_SHOW',
@@ -63,45 +56,27 @@ export const MESSAGES = createRequestTypes('MESSAGES', [
 	'TOGGLE_STAR_REQUEST',
 	'TOGGLE_STAR_SUCCESS',
 	'TOGGLE_STAR_FAILURE',
-	'PERMALINK_REQUEST',
-	'PERMALINK_SUCCESS',
-	'PERMALINK_FAILURE',
-	'PERMALINK_CLEAR',
 	'TOGGLE_PIN_REQUEST',
 	'TOGGLE_PIN_SUCCESS',
 	'TOGGLE_PIN_FAILURE',
-	'SET_INPUT',
-	'CLEAR_INPUT',
-	'TOGGLE_REACTION_PICKER'
+	'REPLY_INIT',
+	'REPLY_CANCEL',
+	'TOGGLE_REACTION_PICKER',
+	'REPLY_BROADCAST'
 ]);
-export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [
-	...defaultTypes,
-	'REQUEST_USERS',
-	'SUCCESS_USERS',
-	'FAILURE_USERS',
-	'SET_USERS',
-	'ADD_USER',
-	'REMOVE_USER',
-	'RESET'
-]);
-export const NAVIGATION = createRequestTypes('NAVIGATION', ['SET']);
+export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [...defaultTypes]);
+export const SELECTED_USERS = createRequestTypes('SELECTED_USERS', ['ADD_USER', 'REMOVE_USER', 'RESET', 'SET_LOADING']);
 export const SERVER = createRequestTypes('SERVER', [
 	...defaultTypes,
-	'SELECT',
-	'CHANGED',
-	'ADD',
-	'GOTO_ADD'
+	'SELECT_SUCCESS',
+	'SELECT_REQUEST',
+	'INIT_ADD',
+	'FINISH_ADD'
 ]);
-export const METEOR = createRequestTypes('METEOR_CONNECT', [...defaultTypes, 'DISCONNECT', 'DISCONNECT_BY_USER']);
+export const METEOR = createRequestTypes('METEOR_CONNECT', [...defaultTypes, 'DISCONNECT']);
 export const LOGOUT = 'LOGOUT'; // logout is always success
 export const ACTIVE_USERS = createRequestTypes('ACTIVE_USERS', ['SET']);
 export const ROLES = createRequestTypes('ROLES', ['SET']);
-export const STARRED_MESSAGES = createRequestTypes('STARRED_MESSAGES', ['OPEN', 'CLOSE', 'MESSAGES_RECEIVED', 'MESSAGE_UNSTARRED']);
-export const PINNED_MESSAGES = createRequestTypes('PINNED_MESSAGES', ['OPEN', 'CLOSE', 'MESSAGES_RECEIVED', 'MESSAGE_UNPINNED']);
-export const MENTIONED_MESSAGES = createRequestTypes('MENTIONED_MESSAGES', ['OPEN', 'CLOSE', 'MESSAGES_RECEIVED']);
-export const SNIPPETED_MESSAGES = createRequestTypes('SNIPPETED_MESSAGES', ['OPEN', 'CLOSE', 'MESSAGES_RECEIVED']);
-export const ROOM_FILES = createRequestTypes('ROOM_FILES', ['OPEN', 'CLOSE', 'MESSAGES_RECEIVED']);
-
-export const INCREMENT = 'INCREMENT';
-export const DECREMENT = 'DECREMENT';
-
+export const SNIPPETED_MESSAGES = createRequestTypes('SNIPPETED_MESSAGES', ['OPEN', 'READY', 'CLOSE', 'MESSAGES_RECEIVED']);
+export const DEEP_LINKING = createRequestTypes('DEEP_LINKING', ['OPEN']);
+export const SORT_PREFERENCES = createRequestTypes('SORT_PREFERENCES', ['SET_ALL', 'SET']);

@@ -1,42 +1,54 @@
 import { AsyncStorage } from 'react-native';
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest, all } from 'redux-saga/effects';
+import SplashScreen from 'react-native-splash-screen';
+
 import * as actions from '../actions';
-import { setServer } from '../actions/server';
-import { restoreToken } from '../actions/login';
+import { selectServerRequest } from '../actions/server';
+import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';
-import { setRoles } from '../actions/roles';
-import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
+import log from '../utils/log';
+import Navigation from '../lib/Navigation';
 
 const restore = function* restore() {
 	try {
-		const token = yield call([AsyncStorage, 'getItem'], 'reactnativemeteor_usertoken');
-		if (token) {
-			yield put(restoreToken(token));
+		const { token, server } = yield all({
+			token: AsyncStorage.getItem(RocketChat.TOKEN_KEY),
+			server: AsyncStorage.getItem('currentServer')
+		});
+
+		const sortPreferences = yield RocketChat.getSortPreferences();
+		yield put(setAllPreferences(sortPreferences));
+
+		if (!token || !server) {
+			yield all([
+				AsyncStorage.removeItem(RocketChat.TOKEN_KEY),
+				AsyncStorage.removeItem('currentServer')
+			]);
+			yield put(actions.appStart('outside'));
+		} else if (server) {
+			yield put(selectServerRequest(server));
 		}
 
-		const currentServer = yield call([AsyncStorage, 'getItem'], 'currentServer');
-		if (currentServer) {
-			yield put(setServer(currentServer));
-			const settings = database.objects('settings');
-			yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
-			const permissions = database.objects('permissions');
-			yield put(actions.setAllPermissions(RocketChat.parsePermissions(permissions.slice(0, permissions.length))));
-			const emojis = database.objects('customEmojis');
-			yield put(actions.setCustomEmojis(RocketChat.parseEmojis(emojis.slice(0, emojis.length))));
-			const roles = database.objects('roles');
-			yield put(setRoles(roles.reduce((result, role) => {
-				result[role._id] = role.description;
-				return result;
-			}, {})));
-		}
 		yield put(actions.appReady({}));
 	} catch (e) {
-		console.log(e);
+		log('restore', e);
 	}
+};
+
+const start = function* start({ root }) {
+	if (root === 'inside') {
+		yield Navigation.navigate('InsideStack');
+	} else if (root === 'setUsername') {
+		yield Navigation.navigate('SetUsernameView');
+	} else if (root === 'outside') {
+		yield Navigation.navigate('OutsideStack');
+	}
+	SplashScreen.hide();
 };
 
 const root = function* root() {
 	yield takeLatest(APP.INIT, restore);
+	yield takeLatest(APP.START, start);
 };
 export default root;

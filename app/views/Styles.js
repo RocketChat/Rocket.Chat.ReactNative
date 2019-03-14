@@ -1,48 +1,18 @@
-import { StyleSheet, Dimensions, Platform } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
-import { COLOR_DANGER } from '../constants/colors';
+import {
+	COLOR_DANGER, COLOR_BUTTON_PRIMARY, COLOR_SEPARATOR
+} from '../constants/colors';
+import { isIOS } from '../utils/deviceInfo';
 
 export default StyleSheet.create({
 	container: {
 		backgroundColor: 'white',
 		flex: 1
 	},
-	loginView: {
-		padding: 20
+	containerScrollView: {
+		padding: 15
 	},
-	view: {
-		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'center',
-		padding: 20,
-		alignItems: 'stretch',
-		backgroundColor: '#2f343d'
-	},
-	defaultView: {
-		flexDirection: 'column',
-		justifyContent: 'center',
-		padding: 20,
-		alignItems: 'stretch'
-	},
-	defaultViewBackground: {
-		backgroundColor: '#fff'
-	},
-	logoContainer: {
-		alignItems: 'center',
-		justifyContent: 'center',
-		flex: 1
-	},
-	loginLogo: {
-		width: Dimensions.get('window').width - 150,
-		height: Dimensions.get('window').width - 150,
-		resizeMode: 'contain'
-	},
-	registerLogo: {
-		width: Dimensions.get('window').width - 40,
-		height: 100,
-		resizeMode: 'contain'
-	},
-	formContainer: {},
 	label: {
 		lineHeight: 40,
 		height: 40,
@@ -62,28 +32,6 @@ export default StyleSheet.create({
 		flexGrow: 1,
 		paddingHorizontal: 0,
 		marginBottom: 20
-	},
-	input: {
-		height: 45,
-		marginBottom: 20,
-		borderRadius: 2,
-		// padding: 14,
-		paddingHorizontal: 10,
-		borderWidth: 2,
-		backgroundColor: 'rgba(255,255,255,.2)',
-		borderColor: '#e1e5e8',
-		color: 'white'
-	},
-	input_white: {
-		paddingVertical: 12,
-		marginBottom: 20,
-		borderRadius: 2,
-		// padding: 14,
-		paddingHorizontal: 10,
-		borderWidth: 2,
-		backgroundColor: 'white',
-		borderColor: 'rgba(0,0,0,.15)',
-		color: 'black'
 	},
 	buttonContainerLastChild: {
 		marginBottom: 40
@@ -106,13 +54,11 @@ export default StyleSheet.create({
 	button: {
 		textAlign: 'center',
 		color: 'white',
-		borderRadius: 2,
 		fontWeight: '700'
 	},
 	button_white: {
 		textAlign: 'center',
 		color: 'white',
-		borderRadius: 2,
 		fontWeight: '700'
 	},
 	button_inverted: {
@@ -137,11 +83,17 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
 		alignItems: 'center',
-		paddingHorizontal: 0
+		paddingHorizontal: 0,
+		paddingBottom: 5
 	},
 	switchLabel: {
-		flexGrow: 1,
+		fontSize: 16,
+		color: '#2f343d',
 		paddingHorizontal: 10
+	},
+	switchDescription: {
+		fontSize: 16,
+		color: '#9ea2a8'
 	},
 	disabledButton: {
 		backgroundColor: '#e1e5e8'
@@ -150,23 +102,14 @@ export default StyleSheet.create({
 		backgroundColor: '#1d74f5'
 	},
 	link: {
-		fontWeight: 'bold'
+		fontWeight: 'bold',
+		color: COLOR_BUTTON_PRIMARY
 	},
 	loginTermsText: {
-		marginTop: 10,
-		textAlign: 'center',
+		marginBottom: 20,
 		color: '#414852',
-		fontSize: 16
-	},
-	loginSecondaryButtons: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		justifyContent: 'space-around'
-	},
-	loginOAuthButtons: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		justifyContent: 'center'
+		fontSize: 13,
+		fontWeight: '700'
 	},
 	validText: {
 		color: 'green'
@@ -209,7 +152,7 @@ export default StyleSheet.create({
 	closeOAuth: {
 		position: 'absolute',
 		left: 5,
-		top: Platform.OS === 'ios' ? 20 : 0,
+		top: isIOS ? 20 : 0,
 		backgroundColor: 'transparent'
 	},
 	oAuthModal: {
@@ -220,18 +163,113 @@ export default StyleSheet.create({
 		bottom: -3,
 		right: -3,
 		borderWidth: 3,
-		borderColor: '#fff',
-		borderRadius: 16,
-		width: 16,
-		height: 16
+		borderColor: '#fff'
 	},
 	alignItemsFlexEnd: {
 		alignItems: 'flex-end'
+	},
+	alignItemsFlexStart: {
+		alignItems: 'flex-start'
 	},
 	textAlignRight: {
 		textAlign: 'right'
 	},
 	opacity5: {
 		opacity: 0.5
+	},
+	loginTitle: {
+		fontSize: 20,
+		marginVertical: 15,
+		color: '#2f343d',
+		lineHeight: 28
+	},
+	loginSubtitle: {
+		fontSize: 16,
+		color: '#54585e',
+		lineHeight: 20,
+		marginBottom: 15
+	},
+	headerButton: {
+		backgroundColor: 'transparent',
+		height: 44,
+		width: 44,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	separator: {
+		height: StyleSheet.hairlineWidth,
+		backgroundColor: COLOR_SEPARATOR
+	},
+	separatorTop: {
+		borderColor: COLOR_SEPARATOR,
+		borderTopWidth: StyleSheet.hairlineWidth
+	},
+	separatorBottom: {
+		borderColor: COLOR_SEPARATOR,
+		borderBottomWidth: StyleSheet.hairlineWidth
+	},
+	separatorVertical: {
+		borderColor: COLOR_SEPARATOR,
+		borderTopWidth: StyleSheet.hairlineWidth,
+		borderBottomWidth: StyleSheet.hairlineWidth
+	},
+	textRegular: {
+		backgroundColor: 'transparent',
+		...Platform.select({
+			ios: {
+				fontFamily: 'System',
+				fontWeight: '400'
+			},
+			android: {
+				includeFontPadding: false,
+				fontFamily: 'sans-serif',
+				fontWeight: 'normal'
+			}
+		})
+	},
+	textMedium: {
+		backgroundColor: 'transparent',
+		...Platform.select({
+			ios: {
+				fontFamily: 'System',
+				fontWeight: '500'
+			},
+			android: {
+				includeFontPadding: false,
+				fontFamily: 'sans-serif-medium',
+				fontWeight: 'normal'
+			}
+		})
+	},
+	textSemibold: {
+		backgroundColor: 'transparent',
+		...Platform.select({
+			ios: {
+				fontFamily: 'System',
+				fontWeight: '600'
+			},
+			android: {
+				includeFontPadding: false,
+				fontFamily: 'sans-serif',
+				fontWeight: 'bold'
+			}
+		})
+	},
+	textBold: {
+		backgroundColor: 'transparent',
+		...Platform.select({
+			ios: {
+				fontFamily: 'System',
+				fontWeight: '700'
+			},
+			android: {
+				includeFontPadding: false,
+				fontFamily: 'sans-serif',
+				fontWeight: 'bold'
+			}
+		})
+	},
+	inputLastChild: {
+		marginBottom: 15
 	}
 });

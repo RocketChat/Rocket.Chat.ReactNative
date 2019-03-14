@@ -1,0 +1,8 @@
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/QBImagePickerController" "${PODS_ROOT}/Headers/Public/RNDeviceInfo" "${PODS_ROOT}/Headers/Public/RNImageCropPicker" "${PODS_ROOT}/Headers/Public/RNScreens" "${PODS_ROOT}/Headers/Public/RSKImageCropper" "${PODS_ROOT}/Headers/Public/React" "${PODS_ROOT}/Headers/Public/react-native-orientation-locker" "${PODS_ROOT}/Headers/Public/react-native-splash-screen" "${PODS_ROOT}/Headers/Public/yoga"
+LIBRARY_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/QBImagePickerController" "${PODS_CONFIGURATION_BUILD_DIR}/RNDeviceInfo" "${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker" "${PODS_CONFIGURATION_BUILD_DIR}/RNScreens" "${PODS_CONFIGURATION_BUILD_DIR}/RSKImageCropper" "${PODS_CONFIGURATION_BUILD_DIR}/React" "${PODS_CONFIGURATION_BUILD_DIR}/react-native-orientation-locker" "${PODS_CONFIGURATION_BUILD_DIR}/react-native-splash-screen" "${PODS_CONFIGURATION_BUILD_DIR}/yoga"
+OTHER_LDFLAGS = $(inherited) -ObjC -l"QBImagePickerController" -l"RNDeviceInfo" -l"RNImageCropPicker" -l"RNScreens" -l"RSKImageCropper" -l"React" -l"react-native-orientation-locker" -l"react-native-splash-screen" -l"stdc++" -l"yoga" -framework "JavaScriptCore" -framework "Photos" -framework "QuartzCore" -framework "UIKit"
+PODS_BUILD_DIR = ${BUILD_DIR}
+PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
+PODS_PODFILE_DIR_PATH = ${SRCROOT}/.
+PODS_ROOT = ${SRCROOT}/Pods

@@ -1,374 +1,298 @@
 import React from 'react';
-import Spinner from 'react-native-loading-spinner-overlay';
 import PropTypes from 'prop-types';
-import { Keyboard, Text, View, ScrollView, TouchableOpacity, SafeAreaView, WebView, Platform, LayoutAnimation } from 'react-native';
+import {
+	Keyboard, Text, ScrollView, View, StyleSheet, Alert, LayoutAnimation
+} from 'react-native';
 import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Base64 } from 'js-base64';
-import Modal from 'react-native-modal';
+import { Answers } from 'react-native-fabric';
+import { SafeAreaView } from 'react-navigation';
+import equal from 'deep-equal';
 
-import { loginSubmit, open, close } from '../actions/login';
 import KeyboardView from '../presentation/KeyboardView';
 import TextInput from '../containers/TextInput';
-
-import styles from './Styles';
+import Button from '../containers/Button';
+import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
-import { showToast } from '../utils/info';
-import random from '../utils/random';
+import LoggedView from './View';
+import I18n from '../i18n';
+import { loginRequest as loginRequestAction } from '../actions/login';
+import { LegalButton } from '../containers/HeaderButton';
+import StatusBar from '../containers/StatusBar';
+
+const styles = StyleSheet.create({
+	buttonsContainer: {
+		flexDirection: 'column',
+		marginTop: 5
+	},
+	bottomContainer: {
+		flexDirection: 'column',
+		alignItems: 'center',
+		marginTop: 10
+	},
+	dontHaveAccount: {
+		...sharedStyles.textRegular,
+		color: '#9ea2a8',
+		fontSize: 13
+	},
+	createAccount: {
+		...sharedStyles.textSemibold,
+		color: '#1d74f5',
+		fontSize: 13
+	},
+	loginTitle: {
+		marginVertical: 0,
+		marginTop: 15
+	}
+});
 
 @connect(state => ({
-	server: state.server.server,
-	login: state.login,
+	isFetching: state.login.isFetching,
+	failure: state.login.failure,
+	error: state.login.error && state.login.error.data,
+	Site_Name: state.settings.Site_Name,
 	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
-	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
-	Accounts_OAuth_Facebook: state.settings.Accounts_OAuth_Facebook,
-	Accounts_OAuth_Github: state.settings.Accounts_OAuth_Github,
-	Accounts_OAuth_Gitlab: state.settings.Accounts_OAuth_Gitlab,
-	Accounts_OAuth_Google: state.settings.Accounts_OAuth_Google,
-	Accounts_OAuth_Linkedin: state.settings.Accounts_OAuth_Linkedin,
-	Accounts_OAuth_Meteor: state.settings.Accounts_OAuth_Meteor,
-	Accounts_OAuth_Twitter: state.settings.Accounts_OAuth_Twitter,
-	services: state.login.services
+	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder
 }), dispatch => ({
-	loginSubmit: params => dispatch(loginSubmit(params)),
-	open: () => dispatch(open()),
-	close: () => dispatch(close())
+	loginRequest: params => dispatch(loginRequestAction(params))
 }))
-export default class LoginView extends React.Component {
-	static propTypes = {
-		loginSubmit: PropTypes.func.isRequired,
-		open: PropTypes.func.isRequired,
-		close: PropTypes.func.isRequired,
-		navigation: PropTypes.object.isRequired,
-		login: PropTypes.object,
-		server: PropTypes.string,
-		Accounts_EmailOrUsernamePlaceholder: PropTypes.bool,
-		Accounts_PasswordPlaceholder: PropTypes.string,
-		Accounts_OAuth_Facebook: PropTypes.bool,
-		Accounts_OAuth_Github: PropTypes.bool,
-		Accounts_OAuth_Gitlab: PropTypes.bool,
-		Accounts_OAuth_Google: PropTypes.bool,
-		Accounts_OAuth_Linkedin: PropTypes.bool,
-		Accounts_OAuth_Meteor: PropTypes.bool,
-		Accounts_OAuth_Twitter: PropTypes.bool,
-		services: PropTypes.object
+/** @extends React.Component */
+export default class LoginView extends LoggedView {
+	static navigationOptions = ({ navigation }) => {
+		const title = navigation.getParam('title', 'Rocket.Chat');
+		return {
+			title,
+			headerRight: <LegalButton navigation={navigation} testID='login-view-more' />
+		};
 	}
 
-	static navigationOptions = () => ({
-		title: 'Login'
-	});
+	static propTypes = {
+		navigation: PropTypes.object,
+		loginRequest: PropTypes.func.isRequired,
+		error: PropTypes.object,
+		Site_Name: PropTypes.string,
+		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
+		Accounts_PasswordPlaceholder: PropTypes.string,
+		isFetching: PropTypes.bool,
+		failure: PropTypes.bool
+	}
 
 	constructor(props) {
-		super(props);
-
+		super('LoginView', props);
 		this.state = {
-			username: '',
+			user: '',
 			password: '',
-			modalVisible: false,
-			oAuthUrl: ''
+			code: '',
+			showTOTP: false
 		};
-		this.redirectRegex = new RegExp(`(?=.*(${ this.props.server }))(?=.*(credentialToken))(?=.*(credentialSecret))`, 'g');
+		const { Site_Name } = this.props;
+		this.setTitle(Site_Name);
 	}
 
 	componentDidMount() {
-		this.props.open();
+		this.timeout = setTimeout(() => {
+			this.usernameInput.focus();
+		}, 600);
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (this.props.services !== nextProps.services) {
-			LayoutAnimation.easeInEaseOut();
+		const { Site_Name, error } = this.props;
+		if (Site_Name && nextProps.Site_Name !== Site_Name) {
+			this.setTitle(nextProps.Site_Name);
+		} else if (nextProps.failure && !equal(error, nextProps.error)) {
+			if (nextProps.error && nextProps.error.error === 'totp-required') {
+				LayoutAnimation.easeInEaseOut();
+				this.setState({ showTOTP: true });
+				setTimeout(() => {
+					if (this.codeInput && this.codeInput.focus) {
+						this.codeInput.focus();
+					}
+				}, 300);
+				return;
+			}
+			Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
 		}
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const {
+			user, password, code, showTOTP
+		} = this.state;
+		const {
+			isFetching, failure, error, Site_Name, Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder
+		} = this.props;
+		if (nextState.user !== user) {
+			return true;
+		}
+		if (nextState.password !== password) {
+			return true;
+		}
+		if (nextState.code !== code) {
+			return true;
+		}
+		if (nextState.showTOTP !== showTOTP) {
+			return true;
+		}
+		if (nextProps.isFetching !== isFetching) {
+			return true;
+		}
+		if (nextProps.failure !== failure) {
+			return true;
+		}
+		if (nextProps.Site_Name !== Site_Name) {
+			return true;
+		}
+		if (nextProps.Accounts_EmailOrUsernamePlaceholder !== Accounts_EmailOrUsernamePlaceholder) {
+			return true;
+		}
+		if (nextProps.Accounts_PasswordPlaceholder !== Accounts_PasswordPlaceholder) {
+			return true;
+		}
+		if (!equal(nextProps.error, error)) {
+			return true;
+		}
+		return false;
 	}
 
 	componentWillUnmount() {
-		this.props.close();
+		if (this.timeout) {
+			clearTimeout(this.timeout);
+		}
 	}
 
-	onPressFacebook = () => {
-		const { appId } = this.props.services.facebook;
-		const endpoint = 'https://m.facebook.com/v2.9/dialog/oauth';
-		const redirect_uri = `${ this.props.server }/_oauth/facebook?close`;
-		const scope = 'email';
-		const state = this.getOAuthState();
-		const params = `?client_id=${ appId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&display=touch`;
-		this.openOAuth(`${ endpoint }${ params }`);
+	setTitle = (title) => {
+		const { navigation } = this.props;
+		navigation.setParams({ title });
 	}
 
-	onPressGithub = () => {
-		const { clientId } = this.props.services.github;
-		const endpoint = `https://github.com/login?client_id=${ clientId }&return_to=${ encodeURIComponent('/login/oauth/authorize') }`;
-		const redirect_uri = `${ this.props.server }/_oauth/github?close`;
-		const scope = 'user:email';
-		const state = this.getOAuthState();
-		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }`;
-		this.openOAuth(`${ endpoint }${ encodeURIComponent(params) }`);
-	}
-
-	onPressGitlab = () => {
-		const { clientId } = this.props.services.gitlab;
-		const endpoint = 'https://gitlab.com/oauth/authorize';
-		const redirect_uri = `${ this.props.server }/_oauth/gitlab?close`;
-		const scope = 'read_user';
-		const state = this.getOAuthState();
-		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&response_type=code`;
-		this.openOAuth(`${ endpoint }${ params }`);
-	}
-
-	onPressGoogle = () => {
-		const { clientId } = this.props.services.google;
-		const endpoint = 'https://accounts.google.com/o/oauth2/auth';
-		const redirect_uri = `${ this.props.server }/_oauth/google?close`;
-		const scope = 'email';
-		const state = this.getOAuthState();
-		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&response_type=code`;
-		this.openOAuth(`${ endpoint }${ params }`);
-	}
-
-	onPressLinkedin = () => {
-		const { clientId } = this.props.services.linkedin;
-		const endpoint = 'https://www.linkedin.com/uas/oauth2/authorization';
-		const redirect_uri = `${ this.props.server }/_oauth/linkedin?close`;
-		const scope = 'r_emailaddress';
-		const state = this.getOAuthState();
-		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&response_type=code`;
-		this.openOAuth(`${ endpoint }${ params }`);
-	}
-
-	onPressMeteor = () => {
-		const { clientId } = this.props.services['meteor-developer'];
-		const endpoint = 'https://www.meteor.com/oauth2/authorize';
-		const redirect_uri = `${ this.props.server }/_oauth/meteor-developer`;
-		const state = this.getOAuthState();
-		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&state=${ state }&response_type=code`;
-		this.openOAuth(`${ endpoint }${ params }`);
-	}
-
-	onPressTwitter = () => {
-		const state = this.getOAuthState();
-		const url = `${ this.props.server }/_oauth/twitter/?requestTokenAndRedirect=true&state=${ state }`;
-		this.openOAuth(url);
-	}
-
-	getOAuthState = () => {
-		const credentialToken = random(43);
-		return Base64.encodeURI(JSON.stringify({ loginStyle: 'popup', credentialToken, isCordova: true }));
-	}
-
-	openOAuth = (oAuthUrl) => {
-		this.setState({ oAuthUrl, modalVisible: true });
+	valid = () => {
+		const {
+			user, password, code, showTOTP
+		} = this.state;
+		if (showTOTP) {
+			return code.trim();
+		}
+		return user.trim() && password.trim();
 	}
 
 	submit = () => {
-		const {	username, password, code } = this.state;
-		if (username.trim() === '' || password.trim() === '') {
-			showToast('Email or password field is empty');
+		if (!this.valid()) {
 			return;
 		}
 
-		this.props.loginSubmit({ username, password, code });
+		const { user, password, code } = this.state;
+		const { loginRequest } = this.props;
 		Keyboard.dismiss();
-	}
-
-	submitOAuth = (code, credentialToken) => {
-		this.props.loginSubmit({ code, credentialToken });
+		loginRequest({ user, password, code });
+		Answers.logLogin('Email', true);
 	}
 
 	register = () => {
-		this.props.navigation.navigate({ key: 'Register', routeName: 'Register' });
-	}
-
-	termsService = () => {
-		this.props.navigation.navigate({ key: 'TermsService', routeName: 'TermsService' });
-	}
-
-	privacyPolicy = () => {
-		this.props.navigation.navigate({ key: 'PrivacyPolicy', routeName: 'PrivacyPolicy' });
+		const { navigation, Site_Name } = this.props;
+		navigation.navigate('RegisterView', { title: Site_Name });
 	}
 
 	forgotPassword = () => {
-		this.props.navigation.navigate({ key: 'ForgotPassword', routeName: 'ForgotPassword' });
-	}
-
-	closeOAuth = () => {
-		this.setState({ modalVisible: false });
+		const { navigation, Site_Name } = this.props;
+		navigation.navigate('ForgotPasswordView', { title: Site_Name });
 	}
 
 	renderTOTP = () => {
-		if (/totp/ig.test(this.props.login.error.error)) {
-			return (
+		const { isFetching } = this.props;
+		return (
+			<SafeAreaView style={sharedStyles.container} testID='login-view' forceInset={{ bottom: 'never' }}>
+				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle]}>{I18n.t('Two_Factor_Authentication')}</Text>
+				<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular]}>{I18n.t('Whats_your_2fa')}</Text>
 				<TextInput
-					ref={ref => this.codeInput = ref}
-					style={styles.input_white}
-					onChangeText={code => this.setState({ code })}
+					inputRef={ref => this.codeInput = ref}
+					onChangeText={value => this.setState({ code: value })}
 					keyboardType='numeric'
-					autoCorrect={false}
-					returnKeyType='done'
+					returnKeyType='send'
 					autoCapitalize='none'
 					onSubmitEditing={this.submit}
-					placeholder='Code'
-					underlineColorAndroid='transparent'
+					testID='login-view-totp'
+					containerStyle={sharedStyles.inputLastChild}
 				/>
-			);
-		}
-		return null;
+				<Button
+					title={I18n.t('Confirm')}
+					type='primary'
+					onPress={this.submit}
+					testID='login-view-submit'
+					loading={isFetching}
+					disabled={!this.valid()}
+				/>
+			</SafeAreaView>
+		);
+	}
+
+	renderUserForm = () => {
+		const {
+			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, isFetching
+		} = this.props;
+		return (
+			<SafeAreaView style={sharedStyles.container} testID='login-view' forceInset={{ bottom: 'never' }}>
+				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Login')}</Text>
+				<TextInput
+					inputRef={(e) => { this.usernameInput = e; }}
+					placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username_or_email')}
+					keyboardType='email-address'
+					returnKeyType='next'
+					iconLeft='at'
+					onChangeText={value => this.setState({ user: value })}
+					onSubmitEditing={() => { this.passwordInput.focus(); }}
+					testID='login-view-email'
+				/>
+				<TextInput
+					inputRef={(e) => { this.passwordInput = e; }}
+					placeholder={Accounts_PasswordPlaceholder || I18n.t('Password')}
+					returnKeyType='send'
+					iconLeft='key'
+					secureTextEntry
+					onSubmitEditing={this.submit}
+					onChangeText={value => this.setState({ password: value })}
+					testID='login-view-password'
+					containerStyle={sharedStyles.inputLastChild}
+				/>
+				<Button
+					title={I18n.t('Login')}
+					type='primary'
+					onPress={this.submit}
+					testID='login-view-submit'
+					loading={isFetching}
+					disabled={!this.valid()}
+				/>
+				<Button
+					title={I18n.t('Forgot_password')}
+					type='secondary'
+					onPress={this.forgotPassword}
+					testID='login-view-forgot-password'
+				/>
+				<View style={styles.bottomContainer}>
+					<Text style={styles.dontHaveAccount}>{I18n.t('Dont_Have_An_Account')}</Text>
+					<Text
+						style={styles.createAccount}
+						onPress={this.register}
+						testID='login-view-register'
+					>{I18n.t('Create_account')}
+					</Text>
+				</View>
+			</SafeAreaView>
+		);
 	}
 
 	render() {
+		const { showTOTP } = this.state;
 		return (
-			[
-				<KeyboardView
-					contentContainerStyle={styles.container}
-					keyboardVerticalOffset={128}
-					key='login-view'
-				>
-					<ScrollView
-						style={styles.loginView}
-						{...scrollPersistTaps}
-					>
-						<SafeAreaView>
-							<View style={styles.formContainer}>
-								<TextInput
-									style={styles.input_white}
-									onChangeText={username => this.setState({ username })}
-									keyboardType='email-address'
-									autoCorrect={false}
-									returnKeyType='next'
-									autoCapitalize='none'
-									underlineColorAndroid='transparent'
-									onSubmitEditing={() => { this.password.focus(); }}
-									placeholder={this.props.Accounts_EmailOrUsernamePlaceholder || 'Email or username'}
-								/>
-
-								<TextInput
-									ref={(e) => { this.password = e; }}
-									style={styles.input_white}
-									onChangeText={password => this.setState({ password })}
-									secureTextEntry
-									autoCorrect={false}
-									returnKeyType='done'
-									autoCapitalize='none'
-									underlineColorAndroid='transparent'
-									onSubmitEditing={this.submit}
-									placeholder={this.props.Accounts_PasswordPlaceholder || 'Password'}
-								/>
-
-								{this.renderTOTP()}
-
-								<TouchableOpacity
-									style={styles.buttonContainer}
-									onPress={this.submit}
-								>
-									<Text style={styles.button} accessibilityTraits='button'>LOGIN</Text>
-								</TouchableOpacity>
-
-								<View style={styles.loginSecondaryButtons}>
-									<TouchableOpacity style={styles.buttonContainer_inverted} onPress={this.register}>
-										<Text style={styles.button_inverted} accessibilityTraits='button'>REGISTER</Text>
-									</TouchableOpacity>
-
-									<TouchableOpacity style={styles.buttonContainer_inverted} onPress={this.forgotPassword}>
-										<Text style={styles.button_inverted} accessibilityTraits='button'>FORGOT MY PASSWORD</Text>
-									</TouchableOpacity>
-								</View>
-
-								<View style={styles.loginOAuthButtons} key='services'>
-									{this.props.Accounts_OAuth_Facebook && this.props.services.facebook &&
-										<TouchableOpacity
-											style={[styles.oauthButton, styles.facebookButton]}
-											onPress={this.onPressFacebook}
-										>
-											<Icon name='facebook' size={20} color='#ffffff' />
-										</TouchableOpacity>
-									}
-									{this.props.Accounts_OAuth_Github && this.props.services.github &&
-										<TouchableOpacity
-											style={[styles.oauthButton, styles.githubButton]}
-											onPress={this.onPressGithub}
-										>
-											<Icon name='github' size={20} color='#ffffff' />
-										</TouchableOpacity>
-									}
-									{this.props.Accounts_OAuth_Gitlab && this.props.services.gitlab &&
-										<TouchableOpacity
-											style={[styles.oauthButton, styles.gitlabButton]}
-											onPress={this.onPressGitlab}
-										>
-											<Icon name='gitlab' size={20} color='#ffffff' />
-										</TouchableOpacity>
-									}
-									{this.props.Accounts_OAuth_Google && this.props.services.google &&
-										<TouchableOpacity
-											style={[styles.oauthButton, styles.googleButton]}
-											onPress={this.onPressGoogle}
-										>
-											<Icon name='google' size={20} color='#ffffff' />
-										</TouchableOpacity>
-									}
-									{this.props.Accounts_OAuth_Linkedin && this.props.services.linkedin &&
-										<TouchableOpacity
-											style={[styles.oauthButton, styles.linkedinButton]}
-											onPress={this.onPressLinkedin}
-										>
-											<Icon name='linkedin' size={20} color='#ffffff' />
-										</TouchableOpacity>
-									}
-									{this.props.Accounts_OAuth_Meteor && this.props.services['meteor-developer'] &&
-										<TouchableOpacity
-											style={[styles.oauthButton, styles.meteorButton]}
-											onPress={this.onPressMeteor}
-										>
-											<MaterialCommunityIcons name='meteor' size={25} color='#ffffff' />
-										</TouchableOpacity>
-									}
-									{this.props.Accounts_OAuth_Twitter && this.props.services.twitter &&
-										<TouchableOpacity
-											style={[styles.oauthButton, styles.twitterButton]}
-											onPress={this.onPressTwitter}
-										>
-											<Icon name='twitter' size={20} color='#ffffff' />
-										</TouchableOpacity>
-									}
-								</View>
-
-								<TouchableOpacity>
-									<Text style={styles.loginTermsText} accessibilityTraits='button'>
-										By proceeding you are agreeing to our
-										<Text style={styles.link} onPress={this.termsService}> Terms of Service </Text>
-										and
-										<Text style={styles.link} onPress={this.privacyPolicy}> Privacy Policy</Text>
-									</Text>
-								</TouchableOpacity>
-								{this.props.login.failure && <Text style={styles.error}>{this.props.login.error.reason}</Text>}
-							</View>
-							<Spinner visible={this.props.login.isFetching} textContent='Loading...' textStyle={{ color: '#FFF' }} />
-						</SafeAreaView>
-					</ScrollView>
-				</KeyboardView>,
-				<Modal
-					key='modal-oauth'
-					visible={this.state.modalVisible}
-					animationType='slide'
-					style={styles.oAuthModal}
-					onBackButtonPress={this.closeOAuth}
-					useNativeDriver
-				>
-					<WebView
-						source={{ uri: this.state.oAuthUrl }}
-						userAgent={Platform.OS === 'ios' ? 'UserAgent' : 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1'}
-						onNavigationStateChange={(webViewState) => {
-							const url = decodeURIComponent(webViewState.url);
-							if (this.redirectRegex.test(url)) {
-								const parts = url.split('#');
-								const credentials = JSON.parse(parts[1]);
-								this.props.loginSubmit({ oauth: { ...credentials } });
-								this.setState({ modalVisible: false });
-							}
-						}}
-					/>
-					<Icon name='close' size={30} style={styles.closeOAuth} onPress={this.closeOAuth} />
-				</Modal>
-			]
+			<KeyboardView
+				contentContainerStyle={sharedStyles.container}
+				keyboardVerticalOffset={128}
+				key='login-view'
+			>
+				<StatusBar />
+				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
+					{!showTOTP ? this.renderUserForm() : null}
+					{showTOTP ? this.renderTOTP() : null}
+				</ScrollView>
+			</KeyboardView>
 		);
 	}
 }

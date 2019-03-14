@@ -1,153 +1,136 @@
 import React from 'react';
-import { Text, StyleSheet, ViewPropTypes } from 'react-native';
+import { Text, Image, Platform } from 'react-native';
 import PropTypes from 'prop-types';
-import EasyMarkdown from 'react-native-easy-markdown'; // eslint-disable-line
-import SimpleMarkdown from 'simple-markdown';
 import { emojify } from 'react-emojione';
+import MarkdownRenderer, { PluginContainer } from 'react-native-markdown-renderer';
+import MarkdownFlowdock from 'markdown-it-flowdock';
 import styles from './styles';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
+import MarkdownEmojiPlugin from './MarkdownEmojiPlugin';
 
-const BlockCode = ({ node, state }) => (
-	<Text
-		key={state.key}
-		style={styles.codeStyle}
-	>
-		{node.content}
-	</Text>
+// Support <http://link|Text>
+const formatText = text => text.replace(
+	new RegExp('(?:<|<)((?:https|http):\\/\\/[^\\|]+)\\|(.+?)(?=>|>)(?:>|>)', 'gm'),
+	(match, url, title) => `[${ title }](${ url })`
 );
-const mentionStyle = { color: '#13679a' };
 
-const Markdown = ({
-	msg, customEmojis, style, markdownStyle, customRules, renderInline
-}) => {
-	if (!msg) {
-		return null;
+const codeFontFamily = Platform.select({
+	ios: { fontFamily: 'Courier New' },
+	android: { fontFamily: 'monospace' }
+});
+
+export default class Markdown extends React.Component {
+	shouldComponentUpdate(nextProps) {
+		const { msg } = this.props;
+		return nextProps.msg !== msg;
 	}
-	msg = emojify(msg, { output: 'unicode' });
 
-	const defaultRules = {
-		username: {
-			order: -1,
-			match: SimpleMarkdown.inlineRegex(/^@[0-9a-zA-Z-_.]+/),
-			parse: capture => ({ content: capture[0] }),
-			react: (node, output, state) => ({
-				type: 'custom',
-				key: state.key,
-				props: {
-					children: (
-						<Text
-							key={state.key}
-							style={mentionStyle}
-							onPress={() => alert('Username')}
-						>
-							{node.content}
-						</Text>
-					)
-				}
-			})
-		},
-		heading: {
-			order: -2,
-			match: SimpleMarkdown.inlineRegex(/^#[0-9a-zA-Z-_.]+/),
-			parse: capture => ({ content: capture[0] }),
-			react: (node, output, state) => ({
-				type: 'custom',
-				key: state.key,
-				props: {
-					children: (
-						<Text
-							key={state.key}
-							style={mentionStyle}
-							onPress={() => alert('Room')}
-						>
-							{node.content}
-						</Text>
-					)
-				}
-			})
-		},
-		fence: {
-			order: -3,
-			match: SimpleMarkdown.blockRegex(/^ *(`{3,}|~{3,}) *(\S+)? *\n([\s\S]+?)\s*\1 *(?:\n *)+\n/),
-			parse: capture => ({
-				lang: capture[2] || undefined,
-				content: capture[3]
-			}),
-			react: (node, output, state) => ({
-				type: 'custom',
-				key: state.key,
-				props: {
-					children: (
-						<BlockCode key={state.key} node={node} state={state} />
-					)
-				}
-			})
-		},
-		blockCode: {
-			order: -4,
-			match: SimpleMarkdown.blockRegex(/^(```)\s*([\s\S]*?[^`])\s*\1(?!```)/),
-			parse: capture => ({ content: capture[2] }),
-			react: (node, output, state) => ({
-				type: 'custom',
-				key: state.key,
-				props: {
-					children: (
-						<BlockCode key={state.key} node={node} state={state} />
-					)
-				}
-			})
-		},
-		customEmoji: {
-			order: -5,
-			match: SimpleMarkdown.inlineRegex(/^:([0-9a-zA-Z-_.]+):/),
-			parse: capture => ({ content: capture }),
-			react: (node, output, state) => {
-				const element = {
-					type: 'custom',
-					key: state.key,
-					props: {
-						children: <Text key={state.key}>{node.content[0]}</Text>
-					}
-				};
-				const content = node.content[1];
-				const emojiExtension = customEmojis[content];
-				if (emojiExtension) {
-					const emoji = { extension: emojiExtension, content };
-					element.props.children = (
-						<CustomEmoji key={state.key} style={styles.customEmoji} emoji={emoji} />
-					);
-				}
-				return element;
-			}
+	render() {
+		const {
+			msg, customEmojis, style, rules, baseUrl, username, edited
+		} = this.props;
+		if (!msg) {
+			return null;
 		}
-	};
-
-	const codeStyle = StyleSheet.flatten(styles.codeStyle);
-	style = StyleSheet.flatten(style);
-	return (
-		<EasyMarkdown
-			style={{ marginBottom: 0, ...style }}
-			markdownStyles={{ code: codeStyle, ...markdownStyle }}
-			rules={{ ...defaultRules, ...customRules }}
-			renderInline={renderInline}
-		>{msg}
-		</EasyMarkdown>
-	);
-};
+		let m = formatText(msg);
+		m = emojify(m, { output: 'unicode' });
+		m = m.replace(/^\[([^\]]*)\]\(([^)]*)\)/, '').trim();
+		return (
+			<MarkdownRenderer
+				rules={{
+					paragraph: (node, children) => (
+						// eslint-disable-next-line
+						<Text key={node.key} style={styles.paragraph}>
+							{children}
+							{edited ? <Text style={styles.edited}> (edited)</Text> : null}
+						</Text>
+					),
+					mention: (node) => {
+						const { content, key } = node;
+						let mentionStyle = styles.mention;
+						if (content === 'all' || content === 'here') {
+							mentionStyle = {
+								...mentionStyle,
+								...styles.mentionAll
+							};
+						} else if (content === username) {
+							mentionStyle = {
+								...mentionStyle,
+								...styles.mentionLoggedUser
+							};
+						}
+						return (
+							<Text style={mentionStyle} key={key}>
+								&nbsp;{content}&nbsp;
+							</Text>
+						);
+					},
+					hashtag: node => (
+						<Text key={node.key} style={styles.mention}>
+							&nbsp;#{node.content}&nbsp;
+						</Text>
+					),
+					emoji: (node) => {
+						if (node.children && node.children.length && node.children[0].content) {
+							const { content } = node.children[0];
+							const emojiExtension = customEmojis[content];
+							if (emojiExtension) {
+								const emoji = { extension: emojiExtension, content };
+								return <CustomEmoji key={node.key} baseUrl={baseUrl} style={styles.customEmoji} emoji={emoji} />;
+							}
+							return <Text key={node.key}>:{content}:</Text>;
+						}
+						return null;
+					},
+					hardbreak: () => null,
+					blocklink: () => null,
+					image: node => (
+						<Image key={node.key} style={styles.inlineImage} source={{ uri: node.attributes.src }} />
+					),
+					...rules
+				}}
+				style={{
+					paragraph: styles.paragraph,
+					text: {
+						color: '#0C0D0F',
+						fontSize: 16,
+						letterSpacing: 0.1
+					},
+					codeInline: {
+						...codeFontFamily,
+						borderWidth: 1,
+						backgroundColor: '#f8f8f8',
+						borderRadius: 4
+					},
+					codeBlock: {
+						...codeFontFamily,
+						backgroundColor: '#f8f8f8',
+						borderColor: '#cccccc',
+						borderWidth: 1,
+						borderRadius: 4,
+						padding: 4
+					},
+					link: {
+						color: '#1D74F5'
+					},
+					...style
+				}}
+				plugins={[
+					new PluginContainer(MarkdownFlowdock),
+					new PluginContainer(MarkdownEmojiPlugin)
+				]}
+			>{m}
+			</MarkdownRenderer>
+		);
+	}
+}
 
 Markdown.propTypes = {
-	msg: PropTypes.string.isRequired,
-	customEmojis: PropTypes.object,
-	// eslint-disable-next-line react/no-typos
-	style: ViewPropTypes.style,
-	markdownStyle: PropTypes.object,
-	customRules: PropTypes.object,
-	renderInline: PropTypes.bool
+	msg: PropTypes.string,
+	username: PropTypes.string.isRequired,
+	baseUrl: PropTypes.string.isRequired,
+	customEmojis: PropTypes.object.isRequired,
+	style: PropTypes.any,
+	rules: PropTypes.object,
+	edited: PropTypes.bool
 };
-
-BlockCode.propTypes = {
-	node: PropTypes.object,
-	state: PropTypes.object
-};
-
-export default Markdown;

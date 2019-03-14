@@ -1,74 +1,77 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
+import FastImage from 'react-native-fast-image';
+import { RectButton } from 'react-native-gesture-handler';
 
-import QuoteMark from './QuoteMark';
 import openLink from '../../utils/openLink';
 
 const styles = StyleSheet.create({
 	button: {
+		marginTop: 6
+	},
+	container: {
 		flex: 1,
-		flexDirection: 'row',
-		alignItems: 'center',
-		marginVertical: 2
-	},
-	quoteSign: {
-		borderWidth: 2,
+		flexDirection: 'column',
 		borderRadius: 4,
-		borderColor: '#a0a0a0',
-		height: '100%',
-		marginRight: 5
-	},
-	image: {
-		height: 80,
-		width: 80,
-		resizeMode: 'cover',
-		borderRadius: 6
+		backgroundColor: '#F3F4F5',
+		borderColor: '#F3F4F5',
+		borderWidth: 1
 	},
 	textContainer: {
 		flex: 1,
-		height: '100%',
 		flexDirection: 'column',
-		padding: 4,
+		padding: 15,
 		justifyContent: 'flex-start',
 		alignItems: 'flex-start'
 	},
 	title: {
-		fontWeight: 'bold',
-		fontSize: 12
+		fontWeight: '500',
+		color: '#1D74F5',
+		fontSize: 16
 	},
 	description: {
-		fontSize: 12
+		marginTop: 5,
+		fontSize: 16,
+		color: '#0C0D0F'
+	},
+	marginTop: {
+		marginTop: 4
+	},
+	image: {
+		width: '100%',
+		height: 150,
+		borderTopLeftRadius: 4,
+		borderTopRightRadius: 4
 	}
 });
 
 const onPress = (url) => {
 	openLink(url);
 };
-const Url = ({ url }) => {
+const Url = ({ url, index }) => {
 	if (!url) {
 		return null;
 	}
 	return (
-		<TouchableOpacity onPress={() => onPress(url.url)} style={styles.button}>
-			<QuoteMark />
-			{url.image ?
-				<Image
-					style={styles.image}
-					source={{ uri: encodeURI(url.image) }}
-				/>
-				: null
-			}
+		<RectButton
+			onPress={() => onPress(url.url)}
+			style={[styles.button, index > 0 && styles.marginTop, styles.container]}
+			activeOpacity={0.5}
+			underlayColor='#fff'
+		>
+			{url.image ? <FastImage source={{ uri: url.image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} /> : null}
 			<View style={styles.textContainer}>
-				<Text style={styles.title}>{url.title}</Text>
-				<Text style={styles.description} numberOfLines={1}>{url.description}</Text>
+				<Text style={styles.title} numberOfLines={2}>{url.title}</Text>
+				<Text style={styles.description} numberOfLines={2}>{url.description}</Text>
 			</View>
-		</TouchableOpacity>
+		</RectButton>
 	);
 };
 
 Url.propTypes = {
-	url: PropTypes.object.isRequired
+	url: PropTypes.object.isRequired,
+	index: PropTypes.number
 };
 
 export default Url;

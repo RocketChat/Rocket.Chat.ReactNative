@@ -1,22 +1,40 @@
 import { takeLatest, select } from 'redux-saga/effects';
-import { FOREGROUND, BACKGROUND, INACTIVE } from 'redux-enhancer-react-native-appstate';
+import { FOREGROUND, BACKGROUND } from 'redux-enhancer-react-native-appstate';
 
 import RocketChat from '../lib/rocketchat';
+import { setBadgeCount } from '../push';
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
+	const appRoot = yield select(state => state.app.root);
+	if (appRoot === 'outside') {
+		return;
+	}
 	const auth = yield select(state => state.login.isAuthenticated);
 	if (!auth) {
 		return;
 	}
-	return yield RocketChat.setUserPresenceOnline();
+	try {
+		setBadgeCount();
+		return yield RocketChat.setUserPresenceOnline();
+	} catch (e) {
+		console.log('appHasComeBackToForeground', e);
+	}
 };
 
 const appHasComeBackToBackground = function* appHasComeBackToBackground() {
+	const appRoot = yield select(state => state.app.root);
+	if (appRoot === 'outside') {
+		return;
+	}
 	const auth = yield select(state => state.login.isAuthenticated);
 	if (!auth) {
 		return;
 	}
-	return yield RocketChat.setUserPresenceAway();
+	try {
+		return yield RocketChat.setUserPresenceAway();
+	} catch (e) {
+		console.log('appHasComeBackToBackground', e);
+	}
 };
 
 const root = function* root() {
@@ -28,10 +46,10 @@ const root = function* root() {
 		BACKGROUND,
 		appHasComeBackToBackground
 	);
-	yield takeLatest(
-		INACTIVE,
-		appHasComeBackToBackground
-	);
+	// yield takeLatest(
+	// 	INACTIVE,
+	// 	appHasComeBackToBackground
+	// );
 };
 
 export default root;

@@ -1,46 +1,44 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { RectButton } from 'react-native-gesture-handler';
 
 import Markdown from './Markdown';
-import QuoteMark from './QuoteMark';
-import Avatar from '../Avatar';
 import openLink from '../../utils/openLink';
-
 
 const styles = StyleSheet.create({
 	button: {
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginTop: 2,
-		alignSelf: 'flex-end'
-	},
-	quoteSign: {
-		borderWidth: 2,
-		borderRadius: 4,
-		borderColor: '#a0a0a0',
-		height: '100%',
-		marginRight: 5
+		marginTop: 15,
+		alignSelf: 'flex-end',
+		backgroundColor: '#f3f4f5',
+		borderRadius: 4
 	},
 	attachmentContainer: {
 		flex: 1,
-		flexDirection: 'column'
+		borderRadius: 4,
+		flexDirection: 'column',
+		padding: 15
 	},
 	authorContainer: {
+		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
 	author: {
-		fontWeight: 'bold',
-		marginHorizontal: 5,
-		flex: 1
+		flex: 1,
+		color: '#0C0D0F',
+		fontSize: 16,
+		fontWeight: '500',
+		marginRight: 10
 	},
 	time: {
-		fontSize: 10,
+		fontSize: 12,
 		fontWeight: 'normal',
-		color: '#888',
+		color: '#9ea2a8',
 		marginLeft: 5
 	},
 	fieldsContainer: {
@@ -54,41 +52,29 @@ const styles = StyleSheet.create({
 	},
 	fieldTitle: {
 		fontWeight: 'bold'
+	},
+	marginTop: {
+		marginTop: 4
 	}
 });
 
-const onPress = (attachment) => {
-	const url = attachment.title_link || attachment.author_link;
+const onPress = (attachment, baseUrl, user) => {
+	let url = attachment.title_link || attachment.author_link;
 	if (!url) {
 		return;
 	}
-	openLink(attachment.title_link || attachment.author_link);
+	if (attachment.type === 'file') {
+		url = `${ baseUrl }${ url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
+	}
+	openLink(url);
 };
 
-// Support <http://link|Text>
-const formatText = text =>
-	text.replace(
-		new RegExp('(?:<|<)((?:https|http):\\/\\/[^\\|]+)\\|(.+?)(?=>|>)(?:>|>)', 'gm'),
-		(match, url, title) => `[${ title }](${ url })`
-	);
-
-const Reply = ({ attachment, timeFormat }) => {
+const Reply = ({
+	attachment, timeFormat, baseUrl, customEmojis, user, index
+}) => {
 	if (!attachment) {
 		return null;
 	}
-
-	const renderAvatar = () => {
-		if (!attachment.author_icon && !attachment.author_name) {
-			return null;
-		}
-		return (
-			<Avatar
-				text={attachment.author_name}
-				size={16}
-				avatar={attachment.author_icon}
-			/>
-		);
-	};
 
 	const renderAuthor = () => (
 		attachment.author_name ? <Text style={styles.author}>{attachment.author_name}</Text> : null
@@ -105,16 +91,25 @@ const Reply = ({ attachment, timeFormat }) => {
 		}
 		return (
 			<View style={styles.authorContainer}>
-				{renderAvatar()}
 				{renderAuthor()}
 				{renderTime()}
 			</View>
 		);
 	};
 
-	const renderText = () => (
-		attachment.text ? <Markdown msg={formatText(attachment.text)} /> : null
-	);
+	const renderText = () => {
+		const text = attachment.text || attachment.title;
+		if (text) {
+			return (
+				<Markdown
+					msg={text}
+					customEmojis={customEmojis}
+					baseUrl={baseUrl}
+					username={user.username}
+				/>
+			);
+		}
+	};
 
 	const renderFields = () => {
 		if (!attachment.fields) {
@@ -134,24 +129,28 @@ const Reply = ({ attachment, timeFormat }) => {
 	};
 
 	return (
-		<TouchableOpacity
-			onPress={() => onPress(attachment)}
-			style={styles.button}
+		<RectButton
+			onPress={() => onPress(attachment, baseUrl, user)}
+			style={[styles.button, index > 0 && styles.marginTop]}
+			activeOpacity={0.5}
+			underlayColor='#fff'
 		>
-			<QuoteMark color={attachment.color} />
 			<View style={styles.attachmentContainer}>
 				{renderTitle()}
 				{renderText()}
 				{renderFields()}
-				{attachment.attachments && attachment.attachments.map(attach => <Reply key={attach.text} attachment={attach} timeFormat={timeFormat} />)}
 			</View>
-		</TouchableOpacity>
+		</RectButton>
 	);
 };
 
 Reply.propTypes = {
 	attachment: PropTypes.object.isRequired,
-	timeFormat: PropTypes.string.isRequired
+	timeFormat: PropTypes.string.isRequired,
+	baseUrl: PropTypes.string.isRequired,
+	customEmojis: PropTypes.object.isRequired,
+	user: PropTypes.object.isRequired,
+	index: PropTypes.number
 };
 
 export default Reply;

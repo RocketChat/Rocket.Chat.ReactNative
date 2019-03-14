@@ -1,55 +1,35 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { StyleSheet, Text, View, ViewPropTypes } from 'react-native';
-import { CachedImage } from 'react-native-img-cache';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import avatarInitialsAndColor from '../utils/avatarInitialsAndColor';
+import { View, ViewPropTypes } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
-const styles = StyleSheet.create({
-	iconContainer: {
-		// overflow: 'hidden',
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	avatar: {
-		position: 'absolute'
-	},
-	avatarInitials: {
-		color: '#ffffff'
-	}
-});
-
-@connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-}))
-export default class Avatar extends React.PureComponent {
+export default class Avatar extends PureComponent {
 	static propTypes = {
+		baseUrl: PropTypes.string.isRequired,
 		style: ViewPropTypes.style,
-		baseUrl: PropTypes.string,
-		text: PropTypes.string.isRequired,
+		text: PropTypes.string,
 		avatar: PropTypes.string,
 		size: PropTypes.number,
 		borderRadius: PropTypes.number,
 		type: PropTypes.string,
-		children: PropTypes.object
-	};
+		children: PropTypes.object,
+		user: PropTypes.shape({
+			id: PropTypes.string,
+			token: PropTypes.string
+		})
+	}
+
+	static defaultProps = {
+		text: '',
+		size: 25,
+		type: 'd',
+		borderRadius: 4
+	}
+
 	render() {
 		const {
-			text = '', size = 25, baseUrl, borderRadius = 4, style, avatar, type = 'd'
+			text, size, baseUrl, borderRadius, style, avatar, type, children, user
 		} = this.props;
-		const { initials, color } = avatarInitialsAndColor(`${ text }`);
-
-		const iconContainerStyle = {
-			backgroundColor: color,
-			width: size,
-			height: size,
-			borderRadius
-		};
-
-		const avatarInitialsStyle = {
-			fontSize: size / 2
-		};
 
 		const avatarStyle = {
 			width: size,
@@ -57,31 +37,36 @@ export default class Avatar extends React.PureComponent {
 			borderRadius
 		};
 
-		if (type === 'd') {
-			const uri = avatar || `${ baseUrl }/avatar/${ text }`;
-			const image = (avatar || baseUrl) && (
-				<CachedImage
-					style={[styles.avatar, avatarStyle]}
-					source={{ uri }}
-				/>
-			);
-			return (
-				<View style={[styles.iconContainer, iconContainerStyle, style]}>
-					<Text style={[styles.avatarInitials, avatarInitialsStyle]} allowFontScaling={false}>{initials}</Text>
-					{image}
-					{this.props.children}
-				</View>);
+		if (!text && !avatar) {
+			return null;
 		}
 
-		const icon = {
-			c: 'pound',
-			p: 'lock',
-			l: 'account'
-		}[type];
+		const room = type === 'd' ? text : `@${ text }`;
+
+		// Avoid requesting several sizes by having only two sizes on cache
+		const uriSize = size === 100 ? 100 : 50;
+
+		let avatarAuthURLFragment = '';
+		if (user && user.id && user.token) {
+			avatarAuthURLFragment = `&rc_token=${ user.token }&rc_uid=${ user.id }`;
+		}
+
+		const uri = avatar || `${ baseUrl }/avatar/${ room }?format=png&width=${ uriSize }&height=${ uriSize }${ avatarAuthURLFragment }`;
+
+		const image = (
+			<FastImage
+				style={avatarStyle}
+				source={{
+					uri,
+					priority: FastImage.priority.high
+				}}
+			/>
+		);
 
 		return (
-			<View style={[styles.iconContainer, iconContainerStyle, style]}>
-				<MaterialCommunityIcons name={icon} style={[styles.avatarInitials, avatarInitialsStyle]} />
+			<View style={[avatarStyle, style]}>
+				{image}
+				{children}
 			</View>
 		);
 	}

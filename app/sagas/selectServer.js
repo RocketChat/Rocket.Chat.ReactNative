@@ -1,66 +1,75 @@
-import { put, call, takeLatest, race, take } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
-import { AsyncStorage } from 'react-native';
+import { put, takeLatest } from 'redux-saga/effects';
+import { AsyncStorage, Alert } from 'react-native';
+
+import Navigation from '../lib/Navigation';
 import { SERVER } from '../actions/actionsTypes';
 import * as actions from '../actions';
-import { connectRequest, disconnect, disconnect_by_user } from '../actions/connect';
-import { changedServer, serverSuccess, serverFailure, serverRequest, setServer } from '../actions/server';
+import { serverFailure, selectServerRequest, selectServerSuccess } from '../actions/server';
+import { setRoles } from '../actions/roles';
+import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
-import * as NavigationService from '../containers/routes/NavigationService';
+import log from '../utils/log';
+import I18n from '../i18n';
 
-const validate = function* validate(server) {
-	return yield RocketChat.testServer(server);
-};
-
-const selectServer = function* selectServer({ server }) {
-	yield database.setActiveDB(server);
-	yield put(disconnect_by_user());
-	yield put(disconnect());
-	yield put(changedServer(server));
-	yield call([AsyncStorage, 'setItem'], 'currentServer', server);
-	const settings = database.objects('settings');
-	yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
-	const permissions = database.objects('permissions');
-	yield put(actions.setAllPermissions(RocketChat.parsePermissions(permissions.slice(0, permissions.length))));
-	yield put(connectRequest(server));
-};
-
-const validateServer = function* validateServer({ server }) {
+const handleSelectServer = function* handleSelectServer({ server }) {
 	try {
-		yield delay(1000);
-		yield call(validate, server);
-		yield put(serverSuccess());
+		yield AsyncStorage.setItem('currentServer', server);
+		const userStringified = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
+
+		if (userStringified) {
+			const user = JSON.parse(userStringified);
+			RocketChat.connect({ server, user });
+			yield put(setUser(user));
+			yield put(actions.appStart('inside'));
+		} else {
+			RocketChat.connect({ server });
+		}
+
+		const settings = database.objects('settings');
+		yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
+		const emojis = database.objects('customEmojis');
+		yield put(actions.setCustomEmojis(RocketChat.parseEmojis(emojis.slice(0, emojis.length))));
+		const roles = database.objects('roles');
+		yield put(setRoles(roles.reduce((result, role) => {
+			result[role._id] = role.description;
+			return result;
+		}, {})));
+
+		yield put(selectServerSuccess(server));
 	} catch (e) {
-		console.log(e);
-		yield put(serverFailure(e));
+		log('handleSelectServer', e);
 	}
 };
 
-const addServer = function* addServer({ server }) {
-	yield put(serverRequest(server));
+const handleServerRequest = function* handleServerRequest({ server }) {
+	try {
+		const result = yield RocketChat.testServer(server);
+		if (!result.success) {
+			Alert.alert(I18n.t('Oops'), I18n.t(result.message, result.messageOptions));
+			yield put(serverFailure());
+			return;
+		}
 
-	const { error } = yield race({
-		error: take(SERVER.FAILURE),
-		success: take(SERVER.SUCCESS)
-	});
-	if (!error) {
+		const loginServicesLength = yield RocketChat.getLoginServices(server);
+		if (loginServicesLength === 0) {
+			Navigation.navigate('LoginView');
+		} else {
+			Navigation.navigate('LoginSignupView');
+		}
+
 		database.databases.serversDB.write(() => {
-			database.databases.serversDB.create('servers', { id: server, current: false }, true);
+			database.databases.serversDB.create('servers', { id: server }, true);
 		});
-		yield put(setServer(server));
+		yield put(selectServerRequest(server));
+	} catch (e) {
+		yield put(serverFailure());
+		log('handleServerRequest', e);
 	}
-};
-
-const handleGotoAddServer = function* handleGotoAddServer() {
-	yield call(AsyncStorage.removeItem, RocketChat.TOKEN_KEY);
-	yield call(NavigationService.navigate, 'AddServer');
 };
 
 const root = function* root() {
-	yield takeLatest(SERVER.REQUEST, validateServer);
-	yield takeLatest(SERVER.SELECT, selectServer);
-	yield takeLatest(SERVER.ADD, addServer);
-	yield takeLatest(SERVER.GOTO_ADD, handleGotoAddServer);
+	yield takeLatest(SERVER.SELECT_REQUEST, handleSelectServer);
+	yield takeLatest(SERVER.REQUEST, handleServerRequest);
 };
 export default root;

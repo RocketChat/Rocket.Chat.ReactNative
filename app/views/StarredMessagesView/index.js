@@ -1,112 +1,185 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
-import ActionSheet from 'react-native-actionsheet';
+import ActionSheet from 'react-native-action-sheet';
+import { SafeAreaView } from 'react-navigation';
+import equal from 'deep-equal';
 
 import LoggedView from '../View';
-import { openStarredMessages, closeStarredMessages } from '../../actions/starredMessages';
 import styles from './styles';
-import Message from '../../containers/message';
-import { toggleStarRequest } from '../../actions/messages';
+import Message from '../../containers/message/Message';
+import RCActivityIndicator from '../../containers/ActivityIndicator';
+import I18n from '../../i18n';
+import RocketChat from '../../lib/rocketchat';
+import StatusBar from '../../containers/StatusBar';
 
 const STAR_INDEX = 0;
 const CANCEL_INDEX = 1;
-const options = ['Unstar', 'Cancel'];
+const options = [I18n.t('Unstar'), I18n.t('Cancel')];
 
-@connect(
-	state => ({
-		messages: state.starredMessages.messages,
-		user: state.login.user,
-		baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-	}),
-	dispatch => ({
-		openStarredMessages: rid => dispatch(openStarredMessages(rid)),
-		closeStarredMessages: () => dispatch(closeStarredMessages()),
-		toggleStarRequest: message => dispatch(toggleStarRequest(message))
-	})
-)
+@connect(state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	customEmojis: state.customEmojis,
+	room: state.room,
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	}
+}))
+/** @extends React.Component */
 export default class StarredMessagesView extends LoggedView {
+	static navigationOptions = {
+		title: I18n.t('Starred')
+	}
+
 	static propTypes = {
-		navigation: PropTypes.object,
-		messages: PropTypes.array,
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
-		openStarredMessages: PropTypes.func,
-		closeStarredMessages: PropTypes.func,
-		toggleStarRequest: PropTypes.func
+		customEmojis: PropTypes.object,
+		room: PropTypes.object
 	}
 
 	constructor(props) {
 		super('StarredMessagesView', props);
 		this.state = {
-			message: {}
+			loading: false,
+			messages: []
 		};
 	}
 
 	componentDidMount() {
-		this.props.openStarredMessages(this.props.navigation.state.params.rid);
+		this.load();
 	}
 
-	componentWillUnmount() {
-		this.props.closeStarredMessages();
+	shouldComponentUpdate(nextProps, nextState) {
+		const { loading, messages } = this.state;
+		if (nextState.loading !== loading) {
+			return true;
+		}
+		if (!equal(nextState.messages, messages)) {
+			return true;
+		}
+		return false;
 	}
 
 	onLongPress = (message) => {
 		this.setState({ message });
-		this.actionSheet.show();
+		this.showActionSheet();
+	}
+
+	showActionSheet = () => {
+		ActionSheet.showActionSheetWithOptions({
+			options,
+			cancelButtonIndex: CANCEL_INDEX,
+			title: I18n.t('Actions')
+		}, (actionIndex) => {
+			this.handleActionPress(actionIndex);
+		});
 	}
 
 	handleActionPress = (actionIndex) => {
 		switch (actionIndex) {
 			case STAR_INDEX:
-				this.props.toggleStarRequest(this.state.message);
+				this.unStar();
 				break;
 			default:
 				break;
 		}
 	}
 
+	unStar = async() => {
+		const { message } = this.state;
+		try {
+			const result = await RocketChat.toggleStarMessage(message);
+			if (result.success) {
+				this.setState(prevState => ({
+					messages: prevState.messages.filter(item => item._id !== message._id)
+				}));
+			}
+		} catch (error) {
+			console.log('StarredMessagesView -> unStar -> catch -> error', error);
+		}
+	}
+
+	load = async() => {
+		const {
+			messages, total, loading
+		} = this.state;
+		const { user } = this.props;
+		if (messages.length === total || loading) {
+			return;
+		}
+
+		this.setState({ loading: true });
+
+		try {
+			const { room } = this.props;
+			const result = await RocketChat.getMessages(
+				room.rid,
+				room.t,
+				{ 'starred._id': { $in: [user.id] } },
+				messages.length
+			);
+			if (result.success) {
+				this.setState(prevState => ({
+					messages: [...prevState.messages, ...result.messages],
+					total: result.total,
+					loading: false
+				}));
+			}
+		} catch (error) {
+			this.setState({ loading: false });
+			console.log('StarredMessagesView -> load -> catch -> error', error);
+		}
+	}
+
 	renderEmpty = () => (
-		<View style={styles.listEmptyContainer}>
-			<Text>No starred messages</Text>
+		<View style={styles.listEmptyContainer} testID='starred-messages-view'>
+			<Text>{I18n.t('No_starred_messages')}</Text>
 		</View>
 	)
 
-	renderItem = ({ item }) => (
-		<Message
-			item={item}
-			style={styles.message}
-			reactions={item.reactions}
-			user={this.props.user}
-			baseUrl={this.props.baseUrl}
-			Message_TimeFormat='MMMM Do YYYY, h:mm:ss a'
-			onLongPress={this.onLongPress}
-		/>
-	)
+	renderItem = ({ item }) => {
+		const { user, customEmojis, baseUrl } = this.props;
+		return (
+			<Message
+				style={styles.message}
+				customEmojis={customEmojis}
+				baseUrl={baseUrl}
+				user={user}
+				author={item.u}
+				ts={item.ts}
+				msg={item.msg}
+				attachments={item.attachments || []}
+				timeFormat='MMM Do YYYY, h:mm:ss a'
+				edited={!!item.editedAt}
+				header
+				onLongPress={() => this.onLongPress(item)}
+			/>
+		);
+	}
 
 	render() {
-		if (this.props.messages.length === 0) {
+		const { messages, loading } = this.state;
+
+		if (!loading && messages.length === 0) {
 			return this.renderEmpty();
 		}
+
 		return (
-			[
+			<SafeAreaView style={styles.list} testID='starred-messages-view' forceInset={{ bottom: 'never' }}>
+				<StatusBar />
 				<FlatList
-					key='starred-messages-view-list'
-					data={this.props.messages}
+					data={messages}
 					renderItem={this.renderItem}
 					style={styles.list}
 					keyExtractor={item => item._id}
-				/>,
-				<ActionSheet
-					key='starred-messages-view-action-sheet'
-					ref={o => this.actionSheet = o}
-					title='Actions'
-					options={options}
-					cancelButtonIndex={CANCEL_INDEX}
-					onPress={this.handleActionPress}
+					onEndReached={this.load}
+					ListFooterComponent={loading ? <RCActivityIndicator /> : null}
 				/>
-			]
+			</SafeAreaView>
 		);
 	}
 }

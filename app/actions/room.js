@@ -35,17 +35,19 @@ export function closeRoom() {
 	};
 }
 
-export function leaveRoom(rid) {
+export function leaveRoom(rid, t) {
 	return {
 		type: types.ROOM.LEAVE,
-		rid
+		rid,
+		t
 	};
 }
 
-export function eraseRoom(rid) {
+export function eraseRoom(rid, t) {
 	return {
 		type: types.ROOM.ERASE,
-		rid
+		rid,
+		t
 	};
 }
 
@@ -67,11 +69,5 @@ export function setLastOpen(date = new Date()) {
 	return {
 		type: types.ROOM.SET_LAST_OPEN,
 		date
-	};
-}
-
-export function layoutAnimation() {
-	return {
-		type: types.ROOM.LAYOUT_ANIMATION
 	};
 }

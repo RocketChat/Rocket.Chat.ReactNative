@@ -2,128 +2,93 @@ import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
-
 import { connect } from 'react-redux';
-import SimpleMarkdown from 'simple-markdown';
+import { emojify } from 'react-emojione';
+import { RectButton } from 'react-native-gesture-handler';
 
 import Avatar from '../containers/Avatar';
-import Status from '../containers/status';
-import Touch from '../utils/touch/index'; //eslint-disable-line
-import Markdown from '../containers/message/Markdown';
+import Status from '../containers/Status';
+import RoomTypeIcon from '../containers/RoomTypeIcon';
+import I18n from '../i18n';
+import { isIOS } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
-		paddingHorizontal: 16,
-		paddingVertical: 12,
 		alignItems: 'center',
-		borderBottomWidth: 0.5,
-		borderBottomColor: '#ddd'
+		marginHorizontal: 15
 	},
-	number: {
-		minWidth: 25,
+	centerContainer: {
+		flex: 1,
+		height: '100%'
+	},
+	title: {
+		flex: 1,
+		fontSize: 18,
+		color: '#0C0D0F',
+		fontWeight: '400',
+		marginRight: 5,
+		paddingTop: 0,
+		paddingBottom: 0
+	},
+	alert: {
+		fontWeight: '600'
+	},
+	row: {
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'flex-start'
+	},
+	titleContainer: {
+		width: '100%',
+		marginTop: isIOS ? 5 : 2,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	date: {
+		fontSize: 14,
+		color: '#9EA2A8',
+		fontWeight: 'normal',
+		paddingTop: 0,
+		paddingBottom: 0
+	},
+	updateAlert: {
+		color: '#1D74F5',
+		fontWeight: '700'
+	},
+	unreadNumberContainer: {
+		minWidth: 23,
+		padding: 3,
 		borderRadius: 4,
-		backgroundColor: '#1d74f5',
+		backgroundColor: '#1D74F5',
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	unreadNumberText: {
 		color: '#fff',
 		overflow: 'hidden',
 		fontSize: 14,
-		paddingVertical: 4,
-		paddingHorizontal: 5,
-
-		textAlign: 'center',
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	roomNameView: {
-		flex: 1,
-		height: '100%',
-		marginLeft: 16,
-		marginRight: 4
-	},
-	roomName: {
-		flex: 1,
-		fontSize: 18,
-		color: '#444',
-
-		marginRight: 8
-	},
-	lastMessage: {
-		flex: 1,
-		flexShrink: 1,
-		marginRight: 8,
-		maxHeight: 20,
-		overflow: 'hidden',
-		flexDirection: 'row',
-		alignItems: 'flex-start',
-		justifyContent: 'flex-start'
-	},
-	alert: {
-		fontWeight: 'bold'
-	},
-	favorite: {
-		// backgroundColor: '#eee'
-	},
-	row: {
-		width: '100%',
-		flex: 1,
-		flexDirection: 'row',
-		alignItems: 'flex-end',
-		justifyContent: 'flex-end'
-	},
-	firstRow: {
-		width: '100%',
-		flex: 1,
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	update: {
-		fontSize: 10,
-		color: '#888',
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	updateAlert: {
-		color: '#1d74f5'
+		fontWeight: '500',
+		letterSpacing: 0.56
 	},
 	status: {
-		position: 'absolute',
-		bottom: -3,
-		right: -3,
-		borderWidth: 3,
-		borderColor: '#fff'
+		marginRight: 7,
+		marginTop: 3
+	},
+	markdownText: {
+		flex: 1,
+		color: '#9EA2A8',
+		fontSize: 15,
+		fontWeight: 'normal'
+	},
+	markdownTextAlert: {
+		color: '#0C0D0F'
+	},
+	avatar: {
+		marginRight: 10
 	}
 });
-const markdownStyle = { block: { marginBottom: 0, flexWrap: 'wrap', flexDirection: 'row' } };
-
-const parseInline = (parse, content, state) => {
-	const isCurrentlyInline = state.inline || false;
-	state.inline = true;
-	const result = parse(content, state);
-	state.inline = isCurrentlyInline;
-	return result;
-};
-const parseCaptureInline = (capture, parse, state) => ({ content: parseInline(parse, capture[1], state) });
-const customRules = {
-	strong: {
-		order: -4,
-		match: SimpleMarkdown.inlineRegex(/^\*\*([\s\S]+?)\*\*(?!\*)/),
-		parse: parseCaptureInline,
-		react: (node, output, state) => ({
-			type: 'strong',
-			key: state.key,
-			props: {
-				children: output(node.content, state)
-			}
-		})
-	},
-	text: {
-		order: -3,
-		match: SimpleMarkdown.inlineRegex(/^[\s\S]+?(?=[^0-9A-Za-z\s\u00c0-\uffff]|\n\n| {2,}\n|\w+:\S|$)/),
-		parse: capture => ({ content: capture[0] }),
-		react: node => node.content
-	}
-};
 
 const renderNumber = (unread, userMentions) => {
 	if (!unread || unread <= 0) {
@@ -139,23 +104,29 @@ const renderNumber = (unread, userMentions) => {
 	}
 
 	return (
-		<Text style={styles.number}>
-			{ unread }
-		</Text>
+		<View style={styles.unreadNumberContainer}>
+			<Text style={styles.unreadNumberText}>{ unread }</Text>
+		</View>
 	);
 };
 
+const attrs = ['name', 'unread', 'userMentions', 'StoreLastMessage', 'alert', 'type'];
 @connect(state => ({
-	user: state.login && state.login.user,
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	},
 	StoreLastMessage: state.settings.Store_Last_Message,
-	customEmojis: state.customEmojis
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }))
-export default class RoomItem extends React.PureComponent {
+export default class RoomItem extends React.Component {
 	static propTypes = {
 		type: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
+		baseUrl: PropTypes.string.isRequired,
 		StoreLastMessage: PropTypes.bool,
-		_updatedAt: PropTypes.instanceOf(Date),
+		_updatedAt: PropTypes.string,
 		lastMessage: PropTypes.object,
 		favorite: PropTypes.bool,
 		alert: PropTypes.bool,
@@ -163,44 +134,86 @@ export default class RoomItem extends React.PureComponent {
 		userMentions: PropTypes.number,
 		id: PropTypes.string,
 		onPress: PropTypes.func,
-		customEmojis: PropTypes.object,
-		user: PropTypes.object
+		user: PropTypes.shape({
+			id: PropTypes.string,
+			username: PropTypes.string,
+			token: PropTypes.string
+		}),
+		avatarSize: PropTypes.number,
+		testID: PropTypes.string,
+		height: PropTypes.number
 	}
 
-	get icon() {
+	static defaultProps = {
+		avatarSize: 48
+	}
+
+	shouldComponentUpdate(nextProps) {
+		const { lastMessage, _updatedAt } = this.props;
+		const oldlastMessage = lastMessage;
+		const newLastmessage = nextProps.lastMessage;
+
+		if (oldlastMessage && newLastmessage && oldlastMessage.ts !== newLastmessage.ts) {
+			return true;
+		}
+		if (_updatedAt && nextProps._updatedAt && nextProps._updatedAt !== _updatedAt) {
+			return true;
+		}
+		// eslint-disable-next-line react/destructuring-assignment
+		return attrs.some(key => nextProps[key] !== this.props[key]);
+	}
+
+	get avatar() {
 		const {
-			type, name, id
+			type, name, avatarSize, baseUrl, user
 		} = this.props;
-		return (<Avatar text={name} size={46} type={type}>{type === 'd' ? <Status style={styles.status} id={id} /> : null }</Avatar>);
+		return <Avatar text={name} size={avatarSize} type={type} baseUrl={baseUrl} style={styles.avatar} user={user} />;
 	}
 
 	get lastMessage() {
 		const {
-			lastMessage, type
+			lastMessage, type, StoreLastMessage, user
 		} = this.props;
 
-		if (!this.props.StoreLastMessage) {
+		if (!StoreLastMessage) {
 			return '';
 		}
 		if (!lastMessage) {
-			return 'No Message';
+			return I18n.t('No_Message');
 		}
 
 		let prefix = '';
+		const me = lastMessage.u.username === user.username;
 
-		if (lastMessage.u.username === this.props.user.username) {
-			prefix = 'You: ';
+		if (!lastMessage.msg && Object.keys(lastMessage.attachments).length > 0) {
+			if (me) {
+				return I18n.t('User_sent_an_attachment', { user: I18n.t('You') });
+			} else {
+				return I18n.t('User_sent_an_attachment', { user: lastMessage.u.username });
+			}
+		}
+
+		if (me) {
+			prefix = I18n.t('You_colon');
 		}	else if (type !== 'd') {
 			prefix = `${ lastMessage.u.username }: `;
 		}
 
-		const msg = `${ prefix }${ lastMessage.msg.replace(/[\n\t\r]/igm, '') }`;
-		const maxChars = 35;
-		return `${ msg.slice(0, maxChars) }${ msg.replace(/:[a-z0-9]+:/gi, ':::').length > maxChars ? '...' : '' }`;
+		let msg = `${ prefix }${ lastMessage.msg.replace(/[\n\t\r]/igm, '') }`;
+		msg = emojify(msg, { output: 'unicode' });
+		return msg;
+	}
+
+	get type() {
+		const { type, id } = this.props;
+		if (type === 'd') {
+			return <Status style={styles.status} size={10} id={id} />;
+		}
+		return <RoomTypeIcon type={type} />;
 	}
 
 	formatDate = date => moment(date).calendar(null, {
-		lastDay: '[Yesterday]',
+		lastDay: `[${ I18n.t('Yesterday') }]`,
 		sameDay: 'h:mm A',
 		lastWeek: 'dddd',
 		sameElse: 'MMM D'
@@ -208,48 +221,53 @@ export default class RoomItem extends React.PureComponent {
 
 	render() {
 		const {
-			favorite, unread, userMentions, name, _updatedAt, customEmojis, alert
+			favorite, unread, userMentions, name, _updatedAt, alert, testID, height, onPress
 		} = this.props;
 
 		const date = this.formatDate(_updatedAt);
 
 		let accessibilityLabel = name;
 		if (unread === 1) {
-			accessibilityLabel += `, ${ unread } alert`;
+			accessibilityLabel += `, ${ unread } ${ I18n.t('alert') }`;
 		} else if (unread > 1) {
-			accessibilityLabel += `, ${ unread } alerts`;
+			accessibilityLabel += `, ${ unread } ${ I18n.t('alerts') }`;
 		}
 
 		if (userMentions > 0) {
-			accessibilityLabel += ', you were mentioned';
+			accessibilityLabel += `, ${ I18n.t('you_were_mentioned') }`;
 		}
 
-		accessibilityLabel += `, last message ${ date }`;
+		if (date) {
+			accessibilityLabel += `, ${ I18n.t('last_message') } ${ date }`;
+		}
 
 		return (
-			<Touch onPress={this.props.onPress} underlayColor='#FFFFFF' activeOpacity={0.5} accessibilityLabel={accessibilityLabel} accessibilityTraits='selected'>
-				<View style={[styles.container, favorite && styles.favorite]}>
-					{this.icon}
-					<View style={styles.roomNameView}>
-						<View style={styles.firstRow}>
-							<Text style={[styles.roomName, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
-							{_updatedAt ? <Text style={[styles.update, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
+			<RectButton
+				onPress={onPress}
+				activeOpacity={0.8}
+				underlayColor='#e1e5e8'
+				testID={testID}
+			>
+				<View
+					style={[styles.container, favorite && styles.favorite, height && { height }]}
+					accessibilityLabel={accessibilityLabel}
+				>
+					{this.avatar}
+					<View style={styles.centerContainer}>
+						<View style={styles.titleContainer}>
+							{this.type}
+							<Text style={[styles.title, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
+							{_updatedAt ? <Text style={[styles.date, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
 						</View>
 						<View style={styles.row}>
-							<Markdown
-								msg={this.lastMessage}
-								customEmojis={customEmojis}
-								style={styles.lastMessage}
-								markdownStyle={markdownStyle}
-								customRules={customRules}
-								renderInline
-								numberOfLines={1}
-							/>
+							<Text style={[styles.markdownText, alert && styles.markdownTextAlert]} numberOfLines={2}>
+								{this.lastMessage}
+							</Text>
 							{renderNumber(unread, userMentions)}
 						</View>
 					</View>
 				</View>
-			</Touch>
+			</RectButton>
 		);
 	}
 }

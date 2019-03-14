@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Rocket.Chat.ReactNative</string>
+	<string>Rocket.Chat Experimental</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -17,15 +17,28 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.0</string>
+	<string>1.10.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>rocketchat</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>rocketchat</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>100</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
-		<string>YOUR_API_KEY</string>
+		<string>ef3f46fdf18479fd3e1b9b78d0ec73751a255e14</string>
 		<key>Kits</key>
 		<array>
 			<dict>
@@ -52,29 +65,15 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Upload images from camera</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Take photos to share with other users</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>This app uses the microphone to record audio message.</string>
+	<string>Use your microphone to record audio messages</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Upload images from library</string>
+	<string>Upload photos to share with other users or to change your avatar</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Entypo.ttf</string>
-		<string>EvilIcons.ttf</string>
-		<string>FontAwesome.ttf</string>
-		<string>Foundation.ttf</string>
-		<string>Ionicons.ttf</string>
-		<string>MaterialCommunityIcons.ttf</string>
-		<string>MaterialIcons.ttf</string>
-		<string>Octicons.ttf</string>
-		<string>SimpleLineIcons.ttf</string>
-		<string>Zocial.ttf</string>
-		<string>icomoon.ttf</string>
+		<string>custom.ttf</string>
 	</array>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

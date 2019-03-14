@@ -9,7 +9,9 @@ const serversSchema = {
 	primaryKey: 'id',
 	properties: {
 		id: 'string',
-		current: 'bool'
+		name: { type: 'string', optional: true },
+		iconURL: { type: 'string', optional: true },
+		roomsUpdatedAt: { type: 'date', optional: true }
 	}
 };
 
@@ -21,7 +23,6 @@ const settingsSchema = {
 		valueAsString: { type: 'string', optional: true },
 		valueAsBoolean: { type: 'bool', optional: true },
 		valueAsNumber: { type: 'int', optional: true },
-
 		_updatedAt: { type: 'date', optional: true }
 	}
 };
@@ -49,14 +50,20 @@ const roomsSchema = {
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
-		t: 'string',
-		lastMessage: 'messages',
-		_updatedAt: { type: 'date', optional: true }
+		broadcast: { type: 'bool', optional: true }
 	}
 };
 
 const subscriptionRolesSchema = {
 	name: 'subscriptionRolesSchema',
+	primaryKey: 'value',
+	properties: {
+		value: 'string'
+	}
+};
+
+const userMutedInRoomSchema = {
+	name: 'usersMuted',
 	primaryKey: 'value',
 	properties: {
 		value: 'string'
@@ -88,9 +95,13 @@ const subscriptionSchema = {
 		announcement: { type: 'string', optional: true },
 		topic: { type: 'string', optional: true },
 		blocked: { type: 'bool', optional: true },
+		blocker: { type: 'bool', optional: true },
 		reactWhenReadOnly: { type: 'bool', optional: true },
 		archived: { type: 'bool', optional: true },
-		joinCodeRequired: { type: 'bool', optional: true }
+		joinCodeRequired: { type: 'bool', optional: true },
+		notifications: { type: 'bool', optional: true },
+		muted: { type: 'list', objectType: 'usersMuted' },
+		broadcast: { type: 'bool', optional: true }
 	}
 };
 
@@ -100,7 +111,8 @@ const usersSchema = {
 	properties: {
 		_id: 'string',
 		username: 'string',
-		name: { type: 'string', optional: true }
+		name: { type: 'string', optional: true },
+		avatarVersion: { type: 'int', optional: true }
 	}
 };
 
@@ -128,7 +140,7 @@ const attachment = {
 		video_url: { type: 'string', optional: true },
 		title: { type: 'string', optional: true },
 		title_link: { type: 'string', optional: true },
-		title_link_download: { type: 'bool', optional: true },
+		// title_link_download: { type: 'bool', optional: true },
 		type: { type: 'string', optional: true },
 		author_icon: { type: 'string', optional: true },
 		author_name: { type: 'string', optional: true },
@@ -137,7 +149,9 @@ const attachment = {
 		color: { type: 'string', optional: true },
 		ts: { type: 'date', optional: true },
 		attachments: { type: 'list', objectType: 'attachment' },
-		fields: { type: 'list', objectType: 'attachmentFields' }
+		fields: {
+			type: 'list', objectType: 'attachmentFields', default: []
+		}
 	}
 };
 
@@ -163,8 +177,9 @@ const messagesReactionsUsernamesSchema = {
 
 const messagesReactionsSchema = {
 	name: 'messagesReactions',
-	primaryKey: 'emoji',
+	primaryKey: '_id',
 	properties: {
+		_id: 'string',
 		emoji: 'string',
 		usernames: { type: 'list', objectType: 'messagesReactionsUsernames' }
 	}
@@ -247,6 +262,22 @@ const rolesSchema = {
 	}
 };
 
+const uploadsSchema = {
+	name: 'uploads',
+	primaryKey: 'path',
+	properties: {
+		path: 'string',
+		rid: 'string',
+		name: { type: 'string', optional: true },
+		description: { type: 'string', optional: true },
+		size: { type: 'int', optional: true },
+		type: { type: 'string', optional: true },
+		store: { type: 'string', optional: true },
+		progress: { type: 'int', default: 1 },
+		error: { type: 'bool', default: false }
+	}
+};
+
 const schema = [
 	settingsSchema,
 	subscriptionSchema,
@@ -265,8 +296,11 @@ const schema = [
 	customEmojisSchema,
 	messagesReactionsSchema,
 	messagesReactionsUsernamesSchema,
-	rolesSchema
+	rolesSchema,
+	userMutedInRoomSchema,
+	uploadsSchema
 ];
+
 class DB {
 	databases = {
 		serversDB: new Realm({
@@ -274,41 +308,41 @@ class DB {
 			schema: [
 				serversSchema
 			],
-			deleteRealmIfMigrationNeeded: true
+			schemaVersion: 1
 		})
-	};
+	}
+
 	deleteAll(...args) {
 		return this.database.write(() => this.database.deleteAll(...args));
 	}
+
 	delete(...args) {
 		return this.database.delete(...args);
 	}
+
 	write(...args) {
 		return this.database.write(...args);
 	}
+
 	create(...args) {
 		return this.database.create(...args);
 	}
+
 	objects(...args) {
 		return this.database.objects(...args);
 	}
+
 	get database() {
 		return this.databases.activeDB;
 	}
 
-	setActiveDB(database) {
+	setActiveDB(database = '') {
 		const path = database.replace(/(^\w+:|^)\/\//, '');
 		return this.databases.activeDB = new Realm({
 			path: `${ path }.realm`,
 			schema,
-			deleteRealmIfMigrationNeeded: true
+			schemaVersion: 1
 		});
 	}
 }
 export default new DB();
-
-// realm.write(() => {
-// 	realm.create('servers', { id: 'https://open.rocket.chat', current: false }, true);
-// 	realm.create('servers', { id: 'http://localhost:3000', current: false }, true);
-// 	realm.create('servers', { id: 'http://10.0.2.2:3000', current: false }, true);
-// });

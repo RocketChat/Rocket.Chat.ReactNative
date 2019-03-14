@@ -1,71 +1,59 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, TouchableOpacity, Text, Easing } from 'react-native';
+import {
+	View, StyleSheet, Text, Easing
+} from 'react-native';
 import Video from 'react-native-video';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import Slider from 'react-native-slider';
-import Markdown from './Markdown';
+import moment from 'moment';
+import { BorderlessButton } from 'react-native-gesture-handler';
+import equal from 'deep-equal';
 
+import Markdown from './Markdown';
+import { CustomIcon } from '../../lib/Icons';
 
 const styles = StyleSheet.create({
 	audioContainer: {
 		flex: 1,
 		flexDirection: 'row',
-		justifyContent: 'center',
 		alignItems: 'center',
-		height: 50,
-		margin: 5,
-		backgroundColor: '#eee',
-		borderRadius: 6
+		height: 56,
+		backgroundColor: '#f7f8fa',
+		borderRadius: 4,
+		marginBottom: 10
 	},
 	playPauseButton: {
-		width: 50,
+		width: 56,
 		alignItems: 'center',
-		backgroundColor: 'transparent',
-		borderRightColor: '#ccc',
-		borderRightWidth: 1
-	},
-	playPauseIcon: {
-		color: '#ccc',
 		backgroundColor: 'transparent'
 	},
-	progressContainer: {
+	playPauseImage: {
+		color: '#1D74F5'
+	},
+	slider: {
 		flex: 1,
-		justifyContent: 'center',
-		height: '100%',
-		marginHorizontal: 10
-	},
-	label: {
-		color: '#888',
-		fontSize: 10
-	},
-	currentTime: {
-		position: 'absolute',
-		left: 0,
-		bottom: 2
+		marginRight: 10
 	},
 	duration: {
-		position: 'absolute',
-		right: 0,
-		bottom: 2
+		marginRight: 16,
+		fontSize: 14,
+		fontWeight: '500',
+		color: '#54585e'
+	},
+	thumbStyle: {
+		width: 12,
+		height: 12
 	}
 });
 
-const formatTime = (t = 0, duration = 0) => {
-	const time = Math.min(
-		Math.max(t, 0),
-		duration
-	);
-	const formattedMinutes = Math.floor(time / 60).toFixed(0).padStart(2, 0);
-	const formattedSeconds = Math.floor(time % 60).toFixed(0).padStart(2, 0);
-	return `${ formattedMinutes }:${ formattedSeconds }`;
-};
+const formatTime = seconds => moment.utc(seconds * 1000).format('mm:ss');
 
-export default class Audio extends React.PureComponent {
+export default class Audio extends React.Component {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
-		user: PropTypes.object.isRequired
+		user: PropTypes.object.isRequired,
+		customEmojis: PropTypes.object.isRequired
 	}
 
 	constructor(props) {
@@ -82,12 +70,36 @@ export default class Audio extends React.PureComponent {
 		};
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		const {
+			currentTime, duration, paused, uri
+		} = this.state;
+		const { file } = this.props;
+		if (nextState.currentTime !== currentTime) {
+			return true;
+		}
+		if (nextState.duration !== duration) {
+			return true;
+		}
+		if (nextState.paused !== paused) {
+			return true;
+		}
+		if (nextState.uri !== uri) {
+			return true;
+		}
+		if (!equal(nextProps.file, file)) {
+			return true;
+		}
+		return false;
+	}
+
 	onLoad(data) {
 		this.setState({ duration: data.duration > 0 ? data.duration : 0 });
 	}
 
 	onProgress(data) {
-		if (data.currentTime < this.state.duration) {
+		const { duration } = this.state;
+		if (data.currentTime <= duration) {
 			this.setState({ currentTime: data.currentTime });
 		}
 	}
@@ -99,24 +111,32 @@ export default class Audio extends React.PureComponent {
 		});
 	}
 
-	getCurrentTime() {
-		return formatTime(this.state.currentTime, this.state.duration);
-	}
-
 	getDuration() {
-		return formatTime(this.state.duration);
+		const { duration } = this.state;
+		return formatTime(duration);
 	}
 
 	togglePlayPause() {
-		this.setState({ paused: !this.state.paused });
+		const { paused } = this.state;
+		this.setState({ paused: !paused });
 	}
 
 	render() {
-		const { uri, paused } = this.state;
-		const { description } = this.props.file;
+		const {
+			uri, paused, currentTime, duration
+		} = this.state;
+		const {
+			user, baseUrl, customEmojis, file
+		} = this.props;
+		const { description } = file;
+
+		if (!baseUrl) {
+			return null;
+		}
+
 		return (
-			<View>
-				<View style={styles.audioContainer}>
+			[
+				<View key='audio' style={styles.audioContainer}>
 					<Video
 						ref={(ref) => {
 							this.player = ref;
@@ -128,35 +148,36 @@ export default class Audio extends React.PureComponent {
 						paused={paused}
 						repeat={false}
 					/>
-					<TouchableOpacity
+					<BorderlessButton
 						style={styles.playPauseButton}
 						onPress={() => this.togglePlayPause()}
 					>
 						{
-							paused ? <Icon name='play-arrow' size={50} style={styles.playPauseIcon} />
-								: <Icon name='pause' size={47} style={styles.playPauseIcon} />
+							paused
+								? <CustomIcon name='play' size={30} style={styles.playPauseImage} />
+								: <CustomIcon name='pause' size={30} style={styles.playPauseImage} />
 						}
-					</TouchableOpacity>
-					<View style={styles.progressContainer}>
-						<Text style={[styles.label, styles.currentTime]}>{this.getCurrentTime()}</Text>
-						<Text style={[styles.label, styles.duration]}>{this.getDuration()}</Text>
-						<Slider
-							value={this.state.currentTime}
-							maximumValue={this.state.duration}
-							minimumValue={0}
-							animateTransitions
-							animationConfig={{
-								duration: 250,
-								easing: Easing.linear,
-								delay: 0
-							}}
-							thumbTintColor='#ccc'
-							onValueChange={value => this.setState({ currentTime: value })}
-						/>
-					</View>
-				</View>
-				<Markdown msg={description} />
-			</View>
+					</BorderlessButton>
+					<Slider
+						style={styles.slider}
+						value={currentTime}
+						maximumValue={duration}
+						minimumValue={0}
+						animateTransitions
+						animationConfig={{
+							duration: 250,
+							easing: Easing.linear,
+							delay: 0
+						}}
+						thumbTintColor='#1d74f5'
+						minimumTrackTintColor='#1d74f5'
+						onValueChange={value => this.setState({ currentTime: value })}
+						thumbStyle={styles.thumbStyle}
+					/>
+					<Text style={styles.duration}>{this.getDuration()}</Text>
+				</View>,
+				<Markdown key='description' msg={description} baseUrl={baseUrl} customEmojis={customEmojis} username={user.username} />
+			]
 		);
 	}
 }

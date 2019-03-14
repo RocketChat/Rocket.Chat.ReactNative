@@ -1,4 +1,6 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
+
+import { isIOS } from '../../utils/deviceInfo';
 
 const MENTION_HEIGHT = 50;
 
@@ -11,6 +13,12 @@ export default StyleSheet.create({
 		borderTopColor: '#D8D8D8',
 		zIndex: 2
 	},
+	composer: {
+		backgroundColor: '#fff',
+		flexDirection: 'column',
+		borderTopColor: '#e1e5e8',
+		borderTopWidth: 1
+	},
 	textArea: {
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -19,39 +27,38 @@ export default StyleSheet.create({
 	},
 	textBoxInput: {
 		textAlignVertical: 'center',
-		maxHeight: 120,
+		maxHeight: 242,
 		flexGrow: 1,
 		width: 1,
-		paddingTop: 15,
-		paddingBottom: 15,
+		// paddingVertical: 12, needs to be paddingTop/paddingBottom because of iOS/Android's TextInput differences on rendering
+		paddingTop: 12,
+		paddingBottom: 12,
 		paddingLeft: 0,
-		paddingRight: 0
+		paddingRight: 0,
+		fontSize: 17,
+		letterSpacing: 0,
+		color: '#2f343d'
 	},
 	editing: {
 		backgroundColor: '#fff5df'
 	},
-	actionButtons: {
-		color: '#2F343D',
-		fontSize: 20,
-		textAlign: 'center',
-		padding: 15,
-		paddingHorizontal: 21,
-		flex: 0
+	actionButton: {
+		alignItems: 'center',
+		justifyContent: 'center',
+		width: 60,
+		height: 56
 	},
 	mentionList: {
-		maxHeight: MENTION_HEIGHT * 4,
-		borderTopColor: '#ECECEC',
-		borderTopWidth: 1,
-		paddingHorizontal: 5,
-		backgroundColor: '#fff'
+		maxHeight: MENTION_HEIGHT * 4
 	},
 	mentionItem: {
 		height: MENTION_HEIGHT,
 		backgroundColor: '#F7F8FA',
-		borderBottomWidth: 1,
-		borderBottomColor: '#ECECEC',
+		borderTopWidth: 1,
+		borderTopColor: '#ECECEC',
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingHorizontal: 5
 	},
 	mentionItemCustomEmoji: {
 		margin: 8,
@@ -61,7 +68,7 @@ export default StyleSheet.create({
 	mentionItemEmoji: {
 		width: 46,
 		height: 36,
-		fontSize: Platform.OS === 'ios' ? 30 : 25,
+		fontSize: isIOS ? 30 : 25,
 		textAlign: 'center'
 	},
 	fixedMentionAvatar: {

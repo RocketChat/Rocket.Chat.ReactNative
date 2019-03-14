@@ -2,14 +2,8 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
 	container: {
+		flex: 1,
 		backgroundColor: '#F6F7F9'
-	},
-	headerButton: {
-		backgroundColor: 'transparent',
-		height: 44,
-		width: 44,
-		alignItems: 'center',
-		justifyContent: 'center'
 	},
 	sectionItem: {
 		backgroundColor: '#ffffff',
@@ -21,7 +15,7 @@ export default StyleSheet.create({
 		opacity: 0.3
 	},
 	sectionItemIcon: {
-		width: 45,
+		width: 56,
 		textAlign: 'center'
 	},
 	sectionItemName: {
@@ -57,5 +51,9 @@ export default StyleSheet.create({
 	roomDescription: {
 		fontSize: 12,
 		color: '#ccc'
+	},
+	roomTitleRow: {
+		flexDirection: 'row',
+		alignItems: 'center'
 	}
 });

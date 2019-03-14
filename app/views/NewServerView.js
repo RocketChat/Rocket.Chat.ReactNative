@@ -1,73 +1,137 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, TouchableOpacity, ScrollView, TextInput } from 'react-native';
+import {
+	Text, ScrollView, Keyboard, Image, StyleSheet, TouchableOpacity
+} from 'react-native';
 import { connect } from 'react-redux';
-import { serverRequest, addServer } from '../actions/server';
-import KeyboardView from '../presentation/KeyboardView';
-import styles from './Styles';
+import { SafeAreaView } from 'react-navigation';
+
+import { serverRequest } from '../actions/server';
+import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
+import Button from '../containers/Button';
+import TextInput from '../containers/TextInput';
+import LoggedView from './View';
+import I18n from '../i18n';
+import { verticalScale, moderateScale } from '../utils/scaling';
+import KeyboardView from '../presentation/KeyboardView';
+import { isIOS, isNotch } from '../utils/deviceInfo';
+// import { LIGHT_HEADER } from '../constants/headerOptions';
+import { CustomIcon } from '../lib/Icons';
+import StatusBar from '../containers/StatusBar';
+
+const styles = StyleSheet.create({
+	image: {
+		alignSelf: 'center',
+		marginVertical: verticalScale(20),
+		width: 210,
+		height: 171
+	},
+	title: {
+		...sharedStyles.textBold,
+		fontSize: moderateScale(22),
+		letterSpacing: 0,
+		color: '#2F343D',
+		alignSelf: 'center'
+	},
+	inputContainer: {
+		marginTop: 25,
+		marginBottom: 15
+	},
+	input: {
+		...sharedStyles.textRegular,
+		fontSize: 17,
+		letterSpacing: 0,
+		color: '#9EA2A8',
+		paddingTop: 14,
+		paddingBottom: 14,
+		paddingLeft: 16,
+		paddingRight: 16
+	},
+	backButton: {
+		position: 'absolute',
+		paddingHorizontal: 9,
+		left: 15
+	}
+});
+
+const defaultServer = 'https://open.rocket.chat';
 
 @connect(state => ({
-	validInstance: !state.server.failure && !state.server.connecting,
-	validating: state.server.connecting
+	connecting: state.server.connecting
 }), dispatch => ({
-	validateServer: url => dispatch(serverRequest(url)),
-	addServer: url => dispatch(addServer(url))
+	connectServer: server => dispatch(serverRequest(server))
 }))
-export default class NewServerView extends React.Component {
-	static propTypes = {
-		validateServer: PropTypes.func.isRequired,
-		addServer: PropTypes.func.isRequired,
-		validating: PropTypes.bool.isRequired,
-		validInstance: PropTypes.bool.isRequired,
-		navigation: PropTypes.object.isRequired
-	}
-
+/** @extends React.Component */
+export default class NewServerView extends LoggedView {
 	static navigationOptions = () => ({
-		title: 'New Server Connection'
-	});
+		header: null
+	})
+
+	static propTypes = {
+		navigation: PropTypes.object,
+		server: PropTypes.string,
+		connecting: PropTypes.bool.isRequired,
+		connectServer: PropTypes.func.isRequired
+	}
 
 	constructor(props) {
-		super(props);
+		super('NewServerView', props);
 		this.state = {
-			defaultServer: 'https://open.rocket.chat',
-			editable: true,
 			text: ''
 		};
-		this.adding = false;
-		this.props.validateServer(this.state.defaultServer); // Need to call because in case of submit with empty field
 	}
 
-	componentDidUpdate() {
-		if (this.adding) {
-			if (!this.props.validInstance) {
-				/* eslint-disable react/no-did-update-set-state */
-				this.setState({ editable: true });
-				this.adding = false;
-			}
-			if (this.props.validInstance) {
-				this.props.navigation.goBack();
-				this.adding = false;
-			}
+	componentDidMount() {
+		const { navigation, connectServer } = this.props;
+		const server = navigation.getParam('server');
+		if (server) {
+			connectServer(server);
+			this.setState({ text: server });
+		} else {
+			this.timeout = setTimeout(() => {
+				this.input.focus();
+			}, 600);
+		}
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const { text } = this.state;
+		const { connecting } = this.props;
+		if (nextState.text !== text) {
+			return true;
+		}
+		if (nextProps.connecting !== connecting) {
+			return true;
+		}
+		return false;
+	}
+
+	componentWillUnmount() {
+		if (this.timeout) {
+			clearTimeout(this.timeout);
 		}
 	}
 
 	onChangeText = (text) => {
 		this.setState({ text });
-		this.props.validateServer(this.completeUrl(text));
 	}
 
 	submit = () => {
-		this.setState({ editable: false });
-		this.adding = true;
-		this.props.addServer(this.completeUrl(this.state.text.trim() || this.state.defaultServer));
+		const { text } = this.state;
+		const { connectServer } = this.props;
+
+		if (text) {
+			Keyboard.dismiss();
+			connectServer(this.completeUrl(text));
+		}
 	}
 
 	completeUrl = (url) => {
-		url = url.trim();
+		url = url && url.trim();
 
-		if (/^(\w|[0-9-_]){3,}$/.test(url) &&
-				/^(htt(ps?)?)|(loca((l)?|(lh)?|(lho)?|(lhos)?|(lhost:?\d*)?)$)/.test(url) === false) {
+		if (/^(\w|[0-9-_]){3,}$/.test(url)
+			&& /^(htt(ps?)?)|(loca((l)?|(lh)?|(lho)?|(lhos)?|(lhost:?\d*)?)$)/.test(url) === false) {
 			url = `${ url }.rocket.chat`;
 		}
 
@@ -82,65 +146,64 @@ export default class NewServerView extends React.Component {
 		return url.replace(/\/+$/, '');
 	}
 
-	renderValidation = () => {
-		if (!this.state.text.trim()) {
-			return null;
-		}
-		if (this.props.validating) {
-			return (
-				<Text style={[styles.validateText, styles.validatingText]}>
-					Validating {this.state.text} ...
-				</Text>
-			);
+	renderBack = () => {
+		const { navigation } = this.props;
+
+		let top = 15;
+		if (isIOS) {
+			top = isNotch ? 45 : 30;
 		}
 
-		if (this.props.validInstance) {
-			return (
-				<Text style={[styles.validateText, styles.validText]}>
-					{this.state.url} is a valid Rocket.Chat instance
-				</Text>
-			);
-		}
 		return (
-			<Text style={[styles.validateText, styles.invalidText]}>
-				{this.state.url} is not a valid Rocket.Chat instance
-			</Text>
+			<TouchableOpacity
+				style={[styles.backButton, { top }]}
+				onPress={() => navigation.pop()}
+			>
+				<CustomIcon
+					name='back'
+					size={30}
+					color='#1D74F5'
+				/>
+			</TouchableOpacity>
 		);
 	}
 
 	render() {
+		const { connecting } = this.props;
+		const { text } = this.state;
 		return (
 			<KeyboardView
-				contentContainerStyle={styles.container}
+				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
+				key='login-view'
 			>
-				<ScrollView
-					style={styles.loginView}
-					{...scrollPersistTaps}
-				>
-					<TextInput
-						ref={ref => this.inputElement = ref}
-						style={styles.input_white}
-						onChangeText={this.onChangeText}
-						keyboardType='url'
-						autoCorrect={false}
-						returnKeyType='done'
-						autoCapitalize='none'
-						autoFocus
-						editable={this.state.editable}
-						placeholder={this.state.defaultServer}
-						underlineColorAndroid='transparent'
-					/>
-					<TouchableOpacity
-						disabled={!this.props.validInstance}
-						style={[styles.buttonContainer, this.props.validInstance ? null
-							: styles.disabledButton]}
-						onPress={this.submit}
-					>
-						<Text style={styles.button} accessibilityTraits='button'>Add</Text>
-					</TouchableOpacity>
-					{this.renderValidation()}
+				<StatusBar light />
+				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
+					<SafeAreaView style={sharedStyles.container} testID='new-server-view' forceInset={{ bottom: 'never' }}>
+						<Image style={styles.image} source={{ uri: 'new_server' }} />
+						<Text style={styles.title}>{I18n.t('Sign_in_your_server')}</Text>
+						<TextInput
+							inputRef={e => this.input = e}
+							containerStyle={styles.inputContainer}
+							placeholder={defaultServer}
+							value={text}
+							returnKeyType='send'
+							onChangeText={this.onChangeText}
+							testID='new-server-view-input'
+							onSubmitEditing={this.submit}
+							clearButtonMode='while-editing'
+						/>
+						<Button
+							title={I18n.t('Connect')}
+							type='primary'
+							onPress={this.submit}
+							disabled={text.length === 0}
+							loading={connecting}
+							testID='new-server-view-button'
+						/>
+					</SafeAreaView>
 				</ScrollView>
+				{this.renderBack()}
 			</KeyboardView>
 		);
 	}

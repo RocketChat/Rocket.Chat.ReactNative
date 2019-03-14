@@ -1,18 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, TouchableOpacity, Platform } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import { emojify } from 'react-emojione';
 import { responsive } from 'react-native-responsive-ui';
 import { OptimizedFlatList } from 'react-native-optimized-flatlist';
+
 import styles from './styles';
 import CustomEmoji from './CustomEmoji';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import { isIOS } from '../../utils/deviceInfo';
 
-const emojisPerRow = Platform.OS === 'ios' ? 8 : 9;
+const EMOJIS_PER_ROW = isIOS ? 8 : 9;
 
-const renderEmoji = (emoji, size) => {
+const renderEmoji = (emoji, size, baseUrl) => {
 	if (emoji.isCustom) {
-		return <CustomEmoji style={[styles.customCategoryEmoji, { height: size - 8, width: size - 8 }]} emoji={emoji} />;
+		return <CustomEmoji style={[styles.customCategoryEmoji, { height: size - 8, width: size - 8 }]} emoji={emoji} baseUrl={baseUrl} />;
 	}
 	return (
 		<Text style={[styles.categoryEmoji, { height: size, width: size, fontSize: size - 14 }]}>
@@ -25,17 +27,20 @@ const renderEmoji = (emoji, size) => {
 @responsive
 export default class EmojiCategory extends React.Component {
 	static propTypes = {
+		baseUrl: PropTypes.string.isRequired,
 		emojis: PropTypes.any,
 		window: PropTypes.any,
 		onEmojiSelected: PropTypes.func,
 		emojisPerRow: PropTypes.number,
 		width: PropTypes.number
-	};
+	}
+
 	constructor(props) {
 		super(props);
-		const { width, height } = this.props.window;
+		const { window, width, emojisPerRow } = this.props;
+		const { width: widthWidth, height: windowHeight } = window;
 
-		this.size = Math.min(this.props.width || width, height) / (this.props.emojisPerRow || emojisPerRow);
+		this.size = Math.min(width || widthWidth, windowHeight) / (emojisPerRow || EMOJIS_PER_ROW);
 		this.emojis = props.emojis;
 	}
 
@@ -44,23 +49,28 @@ export default class EmojiCategory extends React.Component {
 	}
 
 	renderItem(emoji, size) {
+		const { baseUrl, onEmojiSelected } = this.props;
 		return (
 			<TouchableOpacity
 				activeOpacity={0.7}
 				key={emoji.isCustom ? emoji.content : emoji}
-				onPress={() => this.props.onEmojiSelected(emoji)}
+				onPress={() => onEmojiSelected(emoji)}
+				testID={`reaction-picker-${ emoji.isCustom ? emoji.content : emoji }`}
 			>
-				{renderEmoji(emoji, size)}
-			</TouchableOpacity>);
+				{renderEmoji(emoji, size, baseUrl)}
+			</TouchableOpacity>
+		);
 	}
 
 	render() {
+		const { emojis } = this.props;
+
 		return (
 			<OptimizedFlatList
 				keyExtractor={item => (item.isCustom && item.content) || item}
-				data={this.props.emojis}
+				data={emojis}
 				renderItem={({ item }) => this.renderItem(item, this.size)}
-				numColumns={emojisPerRow}
+				numColumns={EMOJIS_PER_ROW}
 				initialNumToRender={45}
 				getItemLayout={(data, index) => ({ length: this.size, offset: this.size * index, index })}
 				removeClippedSubviews

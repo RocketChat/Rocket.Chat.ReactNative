@@ -28,7 +28,6 @@ build/
 .idea
 .gradle
 local.properties
-fabric.properties
 *.iml
 
 # node.js

@@ -18,30 +18,19 @@ export default StyleSheet.create({
 		bottom: -2,
 		right: -2,
 		borderWidth: 2,
-		borderRadius: 10,
-		width: 10,
-		height: 10
+		borderRadius: 12,
+		width: 12,
+		height: 12
 	},
 	separator: {
 		height: StyleSheet.hairlineWidth,
-		backgroundColor: '#ddd'
+		backgroundColor: '#E1E5E8',
+		marginLeft: 60
 	},
 	username: {
 		flex: 1,
 		fontSize: 16,
 		color: '#444'
-	},
-	headerButtonTouchable: {
-		borderRadius: 4
-	},
-	headerButton: {
-		padding: 6,
-		backgroundColor: 'transparent',
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	headerButtonText: {
-		color: '#292E35'
 	},
 	searchBoxView: {
 		backgroundColor: '#eee'
@@ -53,5 +42,9 @@ export default StyleSheet.create({
 		padding: 5,
 		paddingLeft: 10,
 		color: '#aaa'
+	},
+	headerButton: {
+		marginRight: 9,
+		alignItems: 'flex-end'
 	}
 });

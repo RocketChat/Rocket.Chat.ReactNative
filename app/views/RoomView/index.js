@@ -1,211 +1,369 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Button } from 'react-native';
+import {
+	Text, View, LayoutAnimation, ActivityIndicator
+} from 'react-native';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { RectButton } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
+import { openRoom as openRoomAction, closeRoom as closeRoomAction, setLastOpen as setLastOpenAction } from '../../actions/room';
+import { toggleReactionPicker as toggleReactionPickerAction, actionsShow as actionsShowAction } from '../../actions/messages';
 import LoggedView from '../View';
 import { List } from './ListView';
-import * as actions from '../../actions';
-import { openRoom, setLastOpen } from '../../actions/room';
-import { editCancel, toggleReactionPicker, actionsShow } from '../../actions/messages';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
 import MessageActions from '../../containers/MessageActions';
 import MessageErrorActions from '../../containers/MessageErrorActions';
 import MessageBox from '../../containers/MessageBox';
-import Header from '../../containers/Header';
-import RoomsHeader from './Header';
 import ReactionPicker from './ReactionPicker';
-import Banner from './banner';
+import UploadProgress from './UploadProgress';
 import styles from './styles';
+import log from '../../utils/log';
+import { isIOS } from '../../utils/deviceInfo';
+import I18n from '../../i18n';
+import ConnectionBadge from '../../containers/ConnectionBadge';
+import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
+import RoomHeaderView from './Header';
+import StatusBar from '../../containers/StatusBar';
 
-@connect(
-	state => ({
-		Site_Url: state.settings.Site_Url || state.server ? state.server.server : '',
-		Message_TimeFormat: state.settings.Message_TimeFormat,
-		loading: state.messages.isFetching,
-		user: state.login.user,
-		actionMessage: state.messages.actionMessage,
-		layoutAnimation: state.room.layoutAnimation
-	}),
-	dispatch => ({
-		actions: bindActionCreators(actions, dispatch),
-		openRoom: room => dispatch(openRoom(room)),
-		editCancel: () => dispatch(editCancel()),
-		setLastOpen: date => dispatch(setLastOpen(date)),
-		toggleReactionPicker: message => dispatch(toggleReactionPicker(message)),
-		actionsShow: actionMessage => dispatch(actionsShow(actionMessage))
-	})
-)
+@connect(state => ({
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	},
+	actionMessage: state.messages.actionMessage,
+	showActions: state.messages.showActions,
+	showErrorActions: state.messages.showErrorActions,
+	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background'
+}), dispatch => ({
+	openRoom: room => dispatch(openRoomAction(room)),
+	setLastOpen: date => dispatch(setLastOpenAction(date)),
+	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
+	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage)),
+	closeRoom: () => dispatch(closeRoomAction())
+}))
+/** @extends React.Component */
 export default class RoomView extends LoggedView {
+	static navigationOptions = ({ navigation }) => {
+		const rid = navigation.getParam('rid');
+		const t = navigation.getParam('t');
+		const f = navigation.getParam('f');
+		const toggleFav = navigation.getParam('toggleFav', () => {});
+		const starIcon = f ? 'Star-filled' : 'star';
+		return {
+			headerTitle: <RoomHeaderView />,
+			headerRight: t === 'l'
+				? null
+				: (
+					<CustomHeaderButtons>
+						<Item title='star' iconName={starIcon} onPress={toggleFav} testID='room-view-header-star' />
+						<Item title='more' iconName='menu' onPress={() => navigation.navigate('RoomActionsView', { rid })} testID='room-view-header-actions' />
+					</CustomHeaderButtons>
+				)
+		};
+	}
+
 	static propTypes = {
-		navigation: PropTypes.object.isRequired,
+		navigation: PropTypes.object,
 		openRoom: PropTypes.func.isRequired,
 		setLastOpen: PropTypes.func.isRequired,
-		user: PropTypes.object.isRequired,
-		editCancel: PropTypes.func,
-		rid: PropTypes.string,
-		name: PropTypes.string,
-		Site_Url: PropTypes.string,
-		Message_TimeFormat: PropTypes.string,
-		loading: PropTypes.bool,
+		user: PropTypes.shape({
+			id: PropTypes.string.isRequired,
+			username: PropTypes.string.isRequired,
+			token: PropTypes.string.isRequired
+		}),
+		showActions: PropTypes.bool,
+		showErrorActions: PropTypes.bool,
 		actionMessage: PropTypes.object,
+		appState: PropTypes.string,
 		toggleReactionPicker: PropTypes.func.isRequired,
-		actionsShow: PropTypes.func
+		actionsShow: PropTypes.func,
+		closeRoom: PropTypes.func
 	};
-
-	static navigationOptions = ({ navigation }) => ({
-		header: <Header subview={<RoomsHeader navigation={navigation} />} />
-	});
 
 	constructor(props) {
 		super('RoomView', props);
-		this.rid =
-			props.rid ||
-			props.navigation.state.params.room.rid;
-		this.name = props.name ||
-			props.navigation.state.params.name ||
-			props.navigation.state.params.room.name;
+		this.rid = props.navigation.getParam('rid');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
-			loaded: true,
-			joined: typeof props.rid === 'undefined',
+			loaded: false,
+			joined: this.rooms.length > 0,
 			room: {}
 		};
 		this.onReactionPress = this.onReactionPress.bind(this);
 	}
 
-	async componentDidMount() {
-		this.props.navigation.setParams({
-			title: this.name
-		});
-		this.updateRoom();
-		await this.props.openRoom({ rid: this.rid, name: this.name, ls: this.state.room.ls });
-		if (this.state.room.alert || this.state.room.unread || this.state.room.userMentions) {
-			this.props.setLastOpen(this.state.room.ls);
-		} else {
-			this.props.setLastOpen(null);
-		}
+	componentDidMount() {
+		const { navigation } = this.props;
+		navigation.setParams({ toggleFav: this.toggleFav });
 
+		if (this.rooms.length === 0 && this.rid) {
+			const { rid, name, t } = navigation.state.params;
+			this.setState(
+				{ room: { rid, name, t } },
+				() => this.updateRoom()
+			);
+		}
 		this.rooms.addListener(this.updateRoom);
+		this.internalSetState({ loaded: true });
 	}
+
 	shouldComponentUpdate(nextProps, nextState) {
-		return !(equal(this.props, nextProps) && equal(this.state, nextState) && this.state.room.ro === nextState.room.ro);
-	}
-	componentWillUnmount() {
-		this.rooms.removeAllListeners();
-		this.props.editCancel();
-	}
+		const {
+			room, loaded, joined
+		} = this.state;
+		const { showActions, showErrorActions, appState } = this.props;
 
-	onEndReached = (data) => {
-		if (this.props.loading || this.state.end) {
-			return;
+		if (room.ro !== nextState.room.ro) {
+			return true;
+		} else if (room.f !== nextState.room.f) {
+			return true;
+		} else if (room.blocked !== nextState.room.blocked) {
+			return true;
+		} else if (room.blocker !== nextState.room.blocker) {
+			return true;
+		} else if (room.archived !== nextState.room.archived) {
+			return true;
+		} else if (loaded !== nextState.loaded) {
+			return true;
+		} else if (joined !== nextState.joined) {
+			return true;
+		} else if (showActions !== nextProps.showActions) {
+			return true;
+		} else if (showErrorActions !== nextProps.showErrorActions) {
+			return true;
+		} else if (appState !== nextProps.appState) {
+			return true;
+		} else if (!equal(room.muted, nextState.room.muted)) {
+			return true;
 		}
+		return false;
+	}
 
-		requestAnimationFrame(() => {
-			const lastRowData = data[data.length - 1];
-			if (!lastRowData) {
-				return;
-			}
-			RocketChat.loadMessagesForRoom(this.rid, lastRowData.ts, ({ end }) => end && this.setState({
-				end
-			}));
-		});
+	componentDidUpdate(prevProps, prevState) {
+		const { room } = this.state;
+		const { appState, navigation } = this.props;
+
+		if (prevState.room.f !== room.f) {
+			navigation.setParams({ f: room.f });
+		} else if (appState === 'foreground' && appState !== prevProps.appState) {
+			RocketChat.loadMissedMessages(room).catch(e => console.log(e));
+			RocketChat.readMessages(room.rid).catch(e => console.log(e));
+		}
+	}
+
+	componentWillUnmount() {
+		const { closeRoom } = this.props;
+		closeRoom();
+		this.rooms.removeAllListeners();
 	}
 
 	onMessageLongPress = (message) => {
-		this.props.actionsShow(message);
+		const { actionsShow } = this.props;
+		actionsShow(message);
 	}
 
 	onReactionPress = (shortname, messageId) => {
-		if (!messageId) {
-			RocketChat.setReaction(shortname, this.props.actionMessage._id);
-			return this.props.toggleReactionPicker();
+		const { actionMessage, toggleReactionPicker } = this.props;
+		try {
+			if (!messageId) {
+				RocketChat.setReaction(shortname, actionMessage._id);
+				return toggleReactionPicker();
+			}
+			RocketChat.setReaction(shortname, messageId);
+		} catch (e) {
+			log('RoomView.onReactionPress', e);
 		}
-		RocketChat.setReaction(shortname, messageId);
 	};
 
+	internalSetState = (...args) => {
+		if (isIOS) {
+			LayoutAnimation.easeInEaseOut();
+		}
+		this.setState(...args);
+	}
+
+	// eslint-disable-next-line react/sort-comp
 	updateRoom = () => {
-		this.setState({ room: this.rooms[0] });
-		this.forceUpdate();
+		const { openRoom, setLastOpen } = this.props;
+
+		if (this.rooms.length > 0) {
+			const { room: prevRoom } = this.state;
+			const room = JSON.parse(JSON.stringify(this.rooms[0] || {}));
+			this.internalSetState({ room });
+
+			if (!prevRoom._id) {
+				openRoom({
+					...room
+				});
+				if (room.alert || room.unread || room.userMentions) {
+					setLastOpen(room.ls);
+				} else {
+					setLastOpen(null);
+				}
+			}
+		} else {
+			const { room } = this.state;
+			if (room.rid) {
+				openRoom(room);
+				this.internalSetState({ joined: false });
+			}
+		}
+	}
+
+	toggleFav = () => {
+		try {
+			const { room } = this.state;
+			const { rid, f } = room;
+			RocketChat.toggleFavorite(rid, !f);
+		} catch (e) {
+			log('toggleFavorite', e);
+		}
 	}
 
 	sendMessage = (message) => {
+		const { setLastOpen } = this.props;
+		LayoutAnimation.easeInEaseOut();
 		RocketChat.sendMessage(this.rid, message).then(() => {
-			this.props.setLastOpen(null);
+			setLastOpen(null);
 		});
 	};
 
 	joinRoom = async() => {
-		await RocketChat.joinRoom(this.props.rid);
-		this.setState({
-			joined: true
-		});
+		try {
+			const result = await RocketChat.joinRoom(this.rid);
+			if (result.success) {
+				this.internalSetState({
+					joined: true
+				});
+			}
+		} catch (e) {
+			log('joinRoom', e);
+		}
 	};
 
-	renderItem = item => (
-		<Message
-			key={item._id}
-			item={item}
-			_updatedAt={item._updatedAt}
-			status={item.status}
-			reactions={JSON.parse(JSON.stringify(item.reactions))}
-			baseUrl={this.props.Site_Url}
-			Message_TimeFormat={this.props.Message_TimeFormat}
-			user={this.props.user}
-			onReactionPress={this.onReactionPress}
-			onLongPress={this.onMessageLongPress}
-			archived={this.state.room.archived}
-		/>
-	);
+	isOwner = () => {
+		const { room } = this.state;
+		return room && room.roles && Array.from(Object.keys(room.roles), i => room.roles[i].value).includes('owner');
+	}
 
-	renderSeparator = () => <View style={styles.separator} />;
+	isMuted = () => {
+		const { room } = this.state;
+		const { user } = this.props;
+		return room && room.muted && !!Array.from(Object.keys(room.muted), i => room.muted[i].value).includes(user.username);
+	}
+
+	isReadOnly = () => {
+		const { room } = this.state;
+		return (room.ro && !room.broadcast) || this.isMuted() || room.archived;
+	}
+
+	isBlocked = () => {
+		const { room } = this.state;
+
+		if (room) {
+			const { t, blocked, blocker } = room;
+			if (t === 'd' && (blocked || blocker)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	renderItem = (item, previousItem) => {
+		const { room } = this.state;
+		const { user } = this.props;
+
+		return (
+			<Message
+				key={item._id}
+				item={item}
+				status={item.status}
+				reactions={JSON.parse(JSON.stringify(item.reactions))}
+				user={user}
+				archived={room.archived}
+				broadcast={room.broadcast}
+				previousItem={previousItem}
+				_updatedAt={item._updatedAt}
+				onReactionPress={this.onReactionPress}
+				onLongPress={this.onMessageLongPress}
+			/>
+		);
+	}
 
 	renderFooter = () => {
-		if (!this.state.joined) {
+		const { joined } = this.state;
+
+		if (!joined) {
 			return (
-				<View>
-					<Text>You are in preview mode.</Text>
-					<Button title='Join' onPress={this.joinRoom} />
+				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
+					<Text style={styles.previewMode}>{I18n.t('You_are_in_preview_mode')}</Text>
+					<RectButton
+						onPress={this.joinRoom}
+						style={styles.joinRoomButton}
+						activeOpacity={0.5}
+						underlayColor='#fff'
+					>
+						<Text style={styles.joinRoomText} testID='room-view-join-button'>{I18n.t('Join')}</Text>
+					</RectButton>
 				</View>
 			);
 		}
-		if (this.state.room.ro || this.state.room.archived) {
+		if (this.isReadOnly()) {
 			return (
-				<View style={styles.readOnly}>
-					<Text>This room is read only</Text>
+				<View style={styles.readOnly} key='room-view-read-only'>
+					<Text>{I18n.t('This_room_is_read_only')}</Text>
 				</View>
 			);
 		}
-		return <MessageBox onSubmit={this.sendMessage} rid={this.rid} />;
+		if (this.isBlocked()) {
+			return (
+				<View style={styles.readOnly} key='room-view-block'>
+					<Text>{I18n.t('This_room_is_blocked')}</Text>
+				</View>
+			);
+		}
+		return <MessageBox key='room-view-messagebox' onSubmit={this.sendMessage} rid={this.rid} />;
 	};
 
-	renderHeader = () => {
-		if (this.state.end) {
-			return <Text style={styles.loadingMore}>Start of conversation</Text>;
+	renderList = () => {
+		const { loaded, room } = this.state;
+		if (!loaded || !room.rid) {
+			return <ActivityIndicator style={styles.loading} />;
 		}
-		return <Text style={styles.loadingMore}>Loading more messages...</Text>;
-	}
-	render() {
 		return (
-			<View style={styles.container}>
-				<Banner />
+			[
 				<List
 					key='room-view-messages'
-					end={this.state.end}
-					room={this.rid}
-					renderFooter={this.renderHeader}
-					onEndReached={this.onEndReached}
-					renderRow={item => this.renderItem(item)}
-				/>
-				{this.renderFooter()}
-				{this.state.room._id ? <MessageActions room={this.state.room} /> : null}
-				<MessageErrorActions />
+					room={room}
+					renderRow={this.renderItem}
+				/>,
+				this.renderFooter()
+			]
+		);
+	}
+
+	render() {
+		const { room } = this.state;
+		const { user, showActions, showErrorActions } = this.props;
+
+		return (
+			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ bottom: 'never' }}>
+				<StatusBar />
+				{this.renderList()}
+				{room._id && showActions
+					? <MessageActions room={room} user={user} />
+					: null
+				}
+				{showErrorActions ? <MessageErrorActions /> : null}
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
-			</View>
+				<UploadProgress rid={this.rid} />
+				<ConnectionBadge />
+			</SafeAreaView>
 		);
 	}
 }

@@ -1,86 +1,94 @@
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import React from 'react';
-import { CachedImage } from 'react-native-img-cache';
-import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import { RectButton } from 'react-native-gesture-handler';
+import equal from 'deep-equal';
+
 import PhotoModal from './PhotoModal';
+import Markdown from './Markdown';
+import styles from './styles';
 
-const styles = StyleSheet.create({
-	button: {
-		flex: 1,
-		flexDirection: 'column',
-		height: 320,
-		borderColor: '#ccc',
-		borderWidth: 1,
-		borderRadius: 6
-	},
-	image: {
-		flex: 1,
-		height: undefined,
-		width: undefined,
-		resizeMode: 'contain'
-	},
-	labelContainer: {
-		height: 62,
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	imageName: {
-		fontSize: 12,
-		alignSelf: 'center',
-		fontStyle: 'italic'
-	},
-	message: {
-		alignSelf: 'center',
-		fontWeight: 'bold'
-	}
-});
-
-export default class Image extends React.PureComponent {
+export default class extends Component {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
-		user: PropTypes.object.isRequired
+		user: PropTypes.object.isRequired,
+		customEmojis: PropTypes.oneOfType([
+			PropTypes.array,
+			PropTypes.object
+		])
 	}
 
-	state = { modalVisible: false };
+	state = { modalVisible: false, isPressed: false };
 
-	getDescription() {
-		if (this.props.file.description) {
-			return <Text style={styles.message}>{this.props.file.description}</Text>;
+	shouldComponentUpdate(nextProps, nextState) {
+		const { modalVisible, isPressed } = this.state;
+		const { file } = this.props;
+		if (nextState.modalVisible !== modalVisible) {
+			return true;
 		}
+		if (nextState.isPressed !== isPressed) {
+			return true;
+		}
+		if (!equal(nextProps.file, file)) {
+			return true;
+		}
+		return false;
 	}
 
-	_onPressButton() {
+	onPressButton() {
 		this.setState({
 			modalVisible: true
 		});
 	}
 
+	getDescription() {
+		const {
+			file, customEmojis, baseUrl, user
+		} = this.props;
+		if (file.description) {
+			return <Markdown msg={file.description} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} />;
+		}
+	}
+
+	isPressed = (state) => {
+		this.setState({ isPressed: state });
+	}
+
 	render() {
+		const { modalVisible, isPressed } = this.state;
 		const { baseUrl, file, user } = this.props;
 		const img = `${ baseUrl }${ file.image_url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
+
+		if (!img) {
+			return null;
+		}
+
 		return (
-			<View>
-				<TouchableOpacity
-					onPress={() => this._onPressButton()}
-					style={styles.button}
+			[
+				<RectButton
+					key='image'
+					onPress={() => this.onPressButton()}
+					onActiveStateChange={this.isPressed}
+					style={styles.imageContainer}
+					underlayColor='#fff'
 				>
-					<CachedImage
-						style={styles.image}
+					<FastImage
+						style={[styles.image, isPressed && { opacity: 0.5 }]}
 						source={{ uri: encodeURI(img) }}
+						resizeMode={FastImage.resizeMode.cover}
 					/>
-					<View style={styles.labelContainer}>
-						<Text style={styles.imageName}>{this.props.file.title}</Text>
-						{this.getDescription()}
-					</View>
-				</TouchableOpacity>
+					{this.getDescription()}
+				</RectButton>,
 				<PhotoModal
-					title={this.props.file.title}
+					key='modal'
+					title={file.title}
+					description={file.description}
 					image={img}
-					isVisible={this.state.modalVisible}
+					isVisible={modalVisible}
 					onClose={() => this.setState({ modalVisible: false })}
 				/>
-			</View>
+			]
 		);
 	}
 }

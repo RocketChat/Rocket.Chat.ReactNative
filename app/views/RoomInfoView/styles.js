@@ -3,16 +3,13 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
 	container: {
 		flex: 1,
+		backgroundColor: '#ffffff'
+	},
+	scroll: {
+		flex: 1,
 		flexDirection: 'column',
 		backgroundColor: '#ffffff',
 		padding: 10
-	},
-	headerButton: {
-		backgroundColor: 'transparent',
-		height: 44,
-		width: 44,
-		alignItems: 'center',
-		justifyContent: 'center'
 	},
 	item: {
 		padding: 10,
@@ -29,19 +26,23 @@ export default StyleSheet.create({
 	avatar: {
 		marginHorizontal: 10
 	},
+	roomTitleContainer: {
+		paddingTop: 20,
+		flexDirection: 'row'
+	},
 	roomTitle: {
-		fontSize: 18,
-		paddingTop: 20
+		fontSize: 18
 	},
 	roomDescription: {
 		fontSize: 14,
 		color: '#ccc',
 		paddingTop: 10
 	},
+	roomTitleRow: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
 	status: {
-		borderRadius: 24,
-		width: 24,
-		height: 24,
 		borderWidth: 4,
 		bottom: -4,
 		right: -4

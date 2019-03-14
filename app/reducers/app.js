@@ -2,7 +2,7 @@ import { FOREGROUND, BACKGROUND, INACTIVE } from 'redux-enhancer-react-native-ap
 import { APP } from '../actions/actionsTypes';
 
 const initialState = {
-	starting: true,
+	root: null,
 	ready: false,
 	inactive: false,
 	background: false
@@ -31,17 +31,20 @@ export default function app(state = initialState, action) {
 				foreground: false,
 				background: false
 			};
+		case APP.START:
+			return {
+				...state,
+				root: action.root
+			};
 		case APP.INIT:
 			return {
 				...state,
-				ready: false,
-				starting: true
+				ready: false
 			};
 		case APP.READY:
 			return {
 				...state,
-				ready: true,
-				starting: false
+				ready: true
 			};
 		default:
 			return state;

@@ -26,3 +26,39 @@ export function setSearch(searchText) {
 		searchText
 	};
 }
+
+export function closeServerDropdown() {
+	return {
+		type: types.ROOMS.CLOSE_SERVER_DROPDOWN
+	};
+}
+
+export function toggleServerDropdown() {
+	return {
+		type: types.ROOMS.TOGGLE_SERVER_DROPDOWN
+	};
+}
+
+export function closeSortDropdown() {
+	return {
+		type: types.ROOMS.CLOSE_SORT_DROPDOWN
+	};
+}
+
+export function toggleSortDropdown() {
+	return {
+		type: types.ROOMS.TOGGLE_SORT_DROPDOWN
+	};
+}
+
+export function openSearchHeader() {
+	return {
+		type: types.ROOMS.OPEN_SEARCH_HEADER
+	};
+}
+
+export function closeSearchHeader() {
+	return {
+		type: types.ROOMS.CLOSE_SEARCH_HEADER
+	};
+}

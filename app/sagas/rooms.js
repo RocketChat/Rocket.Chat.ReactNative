@@ -1,169 +1,42 @@
-import { Alert } from 'react-native';
-import { put, call, takeLatest, take, select, race, fork, cancel, takeEvery } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
-import { FOREGROUND, BACKGROUND } from 'redux-enhancer-react-native-appstate';
+import {
+	put, takeLatest, select
+} from 'redux-saga/effects';
+
 import * as types from '../actions/actionsTypes';
 import { roomsSuccess, roomsFailure } from '../actions/rooms';
-import { addUserTyping, removeUserTyping, setLastOpen } from '../actions/room';
-import { messagesRequest } from '../actions/messages';
-import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
-import * as NavigationService from '../containers/routes/NavigationService';
+import log from '../utils/log';
+import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
+import RocketChat from '../lib/rocketchat';
 
-const leaveRoom = rid => RocketChat.leaveRoom(rid);
-const eraseRoom = rid => RocketChat.eraseRoom(rid);
-
-const getRooms = function* getRooms() {
-	return yield RocketChat.getRooms();
-};
-
-const watchRoomsRequest = function* watchRoomsRequest() {
+const handleRoomsRequest = function* handleRoomsRequest() {
 	try {
-		yield call(getRooms);
-		yield put(roomsSuccess());
-	} catch (err) {
-		yield put(roomsFailure(err.status));
-	}
-};
+		const newRoomsUpdatedAt = new Date();
+		const server = yield select(state => state.server.server);
+		const [serverRecord] = database.databases.serversDB.objects('servers').filtered('id = $0', server);
+		const { roomsUpdatedAt } = serverRecord;
+		const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms(roomsUpdatedAt);
+		const { subscriptions } = mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
 
-const cancelTyping = function* cancelTyping(username) {
-	while (true) {
-		const { typing, timeout } = yield race({
-			typing: take(types.ROOM.SOMEONE_TYPING),
-			timeout: call(delay, 5000)
-		});
-		if (timeout || (typing.username === username && !typing.typing)) {
-			return yield put(removeUserTyping(username));
-		}
-	}
-};
-
-const usersTyping = function* usersTyping({ rid }) {
-	while (true) {
-		const { _rid, username, typing } = yield take(types.ROOM.SOMEONE_TYPING);
-		if (_rid === rid) {
-			yield (typing ? put(addUserTyping(username)) : put(removeUserTyping(username)));
-			if (typing) {
-				yield fork(cancelTyping, username);
-			}
-		}
-	}
-};
-const handleMessageReceived = function* handleMessageReceived({ message }) {
-	const room = yield select(state => state.room);
-
-	if (message.rid === room.rid) {
 		database.write(() => {
-			database.create('messages', message, true);
+			subscriptions.forEach(subscription => database.create('subscriptions', subscription, true));
+		});
+		database.databases.serversDB.write(() => {
+			try {
+				database.databases.serversDB.create('servers', { id: server, roomsUpdatedAt: newRoomsUpdatedAt }, true);
+			} catch (e) {
+				log('handleRoomsRequest update roomsUpdatedAt', e);
+			}
 		});
 
-		RocketChat.readMessages(room.rid);
-	}
-};
-
-const watchRoomOpen = function* watchRoomOpen({ room }) {
-	const auth = yield select(state => state.login.isAuthenticated);
-	if (!auth) {
-		yield take(types.LOGIN.SUCCESS);
-	}
-
-
-	yield put(messagesRequest({ rid: room.rid }));
-
-	const { open } = yield race({
-		messages: take(types.MESSAGES.SUCCESS),
-		open: take(types.ROOM.OPEN)
-	});
-
-	if (open) {
-		return;
-	}
-	RocketChat.readMessages(room.rid);
-	const subscriptions = yield Promise.all([RocketChat.subscribe('stream-room-messages', room.rid, false), RocketChat.subscribe('stream-notify-room', `${ room.rid }/typing`, false)]);
-	const thread = yield fork(usersTyping, { rid: room.rid });
-	yield race({
-		open: take(types.ROOM.OPEN),
-		close: take(types.ROOM.CLOSE)
-	});
-	cancel(thread);
-	subscriptions.forEach((sub) => {
-		sub.unsubscribe().catch(e => alert(e));
-	});
-};
-
-const watchuserTyping = function* watchuserTyping({ status }) {
-	const auth = yield select(state => state.login.isAuthenticated);
-	if (!auth) {
-		yield take(types.LOGIN.SUCCESS);
-	}
-
-	const room = yield select(state => state.room);
-
-	if (!room) {
-		return;
-	}
-	yield RocketChat.emitTyping(room.rid, status);
-
-	if (status) {
-		yield call(delay, 5000);
-		yield RocketChat.emitTyping(room.rid, false);
-	}
-};
-
-const updateRoom = function* updateRoom() {
-	const room = yield select(state => state.room);
-	if (!room || !room.rid) {
-		return;
-	}
-	yield put(messagesRequest({ rid: room.rid }));
-};
-
-const updateLastOpen = function* updateLastOpen() {
-	yield put(setLastOpen());
-};
-
-const goRoomsListAndDelete = function* goRoomsListAndDelete(rid) {
-	NavigationService.goRoomsList();
-	yield delay(1000);
-	database.write(() => {
-		const messages = database.objects('messages').filtered('rid = $0', rid);
-		database.delete(messages);
-		const subscription = database.objects('subscriptions').filtered('rid = $0', rid);
-		database.delete(subscription);
-	});
-};
-
-const handleLeaveRoom = function* handleLeaveRoom({ rid }) {
-	try {
-		yield call(leaveRoom, rid);
-		yield goRoomsListAndDelete(rid);
+		yield put(roomsSuccess());
 	} catch (e) {
-		if (e.error === 'error-you-are-last-owner') {
-			Alert.alert('You are the last owner. Please set new owner before leaving the room.');
-		} else {
-			Alert.alert('Something happened when leaving room!');
-		}
-	}
-};
-
-const handleEraseRoom = function* handleEraseRoom({ rid }) {
-	try {
-		yield call(eraseRoom, rid);
-		yield goRoomsListAndDelete(rid);
-	} catch (e) {
-		Alert.alert('Something happened when erasing room!');
+		yield put(roomsFailure(e));
+		log('handleRoomsRequest', e);
 	}
 };
 
 const root = function* root() {
-	yield takeLatest(types.ROOM.USER_TYPING, watchuserTyping);
-	yield takeLatest(types.LOGIN.SUCCESS, watchRoomsRequest);
-	yield takeLatest(types.ROOM.OPEN, watchRoomOpen);
-	yield takeEvery(types.ROOM.MESSAGE_RECEIVED, handleMessageReceived);
-	yield takeLatest(FOREGROUND, updateRoom);
-	yield takeLatest(FOREGROUND, watchRoomsRequest);
-	yield takeLatest(BACKGROUND, updateLastOpen);
-	yield takeLatest(types.ROOM.LEAVE, handleLeaveRoom);
-	yield takeLatest(types.ROOM.ERASE, handleEraseRoom);
+	yield takeLatest(types.ROOMS.REQUEST, handleRoomsRequest);
 };
 export default root;

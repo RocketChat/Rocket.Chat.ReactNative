@@ -1,25 +1,25 @@
 import { SERVER } from './actionsTypes';
 
-export function setServer(server) {
+export function selectServerRequest(server) {
 	return {
-		type: SERVER.SELECT,
+		type: SERVER.SELECT_REQUEST,
 		server
 	};
 }
+
+export function selectServerSuccess(server) {
+	return {
+		type: SERVER.SELECT_SUCCESS,
+		server
+	};
+}
+
 export function serverRequest(server) {
 	return {
 		type: SERVER.REQUEST,
 		server
 	};
 }
-
-export function addServer(server) {
-	return {
-		type: SERVER.ADD,
-		server
-	};
-}
-
 
 export function serverSuccess() {
 	return {
@@ -34,16 +34,14 @@ export function serverFailure(err) {
 	};
 }
 
-
-export function changedServer(server) {
+export function serverInitAdd() {
 	return {
-		type: SERVER.CHANGED,
-		server
+		type: SERVER.INIT_ADD
 	};
 }
 
-export function gotoAddServer() {
+export function serverFinishAdd() {
 	return {
-		type: SERVER.GOTO_ADD
+		type: SERVER.FINISH_ADD
 	};
 }

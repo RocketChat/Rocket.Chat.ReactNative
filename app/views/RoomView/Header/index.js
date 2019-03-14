@@ -1,160 +1,193 @@
-import React from 'react';
-import { Text, View, Platform, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import {
+	View, Text, StyleSheet, LayoutAnimation
+} from 'react-native';
 import { connect } from 'react-redux';
-import { HeaderBackButton } from 'react-navigation';
+import { responsive } from 'react-native-responsive-ui';
+import equal from 'deep-equal';
 
-import RocketChat from '../../../lib/rocketchat';
-import realm from '../../../lib/realm';
-import Avatar from '../../../containers/Avatar';
+import I18n from '../../../i18n';
 import { STATUS_COLORS } from '../../../constants/colors';
-import styles from './styles';
-import { closeRoom } from '../../../actions/room';
-import Touch from '../../../utils/touch';
+import sharedStyles from '../../Styles';
+import { isIOS } from '../../../utils/deviceInfo';
+import { CustomIcon } from '../../../lib/Icons';
+import Status from '../../../containers/Status/Status';
 
+const TITLE_SIZE = 18;
+const ICON_SIZE = 18;
+const styles = StyleSheet.create({
+	container: {
+		flex: 1
+	},
+	titleContainer: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+	title: {
+		...sharedStyles.textSemibold,
+		color: isIOS ? '#0C0D0F' : '#fff',
+		fontSize: TITLE_SIZE
+	},
+	type: {
+		width: ICON_SIZE,
+		height: ICON_SIZE,
+		marginRight: 8,
+		color: isIOS ? '#9EA2A8' : '#fff'
+	},
+	typing: {
+		...sharedStyles.textRegular,
+		color: isIOS ? '#9EA2A8' : '#fff',
+		fontSize: 12
+	},
+	typingUsers: {
+		...sharedStyles.textSemibold,
+		fontWeight: '600'
+	},
+	status: {
+		marginRight: 8
+	}
+});
 
-@connect(state => ({
-	user: state.login.user,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	activeUsers: state.activeUsers
-}), dispatch => ({
-	close: () => dispatch(closeRoom())
-}))
-export default class RoomHeaderView extends React.PureComponent {
+@responsive
+@connect((state) => {
+	let status = '';
+	let title = '';
+	const roomType = state.room.t;
+	if (roomType === 'd') {
+		if (state.login.user && state.login.user.id) {
+			const { id: loggedUserId } = state.login.user;
+			const userId = state.room.rid.replace(loggedUserId, '').trim();
+			if (userId === loggedUserId) {
+				status = state.login.user.status; // eslint-disable-line
+			} else {
+				const user = state.activeUsers[userId];
+				status = (user && user.status) || 'offline';
+			}
+		}
+		title = state.settings.UI_Use_Real_Name ? state.room.fname : state.room.name;
+	} else {
+		title = state.room.name;
+	}
+
+	let otherUsersTyping = [];
+	if (state.login.user && state.login.user.username) {
+		const { username } = state.login.user;
+		const { usersTyping } = state.room;
+		otherUsersTyping = usersTyping.filter(_username => _username !== username);
+	}
+
+	return {
+		usersTyping: otherUsersTyping,
+		type: roomType,
+		title,
+		status
+	};
+})
+export default class RoomHeaderView extends Component {
 	static propTypes = {
-		close: PropTypes.func.isRequired,
-		navigation: PropTypes.object.isRequired,
-		user: PropTypes.object.isRequired,
-		baseUrl: PropTypes.string,
-		activeUsers: PropTypes.object
-	}
-
-	constructor(props) {
-		super(props);
-		this.state = {
-			room: {},
-			roomName: props.navigation.state.params.room.name
-		};
-		this.rid = props.navigation.state.params.room.rid;
-		this.room = realm.objects('subscriptions').filtered('rid = $0', this.rid);
-		this.room.addListener(this.updateState);
-	}
-
-	componentDidMount() {
-		this.updateState();
-	}
-	componentWillUnmount() {
-		this.room.removeAllListeners();
-	}
-
-	getUserStatus() {
-		const userId = this.rid.replace(this.props.user.id, '').trim();
-		const userInfo = this.props.activeUsers[userId];
-		return (userInfo && userInfo.status) || 'offline';
-	}
-
-	getUserStatusLabel() {
-		const status = this.getUserStatus();
-		return status.charAt(0).toUpperCase() + status.slice(1);
-	}
-
-	updateState = () => {
-		this.setState({ room: this.room[0] });
+		title: PropTypes.string,
+		type: PropTypes.string,
+		window: PropTypes.object,
+		usersTyping: PropTypes.array,
+		status: PropTypes.string
 	};
 
-	isDirect = () => this.state.room && this.state.room.t === 'd';
+	shouldComponentUpdate(nextProps) {
+		const {
+			type, title, status, usersTyping, window
+		} = this.props;
+		if (nextProps.type !== type) {
+			return true;
+		}
+		if (nextProps.title !== title) {
+			return true;
+		}
+		if (nextProps.status !== status) {
+			return true;
+		}
+		if (nextProps.window.width !== window.width) {
+			return true;
+		}
+		if (nextProps.window.height !== window.height) {
+			return true;
+		}
+		if (!equal(nextProps.usersTyping, usersTyping)) {
+			return true;
+		}
+		return false;
+	}
 
-	renderLeft = () => (<HeaderBackButton
-		onPress={() => {
-			this.props.navigation.goBack(null);
-			requestAnimationFrame(() => this.props.close());
-		}}
-		tintColor='#292E35'
-		title='Back'
-		titleStyle={{ display: 'none' }}
-	/>);
+	componentDidUpdate(prevProps) {
+		if (isIOS) {
+			const { usersTyping } = this.props;
+			if (!equal(prevProps.usersTyping, usersTyping)) {
+				LayoutAnimation.easeInEaseOut();
+			}
+		}
+	}
 
-	renderTitle() {
-		if (!this.state.roomName) {
+	get typing() {
+		const { usersTyping } = this.props;
+		let usersText;
+		if (!usersTyping.length) {
 			return null;
+		} else if (usersTyping.length === 2) {
+			usersText = usersTyping.join(` ${ I18n.t('and') } `);
+		} else {
+			usersText = usersTyping.join(', ');
 		}
-
-		let accessibilityLabel = this.state.roomName;
-
-		if (this.isDirect()) {
-			accessibilityLabel += `, ${ this.getUserStatusLabel() }`;
-		}
-
 		return (
-			<TouchableOpacity
-				style={styles.titleContainer}
-				accessibilityLabel={accessibilityLabel}
-				accessibilityTraits='header'
-				onPress={() => this.props.navigation.navigate({ key: 'RoomInfo', routeName: 'RoomInfo', params: { rid: this.rid } })}
-			>
-				{this.isDirect() ?
-					<View style={[styles.status, { backgroundColor: STATUS_COLORS[this.getUserStatus()] }]} />
-					: null
-				}
-				<Avatar
-					text={this.state.roomName}
-					size={24}
-					style={{ marginRight: 5 }}
-					baseUrl={this.props.baseUrl}
-					type={this.state.room.t}
-				/>
-				<View style={{ flexDirection: 'column' }}>
-					<Text style={styles.title} allowFontScaling={false}>{this.state.roomName}</Text>
-					{this.isDirect() ?
-						<Text style={styles.userStatus} allowFontScaling={false}>{this.getUserStatusLabel()}</Text>
-						: null
-					}
-				</View>
-			</TouchableOpacity>
+			<Text style={styles.typing} numberOfLines={1}>
+				<Text style={styles.typingUsers}>{usersText} </Text>
+				{ usersTyping.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing') }...
+			</Text>
 		);
 	}
 
-	renderRight = () => (
-		<View style={styles.right}>
-			<Touch
-				onPress={() => RocketChat.toggleFavorite(this.room[0].rid, this.room[0].f)}
-				accessibilityLabel='Star room'
-				accessibilityTraits='button'
-				underlayColor='#FFFFFF'
-				activeOpacity={0.5}
-			>
-				<View style={styles.headerButton}>
-					<Icon
-						name={`${ Platform.OS === 'ios' ? 'ios' : 'md' }-star${ this.room[0].f ? '' : '-outline' }`}
-						color='#f6c502'
-						size={24}
-						backgroundColor='transparent'
-					/>
-				</View>
-			</Touch>
-			<TouchableOpacity
-				style={styles.headerButton}
-				onPress={() => this.props.navigation.navigate({ key: 'RoomActions', routeName: 'RoomActions', params: { rid: this.room[0].rid } })}
-				accessibilityLabel='Room actions'
-				accessibilityTraits='button'
-			>
-				<Icon
-					name={Platform.OS === 'ios' ? 'ios-more' : 'md-more'}
-					color='#292E35'
-					size={24}
-					backgroundColor='transparent'
-				/>
-			</TouchableOpacity>
-		</View>
-	);
+	renderIcon = () => {
+		const { type, status } = this.props;
+		if (type === 'd') {
+			return <Status size={10} style={styles.status} status={status} />;
+		}
+
+		const icon = type === 'c' ? 'hashtag' : 'lock';
+		return (
+			<CustomIcon
+				name={icon}
+				size={ICON_SIZE * 1}
+				style={[
+					styles.type,
+					{
+						width: ICON_SIZE * 1,
+						height: ICON_SIZE * 1
+					},
+					type === 'd' && { color: STATUS_COLORS[status] }
+				]}
+			/>
+		);
+	}
 
 	render() {
+		const {
+			window, title, usersTyping
+		} = this.props;
+		const portrait = window.height > window.width;
+		let scale = 1;
+
+		if (!portrait) {
+			if (usersTyping.length > 0) {
+				scale = 0.8;
+			}
+		}
+
 		return (
-			<View style={styles.header}>
-				{this.renderLeft()}
-				{this.renderTitle()}
-				{this.renderRight()}
+			<View style={styles.container}>
+				<View style={styles.titleContainer}>
+					{this.renderIcon()}
+					<Text style={[styles.title, { fontSize: TITLE_SIZE * scale }]} numberOfLines={1}>{title}</Text>
+				</View>
+				{this.typing}
 			</View>
 		);
 	}

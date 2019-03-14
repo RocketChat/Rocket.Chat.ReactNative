@@ -1,112 +1,179 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
-import ActionSheet from 'react-native-actionsheet';
+import ActionSheet from 'react-native-action-sheet';
+import { SafeAreaView } from 'react-navigation';
+import equal from 'deep-equal';
 
 import LoggedView from '../View';
-import { openPinnedMessages, closePinnedMessages } from '../../actions/pinnedMessages';
 import styles from './styles';
-import Message from '../../containers/message';
-import { togglePinRequest } from '../../actions/messages';
+import Message from '../../containers/message/Message';
+import RCActivityIndicator from '../../containers/ActivityIndicator';
+import I18n from '../../i18n';
+import RocketChat from '../../lib/rocketchat';
+import StatusBar from '../../containers/StatusBar';
 
 const PIN_INDEX = 0;
 const CANCEL_INDEX = 1;
-const options = ['Unpin', 'Cancel'];
+const options = [I18n.t('Unpin'), I18n.t('Cancel')];
 
-@connect(
-	state => ({
-		messages: state.pinnedMessages.messages,
-		user: state.login.user,
-		baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-	}),
-	dispatch => ({
-		openPinnedMessages: rid => dispatch(openPinnedMessages(rid)),
-		closePinnedMessages: () => dispatch(closePinnedMessages()),
-		togglePinRequest: message => dispatch(togglePinRequest(message))
-	})
-)
+@connect(state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	customEmojis: state.customEmojis,
+	room: state.room,
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	}
+}))
+/** @extends React.Component */
 export default class PinnedMessagesView extends LoggedView {
+	static navigationOptions = {
+		title: I18n.t('Pinned')
+	}
+
 	static propTypes = {
-		navigation: PropTypes.object,
-		messages: PropTypes.array,
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
-		openPinnedMessages: PropTypes.func,
-		closePinnedMessages: PropTypes.func,
-		togglePinRequest: PropTypes.func
+		customEmojis: PropTypes.object,
+		room: PropTypes.object
 	}
 
 	constructor(props) {
 		super('PinnedMessagesView', props);
 		this.state = {
-			message: {}
+			loading: false,
+			messages: []
 		};
 	}
 
 	componentDidMount() {
-		this.props.openPinnedMessages(this.props.navigation.state.params.rid);
+		this.load();
 	}
 
-	componentWillUnmount() {
-		this.props.closePinnedMessages();
+	shouldComponentUpdate(nextProps, nextState) {
+		const { loading, messages } = this.state;
+		if (nextState.loading !== loading) {
+			return true;
+		}
+		if (!equal(nextState.messages, messages)) {
+			return true;
+		}
+		return false;
 	}
 
 	onLongPress = (message) => {
 		this.setState({ message });
-		this.actionSheet.show();
+		this.showActionSheet();
+	}
+
+	showActionSheet = () => {
+		ActionSheet.showActionSheetWithOptions({
+			options,
+			cancelButtonIndex: CANCEL_INDEX,
+			title: I18n.t('Actions')
+		}, (actionIndex) => {
+			this.handleActionPress(actionIndex);
+		});
 	}
 
 	handleActionPress = (actionIndex) => {
 		switch (actionIndex) {
 			case PIN_INDEX:
-				this.props.togglePinRequest(this.state.message);
+				this.unPin();
 				break;
 			default:
 				break;
 		}
 	}
 
+	unPin = async() => {
+		const { message } = this.state;
+		try {
+			const result = await RocketChat.togglePinMessage(message);
+			if (result.success) {
+				this.setState(prevState => ({
+					messages: prevState.messages.filter(item => item._id !== message._id)
+				}));
+			}
+		} catch (error) {
+			console.log('PinnedMessagesView -> unPin -> catch -> error', error);
+		}
+	}
+
+	load = async() => {
+		const {
+			messages, total, loading
+		} = this.state;
+		if (messages.length === total || loading) {
+			return;
+		}
+
+		this.setState({ loading: true });
+
+		try {
+			const { room } = this.props;
+			const result = await RocketChat.getMessages(room.rid, room.t, { pinned: true }, messages.length);
+			if (result.success) {
+				this.setState(prevState => ({
+					messages: [...prevState.messages, ...result.messages],
+					total: result.total,
+					loading: false
+				}));
+			}
+		} catch (error) {
+			this.setState({ loading: false });
+			console.log('PinnedMessagesView -> catch -> error', error);
+		}
+	}
+
 	renderEmpty = () => (
-		<View style={styles.listEmptyContainer}>
-			<Text>No pinned messages</Text>
+		<View style={styles.listEmptyContainer} testID='pinned-messages-view'>
+			<Text>{I18n.t('No_pinned_messages')}</Text>
 		</View>
 	)
 
-	renderItem = ({ item }) => (
-		<Message
-			item={item}
-			style={styles.message}
-			reactions={item.reactions}
-			user={this.props.user}
-			baseUrl={this.props.baseUrl}
-			Message_TimeFormat='MMMM Do YYYY, h:mm:ss a'
-			onLongPress={this.onLongPress}
-		/>
-	)
+	renderItem = ({ item }) => {
+		const { user, customEmojis, baseUrl } = this.props;
+		return (
+			<Message
+				style={styles.message}
+				customEmojis={customEmojis}
+				baseUrl={baseUrl}
+				user={user}
+				author={item.u}
+				ts={item.ts}
+				msg={item.msg}
+				attachments={item.attachments || []}
+				timeFormat='MMM Do YYYY, h:mm:ss a'
+				header
+				edited={!!item.editedAt}
+				onLongPress={() => this.onLongPress(item)}
+			/>
+		);
+	}
 
 	render() {
-		if (this.props.messages.length === 0) {
+		const { messages, loading } = this.state;
+
+		if (!loading && messages.length === 0) {
 			return this.renderEmpty();
 		}
+
 		return (
-			[
+			<SafeAreaView style={styles.list} testID='pinned-messages-view' forceInset={{ bottom: 'never' }}>
+				<StatusBar />
 				<FlatList
-					key='pinned-messages-view-list'
-					data={this.props.messages}
+					data={messages}
 					renderItem={this.renderItem}
 					style={styles.list}
 					keyExtractor={item => item._id}
-				/>,
-				<ActionSheet
-					key='pinned-messages-view-action-sheet'
-					ref={o => this.actionSheet = o}
-					title='Actions'
-					options={options}
-					cancelButtonIndex={CANCEL_INDEX}
-					onPress={this.handleActionPress}
+					onEndReached={this.load}
+					ListFooterComponent={loading ? <RCActivityIndicator /> : null}
 				/>
-			]
+			</SafeAreaView>
 		);
 	}
 }
