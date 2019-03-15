@@ -5,8 +5,6 @@ import {
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import { Linking } from 'react-native';
-import { PendingNotifications } from 'react-native-notifications';
-import EJSON from 'ejson';
 
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -42,21 +40,23 @@ import OAuthView from './views/OAuthView';
 import SetUsernameView from './views/SetUsernameView';
 import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from './constants/colors';
 import parseQuery from './lib/methods/helpers/parseQuery';
-import { initializePushNotifications } from './push';
+import { initializePushNotifications, onNotification } from './push';
 import store from './lib/createStore';
 
 useScreens();
 
-const handleOpenURL = ({ url }) => {
+const parseDeepLinking = (url) => {
 	if (url) {
 		url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
 		const regex = /^(room|auth)\?/;
 		if (url.match(regex)) {
-			url = url.replace(regex, '');
-			const params = parseQuery(url);
-			store.dispatch(deepLinkingOpen(params));
+			url = url.replace(regex, '').trim();
+			if (url) {
+				return parseQuery(url);
+			}
 		}
 	}
+	return null;
 };
 
 const defaultHeader = {
@@ -180,78 +180,28 @@ const App = createAppContainer(createSwitchNavigator(
 	}
 ));
 
-const onNotification = (notification) => {
-	if (notification) {
-		const data = notification.getData();
-		if (data) {
-			try {
-				const {
-					rid, name, sender, type, host
-				} = EJSON.parse(data.ejson);
-
-				const types = {
-					c: 'channel', d: 'direct', p: 'group'
-				};
-				const roomName = type === 'd' ? sender.username : name;
-
-				const params = {
-					host,
-					rid,
-					path: `${ types[type] }/${ roomName }`
-				};
-				console.log('TCL: onNotification -> params', params);
-				store.dispatch(deepLinkingOpen(params));
-			} catch (e) {
-				console.warn(e);
-			}
-		}
-	}
-};
-
 export default class Root extends React.Component {
 	constructor(props) {
 		super(props);
-		// Linking
-		// 	.getInitialURL()
-		// 	.then((url) => {
-		// 		console.log('TCL: Root -> constructor -> url', url);
-		// 		if (url) {
-		// 			handleOpenURL({ url });
-		// 		} else {
-		// 			store.dispatch(appInit());
-		// 		}
-		// 	})
-		// 	.catch(e => console.warn(e));
-		
-		
-		// PendingNotifications.getInitialNotification()
-		// 	.then((notification) => {
-		// 		// this.onNotification(notification);
-		// 		if (notification) {
-		// 			onNotification(notification);
-		// 		} else {
-		// 			store.dispatch(appInit());
-		// 		}
-		// 	})
-		// 	.catch(e => console.warn(e));
-
 		this.init();
-
-
-		Linking.addEventListener('url', handleOpenURL);
+		Linking.addEventListener('url', ({ url }) => {
+			const parsedDeepLinkingURL = parseDeepLinking(url);
+			if (parsedDeepLinkingURL) {
+				store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
+			}
+		});
 	}
 
 	init = async() => {
-		const [initial, initialLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
-		if (initial) {
-			onNotification(initial);
-		} else if (initialLinking) {
-			handleOpenURL({ url: initialLinking });
+		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
+		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
+		if (notification) {
+			onNotification(notification);
+		} else if (parsedDeepLinkingURL) {
+			store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
 		} else {
 			store.dispatch(appInit());
 		}
-		console.log('TCL: Root -> init -> initial', initial);
-		console.log('TCL: Root -> init -> initialLinking', initialLinking);
 	}
 
 	render() {

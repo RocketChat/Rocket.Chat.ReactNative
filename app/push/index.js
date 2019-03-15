@@ -23,7 +23,6 @@ export const onNotification = (notification) => {
 					rid,
 					path: `${ types[type] }/${ roomName }`
 				};
-				console.log('TCL: onNotification -> params', params);
 				store.dispatch(deepLinkingOpen(params));
 			} catch (e) {
 				console.warn(e);

@@ -28,13 +28,6 @@ const navigate = function* navigate({ params }) {
 };
 
 const handleOpen = function* handleOpen({ params }) {
-	console.log('TCL: handleOpen -> params', params);
-	// const isReady = yield select(state => state.app.ready);
-
-	// if (!isReady) {
-	// 	yield take(types.APP.READY);
-	// }
-
 	if (!params.host) {
 		return;
 	}
@@ -52,7 +45,6 @@ const handleOpen = function* handleOpen({ params }) {
 		AsyncStorage.getItem('currentServer'),
 		AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ host }`)
 	]);
-	console.log('TCL: handleOpen -> server, user', server, user);
 
 	// TODO: needs better test
 	// if deep link is from same server
