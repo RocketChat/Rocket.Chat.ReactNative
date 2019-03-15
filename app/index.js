@@ -184,12 +184,21 @@ export default class Root extends React.Component {
 	constructor(props) {
 		super(props);
 		this.init();
-		Linking.addEventListener('url', ({ url }) => {
-			const parsedDeepLinkingURL = parseDeepLinking(url);
-			if (parsedDeepLinkingURL) {
-				store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
-			}
-		});
+	}
+
+	componentDidMount() {
+		this.listenerTimeout = setTimeout(() => {
+			Linking.addEventListener('url', ({ url }) => {
+				const parsedDeepLinkingURL = parseDeepLinking(url);
+				if (parsedDeepLinkingURL) {
+					store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
+				}
+			});
+		}, 5000);
+	}
+
+	componentWillUnmount() {
+		clearTimeout(this.listenerTimeout);
 	}
 
 	init = async() => {
