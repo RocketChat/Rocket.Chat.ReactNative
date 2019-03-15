@@ -5,7 +5,10 @@ import {
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import { Linking } from 'react-native';
+import { PendingNotifications } from 'react-native-notifications';
+import EJSON from 'ejson';
 
+import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
 import OnboardingView from './views/OnboardingView';
 import NewServerView from './views/NewServerView';
@@ -43,7 +46,6 @@ import { initializePushNotifications } from './push';
 import store from './lib/createStore';
 
 useScreens();
-initializePushNotifications();
 
 const handleOpenURL = ({ url }) => {
 	if (url) {
@@ -56,12 +58,6 @@ const handleOpenURL = ({ url }) => {
 		}
 	}
 };
-
-Linking
-	.getInitialURL()
-	.then(url => handleOpenURL({ url }))
-	.catch(e => console.warn(e));
-Linking.addEventListener('url', handleOpenURL);
 
 const defaultHeader = {
 	headerStyle: {
@@ -184,12 +180,89 @@ const App = createAppContainer(createSwitchNavigator(
 	}
 ));
 
-export default () => (
-	<Provider store={store}>
-		<App
-			ref={(navigatorRef) => {
-				Navigation.setTopLevelNavigator(navigatorRef);
-			}}
-		/>
-	</Provider>
-);
+const onNotification = (notification) => {
+	if (notification) {
+		const data = notification.getData();
+		if (data) {
+			try {
+				const {
+					rid, name, sender, type, host
+				} = EJSON.parse(data.ejson);
+
+				const types = {
+					c: 'channel', d: 'direct', p: 'group'
+				};
+				const roomName = type === 'd' ? sender.username : name;
+
+				const params = {
+					host,
+					rid,
+					path: `${ types[type] }/${ roomName }`
+				};
+				console.log('TCL: onNotification -> params', params);
+				store.dispatch(deepLinkingOpen(params));
+			} catch (e) {
+				console.warn(e);
+			}
+		}
+	}
+};
+
+export default class Root extends React.Component {
+	constructor(props) {
+		super(props);
+		// Linking
+		// 	.getInitialURL()
+		// 	.then((url) => {
+		// 		console.log('TCL: Root -> constructor -> url', url);
+		// 		if (url) {
+		// 			handleOpenURL({ url });
+		// 		} else {
+		// 			store.dispatch(appInit());
+		// 		}
+		// 	})
+		// 	.catch(e => console.warn(e));
+		
+		
+		// PendingNotifications.getInitialNotification()
+		// 	.then((notification) => {
+		// 		// this.onNotification(notification);
+		// 		if (notification) {
+		// 			onNotification(notification);
+		// 		} else {
+		// 			store.dispatch(appInit());
+		// 		}
+		// 	})
+		// 	.catch(e => console.warn(e));
+
+		this.init();
+
+
+		Linking.addEventListener('url', handleOpenURL);
+	}
+
+	init = async() => {
+		const [initial, initialLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
+		if (initial) {
+			onNotification(initial);
+		} else if (initialLinking) {
+			handleOpenURL({ url: initialLinking });
+		} else {
+			store.dispatch(appInit());
+		}
+		console.log('TCL: Root -> init -> initial', initial);
+		console.log('TCL: Root -> init -> initialLinking', initialLinking);
+	}
+
+	render() {
+		return (
+			<Provider store={store}>
+				<App
+					ref={(navigatorRef) => {
+						Navigation.setTopLevelNavigator(navigatorRef);
+					}}
+				/>
+			</Provider>
+		);
+	}
+}

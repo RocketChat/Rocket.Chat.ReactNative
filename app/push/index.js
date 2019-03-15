@@ -4,7 +4,7 @@ import PushNotification from './push';
 import store from '../lib/createStore';
 import { deepLinkingOpen } from '../actions/deepLinking';
 
-const onNotification = (notification) => {
+export const onNotification = (notification) => {
 	if (notification) {
 		const data = notification.getData();
 		if (data) {
@@ -23,6 +23,7 @@ const onNotification = (notification) => {
 					rid,
 					path: `${ types[type] }/${ roomName }`
 				};
+				console.log('TCL: onNotification -> params', params);
 				store.dispatch(deepLinkingOpen(params));
 			} catch (e) {
 				console.warn(e);
@@ -31,13 +32,11 @@ const onNotification = (notification) => {
 	}
 };
 
-const getDeviceToken = () => PushNotification.getDeviceToken();
-const setBadgeCount = count => PushNotification.setBadgeCount(count);
-const initializePushNotifications = () => {
-	PushNotification.configure({
+export const getDeviceToken = () => PushNotification.getDeviceToken();
+export const setBadgeCount = count => PushNotification.setBadgeCount(count);
+export const initializePushNotifications = () => {
+	setBadgeCount();
+	return PushNotification.configure({
 		onNotification
 	});
-	setBadgeCount();
 };
-
-export { initializePushNotifications, getDeviceToken, setBadgeCount };

@@ -22,10 +22,10 @@ export default class Loading extends React.PureComponent {
 		appInit: PropTypes.func
 	}
 
-	constructor(props) {
-		super(props);
-		props.appInit();
-	}
+	// constructor(props) {
+	// 	super(props);
+	// 	props.appInit();
+	// }
 
 	render() {
 		return (

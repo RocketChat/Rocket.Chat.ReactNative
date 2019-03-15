@@ -26,11 +26,11 @@ class PushNotification {
 		this.onNotification = params.onNotification;
 		NotificationsAndroid.refreshToken();
 
-		PendingNotifications.getInitialNotification()
-			.then((notification) => {
-				this.onNotification(notification);
-			})
-			.catch(e => console.warn(e));
+		return PendingNotifications.getInitialNotification()
+			// .then((notification) => {
+			// 	this.onNotification(notification);
+			// })
+			// .catch(e => console.warn(e));
 	}
 }
 
