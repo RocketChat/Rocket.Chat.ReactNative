@@ -52,7 +52,7 @@
     "react-native-notifications": "1.1.23",
     "react-native-optimized-flatlist": "^1.0.4",
     "react-native-orientation-locker": "^1.1.3",
-    "react-native-picker-select": "^5.2.3",
+    "react-native-picker-select": "^6.1.0",
     "react-native-responsive-ui": "^1.1.1",
     "react-native-safari-view": "^2.1.0",
     "react-native-screens": "^1.0.0-alpha.22",
