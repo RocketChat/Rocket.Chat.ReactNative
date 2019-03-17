@@ -79,7 +79,7 @@
   "devDependencies": {
     "@babel/core": "^7.1.0",
     "@babel/plugin-proposal-decorators": "^7.1.0",
-    "@storybook/addon-actions": "4.1.14",
+    "@storybook/addon-actions": "5.0.2",
     "@storybook/addon-links": "4.1.14",
     "@storybook/addon-storyshots": "4.1.14",
     "@storybook/addons": "5.0.2",
