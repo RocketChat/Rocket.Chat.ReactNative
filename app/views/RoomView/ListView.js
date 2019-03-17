@@ -1,7 +1,7 @@
 import { ListView as OldList } from 'realm/react-native';
 import React from 'react';
 import {
-	ScrollView, ListView as OldList2, ImageBackground, ActivityIndicator
+	TouchableOpacity, ScrollView, ListView as OldList2, ImageBackground, ActivityIndicator
 } from 'react-native';
 import moment from 'moment';
 import { connect } from 'react-redux';
@@ -14,6 +14,7 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import debounce from '../../utils/debounce';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
+import { CustomIcon } from '../../lib/Icons';
 
 const DEFAULT_SCROLL_CALLBACK_THROTTLE = 100;
 
@@ -47,7 +48,8 @@ export class List extends React.Component {
 		this.state = {
 			loading: true,
 			loadingMore: false,
-			end: false
+			end: false,
+			showScollToBottomButton: false
 		};
 		this.dataSource = ds.cloneWithRows(this.data);
 	}
@@ -58,8 +60,8 @@ export class List extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { loadingMore, loading, end } = this.state;
-		return end !== nextState.end || loadingMore !== nextState.loadingMore || loading !== nextState.loading;
+		const { loadingMore, loading, end, showScollToBottomButton } = this.state;
+		return end !== nextState.end || loadingMore !== nextState.loadingMore || loading !== nextState.loading || showScollToBottomButton !== nextState.showScollToBottomButton;
 	}
 
 	componentWillUnmount() {
@@ -91,6 +93,18 @@ export class List extends React.Component {
 		}
 	}
 
+	scrollToBottom = () => {
+		this.listView.scrollTo({ x: 0, y: 0, animated: true });
+	}
+
+	handleScroll= (event) => {
+		if (event.nativeEvent.contentOffset.y > 400) {
+			this.setState({ showScollToBottomButton: true });
+		} else {
+			this.setState({ showScollToBottomButton: false });
+		}
+	}
+
 	renderFooter = () => {
 		const { loadingMore, loading } = this.state;
 		if (loadingMore || loading) {
@@ -101,30 +115,39 @@ export class List extends React.Component {
 
 	render() {
 		const { renderRow } = this.props;
-
+		const { showScollToBottomButton } = this.state;
 		return (
-			<ListView
-				enableEmptySections
-				style={styles.list}
-				data={this.data}
-				keyExtractor={item => item._id}
-				onEndReachedThreshold={100}
-				renderFooter={this.renderFooter}
-				onEndReached={this.onEndReached}
-				dataSource={this.dataSource}
-				renderRow={(item, previousItem) => renderRow(item, previousItem)}
-				initialListSize={1}
-				pageSize={20}
-				testID='room-view-messages'
-				{...scrollPersistTaps}
-			/>
+			<>
+				<ListView
+					enableEmptySections
+					ref={ref => this.listView = ref}
+					style={styles.list}
+					data={this.data}
+					keyExtractor={item => item._id}
+					onEndReachedThreshold={100}
+					renderFooter={this.renderFooter}
+					onEndReached={this.onEndReached}
+					dataSource={this.dataSource}
+					renderRow={(item, previousItem) => renderRow(item, previousItem)}
+					initialListSize={1}
+					pageSize={20}
+					onScroll={this.handleScroll}
+					testID='room-view-messages'
+					{...scrollPersistTaps}
+				/>
+				{showScollToBottomButton ? (
+					<TouchableOpacity activeOpacity={0.5} style={styles.scrollToBottomButton} onPress={this.scrollToBottom}>
+						<CustomIcon name='arrow-down' color='white' size={30} />
+					</TouchableOpacity>
+				) : null}
+			</>
 		);
 	}
 }
 
 @connect(state => ({
 	lastOpen: state.room.lastOpen
-}))
+}), null, null, { forwardRef: true })
 export class ListView extends OldList2 {
 	constructor(props) {
 		super(props);
@@ -221,6 +244,7 @@ export class ListView extends OldList2 {
 					ref={this._setScrollComponentRef}
 					onContentSizeChange={this._onContentSizeChange}
 					onLayout={this._onLayout}
+					stickyHeaderIndices={[0]}
 					{...props}
 				>
 					{header}
