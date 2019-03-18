@@ -24,6 +24,7 @@ const handleSelectServer = function* handleSelectServer({ server }) {
 			yield put(actions.appStart('inside'));
 		} else {
 			RocketChat.connect({ server });
+			yield put(actions.appStart('outside'));
 		}
 
 		const settings = database.objects('settings');
