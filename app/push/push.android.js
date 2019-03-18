@@ -25,12 +25,7 @@ class PushNotification {
 		this.onRegister = params.onRegister;
 		this.onNotification = params.onNotification;
 		NotificationsAndroid.refreshToken();
-
-		PendingNotifications.getInitialNotification()
-			.then((notification) => {
-				this.onNotification(notification);
-			})
-			.catch(e => console.warn(e));
+		return PendingNotifications.getInitialNotification();
 	}
 }
 
