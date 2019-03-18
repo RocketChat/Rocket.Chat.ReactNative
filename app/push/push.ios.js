@@ -30,6 +30,7 @@ class PushNotification {
 		this.onNotification = params.onNotification;
 
 		NotificationsIOS.consumeBackgroundQueue();
+		return Promise.resolve();
 	}
 }
 export default new PushNotification();
