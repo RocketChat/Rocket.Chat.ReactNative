@@ -3,7 +3,6 @@ import {
 	put, call, takeLatest, select
 } from 'redux-saga/effects';
 
-import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions';
 import { serverFinishAdd, selectServerRequest } from '../actions/server';
@@ -50,7 +49,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield put(appStart('setUsername'));
 	} else if (adding) {
 		yield put(serverFinishAdd());
-		yield Navigation.dismissAllModals();
+		yield put(appStart('inside'));
 	} else {
 		yield put(appStart('inside'));
 	}

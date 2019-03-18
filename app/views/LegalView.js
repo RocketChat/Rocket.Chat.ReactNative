@@ -3,18 +3,16 @@ import PropTypes from 'prop-types';
 import {
 	Text, ScrollView, View, StyleSheet
 } from 'react-native';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 import { RectButton } from 'react-native-gesture-handler';
 
-import Navigation from '../lib/Navigation';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
-import { isIOS, isAndroid } from '../utils/deviceInfo';
 import LoggedView from './View';
 import I18n from '../i18n';
-import { DARK_HEADER } from '../constants/headerOptions';
-import Icons from '../lib/Icons';
 import DisclosureIndicator from '../containers/DisclosureIndicator';
+import { CloseModalButton } from '../containers/HeaderButton';
+import StatusBar from '../containers/StatusBar';
 
 const styles = StyleSheet.create({
 	container: {
@@ -55,48 +53,22 @@ const Separator = () => <View style={styles.separator} />;
 
 /** @extends React.Component */
 export default class LegalView extends LoggedView {
-	static options() {
-		return {
-			...DARK_HEADER,
-			topBar: {
-				...DARK_HEADER.topBar,
-				title: {
-					...DARK_HEADER.topBar.title,
-					text: I18n.t('Legal')
-				},
-				leftButtons: [{
-					id: 'close',
-					icon: isAndroid ? Icons.getSource('close') : undefined,
-					text: isIOS ? I18n.t('Close') : undefined,
-					testID: 'legal-view-close'
-				}]
-			}
-		};
-	}
+	static navigationOptions = ({ navigation }) => ({
+		headerLeft: <CloseModalButton testID='legal-view-close' navigation={navigation} />,
+		title: I18n.t('Legal')
+	})
 
 	static propTypes = {
-		componentId: PropTypes.string
+		navigation: PropTypes.object
 	}
 
 	constructor(props) {
 		super('LegalView', props);
-		Navigation.events().bindComponent(this);
-	}
-
-	navigationButtonPressed = ({ buttonId }) => {
-		if (buttonId === 'close') {
-			const { componentId } = this.props;
-			Navigation.dismissModal(componentId);
-		}
 	}
 
 	onPressItem = ({ route }) => {
-		const { componentId } = this.props;
-		Navigation.push(componentId, {
-			component: {
-				name: route
-			}
-		});
+		const { navigation } = this.props;
+		navigation.navigate(route);
 	}
 
 	renderItem = ({ text, route, testID }) => (
@@ -109,6 +81,7 @@ export default class LegalView extends LoggedView {
 	render() {
 		return (
 			<SafeAreaView style={styles.container} testID='legal-view' forceInset={{ bottom: 'never' }}>
+				<StatusBar />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.scroll}>
 					{this.renderItem({ text: 'Terms_of_Service', route: 'TermsServiceView', testID: 'legal-terms-button' })}
 					<Separator />

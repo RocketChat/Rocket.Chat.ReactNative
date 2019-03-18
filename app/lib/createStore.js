@@ -1,5 +1,5 @@
 import { createStore as reduxCreateStore, applyMiddleware, compose } from 'redux';
-import Reactotron from 'reactotron-react-native' ; // eslint-disable-line
+import Reactotron from 'reactotron-react-native';
 import createSagaMiddleware from 'redux-saga';
 import applyAppStateListener from 'redux-enhancer-react-native-appstate';
 

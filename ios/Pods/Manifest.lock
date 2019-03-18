@@ -2,6 +2,10 @@ PODS:
   - QBImagePickerController (3.4.0)
   - React (0.58.6):
     - React/Core (= 0.58.6)
+  - react-native-orientation-locker (1.1.3):
+    - React
+  - react-native-splash-screen (3.2.0):
+    - React
   - React/Core (0.58.6):
     - yoga (= 0.58.6.React)
   - React/fishhook (0.58.6)
@@ -36,10 +40,14 @@ PODS:
     - QBImagePickerController
     - React/Core
     - RSKImageCropper
+  - RNScreens (1.0.0-alpha.22):
+    - React
   - RSKImageCropper (2.2.1)
   - yoga (0.58.6.React)
 
 DEPENDENCIES:
+  - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
+  - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - React/Core (from `../node_modules/react-native`)
   - React/RCTActionSheet (from `../node_modules/react-native`)
   - React/RCTAnimation (from `../node_modules/react-native`)
@@ -53,6 +61,7 @@ DEPENDENCIES:
   - React/RCTWebSocket (from `../node_modules/react-native`)
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
+  - RNScreens (from `../node_modules/react-native-screens`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
 SPEC REPOS:
@@ -63,21 +72,30 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   React:
     :path: "../node_modules/react-native"
+  react-native-orientation-locker:
+    :path: "../node_modules/react-native-orientation-locker"
+  react-native-splash-screen:
+    :path: "../node_modules/react-native-splash-screen"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNImageCropPicker:
     :path: "../node_modules/react-native-image-crop-picker"
+  RNScreens:
+    :path: "../node_modules/react-native-screens"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga/yoga.podspec"
 
 SPEC CHECKSUMS:
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   React: 130b87b2d5e2baac646954282cab87be986d98fc
+  react-native-orientation-locker: 8878845713f8d52f2a520ec3c3b0c9348e08e32c
+  react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   RNDeviceInfo: e7c5fcde13d40e161d8a27f6c5dc69c638936002
   RNImageCropPicker: e608efe182652dc8690268cb99cb5a201f2b5ea3
+  RNScreens: 720a9e6968beb73e8196239801e887d8401f86ed
   RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
   yoga: 32d7ef1081951e9a35a4c72a7be797598b138a48
 
-PODFILE CHECKSUM: da5e520837501713de2c32adbff219ab7fc5c0fa
+PODFILE CHECKSUM: ad284b28235f7bcda110a24095b5e2b5718cf7e2
 
 COCOAPODS: 1.6.0

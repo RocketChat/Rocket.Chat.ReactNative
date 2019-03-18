@@ -53,17 +53,9 @@ const handleServerRequest = function* handleServerRequest({ server }) {
 
 		const loginServicesLength = yield RocketChat.getLoginServices(server);
 		if (loginServicesLength === 0) {
-			yield Navigation.push('NewServerView', {
-				component: {
-					name: 'LoginView'
-				}
-			});
+			Navigation.navigate('LoginView');
 		} else {
-			yield Navigation.push('NewServerView', {
-				component: {
-					name: 'LoginSignupView'
-				}
-			});
+			Navigation.navigate('LoginSignupView');
 		}
 
 		database.databases.serversDB.write(() => {

@@ -2,29 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { WebView } from 'react-native';
 import { connect } from 'react-redux';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 
 import styles from './Styles';
 import LoggedView from './View';
-import { DARK_HEADER } from '../constants/headerOptions';
 import I18n from '../i18n';
+import StatusBar from '../containers/StatusBar';
 
 @connect(state => ({
 	termsService: state.settings.Layout_Terms_of_Service
 }))
 /** @extends React.Component */
 export default class TermsServiceView extends LoggedView {
-	static options() {
-		return {
-			...DARK_HEADER,
-			topBar: {
-				...DARK_HEADER.topBar,
-				title: {
-					...DARK_HEADER.topBar.title,
-					text: I18n.t('Terms_of_Service')
-				}
-			}
-		};
+	static navigationOptions = {
+		title: I18n.t('Terms_of_Service')
 	}
 
 	static propTypes = {
@@ -39,6 +30,7 @@ export default class TermsServiceView extends LoggedView {
 		const { termsService } = this.props;
 		return (
 			<SafeAreaView style={styles.container} testID='terms-view'>
+				<StatusBar />
 				<WebView originWhitelist={['*']} source={{ html: termsService, baseUrl: '' }} />
 			</SafeAreaView>
 		);

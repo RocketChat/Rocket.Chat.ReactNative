@@ -4,7 +4,8 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
+import Orientation from 'react-native-orientation-locker';
 
 import { selectServerRequest, serverInitAdd, serverFinishAdd } from '../../actions/server';
 import { appStart as appStartAction } from '../../actions';
@@ -15,9 +16,8 @@ import styles from './styles';
 import LoggedView from '../View';
 import { isIOS, isNotch } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
-import { LIGHT_HEADER } from '../../constants/headerOptions';
-import Navigation from '../../lib/Navigation';
 import { CustomIcon } from '../../lib/Icons';
+import StatusBar from '../../containers/StatusBar';
 
 @connect(state => ({
 	currentServer: state.server.server,
@@ -26,23 +26,16 @@ import { CustomIcon } from '../../lib/Icons';
 	initAdd: () => dispatch(serverInitAdd()),
 	finishAdd: () => dispatch(serverFinishAdd()),
 	selectServer: server => dispatch(selectServerRequest(server)),
-	appStart: () => dispatch(appStartAction())
+	appStart: root => dispatch(appStartAction(root))
 }))
 /** @extends React.Component */
 export default class OnboardingView extends LoggedView {
-	static options() {
-		return {
-			...LIGHT_HEADER,
-			topBar: {
-				visible: false,
-				drawBehind: true
-			}
-		};
-	}
+	static navigationOptions = () => ({
+		header: null
+	})
 
 	static propTypes = {
-		componentId: PropTypes.string,
-		previousServer: PropTypes.string,
+		navigation: PropTypes.object,
 		adding: PropTypes.bool,
 		selectServer: PropTypes.func.isRequired,
 		currentServer: PropTypes.string,
@@ -54,11 +47,13 @@ export default class OnboardingView extends LoggedView {
 	constructor(props) {
 		super('OnboardingView', props);
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+		this.previousServer = props.navigation.getParam('previousServer');
+		Orientation.lockToPortrait();
 	}
 
 	componentDidMount() {
-		const { previousServer, initAdd } = this.props;
-		if (previousServer) {
+		const { initAdd } = this.props;
+		if (this.previousServer) {
 			initAdd();
 		}
 		EventEmitter.addEventListener('NewServer', this.handleNewServerEvent);
@@ -70,11 +65,11 @@ export default class OnboardingView extends LoggedView {
 
 	componentWillUnmount() {
 		const {
-			selectServer, previousServer, currentServer, adding, finishAdd
+			selectServer, currentServer, adding, finishAdd
 		} = this.props;
 		if (adding) {
-			if (previousServer !== currentServer) {
-				selectServer(previousServer);
+			if (this.previousServer !== currentServer) {
+				selectServer(this.previousServer);
 			}
 			finishAdd();
 		}
@@ -89,26 +84,13 @@ export default class OnboardingView extends LoggedView {
 	}
 
 	close = () => {
-		const { componentId } = this.props;
-		Navigation.dismissModal(componentId);
+		const { appStart } = this.props;
+		appStart('inside');
 	}
 
 	newServer = (server) => {
-		const { componentId } = this.props;
-		Navigation.push(componentId, {
-			component: {
-				id: 'NewServerView',
-				name: 'NewServerView',
-				passProps: {
-					server
-				},
-				options: {
-					topBar: {
-						visible: false
-					}
-				}
-			}
-		});
+		const { navigation } = this.props;
+		navigation.navigate('NewServerView', { server });
 	}
 
 	handleNewServerEvent = (event) => {
@@ -129,9 +111,7 @@ export default class OnboardingView extends LoggedView {
 	}
 
 	renderClose = () => {
-		const { previousServer } = this.props;
-
-		if (previousServer) {
+		if (this.previousServer) {
 			let top = 15;
 			if (isIOS) {
 				top = isNotch ? 45 : 30;
@@ -156,6 +136,7 @@ export default class OnboardingView extends LoggedView {
 	render() {
 		return (
 			<SafeAreaView style={styles.container} testID='onboarding-view' forceInset={{ bottom: 'never' }}>
+				<StatusBar light />
 				<Image style={styles.onboarding} source={{ uri: 'onboarding' }} fadeDuration={0} />
 				<Text style={styles.title}>{I18n.t('Welcome_to_RocketChat')}</Text>
 				<Text style={styles.subtitle}>{I18n.t('Open_Source_Communication')}</Text>
