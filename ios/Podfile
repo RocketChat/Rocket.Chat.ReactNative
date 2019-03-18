@@ -26,6 +26,12 @@ target 'RocketChatRN' do
   pod 'RNImageCropPicker', :path =>  '../node_modules/react-native-image-crop-picker'
   pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
 
+  pod 'RNScreens', :path => '../node_modules/react-native-screens'
+
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
+  pod 'react-native-orientation-locker', :path => '../node_modules/react-native-orientation-locker'
+
 end
 
 post_install do |installer|

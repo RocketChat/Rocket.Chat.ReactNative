@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import { FlatList, View, ActivityIndicator } from 'react-native';
 import ActionSheet from 'react-native-action-sheet';
 import { connect } from 'react-redux';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
-import Navigation from '../../lib/Navigation';
 import LoggedView from '../View';
 import styles from './styles';
 import UserItem from '../../presentation/UserItem';
@@ -15,11 +14,12 @@ import RocketChat from '../../lib/rocketchat';
 import database from '../../lib/realm';
 import { showToast } from '../../utils/info';
 import log from '../../utils/log';
-import { isAndroid } from '../../utils/deviceInfo';
 import { vibrate } from '../../utils/vibration';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
+import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
+import StatusBar from '../../containers/StatusBar';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -31,24 +31,22 @@ import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 }))
 /** @extends React.Component */
 export default class RoomMembersView extends LoggedView {
-	static options() {
+	static navigationOptions = ({ navigation }) => {
+		const toggleStatus = navigation.getParam('toggleStatus', () => {});
+		const allUsers = navigation.getParam('allUsers');
+		const toggleText = allUsers ? I18n.t('Online') : I18n.t('All');
 		return {
-			topBar: {
-				title: {
-					text: I18n.t('Members')
-				},
-				rightButtons: [{
-					id: 'toggleOnline',
-					text: I18n.t('Online'),
-					testID: 'room-members-view-toggle-status',
-					color: isAndroid ? '#FFF' : undefined
-				}]
-			}
+			title: I18n.t('Members'),
+			headerRight: (
+				<CustomHeaderButtons>
+					<Item title={toggleText} onPress={toggleStatus} testID='room-members-view-toggle-status' />
+				</CustomHeaderButtons>
+			)
 		};
 	}
 
 	static propTypes = {
-		componentId: PropTypes.string,
+		navigation: PropTypes.object,
 		rid: PropTypes.string,
 		members: PropTypes.array,
 		baseUrl: PropTypes.string,
@@ -65,7 +63,7 @@ export default class RoomMembersView extends LoggedView {
 		this.CANCEL_INDEX = 0;
 		this.MUTE_INDEX = 1;
 		this.actionSheetOptions = [''];
-		const { rid, members, room } = props;
+		const { rid, members } = props.navigation.state.params;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.permissions = RocketChat.hasPermission(['mute-user'], rid);
 		this.state = {
@@ -76,15 +74,17 @@ export default class RoomMembersView extends LoggedView {
 			members,
 			membersFiltered: [],
 			userLongPressed: {},
-			room,
+			room: this.rooms[0] || {},
 			options: []
 		};
-		Navigation.events().bindComponent(this);
 	}
 
 	componentDidMount() {
 		this.fetchMembers();
 		this.rooms.addListener(this.updateRoom);
+
+		const { navigation } = this.props;
+		navigation.setParams({ toggleStatus: this.toggleStatus });
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -112,7 +112,7 @@ export default class RoomMembersView extends LoggedView {
 		if (!equal(nextState.room.muted, room.muted)) {
 			return true;
 		}
-		if (isLoading !== nextState.loaded) {
+		if (isLoading !== nextState.isLoading) {
 			return true;
 		}
 		return false;
@@ -131,29 +131,6 @@ export default class RoomMembersView extends LoggedView {
 		}
 		this.setState({ filtering: !!text, membersFiltered });
 	})
-
-	navigationButtonPressed = ({ buttonId }) => {
-		const { allUsers } = this.state;
-		const { componentId } = this.props;
-
-		if (buttonId === 'toggleOnline') {
-			try {
-				Navigation.mergeOptions(componentId, {
-					topBar: {
-						rightButtons: [{
-							id: 'toggleOnline',
-							text: allUsers ? I18n.t('Online') : I18n.t('All'),
-							testID: 'room-members-view-toggle-status',
-							color: isAndroid ? '#FFF' : undefined
-						}]
-					}
-				});
-				this.fetchMembers(!allUsers);
-			} catch (e) {
-				log('RoomMembers.onNavigationButtonPressed', e);
-			}
-		}
-	}
 
 	onPressUser = async(item) => {
 		try {
@@ -191,6 +168,15 @@ export default class RoomMembersView extends LoggedView {
 		this.showActionSheet();
 	}
 
+	toggleStatus = () => {
+		try {
+			const { allUsers } = this.state;
+			this.fetchMembers(!allUsers);
+		} catch (e) {
+			log('RoomMembers.toggleStatus', e);
+		}
+	}
+
 	showActionSheet = () => {
 		ActionSheet.showActionSheetWithOptions({
 			options: this.actionSheetOptions,
@@ -204,9 +190,11 @@ export default class RoomMembersView extends LoggedView {
 	fetchMembers = async(status) => {
 		this.setState({ isLoading: true });
 		const { rid } = this.state;
+		const { navigation } = this.props;
 		const membersResult = await RocketChat.getRoomMembers(rid, status);
 		const members = membersResult.records;
 		this.setState({ allUsers: status, members, isLoading: false });
+		navigation.setParams({ allUsers: status });
 	}
 
 	updateRoom = () => {
@@ -217,16 +205,9 @@ export default class RoomMembersView extends LoggedView {
 	}
 
 	goRoom = async({ rid, name }) => {
-		const { componentId } = this.props;
-		await Navigation.popToRoot(componentId);
-		Navigation.push('RoomsListView', {
-			component: {
-				name: 'RoomView',
-				passProps: {
-					rid, name, t: 'd'
-				}
-			}
-		});
+		const { navigation } = this.props;
+		await navigation.popToTop();
+		navigation.navigate('RoomView', { rid, name, t: 'd' });
 	}
 
 	handleMute = async() => {
@@ -280,6 +261,7 @@ export default class RoomMembersView extends LoggedView {
 		}
 		return (
 			<SafeAreaView style={styles.list} testID='room-members-view' forceInset={{ bottom: 'never' }}>
+				<StatusBar />
 				<FlatList
 					data={filtering ? membersFiltered : members}
 					renderItem={this.renderItem}

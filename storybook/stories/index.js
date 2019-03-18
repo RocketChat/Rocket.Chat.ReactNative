@@ -1,11 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions */
-
 import React from 'react';
 import { Provider } from 'react-redux';
-
 import { createStore, combineReducers } from 'redux';
-
-
 import { storiesOf } from '@storybook/react-native';
 
 import DirectMessage from './Channels/DirectMessage';

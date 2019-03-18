@@ -7,7 +7,6 @@ import selectServer from './selectServer';
 import createChannel from './createChannel';
 import init from './init';
 import state from './state';
-import snippetedMessages from './snippetedMessages';
 import deepLinking from './deepLinking';
 
 const root = function* root() {
@@ -20,7 +19,6 @@ const root = function* root() {
 		messages(),
 		selectServer(),
 		state(),
-		snippetedMessages(),
 		deepLinking()
 	]);
 };
