@@ -475,6 +475,7 @@ export default class RoomsListView extends LoggedView {
 			<RoomItem
 				alert={item.alert}
 				unread={item.unread}
+				isRead={!((item.archived !== true && item.open === true) && (item.unread > 0 || item.alert === true))}
 				userMentions={item.userMentions}
 				favorite={item.f}
 				lastMessage={item.lastMessage}

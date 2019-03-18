@@ -1,16 +1,19 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 import { RectButton } from 'react-native-gesture-handler';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 import Avatar from '../containers/Avatar';
 import Status from '../containers/Status';
 import RoomTypeIcon from '../containers/RoomTypeIcon';
 import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
+import { CustomIcon } from '../lib/Icons';
+import RocketChat from '../lib/rocketchat';
 
 const styles = StyleSheet.create({
 	container: {
@@ -87,6 +90,16 @@ const styles = StyleSheet.create({
 	},
 	avatar: {
 		marginRight: 10
+	},
+	actionText: {
+		color: 'white',
+		fontSize: 14,
+		backgroundColor: 'transparent'
+	},
+	action: {
+		alignItems: 'center',
+		flex: 1,
+		justifyContent: 'center'
 	}
 });
 
@@ -131,6 +144,7 @@ export default class RoomItem extends React.Component {
 		favorite: PropTypes.bool,
 		alert: PropTypes.bool,
 		unread: PropTypes.number,
+		isRead: PropTypes.bool,
 		userMentions: PropTypes.number,
 		id: PropTypes.string,
 		onPress: PropTypes.func,
@@ -149,7 +163,7 @@ export default class RoomItem extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		const { lastMessage, _updatedAt } = this.props;
+		const { lastMessage, _updatedAt, isRead } = this.props;
 		const oldlastMessage = lastMessage;
 		const newLastmessage = nextProps.lastMessage;
 
@@ -157,6 +171,9 @@ export default class RoomItem extends React.Component {
 			return true;
 		}
 		if (_updatedAt && nextProps._updatedAt && nextProps._updatedAt !== _updatedAt) {
+			return true;
+		}
+		if (isRead !== nextProps.isRead) {
 			return true;
 		}
 		// eslint-disable-next-line react/destructuring-assignment
@@ -219,6 +236,103 @@ export default class RoomItem extends React.Component {
 		sameElse: 'MMM D'
 	})
 
+	toggleFav = () => {
+		try {
+			const { id, favorite } = this.props;
+			RocketChat.toggleFavorite(id, !favorite);
+		} catch (e) {
+			log('toggleFavorite', e);
+		}
+		this.close();
+	}
+
+	toggleRead = () => {
+		try {
+			const { id, isRead } = this.props;
+			RocketChat.toggleRead(isRead, id);
+		} catch (e) {
+			log('toggleFavorite', e);
+		}
+		this.close();
+	}
+
+	toggleHide =() => {
+
+	}
+
+	renderLeftActions = (progress) => {
+		const { isRead } = this.props;
+		const trans = progress.interpolate({
+			inputRange: [0, 1],
+			outputRange: [-80, 0]
+		});
+		return (
+			<View style={{ width: 80, flexDirection: 'row' }}>
+				<Animated.View style={{ flex: 1, transform: [{ translateX: trans }] }}>
+					<RectButton
+						style={[styles.action, { backgroundColor: '#1d74f5' }]}
+						onPress={this.toggleRead}
+					>
+						{isRead ? (
+							<>
+								<CustomIcon size={15} name='flag' color='white' />
+								<Text style={styles.actionText}>Unread</Text>
+							</>
+						) : (
+							<>
+								<CustomIcon size={15} name='check' color='white' />
+								<Text style={styles.actionText}>Read</Text>
+							</>
+						)}
+					</RectButton>
+				</Animated.View>
+			</View>
+		);
+	};
+
+	renderRightActions = (progress) => {
+		const { favorite } = this.props;
+		const trans = progress.interpolate({
+			inputRange: [0, 1],
+			outputRange: [160, 0]
+		});
+		return (
+			<View style={{ width: 160, flexDirection: 'row' }}>
+				<Animated.View style={{ flex: 1, transform: [{ translateX: trans }] }}>
+					<RectButton
+						style={[styles.action, { backgroundColor: '#F4BD3E' }]}
+						onPress={this.toggleFav}
+					>
+						{favorite ? (
+							<>
+								<CustomIcon size={17} name='Star-filled' color='white' />
+								<Text style={styles.actionText}>Unfavorite</Text>
+							</>
+						) : (
+							<>
+								<CustomIcon size={17} name='star' color='white' />
+								<Text style={styles.actionText}>Favorite</Text>
+							</>
+						)}
+					</RectButton>
+				</Animated.View>
+				<Animated.View style={{ flex: 1, transform: [{ translateX: trans }] }}>
+					<RectButton
+						style={[styles.action, { backgroundColor: '#55585D' }]}
+						onPress={this.toggleHide}
+					>
+						<CustomIcon size={15} name='eye-off' color='white' />
+						<Text style={styles.actionText}>Hide</Text>
+					</RectButton>
+				</Animated.View>
+			</View>
+		);
+	}
+
+	close = () => {
+		this.swipeableRow.close();
+	};
+
 	render() {
 		const {
 			favorite, unread, userMentions, name, _updatedAt, alert, testID, height, onPress
@@ -242,32 +356,42 @@ export default class RoomItem extends React.Component {
 		}
 
 		return (
-			<RectButton
-				onPress={onPress}
-				activeOpacity={0.8}
-				underlayColor='#e1e5e8'
-				testID={testID}
+			<Swipeable
+				ref={(ref) => { this.swipeableRow = ref; }}
+				friction={3}
+				leftThreshold={30}
+				rightThreshold={40}
+				renderLeftActions={this.renderLeftActions}
+				renderRightActions={this.renderRightActions}
 			>
-				<View
-					style={[styles.container, favorite && styles.favorite, height && { height }]}
-					accessibilityLabel={accessibilityLabel}
+
+				<RectButton
+					onPress={onPress}
+					activeOpacity={0.8}
+					underlayColor='#e1e5e8'
+					testID={testID}
 				>
-					{this.avatar}
-					<View style={styles.centerContainer}>
-						<View style={styles.titleContainer}>
-							{this.type}
-							<Text style={[styles.title, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
-							{_updatedAt ? <Text style={[styles.date, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
-						</View>
-						<View style={styles.row}>
-							<Text style={[styles.markdownText, alert && styles.markdownTextAlert]} numberOfLines={2}>
-								{this.lastMessage}
-							</Text>
-							{renderNumber(unread, userMentions)}
+					<View
+						style={[styles.container, favorite && styles.favorite, height && { height }]}
+						accessibilityLabel={accessibilityLabel}
+					>
+						{this.avatar}
+						<View style={styles.centerContainer}>
+							<View style={styles.titleContainer}>
+								{this.type}
+								<Text style={[styles.title, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
+								{_updatedAt ? <Text style={[styles.date, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
+							</View>
+							<View style={styles.row}>
+								<Text style={[styles.markdownText, alert && styles.markdownTextAlert]} numberOfLines={2}>
+									{this.lastMessage}
+								</Text>
+								{renderNumber(unread, userMentions)}
+							</View>
 						</View>
 					</View>
-				</View>
-			</RectButton>
+				</RectButton>
+			</Swipeable>
 		);
 	}
 }
