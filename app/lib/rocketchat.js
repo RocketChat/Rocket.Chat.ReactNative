@@ -114,6 +114,10 @@ const RocketChat = {
 			reduxStore.dispatch(setUser(ddpMessage.fields));
 		}
 
+		if (ddpMessage.cleared && user && user.id === ddpMessage.id) {
+			reduxStore.dispatch(setUser({ status: 'offline' }));
+		}
+
 		if (this._setUserTimer) {
 			clearTimeout(this._setUserTimer);
 			this._setUserTimer = null;
