@@ -46,5 +46,8 @@ export default StyleSheet.create({
 	headerButton: {
 		marginRight: 9,
 		alignItems: 'flex-end'
+	},
+	loading: {
+		flex: 1
 	}
 });

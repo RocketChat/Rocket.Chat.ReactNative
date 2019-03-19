@@ -110,7 +110,7 @@ const renderNumber = (unread, userMentions) => {
 	);
 };
 
-const attrs = ['name', 'unread', 'userMentions', 'alert', 'showLastMessage', 'type'];
+const attrs = ['name', 'unread', 'userMentions', 'StoreLastMessage', 'alert', 'type'];
 @connect(state => ({
 	user: {
 		id: state.login.user && state.login.user.id,
@@ -128,7 +128,6 @@ export default class RoomItem extends React.Component {
 		StoreLastMessage: PropTypes.bool,
 		_updatedAt: PropTypes.string,
 		lastMessage: PropTypes.object,
-		showLastMessage: PropTypes.bool,
 		favorite: PropTypes.bool,
 		alert: PropTypes.bool,
 		unread: PropTypes.number,
@@ -147,7 +146,6 @@ export default class RoomItem extends React.Component {
 	}
 
 	static defaultProps = {
-		showLastMessage: true,
 		avatarSize: 48
 	}
 
@@ -175,10 +173,10 @@ export default class RoomItem extends React.Component {
 
 	get lastMessage() {
 		const {
-			lastMessage, type, showLastMessage, StoreLastMessage, user
+			lastMessage, type, StoreLastMessage, user
 		} = this.props;
 
-		if (!StoreLastMessage || !showLastMessage) {
+		if (!StoreLastMessage) {
 			return '';
 		}
 		if (!lastMessage) {

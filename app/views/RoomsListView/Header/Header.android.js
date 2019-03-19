@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
 });
 
 const Header = ({
-	isFetching, serverName, showServerDropdown, width, setSearchInputRef, showSearchHeader, onSearchChangeText, onPress
+	isFetching, serverName, showServerDropdown, setSearchInputRef, showSearchHeader, onSearchChangeText, onPress
 }) => {
 	if (showSearchHeader) {
 		return (
@@ -55,7 +55,7 @@ const Header = ({
 		);
 	}
 	return (
-		<View style={[styles.container, { width: width - 150 }]}>
+		<View style={styles.container}>
 			<TouchableOpacity onPress={onPress} testID='rooms-list-header-server-dropdown-button'>
 				{isFetching ? <Text style={styles.updating}>{I18n.t('Updating')}</Text> : null}
 				<View style={styles.button}>
@@ -74,8 +74,7 @@ Header.propTypes = {
 	onSearchChangeText: PropTypes.func.isRequired,
 	setSearchInputRef: PropTypes.func.isRequired,
 	isFetching: PropTypes.bool,
-	serverName: PropTypes.string,
-	width: PropTypes.number
+	serverName: PropTypes.string
 };
 
 Header.defaultProps = {

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, FlatList, Text } from 'react-native';
 import { connect } from 'react-redux';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
 import LoggedView from '../View';
@@ -15,6 +15,7 @@ import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message/Message';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
+import StatusBar from '../../containers/StatusBar';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -27,18 +28,12 @@ import I18n from '../../i18n';
 }))
 /** @extends React.Component */
 export default class SearchMessagesView extends LoggedView {
-	static options() {
-		return {
-			topBar: {
-				title: {
-					text: I18n.t('Search')
-				}
-			}
-		};
+	static navigationOptions = {
+		title: I18n.t('Search')
 	}
 
 	static propTypes = {
-		rid: PropTypes.string,
+		navigation: PropTypes.object,
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
 		customEmojis: PropTypes.object
@@ -77,7 +72,8 @@ export default class SearchMessagesView extends LoggedView {
 
 	// eslint-disable-next-line react/sort-comp
 	search = debounce(async(searchText) => {
-		const { rid } = this.props;
+		const { navigation } = this.props;
+		const rid = navigation.getParam('rid');
 		this.setState({ searchText, loading: true, messages: [] });
 
 		try {
@@ -142,6 +138,7 @@ export default class SearchMessagesView extends LoggedView {
 	render() {
 		return (
 			<SafeAreaView style={styles.container} testID='search-messages-view' forceInset={{ bottom: 'never' }}>
+				<StatusBar />
 				<View style={styles.searchContainer}>
 					<RCTextInput
 						inputRef={(e) => { this.name = e; }}

@@ -4,10 +4,9 @@ import {
 	View, StyleSheet, FlatList, LayoutAnimation
 } from 'react-native';
 import { connect } from 'react-redux';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
-import Navigation from '../lib/Navigation';
 import {
 	addUser as addUserAction, removeUser as removeUserAction, reset as resetAction, setLoading as setLoadingAction
 } from '../actions/selectedUsers';
@@ -19,9 +18,11 @@ import debounce from '../utils/debounce';
 import LoggedView from './View';
 import I18n from '../i18n';
 import log from '../utils/log';
-import { isIOS, isAndroid } from '../utils/deviceInfo';
+import { isIOS } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
+import { Item, CustomHeaderButtons } from '../containers/HeaderButton';
+import StatusBar from '../containers/StatusBar';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -52,23 +53,21 @@ const styles = StyleSheet.create({
 }))
 /** @extends React.Component */
 export default class SelectedUsersView extends LoggedView {
-	static options() {
+	static navigationOptions = ({ navigation }) => {
+		const title = navigation.getParam('title');
+		const nextAction = navigation.getParam('nextAction', () => {});
 		return {
-			topBar: {
-				rightButtons: [{
-					id: 'create',
-					text: I18n.t('Next'),
-					testID: 'selected-users-view-submit',
-					color: isAndroid ? '#FFF' : undefined
-				}]
-			}
+			title,
+			headerRight: (
+				<CustomHeaderButtons>
+					<Item title={I18n.t('Next')} onPress={nextAction} testID='selected-users-view-submit' />
+				</CustomHeaderButtons>
+			)
 		};
 	}
 
 	static propTypes = {
-		componentId: PropTypes.string,
-		rid: PropTypes.string,
-		nextAction: PropTypes.string.isRequired,
+		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
 		addUser: PropTypes.func.isRequired,
 		removeUser: PropTypes.func.isRequired,
@@ -89,7 +88,11 @@ export default class SelectedUsersView extends LoggedView {
 			search: []
 		};
 		this.data.addListener(this.updateState);
-		Navigation.events().bindComponent(this);
+	}
+
+	componentDidMount() {
+		const { navigation } = this.props;
+		navigation.setParams({ nextAction: this.nextAction });
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -118,27 +121,22 @@ export default class SelectedUsersView extends LoggedView {
 		this.search(text);
 	}
 
-	navigationButtonPressed = async({ buttonId }) => {
-		if (buttonId === 'create') {
-			const { nextAction, setLoadingInvite } = this.props;
-			if (nextAction === 'CREATE_CHANNEL') {
-				const { componentId } = this.props;
-				Navigation.push(componentId, {
-					component: {
-						name: 'CreateChannelView'
-					}
-				});
-			} else {
-				const { rid, componentId } = this.props;
-				try {
-					setLoadingInvite(true);
-					await RocketChat.addUsersToRoom(rid);
-					Navigation.pop(componentId);
-				} catch (e) {
-					log('RoomActions Add User', e);
-				} finally {
-					setLoadingInvite(false);
-				}
+	nextAction = async() => {
+		const { navigation, setLoadingInvite } = this.props;
+		const nextActionID = navigation.getParam('nextActionID');
+		if (nextActionID === 'CREATE_CHANNEL') {
+			navigation.navigate('CreateChannelView');
+		} else {
+			const rid = navigation.getParam('rid');
+			try {
+				setLoadingInvite(true);
+				await RocketChat.addUsersToRoom(rid);
+				navigation.pop();
+				// Navigation.pop(componentId);
+			} catch (e) {
+				log('RoomActions Add User', e);
+			} finally {
+				setLoadingInvite(false);
 			}
 		}
 	}
@@ -275,6 +273,7 @@ export default class SelectedUsersView extends LoggedView {
 		const { loading } = this.props;
 		return (
 			<SafeAreaView style={styles.safeAreaView} testID='select-users-view' forceInset={{ bottom: 'never' }}>
+				<StatusBar />
 				{this.renderList()}
 				<Loading visible={loading} />
 			</SafeAreaView>

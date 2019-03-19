@@ -1,0 +1,1 @@
+../../../../../node_modules/react-native-orientation-locker/iOS/RCTOrientation/Orientation.h

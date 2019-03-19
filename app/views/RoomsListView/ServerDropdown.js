@@ -5,8 +5,8 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
+import { withNavigation } from 'react-navigation';
 
-import Navigation from '../../lib/Navigation';
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 import { appStart as appStartAction } from '../../actions';
@@ -29,8 +29,9 @@ const ANIMATION_DURATION = 200;
 	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
 	appStart: () => dispatch(appStartAction('outside'))
 }))
-export default class ServerDropdown extends Component {
+class ServerDropdown extends Component {
 	static propTypes = {
+		navigation: PropTypes.object,
 		closeServerDropdown: PropTypes.bool,
 		server: PropTypes.string,
 		toggleServerDropdown: PropTypes.func,
@@ -108,30 +109,11 @@ export default class ServerDropdown extends Component {
 	}
 
 	addServer = () => {
-		const { server } = this.props;
+		const { server, navigation } = this.props;
 
 		this.close();
 		setTimeout(() => {
-			Navigation.showModal({
-				stack: {
-					children: [{
-						component: {
-							name: 'OnboardingView',
-							passProps: {
-								previousServer: server
-							},
-							options: {
-								topBar: {
-									visible: false
-								},
-								layout: {
-									orientation: 'portrait'
-								}
-							}
-						}
-					}]
-				}
-			});
+			navigation.navigate('OnboardingView', { previousServer: server });
 		}, ANIMATION_DURATION);
 	}
 
@@ -228,3 +210,4 @@ export default class ServerDropdown extends Component {
 		);
 	}
 }
+export default withNavigation(ServerDropdown);

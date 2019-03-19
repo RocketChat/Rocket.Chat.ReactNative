@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
 	style: {
 		marginRight: 7,
 		marginTop: 3,
-		color: '#9EA2A8'
+		tintColor: '#9EA2A8'
 	}
 });
 
