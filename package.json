@@ -82,7 +82,7 @@
     "@storybook/addon-actions": "4.1.14",
     "@storybook/addon-links": "4.1.14",
     "@storybook/addon-storyshots": "4.1.14",
-    "@storybook/addons": "4.1.14",
+    "@storybook/addons": "5.0.3",
     "@storybook/react-native": "4.1.14",
     "babel-core": "^6.26.3",
     "babel-eslint": "^9.0.0",
