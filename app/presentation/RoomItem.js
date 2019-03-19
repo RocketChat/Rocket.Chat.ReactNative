@@ -14,6 +14,10 @@ import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
 import { CustomIcon } from '../lib/Icons';
 import RocketChat from '../lib/rocketchat';
+import log from '../utils/log';
+// import database from '../lib/realm'; TODO
+
+const PERMISSION_ARCHIVE = 'archive-room';
 
 const styles = StyleSheet.create({
 	container: {
@@ -241,10 +245,31 @@ export default class RoomItem extends React.Component {
 			const { id, favorite } = this.props;
 			RocketChat.toggleFavorite(id, !favorite);
 		} catch (e) {
-			log('toggleFavorite', e);
+			log('toggleFav', e);
 		}
 		this.close();
 	}
+
+	/* 	TODO : find out which property of subscriptions API toogleRead is changing and set it accordingly
+
+	setUnread = (unread) => {
+		const { id } = this.props;
+		const ls = new Date();
+		try {
+			const [subscription] = database.objects('subscriptions').filtered('rid = $0', id);
+			database.write(() => {
+				subscription.open = true;
+				subscription.alert = false;
+				subscription.unread = 0;
+				subscription.userMentions = 0;
+				subscription.groupMentions = 0;
+				subscription.ls = ls;
+				subscription.lastOpen = ls;
+			});
+		} catch (e) {
+			log('toggleRead', e);
+		}
+	} */
 
 	toggleRead = () => {
 		try {
@@ -257,7 +282,13 @@ export default class RoomItem extends React.Component {
 	}
 
 	toggleHide =() => {
-
+		try {
+			const { id, type } = this.props;
+			RocketChat.toggleArchiveRoom(id, type, true);
+		} catch (e) {
+			log('toggleHide', e);
+		}
+		this.close();
 	}
 
 	renderLeftActions = (progress) => {
@@ -292,12 +323,14 @@ export default class RoomItem extends React.Component {
 
 	renderRightActions = (progress) => {
 		const { favorite } = this.props;
+		const canHideRoom = this.canHideRoom() 
+		const width = canHideRoom ? 160 : 80;
 		const trans = progress.interpolate({
 			inputRange: [0, 1],
-			outputRange: [160, 0]
+			outputRange: [width, 0]
 		});
 		return (
-			<View style={{ width: 160, flexDirection: 'row' }}>
+			<View style={{ width , flexDirection: 'row' }}>
 				<Animated.View style={{ flex: 1, transform: [{ translateX: trans }] }}>
 					<RectButton
 						style={[styles.action, { backgroundColor: '#F4BD3E' }]}
@@ -316,15 +349,18 @@ export default class RoomItem extends React.Component {
 						)}
 					</RectButton>
 				</Animated.View>
-				<Animated.View style={{ flex: 1, transform: [{ translateX: trans }] }}>
-					<RectButton
-						style={[styles.action, { backgroundColor: '#55585D' }]}
-						onPress={this.toggleHide}
-					>
-						<CustomIcon size={15} name='eye-off' color='white' />
-						<Text style={styles.actionText}>Hide</Text>
-					</RectButton>
-				</Animated.View>
+				{ canHideRoom ? (
+					<Animated.View style={{ flex: 1, transform: [{ translateX: trans }] }}>
+						<RectButton
+							style={[styles.action, { backgroundColor: '#55585D' }]}
+							onPress={this.toggleHide}
+						>
+							<CustomIcon size={15} name='eye-off' color='white' />
+							<Text style={styles.actionText}>Hide</Text>
+						</RectButton>
+					</Animated.View>
+				) : null
+				}
 			</View>
 		);
 	}
@@ -332,6 +368,15 @@ export default class RoomItem extends React.Component {
 	close = () => {
 		this.swipeableRow.close();
 	};
+
+	canHideRoom = () => {
+		const { id } = this.props;
+		const permissions = RocketChat.hasPermission([PERMISSION_ARCHIVE], id);
+		if (permissions[PERMISSION_ARCHIVE]) {
+			return true;
+		}
+		return false;
+	}
 
 	render() {
 		const {
