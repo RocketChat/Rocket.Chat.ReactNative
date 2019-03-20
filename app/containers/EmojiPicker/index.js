@@ -81,11 +81,11 @@ export default class EmojiPicker extends Component {
 			});
 			onEmojiSelected(`:${ emoji.content }:`);
 		} else {
-			const content = emoji;
+			const content = emoji.name;
 			const count = this._getFrequentlyUsedCount(content);
 			this._addFrequentlyUsed({ content, count, isCustom: false });
-			const shortname = `:${ emoji }:`;
-			onEmojiSelected(emojify(shortname, { output: 'unicode' }), shortname);
+			const shortname = `:${ emoji.name }:`;
+			onEmojiSelected(emoji.symbol, shortname);
 		}
 	}
 
