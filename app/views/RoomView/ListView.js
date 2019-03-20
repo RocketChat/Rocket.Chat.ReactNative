@@ -15,6 +15,7 @@ import debounce from '../../utils/debounce';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import { CustomIcon } from '../../lib/Icons';
+import { isIOS, isNotch } from '../../utils/deviceInfo';
 
 const DEFAULT_SCROLL_CALLBACK_THROTTLE = 100;
 
@@ -98,7 +99,7 @@ export class List extends React.Component {
 	}
 
 	handleScroll= (event) => {
-		if (event.nativeEvent.contentOffset.y > 400) {
+		if (event.nativeEvent.contentOffset.y > 0) {
 			this.setState({ showScollToBottomButton: true });
 		} else {
 			this.setState({ showScollToBottomButton: false });
@@ -113,11 +114,30 @@ export class List extends React.Component {
 		return null;
 	}
 
+	getScrollButtonStyle = () => {
+		let right = 30;
+		if (isIOS) {
+			right = isNotch ? 45 : 30;
+		}
+		return ({
+			position: 'absolute',
+			width: 42,
+			height: 42,
+			alignItems: 'center',
+			justifyContent: 'center',
+			right,
+			bottom: 70,
+			backgroundColor: '#EAF2FE',
+			borderRadius: 20
+		})
+	}
+
 	render() {
 		const { renderRow } = this.props;
 		const { showScollToBottomButton } = this.state;
+		const scrollButtonStyle = this.getScrollButtonStyle();
 		return (
-			<>
+			<React.Fragment>
 				<ListView
 					enableEmptySections
 					ref={ref => this.listView = ref}
@@ -136,11 +156,11 @@ export class List extends React.Component {
 					{...scrollPersistTaps}
 				/>
 				{showScollToBottomButton ? (
-					<TouchableOpacity activeOpacity={0.5} style={styles.scrollToBottomButton} onPress={this.scrollToBottom}>
+					<TouchableOpacity activeOpacity={0.5} style={scrollButtonStyle} onPress={this.scrollToBottom}>
 						<CustomIcon name='arrow-down' color='white' size={30} />
 					</TouchableOpacity>
 				) : null}
-			</>
+			</React.Fragment>
 		);
 	}
 }
@@ -244,7 +264,6 @@ export class ListView extends OldList2 {
 					ref={this._setScrollComponentRef}
 					onContentSizeChange={this._onContentSizeChange}
 					onLayout={this._onLayout}
-					stickyHeaderIndices={[0]}
 					{...props}
 				>
 					{header}

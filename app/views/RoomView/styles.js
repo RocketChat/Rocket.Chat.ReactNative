@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import { HEADER_BACKGROUND } from '../../constants/colors';
 
 export default StyleSheet.create({
 	typing: { fontWeight: 'bold', paddingHorizontal: 15, height: 25 },
@@ -76,16 +75,5 @@ export default StyleSheet.create({
 		fontSize: 16,
 		fontWeight: '500',
 		color: '#0C0D0F'
-	},
-	scrollToBottomButton: {
-		position: 'absolute',
-		width: 40,
-		height: 40,
-		alignItems: 'center',
-		justifyContent: 'center',
-		right: 30,
-		bottom: 70,
-		backgroundColor: HEADER_BACKGROUND,
-		borderRadius: 50
 	}
 });
