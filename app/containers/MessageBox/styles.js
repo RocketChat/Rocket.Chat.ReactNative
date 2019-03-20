@@ -17,7 +17,8 @@ export default StyleSheet.create({
 		backgroundColor: '#fff',
 		flexDirection: 'column',
 		borderTopColor: '#e1e5e8',
-		borderTopWidth: 1
+		borderTopWidth: 1,
+		marginTop: 24
 	},
 	textArea: {
 		flexDirection: 'row',
