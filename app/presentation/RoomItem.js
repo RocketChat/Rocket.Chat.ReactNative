@@ -240,6 +240,20 @@ export default class RoomItem extends React.Component {
 		sameElse: 'MMM D'
 	})
 
+	close = () => {
+		this.swipeableRow.close();
+	};
+
+	canHideRoom = () => {
+		const { id } = this.props;
+		const permissions = RocketChat.hasPermission([PERMISSION_ARCHIVE], id);
+		if (permissions[PERMISSION_ARCHIVE]) {
+			return true;
+		}
+		return false;
+	}
+
+
 	toggleFav = () => {
 		try {
 			const { id, favorite } = this.props;
@@ -305,15 +319,15 @@ export default class RoomItem extends React.Component {
 						onPress={this.toggleRead}
 					>
 						{isRead ? (
-							<>
+							<React.Fragment>
 								<CustomIcon size={15} name='flag' color='white' />
 								<Text style={styles.actionText}>Unread</Text>
-							</>
+							</React.Fragment>
 						) : (
-							<>
+							<React.Fragment>
 								<CustomIcon size={15} name='check' color='white' />
 								<Text style={styles.actionText}>Read</Text>
-							</>
+							</React.Fragment>
 						)}
 					</RectButton>
 				</Animated.View>
@@ -323,29 +337,29 @@ export default class RoomItem extends React.Component {
 
 	renderRightActions = (progress) => {
 		const { favorite } = this.props;
-		const canHideRoom = this.canHideRoom() 
+		const canHideRoom = this.canHideRoom();
 		const width = canHideRoom ? 160 : 80;
 		const trans = progress.interpolate({
 			inputRange: [0, 1],
 			outputRange: [width, 0]
 		});
 		return (
-			<View style={{ width , flexDirection: 'row' }}>
+			<View style={{ width, flexDirection: 'row' }}>
 				<Animated.View style={{ flex: 1, transform: [{ translateX: trans }] }}>
 					<RectButton
 						style={[styles.action, { backgroundColor: '#F4BD3E' }]}
 						onPress={this.toggleFav}
 					>
 						{favorite ? (
-							<>
+							<React.Fragment>
 								<CustomIcon size={17} name='Star-filled' color='white' />
 								<Text style={styles.actionText}>Unfavorite</Text>
-							</>
+							</React.Fragment>
 						) : (
-							<>
+							<React.Fragment>
 								<CustomIcon size={17} name='star' color='white' />
 								<Text style={styles.actionText}>Favorite</Text>
-							</>
+							</React.Fragment>
 						)}
 					</RectButton>
 				</Animated.View>
@@ -363,19 +377,6 @@ export default class RoomItem extends React.Component {
 				}
 			</View>
 		);
-	}
-
-	close = () => {
-		this.swipeableRow.close();
-	};
-
-	canHideRoom = () => {
-		const { id } = this.props;
-		const permissions = RocketChat.hasPermission([PERMISSION_ARCHIVE], id);
-		if (permissions[PERMISSION_ARCHIVE]) {
-			return true;
-		}
-		return false;
 	}
 
 	render() {
