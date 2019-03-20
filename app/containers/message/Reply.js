@@ -26,7 +26,8 @@ const styles = StyleSheet.create({
 	authorContainer: {
 		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingBottom: 5
 	},
 	author: {
 		flex: 1,
