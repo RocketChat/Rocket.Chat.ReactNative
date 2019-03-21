@@ -181,6 +181,21 @@ repositories {
 configurations.all {
     resolutionStrategy {
         force 'org.webkit:android-jsc:r225067'
+
+        eachDependency { DependencyResolveDetails details ->
+            if (details.requested.name == 'play-services-base') {
+                details.useTarget group: details.requested.group, name: details.requested.name, version: '15.0.1'
+            }
+            if (details.requested.name == 'play-services-tasks') {
+                details.useTarget group: details.requested.group, name: details.requested.name, version: '15.0.1'
+            }
+            if (details.requested.name == 'play-services-stats') {
+                details.useTarget group: details.requested.group, name: details.requested.name, version: '15.0.1'
+            }
+            if (details.requested.name == 'play-services-basement') {
+                details.useTarget group: details.requested.group, name: details.requested.name, version: '15.0.1'
+            }
+        }
     }
 }
 
@@ -213,7 +228,9 @@ dependencies {
     implementation 'com.facebook.fresco:animated-gif:1.10.0'
     implementation 'com.facebook.fresco:animated-webp:1.10.0'
     implementation 'com.facebook.fresco:webpsupport:1.10.0'
-    implementation 'com.google.android.gms:play-services-gcm:16.1.0'
+    // implementation 'com.google.android.gms:play-services-gcm:16.1.0'
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    // implementation "com.google.firebase:firebase-messaging:17.3.0"
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.5@aar') {
         transitive = true;
     }
@@ -225,3 +242,5 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
+
+apply plugin: 'com.google.gms.google-services'
