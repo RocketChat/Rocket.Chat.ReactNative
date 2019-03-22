@@ -197,6 +197,6 @@ export default class RoomHeaderView extends Component {
 				</View>
 				{this.typing}
 			</View>
-		)
+		);
 	}
 }
