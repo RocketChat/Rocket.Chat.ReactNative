@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import {
+	View, Text, TouchableOpacity, Dimensions
+} from 'react-native';
 import { responsive } from 'react-native-responsive-ui';
 import { OptimizedFlatList } from 'react-native-optimized-flatlist';
 import Modal from 'react-native-modal';
