@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
-import { emojify } from 'react-emojione';
+import { emojis } from '../../emojis';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 
 export default class Emoji extends React.PureComponent {
@@ -26,6 +26,6 @@ export default class Emoji extends React.PureComponent {
 			const emoji = { extension: emojiExtension, content: parsedContent };
 			return <CustomEmoji key={content} baseUrl={baseUrl} style={customEmojiStyle} emoji={emoji} />;
 		}
-		return <Text style={standardEmojiStyle}>{ emojify(`${ content }`, { output: 'unicode' }) }</Text>;
+		return <Text style={standardEmojiStyle}>{ emojis[parsedContent] }</Text>;
 	}
 }

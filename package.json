@@ -32,7 +32,6 @@
     "moment": "^2.24.0",
     "prop-types": "^15.6.2",
     "react": "16.6.3",
-    "react-emojione": "^5.0.1",
     "react-native": "0.58.6",
     "react-native-action-sheet": "^2.1.0",
     "react-native-audio": "^4.3.0",

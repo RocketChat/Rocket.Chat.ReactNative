@@ -4,11 +4,11 @@ import {
 	View, TextInput, FlatList, Text, TouchableOpacity, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
-import { emojify } from 'react-emojione';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
+import { pickBy } from 'lodash';
 
 import { userTyping as userTypingAction } from '../../actions/room';
 import {
@@ -433,7 +433,7 @@ export default class MessageBox extends Component {
 	getEmojis = (keyword) => {
 		if (keyword) {
 			this.customEmojis = database.objects('customEmojis').filtered('name CONTAINS[c] $0', keyword).slice(0, 4);
-			this.emojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, 4);
+			this.emojis = Object.keys(pickBy(emojis, (emoji, key) => key.indexOf(keyword) !== -1)).slice(0, 4);
 			const mergedEmojis = [...this.customEmojis, ...this.emojis];
 			this.setState({ mentions: mergedEmojis });
 		}
@@ -670,7 +670,7 @@ export default class MessageBox extends Component {
 				key='mention-item-avatar'
 				style={styles.mentionItemEmoji}
 			>
-				{emojify(`:${ item }:`, { output: 'unicode' })}
+				{emojis[item]}
 			</Text>
 		);
 	}

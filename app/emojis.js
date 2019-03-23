@@ -7127,7 +7127,7 @@ export const emojisByCategory = {
     
 }
 
-const emojis = {
+export const emojis = {
   "soccer": "⚽",
   "basketball": "🏀",
   "football": "🏈",
@@ -8873,4 +8873,12 @@ const emojis = {
   "scooter": "🛴",
   "motor_scooter": "🛵",
   "canoe": "🛶"
+}
+
+export const emojiParser=(match,emoji)=>{
+  if(emojis.hasOwnProperty(emoji)){
+    return emojis[emoji];
+  }else {
+    return match
+  }
 }

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Text, Image, Platform } from 'react-native';
 import PropTypes from 'prop-types';
-import { emojify } from 'react-emojione';
 import MarkdownRenderer, { PluginContainer } from 'react-native-markdown-renderer';
 import MarkdownFlowdock from 'markdown-it-flowdock';
+import { emojiParser } from '../../emojis';
 import styles from './styles';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import MarkdownEmojiPlugin from './MarkdownEmojiPlugin';
@@ -33,7 +33,7 @@ export default class Markdown extends React.Component {
 			return null;
 		}
 		let m = formatText(msg);
-		m = emojify(m, { output: 'unicode' });
+		m = m.replace(/:([\w\d-_]+):/g, emojiParser);
 		m = m.replace(/^\[([^\]]*)\]\(([^)]*)\)/, '').trim();
 		return (
 			<MarkdownRenderer

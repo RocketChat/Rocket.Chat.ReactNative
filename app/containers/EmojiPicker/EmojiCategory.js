@@ -61,12 +61,12 @@ export default class EmojiCategory extends React.Component {
 	getModelStyle() {
 		const { modalX, modalY } = this.state;
 		const { width } = Dimensions.get('window');
-		const widthOfModal = this.size * 5.5;
+		const widthOfModal = this.size * 5.2;
 		let xCenter = modalX - (widthOfModal) / 2;
 		if (xCenter < 0) {
-			xCenter = 2;
+			xCenter = 0;
 		} else if (xCenter + (widthOfModal) / 2 > widthOfModal) {
-			xCenter = width - widthOfModal - 10;
+			xCenter = width - widthOfModal - 20;
 		}
 
 		const yCenter = modalY - 2.5 * this.size;
@@ -115,7 +115,7 @@ export default class EmojiCategory extends React.Component {
 		const modelStyle = this.getModelStyle();
 
 		return (
-			<>
+			<React.Fragment>
 				<OptimizedFlatList
 					keyExtractor={item => (item.isCustom && item.content) || item.name}
 					data={emojis}
@@ -151,7 +151,7 @@ export default class EmojiCategory extends React.Component {
 						/>
 					</View>
 				</Modal>
-			</>
+			</React.Fragment>
 		);
 	}
 }

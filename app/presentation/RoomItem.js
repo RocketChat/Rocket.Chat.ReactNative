@@ -3,7 +3,6 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { emojify } from 'react-emojione';
 import { RectButton } from 'react-native-gesture-handler';
 
 import Avatar from '../containers/Avatar';
@@ -11,6 +10,7 @@ import Status from '../containers/Status';
 import RoomTypeIcon from '../containers/RoomTypeIcon';
 import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
+import { emojiParser } from '../emojis';
 
 const styles = StyleSheet.create({
 	container: {
@@ -200,7 +200,7 @@ export default class RoomItem extends React.Component {
 		}
 
 		let msg = `${ prefix }${ lastMessage.msg.replace(/[\n\t\r]/igm, '') }`;
-		msg = emojify(msg, { output: 'unicode' });
+		msg = msg.replace(/:([\w\d-_]+):/g, emojiParser);
 		return msg;
 	}
 

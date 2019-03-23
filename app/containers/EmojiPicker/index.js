@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import map from 'lodash/map';
-import { emojify } from 'react-emojione';
 import equal from 'deep-equal';
 
 import TabBar from './TabBar';
@@ -11,7 +10,7 @@ import EmojiCategory from './EmojiCategory';
 import styles from './styles';
 import categories from './categories';
 import database from '../../lib/realm';
-import { emojisByCategory } from '../../emojis';
+import { emojisByCategory, emojis as allEmojis } from '../../emojis';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 
 const scrollProps = {
@@ -106,7 +105,10 @@ export default class EmojiPicker extends Component {
 			if (item.isCustom) {
 				return item;
 			}
-			return emojify(`${ item.content }`, { output: 'unicode' });
+			return {
+				name: item.content,
+				symbol: allEmojis[item.content]
+			};
 		});
 		this.setState({ frequentlyUsed });
 	}
