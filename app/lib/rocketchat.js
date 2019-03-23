@@ -576,7 +576,7 @@ const RocketChat = {
 		if (read) {
 			return this.sdk.post('subscriptions.unread', { roomId });
 		}
-		return this.sdk.post('subscriptions.read', { rid : roomId });
+		return this.sdk.post('subscriptions.read', { rid: roomId });
 	},
 	getRoomMembers(rid, allUsers) {
 		// RC 0.42.0

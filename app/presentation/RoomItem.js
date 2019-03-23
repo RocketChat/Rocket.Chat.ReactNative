@@ -1,7 +1,9 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, Animated } from 'react-native';
+import {
+	View, Text, StyleSheet, Animated
+} from 'react-native';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 import { RectButton } from 'react-native-gesture-handler';
