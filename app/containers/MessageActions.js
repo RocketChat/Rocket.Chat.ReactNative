@@ -18,6 +18,7 @@ import { showToast } from '../utils/info';
 import { vibrate } from '../utils/vibration';
 import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
+import Navigation from '../lib/Navigation';
 
 @connect(
 	state => ({
@@ -27,7 +28,8 @@ import I18n from '../i18n';
 		Message_AllowEditing: state.settings.Message_AllowEditing,
 		Message_AllowEditing_BlockEditInMinutes: state.settings.Message_AllowEditing_BlockEditInMinutes,
 		Message_AllowPinning: state.settings.Message_AllowPinning,
-		Message_AllowStarring: state.settings.Message_AllowStarring
+		Message_AllowStarring: state.settings.Message_AllowStarring,
+		Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users
 	}),
 	dispatch => ({
 		actionsHide: () => dispatch(actionsHideAction()),
@@ -64,7 +66,7 @@ export default class MessageActions extends React.Component {
 		this.handleActionPress = this.handleActionPress.bind(this);
 		this.setPermissions();
 
-		const { Message_AllowStarring, Message_AllowPinning } = this.props;
+		const { Message_AllowStarring, Message_AllowPinning, Message_Read_Receipt_Store_Users } = this.props;
 
 		// Cancel
 		this.options = [I18n.t('Cancel')];
@@ -127,6 +129,11 @@ export default class MessageActions extends React.Component {
 			this.showActionSheet();
 			vibrate();
 		});
+
+		if (Message_Read_Receipt_Store_Users) {
+			this.options.push(I18n.t('Read_Receipt'));
+			this.READ_RECEIPT_INDEX = this.options.length - 1;
+		}
 	}
 
 	setPermissions() {
@@ -293,6 +300,11 @@ export default class MessageActions extends React.Component {
 		toggleReactionPicker(actionMessage);
 	}
 
+	handleReadReceipt = () => {
+		const { actionMessage } = this.props;
+		Navigation.navigate('ReadReceiptsView', { messageId: actionMessage._id });
+	}
+
 	handleActionPress = (actionIndex) => {
 		if (actionIndex) {
 			switch (actionIndex) {
@@ -325,6 +337,9 @@ export default class MessageActions extends React.Component {
 					break;
 				case this.DELETE_INDEX:
 					this.handleDelete();
+					break;
+				case this.READ_RECEIPT_INDEX:
+					this.handleReadReceipt();
 					break;
 				default:
 					break;

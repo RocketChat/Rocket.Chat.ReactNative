@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, StyleSheet, LayoutAnimation
+	View, Text, StyleSheet, LayoutAnimation, ScrollView
 } from 'react-native';
 import { connect } from 'react-redux';
 import { responsive } from 'react-native-responsive-ui';
@@ -180,12 +180,19 @@ export default class RoomHeaderView extends Component {
 				scale = 0.8;
 			}
 		}
+		const widthScrollView = window.width - 6.5 * 23;
 
 		return (
 			<View style={styles.container}>
-				<View style={styles.titleContainer}>
-					{this.renderIcon()}
-					<Text style={[styles.title, { fontSize: TITLE_SIZE * scale }]} numberOfLines={1}>{title}</Text>
+				<View style={[styles.titleContainer, { width: widthScrollView }]}>
+					<ScrollView
+						showsHorizontalScrollIndicator={false}
+						horizontal
+						bounces={false}
+					>
+						{this.renderIcon()}
+						<Text style={[styles.title, { fontSize: TITLE_SIZE * scale }]} numberOfLines={1}>{title}</Text>
+					</ScrollView>
 				</View>
 				{this.typing}
 			</View>

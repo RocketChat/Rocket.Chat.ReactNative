@@ -255,6 +255,7 @@ export default {
 	Read_Only_Channel: 'Canal Somente Leitura',
 	Read_Only: 'Somente Leitura',
 	Register: 'Registrar',
+	Read_Receipt: 'Read Receipt',
 	Repeat_Password: 'Repetir Senha',
 	Reply: 'Responder',
 	Resend: 'Reenviar',

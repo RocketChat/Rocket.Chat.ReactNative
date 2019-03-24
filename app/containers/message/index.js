@@ -18,7 +18,8 @@ import { vibrate } from '../../utils/vibration';
 	Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	editingMessage: state.messages.message,
-	useRealName: state.settings.UI_Use_Real_Name
+	useRealName: state.settings.UI_Use_Real_Name,
+	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled
 }), dispatch => ({
 	errorActionsShow: actionMessage => dispatch(errorActionsShowAction(actionMessage)),
 	replyBroadcast: message => dispatch(replyBroadcastAction(message)),
@@ -47,6 +48,7 @@ export default class MessageContainer extends React.Component {
 		Message_TimeFormat: PropTypes.string,
 		editingMessage: PropTypes.object,
 		useRealName: PropTypes.bool,
+		Message_Read_Receipt_Enabled: PropTypes.bool,
 		// methods - props
 		onLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
@@ -165,7 +167,7 @@ export default class MessageContainer extends React.Component {
 	render() {
 		const { reactionsModal } = this.state;
 		const {
-			item, editingMessage, user, style, archived, baseUrl, customEmojis, useRealName, broadcast
+			item, editingMessage, user, style, archived, baseUrl, customEmojis, useRealName, broadcast, Message_Read_Receipt_Enabled
 		} = this.props;
 		const {
 			msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy, role
@@ -195,6 +197,7 @@ export default class MessageContainer extends React.Component {
 				customEmojis={customEmojis}
 				reactionsModal={reactionsModal}
 				useRealName={useRealName}
+				showReadRecipt={Message_Read_Receipt_Enabled}
 				role={role}
 				closeReactions={this.closeReactions}
 				onErrorPress={this.onErrorPress}

@@ -61,5 +61,11 @@ export default {
 	},
 	Assets_favicon_512: {
 		type: null
+	},
+	Message_Read_Receipt_Enabled: {
+		type: 'valueAsBoolean'
+	},
+	Message_Read_Receipt_Store_Users: {
+		type: 'valueAsBoolean'
 	}
 };

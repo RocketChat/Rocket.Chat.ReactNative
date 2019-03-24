@@ -218,6 +218,7 @@ export default {
 	Reactions: 'Реакции',
 	Read_Only_Channel: 'Канал только для чтения',
 	Read_Only: 'Только для чтения',
+	Read_Receipt: 'Read Receipt',
 	Register: 'Зарегистрировать',
 	Repeat_Password: 'Повторите пароль',
 	Reply: 'Ответить',

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 import moment from 'moment';
+import { CustomIcon } from '../../lib/Icons';
 
 const styles = StyleSheet.create({
 	container: {
@@ -59,6 +60,7 @@ export default class User extends React.PureComponent {
 		}
 
 		const aliasUsername = alias ? (<Text style={styles.alias}>@{username}</Text>) : null;
+		const readRecipt = <CustomIcon name='circle-cross' color='red' size={20} />;
 		const time = moment(ts).format(timeFormat);
 
 		return (
@@ -68,6 +70,7 @@ export default class User extends React.PureComponent {
 						{alias || username}
 					</Text>
 					{aliasUsername}
+					<CustomIcon name='check' color='blue' size={10} />
 				</View>
 				<Text style={styles.time}>{time}</Text>
 			</View>
