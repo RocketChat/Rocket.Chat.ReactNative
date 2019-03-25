@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View } from 'react-native';
+import { FlatList, View, ActivityIndicator } from 'react-native';
 import ActionSheet from 'react-native-action-sheet';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
@@ -67,6 +67,7 @@ export default class RoomMembersView extends LoggedView {
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.permissions = RocketChat.hasPermission(['mute-user'], rid);
 		this.state = {
+			isLoading: true,
 			allUsers: false,
 			filtering: false,
 			rid,
@@ -88,7 +89,7 @@ export default class RoomMembersView extends LoggedView {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			allUsers, filtering, members, membersFiltered, userLongPressed, room, options
+			allUsers, filtering, members, membersFiltered, userLongPressed, room, options, isLoading
 		} = this.state;
 		if (nextState.allUsers !== allUsers) {
 			return true;
@@ -109,6 +110,9 @@ export default class RoomMembersView extends LoggedView {
 			return true;
 		}
 		if (!equal(nextState.room.muted, room.muted)) {
+			return true;
+		}
+		if (isLoading !== nextState.isLoading) {
 			return true;
 		}
 		return false;
@@ -184,11 +188,12 @@ export default class RoomMembersView extends LoggedView {
 	}
 
 	fetchMembers = async(status) => {
+		this.setState({ isLoading: true });
 		const { rid } = this.state;
 		const { navigation } = this.props;
 		const membersResult = await RocketChat.getRoomMembers(rid, status);
 		const members = membersResult.records;
-		this.setState({ allUsers: status, members });
+		this.setState({ allUsers: status, members, isLoading: false });
 		navigation.setParams({ allUsers: status });
 	}
 
@@ -249,8 +254,11 @@ export default class RoomMembersView extends LoggedView {
 
 	render() {
 		const {
-			filtering, members, membersFiltered
+			filtering, members, membersFiltered, isLoading
 		} = this.state;
+		if (isLoading) {
+			return <ActivityIndicator style={styles.loading} />;
+		}
 		return (
 			<SafeAreaView style={styles.list} testID='room-members-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
