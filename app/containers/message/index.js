@@ -93,6 +93,9 @@ export default class MessageContainer extends React.Component {
 		if (broadcast !== nextProps.broadcast) {
 			return true;
 		}
+		if (item.unread !== nextProps.item.unread) {
+			return true;
+		}
 		if (!equal(editingMessage, nextProps.editingMessage)) {
 			if (nextProps.editingMessage && nextProps.editingMessage._id === item._id) {
 				return true;
@@ -170,8 +173,9 @@ export default class MessageContainer extends React.Component {
 			item, editingMessage, user, style, archived, baseUrl, customEmojis, useRealName, broadcast, Message_Read_Receipt_Enabled
 		} = this.props;
 		const {
-			msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy, role
+			msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy, role, unread
 		} = item;
+		const showReadRecipt = !unread && Message_Read_Receipt_Enabled;
 		const isEditing = editingMessage._id === item._id;
 		return (
 			<Message
@@ -197,7 +201,7 @@ export default class MessageContainer extends React.Component {
 				customEmojis={customEmojis}
 				reactionsModal={reactionsModal}
 				useRealName={useRealName}
-				showReadRecipt={Message_Read_Receipt_Enabled}
+				showReadRecipt={showReadRecipt}
 				role={role}
 				closeReactions={this.closeReactions}
 				onErrorPress={this.onErrorPress}

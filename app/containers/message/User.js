@@ -46,12 +46,13 @@ export default class User extends React.PureComponent {
 			PropTypes.instanceOf(Date),
 			PropTypes.string
 		]),
-		temp: PropTypes.bool
+		temp: PropTypes.bool,
+		showReadRecipt: PropTypes.bool
 	}
 
 	render() {
 		const {
-			username, alias, ts, temp, timeFormat
+			username, alias, ts, temp, timeFormat, showReadRecipt
 		} = this.props;
 
 		const extraStyle = {};
@@ -60,7 +61,7 @@ export default class User extends React.PureComponent {
 		}
 
 		const aliasUsername = alias ? (<Text style={styles.alias}>@{username}</Text>) : null;
-		const readRecipt = <CustomIcon name='circle-cross' color='red' size={20} />;
+		const readRecipt = showReadRecipt ? <CustomIcon name='check' color='#0084ff' size={15} /> : null;
 		const time = moment(ts).format(timeFormat);
 
 		return (
@@ -70,7 +71,7 @@ export default class User extends React.PureComponent {
 						{alias || username}
 					</Text>
 					{aliasUsername}
-					<CustomIcon name='check' color='blue' size={10} />
+					{ readRecipt }
 				</View>
 				<Text style={styles.time}>{time}</Text>
 			</View>

@@ -206,6 +206,7 @@ const messagesSchema = {
 		u: 'users',
 		// mentions: [],
 		// channels: [],
+		unread: { type: 'bool', optional: true },
 		alias: { type: 'string', optional: true },
 		parseUrls: { type: 'bool', optional: true },
 		groupable: { type: 'bool', optional: true },
