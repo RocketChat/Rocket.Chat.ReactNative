@@ -9,15 +9,6 @@
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<uses-permission-sdk-23 android:name="android.permission.VIBRATE"/>
 
-	<permission
-		android:name="${applicationId}.permission.C2D_MESSAGE"
-		android:protectionLevel="signature" />
-	<uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
-
-	<uses-sdk
-		android:minSdkVersion="21"
-		android:targetSdkVersion="27" />
-
 	<application
 		android:name=".MainApplication"
 		android:allowBackup="true"
@@ -45,8 +36,6 @@
 			</intent-filter>
 		</activity>
 		<activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-
-		<meta-data android:name="com.wix.reactnativenotifications.gcmSenderId" android:value="673693445664\0"/>
 	</application>
 
 </manifest>
