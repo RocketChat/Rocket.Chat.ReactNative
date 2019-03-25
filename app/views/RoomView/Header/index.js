@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, StyleSheet, LayoutAnimation
+	View, Text, StyleSheet, LayoutAnimation, ScrollView
 } from 'react-native';
 import { connect } from 'react-redux';
 import { responsive } from 'react-native-responsive-ui';
@@ -13,6 +13,7 @@ import sharedStyles from '../../Styles';
 import { isIOS } from '../../../utils/deviceInfo';
 import { CustomIcon } from '../../../lib/Icons';
 import Status from '../../../containers/Status/Status';
+import { headerIconSize } from '../../../containers/HeaderButton';
 
 const TITLE_SIZE = 18;
 const ICON_SIZE = 18;
@@ -173,6 +174,7 @@ export default class RoomHeaderView extends Component {
 			window, title, usersTyping
 		} = this.props;
 		const portrait = window.height > window.width;
+		const widthScrollView = window.width - 6.5 * headerIconSize;
 		let scale = 1;
 
 		if (!portrait) {
@@ -183,9 +185,15 @@ export default class RoomHeaderView extends Component {
 
 		return (
 			<View style={styles.container}>
-				<View style={styles.titleContainer}>
-					{this.renderIcon()}
-					<Text style={[styles.title, { fontSize: TITLE_SIZE * scale }]} numberOfLines={1}>{title}</Text>
+				<View style={[styles.titleContainer, { width: widthScrollView }]}>
+					<ScrollView
+						showsHorizontalScrollIndicator={false}
+						horizontal
+						bounces={false}
+					>
+						{this.renderIcon()}
+						<Text style={[styles.title, { fontSize: TITLE_SIZE * scale }]} numberOfLines={1}>{title}</Text>
+					</ScrollView>
 				</View>
 				{this.typing}
 			</View>

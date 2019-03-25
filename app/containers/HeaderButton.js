@@ -7,9 +7,10 @@ import { CustomIcon } from '../lib/Icons';
 import { isIOS } from '../utils/deviceInfo';
 
 const color = isIOS ? '#1D74F5' : '#FFF';
+export const headerIconSize = 23;
 
 const CustomHeaderButton = React.memo(props => (
-	<HeaderButton {...props} IconComponent={CustomIcon} iconSize={23} color={color} />
+	<HeaderButton {...props} IconComponent={CustomIcon} iconSize={headerIconSize} color={color} />
 ));
 
 export const CustomHeaderButtons = React.memo(props => (
