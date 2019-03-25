@@ -11,7 +11,6 @@
     "ios": "react-native run-ios",
     "log-android": "react-native log-android",
     "android": "react-native run-android",
-    "storybook": "storybook start -p 7007 | react-native start --projectRoot storybook",
     "snyk-protect": "snyk protect"
   },
   "rnpm": {
