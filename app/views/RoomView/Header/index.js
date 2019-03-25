@@ -13,6 +13,7 @@ import sharedStyles from '../../Styles';
 import { isIOS } from '../../../utils/deviceInfo';
 import { CustomIcon } from '../../../lib/Icons';
 import Status from '../../../containers/Status/Status';
+import { headerIconSize } from '../../../containers/HeaderButton';
 
 const TITLE_SIZE = 18;
 const ICON_SIZE = 18;
@@ -173,6 +174,7 @@ export default class RoomHeaderView extends Component {
 			window, title, usersTyping
 		} = this.props;
 		const portrait = window.height > window.width;
+		const widthScrollView = window.width - 6.5 * headerIconSize;
 		let scale = 1;
 
 		if (!portrait) {
