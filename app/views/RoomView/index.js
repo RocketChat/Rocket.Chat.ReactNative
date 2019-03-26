@@ -12,7 +12,7 @@ import moment from 'moment';
 import { openRoom as openRoomAction, closeRoom as closeRoomAction } from '../../actions/room';
 import { toggleReactionPicker as toggleReactionPickerAction, actionsShow as actionsShowAction } from '../../actions/messages';
 import LoggedView from '../View';
-import { List } from './ListView';
+import { List } from './List';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
