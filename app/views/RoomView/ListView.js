@@ -117,7 +117,7 @@ export class List extends React.Component {
 					keyExtractor={item => item._id}
 					data={messages}
 					extraData={this.state}
-					renderItem={({ item, index }) => renderRow(item, messages[index - 1])}
+					renderItem={({ item, index }) => renderRow(item, messages[index + 1])}
 					style={styles.list}
 					onScroll={this.handleScroll}
 					inverted

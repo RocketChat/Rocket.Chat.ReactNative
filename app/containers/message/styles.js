@@ -5,9 +5,9 @@ export default StyleSheet.create({
 		flexDirection: 'row'
 	},
 	container: {
-		paddingVertical: 5,
+		paddingVertical: 4,
 		width: '100%',
-		paddingHorizontal: 15,
+		paddingHorizontal: 14,
 		flexDirection: 'column',
 		flex: 1
 	},
@@ -38,8 +38,8 @@ export default StyleSheet.create({
 		height: 20
 	},
 	temp: { opacity: 0.3 },
-	marginBottom: {
-		marginBottom: 10
+	marginTop: {
+		marginTop: 10
 	},
 	reactionsContainer: {
 		flexDirection: 'row',
@@ -81,7 +81,7 @@ export default StyleSheet.create({
 		marginLeft: 7
 	},
 	avatar: {
-		marginTop: 5
+		marginTop: 4
 	},
 	addReaction: {
 		color: '#1D74F5'
