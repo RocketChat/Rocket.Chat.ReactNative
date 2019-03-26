@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { COLOR_SEPARATOR } from '../../constants/colors';
 
 export default StyleSheet.create({
 	typing: { fontWeight: 'bold', paddingHorizontal: 15, height: 25 },
@@ -14,7 +15,7 @@ export default StyleSheet.create({
 	},
 	separator: {
 		height: 1,
-		backgroundColor: '#CED0CE'
+		backgroundColor: COLOR_SEPARATOR
 	},
 	bannerContainer: {
 		backgroundColor: 'orange'

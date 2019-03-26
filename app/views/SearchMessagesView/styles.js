@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { COLOR_SEPARATOR } from '../../constants/colors';
 
 export default StyleSheet.create({
 	container: {
@@ -19,7 +20,7 @@ export default StyleSheet.create({
 	divider: {
 		width: '100%',
 		height: StyleSheet.hairlineWidth,
-		backgroundColor: '#E7EBF2',
+		backgroundColor: COLOR_SEPARATOR,
 		marginVertical: 20
 	},
 	listEmptyContainer: {

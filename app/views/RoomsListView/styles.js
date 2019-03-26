@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { isIOS } from '../../utils/deviceInfo';
+import { COLOR_SEPARATOR } from '../../constants/colors';
 
 export default StyleSheet.create({
 	container: {
@@ -8,8 +9,8 @@ export default StyleSheet.create({
 	},
 	separator: {
 		height: StyleSheet.hairlineWidth,
-		backgroundColor: '#E1E5E8',
-		marginLeft: 78
+		backgroundColor: COLOR_SEPARATOR,
+		marginLeft: 73
 	},
 	list: {
 		width: '100%',
@@ -36,7 +37,7 @@ export default StyleSheet.create({
 	dropdownContainerHeader: {
 		height: 41,
 		borderBottomWidth: StyleSheet.hairlineWidth,
-		borderColor: '#E1E5E8',
+		borderColor: COLOR_SEPARATOR,
 		alignItems: 'center',
 		backgroundColor: isIOS ? '#fff' : '#54585E',
 		flexDirection: 'row'
@@ -79,7 +80,7 @@ export default StyleSheet.create({
 	},
 	sortSeparator: {
 		height: StyleSheet.hairlineWidth,
-		backgroundColor: '#CBCED1',
+		backgroundColor: COLOR_SEPARATOR,
 		marginHorizontal: 15,
 		flex: 1
 	},
@@ -154,7 +155,7 @@ export default StyleSheet.create({
 	},
 	serverSeparator: {
 		height: StyleSheet.hairlineWidth,
-		backgroundColor: '#E1E5E8',
+		backgroundColor: COLOR_SEPARATOR,
 		marginLeft: 72
 	}
 });
