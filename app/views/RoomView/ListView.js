@@ -5,6 +5,7 @@ import {
 import moment from 'moment';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { responsive } from 'react-native-responsive-ui';
 
 import Separator from './Separator';
 import styles from './styles';
@@ -13,16 +14,17 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import debounce from '../../utils/debounce';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
-import { CustomIcon } from '../../lib/Icons';
-import { isIOS, isNotch } from '../../utils/deviceInfo';
 import EmptyRoom from './EmptyRoom';
+import ScrollBottomButton from './ScrollBottomButton';
 
+@responsive
 export class List extends React.Component {
 	static propTypes = {
 		onEndReached: PropTypes.func,
 		renderFooter: PropTypes.func,
 		renderRow: PropTypes.func,
-		room: PropTypes.object
+		room: PropTypes.object,
+		window: PropTypes.object
 	};
 
 	constructor(props) {
@@ -45,11 +47,13 @@ export class List extends React.Component {
 		const {
 			loadingMore, loading, end, showScollToBottomButton, messages
 		} = this.state;
+		const { window } = this.props;
 		return end !== nextState.end
 			|| loadingMore !== nextState.loadingMore
 			|| loading !== nextState.loading
 			|| showScollToBottomButton !== nextState.showScollToBottomButton
-			|| messages.length !== nextState.messages.length;
+			|| messages.length !== nextState.messages.length
+			|| window.width !== nextProps.window.width;
 	}
 
 	componentWillUnmount() {
@@ -101,47 +105,11 @@ export class List extends React.Component {
 		return null;
 	}
 
-	getScrollButtonStyle = () => {
-		let right = 30;
-		if (isIOS) {
-			right = isNotch ? 45 : 30;
-		}
-		return ({
-			position: 'absolute',
-			width: 42,
-			height: 42,
-			alignItems: 'center',
-			justifyContent: 'center',
-			right,
-			bottom: 70,
-			backgroundColor: '#EAF2FE',
-			borderRadius: 20
-		});
-	}
-
 	render() {
-		const { renderRow } = this.props;
+		const { renderRow, window } = this.props;
 		const { showScollToBottomButton, messages } = this.state;
-		const scrollButtonStyle = this.getScrollButtonStyle();
 		return (
 			<React.Fragment>
-				{/* <ListView
-					enableEmptySections
-					ref={ref => this.list = ref}
-					style={styles.list}
-					data={this.data}
-					keyExtractor={item => item._id}
-					onEndReachedThreshold={100}
-					renderFooter={this.renderFooter}
-					onEndReached={this.onEndReached}
-					dataSource={this.dataSource}
-					renderRow={(item, previousItem) => renderRow(item, previousItem)}
-					initialListSize={1}
-					pageSize={20}
-					onScroll={this.handleScroll}
-					testID='room-view-messages'
-					{...scrollPersistTaps}
-				/> */}
 				<EmptyRoom length={messages.length} />
 				<FlatList
 					testID='room-view-messages'
@@ -156,17 +124,16 @@ export class List extends React.Component {
 					removeClippedSubviews
 					initialNumToRender={10}
 					onEndReached={this.onEndReached}
-					// onEndReachedThreshold={0.01}
 					onEndReachedThreshold={0.5}
 					maxToRenderPerBatch={20}
 					ListFooterComponent={this.renderFooter}
 					{...scrollPersistTaps}
 				/>
-				{showScollToBottomButton ? (
-					<TouchableOpacity activeOpacity={0.5} style={scrollButtonStyle} onPress={this.scrollToBottom}>
-						<CustomIcon name='arrow-down' color='#1d74f5' size={30} />
-					</TouchableOpacity>
-				) : null}
+				<ScrollBottomButton
+					show={showScollToBottomButton}
+					onPress={this.scrollToBottom}
+					landscape={window.width > window.height}
+				/>
 			</React.Fragment>
 		);
 	}
