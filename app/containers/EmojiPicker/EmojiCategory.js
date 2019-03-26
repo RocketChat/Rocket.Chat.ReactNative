@@ -52,15 +52,19 @@ export default class EmojiCategory extends React.Component {
 		};
 	}
 
-	shouldComponentUpdate() {
-		return true;
+	shouldComponentUpdate(nextProps, nextState) {
+		const { isModalVisible } = this.state;
+		if (isModalVisible !== nextState.isModalVisible) {
+			return true;
+		}
+		return false;
 	}
 
 	componentWillUnmount() {
 		this.setState({ isModalVisible: false });
 	}
 
-	getModelStyle() {
+	getModalStyle() {
 		const { modalX, modalY } = this.state;
 		const { width } = Dimensions.get('window');
 		const widthOfModal = this.size * 5.2;
