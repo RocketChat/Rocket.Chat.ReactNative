@@ -15,6 +15,7 @@ import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import { CustomIcon } from '../../lib/Icons';
 import { isIOS, isNotch } from '../../utils/deviceInfo';
+import EmptyRoom from './EmptyRoom';
 
 export class List extends React.Component {
 	static propTypes = {
@@ -141,6 +142,7 @@ export class List extends React.Component {
 					testID='room-view-messages'
 					{...scrollPersistTaps}
 				/> */}
+				<EmptyRoom length={messages.length} />
 				<FlatList
 					testID='room-view-messages'
 					ref={ref => this.list = ref}

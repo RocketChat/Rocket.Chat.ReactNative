@@ -44,11 +44,6 @@ export default StyleSheet.create({
 	loading: {
 		flex: 1
 	},
-	imageBackground: {
-		width: '100%',
-		height: '100%',
-		position: 'absolute'
-	},
 	joinRoomContainer: {
 		justifyContent: 'flex-end',
 		alignItems: 'center',
