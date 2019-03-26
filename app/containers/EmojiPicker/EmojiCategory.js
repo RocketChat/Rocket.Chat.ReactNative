@@ -118,7 +118,7 @@ export default class EmojiCategory extends React.Component {
 	render() {
 		const { emojis } = this.props;
 		const { modalData, isModalVisible } = this.state;
-		const modelStyle = this.getModelStyle();
+		const modelStyle = this.getModalStyle();
 
 		return (
 			<React.Fragment>
