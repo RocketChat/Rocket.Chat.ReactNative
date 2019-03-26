@@ -95,7 +95,11 @@ export default class RoomView extends LoggedView {
 			room: {},
 			lastOpen: null
 		};
+		this.beginAnimating = false;
 		this.onReactionPress = this.onReactionPress.bind(this);
+		setTimeout(() => {
+			this.beginAnimating = true;
+		}, 300);
 	}
 
 	componentDidMount() {
@@ -182,9 +186,9 @@ export default class RoomView extends LoggedView {
 	};
 
 	internalSetState = (...args) => {
-		// if (isIOS) {
-		// 	LayoutAnimation.easeInEaseOut();
-		// }
+		if (isIOS && this.beginAnimating) {
+			LayoutAnimation.easeInEaseOut();
+		}
 		this.setState(...args);
 	}
 
