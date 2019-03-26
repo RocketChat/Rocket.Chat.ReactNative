@@ -34,6 +34,9 @@ const styles = StyleSheet.create({
 		paddingLeft: 10,
 		fontWeight: '300',
 		lineHeight: 16
+	},
+	emptySpace: {
+		marginEnd: 15
 	}
 });
 
@@ -47,12 +50,12 @@ export default class User extends React.PureComponent {
 			PropTypes.string
 		]),
 		temp: PropTypes.bool,
-		showReadRecipt: PropTypes.bool
+		showReadReceipt: PropTypes.bool
 	}
 
 	render() {
 		const {
-			username, alias, ts, temp, timeFormat, showReadRecipt
+			username, alias, ts, temp, timeFormat, showReadReceipt
 		} = this.props;
 
 		const extraStyle = {};
@@ -61,7 +64,7 @@ export default class User extends React.PureComponent {
 		}
 
 		const aliasUsername = alias ? (<Text style={styles.alias}>@{username}</Text>) : null;
-		const readRecipt = showReadRecipt ? <CustomIcon name='check' color='#0084ff' size={15} /> : <View style={{ marginEnd: 15 }} />;
+		const readReceipt = showReadReceipt ? <CustomIcon name='check' color='#0084ff' size={15} /> : <View style={styles.emptySpace} />;
 		const time = moment(ts).format(timeFormat);
 
 		return (
@@ -73,7 +76,7 @@ export default class User extends React.PureComponent {
 					{aliasUsername}
 				</View>
 				<Text style={styles.time}>{time}</Text>
-				{ readRecipt }
+				{ readReceipt }
 			</View>
 		);
 	}

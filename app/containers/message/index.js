@@ -175,7 +175,7 @@ export default class MessageContainer extends React.Component {
 		const {
 			msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy, role, unread
 		} = item;
-		const showReadRecipt = !unread && Message_Read_Receipt_Enabled;
+		const showReadReceipt = !unread && Message_Read_Receipt_Enabled;
 		const isEditing = editingMessage._id === item._id;
 		return (
 			<Message
@@ -201,7 +201,7 @@ export default class MessageContainer extends React.Component {
 				customEmojis={customEmojis}
 				reactionsModal={reactionsModal}
 				useRealName={useRealName}
-				showReadRecipt={showReadRecipt}
+				showReadReceipt={showReadReceipt}
 				role={role}
 				closeReactions={this.closeReactions}
 				onErrorPress={this.onErrorPress}

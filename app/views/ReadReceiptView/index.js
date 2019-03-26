@@ -4,6 +4,7 @@ import { FlatList, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import moment from 'moment';
+import { connect } from 'react-redux';
 
 import LoggedView from '../View';
 import styles from './styles';
@@ -14,13 +15,17 @@ import StatusBar from '../../containers/StatusBar';
 
 
 /** @extends React.Component */
+@connect(state => ({
+	Message_TimeFormat: state.settings.Message_TimeFormat
+}))
 export default class ReadReceiptsView extends LoggedView {
 	static navigationOptions = {
 		title: I18n.t('Read_Receipt')
 	}
 
 	static propTypes = {
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		Message_TimeFormat: PropTypes.string
 	}
 
 	constructor(props) {
@@ -56,7 +61,7 @@ export default class ReadReceiptsView extends LoggedView {
 		this.setState({ loading: true });
 
 		try {
-			const result = await RocketChat.getReadReceips(this.messageId);
+			const result = await RocketChat.getReadReceipts(this.messageId);
 			if (result.success) {
 				this.setState({
 					receipts: result.receipts,
@@ -70,13 +75,14 @@ export default class ReadReceiptsView extends LoggedView {
 	}
 
 	renderEmpty = () => (
-		<View style={styles.listEmptyContainer} testID='read-recepit-view'>
-			<Text>{I18n.t('No_pinned_messages')}</Text>
+		<View style={styles.listEmptyContainer} testID='read-receipt-view'>
+			<Text>No Read Receipts</Text>
 		</View>
 	)
 
 	renderItem = ({ item }) => {
-		const time = moment(item.ts).format('LLL');
+		const { Message_TimeFormat } = this.props;
+		const time = moment(item.ts).format(Message_TimeFormat);
 		return (
 			<View style={styles.itemContainer}>
 				<View style={styles.item}>
@@ -104,7 +110,7 @@ export default class ReadReceiptsView extends LoggedView {
 		}
 
 		return (
-			<SafeAreaView style={styles.list} testID='read-recepit-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.list} testID='read-receipt-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
 				{loading
 					? <RCActivityIndicator />

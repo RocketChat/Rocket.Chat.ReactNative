@@ -761,7 +761,7 @@ const RocketChat = {
 		});
 	},
 
-	getReadReceips(messageId) {
+	getReadReceipts(messageId) {
 		return this.sdk.get('chat.getMessageReadReceipts', {
 			messageId
 		});

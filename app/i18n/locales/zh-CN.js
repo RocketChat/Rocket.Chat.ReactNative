@@ -249,7 +249,6 @@ export default {
 	Reactions: '回复',
 	Read_Only_Channel: '只读频道',
 	Read_Only: '只读',
-	Read_Receipt: 'Read Receipt',
 	Register: '注册',
 	Repeat_Password: '重复输入密码',
 	Reply: '回复',

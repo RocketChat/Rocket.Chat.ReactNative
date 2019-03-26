@@ -252,7 +252,6 @@ export default {
 	Reactions: 'Réactions',
 	Read_Only_Channel: 'Chaîne en lecture seule',
 	Read_Only: 'Lecture seule',
-	Read_Receipt: 'Read Receipt',
 	Register: 'S\'inscrire',
 	Repeat_Password: 'Répéter le mot de passe',
 	Reply: 'Répondre',
