@@ -11,6 +11,6 @@ export const STATUS_COLORS = {
 	offline: '#cbced1'
 };
 
-export const HEADER_BACKGROUND = isIOS ? '#FFF' : '#2F343D';
+export const HEADER_BACKGROUND = isIOS ? '#f8f8f8' : '#2F343D';
 export const HEADER_TITLE = isIOS ? '#0C0D0F' : '#FFF';
 export const HEADER_BACK = isIOS ? '#1d74f5' : '#FFF';
