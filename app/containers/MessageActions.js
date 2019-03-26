@@ -58,7 +58,8 @@ export default class MessageActions extends React.Component {
 		Message_AllowEditing: PropTypes.bool,
 		Message_AllowEditing_BlockEditInMinutes: PropTypes.number,
 		Message_AllowPinning: PropTypes.bool,
-		Message_AllowStarring: PropTypes.bool
+		Message_AllowStarring: PropTypes.bool,
+		Message_Read_Receipt_Store_Users: PropTypes.bool
 	};
 
 	constructor(props) {

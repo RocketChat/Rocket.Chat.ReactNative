@@ -58,7 +58,8 @@ export default class ReadReceiptsView extends LoggedView {
 		try {
 			const result = await RocketChat.getReadReceips(this.messageId);
 			if (result.success) {
-				this.setState({ receipts: result.receipts,
+				this.setState({
+					receipts: result.receipts,
 					loading: false
 				});
 			}
