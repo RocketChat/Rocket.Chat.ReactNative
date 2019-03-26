@@ -10,8 +10,7 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	list: {
-		flex: 1,
-		transform: [{ scaleY: -1 }]
+		flex: 1
 	},
 	separator: {
 		height: 1,
@@ -26,7 +25,6 @@ export default StyleSheet.create({
 		color: '#a00'
 	},
 	loadingMore: {
-		transform: [{ scaleY: -1 }],
 		textAlign: 'center',
 		padding: 15,
 		color: '#ccc'

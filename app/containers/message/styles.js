@@ -9,7 +9,6 @@ export default StyleSheet.create({
 		width: '100%',
 		paddingHorizontal: 15,
 		flexDirection: 'column',
-		transform: [{ scaleY: -1 }],
 		flex: 1
 	},
 	messageContent: {
