@@ -182,7 +182,6 @@ export default class RoomHeaderView extends Component {
 				scale = 0.8;
 			}
 		}
-		const widthScrollView = window.width - 6.5 * 23;
 
 		return (
 			<View style={styles.container}>
