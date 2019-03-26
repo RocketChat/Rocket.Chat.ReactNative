@@ -382,6 +382,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -594,6 +601,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -806,6 +820,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -995,6 +1016,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -1366,6 +1394,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -1705,6 +1740,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -1917,6 +1959,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -2139,6 +2188,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -2351,6 +2407,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -2563,6 +2626,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -2854,6 +2924,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -3066,6 +3143,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -3320,6 +3404,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10 November 2017
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -3532,6 +3623,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -3758,6 +3856,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -3989,6 +4094,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -4178,6 +4290,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -4367,6 +4486,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -4556,6 +4682,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -4768,6 +4901,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -5023,6 +5163,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -5353,6 +5500,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -5584,6 +5738,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -5796,6 +5957,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             View
             <Modal
@@ -6271,6 +6439,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             View
             <Modal
@@ -6769,6 +6944,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View>
               View
@@ -7056,6 +7238,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={
@@ -7409,6 +7598,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -7599,6 +7795,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -7812,6 +8015,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             View
             View
@@ -7996,6 +8206,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -8209,6 +8426,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -8423,6 +8647,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -8636,6 +8867,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -8949,6 +9187,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -9163,6 +9408,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -9377,6 +9629,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -9589,6 +9848,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <Text
               style={
@@ -9782,6 +10048,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <Text
               style={
@@ -9975,6 +10248,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <Text
               style={
@@ -10168,6 +10448,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <Text
               style={
@@ -10362,6 +10649,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <Text
               style={
@@ -10555,6 +10849,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <Text
               style={
@@ -10748,6 +11049,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <Text
               style={
@@ -10941,6 +11249,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <Text
               style={
@@ -11134,6 +11449,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <Text
               style={
@@ -11327,6 +11649,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <Text
               style={
@@ -11520,6 +11849,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <Text
               style={
@@ -11713,6 +12049,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <Text
               style={
@@ -11906,6 +12249,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <Text
               style={
@@ -12099,6 +12449,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <Text
               style={
@@ -12292,6 +12649,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <Text
               style={
@@ -12490,6 +12854,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -12702,6 +13073,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -12981,6 +13359,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -13329,6 +13714,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -13571,6 +13963,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -13784,6 +14183,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -14041,6 +14447,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
@@ -14264,6 +14677,13 @@ exports[`Storyshots Message list 1`] = `
               >
                 10:00 AM
               </Text>
+              <View
+                style={
+                  Object {
+                    "marginEnd": 15,
+                  }
+                }
+              />
             </View>
             <View
               style={Object {}}
