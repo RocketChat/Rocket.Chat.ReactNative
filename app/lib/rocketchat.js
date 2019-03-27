@@ -152,6 +152,7 @@ const RocketChat = {
 
 		if (this.activeUsersSubTimeout) {
 			clearTimeout(this.activeUsersSubTimeout);
+			this.activeUsersSubTimeout = false;
 		}
 		this.activeUsersSubTimeout = setTimeout(() => {
 			this.sdk.subscribe('activeUsers');
@@ -334,6 +335,11 @@ const RocketChat = {
 	async logout({ server }) {
 		if (this.roomsSub) {
 			this.roomsSub.stop();
+		}
+
+		if (this.activeUsersSubTimeout) {
+			clearTimeout(this.activeUsersSubTimeout);
+			this.activeUsersSubTimeout = false;
 		}
 
 		try {
