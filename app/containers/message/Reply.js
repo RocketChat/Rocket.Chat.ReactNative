@@ -6,6 +6,7 @@ import { RectButton } from 'react-native-gesture-handler';
 
 import Markdown from './Markdown';
 import openLink from '../../utils/openLink';
+import Image from './Image';
 
 const styles = StyleSheet.create({
 	button: {
@@ -128,6 +129,20 @@ const Reply = ({
 		);
 	};
 
+	const renderImage = () => {
+		if (attachment.attachments.length === 0) {
+			return null;
+		}
+
+		return attachment.attachments.map((attach) => {
+			if (!attach.image_url) {
+				return null;
+			}
+
+			return <Image key={attach.image_url} file={attach} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
+		});
+	};
+
 	return (
 		<RectButton
 			onPress={() => onPress(attachment, baseUrl, user)}
@@ -138,6 +153,7 @@ const Reply = ({
 			<View style={styles.attachmentContainer}>
 				{renderTitle()}
 				{renderText()}
+				{renderImage()}
 				{renderFields()}
 			</View>
 		</RectButton>

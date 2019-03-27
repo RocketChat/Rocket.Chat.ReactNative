@@ -53,7 +53,7 @@ const imagePickerConfig = {
 	roomType: state.room.t,
 	message: state.messages.message,
 	replyMessage: state.messages.replyMessage,
-	replying: state.messages.replyMessage && !!state.messages.replyMessage.msg,
+	replying: state.messages.replyMessage && (!!state.messages.replyMessage.msg || !!state.messages.replyMessage.attachments),
 	editing: state.messages.editing,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	user: {
@@ -735,7 +735,7 @@ export default class MessageBox extends Component {
 		if (!replying) {
 			return null;
 		}
-		return <ReplyPreview key='reply-preview' message={replyMessage} close={closeReply} username={user.username} />;
+		return <ReplyPreview key='reply-preview' message={replyMessage} close={closeReply} user={user} />;
 	};
 
 	renderFilesActions = () => {
