@@ -245,7 +245,8 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	internalSetState = (...args) => {
-		if (isIOS) {
+		const { navigation } = this.props;
+		if (isIOS && navigation.isFocused()) {
 			LayoutAnimation.easeInEaseOut();
 		}
 		this.setState(...args);
