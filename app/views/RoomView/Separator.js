@@ -8,10 +8,9 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginBottom: 25,
-		marginTop: 15,
-		marginHorizontal: 15,
-		transform: [{ scaleY: -1 }]
+		marginTop: 16,
+		marginBottom: 4,
+		marginHorizontal: 14
 	},
 	line: {
 		backgroundColor: '#9ea2a8',
@@ -40,7 +39,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const DateSeparator = ({ ts, unread }) => {
+const DateSeparator = React.memo(({ ts, unread }) => {
 	const date = ts ? moment(ts).format('MMM DD, YYYY') : null;
 	if (ts && unread) {
 		return (
@@ -65,7 +64,7 @@ const DateSeparator = ({ ts, unread }) => {
 			<View style={[styles.line, styles.unreadLine]} />
 		</View>
 	);
-};
+});
 
 DateSeparator.propTypes = {
 	ts: PropTypes.instanceOf(Date),

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { COLOR_SEPARATOR } from '../../constants/colors';
 
 export default StyleSheet.create({
 	typing: { fontWeight: 'bold', paddingHorizontal: 15, height: 25 },
@@ -10,12 +11,11 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	list: {
-		flex: 1,
-		transform: [{ scaleY: -1 }]
+		flex: 1
 	},
 	separator: {
 		height: 1,
-		backgroundColor: '#CED0CE'
+		backgroundColor: COLOR_SEPARATOR
 	},
 	bannerContainer: {
 		backgroundColor: 'orange'
@@ -26,7 +26,6 @@ export default StyleSheet.create({
 		color: '#a00'
 	},
 	loadingMore: {
-		transform: [{ scaleY: -1 }],
 		textAlign: 'center',
 		padding: 15,
 		color: '#ccc'
@@ -45,11 +44,6 @@ export default StyleSheet.create({
 	},
 	loading: {
 		flex: 1
-	},
-	imageBackground: {
-		width: '100%',
-		height: '100%',
-		position: 'absolute'
 	},
 	joinRoomContainer: {
 		justifyContent: 'flex-end',

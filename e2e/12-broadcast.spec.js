@@ -26,8 +26,8 @@ describe('Broadcast room', () => {
 		await element(by.id('create-channel-submit')).tap();
 		await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
 		await expect(element(by.id('room-view'))).toBeVisible();
-		await waitFor(element(by.text(`broadcast${ data.random }`))).toBeVisible().withTimeout(60000);
-		await expect(element(by.text(`broadcast${ data.random }`))).toBeVisible();
+		await waitFor(element(by.text(`broadcast${ data.random }`))).toExist().withTimeout(60000);
+		await expect(element(by.text(`broadcast${ data.random }`))).toExist();
 		await element(by.id('room-view-header-actions')).tap();
 		await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(5000);
 		await element(by.id('room-actions-info')).tap();
@@ -76,8 +76,8 @@ describe('Broadcast room', () => {
 		await expect(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toExist();
 		await element(by.id(`rooms-list-view-item-broadcast${ data.random }`)).tap();
 		await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
-		await waitFor(element(by.text(`broadcast${ data.random }`))).toBeVisible().withTimeout(60000);
-		await expect(element(by.text(`broadcast${ data.random }`))).toBeVisible();
+		await waitFor(element(by.text(`broadcast${ data.random }`))).toExist().withTimeout(60000);
+		await expect(element(by.text(`broadcast${ data.random }`))).toExist();
 	});
 
 	it('should not have messagebox', async() => {
