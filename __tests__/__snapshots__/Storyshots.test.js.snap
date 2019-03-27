@@ -219,15 +219,28 @@ exports[`Storyshots Message list 1`] = `
   style={
     Object {
       "flex": 1,
-      "transform": Array [
-        Object {
-          "scaleY": -1,
-        },
-      ],
     }
   }
 >
   <View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginTop": 30,
+          },
+          Object {
+            "marginBottom": 0,
+            "marginTop": 30,
+          },
+        ]
+      }
+    >
+      Simple
+    </Text>
     <View
       style={
         Object {
@@ -248,17 +261,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -282,7 +290,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -427,18 +435,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Simple
+      Long message
     </Text>
     <View
       style={
@@ -460,17 +463,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -494,7 +492,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -639,18 +637,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Long message
+      Grouped messages
     </Text>
     <View
       style={
@@ -672,17 +665,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -706,7 +694,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -861,17 +849,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -895,7 +878,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -1050,13 +1033,8 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             false,
@@ -1141,13 +1119,8 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             false,
@@ -1232,17 +1205,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -1266,7 +1234,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -1411,18 +1379,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Grouped messages
+      Without header
     </Text>
     <View
       style={
@@ -1444,13 +1407,8 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             false,
@@ -1525,18 +1483,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Without header
+      With alias
     </Text>
     <View
       style={
@@ -1558,17 +1511,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -1592,7 +1540,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -1750,18 +1698,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      With alias
+      Edited
     </Text>
     <View
       style={
@@ -1783,17 +1726,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -1817,7 +1755,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -1972,18 +1910,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Edited
+      Static avatar
     </Text>
     <View
       style={
@@ -2005,17 +1938,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -2039,7 +1967,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -2184,18 +2112,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Static avatar
+      Full name
     </Text>
     <View
       style={
@@ -2217,17 +2140,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -2251,7 +2169,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -2396,18 +2314,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Full name
+      Mentions
     </Text>
     <View
       style={
@@ -2429,17 +2342,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -2463,7 +2371,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -2687,18 +2595,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Mentions
+      Emojis
     </Text>
     <View
       style={
@@ -2720,17 +2623,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -2754,7 +2652,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -2899,18 +2797,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Emojis
+      Custom Emojis
     </Text>
     <View
       style={
@@ -2932,17 +2825,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -2966,7 +2854,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -3153,18 +3041,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Custom Emojis
+      Time format
     </Text>
     <View
       style={
@@ -3186,17 +3069,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -3220,7 +3098,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -3365,18 +3243,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Time format
+      Reactions
     </Text>
     <View
       style={
@@ -3398,17 +3271,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -3432,7 +3300,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -3591,18 +3459,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Reactions
+      Multiple reactions
     </Text>
     <View
       style={
@@ -3624,17 +3487,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -3658,7 +3516,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -3822,18 +3680,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Multiple reactions
+      Intercalated users
     </Text>
     <View
       style={
@@ -3855,17 +3708,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -3889,7 +3737,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -4044,17 +3892,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -4078,7 +3921,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -4233,17 +4076,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -4267,7 +4105,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -4422,17 +4260,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -4456,7 +4289,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -4601,18 +4434,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Intercalated users
+      Date and Unread separators
     </Text>
     <View
       style={
@@ -4634,17 +4462,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -4668,7 +4491,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -4808,14 +4631,9 @@ exports[`Storyshots Message list 1`] = `
         Object {
           "alignItems": "center",
           "flexDirection": "row",
-          "marginBottom": 25,
-          "marginHorizontal": 15,
-          "marginTop": 15,
-          "transform": Array [
-            Object {
-              "scaleY": -1,
-            },
-          ],
+          "marginBottom": 4,
+          "marginHorizontal": 14,
+          "marginTop": 16,
         }
       }
     >
@@ -4889,17 +4707,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -4923,7 +4736,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -5063,14 +4876,9 @@ exports[`Storyshots Message list 1`] = `
         Object {
           "alignItems": "center",
           "flexDirection": "row",
-          "marginBottom": 25,
-          "marginHorizontal": 15,
-          "marginTop": 15,
-          "transform": Array [
-            Object {
-              "scaleY": -1,
-            },
-          ],
+          "marginBottom": 4,
+          "marginHorizontal": 14,
+          "marginTop": 16,
         }
       }
     >
@@ -5128,13 +4936,8 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             false,
@@ -5219,17 +5022,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -5253,7 +5051,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -5393,14 +5191,9 @@ exports[`Storyshots Message list 1`] = `
         Object {
           "alignItems": "center",
           "flexDirection": "row",
-          "marginBottom": 25,
-          "marginHorizontal": 15,
-          "marginTop": 15,
-          "transform": Array [
-            Object {
-              "scaleY": -1,
-            },
-          ],
+          "marginBottom": 4,
+          "marginHorizontal": 14,
+          "marginTop": 16,
         }
       }
     >
@@ -5450,17 +5243,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -5484,7 +5272,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -5629,18 +5417,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Date and Unread separators
+      With image
     </Text>
     <View
       style={
@@ -5662,17 +5445,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -5696,7 +5474,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -6137,17 +5915,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -6171,7 +5944,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -6602,18 +6375,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      With image
+      With video
     </Text>
     <View
       style={
@@ -6635,17 +6403,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -6669,7 +6432,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -6889,18 +6652,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      With video
+      With audio
     </Text>
     <View
       style={
@@ -6922,17 +6680,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -6956,7 +6709,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -7242,416 +6995,8 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
-          },
-        ]
-      }
-    >
-      With audio
-    </Text>
-    <View
-      style={
-        Object {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <View
-        accessible={true}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          Array [
-            Object {
-              "flex": 1,
-              "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
-              "width": "100%",
-            },
-            Object {
-              "marginBottom": 10,
-            },
-            undefined,
-            undefined,
-          ]
-        }
-      >
-        <View
-          style={
-            Object {
-              "flex": 1,
-              "flexDirection": "row",
-            }
-          }
-        >
-          <View
-            style={
-              Array [
-                Object {
-                  "borderRadius": 4,
-                  "height": 36,
-                  "width": 36,
-                },
-                Object {
-                  "marginTop": 5,
-                },
-              ]
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {
-                    "overflow": "hidden",
-                  },
-                  Object {
-                    "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
-                  },
-                ]
-              }
-            >
-              <FastImageView
-                resizeMode="cover"
-                source={
-                  Object {
-                    "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
-                  }
-                }
-                style={
-                  Object {
-                    "bottom": 0,
-                    "left": 0,
-                    "position": "absolute",
-                    "right": 0,
-                    "top": 0,
-                  }
-                }
-              />
-            </View>
-          </View>
-          <View
-            style={
-              Array [
-                Object {
-                  "flex": 1,
-                  "marginLeft": 46,
-                },
-                Object {
-                  "marginLeft": 10,
-                },
-                false,
-                false,
-                false,
-              ]
-            }
-          >
-            <View
-              style={
-                Object {
-                  "alignItems": "center",
-                  "flex": 1,
-                  "flexDirection": "row",
-                  "marginBottom": 2,
-                }
-              }
-            >
-              <View
-                style={
-                  Object {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <Text
-                  style={
-                    Object {
-                      "color": "#0C0D0F",
-                      "fontSize": 16,
-                      "fontWeight": "600",
-                      "lineHeight": 22,
-                    }
-                  }
-                >
-                  diego.mello
-                </Text>
-              </View>
-              <Text
-                style={
-                  Object {
-                    "color": "#9EA2A8",
-                    "fontSize": 12,
-                    "fontWeight": "300",
-                    "lineHeight": 16,
-                    "paddingLeft": 10,
-                  }
-                }
-              >
-                10:00 AM
-              </Text>
-            </View>
-            <View
-              style={Object {}}
-            >
-              <Text
-                style={
-                  Object {
-                    "alignItems": "flex-start",
-                    "flexDirection": "row",
-                    "flexWrap": "wrap",
-                    "justifyContent": "flex-start",
-                    "marginBottom": 0,
-                    "marginTop": 0,
-                  }
-                }
-              >
-                <Text
-                  style={
-                    Object {
-                      "color": "#0C0D0F",
-                      "fontSize": 16,
-                      "letterSpacing": 0.1,
-                    }
-                  }
-                >
-                  <Text>
-                    I’m fine!
-                  </Text>
-                </Text>
-              </Text>
-            </View>
-            View
-          </View>
-        </View>
-      </View>
-    </View>
-    <View
-      style={
-        Object {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <View
-        accessible={true}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          Array [
-            Object {
-              "flex": 1,
-              "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
-              "width": "100%",
-            },
-            Object {
-              "marginBottom": 10,
-            },
-            undefined,
-            undefined,
-          ]
-        }
-      >
-        <View
-          style={
-            Object {
-              "flex": 1,
-              "flexDirection": "row",
-            }
-          }
-        >
-          <View
-            style={
-              Array [
-                Object {
-                  "borderRadius": 4,
-                  "height": 36,
-                  "width": 36,
-                },
-                Object {
-                  "marginTop": 5,
-                },
-              ]
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {
-                    "overflow": "hidden",
-                  },
-                  Object {
-                    "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
-                  },
-                ]
-              }
-            >
-              <FastImageView
-                resizeMode="cover"
-                source={
-                  Object {
-                    "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
-                  }
-                }
-                style={
-                  Object {
-                    "bottom": 0,
-                    "left": 0,
-                    "position": "absolute",
-                    "right": 0,
-                    "top": 0,
-                  }
-                }
-              />
-            </View>
-          </View>
-          <View
-            style={
-              Array [
-                Object {
-                  "flex": 1,
-                  "marginLeft": 46,
-                },
-                Object {
-                  "marginLeft": 10,
-                },
-                false,
-                false,
-                false,
-              ]
-            }
-          >
-            <View
-              style={
-                Object {
-                  "alignItems": "center",
-                  "flex": 1,
-                  "flexDirection": "row",
-                  "marginBottom": 2,
-                }
-              }
-            >
-              <View
-                style={
-                  Object {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <Text
-                  style={
-                    Object {
-                      "color": "#0C0D0F",
-                      "fontSize": 16,
-                      "fontWeight": "600",
-                      "lineHeight": 22,
-                    }
-                  }
-                >
-                  diego.mello
-                </Text>
-              </View>
-              <Text
-                style={
-                  Object {
-                    "color": "#9EA2A8",
-                    "fontSize": 12,
-                    "fontWeight": "300",
-                    "lineHeight": 16,
-                    "paddingLeft": 10,
-                  }
-                }
-              >
-                10:00 AM
-              </Text>
-            </View>
-            <View
-              style={Object {}}
-            >
-              <Text
-                style={
-                  Object {
-                    "alignItems": "flex-start",
-                    "flexDirection": "row",
-                    "flexWrap": "wrap",
-                    "justifyContent": "flex-start",
-                    "marginBottom": 0,
-                    "marginTop": 0,
-                  }
-                }
-              >
-                <Text
-                  style={
-                    Object {
-                      "color": "#0C0D0F",
-                      "fontSize": 16,
-                      "letterSpacing": 0.1,
-                    }
-                  }
-                >
-                  <Text>
-                    I’m fine!
-                  </Text>
-                </Text>
-              </Text>
-            </View>
-            View
-          </View>
-        </View>
-      </View>
-    </View>
-    <Text
-      style={
-        Array [
-          Object {
-            "fontSize": 20,
-            "fontWeight": "300",
-            "marginLeft": 10,
+            "marginBottom": 0,
             "marginTop": 30,
-          },
-          Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
           },
         ]
       }
@@ -7678,17 +7023,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -7712,7 +7052,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -7813,7 +7153,221 @@ exports[`Storyshots Message list 1`] = `
                 10:00 AM
               </Text>
             </View>
+            <View
+              style={Object {}}
+            >
+              <Text
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "justifyContent": "flex-start",
+                    "marginBottom": 0,
+                    "marginTop": 0,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "letterSpacing": 0.1,
+                    }
+                  }
+                >
+                  <Text>
+                    I’m fine!
+                  </Text>
+                </Text>
+              </Text>
+            </View>
             View
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            Object {
+              "marginTop": 10,
+            },
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+                Object {
+                  "marginTop": 4,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "overflow": "hidden",
+                  },
+                  Object {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                ]
+              }
+            >
+              <FastImageView
+                resizeMode="cover"
+                source={
+                  Object {
+                    "priority": "high",
+                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                  }
+                }
+                style={
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  }
+                }
+              />
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 46,
+                },
+                Object {
+                  "marginLeft": 10,
+                },
+                false,
+                false,
+                false,
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "marginBottom": 2,
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
+              <Text
+                style={
+                  Object {
+                    "color": "#9EA2A8",
+                    "fontSize": 12,
+                    "fontWeight": "300",
+                    "lineHeight": 16,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                10:00 AM
+              </Text>
+            </View>
+            <View
+              style={Object {}}
+            >
+              <Text
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "justifyContent": "flex-start",
+                    "marginBottom": 0,
+                    "marginTop": 0,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "letterSpacing": 0.1,
+                    }
+                  }
+                >
+                  <Text>
+                    I’m fine!
+                  </Text>
+                </Text>
+              </Text>
+            </View>
             View
           </View>
         </View>
@@ -7829,13 +7383,8 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
@@ -7862,17 +7411,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -7896,7 +7440,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -7997,36 +7541,7 @@ exports[`Storyshots Message list 1`] = `
                 10:00 AM
               </Text>
             </View>
-            <View
-              style={Object {}}
-            >
-              <Text
-                style={
-                  Object {
-                    "alignItems": "flex-start",
-                    "flexDirection": "row",
-                    "flexWrap": "wrap",
-                    "justifyContent": "flex-start",
-                    "marginBottom": 0,
-                    "marginTop": 0,
-                  }
-                }
-              >
-                <Text
-                  style={
-                    Object {
-                      "color": "#0C0D0F",
-                      "fontSize": 16,
-                      "letterSpacing": 0.1,
-                    }
-                  }
-                >
-                  <Text>
-                    Message
-                  </Text>
-                </Text>
-              </Text>
-            </View>
+            View
             View
           </View>
         </View>
@@ -8042,13 +7557,8 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
@@ -8075,17 +7585,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -8109,7 +7614,210 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "overflow": "hidden",
+                  },
+                  Object {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                ]
+              }
+            >
+              <FastImageView
+                resizeMode="cover"
+                source={
+                  Object {
+                    "priority": "high",
+                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                  }
+                }
+                style={
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  }
+                }
+              />
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 46,
+                },
+                Object {
+                  "marginLeft": 10,
+                },
+                false,
+                false,
+                false,
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "marginBottom": 2,
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
+              <Text
+                style={
+                  Object {
+                    "color": "#9EA2A8",
+                    "fontSize": 12,
+                    "fontWeight": "300",
+                    "lineHeight": 16,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                10:00 AM
+              </Text>
+            </View>
+            <View
+              style={Object {}}
+            >
+              <Text
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "justifyContent": "flex-start",
+                    "marginBottom": 0,
+                    "marginTop": 0,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "color": "#0C0D0F",
+                      "fontSize": 16,
+                      "letterSpacing": 0.1,
+                    }
+                  }
+                >
+                  <Text>
+                    Message
+                  </Text>
+                </Text>
+              </Text>
+            </View>
+            View
+          </View>
+        </View>
+      </View>
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginTop": 30,
+          },
+          Object {
+            "marginBottom": 0,
+            "marginTop": 30,
+          },
+        ]
+      }
+    >
+      Two short custom fields
+    </Text>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            Object {
+              "marginTop": 10,
+            },
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+                Object {
+                  "marginTop": 4,
                 },
               ]
             }
@@ -8256,18 +7964,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Two short custom fields
+      Broadcast
     </Text>
     <View
       style={
@@ -8289,17 +7992,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -8323,7 +8021,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -8469,18 +8167,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Broadcast
+      Archived
     </Text>
     <View
       style={
@@ -8502,17 +8195,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -8536,7 +8224,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -8681,18 +8369,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Archived
+      Error
     </Text>
     <View
       style={
@@ -8715,13 +8398,8 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             false,
@@ -8811,17 +8489,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -8845,7 +8518,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -8994,18 +8667,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Error
+      Temp
     </Text>
     <View
       style={
@@ -9027,17 +8695,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -9061,7 +8724,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -9208,18 +8871,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Temp
+      Editing
     </Text>
     <View
       style={
@@ -9241,17 +8899,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             Object {
               "backgroundColor": "#fff5df",
@@ -9277,7 +8930,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -9422,18 +9075,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Editing
+      Removed
     </Text>
     <View
       style={
@@ -9455,17 +9103,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -9489,7 +9132,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -9615,18 +9258,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Removed
+      Joined
     </Text>
     <View
       style={
@@ -9648,17 +9286,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -9682,7 +9315,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -9808,18 +9441,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Joined
+      Room name changed
     </Text>
     <View
       style={
@@ -9841,17 +9469,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -9875,7 +9498,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -10001,18 +9624,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Room name changed
+      Message pinned
     </Text>
     <View
       style={
@@ -10034,17 +9652,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -10068,7 +9681,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -10195,18 +9808,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Message pinned
+      Has left the channel
     </Text>
     <View
       style={
@@ -10228,17 +9836,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -10262,7 +9865,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -10388,18 +9991,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Has left the channel
+      User removed
     </Text>
     <View
       style={
@@ -10421,17 +10019,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -10455,7 +10048,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -10581,18 +10174,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      User removed
+      User added
     </Text>
     <View
       style={
@@ -10614,17 +10202,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -10648,7 +10231,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -10774,18 +10357,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      User added
+      User muted
     </Text>
     <View
       style={
@@ -10807,17 +10385,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -10841,7 +10414,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -10967,18 +10540,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      User muted
+      User unmuted
     </Text>
     <View
       style={
@@ -11000,17 +10568,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -11034,7 +10597,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -11160,18 +10723,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      User unmuted
+      Role added
     </Text>
     <View
       style={
@@ -11193,17 +10751,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -11227,7 +10780,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -11353,18 +10906,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Role added
+      Role removed
     </Text>
     <View
       style={
@@ -11386,17 +10934,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -11420,7 +10963,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -11546,18 +11089,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Role removed
+      Changed description
     </Text>
     <View
       style={
@@ -11579,17 +11117,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -11613,7 +11146,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -11739,18 +11272,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Changed description
+      Changed announcement
     </Text>
     <View
       style={
@@ -11772,17 +11300,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -11806,7 +11329,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -11932,18 +11455,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Changed announcement
+      Changed topic
     </Text>
     <View
       style={
@@ -11965,17 +11483,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -11999,7 +11512,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -12125,18 +11638,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Changed topic
+      Changed type
     </Text>
     <View
       style={
@@ -12158,17 +11666,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -12192,7 +11695,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -12318,18 +11821,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Changed type
+      Custom style
     </Text>
     <View
       style={
@@ -12351,17 +11849,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             Array [
@@ -12390,7 +11883,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -12535,18 +12028,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Custom style
+      Markdown emphasis
     </Text>
     <View
       style={
@@ -12568,17 +12056,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -12602,7 +12085,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -12814,18 +12297,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Markdown emphasis
+      Markdown headers
     </Text>
     <View
       style={
@@ -12847,17 +12325,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -12881,7 +12354,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -13162,18 +12635,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Markdown headers
+      Markdown links
     </Text>
     <View
       style={
@@ -13195,17 +12663,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -13229,7 +12692,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -13404,18 +12867,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Markdown links
+      Markdown image
     </Text>
     <View
       style={
@@ -13437,17 +12895,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -13471,7 +12924,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -13617,18 +13070,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Markdown image
+      Markdown code
     </Text>
     <View
       style={
@@ -13650,17 +13098,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -13684,7 +13127,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -13874,18 +13317,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Markdown code
+      Markdown quote
     </Text>
     <View
       style={
@@ -13907,17 +13345,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -13941,7 +13374,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -14097,18 +13530,13 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
+            "marginBottom": 0,
+            "marginTop": 30,
           },
         ]
       }
     >
-      Markdown quote
+      Markdown table
     </Text>
     <View
       style={
@@ -14130,17 +13558,12 @@ exports[`Storyshots Message list 1`] = `
             Object {
               "flex": 1,
               "flexDirection": "column",
-              "paddingHorizontal": 15,
-              "paddingVertical": 5,
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
               "width": "100%",
             },
             Object {
-              "marginBottom": 10,
+              "marginTop": 10,
             },
             undefined,
             undefined,
@@ -14164,7 +13587,7 @@ exports[`Storyshots Message list 1`] = `
                   "width": 36,
                 },
                 Object {
-                  "marginTop": 5,
+                  "marginTop": 4,
                 },
               ]
             }
@@ -14475,29 +13898,6 @@ exports[`Storyshots Message list 1`] = `
         </View>
       </View>
     </View>
-    <Text
-      style={
-        Array [
-          Object {
-            "fontSize": 20,
-            "fontWeight": "300",
-            "marginLeft": 10,
-            "marginTop": 30,
-          },
-          Object {
-            "marginBottom": 30,
-            "marginTop": 0,
-            "transform": Array [
-              Object {
-                "scaleY": -1,
-              },
-            ],
-          },
-        ]
-      }
-    >
-      Markdown table
-    </Text>
   </View>
 </RCTScrollView>
 `;
