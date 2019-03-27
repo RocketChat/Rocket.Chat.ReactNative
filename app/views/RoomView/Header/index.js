@@ -16,21 +16,26 @@ import Icon from './Icon';
 const TITLE_SIZE = 18;
 const styles = StyleSheet.create({
 	container: {
-		flex: 1
+		flex: 1,
+		height: '100%'
 	},
 	titleContainer: {
-		flexDirection: 'row',
-		alignItems: 'center'
+		flex: 1,
+		flexDirection: 'row'
 	},
 	title: {
 		...sharedStyles.textSemibold,
 		color: isIOS ? '#0C0D0F' : '#fff',
 		fontSize: TITLE_SIZE
 	},
+	scroll: {
+		alignItems: 'center'
+	},
 	typing: {
 		...sharedStyles.textRegular,
 		color: isIOS ? '#9EA2A8' : '#fff',
-		fontSize: 12
+		fontSize: 12,
+		marginBottom: 2
 	},
 	typingUsers: {
 		...sharedStyles.textSemibold,
@@ -155,7 +160,7 @@ export default class RoomHeaderView extends Component {
 						showsHorizontalScrollIndicator={false}
 						horizontal
 						bounces={false}
-						contentContainerStyle={styles.titleContainer}
+						contentContainerStyle={styles.scroll}
 					>
 						<Icon type={type} status={status} />
 						<Text style={[styles.title, { fontSize: TITLE_SIZE * scale }]} numberOfLines={1}>{title}</Text>
