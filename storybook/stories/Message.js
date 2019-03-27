@@ -8,9 +8,8 @@ import MessageSeparator from '../../app/views/RoomView/Separator';
 
 const styles = StyleSheet.create({
 	separator: {
-		transform: [{ scaleY: -1 }],
-		marginBottom: 30,
-		marginTop: 0
+		marginTop: 30,
+		marginBottom: 0
 	}
 });
 
@@ -44,14 +43,15 @@ const Message = props => (
 const Separator = ({ title }) => <StoriesSeparator title={title} style={styles.separator} />;
 
 export default (
-	<ScrollView style={{ flex: 1, transform: [{ scaleY: -1 }] }} contentContainerStyle={{ marginVertical: 30 }}>
+	<ScrollView style={{ flex: 1 }} contentContainerStyle={{ marginVertical: 30 }}>
 
-		<Message msg='Message' />
 		<Separator title='Simple' />
+		<Message msg='Message' />
 
-		<Message msg='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum' />
 		<Separator title='Long message' />
+		<Message msg='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum' />
 
+		<Separator title='Grouped messages' />
 		<Message msg='...' />
 		<Message
 			msg='Different user'
@@ -63,23 +63,23 @@ export default (
 		<Message msg='This is the third message' header={false} />
 		<Message msg='This is the second message' header={false} />
 		<Message msg='This is the first message' />
-		<Separator title='Grouped messages' />
 
-		<Message msg='Message' header={false} />
 		<Separator title='Without header' />
+		<Message msg='Message' header={false} />
 
-		<Message msg='Message' alias='Diego Mello' />
 		<Separator title='With alias' />
+		<Message msg='Message' alias='Diego Mello' />
 
-		<Message msg='Message' edited />
 		<Separator title='Edited' />
+		<Message msg='Message' edited />
 
+		<Separator title='Static avatar' />
 		<Message
 			msg='Message'
 			avatar='https://pbs.twimg.com/profile_images/1016397063649660929/14EIApTi_400x400.jpg'
 		/>
-		<Separator title='Static avatar' />
 
+		<Separator title='Full name' />
 		<Message
 			msg='Message'
 			author={{
@@ -89,20 +89,20 @@ export default (
 			}}
 			useRealName
 		/>
-		<Separator title='Full name' />
 
-		<Message msg='@rocket.cat @diego.mello @all @here #general' />
 		<Separator title='Mentions' />
+		<Message msg='@rocket.cat @diego.mello @all @here #general' />
 
-		<Message msg='👊🤙👏' />
 		<Separator title='Emojis' />
+		<Message msg='👊🤙👏' />
 
-		<Message msg=':react_rocket: :nyan_rocket: :marioparty:' />
 		<Separator title='Custom Emojis' />
+		<Message msg=':react_rocket: :nyan_rocket: :marioparty:' />
 
-		<Message msg='Testing' timeFormat='DD MMMM YYYY' />
 		<Separator title='Time format' />
+		<Message msg='Testing' timeFormat='DD MMMM YYYY' />
 
+		<Separator title='Reactions' />
 		<Message
 			msg='Reactions'
 			reactions={[{
@@ -117,8 +117,8 @@ export default (
 			}]}
 			onReactionPress={() => {}}
 		/>
-		<Separator title='Reactions' />
 
+		<Separator title='Multiple reactions' />
 		<Message
 			msg='Multiple Reactions'
 			reactions={[{
@@ -148,8 +148,8 @@ export default (
 			}]}
 			onReactionPress={() => {}}
 		/>
-		<Separator title='Multiple reactions' />
 
+		<Separator title='Intercalated users' />
 		<Message
 			msg='Fourth message'
 			author={{
@@ -166,8 +166,8 @@ export default (
 			}}
 		/>
 		<Message msg='First message' />
-		<Separator title='Intercalated users' />
 
+		<Separator title='Date and Unread separators' />
 		<Message
 			msg='Fourth message'
 			author={{
@@ -195,8 +195,8 @@ export default (
 		/>
 		<MessageSeparator ts={date} />
 		<Message msg='First message' />
-		<Separator title='Date and Unread separators' />
 
+		<Separator title='With image' />
 		<Message
 			attachments={[{
 				title: 'This is a title',
@@ -211,8 +211,8 @@ export default (
 				image_url: '/file-upload/sxLXBzjwuqxMnebyP/Clipboard%20-%2029%20de%20Agosto%20de%202018%20%C3%A0s%2018:10'
 			}]}
 		/>
-		<Separator title='With image' />
 
+		<Separator title='With video' />
 		<Message
 			attachments={[{
 				title: 'This is a title',
@@ -220,8 +220,8 @@ export default (
 				video_url: '/file-upload/cqnKqb6kdajky5Rxj/WhatsApp%20Video%202018-08-22%20at%2019.09.55.mp4'
 			}]}
 		/>
-		<Separator title='With video' />
 
+		<Separator title='With audio' />
 		<Message
 			attachments={[{
 				title: 'This is a title',
@@ -229,8 +229,8 @@ export default (
 				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
 			}]}
 		/>
-		<Separator title='With audio' />
 
+		<Separator title='Message with reply' />
 		<Message
 			msg="I'm fine!"
 			attachments={[{
@@ -249,8 +249,8 @@ export default (
 				text: 'How are you?'
 			}]}
 		/>
-		<Separator title='Message with reply' />
 
+		<Separator title='URL' />
 		<Message
 			urls={[{
 				url: 'https://rocket.chat',
@@ -263,8 +263,8 @@ export default (
 				description: 'Search the world\'s information, including webpages, images, videos and more. Google has many special features to help you find exactly what you\'re looking for.'
 			}]}
 		/>
-		<Separator title='URL' />
 
+		<Separator title='Custom fields' />
 		<Message
 			msg='Message'
 			attachments={[{
@@ -290,8 +290,8 @@ export default (
 				}]
 			}]}
 		/>
-		<Separator title='Custom fields' />
 
+		<Separator title='Two short custom fields' />
 		<Message
 			msg='Message'
 			attachments={[{
@@ -324,33 +324,33 @@ export default (
 				}]
 			}]}
 		/>
-		<Separator title='Two short custom fields' />
 
-		<Message msg='Broadcasted message' broadcast replyBroadcast={() => alert('broadcast!')} />
 		<Separator title='Broadcast' />
+		<Message msg='Broadcasted message' broadcast replyBroadcast={() => alert('broadcast!')} />
 
-		<Message msg='This message is inside an archived room' archived />
 		<Separator title='Archived' />
+		<Message msg='This message is inside an archived room' archived />
 
+		<Separator title='Error' />
 		<Message msg='This message has error too' status={messagesStatus.ERROR} onErrorPress={() => alert('Error pressed')} header={false} />
 		<Message msg='This message has error' status={messagesStatus.ERROR} onErrorPress={() => alert('Error pressed')} />
-		<Separator title='Error' />
 
-		<Message msg='Temp message' status={messagesStatus.TEMP} />
 		<Separator title='Temp' />
+		<Message msg='Temp message' status={messagesStatus.TEMP} />
 
-		<Message msg='Message being edited' editing />
 		<Separator title='Editing' />
+		<Message msg='Message being edited' editing />
 
-		<Message type='rm' />
 		<Separator title='Removed' />
+		<Message type='rm' />
 
-		<Message type='uj' />
 		<Separator title='Joined' />
+		<Message type='uj' />
 
-		<Message msg='New name' type='r' />
 		<Separator title='Room name changed' />
+		<Message msg='New name' type='r' />
 
+		<Separator title='Message pinned' />
 		<Message
 			msg='New name'
 			type='message_pinned'
@@ -361,55 +361,55 @@ export default (
 				text: 'First message'
 			}]}
 		/>
-		<Separator title='Message pinned' />
 
-		<Message type='ul' />
 		<Separator title='Has left the channel' />
+		<Message type='ul' />
 
-		<Message msg='rocket.cat' type='ru' />
 		<Separator title='User removed' />
+		<Message msg='rocket.cat' type='ru' />
 
-		<Message msg='rocket.cat' type='au' />
 		<Separator title='User added' />
+		<Message msg='rocket.cat' type='au' />
 
-		<Message msg='rocket.cat' type='user-muted' />
 		<Separator title='User muted' />
+		<Message msg='rocket.cat' type='user-muted' />
 
-		<Message msg='rocket.cat' type='user-unmuted' />
 		<Separator title='User unmuted' />
+		<Message msg='rocket.cat' type='user-unmuted' />
 
+		<Separator title='Role added' />
 		<Message
 			msg='rocket.cat'
 			role='admin' // eslint-disable-line
 			type='subscription-role-added'
 		/>
-		<Separator title='Role added' />
 
+		<Separator title='Role removed' />
 		<Message
 			msg='rocket.cat'
 			role='admin' // eslint-disable-line
 			type='subscription-role-removed'
 		/>
-		<Separator title='Role removed' />
 
-		<Message msg='new description' type='room_changed_description' />
 		<Separator title='Changed description' />
+		<Message msg='new description' type='room_changed_description' />
 
-		<Message msg='new announcement' type='room_changed_announcement' />
 		<Separator title='Changed announcement' />
+		<Message msg='new announcement' type='room_changed_announcement' />
 
-		<Message msg='new topic' type='room_changed_topic' />
 		<Separator title='Changed topic' />
+		<Message msg='new topic' type='room_changed_topic' />
 
-		<Message msg='public' type='room_changed_privacy' />
 		<Separator title='Changed type' />
+		<Message msg='public' type='room_changed_privacy' />
 
-		<Message msg='Message' style={[styles.normalize, { backgroundColor: '#ddd' }]} />
 		<Separator title='Custom style' />
+		<Message msg='Message' style={[styles.normalize, { backgroundColor: '#ddd' }]} />
 
-		<Message msg='Italic with *asterisks* or _underscores_. Bold with **asterisks** or __underscores__. ~~Strikethrough~~' />
 		<Separator title='Markdown emphasis' />
+		<Message msg='Italic with *asterisks* or _underscores_. Bold with **asterisks** or __underscores__. ~~Strikethrough~~' />
 
+		<Separator title='Markdown headers' />
 		<Message
 			msg='# H1
 ## H2
@@ -418,31 +418,30 @@ export default (
 ##### H5
 ###### H6'
 		/>
-		<Separator title='Markdown headers' />
 
-		<Message msg='Support <http://google.com|Google> [I`m an inline-style link](https://www.google.com) https://google.com' />
 		<Separator title='Markdown links' />
+		<Message msg='Support <http://google.com|Google> [I`m an inline-style link](https://www.google.com) https://google.com' />
 
-		<Message msg='![alt text](https://play.google.com/intl/en_us/badges/images/badge_new.png)' />
 		<Separator title='Markdown image' />
+		<Message msg='![alt text](https://play.google.com/intl/en_us/badges/images/badge_new.png)' />
 
+		<Separator title='Markdown code' />
 		<Message
 			msg='Inline `code` has `back-ticks around` it.
 ```
 Code block
 ```'
 		/>
-		<Separator title='Markdown code' />
 
-		<Message msg='> Quote' />
 		<Separator title='Markdown quote' />
+		<Message msg='> Quote' />
 
+		<Separator title='Markdown table' />
 		<Message
 			msg='First Header | Second Header
 ------------ | -------------
 Content from cell 1 | Content from cell 2
 Content in the first column | Content in the second column'
 		/>
-		<Separator title='Markdown table' />
 	</ScrollView>
 );

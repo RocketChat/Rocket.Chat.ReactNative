@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { COLOR_DANGER } from '../../constants/colors';
+import { COLOR_DANGER, COLOR_SEPARATOR } from '../../constants/colors';
 
 export default StyleSheet.create({
 	buttonInverted: {
@@ -39,7 +39,7 @@ export default StyleSheet.create({
 	},
 	divider: {
 		height: StyleSheet.hairlineWidth,
-		borderColor: '#ddd',
+		borderColor: COLOR_SEPARATOR,
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		marginVertical: 20
 	},

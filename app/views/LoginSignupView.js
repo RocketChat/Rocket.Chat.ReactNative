@@ -17,6 +17,7 @@ import Button from '../containers/Button';
 import I18n from '../i18n';
 import { LegalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
+import { COLOR_SEPARATOR } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
 	separatorLine: {
 		flex: 1,
 		height: 1,
-		backgroundColor: '#e1e5e8'
+		backgroundColor: COLOR_SEPARATOR
 	},
 	separatorLineLeft: {
 		marginRight: 15

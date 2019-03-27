@@ -11,6 +11,7 @@ import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
+import { COLOR_SEPARATOR } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#F1F2F4',
 		height: 54,
 		borderBottomWidth: StyleSheet.hairlineWidth,
-		borderColor: '#CACED1',
+		borderColor: COLOR_SEPARATOR,
 		justifyContent: 'center',
 		paddingHorizontal: 20
 	},

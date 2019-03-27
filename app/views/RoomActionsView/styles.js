@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { COLOR_SEPARATOR } from '../../constants/colors';
 
 export default StyleSheet.create({
 	container: {
@@ -26,7 +27,7 @@ export default StyleSheet.create({
 	},
 	separator: {
 		height: StyleSheet.hairlineWidth,
-		backgroundColor: '#ddd'
+		backgroundColor: COLOR_SEPARATOR
 	},
 	sectionSeparator: {
 		height: 10,
