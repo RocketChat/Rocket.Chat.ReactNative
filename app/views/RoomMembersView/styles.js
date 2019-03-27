@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { COLOR_SEPARATOR } from '../../constants/colors';
 
 export default StyleSheet.create({
 	list: {
@@ -24,7 +25,7 @@ export default StyleSheet.create({
 	},
 	separator: {
 		height: StyleSheet.hairlineWidth,
-		backgroundColor: '#E1E5E8',
+		backgroundColor: COLOR_SEPARATOR,
 		marginLeft: 60
 	},
 	username: {
