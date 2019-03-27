@@ -38,18 +38,19 @@ export class List extends React.Component {
 		this.data.addListener(this.updateState);
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const {
-			loadingMore, loading, end, showScollToBottomButton, messages
-		} = this.state;
-		const { window } = this.props;
-		return end !== nextState.end
-			|| loadingMore !== nextState.loadingMore
-			|| loading !== nextState.loading
-			|| showScollToBottomButton !== nextState.showScollToBottomButton
-			|| messages.length !== nextState.messages.length
-			|| window.width !== nextProps.window.width;
-	}
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	const {
+	// 		loadingMore, loading, end, showScollToBottomButton, messages
+	// 	} = this.state;
+	// 	const { window } = this.props;
+	// 	return end !== nextState.end
+	// 		|| loadingMore !== nextState.loadingMore
+	// 		|| loading !== nextState.loading
+	// 		|| showScollToBottomButton !== nextState.showScollToBottomButton
+	// 		// || messages.length !== nextState.messages.length
+	// 		|| !equal(messages, nextState.messages)
+	// 		|| window.width !== nextProps.window.width;
+	// }
 
 	componentWillUnmount() {
 		this.data.removeAllListeners();
