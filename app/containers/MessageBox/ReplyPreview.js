@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 	time: {
 		color: '#9EA2A8',
 		fontSize: 12,
-		lineHeight: 20,
+		lineHeight: 24,
 		marginLeft: 5
 	},
 	close: {
@@ -43,7 +43,8 @@ const styles = StyleSheet.create({
 	thumbnail: {
 		marginLeft: 'auto',
 		width: 50,
-		height: 50
+		height: 50,
+		borderRadius: 2
 	},
 	text: {
 		flexDirection: 'column',
@@ -86,14 +87,14 @@ export default class ReplyPreview extends Component {
 		if (!message.attachments) {
 			return null;
 		} else {
-			const p = [];
+			const imgs = [];
 			Object.keys(message.attachments).forEach((key) => {
 				if (!message.attachments[key].image_url) {
 					return null;
 				}
 
 				const img = `${ baseUrl }${ message.attachments[key].image_url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
-				p.push(
+				imgs.push(
 					<FastImage
 						source={{ uri: encodeURI(img) }}
 						resizeMode={FastImage.resizeMode.cover}
@@ -101,7 +102,7 @@ export default class ReplyPreview extends Component {
 					/>
 				);
 			});
-			return p;
+			return imgs;
 		}
 	};
 
