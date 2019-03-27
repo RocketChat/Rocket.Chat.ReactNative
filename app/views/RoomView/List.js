@@ -82,7 +82,9 @@ export class List extends React.Component {
 	}
 
 	scrollToBottom = () => {
-		this.list.scrollToOffset({ offset: -100 });
+		requestAnimationFrame(() => {
+			this.list.scrollToOffset({ offset: -100 });
+		});
 	}
 
 	handleScroll = (event) => {
