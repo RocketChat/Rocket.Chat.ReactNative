@@ -10225,10 +10225,10 @@ react-native-modal@^7.0.2:
     prop-types "^15.6.1"
     react-native-animatable "^1.2.4"
 
-react-native-notifications@1.1.23:
-  version "1.1.23"
-  resolved "https://registry.yarnpkg.com/react-native-notifications/-/react-native-notifications-1.1.23.tgz#06313aea5d1d9e5ab2716e09ffb76391aaf0ebe2"
-  integrity sha512-AVWhPZJ4+pHH7dEvphH2593wv2D+Xp9whNRftVm5xpP7h8XLOuObQBlfZniJDlXd34GLMuYXmtJ44gAg+HwIMQ==
+react-native-notifications@1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/react-native-notifications/-/react-native-notifications-1.2.6.tgz#04afb4d7be74ede71faa7e05629e2b84986ef8e6"
+  integrity sha512-ZInyL8zpV/ZhK9IJwpuRCyJ8bzu7Agcj3o95Ux7t7Q6BVzjEQ4diShgrxVXNC9CHZ/4U52ILu4kF7r2KTavmLA==
   dependencies:
     core-js "^1.0.0"
     uuid "^2.0.3"
