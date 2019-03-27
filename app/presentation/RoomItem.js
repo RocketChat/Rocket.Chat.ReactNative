@@ -214,7 +214,7 @@ export default class RoomItem extends React.Component {
 
 	formatDate = date => moment(date).calendar(null, {
 		lastDay: `[${ I18n.t('Yesterday') }]`,
-		sameDay: 'h:mm A',
+		sameDay: 'HH:mm',
 		lastWeek: 'dddd',
 		sameElse: 'MMM D'
 	})

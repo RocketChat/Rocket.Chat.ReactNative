@@ -64,10 +64,3 @@ export function roomMessageReceived(message) {
 		message
 	};
 }
-
-export function setLastOpen(date = new Date()) {
-	return {
-		type: types.ROOM.SET_LAST_OPEN,
-		date
-	};
-}

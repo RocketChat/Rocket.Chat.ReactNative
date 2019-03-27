@@ -365,7 +365,7 @@ export default class Message extends PureComponent {
 					onPress={this.onPress}
 				>
 					<View
-						style={[styles.container, header && styles.marginBottom, editing && styles.editing, style]}
+						style={[styles.container, header && styles.marginTop, editing && styles.editing, style]}
 						accessibilityLabel={accessibilityLabel}
 					>
 						<View style={styles.flex}>
