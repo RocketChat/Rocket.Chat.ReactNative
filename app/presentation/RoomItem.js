@@ -411,6 +411,8 @@ export default class RoomItem extends React.Component {
 				rightThreshold={40}
 				renderLeftActions={this.renderLeftActions}
 				renderRightActions={this.renderRightActions}
+				overshootRight={false}
+				overshootLeft={false}
 			>
 
 				<RectButton
