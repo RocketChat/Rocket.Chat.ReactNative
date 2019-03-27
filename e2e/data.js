@@ -7,7 +7,7 @@ const data = {
     password: `password${ value }`,
     alternateUser: 'detoxrn',
     alternateUserPassword: '123',
-    alternateUserTOTPSecret: 'KESVIUCQMZWEYNBMJJAUW4LYKRBVWYZ7HBWTIWDPIAZUOURTF4WA',
+    alternateUserTOTPSecret: 'I5SGETK3GBXXA7LNLMZTEJJRIN3G6LTEEE4G4PS3EQRXU4LNPU7A',
     email: `diego.mello+e2e${ value }@rocket.chat`,
     random: value
 }
