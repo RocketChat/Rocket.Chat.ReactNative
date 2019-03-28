@@ -15,8 +15,6 @@ PODS:
     - React/Core
   - React/RCTBlob (0.58.6):
     - React/Core
-  - React/RCTGeolocation (0.58.6):
-    - React/Core
   - React/RCTImage (0.58.6):
     - React/Core
     - React/RCTNetwork
@@ -51,7 +49,6 @@ DEPENDENCIES:
   - React/Core (from `../node_modules/react-native`)
   - React/RCTActionSheet (from `../node_modules/react-native`)
   - React/RCTAnimation (from `../node_modules/react-native`)
-  - React/RCTGeolocation (from `../node_modules/react-native`)
   - React/RCTImage (from `../node_modules/react-native`)
   - React/RCTLinkingIOS (from `../node_modules/react-native`)
   - React/RCTNetwork (from `../node_modules/react-native`)
@@ -96,6 +93,6 @@ SPEC CHECKSUMS:
   RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
   yoga: 32d7ef1081951e9a35a4c72a7be797598b138a48
 
-PODFILE CHECKSUM: ad284b28235f7bcda110a24095b5e2b5718cf7e2
+PODFILE CHECKSUM: cef0a3df130baa205d9d4dcbf8ecc923f8f744cb
 
 COCOAPODS: 1.6.0
