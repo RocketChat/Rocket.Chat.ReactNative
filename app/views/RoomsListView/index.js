@@ -468,8 +468,7 @@ export default class RoomsListView extends LoggedView {
 	)
 
 	renderItem = ({ item }) => {
-		const { useRealName, userId, baseUrl } = this.props;
-		const id = item.rid.replace(userId, '').trim();
+		const { useRealName, baseUrl } = this.props;
 
 		return (
 			<RoomItem
@@ -482,7 +481,7 @@ export default class RoomsListView extends LoggedView {
 				name={(useRealName && item.fname) || item.name}
 				_updatedAt={item.roomUpdatedAt}
 				key={item._id}
-				id={id}
+				id={item.rid}
 				type={item.t}
 				baseUrl={baseUrl}
 				onPress={() => this._onPressItem(item)}

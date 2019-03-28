@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import {
-	View, Text, StyleSheet, Animated
+	View, Text, StyleSheet, Animated, Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
@@ -18,8 +18,6 @@ import { CustomIcon } from '../lib/Icons';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 // import database from '../lib/realm'; TODO
-
-const PERMISSION_ARCHIVE = 'archive-room';
 
 const styles = StyleSheet.create({
 	container: {
@@ -100,12 +98,16 @@ const styles = StyleSheet.create({
 	actionText: {
 		color: 'white',
 		fontSize: 14,
-		backgroundColor: 'transparent'
+		backgroundColor: 'transparent',
+		justifyContent: 'center'
 	},
 	action: {
-		alignItems: 'center',
 		flex: 1,
 		justifyContent: 'center'
+	},
+	actionView: {
+		width: 80,
+		alignItems: 'center'
 	}
 });
 
@@ -246,16 +248,6 @@ export default class RoomItem extends React.Component {
 		this.swipeableRow.close();
 	};
 
-	canHideRoom = () => {
-		const { id } = this.props;
-		const permissions = RocketChat.hasPermission([PERMISSION_ARCHIVE], id);
-		if (permissions[PERMISSION_ARCHIVE]) {
-			return true;
-		}
-		return false;
-	}
-
-
 	toggleFav = () => {
 		try {
 			const { id, favorite } = this.props;
@@ -296,88 +288,60 @@ export default class RoomItem extends React.Component {
 		}
 		this.close();
 	}
+	/* */
 
-	toggleHide =() => {
-		try {
-			const { id, type } = this.props;
-			RocketChat.toggleArchiveRoom(id, type, true);
-		} catch (e) {
-			log('toggleHide', e);
-		}
-		this.close();
-	}
-
-	renderLeftActions = (progress) => {
+	renderLeftActions = (progress, dragX) => {
 		const { isRead } = this.props;
-		const trans = progress.interpolate({
-			inputRange: [0, 1],
-			outputRange: [-80, 0]
+		const trans = dragX.interpolate({
+			inputRange: [0, 80, 81],
+			outputRange: [0, 0, 1]
 		});
 		return (
-			<View style={{ width: 80, flexDirection: 'row' }}>
-				<Animated.View style={{ flex: 1, transform: [{ translateX: trans }] }}>
-					<RectButton
-						style={[styles.action, { backgroundColor: '#1d74f5' }]}
-						onPress={this.toggleRead}
-					>
-						{isRead ? (
-							<React.Fragment>
-								<CustomIcon size={15} name='flag' color='white' />
-								<Text style={styles.actionText}>Unread</Text>
-							</React.Fragment>
-						) : (
-							<React.Fragment>
-								<CustomIcon size={15} name='check' color='white' />
-								<Text style={styles.actionText}>Read</Text>
-							</React.Fragment>
-						)}
-					</RectButton>
+			<RectButton style={[styles.action, { backgroundColor: '#497AFC' }]}>
+				<Animated.View
+					style={{ transform: [{ translateX: trans }] }}
+				>
+					{isRead ? (
+						<View style={styles.actionView}>
+							<CustomIcon size={15} name='flag' color='white' />
+							<Text style={styles.actionText}>Unread</Text>
+						</View>
+					) : (
+						<View style={styles.actionView}>
+							<CustomIcon size={15} name='check' color='white' />
+							<Text style={styles.actionText}>Read</Text>
+						</View>
+					)}
 				</Animated.View>
-			</View>
+			</RectButton>
 		);
 	};
 
-	renderRightActions = (progress) => {
+	renderRightActions = (progress, dragX) => {
 		const { favorite } = this.props;
-		const canHideRoom = this.canHideRoom();
-		const width = canHideRoom ? 160 : 80;
-		const trans = progress.interpolate({
-			inputRange: [0, 1],
-			outputRange: [width, 0]
+		const { width } = Dimensions.get('window');
+		const trans = dragX.interpolate({
+			inputRange: [-width, -80, 0],
+			outputRange: [0, width - 80, width - 80]
 		});
 		return (
-			<View style={{ width, flexDirection: 'row' }}>
-				<Animated.View style={{ flex: 1, transform: [{ translateX: trans }] }}>
-					<RectButton
-						style={[styles.action, { backgroundColor: '#F4BD3E' }]}
-						onPress={this.toggleFav}
-					>
-						{favorite ? (
-							<React.Fragment>
-								<CustomIcon size={17} name='Star-filled' color='white' />
-								<Text style={styles.actionText}>Unfavorite</Text>
-							</React.Fragment>
-						) : (
-							<React.Fragment>
-								<CustomIcon size={17} name='star' color='white' />
-								<Text style={styles.actionText}>Favorite</Text>
-							</React.Fragment>
-						)}
-					</RectButton>
+			<RectButton style={[styles.action, { backgroundColor: '#F4BD3E' }]}>
+				<Animated.View
+					style={{ transform: [{ translateX: trans }] }}
+				>
+					{favorite ? (
+						<View style={styles.actionView}>
+							<CustomIcon size={17} name='Star-filled' color='white' />
+							<Text style={styles.actionText}>Unfavorite</Text>
+						</View>
+					) : (
+						<View style={styles.actionView}>
+							<CustomIcon size={17} name='star' color='white' />
+							<Text style={styles.actionText}>Favorite</Text>
+						</View>
+					)}
 				</Animated.View>
-				{ canHideRoom ? (
-					<Animated.View style={{ flex: 1, transform: [{ translateX: trans }] }}>
-						<RectButton
-							style={[styles.action, { backgroundColor: '#55585D' }]}
-							onPress={this.toggleHide}
-						>
-							<CustomIcon size={15} name='eye-off' color='white' />
-							<Text style={styles.actionText}>Hide</Text>
-						</RectButton>
-					</Animated.View>
-				) : null
-				}
-			</View>
+			</RectButton>
 		);
 	}
 
@@ -407,12 +371,14 @@ export default class RoomItem extends React.Component {
 			<Swipeable
 				ref={(ref) => { this.swipeableRow = ref; }}
 				friction={3}
-				leftThreshold={30}
-				rightThreshold={40}
+				leftThreshold={90}
+				rightThreshold={90}
 				renderLeftActions={this.renderLeftActions}
 				renderRightActions={this.renderRightActions}
 				overshootRight={false}
 				overshootLeft={false}
+				onSwipeableLeftOpen={this.toggleRead}
+				onSwipeableRightOpen={this.toggleFav}
 			>
 
 				<RectButton
@@ -420,6 +386,8 @@ export default class RoomItem extends React.Component {
 					activeOpacity={0.8}
 					underlayColor='#e1e5e8'
 					testID={testID}
+					style={{ backgroundColor: 'white' }}
+
 				>
 					<View
 						style={[styles.container, favorite && styles.favorite, height && { height }]}
