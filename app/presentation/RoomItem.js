@@ -13,6 +13,7 @@ import Status from '../containers/Status';
 import RoomTypeIcon from '../containers/RoomTypeIcon';
 import I18n from '../i18n';
 import sharedStyles from '../views/Styles';
+import { COLOR_SEPARATOR } from '../constants/colors';
 
 export const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
 
@@ -20,12 +21,15 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginHorizontal: 15,
+		marginLeft: 15,
 		height: ROW_HEIGHT
 	},
 	centerContainer: {
 		flex: 1,
-		marginVertical: 10
+		paddingVertical: 10,
+		paddingRight: 15,
+		borderBottomWidth: StyleSheet.hairlineWidth,
+		borderColor: COLOR_SEPARATOR
 	},
 	title: {
 		flex: 1,
@@ -111,25 +115,22 @@ const renderNumber = (unread, userMentions) => {
 	);
 };
 
-const attrs = ['name', 'unread', 'userMentions', 'StoreLastMessage', 'alert', 'type'];
+const attrs = ['name', 'unread', 'userMentions', 'showLastMessage', 'alert', 'type'];
 @connect(state => ({
 	user: {
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token
-	},
-	StoreLastMessage: state.settings.Store_Last_Message,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	}
 }))
 export default class RoomItem extends React.Component {
 	static propTypes = {
 		type: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
 		baseUrl: PropTypes.string.isRequired,
-		StoreLastMessage: PropTypes.bool,
+		showLastMessage: PropTypes.bool,
 		_updatedAt: PropTypes.string,
 		lastMessage: PropTypes.object,
-		favorite: PropTypes.bool,
 		alert: PropTypes.bool,
 		unread: PropTypes.number,
 		userMentions: PropTypes.number,
@@ -173,10 +174,10 @@ export default class RoomItem extends React.Component {
 
 	get lastMessage() {
 		const {
-			lastMessage, type, StoreLastMessage, user
+			lastMessage, type, showLastMessage, user
 		} = this.props;
 
-		if (!StoreLastMessage) {
+		if (!showLastMessage) {
 			return '';
 		}
 		if (!lastMessage) {
@@ -222,7 +223,7 @@ export default class RoomItem extends React.Component {
 
 	render() {
 		const {
-			favorite, unread, userMentions, name, _updatedAt, alert, testID, height, onPress
+			unread, userMentions, name, _updatedAt, alert, testID, height, onPress
 		} = this.props;
 
 		const date = this.formatDate(_updatedAt);
@@ -250,7 +251,7 @@ export default class RoomItem extends React.Component {
 				testID={testID}
 			>
 				<View
-					style={[styles.container, favorite && styles.favorite, height && { height }]}
+					style={[styles.container, height && { height }]}
 					accessibilityLabel={accessibilityLabel}
 				>
 					{this.avatar}

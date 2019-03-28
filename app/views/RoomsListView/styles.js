@@ -7,11 +7,6 @@ export default StyleSheet.create({
 		flex: 1,
 		backgroundColor: isIOS ? '#FFF' : '#E1E5E8'
 	},
-	separator: {
-		height: StyleSheet.hairlineWidth,
-		backgroundColor: COLOR_SEPARATOR,
-		marginLeft: 73
-	},
 	list: {
 		width: '100%',
 		backgroundColor: '#FFFFFF'

@@ -191,24 +191,6 @@ exports[`Storyshots Avatar avatar 1`] = `
 </RCTScrollView>
 `;
 
-exports[`Storyshots Channel Cell Direct Messages 1`] = `
-<RCTScrollView>
-  <View>
-    View
-    View
-    View
-    View
-    View
-    View
-    View
-    View
-    View
-    View
-    View
-  </View>
-</RCTScrollView>
-`;
-
 exports[`Storyshots Message list 1`] = `
 <RCTScrollView
   contentContainerStyle={
@@ -13898,6 +13880,107 @@ exports[`Storyshots Message list 1`] = `
         </View>
       </View>
     </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Storyshots RoomItem Direct Messages 1`] = `
+<RCTScrollView>
+  <View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginTop": 30,
+          },
+          undefined,
+        ]
+      }
+    >
+      Basic
+    </Text>
+    View
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginTop": 30,
+          },
+          undefined,
+        ]
+      }
+    >
+      User
+    </Text>
+    View
+    View
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginTop": 30,
+          },
+          undefined,
+        ]
+      }
+    >
+      Type
+    </Text>
+    View
+    View
+    View
+    View
+    View
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginTop": 30,
+          },
+          undefined,
+        ]
+      }
+    >
+      Alerts
+    </Text>
+    View
+    View
+    View
+    View
+    View
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginTop": 30,
+          },
+          undefined,
+        ]
+      }
+    >
+      Last Message
+    </Text>
+    View
+    View
+    View
+    View
+    View
+    View
   </View>
 </RCTScrollView>
 `;
