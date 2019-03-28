@@ -50,12 +50,13 @@ export default class User extends React.PureComponent {
 			PropTypes.string
 		]),
 		temp: PropTypes.bool,
-		showReadReceipt: PropTypes.bool
+		unread: PropTypes.bool,
+		Message_Read_Receipt_Enabled: PropTypes.bool
 	}
 
 	render() {
 		const {
-			username, alias, ts, temp, timeFormat, showReadReceipt
+			username, alias, ts, temp, timeFormat, unread, Message_Read_Receipt_Enabled
 		} = this.props;
 
 		const extraStyle = {};
@@ -64,8 +65,11 @@ export default class User extends React.PureComponent {
 		}
 
 		const aliasUsername = alias ? (<Text style={styles.alias}>@{username}</Text>) : null;
-		const readReceipt = showReadReceipt ? <CustomIcon name='check' color='#0084ff' size={15} /> : <View style={styles.emptySpace} />;
 		const time = moment(ts).format(timeFormat);
+		let readReceipt = null;
+		if (Message_Read_Receipt_Enabled) {
+			readReceipt = !unread ? <CustomIcon name='check' color='#1d74f5' size={15} /> : <View style={styles.emptySpace} />;
+		}
 
 		return (
 			<View style={styles.container}>

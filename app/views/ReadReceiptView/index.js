@@ -76,7 +76,7 @@ export default class ReadReceiptsView extends LoggedView {
 
 	renderEmpty = () => (
 		<View style={styles.listEmptyContainer} testID='read-receipt-view'>
-			<Text>No Read Receipts</Text>
+			<Text>{I18n.t('No_Read_Receipts')}</Text>
 		</View>
 	)
 

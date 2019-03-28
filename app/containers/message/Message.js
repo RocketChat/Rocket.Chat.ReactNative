@@ -124,7 +124,8 @@ export default class Message extends PureComponent {
 			PropTypes.object
 		]),
 		useRealName: PropTypes.bool,
-		showReadReceipt: PropTypes.bool,
+		unread: PropTypes.bool,
+		Message_Read_Receipt_Enabled: PropTypes.bool,
 		// methods
 		closeReactions: PropTypes.func,
 		onErrorPress: PropTypes.func,
@@ -203,7 +204,7 @@ export default class Message extends PureComponent {
 
 	renderUsername = () => {
 		const {
-			header, timeFormat, author, alias, ts, useRealName, showReadReceipt
+			header, timeFormat, author, alias, ts, useRealName, Message_Read_Receipt_Enabled, unread
 		} = this.props;
 		if (header) {
 			return (
@@ -213,7 +214,8 @@ export default class Message extends PureComponent {
 					username={(useRealName && author.name) || author.username}
 					alias={alias}
 					ts={ts}
-					showReadReceipt={showReadReceipt}
+					Message_Read_Receipt_Enabled={Message_Read_Receipt_Enabled}
+					unread={unread}
 					temp={this.isTemp()}
 				/>
 			);

@@ -220,6 +220,7 @@ export default {
 	No_topic_provided: 'No topic provided.',
 	No_Message: 'No Message',
 	No_Reactions: 'No Reactions',
+	No_Read_Receipts: 'No Read Receipts',
 	Not_logged: 'Not logged',
 	Nothing_to_save: 'Nothing to save!',
 	Notify_active_in_this_room: 'Notify active users in this room',

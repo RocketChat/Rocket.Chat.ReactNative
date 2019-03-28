@@ -121,6 +121,12 @@ export default class MessageActions extends React.Component {
 			this.REACTION_INDEX = this.options.length - 1;
 		}
 
+		// Read Recepits
+		if (Message_Read_Receipt_Store_Users) {
+			this.options.push(I18n.t('Read_Receipt'));
+			this.READ_RECEIPT_INDEX = this.options.length - 1;
+		}
+
 		// Delete
 		if (this.allowDelete(props)) {
 			this.options.push(I18n.t('Delete'));
@@ -131,10 +137,6 @@ export default class MessageActions extends React.Component {
 			vibrate();
 		});
 
-		if (Message_Read_Receipt_Store_Users) {
-			this.options.push(I18n.t('Read_Receipt'));
-			this.READ_RECEIPT_INDEX = this.options.length - 1;
-		}
 	}
 
 	setPermissions() {
