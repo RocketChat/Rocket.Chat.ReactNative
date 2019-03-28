@@ -42,7 +42,6 @@ const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT
 const keyExtractor = item => item.rid;
 
 @connect(state => ({
-	userId: state.login.user && state.login.user.id,
 	server: state.server.server,
 	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
 	searchText: state.rooms.searchText,
@@ -96,7 +95,6 @@ export default class RoomsListView extends LoggedView {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		userId: PropTypes.string,
 		baseUrl: PropTypes.string,
 		server: PropTypes.string,
 		searchText: PropTypes.string,

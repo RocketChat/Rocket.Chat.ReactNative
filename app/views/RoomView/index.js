@@ -51,7 +51,6 @@ export default class RoomView extends LoggedView {
 	static navigationOptions = ({ navigation }) => {
 		const rid = navigation.getParam('rid');
 		const t = navigation.getParam('t');
-		const f = navigation.getParam('f');
 		return {
 			headerTitle: <RoomHeaderView />,
 			headerRight: t === 'l'
@@ -140,13 +139,11 @@ export default class RoomView extends LoggedView {
 		return false;
 	}
 
-	componentDidUpdate(prevProps, prevState) {
+	componentDidUpdate(prevProps) {
 		const { room } = this.state;
-		const { appState, navigation } = this.props;
+		const { appState } = this.props;
 
-		if (prevState.room.f !== room.f) {
-			navigation.setParams({ f: room.f });
-		} else if (appState === 'foreground' && appState !== prevProps.appState) {
+		if (appState === 'foreground' && appState !== prevProps.appState) {
 			RocketChat.loadMissedMessages(room).catch(e => console.log(e));
 			RocketChat.readMessages(room.rid).catch(e => console.log(e));
 		}
