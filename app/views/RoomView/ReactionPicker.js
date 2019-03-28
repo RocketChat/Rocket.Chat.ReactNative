@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
@@ -58,7 +59,7 @@ export default class ReactionPicker extends React.Component {
 					animationOut='fadeOut'
 				>
 					<View
-						style={[styles.reactionPickerContainer, { width: width - margin, height: Math.min(width, height) - (margin * 2) }]}
+						style={[styles.reactionPickerContainer, { width: width - margin, height: height - 10 }]}
 						testID='reaction-picker'
 					>
 						<EmojiPicker
