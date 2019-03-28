@@ -106,7 +106,6 @@ export default class MessageContainer extends React.Component {
 		return _updatedAt.toGMTString() !== nextProps._updatedAt.toGMTString();
 	}
 
-
 	onLongPress = () => {
 		const { onLongPress } = this.props;
 		onLongPress(this.parseMessage());

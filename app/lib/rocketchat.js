@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, InteractionManager } from 'react-native';
 import foreach from 'lodash/forEach';
 import semver from 'semver';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
@@ -118,16 +118,16 @@ const RocketChat = {
 			reduxStore.dispatch(setUser({ status: 'offline' }));
 		}
 
-		if (this._setUserTimer) {
-			clearTimeout(this._setUserTimer);
-			this._setUserTimer = null;
+		if (!this._setUserTimer) {
+			this._setUserTimer = setTimeout(() => {
+				const batchUsers = this.activeUsers;
+				InteractionManager.runAfterInteractions(() => {
+					reduxStore.dispatch(setActiveUser(batchUsers));
+				});
+				this._setUserTimer = null;
+				return this.activeUsers = {};
+			}, 10000);
 		}
-
-		this._setUserTimer = setTimeout(() => {
-			reduxStore.dispatch(setActiveUser(this.activeUsers));
-			this._setUserTimer = null;
-			return this.activeUsers = {};
-		}, 2000);
 
 		const activeUser = reduxStore.getState().activeUsers[ddpMessage.id];
 		if (!ddpMessage.fields) {
@@ -145,11 +145,18 @@ const RocketChat = {
 		}
 		this.roomsSub = await this.subscribeRooms();
 
-		this.sdk.subscribe('activeUsers');
 		this.sdk.subscribe('roles');
 		this.getPermissions();
 		this.getCustomEmoji();
 		this.registerPushToken().catch(e => console.log(e));
+
+		if (this.activeUsersSubTimeout) {
+			clearTimeout(this.activeUsersSubTimeout);
+			this.activeUsersSubTimeout = false;
+		}
+		this.activeUsersSubTimeout = setTimeout(() => {
+			this.sdk.subscribe('activeUsers');
+		}, 5000);
 	},
 	connect({ server, user }) {
 		database.setActiveDB(server);
@@ -328,6 +335,11 @@ const RocketChat = {
 	async logout({ server }) {
 		if (this.roomsSub) {
 			this.roomsSub.stop();
+		}
+
+		if (this.activeUsersSubTimeout) {
+			clearTimeout(this.activeUsersSubTimeout);
+			this.activeUsersSubTimeout = false;
 		}
 
 		try {

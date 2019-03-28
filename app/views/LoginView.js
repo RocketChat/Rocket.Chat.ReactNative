@@ -96,7 +96,7 @@ export default class LoginView extends LoggedView {
 
 	componentWillReceiveProps(nextProps) {
 		const { Site_Name, error } = this.props;
-		if (Site_Name && nextProps.Site_Name !== Site_Name) {
+		if (nextProps.Site_Name && nextProps.Site_Name !== Site_Name) {
 			this.setTitle(nextProps.Site_Name);
 		} else if (nextProps.failure && !equal(error, nextProps.error)) {
 			if (nextProps.error && nextProps.error.error === 'totp-required') {
