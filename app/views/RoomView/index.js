@@ -52,15 +52,12 @@ export default class RoomView extends LoggedView {
 		const rid = navigation.getParam('rid');
 		const t = navigation.getParam('t');
 		const f = navigation.getParam('f');
-		const toggleFav = navigation.getParam('toggleFav', () => {});
-		const starIcon = f ? 'Star-filled' : 'star';
 		return {
 			headerTitle: <RoomHeaderView />,
 			headerRight: t === 'l'
 				? null
 				: (
 					<CustomHeaderButtons>
-						<Item title='star' iconName={starIcon} onPress={toggleFav} testID='room-view-header-star' />
 						<Item title='more' iconName='menu' onPress={() => navigation.navigate('RoomActionsView', { rid })} testID='room-view-header-actions' />
 					</CustomHeaderButtons>
 				)
@@ -99,7 +96,6 @@ export default class RoomView extends LoggedView {
 
 	componentDidMount() {
 		const { navigation } = this.props;
-		navigation.setParams({ toggleFav: this.toggleFav });
 
 		if (this.rooms.length === 0 && this.rid) {
 			const { rid, name, t } = navigation.state.params;
@@ -212,16 +208,6 @@ export default class RoomView extends LoggedView {
 				openRoom(room);
 				this.internalSetState({ joined: false });
 			}
-		}
-	}
-
-	toggleFav = () => {
-		try {
-			const { room } = this.state;
-			const { rid, f } = room;
-			RocketChat.toggleFavorite(rid, !f);
-		} catch (e) {
-			log('toggleFavorite', e);
 		}
 	}
 

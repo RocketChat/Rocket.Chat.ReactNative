@@ -371,8 +371,8 @@ export default class RoomItem extends React.Component {
 			<Swipeable
 				ref={(ref) => { this.swipeableRow = ref; }}
 				friction={3}
-				leftThreshold={90}
-				rightThreshold={90}
+				leftThreshold={70}
+				rightThreshold={70}
 				renderLeftActions={this.renderLeftActions}
 				renderRightActions={this.renderRightActions}
 				overshootRight={false}
