@@ -101,7 +101,8 @@ const subscriptionSchema = {
 		joinCodeRequired: { type: 'bool', optional: true },
 		notifications: { type: 'bool', optional: true },
 		muted: { type: 'list', objectType: 'usersMuted' },
-		broadcast: { type: 'bool', optional: true }
+		broadcast: { type: 'bool', optional: true },
+		draftMessage: { type: 'string', optional: true }
 	}
 };
 
