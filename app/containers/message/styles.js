@@ -154,5 +154,11 @@ export default StyleSheet.create({
 	edited: {
 		fontSize: 14,
 		color: '#9EA2A8'
+	},
+	replyAction: {
+		flex: 1,
+		alignItems: 'center',
+		fontSize: 12,
+		justifyContent: 'center'
 	}
 });
