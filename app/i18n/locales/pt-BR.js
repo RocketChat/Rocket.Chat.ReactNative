@@ -346,7 +346,7 @@ export default {
 	Yesterday: 'Ontem',
 	You_are_in_preview_mode: 'Está é uma prévia do canal',
 	You_are_offline: 'Você está offline',
-	You_can_search_using_RegExp_eg: 'Você pode pesquisar usando expressões regulares, por exemplo `/^text$/i`',
+	You_can_search_using_RegExp_eg: 'Você pode usar expressões regulares, por exemplo `/^text$/i`',
 	You_colon: 'Você: ',
 	you_were_mentioned: 'você foi mencionado',
 	you: 'você',
