@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { TextInput } from 'react-native-gesture-handler';
 
 import I18n from '../../../i18n';
+import sharedStyles from '../../Styles';
 
 const styles = StyleSheet.create({
 	container: {
@@ -18,14 +19,16 @@ const styles = StyleSheet.create({
 	},
 	server: {
 		fontSize: 20,
-		color: '#FFF'
+		color: '#FFF',
+		...sharedStyles.textRegular
 	},
 	serverSmall: {
 		fontSize: 16
 	},
 	updating: {
 		fontSize: 14,
-		color: '#FFF'
+		color: '#FFF',
+		...sharedStyles.textRegular
 	},
 	disclosure: {
 		marginLeft: 9,

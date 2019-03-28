@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
 	date: {
 		fontSize: 13,
 		color: '#9EA2A8',
+		marginLeft: 4,
 		...sharedStyles.textRegular
 	},
 	updateAlert: {
@@ -216,7 +217,7 @@ export default class RoomItem extends React.Component {
 
 	formatDate = date => moment(date).calendar(null, {
 		lastDay: `[${ I18n.t('Yesterday') }]`,
-		sameDay: 'HH:mm',
+		sameDay: 'h:mm A',
 		lastWeek: 'dddd',
 		sameElse: 'MMM D'
 	})

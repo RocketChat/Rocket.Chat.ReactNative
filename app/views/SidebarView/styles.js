@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { COLOR_SEPARATOR } from '../../constants/colors';
 
+import sharedStyles from '../Styles';
+
 export default StyleSheet.create({
 	container: {
 		flex: 1,
@@ -23,8 +25,8 @@ export default StyleSheet.create({
 	},
 	itemText: {
 		marginVertical: 16,
-		fontWeight: 'bold',
-		color: '#292E35'
+		color: '#0C0D0F',
+		...sharedStyles.textSemibold
 	},
 	separator: {
 		borderBottomWidth: StyleSheet.hairlineWidth,
@@ -47,7 +49,7 @@ export default StyleSheet.create({
 	},
 	headerIcon: {
 		paddingHorizontal: 10,
-		color: '#292E35'
+		color: '#0C0D0F'
 	},
 	avatar: {
 		marginHorizontal: 10
@@ -56,14 +58,14 @@ export default StyleSheet.create({
 		marginRight: 5
 	},
 	currentServerText: {
-		fontWeight: 'bold'
+		...sharedStyles.textSemibold
 	},
 	version: {
 		marginHorizontal: 5,
 		marginBottom: 5,
-		fontWeight: '600',
-		color: '#292E35',
-		fontSize: 13
+		color: '#0C0D0F',
+		fontSize: 13,
+		...sharedStyles.textSemibold
 	},
 	inverted: {
 		transform: [{ scaleY: -1 }]

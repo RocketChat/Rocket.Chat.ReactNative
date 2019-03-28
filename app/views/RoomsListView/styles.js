@@ -2,6 +2,8 @@ import { StyleSheet } from 'react-native';
 import { isIOS } from '../../utils/deviceInfo';
 import { COLOR_SEPARATOR } from '../../constants/colors';
 
+import sharedStyles from '../Styles';
+
 export default StyleSheet.create({
 	container: {
 		flex: 1,
@@ -10,16 +12,6 @@ export default StyleSheet.create({
 	list: {
 		width: '100%',
 		backgroundColor: '#FFFFFF'
-	},
-	emptyView: {
-		flexGrow: 1,
-		alignItems: 'stretch',
-		justifyContent: 'center'
-	},
-	emptyText: {
-		textAlign: 'center',
-		fontSize: 18,
-		color: '#ccc'
 	},
 	actionButtonIcon: {
 		fontSize: 20,
@@ -45,9 +37,9 @@ export default StyleSheet.create({
 	sortToggleText: {
 		color: '#9EA2A8',
 		fontSize: 15,
-		fontWeight: 'normal',
 		flex: 1,
-		marginLeft: 15
+		marginLeft: 15,
+		...sharedStyles.textRegular
 	},
 	dropdownContainer: {
 		backgroundColor: '#fff',
@@ -66,8 +58,8 @@ export default StyleSheet.create({
 	sortItemText: {
 		color: '#54585E',
 		fontSize: 18,
-		fontWeight: 'normal',
-		flex: 1
+		flex: 1,
+		...sharedStyles.textRegular
 	},
 	backdrop: {
 		...StyleSheet.absoluteFill,
@@ -96,10 +88,10 @@ export default StyleSheet.create({
 	groupTitle: {
 		color: isIOS ? '#2F343D' : '#54585E',
 		fontSize: isIOS ? 22 : 15,
-		fontWeight: 'bold',
 		letterSpacing: 0.27,
 		flex: 1,
-		lineHeight: isIOS ? 41 : 24
+		lineHeight: isIOS ? 41 : 24,
+		...sharedStyles.textBold
 	},
 	serverHeader: {
 		justifyContent: 'space-between'
@@ -107,15 +99,15 @@ export default StyleSheet.create({
 	serverHeaderText: {
 		color: '#9EA2A8',
 		fontSize: 15,
-		fontWeight: 'normal',
-		marginLeft: 15
+		marginLeft: 15,
+		...sharedStyles.textRegular
 	},
 	serverHeaderAdd: {
 		color: isIOS ? '#1D74F5' : '#FFF',
 		fontSize: 15,
-		fontWeight: 'normal',
 		marginRight: 15,
-		paddingVertical: 10
+		paddingVertical: 10,
+		...sharedStyles.textRegular
 	},
 	serverItem: {
 		height: 68
@@ -138,11 +130,14 @@ export default StyleSheet.create({
 		justifyContent: 'center'
 	},
 	serverName: {
-		fontSize: 18, fontWeight: '600', color: '#0C0D0F'
+		fontSize: 18,
+		color: '#0C0D0F',
+		...sharedStyles.textSemibold
 	},
 	serverUrl: {
 		fontSize: 15,
-		color: '#9EA2A8'
+		color: '#9EA2A8',
+		...sharedStyles.textRegular
 	},
 	checkIcon: {
 		marginHorizontal: 15,

@@ -248,7 +248,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -333,7 +333,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -347,11 +346,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -362,10 +364,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -391,8 +395,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -450,7 +457,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -535,7 +542,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -549,11 +555,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -564,10 +573,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -593,8 +604,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -652,7 +666,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -737,7 +751,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -751,11 +764,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -766,10 +782,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -795,8 +813,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -836,7 +857,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -884,7 +905,7 @@ exports[`Storyshots Message list 1`] = `
                 source={
                   Object {
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                    "uri": "https://open.rocket.chat/avatar/Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                   }
                 }
                 style={
@@ -921,7 +942,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -935,25 +955,30 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
                 >
-                  rocket.cat
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
                 </Text>
               </View>
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -979,8 +1004,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -1065,8 +1093,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -1151,8 +1182,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -1192,7 +1226,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -1277,7 +1311,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -1291,11 +1324,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -1306,10 +1342,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -1335,8 +1373,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -1439,8 +1480,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -1498,7 +1542,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -1583,7 +1627,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -1597,38 +1640,44 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
                 >
                   Diego Mello
-                </Text>
-                <Text
-                  style={
-                    Object {
-                      "color": "#9EA2A8",
-                      "fontSize": 14,
-                      "lineHeight": 16,
-                      "paddingLeft": 6,
+                  <Text
+                    style={
+                      Object {
+                        "backgroundColor": "transparent",
+                        "color": "#9EA2A8",
+                        "fontFamily": "System",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                      }
                     }
-                  }
-                >
-                  @
-                  diego.mello
+                  >
+                     @
+                    diego.mello
+                  </Text>
                 </Text>
               </View>
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -1654,8 +1703,216 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
+                      "letterSpacing": 0.1,
+                    }
+                  }
+                >
+                  <Text>
+                    Message
+                  </Text>
+                </Text>
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            Object {
+              "marginTop": 6,
+            },
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+                Object {
+                  "marginTop": 4,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "overflow": "hidden",
+                  },
+                  Object {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                ]
+              }
+            >
+              <FastImageView
+                resizeMode="cover"
+                source={
+                  Object {
+                    "priority": "high",
+                    "uri": "https://open.rocket.chat/avatar/Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                  }
+                }
+                style={
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  }
+                }
+              />
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 46,
+                },
+                Object {
+                  "marginLeft": 10,
+                },
+                false,
+                false,
+                false,
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#0C0D0F",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "500",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  Diego Mello
+                  <Text
+                    style={
+                      Object {
+                        "backgroundColor": "transparent",
+                        "color": "#9EA2A8",
+                        "fontFamily": "System",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                      }
+                    }
+                  >
+                     @
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+                  </Text>
+                </Text>
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#9EA2A8",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "300",
+                    "lineHeight": 22,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                10:00 AM
+              </Text>
+            </View>
+            <View
+              style={Object {}}
+            >
+              <Text
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "justifyContent": "flex-start",
+                    "marginBottom": 0,
+                    "marginTop": 0,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#0C0D0F",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -1713,7 +1970,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -1798,7 +2055,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -1812,11 +2068,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -1827,10 +2086,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -1856,8 +2117,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -1869,8 +2133,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#9EA2A8",
+                      "fontFamily": "System",
                       "fontSize": 14,
+                      "fontWeight": "400",
                     }
                   }
                 >
@@ -1925,7 +2192,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -2010,7 +2277,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -2024,11 +2290,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -2039,10 +2308,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -2068,8 +2339,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -2127,7 +2401,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -2212,7 +2486,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -2226,11 +2499,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -2241,10 +2517,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -2270,8 +2548,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -2329,7 +2610,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -2414,7 +2695,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -2428,11 +2708,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -2443,10 +2726,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -2472,8 +2757,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -2483,6 +2771,7 @@ exports[`Storyshots Message list 1`] = `
                       Object {
                         "backgroundColor": "#E8F2FF",
                         "color": "#0072FE",
+                        "fontFamily": "System",
                         "fontWeight": "500",
                         "padding": 5,
                       }
@@ -2500,6 +2789,7 @@ exports[`Storyshots Message list 1`] = `
                       Object {
                         "backgroundColor": "#1D74F5",
                         "color": "#fff",
+                        "fontFamily": "System",
                         "fontWeight": "500",
                         "padding": 5,
                       }
@@ -2517,6 +2807,7 @@ exports[`Storyshots Message list 1`] = `
                       Object {
                         "backgroundColor": "#FF5B5A",
                         "color": "#fff",
+                        "fontFamily": "System",
                         "fontWeight": "500",
                         "padding": 5,
                       }
@@ -2534,6 +2825,7 @@ exports[`Storyshots Message list 1`] = `
                       Object {
                         "backgroundColor": "#FF5B5A",
                         "color": "#fff",
+                        "fontFamily": "System",
                         "fontWeight": "500",
                         "padding": 5,
                       }
@@ -2551,6 +2843,7 @@ exports[`Storyshots Message list 1`] = `
                       Object {
                         "backgroundColor": "#E8F2FF",
                         "color": "#0072FE",
+                        "fontFamily": "System",
                         "fontWeight": "500",
                         "padding": 5,
                       }
@@ -2610,7 +2903,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -2695,7 +2988,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -2709,11 +3001,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -2724,10 +3019,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -2753,8 +3050,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -2812,7 +3112,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -2897,7 +3197,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -2911,11 +3210,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -2926,10 +3228,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -2955,8 +3259,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -3056,7 +3363,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -3141,7 +3448,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -3155,11 +3461,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -3170,10 +3479,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -3199,8 +3510,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -3258,7 +3572,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -3343,7 +3657,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -3357,11 +3670,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -3372,10 +3688,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -3401,8 +3719,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -3418,7 +3739,7 @@ exports[`Storyshots Message list 1`] = `
                 Object {
                   "flexDirection": "row",
                   "flexWrap": "wrap",
-                  "marginTop": 10,
+                  "marginTop": 6,
                 }
               }
             >
@@ -3474,7 +3795,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -3559,7 +3880,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -3573,11 +3893,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -3588,10 +3911,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -3617,8 +3942,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -3634,7 +3962,7 @@ exports[`Storyshots Message list 1`] = `
                 Object {
                   "flexDirection": "row",
                   "flexWrap": "wrap",
-                  "marginTop": 10,
+                  "marginTop": 6,
                 }
               }
             >
@@ -3695,7 +4023,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -3780,7 +4108,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -3794,11 +4121,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -3809,10 +4139,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -3838,8 +4170,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -3879,7 +4214,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -3964,7 +4299,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -3978,11 +4312,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -3993,10 +4330,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -4022,8 +4361,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -4063,7 +4405,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -4148,7 +4490,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -4162,11 +4503,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -4177,10 +4521,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -4206,8 +4552,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -4247,7 +4596,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -4332,7 +4681,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -4346,11 +4694,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -4361,10 +4712,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -4390,8 +4743,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -4449,7 +4805,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -4534,7 +4890,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -4548,11 +4903,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -4563,10 +4921,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -4592,8 +4952,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -4623,7 +4986,9 @@ exports[`Storyshots Message list 1`] = `
         style={
           Array [
             Object {
+              "backgroundColor": "transparent",
               "color": "#9ea2a8",
+              "fontFamily": "System",
               "fontSize": 14,
               "fontWeight": "600",
             },
@@ -4647,7 +5012,7 @@ exports[`Storyshots Message list 1`] = `
               "backgroundColor": "#f5455c",
             },
             Object {
-              "marginHorizontal": 15,
+              "marginHorizontal": 14,
             },
           ]
         }
@@ -4656,7 +5021,9 @@ exports[`Storyshots Message list 1`] = `
         style={
           Array [
             Object {
+              "backgroundColor": "transparent",
               "color": "#9ea2a8",
+              "fontFamily": "System",
               "fontSize": 14,
               "fontWeight": "600",
             },
@@ -4694,7 +5061,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -4779,7 +5146,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -4793,11 +5159,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -4808,10 +5177,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -4837,8 +5208,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -4868,7 +5242,9 @@ exports[`Storyshots Message list 1`] = `
         style={
           Array [
             Object {
+              "backgroundColor": "transparent",
               "color": "#9ea2a8",
+              "fontFamily": "System",
               "fontSize": 14,
               "fontWeight": "600",
             },
@@ -4876,7 +5252,7 @@ exports[`Storyshots Message list 1`] = `
               "color": "#f5455c",
             },
             Object {
-              "marginRight": 15,
+              "marginRight": 14,
             },
           ]
         }
@@ -4968,8 +5344,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -5009,7 +5388,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -5094,7 +5473,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -5108,11 +5486,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -5123,10 +5504,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -5152,8 +5535,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -5192,12 +5578,14 @@ exports[`Storyshots Message list 1`] = `
         style={
           Array [
             Object {
+              "backgroundColor": "transparent",
               "color": "#9ea2a8",
+              "fontFamily": "System",
               "fontSize": 14,
               "fontWeight": "600",
             },
             Object {
-              "marginLeft": 15,
+              "marginLeft": 14,
             },
           ]
         }
@@ -5230,7 +5618,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -5315,7 +5703,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -5329,11 +5716,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -5344,10 +5734,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -5373,8 +5765,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -5432,7 +5827,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -5517,7 +5912,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -5531,11 +5925,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -5546,10 +5943,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -5654,7 +6053,9 @@ exports[`Storyshots Message list 1`] = `
                     <Text
                       style={
                         Object {
+                          "backgroundColor": "transparent",
                           "color": "#ffffff",
+                          "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "600",
                           "textAlign": "center",
@@ -5666,7 +6067,9 @@ exports[`Storyshots Message list 1`] = `
                     <Text
                       style={
                         Object {
+                          "backgroundColor": "transparent",
                           "color": "#ffffff",
+                          "fontFamily": "System",
                           "fontSize": 14,
                           "fontWeight": "500",
                           "textAlign": "center",
@@ -5902,7 +6305,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -5987,7 +6390,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -6001,11 +6403,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -6016,10 +6421,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -6124,7 +6531,9 @@ exports[`Storyshots Message list 1`] = `
                     <Text
                       style={
                         Object {
+                          "backgroundColor": "transparent",
                           "color": "#ffffff",
+                          "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "600",
                           "textAlign": "center",
@@ -6136,7 +6545,9 @@ exports[`Storyshots Message list 1`] = `
                     <Text
                       style={
                         Object {
+                          "backgroundColor": "transparent",
                           "color": "#ffffff",
+                          "fontFamily": "System",
                           "fontSize": 14,
                           "fontWeight": "500",
                           "textAlign": "center",
@@ -6390,7 +6801,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -6475,7 +6886,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -6489,11 +6899,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -6504,10 +6917,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -6535,8 +6950,11 @@ exports[`Storyshots Message list 1`] = `
                   <Text
                     style={
                       Object {
+                        "backgroundColor": "transparent",
                         "color": "#0C0D0F",
+                        "fontFamily": "System",
                         "fontSize": 16,
+                        "fontWeight": "400",
                         "letterSpacing": 0.1,
                       }
                     }
@@ -6667,7 +7085,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -6752,7 +7170,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -6766,11 +7183,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -6781,10 +7201,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -6801,7 +7223,7 @@ exports[`Storyshots Message list 1`] = `
                   "flex": 1,
                   "flexDirection": "row",
                   "height": 56,
-                  "marginBottom": 10,
+                  "marginBottom": 6,
                 }
               }
             >
@@ -6923,9 +7345,11 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
-                    "color": "#54585e",
+                    "backgroundColor": "transparent",
+                    "color": "#0C0D0F",
+                    "fontFamily": "System",
                     "fontSize": 14,
-                    "fontWeight": "500",
+                    "fontWeight": "400",
                     "marginRight": 16,
                   }
                 }
@@ -6951,8 +7375,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -6961,6 +7388,725 @@ exports[`Storyshots Message list 1`] = `
                     This is a description
                   </Text>
                 </Text>
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            false,
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 46,
+                },
+                false,
+                false,
+                false,
+                false,
+              ]
+            }
+          >
+            <View
+              style={Object {}}
+            >
+              <Text
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "justifyContent": "flex-start",
+                    "marginBottom": 0,
+                    "marginTop": 0,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#0C0D0F",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "letterSpacing": 0.1,
+                    }
+                  }
+                >
+                  <Text>
+                    First message
+                  </Text>
+                </Text>
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            false,
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 46,
+                },
+                false,
+                false,
+                false,
+                false,
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "#f7f8fa",
+                  "borderRadius": 4,
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "height": 56,
+                  "marginBottom": 6,
+                }
+              }
+            >
+              View
+              View
+              <View
+                animateTransitions={true}
+                animationConfig={
+                  Object {
+                    "delay": 0,
+                    "duration": 250,
+                    "easing": [Function],
+                  }
+                }
+                animationType="timing"
+                onLayout={[Function]}
+                onValueChange={[Function]}
+                step={0}
+                style={
+                  Array [
+                    Object {
+                      "height": 40,
+                      "justifyContent": "center",
+                    },
+                    Object {
+                      "flex": 1,
+                      "marginRight": 10,
+                    },
+                  ]
+                }
+                thumbTouchSize={
+                  Object {
+                    "height": 40,
+                    "width": 40,
+                  }
+                }
+                value={0}
+              >
+                <View
+                  onLayout={[Function]}
+                  renderToHardwareTextureAndroid={true}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "#b3b3b3",
+                      },
+                      Object {
+                        "borderRadius": 2,
+                        "height": 4,
+                      },
+                      undefined,
+                    ]
+                  }
+                />
+                <View
+                  renderToHardwareTextureAndroid={true}
+                  style={
+                    Object {
+                      "backgroundColor": "#1d74f5",
+                      "borderRadius": 2,
+                      "height": 4,
+                      "opacity": 0,
+                      "position": "absolute",
+                      "width": 0,
+                    }
+                  }
+                />
+                <View
+                  onLayout={[Function]}
+                  renderToHardwareTextureAndroid={true}
+                  style={
+                    Object {
+                      "backgroundColor": "#1d74f5",
+                      "borderRadius": 10,
+                      "height": 12,
+                      "opacity": 0,
+                      "position": "absolute",
+                      "transform": Array [
+                        Object {
+                          "translateX": 0,
+                        },
+                        Object {
+                          "translateY": 0,
+                        },
+                      ],
+                      "width": 12,
+                    }
+                  }
+                />
+                <View
+                  onMoveShouldSetResponder={[Function]}
+                  onMoveShouldSetResponderCapture={[Function]}
+                  onResponderEnd={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderReject={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderStart={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  onStartShouldSetResponderCapture={[Function]}
+                  renderToHardwareTextureAndroid={true}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "bottom": 0,
+                        "left": 0,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": 0,
+                      },
+                      Object {},
+                    ]
+                  }
+                />
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#0C0D0F",
+                    "fontFamily": "System",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "marginRight": 16,
+                  }
+                }
+              >
+                00:00
+              </Text>
+            </View>
+            <View
+              style={Object {}}
+            >
+              <Text
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "justifyContent": "flex-start",
+                    "marginBottom": 0,
+                    "marginTop": 0,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#0C0D0F",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "letterSpacing": 0.1,
+                    }
+                  }
+                >
+                  <Text>
+                    This is a description
+                  </Text>
+                </Text>
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            false,
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 46,
+                },
+                false,
+                false,
+                false,
+                false,
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "#f7f8fa",
+                  "borderRadius": 4,
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "height": 56,
+                  "marginBottom": 6,
+                }
+              }
+            >
+              View
+              View
+              <View
+                animateTransitions={true}
+                animationConfig={
+                  Object {
+                    "delay": 0,
+                    "duration": 250,
+                    "easing": [Function],
+                  }
+                }
+                animationType="timing"
+                onLayout={[Function]}
+                onValueChange={[Function]}
+                step={0}
+                style={
+                  Array [
+                    Object {
+                      "height": 40,
+                      "justifyContent": "center",
+                    },
+                    Object {
+                      "flex": 1,
+                      "marginRight": 10,
+                    },
+                  ]
+                }
+                thumbTouchSize={
+                  Object {
+                    "height": 40,
+                    "width": 40,
+                  }
+                }
+                value={0}
+              >
+                <View
+                  onLayout={[Function]}
+                  renderToHardwareTextureAndroid={true}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "#b3b3b3",
+                      },
+                      Object {
+                        "borderRadius": 2,
+                        "height": 4,
+                      },
+                      undefined,
+                    ]
+                  }
+                />
+                <View
+                  renderToHardwareTextureAndroid={true}
+                  style={
+                    Object {
+                      "backgroundColor": "#1d74f5",
+                      "borderRadius": 2,
+                      "height": 4,
+                      "opacity": 0,
+                      "position": "absolute",
+                      "width": 0,
+                    }
+                  }
+                />
+                <View
+                  onLayout={[Function]}
+                  renderToHardwareTextureAndroid={true}
+                  style={
+                    Object {
+                      "backgroundColor": "#1d74f5",
+                      "borderRadius": 10,
+                      "height": 12,
+                      "opacity": 0,
+                      "position": "absolute",
+                      "transform": Array [
+                        Object {
+                          "translateX": 0,
+                        },
+                        Object {
+                          "translateY": 0,
+                        },
+                      ],
+                      "width": 12,
+                    }
+                  }
+                />
+                <View
+                  onMoveShouldSetResponder={[Function]}
+                  onMoveShouldSetResponderCapture={[Function]}
+                  onResponderEnd={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderReject={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderStart={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  onStartShouldSetResponderCapture={[Function]}
+                  renderToHardwareTextureAndroid={true}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "bottom": 0,
+                        "left": 0,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": 0,
+                      },
+                      Object {},
+                    ]
+                  }
+                />
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#0C0D0F",
+                    "fontFamily": "System",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "marginRight": 16,
+                  }
+                }
+              >
+                00:00
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            false,
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 46,
+                },
+                false,
+                false,
+                false,
+                false,
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "#f7f8fa",
+                  "borderRadius": 4,
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "height": 56,
+                  "marginBottom": 6,
+                }
+              }
+            >
+              View
+              View
+              <View
+                animateTransitions={true}
+                animationConfig={
+                  Object {
+                    "delay": 0,
+                    "duration": 250,
+                    "easing": [Function],
+                  }
+                }
+                animationType="timing"
+                onLayout={[Function]}
+                onValueChange={[Function]}
+                step={0}
+                style={
+                  Array [
+                    Object {
+                      "height": 40,
+                      "justifyContent": "center",
+                    },
+                    Object {
+                      "flex": 1,
+                      "marginRight": 10,
+                    },
+                  ]
+                }
+                thumbTouchSize={
+                  Object {
+                    "height": 40,
+                    "width": 40,
+                  }
+                }
+                value={0}
+              >
+                <View
+                  onLayout={[Function]}
+                  renderToHardwareTextureAndroid={true}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "#b3b3b3",
+                      },
+                      Object {
+                        "borderRadius": 2,
+                        "height": 4,
+                      },
+                      undefined,
+                    ]
+                  }
+                />
+                <View
+                  renderToHardwareTextureAndroid={true}
+                  style={
+                    Object {
+                      "backgroundColor": "#1d74f5",
+                      "borderRadius": 2,
+                      "height": 4,
+                      "opacity": 0,
+                      "position": "absolute",
+                      "width": 0,
+                    }
+                  }
+                />
+                <View
+                  onLayout={[Function]}
+                  renderToHardwareTextureAndroid={true}
+                  style={
+                    Object {
+                      "backgroundColor": "#1d74f5",
+                      "borderRadius": 10,
+                      "height": 12,
+                      "opacity": 0,
+                      "position": "absolute",
+                      "transform": Array [
+                        Object {
+                          "translateX": 0,
+                        },
+                        Object {
+                          "translateY": 0,
+                        },
+                      ],
+                      "width": 12,
+                    }
+                  }
+                />
+                <View
+                  onMoveShouldSetResponder={[Function]}
+                  onMoveShouldSetResponderCapture={[Function]}
+                  onResponderEnd={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderReject={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderStart={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  onStartShouldSetResponderCapture={[Function]}
+                  renderToHardwareTextureAndroid={true}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "bottom": 0,
+                        "left": 0,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": 0,
+                      },
+                      Object {},
+                    ]
+                  }
+                />
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#0C0D0F",
+                    "fontFamily": "System",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "marginRight": 16,
+                  }
+                }
+              >
+                00:00
               </Text>
             </View>
           </View>
@@ -7010,7 +8156,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -7095,7 +8241,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -7109,11 +8254,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -7124,10 +8272,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -7153,8 +8303,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -7195,7 +8348,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -7280,7 +8433,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -7294,11 +8446,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -7309,10 +8464,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -7338,8 +8495,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -7398,7 +8558,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -7483,7 +8643,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -7497,11 +8656,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -7512,10 +8674,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -7572,7 +8736,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -7657,7 +8821,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -7671,11 +8834,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -7686,10 +8852,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -7715,8 +8883,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -7775,7 +8946,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -7860,7 +9031,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -7874,11 +9044,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -7889,10 +9062,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -7918,8 +9093,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -7979,7 +9157,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -8064,7 +9242,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -8078,11 +9255,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -8093,10 +9273,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -8122,8 +9304,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -8182,7 +9367,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -8267,7 +9452,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -8281,11 +9465,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -8296,10 +9483,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -8325,8 +9514,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -8434,8 +9626,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -8476,7 +9671,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -8565,7 +9760,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -8579,11 +9773,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -8594,10 +9791,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -8623,8 +9822,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -8682,7 +9884,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -8769,7 +9971,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -8783,11 +9984,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -8798,10 +10002,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -8827,8 +10033,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -8886,7 +10095,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             Object {
               "backgroundColor": "#fff5df",
@@ -8973,7 +10182,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -8987,11 +10195,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -9002,10 +10213,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -9031,8 +10244,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -9090,7 +10306,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -9175,7 +10391,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -9189,11 +10404,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -9204,10 +10422,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -9218,9 +10438,12 @@ exports[`Storyshots Message list 1`] = `
             <Text
               style={
                 Object {
+                  "backgroundColor": "transparent",
                   "color": "#a0a0a0",
+                  "fontFamily": "System",
                   "fontSize": 16,
                   "fontStyle": "italic",
+                  "fontWeight": "400",
                 }
               }
             >
@@ -9273,7 +10496,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -9358,7 +10581,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -9372,11 +10594,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -9387,10 +10612,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -9401,9 +10628,12 @@ exports[`Storyshots Message list 1`] = `
             <Text
               style={
                 Object {
+                  "backgroundColor": "transparent",
                   "color": "#a0a0a0",
+                  "fontFamily": "System",
                   "fontSize": 16,
                   "fontStyle": "italic",
+                  "fontWeight": "400",
                 }
               }
             >
@@ -9456,7 +10686,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -9541,7 +10771,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -9555,11 +10784,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -9570,10 +10802,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -9584,9 +10818,12 @@ exports[`Storyshots Message list 1`] = `
             <Text
               style={
                 Object {
+                  "backgroundColor": "transparent",
                   "color": "#a0a0a0",
+                  "fontFamily": "System",
                   "fontSize": 16,
                   "fontStyle": "italic",
+                  "fontWeight": "400",
                 }
               }
             >
@@ -9639,7 +10876,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -9724,7 +10961,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -9738,11 +10974,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -9753,10 +10992,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -9767,9 +11008,12 @@ exports[`Storyshots Message list 1`] = `
             <Text
               style={
                 Object {
+                  "backgroundColor": "transparent",
                   "color": "#a0a0a0",
+                  "fontFamily": "System",
                   "fontSize": 16,
                   "fontStyle": "italic",
+                  "fontWeight": "400",
                 }
               }
             >
@@ -9823,7 +11067,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -9908,7 +11152,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -9922,11 +11165,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -9937,10 +11183,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -9951,9 +11199,12 @@ exports[`Storyshots Message list 1`] = `
             <Text
               style={
                 Object {
+                  "backgroundColor": "transparent",
                   "color": "#a0a0a0",
+                  "fontFamily": "System",
                   "fontSize": 16,
                   "fontStyle": "italic",
+                  "fontWeight": "400",
                 }
               }
             >
@@ -10006,7 +11257,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -10091,7 +11342,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -10105,11 +11355,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -10120,10 +11373,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -10134,9 +11389,12 @@ exports[`Storyshots Message list 1`] = `
             <Text
               style={
                 Object {
+                  "backgroundColor": "transparent",
                   "color": "#a0a0a0",
+                  "fontFamily": "System",
                   "fontSize": 16,
                   "fontStyle": "italic",
+                  "fontWeight": "400",
                 }
               }
             >
@@ -10189,7 +11447,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -10274,7 +11532,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -10288,11 +11545,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -10303,10 +11563,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -10317,9 +11579,12 @@ exports[`Storyshots Message list 1`] = `
             <Text
               style={
                 Object {
+                  "backgroundColor": "transparent",
                   "color": "#a0a0a0",
+                  "fontFamily": "System",
                   "fontSize": 16,
                   "fontStyle": "italic",
+                  "fontWeight": "400",
                 }
               }
             >
@@ -10372,7 +11637,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -10457,7 +11722,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -10471,11 +11735,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -10486,10 +11753,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -10500,9 +11769,12 @@ exports[`Storyshots Message list 1`] = `
             <Text
               style={
                 Object {
+                  "backgroundColor": "transparent",
                   "color": "#a0a0a0",
+                  "fontFamily": "System",
                   "fontSize": 16,
                   "fontStyle": "italic",
+                  "fontWeight": "400",
                 }
               }
             >
@@ -10555,7 +11827,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -10640,7 +11912,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -10654,11 +11925,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -10669,10 +11943,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -10683,9 +11959,12 @@ exports[`Storyshots Message list 1`] = `
             <Text
               style={
                 Object {
+                  "backgroundColor": "transparent",
                   "color": "#a0a0a0",
+                  "fontFamily": "System",
                   "fontSize": 16,
                   "fontStyle": "italic",
+                  "fontWeight": "400",
                 }
               }
             >
@@ -10738,7 +12017,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -10823,7 +12102,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -10837,11 +12115,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -10852,10 +12133,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -10866,9 +12149,12 @@ exports[`Storyshots Message list 1`] = `
             <Text
               style={
                 Object {
+                  "backgroundColor": "transparent",
                   "color": "#a0a0a0",
+                  "fontFamily": "System",
                   "fontSize": 16,
                   "fontStyle": "italic",
+                  "fontWeight": "400",
                 }
               }
             >
@@ -10921,7 +12207,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -11006,7 +12292,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -11020,11 +12305,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -11035,10 +12323,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -11049,9 +12339,12 @@ exports[`Storyshots Message list 1`] = `
             <Text
               style={
                 Object {
+                  "backgroundColor": "transparent",
                   "color": "#a0a0a0",
+                  "fontFamily": "System",
                   "fontSize": 16,
                   "fontStyle": "italic",
+                  "fontWeight": "400",
                 }
               }
             >
@@ -11104,7 +12397,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -11189,7 +12482,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -11203,11 +12495,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -11218,10 +12513,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -11232,9 +12529,12 @@ exports[`Storyshots Message list 1`] = `
             <Text
               style={
                 Object {
+                  "backgroundColor": "transparent",
                   "color": "#a0a0a0",
+                  "fontFamily": "System",
                   "fontSize": 16,
                   "fontStyle": "italic",
+                  "fontWeight": "400",
                 }
               }
             >
@@ -11287,7 +12587,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -11372,7 +12672,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -11386,11 +12685,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -11401,10 +12703,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -11415,9 +12719,12 @@ exports[`Storyshots Message list 1`] = `
             <Text
               style={
                 Object {
+                  "backgroundColor": "transparent",
                   "color": "#a0a0a0",
+                  "fontFamily": "System",
                   "fontSize": 16,
                   "fontStyle": "italic",
+                  "fontWeight": "400",
                 }
               }
             >
@@ -11470,7 +12777,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -11555,7 +12862,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -11569,11 +12875,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -11584,10 +12893,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -11598,9 +12909,12 @@ exports[`Storyshots Message list 1`] = `
             <Text
               style={
                 Object {
+                  "backgroundColor": "transparent",
                   "color": "#a0a0a0",
+                  "fontFamily": "System",
                   "fontSize": 16,
                   "fontStyle": "italic",
+                  "fontWeight": "400",
                 }
               }
             >
@@ -11653,7 +12967,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -11738,7 +13052,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -11752,11 +13065,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -11767,10 +13083,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -11781,9 +13099,12 @@ exports[`Storyshots Message list 1`] = `
             <Text
               style={
                 Object {
+                  "backgroundColor": "transparent",
                   "color": "#a0a0a0",
+                  "fontFamily": "System",
                   "fontSize": 16,
                   "fontStyle": "italic",
+                  "fontWeight": "400",
                 }
               }
             >
@@ -11836,7 +13157,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             Array [
@@ -11926,7 +13247,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -11940,11 +13260,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -11955,10 +13278,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -11984,8 +13309,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -12043,7 +13371,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -12128,7 +13456,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -12142,11 +13469,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -12157,10 +13487,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -12186,8 +13518,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -12312,7 +13647,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -12397,7 +13732,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -12411,11 +13745,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -12426,10 +13763,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -12451,8 +13790,11 @@ exports[`Storyshots Message list 1`] = `
                   style={
                     Array [
                       Object {
+                        "backgroundColor": "transparent",
                         "color": "#0C0D0F",
+                        "fontFamily": "System",
                         "fontSize": 16,
+                        "fontWeight": "400",
                         "letterSpacing": 0.1,
                       },
                       Object {},
@@ -12478,8 +13820,11 @@ exports[`Storyshots Message list 1`] = `
                   style={
                     Array [
                       Object {
+                        "backgroundColor": "transparent",
                         "color": "#0C0D0F",
+                        "fontFamily": "System",
                         "fontSize": 16,
+                        "fontWeight": "400",
                         "letterSpacing": 0.1,
                       },
                       Object {},
@@ -12505,8 +13850,11 @@ exports[`Storyshots Message list 1`] = `
                   style={
                     Array [
                       Object {
+                        "backgroundColor": "transparent",
                         "color": "#0C0D0F",
+                        "fontFamily": "System",
                         "fontSize": 16,
+                        "fontWeight": "400",
                         "letterSpacing": 0.1,
                       },
                       Object {},
@@ -12532,8 +13880,11 @@ exports[`Storyshots Message list 1`] = `
                   style={
                     Array [
                       Object {
+                        "backgroundColor": "transparent",
                         "color": "#0C0D0F",
+                        "fontFamily": "System",
                         "fontSize": 16,
+                        "fontWeight": "400",
                         "letterSpacing": 0.1,
                       },
                       Object {},
@@ -12559,8 +13910,11 @@ exports[`Storyshots Message list 1`] = `
                   style={
                     Array [
                       Object {
+                        "backgroundColor": "transparent",
                         "color": "#0C0D0F",
+                        "fontFamily": "System",
                         "fontSize": 16,
+                        "fontWeight": "400",
                         "letterSpacing": 0.1,
                       },
                       Object {},
@@ -12586,8 +13940,11 @@ exports[`Storyshots Message list 1`] = `
                   style={
                     Array [
                       Object {
+                        "backgroundColor": "transparent",
                         "color": "#0C0D0F",
+                        "fontFamily": "System",
                         "fontSize": 16,
+                        "fontWeight": "400",
                         "letterSpacing": 0.1,
                       },
                       Object {},
@@ -12650,7 +14007,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -12735,7 +14092,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -12749,11 +14105,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -12764,10 +14123,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -12793,8 +14154,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -12806,7 +14170,10 @@ exports[`Storyshots Message list 1`] = `
                     onPress={[Function]}
                     style={
                       Object {
+                        "backgroundColor": "transparent",
                         "color": "#1D74F5",
+                        "fontFamily": "System",
+                        "fontWeight": "400",
                       }
                     }
                   >
@@ -12821,7 +14188,10 @@ exports[`Storyshots Message list 1`] = `
                     onPress={[Function]}
                     style={
                       Object {
+                        "backgroundColor": "transparent",
                         "color": "#1D74F5",
+                        "fontFamily": "System",
+                        "fontWeight": "400",
                       }
                     }
                   >
@@ -12882,7 +14252,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -12967,7 +14337,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -12981,11 +14350,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -12996,10 +14368,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -13085,7 +14459,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -13170,7 +14544,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -13184,11 +14557,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -13199,10 +14575,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -13228,8 +14606,11 @@ exports[`Storyshots Message list 1`] = `
                 <Text
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
+                      "fontWeight": "400",
                       "letterSpacing": 0.1,
                     }
                   }
@@ -13240,10 +14621,11 @@ exports[`Storyshots Message list 1`] = `
                   <Text
                     style={
                       Object {
-                        "backgroundColor": "#f8f8f8",
+                        "backgroundColor": "transparent",
                         "borderRadius": 4,
                         "borderWidth": 1,
-                        "fontFamily": "Courier New",
+                        "fontFamily": "System",
+                        "fontWeight": "400",
                       }
                     }
                   >
@@ -13255,10 +14637,11 @@ exports[`Storyshots Message list 1`] = `
                   <Text
                     style={
                       Object {
-                        "backgroundColor": "#f8f8f8",
+                        "backgroundColor": "transparent",
                         "borderRadius": 4,
                         "borderWidth": 1,
-                        "fontFamily": "Courier New",
+                        "fontFamily": "System",
+                        "fontWeight": "400",
                       }
                     }
                   >
@@ -13272,11 +14655,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
-                    "backgroundColor": "#f8f8f8",
+                    "backgroundColor": "transparent",
                     "borderColor": "#cccccc",
                     "borderRadius": 4,
                     "borderWidth": 1,
-                    "fontFamily": "Courier New",
+                    "fontFamily": "System",
+                    "fontWeight": "400",
                     "padding": 4,
                   }
                 }
@@ -13332,7 +14716,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -13417,7 +14801,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -13431,11 +14814,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -13446,10 +14832,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -13485,8 +14873,11 @@ exports[`Storyshots Message list 1`] = `
                   <Text
                     style={
                       Object {
+                        "backgroundColor": "transparent",
                         "color": "#0C0D0F",
+                        "fontFamily": "System",
                         "fontSize": 16,
+                        "fontWeight": "400",
                         "letterSpacing": 0.1,
                       }
                     }
@@ -13545,7 +14936,7 @@ exports[`Storyshots Message list 1`] = `
               "width": "100%",
             },
             Object {
-              "marginTop": 10,
+              "marginTop": 6,
             },
             undefined,
             undefined,
@@ -13630,7 +15021,6 @@ exports[`Storyshots Message list 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                  "marginBottom": 2,
                 }
               }
             >
@@ -13644,11 +15034,14 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Object {
+                      "backgroundColor": "transparent",
                       "color": "#0C0D0F",
+                      "fontFamily": "System",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "lineHeight": 22,
                     }
                   }
@@ -13659,10 +15052,12 @@ exports[`Storyshots Message list 1`] = `
               <Text
                 style={
                   Object {
+                    "backgroundColor": "transparent",
                     "color": "#9EA2A8",
+                    "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "300",
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "paddingLeft": 10,
                   }
                 }
@@ -13715,8 +15110,11 @@ exports[`Storyshots Message list 1`] = `
                       <Text
                         style={
                           Object {
+                            "backgroundColor": "transparent",
                             "color": "#0C0D0F",
+                            "fontFamily": "System",
                             "fontSize": 16,
+                            "fontWeight": "400",
                             "letterSpacing": 0.1,
                           }
                         }
@@ -13739,8 +15137,11 @@ exports[`Storyshots Message list 1`] = `
                       <Text
                         style={
                           Object {
+                            "backgroundColor": "transparent",
                             "color": "#0C0D0F",
+                            "fontFamily": "System",
                             "fontSize": 16,
+                            "fontWeight": "400",
                             "letterSpacing": 0.1,
                           }
                         }
@@ -13777,8 +15178,11 @@ exports[`Storyshots Message list 1`] = `
                       <Text
                         style={
                           Object {
+                            "backgroundColor": "transparent",
                             "color": "#0C0D0F",
+                            "fontFamily": "System",
                             "fontSize": 16,
+                            "fontWeight": "400",
                             "letterSpacing": 0.1,
                           }
                         }
@@ -13801,8 +15205,11 @@ exports[`Storyshots Message list 1`] = `
                       <Text
                         style={
                           Object {
+                            "backgroundColor": "transparent",
                             "color": "#0C0D0F",
+                            "fontFamily": "System",
                             "fontSize": 16,
+                            "fontWeight": "400",
                             "letterSpacing": 0.1,
                           }
                         }
@@ -13837,8 +15244,11 @@ exports[`Storyshots Message list 1`] = `
                       <Text
                         style={
                           Object {
+                            "backgroundColor": "transparent",
                             "color": "#0C0D0F",
+                            "fontFamily": "System",
                             "fontSize": 16,
+                            "fontWeight": "400",
                             "letterSpacing": 0.1,
                           }
                         }
@@ -13861,8 +15271,11 @@ exports[`Storyshots Message list 1`] = `
                       <Text
                         style={
                           Object {
+                            "backgroundColor": "transparent",
                             "color": "#0C0D0F",
+                            "fontFamily": "System",
                             "fontSize": 16,
+                            "fontWeight": "400",
                             "letterSpacing": 0.1,
                           }
                         }
@@ -13884,7 +15297,7 @@ exports[`Storyshots Message list 1`] = `
 </RCTScrollView>
 `;
 
-exports[`Storyshots RoomItem Direct Messages 1`] = `
+exports[`Storyshots RoomItem list 1`] = `
 <RCTScrollView>
   <View>
     <Text

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import I18n from '../../i18n';
-import sharedStyles from '../../views/Styles';
+import sharedStyles from '../Styles';
 
 const styles = StyleSheet.create({
 	container: {
