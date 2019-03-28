@@ -26,6 +26,7 @@ export default StyleSheet.create({
 	itemText: {
 		marginVertical: 16,
 		color: '#0C0D0F',
+		fontSize: 14,
 		...sharedStyles.textSemibold
 	},
 	separator: {
@@ -47,6 +48,11 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
+	username: {
+		color: '#0C0D0F',
+		fontSize: 14,
+		...sharedStyles.textMedium
+	},
 	headerIcon: {
 		paddingHorizontal: 10,
 		color: '#0C0D0F'
@@ -58,6 +64,8 @@ export default StyleSheet.create({
 		marginRight: 5
 	},
 	currentServerText: {
+		color: '#0C0D0F',
+		fontSize: 14,
 		...sharedStyles.textSemibold
 	},
 	version: {
