@@ -1,7 +1,9 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+	View, Text, StyleSheet, PixelRatio
+} from 'react-native';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 import { RectButton } from 'react-native-gesture-handler';
@@ -10,29 +12,30 @@ import Avatar from '../containers/Avatar';
 import Status from '../containers/Status';
 import RoomTypeIcon from '../containers/RoomTypeIcon';
 import I18n from '../i18n';
-import { isIOS } from '../utils/deviceInfo';
+import sharedStyles from '../views/Styles';
+
+export const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
 
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginHorizontal: 15
+		marginHorizontal: 15,
+		height: ROW_HEIGHT
 	},
 	centerContainer: {
 		flex: 1,
-		height: '100%'
+		marginVertical: 10
 	},
 	title: {
 		flex: 1,
-		fontSize: 18,
+		fontSize: 17,
+		lineHeight: 20,
 		color: '#0C0D0F',
-		fontWeight: '400',
-		marginRight: 5,
-		paddingTop: 0,
-		paddingBottom: 0
+		...sharedStyles.textMedium
 	},
 	alert: {
-		fontWeight: '600'
+		...sharedStyles.textSemibold
 	},
 	row: {
 		flex: 1,
@@ -41,21 +44,18 @@ const styles = StyleSheet.create({
 	},
 	titleContainer: {
 		width: '100%',
-		marginTop: isIOS ? 5 : 2,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
 	date: {
-		fontSize: 14,
+		fontSize: 13,
 		color: '#9EA2A8',
-		fontWeight: 'normal',
-		paddingTop: 0,
-		paddingBottom: 0
+		...sharedStyles.textRegular
 	},
 	updateAlert: {
 		color: '#1D74F5',
-		fontWeight: '700'
+		...sharedStyles.textBold
 	},
 	unreadNumberContainer: {
 		minWidth: 23,
@@ -63,13 +63,14 @@ const styles = StyleSheet.create({
 		borderRadius: 4,
 		backgroundColor: '#1D74F5',
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		marginLeft: 10
 	},
 	unreadNumberText: {
 		color: '#fff',
 		overflow: 'hidden',
-		fontSize: 14,
-		fontWeight: '500',
+		fontSize: 13,
+		...sharedStyles.textRegular,
 		letterSpacing: 0.56
 	},
 	status: {
@@ -79,8 +80,8 @@ const styles = StyleSheet.create({
 	markdownText: {
 		flex: 1,
 		color: '#9EA2A8',
-		fontSize: 15,
-		fontWeight: 'normal'
+		fontSize: 14,
+		lineHeight: 17
 	},
 	markdownTextAlert: {
 		color: '#0C0D0F'

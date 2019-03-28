@@ -12,7 +12,7 @@ import SearchBox from '../../containers/SearchBox';
 import ConnectionBadge from '../../containers/ConnectionBadge';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
-import RoomItem from '../../presentation/RoomItem';
+import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
 import styles from './styles';
 import LoggedView from '../View';
 import log from '../../utils/log';
@@ -34,7 +34,6 @@ import RoomsListHeaderView from './Header';
 import { DrawerButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 
-const ROW_HEIGHT = 70;
 const SCROLL_OFFSET = 56;
 
 const shouldUpdateProps = ['searchText', 'loadingServer', 'showServerDropdown', 'showSortDropdown', 'sortBy', 'groupByType', 'showFavorites', 'showUnread', 'useRealName', 'appState'];
