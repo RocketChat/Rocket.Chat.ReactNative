@@ -6,13 +6,14 @@ import { RectButton } from 'react-native-gesture-handler';
 
 import Markdown from './Markdown';
 import openLink from '../../utils/openLink';
+import sharedStyles from '../../views/Styles';
 
 const styles = StyleSheet.create({
 	button: {
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginTop: 15,
+		marginTop: 6,
 		alignSelf: 'flex-end',
 		backgroundColor: '#f3f4f5',
 		borderRadius: 4
@@ -32,14 +33,14 @@ const styles = StyleSheet.create({
 		flex: 1,
 		color: '#0C0D0F',
 		fontSize: 16,
-		fontWeight: '500',
-		marginRight: 10
+		...sharedStyles.textMedium
 	},
 	time: {
 		fontSize: 12,
-		fontWeight: 'normal',
 		color: '#9ea2a8',
-		marginLeft: 5
+		marginLeft: 10,
+		...sharedStyles.textRegular,
+		fontWeight: '300'
 	},
 	fieldsContainer: {
 		flex: 1,
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
 		padding: 10
 	},
 	fieldTitle: {
-		fontWeight: 'bold'
+		...sharedStyles.textBold
 	},
 	marginTop: {
 		marginTop: 4

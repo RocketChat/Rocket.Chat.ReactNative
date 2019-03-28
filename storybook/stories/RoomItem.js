@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
-import moment from 'moment';
+// import moment from 'moment';
 
 import RoomItemComponent from '../../app/presentation/RoomItem';
 import StoriesSeparator from './StoriesSeparator';

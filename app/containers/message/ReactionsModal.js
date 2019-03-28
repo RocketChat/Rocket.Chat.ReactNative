@@ -8,6 +8,7 @@ import Modal from 'react-native-modal';
 import Emoji from './Emoji';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
+import sharedStyles from '../../views/Styles';
 
 const styles = StyleSheet.create({
 	titleContainer: {
@@ -19,15 +20,16 @@ const styles = StyleSheet.create({
 		color: '#ffffff',
 		textAlign: 'center',
 		fontSize: 16,
-		fontWeight: '600'
+		...sharedStyles.textSemibold
 	},
 	reactCount: {
 		color: '#dddddd',
-		fontSize: 10
+		fontSize: 10,
+		...sharedStyles.textRegular
 	},
 	peopleReacted: {
 		color: '#ffffff',
-		fontWeight: '500'
+		...sharedStyles.textMedium
 	},
 	peopleItemContainer: {
 		flex: 1,

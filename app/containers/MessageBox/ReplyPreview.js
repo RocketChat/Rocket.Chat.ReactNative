@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 
 import Markdown from '../message/Markdown';
 import { CustomIcon } from '../../lib/Icons';
+import sharedStyles from '../../views/Styles';
 
 const styles = StyleSheet.create({
 	container: {
@@ -28,13 +29,15 @@ const styles = StyleSheet.create({
 	username: {
 		color: '#1D74F5',
 		fontSize: 16,
-		fontWeight: '500'
+		...sharedStyles.textMedium
 	},
 	time: {
 		color: '#9EA2A8',
 		fontSize: 12,
 		lineHeight: 16,
-		marginLeft: 5
+		marginLeft: 6,
+		...sharedStyles.textRegular,
+		fontWeight: '300'
 	},
 	close: {
 		marginRight: 10

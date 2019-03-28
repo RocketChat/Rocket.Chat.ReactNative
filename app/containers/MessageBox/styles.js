@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import { isIOS } from '../../utils/deviceInfo';
+import sharedStyles from '../../views/Styles';
 
 const MENTION_HEIGHT = 50;
 
@@ -37,7 +38,8 @@ export default StyleSheet.create({
 		paddingRight: 0,
 		fontSize: 17,
 		letterSpacing: 0,
-		color: '#2f343d'
+		color: '#2f343d',
+		...sharedStyles.textRegular
 	},
 	editing: {
 		backgroundColor: '#fff5df'
@@ -72,9 +74,9 @@ export default StyleSheet.create({
 		textAlign: 'center'
 	},
 	fixedMentionAvatar: {
-		fontWeight: 'bold',
 		textAlign: 'center',
-		width: 46
+		width: 46,
+		...sharedStyles.textBold
 	},
 	emojiKeyboardContainer: {
 		flex: 1,

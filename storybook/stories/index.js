@@ -24,6 +24,6 @@ storiesOf('Avatar', module)
 	.add('avatar', () => Avatar);
 storiesOf('RoomItem', module)
 	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
-	.add('Direct Messages', () => RoomItem);
+	.add('list', () => RoomItem);
 storiesOf('Message', module)
 	.add('list', () => Message);

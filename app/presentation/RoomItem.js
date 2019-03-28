@@ -21,13 +21,13 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginLeft: 15,
+		marginLeft: 14,
 		height: ROW_HEIGHT
 	},
 	centerContainer: {
 		flex: 1,
 		paddingVertical: 10,
-		paddingRight: 15,
+		paddingRight: 14,
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		borderColor: COLOR_SEPARATOR
 	},

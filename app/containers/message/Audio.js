@@ -11,6 +11,7 @@ import equal from 'deep-equal';
 
 import Markdown from './Markdown';
 import { CustomIcon } from '../../lib/Icons';
+import sharedStyles from '../../views/Styles';
 
 const styles = StyleSheet.create({
 	audioContainer: {
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
 		height: 56,
 		backgroundColor: '#f7f8fa',
 		borderRadius: 4,
-		marginBottom: 10
+		marginBottom: 6
 	},
 	playPauseButton: {
 		width: 56,
@@ -37,8 +38,8 @@ const styles = StyleSheet.create({
 	duration: {
 		marginRight: 16,
 		fontSize: 14,
-		fontWeight: '500',
-		color: '#54585e'
+		color: '#0C0D0F',
+		...sharedStyles.textRegular
 	},
 	thumbStyle: {
 		width: 12,

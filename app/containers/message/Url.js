@@ -5,6 +5,7 @@ import FastImage from 'react-native-fast-image';
 import { RectButton } from 'react-native-gesture-handler';
 
 import openLink from '../../utils/openLink';
+import sharedStyles from '../../views/Styles';
 
 const styles = StyleSheet.create({
 	button: {
@@ -26,14 +27,14 @@ const styles = StyleSheet.create({
 		alignItems: 'flex-start'
 	},
 	title: {
-		fontWeight: '500',
 		color: '#1D74F5',
-		fontSize: 16
+		fontSize: 16,
+		...sharedStyles.textMedium
 	},
 	description: {
-		marginTop: 5,
 		fontSize: 16,
-		color: '#0C0D0F'
+		color: '#0C0D0F',
+		...sharedStyles.textRegular
 	},
 	marginTop: {
 		marginTop: 4

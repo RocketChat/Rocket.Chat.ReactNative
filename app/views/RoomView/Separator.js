@@ -2,7 +2,9 @@ import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+
 import I18n from '../../i18n';
+import sharedStyles from '../../views/Styles';
 
 const styles = StyleSheet.create({
 	container: {
@@ -20,7 +22,7 @@ const styles = StyleSheet.create({
 	text: {
 		color: '#9ea2a8',
 		fontSize: 14,
-		fontWeight: '600'
+		...sharedStyles.textSemibold
 	},
 	unreadLine: {
 		backgroundColor: '#f5455c'
@@ -29,13 +31,13 @@ const styles = StyleSheet.create({
 		color: '#f5455c'
 	},
 	marginLeft: {
-		marginLeft: 15
+		marginLeft: 14
 	},
 	marginRight: {
-		marginRight: 15
+		marginRight: 14
 	},
 	marginHorizontal: {
-		marginHorizontal: 15
+		marginHorizontal: 14
 	}
 });
 

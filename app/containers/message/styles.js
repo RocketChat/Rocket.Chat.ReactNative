@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import sharedStyles from '../../views/Styles';
+
 export default StyleSheet.create({
 	root: {
 		flexDirection: 'row'
@@ -28,7 +30,8 @@ export default StyleSheet.create({
 	textInfo: {
 		fontStyle: 'italic',
 		color: '#a0a0a0',
-		fontSize: 16
+		fontSize: 16,
+		...sharedStyles.textRegular
 	},
 	editing: {
 		backgroundColor: '#fff5df'
@@ -39,27 +42,27 @@ export default StyleSheet.create({
 	},
 	temp: { opacity: 0.3 },
 	marginTop: {
-		marginTop: 10
+		marginTop: 6
 	},
 	reactionsContainer: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		marginTop: 10
+		marginTop: 6
 	},
 	reactionButton: {
-		marginRight: 10,
-		marginBottom: 10,
+		marginRight: 6,
+		marginBottom: 6,
 		borderRadius: 2
 	},
 	reactionContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
-		borderRadius: 4,
-		borderWidth: 1.5,
+		borderRadius: 2,
+		borderWidth: 1,
 		borderColor: '#e1e5e8',
 		height: 28,
-		minWidth: 46
+		minWidth: 46.3
 	},
 	reactedContainer: {
 		borderColor: '#1d74f580'
@@ -68,8 +71,8 @@ export default StyleSheet.create({
 		fontSize: 14,
 		marginLeft: 3,
 		marginRight: 8.5,
-		fontWeight: '600',
-		color: '#1D74F5'
+		color: '#1D74F5',
+		...sharedStyles.textSemibold
 	},
 	reactionEmoji: {
 		fontSize: 13,
@@ -108,11 +111,11 @@ export default StyleSheet.create({
 	broadcastButtonText: {
 		color: '#fff',
 		fontSize: 14,
-		fontWeight: '500'
+		...sharedStyles.textMedium
 	},
 	mention: {
+		...sharedStyles.textMedium,
 		color: '#0072FE',
-		fontWeight: '500',
 		padding: 5,
 		backgroundColor: '#E8F2FF'
 	},
@@ -144,7 +147,7 @@ export default StyleSheet.create({
 		maxWidth: 400,
 		minHeight: 200,
 		borderRadius: 4,
-		marginBottom: 10
+		marginBottom: 6
 	},
 	inlineImage: {
 		width: 300,
@@ -153,6 +156,7 @@ export default StyleSheet.create({
 	},
 	edited: {
 		fontSize: 14,
-		color: '#9EA2A8'
+		color: '#9EA2A8',
+		...sharedStyles.textRegular
 	}
 });

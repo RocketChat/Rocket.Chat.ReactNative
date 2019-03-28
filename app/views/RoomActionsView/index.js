@@ -443,6 +443,7 @@ export default class RoomActionsView extends LoggedView {
 			<SafeAreaView style={styles.container} testID='room-actions-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
 				<SectionList
+					contentContainerStyle={styles.contentContainer}
 					style={styles.container}
 					stickySectionHeadersEnabled={false}
 					sections={this.sections}

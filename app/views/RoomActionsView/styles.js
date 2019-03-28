@@ -2,6 +2,9 @@ import { StyleSheet } from 'react-native';
 import { COLOR_SEPARATOR } from '../../constants/colors';
 
 export default StyleSheet.create({
+	contentContainer: {
+		paddingBottom: 30
+	},
 	container: {
 		flex: 1,
 		backgroundColor: '#F6F7F9'

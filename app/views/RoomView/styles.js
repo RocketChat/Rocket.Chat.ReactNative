@@ -13,6 +13,9 @@ export default StyleSheet.create({
 	list: {
 		flex: 1
 	},
+	contentContainer: {
+		paddingTop: 10
+	},
 	separator: {
 		height: 1,
 		backgroundColor: COLOR_SEPARATOR

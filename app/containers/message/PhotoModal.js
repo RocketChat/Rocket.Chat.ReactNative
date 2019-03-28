@@ -8,6 +8,8 @@ import Modal from 'react-native-modal';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { responsive } from 'react-native-responsive-ui';
 
+import sharedStyles from '../../views/Styles';
+
 const styles = StyleSheet.create({
 	imageWrapper: {
 		flex: 1
@@ -21,13 +23,13 @@ const styles = StyleSheet.create({
 		color: '#ffffff',
 		textAlign: 'center',
 		fontSize: 16,
-		fontWeight: '600'
+		...sharedStyles.textSemibold
 	},
 	description: {
 		color: '#ffffff',
 		textAlign: 'center',
 		fontSize: 14,
-		fontWeight: '500'
+		...sharedStyles.textMedium
 	},
 	indicatorContainer: {
 		alignItems: 'center',

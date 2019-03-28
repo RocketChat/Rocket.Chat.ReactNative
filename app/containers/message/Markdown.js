@@ -8,6 +8,8 @@ import styles from './styles';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import MarkdownEmojiPlugin from './MarkdownEmojiPlugin';
 
+import sharedStyles from '../../views/Styles';
+
 // Support <http://link|Text>
 const formatText = text => text.replace(
 	new RegExp('(?:<|<)((?:https|http):\\/\\/[^\\|]+)\\|(.+?)(?=>|>)(?:>|>)', 'gm'),
@@ -94,13 +96,15 @@ export default class Markdown extends React.Component {
 					text: {
 						color: '#0C0D0F',
 						fontSize: 16,
-						letterSpacing: 0.1
+						letterSpacing: 0.1,
+						...sharedStyles.textRegular
 					},
 					codeInline: {
 						...codeFontFamily,
 						borderWidth: 1,
 						backgroundColor: '#f8f8f8',
-						borderRadius: 4
+						borderRadius: 4,
+						...sharedStyles.textRegular
 					},
 					codeBlock: {
 						...codeFontFamily,
@@ -108,10 +112,12 @@ export default class Markdown extends React.Component {
 						borderColor: '#cccccc',
 						borderWidth: 1,
 						borderRadius: 4,
-						padding: 4
+						padding: 4,
+						...sharedStyles.textRegular
 					},
 					link: {
-						color: '#1D74F5'
+						color: '#1D74F5',
+						...sharedStyles.textRegular
 					},
 					...style
 				}}
