@@ -49,6 +49,13 @@ export default StyleSheet.create({
 		left: 0,
 		top: 0
 	},
+	status: {
+		position: 'absolute',
+		bottom: -3,
+		right: -3,
+		borderWidth: 3,
+		borderColor: '#fff'
+	},
 	link: {
 		fontWeight: 'bold',
 		color: COLOR_BUTTON_PRIMARY

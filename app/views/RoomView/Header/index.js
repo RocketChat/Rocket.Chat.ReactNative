@@ -14,7 +14,7 @@ import { headerIconSize } from '../../../containers/HeaderButton';
 import Icon from './Icon';
 import { COLOR_TEXT_DESCRIPTION, HEADER_TITLE, COLOR_WHITE } from '../../../constants/colors';
 
-const TITLE_SIZE = 18;
+const TITLE_SIZE = 16;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
