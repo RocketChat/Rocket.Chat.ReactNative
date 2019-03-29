@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
 	},
 	serviceText: {
 		...sharedStyles.textRegular,
-		fontSize: 16,
-		color: '#2f343d'
+		...sharedStyles.textColorNormal,
+		fontSize: 16
 	},
 	serviceName: {
 		...sharedStyles.textBold

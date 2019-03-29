@@ -12,6 +12,7 @@ import equal from 'deep-equal';
 import Markdown from './Markdown';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
+import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, COLOR_PRIMARY } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	audioContainer: {
@@ -19,7 +20,9 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		height: 56,
-		backgroundColor: '#f7f8fa',
+		backgroundColor: COLOR_BACKGROUND_CONTAINER,
+		borderColor: COLOR_BORDER,
+		borderWidth: 1,
 		borderRadius: 4,
 		marginBottom: 6
 	},
@@ -29,7 +32,7 @@ const styles = StyleSheet.create({
 		backgroundColor: 'transparent'
 	},
 	playPauseImage: {
-		color: '#1D74F5'
+		color: COLOR_PRIMARY
 	},
 	slider: {
 		flex: 1,
@@ -38,7 +41,7 @@ const styles = StyleSheet.create({
 	duration: {
 		marginRight: 16,
 		fontSize: 14,
-		color: '#0C0D0F',
+		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},
 	thumbStyle: {
@@ -170,8 +173,8 @@ export default class Audio extends React.Component {
 							easing: Easing.linear,
 							delay: 0
 						}}
-						thumbTintColor='#1d74f5'
-						minimumTrackTintColor='#1d74f5'
+						thumbTintColor={COLOR_PRIMARY}
+						minimumTrackTintColor={COLOR_PRIMARY}
 						onValueChange={value => this.setState({ currentTime: value })}
 						thumbStyle={styles.thumbStyle}
 					/>

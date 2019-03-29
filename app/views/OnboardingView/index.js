@@ -18,6 +18,7 @@ import { isIOS, isNotch } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
 import { CustomIcon } from '../../lib/Icons';
 import StatusBar from '../../containers/StatusBar';
+import { COLOR_PRIMARY } from '../../constants/colors';
 
 @connect(state => ({
 	currentServer: state.server.server,
@@ -125,7 +126,7 @@ export default class OnboardingView extends LoggedView {
 					<CustomIcon
 						name='cross'
 						size={30}
-						color='#1D74F5'
+						color={COLOR_PRIMARY}
 					/>
 				</TouchableOpacity>
 			);
@@ -144,7 +145,7 @@ export default class OnboardingView extends LoggedView {
 					<Button
 						type='secondary'
 						title={I18n.t('Connect_to_a_server')}
-						icon={<CustomIcon name='permalink' size={30} color='#1D74F5' />}
+						icon={<CustomIcon name='permalink' size={30} color={COLOR_PRIMARY} />}
 						onPress={this.connectServer}
 						testID='connect-server-button'
 					/>

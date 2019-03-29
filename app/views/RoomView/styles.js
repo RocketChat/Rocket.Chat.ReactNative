@@ -1,8 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { COLOR_SEPARATOR } from '../../constants/colors';
+import { COLOR_SEPARATOR, COLOR_PRIMARY } from '../../constants/colors';
+
+import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
-	typing: { fontWeight: 'bold', paddingHorizontal: 15, height: 25 },
 	container: {
 		flex: 1,
 		backgroundColor: '#fff'
@@ -19,14 +20,6 @@ export default StyleSheet.create({
 	separator: {
 		height: 1,
 		backgroundColor: COLOR_SEPARATOR
-	},
-	bannerContainer: {
-		backgroundColor: 'orange'
-	},
-	bannerText: {
-		margin: 5,
-		textAlign: 'center',
-		color: '#a00'
 	},
 	loadingMore: {
 		textAlign: 'center',
@@ -60,17 +53,17 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		backgroundColor: '#1d74f5',
-		borderRadius: 4
+		backgroundColor: COLOR_PRIMARY,
+		borderRadius: 2
 	},
 	joinRoomText: {
 		color: '#fff',
 		fontSize: 14,
-		fontWeight: '500'
+		...sharedStyles.textMedium
 	},
 	previewMode: {
 		fontSize: 16,
-		fontWeight: '500',
-		color: '#0C0D0F'
+		...sharedStyles.textMedium,
+		...sharedStyles.textColorNormal
 	}
 });

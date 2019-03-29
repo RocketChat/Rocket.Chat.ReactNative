@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
+import { COLOR_BORDER, COLOR_PRIMARY } from '../../constants/colors';
 
 export default StyleSheet.create({
 	root: {
@@ -29,8 +30,8 @@ export default StyleSheet.create({
 	},
 	textInfo: {
 		fontStyle: 'italic',
-		color: '#a0a0a0',
 		fontSize: 16,
+		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
 	editing: {
@@ -60,18 +61,18 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		borderRadius: 2,
 		borderWidth: 1,
-		borderColor: '#e1e5e8',
+		borderColor: COLOR_BORDER,
 		height: 28,
 		minWidth: 46.3
 	},
 	reactedContainer: {
-		borderColor: '#1d74f580'
+		borderColor: COLOR_PRIMARY
 	},
 	reactionCount: {
 		fontSize: 14,
 		marginLeft: 3,
 		marginRight: 8.5,
-		color: '#1D74F5',
+		color: COLOR_PRIMARY,
 		...sharedStyles.textSemibold
 	},
 	reactionEmoji: {
@@ -87,7 +88,7 @@ export default StyleSheet.create({
 		marginTop: 4
 	},
 	addReaction: {
-		color: '#1D74F5'
+		color: COLOR_PRIMARY
 	},
 	errorButton: {
 		paddingHorizontal: 15,
@@ -101,7 +102,7 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		backgroundColor: '#1d74f5',
+		backgroundColor: COLOR_PRIMARY,
 		borderRadius: 4
 	},
 	broadcastButtonIcon: {
@@ -121,7 +122,7 @@ export default StyleSheet.create({
 	},
 	mentionLoggedUser: {
 		color: '#fff',
-		backgroundColor: '#1D74F5'
+		backgroundColor: COLOR_PRIMARY
 	},
 	mentionAll: {
 		color: '#fff',
@@ -138,7 +139,7 @@ export default StyleSheet.create({
 	imageContainer: {
 		flex: 1,
 		flexDirection: 'column',
-		borderColor: '#F3F4F5',
+		borderColor: COLOR_BORDER,
 		borderWidth: 1,
 		borderRadius: 4
 	},
@@ -156,7 +157,7 @@ export default StyleSheet.create({
 	},
 	edited: {
 		fontSize: 14,
-		color: '#9EA2A8',
+		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	}
 });

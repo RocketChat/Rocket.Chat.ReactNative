@@ -12,6 +12,7 @@ import sharedStyles from '../../Styles';
 import { isIOS } from '../../../utils/deviceInfo';
 import { headerIconSize } from '../../../containers/HeaderButton';
 import Icon from './Icon';
+import { COLOR_TEXT_DESCRIPTION, HEADER_TITLE } from '../../../constants/colors';
 
 const TITLE_SIZE = 18;
 const styles = StyleSheet.create({
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		...sharedStyles.textSemibold,
-		color: isIOS ? '#0C0D0F' : '#fff',
+		color: HEADER_TITLE,
 		fontSize: TITLE_SIZE
 	},
 	scroll: {
@@ -33,13 +34,12 @@ const styles = StyleSheet.create({
 	},
 	typing: {
 		...sharedStyles.textRegular,
-		color: isIOS ? '#9EA2A8' : '#fff',
+		color: isIOS ? COLOR_TEXT_DESCRIPTION : '#fff',
 		fontSize: 12,
 		marginBottom: 2
 	},
 	typingUsers: {
-		...sharedStyles.textSemibold,
-		fontWeight: '600'
+		...sharedStyles.textSemibold
 	}
 });
 

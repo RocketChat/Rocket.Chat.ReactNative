@@ -132,7 +132,6 @@ export default class SelectedUsersView extends LoggedView {
 				setLoadingInvite(true);
 				await RocketChat.addUsersToRoom(rid);
 				navigation.pop();
-				// Navigation.pop(componentId);
 			} catch (e) {
 				log('RoomActions Add User', e);
 			} finally {

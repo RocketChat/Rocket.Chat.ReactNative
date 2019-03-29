@@ -12,9 +12,9 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	username: {
-		color: '#0C0D0F',
 		fontSize: 16,
 		lineHeight: 22,
+		...sharedStyles.textColorNormal,
 		...sharedStyles.textMedium
 	},
 	titleContainer: {
@@ -24,14 +24,14 @@ const styles = StyleSheet.create({
 	},
 	alias: {
 		fontSize: 14,
-		color: '#9EA2A8',
+		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
 	time: {
 		fontSize: 12,
-		color: '#9EA2A8',
 		paddingLeft: 10,
 		lineHeight: 22,
+		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular,
 		fontWeight: '300'
 	}

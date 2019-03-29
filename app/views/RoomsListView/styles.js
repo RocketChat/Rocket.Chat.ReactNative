@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { isIOS } from '../../utils/deviceInfo';
-import { COLOR_SEPARATOR } from '../../constants/colors';
+import { COLOR_SEPARATOR, COLOR_TEXT, COLOR_PRIMARY } from '../../constants/colors';
 
 import sharedStyles from '../Styles';
 
@@ -35,10 +35,10 @@ export default StyleSheet.create({
 		width: '100%'
 	},
 	sortToggleText: {
-		color: '#9EA2A8',
 		fontSize: 15,
 		flex: 1,
 		marginLeft: 15,
+		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
 	dropdownContainer: {
@@ -56,9 +56,9 @@ export default StyleSheet.create({
 		alignItems: 'center'
 	},
 	sortItemText: {
-		color: '#54585E',
 		fontSize: 18,
 		flex: 1,
+		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},
 	backdrop: {
@@ -75,18 +75,16 @@ export default StyleSheet.create({
 		width: 22,
 		height: 22,
 		marginHorizontal: 15,
-		// resizeMode: 'contain',
-		// justifyContent: 'center',
-		color: '#9ea2a8'
+		...sharedStyles.textColorDescription
 	},
 	groupTitleContainer: {
 		paddingHorizontal: 15,
 		paddingTop: 17,
 		paddingBottom: 10,
-		backgroundColor: isIOS ? '#fff' : '#E1E5E8'
+		backgroundColor: isIOS ? '#fff' : '#9ea2a8'
 	},
 	groupTitle: {
-		color: isIOS ? '#2F343D' : '#54585E',
+		color: isIOS ? COLOR_TEXT : '#54585E',
 		fontSize: isIOS ? 22 : 15,
 		letterSpacing: 0.27,
 		flex: 1,
@@ -97,13 +95,13 @@ export default StyleSheet.create({
 		justifyContent: 'space-between'
 	},
 	serverHeaderText: {
-		color: '#9EA2A8',
 		fontSize: 15,
 		marginLeft: 15,
+		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
 	serverHeaderAdd: {
-		color: isIOS ? '#1D74F5' : '#FFF',
+		color: isIOS ? COLOR_PRIMARY : '#FFF',
 		fontSize: 15,
 		marginRight: 15,
 		paddingVertical: 10,
@@ -131,17 +129,17 @@ export default StyleSheet.create({
 	},
 	serverName: {
 		fontSize: 18,
-		color: '#0C0D0F',
+		...sharedStyles.textColorNormal,
 		...sharedStyles.textSemibold
 	},
 	serverUrl: {
 		fontSize: 15,
-		color: '#9EA2A8',
+		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
 	checkIcon: {
 		marginHorizontal: 15,
-		color: '#1d74f5'
+		color: COLOR_PRIMARY
 	},
 	serverSeparator: {
 		height: StyleSheet.hairlineWidth,

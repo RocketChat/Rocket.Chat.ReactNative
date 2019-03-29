@@ -7,6 +7,7 @@ import { RectButton } from 'react-native-gesture-handler';
 import Markdown from './Markdown';
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
+import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	button: {
@@ -15,7 +16,9 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginTop: 6,
 		alignSelf: 'flex-end',
-		backgroundColor: '#f3f4f5',
+		backgroundColor: COLOR_BACKGROUND_CONTAINER,
+		borderColor: COLOR_BORDER,
+		borderWidth: 1,
 		borderRadius: 4
 	},
 	attachmentContainer: {
@@ -31,14 +34,14 @@ const styles = StyleSheet.create({
 	},
 	author: {
 		flex: 1,
-		color: '#0C0D0F',
 		fontSize: 16,
+		...sharedStyles.textColorNormal,
 		...sharedStyles.textMedium
 	},
 	time: {
 		fontSize: 12,
-		color: '#9ea2a8',
 		marginLeft: 10,
+		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular,
 		fontWeight: '300'
 	},
@@ -52,7 +55,14 @@ const styles = StyleSheet.create({
 		padding: 10
 	},
 	fieldTitle: {
-		...sharedStyles.textBold
+		fontSize: 14,
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textSemibold
+	},
+	fieldValue: {
+		fontSize: 14,
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textRegular
 	},
 	marginTop: {
 		marginTop: 4
@@ -122,7 +132,7 @@ const Reply = ({
 				{attachment.fields.map(field => (
 					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
 						<Text style={styles.fieldTitle}>{field.title}</Text>
-						<Text>{field.value}</Text>
+						<Text style={styles.fieldValue}>{field.value}</Text>
 					</View>
 				))}
 			</View>

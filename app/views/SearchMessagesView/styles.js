@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { COLOR_SEPARATOR } from '../../constants/colors';
 
+import sharedStyles from '../Styles';
+
 export default StyleSheet.create({
 	container: {
 		flex: 1,
@@ -14,9 +16,6 @@ export default StyleSheet.create({
 		flex: 1,
 		backgroundColor: '#ffffff'
 	},
-	message: {
-		transform: [{ scaleY: 1 }]
-	},
 	divider: {
 		width: '100%',
 		height: StyleSheet.hairlineWidth,
@@ -28,5 +27,10 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'flex-start',
 		backgroundColor: '#ffffff'
+	},
+	noDataFound: {
+		fontSize: 14,
+		...sharedStyles.textRegular,
+		...sharedStyles.textColorNormal
 	}
 });

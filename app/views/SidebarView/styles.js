@@ -25,9 +25,9 @@ export default StyleSheet.create({
 	},
 	itemText: {
 		marginVertical: 16,
-		color: '#0C0D0F',
 		fontSize: 14,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
+		...sharedStyles.textColorNormal
 	},
 	separator: {
 		borderBottomWidth: StyleSheet.hairlineWidth,
@@ -49,13 +49,13 @@ export default StyleSheet.create({
 		alignItems: 'center'
 	},
 	username: {
-		color: '#0C0D0F',
 		fontSize: 14,
+		...sharedStyles.textColorNormal,
 		...sharedStyles.textMedium
 	},
 	headerIcon: {
 		paddingHorizontal: 10,
-		color: '#0C0D0F'
+		...sharedStyles.textColorNormal
 	},
 	avatar: {
 		marginHorizontal: 10
@@ -64,15 +64,15 @@ export default StyleSheet.create({
 		marginRight: 5
 	},
 	currentServerText: {
-		color: '#0C0D0F',
 		fontSize: 14,
+		...sharedStyles.textColorNormal,
 		...sharedStyles.textSemibold
 	},
 	version: {
-		marginHorizontal: 5,
-		marginBottom: 5,
-		color: '#0C0D0F',
+		marginHorizontal: 10,
+		marginBottom: 10,
 		fontSize: 13,
+		...sharedStyles.textColorNormal,
 		...sharedStyles.textSemibold
 	},
 	inverted: {

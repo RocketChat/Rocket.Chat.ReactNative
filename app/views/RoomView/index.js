@@ -360,14 +360,14 @@ export default class RoomView extends LoggedView {
 		if (this.isReadOnly()) {
 			return (
 				<View style={styles.readOnly} key='room-view-read-only'>
-					<Text>{I18n.t('This_room_is_read_only')}</Text>
+					<Text style={styles.previewMode}>{I18n.t('This_room_is_read_only')}</Text>
 				</View>
 			);
 		}
 		if (this.isBlocked()) {
 			return (
 				<View style={styles.readOnly} key='room-view-block'>
-					<Text>{I18n.t('This_room_is_blocked')}</Text>
+					<Text style={styles.previewMode}>{I18n.t('This_room_is_blocked')}</Text>
 				</View>
 			);
 		}

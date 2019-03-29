@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		...sharedStyles.textMedium,
-		color: '#0c0d0f',
+		...sharedStyles.textColorNormal,
 		fontSize: 18
 	}
 });

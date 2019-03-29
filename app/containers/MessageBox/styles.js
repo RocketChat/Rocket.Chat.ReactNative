@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 
 import { isIOS } from '../../utils/deviceInfo';
 import sharedStyles from '../../views/Styles';
+import { COLOR_BORDER, COLOR_SEPARATOR, COLOR_BACKGROUND_CONTAINER } from '../../constants/colors';
 
 const MENTION_HEIGHT = 50;
 
@@ -10,15 +11,15 @@ export default StyleSheet.create({
 		backgroundColor: '#fff',
 		flex: 0,
 		alignItems: 'center',
-		borderTopWidth: 1,
-		borderTopColor: '#D8D8D8',
+		borderTopWidth: StyleSheet.hairlineWidth,
+		borderTopColor: COLOR_SEPARATOR,
 		zIndex: 2
 	},
 	composer: {
 		backgroundColor: '#fff',
 		flexDirection: 'column',
-		borderTopColor: '#e1e5e8',
-		borderTopWidth: 1
+		borderTopColor: COLOR_SEPARATOR,
+		borderTopWidth: StyleSheet.hairlineWidth
 	},
 	textArea: {
 		flexDirection: 'row',
@@ -38,7 +39,7 @@ export default StyleSheet.create({
 		paddingRight: 0,
 		fontSize: 17,
 		letterSpacing: 0,
-		color: '#2f343d',
+		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},
 	editing: {
@@ -55,9 +56,9 @@ export default StyleSheet.create({
 	},
 	mentionItem: {
 		height: MENTION_HEIGHT,
-		backgroundColor: '#F7F8FA',
+		backgroundColor: COLOR_BACKGROUND_CONTAINER,
 		borderTopWidth: 1,
-		borderTopColor: '#ECECEC',
+		borderTopColor: COLOR_BORDER,
 		flexDirection: 'row',
 		alignItems: 'center',
 		paddingHorizontal: 5
@@ -76,11 +77,18 @@ export default StyleSheet.create({
 	fixedMentionAvatar: {
 		textAlign: 'center',
 		width: 46,
-		...sharedStyles.textBold
+		fontSize: 14,
+		...sharedStyles.textBold,
+		...sharedStyles.textColorNormal
+	},
+	mentionText: {
+		fontSize: 14,
+		...sharedStyles.textRegular,
+		...sharedStyles.textColorNormal
 	},
 	emojiKeyboardContainer: {
 		flex: 1,
-		borderTopColor: '#ECECEC',
+		borderTopColor: COLOR_BORDER,
 		borderTopWidth: 1
 	},
 	iphoneXArea: {

@@ -23,12 +23,13 @@ const styles = StyleSheet.create({
 		...sharedStyles.textSemibold
 	},
 	reactCount: {
-		color: '#dddddd',
-		fontSize: 10,
+		color: '#ffffff',
+		fontSize: 13,
 		...sharedStyles.textRegular
 	},
 	peopleReacted: {
 		color: '#ffffff',
+		fontSize: 14,
 		...sharedStyles.textMedium
 	},
 	peopleItemContainer: {

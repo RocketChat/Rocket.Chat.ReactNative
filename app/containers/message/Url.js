@@ -6,6 +6,7 @@ import { RectButton } from 'react-native-gesture-handler';
 
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
+import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, COLOR_PRIMARY } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	button: {
@@ -15,8 +16,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'column',
 		borderRadius: 4,
-		backgroundColor: '#F3F4F5',
-		borderColor: '#F3F4F5',
+		backgroundColor: COLOR_BACKGROUND_CONTAINER,
+		borderColor: COLOR_BORDER,
 		borderWidth: 1
 	},
 	textContainer: {
@@ -27,13 +28,13 @@ const styles = StyleSheet.create({
 		alignItems: 'flex-start'
 	},
 	title: {
-		color: '#1D74F5',
+		color: COLOR_PRIMARY,
 		fontSize: 16,
 		...sharedStyles.textMedium
 	},
 	description: {
 		fontSize: 16,
-		color: '#0C0D0F',
+		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
 	marginTop: {

@@ -13,7 +13,7 @@ import Status from '../containers/Status';
 import RoomTypeIcon from '../containers/RoomTypeIcon';
 import I18n from '../i18n';
 import sharedStyles from '../views/Styles';
-import { COLOR_SEPARATOR } from '../constants/colors';
+import { COLOR_SEPARATOR, COLOR_PRIMARY } from '../constants/colors';
 
 export const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
 
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		fontSize: 17,
 		lineHeight: 20,
-		color: '#0C0D0F',
+		...sharedStyles.textColorNormal,
 		...sharedStyles.textMedium
 	},
 	alert: {
@@ -54,19 +54,19 @@ const styles = StyleSheet.create({
 	},
 	date: {
 		fontSize: 13,
-		color: '#9EA2A8',
 		marginLeft: 4,
+		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
 	updateAlert: {
-		color: '#1D74F5',
-		...sharedStyles.textBold
+		color: COLOR_PRIMARY,
+		...sharedStyles.textSemibold
 	},
 	unreadNumberContainer: {
 		minWidth: 23,
 		padding: 3,
 		borderRadius: 4,
-		backgroundColor: '#1D74F5',
+		backgroundColor: COLOR_PRIMARY,
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginLeft: 10
@@ -84,12 +84,13 @@ const styles = StyleSheet.create({
 	},
 	markdownText: {
 		flex: 1,
-		color: '#9EA2A8',
 		fontSize: 14,
-		lineHeight: 17
+		lineHeight: 17,
+		...sharedStyles.textRegular,
+		...sharedStyles.textColorDescription
 	},
 	markdownTextAlert: {
-		color: '#0C0D0F'
+		...sharedStyles.textColorNormal
 	},
 	avatar: {
 		marginRight: 10
