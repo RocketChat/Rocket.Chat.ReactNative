@@ -1,29 +1,33 @@
 import { StyleSheet } from 'react-native';
 
 import { isIOS } from '../../utils/deviceInfo';
+import sharedStyles from '../../views/Styles';
+import {
+	COLOR_BORDER, COLOR_SEPARATOR, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE
+} from '../../constants/colors';
 
 const MENTION_HEIGHT = 50;
 
 export default StyleSheet.create({
 	textBox: {
-		backgroundColor: '#fff',
+		backgroundColor: COLOR_WHITE,
 		flex: 0,
 		alignItems: 'center',
-		borderTopWidth: 1,
-		borderTopColor: '#D8D8D8',
+		borderTopWidth: StyleSheet.hairlineWidth,
+		borderTopColor: COLOR_SEPARATOR,
 		zIndex: 2
 	},
 	composer: {
-		backgroundColor: '#fff',
+		backgroundColor: COLOR_WHITE,
 		flexDirection: 'column',
-		borderTopColor: '#e1e5e8',
-		borderTopWidth: 1
+		borderTopColor: COLOR_SEPARATOR,
+		borderTopWidth: StyleSheet.hairlineWidth
 	},
 	textArea: {
 		flexDirection: 'row',
 		alignItems: 'center',
 		flexGrow: 0,
-		backgroundColor: '#fff'
+		backgroundColor: COLOR_WHITE
 	},
 	textBoxInput: {
 		textAlignVertical: 'center',
@@ -37,7 +41,8 @@ export default StyleSheet.create({
 		paddingRight: 0,
 		fontSize: 17,
 		letterSpacing: 0,
-		color: '#2f343d'
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textRegular
 	},
 	editing: {
 		backgroundColor: '#fff5df'
@@ -53,9 +58,9 @@ export default StyleSheet.create({
 	},
 	mentionItem: {
 		height: MENTION_HEIGHT,
-		backgroundColor: '#F7F8FA',
+		backgroundColor: COLOR_BACKGROUND_CONTAINER,
 		borderTopWidth: 1,
-		borderTopColor: '#ECECEC',
+		borderTopColor: COLOR_BORDER,
 		flexDirection: 'row',
 		alignItems: 'center',
 		paddingHorizontal: 5
@@ -72,18 +77,25 @@ export default StyleSheet.create({
 		textAlign: 'center'
 	},
 	fixedMentionAvatar: {
-		fontWeight: 'bold',
 		textAlign: 'center',
-		width: 46
+		width: 46,
+		fontSize: 14,
+		...sharedStyles.textBold,
+		...sharedStyles.textColorNormal
+	},
+	mentionText: {
+		fontSize: 14,
+		...sharedStyles.textRegular,
+		...sharedStyles.textColorNormal
 	},
 	emojiKeyboardContainer: {
 		flex: 1,
-		borderTopColor: '#ECECEC',
+		borderTopColor: COLOR_BORDER,
 		borderTopWidth: 1
 	},
 	iphoneXArea: {
 		height: 50,
-		backgroundColor: '#fff',
+		backgroundColor: COLOR_WHITE,
 		position: 'absolute',
 		bottom: 0,
 		left: 0,

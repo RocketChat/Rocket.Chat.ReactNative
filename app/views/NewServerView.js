@@ -16,9 +16,9 @@ import I18n from '../i18n';
 import { verticalScale, moderateScale } from '../utils/scaling';
 import KeyboardView from '../presentation/KeyboardView';
 import { isIOS, isNotch } from '../utils/deviceInfo';
-// import { LIGHT_HEADER } from '../constants/headerOptions';
 import { CustomIcon } from '../lib/Icons';
 import StatusBar from '../containers/StatusBar';
+import { COLOR_PRIMARY } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	image: {
@@ -29,9 +29,9 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		...sharedStyles.textBold,
+		...sharedStyles.textColorNormal,
 		fontSize: moderateScale(22),
 		letterSpacing: 0,
-		color: '#2F343D',
 		alignSelf: 'center'
 	},
 	inputContainer: {
@@ -40,9 +40,9 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		...sharedStyles.textRegular,
+		...sharedStyles.textColorDescription,
 		fontSize: 17,
 		letterSpacing: 0,
-		color: '#9EA2A8',
 		paddingTop: 14,
 		paddingBottom: 14,
 		paddingLeft: 16,
@@ -162,7 +162,7 @@ export default class NewServerView extends LoggedView {
 				<CustomIcon
 					name='back'
 					size={30}
-					color='#1D74F5'
+					color={COLOR_PRIMARY}
 				/>
 			</TouchableOpacity>
 		);

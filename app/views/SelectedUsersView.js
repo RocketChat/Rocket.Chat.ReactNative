@@ -23,6 +23,7 @@ import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
 import { Item, CustomHeaderButtons } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
+import { COLOR_WHITE } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
 		backgroundColor: isIOS ? '#F7F8FA' : '#E1E5E8'
 	},
 	header: {
-		backgroundColor: '#fff'
+		backgroundColor: COLOR_WHITE
 	},
 	separator: {
 		marginLeft: 60
@@ -132,7 +133,6 @@ export default class SelectedUsersView extends LoggedView {
 				setLoadingInvite(true);
 				await RocketChat.addUsersToRoom(rid);
 				navigation.pop();
-				// Navigation.pop(componentId);
 			} catch (e) {
 				log('RoomActions Add User', e);
 			} finally {
