@@ -6,17 +6,21 @@ import { connect } from 'react-redux';
 
 import Markdown from '../message/Markdown';
 import { CustomIcon } from '../../lib/Icons';
+import sharedStyles from '../../views/Styles';
+import {
+	COLOR_PRIMARY, COLOR_BACKGROUND_CONTAINER, COLOR_TEXT_DESCRIPTION, COLOR_WHITE
+} from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		marginTop: 10,
-		backgroundColor: '#fff'
+		backgroundColor: COLOR_WHITE
 	},
 	messageContainer: {
 		flex: 1,
 		marginHorizontal: 10,
-		backgroundColor: '#F3F4F5',
+		backgroundColor: COLOR_BACKGROUND_CONTAINER,
 		paddingHorizontal: 15,
 		paddingVertical: 10,
 		borderRadius: 4
@@ -26,15 +30,17 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	username: {
-		color: '#1D74F5',
+		color: COLOR_PRIMARY,
 		fontSize: 16,
-		fontWeight: '500'
+		...sharedStyles.textMedium
 	},
 	time: {
-		color: '#9EA2A8',
 		fontSize: 12,
 		lineHeight: 16,
-		marginLeft: 5
+		marginLeft: 6,
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textRegular,
+		fontWeight: '300'
 	},
 	close: {
 		marginRight: 10
@@ -79,7 +85,7 @@ export default class ReplyPreview extends Component {
 					</View>
 					<Markdown msg={message.msg} customEmojis={customEmojis} baseUrl={baseUrl} username={username} />
 				</View>
-				<CustomIcon name='cross' color='#9ea2a8' size={20} style={styles.close} onPress={this.close} />
+				<CustomIcon name='cross' color={COLOR_TEXT_DESCRIPTION} size={20} style={styles.close} onPress={this.close} />
 			</View>
 		);
 	}

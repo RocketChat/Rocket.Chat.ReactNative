@@ -57,7 +57,7 @@ export default (
 			msg='Different user'
 			author={{
 				...author,
-				username: 'rocket.cat'
+				username: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
 			}}
 		/>
 		<Message msg='This is the third message' header={false} />
@@ -69,6 +69,14 @@ export default (
 
 		<Separator title='With alias' />
 		<Message msg='Message' alias='Diego Mello' />
+		<Message
+			msg='Message'
+			author={{
+				...author,
+				username: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
+			}}
+			alias='Diego Mello'
+		/>
 
 		<Separator title='Edited' />
 		<Message msg='Message' edited />
@@ -229,12 +237,35 @@ export default (
 				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
 			}]}
 		/>
+		<Message msg='First message' header={false} />
+		<Message
+			attachments={[{
+				title: 'This is a title',
+				description: 'This is a description',
+				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
+			}]}
+			header={false}
+		/>
+		<Message
+			attachments={[{
+				title: 'This is a title',
+				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
+			}]}
+			header={false}
+		/>
+		<Message
+			attachments={[{
+				title: 'This is a title',
+				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
+			}]}
+			header={false}
+		/>
 
 		<Separator title='Message with reply' />
 		<Message
 			msg="I'm fine!"
 			attachments={[{
-				author_name: 'This is a long title and i\'ll break',
+				author_name: 'I\'m a very long long title and I\'ll break',
 				ts: date,
 				timeFormat: 'LT',
 				text: 'How are you?'

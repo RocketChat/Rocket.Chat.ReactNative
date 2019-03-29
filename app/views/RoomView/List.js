@@ -11,6 +11,7 @@ import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import EmptyRoom from './EmptyRoom';
 import ScrollBottomButton from './ScrollBottomButton';
+import { isNotch } from '../../utils/deviceInfo';
 
 @responsive
 export class List extends React.Component {
@@ -83,7 +84,7 @@ export class List extends React.Component {
 
 	scrollToBottom = () => {
 		requestAnimationFrame(() => {
-			this.list.scrollToOffset({ offset: -100 });
+			this.list.scrollToOffset({ offset: isNotch ? -90 : -60 });
 		});
 	}
 
@@ -116,6 +117,7 @@ export class List extends React.Component {
 					data={messages}
 					extraData={this.state}
 					renderItem={({ item, index }) => renderRow(item, messages[index + 1])}
+					contentContainerStyle={styles.contentContainer}
 					style={styles.list}
 					onScroll={this.handleScroll}
 					inverted

@@ -1,30 +1,19 @@
 import { StyleSheet } from 'react-native';
 import { isIOS } from '../../utils/deviceInfo';
-import { COLOR_SEPARATOR } from '../../constants/colors';
+import {
+	COLOR_SEPARATOR, COLOR_TEXT, COLOR_PRIMARY, COLOR_WHITE
+} from '../../constants/colors';
+
+import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: isIOS ? '#FFF' : '#E1E5E8'
-	},
-	separator: {
-		height: StyleSheet.hairlineWidth,
-		backgroundColor: COLOR_SEPARATOR,
-		marginLeft: 73
+		backgroundColor: isIOS ? COLOR_WHITE : '#E1E5E8'
 	},
 	list: {
 		width: '100%',
-		backgroundColor: '#FFFFFF'
-	},
-	emptyView: {
-		flexGrow: 1,
-		alignItems: 'stretch',
-		justifyContent: 'center'
-	},
-	emptyText: {
-		textAlign: 'center',
-		fontSize: 18,
-		color: '#ccc'
+		backgroundColor: COLOR_WHITE
 	},
 	actionButtonIcon: {
 		fontSize: 20,
@@ -39,7 +28,7 @@ export default StyleSheet.create({
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		borderColor: COLOR_SEPARATOR,
 		alignItems: 'center',
-		backgroundColor: isIOS ? '#fff' : '#54585E',
+		backgroundColor: isIOS ? COLOR_WHITE : '#54585E',
 		flexDirection: 'row'
 	},
 	sortToggleContainerClose: {
@@ -48,14 +37,14 @@ export default StyleSheet.create({
 		width: '100%'
 	},
 	sortToggleText: {
-		color: '#9EA2A8',
 		fontSize: 15,
-		fontWeight: 'normal',
 		flex: 1,
-		marginLeft: 15
+		marginLeft: 15,
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textRegular
 	},
 	dropdownContainer: {
-		backgroundColor: '#fff',
+		backgroundColor: COLOR_WHITE,
 		width: '100%',
 		position: 'absolute',
 		top: 0
@@ -69,10 +58,10 @@ export default StyleSheet.create({
 		alignItems: 'center'
 	},
 	sortItemText: {
-		color: '#54585E',
 		fontSize: 18,
-		fontWeight: 'normal',
-		flex: 1
+		flex: 1,
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textRegular
 	},
 	backdrop: {
 		...StyleSheet.absoluteFill,
@@ -88,39 +77,37 @@ export default StyleSheet.create({
 		width: 22,
 		height: 22,
 		marginHorizontal: 15,
-		// resizeMode: 'contain',
-		// justifyContent: 'center',
-		color: '#9ea2a8'
+		...sharedStyles.textColorDescription
 	},
 	groupTitleContainer: {
 		paddingHorizontal: 15,
 		paddingTop: 17,
 		paddingBottom: 10,
-		backgroundColor: isIOS ? '#fff' : '#E1E5E8'
+		backgroundColor: isIOS ? COLOR_WHITE : '#9ea2a8'
 	},
 	groupTitle: {
-		color: isIOS ? '#2F343D' : '#54585E',
+		color: isIOS ? COLOR_TEXT : '#54585E',
 		fontSize: isIOS ? 22 : 15,
-		fontWeight: 'bold',
 		letterSpacing: 0.27,
 		flex: 1,
-		lineHeight: isIOS ? 41 : 24
+		lineHeight: isIOS ? 41 : 24,
+		...sharedStyles.textBold
 	},
 	serverHeader: {
 		justifyContent: 'space-between'
 	},
 	serverHeaderText: {
-		color: '#9EA2A8',
 		fontSize: 15,
-		fontWeight: 'normal',
-		marginLeft: 15
+		marginLeft: 15,
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textRegular
 	},
 	serverHeaderAdd: {
-		color: isIOS ? '#1D74F5' : '#FFF',
+		color: isIOS ? COLOR_PRIMARY : COLOR_WHITE,
 		fontSize: 15,
-		fontWeight: 'normal',
 		marginRight: 15,
-		paddingVertical: 10
+		paddingVertical: 10,
+		...sharedStyles.textRegular
 	},
 	serverItem: {
 		height: 68
@@ -143,15 +130,18 @@ export default StyleSheet.create({
 		justifyContent: 'center'
 	},
 	serverName: {
-		fontSize: 18, fontWeight: '600', color: '#0C0D0F'
+		fontSize: 18,
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textSemibold
 	},
 	serverUrl: {
 		fontSize: 15,
-		color: '#9EA2A8'
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textRegular
 	},
 	checkIcon: {
 		marginHorizontal: 15,
-		color: '#1d74f5'
+		color: COLOR_PRIMARY
 	},
 	serverSeparator: {
 		height: StyleSheet.hairlineWidth,
