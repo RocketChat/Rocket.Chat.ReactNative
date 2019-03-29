@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { COLOR_SEPARATOR, COLOR_BORDER, COLOR_DANGER, COLOR_WHITE } from '../../constants/colors';
+import {
+	COLOR_SEPARATOR, COLOR_BORDER, COLOR_DANGER, COLOR_WHITE
+} from '../../constants/colors';
 
 import sharedStyles from '../Styles';
 

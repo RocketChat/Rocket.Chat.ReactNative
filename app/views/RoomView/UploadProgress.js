@@ -11,7 +11,9 @@ import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
-import { COLOR_SEPARATOR, COLOR_PRIMARY, COLOR_BACKGROUND_CONTAINER, COLOR_TEXT_DESCRIPTION, COLOR_DANGER } from '../../constants/colors';
+import {
+	COLOR_SEPARATOR, COLOR_PRIMARY, COLOR_BACKGROUND_CONTAINER, COLOR_TEXT_DESCRIPTION, COLOR_DANGER
+} from '../../constants/colors';
 import sharedStyles from '../Styles';
 
 const styles = StyleSheet.create({

@@ -6,7 +6,9 @@ import { RectButton } from 'react-native-gesture-handler';
 
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
-import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, COLOR_PRIMARY, COLOR_WHITE } from '../../constants/colors';
+import {
+	COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, COLOR_PRIMARY, COLOR_WHITE
+} from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	button: {
