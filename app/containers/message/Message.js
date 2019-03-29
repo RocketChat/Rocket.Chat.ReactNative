@@ -1,13 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, ViewPropTypes, TouchableWithoutFeedback
+	View, Text, ViewPropTypes, TouchableWithoutFeedback, Animated
 } from 'react-native';
 import moment from 'moment';
 import { KeyboardUtils } from 'react-native-keyboard-input';
 import {
 	State, RectButton, LongPressGestureHandler, BorderlessButton
 } from 'react-native-gesture-handler';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 import Image from './Image';
 import User from './User';
@@ -126,6 +127,7 @@ export default class Message extends PureComponent {
 		useRealName: PropTypes.bool,
 		// methods
 		closeReactions: PropTypes.func,
+		handleReply: PropTypes.func,
 		onErrorPress: PropTypes.func,
 		onLongPress: PropTypes.func,
 		onReactionLongPress: PropTypes.func,
@@ -141,6 +143,16 @@ export default class Message extends PureComponent {
 		urls: [],
 		reactions: [],
 		onLongPress: () => {}
+	}
+
+	closeSwipeReply = () => {
+		this.swipeableRow.close();
+	};
+
+	handleSwipe = () => {
+		const { handleReply } = this.props;
+		handleReply();
+		this.closeSwipeReply();
 	}
 
 	onPress = () => {
@@ -228,6 +240,23 @@ export default class Message extends PureComponent {
 		} = this.props;
 		return <Markdown msg={msg} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} edited={edited} />;
 	}
+
+	renderLeftActions = (progress, dragX) => {
+		const trans = dragX.interpolate({
+			inputRange: [0, 50, 51],
+			outputRange: [-50, 0, 1]
+		});
+		return (
+			<Animated.View
+				style={{ transform: [{ translateX: trans }], width: 50 }}
+			>
+				<RectButton style={styles.replyAction}>
+					<CustomIcon size={13} name='reply' color='black' />
+					<Text>Reply</Text>
+				</RectButton>
+			</Animated.View>
+		);
+	};
 
 	renderAttachment() {
 		const { attachments, timeFormat } = this.props;
@@ -358,51 +387,59 @@ export default class Message extends PureComponent {
 		const accessibilityLabel = I18n.t('Message_accessibility', { user: author.username, time: moment(ts).format(timeFormat), message: msg });
 
 		return (
-			<View style={styles.root}>
-				{this.renderError()}
-				<TouchableWithoutFeedback
-					onLongPress={this.onLongPress}
-					onPress={this.onPress}
-				>
-					<View
-						style={[styles.container, header && styles.marginTop, editing && styles.editing, style]}
-						accessibilityLabel={accessibilityLabel}
+			<Swipeable
+				ref={ref => this.swipeableRow = ref}
+				friction={2}
+				leftThreshold={40}
+				renderLeftActions={this.renderLeftActions}
+				onSwipeableLeftOpen={this.handleSwipe}
+			>
+				<View style={styles.root}>
+					{this.renderError()}
+					<TouchableWithoutFeedback
+						onLongPress={this.onLongPress}
+						onPress={this.onPress}
 					>
-						<View style={styles.flex}>
-							{this.renderAvatar()}
-							<View
-								style={[
-									styles.messageContent,
-									header && styles.messageContentWithHeader,
-									this.hasError() && header && styles.messageContentWithHeader,
-									this.hasError() && !header && styles.messageContentWithError,
-									this.isTemp() && styles.temp
-								]}
-							>
-								{this.renderUsername()}
-								{this.renderContent()}
-								{this.renderAttachment()}
-								{this.renderUrl()}
-								{this.renderReactions()}
-								{this.renderBroadcastReply()}
+						<View
+							style={[styles.container, header && styles.marginTop, editing && styles.editing, style]}
+							accessibilityLabel={accessibilityLabel}
+						>
+							<View style={styles.flex}>
+								{this.renderAvatar()}
+								<View
+									style={[
+										styles.messageContent,
+										header && styles.messageContentWithHeader,
+										this.hasError() && header && styles.messageContentWithHeader,
+										this.hasError() && !header && styles.messageContentWithError,
+										this.isTemp() && styles.temp
+									]}
+								>
+									{this.renderUsername()}
+									{this.renderContent()}
+									{this.renderAttachment()}
+									{this.renderUrl()}
+									{this.renderReactions()}
+									{this.renderBroadcastReply()}
+								</View>
 							</View>
+							{reactionsModal
+								? (
+									<ReactionsModal
+										isVisible={reactionsModal}
+										reactions={reactions}
+										user={user}
+										customEmojis={customEmojis}
+										baseUrl={baseUrl}
+										close={closeReactions}
+									/>
+								)
+								: null
+							}
 						</View>
-						{reactionsModal
-							? (
-								<ReactionsModal
-									isVisible={reactionsModal}
-									reactions={reactions}
-									user={user}
-									customEmojis={customEmojis}
-									baseUrl={baseUrl}
-									close={closeReactions}
-								/>
-							)
-							: null
-						}
-					</View>
-				</TouchableWithoutFeedback>
-			</View>
+					</TouchableWithoutFeedback>
+				</View>
+			</Swipeable>
 		);
 	}
 }

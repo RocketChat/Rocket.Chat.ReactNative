@@ -1,11 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, Animated, ViewPropTypes } from 'react-native';
+import { ViewPropTypes } from 'react-native';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
-import { RectButton } from 'react-native-gesture-handler';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { CustomIcon } from '../../lib/Icons';
 
 import Message from './Message';
 import {
@@ -14,7 +11,6 @@ import {
 	replyBroadcast as replyBroadcastAction,
 	replyInit as replyInitAction
 } from '../../actions/messages';
-import styles from './styles';
 import { vibrate } from '../../utils/vibration';
 
 @connect(state => ({
@@ -139,10 +135,6 @@ export default class MessageContainer extends React.Component {
 		this.setState({ reactionsModal: false });
 	}
 
-	closeSwipeReply = () => {
-		this.swipeableRow.close();
-	};
-
 	isHeader = () => {
 		const {
 			item, previousItem, broadcast, Message_GroupingPeriod
@@ -161,7 +153,6 @@ export default class MessageContainer extends React.Component {
 	handleReply = () => {
 		const { item, replyInit } = this.props;
 		replyInit(item, true);
-		this.closeSwipeReply();
 	}
 
 	parseMessage = () => {
@@ -179,23 +170,6 @@ export default class MessageContainer extends React.Component {
 		replyBroadcast(this.parseMessage());
 	}
 
-	renderLeftActions = (progress, dragX) => {
-		const trans = dragX.interpolate({
-			inputRange: [0, 50, 51],
-			outputRange: [-50, 0, 1]
-		});
-		return (
-			<Animated.View
-				style={{ transform: [{ translateX: trans }], width: 50 }}
-			>
-				<RectButton style={styles.replyAction}>
-					<CustomIcon size={13} name='reply' color='black' />
-					<Text>Reply</Text>
-				</RectButton>
-			</Animated.View>
-		);
-	};
-
 	render() {
 		const { reactionsModal } = this.state;
 		const {
@@ -206,46 +180,39 @@ export default class MessageContainer extends React.Component {
 		} = item;
 		const isEditing = editingMessage._id === item._id;
 		return (
-			<Swipeable
-				ref={ref => this.swipeableRow = ref}
-				friction={2}
-				leftThreshold={40}
-				renderLeftActions={this.renderLeftActions}
-				onSwipeableLeftOpen={this.handleReply}
-			>
-				<Message
-					msg={msg}
-					author={u}
-					ts={ts}
-					type={t}
-					status={status}
-					attachments={attachments}
-					urls={urls}
-					reactions={reactions}
-					alias={alias}
-					editing={isEditing}
-					header={this.isHeader()}
-					avatar={avatar}
-					user={user}
-					edited={editedBy && !!editedBy.username}
-					timeFormat={this.timeFormat}
-					style={style}
-					archived={archived}
-					broadcast={broadcast}
-					baseUrl={baseUrl}
-					customEmojis={customEmojis}
-					reactionsModal={reactionsModal}
-					useRealName={useRealName}
-					role={role}
-					closeReactions={this.closeReactions}
-					onErrorPress={this.onErrorPress}
-					onLongPress={this.onLongPress}
-					onReactionLongPress={this.onReactionLongPress}
-					onReactionPress={this.onReactionPress}
-					replyBroadcast={this.replyBroadcast}
-					toggleReactionPicker={this.toggleReactionPicker}
-				/>
-			</Swipeable>
+			<Message
+				msg={msg}
+				author={u}
+				ts={ts}
+				type={t}
+				status={status}
+				attachments={attachments}
+				urls={urls}
+				reactions={reactions}
+				alias={alias}
+				editing={isEditing}
+				header={this.isHeader()}
+				avatar={avatar}
+				user={user}
+				edited={editedBy && !!editedBy.username}
+				timeFormat={this.timeFormat}
+				style={style}
+				archived={archived}
+				broadcast={broadcast}
+				baseUrl={baseUrl}
+				customEmojis={customEmojis}
+				reactionsModal={reactionsModal}
+				useRealName={useRealName}
+				role={role}
+				closeReactions={this.closeReactions}
+				handleReply={this.handleReply}
+				onErrorPress={this.onErrorPress}
+				onLongPress={this.onLongPress}
+				onReactionLongPress={this.onReactionLongPress}
+				onReactionPress={this.onReactionPress}
+				replyBroadcast={this.replyBroadcast}
+				toggleReactionPicker={this.toggleReactionPicker}
+			/>
 		);
 	}
 }
