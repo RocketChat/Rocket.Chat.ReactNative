@@ -8,7 +8,9 @@ import PropTypes from 'prop-types';
 import I18n from '../i18n';
 import debounce from '../utils/debounce';
 import sharedStyles from '../views/Styles';
-import { COLOR_BACKGROUND_CONTAINER, COLOR_DANGER, COLOR_SUCCESS } from '../constants/colors';
+import {
+	COLOR_BACKGROUND_CONTAINER, COLOR_DANGER, COLOR_SUCCESS, COLOR_WHITE
+} from '../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
@@ -23,7 +25,7 @@ const styles = StyleSheet.create({
 		elevation: 4
 	},
 	text: {
-		color: '#fff',
+		color: COLOR_WHITE,
 		fontSize: 15,
 		...sharedStyles.textRegular
 	},

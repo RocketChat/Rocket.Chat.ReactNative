@@ -2,13 +2,15 @@ import { StyleSheet } from 'react-native';
 
 import { isIOS } from '../../utils/deviceInfo';
 import sharedStyles from '../../views/Styles';
-import { COLOR_BORDER, COLOR_SEPARATOR, COLOR_BACKGROUND_CONTAINER } from '../../constants/colors';
+import {
+	COLOR_BORDER, COLOR_SEPARATOR, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE
+} from '../../constants/colors';
 
 const MENTION_HEIGHT = 50;
 
 export default StyleSheet.create({
 	textBox: {
-		backgroundColor: '#fff',
+		backgroundColor: COLOR_WHITE,
 		flex: 0,
 		alignItems: 'center',
 		borderTopWidth: StyleSheet.hairlineWidth,
@@ -16,7 +18,7 @@ export default StyleSheet.create({
 		zIndex: 2
 	},
 	composer: {
-		backgroundColor: '#fff',
+		backgroundColor: COLOR_WHITE,
 		flexDirection: 'column',
 		borderTopColor: COLOR_SEPARATOR,
 		borderTopWidth: StyleSheet.hairlineWidth
@@ -25,7 +27,7 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		flexGrow: 0,
-		backgroundColor: '#fff'
+		backgroundColor: COLOR_WHITE
 	},
 	textBoxInput: {
 		textAlignVertical: 'center',
@@ -93,7 +95,7 @@ export default StyleSheet.create({
 	},
 	iphoneXArea: {
 		height: 50,
-		backgroundColor: '#fff',
+		backgroundColor: COLOR_WHITE,
 		position: 'absolute',
 		bottom: 0,
 		left: 0,

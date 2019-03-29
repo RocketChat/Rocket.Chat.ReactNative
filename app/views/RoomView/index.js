@@ -30,6 +30,7 @@ import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import RoomHeaderView from './Header';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
+import { COLOR_WHITE } from '../../constants/colors';
 
 @connect(state => ({
 	user: {
@@ -350,7 +351,7 @@ export default class RoomView extends LoggedView {
 						onPress={this.joinRoom}
 						style={styles.joinRoomButton}
 						activeOpacity={0.5}
-						underlayColor='#fff'
+						underlayColor={COLOR_WHITE}
 					>
 						<Text style={styles.joinRoomText} testID='room-view-join-button'>{I18n.t('Join')}</Text>
 					</RectButton>

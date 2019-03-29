@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 import { verticalScale, moderateScale } from '../../utils/scaling';
 import sharedStyles from '../Styles';
-import { COLOR_PRIMARY } from '../../constants/colors';
+import { COLOR_PRIMARY, COLOR_BORDER, COLOR_WHITE } from '../../constants/colors';
 
 const colors = {
 	backgroundPrimary: COLOR_PRIMARY,
@@ -12,14 +12,14 @@ const colors = {
 	textColorSecondary: COLOR_PRIMARY,
 
 	borderColorPrimary: COLOR_PRIMARY,
-	borderColorSecondary: '#E1E5E8'
+	borderColorSecondary: COLOR_BORDER
 };
 
 export default StyleSheet.create({
 	container: {
 		flex: 1,
 		flexDirection: 'column',
-		backgroundColor: '#fff'
+		backgroundColor: COLOR_WHITE
 	},
 	onboarding: {
 		alignSelf: 'center',

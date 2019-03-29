@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { COLOR_SEPARATOR } from '../../constants/colors';
+import { COLOR_SEPARATOR, COLOR_WHITE } from '../../constants/colors';
 
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#fff'
+		backgroundColor: COLOR_WHITE
 	},
 	item: {
 		flexDirection: 'row',

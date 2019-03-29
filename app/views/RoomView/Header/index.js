@@ -12,7 +12,7 @@ import sharedStyles from '../../Styles';
 import { isIOS } from '../../../utils/deviceInfo';
 import { headerIconSize } from '../../../containers/HeaderButton';
 import Icon from './Icon';
-import { COLOR_TEXT_DESCRIPTION, HEADER_TITLE } from '../../../constants/colors';
+import { COLOR_TEXT_DESCRIPTION, HEADER_TITLE, COLOR_WHITE } from '../../../constants/colors';
 
 const TITLE_SIZE = 18;
 const styles = StyleSheet.create({
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 	},
 	typing: {
 		...sharedStyles.textRegular,
-		color: isIOS ? COLOR_TEXT_DESCRIPTION : '#fff',
+		color: isIOS ? COLOR_TEXT_DESCRIPTION : COLOR_WHITE,
 		fontSize: 12,
 		marginBottom: 2
 	},

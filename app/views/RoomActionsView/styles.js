@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { COLOR_SEPARATOR, COLOR_BORDER, COLOR_DANGER } from '../../constants/colors';
+import { COLOR_SEPARATOR, COLOR_BORDER, COLOR_DANGER, COLOR_WHITE } from '../../constants/colors';
 
 import sharedStyles from '../Styles';
 
@@ -12,7 +12,7 @@ export default StyleSheet.create({
 		backgroundColor: '#F6F7F9'
 	},
 	sectionItem: {
-		backgroundColor: '#ffffff',
+		backgroundColor: COLOR_WHITE,
 		paddingVertical: 16,
 		flexDirection: 'row',
 		alignItems: 'center'

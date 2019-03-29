@@ -13,7 +13,7 @@ import Status from '../containers/Status';
 import RoomTypeIcon from '../containers/RoomTypeIcon';
 import I18n from '../i18n';
 import sharedStyles from '../views/Styles';
-import { COLOR_SEPARATOR, COLOR_PRIMARY } from '../constants/colors';
+import { COLOR_SEPARATOR, COLOR_PRIMARY, COLOR_WHITE } from '../constants/colors';
 
 export const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
 
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
 		marginLeft: 10
 	},
 	unreadNumberText: {
-		color: '#fff',
+		color: COLOR_WHITE,
 		overflow: 'hidden',
 		fontSize: 13,
 		...sharedStyles.textRegular,

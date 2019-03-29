@@ -9,6 +9,7 @@ import Markdown from './Markdown';
 import openLink from '../../utils/openLink';
 import { isIOS } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
+import { COLOR_WHITE } from '../../constants/colors';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/webm', 'video/3gp', 'video/mkv'])];
 const isTypeSupported = type => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -80,7 +81,7 @@ export default class Video extends React.PureComponent {
 						style={styles.button}
 						onPress={() => this.open()}
 						activeOpacity={0.5}
-						underlayColor='#fff'
+						underlayColor={COLOR_WHITE}
 					>
 						<CustomIcon
 							name='play'

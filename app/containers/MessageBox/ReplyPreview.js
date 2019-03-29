@@ -7,13 +7,15 @@ import { connect } from 'react-redux';
 import Markdown from '../message/Markdown';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
-import { COLOR_PRIMARY, COLOR_BACKGROUND_CONTAINER, COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
+import {
+	COLOR_PRIMARY, COLOR_BACKGROUND_CONTAINER, COLOR_TEXT_DESCRIPTION, COLOR_WHITE
+} from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		marginTop: 10,
-		backgroundColor: '#fff'
+		backgroundColor: COLOR_WHITE
 	},
 	messageContainer: {
 		flex: 1,

@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { COLOR_SEPARATOR, COLOR_PRIMARY } from '../../constants/colors';
+import { COLOR_SEPARATOR, COLOR_PRIMARY, COLOR_WHITE, COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
 
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#fff'
+		backgroundColor: COLOR_WHITE
 	},
 	safeAreaView: {
 		flex: 1
@@ -24,7 +24,7 @@ export default StyleSheet.create({
 	loadingMore: {
 		textAlign: 'center',
 		padding: 15,
-		color: '#ccc'
+		color: COLOR_TEXT_DESCRIPTION
 	},
 	readOnly: {
 		justifyContent: 'flex-end',
@@ -57,7 +57,7 @@ export default StyleSheet.create({
 		borderRadius: 2
 	},
 	joinRoomText: {
-		color: '#fff',
+		color: COLOR_WHITE,
 		fontSize: 14,
 		...sharedStyles.textMedium
 	},

@@ -8,12 +8,12 @@ import Avatar from '../containers/Avatar';
 import Touch from '../utils/touch';
 import { CustomIcon } from '../lib/Icons';
 import sharedStyles from '../views/Styles';
-import { COLOR_PRIMARY } from '../constants/colors';
+import { COLOR_PRIMARY, COLOR_WHITE } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	button: {
 		height: 54,
-		backgroundColor: '#fff'
+		backgroundColor: COLOR_WHITE
 	},
 	container: {
 		flexDirection: 'row'

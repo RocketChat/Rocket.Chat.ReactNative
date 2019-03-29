@@ -6,7 +6,7 @@ import { RectButton } from 'react-native-gesture-handler';
 
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
-import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, COLOR_PRIMARY } from '../../constants/colors';
+import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, COLOR_PRIMARY, COLOR_WHITE } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	button: {
@@ -60,7 +60,7 @@ const Url = ({ url, index }) => {
 			onPress={() => onPress(url.url)}
 			style={[styles.button, index > 0 && styles.marginTop, styles.container]}
 			activeOpacity={0.5}
-			underlayColor='#fff'
+			underlayColor={COLOR_WHITE}
 		>
 			{url.image ? <FastImage source={{ uri: url.image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} /> : null}
 			<View style={styles.textContainer}>

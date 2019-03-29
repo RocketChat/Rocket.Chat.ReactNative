@@ -1,17 +1,19 @@
 import { StyleSheet } from 'react-native';
 import { isIOS } from '../../utils/deviceInfo';
-import { COLOR_SEPARATOR, COLOR_TEXT, COLOR_PRIMARY } from '../../constants/colors';
+import {
+	COLOR_SEPARATOR, COLOR_TEXT, COLOR_PRIMARY, COLOR_WHITE
+} from '../../constants/colors';
 
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: isIOS ? '#FFF' : '#E1E5E8'
+		backgroundColor: isIOS ? COLOR_WHITE : '#E1E5E8'
 	},
 	list: {
 		width: '100%',
-		backgroundColor: '#FFFFFF'
+		backgroundColor: COLOR_WHITE
 	},
 	actionButtonIcon: {
 		fontSize: 20,
@@ -26,7 +28,7 @@ export default StyleSheet.create({
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		borderColor: COLOR_SEPARATOR,
 		alignItems: 'center',
-		backgroundColor: isIOS ? '#fff' : '#54585E',
+		backgroundColor: isIOS ? COLOR_WHITE : '#54585E',
 		flexDirection: 'row'
 	},
 	sortToggleContainerClose: {
@@ -42,7 +44,7 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	dropdownContainer: {
-		backgroundColor: '#fff',
+		backgroundColor: COLOR_WHITE,
 		width: '100%',
 		position: 'absolute',
 		top: 0
@@ -81,7 +83,7 @@ export default StyleSheet.create({
 		paddingHorizontal: 15,
 		paddingTop: 17,
 		paddingBottom: 10,
-		backgroundColor: isIOS ? '#fff' : '#9ea2a8'
+		backgroundColor: isIOS ? COLOR_WHITE : '#9ea2a8'
 	},
 	groupTitle: {
 		color: isIOS ? COLOR_TEXT : '#54585E',
@@ -101,7 +103,7 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	serverHeaderAdd: {
-		color: isIOS ? COLOR_PRIMARY : '#FFF',
+		color: isIOS ? COLOR_PRIMARY : COLOR_WHITE,
 		fontSize: 15,
 		marginRight: 15,
 		paddingVertical: 10,

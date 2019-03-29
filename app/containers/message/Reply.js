@@ -7,7 +7,7 @@ import { RectButton } from 'react-native-gesture-handler';
 import Markdown from './Markdown';
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
-import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER } from '../../constants/colors';
+import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, COLOR_WHITE } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	button: {
@@ -144,7 +144,7 @@ const Reply = ({
 			onPress={() => onPress(attachment, baseUrl, user)}
 			style={[styles.button, index > 0 && styles.marginTop]}
 			activeOpacity={0.5}
-			underlayColor='#fff'
+			underlayColor={COLOR_WHITE}
 		>
 			<View style={styles.attachmentContainer}>
 				{renderTitle()}

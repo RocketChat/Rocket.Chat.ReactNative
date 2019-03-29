@@ -9,6 +9,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import { responsive } from 'react-native-responsive-ui';
 
 import sharedStyles from '../../views/Styles';
+import { COLOR_WHITE } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	imageWrapper: {
@@ -20,13 +21,13 @@ const styles = StyleSheet.create({
 		marginVertical: 10
 	},
 	title: {
-		color: '#ffffff',
+		color: COLOR_WHITE,
 		textAlign: 'center',
 		fontSize: 16,
 		...sharedStyles.textSemibold
 	},
 	description: {
-		color: '#ffffff',
+		color: COLOR_WHITE,
 		textAlign: 'center',
 		fontSize: 14,
 		...sharedStyles.textMedium

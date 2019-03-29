@@ -20,7 +20,7 @@ import SearchBox from '../containers/SearchBox';
 import { CustomIcon } from '../lib/Icons';
 import { CloseModalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
-import { COLOR_PRIMARY } from '../constants/colors';
+import { COLOR_PRIMARY, COLOR_WHITE } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 	},
 	createChannelContainer: {
 		height: 47,
-		backgroundColor: '#fff',
+		backgroundColor: COLOR_WHITE,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},

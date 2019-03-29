@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
-import { COLOR_BORDER, COLOR_PRIMARY } from '../../constants/colors';
+import { COLOR_BORDER, COLOR_PRIMARY, COLOR_WHITE } from '../../constants/colors';
 
 export default StyleSheet.create({
 	root: {
@@ -106,11 +106,11 @@ export default StyleSheet.create({
 		borderRadius: 4
 	},
 	broadcastButtonIcon: {
-		color: '#fff',
+		color: COLOR_WHITE,
 		marginRight: 11
 	},
 	broadcastButtonText: {
-		color: '#fff',
+		color: COLOR_WHITE,
 		fontSize: 14,
 		...sharedStyles.textMedium
 	},
@@ -121,11 +121,11 @@ export default StyleSheet.create({
 		backgroundColor: '#E8F2FF'
 	},
 	mentionLoggedUser: {
-		color: '#fff',
+		color: COLOR_WHITE,
 		backgroundColor: COLOR_PRIMARY
 	},
 	mentionAll: {
-		color: '#fff',
+		color: COLOR_WHITE,
 		backgroundColor: '#FF5B5A'
 	},
 	paragraph: {
