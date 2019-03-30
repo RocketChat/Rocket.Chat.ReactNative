@@ -23,6 +23,7 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { CustomIcon } from '../../lib/Icons';
 import DisclosureIndicator from '../../containers/DisclosureIndicator';
 import StatusBar from '../../containers/StatusBar';
+import { COLOR_WHITE } from '../../constants/colors';
 
 const renderSeparator = () => <View style={styles.separator} />;
 
@@ -403,7 +404,7 @@ export default class RoomActionsView extends LoggedView {
 	renderTouchableItem = (subview, item) => (
 		<Touch
 			onPress={() => this.onPressTouchable(item)}
-			underlayColor='#FFFFFF'
+			underlayColor={COLOR_WHITE}
 			activeOpacity={0.5}
 			accessibilityLabel={item.name}
 			accessibilityTraits='button'
@@ -443,6 +444,7 @@ export default class RoomActionsView extends LoggedView {
 			<SafeAreaView style={styles.container} testID='room-actions-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
 				<SectionList
+					contentContainerStyle={styles.contentContainer}
 					style={styles.container}
 					stickySectionHeadersEnabled={false}
 					sections={this.sections}

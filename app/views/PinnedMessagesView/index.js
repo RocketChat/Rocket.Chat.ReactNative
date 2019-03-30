@@ -131,7 +131,7 @@ export default class PinnedMessagesView extends LoggedView {
 
 	renderEmpty = () => (
 		<View style={styles.listEmptyContainer} testID='pinned-messages-view'>
-			<Text>{I18n.t('No_pinned_messages')}</Text>
+			<Text style={styles.noDataFound}>{I18n.t('No_pinned_messages')}</Text>
 		</View>
 	)
 
@@ -139,7 +139,6 @@ export default class PinnedMessagesView extends LoggedView {
 		const { user, customEmojis, baseUrl } = this.props;
 		return (
 			<Message
-				style={styles.message}
 				customEmojis={customEmojis}
 				baseUrl={baseUrl}
 				user={user}

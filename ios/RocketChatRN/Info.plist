@@ -70,6 +70,12 @@
 	<string>Use your microphone to record audio messages</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Upload photos to share with other users or to change your avatar</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This permission stems from a library we use and will never be called anyway. If you see this, deny access</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This permission stems from a library we use and will never be called anyway. If you see this, deny access</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This permission stems from a library we use and will never be called anyway. If you see this, deny access</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>custom.ttf</string>

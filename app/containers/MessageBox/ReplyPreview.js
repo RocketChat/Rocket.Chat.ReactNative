@@ -3,21 +3,26 @@ import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
-
 import FastImage from 'react-native-fast-image';
+import { RectButton } from 'react-native-gesture-handler';
+
 import Markdown from '../message/Markdown';
 import { CustomIcon } from '../../lib/Icons';
+import sharedStyles from '../../views/Styles';
+import {
+	COLOR_PRIMARY, COLOR_BACKGROUND_CONTAINER, COLOR_TEXT_DESCRIPTION, COLOR_WHITE
+} from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		marginTop: 10,
-		backgroundColor: '#fff'
+		backgroundColor: COLOR_WHITE
 	},
 	messageContainer: {
 		flex: 1,
 		marginHorizontal: 10,
-		backgroundColor: '#F3F4F5',
+		backgroundColor: COLOR_BACKGROUND_CONTAINER,
 		paddingHorizontal: 15,
 		paddingVertical: 10,
 		borderRadius: 4
@@ -27,15 +32,17 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	username: {
-		color: '#1D74F5',
+		color: COLOR_PRIMARY,
 		fontSize: 16,
-		fontWeight: '500'
+		...sharedStyles.textMedium
 	},
 	time: {
-		color: '#9EA2A8',
 		fontSize: 12,
-		lineHeight: 24,
-		marginLeft: 5
+		lineHeight: 20,
+		marginLeft: 6,
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textRegular,
+		fontWeight: '300'
 	},
 	close: {
 		marginRight: 10
@@ -47,11 +54,35 @@ const styles = StyleSheet.create({
 		borderRadius: 2
 	},
 	text: {
-		flexDirection: 'column',
-		marginRight: 50
+		flex: 1,
+		flexDirection: 'column'
 	},
 	details: {
 		flexDirection: 'row'
+	},
+	buttonVideo: {
+		borderRadius: 4,
+		height: 50,
+		width: 100,
+		backgroundColor: '#1f2329',
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginLeft: 'auto'
+	},
+	buttonAudio: {
+		borderRadius: 50,
+		height: 50,
+		width: 50,
+		backgroundColor: '#f7f8fa',
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginLeft: 'auto'
+	},
+	playVideo: {
+		color: '#f7f8fa'
+	},
+	playAudio: {
+		color: '#1D74F5'
 	}
 });
 
@@ -77,9 +108,9 @@ export default class ReplyPreview extends Component {
 	close = () => {
 		const { close } = this.props;
 		close();
-	};
+	}
 
-	renderImage = () => {
+	renderAttachment = () => {
 		const {
 			message, baseUrl, user
 		} = this.props;
@@ -87,22 +118,48 @@ export default class ReplyPreview extends Component {
 		if (!message.attachments) {
 			return null;
 		} else {
-			const imgs = [];
+			const attach = [];
 			Object.keys(message.attachments).forEach((key) => {
-				if (!message.attachments[key].image_url) {
-					return null;
+				if (message.attachments[key].image_url) {
+					const img = `${ baseUrl }${ message.attachments[key].image_url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
+					attach.push(
+						<FastImage
+							source={{ uri: encodeURI(img) }}
+							resizeMode={FastImage.resizeMode.cover}
+							style={styles.thumbnail}
+						/>
+					);
+				} else if (message.attachments[key].video_url) {
+					attach.push(
+						<RectButton
+							style={styles.buttonVideo}
+							activeOpacity={0.5}
+							underlayColor='#fff'
+						>
+							<CustomIcon
+								name='play'
+								size={20}
+								style={styles.playVideo}
+							/>
+						</RectButton>
+					);
+				} else if (message.attachments[key].audio_url) {
+					attach.push(
+						<RectButton
+							style={styles.buttonAudio}
+							activeOpacity={0.5}
+							underlayColor='#fff'
+						>
+							<CustomIcon
+								name='Files-audio'
+								size={20}
+								style={styles.playAudio}
+							/>
+						</RectButton>
+					);
 				}
-
-				const img = `${ baseUrl }${ message.attachments[key].image_url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
-				imgs.push(
-					<FastImage
-						source={{ uri: encodeURI(img) }}
-						resizeMode={FastImage.resizeMode.cover}
-						style={styles.thumbnail}
-					/>
-				);
 			});
-			return imgs;
+			return attach;
 		}
 	};
 
@@ -110,7 +167,6 @@ export default class ReplyPreview extends Component {
 		const {
 			message, Message_TimeFormat, customEmojis, baseUrl, user
 		} = this.props;
-
 		const time = moment(message.ts).format(Message_TimeFormat);
 		return (
 			<View style={styles.container}>
@@ -123,10 +179,10 @@ export default class ReplyPreview extends Component {
 							</View>
 							<Markdown msg={message.msg} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} />
 						</View>
-						{this.renderImage()}
+						{this.renderAttachment()}
 					</View>
 				</View>
-				<CustomIcon name='cross' color='#9ea2a8' size={20} style={styles.close} onPress={this.close} />
+				<CustomIcon name='cross' color={COLOR_TEXT_DESCRIPTION} size={20} style={styles.close} onPress={this.close} />
 			</View>
 		);
 	}

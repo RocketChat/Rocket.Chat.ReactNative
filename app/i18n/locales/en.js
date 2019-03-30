@@ -349,7 +349,7 @@ export default {
 	Yesterday: 'Yesterday',
 	You_are_in_preview_mode: 'You are in preview mode',
 	You_are_offline: 'You are offline',
-	You_can_search_using_RegExp_eg: 'You can search using RegExp. e.g. `/^text$/i`',
+	You_can_search_using_RegExp_eg: 'You can use RegExp. e.g. `/^text$/i`',
 	You_colon: 'You: ',
 	you_were_mentioned: 'you were mentioned',
 	you: 'you',

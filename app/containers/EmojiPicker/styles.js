@@ -1,8 +1,9 @@
 import { StyleSheet } from 'react-native';
+import { COLOR_PRIMARY, COLOR_WHITE } from '../../constants/colors';
 
 export default StyleSheet.create({
 	background: {
-		backgroundColor: '#fff'
+		backgroundColor: COLOR_WHITE
 	},
 	container: {
 		flex: 1
@@ -27,7 +28,7 @@ export default StyleSheet.create({
 		left: 0,
 		right: 0,
 		height: 2,
-		backgroundColor: '#007aff',
+		backgroundColor: COLOR_PRIMARY,
 		bottom: 0
 	},
 	tabLine: {
