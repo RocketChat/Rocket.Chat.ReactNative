@@ -6,13 +6,14 @@ import PropTypes from 'prop-types';
 
 import Avatar from '../containers/Avatar';
 import Touch from '../utils/touch';
-import { isIOS } from '../utils/deviceInfo';
 import { CustomIcon } from '../lib/Icons';
+import sharedStyles from '../views/Styles';
+import { COLOR_PRIMARY, COLOR_WHITE } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	button: {
 		height: 54,
-		backgroundColor: '#fff'
+		backgroundColor: COLOR_WHITE
 	},
 	container: {
 		flexDirection: 'row'
@@ -23,23 +24,23 @@ const styles = StyleSheet.create({
 	},
 	textContainer: {
 		flex: 1,
-		flexDirection: 'column'
+		flexDirection: 'column',
+		justifyContent: 'center'
 	},
 	name: {
-		fontSize: 18,
-		color: '#0C0D0F',
-		marginTop: isIOS ? 6 : 3,
-		marginBottom: 1,
-		textAlign: 'left'
+		fontSize: 17,
+		...sharedStyles.textMedium,
+		...sharedStyles.textColorNormal
 	},
 	username: {
 		fontSize: 14,
-		color: '#9EA2A8'
+		...sharedStyles.textRegular,
+		...sharedStyles.textColorDescription
 	},
 	icon: {
 		marginHorizontal: 15,
 		alignSelf: 'center',
-		color: '#1D74F5'
+		color: COLOR_PRIMARY
 	}
 });
 

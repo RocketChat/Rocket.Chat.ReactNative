@@ -7,6 +7,7 @@ import equal from 'deep-equal';
 import PhotoModal from './PhotoModal';
 import Markdown from './Markdown';
 import styles from './styles';
+import { COLOR_WHITE } from '../../constants/colors';
 
 export default class extends Component {
 	static propTypes = {
@@ -71,7 +72,7 @@ export default class extends Component {
 					onPress={() => this.onPressButton()}
 					onActiveStateChange={this.isPressed}
 					style={styles.imageContainer}
-					underlayColor='#fff'
+					underlayColor={COLOR_WHITE}
 				>
 					<FastImage
 						style={[styles.image, isPressed && { opacity: 0.5 }]}

@@ -7,6 +7,10 @@ import PropTypes from 'prop-types';
 
 import I18n from '../i18n';
 import debounce from '../utils/debounce';
+import sharedStyles from '../views/Styles';
+import {
+	COLOR_BACKGROUND_CONTAINER, COLOR_DANGER, COLOR_SUCCESS, COLOR_WHITE
+} from '../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
@@ -14,25 +18,25 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		top: 0,
 		height: 41,
-		backgroundColor: '#F7F8FA',
+		backgroundColor: COLOR_BACKGROUND_CONTAINER,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
 		elevation: 4
 	},
 	text: {
-		color: '#fff',
+		color: COLOR_WHITE,
 		fontSize: 15,
-		fontWeight: 'normal'
+		...sharedStyles.textRegular
 	},
 	textConnecting: {
-		color: '#9EA2A8'
+		...sharedStyles.textColorDescription
 	},
 	containerConnected: {
-		backgroundColor: '#2de0a5'
+		backgroundColor: COLOR_SUCCESS
 	},
 	containerOffline: {
-		backgroundColor: '#f5455c'
+		backgroundColor: COLOR_DANGER
 	},
 	activityIndicator: {
 		marginRight: 15

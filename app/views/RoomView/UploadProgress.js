@@ -11,7 +11,10 @@ import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
-import { COLOR_SEPARATOR } from '../../constants/colors';
+import {
+	COLOR_SEPARATOR, COLOR_PRIMARY, COLOR_BACKGROUND_CONTAINER, COLOR_TEXT_DESCRIPTION, COLOR_DANGER
+} from '../../constants/colors';
+import sharedStyles from '../Styles';
 
 const styles = StyleSheet.create({
 	container: {
@@ -21,7 +24,7 @@ const styles = StyleSheet.create({
 		maxHeight: 246
 	},
 	item: {
-		backgroundColor: '#F1F2F4',
+		backgroundColor: COLOR_BACKGROUND_CONTAINER,
 		height: 54,
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		borderColor: COLOR_SEPARATOR,
@@ -40,19 +43,20 @@ const styles = StyleSheet.create({
 	descriptionText: {
 		fontSize: 16,
 		lineHeight: 20,
-		color: '#54585E'
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textRegular
 	},
 	progress: {
 		position: 'absolute',
 		bottom: 0,
-		backgroundColor: '#1D74F5',
+		backgroundColor: COLOR_PRIMARY,
 		height: 3
 	},
 	tryAgainButtonText: {
-		color: '#1D74F5',
+		color: COLOR_PRIMARY,
 		fontSize: 16,
-		fontWeight: '500',
-		lineHeight: 20
+		lineHeight: 20,
+		...sharedStyles.textMedium
 	}
 });
 
@@ -144,11 +148,11 @@ export default class UploadProgress extends Component {
 			return (
 				[
 					<View key='row' style={styles.row}>
-						<CustomIcon name='file-generic' size={20} color='#9EA2A8' />
+						<CustomIcon name='file-generic' size={20} color={COLOR_TEXT_DESCRIPTION} />
 						<Text style={[styles.descriptionContainer, styles.descriptionText]} ellipsizeMode='tail' numberOfLines={1}>
 							{I18n.t('Uploading')} {item.name}
 						</Text>
-						<CustomIcon name='cross' size={20} color='#9EA2A8' onPress={() => this.cancelUpload(item)} />
+						<CustomIcon name='cross' size={20} color={COLOR_TEXT_DESCRIPTION} onPress={() => this.cancelUpload(item)} />
 					</View>,
 					<View key='progress' style={[styles.progress, { width: (window.width * item.progress) / 100 }]} />
 				]
@@ -156,14 +160,14 @@ export default class UploadProgress extends Component {
 		}
 		return (
 			<View style={styles.row}>
-				<CustomIcon name='warning' size={20} color='#FF5050' />
+				<CustomIcon name='warning' size={20} color={COLOR_DANGER} />
 				<View style={styles.descriptionContainer}>
 					<Text style={styles.descriptionText}>{I18n.t('Error_uploading')} {item.name}</Text>
 					<TouchableOpacity onPress={() => this.tryAgain(item)}>
 						<Text style={styles.tryAgainButtonText}>{I18n.t('Try_again')}</Text>
 					</TouchableOpacity>
 				</View>
-				<CustomIcon name='cross' size={20} color='#9EA2A8' onPress={() => this.deleteUpload(item)} />
+				<CustomIcon name='cross' size={20} color={COLOR_TEXT_DESCRIPTION} onPress={() => this.deleteUpload(item)} />
 			</View>
 		);
 	}
