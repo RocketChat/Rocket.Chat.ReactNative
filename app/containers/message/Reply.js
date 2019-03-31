@@ -6,15 +6,19 @@ import { RectButton } from 'react-native-gesture-handler';
 
 import Markdown from './Markdown';
 import openLink from '../../utils/openLink';
+import sharedStyles from '../../views/Styles';
+import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, COLOR_WHITE } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	button: {
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginTop: 15,
+		marginTop: 6,
 		alignSelf: 'flex-end',
-		backgroundColor: '#f3f4f5',
+		backgroundColor: COLOR_BACKGROUND_CONTAINER,
+		borderColor: COLOR_BORDER,
+		borderWidth: 1,
 		borderRadius: 4
 	},
 	attachmentContainer: {
@@ -30,16 +34,16 @@ const styles = StyleSheet.create({
 	},
 	author: {
 		flex: 1,
-		color: '#0C0D0F',
 		fontSize: 16,
-		fontWeight: '500',
-		marginRight: 10
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textMedium
 	},
 	time: {
 		fontSize: 12,
-		fontWeight: 'normal',
-		color: '#9ea2a8',
-		marginLeft: 5
+		marginLeft: 10,
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textRegular,
+		fontWeight: '300'
 	},
 	fieldsContainer: {
 		flex: 1,
@@ -51,7 +55,14 @@ const styles = StyleSheet.create({
 		padding: 10
 	},
 	fieldTitle: {
-		fontWeight: 'bold'
+		fontSize: 14,
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textSemibold
+	},
+	fieldValue: {
+		fontSize: 14,
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textRegular
 	},
 	marginTop: {
 		marginTop: 4
@@ -121,7 +132,7 @@ const Reply = ({
 				{attachment.fields.map(field => (
 					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
 						<Text style={styles.fieldTitle}>{field.title}</Text>
-						<Text>{field.value}</Text>
+						<Text style={styles.fieldValue}>{field.value}</Text>
 					</View>
 				))}
 			</View>
@@ -133,7 +144,7 @@ const Reply = ({
 			onPress={() => onPress(attachment, baseUrl, user)}
 			style={[styles.button, index > 0 && styles.marginTop]}
 			activeOpacity={0.5}
-			underlayColor='#fff'
+			underlayColor={COLOR_WHITE}
 		>
 			<View style={styles.attachmentContainer}>
 				{renderTitle()}

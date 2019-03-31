@@ -5,6 +5,8 @@ import {
 import PropTypes from 'prop-types';
 
 import I18n from '../../../i18n';
+import sharedStyles from '../../Styles';
+import { COLOR_PRIMARY } from '../../../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
@@ -17,11 +19,13 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 14,
-		color: '#0C0D0F'
+		...sharedStyles.textColorTitle,
+		...sharedStyles.textRegular
 	},
 	server: {
 		fontSize: 12,
-		color: '#1D74F5'
+		color: COLOR_PRIMARY,
+		...sharedStyles.textRegular
 	},
 	disclosure: {
 		marginLeft: 3,

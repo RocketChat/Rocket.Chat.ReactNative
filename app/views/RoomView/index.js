@@ -30,6 +30,7 @@ import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import RoomHeaderView from './Header';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
+import { COLOR_WHITE } from '../../constants/colors';
 
 @connect(state => ({
 	user: {
@@ -350,7 +351,7 @@ export default class RoomView extends LoggedView {
 						onPress={this.joinRoom}
 						style={styles.joinRoomButton}
 						activeOpacity={0.5}
-						underlayColor='#fff'
+						underlayColor={COLOR_WHITE}
 					>
 						<Text style={styles.joinRoomText} testID='room-view-join-button'>{I18n.t('Join')}</Text>
 					</RectButton>
@@ -360,14 +361,14 @@ export default class RoomView extends LoggedView {
 		if (this.isReadOnly()) {
 			return (
 				<View style={styles.readOnly} key='room-view-read-only'>
-					<Text>{I18n.t('This_room_is_read_only')}</Text>
+					<Text style={styles.previewMode}>{I18n.t('This_room_is_read_only')}</Text>
 				</View>
 			);
 		}
 		if (this.isBlocked()) {
 			return (
 				<View style={styles.readOnly} key='room-view-block'>
-					<Text>{I18n.t('This_room_is_blocked')}</Text>
+					<Text style={styles.previewMode}>{I18n.t('This_room_is_blocked')}</Text>
 				</View>
 			);
 		}
