@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
-import { COLOR_DANGER } from '../../constants/colors';
+import { COLOR_DANGER, COLOR_SEPARATOR } from '../../constants/colors';
+import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	buttonInverted: {
@@ -29,22 +30,27 @@ export default StyleSheet.create({
 	},
 	switchLabelPrimary: {
 		fontSize: 16,
-		paddingBottom: 6
+		paddingBottom: 6,
+		...sharedStyles.textRegular,
+		...sharedStyles.textColorNormal
 	},
 	switchLabelSecondary: {
-		fontSize: 12
+		fontSize: 12,
+		...sharedStyles.textRegular,
+		...sharedStyles.textColorNormal
 	},
 	switch: {
 		alignSelf: 'center'
 	},
 	divider: {
 		height: StyleSheet.hairlineWidth,
-		borderColor: '#ddd',
+		borderColor: COLOR_SEPARATOR,
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		marginVertical: 20
 	},
 	broadcast: {
-		fontWeight: 'bold',
-		textAlign: 'center'
+		textAlign: 'center',
+		...sharedStyles.textSemibold,
+		...sharedStyles.textColorNormal
 	}
 });

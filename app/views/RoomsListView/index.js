@@ -12,7 +12,7 @@ import SearchBox from '../../containers/SearchBox';
 import ConnectionBadge from '../../containers/ConnectionBadge';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
-import RoomItem from '../../presentation/RoomItem';
+import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
 import styles from './styles';
 import LoggedView from '../View';
 import log from '../../utils/log';
@@ -34,10 +34,9 @@ import RoomsListHeaderView from './Header';
 import { DrawerButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 
-const ROW_HEIGHT = 70;
 const SCROLL_OFFSET = 56;
 
-const shouldUpdateProps = ['searchText', 'loadingServer', 'showServerDropdown', 'showSortDropdown', 'sortBy', 'groupByType', 'showFavorites', 'showUnread', 'useRealName', 'appState'];
+const shouldUpdateProps = ['searchText', 'loadingServer', 'showServerDropdown', 'showSortDropdown', 'sortBy', 'groupByType', 'showFavorites', 'showUnread', 'useRealName', 'StoreLastMessage', 'appState'];
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.rid;
 
@@ -53,7 +52,8 @@ const keyExtractor = item => item.rid;
 	showFavorites: state.sortPreferences.showFavorites,
 	showUnread: state.sortPreferences.showUnread,
 	useRealName: state.settings.UI_Use_Real_Name,
-	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background'
+	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
+	StoreLastMessage: state.settings.Store_Last_Message
 }), dispatch => ({
 	toggleSortDropdown: () => dispatch(toggleSortDropdownAction()),
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
@@ -106,6 +106,7 @@ export default class RoomsListView extends LoggedView {
 		showFavorites: PropTypes.bool,
 		showUnread: PropTypes.bool,
 		useRealName: PropTypes.bool,
+		StoreLastMessage: PropTypes.bool,
 		// appState: PropTypes.string,
 		toggleSortDropdown: PropTypes.func,
 		openSearchHeader: PropTypes.func,
@@ -243,7 +244,8 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	internalSetState = (...args) => {
-		if (isIOS) {
+		const { navigation } = this.props;
+		if (isIOS && navigation.isFocused()) {
 			LayoutAnimation.easeInEaseOut();
 		}
 		this.setState(...args);
@@ -466,7 +468,7 @@ export default class RoomsListView extends LoggedView {
 	)
 
 	renderItem = ({ item }) => {
-		const { useRealName, baseUrl } = this.props;
+		const { useRealName, baseUrl, StoreLastMessage } = this.props;
 
 		return (
 			<RoomItem
@@ -482,14 +484,13 @@ export default class RoomsListView extends LoggedView {
 				id={item.rid}
 				type={item.t}
 				baseUrl={baseUrl}
+				showLastMessage={StoreLastMessage}
 				onPress={() => this._onPressItem(item)}
 				testID={`rooms-list-view-item-${ item.name }`}
 				height={ROW_HEIGHT}
 			/>
 		);
 	}
-
-	renderSeparator = () => <View style={styles.separator} />
 
 	renderSectionHeader = header => (
 		<View style={styles.groupTitleContainer}>
@@ -517,7 +518,6 @@ export default class RoomsListView extends LoggedView {
 					keyExtractor={keyExtractor}
 					style={styles.list}
 					renderItem={this.renderItem}
-					ItemSeparatorComponent={this.renderSeparator}
 					ListHeaderComponent={() => this.renderSectionHeader(header)}
 					getItemLayout={getItemLayout}
 					enableEmptySections
@@ -544,7 +544,6 @@ export default class RoomsListView extends LoggedView {
 					keyExtractor={keyExtractor}
 					style={styles.list}
 					renderItem={this.renderItem}
-					ItemSeparatorComponent={this.renderSeparator}
 					getItemLayout={getItemLayout}
 					enableEmptySections
 					removeClippedSubviews
@@ -587,7 +586,6 @@ export default class RoomsListView extends LoggedView {
 					keyExtractor={keyExtractor}
 					style={styles.list}
 					renderItem={this.renderItem}
-					ItemSeparatorComponent={this.renderSeparator}
 					ListHeaderComponent={this.renderListHeader}
 					getItemLayout={getItemLayout}
 					enableEmptySections

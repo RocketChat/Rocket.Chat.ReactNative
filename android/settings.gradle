@@ -11,8 +11,8 @@ include ':react-native-device-info'
 project(':react-native-device-info').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-device-info/android')
 include ':react-native-gesture-handler'
 project(':react-native-gesture-handler').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-gesture-handler/android')
-include ':@remobile/react-native-toast'
-project(':@remobile/react-native-toast').projectDir = new File(rootProject.projectDir, '../node_modules/@remobile/react-native-toast/android')
+include ':react-native-toast'
+project(':react-native-toast').projectDir = new File(rootProject.projectDir, '../node_modules/@remobile/react-native-toast/android')
 include ':rn-fetch-blob'
 project(':rn-fetch-blob').projectDir = new File(rootProject.projectDir, '../node_modules/rn-fetch-blob/android')
 include ':react-native-image-crop-picker'

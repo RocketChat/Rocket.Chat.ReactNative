@@ -13,7 +13,7 @@ target 'RocketChatRN' do
     'Core',
     'RCTActionSheet',
     'RCTAnimation',
-    'RCTGeolocation',
+#    'RCTGeolocation',
     'RCTImage',
     'RCTLinkingIOS',
     'RCTNetwork',

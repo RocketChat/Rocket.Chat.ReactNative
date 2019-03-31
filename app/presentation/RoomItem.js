@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import {
-	View, Text, StyleSheet, Animated, Dimensions
+	View, Text, StyleSheet, Animated, Dimensions, PixelRatio
 } from 'react-native';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
@@ -13,33 +13,38 @@ import Avatar from '../containers/Avatar';
 import Status from '../containers/Status';
 import RoomTypeIcon from '../containers/RoomTypeIcon';
 import I18n from '../i18n';
-import { isIOS } from '../utils/deviceInfo';
 import { CustomIcon } from '../lib/Icons';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 // import database from '../lib/realm'; TODO
+import sharedStyles from '../views/Styles';
+import { COLOR_SEPARATOR, COLOR_PRIMARY, COLOR_WHITE } from '../constants/colors';
+
+export const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
 
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginHorizontal: 15
+		marginLeft: 14,
+		height: ROW_HEIGHT
 	},
 	centerContainer: {
 		flex: 1,
-		height: '100%'
+		paddingVertical: 10,
+		paddingRight: 14,
+		borderBottomWidth: StyleSheet.hairlineWidth,
+		borderColor: COLOR_SEPARATOR
 	},
 	title: {
 		flex: 1,
-		fontSize: 18,
-		color: '#0C0D0F',
-		fontWeight: '400',
-		marginRight: 5,
-		paddingTop: 0,
-		paddingBottom: 0
+		fontSize: 17,
+		lineHeight: 20,
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textMedium
 	},
 	alert: {
-		fontWeight: '600'
+		...sharedStyles.textSemibold
 	},
 	row: {
 		flex: 1,
@@ -48,35 +53,34 @@ const styles = StyleSheet.create({
 	},
 	titleContainer: {
 		width: '100%',
-		marginTop: isIOS ? 5 : 2,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
 	date: {
-		fontSize: 14,
-		color: '#9EA2A8',
-		fontWeight: 'normal',
-		paddingTop: 0,
-		paddingBottom: 0
+		fontSize: 13,
+		marginLeft: 4,
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textRegular
 	},
 	updateAlert: {
-		color: '#1D74F5',
-		fontWeight: '700'
+		color: COLOR_PRIMARY,
+		...sharedStyles.textSemibold
 	},
 	unreadNumberContainer: {
 		minWidth: 23,
 		padding: 3,
 		borderRadius: 4,
-		backgroundColor: '#1D74F5',
+		backgroundColor: COLOR_PRIMARY,
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		marginLeft: 10
 	},
 	unreadNumberText: {
-		color: '#fff',
+		color: COLOR_WHITE,
 		overflow: 'hidden',
-		fontSize: 14,
-		fontWeight: '500',
+		fontSize: 13,
+		...sharedStyles.textRegular,
 		letterSpacing: 0.56
 	},
 	status: {
@@ -85,12 +89,13 @@ const styles = StyleSheet.create({
 	},
 	markdownText: {
 		flex: 1,
-		color: '#9EA2A8',
-		fontSize: 15,
-		fontWeight: 'normal'
+		fontSize: 14,
+		lineHeight: 17,
+		...sharedStyles.textRegular,
+		...sharedStyles.textColorDescription
 	},
 	markdownTextAlert: {
-		color: '#0C0D0F'
+		...sharedStyles.textColorNormal
 	},
 	avatar: {
 		marginRight: 10
@@ -131,22 +136,20 @@ const renderNumber = (unread, userMentions) => {
 	);
 };
 
-const attrs = ['name', 'unread', 'userMentions', 'StoreLastMessage', 'alert', 'type'];
+const attrs = ['name', 'unread', 'userMentions', 'showLastMessage', 'alert', 'type'];
 @connect(state => ({
 	user: {
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token
-	},
-	StoreLastMessage: state.settings.Store_Last_Message,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	}
 }))
 export default class RoomItem extends React.Component {
 	static propTypes = {
 		type: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
 		baseUrl: PropTypes.string.isRequired,
-		StoreLastMessage: PropTypes.bool,
+		showLastMessage: PropTypes.bool,
 		_updatedAt: PropTypes.string,
 		lastMessage: PropTypes.object,
 		favorite: PropTypes.bool,
@@ -197,10 +200,10 @@ export default class RoomItem extends React.Component {
 
 	get lastMessage() {
 		const {
-			lastMessage, type, StoreLastMessage, user
+			lastMessage, type, showLastMessage, user
 		} = this.props;
 
-		if (!StoreLastMessage) {
+		if (!showLastMessage) {
 			return '';
 		}
 		if (!lastMessage) {
@@ -347,7 +350,7 @@ export default class RoomItem extends React.Component {
 
 	render() {
 		const {
-			favorite, unread, userMentions, name, _updatedAt, alert, testID, height, onPress
+			unread, userMentions, name, _updatedAt, alert, testID, height, onPress
 		} = this.props;
 
 		const date = this.formatDate(_updatedAt);
@@ -387,10 +390,10 @@ export default class RoomItem extends React.Component {
 					underlayColor='#e1e5e8'
 					testID={testID}
 					style={{ backgroundColor: 'white' }}
-
 				>
+
 					<View
-						style={[styles.container, favorite && styles.favorite, height && { height }]}
+						style={[styles.container, height && { height }]}
 						accessibilityLabel={accessibilityLabel}
 					>
 						{this.avatar}

@@ -214,3 +214,24 @@ $ detox build --configuration ios.sim.release
 ```bash
 $ detox test --configuration ios.sim.release
 ```
+
+## Storybook
+- Open index.js
+
+- Uncomment following line
+
+```bash
+import './storybook';
+```
+
+- Comment out following lines
+```bash
+import './app/ReactotronConfig';
+import { AppRegistry } from 'react-native';
+import App from './app/index';
+import { name as appName } from './app.json';
+
+AppRegistry.registerComponent(appName, () => App);
+```
+
+- Start your application again

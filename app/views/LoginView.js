@@ -18,6 +18,7 @@ import I18n from '../i18n';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import { LegalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
+import { COLOR_PRIMARY } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	buttonsContainer: {
@@ -31,12 +32,12 @@ const styles = StyleSheet.create({
 	},
 	dontHaveAccount: {
 		...sharedStyles.textRegular,
-		color: '#9ea2a8',
+		...sharedStyles.textColorDescription,
 		fontSize: 13
 	},
 	createAccount: {
 		...sharedStyles.textSemibold,
-		color: '#1d74f5',
+		color: COLOR_PRIMARY,
 		fontSize: 13
 	},
 	loginTitle: {
@@ -96,7 +97,7 @@ export default class LoginView extends LoggedView {
 
 	componentWillReceiveProps(nextProps) {
 		const { Site_Name, error } = this.props;
-		if (Site_Name && nextProps.Site_Name !== Site_Name) {
+		if (nextProps.Site_Name && nextProps.Site_Name !== Site_Name) {
 			this.setTitle(nextProps.Site_Name);
 		} else if (nextProps.failure && !equal(error, nextProps.error)) {
 			if (nextProps.error && nextProps.error.error === 'totp-required') {

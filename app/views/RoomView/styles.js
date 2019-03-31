@@ -1,35 +1,32 @@
 import { StyleSheet } from 'react-native';
+import {
+	COLOR_SEPARATOR, COLOR_PRIMARY, COLOR_WHITE, COLOR_TEXT_DESCRIPTION
+} from '../../constants/colors';
+
+import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
-	typing: { fontWeight: 'bold', paddingHorizontal: 15, height: 25 },
 	container: {
 		flex: 1,
-		backgroundColor: '#fff'
+		backgroundColor: COLOR_WHITE
 	},
 	safeAreaView: {
 		flex: 1
 	},
 	list: {
-		flex: 1,
-		transform: [{ scaleY: -1 }]
+		flex: 1
+	},
+	contentContainer: {
+		paddingTop: 10
 	},
 	separator: {
 		height: 1,
-		backgroundColor: '#CED0CE'
-	},
-	bannerContainer: {
-		backgroundColor: 'orange'
-	},
-	bannerText: {
-		margin: 5,
-		textAlign: 'center',
-		color: '#a00'
+		backgroundColor: COLOR_SEPARATOR
 	},
 	loadingMore: {
-		transform: [{ scaleY: -1 }],
 		textAlign: 'center',
 		padding: 15,
-		color: '#ccc'
+		color: COLOR_TEXT_DESCRIPTION
 	},
 	readOnly: {
 		justifyContent: 'flex-end',
@@ -46,11 +43,6 @@ export default StyleSheet.create({
 	loading: {
 		flex: 1
 	},
-	imageBackground: {
-		width: '100%',
-		height: '100%',
-		position: 'absolute'
-	},
 	joinRoomContainer: {
 		justifyContent: 'flex-end',
 		alignItems: 'center',
@@ -63,17 +55,17 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		backgroundColor: '#1d74f5',
-		borderRadius: 4
+		backgroundColor: COLOR_PRIMARY,
+		borderRadius: 2
 	},
 	joinRoomText: {
-		color: '#fff',
+		color: COLOR_WHITE,
 		fontSize: 14,
-		fontWeight: '500'
+		...sharedStyles.textMedium
 	},
 	previewMode: {
 		fontSize: 16,
-		fontWeight: '500',
-		color: '#0C0D0F'
+		...sharedStyles.textMedium,
+		...sharedStyles.textColorNormal
 	}
 });

@@ -7,11 +7,12 @@ import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
+import moment from 'moment';
 
-import { openRoom as openRoomAction, closeRoom as closeRoomAction, setLastOpen as setLastOpenAction } from '../../actions/room';
+import { openRoom as openRoomAction, closeRoom as closeRoomAction } from '../../actions/room';
 import { toggleReactionPicker as toggleReactionPickerAction, actionsShow as actionsShowAction } from '../../actions/messages';
 import LoggedView from '../View';
-import { List } from './ListView';
+import { List } from './List';
 import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
@@ -28,6 +29,8 @@ import ConnectionBadge from '../../containers/ConnectionBadge';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import RoomHeaderView from './Header';
 import StatusBar from '../../containers/StatusBar';
+import Separator from './Separator';
+import { COLOR_WHITE } from '../../constants/colors';
 
 @connect(state => ({
 	user: {
@@ -41,7 +44,6 @@ import StatusBar from '../../containers/StatusBar';
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background'
 }), dispatch => ({
 	openRoom: room => dispatch(openRoomAction(room)),
-	setLastOpen: date => dispatch(setLastOpenAction(date)),
 	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
 	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage)),
 	closeRoom: () => dispatch(closeRoomAction())
@@ -66,7 +68,6 @@ export default class RoomView extends LoggedView {
 	static propTypes = {
 		navigation: PropTypes.object,
 		openRoom: PropTypes.func.isRequired,
-		setLastOpen: PropTypes.func.isRequired,
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
 			username: PropTypes.string.isRequired,
@@ -88,9 +89,14 @@ export default class RoomView extends LoggedView {
 		this.state = {
 			loaded: false,
 			joined: this.rooms.length > 0,
-			room: {}
+			room: {},
+			lastOpen: null
 		};
+		this.beginAnimating = false;
 		this.onReactionPress = this.onReactionPress.bind(this);
+		setTimeout(() => {
+			this.beginAnimating = true;
+		}, 300);
 	}
 
 	componentDidMount() {
@@ -174,7 +180,7 @@ export default class RoomView extends LoggedView {
 	};
 
 	internalSetState = (...args) => {
-		if (isIOS) {
+		if (isIOS && this.beginAnimating) {
 			LayoutAnimation.easeInEaseOut();
 		}
 		this.setState(...args);
@@ -182,7 +188,7 @@ export default class RoomView extends LoggedView {
 
 	// eslint-disable-next-line react/sort-comp
 	updateRoom = () => {
-		const { openRoom, setLastOpen } = this.props;
+		const { openRoom } = this.props;
 
 		if (this.rooms.length > 0) {
 			const { room: prevRoom } = this.state;
@@ -194,9 +200,9 @@ export default class RoomView extends LoggedView {
 					...room
 				});
 				if (room.alert || room.unread || room.userMentions) {
-					setLastOpen(room.ls);
+					this.setLastOpen(room.ls);
 				} else {
-					setLastOpen(null);
+					this.setLastOpen(null);
 				}
 			}
 		} else {
@@ -209,12 +215,13 @@ export default class RoomView extends LoggedView {
 	}
 
 	sendMessage = (message) => {
-		const { setLastOpen } = this.props;
 		LayoutAnimation.easeInEaseOut();
 		RocketChat.sendMessage(this.rid, message).then(() => {
-			setLastOpen(null);
+			this.setLastOpen(null);
 		});
 	};
+
+	setLastOpen = lastOpen => this.setState({ lastOpen });
 
 	joinRoom = async() => {
 		try {
@@ -258,8 +265,46 @@ export default class RoomView extends LoggedView {
 	}
 
 	renderItem = (item, previousItem) => {
-		const { room } = this.state;
+		const { room, lastOpen } = this.state;
 		const { user } = this.props;
+		let dateSeparator = null;
+		let showUnreadSeparator = false;
+
+		if (!previousItem) {
+			dateSeparator = item.ts;
+			showUnreadSeparator = moment(item.ts).isAfter(lastOpen);
+		} else {
+			showUnreadSeparator = lastOpen
+				&& moment(item.ts).isAfter(lastOpen)
+				&& moment(previousItem.ts).isBefore(lastOpen);
+			if (!moment(item.ts).isSame(previousItem.ts, 'day')) {
+				dateSeparator = previousItem.ts;
+			}
+		}
+
+		if (showUnreadSeparator || dateSeparator) {
+			return (
+				<React.Fragment>
+					<Message
+						key={item._id}
+						item={item}
+						status={item.status}
+						reactions={JSON.parse(JSON.stringify(item.reactions))}
+						user={user}
+						archived={room.archived}
+						broadcast={room.broadcast}
+						previousItem={previousItem}
+						_updatedAt={item._updatedAt}
+						onReactionPress={this.onReactionPress}
+						onLongPress={this.onMessageLongPress}
+					/>
+					<Separator
+						ts={dateSeparator}
+						unread={showUnreadSeparator}
+					/>
+				</React.Fragment>
+			);
+		}
 
 		return (
 			<Message
@@ -289,7 +334,7 @@ export default class RoomView extends LoggedView {
 						onPress={this.joinRoom}
 						style={styles.joinRoomButton}
 						activeOpacity={0.5}
-						underlayColor='#fff'
+						underlayColor={COLOR_WHITE}
 					>
 						<Text style={styles.joinRoomText} testID='room-view-join-button'>{I18n.t('Join')}</Text>
 					</RectButton>
@@ -299,14 +344,14 @@ export default class RoomView extends LoggedView {
 		if (this.isReadOnly()) {
 			return (
 				<View style={styles.readOnly} key='room-view-read-only'>
-					<Text>{I18n.t('This_room_is_read_only')}</Text>
+					<Text style={styles.previewMode}>{I18n.t('This_room_is_read_only')}</Text>
 				</View>
 			);
 		}
 		if (this.isBlocked()) {
 			return (
 				<View style={styles.readOnly} key='room-view-block'>
-					<Text>{I18n.t('This_room_is_blocked')}</Text>
+					<Text style={styles.previewMode}>{I18n.t('This_room_is_blocked')}</Text>
 				</View>
 			);
 		}

@@ -13,6 +13,7 @@ import I18n from '../i18n';
 import DisclosureIndicator from '../containers/DisclosureIndicator';
 import { CloseModalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
+import { COLOR_SEPARATOR, COLOR_WHITE } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
@@ -21,13 +22,13 @@ const styles = StyleSheet.create({
 	},
 	scroll: {
 		marginTop: 35,
-		backgroundColor: '#fff',
-		borderColor: '#cbced1',
+		backgroundColor: COLOR_WHITE,
+		borderColor: COLOR_SEPARATOR,
 		borderTopWidth: StyleSheet.hairlineWidth,
 		borderBottomWidth: StyleSheet.hairlineWidth
 	},
 	separator: {
-		backgroundColor: '#cbced1',
+		backgroundColor: COLOR_SEPARATOR,
 		height: StyleSheet.hairlineWidth,
 		width: '100%',
 		marginLeft: 20
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
 	item: {
 		width: '100%',
 		height: 48,
-		backgroundColor: '#fff',
+		backgroundColor: COLOR_WHITE,
 		paddingLeft: 20,
 		paddingRight: 10,
 		flexDirection: 'row',
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		...sharedStyles.textMedium,
-		color: '#0c0d0f',
+		...sharedStyles.textColorNormal,
 		fontSize: 18
 	}
 });
