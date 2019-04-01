@@ -93,7 +93,7 @@ export default class MentionedMessagesView extends LoggedView {
 
 	renderEmpty = () => (
 		<View style={styles.listEmptyContainer} testID='mentioned-messages-view'>
-			<Text>{I18n.t('No_mentioned_messages')}</Text>
+			<Text style={styles.noDataFound}>{I18n.t('No_mentioned_messages')}</Text>
 		</View>
 	)
 
@@ -101,7 +101,6 @@ export default class MentionedMessagesView extends LoggedView {
 		const { user, customEmojis, baseUrl } = this.props;
 		return (
 			<Message
-				style={styles.message}
 				customEmojis={customEmojis}
 				baseUrl={baseUrl}
 				user={user}

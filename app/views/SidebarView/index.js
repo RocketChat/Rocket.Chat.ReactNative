@@ -19,6 +19,7 @@ import { getReadableVersion } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import SidebarItem from './SidebarItem';
+import { COLOR_TEXT } from '../../constants/colors';
 
 const keyExtractor = item => item.id;
 
@@ -163,21 +164,21 @@ export default class Sidebar extends Component {
 			<React.Fragment>
 				<SidebarItem
 					text={I18n.t('Chats')}
-					left={<CustomIcon name='chat' size={20} color='#292E35' />}
+					left={<CustomIcon name='chat' size={20} color={COLOR_TEXT} />}
 					onPress={() => this.sidebarNavigate('RoomsListView')}
 					testID='sidebar-chats'
 					current={activeItemKey === 'ChatsStack'}
 				/>
 				<SidebarItem
 					text={I18n.t('Profile')}
-					left={<CustomIcon name='user' size={20} color='#292E35' />}
+					left={<CustomIcon name='user' size={20} color={COLOR_TEXT} />}
 					onPress={() => this.sidebarNavigate('ProfileView')}
 					testID='sidebar-profile'
 					current={activeItemKey === 'ProfileStack'}
 				/>
 				<SidebarItem
 					text={I18n.t('Settings')}
-					left={<CustomIcon name='cog' size={20} color='#292E35' />}
+					left={<CustomIcon name='cog' size={20} color={COLOR_TEXT} />}
 					onPress={() => this.sidebarNavigate('SettingsView')}
 					testID='sidebar-settings'
 					current={activeItemKey === 'SettingsStack'}
@@ -185,7 +186,7 @@ export default class Sidebar extends Component {
 				<Separator key='separator-logout' />
 				<SidebarItem
 					text={I18n.t('Logout')}
-					left={<CustomIcon name='sign-out' size={20} color='#292E35' />}
+					left={<CustomIcon name='sign-out' size={20} color={COLOR_TEXT} />}
 					onPress={this.logout}
 					testID='sidebar-logout'
 				/>
@@ -219,7 +220,7 @@ export default class Sidebar extends Component {
 				<ScrollView style={styles.container} {...scrollPersistTaps}>
 					<RectButton
 						onPress={this.toggleStatus}
-						underlayColor='#292E35'
+						underlayColor={COLOR_TEXT}
 						activeOpacity={0.1}
 						testID='sidebar-toggle-status'
 						style={styles.header}
@@ -234,7 +235,7 @@ export default class Sidebar extends Component {
 						<View style={styles.headerTextContainer}>
 							<View style={styles.headerUsername}>
 								<StatusContainer style={styles.status} size={12} id={user.id} />
-								<Text numberOfLines={1}>{user.username}</Text>
+								<Text numberOfLines={1} style={styles.username}>{user.username}</Text>
 							</View>
 							<Text style={styles.currentServerText} numberOfLines={1}>{Site_Name}</Text>
 						</View>

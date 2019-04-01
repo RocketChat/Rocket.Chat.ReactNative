@@ -6,7 +6,9 @@ import PropTypes from 'prop-types';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 import sharedStyles from '../views/Styles';
-import { COLOR_DANGER, COLOR_TEXT } from '../constants/colors';
+import {
+	COLOR_DANGER, COLOR_TEXT_DESCRIPTION, COLOR_TEXT, COLOR_BORDER
+} from '../constants/colors';
 import { CustomIcon } from '../lib/Icons';
 
 const styles = StyleSheet.create({
@@ -15,22 +17,21 @@ const styles = StyleSheet.create({
 	},
 	label: {
 		marginBottom: 10,
-		color: COLOR_TEXT,
 		fontSize: 14,
-		fontWeight: '700'
+		...sharedStyles.textSemibold,
+		...sharedStyles.textColorNormal
 	},
 	input: {
 		...sharedStyles.textRegular,
+		...sharedStyles.textColorNormal,
 		height: 48,
-		fontSize: 17,
-		color: '#9EA2A8',
-		letterSpacing: 0,
+		fontSize: 16,
 		paddingLeft: 14,
 		paddingRight: 14,
-		borderWidth: 1.5,
+		borderWidth: 1,
 		borderRadius: 2,
 		backgroundColor: 'white',
-		borderColor: '#E7EBF2'
+		borderColor: COLOR_BORDER
 	},
 	inputIconLeft: {
 		paddingLeft: 45
@@ -59,10 +60,10 @@ const styles = StyleSheet.create({
 		right: 15
 	},
 	icon: {
-		color: '#2F343D'
+		color: COLOR_TEXT
 	},
 	password: {
-		color: '#9ea2a8'
+		color: COLOR_TEXT_DESCRIPTION
 	}
 });
 
@@ -144,7 +145,7 @@ export default class RCTextInput extends React.PureComponent {
 						testID={testID}
 						accessibilityLabel={placeholder}
 						placeholder={placeholder}
-						placeholderTextColor='#9ea2a8'
+						placeholderTextColor={COLOR_TEXT_DESCRIPTION}
 						contentDescription={placeholder}
 						{...inputProps}
 					/>

@@ -1,10 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { COLOR_SEPARATOR } from '../../constants/colors';
+import { COLOR_SEPARATOR, COLOR_WHITE } from '../../constants/colors';
+
+import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#fff'
+		backgroundColor: COLOR_WHITE
 	},
 	item: {
 		flexDirection: 'row',
@@ -23,8 +25,9 @@ export default StyleSheet.create({
 	},
 	itemText: {
 		marginVertical: 16,
-		fontWeight: 'bold',
-		color: '#292E35'
+		fontSize: 14,
+		...sharedStyles.textSemibold,
+		...sharedStyles.textColorNormal
 	},
 	separator: {
 		borderBottomWidth: StyleSheet.hairlineWidth,
@@ -45,9 +48,14 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
+	username: {
+		fontSize: 14,
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textMedium
+	},
 	headerIcon: {
 		paddingHorizontal: 10,
-		color: '#292E35'
+		...sharedStyles.textColorNormal
 	},
 	avatar: {
 		marginHorizontal: 10
@@ -56,14 +64,16 @@ export default StyleSheet.create({
 		marginRight: 5
 	},
 	currentServerText: {
-		fontWeight: 'bold'
+		fontSize: 14,
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textSemibold
 	},
 	version: {
-		marginHorizontal: 5,
-		marginBottom: 5,
-		fontWeight: '600',
-		color: '#292E35',
-		fontSize: 13
+		marginHorizontal: 10,
+		marginBottom: 10,
+		fontSize: 13,
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textSemibold
 	},
 	inverted: {
 		transform: [{ scaleY: -1 }]

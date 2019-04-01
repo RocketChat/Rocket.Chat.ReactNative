@@ -26,6 +26,7 @@ import { setUser as setUserAction } from '../../actions/login';
 import { CustomIcon } from '../../lib/Icons';
 import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
+import { COLOR_TEXT } from '../../constants/colors';
 
 @connect(state => ({
 	user: {
@@ -290,12 +291,12 @@ export default class ProfileView extends LoggedView {
 					key: 'profile-view-reset-avatar'
 				})}
 				{this.renderAvatarButton({
-					child: <CustomIcon name='upload' size={30} />,
+					child: <CustomIcon name='upload' size={30} color={COLOR_TEXT} />,
 					onPress: () => this.pickImage(),
 					key: 'profile-view-upload-avatar'
 				})}
 				{this.renderAvatarButton({
-					child: <CustomIcon name='permalink' size={30} />,
+					child: <CustomIcon name='permalink' size={30} color={COLOR_TEXT} />,
 					onPress: () => this.setAvatar({ url: avatarUrl, data: avatarUrl, service: 'url' }),
 					disabled: !avatarUrl,
 					key: 'profile-view-avatar-url-button'

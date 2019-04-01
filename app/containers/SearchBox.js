@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
 import { CustomIcon } from '../lib/Icons';
+import sharedStyles from '../views/Styles';
 
 const styles = StyleSheet.create({
 	container: {
@@ -28,7 +29,8 @@ const styles = StyleSheet.create({
 		fontSize: 17,
 		marginLeft: 8,
 		paddingTop: 0,
-		paddingBottom: 0
+		paddingBottom: 0,
+		...sharedStyles.textRegular
 	}
 });
 

@@ -17,7 +17,7 @@ import Button from '../containers/Button';
 import I18n from '../i18n';
 import { LegalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
-import { COLOR_SEPARATOR } from '../constants/colors';
+import { COLOR_SEPARATOR, COLOR_BORDER } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 	serviceButtonContainer: {
 		borderRadius: 2,
 		borderWidth: 1,
-		borderColor: '#e1e5e8',
+		borderColor: COLOR_BORDER,
 		width: '100%',
 		height: 48,
 		flexDirection: 'row',
@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
 	},
 	serviceText: {
 		...sharedStyles.textRegular,
-		fontSize: 16,
-		color: '#2f343d'
+		...sharedStyles.textColorNormal,
+		fontSize: 16
 	},
 	serviceName: {
 		...sharedStyles.textBold

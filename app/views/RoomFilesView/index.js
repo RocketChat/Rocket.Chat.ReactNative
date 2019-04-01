@@ -87,7 +87,7 @@ export default class RoomFilesView extends LoggedView {
 
 	renderEmpty = () => (
 		<View style={styles.listEmptyContainer} testID='room-files-view'>
-			<Text>{I18n.t('No_files')}</Text>
+			<Text style={styles.noDataFound}>{I18n.t('No_files')}</Text>
 		</View>
 	)
 
@@ -110,7 +110,6 @@ export default class RoomFilesView extends LoggedView {
 
 		return (
 			<Message
-				style={styles.message}
 				customEmojis={customEmojis}
 				baseUrl={baseUrl}
 				user={user}
