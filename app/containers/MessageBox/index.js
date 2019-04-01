@@ -31,11 +31,10 @@ import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
 import { CustomIcon } from '../../lib/Icons';
 import debounce from '../../utils/debounce';
+import { COLOR_PRIMARY, COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
-
-const BLUE_COLOR = '#1D74F5';
 
 const onlyUnique = function onlyUnique(value, index, self) {
 	return self.indexOf(({ _id }) => value._id === _id) === index;
@@ -257,7 +256,7 @@ export default class MessageBox extends Component {
 				>
 					<CustomIcon
 						size={22}
-						color={BLUE_COLOR}
+						color={COLOR_PRIMARY}
 						name='cross'
 					/>
 				</BorderlessButton>
@@ -274,7 +273,7 @@ export default class MessageBox extends Component {
 				>
 					<CustomIcon
 						size={22}
-						color={BLUE_COLOR}
+						color={COLOR_PRIMARY}
 						name='emoji'
 					/>
 				</BorderlessButton>
@@ -289,7 +288,7 @@ export default class MessageBox extends Component {
 				>
 					<CustomIcon
 						size={22}
-						color={BLUE_COLOR}
+						color={COLOR_PRIMARY}
 						name='keyboard'
 					/>
 				</BorderlessButton>
@@ -310,7 +309,7 @@ export default class MessageBox extends Component {
 					accessibilityLabel={I18n.t('Send message')}
 					accessibilityTraits='button'
 				>
-					<CustomIcon name='send1' size={23} color={BLUE_COLOR} />
+					<CustomIcon name='send1' size={23} color={COLOR_PRIMARY} />
 				</BorderlessButton>
 			);
 			return icons;
@@ -324,7 +323,7 @@ export default class MessageBox extends Component {
 				accessibilityLabel={I18n.t('Send audio message')}
 				accessibilityTraits='button'
 			>
-				<CustomIcon name='mic' size={23} color={BLUE_COLOR} />
+				<CustomIcon name='mic' size={23} color={COLOR_PRIMARY} />
 			</BorderlessButton>
 		);
 		icons.push(
@@ -336,7 +335,7 @@ export default class MessageBox extends Component {
 				accessibilityLabel={I18n.t('Message actions')}
 				accessibilityTraits='button'
 			>
-				<CustomIcon name='plus' size={23} color={BLUE_COLOR} />
+				<CustomIcon name='plus' size={23} color={COLOR_PRIMARY} />
 			</BorderlessButton>
 		);
 		return icons;
@@ -664,7 +663,7 @@ export default class MessageBox extends Component {
 			onPress={() => this.onPressMention(item)}
 		>
 			<Text style={styles.fixedMentionAvatar}>{item.username}</Text>
-			<Text>{item.username === 'here' ? I18n.t('Notify_active_in_this_room') : I18n.t('Notify_all_in_this_room')}</Text>
+			<Text style={styles.mentionText}>{item.username === 'here' ? I18n.t('Notify_active_in_this_room') : I18n.t('Notify_all_in_this_room')}</Text>
 		</TouchableOpacity>
 	)
 
@@ -707,7 +706,7 @@ export default class MessageBox extends Component {
 				{trackingType === MENTIONS_TRACKING_TYPE_EMOJIS
 					? [
 						this.renderMentionEmoji(item),
-						<Text key='mention-item-name'>:{ item.name || item }:</Text>
+						<Text key='mention-item-name' style={styles.mentionText}>:{ item.name || item }:</Text>
 					]
 					: [
 						<Avatar
@@ -719,7 +718,7 @@ export default class MessageBox extends Component {
 							baseUrl={baseUrl}
 							user={user}
 						/>,
-						<Text key='mention-item-name'>{ item.username || item.name }</Text>
+						<Text key='mention-item-name' style={styles.mentionText}>{ item.username || item.name }</Text>
 					]
 				}
 			</TouchableOpacity>
@@ -798,7 +797,7 @@ export default class MessageBox extends Component {
 							underlineColorAndroid='transparent'
 							defaultValue=''
 							multiline
-							placeholderTextColor='#9ea2a8'
+							placeholderTextColor={COLOR_TEXT_DESCRIPTION}
 							testID='messagebox-input'
 						/>
 						{this.rightButtons}

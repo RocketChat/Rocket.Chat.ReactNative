@@ -10,6 +10,7 @@ import styles from './styles';
 import I18n from '../../i18n';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
+import { COLOR_SUCCESS, COLOR_DANGER } from '../../constants/colors';
 
 export const _formatTime = function(seconds) {
 	let minutes = Math.floor(seconds / 60);
@@ -130,7 +131,7 @@ export default class extends React.PureComponent {
 					>
 						<CustomIcon
 							size={22}
-							color='#f5455c'
+							color={COLOR_DANGER}
 							name='cross'
 						/>
 					</BorderlessButton>
@@ -143,7 +144,7 @@ export default class extends React.PureComponent {
 					>
 						<CustomIcon
 							size={22}
-							color='#2de0a5'
+							color={COLOR_SUCCESS}
 							name='check'
 						/>
 					</BorderlessButton>

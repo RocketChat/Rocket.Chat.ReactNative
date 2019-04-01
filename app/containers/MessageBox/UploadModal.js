@@ -12,8 +12,9 @@ import Button from '../Button';
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { isIOS } from '../../utils/deviceInfo';
+import { COLOR_PRIMARY, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE } from '../../constants/colors';
 
-const cancelButtonColor = '#f7f8fa';
+const cancelButtonColor = COLOR_BACKGROUND_CONTAINER;
 
 const styles = StyleSheet.create({
 	modal: {
@@ -25,11 +26,13 @@ const styles = StyleSheet.create({
 		paddingTop: 16
 	},
 	title: {
+		fontSize: 14,
+		...sharedStyles.textColorTitle,
 		...sharedStyles.textBold
 	},
 	container: {
 		height: 430,
-		backgroundColor: '#ffffff',
+		backgroundColor: COLOR_WHITE,
 		flexDirection: 'column'
 	},
 	scrollView: {
@@ -46,7 +49,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		padding: 16,
-		backgroundColor: '#f7f8fa'
+		backgroundColor: COLOR_BACKGROUND_CONTAINER
 	},
 	button: {
 		marginBottom: 0
@@ -149,15 +152,15 @@ export default class UploadModal extends Component {
 					underlayColor={cancelButtonColor}
 					activeOpacity={0.5}
 				>
-					<Text style={[styles.androidButtonText, { ...sharedStyles.textBold, color: '#1d74f5' }]}>{I18n.t('Cancel')}</Text>
+					<Text style={[styles.androidButtonText, { ...sharedStyles.textBold, color: COLOR_PRIMARY }]}>{I18n.t('Cancel')}</Text>
 				</TouchableHighlight>
 				<TouchableHighlight
 					onPress={this.submit}
-					style={[styles.androidButton, { backgroundColor: '#1d74f5' }]}
-					underlayColor='#1d74f5'
+					style={[styles.androidButton, { backgroundColor: COLOR_PRIMARY }]}
+					underlayColor={COLOR_PRIMARY}
 					activeOpacity={0.5}
 				>
-					<Text style={[styles.androidButtonText, { ...sharedStyles.textMedium, color: '#fff' }]}>{I18n.t('Send')}</Text>
+					<Text style={[styles.androidButtonText, { ...sharedStyles.textMedium, color: COLOR_WHITE }]}>{I18n.t('Send')}</Text>
 				</TouchableHighlight>
 			</View>
 		);

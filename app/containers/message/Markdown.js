@@ -8,6 +8,9 @@ import styles from './styles';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import MarkdownEmojiPlugin from './MarkdownEmojiPlugin';
 
+import sharedStyles from '../../views/Styles';
+import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, COLOR_PRIMARY } from '../../constants/colors';
+
 // Support <http://link|Text>
 const formatText = text => text.replace(
 	new RegExp('(?:<|<)((?:https|http):\\/\\/[^\\|]+)\\|(.+?)(?=>|>)(?:>|>)', 'gm'),
@@ -92,26 +95,29 @@ export default class Markdown extends React.Component {
 				style={{
 					paragraph: styles.paragraph,
 					text: {
-						color: '#0C0D0F',
 						fontSize: 16,
-						letterSpacing: 0.1
+						...sharedStyles.textColorNormal,
+						...sharedStyles.textRegular
 					},
 					codeInline: {
+						...sharedStyles.textRegular,
 						...codeFontFamily,
 						borderWidth: 1,
-						backgroundColor: '#f8f8f8',
+						backgroundColor: COLOR_BACKGROUND_CONTAINER,
 						borderRadius: 4
 					},
 					codeBlock: {
+						...sharedStyles.textRegular,
 						...codeFontFamily,
-						backgroundColor: '#f8f8f8',
-						borderColor: '#cccccc',
+						backgroundColor: COLOR_BACKGROUND_CONTAINER,
+						borderColor: COLOR_BORDER,
 						borderWidth: 1,
 						borderRadius: 4,
 						padding: 4
 					},
 					link: {
-						color: '#1D74F5'
+						color: COLOR_PRIMARY,
+						...sharedStyles.textRegular
 					},
 					...style
 				}}

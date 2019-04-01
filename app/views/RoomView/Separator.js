@@ -2,7 +2,10 @@ import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+
 import I18n from '../../i18n';
+import sharedStyles from '../Styles';
+import { COLOR_DANGER, COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
@@ -13,29 +16,29 @@ const styles = StyleSheet.create({
 		marginHorizontal: 14
 	},
 	line: {
-		backgroundColor: '#9ea2a8',
+		backgroundColor: COLOR_TEXT_DESCRIPTION,
 		height: 1,
 		flex: 1
 	},
 	text: {
-		color: '#9ea2a8',
 		fontSize: 14,
-		fontWeight: '600'
+		...sharedStyles.textMedium,
+		...sharedStyles.textColorDescription
 	},
 	unreadLine: {
-		backgroundColor: '#f5455c'
+		backgroundColor: COLOR_DANGER
 	},
 	unreadText: {
-		color: '#f5455c'
+		color: COLOR_DANGER
 	},
 	marginLeft: {
-		marginLeft: 15
+		marginLeft: 14
 	},
 	marginRight: {
-		marginRight: 15
+		marginRight: 14
 	},
 	marginHorizontal: {
-		marginHorizontal: 15
+		marginHorizontal: 14
 	}
 });
 

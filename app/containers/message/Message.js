@@ -23,6 +23,7 @@ import styles from './styles';
 import I18n from '../../i18n';
 import messagesStatus from '../../constants/messagesStatus';
 import { CustomIcon } from '../../lib/Icons';
+import { COLOR_DANGER, COLOR_TEXT_DESCRIPTION, COLOR_WHITE } from '../../constants/colors';
 
 const SYSTEM_MESSAGES = [
 	'r',
@@ -271,7 +272,7 @@ export default class Message extends PureComponent {
 		const { onErrorPress } = this.props;
 		return (
 			<BorderlessButton onPress={onErrorPress} style={styles.errorButton}>
-				<CustomIcon name='circle-cross' color='red' size={20} />
+				<CustomIcon name='circle-cross' color={COLOR_DANGER} size={20} />
 			</BorderlessButton>
 		);
 	}
@@ -281,7 +282,7 @@ export default class Message extends PureComponent {
 			user, onReactionLongPress, onReactionPress, customEmojis, baseUrl
 		} = this.props;
 		const reacted = reaction.usernames.findIndex(item => item.value === user.username) !== -1;
-		const underlayColor = reacted ? '#fff' : '#e1e5e8';
+		const underlayColor = reacted ? COLOR_WHITE : COLOR_TEXT_DESCRIPTION;
 		return (
 			<LongPressGestureHandler
 				key={reaction.emoji}
@@ -341,7 +342,7 @@ export default class Message extends PureComponent {
 					onPress={replyBroadcast}
 					style={styles.broadcastButton}
 					activeOpacity={0.5}
-					underlayColor='#fff'
+					underlayColor={COLOR_WHITE}
 				>
 					<CustomIcon name='back' size={20} style={styles.broadcastButtonIcon} />
 					<Text style={styles.broadcastButtonText}>{I18n.t('Reply')}</Text>
