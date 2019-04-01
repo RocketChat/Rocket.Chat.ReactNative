@@ -142,7 +142,7 @@ const Reply = ({
 		);
 	};
 	const renderAttachments = () => {
-		if (attachment.attachments.length === 0) {
+		if (!attachment.attachments) {
 			return null;
 		}
 
