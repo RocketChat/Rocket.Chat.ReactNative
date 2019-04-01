@@ -43,7 +43,8 @@ import { COLOR_WHITE } from '../../constants/colors';
 	actionMessage: state.messages.actionMessage,
 	showActions: state.messages.showActions,
 	showErrorActions: state.messages.showErrorActions,
-	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background'
+	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
+	useRealName: state.settings.UI_Use_Real_Name
 }), dispatch => ({
 	openRoom: room => dispatch(openRoomAction(room)),
 	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
@@ -55,17 +56,14 @@ import { COLOR_WHITE } from '../../constants/colors';
 export default class RoomView extends LoggedView {
 	static navigationOptions = ({ navigation }) => {
 		const rid = navigation.getParam('rid');
+		const title = navigation.getParam('name');
 		const t = navigation.getParam('t');
-		const f = navigation.getParam('f');
-		const toggleFav = navigation.getParam('toggleFav', () => {});
-		const starIcon = f ? 'Star-filled' : 'star';
 		return {
-			headerTitle: <RoomHeaderView />,
+			headerTitle: <RoomHeaderView rid={rid} title={title} type={t} />,
 			headerRight: t === 'l'
 				? null
 				: (
 					<CustomHeaderButtons>
-						<Item title='star' iconName={starIcon} onPress={toggleFav} testID='room-view-header-star' />
 						<Item title='more' iconName='menu' onPress={() => navigation.navigate('RoomActionsView', { rid })} testID='room-view-header-actions' />
 					</CustomHeaderButtons>
 				)
@@ -74,7 +72,6 @@ export default class RoomView extends LoggedView {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		// openRoom: PropTypes.func.isRequired,
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
 			username: PropTypes.string.isRequired,
@@ -84,9 +81,9 @@ export default class RoomView extends LoggedView {
 		showErrorActions: PropTypes.bool,
 		actionMessage: PropTypes.object,
 		appState: PropTypes.string,
+		useRealName: PropTypes.bool,
 		toggleReactionPicker: PropTypes.func.isRequired,
 		actionsShow: PropTypes.func,
-		// closeRoom: PropTypes.func,
 		messagesRequest: PropTypes.func
 	};
 
@@ -107,11 +104,12 @@ export default class RoomView extends LoggedView {
 
 	async componentDidMount() {
 		const { room } = this.state;
-		const { messagesRequest } = this.props;
+		const { messagesRequest, navigation } = this.props;
 		messagesRequest(room);
 
 		// if room is joined
 		if (room._id) {
+			navigation.setParams({ name: this.getRoomTitle(room), t: room.t });
 			this.sub = await RocketChat.subscribeRoom(room);
 			RocketChat.readMessages(room.rid);
 			if (room.alert || room.unread || room.userMentions) {
@@ -156,13 +154,11 @@ export default class RoomView extends LoggedView {
 		return false;
 	}
 
-	componentDidUpdate(prevProps, prevState) {
+	componentDidUpdate(prevProps) {
 		const { room } = this.state;
-		const { appState, navigation } = this.props;
+		const { appState } = this.props;
 
-		if (prevState.room.f !== room.f) {
-			navigation.setParams({ f: room.f });
-		} else if (appState === 'foreground' && appState !== prevProps.appState) {
+		if (appState === 'foreground' && appState !== prevProps.appState) {
 			RocketChat.loadMissedMessages(room).catch(e => console.log(e));
 			RocketChat.readMessages(room.rid).catch(e => console.log(e));
 		}
@@ -210,22 +206,17 @@ export default class RoomView extends LoggedView {
 		this.internalSetState({ room });
 	}
 
-	toggleFav = () => {
-		try {
-			const { room } = this.state;
-			const { rid, f } = room;
-			RocketChat.toggleFavorite(rid, !f);
-		} catch (e) {
-			log('toggleFavorite', e);
-		}
-	}
-
 	sendMessage = (message) => {
 		LayoutAnimation.easeInEaseOut();
 		RocketChat.sendMessage(this.rid, message).then(() => {
 			this.setLastOpen(null);
 		});
 	};
+
+	getRoomTitle = (room) => {
+		const { useRealName } = this.props;
+		return ((room.prid || useRealName) && room.fname) || room.name;
+	}
 
 	setLastOpen = lastOpen => this.setState({ lastOpen });
 

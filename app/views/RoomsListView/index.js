@@ -387,16 +387,22 @@ export default class RoomsListView extends LoggedView {
 		});
 	}
 
-	goRoom = ({ rid, name, t }) => {
+	getRoomTitle = (item) => {
+		const { useRealName } = this.props;
+		return ((item.prid || useRealName) && item.fname) || item.name;
+	}
+
+	goRoom = (item) => {
 		this.cancelSearchingAndroid();
 		const { navigation } = this.props;
-		navigation.navigate('RoomView', { rid, name, t });
+		navigation.navigate('RoomView', {
+			rid: item.rid, name: this.getRoomTitle(item), t: item.t
+		});
 	}
 
 	_onPressItem = async(item = {}) => {
 		if (!item.search) {
-			const { rid, name, t } = item;
-			return this.goRoom({ rid, name, t });
+			return this.goRoom(item);
 		}
 		if (item.t === 'd') {
 			// if user is using the search we need first to join/create room
@@ -410,8 +416,7 @@ export default class RoomsListView extends LoggedView {
 				log('RoomsListView._onPressItem', e);
 			}
 		} else {
-			const { rid, name, t } = item;
-			return this.goRoom({ rid, name, t });
+			return this.goRoom(item);
 		}
 	}
 
@@ -471,7 +476,7 @@ export default class RoomsListView extends LoggedView {
 
 	renderItem = ({ item }) => {
 		const {
-			useRealName, userId, baseUrl, StoreLastMessage
+			userId, baseUrl, StoreLastMessage
 		} = this.props;
 		const id = item.rid.replace(userId, '').trim();
 
@@ -482,7 +487,7 @@ export default class RoomsListView extends LoggedView {
 				userMentions={item.userMentions}
 				favorite={item.f}
 				lastMessage={item.lastMessage}
-				name={((item.prid || useRealName) && item.fname) || item.name}
+				name={this.getRoomTitle(item)}
 				_updatedAt={item.roomUpdatedAt}
 				key={item._id}
 				id={id}

@@ -44,14 +44,13 @@ const styles = StyleSheet.create({
 });
 
 @responsive
-@connect((state) => {
+@connect((state, ownProps) => {
 	let status = '';
-	let title = '';
-	const roomType = state.room.t;
-	if (roomType === 'd') {
+	const { rid, type } = ownProps;
+	if (type === 'd') {
 		if (state.login.user && state.login.user.id) {
 			const { id: loggedUserId } = state.login.user;
-			const userId = state.room.rid.replace(loggedUserId, '').trim();
+			const userId = rid.replace(loggedUserId, '').trim();
 			if (userId === loggedUserId) {
 				status = state.login.user.status; // eslint-disable-line
 			} else {
@@ -59,9 +58,6 @@ const styles = StyleSheet.create({
 				status = (user && user.status) || 'offline';
 			}
 		}
-		title = state.room.prid || state.settings.UI_Use_Real_Name ? state.room.fname : state.room.name;
-	} else {
-		title = state.room.prid ? state.room.fname : state.room.name;
 	}
 
 	let otherUsersTyping = [];
@@ -73,9 +69,7 @@ const styles = StyleSheet.create({
 
 	return {
 		usersTyping: otherUsersTyping,
-		type: roomType,
-		prid: state.room.prid,
-		title,
+		prid: null,
 		status
 	};
 })
