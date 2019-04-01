@@ -1,3 +1,13 @@
+# Base on Rocket.Chat React Native
+
+## using pure Expo.
+
+## add outside tabbar and can be used as a chat module with other modules.
+
+# debug react native for uploading image file
+
+https://github.com/facebook/react-native/pull/22063/files
+
 # Rocket.Chat React Native Mobile
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/RocketChat/Rocket.Chat.ReactNative.svg)](https://greenkeeper.io/)
@@ -10,6 +20,7 @@
 **Supported Server Versions:** 0.66.0+
 
 ## Download
+
 <a href="https://play.google.com/store/apps/details?id=chat.rocket.reactnative">
   <img alt="Download on Google Play" src="https://play.google.com/intl/en_us/badges/images/badge_new.png" height=43>
 </a>
@@ -38,37 +49,41 @@ Also check the [#react-native](https://open.rocket.chat/channel/react-native) co
 Follow the [React Native Getting Started Guide](https://facebook.github.io/react-native/docs/getting-started.html) for detailed instructions on setting up your local machine for development.
 
 ## How to run
+
 - Clone repository and install dependencies:
-    ```bash
-    $ git clone git@github.com:RocketChat/Rocket.Chat.ReactNative.git
-    $ cd Rocket.Chat.ReactNative
-    $ yarn global add react-native-cli
-    $ yarn
-    ```
+
+  ```bash
+  $ git clone git@github.com:RocketChat/Rocket.Chat.ReactNative.git
+  $ cd Rocket.Chat.ReactNative
+  $ yarn global add react-native-cli
+  $ yarn
+  ```
 
 - Run application
-    ```bash
-    $ react-native run-ios
-    ```
-    ```bash
-    $ react-native run-android
-    ```
+  ```bash
+  $ react-native run-ios
+  ```
+  ```bash
+  $ react-native run-android
+  ```
 
 ### Running single server
+
 If you don't need multiple servers, there is a branch `single-server` just for that.
 Readme will guide you on how to config.
 
 ## Current priorities
-1) [NEW] Jitsi integration ([#711][i711])
-2) [NEW] Federation ([#706][i706])
-3) [NEW] Threads ([#707][i707])
-4) [NEW] Record video ([#712][i712])
-5) [NEW] Slash Commands ([#405][i405])
-6) [NEW] Draft message per room ([#708][i708])
-7) [NEW] Share extension ([#391][i391])
+
+1. [NEW] Jitsi integration ([#711][i711])
+2. [NEW] Federation ([#706][i706])
+3. [NEW] Threads ([#707][i707])
+4. [NEW] Record video ([#712][i712])
+5. [NEW] Slash Commands ([#405][i405])
+6. [NEW] Draft message per room ([#708][i708])
+7. [NEW] Share extension ([#391][i391])
 
 [i711]: https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/711
-[i706]: https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/706 
+[i706]: https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/706
 [i707]: https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/707
 [i712]: https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/712
 [i708]: https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/708
@@ -76,133 +91,135 @@ Readme will guide you on how to config.
 [i405]: https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/405
 
 ## Features
-| Feature                                                   	    | Status 	|
-|---------------------------------------------------------------	|--------	|
-| Jitsi Integration                                             	| ❌    	|
-| Federation (Directory)                                        	| ❌    	|
-| Threads                                                       	| ❌    	|
-| Record Audio                                                  	| ✅    	|
-| Record Video                                                  	| ❌    	|
-| Commands                                                      	| ❌    	|
-| Draft message per room                                        	| ❌    	|
-| Share Extension                                               	| ❌    	|
-| Notifications Preferences                                     	| ✅    	|
-| Edited status                                                 	| ✅    	|
-| Upload video                                                  	| ❌    	|
-| Grouped messages                                              	| ✅    	|
-| Mark room as read                                             	| ❌    	|
-| Mark room as unread                                           	| ❌    	|
-| Tablet Support                                                	| ❌    	|
-| Read receipt                                                  	| ❌    	|
-| Broadbast Channel                                             	| ✅    	|
-| Authentication via SAML                                       	| ❌    	|
-| Authentication via CAS                                        	| ❌    	|
-| Custom Fields on Signup                                       	| ❌    	|
-| Report message                                                	| ❌    	|
-| Theming                                                       	| ❌    	|
-| Settings -> Review the App                                    	| ❌    	|
-| Settings -> Default Browser                                   	| ❌    	|
-| Admin panel                                                   	| ❌    	|
-| Reply message from notification                               	| ❌    	|
-| Unread counter banner on message list                         	| ✅    	|
-| E2E                                                           	| ❌    	|
-| Join a Protected Room                                         	| ❌    	|
-| Optional Analytics                                            	| ❌    	|
-| Settings -> About us                                          	| ❌    	|
-| Settings -> Contact us                                        	| ❌    	|
-| Settings -> Update App Icon                                   	| ❌    	|
-| Settings -> Share                                             	| ❌    	|
-| Accessibility (Medium)                                        	| ❌    	|
-| Accessibility (Advanced)                                      	| ❌    	|
-| Authentication via Meteor                                     	| ❌    	|
-| Authentication via Wordpress                                  	| ❌    	|
-| Authentication via Custom OAuth                               	| ❌    	|
-| Add user to the room                                          	| ✅    	|
-| Send message                                                  	| ✅    	|
-| Authentication via Email                                      	| ✅    	|
-| Authentication via Username                                   	| ✅    	|
-| Authentication via LDAP                                       	| ✅    	|
-| Message format: Markdown                                      	| ✅    	|
-| Message format: System messages (Welcome, Message removed...) 	| ✅    	|
-| Message format: links                                         	| ✅    	|
-| Message format: images                                        	| ✅    	|
-| Message format: replies                                       	| ✅    	|
-| Message format: alias with custom message (title & text)      	| ✅    	|
-| Messages list: day separation                                 	| ✅    	|
-| Messages list: load more on scroll                            	| ✅    	|
-| Messages list: receive new messages via subscription          	| ✅    	|
-| Subscriptions list                                            	| ✅    	|
-| Segmented subscriptions list: Favorites                       	| ✅    	|
-| Segmented subscriptions list: Unreads                         	| ✅    	|
-| Segmented subscriptions list: DMs                             	| ✅    	|
-| Segmented subscriptions list: Channels                        	| ✅    	|
-| Subscriptions list: update user status via subscription       	| ✅    	|
-| Numbers os messages unread in the Subscriptions list          	| ✅    	|
-| Status change                                                 	| ✅    	|
-| Upload image                                                  	| ✅    	|
-| Take picture & upload it                                      	| ✅    	|
-| 2FA                                                           	| ✅    	|
-| Signup                                                        	| ✅    	|
-| Autocomplete with usernames                                   	| ✅    	|
-| Autocomplete with @all & @here                                	| ✅    	|
-| Autocomplete room/channel name                                	| ✅    	|
-| Upload audio                                                  	| ✅    	|
-| Forgot your password                                          	| ✅    	|
-| Login screen: terms of service                                	| ✅    	|
-| Login screen: privacy policy                                  	| ✅    	|
-| Authentication via Google                                     	| ✅    	|
-| Authentication via Facebook                                   	| ✅    	|
-| Authentication via Twitter                                    	| ✅    	|
-| Authentication via GitHub                                     	| ✅    	|
-| Authentication via GitLab                                     	| ✅    	|
-| Authentication via LinkedIn                                   	| ✅    	|
-| Create channel                                                	| ✅    	|
-| Search Local                                                  	| ✅    	|
-| Search in the API                                             	| ✅    	|
-| Settings -> License                                           	| ✅    	|
-| Settings -> App version                                       	| ✅    	|
-| Autocomplete emoji                                            	| ✅    	|
-| Upload file (documents, PDFs, spreadsheets, zip files, etc)   	| ✅    	|
-| Copy message                                                  	| ✅    	|
-| Pin message                                                   	| ✅    	|
-| Unpin message                                                 	| ✅    	|
-| Channel Info screen -> Members                                	| ✅    	|
-| Channel Info screen -> Pinned                                 	| ✅    	|
-| Channel Info screen -> Starred                                	| ✅    	|
-| Channel Info screen -> Uploads                                	| ✅    	|
-| Star message                                                  	| ✅    	|
-| Unstar message                                                	| ✅    	|
-| Channel Info screen -> Topic                                  	| ✅    	|
-| Channel Info screen -> Description                            	| ✅    	|
-| Star a channel                                                	| ✅    	|
-| Message format: videos                                        	| ✅    	|
-| Message format: audios                                        	| ✅    	|
-| Edit message                                                  	| ✅    	|
-| Delete a message                                              	| ✅    	|
-| Reply message                                                 	| ✅    	|
-| Quote message                                                 	| ✅    	|
-| Muted state                                                   	| ✅    	|
-| Offline reading                                               	| ✅    	|
-| Offline writing                                               	| ✅    	|
-| Edit profile                                                  	| ✅    	|
-| Reactions                                                     	| ✅    	|
-| Custom emojis                                                 	| ✅    	|
-| Accessibility (Basic)                                         	| ✅    	|
-| Tap notification, go to the channel                           	| ✅    	|
-| Deep links: Authentication                                    	| ✅    	|
-| Deep links: Rooms                                             	| ✅    	|
-| Full name setting                                             	| ✅    	|
-| Read only rooms                                               	| ✅    	|
-| Typing status                                                 	| ✅    	|
-| Create channel/group                                          	| ✅    	|
-| Disable registration setting                                  	| ✅    	|
-| Unread red line indicator on message list                     	| ✅    	|
-| Search Messages in Channel                                    	| ✅    	|
-| Mentions List                                                 	| ✅    	|
-| Attachment List                                               	| ✅    	|
-| Join a Room                                                   	| ✅    	|
+
+| Feature                                                       | Status |
+| ------------------------------------------------------------- | ------ |
+| Jitsi Integration                                             | ❌     |
+| Federation (Directory)                                        | ❌     |
+| Threads                                                       | ❌     |
+| Record Audio                                                  | ✅     |
+| Record Video                                                  | ❌     |
+| Commands                                                      | ❌     |
+| Draft message per room                                        | ❌     |
+| Share Extension                                               | ❌     |
+| Notifications Preferences                                     | ✅     |
+| Edited status                                                 | ✅     |
+| Upload video                                                  | ❌     |
+| Grouped messages                                              | ✅     |
+| Mark room as read                                             | ❌     |
+| Mark room as unread                                           | ❌     |
+| Tablet Support                                                | ❌     |
+| Read receipt                                                  | ❌     |
+| Broadbast Channel                                             | ✅     |
+| Authentication via SAML                                       | ❌     |
+| Authentication via CAS                                        | ❌     |
+| Custom Fields on Signup                                       | ❌     |
+| Report message                                                | ❌     |
+| Theming                                                       | ❌     |
+| Settings -> Review the App                                    | ❌     |
+| Settings -> Default Browser                                   | ❌     |
+| Admin panel                                                   | ❌     |
+| Reply message from notification                               | ❌     |
+| Unread counter banner on message list                         | ✅     |
+| E2E                                                           | ❌     |
+| Join a Protected Room                                         | ❌     |
+| Optional Analytics                                            | ❌     |
+| Settings -> About us                                          | ❌     |
+| Settings -> Contact us                                        | ❌     |
+| Settings -> Update App Icon                                   | ❌     |
+| Settings -> Share                                             | ❌     |
+| Accessibility (Medium)                                        | ❌     |
+| Accessibility (Advanced)                                      | ❌     |
+| Authentication via Meteor                                     | ❌     |
+| Authentication via Wordpress                                  | ❌     |
+| Authentication via Custom OAuth                               | ❌     |
+| Add user to the room                                          | ✅     |
+| Send message                                                  | ✅     |
+| Authentication via Email                                      | ✅     |
+| Authentication via Username                                   | ✅     |
+| Authentication via LDAP                                       | ✅     |
+| Message format: Markdown                                      | ✅     |
+| Message format: System messages (Welcome, Message removed...) | ✅     |
+| Message format: links                                         | ✅     |
+| Message format: images                                        | ✅     |
+| Message format: replies                                       | ✅     |
+| Message format: alias with custom message (title & text)      | ✅     |
+| Messages list: day separation                                 | ✅     |
+| Messages list: load more on scroll                            | ✅     |
+| Messages list: receive new messages via subscription          | ✅     |
+| Subscriptions list                                            | ✅     |
+| Segmented subscriptions list: Favorites                       | ✅     |
+| Segmented subscriptions list: Unreads                         | ✅     |
+| Segmented subscriptions list: DMs                             | ✅     |
+| Segmented subscriptions list: Channels                        | ✅     |
+| Subscriptions list: update user status via subscription       | ✅     |
+| Numbers os messages unread in the Subscriptions list          | ✅     |
+| Status change                                                 | ✅     |
+| Upload image                                                  | ✅     |
+| Take picture & upload it                                      | ✅     |
+| 2FA                                                           | ✅     |
+| Signup                                                        | ✅     |
+| Autocomplete with usernames                                   | ✅     |
+| Autocomplete with @all & @here                                | ✅     |
+| Autocomplete room/channel name                                | ✅     |
+| Upload audio                                                  | ✅     |
+| Forgot your password                                          | ✅     |
+| Login screen: terms of service                                | ✅     |
+| Login screen: privacy policy                                  | ✅     |
+| Authentication via Google                                     | ✅     |
+| Authentication via Facebook                                   | ✅     |
+| Authentication via Twitter                                    | ✅     |
+| Authentication via GitHub                                     | ✅     |
+| Authentication via GitLab                                     | ✅     |
+| Authentication via LinkedIn                                   | ✅     |
+| Create channel                                                | ✅     |
+| Search Local                                                  | ✅     |
+| Search in the API                                             | ✅     |
+| Settings -> License                                           | ✅     |
+| Settings -> App version                                       | ✅     |
+| Autocomplete emoji                                            | ✅     |
+| Upload file (documents, PDFs, spreadsheets, zip files, etc)   | ✅     |
+| Copy message                                                  | ✅     |
+| Pin message                                                   | ✅     |
+| Unpin message                                                 | ✅     |
+| Channel Info screen -> Members                                | ✅     |
+| Channel Info screen -> Pinned                                 | ✅     |
+| Channel Info screen -> Starred                                | ✅     |
+| Channel Info screen -> Uploads                                | ✅     |
+| Star message                                                  | ✅     |
+| Unstar message                                                | ✅     |
+| Channel Info screen -> Topic                                  | ✅     |
+| Channel Info screen -> Description                            | ✅     |
+| Star a channel                                                | ✅     |
+| Message format: videos                                        | ✅     |
+| Message format: audios                                        | ✅     |
+| Edit message                                                  | ✅     |
+| Delete a message                                              | ✅     |
+| Reply message                                                 | ✅     |
+| Quote message                                                 | ✅     |
+| Muted state                                                   | ✅     |
+| Offline reading                                               | ✅     |
+| Offline writing                                               | ✅     |
+| Edit profile                                                  | ✅     |
+| Reactions                                                     | ✅     |
+| Custom emojis                                                 | ✅     |
+| Accessibility (Basic)                                         | ✅     |
+| Tap notification, go to the channel                           | ✅     |
+| Deep links: Authentication                                    | ✅     |
+| Deep links: Rooms                                             | ✅     |
+| Full name setting                                             | ✅     |
+| Read only rooms                                               | ✅     |
+| Typing status                                                 | ✅     |
+| Create channel/group                                          | ✅     |
+| Disable registration setting                                  | ✅     |
+| Unread red line indicator on message list                     | ✅     |
+| Search Messages in Channel                                    | ✅     |
+| Mentions List                                                 | ✅     |
+| Attachment List                                               | ✅     |
+| Join a Room                                                   | ✅     |
 
 ## Detox (end-to-end tests)
+
 - Build your app
 
 ```bash
@@ -216,6 +233,7 @@ $ detox test --configuration ios.sim.release
 ```
 
 ## Storybook
+
 - Open index.js
 
 - Uncomment following line
@@ -225,6 +243,7 @@ import './storybook';
 ```
 
 - Comment out following lines
+
 ```bash
 import './app/ReactotronConfig';
 import { AppRegistry } from 'react-native';

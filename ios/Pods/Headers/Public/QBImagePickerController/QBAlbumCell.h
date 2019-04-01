@@ -1,1 +1,0 @@
-../../../QBImagePickerController/QBImagePicker/QBAlbumCell.h

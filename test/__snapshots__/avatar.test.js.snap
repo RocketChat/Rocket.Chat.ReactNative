@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  accessibilityTraits="image"
+  accessible={true}
+  isTVSelectable={true}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "opacity": 1,
+    }
+  }
+>
+  <Image
+    source={
+      Object {
+        "uri": "https://jestjs.io/img/jest.svg",
+      }
+    }
+    style={
+      Array [
+        undefined,
+        Object {
+          "height": 60,
+          "width": 60,
+        },
+      ]
+    }
+  />
+  <Text
+    accessible={true}
+    allowFontScaling={false}
+    ellipsizeMode="tail"
+    numberOfLines={1}
+    style={
+      Array [
+        undefined,
+        undefined,
+      ]
+    }
+  >
+    jestjs
+  </Text>
+</View>
+`;
