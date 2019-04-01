@@ -8,6 +8,8 @@ import Modal from 'react-native-modal';
 import Emoji from './Emoji';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
+import sharedStyles from '../../views/Styles';
+import { COLOR_WHITE } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	titleContainer: {
@@ -16,18 +18,20 @@ const styles = StyleSheet.create({
 		paddingVertical: 10
 	},
 	title: {
-		color: '#ffffff',
+		color: COLOR_WHITE,
 		textAlign: 'center',
 		fontSize: 16,
-		fontWeight: '600'
+		...sharedStyles.textSemibold
 	},
 	reactCount: {
-		color: '#dddddd',
-		fontSize: 10
+		color: COLOR_WHITE,
+		fontSize: 13,
+		...sharedStyles.textRegular
 	},
 	peopleReacted: {
-		color: '#ffffff',
-		fontWeight: '500'
+		color: COLOR_WHITE,
+		fontSize: 14,
+		...sharedStyles.textMedium
 	},
 	peopleItemContainer: {
 		flex: 1,
@@ -51,7 +55,7 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		left: 0,
 		top: 10,
-		color: '#ffffff'
+		color: COLOR_WHITE
 	}
 });
 const standardEmojiStyle = { fontSize: 20 };

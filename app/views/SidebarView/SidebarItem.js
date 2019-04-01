@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { RectButton } from 'react-native-gesture-handler';
 
 import styles from './styles';
+import { COLOR_TEXT } from '../../constants/colors';
 
 const Item = React.memo(({
 	left, text, onPress, testID, current
@@ -12,7 +13,7 @@ const Item = React.memo(({
 		key={testID}
 		testID={testID}
 		onPress={onPress}
-		underlayColor='#292E35'
+		underlayColor={COLOR_TEXT}
 		activeOpacity={0.1}
 		style={[styles.item, current && styles.itemCurrent]}
 	>

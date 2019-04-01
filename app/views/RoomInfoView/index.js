@@ -195,7 +195,7 @@ export default class RoomInfoView extends LoggedView {
 						<View style={styles.rolesContainer}>
 							{roles.map(role => (
 								<View style={styles.roleBadge} key={role}>
-									<Text>{ allRoles[role] }</Text>
+									<Text style={styles.role}>{ allRoles[role] }</Text>
 								</View>
 							))}
 						</View>

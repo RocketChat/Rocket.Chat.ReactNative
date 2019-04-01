@@ -102,7 +102,8 @@ const subscriptionSchema = {
 		notifications: { type: 'bool', optional: true },
 		muted: { type: 'list', objectType: 'usersMuted' },
 		broadcast: { type: 'bool', optional: true },
-		prid: { type: 'string', optional: true }
+		prid: { type: 'string', optional: true },
+		draftMessage: { type: 'string', optional: true }
 	}
 };
 

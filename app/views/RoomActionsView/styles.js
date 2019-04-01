@@ -1,13 +1,20 @@
 import { StyleSheet } from 'react-native';
-import { COLOR_SEPARATOR } from '../../constants/colors';
+import {
+	COLOR_SEPARATOR, COLOR_BORDER, COLOR_DANGER, COLOR_WHITE
+} from '../../constants/colors';
+
+import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
+	contentContainer: {
+		paddingBottom: 30
+	},
 	container: {
 		flex: 1,
 		backgroundColor: '#F6F7F9'
 	},
 	sectionItem: {
-		backgroundColor: '#ffffff',
+		backgroundColor: COLOR_WHITE,
 		paddingVertical: 16,
 		flexDirection: 'row',
 		alignItems: 'center'
@@ -17,13 +24,19 @@ export default StyleSheet.create({
 	},
 	sectionItemIcon: {
 		width: 56,
-		textAlign: 'center'
+		textAlign: 'center',
+		...sharedStyles.textColorNormal
 	},
 	sectionItemName: {
-		flex: 1
+		flex: 1,
+		fontSize: 14,
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textRegular
 	},
 	sectionItemDescription: {
-		color: '#ccc'
+		fontSize: 14,
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textRegular
 	},
 	separator: {
 		height: StyleSheet.hairlineWidth,
@@ -34,24 +47,27 @@ export default StyleSheet.create({
 		backgroundColor: '#F6F7F9'
 	},
 	sectionSeparatorBorder: {
-		borderColor: '#EBEDF1',
+		borderColor: COLOR_BORDER,
 		borderTopWidth: 1
 	},
 	textColorDanger: {
-		color: '#f5455c'
+		color: COLOR_DANGER
 	},
 	avatar: {
-		marginHorizontal: 10
+		marginHorizontal: 16
 	},
 	roomTitleContainer: {
 		flex: 1
 	},
 	roomTitle: {
-		fontSize: 16
+		fontSize: 16,
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textMedium
 	},
 	roomDescription: {
-		fontSize: 12,
-		color: '#ccc'
+		fontSize: 13,
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textRegular
 	},
 	roomTitleRow: {
 		flexDirection: 'row',
