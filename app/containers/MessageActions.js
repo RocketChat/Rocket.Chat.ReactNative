@@ -136,7 +136,6 @@ export default class MessageActions extends React.Component {
 			this.showActionSheet();
 			vibrate();
 		});
-
 	}
 
 	setPermissions() {
