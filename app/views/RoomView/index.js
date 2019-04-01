@@ -10,7 +10,9 @@ import equal from 'deep-equal';
 import moment from 'moment';
 
 import { openRoom as openRoomAction, closeRoom as closeRoomAction } from '../../actions/room';
-import { toggleReactionPicker as toggleReactionPickerAction, actionsShow as actionsShowAction } from '../../actions/messages';
+import {
+	toggleReactionPicker as toggleReactionPickerAction, actionsShow as actionsShowAction, messagesRequest as messagesRequestAction
+} from '../../actions/messages';
 import LoggedView from '../View';
 import { List } from './List';
 import database from '../../lib/realm';
@@ -46,7 +48,8 @@ import { COLOR_WHITE } from '../../constants/colors';
 	openRoom: room => dispatch(openRoomAction(room)),
 	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
 	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage)),
-	closeRoom: () => dispatch(closeRoomAction())
+	closeRoom: () => dispatch(closeRoomAction()),
+	messagesRequest: room => dispatch(messagesRequestAction(room))
 }))
 /** @extends React.Component */
 export default class RoomView extends LoggedView {
@@ -71,7 +74,7 @@ export default class RoomView extends LoggedView {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		openRoom: PropTypes.func.isRequired,
+		// openRoom: PropTypes.func.isRequired,
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
 			username: PropTypes.string.isRequired,
@@ -83,36 +86,39 @@ export default class RoomView extends LoggedView {
 		appState: PropTypes.string,
 		toggleReactionPicker: PropTypes.func.isRequired,
 		actionsShow: PropTypes.func,
-		closeRoom: PropTypes.func
+		// closeRoom: PropTypes.func,
+		messagesRequest: PropTypes.func
 	};
 
 	constructor(props) {
 		super('RoomView', props);
 		this.rid = props.navigation.getParam('rid');
+		this.t = props.navigation.getParam('t');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			loaded: false,
 			joined: this.rooms.length > 0,
-			room: {},
+			room: this.rooms[0] || { rid: this.rid, t: this.t },
 			lastOpen: null
 		};
 		this.beginAnimating = false;
-		this.onReactionPress = this.onReactionPress.bind(this);
-		setTimeout(() => {
-			this.beginAnimating = true;
-		}, 300);
+		this.beginAnimatingTimeout = setTimeout(() => this.beginAnimating = true, 300);
 	}
 
-	componentDidMount() {
-		const { navigation } = this.props;
-		navigation.setParams({ toggleFav: this.toggleFav });
+	async componentDidMount() {
+		const { room } = this.state;
+		const { messagesRequest } = this.props;
+		messagesRequest(room);
 
-		if (this.rooms.length === 0 && this.rid) {
-			const { rid, name, t } = navigation.state.params;
-			this.setState(
-				{ room: { rid, name, t } },
-				() => this.updateRoom()
-			);
+		// if room is joined
+		if (room._id) {
+			this.sub = await RocketChat.subscribeRoom(room);
+			RocketChat.readMessages(room.rid);
+			if (room.alert || room.unread || room.userMentions) {
+				this.setLastOpen(room.ls);
+			} else {
+				this.setLastOpen(null);
+			}
 		}
 		this.rooms.addListener(this.updateRoom);
 		this.internalSetState({ loaded: true });
@@ -163,9 +169,15 @@ export default class RoomView extends LoggedView {
 	}
 
 	componentWillUnmount() {
-		const { closeRoom } = this.props;
-		closeRoom();
+		// const { closeRoom } = this.props;
+		// closeRoom();
 		this.rooms.removeAllListeners();
+		if (this.sub && this.sub.unsubscribe) {
+			this.sub.unsubscribe();
+		}
+		if (this.beginAnimatingTimeout) {
+			clearTimeout(this.beginAnimatingTimeout);
+		}
 	}
 
 	onMessageLongPress = (message) => {
@@ -193,32 +205,9 @@ export default class RoomView extends LoggedView {
 		this.setState(...args);
 	}
 
-	// eslint-disable-next-line react/sort-comp
 	updateRoom = () => {
-		const { openRoom } = this.props;
-
-		if (this.rooms.length > 0) {
-			const { room: prevRoom } = this.state;
-			const room = JSON.parse(JSON.stringify(this.rooms[0] || {}));
-			this.internalSetState({ room });
-
-			if (!prevRoom._id) {
-				openRoom({
-					...room
-				});
-				if (room.alert || room.unread || room.userMentions) {
-					this.setLastOpen(room.ls);
-				} else {
-					this.setLastOpen(null);
-				}
-			}
-		} else {
-			const { room } = this.state;
-			if (room.rid) {
-				openRoom(room);
-				this.internalSetState({ joined: false });
-			}
-		}
+		const room = JSON.parse(JSON.stringify(this.rooms[0] || {}));
+		this.internalSetState({ room });
 	}
 
 	toggleFav = () => {
