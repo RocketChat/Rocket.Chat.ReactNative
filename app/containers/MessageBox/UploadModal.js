@@ -87,7 +87,7 @@ export default class UploadModal extends Component {
 		if (!equal(props.file, state.file) && props.file && props.file.path) {
 			return {
 				file: props.file,
-				name: props.file.filename || 'Filename',
+				name: props.file.filename || '',
 				description: ''
 			};
 		}
