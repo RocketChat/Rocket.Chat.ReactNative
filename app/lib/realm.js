@@ -220,7 +220,10 @@ const messagesSchema = {
 		starred: { type: 'bool', optional: true },
 		editedBy: 'messagesEditedBy',
 		reactions: { type: 'list', objectType: 'messagesReactions' },
-		role: { type: 'string', optional: true }
+		role: { type: 'string', optional: true },
+		drid: { type: 'string', optional: true },
+		dcount: { type: 'int', optional: true },
+		dlm: { type: 'date', optional: true }
 	}
 };
 
@@ -363,7 +366,7 @@ class DB {
 		return this.databases.activeDB = new Realm({
 			path: `${ path }.realm`,
 			schema,
-			schemaVersion: 2
+			schemaVersion: 3
 		});
 	}
 }

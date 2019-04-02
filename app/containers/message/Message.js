@@ -128,12 +128,15 @@ export default class Message extends PureComponent {
 			PropTypes.object
 		]),
 		useRealName: PropTypes.bool,
+		dcount: PropTypes.number,
+		dlm: PropTypes.instanceOf(Date),
 		// methods
 		closeReactions: PropTypes.func,
 		onErrorPress: PropTypes.func,
 		onLongPress: PropTypes.func,
 		onReactionLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
+		onDiscussionPress: PropTypes.func,
 		replyBroadcast: PropTypes.func,
 		toggleReactionPicker: PropTypes.func
 	}
@@ -341,18 +344,78 @@ export default class Message extends PureComponent {
 		const { broadcast, replyBroadcast } = this.props;
 		if (broadcast && !this.isOwn()) {
 			return (
-				<RectButton
-					onPress={replyBroadcast}
-					style={styles.broadcastButton}
-					activeOpacity={0.5}
-					underlayColor={COLOR_WHITE}
-				>
-					<CustomIcon name='back' size={20} style={styles.broadcastButtonIcon} />
-					<Text style={styles.broadcastButtonText}>{I18n.t('Reply')}</Text>
-				</RectButton>
+				<View style={styles.buttonContainer}>
+					<RectButton
+						onPress={replyBroadcast}
+						style={styles.button}
+						activeOpacity={0.5}
+						underlayColor={COLOR_WHITE}
+					>
+						<CustomIcon name='back' size={20} style={styles.buttonIcon} />
+						<Text style={styles.buttonText}>{I18n.t('Reply')}</Text>
+					</RectButton>
+				</View>
 			);
 		}
 		return null;
+	}
+
+	renderDiscussion = () => {
+		const {
+			type, attachments, dcount, dlm, onDiscussionPress
+		} = this.props;
+		if (attachments.length === 0) {
+			return null;
+		}
+		if (type === 'discussion-created') {
+			const time = moment(dlm).calendar(null, {
+				lastDay: `[${ I18n.t('Yesterday') }]`,
+				sameDay: 'h:mm A',
+				lastWeek: 'dddd',
+				sameElse: 'MMM D'
+			});
+			return (
+				<React.Fragment>
+					<Text style={styles.textInfo}>Started a discussion:</Text>
+					<Text style={styles.text}>{attachments[0].text}</Text>
+					<View style={styles.buttonContainer}>
+						<RectButton
+							onPress={onDiscussionPress}
+							style={[styles.button, styles.smallButton]}
+							activeOpacity={0.5}
+							underlayColor={COLOR_WHITE}
+						>
+							<CustomIcon name='chat' size={20} style={styles.buttonIcon} />
+							<Text style={styles.buttonText}>{dcount === 1 ? `${ dcount } message` : `${ dcount } messages`}</Text>
+						</RectButton>
+						<Text style={styles.time}>{time}</Text>
+					</View>
+				</React.Fragment>
+			);
+		}
+		return null;
+	}
+
+	renderInner = () => {
+		const { type } = this.props;
+		if (type === 'discussion-created') {
+			return (
+				<React.Fragment>
+					{this.renderUsername()}
+					{this.renderDiscussion()}
+				</React.Fragment>
+			);
+		}
+		return (
+			<React.Fragment>
+				{this.renderUsername()}
+				{this.renderContent()}
+				{this.renderAttachment()}
+				{this.renderUrl()}
+				{this.renderReactions()}
+				{this.renderBroadcastReply()}
+			</React.Fragment>
+		);
 	}
 
 	render() {
@@ -383,12 +446,7 @@ export default class Message extends PureComponent {
 									this.isTemp() && styles.temp
 								]}
 							>
-								{this.renderUsername()}
-								{this.renderContent()}
-								{this.renderAttachment()}
-								{this.renderUrl()}
-								{this.renderReactions()}
-								{this.renderBroadcastReply()}
+								{this.renderInner()}
 							</View>
 						</View>
 						{reactionsModal

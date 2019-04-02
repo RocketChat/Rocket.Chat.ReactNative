@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
+import moment from 'moment';
 
 import MessageComponent from '../../app/containers/message/Message';
 import StoriesSeparator from './StoriesSeparator';
@@ -358,6 +359,71 @@ export default (
 
 		<Separator title='Broadcast' />
 		<Message msg='Broadcasted message' broadcast replyBroadcast={() => alert('broadcast!')} />
+
+		<Separator title='Discussion' />
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1}
+			dlm={date}
+			attachments={[{
+				text: 'This is a discussion'
+			}]}
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={10}
+			dlm={date}
+			attachments={[{
+				text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
+			}]}
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={date}
+			attachments={[{
+				text: 'This is a discussion'
+			}]}
+		/>
+		{/* <Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={moment().subtract(1, 'hour')}
+			attachments={[{
+				text: 'This is a discussion'
+			}]}
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={moment().subtract(1, 'day')}
+			attachments={[{
+				text: 'This is a discussion'
+			}]}
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={moment().subtract(5, 'day')}
+			attachments={[{
+				text: 'This is a discussion'
+			}]}
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={moment().subtract(30, 'day')}
+			attachments={[{
+				text: 'This is a discussion'
+			}]}
+		/> */}
 
 		<Separator title='Archived' />
 		<Message msg='This message is inside an archived room' archived />
