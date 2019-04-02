@@ -27,8 +27,8 @@ const Icon = React.memo(({ type, status }) => {
 	}
 
 	let icon;
-	if (type === 'thread') {
-		icon = 'thread';
+	if (type === 'discussion') {
+		icon = 'chat';
 	} else if (type === 'c') {
 		icon = 'hashtag';
 	} else {

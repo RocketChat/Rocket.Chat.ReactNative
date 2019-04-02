@@ -362,38 +362,40 @@ export default class Message extends PureComponent {
 
 	renderDiscussion = () => {
 		const {
-			type, attachments, dcount, dlm, onDiscussionPress
+			msg, dcount, dlm, onDiscussionPress
 		} = this.props;
-		if (attachments.length === 0) {
-			return null;
+		const time = dlm ? moment(dlm).calendar(null, {
+			lastDay: `[${ I18n.t('Yesterday') }]`,
+			sameDay: 'h:mm A',
+			lastWeek: 'dddd',
+			sameElse: 'MMM D'
+		}) : null;
+		let buttonText = 'No messages yet';
+		if (dcount === 1) {
+			buttonText = `${ dcount } message`;
+		} else if (dcount > 1 && dcount < 1000) {
+			buttonText = `${ dcount } messages`;
+		} else if (dcount > 999) {
+			buttonText = '+999 messages';
 		}
-		if (type === 'discussion-created') {
-			const time = moment(dlm).calendar(null, {
-				lastDay: `[${ I18n.t('Yesterday') }]`,
-				sameDay: 'h:mm A',
-				lastWeek: 'dddd',
-				sameElse: 'MMM D'
-			});
-			return (
-				<React.Fragment>
-					<Text style={styles.textInfo}>Started a discussion:</Text>
-					<Text style={styles.text}>{attachments[0].text}</Text>
-					<View style={styles.buttonContainer}>
-						<RectButton
-							onPress={onDiscussionPress}
-							style={[styles.button, styles.smallButton]}
-							activeOpacity={0.5}
-							underlayColor={COLOR_WHITE}
-						>
-							<CustomIcon name='chat' size={20} style={styles.buttonIcon} />
-							<Text style={styles.buttonText}>{dcount === 1 ? `${ dcount } message` : `${ dcount } messages`}</Text>
-						</RectButton>
-						<Text style={styles.time}>{time}</Text>
-					</View>
-				</React.Fragment>
-			);
-		}
-		return null;
+		return (
+			<React.Fragment>
+				<Text style={styles.textInfo}>Started a discussion:</Text>
+				<Text style={styles.text}>{msg}</Text>
+				<View style={styles.buttonContainer}>
+					<RectButton
+						onPress={onDiscussionPress}
+						style={[styles.button, styles.smallButton]}
+						activeOpacity={0.5}
+						underlayColor={COLOR_WHITE}
+					>
+						<CustomIcon name='chat' size={20} style={styles.buttonIcon} />
+						<Text style={styles.buttonText}>{buttonText}</Text>
+					</RectButton>
+					<Text style={styles.time}>{time}</Text>
+				</View>
+			</React.Fragment>
+		);
 	}
 
 	renderInner = () => {

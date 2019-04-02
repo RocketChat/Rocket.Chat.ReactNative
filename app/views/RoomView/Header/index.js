@@ -166,7 +166,7 @@ export default class RoomHeaderView extends Component {
 						bounces={false}
 						contentContainerStyle={styles.scroll}
 					>
-						<Icon type={prid ? 'thread' : type} status={status} />
+						<Icon type={prid ? 'discussion' : type} status={status} />
 						<Text style={[styles.title, { fontSize: TITLE_SIZE * scale }]} numberOfLines={1}>{title}</Text>
 					</ScrollView>
 				</View>

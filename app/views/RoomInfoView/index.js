@@ -26,7 +26,7 @@ const getRoomTitle = room => (room.t === 'd'
 	? <Text testID='room-info-view-name' style={styles.roomTitle}>{room.fname}</Text>
 	: (
 		<View style={styles.roomTitleRow}>
-			<RoomTypeIcon type={room.prid ? 'thread' : room.t} key='room-info-type' />
+			<RoomTypeIcon type={room.prid ? 'discussion' : room.t} key='room-info-type' />
 			<Text testID='room-info-view-name' style={styles.roomTitle} key='room-info-name'>{room.prid ? room.fname : room.name}</Text>
 		</View>
 	)

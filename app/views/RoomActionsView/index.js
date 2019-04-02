@@ -406,7 +406,7 @@ export default class RoomActionsView extends LoggedView {
 						? <Text style={styles.roomTitle}>{room.fname}</Text>
 						: (
 							<View style={styles.roomTitleRow}>
-								<RoomTypeIcon type={room.prid ? 'thread' : room.t} />
+								<RoomTypeIcon type={room.prid ? 'discussion' : room.t} />
 								<Text style={styles.roomTitle}>{room.prid ? room.fname : room.name}</Text>
 							</View>
 						)

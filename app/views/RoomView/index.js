@@ -59,10 +59,11 @@ import { COLOR_WHITE } from '../../constants/colors';
 export default class RoomView extends LoggedView {
 	static navigationOptions = ({ navigation }) => {
 		const rid = navigation.getParam('rid');
+		const prid = navigation.getParam('prid');
 		const title = navigation.getParam('name');
 		const t = navigation.getParam('t');
 		return {
-			headerTitle: <RoomHeaderView rid={rid} title={title} type={t} />,
+			headerTitle: <RoomHeaderView rid={rid} prid={prid} title={title} type={t} />,
 			headerRight: t === 'l'
 				? null
 				: (
@@ -202,7 +203,9 @@ export default class RoomView extends LoggedView {
 
 	onDiscussionPress = (item) => {
 		const { navigation } = this.props;
-		navigation.push('RoomView', { rid: item.drid, name: item.msg, t: 'p' });
+		navigation.push('RoomView', {
+			rid: item.drid, prid: item.rid, name: item.msg, t: 'p'
+		});
 	}
 
 	internalSetState = (...args) => {
