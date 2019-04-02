@@ -203,7 +203,13 @@ export default class RoomItem extends React.Component {
 			prefix = `${ lastMessage.u.username }: `;
 		}
 
+		if (lastMessage.msg && Object.keys(lastMessage.attachments).length > 0) {
+			lastMessage.msg = lastMessage.msg.replace(/^\[ ]\(.+?\)/, '');
+			prefix = prefix.replace(/:/, ' (replied):');
+		}
+
 		let msg = `${ prefix }${ lastMessage.msg.replace(/[\n\t\r]/igm, '') }`;
+
 		msg = emojify(msg, { output: 'unicode' });
 		return msg;
 	}
