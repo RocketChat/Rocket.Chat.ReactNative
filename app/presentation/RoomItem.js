@@ -209,7 +209,6 @@ export default class RoomItem extends React.Component {
 		}
 
 		let msg = `${ prefix }${ lastMessage.msg.replace(/[\n\t\r]/igm, '') }`;
-
 		msg = emojify(msg, { output: 'unicode' });
 		return msg;
 	}
