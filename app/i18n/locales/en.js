@@ -255,6 +255,7 @@ export default {
 	Register: 'Register',
 	Repeat_Password: 'Repeat Password',
 	Reply: 'Reply',
+	Replied: 'Replied',
 	Resend: 'Resend',
 	Reset_password: 'Reset password',
 	resetting_password: 'resetting password',
