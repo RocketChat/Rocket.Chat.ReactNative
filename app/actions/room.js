@@ -8,17 +8,17 @@ export function removeUserTyping(username) {
 	};
 }
 
-export function someoneTyping(data) {
+export function someoneTyping(data) { //
 	return {
 		type: types.ROOM.SOMEONE_TYPING,
 		...data
 	};
 }
 
-export function addUserTyping(username) {
+export function addUserTyping(username, rid) {
 	return {
 		type: types.ROOM.ADD_USER_TYPING,
-		username
+		username, rid
 	};
 }
 

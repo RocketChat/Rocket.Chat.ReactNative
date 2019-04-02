@@ -280,6 +280,14 @@ const uploadsSchema = {
 	}
 };
 
+const usersTypingSchema = {
+	name: 'usersTyping',
+	properties: {
+		rid: { type: 'string', indexed: true },
+		username: { type: 'string', optional: true }
+	}
+};
+
 const schema = [
 	settingsSchema,
 	subscriptionSchema,
@@ -303,6 +311,8 @@ const schema = [
 	uploadsSchema
 ];
 
+const inMemorySchema = [usersTypingSchema];
+
 class DB {
 	databases = {
 		serversDB: new Realm({
@@ -311,6 +321,12 @@ class DB {
 				serversSchema
 			],
 			schemaVersion: 1
+		}),
+		inMemoryDB: new Realm({
+			path: 'memory.realm',
+			schema: inMemorySchema,
+			schemaVersion: 1,
+			inMemory: true
 		})
 	}
 
@@ -336,6 +352,10 @@ class DB {
 
 	get database() {
 		return this.databases.activeDB;
+	}
+
+	get memoryDatabase() {
+		return this.databases.inMemoryDB;
 	}
 
 	setActiveDB(database = '') {

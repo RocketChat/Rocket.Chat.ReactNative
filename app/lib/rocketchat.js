@@ -208,21 +208,6 @@ const RocketChat = {
 			requestAnimationFrame(() => reduxStore.dispatch(roomMessageReceived(message)));
 		});
 
-		this.sdk.onStreamData('stream-notify-room', protectedFunction((ddpMessage) => {
-			const [_rid, ev] = ddpMessage.fields.eventName.split('/');
-			if (ev === 'typing') {
-				reduxStore.dispatch(someoneTyping({ _rid, username: ddpMessage.fields.args[0], typing: ddpMessage.fields.args[1] }));
-			} else if (ev === 'deleteMessage') {
-				database.write(() => {
-					if (ddpMessage && ddpMessage.fields && ddpMessage.fields.args.length > 0) {
-						const { _id } = ddpMessage.fields.args[0];
-						const message = database.objects('messages').filtered('_id = $0', _id);
-						database.delete(message);
-					}
-				});
-			}
-		}));
-
 		this.sdk.onStreamData('rocketchat_roles', protectedFunction((ddpMessage) => {
 			this.roles = this.roles || {};
 
@@ -566,6 +551,9 @@ const RocketChat = {
 	},
 	unsubscribe(subscription) {
 		return this.sdk.unsubscribe(subscription);
+	},
+	onStreamData(...args) {
+		return this.sdk.onStreamData(...args);
 	},
 	emitTyping(room, t = true) {
 		const { login } = reduxStore.getState();

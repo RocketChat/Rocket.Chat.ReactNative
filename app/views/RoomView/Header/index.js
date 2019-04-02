@@ -13,6 +13,7 @@ import { isIOS } from '../../../utils/deviceInfo';
 import { headerIconSize } from '../../../containers/HeaderButton';
 import Icon from './Icon';
 import { COLOR_TEXT_DESCRIPTION, HEADER_TITLE, COLOR_WHITE } from '../../../constants/colors';
+import database from '../../../lib/realm';
 
 const TITLE_SIZE = 16;
 const styles = StyleSheet.create({
@@ -60,16 +61,7 @@ const styles = StyleSheet.create({
 		}
 	}
 
-	let otherUsersTyping = [];
-	if (state.login.user && state.login.user.username) {
-		const { username } = state.login.user;
-		const { usersTyping } = state.room;
-		otherUsersTyping = usersTyping.filter(_username => _username !== username);
-	}
-
 	return {
-		usersTyping: otherUsersTyping,
-		prid: null,
 		status
 	};
 })
@@ -78,14 +70,24 @@ export default class RoomHeaderView extends Component {
 		title: PropTypes.string,
 		type: PropTypes.string,
 		prid: PropTypes.string,
+		rid: PropTypes.string,
 		window: PropTypes.object,
-		usersTyping: PropTypes.array,
 		status: PropTypes.string
 	};
 
-	shouldComponentUpdate(nextProps) {
+	constructor(props) {
+		super(props);
+		this.usersTyping = database.memoryDatabase.objects('usersTyping').filtered('rid = $0', props.rid);
+		this.state = {
+			usersTyping: this.usersTyping.slice() || []
+		};
+		this.usersTyping.addListener(this.updateState);
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const { usersTyping } = this.state;
 		const {
-			type, title, status, usersTyping, window
+			type, title, status, window
 		} = this.props;
 		if (nextProps.type !== type) {
 			return true;
@@ -102,7 +104,7 @@ export default class RoomHeaderView extends Component {
 		if (nextProps.window.height !== window.height) {
 			return true;
 		}
-		if (!equal(nextProps.usersTyping, usersTyping)) {
+		if (!equal(nextState.usersTyping, usersTyping)) {
 			return true;
 		}
 		return false;
@@ -118,26 +120,32 @@ export default class RoomHeaderView extends Component {
 	// }
 
 	get typing() {
-		const { usersTyping } = this.props;
+		const { usersTyping } = this.state;
+		const users = usersTyping.map(item => item.username);
 		let usersText;
-		if (!usersTyping.length) {
+		if (!users.length) {
 			return null;
-		} else if (usersTyping.length === 2) {
-			usersText = usersTyping.join(` ${ I18n.t('and') } `);
+		} else if (users.length === 2) {
+			usersText = users.join(` ${ I18n.t('and') } `);
 		} else {
-			usersText = usersTyping.join(', ');
+			usersText = users.join(', ');
 		}
 		return (
 			<Text style={styles.typing} numberOfLines={1}>
 				<Text style={styles.typingUsers}>{usersText} </Text>
-				{ usersTyping.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing') }...
+				{ users.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing') }...
 			</Text>
 		);
 	}
 
+	updateState = () => {
+		this.setState({ usersTyping: this.usersTyping.slice() });
+	}
+
 	render() {
+		const { usersTyping } = this.state;
 		const {
-			window, title, usersTyping, type, status, prid
+			window, title, type, status, prid
 		} = this.props;
 		const portrait = window.height > window.width;
 		const widthScrollView = window.width - 6.5 * headerIconSize;

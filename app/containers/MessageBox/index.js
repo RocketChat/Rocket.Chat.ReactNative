@@ -49,7 +49,6 @@ const imagePickerConfig = {
 };
 
 @connect(state => ({
-	roomType: state.room.t,
 	message: state.messages.message,
 	replyMessage: state.messages.replyMessage,
 	replying: state.messages.replyMessage && !!state.messages.replyMessage.msg,

@@ -9,9 +9,12 @@ import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import moment from 'moment';
 
-import { openRoom as openRoomAction, closeRoom as closeRoomAction } from '../../actions/room';
 import {
-	toggleReactionPicker as toggleReactionPickerAction, actionsShow as actionsShowAction, messagesRequest as messagesRequestAction
+	toggleReactionPicker as toggleReactionPickerAction,
+	actionsShow as actionsShowAction,
+	messagesRequest as messagesRequestAction,
+	editCancel as editCancelAction,
+	replyCancel as replyCancelAction
 } from '../../actions/messages';
 import LoggedView from '../View';
 import { List } from './List';
@@ -46,10 +49,10 @@ import { COLOR_WHITE } from '../../constants/colors';
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	useRealName: state.settings.UI_Use_Real_Name
 }), dispatch => ({
-	openRoom: room => dispatch(openRoomAction(room)),
+	editCancel: () => dispatch(editCancelAction()),
+	replyCancel: () => dispatch(replyCancelAction()),
 	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
 	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage)),
-	closeRoom: () => dispatch(closeRoomAction()),
 	messagesRequest: room => dispatch(messagesRequestAction(room))
 }))
 /** @extends React.Component */
@@ -84,7 +87,9 @@ export default class RoomView extends LoggedView {
 		useRealName: PropTypes.bool,
 		toggleReactionPicker: PropTypes.func.isRequired,
 		actionsShow: PropTypes.func,
-		messagesRequest: PropTypes.func
+		messagesRequest: PropTypes.func,
+		editCancel: PropTypes.func,
+		replyCancel: PropTypes.func
 	};
 
 	constructor(props) {
@@ -165,15 +170,16 @@ export default class RoomView extends LoggedView {
 	}
 
 	componentWillUnmount() {
-		// const { closeRoom } = this.props;
-		// closeRoom();
 		this.rooms.removeAllListeners();
-		if (this.sub && this.sub.unsubscribe) {
-			this.sub.unsubscribe();
+		if (this.sub && this.sub.stop) {
+			this.sub.stop();
 		}
 		if (this.beginAnimatingTimeout) {
 			clearTimeout(this.beginAnimatingTimeout);
 		}
+		const { editCancel, replyCancel } = this.props;
+		editCancel();
+		replyCancel();
 	}
 
 	onMessageLongPress = (message) => {
@@ -321,7 +327,7 @@ export default class RoomView extends LoggedView {
 	}
 
 	renderFooter = () => {
-		const { joined } = this.state;
+		const { joined, room } = this.state;
 
 		if (!joined) {
 			return (
@@ -352,7 +358,7 @@ export default class RoomView extends LoggedView {
 				</View>
 			);
 		}
-		return <MessageBox key='room-view-messagebox' onSubmit={this.sendMessage} rid={this.rid} />;
+		return <MessageBox key='room-view-messagebox' onSubmit={this.sendMessage} rid={this.rid} roomType={room.t} />;
 	};
 
 	renderList = () => {
