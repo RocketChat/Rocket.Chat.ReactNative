@@ -67,7 +67,7 @@ export default class RoomView extends LoggedView {
 				? null
 				: (
 					<CustomHeaderButtons>
-						<Item title='more' iconName='menu' onPress={() => navigation.navigate('RoomActionsView', { rid })} testID='room-view-header-actions' />
+						<Item title='more' iconName='menu' onPress={() => navigation.navigate('RoomActionsView', { rid, t })} testID='room-view-header-actions' />
 					</CustomHeaderButtons>
 				)
 		};

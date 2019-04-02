@@ -23,7 +23,6 @@ import StatusBar from '../../containers/StatusBar';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	room: state.room,
 	user: {
 		id: state.login.user && state.login.user.id,
 		token: state.login.user && state.login.user.token
@@ -191,10 +190,15 @@ export default class RoomMembersView extends LoggedView {
 		this.setState({ isLoading: true });
 		const { rid } = this.state;
 		const { navigation } = this.props;
-		const membersResult = await RocketChat.getRoomMembers(rid, status);
-		const members = membersResult.records;
-		this.setState({ allUsers: status, members, isLoading: false });
-		navigation.setParams({ allUsers: status });
+		try {
+			const membersResult = await RocketChat.getRoomMembers(rid, status);
+			const members = membersResult.records;
+			this.setState({ allUsers: status, members, isLoading: false });
+			navigation.setParams({ allUsers: status });
+		} catch (error) {
+			console.log('TCL: fetchMembers -> error', error);
+			this.setState({ isLoading: false });
+		}
 	}
 
 	updateRoom = () => {

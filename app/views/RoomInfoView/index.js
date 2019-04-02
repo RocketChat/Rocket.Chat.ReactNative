@@ -40,8 +40,7 @@ const getRoomTitle = room => (room.t === 'd'
 	},
 	activeUsers: state.activeUsers, // TODO: remove it
 	Message_TimeFormat: state.settings.Message_TimeFormat,
-	allRoles: state.roles,
-	room: state.room
+	allRoles: state.roles
 }))
 /** @extends React.Component */
 export default class RoomInfoView extends LoggedView {
@@ -75,12 +74,13 @@ export default class RoomInfoView extends LoggedView {
 	constructor(props) {
 		super('RoomInfoView', props);
 		const rid = props.navigation.getParam('rid');
+		const room = props.navigation.getParam('room');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.sub = {
 			unsubscribe: () => {}
 		};
 		this.state = {
-			room: this.rooms[0] || {},
+			room: this.rooms[0] || room || {},
 			roomUser: {},
 			roles: []
 		};

@@ -582,6 +582,10 @@ const RocketChat = {
 		// RC 0.65.0
 		return this.sdk.get(`${ this.roomTypeToApiType(t) }.counters`, { roomId });
 	},
+	getChannelInfo(roomId) {
+		// RC 0.48.0
+		return this.sdk.get('channels.info', { roomId });
+	},
 	async getRoomMember(rid, currentUserId) {
 		try {
 			if (rid === `${ currentUserId }${ currentUserId }`) {
@@ -651,7 +655,13 @@ const RocketChat = {
 		let roles = [];
 		try {
 			// get the room from realm
-			const room = database.objects('subscriptions').filtered('rid = $0', rid)[0];
+			const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
+			if (!room) {
+				return permissions.reduce((result, permission) => {
+					result[permission] = false;
+					return result;
+				}, {});
+			}
 			// get room roles
 			roles = room.roles; // eslint-disable-line prefer-destructuring
 		} catch (error) {
