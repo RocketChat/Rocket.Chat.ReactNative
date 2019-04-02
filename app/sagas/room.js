@@ -31,24 +31,18 @@ const handleMessageReceived = function* handleMessageReceived({ message }) {
 	}
 };
 
-const watchUserTyping = function* watchUserTyping({ status }) {
+const watchUserTyping = function* watchUserTyping({ rid, status }) {
 	const auth = yield select(state => state.login.isAuthenticated);
 	if (!auth) {
 		yield take(types.LOGIN.SUCCESS);
 	}
 
-	const room = yield select(state => state.room);
-
-	if (!room) {
-		return;
-	}
-
 	try {
-		yield RocketChat.emitTyping(room.rid, status);
+		yield RocketChat.emitTyping(rid, status);
 
 		if (status) {
 			yield call(delay, 5000);
-			yield RocketChat.emitTyping(room.rid, false);
+			yield RocketChat.emitTyping(rid, false);
 		}
 	} catch (e) {
 		log('watchUserTyping', e);

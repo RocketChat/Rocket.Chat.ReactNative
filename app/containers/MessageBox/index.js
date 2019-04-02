@@ -62,7 +62,7 @@ const imagePickerConfig = {
 }), dispatch => ({
 	editCancel: () => dispatch(editCancelAction()),
 	editRequest: message => dispatch(editRequestAction(message)),
-	typing: status => dispatch(userTypingAction(status)),
+	typing: (rid, status) => dispatch(userTypingAction(rid, status)),
 	closeReply: () => dispatch(replyCancelAction())
 }))
 export default class MessageBox extends Component {
@@ -460,13 +460,13 @@ export default class MessageBox extends Component {
 	}
 
 	handleTyping = (isTyping) => {
-		const { typing } = this.props;
+		const { typing, rid } = this.props;
 		if (!isTyping) {
 			if (this.typingTimeout) {
 				clearTimeout(this.typingTimeout);
 				this.typingTimeout = false;
 			}
-			typing(false);
+			typing(rid, false);
 			return;
 		}
 
@@ -475,7 +475,7 @@ export default class MessageBox extends Component {
 		}
 
 		this.typingTimeout = setTimeout(() => {
-			typing(true);
+			typing(rid, true);
 			this.typingTimeout = false;
 		}, 1000);
 	}
