@@ -1,35 +1,14 @@
 import { Alert } from 'react-native';
 import {
-	call, takeLatest, take, select, takeEvery
+	call, takeLatest, take, select
 } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
-import EJSON from 'ejson';
 
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
-import { messagesRequest, editCancel, replyCancel } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
-import database from '../lib/realm';
 import log from '../utils/log';
 import I18n from '../i18n';
-
-const handleMessageReceived = function* handleMessageReceived({ message }) {
-	try {
-		const room = yield select(state => state.room);
-
-		if (message.rid === room.rid) {
-			database.write(() => {
-				database.create('messages', EJSON.fromJSONValue(message), true);
-			});
-
-			if (room._id) {
-				RocketChat.readMessages(room.rid);
-			}
-		}
-	} catch (e) {
-		console.warn('handleMessageReceived', e);
-	}
-};
 
 const watchUserTyping = function* watchUserTyping({ rid, status }) {
 	const auth = yield select(state => state.login.isAuthenticated);
@@ -77,7 +56,6 @@ const handleEraseRoom = function* handleEraseRoom({ rid, t }) {
 
 const root = function* root() {
 	yield takeLatest(types.ROOM.USER_TYPING, watchUserTyping);
-	yield takeEvery(types.ROOM.MESSAGE_RECEIVED, handleMessageReceived);
 	yield takeLatest(types.ROOM.LEAVE, handleLeaveRoom);
 	yield takeLatest(types.ROOM.ERASE, handleEraseRoom);
 };

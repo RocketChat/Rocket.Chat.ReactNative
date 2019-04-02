@@ -1,16 +1,20 @@
+import EJSON from 'ejson';
+
 import log from '../../../utils/log';
 import protectedFunction from '../helpers/protectedFunction';
+import buildMessage from '../helpers/buildMessage';
 import database from '../../realm';
 
 const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
 const removeListener = listener => listener.stop();
 
 export default function subscribeRoom({ rid }) {
-	let streamListener;
 	let promises;
 	let timer = null;
 	let connectedListener;
 	let disconnectedListener;
+	let notifyRoomListener;
+	let messageReceivedListener;
 	const typingTimeouts = {};
 	const loop = () => {
 		if (timer) {
@@ -85,21 +89,17 @@ export default function subscribeRoom({ rid }) {
 		}
 	};
 
-	const handleStreamReceived = protectedFunction((ddpMessage) => {
+	const handleNotifyRoomReceived = protectedFunction((ddpMessage) => {
 		const [_rid, ev] = ddpMessage.fields.eventName.split('/');
 		if (rid !== _rid) {
 			return;
 		}
 		if (ev === 'typing') {
 			const [username, typing] = ddpMessage.fields.args;
-			try {
-				if (typing) {
-					addUserTyping(username);
-				} else {
-					removeUserTyping(username);
-				}
-			} catch (error) {
-				console.log('TCL: handleStreamReceived -> typing -> error', error);
+			if (typing) {
+				addUserTyping(username);
+			} else {
+				removeUserTyping(username);
 			}
 		} else if (ev === 'deleteMessage') {
 			database.write(() => {
@@ -110,6 +110,28 @@ export default function subscribeRoom({ rid }) {
 				}
 			});
 		}
+	});
+
+	const handleMessageReceived = protectedFunction((ddpMessage) => {
+		const message = buildMessage(ddpMessage.fields.args[0]);
+		if (rid !== message.rid) {
+			return;
+		}
+		requestAnimationFrame(() => {
+			try {
+				database.write(() => {
+					database.create('messages', EJSON.fromJSONValue(message), true);
+				});
+
+				const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
+
+				if (room._id) {
+					this.readMessages(rid);
+				}
+			} catch (e) {
+				console.warn('handleMessageReceived', e);
+			}
+		});
 	});
 
 	const stop = () => {
@@ -125,9 +147,13 @@ export default function subscribeRoom({ rid }) {
 			disconnectedListener.then(removeListener);
 			disconnectedListener = false;
 		}
-		if (streamListener) {
-			streamListener.then(removeListener);
-			streamListener = false;
+		if (notifyRoomListener) {
+			notifyRoomListener.then(removeListener);
+			notifyRoomListener = false;
+		}
+		if (messageReceivedListener) {
+			messageReceivedListener.then(removeListener);
+			messageReceivedListener = false;
 		}
 		clearTimeout(timer);
 		timer = false;
@@ -141,7 +167,8 @@ export default function subscribeRoom({ rid }) {
 
 	connectedListener = this.sdk.onStreamData('connected', handleConnected);
 	disconnectedListener = this.sdk.onStreamData('close', handleDisconnected);
-	streamListener = this.sdk.onStreamData('stream-notify-room', handleStreamReceived);
+	notifyRoomListener = this.sdk.onStreamData('stream-notify-room', handleNotifyRoomReceived);
+	messageReceivedListener = this.sdk.onStreamData('stream-room-messages', handleMessageReceived);
 
 	try {
 		promises = this.sdk.subscribeRoom(rid);

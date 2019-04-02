@@ -202,12 +202,6 @@ const RocketChat = {
 
 		this.sdk.onStreamData('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 
-		this.sdk.onStreamData('stream-room-messages', (ddpMessage) => {
-			// TODO: debounce
-			const message = _buildMessage(ddpMessage.fields.args[0]);
-			requestAnimationFrame(() => reduxStore.dispatch(roomMessageReceived(message)));
-		});
-
 		this.sdk.onStreamData('rocketchat_roles', protectedFunction((ddpMessage) => {
 			this.roles = this.roles || {};
 
