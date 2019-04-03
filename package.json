@@ -11,7 +11,6 @@
     "ios": "react-native run-ios",
     "log-android": "react-native log-android",
     "android": "react-native run-android",
-    "storybook": "storybook start -p 7007 | react-native start --projectRoot storybook",
     "snyk-protect": "snyk protect"
   },
   "rnpm": {
@@ -32,7 +31,7 @@
     "prop-types": "^15.6.2",
     "react": "16.8.3",
     "react-emojione": "^5.0.1",
-    "react-native": "0.59.0",
+    "react-native": "0.59.3",
     "react-native-action-sheet": "^2.1.0",
     "react-native-audio": "^4.3.0",
     "react-native-device-info": "^0.25.1",
@@ -48,7 +47,7 @@
     "react-native-keyboard-tracking-view": "^5.5.0",
     "react-native-markdown-renderer": "^3.2.8",
     "react-native-modal": "^7.0.2",
-    "react-native-notifications": "1.1.23",
+    "react-native-notifications": "1.2.6",
     "react-native-optimized-flatlist": "^1.0.4",
     "react-native-orientation-locker": "^1.1.3",
     "react-native-picker-select": "^5.2.3",

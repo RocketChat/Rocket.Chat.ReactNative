@@ -1,9 +1,12 @@
 import { StyleSheet } from 'react-native';
+import { COLOR_SEPARATOR, COLOR_WHITE } from '../../constants/colors';
+
+import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#fff'
+		backgroundColor: COLOR_WHITE
 	},
 	searchContainer: {
 		padding: 20,
@@ -11,21 +14,23 @@ export default StyleSheet.create({
 	},
 	list: {
 		flex: 1,
-		backgroundColor: '#ffffff'
-	},
-	message: {
-		transform: [{ scaleY: 1 }]
+		backgroundColor: COLOR_WHITE
 	},
 	divider: {
 		width: '100%',
 		height: StyleSheet.hairlineWidth,
-		backgroundColor: '#E7EBF2',
+		backgroundColor: COLOR_SEPARATOR,
 		marginVertical: 20
 	},
 	listEmptyContainer: {
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'flex-start',
-		backgroundColor: '#ffffff'
+		backgroundColor: COLOR_WHITE
+	},
+	noDataFound: {
+		fontSize: 14,
+		...sharedStyles.textRegular,
+		...sharedStyles.textColorNormal
 	}
 });

@@ -1,15 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text } from 'react-native';
 import HeaderButtons, { HeaderButton, Item } from 'react-navigation-header-buttons';
 
 import { CustomIcon } from '../lib/Icons';
 import { isIOS } from '../utils/deviceInfo';
+import { COLOR_PRIMARY, COLOR_WHITE } from '../constants/colors';
 
-const color = isIOS ? '#1D74F5' : '#FFF';
+const color = isIOS ? COLOR_PRIMARY : COLOR_WHITE;
+export const headerIconSize = 23;
 
 const CustomHeaderButton = React.memo(props => (
-	<HeaderButton {...props} IconComponent={CustomIcon} iconSize={23} color={color} />
+	<HeaderButton {...props} IconComponent={CustomIcon} iconSize={headerIconSize} color={color} />
 ));
 
 export const CustomHeaderButtons = React.memo(props => (
@@ -59,5 +60,3 @@ LegalButton.propTypes = {
 };
 
 export { Item };
-
-export default () => <Text>a</Text>;

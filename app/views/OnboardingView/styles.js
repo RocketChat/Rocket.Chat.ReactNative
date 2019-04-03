@@ -2,23 +2,24 @@ import { StyleSheet } from 'react-native';
 
 import { verticalScale, moderateScale } from '../../utils/scaling';
 import sharedStyles from '../Styles';
+import { COLOR_PRIMARY, COLOR_BORDER, COLOR_WHITE } from '../../constants/colors';
 
 const colors = {
-	backgroundPrimary: '#1D74F5',
+	backgroundPrimary: COLOR_PRIMARY,
 	backgroundSecondary: 'white',
 
 	textColorPrimary: 'white',
-	textColorSecondary: '#1D74F5',
+	textColorSecondary: COLOR_PRIMARY,
 
-	borderColorPrimary: '#1D74F5',
-	borderColorSecondary: '#E1E5E8'
+	borderColorPrimary: COLOR_PRIMARY,
+	borderColorSecondary: COLOR_BORDER
 };
 
 export default StyleSheet.create({
 	container: {
 		flex: 1,
 		flexDirection: 'column',
-		backgroundColor: '#fff'
+		backgroundColor: COLOR_WHITE
 	},
 	onboarding: {
 		alignSelf: 'center',
@@ -31,9 +32,9 @@ export default StyleSheet.create({
 	},
 	title: {
 		...sharedStyles.textBold,
+		...sharedStyles.textColorNormal,
 		letterSpacing: 0,
 		fontSize: moderateScale(24),
-		color: '#2F343D',
 		alignSelf: 'center',
 		marginBottom: verticalScale(8)
 	},
@@ -67,7 +68,7 @@ export default StyleSheet.create({
 	},
 	buttonSubtitle: {
 		...sharedStyles.textRegular,
-		color: '#9EA2A8',
+		...sharedStyles.textColorDescription,
 		fontSize: 15
 	},
 	buttonIconContainer: {

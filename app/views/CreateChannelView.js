@@ -20,6 +20,7 @@ import { showErrorAlert } from '../utils/info';
 import { isAndroid } from '../utils/deviceInfo';
 import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
+import { COLOR_TEXT_DESCRIPTION, COLOR_WHITE } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
 	},
 	list: {
 		width: '100%',
-		backgroundColor: '#FFFFFF'
+		backgroundColor: COLOR_WHITE
 	},
 	separator: {
 		marginLeft: 60
@@ -39,22 +40,23 @@ const styles = StyleSheet.create({
 	input: {
 		height: 54,
 		paddingHorizontal: 18,
-		color: '#9EA2A8',
-		backgroundColor: '#fff',
-		fontSize: 18
+		fontSize: 17,
+		...sharedStyles.textRegular,
+		...sharedStyles.textColorNormal,
+		backgroundColor: COLOR_WHITE
 	},
 	swithContainer: {
 		height: 54,
-		backgroundColor: '#fff',
+		backgroundColor: COLOR_WHITE,
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		flexDirection: 'row',
 		paddingHorizontal: 18
 	},
 	label: {
-		color: '#0C0D0F',
-		fontSize: 18,
-		fontWeight: '500'
+		fontSize: 17,
+		...sharedStyles.textMedium,
+		...sharedStyles.textColorNormal
 	},
 	invitedHeader: {
 		marginTop: 18,
@@ -64,14 +66,15 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	invitedTitle: {
-		color: '#2F343D',
-		fontSize: 22,
-		fontWeight: 'bold',
+		fontSize: 18,
+		...sharedStyles.textSemibold,
+		...sharedStyles.textColorNormal,
 		lineHeight: 41
 	},
 	invitedCount: {
-		color: '#9EA2A8',
-		fontSize: 15
+		fontSize: 14,
+		...sharedStyles.textRegular,
+		...sharedStyles.textColorDescription
 	}
 });
 
@@ -347,6 +350,7 @@ export default class CreateChannelView extends LoggedView {
 								value={channelName}
 								onChangeText={this.onChangeText}
 								placeholder={I18n.t('Channel_Name')}
+								placeholderTextColor={COLOR_TEXT_DESCRIPTION}
 								returnKeyType='done'
 								testID='create-channel-name'
 								autoCorrect={false}

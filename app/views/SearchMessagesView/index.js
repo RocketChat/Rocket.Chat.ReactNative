@@ -92,7 +92,7 @@ export default class SearchMessagesView extends LoggedView {
 
 	renderEmpty = () => (
 		<View style={styles.listEmptyContainer}>
-			<Text>{I18n.t('No_results_found')}</Text>
+			<Text style={styles.noDataFound}>{I18n.t('No_results_found')}</Text>
 		</View>
 	)
 
@@ -100,7 +100,6 @@ export default class SearchMessagesView extends LoggedView {
 		const { user, customEmojis, baseUrl } = this.props;
 		return (
 			<Message
-				style={styles.message}
 				customEmojis={customEmojis}
 				baseUrl={baseUrl}
 				user={user}

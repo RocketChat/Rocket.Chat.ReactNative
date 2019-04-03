@@ -1,51 +1,45 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, StyleSheet, LayoutAnimation
+	View, Text, StyleSheet, ScrollView
 } from 'react-native';
 import { connect } from 'react-redux';
 import { responsive } from 'react-native-responsive-ui';
 import equal from 'deep-equal';
 
 import I18n from '../../../i18n';
-import { STATUS_COLORS } from '../../../constants/colors';
 import sharedStyles from '../../Styles';
 import { isIOS } from '../../../utils/deviceInfo';
-import { CustomIcon } from '../../../lib/Icons';
-import Status from '../../../containers/Status/Status';
+import { headerIconSize } from '../../../containers/HeaderButton';
+import Icon from './Icon';
+import { COLOR_TEXT_DESCRIPTION, HEADER_TITLE, COLOR_WHITE } from '../../../constants/colors';
 
-const TITLE_SIZE = 18;
-const ICON_SIZE = 18;
+const TITLE_SIZE = 16;
 const styles = StyleSheet.create({
 	container: {
-		flex: 1
+		flex: 1,
+		height: '100%'
 	},
 	titleContainer: {
-		flexDirection: 'row',
-		alignItems: 'center'
+		flex: 1,
+		flexDirection: 'row'
 	},
 	title: {
 		...sharedStyles.textSemibold,
-		color: isIOS ? '#0C0D0F' : '#fff',
+		color: HEADER_TITLE,
 		fontSize: TITLE_SIZE
 	},
-	type: {
-		width: ICON_SIZE,
-		height: ICON_SIZE,
-		marginRight: 8,
-		color: isIOS ? '#9EA2A8' : '#fff'
+	scroll: {
+		alignItems: 'center'
 	},
 	typing: {
 		...sharedStyles.textRegular,
-		color: isIOS ? '#9EA2A8' : '#fff',
-		fontSize: 12
+		color: isIOS ? COLOR_TEXT_DESCRIPTION : COLOR_WHITE,
+		fontSize: 12,
+		marginBottom: 2
 	},
 	typingUsers: {
-		...sharedStyles.textSemibold,
-		fontWeight: '600'
-	},
-	status: {
-		marginRight: 8
+		...sharedStyles.textSemibold
 	}
 });
 
@@ -118,14 +112,14 @@ export default class RoomHeaderView extends Component {
 		return false;
 	}
 
-	componentDidUpdate(prevProps) {
-		if (isIOS) {
-			const { usersTyping } = this.props;
-			if (!equal(prevProps.usersTyping, usersTyping)) {
-				LayoutAnimation.easeInEaseOut();
-			}
-		}
-	}
+	// componentDidUpdate(prevProps) {
+	// 	if (isIOS) {
+	// 		const { usersTyping } = this.props;
+	// 		if (!equal(prevProps.usersTyping, usersTyping)) {
+	// 			LayoutAnimation.easeInEaseOut();
+	// 		}
+	// 	}
+	// }
 
 	get typing() {
 		const { usersTyping } = this.props;
@@ -145,34 +139,12 @@ export default class RoomHeaderView extends Component {
 		);
 	}
 
-	renderIcon = () => {
-		const { type, status } = this.props;
-		if (type === 'd') {
-			return <Status size={10} style={styles.status} status={status} />;
-		}
-
-		const icon = type === 'c' ? 'hashtag' : 'lock';
-		return (
-			<CustomIcon
-				name={icon}
-				size={ICON_SIZE * 1}
-				style={[
-					styles.type,
-					{
-						width: ICON_SIZE * 1,
-						height: ICON_SIZE * 1
-					},
-					type === 'd' && { color: STATUS_COLORS[status] }
-				]}
-			/>
-		);
-	}
-
 	render() {
 		const {
-			window, title, usersTyping
+			window, title, usersTyping, type, status
 		} = this.props;
 		const portrait = window.height > window.width;
+		const widthScrollView = window.width - 6.5 * headerIconSize;
 		let scale = 1;
 
 		if (!portrait) {
@@ -183,9 +155,16 @@ export default class RoomHeaderView extends Component {
 
 		return (
 			<View style={styles.container}>
-				<View style={styles.titleContainer}>
-					{this.renderIcon()}
-					<Text style={[styles.title, { fontSize: TITLE_SIZE * scale }]} numberOfLines={1}>{title}</Text>
+				<View style={[styles.titleContainer, { width: widthScrollView }]}>
+					<ScrollView
+						showsHorizontalScrollIndicator={false}
+						horizontal
+						bounces={false}
+						contentContainerStyle={styles.scroll}
+					>
+						<Icon type={type} status={status} />
+						<Text style={[styles.title, { fontSize: TITLE_SIZE * scale }]} numberOfLines={1}>{title}</Text>
+					</ScrollView>
 				</View>
 				{this.typing}
 			</View>
