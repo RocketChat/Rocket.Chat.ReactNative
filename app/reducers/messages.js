@@ -9,7 +9,6 @@ const initialState = {
 	editing: false,
 	showActions: false,
 	showErrorActions: false,
-	showReactionPicker: false
 };
 
 export default function messages(state = initialState, action) {
@@ -103,7 +102,6 @@ export default function messages(state = initialState, action) {
 		case types.MESSAGES.TOGGLE_REACTION_PICKER:
 			return {
 				...state,
-				showReactionPicker: !state.showReactionPicker,
 				actionMessage: action.message
 			};
 		default:

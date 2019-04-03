@@ -1,6 +1,9 @@
 import React from 'react';
 import {
-	createStackNavigator, createAppContainer, createSwitchNavigator, createDrawerNavigator
+	createStackNavigator,
+	createAppContainer,
+	createSwitchNavigator,
+	createDrawerNavigator
 } from 'react-navigation';
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
@@ -38,6 +41,7 @@ import ForgotPasswordView from './views/ForgotPasswordView';
 import RegisterView from './views/RegisterView';
 import OAuthView from './views/OAuthView';
 import SetUsernameView from './views/SetUsernameView';
+import ReactionPickerView from './views/ReactionPickerView';
 import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from './constants/colors';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications, onNotification } from './push';
@@ -71,114 +75,145 @@ const defaultHeader = {
 };
 
 // Outside
-const OutsideStack = createStackNavigator({
-	OnboardingView: {
-		screen: OnboardingView,
-		header: null
+const OutsideStack = createStackNavigator(
+	{
+		OnboardingView: {
+			screen: OnboardingView,
+			header: null
+		},
+		NewServerView,
+		LoginSignupView,
+		LoginView,
+		ForgotPasswordView,
+		RegisterView
 	},
-	NewServerView,
-	LoginSignupView,
-	LoginView,
-	ForgotPasswordView,
-	RegisterView
-}, {
-	defaultNavigationOptions: defaultHeader
-});
+	{
+		defaultNavigationOptions: defaultHeader
+	}
+);
 
-const LegalStack = createStackNavigator({
-	LegalView,
-	TermsServiceView,
-	PrivacyPolicyView
-}, {
-	defaultNavigationOptions: defaultHeader
-});
+const LegalStack = createStackNavigator(
+	{
+		LegalView,
+		TermsServiceView,
+		PrivacyPolicyView
+	},
+	{
+		defaultNavigationOptions: defaultHeader
+	}
+);
 
-const OAuthStack = createStackNavigator({
-	OAuthView
-}, {
-	defaultNavigationOptions: defaultHeader
-});
+const OAuthStack = createStackNavigator(
+	{
+		OAuthView
+	},
+	{
+		defaultNavigationOptions: defaultHeader
+	}
+);
 
-const OutsideStackModal = createStackNavigator({
-	OutsideStack,
-	LegalStack,
-	OAuthStack
-},
-{
-	mode: 'modal',
-	headerMode: 'none'
-});
+const OutsideStackModal = createStackNavigator(
+	{
+		OutsideStack,
+		LegalStack,
+		OAuthStack
+	},
+	{
+		mode: 'modal',
+		headerMode: 'none'
+	}
+);
 
 // Inside
-const ChatsStack = createStackNavigator({
-	RoomsListView,
-	RoomView,
-	RoomActionsView,
-	RoomInfoView,
-	RoomInfoEditView,
-	RoomMembersView,
-	RoomFilesView,
-	MentionedMessagesView,
-	StarredMessagesView,
-	SearchMessagesView,
-	PinnedMessagesView,
-	SelectedUsersView
-}, {
-	defaultNavigationOptions: defaultHeader
-});
+const ChatsStack = createStackNavigator(
+	{
+		RoomsListView,
+		RoomView,
+		RoomActionsView,
+		RoomInfoView,
+		RoomInfoEditView,
+		RoomMembersView,
+		RoomFilesView,
+		MentionedMessagesView,
+		StarredMessagesView,
+		SearchMessagesView,
+		PinnedMessagesView,
+		SelectedUsersView,
+		ReactionPickerView
+	},
+	{
+		defaultNavigationOptions: defaultHeader
+	}
+);
 
-const ProfileStack = createStackNavigator({
-	ProfileView
-}, {
-	defaultNavigationOptions: defaultHeader
-});
+const ProfileStack = createStackNavigator(
+	{
+		ProfileView
+	},
+	{
+		defaultNavigationOptions: defaultHeader
+	}
+);
 
-const SettingsStack = createStackNavigator({
-	SettingsView
-}, {
-	defaultNavigationOptions: defaultHeader
-});
+const SettingsStack = createStackNavigator(
+	{
+		SettingsView
+	},
+	{
+		defaultNavigationOptions: defaultHeader
+	}
+);
 
-const ChatsDrawer = createDrawerNavigator({
-	ChatsStack,
-	ProfileStack,
-	SettingsStack
-}, {
-	contentComponent: Sidebar
-});
+const ChatsDrawer = createDrawerNavigator(
+	{
+		ChatsStack,
+		ProfileStack,
+		SettingsStack
+	},
+	{
+		contentComponent: Sidebar
+	}
+);
 
-const NewMessageStack = createStackNavigator({
-	NewMessageView,
-	SelectedUsersViewCreateChannel: SelectedUsersView,
-	CreateChannelView
-}, {
-	defaultNavigationOptions: defaultHeader
-});
+const NewMessageStack = createStackNavigator(
+	{
+		NewMessageView,
+		SelectedUsersViewCreateChannel: SelectedUsersView,
+		CreateChannelView
+	},
+	{
+		defaultNavigationOptions: defaultHeader
+	}
+);
 
-const InsideStackModal = createStackNavigator({
-	Main: ChatsDrawer,
-	NewMessageStack
-},
-{
-	mode: 'modal',
-	headerMode: 'none'
-});
+const InsideStackModal = createStackNavigator(
+	{
+		Main: ChatsDrawer,
+		NewMessageStack
+	},
+	{
+		mode: 'modal',
+		headerMode: 'none'
+	}
+);
 
 const SetUsernameStack = createStackNavigator({
 	SetUsernameView
 });
 
-const App = createAppContainer(createSwitchNavigator(
-	{
-		OutsideStack: OutsideStackModal,
-		InsideStack: InsideStackModal,
-		AuthLoading: AuthLoadingView,
-		SetUsernameStack
-	},
-	{
-		initialRouteName: 'AuthLoading'
-	}
-));
+const App = createAppContainer(
+	createSwitchNavigator(
+		{
+			OutsideStack: OutsideStackModal,
+			InsideStack: InsideStackModal,
+			AuthLoading: AuthLoadingView,
+			SetUsernameStack
+		},
+		{
+			initialRouteName: 'AuthLoading'
+		}
+	)
+);
 
 export default class Root extends React.Component {
 	constructor(props) {
@@ -201,8 +236,11 @@ export default class Root extends React.Component {
 		clearTimeout(this.listenerTimeout);
 	}
 
-	init = async() => {
-		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
+	init = async () => {
+		const [notification, deepLinking] = await Promise.all([
+			initializePushNotifications(),
+			Linking.getInitialURL()
+		]);
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
 		if (notification) {
 			onNotification(notification);
@@ -211,7 +249,7 @@ export default class Root extends React.Component {
 		} else {
 			store.dispatch(appInit());
 		}
-	}
+	};
 
 	render() {
 		return (

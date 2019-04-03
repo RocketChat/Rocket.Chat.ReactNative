@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity, FlatList } from 'react-native';
 import { emojify } from 'react-emojione';
 import { responsive } from 'react-native-responsive-ui';
-import { OptimizedFlatList } from 'react-native-optimized-flatlist';
 
 import styles from './styles';
 import CustomEmoji from './CustomEmoji';
@@ -14,15 +13,21 @@ const EMOJIS_PER_ROW = isIOS ? 8 : 9;
 
 const renderEmoji = (emoji, size, baseUrl) => {
 	if (emoji.isCustom) {
-		return <CustomEmoji style={[styles.customCategoryEmoji, { height: size - 8, width: size - 8 }]} emoji={emoji} baseUrl={baseUrl} />;
+		return (
+			<CustomEmoji
+				style={[styles.customCategoryEmoji, { height: size - 8, width: size - 8 }]}
+				emoji={emoji}
+				baseUrl={baseUrl}
+			/>
+		);
 	}
+
 	return (
 		<Text style={[styles.categoryEmoji, { height: size, width: size, fontSize: size - 14 }]}>
-			{emojify(`:${ emoji }:`, { output: 'unicode' })}
+			{emojify(`:${emoji}:`, { output: 'unicode' })}
 		</Text>
 	);
 };
-
 
 @responsive
 export default class EmojiCategory extends React.Component {
@@ -33,7 +38,7 @@ export default class EmojiCategory extends React.Component {
 		onEmojiSelected: PropTypes.func,
 		emojisPerRow: PropTypes.number,
 		width: PropTypes.number
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -44,7 +49,13 @@ export default class EmojiCategory extends React.Component {
 		this.emojis = props.emojis;
 	}
 
-	shouldComponentUpdate() {
+	shouldComponentUpdate(nextProps) {
+		const { emojis: oldEmojis } = this.props;
+
+		if (nextProps.emojis.length !== oldEmojis.length) {
+			return true;
+		}
+
 		return false;
 	}
 
@@ -55,7 +66,7 @@ export default class EmojiCategory extends React.Component {
 				activeOpacity={0.7}
 				key={emoji.isCustom ? emoji.content : emoji}
 				onPress={() => onEmojiSelected(emoji)}
-				testID={`reaction-picker-${ emoji.isCustom ? emoji.content : emoji }`}
+				testID={`reaction-picker-${emoji.isCustom ? emoji.content : emoji}`}
 			>
 				{renderEmoji(emoji, size, baseUrl)}
 			</TouchableOpacity>
@@ -66,13 +77,17 @@ export default class EmojiCategory extends React.Component {
 		const { emojis } = this.props;
 
 		return (
-			<OptimizedFlatList
-				keyExtractor={item => (item.isCustom && item.content) || item}
+			<FlatList
+				keyExtractor={(item) => (item.isCustom && item.content) || item}
 				data={emojis}
 				renderItem={({ item }) => this.renderItem(item, this.size)}
 				numColumns={EMOJIS_PER_ROW}
-				initialNumToRender={45}
-				getItemLayout={(data, index) => ({ length: this.size, offset: this.size * index, index })}
+				initialNumToRender={30}
+				getItemLayout={(data, index) => ({
+					length: this.size,
+					offset: this.size * index,
+					index
+				})}
 				removeClippedSubviews
 				{...scrollPersistTaps}
 			/>

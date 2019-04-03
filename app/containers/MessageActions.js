@@ -289,7 +289,8 @@ export default class MessageActions extends React.Component {
 	}
 
 	handleReaction = () => {
-		const { actionMessage, toggleReactionPicker } = this.props;
+		const { actionMessage, toggleReactionPicker, navigation } = this.props;
+		navigation.navigate('ReactionPickerView');
 		toggleReactionPicker(actionMessage);
 	}
 

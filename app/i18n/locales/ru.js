@@ -242,6 +242,8 @@ export default {
 	saving_profile: 'сохранение профиля',
 	saving_settings: 'сохранение настроек',
 	Search_Messages: 'Поиск сообщений',
+	Search_Emoji: 'Поиск смайлов',
+	Emoji_Not_Found: 'Нет смайликов, соответствующих вашему запросу',
 	Search: 'Поиск',
 	Select_Avatar: 'Выбор аватара',
 	Select_Users: 'Выбор пользователей',

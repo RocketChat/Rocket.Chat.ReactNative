@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, Text, ViewPropTypes, TouchableWithoutFeedback
-} from 'react-native';
+import { View, Text, ViewPropTypes, TouchableWithoutFeedback } from 'react-native';
 import moment from 'moment';
 import { KeyboardUtils } from 'react-native-keyboard-input';
 import {
-	State, RectButton, LongPressGestureHandler, BorderlessButton
+	State,
+	RectButton,
+	LongPressGestureHandler,
+	BorderlessButton
 } from 'react-native-gesture-handler';
 
 import Image from './Image';
@@ -17,7 +18,6 @@ import Video from './Video';
 import Markdown from './Markdown';
 import Url from './Url';
 import Reply from './Reply';
-import ReactionsModal from './ReactionsModal';
 import Emoji from './Emoji';
 import styles from './styles';
 import I18n from '../../i18n';
@@ -44,9 +44,7 @@ const SYSTEM_MESSAGES = [
 	'message_snippeted'
 ];
 
-const getInfoMessage = ({
-	type, role, msg, author
-}) => {
+const getInfoMessage = ({ type, role, msg, author }) => {
 	const { username } = author;
 	if (type === 'rm') {
 		return I18n.t('Message_removed');
@@ -67,9 +65,9 @@ const getInfoMessage = ({
 	} else if (type === 'user-unmuted') {
 		return I18n.t('User_unmuted_by', { userUnmuted: msg, userBy: username });
 	} else if (type === 'subscription-role-added') {
-		return `${ msg } was set ${ role } by ${ username }`;
+		return `${msg} was set ${role} by ${username}`;
 	} else if (type === 'subscription-role-removed') {
-		return `${ msg } is no longer ${ role } by ${ username }`;
+		return `${msg} is no longer ${role} by ${username}`;
 	} else if (type === 'room_changed_description') {
 		return I18n.t('Room_changed_description', { description: msg, userBy: username });
 	} else if (type === 'room_changed_announcement') {
@@ -106,34 +104,23 @@ export default class Message extends PureComponent {
 		style: ViewPropTypes.style,
 		archived: PropTypes.bool,
 		broadcast: PropTypes.bool,
-		reactionsModal: PropTypes.bool,
 		type: PropTypes.string,
 		header: PropTypes.bool,
 		avatar: PropTypes.string,
 		alias: PropTypes.string,
-		ts: PropTypes.oneOfType([
-			PropTypes.instanceOf(Date),
-			PropTypes.string
-		]),
+		ts: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]),
 		edited: PropTypes.bool,
-		attachments: PropTypes.oneOfType([
-			PropTypes.array,
-			PropTypes.object
-		]),
-		urls: PropTypes.oneOfType([
-			PropTypes.array,
-			PropTypes.object
-		]),
+		attachments: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+		urls: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 		useRealName: PropTypes.bool,
 		// methods
-		closeReactions: PropTypes.func,
 		onErrorPress: PropTypes.func,
 		onLongPress: PropTypes.func,
 		onReactionLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
 		replyBroadcast: PropTypes.func,
 		toggleReactionPicker: PropTypes.func
-	}
+	};
 
 	static defaultProps = {
 		archived: false,
@@ -142,11 +129,11 @@ export default class Message extends PureComponent {
 		urls: [],
 		reactions: [],
 		onLongPress: () => {}
-	}
+	};
 
 	onPress = () => {
 		KeyboardUtils.dismiss();
-	}
+	};
 
 	onLongPress = () => {
 		const { archived, onLongPress } = this.props;
@@ -154,17 +141,17 @@ export default class Message extends PureComponent {
 			return;
 		}
 		onLongPress();
-	}
+	};
 
 	isInfoMessage = () => {
 		const { type } = this.props;
 		return SYSTEM_MESSAGES.includes(type);
-	}
+	};
 
 	isOwn = () => {
 		const { author, user } = this.props;
 		return author._id === user.id;
-	}
+	};
 
 	isDeleted() {
 		const { type } = this.props;
@@ -182,9 +169,7 @@ export default class Message extends PureComponent {
 	}
 
 	renderAvatar = () => {
-		const {
-			header, avatar, author, baseUrl, user
-		} = this.props;
+		const { header, avatar, author, baseUrl, user } = this.props;
 		if (header) {
 			return (
 				<Avatar
@@ -199,12 +184,10 @@ export default class Message extends PureComponent {
 			);
 		}
 		return null;
-	}
+	};
 
 	renderUsername = () => {
-		const {
-			header, timeFormat, author, alias, ts, useRealName
-		} = this.props;
+		const { header, timeFormat, author, alias, ts, useRealName } = this.props;
 		if (header) {
 			return (
 				<User
@@ -218,16 +201,22 @@ export default class Message extends PureComponent {
 			);
 		}
 		return null;
-	}
+	};
 
 	renderContent() {
 		if (this.isInfoMessage()) {
 			return <Text style={styles.textInfo}>{getInfoMessage({ ...this.props })}</Text>;
 		}
-		const {
-			customEmojis, msg, baseUrl, user, edited
-		} = this.props;
-		return <Markdown msg={msg} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} edited={edited} />;
+		const { customEmojis, msg, baseUrl, user, edited } = this.props;
+		return (
+			<Markdown
+				msg={msg}
+				customEmojis={customEmojis}
+				baseUrl={baseUrl}
+				username={user.username}
+				edited={edited}
+			/>
+		);
 	}
 
 	renderAttachment() {
@@ -240,17 +229,51 @@ export default class Message extends PureComponent {
 		return attachments.map((file, index) => {
 			const { user, baseUrl, customEmojis } = this.props;
 			if (file.image_url) {
-				return <Image key={file.image_url} file={file} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
+				return (
+					<Image
+						key={file.image_url}
+						file={file}
+						user={user}
+						baseUrl={baseUrl}
+						customEmojis={customEmojis}
+					/>
+				);
 			}
 			if (file.audio_url) {
-				return <Audio key={file.audio_url} file={file} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
+				return (
+					<Audio
+						key={file.audio_url}
+						file={file}
+						user={user}
+						baseUrl={baseUrl}
+						customEmojis={customEmojis}
+					/>
+				);
 			}
 			if (file.video_url) {
-				return <Video key={file.video_url} file={file} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
+				return (
+					<Video
+						key={file.video_url}
+						file={file}
+						user={user}
+						baseUrl={baseUrl}
+						customEmojis={customEmojis}
+					/>
+				);
 			}
 
 			// eslint-disable-next-line react/no-array-index-key
-			return <Reply key={index} index={index} attachment={file} timeFormat={timeFormat} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
+			return (
+				<Reply
+					key={index}
+					index={index}
+					attachment={file}
+					timeFormat={timeFormat}
+					user={user}
+					baseUrl={baseUrl}
+					customEmojis={customEmojis}
+				/>
+			);
 		});
 	}
 
@@ -260,10 +283,8 @@ export default class Message extends PureComponent {
 			return null;
 		}
 
-		return urls.map((url, index) => (
-			<Url url={url} key={url.url} index={index} />
-		));
-	}
+		return urls.map((url, index) => <Url url={url} key={url.url} index={index} />);
+	};
 
 	renderError = () => {
 		if (!this.hasError()) {
@@ -272,25 +293,25 @@ export default class Message extends PureComponent {
 		const { onErrorPress } = this.props;
 		return (
 			<BorderlessButton onPress={onErrorPress} style={styles.errorButton}>
-				<CustomIcon name='circle-cross' color={COLOR_DANGER} size={20} />
+				<CustomIcon name="circle-cross" color={COLOR_DANGER} size={20} />
 			</BorderlessButton>
 		);
-	}
+	};
 
 	renderReaction = (reaction) => {
-		const {
-			user, onReactionLongPress, onReactionPress, customEmojis, baseUrl
-		} = this.props;
-		const reacted = reaction.usernames.findIndex(item => item.value === user.username) !== -1;
+		const { user, onReactionLongPress, onReactionPress, customEmojis, baseUrl } = this.props;
+		const reacted = reaction.usernames.findIndex((item) => item.value === user.username) !== -1;
 		const underlayColor = reacted ? COLOR_WHITE : COLOR_TEXT_DESCRIPTION;
 		return (
 			<LongPressGestureHandler
 				key={reaction.emoji}
-				onHandlerStateChange={({ nativeEvent }) => nativeEvent.state === State.ACTIVE && onReactionLongPress()}
+				onHandlerStateChange={({ nativeEvent }) =>
+					nativeEvent.state === State.ACTIVE && onReactionLongPress()
+				}
 			>
 				<RectButton
 					onPress={() => onReactionPress(reaction.emoji)}
-					testID={`message-reaction-${ reaction.emoji }`}
+					testID={`message-reaction-${reaction.emoji}`}
 					style={[styles.reactionButton, reacted && { backgroundColor: '#e8f2ff' }]}
 					activeOpacity={0.8}
 					underlayColor={underlayColor}
@@ -303,15 +324,16 @@ export default class Message extends PureComponent {
 							customEmojiStyle={styles.reactionCustomEmoji}
 							baseUrl={baseUrl}
 						/>
-						<Text style={styles.reactionCount}>{ reaction.usernames.length }</Text>
+						<Text style={styles.reactionCount}>{reaction.usernames.length}</Text>
 					</View>
 				</RectButton>
 			</LongPressGestureHandler>
 		);
-	}
+	};
 
 	renderReactions() {
 		const { reactions, toggleReactionPicker } = this.props;
+
 		if (reactions.length === 0) {
 			return null;
 		}
@@ -320,14 +342,14 @@ export default class Message extends PureComponent {
 				{reactions.map(this.renderReaction)}
 				<RectButton
 					onPress={toggleReactionPicker}
-					key='message-add-reaction'
-					testID='message-add-reaction'
+					key="message-add-reaction"
+					testID="message-add-reaction"
 					style={styles.reactionButton}
 					activeOpacity={0.8}
-					underlayColor='#e1e5e8'
+					underlayColor="#e1e5e8"
 				>
 					<View style={styles.reactionContainer}>
-						<CustomIcon name='add-reaction' size={21} style={styles.addReaction} />
+						<CustomIcon name="add-reaction" size={21} style={styles.addReaction} />
 					</View>
 				</RectButton>
 			</View>
@@ -344,7 +366,7 @@ export default class Message extends PureComponent {
 					activeOpacity={0.5}
 					underlayColor={COLOR_WHITE}
 				>
-					<CustomIcon name='back' size={20} style={styles.broadcastButtonIcon} />
+					<CustomIcon name="back" size={20} style={styles.broadcastButtonIcon} />
 					<Text style={styles.broadcastButtonText}>{I18n.t('Reply')}</Text>
 				</RectButton>
 			);
@@ -353,18 +375,17 @@ export default class Message extends PureComponent {
 	}
 
 	render() {
-		const {
-			editing, style, header, reactionsModal, closeReactions, msg, ts, reactions, author, user, timeFormat, customEmojis, baseUrl
-		} = this.props;
-		const accessibilityLabel = I18n.t('Message_accessibility', { user: author.username, time: moment(ts).format(timeFormat), message: msg });
+		const { editing, style, header, msg, ts, author, timeFormat } = this.props;
+		const accessibilityLabel = I18n.t('Message_accessibility', {
+			user: author.username,
+			time: moment(ts).format(timeFormat),
+			message: msg
+		});
 
 		return (
 			<View style={styles.root}>
 				{this.renderError()}
-				<TouchableWithoutFeedback
-					onLongPress={this.onLongPress}
-					onPress={this.onPress}
-				>
+				<TouchableWithoutFeedback onLongPress={this.onLongPress} onPress={this.onPress}>
 					<View
 						style={[styles.container, header && styles.marginTop, editing && styles.editing, style]}
 						accessibilityLabel={accessibilityLabel}
@@ -388,19 +409,6 @@ export default class Message extends PureComponent {
 								{this.renderBroadcastReply()}
 							</View>
 						</View>
-						{reactionsModal
-							? (
-								<ReactionsModal
-									isVisible={reactionsModal}
-									reactions={reactions}
-									user={user}
-									customEmojis={customEmojis}
-									baseUrl={baseUrl}
-									close={closeReactions}
-								/>
-							)
-							: null
-						}
 					</View>
 				</TouchableWithoutFeedback>
 			</View>

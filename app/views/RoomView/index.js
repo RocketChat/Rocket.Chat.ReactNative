@@ -19,7 +19,6 @@ import Message from '../../containers/message';
 import MessageActions from '../../containers/MessageActions';
 import MessageErrorActions from '../../containers/MessageErrorActions';
 import MessageBox from '../../containers/MessageBox';
-import ReactionPicker from './ReactionPicker';
 import UploadProgress from './UploadProgress';
 import styles from './styles';
 import log from '../../utils/log';
@@ -283,7 +282,7 @@ export default class RoomView extends LoggedView {
 
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen } = this.state;
-		const { user } = this.props;
+		const { user, navigation } = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
 
@@ -314,6 +313,7 @@ export default class RoomView extends LoggedView {
 						_updatedAt={item._updatedAt}
 						onReactionPress={this.onReactionPress}
 						onLongPress={this.onMessageLongPress}
+						navigation={navigation}
 					/>
 					<Separator
 						ts={dateSeparator}
@@ -336,6 +336,7 @@ export default class RoomView extends LoggedView {
 				_updatedAt={item._updatedAt}
 				onReactionPress={this.onReactionPress}
 				onLongPress={this.onMessageLongPress}
+				navigation={navigation}
 			/>
 		);
 	}
@@ -394,18 +395,18 @@ export default class RoomView extends LoggedView {
 
 	render() {
 		const { room } = this.state;
-		const { user, showActions, showErrorActions } = this.props;
+		const { user, showActions, showErrorActions, navigation } = this.props;
 
 		return (
 			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
 				{this.renderList()}
 				{room._id && showActions
-					? <MessageActions room={room} user={user} />
+					? <MessageActions navigation={navigation} room={room} user={user} />
 					: null
 				}
 				{showErrorActions ? <MessageErrorActions /> : null}
-				<ReactionPicker onEmojiSelected={this.onReactionPress} />
+				{/*<ReactionPicker onEmojiSelected={this.onReactionPress} />*/}
 				<UploadProgress rid={this.rid} />
 				<ConnectionBadge />
 			</SafeAreaView>

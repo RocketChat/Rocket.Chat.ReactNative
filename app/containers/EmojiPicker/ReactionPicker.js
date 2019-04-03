@@ -1,25 +1,43 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView } from 'react-native';
-import ScrollableTabView from 'react-native-scrollable-tab-view';
+import { ScrollView, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import map from 'lodash/map';
 import { emojify } from 'react-emojione';
 import equal from 'deep-equal';
 
-import TabBar from './TabBar';
 import EmojiCategory from './EmojiCategory';
 import styles from './styles';
 import categories from './categories';
 import database from '../../lib/realm';
-import { emojisByCategory } from '../../emojis';
+import { emojis, emojisByCategory } from '../../emojis';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
+import I18n from '../../i18n';
+import RCTextInput from '../TextInput';
+import CustomEmoji from './CustomEmoji';
 
 const scrollProps = {
 	keyboardShouldPersistTaps: 'always',
 	keyboardDismissMode: 'none'
 };
 
-export default class EmojiPicker extends Component {
+const renderEmoji = (emoji, size, baseUrl) => {
+	if (emoji.isCustom) {
+		return (
+			<CustomEmoji
+				style={[styles.customCategoryEmoji, { height: size - 8, width: size - 8 }]}
+				emoji={emoji}
+				baseUrl={baseUrl}
+			/>
+		);
+	}
+	return (
+		<Text style={[styles.categoryEmoji, { height: size, width: size, fontSize: size - 14 }]}>
+			{emojify(`:${emoji}:`, { output: 'unicode' })}
+		</Text>
+	);
+};
+
+export default class ReactionPicker extends Component {
 	static propTypes = {
 		baseUrl: PropTypes.string.isRequired,
 		onEmojiSelected: PropTypes.func,
@@ -35,7 +53,9 @@ export default class EmojiPicker extends Component {
 		this.state = {
 			frequentlyUsed: [],
 			customEmojis: [],
-			show: false
+			show: false,
+			searchQuery: '',
+			searchResults: {}
 		};
 		this.updateFrequentlyUsed = this.updateFrequentlyUsed.bind(this);
 		this.updateCustomEmojis = this.updateCustomEmojis.bind(this);
@@ -50,12 +70,15 @@ export default class EmojiPicker extends Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { frequentlyUsed, customEmojis, show } = this.state;
+		const { frequentlyUsed, customEmojis, show, searchResults } = this.state;
 		const { width } = this.props;
 		if (nextState.show !== show) {
 			return true;
 		}
 		if (nextProps.width !== width) {
+			return true;
+		}
+		if (nextState.searchResults.length !== searchResults.length) {
 			return true;
 		}
 		if (!equal(nextState.frequentlyUsed, frequentlyUsed)) {
@@ -104,6 +127,22 @@ export default class EmojiPicker extends Component {
 		return emojiRow.length ? emojiRow[0].count + 1 : 1;
 	};
 
+	handleOnChangeSearchQuery = (newSearchQuery = '') => {
+		const { searchQuery } = this.state;
+
+		if (!newSearchQuery) {
+			return this.setState({ searchResults: {}, searchQuery: '' });
+		}
+
+		if (searchQuery !== newSearchQuery) {
+			const searchResults = emojis.filter(
+				(emojiName) => emojiName.indexOf(newSearchQuery.toLowerCase()) === 0
+			);
+
+			this.setState({ searchQuery: newSearchQuery, searchResults });
+		}
+	};
+
 	updateFrequentlyUsed() {
 		const frequentlyUsed = map(this.frequentlyUsed.slice(), (item) => {
 			if (item.isCustom) {
@@ -126,8 +165,8 @@ export default class EmojiPicker extends Component {
 	renderCategory(category, i) {
 		const { frequentlyUsed, customEmojis } = this.state;
 		const { emojisPerRow, width, baseUrl } = this.props;
+		let emojis;
 
-		let emojis = [];
 		if (i === 0) {
 			emojis = frequentlyUsed;
 		} else if (i === 1) {
@@ -147,30 +186,65 @@ export default class EmojiPicker extends Component {
 		);
 	}
 
-	render() {
-		const { show } = this.state;
-		const { tabEmojiStyle } = this.props;
+	renderItem(emoji, size) {
+		const { baseUrl, onEmojiSelected } = this.props;
+		return (
+			<TouchableOpacity
+				activeOpacity={0.7}
+				key={emoji.isCustom ? emoji.content : emoji}
+				onPress={() => onEmojiSelected(emoji)}
+				testID={`reaction-picker-${emoji.isCustom ? emoji.content : emoji}`}
+			>
+				{renderEmoji(emoji, size, baseUrl)}
+			</TouchableOpacity>
+		);
+	}
+
+	renderCategories() {
+		const { show, searchQuery, searchResults } = this.state;
+		const { emojisPerRow, width, baseUrl } = this.props;
 
 		if (!show) {
-			return null;
+			return <ActivityIndicator style={styles.loader} />;
 		}
+
 		return (
-			<ScrollableTabView
-				renderTabBar={() => <TabBar tabEmojiStyle={tabEmojiStyle} />}
-				contentProps={scrollProps}
-				style={styles.background}
-			>
-				{categories.tabs.map((tab, i) => (
-					<ScrollView
-						key={tab.category}
-						tabLabel={tab.tabLabel}
-						style={styles.background}
-						{...scrollProps}
-					>
-						{this.renderCategory(tab.category, i)}
-					</ScrollView>
-				))}
-			</ScrollableTabView>
+			<ScrollView {...scrollProps} style={styles.background}>
+				{(searchQuery &&
+					(searchResults.length > 0 ? (
+						<View style={styles.background} {...scrollProps}>
+							<EmojiCategory
+								emojis={searchResults}
+								onEmojiSelected={(emoji) => this.onEmojiSelected(emoji)}
+								style={styles.categoryContainer}
+								size={emojisPerRow}
+								width={width}
+								baseUrl={baseUrl}
+							/>
+						</View>
+					) : (
+						<Text style={styles.noEmojiFoundText}>{I18n.t('Emoji_Not_Found')}</Text>
+					))) ||
+					categories.tabs.map((tab, i) => (
+						<View key={tab.category} style={styles.background} {...scrollProps}>
+							<Text style={styles.categoryTitle}>{tab.title}</Text>
+							{this.renderCategory(tab.category, i)}
+						</View>
+					))}
+			</ScrollView>
+		);
+	}
+
+	render() {
+		return (
+			<View>
+				<RCTextInput
+					onChangeText={this.handleOnChangeSearchQuery}
+					placeholder={I18n.t('Search_Emoji')}
+					testID="search-message-view-input"
+				/>
+				{this.renderCategories()}
+			</View>
 		);
 	}
 }

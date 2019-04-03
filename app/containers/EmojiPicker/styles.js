@@ -57,5 +57,17 @@ export default StyleSheet.create({
 	},
 	customCategoryEmoji: {
 		margin: 4
+	},
+	loader: {
+		margin: 20,
+		alignSelf: 'center'
+	},
+	noEmojiFoundText: {
+		margin: 20,
+		alignSelf: 'center'
+	},
+	categoryTitle: {
+		fontSize: 16,
+		fontWeight: 'bold'
 	}
 });
