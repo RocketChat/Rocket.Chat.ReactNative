@@ -106,6 +106,7 @@ export default class RoomView extends LoggedView {
 		};
 		this.beginAnimating = false;
 		this.beginAnimatingTimeout = setTimeout(() => this.beginAnimating = true, 300);
+		this.messagebox = React.createRef();
 	}
 
 	async componentDidMount() {
@@ -171,6 +172,13 @@ export default class RoomView extends LoggedView {
 	}
 
 	componentWillUnmount() {
+		if (this.messagebox && this.messagebox.current && this.messagebox.current.text) {
+			const { text } = this.messagebox.current;
+			database.write(() => {
+				const [room] = this.rooms;
+				room.draftMessage = text;
+			});
+		}
 		this.rooms.removeAllListeners();
 		if (this.sub && this.sub.stop) {
 			this.sub.stop();
@@ -356,19 +364,19 @@ export default class RoomView extends LoggedView {
 		}
 		if (this.isReadOnly()) {
 			return (
-				<View style={styles.readOnly} key='room-view-read-only'>
+				<View style={styles.readOnly}>
 					<Text style={styles.previewMode}>{I18n.t('This_room_is_read_only')}</Text>
 				</View>
 			);
 		}
 		if (this.isBlocked()) {
 			return (
-				<View style={styles.readOnly} key='room-view-block'>
+				<View style={styles.readOnly}>
 					<Text style={styles.previewMode}>{I18n.t('This_room_is_blocked')}</Text>
 				</View>
 			);
 		}
-		return <MessageBox key='room-view-messagebox' onSubmit={this.sendMessage} rid={this.rid} roomType={room.t} />;
+		return <MessageBox ref={this.messagebox} onSubmit={this.sendMessage} rid={this.rid} roomType={room.t} />;
 	};
 
 	renderList = () => {
@@ -377,14 +385,10 @@ export default class RoomView extends LoggedView {
 			return <ActivityIndicator style={styles.loading} />;
 		}
 		return (
-			[
-				<List
-					key='room-view-messages'
-					room={room}
-					renderRow={this.renderItem}
-				/>,
-				this.renderFooter()
-			]
+			<React.Fragment>
+				<List room={room} renderRow={this.renderItem} />
+				{this.renderFooter()}
+			</React.Fragment>
 		);
 	}
 

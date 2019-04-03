@@ -48,24 +48,7 @@ const imagePickerConfig = {
 	cropperCancelText: I18n.t('Cancel')
 };
 
-@connect(state => ({
-	message: state.messages.message,
-	replyMessage: state.messages.replyMessage,
-	replying: state.messages.replyMessage && !!state.messages.replyMessage.msg,
-	editing: state.messages.editing,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	user: {
-		id: state.login.user && state.login.user.id,
-		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token
-	}
-}), dispatch => ({
-	editCancel: () => dispatch(editCancelAction()),
-	editRequest: message => dispatch(editRequestAction(message)),
-	typing: (rid, status) => dispatch(userTypingAction(rid, status)),
-	closeReply: () => dispatch(replyCancelAction())
-}))
-export default class MessageBox extends Component {
+class MessageBox extends Component {
 	static propTypes = {
 		rid: PropTypes.string.isRequired,
 		baseUrl: PropTypes.string.isRequired,
@@ -112,6 +95,7 @@ export default class MessageBox extends Component {
 		const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
 		if (room.draftMessage && room.draftMessage !== '') {
 			this.setInput(room.draftMessage);
+			this.setShowSend(true);
 		}
 	}
 
@@ -119,6 +103,9 @@ export default class MessageBox extends Component {
 		const { message, replyMessage } = this.props;
 		if (message !== nextProps.message && nextProps.message.msg) {
 			this.setInput(nextProps.message.msg);
+			if (this.text) {
+				this.setShowSend(true);
+			}
 			this.focus();
 		} else if (replyMessage !== nextProps.replyMessage && nextProps.replyMessage.msg) {
 			this.focus();
@@ -162,14 +149,6 @@ export default class MessageBox extends Component {
 			return true;
 		}
 		return false;
-	}
-
-	componentWillUnmount() {
-		const { rid } = this.props;
-		const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
-		database.write(() => {
-			room.draftMessage = this.text;
-		});
 	}
 
 	onChangeText = (text) => {
@@ -834,3 +813,25 @@ export default class MessageBox extends Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	message: state.messages.message,
+	replyMessage: state.messages.replyMessage,
+	replying: state.messages.replyMessage && !!state.messages.replyMessage.msg,
+	editing: state.messages.editing,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	}
+});
+
+const dispatchToProps = ({
+	editCancel: () => editCancelAction(),
+	editRequest: message => editRequestAction(message),
+	typing: (rid, status) => userTypingAction(rid, status),
+	closeReply: () => replyCancelAction()
+});
+
+export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(MessageBox);
