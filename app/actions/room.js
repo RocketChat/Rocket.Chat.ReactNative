@@ -1,40 +1,5 @@
 import * as types from './actionsTypes';
 
-
-export function removeUserTyping(username) {
-	return {
-		type: types.ROOM.REMOVE_USER_TYPING,
-		username
-	};
-}
-
-export function someoneTyping(data) { //
-	return {
-		type: types.ROOM.SOMEONE_TYPING,
-		...data
-	};
-}
-
-export function addUserTyping(username, rid) {
-	return {
-		type: types.ROOM.ADD_USER_TYPING,
-		username, rid
-	};
-}
-
-export function openRoom(room) {
-	return {
-		type: types.ROOM.OPEN,
-		room
-	};
-}
-
-export function closeRoom() {
-	return {
-		type: types.ROOM.CLOSE
-	};
-}
-
 export function leaveRoom(rid, t) {
 	return {
 		type: types.ROOM.LEAVE,
@@ -56,12 +21,5 @@ export function userTyping(rid, status = true) {
 		type: types.ROOM.USER_TYPING,
 		rid,
 		status
-	};
-}
-
-export function roomMessageReceived(message) {
-	return {
-		type: types.ROOM.MESSAGE_RECEIVED,
-		message
 	};
 }

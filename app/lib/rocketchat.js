@@ -15,7 +15,6 @@ import {
 } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
 import { setActiveUser } from '../actions/activeUsers';
-import { someoneTyping, roomMessageReceived } from '../actions/room';
 import { setRoles } from '../actions/roles';
 
 import subscribeRooms from './methods/subscriptions/rooms';
@@ -30,7 +29,6 @@ import getPermissions from './methods/getPermissions';
 import getCustomEmoji from './methods/getCustomEmojis';
 import canOpenRoom from './methods/canOpenRoom';
 
-import _buildMessage from './methods/helpers/buildMessage';
 import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import loadMissedMessages from './methods/loadMissedMessages';
 
