@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import {
+	ScrollView, View, Text, TouchableOpacity, ActivityIndicator
+} from 'react-native';
 import map from 'lodash/map';
 import { emojify } from 'react-emojione';
 import equal from 'deep-equal';
@@ -32,7 +34,7 @@ const renderEmoji = (emoji, size, baseUrl) => {
 	}
 	return (
 		<Text style={[styles.categoryEmoji, { height: size, width: size, fontSize: size - 14 }]}>
-			{emojify(`:${emoji}:`, { output: 'unicode' })}
+			{emojify(`:${ emoji }:`, { output: 'unicode' })}
 		</Text>
 	);
 };
@@ -70,7 +72,9 @@ export default class ReactionPicker extends Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { frequentlyUsed, customEmojis, show, searchResults } = this.state;
+		const {
+			frequentlyUsed, customEmojis, show, searchResults
+		} = this.state;
 		const { width } = this.props;
 		if (nextState.show !== show) {
 			return true;
@@ -105,12 +109,12 @@ export default class ReactionPicker extends Component {
 				count,
 				isCustom: true
 			});
-			onEmojiSelected(`:${emoji.content}:`);
+			onEmojiSelected(`:${ emoji.content }:`);
 		} else {
 			const content = emoji;
 			const count = this._getFrequentlyUsedCount(content);
 			this._addFrequentlyUsed({ content, count, isCustom: false });
-			const shortname = `:${emoji}:`;
+			const shortname = `:${ emoji }:`;
 			onEmojiSelected(emojify(shortname, { output: 'unicode' }), shortname);
 		}
 	}
@@ -136,7 +140,7 @@ export default class ReactionPicker extends Component {
 
 		if (searchQuery !== newSearchQuery) {
 			const searchResults = emojis.filter(
-				(emojiName) => emojiName.indexOf(newSearchQuery.toLowerCase()) === 0
+				emojiName => emojiName.indexOf(newSearchQuery.toLowerCase()) === 0
 			);
 
 			this.setState({ searchQuery: newSearchQuery, searchResults });
@@ -148,13 +152,13 @@ export default class ReactionPicker extends Component {
 			if (item.isCustom) {
 				return item;
 			}
-			return emojify(`${item.content}`, { output: 'unicode' });
+			return emojify(`${ item.content }`, { output: 'unicode' });
 		});
 		this.setState({ frequentlyUsed });
 	}
 
 	updateCustomEmojis() {
-		const customEmojis = map(this.customEmojis.slice(), (item) => ({
+		const customEmojis = map(this.customEmojis.slice(), item => ({
 			content: item.name,
 			extension: item.extension,
 			isCustom: true
@@ -177,7 +181,7 @@ export default class ReactionPicker extends Component {
 		return (
 			<EmojiCategory
 				emojis={emojis}
-				onEmojiSelected={(emoji) => this.onEmojiSelected(emoji)}
+				onEmojiSelected={emoji => this.onEmojiSelected(emoji)}
 				style={styles.categoryContainer}
 				size={emojisPerRow}
 				width={width}
@@ -193,7 +197,7 @@ export default class ReactionPicker extends Component {
 				activeOpacity={0.7}
 				key={emoji.isCustom ? emoji.content : emoji}
 				onPress={() => onEmojiSelected(emoji)}
-				testID={`reaction-picker-${emoji.isCustom ? emoji.content : emoji}`}
+				testID={`reaction-picker-${ emoji.isCustom ? emoji.content : emoji }`}
 			>
 				{renderEmoji(emoji, size, baseUrl)}
 			</TouchableOpacity>
@@ -210,12 +214,12 @@ export default class ReactionPicker extends Component {
 
 		return (
 			<ScrollView {...scrollProps} style={styles.background}>
-				{(searchQuery &&
-					(searchResults.length > 0 ? (
+				{(searchQuery
+					&& (searchResults.length > 0 ? (
 						<View style={styles.background} {...scrollProps}>
 							<EmojiCategory
 								emojis={searchResults}
-								onEmojiSelected={(emoji) => this.onEmojiSelected(emoji)}
+								onEmojiSelected={emoji => this.onEmojiSelected(emoji)}
 								style={styles.categoryContainer}
 								size={emojisPerRow}
 								width={width}
@@ -224,8 +228,8 @@ export default class ReactionPicker extends Component {
 						</View>
 					) : (
 						<Text style={styles.noEmojiFoundText}>{I18n.t('Emoji_Not_Found')}</Text>
-					))) ||
-					categories.tabs.map((tab, i) => (
+					)))
+					|| categories.tabs.map((tab, i) => (
 						<View key={tab.category} style={styles.background} {...scrollProps}>
 							<Text style={styles.categoryTitle}>{tab.title}</Text>
 							{this.renderCategory(tab.category, i)}
@@ -241,7 +245,7 @@ export default class ReactionPicker extends Component {
 				<RCTextInput
 					onChangeText={this.handleOnChangeSearchQuery}
 					placeholder={I18n.t('Search_Emoji')}
-					testID="search-message-view-input"
+					testID='search-message-view-input'
 				/>
 				{this.renderCategories()}
 			</View>

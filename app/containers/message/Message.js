@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ViewPropTypes, TouchableWithoutFeedback } from 'react-native';
+import {
+	View, Text, ViewPropTypes, TouchableWithoutFeedback
+} from 'react-native';
 import moment from 'moment';
 import { KeyboardUtils } from 'react-native-keyboard-input';
 import {
@@ -44,7 +46,9 @@ const SYSTEM_MESSAGES = [
 	'message_snippeted'
 ];
 
-const getInfoMessage = ({ type, role, msg, author }) => {
+const getInfoMessage = ({
+	type, role, msg, author
+}) => {
 	const { username } = author;
 	if (type === 'rm') {
 		return I18n.t('Message_removed');
@@ -65,9 +69,9 @@ const getInfoMessage = ({ type, role, msg, author }) => {
 	} else if (type === 'user-unmuted') {
 		return I18n.t('User_unmuted_by', { userUnmuted: msg, userBy: username });
 	} else if (type === 'subscription-role-added') {
-		return `${msg} was set ${role} by ${username}`;
+		return `${ msg } was set ${ role } by ${ username }`;
 	} else if (type === 'subscription-role-removed') {
-		return `${msg} is no longer ${role} by ${username}`;
+		return `${ msg } is no longer ${ role } by ${ username }`;
 	} else if (type === 'room_changed_description') {
 		return I18n.t('Room_changed_description', { description: msg, userBy: username });
 	} else if (type === 'room_changed_announcement') {
@@ -169,7 +173,9 @@ export default class Message extends PureComponent {
 	}
 
 	renderAvatar = () => {
-		const { header, avatar, author, baseUrl, user } = this.props;
+		const {
+			header, avatar, author, baseUrl, user
+		} = this.props;
 		if (header) {
 			return (
 				<Avatar
@@ -187,7 +193,9 @@ export default class Message extends PureComponent {
 	};
 
 	renderUsername = () => {
-		const { header, timeFormat, author, alias, ts, useRealName } = this.props;
+		const {
+			header, timeFormat, author, alias, ts, useRealName
+		} = this.props;
 		if (header) {
 			return (
 				<User
@@ -207,7 +215,9 @@ export default class Message extends PureComponent {
 		if (this.isInfoMessage()) {
 			return <Text style={styles.textInfo}>{getInfoMessage({ ...this.props })}</Text>;
 		}
-		const { customEmojis, msg, baseUrl, user, edited } = this.props;
+		const {
+			customEmojis, msg, baseUrl, user, edited
+		} = this.props;
 		return (
 			<Markdown
 				msg={msg}
@@ -293,25 +303,26 @@ export default class Message extends PureComponent {
 		const { onErrorPress } = this.props;
 		return (
 			<BorderlessButton onPress={onErrorPress} style={styles.errorButton}>
-				<CustomIcon name="circle-cross" color={COLOR_DANGER} size={20} />
+				<CustomIcon name='circle-cross' color={COLOR_DANGER} size={20} />
 			</BorderlessButton>
 		);
 	};
 
 	renderReaction = (reaction) => {
-		const { user, onReactionLongPress, onReactionPress, customEmojis, baseUrl } = this.props;
-		const reacted = reaction.usernames.findIndex((item) => item.value === user.username) !== -1;
+		const {
+			user, onReactionLongPress, onReactionPress, customEmojis, baseUrl
+		} = this.props;
+		const reacted = reaction.usernames.findIndex(item => item.value === user.username) !== -1;
 		const underlayColor = reacted ? COLOR_WHITE : COLOR_TEXT_DESCRIPTION;
 		return (
 			<LongPressGestureHandler
 				key={reaction.emoji}
-				onHandlerStateChange={({ nativeEvent }) =>
-					nativeEvent.state === State.ACTIVE && onReactionLongPress()
+				onHandlerStateChange={({ nativeEvent }) => nativeEvent.state === State.ACTIVE && onReactionLongPress()
 				}
 			>
 				<RectButton
 					onPress={() => onReactionPress(reaction.emoji)}
-					testID={`message-reaction-${reaction.emoji}`}
+					testID={`message-reaction-${ reaction.emoji }`}
 					style={[styles.reactionButton, reacted && { backgroundColor: '#e8f2ff' }]}
 					activeOpacity={0.8}
 					underlayColor={underlayColor}
@@ -342,14 +353,14 @@ export default class Message extends PureComponent {
 				{reactions.map(this.renderReaction)}
 				<RectButton
 					onPress={toggleReactionPicker}
-					key="message-add-reaction"
-					testID="message-add-reaction"
+					key='message-add-reaction'
+					testID='message-add-reaction'
 					style={styles.reactionButton}
 					activeOpacity={0.8}
-					underlayColor="#e1e5e8"
+					underlayColor='#e1e5e8'
 				>
 					<View style={styles.reactionContainer}>
-						<CustomIcon name="add-reaction" size={21} style={styles.addReaction} />
+						<CustomIcon name='add-reaction' size={21} style={styles.addReaction} />
 					</View>
 				</RectButton>
 			</View>
@@ -366,7 +377,7 @@ export default class Message extends PureComponent {
 					activeOpacity={0.5}
 					underlayColor={COLOR_WHITE}
 				>
-					<CustomIcon name="back" size={20} style={styles.broadcastButtonIcon} />
+					<CustomIcon name='back' size={20} style={styles.broadcastButtonIcon} />
 					<Text style={styles.broadcastButtonText}>{I18n.t('Reply')}</Text>
 				</RectButton>
 			);
@@ -375,7 +386,9 @@ export default class Message extends PureComponent {
 	}
 
 	render() {
-		const { editing, style, header, msg, ts, author, timeFormat } = this.props;
+		const {
+			editing, style, header, msg, ts, author, timeFormat
+		} = this.props;
 		const accessibilityLabel = I18n.t('Message_accessibility', {
 			user: author.username,
 			time: moment(ts).format(timeFormat),

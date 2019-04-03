@@ -236,7 +236,7 @@ export default class Root extends React.Component {
 		clearTimeout(this.listenerTimeout);
 	}
 
-	init = async () => {
+	init = async() => {
 		const [notification, deepLinking] = await Promise.all([
 			initializePushNotifications(),
 			Linking.getInitialURL()

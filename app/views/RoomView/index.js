@@ -395,7 +395,9 @@ export default class RoomView extends LoggedView {
 
 	render() {
 		const { room } = this.state;
-		const { user, showActions, showErrorActions, navigation } = this.props;
+		const {
+			user, showActions, showErrorActions, navigation
+		} = this.props;
 
 		return (
 			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ bottom: 'never' }}>
@@ -406,7 +408,7 @@ export default class RoomView extends LoggedView {
 					: null
 				}
 				{showErrorActions ? <MessageErrorActions /> : null}
-				{/*<ReactionPicker onEmojiSelected={this.onReactionPress} />*/}
+				{/* <ReactionPicker onEmojiSelected={this.onReactionPress} /> */}
 				<UploadProgress rid={this.rid} />
 				<ConnectionBadge />
 			</SafeAreaView>

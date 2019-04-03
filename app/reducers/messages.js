@@ -8,7 +8,7 @@ const initialState = {
 	replyMessage: {},
 	editing: false,
 	showActions: false,
-	showErrorActions: false,
+	showErrorActions: false
 };
 
 export default function messages(state = initialState, action) {

@@ -82,12 +82,12 @@ export default class EmojiPicker extends Component {
 				count,
 				isCustom: true
 			});
-			onEmojiSelected(`:${emoji.content}:`);
+			onEmojiSelected(`:${ emoji.content }:`);
 		} else {
 			const content = emoji;
 			const count = this._getFrequentlyUsedCount(content);
 			this._addFrequentlyUsed({ content, count, isCustom: false });
-			const shortname = `:${emoji}:`;
+			const shortname = `:${ emoji }:`;
 			onEmojiSelected(emojify(shortname, { output: 'unicode' }), shortname);
 		}
 	}
@@ -109,13 +109,13 @@ export default class EmojiPicker extends Component {
 			if (item.isCustom) {
 				return item;
 			}
-			return emojify(`${item.content}`, { output: 'unicode' });
+			return emojify(`${ item.content }`, { output: 'unicode' });
 		});
 		this.setState({ frequentlyUsed });
 	}
 
 	updateCustomEmojis() {
-		const customEmojis = map(this.customEmojis.slice(), (item) => ({
+		const customEmojis = map(this.customEmojis.slice(), item => ({
 			content: item.name,
 			extension: item.extension,
 			isCustom: true
@@ -138,7 +138,7 @@ export default class EmojiPicker extends Component {
 		return (
 			<EmojiCategory
 				emojis={emojis}
-				onEmojiSelected={(emoji) => this.onEmojiSelected(emoji)}
+				onEmojiSelected={emoji => this.onEmojiSelected(emoji)}
 				style={styles.categoryContainer}
 				size={emojisPerRow}
 				width={width}

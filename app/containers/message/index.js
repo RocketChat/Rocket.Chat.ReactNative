@@ -14,7 +14,7 @@ import { vibrate } from '../../utils/vibration';
 import I18n from '../../i18n';
 
 @connect(
-	(state) => ({
+	state => ({
 		baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 		customEmojis: state.customEmojis,
 		Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
@@ -22,10 +22,10 @@ import I18n from '../../i18n';
 		editingMessage: state.messages.message,
 		useRealName: state.settings.UI_Use_Real_Name
 	}),
-	(dispatch) => ({
-		errorActionsShow: (actionMessage) => dispatch(errorActionsShowAction(actionMessage)),
-		replyBroadcast: (message) => dispatch(replyBroadcastAction(message)),
-		toggleReactionPicker: (message) => dispatch(toggleReactionPickerAction(message))
+	dispatch => ({
+		errorActionsShow: actionMessage => dispatch(errorActionsShowAction(actionMessage)),
+		replyBroadcast: message => dispatch(replyBroadcastAction(message)),
+		toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message))
 	})
 )
 export default class MessageContainer extends React.Component {
@@ -72,7 +72,9 @@ export default class MessageContainer extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		const { status, reactions, broadcast, _updatedAt, editingMessage, item } = this.props;
+		const {
+			status, reactions, broadcast, _updatedAt, editingMessage, item
+		} = this.props;
 
 		if (status !== nextProps.status) {
 			return true;
@@ -122,13 +124,15 @@ export default class MessageContainer extends React.Component {
 	}
 
 	isHeader = () => {
-		const { item, previousItem, broadcast, Message_GroupingPeriod } = this.props;
+		const {
+			item, previousItem, broadcast, Message_GroupingPeriod
+		} = this.props;
 		if (
-			previousItem &&
-			(previousItem.ts.toDateString() === item.ts.toDateString() &&
-				previousItem.u.username === item.u.username &&
-				!(previousItem.groupable === false || item.groupable === false || broadcast === true) &&
-				item.ts - previousItem.ts < Message_GroupingPeriod * 1000)
+			previousItem
+			&& (previousItem.ts.toDateString() === item.ts.toDateString()
+				&& previousItem.u.username === item.u.username
+				&& !(previousItem.groupable === false || item.groupable === false || broadcast === true)
+				&& item.ts - previousItem.ts < Message_GroupingPeriod * 1000)
 		) {
 			return false;
 		}

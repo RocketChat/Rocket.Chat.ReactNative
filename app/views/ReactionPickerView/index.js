@@ -1,9 +1,9 @@
-import { isAndroid } from '../../utils/deviceInfo';
 import { connect } from 'react-redux';
 import { responsive } from 'react-native-responsive-ui';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
+import { isAndroid } from '../../utils/deviceInfo';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import ReactionPicker from '../../containers/EmojiPicker/ReactionPicker';
@@ -47,7 +47,7 @@ export default class ReactionPickerView extends React.Component {
 		} = this.props;
 
 		return (
-			<View style={{ padding: 10 }} testID="reaction-picker">
+			<View style={{ padding: 10 }} testID='reaction-picker'>
 				<ReactionPicker
 					tabEmojiStyle={tabEmojiStyle}
 					width={Math.min(width, height) - margin}

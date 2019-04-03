@@ -24,7 +24,7 @@ const renderEmoji = (emoji, size, baseUrl) => {
 
 	return (
 		<Text style={[styles.categoryEmoji, { height: size, width: size, fontSize: size - 14 }]}>
-			{emojify(`:${emoji}:`, { output: 'unicode' })}
+			{emojify(`:${ emoji }:`, { output: 'unicode' })}
 		</Text>
 	);
 };
@@ -66,7 +66,7 @@ export default class EmojiCategory extends React.Component {
 				activeOpacity={0.7}
 				key={emoji.isCustom ? emoji.content : emoji}
 				onPress={() => onEmojiSelected(emoji)}
-				testID={`reaction-picker-${emoji.isCustom ? emoji.content : emoji}`}
+				testID={`reaction-picker-${ emoji.isCustom ? emoji.content : emoji }`}
 			>
 				{renderEmoji(emoji, size, baseUrl)}
 			</TouchableOpacity>
@@ -78,7 +78,7 @@ export default class EmojiCategory extends React.Component {
 
 		return (
 			<FlatList
-				keyExtractor={(item) => (item.isCustom && item.content) || item}
+				keyExtractor={item => (item.isCustom && item.content) || item}
 				data={emojis}
 				renderItem={({ item }) => this.renderItem(item, this.size)}
 				numColumns={EMOJIS_PER_ROW}
