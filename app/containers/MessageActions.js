@@ -51,6 +51,7 @@ export default class MessageActions extends React.Component {
 		togglePinRequest: PropTypes.func.isRequired,
 		toggleReactionPicker: PropTypes.func.isRequired,
 		replyInit: PropTypes.func.isRequired,
+		navigation: PropTypes.object.isRequired,
 		Message_AllowDeleting: PropTypes.bool,
 		Message_AllowDeleting_BlockDeleteInMinutes: PropTypes.number,
 		Message_AllowEditing: PropTypes.bool,

@@ -169,18 +169,18 @@ export default class ReactionPicker extends Component {
 	renderCategory(category, i) {
 		const { frequentlyUsed, customEmojis } = this.state;
 		const { emojisPerRow, width, baseUrl } = this.props;
-		let emojis;
+		let emojiCategory;
 
 		if (i === 0) {
-			emojis = frequentlyUsed;
+			emojiCategory = frequentlyUsed;
 		} else if (i === 1) {
-			emojis = customEmojis;
+			emojiCategory = customEmojis;
 		} else {
-			emojis = emojisByCategory[category];
+			emojiCategory = emojisByCategory[category];
 		}
 		return (
 			<EmojiCategory
-				emojis={emojis}
+				emojis={emojiCategory}
 				onEmojiSelected={emoji => this.onEmojiSelected(emoji)}
 				style={styles.categoryContainer}
 				size={emojisPerRow}

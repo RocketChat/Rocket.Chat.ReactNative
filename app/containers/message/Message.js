@@ -272,9 +272,9 @@ export default class Message extends PureComponent {
 				);
 			}
 
-			// eslint-disable-next-line react/no-array-index-key
 			return (
 				<Reply
+					// eslint-disable-next-line react/no-array-index-key
 					key={index}
 					index={index}
 					attachment={file}

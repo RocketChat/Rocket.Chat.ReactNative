@@ -54,6 +54,7 @@ export default class MessageContainer extends React.Component {
 		// methods - props
 		onLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
+		navigation: PropTypes.object.isRequired,
 		// methods - redux
 		errorActionsShow: PropTypes.func,
 		replyBroadcast: PropTypes.func,
@@ -66,10 +67,6 @@ export default class MessageContainer extends React.Component {
 		archived: false,
 		broadcast: false
 	};
-
-	constructor(props) {
-		super(props);
-	}
 
 	shouldComponentUpdate(nextProps) {
 		const {
