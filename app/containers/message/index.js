@@ -124,7 +124,7 @@ export default class MessageContainer extends React.Component {
 
 	onDiscussionPress = () => {
 		const { onDiscussionPress, item } = this.props;
-		onDiscussionPress(item)
+		onDiscussionPress(item);
 	}
 
 	get timeFormat() {

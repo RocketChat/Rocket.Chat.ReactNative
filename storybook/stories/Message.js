@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import moment from 'moment';
+// import moment from 'moment';
 
 import MessageComponent from '../../app/containers/message/Message';
 import StoriesSeparator from './StoriesSeparator';
