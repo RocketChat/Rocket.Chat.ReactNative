@@ -297,7 +297,7 @@ export default class RoomView extends LoggedView {
 				&& moment(item.ts).isAfter(lastOpen)
 				&& moment(previousItem.ts).isBefore(lastOpen);
 			if (!moment(item.ts).isSame(previousItem.ts, 'day')) {
-				dateSeparator = previousItem.ts;
+				dateSeparator = item.ts;
 			}
 		}
 
