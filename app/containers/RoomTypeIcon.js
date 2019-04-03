@@ -10,6 +10,9 @@ const styles = StyleSheet.create({
 		marginTop: 3,
 		tintColor: COLOR_TEXT_DESCRIPTION,
 		color: COLOR_TEXT_DESCRIPTION
+	},
+	discussion: {
+		marginRight: 6
 	}
 });
 
@@ -19,7 +22,8 @@ const RoomTypeIcon = React.memo(({ type, size, style }) => {
 	}
 
 	if (type === 'discussion') {
-		return <CustomIcon name='chat' size={13} style={[styles.style, { marginRight: 6 }]} />;
+		// FIXME: These are temporary only. We should have all room icons on <Customicon />, but our design team is still working on this.
+		return <CustomIcon name='chat' size={13} style={[styles.style, styles.discussion]} />;
 	}
 
 	if (type === 'c') {
