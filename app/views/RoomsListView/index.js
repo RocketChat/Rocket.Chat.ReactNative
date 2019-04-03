@@ -128,6 +128,7 @@ export default class RoomsListView extends LoggedView {
 			chats: [],
 			unread: [],
 			favorites: [],
+			discussions: [],
 			channels: [],
 			privateGroup: [],
 			direct: [],
@@ -188,8 +189,11 @@ export default class RoomsListView extends LoggedView {
 		}
 		if (groupByType) {
 			const {
-				channels, privateGroup, direct, livechat
+				dicussions, channels, privateGroup, direct, livechat
 			} = this.state;
+			if (!isEqual(nextState.dicussions, dicussions)) {
+				return true;
+			}
 			if (!isEqual(nextState.channels, channels)) {
 				return true;
 			}
@@ -239,6 +243,7 @@ export default class RoomsListView extends LoggedView {
 		this.removeListener(this.data);
 		this.removeListener(this.unread);
 		this.removeListener(this.favorites);
+		this.removeListener(this.discussions);
 		this.removeListener(this.channels);
 		this.removeListener(this.privateGroup);
 		this.removeListener(this.direct);
@@ -268,6 +273,7 @@ export default class RoomsListView extends LoggedView {
 			let chats = [];
 			let unread = [];
 			let favorites = [];
+			let discussions = [];
 			let channels = [];
 			let privateGroup = [];
 			let direct = [];
@@ -291,22 +297,27 @@ export default class RoomsListView extends LoggedView {
 			}
 			// type
 			if (groupByType) {
+				// discussions
+				this.discussions = this.data.filtered('prid != null');
+				discussions = this.removeRealmInstance(this.discussions);
+
 				// channels
-				this.channels = this.data.filtered('t == $0', 'c');
+				this.channels = this.data.filtered('t == $0 AND prid == null', 'c');
 				channels = this.removeRealmInstance(this.channels);
 
 				// private
-				this.privateGroup = this.data.filtered('t == $0', 'p');
+				this.privateGroup = this.data.filtered('t == $0 AND prid == null', 'p');
 				privateGroup = this.removeRealmInstance(this.privateGroup);
 
 				// direct
-				this.direct = this.data.filtered('t == $0', 'd');
+				this.direct = this.data.filtered('t == $0 AND prid == null', 'd');
 				direct = this.removeRealmInstance(this.direct);
 
 				// livechat
-				this.livechat = this.data.filtered('t == $0', 'l');
+				this.livechat = this.data.filtered('t == $0 AND prid == null', 'l');
 				livechat = this.removeRealmInstance(this.livechat);
 
+				this.discussions.addListener(debounce(() => this.internalSetState({ discussions: this.removeRealmInstance(this.discussions) }), 300));
 				this.channels.addListener(debounce(() => this.internalSetState({ channels: this.removeRealmInstance(this.channels) }), 300));
 				this.privateGroup.addListener(debounce(() => this.internalSetState({ privateGroup: this.removeRealmInstance(this.privateGroup) }), 300));
 				this.direct.addListener(debounce(() => this.internalSetState({ direct: this.removeRealmInstance(this.direct) }), 300));
@@ -322,6 +333,7 @@ export default class RoomsListView extends LoggedView {
 				chats = this.removeRealmInstance(this.chats);
 
 				this.chats.addListener(debounce(() => this.internalSetState({ chats: this.removeRealmInstance(this.chats) }), 300));
+				this.removeListener(this.discussions);
 				this.removeListener(this.channels);
 				this.removeListener(this.privateGroup);
 				this.removeListener(this.direct);
@@ -330,7 +342,7 @@ export default class RoomsListView extends LoggedView {
 
 			// setState
 			this.internalSetState({
-				chats, unread, favorites, channels, privateGroup, direct, livechat, loading: false
+				chats, unread, favorites, discussions, channels, privateGroup, direct, livechat, loading: false
 			});
 		}
 	}
@@ -515,7 +527,7 @@ export default class RoomsListView extends LoggedView {
 			return null;
 		} else if (header === 'Favorites' && !showFavorites) {
 			return null;
-		} else if (['Channels', 'Direct_Messages', 'Private_Groups', 'Livechat'].includes(header) && !groupByType) {
+		} else if (['Discussions', 'Channels', 'Direct_Messages', 'Private_Groups', 'Livechat'].includes(header) && !groupByType) {
 			return null;
 		} else if (header === 'Chats' && groupByType) {
 			return null;
@@ -543,7 +555,7 @@ export default class RoomsListView extends LoggedView {
 
 	renderList = () => {
 		const {
-			search, chats, unread, favorites, channels, direct, privateGroup, livechat
+			search, chats, unread, favorites, discussions, channels, direct, privateGroup, livechat
 		} = this.state;
 
 		if (search.length > 0) {
@@ -568,6 +580,7 @@ export default class RoomsListView extends LoggedView {
 			<View style={styles.container}>
 				{this.renderSection(unread, 'Unread')}
 				{this.renderSection(favorites, 'Favorites')}
+				{this.renderSection(discussions, 'Discussions')}
 				{this.renderSection(channels, 'Channels')}
 				{this.renderSection(direct, 'Direct_Messages')}
 				{this.renderSection(privateGroup, 'Private_Groups')}

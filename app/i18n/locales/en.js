@@ -141,6 +141,7 @@ export default {
 	description: 'description',
 	Description: 'Description',
 	Disable_notifications: 'Disable notifications',
+	Discussions: 'Discussions',
 	Direct_Messages: 'Direct Messages',
 	Dont_Have_An_Account: 'Don\'t have an account?',
 	Do_you_really_want_to_key_this_room_question_mark: 'Do you really want to {{key}} this room?',
