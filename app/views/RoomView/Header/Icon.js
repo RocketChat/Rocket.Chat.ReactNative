@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
 		color: isIOS ? COLOR_TEXT_DESCRIPTION : COLOR_WHITE
 	},
 	status: {
-		marginRight: 8
+		marginLeft: 4,
+		marginRight: 12
 	}
 });
 

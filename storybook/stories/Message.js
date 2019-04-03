@@ -46,7 +46,7 @@ const Separator = ({ title }) => <StoriesSeparator title={title} style={styles.s
 export default (
 	<ScrollView style={{ flex: 1 }} contentContainerStyle={{ marginVertical: 30 }}>
 
-		{/* <Separator title='Simple' />
+		<Separator title='Simple' />
 		<Message msg='Message' />
 
 		<Separator title='Long message' />
@@ -358,7 +358,7 @@ export default (
 		/>
 
 		<Separator title='Broadcast' />
-		<Message msg='Broadcasted message' broadcast replyBroadcast={() => alert('broadcast!')} /> */}
+		<Message msg='Broadcasted message' broadcast replyBroadcast={() => alert('broadcast!')} />
 
 		<Separator title='Discussion' />
 		<Message

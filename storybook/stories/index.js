@@ -7,6 +7,7 @@ import { storiesOf } from '@storybook/react-native';
 import RoomItem from './RoomItem';
 import Avatar from './Avatar';
 import Message from './Message';
+import RoomViewHeader from './RoomViewHeader';
 
 const reducers = combineReducers({
 	settings: () => ({}),
@@ -27,3 +28,5 @@ storiesOf('RoomItem', module)
 	.add('list', () => RoomItem);
 storiesOf('Message', module)
 	.add('list', () => Message);
+storiesOf('RoomViewHeader', module)
+	.add('list', () => RoomViewHeader);
