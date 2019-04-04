@@ -14,7 +14,7 @@ import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status';
 import Touch from '../../utils/touch';
-import database from '../../lib/realm';
+import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
@@ -81,7 +81,7 @@ export default class RoomActionsView extends LoggedView {
 		} else if (room.t === 'd') {
 			this.updateRoomMember();
 		}
-		this.rooms.addListener(this.updateRoom);
+		safeAddListener(this.rooms, this.updateRoom);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
