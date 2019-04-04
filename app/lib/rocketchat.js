@@ -6,7 +6,7 @@ import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
 import messagesStatus from '../constants/messagesStatus';
-import database from './realm';
+import database, { safeAddListener } from './realm';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
 
@@ -65,7 +65,7 @@ const RocketChat = {
 			if (data.length) {
 				return resolve(data[0]);
 			}
-			data.addListener(() => {
+			safeAddListener(data, () => {
 				if (!data.length) { return; }
 				data.removeAllListeners();
 				resolve(data[0]);
