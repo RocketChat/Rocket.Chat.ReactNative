@@ -10,7 +10,7 @@ import equal from 'deep-equal';
 import {
 	addUser as addUserAction, removeUser as removeUserAction, reset as resetAction, setLoading as setLoadingAction
 } from '../actions/selectedUsers';
-import database from '../lib/realm';
+import database, { safeAddListener } from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
 import Loading from '../containers/Loading';
@@ -88,7 +88,7 @@ export default class SelectedUsersView extends LoggedView {
 		this.state = {
 			search: []
 		};
-		this.data.addListener(this.updateState);
+		safeAddListener(this.data, this.updateState);
 	}
 
 	componentDidMount() {

@@ -10,7 +10,7 @@ import TabBar from './TabBar';
 import EmojiCategory from './EmojiCategory';
 import styles from './styles';
 import categories from './categories';
-import database from '../../lib/realm';
+import database, { safeAddListener } from '../../lib/realm';
 import { emojisByCategory } from '../../emojis';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 
@@ -45,8 +45,8 @@ export default class EmojiPicker extends Component {
 		this.updateFrequentlyUsed();
 		this.updateCustomEmojis();
 		requestAnimationFrame(() => this.setState({ show: true }));
-		this.frequentlyUsed.addListener(this.updateFrequentlyUsed);
-		this.customEmojis.addListener(this.updateCustomEmojis);
+		safeAddListener(this.frequentlyUsed, this.updateFrequentlyUsed);
+		safeAddListener(this.customEmojis, this.updateCustomEmojis);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
