@@ -36,10 +36,6 @@ describe('Room screen', () => {
 
 		// Render - Header
 		describe('Header', async() => {
-			it('should have star button', async() => {
-				await expect(element(by.id('room-view-header-star'))).toBeVisible();
-			});
-
 			it('should have actions button ', async() => {
 				await expect(element(by.id('room-view-header-actions'))).toBeVisible();
 			});
