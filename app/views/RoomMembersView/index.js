@@ -11,7 +11,7 @@ import styles from './styles';
 import UserItem from '../../presentation/UserItem';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
-import database from '../../lib/realm';
+import database, { safeAddListener } from '../../lib/realm';
 import { showToast } from '../../utils/info';
 import log from '../../utils/log';
 import { vibrate } from '../../utils/vibration';
@@ -81,7 +81,7 @@ export default class RoomMembersView extends LoggedView {
 
 	componentDidMount() {
 		this.fetchMembers();
-		this.rooms.addListener(this.updateRoom);
+		safeAddListener(this.rooms, this.updateRoom);
 
 		const { navigation } = this.props;
 		navigation.setParams({ toggleStatus: this.toggleStatus });
