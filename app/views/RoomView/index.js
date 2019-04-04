@@ -18,7 +18,7 @@ import {
 } from '../../actions/messages';
 import LoggedView from '../View';
 import { List } from './List';
-import database from '../../lib/realm';
+import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
 import MessageActions from '../../containers/MessageActions';
@@ -126,7 +126,7 @@ export default class RoomView extends LoggedView {
 				this.setLastOpen(null);
 			}
 		}
-		this.rooms.addListener(this.updateRoom);
+		safeAddListener(this.rooms, this.updateRoom);
 		this.internalSetState({ loaded: true });
 	}
 

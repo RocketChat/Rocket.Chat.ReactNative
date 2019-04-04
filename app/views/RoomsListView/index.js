@@ -10,7 +10,7 @@ import Orientation from 'react-native-orientation-locker';
 
 import SearchBox from '../../containers/SearchBox';
 import ConnectionBadge from '../../containers/ConnectionBadge';
-import database from '../../lib/realm';
+import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
 import styles from './styles';
@@ -283,7 +283,7 @@ export default class RoomsListView extends LoggedView {
 			if (showUnread) {
 				this.unread = this.data.filtered('archived != true && open == true').filtered('(unread > 0 || alert == true)');
 				unread = this.removeRealmInstance(this.unread);
-				this.unread.addListener(debounce(() => this.internalSetState({ unread: this.removeRealmInstance(this.unread) }), 300));
+				safeAddListener(this.unread, debounce(() => this.internalSetState({ unread: this.removeRealmInstance(this.unread) }), 300));
 			} else {
 				this.removeListener(unread);
 			}
@@ -291,7 +291,7 @@ export default class RoomsListView extends LoggedView {
 			if (showFavorites) {
 				this.favorites = this.data.filtered('f == true');
 				favorites = this.removeRealmInstance(this.favorites);
-				this.favorites.addListener(debounce(() => this.internalSetState({ favorites: this.removeRealmInstance(this.favorites) }), 300));
+				safeAddListener(this.favorites, debounce(() => this.internalSetState({ favorites: this.removeRealmInstance(this.favorites) }), 300));
 			} else {
 				this.removeListener(favorites);
 			}
@@ -317,11 +317,11 @@ export default class RoomsListView extends LoggedView {
 				this.livechat = this.data.filtered('t == $0 AND prid == null', 'l');
 				livechat = this.removeRealmInstance(this.livechat);
 
-				this.discussions.addListener(debounce(() => this.internalSetState({ discussions: this.removeRealmInstance(this.discussions) }), 300));
-				this.channels.addListener(debounce(() => this.internalSetState({ channels: this.removeRealmInstance(this.channels) }), 300));
-				this.privateGroup.addListener(debounce(() => this.internalSetState({ privateGroup: this.removeRealmInstance(this.privateGroup) }), 300));
-				this.direct.addListener(debounce(() => this.internalSetState({ direct: this.removeRealmInstance(this.direct) }), 300));
-				this.livechat.addListener(debounce(() => this.internalSetState({ livechat: this.removeRealmInstance(this.livechat) }), 300));
+				safeAddListener(this.discussions, debounce(() => this.internalSetState({ discussions: this.removeRealmInstance(this.discussions) }), 300));
+				safeAddListener(this.channels, debounce(() => this.internalSetState({ channels: this.removeRealmInstance(this.channels) }), 300));
+				safeAddListener(this.privateGroup, debounce(() => this.internalSetState({ privateGroup: this.removeRealmInstance(this.privateGroup) }), 300));
+				safeAddListener(this.direct, debounce(() => this.internalSetState({ direct: this.removeRealmInstance(this.direct) }), 300));
+				safeAddListener(this.livechat, debounce(() => this.internalSetState({ livechat: this.removeRealmInstance(this.livechat) }), 300));
 				this.removeListener(this.chats);
 			} else {
 				// chats
@@ -332,7 +332,7 @@ export default class RoomsListView extends LoggedView {
 				}
 				chats = this.removeRealmInstance(this.chats);
 
-				this.chats.addListener(debounce(() => this.internalSetState({ chats: this.removeRealmInstance(this.chats) }), 300));
+				safeAddListener(this.chats, debounce(() => this.internalSetState({ chats: this.removeRealmInstance(this.chats) }), 300));
 				this.removeListener(this.discussions);
 				this.removeListener(this.channels);
 				this.removeListener(this.privateGroup);
