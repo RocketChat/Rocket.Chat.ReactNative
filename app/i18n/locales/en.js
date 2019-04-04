@@ -167,6 +167,7 @@ export default {
 	Group_by_favorites: 'Group favorites',
 	Group_by_type: 'Group by type',
 	Has_joined_the_channel: 'Has joined the channel',
+	Has_joined_the_conversation: 'Has joined the conversation',
 	Has_left_the_channel: 'Has left the channel',
 	Invisible: 'Invisible',
 	Invite: 'Invite',

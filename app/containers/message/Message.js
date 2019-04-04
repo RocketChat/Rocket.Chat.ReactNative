@@ -32,6 +32,7 @@ const SYSTEM_MESSAGES = [
 	'ru',
 	'ul',
 	'uj',
+	'ut',
 	'rm',
 	'user-muted',
 	'user-unmuted',
@@ -54,6 +55,8 @@ const getInfoMessage = ({
 		return I18n.t('Message_removed');
 	} else if (type === 'uj') {
 		return I18n.t('Has_joined_the_channel');
+	} else if (type === 'ut') {
+		return I18n.t('Has_joined_the_conversation');
 	} else if (type === 'r') {
 		return I18n.t('Room_name_changed', { name: msg, userBy: username });
 	} else if (type === 'message_pinned') {
