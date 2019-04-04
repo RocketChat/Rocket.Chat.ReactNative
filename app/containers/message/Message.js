@@ -385,7 +385,7 @@ export default class Message extends PureComponent {
 		}
 		return (
 			<React.Fragment>
-				<Text style={styles.textInfo}>Started a discussion:</Text>
+				<Text style={styles.textInfo}>{I18n.t('Started_discussion')}</Text>
 				<Text style={styles.text}>{msg}</Text>
 				<View style={styles.buttonContainer}>
 					<Touchable

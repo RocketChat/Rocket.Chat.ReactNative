@@ -301,6 +301,7 @@ export default {
 	starred: 'starred',
 	Starred: 'Starred',
 	Start_of_conversation: 'Start of conversation',
+	Started_discussion: 'Started a discussion:',
 	Submit: 'Submit',
 	Take_a_photo: 'Take a photo',
 	tap_to_change_status: 'tap to change status',

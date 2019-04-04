@@ -302,6 +302,7 @@ export default {
 	starred: 'favoritou',
 	Starred: 'Mensagens Favoritas',
 	Start_of_conversation: 'Início da conversa',
+	Started_discussion: 'Iniciou uma discussão:',
 	Submit: 'Enviar',
 	Take_a_photo: 'Tirar uma foto',
 	Terms_of_Service: ' Termos de Serviço ',
