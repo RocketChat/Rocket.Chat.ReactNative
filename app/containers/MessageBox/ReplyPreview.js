@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
 });
 
 @connect(state => ({
+	message: state.messages.replyMessage,
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	customEmojis: state.customEmojis,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
