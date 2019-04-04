@@ -7,7 +7,6 @@ import {
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { isIOS } from '../../../utils/deviceInfo';
-import { headerIconSize } from '../../../containers/HeaderButton';
 import Icon from './Icon';
 import { COLOR_TEXT_DESCRIPTION, HEADER_TITLE, COLOR_WHITE } from '../../../constants/colors';
 
@@ -18,7 +17,7 @@ const styles = StyleSheet.create({
 		height: '100%'
 	},
 	titleContainer: {
-		flex: 1,
+		flex: 6,
 		flexDirection: 'row'
 	},
 	title: {
@@ -33,7 +32,7 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular,
 		color: isIOS ? COLOR_TEXT_DESCRIPTION : COLOR_WHITE,
 		fontSize: 12,
-		marginBottom: 4
+		flex: 4
 	},
 	typingUsers: {
 		...sharedStyles.textSemibold
@@ -66,7 +65,6 @@ const Header = React.memo(({
 	prid, title, type, status, usersTyping, width, height
 }) => {
 	const portrait = height > width;
-	const widthScrollView = width - 6.5 * headerIconSize;
 	let scale = 1;
 
 	if (!portrait) {
@@ -76,7 +74,7 @@ const Header = React.memo(({
 	}
 	return (
 		<View style={styles.container}>
-			<View style={[styles.titleContainer, { width: widthScrollView }]}>
+			<View style={styles.titleContainer}>
 				<ScrollView
 					showsHorizontalScrollIndicator={false}
 					horizontal

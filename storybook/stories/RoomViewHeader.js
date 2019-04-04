@@ -4,7 +4,7 @@ import { HeaderBackButton } from 'react-navigation';
 
 import HeaderComponent from '../../app/views/RoomView/Header/Header';
 import { CustomHeaderButtons, Item } from '../../app/containers/HeaderButton';
-import { COLOR_SEPARATOR } from '../../app/constants/colors';
+import { COLOR_SEPARATOR, HEADER_BACKGROUND } from '../../app/constants/colors';
 import StoriesSeparator from './StoriesSeparator';
 import { isIOS } from '../../app/utils/deviceInfo';
 
@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
 		borderTopWidth: 1,
 		borderBottomWidth: 1,
 		borderColor: COLOR_SEPARATOR,
-		marginVertical: 6
+		marginVertical: 6,
+		backgroundColor: HEADER_BACKGROUND
 	}
 });
 
@@ -30,9 +31,6 @@ const Header = props => (
 			height={480}
 			{...props}
 		/>
-		<CustomHeaderButtons>
-			<Item title='star' iconName='star' />
-		</CustomHeaderButtons>
 		<CustomHeaderButtons>
 			<Item title='more' iconName='menu' />
 		</CustomHeaderButtons>
@@ -57,5 +55,9 @@ export default (
 
 		<StoriesSeparator title='Title scroll' />
 		<Header title='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' />
+		<Header
+			title='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+			usersTyping={[{ username: 'diego.mello' }, { username: 'rocket.cat' }, { username: 'detoxrn' }]}
+		/>
 	</ScrollView>
 );
