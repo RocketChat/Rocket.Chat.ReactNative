@@ -36,6 +36,7 @@ import RoomHeaderView from './Header';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
 import { COLOR_WHITE } from '../../constants/colors';
+import debounce from '../../utils/debounce';
 
 @connect(state => ({
 	user: {
@@ -209,12 +210,12 @@ export default class RoomView extends LoggedView {
 		}
 	};
 
-	onDiscussionPress = (item) => {
+	onDiscussionPress = debounce((item) => {
 		const { navigation } = this.props;
 		navigation.push('RoomView', {
 			rid: item.drid, prid: item.rid, name: item.msg, t: 'p'
 		});
-	}
+	}, 1000, true)
 
 	internalSetState = (...args) => {
 		if (isIOS && this.beginAnimating) {

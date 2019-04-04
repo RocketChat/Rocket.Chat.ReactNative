@@ -67,6 +67,9 @@ export default StyleSheet.create({
 		marginBottom: 6,
 		borderRadius: 2
 	},
+	reactionButtonReacted: {
+		backgroundColor: '#e8f2ff'
+	},
 	reactionContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center',
@@ -157,8 +160,6 @@ export default StyleSheet.create({
 	imageContainer: {
 		flex: 1,
 		flexDirection: 'column',
-		borderColor: COLOR_BORDER,
-		borderWidth: 1,
 		borderRadius: 4
 	},
 	image: {
@@ -166,7 +167,8 @@ export default StyleSheet.create({
 		maxWidth: 400,
 		minHeight: 200,
 		borderRadius: 4,
-		marginBottom: 6
+		borderColor: COLOR_BORDER,
+		borderWidth: 1
 	},
 	inlineImage: {
 		width: 300,

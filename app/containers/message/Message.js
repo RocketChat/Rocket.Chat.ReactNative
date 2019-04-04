@@ -6,8 +6,9 @@ import {
 import moment from 'moment';
 import { KeyboardUtils } from 'react-native-keyboard-input';
 import {
-	State, RectButton, LongPressGestureHandler, BorderlessButton
+	BorderlessButton
 } from 'react-native-gesture-handler';
+import Touchable from 'react-native-platform-touchable';
 
 import Image from './Image';
 import User from './User';
@@ -23,7 +24,7 @@ import styles from './styles';
 import I18n from '../../i18n';
 import messagesStatus from '../../constants/messagesStatus';
 import { CustomIcon } from '../../lib/Icons';
-import { COLOR_DANGER, COLOR_TEXT_DESCRIPTION, COLOR_WHITE } from '../../constants/colors';
+import { COLOR_DANGER } from '../../constants/colors';
 
 const SYSTEM_MESSAGES = [
 	'r',
@@ -85,6 +86,9 @@ const getInfoMessage = ({
 		return I18n.t('Thread_created', { name: msg });
 	}
 	return '';
+};
+const BUTTON_HIT_SLOP = {
+	top: 4, right: 4, bottom: 4, left: 4
 };
 
 export default class Message extends PureComponent {
@@ -288,31 +292,27 @@ export default class Message extends PureComponent {
 			user, onReactionLongPress, onReactionPress, customEmojis, baseUrl
 		} = this.props;
 		const reacted = reaction.usernames.findIndex(item => item.value === user.username) !== -1;
-		const underlayColor = reacted ? COLOR_WHITE : COLOR_TEXT_DESCRIPTION;
 		return (
-			<LongPressGestureHandler
+			<Touchable
+				onPress={() => onReactionPress(reaction.emoji)}
+				onLongPress={onReactionLongPress}
 				key={reaction.emoji}
-				onHandlerStateChange={({ nativeEvent }) => nativeEvent.state === State.ACTIVE && onReactionLongPress()}
+				testID={`message-reaction-${ reaction.emoji }`}
+				style={[styles.reactionButton, reacted && styles.reactionButtonReacted]}
+				background={Touchable.Ripple('#fff')}
+				hitSlop={BUTTON_HIT_SLOP}
 			>
-				<RectButton
-					onPress={() => onReactionPress(reaction.emoji)}
-					testID={`message-reaction-${ reaction.emoji }`}
-					style={[styles.reactionButton, reacted && { backgroundColor: '#e8f2ff' }]}
-					activeOpacity={0.8}
-					underlayColor={underlayColor}
-				>
-					<View style={[styles.reactionContainer, reacted && styles.reactedContainer]}>
-						<Emoji
-							content={reaction.emoji}
-							customEmojis={customEmojis}
-							standardEmojiStyle={styles.reactionEmoji}
-							customEmojiStyle={styles.reactionCustomEmoji}
-							baseUrl={baseUrl}
-						/>
-						<Text style={styles.reactionCount}>{ reaction.usernames.length }</Text>
-					</View>
-				</RectButton>
-			</LongPressGestureHandler>
+				<View style={[styles.reactionContainer, reacted && styles.reactedContainer]}>
+					<Emoji
+						content={reaction.emoji}
+						customEmojis={customEmojis}
+						standardEmojiStyle={styles.reactionEmoji}
+						customEmojiStyle={styles.reactionCustomEmoji}
+						baseUrl={baseUrl}
+					/>
+					<Text style={styles.reactionCount}>{ reaction.usernames.length }</Text>
+				</View>
+			</Touchable>
 		);
 	}
 
@@ -324,18 +324,18 @@ export default class Message extends PureComponent {
 		return (
 			<View style={styles.reactionsContainer}>
 				{reactions.map(this.renderReaction)}
-				<RectButton
+				<Touchable
 					onPress={toggleReactionPicker}
 					key='message-add-reaction'
 					testID='message-add-reaction'
 					style={styles.reactionButton}
-					activeOpacity={0.8}
-					underlayColor='#e1e5e8'
+					background={Touchable.Ripple('#fff')}
+					hitSlop={BUTTON_HIT_SLOP}
 				>
 					<View style={styles.reactionContainer}>
 						<CustomIcon name='add-reaction' size={21} style={styles.addReaction} />
 					</View>
-				</RectButton>
+				</Touchable>
 			</View>
 		);
 	}
@@ -345,15 +345,17 @@ export default class Message extends PureComponent {
 		if (broadcast && !this.isOwn()) {
 			return (
 				<View style={styles.buttonContainer}>
-					<RectButton
+					<Touchable
 						onPress={replyBroadcast}
+						background={Touchable.Ripple('#fff')}
 						style={styles.button}
-						activeOpacity={0.5}
-						underlayColor={COLOR_WHITE}
+						hitSlop={BUTTON_HIT_SLOP}
 					>
-						<CustomIcon name='back' size={20} style={styles.buttonIcon} />
-						<Text style={styles.buttonText}>{I18n.t('Reply')}</Text>
-					</RectButton>
+						<React.Fragment>
+							<CustomIcon name='back' size={20} style={styles.buttonIcon} />
+							<Text style={styles.buttonText}>{I18n.t('Reply')}</Text>
+						</React.Fragment>
+					</Touchable>
 				</View>
 			);
 		}
@@ -383,15 +385,17 @@ export default class Message extends PureComponent {
 				<Text style={styles.textInfo}>Started a discussion:</Text>
 				<Text style={styles.text}>{msg}</Text>
 				<View style={styles.buttonContainer}>
-					<RectButton
+					<Touchable
 						onPress={onDiscussionPress}
+						background={Touchable.Ripple('#fff')}
 						style={[styles.button, styles.smallButton]}
-						activeOpacity={0.5}
-						underlayColor={COLOR_WHITE}
+						hitSlop={BUTTON_HIT_SLOP}
 					>
-						<CustomIcon name='chat' size={20} style={styles.buttonIcon} />
-						<Text style={styles.buttonText}>{buttonText}</Text>
-					</RectButton>
+						<React.Fragment>
+							<CustomIcon name='chat' size={20} style={styles.buttonIcon} />
+							<Text style={styles.buttonText}>{buttonText}</Text>
+						</React.Fragment>
+					</Touchable>
 					<Text style={styles.time}>{time}</Text>
 				</View>
 			</React.Fragment>
