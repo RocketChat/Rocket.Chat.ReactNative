@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { responsive } from 'react-native-responsive-ui';
 
 import styles from './styles';
-import database from '../../lib/realm';
+import database, { safeAddListener } from '../../lib/realm';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import debounce from '../../utils/debounce';
 import RocketChat from '../../lib/rocketchat';
@@ -36,7 +36,7 @@ export class List extends React.Component {
 			messages: this.data.slice(),
 			showScollToBottomButton: false
 		};
-		this.data.addListener(this.updateState);
+		safeAddListener(this.data, this.updateState);
 	}
 
 	// shouldComponentUpdate(nextProps, nextState) {
