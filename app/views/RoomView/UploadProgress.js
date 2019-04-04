@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { responsive } from 'react-native-responsive-ui';
 import equal from 'deep-equal';
 
-import database from '../../lib/realm';
+import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import I18n from '../../i18n';
@@ -74,7 +74,7 @@ export default class UploadProgress extends Component {
 		};
 		const { rid } = this.props;
 		this.uploads = database.objects('uploads').filtered('rid = $0', rid);
-		this.uploads.addListener(this.updateUploads);
+		safeAddListener(this.uploads, this.updateUploads);
 	}
 
 	componentDidMount() {

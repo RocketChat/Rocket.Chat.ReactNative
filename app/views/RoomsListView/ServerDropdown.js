@@ -11,7 +11,7 @@ import { toggleServerDropdown as toggleServerDropdownAction } from '../../action
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 import { appStart as appStartAction } from '../../actions';
 import styles from './styles';
-import database from '../../lib/realm';
+import database, { safeAddListener } from '../../lib/realm';
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
@@ -46,7 +46,7 @@ class ServerDropdown extends Component {
 			servers: this.servers
 		};
 		this.animatedValue = new Animated.Value(0);
-		this.servers.addListener(this.updateState);
+		safeAddListener(this.servers, this.updateState);
 	}
 
 	componentDidMount() {
