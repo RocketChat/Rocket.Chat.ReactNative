@@ -205,7 +205,9 @@ export default class RoomItem extends React.Component {
 
 		if (lastMessage.msg && lastMessage.attachments && Object.keys(lastMessage.attachments).length > 0) {
 			lastMessage.msg = lastMessage.msg.replace(/^\[ ]\(.+?\)/, '');
-			prefix = prefix.replace(/:/, ` (${ I18n.t('Replied') }):`);
+			if (type === 'd') {
+				prefix = '';
+			}
 		}
 
 		let msg = `${ prefix }${ lastMessage.msg.replace(/[\n\t\r]/igm, '') }`;
