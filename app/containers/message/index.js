@@ -11,7 +11,6 @@ import {
 	replyBroadcast as replyBroadcastAction
 } from '../../actions/messages';
 import { vibrate } from '../../utils/vibration';
-import I18n from '../../i18n';
 
 @connect(
 	state => ({
@@ -144,7 +143,7 @@ export default class MessageContainer extends React.Component {
 	toggleReactionPicker = () => {
 		const { toggleReactionPicker, navigation } = this.props;
 		toggleReactionPicker(this.parseMessage());
-		navigation.navigate('ReactionPickerView', { headerTitle: I18n.t('Actions') });
+		navigation.navigate('ReactionPickerView');
 	};
 
 	replyBroadcast = () => {

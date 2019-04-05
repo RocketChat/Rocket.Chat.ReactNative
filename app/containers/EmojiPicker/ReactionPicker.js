@@ -10,7 +10,7 @@ import equal from 'deep-equal';
 import EmojiCategory from './EmojiCategory';
 import styles from './styles';
 import categories from './categories';
-import database from '../../lib/realm';
+import database, { safeAddListener } from '../../lib/realm';
 import { emojis, emojisByCategory } from '../../emojis';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import I18n from '../../i18n';
@@ -66,9 +66,10 @@ export default class ReactionPicker extends Component {
 	componentDidMount() {
 		this.updateFrequentlyUsed();
 		this.updateCustomEmojis();
+		this.name.focus();
 		requestAnimationFrame(() => this.setState({ show: true }));
-		this.frequentlyUsed.addListener(this.updateFrequentlyUsed);
-		this.customEmojis.addListener(this.updateCustomEmojis);
+		safeAddListener(this.frequentlyUsed, this.updateFrequentlyUsed);
+		safeAddListener(this.customEmojis, this.updateCustomEmojis);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -243,6 +244,7 @@ export default class ReactionPicker extends Component {
 		return (
 			<View>
 				<RCTextInput
+					inputRef={(e) => { this.name = e; }}
 					onChangeText={this.handleOnChangeSearchQuery}
 					placeholder={I18n.t('Search_Emoji')}
 					testID='search-message-view-input'

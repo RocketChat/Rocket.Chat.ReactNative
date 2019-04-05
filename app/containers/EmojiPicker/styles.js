@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { COLOR_PRIMARY, COLOR_WHITE } from '../../constants/colors';
 
+import sharedStyles from '../../views/Styles';
+
 export default StyleSheet.create({
 	background: {
 		backgroundColor: COLOR_WHITE
@@ -64,10 +66,14 @@ export default StyleSheet.create({
 	},
 	noEmojiFoundText: {
 		margin: 20,
-		alignSelf: 'center'
+		alignSelf: 'center',
+		...sharedStyles.textRegular,
+		...sharedStyles.textColorNormal
 	},
 	categoryTitle: {
-		fontSize: 16,
-		fontWeight: 'bold'
+		fontSize: 14,
+		marginVertical: 6,
+		...sharedStyles.textSemibold,
+		...sharedStyles.textColorNormal
 	}
 });

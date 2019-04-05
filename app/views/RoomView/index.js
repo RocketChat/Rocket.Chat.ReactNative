@@ -408,7 +408,6 @@ export default class RoomView extends LoggedView {
 					: null
 				}
 				{showErrorActions ? <MessageErrorActions /> : null}
-				{/* <ReactionPicker onEmojiSelected={this.onReactionPress} /> */}
 				<UploadProgress rid={this.rid} />
 				<ConnectionBadge />
 			</SafeAreaView>

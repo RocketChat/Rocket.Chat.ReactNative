@@ -252,6 +252,7 @@ export default {
 	Reactions_are_disabled: 'Reagir está desabilitado',
 	Reactions_are_enabled: 'Reagir está habilitado',
 	Reactions: 'Reações',
+	Reactions_search: 'Pesquisa de Reações',
 	Read_Only_Channel: 'Canal Somente Leitura',
 	Read_Only: 'Somente Leitura',
 	Register: 'Registrar',

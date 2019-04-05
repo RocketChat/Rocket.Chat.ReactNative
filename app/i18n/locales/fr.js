@@ -250,6 +250,7 @@ export default {
 	Reactions_are_disabled: 'Les réactions sont désactivées',
 	Reactions_are_enabled: 'Les réactions sont activées',
 	Reactions: 'Réactions',
+	Reactions_search: 'Recherche de réactions',
 	Read_Only_Channel: 'Chaîne en lecture seule',
 	Read_Only: 'Lecture seule',
 	Register: 'S\'inscrire',

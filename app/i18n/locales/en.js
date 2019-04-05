@@ -250,6 +250,7 @@ export default {
 	Reactions_are_disabled: 'Reactions are disabled',
 	Reactions_are_enabled: 'Reactions are enabled',
 	Reactions: 'Reactions',
+	Reactions_search: 'Reactions Search',
 	Read_Only_Channel: 'Read Only Channel',
 	Read_Only: 'Read Only',
 	Register: 'Register',
