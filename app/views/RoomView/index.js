@@ -13,7 +13,7 @@ import { openRoom as openRoomAction, closeRoom as closeRoomAction } from '../../
 import { toggleReactionPicker as toggleReactionPickerAction, actionsShow as actionsShowAction } from '../../actions/messages';
 import LoggedView from '../View';
 import { List } from './List';
-import database from '../../lib/realm';
+import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
 import MessageActions from '../../containers/MessageActions';
@@ -114,7 +114,7 @@ export default class RoomView extends LoggedView {
 				() => this.updateRoom()
 			);
 		}
-		this.rooms.addListener(this.updateRoom);
+		safeAddListener(this.rooms, this.updateRoom);
 		this.internalSetState({ loaded: true });
 	}
 

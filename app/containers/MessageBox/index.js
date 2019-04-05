@@ -108,6 +108,14 @@ export default class MessageBox extends Component {
 		this.text = '';
 	}
 
+	componentDidMount() {
+		const { rid } = this.props;
+		const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
+		if (room.draftMessage && room.draftMessage !== '') {
+			this.setInput(room.draftMessage);
+		}
+	}
+
 	componentWillReceiveProps(nextProps) {
 		const { message, replyMessage } = this.props;
 		if (message !== nextProps.message && nextProps.message.msg) {
@@ -155,6 +163,14 @@ export default class MessageBox extends Component {
 			return true;
 		}
 		return false;
+	}
+
+	componentWillUnmount() {
+		const { rid } = this.props;
+		const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
+		database.write(() => {
+			room.draftMessage = this.text;
+		});
 	}
 
 	onChangeText = (text) => {
