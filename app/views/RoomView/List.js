@@ -1,7 +1,6 @@
 import React from 'react';
-import { ActivityIndicator, FlatList } from 'react-native';
+import { ActivityIndicator, FlatList, InteractionManager } from 'react-native';
 import PropTypes from 'prop-types';
-import { responsive } from 'react-native-responsive-ui';
 
 import styles from './styles';
 import database, { safeAddListener } from '../../lib/realm';
@@ -10,33 +9,35 @@ import debounce from '../../utils/debounce';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import EmptyRoom from './EmptyRoom';
-import ScrollBottomButton from './ScrollBottomButton';
-import { isNotch } from '../../utils/deviceInfo';
+// import ScrollBottomButton from './ScrollBottomButton';
 
-@responsive
 export class List extends React.Component {
 	static propTypes = {
 		onEndReached: PropTypes.func,
 		renderFooter: PropTypes.func,
 		renderRow: PropTypes.func,
-		room: PropTypes.object,
+		rid: PropTypes.string,
+		t: PropTypes.string,
 		window: PropTypes.object
 	};
 
 	constructor(props) {
 		super(props);
+		console.time(`${ this.constructor.name } init`);
+		console.time(`${ this.constructor.name } mount`);
 		this.data = database
 			.objects('messages')
-			.filtered('rid = $0', props.room.rid)
+			.filtered('rid = $0', props.rid)
 			.sorted('ts', true);
 		this.state = {
 			loading: true,
 			loadingMore: false,
 			end: false,
-			messages: this.data.slice(),
-			showScollToBottomButton: false
+			messages: this.data.slice()
+			// showScollToBottomButton: false
 		};
 		safeAddListener(this.data, this.updateState);
+		console.timeEnd(`${ this.constructor.name } init`);
 	}
 
 	// shouldComponentUpdate(nextProps, nextState) {
@@ -53,14 +54,26 @@ export class List extends React.Component {
 	// 		|| window.width !== nextProps.window.width;
 	// }
 
+	componentDidMount() {
+		console.timeEnd(`${ this.constructor.name } mount`);
+	}
+
 	componentWillUnmount() {
 		this.data.removeAllListeners();
-		this.updateState.stop();
+		if (this.updateState && this.updateState.stop) {
+			this.updateState.stop();
+		}
+		if (this.interactionManager && this.interactionManager.cancel) {
+			this.interactionManager.cancel();
+		}
+		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
 	// eslint-disable-next-line react/sort-comp
 	updateState = debounce(() => {
-		this.setState({ messages: this.data.slice(), loading: false, loadingMore: false });
+		this.interactionManager = InteractionManager.runAfterInteractions(() => {
+			this.setState({ messages: this.data.slice(), loading: false, loadingMore: false });
+		});
 	}, 300);
 
 	onEndReached = async() => {
@@ -72,9 +85,9 @@ export class List extends React.Component {
 		}
 
 		this.setState({ loadingMore: true });
-		const { room } = this.props;
+		const { rid, t } = this.props;
 		try {
-			const result = await RocketChat.loadMessagesForRoom({ rid: room.rid, t: room.t, latest: this.data[this.data.length - 1].ts });
+			const result = await RocketChat.loadMessagesForRoom({ rid, t, latest: this.data[this.data.length - 1].ts });
 			this.setState({ end: result.length < 50 });
 		} catch (e) {
 			this.setState({ loadingMore: false });
@@ -82,19 +95,19 @@ export class List extends React.Component {
 		}
 	}
 
-	scrollToBottom = () => {
-		requestAnimationFrame(() => {
-			this.list.scrollToOffset({ offset: isNotch ? -90 : -60 });
-		});
-	}
+	// scrollToBottom = () => {
+	// 	requestAnimationFrame(() => {
+	// 		this.list.scrollToOffset({ offset: isNotch ? -90 : -60 });
+	// 	});
+	// }
 
-	handleScroll = (event) => {
-		if (event.nativeEvent.contentOffset.y > 0) {
-			this.setState({ showScollToBottomButton: true });
-		} else {
-			this.setState({ showScollToBottomButton: false });
-		}
-	}
+	// handleScroll = (event) => {
+	// 	if (event.nativeEvent.contentOffset.y > 0) {
+	// 		this.setState({ showScollToBottomButton: true });
+	// 	} else {
+	// 		this.setState({ showScollToBottomButton: false });
+	// 	}
+	// }
 
 	renderFooter = () => {
 		const { loadingMore, loading } = this.state;
@@ -105,8 +118,9 @@ export class List extends React.Component {
 	}
 
 	render() {
-		const { renderRow, window } = this.props;
-		const { showScollToBottomButton, messages } = this.state;
+		console.count(`${ this.constructor.name }.render calls`);
+		const { renderRow } = this.props;
+		const { messages } = this.state;
 		return (
 			<React.Fragment>
 				<EmptyRoom length={messages.length} />
@@ -119,21 +133,22 @@ export class List extends React.Component {
 					renderItem={({ item, index }) => renderRow(item, messages[index + 1])}
 					contentContainerStyle={styles.contentContainer}
 					style={styles.list}
-					onScroll={this.handleScroll}
+					// onScroll={this.handleScroll}
 					inverted
 					removeClippedSubviews
-					initialNumToRender={10}
+					initialNumToRender={1}
 					onEndReached={this.onEndReached}
 					onEndReachedThreshold={0.5}
-					maxToRenderPerBatch={20}
+					maxToRenderPerBatch={5}
+					windowSize={21}
 					ListFooterComponent={this.renderFooter}
 					{...scrollPersistTaps}
 				/>
-				<ScrollBottomButton
+				{/* <ScrollBottomButton
 					show={showScollToBottomButton}
 					onPress={this.scrollToBottom}
 					landscape={window.width > window.height}
-				/>
+				/> */}
 			</React.Fragment>
 		);
 	}

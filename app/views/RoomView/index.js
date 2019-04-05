@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, LayoutAnimation, ActivityIndicator
+	Text, View, LayoutAnimation, InteractionManager
 } from 'react-native';
 import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import moment from 'moment';
+import 'react-native-console-time-polyfill';
 
 import {
 	toggleReactionPicker as toggleReactionPickerAction,
@@ -96,11 +97,12 @@ export default class RoomView extends LoggedView {
 
 	constructor(props) {
 		super('RoomView', props);
+		console.time(`${ this.constructor.name } init`);
+		console.time(`${ this.constructor.name } mount`);
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
-			loaded: false,
 			joined: this.rooms.length > 0,
 			room: this.rooms[0] || { rid: this.rid, t: this.t },
 			lastOpen: null
@@ -108,31 +110,34 @@ export default class RoomView extends LoggedView {
 		this.beginAnimating = false;
 		this.beginAnimatingTimeout = setTimeout(() => this.beginAnimating = true, 300);
 		this.messagebox = React.createRef();
+		console.timeEnd(`${ this.constructor.name } init`);
 	}
 
-	async componentDidMount() {
-		const { room } = this.state;
-		const { messagesRequest, navigation } = this.props;
-		messagesRequest(room);
+	componentDidMount() {
+		this.didMountInteraction = InteractionManager.runAfterInteractions(async() => {
+			const { room } = this.state;
+			const { messagesRequest, navigation } = this.props;
+			messagesRequest(room);
 
-		// if room is joined
-		if (room._id) {
-			navigation.setParams({ name: this.getRoomTitle(room), t: room.t });
-			this.sub = await RocketChat.subscribeRoom(room);
-			RocketChat.readMessages(room.rid);
-			if (room.alert || room.unread || room.userMentions) {
-				this.setLastOpen(room.ls);
-			} else {
-				this.setLastOpen(null);
+			// if room is joined
+			if (room._id) {
+				navigation.setParams({ name: this.getRoomTitle(room), t: room.t });
+				this.sub = await RocketChat.subscribeRoom(room);
+				RocketChat.readMessages(room.rid);
+				if (room.alert || room.unread || room.userMentions) {
+					this.setLastOpen(room.ls);
+				} else {
+					this.setLastOpen(null);
+				}
 			}
-		}
-		safeAddListener(this.rooms, this.updateRoom);
-		this.internalSetState({ loaded: true });
+			safeAddListener(this.rooms, this.updateRoom);
+		});
+		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			room, loaded, joined
+			room, joined
 		} = this.state;
 		const { showActions, showErrorActions, appState } = this.props;
 
@@ -145,8 +150,6 @@ export default class RoomView extends LoggedView {
 		} else if (room.blocker !== nextState.room.blocker) {
 			return true;
 		} else if (room.archived !== nextState.room.archived) {
-			return true;
-		} else if (loaded !== nextState.loaded) {
 			return true;
 		} else if (joined !== nextState.joined) {
 			return true;
@@ -167,8 +170,10 @@ export default class RoomView extends LoggedView {
 		const { appState } = this.props;
 
 		if (appState === 'foreground' && appState !== prevProps.appState) {
-			RocketChat.loadMissedMessages(room).catch(e => console.log(e));
-			RocketChat.readMessages(room.rid).catch(e => console.log(e));
+			this.onForegroundInteraction = InteractionManager.runAfterInteractions(() => {
+				RocketChat.loadMissedMessages(room).catch(e => console.log(e));
+				RocketChat.readMessages(room.rid).catch(e => console.log(e));
+			});
 		}
 	}
 
@@ -190,6 +195,16 @@ export default class RoomView extends LoggedView {
 		const { editCancel, replyCancel } = this.props;
 		editCancel();
 		replyCancel();
+		if (this.didMountInteraction && this.didMountInteraction.cancel) {
+			this.didMountInteraction.cancel();
+		}
+		if (this.onForegroundInteraction && this.onForegroundInteraction.cancel) {
+			this.onForegroundInteraction.cancel();
+		}
+		if (this.updateStateInteraction && this.updateStateInteraction.cancel) {
+			this.updateStateInteraction.cancel();
+		}
+		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
 	onMessageLongPress = (message) => {
@@ -225,8 +240,10 @@ export default class RoomView extends LoggedView {
 	}
 
 	updateRoom = () => {
-		const room = JSON.parse(JSON.stringify(this.rooms[0] || {}));
-		this.internalSetState({ room });
+		this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
+			const room = JSON.parse(JSON.stringify(this.rooms[0] || {}));
+			this.internalSetState({ room });
+		});
 	}
 
 	sendMessage = (message) => {
@@ -381,19 +398,18 @@ export default class RoomView extends LoggedView {
 	};
 
 	renderList = () => {
-		const { loaded, room } = this.state;
-		if (!loaded || !room.rid) {
-			return <ActivityIndicator style={styles.loading} />;
-		}
+		const { room } = this.state;
+		const { rid, t } = room;
 		return (
 			<React.Fragment>
-				<List room={room} renderRow={this.renderItem} />
+				<List rid={rid} t={t} renderRow={this.renderItem} />
 				{this.renderFooter()}
 			</React.Fragment>
 		);
 	}
 
 	render() {
+		console.count(`${ this.constructor.name }.render calls`);
 		const { room } = this.state;
 		const { user, showActions, showErrorActions } = this.props;
 

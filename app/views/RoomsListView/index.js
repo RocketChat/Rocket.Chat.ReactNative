@@ -611,11 +611,10 @@ export default class RoomsListView extends LoggedView {
 					renderItem={this.renderItem}
 					ListHeaderComponent={this.renderListHeader}
 					getItemLayout={getItemLayout}
-					enableEmptySections
 					removeClippedSubviews
 					keyboardShouldPersistTaps='always'
-					initialNumToRender={12}
-					windowSize={7}
+					initialNumToRender={9}
+					windowSize={9}
 				/>
 			);
 		}
