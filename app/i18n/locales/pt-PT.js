@@ -278,7 +278,6 @@ export default {
 	saving_profile: 'a guardar perfil',
 	saving_settings: 'a guardar configurações',
 	Search_Messages: 'Pesquisar Mensagens',
-	Search_Emoji: 'Pesquisar Sorrisos',
 	Emoji_Not_Found: 'Nenhum Emoji que corresponda à sua consulta',
 	Search: 'Pesquisar',
 	Select_Avatar: 'Seleccionar Avatar',

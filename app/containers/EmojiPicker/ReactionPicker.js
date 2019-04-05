@@ -14,8 +14,8 @@ import database, { safeAddListener } from '../../lib/realm';
 import { emojis, emojisByCategory } from '../../emojis';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import I18n from '../../i18n';
-import RCTextInput from '../TextInput';
 import CustomEmoji from './CustomEmoji';
+import SearchBox from '../SearchBox';
 
 const scrollProps = {
 	keyboardShouldPersistTaps: 'always',
@@ -66,7 +66,6 @@ export default class ReactionPicker extends Component {
 	componentDidMount() {
 		this.updateFrequentlyUsed();
 		this.updateCustomEmojis();
-		this.name.focus();
 		requestAnimationFrame(() => this.setState({ show: true }));
 		safeAddListener(this.frequentlyUsed, this.updateFrequentlyUsed);
 		safeAddListener(this.customEmojis, this.updateCustomEmojis);
@@ -243,10 +242,8 @@ export default class ReactionPicker extends Component {
 	render() {
 		return (
 			<View>
-				<RCTextInput
-					inputRef={(e) => { this.name = e; }}
+				<SearchBox
 					onChangeText={this.handleOnChangeSearchQuery}
-					placeholder={I18n.t('Search_Emoji')}
 					testID='search-message-view-input'
 				/>
 				{this.renderCategories()}

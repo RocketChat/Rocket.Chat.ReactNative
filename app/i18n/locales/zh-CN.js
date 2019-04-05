@@ -273,7 +273,6 @@ export default {
 	saving_profile: '保存配置文件',
 	saving_settings: '保存设置',
 	Search_Messages: '搜索消息',
-	Search_Emoji: '搜索微笑',
 	Emoji_Not_Found: '没有符合您查询的表情符号',
 	Search: '搜索',
 	Select_Avatar: '选择头像',

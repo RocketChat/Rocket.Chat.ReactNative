@@ -278,7 +278,6 @@ export default {
 	saving_profile: 'enregistrement du profil',
 	saving_settings: 'enregistrement des paramètres',
 	Search_Messages: 'Rechercher des messages',
-	Search_Emoji: 'Rechercher des emoji',
 	Emoji_Not_Found: 'Aucun Emoji qui correspond à votre requête',
 	Search: 'Recherche',
 	Select_Avatar: 'Sélectionnez un avatar',
