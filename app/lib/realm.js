@@ -346,4 +346,22 @@ class DB {
 		});
 	}
 }
-export default new DB();
+const db = new DB();
+export default db;
+
+// Realm workaround for "Cannot create asynchronous query while in a write transaction"
+// inpired from https://github.com/realm/realm-js/issues/1188#issuecomment-359223918
+export function safeAddListener(results, callback, database = db) {
+	if (!results || !results.addListener) {
+		console.log('⚠️ safeAddListener called for non addListener-compliant object');
+		return;
+	}
+
+	if (database.isInTransaction) {
+		setTimeout(() => {
+			safeAddListener(results, callback);
+		}, 50);
+	} else {
+		results.addListener(callback);
+	}
+}
