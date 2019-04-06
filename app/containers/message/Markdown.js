@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 import { emojify } from 'react-emojione';
 import MarkdownRenderer, { PluginContainer } from 'react-native-markdown-renderer';
 import MarkdownFlowdock from 'markdown-it-flowdock';
+
 import styles from './styles';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import MarkdownEmojiPlugin from './MarkdownEmojiPlugin';
-
 import sharedStyles from '../../views/Styles';
 import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, COLOR_PRIMARY } from '../../constants/colors';
+import repliedMsgParser from '../../utils/repliedMsgParser';
 
 // Support <http://link|Text>
 const formatText = text => text.replace(
@@ -37,7 +38,7 @@ export default class Markdown extends React.Component {
 		}
 		let m = formatText(msg);
 		m = emojify(m, { output: 'unicode' });
-		m = m.replace(/^\[([^\]]*)\]\(([^)]*)\)/, '').trim();
+		m = repliedMsgParser(m);
 		return (
 			<MarkdownRenderer
 				rules={{

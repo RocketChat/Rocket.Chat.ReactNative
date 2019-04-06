@@ -14,6 +14,7 @@ import RoomTypeIcon from '../containers/RoomTypeIcon';
 import I18n from '../i18n';
 import sharedStyles from '../views/Styles';
 import { COLOR_SEPARATOR, COLOR_PRIMARY, COLOR_WHITE } from '../constants/colors';
+import repliedMsgParser from '../utils/repliedMsgParser';
 
 export const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
 
@@ -204,7 +205,7 @@ export default class RoomItem extends React.Component {
 		}
 
 		if (lastMessage.msg && lastMessage.attachments && Object.keys(lastMessage.attachments).length > 0) {
-			lastMessage.msg = lastMessage.msg.replace(/^\[ ]\(.+?\)/, '');
+			lastMessage.msg = repliedMsgParser(lastMessage.msg);
 			if (type === 'd') {
 				prefix = '';
 			}
