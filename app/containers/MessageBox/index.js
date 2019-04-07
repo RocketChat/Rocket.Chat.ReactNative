@@ -113,7 +113,7 @@ export default class MessageBox extends Component {
 		const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
 		if (room.draftMessage) {
 			this.setInput(room.draftMessage);
-			this.setState({ showSend: true });
+			this.setShowSend(true);
 		}
 	}
 
