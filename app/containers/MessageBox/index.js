@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, TextInput, FlatList, Text, TouchableOpacity, Alert
+	View, FlatList, Text, TouchableOpacity, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
 
 import { userTyping as userTypingAction } from '../../actions/room';
@@ -29,9 +28,8 @@ import './EmojiKeyboard';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
-import { CustomIcon } from '../../lib/Icons';
 import debounce from '../../utils/debounce';
-import { COLOR_PRIMARY, COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
+import MessageBoxContent from './MessageBoxContent';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
@@ -241,106 +239,6 @@ export default class MessageBox extends Component {
 		this.setShowSend(true);
 	}
 
-	get leftButtons() {
-		const { showEmojiKeyboard } = this.state;
-		const { editing } = this.props;
-
-		if (editing) {
-			return (
-				<BorderlessButton
-					onPress={this.editCancel}
-					accessibilityLabel={I18n.t('Cancel_editing')}
-					accessibilityTraits='button'
-					style={styles.actionButton}
-					testID='messagebox-cancel-editing'
-				>
-					<CustomIcon
-						size={22}
-						color={COLOR_PRIMARY}
-						name='cross'
-					/>
-				</BorderlessButton>
-			);
-		}
-		return !showEmojiKeyboard
-			? (
-				<BorderlessButton
-					onPress={this.openEmoji}
-					accessibilityLabel={I18n.t('Open_emoji_selector')}
-					accessibilityTraits='button'
-					style={styles.actionButton}
-					testID='messagebox-open-emoji'
-				>
-					<CustomIcon
-						size={22}
-						color={COLOR_PRIMARY}
-						name='emoji'
-					/>
-				</BorderlessButton>
-			)
-			: (
-				<BorderlessButton
-					onPress={this.closeEmoji}
-					accessibilityLabel={I18n.t('Close_emoji_selector')}
-					accessibilityTraits='button'
-					style={styles.actionButton}
-					testID='messagebox-close-emoji'
-				>
-					<CustomIcon
-						size={22}
-						color={COLOR_PRIMARY}
-						name='keyboard'
-					/>
-				</BorderlessButton>
-			);
-	}
-
-	get rightButtons() {
-		const { showSend } = this.state;
-		const icons = [];
-
-		if (showSend) {
-			icons.push(
-				<BorderlessButton
-					key='send-message'
-					onPress={this.submit}
-					style={styles.actionButton}
-					testID='messagebox-send-message'
-					accessibilityLabel={I18n.t('Send message')}
-					accessibilityTraits='button'
-				>
-					<CustomIcon name='send1' size={23} color={COLOR_PRIMARY} />
-				</BorderlessButton>
-			);
-			return icons;
-		}
-		icons.push(
-			<BorderlessButton
-				key='audio-message'
-				onPress={this.recordAudioMessage}
-				style={styles.actionButton}
-				testID='messagebox-send-audio'
-				accessibilityLabel={I18n.t('Send audio message')}
-				accessibilityTraits='button'
-			>
-				<CustomIcon name='mic' size={23} color={COLOR_PRIMARY} />
-			</BorderlessButton>
-		);
-		icons.push(
-			<BorderlessButton
-				key='file-message'
-				onPress={this.toggleFilesActions}
-				style={styles.actionButton}
-				testID='messagebox-actions'
-				accessibilityLabel={I18n.t('Message actions')}
-				accessibilityTraits='button'
-			>
-				<CustomIcon name='plus' size={23} color={COLOR_PRIMARY} />
-			</BorderlessButton>
-		);
-		return icons;
-	}
-
 	getPermalink = async(message) => {
 		try {
 			return await RocketChat.getPermalink(message);
@@ -479,6 +377,10 @@ export default class MessageBox extends Component {
 			typing(true);
 			this.typingTimeout = false;
 		}, 1000);
+	}
+
+	setTextInputRef(component) {
+		this.component = component;
 	}
 
 	setInput = (text) => {
@@ -770,7 +672,7 @@ export default class MessageBox extends Component {
 	}
 
 	renderContent = () => {
-		const { recording } = this.state;
+		const { recording, showEmojiKeyboard, showSend } = this.state;
 		const { editing } = this.props;
 
 		if (recording) {
@@ -779,30 +681,24 @@ export default class MessageBox extends Component {
 		return (
 			[
 				this.renderMentions(),
-				<View style={styles.composer} key='messagebox'>
-					{this.renderReplyPreview()}
-					<View
-						style={[styles.textArea, editing && styles.editing]}
-						testID='messagebox'
-					>
-						{this.leftButtons}
-						<TextInput
-							ref={component => this.component = component}
-							style={styles.textBoxInput}
-							returnKeyType='default'
-							keyboardType='twitter'
-							blurOnSubmit={false}
-							placeholder={I18n.t('New_Message')}
-							onChangeText={this.onChangeText}
-							underlineColorAndroid='transparent'
-							defaultValue=''
-							multiline
-							placeholderTextColor={COLOR_TEXT_DESCRIPTION}
-							testID='messagebox-input'
-						/>
-						{this.rightButtons}
-					</View>
-				</View>
+				<MessageBoxContent
+					editing={editing}
+					recording={recording}
+					setTextInputRef={this.setTextInputRef.bind(this)} // eslint-disable-line
+					onChangeText={this.onChangeText}
+					renderReplyPreview={this.renderReplyPreview}
+					editCancel={this.editCancel}
+					showEmojiKeyboard={showEmojiKeyboard}
+					openEmoji={this.openEmoji}
+					closeEmoji={this.closeEmoji}
+					showSend={showSend}
+					submit={this.submit}
+					recordAudioMessage={this.recordAudioMessage}
+					toggleFilesActions={this.toggleFilesActions}
+					renderMentions={this.renderMentions}
+					onKeyboardResigned={this.onKeyboardResigned}
+					onEmojiSelected={this.onEmojiSelected}
+				/>
 			]
 		);
 	}
@@ -819,7 +715,6 @@ export default class MessageBox extends Component {
 					onKeyboardResigned={this.onKeyboardResigned}
 					onItemSelected={this.onEmojiSelected}
 					trackInteractive
-					// revealKeyboardInteractive
 					requiresSameParentToManageScrollView
 					addBottomView
 				/>,
