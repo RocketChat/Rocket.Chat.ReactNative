@@ -41,6 +41,10 @@ export default StyleSheet.create({
 		width: 20,
 		height: 20
 	},
+	customEmojiBig: {
+		width: 50,
+		height: 50
+	},
 	temp: { opacity: 0.3 },
 	marginTop: {
 		marginTop: 6

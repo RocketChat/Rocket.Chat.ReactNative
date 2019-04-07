@@ -17,6 +17,16 @@ const formatText = text => text.replace(
 	(match, url, title) => `[${ title }](${ url })`
 );
 
+const emojiRanges = [
+	'\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]', // unicode emoji from https://www.regextester.com/106421
+	':.{1,40}:', // custom emoji
+	' |\n' // allow spaces and line breaks
+].join('|');
+
+const removeEmoji = str => str.replace(new RegExp(emojiRanges, 'g'), '');
+
+const isOnlyEmoji = str => !removeEmoji(str).length;
+
 const codeFontFamily = Platform.select({
 	ios: { fontFamily: 'Courier New' },
 	android: { fontFamily: 'monospace' }
@@ -38,6 +48,9 @@ export default class Markdown extends React.Component {
 		let m = formatText(msg);
 		m = emojify(m, { output: 'unicode' });
 		m = m.replace(/^\[([^\]]*)\]\(([^)]*)\)/, '').trim();
+
+		const isMessageContainsOnlyEmoji = isOnlyEmoji(m);
+
 		return (
 			<MarkdownRenderer
 				rules={{
@@ -79,7 +92,14 @@ export default class Markdown extends React.Component {
 							const emojiExtension = customEmojis[content];
 							if (emojiExtension) {
 								const emoji = { extension: emojiExtension, content };
-								return <CustomEmoji key={node.key} baseUrl={baseUrl} style={styles.customEmoji} emoji={emoji} />;
+								return (
+									<CustomEmoji
+										key={node.key}
+										baseUrl={baseUrl}
+										style={isMessageContainsOnlyEmoji ? styles.customEmojiBig : styles.customEmoji}
+										emoji={emoji}
+									/>
+								);
 							}
 							return <Text key={node.key}>:{content}:</Text>;
 						}
@@ -95,7 +115,7 @@ export default class Markdown extends React.Component {
 				style={{
 					paragraph: styles.paragraph,
 					text: {
-						fontSize: 16,
+						fontSize: isMessageContainsOnlyEmoji ? 50 : 16,
 						...sharedStyles.textColorNormal,
 						...sharedStyles.textRegular
 					},
