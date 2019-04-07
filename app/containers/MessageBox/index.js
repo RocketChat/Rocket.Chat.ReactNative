@@ -111,8 +111,9 @@ export default class MessageBox extends Component {
 	componentDidMount() {
 		const { rid } = this.props;
 		const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
-		if (room.draftMessage && room.draftMessage !== '') {
+		if (room.draftMessage) {
 			this.setInput(room.draftMessage);
+			this.setState({ showSend: true });
 		}
 	}
 
