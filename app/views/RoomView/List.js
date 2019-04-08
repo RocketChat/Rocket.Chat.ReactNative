@@ -103,7 +103,7 @@ export class List extends React.Component {
 		}
 		return null;
 	}
-
+	
 	render() {
 		const { renderRow, window } = this.props;
 		const { showScollToBottomButton, messages } = this.state;
@@ -116,7 +116,7 @@ export class List extends React.Component {
 					keyExtractor={item => item._id}
 					data={messages}
 					extraData={this.state}
-					renderItem={({ item, index }) => renderRow(item, messages[index + 1])}
+					renderItem={({ item, index }) => renderRow(item, messages[index + 1], index, messages)}
 					contentContainerStyle={styles.contentContainer}
 					style={styles.list}
 					onScroll={this.handleScroll}

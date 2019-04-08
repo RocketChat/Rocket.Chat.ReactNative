@@ -53,7 +53,8 @@ export default class MessageContainer extends React.Component {
 		// methods - redux
 		errorActionsShow: PropTypes.func,
 		replyBroadcast: PropTypes.func,
-		toggleReactionPicker: PropTypes.func
+		toggleReactionPicker: PropTypes.func,
+		edited:PropTypes.bool
 	}
 
 	static defaultProps = {
@@ -130,22 +131,7 @@ export default class MessageContainer extends React.Component {
 	closeReactions = () => {
 		this.setState({ reactionsModal: false });
 	}
-
-	isHeader = () => {
-		const {
-			item, previousItem, broadcast, Message_GroupingPeriod
-		} = this.props;
-		if (previousItem && (
-			(previousItem.ts.toDateString() === item.ts.toDateString())
-			&& (previousItem.u.username === item.u.username)
-			&& !(previousItem.groupable === false || item.groupable === false || broadcast === true)
-			&& (item.ts - previousItem.ts < Message_GroupingPeriod * 1000)
-		)) {
-			return false;
-		}
-		return true;
-	}
-
+	
 	parseMessage = () => {
 		const { item } = this.props;
 		return JSON.parse(JSON.stringify(item));
@@ -164,7 +150,7 @@ export default class MessageContainer extends React.Component {
 	render() {
 		const { reactionsModal } = this.state;
 		const {
-			item, editingMessage, user, style, archived, baseUrl, customEmojis, useRealName, broadcast
+			item, editingMessage, user, style, archived, baseUrl, customEmojis, useRealName, broadcast, edited, isHeader
 		} = this.props;
 		const {
 			msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy, role
@@ -182,10 +168,10 @@ export default class MessageContainer extends React.Component {
 				reactions={reactions}
 				alias={alias}
 				editing={isEditing}
-				header={this.isHeader()}
+				header={isHeader}
 				avatar={avatar}
 				user={user}
-				edited={editedBy && !!editedBy.username}
+				edited={edited}
 				timeFormat={this.timeFormat}
 				style={style}
 				archived={archived}

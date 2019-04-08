@@ -203,7 +203,7 @@ export default class Message extends PureComponent {
 
 	renderUsername = () => {
 		const {
-			header, timeFormat, author, alias, ts, useRealName
+			header, timeFormat, author, alias, ts, useRealName, edited
 		} = this.props;
 		if (header) {
 			return (
@@ -214,6 +214,7 @@ export default class Message extends PureComponent {
 					alias={alias}
 					ts={ts}
 					temp={this.isTemp()}
+					edited={edited}
 				/>
 			);
 		}
@@ -225,9 +226,9 @@ export default class Message extends PureComponent {
 			return <Text style={styles.textInfo}>{getInfoMessage({ ...this.props })}</Text>;
 		}
 		const {
-			customEmojis, msg, baseUrl, user, edited
+			customEmojis, msg, baseUrl, user
 		} = this.props;
-		return <Markdown msg={msg} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} edited={edited} />;
+		return <Markdown msg={msg} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} />;
 	}
 
 	renderAttachment() {

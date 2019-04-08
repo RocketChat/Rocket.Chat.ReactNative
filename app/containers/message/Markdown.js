@@ -30,7 +30,7 @@ export default class Markdown extends React.Component {
 
 	render() {
 		const {
-			msg, customEmojis, style, rules, baseUrl, username, edited
+			msg, customEmojis, style, rules, baseUrl, username
 		} = this.props;
 		if (!msg) {
 			return null;
@@ -44,8 +44,7 @@ export default class Markdown extends React.Component {
 					paragraph: (node, children) => (
 						// eslint-disable-next-line
 						<Text key={node.key} style={styles.paragraph}>
-							{children}
-							{edited ? <Text style={styles.edited}> (edited)</Text> : null}
+							{children}	
 						</Text>
 					),
 					mention: (node) => {
@@ -138,5 +137,4 @@ Markdown.propTypes = {
 	customEmojis: PropTypes.object.isRequired,
 	style: PropTypes.any,
 	rules: PropTypes.object,
-	edited: PropTypes.bool
 };

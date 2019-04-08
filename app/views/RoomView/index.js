@@ -41,6 +41,7 @@ import { COLOR_WHITE } from '../../constants/colors';
 	actionMessage: state.messages.actionMessage,
 	showActions: state.messages.showActions,
 	showErrorActions: state.messages.showErrorActions,
+	Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background'
 }), dispatch => ({
 	openRoom: room => dispatch(openRoomAction(room)),
@@ -280,13 +281,46 @@ export default class RoomView extends LoggedView {
 		}
 		return false;
 	}
+	isHeader = (item, previousItem) => {
+		const{room}=this.state;
+		const {Message_GroupingPeriod}= this.props;
 
-	renderItem = (item, previousItem) => {
+		if (previousItem && (
+			(previousItem.ts.toDateString() === item.ts.toDateString())
+			&& (previousItem.u.username === item.u.username)
+			&& !(previousItem.groupable === false || item.groupable === false || room.broadcast === true)
+			&& (item.ts - previousItem.ts < Message_GroupingPeriod * 1000)
+		)) {
+			return false;
+		}
+		return true;
+	}
+
+	isMarkHeaderEdited = (index, messages)=>{
+		let item= messages[index];
+		let currentEdited=(item.editedBy && !!item.editedBy.username);
+		if(index ===0){
+			return currentEdited;
+		}
+		else if(this.isHeader(messages[index-1], item)){
+			return currentEdited;
+		}else{
+			return (currentEdited || this.isMarkHeaderEdited(index-1, messages));
+		}
+	}
+
+	renderItem = (item, previousItem, index, messages) => {
 		const { room, lastOpen } = this.state;
 		const { user } = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
+		let isHeader = this.isHeader(item, previousItem);
+		let edited= false;
 
+		if(isHeader){
+			edited = this.isMarkHeaderEdited(index, messages);
+		}
+		
 		if (!previousItem) {
 			dateSeparator = item.ts;
 			showUnreadSeparator = moment(item.ts).isAfter(lastOpen);
@@ -314,6 +348,8 @@ export default class RoomView extends LoggedView {
 						_updatedAt={item._updatedAt}
 						onReactionPress={this.onReactionPress}
 						onLongPress={this.onMessageLongPress}
+						isHeader={isHeader}
+						edited={edited}
 					/>
 					<Separator
 						ts={dateSeparator}
@@ -336,6 +372,9 @@ export default class RoomView extends LoggedView {
 				_updatedAt={item._updatedAt}
 				onReactionPress={this.onReactionPress}
 				onLongPress={this.onMessageLongPress}
+				isHeader={isHeader}
+				edited={edited}
+				
 			/>
 		);
 	}
