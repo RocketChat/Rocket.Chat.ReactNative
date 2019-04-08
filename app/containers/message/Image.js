@@ -4,6 +4,7 @@ import FastImage from 'react-native-fast-image';
 import equal from 'deep-equal';
 import Touchable from 'react-native-platform-touchable';
 
+import { ActivityIndicator, View } from 'react-native';
 import PhotoModal from './PhotoModal';
 import Markdown from './Markdown';
 import styles from './styles';
@@ -19,12 +20,15 @@ export default class extends Component {
 		])
 	}
 
-	state = { modalVisible: false, isPressed: false };
+	state = { modalVisible: false, isPressed: false, loading: true };
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { modalVisible, isPressed } = this.state;
+		const { modalVisible, isPressed, loading } = this.state;
 		const { file } = this.props;
 		if (nextState.modalVisible !== modalVisible) {
+			return true;
+		}
+		if (nextState.loading !== loading) {
 			return true;
 		}
 		if (nextState.isPressed !== isPressed) {
@@ -55,6 +59,21 @@ export default class extends Component {
 		this.setState({ isPressed: state });
 	}
 
+	setLoading = (loading) => {
+		this.setState({ loading });
+	}
+
+	renderLoading() {
+		const { loading } = this.state;
+		if (loading) {
+			return (
+				<View style={styles.loading}>
+					<ActivityIndicator />
+				</View>
+			);
+		}
+	}
+
 	render() {
 		const { modalVisible, isPressed } = this.state;
 		const { baseUrl, file, user } = this.props;
@@ -77,7 +96,10 @@ export default class extends Component {
 							style={[styles.image, isPressed && { opacity: 0.5 }]}
 							source={{ uri: encodeURI(img) }}
 							resizeMode={FastImage.resizeMode.cover}
+							onLoadStart={() => this.setLoading(true)}
+							onLoadEnd={() => this.setLoading(false)}
 						/>
+						{this.renderLoading()}
 						{this.getDescription()}
 					</React.Fragment>
 				</Touchable>,

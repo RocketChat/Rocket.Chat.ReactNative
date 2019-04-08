@@ -207,5 +207,11 @@ export default StyleSheet.create({
 		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular,
 		fontWeight: '300'
+	},
+	loading: {
+		position: 'absolute',
+		width: '100%',
+		height: '100%',
+		justifyContent: 'center'
 	}
 });

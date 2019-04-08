@@ -6887,6 +6887,8 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <FastImageView
+                  onFastImageLoadEnd={[Function]}
+                  onFastImageLoadStart={[Function]}
                   resizeMode="cover"
                   source={
                     Object {
@@ -6902,6 +6904,23 @@ exports[`Storyshots Message list 1`] = `
                       "top": 0,
                     }
                   }
+                />
+              </View>
+              <View
+                style={
+                  Object {
+                    "height": "100%",
+                    "justifyContent": "center",
+                    "position": "absolute",
+                    "width": "100%",
+                  }
+                }
+              >
+                <ActivityIndicator
+                  animating={true}
+                  color="#999999"
+                  hidesWhenStopped={true}
+                  size="small"
                 />
               </View>
               <View
@@ -7453,6 +7472,8 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <FastImageView
+                  onFastImageLoadEnd={[Function]}
+                  onFastImageLoadStart={[Function]}
                   resizeMode="cover"
                   source={
                     Object {
@@ -7468,6 +7489,23 @@ exports[`Storyshots Message list 1`] = `
                       "top": 0,
                     }
                   }
+                />
+              </View>
+              <View
+                style={
+                  Object {
+                    "height": "100%",
+                    "justifyContent": "center",
+                    "position": "absolute",
+                    "width": "100%",
+                  }
+                }
+              >
+                <ActivityIndicator
+                  animating={true}
+                  color="#999999"
+                  hidesWhenStopped={true}
+                  size="small"
                 />
               </View>
               <View
