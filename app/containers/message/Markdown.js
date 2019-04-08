@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Image, Platform } from 'react-native';
+import { Text, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import { emojify } from 'react-emojione';
 import MarkdownRenderer, { PluginContainer } from 'react-native-markdown-renderer';
@@ -7,9 +7,6 @@ import MarkdownFlowdock from 'markdown-it-flowdock';
 import styles from './styles';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import MarkdownEmojiPlugin from './MarkdownEmojiPlugin';
-
-import sharedStyles from '../../views/Styles';
-import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, COLOR_PRIMARY } from '../../constants/colors';
 
 // Support <http://link|Text>
 const formatText = text => text.replace(
@@ -19,18 +16,29 @@ const formatText = text => text.replace(
 
 const emojiRanges = [
 	'\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]', // unicode emoji from https://www.regextester.com/106421
-	':.{1,40}:', // custom emoji
-	' |\n' // allow spaces and line breaks
+	':.{1,40}:' // custom emoji
 ].join('|');
 
-const removeEmoji = str => str.replace(new RegExp(emojiRanges, 'g'), '');
+const removeAllEmoji = str => str.replace(new RegExp(emojiRanges, 'g'), '');
 
-const isOnlyEmoji = str => !removeEmoji(str).length;
+const isOnlyEmoji = str => !removeAllEmoji(str).length;
 
-const codeFontFamily = Platform.select({
-	ios: { fontFamily: 'Courier New' },
-	android: { fontFamily: 'monospace' }
-});
+const removeOneEmoji = str => str.replace(new RegExp(emojiRanges), '');
+
+const emojiCount = (str) => {
+	let oldLength = 0;
+	let counter = 0;
+
+	while (oldLength !== str.length) {
+		oldLength = str.length;
+		str = removeOneEmoji(str);
+		if (oldLength !== str.length) {
+			counter += 1;
+		}
+	}
+
+	return counter;
+};
 
 export default class Markdown extends React.Component {
 	shouldComponentUpdate(nextProps) {
@@ -49,7 +57,7 @@ export default class Markdown extends React.Component {
 		m = emojify(m, { output: 'unicode' });
 		m = m.replace(/^\[([^\]]*)\]\(([^)]*)\)/, '').trim();
 
-		const isMessageContainsOnlyEmoji = isOnlyEmoji(m);
+		const isMessageContainsOnlyEmoji = isOnlyEmoji(m) && emojiCount(m) <= 3;
 
 		return (
 			<MarkdownRenderer
@@ -114,31 +122,10 @@ export default class Markdown extends React.Component {
 				}}
 				style={{
 					paragraph: styles.paragraph,
-					text: {
-						fontSize: isMessageContainsOnlyEmoji ? 50 : 16,
-						...sharedStyles.textColorNormal,
-						...sharedStyles.textRegular
-					},
-					codeInline: {
-						...sharedStyles.textRegular,
-						...codeFontFamily,
-						borderWidth: 1,
-						backgroundColor: COLOR_BACKGROUND_CONTAINER,
-						borderRadius: 4
-					},
-					codeBlock: {
-						...sharedStyles.textRegular,
-						...codeFontFamily,
-						backgroundColor: COLOR_BACKGROUND_CONTAINER,
-						borderColor: COLOR_BORDER,
-						borderWidth: 1,
-						borderRadius: 4,
-						padding: 4
-					},
-					link: {
-						color: COLOR_PRIMARY,
-						...sharedStyles.textRegular
-					},
+					text: isMessageContainsOnlyEmoji ? styles.textBig : styles.text,
+					codeInline: styles.codeInline,
+					codeBlock: styles.codeBlock,
+					link: styles.link,
 					...style
 				}}
 				plugins={[

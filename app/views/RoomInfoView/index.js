@@ -26,8 +26,8 @@ const getRoomTitle = room => (room.t === 'd'
 	? <Text testID='room-info-view-name' style={styles.roomTitle}>{room.fname}</Text>
 	: (
 		<View style={styles.roomTitleRow}>
-			<RoomTypeIcon type={room.t} key='room-info-type' />
-			<Text testID='room-info-view-name' style={styles.roomTitle} key='room-info-name'>{room.name}</Text>
+			<RoomTypeIcon type={room.prid ? 'discussion' : room.t} key='room-info-type' />
+			<Text testID='room-info-view-name' style={styles.roomTitle} key='room-info-name'>{room.prid ? room.fname : room.name}</Text>
 		</View>
 	)
 );
@@ -40,8 +40,7 @@ const getRoomTitle = room => (room.t === 'd'
 	},
 	activeUsers: state.activeUsers, // TODO: remove it
 	Message_TimeFormat: state.settings.Message_TimeFormat,
-	allRoles: state.roles,
-	room: state.room
+	allRoles: state.roles
 }))
 /** @extends React.Component */
 export default class RoomInfoView extends LoggedView {
@@ -75,12 +74,13 @@ export default class RoomInfoView extends LoggedView {
 	constructor(props) {
 		super('RoomInfoView', props);
 		const rid = props.navigation.getParam('rid');
+		const room = props.navigation.getParam('room');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.sub = {
 			unsubscribe: () => {}
 		};
 		this.state = {
-			room: this.rooms[0] || {},
+			room: this.rooms[0] || room || {},
 			roomUser: {},
 			roles: []
 		};
@@ -90,7 +90,7 @@ export default class RoomInfoView extends LoggedView {
 		safeAddListener(this.rooms, this.updateRoom);
 		const { room } = this.state;
 		const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
-		if (permissions[PERMISSION_EDIT_ROOM]) {
+		if (permissions[PERMISSION_EDIT_ROOM] && !room.prid) {
 			const { navigation } = this.props;
 			navigation.setParams({ showEdit: true });
 		}
