@@ -223,7 +223,10 @@ const messagesSchema = {
 		role: { type: 'string', optional: true },
 		drid: { type: 'string', optional: true },
 		dcount: { type: 'int', optional: true },
-		dlm: { type: 'date', optional: true }
+		dlm: { type: 'date', optional: true },
+		tmid: { type: 'string', optional: true },
+		tcount: { type: 'int', optional: true },
+		tlm: { type: 'date', optional: true }
 	}
 };
 

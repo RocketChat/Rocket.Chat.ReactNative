@@ -232,6 +232,13 @@ export default class RoomView extends LoggedView {
 		});
 	}, 1000, true)
 
+	onThreadPress = debounce((rid) => {
+		const { navigation } = this.props;
+		// navigation.push('RoomView', {
+		// 	rid, name: item.msg, t: 'p'
+		// });
+	}, 1000, true)
+
 	internalSetState = (...args) => {
 		if (isIOS && this.beginAnimating) {
 			LayoutAnimation.easeInEaseOut();
@@ -335,6 +342,7 @@ export default class RoomView extends LoggedView {
 						onReactionPress={this.onReactionPress}
 						onLongPress={this.onMessageLongPress}
 						onDiscussionPress={this.onDiscussionPress}
+						onThreadPress={this.onThreadPress}
 					/>
 					<Separator
 						ts={dateSeparator}
@@ -358,6 +366,7 @@ export default class RoomView extends LoggedView {
 				onReactionPress={this.onReactionPress}
 				onLongPress={this.onMessageLongPress}
 				onDiscussionPress={this.onDiscussionPress}
+				onThreadPress={this.onThreadPress}
 			/>
 		);
 	}

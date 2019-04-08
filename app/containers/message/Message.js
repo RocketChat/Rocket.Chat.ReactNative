@@ -99,6 +99,7 @@ export default class Message extends PureComponent {
 		baseUrl: PropTypes.string.isRequired,
 		customEmojis: PropTypes.object.isRequired,
 		timeFormat: PropTypes.string.isRequired,
+		id: PropTypes.string,
 		msg: PropTypes.string,
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
@@ -137,6 +138,9 @@ export default class Message extends PureComponent {
 		useRealName: PropTypes.bool,
 		dcount: PropTypes.number,
 		dlm: PropTypes.instanceOf(Date),
+		tmid: PropTypes.string,
+		tcount: PropTypes.number,
+		tlm: PropTypes.instanceOf(Date),
 		// methods
 		closeReactions: PropTypes.func,
 		onErrorPress: PropTypes.func,
@@ -144,6 +148,7 @@ export default class Message extends PureComponent {
 		onReactionLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
 		onDiscussionPress: PropTypes.func,
+		onThreadPress: PropTypes.func,
 		replyBroadcast: PropTypes.func,
 		toggleReactionPicker: PropTypes.func
 	}
@@ -167,6 +172,35 @@ export default class Message extends PureComponent {
 			return;
 		}
 		onLongPress();
+	}
+
+	onThreadPress = () => {
+		const {
+			id, tmid, onThreadPress
+		} = this.props;
+		onThreadPress(tmid || id);
+	}
+
+	formatLastMessage = lm => (
+		lm ? moment(lm).calendar(null, {
+			lastDay: `[${ I18n.t('Yesterday') }]`,
+			sameDay: 'h:mm A',
+			lastWeek: 'dddd',
+			sameElse: 'MMM D'
+		}) : null
+	)
+
+	formatMessageCount = (count, type) => {
+		const discussion = type === 'discussion';
+		let text = discussion ? 'No messages yet' : null;
+		if (count === 1) {
+			text = `${ count } ${ discussion ? 'message' : 'reply' }`;
+		} else if (count > 1 && count < 1000) {
+			text = `${ count } ${ discussion ? 'messages' : 'replies' }`;
+		} else if (count > 999) {
+			text = `+999 ${ discussion ? 'messages' : 'replies' }`;
+		}
+		return text;
 	}
 
 	isInfoMessage = () => {
@@ -369,20 +403,8 @@ export default class Message extends PureComponent {
 		const {
 			msg, dcount, dlm, onDiscussionPress
 		} = this.props;
-		const time = dlm ? moment(dlm).calendar(null, {
-			lastDay: `[${ I18n.t('Yesterday') }]`,
-			sameDay: 'h:mm A',
-			lastWeek: 'dddd',
-			sameElse: 'MMM D'
-		}) : null;
-		let buttonText = 'No messages yet';
-		if (dcount === 1) {
-			buttonText = `${ dcount } message`;
-		} else if (dcount > 1 && dcount < 1000) {
-			buttonText = `${ dcount } messages`;
-		} else if (dcount > 999) {
-			buttonText = '+999 messages';
-		}
+		const time = this.formatLastMessage(dlm);
+		const buttonText = this.formatMessageCount(dcount, 'discussion');
 		return (
 			<React.Fragment>
 				<Text style={styles.textInfo}>{I18n.t('Started_discussion')}</Text>
@@ -405,6 +427,49 @@ export default class Message extends PureComponent {
 		);
 	}
 
+	renderThread = () => {
+		const {
+			tcount, tlm
+		} = this.props;
+
+		if (!tlm) {
+			return null;
+		}
+
+		const time = this.formatLastMessage(tlm);
+		const buttonText = this.formatMessageCount(tcount, 'thread');
+		return (
+			<View style={styles.buttonContainer}>
+				<Touchable
+					onPress={this.onThreadPress}
+					background={Touchable.Ripple('#fff')}
+					style={[styles.button, styles.smallButton]}
+					hitSlop={BUTTON_HIT_SLOP}
+				>
+					<React.Fragment>
+						<CustomIcon name='thread' size={20} style={styles.buttonIcon} />
+						<Text style={styles.buttonText}>{buttonText}</Text>
+					</React.Fragment>
+				</Touchable>
+				<Text style={styles.time}>{time}</Text>
+			</View>
+		);
+	}
+
+	renderRepliedThread = () => {
+		const { tmid } = this.props;
+
+		if (!tmid) {
+			return null;
+		}
+
+		return (
+			<Text style={styles.repliedThread}>
+				Replied on: <Text style={styles.repliedThreadName} onPress={this.onThreadPress}>123</Text>
+			</Text>
+		);
+	}
+
 	renderInner = () => {
 		const { type } = this.props;
 		if (type === 'discussion-created') {
@@ -418,9 +483,11 @@ export default class Message extends PureComponent {
 		return (
 			<React.Fragment>
 				{this.renderUsername()}
+				{this.renderRepliedThread()}
 				{this.renderContent()}
 				{this.renderAttachment()}
 				{this.renderUrl()}
+				{this.renderThread()}
 				{this.renderReactions()}
 				{this.renderBroadcastReply()}
 			</React.Fragment>

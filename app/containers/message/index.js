@@ -127,6 +127,11 @@ export default class MessageContainer extends React.Component {
 		onDiscussionPress(item);
 	}
 
+	onThreadPress = (rid) => {
+		const { onThreadPress } = this.props;
+		onThreadPress(rid);
+	}
+
 	get timeFormat() {
 		const { customTimeFormat, Message_TimeFormat } = this.props;
 		return customTimeFormat || Message_TimeFormat;
@@ -140,6 +145,9 @@ export default class MessageContainer extends React.Component {
 		const {
 			item, previousItem, broadcast, Message_GroupingPeriod
 		} = this.props;
+		if (item.tmid) {
+			return true;
+		}
 		if (previousItem && (
 			(previousItem.ts.toDateString() === item.ts.toDateString())
 			&& (previousItem.u.username === item.u.username)
@@ -172,11 +180,12 @@ export default class MessageContainer extends React.Component {
 			item, editingMessage, user, style, archived, baseUrl, customEmojis, useRealName, broadcast
 		} = this.props;
 		const {
-			msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy, role, drid, dcount, dlm
+			_id, msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm
 		} = item;
 		const isEditing = editingMessage._id === item._id;
 		return (
 			<Message
+				id={_id}
 				msg={msg}
 				author={u}
 				ts={ts}
@@ -203,6 +212,9 @@ export default class MessageContainer extends React.Component {
 				drid={drid}
 				dcount={dcount}
 				dlm={dlm}
+				tmid={tmid}
+				tcount={tcount}
+				tlm={tlm}
 				closeReactions={this.closeReactions}
 				onErrorPress={this.onErrorPress}
 				onLongPress={this.onLongPress}
@@ -211,6 +223,7 @@ export default class MessageContainer extends React.Component {
 				replyBroadcast={this.replyBroadcast}
 				toggleReactionPicker={this.toggleReactionPicker}
 				onDiscussionPress={this.onDiscussionPress}
+				onThreadPress={this.onThreadPress}
 			/>
 		);
 	}
