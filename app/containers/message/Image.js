@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 import equal from 'deep-equal';
 import Touchable from 'react-native-platform-touchable';
 
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import PhotoModal from './PhotoModal';
 import Markdown from './Markdown';
 import styles from './styles';
@@ -67,9 +67,7 @@ export default class extends Component {
 		const { loading } = this.state;
 		if (loading) {
 			return (
-				<View style={styles.loading}>
-					<ActivityIndicator />
-				</View>
+				<ActivityIndicator style={styles.loading} />
 			);
 		}
 	}
