@@ -295,13 +295,15 @@ export default class RoomView extends LoggedView {
 		}
 		return true;
 	}
-
+	// this function  mark the header only as edited depend on
+	// the under un header messages 
 	isMarkHeaderEdited = (index, messages)=>{
-		let item= messages[index];
-		let currentEdited=(item.editedBy && !!item.editedBy.username);
+		const item= messages[index];
+		const currentEdited=(item.editedBy && !!item.editedBy.username);
 		if(index ===0){
 			return currentEdited;
 		}
+		//check if the  under message is header or not 
 		else if(this.isHeader(messages[index-1], item)){
 			return currentEdited;
 		}else{
@@ -320,7 +322,7 @@ export default class RoomView extends LoggedView {
 		if(isHeader){
 			edited = this.isMarkHeaderEdited(index, messages);
 		}
-		
+
 		if (!previousItem) {
 			dateSeparator = item.ts;
 			showUnreadSeparator = moment(item.ts).isAfter(lastOpen);

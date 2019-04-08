@@ -200,10 +200,14 @@ export default class Message extends PureComponent {
 		}
 		return null;
 	}
+	editTag = () => {
+		const { edited } = this.props;
+		return (edited ? <Text style={styles.edited}> (edited)</Text> : null);
+	}
 
 	renderUsername = () => {
 		const {
-			header, timeFormat, author, alias, ts, useRealName, edited
+			header, timeFormat, author, alias, ts, useRealName
 		} = this.props;
 		if (header) {
 			return (
@@ -214,7 +218,7 @@ export default class Message extends PureComponent {
 					alias={alias}
 					ts={ts}
 					temp={this.isTemp()}
-					edited={edited}
+					editTag={this.editTag}
 				/>
 			);
 		}

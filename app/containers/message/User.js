@@ -47,12 +47,12 @@ export default class User extends React.PureComponent {
 			PropTypes.string
 		]),
 		temp: PropTypes.bool,
-		edited: PropTypes.bool
+		editTag: PropTypes.func
 	}
 
 	render() {
 		const {
-			username, alias, ts, temp, timeFormat, edited
+			username, alias, ts, temp, timeFormat, editTag
 		} = this.props;
 
 		const extraStyle = {};
@@ -71,7 +71,7 @@ export default class User extends React.PureComponent {
 						{aliasUsername}
 					</Text>
 				</View>
-				{edited ? <Text style={styles.edited}> (edited)</Text> : null}
+				{editTag()}
 				<Text style={styles.time}>{time}</Text>
 			</View>
 		);
