@@ -6906,7 +6906,11 @@ exports[`Storyshots Message list 1`] = `
                   }
                 />
               </View>
-              <View
+              <ActivityIndicator
+                animating={true}
+                color="#999999"
+                hidesWhenStopped={true}
+                size="small"
                 style={
                   Object {
                     "height": "100%",
@@ -6915,14 +6919,7 @@ exports[`Storyshots Message list 1`] = `
                     "width": "100%",
                   }
                 }
-              >
-                <ActivityIndicator
-                  animating={true}
-                  color="#999999"
-                  hidesWhenStopped={true}
-                  size="small"
-                />
-              </View>
+              />
               <View
                 style={Object {}}
               >
@@ -7491,7 +7488,11 @@ exports[`Storyshots Message list 1`] = `
                   }
                 />
               </View>
-              <View
+              <ActivityIndicator
+                animating={true}
+                color="#999999"
+                hidesWhenStopped={true}
+                size="small"
                 style={
                   Object {
                     "height": "100%",
@@ -7500,14 +7501,7 @@ exports[`Storyshots Message list 1`] = `
                     "width": "100%",
                   }
                 }
-              >
-                <ActivityIndicator
-                  animating={true}
-                  color="#999999"
-                  hidesWhenStopped={true}
-                  size="small"
-                />
-              </View>
+              />
               <View
                 style={Object {}}
               >
