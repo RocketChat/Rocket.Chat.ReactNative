@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
 		color: isIOS ? COLOR_TEXT_DESCRIPTION : COLOR_WHITE
 	},
 	status: {
-		marginRight: 8
+		marginLeft: 4,
+		marginRight: 12
 	}
 });
 
@@ -26,7 +27,14 @@ const Icon = React.memo(({ type, status }) => {
 		return <Status size={10} style={styles.status} status={status} />;
 	}
 
-	const icon = type === 'c' ? 'hashtag' : 'lock';
+	let icon;
+	if (type === 'discussion') {
+		icon = 'chat';
+	} else if (type === 'c') {
+		icon = 'hashtag';
+	} else {
+		icon = 'lock';
+	}
 	return (
 		<CustomIcon
 			name={icon}
