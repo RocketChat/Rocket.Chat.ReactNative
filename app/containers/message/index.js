@@ -51,6 +51,7 @@ export default class MessageContainer extends React.Component {
 		onLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
 		onDiscussionPress: PropTypes.func,
+		onThreadPress: PropTypes.func,
 		// methods - redux
 		errorActionsShow: PropTypes.func,
 		replyBroadcast: PropTypes.func,
@@ -145,14 +146,12 @@ export default class MessageContainer extends React.Component {
 		const {
 			item, previousItem, broadcast, Message_GroupingPeriod
 		} = this.props;
-		if (item.tmid) {
-			return true;
-		}
 		if (previousItem && (
 			(previousItem.ts.toDateString() === item.ts.toDateString())
 			&& (previousItem.u.username === item.u.username)
 			&& !(previousItem.groupable === false || item.groupable === false || broadcast === true)
 			&& (item.ts - previousItem.ts < Message_GroupingPeriod * 1000)
+			&& (previousItem.tmid === item.tmid)
 		)) {
 			return false;
 		}

@@ -457,9 +457,8 @@ export default class Message extends PureComponent {
 	}
 
 	renderRepliedThread = () => {
-		const { tmid } = this.props;
-
-		if (!tmid) {
+		const { tmid, header } = this.props;
+		if (!tmid || !header) {
 			return null;
 		}
 
