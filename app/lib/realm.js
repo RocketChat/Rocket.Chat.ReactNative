@@ -102,6 +102,7 @@ const subscriptionSchema = {
 		notifications: { type: 'bool', optional: true },
 		muted: { type: 'list', objectType: 'usersMuted' },
 		broadcast: { type: 'bool', optional: true },
+		prid: { type: 'string', optional: true },
 		draftMessage: { type: 'string', optional: true }
 	}
 };
@@ -219,7 +220,10 @@ const messagesSchema = {
 		starred: { type: 'bool', optional: true },
 		editedBy: 'messagesEditedBy',
 		reactions: { type: 'list', objectType: 'messagesReactions' },
-		role: { type: 'string', optional: true }
+		role: { type: 'string', optional: true },
+		drid: { type: 'string', optional: true },
+		dcount: { type: 'int', optional: true },
+		dlm: { type: 'date', optional: true }
 	}
 };
 
@@ -279,6 +283,14 @@ const uploadsSchema = {
 	}
 };
 
+const usersTypingSchema = {
+	name: 'usersTyping',
+	properties: {
+		rid: { type: 'string', indexed: true },
+		username: { type: 'string', optional: true }
+	}
+};
+
 const schema = [
 	settingsSchema,
 	subscriptionSchema,
@@ -302,6 +314,8 @@ const schema = [
 	uploadsSchema
 ];
 
+const inMemorySchema = [usersTypingSchema];
+
 class DB {
 	databases = {
 		serversDB: new Realm({
@@ -309,7 +323,23 @@ class DB {
 			schema: [
 				serversSchema
 			],
-			schemaVersion: 1
+			schemaVersion: 2,
+			migration: (oldRealm, newRealm) => {
+				if (oldRealm.schemaVersion === 1 && newRealm.schemaVersion === 2) {
+					const newServers = newRealm.objects('servers');
+
+					// eslint-disable-next-line no-plusplus
+					for (let i = 0; i < newServers.length; i++) {
+						newServers[i].roomsUpdatedAt = null;
+					}
+				}
+			}
+		}),
+		inMemoryDB: new Realm({
+			path: 'memory.realm',
+			schema: inMemorySchema,
+			schemaVersion: 1,
+			inMemory: true
 		})
 	}
 
@@ -337,12 +367,29 @@ class DB {
 		return this.databases.activeDB;
 	}
 
+	get memoryDatabase() {
+		return this.databases.inMemoryDB;
+	}
+
 	setActiveDB(database = '') {
 		const path = database.replace(/(^\w+:|^)\/\//, '');
 		return this.databases.activeDB = new Realm({
 			path: `${ path }.realm`,
 			schema,
-			schemaVersion: 2
+			schemaVersion: 4,
+			migration: (oldRealm, newRealm) => {
+				if (oldRealm.schemaVersion === 3 && newRealm.schemaVersion === 4) {
+					const newSubs = newRealm.objects('subscriptions');
+
+					// eslint-disable-next-line no-plusplus
+					for (let i = 0; i < newSubs.length; i++) {
+						newSubs[i].lastOpen = null;
+						newSubs[i].ls = null;
+					}
+					const newMessages = newRealm.objects('messages');
+					newRealm.delete(newMessages);
+				}
+			}
 		});
 	}
 }

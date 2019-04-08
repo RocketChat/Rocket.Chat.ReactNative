@@ -1,16 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, LayoutAnimation, ActivityIndicator
+	Text, View, LayoutAnimation, InteractionManager
 } from 'react-native';
 import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import moment from 'moment';
+import 'react-native-console-time-polyfill';
 
-import { openRoom as openRoomAction, closeRoom as closeRoomAction } from '../../actions/room';
-import { toggleReactionPicker as toggleReactionPickerAction, actionsShow as actionsShowAction } from '../../actions/messages';
+import {
+	toggleReactionPicker as toggleReactionPickerAction,
+	actionsShow as actionsShowAction,
+	messagesRequest as messagesRequestAction,
+	editCancel as editCancelAction,
+	replyCancel as replyCancelAction
+} from '../../actions/messages';
 import LoggedView from '../View';
 import { List } from './List';
 import database, { safeAddListener } from '../../lib/realm';
@@ -31,6 +37,7 @@ import RoomHeaderView from './Header';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
 import { COLOR_WHITE } from '../../constants/colors';
+import debounce from '../../utils/debounce';
 
 @connect(state => ({
 	user: {
@@ -41,29 +48,29 @@ import { COLOR_WHITE } from '../../constants/colors';
 	actionMessage: state.messages.actionMessage,
 	showActions: state.messages.showActions,
 	showErrorActions: state.messages.showErrorActions,
-	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background'
+	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
+	useRealName: state.settings.UI_Use_Real_Name
 }), dispatch => ({
-	openRoom: room => dispatch(openRoomAction(room)),
+	editCancel: () => dispatch(editCancelAction()),
+	replyCancel: () => dispatch(replyCancelAction()),
 	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
 	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage)),
-	closeRoom: () => dispatch(closeRoomAction())
+	messagesRequest: room => dispatch(messagesRequestAction(room))
 }))
 /** @extends React.Component */
 export default class RoomView extends LoggedView {
 	static navigationOptions = ({ navigation }) => {
 		const rid = navigation.getParam('rid');
+		const prid = navigation.getParam('prid');
+		const title = navigation.getParam('name');
 		const t = navigation.getParam('t');
-		const f = navigation.getParam('f');
-		const toggleFav = navigation.getParam('toggleFav', () => {});
-		const starIcon = f ? 'Star-filled' : 'star';
 		return {
-			headerTitle: <RoomHeaderView />,
+			headerTitle: <RoomHeaderView rid={rid} prid={prid} title={title} type={t} />,
 			headerRight: t === 'l'
 				? null
 				: (
 					<CustomHeaderButtons>
-						<Item title='star' iconName={starIcon} onPress={toggleFav} testID='room-view-header-star' />
-						<Item title='more' iconName='menu' onPress={() => navigation.navigate('RoomActionsView', { rid })} testID='room-view-header-actions' />
+						<Item title='more' iconName='menu' onPress={() => navigation.navigate('RoomActionsView', { rid, t })} testID='room-view-header-actions' />
 					</CustomHeaderButtons>
 				)
 		};
@@ -71,7 +78,6 @@ export default class RoomView extends LoggedView {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		openRoom: PropTypes.func.isRequired,
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
 			username: PropTypes.string.isRequired,
@@ -81,46 +87,57 @@ export default class RoomView extends LoggedView {
 		showErrorActions: PropTypes.bool,
 		actionMessage: PropTypes.object,
 		appState: PropTypes.string,
+		useRealName: PropTypes.bool,
 		toggleReactionPicker: PropTypes.func.isRequired,
 		actionsShow: PropTypes.func,
-		closeRoom: PropTypes.func
+		messagesRequest: PropTypes.func,
+		editCancel: PropTypes.func,
+		replyCancel: PropTypes.func
 	};
 
 	constructor(props) {
 		super('RoomView', props);
+		console.time(`${ this.constructor.name } init`);
+		console.time(`${ this.constructor.name } mount`);
 		this.rid = props.navigation.getParam('rid');
+		this.t = props.navigation.getParam('t');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
-			loaded: false,
 			joined: this.rooms.length > 0,
-			room: {},
+			room: this.rooms[0] || { rid: this.rid, t: this.t },
 			lastOpen: null
 		};
 		this.beginAnimating = false;
-		this.onReactionPress = this.onReactionPress.bind(this);
-		setTimeout(() => {
-			this.beginAnimating = true;
-		}, 300);
+		this.beginAnimatingTimeout = setTimeout(() => this.beginAnimating = true, 300);
+		this.messagebox = React.createRef();
+		console.timeEnd(`${ this.constructor.name } init`);
 	}
 
 	componentDidMount() {
-		const { navigation } = this.props;
-		navigation.setParams({ toggleFav: this.toggleFav });
+		this.didMountInteraction = InteractionManager.runAfterInteractions(async() => {
+			const { room } = this.state;
+			const { messagesRequest, navigation } = this.props;
+			messagesRequest(room);
 
-		if (this.rooms.length === 0 && this.rid) {
-			const { rid, name, t } = navigation.state.params;
-			this.setState(
-				{ room: { rid, name, t } },
-				() => this.updateRoom()
-			);
-		}
-		safeAddListener(this.rooms, this.updateRoom);
-		this.internalSetState({ loaded: true });
+			// if room is joined
+			if (room._id) {
+				navigation.setParams({ name: this.getRoomTitle(room), t: room.t });
+				this.sub = await RocketChat.subscribeRoom(room);
+				RocketChat.readMessages(room.rid);
+				if (room.alert || room.unread || room.userMentions) {
+					this.setLastOpen(room.ls);
+				} else {
+					this.setLastOpen(null);
+				}
+			}
+			safeAddListener(this.rooms, this.updateRoom);
+		});
+		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			room, loaded, joined
+			room, joined
 		} = this.state;
 		const { showActions, showErrorActions, appState } = this.props;
 
@@ -133,8 +150,6 @@ export default class RoomView extends LoggedView {
 		} else if (room.blocker !== nextState.room.blocker) {
 			return true;
 		} else if (room.archived !== nextState.room.archived) {
-			return true;
-		} else if (loaded !== nextState.loaded) {
 			return true;
 		} else if (joined !== nextState.joined) {
 			return true;
@@ -150,22 +165,46 @@ export default class RoomView extends LoggedView {
 		return false;
 	}
 
-	componentDidUpdate(prevProps, prevState) {
+	componentDidUpdate(prevProps) {
 		const { room } = this.state;
-		const { appState, navigation } = this.props;
+		const { appState } = this.props;
 
-		if (prevState.room.f !== room.f) {
-			navigation.setParams({ f: room.f });
-		} else if (appState === 'foreground' && appState !== prevProps.appState) {
-			RocketChat.loadMissedMessages(room).catch(e => console.log(e));
-			RocketChat.readMessages(room.rid).catch(e => console.log(e));
+		if (appState === 'foreground' && appState !== prevProps.appState) {
+			this.onForegroundInteraction = InteractionManager.runAfterInteractions(() => {
+				RocketChat.loadMissedMessages(room).catch(e => console.log(e));
+				RocketChat.readMessages(room.rid).catch(e => console.log(e));
+			});
 		}
 	}
 
 	componentWillUnmount() {
-		const { closeRoom } = this.props;
-		closeRoom();
+		if (this.messagebox && this.messagebox.current && this.messagebox.current.text) {
+			const { text } = this.messagebox.current;
+			database.write(() => {
+				const [room] = this.rooms;
+				room.draftMessage = text;
+			});
+		}
 		this.rooms.removeAllListeners();
+		if (this.sub && this.sub.stop) {
+			this.sub.stop();
+		}
+		if (this.beginAnimatingTimeout) {
+			clearTimeout(this.beginAnimatingTimeout);
+		}
+		const { editCancel, replyCancel } = this.props;
+		editCancel();
+		replyCancel();
+		if (this.didMountInteraction && this.didMountInteraction.cancel) {
+			this.didMountInteraction.cancel();
+		}
+		if (this.onForegroundInteraction && this.onForegroundInteraction.cancel) {
+			this.onForegroundInteraction.cancel();
+		}
+		if (this.updateStateInteraction && this.updateStateInteraction.cancel) {
+			this.updateStateInteraction.cancel();
+		}
+		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
 	onMessageLongPress = (message) => {
@@ -186,6 +225,13 @@ export default class RoomView extends LoggedView {
 		}
 	};
 
+	onDiscussionPress = debounce((item) => {
+		const { navigation } = this.props;
+		navigation.push('RoomView', {
+			rid: item.drid, prid: item.rid, name: item.msg, t: 'p'
+		});
+	}, 1000, true)
+
 	internalSetState = (...args) => {
 		if (isIOS && this.beginAnimating) {
 			LayoutAnimation.easeInEaseOut();
@@ -193,42 +239,11 @@ export default class RoomView extends LoggedView {
 		this.setState(...args);
 	}
 
-	// eslint-disable-next-line react/sort-comp
 	updateRoom = () => {
-		const { openRoom } = this.props;
-
-		if (this.rooms.length > 0) {
-			const { room: prevRoom } = this.state;
+		this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
 			const room = JSON.parse(JSON.stringify(this.rooms[0] || {}));
 			this.internalSetState({ room });
-
-			if (!prevRoom._id) {
-				openRoom({
-					...room
-				});
-				if (room.alert || room.unread || room.userMentions) {
-					this.setLastOpen(room.ls);
-				} else {
-					this.setLastOpen(null);
-				}
-			}
-		} else {
-			const { room } = this.state;
-			if (room.rid) {
-				openRoom(room);
-				this.internalSetState({ joined: false });
-			}
-		}
-	}
-
-	toggleFav = () => {
-		try {
-			const { room } = this.state;
-			const { rid, f } = room;
-			RocketChat.toggleFavorite(rid, !f);
-		} catch (e) {
-			log('toggleFavorite', e);
-		}
+		});
 	}
 
 	sendMessage = (message) => {
@@ -237,6 +252,11 @@ export default class RoomView extends LoggedView {
 			this.setLastOpen(null);
 		});
 	};
+
+	getRoomTitle = (room) => {
+		const { useRealName } = this.props;
+		return ((room.prid || useRealName) && room.fname) || room.name;
+	}
 
 	setLastOpen = lastOpen => this.setState({ lastOpen });
 
@@ -295,7 +315,7 @@ export default class RoomView extends LoggedView {
 				&& moment(item.ts).isAfter(lastOpen)
 				&& moment(previousItem.ts).isBefore(lastOpen);
 			if (!moment(item.ts).isSame(previousItem.ts, 'day')) {
-				dateSeparator = previousItem.ts;
+				dateSeparator = item.ts;
 			}
 		}
 
@@ -314,6 +334,7 @@ export default class RoomView extends LoggedView {
 						_updatedAt={item._updatedAt}
 						onReactionPress={this.onReactionPress}
 						onLongPress={this.onMessageLongPress}
+						onDiscussionPress={this.onDiscussionPress}
 					/>
 					<Separator
 						ts={dateSeparator}
@@ -336,12 +357,13 @@ export default class RoomView extends LoggedView {
 				_updatedAt={item._updatedAt}
 				onReactionPress={this.onReactionPress}
 				onLongPress={this.onMessageLongPress}
+				onDiscussionPress={this.onDiscussionPress}
 			/>
 		);
 	}
 
 	renderFooter = () => {
-		const { joined } = this.state;
+		const { joined, room } = this.state;
 
 		if (!joined) {
 			return (
@@ -360,39 +382,34 @@ export default class RoomView extends LoggedView {
 		}
 		if (this.isReadOnly()) {
 			return (
-				<View style={styles.readOnly} key='room-view-read-only'>
+				<View style={styles.readOnly}>
 					<Text style={styles.previewMode}>{I18n.t('This_room_is_read_only')}</Text>
 				</View>
 			);
 		}
 		if (this.isBlocked()) {
 			return (
-				<View style={styles.readOnly} key='room-view-block'>
+				<View style={styles.readOnly}>
 					<Text style={styles.previewMode}>{I18n.t('This_room_is_blocked')}</Text>
 				</View>
 			);
 		}
-		return <MessageBox key='room-view-messagebox' onSubmit={this.sendMessage} rid={this.rid} />;
+		return <MessageBox ref={this.messagebox} onSubmit={this.sendMessage} rid={this.rid} roomType={room.t} />;
 	};
 
 	renderList = () => {
-		const { loaded, room } = this.state;
-		if (!loaded || !room.rid) {
-			return <ActivityIndicator style={styles.loading} />;
-		}
+		const { room } = this.state;
+		const { rid, t } = room;
 		return (
-			[
-				<List
-					key='room-view-messages'
-					room={room}
-					renderRow={this.renderItem}
-				/>,
-				this.renderFooter()
-			]
+			<React.Fragment>
+				<List rid={rid} t={t} renderRow={this.renderItem} />
+				{this.renderFooter()}
+			</React.Fragment>
 		);
 	}
 
 	render() {
+		console.count(`${ this.constructor.name }.render calls`);
 		const { room } = this.state;
 		const { user, showActions, showErrorActions } = this.props;
 
