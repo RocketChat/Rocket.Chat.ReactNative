@@ -26,17 +26,7 @@ export const ROOMS = createRequestTypes('ROOMS', [
 	'OPEN_SEARCH_HEADER',
 	'CLOSE_SEARCH_HEADER'
 ]);
-export const ROOM = createRequestTypes('ROOM', [
-	'ADD_USER_TYPING',
-	'REMOVE_USER_TYPING',
-	'SOMEONE_TYPING',
-	'OPEN',
-	'CLOSE',
-	'LEAVE',
-	'ERASE',
-	'USER_TYPING',
-	'MESSAGE_RECEIVED'
-]);
+export const ROOM = createRequestTypes('ROOM', ['LEAVE', 'ERASE', 'USER_TYPING']);
 export const APP = createRequestTypes('APP', ['START', 'READY', 'INIT']);
 export const MESSAGES = createRequestTypes('MESSAGES', [
 	...defaultTypes,

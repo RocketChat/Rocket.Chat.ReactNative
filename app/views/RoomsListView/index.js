@@ -10,7 +10,7 @@ import Orientation from 'react-native-orientation-locker';
 
 import SearchBox from '../../containers/SearchBox';
 import ConnectionBadge from '../../containers/ConnectionBadge';
-import database from '../../lib/realm';
+import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
 import styles from './styles';
@@ -128,6 +128,7 @@ export default class RoomsListView extends LoggedView {
 			chats: [],
 			unread: [],
 			favorites: [],
+			discussions: [],
 			channels: [],
 			privateGroup: [],
 			direct: [],
@@ -188,8 +189,11 @@ export default class RoomsListView extends LoggedView {
 		}
 		if (groupByType) {
 			const {
-				channels, privateGroup, direct, livechat
+				dicussions, channels, privateGroup, direct, livechat
 			} = this.state;
+			if (!isEqual(nextState.dicussions, dicussions)) {
+				return true;
+			}
 			if (!isEqual(nextState.channels, channels)) {
 				return true;
 			}
@@ -239,6 +243,7 @@ export default class RoomsListView extends LoggedView {
 		this.removeListener(this.data);
 		this.removeListener(this.unread);
 		this.removeListener(this.favorites);
+		this.removeListener(this.discussions);
 		this.removeListener(this.channels);
 		this.removeListener(this.privateGroup);
 		this.removeListener(this.direct);
@@ -268,6 +273,7 @@ export default class RoomsListView extends LoggedView {
 			let chats = [];
 			let unread = [];
 			let favorites = [];
+			let discussions = [];
 			let channels = [];
 			let privateGroup = [];
 			let direct = [];
@@ -277,7 +283,7 @@ export default class RoomsListView extends LoggedView {
 			if (showUnread) {
 				this.unread = this.data.filtered('archived != true && open == true').filtered('(unread > 0 || alert == true)');
 				unread = this.removeRealmInstance(this.unread);
-				this.unread.addListener(debounce(() => this.internalSetState({ unread: this.removeRealmInstance(this.unread) }), 300));
+				safeAddListener(this.unread, debounce(() => this.internalSetState({ unread: this.removeRealmInstance(this.unread) }), 300));
 			} else {
 				this.removeListener(unread);
 			}
@@ -285,32 +291,37 @@ export default class RoomsListView extends LoggedView {
 			if (showFavorites) {
 				this.favorites = this.data.filtered('f == true');
 				favorites = this.removeRealmInstance(this.favorites);
-				this.favorites.addListener(debounce(() => this.internalSetState({ favorites: this.removeRealmInstance(this.favorites) }), 300));
+				safeAddListener(this.favorites, debounce(() => this.internalSetState({ favorites: this.removeRealmInstance(this.favorites) }), 300));
 			} else {
 				this.removeListener(favorites);
 			}
 			// type
 			if (groupByType) {
+				// discussions
+				this.discussions = this.data.filtered('prid != null');
+				discussions = this.removeRealmInstance(this.discussions);
+
 				// channels
-				this.channels = this.data.filtered('t == $0', 'c');
+				this.channels = this.data.filtered('t == $0 AND prid == null', 'c');
 				channels = this.removeRealmInstance(this.channels);
 
 				// private
-				this.privateGroup = this.data.filtered('t == $0', 'p');
+				this.privateGroup = this.data.filtered('t == $0 AND prid == null', 'p');
 				privateGroup = this.removeRealmInstance(this.privateGroup);
 
 				// direct
-				this.direct = this.data.filtered('t == $0', 'd');
+				this.direct = this.data.filtered('t == $0 AND prid == null', 'd');
 				direct = this.removeRealmInstance(this.direct);
 
 				// livechat
-				this.livechat = this.data.filtered('t == $0', 'l');
+				this.livechat = this.data.filtered('t == $0 AND prid == null', 'l');
 				livechat = this.removeRealmInstance(this.livechat);
 
-				this.channels.addListener(debounce(() => this.internalSetState({ channels: this.removeRealmInstance(this.channels) }), 300));
-				this.privateGroup.addListener(debounce(() => this.internalSetState({ privateGroup: this.removeRealmInstance(this.privateGroup) }), 300));
-				this.direct.addListener(debounce(() => this.internalSetState({ direct: this.removeRealmInstance(this.direct) }), 300));
-				this.livechat.addListener(debounce(() => this.internalSetState({ livechat: this.removeRealmInstance(this.livechat) }), 300));
+				safeAddListener(this.discussions, debounce(() => this.internalSetState({ discussions: this.removeRealmInstance(this.discussions) }), 300));
+				safeAddListener(this.channels, debounce(() => this.internalSetState({ channels: this.removeRealmInstance(this.channels) }), 300));
+				safeAddListener(this.privateGroup, debounce(() => this.internalSetState({ privateGroup: this.removeRealmInstance(this.privateGroup) }), 300));
+				safeAddListener(this.direct, debounce(() => this.internalSetState({ direct: this.removeRealmInstance(this.direct) }), 300));
+				safeAddListener(this.livechat, debounce(() => this.internalSetState({ livechat: this.removeRealmInstance(this.livechat) }), 300));
 				this.removeListener(this.chats);
 			} else {
 				// chats
@@ -321,7 +332,8 @@ export default class RoomsListView extends LoggedView {
 				}
 				chats = this.removeRealmInstance(this.chats);
 
-				this.chats.addListener(debounce(() => this.internalSetState({ chats: this.removeRealmInstance(this.chats) }), 300));
+				safeAddListener(this.chats, debounce(() => this.internalSetState({ chats: this.removeRealmInstance(this.chats) }), 300));
+				this.removeListener(this.discussions);
 				this.removeListener(this.channels);
 				this.removeListener(this.privateGroup);
 				this.removeListener(this.direct);
@@ -330,7 +342,7 @@ export default class RoomsListView extends LoggedView {
 
 			// setState
 			this.internalSetState({
-				chats, unread, favorites, channels, privateGroup, direct, livechat, loading: false
+				chats, unread, favorites, discussions, channels, privateGroup, direct, livechat, loading: false
 			});
 		}
 	}
@@ -387,16 +399,22 @@ export default class RoomsListView extends LoggedView {
 		});
 	}
 
-	goRoom = ({ rid, name, t }) => {
+	getRoomTitle = (item) => {
+		const { useRealName } = this.props;
+		return ((item.prid || useRealName) && item.fname) || item.name;
+	}
+
+	goRoom = (item) => {
 		this.cancelSearchingAndroid();
 		const { navigation } = this.props;
-		navigation.navigate('RoomView', { rid, name, t });
+		navigation.navigate('RoomView', {
+			rid: item.rid, name: this.getRoomTitle(item), t: item.t, prid: item.prid
+		});
 	}
 
 	_onPressItem = async(item = {}) => {
 		if (!item.search) {
-			const { rid, name, t } = item;
-			return this.goRoom({ rid, name, t });
+			return this.goRoom(item);
 		}
 		if (item.t === 'd') {
 			// if user is using the search we need first to join/create room
@@ -410,8 +428,7 @@ export default class RoomsListView extends LoggedView {
 				log('RoomsListView._onPressItem', e);
 			}
 		} else {
-			const { rid, name, t } = item;
-			return this.goRoom({ rid, name, t });
+			return this.goRoom(item);
 		}
 	}
 
@@ -471,7 +488,7 @@ export default class RoomsListView extends LoggedView {
 
 	renderItem = ({ item }) => {
 		const {
-			useRealName, userId, baseUrl, StoreLastMessage
+			userId, baseUrl, StoreLastMessage
 		} = this.props;
 		const id = item.rid.replace(userId, '').trim();
 
@@ -482,12 +499,13 @@ export default class RoomsListView extends LoggedView {
 				userMentions={item.userMentions}
 				favorite={item.f}
 				lastMessage={item.lastMessage}
-				name={(useRealName && item.fname) || item.name}
+				name={this.getRoomTitle(item)}
 				_updatedAt={item.roomUpdatedAt}
 				key={item._id}
 				id={id}
 				type={item.t}
 				baseUrl={baseUrl}
+				prid={item.prid}
 				showLastMessage={StoreLastMessage}
 				onPress={() => this._onPressItem(item)}
 				testID={`rooms-list-view-item-${ item.name }`}
@@ -509,7 +527,7 @@ export default class RoomsListView extends LoggedView {
 			return null;
 		} else if (header === 'Favorites' && !showFavorites) {
 			return null;
-		} else if (['Channels', 'Direct_Messages', 'Private_Groups', 'Livechat'].includes(header) && !groupByType) {
+		} else if (['Discussions', 'Channels', 'Direct_Messages', 'Private_Groups', 'Livechat'].includes(header) && !groupByType) {
 			return null;
 		} else if (header === 'Chats' && groupByType) {
 			return null;
@@ -537,7 +555,7 @@ export default class RoomsListView extends LoggedView {
 
 	renderList = () => {
 		const {
-			search, chats, unread, favorites, channels, direct, privateGroup, livechat
+			search, chats, unread, favorites, discussions, channels, direct, privateGroup, livechat
 		} = this.state;
 
 		if (search.length > 0) {
@@ -562,6 +580,7 @@ export default class RoomsListView extends LoggedView {
 			<View style={styles.container}>
 				{this.renderSection(unread, 'Unread')}
 				{this.renderSection(favorites, 'Favorites')}
+				{this.renderSection(discussions, 'Discussions')}
 				{this.renderSection(channels, 'Channels')}
 				{this.renderSection(direct, 'Direct_Messages')}
 				{this.renderSection(privateGroup, 'Private_Groups')}
@@ -592,11 +611,10 @@ export default class RoomsListView extends LoggedView {
 					renderItem={this.renderItem}
 					ListHeaderComponent={this.renderListHeader}
 					getItemLayout={getItemLayout}
-					enableEmptySections
 					removeClippedSubviews
 					keyboardShouldPersistTaps='always'
-					initialNumToRender={12}
-					windowSize={7}
+					initialNumToRender={9}
+					windowSize={9}
 				/>
 			);
 		}
