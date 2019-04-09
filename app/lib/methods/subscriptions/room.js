@@ -113,7 +113,7 @@ export default function subscribeRoom({ rid }) {
 	});
 
 	const handleMessageReceived = protectedFunction((ddpMessage) => {
-		let message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0]));
+		const message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0]));
 		if (rid !== message.rid) {
 			return;
 		}
