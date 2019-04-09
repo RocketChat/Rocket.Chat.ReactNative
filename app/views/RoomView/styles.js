@@ -23,8 +23,8 @@ export default StyleSheet.create({
 		height: 1,
 		backgroundColor: COLOR_SEPARATOR
 	},
-	loadingMore: {
-		textAlign: 'center',
+	loading: {
+		flex: 1,
 		padding: 15,
 		color: COLOR_TEXT_DESCRIPTION
 	},
@@ -39,9 +39,6 @@ export default StyleSheet.create({
 		backgroundColor: '#F7F7F7',
 		borderRadius: 4,
 		flexDirection: 'column'
-	},
-	loading: {
-		flex: 1
 	},
 	joinRoomContainer: {
 		justifyContent: 'flex-end',

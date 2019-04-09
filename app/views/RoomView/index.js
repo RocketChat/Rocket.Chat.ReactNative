@@ -406,26 +406,17 @@ export default class RoomView extends LoggedView {
 		return <MessageBox ref={this.messagebox} onSubmit={this.sendMessage} rid={this.rid} roomType={room.t} />;
 	};
 
-	renderList = () => {
-		const { room } = this.state;
-		const { rid, t } = room;
-		return (
-			<React.Fragment>
-				<List rid={rid} t={t} renderRow={this.renderItem} />
-				{this.renderFooter()}
-			</React.Fragment>
-		);
-	}
-
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { room } = this.state;
 		const { user, showActions, showErrorActions } = this.props;
+		const { rid, t } = room;
 
 		return (
 			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
-				{this.renderList()}
+				<List rid={rid} t={t} renderRow={this.renderItem} />
+				{this.renderFooter()}
 				{room._id && showActions
 					? <MessageActions room={room} user={user} />
 					: null
