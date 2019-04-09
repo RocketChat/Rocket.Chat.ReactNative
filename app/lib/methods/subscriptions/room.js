@@ -113,14 +113,18 @@ export default function subscribeRoom({ rid }) {
 	});
 
 	const handleMessageReceived = protectedFunction((ddpMessage) => {
-		const message = buildMessage(ddpMessage.fields.args[0]);
+		let message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0]));
 		if (rid !== message.rid) {
 			return;
 		}
 		requestAnimationFrame(() => {
 			try {
 				database.write(() => {
-					database.create('messages', EJSON.fromJSONValue(message), true);
+					database.create('messages', message, true);
+					if (message.tmid) {
+						message.rid = message.tmid;
+						database.create('threads', message, true);
+					}
 				});
 
 				const [room] = database.objects('subscriptions').filtered('rid = $0', rid);

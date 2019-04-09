@@ -23,10 +23,18 @@ export class List extends React.Component {
 		super(props);
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
-		this.data = database
-			.objects('messages')
-			.filtered('rid = $0', props.rid)
-			.sorted('ts', true);
+		if (props.tmid) {
+			this.data = database
+				.objects('threads')
+				.filtered('rid = $0', props.tmid)
+				.sorted('ts', false);
+		} else {
+			this.data = database
+				.objects('messages')
+				.filtered('rid = $0', props.rid)
+				.sorted('ts', true);
+		}
+
 		this.state = {
 			loading: true,
 			end: false,
@@ -85,10 +93,20 @@ export class List extends React.Component {
 		return null;
 	}
 
+	renderItem = ({ item, index }) => {
+		const { messages } = this.state;
+		const { renderRow, tmid } = this.props;
+		if (tmid) {
+			return renderRow(item, messages[index - 1]);
+		} else {
+			return renderRow(item, messages[index + 1]);
+		}
+	}
+
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
-		const { renderRow } = this.props;
 		const { messages } = this.state;
+		const { t, tmid } = this.props;
 		return (
 			<React.Fragment>
 				<EmptyRoom length={messages.length} />
@@ -98,14 +116,14 @@ export class List extends React.Component {
 					keyExtractor={item => item._id}
 					data={messages}
 					extraData={this.state}
-					renderItem={({ item, index }) => renderRow(item, messages[index + 1])}
+					renderItem={this.renderItem}
 					contentContainerStyle={styles.contentContainer}
 					style={styles.list}
-					inverted
+					inverted={!tmid}
 					removeClippedSubviews
 					initialNumToRender={1}
-					onEndReached={this.onEndReached}
-					onEndReachedThreshold={0.5}
+					// onEndReached={this.onEndReached}
+					// onEndReachedThreshold={0.5}
 					maxToRenderPerBatch={5}
 					windowSize={21}
 					ListFooterComponent={this.renderFooter}

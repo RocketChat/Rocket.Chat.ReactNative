@@ -101,6 +101,7 @@ export default class RoomView extends LoggedView {
 		console.time(`${ this.constructor.name } mount`);
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
+		this.tmid = props.navigation.getParam('tmid');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			joined: this.rooms.length > 0,
@@ -118,8 +119,8 @@ export default class RoomView extends LoggedView {
 			const { room } = this.state;
 			const { messagesRequest, navigation } = this.props;
 
-			if (room.t === 'thread') {
-				console.log('ITS A THREAD!')
+			if (this.tmid) {
+				RocketChat.loadThreadMessages({ tmid: this.tmid, t: this.t });
 			} else {
 				messagesRequest(room);
 
@@ -239,10 +240,11 @@ export default class RoomView extends LoggedView {
 		});
 	}, 1000, true)
 
-	onThreadPress = debounce((rid) => {
+	onThreadPress = debounce((item) => {
 		const { navigation } = this.props;
 		navigation.push('RoomView', {
-			rid, name: 'THREAD NAME', t: 'thread'
+			// rid, tmid, name: 'THREAD NAME', t: 'thread'
+			rid: item.rid, tmid: item.tmid, name: item.msg, t: 'thread'
 		});
 	}, 1000, true)
 
@@ -262,7 +264,7 @@ export default class RoomView extends LoggedView {
 
 	sendMessage = (message) => {
 		LayoutAnimation.easeInEaseOut();
-		RocketChat.sendMessage(this.rid, message).then(() => {
+		RocketChat.sendMessage(this.rid, message, this.tmid).then(() => {
 			this.setLastOpen(null);
 		});
 	};
@@ -334,8 +336,15 @@ export default class RoomView extends LoggedView {
 		}
 
 		if (showUnreadSeparator || dateSeparator) {
+			const separator = (
+				<Separator
+					ts={dateSeparator}
+					unread={showUnreadSeparator}
+				/>
+			);
 			return (
 				<React.Fragment>
+					{this.tmid ? separator : null}
 					<Message
 						key={item._id}
 						item={item}
@@ -351,10 +360,7 @@ export default class RoomView extends LoggedView {
 						onDiscussionPress={this.onDiscussionPress}
 						onThreadPress={this.onThreadPress}
 					/>
-					<Separator
-						ts={dateSeparator}
-						unread={showUnreadSeparator}
-					/>
+					{!this.tmid ? separator : null}
 				</React.Fragment>
 			);
 		}
@@ -381,7 +387,7 @@ export default class RoomView extends LoggedView {
 	renderFooter = () => {
 		const { joined, room } = this.state;
 
-		if (!joined && room.t !== 'thread') {
+		if (!joined && !this.tmid) {
 			return (
 				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
 					<Text style={styles.previewMode}>{I18n.t('You_are_in_preview_mode')}</Text>
@@ -422,7 +428,7 @@ export default class RoomView extends LoggedView {
 		return (
 			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
-				<List rid={rid} t={t} renderRow={this.renderItem} />
+				<List rid={rid} t={t} tmid={this.tmid} renderRow={this.renderItem} />
 				{this.renderFooter()}
 				{room._id && showActions
 					? <MessageActions room={room} user={user} />

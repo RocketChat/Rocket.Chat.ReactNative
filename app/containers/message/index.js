@@ -128,9 +128,9 @@ export default class MessageContainer extends React.Component {
 		onDiscussionPress(item);
 	}
 
-	onThreadPress = (rid) => {
-		const { onThreadPress } = this.props;
-		onThreadPress(rid);
+	onThreadPress = () => {
+		const { onThreadPress, item } = this.props;
+		onThreadPress(item);
 	}
 
 	get timeFormat() {

@@ -99,7 +99,6 @@ export default class Message extends PureComponent {
 		baseUrl: PropTypes.string.isRequired,
 		customEmojis: PropTypes.object.isRequired,
 		timeFormat: PropTypes.string.isRequired,
-		id: PropTypes.string,
 		msg: PropTypes.string,
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
@@ -172,13 +171,6 @@ export default class Message extends PureComponent {
 			return;
 		}
 		onLongPress();
-	}
-
-	onThreadPress = () => {
-		const {
-			id, tmid, onThreadPress
-		} = this.props;
-		onThreadPress(tmid || id);
 	}
 
 	formatLastMessage = lm => (
@@ -429,7 +421,7 @@ export default class Message extends PureComponent {
 
 	renderThread = () => {
 		const {
-			tcount, tlm
+			tcount, tlm, onThreadPress
 		} = this.props;
 
 		if (!tlm) {
@@ -441,7 +433,7 @@ export default class Message extends PureComponent {
 		return (
 			<View style={styles.buttonContainer}>
 				<Touchable
-					onPress={this.onThreadPress}
+					onPress={onThreadPress}
 					background={Touchable.Ripple('#fff')}
 					style={[styles.button, styles.smallButton]}
 					hitSlop={BUTTON_HIT_SLOP}
@@ -457,14 +449,14 @@ export default class Message extends PureComponent {
 	}
 
 	renderRepliedThread = () => {
-		const { tmid, header } = this.props;
+		const { tmid, header, onThreadPress } = this.props;
 		if (!tmid || !header) {
 			return null;
 		}
 
 		return (
 			<Text style={styles.repliedThread}>
-				Replied on: <Text style={styles.repliedThreadName} onPress={this.onThreadPress}>123</Text>
+				Replied on: <Text style={styles.repliedThreadName} onPress={onThreadPress}>123</Text>
 			</Text>
 		);
 	}
