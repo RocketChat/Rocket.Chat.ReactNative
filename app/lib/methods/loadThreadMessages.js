@@ -5,10 +5,10 @@ import buildMessage from './helpers/buildMessage';
 import database from '../realm';
 import log from '../../utils/log';
 
-async function load({ tmid, latest, t }) {
+async function load({ tmid, skip }) {
 	try {
 		// RC 1.0
-		const data = await this.sdk.methodCall('getThreadMessages', { tmid, limit: 3, latest });
+		const data = await this.sdk.methodCall('getThreadMessages', { tmid, limit: 50, skip });
 		console.log('TCL: load -> data', data);
 		if (!data || data.status === 'error') {
 			return [];
@@ -20,14 +20,14 @@ async function load({ tmid, latest, t }) {
 	}
 }
 
-export default function loadThreadMessages({ tmid, t, latest }) {
-	console.log('TCL: loadThreadMessages -> tmid, t, latest', tmid, t, latest);
+export default function loadThreadMessages({ tmid, skip }) {
+	console.log('TCL: loadThreadMessages -> tmid, t, skip', tmid, skip);
 	return new Promise(async(resolve, reject) => {
 		try {
 			// if (t !== 'thread') {
 			// 	return reject();
 			// }
-			const data = await load.call(this, { tmid, t, latest });
+			const data = await load.call(this, { tmid, skip });
 
 			if (data && data.length) {
 				InteractionManager.runAfterInteractions(() => {

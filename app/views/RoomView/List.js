@@ -16,7 +16,8 @@ export class List extends React.Component {
 		renderFooter: PropTypes.func,
 		renderRow: PropTypes.func,
 		rid: PropTypes.string,
-		t: PropTypes.string
+		t: PropTypes.string,
+		tmid: PropTypes.string
 	};
 
 	constructor(props) {
@@ -75,9 +76,15 @@ export class List extends React.Component {
 		}
 
 		this.setState({ loading: true });
-		const { rid, t } = this.props;
+		const { rid, t, tmid } = this.props;
 		try {
-			const result = await RocketChat.loadMessagesForRoom({ rid, t, latest: this.data[this.data.length - 1].ts });
+			let result;
+			if (tmid) {
+				result = await RocketChat.loadThreadMessages({ tmid, skip: messages.length });
+			} else {
+				result = await RocketChat.loadMessagesForRoom({ rid, t, latest: messages[messages.length - 1].ts });
+			}
+
 			this.setState({ end: result.length < 50 });
 		} catch (e) {
 			this.setState({ loading: false });
@@ -106,7 +113,7 @@ export class List extends React.Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { messages } = this.state;
-		const { t, tmid } = this.props;
+		const { tmid } = this.props;
 		return (
 			<React.Fragment>
 				<EmptyRoom length={messages.length} />
@@ -122,8 +129,8 @@ export class List extends React.Component {
 					inverted={!tmid}
 					removeClippedSubviews
 					initialNumToRender={1}
-					// onEndReached={this.onEndReached}
-					// onEndReachedThreshold={0.5}
+					onEndReached={this.onEndReached}
+					onEndReachedThreshold={0.5}
 					maxToRenderPerBatch={5}
 					windowSize={21}
 					ListFooterComponent={this.renderFooter}
