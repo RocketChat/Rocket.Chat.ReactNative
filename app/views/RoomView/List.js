@@ -28,7 +28,7 @@ export class List extends React.Component {
 			this.data = database
 				.objects('threads')
 				.filtered('rid = $0', props.tmid)
-				.sorted('ts', false);
+				.sorted('ts', true);
 		} else {
 			this.data = database
 				.objects('messages')
@@ -102,18 +102,13 @@ export class List extends React.Component {
 
 	renderItem = ({ item, index }) => {
 		const { messages } = this.state;
-		const { renderRow, tmid } = this.props;
-		if (tmid) {
-			return renderRow(item, messages[index - 1]);
-		} else {
-			return renderRow(item, messages[index + 1]);
-		}
+		const { renderRow } = this.props;
+		return renderRow(item, messages[index + 1]);
 	}
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { messages } = this.state;
-		const { tmid } = this.props;
 		return (
 			<React.Fragment>
 				<EmptyRoom length={messages.length} />
@@ -126,7 +121,7 @@ export class List extends React.Component {
 					renderItem={this.renderItem}
 					contentContainerStyle={styles.contentContainer}
 					style={styles.list}
-					inverted={!tmid}
+					inverted
 					removeClippedSubviews
 					initialNumToRender={1}
 					onEndReached={this.onEndReached}

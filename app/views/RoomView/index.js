@@ -336,15 +336,8 @@ export default class RoomView extends LoggedView {
 		}
 
 		if (showUnreadSeparator || dateSeparator) {
-			const separator = (
-				<Separator
-					ts={dateSeparator}
-					unread={showUnreadSeparator}
-				/>
-			);
 			return (
 				<React.Fragment>
-					{this.tmid ? separator : null}
 					<Message
 						key={item._id}
 						item={item}
@@ -360,7 +353,10 @@ export default class RoomView extends LoggedView {
 						onDiscussionPress={this.onDiscussionPress}
 						onThreadPress={this.onThreadPress}
 					/>
-					{!this.tmid ? separator : null}
+					<Separator
+						ts={dateSeparator}
+						unread={showUnreadSeparator}
+					/>
 				</React.Fragment>
 			);
 		}
