@@ -117,20 +117,25 @@ export default class RoomView extends LoggedView {
 		this.didMountInteraction = InteractionManager.runAfterInteractions(async() => {
 			const { room } = this.state;
 			const { messagesRequest, navigation } = this.props;
-			messagesRequest(room);
 
-			// if room is joined
-			if (room._id) {
-				navigation.setParams({ name: this.getRoomTitle(room), t: room.t });
-				this.sub = await RocketChat.subscribeRoom(room);
-				RocketChat.readMessages(room.rid);
-				if (room.alert || room.unread || room.userMentions) {
-					this.setLastOpen(room.ls);
-				} else {
-					this.setLastOpen(null);
+			if (room.t === 'thread') {
+				console.log('ITS A THREAD!')
+			} else {
+				messagesRequest(room);
+
+				// if room is joined
+				if (room._id) {
+					navigation.setParams({ name: this.getRoomTitle(room), t: room.t });
+					this.sub = await RocketChat.subscribeRoom(room);
+					RocketChat.readMessages(room.rid);
+					if (room.alert || room.unread || room.userMentions) {
+						this.setLastOpen(room.ls);
+					} else {
+						this.setLastOpen(null);
+					}
 				}
+				safeAddListener(this.rooms, this.updateRoom);
 			}
-			safeAddListener(this.rooms, this.updateRoom);
 		});
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
@@ -180,10 +185,12 @@ export default class RoomView extends LoggedView {
 	componentWillUnmount() {
 		if (this.messagebox && this.messagebox.current && this.messagebox.current.text) {
 			const { text } = this.messagebox.current;
-			database.write(() => {
-				const [room] = this.rooms;
-				room.draftMessage = text;
-			});
+			const [room] = this.rooms;
+			if (room) {
+				database.write(() => {
+					room.draftMessage = text;
+				});
+			}
 		}
 		this.rooms.removeAllListeners();
 		if (this.sub && this.sub.stop) {
@@ -234,9 +241,9 @@ export default class RoomView extends LoggedView {
 
 	onThreadPress = debounce((rid) => {
 		const { navigation } = this.props;
-		// navigation.push('RoomView', {
-		// 	rid, name: item.msg, t: 'p'
-		// });
+		navigation.push('RoomView', {
+			rid, name: 'THREAD NAME', t: 'thread'
+		});
 	}, 1000, true)
 
 	internalSetState = (...args) => {
@@ -374,7 +381,7 @@ export default class RoomView extends LoggedView {
 	renderFooter = () => {
 		const { joined, room } = this.state;
 
-		if (!joined) {
+		if (!joined && room.t !== 'thread') {
 			return (
 				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
 					<Text style={styles.previewMode}>{I18n.t('You_are_in_preview_mode')}</Text>
