@@ -26,7 +26,7 @@ export class List extends React.Component {
 		console.time(`${ this.constructor.name } mount`);
 		if (props.tmid) {
 			this.data = database
-				.objects('threads')
+				.objects('threadMessages')
 				.filtered('rid = $0', props.tmid)
 				.sorted('ts', true);
 		} else {
@@ -34,14 +34,17 @@ export class List extends React.Component {
 				.objects('messages')
 				.filtered('rid = $0', props.rid)
 				.sorted('ts', true);
+			this.threads = database.objects('threads').filtered('rid = $0', props.rid);
 		}
 
 		this.state = {
 			loading: true,
 			end: false,
-			messages: this.data.slice()
+			messages: this.data.slice(),
+			threads: this.threads.slice()
 		};
 		safeAddListener(this.data, this.updateState);
+		safeAddListener(this.threads, this.updateThreads);
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
 
@@ -64,6 +67,13 @@ export class List extends React.Component {
 	updateState = debounce(() => {
 		this.interactionManager = InteractionManager.runAfterInteractions(() => {
 			this.setState({ messages: this.data.slice(), loading: false });
+		});
+	}, 300);
+
+	// eslint-disable-next-line react/sort-comp
+	updateThreads = debounce(() => {
+		this.interactionManager = InteractionManager.runAfterInteractions(() => {
+			this.setState({ threads: this.threads.slice() });
 		});
 	}, 300);
 
@@ -101,8 +111,14 @@ export class List extends React.Component {
 	}
 
 	renderItem = ({ item, index }) => {
-		const { messages } = this.state;
+		const { messages, threads } = this.state;
 		const { renderRow } = this.props;
+		if (item.tmid) {
+			const thread = threads.find(t => t._id === item.tmid);
+			if (thread) {
+				item = { ...item, tmsg: thread.msg };
+			}
+		}
 		return renderRow(item, messages[index + 1]);
 	}
 

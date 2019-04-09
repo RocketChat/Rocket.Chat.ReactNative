@@ -449,14 +449,20 @@ export default class Message extends PureComponent {
 	}
 
 	renderRepliedThread = () => {
-		const { tmid, header, onThreadPress } = this.props;
+		const {
+			tmid, tmsg, header, onThreadPress, fetchThreadName
+		} = this.props;
 		if (!tmid || !header) {
 			return null;
 		}
 
+		if (!tmsg) {
+			fetchThreadName(tmid);
+		}
+
 		return (
 			<Text style={styles.repliedThread}>
-				Replied on: <Text style={styles.repliedThreadName} onPress={onThreadPress}>123</Text>
+				Replied on: <Text style={styles.repliedThreadName} onPress={onThreadPress}>{tmsg || 'Thread'}</Text>
 			</Text>
 		);
 	}

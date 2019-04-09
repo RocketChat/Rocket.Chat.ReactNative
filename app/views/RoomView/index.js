@@ -317,6 +317,20 @@ export default class RoomView extends LoggedView {
 		return false;
 	}
 
+	// eslint-disable-next-line react/sort-comp
+	fetchThreadName = async(tmid) => {
+		try {
+			console.log(tmid)
+			const thread = await RocketChat.getSingleMessage(tmid);
+			console.log('TCL: fetchThreadName -> thread', thread);
+			database.write(() => {
+				database.create('threads', thread, true);
+			});
+		} catch (error) {
+			console.log('TCL: fetchThreadName -> error', error);
+		}
+	}
+
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen } = this.state;
 		const { user } = this.props;
@@ -348,6 +362,7 @@ export default class RoomView extends LoggedView {
 						broadcast={room.broadcast}
 						previousItem={previousItem}
 						_updatedAt={item._updatedAt}
+						fetchThreadName={this.fetchThreadName}
 						onReactionPress={this.onReactionPress}
 						onLongPress={this.onMessageLongPress}
 						onDiscussionPress={this.onDiscussionPress}
@@ -372,6 +387,7 @@ export default class RoomView extends LoggedView {
 				broadcast={room.broadcast}
 				previousItem={previousItem}
 				_updatedAt={item._updatedAt}
+				fetchThreadName={this.fetchThreadName}
 				onReactionPress={this.onReactionPress}
 				onLongPress={this.onMessageLongPress}
 				onDiscussionPress={this.onDiscussionPress}

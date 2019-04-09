@@ -121,10 +121,6 @@ export default function subscribeRoom({ rid }) {
 			try {
 				database.write(() => {
 					database.create('messages', message, true);
-					if (message.tmid) {
-						message.rid = message.tmid;
-						database.create('threads', message, true);
-					}
 				});
 
 				const [room] = database.objects('subscriptions').filtered('rid = $0', rid);

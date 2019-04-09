@@ -651,6 +651,10 @@ const RocketChat = {
 		// RC 0.51.0
 		return this.sdk.methodCall('addUsersToRoom', { rid, users });
 	},
+	getSingleMessage(msgId) {
+		// RC 0.57.0
+		return this.sdk.methodCall('getSingleMessage', msgId);
+	},
 	hasPermission(permissions, rid) {
 		let roles = [];
 		try {

@@ -93,6 +93,9 @@ export default class MessageContainer extends React.Component {
 		if (broadcast !== nextProps.broadcast) {
 			return true;
 		}
+		if (item.tmsg !== nextProps.item.tmsg) {
+			return true;
+		}
 		if (!equal(editingMessage, nextProps.editingMessage)) {
 			if (nextProps.editingMessage && nextProps.editingMessage._id === item._id) {
 				return true;
@@ -176,10 +179,10 @@ export default class MessageContainer extends React.Component {
 	render() {
 		const { reactionsModal } = this.state;
 		const {
-			item, editingMessage, user, style, archived, baseUrl, customEmojis, useRealName, broadcast
+			item, editingMessage, user, style, archived, baseUrl, customEmojis, useRealName, broadcast, fetchThreadName
 		} = this.props;
 		const {
-			_id, msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm
+			_id, msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg
 		} = item;
 		const isEditing = editingMessage._id === item._id;
 		return (
@@ -214,6 +217,8 @@ export default class MessageContainer extends React.Component {
 				tmid={tmid}
 				tcount={tcount}
 				tlm={tlm}
+				tmsg={tmsg}
+				fetchThreadName={fetchThreadName}
 				closeReactions={this.closeReactions}
 				onErrorPress={this.onErrorPress}
 				onLongPress={this.onLongPress}

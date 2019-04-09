@@ -9,7 +9,6 @@ async function load({ tmid, skip }) {
 	try {
 		// RC 1.0
 		const data = await this.sdk.methodCall('getThreadMessages', { tmid, limit: 50, skip });
-		console.log('TCL: load -> data', data);
 		if (!data || data.status === 'error') {
 			return [];
 		}
@@ -21,12 +20,8 @@ async function load({ tmid, skip }) {
 }
 
 export default function loadThreadMessages({ tmid, skip }) {
-	console.log('TCL: loadThreadMessages -> tmid, t, skip', tmid, skip);
 	return new Promise(async(resolve, reject) => {
 		try {
-			// if (t !== 'thread') {
-			// 	return reject();
-			// }
 			const data = await load.call(this, { tmid, skip });
 
 			if (data && data.length) {
@@ -35,7 +30,7 @@ export default function loadThreadMessages({ tmid, skip }) {
 						try {
 							const message = buildMessage(EJSON.fromJSONValue(m));
 							message.rid = tmid;
-							database.create('threads', message, true);
+							database.create('threadMessages', message, true);
 						} catch (e) {
 							log('loadThreadMessages -> create messages', e);
 						}

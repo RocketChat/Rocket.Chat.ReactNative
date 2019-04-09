@@ -234,6 +234,16 @@ const threadsSchema = {
 	properties: {
 		_id: 'string',
 		msg: { type: 'string', optional: true },
+		rid: { type: 'string', indexed: true }
+	}
+};
+
+const threadMessagesSchema = {
+	name: 'threadMessages',
+	primaryKey: '_id',
+	properties: {
+		_id: 'string',
+		msg: { type: 'string', optional: true },
 		t: { type: 'string', optional: true },
 		rid: { type: 'string', indexed: true },
 		ts: 'date',
@@ -324,6 +334,7 @@ const schema = [
 	subscriptionRolesSchema,
 	messagesSchema,
 	threadsSchema,
+	threadMessagesSchema,
 	usersSchema,
 	roomsSchema,
 	attachment,
@@ -391,6 +402,10 @@ class DB {
 		return this.database.objects(...args);
 	}
 
+	objectForPrimaryKey(...args) {
+		return this.database.objectForPrimaryKey(...args);
+	}
+
 	get database() {
 		return this.databases.activeDB;
 	}
@@ -404,7 +419,7 @@ class DB {
 		return this.databases.activeDB = new Realm({
 			path: `${ path }.realm`,
 			schema,
-			schemaVersion: 5,
+			schemaVersion: 6,
 			migration: (oldRealm, newRealm) => {
 				if (oldRealm.schemaVersion === 3 && newRealm.schemaVersion === 4) {
 					const newSubs = newRealm.objects('subscriptions');
