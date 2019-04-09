@@ -64,9 +64,10 @@ export default class RoomView extends LoggedView {
 		const prid = navigation.getParam('prid');
 		const title = navigation.getParam('name');
 		const t = navigation.getParam('t');
+		const tmid = navigation.getParam('tmid');
 		return {
 			headerTitle: <RoomHeaderView rid={rid} prid={prid} title={title} type={t} />,
-			headerRight: t === 'l'
+			headerRight: t === 'l' || tmid
 				? null
 				: (
 					<CustomHeaderButtons>
@@ -243,7 +244,6 @@ export default class RoomView extends LoggedView {
 	onThreadPress = debounce((item) => {
 		const { navigation } = this.props;
 		navigation.push('RoomView', {
-			// rid, tmid, name: 'THREAD NAME', t: 'thread'
 			rid: item.rid, tmid: item.tmid, name: item.msg, t: 'thread'
 		});
 	}, 1000, true)
