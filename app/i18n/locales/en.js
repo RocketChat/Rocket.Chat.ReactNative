@@ -304,6 +304,7 @@ export default {
 	Started_discussion: 'Started a discussion:',
 	Submit: 'Submit',
 	Take_a_photo: 'Take a photo',
+	Take_a_vedio: 'Take a vedio',
 	tap_to_change_status: 'tap to change status',
 	Tap_to_view_servers_list: 'Tap to view servers list',
 	Terms_of_Service: ' Terms of Service ',

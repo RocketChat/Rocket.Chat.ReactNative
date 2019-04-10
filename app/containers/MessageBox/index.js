@@ -48,6 +48,14 @@ const imagePickerConfig = {
 	cropperCancelText: I18n.t('Cancel')
 };
 
+const libraryPickerConfig = {
+	mediaType: 'video'
+};
+
+const vedioPickerConfig = {
+	mediaType: 'video'
+};
+
 class MessageBox extends Component {
 	static propTypes = {
 		rid: PropTypes.string.isRequired,
@@ -479,7 +487,7 @@ class MessageBox extends Component {
 		this.setState(prevState => ({ showFilesAction: !prevState.showFilesAction }));
 	}
 
-	sendImageMessage = async(file) => {
+	sendMediaMessage = async(file) => {
 		const { rid } = this.props;
 
 		this.setState({ file: { isVisible: false } });
@@ -499,6 +507,7 @@ class MessageBox extends Component {
 	}
 
 	takePhoto = async() => {
+		console.warn('take photo');
 		try {
 			const image = await ImagePicker.openCamera(imagePickerConfig);
 			this.showUploadModal(image);
@@ -507,9 +516,18 @@ class MessageBox extends Component {
 		}
 	}
 
+	takeVedio = async() => {
+		try {
+			const vedio = await ImagePicker.openCamera(vedioPickerConfig);
+			this.showUploadModal(vedio);
+		} catch (e) {
+			log('takeVedio', e);
+		}
+	}
+
 	chooseFromLibrary = async() => {
 		try {
-			const image = await ImagePicker.openPicker(imagePickerConfig);
+			const image = await ImagePicker.openPicker(libraryPickerConfig);
 			this.showUploadModal(image);
 		} catch (e) {
 			log('chooseFromLibrary', e);
@@ -742,6 +760,7 @@ class MessageBox extends Component {
 				key='files-actions'
 				hideActions={this.toggleFilesActions}
 				takePhoto={this.takePhoto}
+				takeVedio={this.takeVedio}
 				chooseFromLibrary={this.chooseFromLibrary}
 			/>
 		);
@@ -807,7 +826,7 @@ class MessageBox extends Component {
 					isVisible={(file && file.isVisible)}
 					file={file}
 					close={() => this.setState({ file: {} })}
-					submit={this.sendImageMessage}
+					submit={this.sendMediaMessage}
 				/>
 			]
 		);
