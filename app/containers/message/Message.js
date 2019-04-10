@@ -140,6 +140,7 @@ export default class Message extends PureComponent {
 		tmid: PropTypes.string,
 		tcount: PropTypes.number,
 		tlm: PropTypes.instanceOf(Date),
+		tmsg: PropTypes.string,
 		// methods
 		closeReactions: PropTypes.func,
 		onErrorPress: PropTypes.func,
@@ -149,7 +150,8 @@ export default class Message extends PureComponent {
 		onDiscussionPress: PropTypes.func,
 		onThreadPress: PropTypes.func,
 		replyBroadcast: PropTypes.func,
-		toggleReactionPicker: PropTypes.func
+		toggleReactionPicker: PropTypes.func,
+		fetchThreadName: PropTypes.func
 	}
 
 	static defaultProps = {

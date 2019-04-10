@@ -55,7 +55,8 @@ export default class MessageContainer extends React.Component {
 		// methods - redux
 		errorActionsShow: PropTypes.func,
 		replyBroadcast: PropTypes.func,
-		toggleReactionPicker: PropTypes.func
+		toggleReactionPicker: PropTypes.func,
+		fetchThreadName: PropTypes.func
 	}
 
 	static defaultProps = {

@@ -439,7 +439,7 @@ export default class RoomView extends LoggedView {
 				}
 				{showErrorActions ? <MessageErrorActions /> : null}
 			</React.Fragment>
-		)
+		);
 	}
 
 	render() {
