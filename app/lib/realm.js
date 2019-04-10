@@ -196,72 +196,51 @@ const messagesEditedBySchema = {
 	}
 };
 
+// We reuse this object on threads
+const messageObj = {
+	_id: 'string',
+	msg: { type: 'string', optional: true },
+	t: { type: 'string', optional: true },
+	rid: { type: 'string', indexed: true },
+	ts: 'date',
+	u: 'users',
+	alias: { type: 'string', optional: true },
+	parseUrls: { type: 'bool', optional: true },
+	groupable: { type: 'bool', optional: true },
+	avatar: { type: 'string', optional: true },
+	attachments: { type: 'list', objectType: 'attachment' },
+	urls: { type: 'list', objectType: 'url', default: [] },
+	_updatedAt: { type: 'date', optional: true },
+	status: { type: 'int', optional: true },
+	pinned: { type: 'bool', optional: true },
+	starred: { type: 'bool', optional: true },
+	editedBy: 'messagesEditedBy',
+	reactions: { type: 'list', objectType: 'messagesReactions' },
+	role: { type: 'string', optional: true },
+	drid: { type: 'string', optional: true },
+	dcount: { type: 'int', optional: true },
+	dlm: { type: 'date', optional: true },
+	tmid: { type: 'string', optional: true },
+	tcount: { type: 'int', optional: true },
+	tlm: { type: 'date', optional: true }
+};
+
 const messagesSchema = {
 	name: 'messages',
 	primaryKey: '_id',
-	properties: {
-		_id: 'string',
-		msg: { type: 'string', optional: true },
-		t: { type: 'string', optional: true },
-		rid: { type: 'string', indexed: true },
-		ts: 'date',
-		u: 'users',
-		alias: { type: 'string', optional: true },
-		parseUrls: { type: 'bool', optional: true },
-		groupable: { type: 'bool', optional: true },
-		avatar: { type: 'string', optional: true },
-		attachments: { type: 'list', objectType: 'attachment' },
-		urls: { type: 'list', objectType: 'url', default: [] },
-		_updatedAt: { type: 'date', optional: true },
-		status: { type: 'int', optional: true },
-		pinned: { type: 'bool', optional: true },
-		starred: { type: 'bool', optional: true },
-		editedBy: 'messagesEditedBy',
-		reactions: { type: 'list', objectType: 'messagesReactions' },
-		role: { type: 'string', optional: true },
-		drid: { type: 'string', optional: true },
-		dcount: { type: 'int', optional: true },
-		dlm: { type: 'date', optional: true },
-		tmid: { type: 'string', optional: true },
-		tcount: { type: 'int', optional: true },
-		tlm: { type: 'date', optional: true }
-	}
+	properties: messageObj
 };
 
 const threadsSchema = {
 	name: 'threads',
 	primaryKey: '_id',
-	properties: {
-		_id: 'string',
-		msg: { type: 'string', optional: true },
-		rid: { type: 'string', indexed: true }
-	}
+	properties: messageObj
 };
 
 const threadMessagesSchema = {
 	name: 'threadMessages',
 	primaryKey: '_id',
-	properties: {
-		_id: 'string',
-		msg: { type: 'string', optional: true },
-		t: { type: 'string', optional: true },
-		rid: { type: 'string', indexed: true },
-		ts: 'date',
-		u: 'users',
-		alias: { type: 'string', optional: true },
-		parseUrls: { type: 'bool', optional: true },
-		groupable: { type: 'bool', optional: true },
-		avatar: { type: 'string', optional: true },
-		attachments: { type: 'list', objectType: 'attachment' },
-		urls: { type: 'list', objectType: 'url', default: [] },
-		_updatedAt: { type: 'date', optional: true },
-		status: { type: 'int', optional: true },
-		pinned: { type: 'bool', optional: true },
-		starred: { type: 'bool', optional: true },
-		editedBy: 'messagesEditedBy',
-		reactions: { type: 'list', objectType: 'messagesReactions' },
-		role: { type: 'string', optional: true }
-	}
+	properties: messageObj
 };
 
 const frequentlyUsedEmojiSchema = {
