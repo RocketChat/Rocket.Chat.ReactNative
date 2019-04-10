@@ -326,9 +326,8 @@ export default class RoomView extends LoggedView {
 	// eslint-disable-next-line react/sort-comp
 	fetchThreadName = async(tmid) => {
 		try {
-			console.log(tmid)
+			// TODO: we should build a tmid queue here in order to search for a single tmid only once
 			const thread = await RocketChat.getSingleMessage(tmid);
-			console.log('TCL: fetchThreadName -> thread', thread);
 			database.write(() => {
 				database.create('threads', thread, true);
 			});
@@ -355,34 +354,7 @@ export default class RoomView extends LoggedView {
 			}
 		}
 
-		if (showUnreadSeparator || dateSeparator) {
-			return (
-				<React.Fragment>
-					<Message
-						key={item._id}
-						item={item}
-						status={item.status}
-						reactions={JSON.parse(JSON.stringify(item.reactions))}
-						user={user}
-						archived={room.archived}
-						broadcast={room.broadcast}
-						previousItem={previousItem}
-						_updatedAt={item._updatedAt}
-						fetchThreadName={this.fetchThreadName}
-						onReactionPress={this.onReactionPress}
-						onLongPress={this.onMessageLongPress}
-						onDiscussionPress={this.onDiscussionPress}
-						onThreadPress={this.onThreadPress}
-					/>
-					<Separator
-						ts={dateSeparator}
-						unread={showUnreadSeparator}
-					/>
-				</React.Fragment>
-			);
-		}
-
-		return (
+		const message = (
 			<Message
 				key={item._id}
 				item={item}
@@ -400,6 +372,20 @@ export default class RoomView extends LoggedView {
 				onThreadPress={this.onThreadPress}
 			/>
 		);
+
+		if (showUnreadSeparator || dateSeparator) {
+			return (
+				<React.Fragment>
+					{message}
+					<Separator
+						ts={dateSeparator}
+						unread={showUnreadSeparator}
+					/>
+				</React.Fragment>
+			);
+		}
+
+		return message;
 	}
 
 	renderFooter = () => {
