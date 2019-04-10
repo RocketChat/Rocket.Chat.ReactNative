@@ -401,7 +401,7 @@ export default class Message extends PureComponent {
 		const buttonText = this.formatMessageCount(dcount, 'discussion');
 		return (
 			<React.Fragment>
-				<Text style={styles.textInfo}>{I18n.t('Started_discussion')}</Text>
+				<Text style={styles.startedDiscussion}>{I18n.t('Started_discussion')}</Text>
 				<Text style={styles.text}>{msg}</Text>
 				<View style={styles.buttonContainer}>
 					<Touchable

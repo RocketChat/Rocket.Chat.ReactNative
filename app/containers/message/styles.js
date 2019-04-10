@@ -200,6 +200,13 @@ export default StyleSheet.create({
 		color: COLOR_PRIMARY,
 		...sharedStyles.textRegular
 	},
+	startedDiscussion: {
+		fontStyle: 'italic',
+		fontSize: 16,
+		marginBottom: 6,
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textRegular
+	},
 	time: {
 		fontSize: 12,
 		paddingLeft: 10,
