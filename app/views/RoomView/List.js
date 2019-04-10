@@ -117,7 +117,8 @@ export class List extends React.Component {
 		if (item.tmid) {
 			const thread = threads.find(t => t._id === item.tmid);
 			if (thread) {
-				const tmsg = emojify(thread.msg, { output: 'unicode' });
+				let tmsg = thread.msg || (thread.attachments && thread.attachments.length && thread.attachments[0].title);
+				tmsg = emojify(tmsg, { output: 'unicode' });
 				item = { ...item, tmsg };
 			}
 		}
