@@ -186,13 +186,13 @@ export default class Message extends PureComponent {
 
 	formatMessageCount = (count, type) => {
 		const discussion = type === 'discussion';
-		let text = discussion ? 'No messages yet' : null;
+		let text = discussion ? I18n.t('No_messages_yet') : null;
 		if (count === 1) {
-			text = `${ count } ${ discussion ? 'message' : 'reply' }`;
+			text = `${ count } ${ discussion ? I18n.t('message') : I18n.t('reply') }`;
 		} else if (count > 1 && count < 1000) {
-			text = `${ count } ${ discussion ? 'messages' : 'replies' }`;
+			text = `${ count } ${ discussion ? I18n.t('messages') : I18n.t('replies') }`;
 		} else if (count > 999) {
-			text = `+999 ${ discussion ? 'messages' : 'replies' }`;
+			text = `+999 ${ discussion ? I18n.t('messages') : I18n.t('replies') }`;
 		}
 		return text;
 	}
@@ -464,7 +464,7 @@ export default class Message extends PureComponent {
 
 		return (
 			<Text style={styles.repliedThread}>
-				Replied on: <Text style={styles.repliedThreadName} onPress={onThreadPress}>{tmsg || 'Thread'}</Text>
+				{I18n.t('Replied_on')} <Text style={styles.repliedThreadName} onPress={onThreadPress}>{tmsg || 'Thread'}</Text>
 			</Text>
 		);
 	}
