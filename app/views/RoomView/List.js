@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import styles from './styles';
 import database, { safeAddListener } from '../../lib/realm';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import debounce from '../../utils/debounce';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import EmptyRoom from './EmptyRoom';
@@ -65,18 +64,18 @@ export class List extends React.Component {
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	updateState = debounce(() => {
+	updateState = () => {
 		this.interactionManager = InteractionManager.runAfterInteractions(() => {
 			this.setState({ messages: this.data.slice(), loading: false });
 		});
-	}, 300);
+	};
 
 	// eslint-disable-next-line react/sort-comp
-	updateThreads = debounce(() => {
+	updateThreads = () => {
 		this.interactionManager = InteractionManager.runAfterInteractions(() => {
 			this.setState({ threads: this.threads.slice() });
 		});
-	}, 300);
+	};
 
 	onEndReached = async() => {
 		const {
