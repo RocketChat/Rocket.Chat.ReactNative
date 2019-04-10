@@ -6,7 +6,7 @@ import {
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
 import { RectButton } from 'react-native-gesture-handler';
-
+import Reactrotron from 'reactotron-react-native';
 import { logout as logoutAction } from '../../actions/login';
 import Avatar from '../../containers/Avatar';
 import StatusContainer from '../../containers/Status';
@@ -20,10 +20,18 @@ import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import SidebarItem from './SidebarItem';
 import { COLOR_TEXT } from '../../constants/colors';
+import database from '../../lib/realm';
 
 const keyExtractor = item => item.id;
 
 const Separator = React.memo(() => <View style={styles.separator} />);
+
+const permissions = [
+	'view-statistics',
+	'view-room-administration',
+	'view-user-administration',
+	'view-privileged-setting'
+];
 
 @connect(state => ({
 	Site_Name: state.settings.Site_Name,
@@ -32,7 +40,8 @@ const Separator = React.memo(() => <View style={styles.separator} />);
 		language: state.login.user && state.login.user.language,
 		status: state.login.user && state.login.user.status,
 		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token
+		token: state.login.user && state.login.user.token,
+		roles: state.login.user && state.login.user.roles
 	},
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }), dispatch => ({
@@ -52,7 +61,8 @@ export default class Sidebar extends Component {
 		super(props);
 		this.state = {
 			showStatus: false,
-			status: []
+			status: [],
+			showAdminPanel: false
 		};
 	}
 
@@ -68,11 +78,14 @@ export default class Sidebar extends Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { status, showStatus } = this.state;
+		const { status, showStatus, showAdminPanel } = this.state;
 		const {
 			Site_Name, user, baseUrl, activeItemKey
 		} = this.props;
 		if (nextState.showStatus !== showStatus) {
+			return true;
+		}
+		if (nextState.showAdminPanel !== showAdminPanel) {
 			return true;
 		}
 		if (nextProps.Site_Name !== Site_Name) {
@@ -137,6 +150,21 @@ export default class Sidebar extends Component {
 		logout();
 	}
 
+	canSeeAdminPanel() {
+		// eslint-disable-next-line react/destructuring-assignment
+		const { user } = this.props;
+		const { roles } = user;
+		if	(roles) {
+			const permissionsFiltered = database.objects('permissions')
+				.filter(permission => permissions.includes(permission._id));
+			Reactrotron.log(permissionsFiltered);
+			return permissionsFiltered.reduce((result, permission) => (
+				result || permission.roles.some(r => roles.includes(r.value))),
+			false);
+		}
+		return false;
+	}
+
 	renderStatusItem = ({ item }) => {
 		const { user } = this.props;
 		return (
@@ -183,6 +211,15 @@ export default class Sidebar extends Component {
 					testID='sidebar-settings'
 					current={activeItemKey === 'SettingsStack'}
 				/>
+				{this.canSeeAdminPanel() ? (
+					<SidebarItem
+						text={I18n.t('Admin_Panel')}
+						left={<CustomIcon name='cog' size={20} color={COLOR_TEXT} />}
+						onPress={() => this.sidebarNavigate('AdminPanelView')}
+						testID='sidebar-settings'
+						current={activeItemKey === 'AdminPanelStack'}
+					/>
+				) : null}
 				<Separator key='separator-logout' />
 				<SidebarItem
 					text={I18n.t('Logout')}
@@ -211,7 +248,6 @@ export default class Sidebar extends Component {
 	render() {
 		const { showStatus } = this.state;
 		const { user, Site_Name, baseUrl } = this.props;
-
 		if (!user) {
 			return null;
 		}

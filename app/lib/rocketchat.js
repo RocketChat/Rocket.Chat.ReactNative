@@ -297,7 +297,8 @@ const RocketChat = {
 				language: result.me.language,
 				status: result.me.status,
 				customFields: result.me.customFields,
-				emails: result.me.emails
+				emails: result.me.emails,
+				roles: result.me.roles
 			};
 			return user;
 		} catch (e) {

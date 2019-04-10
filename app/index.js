@@ -20,6 +20,7 @@ import Navigation from './lib/Navigation';
 import Sidebar from './views/SidebarView';
 import ProfileView from './views/ProfileView';
 import SettingsView from './views/SettingsView';
+import AdminPanelView from './views/AdminPanelView';
 import RoomActionsView from './views/RoomActionsView';
 import RoomInfoView from './views/RoomInfoView';
 import RoomInfoEditView from './views/RoomInfoEditView';
@@ -139,10 +140,17 @@ const SettingsStack = createStackNavigator({
 	defaultNavigationOptions: defaultHeader
 });
 
+const AdminPanelStack = createStackNavigator({
+	AdminPanelView
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
 const ChatsDrawer = createDrawerNavigator({
 	ChatsStack,
 	ProfileStack,
-	SettingsStack
+	SettingsStack,
+	AdminPanelStack
 }, {
 	contentComponent: Sidebar
 });

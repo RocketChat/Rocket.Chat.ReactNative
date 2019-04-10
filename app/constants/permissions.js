@@ -13,5 +13,9 @@ export default [
 	'set-react-when-readonly',
 	'set-readonly',
 	'unarchive-room',
-	'view-broadcast-member-list'
+	'view-broadcast-member-list',
+	'view-statistics',
+	'view-room-administration',
+	'view-user-administration',
+	'view-privileged-setting'
 ];
