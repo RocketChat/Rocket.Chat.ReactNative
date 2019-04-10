@@ -12,10 +12,10 @@ import styles from '../Styles';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	token: state.login.user && state.login.user.token
+	authToken: state.login.user && state.login.user.token
 }))
 /** @extends React.Component */
-export default class AdminPanelView extends LoggedView {
+export default class AdminPanelView	 extends LoggedView {
 	static navigationOptions = ({ navigation }) => ({
 		headerLeft: <DrawerButton navigation={navigation} />,
 		title: I18n.t('Admin_Panel')
@@ -37,7 +37,7 @@ export default class AdminPanelView extends LoggedView {
 				<StatusBar />
 				<WebView
 					source={{ uri: `${ baseUrl }/admin/info?layout=embedded` }}
-					injectedJavaScript={`Meteor.loginWithToken(${ authToken }, function() { })`}
+					injectedJavaScript={`Meteor.loginWithToken('${ authToken }', function() { })`}
 				/>
 			</SafeAreaView>
 		);
