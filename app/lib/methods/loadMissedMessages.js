@@ -34,7 +34,12 @@ export default function loadMissedMessages(...args) {
 					InteractionManager.runAfterInteractions(() => {
 						database.write(() => updated.forEach((message) => {
 							try {
-								database.create('messages', buildMessage(message), true);
+								message = buildMessage(message);
+								database.create('messages', message, true);
+								// if it's a thread "header"
+								if (message.tlm) {
+									database.create('threads', message, true);
+								}
 							} catch (e) {
 								log('loadMissedMessages -> create messages', e);
 							}

@@ -107,6 +107,8 @@ export default function subscribeRoom({ rid }) {
 					const { _id } = ddpMessage.fields.args[0];
 					const message = database.objects('messages').filtered('_id = $0', _id);
 					database.delete(message);
+					const threadMessage = database.objects('threadMessages').filtered('_id = $0', _id);
+					database.delete(threadMessage);
 				}
 			});
 		}
@@ -121,6 +123,13 @@ export default function subscribeRoom({ rid }) {
 			try {
 				database.write(() => {
 					database.create('messages', message, true);
+					// if it's a thread "header"
+					if (message.tlm) {
+						database.create('threads', message, true);
+					} else if (message.tmid) {
+						message.rid = message.tmid;
+						database.create('threadMessages', message, true);
+					}
 				});
 
 				const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
