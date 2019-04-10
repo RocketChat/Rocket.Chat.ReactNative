@@ -243,9 +243,15 @@ export default class RoomView extends LoggedView {
 
 	onThreadPress = debounce((item) => {
 		const { navigation } = this.props;
-		navigation.push('RoomView', {
-			rid: item.rid, tmid: item.tmid, name: item.msg, t: 'thread'
-		});
+		if (item.tmid) {
+			navigation.push('RoomView', {
+				rid: item.rid, tmid: item.tmid, name: item.tmsg, t: 'thread'
+			});
+		} else if (item.tlm) {
+			navigation.push('RoomView', {
+				rid: item.rid, tmid: item._id, name: item.msg, t: 'thread'
+			});
+		}
 	}, 1000, true)
 
 	internalSetState = (...args) => {

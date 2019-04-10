@@ -29,6 +29,7 @@ export class List extends React.Component {
 				.objects('threadMessages')
 				.filtered('rid = $0', props.tmid)
 				.sorted('ts', true);
+			this.threads = [];
 		} else {
 			this.data = database
 				.objects('messages')
