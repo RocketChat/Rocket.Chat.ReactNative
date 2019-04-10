@@ -341,9 +341,9 @@ class DB {
 			schema: [
 				serversSchema
 			],
-			schemaVersion: 2,
+			schemaVersion: 3,
 			migration: (oldRealm, newRealm) => {
-				if (oldRealm.schemaVersion === 1 && newRealm.schemaVersion === 2) {
+				if (oldRealm.schemaVersion >= 1 && newRealm.schemaVersion <= 3) {
 					const newServers = newRealm.objects('servers');
 
 					// eslint-disable-next-line no-plusplus
@@ -400,7 +400,7 @@ class DB {
 			schema,
 			schemaVersion: 6,
 			migration: (oldRealm, newRealm) => {
-				if (oldRealm.schemaVersion === 3 && newRealm.schemaVersion === 4) {
+				if (oldRealm.schemaVersion >= 3 && newRealm.schemaVersion <= 6) {
 					const newSubs = newRealm.objects('subscriptions');
 
 					// eslint-disable-next-line no-plusplus
