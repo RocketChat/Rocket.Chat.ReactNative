@@ -423,10 +423,28 @@ export default class RoomView extends LoggedView {
 		return <MessageBox ref={this.messagebox} onSubmit={this.sendMessage} rid={this.rid} roomType={room.t} />;
 	};
 
+	renderActions = () => {
+		const { room } = this.state;
+		const {
+			user, showActions, showErrorActions, navigation
+		} = this.props;
+		if (!navigation.isFocused()) {
+			return null;
+		}
+		return (
+			<React.Fragment>
+				{room._id && showActions
+					? <MessageActions room={room} user={user} />
+					: null
+				}
+				{showErrorActions ? <MessageErrorActions /> : null}
+			</React.Fragment>
+		)
+	}
+
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { room } = this.state;
-		const { user, showActions, showErrorActions } = this.props;
 		const { rid, t } = room;
 
 		return (
@@ -434,11 +452,7 @@ export default class RoomView extends LoggedView {
 				<StatusBar />
 				<List rid={rid} t={t} tmid={this.tmid} renderRow={this.renderItem} />
 				{this.renderFooter()}
-				{room._id && showActions
-					? <MessageActions room={room} user={user} />
-					: null
-				}
-				{showErrorActions ? <MessageErrorActions /> : null}
+				{this.renderActions()}
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
 				<UploadProgress rid={this.rid} />
 				<ConnectionBadge />
