@@ -9,6 +9,7 @@ import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import moment from 'moment';
 import 'react-native-console-time-polyfill';
+import EJSON from 'ejson';
 
 import {
 	toggleReactionPicker as toggleReactionPickerAction,
@@ -38,6 +39,7 @@ import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
 import { COLOR_WHITE } from '../../constants/colors';
 import debounce from '../../utils/debounce';
+import buildMessage from '../../lib/methods/helpers/buildMessage';
 
 @connect(state => ({
 	user: {
@@ -329,7 +331,7 @@ export default class RoomView extends LoggedView {
 			// TODO: we should build a tmid queue here in order to search for a single tmid only once
 			const thread = await RocketChat.getSingleMessage(tmid);
 			database.write(() => {
-				database.create('threads', thread, true);
+				database.create('threads', buildMessage(EJSON.fromJSONValue(thread)), true);
 			});
 		} catch (error) {
 			console.log('TCL: fetchThreadName -> error', error);
