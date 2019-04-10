@@ -6,7 +6,7 @@ import {
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
 import { RectButton } from 'react-native-gesture-handler';
-import Reactrotron from 'reactotron-react-native';
+
 import { logout as logoutAction } from '../../actions/login';
 import Avatar from '../../containers/Avatar';
 import StatusContainer from '../../containers/Status';
@@ -61,8 +61,7 @@ export default class Sidebar extends Component {
 		super(props);
 		this.state = {
 			showStatus: false,
-			status: [],
-			showAdminPanel: false
+			status: []
 		};
 	}
 
@@ -78,14 +77,11 @@ export default class Sidebar extends Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { status, showStatus, showAdminPanel } = this.state;
+		const { status, showStatus } = this.state;
 		const {
 			Site_Name, user, baseUrl, activeItemKey
 		} = this.props;
 		if (nextState.showStatus !== showStatus) {
-			return true;
-		}
-		if (nextState.showAdminPanel !== showAdminPanel) {
 			return true;
 		}
 		if (nextProps.Site_Name !== Site_Name) {
@@ -157,7 +153,6 @@ export default class Sidebar extends Component {
 		if	(roles) {
 			const permissionsFiltered = database.objects('permissions')
 				.filter(permission => permissions.includes(permission._id));
-			Reactrotron.log(permissionsFiltered);
 			return permissionsFiltered.reduce((result, permission) => (
 				result || permission.roles.some(r => roles.includes(r.value))),
 			false);
@@ -248,6 +243,7 @@ export default class Sidebar extends Component {
 	render() {
 		const { showStatus } = this.state;
 		const { user, Site_Name, baseUrl } = this.props;
+
 		if (!user) {
 			return null;
 		}
