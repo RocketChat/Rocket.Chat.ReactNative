@@ -559,7 +559,7 @@ class MessageBox extends Component {
 		this.setState({ showEmojiKeyboard: false });
 	}
 
-	submit = async() => {
+	submit = () => {
 		const {
 			message: editingMessage, editRequest, onSubmit
 		} = this.props;
@@ -580,19 +580,9 @@ class MessageBox extends Component {
 			const { _id, rid } = editingMessage;
 			editRequest({ _id, msg: message, rid });
 		} else if (replying) {
-			const {
-				user, replyMessage, roomType, closeReply
-			} = this.props;
-			const permalink = await this.getPermalink(replyMessage);
-			let msg = `[ ](${ permalink }) `;
-
-			// if original message wasn't sent by current user and neither from a direct room
-			if (user.username !== replyMessage.u.username && roomType !== 'd' && replyMessage.mention) {
-				msg += `@${ replyMessage.u.username } `;
-			}
-
-			msg = `${ msg } ${ message }`;
-			onSubmit(msg);
+			const { replyMessage, closeReply } = this.props;
+			// start a new thread
+			onSubmit(message, replyMessage._id);
 			closeReply();
 		} else {
 			// if is submiting a new message

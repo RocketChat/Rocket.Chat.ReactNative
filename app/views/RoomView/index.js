@@ -268,9 +268,9 @@ export default class RoomView extends LoggedView {
 		});
 	}
 
-	sendMessage = (message) => {
+	sendMessage = (message, tmid) => {
 		LayoutAnimation.easeInEaseOut();
-		RocketChat.sendMessage(this.rid, message, this.tmid).then(() => {
+		RocketChat.sendMessage(this.rid, message, this.tmid || tmid).then(() => {
 			this.setLastOpen(null);
 		});
 	};
