@@ -85,7 +85,7 @@ const Header = React.memo(({
 					<Text style={[styles.title, { fontSize: TITLE_SIZE * scale }]} numberOfLines={1}>{title}</Text>
 				</ScrollView>
 			</View>
-			<Typing usersTyping={usersTyping} />
+			{type === 'thread' ? null : <Typing usersTyping={usersTyping} />}
 		</View>
 	);
 });
