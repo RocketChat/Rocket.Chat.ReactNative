@@ -76,7 +76,9 @@ const Header = React.memo(({
 			scale = 0.8;
 		}
 	}
-	title = emojify(title, { output: 'unicode' });
+	if (title) {
+		title = emojify(title, { output: 'unicode' });
+	}
 
 	return (
 		<View style={styles.container}>
