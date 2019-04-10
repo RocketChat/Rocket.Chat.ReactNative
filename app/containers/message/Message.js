@@ -85,8 +85,6 @@ const getInfoMessage = ({
 		return I18n.t('Room_changed_privacy', { type: msg, userBy: username });
 	} else if (type === 'message_snippeted') {
 		return I18n.t('Created_snippet');
-	} else if (type === 'thread-created') {
-		return I18n.t('Thread_created', { name: msg });
 	}
 	return '';
 };
@@ -463,8 +461,8 @@ export default class Message extends PureComponent {
 		}
 
 		return (
-			<Text style={styles.repliedThread}>
-				{I18n.t('Replied_on')} <Text style={styles.repliedThreadName} onPress={onThreadPress}>{tmsg || 'Thread'}</Text>
+			<Text style={styles.repliedThread} numberOfLines={3}>
+				{I18n.t('Replied_on')} <Text style={styles.repliedThreadName} onPress={onThreadPress}>{tmsg || I18n.t('Thread')}</Text>
 			</Text>
 		);
 	}

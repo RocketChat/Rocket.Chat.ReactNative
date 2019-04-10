@@ -33,6 +33,7 @@ export default class RoomHeaderView extends Component {
 		title: PropTypes.string,
 		type: PropTypes.string,
 		prid: PropTypes.string,
+		tmid: PropTypes.string,
 		rid: PropTypes.string,
 		window: PropTypes.object,
 		status: PropTypes.string
@@ -89,12 +90,13 @@ export default class RoomHeaderView extends Component {
 	render() {
 		const { usersTyping } = this.state;
 		const {
-			window, title, type, status, prid
+			window, title, type, status, prid, tmid
 		} = this.props;
 
 		return (
 			<Header
 				prid={prid}
+				tmid={tmid}
 				title={title}
 				type={type}
 				status={status}

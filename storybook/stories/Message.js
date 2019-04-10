@@ -298,6 +298,11 @@ export default (
 		<Message
 			msg="I'm fine!"
 			tmid='1'
+			tmsg='Thread with emoji :) :joy:'
+		/>
+		<Message
+			msg="I'm fine!"
+			tmid='1'
 			tmsg={longText}
 		/>
 		<Message

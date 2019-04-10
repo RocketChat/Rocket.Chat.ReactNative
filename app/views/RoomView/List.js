@@ -1,6 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, FlatList, InteractionManager } from 'react-native';
 import PropTypes from 'prop-types';
+import { emojify } from 'react-emojione';
 
 import styles from './styles';
 import database, { safeAddListener } from '../../lib/realm';
@@ -116,7 +117,8 @@ export class List extends React.Component {
 		if (item.tmid) {
 			const thread = threads.find(t => t._id === item.tmid);
 			if (thread) {
-				item = { ...item, tmsg: thread.msg };
+				const tmsg = emojify(thread.msg, { output: 'unicode' });
+				item = { ...item, tmsg };
 			}
 		}
 		return renderRow(item, messages[index + 1]);
