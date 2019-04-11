@@ -38,6 +38,7 @@ export default class Markdown extends React.Component {
 		let m = formatText(msg);
 		m = emojify(m, { output: 'unicode' });
 		m = m.replace(/^\[([^\]]*)\]\(([^)]*)\)/, '').trim();
+		let p_edited = edited;
 		return (
 			<MarkdownRenderer
 				rules={{
@@ -45,7 +46,7 @@ export default class Markdown extends React.Component {
 						// eslint-disable-next-line
 						<Text key={node.key} style={styles.paragraph}>
 							{children}
-							{edited ? <Text style={styles.edited}> (edited)</Text> : null}
+							{p_edited ? ( p_edited = false,<Text style={styles.edited}> (edited)</Text> ): null}
 						</Text>
 					),
 					mention: (node) => {
