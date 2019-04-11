@@ -46,7 +46,7 @@ export default class Markdown extends React.Component {
 						// eslint-disable-next-line
 						<Text key={node.key} style={styles.paragraph}>
 							{children}
-							{p_edited ? ( p_edited = false,<Text style={styles.edited}> (edited)</Text> ): null}
+							{p_edited ? (p_edited = false, <Text style={styles.edited}> (edited)</Text>) : null}
 						</Text>
 					),
 					mention: (node) => {
