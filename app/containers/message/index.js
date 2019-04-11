@@ -27,7 +27,6 @@ import { vibrate } from '../../utils/vibration';
 export default class MessageContainer extends React.Component {
 	static propTypes = {
 		item: PropTypes.object.isRequired,
-		reactions: PropTypes.any.isRequired,
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
 			username: PropTypes.string.isRequired,
@@ -35,7 +34,6 @@ export default class MessageContainer extends React.Component {
 		}),
 		customTimeFormat: PropTypes.string,
 		style: ViewPropTypes.style,
-		status: PropTypes.number,
 		archived: PropTypes.bool,
 		broadcast: PropTypes.bool,
 		previousItem: PropTypes.object,
@@ -72,31 +70,9 @@ export default class MessageContainer extends React.Component {
 		this.closeReactions = this.closeReactions.bind(this);
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const { reactionsModal } = this.state;
-		const {
-			status, reactions, broadcast, _updatedAt, editingMessage, item
-		} = this.props;
+	shouldComponentUpdate(nextProps) {
+		const { editingMessage, item } = this.props;
 
-		if (reactionsModal !== nextState.reactionsModal) {
-			return true;
-		}
-		if (status !== nextProps.status) {
-			return true;
-		}
-		// eslint-disable-next-line
-		if (!!_updatedAt ^ !!nextProps._updatedAt) {
-			return true;
-		}
-		if (!equal(reactions, nextProps.reactions)) {
-			return true;
-		}
-		if (broadcast !== nextProps.broadcast) {
-			return true;
-		}
-		if (item.tmsg !== nextProps.item.tmsg) {
-			return true;
-		}
 		if (!equal(editingMessage, nextProps.editingMessage)) {
 			if (nextProps.editingMessage && nextProps.editingMessage._id === item._id) {
 				return true;
@@ -104,7 +80,7 @@ export default class MessageContainer extends React.Component {
 				return true;
 			}
 		}
-		return _updatedAt.toGMTString() !== nextProps._updatedAt.toGMTString();
+		return item._updatedAt.toISOString() !== nextProps.item._updatedAt.toISOString();
 	}
 
 	onLongPress = () => {

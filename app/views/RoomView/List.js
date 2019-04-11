@@ -9,7 +9,6 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import EmptyRoom from './EmptyRoom';
-import debounce from '../../utils/debounce';
 
 export class List extends React.Component {
 	static propTypes = {
@@ -57,13 +56,6 @@ export class List extends React.Component {
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const {
-			loading, end
-		} = this.state;
-		return end !== nextState.end || loading !== nextState.loading;
-	}
-
 	componentWillUnmount() {
 		this.data.removeAllListeners();
 		this.threads.removeAllListeners();
@@ -82,21 +74,21 @@ export class List extends React.Component {
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
+	// TODO: there's unnecessary rerenders here
+	// For some reason, debounce doesn't work on threads
 	// eslint-disable-next-line react/sort-comp
-	updateState = debounce(() => {
+	updateState = () => {
 		this.interactionManagerState = InteractionManager.runAfterInteractions(() => {
 			this.setState({ messages: this.data.slice(), loading: false });
-			this.forceUpdate();
 		});
-	}, 300, true);
+	};
 
 	// eslint-disable-next-line react/sort-comp
-	updateThreads = debounce(() => {
+	updateThreads = () => {
 		this.interactionManagerThreads = InteractionManager.runAfterInteractions(() => {
 			this.setState({ threads: this.threads.slice() });
-			this.forceUpdate();
 		});
-	}, 300, true);
+	};
 
 	onEndReached = async() => {
 		const {

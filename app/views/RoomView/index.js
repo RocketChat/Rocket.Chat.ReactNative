@@ -360,13 +360,10 @@ export default class RoomView extends LoggedView {
 			<Message
 				key={item._id}
 				item={item}
-				status={item.status}
-				reactions={JSON.parse(JSON.stringify(item.reactions))}
 				user={user}
 				archived={room.archived}
 				broadcast={room.broadcast}
 				previousItem={previousItem}
-				_updatedAt={item._updatedAt}
 				fetchThreadName={this.fetchThreadName}
 				onReactionPress={this.onReactionPress}
 				onLongPress={this.onMessageLongPress}
