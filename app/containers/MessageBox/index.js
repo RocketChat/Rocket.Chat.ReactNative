@@ -9,6 +9,7 @@ import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
+import semver from 'semver';
 
 import { userTyping as userTypingAction } from '../../actions/room';
 import {
@@ -56,6 +57,7 @@ class MessageBox extends Component {
 		replyMessage: PropTypes.object,
 		replying: PropTypes.bool,
 		editing: PropTypes.bool,
+		serverVersion: PropTypes.string,
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			username: PropTypes.string,
@@ -559,7 +561,7 @@ class MessageBox extends Component {
 		this.setState({ showEmojiKeyboard: false });
 	}
 
-	submit = () => {
+	submit = async() => {
 		const {
 			message: editingMessage, editRequest, onSubmit
 		} = this.props;
@@ -571,21 +573,43 @@ class MessageBox extends Component {
 		if (message.trim() === '') {
 			return;
 		}
-		// if is editing a message
+
 		const {
 			editing, replying
 		} = this.props;
 
+		// Edit
 		if (editing) {
 			const { _id, rid } = editingMessage;
 			editRequest({ _id, msg: message, rid });
+
+		// Reply
 		} else if (replying) {
-			const { replyMessage, closeReply } = this.props;
-			// start a new thread
-			onSubmit(message, replyMessage._id);
+			const { replyMessage, closeReply, serverVersion } = this.props;
+			const truncatedServerVersion = semver.coerce(serverVersion).version;
+
+			// Thread
+			if (semver.gte(truncatedServerVersion, '1.0.0')) {
+				onSubmit(message, replyMessage._id);
+
+			// Legacy reply
+			} else {
+				const { user, roomType } = this.props;
+				const permalink = await this.getPermalink(replyMessage);
+				let msg = `[ ](${ permalink }) `;
+
+				// if original message wasn't sent by current user and neither from a direct room
+				if (user.username !== replyMessage.u.username && roomType !== 'd' && replyMessage.mention) {
+					msg += `@${ replyMessage.u.username } `;
+				}
+
+				msg = `${ msg } ${ message }`;
+				onSubmit(msg);
+			}
 			closeReply();
+
+		// Normal message
 		} else {
-			// if is submiting a new message
 			onSubmit(message);
 		}
 		this.clearInput();
@@ -810,6 +834,7 @@ const mapStateToProps = state => ({
 	replying: state.messages.replyMessage && !!state.messages.replyMessage.msg,
 	editing: state.messages.editing,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	serverVersion: state.server && state.server.version,
 	user: {
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
