@@ -9,6 +9,7 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import EmptyRoom from './EmptyRoom';
+import debounce from '../../utils/debounce';
 
 export class List extends React.Component {
 	static propTypes = {
@@ -44,39 +45,58 @@ export class List extends React.Component {
 			messages: this.data.slice(),
 			threads: this.threads.slice()
 		};
-		safeAddListener(this.data, this.updateState);
-		safeAddListener(this.threads, this.updateThreads);
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
 
 	componentDidMount() {
+		const { tmid } = this.props;
+		safeAddListener(this.data, this.updateState);
+		if (!tmid) {
+			safeAddListener(this.threads, this.updateThreads);
+		}
 		console.timeEnd(`${ this.constructor.name } mount`);
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const {
+			loading, end
+		} = this.state;
+		return end !== nextState.end || loading !== nextState.loading;
 	}
 
 	componentWillUnmount() {
 		this.data.removeAllListeners();
+		this.threads.removeAllListeners();
 		if (this.updateState && this.updateState.stop) {
 			this.updateState.stop();
 		}
-		if (this.interactionManager && this.interactionManager.cancel) {
-			this.interactionManager.cancel();
+		if (this.updateThreads && this.updateThreads.stop) {
+			this.updateThreads.stop();
+		}
+		if (this.interactionManagerState && this.interactionManagerState.cancel) {
+			this.interactionManagerState.cancel();
+		}
+		if (this.interactionManagerThreads && this.interactionManagerThreads.cancel) {
+			this.interactionManagerThreads.cancel();
 		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	updateState = () => {
-		this.interactionManager = InteractionManager.runAfterInteractions(() => {
+	updateState = debounce(() => {
+		this.interactionManagerState = InteractionManager.runAfterInteractions(() => {
 			this.setState({ messages: this.data.slice(), loading: false });
+			this.forceUpdate();
 		});
-	};
+	}, 300, true);
 
 	// eslint-disable-next-line react/sort-comp
-	updateThreads = () => {
-		this.interactionManager = InteractionManager.runAfterInteractions(() => {
+	updateThreads = debounce(() => {
+		this.interactionManagerThreads = InteractionManager.runAfterInteractions(() => {
 			this.setState({ threads: this.threads.slice() });
+			this.forceUpdate();
 		});
-	};
+	}, 300, true);
 
 	onEndReached = async() => {
 		const {
