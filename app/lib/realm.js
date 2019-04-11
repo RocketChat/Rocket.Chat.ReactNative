@@ -11,7 +11,8 @@ const serversSchema = {
 		id: 'string',
 		name: { type: 'string', optional: true },
 		iconURL: { type: 'string', optional: true },
-		roomsUpdatedAt: { type: 'date', optional: true }
+		roomsUpdatedAt: { type: 'date', optional: true },
+		version: 'string?'
 	}
 };
 
@@ -341,7 +342,7 @@ class DB {
 			schema: [
 				serversSchema
 			],
-			schemaVersion: 3,
+			schemaVersion: 4,
 			migration: (oldRealm, newRealm) => {
 				if (oldRealm.schemaVersion >= 1 && newRealm.schemaVersion <= 3) {
 					const newServers = newRealm.objects('servers');

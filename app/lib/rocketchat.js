@@ -9,6 +9,7 @@ import messagesStatus from '../constants/messagesStatus';
 import database, { safeAddListener } from './realm';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
+import I18n from '../i18n';
 
 import {
 	setUser, setLoginServices, loginRequest, loginFailure, logout
@@ -79,26 +80,24 @@ const RocketChat = {
 			console.warn(`AsyncStorage error: ${ error.message }`);
 		}
 	},
-	async testServer(server) {
+	async getServerInfo(server) {
 		try {
-			const result = await fetch(`${ server }/api/v1/info`).then(response => response.json());
-			if (result.success && result.info) {
-				if (semver.lt(result.info.version, MIN_ROCKETCHAT_VERSION)) {
+			const result = await fetch(`${ server }/api/info`).then(response => response.json());
+			if (result.success) {
+				if (semver.lt(result.version, MIN_ROCKETCHAT_VERSION)) {
 					return {
 						success: false,
 						message: 'Invalid_server_version',
 						messageOptions: {
-							currentVersion: result.info.version,
+							currentVersion: result.version,
 							minVersion: MIN_ROCKETCHAT_VERSION
 						}
 					};
 				}
-				return {
-					success: true
-				};
+				return result;
 			}
 		} catch (e) {
-			log('testServer', e);
+			log('getServerInfo', e);
 		}
 		return {
 			success: false,
@@ -157,7 +156,7 @@ const RocketChat = {
 			this.sdk.subscribe('activeUsers');
 		}, 5000);
 	},
-	connect({ server, user }) {
+	async connect({ server, user }) {
 		database.setActiveDB(server);
 		reduxStore.dispatch(connectRequest());
 
