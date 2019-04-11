@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity, ScrollView } from 'react-native';
 import { emojify } from 'react-emojione';
 import { responsive } from 'react-native-responsive-ui';
 import { OptimizedFlatList } from 'react-native-optimized-flatlist';
@@ -21,6 +21,11 @@ const renderEmoji = (emoji, size, baseUrl) => {
 			{emojify(`:${ emoji }:`, { output: 'unicode' })}
 		</Text>
 	);
+};
+
+const scrollProps = {
+	keyboardShouldPersistTaps: 'always',
+	keyboardDismissMode: 'none'
 };
 
 
@@ -66,16 +71,21 @@ export default class EmojiCategory extends React.Component {
 		const { emojis } = this.props;
 
 		return (
-			<OptimizedFlatList
-				keyExtractor={item => (item.isCustom && item.content) || item}
-				data={emojis}
-				renderItem={({ item }) => this.renderItem(item, this.size)}
-				numColumns={EMOJIS_PER_ROW}
-				initialNumToRender={45}
-				getItemLayout={(data, index) => ({ length: this.size, offset: this.size * index, index })}
-				removeClippedSubviews
-				{...scrollPersistTaps}
-			/>
+			<ScrollView
+				style={styles.background}
+				{...scrollProps}
+			>
+				<OptimizedFlatList
+					keyExtractor={item => (item.isCustom && item.content) || item}
+					data={emojis}
+					renderItem={({ item }) => this.renderItem(item, this.size)}
+					numColumns={EMOJIS_PER_ROW}
+					initialNumToRender={45}
+					getItemLayout={(data, index) => ({ length: this.size, offset: this.size * index, index })}
+					removeClippedSubviews
+					{...scrollPersistTaps}
+				/>
+			</ScrollView>
 		);
 	}
 }
