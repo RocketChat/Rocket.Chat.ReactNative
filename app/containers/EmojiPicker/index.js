@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native';
-import ScrollableTabView from 'react-native-scrollable-tab-view';
+import { TabView, TabBar } from 'react-native-tab-view';
 import map from 'lodash/map';
 import { emojify } from 'react-emojione';
 import equal from 'deep-equal';
 
-import TabBar from './TabBar';
 import EmojiCategory from './EmojiCategory';
 import styles from './styles';
 import categories from './categories';
@@ -18,6 +17,18 @@ const scrollProps = {
 	keyboardShouldPersistTaps: 'always',
 	keyboardDismissMode: 'none'
 };
+
+let FREQUENTLY_USED;
+let CUSTOM;
+let PEOPLE;
+let NATURE;
+let FOOD;
+let ACTIVITY;
+let TRAVEL;
+let OBJECTS;
+let SYMBOLS;
+let FLAGS;
+
 
 export default class EmojiPicker extends Component {
 	static propTypes = {
@@ -35,7 +46,11 @@ export default class EmojiPicker extends Component {
 		this.state = {
 			frequentlyUsed: [],
 			customEmojis: [],
-			show: false
+			show: false,
+			tabView: {
+				index: 0,
+				routes: categories.tabs ,
+			}
 		};
 		this.updateFrequentlyUsed = this.updateFrequentlyUsed.bind(this);
 		this.updateCustomEmojis = this.updateCustomEmojis.bind(this);
@@ -47,6 +62,7 @@ export default class EmojiPicker extends Component {
 		requestAnimationFrame(() => this.setState({ show: true }));
 		safeAddListener(this.frequentlyUsed, this.updateFrequentlyUsed);
 		safeAddListener(this.customEmojis, this.updateCustomEmojis);
+		this.initializeScenes();
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -72,6 +88,7 @@ export default class EmojiPicker extends Component {
 		this.customEmojis.removeAllListeners();
 	}
 
+
 	onEmojiSelected(emoji) {
 		const { onEmojiSelected } = this.props;
 		if (emoji.isCustom) {
@@ -88,6 +105,15 @@ export default class EmojiPicker extends Component {
 			onEmojiSelected(emojify(shortname, { output: 'unicode' }), shortname);
 		}
 	}
+	
+	handleIndexChange = (index) => {
+		this.setState({
+			tabView:{
+				...this.state.tabView, 
+				index
+			}
+		});
+	}
 
 	// eslint-disable-next-line react/sort-comp
 	_addFrequentlyUsed = protectedFunction((emoji) => {
@@ -100,6 +126,22 @@ export default class EmojiPicker extends Component {
 		const emojiRow = this.frequentlyUsed.filtered('content == $0', content);
 		return emojiRow.length ? emojiRow[0].count + 1 : 1;
 	}
+
+	initializeScenes() {
+		const { frequentlyUsed, customEmojis } = this.state;
+		const { list } = categories;
+		FREQUENTLY_USED = this.renderCategory(frequentlyUsed);
+		CUSTOM = this.renderCategory(customEmojis);
+		PEOPLE = this.renderCategory(emojisByCategory[list[2]]);
+		NATURE = this.renderCategory(emojisByCategory[list[3]]);
+		FOOD = this.renderCategory(emojisByCategory[list[4]]);
+		ACTIVITY = this.renderCategory(emojisByCategory[list[5]]);
+		TRAVEL = this.renderCategory(emojisByCategory[list[6]]);
+		OBJECTS = this.renderCategory(emojisByCategory[list[7]]);
+		SYMBOLS = this.renderCategory(emojisByCategory[list[8]]);
+		FLAGS = this.renderCategory(emojisByCategory[list[9]]);
+	}
+
 
 	updateFrequentlyUsed() {
 		const frequentlyUsed = map(this.frequentlyUsed.slice(), (item) => {
@@ -116,56 +158,64 @@ export default class EmojiPicker extends Component {
 		this.setState({ customEmojis });
 	}
 
-	renderCategory(category, i) {
-		const { frequentlyUsed, customEmojis } = this.state;
+	renderCategory(emojis) {
 		const { emojisPerRow, width, baseUrl } = this.props;
-
-		let emojis = [];
-		if (i === 0) {
-			emojis = frequentlyUsed;
-		} else if (i === 1) {
-			emojis = customEmojis;
-		} else {
-			emojis = emojisByCategory[category];
-		}
 		return (
-			<EmojiCategory
-				emojis={emojis}
-				onEmojiSelected={emoji => this.onEmojiSelected(emoji)}
-				style={styles.categoryContainer}
-				size={emojisPerRow}
-				width={width}
-				baseUrl={baseUrl}
+			<ScrollView
+				style={styles.background}
+				{...scrollProps}
+			>
+				<EmojiCategory
+					emojis={emojis}
+					onEmojiSelected={emoji => this.onEmojiSelected(emoji)}
+					style={styles.categoryContainer}
+					size={emojisPerRow}
+					width={width}
+					baseUrl={baseUrl}
+				/>
+			</ScrollView>
+		);
+	}
+
+	renderTabBar=(props)=> {
+		const { tabEmojiStyle } = this.props;
+		return (
+			<TabBar
+				{...props}
+				indicatorStyle={{ backgroundColor: 'blue' }}
+				getLabelText={({ route }) => route.icon}
+				style={tabEmojiStyle}
 			/>
 		);
 	}
 
 	render() {
 		const { show } = this.state;
-		const { tabEmojiStyle } = this.props;
 
 		if (!show) {
 			return null;
 		}
 		return (
-			<ScrollableTabView
-				renderTabBar={() => <TabBar tabEmojiStyle={tabEmojiStyle} />}
-				contentProps={scrollProps}
-				style={styles.background}
-			>
-				{
-					categories.tabs.map((tab, i) => (
-						<ScrollView
-							key={tab.category}
-							tabLabel={tab.tabLabel}
-							style={styles.background}
-							{...scrollProps}
-						>
-							{this.renderCategory(tab.category, i)}
-						</ScrollView>
-					))
-				}
-			</ScrollableTabView>
+			<TabView
+				navigationState={this.state.tabView}
+				renderScene={({ route }) => {
+					switch (route.key) {
+						case 'frequentlyUsed': return FREQUENTLY_USED;
+						case 'custom': return CUSTOM;
+						case 'people': return PEOPLE;
+						case 'nature': return NATURE;
+						case 'food': return FOOD;
+						case 'activity': return ACTIVITY;
+						case 'travel': return TRAVEL;
+						case 'objects': return OBJECTS;
+						case 'symbols': return SYMBOLS;
+						case 'flags': return FLAGS;
+						default: return null;
+					}
+				}}
+				renderTabBar={this.renderTabBar}
+				onIndexChange={this.handleIndexChange}
+			/>
 		);
 	}
 }
