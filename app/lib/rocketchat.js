@@ -9,7 +9,6 @@ import messagesStatus from '../constants/messagesStatus';
 import database, { safeAddListener } from './realm';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
-import I18n from '../i18n';
 
 import {
 	setUser, setLoginServices, loginRequest, loginFailure, logout
@@ -156,7 +155,7 @@ const RocketChat = {
 			this.sdk.subscribe('activeUsers');
 		}, 5000);
 	},
-	async connect({ server, user }) {
+	connect({ server, user }) {
 		database.setActiveDB(server);
 		reduxStore.dispatch(connectRequest());
 
