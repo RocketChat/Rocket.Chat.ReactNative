@@ -250,8 +250,9 @@ export default class RoomView extends LoggedView {
 				rid: item.rid, tmid: item.tmid, name: item.tmsg, t: 'thread'
 			});
 		} else if (item.tlm) {
+			const title = item.msg || (item.attachments && item.attachments.length && item.attachments[0].title);
 			navigation.push('RoomView', {
-				rid: item.rid, tmid: item._id, name: item.msg, t: 'thread'
+				rid: item.rid, tmid: item._id, name: title, t: 'thread'
 			});
 		}
 	}, 1000, true)
@@ -363,6 +364,7 @@ export default class RoomView extends LoggedView {
 				user={user}
 				archived={room.archived}
 				broadcast={room.broadcast}
+				status={item.status}
 				previousItem={previousItem}
 				fetchThreadName={this.fetchThreadName}
 				onReactionPress={this.onReactionPress}

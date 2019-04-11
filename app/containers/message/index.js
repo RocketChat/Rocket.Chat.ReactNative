@@ -45,6 +45,7 @@ export default class MessageContainer extends React.Component {
 		Message_TimeFormat: PropTypes.string,
 		editingMessage: PropTypes.object,
 		useRealName: PropTypes.bool,
+		status: PropTypes.number,
 		// methods - props
 		onLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
@@ -70,8 +71,16 @@ export default class MessageContainer extends React.Component {
 		this.closeReactions = this.closeReactions.bind(this);
 	}
 
-	shouldComponentUpdate(nextProps) {
-		const { editingMessage, item } = this.props;
+	shouldComponentUpdate(nextProps, nextState) {
+		const { reactionsModal } = this.state;
+		const { status, editingMessage, item } = this.props;
+
+		if (reactionsModal !== nextState.reactionsModal) {
+			return true;
+		}
+		if (status !== nextProps.status) {
+			return true;
+		}
 
 		if (!equal(editingMessage, nextProps.editingMessage)) {
 			if (nextProps.editingMessage && nextProps.editingMessage._id === item._id) {
