@@ -9,6 +9,7 @@ import messagesStatus from '../constants/messagesStatus';
 import database, { safeAddListener } from './realm';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
+import EventEmitter from '../utils/events';
 
 import {
 	setUser, setLoginServices, loginRequest, loginFailure, logout
@@ -134,6 +135,7 @@ const RocketChat = {
 		}
 	},
 	async loginSuccess({ user }) {
+		EventEmitter.emit('connected');
 		reduxStore.dispatch(setUser(user));
 		reduxStore.dispatch(roomsRequest());
 
@@ -172,14 +174,14 @@ const RocketChat = {
 		const useSsl = !/http:\/\//.test(server);
 
 		this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
+
+		if (user && user.token) {
+			reduxStore.dispatch(loginRequest({ resume: user.token }));
+		}
+
 		this.getSettings();
 
 		this.sdk.connect()
-			.then(() => {
-				if (user && user.token) {
-					reduxStore.dispatch(loginRequest({ resume: user.token }));
-				}
-			})
 			.catch((err) => {
 				console.log('connect error', err);
 

@@ -31,6 +31,7 @@ import UploadProgress from './UploadProgress';
 import styles from './styles';
 import log from '../../utils/log';
 import { isIOS } from '../../utils/deviceInfo';
+import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
 import ConnectionBadge from '../../containers/ConnectionBadge';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
@@ -51,7 +52,8 @@ import buildMessage from '../../lib/methods/helpers/buildMessage';
 	showActions: state.messages.showActions,
 	showErrorActions: state.messages.showErrorActions,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
-	useRealName: state.settings.UI_Use_Real_Name
+	useRealName: state.settings.UI_Use_Real_Name,
+	isAuthenticated: state.login.isAuthenticated
 }), dispatch => ({
 	editCancel: () => dispatch(editCancelAction()),
 	replyCancel: () => dispatch(replyCancelAction()),
@@ -91,6 +93,7 @@ export default class RoomView extends LoggedView {
 		actionMessage: PropTypes.object,
 		appState: PropTypes.string,
 		useRealName: PropTypes.bool,
+		isAuthenticated: PropTypes.bool,
 		toggleReactionPicker: PropTypes.func.isRequired,
 		actionsShow: PropTypes.func,
 		messagesRequest: PropTypes.func,
@@ -114,31 +117,29 @@ export default class RoomView extends LoggedView {
 		this.beginAnimating = false;
 		this.beginAnimatingTimeout = setTimeout(() => this.beginAnimating = true, 300);
 		this.messagebox = React.createRef();
+		safeAddListener(this.rooms, this.updateRoom);
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
 
 	componentDidMount() {
 		this.didMountInteraction = InteractionManager.runAfterInteractions(async() => {
 			const { room } = this.state;
-			const { messagesRequest, navigation } = this.props;
+			const { navigation, isAuthenticated } = this.props;
 
-			if (this.tmid) {
-				RocketChat.loadThreadMessages({ tmid: this.tmid, t: this.t });
-			} else {
-				messagesRequest(room);
-
-				// if room is joined
-				if (room._id) {
-					navigation.setParams({ name: this.getRoomTitle(room), t: room.t });
-					this.sub = await RocketChat.subscribeRoom(room);
-					RocketChat.readMessages(room.rid);
-					if (room.alert || room.unread || room.userMentions) {
-						this.setLastOpen(room.ls);
-					} else {
-						this.setLastOpen(null);
-					}
+			if (room._id && !this.tmid) {
+				navigation.setParams({ name: this.getRoomTitle(room), t: room.t });
+				this.sub = await RocketChat.subscribeRoom(room);
+				if (room.alert || room.unread || room.userMentions) {
+					this.setLastOpen(room.ls);
+				} else {
+					this.setLastOpen(null);
 				}
-				safeAddListener(this.rooms, this.updateRoom);
+			}
+
+			if (isAuthenticated) {
+				this.init();
+			} else {
+				EventEmitter.addEventListener('connected', this.handleConnected);
 			}
 		});
 		console.timeEnd(`${ this.constructor.name } mount`);
@@ -215,7 +216,30 @@ export default class RoomView extends LoggedView {
 		if (this.updateStateInteraction && this.updateStateInteraction.cancel) {
 			this.updateStateInteraction.cancel();
 		}
+		if (this.initInteraction && this.initInteraction.cancel) {
+			this.initInteraction.cancel();
+		}
+		EventEmitter.removeListener('connected', this.handleConnected);
 		console.countReset(`${ this.constructor.name }.render calls`);
+	}
+
+	// eslint-disable-next-line react/sort-comp
+	init = () => {
+		this.initInteraction = InteractionManager.runAfterInteractions(() => {
+			const { room } = this.state;
+			const { messagesRequest } = this.props;
+
+			if (this.tmid) {
+				RocketChat.loadThreadMessages({ tmid: this.tmid, t: this.t });
+			} else {
+				messagesRequest(room);
+
+				// if room is joined
+				if (room._id) {
+					RocketChat.readMessages(room.rid);
+				}
+			}
+		});
 	}
 
 	onMessageLongPress = (message) => {
@@ -256,6 +280,11 @@ export default class RoomView extends LoggedView {
 			});
 		}
 	}, 1000, true)
+
+	handleConnected = () => {
+		this.init();
+		EventEmitter.removeListener('connected', this.handleConnected);
+	}
 
 	internalSetState = (...args) => {
 		if (isIOS && this.beginAnimating) {

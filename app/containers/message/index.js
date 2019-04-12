@@ -73,7 +73,9 @@ export default class MessageContainer extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { reactionsModal } = this.state;
-		const { status, editingMessage, item, _updatedAt } = this.props;
+		const {
+			status, editingMessage, item, _updatedAt
+		} = this.props;
 
 		if (reactionsModal !== nextState.reactionsModal) {
 			return true;
