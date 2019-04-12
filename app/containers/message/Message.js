@@ -452,7 +452,7 @@ export default class Message extends PureComponent {
 		const {
 			tmid, tmsg, header, onThreadPress, fetchThreadName
 		} = this.props;
-		if (!tmid || !header) {
+		if (!tmid || !header || this.isTemp()) {
 			return null;
 		}
 
