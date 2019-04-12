@@ -122,18 +122,12 @@ export default class RoomView extends LoggedView {
 	}
 
 	componentDidMount() {
-		this.didMountInteraction = InteractionManager.runAfterInteractions(async() => {
+		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
 			const { room } = this.state;
 			const { navigation, isAuthenticated } = this.props;
 
 			if (room._id && !this.tmid) {
 				navigation.setParams({ name: this.getRoomTitle(room), t: room.t });
-				this.sub = await RocketChat.subscribeRoom(room);
-				if (room.alert || room.unread || room.userMentions) {
-					this.setLastOpen(room.ls);
-				} else {
-					this.setLastOpen(null);
-				}
 			}
 
 			if (isAuthenticated) {
@@ -147,11 +141,13 @@ export default class RoomView extends LoggedView {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			room, joined
+			room, joined, lastOpen
 		} = this.state;
 		const { showActions, showErrorActions, appState } = this.props;
 
-		if (room.ro !== nextState.room.ro) {
+		if (lastOpen !== nextState.lastOpen) {
+			return true;
+		} else if (room.ro !== nextState.room.ro) {
 			return true;
 		} else if (room.f !== nextState.room.f) {
 			return true;
@@ -225,21 +221,32 @@ export default class RoomView extends LoggedView {
 
 	// eslint-disable-next-line react/sort-comp
 	init = () => {
-		this.initInteraction = InteractionManager.runAfterInteractions(() => {
-			const { room } = this.state;
-			const { messagesRequest } = this.props;
+		try {
+			this.initInteraction = InteractionManager.runAfterInteractions(async() => {
+				const { room } = this.state;
+				// const { messagesRequest } = this.props;  REMOVER ACTIONS
 
-			if (this.tmid) {
-				RocketChat.loadThreadMessages({ tmid: this.tmid, t: this.t });
-			} else {
-				messagesRequest(room);
+				if (this.tmid) {
+					RocketChat.loadThreadMessages({ tmid: this.tmid, t: this.t });
+				} else {
+					await this.getMessages(room);
 
-				// if room is joined
-				if (room._id) {
-					RocketChat.readMessages(room.rid);
+					// if room is joined
+					if (room._id) {
+						if (room.alert || room.unread || room.userMentions) {
+							this.setLastOpen(room.ls);
+						} else {
+							this.setLastOpen(null);
+						}
+						RocketChat.readMessages(room.rid).catch(e => console.log(e));
+						this.sub = await RocketChat.subscribeRoom(room);
+					}
 				}
-			}
-		});
+			});
+		} catch (e) {
+			console.log('TCL: init -> e', e);
+			log('RoomView.init', e);
+		}
 	}
 
 	onMessageLongPress = (message) => {
@@ -310,6 +317,20 @@ export default class RoomView extends LoggedView {
 	getRoomTitle = (room) => {
 		const { useRealName } = this.props;
 		return ((room.prid || useRealName) && room.fname) || room.name;
+	}
+
+	getMessages = () => {
+		const { room } = this.state;
+		try {
+			if (room.lastOpen) {
+				return RocketChat.loadMissedMessages(room);
+			} else {
+				return RocketChat.loadMessagesForRoom(room);
+			}
+		} catch (e) {
+			console.log('TCL: getMessages -> e', e);
+			log('getMessages', e);
+		}
 	}
 
 	setLastOpen = lastOpen => this.setState({ lastOpen });
