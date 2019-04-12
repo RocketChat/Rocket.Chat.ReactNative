@@ -19,7 +19,7 @@ export default class extends Component {
 		onPress: PropTypes.func.isRequired
 	};
 
-	state = { modalVisible: false, isPressed: false, files: [] };
+	state = { modalVisible: false, isPressed: false };
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { modalVisible, isPressed } = this.state;
