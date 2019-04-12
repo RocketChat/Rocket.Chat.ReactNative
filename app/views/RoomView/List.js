@@ -2,6 +2,7 @@ import React from 'react';
 import { ActivityIndicator, FlatList, InteractionManager } from 'react-native';
 import PropTypes from 'prop-types';
 import { emojify } from 'react-emojione';
+import debounce from 'lodash/debounce';
 
 import styles from './styles';
 import database, { safeAddListener } from '../../lib/realm';
@@ -10,7 +11,7 @@ import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import EmptyRoom from './EmptyRoom';
 
-export class List extends React.Component {
+export class List extends React.PureComponent {
 	static propTypes = {
 		onEndReached: PropTypes.func,
 		renderFooter: PropTypes.func,
@@ -44,15 +45,12 @@ export class List extends React.Component {
 			messages: this.data.slice(),
 			threads: this.threads.slice()
 		};
+
+		safeAddListener(this.data, this.updateState);
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
 
 	componentDidMount() {
-		const { tmid } = this.props;
-		safeAddListener(this.data, this.updateState);
-		if (!tmid) {
-			safeAddListener(this.threads, this.updateThreads);
-		}
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
@@ -74,21 +72,16 @@ export class List extends React.Component {
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
-	// TODO: there's unnecessary rerenders here
-	// For some reason, debounce doesn't work on threads
 	// eslint-disable-next-line react/sort-comp
-	updateState = () => {
+	updateState = debounce(() => {
 		this.interactionManagerState = InteractionManager.runAfterInteractions(() => {
-			this.setState({ messages: this.data.slice(), loading: false });
+			this.setState({
+				messages: this.data.slice(),
+				threads: this.threads.slice(),
+				loading: false
+			});
 		});
-	};
-
-	// eslint-disable-next-line react/sort-comp
-	updateThreads = () => {
-		this.interactionManagerThreads = InteractionManager.runAfterInteractions(() => {
-			this.setState({ threads: this.threads.slice() });
-		});
-	};
+	}, 300, { leading: true });
 
 	onEndReached = async() => {
 		const {

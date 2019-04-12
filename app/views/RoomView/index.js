@@ -365,6 +365,7 @@ export default class RoomView extends LoggedView {
 				archived={room.archived}
 				broadcast={room.broadcast}
 				status={item.status}
+				_updatedAt={item._updatedAt}
 				previousItem={previousItem}
 				fetchThreadName={this.fetchThreadName}
 				onReactionPress={this.onReactionPress}

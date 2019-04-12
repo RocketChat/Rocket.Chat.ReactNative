@@ -73,12 +73,15 @@ export default class MessageContainer extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { reactionsModal } = this.state;
-		const { status, editingMessage, item } = this.props;
+		const { status, editingMessage, item, _updatedAt } = this.props;
 
 		if (reactionsModal !== nextState.reactionsModal) {
 			return true;
 		}
 		if (status !== nextProps.status) {
+			return true;
+		}
+		if (item.tmsg !== nextProps.item.tmsg) {
 			return true;
 		}
 
@@ -89,7 +92,7 @@ export default class MessageContainer extends React.Component {
 				return true;
 			}
 		}
-		return item._updatedAt.toISOString() !== nextProps.item._updatedAt.toISOString();
+		return _updatedAt.toISOString() !== nextProps._updatedAt.toISOString();
 	}
 
 	onLongPress = () => {
