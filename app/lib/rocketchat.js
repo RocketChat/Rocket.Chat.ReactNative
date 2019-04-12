@@ -174,14 +174,14 @@ const RocketChat = {
 		const useSsl = !/http:\/\//.test(server);
 
 		this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
-
-		if (user && user.token) {
-			reduxStore.dispatch(loginRequest({ resume: user.token }));
-		}
-
 		this.getSettings();
 
 		this.sdk.connect()
+			.then(() => {
+				if (user && user.token) {
+					reduxStore.dispatch(loginRequest({ resume: user.token }));
+				}
+			})
 			.catch((err) => {
 				console.log('connect error', err);
 
