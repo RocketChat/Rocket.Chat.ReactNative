@@ -570,9 +570,9 @@ const RocketChat = {
 		// RC 0.64.0
 		return this.sdk.post('rooms.favorite', { roomId, favorite });
 	},
-	getRoomMembers(rid, allUsers) {
+	getRoomMembers(rid, allUsers, skip = 0, limit = 10) {
 		// RC 0.42.0
-		return this.sdk.methodCall('getUsersOfRoom', rid, allUsers);
+		return this.sdk.methodCall('getUsersOfRoom', rid, allUsers, { skip, limit });
 	},
 	getUserRoles() {
 		// RC 0.27.0
