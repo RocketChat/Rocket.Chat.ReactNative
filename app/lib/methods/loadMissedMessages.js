@@ -19,7 +19,7 @@ async function load({ rid: roomId, lastOpen }) {
 		lastUpdate = getLastUpdate(roomId);
 	}
 	// RC 0.60.0
-	const { result } = await this.sdk.get('chat.syncMessages', { roomId, lastUpdate, count: 50 });
+	const { result } = await this.sdk.get('chat.syncMessages', { roomId, lastUpdate });
 	return result;
 }
 
