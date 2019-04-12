@@ -4,7 +4,6 @@ import FastImage from 'react-native-fast-image';
 import equal from 'deep-equal';
 import Touchable from 'react-native-platform-touchable';
 
-import PhotoModal from './PhotoModal';
 import Markdown from './Markdown';
 import styles from './styles';
 
@@ -16,10 +15,11 @@ export default class extends Component {
 		customEmojis: PropTypes.oneOfType([
 			PropTypes.array,
 			PropTypes.object
-		])
-	}
+		]),
+		onPress: PropTypes.func.isRequired
+	};
 
-	state = { modalVisible: false, isPressed: false };
+	state = { modalVisible: false, isPressed: false, files: [] };
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { modalVisible, isPressed } = this.state;
@@ -36,12 +36,6 @@ export default class extends Component {
 		return false;
 	}
 
-	onPressButton = () => {
-		this.setState({
-			modalVisible: true
-		});
-	}
-
 	getDescription() {
 		const {
 			file, customEmojis, baseUrl, user
@@ -53,11 +47,13 @@ export default class extends Component {
 
 	isPressed = (state) => {
 		this.setState({ isPressed: state });
-	}
+	};
 
 	render() {
-		const { modalVisible, isPressed } = this.state;
-		const { baseUrl, file, user } = this.props;
+		const { isPressed } = this.state;
+		const {
+			baseUrl, file, user, onPress
+		} = this.props;
 		const img = `${ baseUrl }${ file.image_url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
 
 		if (!img) {
@@ -65,31 +61,21 @@ export default class extends Component {
 		}
 
 		return (
-			[
-				<Touchable
-					key='image'
-					onPress={this.onPressButton}
-					style={styles.imageContainer}
-					background={Touchable.Ripple('#fff')}
-				>
-					<React.Fragment>
-						<FastImage
-							style={[styles.image, isPressed && { opacity: 0.5 }]}
-							source={{ uri: encodeURI(img) }}
-							resizeMode={FastImage.resizeMode.cover}
-						/>
-						{this.getDescription()}
-					</React.Fragment>
-				</Touchable>,
-				<PhotoModal
-					key='modal'
-					title={file.title}
-					description={file.description}
-					image={img}
-					isVisible={modalVisible}
-					onClose={() => this.setState({ modalVisible: false })}
-				/>
-			]
+			<Touchable
+				key='image'
+				onPress={() => onPress(img)}
+				style={styles.imageContainer}
+				background={Touchable.Ripple('#fff')}
+			>
+				<React.Fragment>
+					<FastImage
+						style={[styles.image, isPressed && { opacity: 0.5 }]}
+						source={{ uri: encodeURI(img) }}
+						resizeMode={FastImage.resizeMode.cover}
+					/>
+					{this.getDescription()}
+				</React.Fragment>
+			</Touchable>
 		);
 	}
 }

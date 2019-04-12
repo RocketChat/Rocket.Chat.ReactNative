@@ -9,7 +9,9 @@ const initialState = {
 	editing: false,
 	showActions: false,
 	showErrorActions: false,
-	showReactionPicker: false
+	showReactionPicker: false,
+	showFilesModal: false,
+	file: {}
 };
 
 export default function messages(state = initialState, action) {
@@ -105,6 +107,17 @@ export default function messages(state = initialState, action) {
 				...state,
 				showReactionPicker: !state.showReactionPicker,
 				actionMessage: action.message
+			};
+		case types.MESSAGES.OPEN_FILES_MODAL:
+			return {
+				...state,
+				showFilesModal: true,
+				file: JSON.parse(JSON.stringify(action.message))
+			};
+		case types.MESSAGES.CLOSE_FILES_MODAL:
+			return {
+				...state,
+				showFilesModal: false
 			};
 		default:
 			return state;

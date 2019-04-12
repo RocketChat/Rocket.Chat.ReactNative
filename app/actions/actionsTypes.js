@@ -51,6 +51,8 @@ export const MESSAGES = createRequestTypes('MESSAGES', [
 	'REPLY_INIT',
 	'REPLY_CANCEL',
 	'TOGGLE_REACTION_PICKER',
+	'OPEN_FILES_MODAL',
+	'CLOSE_FILES_MODAL',
 	'REPLY_BROADCAST'
 ]);
 export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [...defaultTypes]);

@@ -158,6 +158,19 @@ export function toggleReactionPicker(message) {
 	};
 }
 
+export function openFilesModal(message) {
+	return {
+		type: types.MESSAGES.OPEN_FILES_MODAL,
+		message
+	};
+}
+
+export function closeFilesModal() {
+	return {
+		type: types.MESSAGES.CLOSE_FILES_MODAL
+	};
+}
+
 export function replyBroadcast(message) {
 	return {
 		type: types.MESSAGES.REPLY_BROADCAST,

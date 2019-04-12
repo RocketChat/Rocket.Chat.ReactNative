@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, Text, TouchableWithoutFeedback, ActivityIndicator, StyleSheet
+	View, Text, ActivityIndicator, StyleSheet
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
@@ -8,6 +8,7 @@ import Modal from 'react-native-modal';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { responsive } from 'react-native-responsive-ui';
 
+import { connect } from 'react-redux';
 import sharedStyles from '../../views/Styles';
 import { COLOR_WHITE } from '../../constants/colors';
 
@@ -18,7 +19,10 @@ const styles = StyleSheet.create({
 	titleContainer: {
 		width: '100%',
 		alignItems: 'center',
-		marginVertical: 10
+		marginTop: 20,
+		paddingTop: 40,
+		position: 'absolute',
+		zIndex: 1
 	},
 	title: {
 		color: COLOR_WHITE,
@@ -30,6 +34,7 @@ const styles = StyleSheet.create({
 		color: COLOR_WHITE,
 		textAlign: 'center',
 		fontSize: 14,
+		margin: 5,
 		...sharedStyles.textMedium
 	},
 	indicatorContainer: {
@@ -40,21 +45,49 @@ const styles = StyleSheet.create({
 
 const margin = 40;
 
+@connect(state => ({
+	file: state.messages.file
+}), null)
 @responsive
 export default class PhotoModal extends React.PureComponent {
 	static propTypes = {
-		title: PropTypes.string.isRequired,
-		description: PropTypes.string,
-		image: PropTypes.string.isRequired,
 		isVisible: PropTypes.bool,
 		onClose: PropTypes.func.isRequired,
-		window: PropTypes.object
-	}
+		window: PropTypes.object,
+		files: PropTypes.array,
+		file: PropTypes.string.isRequired
+	};
+
+	loadingView = () => {
+		const { window: { width, height } } = this.props;
+
+		return (
+			<View style={[styles.indicatorContainer, { width, height }]}>
+				<ActivityIndicator />
+			</View>
+		);
+	};
+
+	header = (currentIndex) => {
+		const { files } = this.props;
+
+		return (
+			<View style={styles.titleContainer}>
+				<Text style={styles.title}>{files[currentIndex] ? files[currentIndex].title : ''}</Text>
+				<Text style={styles.description}>{files[currentIndex] ? files[currentIndex].description : ''}</Text>
+			</View>
+		);
+	};
 
 	render() {
 		const {
-			image, isVisible, onClose, title, description, window: { width, height }
+			isVisible, window: { width, height }, files, file, onClose
 		} = this.props;
+
+		// determine the index of the first image to be opened by ImageViewer
+		// slice used because formats of urls are different
+		const index = files.findIndex(f => f.url.includes(file.slice(37)));
+
 		return (
 			<Modal
 				isVisible={isVisible}
@@ -63,28 +96,21 @@ export default class PhotoModal extends React.PureComponent {
 				onBackButtonPress={onClose}
 				animationIn='fadeIn'
 				animationOut='fadeOut'
+				backdropOpacity={0.95}
 			>
 				<View style={{ width: width - margin, height: height - margin }}>
-					<TouchableWithoutFeedback onPress={onClose}>
-						<View style={styles.titleContainer}>
-							<Text style={styles.title}>{title}</Text>
-							<Text style={styles.description}>{description}</Text>
-						</View>
-					</TouchableWithoutFeedback>
 					<View style={styles.imageWrapper}>
 						<ImageViewer
-							imageUrls={[{ url: encodeURI(image) }]}
+							imageUrls={files.length ? files : [file]}
 							onClick={onClose}
 							backgroundColor='transparent'
 							enableSwipeDown
 							onSwipeDown={onClose}
-							renderIndicator={() => {}}
 							renderImage={props => <FastImage {...props} />}
-							loadingRender={() => (
-								<View style={[styles.indicatorContainer, { width, height }]}>
-									<ActivityIndicator />
-								</View>
-							)}
+							loadingRender={this.loadingView}
+							index={files.length ? index : 0}
+							enablePreload
+							renderHeader={currentIndex => this.header(currentIndex)}
 						/>
 					</View>
 				</View>

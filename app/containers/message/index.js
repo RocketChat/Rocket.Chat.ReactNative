@@ -8,7 +8,8 @@ import Message from './Message';
 import {
 	errorActionsShow as errorActionsShowAction,
 	toggleReactionPicker as toggleReactionPickerAction,
-	replyBroadcast as replyBroadcastAction
+	replyBroadcast as replyBroadcastAction,
+	openFilesModal as openFilesModalAction
 } from '../../actions/messages';
 import { vibrate } from '../../utils/vibration';
 
@@ -22,7 +23,8 @@ import { vibrate } from '../../utils/vibration';
 }), dispatch => ({
 	errorActionsShow: actionMessage => dispatch(errorActionsShowAction(actionMessage)),
 	replyBroadcast: message => dispatch(replyBroadcastAction(message)),
-	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message))
+	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
+	openFilesModal: file => dispatch(openFilesModalAction(file))
 }))
 export default class MessageContainer extends React.Component {
 	static propTypes = {
@@ -54,7 +56,9 @@ export default class MessageContainer extends React.Component {
 		// methods - redux
 		errorActionsShow: PropTypes.func,
 		replyBroadcast: PropTypes.func,
-		toggleReactionPicker: PropTypes.func
+		toggleReactionPicker: PropTypes.func,
+		openFilesModal: PropTypes.func,
+		getFiles: PropTypes.func
 	}
 
 	static defaultProps = {
@@ -166,6 +170,12 @@ export default class MessageContainer extends React.Component {
 		replyBroadcast(this.parseMessage());
 	}
 
+	openFilesModal = async(file) => {
+		const { openFilesModal, getFiles } = this.props;
+		await getFiles();
+		openFilesModal(file);
+	}
+
 	render() {
 		const { reactionsModal } = this.state;
 		const {
@@ -211,6 +221,7 @@ export default class MessageContainer extends React.Component {
 				replyBroadcast={this.replyBroadcast}
 				toggleReactionPicker={this.toggleReactionPicker}
 				onDiscussionPress={this.onDiscussionPress}
+				openFilesModal={this.openFilesModal}
 			/>
 		);
 	}

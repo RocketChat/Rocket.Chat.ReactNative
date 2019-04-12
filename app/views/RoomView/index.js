@@ -12,6 +12,7 @@ import 'react-native-console-time-polyfill';
 
 import {
 	toggleReactionPicker as toggleReactionPickerAction,
+	closeFilesModal as closeFilesModalAction,
 	actionsShow as actionsShowAction,
 	messagesRequest as messagesRequestAction,
 	editCancel as editCancelAction,
@@ -38,6 +39,7 @@ import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
 import { COLOR_WHITE } from '../../constants/colors';
 import debounce from '../../utils/debounce';
+import PhotoModal from '../../containers/message/PhotoModal';
 
 @connect(state => ({
 	user: {
@@ -48,29 +50,32 @@ import debounce from '../../utils/debounce';
 	actionMessage: state.messages.actionMessage,
 	showActions: state.messages.showActions,
 	showErrorActions: state.messages.showErrorActions,
+	showFilesModal: state.messages.showFilesModal,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
-	useRealName: state.settings.UI_Use_Real_Name
+	useRealName: state.settings.UI_Use_Real_Name,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }), dispatch => ({
 	editCancel: () => dispatch(editCancelAction()),
 	replyCancel: () => dispatch(replyCancelAction()),
 	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
+	closeFilesModal: () => dispatch(closeFilesModalAction()),
 	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage)),
 	messagesRequest: room => dispatch(messagesRequestAction(room))
 }))
 /** @extends React.Component */
 export default class RoomView extends LoggedView {
 	static navigationOptions = ({ navigation }) => {
-		const rid = navigation.getParam('rid');
+		this.rid = navigation.getParam('rid');
 		const prid = navigation.getParam('prid');
 		const title = navigation.getParam('name');
-		const t = navigation.getParam('t');
+		this.t = navigation.getParam('t');
 		return {
-			headerTitle: <RoomHeaderView rid={rid} prid={prid} title={title} type={t} />,
-			headerRight: t === 'l'
+			headerTitle: <RoomHeaderView rid={this.rid} prid={prid} title={title} type={this.t} />,
+			headerRight: this.t === 'l'
 				? null
 				: (
 					<CustomHeaderButtons>
-						<Item title='more' iconName='menu' onPress={() => navigation.navigate('RoomActionsView', { rid, t })} testID='room-view-header-actions' />
+						<Item title='more' iconName='menu' onPress={() => navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t })} testID='room-view-header-actions' />
 					</CustomHeaderButtons>
 				)
 		};
@@ -85,14 +90,17 @@ export default class RoomView extends LoggedView {
 		}),
 		showActions: PropTypes.bool,
 		showErrorActions: PropTypes.bool,
+		showFilesModal: PropTypes.bool,
 		actionMessage: PropTypes.object,
 		appState: PropTypes.string,
 		useRealName: PropTypes.bool,
 		toggleReactionPicker: PropTypes.func.isRequired,
+		closeFilesModal: PropTypes.func.isRequired,
 		actionsShow: PropTypes.func,
 		messagesRequest: PropTypes.func,
 		editCancel: PropTypes.func,
-		replyCancel: PropTypes.func
+		replyCancel: PropTypes.func,
+		baseUrl: PropTypes.string.isRequired
 	};
 
 	constructor(props) {
@@ -105,7 +113,8 @@ export default class RoomView extends LoggedView {
 		this.state = {
 			joined: this.rooms.length > 0,
 			room: this.rooms[0] || { rid: this.rid, t: this.t },
-			lastOpen: null
+			lastOpen: null,
+			files: []
 		};
 		this.beginAnimating = false;
 		this.beginAnimatingTimeout = setTimeout(() => this.beginAnimating = true, 300);
@@ -139,7 +148,9 @@ export default class RoomView extends LoggedView {
 		const {
 			room, joined
 		} = this.state;
-		const { showActions, showErrorActions, appState } = this.props;
+		const {
+			showActions, showErrorActions, appState, showFilesModal
+		} = this.props;
 
 		if (room.ro !== nextState.room.ro) {
 			return true;
@@ -156,6 +167,8 @@ export default class RoomView extends LoggedView {
 		} else if (showActions !== nextProps.showActions) {
 			return true;
 		} else if (showErrorActions !== nextProps.showErrorActions) {
+			return true;
+		} else if (showFilesModal !== nextProps.showFilesModal) {
 			return true;
 		} else if (appState !== nextProps.appState) {
 			return true;
@@ -230,21 +243,41 @@ export default class RoomView extends LoggedView {
 		navigation.push('RoomView', {
 			rid: item.drid, prid: item.rid, name: item.msg, t: 'p'
 		});
-	}, 1000, true)
+	}, 1000, true);
+
+	async getFiles() {
+		const { baseUrl, user } = this.props;
+
+		const response = await RocketChat.getFiles(this.rid, this.t, 0);
+
+		if (response.success) {
+			// filter only images, format url for each file, reverse for natural sliding left\right
+			const files = response.files
+				.filter(file => (/image/.test(file.type)))
+				.map(file => ({
+					url: `${ baseUrl }${ file.url }?rc_uid=${ user.id }&rc_token=${ user.token }`,
+					title: file.name,
+					description: file.description
+				}))
+				.reverse();
+
+			this.setState({ files });
+		}
+	}
 
 	internalSetState = (...args) => {
 		if (isIOS && this.beginAnimating) {
 			LayoutAnimation.easeInEaseOut();
 		}
 		this.setState(...args);
-	}
+	};
 
 	updateRoom = () => {
 		this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
 			const room = JSON.parse(JSON.stringify(this.rooms[0] || {}));
 			this.internalSetState({ room });
 		});
-	}
+	};
 
 	sendMessage = (message) => {
 		LayoutAnimation.easeInEaseOut();
@@ -256,7 +289,7 @@ export default class RoomView extends LoggedView {
 	getRoomTitle = (room) => {
 		const { useRealName } = this.props;
 		return ((room.prid || useRealName) && room.fname) || room.name;
-	}
+	};
 
 	setLastOpen = lastOpen => this.setState({ lastOpen });
 
@@ -276,18 +309,18 @@ export default class RoomView extends LoggedView {
 	isOwner = () => {
 		const { room } = this.state;
 		return room && room.roles && Array.from(Object.keys(room.roles), i => room.roles[i].value).includes('owner');
-	}
+	};
 
 	isMuted = () => {
 		const { room } = this.state;
 		const { user } = this.props;
 		return room && room.muted && !!Array.from(Object.keys(room.muted), i => room.muted[i].value).includes(user.username);
-	}
+	};
 
 	isReadOnly = () => {
 		const { room } = this.state;
 		return (room.ro && !room.broadcast) || this.isMuted() || room.archived;
-	}
+	};
 
 	isBlocked = () => {
 		const { room } = this.state;
@@ -299,7 +332,7 @@ export default class RoomView extends LoggedView {
 			}
 		}
 		return false;
-	}
+	};
 
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen } = this.state;
@@ -319,23 +352,26 @@ export default class RoomView extends LoggedView {
 			}
 		}
 
+		const commonProps = {
+			key: item._id,
+			item,
+			status: item.status,
+			reactions: JSON.parse(JSON.stringify(item.reactions)),
+			user,
+			archived: room.archived,
+			broadcast: room.broadcast,
+			previousItem,
+			_updatedAt: item._updatedAt,
+			onReactionPress: this.onReactionPress,
+			onLongPress: this.onMessageLongPress,
+			onDiscussionPress: this.onDiscussionPress,
+			getFiles: () => this.getFiles()
+		};
+
 		if (showUnreadSeparator || dateSeparator) {
 			return (
 				<React.Fragment>
-					<Message
-						key={item._id}
-						item={item}
-						status={item.status}
-						reactions={JSON.parse(JSON.stringify(item.reactions))}
-						user={user}
-						archived={room.archived}
-						broadcast={room.broadcast}
-						previousItem={previousItem}
-						_updatedAt={item._updatedAt}
-						onReactionPress={this.onReactionPress}
-						onLongPress={this.onMessageLongPress}
-						onDiscussionPress={this.onDiscussionPress}
-					/>
+					<Message {...commonProps} />
 					<Separator
 						ts={dateSeparator}
 						unread={showUnreadSeparator}
@@ -344,23 +380,8 @@ export default class RoomView extends LoggedView {
 			);
 		}
 
-		return (
-			<Message
-				key={item._id}
-				item={item}
-				status={item.status}
-				reactions={JSON.parse(JSON.stringify(item.reactions))}
-				user={user}
-				archived={room.archived}
-				broadcast={room.broadcast}
-				previousItem={previousItem}
-				_updatedAt={item._updatedAt}
-				onReactionPress={this.onReactionPress}
-				onLongPress={this.onMessageLongPress}
-				onDiscussionPress={this.onDiscussionPress}
-			/>
-		);
-	}
+		return (<Message {...commonProps} />);
+	};
 
 	renderFooter = () => {
 		const { joined, room } = this.state;
@@ -410,8 +431,10 @@ export default class RoomView extends LoggedView {
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
-		const { room } = this.state;
-		const { user, showActions, showErrorActions } = this.props;
+		const { room, files } = this.state;
+		const {
+			user, showActions, showErrorActions, closeFilesModal, showFilesModal
+		} = this.props;
 
 		return (
 			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ bottom: 'never' }}>
@@ -425,6 +448,14 @@ export default class RoomView extends LoggedView {
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
 				<UploadProgress rid={this.rid} />
 				<ConnectionBadge />
+				{showFilesModal && (
+					<PhotoModal
+						key='modal'
+						isVisible
+						onClose={closeFilesModal}
+						files={files}
+					/>
+				)}
 			</SafeAreaView>
 		);
 	}

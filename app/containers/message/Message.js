@@ -145,7 +145,8 @@ export default class Message extends PureComponent {
 		onReactionPress: PropTypes.func,
 		onDiscussionPress: PropTypes.func,
 		replyBroadcast: PropTypes.func,
-		toggleReactionPicker: PropTypes.func
+		toggleReactionPicker: PropTypes.func,
+		openFilesModal: PropTypes.func
 	}
 
 	static defaultProps = {
@@ -244,7 +245,7 @@ export default class Message extends PureComponent {
 	}
 
 	renderAttachment() {
-		const { attachments, timeFormat } = this.props;
+		const { attachments, timeFormat, openFilesModal } = this.props;
 
 		if (attachments.length === 0) {
 			return null;
@@ -253,7 +254,7 @@ export default class Message extends PureComponent {
 		return attachments.map((file, index) => {
 			const { user, baseUrl, customEmojis } = this.props;
 			if (file.image_url) {
-				return <Image key={file.image_url} file={file} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
+				return <Image key={file.image_url} file={file} user={user} baseUrl={baseUrl} customEmojis={customEmojis} onPress={openFilesModal} />;
 			}
 			if (file.audio_url) {
 				return <Audio key={file.audio_url} file={file} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
