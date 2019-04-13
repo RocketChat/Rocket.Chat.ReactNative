@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, ViewPropTypes, TouchableWithoutFeedback
+	View, Text, ViewPropTypes, TouchableWithoutFeedback, Keyboard
 } from 'react-native';
 import moment from 'moment';
 import { KeyboardUtils } from 'react-native-keyboard-input';
@@ -25,6 +25,7 @@ import I18n from '../../i18n';
 import messagesStatus from '../../constants/messagesStatus';
 import { CustomIcon } from '../../lib/Icons';
 import { COLOR_DANGER } from '../../constants/colors';
+import { isIOS } from '../../utils/deviceInfo';
 
 const SYSTEM_MESSAGES = [
 	'r',
@@ -157,9 +158,7 @@ export default class Message extends PureComponent {
 		onLongPress: () => {}
 	}
 
-	onPress = () => {
-		KeyboardUtils.dismiss();
-	}
+	onPress = () => (isIOS ? Keyboard.dismiss() : KeyboardUtils.dismiss());
 
 	onLongPress = () => {
 		const { archived, onLongPress } = this.props;
