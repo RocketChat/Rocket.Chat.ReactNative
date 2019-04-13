@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, ScrollView, Keyboard, Image, StyleSheet, TouchableOpacity
+	Text, ScrollView, Keyboard, Image, StyleSheet, TouchableOpacity, View, Picker
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
@@ -35,27 +35,25 @@ const styles = StyleSheet.create({
 		alignSelf: 'center'
 	},
 	inputContainer: {
+		flex: 1,
 		marginTop: 25,
-		marginBottom: 15
-	},
-	input: {
-		...sharedStyles.textRegular,
-		...sharedStyles.textColorDescription,
-		fontSize: 17,
-		letterSpacing: 0,
-		paddingTop: 14,
-		paddingBottom: 14,
-		paddingLeft: 16,
-		paddingRight: 16
+		marginBottom: 15,
+		flexDirection: 'row'
 	},
 	backButton: {
 		position: 'absolute',
 		paddingHorizontal: 9,
 		left: 15
+	},
+	picker: {
+		width: 120
+	},
+	input: {
+		flex: 1
 	}
 });
 
-const defaultServer = 'https://open.rocket.chat';
+const defaultServer = 'open.rocket.chat';
 
 @connect(state => ({
 	connecting: state.server.connecting
@@ -78,7 +76,8 @@ export default class NewServerView extends LoggedView {
 	constructor(props) {
 		super('NewServerView', props);
 		this.state = {
-			text: ''
+			text: '',
+			protocolType: 'https://'
 		};
 	}
 
@@ -96,9 +95,12 @@ export default class NewServerView extends LoggedView {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { text } = this.state;
+		const { text, protocolType } = this.state;
 		const { connecting } = this.props;
 		if (nextState.text !== text) {
+			return true;
+		}
+		if (nextState.protocolType !== protocolType) {
 			return true;
 		}
 		if (nextProps.connecting !== connecting) {
@@ -117,6 +119,10 @@ export default class NewServerView extends LoggedView {
 		this.setState({ text });
 	}
 
+	handlePickerValueChange = (itemValue) => {
+		this.setState({ protocolType: itemValue });
+	}
+
 	submit = () => {
 		const { text } = this.state;
 		const { connectServer } = this.props;
@@ -128,21 +134,14 @@ export default class NewServerView extends LoggedView {
 	}
 
 	completeUrl = (url) => {
+		const { protocolType } = this.state;
 		url = url && url.trim();
 
 		if (/^(\w|[0-9-_]){3,}$/.test(url)
-			&& /^(htt(ps?)?)|(loca((l)?|(lh)?|(lho)?|(lhos)?|(lhost:?\d*)?)$)/.test(url) === false) {
+			&& /^(loca((l)?|(lh)?|(lho)?|(lhos)?|(lhost:?\d*)?)$)/.test(url) === false) {
 			url = `${ url }.rocket.chat`;
 		}
-
-		if (/^(https?:\/\/)?(((\w|[0-9])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
-			if (/^localhost(:\d+)?/.test(url)) {
-				url = `http://${ url }`;
-			} else if (/^https?:\/\//.test(url) === false) {
-				url = `https://${ url }`;
-			}
-		}
-
+		url = protocolType + url;
 		return url.replace(/\/+$/, '');
 	}
 
@@ -170,7 +169,7 @@ export default class NewServerView extends LoggedView {
 
 	render() {
 		const { connecting } = this.props;
-		const { text } = this.state;
+		const { text, protocolType } = this.state;
 		return (
 			<KeyboardView
 				contentContainerStyle={sharedStyles.container}
@@ -182,17 +181,30 @@ export default class NewServerView extends LoggedView {
 					<SafeAreaView style={sharedStyles.container} testID='new-server-view' forceInset={{ bottom: 'never' }}>
 						<Image style={styles.image} source={{ uri: 'new_server' }} />
 						<Text style={styles.title}>{I18n.t('Sign_in_your_server')}</Text>
-						<TextInput
-							inputRef={e => this.input = e}
-							containerStyle={styles.inputContainer}
-							placeholder={defaultServer}
-							value={text}
-							returnKeyType='send'
-							onChangeText={this.onChangeText}
-							testID='new-server-view-input'
-							onSubmitEditing={this.submit}
-							clearButtonMode='while-editing'
-						/>
+						<View
+							style={styles.inputContainer}
+						>
+							<Picker
+								mode='dropdown'
+								selectedValue={protocolType}
+								onValueChange={this.handlePickerValueChange}
+								style={styles.picker}
+							>
+								<Picker.Item label='https://' value='https://' />
+								<Picker.Item label='http://' value='http://' />
+							</Picker>
+							<TextInput
+								inputRef={e => this.input = e}
+								placeholder={defaultServer}
+								value={text}
+								containerStyle={styles.input}
+								returnKeyType='send'
+								onChangeText={this.onChangeText}
+								testID='new-server-view-input'
+								onSubmitEditing={this.submit}
+								clearButtonMode='while-editing'
+							/>
+						</View>
 						<Button
 							title={I18n.t('Connect')}
 							type='primary'
