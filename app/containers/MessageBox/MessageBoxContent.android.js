@@ -8,7 +8,6 @@ import I18n from '../../i18n';
 import { COLOR_PRIMARY, COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 
-
 const leftButtons = ({
 	editing, editCancel, showEmojiKeyboard, openEmoji, closeEmoji
 }) => {

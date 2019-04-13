@@ -7,8 +7,11 @@ import styles from './styles';
 import I18n from '../../i18n';
 import { COLOR_PRIMARY, COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
+import IOSKeyboardAvoidingView from '../IOSKeyboardAvoidingView';
 
-const leftButtons = ({ toggleFilesActions }) => (
+const iconSize = 22;
+
+const attachFileButton = ({ toggleFilesActions }) => (
 	<BorderlessButton
 		key='file-message'
 		onPress={toggleFilesActions}
@@ -17,7 +20,7 @@ const leftButtons = ({ toggleFilesActions }) => (
 		accessibilityLabel={I18n.t('Message actions')}
 		accessibilityTraits='button'
 	>
-		<CustomIcon name='plus' size={23} color={COLOR_PRIMARY} />
+		<CustomIcon name='plus' size={iconSize} color={COLOR_PRIMARY} />
 	</BorderlessButton>
 );
 
@@ -30,7 +33,7 @@ const rightButtons = ({ showSend, submit, recordAudioMessage }) => (showSend ? (
 		accessibilityLabel={I18n.t('Send message')}
 		accessibilityTraits='button'
 	>
-		<CustomIcon name='send1' size={23} color={COLOR_PRIMARY} />
+		<CustomIcon name='send1' size={iconSize} color={COLOR_PRIMARY} />
 	</BorderlessButton>
 )
 	: (
@@ -42,10 +45,9 @@ const rightButtons = ({ showSend, submit, recordAudioMessage }) => (showSend ? (
 			accessibilityLabel={I18n.t('Send audio message')}
 			accessibilityTraits='button'
 		>
-			<CustomIcon name='mic' size={23} color={COLOR_PRIMARY} />
+			<CustomIcon name='mic' size={iconSize} color={COLOR_PRIMARY} />
 		</BorderlessButton>
 	));
-
 
 const MessageBoxContent = ({
 	setTextInputRef,
@@ -57,13 +59,13 @@ const MessageBoxContent = ({
 	onChangeText,
 	renderReplyPreview
 }) => (
-	<View style={styles.composer} key='messagebox'>
+	<IOSKeyboardAvoidingView style={styles.composer} key='messagebox'>
 		{renderReplyPreview()}
 		<View
 			style={[styles.textArea, editing && styles.editing]}
 			testID='messagebox'
 		>
-			{leftButtons({ toggleFilesActions })}
+			{attachFileButton({ toggleFilesActions })}
 			<TextInput
 				ref={setTextInputRef}
 				style={styles.textBoxInput}
@@ -80,10 +82,10 @@ const MessageBoxContent = ({
 			/>
 			{rightButtons({ showSend, submit, recordAudioMessage })}
 		</View>
-	</View>
+	</IOSKeyboardAvoidingView>
 );
 
-leftButtons.propTypes = {
+attachFileButton.propTypes = {
 	toggleFilesActions: PropTypes.func.isRequired
 };
 

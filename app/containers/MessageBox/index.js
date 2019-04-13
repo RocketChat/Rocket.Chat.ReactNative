@@ -30,6 +30,7 @@ import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
 import debounce from '../../utils/debounce';
 import MessageBoxContent from './MessageBoxContent';
+import { isIOS } from '../../utils/deviceInfo';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
@@ -685,17 +686,19 @@ class MessageBox extends Component {
 		const { showEmojiKeyboard, file } = this.state;
 		return (
 			[
-				<KeyboardAccessoryView
-					key='input'
-					renderContent={this.renderContent}
-					kbInputRef={this.component}
-					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
-					onKeyboardResigned={this.onKeyboardResigned}
-					onItemSelected={this.onEmojiSelected}
-					trackInteractive
-					requiresSameParentToManageScrollView
-					addBottomView
-				/>,
+				isIOS ? this.renderContent() : (
+					<KeyboardAccessoryView
+						key='input'
+						renderContent={this.renderContent}
+						kbInputRef={this.component}
+						kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
+						onKeyboardResigned={this.onKeyboardResigned}
+						onItemSelected={this.onEmojiSelected}
+						trackInteractive
+						requiresSameParentToManageScrollView
+						addBottomView
+					/>
+				),
 				this.renderFilesActions(),
 				<UploadModal
 					key='upload-modal'
