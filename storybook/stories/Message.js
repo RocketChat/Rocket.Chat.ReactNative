@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
+// import moment from 'moment';
 
 import MessageComponent from '../../app/containers/message/Message';
 import StoriesSeparator from './StoriesSeparator';
@@ -358,6 +359,64 @@ export default (
 
 		<Separator title='Broadcast' />
 		<Message msg='Broadcasted message' broadcast replyBroadcast={() => alert('broadcast!')} />
+
+		<Separator title='Discussion' />
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={null}
+			dlm={null}
+			msg='This is a discussion'
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1}
+			dlm={date}
+			msg='This is a discussion'
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={10}
+			dlm={date}
+			msg='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={date}
+			msg='This is a discussion'
+		/>
+		{/* <Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={moment().subtract(1, 'hour')}
+			msg='This is a discussion'
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={moment().subtract(1, 'day')}
+			msg='This is a discussion'
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={moment().subtract(5, 'day')}
+			msg='This is a discussion'
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={moment().subtract(30, 'day')}
+			msg='This is a discussion'
+		/> */}
 
 		<Separator title='Archived' />
 		<Message msg='This message is inside an archived room' archived />

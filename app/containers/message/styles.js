@@ -1,7 +1,14 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
-import { COLOR_BORDER, COLOR_PRIMARY, COLOR_WHITE } from '../../constants/colors';
+import {
+	COLOR_BORDER, COLOR_PRIMARY, COLOR_WHITE, COLOR_BACKGROUND_CONTAINER
+} from '../../constants/colors';
+
+const codeFontFamily = Platform.select({
+	ios: { fontFamily: 'Courier New' },
+	android: { fontFamily: 'monospace' }
+});
 
 export default StyleSheet.create({
 	root: {
@@ -27,6 +34,11 @@ export default StyleSheet.create({
 	flex: {
 		flexDirection: 'row',
 		flex: 1
+	},
+	text: {
+		fontSize: 16,
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textRegular
 	},
 	textInfo: {
 		fontStyle: 'italic',
@@ -54,6 +66,9 @@ export default StyleSheet.create({
 		marginRight: 6,
 		marginBottom: 6,
 		borderRadius: 2
+	},
+	reactionButtonReacted: {
+		backgroundColor: '#e8f2ff'
 	},
 	reactionContainer: {
 		flexDirection: 'row',
@@ -94,22 +109,28 @@ export default StyleSheet.create({
 		paddingHorizontal: 15,
 		paddingVertical: 5
 	},
-	broadcastButton: {
-		width: 107,
+	buttonContainer: {
+		marginTop: 6,
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+	button: {
+		paddingHorizontal: 15,
 		height: 44,
-		marginTop: 15,
-		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
 		backgroundColor: COLOR_PRIMARY,
 		borderRadius: 4
 	},
-	broadcastButtonIcon: {
-		color: COLOR_WHITE,
-		marginRight: 11
+	smallButton: {
+		height: 30
 	},
-	broadcastButtonText: {
+	buttonIcon: {
+		color: COLOR_WHITE,
+		marginRight: 6
+	},
+	buttonText: {
 		color: COLOR_WHITE,
 		fontSize: 14,
 		...sharedStyles.textMedium
@@ -139,8 +160,6 @@ export default StyleSheet.create({
 	imageContainer: {
 		flex: 1,
 		flexDirection: 'column',
-		borderColor: COLOR_BORDER,
-		borderWidth: 1,
 		borderRadius: 4
 	},
 	image: {
@@ -148,7 +167,8 @@ export default StyleSheet.create({
 		maxWidth: 400,
 		minHeight: 200,
 		borderRadius: 4,
-		marginBottom: 6
+		borderColor: COLOR_BORDER,
+		borderWidth: 1
 	},
 	inlineImage: {
 		width: 300,
@@ -159,5 +179,33 @@ export default StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
+	},
+	codeInline: {
+		...sharedStyles.textRegular,
+		...codeFontFamily,
+		borderWidth: 1,
+		backgroundColor: COLOR_BACKGROUND_CONTAINER,
+		borderRadius: 4
+	},
+	codeBlock: {
+		...sharedStyles.textRegular,
+		...codeFontFamily,
+		backgroundColor: COLOR_BACKGROUND_CONTAINER,
+		borderColor: COLOR_BORDER,
+		borderWidth: 1,
+		borderRadius: 4,
+		padding: 4
+	},
+	link: {
+		color: COLOR_PRIMARY,
+		...sharedStyles.textRegular
+	},
+	time: {
+		fontSize: 12,
+		paddingLeft: 10,
+		lineHeight: 22,
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textRegular,
+		fontWeight: '300'
 	}
 });

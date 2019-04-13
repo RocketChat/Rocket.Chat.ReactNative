@@ -50,6 +50,7 @@ export default class MessageContainer extends React.Component {
 		// methods - props
 		onLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
+		onDiscussionPress: PropTypes.func,
 		// methods - redux
 		errorActionsShow: PropTypes.func,
 		replyBroadcast: PropTypes.func,
@@ -116,10 +117,14 @@ export default class MessageContainer extends React.Component {
 		onReactionPress(emoji, item._id);
 	}
 
-
 	onReactionLongPress = () => {
 		this.setState({ reactionsModal: true });
 		vibrate();
+	}
+
+	onDiscussionPress = () => {
+		const { onDiscussionPress, item } = this.props;
+		onDiscussionPress(item);
 	}
 
 	get timeFormat() {
@@ -167,7 +172,7 @@ export default class MessageContainer extends React.Component {
 			item, editingMessage, user, style, archived, baseUrl, customEmojis, useRealName, broadcast
 		} = this.props;
 		const {
-			msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy, role
+			msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy, role, drid, dcount, dlm
 		} = item;
 		const isEditing = editingMessage._id === item._id;
 		return (
@@ -195,6 +200,9 @@ export default class MessageContainer extends React.Component {
 				reactionsModal={reactionsModal}
 				useRealName={useRealName}
 				role={role}
+				drid={drid}
+				dcount={dcount}
+				dlm={dlm}
 				closeReactions={this.closeReactions}
 				onErrorPress={this.onErrorPress}
 				onLongPress={this.onLongPress}
@@ -202,6 +210,7 @@ export default class MessageContainer extends React.Component {
 				onReactionPress={this.onReactionPress}
 				replyBroadcast={this.replyBroadcast}
 				toggleReactionPicker={this.toggleReactionPicker}
+				onDiscussionPress={this.onDiscussionPress}
 			/>
 		);
 	}
