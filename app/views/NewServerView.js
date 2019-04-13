@@ -144,7 +144,7 @@ export default class NewServerView extends LoggedView {
 			&& /^(loca((l)?|(lh)?|(lho)?|(lhos)?|(lhost:?\d*)?)$)/.test(url) === false) {
 			url = `${ url }.rocket.chat`;
 		}
-		url += protocolType;
+		url = protocolType + url;
 		return url.replace(/\/+$/, '');
 	}
 
