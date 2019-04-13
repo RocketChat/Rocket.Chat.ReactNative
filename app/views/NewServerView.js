@@ -20,6 +20,9 @@ import { CustomIcon } from '../lib/Icons';
 import StatusBar from '../containers/StatusBar';
 import { COLOR_PRIMARY } from '../constants/colors';
 
+const PROTOCOl_HTTP = 'http://';
+const PROTOCOL_HTTPS = 'https://';
+
 const styles = StyleSheet.create({
 	image: {
 		alignSelf: 'center',
@@ -77,7 +80,7 @@ export default class NewServerView extends LoggedView {
 		super('NewServerView', props);
 		this.state = {
 			text: '',
-			protocolType: 'https://'
+			protocolType: PROTOCOL_HTTPS
 		};
 	}
 
@@ -141,7 +144,7 @@ export default class NewServerView extends LoggedView {
 			&& /^(loca((l)?|(lh)?|(lho)?|(lhos)?|(lhost:?\d*)?)$)/.test(url) === false) {
 			url = `${ url }.rocket.chat`;
 		}
-		url = protocolType + url;
+		url += protocolType;
 		return url.replace(/\/+$/, '');
 	}
 
@@ -167,9 +170,39 @@ export default class NewServerView extends LoggedView {
 		);
 	}
 
+	renderInput() {
+		const { text, protocolType } = this.state;
+		return (
+			<View
+				style={styles.inputContainer}
+			>
+				<Picker
+					mode='dropdown'
+					selectedValue={protocolType}
+					onValueChange={this.handlePickerValueChange}
+					style={styles.picker}
+				>
+					<Picker.Item label={PROTOCOL_HTTPS} value={PROTOCOL_HTTPS} />
+					<Picker.Item label={PROTOCOl_HTTP} value={PROTOCOl_HTTP} />
+				</Picker>
+				<TextInput
+					inputRef={e => this.input = e}
+					placeholder={defaultServer}
+					value={text}
+					containerStyle={styles.input}
+					returnKeyType='send'
+					onChangeText={this.onChangeText}
+					testID='new-server-view-input'
+					onSubmitEditing={this.submit}
+					clearButtonMode='while-editing'
+				/>
+			</View>
+		);
+	}
+
 	render() {
 		const { connecting } = this.props;
-		const { text, protocolType } = this.state;
+		const { text } = this.state;
 		return (
 			<KeyboardView
 				contentContainerStyle={sharedStyles.container}
@@ -181,30 +214,7 @@ export default class NewServerView extends LoggedView {
 					<SafeAreaView style={sharedStyles.container} testID='new-server-view' forceInset={{ bottom: 'never' }}>
 						<Image style={styles.image} source={{ uri: 'new_server' }} />
 						<Text style={styles.title}>{I18n.t('Sign_in_your_server')}</Text>
-						<View
-							style={styles.inputContainer}
-						>
-							<Picker
-								mode='dropdown'
-								selectedValue={protocolType}
-								onValueChange={this.handlePickerValueChange}
-								style={styles.picker}
-							>
-								<Picker.Item label='https://' value='https://' />
-								<Picker.Item label='http://' value='http://' />
-							</Picker>
-							<TextInput
-								inputRef={e => this.input = e}
-								placeholder={defaultServer}
-								value={text}
-								containerStyle={styles.input}
-								returnKeyType='send'
-								onChangeText={this.onChangeText}
-								testID='new-server-view-input'
-								onSubmitEditing={this.submit}
-								clearButtonMode='while-editing'
-							/>
-						</View>
+						{this.renderInput()}
 						<Button
 							title={I18n.t('Connect')}
 							type='primary'
