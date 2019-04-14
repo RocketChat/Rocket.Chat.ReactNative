@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
+import { isEqual } from 'lodash';
 
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
@@ -18,7 +19,6 @@ import { loginRequest as loginRequestAction } from '../actions/login';
 import isValidEmail from '../utils/isValidEmail';
 import { LegalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
-import { isEqual } from 'lodash';
 
 const shouldUpdateState = ['name', 'email', 'password', 'username', 'saving'];
 
