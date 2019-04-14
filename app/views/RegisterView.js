@@ -18,6 +18,7 @@ import { loginRequest as loginRequestAction } from '../actions/login';
 import isValidEmail from '../utils/isValidEmail';
 import { LegalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
+import { isEqual } from 'lodash';
 
 const shouldUpdateState = ['name', 'email', 'password', 'username', 'saving'];
 
@@ -59,7 +60,8 @@ export default class RegisterView extends LoggedView {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		if (nextState.validationError !== this.state.validationError) {
+		const { validationError } = this.state;
+		if (!isEqual(nextState.validationError, validationError)) {
 			return true;
 		}
 		// eslint-disable-next-line react/destructuring-assignment
