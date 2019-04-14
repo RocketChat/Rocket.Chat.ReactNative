@@ -49,30 +49,28 @@ const styles = StyleSheet.create({
 	},
 	thumbnail: {
 		marginLeft: 'auto',
-		width: 50,
-		height: 50,
-		borderRadius: 2
+		width: 38,
+		height: 38
 	},
 	text: {
 		flex: 1,
-		flexDirection: 'column'
+		flexDirection: 'column',
+		paddingRight: 5
 	},
 	details: {
 		flexDirection: 'row'
 	},
 	buttonVideo: {
-		borderRadius: 4,
-		height: 50,
-		width: 100,
+		height: 38,
+		width: 38,
 		backgroundColor: '#1f2329',
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginLeft: 'auto'
 	},
 	buttonAudio: {
-		borderRadius: 50,
-		height: 50,
-		width: 50,
+		height: 38,
+		width: 38,
 		backgroundColor: '#f7f8fa',
 		alignItems: 'center',
 		justifyContent: 'center',
@@ -87,6 +85,7 @@ const styles = StyleSheet.create({
 });
 
 @connect(state => ({
+	message: state.messages.replyMessage,
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	customEmojis: state.customEmojis,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
@@ -102,7 +101,7 @@ export default class ReplyPreview extends Component {
 	}
 
 	shouldComponentUpdate() {
-		return false;
+		return true;
 	}
 
 	close = () => {
@@ -168,6 +167,7 @@ export default class ReplyPreview extends Component {
 			message, Message_TimeFormat, customEmojis, baseUrl, user
 		} = this.props;
 		const time = moment(message.ts).format(Message_TimeFormat);
+		const desc = (message.msg === '') ? message.attachments[0].description : message.msg;
 		return (
 			<View style={styles.container}>
 				<View style={styles.messageContainer}>
@@ -177,7 +177,7 @@ export default class ReplyPreview extends Component {
 								<Text style={styles.username}>{message.u.username}</Text>
 								<Text style={styles.time}>{time}</Text>
 							</View>
-							<Markdown msg={message.msg} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} />
+							<Markdown msg={desc} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} />
 						</View>
 						{this.renderAttachment()}
 					</View>

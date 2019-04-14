@@ -15,7 +15,6 @@ import {
 } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
 import { setActiveUser } from '../actions/activeUsers';
-import { someoneTyping, roomMessageReceived } from '../actions/room';
 import { setRoles } from '../actions/roles';
 
 import subscribeRooms from './methods/subscriptions/rooms';
@@ -30,7 +29,6 @@ import getPermissions from './methods/getPermissions';
 import getCustomEmoji from './methods/getCustomEmojis';
 import canOpenRoom from './methods/canOpenRoom';
 
-import _buildMessage from './methods/helpers/buildMessage';
 import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import loadMissedMessages from './methods/loadMissedMessages';
 
@@ -201,27 +199,6 @@ const RocketChat = {
 		});
 
 		this.sdk.onStreamData('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
-
-		this.sdk.onStreamData('stream-room-messages', (ddpMessage) => {
-			// TODO: debounce
-			const message = _buildMessage(ddpMessage.fields.args[0]);
-			requestAnimationFrame(() => reduxStore.dispatch(roomMessageReceived(message)));
-		});
-
-		this.sdk.onStreamData('stream-notify-room', protectedFunction((ddpMessage) => {
-			const [_rid, ev] = ddpMessage.fields.eventName.split('/');
-			if (ev === 'typing') {
-				reduxStore.dispatch(someoneTyping({ _rid, username: ddpMessage.fields.args[0], typing: ddpMessage.fields.args[1] }));
-			} else if (ev === 'deleteMessage') {
-				database.write(() => {
-					if (ddpMessage && ddpMessage.fields && ddpMessage.fields.args.length > 0) {
-						const { _id } = ddpMessage.fields.args[0];
-						const message = database.objects('messages').filtered('_id = $0', _id);
-						database.delete(message);
-					}
-				});
-			}
-		}));
 
 		this.sdk.onStreamData('rocketchat_roles', protectedFunction((ddpMessage) => {
 			this.roles = this.roles || {};
@@ -567,6 +544,9 @@ const RocketChat = {
 	unsubscribe(subscription) {
 		return this.sdk.unsubscribe(subscription);
 	},
+	onStreamData(...args) {
+		return this.sdk.onStreamData(...args);
+	},
 	emitTyping(room, t = true) {
 		const { login } = reduxStore.getState();
 		return this.sdk.methodCall('stream-notify-room', `${ room }/typing`, login.user.username, t);
@@ -599,6 +579,10 @@ const RocketChat = {
 	getRoomCounters(roomId, t) {
 		// RC 0.65.0
 		return this.sdk.get(`${ this.roomTypeToApiType(t) }.counters`, { roomId });
+	},
+	getChannelInfo(roomId) {
+		// RC 0.48.0
+		return this.sdk.get('channels.info', { roomId });
 	},
 	async getRoomMember(rid, currentUserId) {
 		try {
@@ -669,7 +653,13 @@ const RocketChat = {
 		let roles = [];
 		try {
 			// get the room from realm
-			const room = database.objects('subscriptions').filtered('rid = $0', rid)[0];
+			const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
+			if (!room) {
+				return permissions.reduce((result, permission) => {
+					result[permission] = false;
+					return result;
+				}, {});
+			}
 			// get room roles
 			roles = room.roles; // eslint-disable-line prefer-destructuring
 		} catch (error) {

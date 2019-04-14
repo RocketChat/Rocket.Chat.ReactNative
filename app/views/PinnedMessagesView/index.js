@@ -21,7 +21,6 @@ const options = [I18n.t('Unpin'), I18n.t('Cancel')];
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	customEmojis: state.customEmojis,
-	room: state.room,
 	user: {
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
@@ -38,7 +37,7 @@ export default class PinnedMessagesView extends LoggedView {
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
 		customEmojis: PropTypes.object,
-		room: PropTypes.object
+		navigation: PropTypes.object
 	}
 
 	constructor(props) {
@@ -47,6 +46,8 @@ export default class PinnedMessagesView extends LoggedView {
 			loading: false,
 			messages: []
 		};
+		this.rid = props.navigation.getParam('rid');
+		this.t = props.navigation.getParam('t');
 	}
 
 	componentDidMount() {
@@ -114,8 +115,7 @@ export default class PinnedMessagesView extends LoggedView {
 		this.setState({ loading: true });
 
 		try {
-			const { room } = this.props;
-			const result = await RocketChat.getMessages(room.rid, room.t, { pinned: true }, messages.length);
+			const result = await RocketChat.getMessages(this.rid, this.t, { pinned: true }, messages.length);
 			if (result.success) {
 				this.setState(prevState => ({
 					messages: [...prevState.messages, ...result.messages],

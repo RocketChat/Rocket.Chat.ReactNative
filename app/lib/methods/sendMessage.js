@@ -39,11 +39,10 @@ export async function sendMessageCall(message) {
 export default async function(rid, msg) {
 	try {
 		const message = getMessage(rid, msg);
-		const room = database.objects('subscriptions').filtered('rid == $0', rid);
+		const [room] = database.objects('subscriptions').filtered('rid == $0', rid);
 
-		// TODO: do we need this?
 		database.write(() => {
-			room.lastMessage = message;
+			room.draftMessage = null;
 		});
 
 		try {

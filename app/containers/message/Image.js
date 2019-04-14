@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
-import { RectButton } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
+import Touchable from 'react-native-platform-touchable';
 
 import PhotoModal from './PhotoModal';
 import Markdown from './Markdown';
 import styles from './styles';
-import { COLOR_WHITE } from '../../constants/colors';
 
 export default class extends Component {
 	static propTypes = {
@@ -17,7 +16,8 @@ export default class extends Component {
 		customEmojis: PropTypes.oneOfType([
 			PropTypes.array,
 			PropTypes.object
-		])
+		]),
+		onLongPress: PropTypes.func
 	}
 
 	state = { modalVisible: false, isPressed: false };
@@ -37,7 +37,7 @@ export default class extends Component {
 		return false;
 	}
 
-	onPressButton() {
+	onPressButton = () => {
 		this.setState({
 			modalVisible: true
 		});
@@ -58,7 +58,9 @@ export default class extends Component {
 
 	render() {
 		const { modalVisible, isPressed } = this.state;
-		const { baseUrl, file, user } = this.props;
+		const {
+			baseUrl, file, user, onLongPress
+		} = this.props;
 		const img = `${ baseUrl }${ file.image_url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
 
 		if (!img) {
@@ -67,20 +69,22 @@ export default class extends Component {
 
 		return (
 			[
-				<RectButton
+				<Touchable
 					key='image'
-					onPress={() => this.onPressButton()}
-					onActiveStateChange={this.isPressed}
+					onPress={this.onPressButton}
+					onLongPress={onLongPress}
 					style={styles.imageContainer}
-					underlayColor={COLOR_WHITE}
+					background={Touchable.Ripple('#fff')}
 				>
-					<FastImage
-						style={[styles.image, isPressed && { opacity: 0.5 }]}
-						source={{ uri: encodeURI(img) }}
-						resizeMode={FastImage.resizeMode.cover}
-					/>
-					{this.getDescription()}
-				</RectButton>,
+					<React.Fragment>
+						<FastImage
+							style={[styles.image, isPressed && { opacity: 0.5 }]}
+							source={{ uri: encodeURI(img) }}
+							resizeMode={FastImage.resizeMode.cover}
+						/>
+						{this.getDescription()}
+					</React.Fragment>
+				</Touchable>,
 				<PhotoModal
 					key='modal'
 					title={file.title}
