@@ -13,6 +13,19 @@
     "android": "react-native run-android",
     "snyk-protect": "snyk protect"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "jest ./__tests__/*",
+      "eslint . --fix",
+      "eslint .",
+      "git add ."
+    ]
+  },
   "rnpm": {
     "assets": [
       "resources/fonts"
@@ -98,9 +111,11 @@
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.11.1",
     "eslint-plugin-react-native": "^3.3.0",
+    "husky": ">=1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
+    "lint-staged": ">=8",
     "metro-react-native-babel-preset": "^0.45.6",
     "mocha": "^5.2.0",
     "otp.js": "^1.1.0",
