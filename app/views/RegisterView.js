@@ -47,7 +47,8 @@ export default class RegisterView extends LoggedView {
 			email: '',
 			password: '',
 			username: '',
-			saving: false
+			saving: false,
+			validationError: {}
 		};
 	}
 
@@ -58,6 +59,9 @@ export default class RegisterView extends LoggedView {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
+		if (nextState.validationError !== this.state.validationError) {
+			return true;
+		}
 		// eslint-disable-next-line react/destructuring-assignment
 		return shouldUpdateState.some(key => nextState[key] !== this.state[key]);
 	}
@@ -75,6 +79,19 @@ export default class RegisterView extends LoggedView {
 		}
 	}
 
+	onEmailInputChange(email) {
+		const { validationError } = this.state;
+		if (validationError && validationError.email && !email) {
+			this.setValidationErrorState('email', null);
+		}
+		this.setState({ email });
+	}
+
+	setValidationErrorState(field, value) {
+		const { validationError } = this.state;
+		this.setState({ validationError: { ...validationError, [field]: value } });
+	}
+
 	setTitle = (title) => {
 		const { navigation } = this.props;
 		navigation.setParams({ title });
@@ -84,12 +101,23 @@ export default class RegisterView extends LoggedView {
 		const {
 			name, email, password, username
 		} = this.state;
-		return name.trim() && email.trim() && password.trim() && username.trim() && isValidEmail(email);
+		return name.trim() && email.trim() && password.trim() && username.trim();
+	}
+
+	validEmail = () => {
+		const { email } = this.state;
+		return isValidEmail(email);
 	}
 
 	submit = async() => {
 		if (!this.valid()) {
 			return;
+		}
+		if (!this.validEmail()) {
+			this.setValidationErrorState('email', { error: 'error-invalid-email-address', reason: I18n.t('error-invalid-email-address') });
+			return;
+		} else {
+			this.setValidationErrorState('email', null);
 		}
 		this.setState({ saving: true });
 		Keyboard.dismiss();
@@ -111,7 +139,7 @@ export default class RegisterView extends LoggedView {
 	}
 
 	render() {
-		const { saving } = this.state;
+		const { saving, validationError } = this.state;
 		return (
 			<KeyboardView contentContainerStyle={sharedStyles.container}>
 				<StatusBar />
@@ -142,9 +170,10 @@ export default class RegisterView extends LoggedView {
 							returnKeyType='next'
 							keyboardType='email-address'
 							iconLeft='mail'
-							onChangeText={email => this.setState({ email })}
+							onChangeText={email => this.onEmailInputChange(email)}
 							onSubmitEditing={() => { this.passwordInput.focus(); }}
 							testID='register-view-email'
+							error={validationError && validationError.email ? validationError.email : {}}
 						/>
 						<TextInput
 							inputRef={(e) => { this.passwordInput = e; }}
