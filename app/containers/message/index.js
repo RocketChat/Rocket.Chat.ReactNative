@@ -34,6 +34,7 @@ export default class MessageContainer extends React.Component {
 			token: PropTypes.string.isRequired
 		}),
 		customTimeFormat: PropTypes.string,
+		customThreadTimeFormat: PropTypes.string,
 		style: ViewPropTypes.style,
 		archived: PropTypes.bool,
 		broadcast: PropTypes.bool,
@@ -180,7 +181,7 @@ export default class MessageContainer extends React.Component {
 	render() {
 		const { reactionsModal } = this.state;
 		const {
-			item, editingMessage, user, style, archived, baseUrl, customEmojis, useRealName, broadcast, fetchThreadName
+			item, editingMessage, user, style, archived, baseUrl, customEmojis, useRealName, broadcast, fetchThreadName, customThreadTimeFormat
 		} = this.props;
 		const {
 			_id, msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg
@@ -204,6 +205,7 @@ export default class MessageContainer extends React.Component {
 				user={user}
 				edited={editedBy && !!editedBy.username}
 				timeFormat={this.timeFormat}
+				customThreadTimeFormat={customThreadTimeFormat}
 				style={style}
 				archived={archived}
 				broadcast={broadcast}

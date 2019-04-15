@@ -97,6 +97,7 @@ export default class Message extends PureComponent {
 		baseUrl: PropTypes.string.isRequired,
 		customEmojis: PropTypes.object.isRequired,
 		timeFormat: PropTypes.string.isRequired,
+		customThreadTimeFormat: PropTypes.string,
 		msg: PropTypes.string,
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
@@ -173,14 +174,18 @@ export default class Message extends PureComponent {
 		onLongPress();
 	}
 
-	formatLastMessage = lm => (
-		lm ? moment(lm).calendar(null, {
+	formatLastMessage = (lm) => {
+		const { customThreadTimeFormat } = this.props;
+		if (customThreadTimeFormat) {
+			return moment(lm).format(customThreadTimeFormat);
+		}
+		return lm ? moment(lm).calendar(null, {
 			lastDay: `[${ I18n.t('Yesterday') }]`,
 			sameDay: 'h:mm A',
 			lastWeek: 'dddd',
 			sameElse: 'MMM D'
-		}) : null
-	)
+		}) : null;
+	}
 
 	formatMessageCount = (count, type) => {
 		const discussion = type === 'discussion';

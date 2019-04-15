@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import EJSON from 'ejson';
+import moment from 'moment';
 
 import LoggedView from '../View';
 import styles from './styles';
@@ -19,6 +20,8 @@ import StatusBar from '../../containers/StatusBar';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import log from '../../utils/log';
 import debounce from '../../utils/debounce';
+
+const Separator = React.memo(() => <View style={styles.separator} />);
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -111,6 +114,17 @@ export default class ThreadMessagesView extends LoggedView {
 		}
 	}, 300, true)
 
+	formatMessage = lm => (
+		lm ? moment(lm).calendar(null, {
+			lastDay: `[${ I18n.t('Yesterday') }]`,
+			sameDay: 'h:mm A',
+			lastWeek: 'dddd',
+			sameElse: 'MMM D'
+		}) : null
+	)
+
+	renderSeparator = () => <Separator />
+
 	renderEmpty = () => (
 		<View style={styles.listEmptyContainer} testID='thread-messages-view'>
 			<Text style={styles.noDataFound}>{I18n.t('No_thread_messages')}</Text>
@@ -129,6 +143,8 @@ export default class ThreadMessagesView extends LoggedView {
 				status={item.status}
 				_updatedAt={item._updatedAt}
 				navigation={navigation}
+				customTimeFormat='MMM D'
+				customThreadTimeFormat='MMM Do YYYY, h:mm:ss a'
 				fetchThreadName={this.fetchThreadName}
 				onDiscussionPress={this.onDiscussionPress}
 			/>
@@ -155,6 +171,7 @@ export default class ThreadMessagesView extends LoggedView {
 					onEndReachedThreshold={0.5}
 					maxToRenderPerBatch={5}
 					initialNumToRender={1}
+					ItemSeparatorComponent={this.renderSeparator}
 					ListFooterComponent={loading ? <RCActivityIndicator /> : null}
 				/>
 			</SafeAreaView>

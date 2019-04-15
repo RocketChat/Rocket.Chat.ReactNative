@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../Styles';
-import { COLOR_WHITE } from '../../constants/colors';
+import { COLOR_WHITE, COLOR_SEPARATOR } from '../../constants/colors';
 
 export default StyleSheet.create({
 	list: {
@@ -21,5 +21,12 @@ export default StyleSheet.create({
 	},
 	contentContainer: {
 		paddingBottom: 30
+	},
+	separator: {
+		height: StyleSheet.hairlineWidth,
+		width: '100%',
+		marginLeft: 60,
+		marginTop: 10,
+		backgroundColor: COLOR_SEPARATOR
 	}
 });
