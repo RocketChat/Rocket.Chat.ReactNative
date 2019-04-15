@@ -118,6 +118,10 @@ export default class MessageActions extends React.Component {
 			this.REACTION_INDEX = this.options.length - 1;
 		}
 
+		// Report
+		this.options.push(I18n.t('Report'));
+		this.REPORT_INDEX = this.options.length - 1;
+
 		// Delete
 		if (this.allowDelete(props)) {
 			this.options.push(I18n.t('Delete'));
@@ -293,6 +297,12 @@ export default class MessageActions extends React.Component {
 		toggleReactionPicker(actionMessage);
 	}
 
+	handleReport = async() => {
+		const { actionMessage } = this.props;
+		await RocketChat.reportMessage(actionMessage._id);
+		showToast(I18n.t('Message_Reported'));
+	}
+
 	handleActionPress = (actionIndex) => {
 		if (actionIndex) {
 			switch (actionIndex) {
@@ -322,6 +332,9 @@ export default class MessageActions extends React.Component {
 					break;
 				case this.REACTION_INDEX:
 					this.handleReaction();
+					break;
+				case this.REPORT_INDEX:
+					this.handleReport();
 					break;
 				case this.DELETE_INDEX:
 					this.handleDelete();
