@@ -11,6 +11,7 @@ import {
 	replyBroadcast as replyBroadcastAction
 } from '../../actions/messages';
 import { vibrate } from '../../utils/vibration';
+import debounce from '../../utils/debounce';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -46,11 +47,11 @@ export default class MessageContainer extends React.Component {
 		editingMessage: PropTypes.object,
 		useRealName: PropTypes.bool,
 		status: PropTypes.number,
+		navigation: PropTypes.object,
 		// methods - props
 		onLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
 		onDiscussionPress: PropTypes.func,
-		onThreadPress: PropTypes.func,
 		// methods - redux
 		errorActionsShow: PropTypes.func,
 		replyBroadcast: PropTypes.func,
@@ -122,10 +123,19 @@ export default class MessageContainer extends React.Component {
 		onDiscussionPress(item);
 	}
 
-	onThreadPress = () => {
-		const { onThreadPress, item } = this.props;
-		onThreadPress(item);
-	}
+	onThreadPress = debounce(() => {
+		const { navigation, item } = this.props;
+		if (item.tmid) {
+			navigation.push('RoomView', {
+				rid: item.rid, tmid: item.tmid, name: item.tmsg, t: 'thread'
+			});
+		} else if (item.tlm) {
+			const title = item.msg || (item.attachments && item.attachments.length && item.attachments[0].title);
+			navigation.push('RoomView', {
+				rid: item.rid, tmid: item._id, name: title, t: 'thread'
+			});
+		}
+	}, 1000, true)
 
 	get timeFormat() {
 		const { customTimeFormat, Message_TimeFormat } = this.props;

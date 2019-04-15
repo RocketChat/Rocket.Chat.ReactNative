@@ -252,7 +252,14 @@ const threadsSchema = {
 		starred: { type: 'bool', optional: true },
 		editedBy: 'messagesEditedBy',
 		reactions: { type: 'list', objectType: 'messagesReactions' },
-		role: { type: 'string', optional: true }
+		role: { type: 'string', optional: true },
+		drid: { type: 'string', optional: true },
+		dcount: { type: 'int', optional: true },
+		dlm: { type: 'date', optional: true },
+		tmid: { type: 'string', optional: true },
+		tcount: { type: 'int', optional: true },
+		tlm: { type: 'date', optional: true },
+		replies: 'string[]'
 	}
 };
 

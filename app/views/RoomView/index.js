@@ -68,7 +68,7 @@ export default class RoomView extends LoggedView {
 		const tmid = navigation.getParam('tmid');
 		return {
 			headerTitle: <RoomHeaderView rid={rid} prid={prid} tmid={tmid} title={title} type={t} />,
-			headerRight: <RightButtons rid={rid} tmid={tmid} type={t} navigation={navigation} />
+			headerRight: <RightButtons rid={rid} tmid={tmid} t={t} navigation={navigation} />
 		};
 	}
 
@@ -262,20 +262,6 @@ export default class RoomView extends LoggedView {
 		});
 	}, 1000, true)
 
-	onThreadPress = debounce((item) => {
-		const { navigation } = this.props;
-		if (item.tmid) {
-			navigation.push('RoomView', {
-				rid: item.rid, tmid: item.tmid, name: item.tmsg, t: 'thread'
-			});
-		} else if (item.tlm) {
-			const title = item.msg || (item.attachments && item.attachments.length && item.attachments[0].title);
-			navigation.push('RoomView', {
-				rid: item.rid, tmid: item._id, name: title, t: 'thread'
-			});
-		}
-	}, 1000, true)
-
 	handleConnected = () => {
 		this.init();
 		EventEmitter.removeListener('connected', this.handleConnected);
@@ -379,7 +365,7 @@ export default class RoomView extends LoggedView {
 
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen } = this.state;
-		const { user } = this.props;
+		const { user, navigation } = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
 
@@ -405,11 +391,11 @@ export default class RoomView extends LoggedView {
 				status={item.status}
 				_updatedAt={item._updatedAt}
 				previousItem={previousItem}
+				navigation={navigation}
 				fetchThreadName={this.fetchThreadName}
 				onReactionPress={this.onReactionPress}
 				onLongPress={this.onMessageLongPress}
 				onDiscussionPress={this.onDiscussionPress}
-				onThreadPress={this.onThreadPress}
 			/>
 		);
 

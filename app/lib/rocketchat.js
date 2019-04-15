@@ -776,11 +776,15 @@ const RocketChat = {
 		});
 	},
 	toggleFollowMessage(mid, follow) {
-		// RC 0.51.0
+		// RC 1.0
 		if (follow) {
 			return this.sdk.methodCall('followMessage', { mid });
 		}
 		return this.sdk.methodCall('unfollowMessage', { mid });
+	},
+	getThreadsList({ rid, limit, skip }) {
+		// RC 1.0
+		return this.sdk.methodCall('getThreadsList', { rid, limit, skip });
 	}
 };
 

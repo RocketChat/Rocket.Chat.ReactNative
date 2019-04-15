@@ -37,6 +37,11 @@ class RightButtonsContainer extends React.PureComponent {
 		});
 	}
 
+	goThreadsView = () => {
+		const { rid, t, navigation } = this.props;
+		navigation.navigate('ThreadMessagesView', { rid, t });
+	}
+
 	goRoomActionsView = () => {
 		const { rid, t, navigation } = this.props;
 		navigation.navigate('RoomActionsView', { rid, t });
@@ -73,6 +78,12 @@ class RightButtonsContainer extends React.PureComponent {
 		}
 		return (
 			<CustomHeaderButtons>
+				<Item
+					title='thread'
+					iconName='thread'
+					onPress={this.goThreadsView}
+					testID='room-view-header-threads'
+				/>
 				<Item
 					title='more'
 					iconName='menu'
