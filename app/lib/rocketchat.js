@@ -774,6 +774,13 @@ const RocketChat = {
 			roomId,
 			searchText
 		});
+	},
+	toggleFollowMessage(mid, follow) {
+		// RC 0.51.0
+		if (follow) {
+			return this.sdk.methodCall('followMessage', { mid });
+		}
+		return this.sdk.methodCall('unfollowMessage', { mid });
 	}
 };
 

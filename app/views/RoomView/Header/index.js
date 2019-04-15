@@ -6,6 +6,7 @@ import equal from 'deep-equal';
 
 import database from '../../../lib/realm';
 import Header from './Header';
+import RightButtons from './RightButtons';
 
 @responsive
 @connect((state, ownProps) => {
@@ -107,3 +108,5 @@ export default class RoomHeaderView extends Component {
 		);
 	}
 }
+
+export { RightButtons };

@@ -14,7 +14,6 @@ import EJSON from 'ejson';
 import {
 	toggleReactionPicker as toggleReactionPickerAction,
 	actionsShow as actionsShowAction,
-	messagesRequest as messagesRequestAction,
 	editCancel as editCancelAction,
 	replyCancel as replyCancelAction
 } from '../../actions/messages';
@@ -34,8 +33,7 @@ import { isIOS } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
 import ConnectionBadge from '../../containers/ConnectionBadge';
-import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
-import RoomHeaderView from './Header';
+import RoomHeaderView, { RightButtons } from './Header';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
 import { COLOR_WHITE } from '../../constants/colors';
@@ -58,8 +56,7 @@ import buildMessage from '../../lib/methods/helpers/buildMessage';
 	editCancel: () => dispatch(editCancelAction()),
 	replyCancel: () => dispatch(replyCancelAction()),
 	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
-	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage)),
-	messagesRequest: room => dispatch(messagesRequestAction(room))
+	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage))
 }))
 /** @extends React.Component */
 export default class RoomView extends LoggedView {
@@ -71,13 +68,7 @@ export default class RoomView extends LoggedView {
 		const tmid = navigation.getParam('tmid');
 		return {
 			headerTitle: <RoomHeaderView rid={rid} prid={prid} tmid={tmid} title={title} type={t} />,
-			headerRight: t === 'l' || tmid
-				? null
-				: (
-					<CustomHeaderButtons>
-						<Item title='more' iconName='menu' onPress={() => navigation.navigate('RoomActionsView', { rid, t })} testID='room-view-header-actions' />
-					</CustomHeaderButtons>
-				)
+			headerRight: <RightButtons rid={rid} tmid={tmid} type={t} navigation={navigation} />
 		};
 	}
 
@@ -96,7 +87,6 @@ export default class RoomView extends LoggedView {
 		isAuthenticated: PropTypes.bool,
 		toggleReactionPicker: PropTypes.func.isRequired,
 		actionsShow: PropTypes.func,
-		messagesRequest: PropTypes.func,
 		editCancel: PropTypes.func,
 		replyCancel: PropTypes.func
 	};
@@ -224,8 +214,6 @@ export default class RoomView extends LoggedView {
 		try {
 			this.initInteraction = InteractionManager.runAfterInteractions(async() => {
 				const { room } = this.state;
-				// const { messagesRequest } = this.props;  REMOVER ACTIONS
-
 				if (this.tmid) {
 					RocketChat.loadThreadMessages({ tmid: this.tmid, t: this.t });
 				} else {

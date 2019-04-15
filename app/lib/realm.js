@@ -225,7 +225,8 @@ const messagesSchema = {
 		dlm: { type: 'date', optional: true },
 		tmid: { type: 'string', optional: true },
 		tcount: { type: 'int', optional: true },
-		tlm: { type: 'date', optional: true }
+		tlm: { type: 'date', optional: true },
+		replies: 'string[]'
 	}
 };
 
