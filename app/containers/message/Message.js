@@ -426,7 +426,7 @@ export default class Message extends PureComponent {
 
 	renderThread = () => {
 		const {
-			tcount, tlm, onThreadPress
+			tcount, tlm, onThreadPress, msg
 		} = this.props;
 
 		if (!tlm) {
@@ -442,6 +442,7 @@ export default class Message extends PureComponent {
 					background={Touchable.Ripple('#fff')}
 					style={[styles.button, styles.smallButton]}
 					hitSlop={BUTTON_HIT_SLOP}
+					testID={`message-thread-button-${ msg }`}
 				>
 					<React.Fragment>
 						<CustomIcon name='thread' size={20} style={styles.buttonIcon} />
@@ -465,9 +466,11 @@ export default class Message extends PureComponent {
 			fetchThreadName(tmid);
 		}
 
+		const msg = tmsg || I18n.t('Thread');
+
 		return (
-			<Text style={styles.repliedThread} numberOfLines={3}>
-				{I18n.t('Replied_on')} <Text style={styles.repliedThreadName} onPress={onThreadPress}>{tmsg || I18n.t('Thread')}</Text>
+			<Text style={styles.repliedThread} numberOfLines={3} testID={`message-thread-replied-on-${ msg }`}>
+				{I18n.t('Replied_on')} <Text style={styles.repliedThreadName} onPress={onThreadPress}>{msg}</Text>
 			</Text>
 		);
 	}

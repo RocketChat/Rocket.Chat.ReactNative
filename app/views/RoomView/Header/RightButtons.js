@@ -83,7 +83,7 @@ class RightButtonsContainer extends React.PureComponent {
 						title='bell'
 						iconName={isFollowingThread ? 'Bell-off' : 'bell'}
 						onPress={this.toggleFollowThread}
-						testID='room-view-header-toggle-follow'
+						testID={isFollowingThread ? 'room-view-header-unfollow' : 'room-view-header-follow'}
 					/>
 				</CustomHeaderButtons>
 			);

@@ -89,7 +89,7 @@ const Header = React.memo(({
 					contentContainerStyle={styles.scroll}
 				>
 					<Icon type={prid ? 'discussion' : type} status={status} />
-					<Text style={[styles.title, { fontSize: TITLE_SIZE * scale }]} numberOfLines={1}>{title}</Text>
+					<Text style={[styles.title, { fontSize: TITLE_SIZE * scale }]} numberOfLines={1} testID={`room-view-title-${ title }`}>{title}</Text>
 				</ScrollView>
 			</View>
 			{type === 'thread' ? null : <Typing usersTyping={usersTyping} />}
