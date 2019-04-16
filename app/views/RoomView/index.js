@@ -67,7 +67,10 @@ export default class RoomView extends LoggedView {
 		const t = navigation.getParam('t');
 		const tmid = navigation.getParam('tmid');
 		return {
-			headerTitle: <RoomHeaderView rid={rid} prid={prid} tmid={tmid} title={title} type={t} />,
+			headerTitleContainerStyle: styles.headerTitleContainerStyle,
+			headerTitle: (
+				<RoomHeaderView rid={rid} prid={prid} tmid={tmid} title={title} type={t} widthOffset={tmid ? 95 : 130} />
+			),
 			headerRight: <RightButtons rid={rid} tmid={tmid} t={t} navigation={navigation} />
 		};
 	}

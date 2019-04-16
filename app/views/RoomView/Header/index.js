@@ -37,7 +37,8 @@ export default class RoomHeaderView extends Component {
 		tmid: PropTypes.string,
 		rid: PropTypes.string,
 		window: PropTypes.object,
-		status: PropTypes.string
+		status: PropTypes.string,
+		widthOffset: PropTypes.number
 	};
 
 	constructor(props) {
@@ -91,7 +92,7 @@ export default class RoomHeaderView extends Component {
 	render() {
 		const { usersTyping } = this.state;
 		const {
-			window, title, type, status, prid, tmid
+			window, title, type, status, prid, tmid, widthOffset
 		} = this.props;
 
 		return (
@@ -104,6 +105,7 @@ export default class RoomHeaderView extends Component {
 				width={window.width}
 				height={window.height}
 				usersTyping={usersTyping}
+				widthOffset={widthOffset}
 			/>
 		);
 	}

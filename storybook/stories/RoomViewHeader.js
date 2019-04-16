@@ -32,6 +32,9 @@ const Header = props => (
 			{...props}
 		/>
 		<CustomHeaderButtons>
+			<Item title='thread' iconName='thread' />
+		</CustomHeaderButtons>
+		<CustomHeaderButtons>
 			<Item title='more' iconName='menu' />
 		</CustomHeaderButtons>
 	</View>

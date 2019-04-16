@@ -1,4 +1,5 @@
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -6,6 +7,15 @@ import { CustomHeaderButtons, Item } from '../../../containers/HeaderButton';
 import database, { safeAddListener } from '../../../lib/realm';
 import RocketChat from '../../../lib/rocketchat';
 import log from '../../../utils/log';
+
+const styles = StyleSheet.create({
+	more: {
+		marginHorizontal: 0, marginLeft: 0, marginRight: 5
+	},
+	thread: {
+		marginHorizontal: 0, marginLeft: 0, marginRight: 10
+	}
+});
 
 @connect(state => ({
 	userId: state.login.user && state.login.user.id
@@ -83,12 +93,14 @@ class RightButtonsContainer extends React.PureComponent {
 					iconName='thread'
 					onPress={this.goThreadsView}
 					testID='room-view-header-threads'
+					buttonStyle={styles.thread}
 				/>
 				<Item
 					title='more'
 					iconName='menu'
 					onPress={this.goRoomActionsView}
 					testID='room-view-header-actions'
+					buttonStyle={styles.more}
 				/>
 			</CustomHeaderButtons>
 		);
