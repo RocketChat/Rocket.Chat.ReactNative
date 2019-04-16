@@ -279,8 +279,10 @@ export default class RoomView extends LoggedView {
 
 	updateRoom = () => {
 		this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
-			const room = JSON.parse(JSON.stringify(this.rooms[0] || {}));
-			this.internalSetState({ room });
+			if (this.rooms[0]) {
+				const room = JSON.parse(JSON.stringify(this.rooms[0] || {}));
+				this.internalSetState({ room });
+			}
 		});
 	}
 
