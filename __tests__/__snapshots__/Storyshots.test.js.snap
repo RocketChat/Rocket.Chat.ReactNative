@@ -10081,6 +10081,7 @@ exports[`Storyshots Message list 1`] = `
                     "paddingHorizontal": 15,
                   }
                 }
+                testID="message-thread-button-How are you?"
               >
                 <Text
                   allowFontScaling={false}
@@ -10305,6 +10306,7 @@ exports[`Storyshots Message list 1`] = `
                   "marginBottom": 6,
                 }
               }
+              testID="message-thread-replied-on-How are you?"
             >
               Replied on:
                
@@ -10524,6 +10526,7 @@ exports[`Storyshots Message list 1`] = `
                   "marginBottom": 6,
                 }
               }
+              testID="message-thread-replied-on-Thread with emoji :) :joy:"
             >
               Replied on:
                
@@ -10743,6 +10746,7 @@ exports[`Storyshots Message list 1`] = `
                   "marginBottom": 6,
                 }
               }
+              testID="message-thread-replied-on-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             >
               Replied on:
                
@@ -10962,6 +10966,7 @@ exports[`Storyshots Message list 1`] = `
                   "marginBottom": 6,
                 }
               }
+              testID="message-thread-replied-on-How are you?"
             >
               Replied on:
                
@@ -11181,6 +11186,7 @@ exports[`Storyshots Message list 1`] = `
                   "marginBottom": 6,
                 }
               }
+              testID="message-thread-replied-on-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             >
               Replied on:
                
@@ -11458,6 +11464,7 @@ exports[`Storyshots Message list 1`] = `
                     "paddingHorizontal": 15,
                   }
                 }
+                testID="message-thread-button-How are you?"
               >
                 <Text
                   allowFontScaling={false}
@@ -11738,6 +11745,7 @@ exports[`Storyshots Message list 1`] = `
                     "paddingHorizontal": 15,
                   }
                 }
+                testID="message-thread-button-How are you?"
               >
                 <Text
                   allowFontScaling={false}
