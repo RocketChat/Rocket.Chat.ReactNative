@@ -21,9 +21,7 @@
   "lint-staged": {
     "*.js": [
       "jest ./__tests__/*",
-      "eslint . --fix",
-      "eslint .",
-      "git add ."
+      "eslint ."
     ]
   },
   "rnpm": {
