@@ -9,7 +9,6 @@ import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
-import semver from 'semver';
 
 import { userTyping as userTypingAction } from '../../actions/room';
 import {
@@ -57,7 +56,7 @@ class MessageBox extends Component {
 		replyMessage: PropTypes.object,
 		replying: PropTypes.bool,
 		editing: PropTypes.bool,
-		serverVersion: PropTypes.string,
+		threadsEnabled: PropTypes.bool,
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			username: PropTypes.string,
@@ -585,11 +584,10 @@ class MessageBox extends Component {
 
 		// Reply
 		} else if (replying) {
-			const { replyMessage, closeReply, serverVersion } = this.props;
-			const truncatedServerVersion = semver.coerce(serverVersion).version;
+			const { replyMessage, closeReply, threadsEnabled } = this.props;
 
 			// Thread
-			if (semver.gte(truncatedServerVersion, '1.0.0')) {
+			if (threadsEnabled) {
 				onSubmit(message, replyMessage._id);
 
 			// Legacy reply
@@ -834,7 +832,7 @@ const mapStateToProps = state => ({
 	replying: state.messages.replyMessage && !!state.messages.replyMessage.msg,
 	editing: state.messages.editing,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	serverVersion: state.server && state.server.version,
+	threadsEnabled: state.settings.Threads_enabled,
 	user: {
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,

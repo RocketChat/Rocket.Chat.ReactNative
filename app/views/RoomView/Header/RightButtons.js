@@ -18,11 +18,13 @@ const styles = StyleSheet.create({
 });
 
 @connect(state => ({
-	userId: state.login.user && state.login.user.id
+	userId: state.login.user && state.login.user.id,
+	threadsEnabled: state.settings.Threads_enabled
 }))
 class RightButtonsContainer extends React.PureComponent {
 	static propTypes = {
 		userId: PropTypes.string,
+		threadsEnabled: PropTypes.bool,
 		rid: PropTypes.string,
 		t: PropTypes.string,
 		tmid: PropTypes.string,
@@ -70,7 +72,7 @@ class RightButtonsContainer extends React.PureComponent {
 
 	render() {
 		const { isFollowingThread } = this.state;
-		const { t, tmid } = this.props;
+		const { t, tmid, threadsEnabled } = this.props;
 		if (t === 'l') {
 			return null;
 		}
@@ -88,13 +90,15 @@ class RightButtonsContainer extends React.PureComponent {
 		}
 		return (
 			<CustomHeaderButtons>
-				<Item
-					title='thread'
-					iconName='thread'
-					onPress={this.goThreadsView}
-					testID='room-view-header-threads'
-					buttonStyle={styles.thread}
-				/>
+				{threadsEnabled ? (
+					<Item
+						title='thread'
+						iconName='thread'
+						onPress={this.goThreadsView}
+						testID='room-view-header-threads'
+						buttonStyle={styles.thread}
+					/>
+				) : null}
 				<Item
 					title='more'
 					iconName='menu'
