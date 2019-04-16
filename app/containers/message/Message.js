@@ -464,13 +464,12 @@ export default class Message extends PureComponent {
 
 		if (!tmsg) {
 			fetchThreadName(tmid);
+			return null;
 		}
 
-		const msg = tmsg || I18n.t('Thread');
-
 		return (
-			<Text style={styles.repliedThread} numberOfLines={3} testID={`message-thread-replied-on-${ msg }`}>
-				{I18n.t('Replied_on')} <Text style={styles.repliedThreadName} onPress={onThreadPress}>{msg}</Text>
+			<Text style={styles.repliedThread} numberOfLines={3} testID={`message-thread-replied-on-${ tmsg }`}>
+				{I18n.t('Replied_on')} <Text style={styles.repliedThreadName} onPress={onThreadPress}>{tmsg}</Text>
 			</Text>
 		);
 	}
