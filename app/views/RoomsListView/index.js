@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, FlatList, BackHandler, ActivityIndicator, Text, ScrollView, Keyboard, LayoutAnimation
+	View, FlatList, BackHandler, ActivityIndicator, Text, ScrollView, Keyboard, LayoutAnimation, InteractionManager
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
@@ -247,6 +247,9 @@ export default class RoomsListView extends LoggedView {
 		if (this.getSubscriptions && this.getSubscriptions.stop) {
 			this.getSubscriptions.stop();
 		}
+		if (this.updateStateInteraction && this.updateStateInteraction.cancel) {
+			this.updateStateInteraction.cancel();
+		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
@@ -306,16 +309,18 @@ export default class RoomsListView extends LoggedView {
 
 	// eslint-disable-next-line react/sort-comp
 	updateState = debounce(() => {
-		this.internalSetState({
-			chats: this.getSnapshot(this.chats),
-			unread: this.getSnapshot(this.unread),
-			favorites: this.getSnapshot(this.favorites),
-			discussions: this.getSnapshot(this.discussions),
-			channels: this.getSnapshot(this.channels),
-			privateGroup: this.getSnapshot(this.privateGroup),
-			direct: this.getSnapshot(this.direct),
-			livechat: this.getSnapshot(this.livechat),
-			loading: false
+		this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
+			this.internalSetState({
+				chats: this.getSnapshot(this.chats),
+				unread: this.getSnapshot(this.unread),
+				favorites: this.getSnapshot(this.favorites),
+				discussions: this.getSnapshot(this.discussions),
+				channels: this.getSnapshot(this.channels),
+				privateGroup: this.getSnapshot(this.privateGroup),
+				direct: this.getSnapshot(this.direct),
+				livechat: this.getSnapshot(this.livechat),
+				loading: false
+			});
 		});
 	}, 300);
 
