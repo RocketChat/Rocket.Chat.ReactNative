@@ -264,10 +264,11 @@ export default class RoomsListView extends LoggedView {
 		} = this.props;
 
 		if (server && this.hasActiveDB()) {
+			this.data = database.objects('subscriptions').filtered('archived != true && open == true && t != $0', 'l');
 			if (sortBy === 'alphabetical') {
-				this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('name', false);
+				this.data = this.data.sorted('name', false);
 			} else {
-				this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
+				this.data = this.data.sorted('roomUpdatedAt', true);
 			}
 
 			let chats = [];
@@ -281,7 +282,7 @@ export default class RoomsListView extends LoggedView {
 
 			// unread
 			if (showUnread) {
-				this.unread = this.data.filtered('archived != true && open == true').filtered('(unread > 0 || alert == true)');
+				this.unread = this.data.filtered('(unread > 0 || alert == true)');
 				unread = this.removeRealmInstance(this.unread);
 				safeAddListener(this.unread, debounce(() => this.internalSetState({ unread: this.removeRealmInstance(this.unread) }), 300));
 			} else {
