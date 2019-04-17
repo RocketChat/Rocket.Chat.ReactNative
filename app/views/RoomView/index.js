@@ -8,7 +8,6 @@ import { RectButton } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import moment from 'moment';
-import 'react-native-console-time-polyfill';
 import EJSON from 'ejson';
 
 import {
