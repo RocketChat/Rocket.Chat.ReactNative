@@ -18,6 +18,7 @@ import { showToast } from '../utils/info';
 import { vibrate } from '../utils/vibration';
 import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
+import log from '../utils/log';
 
 @connect(
 	state => ({
@@ -299,8 +300,12 @@ export default class MessageActions extends React.Component {
 
 	handleReport = async() => {
 		const { actionMessage } = this.props;
-		await RocketChat.reportMessage(actionMessage._id);
-		showToast(I18n.t('Message_Reported'));
+		try {
+			await RocketChat.reportMessage(actionMessage._id);
+			Alert.alert(I18n.t('Message_Reported'));
+		} catch (err) {
+			log('report message', err);
+		}
 	}
 
 	handleActionPress = (actionIndex) => {
