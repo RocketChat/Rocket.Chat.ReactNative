@@ -119,6 +119,8 @@ export default class RoomsListView extends LoggedView {
 
 	constructor(props) {
 		super('RoomsListView', props);
+		console.time(`${ this.constructor.name } init`);
+		console.time(`${ this.constructor.name } mount`);
 
 		this.data = [];
 		this.state = {
@@ -143,6 +145,7 @@ export default class RoomsListView extends LoggedView {
 		navigation.setParams({
 			onPressItem: this._onPressItem, initSearchingAndroid: this.initSearchingAndroid, cancelSearchingAndroid: this.cancelSearchingAndroid
 		});
+		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -248,8 +251,14 @@ export default class RoomsListView extends LoggedView {
 		this.removeListener(this.privateGroup);
 		this.removeListener(this.direct);
 		this.removeListener(this.livechat);
+		console.countReset(`${ this.constructor.name }.render calls`);
+
+		if (this.getSubscriptions && this.getSubscriptions.stop) {
+			this.getSubscriptions.stop();
+		}
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	internalSetState = (...args) => {
 		const { navigation } = this.props;
 		if (isIOS && navigation.isFocused()) {
@@ -258,7 +267,7 @@ export default class RoomsListView extends LoggedView {
 		this.setState(...args);
 	}
 
-	getSubscriptions = () => {
+	getSubscriptions = debounce(() => {
 		const {
 			server, sortBy, showUnread, showFavorites, groupByType
 		} = this.props;
@@ -346,7 +355,7 @@ export default class RoomsListView extends LoggedView {
 				chats, unread, favorites, discussions, channels, privateGroup, direct, livechat, loading: false
 			});
 		}
-	}
+	}, 300);
 
 	removeRealmInstance = (data) => {
 		const array = Array.from(data);
@@ -634,6 +643,7 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	render = () => {
+		console.count(`${ this.constructor.name }.render calls`);
 		const {
 			sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown
 		} = this.props;
