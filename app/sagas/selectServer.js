@@ -12,8 +12,31 @@ import database from '../lib/realm';
 import log from '../utils/log';
 import I18n from '../i18n';
 
-const handleSelectServer = function* handleSelectServer({ server }) {
+const getServerInfo = function* getServerInfo({ server }) {
 	try {
+		const serverInfo = yield RocketChat.getServerInfo(server);
+		if (!serverInfo.success) {
+			Alert.alert(I18n.t('Oops'), I18n.t(serverInfo.message, serverInfo.messageOptions));
+			yield put(serverFailure());
+			return;
+		}
+
+		database.databases.serversDB.write(() => {
+			database.databases.serversDB.create('servers', { id: server, version: serverInfo.version }, true);
+		});
+
+		return serverInfo;
+	} catch (e) {
+		log('getServerInfo', e);
+	}
+};
+
+const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }) {
+	try {
+		let serverInfo;
+		if (fetchVersion) {
+			serverInfo = yield getServerInfo({ server });
+		}
 		yield AsyncStorage.setItem('currentServer', server);
 		const userStringified = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
 
@@ -37,7 +60,7 @@ const handleSelectServer = function* handleSelectServer({ server }) {
 			return result;
 		}, {})));
 
-		yield put(selectServerSuccess(server));
+		yield put(selectServerSuccess(server, fetchVersion ? serverInfo && serverInfo.version : version));
 	} catch (e) {
 		log('handleSelectServer', e);
 	}
@@ -45,13 +68,9 @@ const handleSelectServer = function* handleSelectServer({ server }) {
 
 const handleServerRequest = function* handleServerRequest({ server }) {
 	try {
-		const result = yield RocketChat.testServer(server);
-		if (!result.success) {
-			Alert.alert(I18n.t('Oops'), I18n.t(result.message, result.messageOptions));
-			yield put(serverFailure());
-			return;
-		}
+		const serverInfo = yield getServerInfo({ server });
 
+		// TODO: cai aqui O.o
 		const loginServicesLength = yield RocketChat.getLoginServices(server);
 		if (loginServicesLength === 0) {
 			Navigation.navigate('LoginView');
@@ -59,10 +78,7 @@ const handleServerRequest = function* handleServerRequest({ server }) {
 			Navigation.navigate('LoginSignupView');
 		}
 
-		database.databases.serversDB.write(() => {
-			database.databases.serversDB.create('servers', { id: server }, true);
-		});
-		yield put(selectServerRequest(server));
+		yield put(selectServerRequest(server, serverInfo.version, false));
 	} catch (e) {
 		yield put(serverFailure());
 		log('handleServerRequest', e);

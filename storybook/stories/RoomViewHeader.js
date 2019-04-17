@@ -32,6 +32,9 @@ const Header = props => (
 			{...props}
 		/>
 		<CustomHeaderButtons>
+			<Item title='thread' iconName='thread' />
+		</CustomHeaderButtons>
+		<CustomHeaderButtons>
 			<Item title='more' iconName='menu' />
 		</CustomHeaderButtons>
 	</View>
@@ -47,6 +50,7 @@ export default (
 		<Header type='c' />
 		<Header type='p' />
 		<Header type='discussion' />
+		<Header type='thread' />
 
 		<StoriesSeparator title='Typing' />
 		<Header usersTyping={[{ username: 'diego.mello' }]} />

@@ -3,22 +3,25 @@ import PropTypes from 'prop-types';
 import {
 	View, Text, StyleSheet, ScrollView
 } from 'react-native';
+import { emojify } from 'react-emojione';
 
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
-import { isIOS } from '../../../utils/deviceInfo';
+import { isIOS, isAndroid } from '../../../utils/deviceInfo';
 import Icon from './Icon';
 import { COLOR_TEXT_DESCRIPTION, HEADER_TITLE, COLOR_WHITE } from '../../../constants/colors';
 
 const TITLE_SIZE = 16;
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
 		height: '100%'
 	},
 	titleContainer: {
 		flex: 6,
 		flexDirection: 'row'
+	},
+	threadContainer: {
+		marginRight: isAndroid ? 20 : undefined
 	},
 	title: {
 		...sharedStyles.textSemibold,
@@ -62,7 +65,7 @@ Typing.propTypes = {
 };
 
 const Header = React.memo(({
-	prid, title, type, status, usersTyping, width, height
+	title, type, status, usersTyping, width, height, prid, tmid, widthOffset
 }) => {
 	const portrait = height > width;
 	let scale = 1;
@@ -72,9 +75,13 @@ const Header = React.memo(({
 			scale = 0.8;
 		}
 	}
+	if (title) {
+		title = emojify(title, { output: 'unicode' });
+	}
+
 	return (
-		<View style={styles.container}>
-			<View style={styles.titleContainer}>
+		<View style={[styles.container, { width: width - widthOffset }]}>
+			<View style={[styles.titleContainer, tmid && styles.threadContainer]}>
 				<ScrollView
 					showsHorizontalScrollIndicator={false}
 					horizontal
@@ -82,10 +89,10 @@ const Header = React.memo(({
 					contentContainerStyle={styles.scroll}
 				>
 					<Icon type={prid ? 'discussion' : type} status={status} />
-					<Text style={[styles.title, { fontSize: TITLE_SIZE * scale }]} numberOfLines={1}>{title}</Text>
+					<Text style={[styles.title, { fontSize: TITLE_SIZE * scale }]} numberOfLines={1} testID={`room-view-title-${ title }`}>{title}</Text>
 				</ScrollView>
 			</View>
-			<Typing usersTyping={usersTyping} />
+			{type === 'thread' ? null : <Typing usersTyping={usersTyping} />}
 		</View>
 	);
 });
@@ -96,8 +103,10 @@ Header.propTypes = {
 	width: PropTypes.number.isRequired,
 	height: PropTypes.number.isRequired,
 	prid: PropTypes.string,
+	tmid: PropTypes.string,
 	status: PropTypes.string,
-	usersTyping: PropTypes.array
+	usersTyping: PropTypes.array,
+	widthOffset: PropTypes.number
 };
 
 Header.defaultProps = {
