@@ -441,6 +441,9 @@ class DB {
 
 	setActiveDB(database = '') {
 		const path = database.replace(/(^\w+:|^)\/\//, '');
+		if (this.database) {
+			this.database.close();
+		}
 		return this.databases.activeDB = new Realm({
 			path: `${ path }.realm`,
 			schema,
