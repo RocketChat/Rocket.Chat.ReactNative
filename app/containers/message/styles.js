@@ -130,7 +130,7 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		backgroundColor: COLOR_PRIMARY,
-		borderRadius: 4
+		borderRadius: 2
 	},
 	smallButton: {
 		height: 30
@@ -209,6 +209,13 @@ export default StyleSheet.create({
 		color: COLOR_PRIMARY,
 		...sharedStyles.textRegular
 	},
+	startedDiscussion: {
+		fontStyle: 'italic',
+		fontSize: 16,
+		marginBottom: 6,
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textRegular
+	},
 	time: {
 		fontSize: 12,
 		paddingLeft: 10,
@@ -216,5 +223,16 @@ export default StyleSheet.create({
 		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular,
 		fontWeight: '300'
+	},
+	repliedThread: {
+		fontSize: 16,
+		marginBottom: 6,
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textRegular
+	},
+	repliedThreadName: {
+		fontSize: 16,
+		color: COLOR_PRIMARY,
+		...sharedStyles.textSemibold
 	}
 });

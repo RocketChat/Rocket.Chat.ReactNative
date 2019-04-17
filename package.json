@@ -67,7 +67,7 @@
     "react-navigation-header-buttons": "^2.1.2",
     "react-redux": "^6.0.0",
     "reactotron-react-native": "2.2",
-    "realm": "2.24",
+    "realm": "2.26.1",
     "redux": "^4.0.1",
     "redux-enhancer-react-native-appstate": "^0.3.1",
     "redux-immutable-state-invariant": "^2.1.0",

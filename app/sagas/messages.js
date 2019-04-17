@@ -4,8 +4,6 @@ import { takeLatest, put, call } from 'redux-saga/effects';
 import Navigation from '../lib/Navigation';
 import { MESSAGES } from '../actions/actionsTypes';
 import {
-	messagesSuccess,
-	messagesFailure,
 	deleteSuccess,
 	deleteFailure,
 	editSuccess,
@@ -24,19 +22,6 @@ const deleteMessage = message => RocketChat.deleteMessage(message);
 const editMessage = message => RocketChat.editMessage(message);
 const toggleStarMessage = message => RocketChat.toggleStarMessage(message);
 const togglePinMessage = message => RocketChat.togglePinMessage(message);
-
-const get = function* get({ room }) {
-	try {
-		if (room.lastOpen) {
-			yield RocketChat.loadMissedMessages(room);
-		} else {
-			yield RocketChat.loadMessagesForRoom(room);
-		}
-		yield put(messagesSuccess());
-	} catch (err) {
-		yield put(messagesFailure(err));
-	}
-};
 
 const handleDeleteRequest = function* handleDeleteRequest({ message }) {
 	try {
@@ -97,7 +82,6 @@ const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 };
 
 const root = function* root() {
-	yield takeLatest(MESSAGES.REQUEST, get);
 	yield takeLatest(MESSAGES.DELETE_REQUEST, handleDeleteRequest);
 	yield takeLatest(MESSAGES.EDIT_REQUEST, handleEditRequest);
 	yield takeLatest(MESSAGES.TOGGLE_STAR_REQUEST, handleToggleStarRequest);
