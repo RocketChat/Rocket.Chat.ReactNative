@@ -15,7 +15,7 @@ import styles from '../Styles';
 	authToken: state.login.user && state.login.user.token
 }))
 /** @extends React.Component */
-export default class AdminPanelView	extends LoggedView {
+export default class AdminPanelView extends LoggedView {
 	static navigationOptions = ({ navigation }) => ({
 		headerLeft: <DrawerButton navigation={navigation} />,
 		title: I18n.t('Admin_Panel')
