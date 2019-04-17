@@ -3,13 +3,12 @@ import PropTypes from 'prop-types';
 import { StyleSheet, View } from 'react-native';
 import Modal from 'react-native-modal';
 import VideoPlayer from 'react-native-video-controls';
-import { RectButton } from 'react-native-gesture-handler';
+import Touchable from 'react-native-platform-touchable';
 
 import Markdown from './Markdown';
 import openLink from '../../utils/openLink';
 import { isIOS } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
-import { COLOR_WHITE } from '../../constants/colors';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/webm', 'video/3gp', 'video/mkv'])];
 const isTypeSupported = type => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -49,13 +48,13 @@ export default class Video extends React.PureComponent {
 		return `${ baseUrl }${ video_url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
 	}
 
-	toggleModal() {
+	toggleModal = () => {
 		this.setState(prevState => ({
 			isVisible: !prevState.isVisible
 		}));
 	}
 
-	open() {
+	open = () => {
 		const { file } = this.props;
 		if (isTypeSupported(file.video_type)) {
 			return this.toggleModal();
@@ -77,18 +76,17 @@ export default class Video extends React.PureComponent {
 		return (
 			[
 				<View key='button'>
-					<RectButton
+					<Touchable
+						onPress={this.open}
 						style={styles.button}
-						onPress={() => this.open()}
-						activeOpacity={0.5}
-						underlayColor={COLOR_WHITE}
+						background={Touchable.Ripple('#fff')}
 					>
 						<CustomIcon
 							name='play'
 							size={54}
 							style={styles.image}
 						/>
-					</RectButton>
+					</Touchable>
 					<Markdown msg={description} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} />
 				</View>,
 				<Modal
@@ -100,7 +98,7 @@ export default class Video extends React.PureComponent {
 				>
 					<VideoPlayer
 						source={{ uri: this.uri }}
-						onBack={() => this.toggleModal()}
+						onBack={this.toggleModal}
 						disableVolume
 					/>
 				</Modal>

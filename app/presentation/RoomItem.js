@@ -138,6 +138,7 @@ export default class RoomItem extends React.Component {
 		unread: PropTypes.number,
 		userMentions: PropTypes.number,
 		id: PropTypes.string,
+		prid: PropTypes.string,
 		onPress: PropTypes.func,
 		user: PropTypes.shape({
 			id: PropTypes.string,
@@ -217,11 +218,11 @@ export default class RoomItem extends React.Component {
 	}
 
 	get type() {
-		const { type, id } = this.props;
+		const { type, id, prid } = this.props;
 		if (type === 'd') {
 			return <Status style={styles.status} size={10} id={id} />;
 		}
-		return <RoomTypeIcon type={type} />;
+		return <RoomTypeIcon type={prid ? 'discussion' : type} />;
 	}
 
 	formatDate = date => moment(date).calendar(null, {
