@@ -3,7 +3,6 @@ import settings from './reducers';
 import login from './login';
 import meteor from './connect';
 import messages from './messages';
-import room from './room';
 import rooms from './rooms';
 import server from './server';
 import selectedUsers from './selectedUsers';
@@ -23,7 +22,6 @@ export default combineReducers({
 	selectedUsers,
 	createChannel,
 	app,
-	room,
 	rooms,
 	customEmojis,
 	activeUsers,
