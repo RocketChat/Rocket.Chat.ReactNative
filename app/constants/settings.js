@@ -61,5 +61,8 @@ export default {
 	},
 	Assets_favicon_512: {
 		type: null
+	},
+	Threads_enabled: {
+		type: null
 	}
 };

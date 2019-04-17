@@ -85,8 +85,6 @@ const getInfoMessage = ({
 		return I18n.t('Room_changed_privacy', { type: msg, userBy: username });
 	} else if (type === 'message_snippeted') {
 		return I18n.t('Created_snippet');
-	} else if (type === 'thread-created') {
-		return I18n.t('Thread_created', { name: msg });
 	}
 	return '';
 };
@@ -99,6 +97,7 @@ export default class Message extends PureComponent {
 		baseUrl: PropTypes.string.isRequired,
 		customEmojis: PropTypes.object.isRequired,
 		timeFormat: PropTypes.string.isRequired,
+		customThreadTimeFormat: PropTypes.string,
 		msg: PropTypes.string,
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
@@ -137,6 +136,10 @@ export default class Message extends PureComponent {
 		useRealName: PropTypes.bool,
 		dcount: PropTypes.number,
 		dlm: PropTypes.instanceOf(Date),
+		tmid: PropTypes.string,
+		tcount: PropTypes.number,
+		tlm: PropTypes.instanceOf(Date),
+		tmsg: PropTypes.string,
 		// methods
 		closeReactions: PropTypes.func,
 		onErrorPress: PropTypes.func,
@@ -144,8 +147,10 @@ export default class Message extends PureComponent {
 		onReactionLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
 		onDiscussionPress: PropTypes.func,
+		onThreadPress: PropTypes.func,
 		replyBroadcast: PropTypes.func,
-		toggleReactionPicker: PropTypes.func
+		toggleReactionPicker: PropTypes.func,
+		fetchThreadName: PropTypes.func
 	}
 
 	static defaultProps = {
@@ -167,6 +172,32 @@ export default class Message extends PureComponent {
 			return;
 		}
 		onLongPress();
+	}
+
+	formatLastMessage = (lm) => {
+		const { customThreadTimeFormat } = this.props;
+		if (customThreadTimeFormat) {
+			return moment(lm).format(customThreadTimeFormat);
+		}
+		return lm ? moment(lm).calendar(null, {
+			lastDay: `[${ I18n.t('Yesterday') }]`,
+			sameDay: 'h:mm A',
+			lastWeek: 'dddd',
+			sameElse: 'MMM D'
+		}) : null;
+	}
+
+	formatMessageCount = (count, type) => {
+		const discussion = type === 'discussion';
+		let text = discussion ? I18n.t('No_messages_yet') : null;
+		if (count === 1) {
+			text = `${ count } ${ discussion ? I18n.t('message') : I18n.t('reply') }`;
+		} else if (count > 1 && count < 1000) {
+			text = `${ count } ${ discussion ? I18n.t('messages') : I18n.t('replies') }`;
+		} else if (count > 999) {
+			text = `+999 ${ discussion ? I18n.t('messages') : I18n.t('replies') }`;
+		}
+		return text;
 	}
 
 	isInfoMessage = () => {
@@ -369,23 +400,11 @@ export default class Message extends PureComponent {
 		const {
 			msg, dcount, dlm, onDiscussionPress
 		} = this.props;
-		const time = dlm ? moment(dlm).calendar(null, {
-			lastDay: `[${ I18n.t('Yesterday') }]`,
-			sameDay: 'h:mm A',
-			lastWeek: 'dddd',
-			sameElse: 'MMM D'
-		}) : null;
-		let buttonText = 'No messages yet';
-		if (dcount === 1) {
-			buttonText = `${ dcount } message`;
-		} else if (dcount > 1 && dcount < 1000) {
-			buttonText = `${ dcount } messages`;
-		} else if (dcount > 999) {
-			buttonText = '+999 messages';
-		}
+		const time = this.formatLastMessage(dlm);
+		const buttonText = this.formatMessageCount(dcount, 'discussion');
 		return (
 			<React.Fragment>
-				<Text style={styles.textInfo}>{I18n.t('Started_discussion')}</Text>
+				<Text style={styles.startedDiscussion}>{I18n.t('Started_discussion')}</Text>
 				<Text style={styles.text}>{msg}</Text>
 				<View style={styles.buttonContainer}>
 					<Touchable
@@ -405,6 +424,56 @@ export default class Message extends PureComponent {
 		);
 	}
 
+	renderThread = () => {
+		const {
+			tcount, tlm, onThreadPress, msg
+		} = this.props;
+
+		if (!tlm) {
+			return null;
+		}
+
+		const time = this.formatLastMessage(tlm);
+		const buttonText = this.formatMessageCount(tcount, 'thread');
+		return (
+			<View style={styles.buttonContainer}>
+				<Touchable
+					onPress={onThreadPress}
+					background={Touchable.Ripple('#fff')}
+					style={[styles.button, styles.smallButton]}
+					hitSlop={BUTTON_HIT_SLOP}
+					testID={`message-thread-button-${ msg }`}
+				>
+					<React.Fragment>
+						<CustomIcon name='thread' size={20} style={styles.buttonIcon} />
+						<Text style={styles.buttonText}>{buttonText}</Text>
+					</React.Fragment>
+				</Touchable>
+				<Text style={styles.time}>{time}</Text>
+			</View>
+		);
+	}
+
+	renderRepliedThread = () => {
+		const {
+			tmid, tmsg, header, onThreadPress, fetchThreadName
+		} = this.props;
+		if (!tmid || !header || this.isTemp()) {
+			return null;
+		}
+
+		if (!tmsg) {
+			fetchThreadName(tmid);
+			return null;
+		}
+
+		return (
+			<Text style={styles.repliedThread} numberOfLines={3} testID={`message-thread-replied-on-${ tmsg }`}>
+				{I18n.t('Replied_on')} <Text style={styles.repliedThreadName} onPress={onThreadPress}>{tmsg}</Text>
+			</Text>
+		);
+	}
+
 	renderInner = () => {
 		const { type } = this.props;
 		if (type === 'discussion-created') {
@@ -418,9 +487,11 @@ export default class Message extends PureComponent {
 		return (
 			<React.Fragment>
 				{this.renderUsername()}
+				{this.renderRepliedThread()}
 				{this.renderContent()}
 				{this.renderAttachment()}
 				{this.renderUrl()}
+				{this.renderThread()}
 				{this.renderReactions()}
 				{this.renderBroadcastReply()}
 			</React.Fragment>

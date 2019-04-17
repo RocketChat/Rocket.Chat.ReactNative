@@ -9,6 +9,7 @@ import messagesStatus from '../constants/messagesStatus';
 import database, { safeAddListener } from './realm';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
+import EventEmitter from '../utils/events';
 
 import {
 	setUser, setLoginServices, loginRequest, loginFailure, logout
@@ -31,6 +32,7 @@ import canOpenRoom from './methods/canOpenRoom';
 
 import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import loadMissedMessages from './methods/loadMissedMessages';
+import loadThreadMessages from './methods/loadThreadMessages';
 
 import sendMessage, { getMessage, sendMessageCall } from './methods/sendMessage';
 import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFileMessage';
@@ -78,26 +80,24 @@ const RocketChat = {
 			console.warn(`AsyncStorage error: ${ error.message }`);
 		}
 	},
-	async testServer(server) {
+	async getServerInfo(server) {
 		try {
-			const result = await fetch(`${ server }/api/v1/info`).then(response => response.json());
-			if (result.success && result.info) {
-				if (semver.lt(result.info.version, MIN_ROCKETCHAT_VERSION)) {
+			const result = await fetch(`${ server }/api/info`).then(response => response.json());
+			if (result.success) {
+				if (semver.lt(result.version, MIN_ROCKETCHAT_VERSION)) {
 					return {
 						success: false,
 						message: 'Invalid_server_version',
 						messageOptions: {
-							currentVersion: result.info.version,
+							currentVersion: result.version,
 							minVersion: MIN_ROCKETCHAT_VERSION
 						}
 					};
 				}
-				return {
-					success: true
-				};
+				return result;
 			}
 		} catch (e) {
-			log('testServer', e);
+			log('getServerInfo', e);
 		}
 		return {
 			success: false,
@@ -135,6 +135,7 @@ const RocketChat = {
 		}
 	},
 	async loginSuccess({ user }) {
+		EventEmitter.emit('connected');
 		reduxStore.dispatch(setUser(user));
 		reduxStore.dispatch(roomsRequest());
 
@@ -370,6 +371,7 @@ const RocketChat = {
 	},
 	loadMissedMessages,
 	loadMessagesForRoom,
+	loadThreadMessages,
 	getMessage,
 	sendMessage,
 	getRooms,
@@ -568,9 +570,9 @@ const RocketChat = {
 		// RC 0.64.0
 		return this.sdk.post('rooms.favorite', { roomId, favorite });
 	},
-	getRoomMembers(rid, allUsers) {
+	getRoomMembers(rid, allUsers, skip = 0, limit = 10) {
 		// RC 0.42.0
-		return this.sdk.methodCall('getUsersOfRoom', rid, allUsers);
+		return this.sdk.methodCall('getUsersOfRoom', rid, allUsers, { skip, limit });
 	},
 	getUserRoles() {
 		// RC 0.27.0
@@ -648,6 +650,10 @@ const RocketChat = {
 		users = users.map(u => u.name);
 		// RC 0.51.0
 		return this.sdk.methodCall('addUsersToRoom', { rid, users });
+	},
+	getSingleMessage(msgId) {
+		// RC 0.57.0
+		return this.sdk.methodCall('getSingleMessage', msgId);
 	},
 	hasPermission(permissions, rid) {
 		let roles = [];
@@ -768,6 +774,17 @@ const RocketChat = {
 			roomId,
 			searchText
 		});
+	},
+	toggleFollowMessage(mid, follow) {
+		// RC 1.0
+		if (follow) {
+			return this.sdk.methodCall('followMessage', { mid });
+		}
+		return this.sdk.methodCall('unfollowMessage', { mid });
+	},
+	getThreadsList({ rid, limit, skip }) {
+		// RC 1.0
+		return this.sdk.methodCall('getThreadsList', { rid, limit, skip });
 	}
 };
 
