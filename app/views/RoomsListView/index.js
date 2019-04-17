@@ -8,7 +8,6 @@ import { isEqual } from 'lodash';
 import { SafeAreaView, NavigationEvents } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 
-import SearchBox from '../../containers/SearchBox';
 import ConnectionBadge from '../../containers/ConnectionBadge';
 import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
@@ -19,7 +18,6 @@ import log from '../../utils/log';
 import I18n from '../../i18n';
 import SortDropdown from './SortDropdown';
 import ServerDropdown from './ServerDropdown';
-import Touch from '../../utils/touch';
 import {
 	toggleSortDropdown as toggleSortDropdownAction,
 	openSearchHeader as openSearchHeaderAction,
@@ -29,10 +27,10 @@ import {
 import { appStart as appStartAction } from '../../actions';
 import debounce from '../../utils/debounce';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
-import { CustomIcon } from '../../lib/Icons';
 import RoomsListHeaderView from './Header';
 import { DrawerButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
+import ListHeader from './ListHeader';
 
 const SCROLL_OFFSET = 56;
 
@@ -418,43 +416,18 @@ export default class RoomsListView extends LoggedView {
 
 	getScrollRef = ref => this.scroll = ref
 
-	renderHeader = () => {
+	renderListHeader = () => {
 		const { search } = this.state;
-		if (search.length > 0) {
-			return null;
-		}
-		return this.renderSort();
-	}
-
-	renderSort = () => {
 		const { sortBy } = this.props;
-
 		return (
-			<Touch
-				key='rooms-list-view-sort'
-				onPress={this.toggleSort}
-				style={styles.dropdownContainerHeader}
-			>
-				<View style={styles.sortItemContainer}>
-					<Text style={styles.sortToggleText}>{I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') })}</Text>
-					<CustomIcon style={styles.sortIcon} size={22} name='sort1' />
-				</View>
-			</Touch>
+			<ListHeader
+				searchLength={search.length}
+				sortBy={sortBy}
+				onChangeSearchText={this.search}
+				toggleSort={this.toggleSort}
+			/>
 		);
 	}
-
-	renderSearchBar = () => {
-		if (isIOS) {
-			return <SearchBox onChangeText={this.search} testID='rooms-list-view-search' key='rooms-list-view-search' />;
-		}
-	}
-
-	renderListHeader = () => (
-		[
-			this.renderSearchBar(),
-			this.renderHeader()
-		]
-	)
 
 	renderItem = ({ item }) => {
 		const {
