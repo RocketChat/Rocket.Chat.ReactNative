@@ -400,6 +400,13 @@ export default class RoomsListView extends LoggedView {
 		}
 	}
 
+	handleBackPressListener = ({ type }) => {
+		if (type === 'didFocus') {
+			BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+		}
+		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+	}
+
 	toggleSort = () => {
 		const { toggleSortDropdown } = this.props;
 
@@ -600,8 +607,8 @@ export default class RoomsListView extends LoggedView {
 				{showServerDropdown ? <ServerDropdown navigator={navigator} /> : null}
 				<ConnectionBadge />
 				<NavigationEvents
-					onDidFocus={() => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)}
-					onWillBlur={() => BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)}
+					onDidFocus={this.handleBackPressListener}
+					onWillBlur={this.handleBackPressListener}
 				/>
 			</SafeAreaView>
 		);
