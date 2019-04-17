@@ -250,9 +250,6 @@ export default class RoomsListView extends LoggedView {
 		if (this.updateStateInteraction && this.updateStateInteraction.cancel) {
 			this.updateStateInteraction.cancel();
 		}
-		if (this.backPressInteraction && this.backPressInteraction.cancel) {
-			this.backPressInteraction.cancel();
-		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
@@ -407,15 +404,6 @@ export default class RoomsListView extends LoggedView {
 		} else {
 			return this.goRoom(item);
 		}
-	}
-
-	handleBackPressListener = ({ type }) => {
-		this.backPressInteraction = InteractionManager.runAfterInteractions(() => {
-			if (type === 'didFocus') {
-				BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-			}
-			BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
-		});
 	}
 
 	toggleSort = () => {
@@ -618,8 +606,8 @@ export default class RoomsListView extends LoggedView {
 				{showServerDropdown ? <ServerDropdown navigator={navigator} /> : null}
 				<ConnectionBadge />
 				<NavigationEvents
-					onDidFocus={this.handleBackPressListener}
-					onWillBlur={this.handleBackPressListener}
+					onDidFocus={() => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)}
+					onWillBlur={() => BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)}
 				/>
 			</SafeAreaView>
 		);
