@@ -209,7 +209,7 @@ export default class Sidebar extends Component {
 				{this.canSeeAdminPanel() ? (
 					<SidebarItem
 						text={I18n.t('Admin_Panel')}
-						left={<CustomIcon name='cog' size={20} color={COLOR_TEXT} />}
+						left={<CustomIcon name='shield-alt' size={20} color={COLOR_TEXT} />}
 						onPress={() => this.sidebarNavigate('AdminPanelView')}
 						testID='sidebar-settings'
 						current={activeItemKey === 'AdminPanelStack'}
