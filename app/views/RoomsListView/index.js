@@ -250,6 +250,9 @@ export default class RoomsListView extends LoggedView {
 		if (this.updateStateInteraction && this.updateStateInteraction.cancel) {
 			this.updateStateInteraction.cancel();
 		}
+		if (this.backPressInteraction && this.backPressInteraction.cancel) {
+			this.backPressInteraction.cancel();
+		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
@@ -325,8 +328,9 @@ export default class RoomsListView extends LoggedView {
 	}, 300);
 
 	getSnapshot = (data) => {
-		if (data && data.snapshot) {
-			return data.snapshot();
+		if (data && data.length) {
+			const array = Array.from(data);
+			return JSON.parse(JSON.stringify(array));
 		}
 		return [];
 	}
@@ -406,10 +410,12 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	handleBackPressListener = ({ type }) => {
-		if (type === 'didFocus') {
-			BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-		}
-		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+		this.backPressInteraction = InteractionManager.runAfterInteractions(() => {
+			if (type === 'didFocus') {
+				BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+			}
+			BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+		});
 	}
 
 	toggleSort = () => {
