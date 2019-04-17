@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Reactotron from 'reactotron-react-native';
 
 import { CustomHeaderButtons, Item } from '../../../containers/HeaderButton';
 import database, { safeAddListener } from '../../../lib/realm';
@@ -34,7 +35,7 @@ class RightButtonsContainer extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		if (props.tmid) {
-			this.thread = database.objectForPrimaryKey('messages', props.tmid);
+			this.thread = database.objects('messages').filtered('_id = $0', props.tmid);
 			safeAddListener(this.thread, this.updateThread);
 		}
 		this.state = {
@@ -42,10 +43,18 @@ class RightButtonsContainer extends React.PureComponent {
 		};
 	}
 
+	componentWillUnmount() {
+		const { tmid } = this.props;
+		if (tmid) {
+			this.thread.removeAllListeners();
+		}
+	}
+
 	updateThread = () => {
 		const { userId } = this.props;
+		Reactotron.log(this.thread);
 		this.setState({
-			isFollowingThread: this.thread.replies && !!this.thread.replies.find(t => t === userId)
+			isFollowingThread: this.thread[0].replies && !!this.thread[0].replies.find(t => t === userId)
 		});
 	}
 
