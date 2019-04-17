@@ -243,19 +243,13 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	componentWillUnmount() {
-		this.removeListener(this.data);
-		this.removeListener(this.unread);
-		this.removeListener(this.favorites);
-		this.removeListener(this.discussions);
-		this.removeListener(this.channels);
-		this.removeListener(this.privateGroup);
-		this.removeListener(this.direct);
-		this.removeListener(this.livechat);
-		console.countReset(`${ this.constructor.name }.render calls`);
-
+		if (this.data && this.data.removeAllListeners) {
+			this.data.removeAllListeners();
+		}
 		if (this.getSubscriptions && this.getSubscriptions.stop) {
 			this.getSubscriptions.stop();
 		}
+		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -268,6 +262,10 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	getSubscriptions = debounce(() => {
+		if (this.data && this.data.removeAllListeners) {
+			this.data.removeAllListeners();
+		}
+
 		const {
 			server, sortBy, showUnread, showFavorites, groupByType
 		} = this.props;
@@ -280,92 +278,54 @@ export default class RoomsListView extends LoggedView {
 				this.data = this.data.sorted('roomUpdatedAt', true);
 			}
 
-			let chats = [];
-			let unread = [];
-			let favorites = [];
-			let discussions = [];
-			let channels = [];
-			let privateGroup = [];
-			let direct = [];
-			let livechat = [];
-
 			// unread
 			if (showUnread) {
 				this.unread = this.data.filtered('(unread > 0 || alert == true)');
-				unread = this.removeRealmInstance(this.unread);
-				safeAddListener(this.unread, debounce(() => this.internalSetState({ unread: this.removeRealmInstance(this.unread) }), 300));
 			} else {
-				this.removeListener(unread);
+				this.unread = [];
 			}
 			// favorites
 			if (showFavorites) {
 				this.favorites = this.data.filtered('f == true');
-				favorites = this.removeRealmInstance(this.favorites);
-				safeAddListener(this.favorites, debounce(() => this.internalSetState({ favorites: this.removeRealmInstance(this.favorites) }), 300));
 			} else {
-				this.removeListener(favorites);
+				this.favorites = [];
 			}
 			// type
 			if (groupByType) {
-				// discussions
 				this.discussions = this.data.filtered('prid != null');
-				discussions = this.removeRealmInstance(this.discussions);
-
-				// channels
 				this.channels = this.data.filtered('t == $0 AND prid == null', 'c');
-				channels = this.removeRealmInstance(this.channels);
-
-				// private
 				this.privateGroup = this.data.filtered('t == $0 AND prid == null', 'p');
-				privateGroup = this.removeRealmInstance(this.privateGroup);
-
-				// direct
 				this.direct = this.data.filtered('t == $0 AND prid == null', 'd');
-				direct = this.removeRealmInstance(this.direct);
-
-				// livechat
 				this.livechat = this.data.filtered('t == $0 AND prid == null', 'l');
-				livechat = this.removeRealmInstance(this.livechat);
-
-				safeAddListener(this.discussions, debounce(() => this.internalSetState({ discussions: this.removeRealmInstance(this.discussions) }), 300));
-				safeAddListener(this.channels, debounce(() => this.internalSetState({ channels: this.removeRealmInstance(this.channels) }), 300));
-				safeAddListener(this.privateGroup, debounce(() => this.internalSetState({ privateGroup: this.removeRealmInstance(this.privateGroup) }), 300));
-				safeAddListener(this.direct, debounce(() => this.internalSetState({ direct: this.removeRealmInstance(this.direct) }), 300));
-				safeAddListener(this.livechat, debounce(() => this.internalSetState({ livechat: this.removeRealmInstance(this.livechat) }), 300));
-				this.removeListener(this.chats);
+			} else if (showUnread) {
+				this.chats = this.data.filtered('(unread == 0 && alert == false)');
 			} else {
-				// chats
-				if (showUnread) {
-					this.chats = this.data.filtered('(unread == 0 && alert == false)');
-				} else {
-					this.chats = this.data;
-				}
-				chats = this.removeRealmInstance(this.chats);
-
-				safeAddListener(this.chats, debounce(() => this.internalSetState({ chats: this.removeRealmInstance(this.chats) }), 300));
-				this.removeListener(this.discussions);
-				this.removeListener(this.channels);
-				this.removeListener(this.privateGroup);
-				this.removeListener(this.direct);
-				this.removeListener(this.livechat);
+				this.chats = this.data;
 			}
-
-			// setState
-			this.internalSetState({
-				chats, unread, favorites, discussions, channels, privateGroup, direct, livechat, loading: false
-			});
+			safeAddListener(this.data, this.updateState);
 		}
 	}, 300);
 
-	removeRealmInstance = (data) => {
-		const array = Array.from(data);
-		return JSON.parse(JSON.stringify(array));
-	}
+	// eslint-disable-next-line react/sort-comp
+	updateState = debounce(() => {
+		this.internalSetState({
+			chats: this.getSnapshot(this.chats),
+			unread: this.getSnapshot(this.unread),
+			favorites: this.getSnapshot(this.favorites),
+			discussions: this.getSnapshot(this.discussions),
+			channels: this.getSnapshot(this.channels),
+			privateGroup: this.getSnapshot(this.privateGroup),
+			direct: this.getSnapshot(this.direct),
+			livechat: this.getSnapshot(this.livechat),
+			loading: false
+		});
+	}, 300);
 
-	removeListener = (data) => {
-		if (data && data.removeAllListeners) {
-			data.removeAllListeners();
+	getSnapshot = (data) => {
+		if (data && data.snapshot) {
+			return data.snapshot();
 		}
+		return [];
 	}
 
 	initSearchingAndroid = () => {
