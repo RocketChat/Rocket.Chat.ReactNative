@@ -61,20 +61,6 @@ export default class ThreadMessagesView extends LoggedView {
 		this.load();
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const { loading, messages, end } = this.state;
-		if (nextState.loading !== loading) {
-			return true;
-		}
-		if (!equal(nextState.messages, messages)) {
-			return true;
-		}
-		if (!equal(nextState.end, end)) {
-			return true;
-		}
-		return false;
-	}
-
 	updateMessages = () => {
 		this.setState({ messages: this.messages.slice() });
 	}
