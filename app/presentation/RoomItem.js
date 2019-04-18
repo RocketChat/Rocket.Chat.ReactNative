@@ -13,7 +13,9 @@ import Status from '../containers/Status';
 import RoomTypeIcon from '../containers/RoomTypeIcon';
 import I18n from '../i18n';
 import sharedStyles from '../views/Styles';
-import { COLOR_SEPARATOR, COLOR_PRIMARY, COLOR_WHITE } from '../constants/colors';
+import {
+	COLOR_SEPARATOR, COLOR_PRIMARY, COLOR_WHITE, COLOR_TEXT
+} from '../constants/colors';
 
 export const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
 
@@ -63,13 +65,18 @@ const styles = StyleSheet.create({
 		...sharedStyles.textSemibold
 	},
 	unreadNumberContainer: {
-		minWidth: 23,
-		padding: 3,
-		borderRadius: 4,
-		backgroundColor: COLOR_PRIMARY,
+		minWidth: 22,
+		height: 22,
+		paddingVertical: 3,
+		paddingHorizontal: 5,
+		borderRadius: 14,
+		backgroundColor: COLOR_TEXT,
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginLeft: 10
+	},
+	unreadMentioned: {
+		backgroundColor: COLOR_PRIMARY
 	},
 	unreadNumberText: {
 		color: COLOR_WHITE,
@@ -97,24 +104,25 @@ const styles = StyleSheet.create({
 	}
 });
 
-const renderNumber = (unread, userMentions) => {
+const UnreadBadge = React.memo(({ unread, userMentions, type }) => {
 	if (!unread || unread <= 0) {
 		return;
 	}
-
 	if (unread >= 1000) {
 		unread = '999+';
 	}
-
-	if (userMentions > 0) {
-		unread = `@ ${ unread }`;
-	}
+	const mentioned = userMentions > 0 && type !== 'd';
 
 	return (
-		<View style={styles.unreadNumberContainer}>
+		<View style={[styles.unreadNumberContainer, mentioned && styles.unreadMentioned]}>
 			<Text style={styles.unreadNumberText}>{ unread }</Text>
 		</View>
 	);
+});
+UnreadBadge.propTypes = {
+	unread: PropTypes.number,
+	userMentions: PropTypes.number,
+	type: PropTypes.string
 };
 
 const attrs = ['name', 'unread', 'userMentions', 'showLastMessage', 'alert', 'type'];
@@ -205,7 +213,9 @@ export default class RoomItem extends React.Component {
 		}
 
 		let msg = `${ prefix }${ lastMessage.msg.replace(/[\n\t\r]/igm, '') }`;
-		msg = emojify(msg, { output: 'unicode' });
+		if (msg) {
+			msg = emojify(msg, { output: 'unicode' });
+		}
 		return msg;
 	}
 
@@ -226,7 +236,7 @@ export default class RoomItem extends React.Component {
 
 	render() {
 		const {
-			unread, userMentions, name, _updatedAt, alert, testID, height, onPress
+			unread, userMentions, name, _updatedAt, alert, testID, height, type, onPress
 		} = this.props;
 
 		const date = this.formatDate(_updatedAt);
@@ -268,7 +278,7 @@ export default class RoomItem extends React.Component {
 							<Text style={[styles.markdownText, alert && styles.markdownTextAlert]} numberOfLines={2}>
 								{this.lastMessage}
 							</Text>
-							{renderNumber(unread, userMentions)}
+							<UnreadBadge unread={unread} userMentions={userMentions} type={type} />
 						</View>
 					</View>
 				</View>
