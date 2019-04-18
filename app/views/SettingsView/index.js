@@ -61,6 +61,10 @@ export default class SettingsView extends Component {
 		title: I18n.t('Settings')
 	})
 
+	static propTypes = {
+		navigation: PropTypes.object
+	}
+
 	sections() {
 		const settings = [
 			{
@@ -127,24 +131,24 @@ export default class SettingsView extends Component {
 		return settings;
 	}
 
-	renderSectionSeparator = () => {
-		return <View style={styles.sectionSeparatorBorder} />;
-	}
+	renderSectionSeparator = () => <View style={styles.sectionSeparatorBorder} />;
+	
 	renderNromalSettingItem = ({ item }) => {
 		const { navigate } = this.props.navigation;
 		return (
 			<RectButton
-				onPress={item.withScreen ? () => item.isDeveloped ? navigate(item.screen, {}) : showButtomToast('Comming Soon') : null}
+				onPress={item.withScreen ? (() => item.isDeveloped ? navigate(item.screen, {}) : showButtomToast('Comming Soon')) : null}
 				activeOpacity={0.9}
 				underlayColor={COLOR_TEXT}
 			>
-				<View style={styles.sectionItem} >
+				<View style={styles.sectionItem}>
 					<Text style={styles.sectionItemName}>{item.title}</Text>
-					{item.withScreen ? <CustomIcon style={styles.iconStyle} name='arrow-down' size={20} color={COLOR_TEXT_DESCRIPTION} /> : null}
+					{item.withScreen ? <CustomIcon style={styles.iconStyle} name='arrow-down' size={20} color={COLOR_TEXT_DESCRIPTION}/> : null}
 				</View>
 			</RectButton>
 		);
 	}
+
 	renderLastSection = ({ item }) => {
 		return (
 			<View style={[styles.sectionItem, item.disable && styles.sectionItemDisabled]} >
