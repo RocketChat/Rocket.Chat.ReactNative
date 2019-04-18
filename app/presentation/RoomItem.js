@@ -126,6 +126,18 @@ UnreadBadge.propTypes = {
 	type: PropTypes.string
 };
 
+const TypeIcon = React.memo(({ type, id, prid }) => {
+	if (type === 'd') {
+		return <Status style={styles.status} size={10} id={id} />;
+	}
+	return <RoomTypeIcon type={prid ? 'discussion' : type} />;
+});
+TypeIcon.propTypes = {
+	type: PropTypes.string,
+	id: PropTypes.string,
+	prid: PropTypes.string
+};
+
 const attrs = ['name', 'unread', 'userMentions', 'showLastMessage', 'alert', 'type'];
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
@@ -209,14 +221,6 @@ export default class RoomItem extends React.Component {
 		return msg;
 	}
 
-	get type() {
-		const { type, id, prid } = this.props;
-		if (type === 'd') {
-			return <Status style={styles.status} size={10} id={id} />;
-		}
-		return <RoomTypeIcon type={prid ? 'discussion' : type} />;
-	}
-
 	formatDate = date => moment(date).calendar(null, {
 		lastDay: `[${ I18n.t('Yesterday') }]`,
 		sameDay: 'h:mm A',
@@ -226,7 +230,7 @@ export default class RoomItem extends React.Component {
 
 	render() {
 		const {
-			unread, userMentions, name, _updatedAt, alert, testID, height, type, avatarSize, baseUrl, userId, token, onPress
+			unread, userMentions, name, _updatedAt, alert, testID, height, type, avatarSize, baseUrl, userId, token, onPress, id, prid
 		} = this.props;
 
 		const date = this.formatDate(_updatedAt);
@@ -260,7 +264,7 @@ export default class RoomItem extends React.Component {
 					<Avatar text={name} size={avatarSize} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
 					<View style={styles.centerContainer}>
 						<View style={styles.titleContainer}>
-							{this.type}
+							<TypeIcon type={type} id={id} prid={prid} />
 							<Text style={[styles.title, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
 							{_updatedAt ? <Text style={[styles.date, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
 						</View>
