@@ -132,13 +132,14 @@ export default class SettingsView extends Component {
 		return settings;
 	}
 
-	renderSectionSeparator = () => <View style={styles.sectionSeparatorBorder}/>;
+	renderSectionSeparator = () => <View style={styles.sectionSeparatorBorder} />;
 
 	renderNromalSettingItem = ({ item }) => {
-		const { navigate } = this.props.navigation;
+		const { navigation }= this.props;
+		const { navigate } = navigation;
 		return (
 			<RectButton
-				onPress={item.withScreen ? (() => item.isDeveloped ? navigate(item.screen, {}) : showButtomToast('Comming Soon')) : null}
+				onPress={item.withScreen ? (() => (item.isDeveloped ? navigate(item.screen, {}) : showButtomToast('Comming Soon'))) : null}
 				activeOpacity={0.9}
 				underlayColor={COLOR_TEXT}
 			>
@@ -151,16 +152,15 @@ export default class SettingsView extends Component {
 	}
 
 	renderLastSection = ({ item }) => (
-			<View style={[styles.sectionItem, item.disable && styles.sectionItemDisabled]} >
-				<Text style={styles.sectionItemName}>{item.title}</Text>
-				{item.withToggleButton ? <Switch value={false} /> : null}
-			</View>
-		)
-	
+		<View style={[styles.sectionItem, item.disable && styles.sectionItemDisabled]}>
+			<Text style={styles.sectionItemName}>{item.title}</Text>
+			{item.withToggleButton ? <Switch value={false} /> : null}
+		</View>
+	)
 
 	render() {
 		return (
-			<SafeAreaView style={styles.container} forceInset={{ bottom: 'never'}}>
+			<SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
 				<StatusBar />
 				<SectionList
 					contentContainerStyle={styles.contentContainer}
