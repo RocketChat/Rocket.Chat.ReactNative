@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
 	I18nManager, Text, View, StyleSheet, SectionList, Switch
 } from 'react-native';
+import PropTypes from 'prop-types';
 import { SafeAreaView } from 'react-navigation';
 import { RectButton } from 'react-native-gesture-handler';
 import { DrawerButton } from '../../containers/HeaderButton';
@@ -108,7 +109,7 @@ export default class SettingsView extends Component {
 					title: 'Server version: 1.0.0-develop',
 					screen: 'comming Soon ',
 					isDeveloped: false
-				},
+				}
 				],
 				renderItem: this.renderNromalSettingItem
 			},
@@ -131,8 +132,8 @@ export default class SettingsView extends Component {
 		return settings;
 	}
 
-	renderSectionSeparator = () => <View style={styles.sectionSeparatorBorder} />;
-	
+	renderSectionSeparator = () => <View style={styles.sectionSeparatorBorder}/>;
+
 	renderNromalSettingItem = ({ item }) => {
 		const { navigate } = this.props.navigation;
 		return (
@@ -143,24 +144,23 @@ export default class SettingsView extends Component {
 			>
 				<View style={styles.sectionItem}>
 					<Text style={styles.sectionItemName}>{item.title}</Text>
-					{item.withScreen ? <CustomIcon style={styles.iconStyle} name='arrow-down' size={20} color={COLOR_TEXT_DESCRIPTION}/> : null}
+					{item.withScreen ? <CustomIcon style={styles.iconStyle} name='arrow-down' size={20} color={COLOR_TEXT_DESCRIPTION} /> : null}
 				</View>
 			</RectButton>
 		);
 	}
 
-	renderLastSection = ({ item }) => {
-		return (
+	renderLastSection = ({ item }) => (
 			<View style={[styles.sectionItem, item.disable && styles.sectionItemDisabled]} >
 				<Text style={styles.sectionItemName}>{item.title}</Text>
 				{item.withToggleButton ? <Switch value={false} /> : null}
 			</View>
-		);
-	}
+		)
+	
 
 	render() {
 		return (
-			<SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.container} forceInset={{ bottom: 'never'}}>
 				<StatusBar />
 				<SectionList
 					contentContainerStyle={styles.contentContainer}
