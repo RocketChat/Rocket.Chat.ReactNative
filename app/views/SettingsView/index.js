@@ -58,9 +58,9 @@ const renderSeparator = () => <View style={styles.separator} />;
 
 export default class SettingsView extends Component {
     static navigationOptions = ({ navigation }) => ({
-					headerLeft: <DrawerButton navigation={navigation} />,
-					title: I18n.t('Settings')
-				})
+     headerLeft: <DrawerButton navigation={navigation} />,
+     title: I18n.t('Settings')
+    })
 
 	static propTypes = {
 		navigation: PropTypes.object
