@@ -238,7 +238,8 @@ export default class Message extends PureComponent {
 					borderRadius={4}
 					avatar={avatar}
 					baseUrl={baseUrl}
-					user={user}
+					userId={user.id}
+					token={user.token}
 				/>
 			);
 		}
