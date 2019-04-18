@@ -97,7 +97,7 @@ const Reply = ({
 	};
 
 	const renderTitle = () => {
-		if (!(attachment.author_icon || attachment.author_name || attachment.ts)) {
+		if (!attachment.author_name) {
 			return null;
 		}
 		return (
