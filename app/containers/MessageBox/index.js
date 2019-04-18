@@ -718,7 +718,8 @@ class MessageBox extends Component {
 							size={30}
 							type={item.username ? 'd' : 'c'}
 							baseUrl={baseUrl}
-							user={user}
+							userId={user.id}
+							token={user.token}
 						/>,
 						<Text key='mention-item-name' style={styles.mentionText}>{ item.username || item.name }</Text>
 					]
