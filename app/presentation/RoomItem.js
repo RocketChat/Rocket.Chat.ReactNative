@@ -83,7 +83,8 @@ const styles = StyleSheet.create({
 		overflow: 'hidden',
 		fontSize: 13,
 		...sharedStyles.textRegular,
-		letterSpacing: 0.56
+		letterSpacing: 0.56,
+		textAlign: 'center'
 	},
 	status: {
 		marginRight: 7,
@@ -127,11 +128,9 @@ UnreadBadge.propTypes = {
 
 const attrs = ['name', 'unread', 'userMentions', 'showLastMessage', 'alert', 'type'];
 @connect(state => ({
-	user: {
-		id: state.login.user && state.login.user.id,
-		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token
-	}
+	userId: state.login.user && state.login.user.id,
+	username: state.login.user && state.login.user.username,
+	token: state.login.user && state.login.user.token
 }))
 export default class RoomItem extends React.Component {
 	static propTypes = {
@@ -147,11 +146,9 @@ export default class RoomItem extends React.Component {
 		id: PropTypes.string,
 		prid: PropTypes.string,
 		onPress: PropTypes.func,
-		user: PropTypes.shape({
-			id: PropTypes.string,
-			username: PropTypes.string,
-			token: PropTypes.string
-		}),
+		userId: PropTypes.string,
+		username: PropTypes.string,
+		token: PropTypes.string,
 		avatarSize: PropTypes.number,
 		testID: PropTypes.string,
 		height: PropTypes.number
@@ -176,16 +173,9 @@ export default class RoomItem extends React.Component {
 		return attrs.some(key => nextProps[key] !== this.props[key]);
 	}
 
-	get avatar() {
-		const {
-			type, name, avatarSize, baseUrl, user
-		} = this.props;
-		return <Avatar text={name} size={avatarSize} type={type} baseUrl={baseUrl} style={styles.avatar} user={user} />;
-	}
-
 	get lastMessage() {
 		const {
-			lastMessage, type, showLastMessage, user
+			lastMessage, type, showLastMessage, username
 		} = this.props;
 
 		if (!showLastMessage) {
@@ -196,7 +186,7 @@ export default class RoomItem extends React.Component {
 		}
 
 		let prefix = '';
-		const me = lastMessage.u.username === user.username;
+		const me = lastMessage.u.username === username;
 
 		if (!lastMessage.msg && Object.keys(lastMessage.attachments).length > 0) {
 			if (me) {
@@ -236,7 +226,7 @@ export default class RoomItem extends React.Component {
 
 	render() {
 		const {
-			unread, userMentions, name, _updatedAt, alert, testID, height, type, onPress
+			unread, userMentions, name, _updatedAt, alert, testID, height, type, avatarSize, baseUrl, userId, token, onPress
 		} = this.props;
 
 		const date = this.formatDate(_updatedAt);
@@ -267,7 +257,7 @@ export default class RoomItem extends React.Component {
 					style={[styles.container, height && { height }]}
 					accessibilityLabel={accessibilityLabel}
 				>
-					{this.avatar}
+					<Avatar text={name} size={avatarSize} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
 					<View style={styles.centerContainer}>
 						<View style={styles.titleContainer}>
 							{this.type}
