@@ -2,6 +2,7 @@ import React from 'react';
 import { Text } from 'react-native';
 import { emojify } from 'react-emojione';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import I18n from '../../i18n';
 import styles from './styles';
@@ -17,17 +18,14 @@ const formatMsg = ({
 	}
 
 	let prefix = '';
-	const me = lastMessage.u.username === username;
+	const isLastMessageSentByMe = lastMessage.u.username === username;
 
-	if (!lastMessage.msg && Object.keys(lastMessage.attachments).length > 0) {
-		if (me) {
-			return I18n.t('User_sent_an_attachment', { user: I18n.t('You') });
-		} else {
-			return I18n.t('User_sent_an_attachment', { user: lastMessage.u.username });
-		}
+	if (!lastMessage.msg && Object.keys(lastMessage.attachments).length) {
+		const user = isLastMessageSentByMe ? I18n.t('You') : lastMessage.u.username;
+		return I18n.t('User_sent_an_attachment', { user });
 	}
 
-	if (me) {
+	if (isLastMessageSentByMe) {
 		prefix = I18n.t('You_colon');
 	}	else if (type !== 'd') {
 		prefix = `${ lastMessage.u.username }: `;
@@ -40,7 +38,8 @@ const formatMsg = ({
 	return msg;
 };
 
-// FIXME: lastMessage is an object and makes React.memo to rerender all the time
+const arePropsEqual = (oldProps, newProps) => _.isEqual(oldProps, newProps);
+
 const LastMessage = React.memo(({
 	lastMessage, type, showLastMessage, username
 }) => (
@@ -49,7 +48,7 @@ const LastMessage = React.memo(({
 			lastMessage, type, showLastMessage, username
 		})}
 	</Text>
-));
+), arePropsEqual);
 
 LastMessage.propTypes = {
 	lastMessage: PropTypes.object,
