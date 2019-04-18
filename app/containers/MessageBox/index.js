@@ -56,6 +56,7 @@ class MessageBox extends Component {
 		replyMessage: PropTypes.object,
 		replying: PropTypes.bool,
 		editing: PropTypes.bool,
+		threadsEnabled: PropTypes.bool,
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			username: PropTypes.string,
@@ -93,7 +94,7 @@ class MessageBox extends Component {
 	componentDidMount() {
 		const { rid } = this.props;
 		const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
-		if (room.draftMessage && room.draftMessage !== '') {
+		if (room && room.draftMessage) {
 			this.setInput(room.draftMessage);
 			this.setShowSend(true);
 		}
@@ -571,31 +572,42 @@ class MessageBox extends Component {
 		if (message.trim() === '') {
 			return;
 		}
-		// if is editing a message
+
 		const {
 			editing, replying
 		} = this.props;
 
+		// Edit
 		if (editing) {
 			const { _id, rid } = editingMessage;
 			editRequest({ _id, msg: message, rid });
+
+		// Reply
 		} else if (replying) {
-			const {
-				user, replyMessage, roomType, closeReply
-			} = this.props;
-			const permalink = await this.getPermalink(replyMessage);
-			let msg = `[ ](${ permalink }) `;
+			const { replyMessage, closeReply, threadsEnabled } = this.props;
 
-			// if original message wasn't sent by current user and neither from a direct room
-			if (user.username !== replyMessage.u.username && roomType !== 'd' && replyMessage.mention) {
-				msg += `@${ replyMessage.u.username } `;
+			// Thread
+			if (threadsEnabled) {
+				onSubmit(message, replyMessage._id);
+
+			// Legacy reply
+			} else {
+				const { user, roomType } = this.props;
+				const permalink = await this.getPermalink(replyMessage);
+				let msg = `[ ](${ permalink }) `;
+
+				// if original message wasn't sent by current user and neither from a direct room
+				if (user.username !== replyMessage.u.username && roomType !== 'd' && replyMessage.mention) {
+					msg += `@${ replyMessage.u.username } `;
+				}
+
+				msg = `${ msg } ${ message }`;
+				onSubmit(msg);
 			}
-
-			msg = `${ msg } ${ message }`;
-			onSubmit(msg);
 			closeReply();
+
+		// Normal message
 		} else {
-			// if is submiting a new message
 			onSubmit(message);
 		}
 		this.clearInput();
@@ -820,6 +832,7 @@ const mapStateToProps = state => ({
 	replying: state.messages.replyMessage && !!state.messages.replyMessage.msg,
 	editing: state.messages.editing,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	threadsEnabled: state.settings.Threads_enabled,
 	user: {
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,

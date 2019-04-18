@@ -21,6 +21,8 @@ async function navigateToRoom() {
 }
 
 describe('Room screen', () => {
+	const mainRoom = `private${ data.random }`;
+
 	before(async() => {
 		await navigateToRoom();
 	});
@@ -28,6 +30,8 @@ describe('Room screen', () => {
 	describe('Render', async() => {
 		it('should have room screen', async() => {
 			await expect(element(by.id('room-view'))).toBeVisible();
+			await waitFor(element(by.id(`room-view-title-${ mainRoom }`))).toBeVisible().withTimeout(5000);
+			await expect(element(by.id(`room-view-title-${ mainRoom }`))).toBeVisible();
 		});
 
 		it('should have messages list', async() => {
@@ -228,17 +232,6 @@ describe('Room screen', () => {
 				await expect(element(by.id('message-reaction-:grinning:'))).toBeNotVisible();
 			});
 
-			it('should reply message', async() => {
-				await mockMessage('reply');
-				await element(by.text(`${ data.random }reply`)).longPress();
-				await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
-				await expect(element(by.text('Message actions'))).toBeVisible();
-				await element(by.text('Reply')).tap();
-				await element(by.id('messagebox-input')).typeText('replied');
-				await element(by.id('messagebox-send-message')).tap();
-				// TODO: test if reply was sent
-			});
-
 			it('should edit message', async() => {
 				await mockMessage('edit');
 				await element(by.text(`${ data.random }edit`)).longPress();
@@ -279,6 +272,67 @@ describe('Room screen', () => {
 			});
 
 			// TODO: delete message - swipe on action sheet missing
+		});
+
+		describe('Thread', async() => {
+			const thread = `${ data.random }thread`;
+			it('should create thread', async() => {
+				await mockMessage('thread');
+				await element(by.text(thread)).longPress();
+				await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
+				await expect(element(by.text('Message actions'))).toBeVisible();
+				await element(by.text('Reply')).tap();
+				await element(by.id('messagebox-input')).typeText('replied');
+				await element(by.id('messagebox-send-message')).tap();
+				await waitFor(element(by.id(`message-thread-button-${ thread }`))).toBeVisible().withTimeout(5000);
+				await expect(element(by.id(`message-thread-button-${ thread }`))).toBeVisible();
+				await waitFor(element(by.id(`message-thread-replied-on-${ thread }`))).toBeVisible().withTimeout(5000);
+				await expect(element(by.id(`message-thread-replied-on-${ thread }`))).toBeVisible();
+			});
+
+			it('should navigate to thread from button', async() => {
+				await element(by.id(`message-thread-button-${ thread }`)).tap();
+				await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
+				await waitFor(element(by.id(`room-view-title-${ thread }`))).toBeVisible().withTimeout(5000);
+				await expect(element(by.id(`room-view-title-${ thread }`))).toBeVisible();
+				await tapBack();
+			});
+
+			it('should toggle follow thread', async() => {
+				await element(by.id(`message-thread-button-${ thread }`)).tap();
+				await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
+				await waitFor(element(by.id(`room-view-title-${ thread }`))).toBeVisible().withTimeout(5000);
+				await expect(element(by.id(`room-view-title-${ thread }`))).toBeVisible();
+				await element(by.id('room-view-header-unfollow')).tap();
+				await waitFor(element(by.id('room-view-header-follow'))).toBeVisible().withTimeout(60000);
+				await expect(element(by.id('room-view-header-follow'))).toBeVisible();
+				await element(by.id('room-view-header-follow')).tap();
+				await waitFor(element(by.id('room-view-header-unfollow'))).toBeVisible().withTimeout(60000);
+				await expect(element(by.id('room-view-header-unfollow'))).toBeVisible();
+				await tapBack();
+			});
+
+			it('should navigate to thread from thread name', async() => {
+				await element(by.id(`message-thread-replied-on-${ thread }`)).tap();
+				await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
+				await waitFor(element(by.id(`room-view-title-${ thread }`))).toBeVisible().withTimeout(5000);
+				await expect(element(by.id(`room-view-title-${ thread }`))).toBeVisible();
+				await tapBack();
+			});
+
+			it('should navigate to thread from threads view', async() => {
+				await element(by.id('room-view-header-threads')).tap();
+				await waitFor(element(by.id('thread-messages-view'))).toBeVisible().withTimeout(5000);
+				await expect(element(by.id('thread-messages-view'))).toBeVisible();
+				await element(by.id(`message-thread-button-${ thread }`)).tap();
+				await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
+				await waitFor(element(by.id(`room-view-title-${ thread }`))).toBeVisible().withTimeout(5000);
+				await expect(element(by.id(`room-view-title-${ thread }`))).toBeVisible();
+				await tapBack();
+				await waitFor(element(by.id('thread-messages-view'))).toBeVisible().withTimeout(5000);
+				await expect(element(by.id('thread-messages-view'))).toBeVisible();
+				await tapBack();
+			});
 		});
 
 		afterEach(async() => {

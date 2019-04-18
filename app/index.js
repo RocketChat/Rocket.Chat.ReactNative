@@ -29,6 +29,7 @@ import MentionedMessagesView from './views/MentionedMessagesView';
 import StarredMessagesView from './views/StarredMessagesView';
 import SearchMessagesView from './views/SearchMessagesView';
 import PinnedMessagesView from './views/PinnedMessagesView';
+import ThreadMessagesView from './views/ThreadMessagesView';
 import SelectedUsersView from './views/SelectedUsersView';
 import CreateChannelView from './views/CreateChannelView';
 import LegalView from './views/LegalView';
@@ -122,7 +123,8 @@ const ChatsStack = createStackNavigator({
 	StarredMessagesView,
 	SearchMessagesView,
 	PinnedMessagesView,
-	SelectedUsersView
+	SelectedUsersView,
+	ThreadMessagesView
 }, {
 	defaultNavigationOptions: defaultHeader
 });

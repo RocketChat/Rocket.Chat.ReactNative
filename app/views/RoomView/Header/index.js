@@ -6,6 +6,7 @@ import equal from 'deep-equal';
 
 import database from '../../../lib/realm';
 import Header from './Header';
+import RightButtons from './RightButtons';
 
 @responsive
 @connect((state, ownProps) => {
@@ -33,9 +34,11 @@ export default class RoomHeaderView extends Component {
 		title: PropTypes.string,
 		type: PropTypes.string,
 		prid: PropTypes.string,
+		tmid: PropTypes.string,
 		rid: PropTypes.string,
 		window: PropTypes.object,
-		status: PropTypes.string
+		status: PropTypes.string,
+		widthOffset: PropTypes.number
 	};
 
 	constructor(props) {
@@ -89,19 +92,23 @@ export default class RoomHeaderView extends Component {
 	render() {
 		const { usersTyping } = this.state;
 		const {
-			window, title, type, status, prid
+			window, title, type, status, prid, tmid, widthOffset
 		} = this.props;
 
 		return (
 			<Header
 				prid={prid}
+				tmid={tmid}
 				title={title}
 				type={type}
 				status={status}
 				width={window.width}
 				height={window.height}
 				usersTyping={usersTyping}
+				widthOffset={widthOffset}
 			/>
 		);
 	}
 }
+
+export { RightButtons };

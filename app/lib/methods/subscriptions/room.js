@@ -4,6 +4,7 @@ import log from '../../../utils/log';
 import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';
 import database from '../../realm';
+import debounce from '../../../utils/debounce';
 
 const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
 const removeListener = listener => listener.stop();
@@ -107,27 +108,47 @@ export default function subscribeRoom({ rid }) {
 					const { _id } = ddpMessage.fields.args[0];
 					const message = database.objects('messages').filtered('_id = $0', _id);
 					database.delete(message);
+					const thread = database.objects('threads').filtered('_id = $0', _id);
+					database.delete(thread);
+					const threadMessage = database.objects('threadMessages').filtered('_id = $0', _id);
+					database.delete(threadMessage);
+					const cleanTmids = database.objects('messages').filtered('tmid = $0', _id).snapshot();
+					if (cleanTmids && cleanTmids.length) {
+						cleanTmids.forEach((m) => {
+							m.tmid = null;
+						});
+					}
 				}
 			});
 		}
 	});
 
+	const read = debounce(() => {
+		const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
+		if (room._id) {
+			this.readMessages(rid);
+		}
+	}, 300);
+
 	const handleMessageReceived = protectedFunction((ddpMessage) => {
-		const message = buildMessage(ddpMessage.fields.args[0]);
+		const message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0]));
 		if (rid !== message.rid) {
 			return;
 		}
 		requestAnimationFrame(() => {
 			try {
 				database.write(() => {
-					database.create('messages', EJSON.fromJSONValue(message), true);
+					database.create('messages', message, true);
+					// if it's a thread "header"
+					if (message.tlm) {
+						database.create('threads', message, true);
+					} else if (message.tmid) {
+						message.rid = message.tmid;
+						database.create('threadMessages', message, true);
+					}
 				});
 
-				const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
-
-				if (room._id) {
-					this.readMessages(rid);
-				}
+				read();
 			} catch (e) {
 				console.warn('handleMessageReceived', e);
 			}
