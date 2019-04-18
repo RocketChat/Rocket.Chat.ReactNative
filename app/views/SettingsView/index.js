@@ -14,7 +14,6 @@ import {
 	COLOR_TEXT_DESCRIPTION, COLOR_SEPARATOR, COLOR_WHITE, COLOR_BORDER, COLOR_TEXT
 } from '../../constants/colors';
 
-const renderSeparator = () => <View style={styles.separator} />;
 const styles = StyleSheet.create({
 	contentContainer: {
 		paddingBottom: 30
@@ -54,11 +53,13 @@ const styles = StyleSheet.create({
 	}
 });
 
+const renderSeparator = () => <View style={styles.separator} />;
+
 export default class SettingsView extends Component {
     static navigationOptions = ({ navigation }) => ({
-		headerLeft: <DrawerButton navigation={navigation} />,
-		title: I18n.t('Settings')
-	})
+					headerLeft: <DrawerButton navigation={navigation} />,
+					title: I18n.t('Settings')
+			});
 
 	sections() {
 		const settings = [
