@@ -4,8 +4,7 @@ import {
 } from 'react-navigation';
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
-import { Linking, View } from 'react-native';
-
+import { Linking } from 'react-native';
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
 import OnboardingView from './views/OnboardingView';
