@@ -4,7 +4,7 @@ import {
 } from 'react-navigation';
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
-import { Linking } from 'react-native';
+import { Linking, View } from 'react-native';
 
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -20,6 +20,7 @@ import Navigation from './lib/Navigation';
 import Sidebar from './views/SidebarView';
 import ProfileView from './views/ProfileView';
 import SettingsView from './views/SettingsView';
+import LanguageView from './views/LanguageView';
 import RoomActionsView from './views/RoomActionsView';
 import RoomInfoView from './views/RoomInfoView';
 import RoomInfoEditView from './views/RoomInfoEditView';
@@ -134,7 +135,8 @@ const ProfileStack = createStackNavigator({
 });
 
 const SettingsStack = createStackNavigator({
-	SettingsView
+	SettingsView,
+	LanguageView
 }, {
 	defaultNavigationOptions: defaultHeader
 });
@@ -142,7 +144,7 @@ const SettingsStack = createStackNavigator({
 const ChatsDrawer = createDrawerNavigator({
 	ChatsStack,
 	ProfileStack,
-	SettingsStack
+	SettingsStack,
 }, {
 	contentComponent: Sidebar
 });

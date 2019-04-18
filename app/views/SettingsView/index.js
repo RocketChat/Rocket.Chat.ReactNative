@@ -1,183 +1,176 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { View, ScrollView } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
-import { connect } from 'react-redux';
+import React, { Component } from 'react';
+import { I18nManager, Text, View, StyleSheet, SectionList, Switch } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-
-import LoggedView from '../View';
-import RocketChat from '../../lib/rocketchat';
-import KeyboardView from '../../presentation/KeyboardView';
-import sharedStyles from '../Styles';
-import RCTextInput from '../../containers/TextInput';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import I18n from '../../i18n';
-import Button from '../../containers/Button';
-import Loading from '../../containers/Loading';
-import { showErrorAlert, showToast } from '../../utils/info';
-import log from '../../utils/log';
-import { setUser as setUserAction } from '../../actions/login';
+import { RectButton } from 'react-native-gesture-handler';
 import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
+import { showButtomToast } from '../../utils/info';
+import I18n from '../../i18n';
+import sharedStyles from '../Styles';
+import { CustomIcon } from '../../lib/Icons';
+import { COLOR_TEXT_DESCRIPTION, COLOR_SEPARATOR, COLOR_WHITE, COLOR_BORDER, COLOR_TEXT }
+    from '../../constants/colors';
 
-@connect(state => ({
-	userLanguage: state.login.user && state.login.user.language
-}), dispatch => ({
-	setUser: params => dispatch(setUserAction(params))
-}))
-/** @extends React.Component */
-export default class SettingsView extends LoggedView {
-	static navigationOptions = ({ navigation }) => ({
-		headerLeft: <DrawerButton navigation={navigation} />,
-		title: I18n.t('Settings')
-	})
+const renderSeparator = () => <View style={styles.separator} />;
+const styles = StyleSheet.create({
+    contentContainer: {
+        paddingBottom: 30
+    },
+    container: {
+        flex: 1,
+        backgroundColor: '#F6F7F9'
+    },
+    sectionItemName: {
+        flex: 1,
+        fontSize: 14,
+        marginStart: 20,
+        ...sharedStyles.textColorNormal,
+        ...sharedStyles.textRegular
+    },
+    sectionItem: {
+        backgroundColor: COLOR_WHITE,
+        paddingVertical: 16,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    sectionItemDisabled: {
+        opacity: 0.3
+    },
+    separator: {
+        height: StyleSheet.hairlineWidth,
+        backgroundColor: COLOR_SEPARATOR
+    },
+    sectionSeparatorBorder: {
+        borderColor: COLOR_BORDER,
+        borderTopWidth: 10
+    },
+    iconStyle: {
+        transform: [{ rotate: I18nManager.isRTL ? '90deg' : '270deg' }],
+        alignSelf: 'baseline',
+        marginEnd: 20
+    }
+});
 
-	static propTypes = {
-		componentId: PropTypes.string,
-		userLanguage: PropTypes.string,
-		setUser: PropTypes.func
-	}
+export default class SettingsView extends Component {
+    static navigationOptions = ({ navigation }) => ({
+        headerLeft: <DrawerButton navigation={navigation} />,
+        title: I18n.t('Settings')
+    })
 
-	constructor(props) {
-		super('SettingsView', props);
-		this.state = {
-			placeholder: {},
-			language: props.userLanguage ? props.userLanguage : 'en',
-			languages: [{
-				label: 'English',
-				value: 'en'
-			}, {
-				label: 'Português (BR)',
-				value: 'pt-BR'
-			}, {
-				label: 'Russian',
-				value: 'ru'
-			}, {
-				label: '简体中文',
-				value: 'zh-CN'
-			}, {
-				label: 'Français',
-				value: 'fr'
-			}, {
-				label: 'Deutsch',
-				value: 'de'
-			}, {
-				label: 'Português (PT)',
-				value: 'pt-PT'
-			}],
-			saving: false
-		};
-	}
+    sections() {
+        const settings = [
+            {
+                data: [
+                    {
+                        withScreen: true,
+                        title: 'Contact us',
+                        screen: 'comming Soon',
+                        isDeveloped: false
+                    },
+                    {
+                        withScreen: true,
+                        title: 'Language',
+                        screen: 'LanguageView',
+                        isDeveloped: true
+                    },
+                    {
+                        withScreen: true,
+                        title: 'Theme',
+                        screen: 'comming Soon',
+                        isDeveloped: false
+                    },
+                    {
+                        withScreen: true,
+                        title: 'Share this app',
+                        screen: 'comming Soon',
+                        isDeveloped: false
+                    }
+                ],
+                renderItem: this.renderNromalSettingItem
+            },
+            {
+                data: [{
+                    withScreen: true,
+                    title: 'License',
+                    screen: 'comming Soon',
+                    isDeveloped: false
+                },
+                {
+                    withScreen: false,
+                    title: 'Version: 3.4.1 (250)',
+                    screen: 'comming Soon ',
+                    isDeveloped: false
+                },
+                {
+                    withScreen: false,
+                    title: 'Server version: 1.0.0-develop',
+                    screen: 'comming Soon ',
+                    isDeveloped: false
+                },
+                ],
+                renderItem: this.renderNromalSettingItem
+            },
+            {
+                data: [{
+                    title: 'Send crash report',
+                    screen: 'comming Soon',
+                    isDeveloped: false,
+                    withToggleButton: true
+                },
+                {
+                    title: 'We never track the content of your chats. The crash report only contains relevant infromation for us in order ',
+                    screen: 'comming Soon',
+                    isDeveloped: false,
+                    disable: true
+                }],
+                renderItem: this.renderLastSection
+            }
+        ];
+        return settings;
+    }
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const { language, saving } = this.state;
-		const { userLanguage } = this.props;
-		if (nextState.language !== language) {
-			return true;
-		}
-		if (nextState.saving !== saving) {
-			return true;
-		}
-		if (nextProps.userLanguage !== userLanguage) {
-			return true;
-		}
-		return false;
-	}
+    renderSectionSeparator = () => {
+        return <View style={styles.sectionSeparatorBorder} />;
+    }
+    renderNromalSettingItem = ({ item }) => {
+        const { navigate } = this.props.navigation;
+        return (
+            <RectButton
+                onPress={item.withScreen ? () => item.isDeveloped ? navigate(item.screen, {}) : showButtomToast('Comming Soon') : null}
+                activeOpacity={0.9}
+                underlayColor={COLOR_TEXT}
+            >
+                <View style={styles.sectionItem} >
+                    <Text style={styles.sectionItemName}>{item.title}</Text>
+                    {item.withScreen ? <CustomIcon style={styles.iconStyle} name='arrow-down' size={20} color={COLOR_TEXT_DESCRIPTION} /> : null}
+                </View>
+            </RectButton>
+        );
+    }
+    renderLastSection = ({ item }) => {
+        return (
+            <View style={[styles.sectionItem, item.disable && styles.sectionItemDisabled]} >
+                <Text style={styles.sectionItemName}>{item.title}</Text>
+                { item.withToggleButton ? <Switch value={false} /> : null }
+            </View>
+        );
+    }
 
-	getLabel = (language) => {
-		const { languages } = this.state;
-		const l = languages.find(i => i.value === language);
-		if (l && l.label) {
-			return l.label;
-		}
-		return null;
-	}
+    render() {
 
-	formIsChanged = () => {
-		const { userLanguage } = this.props;
-		const { language } = this.state;
-		return !(userLanguage === language);
-	}
-
-	submit = async() => {
-		this.setState({ saving: true });
-
-		const { language } = this.state;
-		const { userLanguage, setUser } = this.props;
-
-		if (!this.formIsChanged()) {
-			return;
-		}
-
-		const params = {};
-
-		// language
-		if (userLanguage !== language) {
-			params.language = language;
-		}
-
-		try {
-			await RocketChat.saveUserPreferences(params);
-			setUser({ language: params.language });
-
-			this.setState({ saving: false });
-			setTimeout(() => {
-				showToast(I18n.t('Preferences_saved'));
-			}, 300);
-		} catch (e) {
-			this.setState({ saving: false });
-			setTimeout(() => {
-				showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_preferences') }));
-				log('saveUserPreferences', e);
-			}, 300);
-		}
-	}
-
-	render() {
-		const {
-			language, languages, placeholder, saving
-		} = this.state;
-		return (
-			<KeyboardView
-				contentContainerStyle={sharedStyles.container}
-				keyboardVerticalOffset={128}
-			>
-				<StatusBar />
-				<ScrollView
-					contentContainerStyle={sharedStyles.containerScrollView}
-					testID='settings-view-list'
-					{...scrollPersistTaps}
-				>
-					<SafeAreaView style={sharedStyles.container} testID='settings-view' forceInset={{ bottom: 'never' }}>
-						<RNPickerSelect
-							items={languages}
-							onValueChange={(value) => {
-								this.setState({ language: value });
-							}}
-							value={language}
-							placeholder={placeholder}
-						>
-							<RCTextInput
-								inputRef={(e) => { this.name = e; }}
-								label={I18n.t('Language')}
-								placeholder={I18n.t('Language')}
-								value={this.getLabel(language)}
-								testID='settings-view-language'
-							/>
-						</RNPickerSelect>
-						<View style={sharedStyles.alignItemsFlexStart}>
-							<Button
-								title={I18n.t('Save_Changes')}
-								type='primary'
-								onPress={this.submit}
-								disabled={!this.formIsChanged()}
-								testID='settings-view-button'
-							/>
-						</View>
-						<Loading visible={saving} />
-					</SafeAreaView>
-				</ScrollView>
-			</KeyboardView>
-		);
-	}
+        return (
+            <SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
+                <StatusBar />
+                <SectionList
+                    contentContainerStyle={styles.contentContainer}
+                    style={styles.container}
+                    stickySectionHeadersEnabled={false}
+                    sections={this.sections()}
+                    SectionSeparatorComponent={this.renderSectionSeparator}
+                    ItemSeparatorComponent={renderSeparator}
+                    keyExtractor={item => item.title}
+                />
+            </SafeAreaView>
+        );
+    }
 }
