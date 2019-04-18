@@ -143,7 +143,7 @@ const SettingsStack = createStackNavigator({
 const ChatsDrawer = createDrawerNavigator({
 	ChatsStack,
 	ProfileStack,
-	SettingsStack,
+	SettingsStack
 }, {
 	contentComponent: Sidebar
 });

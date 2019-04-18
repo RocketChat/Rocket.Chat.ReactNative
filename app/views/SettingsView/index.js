@@ -56,118 +56,117 @@ const styles = StyleSheet.create({
 
 export default class SettingsView extends Component {
     static navigationOptions = ({ navigation }) => ({
-    	headerLeft: <DrawerButton navigation={navigation} />,
-    	title: I18n.t('Settings')
-    })
+		headerLeft: <DrawerButton navigation={navigation} />,
+		title: I18n.t('Settings')
+	})
 
-    sections() {
-    	const settings = [
-    		{
-    			data: [
-    				{
-    					withScreen: true,
-    					title: 'Contact us',
-    					screen: 'comming Soon',
-    					isDeveloped: false
-    				}, {
-    					withScreen: true,
-    					title: 'Language',
-    					screen: 'LanguageView',
-    					isDeveloped: true
-    				}, {
-    					withScreen: true,
-    					title: 'Theme',
-    					screen: 'comming Soon',
-    					isDeveloped: false
-    				}, {
-    					withScreen: true,
-    					title: 'Share this app',
-    					screen: 'comming Soon',
-    					isDeveloped: false
-    				}
-    			],
-    			renderItem: this.renderNromalSettingItem
-    		}, {
-    			data: [{
-    				withScreen: true,
-    				title: 'License',
-    				screen: 'comming Soon',
-    				isDeveloped: false
-    			}, {
-    				withScreen: false,
-    				title: 'Version: 3.4.1 (250)',
-    				screen: 'comming Soon ',
-    				isDeveloped: false
-    			}, {
-    				withScreen: false,
-    				title: 'Server version: 1.0.0-develop',
-    				screen: 'comming Soon ',
-    				isDeveloped: false
-    			},
-    			],
-    			renderItem: this.renderNromalSettingItem
-    		},
-    		{
-    			data: [{
-    				title: 'Send crash report',
-    				screen: 'comming Soon',
-    				isDeveloped: false,
-    				withToggleButton: true
-    			},
-    			{
-    				title: 'We never track the content of your chats. The crash report only contains relevant infromation for us in order ',
-    				screen: 'comming Soon',
-    				isDeveloped: false,
-    				disable: true
-    			}],
-    			renderItem: this.renderLastSection
-    		}
-    	];
-    	return settings;
-    }
+	sections() {
+		const settings = [
+			{
+				data: [
+					{
+						withScreen: true,
+						title: 'Contact us',
+						screen: 'comming Soon',
+						isDeveloped: false
+					}, {
+						withScreen: true,
+						title: 'Language',
+						screen: 'LanguageView',
+						isDeveloped: true
+					}, {
+						withScreen: true,
+						title: 'Theme',
+						screen: 'comming Soon',
+						isDeveloped: false
+					}, {
+						withScreen: true,
+						title: 'Share this app',
+						screen: 'comming Soon',
+						isDeveloped: false
+					}
+				],
+				renderItem: this.renderNromalSettingItem
+			}, {
+				data: [{
+					withScreen: true,
+					title: 'License',
+					screen: 'comming Soon',
+					isDeveloped: false
+				}, {
+					withScreen: false,
+					title: 'Version: 3.4.1 (250)',
+					screen: 'comming Soon ',
+					isDeveloped: false
+				}, {
+					withScreen: false,
+					title: 'Server version: 1.0.0-develop',
+					screen: 'comming Soon ',
+					isDeveloped: false
+				},
+				],
+				renderItem: this.renderNromalSettingItem
+			},
+			{
+				data: [{
+					title: 'Send crash report',
+					screen: 'comming Soon',
+					isDeveloped: false,
+					withToggleButton: true
+				},
+				{
+					title: 'We never track the content of your chats. The crash report only contains relevant infromation for us in order ',
+					screen: 'comming Soon',
+					isDeveloped: false,
+					disable: true
+				}],
+				renderItem: this.renderLastSection
+			}
+		];
+		return settings;
+	}
 
-    renderSectionSeparator = () => {
-    	return <View style={styles.sectionSeparatorBorder} />;
-    }
-    renderNromalSettingItem = ({ item }) => {
-    	const { navigate } = this.props.navigation;
-    	return (
-    		<RectButton
-    			onPress={item.withScreen ? () => item.isDeveloped ? navigate(item.screen, {}) : showButtomToast('Comming Soon') : null}
-    			activeOpacity={0.9}
-    			underlayColor={COLOR_TEXT}
-    		>
-    			<View style={styles.sectionItem} >
-    				<Text style={styles.sectionItemName}>{item.title}</Text>
-    				{item.withScreen ? <CustomIcon style={styles.iconStyle} name='arrow-down' size={20} color={COLOR_TEXT_DESCRIPTION} /> : null}
-    			</View>
-    		</RectButton>
-    	);
-    }
-    renderLastSection = ({ item }) => {
-    	return (
-    		<View style={[styles.sectionItem, item.disable && styles.sectionItemDisabled]} >
-    			<Text style={styles.sectionItemName}>{item.title}</Text>
-    			{item.withToggleButton ? <Switch value={false} /> : null}
-    		</View>
-    	);
-    }
+	renderSectionSeparator = () => {
+		return <View style={styles.sectionSeparatorBorder} />;
+	}
+	renderNromalSettingItem = ({ item }) => {
+		const { navigate } = this.props.navigation;
+		return (
+			<RectButton
+				onPress={item.withScreen ? () => item.isDeveloped ? navigate(item.screen, {}) : showButtomToast('Comming Soon') : null}
+				activeOpacity={0.9}
+				underlayColor={COLOR_TEXT}
+			>
+				<View style={styles.sectionItem} >
+					<Text style={styles.sectionItemName}>{item.title}</Text>
+					{item.withScreen ? <CustomIcon style={styles.iconStyle} name='arrow-down' size={20} color={COLOR_TEXT_DESCRIPTION} /> : null}
+				</View>
+			</RectButton>
+		);
+	}
+	renderLastSection = ({ item }) => {
+		return (
+			<View style={[styles.sectionItem, item.disable && styles.sectionItemDisabled]} >
+				<Text style={styles.sectionItemName}>{item.title}</Text>
+				{item.withToggleButton ? <Switch value={false} /> : null}
+			</View>
+		);
+	}
 
-    render() {
-
-    	return (
-    		<SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
-    			<StatusBar />
-    			<SectionList
-    				contentContainerStyle={styles.contentContainer}
-    				style={styles.container}
-    				stickySectionHeadersEnabled={false}
-    				sections={this.sections()}
-    				SectionSeparatorComponent={this.renderSectionSeparator}
-    				ItemSeparatorComponent={renderSeparator}
-    				keyExtractor={item => item.title}
-    			/>
-    		</SafeAreaView>
-    	);
-    }
+	render() {
+		return (
+			<SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
+				<StatusBar />
+				<SectionList
+					contentContainerStyle={styles.contentContainer}
+					style={styles.container}
+					stickySectionHeadersEnabled={false}
+					sections={this.sections()}
+					SectionSeparatorComponent={this.renderSectionSeparator}
+					ItemSeparatorComponent={renderSeparator}
+					keyExtractor={item => item.title}
+				/>
+			</SafeAreaView>
+		);
+	}
 }
