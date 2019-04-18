@@ -5,6 +5,7 @@ import moment from 'moment';
 import { CustomIcon } from '../../lib/Icons';
 
 import sharedStyles from '../../views/Styles';
+import messageStyles from './styles';
 
 const styles = StyleSheet.create({
 	container: {
@@ -27,14 +28,6 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
-	},
-	time: {
-		fontSize: 12,
-		paddingLeft: 10,
-		lineHeight: 22,
-		...sharedStyles.textColorDescription,
-		...sharedStyles.textRegular,
-		fontWeight: '300'
 	},
 	emptySpace: {
 		marginEnd: 15
@@ -80,7 +73,7 @@ export default class User extends React.PureComponent {
 						{aliasUsername}
 					</Text>
 				</View>
-				<Text style={styles.time}>{time}</Text>
+				<Text style={messageStyles.time}>{time}</Text>
 				{ readReceipt }
 			</View>
 		);

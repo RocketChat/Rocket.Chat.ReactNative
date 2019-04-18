@@ -1,8 +1,9 @@
 import { StyleSheet } from 'react-native';
+
 import {
 	COLOR_SEPARATOR, COLOR_PRIMARY, COLOR_WHITE, COLOR_TEXT_DESCRIPTION
 } from '../../constants/colors';
-
+import { isIOS } from '../../utils/deviceInfo';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
@@ -23,8 +24,8 @@ export default StyleSheet.create({
 		height: 1,
 		backgroundColor: COLOR_SEPARATOR
 	},
-	loadingMore: {
-		textAlign: 'center',
+	loading: {
+		flex: 1,
 		padding: 15,
 		color: COLOR_TEXT_DESCRIPTION
 	},
@@ -39,9 +40,6 @@ export default StyleSheet.create({
 		backgroundColor: '#F7F7F7',
 		borderRadius: 4,
 		flexDirection: 'column'
-	},
-	loading: {
-		flex: 1
 	},
 	joinRoomContainer: {
 		justifyContent: 'flex-end',
@@ -67,5 +65,9 @@ export default StyleSheet.create({
 		fontSize: 16,
 		...sharedStyles.textMedium,
 		...sharedStyles.textColorNormal
+	},
+	headerTitleContainerStyle: {
+		justifyContent: 'flex-start',
+		left: isIOS ? 40 : 50
 	}
 });

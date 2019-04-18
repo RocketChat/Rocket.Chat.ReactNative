@@ -67,5 +67,8 @@ export default {
 	},
 	Message_Read_Receipt_Store_Users: {
 		type: 'valueAsBoolean'
+	},
+	Threads_enabled: {
+		type: null
 	}
 };

@@ -9,7 +9,7 @@ import I18n from '../i18n';
 import debounce from '../utils/debounce';
 import sharedStyles from '../views/Styles';
 import {
-	COLOR_BACKGROUND_CONTAINER, COLOR_DANGER, COLOR_SUCCESS, COLOR_WHITE
+	COLOR_BACKGROUND_CONTAINER, COLOR_DANGER, COLOR_SUCCESS, COLOR_WHITE, COLOR_TEXT_DESCRIPTION
 } from '../constants/colors';
 
 const styles = StyleSheet.create({
@@ -117,7 +117,7 @@ class ConnectionBadge extends Component {
 		if (connecting) {
 			return (
 				<Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
-					<ActivityIndicator color='#9EA2A8' style={styles.activityIndicator} />
+					<ActivityIndicator color={COLOR_TEXT_DESCRIPTION} style={styles.activityIndicator} />
 					<Text style={[styles.text, styles.textConnecting]}>{I18n.t('Connecting')}</Text>
 				</Animated.View>
 			);
