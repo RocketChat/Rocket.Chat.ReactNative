@@ -63,6 +63,7 @@ class MessageBox extends Component {
 			token: PropTypes.string
 		}),
 		roomType: PropTypes.string,
+		tmid: PropTypes.string,
 		editCancel: PropTypes.func.isRequired,
 		editRequest: PropTypes.func.isRequired,
 		onSubmit: PropTypes.func.isRequired,
@@ -92,10 +93,21 @@ class MessageBox extends Component {
 	}
 
 	componentDidMount() {
-		const { rid } = this.props;
-		const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
-		if (room && room.draftMessage) {
-			this.setInput(room.draftMessage);
+		const { rid, tmid } = this.props;
+		let msg;
+		if (tmid) {
+			const thread = database.objectForPrimaryKey('threads', tmid);
+			if (thread) {
+				msg = thread.draftMessage;
+			}
+		} else {
+			const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
+			if (room) {
+				msg = room.draftMessage;
+			}
+		}
+		if (msg) {
+			this.setInput(msg);
 			this.setShowSend(true);
 		}
 	}

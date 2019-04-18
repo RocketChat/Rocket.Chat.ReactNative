@@ -178,10 +178,15 @@ export default class RoomView extends LoggedView {
 	componentWillUnmount() {
 		if (this.messagebox && this.messagebox.current && this.messagebox.current.text) {
 			const { text } = this.messagebox.current;
-			const [room] = this.rooms;
-			if (room) {
+			let obj;
+			if (this.tmid) {
+				obj = database.objectForPrimaryKey('threads', this.tmid);
+			} else {
+				[obj] = this.rooms;
+			}
+			if (obj) {
 				database.write(() => {
-					room.draftMessage = text;
+					obj.draftMessage = text;
 				});
 			}
 		}
@@ -450,7 +455,15 @@ export default class RoomView extends LoggedView {
 				</View>
 			);
 		}
-		return <MessageBox ref={this.messagebox} onSubmit={this.sendMessage} rid={this.rid} roomType={room.t} />;
+		return (
+			<MessageBox
+				ref={this.messagebox}
+				onSubmit={this.sendMessage}
+				rid={this.rid}
+				tmid={this.tmid}
+				roomType={room.t}
+			/>
+		);
 	};
 
 	renderActions = () => {

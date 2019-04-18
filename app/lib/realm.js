@@ -259,7 +259,8 @@ const threadsSchema = {
 		tmid: { type: 'string', optional: true },
 		tcount: { type: 'int', optional: true },
 		tlm: { type: 'date', optional: true },
-		replies: 'string[]'
+		replies: 'string[]',
+		draftMessage: 'string?'
 	}
 };
 
@@ -447,9 +448,9 @@ class DB {
 		return this.databases.activeDB = new Realm({
 			path: `${ path }.realm`,
 			schema,
-			schemaVersion: 6,
+			schemaVersion: 7,
 			migration: (oldRealm, newRealm) => {
-				if (oldRealm.schemaVersion >= 3 && newRealm.schemaVersion <= 6) {
+				if (oldRealm.schemaVersion >= 3 && newRealm.schemaVersion <= 7) {
 					const newSubs = newRealm.objects('subscriptions');
 
 					// eslint-disable-next-line no-plusplus
@@ -459,6 +460,10 @@ class DB {
 					}
 					const newMessages = newRealm.objects('messages');
 					newRealm.delete(newMessages);
+					const newThreads = newRealm.objects('threads');
+					newRealm.delete(newThreads);
+					const newThreadMessages = newRealm.objects('threadMessages');
+					newRealm.delete(newThreadMessages);
 				}
 			}
 		});
