@@ -129,17 +129,47 @@ const ChatsStack = createStackNavigator({
 	defaultNavigationOptions: defaultHeader
 });
 
+ChatsStack.navigationOptions = ({ navigation }) => {
+	let drawerLockMode = 'unlocked';
+	if (navigation.state.index > 0) {
+		drawerLockMode = 'locked-closed';
+	}
+	return {
+		drawerLockMode
+	};
+};
+
 const ProfileStack = createStackNavigator({
 	ProfileView
 }, {
 	defaultNavigationOptions: defaultHeader
 });
 
+ProfileView.navigationOptions = ({ navigation }) => {
+	let drawerLockMode = 'unlocked';
+	if (navigation.state.index > 0) {
+		drawerLockMode = 'locked-closed';
+	}
+	return {
+		drawerLockMode
+	};
+};
+
 const SettingsStack = createStackNavigator({
 	SettingsView
 }, {
 	defaultNavigationOptions: defaultHeader
 });
+
+SettingsStack.navigationOptions = ({ navigation }) => {
+	let drawerLockMode = 'unlocked';
+	if (navigation.state.index > 0) {
+		drawerLockMode = 'locked-closed';
+	}
+	return {
+		drawerLockMode
+	};
+};
 
 const ChatsDrawer = createDrawerNavigator({
 	ChatsStack,
