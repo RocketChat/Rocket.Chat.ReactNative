@@ -1,25 +1,5 @@
 import * as types from './actionsTypes';
 
-export function messagesRequest(room) {
-	return {
-		type: types.MESSAGES.REQUEST,
-		room
-	};
-}
-
-export function messagesSuccess() {
-	return {
-		type: types.MESSAGES.SUCCESS
-	};
-}
-
-export function messagesFailure(err) {
-	return {
-		type: types.MESSAGES.FAILURE,
-		err
-	};
-}
-
 export function actionsShow(actionMessage) {
 	return {
 		type: types.MESSAGES.ACTIONS_SHOW,

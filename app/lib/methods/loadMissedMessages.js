@@ -31,11 +31,15 @@ export default function loadMissedMessages(...args) {
 			if (data) {
 				if (data.updated && data.updated.length) {
 					const { updated } = data;
-					updated.forEach(buildMessage);
 					InteractionManager.runAfterInteractions(() => {
 						database.write(() => updated.forEach((message) => {
 							try {
+								message = buildMessage(message);
 								database.create('messages', message, true);
+								// if it's a thread "header"
+								if (message.tlm) {
+									database.create('threads', message, true);
+								}
 							} catch (e) {
 								log('loadMissedMessages -> create messages', e);
 							}

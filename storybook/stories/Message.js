@@ -26,6 +26,7 @@ const author = {
 const baseUrl = 'https://open.rocket.chat';
 const customEmojis = { react_rocket: 'png', nyan_rocket: 'png', marioparty: 'gif' };
 const date = new Date(2017, 10, 10, 10);
+const longText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 
 const Message = props => (
 	<MessageComponent
@@ -50,7 +51,7 @@ export default (
 		<Message msg='Message' />
 
 		<Separator title='Long message' />
-		<Message msg='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum' />
+		<Message msg={longText} />
 
 		<Separator title='Grouped messages' />
 		<Message msg='...' />
@@ -58,7 +59,7 @@ export default (
 			msg='Different user'
 			author={{
 				...author,
-				username: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
+				username: longText
 			}}
 		/>
 		<Message msg='This is the third message' header={false} />
@@ -74,7 +75,7 @@ export default (
 			msg='Message'
 			author={{
 				...author,
-				username: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
+				username: longText
 			}}
 			alias='Diego Mello'
 		/>
@@ -262,6 +263,7 @@ export default (
 			header={false}
 		/>
 
+		{/* Legacy thread */}
 		<Separator title='Message with reply' />
 		<Message
 			msg="I'm fine!"
@@ -281,6 +283,127 @@ export default (
 				text: 'How are you?'
 			}]}
 		/>
+
+		<Separator title='Message with thread' />
+		<Message
+			msg='How are you?'
+			tcount={1}
+			tlm={date}
+		/>
+		<Message
+			msg="I'm fine!"
+			tmid='1'
+			tmsg='How are you?'
+		/>
+		<Message
+			msg="I'm fine!"
+			tmid='1'
+			tmsg='Thread with emoji :) :joy:'
+		/>
+		<Message
+			msg="I'm fine!"
+			tmid='1'
+			tmsg={longText}
+		/>
+		<Message
+			msg={longText}
+			tmid='1'
+			tmsg='How are you?'
+		/>
+		<Message
+			msg={longText}
+			tmid='1'
+			tmsg={longText}
+		/>
+		<Message
+			msg='How are you?'
+			tcount={0}
+			tlm={date}
+		/>
+		<Message
+			msg='How are you?'
+			tcount={9999}
+			tlm={date}
+		/>
+		{/* <Message
+			msg='How are you?'
+			tcount={9999}
+			tlm={moment().subtract(1, 'hour')}
+		/>
+		<Message
+			msg='How are you?'
+			tcount={9999}
+			tlm={moment().subtract(1, 'day')}
+		/>
+		<Message
+			msg='How are you?'
+			tcount={9999}
+			tlm={moment().subtract(5, 'day')}
+		/>
+		<Message
+			msg='How are you?'
+			tcount={9999}
+			tlm={moment().subtract(30, 'day')}
+		/> */}
+
+		<Separator title='Discussion' />
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={null}
+			dlm={null}
+			msg='This is a discussion'
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1}
+			dlm={date}
+			msg='This is a discussion'
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={10}
+			dlm={date}
+			msg={longText}
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={date}
+			msg='This is a discussion'
+		/>
+		{/* <Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={moment().subtract(1, 'hour')}
+			msg='This is a discussion'
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={moment().subtract(1, 'day')}
+			msg='This is a discussion'
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={moment().subtract(5, 'day')}
+			msg='This is a discussion'
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={moment().subtract(30, 'day')}
+			msg='This is a discussion'
+		/> */}
+
 
 		<Separator title='URL' />
 		<Message
@@ -359,64 +482,6 @@ export default (
 
 		<Separator title='Broadcast' />
 		<Message msg='Broadcasted message' broadcast replyBroadcast={() => alert('broadcast!')} />
-
-		<Separator title='Discussion' />
-		<Message
-			type='discussion-created'
-			drid='aisduhasidhs'
-			dcount={null}
-			dlm={null}
-			msg='This is a discussion'
-		/>
-		<Message
-			type='discussion-created'
-			drid='aisduhasidhs'
-			dcount={1}
-			dlm={date}
-			msg='This is a discussion'
-		/>
-		<Message
-			type='discussion-created'
-			drid='aisduhasidhs'
-			dcount={10}
-			dlm={date}
-			msg='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-		/>
-		<Message
-			type='discussion-created'
-			drid='aisduhasidhs'
-			dcount={1000}
-			dlm={date}
-			msg='This is a discussion'
-		/>
-		{/* <Message
-			type='discussion-created'
-			drid='aisduhasidhs'
-			dcount={1000}
-			dlm={moment().subtract(1, 'hour')}
-			msg='This is a discussion'
-		/>
-		<Message
-			type='discussion-created'
-			drid='aisduhasidhs'
-			dcount={1000}
-			dlm={moment().subtract(1, 'day')}
-			msg='This is a discussion'
-		/>
-		<Message
-			type='discussion-created'
-			drid='aisduhasidhs'
-			dcount={1000}
-			dlm={moment().subtract(5, 'day')}
-			msg='This is a discussion'
-		/>
-		<Message
-			type='discussion-created'
-			drid='aisduhasidhs'
-			dcount={1000}
-			dlm={moment().subtract(30, 'day')}
-			msg='This is a discussion'
-		/> */}
 
 		<Separator title='Archived' />
 		<Message msg='This message is inside an archived room' archived />

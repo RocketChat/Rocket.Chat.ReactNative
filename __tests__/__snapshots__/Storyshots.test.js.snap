@@ -612,7 +612,7 @@ exports[`Storyshots Message list 1`] = `
                   }
                 >
                   <Text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                   </Text>
                 </Text>
               </Text>
@@ -902,7 +902,7 @@ exports[`Storyshots Message list 1`] = `
                 source={
                   Object {
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                    "uri": "https://open.rocket.chat/avatar/Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                   }
                 }
                 style={
@@ -964,7 +964,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 </Text>
               </View>
               <Text
@@ -1786,7 +1786,7 @@ exports[`Storyshots Message list 1`] = `
                 source={
                   Object {
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                    "uri": "https://open.rocket.chat/avatar/Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                   }
                 }
                 style={
@@ -1861,7 +1861,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   >
                      @
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                   </Text>
                 </Text>
               </View>
@@ -9855,6 +9855,3099 @@ exports[`Storyshots Message list 1`] = `
         ]
       }
     >
+      Message with thread
+    </Text>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            Object {
+              "marginTop": 6,
+            },
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+                Object {
+                  "marginTop": 4,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "overflow": "hidden",
+                  },
+                  Object {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                ]
+              }
+            >
+              <FastImageView
+                resizeMode="cover"
+                source={
+                  Object {
+                    "priority": "high",
+                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                  }
+                }
+                style={
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  }
+                }
+              />
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 46,
+                },
+                Object {
+                  "marginLeft": 10,
+                },
+                false,
+                false,
+                false,
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "500",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#9ca2a8",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "300",
+                    "lineHeight": 22,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                10:00 AM
+              </Text>
+            </View>
+            <View
+              style={Object {}}
+            >
+              <Text
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "justifyContent": "flex-start",
+                    "marginBottom": 0,
+                    "marginTop": 0,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
+                >
+                  <Text>
+                    How are you?
+                  </Text>
+                </Text>
+              </Text>
+            </View>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "marginTop": 6,
+                }
+              }
+            >
+              <View
+                accessible={true}
+                hitSlop={
+                  Object {
+                    "bottom": 4,
+                    "left": 4,
+                    "right": 4,
+                    "top": 4,
+                  }
+                }
+                isTVSelectable={true}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "backgroundColor": "#1d74f5",
+                    "borderRadius": 2,
+                    "flexDirection": "row",
+                    "height": 30,
+                    "justifyContent": "center",
+                    "opacity": 1,
+                    "paddingHorizontal": 15,
+                  }
+                }
+                testID="message-thread-button-How are you?"
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": undefined,
+                        "fontSize": 20,
+                      },
+                      Object {
+                        "color": "#fff",
+                        "marginRight": 6,
+                      },
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#fff",
+                      "fontFamily": "System",
+                      "fontSize": 14,
+                      "fontWeight": "500",
+                    }
+                  }
+                >
+                  1 reply
+                </Text>
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#9ca2a8",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "300",
+                    "lineHeight": 22,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                Nov 10
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            Object {
+              "marginTop": 6,
+            },
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+                Object {
+                  "marginTop": 4,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "overflow": "hidden",
+                  },
+                  Object {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                ]
+              }
+            >
+              <FastImageView
+                resizeMode="cover"
+                source={
+                  Object {
+                    "priority": "high",
+                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                  }
+                }
+                style={
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  }
+                }
+              />
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 46,
+                },
+                Object {
+                  "marginLeft": 10,
+                },
+                false,
+                false,
+                false,
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "500",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#9ca2a8",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "300",
+                    "lineHeight": 22,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                10:00 AM
+              </Text>
+            </View>
+            <Text
+              numberOfLines={3}
+              style={
+                Object {
+                  "backgroundColor": "transparent",
+                  "color": "#9ca2a8",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "marginBottom": 6,
+                }
+              }
+              testID="message-thread-replied-on-How are you?"
+            >
+              Replied on:
+               
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#1d74f5",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "600",
+                  }
+                }
+              >
+                How are you?
+              </Text>
+            </Text>
+            <View
+              style={Object {}}
+            >
+              <Text
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "justifyContent": "flex-start",
+                    "marginBottom": 0,
+                    "marginTop": 0,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
+                >
+                  <Text>
+                    I’m fine!
+                  </Text>
+                </Text>
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            Object {
+              "marginTop": 6,
+            },
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+                Object {
+                  "marginTop": 4,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "overflow": "hidden",
+                  },
+                  Object {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                ]
+              }
+            >
+              <FastImageView
+                resizeMode="cover"
+                source={
+                  Object {
+                    "priority": "high",
+                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                  }
+                }
+                style={
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  }
+                }
+              />
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 46,
+                },
+                Object {
+                  "marginLeft": 10,
+                },
+                false,
+                false,
+                false,
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "500",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#9ca2a8",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "300",
+                    "lineHeight": 22,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                10:00 AM
+              </Text>
+            </View>
+            <Text
+              numberOfLines={3}
+              style={
+                Object {
+                  "backgroundColor": "transparent",
+                  "color": "#9ca2a8",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "marginBottom": 6,
+                }
+              }
+              testID="message-thread-replied-on-Thread with emoji :) :joy:"
+            >
+              Replied on:
+               
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#1d74f5",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "600",
+                  }
+                }
+              >
+                Thread with emoji :) :joy:
+              </Text>
+            </Text>
+            <View
+              style={Object {}}
+            >
+              <Text
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "justifyContent": "flex-start",
+                    "marginBottom": 0,
+                    "marginTop": 0,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
+                >
+                  <Text>
+                    I’m fine!
+                  </Text>
+                </Text>
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            Object {
+              "marginTop": 6,
+            },
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+                Object {
+                  "marginTop": 4,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "overflow": "hidden",
+                  },
+                  Object {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                ]
+              }
+            >
+              <FastImageView
+                resizeMode="cover"
+                source={
+                  Object {
+                    "priority": "high",
+                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                  }
+                }
+                style={
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  }
+                }
+              />
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 46,
+                },
+                Object {
+                  "marginLeft": 10,
+                },
+                false,
+                false,
+                false,
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "500",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#9ca2a8",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "300",
+                    "lineHeight": 22,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                10:00 AM
+              </Text>
+            </View>
+            <Text
+              numberOfLines={3}
+              style={
+                Object {
+                  "backgroundColor": "transparent",
+                  "color": "#9ca2a8",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "marginBottom": 6,
+                }
+              }
+              testID="message-thread-replied-on-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            >
+              Replied on:
+               
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#1d74f5",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "600",
+                  }
+                }
+              >
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </Text>
+            </Text>
+            <View
+              style={Object {}}
+            >
+              <Text
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "justifyContent": "flex-start",
+                    "marginBottom": 0,
+                    "marginTop": 0,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
+                >
+                  <Text>
+                    I’m fine!
+                  </Text>
+                </Text>
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            Object {
+              "marginTop": 6,
+            },
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+                Object {
+                  "marginTop": 4,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "overflow": "hidden",
+                  },
+                  Object {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                ]
+              }
+            >
+              <FastImageView
+                resizeMode="cover"
+                source={
+                  Object {
+                    "priority": "high",
+                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                  }
+                }
+                style={
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  }
+                }
+              />
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 46,
+                },
+                Object {
+                  "marginLeft": 10,
+                },
+                false,
+                false,
+                false,
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "500",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#9ca2a8",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "300",
+                    "lineHeight": 22,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                10:00 AM
+              </Text>
+            </View>
+            <Text
+              numberOfLines={3}
+              style={
+                Object {
+                  "backgroundColor": "transparent",
+                  "color": "#9ca2a8",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "marginBottom": 6,
+                }
+              }
+              testID="message-thread-replied-on-How are you?"
+            >
+              Replied on:
+               
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#1d74f5",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "600",
+                  }
+                }
+              >
+                How are you?
+              </Text>
+            </Text>
+            <View
+              style={Object {}}
+            >
+              <Text
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "justifyContent": "flex-start",
+                    "marginBottom": 0,
+                    "marginTop": 0,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
+                >
+                  <Text>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  </Text>
+                </Text>
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            Object {
+              "marginTop": 6,
+            },
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+                Object {
+                  "marginTop": 4,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "overflow": "hidden",
+                  },
+                  Object {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                ]
+              }
+            >
+              <FastImageView
+                resizeMode="cover"
+                source={
+                  Object {
+                    "priority": "high",
+                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                  }
+                }
+                style={
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  }
+                }
+              />
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 46,
+                },
+                Object {
+                  "marginLeft": 10,
+                },
+                false,
+                false,
+                false,
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "500",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#9ca2a8",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "300",
+                    "lineHeight": 22,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                10:00 AM
+              </Text>
+            </View>
+            <Text
+              numberOfLines={3}
+              style={
+                Object {
+                  "backgroundColor": "transparent",
+                  "color": "#9ca2a8",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "marginBottom": 6,
+                }
+              }
+              testID="message-thread-replied-on-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            >
+              Replied on:
+               
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#1d74f5",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "600",
+                  }
+                }
+              >
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </Text>
+            </Text>
+            <View
+              style={Object {}}
+            >
+              <Text
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "justifyContent": "flex-start",
+                    "marginBottom": 0,
+                    "marginTop": 0,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
+                >
+                  <Text>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  </Text>
+                </Text>
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            Object {
+              "marginTop": 6,
+            },
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+                Object {
+                  "marginTop": 4,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "overflow": "hidden",
+                  },
+                  Object {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                ]
+              }
+            >
+              <FastImageView
+                resizeMode="cover"
+                source={
+                  Object {
+                    "priority": "high",
+                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                  }
+                }
+                style={
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  }
+                }
+              />
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 46,
+                },
+                Object {
+                  "marginLeft": 10,
+                },
+                false,
+                false,
+                false,
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "500",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#9ca2a8",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "300",
+                    "lineHeight": 22,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                10:00 AM
+              </Text>
+            </View>
+            <View
+              style={Object {}}
+            >
+              <Text
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "justifyContent": "flex-start",
+                    "marginBottom": 0,
+                    "marginTop": 0,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
+                >
+                  <Text>
+                    How are you?
+                  </Text>
+                </Text>
+              </Text>
+            </View>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "marginTop": 6,
+                }
+              }
+            >
+              <View
+                accessible={true}
+                hitSlop={
+                  Object {
+                    "bottom": 4,
+                    "left": 4,
+                    "right": 4,
+                    "top": 4,
+                  }
+                }
+                isTVSelectable={true}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "backgroundColor": "#1d74f5",
+                    "borderRadius": 2,
+                    "flexDirection": "row",
+                    "height": 30,
+                    "justifyContent": "center",
+                    "opacity": 1,
+                    "paddingHorizontal": 15,
+                  }
+                }
+                testID="message-thread-button-How are you?"
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": undefined,
+                        "fontSize": 20,
+                      },
+                      Object {
+                        "color": "#fff",
+                        "marginRight": 6,
+                      },
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#fff",
+                      "fontFamily": "System",
+                      "fontSize": 14,
+                      "fontWeight": "500",
+                    }
+                  }
+                />
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#9ca2a8",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "300",
+                    "lineHeight": 22,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                Nov 10
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            Object {
+              "marginTop": 6,
+            },
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+                Object {
+                  "marginTop": 4,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "overflow": "hidden",
+                  },
+                  Object {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                ]
+              }
+            >
+              <FastImageView
+                resizeMode="cover"
+                source={
+                  Object {
+                    "priority": "high",
+                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                  }
+                }
+                style={
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  }
+                }
+              />
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 46,
+                },
+                Object {
+                  "marginLeft": 10,
+                },
+                false,
+                false,
+                false,
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "500",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#9ca2a8",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "300",
+                    "lineHeight": 22,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                10:00 AM
+              </Text>
+            </View>
+            <View
+              style={Object {}}
+            >
+              <Text
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "justifyContent": "flex-start",
+                    "marginBottom": 0,
+                    "marginTop": 0,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
+                >
+                  <Text>
+                    How are you?
+                  </Text>
+                </Text>
+              </Text>
+            </View>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "marginTop": 6,
+                }
+              }
+            >
+              <View
+                accessible={true}
+                hitSlop={
+                  Object {
+                    "bottom": 4,
+                    "left": 4,
+                    "right": 4,
+                    "top": 4,
+                  }
+                }
+                isTVSelectable={true}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "backgroundColor": "#1d74f5",
+                    "borderRadius": 2,
+                    "flexDirection": "row",
+                    "height": 30,
+                    "justifyContent": "center",
+                    "opacity": 1,
+                    "paddingHorizontal": 15,
+                  }
+                }
+                testID="message-thread-button-How are you?"
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": undefined,
+                        "fontSize": 20,
+                      },
+                      Object {
+                        "color": "#fff",
+                        "marginRight": 6,
+                      },
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#fff",
+                      "fontFamily": "System",
+                      "fontSize": 14,
+                      "fontWeight": "500",
+                    }
+                  }
+                >
+                  +999 replies
+                </Text>
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#9ca2a8",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "300",
+                    "lineHeight": 22,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                Nov 10
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginTop": 30,
+          },
+          Object {
+            "marginBottom": 0,
+            "marginTop": 30,
+          },
+        ]
+      }
+    >
+      Discussion
+    </Text>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            Object {
+              "marginTop": 6,
+            },
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+                Object {
+                  "marginTop": 4,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "overflow": "hidden",
+                  },
+                  Object {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                ]
+              }
+            >
+              <FastImageView
+                resizeMode="cover"
+                source={
+                  Object {
+                    "priority": "high",
+                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                  }
+                }
+                style={
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  }
+                }
+              />
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 46,
+                },
+                Object {
+                  "marginLeft": 10,
+                },
+                false,
+                false,
+                false,
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "500",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#9ca2a8",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "300",
+                    "lineHeight": 22,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                10:00 AM
+              </Text>
+            </View>
+            <Text
+              style={
+                Object {
+                  "backgroundColor": "transparent",
+                  "color": "#9ca2a8",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontStyle": "italic",
+                  "fontWeight": "400",
+                  "marginBottom": 6,
+                }
+              }
+            >
+              Started a discussion:
+            </Text>
+            <Text
+              style={
+                Object {
+                  "backgroundColor": "transparent",
+                  "color": "#2F343D",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                }
+              }
+            >
+              This is a discussion
+            </Text>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "marginTop": 6,
+                }
+              }
+            >
+              <View
+                accessible={true}
+                hitSlop={
+                  Object {
+                    "bottom": 4,
+                    "left": 4,
+                    "right": 4,
+                    "top": 4,
+                  }
+                }
+                isTVSelectable={true}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "backgroundColor": "#1d74f5",
+                    "borderRadius": 2,
+                    "flexDirection": "row",
+                    "height": 30,
+                    "justifyContent": "center",
+                    "opacity": 1,
+                    "paddingHorizontal": 15,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": undefined,
+                        "fontSize": 20,
+                      },
+                      Object {
+                        "color": "#fff",
+                        "marginRight": 6,
+                      },
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#fff",
+                      "fontFamily": "System",
+                      "fontSize": 14,
+                      "fontWeight": "500",
+                    }
+                  }
+                >
+                  No messages yet
+                </Text>
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#9ca2a8",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "300",
+                    "lineHeight": 22,
+                    "paddingLeft": 10,
+                  }
+                }
+              />
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            Object {
+              "marginTop": 6,
+            },
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+                Object {
+                  "marginTop": 4,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "overflow": "hidden",
+                  },
+                  Object {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                ]
+              }
+            >
+              <FastImageView
+                resizeMode="cover"
+                source={
+                  Object {
+                    "priority": "high",
+                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                  }
+                }
+                style={
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  }
+                }
+              />
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 46,
+                },
+                Object {
+                  "marginLeft": 10,
+                },
+                false,
+                false,
+                false,
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "500",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#9ca2a8",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "300",
+                    "lineHeight": 22,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                10:00 AM
+              </Text>
+            </View>
+            <Text
+              style={
+                Object {
+                  "backgroundColor": "transparent",
+                  "color": "#9ca2a8",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontStyle": "italic",
+                  "fontWeight": "400",
+                  "marginBottom": 6,
+                }
+              }
+            >
+              Started a discussion:
+            </Text>
+            <Text
+              style={
+                Object {
+                  "backgroundColor": "transparent",
+                  "color": "#2F343D",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                }
+              }
+            >
+              This is a discussion
+            </Text>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "marginTop": 6,
+                }
+              }
+            >
+              <View
+                accessible={true}
+                hitSlop={
+                  Object {
+                    "bottom": 4,
+                    "left": 4,
+                    "right": 4,
+                    "top": 4,
+                  }
+                }
+                isTVSelectable={true}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "backgroundColor": "#1d74f5",
+                    "borderRadius": 2,
+                    "flexDirection": "row",
+                    "height": 30,
+                    "justifyContent": "center",
+                    "opacity": 1,
+                    "paddingHorizontal": 15,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": undefined,
+                        "fontSize": 20,
+                      },
+                      Object {
+                        "color": "#fff",
+                        "marginRight": 6,
+                      },
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#fff",
+                      "fontFamily": "System",
+                      "fontSize": 14,
+                      "fontWeight": "500",
+                    }
+                  }
+                >
+                  1 message
+                </Text>
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#9ca2a8",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "300",
+                    "lineHeight": 22,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                Nov 10
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            Object {
+              "marginTop": 6,
+            },
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+                Object {
+                  "marginTop": 4,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "overflow": "hidden",
+                  },
+                  Object {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                ]
+              }
+            >
+              <FastImageView
+                resizeMode="cover"
+                source={
+                  Object {
+                    "priority": "high",
+                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                  }
+                }
+                style={
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  }
+                }
+              />
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 46,
+                },
+                Object {
+                  "marginLeft": 10,
+                },
+                false,
+                false,
+                false,
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "500",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#9ca2a8",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "300",
+                    "lineHeight": 22,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                10:00 AM
+              </Text>
+            </View>
+            <Text
+              style={
+                Object {
+                  "backgroundColor": "transparent",
+                  "color": "#9ca2a8",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontStyle": "italic",
+                  "fontWeight": "400",
+                  "marginBottom": 6,
+                }
+              }
+            >
+              Started a discussion:
+            </Text>
+            <Text
+              style={
+                Object {
+                  "backgroundColor": "transparent",
+                  "color": "#2F343D",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                }
+              }
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </Text>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "marginTop": 6,
+                }
+              }
+            >
+              <View
+                accessible={true}
+                hitSlop={
+                  Object {
+                    "bottom": 4,
+                    "left": 4,
+                    "right": 4,
+                    "top": 4,
+                  }
+                }
+                isTVSelectable={true}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "backgroundColor": "#1d74f5",
+                    "borderRadius": 2,
+                    "flexDirection": "row",
+                    "height": 30,
+                    "justifyContent": "center",
+                    "opacity": 1,
+                    "paddingHorizontal": 15,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": undefined,
+                        "fontSize": 20,
+                      },
+                      Object {
+                        "color": "#fff",
+                        "marginRight": 6,
+                      },
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#fff",
+                      "fontFamily": "System",
+                      "fontSize": 14,
+                      "fontWeight": "500",
+                    }
+                  }
+                >
+                  10 messages
+                </Text>
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#9ca2a8",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "300",
+                    "lineHeight": 22,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                Nov 10
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            Object {
+              "marginTop": 6,
+            },
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+                Object {
+                  "marginTop": 4,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "overflow": "hidden",
+                  },
+                  Object {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                ]
+              }
+            >
+              <FastImageView
+                resizeMode="cover"
+                source={
+                  Object {
+                    "priority": "high",
+                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                  }
+                }
+                style={
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  }
+                }
+              />
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 46,
+                },
+                Object {
+                  "marginLeft": 10,
+                },
+                false,
+                false,
+                false,
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "500",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#9ca2a8",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "300",
+                    "lineHeight": 22,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                10:00 AM
+              </Text>
+            </View>
+            <Text
+              style={
+                Object {
+                  "backgroundColor": "transparent",
+                  "color": "#9ca2a8",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontStyle": "italic",
+                  "fontWeight": "400",
+                  "marginBottom": 6,
+                }
+              }
+            >
+              Started a discussion:
+            </Text>
+            <Text
+              style={
+                Object {
+                  "backgroundColor": "transparent",
+                  "color": "#2F343D",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                }
+              }
+            >
+              This is a discussion
+            </Text>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "marginTop": 6,
+                }
+              }
+            >
+              <View
+                accessible={true}
+                hitSlop={
+                  Object {
+                    "bottom": 4,
+                    "left": 4,
+                    "right": 4,
+                    "top": 4,
+                  }
+                }
+                isTVSelectable={true}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "backgroundColor": "#1d74f5",
+                    "borderRadius": 2,
+                    "flexDirection": "row",
+                    "height": 30,
+                    "justifyContent": "center",
+                    "opacity": 1,
+                    "paddingHorizontal": 15,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": undefined,
+                        "fontSize": 20,
+                      },
+                      Object {
+                        "color": "#fff",
+                        "marginRight": 6,
+                      },
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#fff",
+                      "fontFamily": "System",
+                      "fontSize": 14,
+                      "fontWeight": "500",
+                    }
+                  }
+                >
+                  +999 messages
+                </Text>
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#9ca2a8",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "300",
+                    "lineHeight": 22,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                Nov 10
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginTop": 30,
+          },
+          Object {
+            "marginBottom": 0,
+            "marginTop": 30,
+          },
+        ]
+      }
+    >
       URL
     </Text>
     <View
@@ -11532,7 +14625,7 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "alignItems": "center",
                     "backgroundColor": "#1d74f5",
-                    "borderRadius": 4,
+                    "borderRadius": 2,
                     "flexDirection": "row",
                     "height": 44,
                     "justifyContent": "center",
@@ -11578,1130 +14671,6 @@ exports[`Storyshots Message list 1`] = `
                   Reply
                 </Text>
               </View>
-            </View>
-          </View>
-        </View>
-      </View>
-    </View>
-    <Text
-      style={
-        Array [
-          Object {
-            "fontSize": 20,
-            "fontWeight": "300",
-            "marginLeft": 10,
-            "marginTop": 30,
-          },
-          Object {
-            "marginBottom": 0,
-            "marginTop": 30,
-          },
-        ]
-      }
-    >
-      Discussion
-    </Text>
-    <View
-      style={
-        Object {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <View
-        accessible={true}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          Array [
-            Object {
-              "flex": 1,
-              "flexDirection": "column",
-              "paddingHorizontal": 14,
-              "paddingVertical": 4,
-              "width": "100%",
-            },
-            Object {
-              "marginTop": 6,
-            },
-            undefined,
-            undefined,
-          ]
-        }
-      >
-        <View
-          style={
-            Object {
-              "flex": 1,
-              "flexDirection": "row",
-            }
-          }
-        >
-          <View
-            style={
-              Array [
-                Object {
-                  "borderRadius": 4,
-                  "height": 36,
-                  "width": 36,
-                },
-                Object {
-                  "marginTop": 4,
-                },
-              ]
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {
-                    "overflow": "hidden",
-                  },
-                  Object {
-                    "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
-                  },
-                ]
-              }
-            >
-              <FastImageView
-                resizeMode="cover"
-                source={
-                  Object {
-                    "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
-                  }
-                }
-                style={
-                  Object {
-                    "bottom": 0,
-                    "left": 0,
-                    "position": "absolute",
-                    "right": 0,
-                    "top": 0,
-                  }
-                }
-              />
-            </View>
-          </View>
-          <View
-            style={
-              Array [
-                Object {
-                  "flex": 1,
-                  "marginLeft": 46,
-                },
-                Object {
-                  "marginLeft": 10,
-                },
-                false,
-                false,
-                false,
-              ]
-            }
-          >
-            <View
-              style={
-                Object {
-                  "alignItems": "center",
-                  "flex": 1,
-                  "flexDirection": "row",
-                }
-              }
-            >
-              <View
-                style={
-                  Object {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <Text
-                  numberOfLines={1}
-                  style={
-                    Object {
-                      "backgroundColor": "transparent",
-                      "color": "#2F343D",
-                      "fontFamily": "System",
-                      "fontSize": 16,
-                      "fontWeight": "500",
-                      "lineHeight": 22,
-                    }
-                  }
-                >
-                  diego.mello
-                </Text>
-              </View>
-              <Text
-                style={
-                  Object {
-                    "backgroundColor": "transparent",
-                    "color": "#9ca2a8",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "300",
-                    "lineHeight": 22,
-                    "paddingLeft": 10,
-                  }
-                }
-              >
-                10:00 AM
-              </Text>
-            </View>
-            <Text
-              style={
-                Object {
-                  "backgroundColor": "transparent",
-                  "color": "#9ca2a8",
-                  "fontFamily": "System",
-                  "fontSize": 16,
-                  "fontStyle": "italic",
-                  "fontWeight": "400",
-                }
-              }
-            >
-              Started a discussion:
-            </Text>
-            <Text
-              style={
-                Object {
-                  "backgroundColor": "transparent",
-                  "color": "#2F343D",
-                  "fontFamily": "System",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                }
-              }
-            >
-              This is a discussion
-            </Text>
-            <View
-              style={
-                Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "marginTop": 6,
-                }
-              }
-            >
-              <View
-                accessible={true}
-                hitSlop={
-                  Object {
-                    "bottom": 4,
-                    "left": 4,
-                    "right": 4,
-                    "top": 4,
-                  }
-                }
-                isTVSelectable={true}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
-                style={
-                  Object {
-                    "alignItems": "center",
-                    "backgroundColor": "#1d74f5",
-                    "borderRadius": 4,
-                    "flexDirection": "row",
-                    "height": 30,
-                    "justifyContent": "center",
-                    "opacity": 1,
-                    "paddingHorizontal": 15,
-                  }
-                }
-              >
-                <Text
-                  allowFontScaling={false}
-                  style={
-                    Array [
-                      Object {
-                        "color": undefined,
-                        "fontSize": 20,
-                      },
-                      Object {
-                        "color": "#fff",
-                        "marginRight": 6,
-                      },
-                      Object {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      Object {},
-                    ]
-                  }
-                >
-                  
-                </Text>
-                <Text
-                  style={
-                    Object {
-                      "backgroundColor": "transparent",
-                      "color": "#fff",
-                      "fontFamily": "System",
-                      "fontSize": 14,
-                      "fontWeight": "500",
-                    }
-                  }
-                >
-                  No messages yet
-                </Text>
-              </View>
-              <Text
-                style={
-                  Object {
-                    "backgroundColor": "transparent",
-                    "color": "#9ca2a8",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "300",
-                    "lineHeight": 22,
-                    "paddingLeft": 10,
-                  }
-                }
-              />
-            </View>
-          </View>
-        </View>
-      </View>
-    </View>
-    <View
-      style={
-        Object {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <View
-        accessible={true}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          Array [
-            Object {
-              "flex": 1,
-              "flexDirection": "column",
-              "paddingHorizontal": 14,
-              "paddingVertical": 4,
-              "width": "100%",
-            },
-            Object {
-              "marginTop": 6,
-            },
-            undefined,
-            undefined,
-          ]
-        }
-      >
-        <View
-          style={
-            Object {
-              "flex": 1,
-              "flexDirection": "row",
-            }
-          }
-        >
-          <View
-            style={
-              Array [
-                Object {
-                  "borderRadius": 4,
-                  "height": 36,
-                  "width": 36,
-                },
-                Object {
-                  "marginTop": 4,
-                },
-              ]
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {
-                    "overflow": "hidden",
-                  },
-                  Object {
-                    "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
-                  },
-                ]
-              }
-            >
-              <FastImageView
-                resizeMode="cover"
-                source={
-                  Object {
-                    "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
-                  }
-                }
-                style={
-                  Object {
-                    "bottom": 0,
-                    "left": 0,
-                    "position": "absolute",
-                    "right": 0,
-                    "top": 0,
-                  }
-                }
-              />
-            </View>
-          </View>
-          <View
-            style={
-              Array [
-                Object {
-                  "flex": 1,
-                  "marginLeft": 46,
-                },
-                Object {
-                  "marginLeft": 10,
-                },
-                false,
-                false,
-                false,
-              ]
-            }
-          >
-            <View
-              style={
-                Object {
-                  "alignItems": "center",
-                  "flex": 1,
-                  "flexDirection": "row",
-                }
-              }
-            >
-              <View
-                style={
-                  Object {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <Text
-                  numberOfLines={1}
-                  style={
-                    Object {
-                      "backgroundColor": "transparent",
-                      "color": "#2F343D",
-                      "fontFamily": "System",
-                      "fontSize": 16,
-                      "fontWeight": "500",
-                      "lineHeight": 22,
-                    }
-                  }
-                >
-                  diego.mello
-                </Text>
-              </View>
-              <Text
-                style={
-                  Object {
-                    "backgroundColor": "transparent",
-                    "color": "#9ca2a8",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "300",
-                    "lineHeight": 22,
-                    "paddingLeft": 10,
-                  }
-                }
-              >
-                10:00 AM
-              </Text>
-            </View>
-            <Text
-              style={
-                Object {
-                  "backgroundColor": "transparent",
-                  "color": "#9ca2a8",
-                  "fontFamily": "System",
-                  "fontSize": 16,
-                  "fontStyle": "italic",
-                  "fontWeight": "400",
-                }
-              }
-            >
-              Started a discussion:
-            </Text>
-            <Text
-              style={
-                Object {
-                  "backgroundColor": "transparent",
-                  "color": "#2F343D",
-                  "fontFamily": "System",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                }
-              }
-            >
-              This is a discussion
-            </Text>
-            <View
-              style={
-                Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "marginTop": 6,
-                }
-              }
-            >
-              <View
-                accessible={true}
-                hitSlop={
-                  Object {
-                    "bottom": 4,
-                    "left": 4,
-                    "right": 4,
-                    "top": 4,
-                  }
-                }
-                isTVSelectable={true}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
-                style={
-                  Object {
-                    "alignItems": "center",
-                    "backgroundColor": "#1d74f5",
-                    "borderRadius": 4,
-                    "flexDirection": "row",
-                    "height": 30,
-                    "justifyContent": "center",
-                    "opacity": 1,
-                    "paddingHorizontal": 15,
-                  }
-                }
-              >
-                <Text
-                  allowFontScaling={false}
-                  style={
-                    Array [
-                      Object {
-                        "color": undefined,
-                        "fontSize": 20,
-                      },
-                      Object {
-                        "color": "#fff",
-                        "marginRight": 6,
-                      },
-                      Object {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      Object {},
-                    ]
-                  }
-                >
-                  
-                </Text>
-                <Text
-                  style={
-                    Object {
-                      "backgroundColor": "transparent",
-                      "color": "#fff",
-                      "fontFamily": "System",
-                      "fontSize": 14,
-                      "fontWeight": "500",
-                    }
-                  }
-                >
-                  1 message
-                </Text>
-              </View>
-              <Text
-                style={
-                  Object {
-                    "backgroundColor": "transparent",
-                    "color": "#9ca2a8",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "300",
-                    "lineHeight": 22,
-                    "paddingLeft": 10,
-                  }
-                }
-              >
-                Nov 10
-              </Text>
-            </View>
-          </View>
-        </View>
-      </View>
-    </View>
-    <View
-      style={
-        Object {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <View
-        accessible={true}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          Array [
-            Object {
-              "flex": 1,
-              "flexDirection": "column",
-              "paddingHorizontal": 14,
-              "paddingVertical": 4,
-              "width": "100%",
-            },
-            Object {
-              "marginTop": 6,
-            },
-            undefined,
-            undefined,
-          ]
-        }
-      >
-        <View
-          style={
-            Object {
-              "flex": 1,
-              "flexDirection": "row",
-            }
-          }
-        >
-          <View
-            style={
-              Array [
-                Object {
-                  "borderRadius": 4,
-                  "height": 36,
-                  "width": 36,
-                },
-                Object {
-                  "marginTop": 4,
-                },
-              ]
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {
-                    "overflow": "hidden",
-                  },
-                  Object {
-                    "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
-                  },
-                ]
-              }
-            >
-              <FastImageView
-                resizeMode="cover"
-                source={
-                  Object {
-                    "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
-                  }
-                }
-                style={
-                  Object {
-                    "bottom": 0,
-                    "left": 0,
-                    "position": "absolute",
-                    "right": 0,
-                    "top": 0,
-                  }
-                }
-              />
-            </View>
-          </View>
-          <View
-            style={
-              Array [
-                Object {
-                  "flex": 1,
-                  "marginLeft": 46,
-                },
-                Object {
-                  "marginLeft": 10,
-                },
-                false,
-                false,
-                false,
-              ]
-            }
-          >
-            <View
-              style={
-                Object {
-                  "alignItems": "center",
-                  "flex": 1,
-                  "flexDirection": "row",
-                }
-              }
-            >
-              <View
-                style={
-                  Object {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <Text
-                  numberOfLines={1}
-                  style={
-                    Object {
-                      "backgroundColor": "transparent",
-                      "color": "#2F343D",
-                      "fontFamily": "System",
-                      "fontSize": 16,
-                      "fontWeight": "500",
-                      "lineHeight": 22,
-                    }
-                  }
-                >
-                  diego.mello
-                </Text>
-              </View>
-              <Text
-                style={
-                  Object {
-                    "backgroundColor": "transparent",
-                    "color": "#9ca2a8",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "300",
-                    "lineHeight": 22,
-                    "paddingLeft": 10,
-                  }
-                }
-              >
-                10:00 AM
-              </Text>
-            </View>
-            <Text
-              style={
-                Object {
-                  "backgroundColor": "transparent",
-                  "color": "#9ca2a8",
-                  "fontFamily": "System",
-                  "fontSize": 16,
-                  "fontStyle": "italic",
-                  "fontWeight": "400",
-                }
-              }
-            >
-              Started a discussion:
-            </Text>
-            <Text
-              style={
-                Object {
-                  "backgroundColor": "transparent",
-                  "color": "#2F343D",
-                  "fontFamily": "System",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                }
-              }
-            >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </Text>
-            <View
-              style={
-                Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "marginTop": 6,
-                }
-              }
-            >
-              <View
-                accessible={true}
-                hitSlop={
-                  Object {
-                    "bottom": 4,
-                    "left": 4,
-                    "right": 4,
-                    "top": 4,
-                  }
-                }
-                isTVSelectable={true}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
-                style={
-                  Object {
-                    "alignItems": "center",
-                    "backgroundColor": "#1d74f5",
-                    "borderRadius": 4,
-                    "flexDirection": "row",
-                    "height": 30,
-                    "justifyContent": "center",
-                    "opacity": 1,
-                    "paddingHorizontal": 15,
-                  }
-                }
-              >
-                <Text
-                  allowFontScaling={false}
-                  style={
-                    Array [
-                      Object {
-                        "color": undefined,
-                        "fontSize": 20,
-                      },
-                      Object {
-                        "color": "#fff",
-                        "marginRight": 6,
-                      },
-                      Object {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      Object {},
-                    ]
-                  }
-                >
-                  
-                </Text>
-                <Text
-                  style={
-                    Object {
-                      "backgroundColor": "transparent",
-                      "color": "#fff",
-                      "fontFamily": "System",
-                      "fontSize": 14,
-                      "fontWeight": "500",
-                    }
-                  }
-                >
-                  10 messages
-                </Text>
-              </View>
-              <Text
-                style={
-                  Object {
-                    "backgroundColor": "transparent",
-                    "color": "#9ca2a8",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "300",
-                    "lineHeight": 22,
-                    "paddingLeft": 10,
-                  }
-                }
-              >
-                Nov 10
-              </Text>
-            </View>
-          </View>
-        </View>
-      </View>
-    </View>
-    <View
-      style={
-        Object {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <View
-        accessible={true}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          Array [
-            Object {
-              "flex": 1,
-              "flexDirection": "column",
-              "paddingHorizontal": 14,
-              "paddingVertical": 4,
-              "width": "100%",
-            },
-            Object {
-              "marginTop": 6,
-            },
-            undefined,
-            undefined,
-          ]
-        }
-      >
-        <View
-          style={
-            Object {
-              "flex": 1,
-              "flexDirection": "row",
-            }
-          }
-        >
-          <View
-            style={
-              Array [
-                Object {
-                  "borderRadius": 4,
-                  "height": 36,
-                  "width": 36,
-                },
-                Object {
-                  "marginTop": 4,
-                },
-              ]
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {
-                    "overflow": "hidden",
-                  },
-                  Object {
-                    "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
-                  },
-                ]
-              }
-            >
-              <FastImageView
-                resizeMode="cover"
-                source={
-                  Object {
-                    "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
-                  }
-                }
-                style={
-                  Object {
-                    "bottom": 0,
-                    "left": 0,
-                    "position": "absolute",
-                    "right": 0,
-                    "top": 0,
-                  }
-                }
-              />
-            </View>
-          </View>
-          <View
-            style={
-              Array [
-                Object {
-                  "flex": 1,
-                  "marginLeft": 46,
-                },
-                Object {
-                  "marginLeft": 10,
-                },
-                false,
-                false,
-                false,
-              ]
-            }
-          >
-            <View
-              style={
-                Object {
-                  "alignItems": "center",
-                  "flex": 1,
-                  "flexDirection": "row",
-                }
-              }
-            >
-              <View
-                style={
-                  Object {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <Text
-                  numberOfLines={1}
-                  style={
-                    Object {
-                      "backgroundColor": "transparent",
-                      "color": "#2F343D",
-                      "fontFamily": "System",
-                      "fontSize": 16,
-                      "fontWeight": "500",
-                      "lineHeight": 22,
-                    }
-                  }
-                >
-                  diego.mello
-                </Text>
-              </View>
-              <Text
-                style={
-                  Object {
-                    "backgroundColor": "transparent",
-                    "color": "#9ca2a8",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "300",
-                    "lineHeight": 22,
-                    "paddingLeft": 10,
-                  }
-                }
-              >
-                10:00 AM
-              </Text>
-            </View>
-            <Text
-              style={
-                Object {
-                  "backgroundColor": "transparent",
-                  "color": "#9ca2a8",
-                  "fontFamily": "System",
-                  "fontSize": 16,
-                  "fontStyle": "italic",
-                  "fontWeight": "400",
-                }
-              }
-            >
-              Started a discussion:
-            </Text>
-            <Text
-              style={
-                Object {
-                  "backgroundColor": "transparent",
-                  "color": "#2F343D",
-                  "fontFamily": "System",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                }
-              }
-            >
-              This is a discussion
-            </Text>
-            <View
-              style={
-                Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "marginTop": 6,
-                }
-              }
-            >
-              <View
-                accessible={true}
-                hitSlop={
-                  Object {
-                    "bottom": 4,
-                    "left": 4,
-                    "right": 4,
-                    "top": 4,
-                  }
-                }
-                isTVSelectable={true}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
-                style={
-                  Object {
-                    "alignItems": "center",
-                    "backgroundColor": "#1d74f5",
-                    "borderRadius": 4,
-                    "flexDirection": "row",
-                    "height": 30,
-                    "justifyContent": "center",
-                    "opacity": 1,
-                    "paddingHorizontal": 15,
-                  }
-                }
-              >
-                <Text
-                  allowFontScaling={false}
-                  style={
-                    Array [
-                      Object {
-                        "color": undefined,
-                        "fontSize": 20,
-                      },
-                      Object {
-                        "color": "#fff",
-                        "marginRight": 6,
-                      },
-                      Object {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      Object {},
-                    ]
-                  }
-                >
-                  
-                </Text>
-                <Text
-                  style={
-                    Object {
-                      "backgroundColor": "transparent",
-                      "color": "#fff",
-                      "fontFamily": "System",
-                      "fontSize": 14,
-                      "fontWeight": "500",
-                    }
-                  }
-                >
-                  +999 messages
-                </Text>
-              </View>
-              <Text
-                style={
-                  Object {
-                    "backgroundColor": "transparent",
-                    "color": "#9ca2a8",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "300",
-                    "lineHeight": 22,
-                    "paddingLeft": 10,
-                  }
-                }
-              >
-                Nov 10
-              </Text>
             </View>
           </View>
         </View>
