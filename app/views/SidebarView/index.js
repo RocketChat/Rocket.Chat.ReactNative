@@ -230,7 +230,8 @@ export default class Sidebar extends Component {
 							size={30}
 							style={styles.avatar}
 							baseUrl={baseUrl}
-							user={user}
+							userId={user.id}
+							token={user.token}
 						/>
 						<View style={styles.headerTextContainer}>
 							<View style={styles.headerUsername}>
