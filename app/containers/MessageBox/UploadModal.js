@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-	View, Text, StyleSheet, Image, ScrollView, TouchableHighlight, ToastAndroid
+	View, Text, StyleSheet, Image, ScrollView, TouchableHighlight, Alert
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
@@ -120,7 +120,7 @@ export default class UploadModal extends Component {
 		const { file, submit } = this.props;
 		const { name, description } = this.state;
 		if (name === '') {
-			ToastAndroid.show('Please enter a filename', ToastAndroid.SHORT);
+			Alert.alert('Oops!', 'Filename is required.');
 			return;
 		}
 		submit({ ...file, name, description });
