@@ -35,6 +35,7 @@ export default class LanguageView extends LoggedView {
 	static propTypes = {
 		componentId: PropTypes.string,
 		userLanguage: PropTypes.string,
+		navigation: PropTypes.object,
 		setUser: PropTypes.func
 	}
 
@@ -103,7 +104,7 @@ export default class LanguageView extends LoggedView {
 		this.setState({ saving: true });
 
 		const { language } = this.state;
-		const { userLanguage, setUser } = this.props;
+		const { userLanguage, setUser, navigation } = this.props;
 
 		if (!this.formIsChanged()) {
 			return;
@@ -123,6 +124,8 @@ export default class LanguageView extends LoggedView {
 			this.setState({ saving: false });
 			setTimeout(() => {
 				showToast(I18n.t('Preferences_saved'));
+				navigation.popToTop();
+				navigation.goBack(null);
 			}, 300);
 		} catch (e) {
 			this.setState({ saving: false });
