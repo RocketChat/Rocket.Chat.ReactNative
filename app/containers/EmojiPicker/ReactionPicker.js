@@ -166,7 +166,7 @@ export default class ReactionPicker extends Component {
 		this.setState({ customEmojis });
 	}
 
-	renderCategory(category, i) {
+	renderCategory({ category, title }, i) {
 		const { frequentlyUsed, customEmojis } = this.state;
 		const { emojisPerRow, width, baseUrl } = this.props;
 		let emojiCategory;
@@ -178,15 +178,18 @@ export default class ReactionPicker extends Component {
 		} else {
 			emojiCategory = emojisByCategory[category];
 		}
-		return (
-			<EmojiCategory
-				emojis={emojiCategory}
-				onEmojiSelected={emoji => this.onEmojiSelected(emoji)}
-				style={styles.categoryContainer}
-				size={emojisPerRow}
-				width={width}
-				baseUrl={baseUrl}
-			/>
+		return emojiCategory && emojiCategory.length > 0 && (
+			[
+				<Text style={styles.categoryTitle}>{title}</Text>,
+				<EmojiCategory
+					emojis={emojiCategory}
+					onEmojiSelected={emoji => this.onEmojiSelected(emoji)}
+					style={styles.categoryContainer}
+					size={emojisPerRow}
+					width={width}
+					baseUrl={baseUrl}
+				/>
+			]
 		);
 	}
 
@@ -229,12 +232,11 @@ export default class ReactionPicker extends Component {
 					) : (
 						<Text style={styles.noEmojiFoundText}>{I18n.t('Emoji_Not_Found')}</Text>
 					)))
-					|| categories.tabs.map((tab, i) => (
-						<View key={tab.category} style={styles.background} {...scrollProps}>
-							<Text style={styles.categoryTitle}>{tab.title}</Text>
-							{this.renderCategory(tab.category, i)}
-						</View>
-					))}
+				|| categories.tabs.map((tab, i) => (
+					<View key={tab.category} style={styles.background} {...scrollProps}>
+						{this.renderCategory(tab, i)}
+					</View>
+				))}
 			</ScrollView>
 		);
 	}
