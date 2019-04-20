@@ -1,5 +1,7 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { Component } from 'react';
+import {
+	View, Text, StyleSheet, ActivityIndicator
+} from 'react-native';
 import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 import Touchable from 'react-native-platform-touchable';
@@ -47,36 +49,68 @@ const styles = StyleSheet.create({
 		height: 150,
 		borderTopLeftRadius: 4,
 		borderTopRightRadius: 4
+	},
+	loading: {
+		position: 'absolute',
+		width: '100%',
+		height: '100%',
+		justifyContent: 'center'
 	}
 });
-
-const onPress = (url) => {
-	openLink(url);
-};
-const Url = ({ url, index }) => {
-	if (!url) {
-		return null;
+export default class extends Component {
+	static propTypes = {
+		url: PropTypes.object.isRequired,
+		index: PropTypes.number
 	}
-	return (
-		<Touchable
-			onPress={() => onPress(url.url)}
-			style={[styles.button, index > 0 && styles.marginTop, styles.container]}
-			background={Touchable.Ripple('#fff')}
-		>
-			<React.Fragment>
-				{url.image ? <FastImage source={{ uri: url.image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} /> : null}
-				<View style={styles.textContainer}>
-					<Text style={styles.title} numberOfLines={2}>{url.title}</Text>
-					<Text style={styles.description} numberOfLines={2}>{url.description}</Text>
-				</View>
-			</React.Fragment>
-		</Touchable>
-	);
-};
 
-Url.propTypes = {
-	url: PropTypes.object.isRequired,
-	index: PropTypes.number
-};
+	state = { loading: false }
 
-export default Url;
+	onPress = (url) => {
+		openLink(url);
+	};
+
+	setLoading = (loading) => {
+		this.setState({ loading });
+	}
+
+	renderLoading = () => {
+		const { loading } = this.state;
+		if (loading) {
+			return (
+				<ActivityIndicator style={styles.loading} />
+			);
+		}
+	}
+
+	render() {
+		const { url, index } = this.props;
+		if (!url) {
+			return null;
+		}
+		return (
+			<Touchable
+				onPress={() => this.onPress(url.url)}
+				style={[styles.button, index > 0 && styles.marginTop, styles.container]}
+				background={Touchable.Ripple('#fff')}
+			>
+				<React.Fragment>
+					{url.image ? (
+						<FastImage
+							source={{ uri: url.image }}
+							style={styles.image}
+							resizeMode={FastImage.resizeMode.cover}
+							onLoadStart={() => this.setLoading(true)}
+							onLoadEnd={() => this.setLoading(false)}
+						>
+							{this.renderLoading()}
+						</FastImage>
+					) : null}
+					<View style={styles.textContainer}>
+						<Text style={styles.title} numberOfLines={2}>{url.title}</Text>
+						<Text style={styles.description} numberOfLines={2}>{url.description}</Text>
+					</View>
+				</React.Fragment>
+			</Touchable>
+		);
+	}
+}

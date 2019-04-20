@@ -20,7 +20,7 @@ export default class extends Component {
 		])
 	}
 
-	state = { modalVisible: false, isPressed: false, loading: true };
+	state = { modalVisible: false, isPressed: false, loading: false };
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { modalVisible, isPressed, loading } = this.state;
