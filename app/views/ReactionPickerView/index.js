@@ -6,7 +6,6 @@ import { isAndroid } from '../../utils/deviceInfo';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import ReactionPicker from '../../containers/EmojiPicker/ReactionPicker';
-import i18n from '../../i18n';
 import LoggedView from '../View';
 
 const margin = isAndroid ? 40 : 20;
@@ -18,10 +17,6 @@ const tabEmojiStyle = { fontSize: 15 };
 }))
 @responsive
 export default class ReactionPickerView extends LoggedView {
-	static navigationOptions = {
-		title: i18n.t('Reactions_search')
-	}
-
 	static propTypes = {
 		baseUrl: PropTypes.string.isRequired,
 		window: PropTypes.any,

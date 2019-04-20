@@ -73,7 +73,7 @@ export default class ReactionPicker extends Component {
 
 		this.handleSearchDebounced = debounce((query) => {
 			this.handleOnChangeSearchQuery.call(this, query);
-		}, 500);
+		}, 300);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {

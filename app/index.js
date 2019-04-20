@@ -47,6 +47,7 @@ import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from './constants/colors
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications, onNotification } from './push';
 import store from './lib/createStore';
+import i18n from './i18n';
 
 useScreens();
 
@@ -140,7 +141,12 @@ const ChatsStack = createStackNavigator({
 	PinnedMessagesView,
 	SelectedUsersView,
 	ThreadMessagesView,
-	ReactionPickerView
+	ReactionPickerView: {
+		screen: ReactionPickerView,
+		navigationOptions: {
+			title: i18n.t('Reactions_search')
+		}
+	}
 }, {
 	defaultNavigationOptions: defaultHeader
 });
