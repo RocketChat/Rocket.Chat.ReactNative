@@ -32,6 +32,7 @@ import MentionedMessagesView from './views/MentionedMessagesView';
 import StarredMessagesView from './views/StarredMessagesView';
 import SearchMessagesView from './views/SearchMessagesView';
 import PinnedMessagesView from './views/PinnedMessagesView';
+import ThreadMessagesView from './views/ThreadMessagesView';
 import SelectedUsersView from './views/SelectedUsersView';
 import CreateChannelView from './views/CreateChannelView';
 import LegalView from './views/LegalView';
@@ -125,55 +126,74 @@ const OutsideStackModal = createStackNavigator(
 );
 
 // Inside
-const ChatsStack = createStackNavigator(
-	{
-		RoomsListView,
-		RoomView,
-		RoomActionsView,
-		RoomInfoView,
-		RoomInfoEditView,
-		RoomMembersView,
-		RoomFilesView,
-		MentionedMessagesView,
-		StarredMessagesView,
-		SearchMessagesView,
-		PinnedMessagesView,
-		SelectedUsersView,
-		ReactionPickerView
-	},
-	{
-		defaultNavigationOptions: defaultHeader
-	}
-);
+const ChatsStack = createStackNavigator({
+	RoomsListView,
+	RoomView,
+	RoomActionsView,
+	RoomInfoView,
+	RoomInfoEditView,
+	RoomMembersView,
+	RoomFilesView,
+	MentionedMessagesView,
+	StarredMessagesView,
+	SearchMessagesView,
+	PinnedMessagesView,
+	SelectedUsersView,
+	ThreadMessagesView,
+	ReactionPickerView
+}, {
+	defaultNavigationOptions: defaultHeader
+});
 
-const ProfileStack = createStackNavigator(
-	{
-		ProfileView
-	},
-	{
-		defaultNavigationOptions: defaultHeader
+ChatsStack.navigationOptions = ({ navigation }) => {
+	let drawerLockMode = 'unlocked';
+	if (navigation.state.index > 0) {
+		drawerLockMode = 'locked-closed';
 	}
-);
+	return {
+		drawerLockMode
+	};
+};
 
-const SettingsStack = createStackNavigator(
-	{
-		SettingsView
-	},
-	{
-		defaultNavigationOptions: defaultHeader
-	}
-);
+const ProfileStack = createStackNavigator({
+	ProfileView
+}, {
+	defaultNavigationOptions: defaultHeader
+});
 
-const ChatsDrawer = createDrawerNavigator(
-	{
-		ChatsStack,
-		ProfileStack,
-		SettingsStack
-	},
-	{
-		contentComponent: Sidebar
+ProfileView.navigationOptions = ({ navigation }) => {
+	let drawerLockMode = 'unlocked';
+	if (navigation.state.index > 0) {
+		drawerLockMode = 'locked-closed';
 	}
-);
+	return {
+		drawerLockMode
+	};
+};
+
+const SettingsStack = createStackNavigator({
+	SettingsView
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
+SettingsStack.navigationOptions = ({ navigation }) => {
+	let drawerLockMode = 'unlocked';
+	if (navigation.state.index > 0) {
+		drawerLockMode = 'locked-closed';
+	}
+	return {
+		drawerLockMode
+	};
+};
+
+const ChatsDrawer = createDrawerNavigator({
+	ChatsStack,
+	ProfileStack,
+	SettingsStack
+}, {
+	contentComponent: Sidebar
+});
 
 const NewMessageStack = createStackNavigator(
 	{
