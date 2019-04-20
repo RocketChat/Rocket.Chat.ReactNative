@@ -3255,6 +3255,7 @@ exports[`Storyshots Message list 1`] = `
                   <Image
                     source={
                       Object {
+                        "cache": "force-cache",
                         "uri": "https://open.rocket.chat/emoji-custom/react_rocket.png",
                       }
                     }
@@ -3271,6 +3272,7 @@ exports[`Storyshots Message list 1`] = `
                   <Image
                     source={
                       Object {
+                        "cache": "force-cache",
                         "uri": "https://open.rocket.chat/emoji-custom/nyan_rocket.png",
                       }
                     }
@@ -3287,6 +3289,7 @@ exports[`Storyshots Message list 1`] = `
                   <Image
                     source={
                       Object {
+                        "cache": "force-cache",
                         "uri": "https://open.rocket.chat/emoji-custom/marioparty.gif",
                       }
                     }
@@ -3849,6 +3852,7 @@ exports[`Storyshots Message list 1`] = `
                   <Image
                     source={
                       Object {
+                        "cache": "force-cache",
                         "uri": "https://open.rocket.chat/emoji-custom/marioparty.gif",
                       }
                     }
@@ -4278,6 +4282,7 @@ exports[`Storyshots Message list 1`] = `
                   <Image
                     source={
                       Object {
+                        "cache": "force-cache",
                         "uri": "https://open.rocket.chat/emoji-custom/marioparty.gif",
                       }
                     }
@@ -4353,6 +4358,7 @@ exports[`Storyshots Message list 1`] = `
                   <Image
                     source={
                       Object {
+                        "cache": "force-cache",
                         "uri": "https://open.rocket.chat/emoji-custom/react_rocket.png",
                       }
                     }
@@ -4428,6 +4434,7 @@ exports[`Storyshots Message list 1`] = `
                   <Image
                     source={
                       Object {
+                        "cache": "force-cache",
                         "uri": "https://open.rocket.chat/emoji-custom/nyan_rocket.png",
                       }
                     }
