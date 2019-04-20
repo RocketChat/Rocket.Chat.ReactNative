@@ -49,7 +49,7 @@ const UserItem = ({
 }) => (
 	<Touch onPress={onPress} onLongPress={onLongPress} style={styles.button} testID={testID}>
 		<View style={[styles.container, style]}>
-			<Avatar text={username} size={30} type='d' style={styles.avatar} baseUrl={baseUrl} user={user} />
+			<Avatar text={username} size={30} type='d' style={styles.avatar} baseUrl={baseUrl} userId={user.id} token={user.token} />
 			<View style={styles.textContainer}>
 				<Text style={styles.name}>{name}</Text>
 				<Text style={styles.username}>@{username}</Text>

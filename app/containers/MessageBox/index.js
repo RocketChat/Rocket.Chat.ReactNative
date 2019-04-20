@@ -48,25 +48,7 @@ const imagePickerConfig = {
 	cropperCancelText: I18n.t('Cancel')
 };
 
-@connect(state => ({
-	roomType: state.room.t,
-	message: state.messages.message,
-	replyMessage: state.messages.replyMessage,
-	replying: state.messages.replyMessage && !!state.messages.replyMessage.msg,
-	editing: state.messages.editing,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	user: {
-		id: state.login.user && state.login.user.id,
-		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token
-	}
-}), dispatch => ({
-	editCancel: () => dispatch(editCancelAction()),
-	editRequest: message => dispatch(editRequestAction(message)),
-	typing: status => dispatch(userTypingAction(status)),
-	closeReply: () => dispatch(replyCancelAction())
-}))
-export default class MessageBox extends Component {
+class MessageBox extends Component {
 	static propTypes = {
 		rid: PropTypes.string.isRequired,
 		baseUrl: PropTypes.string.isRequired,
@@ -74,6 +56,7 @@ export default class MessageBox extends Component {
 		replyMessage: PropTypes.object,
 		replying: PropTypes.bool,
 		editing: PropTypes.bool,
+		threadsEnabled: PropTypes.bool,
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			username: PropTypes.string,
@@ -111,8 +94,9 @@ export default class MessageBox extends Component {
 	componentDidMount() {
 		const { rid } = this.props;
 		const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
-		if (room.draftMessage && room.draftMessage !== '') {
+		if (room && room.draftMessage) {
 			this.setInput(room.draftMessage);
+			this.setShowSend(true);
 		}
 	}
 
@@ -120,6 +104,9 @@ export default class MessageBox extends Component {
 		const { message, replyMessage } = this.props;
 		if (message !== nextProps.message && nextProps.message.msg) {
 			this.setInput(nextProps.message.msg);
+			if (this.text) {
+				this.setShowSend(true);
+			}
 			this.focus();
 		} else if (replyMessage !== nextProps.replyMessage && nextProps.replyMessage.msg) {
 			this.focus();
@@ -163,14 +150,6 @@ export default class MessageBox extends Component {
 			return true;
 		}
 		return false;
-	}
-
-	componentWillUnmount() {
-		const { rid } = this.props;
-		const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
-		database.write(() => {
-			room.draftMessage = this.text;
-		});
 	}
 
 	onChangeText = (text) => {
@@ -461,13 +440,13 @@ export default class MessageBox extends Component {
 	}
 
 	handleTyping = (isTyping) => {
-		const { typing } = this.props;
+		const { typing, rid } = this.props;
 		if (!isTyping) {
 			if (this.typingTimeout) {
 				clearTimeout(this.typingTimeout);
 				this.typingTimeout = false;
 			}
-			typing(false);
+			typing(rid, false);
 			return;
 		}
 
@@ -476,7 +455,7 @@ export default class MessageBox extends Component {
 		}
 
 		this.typingTimeout = setTimeout(() => {
-			typing(true);
+			typing(rid, true);
 			this.typingTimeout = false;
 		}, 1000);
 	}
@@ -593,31 +572,42 @@ export default class MessageBox extends Component {
 		if (message.trim() === '') {
 			return;
 		}
-		// if is editing a message
+
 		const {
 			editing, replying
 		} = this.props;
 
+		// Edit
 		if (editing) {
 			const { _id, rid } = editingMessage;
 			editRequest({ _id, msg: message, rid });
+
+		// Reply
 		} else if (replying) {
-			const {
-				user, replyMessage, roomType, closeReply
-			} = this.props;
-			const permalink = await this.getPermalink(replyMessage);
-			let msg = `[ ](${ permalink }) `;
+			const { replyMessage, closeReply, threadsEnabled } = this.props;
 
-			// if original message wasn't sent by current user and neither from a direct room
-			if (user.username !== replyMessage.u.username && roomType !== 'd' && replyMessage.mention) {
-				msg += `@${ replyMessage.u.username } `;
+			// Thread
+			if (threadsEnabled) {
+				onSubmit(message, replyMessage._id);
+
+			// Legacy reply
+			} else {
+				const { user, roomType } = this.props;
+				const permalink = await this.getPermalink(replyMessage);
+				let msg = `[ ](${ permalink }) `;
+
+				// if original message wasn't sent by current user and neither from a direct room
+				if (user.username !== replyMessage.u.username && roomType !== 'd' && replyMessage.mention) {
+					msg += `@${ replyMessage.u.username } `;
+				}
+
+				msg = `${ msg } ${ message }`;
+				onSubmit(msg);
 			}
-
-			msg = `${ msg } ${ message }`;
-			onSubmit(msg);
 			closeReply();
+
+		// Normal message
 		} else {
-			// if is submiting a new message
 			onSubmit(message);
 		}
 		this.clearInput();
@@ -716,7 +706,8 @@ export default class MessageBox extends Component {
 							size={30}
 							type={item.username ? 'd' : 'c'}
 							baseUrl={baseUrl}
-							user={user}
+							userId={user.id}
+							token={user.token}
 						/>,
 						<Text key='mention-item-name' style={styles.mentionText}>{ item.username || item.name }</Text>
 					]
@@ -835,3 +826,26 @@ export default class MessageBox extends Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	message: state.messages.message,
+	replyMessage: state.messages.replyMessage,
+	replying: state.messages.replyMessage && !!state.messages.replyMessage.msg,
+	editing: state.messages.editing,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	threadsEnabled: state.settings.Threads_enabled,
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	}
+});
+
+const dispatchToProps = ({
+	editCancel: () => editCancelAction(),
+	editRequest: message => editRequestAction(message),
+	typing: (rid, status) => userTypingAction(rid, status),
+	closeReply: () => replyCancelAction()
+});
+
+export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(MessageBox);

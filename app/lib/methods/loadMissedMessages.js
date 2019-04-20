@@ -19,7 +19,7 @@ async function load({ rid: roomId, lastOpen }) {
 		lastUpdate = getLastUpdate(roomId);
 	}
 	// RC 0.60.0
-	const { result } = await this.sdk.get('chat.syncMessages', { roomId, lastUpdate, count: 50 });
+	const { result } = await this.sdk.get('chat.syncMessages', { roomId, lastUpdate });
 	return result;
 }
 
@@ -31,11 +31,15 @@ export default function loadMissedMessages(...args) {
 			if (data) {
 				if (data.updated && data.updated.length) {
 					const { updated } = data;
-					updated.forEach(buildMessage);
 					InteractionManager.runAfterInteractions(() => {
 						database.write(() => updated.forEach((message) => {
 							try {
+								message = buildMessage(message);
 								database.create('messages', message, true);
+								// if it's a thread "header"
+								if (message.tlm) {
+									database.create('threads', message, true);
+								}
 							} catch (e) {
 								log('loadMissedMessages -> create messages', e);
 							}
