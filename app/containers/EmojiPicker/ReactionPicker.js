@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
-	ScrollView, View, Text, TouchableOpacity, ActivityIndicator
+	ScrollView, Text, TouchableOpacity, ActivityIndicator
 } from 'react-native';
 import map from 'lodash/map';
 import { emojify } from 'react-emojione';
@@ -16,6 +16,7 @@ import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import I18n from '../../i18n';
 import CustomEmoji from './CustomEmoji';
 import SearchBox from '../SearchBox';
+import debounce from '../../utils/debounce';
 
 const scrollProps = {
 	keyboardShouldPersistTaps: 'always',
@@ -69,6 +70,10 @@ export default class ReactionPicker extends Component {
 		requestAnimationFrame(() => this.setState({ show: true }));
 		safeAddListener(this.frequentlyUsed, this.updateFrequentlyUsed);
 		safeAddListener(this.customEmojis, this.updateCustomEmojis);
+
+		this.handleSearchDebounced = debounce((query) => {
+			this.handleOnChangeSearchQuery.call(this, query);
+		}, 500);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -219,37 +224,31 @@ export default class ReactionPicker extends Component {
 			<ScrollView {...scrollProps} style={styles.background}>
 				{(searchQuery
 					&& (searchResults.length > 0 ? (
-						<View style={styles.background} {...scrollProps}>
-							<EmojiCategory
-								emojis={searchResults}
-								onEmojiSelected={emoji => this.onEmojiSelected(emoji)}
-								style={styles.categoryContainer}
-								size={emojisPerRow}
-								width={width}
-								baseUrl={baseUrl}
-							/>
-						</View>
+						<EmojiCategory
+							emojis={searchResults}
+							onEmojiSelected={emoji => this.onEmojiSelected(emoji)}
+							style={styles.categoryContainer}
+							size={emojisPerRow}
+							width={width}
+							baseUrl={baseUrl}
+						/>
 					) : (
 						<Text style={styles.noEmojiFoundText}>{I18n.t('Emoji_Not_Found')}</Text>
 					)))
-				|| categories.tabs.map((tab, i) => (
-					<View key={tab.category} style={styles.background} {...scrollProps}>
-						{this.renderCategory(tab, i)}
-					</View>
-				))}
+				|| categories.tabs.map((tab, i) => this.renderCategory(tab, i))}
 			</ScrollView>
 		);
 	}
 
 	render() {
 		return (
-			<View>
+			<Fragment>
 				<SearchBox
-					onChangeText={this.handleOnChangeSearchQuery}
+					onChangeText={this.handleSearchDebounced}
 					testID='search-message-view-input'
 				/>
 				{this.renderCategories()}
-			</View>
+			</Fragment>
 		);
 	}
 }
