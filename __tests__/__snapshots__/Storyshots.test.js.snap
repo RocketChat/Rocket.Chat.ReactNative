@@ -6906,20 +6906,6 @@ exports[`Storyshots Message list 1`] = `
                   }
                 />
               </View>
-              <ActivityIndicator
-                animating={true}
-                color="#999999"
-                hidesWhenStopped={true}
-                size="small"
-                style={
-                  Object {
-                    "height": "100%",
-                    "justifyContent": "center",
-                    "position": "absolute",
-                    "width": "100%",
-                  }
-                }
-              />
               <View
                 style={Object {}}
               >
@@ -7488,20 +7474,6 @@ exports[`Storyshots Message list 1`] = `
                   }
                 />
               </View>
-              <ActivityIndicator
-                animating={true}
-                color="#999999"
-                hidesWhenStopped={true}
-                size="small"
-                style={
-                  Object {
-                    "height": "100%",
-                    "justifyContent": "center",
-                    "position": "absolute",
-                    "width": "100%",
-                  }
-                }
-              />
               <View
                 style={Object {}}
               >
@@ -10081,6 +10053,8 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <FastImageView
+                  onFastImageLoadEnd={[Function]}
+                  onFastImageLoadStart={[Function]}
                   resizeMode="cover"
                   source={
                     Object {
