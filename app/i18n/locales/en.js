@@ -367,5 +367,7 @@ export default {
 	you_were_mentioned: 'you were mentioned',
 	you: 'you',
 	You: 'You',
-	You_will_not_be_able_to_recover_this_message: 'You will not be able to recover this message!'
+	You_will_not_be_able_to_recover_this_message: 'You will not be able to recover this message!',
+	Change_Language: 'Change Language'
+
 };

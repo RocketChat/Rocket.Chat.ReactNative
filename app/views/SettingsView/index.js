@@ -3,6 +3,7 @@ import {
 	I18nManager, Text, View, StyleSheet, SectionList, Switch
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import { RectButton } from 'react-native-gesture-handler';
 import { DrawerButton } from '../../containers/HeaderButton';
@@ -24,9 +25,16 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: '#F6F7F9'
 	},
-	sectionItemName: {
+	sectionItemTitle: {
 		flex: 1,
 		fontSize: 14,
+		marginStart: 20,
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textRegular
+	},
+	sectionItemSubTitle: {
+		flex: 1,
+		fontSize: 11,
 		marginStart: 20,
 		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
@@ -56,6 +64,7 @@ const styles = StyleSheet.create({
 });
 
 const renderSeparator = () => <View style={styles.separator} />;
+@connect(state => ({ server: state.server }))
 
 export default class SettingsView extends Component {
 	static navigationOptions = ({ navigation }) => ({
@@ -64,10 +73,12 @@ export default class SettingsView extends Component {
 	});
 
 	static propTypes = {
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		server:	PropTypes.object
 	}
 
 	sections() {
+		const { server } =	this.props;
 		const settings = [
 			{
 				data: [
@@ -99,14 +110,17 @@ export default class SettingsView extends Component {
 					withScreen: true,
 					title: 'License',
 					screen: 'comming Soon',
+					subTitle: '',
 					isDeveloped: false
 				}, {
 					withScreen: false,
 					title: `Version: ${ getReadableVersion }`,
+					subTitle: '',
 					isDeveloped: false
 				}, {
 					withScreen: false,
-					title: 'Server version: 1.0.0-develop',
+					title: `Server version: ${ server.version }`,
+					subTitle: `${ server.server.split('//')[1] }`,
 					isDeveloped: false
 				}
 				],
@@ -143,7 +157,10 @@ export default class SettingsView extends Component {
 				underlayColor={COLOR_TEXT}
 			>
 				<View style={styles.sectionItem}>
-					<Text style={styles.sectionItemName}>{item.title}</Text>
+					<View style={{ flex: 1 }}>
+						<Text style={styles.sectionItemTitle}>{item.title}</Text>
+						<Text style={styles.sectionItemSubTitle}>{item.subTitle}</Text>
+					</View>
 					{item.withScreen ? <CustomIcon style={styles.iconStyle} name='arrow-down' size={20} color={COLOR_TEXT_DESCRIPTION} /> : null}
 				</View>
 			</RectButton>
@@ -152,7 +169,7 @@ export default class SettingsView extends Component {
 
 	renderLastSection = ({ item }) => (
 		<View style={[styles.sectionItem, item.disable && styles.sectionItemDisabled]}>
-			<Text style={styles.sectionItemName}>{item.title}</Text>
+			<Text style={styles.sectionItemTitle}>{item.title}</Text>
 			{item.withToggleButton ? <Switch value={false} /> : null}
 		</View>
 	)

@@ -29,7 +29,7 @@ import StatusBar from '../../containers/StatusBar';
 export default class LanguageView extends LoggedView {
 	static navigationOptions = ({ navigation }) => ({
 		headerLeft: <DrawerButton navigation={navigation} />,
-		title: I18n.t('Change Language')
+		title: I18n.t('Change_Language')
 	})
 
 	static propTypes = {
