@@ -8,6 +8,7 @@ import { RectButton } from 'react-native-gesture-handler';
 import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { showButtomToast } from '../../utils/info';
+import { getReadableVersion } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import sharedStyles from '../Styles';
 import { CustomIcon } from '../../lib/Icons';
@@ -101,13 +102,11 @@ export default class SettingsView extends Component {
 					isDeveloped: false
 				}, {
 					withScreen: false,
-					title: 'Version: 3.4.1 (250)',
-					screen: 'comming Soon ',
+					title: `Version: ${ getReadableVersion }`,
 					isDeveloped: false
 				}, {
 					withScreen: false,
 					title: 'Server version: 1.0.0-develop',
-					screen: 'comming Soon ',
 					isDeveloped: false
 				}
 				],
