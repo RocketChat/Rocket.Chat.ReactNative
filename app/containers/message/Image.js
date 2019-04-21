@@ -58,7 +58,7 @@ export default class extends Component {
 	render() {
 		const { modalVisible, isPressed } = this.state;
 		const { baseUrl, file, user } = this.props;
-		const img = `${ baseUrl }${ file.image_url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
+		const img = file.image_url.includes('http') ? file.image_url : `${ baseUrl }${ file.image_url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
 
 		if (!img) {
 			return null;
