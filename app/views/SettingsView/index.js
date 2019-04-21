@@ -169,7 +169,9 @@ export default class SettingsView extends Component {
 
 	renderLastSection = ({ item }) => (
 		<View style={[styles.sectionItem, item.disable && styles.sectionItemDisabled]}>
-			<Text style={{ ...styles.sectionItemTitle, marginTop: 5 }}>{item.title}</Text>
+			<View style={{ flex: 1 }}>
+				<Text style={{ ...styles.sectionItemTitle, marginTop: 5 }}>{item.title}</Text>
+			</View>
 			{item.withToggleButton ? <Switch value={false} style={{ marginStart: 5 }} /> : null}
 		</View>
 	)
