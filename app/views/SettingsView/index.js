@@ -26,14 +26,14 @@ const styles = StyleSheet.create({
 		backgroundColor: '#F6F7F9'
 	},
 	sectionItemTitle: {
-		flex: 1,
+		alignSelf: 'flex-start',
 		fontSize: 14,
 		marginStart: 20,
 		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},
 	sectionItemSubTitle: {
-		flex: 1,
+		alignSelf: 'flex-start',
 		fontSize: 11,
 		marginStart: 20,
 		...sharedStyles.textColorNormal,
@@ -169,8 +169,8 @@ export default class SettingsView extends Component {
 
 	renderLastSection = ({ item }) => (
 		<View style={[styles.sectionItem, item.disable && styles.sectionItemDisabled]}>
-			<Text style={styles.sectionItemTitle}>{item.title}</Text>
-			{item.withToggleButton ? <Switch value={false} /> : null}
+			<Text style={{ ...styles.sectionItemTitle, marginTop: 5 }}>{item.title}</Text>
+			{item.withToggleButton ? <Switch value={false} style={{ marginStart: 5 }} /> : null}
 		</View>
 	)
 
