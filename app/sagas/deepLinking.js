@@ -69,7 +69,7 @@ const handleOpen = function* handleOpen({ params }) {
 			yield navigate({ params });
 		} else {
 			// if deep link is from a different server
-			const result = yield RocketChat.testServer(server);
+			const result = yield RocketChat.getServerInfo(server);
 			if (!result.success) {
 				return;
 			}

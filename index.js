@@ -1,3 +1,5 @@
+import 'react-native-console-time-polyfill';
+
 import './app/ReactotronConfig';
 import { AppRegistry } from 'react-native';
 import App from './app/index';
