@@ -152,7 +152,8 @@ export default class MessageContainer extends React.Component {
 
 	handleReply = () => {
 		const { item, replyInit } = this.props;
-		replyInit(item, true);
+		const parsedItem = JSON.parse(JSON.stringify(item));
+		replyInit(parsedItem, true);
 	}
 
 	parseMessage = () => {
