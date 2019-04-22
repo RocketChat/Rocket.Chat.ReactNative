@@ -19,7 +19,6 @@
     ]
   },
   "dependencies": {
-    "@remobile/react-native-toast": "^1.0.7",
     "@rocket.chat/sdk": "1.0.0-alpha.25",
     "deep-equal": "^1.0.1",
     "ejson": "^2.1.2",

@@ -1005,11 +1005,6 @@
     react-native-safe-area-view "^0.13.0"
     react-native-screens "^1.0.0 || ^1.0.0-alpha"
 
-"@remobile/react-native-toast@^1.0.7":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@remobile/react-native-toast/-/react-native-toast-1.0.7.tgz#b2e3684cdb13e1c9d9b4ed08e667157d4ad0fab2"
-  integrity sha512-iOD1PRnTSVr9sDWQdesIpfRrwJhHfeEQe5BpalQxC5OhM9thpiE6cu2NlW1KBWl0RJG4ZiJaF1xLlCo9YxU6dA==
-
 "@rocket.chat/sdk@1.0.0-alpha.25":
   version "1.0.0-alpha.25"
   resolved "https://registry.yarnpkg.com/@rocket.chat/sdk/-/sdk-1.0.0-alpha.25.tgz#7fd6fce64e29c2ab9eb77000f1a65bdd3b0379bb"
