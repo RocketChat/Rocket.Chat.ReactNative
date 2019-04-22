@@ -246,7 +246,7 @@ export default class RoomView extends LoggedView {
 
 	onMessageLongPress = (message) => {
 		const { actionsShow } = this.props;
-		actionsShow(message);
+		actionsShow({ ...message, rid: this.rid });
 	}
 
 	onReactionPress = (shortname, messageId) => {
