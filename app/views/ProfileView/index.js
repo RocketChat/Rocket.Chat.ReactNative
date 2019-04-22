@@ -286,7 +286,7 @@ export default class ProfileView extends LoggedView {
 		return (
 			<View style={styles.avatarButtons}>
 				{this.renderAvatarButton({
-					child: <Avatar text={`@${ user.username }`} size={50} baseUrl={baseUrl} user={user} />,
+					child: <Avatar text={`@${ user.username }`} size={50} baseUrl={baseUrl} userId={user.id} token={user.token} />,
 					onPress: () => this.resetAvatar(),
 					key: 'profile-view-reset-avatar'
 				})}
@@ -305,7 +305,7 @@ export default class ProfileView extends LoggedView {
 					const { url, blob, contentType } = avatarSuggestions[service];
 					return this.renderAvatarButton({
 						key: `profile-view-avatar-${ service }`,
-						child: <Avatar avatar={url} size={50} baseUrl={baseUrl} user={user} />,
+						child: <Avatar avatar={url} size={50} baseUrl={baseUrl} userId={user.id} token={user.token} />,
 						onPress: () => this.setAvatar({
 							url, data: blob, service, contentType
 						})
@@ -399,7 +399,8 @@ export default class ProfileView extends LoggedView {
 								avatar={avatar && avatar.url}
 								size={100}
 								baseUrl={baseUrl}
-								user={user}
+								userId={user.id}
+								token={user.token}
 							/>
 						</View>
 						<RCTextInput

@@ -30,8 +30,12 @@ export default class Markdown extends React.Component {
 			return null;
 		}
 		let m = formatText(msg);
-		m = emojify(m, { output: 'unicode' });
+
+		if (m) {
+			m = emojify(m, { output: 'unicode' });
+		}
 		m = repliedMsgParser(m);
+
 		return (
 			<MarkdownRenderer
 				rules={{

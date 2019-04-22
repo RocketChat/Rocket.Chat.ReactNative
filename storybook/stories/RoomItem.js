@@ -57,6 +57,10 @@ export default (
 		<RoomItem alert unread={1000} />
 		<RoomItem alert unread={1} userMentions={1} />
 		<RoomItem alert unread={1000} userMentions={1} />
+		<RoomItem alert name='general' unread={1} type='c' />
+		<RoomItem alert name='general' unread={1000} type='c' />
+		<RoomItem alert name='general' unread={1} userMentions={1} type='c' />
+		<RoomItem alert name='general' unread={1000} userMentions={1} type='c' />
 
 		<StoriesSeparator title='Last Message' />
 		<RoomItem
