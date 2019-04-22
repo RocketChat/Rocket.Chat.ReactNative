@@ -114,13 +114,13 @@ class MessageBox extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		const { message, replyMessage } = this.props;
-		if (message !== nextProps.message && nextProps.message.msg) {
+		if (!equal(message, nextProps.message) && nextProps.message.msg) {
 			this.setInput(nextProps.message.msg);
 			if (this.text) {
 				this.setShowSend(true);
 			}
 			this.focus();
-		} else if (replyMessage !== nextProps.replyMessage && nextProps.replyMessage.msg) {
+		} else if (!equal(replyMessage, nextProps.replyMessage)) {
 			this.focus();
 		} else if (!nextProps.message) {
 			this.clearInput();
@@ -842,7 +842,7 @@ class MessageBox extends Component {
 const mapStateToProps = state => ({
 	message: state.messages.message,
 	replyMessage: state.messages.replyMessage,
-	replying: state.messages.replyMessage && !!state.messages.replyMessage.msg,
+	replying: state.messages.replying,
 	editing: state.messages.editing,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	threadsEnabled: state.settings.Threads_enabled,
