@@ -493,7 +493,7 @@ class MessageBox extends Component {
 	}
 
 	sendImageMessage = async(file) => {
-		const { rid } = this.props;
+		const { rid, tmid } = this.props;
 
 		this.setState({ file: { isVisible: false } });
 		const fileInfo = {
@@ -505,7 +505,7 @@ class MessageBox extends Component {
 			path: file.path
 		};
 		try {
-			await RocketChat.sendFileMessage(rid, fileInfo);
+			await RocketChat.sendFileMessage(rid, fileInfo, tmid);
 		} catch (e) {
 			log('sendImageMessage', e);
 		}
@@ -551,14 +551,14 @@ class MessageBox extends Component {
 	}
 
 	finishAudioMessage = async(fileInfo) => {
-		const { rid } = this.props;
+		const { rid, tmid } = this.props;
 
 		this.setState({
 			recording: false
 		});
 		if (fileInfo) {
 			try {
-				await RocketChat.sendFileMessage(rid, fileInfo);
+				await RocketChat.sendFileMessage(rid, fileInfo, tmid);
 			} catch (e) {
 				if (e && e.error === 'error-file-too-large') {
 					return Alert.alert(I18n.t(e.error));
