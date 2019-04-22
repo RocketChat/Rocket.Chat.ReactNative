@@ -104,7 +104,8 @@ const subscriptionSchema = {
 		muted: { type: 'list', objectType: 'usersMuted' },
 		broadcast: { type: 'bool', optional: true },
 		prid: { type: 'string', optional: true },
-		draftMessage: { type: 'string', optional: true }
+		draftMessage: { type: 'string', optional: true },
+		lastThreadSync: 'date?'
 	}
 };
 
@@ -448,9 +449,9 @@ class DB {
 		return this.databases.activeDB = new Realm({
 			path: `${ path }.realm`,
 			schema,
-			schemaVersion: 7,
+			schemaVersion: 8,
 			migration: (oldRealm, newRealm) => {
-				if (oldRealm.schemaVersion >= 3 && newRealm.schemaVersion <= 7) {
+				if (oldRealm.schemaVersion >= 3 && newRealm.schemaVersion <= 8) {
 					const newSubs = newRealm.objects('subscriptions');
 
 					// eslint-disable-next-line no-plusplus

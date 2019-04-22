@@ -782,9 +782,17 @@ const RocketChat = {
 		}
 		return this.sdk.methodCall('unfollowMessage', { mid });
 	},
-	getThreadsList({ rid, limit, skip }) {
+	getThreadsList({ rid, count, offset }) {
 		// RC 1.0
-		return this.sdk.methodCall('getThreadsList', { rid, limit, skip });
+		return this.sdk.get('chat.getThreadsList', {
+			rid, count, offset, sort: { ts: -1 }
+		});
+	},
+	getSyncThreadsList({ rid, updatedSince }) {
+		// RC 1.0
+		return this.sdk.get('chat.syncThreadsList', {
+			rid, updatedSince
+		});
 	}
 };
 
