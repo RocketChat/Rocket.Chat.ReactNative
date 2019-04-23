@@ -57,6 +57,7 @@ class MessageBox extends Component {
 		replying: PropTypes.bool,
 		editing: PropTypes.bool,
 		threadsEnabled: PropTypes.bool,
+		isFocused: PropTypes.bool,
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			username: PropTypes.string,
@@ -113,7 +114,10 @@ class MessageBox extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const { message, replyMessage } = this.props;
+		const { message, replyMessage, isFocused } = this.props;
+		if (!isFocused) {
+			return;
+		}
 		if (!equal(message, nextProps.message) && nextProps.message.msg) {
 			this.setInput(nextProps.message.msg);
 			if (this.text) {
@@ -132,8 +136,11 @@ class MessageBox extends Component {
 			showEmojiKeyboard, showFilesAction, showSend, recording, mentions, file
 		} = this.state;
 		const {
-			roomType, replying, editing
+			roomType, replying, editing, isFocused
 		} = this.props;
+		if (!isFocused) {
+			return false;
+		}
 		if (nextProps.roomType !== roomType) {
 			return true;
 		}

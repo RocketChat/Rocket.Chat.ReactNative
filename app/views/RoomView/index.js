@@ -46,6 +46,8 @@ import buildMessage from '../../lib/methods/helpers/buildMessage';
 		token: state.login.user && state.login.user.token
 	},
 	actionMessage: state.messages.actionMessage,
+	editing: state.messages.editing,
+	replying: state.messages.replying,
 	showActions: state.messages.showActions,
 	showErrorActions: state.messages.showErrorActions,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
@@ -87,6 +89,8 @@ export default class RoomView extends LoggedView {
 		appState: PropTypes.string,
 		useRealName: PropTypes.bool,
 		isAuthenticated: PropTypes.bool,
+		editing: PropTypes.bool,
+		replying: PropTypes.bool,
 		toggleReactionPicker: PropTypes.func.isRequired,
 		actionsShow: PropTypes.func,
 		editCancel: PropTypes.func,
@@ -176,7 +180,8 @@ export default class RoomView extends LoggedView {
 	}
 
 	componentWillUnmount() {
-		if (this.messagebox && this.messagebox.current && this.messagebox.current.text) {
+		const { editing, replying } = this.props;
+		if (!editing && this.messagebox && this.messagebox.current && this.messagebox.current.text) {
 			const { text } = this.messagebox.current;
 			let obj;
 			if (this.tmid) {
@@ -197,9 +202,14 @@ export default class RoomView extends LoggedView {
 		if (this.beginAnimatingTimeout) {
 			clearTimeout(this.beginAnimatingTimeout);
 		}
-		const { editCancel, replyCancel } = this.props;
-		editCancel();
-		replyCancel();
+		if (editing) {
+			const { editCancel } = this.props;
+			editCancel();
+		}
+		if (replying) {
+			const { replyCancel } = this.props;
+			replyCancel();
+		}
 		if (this.didMountInteraction && this.didMountInteraction.cancel) {
 			this.didMountInteraction.cancel();
 		}
@@ -441,6 +451,7 @@ export default class RoomView extends LoggedView {
 
 	renderFooter = () => {
 		const { joined, room } = this.state;
+		const { navigation } = this.props;
 
 		if (!joined && !this.tmid) {
 			return (
@@ -478,6 +489,7 @@ export default class RoomView extends LoggedView {
 				rid={this.rid}
 				tmid={this.tmid}
 				roomType={room.t}
+				isFocused={navigation.isFocused()}
 			/>
 		);
 	};
