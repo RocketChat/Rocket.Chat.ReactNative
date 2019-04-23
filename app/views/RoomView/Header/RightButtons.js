@@ -10,10 +10,14 @@ import log from '../../../utils/log';
 
 const styles = StyleSheet.create({
 	more: {
-		marginHorizontal: 0, marginLeft: 0, marginRight: 5
+		marginHorizontal: 0,
+		marginLeft: 0,
+		marginRight: 5
 	},
 	thread: {
-		marginHorizontal: 0, marginLeft: 0, marginRight: 10
+		marginHorizontal: 0,
+		marginLeft: 0,
+		marginRight: 15
 	}
 });
 
