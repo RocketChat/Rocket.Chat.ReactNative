@@ -222,7 +222,8 @@ export default class RoomView extends LoggedView {
 			this.initInteraction = InteractionManager.runAfterInteractions(async() => {
 				const { room } = this.state;
 				if (this.tmid) {
-					RocketChat.loadThreadMessages({ tmid: this.tmid, t: this.t });
+					// TODO: call sync
+					await this.getThreadMessages();
 				} else {
 					await this.getMessages(room);
 
@@ -313,6 +314,21 @@ export default class RoomView extends LoggedView {
 		} catch (e) {
 			console.log('TCL: getMessages -> e', e);
 			log('getMessages', e);
+		}
+	}
+
+	getThreadMessages = () => {
+		const { room } = this.state;
+		const { lastOpen } = room;
+		try {
+			if (lastOpen) {
+				return RocketChat.loadMissedThreadMessages({ tmid: this.tmid, lastOpen });
+			} else {
+				return RocketChat.loadThreadMessages({ tmid: this.tmid });
+			}
+		} catch (e) {
+			console.log('TCL: getThreadMessages -> e', e);
+			log('getThreadMessages', e);
 		}
 	}
 

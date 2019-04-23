@@ -33,6 +33,7 @@ import canOpenRoom from './methods/canOpenRoom';
 import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import loadMissedMessages from './methods/loadMissedMessages';
 import loadThreadMessages from './methods/loadThreadMessages';
+import loadMissedThreadMessages from './methods/loadMissedThreadMessages';
 
 import sendMessage, { getMessage, sendMessageCall } from './methods/sendMessage';
 import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFileMessage';
@@ -372,6 +373,7 @@ const RocketChat = {
 	loadMissedMessages,
 	loadMessagesForRoom,
 	loadThreadMessages,
+	loadMissedThreadMessages,
 	getMessage,
 	sendMessage,
 	getRooms,

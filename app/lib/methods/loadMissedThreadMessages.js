@@ -4,29 +4,23 @@ import buildMessage from './helpers/buildMessage';
 import database from '../realm';
 import log from '../../utils/log';
 
-const getLastUpdate = (rid) => {
-	const sub = database
-		.objects('subscriptions')
-		.filtered('rid == $0', rid)[0];
-	return sub && new Date(sub.lastOpen).toISOString();
-};
-
-async function load({ rid: roomId, lastOpen }) {
-	let lastUpdate;
+async function load({ tmid, lastOpen }) {
+	let updatedSince;
 	if (lastOpen) {
-		lastUpdate = new Date(lastOpen).toISOString();
-	} else {
-		lastUpdate = getLastUpdate(roomId);
+		updatedSince = new Date(lastOpen).toISOString();
 	}
-	// RC 0.60.0
-	const { result } = await this.sdk.get('chat.syncMessages', { roomId, lastUpdate });
+	// RC 1.0
+	const { result } = await this.sdk.get('chat.syncThreadMessages', { tmid, updatedSince });
 	return result;
 }
 
-export default function loadMissedMessages(...args) {
+export default function loadMissedThreadMessages({ tmid, lastOpen }) {
 	return new Promise(async(resolve, reject) => {
+		if (!lastOpen) {
+			return reject();
+		}
 		try {
-			const data = (await load.call(this, ...args));
+			const data = (await load.call(this, { tmid, lastOpen }));
 
 			if (data) {
 				if (data.updated && data.updated.length) {
@@ -34,8 +28,6 @@ export default function loadMissedMessages(...args) {
 					InteractionManager.runAfterInteractions(() => {
 						database.write(() => updated.forEach((message) => {
 							try {
-								message = buildMessage(message);
-								database.create('messages', message, true);
 								// if it's a thread "header"
 								if (message.tlm) {
 									database.create('threads', message, true);
@@ -45,7 +37,7 @@ export default function loadMissedMessages(...args) {
 									database.create('threadMessages', message, true);
 								}
 							} catch (e) {
-								log('loadMissedMessages -> create messages', e);
+								log('loadMissedThreadMessages -> create messages', e);
 							}
 						}));
 					});
@@ -56,8 +48,6 @@ export default function loadMissedMessages(...args) {
 						try {
 							database.write(() => {
 								deleted.forEach((m) => {
-									const message = database.objects('messages').filtered('_id = $0', m._id);
-									database.delete(message);
 									const thread = database.objects('threads').filtered('_id = $0', m._id);
 									database.delete(thread);
 									const threadMessage = database.objects('threadMessages').filtered('_id = $0', m._id);
@@ -65,14 +55,14 @@ export default function loadMissedMessages(...args) {
 								});
 							});
 						} catch (e) {
-							log('loadMissedMessages -> delete message', e);
+							log('loadMissedThreadMessages -> delete message', e);
 						}
 					});
 				}
 			}
 			resolve();
 		} catch (e) {
-			log('loadMissedMessages', e);
+			log('loadMissedThreadMessages', e);
 			reject(e);
 		}
 	});

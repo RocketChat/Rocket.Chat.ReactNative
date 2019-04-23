@@ -34,6 +34,7 @@ class RightButtonsContainer extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		if (props.tmid) {
+			// FIXME: it may be empty if the thread header isn't fetched yet
 			this.thread = database.objectForPrimaryKey('messages', props.tmid);
 			safeAddListener(this.thread, this.updateThread);
 		}
