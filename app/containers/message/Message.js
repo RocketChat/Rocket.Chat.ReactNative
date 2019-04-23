@@ -164,6 +164,11 @@ export default class Message extends PureComponent {
 
 	onPress = () => {
 		KeyboardUtils.dismiss();
+
+		const { onThreadPress, tlm, tmid } = this.props;
+		if ((tlm || tmid) && onThreadPress) {
+			onThreadPress();
+		}
 	}
 
 	onLongPress = () => {
