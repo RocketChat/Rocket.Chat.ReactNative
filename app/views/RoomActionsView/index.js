@@ -421,8 +421,10 @@ export default class RoomActionsView extends LoggedView {
 			<CustomIcon key='icon' name={item.icon} size={24} style={[styles.sectionItemIcon, styles.textColorDanger]} />,
 			<Text key='name' style={[styles.sectionItemName, styles.textColorDanger]}>{ item.name }</Text>
 		] : [
-			<CustomIcon key='left-icon' name={item.icon} size={24} style={styles.sectionItemIcon} />,
-			<Text key='name' style={styles.sectionItemName}>{ item.name }</Text>,
+			<View style={styles.sectionItemContainer}>
+				<CustomIcon key='left-icon' name={item.icon} size={24} style={styles.sectionItemIcon} />
+				<Text key='name' style={styles.sectionItemName}>{ item.name }</Text>
+			</View>,
 			item.description ? <Text key='description' style={styles.sectionItemDescription}>{ item.description }</Text> : null,
 			<DisclosureIndicator key='disclosure-indicator' />
 		];

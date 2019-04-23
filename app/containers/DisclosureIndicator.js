@@ -1,8 +1,11 @@
 import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import {
+	View, Image, StyleSheet, I18nManager
+} from 'react-native';
 
 const styles = StyleSheet.create({
 	disclosureContainer: {
+		transform: [{ scaleX: I18nManager.isRTL ? -1 : 1 }],
 		marginLeft: 6,
 		marginRight: 9,
 		alignItems: 'center',

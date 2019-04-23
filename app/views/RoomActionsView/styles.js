@@ -28,7 +28,6 @@ export default StyleSheet.create({
 		...sharedStyles.textColorNormal
 	},
 	sectionItemName: {
-		flex: 1,
 		fontSize: 14,
 		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
@@ -71,6 +70,11 @@ export default StyleSheet.create({
 	},
 	roomTitleRow: {
 		flexDirection: 'row',
+		alignItems: 'center'
+	},
+	sectionItemContainer: {
+		flexDirection: 'row',
+		flex: 1,
 		alignItems: 'center'
 	}
 });
