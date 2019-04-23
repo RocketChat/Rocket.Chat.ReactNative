@@ -217,12 +217,14 @@ export default StyleSheet.create({
 	},
 	repliedThread: {
 		fontSize: 16,
+		fontStyle: 'italic',
 		marginBottom: 6,
 		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
 	repliedThreadName: {
 		fontSize: 16,
+		fontStyle: 'normal',
 		color: COLOR_PRIMARY,
 		...sharedStyles.textSemibold
 	}

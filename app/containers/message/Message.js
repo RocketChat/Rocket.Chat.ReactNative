@@ -272,9 +272,18 @@ export default class Message extends PureComponent {
 			return <Text style={styles.textInfo}>{getInfoMessage({ ...this.props })}</Text>;
 		}
 		const {
-			customEmojis, msg, baseUrl, user, edited
+			customEmojis, msg, baseUrl, user, edited, tmid
 		} = this.props;
-		return <Markdown msg={msg} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} edited={edited} />;
+		return (
+			<Markdown
+				msg={msg}
+				customEmojis={customEmojis}
+				baseUrl={baseUrl}
+				username={user.username}
+				edited={edited}
+				numberOfLines={tmid ? 1 : 0}
+			/>
+		);
 	}
 
 	renderAttachment() {
@@ -471,14 +480,14 @@ export default class Message extends PureComponent {
 		}
 
 		return (
-			<Text style={styles.repliedThread} numberOfLines={3} testID={`message-thread-replied-on-${ tmsg }`}>
+			<Text style={styles.repliedThread} numberOfLines={1} testID={`message-thread-replied-on-${ tmsg }`}>
 				{I18n.t('Replied_on')} <Text style={styles.repliedThreadName} onPress={onThreadPress}>{tmsg}</Text>
 			</Text>
 		);
 	}
 
 	renderInner = () => {
-		const { type } = this.props;
+		const { type, tmid } = this.props;
 		if (type === 'discussion-created') {
 			return (
 				<React.Fragment>
@@ -487,10 +496,18 @@ export default class Message extends PureComponent {
 				</React.Fragment>
 			);
 		}
+		if (tmid) {
+			return (
+				<React.Fragment>
+					{this.renderUsername()}
+					{this.renderRepliedThread()}
+					{this.renderContent()}
+				</React.Fragment>
+			);
+		}
 		return (
 			<React.Fragment>
 				{this.renderUsername()}
-				{this.renderRepliedThread()}
 				{this.renderContent()}
 				{this.renderAttachment()}
 				{this.renderUrl()}
