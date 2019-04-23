@@ -5,9 +5,6 @@ import {
 } from 'react-native';
 import moment from 'moment';
 import { KeyboardUtils } from 'react-native-keyboard-input';
-import {
-	BorderlessButton
-} from 'react-native-gesture-handler';
 import Touchable from 'react-native-platform-touchable';
 
 import Image from './Image';
@@ -321,9 +318,9 @@ export default class Message extends PureComponent {
 		}
 		const { onErrorPress } = this.props;
 		return (
-			<BorderlessButton onPress={onErrorPress} style={styles.errorButton}>
+			<Touchable onPress={onErrorPress} style={styles.errorButton}>
 				<CustomIcon name='circle-cross' color={COLOR_DANGER} size={20} />
-			</BorderlessButton>
+			</Touchable>
 		);
 	}
 

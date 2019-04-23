@@ -8341,7 +8341,55 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               View
-              View
+              <View
+                accessible={true}
+                hitSlop={
+                  Object {
+                    "bottom": 12,
+                    "left": 12,
+                    "right": 12,
+                    "top": 12,
+                  }
+                }
+                isTVSelectable={true}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "backgroundColor": "transparent",
+                    "marginHorizontal": 10,
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": undefined,
+                        "fontSize": 36,
+                      },
+                      Object {
+                        "color": "#1d74f5",
+                      },
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
               <View
                 animateTransitions={true}
                 animationConfig={
@@ -8363,7 +8411,6 @@ exports[`Storyshots Message list 1`] = `
                     },
                     Object {
                       "flex": 1,
-                      "marginRight": 10,
                     },
                   ]
                 }
@@ -8387,7 +8434,9 @@ exports[`Storyshots Message list 1`] = `
                         "borderRadius": 2,
                         "height": 4,
                       },
-                      undefined,
+                      Object {
+                        "height": 2,
+                      },
                     ]
                   }
                 />
@@ -8397,7 +8446,7 @@ exports[`Storyshots Message list 1`] = `
                     Object {
                       "backgroundColor": "#1d74f5",
                       "borderRadius": 2,
-                      "height": 4,
+                      "height": 2,
                       "opacity": 0,
                       "position": "absolute",
                       "width": 0,
@@ -8463,7 +8512,7 @@ exports[`Storyshots Message list 1`] = `
                     "fontFamily": "System",
                     "fontSize": 14,
                     "fontWeight": "400",
-                    "marginRight": 16,
+                    "marginHorizontal": 12,
                   }
                 }
               >
@@ -8662,7 +8711,55 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               View
-              View
+              <View
+                accessible={true}
+                hitSlop={
+                  Object {
+                    "bottom": 12,
+                    "left": 12,
+                    "right": 12,
+                    "top": 12,
+                  }
+                }
+                isTVSelectable={true}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "backgroundColor": "transparent",
+                    "marginHorizontal": 10,
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": undefined,
+                        "fontSize": 36,
+                      },
+                      Object {
+                        "color": "#1d74f5",
+                      },
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
               <View
                 animateTransitions={true}
                 animationConfig={
@@ -8684,7 +8781,6 @@ exports[`Storyshots Message list 1`] = `
                     },
                     Object {
                       "flex": 1,
-                      "marginRight": 10,
                     },
                   ]
                 }
@@ -8708,7 +8804,9 @@ exports[`Storyshots Message list 1`] = `
                         "borderRadius": 2,
                         "height": 4,
                       },
-                      undefined,
+                      Object {
+                        "height": 2,
+                      },
                     ]
                   }
                 />
@@ -8718,7 +8816,7 @@ exports[`Storyshots Message list 1`] = `
                     Object {
                       "backgroundColor": "#1d74f5",
                       "borderRadius": 2,
-                      "height": 4,
+                      "height": 2,
                       "opacity": 0,
                       "position": "absolute",
                       "width": 0,
@@ -8784,7 +8882,7 @@ exports[`Storyshots Message list 1`] = `
                     "fontFamily": "System",
                     "fontSize": 14,
                     "fontWeight": "400",
-                    "marginRight": 16,
+                    "marginHorizontal": 12,
                   }
                 }
               >
@@ -8895,7 +8993,55 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               View
-              View
+              <View
+                accessible={true}
+                hitSlop={
+                  Object {
+                    "bottom": 12,
+                    "left": 12,
+                    "right": 12,
+                    "top": 12,
+                  }
+                }
+                isTVSelectable={true}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "backgroundColor": "transparent",
+                    "marginHorizontal": 10,
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": undefined,
+                        "fontSize": 36,
+                      },
+                      Object {
+                        "color": "#1d74f5",
+                      },
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
               <View
                 animateTransitions={true}
                 animationConfig={
@@ -8917,7 +9063,6 @@ exports[`Storyshots Message list 1`] = `
                     },
                     Object {
                       "flex": 1,
-                      "marginRight": 10,
                     },
                   ]
                 }
@@ -8941,7 +9086,9 @@ exports[`Storyshots Message list 1`] = `
                         "borderRadius": 2,
                         "height": 4,
                       },
-                      undefined,
+                      Object {
+                        "height": 2,
+                      },
                     ]
                   }
                 />
@@ -8951,7 +9098,7 @@ exports[`Storyshots Message list 1`] = `
                     Object {
                       "backgroundColor": "#1d74f5",
                       "borderRadius": 2,
-                      "height": 4,
+                      "height": 2,
                       "opacity": 0,
                       "position": "absolute",
                       "width": 0,
@@ -9017,7 +9164,7 @@ exports[`Storyshots Message list 1`] = `
                     "fontFamily": "System",
                     "fontSize": 14,
                     "fontWeight": "400",
-                    "marginRight": 16,
+                    "marginHorizontal": 12,
                   }
                 }
               >
@@ -9096,7 +9243,55 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               View
-              View
+              <View
+                accessible={true}
+                hitSlop={
+                  Object {
+                    "bottom": 12,
+                    "left": 12,
+                    "right": 12,
+                    "top": 12,
+                  }
+                }
+                isTVSelectable={true}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "backgroundColor": "transparent",
+                    "marginHorizontal": 10,
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": undefined,
+                        "fontSize": 36,
+                      },
+                      Object {
+                        "color": "#1d74f5",
+                      },
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
               <View
                 animateTransitions={true}
                 animationConfig={
@@ -9118,7 +9313,6 @@ exports[`Storyshots Message list 1`] = `
                     },
                     Object {
                       "flex": 1,
-                      "marginRight": 10,
                     },
                   ]
                 }
@@ -9142,7 +9336,9 @@ exports[`Storyshots Message list 1`] = `
                         "borderRadius": 2,
                         "height": 4,
                       },
-                      undefined,
+                      Object {
+                        "height": 2,
+                      },
                     ]
                   }
                 />
@@ -9152,7 +9348,7 @@ exports[`Storyshots Message list 1`] = `
                     Object {
                       "backgroundColor": "#1d74f5",
                       "borderRadius": 2,
-                      "height": 4,
+                      "height": 2,
                       "opacity": 0,
                       "position": "absolute",
                       "width": 0,
@@ -9218,7 +9414,7 @@ exports[`Storyshots Message list 1`] = `
                     "fontFamily": "System",
                     "fontSize": 14,
                     "fontWeight": "400",
-                    "marginRight": 16,
+                    "marginHorizontal": 12,
                   }
                 }
               >
@@ -14909,7 +15105,44 @@ exports[`Storyshots Message list 1`] = `
         }
       }
     >
-      View
+      <View
+        accessible={true}
+        isTVSelectable={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+            "paddingHorizontal": 15,
+            "paddingVertical": 5,
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          style={
+            Array [
+              Object {
+                "color": "#f5455c",
+                "fontSize": 20,
+              },
+              undefined,
+              Object {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              Object {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <View
         accessible={true}
         onResponderGrant={[Function]}
@@ -15002,7 +15235,44 @@ exports[`Storyshots Message list 1`] = `
         }
       }
     >
-      View
+      <View
+        accessible={true}
+        isTVSelectable={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+            "paddingHorizontal": 15,
+            "paddingVertical": 5,
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          style={
+            Array [
+              Object {
+                "color": "#f5455c",
+                "fontSize": 20,
+              },
+              undefined,
+              Object {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              Object {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <View
         accessible={true}
         onResponderGrant={[Function]}
