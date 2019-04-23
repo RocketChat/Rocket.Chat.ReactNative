@@ -327,14 +327,8 @@ export default class RoomView extends LoggedView {
 	}
 
 	getThreadMessages = () => {
-		const { room } = this.state;
-		const { lastOpen } = room;
 		try {
-			if (lastOpen) {
-				return RocketChat.loadMissedThreadMessages({ tmid: this.tmid, lastOpen });
-			} else {
-				return RocketChat.loadThreadMessages({ tmid: this.tmid });
-			}
+			return RocketChat.loadThreadMessages({ tmid: this.tmid });
 		} catch (e) {
 			console.log('TCL: getThreadMessages -> e', e);
 			log('getThreadMessages', e);
