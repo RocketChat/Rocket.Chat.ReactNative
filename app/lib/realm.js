@@ -1,7 +1,7 @@
 import Realm from 'realm';
 
 // import { AsyncStorage } from 'react-native';
-Realm.clearTestState();
+// Realm.clearTestState();
 // AsyncStorage.clear();
 
 const serversSchema = {
@@ -449,9 +449,9 @@ class DB {
 		return this.databases.activeDB = new Realm({
 			path: `${ path }.realm`,
 			schema,
-			schemaVersion: 8,
+			schemaVersion: 7,
 			migration: (oldRealm, newRealm) => {
-				if (oldRealm.schemaVersion >= 3 && newRealm.schemaVersion <= 8) {
+				if (oldRealm.schemaVersion >= 3 && newRealm.schemaVersion <= 7) {
 					const newSubs = newRealm.objects('subscriptions');
 
 					// eslint-disable-next-line no-plusplus
