@@ -194,7 +194,7 @@ export default class ThreadMessagesView extends LoggedView {
 
 	renderItem = ({ item }) => {
 		const { user, navigation } = this.props;
-		if (item.isValid) {
+		if (item.isValid && item.isValid()) {
 			return (
 				<Message
 					key={item._id}
