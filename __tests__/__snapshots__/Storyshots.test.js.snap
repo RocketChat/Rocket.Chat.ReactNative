@@ -381,6 +381,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -589,6 +590,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -797,6 +799,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -987,6 +990,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -1075,6 +1079,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -1163,6 +1168,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -1353,6 +1359,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -1459,6 +1466,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -1681,6 +1689,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -1885,6 +1894,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -2093,6 +2103,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -2314,6 +2325,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -2522,6 +2534,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -2730,6 +2743,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -3022,6 +3036,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -3230,6 +3245,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -3480,6 +3496,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -3688,6 +3705,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -4194,6 +4212,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -5057,6 +5076,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -5247,6 +5267,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -5437,6 +5458,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -5627,6 +5649,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -5835,6 +5858,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -6090,6 +6114,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -6225,6 +6250,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -6415,6 +6441,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -6644,6 +6671,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -8611,6 +8639,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -9601,6 +9630,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -9897,6 +9927,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -10211,6 +10242,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -10491,13 +10523,14 @@ exports[`Storyshots Message list 1`] = `
               </Text>
             </View>
             <Text
-              numberOfLines={3}
+              numberOfLines={1}
               style={
                 Object {
                   "backgroundColor": "transparent",
                   "color": "#9ca2a8",
                   "fontFamily": "System",
                   "fontSize": 16,
+                  "fontStyle": "italic",
                   "fontWeight": "400",
                   "marginBottom": 6,
                 }
@@ -10513,6 +10546,7 @@ exports[`Storyshots Message list 1`] = `
                     "color": "#1d74f5",
                     "fontFamily": "System",
                     "fontSize": 16,
+                    "fontStyle": "normal",
                     "fontWeight": "600",
                   }
                 }
@@ -10524,6 +10558,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={1}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -10711,13 +10746,14 @@ exports[`Storyshots Message list 1`] = `
               </Text>
             </View>
             <Text
-              numberOfLines={3}
+              numberOfLines={1}
               style={
                 Object {
                   "backgroundColor": "transparent",
                   "color": "#9ca2a8",
                   "fontFamily": "System",
                   "fontSize": 16,
+                  "fontStyle": "italic",
                   "fontWeight": "400",
                   "marginBottom": 6,
                 }
@@ -10733,6 +10769,7 @@ exports[`Storyshots Message list 1`] = `
                     "color": "#1d74f5",
                     "fontFamily": "System",
                     "fontSize": 16,
+                    "fontStyle": "normal",
                     "fontWeight": "600",
                   }
                 }
@@ -10744,6 +10781,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={1}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -10931,13 +10969,14 @@ exports[`Storyshots Message list 1`] = `
               </Text>
             </View>
             <Text
-              numberOfLines={3}
+              numberOfLines={1}
               style={
                 Object {
                   "backgroundColor": "transparent",
                   "color": "#9ca2a8",
                   "fontFamily": "System",
                   "fontSize": 16,
+                  "fontStyle": "italic",
                   "fontWeight": "400",
                   "marginBottom": 6,
                 }
@@ -10953,6 +10992,7 @@ exports[`Storyshots Message list 1`] = `
                     "color": "#1d74f5",
                     "fontFamily": "System",
                     "fontSize": 16,
+                    "fontStyle": "normal",
                     "fontWeight": "600",
                   }
                 }
@@ -10964,6 +11004,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={1}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -11151,13 +11192,14 @@ exports[`Storyshots Message list 1`] = `
               </Text>
             </View>
             <Text
-              numberOfLines={3}
+              numberOfLines={1}
               style={
                 Object {
                   "backgroundColor": "transparent",
                   "color": "#9ca2a8",
                   "fontFamily": "System",
                   "fontSize": 16,
+                  "fontStyle": "italic",
                   "fontWeight": "400",
                   "marginBottom": 6,
                 }
@@ -11173,6 +11215,7 @@ exports[`Storyshots Message list 1`] = `
                     "color": "#1d74f5",
                     "fontFamily": "System",
                     "fontSize": 16,
+                    "fontStyle": "normal",
                     "fontWeight": "600",
                   }
                 }
@@ -11184,6 +11227,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={1}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -11371,13 +11415,14 @@ exports[`Storyshots Message list 1`] = `
               </Text>
             </View>
             <Text
-              numberOfLines={3}
+              numberOfLines={1}
               style={
                 Object {
                   "backgroundColor": "transparent",
                   "color": "#9ca2a8",
                   "fontFamily": "System",
                   "fontSize": 16,
+                  "fontStyle": "italic",
                   "fontWeight": "400",
                   "marginBottom": 6,
                 }
@@ -11393,6 +11438,7 @@ exports[`Storyshots Message list 1`] = `
                     "color": "#1d74f5",
                     "fontFamily": "System",
                     "fontSize": 16,
+                    "fontStyle": "normal",
                     "fontWeight": "600",
                   }
                 }
@@ -11404,6 +11450,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={1}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -11594,6 +11641,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -11875,6 +11923,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -13639,6 +13688,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -14163,6 +14213,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -14763,6 +14814,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -15048,6 +15100,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -15196,6 +15249,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -15428,6 +15482,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -15638,6 +15693,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -15848,6 +15904,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -19017,6 +19074,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -19225,6 +19283,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -19854,6 +19913,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -20098,6 +20158,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -20305,6 +20366,7 @@ exports[`Storyshots Message list 1`] = `
               style={Object {}}
             >
               <Text
+                numberOfLines={0}
                 style={
                   Object {
                     "alignItems": "flex-start",
@@ -20571,6 +20633,7 @@ exports[`Storyshots Message list 1`] = `
                 }
               >
                 <Text
+                  numberOfLines={0}
                   style={
                     Object {
                       "alignItems": "flex-start",
