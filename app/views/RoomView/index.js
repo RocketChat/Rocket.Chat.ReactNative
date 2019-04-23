@@ -232,7 +232,6 @@ export default class RoomView extends LoggedView {
 			this.initInteraction = InteractionManager.runAfterInteractions(async() => {
 				const { room } = this.state;
 				if (this.tmid) {
-					// TODO: call sync
 					await this.getThreadMessages();
 				} else {
 					await this.getMessages(room);
