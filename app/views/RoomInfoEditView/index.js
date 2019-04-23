@@ -14,7 +14,7 @@ import sharedStyles from '../Styles';
 import styles from './styles';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert, showToast } from '../../utils/info';
-import database from '../../lib/realm';
+import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RCTextInput from '../../containers/TextInput';
 import Loading from '../../containers/Loading';
@@ -77,7 +77,7 @@ export default class RoomInfoEditView extends LoggedView {
 	componentDidMount() {
 		this.updateRoom();
 		this.init();
-		this.rooms.addListener(this.updateRoom);
+		safeAddListener(this.rooms, this.updateRoom);
 		const { room } = this.state;
 		this.permissions = RocketChat.hasPermission(PERMISSIONS_ARRAY, room.rid);
 	}

@@ -2,12 +2,12 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { RectButton } from 'react-native-gesture-handler';
+import Touchable from 'react-native-platform-touchable';
 
 import Markdown from './Markdown';
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
-import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, COLOR_WHITE } from '../../constants/colors';
+import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	button: {
@@ -97,7 +97,7 @@ const Reply = ({
 	};
 
 	const renderTitle = () => {
-		if (!(attachment.author_icon || attachment.author_name || attachment.ts)) {
+		if (!attachment.author_name) {
 			return null;
 		}
 		return (
@@ -140,18 +140,17 @@ const Reply = ({
 	};
 
 	return (
-		<RectButton
+		<Touchable
 			onPress={() => onPress(attachment, baseUrl, user)}
 			style={[styles.button, index > 0 && styles.marginTop]}
-			activeOpacity={0.5}
-			underlayColor={COLOR_WHITE}
+			background={Touchable.Ripple('#fff')}
 		>
 			<View style={styles.attachmentContainer}>
 				{renderTitle()}
 				{renderText()}
 				{renderFields()}
 			</View>
-		</RectButton>
+		</Touchable>
 	);
 };
 
