@@ -28,6 +28,7 @@ export default function loadMissedThreadMessages({ tmid, lastOpen }) {
 					InteractionManager.runAfterInteractions(() => {
 						database.write(() => updated.forEach((message) => {
 							try {
+								message = buildMessage(message);
 								// if it's a thread "header"
 								if (message.tlm) {
 									database.create('threads', message, true);
