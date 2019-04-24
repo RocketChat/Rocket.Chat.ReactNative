@@ -295,6 +295,7 @@ export default {
 	Send: 'Enviar',
 	Send_audio_message: 'Enviar mensagem de áudio',
 	Send_message: 'Enviar mensagem',
+	Sent_an_attachment: 'Enviou um anexo',
 	Server: 'Servidor',
 	Set_username_subtitle: 'O usuário é utilizado para permitir que você seja mencionado em mensagens',
 	Settings: 'Configurações',

@@ -293,6 +293,7 @@ export default {
 	Send: 'Send',
 	Send_audio_message: 'Send audio message',
 	Send_message: 'Send message',
+	Sent_an_attachment: 'Sent an attachment',
 	Server: 'Server',
 	Servers: 'Servers',
 	Set_username_subtitle: 'The username is used to allow others to mention you in messages',
