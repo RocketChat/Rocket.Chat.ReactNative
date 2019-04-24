@@ -46,6 +46,11 @@ export default function loadMessagesForRoom(...args) {
 							if (message.tlm) {
 								database.create('threads', message, true);
 							}
+							// if it belongs to a thread
+							if (message.tmid) {
+								message.rid = message.tmid;
+								database.create('threadMessages', message, true);
+							}
 						} catch (e) {
 							log('loadMessagesForRoom -> create messages', e);
 						}

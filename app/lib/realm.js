@@ -104,7 +104,8 @@ const subscriptionSchema = {
 		muted: { type: 'list', objectType: 'usersMuted' },
 		broadcast: { type: 'bool', optional: true },
 		prid: { type: 'string', optional: true },
-		draftMessage: { type: 'string', optional: true }
+		draftMessage: { type: 'string', optional: true },
+		lastThreadSync: 'date?'
 	}
 };
 
@@ -259,7 +260,8 @@ const threadsSchema = {
 		tmid: { type: 'string', optional: true },
 		tcount: { type: 'int', optional: true },
 		tlm: { type: 'date', optional: true },
-		replies: 'string[]'
+		replies: 'string[]',
+		draftMessage: 'string?'
 	}
 };
 
@@ -387,9 +389,9 @@ class DB {
 			schema: [
 				serversSchema
 			],
-			schemaVersion: 4,
+			schemaVersion: 5,
 			migration: (oldRealm, newRealm) => {
-				if (oldRealm.schemaVersion >= 1 && newRealm.schemaVersion <= 3) {
+				if (oldRealm.schemaVersion >= 1 && newRealm.schemaVersion <= 5) {
 					const newServers = newRealm.objects('servers');
 
 					// eslint-disable-next-line no-plusplus
@@ -441,15 +443,12 @@ class DB {
 
 	setActiveDB(database = '') {
 		const path = database.replace(/(^\w+:|^)\/\//, '');
-		if (this.database) {
-			this.database.close();
-		}
 		return this.databases.activeDB = new Realm({
 			path: `${ path }.realm`,
 			schema,
-			schemaVersion: 6,
+			schemaVersion: 8,
 			migration: (oldRealm, newRealm) => {
-				if (oldRealm.schemaVersion >= 3 && newRealm.schemaVersion <= 6) {
+				if (oldRealm.schemaVersion >= 3 && newRealm.schemaVersion <= 8) {
 					const newSubs = newRealm.objects('subscriptions');
 
 					// eslint-disable-next-line no-plusplus
@@ -459,6 +458,10 @@ class DB {
 					}
 					const newMessages = newRealm.objects('messages');
 					newRealm.delete(newMessages);
+					const newThreads = newRealm.objects('threads');
+					newRealm.delete(newThreads);
+					const newThreadMessages = newRealm.objects('threadMessages');
+					newRealm.delete(newThreadMessages);
 				}
 			}
 		});

@@ -14,8 +14,8 @@ const UnreadBadge = React.memo(({ unread, userMentions, type }) => {
 	const mentioned = userMentions > 0 && type !== 'd';
 
 	return (
-		<View style={[styles.unreadNumberContainer, mentioned && styles.unreadMentioned]}>
-			<Text style={styles.unreadNumberText}>{ unread }</Text>
+		<View style={[styles.unreadNumberContainer, mentioned && styles.unreadMentionedContainer]}>
+			<Text style={[styles.unreadText, mentioned && styles.unreadMentionedText]}>{ unread }</Text>
 		</View>
 	);
 });
