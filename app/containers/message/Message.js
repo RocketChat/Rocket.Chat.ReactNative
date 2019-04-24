@@ -22,7 +22,7 @@ import styles from './styles';
 import I18n from '../../i18n';
 import messagesStatus from '../../constants/messagesStatus';
 import { CustomIcon } from '../../lib/Icons';
-import { COLOR_DANGER, COLOR_TEXT, COLOR_PRIMARY } from '../../constants/colors';
+import { COLOR_DANGER } from '../../constants/colors';
 
 const SYSTEM_MESSAGES = [
 	'r',

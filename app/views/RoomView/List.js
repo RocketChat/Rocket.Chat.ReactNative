@@ -121,7 +121,7 @@ export class List extends React.PureComponent {
 		if (item.tmid) {
 			const thread = threads.find(t => t._id === item.tmid);
 			if (thread) {
-				let tmsg = thread.msg || (thread.attachments && thread.attachments.length && thread.attachments[0].title);
+				const tmsg = thread.msg || (thread.attachments && thread.attachments.length && thread.attachments[0].title);
 				item = { ...item, tmsg };
 			}
 		}
