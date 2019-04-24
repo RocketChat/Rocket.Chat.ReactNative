@@ -51,7 +51,8 @@ export default class ThreadMessagesView extends LoggedView {
 		safeAddListener(this.messages, this.updateMessages);
 		this.state = {
 			loading: false,
-			end: false
+			end: false,
+			messages: this.messages
 		};
 		this.mounted = false;
 	}
@@ -76,9 +77,10 @@ export default class ThreadMessagesView extends LoggedView {
 		}
 	}
 
-	updateMessages = () => {
-		this.forceUpdate();
-	}
+	// eslint-disable-next-line react/sort-comp
+	updateMessages = debounce(() => {
+		this.setState({ messages: this.messages });
+	}, 300)
 
 	init = () => {
 		const [room] = this.rooms;
@@ -216,7 +218,7 @@ export default class ThreadMessagesView extends LoggedView {
 	}
 
 	render() {
-		const { loading } = this.state;
+		const { loading, messages } = this.state;
 
 		if (!loading && this.messages.length === 0) {
 			return this.renderEmpty();
@@ -226,7 +228,8 @@ export default class ThreadMessagesView extends LoggedView {
 			<SafeAreaView style={styles.list} testID='thread-messages-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
 				<FlatList
-					data={this.messages}
+					data={messages}
+					extraData={this.state}
 					renderItem={this.renderItem}
 					style={styles.list}
 					contentContainerStyle={styles.contentContainer}
