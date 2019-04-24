@@ -402,7 +402,7 @@ export default class RoomsListView extends LoggedView {
 					unread={item.unread}
 					userMentions={item.userMentions}
 					favorite={item.f}
-					lastMessage={item.lastMessage}
+					lastMessage={JSON.parse(JSON.stringify(item.lastMessage))}
 					name={this.getRoomTitle(item)}
 					_updatedAt={item.roomUpdatedAt}
 					key={item._id}
