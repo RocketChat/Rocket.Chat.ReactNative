@@ -22,7 +22,7 @@ export default class Markdown extends React.Component {
 
 	render() {
 		const {
-			msg, customEmojis, style, rules, baseUrl, username, edited
+			msg, customEmojis, style, rules, baseUrl, username, edited, numberOfLines
 		} = this.props;
 		if (!msg) {
 			return null;
@@ -32,12 +32,15 @@ export default class Markdown extends React.Component {
 			m = emojify(m, { output: 'unicode' });
 		}
 		m = m.replace(/^\[([^\]]*)\]\(([^)]*)\)/, '').trim();
+		if (numberOfLines > 0) {
+			m = m.replace(/[\n]+/g, '\n').trim();
+		}
 		return (
 			<MarkdownRenderer
 				rules={{
 					paragraph: (node, children) => (
 						// eslint-disable-next-line
-						<Text key={node.key} style={styles.paragraph}>
+						<Text key={node.key} style={styles.paragraph} numberOfLines={numberOfLines}>
 							{children}
 							{edited ? <Text style={styles.edited}> (edited)</Text> : null}
 						</Text>
@@ -111,5 +114,6 @@ Markdown.propTypes = {
 	customEmojis: PropTypes.object.isRequired,
 	style: PropTypes.any,
 	rules: PropTypes.object,
-	edited: PropTypes.bool
+	edited: PropTypes.bool,
+	numberOfLines: PropTypes.number
 };
