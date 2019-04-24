@@ -490,7 +490,7 @@ export default class Message extends PureComponent {
 
 		return (
 			<View style={styles.repliedThread} testID={`message-thread-replied-on-${ msg }`}>
-				<CustomIcon name='thread' size={20} style={[styles.buttonIcon, styles.repliedThreadIcon]} />
+				<CustomIcon name='thread' size={16} style={styles.repliedThreadIcon} />
 				<Text style={styles.repliedThreadName} numberOfLines={1}>{msg}</Text>
 			</View>
 		);

@@ -10821,17 +10821,12 @@ exports[`Storyshots Message list 1`] = `
                   Array [
                     Object {
                       "color": undefined,
-                      "fontSize": 20,
+                      "fontSize": 16,
                     },
-                    Array [
-                      Object {
-                        "color": "#fff",
-                        "marginRight": 6,
-                      },
-                      Object {
-                        "color": "#1d74f5",
-                      },
-                    ],
+                    Object {
+                      "color": "#1d74f5",
+                      "marginRight": 2,
+                    },
                     Object {
                       "fontFamily": "custom",
                       "fontStyle": "normal",
@@ -10851,9 +10846,9 @@ exports[`Storyshots Message list 1`] = `
                     "color": "#1d74f5",
                     "flex": 1,
                     "fontFamily": "System",
-                    "fontSize": 16,
+                    "fontSize": 14,
                     "fontStyle": "normal",
-                    "fontWeight": "600",
+                    "fontWeight": "400",
                   }
                 }
               >
@@ -11066,17 +11061,12 @@ exports[`Storyshots Message list 1`] = `
                   Array [
                     Object {
                       "color": undefined,
-                      "fontSize": 20,
+                      "fontSize": 16,
                     },
-                    Array [
-                      Object {
-                        "color": "#fff",
-                        "marginRight": 6,
-                      },
-                      Object {
-                        "color": "#1d74f5",
-                      },
-                    ],
+                    Object {
+                      "color": "#1d74f5",
+                      "marginRight": 2,
+                    },
                     Object {
                       "fontFamily": "custom",
                       "fontStyle": "normal",
@@ -11096,9 +11086,9 @@ exports[`Storyshots Message list 1`] = `
                     "color": "#1d74f5",
                     "flex": 1,
                     "fontFamily": "System",
-                    "fontSize": 16,
+                    "fontSize": 14,
                     "fontStyle": "normal",
-                    "fontWeight": "600",
+                    "fontWeight": "400",
                   }
                 }
               >
@@ -11311,17 +11301,12 @@ exports[`Storyshots Message list 1`] = `
                   Array [
                     Object {
                       "color": undefined,
-                      "fontSize": 20,
+                      "fontSize": 16,
                     },
-                    Array [
-                      Object {
-                        "color": "#fff",
-                        "marginRight": 6,
-                      },
-                      Object {
-                        "color": "#1d74f5",
-                      },
-                    ],
+                    Object {
+                      "color": "#1d74f5",
+                      "marginRight": 2,
+                    },
                     Object {
                       "fontFamily": "custom",
                       "fontStyle": "normal",
@@ -11341,9 +11326,9 @@ exports[`Storyshots Message list 1`] = `
                     "color": "#1d74f5",
                     "flex": 1,
                     "fontFamily": "System",
-                    "fontSize": 16,
+                    "fontSize": 14,
                     "fontStyle": "normal",
-                    "fontWeight": "600",
+                    "fontWeight": "400",
                   }
                 }
               >
@@ -11556,17 +11541,12 @@ exports[`Storyshots Message list 1`] = `
                   Array [
                     Object {
                       "color": undefined,
-                      "fontSize": 20,
+                      "fontSize": 16,
                     },
-                    Array [
-                      Object {
-                        "color": "#fff",
-                        "marginRight": 6,
-                      },
-                      Object {
-                        "color": "#1d74f5",
-                      },
-                    ],
+                    Object {
+                      "color": "#1d74f5",
+                      "marginRight": 2,
+                    },
                     Object {
                       "fontFamily": "custom",
                       "fontStyle": "normal",
@@ -11586,9 +11566,9 @@ exports[`Storyshots Message list 1`] = `
                     "color": "#1d74f5",
                     "flex": 1,
                     "fontFamily": "System",
-                    "fontSize": 16,
+                    "fontSize": 14,
                     "fontStyle": "normal",
-                    "fontWeight": "600",
+                    "fontWeight": "400",
                   }
                 }
               >
@@ -11801,17 +11781,12 @@ exports[`Storyshots Message list 1`] = `
                   Array [
                     Object {
                       "color": undefined,
-                      "fontSize": 20,
+                      "fontSize": 16,
                     },
-                    Array [
-                      Object {
-                        "color": "#fff",
-                        "marginRight": 6,
-                      },
-                      Object {
-                        "color": "#1d74f5",
-                      },
-                    ],
+                    Object {
+                      "color": "#1d74f5",
+                      "marginRight": 2,
+                    },
                     Object {
                       "fontFamily": "custom",
                       "fontStyle": "normal",
@@ -11831,9 +11806,9 @@ exports[`Storyshots Message list 1`] = `
                     "color": "#1d74f5",
                     "flex": 1,
                     "fontFamily": "System",
-                    "fontSize": 16,
+                    "fontSize": 14,
                     "fontStyle": "normal",
-                    "fontWeight": "600",
+                    "fontWeight": "400",
                   }
                 }
               >
@@ -12046,17 +12021,12 @@ exports[`Storyshots Message list 1`] = `
                   Array [
                     Object {
                       "color": undefined,
-                      "fontSize": 20,
+                      "fontSize": 16,
                     },
-                    Array [
-                      Object {
-                        "color": "#fff",
-                        "marginRight": 6,
-                      },
-                      Object {
-                        "color": "#1d74f5",
-                      },
-                    ],
+                    Object {
+                      "color": "#1d74f5",
+                      "marginRight": 2,
+                    },
                     Object {
                       "fontFamily": "custom",
                       "fontStyle": "normal",
@@ -12076,9 +12046,9 @@ exports[`Storyshots Message list 1`] = `
                     "color": "#1d74f5",
                     "flex": 1,
                     "fontFamily": "System",
-                    "fontSize": 16,
+                    "fontSize": 14,
                     "fontStyle": "normal",
-                    "fontWeight": "600",
+                    "fontWeight": "400",
                   }
                 }
               >
