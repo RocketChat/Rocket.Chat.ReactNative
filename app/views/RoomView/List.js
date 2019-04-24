@@ -1,7 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, FlatList, InteractionManager } from 'react-native';
 import PropTypes from 'prop-types';
-import { emojify } from 'react-emojione';
 import debounce from 'lodash/debounce';
 
 import styles from './styles';
@@ -123,9 +122,6 @@ export class List extends React.PureComponent {
 			const thread = threads.find(t => t._id === item.tmid);
 			if (thread) {
 				let tmsg = thread.msg || (thread.attachments && thread.attachments.length && thread.attachments[0].title);
-				if (tmsg) {
-					tmsg = emojify(tmsg, { output: 'unicode' });
-				}
 				item = { ...item, tmsg };
 			}
 		}

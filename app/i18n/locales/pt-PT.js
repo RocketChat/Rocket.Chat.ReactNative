@@ -284,6 +284,7 @@ export default {
 	Send: 'Enviar',
 	Send_audio_message: 'Enviar mensagem de áudio',
 	Send_message: 'Enviar mensagem',
+	Sent_an_attachment: 'Enviou um ficheiro',
 	Server: 'Servidor',
 	Servers: 'Servidores',
 	Set_username_subtitle: 'O nome de utilizador é usado para permitir que outros mencionem você em mensagens',

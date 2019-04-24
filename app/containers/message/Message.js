@@ -6,6 +6,7 @@ import {
 import moment from 'moment';
 import { KeyboardUtils } from 'react-native-keyboard-input';
 import Touchable from 'react-native-platform-touchable';
+import { emojify } from 'react-emojione';
 
 import Image from './Image';
 import User from './User';
@@ -21,7 +22,7 @@ import styles from './styles';
 import I18n from '../../i18n';
 import messagesStatus from '../../constants/messagesStatus';
 import { CustomIcon } from '../../lib/Icons';
-import { COLOR_DANGER } from '../../constants/colors';
+import { COLOR_DANGER, COLOR_TEXT, COLOR_PRIMARY } from '../../constants/colors';
 
 const SYSTEM_MESSAGES = [
 	'r',
@@ -271,9 +272,15 @@ export default class Message extends PureComponent {
 		if (this.isInfoMessage()) {
 			return <Text style={styles.textInfo}>{getInfoMessage({ ...this.props })}</Text>;
 		}
+
 		const {
 			customEmojis, msg, baseUrl, user, edited, tmid
 		} = this.props;
+
+		if (tmid && !msg) {
+			return <Text style={styles.text}>{I18n.t('Sent_an_attachment')}</Text>;
+		}
+
 		return (
 			<Markdown
 				msg={msg}
@@ -479,10 +486,13 @@ export default class Message extends PureComponent {
 			return null;
 		}
 
+		const msg = emojify(tmsg, { output: 'unicode' });
+
 		return (
-			<Text style={styles.repliedThread} numberOfLines={1} testID={`message-thread-replied-on-${ tmsg }`}>
-				{I18n.t('Replied_on')} <Text style={styles.repliedThreadName} onPress={onThreadPress}>{tmsg}</Text>
-			</Text>
+			<View style={styles.repliedThread}>
+				<CustomIcon name='thread' size={20} style={[styles.buttonIcon, styles.repliedThreadIcon]} />
+				<Text style={styles.repliedThreadName} onPress={onThreadPress} numberOfLines={1}>{msg}</Text>
+			</View>
 		);
 	}
 
