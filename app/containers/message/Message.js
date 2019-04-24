@@ -475,7 +475,7 @@ export default class Message extends PureComponent {
 
 	renderRepliedThread = () => {
 		const {
-			tmid, tmsg, header, onThreadPress, fetchThreadName
+			tmid, tmsg, header, fetchThreadName
 		} = this.props;
 		if (!tmid || !header || this.isTemp()) {
 			return null;
@@ -491,7 +491,7 @@ export default class Message extends PureComponent {
 		return (
 			<View style={styles.repliedThread}>
 				<CustomIcon name='thread' size={20} style={[styles.buttonIcon, styles.repliedThreadIcon]} />
-				<Text style={styles.repliedThreadName} onPress={onThreadPress} numberOfLines={1}>{msg}</Text>
+				<Text style={styles.repliedThreadName} numberOfLines={1}>{msg}</Text>
 			</View>
 		);
 	}
