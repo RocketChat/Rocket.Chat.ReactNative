@@ -10813,6 +10813,7 @@ exports[`Storyshots Message list 1`] = `
                   "flexDirection": "row",
                 }
               }
+              testID="message-thread-replied-on-How are you?"
             >
               <Text
                 allowFontScaling={false}
@@ -11057,6 +11058,7 @@ exports[`Storyshots Message list 1`] = `
                   "flexDirection": "row",
                 }
               }
+              testID="message-thread-replied-on-Thread with emoji 🙂 😂"
             >
               <Text
                 allowFontScaling={false}
@@ -11301,6 +11303,7 @@ exports[`Storyshots Message list 1`] = `
                   "flexDirection": "row",
                 }
               }
+              testID="message-thread-replied-on-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             >
               <Text
                 allowFontScaling={false}
@@ -11545,6 +11548,7 @@ exports[`Storyshots Message list 1`] = `
                   "flexDirection": "row",
                 }
               }
+              testID="message-thread-replied-on-How are you?"
             >
               <Text
                 allowFontScaling={false}
@@ -11789,6 +11793,7 @@ exports[`Storyshots Message list 1`] = `
                   "flexDirection": "row",
                 }
               }
+              testID="message-thread-replied-on-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             >
               <Text
                 allowFontScaling={false}
@@ -12033,6 +12038,7 @@ exports[`Storyshots Message list 1`] = `
                   "flexDirection": "row",
                 }
               }
+              testID="message-thread-replied-on-Thread with attachment"
             >
               <Text
                 allowFontScaling={false}

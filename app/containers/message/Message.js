@@ -489,7 +489,7 @@ export default class Message extends PureComponent {
 		const msg = emojify(tmsg, { output: 'unicode' });
 
 		return (
-			<View style={styles.repliedThread}>
+			<View style={styles.repliedThread} testID={`message-thread-replied-on-${ msg }`}>
 				<CustomIcon name='thread' size={20} style={[styles.buttonIcon, styles.repliedThreadIcon]} />
 				<Text style={styles.repliedThreadName} numberOfLines={1}>{msg}</Text>
 			</View>

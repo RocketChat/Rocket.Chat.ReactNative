@@ -284,10 +284,10 @@ describe('Room screen', () => {
 				await element(by.text('Reply')).tap();
 				await element(by.id('messagebox-input')).typeText('replied');
 				await element(by.id('messagebox-send-message')).tap();
-				await waitFor(element(by.id(`message-thread-button-${ thread }`))).toBeVisible().withTimeout(5000);
-				await expect(element(by.id(`message-thread-button-${ thread }`))).toBeVisible();
-				await waitFor(element(by.id(`message-thread-replied-on-${ thread }`))).toBeVisible().withTimeout(5000);
-				await expect(element(by.id(`message-thread-replied-on-${ thread }`))).toBeVisible();
+				await waitFor(element(by.id(`message-thread-button-${ thread }`))).toExist().withTimeout(5000);
+				await expect(element(by.id(`message-thread-button-${ thread }`))).toExist();
+				await waitFor(element(by.id(`message-thread-replied-on-${ thread }`))).toExist().withTimeout(5000);
+				await expect(element(by.id(`message-thread-replied-on-${ thread }`))).toExist();
 			});
 
 			it('should navigate to thread from button', async() => {
