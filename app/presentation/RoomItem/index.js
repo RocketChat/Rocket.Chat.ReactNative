@@ -109,7 +109,7 @@ export default class RoomItem extends React.Component {
 							{_updatedAt ? <Text style={[styles.date, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
 						</View>
 						<View style={styles.row}>
-							<LastMessage lastMessage={lastMessage} type={type} showLastMessage={showLastMessage} username={username} />
+							<LastMessage lastMessage={lastMessage} type={type} showLastMessage={showLastMessage} username={username} alert={alert} />
 							<UnreadBadge unread={unread} userMentions={userMentions} type={type} />
 						</View>
 					</View>
