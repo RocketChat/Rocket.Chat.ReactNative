@@ -4,6 +4,7 @@ import {
 	View, Text, StyleSheet, ScrollView
 } from 'react-native';
 import { emojify } from 'react-emojione';
+import removeMarkdown from 'remove-markdown';
 
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
@@ -77,6 +78,9 @@ const Header = React.memo(({
 	}
 	if (title) {
 		title = emojify(title, { output: 'unicode' });
+		if (tmid) {
+			title = removeMarkdown(title);
+		}
 	}
 
 	return (
