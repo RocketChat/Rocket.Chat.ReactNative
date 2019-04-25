@@ -24,6 +24,7 @@ import I18n from '../../i18n';
 import messagesStatus from '../../constants/messagesStatus';
 import { CustomIcon } from '../../lib/Icons';
 import { COLOR_DANGER } from '../../constants/colors';
+import debounce from '../../utils/debounce';
 
 const SYSTEM_MESSAGES = [
 	'r',
@@ -161,14 +162,14 @@ export default class Message extends PureComponent {
 		onLongPress: () => {}
 	}
 
-	onPress = () => {
+	onPress = debounce(() => {
 		KeyboardUtils.dismiss();
 
 		const { onThreadPress, tlm, tmid } = this.props;
 		if ((tlm || tmid) && onThreadPress) {
 			onThreadPress();
 		}
-	}
+	}, 300, true)
 
 	onLongPress = () => {
 		const { archived, onLongPress } = this.props;
