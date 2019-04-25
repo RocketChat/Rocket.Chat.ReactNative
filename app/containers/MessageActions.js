@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Alert, Clipboard, Share } from 'react-native';
+import {
+	Alert, Clipboard, Share, View, Text, StyleSheet, TouchableOpacity
+} from 'react-native';
 import { connect } from 'react-redux';
-import ActionSheet from 'react-native-action-sheet';
 import * as moment from 'moment';
+
+import BottomSheet from 'reanimated-bottom-sheet';
 
 import {
 	actionsHide as actionsHideAction,
@@ -16,8 +19,43 @@ import {
 } from '../actions/messages';
 import { showToast } from '../utils/info';
 import { vibrate } from '../utils/vibration';
+import { verticalScale } from '../utils/scaling';
 import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
+
+const styles = StyleSheet.create({
+	panelContainer: {
+		position: 'absolute',
+		top: 0,
+		bottom: 0,
+		left: 0,
+		right: 0
+	},
+	panel: {
+		height: verticalScale(500),
+		padding: verticalScale(10),
+		backgroundColor: '#aaaaaa',
+		paddingTop: verticalScale(20),
+		borderTopLeftRadius: verticalScale(20),
+		borderTopRightRadius: verticalScale(20),
+		shadowColor: '#000000',
+		shadowOffset: { width: 0, height: 0 },
+		shadowRadius: 5,
+		shadowOpacity: 0.4
+	},
+	panelButton: {
+		padding: verticalScale(10),
+		borderRadius: verticalScale(10),
+		backgroundColor: '#656565',
+		alignItems: 'center',
+		marginVertical: verticalScale(5)
+	},
+	panelButtonTitle: {
+		fontSize: verticalScale(14),
+		fontWeight: 'bold',
+		color: 'white'
+	}
+});
 
 @connect(
 	state => ({
@@ -44,7 +82,6 @@ export default class MessageActions extends React.Component {
 		actionsHide: PropTypes.func.isRequired,
 		room: PropTypes.object.isRequired,
 		actionMessage: PropTypes.object,
-		// user: PropTypes.object.isRequired,
 		deleteRequest: PropTypes.func.isRequired,
 		editInit: PropTypes.func.isRequired,
 		toggleStarRequest: PropTypes.func.isRequired,
@@ -61,70 +98,49 @@ export default class MessageActions extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.handleActionPress = this.handleActionPress.bind(this);
+		this.hideActionSheet = this.hideActionSheet.bind(this);
 		this.setPermissions();
+
+		this.options = [
+			{ label: I18n.t('Cancel'), handler: () => {} },
+			{ label: I18n.t('Permalink'), handler: this.handlePermalink },
+			{ label: I18n.t('Copy'), handler: this.handleCopy },
+			{ label: I18n.t('Share'), handler: this.handleShare }
+		];
+
+		if (!this.isRoomReadOnly()) {
+			this.options.push({ label: I18n.t('Reply'), handler: this.handleReply });
+		}
+
+		if (this.allowEdit(props)) {
+			this.options.push({ label: I18n.t('Edit'), handler: this.handleEdit });
+		}
+
+		if (!this.isRoomReadOnly()) {
+			this.options.push({ label: I18n.t('Quote'), handler: this.handleQuote });
+		}
 
 		const { Message_AllowStarring, Message_AllowPinning } = this.props;
 
-		// Cancel
-		this.options = [I18n.t('Cancel')];
-		this.CANCEL_INDEX = 0;
-
-		// Reply
-		if (!this.isRoomReadOnly()) {
-			this.options.push(I18n.t('Reply'));
-			this.REPLY_INDEX = this.options.length - 1;
-		}
-
-		// Edit
-		if (this.allowEdit(props)) {
-			this.options.push(I18n.t('Edit'));
-			this.EDIT_INDEX = this.options.length - 1;
-		}
-
-		// Permalink
-		this.options.push(I18n.t('Permalink'));
-		this.PERMALINK_INDEX = this.options.length - 1;
-
-		// Copy
-		this.options.push(I18n.t('Copy'));
-		this.COPY_INDEX = this.options.length - 1;
-
-		// Share
-		this.options.push(I18n.t('Share'));
-		this.SHARE_INDEX = this.options.length - 1;
-
-		// Quote
-		if (!this.isRoomReadOnly()) {
-			this.options.push(I18n.t('Quote'));
-			this.QUOTE_INDEX = this.options.length - 1;
-		}
-
-		// Star
 		if (Message_AllowStarring) {
-			this.options.push(I18n.t(props.actionMessage.starred ? 'Unstar' : 'Star'));
-			this.STAR_INDEX = this.options.length - 1;
+			this.options.push({ label: I18n.t(props.actionMessage.starred ? 'Unstar' : 'Star'), handler: this.handleStar });
 		}
 
-		// Pin
 		if (Message_AllowPinning) {
-			this.options.push(I18n.t(props.actionMessage.pinned ? 'Unpin' : 'Pin'));
-			this.PIN_INDEX = this.options.length - 1;
+			this.options.push({ label: I18n.t(props.actionMessage.pinned ? 'Unpin' : 'Pin'), handler: this.handlePin });
 		}
 
-		// Reaction
 		if (!this.isRoomReadOnly() || this.canReactWhenReadOnly()) {
-			this.options.push(I18n.t('Add_Reaction'));
-			this.REACTION_INDEX = this.options.length - 1;
+			this.options.push({ label: I18n.t('Add_Reaction'), handler: this.handleReaction });
 		}
 
-		// Delete
 		if (this.allowDelete(props)) {
-			this.options.push(I18n.t('Delete'));
-			this.DELETE_INDEX = this.options.length - 1;
+			this.options.push({ label: I18n.t('Delete'), handler: this.handleDelete });
 		}
+
+		this.options.reverse(); // reversing to put the cancel to the bottom of the list
+
 		setTimeout(() => {
-			this.showActionSheet();
 			vibrate();
 		});
 	}
@@ -138,36 +154,25 @@ export default class MessageActions extends React.Component {
 		this.hasForceDeletePermission = result[permissions[2]];
 	}
 
-	showActionSheet = () => {
-		ActionSheet.showActionSheetWithOptions({
-			options: this.options,
-			cancelButtonIndex: this.CANCEL_INDEX,
-			destructiveButtonIndex: this.DELETE_INDEX,
-			title: I18n.t('Message_actions')
-		}, (actionIndex) => {
-			this.handleActionPress(actionIndex);
-		});
-	}
-
 	getPermalink = async(message) => {
 		try {
 			return await RocketChat.getPermalink(message);
 		} catch (error) {
 			return null;
 		}
-	}
+	};
 
 	isOwn = props => props.actionMessage.u && props.actionMessage.u._id === props.user.id;
 
 	isRoomReadOnly = () => {
 		const { room } = this.props;
 		return room.ro;
-	}
+	};
 
 	canReactWhenReadOnly = () => {
 		const { room } = this.props;
 		return room.reactWhenReadOnly;
-	}
+	};
 
 	allowEdit = (props) => {
 		if (this.isRoomReadOnly()) {
@@ -192,7 +197,7 @@ export default class MessageActions extends React.Component {
 			return currentTsDiff < blockEditInMinutes;
 		}
 		return true;
-	}
+	};
 
 	allowDelete = (props) => {
 		if (this.isRoomReadOnly()) {
@@ -219,7 +224,7 @@ export default class MessageActions extends React.Component {
 			return currentTsDiff < blockDeleteInMinutes;
 		}
 		return true;
-	}
+	};
 
 	handleDelete = () => {
 		const { deleteRequest, actionMessage } = this.props;
@@ -239,19 +244,19 @@ export default class MessageActions extends React.Component {
 			],
 			{ cancelable: false }
 		);
-	}
+	};
 
 	handleEdit = () => {
 		const { actionMessage, editInit } = this.props;
 		const { _id, msg, rid } = actionMessage;
 		editInit({ _id, msg, rid });
-	}
+	};
 
 	handleCopy = async() => {
 		const { actionMessage } = this.props;
 		await Clipboard.setString(actionMessage.msg);
 		showToast(I18n.t('Copied_to_clipboard'));
-	}
+	};
 
 	handleShare = async() => {
 		const { actionMessage } = this.props;
@@ -264,79 +269,61 @@ export default class MessageActions extends React.Component {
 	handleStar = () => {
 		const { actionMessage, toggleStarRequest } = this.props;
 		toggleStarRequest(actionMessage);
-	}
+	};
 
 	handlePermalink = async() => {
 		const { actionMessage } = this.props;
 		const permalink = await this.getPermalink(actionMessage);
 		Clipboard.setString(permalink);
 		showToast(I18n.t('Permalink_copied_to_clipboard'));
-	}
+	};
 
 	handlePin = () => {
 		const { actionMessage, togglePinRequest } = this.props;
 		togglePinRequest(actionMessage);
-	}
+	};
 
 	handleReply = () => {
 		const { actionMessage, replyInit } = this.props;
 		replyInit(actionMessage, true);
-	}
+	};
 
 	handleQuote = () => {
 		const { actionMessage, replyInit } = this.props;
 		replyInit(actionMessage, false);
-	}
+	};
 
 	handleReaction = () => {
 		const { actionMessage, toggleReactionPicker } = this.props;
 		toggleReactionPicker(actionMessage);
-	}
+	};
 
-	handleActionPress = (actionIndex) => {
-		if (actionIndex) {
-			switch (actionIndex) {
-				case this.REPLY_INDEX:
-					this.handleReply();
-					break;
-				case this.EDIT_INDEX:
-					this.handleEdit();
-					break;
-				case this.PERMALINK_INDEX:
-					this.handlePermalink();
-					break;
-				case this.COPY_INDEX:
-					this.handleCopy();
-					break;
-				case this.SHARE_INDEX:
-					this.handleShare();
-					break;
-				case this.QUOTE_INDEX:
-					this.handleQuote();
-					break;
-				case this.STAR_INDEX:
-					this.handleStar();
-					break;
-				case this.PIN_INDEX:
-					this.handlePin();
-					break;
-				case this.REACTION_INDEX:
-					this.handleReaction();
-					break;
-				case this.DELETE_INDEX:
-					this.handleDelete();
-					break;
-				default:
-					break;
-			}
-		}
+	hideActionSheet() {
 		const { actionsHide } = this.props;
 		actionsHide();
 	}
 
+	renderInner = () => (
+		<View style={[styles.panel, { height: this.options.length * verticalScale(50) }]}>
+			{this.options.map((option, index) => (
+				<TouchableOpacity style={styles.panelButton} onPress={() => { this.hideActionSheet(); option.handler(); }} key={option.label}>
+					<Text style={[styles.panelButtonTitle, index === this.options.length - 1 ? { color: 'red' } : {}]}>{option.label}</Text>
+				</TouchableOpacity>
+			))}
+		</View>
+	);
+
 	render() {
 		return (
-			null
+			<TouchableOpacity activeOpacity={1} style={styles.panelContainer} onPress={() => this.hideActionSheet()}>
+				<BottomSheet
+					snapPoints={[this.options.length * verticalScale(50), 0, 0]}
+					renderContent={this.renderInner}
+					enabledManualSnapping
+					enabledGestureInteraction
+					enabledInnerScrolling
+				/>
+			</TouchableOpacity>
 		);
 	}
 }
