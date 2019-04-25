@@ -31,16 +31,23 @@ export default function loadMissedMessages(...args) {
 			if (data) {
 				if (data.updated && data.updated.length) {
 					const { updated } = data;
-					updated.forEach(buildMessage);
 					InteractionManager.runAfterInteractions(() => {
 						database.write(() => updated.forEach((message) => {
 							try {
+								message = buildMessage(message);
 								database.create('messages', message, true);
+								// if it's a thread "header"
+								if (message.tlm) {
+									database.create('threads', message, true);
+								}
+								if (message.tmid) {
+									message.rid = message.tmid;
+									database.create('threadMessages', message, true);
+								}
 							} catch (e) {
 								log('loadMissedMessages -> create messages', e);
 							}
 						}));
-						resolve(updated);
 					});
 				}
 				if (data.deleted && data.deleted.length) {
@@ -51,6 +58,10 @@ export default function loadMissedMessages(...args) {
 								deleted.forEach((m) => {
 									const message = database.objects('messages').filtered('_id = $0', m._id);
 									database.delete(message);
+									const thread = database.objects('threads').filtered('_id = $0', m._id);
+									database.delete(thread);
+									const threadMessage = database.objects('threadMessages').filtered('_id = $0', m._id);
+									database.delete(threadMessage);
 								});
 							});
 						} catch (e) {
@@ -59,7 +70,7 @@ export default function loadMissedMessages(...args) {
 					});
 				}
 			}
-			resolve([]);
+			resolve();
 		} catch (e) {
 			log('loadMissedMessages', e);
 			reject(e);

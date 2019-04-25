@@ -11,7 +11,8 @@ const serversSchema = {
 		id: 'string',
 		name: { type: 'string', optional: true },
 		iconURL: { type: 'string', optional: true },
-		roomsUpdatedAt: { type: 'date', optional: true }
+		roomsUpdatedAt: { type: 'date', optional: true },
+		version: 'string?'
 	}
 };
 
@@ -103,7 +104,8 @@ const subscriptionSchema = {
 		muted: { type: 'list', objectType: 'usersMuted' },
 		broadcast: { type: 'bool', optional: true },
 		prid: { type: 'string', optional: true },
-		draftMessage: { type: 'string', optional: true }
+		draftMessage: { type: 'string', optional: true },
+		lastThreadSync: 'date?'
 	}
 };
 
@@ -206,8 +208,6 @@ const messagesSchema = {
 		rid: { type: 'string', indexed: true },
 		ts: 'date',
 		u: 'users',
-		// mentions: [],
-		// channels: [],
 		alias: { type: 'string', optional: true },
 		parseUrls: { type: 'bool', optional: true },
 		groupable: { type: 'bool', optional: true },
@@ -223,7 +223,71 @@ const messagesSchema = {
 		role: { type: 'string', optional: true },
 		drid: { type: 'string', optional: true },
 		dcount: { type: 'int', optional: true },
-		dlm: { type: 'date', optional: true }
+		dlm: { type: 'date', optional: true },
+		tmid: { type: 'string', optional: true },
+		tcount: { type: 'int', optional: true },
+		tlm: { type: 'date', optional: true },
+		replies: 'string[]'
+	}
+};
+
+const threadsSchema = {
+	name: 'threads',
+	primaryKey: '_id',
+	properties: {
+		_id: 'string',
+		msg: { type: 'string', optional: true },
+		t: { type: 'string', optional: true },
+		rid: { type: 'string', indexed: true },
+		ts: 'date',
+		u: 'users',
+		alias: { type: 'string', optional: true },
+		parseUrls: { type: 'bool', optional: true },
+		groupable: { type: 'bool', optional: true },
+		avatar: { type: 'string', optional: true },
+		attachments: { type: 'list', objectType: 'attachment' },
+		urls: { type: 'list', objectType: 'url', default: [] },
+		_updatedAt: { type: 'date', optional: true },
+		status: { type: 'int', optional: true },
+		pinned: { type: 'bool', optional: true },
+		starred: { type: 'bool', optional: true },
+		editedBy: 'messagesEditedBy',
+		reactions: { type: 'list', objectType: 'messagesReactions' },
+		role: { type: 'string', optional: true },
+		drid: { type: 'string', optional: true },
+		dcount: { type: 'int', optional: true },
+		dlm: { type: 'date', optional: true },
+		tmid: { type: 'string', optional: true },
+		tcount: { type: 'int', optional: true },
+		tlm: { type: 'date', optional: true },
+		replies: 'string[]',
+		draftMessage: 'string?'
+	}
+};
+
+const threadMessagesSchema = {
+	name: 'threadMessages',
+	primaryKey: '_id',
+	properties: {
+		_id: 'string',
+		msg: { type: 'string', optional: true },
+		t: { type: 'string', optional: true },
+		rid: { type: 'string', indexed: true },
+		ts: 'date',
+		u: 'users',
+		alias: { type: 'string', optional: true },
+		parseUrls: { type: 'bool', optional: true },
+		groupable: { type: 'bool', optional: true },
+		avatar: { type: 'string', optional: true },
+		attachments: { type: 'list', objectType: 'attachment' },
+		urls: { type: 'list', objectType: 'url', default: [] },
+		_updatedAt: { type: 'date', optional: true },
+		status: { type: 'int', optional: true },
+		pinned: { type: 'bool', optional: true },
+		starred: { type: 'bool', optional: true },
+		editedBy: 'messagesEditedBy',
+		reactions: { type: 'list', objectType: 'messagesReactions' },
+		role: { type: 'string', optional: true }
 	}
 };
 
@@ -296,6 +360,8 @@ const schema = [
 	subscriptionSchema,
 	subscriptionRolesSchema,
 	messagesSchema,
+	threadsSchema,
+	threadMessagesSchema,
 	usersSchema,
 	roomsSchema,
 	attachment,
@@ -323,9 +389,9 @@ class DB {
 			schema: [
 				serversSchema
 			],
-			schemaVersion: 2,
+			schemaVersion: 5,
 			migration: (oldRealm, newRealm) => {
-				if (oldRealm.schemaVersion === 1 && newRealm.schemaVersion === 2) {
+				if (oldRealm.schemaVersion >= 1 && newRealm.schemaVersion <= 5) {
 					const newServers = newRealm.objects('servers');
 
 					// eslint-disable-next-line no-plusplus
@@ -363,6 +429,10 @@ class DB {
 		return this.database.objects(...args);
 	}
 
+	objectForPrimaryKey(...args) {
+		return this.database.objectForPrimaryKey(...args);
+	}
+
 	get database() {
 		return this.databases.activeDB;
 	}
@@ -376,9 +446,9 @@ class DB {
 		return this.databases.activeDB = new Realm({
 			path: `${ path }.realm`,
 			schema,
-			schemaVersion: 4,
+			schemaVersion: 8,
 			migration: (oldRealm, newRealm) => {
-				if (oldRealm.schemaVersion === 3 && newRealm.schemaVersion === 4) {
+				if (oldRealm.schemaVersion >= 3 && newRealm.schemaVersion <= 8) {
 					const newSubs = newRealm.objects('subscriptions');
 
 					// eslint-disable-next-line no-plusplus
@@ -388,6 +458,10 @@ class DB {
 					}
 					const newMessages = newRealm.objects('messages');
 					newRealm.delete(newMessages);
+					const newThreads = newRealm.objects('threads');
+					newRealm.delete(newThreads);
+					const newThreadMessages = newRealm.objects('threadMessages');
+					newRealm.delete(newThreadMessages);
 				}
 			}
 		});
