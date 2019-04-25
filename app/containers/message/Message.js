@@ -7,6 +7,7 @@ import moment from 'moment';
 import { KeyboardUtils } from 'react-native-keyboard-input';
 import Touchable from 'react-native-platform-touchable';
 import { emojify } from 'react-emojione';
+import removeMarkdown from 'remove-markdown';
 
 import Image from './Image';
 import User from './User';
@@ -486,7 +487,8 @@ export default class Message extends PureComponent {
 			return null;
 		}
 
-		const msg = emojify(tmsg, { output: 'unicode' });
+		let msg = emojify(tmsg, { output: 'unicode' });
+		msg = removeMarkdown(msg);
 
 		return (
 			<View style={styles.repliedThread} testID={`message-thread-replied-on-${ msg }`}>
