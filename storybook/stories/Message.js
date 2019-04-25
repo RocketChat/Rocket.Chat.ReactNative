@@ -307,6 +307,11 @@ export default (
 		<Message
 			msg="I'm fine!"
 			tmid='1'
+			tmsg='Markdown: [link](http://www.google.com/) ```block code```'
+		/>
+		<Message
+			msg="I'm fine!"
+			tmid='1'
 			tmsg={longText}
 		/>
 		<Message
