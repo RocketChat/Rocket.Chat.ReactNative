@@ -5,35 +5,54 @@ import database from '../realm';
 import * as actions from '../../actions';
 import log from '../../utils/log';
 
-const getLastMessage = () => {
-	const setting = database.objects('customEmojis').sorted('_updatedAt', true)[0];
-	return setting && setting._updatedAt;
+const getUpdatedSince = () => {
+	const emoji = database.objects('customEmojis').sorted('_updatedAt', true)[0];
+	return emoji && emoji._updatedAt.toISOString();
 };
 
-// TODO: fix api (get emojis by date/version....)
 export default async function() {
 	try {
-		const lastMessage = getLastMessage();
-		// RC 0.61.0
-		const result = await this.sdk.get('emoji-custom');
-		let { emojis } = result;
-		emojis = emojis.filter(emoji => !lastMessage || emoji._updatedAt > lastMessage);
-		if (emojis.length === 0) {
+		const params = {};
+		const updatedSince = getUpdatedSince();
+		if (updatedSince) {
+			params.updatedSince = updatedSince;
+		}
+
+		// RC 0.75.0
+		const result = await this.sdk.get('emoji-custom.list', params);
+
+		if (!result.success) {
 			return;
 		}
-		emojis = this._prepareEmojis(emojis);
-		InteractionManager.runAfterInteractions(() => {
-			database.write(() => {
-				emojis.forEach((emoji) => {
-					try {
-						database.create('customEmojis', emoji, true);
-					} catch (e) {
-						log('create custom emojis', e);
-					}
-				});
-			});
-		});
-		reduxStore.dispatch(actions.setCustomEmojis(this.parseEmojis(emojis)));
+
+		InteractionManager.runAfterInteractions(
+			() => database.write(() => {
+				const { emojis } = result;
+				if (emojis.update && emojis.update.length) {
+					emojis.update.forEach((emoji) => {
+						try {
+							database.create('customEmojis', emoji, true);
+						} catch (e) {
+							log('getEmojis create', e);
+						}
+					});
+				}
+
+				if (emojis.delete && emojis.delete.length) {
+					emojis.delete.forEach((emoji) => {
+						try {
+							const emojiRecord = database.objectForPrimaryKey('customEmojis', emoji._id);
+							if (emojiRecord) {
+								database.delete(emojiRecord);
+							}
+						} catch (e) {
+							log('getEmojis delete', e);
+						}
+					});
+				}
+			})
+		);
+		// reduxStore.dispatch(actions.setCustomEmojis(this.parseEmojis(emojis)));
 	} catch (e) {
 		log('getCustomEmojis', e);
 	}

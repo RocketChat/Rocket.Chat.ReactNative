@@ -302,21 +302,13 @@ const frequentlyUsedEmojiSchema = {
 	}
 };
 
-const customEmojiAliasesSchema = {
-	name: 'customEmojiAliases',
-	primaryKey: 'value',
-	properties: {
-		value: 'string'
-	}
-};
-
 const customEmojisSchema = {
 	name: 'customEmojis',
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
 		name: 'string',
-		aliases: { type: 'list', objectType: 'customEmojiAliases' },
+		aliases: 'string[]',
 		extension: 'string',
 		_updatedAt: { type: 'date', optional: true }
 	}
@@ -371,7 +363,6 @@ const schema = [
 	permissionsRolesSchema,
 	url,
 	frequentlyUsedEmojiSchema,
-	customEmojiAliasesSchema,
 	customEmojisSchema,
 	messagesReactionsSchema,
 	messagesReactionsUsernamesSchema,
