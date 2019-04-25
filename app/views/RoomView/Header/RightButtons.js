@@ -10,10 +10,14 @@ import log from '../../../utils/log';
 
 const styles = StyleSheet.create({
 	more: {
-		marginHorizontal: 0, marginLeft: 0, marginRight: 5
+		marginHorizontal: 0,
+		marginLeft: 0,
+		marginRight: 5
 	},
 	thread: {
-		marginHorizontal: 0, marginLeft: 0, marginRight: 10
+		marginHorizontal: 0,
+		marginLeft: 0,
+		marginRight: 15
 	}
 });
 
@@ -34,6 +38,7 @@ class RightButtonsContainer extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		if (props.tmid) {
+			// FIXME: it may be empty if the thread header isn't fetched yet
 			this.thread = database.objectForPrimaryKey('messages', props.tmid);
 			safeAddListener(this.thread, this.updateThread);
 		}

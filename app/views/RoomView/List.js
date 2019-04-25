@@ -1,7 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, FlatList, InteractionManager } from 'react-native';
 import PropTypes from 'prop-types';
-import { emojify } from 'react-emojione';
 import debounce from 'lodash/debounce';
 
 import styles from './styles';
@@ -30,7 +29,7 @@ export class List extends React.PureComponent {
 				.objects('threadMessages')
 				.filtered('rid = $0', props.tmid)
 				.sorted('ts', true);
-			this.threads = [];
+			this.threads = database.objects('threads').filtered('_id = $0', props.tmid);
 		} else {
 			this.data = database
 				.objects('messages')
@@ -83,7 +82,7 @@ export class List extends React.PureComponent {
 		});
 	}, 300, { leading: true });
 
-	onEndReached = async() => {
+	onEndReached = debounce(async() => {
 		const {
 			loading, end, messages
 		} = this.state;
@@ -96,17 +95,17 @@ export class List extends React.PureComponent {
 		try {
 			let result;
 			if (tmid) {
-				result = await RocketChat.loadThreadMessages({ tmid, skip: messages.length });
+				result = await RocketChat.loadThreadMessages({ tmid, offset: messages.length });
 			} else {
 				result = await RocketChat.loadMessagesForRoom({ rid, t, latest: messages[messages.length - 1].ts });
 			}
 
-			this.setState({ end: result.length < 50 });
+			this.setState({ end: result.length < 50, loading: false });
 		} catch (e) {
 			this.setState({ loading: false });
 			log('ListView.onEndReached', e);
 		}
-	}
+	}, 300)
 
 	renderFooter = () => {
 		const { loading } = this.state;
@@ -122,10 +121,7 @@ export class List extends React.PureComponent {
 		if (item.tmid) {
 			const thread = threads.find(t => t._id === item.tmid);
 			if (thread) {
-				let tmsg = thread.msg || (thread.attachments && thread.attachments.length && thread.attachments[0].title);
-				if (tmsg) {
-					tmsg = emojify(tmsg, { output: 'unicode' });
-				}
+				const tmsg = thread.msg || (thread.attachments && thread.attachments.length && thread.attachments[0].title);
 				item = { ...item, tmsg };
 			}
 		}
@@ -134,15 +130,24 @@ export class List extends React.PureComponent {
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
-		const { messages } = this.state;
+		const { messages, threads } = this.state;
+		const { tmid } = this.props;
+		let data = [];
+		if (tmid) {
+			const thread = { ...threads[0] };
+			thread.tlm = null;
+			data = [...messages, thread];
+		} else {
+			data = messages;
+		}
 		return (
 			<React.Fragment>
-				<EmptyRoom length={messages.length} />
+				<EmptyRoom length={data.length} />
 				<FlatList
 					testID='room-view-messages'
 					ref={ref => this.list = ref}
 					keyExtractor={item => item._id}
-					data={messages}
+					data={data}
 					extraData={this.state}
 					renderItem={this.renderItem}
 					contentContainerStyle={styles.contentContainer}

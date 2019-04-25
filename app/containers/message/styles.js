@@ -216,13 +216,16 @@ export default StyleSheet.create({
 		fontWeight: '300'
 	},
 	repliedThread: {
-		fontSize: 16,
-		marginBottom: 6,
-		...sharedStyles.textColorDescription,
-		...sharedStyles.textRegular
+		flexDirection: 'row',
+		flex: 1
+	},
+	repliedThreadIcon: {
+		color: COLOR_PRIMARY
 	},
 	repliedThreadName: {
 		fontSize: 16,
+		fontStyle: 'normal',
+		flex: 1,
 		color: COLOR_PRIMARY,
 		...sharedStyles.textSemibold
 	}
