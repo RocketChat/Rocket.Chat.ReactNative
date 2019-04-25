@@ -225,6 +225,7 @@ export default StyleSheet.create({
 	},
 	repliedThreadName: {
 		fontSize: 14,
+		lineHeight: 16,
 		fontStyle: 'normal',
 		flex: 1,
 		color: COLOR_PRIMARY,

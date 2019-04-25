@@ -10849,6 +10849,7 @@ exports[`Storyshots Message list 1`] = `
                     "fontSize": 14,
                     "fontStyle": "normal",
                     "fontWeight": "400",
+                    "lineHeight": 16,
                   }
                 }
               >
@@ -11089,6 +11090,7 @@ exports[`Storyshots Message list 1`] = `
                     "fontSize": 14,
                     "fontStyle": "normal",
                     "fontWeight": "400",
+                    "lineHeight": 16,
                   }
                 }
               >
@@ -11329,6 +11331,7 @@ exports[`Storyshots Message list 1`] = `
                     "fontSize": 14,
                     "fontStyle": "normal",
                     "fontWeight": "400",
+                    "lineHeight": 16,
                   }
                 }
               >
@@ -11569,6 +11572,7 @@ exports[`Storyshots Message list 1`] = `
                     "fontSize": 14,
                     "fontStyle": "normal",
                     "fontWeight": "400",
+                    "lineHeight": 16,
                   }
                 }
               >
@@ -11809,6 +11813,7 @@ exports[`Storyshots Message list 1`] = `
                     "fontSize": 14,
                     "fontStyle": "normal",
                     "fontWeight": "400",
+                    "lineHeight": 16,
                   }
                 }
               >
@@ -12049,6 +12054,7 @@ exports[`Storyshots Message list 1`] = `
                     "fontSize": 14,
                     "fontStyle": "normal",
                     "fontWeight": "400",
+                    "lineHeight": 16,
                   }
                 }
               >
@@ -12289,6 +12295,7 @@ exports[`Storyshots Message list 1`] = `
                     "fontSize": 14,
                     "fontStyle": "normal",
                     "fontWeight": "400",
+                    "lineHeight": 16,
                   }
                 }
               >
