@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
-import database from '../lib/realm';
+import database, { safeAddListener } from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
 import debounce from '../utils/debounce';
@@ -79,7 +79,7 @@ export default class NewMessageView extends LoggedView {
 		this.state = {
 			search: []
 		};
-		this.data.addListener(this.updateState);
+		safeAddListener(this.data, this.updateState);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
