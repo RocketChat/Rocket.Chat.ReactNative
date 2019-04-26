@@ -109,6 +109,14 @@ export default class RoomInfoView extends LoggedView {
 		this.rooms.removeAllListeners();
 	}
 
+	getRoleDescription = (id) => {
+		const role = database.objectForPrimaryKey('roles', id);
+		if (role) {
+			return role.description;
+		}
+		return null;
+	}
+
 	isDirect = () => {
 		const { room: { t } } = this.state;
 		return t === 'd';
