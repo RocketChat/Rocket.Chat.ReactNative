@@ -15,7 +15,6 @@ import {
 	setUser, setLoginServices, loginRequest, loginFailure, logout
 } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
-import { setActiveUser } from '../actions/activeUsers';
 import { setRoles } from '../actions/roles';
 
 import subscribeRooms from './methods/subscriptions/rooms';
@@ -137,12 +136,11 @@ const RocketChat = {
 			}, 10000);
 		}
 
-		const activeUser = reduxStore.getState().activeUsers[ddpMessage.id];
 		if (!ddpMessage.fields) {
 			this.activeUsers[ddpMessage.id] = {};
 		} else {
 			this.activeUsers[ddpMessage.id] = {
-				id: ddpMessage.id, ...this.activeUsers[ddpMessage.id], ...activeUser, ...ddpMessage.fields
+				id: ddpMessage.id, ...this.activeUsers[ddpMessage.id], ...ddpMessage.fields
 			};
 		}
 	},
