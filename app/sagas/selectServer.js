@@ -5,7 +5,6 @@ import Navigation from '../lib/Navigation';
 import { SERVER } from '../actions/actionsTypes';
 import * as actions from '../actions';
 import { serverFailure, selectServerRequest, selectServerSuccess } from '../actions/server';
-import { setRoles } from '../actions/roles';
 import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
