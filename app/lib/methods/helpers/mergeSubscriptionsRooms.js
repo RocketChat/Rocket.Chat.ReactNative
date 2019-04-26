@@ -31,11 +31,6 @@ export const merge = (subscription, room) => {
 			subscription.muted = [];
 		}
 	}
-	if (subscription.roles && subscription.roles.length) {
-		subscription.roles = subscription.roles.map(role => (role.value ? role : { value: role }));
-	} else {
-		subscription.roles = [];
-	}
 
 	if (subscription.mobilePushNotifications === 'nothing') {
 		subscription.notifications = true;
