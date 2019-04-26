@@ -5,15 +5,16 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { RectButton } from 'react-native-gesture-handler';
+import { connect } from 'react-redux';
 
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import LoggedView from './View';
 import I18n from '../i18n';
 import DisclosureIndicator from '../containers/DisclosureIndicator';
-import { CloseModalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { COLOR_SEPARATOR, COLOR_WHITE } from '../constants/colors';
+import openLink from '../utils/openLink';
 
 const styles = StyleSheet.create({
 	container: {
@@ -52,15 +53,17 @@ const styles = StyleSheet.create({
 
 const Separator = () => <View style={styles.separator} />;
 
+@connect(state => ({
+	server: state.server.server
+}))
 /** @extends React.Component */
 export default class LegalView extends LoggedView {
-	static navigationOptions = ({ navigation }) => ({
-		headerLeft: <CloseModalButton testID='legal-view-close' navigation={navigation} />,
+	static navigationOptions = () => ({
 		title: I18n.t('Legal')
 	})
 
 	static propTypes = {
-		navigation: PropTypes.object
+		server: PropTypes.string
 	}
 
 	constructor(props) {
@@ -68,8 +71,11 @@ export default class LegalView extends LoggedView {
 	}
 
 	onPressItem = ({ route }) => {
-		const { navigation } = this.props;
-		navigation.navigate(route);
+		const { server } = this.props;
+		if (!server) {
+			return;
+		}
+		openLink(`${ server }/${ route }`);
 	}
 
 	renderItem = ({ text, route, testID }) => (
@@ -84,9 +90,9 @@ export default class LegalView extends LoggedView {
 			<SafeAreaView style={styles.container} testID='legal-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.scroll}>
-					{this.renderItem({ text: 'Terms_of_Service', route: 'TermsServiceView', testID: 'legal-terms-button' })}
+					{this.renderItem({ text: 'Terms_of_Service', route: 'terms-of-service', testID: 'legal-terms-button' })}
 					<Separator />
-					{this.renderItem({ text: 'Privacy_Policy', route: 'PrivacyPolicyView', testID: 'legal-privacy-button' })}
+					{this.renderItem({ text: 'Privacy_Policy', route: 'privacy-policy', testID: 'legal-privacy-button' })}
 				</ScrollView>
 			</SafeAreaView>
 		);
