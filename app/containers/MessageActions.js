@@ -334,7 +334,6 @@ export default class MessageActions extends React.Component {
 	);
 
 	render() {
-		console.disableYellowBox = true;
 		return (
 			<TouchableOpacity activeOpacity={1} style={styles.panelContainer} onPress={() => this.hideActionSheet()}>
 				<BottomSheet
