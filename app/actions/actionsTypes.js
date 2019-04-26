@@ -65,7 +65,6 @@ export const SERVER = createRequestTypes('SERVER', [
 export const METEOR = createRequestTypes('METEOR_CONNECT', [...defaultTypes, 'DISCONNECT']);
 export const LOGOUT = 'LOGOUT'; // logout is always success
 export const ACTIVE_USERS = createRequestTypes('ACTIVE_USERS', ['SET']);
-export const ROLES = createRequestTypes('ROLES', ['SET']);
 export const SNIPPETED_MESSAGES = createRequestTypes('SNIPPETED_MESSAGES', ['OPEN', 'READY', 'CLOSE', 'MESSAGES_RECEIVED']);
 export const DEEP_LINKING = createRequestTypes('DEEP_LINKING', ['OPEN']);
 export const SORT_PREFERENCES = createRequestTypes('SORT_PREFERENCES', ['SET_ALL', 'SET']);
