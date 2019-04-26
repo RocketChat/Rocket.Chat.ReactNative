@@ -39,8 +39,7 @@ const getRoomTitle = room => (room.t === 'd'
 		token: state.login.user && state.login.user.token
 	},
 	activeUsers: state.activeUsers, // TODO: remove it
-	Message_TimeFormat: state.settings.Message_TimeFormat,
-	allRoles: state.roles
+	Message_TimeFormat: state.settings.Message_TimeFormat
 }))
 /** @extends React.Component */
 export default class RoomInfoView extends LoggedView {
@@ -67,8 +66,7 @@ export default class RoomInfoView extends LoggedView {
 		}),
 		baseUrl: PropTypes.string,
 		activeUsers: PropTypes.object,
-		Message_TimeFormat: PropTypes.string,
-		allRoles: PropTypes.object
+		Message_TimeFormat: PropTypes.string
 	}
 
 	constructor(props) {
@@ -161,6 +159,14 @@ export default class RoomInfoView extends LoggedView {
 		}
 	}
 
+	getRoleDescription = (id) => {
+		const role = database.objectForPrimaryKey('roles', id);
+		if (role) {
+			return role.description;
+		}
+		return null;
+	}
+
 	isDirect = () => {
 		const { room: { t } } = this.state;
 		return t === 'd';
@@ -185,7 +191,6 @@ export default class RoomInfoView extends LoggedView {
 
 	renderRoles = () => {
 		const { roles } = this.state;
-		const { allRoles } = this.props;
 
 		return (
 			roles.length > 0
@@ -195,7 +200,7 @@ export default class RoomInfoView extends LoggedView {
 						<View style={styles.rolesContainer}>
 							{roles.map(role => (
 								<View style={styles.roleBadge} key={role}>
-									<Text style={styles.role}>{ allRoles[role] }</Text>
+									<Text style={styles.role}>{ this.getRoleDescription(role) }</Text>
 								</View>
 							))}
 						</View>

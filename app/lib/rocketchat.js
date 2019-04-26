@@ -1,5 +1,4 @@
 import { AsyncStorage, InteractionManager } from 'react-native';
-import foreach from 'lodash/forEach';
 import semver from 'semver';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 
@@ -16,7 +15,6 @@ import {
 } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
 import { setActiveUser } from '../actions/activeUsers';
-import { setRoles } from '../actions/roles';
 
 import subscribeRooms from './methods/subscriptions/rooms';
 import subscribeRoom from './methods/subscriptions/room';
@@ -28,6 +26,7 @@ import getSettings from './methods/getSettings';
 import getRooms from './methods/getRooms';
 import getPermissions from './methods/getPermissions';
 import getCustomEmoji from './methods/getCustomEmojis';
+import getRoles from './methods/getRoles';
 import canOpenRoom from './methods/canOpenRoom';
 
 import loadMessagesForRoom from './methods/loadMessagesForRoom';
@@ -43,7 +42,7 @@ import { roomsRequest } from '../actions/rooms';
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
 const returnAnArray = obj => obj || [];
-const MIN_ROCKETCHAT_VERSION = '0.66.0';
+const MIN_ROCKETCHAT_VERSION = '0.70.0';
 
 const RocketChat = {
 	TOKEN_KEY,
@@ -144,9 +143,9 @@ const RocketChat = {
 		}
 		this.roomsSub = await this.subscribeRooms();
 
-		this.sdk.subscribe('roles');
 		this.getPermissions();
 		this.getCustomEmoji();
+		this.getRoles();
 		this.registerPushToken().catch(e => console.log(e));
 
 		if (this.activeUsersSubTimeout) {
@@ -200,32 +199,6 @@ const RocketChat = {
 		});
 
 		this.sdk.onStreamData('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
-
-		this.sdk.onStreamData('rocketchat_roles', protectedFunction((ddpMessage) => {
-			this.roles = this.roles || {};
-
-			if (this.roleTimer) {
-				clearTimeout(this.roleTimer);
-				this.roleTimer = null;
-			}
-			this.roleTimer = setTimeout(() => {
-				reduxStore.dispatch(setRoles(this.roles));
-
-				database.write(() => {
-					foreach(this.roles, (description, _id) => {
-						try {
-							database.create('roles', { _id, description }, true);
-						} catch (e) {
-							log('create roles', e);
-						}
-					});
-				});
-
-				this.roleTimer = null;
-				return this.roles = {};
-			}, 1000);
-			this.roles[ddpMessage.id] = (ddpMessage.fields && ddpMessage.fields.description) || undefined;
-		}));
 	},
 
 	register(credentials) {
@@ -467,6 +440,7 @@ const RocketChat = {
 	getSettings,
 	getPermissions,
 	getCustomEmoji,
+	getRoles,
 	parseSettings: settings => settings.reduce((ret, item) => {
 		ret[item._id] = item[defaultSettings[item._id].type];
 		return ret;
