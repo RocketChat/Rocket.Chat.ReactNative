@@ -311,7 +311,6 @@ export default class MessageActions extends React.Component {
 
 	hideActionSheet() {
 		const { actionsHide } = this.props;
-		console.log('HIDE ACTION SHEET');
 		actionsHide();
 	}
 
