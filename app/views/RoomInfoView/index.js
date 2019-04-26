@@ -199,7 +199,7 @@ export default class RoomInfoView extends LoggedView {
 				userId={user.id}
 				token={user.token}
 			>
-				{room.t === 'd' ? <Status style={[sharedStyles.status, styles.status]} size={24} id={roomUser._id} /> : null}
+				{room.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} size={24} id={roomUser._id} /> : null}
 			</Avatar>
 		);
 	}

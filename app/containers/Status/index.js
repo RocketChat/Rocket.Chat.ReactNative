@@ -11,8 +11,7 @@ import database, { safeAddListener } from '../../lib/realm';
 }))
 export default class StatusContainer extends React.PureComponent {
 	static propTypes = {
-		// id is a prop, but it's used only inside @connect to find for current status
-		id: PropTypes.string, // eslint-disable-line
+		id: PropTypes.string,
 		style: ViewPropTypes.style,
 		size: PropTypes.number,
 		offline: PropTypes.bool
