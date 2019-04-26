@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, LayoutAnimation, InteractionManager
+	Text, View, LayoutAnimation, InteractionManager, Keyboard
 } from 'react-native';
 import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
@@ -14,7 +14,7 @@ import {
 	toggleReactionPicker as toggleReactionPickerAction,
 	actionsShow as actionsShowAction,
 	editCancel as editCancelAction,
-	replyCancel as replyCancelAction
+	replyCancel as replyCancelAction, actionsHide as actionsHideAction
 } from '../../actions/messages';
 import LoggedView from '../View';
 import { List } from './List';
@@ -57,7 +57,8 @@ import buildMessage from '../../lib/methods/helpers/buildMessage';
 	editCancel: () => dispatch(editCancelAction()),
 	replyCancel: () => dispatch(replyCancelAction()),
 	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
-	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage))
+	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage)),
+	actionsHide: () => dispatch(actionsHideAction())
 }))
 /** @extends React.Component */
 export default class RoomView extends LoggedView {
@@ -94,7 +95,8 @@ export default class RoomView extends LoggedView {
 		toggleReactionPicker: PropTypes.func.isRequired,
 		actionsShow: PropTypes.func,
 		editCancel: PropTypes.func,
-		replyCancel: PropTypes.func
+		replyCancel: PropTypes.func,
+		actionsHide: PropTypes.func
 	};
 
 	constructor(props) {
@@ -131,6 +133,8 @@ export default class RoomView extends LoggedView {
 			} else {
 				EventEmitter.addEventListener('connected', this.handleConnected);
 			}
+
+			navigation.addListener('willBlur', () => this.hideActionSheet());
 		});
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
@@ -257,6 +261,12 @@ export default class RoomView extends LoggedView {
 	onMessageLongPress = (message) => {
 		const { actionsShow } = this.props;
 		actionsShow({ ...message, rid: this.rid });
+		Keyboard.dismiss();
+	}
+
+	hideActionSheet() {
+		const { actionsHide } = this.props;
+		actionsHide();
 	}
 
 	onReactionPress = (shortname, messageId) => {

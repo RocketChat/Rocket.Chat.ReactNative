@@ -5,7 +5,6 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as moment from 'moment';
-
 import BottomSheet from 'reanimated-bottom-sheet';
 
 import {
@@ -22,6 +21,8 @@ import { vibrate } from '../utils/vibration';
 import { verticalScale } from '../utils/scaling';
 import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
+import sharedStyles from '../views/Styles';
+import { CustomIcon } from '../lib/Icons';
 
 const styles = StyleSheet.create({
 	panelContainer: {
@@ -33,27 +34,33 @@ const styles = StyleSheet.create({
 	},
 	panel: {
 		height: verticalScale(500),
-		padding: verticalScale(10),
-		backgroundColor: '#aaaaaa',
-		paddingTop: verticalScale(20),
-		borderTopLeftRadius: verticalScale(20),
-		borderTopRightRadius: verticalScale(20),
-		shadowColor: '#000000',
-		shadowOffset: { width: 0, height: 0 },
-		shadowRadius: 5,
-		shadowOpacity: 0.4
+		padding: verticalScale(5),
+		backgroundColor: '#f3f3f3'
 	},
 	panelButton: {
-		padding: verticalScale(10),
-		borderRadius: verticalScale(10),
-		backgroundColor: '#656565',
-		alignItems: 'center',
-		marginVertical: verticalScale(5)
+		padding: verticalScale(13),
+		backgroundColor: 'transparent',
+		borderBottomWidth: 1,
+		borderBottomColor: '#dadada',
+		flexDirection: 'row'
 	},
-	panelButtonTitle: {
-		fontSize: verticalScale(14),
-		fontWeight: 'bold',
-		color: 'white'
+	panelButtonIcon: {
+		paddingHorizontal: 5
+	},
+	header: {
+		backgroundColor: '#f3f3f3',
+		paddingTop: 15,
+		borderTopLeftRadius: 20,
+		borderTopRightRadius: 20
+	},
+	panelHeader: {
+		alignItems: 'center'
+	},
+	panelHandle: {
+		width: 40,
+		height: 8,
+		borderRadius: 4,
+		backgroundColor: '#dadada'
 	}
 });
 
@@ -100,45 +107,49 @@ export default class MessageActions extends React.Component {
 		super(props);
 		this.hideActionSheet = this.hideActionSheet.bind(this);
 		this.setPermissions();
+		const { Message_AllowStarring, Message_AllowPinning } = this.props;
 
 		this.options = [
-			{ label: I18n.t('Cancel'), handler: () => {} },
-			{ label: I18n.t('Permalink'), handler: this.handlePermalink },
-			{ label: I18n.t('Copy'), handler: this.handleCopy },
-			{ label: I18n.t('Share'), handler: this.handleShare }
+			{ label: I18n.t('Cancel'), handler: () => {}, icon: 'circle-cross' },
+			{ label: I18n.t('Permalink'), handler: this.handlePermalink, icon: 'permalink' },
+			{ label: I18n.t('Copy'), handler: this.handleCopy, icon: 'copy' },
+			{ label: I18n.t('Share'), handler: this.handleShare, icon: 'share' }
 		];
 
 		if (!this.isRoomReadOnly()) {
-			this.options.push({ label: I18n.t('Reply'), handler: this.handleReply });
+			this.options.push({ label: I18n.t('Reply'), handler: this.handleReply, icon: 'reply' });
 		}
 
 		if (this.allowEdit(props)) {
-			this.options.push({ label: I18n.t('Edit'), handler: this.handleEdit });
+			this.options.push({ label: I18n.t('Edit'), handler: this.handleEdit, icon: 'edit' });
 		}
 
 		if (!this.isRoomReadOnly()) {
-			this.options.push({ label: I18n.t('Quote'), handler: this.handleQuote });
+			this.options.push({ label: I18n.t('Quote'), handler: this.handleQuote, icon: 'quote' });
 		}
 
-		const { Message_AllowStarring, Message_AllowPinning } = this.props;
-
 		if (Message_AllowStarring) {
-			this.options.push({ label: I18n.t(props.actionMessage.starred ? 'Unstar' : 'Star'), handler: this.handleStar });
+			this.options.push({ label: I18n.t(props.actionMessage.starred ? 'Unstar' : 'Star'), handler: this.handleStar, icon: 'star' });
 		}
 
 		if (Message_AllowPinning) {
-			this.options.push({ label: I18n.t(props.actionMessage.pinned ? 'Unpin' : 'Pin'), handler: this.handlePin });
+			this.options.push({ label: I18n.t(props.actionMessage.pinned ? 'Unpin' : 'Pin'), handler: this.handlePin, icon: 'pin' });
 		}
 
 		if (!this.isRoomReadOnly() || this.canReactWhenReadOnly()) {
-			this.options.push({ label: I18n.t('Add_Reaction'), handler: this.handleReaction });
+			this.options.push({ label: I18n.t('Add_Reaction'), handler: this.handleReaction, icon: 'emoji' });
 		}
 
 		if (this.allowDelete(props)) {
-			this.options.push({ label: I18n.t('Delete'), handler: this.handleDelete });
+			this.options.push({ label: I18n.t('Delete'), handler: this.handleDelete, icon: 'cross' });
 		}
 
-		this.options.reverse(); // reversing to put the cancel to the bottom of the list
+		this.options.reverse(); // reversing to put `cancel` button to the bottom of the list
+
+		const buttonPaddingsSize = 30;
+		const textSize = 13;
+		const headerSize = 25;
+		this.bottomSheetHeight = verticalScale(this.options.length * buttonPaddingsSize) + this.options.length * textSize + headerSize;
 
 		setTimeout(() => {
 			vibrate();
@@ -303,21 +314,32 @@ export default class MessageActions extends React.Component {
 		actionsHide();
 	}
 
+	renderHeader = () => (
+		<View style={styles.header}>
+			<View style={styles.panelHeader}>
+				<View style={styles.panelHandle} />
+			</View>
+		</View>
+	)
+
 	renderInner = () => (
-		<View style={[styles.panel, { height: this.options.length * verticalScale(50) }]}>
-			{this.options.map((option, index) => (
+		<View style={[styles.panel, { height: this.bottomSheetHeight }]}>
+			{this.options.map(option => (
 				<TouchableOpacity style={styles.panelButton} onPress={() => { this.hideActionSheet(); option.handler(); }} key={option.label}>
-					<Text style={[styles.panelButtonTitle, index === this.options.length - 1 ? { color: 'red' } : {}]}>{option.label}</Text>
+					<CustomIcon name={option.icon} size={18} style={styles.panelButtonIcon} />
+					<Text style={sharedStyles.textRegular}>{option.label}</Text>
 				</TouchableOpacity>
 			))}
 		</View>
 	);
 
 	render() {
+		console.disableYellowBox = true;
 		return (
 			<TouchableOpacity activeOpacity={1} style={styles.panelContainer} onPress={() => this.hideActionSheet()}>
 				<BottomSheet
-					snapPoints={[this.options.length * verticalScale(50), 0, 0]}
+					snapPoints={[320, this.bottomSheetHeight + 25, 0]}
+					renderHeader={this.renderHeader}
 					renderContent={this.renderInner}
 					enabledManualSnapping
 					enabledGestureInteraction
