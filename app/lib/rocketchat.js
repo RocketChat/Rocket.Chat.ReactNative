@@ -120,7 +120,17 @@ const RocketChat = {
 			this._setUserTimer = setTimeout(() => {
 				const batchUsers = this.activeUsers;
 				InteractionManager.runAfterInteractions(() => {
-					reduxStore.dispatch(setActiveUser(batchUsers));
+					database.memoryDatabase.write(() => {
+						Object.keys(batchUsers).forEach((key) => {
+							if (batchUsers[key] && batchUsers[key].id) {
+								try {
+									database.memoryDatabase.create('activeUsers', batchUsers[key], true);
+								} catch (error) {
+									console.log(error);
+								}
+							}
+						});
+					});
 				});
 				this._setUserTimer = null;
 				return this.activeUsers = {};
@@ -131,7 +141,9 @@ const RocketChat = {
 		if (!ddpMessage.fields) {
 			this.activeUsers[ddpMessage.id] = {};
 		} else {
-			this.activeUsers[ddpMessage.id] = { ...this.activeUsers[ddpMessage.id], ...activeUser, ...ddpMessage.fields };
+			this.activeUsers[ddpMessage.id] = {
+				id: ddpMessage.id, ...this.activeUsers[ddpMessage.id], ...activeUser, ...ddpMessage.fields
+			};
 		}
 	},
 	async loginSuccess({ user }) {
