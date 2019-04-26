@@ -271,7 +271,8 @@ const RocketChat = {
 				language: result.me.language,
 				status: result.me.status,
 				customFields: result.me.customFields,
-				emails: result.me.emails
+				emails: result.me.emails,
+				roles: result.me.roles
 			};
 			return user;
 		} catch (e) {
@@ -628,7 +629,7 @@ const RocketChat = {
 		return this.sdk.methodCall('getSingleMessage', msgId);
 	},
 	hasPermission(permissions, rid) {
-		let roles = [];
+		let roomRoles = [];
 		try {
 			// get the room from realm
 			const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
@@ -639,15 +640,13 @@ const RocketChat = {
 				}, {});
 			}
 			// get room roles
-			roles = room.roles; // eslint-disable-line prefer-destructuring
+			roomRoles = room.roles;
 		} catch (error) {
 			console.log('hasPermission -> error', error);
 		}
 		// get permissions from realm
 		const permissionsFiltered = database.objects('permissions')
 			.filter(permission => permissions.includes(permission._id));
-		// transform room roles to array
-		const roomRoles = Array.from(Object.keys(roles), i => roles[i].value);
 		// get user roles on the server from redux
 		const userRoles = (reduxStore.getState().login.user && reduxStore.getState().login.user.roles) || [];
 		// merge both roles
@@ -659,7 +658,7 @@ const RocketChat = {
 			result[permission] = false;
 			const permissionFound = permissionsFiltered.find(p => p._id === permission);
 			if (permissionFound) {
-				result[permission] = returnAnArray(permissionFound.roles).some(r => mergedRoles.includes(r.value));
+				result[permission] = returnAnArray(permissionFound.roles).some(r => mergedRoles.includes(r));
 			}
 			return result;
 		}, {});

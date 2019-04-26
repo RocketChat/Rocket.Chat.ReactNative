@@ -33,8 +33,6 @@ import ThreadMessagesView from './views/ThreadMessagesView';
 import SelectedUsersView from './views/SelectedUsersView';
 import CreateChannelView from './views/CreateChannelView';
 import LegalView from './views/LegalView';
-import TermsServiceView from './views/TermsServiceView';
-import PrivacyPolicyView from './views/PrivacyPolicyView';
 import ForgotPasswordView from './views/ForgotPasswordView';
 import RegisterView from './views/RegisterView';
 import OAuthView from './views/OAuthView';
@@ -81,15 +79,8 @@ const OutsideStack = createStackNavigator({
 	LoginSignupView,
 	LoginView,
 	ForgotPasswordView,
-	RegisterView
-}, {
-	defaultNavigationOptions: defaultHeader
-});
-
-const LegalStack = createStackNavigator({
-	LegalView,
-	TermsServiceView,
-	PrivacyPolicyView
+	RegisterView,
+	LegalView
 }, {
 	defaultNavigationOptions: defaultHeader
 });
@@ -102,7 +93,6 @@ const OAuthStack = createStackNavigator({
 
 const OutsideStackModal = createStackNavigator({
 	OutsideStack,
-	LegalStack,
 	OAuthStack
 },
 {

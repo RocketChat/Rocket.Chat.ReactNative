@@ -28,20 +28,12 @@ const settingsSchema = {
 	}
 };
 
-const permissionsRolesSchema = {
-	name: 'permissionsRoles',
-	primaryKey: 'value',
-	properties: {
-		value: 'string'
-	}
-};
-
 const permissionsSchema = {
 	name: 'permissions',
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
-		roles: { type: 'list', objectType: 'permissionsRoles' },
+		roles: 'string[]',
 		_updatedAt: { type: 'date', optional: true }
 	}
 };
@@ -52,14 +44,6 @@ const roomsSchema = {
 	properties: {
 		_id: 'string',
 		broadcast: { type: 'bool', optional: true }
-	}
-};
-
-const subscriptionRolesSchema = {
-	name: 'subscriptionRolesSchema',
-	primaryKey: 'value',
-	properties: {
-		value: 'string'
 	}
 };
 
@@ -85,7 +69,7 @@ const subscriptionSchema = {
 		rid: { type: 'string', indexed: true },
 		open: { type: 'bool', optional: true },
 		alert: { type: 'bool', optional: true },
-		roles: { type: 'list', objectType: 'subscriptionRolesSchema' },
+		roles: 'string[]',
 		unread: { type: 'int', optional: true },
 		userMentions: { type: 'int', optional: true },
 		roomUpdatedAt: { type: 'date', optional: true },
@@ -302,21 +286,13 @@ const frequentlyUsedEmojiSchema = {
 	}
 };
 
-const customEmojiAliasesSchema = {
-	name: 'customEmojiAliases',
-	primaryKey: 'value',
-	properties: {
-		value: 'string'
-	}
-};
-
 const customEmojisSchema = {
 	name: 'customEmojis',
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
 		name: 'string',
-		aliases: { type: 'list', objectType: 'customEmojiAliases' },
+		aliases: 'string[]',
 		extension: 'string',
 		_updatedAt: { type: 'date', optional: true }
 	}
@@ -358,7 +334,6 @@ const usersTypingSchema = {
 const schema = [
 	settingsSchema,
 	subscriptionSchema,
-	subscriptionRolesSchema,
 	messagesSchema,
 	threadsSchema,
 	threadMessagesSchema,
@@ -368,10 +343,8 @@ const schema = [
 	attachmentFields,
 	messagesEditedBySchema,
 	permissionsSchema,
-	permissionsRolesSchema,
 	url,
 	frequentlyUsedEmojiSchema,
-	customEmojiAliasesSchema,
 	customEmojisSchema,
 	messagesReactionsSchema,
 	messagesReactionsUsernamesSchema,
@@ -446,7 +419,7 @@ class DB {
 		return this.databases.activeDB = new Realm({
 			path: `${ path }.realm`,
 			schema,
-			schemaVersion: 8,
+			schemaVersion: 9,
 			migration: (oldRealm, newRealm) => {
 				if (oldRealm.schemaVersion >= 3 && newRealm.schemaVersion <= 8) {
 					const newSubs = newRealm.objects('subscriptions');
@@ -462,6 +435,14 @@ class DB {
 					newRealm.delete(newThreads);
 					const newThreadMessages = newRealm.objects('threadMessages');
 					newRealm.delete(newThreadMessages);
+				}
+				if (newRealm.schemaVersion === 9) {
+					const newSubs = newRealm.objects('subscriptions');
+					newRealm.delete(newSubs);
+					const newEmojis = newRealm.objects('customEmojis');
+					newRealm.delete(newEmojis);
+					const newSettings = newRealm.objects('settings');
+					newRealm.delete(newSettings);
 				}
 			}
 		});
