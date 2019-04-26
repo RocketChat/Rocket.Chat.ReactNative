@@ -14,7 +14,7 @@ import {
 	toggleReactionPicker as toggleReactionPickerAction,
 	actionsShow as actionsShowAction,
 	editCancel as editCancelAction,
-	replyCancel as replyCancelAction, actionsHide as actionsHideAction
+	replyCancel as replyCancelAction
 } from '../../actions/messages';
 import LoggedView from '../View';
 import { List } from './List';
@@ -48,7 +48,6 @@ import buildMessage from '../../lib/methods/helpers/buildMessage';
 	actionMessage: state.messages.actionMessage,
 	editing: state.messages.editing,
 	replying: state.messages.replying,
-	showActions: state.messages.showActions,
 	showErrorActions: state.messages.showErrorActions,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	useRealName: state.settings.UI_Use_Real_Name,
@@ -57,8 +56,7 @@ import buildMessage from '../../lib/methods/helpers/buildMessage';
 	editCancel: () => dispatch(editCancelAction()),
 	replyCancel: () => dispatch(replyCancelAction()),
 	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
-	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage)),
-	actionsHide: () => dispatch(actionsHideAction())
+	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage))
 }))
 /** @extends React.Component */
 export default class RoomView extends LoggedView {
@@ -84,7 +82,6 @@ export default class RoomView extends LoggedView {
 			username: PropTypes.string.isRequired,
 			token: PropTypes.string.isRequired
 		}),
-		showActions: PropTypes.bool,
 		showErrorActions: PropTypes.bool,
 		actionMessage: PropTypes.object,
 		appState: PropTypes.string,
@@ -95,8 +92,7 @@ export default class RoomView extends LoggedView {
 		toggleReactionPicker: PropTypes.func.isRequired,
 		actionsShow: PropTypes.func,
 		editCancel: PropTypes.func,
-		replyCancel: PropTypes.func,
-		actionsHide: PropTypes.func
+		replyCancel: PropTypes.func
 	};
 
 	constructor(props) {
@@ -115,6 +111,7 @@ export default class RoomView extends LoggedView {
 		this.beginAnimating = false;
 		this.beginAnimatingTimeout = setTimeout(() => this.beginAnimating = true, 300);
 		this.messagebox = React.createRef();
+		this.bottomSheetRef = React.createRef();
 		safeAddListener(this.rooms, this.updateRoom);
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
@@ -143,7 +140,7 @@ export default class RoomView extends LoggedView {
 		const {
 			room, joined, lastOpen
 		} = this.state;
-		const { showActions, showErrorActions, appState } = this.props;
+		const { showErrorActions, appState } = this.props;
 
 		if (lastOpen !== nextState.lastOpen) {
 			return true;
@@ -158,8 +155,6 @@ export default class RoomView extends LoggedView {
 		} else if (room.archived !== nextState.room.archived) {
 			return true;
 		} else if (joined !== nextState.joined) {
-			return true;
-		} else if (showActions !== nextProps.showActions) {
 			return true;
 		} else if (showErrorActions !== nextProps.showErrorActions) {
 			return true;
@@ -261,12 +256,12 @@ export default class RoomView extends LoggedView {
 	onMessageLongPress = (message) => {
 		const { actionsShow } = this.props;
 		actionsShow({ ...message, rid: this.rid });
+		this.bottomSheetRef.current.snapTo(0);
 		Keyboard.dismiss();
 	}
 
 	hideActionSheet() {
-		const { actionsHide } = this.props;
-		actionsHide();
+		this.bottomSheetRef.current.snapTo(2);
 	}
 
 	onReactionPress = (shortname, messageId) => {
@@ -388,6 +383,10 @@ export default class RoomView extends LoggedView {
 		return false;
 	}
 
+	setRef(ref) {
+		this.bottomSheetRef = ref;
+	}
+
 	// eslint-disable-next-line react/sort-comp
 	fetchThreadName = async(tmid) => {
 		try {
@@ -500,15 +499,15 @@ export default class RoomView extends LoggedView {
 	renderActions = () => {
 		const { room } = this.state;
 		const {
-			user, showActions, showErrorActions, navigation
+			user, showErrorActions, navigation
 		} = this.props;
 		if (!navigation.isFocused()) {
 			return null;
 		}
 		return (
 			<React.Fragment>
-				{room._id && showActions
-					? <MessageActions room={room} user={user} />
+				{room._id
+					? <MessageActions room={room} user={user} setRef={ref => this.setRef(ref)} />
 					: null
 				}
 				{showErrorActions ? <MessageErrorActions /> : null}

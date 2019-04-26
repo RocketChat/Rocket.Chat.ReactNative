@@ -31,7 +31,6 @@ export const APP = createRequestTypes('APP', ['START', 'READY', 'INIT']);
 export const MESSAGES = createRequestTypes('MESSAGES', [
 	...defaultTypes,
 	'ACTIONS_SHOW',
-	'ACTIONS_HIDE',
 	'ERROR_ACTIONS_SHOW',
 	'ERROR_ACTIONS_HIDE',
 	'DELETE_REQUEST',

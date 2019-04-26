@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Alert, Clipboard, Share, View, Text, StyleSheet, TouchableOpacity
+	Alert, Clipboard, Share, View, Text, StyleSheet
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as moment from 'moment';
 import BottomSheet from 'reanimated-bottom-sheet';
+import Touchable from 'react-native-platform-touchable';
 
 import {
-	actionsHide as actionsHideAction,
 	deleteRequest as deleteRequestAction,
 	editInit as editInitAction,
 	replyInit as replyInitAction,
@@ -25,13 +25,6 @@ import sharedStyles from '../views/Styles';
 import { CustomIcon } from '../lib/Icons';
 
 const styles = StyleSheet.create({
-	panelContainer: {
-		position: 'absolute',
-		top: 0,
-		bottom: 0,
-		left: 0,
-		right: 0
-	},
 	panel: {
 		height: verticalScale(500),
 		padding: verticalScale(5),
@@ -64,6 +57,8 @@ const styles = StyleSheet.create({
 	}
 });
 
+const hiddenBottomSheet = 2;
+
 @connect(
 	state => ({
 		actionMessage: state.messages.actionMessage,
@@ -75,7 +70,6 @@ const styles = StyleSheet.create({
 		Message_AllowStarring: state.settings.Message_AllowStarring
 	}),
 	dispatch => ({
-		actionsHide: () => dispatch(actionsHideAction()),
 		deleteRequest: message => dispatch(deleteRequestAction(message)),
 		editInit: message => dispatch(editInitAction(message)),
 		toggleStarRequest: message => dispatch(toggleStarRequestAction(message)),
@@ -86,7 +80,6 @@ const styles = StyleSheet.create({
 )
 export default class MessageActions extends React.Component {
 	static propTypes = {
-		actionsHide: PropTypes.func.isRequired,
 		room: PropTypes.object.isRequired,
 		actionMessage: PropTypes.object,
 		deleteRequest: PropTypes.func.isRequired,
@@ -100,14 +93,17 @@ export default class MessageActions extends React.Component {
 		Message_AllowEditing: PropTypes.bool,
 		Message_AllowEditing_BlockEditInMinutes: PropTypes.number,
 		Message_AllowPinning: PropTypes.bool,
-		Message_AllowStarring: PropTypes.bool
+		Message_AllowStarring: PropTypes.bool,
+		setRef: PropTypes.func
 	};
 
 	constructor(props) {
 		super(props);
-		this.hideActionSheet = this.hideActionSheet.bind(this);
 		this.setPermissions();
-		const { Message_AllowStarring, Message_AllowPinning } = this.props;
+		const { Message_AllowStarring, Message_AllowPinning, setRef } = this.props;
+
+		this.bottomSheetRef = React.createRef();
+		setRef(this.bottomSheetRef);
 
 		this.options = [
 			{ label: I18n.t('Cancel'), handler: () => {}, icon: 'circle-cross' },
@@ -310,8 +306,7 @@ export default class MessageActions extends React.Component {
 	};
 
 	hideActionSheet() {
-		const { actionsHide } = this.props;
-		actionsHide();
+		this.bottomSheetRef.current.snapTo(hiddenBottomSheet);
 	}
 
 	renderHeader = () => (
@@ -320,31 +315,33 @@ export default class MessageActions extends React.Component {
 				<View style={styles.panelHandle} />
 			</View>
 		</View>
-	)
+	);
 
 	renderInner = () => (
 		<View style={[styles.panel, { height: this.bottomSheetHeight }]}>
 			{this.options.map(option => (
-				<TouchableOpacity style={styles.panelButton} onPress={() => { this.hideActionSheet(); option.handler(); }} key={option.label}>
-					<CustomIcon name={option.icon} size={18} style={styles.panelButtonIcon} />
-					<Text style={sharedStyles.textRegular}>{option.label}</Text>
-				</TouchableOpacity>
+				<Touchable onPress={() => { this.hideActionSheet(); option.handler(); }} key={option.label}>
+					<View style={styles.panelButton}>
+						<CustomIcon name={option.icon} size={18} style={styles.panelButtonIcon} />
+						<Text style={sharedStyles.textRegular}>{option.label}</Text>
+					</View>
+				</Touchable>
 			))}
 		</View>
 	);
 
 	render() {
 		return (
-			<TouchableOpacity activeOpacity={1} style={styles.panelContainer} onPress={() => this.hideActionSheet()}>
-				<BottomSheet
-					snapPoints={[320, this.bottomSheetHeight + 25, 0]}
-					renderHeader={this.renderHeader}
-					renderContent={this.renderInner}
-					enabledManualSnapping
-					enabledGestureInteraction
-					enabledInnerScrolling
-				/>
-			</TouchableOpacity>
+			<BottomSheet
+				ref={this.bottomSheetRef}
+				initialSnap={hiddenBottomSheet}
+				snapPoints={[320, this.bottomSheetHeight + 25, 0]}
+				renderHeader={this.renderHeader}
+				renderContent={this.renderInner}
+				enabledManualSnapping
+				enabledGestureInteraction
+				enabledInnerScrolling
+			/>
 		);
 	}
 }

@@ -6,7 +6,6 @@ const initialState = {
 	replyMessage: {},
 	replying: false,
 	editing: false,
-	showActions: false,
 	showErrorActions: false,
 	showReactionPicker: false
 };
@@ -16,13 +15,7 @@ export default function messages(state = initialState, action) {
 		case types.MESSAGES.ACTIONS_SHOW:
 			return {
 				...state,
-				showActions: true,
 				actionMessage: action.actionMessage
-			};
-		case types.MESSAGES.ACTIONS_HIDE:
-			return {
-				...state,
-				showActions: false
 			};
 		case types.MESSAGES.ERROR_ACTIONS_SHOW:
 			return {
