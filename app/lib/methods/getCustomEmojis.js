@@ -50,9 +50,11 @@ export default async function() {
 						}
 					});
 				}
+
+				const allEmojis = database.objects('customEmojis');
+				reduxStore.dispatch(actions.setCustomEmojis(this.parseEmojis(allEmojis)));
 			})
 		);
-		// reduxStore.dispatch(actions.setCustomEmojis(this.parseEmojis(emojis)));
 	} catch (e) {
 		log('getCustomEmojis', e);
 	}
