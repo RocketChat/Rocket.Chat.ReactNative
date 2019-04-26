@@ -54,11 +54,6 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
 		const emojis = database.objects('customEmojis');
 		yield put(actions.setCustomEmojis(RocketChat.parseEmojis(emojis.slice(0, emojis.length))));
-		const roles = database.objects('roles');
-		yield put(setRoles(roles.reduce((result, role) => {
-			result[role._id] = role.description;
-			return result;
-		}, {})));
 
 		yield put(selectServerSuccess(server, fetchVersion ? serverInfo && serverInfo.version : version));
 	} catch (e) {
