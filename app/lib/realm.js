@@ -28,20 +28,12 @@ const settingsSchema = {
 	}
 };
 
-const permissionsRolesSchema = {
-	name: 'permissionsRoles',
-	primaryKey: 'value',
-	properties: {
-		value: 'string'
-	}
-};
-
 const permissionsSchema = {
 	name: 'permissions',
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
-		roles: { type: 'list', objectType: 'permissionsRoles' },
+		roles: 'string[]',
 		_updatedAt: { type: 'date', optional: true }
 	}
 };
@@ -52,14 +44,6 @@ const roomsSchema = {
 	properties: {
 		_id: 'string',
 		broadcast: { type: 'bool', optional: true }
-	}
-};
-
-const subscriptionRolesSchema = {
-	name: 'subscriptionRolesSchema',
-	primaryKey: 'value',
-	properties: {
-		value: 'string'
 	}
 };
 
@@ -85,7 +69,7 @@ const subscriptionSchema = {
 		rid: { type: 'string', indexed: true },
 		open: { type: 'bool', optional: true },
 		alert: { type: 'bool', optional: true },
-		roles: { type: 'list', objectType: 'subscriptionRolesSchema' },
+		roles: 'string[]',
 		unread: { type: 'int', optional: true },
 		userMentions: { type: 'int', optional: true },
 		roomUpdatedAt: { type: 'date', optional: true },
@@ -358,7 +342,6 @@ const usersTypingSchema = {
 const schema = [
 	settingsSchema,
 	subscriptionSchema,
-	subscriptionRolesSchema,
 	messagesSchema,
 	threadsSchema,
 	threadMessagesSchema,
@@ -368,7 +351,6 @@ const schema = [
 	attachmentFields,
 	messagesEditedBySchema,
 	permissionsSchema,
-	permissionsRolesSchema,
 	url,
 	frequentlyUsedEmojiSchema,
 	customEmojiAliasesSchema,
