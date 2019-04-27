@@ -67,8 +67,7 @@ export default class SettingsView extends LoggedView {
 			}, {
 				label:'العربية',
 				value: 'ar'
-			}
-		],
+			}],
 			saving: false
 		};
 	}
