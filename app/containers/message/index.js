@@ -76,7 +76,7 @@ export default class MessageContainer extends React.Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { reactionsModal } = this.state;
 		const {
-			status, editingMessage, item, _updatedAt
+			status, editingMessage, item, _updatedAt, navigation
 		} = this.props;
 
 		if (reactionsModal !== nextState.reactionsModal) {
@@ -89,7 +89,7 @@ export default class MessageContainer extends React.Component {
 			return true;
 		}
 
-		if (!equal(editingMessage, nextProps.editingMessage)) {
+		if (navigation.isFocused() && !equal(editingMessage, nextProps.editingMessage)) {
 			if (nextProps.editingMessage && nextProps.editingMessage._id === item._id) {
 				return true;
 			} else if (!nextProps.editingMessage._id !== item._id && editingMessage._id === item._id) {

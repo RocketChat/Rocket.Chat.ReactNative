@@ -6,6 +6,7 @@ import _ from 'lodash';
 
 import I18n from '../../i18n';
 import styles from './styles';
+import repliedMsgParser from '../../utils/repliedMsgParser';
 
 const formatMsg = ({
 	lastMessage, type, showLastMessage, username
@@ -31,6 +32,13 @@ const formatMsg = ({
 		prefix = `${ lastMessage.u.username }: `;
 	}
 
+	if (lastMessage.msg && lastMessage.attachments && Object.keys(lastMessage.attachments).length > 0) {
+		lastMessage.msg = repliedMsgParser(lastMessage.msg);
+		if (type === 'd') {
+			prefix = '';
+		}
+	}
+
 	let msg = `${ prefix }${ lastMessage.msg.replace(/[\n\t\r]/igm, '') }`;
 	if (msg) {
 		msg = emojify(msg, { output: 'unicode' });
@@ -41,7 +49,7 @@ const formatMsg = ({
 const arePropsEqual = (oldProps, newProps) => _.isEqual(oldProps, newProps);
 
 const LastMessage = React.memo(({
-	lastMessage, type, showLastMessage, username
+	lastMessage, type, showLastMessage, username, alert
 }) => (
 	<Text style={[styles.markdownText, alert && styles.markdownTextAlert]} numberOfLines={2}>
 		{formatMsg({
@@ -54,7 +62,8 @@ LastMessage.propTypes = {
 	lastMessage: PropTypes.object,
 	type: PropTypes.string,
 	showLastMessage: PropTypes.bool,
-	username: PropTypes.string
+	username: PropTypes.string,
+	alert: PropTypes.bool
 };
 
 export default LastMessage;

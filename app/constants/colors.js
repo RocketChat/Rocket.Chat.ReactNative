@@ -11,6 +11,7 @@ export const COLOR_TEXT_DESCRIPTION = '#9ca2a8';
 export const COLOR_SEPARATOR = '#A7A7AA';
 export const COLOR_BACKGROUND_CONTAINER = '#f3f4f5';
 export const COLOR_BORDER = '#e1e5e8';
+export const COLOR_UNREAD = '#e1e5e8';
 export const STATUS_COLORS = {
 	online: '#2de0a5',
 	busy: COLOR_DANGER,

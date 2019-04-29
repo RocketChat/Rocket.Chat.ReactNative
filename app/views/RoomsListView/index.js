@@ -175,45 +175,6 @@ export default class RoomsListView extends LoggedView {
 			return true;
 		}
 
-		const { showUnread, showFavorites, groupByType } = this.props;
-		if (showUnread) {
-			const { unread } = this.state;
-			if (!isEqual(nextState.unread, unread)) {
-				return true;
-			}
-		}
-		if (showFavorites) {
-			const { favorites } = this.state;
-			if (!isEqual(nextState.favorites, favorites)) {
-				return true;
-			}
-		}
-		if (groupByType) {
-			const {
-				dicussions, channels, privateGroup, direct, livechat
-			} = this.state;
-			if (!isEqual(nextState.dicussions, dicussions)) {
-				return true;
-			}
-			if (!isEqual(nextState.channels, channels)) {
-				return true;
-			}
-			if (!isEqual(nextState.privateGroup, privateGroup)) {
-				return true;
-			}
-			if (!isEqual(nextState.direct, direct)) {
-				return true;
-			}
-			if (!isEqual(nextState.livechat, livechat)) {
-				return true;
-			}
-		} else {
-			const { chats } = this.state;
-			if (!isEqual(nextState.chats, chats)) {
-				return true;
-			}
-		}
-
 		const { search } = this.state;
 		if (!isEqual(nextState.search, search)) {
 			return true;
@@ -311,26 +272,19 @@ export default class RoomsListView extends LoggedView {
 	updateState = debounce(() => {
 		this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
 			this.internalSetState({
-				chats: this.getSnapshot(this.chats),
-				unread: this.getSnapshot(this.unread),
-				favorites: this.getSnapshot(this.favorites),
-				discussions: this.getSnapshot(this.discussions),
-				channels: this.getSnapshot(this.channels),
-				privateGroup: this.getSnapshot(this.privateGroup),
-				direct: this.getSnapshot(this.direct),
-				livechat: this.getSnapshot(this.livechat),
+				chats: this.chats,
+				unread: this.unread,
+				favorites: this.favorites,
+				discussions: this.discussions,
+				channels: this.channels,
+				privateGroup: this.privateGroup,
+				direct: this.direct,
+				livechat: this.livechat,
 				loading: false
 			});
+			this.forceUpdate();
 		});
 	}, 300);
-
-	getSnapshot = (data) => {
-		if (data && data.length) {
-			const array = Array.from(data);
-			return JSON.parse(JSON.stringify(array));
-		}
-		return [];
-	}
 
 	initSearchingAndroid = () => {
 		const { openSearchHeader, navigation } = this.props;
@@ -441,26 +395,29 @@ export default class RoomsListView extends LoggedView {
 		} = this.props;
 		const id = item.rid.replace(userId, '').trim();
 
-		return (
-			<RoomItem
-				alert={item.alert}
-				unread={item.unread}
-				userMentions={item.userMentions}
-				favorite={item.f}
-				lastMessage={item.lastMessage}
-				name={this.getRoomTitle(item)}
-				_updatedAt={item.roomUpdatedAt}
-				key={item._id}
-				id={id}
-				type={item.t}
-				baseUrl={baseUrl}
-				prid={item.prid}
-				showLastMessage={StoreLastMessage}
-				onPress={() => this._onPressItem(item)}
-				testID={`rooms-list-view-item-${ item.name }`}
-				height={ROW_HEIGHT}
-			/>
-		);
+		if (item.search || (item.isValid && item.isValid())) {
+			return (
+				<RoomItem
+					alert={item.alert}
+					unread={item.unread}
+					userMentions={item.userMentions}
+					favorite={item.f}
+					lastMessage={item.lastMessage ? JSON.parse(JSON.stringify(item.lastMessage)) : null}
+					name={this.getRoomTitle(item)}
+					_updatedAt={item.roomUpdatedAt}
+					key={item._id}
+					id={id}
+					type={item.t}
+					baseUrl={baseUrl}
+					prid={item.prid}
+					showLastMessage={StoreLastMessage}
+					onPress={() => this._onPressItem(item)}
+					testID={`rooms-list-view-item-${ item.name }`}
+					height={ROW_HEIGHT}
+				/>
+			);
+		}
+		return null;
 	}
 
 	renderSectionHeader = header => (
@@ -481,11 +438,10 @@ export default class RoomsListView extends LoggedView {
 		} else if (header === 'Chats' && groupByType) {
 			return null;
 		}
-		if (data.length > 0) {
+		if (data && data.length > 0) {
 			return (
 				<FlatList
 					data={data}
-					extraData={data}
 					keyExtractor={keyExtractor}
 					style={styles.list}
 					renderItem={this.renderItem}
@@ -553,7 +509,6 @@ export default class RoomsListView extends LoggedView {
 				<FlatList
 					ref={this.getScrollRef}
 					data={search.length ? search : chats}
-					extraData={search.length ? search : chats}
 					contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
 					keyExtractor={keyExtractor}
 					style={styles.list}
