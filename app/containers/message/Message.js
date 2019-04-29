@@ -531,7 +531,7 @@ export default class Message extends PureComponent {
 		const { header, isThreadReply, isThreadSequential } = this.props;
 
 		const thread = isThreadReply ? this.renderRepliedThread() : null;
-		if (isThreadReply || isThreadSequential) {
+		if (isThreadReply || isThreadSequential || this.isInfoMessage()) {
 			return (
 				<React.Fragment>
 					{thread}
