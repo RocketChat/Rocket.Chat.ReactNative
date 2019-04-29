@@ -4,28 +4,16 @@ import { connect } from 'react-redux';
 import { ViewPropTypes } from 'react-native';
 
 import Status from './Status';
+import database, { safeAddListener } from '../../lib/realm';
 
-@connect((state, ownProps) => {
-	if (state.login.user && ownProps.id === state.login.user.id) {
-		return {
-			status: state.login.user && state.login.user.status,
-			offline: !state.meteor.connected
-		};
-	}
-
-	const user = state.activeUsers[ownProps.id];
-	return {
-		status: (user && user.status) || 'offline'
-	};
-})
-
+@connect(state => ({
+	offline: !state.meteor.connected
+}))
 export default class StatusContainer extends React.PureComponent {
 	static propTypes = {
-		// id is a prop, but it's used only inside @connect to find for current status
-		id: PropTypes.string, // eslint-disable-line
+		id: PropTypes.string,
 		style: ViewPropTypes.style,
 		size: PropTypes.number,
-		status: PropTypes.string,
 		offline: PropTypes.bool
 	};
 
@@ -33,12 +21,32 @@ export default class StatusContainer extends React.PureComponent {
 		size: 16
 	}
 
+	constructor(props) {
+		super(props);
+		this.user = database.memoryDatabase.objects('activeUsers').filtered('id == $0', props.id);
+		this.state = {
+			user: this.user[0] || {}
+		};
+		safeAddListener(this.user, this.updateState);
+	}
+
+	componentWillUnmount() {
+		this.user.removeAllListeners();
+	}
+
 	get status() {
-		const { offline, status } = this.props;
-		if (offline) {
+		const { user } = this.state;
+		const { offline } = this.props;
+		if (offline || !user) {
 			return 'offline';
 		}
-		return status;
+		return user.status || 'offline';
+	}
+
+	updateState = () => {
+		if (this.user.length) {
+			this.setState({ user: this.user[0] });
+		}
 	}
 
 	render() {
