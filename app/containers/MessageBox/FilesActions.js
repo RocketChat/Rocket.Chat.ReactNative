@@ -8,7 +8,7 @@ export default class FilesActions extends PureComponent {
 	static propTypes = {
 		hideActions: PropTypes.func.isRequired,
 		takePhoto: PropTypes.func.isRequired,
-		takeVedio: PropTypes.func.isRequired,
+		takeVideo: PropTypes.func.isRequired,
 		chooseFromLibrary: PropTypes.func.isRequired
 	}
 
@@ -23,9 +23,9 @@ export default class FilesActions extends PureComponent {
 		this.options.push(I18n.t('Take_a_photo'));
 		this.PHOTO_INDEX = 1;
 
-		// Vedio
-		this.options.push(I18n.t('Take_a_vedio'));
-		this.VEDIO_INDEX = 2;
+		// Video
+		this.options.push(I18n.t('Take_a_video'));
+		this.VIDEO_INDEX = 2;
 
 		// Library
 		this.options.push(I18n.t('Choose_from_library'));
@@ -47,7 +47,7 @@ export default class FilesActions extends PureComponent {
 
 	handleActionPress = (actionIndex) => {
 		const {
-			takePhoto, chooseFromLibrary, hideActions, takeVedio
+			takePhoto, chooseFromLibrary, hideActions, takeVideo
 		} = this.props;
 		switch (actionIndex) {
 			case this.PHOTO_INDEX:
@@ -56,8 +56,8 @@ export default class FilesActions extends PureComponent {
 			case this.LIBRARY_INDEX:
 				chooseFromLibrary();
 				break;
-			case this.VEDIO_INDEX:
-				takeVedio();
+			case this.VIDEO_INDEX:
+				takeVideo();
 				break;
 			default:
 				break;

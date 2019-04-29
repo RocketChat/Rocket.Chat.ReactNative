@@ -52,7 +52,7 @@ const libraryPickerConfig = {
 	mediaType: 'video'
 };
 
-const vedioPickerConfig = {
+const videoPickerConfig = {
 	mediaType: 'video'
 };
 
@@ -516,12 +516,12 @@ class MessageBox extends Component {
 		}
 	}
 
-	takeVedio = async() => {
+	takeVideo = async() => {
 		try {
-			const vedio = await ImagePicker.openCamera(vedioPickerConfig);
-			this.showUploadModal(vedio);
+			const video = await ImagePicker.openCamera(videoPickerConfig);
+			this.showUploadModal(video);
 		} catch (e) {
-			log('takeVedio', e);
+			log('takeVideo', e);
 		}
 	}
 
@@ -760,7 +760,7 @@ class MessageBox extends Component {
 				key='files-actions'
 				hideActions={this.toggleFilesActions}
 				takePhoto={this.takePhoto}
-				takeVedio={this.takeVedio}
+				takeVideo={this.takeVideo}
 				chooseFromLibrary={this.chooseFromLibrary}
 			/>
 		);
