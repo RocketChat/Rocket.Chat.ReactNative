@@ -122,7 +122,15 @@ const RocketChat = {
 						Object.keys(batchUsers).forEach((key) => {
 							if (batchUsers[key] && batchUsers[key].id) {
 								try {
-									database.memoryDatabase.create('activeUsers', batchUsers[key], true);
+									const data = batchUsers[key];
+									if (data.removed) {
+										const userRecord = database.memoryDatabase.objectForPrimaryKey('activeUsers', data.id);
+										if (userRecord) {
+											userRecord.status = 'offline';
+										}
+									} else {
+										database.memoryDatabase.create('activeUsers', data, true);
+									}
 								} catch (error) {
 									console.log(error);
 								}
@@ -136,7 +144,10 @@ const RocketChat = {
 		}
 
 		if (!ddpMessage.fields) {
-			this.activeUsers[ddpMessage.id] = {};
+			this.activeUsers[ddpMessage.id] = {
+				id: ddpMessage.id,
+				removed: true
+			};
 		} else {
 			this.activeUsers[ddpMessage.id] = {
 				id: ddpMessage.id, ...this.activeUsers[ddpMessage.id], ...ddpMessage.fields
