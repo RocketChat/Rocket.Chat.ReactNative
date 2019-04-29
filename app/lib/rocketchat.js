@@ -14,7 +14,6 @@ import {
 	setUser, setLoginServices, loginRequest, loginFailure, logout
 } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
-import { setActiveUser } from '../actions/activeUsers';
 
 import subscribeRooms from './methods/subscriptions/rooms';
 import subscribeRoom from './methods/subscriptions/room';
@@ -119,18 +118,40 @@ const RocketChat = {
 			this._setUserTimer = setTimeout(() => {
 				const batchUsers = this.activeUsers;
 				InteractionManager.runAfterInteractions(() => {
-					reduxStore.dispatch(setActiveUser(batchUsers));
+					database.memoryDatabase.write(() => {
+						Object.keys(batchUsers).forEach((key) => {
+							if (batchUsers[key] && batchUsers[key].id) {
+								try {
+									const data = batchUsers[key];
+									if (data.removed) {
+										const userRecord = database.memoryDatabase.objectForPrimaryKey('activeUsers', data.id);
+										if (userRecord) {
+											userRecord.status = 'offline';
+										}
+									} else {
+										database.memoryDatabase.create('activeUsers', data, true);
+									}
+								} catch (error) {
+									console.log(error);
+								}
+							}
+						});
+					});
 				});
 				this._setUserTimer = null;
 				return this.activeUsers = {};
 			}, 10000);
 		}
 
-		const activeUser = reduxStore.getState().activeUsers[ddpMessage.id];
 		if (!ddpMessage.fields) {
-			this.activeUsers[ddpMessage.id] = {};
+			this.activeUsers[ddpMessage.id] = {
+				id: ddpMessage.id,
+				removed: true
+			};
 		} else {
-			this.activeUsers[ddpMessage.id] = { ...this.activeUsers[ddpMessage.id], ...activeUser, ...ddpMessage.fields };
+			this.activeUsers[ddpMessage.id] = {
+				id: ddpMessage.id, ...this.activeUsers[ddpMessage.id], ...ddpMessage.fields
+			};
 		}
 	},
 	async loginSuccess({ user }) {
@@ -559,16 +580,15 @@ const RocketChat = {
 		// RC 0.48.0
 		return this.sdk.get('channels.info', { roomId });
 	},
-	async getRoomMember(rid, currentUserId) {
-		try {
-			if (rid === `${ currentUserId }${ currentUserId }`) {
-				return Promise.resolve(currentUserId);
-			}
-			const membersResult = await RocketChat.getRoomMembers(rid, true);
-			return Promise.resolve(membersResult.records.find(m => m._id !== currentUserId));
-		} catch (error) {
-			return Promise.reject(error);
+	getUserInfo(userId) {
+		// RC 0.48.0
+		return this.sdk.get('users.info', { userId });
+	},
+	getRoomMemberId(rid, currentUserId) {
+		if (rid === `${ currentUserId }${ currentUserId }`) {
+			return currentUserId;
 		}
+		return rid.replace(currentUserId, '').trim();
 	},
 	toggleBlockUser(rid, blocked, block) {
 		if (block) {
