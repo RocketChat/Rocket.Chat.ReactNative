@@ -573,17 +573,6 @@ const RocketChat = {
 		// RC 0.48.0
 		return this.sdk.get('users.info', { userId });
 	},
-	async getRoomMember(rid, currentUserId) {
-		try {
-			if (rid === `${ currentUserId }${ currentUserId }`) {
-				return Promise.resolve(reduxStore.getState().login.user);
-			}
-			const membersResult = await RocketChat.getRoomMembers(rid, true);
-			return Promise.resolve(membersResult.records.find(m => m._id !== currentUserId));
-		} catch (error) {
-			return Promise.reject(error);
-		}
-	},
 	getRoomMemberId(rid, currentUserId) {
 		if (rid === `${ currentUserId }${ currentUserId }`) {
 			return currentUserId;
