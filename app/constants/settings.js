@@ -14,12 +14,6 @@ export default {
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},
-	Layout_Privacy_Policy: {
-		type: 'valueAsString'
-	},
-	Layout_Terms_of_Service: {
-		type: 'valueAsString'
-	},
 	LDAP_Enable: {
 		type: 'valueAsBoolean'
 	},

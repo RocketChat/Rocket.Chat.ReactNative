@@ -397,7 +397,8 @@ export default class RoomActionsView extends LoggedView {
 					style={styles.avatar}
 					type={t}
 					baseUrl={baseUrl}
-					user={user}
+					userId={user.id}
+					token={user.token}
 				>
 					{t === 'd' ? <Status style={sharedStyles.status} id={member._id} /> : null }
 				</Avatar>,
