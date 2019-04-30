@@ -559,7 +559,6 @@ export default class RoomsListView extends LoggedView {
 					: null
 				}
 				{showServerDropdown ? <ServerDropdown /> : null}
-				<ConnectionBadge />
 				<NavigationEvents
 					onDidFocus={() => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)}
 					onWillBlur={() => BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)}
