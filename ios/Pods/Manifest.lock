@@ -2,7 +2,7 @@ PODS:
   - QBImagePickerController (3.4.0)
   - React (0.58.6):
     - React/Core (= 0.58.6)
-  - react-native-orientation-locker (1.1.3):
+  - react-native-orientation-locker (1.1.5):
     - React
   - react-native-splash-screen (3.2.0):
     - React
@@ -32,7 +32,7 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
-  - RNDeviceInfo (0.21.5):
+  - RNDeviceInfo (1.6.1):
     - React
   - RNImageCropPicker (0.21.1):
     - QBImagePickerController
@@ -85,9 +85,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   React: 130b87b2d5e2baac646954282cab87be986d98fc
-  react-native-orientation-locker: 8878845713f8d52f2a520ec3c3b0c9348e08e32c
+  react-native-orientation-locker: 132a63bab4dddd2a5709f6f7935ad9676b0af7c5
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
-  RNDeviceInfo: e7c5fcde13d40e161d8a27f6c5dc69c638936002
+  RNDeviceInfo: 958a1ed6f94e04557b865b8ef848cfc83db0ebba
   RNImageCropPicker: e608efe182652dc8690268cb99cb5a201f2b5ea3
   RNScreens: 720a9e6968beb73e8196239801e887d8401f86ed
   RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
