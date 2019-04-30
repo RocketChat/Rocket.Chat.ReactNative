@@ -10338,10 +10338,10 @@ react-native-console-time-polyfill@^1.2.1:
   resolved "https://registry.yarnpkg.com/react-native-console-time-polyfill/-/react-native-console-time-polyfill-1.2.1.tgz#3bf9a1d1d1ce3a05325fe1f2e5c4e5a1c25d910f"
   integrity sha512-NKWZ1a/kzMOjPYAcCKEws2FAUnB9Eg70rbEhvdWU4Ure0H2v/ffqy47qooCZOWkrlAvlIR/sg1Apml4dzuE54A==
 
-react-native-device-info@^0.25.1:
-  version "0.25.1"
-  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-0.25.1.tgz#bde3be9fe0e06d0c07ab5837e4fc1af90f66696b"
-  integrity sha512-KW4Mf0CVEy10sbWsrnP7dMiB+FhFa46r11+JPdXWu1hHoSy8B/DR5Cb29kHHZSCPftHPzEhfMDflRe4IOgHrVw==
+react-native-device-info@1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-1.6.1.tgz#717171d9ad1ce38358e8f92ade21d41a7047fc02"
+  integrity sha512-txl6xVbRyGe3QTIRtMgUXZqwxcTT5w48urbFWVlGmbR0fi49GsoVY1q6DiA2fa/HMksD8osAZh8eHuNLSiRMhg==
 
 react-native-dialog@^5.6.0:
   version "5.6.0"
@@ -11552,7 +11552,7 @@ semver-diff@^2.0.0:
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.6.0.tgz#7e74256fbaa49c75aa7c7a205cc22799cac80004"
   integrity sha512-RS9R6R35NYgQn++fkDWaOmqGoj4Ek9gGs+DPxNUZKuwE183xjJroKvyo1IzVFeXvUrvmALy6FWD5xrdJT25gMg==
 
-semver@^6.0.0:
+semver@6.0.0, semver@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.0.0.tgz#05e359ee571e5ad7ed641a6eec1e547ba52dea65"
   integrity sha512-0UewU+9rFapKFnlbirLi3byoOuhrSsli/z/ihNnvM24vgF+8sNBiI1LZPBSH9wJKUwaUbw+s3hToDLCXkrghrQ==
@@ -12349,6 +12349,13 @@ strip-ansi@4.0.0, strip-ansi@^4.0.0:
   dependencies:
     ansi-regex "^3.0.0"
 
+strip-ansi@5.2.0, strip-ansi@^5.1.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-5.2.0.tgz#8c9a536feb6afc962bdfa5b104a5091c1ad9c0ae"
+  integrity sha512-DuRs1gKbBqsMKIZlrffwlug8MHkcnpjs5VPmL1PAh+mA30U0DTotfDZ0d2UUsXpPmPmMMJ6W773MaA3J+lbiWA==
+  dependencies:
+    ansi-regex "^4.1.0"
+
 strip-ansi@^3.0.0, strip-ansi@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-3.0.1.tgz#6a385fb8853d952d5ff05d0e8aaf94278dc63dcf"
@@ -12362,13 +12369,6 @@ strip-ansi@^5.0.0:
   integrity sha512-Uu7gQyZI7J7gn5qLn1Np3G9vcYGTVqB+lFTytnDJv83dd8T22aGH451P3jueT2/QemInJDfxHB5Tde5OzgG1Ow==
   dependencies:
     ansi-regex "^4.0.0"
-
-strip-ansi@^5.1.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-5.2.0.tgz#8c9a536feb6afc962bdfa5b104a5091c1ad9c0ae"
-  integrity sha512-DuRs1gKbBqsMKIZlrffwlug8MHkcnpjs5VPmL1PAh+mA30U0DTotfDZ0d2UUsXpPmPmMMJ6W773MaA3J+lbiWA==
-  dependencies:
-    ansi-regex "^4.1.0"
 
 strip-bom@3.0.0, strip-bom@^3.0.0:
   version "3.0.0"
