@@ -133,7 +133,7 @@ export class List extends React.PureComponent {
 		const { messages, threads } = this.state;
 		const { tmid } = this.props;
 		let data = [];
-		if (tmid) {
+		if (tmid && threads[0]) {
 			const thread = { ...threads[0] };
 			thread.tlm = null;
 			data = [...messages, thread];
