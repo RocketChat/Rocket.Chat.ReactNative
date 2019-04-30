@@ -8,7 +8,6 @@ import { isEqual } from 'lodash';
 import { SafeAreaView, NavigationEvents } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 
-import ConnectionBadge from '../../containers/ConnectionBadge';
 import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';

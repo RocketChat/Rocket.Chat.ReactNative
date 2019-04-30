@@ -31,7 +31,6 @@ import log from '../../utils/log';
 import { isIOS } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
-import ConnectionBadge from '../../containers/ConnectionBadge';
 import RoomHeaderView, { RightButtons } from './Header';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
@@ -519,7 +518,6 @@ export default class RoomView extends LoggedView {
 				{this.renderActions()}
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
 				<UploadProgress rid={this.rid} />
-				<ConnectionBadge />
 			</SafeAreaView>
 		);
 	}
