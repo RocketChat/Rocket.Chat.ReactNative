@@ -220,10 +220,10 @@ dependencies {
     implementation project(':reactnativenotifications')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'org.webkit:android-jsc-cppruntime:+'
-    implementation "com.android.support:appcompat-v7:27.1.1"
-    implementation "com.android.support:support-v4:27.1.1"
-    implementation 'com.android.support:customtabs:27.1.1'
-    implementation 'com.android.support:design:27.1.1'
+    implementation "com.android.support:appcompat-v7:28.0.0"
+    implementation "com.android.support:support-v4:28.0.0"
+    implementation 'com.android.support:customtabs:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation 'com.facebook.fresco:fresco:1.10.0'
     implementation 'com.facebook.fresco:animated-gif:1.10.0'
