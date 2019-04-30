@@ -65,8 +65,34 @@ Typing.propTypes = {
 	usersTyping: PropTypes.array
 };
 
+const HeaderTitle = React.memo(({
+	title, scale, connecting, isFetching
+}) => {
+	if (connecting) {
+		title = I18n.t('Connecting');
+	}
+	if (isFetching) {
+		title = I18n.t('Updating');
+	}
+	return (
+		<Text
+			style={[styles.title, { fontSize: TITLE_SIZE * scale }]}
+			numberOfLines={1}
+			testID={`room-view-title-${ title }`}
+		>{title}
+		</Text>
+	);
+});
+
+HeaderTitle.propTypes = {
+	title: PropTypes.string,
+	scale: PropTypes.number,
+	connecting: PropTypes.bool,
+	isFetching: PropTypes.bool
+};
+
 const Header = React.memo(({
-	title, type, status, usersTyping, width, height, prid, tmid, widthOffset
+	title, type, status, usersTyping, width, height, prid, tmid, widthOffset, connecting, isFetching
 }) => {
 	const portrait = height > width;
 	let scale = 1;
@@ -93,7 +119,15 @@ const Header = React.memo(({
 					contentContainerStyle={styles.scroll}
 				>
 					<Icon type={prid ? 'discussion' : type} status={status} />
-					<Text style={[styles.title, { fontSize: TITLE_SIZE * scale }]} numberOfLines={1} testID={`room-view-title-${ title }`}>{title}</Text>
+					<HeaderTitle
+						prid={prid}
+						type={type}
+						status={status}
+						title={title}
+						scale={scale}
+						connecting={connecting}
+						isFetching={isFetching}
+					/>
 				</ScrollView>
 			</View>
 			{type === 'thread' ? null : <Typing usersTyping={usersTyping} />}
@@ -110,7 +144,9 @@ Header.propTypes = {
 	tmid: PropTypes.string,
 	status: PropTypes.string,
 	usersTyping: PropTypes.array,
-	widthOffset: PropTypes.number
+	widthOffset: PropTypes.number,
+	connecting: PropTypes.bool,
+	isFetching: PropTypes.bool
 };
 
 Header.defaultProps = {
