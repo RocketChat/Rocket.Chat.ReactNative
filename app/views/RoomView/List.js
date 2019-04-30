@@ -41,8 +41,8 @@ export class List extends React.PureComponent {
 		this.state = {
 			loading: true,
 			end: false,
-			messages: this.data,
-			threads: this.threads
+			messages: this.data.slice(),
+			threads: this.threads.slice()
 		};
 
 		safeAddListener(this.data, this.updateState);
@@ -76,8 +76,8 @@ export class List extends React.PureComponent {
 				messages = [...messages, thread];
 			}
 			this.setState({
-				messages,
-				threads: this.threads,
+				messages: messages.slice(),
+				threads: this.threads.slice(),
 				loading: false
 			});
 		});
