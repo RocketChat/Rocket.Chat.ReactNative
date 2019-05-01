@@ -122,6 +122,8 @@ export default class RoomView extends LoggedView {
 		this.beginAnimatingTimeout = setTimeout(() => this.beginAnimating = true, 300);
 		this.messagebox = React.createRef();
 		safeAddListener(this.rooms, this.updateRoom);
+		this.willBlurListener = props.navigation.addListener('willBlur', () => this.mounted = false);
+		this.mounted = false;
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
 
@@ -139,6 +141,7 @@ export default class RoomView extends LoggedView {
 			} else {
 				EventEmitter.addEventListener('connected', this.handleConnected);
 			}
+			this.mounted = true;
 		});
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
@@ -188,6 +191,7 @@ export default class RoomView extends LoggedView {
 	}
 
 	componentWillUnmount() {
+		this.mounted = false;
 		const { editing, replying } = this.props;
 		if (!editing && this.messagebox && this.messagebox.current && this.messagebox.current.text) {
 			const { text } = this.messagebox.current;
@@ -229,6 +233,9 @@ export default class RoomView extends LoggedView {
 		}
 		if (this.initInteraction && this.initInteraction.cancel) {
 			this.initInteraction.cancel();
+		}
+		if (this.willBlurListener && this.willBlurListener.remove) {
+			this.willBlurListener.remove();
 		}
 		EventEmitter.removeListener('connected', this.handleConnected);
 		console.countReset(`${ this.constructor.name }.render calls`);
@@ -293,6 +300,9 @@ export default class RoomView extends LoggedView {
 	}
 
 	internalSetState = (...args) => {
+		if (!this.mounted) {
+			return;
+		}
 		if (isIOS && this.beginAnimating) {
 			LayoutAnimation.easeInEaseOut();
 		}
@@ -347,7 +357,7 @@ export default class RoomView extends LoggedView {
 		}
 	}
 
-	setLastOpen = lastOpen => this.setState({ lastOpen });
+	setLastOpen = lastOpen => this.internalSetState({ lastOpen });
 
 	joinRoom = async() => {
 		try {
