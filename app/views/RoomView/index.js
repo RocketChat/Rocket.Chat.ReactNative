@@ -112,6 +112,7 @@ export default class RoomView extends LoggedView {
 		this.beginAnimatingTimeout = setTimeout(() => this.beginAnimating = true, 300);
 		this.messagebox = React.createRef();
 		this.bottomSheetRef = React.createRef();
+		this.setRef = this.setRef.bind(this);
 		safeAddListener(this.rooms, this.updateRoom);
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
@@ -261,7 +262,7 @@ export default class RoomView extends LoggedView {
 	}
 
 	hideActionSheet() {
-		this.bottomSheetRef.current.snapTo(2);
+		return this.bottomSheetRef && this.bottomSheetRef.current && this.bottomSheetRef.current.snapTo(2);
 	}
 
 	onReactionPress = (shortname, messageId) => {
@@ -507,7 +508,7 @@ export default class RoomView extends LoggedView {
 		return (
 			<React.Fragment>
 				{room._id
-					? <MessageActions room={room} user={user} setRef={ref => this.setRef(ref)} />
+					? <MessageActions room={room} user={user} setRef={this.setRef} />
 					: null
 				}
 				{showErrorActions ? <MessageErrorActions /> : null}

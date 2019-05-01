@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Alert, Clipboard, Share, View, Text, StyleSheet
+	Alert, Clipboard, Share, View, Text, StyleSheet, TouchableWithoutFeedback
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as moment from 'moment';
 import BottomSheet from 'reanimated-bottom-sheet';
+import Animated from 'react-native-reanimated';
 import Touchable from 'react-native-platform-touchable';
 
 import {
@@ -23,6 +24,16 @@ import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
 import sharedStyles from '../views/Styles';
 import { CustomIcon } from '../lib/Icons';
+
+const {
+	block, cond, call, eq, lessThan
+} = Animated;
+
+const hiddenBottomSheet = 2;
+const bottomSheetMaxHeight = 320;
+const bottomSheetHeaderHeight = 25;
+const buttonPaddingsSize = 30;
+const textSize = 13;
 
 const styles = StyleSheet.create({
 	panel: {
@@ -54,10 +65,15 @@ const styles = StyleSheet.create({
 		height: 8,
 		borderRadius: 4,
 		backgroundColor: '#dadada'
+	},
+	backdrop: {
+
+		...StyleSheet.absoluteFill,
+		backgroundColor: '#000000',
+		opacity: 0.1
+
 	}
 });
-
-const hiddenBottomSheet = 2;
 
 @connect(
 	state => ({
@@ -99,6 +115,9 @@ export default class MessageActions extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			isBottomSheetOpened: false // eslint-disable-line
+		};
 		this.setPermissions();
 		const { Message_AllowStarring, Message_AllowPinning, setRef } = this.props;
 
@@ -142,10 +161,8 @@ export default class MessageActions extends React.Component {
 
 		this.options.reverse(); // reversing to put `cancel` button to the bottom of the list
 
-		const buttonPaddingsSize = 30;
-		const textSize = 13;
-		const headerSize = 25;
-		this.bottomSheetHeight = verticalScale(this.options.length * buttonPaddingsSize) + this.options.length * textSize + headerSize;
+		this.value_fall = new Animated.Value(1);
+		this.bottomSheetHeight = verticalScale(this.options.length * buttonPaddingsSize) + this.options.length * textSize + bottomSheetHeaderHeight;
 
 		setTimeout(() => {
 			vibrate();
@@ -167,19 +184,19 @@ export default class MessageActions extends React.Component {
 		} catch (error) {
 			return null;
 		}
-	};
+	}
 
 	isOwn = props => props.actionMessage.u && props.actionMessage.u._id === props.user.id;
 
 	isRoomReadOnly = () => {
 		const { room } = this.props;
 		return room.ro;
-	};
+	}
 
 	canReactWhenReadOnly = () => {
 		const { room } = this.props;
 		return room.reactWhenReadOnly;
-	};
+	}
 
 	allowEdit = (props) => {
 		if (this.isRoomReadOnly()) {
@@ -204,7 +221,7 @@ export default class MessageActions extends React.Component {
 			return currentTsDiff < blockEditInMinutes;
 		}
 		return true;
-	};
+	}
 
 	allowDelete = (props) => {
 		if (this.isRoomReadOnly()) {
@@ -231,7 +248,7 @@ export default class MessageActions extends React.Component {
 			return currentTsDiff < blockDeleteInMinutes;
 		}
 		return true;
-	};
+	}
 
 	handleDelete = () => {
 		const { deleteRequest, actionMessage } = this.props;
@@ -251,13 +268,13 @@ export default class MessageActions extends React.Component {
 			],
 			{ cancelable: false }
 		);
-	};
+	}
 
 	handleEdit = () => {
 		const { actionMessage, editInit } = this.props;
 		const { _id, msg, rid } = actionMessage;
 		editInit({ _id, msg, rid });
-	};
+	}
 
 	handleCopy = async() => {
 		const { actionMessage } = this.props;
@@ -271,42 +288,38 @@ export default class MessageActions extends React.Component {
 		Share.share({
 			message: permalink
 		});
-	};
+	}
 
 	handleStar = () => {
 		const { actionMessage, toggleStarRequest } = this.props;
 		toggleStarRequest(actionMessage);
-	};
+	}
 
 	handlePermalink = async() => {
 		const { actionMessage } = this.props;
 		const permalink = await this.getPermalink(actionMessage);
 		Clipboard.setString(permalink);
 		showToast(I18n.t('Permalink_copied_to_clipboard'));
-	};
+	}
 
 	handlePin = () => {
 		const { actionMessage, togglePinRequest } = this.props;
 		togglePinRequest(actionMessage);
-	};
+	}
 
 	handleReply = () => {
 		const { actionMessage, replyInit } = this.props;
 		replyInit(actionMessage, true);
-	};
+	}
 
 	handleQuote = () => {
 		const { actionMessage, replyInit } = this.props;
 		replyInit(actionMessage, false);
-	};
+	}
 
 	handleReaction = () => {
 		const { actionMessage, toggleReactionPicker } = this.props;
 		toggleReactionPicker(actionMessage);
-	};
-
-	hideActionSheet() {
-		this.bottomSheetRef.current.snapTo(hiddenBottomSheet);
 	}
 
 	renderHeader = () => (
@@ -330,18 +343,47 @@ export default class MessageActions extends React.Component {
 		</View>
 	);
 
+	bottomSheetCallback = ([value]) => {
+		// 1 is closed; value < 1 && value > 0 is opened
+		this.setState({ isBottomSheetVisible: value <= 1 - (bottomSheetMaxHeight / (this.bottomSheetHeight + bottomSheetHeaderHeight)) });
+	}
+
+	hideActionSheet() {
+		return this.bottomSheetRef && this.bottomSheetRef.current && this.bottomSheetRef.current.snapTo(hiddenBottomSheet);
+	}
+
 	render() {
+		const { isBottomSheetVisible } = this.state;
+
 		return (
-			<BottomSheet
-				ref={this.bottomSheetRef}
-				initialSnap={hiddenBottomSheet}
-				snapPoints={[320, this.bottomSheetHeight + 25, 0]}
-				renderHeader={this.renderHeader}
-				renderContent={this.renderInner}
-				enabledManualSnapping
-				enabledGestureInteraction
-				enabledInnerScrolling
-			/>
+			[
+				(isBottomSheetVisible && (
+					<TouchableWithoutFeedback onPress={() => this.hideActionSheet()}>
+						<Animated.View style={styles.backdrop} />
+					</TouchableWithoutFeedback>
+				)),
+				<BottomSheet
+					ref={this.bottomSheetRef}
+					initialSnap={hiddenBottomSheet}
+					snapPoints={[bottomSheetMaxHeight, this.bottomSheetHeight + bottomSheetHeaderHeight, 0]}
+					renderHeader={this.renderHeader}
+					renderContent={this.renderInner}
+					enabledManualSnapping
+					enabledGestureInteraction
+					enabledInnerScrolling
+					callbackNode={this.value_fall}
+				/>,
+				<Animated.Code
+					exec={
+						block([
+							// this.value_fall === 0 is opened with bottomSheetMaxHeight; === 1 - (bottomSheetMaxHeight / (this.bottomSheetHeight + bottomSheetHeaderHeight) is opened partly
+							cond(lessThan(this.value_fall, 1 - (bottomSheetMaxHeight / (this.bottomSheetHeight + bottomSheetHeaderHeight))), call([this.value_fall], this.bottomSheetCallback)),
+							// this.value_fall === 1 is closed
+							cond(eq(this.value_fall, 1), call([this.value_fall], this.bottomSheetCallback))
+						])
+					}
+				/>
+			]
 		);
 	}
 }
