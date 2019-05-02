@@ -37,6 +37,7 @@ import Separator from './Separator';
 import { COLOR_WHITE } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
+import { Toast } from '../../utils/info';
 
 @connect(state => ({
 	user: {
@@ -510,7 +511,7 @@ export default class RoomView extends LoggedView {
 		return (
 			<React.Fragment>
 				{room._id && showActions
-					? <MessageActions room={room} user={user} />
+					? <MessageActions room={room} user={user} toast={this.toast} />
 					: null
 				}
 				{showErrorActions ? <MessageErrorActions /> : null}
@@ -531,6 +532,7 @@ export default class RoomView extends LoggedView {
 				{this.renderActions()}
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
 				<UploadProgress rid={this.rid} />
+				<Toast ref={toast => this.toast = toast} />
 			</SafeAreaView>
 		);
 	}

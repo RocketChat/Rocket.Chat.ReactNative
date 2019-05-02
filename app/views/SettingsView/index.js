@@ -14,7 +14,7 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Loading from '../../containers/Loading';
-import { showErrorAlert, showAlert } from '../../utils/info';
+import { showErrorAlert, Toast } from '../../utils/info';
 import log from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
 import { DrawerButton } from '../../containers/HeaderButton';
@@ -122,7 +122,7 @@ export default class SettingsView extends LoggedView {
 
 			this.setState({ saving: false });
 			setTimeout(() => {
-				showAlert(I18n.t('Preferences_saved'));
+				this.toast.show(I18n.t('Preferences_saved'));
 			}, 300);
 		} catch (e) {
 			this.setState({ saving: false });
@@ -175,6 +175,7 @@ export default class SettingsView extends LoggedView {
 							/>
 						</View>
 						<Loading visible={saving} />
+						<Toast ref={toast => this.toast = toast} />
 					</SafeAreaView>
 				</ScrollView>
 			</KeyboardView>
