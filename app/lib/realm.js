@@ -332,6 +332,18 @@ const usersTypingSchema = {
 	}
 };
 
+const activeUsersSchema = {
+	name: 'activeUsers',
+	primaryKey: 'id',
+	properties: {
+		id: 'string',
+		name: 'string?',
+		username: 'string?',
+		status: 'string?',
+		utcOffset: 'double?'
+	}
+};
+
 const schema = [
 	settingsSchema,
 	subscriptionSchema,
@@ -354,7 +366,7 @@ const schema = [
 	uploadsSchema
 ];
 
-const inMemorySchema = [usersTypingSchema];
+const inMemorySchema = [usersTypingSchema, activeUsersSchema];
 
 class DB {
 	databases = {
@@ -363,9 +375,9 @@ class DB {
 			schema: [
 				serversSchema
 			],
-			schemaVersion: 5,
+			schemaVersion: 6,
 			migration: (oldRealm, newRealm) => {
-				if (oldRealm.schemaVersion >= 1 && newRealm.schemaVersion <= 5) {
+				if (oldRealm.schemaVersion >= 1 && newRealm.schemaVersion <= 6) {
 					const newServers = newRealm.objects('servers');
 
 					// eslint-disable-next-line no-plusplus
@@ -378,7 +390,7 @@ class DB {
 		inMemoryDB: new Realm({
 			path: 'memory.realm',
 			schema: inMemorySchema,
-			schemaVersion: 1,
+			schemaVersion: 2,
 			inMemory: true
 		})
 	}

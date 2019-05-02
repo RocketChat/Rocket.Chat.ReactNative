@@ -4,7 +4,6 @@ import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { SafeAreaView } from 'react-navigation';
-import equal from 'deep-equal';
 
 import LoggedView from '../View';
 import Status from '../../containers/Status';
@@ -13,11 +12,11 @@ import styles from './styles';
 import sharedStyles from '../Styles';
 import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
-import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
+import log from '../../utils/log';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
@@ -38,7 +37,6 @@ const getRoomTitle = room => (room.t === 'd'
 		id: state.login.user && state.login.user.id,
 		token: state.login.user && state.login.user.token
 	},
-	activeUsers: state.activeUsers, // TODO: remove it
 	Message_TimeFormat: state.settings.Message_TimeFormat
 }))
 /** @extends React.Component */
@@ -65,22 +63,22 @@ export default class RoomInfoView extends LoggedView {
 			token: PropTypes.string
 		}),
 		baseUrl: PropTypes.string,
-		activeUsers: PropTypes.object,
 		Message_TimeFormat: PropTypes.string
 	}
 
 	constructor(props) {
 		super('RoomInfoView', props);
-		const rid = props.navigation.getParam('rid');
+		this.rid = props.navigation.getParam('rid');
 		const room = props.navigation.getParam('room');
-		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
+		this.t = props.navigation.getParam('t');
+		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
+		this.roles = database.objects('roles');
 		this.sub = {
 			unsubscribe: () => {}
 		};
 		this.state = {
 			room: this.rooms[0] || room || {},
-			roomUser: {},
-			roles: []
+			roomUser: {}
 		};
 	}
 
@@ -93,70 +91,22 @@ export default class RoomInfoView extends LoggedView {
 			navigation.setParams({ showEdit: true });
 		}
 
-		// get user of room
-		if (room) {
-			if (room.t === 'd') {
-				try {
-					const { user, activeUsers } = this.props;
-					const roomUser = await RocketChat.getRoomMember(room.rid, user.id);
-					this.setState({ roomUser: roomUser || {} });
-					const username = room.name;
-
-					const activeUser = activeUsers[roomUser._id];
-					if (!activeUser || !activeUser.utcOffset) {
-						// get full user data looking for utcOffset
-						// will be catched by .on('users) and saved on activeUsers reducer
-						this.getFullUserData(username);
-					}
-
-					// get all users roles
-					// needs to be changed by a better method
-					const allUsersRoles = await RocketChat.getUserRoles();
-					const userRoles = allUsersRoles.find(u => u.username === username);
-					if (userRoles) {
-						this.setState({ roles: userRoles.roles || [] });
-					}
-				} catch (e) {
-					log('RoomInfoView.componentDidMount', e);
+		if (this.t === 'd') {
+			const { user } = this.props;
+			const roomUserId = RocketChat.getRoomMemberId(this.rid, user.id);
+			try {
+				const result = await RocketChat.getUserInfo(roomUserId);
+				if (result.success) {
+					this.setState({ roomUser: result.user });
 				}
+			} catch (error) {
+				log('RoomInfoView.getUserInfo', error);
 			}
 		}
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		const {
-			room, roomUser, roles
-		} = this.state;
-		const { activeUsers } = this.props;
-		if (!equal(nextState.room, room)) {
-			return true;
-		}
-		if (!equal(nextState.roomUser, roomUser)) {
-			return true;
-		}
-		if (!equal(nextState.roles, roles)) {
-			return true;
-		}
-		if (roomUser._id) {
-			if (nextProps.activeUsers[roomUser._id] !== activeUsers[roomUser._id]) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	componentWillUnmount() {
 		this.rooms.removeAllListeners();
-		this.sub.unsubscribe();
-	}
-
-	getFullUserData = async(username) => {
-		try {
-			const result = await RocketChat.subscribe('fullUserData', username);
-			this.sub = result;
-		} catch (e) {
-			log('getFullUserData', e);
-		}
 	}
 
 	getRoleDescription = (id) => {
@@ -189,32 +139,47 @@ export default class RoomInfoView extends LoggedView {
 		</View>
 	);
 
-	renderRoles = () => {
-		const { roles } = this.state;
-
-		return (
-			roles.length > 0
-				? (
-					<View style={styles.item}>
-						<Text style={styles.itemLabel}>{I18n.t('Roles')}</Text>
-						<View style={styles.rolesContainer}>
-							{roles.map(role => (
-								<View style={styles.roleBadge} key={role}>
-									<Text style={styles.role}>{ this.getRoleDescription(role) }</Text>
-								</View>
-							))}
-						</View>
-					</View>
-				)
-				: null
-		);
+	getRoleDescription = (id) => {
+		const role = database.objectForPrimaryKey('roles', id);
+		if (role) {
+			return role.description;
+		}
+		return null;
 	}
 
-	renderTimezone = (userId) => {
-		const { activeUsers, Message_TimeFormat } = this.props;
+	renderRole = (role) => {
+		const description = this.getRoleDescription(role);
+		if (description) {
+			return (
+				<View style={styles.roleBadge} key={role}>
+					<Text style={styles.role}>{ this.getRoleDescription(role) }</Text>
+				</View>
+			);
+		}
+		return null;
+	}
 
-		if (activeUsers[userId]) {
-			const { utcOffset } = activeUsers[userId];
+	renderRoles = () => {
+		const { roomUser } = this.state;
+		if (roomUser && roomUser.roles && roomUser.roles.length) {
+			return (
+				<View style={styles.item}>
+					<Text style={styles.itemLabel}>{I18n.t('Roles')}</Text>
+					<View style={styles.rolesContainer}>
+						{roomUser.roles.map(role => this.renderRole(role))}
+					</View>
+				</View>
+			);
+		}
+		return null;
+	}
+
+	renderTimezone = () => {
+		const { roomUser } = this.state;
+		const { Message_TimeFormat } = this.props;
+
+		if (roomUser) {
+			const { utcOffset } = roomUser;
 
 			if (!utcOffset) {
 				return null;
@@ -242,7 +207,7 @@ export default class RoomInfoView extends LoggedView {
 				userId={user.id}
 				token={user.token}
 			>
-				{room.t === 'd' ? <Status style={[sharedStyles.status, styles.status]} size={24} id={roomUser._id} /> : null}
+				{room.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} size={24} id={roomUser._id} /> : null}
 			</Avatar>
 		);
 	}
@@ -258,12 +223,12 @@ export default class RoomInfoView extends LoggedView {
 		</View>
 	)
 
-	renderCustomFields = (userId) => {
-		const { activeUsers } = this.props;
-		if (activeUsers[userId]) {
-			const { customFields } = activeUsers[userId];
+	renderCustomFields = () => {
+		const { roomUser } = this.state;
+		if (roomUser) {
+			const { customFields } = roomUser;
 
-			if (!customFields) {
+			if (!roomUser.customFields) {
 				return null;
 			}
 
@@ -301,7 +266,7 @@ export default class RoomInfoView extends LoggedView {
 					{!this.isDirect() ? this.renderItem('topic', room) : null}
 					{!this.isDirect() ? this.renderItem('announcement', room) : null}
 					{this.isDirect() ? this.renderRoles() : null}
-					{this.isDirect() ? this.renderTimezone(roomUser._id) : null}
+					{this.isDirect() ? this.renderTimezone() : null}
 					{this.isDirect() ? this.renderCustomFields(roomUser._id) : null}
 					{room.broadcast ? this.renderBroadcast() : null}
 				</SafeAreaView>
