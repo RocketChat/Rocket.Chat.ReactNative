@@ -6972,7 +6972,10 @@ exports[`Storyshots Message list 1`] = `
               hardwareAccelerated={false}
               hideModalContentWhileAnimating={false}
               onModalHide={[Function]}
+              onModalWillHide={[Function]}
+              onModalWillShow={[Function]}
               onRequestClose={[Function]}
+              scrollHorizontal={false}
               scrollOffset={0}
               scrollOffsetMax={0}
               scrollTo={null}
@@ -7011,7 +7014,10 @@ exports[`Storyshots Message list 1`] = `
               <View
                 hideModalContentWhileAnimating={false}
                 onModalHide={[Function]}
+                onModalWillHide={[Function]}
+                onModalWillShow={[Function]}
                 pointerEvents="box-none"
+                scrollHorizontal={false}
                 scrollOffset={0}
                 scrollOffsetMax={0}
                 scrollTo={null}
@@ -7540,7 +7546,10 @@ exports[`Storyshots Message list 1`] = `
               hardwareAccelerated={false}
               hideModalContentWhileAnimating={false}
               onModalHide={[Function]}
+              onModalWillHide={[Function]}
+              onModalWillShow={[Function]}
               onRequestClose={[Function]}
+              scrollHorizontal={false}
               scrollOffset={0}
               scrollOffsetMax={0}
               scrollTo={null}
@@ -7579,7 +7588,10 @@ exports[`Storyshots Message list 1`] = `
               <View
                 hideModalContentWhileAnimating={false}
                 onModalHide={[Function]}
+                onModalWillHide={[Function]}
+                onModalWillShow={[Function]}
                 pointerEvents="box-none"
+                scrollHorizontal={false}
                 scrollOffset={0}
                 scrollOffsetMax={0}
                 scrollTo={null}
@@ -8114,7 +8126,10 @@ exports[`Storyshots Message list 1`] = `
               hardwareAccelerated={false}
               hideModalContentWhileAnimating={false}
               onModalHide={[Function]}
+              onModalWillHide={[Function]}
+              onModalWillShow={[Function]}
               onRequestClose={[Function]}
+              scrollHorizontal={false}
               scrollOffset={0}
               scrollOffsetMax={0}
               scrollTo={null}
@@ -8153,7 +8168,10 @@ exports[`Storyshots Message list 1`] = `
               <View
                 hideModalContentWhileAnimating={false}
                 onModalHide={[Function]}
+                onModalWillHide={[Function]}
+                onModalWillShow={[Function]}
                 pointerEvents="box-none"
+                scrollHorizontal={false}
                 scrollOffset={0}
                 scrollOffsetMax={0}
                 scrollTo={null}
@@ -10825,17 +10843,12 @@ exports[`Storyshots Message list 1`] = `
                   Array [
                     Object {
                       "color": undefined,
-                      "fontSize": 20,
+                      "fontSize": 16,
                     },
-                    Array [
-                      Object {
-                        "color": "#fff",
-                        "marginRight": 6,
-                      },
-                      Object {
-                        "color": "#1d74f5",
-                      },
-                    ],
+                    Object {
+                      "color": "#1d74f5",
+                      "marginRight": 2,
+                    },
                     Object {
                       "fontFamily": "custom",
                       "fontStyle": "normal",
@@ -10855,9 +10868,10 @@ exports[`Storyshots Message list 1`] = `
                     "color": "#1d74f5",
                     "flex": 1,
                     "fontFamily": "System",
-                    "fontSize": 16,
+                    "fontSize": 14,
                     "fontStyle": "normal",
-                    "fontWeight": "600",
+                    "fontWeight": "400",
+                    "lineHeight": 16,
                   }
                 }
               >
@@ -11070,17 +11084,12 @@ exports[`Storyshots Message list 1`] = `
                   Array [
                     Object {
                       "color": undefined,
-                      "fontSize": 20,
+                      "fontSize": 16,
                     },
-                    Array [
-                      Object {
-                        "color": "#fff",
-                        "marginRight": 6,
-                      },
-                      Object {
-                        "color": "#1d74f5",
-                      },
-                    ],
+                    Object {
+                      "color": "#1d74f5",
+                      "marginRight": 2,
+                    },
                     Object {
                       "fontFamily": "custom",
                       "fontStyle": "normal",
@@ -11100,13 +11109,255 @@ exports[`Storyshots Message list 1`] = `
                     "color": "#1d74f5",
                     "flex": 1,
                     "fontFamily": "System",
-                    "fontSize": 16,
+                    "fontSize": 14,
                     "fontStyle": "normal",
-                    "fontWeight": "600",
+                    "fontWeight": "400",
+                    "lineHeight": 16,
                   }
                 }
               >
                 Thread with emoji 🙂 😂
+              </Text>
+            </View>
+            <View
+              style={Object {}}
+            >
+              <Text
+                numberOfLines={1}
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "justifyContent": "flex-start",
+                    "marginBottom": 0,
+                    "marginTop": 0,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
+                >
+                  <Text>
+                    I’m fine!
+                  </Text>
+                </Text>
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            Object {
+              "marginTop": 6,
+            },
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+                Object {
+                  "marginTop": 4,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "overflow": "hidden",
+                  },
+                  Object {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                ]
+              }
+            >
+              <FastImageView
+                resizeMode="cover"
+                source={
+                  Object {
+                    "priority": "high",
+                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                  }
+                }
+                style={
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  }
+                }
+              />
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 46,
+                },
+                Object {
+                  "marginLeft": 10,
+                },
+                false,
+                false,
+                false,
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "500",
+                      "lineHeight": 22,
+                    }
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#9ca2a8",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "300",
+                    "lineHeight": 22,
+                    "paddingLeft": 10,
+                  }
+                }
+              >
+                10:00 AM
+              </Text>
+            </View>
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+              testID="message-thread-replied-on-Markdown: link block code"
+            >
+              <Text
+                allowFontScaling={false}
+                style={
+                  Array [
+                    Object {
+                      "color": undefined,
+                      "fontSize": 16,
+                    },
+                    Object {
+                      "color": "#1d74f5",
+                      "marginRight": 2,
+                    },
+                    Object {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#1d74f5",
+                    "flex": 1,
+                    "fontFamily": "System",
+                    "fontSize": 14,
+                    "fontStyle": "normal",
+                    "fontWeight": "400",
+                    "lineHeight": 16,
+                  }
+                }
+              >
+                Markdown: link block code
               </Text>
             </View>
             <View
@@ -11315,17 +11566,12 @@ exports[`Storyshots Message list 1`] = `
                   Array [
                     Object {
                       "color": undefined,
-                      "fontSize": 20,
+                      "fontSize": 16,
                     },
-                    Array [
-                      Object {
-                        "color": "#fff",
-                        "marginRight": 6,
-                      },
-                      Object {
-                        "color": "#1d74f5",
-                      },
-                    ],
+                    Object {
+                      "color": "#1d74f5",
+                      "marginRight": 2,
+                    },
                     Object {
                       "fontFamily": "custom",
                       "fontStyle": "normal",
@@ -11345,9 +11591,10 @@ exports[`Storyshots Message list 1`] = `
                     "color": "#1d74f5",
                     "flex": 1,
                     "fontFamily": "System",
-                    "fontSize": 16,
+                    "fontSize": 14,
                     "fontStyle": "normal",
-                    "fontWeight": "600",
+                    "fontWeight": "400",
+                    "lineHeight": 16,
                   }
                 }
               >
@@ -11560,17 +11807,12 @@ exports[`Storyshots Message list 1`] = `
                   Array [
                     Object {
                       "color": undefined,
-                      "fontSize": 20,
+                      "fontSize": 16,
                     },
-                    Array [
-                      Object {
-                        "color": "#fff",
-                        "marginRight": 6,
-                      },
-                      Object {
-                        "color": "#1d74f5",
-                      },
-                    ],
+                    Object {
+                      "color": "#1d74f5",
+                      "marginRight": 2,
+                    },
                     Object {
                       "fontFamily": "custom",
                       "fontStyle": "normal",
@@ -11590,9 +11832,10 @@ exports[`Storyshots Message list 1`] = `
                     "color": "#1d74f5",
                     "flex": 1,
                     "fontFamily": "System",
-                    "fontSize": 16,
+                    "fontSize": 14,
                     "fontStyle": "normal",
-                    "fontWeight": "600",
+                    "fontWeight": "400",
+                    "lineHeight": 16,
                   }
                 }
               >
@@ -11805,17 +12048,12 @@ exports[`Storyshots Message list 1`] = `
                   Array [
                     Object {
                       "color": undefined,
-                      "fontSize": 20,
+                      "fontSize": 16,
                     },
-                    Array [
-                      Object {
-                        "color": "#fff",
-                        "marginRight": 6,
-                      },
-                      Object {
-                        "color": "#1d74f5",
-                      },
-                    ],
+                    Object {
+                      "color": "#1d74f5",
+                      "marginRight": 2,
+                    },
                     Object {
                       "fontFamily": "custom",
                       "fontStyle": "normal",
@@ -11835,9 +12073,10 @@ exports[`Storyshots Message list 1`] = `
                     "color": "#1d74f5",
                     "flex": 1,
                     "fontFamily": "System",
-                    "fontSize": 16,
+                    "fontSize": 14,
                     "fontStyle": "normal",
-                    "fontWeight": "600",
+                    "fontWeight": "400",
+                    "lineHeight": 16,
                   }
                 }
               >
@@ -12050,17 +12289,12 @@ exports[`Storyshots Message list 1`] = `
                   Array [
                     Object {
                       "color": undefined,
-                      "fontSize": 20,
+                      "fontSize": 16,
                     },
-                    Array [
-                      Object {
-                        "color": "#fff",
-                        "marginRight": 6,
-                      },
-                      Object {
-                        "color": "#1d74f5",
-                      },
-                    ],
+                    Object {
+                      "color": "#1d74f5",
+                      "marginRight": 2,
+                    },
                     Object {
                       "fontFamily": "custom",
                       "fontStyle": "normal",
@@ -12080,9 +12314,10 @@ exports[`Storyshots Message list 1`] = `
                     "color": "#1d74f5",
                     "flex": 1,
                     "fontFamily": "System",
-                    "fontSize": 16,
+                    "fontSize": 14,
                     "fontStyle": "normal",
-                    "fontWeight": "600",
+                    "fontWeight": "400",
+                    "lineHeight": 16,
                   }
                 }
               >

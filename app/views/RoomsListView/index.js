@@ -8,7 +8,6 @@ import { isEqual } from 'lodash';
 import { SafeAreaView, NavigationEvents } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 
-import ConnectionBadge from '../../containers/ConnectionBadge';
 import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
@@ -402,7 +401,7 @@ export default class RoomsListView extends LoggedView {
 					unread={item.unread}
 					userMentions={item.userMentions}
 					favorite={item.f}
-					lastMessage={JSON.parse(JSON.stringify(item.lastMessage))}
+					lastMessage={item.lastMessage ? JSON.parse(JSON.stringify(item.lastMessage)) : null}
 					name={this.getRoomTitle(item)}
 					_updatedAt={item.roomUpdatedAt}
 					key={item._id}
@@ -559,7 +558,6 @@ export default class RoomsListView extends LoggedView {
 					: null
 				}
 				{showServerDropdown ? <ServerDropdown /> : null}
-				<ConnectionBadge />
 				<NavigationEvents
 					onDidFocus={() => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)}
 					onWillBlur={() => BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)}
