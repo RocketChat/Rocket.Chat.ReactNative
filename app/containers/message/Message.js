@@ -5,10 +5,9 @@ import {
 } from 'react-native';
 import moment from 'moment';
 import { KeyboardUtils } from 'react-native-keyboard-input';
-import {
-	BorderlessButton
-} from 'react-native-gesture-handler';
 import Touchable from 'react-native-platform-touchable';
+import { emojify } from 'react-emojione';
+import removeMarkdown from 'remove-markdown';
 
 import Image from './Image';
 import User from './User';
@@ -25,6 +24,7 @@ import I18n from '../../i18n';
 import messagesStatus from '../../constants/messagesStatus';
 import { CustomIcon } from '../../lib/Icons';
 import { COLOR_DANGER } from '../../constants/colors';
+import debounce from '../../utils/debounce';
 
 const SYSTEM_MESSAGES = [
 	'r',
@@ -85,8 +85,6 @@ const getInfoMessage = ({
 		return I18n.t('Room_changed_privacy', { type: msg, userBy: username });
 	} else if (type === 'message_snippeted') {
 		return I18n.t('Created_snippet');
-	} else if (type === 'thread-created') {
-		return I18n.t('Thread_created', { name: msg });
 	}
 	return '';
 };
@@ -99,6 +97,7 @@ export default class Message extends PureComponent {
 		baseUrl: PropTypes.string.isRequired,
 		customEmojis: PropTypes.object.isRequired,
 		timeFormat: PropTypes.string.isRequired,
+		customThreadTimeFormat: PropTypes.string,
 		msg: PropTypes.string,
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
@@ -137,6 +136,10 @@ export default class Message extends PureComponent {
 		useRealName: PropTypes.bool,
 		dcount: PropTypes.number,
 		dlm: PropTypes.instanceOf(Date),
+		tmid: PropTypes.string,
+		tcount: PropTypes.number,
+		tlm: PropTypes.instanceOf(Date),
+		tmsg: PropTypes.string,
 		// methods
 		closeReactions: PropTypes.func,
 		onErrorPress: PropTypes.func,
@@ -144,8 +147,10 @@ export default class Message extends PureComponent {
 		onReactionLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
 		onDiscussionPress: PropTypes.func,
+		onThreadPress: PropTypes.func,
 		replyBroadcast: PropTypes.func,
-		toggleReactionPicker: PropTypes.func
+		toggleReactionPicker: PropTypes.func,
+		fetchThreadName: PropTypes.func
 	}
 
 	static defaultProps = {
@@ -157,9 +162,14 @@ export default class Message extends PureComponent {
 		onLongPress: () => {}
 	}
 
-	onPress = () => {
+	onPress = debounce(() => {
 		KeyboardUtils.dismiss();
-	}
+
+		const { onThreadPress, tlm, tmid } = this.props;
+		if ((tlm || tmid) && onThreadPress) {
+			onThreadPress();
+		}
+	}, 300, true)
 
 	onLongPress = () => {
 		const { archived, onLongPress } = this.props;
@@ -167,6 +177,32 @@ export default class Message extends PureComponent {
 			return;
 		}
 		onLongPress();
+	}
+
+	formatLastMessage = (lm) => {
+		const { customThreadTimeFormat } = this.props;
+		if (customThreadTimeFormat) {
+			return moment(lm).format(customThreadTimeFormat);
+		}
+		return lm ? moment(lm).calendar(null, {
+			lastDay: `[${ I18n.t('Yesterday') }]`,
+			sameDay: 'h:mm A',
+			lastWeek: 'dddd',
+			sameElse: 'MMM D'
+		}) : null;
+	}
+
+	formatMessageCount = (count, type) => {
+		const discussion = type === 'discussion';
+		let text = discussion ? I18n.t('No_messages_yet') : null;
+		if (count === 1) {
+			text = `${ count } ${ discussion ? I18n.t('message') : I18n.t('reply') }`;
+		} else if (count > 1 && count < 1000) {
+			text = `${ count } ${ discussion ? I18n.t('messages') : I18n.t('replies') }`;
+		} else if (count > 999) {
+			text = `+999 ${ discussion ? I18n.t('messages') : I18n.t('replies') }`;
+		}
+		return text;
 	}
 
 	isInfoMessage = () => {
@@ -207,7 +243,8 @@ export default class Message extends PureComponent {
 					borderRadius={4}
 					avatar={avatar}
 					baseUrl={baseUrl}
-					user={user}
+					userId={user.id}
+					token={user.token}
 				/>
 			);
 		}
@@ -237,10 +274,25 @@ export default class Message extends PureComponent {
 		if (this.isInfoMessage()) {
 			return <Text style={styles.textInfo}>{getInfoMessage({ ...this.props })}</Text>;
 		}
+
 		const {
-			customEmojis, msg, baseUrl, user, edited
+			customEmojis, msg, baseUrl, user, edited, tmid
 		} = this.props;
-		return <Markdown msg={msg} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} edited={edited} />;
+
+		if (tmid && !msg) {
+			return <Text style={styles.text}>{I18n.t('Sent_an_attachment')}</Text>;
+		}
+
+		return (
+			<Markdown
+				msg={msg}
+				customEmojis={customEmojis}
+				baseUrl={baseUrl}
+				username={user.username}
+				edited={edited}
+				numberOfLines={tmid ? 1 : 0}
+			/>
+		);
 	}
 
 	renderAttachment() {
@@ -284,9 +336,9 @@ export default class Message extends PureComponent {
 		}
 		const { onErrorPress } = this.props;
 		return (
-			<BorderlessButton onPress={onErrorPress} style={styles.errorButton}>
+			<Touchable onPress={onErrorPress} style={styles.errorButton}>
 				<CustomIcon name='circle-cross' color={COLOR_DANGER} size={20} />
-			</BorderlessButton>
+			</Touchable>
 		);
 	}
 
@@ -369,23 +421,11 @@ export default class Message extends PureComponent {
 		const {
 			msg, dcount, dlm, onDiscussionPress
 		} = this.props;
-		const time = dlm ? moment(dlm).calendar(null, {
-			lastDay: `[${ I18n.t('Yesterday') }]`,
-			sameDay: 'h:mm A',
-			lastWeek: 'dddd',
-			sameElse: 'MMM D'
-		}) : null;
-		let buttonText = 'No messages yet';
-		if (dcount === 1) {
-			buttonText = `${ dcount } message`;
-		} else if (dcount > 1 && dcount < 1000) {
-			buttonText = `${ dcount } messages`;
-		} else if (dcount > 999) {
-			buttonText = '+999 messages';
-		}
+		const time = this.formatLastMessage(dlm);
+		const buttonText = this.formatMessageCount(dcount, 'discussion');
 		return (
 			<React.Fragment>
-				<Text style={styles.textInfo}>{I18n.t('Started_discussion')}</Text>
+				<Text style={styles.startedDiscussion}>{I18n.t('Started_discussion')}</Text>
 				<Text style={styles.text}>{msg}</Text>
 				<View style={styles.buttonContainer}>
 					<Touchable
@@ -405,13 +445,76 @@ export default class Message extends PureComponent {
 		);
 	}
 
+	renderThread = () => {
+		const {
+			tcount, tlm, onThreadPress, msg
+		} = this.props;
+
+		if (!tlm) {
+			return null;
+		}
+
+		const time = this.formatLastMessage(tlm);
+		const buttonText = this.formatMessageCount(tcount, 'thread');
+		return (
+			<View style={styles.buttonContainer}>
+				<Touchable
+					onPress={onThreadPress}
+					background={Touchable.Ripple('#fff')}
+					style={[styles.button, styles.smallButton]}
+					hitSlop={BUTTON_HIT_SLOP}
+					testID={`message-thread-button-${ msg }`}
+				>
+					<React.Fragment>
+						<CustomIcon name='thread' size={20} style={styles.buttonIcon} />
+						<Text style={styles.buttonText}>{buttonText}</Text>
+					</React.Fragment>
+				</Touchable>
+				<Text style={styles.time}>{time}</Text>
+			</View>
+		);
+	}
+
+	renderRepliedThread = () => {
+		const {
+			tmid, tmsg, header, fetchThreadName
+		} = this.props;
+		if (!tmid || !header || this.isTemp()) {
+			return null;
+		}
+
+		if (!tmsg) {
+			fetchThreadName(tmid);
+			return null;
+		}
+
+		let msg = emojify(tmsg, { output: 'unicode' });
+		msg = removeMarkdown(msg);
+
+		return (
+			<View style={styles.repliedThread} testID={`message-thread-replied-on-${ msg }`}>
+				<CustomIcon name='thread' size={16} style={styles.repliedThreadIcon} />
+				<Text style={styles.repliedThreadName} numberOfLines={1}>{msg}</Text>
+			</View>
+		);
+	}
+
 	renderInner = () => {
-		const { type } = this.props;
+		const { type, tmid } = this.props;
 		if (type === 'discussion-created') {
 			return (
 				<React.Fragment>
 					{this.renderUsername()}
 					{this.renderDiscussion()}
+				</React.Fragment>
+			);
+		}
+		if (tmid) {
+			return (
+				<React.Fragment>
+					{this.renderUsername()}
+					{this.renderRepliedThread()}
+					{this.renderContent()}
 				</React.Fragment>
 			);
 		}
@@ -421,6 +524,7 @@ export default class Message extends PureComponent {
 				{this.renderContent()}
 				{this.renderAttachment()}
 				{this.renderUrl()}
+				{this.renderThread()}
 				{this.renderReactions()}
 				{this.renderBroadcastReply()}
 			</React.Fragment>

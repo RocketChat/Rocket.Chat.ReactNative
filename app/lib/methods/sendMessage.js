@@ -5,12 +5,13 @@ import reduxStore from '../createStore';
 import log from '../../utils/log';
 import random from '../../utils/random';
 
-export const getMessage = (rid, msg = {}) => {
+export const getMessage = (rid, msg = '', tmid) => {
 	const _id = random(17);
 	const message = {
 		_id,
 		rid,
 		msg,
+		tmid,
 		ts: new Date(),
 		_updatedAt: new Date(),
 		status: messagesStatus.TEMP,
@@ -30,20 +31,28 @@ export const getMessage = (rid, msg = {}) => {
 };
 
 export async function sendMessageCall(message) {
-	const { _id, rid, msg } = message;
+	const {
+		_id, rid, msg, tmid
+	} = message;
 	// RC 0.60.0
-	const data = await this.sdk.post('chat.sendMessage', { message: { _id, rid, msg } });
+	const data = await this.sdk.post('chat.sendMessage', {
+		message: {
+			_id, rid, msg, tmid
+		}
+	});
 	return data;
 }
 
-export default async function(rid, msg) {
+export default async function(rid, msg, tmid) {
 	try {
-		const message = getMessage(rid, msg);
+		const message = getMessage(rid, msg, tmid);
 		const [room] = database.objects('subscriptions').filtered('rid == $0', rid);
 
-		database.write(() => {
-			room.draftMessage = null;
-		});
+		if (room) {
+			database.write(() => {
+				room.draftMessage = null;
+			});
+		}
 
 		try {
 			const ret = await sendMessageCall.call(this, message);
