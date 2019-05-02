@@ -139,14 +139,6 @@ export default class RoomInfoView extends LoggedView {
 		</View>
 	);
 
-	getRoleDescription = (id) => {
-		const role = database.objectForPrimaryKey('roles', id);
-		if (role) {
-			return role.description;
-		}
-		return null;
-	}
-
 	renderRole = (role) => {
 		const description = this.getRoleDescription(role);
 		if (description) {
