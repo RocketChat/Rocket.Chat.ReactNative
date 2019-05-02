@@ -29,7 +29,7 @@ export async function cancelUpload(path) {
 	}
 }
 
-export async function sendFileMessage(rid, fileInfo) {
+export async function sendFileMessage(rid, fileInfo, tmid) {
 	try {
 		const data = await RNFetchBlob.wrap(fileInfo.path);
 		if (!fileInfo.size) {
@@ -86,6 +86,8 @@ export async function sendFileMessage(rid, fileInfo) {
 			name: completeResult.name,
 			description: completeResult.description,
 			url: completeResult.path
+		}, {
+			tmid
 		});
 
 		database.write(() => {

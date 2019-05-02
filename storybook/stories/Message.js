@@ -263,7 +263,6 @@ export default (
 			header={false}
 		/>
 
-		{/* Legacy thread */}
 		<Separator title='Message with reply' />
 		<Message
 			msg="I'm fine!"
@@ -291,6 +290,11 @@ export default (
 			tlm={date}
 		/>
 		<Message
+			msg='How are you?'
+			tcount={9999}
+			tlm={date}
+		/>
+		<Message
 			msg="I'm fine!"
 			tmid='1'
 			tmsg='How are you?'
@@ -303,6 +307,11 @@ export default (
 		<Message
 			msg="I'm fine!"
 			tmid='1'
+			tmsg='Markdown: [link](http://www.google.com/) ```block code```'
+		/>
+		<Message
+			msg="I'm fine!"
+			tmid='1'
 			tmsg={longText}
 		/>
 		<Message
@@ -316,15 +325,15 @@ export default (
 			tmsg={longText}
 		/>
 		<Message
-			msg='How are you?'
-			tcount={0}
-			tlm={date}
+			tmid='1'
+			tmsg='Thread with attachment'
+			attachments={[{
+				title: 'This is a title',
+				description: 'This is a description',
+				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
+			}]}
 		/>
-		<Message
-			msg='How are you?'
-			tcount={9999}
-			tlm={date}
-		/>
+
 		{/* <Message
 			msg='How are you?'
 			tcount={9999}
