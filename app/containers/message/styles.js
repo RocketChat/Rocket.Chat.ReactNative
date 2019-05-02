@@ -220,13 +220,15 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	repliedThreadIcon: {
-		color: COLOR_PRIMARY
+		color: COLOR_PRIMARY,
+		marginRight: 2
 	},
 	repliedThreadName: {
-		fontSize: 16,
+		fontSize: 14,
+		lineHeight: 16,
 		fontStyle: 'normal',
 		flex: 1,
 		color: COLOR_PRIMARY,
-		...sharedStyles.textSemibold
+		...sharedStyles.textRegular
 	}
 });

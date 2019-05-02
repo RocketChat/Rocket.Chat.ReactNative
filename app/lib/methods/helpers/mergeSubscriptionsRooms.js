@@ -24,17 +24,15 @@ export const merge = (subscription, room) => {
 		subscription.archived = room.archived;
 		subscription.joinCodeRequired = room.joinCodeRequired;
 		subscription.broadcast = room.broadcast;
+		if (!subscription.roles || !subscription.roles.length) {
+			subscription.roles = [];
+		}
 
 		if (room.muted && room.muted.length) {
 			subscription.muted = room.muted.filter(user => user).map(user => ({ value: user }));
 		} else {
 			subscription.muted = [];
 		}
-	}
-	if (subscription.roles && subscription.roles.length) {
-		subscription.roles = subscription.roles.map(role => (role.value ? role : { value: role }));
-	} else {
-		subscription.roles = [];
 	}
 
 	if (subscription.mobilePushNotifications === 'nothing') {
