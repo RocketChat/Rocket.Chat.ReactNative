@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 import Touchable from 'react-native-platform-touchable';
+import isEqual from 'lodash/isEqual';
 
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
@@ -50,33 +51,60 @@ const styles = StyleSheet.create({
 	}
 });
 
-const onPress = (url) => {
-	openLink(url);
-};
-const Url = ({ url, index }) => {
+const UrlImage = React.memo(({ image, user, baseUrl }) => {
+	if (!image) {
+		return null;
+	}
+	image = image.includes('http') ? image : `${ baseUrl }/${ image }?rc_uid=${ user.id }&rc_token=${ user.token }`;
+	return <FastImage source={{ uri: image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} />;
+});
+
+const UrlContent = React.memo(({ title, description }) => (
+	<View style={styles.textContainer}>
+		{title ? <Text style={styles.title} numberOfLines={2}>{title}</Text> : null}
+		{description ? <Text style={styles.description} numberOfLines={2}>{description}</Text> : null}
+	</View>
+));
+
+const Url = React.memo(({
+	url, index, user, baseUrl
+}) => {
 	if (!url) {
 		return null;
 	}
+
+	const onPress = () => openLink(url.url);
+
 	return (
 		<Touchable
-			onPress={() => onPress(url.url)}
+			onPress={onPress}
 			style={[styles.button, index > 0 && styles.marginTop, styles.container]}
 			background={Touchable.Ripple('#fff')}
 		>
 			<React.Fragment>
-				{url.image ? <FastImage source={{ uri: url.image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} /> : null}
-				<View style={styles.textContainer}>
-					<Text style={styles.title} numberOfLines={2}>{url.title}</Text>
-					<Text style={styles.description} numberOfLines={2}>{url.description}</Text>
-				</View>
+				<UrlImage image={url.image} user={user} baseUrl={baseUrl} />
+				<UrlContent title={url.title} description={url.description} />
 			</React.Fragment>
 		</Touchable>
 	);
+}, (oldProps, newProps) => isEqual(oldProps.url, newProps.url));
+
+UrlImage.propTypes = {
+	image: PropTypes.string,
+	user: PropTypes.object,
+	baseUrl: PropTypes.string
+};
+
+UrlContent.propTypes = {
+	title: PropTypes.string,
+	description: PropTypes.string
 };
 
 Url.propTypes = {
 	url: PropTypes.object.isRequired,
-	index: PropTypes.number
+	index: PropTypes.number,
+	user: PropTypes.object,
+	baseUrl: PropTypes.string
 };
 
 export default Url;
