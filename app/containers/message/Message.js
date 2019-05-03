@@ -320,13 +320,13 @@ export default class Message extends PureComponent {
 	}
 
 	renderUrl = () => {
-		const { urls } = this.props;
+		const { urls, user, baseUrl } = this.props;
 		if (urls.length === 0) {
 			return null;
 		}
 
 		return urls.map((url, index) => (
-			<Url url={url} key={url.url} index={index} />
+			<Url url={url} key={url.url} index={index} user={user} baseUrl={baseUrl} />
 		));
 	}
 
