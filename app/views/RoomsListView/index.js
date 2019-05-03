@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
-import { SafeAreaView, NavigationEvents } from 'react-navigation';
+import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 
 import database, { safeAddListener } from '../../lib/realm';
