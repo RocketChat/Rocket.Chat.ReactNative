@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
-import { SafeAreaView, NavigationEvents } from 'react-navigation';
+import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 
 import database, { safeAddListener } from '../../lib/realm';
@@ -134,6 +134,8 @@ export default class RoomsListView extends LoggedView {
 			livechat: []
 		};
 		Orientation.unlockAllOrientations();
+		this.didFocusListener = props.navigation.addListener('didFocus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
+		this.willBlurListener = props.navigation.addListener('willBlur', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
 	}
 
 	componentDidMount() {
@@ -209,6 +211,12 @@ export default class RoomsListView extends LoggedView {
 		}
 		if (this.updateStateInteraction && this.updateStateInteraction.cancel) {
 			this.updateStateInteraction.cancel();
+		}
+		if (this.didFocusListener && this.didFocusListener.remove) {
+			this.didFocusListener.remove();
+		}
+		if (this.willBlurListener && this.willBlurListener.remove) {
+			this.willBlurListener.remove();
 		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
@@ -558,10 +566,6 @@ export default class RoomsListView extends LoggedView {
 					: null
 				}
 				{showServerDropdown ? <ServerDropdown /> : null}
-				<NavigationEvents
-					onDidFocus={() => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)}
-					onWillBlur={() => BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)}
-				/>
 			</SafeAreaView>
 		);
 	}
