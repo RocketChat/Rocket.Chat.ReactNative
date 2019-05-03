@@ -163,6 +163,26 @@ export default class MessageContainer extends React.Component {
 		return true;
 	}
 
+	isThreadReply = () => {
+		const {
+			item, previousItem
+		} = this.props;
+		if (previousItem && item.tmid && (previousItem.tmid !== item.tmid) && (previousItem._id !== item.tmid)) {
+			return true;
+		}
+		return false;
+	}
+
+	isThreadSequential = () => {
+		const {
+			item, previousItem
+		} = this.props;
+		if (previousItem && item.tmid && ((previousItem.tmid === item.tmid) || (previousItem._id === item.tmid))) {
+			return true;
+		}
+		return false;
+	}
+
 	parseMessage = () => {
 		const { item } = this.props;
 		return JSON.parse(JSON.stringify(item));
@@ -201,6 +221,8 @@ export default class MessageContainer extends React.Component {
 				alias={alias}
 				editing={isEditing}
 				header={this.isHeader()}
+				isThreadReply={this.isThreadReply()}
+				isThreadSequential={this.isThreadSequential()}
 				avatar={avatar}
 				user={user}
 				edited={editedBy && !!editedBy.username}

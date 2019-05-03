@@ -271,14 +271,14 @@ export default class RoomsListView extends LoggedView {
 	updateState = debounce(() => {
 		this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
 			this.internalSetState({
-				chats: this.chats,
-				unread: this.unread,
-				favorites: this.favorites,
-				discussions: this.discussions,
-				channels: this.channels,
-				privateGroup: this.privateGroup,
-				direct: this.direct,
-				livechat: this.livechat,
+				chats: this.chats ? this.chats.slice() : [],
+				unread: this.unread ? this.unread.slice() : [],
+				favorites: this.favorites ? this.favorites.slice() : [],
+				discussions: this.discussions ? this.discussions.slice() : [],
+				channels: this.channels ? this.channels.slice() : [],
+				privateGroup: this.privateGroup ? this.privateGroup.slice() : [],
+				direct: this.direct ? this.direct.slice() : [],
+				livechat: this.livechat ? this.livechat.slice() : [],
 				loading: false
 			});
 			this.forceUpdate();

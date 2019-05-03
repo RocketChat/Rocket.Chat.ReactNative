@@ -606,10 +606,10 @@ class MessageBox extends Component {
 			const { replyMessage, closeReply, threadsEnabled } = this.props;
 
 			// Thread
-			if (threadsEnabled) {
+			if (threadsEnabled && replyMessage.mention) {
 				onSubmit(message, replyMessage._id);
 
-			// Legacy reply
+			// Legacy reply or quote (quote is a reply without mention)
 			} else {
 				const { user, roomType } = this.props;
 				const permalink = await this.getPermalink(replyMessage);
