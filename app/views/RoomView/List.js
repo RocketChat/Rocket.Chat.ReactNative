@@ -147,7 +147,7 @@ export class List extends React.PureComponent {
 					style={styles.list}
 					inverted
 					removeClippedSubviews
-					initialNumToRender={1}
+					initialNumToRender={5}
 					onEndReached={this.onEndReached}
 					onEndReachedThreshold={0.5}
 					maxToRenderPerBatch={5}
