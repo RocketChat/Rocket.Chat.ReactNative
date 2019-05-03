@@ -184,6 +184,10 @@ export default function subscribeRoom({ rid }) {
 				typingTimeouts[key] = null;
 			}
 		});
+		database.memoryDatabase.write(() => {
+			const usersTyping = database.memoryDatabase.objects('usersTyping').filtered('rid == $0', rid);
+			database.memoryDatabase.delete(usersTyping);
+		});
 	};
 
 	connectedListener = this.sdk.onStreamData('connected', handleConnected);
