@@ -510,7 +510,7 @@ export default class RoomView extends LoggedView {
 		return (
 			<React.Fragment>
 				{room._id && showActions
-					? <MessageActions room={room} user={user} />
+					? <MessageActions room={room} tmid={this.tmid} user={user} />
 					: null
 				}
 				{showErrorActions ? <MessageErrorActions /> : null}

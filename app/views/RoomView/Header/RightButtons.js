@@ -48,6 +48,12 @@ class RightButtonsContainer extends React.PureComponent {
 		};
 	}
 
+	componentWillUnmount() {
+		if (this.thread && this.thread.removeAllListeners) {
+			this.thread.removeAllListeners();
+		}
+	}
+
 	updateThread = () => {
 		const { userId } = this.props;
 		this.setState({
