@@ -18,7 +18,7 @@ import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RCTextInput from '../../containers/TextInput';
 import Loading from '../../containers/Loading';
-import SwitchContainer from './SwitchContainer';
+import SwitchContainer from '../SwitchContainer';
 import random from '../../utils/random';
 import log from '../../utils/log';
 import I18n from '../../i18n';
