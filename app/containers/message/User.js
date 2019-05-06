@@ -27,39 +27,28 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
+	},
+	temp: {
+		opacity: 0.3
 	}
 });
 
-export default class User extends React.PureComponent {
-	static propTypes = {
-		timeFormat: PropTypes.string.isRequired,
-		username: PropTypes.string,
-		alias: PropTypes.string,
-		ts: PropTypes.oneOfType([
-			PropTypes.instanceOf(Date),
-			PropTypes.string
-		]),
-		temp: PropTypes.bool
-	}
-
-	render() {
-		const {
-			username, alias, ts, temp, timeFormat
-		} = this.props;
-
+const User = React.memo((props) => {
+	if (props.header) {
+		const username = (props.useRealName && props.author.name) || props.author.username;
 		const extraStyle = {};
-		if (temp) {
+		if (props.isTemp) {
 			extraStyle.opacity = 0.3;
 		}
 
-		const aliasUsername = alias ? (<Text style={styles.alias}> @{username}</Text>) : null;
-		const time = moment(ts).format(timeFormat);
+		const aliasUsername = props.alias ? (<Text style={styles.alias}> @{username}</Text>) : null;
+		const time = moment(props.ts).format(props.timeFormat);
 
 		return (
-			<View style={styles.container}>
+			<View style={[styles.container, props.isTemp && styles.temp]}>
 				<View style={styles.titleContainer}>
 					<Text style={styles.username} numberOfLines={1}>
-						{alias || username}
+						{props.alias || username}
 						{aliasUsername}
 					</Text>
 				</View>
@@ -67,4 +56,7 @@ export default class User extends React.PureComponent {
 			</View>
 		);
 	}
-}
+	return null;
+});
+
+export default User;

@@ -89,6 +89,16 @@ const Url = React.memo(({
 	);
 }, (oldProps, newProps) => isEqual(oldProps.url, newProps.url));
 
+const Urls = React.memo(({ urls, user, baseUrl }) => {
+	if (urls.length === 0) {
+		return null;
+	}
+
+	return urls.map((url, index) => (
+		<Url url={url} key={url.url} index={index} user={user} baseUrl={baseUrl} />
+	));
+});
+
 UrlImage.propTypes = {
 	image: PropTypes.string,
 	user: PropTypes.object,
@@ -107,4 +117,4 @@ Url.propTypes = {
 	baseUrl: PropTypes.string
 };
 
-export default Url;
+export default Urls;
