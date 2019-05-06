@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
+import PropTypes from 'prop-types';
 
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
@@ -29,6 +30,13 @@ const Broadcast = React.memo(({
 		);
 	}
 	return null;
-});
+}, () => true);
+
+Broadcast.propTypes = {
+	author: PropTypes.object,
+	user: PropTypes.object,
+	broadcast: PropTypes.bool,
+	replyBroadcast: PropTypes.func
+};
 
 export default Broadcast;
