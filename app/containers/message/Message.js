@@ -18,6 +18,7 @@ import Markdown from './Markdown';
 import Url from './Url';
 import Reply from './Reply';
 import ReactionsModal from './ReactionsModal';
+import MessageError from './MessageError';
 import Emoji from './Emoji';
 import styles from './styles';
 import I18n from '../../i18n';
@@ -27,6 +28,8 @@ import { COLOR_DANGER } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import DisclosureIndicator from '../DisclosureIndicator';
 import sharedStyles from '../../views/Styles';
+import RepliedThread from './RepliedThread';
+import MessageAvatar from './MessageAvatar';
 
 const SYSTEM_MESSAGES = [
 	'r',
@@ -120,11 +123,11 @@ const formatMessageCount = (count, type) => {
 	return text;
 };
 
-const isInfoMessage = ({ type }) => SYSTEM_MESSAGES.includes(type);
+const isInfoMessageFunc = ({ type }) => SYSTEM_MESSAGES.includes(type);
 
-const isTemp = ({ status }) => status === messagesStatus.TEMP || status === messagesStatus.ERROR;
+const isTempFunc = ({ status }) => status === messagesStatus.TEMP || status === messagesStatus.ERROR;
 
-const hasError = ({ status }) => status === messagesStatus.ERROR;
+const hasErrorFunc = ({ status }) => status === messagesStatus.ERROR;
 
 const onPress = debounce(({ onThreadPress, tlm, tmid }) => {
 	KeyboardUtils.dismiss();
@@ -137,7 +140,7 @@ const onPress = debounce(({ onThreadPress, tlm, tmid }) => {
 const onLongPress = ({
 	archived, onLongPress: onLongPressProp, type, status
 }) => {
-	if (isInfoMessage({ type }) || hasError({ status }) || archived) {
+	if (isInfoMessageFunc({ type }) || hasErrorFunc({ status }) || archived) {
 		return;
 	}
 	onLongPressProp();
@@ -307,7 +310,7 @@ const RenderAttachment = React.memo(({
 })
 
 const RenderContent = React.memo((props) => {
-	if (isInfoMessage({ type: props.type })) {
+	if (isInfoMessageFunc({ type: props.type })) {
 		return <Text style={styles.textInfo}>{getInfoMessage({ ...props })}</Text>;
 	}
 
@@ -337,7 +340,7 @@ const RenderUsername = React.memo(({ header, timeFormat, author, alias, ts, useR
 				username={(useRealName && author.name) || author.username}
 				alias={alias}
 				ts={ts}
-				temp={isTemp({ status })}
+				temp={isTempFunc({ status })}
 			/>
 		);
 	}
@@ -366,67 +369,23 @@ const RenderInner = React.memo((props) => {
 	);
 });
 
-const RenderAvatar = React.memo(({
-	header, avatar, author, baseUrl, user, small
-}) => {
-	if (header) {
-		return (
-			<Avatar
-				style={small ? styles.avatarSmall : styles.avatar}
-				text={avatar ? '' : author.username}
-				size={small ? 20 : 36}
-				borderRadius={small ? 2 : 4}
-				avatar={avatar}
-				baseUrl={baseUrl}
-				userId={user.id}
-				token={user.token}
-			/>
-		);
-	}
-	return null;
-})
-
-const RenderRepliedThread = React.memo(({ status, tmid, tmsg, header, fetchThreadName }) => {
-	if (!tmid || !header || isTemp({ status })) {
-		return null;
-	}
-
-	if (!tmsg) {
-		fetchThreadName(tmid);
-		return null;
-	}
-
-	let msg = emojify(tmsg, { output: 'unicode' });
-	msg = removeMarkdown(msg);
-
-	return (
-		<View style={styles.repliedThread} testID={`message-thread-replied-on-${ msg }`}>
-			<CustomIcon name='thread' size={20} style={styles.repliedThreadIcon} />
-			<Text style={styles.repliedThreadName} numberOfLines={1}>{msg}</Text>
-			<DisclosureIndicator />
-		</View>
-	);
-});
-
 const RenderMessage = React.memo((props) => {
-	if (props.isThreadReply || props.isThreadSequential || isInfoMessage({ type: props.type })) {
-		const thread = props.isThreadReply ? <RenderRepliedThread {...props} /> : null;
+	if (props.isThreadReply || props.isThreadSequential || isInfoMessageFunc({ type: props.type })) {
+		const thread = props.isThreadReply ? <RepliedThread isTemp={props.isTemp} {...props} /> : null;
 		return (
 			<React.Fragment>
 				{thread}
 				<View style={[styles.flex, sharedStyles.alignItemsCenter]}>
-					{/* {this.renderAvatar(true)} */}
-					<RenderAvatar small {...props} />
+					<MessageAvatar small {...props} />
 					<View
 						style={[
 							styles.messageContent,
 							props.header && styles.messageContentWithHeader,
-							hasError({ status: props.status }) && props.header && styles.messageContentWithHeader,
-							hasError({ status: props.status }) && !props.header && styles.messageContentWithError,
-							isTemp({ status: props.status }) && styles.temp
+							props.hasError && props.header && styles.messageContentWithHeader,
+							props.hasError && !props.header && styles.messageContentWithError,
+							props.isTemp && styles.temp
 						]}
 					>
-						{/* {this.renderContent()} */}
 						<RenderContent {...props} />
 					</View>
 				</View>
@@ -435,30 +394,19 @@ const RenderMessage = React.memo((props) => {
 	}
 	return (
 		<View style={styles.flex}>
-			<RenderAvatar {...props} />
+			<MessageAvatar {...props} />
 			<View
 				style={[
 					styles.messageContent,
 					props.header && styles.messageContentWithHeader,
-					hasError({ status: props.status }) && props.header && styles.messageContentWithHeader,
-					hasError({ status: props.status }) && !props.header && styles.messageContentWithError,
-					isTemp({ status: props.status }) && styles.temp
+					props.hasError && props.header && styles.messageContentWithHeader,
+					props.hasError && !props.header && styles.messageContentWithError,
+					props.isTemp && styles.temp
 				]}
 			>
 				<RenderInner {...props} />
 			</View>
 		</View>
-	);
-});
-
-const RenderMessageError = React.memo((props) => {
-	if (!hasError({ status: props.status })) {
-		return null;
-	}
-	return (
-		<Touchable onPress={props.onErrorPress} style={styles.errorButton}>
-			<CustomIcon name='circle-cross' color={COLOR_DANGER} size={20} />
-		</Touchable>
 	);
 });
 
@@ -469,9 +417,12 @@ const Message = React.memo((props) => {
 		message: props.msg
 	});
 
+	const hasError = hasErrorFunc({ status: props.status });
+	const isTemp = isTempFunc({ status: props.status });
+
 	return (
 		<View style={styles.root}>
-			<RenderMessageError {...props} />
+			<MessageError hasError={hasError} {...props} />
 			<TouchableWithoutFeedback
 				onLongPress={() => onLongPress(props)}
 				onPress={() => onPress(props)}
@@ -480,7 +431,7 @@ const Message = React.memo((props) => {
 					style={[styles.container, props.editing && styles.editing, props.style]}
 					accessibilityLabel={accessibilityLabel}
 				>
-					<RenderMessage {...props} />
+					<RenderMessage isTemp={isTemp} hasError={hasError} {...props} />
 				</View>
 			</TouchableWithoutFeedback>
 		</View>
