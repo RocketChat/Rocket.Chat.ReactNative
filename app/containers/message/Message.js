@@ -1,16 +1,13 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, Text, ViewPropTypes, TouchableWithoutFeedback
-} from 'react-native';
+import { View, TouchableWithoutFeedback } from 'react-native';
 import moment from 'moment';
-import { KeyboardUtils } from 'react-native-keyboard-input';
 
 import User from './User';
 import MessageError from './MessageError';
 import styles from './styles';
 import I18n from '../../i18n';
-import debounce from '../../utils/debounce';
+// import debounce from '../../utils/debounce';
 import sharedStyles from '../../views/Styles';
 import RepliedThread from './RepliedThread';
 import MessageAvatar from './MessageAvatar';
@@ -20,48 +17,9 @@ import Thread from './Thread';
 import Reactions from './Reactions';
 import Broadcast from './Broadcast';
 import Discussion from './Discussion';
-import { getInfoMessage } from './utils';
+import Content from './Content';
 
-const onPress = debounce(({ onThreadPress, tlm, tmid }) => {
-	KeyboardUtils.dismiss();
-
-	if ((tlm || tmid) && onThreadPress) {
-		onThreadPress();
-	}
-}, 300, true);
-
-const onLongPress = ({
-	archived, onLongPress: onLongPressProp, type, status, isInfo, hasError
-}) => {
-	if (isInfo({ type }) || hasError({ status }) || archived) {
-		return;
-	}
-	onLongPressProp();
-};
-
-const RenderContent = React.memo((props) => {
-	if (props.isInfo) {
-		return <Text style={styles.textInfo}>{getInfoMessage({ ...props })}</Text>;
-	}
-
-	if (props.tmid && !props.msg) {
-		return <Text style={styles.text}>{I18n.t('Sent_an_attachment')}</Text>;
-	}
-
-	return <Text>{props.msg}</Text>;
-	// return (
-	// 	<Markdown
-	// 		msg={msg}
-	// 		customEmojis={customEmojis}
-	// 		baseUrl={baseUrl}
-	// 		username={user.username}
-	// 		edited={edited}
-	// 		numberOfLines={tmid ? 1 : 0}
-	// 	/>
-	// );
-});
-
-const RenderInner = React.memo((props) => {
+const MessageInner = React.memo((props) => {
 	if (props.type === 'discussion-created') {
 		return (
 			<React.Fragment>
@@ -73,7 +31,7 @@ const RenderInner = React.memo((props) => {
 	return (
 		<React.Fragment>
 			<User {...props} />
-			<RenderContent {...props} />
+			<Content {...props} />
 			<Attachments {...props} />
 			<Urls {...props} />
 			<Thread {...props} />
@@ -83,7 +41,7 @@ const RenderInner = React.memo((props) => {
 	);
 });
 
-const RenderMessage = React.memo((props) => {
+const Message = React.memo((props) => {
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo) {
 		const thread = props.isThreadReply ? <RepliedThread isTemp={props.isTemp} {...props} /> : null;
 		return (
@@ -100,7 +58,7 @@ const RenderMessage = React.memo((props) => {
 							props.isTemp && styles.temp
 						]}
 					>
-						<RenderContent {...props} />
+						<Content {...props} />
 					</View>
 				</View>
 			</React.Fragment>
@@ -118,13 +76,13 @@ const RenderMessage = React.memo((props) => {
 					props.isTemp && styles.temp
 				]}
 			>
-				<RenderInner isTemp={props.isTemp} {...props} />
+				<MessageInner isTemp={props.isTemp} {...props} />
 			</View>
 		</View>
 	);
 });
 
-const Message = React.memo((props) => {
+const MessageTouchable = React.memo((props) => {
 	const accessibilityLabel = I18n.t('Message_accessibility', {
 		user: props.author.username, 
 		time: moment(props.ts).format(props.timeFormat), 
@@ -135,18 +93,18 @@ const Message = React.memo((props) => {
 		<View style={styles.root}>
 			<MessageError hasError={props.hasError} {...props} />
 			<TouchableWithoutFeedback
-				onLongPress={() => onLongPress(props)}
-				onPress={() => onPress(props)}
+				onLongPress={props.onLongPress}
+				onPress={props.onPress}
 			>
 				<View
 					style={[styles.container, props.editing && styles.editing, props.style]}
 					accessibilityLabel={accessibilityLabel}
 				>
-					<RenderMessage isTemp={props.isTemp} hasError={props.hasError} {...props} />
+					<Message isTemp={props.isTemp} hasError={props.hasError} {...props} />
 				</View>
 			</TouchableWithoutFeedback>
 		</View>
 	);
 });
 
-export default Message;
+export default MessageTouchable;

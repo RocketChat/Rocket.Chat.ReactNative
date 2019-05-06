@@ -15,6 +15,7 @@ import { vibrate } from '../../utils/vibration';
 import debounce from '../../utils/debounce';
 import { SYSTEM_MESSAGES } from './utils';
 import messagesStatus from '../../constants/messagesStatus';
+import { KeyboardUtils } from 'react-native-keyboard-input';
 
 // @connect(state => ({
 // 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -108,8 +109,21 @@ export default class MessageContainer extends React.Component {
 	// 	return _updatedAt.toISOString() !== nextProps._updatedAt.toISOString();
 	// }
 
+	onPress = debounce(() => {
+		const { item } = this.props;
+		KeyboardUtils.dismiss();
+
+		if ((item.tlm || item.tmid)) {
+			this.onThreadPress();
+		}
+	}, 300, true);
+
 	onLongPress = () => {
-		const { onLongPress } = this.props;
+		const { archived, onLongPress } = this.props;
+		if (this.isInfo || this.hasError || archived) {
+			return;
+		}
+		console.log('onLongPress')
 		onLongPress(this.parseMessage());
 	}
 
@@ -192,7 +206,7 @@ export default class MessageContainer extends React.Component {
 		return false;
 	}
 
-	get isInfoMessage() {
+	get isInfo() {
 		const { item } = this.props;
 		return SYSTEM_MESSAGES.includes(item.t);
 	}
@@ -230,7 +244,7 @@ export default class MessageContainer extends React.Component {
 	render() {
 		// console.log(`RENDERING ${ this.props.item._id }`)
 		const {
-			item, editingMessage, user, style, archived, baseUrl, customEmojis, useRealName, broadcast, fetchThreadName, customThreadTimeFormat
+			item, user, style, archived, baseUrl, customEmojis, useRealName, broadcast, fetchThreadName, customThreadTimeFormat
 		} = this.props;
 		const {
 			_id, msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg
@@ -269,7 +283,7 @@ export default class MessageContainer extends React.Component {
 				tlm={tlm}
 				tmsg={tmsg}
 				fetchThreadName={fetchThreadName}
-				header={this.isHeader} // FIXME: try something else
+				header={this.isHeader}
 				isThreadReply={this.isThreadReply}
 				isThreadSequential={this.isThreadSequential}
 				isInfo={this.isInfo}
@@ -277,13 +291,14 @@ export default class MessageContainer extends React.Component {
 				hasError={this.hasError}
 				// closeReactions={this.closeReactions}
 				onErrorPress={this.onErrorPress}
+				onPress={this.onPress}
 				onLongPress={this.onLongPress}
 				// onReactionLongPress={this.onReactionLongPress}
 				onReactionPress={this.onReactionPress}
 				replyBroadcast={this.replyBroadcast}
 				toggleReactionPicker={this.toggleReactionPicker}
 				onDiscussionPress={this.onDiscussionPress}
-				onThreadPress={this.onThreadPress}
+				// onThreadPress={this.onThreadPress}
 			/>
 		);
 	}
