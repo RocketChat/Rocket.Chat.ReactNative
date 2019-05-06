@@ -134,28 +134,50 @@ export class List extends React.PureComponent {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { messages } = this.state;
 		return (
-			<React.Fragment>
-				<EmptyRoom length={messages.length} />
-				<FlatList
-					testID='room-view-messages'
-					ref={ref => this.list = ref}
-					keyExtractor={item => item._id}
-					data={messages}
-					extraData={this.state}
-					renderItem={this.renderItem}
-					contentContainerStyle={styles.contentContainer}
-					style={styles.list}
-					inverted
-					removeClippedSubviews
-					initialNumToRender={5}
-					onEndReached={this.onEndReached}
-					onEndReachedThreshold={0.5}
-					maxToRenderPerBatch={5}
-					windowSize={21}
-					ListFooterComponent={this.renderFooter}
-					{...scrollPersistTaps}
-				/>
-			</React.Fragment>
+			<FlatList
+				testID='room-view-messages'
+				ref={ref => this.list = ref}
+				keyExtractor={item => item._id}
+				data={messages}
+				extraData={this.state}
+				renderItem={this.renderItem}
+				contentContainerStyle={styles.contentContainer}
+				style={styles.list}
+				inverted
+				removeClippedSubviews
+				initialNumToRender={20}
+				onEndReached={this.onEndReached}
+				onEndReachedThreshold={0.5}
+				// maxToRenderPerBatch={5}
+				windowSize={21}
+				ListFooterComponent={this.renderFooter}
+				// legacyImplementation
+				{...scrollPersistTaps}
+			/>
 		);
+		// return (
+		// 	<React.Fragment>
+		// 		<EmptyRoom length={messages.length} />
+		// 		<FlatList
+		// 			testID='room-view-messages'
+		// 			ref={ref => this.list = ref}
+		// 			keyExtractor={item => item._id}
+		// 			data={messages}
+		// 			extraData={this.state}
+		// 			renderItem={this.renderItem}
+		// 			contentContainerStyle={styles.contentContainer}
+		// 			style={styles.list}
+		// 			inverted
+		// 			removeClippedSubviews
+		// 			initialNumToRender={20}
+		// 			onEndReached={this.onEndReached}
+		// 			onEndReachedThreshold={0.5}
+		// 			maxToRenderPerBatch={5}
+		// 			windowSize={21}
+		// 			ListFooterComponent={this.renderFooter}
+		// 			{...scrollPersistTaps}
+		// 		/>
+		// 	</React.Fragment>
+		// );
 	}
 }

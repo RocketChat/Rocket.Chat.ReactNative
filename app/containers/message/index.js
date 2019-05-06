@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { ViewPropTypes } from 'react-native';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
+import slowlog from 'react-native-slowlog';
 
 import Message from './Message';
 import {
@@ -13,18 +14,18 @@ import {
 import { vibrate } from '../../utils/vibration';
 import debounce from '../../utils/debounce';
 
-@connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	customEmojis: state.customEmojis,
-	Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
-	Message_TimeFormat: state.settings.Message_TimeFormat,
-	editingMessage: state.messages.message,
-	useRealName: state.settings.UI_Use_Real_Name
-}), dispatch => ({
-	errorActionsShow: actionMessage => dispatch(errorActionsShowAction(actionMessage)),
-	replyBroadcast: message => dispatch(replyBroadcastAction(message)),
-	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message))
-}))
+// @connect(state => ({
+// 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+// 	customEmojis: state.customEmojis,
+// 	Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
+// 	Message_TimeFormat: state.settings.Message_TimeFormat,
+// 	editingMessage: state.messages.message,
+// 	useRealName: state.settings.UI_Use_Real_Name
+// }), dispatch => ({
+// 	errorActionsShow: actionMessage => dispatch(errorActionsShowAction(actionMessage)),
+// 	replyBroadcast: message => dispatch(replyBroadcastAction(message)),
+// 	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message))
+// }))
 export default class MessageContainer extends React.Component {
 	static propTypes = {
 		item: PropTypes.object.isRequired,
@@ -69,35 +70,41 @@ export default class MessageContainer extends React.Component {
 
 	constructor(props) {
 		super(props);
+		// slowlog(this, /.*/)
+		// console.log(`MOUNTING ${ props.item._id }`)
 		this.state = { reactionsModal: false };
 		this.closeReactions = this.closeReactions.bind(this);
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const { reactionsModal } = this.state;
-		const {
-			status, editingMessage, item, _updatedAt, navigation
-		} = this.props;
-
-		if (reactionsModal !== nextState.reactionsModal) {
-			return true;
-		}
-		if (status !== nextProps.status) {
-			return true;
-		}
-		if (item.tmsg !== nextProps.item.tmsg) {
-			return true;
-		}
-
-		if (navigation.isFocused() && !equal(editingMessage, nextProps.editingMessage)) {
-			if (nextProps.editingMessage && nextProps.editingMessage._id === item._id) {
-				return true;
-			} else if (!nextProps.editingMessage._id !== item._id && editingMessage._id === item._id) {
-				return true;
-			}
-		}
-		return _updatedAt.toISOString() !== nextProps._updatedAt.toISOString();
+	shouldComponentUpdate() {
+		return false;
 	}
+
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	const { reactionsModal } = this.state;
+	// 	const {
+	// 		status, editingMessage, item, _updatedAt, navigation
+	// 	} = this.props;
+
+	// 	if (reactionsModal !== nextState.reactionsModal) {
+	// 		return true;
+	// 	}
+	// 	if (status !== nextProps.status) {
+	// 		return true;
+	// 	}
+	// 	if (item.tmsg !== nextProps.item.tmsg) {
+	// 		return true;
+	// 	}
+
+	// 	if (navigation.isFocused() && !equal(editingMessage, nextProps.editingMessage)) {
+	// 		if (nextProps.editingMessage && nextProps.editingMessage._id === item._id) {
+	// 			return true;
+	// 		} else if (!nextProps.editingMessage._id !== item._id && editingMessage._id === item._id) {
+	// 			return true;
+	// 		}
+	// 	}
+	// 	return _updatedAt.toISOString() !== nextProps._updatedAt.toISOString();
+	// }
 
 	onLongPress = () => {
 		const { onLongPress } = this.props;
@@ -199,6 +206,7 @@ export default class MessageContainer extends React.Component {
 	}
 
 	render() {
+		// console.log(`RENDERING ${ this.props.item._id }`)
 		const { reactionsModal } = this.state;
 		const {
 			item, editingMessage, user, style, archived, baseUrl, customEmojis, useRealName, broadcast, fetchThreadName, customThreadTimeFormat
@@ -220,7 +228,7 @@ export default class MessageContainer extends React.Component {
 				reactions={reactions}
 				alias={alias}
 				editing={isEditing}
-				header={this.isHeader()}
+				header={this.isHeader()} // FIXME: try something else
 				isThreadReply={this.isThreadReply()}
 				isThreadSequential={this.isThreadSequential()}
 				avatar={avatar}

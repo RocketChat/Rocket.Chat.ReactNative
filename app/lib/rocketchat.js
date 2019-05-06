@@ -169,13 +169,13 @@ const RocketChat = {
 		this.getRoles();
 		this.registerPushToken().catch(e => console.log(e));
 
-		if (this.activeUsersSubTimeout) {
-			clearTimeout(this.activeUsersSubTimeout);
-			this.activeUsersSubTimeout = false;
-		}
-		this.activeUsersSubTimeout = setTimeout(() => {
-			this.sdk.subscribe('activeUsers');
-		}, 5000);
+		// if (this.activeUsersSubTimeout) {
+		// 	clearTimeout(this.activeUsersSubTimeout);
+		// 	this.activeUsersSubTimeout = false;
+		// }
+		// this.activeUsersSubTimeout = setTimeout(() => {
+		// 	this.sdk.subscribe('activeUsers');
+		// }, 5000);
 	},
 	connect({ server, user }) {
 		database.setActiveDB(server);

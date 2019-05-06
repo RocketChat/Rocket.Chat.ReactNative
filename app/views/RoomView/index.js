@@ -446,6 +446,12 @@ export default class RoomView extends LoggedView {
 				onReactionPress={this.onReactionPress}
 				onLongPress={this.onMessageLongPress}
 				onDiscussionPress={this.onDiscussionPress}
+				baseUrl='https://open.rocket.chat'
+				customEmojis={{}}
+				Message_GroupingPeriod={60000}
+				Message_TimeFormat='LLL'
+				editingMessage={{}}
+				useRealName={false}
 			/>
 		);
 
@@ -537,10 +543,10 @@ export default class RoomView extends LoggedView {
 			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
 				<List rid={rid} t={t} tmid={this.tmid} renderRow={this.renderItem} />
-				{this.renderFooter()}
+				{/* {this.renderFooter()}
 				{this.renderActions()}
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
-				<UploadProgress rid={this.rid} />
+				<UploadProgress rid={this.rid} /> */}
 			</SafeAreaView>
 		);
 	}

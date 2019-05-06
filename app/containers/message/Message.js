@@ -94,516 +94,397 @@ const BUTTON_HIT_SLOP = {
 	top: 4, right: 4, bottom: 4, left: 4
 };
 
-export default class Message extends PureComponent {
-	static propTypes = {
-		baseUrl: PropTypes.string.isRequired,
-		customEmojis: PropTypes.object.isRequired,
-		timeFormat: PropTypes.string.isRequired,
-		customThreadTimeFormat: PropTypes.string,
-		msg: PropTypes.string,
-		user: PropTypes.shape({
-			id: PropTypes.string.isRequired,
-			username: PropTypes.string.isRequired,
-			token: PropTypes.string.isRequired
-		}),
-		author: PropTypes.shape({
-			_id: PropTypes.string.isRequired,
-			username: PropTypes.string.isRequired,
-			name: PropTypes.string
-		}),
-		status: PropTypes.any,
-		reactions: PropTypes.any,
-		editing: PropTypes.bool,
-		style: ViewPropTypes.style,
-		archived: PropTypes.bool,
-		broadcast: PropTypes.bool,
-		reactionsModal: PropTypes.bool,
-		type: PropTypes.string,
-		header: PropTypes.bool,
-		isThreadReply: PropTypes.bool,
-		isThreadSequential: PropTypes.bool,
-		avatar: PropTypes.string,
-		alias: PropTypes.string,
-		ts: PropTypes.oneOfType([
-			PropTypes.instanceOf(Date),
-			PropTypes.string
-		]),
-		edited: PropTypes.bool,
-		attachments: PropTypes.oneOfType([
-			PropTypes.array,
-			PropTypes.object
-		]),
-		urls: PropTypes.oneOfType([
-			PropTypes.array,
-			PropTypes.object
-		]),
-		useRealName: PropTypes.bool,
-		dcount: PropTypes.number,
-		dlm: PropTypes.instanceOf(Date),
-		tmid: PropTypes.string,
-		tcount: PropTypes.number,
-		tlm: PropTypes.instanceOf(Date),
-		tmsg: PropTypes.string,
-		// methods
-		closeReactions: PropTypes.func,
-		onErrorPress: PropTypes.func,
-		onLongPress: PropTypes.func,
-		onReactionLongPress: PropTypes.func,
-		onReactionPress: PropTypes.func,
-		onDiscussionPress: PropTypes.func,
-		onThreadPress: PropTypes.func,
-		replyBroadcast: PropTypes.func,
-		toggleReactionPicker: PropTypes.func,
-		fetchThreadName: PropTypes.func
+const formatLastMessage = (lm) => {
+	// const { customThreadTimeFormat } = this.props;
+	// if (customThreadTimeFormat) {
+	// 	return moment(lm).format(customThreadTimeFormat);
+	// }
+	return lm ? moment(lm).calendar(null, {
+		lastDay: `[${ I18n.t('Yesterday') }]`,
+		sameDay: 'h:mm A',
+		lastWeek: 'dddd',
+		sameElse: 'MMM D'
+	}) : null;
+};
+
+const formatMessageCount = (count, type) => {
+	const discussion = type === 'discussion';
+	let text = discussion ? I18n.t('No_messages_yet') : null;
+	if (count === 1) {
+		text = `${ count } ${ discussion ? I18n.t('message') : I18n.t('reply') }`;
+	} else if (count > 1 && count < 1000) {
+		text = `${ count } ${ discussion ? I18n.t('messages') : I18n.t('replies') }`;
+	} else if (count > 999) {
+		text = `+999 ${ discussion ? I18n.t('messages') : I18n.t('replies') }`;
 	}
+	return text;
+};
 
-	static defaultProps = {
-		archived: false,
-		broadcast: false,
-		attachments: [],
-		urls: [],
-		reactions: [],
-		onLongPress: () => {}
+const isInfoMessage = ({ type }) => SYSTEM_MESSAGES.includes(type);
+
+const isTemp = ({ status }) => status === messagesStatus.TEMP || status === messagesStatus.ERROR;
+
+const hasError = ({ status }) => status === messagesStatus.ERROR;
+
+const onPress = debounce(({ onThreadPress, tlm, tmid }) => {
+	KeyboardUtils.dismiss();
+
+	if ((tlm || tmid) && onThreadPress) {
+		onThreadPress();
 	}
+}, 300, true);
 
-	onPress = debounce(() => {
-		KeyboardUtils.dismiss();
-
-		const { onThreadPress, tlm, tmid } = this.props;
-		if ((tlm || tmid) && onThreadPress) {
-			onThreadPress();
-		}
-	}, 300, true)
-
-	onLongPress = () => {
-		const { archived, onLongPress } = this.props;
-		if (this.isInfoMessage() || this.hasError() || archived) {
-			return;
-		}
-		onLongPress();
+const onLongPress = ({
+	archived, onLongPress: onLongPressProp, type, status
+}) => {
+	if (isInfoMessage({ type }) || hasError({ status }) || archived) {
+		return;
 	}
+	onLongPressProp();
+};
 
-	formatLastMessage = (lm) => {
-		const { customThreadTimeFormat } = this.props;
-		if (customThreadTimeFormat) {
-			return moment(lm).format(customThreadTimeFormat);
-		}
-		return lm ? moment(lm).calendar(null, {
-			lastDay: `[${ I18n.t('Yesterday') }]`,
-			sameDay: 'h:mm A',
-			lastWeek: 'dddd',
-			sameElse: 'MMM D'
-		}) : null;
-	}
-
-	formatMessageCount = (count, type) => {
-		const discussion = type === 'discussion';
-		let text = discussion ? I18n.t('No_messages_yet') : null;
-		if (count === 1) {
-			text = `${ count } ${ discussion ? I18n.t('message') : I18n.t('reply') }`;
-		} else if (count > 1 && count < 1000) {
-			text = `${ count } ${ discussion ? I18n.t('messages') : I18n.t('replies') }`;
-		} else if (count > 999) {
-			text = `+999 ${ discussion ? I18n.t('messages') : I18n.t('replies') }`;
-		}
-		return text;
-	}
-
-	isInfoMessage = () => {
-		const { type } = this.props;
-		return SYSTEM_MESSAGES.includes(type);
-	}
-
-	isOwn = () => {
-		const { author, user } = this.props;
-		return author._id === user.id;
-	}
-
-	isDeleted() {
-		const { type } = this.props;
-		return type === 'rm';
-	}
-
-	isTemp() {
-		const { status } = this.props;
-		return status === messagesStatus.TEMP || status === messagesStatus.ERROR;
-	}
-
-	hasError() {
-		const { status } = this.props;
-		return status === messagesStatus.ERROR;
-	}
-
-	renderAvatar = (small = false) => {
-		const {
-			header, avatar, author, baseUrl, user
-		} = this.props;
-		if (header) {
-			return (
-				<Avatar
-					style={small ? styles.avatarSmall : styles.avatar}
-					text={avatar ? '' : author.username}
-					size={small ? 20 : 36}
-					borderRadius={small ? 2 : 4}
-					avatar={avatar}
-					baseUrl={baseUrl}
-					userId={user.id}
-					token={user.token}
-				/>
-			);
-		}
-		return null;
-	}
-
-	renderUsername = () => {
-		const {
-			header, timeFormat, author, alias, ts, useRealName
-		} = this.props;
-		if (header) {
-			return (
-				<User
-					onPress={this.onPress}
-					timeFormat={timeFormat}
-					username={(useRealName && author.name) || author.username}
-					alias={alias}
-					ts={ts}
-					temp={this.isTemp()}
-				/>
-			);
-		}
-		return null;
-	}
-
-	renderContent() {
-		if (this.isInfoMessage()) {
-			return <Text style={styles.textInfo}>{getInfoMessage({ ...this.props })}</Text>;
-		}
-
-		const {
-			customEmojis, msg, baseUrl, user, edited, tmid
-		} = this.props;
-
-		if (tmid && !msg) {
-			return <Text style={styles.text}>{I18n.t('Sent_an_attachment')}</Text>;
-		}
-
-		return (
-			<Markdown
-				msg={msg}
-				customEmojis={customEmojis}
-				baseUrl={baseUrl}
-				username={user.username}
-				edited={edited}
-				numberOfLines={tmid ? 1 : 0}
-			/>
-		);
-	}
-
-	renderAttachment() {
-		const { attachments, timeFormat } = this.props;
-
-		if (attachments.length === 0) {
-			return null;
-		}
-
-		return attachments.map((file, index) => {
-			const { user, baseUrl, customEmojis } = this.props;
-			if (file.image_url) {
-				return <Image key={file.image_url} file={file} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
-			}
-			if (file.audio_url) {
-				return <Audio key={file.audio_url} file={file} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
-			}
-			if (file.video_url) {
-				return <Video key={file.video_url} file={file} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
-			}
-
-			// eslint-disable-next-line react/no-array-index-key
-			return <Reply key={index} index={index} attachment={file} timeFormat={timeFormat} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
-		});
-	}
-
-	renderUrl = () => {
-		const { urls, user, baseUrl } = this.props;
-		if (urls.length === 0) {
-			return null;
-		}
-
-		return urls.map((url, index) => (
-			<Url url={url} key={url.url} index={index} user={user} baseUrl={baseUrl} />
-		));
-	}
-
-	renderError = () => {
-		if (!this.hasError()) {
-			return null;
-		}
-		const { onErrorPress } = this.props;
-		return (
-			<Touchable onPress={onErrorPress} style={styles.errorButton}>
-				<CustomIcon name='circle-cross' color={COLOR_DANGER} size={20} />
-			</Touchable>
-		);
-	}
-
-	renderReaction = (reaction) => {
-		const {
-			user, onReactionLongPress, onReactionPress, customEmojis, baseUrl
-		} = this.props;
-		const reacted = reaction.usernames.findIndex(item => item.value === user.username) !== -1;
-		return (
-			<Touchable
-				onPress={() => onReactionPress(reaction.emoji)}
-				onLongPress={onReactionLongPress}
-				key={reaction.emoji}
-				testID={`message-reaction-${ reaction.emoji }`}
-				style={[styles.reactionButton, reacted && styles.reactionButtonReacted]}
-				background={Touchable.Ripple('#fff')}
-				hitSlop={BUTTON_HIT_SLOP}
-			>
-				<View style={[styles.reactionContainer, reacted && styles.reactedContainer]}>
-					<Emoji
-						content={reaction.emoji}
-						customEmojis={customEmojis}
-						standardEmojiStyle={styles.reactionEmoji}
-						customEmojiStyle={styles.reactionCustomEmoji}
-						baseUrl={baseUrl}
-					/>
-					<Text style={styles.reactionCount}>{ reaction.usernames.length }</Text>
-				</View>
-			</Touchable>
-		);
-	}
-
-	renderReactions() {
-		const { reactions, toggleReactionPicker } = this.props;
-		if (reactions.length === 0) {
-			return null;
-		}
-		return (
-			<View style={styles.reactionsContainer}>
-				{reactions.map(this.renderReaction)}
-				<Touchable
-					onPress={toggleReactionPicker}
-					key='message-add-reaction'
-					testID='message-add-reaction'
-					style={styles.reactionButton}
-					background={Touchable.Ripple('#fff')}
-					hitSlop={BUTTON_HIT_SLOP}
-				>
-					<View style={styles.reactionContainer}>
-						<CustomIcon name='add-reaction' size={21} style={styles.addReaction} />
-					</View>
-				</Touchable>
-			</View>
-		);
-	}
-
-	renderBroadcastReply() {
-		const { broadcast, replyBroadcast } = this.props;
-		if (broadcast && !this.isOwn()) {
-			return (
-				<View style={styles.buttonContainer}>
-					<Touchable
-						onPress={replyBroadcast}
-						background={Touchable.Ripple('#fff')}
-						style={styles.button}
-						hitSlop={BUTTON_HIT_SLOP}
-					>
-						<React.Fragment>
-							<CustomIcon name='back' size={20} style={styles.buttonIcon} />
-							<Text style={styles.buttonText}>{I18n.t('Reply')}</Text>
-						</React.Fragment>
-					</Touchable>
-				</View>
-			);
-		}
-		return null;
-	}
-
-	renderDiscussion = () => {
-		const {
-			msg, dcount, dlm, onDiscussionPress
-		} = this.props;
-		const time = this.formatLastMessage(dlm);
-		const buttonText = this.formatMessageCount(dcount, 'discussion');
-		return (
-			<React.Fragment>
-				<Text style={styles.startedDiscussion}>{I18n.t('Started_discussion')}</Text>
-				<Text style={styles.text}>{msg}</Text>
-				<View style={styles.buttonContainer}>
-					<Touchable
-						onPress={onDiscussionPress}
-						background={Touchable.Ripple('#fff')}
-						style={[styles.button, styles.smallButton]}
-						hitSlop={BUTTON_HIT_SLOP}
-					>
-						<React.Fragment>
-							<CustomIcon name='chat' size={20} style={styles.buttonIcon} />
-							<Text style={styles.buttonText}>{buttonText}</Text>
-						</React.Fragment>
-					</Touchable>
-					<Text style={styles.time}>{time}</Text>
-				</View>
-			</React.Fragment>
-		);
-	}
-
-	renderThread = () => {
-		const {
-			tcount, tlm, onThreadPress, msg
-		} = this.props;
-
-		if (!tlm) {
-			return null;
-		}
-
-		const time = this.formatLastMessage(tlm);
-		const buttonText = this.formatMessageCount(tcount, 'thread');
-		return (
+const RenderDiscussion = React.memo(({
+	msg, dcount, dlm, onDiscussionPress
+}) => {
+	const time = formatLastMessage(dlm);
+	const buttonText = formatMessageCount(dcount, 'discussion');
+	return (
+		<React.Fragment>
+			<Text style={styles.startedDiscussion}>{I18n.t('Started_discussion')}</Text>
+			<Text style={styles.text}>{msg}</Text>
 			<View style={styles.buttonContainer}>
 				<Touchable
-					onPress={onThreadPress}
+					onPress={onDiscussionPress}
 					background={Touchable.Ripple('#fff')}
 					style={[styles.button, styles.smallButton]}
 					hitSlop={BUTTON_HIT_SLOP}
-					testID={`message-thread-button-${ msg }`}
 				>
 					<React.Fragment>
-						<CustomIcon name='thread' size={20} style={styles.buttonIcon} />
+						<CustomIcon name='chat' size={20} style={styles.buttonIcon} />
 						<Text style={styles.buttonText}>{buttonText}</Text>
 					</React.Fragment>
 				</Touchable>
 				<Text style={styles.time}>{time}</Text>
 			</View>
-		);
-	}
+		</React.Fragment>
+	);
+});
 
-	renderRepliedThread = () => {
-		const {
-			tmid, tmsg, header, fetchThreadName
-		} = this.props;
-		if (!tmid || !header || this.isTemp()) {
-			return null;
-		}
-
-		if (!tmsg) {
-			fetchThreadName(tmid);
-			return null;
-		}
-
-		let msg = emojify(tmsg, { output: 'unicode' });
-		msg = removeMarkdown(msg);
-
+const RenderBroadcastReply = React.memo(({
+	author, user, broadcast, replyBroadcast
+}) => {
+	const isOwn = author._id === user.id;
+	if (broadcast && !isOwn) {
 		return (
-			<View style={styles.repliedThread} testID={`message-thread-replied-on-${ msg }`}>
-				<CustomIcon name='thread' size={20} style={styles.repliedThreadIcon} />
-				<Text style={styles.repliedThreadName} numberOfLines={1}>{msg}</Text>
-				<DisclosureIndicator />
+			<View style={styles.buttonContainer}>
+				<Touchable
+					onPress={replyBroadcast}
+					background={Touchable.Ripple('#fff')}
+					style={styles.button}
+					hitSlop={BUTTON_HIT_SLOP}
+				>
+					<React.Fragment>
+						<CustomIcon name='back' size={20} style={styles.buttonIcon} />
+						<Text style={styles.buttonText}>{I18n.t('Reply')}</Text>
+					</React.Fragment>
+				</Touchable>
 			</View>
 		);
 	}
+	return null;
+});
 
-	renderInner = () => {
-		const { type } = this.props;
-		if (type === 'discussion-created') {
-			return (
+const RenderReaction = React.memo(({
+	reaction, user, onReactionLongPress, onReactionPress, customEmojis, baseUrl
+}) => {
+	const reacted = reaction.usernames.findIndex(item => item.value === user.username) !== -1;
+	return (
+		<Touchable
+			onPress={() => onReactionPress(reaction.emoji)}
+			onLongPress={onReactionLongPress}
+			key={reaction.emoji}
+			testID={`message-reaction-${ reaction.emoji }`}
+			style={[styles.reactionButton, reacted && styles.reactionButtonReacted]}
+			background={Touchable.Ripple('#fff')}
+			hitSlop={BUTTON_HIT_SLOP}
+		>
+			<View style={[styles.reactionContainer, reacted && styles.reactedContainer]}>
+				<Emoji
+					content={reaction.emoji}
+					customEmojis={customEmojis}
+					standardEmojiStyle={styles.reactionEmoji}
+					customEmojiStyle={styles.reactionCustomEmoji}
+					baseUrl={baseUrl}
+				/>
+				<Text style={styles.reactionCount}>{ reaction.usernames.length }</Text>
+			</View>
+		</Touchable>
+	);
+});
+
+const RenderReactions = React.memo((props) => {
+	if (props.reactions.length === 0) {
+		return null;
+	}
+	return (
+		<View style={styles.reactionsContainer}>
+			{props.reactions.map(reaction => <RenderReaction key={reaction.emoji} reaction={reaction} {...props} />)}
+			<Touchable
+				onPress={props.toggleReactionPicker}
+				key='message-add-reaction'
+				testID='message-add-reaction'
+				style={styles.reactionButton}
+				background={Touchable.Ripple('#fff')}
+				hitSlop={BUTTON_HIT_SLOP}
+			>
+				<View style={styles.reactionContainer}>
+					<CustomIcon name='add-reaction' size={21} style={styles.addReaction} />
+				</View>
+			</Touchable>
+		</View>
+	);
+})
+
+const RenderThread = React.memo(({
+	tcount, tlm, onThreadPress, msg
+}) => {
+	if (!tlm) {
+		return null;
+	}
+
+	const time = formatLastMessage(tlm);
+	const buttonText = formatMessageCount(tcount, 'thread');
+	return (
+		<View style={styles.buttonContainer}>
+			<Touchable
+				onPress={onThreadPress}
+				background={Touchable.Ripple('#fff')}
+				style={[styles.button, styles.smallButton]}
+				hitSlop={BUTTON_HIT_SLOP}
+				testID={`message-thread-button-${ msg }`}
+			>
 				<React.Fragment>
-					{this.renderUsername()}
-					{this.renderDiscussion()}
+					<CustomIcon name='thread' size={20} style={styles.buttonIcon} />
+					<Text style={styles.buttonText}>{buttonText}</Text>
 				</React.Fragment>
-			);
+			</Touchable>
+			<Text style={styles.time}>{time}</Text>
+		</View>
+	);
+});
+
+const RenderUrl = React.memo(({ urls, user, baseUrl }) => {
+	if (urls.length === 0) {
+		return null;
+	}
+
+	return urls.map((url, index) => (
+		<Url url={url} key={url.url} index={index} user={user} baseUrl={baseUrl} />
+	));
+});
+
+const RenderAttachment = React.memo(({
+	attachments, timeFormat, user, baseUrl, customEmojis
+}) => {
+	if (attachments.length === 0) {
+		return null;
+	}
+
+	return attachments.map((file, index) => {
+		if (file.image_url) {
+			return <Image key={file.image_url} file={file} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
 		}
+		if (file.audio_url) {
+			return <Audio key={file.audio_url} file={file} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
+		}
+		if (file.video_url) {
+			return <Video key={file.video_url} file={file} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
+		}
+
+		// eslint-disable-next-line react/no-array-index-key
+		return <Reply key={index} index={index} attachment={file} timeFormat={timeFormat} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
+	});
+})
+
+const RenderContent = React.memo((props) => {
+	if (isInfoMessage({ type: props.type })) {
+		return <Text style={styles.textInfo}>{getInfoMessage({ ...props })}</Text>;
+	}
+
+	if (props.tmid && !props.msg) {
+		return <Text style={styles.text}>{I18n.t('Sent_an_attachment')}</Text>;
+	}
+
+	return <Text>{props.msg}</Text>;
+	// return (
+	// 	<Markdown
+	// 		msg={msg}
+	// 		customEmojis={customEmojis}
+	// 		baseUrl={baseUrl}
+	// 		username={user.username}
+	// 		edited={edited}
+	// 		numberOfLines={tmid ? 1 : 0}
+	// 	/>
+	// );
+});
+
+const RenderUsername = React.memo(({ header, timeFormat, author, alias, ts, useRealName, status }) => {
+	if (header) {
+		return (
+			<User
+				// onPress={() => onPress()}
+				timeFormat={timeFormat}
+				username={(useRealName && author.name) || author.username}
+				alias={alias}
+				ts={ts}
+				temp={isTemp({ status })}
+			/>
+		);
+	}
+	return null;
+})
+
+const RenderInner = React.memo((props) => {
+	if (props.type === 'discussion-created') {
 		return (
 			<React.Fragment>
-				{this.renderUsername()}
-				{this.renderContent()}
-				{this.renderAttachment()}
-				{this.renderUrl()}
-				{this.renderThread()}
-				{this.renderReactions()}
-				{this.renderBroadcastReply()}
+				<RenderUsername {...props} />
+				<RenderDiscussion {...props} />
 			</React.Fragment>
 		);
 	}
+	return (
+		<React.Fragment>
+			<RenderUsername {...props} />
+			<RenderContent {...props} />
+			<RenderAttachment {...props} />
+			<RenderUrl {...props} />
+			<RenderThread {...props} />
+			<RenderReactions {...props} />
+			<RenderBroadcastReply {...props} />
+		</React.Fragment>
+	);
+});
 
-	renderMessage = () => {
-		const { header, isThreadReply, isThreadSequential } = this.props;
-
-		if (isThreadReply || isThreadSequential || this.isInfoMessage()) {
-			const thread = isThreadReply ? this.renderRepliedThread() : null;
-			return (
-				<React.Fragment>
-					{thread}
-					<View style={[styles.flex, sharedStyles.alignItemsCenter]}>
-						{this.renderAvatar(true)}
-						<View
-							style={[
-								styles.messageContent,
-								header && styles.messageContentWithHeader,
-								this.hasError() && header && styles.messageContentWithHeader,
-								this.hasError() && !header && styles.messageContentWithError,
-								this.isTemp() && styles.temp
-							]}
-						>
-							{this.renderContent()}
-						</View>
-					</View>
-				</React.Fragment>
-			);
-		}
+const RenderAvatar = React.memo(({
+	header, avatar, author, baseUrl, user, small
+}) => {
+	if (header) {
 		return (
-			<View style={styles.flex}>
-				{this.renderAvatar()}
-				<View
-					style={[
-						styles.messageContent,
-						header && styles.messageContentWithHeader,
-						this.hasError() && header && styles.messageContentWithHeader,
-						this.hasError() && !header && styles.messageContentWithError,
-						this.isTemp() && styles.temp
-					]}
-				>
-					{this.renderInner()}
-				</View>
-			</View>
+			<Avatar
+				style={small ? styles.avatarSmall : styles.avatar}
+				text={avatar ? '' : author.username}
+				size={small ? 20 : 36}
+				borderRadius={small ? 2 : 4}
+				avatar={avatar}
+				baseUrl={baseUrl}
+				userId={user.id}
+				token={user.token}
+			/>
 		);
 	}
+	return null;
+})
 
-	render() {
-		const {
-			editing, style, reactionsModal, closeReactions, msg, ts, reactions, author, user, timeFormat, customEmojis, baseUrl
-		} = this.props;
-		const accessibilityLabel = I18n.t('Message_accessibility', { user: author.username, time: moment(ts).format(timeFormat), message: msg });
+const RenderRepliedThread = React.memo(({ status, tmid, tmsg, header, fetchThreadName }) => {
+	if (!tmid || !header || isTemp({ status })) {
+		return null;
+	}
 
+	if (!tmsg) {
+		fetchThreadName(tmid);
+		return null;
+	}
+
+	let msg = emojify(tmsg, { output: 'unicode' });
+	msg = removeMarkdown(msg);
+
+	return (
+		<View style={styles.repliedThread} testID={`message-thread-replied-on-${ msg }`}>
+			<CustomIcon name='thread' size={20} style={styles.repliedThreadIcon} />
+			<Text style={styles.repliedThreadName} numberOfLines={1}>{msg}</Text>
+			<DisclosureIndicator />
+		</View>
+	);
+});
+
+const RenderMessage = React.memo((props) => {
+	if (props.isThreadReply || props.isThreadSequential || isInfoMessage({ type: props.type })) {
+		const thread = props.isThreadReply ? <RenderRepliedThread {...props} /> : null;
 		return (
-			<View style={styles.root}>
-				{this.renderError()}
-				<TouchableWithoutFeedback
-					onLongPress={this.onLongPress}
-					onPress={this.onPress}
-				>
+			<React.Fragment>
+				{thread}
+				<View style={[styles.flex, sharedStyles.alignItemsCenter]}>
+					{/* {this.renderAvatar(true)} */}
+					<RenderAvatar small {...props} />
 					<View
-						style={[styles.container, editing && styles.editing, style]}
-						accessibilityLabel={accessibilityLabel}
+						style={[
+							styles.messageContent,
+							props.header && styles.messageContentWithHeader,
+							hasError({ status: props.status }) && props.header && styles.messageContentWithHeader,
+							hasError({ status: props.status }) && !props.header && styles.messageContentWithError,
+							isTemp({ status: props.status }) && styles.temp
+						]}
 					>
-						{this.renderMessage()}
-						{reactionsModal
-							? (
-								<ReactionsModal
-									isVisible={reactionsModal}
-									reactions={reactions}
-									user={user}
-									customEmojis={customEmojis}
-									baseUrl={baseUrl}
-									close={closeReactions}
-								/>
-							)
-							: null
-						}
+						{/* {this.renderContent()} */}
+						<RenderContent {...props} />
 					</View>
-				</TouchableWithoutFeedback>
-			</View>
+				</View>
+			</React.Fragment>
 		);
 	}
-}
+	return (
+		<View style={styles.flex}>
+			<RenderAvatar {...props} />
+			<View
+				style={[
+					styles.messageContent,
+					props.header && styles.messageContentWithHeader,
+					hasError({ status: props.status }) && props.header && styles.messageContentWithHeader,
+					hasError({ status: props.status }) && !props.header && styles.messageContentWithError,
+					isTemp({ status: props.status }) && styles.temp
+				]}
+			>
+				<RenderInner {...props} />
+			</View>
+		</View>
+	);
+});
+
+const RenderMessageError = React.memo((props) => {
+	if (!hasError({ status: props.status })) {
+		return null;
+	}
+	return (
+		<Touchable onPress={props.onErrorPress} style={styles.errorButton}>
+			<CustomIcon name='circle-cross' color={COLOR_DANGER} size={20} />
+		</Touchable>
+	);
+});
+
+const Message = React.memo((props) => {
+	const accessibilityLabel = I18n.t('Message_accessibility', {
+		user: props.author.username, 
+		time: moment(props.ts).format(props.timeFormat), 
+		message: props.msg
+	});
+
+	return (
+		<View style={styles.root}>
+			<RenderMessageError {...props} />
+			<TouchableWithoutFeedback
+				onLongPress={() => onLongPress(props)}
+				onPress={() => onPress(props)}
+			>
+				<View
+					style={[styles.container, props.editing && styles.editing, props.style]}
+					accessibilityLabel={accessibilityLabel}
+				>
+					<RenderMessage {...props} />
+				</View>
+			</TouchableWithoutFeedback>
+		</View>
+	);
+});
+
+export default Message;

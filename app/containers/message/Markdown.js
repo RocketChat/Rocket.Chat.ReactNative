@@ -3,10 +3,10 @@ import { Text, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import { emojify } from 'react-emojione';
 import MarkdownRenderer, { PluginContainer } from 'react-native-markdown-renderer';
-import MarkdownFlowdock from 'markdown-it-flowdock';
+// import MarkdownFlowdock from 'markdown-it-flowdock';
 import styles from './styles';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
-import MarkdownEmojiPlugin from './MarkdownEmojiPlugin';
+// import MarkdownEmojiPlugin from './MarkdownEmojiPlugin';
 
 // Support <http://link|Text>
 const formatText = text => text.replace(
@@ -90,10 +90,10 @@ const Markdown = React.memo(({
 				link: styles.link,
 				...style
 			}}
-			plugins={[
-				new PluginContainer(MarkdownFlowdock),
-				new PluginContainer(MarkdownEmojiPlugin)
-			]}
+			// plugins={[
+			// 	new PluginContainer(MarkdownFlowdock),
+			// 	new PluginContainer(MarkdownEmojiPlugin)
+			// ]}
 		>{m}
 		</MarkdownRenderer>
 	);
