@@ -1,4 +1,6 @@
 import React from 'react';
+import isEqual from 'deep-equal';
+import PropTypes from 'prop-types';
 
 import Image from './Image';
 import Audio from './Audio';
@@ -26,6 +28,13 @@ const Attachments = React.memo(({
 		// eslint-disable-next-line react/no-array-index-key
 		return <Reply key={index} index={index} attachment={file} timeFormat={timeFormat} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
 	});
-})
+}, (prevProps, nextProps) => isEqual(prevProps.attachments, nextProps.attachments));
+
+Attachments.propTypes = {
+	attachments: PropTypes.array,
+	timeFormat: PropTypes.string,
+	user: PropTypes.object,
+	baseUrl: PropTypes.string
+};
 
 export default Attachments;
