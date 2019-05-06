@@ -13,6 +13,8 @@ import {
 } from '../../actions/messages';
 import { vibrate } from '../../utils/vibration';
 import debounce from '../../utils/debounce';
+import { SYSTEM_MESSAGES } from './utils';
+import messagesStatus from '../../constants/messagesStatus';
 
 // @connect(state => ({
 // 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -68,13 +70,13 @@ export default class MessageContainer extends React.Component {
 		broadcast: false
 	}
 
-	constructor(props) {
-		super(props);
-		// slowlog(this, /.*/)
-		// console.log(`MOUNTING ${ props.item._id }`)
-		this.state = { reactionsModal: false };
-		this.closeReactions = this.closeReactions.bind(this);
-	}
+	// constructor(props) {
+	// 	super(props);
+	// 	// slowlog(this, /.*/)
+	// 	// console.log(`MOUNTING ${ props.item._id }`)
+	// 	this.state = { reactionsModal: false };
+	// 	// this.closeReactions = this.closeReactions.bind(this);
+	// }
 
 	shouldComponentUpdate() {
 		return false;
@@ -121,10 +123,10 @@ export default class MessageContainer extends React.Component {
 		onReactionPress(emoji, item._id);
 	}
 
-	onReactionLongPress = () => {
-		this.setState({ reactionsModal: true });
-		vibrate();
-	}
+	// onReactionLongPress = () => {
+	// 	this.setState({ reactionsModal: true });
+	// 	vibrate();
+	// }
 
 	onDiscussionPress = () => {
 		const { onDiscussionPress, item } = this.props;
@@ -150,11 +152,11 @@ export default class MessageContainer extends React.Component {
 		return customTimeFormat || Message_TimeFormat;
 	}
 
-	closeReactions = () => {
-		this.setState({ reactionsModal: false });
-	}
+	// closeReactions = () => {
+	// 	this.setState({ reactionsModal: false });
+	// }
 
-	isHeader = () => {
+	get isHeader() {
 		const {
 			item, previousItem, broadcast, Message_GroupingPeriod
 		} = this.props;
@@ -170,7 +172,7 @@ export default class MessageContainer extends React.Component {
 		return true;
 	}
 
-	isThreadReply = () => {
+	get isThreadReply() {
 		const {
 			item, previousItem
 		} = this.props;
@@ -180,7 +182,7 @@ export default class MessageContainer extends React.Component {
 		return false;
 	}
 
-	isThreadSequential = () => {
+	get isThreadSequential() {
 		const {
 			item, previousItem
 		} = this.props;
@@ -188,6 +190,26 @@ export default class MessageContainer extends React.Component {
 			return true;
 		}
 		return false;
+	}
+
+	get isInfoMessage() {
+		const { item } = this.props;
+		return SYSTEM_MESSAGES.includes(item.t);
+	}
+
+	get isTemp() {
+		const { item } = this.props;
+		return item.status === messagesStatus.TEMP || item.status === messagesStatus.ERROR;
+	}
+
+	get hasError() {
+		const { item } = this.props;
+		return item.status === messagesStatus.ERROR;
+	}
+
+	get isEditing() {
+		const { item, editingMessage } = this.props;
+		return editingMessage._id === item._id;
 	}
 
 	parseMessage = () => {
@@ -207,14 +229,12 @@ export default class MessageContainer extends React.Component {
 
 	render() {
 		// console.log(`RENDERING ${ this.props.item._id }`)
-		const { reactionsModal } = this.state;
 		const {
 			item, editingMessage, user, style, archived, baseUrl, customEmojis, useRealName, broadcast, fetchThreadName, customThreadTimeFormat
 		} = this.props;
 		const {
 			_id, msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg
 		} = item;
-		const isEditing = editingMessage._id === item._id;
 		return (
 			<Message
 				id={_id}
@@ -227,10 +247,7 @@ export default class MessageContainer extends React.Component {
 				urls={urls}
 				reactions={reactions}
 				alias={alias}
-				editing={isEditing}
-				header={this.isHeader()} // FIXME: try something else
-				isThreadReply={this.isThreadReply()}
-				isThreadSequential={this.isThreadSequential()}
+				editing={this.isEditing}
 				avatar={avatar}
 				user={user}
 				edited={editedBy && !!editedBy.username}
@@ -241,7 +258,7 @@ export default class MessageContainer extends React.Component {
 				broadcast={broadcast}
 				baseUrl={baseUrl}
 				customEmojis={customEmojis}
-				reactionsModal={reactionsModal}
+				// reactionsModal={reactionsModal}
 				useRealName={useRealName}
 				role={role}
 				drid={drid}
@@ -252,10 +269,16 @@ export default class MessageContainer extends React.Component {
 				tlm={tlm}
 				tmsg={tmsg}
 				fetchThreadName={fetchThreadName}
-				closeReactions={this.closeReactions}
+				header={this.isHeader} // FIXME: try something else
+				isThreadReply={this.isThreadReply}
+				isThreadSequential={this.isThreadSequential}
+				isInfo={this.isInfo}
+				isTemp={this.isTemp}
+				hasError={this.hasError}
+				// closeReactions={this.closeReactions}
 				onErrorPress={this.onErrorPress}
 				onLongPress={this.onLongPress}
-				onReactionLongPress={this.onReactionLongPress}
+				// onReactionLongPress={this.onReactionLongPress}
 				onReactionPress={this.onReactionPress}
 				replyBroadcast={this.replyBroadcast}
 				toggleReactionPicker={this.toggleReactionPicker}

@@ -5,7 +5,7 @@ import Touchable from 'react-native-platform-touchable';
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import { BUTTON_HIT_SLOP } from './utils';
-import I18n from '../../i18n';;
+import I18n from '../../i18n';
 
 const Broadcast = React.memo(({
 	author, user, broadcast, replyBroadcast
