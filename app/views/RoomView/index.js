@@ -308,7 +308,7 @@ export default class RoomView extends LoggedView {
 	// eslint-disable-next-line react/sort-comp
 	updateUnreadCount = debounce(() => {
 		const { navigation } = this.props;
-		const unreadsCount = this.chats.filtered('(unread > 0)').length;
+		const unreadsCount = this.chats.filtered('(unread > 0)').reduce((a, b) => a + (b.unread || 0), 0);
 		if (unreadsCount !== navigation.getParam('unreadsCount')) {
 			navigation.setParams({
 				unreadsCount
