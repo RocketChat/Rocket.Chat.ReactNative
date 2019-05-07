@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView, HeaderBackButton } from 'react-navigation';
 import equal from 'deep-equal';
 import moment from 'moment';
 import EJSON from 'ejson';
@@ -67,18 +67,27 @@ export default class RoomView extends LoggedView {
 		const t = navigation.getParam('t');
 		const tmid = navigation.getParam('tmid');
 		const isFetching = navigation.getParam('isFetching', false);
+		const unreadsCount = navigation.getParam('unreadsCount') > 0 ? navigation.getParam('unreadsCount') : null;
 		return {
-			headerTitleContainerStyle: styles.headerTitleContainerStyle,
-			headerTitle: (
-				<RoomHeaderView
-					rid={rid}
-					prid={prid}
-					tmid={tmid}
-					title={title}
-					type={t}
-					widthOffset={tmid ? 95 : 130}
-					isFetching={isFetching}
-				/>
+			headerLeft: (
+				<View style={styles.headerLeftContainerStyle}>
+					<View style={styles.headerBackButton}>
+						<HeaderBackButton
+							title={unreadsCount > 999 ? '+999' : unreadsCount}
+							backTitleVisible
+							onPress={() => navigation.goBack()}
+						/>
+					</View>
+					<RoomHeaderView
+						rid={rid}
+						prid={prid}
+						tmid={tmid}
+						title={title}
+						type={t}
+						widthOffset={tmid ? 95 : 130}
+						isFetching={isFetching}
+					/>
+				</View>
 			),
 			headerRight: <RightButtons rid={rid} tmid={tmid} t={t} navigation={navigation} />
 		};
@@ -113,6 +122,7 @@ export default class RoomView extends LoggedView {
 		this.t = props.navigation.getParam('t');
 		this.tmid = props.navigation.getParam('tmid');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
+		this.chats = database.objects('subscriptions').filtered('archived != true && open == true');
 		this.state = {
 			joined: this.rooms.length > 0,
 			room: this.rooms[0] || { rid: this.rid, t: this.t },
@@ -122,6 +132,7 @@ export default class RoomView extends LoggedView {
 		this.beginAnimatingTimeout = setTimeout(() => this.beginAnimating = true, 300);
 		this.messagebox = React.createRef();
 		safeAddListener(this.rooms, this.updateRoom);
+		safeAddListener(this.chats, this.updateUnreadCount);
 		this.willBlurListener = props.navigation.addListener('willBlur', () => this.mounted = false);
 		this.mounted = false;
 		console.timeEnd(`${ this.constructor.name } init`);
@@ -293,6 +304,17 @@ export default class RoomView extends LoggedView {
 			rid: item.drid, prid: item.rid, name: item.msg, t: 'p'
 		});
 	}, 1000, true)
+
+	// eslint-disable-next-line react/sort-comp
+	updateUnreadCount = debounce(() => {
+		const { navigation } = this.props;
+		const unreadsCount = this.chats.filtered('(unread > 0)').length;
+		if (unreadsCount !== navigation.getParam('unreadsCount')) {
+			navigation.setParams({
+				unreadsCount
+			});
+		}
+	}, 300, true)
 
 	handleConnected = () => {
 		this.init();
