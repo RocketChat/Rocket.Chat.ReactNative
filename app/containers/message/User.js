@@ -33,22 +33,19 @@ const styles = StyleSheet.create({
 	}
 });
 
-const User = React.memo((props) => {
-	if (props.header) {
-		const username = (props.useRealName && props.author.name) || props.author.username;
-		const extraStyle = {};
-		if (props.isTemp) {
-			extraStyle.opacity = 0.3;
-		}
-
-		const aliasUsername = props.alias ? (<Text style={styles.alias}> @{username}</Text>) : null;
-		const time = moment(props.ts).format(props.timeFormat);
+const User = React.memo(({
+	header, useRealName, author, isTemp, alias, ts, timeFormat
+}) => {
+	if (header) {
+		const username = (useRealName && author.name) || author.username;
+		const aliasUsername = alias ? (<Text style={styles.alias}> @{username}</Text>) : null;
+		const time = moment(ts).format(timeFormat);
 
 		return (
-			<View style={[styles.container, props.isTemp && styles.temp]}>
+			<View style={[styles.container, isTemp && styles.temp]}>
 				<View style={styles.titleContainer}>
 					<Text style={styles.username} numberOfLines={1}>
-						{props.alias || username}
+						{alias || username}
 						{aliasUsername}
 					</Text>
 				</View>
@@ -57,6 +54,16 @@ const User = React.memo((props) => {
 		);
 	}
 	return null;
-});
+}, (prevProps, nextProps) => prevProps.isTemp === nextProps.isTemp);
+
+User.propTypes = {
+	header: PropTypes.bool,
+	useRealName: PropTypes.bool,
+	author: PropTypes.object,
+	isTemp: PropTypes.bool,
+	alias: PropTypes.string,
+	ts: PropTypes.string,
+	timeFormat: PropTypes.string
+};
 
 export default User;

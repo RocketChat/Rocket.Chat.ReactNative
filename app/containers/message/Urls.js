@@ -57,14 +57,22 @@ const UrlImage = React.memo(({ image, user, baseUrl }) => {
 	}
 	image = image.includes('http') ? image : `${ baseUrl }/${ image }?rc_uid=${ user.id }&rc_token=${ user.token }`;
 	return <FastImage source={{ uri: image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} />;
-});
+}, (prevProps, nextProps) => prevProps.image === nextProps.image);
 
 const UrlContent = React.memo(({ title, description }) => (
 	<View style={styles.textContainer}>
 		{title ? <Text style={styles.title} numberOfLines={2}>{title}</Text> : null}
 		{description ? <Text style={styles.description} numberOfLines={2}>{description}</Text> : null}
 	</View>
-));
+), (prevProps, nextProps) => {
+	if (prevProps.title !== nextProps.title) {
+		return false;
+	}
+	if (prevProps.description !== nextProps.description) {
+		return false;
+	}
+	return true;
+});
 
 const Url = React.memo(({
 	url, index, user, baseUrl
@@ -97,7 +105,7 @@ const Urls = React.memo(({ urls, user, baseUrl }) => {
 	return urls.map((url, index) => (
 		<Url url={url} key={url.url} index={index} user={user} baseUrl={baseUrl} />
 	));
-});
+}, (oldProps, newProps) => isEqual(oldProps.urls, newProps.urls));
 
 UrlImage.propTypes = {
 	image: PropTypes.string,
@@ -113,6 +121,12 @@ UrlContent.propTypes = {
 Url.propTypes = {
 	url: PropTypes.object.isRequired,
 	index: PropTypes.number,
+	user: PropTypes.object,
+	baseUrl: PropTypes.string
+};
+
+Urls.propTypes = {
+	urls: PropTypes.array,
 	user: PropTypes.object,
 	baseUrl: PropTypes.string
 };
