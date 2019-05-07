@@ -1,15 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, FlatList, BackHandler, ActivityIndicator, Text, ScrollView, Keyboard, LayoutAnimation
+	View, FlatList, BackHandler, ActivityIndicator, Text, ScrollView, Keyboard, LayoutAnimation, InteractionManager
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
-import { SafeAreaView, NavigationEvents } from 'react-navigation';
+import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 
-import SearchBox from '../../containers/SearchBox';
-import ConnectionBadge from '../../containers/ConnectionBadge';
 import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
@@ -19,7 +17,6 @@ import log from '../../utils/log';
 import I18n from '../../i18n';
 import SortDropdown from './SortDropdown';
 import ServerDropdown from './ServerDropdown';
-import Touch from '../../utils/touch';
 import {
 	toggleSortDropdown as toggleSortDropdownAction,
 	openSearchHeader as openSearchHeaderAction,
@@ -29,10 +26,10 @@ import {
 import { appStart as appStartAction } from '../../actions';
 import debounce from '../../utils/debounce';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
-import { CustomIcon } from '../../lib/Icons';
 import RoomsListHeaderView from './Header';
 import { DrawerButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
+import ListHeader from './ListHeader';
 
 const SCROLL_OFFSET = 56;
 
@@ -119,6 +116,8 @@ export default class RoomsListView extends LoggedView {
 
 	constructor(props) {
 		super('RoomsListView', props);
+		console.time(`${ this.constructor.name } init`);
+		console.time(`${ this.constructor.name } mount`);
 
 		this.data = [];
 		this.state = {
@@ -128,12 +127,15 @@ export default class RoomsListView extends LoggedView {
 			chats: [],
 			unread: [],
 			favorites: [],
+			discussions: [],
 			channels: [],
 			privateGroup: [],
 			direct: [],
 			livechat: []
 		};
 		Orientation.unlockAllOrientations();
+		this.didFocusListener = props.navigation.addListener('didFocus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
+		this.willBlurListener = props.navigation.addListener('willBlur', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
 	}
 
 	componentDidMount() {
@@ -142,6 +144,7 @@ export default class RoomsListView extends LoggedView {
 		navigation.setParams({
 			onPressItem: this._onPressItem, initSearchingAndroid: this.initSearchingAndroid, cancelSearchingAndroid: this.cancelSearchingAndroid
 		});
+		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -173,42 +176,6 @@ export default class RoomsListView extends LoggedView {
 			return true;
 		}
 
-		const { showUnread, showFavorites, groupByType } = this.props;
-		if (showUnread) {
-			const { unread } = this.state;
-			if (!isEqual(nextState.unread, unread)) {
-				return true;
-			}
-		}
-		if (showFavorites) {
-			const { favorites } = this.state;
-			if (!isEqual(nextState.favorites, favorites)) {
-				return true;
-			}
-		}
-		if (groupByType) {
-			const {
-				channels, privateGroup, direct, livechat
-			} = this.state;
-			if (!isEqual(nextState.channels, channels)) {
-				return true;
-			}
-			if (!isEqual(nextState.privateGroup, privateGroup)) {
-				return true;
-			}
-			if (!isEqual(nextState.direct, direct)) {
-				return true;
-			}
-			if (!isEqual(nextState.livechat, livechat)) {
-				return true;
-			}
-		} else {
-			const { chats } = this.state;
-			if (!isEqual(nextState.chats, chats)) {
-				return true;
-			}
-		}
-
 		const { search } = this.state;
 		if (!isEqual(nextState.search, search)) {
 			return true;
@@ -236,15 +203,25 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	componentWillUnmount() {
-		this.removeListener(this.data);
-		this.removeListener(this.unread);
-		this.removeListener(this.favorites);
-		this.removeListener(this.channels);
-		this.removeListener(this.privateGroup);
-		this.removeListener(this.direct);
-		this.removeListener(this.livechat);
+		if (this.data && this.data.removeAllListeners) {
+			this.data.removeAllListeners();
+		}
+		if (this.getSubscriptions && this.getSubscriptions.stop) {
+			this.getSubscriptions.stop();
+		}
+		if (this.updateStateInteraction && this.updateStateInteraction.cancel) {
+			this.updateStateInteraction.cancel();
+		}
+		if (this.didFocusListener && this.didFocusListener.remove) {
+			this.didFocusListener.remove();
+		}
+		if (this.willBlurListener && this.willBlurListener.remove) {
+			this.willBlurListener.remove();
+		}
+		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	internalSetState = (...args) => {
 		const { navigation } = this.props;
 		if (isIOS && navigation.isFocused()) {
@@ -253,98 +230,68 @@ export default class RoomsListView extends LoggedView {
 		this.setState(...args);
 	}
 
-	getSubscriptions = () => {
+	getSubscriptions = debounce(() => {
+		if (this.data && this.data.removeAllListeners) {
+			this.data.removeAllListeners();
+		}
+
 		const {
 			server, sortBy, showUnread, showFavorites, groupByType
 		} = this.props;
 
 		if (server && this.hasActiveDB()) {
+			this.data = database.objects('subscriptions').filtered('archived != true && open == true && t != $0', 'l');
 			if (sortBy === 'alphabetical') {
-				this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('name', false);
+				this.data = this.data.sorted('name', false);
 			} else {
-				this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
+				this.data = this.data.sorted('roomUpdatedAt', true);
 			}
-
-			let chats = [];
-			let unread = [];
-			let favorites = [];
-			let channels = [];
-			let privateGroup = [];
-			let direct = [];
-			let livechat = [];
 
 			// unread
 			if (showUnread) {
-				this.unread = this.data.filtered('archived != true && open == true').filtered('(unread > 0 || alert == true)');
-				unread = this.removeRealmInstance(this.unread);
-				safeAddListener(this.unread, debounce(() => this.internalSetState({ unread: this.removeRealmInstance(this.unread) }), 300));
+				this.unread = this.data.filtered('(unread > 0 || alert == true)');
 			} else {
-				this.removeListener(unread);
+				this.unread = [];
 			}
 			// favorites
 			if (showFavorites) {
 				this.favorites = this.data.filtered('f == true');
-				favorites = this.removeRealmInstance(this.favorites);
-				safeAddListener(this.favorites, debounce(() => this.internalSetState({ favorites: this.removeRealmInstance(this.favorites) }), 300));
 			} else {
-				this.removeListener(favorites);
+				this.favorites = [];
 			}
 			// type
 			if (groupByType) {
-				// channels
-				this.channels = this.data.filtered('t == $0', 'c');
-				channels = this.removeRealmInstance(this.channels);
-
-				// private
-				this.privateGroup = this.data.filtered('t == $0', 'p');
-				privateGroup = this.removeRealmInstance(this.privateGroup);
-
-				// direct
-				this.direct = this.data.filtered('t == $0', 'd');
-				direct = this.removeRealmInstance(this.direct);
-
-				// livechat
-				this.livechat = this.data.filtered('t == $0', 'l');
-				livechat = this.removeRealmInstance(this.livechat);
-
-				safeAddListener(this.channels, debounce(() => this.internalSetState({ channels: this.removeRealmInstance(this.channels) }), 300));
-				safeAddListener(this.privateGroup, debounce(() => this.internalSetState({ privateGroup: this.removeRealmInstance(this.privateGroup) }), 300));
-				safeAddListener(this.direct, debounce(() => this.internalSetState({ direct: this.removeRealmInstance(this.direct) }), 300));
-				safeAddListener(this.livechat, debounce(() => this.internalSetState({ livechat: this.removeRealmInstance(this.livechat) }), 300));
-				this.removeListener(this.chats);
+				this.discussions = this.data.filtered('prid != null');
+				this.channels = this.data.filtered('t == $0 AND prid == null', 'c');
+				this.privateGroup = this.data.filtered('t == $0 AND prid == null', 'p');
+				this.direct = this.data.filtered('t == $0 AND prid == null', 'd');
+				this.livechat = this.data.filtered('t == $0 AND prid == null', 'l');
+			} else if (showUnread) {
+				this.chats = this.data.filtered('(unread == 0 && alert == false)');
 			} else {
-				// chats
-				if (showUnread) {
-					this.chats = this.data.filtered('(unread == 0 && alert == false)');
-				} else {
-					this.chats = this.data;
-				}
-				chats = this.removeRealmInstance(this.chats);
-
-				safeAddListener(this.chats, debounce(() => this.internalSetState({ chats: this.removeRealmInstance(this.chats) }), 300));
-				this.removeListener(this.channels);
-				this.removeListener(this.privateGroup);
-				this.removeListener(this.direct);
-				this.removeListener(this.livechat);
+				this.chats = this.data;
 			}
+			safeAddListener(this.data, this.updateState);
+		}
+	}, 300);
 
-			// setState
+	// eslint-disable-next-line react/sort-comp
+	updateState = debounce(() => {
+		this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
 			this.internalSetState({
-				chats, unread, favorites, channels, privateGroup, direct, livechat, loading: false
+				chats: this.chats ? this.chats.slice() : [],
+				unread: this.unread ? this.unread.slice() : [],
+				favorites: this.favorites ? this.favorites.slice() : [],
+				discussions: this.discussions ? this.discussions.slice() : [],
+				channels: this.channels ? this.channels.slice() : [],
+				privateGroup: this.privateGroup ? this.privateGroup.slice() : [],
+				direct: this.direct ? this.direct.slice() : [],
+				livechat: this.livechat ? this.livechat.slice() : [],
+				loading: false
 			});
-		}
-	}
-
-	removeRealmInstance = (data) => {
-		const array = Array.from(data);
-		return JSON.parse(JSON.stringify(array));
-	}
-
-	removeListener = (data) => {
-		if (data && data.removeAllListeners) {
-			data.removeAllListeners();
-		}
-	}
+			this.forceUpdate();
+		});
+	}, 300);
 
 	initSearchingAndroid = () => {
 		const { openSearchHeader, navigation } = this.props;
@@ -387,16 +334,22 @@ export default class RoomsListView extends LoggedView {
 		});
 	}
 
-	goRoom = ({ rid, name, t }) => {
+	getRoomTitle = (item) => {
+		const { useRealName } = this.props;
+		return ((item.prid || useRealName) && item.fname) || item.name;
+	}
+
+	goRoom = (item) => {
 		this.cancelSearchingAndroid();
 		const { navigation } = this.props;
-		navigation.navigate('RoomView', { rid, name, t });
+		navigation.navigate('RoomView', {
+			rid: item.rid, name: this.getRoomTitle(item), t: item.t, prid: item.prid
+		});
 	}
 
 	_onPressItem = async(item = {}) => {
 		if (!item.search) {
-			const { rid, name, t } = item;
-			return this.goRoom({ rid, name, t });
+			return this.goRoom(item);
 		}
 		if (item.t === 'd') {
 			// if user is using the search we need first to join/create room
@@ -410,8 +363,7 @@ export default class RoomsListView extends LoggedView {
 				log('RoomsListView._onPressItem', e);
 			}
 		} else {
-			const { rid, name, t } = item;
-			return this.goRoom({ rid, name, t });
+			return this.goRoom(item);
 		}
 	}
 
@@ -431,69 +383,48 @@ export default class RoomsListView extends LoggedView {
 
 	getScrollRef = ref => this.scroll = ref
 
-	renderHeader = () => {
+	renderListHeader = () => {
 		const { search } = this.state;
-		if (search.length > 0) {
-			return null;
-		}
-		return this.renderSort();
-	}
-
-	renderSort = () => {
 		const { sortBy } = this.props;
-
 		return (
-			<Touch
-				key='rooms-list-view-sort'
-				onPress={this.toggleSort}
-				style={styles.dropdownContainerHeader}
-			>
-				<View style={styles.sortItemContainer}>
-					<Text style={styles.sortToggleText}>{I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') })}</Text>
-					<CustomIcon style={styles.sortIcon} size={22} name='sort1' />
-				</View>
-			</Touch>
+			<ListHeader
+				searchLength={search.length}
+				sortBy={sortBy}
+				onChangeSearchText={this.search}
+				toggleSort={this.toggleSort}
+			/>
 		);
 	}
-
-	renderSearchBar = () => {
-		if (isIOS) {
-			return <SearchBox onChangeText={this.search} testID='rooms-list-view-search' key='rooms-list-view-search' />;
-		}
-	}
-
-	renderListHeader = () => (
-		[
-			this.renderSearchBar(),
-			this.renderHeader()
-		]
-	)
 
 	renderItem = ({ item }) => {
 		const {
-			useRealName, userId, baseUrl, StoreLastMessage
+			userId, baseUrl, StoreLastMessage
 		} = this.props;
 		const id = item.rid.replace(userId, '').trim();
 
-		return (
-			<RoomItem
-				alert={item.alert}
-				unread={item.unread}
-				userMentions={item.userMentions}
-				favorite={item.f}
-				lastMessage={item.lastMessage}
-				name={(useRealName && item.fname) || item.name}
-				_updatedAt={item.roomUpdatedAt}
-				key={item._id}
-				id={id}
-				type={item.t}
-				baseUrl={baseUrl}
-				showLastMessage={StoreLastMessage}
-				onPress={() => this._onPressItem(item)}
-				testID={`rooms-list-view-item-${ item.name }`}
-				height={ROW_HEIGHT}
-			/>
-		);
+		if (item.search || (item.isValid && item.isValid())) {
+			return (
+				<RoomItem
+					alert={item.alert}
+					unread={item.unread}
+					userMentions={item.userMentions}
+					favorite={item.f}
+					lastMessage={item.lastMessage ? JSON.parse(JSON.stringify(item.lastMessage)) : null}
+					name={this.getRoomTitle(item)}
+					_updatedAt={item.roomUpdatedAt}
+					key={item._id}
+					id={id}
+					type={item.t}
+					baseUrl={baseUrl}
+					prid={item.prid}
+					showLastMessage={StoreLastMessage}
+					onPress={() => this._onPressItem(item)}
+					testID={`rooms-list-view-item-${ item.name }`}
+					height={ROW_HEIGHT}
+				/>
+			);
+		}
+		return null;
 	}
 
 	renderSectionHeader = header => (
@@ -509,16 +440,15 @@ export default class RoomsListView extends LoggedView {
 			return null;
 		} else if (header === 'Favorites' && !showFavorites) {
 			return null;
-		} else if (['Channels', 'Direct_Messages', 'Private_Groups', 'Livechat'].includes(header) && !groupByType) {
+		} else if (['Discussions', 'Channels', 'Direct_Messages', 'Private_Groups', 'Livechat'].includes(header) && !groupByType) {
 			return null;
 		} else if (header === 'Chats' && groupByType) {
 			return null;
 		}
-		if (data.length > 0) {
+		if (data && data.length > 0) {
 			return (
 				<FlatList
 					data={data}
-					extraData={data}
 					keyExtractor={keyExtractor}
 					style={styles.list}
 					renderItem={this.renderItem}
@@ -537,7 +467,7 @@ export default class RoomsListView extends LoggedView {
 
 	renderList = () => {
 		const {
-			search, chats, unread, favorites, channels, direct, privateGroup, livechat
+			search, chats, unread, favorites, discussions, channels, direct, privateGroup, livechat
 		} = this.state;
 
 		if (search.length > 0) {
@@ -562,6 +492,7 @@ export default class RoomsListView extends LoggedView {
 			<View style={styles.container}>
 				{this.renderSection(unread, 'Unread')}
 				{this.renderSection(favorites, 'Favorites')}
+				{this.renderSection(discussions, 'Discussions')}
 				{this.renderSection(channels, 'Channels')}
 				{this.renderSection(direct, 'Direct_Messages')}
 				{this.renderSection(privateGroup, 'Private_Groups')}
@@ -585,18 +516,16 @@ export default class RoomsListView extends LoggedView {
 				<FlatList
 					ref={this.getScrollRef}
 					data={search.length ? search : chats}
-					extraData={search.length ? search : chats}
 					contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
 					keyExtractor={keyExtractor}
 					style={styles.list}
 					renderItem={this.renderItem}
 					ListHeaderComponent={this.renderListHeader}
 					getItemLayout={getItemLayout}
-					enableEmptySections
 					removeClippedSubviews
 					keyboardShouldPersistTaps='always'
-					initialNumToRender={12}
-					windowSize={7}
+					initialNumToRender={9}
+					windowSize={9}
 				/>
 			);
 		}
@@ -615,6 +544,7 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	render = () => {
+		console.count(`${ this.constructor.name }.render calls`);
 		const {
 			sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown
 		} = this.props;
@@ -635,12 +565,7 @@ export default class RoomsListView extends LoggedView {
 					)
 					: null
 				}
-				{showServerDropdown ? <ServerDropdown navigator={navigator} /> : null}
-				<ConnectionBadge />
-				<NavigationEvents
-					onDidFocus={() => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)}
-					onWillBlur={() => BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)}
-				/>
+				{showServerDropdown ? <ServerDropdown /> : null}
 			</SafeAreaView>
 		);
 	}

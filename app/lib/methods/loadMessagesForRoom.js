@@ -39,8 +39,18 @@ export default function loadMessagesForRoom(...args) {
 			if (data && data.length) {
 				InteractionManager.runAfterInteractions(() => {
 					database.write(() => data.forEach((message) => {
+						message = buildMessage(message);
 						try {
-							database.create('messages', buildMessage(message), true);
+							database.create('messages', message, true);
+							// if it's a thread "header"
+							if (message.tlm) {
+								database.create('threads', message, true);
+							}
+							// if it belongs to a thread
+							if (message.tmid) {
+								message.rid = message.tmid;
+								database.create('threadMessages', message, true);
+							}
 						} catch (e) {
 							log('loadMessagesForRoom -> create messages', e);
 						}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
+// import moment from 'moment';
 
 import MessageComponent from '../../app/containers/message/Message';
 import StoriesSeparator from './StoriesSeparator';
@@ -25,6 +26,7 @@ const author = {
 const baseUrl = 'https://open.rocket.chat';
 const customEmojis = { react_rocket: 'png', nyan_rocket: 'png', marioparty: 'gif' };
 const date = new Date(2017, 10, 10, 10);
+const longText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 
 const Message = props => (
 	<MessageComponent
@@ -49,7 +51,7 @@ export default (
 		<Message msg='Message' />
 
 		<Separator title='Long message' />
-		<Message msg='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum' />
+		<Message msg={longText} />
 
 		<Separator title='Grouped messages' />
 		<Message msg='...' />
@@ -57,7 +59,7 @@ export default (
 			msg='Different user'
 			author={{
 				...author,
-				username: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
+				username: longText
 			}}
 		/>
 		<Message msg='This is the third message' header={false} />
@@ -73,7 +75,7 @@ export default (
 			msg='Message'
 			author={{
 				...author,
-				username: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
+				username: longText
 			}}
 			alias='Diego Mello'
 		/>
@@ -280,6 +282,197 @@ export default (
 				text: 'How are you?'
 			}]}
 		/>
+
+		<Separator title='Message with thread' />
+		<Message
+			msg='How are you?'
+			tcount={1}
+			tlm={date}
+		/>
+		<Message
+			msg='How are you?'
+			tcount={9999}
+			tlm={date}
+		/>
+		<Message
+			msg="I'm fine!"
+			tmid='1'
+			tmsg='How are you?'
+			isThreadReply
+		/>
+		<Message
+			msg="I'm fine!"
+			tmid='1'
+			tmsg='Thread with emoji :) :joy:'
+			isThreadReply
+		/>
+		<Message
+			msg="I'm fine!"
+			tmid='1'
+			tmsg='Markdown: [link](http://www.google.com/) ```block code```'
+			isThreadReply
+		/>
+		<Message
+			msg="I'm fine!"
+			tmid='1'
+			tmsg={longText}
+			isThreadReply
+		/>
+		<Message
+			msg={longText}
+			tmid='1'
+			tmsg='How are you?'
+			isThreadReply
+		/>
+		<Message
+			msg={longText}
+			tmid='1'
+			tmsg={longText}
+			isThreadReply
+		/>
+		<Message
+			tmid='1'
+			tmsg='Thread with attachment'
+			attachments={[{
+				title: 'This is a title',
+				description: 'This is a description',
+				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
+			}]}
+			isThreadReply
+		/>
+
+		<Separator title='Sequential thread messages following thread button' />
+		<Message
+			msg='How are you?'
+			tcount={1}
+			tlm={date}
+		/>
+		<Message
+			msg="I'm fine!"
+			tmid='1'
+			isThreadSequential
+		/>
+		<Message
+			msg={longText}
+			tmid='1'
+			isThreadSequential
+		/>
+		<Message
+			attachments={[{
+				title: 'This is a title',
+				description: 'This is a description',
+				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
+			}]}
+			tmid='1'
+			isThreadSequential
+		/>
+
+		<Separator title='Sequential thread messages following thread reply' />
+		<Message
+			msg="I'm fine!"
+			tmid='1'
+			tmsg='How are you?'
+			isThreadReply
+		/>
+		<Message
+			msg='Cool!'
+			tmid='1'
+			isThreadSequential
+		/>
+		<Message
+			msg={longText}
+			tmid='1'
+			isThreadSequential
+		/>
+		<Message
+			attachments={[{
+				title: 'This is a title',
+				description: 'This is a description',
+				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
+			}]}
+			tmid='1'
+			isThreadSequential
+		/>
+
+		{/* <Message
+			msg='How are you?'
+			tcount={9999}
+			tlm={moment().subtract(1, 'hour')}
+		/>
+		<Message
+			msg='How are you?'
+			tcount={9999}
+			tlm={moment().subtract(1, 'day')}
+		/>
+		<Message
+			msg='How are you?'
+			tcount={9999}
+			tlm={moment().subtract(5, 'day')}
+		/>
+		<Message
+			msg='How are you?'
+			tcount={9999}
+			tlm={moment().subtract(30, 'day')}
+		/> */}
+
+		<Separator title='Discussion' />
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={null}
+			dlm={null}
+			msg='This is a discussion'
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1}
+			dlm={date}
+			msg='This is a discussion'
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={10}
+			dlm={date}
+			msg={longText}
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={date}
+			msg='This is a discussion'
+		/>
+		{/* <Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={moment().subtract(1, 'hour')}
+			msg='This is a discussion'
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={moment().subtract(1, 'day')}
+			msg='This is a discussion'
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={moment().subtract(5, 'day')}
+			msg='This is a discussion'
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={moment().subtract(30, 'day')}
+			msg='This is a discussion'
+		/> */}
+
 
 		<Separator title='URL' />
 		<Message
