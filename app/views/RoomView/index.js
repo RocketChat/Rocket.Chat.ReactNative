@@ -122,7 +122,7 @@ export default class RoomView extends LoggedView {
 		this.t = props.navigation.getParam('t');
 		this.tmid = props.navigation.getParam('tmid');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
-		this.chats = database.objects('subscriptions').filtered('archived != true && open == true');
+		this.chats = database.objects('subscriptions').filtered('rid != $0', this.rid);
 		this.state = {
 			joined: this.rooms.length > 0,
 			room: this.rooms[0] || { rid: this.rid, t: this.t },
@@ -219,6 +219,7 @@ export default class RoomView extends LoggedView {
 			}
 		}
 		this.rooms.removeAllListeners();
+		this.chats.removeAllListeners();
 		if (this.sub && this.sub.stop) {
 			this.sub.stop();
 		}
@@ -308,13 +309,13 @@ export default class RoomView extends LoggedView {
 	// eslint-disable-next-line react/sort-comp
 	updateUnreadCount = debounce(() => {
 		const { navigation } = this.props;
-		const unreadsCount = this.chats.filtered('(unread > 0)').reduce((a, b) => a + (b.unread || 0), 0);
+		const unreadsCount = this.chats.filtered('archived != true && open == true && unread > 0').reduce((a, b) => a + (b.unread || 0), 0);
 		if (unreadsCount !== navigation.getParam('unreadsCount')) {
 			navigation.setParams({
 				unreadsCount
 			});
 		}
-	}, 300, true)
+	}, 300, false)
 
 	handleConnected = () => {
 		this.init();
