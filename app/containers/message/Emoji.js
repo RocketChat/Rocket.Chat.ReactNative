@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { emojify } from 'react-emojione';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 
+// FIXME: missing improvement
 export default class Emoji extends React.PureComponent {
 	static propTypes = {
 		content: PropTypes.string.isRequired,

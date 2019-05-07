@@ -38,5 +38,6 @@ Broadcast.propTypes = {
 	broadcast: PropTypes.bool,
 	replyBroadcast: PropTypes.func
 };
+Broadcast.displayName = 'MessageBroadcast';
 
 export default Broadcast;

@@ -79,35 +79,35 @@ export default class MessageContainer extends React.Component {
 	// 	// this.closeReactions = this.closeReactions.bind(this);
 	// }
 
-	shouldComponentUpdate() {
-		return false;
-	}
-
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	const { reactionsModal } = this.state;
-	// 	const {
-	// 		status, editingMessage, item, _updatedAt, navigation
-	// 	} = this.props;
-
-	// 	if (reactionsModal !== nextState.reactionsModal) {
-	// 		return true;
-	// 	}
-	// 	if (status !== nextProps.status) {
-	// 		return true;
-	// 	}
-	// 	if (item.tmsg !== nextProps.item.tmsg) {
-	// 		return true;
-	// 	}
-
-	// 	if (navigation.isFocused() && !equal(editingMessage, nextProps.editingMessage)) {
-	// 		if (nextProps.editingMessage && nextProps.editingMessage._id === item._id) {
-	// 			return true;
-	// 		} else if (!nextProps.editingMessage._id !== item._id && editingMessage._id === item._id) {
-	// 			return true;
-	// 		}
-	// 	}
-	// 	return _updatedAt.toISOString() !== nextProps._updatedAt.toISOString();
+	// shouldComponentUpdate() {
+	// 	return false;
 	// }
+
+	shouldComponentUpdate(nextProps, nextState) {
+		// const { reactionsModal } = this.state;
+		const {
+			status, editingMessage, item, _updatedAt, navigation
+		} = this.props;
+
+		// if (reactionsModal !== nextState.reactionsModal) {
+		// 	return true;
+		// }
+		if (status !== nextProps.status) {
+			return true;
+		}
+		if (item.tmsg !== nextProps.item.tmsg) {
+			return true;
+		}
+
+		if (navigation.isFocused() && !equal(editingMessage, nextProps.editingMessage)) {
+			if (nextProps.editingMessage && nextProps.editingMessage._id === item._id) {
+				return true;
+			} else if (!nextProps.editingMessage._id !== item._id && editingMessage._id === item._id) {
+				return true;
+			}
+		}
+		return _updatedAt.toISOString() !== nextProps._updatedAt.toISOString();
+	}
 
 	onPress = debounce(() => {
 		const { item } = this.props;
@@ -119,12 +119,12 @@ export default class MessageContainer extends React.Component {
 	}, 300, true);
 
 	onLongPress = () => {
-		const { archived, onLongPress } = this.props;
-		if (this.isInfo || this.hasError || archived) {
-			return;
-		}
-		console.log('onLongPress')
-		onLongPress(this.parseMessage());
+		// const { archived, onLongPress } = this.props;
+		// if (this.isInfo || this.hasError || archived) {
+		// 	return;
+		// }
+		console.log(this.parseMessage())
+		// onLongPress(this.parseMessage());
 	}
 
 	onErrorPress = () => {

@@ -4,10 +4,11 @@ import FastImage from 'react-native-fast-image';
 import equal from 'deep-equal';
 import Touchable from 'react-native-platform-touchable';
 
-import PhotoModal from './PhotoModal';
+// import PhotoModal from './PhotoModal';
 import Markdown from './Markdown';
 import styles from './styles';
 
+// FIXME: improve: move modal to RoomView
 export default class extends Component {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
@@ -65,31 +66,49 @@ export default class extends Component {
 		}
 
 		return (
-			[
-				<Touchable
-					key='image'
-					onPress={this.onPressButton}
-					style={styles.imageContainer}
-					background={Touchable.Ripple('#fff')}
-				>
-					<React.Fragment>
-						<FastImage
-							style={[styles.image, isPressed && { opacity: 0.5 }]}
-							source={{ uri: encodeURI(img) }}
-							resizeMode={FastImage.resizeMode.cover}
-						/>
-						{this.getDescription()}
-					</React.Fragment>
-				</Touchable>,
-				<PhotoModal
-					key='modal'
-					title={file.title}
-					description={file.description}
-					image={img}
-					isVisible={modalVisible}
-					onClose={() => this.setState({ modalVisible: false })}
-				/>
-			]
-		);
+			<Touchable
+				key='image'
+				onPress={this.onPressButton}
+				style={styles.imageContainer}
+				background={Touchable.Ripple('#fff')}
+			>
+				<React.Fragment>
+					<FastImage
+						style={[styles.image, isPressed && { opacity: 0.5 }]}
+						source={{ uri: encodeURI(img) }}
+						resizeMode={FastImage.resizeMode.cover}
+					/>
+					{this.getDescription()}
+				</React.Fragment>
+			</Touchable>
+		)
+
+		// return (
+		// 	[
+		// 		<Touchable
+		// 			key='image'
+		// 			onPress={this.onPressButton}
+		// 			style={styles.imageContainer}
+		// 			background={Touchable.Ripple('#fff')}
+		// 		>
+		// 			<React.Fragment>
+		// 				<FastImage
+		// 					style={[styles.image, isPressed && { opacity: 0.5 }]}
+		// 					source={{ uri: encodeURI(img) }}
+		// 					resizeMode={FastImage.resizeMode.cover}
+		// 				/>
+		// 				{this.getDescription()}
+		// 			</React.Fragment>
+		// 		</Touchable>,
+		// 		<PhotoModal
+		// 			key='modal'
+		// 			title={file.title}
+		// 			description={file.description}
+		// 			image={img}
+		// 			isVisible={modalVisible}
+		// 			onClose={() => this.setState({ modalVisible: false })}
+		// 		/>
+		// 	]
+		// );
 	}
 }

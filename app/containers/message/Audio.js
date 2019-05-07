@@ -57,6 +57,7 @@ const BUTTON_HIT_SLOP = {
 	top: 12, right: 12, bottom: 12, left: 12
 };
 
+// FIXME: missing improvements
 export default class Audio extends React.Component {
 	static propTypes = {
 		file: PropTypes.object.isRequired,

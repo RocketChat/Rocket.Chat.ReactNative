@@ -53,5 +53,6 @@ RepliedThread.propTypes = {
 	isTemp: PropTypes.bool,
 	fetchThreadName: PropTypes.func
 };
+RepliedThread.displayName = 'MessageRepliedThread';
 
 export default RepliedThread;

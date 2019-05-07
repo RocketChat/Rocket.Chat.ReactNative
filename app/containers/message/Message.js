@@ -38,6 +38,7 @@ const MessageInner = React.memo((props) => {
 		</React.Fragment>
 	);
 });
+MessageInner.displayName = 'MessageInner';
 
 const Message = React.memo((props) => {
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo) {
@@ -81,6 +82,7 @@ const Message = React.memo((props) => {
 		</View>
 	);
 });
+Message.displayName = 'Message';
 
 const MessageTouchable = React.memo((props) => {
 	if (props.hasError) {

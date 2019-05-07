@@ -65,5 +65,6 @@ User.propTypes = {
 	ts: PropTypes.string,
 	timeFormat: PropTypes.string
 };
+User.displayName = 'MessageUser';
 
 export default User;

@@ -171,11 +171,13 @@ Reply.propTypes = {
 	user: PropTypes.object,
 	index: PropTypes.number
 };
+Reply.displayName = 'MessageReply';
 
 Title.propTypes = {
 	attachment: PropTypes.object,
 	timeFormat: PropTypes.string
 };
+Title.displayName = 'MessageReplyTitle';
 
 Description.propTypes = {
 	attachment: PropTypes.object,
@@ -183,9 +185,11 @@ Description.propTypes = {
 	customEmojis: PropTypes.object,
 	user: PropTypes.object
 };
+Description.displayName = 'MessageReplyDescription';
 
 Fields.propTypes = {
 	attachment: PropTypes.object
 };
+Fields.displayName = 'MessageReplyFields';
 
 export default Reply;

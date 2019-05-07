@@ -16,13 +16,16 @@ const Attachments = React.memo(({
 
 	return attachments.map((file, index) => {
 		if (file.image_url) {
-			return <Image key={file.image_url} file={file} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
+			// return <Image key={file.image_url} file={file} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
+			return null;
 		}
 		if (file.audio_url) {
-			return <Audio key={file.audio_url} file={file} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
+			// return <Audio key={file.audio_url} file={file} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
+			return null;
 		}
 		if (file.video_url) {
-			return <Video key={file.video_url} file={file} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
+			// return <Video key={file.video_url} file={file} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
+			return null;
 		}
 
 		// eslint-disable-next-line react/no-array-index-key
@@ -36,5 +39,6 @@ Attachments.propTypes = {
 	user: PropTypes.object,
 	baseUrl: PropTypes.string
 };
+Attachments.displayName = 'MessageAttachments';
 
 export default Attachments;

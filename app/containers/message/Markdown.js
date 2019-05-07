@@ -109,5 +109,6 @@ Markdown.propTypes = {
 	edited: PropTypes.bool,
 	numberOfLines: PropTypes.number
 };
+Markdown.displayName = 'MessageMarkdown';
 
 export default Markdown;

@@ -32,5 +32,6 @@ MessageAvatar.propTypes = {
 	user: PropTypes.obj,
 	small: PropTypes.bool
 };
+MessageAvatar.displayName = 'MessageAvatar';
 
 export default MessageAvatar;

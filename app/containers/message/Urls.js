@@ -112,11 +112,13 @@ UrlImage.propTypes = {
 	user: PropTypes.object,
 	baseUrl: PropTypes.string
 };
+UrlImage.displayName = 'MessageUrlImage';
 
 UrlContent.propTypes = {
 	title: PropTypes.string,
 	description: PropTypes.string
 };
+UrlContent.displayName = 'MessageUrlContent';
 
 Url.propTypes = {
 	url: PropTypes.object.isRequired,
@@ -124,11 +126,13 @@ Url.propTypes = {
 	user: PropTypes.object,
 	baseUrl: PropTypes.string
 };
+Url.displayName = 'MessageUrl';
 
 Urls.propTypes = {
 	urls: PropTypes.array,
 	user: PropTypes.object,
 	baseUrl: PropTypes.string
 };
+Urls.displayName = 'MessageUrls';
 
 export default Urls;

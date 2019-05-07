@@ -79,6 +79,7 @@ Reaction.propTypes = {
 	onReactionPress: PropTypes.func,
 	onReactionLongPress: PropTypes.func
 };
+Reaction.displayName = 'MessageReaction';
 
 Reactions.propTypes = {
 	reactions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
@@ -89,5 +90,6 @@ Reactions.propTypes = {
 	toggleReactionPicker: PropTypes.func,
 	onReactionLongPress: PropTypes.func
 };
+Reactions.displayName = 'MessageReactions';
 
 export default Reactions;

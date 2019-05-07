@@ -39,5 +39,6 @@ Thread.propTypes = {
 	tcount: PropTypes.string,
 	tlm: PropTypes.string
 };
+Thread.displayName = 'MessageThread';
 
 export default Thread;

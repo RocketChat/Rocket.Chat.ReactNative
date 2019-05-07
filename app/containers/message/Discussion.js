@@ -52,5 +52,6 @@ Discussion.propTypes = {
 	dlm: PropTypes.string,
 	onDiscussionPress: PropTypes.func
 };
+Discussion.displayName = 'MessageDiscussion';
 
 export default Discussion;

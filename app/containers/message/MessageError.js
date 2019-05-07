@@ -21,5 +21,6 @@ MessageError.propTypes = {
 	hasError: PropTypes.bool,
 	onErrorPress: PropTypes.func
 };
+MessageError.displayName = 'MessageError';
 
 export default MessageError;
