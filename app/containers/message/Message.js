@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, TouchableWithoutFeedback } from 'react-native';
-import moment from 'moment';
 
 import User from './User';
 import MessageError from './MessageError';
 import styles from './styles';
-import I18n from '../../i18n';
 // import debounce from '../../utils/debounce';
 import sharedStyles from '../../views/Styles';
 import RepliedThread from './RepliedThread';
@@ -45,7 +43,7 @@ const Message = React.memo((props) => {
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo) {
 		const thread = props.isThreadReply ? <RepliedThread isTemp={props.isTemp} {...props} /> : null;
 		return (
-			<React.Fragment>
+			<View style={[styles.container, props.editing && styles.editing, props.style]}>
 				{thread}
 				<View style={[styles.flex, sharedStyles.alignItemsCenter]}>
 					<MessageAvatar small {...props} />
@@ -61,50 +59,52 @@ const Message = React.memo((props) => {
 						<Content {...props} />
 					</View>
 				</View>
-			</React.Fragment>
+			</View>
 		);
 	}
 	return (
-		<View style={styles.flex}>
-			<MessageAvatar {...props} />
-			<View
-				style={[
-					styles.messageContent,
-					props.header && styles.messageContentWithHeader,
-					props.hasError && props.header && styles.messageContentWithHeader,
-					props.hasError && !props.header && styles.messageContentWithError,
-					props.isTemp && styles.temp
-				]}
-			>
-				<MessageInner isTemp={props.isTemp} {...props} />
+		<View style={[styles.container, props.editing && styles.editing, props.style]}>
+			<View style={styles.flex}>
+				<MessageAvatar {...props} />
+				<View
+					style={[
+						styles.messageContent,
+						props.header && styles.messageContentWithHeader,
+						props.hasError && props.header && styles.messageContentWithHeader,
+						props.hasError && !props.header && styles.messageContentWithError,
+						props.isTemp && styles.temp
+					]}
+				>
+					<MessageInner isTemp={props.isTemp} {...props} />
+				</View>
 			</View>
 		</View>
 	);
 });
 
 const MessageTouchable = React.memo((props) => {
-	const accessibilityLabel = I18n.t('Message_accessibility', {
-		user: props.author.username, 
-		time: moment(props.ts).format(props.timeFormat), 
-		message: props.msg
-	});
-
-	return (
-		<View style={styles.root}>
-			<MessageError hasError={props.hasError} {...props} />
-			<TouchableWithoutFeedback
-				onLongPress={props.onLongPress}
-				onPress={props.onPress}
-			>
-				<View
-					style={[styles.container, props.editing && styles.editing, props.style]}
-					accessibilityLabel={accessibilityLabel}
+	if (props.hasError) {
+		return (
+			<View style={styles.root}>
+				<MessageError {...props} />
+				<TouchableWithoutFeedback
+					onLongPress={props.onLongPress}
+					onPress={props.onPress}
 				>
-					<Message isTemp={props.isTemp} hasError={props.hasError} {...props} />
-				</View>
-			</TouchableWithoutFeedback>
-		</View>
+					<Message {...props} />
+				</TouchableWithoutFeedback>
+			</View>
+		);
+	}
+	return (
+		<TouchableWithoutFeedback
+			onLongPress={props.onLongPress}
+			onPress={props.onPress}
+		>
+			<Message {...props} />
+		</TouchableWithoutFeedback>
 	);
 });
+MessageTouchable.displayName = 'MessageTouchable';
 
 export default MessageTouchable;
