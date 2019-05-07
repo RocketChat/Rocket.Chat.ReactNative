@@ -81,7 +81,7 @@ Reaction.propTypes = {
 };
 
 Reactions.propTypes = {
-	reactions: PropTypes.array,
+	reactions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	user: PropTypes.object,
 	customEmojis: PropTypes.object,
 	baseUrl: PropTypes.string,

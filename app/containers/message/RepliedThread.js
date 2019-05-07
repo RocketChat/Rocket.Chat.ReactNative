@@ -2,13 +2,14 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import removeMarkdown from 'remove-markdown';
 import { emojify } from 'react-emojione';
+import PropTypes from 'prop-types';
 
 import { CustomIcon } from '../../lib/Icons';
 import DisclosureIndicator from '../DisclosureIndicator';
 import styles from './styles';
 
 const RepliedThread = React.memo(({
-	status, tmid, tmsg, header, isTemp, fetchThreadName
+	tmid, tmsg, header, isTemp, fetchThreadName
 }) => {
 	if (!tmid || !header || isTemp) {
 		return null;
@@ -29,6 +30,28 @@ const RepliedThread = React.memo(({
 			<DisclosureIndicator />
 		</View>
 	);
+}, (prevProps, nextProps) => {
+	if (prevProps.tmid !== nextProps.tmid) {
+		return false;
+	}
+	if (prevProps.tmsg !== nextProps.tmsg) {
+		return false;
+	}
+	if (prevProps.header !== nextProps.header) {
+		return false;
+	}
+	if (prevProps.isTemp !== nextProps.isTemp) {
+		return false;
+	}
+	return true;
 });
+
+RepliedThread.propTypes = {
+	tmid: PropTypes.string,
+	tmsg: PropTypes.string,
+	header: PropTypes.bool,
+	isTemp: PropTypes.bool,
+	fetchThreadName: PropTypes.func
+};
 
 export default RepliedThread;
