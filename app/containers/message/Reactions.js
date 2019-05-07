@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
+import PropTypes from 'prop-types';
 
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
@@ -35,15 +36,27 @@ const Reaction = React.memo(({
 	);
 });
 
-const Reactions = React.memo((props) => {
-	if (props.reactions.length === 0) {
+const Reactions = React.memo(({
+	reactions, user, customEmojis, baseUrl, onReactionPress, toggleReactionPicker, onReactionLongPress
+}) => {
+	if (reactions.length === 0) {
 		return null;
 	}
 	return (
 		<View style={styles.reactionsContainer}>
-			{props.reactions.map(reaction => <Reaction key={reaction.emoji} reaction={reaction} {...props} />)}
+			{reactions.map(reaction => (
+				<Reaction
+					key={reaction.emoji}
+					reaction={reaction}
+					user={user}
+					baseUrl={baseUrl}
+					customEmojis={customEmojis}
+					onReactionLongPress={onReactionLongPress}
+					onReactionPress={onReactionPress}
+				/>
+			))}
 			<Touchable
-				onPress={props.toggleReactionPicker}
+				onPress={toggleReactionPicker}
 				key='message-add-reaction'
 				testID='message-add-reaction'
 				style={styles.reactionButton}
@@ -56,6 +69,25 @@ const Reactions = React.memo((props) => {
 			</Touchable>
 		</View>
 	);
-})
+});
+
+Reaction.propTypes = {
+	reaction: PropTypes.object,
+	user: PropTypes.object,
+	customEmojis: PropTypes.object,
+	baseUrl: PropTypes.string,
+	onReactionPress: PropTypes.func,
+	onReactionLongPress: PropTypes.func
+};
+
+Reactions.propTypes = {
+	reactions: PropTypes.array,
+	user: PropTypes.object,
+	customEmojis: PropTypes.object,
+	baseUrl: PropTypes.string,
+	onReactionPress: PropTypes.func,
+	toggleReactionPicker: PropTypes.func,
+	onReactionLongPress: PropTypes.func
+};
 
 export default Reactions;
