@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Avatar from '../Avatar';
 import styles from './styles';
@@ -21,6 +22,15 @@ const MessageAvatar = React.memo(({
 		);
 	}
 	return null;
-});
+}, () => true);
+
+MessageAvatar.propTypes = {
+	header: PropTypes.bool,
+	avatar: PropTypes.string,
+	author: PropTypes.obj,
+	baseUrl: PropTypes.string,
+	user: PropTypes.obj,
+	small: PropTypes.bool
+};
 
 export default MessageAvatar;
