@@ -8,7 +8,7 @@ import Video from './Video';
 import Reply from './Reply';
 
 const Attachments = React.memo(({
-	attachments, timeFormat, user, baseUrl
+	attachments, timeFormat, user, baseUrl, onOpenFileModal
 }) => {
 	if (attachments.length === 0) {
 		return null;
@@ -16,8 +16,7 @@ const Attachments = React.memo(({
 
 	return attachments.map((file, index) => {
 		if (file.image_url) {
-			// return <Image key={file.image_url} file={file} user={user} baseUrl={baseUrl} />;
-			return null;
+			return <Image key={file.image_url} file={file} user={user} baseUrl={baseUrl} onOpenFileModal={onOpenFileModal} />;
 		}
 		if (file.audio_url) {
 			// return <Audio key={file.audio_url} file={file} user={user} baseUrl={baseUrl} />;

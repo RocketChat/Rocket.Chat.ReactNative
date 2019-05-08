@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableWithoutFeedback } from 'react-native';
+import { View, TouchableWithoutFeedback, Text } from 'react-native';
+import Touchable from 'react-native-platform-touchable';
 
 import User from './User';
 import MessageError from './MessageError';
@@ -89,22 +90,19 @@ const MessageTouchable = React.memo((props) => {
 		return (
 			<View style={styles.root}>
 				<MessageError {...props} />
-				<TouchableWithoutFeedback
-					onLongPress={props.onLongPress}
-					onPress={props.onPress}
-				>
-					<Message {...props} />
-				</TouchableWithoutFeedback>
+				<Message {...props} />
 			</View>
 		);
 	}
 	return (
-		<TouchableWithoutFeedback
+		<Touchable
 			onLongPress={props.onLongPress}
 			onPress={props.onPress}
 		>
-			<Message {...props} />
-		</TouchableWithoutFeedback>
+			<View>
+				<Message {...props} />
+			</View>
+		</Touchable>
 	);
 });
 MessageTouchable.displayName = 'MessageTouchable';

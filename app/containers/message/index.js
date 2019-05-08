@@ -117,12 +117,11 @@ export default class MessageContainer extends React.Component {
 	}, 300, true);
 
 	onLongPress = () => {
-		// const { archived, onLongPress } = this.props;
-		// if (this.isInfo || this.hasError || archived) {
-		// 	return;
-		// }
-		console.log(this.parseMessage())
-		// onLongPress(this.parseMessage());
+		const { archived, onLongPress } = this.props;
+		if (this.isInfo || this.hasError || archived) {
+			return;
+		}
+		onLongPress(this.parseMessage());
 	}
 
 	onErrorPress = () => {
@@ -242,7 +241,7 @@ export default class MessageContainer extends React.Component {
 	render() {
 		// console.log(`RENDERING ${ this.props.item._id }`)
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal
 		} = this.props;
 		const {
 			_id, msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg
@@ -295,6 +294,7 @@ export default class MessageContainer extends React.Component {
 				replyBroadcast={this.replyBroadcast}
 				toggleReactionPicker={this.toggleReactionPicker}
 				onDiscussionPress={this.onDiscussionPress}
+				onOpenFileModal={onOpenFileModal}
 				// onThreadPress={this.onThreadPress}
 			/>
 		);

@@ -37,6 +37,7 @@ import Separator from './Separator';
 import { COLOR_WHITE } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
+import FileModal from '../../containers/FileModal';
 
 @connect(state => ({
 	user: {
@@ -116,7 +117,9 @@ export default class RoomView extends LoggedView {
 		this.state = {
 			joined: this.rooms.length > 0,
 			room: this.rooms[0] || { rid: this.rid, t: this.t },
-			lastOpen: null
+			lastOpen: null,
+			photoModalVisible: false,
+			selectedAttachment: {}
 		};
 		this.beginAnimating = false;
 		this.beginAnimatingTimeout = setTimeout(() => this.beginAnimating = true, 300);
@@ -146,37 +149,37 @@ export default class RoomView extends LoggedView {
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const {
-			room, joined, lastOpen
-		} = this.state;
-		const { showActions, showErrorActions, appState } = this.props;
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	const {
+	// 		room, joined, lastOpen
+	// 	} = this.state;
+	// 	const { showActions, showErrorActions, appState } = this.props;
 
-		if (lastOpen !== nextState.lastOpen) {
-			return true;
-		} else if (room.ro !== nextState.room.ro) {
-			return true;
-		} else if (room.f !== nextState.room.f) {
-			return true;
-		} else if (room.blocked !== nextState.room.blocked) {
-			return true;
-		} else if (room.blocker !== nextState.room.blocker) {
-			return true;
-		} else if (room.archived !== nextState.room.archived) {
-			return true;
-		} else if (joined !== nextState.joined) {
-			return true;
-		} else if (showActions !== nextProps.showActions) {
-			return true;
-		} else if (showErrorActions !== nextProps.showErrorActions) {
-			return true;
-		} else if (appState !== nextProps.appState) {
-			return true;
-		} else if (!equal(room.muted, nextState.room.muted)) {
-			return true;
-		}
-		return false;
-	}
+	// 	if (lastOpen !== nextState.lastOpen) {
+	// 		return true;
+	// 	} else if (room.ro !== nextState.room.ro) {
+	// 		return true;
+	// 	} else if (room.f !== nextState.room.f) {
+	// 		return true;
+	// 	} else if (room.blocked !== nextState.room.blocked) {
+	// 		return true;
+	// 	} else if (room.blocker !== nextState.room.blocker) {
+	// 		return true;
+	// 	} else if (room.archived !== nextState.room.archived) {
+	// 		return true;
+	// 	} else if (joined !== nextState.joined) {
+	// 		return true;
+	// 	} else if (showActions !== nextProps.showActions) {
+	// 		return true;
+	// 	} else if (showErrorActions !== nextProps.showErrorActions) {
+	// 		return true;
+	// 	} else if (appState !== nextProps.appState) {
+	// 		return true;
+	// 	} else if (!equal(room.muted, nextState.room.muted)) {
+	// 		return true;
+	// 	}
+	// 	return false;
+	// }
 
 	componentDidUpdate(prevProps) {
 		const { room } = this.state;
@@ -272,6 +275,14 @@ export default class RoomView extends LoggedView {
 	onMessageLongPress = (message) => {
 		const { actionsShow } = this.props;
 		actionsShow({ ...message, rid: this.rid });
+	}
+
+	onOpenFileModal = (attachment) => {
+		this.setState({ selectedAttachment: attachment, photoModalVisible: true });
+	}
+
+	onCloseFileModal = () => {
+		this.setState({ selectedAttachment: {}, photoModalVisible: false });
 	}
 
 	onReactionPress = (shortname, messageId) => {
@@ -446,6 +457,7 @@ export default class RoomView extends LoggedView {
 				onReactionPress={this.onReactionPress}
 				onLongPress={this.onMessageLongPress}
 				onDiscussionPress={this.onDiscussionPress}
+				onOpenFileModal={this.onOpenFileModal}
 				baseUrl='https://open.rocket.chat'
 				Message_GroupingPeriod={60000}
 				Message_TimeFormat='LLL'
@@ -535,17 +547,22 @@ export default class RoomView extends LoggedView {
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
-		const { room } = this.state;
+		const { room, photoModalVisible, selectedAttachment } = this.state;
 		const { rid, t } = room;
 
 		return (
 			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
 				<List rid={rid} t={t} tmid={this.tmid} renderRow={this.renderItem} />
-				{/* {this.renderFooter()}
-				{this.renderActions()}
-				<ReactionPicker onEmojiSelected={this.onReactionPress} />
-				<UploadProgress rid={this.rid} /> */}
+				{this.renderFooter()}
+				{/* {this.renderActions()}
+				<ReactionPicker onEmojiSelected={this.onReactionPress} /> */}
+				<UploadProgress rid={this.rid} />
+				<FileModal
+					attachment={selectedAttachment}
+					isVisible={photoModalVisible}
+					onClose={this.onCloseFileModal}
+				/>
 			</SafeAreaView>
 		);
 	}

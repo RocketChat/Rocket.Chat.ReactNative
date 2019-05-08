@@ -788,6 +788,14 @@ const RocketChat = {
 	getCustomEmojiFromLocal(content) {
 		const { customEmojis } = reduxStore.getState();
 		return customEmojis[content];
+	},
+	formatAttachmentUrl(attachmentUrl) {
+		const { user } = reduxStore.getState().login;
+		if (user.id && user.token) {
+			const { server } = reduxStore.getState().server;
+			return attachmentUrl.includes('http') ? attachmentUrl : `${ server }${ attachmentUrl }?rc_uid=${ user.id }&rc_token=${ user.token }`;
+		}
+		return null;
 	}
 };
 

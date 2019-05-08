@@ -25,6 +25,6 @@ export default class Emoji extends React.PureComponent {
 			const emoji = { extension: emojiExtension, content: parsedContent };
 			return <CustomEmoji key={content} baseUrl={baseUrl} style={customEmojiStyle} emoji={emoji} />;
 		}
-		return <Text style={standardEmojiStyle}>{ emojify(`${ content }`, { output: 'unicode' }) }</Text>;
+		return <Text style={standardEmojiStyle}>{ emojify(content, { output: 'unicode' }) }</Text>;
 	}
 }

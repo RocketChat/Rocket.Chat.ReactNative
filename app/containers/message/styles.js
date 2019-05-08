@@ -173,6 +173,9 @@ export default StyleSheet.create({
 		borderColor: COLOR_BORDER,
 		borderWidth: 1
 	},
+	imagePressed: {
+		opacity: 0.5
+	},
 	inlineImage: {
 		width: 300,
 		height: 300,
