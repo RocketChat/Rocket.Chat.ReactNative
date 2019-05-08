@@ -56,12 +56,15 @@ class MessageBox extends Component {
 		replyMessage: PropTypes.object,
 		replying: PropTypes.bool,
 		editing: PropTypes.bool,
+		threadsEnabled: PropTypes.bool,
+		isFocused: PropTypes.bool,
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			username: PropTypes.string,
 			token: PropTypes.string
 		}),
 		roomType: PropTypes.string,
+		tmid: PropTypes.string,
 		editCancel: PropTypes.func.isRequired,
 		editRequest: PropTypes.func.isRequired,
 		onSubmit: PropTypes.func.isRequired,
@@ -91,23 +94,37 @@ class MessageBox extends Component {
 	}
 
 	componentDidMount() {
-		const { rid } = this.props;
-		const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
-		if (room.draftMessage && room.draftMessage !== '') {
-			this.setInput(room.draftMessage);
+		const { rid, tmid } = this.props;
+		let msg;
+		if (tmid) {
+			const thread = database.objectForPrimaryKey('threads', tmid);
+			if (thread) {
+				msg = thread.draftMessage;
+			}
+		} else {
+			const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
+			if (room) {
+				msg = room.draftMessage;
+			}
+		}
+		if (msg) {
+			this.setInput(msg);
 			this.setShowSend(true);
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const { message, replyMessage } = this.props;
-		if (message !== nextProps.message && nextProps.message.msg) {
+		const { message, replyMessage, isFocused } = this.props;
+		if (!isFocused) {
+			return;
+		}
+		if (!equal(message, nextProps.message) && nextProps.message.msg) {
 			this.setInput(nextProps.message.msg);
 			if (this.text) {
 				this.setShowSend(true);
 			}
 			this.focus();
-		} else if (replyMessage !== nextProps.replyMessage && nextProps.replyMessage.msg) {
+		} else if (!equal(replyMessage, nextProps.replyMessage)) {
 			this.focus();
 		} else if (!nextProps.message) {
 			this.clearInput();
@@ -119,8 +136,11 @@ class MessageBox extends Component {
 			showEmojiKeyboard, showFilesAction, showSend, recording, mentions, file
 		} = this.state;
 		const {
-			roomType, replying, editing
+			roomType, replying, editing, isFocused
 		} = this.props;
+		if (!isFocused) {
+			return false;
+		}
 		if (nextProps.roomType !== roomType) {
 			return true;
 		}
@@ -480,7 +500,7 @@ class MessageBox extends Component {
 	}
 
 	sendImageMessage = async(file) => {
-		const { rid } = this.props;
+		const { rid, tmid } = this.props;
 
 		this.setState({ file: { isVisible: false } });
 		const fileInfo = {
@@ -492,7 +512,7 @@ class MessageBox extends Component {
 			path: file.path
 		};
 		try {
-			await RocketChat.sendFileMessage(rid, fileInfo);
+			await RocketChat.sendFileMessage(rid, fileInfo, tmid);
 		} catch (e) {
 			log('sendImageMessage', e);
 		}
@@ -538,14 +558,14 @@ class MessageBox extends Component {
 	}
 
 	finishAudioMessage = async(fileInfo) => {
-		const { rid } = this.props;
+		const { rid, tmid } = this.props;
 
 		this.setState({
 			recording: false
 		});
 		if (fileInfo) {
 			try {
-				await RocketChat.sendFileMessage(rid, fileInfo);
+				await RocketChat.sendFileMessage(rid, fileInfo, tmid);
 			} catch (e) {
 				if (e && e.error === 'error-file-too-large') {
 					return Alert.alert(I18n.t(e.error));
@@ -571,31 +591,42 @@ class MessageBox extends Component {
 		if (message.trim() === '') {
 			return;
 		}
-		// if is editing a message
+
 		const {
 			editing, replying
 		} = this.props;
 
+		// Edit
 		if (editing) {
 			const { _id, rid } = editingMessage;
 			editRequest({ _id, msg: message, rid });
+
+		// Reply
 		} else if (replying) {
-			const {
-				user, replyMessage, roomType, closeReply
-			} = this.props;
-			const permalink = await this.getPermalink(replyMessage);
-			let msg = `[ ](${ permalink }) `;
+			const { replyMessage, closeReply, threadsEnabled } = this.props;
 
-			// if original message wasn't sent by current user and neither from a direct room
-			if (user.username !== replyMessage.u.username && roomType !== 'd' && replyMessage.mention) {
-				msg += `@${ replyMessage.u.username } `;
+			// Thread
+			if (threadsEnabled && replyMessage.mention) {
+				onSubmit(message, replyMessage._id);
+
+			// Legacy reply or quote (quote is a reply without mention)
+			} else {
+				const { user, roomType } = this.props;
+				const permalink = await this.getPermalink(replyMessage);
+				let msg = `[ ](${ permalink }) `;
+
+				// if original message wasn't sent by current user and neither from a direct room
+				if (user.username !== replyMessage.u.username && roomType !== 'd' && replyMessage.mention) {
+					msg += `@${ replyMessage.u.username } `;
+				}
+
+				msg = `${ msg } ${ message }`;
+				onSubmit(msg);
 			}
-
-			msg = `${ msg } ${ message }`;
-			onSubmit(msg);
 			closeReply();
+
+		// Normal message
 		} else {
-			// if is submiting a new message
 			onSubmit(message);
 		}
 		this.clearInput();
@@ -694,7 +725,8 @@ class MessageBox extends Component {
 							size={30}
 							type={item.username ? 'd' : 'c'}
 							baseUrl={baseUrl}
-							user={user}
+							userId={user.id}
+							token={user.token}
 						/>,
 						<Text key='mention-item-name' style={styles.mentionText}>{ item.username || item.name }</Text>
 					]
@@ -817,9 +849,10 @@ class MessageBox extends Component {
 const mapStateToProps = state => ({
 	message: state.messages.message,
 	replyMessage: state.messages.replyMessage,
-	replying: state.messages.replyMessage && !!state.messages.replyMessage.msg,
+	replying: state.messages.replying,
 	editing: state.messages.editing,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	threadsEnabled: state.settings.Threads_enabled,
 	user: {
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,

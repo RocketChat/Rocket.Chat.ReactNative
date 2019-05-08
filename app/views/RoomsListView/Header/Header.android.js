@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Header = ({
-	isFetching, serverName, showServerDropdown, setSearchInputRef, showSearchHeader, onSearchChangeText, onPress
+const Header = React.memo(({
+	connecting, isFetching, serverName, showServerDropdown, setSearchInputRef, showSearchHeader, onSearchChangeText, onPress
 }) => {
 	if (showSearchHeader) {
 		return (
@@ -61,6 +61,7 @@ const Header = ({
 	return (
 		<View style={styles.container}>
 			<TouchableOpacity onPress={onPress} testID='rooms-list-header-server-dropdown-button'>
+				{connecting ? <Text style={styles.updating}>{I18n.t('Connecting')}</Text> : null}
 				{isFetching ? <Text style={styles.updating}>{I18n.t('Updating')}</Text> : null}
 				<View style={styles.button}>
 					<Text style={[styles.server, isFetching && styles.serverSmall]}>{serverName}</Text>
@@ -69,7 +70,7 @@ const Header = ({
 			</TouchableOpacity>
 		</View>
 	);
-};
+});
 
 Header.propTypes = {
 	showServerDropdown: PropTypes.bool.isRequired,
@@ -77,6 +78,7 @@ Header.propTypes = {
 	onPress: PropTypes.func.isRequired,
 	onSearchChangeText: PropTypes.func.isRequired,
 	setSearchInputRef: PropTypes.func.isRequired,
+	connecting: PropTypes.bool,
 	isFetching: PropTypes.bool,
 	serverName: PropTypes.string
 };
