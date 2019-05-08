@@ -19,8 +19,7 @@ const Attachments = React.memo(({
 			return <Image key={file.image_url} file={file} user={user} baseUrl={baseUrl} onOpenFileModal={onOpenFileModal} />;
 		}
 		if (file.audio_url) {
-			// return <Audio key={file.audio_url} file={file} user={user} baseUrl={baseUrl} />;
-			return null;
+			return <Audio key={file.audio_url} file={file} user={user} baseUrl={baseUrl} />;
 		}
 		if (file.video_url) {
 			// return <Video key={file.video_url} file={file} user={user} baseUrl={baseUrl} />;
