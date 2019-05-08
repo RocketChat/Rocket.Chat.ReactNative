@@ -98,6 +98,13 @@ export default class RoomHeaderView extends Component {
 		return false;
 	}
 
+	componentWillUnmount() {
+		this.usersTyping.removeAllListeners();
+		if (this.user && this.user.removeAllListeners) {
+			this.user.removeAllListeners();
+		}
+	}
+
 	updateState = () => {
 		this.setState({ usersTyping: this.usersTyping.slice() });
 	}
