@@ -31,7 +31,6 @@ import log from '../../utils/log';
 import { isIOS } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
-import ConnectionBadge from '../../containers/ConnectionBadge';
 import RoomHeaderView, { RightButtons } from './Header';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
@@ -46,6 +45,8 @@ import buildMessage from '../../lib/methods/helpers/buildMessage';
 		token: state.login.user && state.login.user.token
 	},
 	actionMessage: state.messages.actionMessage,
+	editing: state.messages.editing,
+	replying: state.messages.replying,
 	showActions: state.messages.showActions,
 	showErrorActions: state.messages.showErrorActions,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
@@ -65,10 +66,19 @@ export default class RoomView extends LoggedView {
 		const title = navigation.getParam('name');
 		const t = navigation.getParam('t');
 		const tmid = navigation.getParam('tmid');
+		const isFetching = navigation.getParam('isFetching', false);
 		return {
 			headerTitleContainerStyle: styles.headerTitleContainerStyle,
 			headerTitle: (
-				<RoomHeaderView rid={rid} prid={prid} tmid={tmid} title={title} type={t} widthOffset={tmid ? 95 : 130} />
+				<RoomHeaderView
+					rid={rid}
+					prid={prid}
+					tmid={tmid}
+					title={title}
+					type={t}
+					widthOffset={tmid ? 95 : 130}
+					isFetching={isFetching}
+				/>
 			),
 			headerRight: <RightButtons rid={rid} tmid={tmid} t={t} navigation={navigation} />
 		};
@@ -87,6 +97,8 @@ export default class RoomView extends LoggedView {
 		appState: PropTypes.string,
 		useRealName: PropTypes.bool,
 		isAuthenticated: PropTypes.bool,
+		editing: PropTypes.bool,
+		replying: PropTypes.bool,
 		toggleReactionPicker: PropTypes.func.isRequired,
 		actionsShow: PropTypes.func,
 		editCancel: PropTypes.func,
@@ -110,6 +122,8 @@ export default class RoomView extends LoggedView {
 		this.beginAnimatingTimeout = setTimeout(() => this.beginAnimating = true, 300);
 		this.messagebox = React.createRef();
 		safeAddListener(this.rooms, this.updateRoom);
+		this.willBlurListener = props.navigation.addListener('willBlur', () => this.mounted = false);
+		this.mounted = false;
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
 
@@ -127,6 +141,7 @@ export default class RoomView extends LoggedView {
 			} else {
 				EventEmitter.addEventListener('connected', this.handleConnected);
 			}
+			this.mounted = true;
 		});
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
@@ -176,12 +191,19 @@ export default class RoomView extends LoggedView {
 	}
 
 	componentWillUnmount() {
-		if (this.messagebox && this.messagebox.current && this.messagebox.current.text) {
+		this.mounted = false;
+		const { editing, replying } = this.props;
+		if (!editing && this.messagebox && this.messagebox.current && this.messagebox.current.text) {
 			const { text } = this.messagebox.current;
-			const [room] = this.rooms;
-			if (room) {
+			let obj;
+			if (this.tmid) {
+				obj = database.objectForPrimaryKey('threads', this.tmid);
+			} else {
+				[obj] = this.rooms;
+			}
+			if (obj) {
 				database.write(() => {
-					room.draftMessage = text;
+					obj.draftMessage = text;
 				});
 			}
 		}
@@ -192,9 +214,14 @@ export default class RoomView extends LoggedView {
 		if (this.beginAnimatingTimeout) {
 			clearTimeout(this.beginAnimatingTimeout);
 		}
-		const { editCancel, replyCancel } = this.props;
-		editCancel();
-		replyCancel();
+		if (editing) {
+			const { editCancel } = this.props;
+			editCancel();
+		}
+		if (replying) {
+			const { replyCancel } = this.props;
+			replyCancel();
+		}
 		if (this.didMountInteraction && this.didMountInteraction.cancel) {
 			this.didMountInteraction.cancel();
 		}
@@ -207,6 +234,9 @@ export default class RoomView extends LoggedView {
 		if (this.initInteraction && this.initInteraction.cancel) {
 			this.initInteraction.cancel();
 		}
+		if (this.willBlurListener && this.willBlurListener.remove) {
+			this.willBlurListener.remove();
+		}
 		EventEmitter.removeListener('connected', this.handleConnected);
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
@@ -217,7 +247,7 @@ export default class RoomView extends LoggedView {
 			this.initInteraction = InteractionManager.runAfterInteractions(async() => {
 				const { room } = this.state;
 				if (this.tmid) {
-					RocketChat.loadThreadMessages({ tmid: this.tmid, t: this.t });
+					await this.getThreadMessages();
 				} else {
 					await this.getMessages(room);
 
@@ -241,7 +271,7 @@ export default class RoomView extends LoggedView {
 
 	onMessageLongPress = (message) => {
 		const { actionsShow } = this.props;
-		actionsShow(message);
+		actionsShow({ ...message, rid: this.rid });
 	}
 
 	onReactionPress = (shortname, messageId) => {
@@ -270,6 +300,9 @@ export default class RoomView extends LoggedView {
 	}
 
 	internalSetState = (...args) => {
+		if (!this.mounted) {
+			return;
+		}
 		if (isIOS && this.beginAnimating) {
 			LayoutAnimation.easeInEaseOut();
 		}
@@ -297,21 +330,34 @@ export default class RoomView extends LoggedView {
 		return ((room.prid || useRealName) && room.fname) || room.name;
 	}
 
-	getMessages = () => {
+	getMessages = async() => {
 		const { room } = this.state;
+		const { navigation } = this.props;
 		try {
+			navigation.setParams({ isFetching: true });
 			if (room.lastOpen) {
-				return RocketChat.loadMissedMessages(room);
+				await RocketChat.loadMissedMessages(room);
 			} else {
-				return RocketChat.loadMessagesForRoom(room);
+				await RocketChat.loadMessagesForRoom(room);
 			}
+			navigation.setParams({ isFetching: false });
+			return Promise.resolve();
 		} catch (e) {
 			console.log('TCL: getMessages -> e', e);
 			log('getMessages', e);
 		}
 	}
 
-	setLastOpen = lastOpen => this.setState({ lastOpen });
+	getThreadMessages = () => {
+		try {
+			return RocketChat.loadThreadMessages({ tmid: this.tmid });
+		} catch (e) {
+			console.log('TCL: getThreadMessages -> e', e);
+			log('getThreadMessages', e);
+		}
+	}
+
+	setLastOpen = lastOpen => this.internalSetState({ lastOpen });
 
 	joinRoom = async() => {
 		try {
@@ -420,6 +466,7 @@ export default class RoomView extends LoggedView {
 
 	renderFooter = () => {
 		const { joined, room } = this.state;
+		const { navigation } = this.props;
 
 		if (!joined && !this.tmid) {
 			return (
@@ -450,7 +497,16 @@ export default class RoomView extends LoggedView {
 				</View>
 			);
 		}
-		return <MessageBox ref={this.messagebox} onSubmit={this.sendMessage} rid={this.rid} roomType={room.t} />;
+		return (
+			<MessageBox
+				ref={this.messagebox}
+				onSubmit={this.sendMessage}
+				rid={this.rid}
+				tmid={this.tmid}
+				roomType={room.t}
+				isFocused={navigation.isFocused()}
+			/>
+		);
 	};
 
 	renderActions = () => {
@@ -464,7 +520,7 @@ export default class RoomView extends LoggedView {
 		return (
 			<React.Fragment>
 				{room._id && showActions
-					? <MessageActions room={room} user={user} />
+					? <MessageActions room={room} tmid={this.tmid} user={user} />
 					: null
 				}
 				{showErrorActions ? <MessageErrorActions /> : null}
@@ -485,7 +541,6 @@ export default class RoomView extends LoggedView {
 				{this.renderActions()}
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
 				<UploadProgress rid={this.rid} />
-				<ConnectionBadge />
 			</SafeAreaView>
 		);
 	}
