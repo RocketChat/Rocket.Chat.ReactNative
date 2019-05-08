@@ -19,7 +19,6 @@ const Content = React.memo((props) => {
 	return (
 		<Markdown
 			msg={props.msg}
-			customEmojis={props.customEmojis}
 			baseUrl={props.baseUrl}
 			username={props.user.username}
 			edited={props.edited}

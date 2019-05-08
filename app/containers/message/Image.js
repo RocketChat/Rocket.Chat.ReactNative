@@ -13,11 +13,7 @@ export default class extends Component {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
-		user: PropTypes.object.isRequired,
-		customEmojis: PropTypes.oneOfType([
-			PropTypes.array,
-			PropTypes.object
-		])
+		user: PropTypes.object.isRequired
 	}
 
 	state = { modalVisible: false, isPressed: false };
@@ -45,10 +41,10 @@ export default class extends Component {
 
 	getDescription() {
 		const {
-			file, customEmojis, baseUrl, user
+			file, baseUrl, user
 		} = this.props;
 		if (file.description) {
-			return <Markdown msg={file.description} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} />;
+			return <Markdown msg={file.description} baseUrl={baseUrl} username={user.username} />;
 		}
 	}
 

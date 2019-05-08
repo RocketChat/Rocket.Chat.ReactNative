@@ -67,15 +67,11 @@ export default class ReactionsModal extends React.PureComponent {
 		close: PropTypes.func.isRequired,
 		reactions: PropTypes.object.isRequired,
 		user: PropTypes.object.isRequired,
-		baseUrl: PropTypes.string.isRequired,
-		customEmojis: PropTypes.oneOfType([
-			PropTypes.array,
-			PropTypes.object
-		])
+		baseUrl: PropTypes.string.isRequired
 	}
 
 	renderItem = (item) => {
-		const { user, customEmojis, baseUrl } = this.props;
+		const { user, baseUrl } = this.props;
 		const count = item.usernames.length;
 		let usernames = item.usernames.slice(0, 3)
 			.map(username => (username.value === user.username ? I18n.t('you') : username.value)).join(', ');
@@ -91,7 +87,6 @@ export default class ReactionsModal extends React.PureComponent {
 						content={item.emoji}
 						standardEmojiStyle={standardEmojiStyle}
 						customEmojiStyle={customEmojiStyle}
-						customEmojis={customEmojis}
 						baseUrl={baseUrl}
 					/>
 				</View>

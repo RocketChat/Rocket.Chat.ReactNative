@@ -447,7 +447,6 @@ export default class RoomView extends LoggedView {
 				onLongPress={this.onMessageLongPress}
 				onDiscussionPress={this.onDiscussionPress}
 				baseUrl='https://open.rocket.chat'
-				customEmojis={{}}
 				Message_GroupingPeriod={60000}
 				Message_TimeFormat='LLL'
 				editingMessage={{}}

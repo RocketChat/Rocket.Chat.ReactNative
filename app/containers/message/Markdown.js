@@ -3,10 +3,12 @@ import { Text, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import { emojify } from 'react-emojione';
 import MarkdownRenderer, { PluginContainer } from 'react-native-markdown-renderer';
-// import MarkdownFlowdock from 'markdown-it-flowdock';
+import MarkdownFlowdock from 'markdown-it-flowdock';
+
 import styles from './styles';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
-// import MarkdownEmojiPlugin from './MarkdownEmojiPlugin';
+import MarkdownEmojiPlugin from './MarkdownEmojiPlugin';
+import RocketChat from '../../lib/rocketchat';
 
 // Support <http://link|Text>
 const formatText = text => text.replace(
@@ -15,7 +17,7 @@ const formatText = text => text.replace(
 );
 
 const Markdown = React.memo(({
-	msg, customEmojis, style, rules, baseUrl, username, edited, numberOfLines
+	msg, style, rules, baseUrl, username, edited, numberOfLines
 }) => {
 	if (!msg) {
 		return null;
@@ -66,7 +68,8 @@ const Markdown = React.memo(({
 				emoji: (node) => {
 					if (node.children && node.children.length && node.children[0].content) {
 						const { content } = node.children[0];
-						const emojiExtension = customEmojis[content];
+						const emojiExtension = RocketChat.getCustomEmojiFromLocal(content);
+
 						if (emojiExtension) {
 							const emoji = { extension: emojiExtension, content };
 							return <CustomEmoji key={node.key} baseUrl={baseUrl} style={styles.customEmoji} emoji={emoji} />;
@@ -90,10 +93,10 @@ const Markdown = React.memo(({
 				link: styles.link,
 				...style
 			}}
-			// plugins={[
-			// 	new PluginContainer(MarkdownFlowdock),
-			// 	new PluginContainer(MarkdownEmojiPlugin)
-			// ]}
+			plugins={[
+				// new PluginContainer(MarkdownFlowdock),
+				new PluginContainer(MarkdownEmojiPlugin)
+			]}
 		>{m}
 		</MarkdownRenderer>
 	);
@@ -103,7 +106,6 @@ Markdown.propTypes = {
 	msg: PropTypes.string,
 	username: PropTypes.string.isRequired,
 	baseUrl: PropTypes.string.isRequired,
-	customEmojis: PropTypes.object.isRequired,
 	style: PropTypes.any,
 	rules: PropTypes.object,
 	edited: PropTypes.bool,

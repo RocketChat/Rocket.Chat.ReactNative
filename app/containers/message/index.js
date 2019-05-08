@@ -19,7 +19,6 @@ import { KeyboardUtils } from 'react-native-keyboard-input';
 
 // @connect(state => ({
 // 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-// 	customEmojis: state.customEmojis,
 // 	Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
 // 	Message_TimeFormat: state.settings.Message_TimeFormat,
 // 	editingMessage: state.messages.message,
@@ -46,7 +45,6 @@ export default class MessageContainer extends React.Component {
 		_updatedAt: PropTypes.instanceOf(Date),
 		// redux
 		baseUrl: PropTypes.string,
-		customEmojis: PropTypes.object,
 		Message_GroupingPeriod: PropTypes.number,
 		Message_TimeFormat: PropTypes.string,
 		editingMessage: PropTypes.object,
@@ -244,7 +242,7 @@ export default class MessageContainer extends React.Component {
 	render() {
 		// console.log(`RENDERING ${ this.props.item._id }`)
 		const {
-			item, user, style, archived, baseUrl, customEmojis, useRealName, broadcast, fetchThreadName, customThreadTimeFormat
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat
 		} = this.props;
 		const {
 			_id, msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg
@@ -271,7 +269,6 @@ export default class MessageContainer extends React.Component {
 				archived={archived}
 				broadcast={broadcast}
 				baseUrl={baseUrl}
-				customEmojis={customEmojis}
 				// reactionsModal={reactionsModal}
 				useRealName={useRealName}
 				role={role}

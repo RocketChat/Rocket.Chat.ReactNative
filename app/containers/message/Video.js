@@ -36,8 +36,7 @@ export default class Video extends React.PureComponent {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
-		user: PropTypes.object.isRequired,
-		customEmojis: PropTypes.object.isRequired
+		user: PropTypes.object.isRequired
 	}
 
 	state = { isVisible: false };
@@ -65,7 +64,7 @@ export default class Video extends React.PureComponent {
 	render() {
 		const { isVisible } = this.state;
 		const {
-			baseUrl, user, customEmojis, file
+			baseUrl, user, file
 		} = this.props;
 		const { description } = file;
 
@@ -87,7 +86,7 @@ export default class Video extends React.PureComponent {
 							style={styles.image}
 						/>
 					</Touchable>
-					<Markdown msg={description} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} />
+					<Markdown msg={description} baseUrl={baseUrl} username={user.username} />
 				</View>,
 				<Modal
 					key='modal'

@@ -784,6 +784,10 @@ const RocketChat = {
 		return this.sdk.get('chat.syncThreadsList', {
 			rid, updatedSince
 		});
+	},
+	getCustomEmojiFromLocal(content) {
+		const { customEmojis } = reduxStore.getState();
+		return customEmojis[content];
 	}
 };
 

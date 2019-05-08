@@ -9,7 +9,7 @@ import Emoji from './Emoji';
 import { BUTTON_HIT_SLOP } from './utils';
 
 const Reaction = React.memo(({
-	reaction, user, onReactionLongPress, onReactionPress, customEmojis, baseUrl
+	reaction, user, onReactionLongPress, onReactionPress, baseUrl
 }) => {
 	const reacted = reaction.usernames.findIndex(item => item.value === user.username) !== -1;
 	return (
@@ -25,7 +25,6 @@ const Reaction = React.memo(({
 			<View style={[styles.reactionContainer, reacted && styles.reactedContainer]}>
 				<Emoji
 					content={reaction.emoji}
-					customEmojis={customEmojis}
 					standardEmojiStyle={styles.reactionEmoji}
 					customEmojiStyle={styles.reactionCustomEmoji}
 					baseUrl={baseUrl}
@@ -37,7 +36,7 @@ const Reaction = React.memo(({
 });
 
 const Reactions = React.memo(({
-	reactions, user, customEmojis, baseUrl, onReactionPress, toggleReactionPicker, onReactionLongPress
+	reactions, user, baseUrl, onReactionPress, toggleReactionPicker, onReactionLongPress
 }) => {
 	if (reactions.length === 0) {
 		return null;
@@ -50,7 +49,6 @@ const Reactions = React.memo(({
 					reaction={reaction}
 					user={user}
 					baseUrl={baseUrl}
-					customEmojis={customEmojis}
 					onReactionLongPress={onReactionLongPress}
 					onReactionPress={onReactionPress}
 				/>
@@ -74,7 +72,6 @@ const Reactions = React.memo(({
 Reaction.propTypes = {
 	reaction: PropTypes.object,
 	user: PropTypes.object,
-	customEmojis: PropTypes.object,
 	baseUrl: PropTypes.string,
 	onReactionPress: PropTypes.func,
 	onReactionLongPress: PropTypes.func
@@ -84,7 +81,6 @@ Reaction.displayName = 'MessageReaction';
 Reactions.propTypes = {
 	reactions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	user: PropTypes.object,
-	customEmojis: PropTypes.object,
 	baseUrl: PropTypes.string,
 	onReactionPress: PropTypes.func,
 	toggleReactionPicker: PropTypes.func,

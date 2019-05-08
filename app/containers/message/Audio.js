@@ -62,8 +62,7 @@ export default class Audio extends React.Component {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
-		user: PropTypes.object.isRequired,
-		customEmojis: PropTypes.object.isRequired
+		user: PropTypes.object.isRequired
 	}
 
 	constructor(props) {
@@ -136,7 +135,7 @@ export default class Audio extends React.Component {
 			uri, paused, currentTime, duration
 		} = this.state;
 		const {
-			user, baseUrl, customEmojis, file
+			user, baseUrl, file
 		} = this.props;
 		const { description } = file;
 
@@ -189,7 +188,7 @@ export default class Audio extends React.Component {
 					/>
 					<Text style={styles.duration}>{this.getDuration()}</Text>
 				</View>,
-				<Markdown key='description' msg={description} baseUrl={baseUrl} customEmojis={customEmojis} username={user.username} />
+				<Markdown key='description' msg={description} baseUrl={baseUrl} username={user.username} />
 			]
 		);
 	}
