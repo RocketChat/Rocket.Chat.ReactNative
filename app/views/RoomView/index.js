@@ -34,7 +34,7 @@ import I18n from '../../i18n';
 import RoomHeaderView, { RightButtons } from './Header';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
-import { COLOR_WHITE } from '../../constants/colors';
+import { COLOR_WHITE, HEADER_BACK } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 
@@ -76,6 +76,7 @@ export default class RoomView extends LoggedView {
 							title={unreadsCount > 999 ? '+999' : unreadsCount}
 							backTitleVisible
 							onPress={() => navigation.goBack()}
+							tintColor={HEADER_BACK}
 						/>
 					</View>
 					<RoomHeaderView
