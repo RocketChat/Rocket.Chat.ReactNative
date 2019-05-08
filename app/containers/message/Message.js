@@ -25,6 +25,8 @@ import messagesStatus from '../../constants/messagesStatus';
 import { CustomIcon } from '../../lib/Icons';
 import { COLOR_DANGER } from '../../constants/colors';
 import debounce from '../../utils/debounce';
+import DisclosureIndicator from '../DisclosureIndicator';
+import sharedStyles from '../../views/Styles';
 
 const SYSTEM_MESSAGES = [
 	'r',
@@ -118,6 +120,8 @@ export default class Message extends PureComponent {
 		reactionsModal: PropTypes.bool,
 		type: PropTypes.string,
 		header: PropTypes.bool,
+		isThreadReply: PropTypes.bool,
+		isThreadSequential: PropTypes.bool,
 		avatar: PropTypes.string,
 		alias: PropTypes.string,
 		ts: PropTypes.oneOfType([
@@ -230,17 +234,17 @@ export default class Message extends PureComponent {
 		return status === messagesStatus.ERROR;
 	}
 
-	renderAvatar = () => {
+	renderAvatar = (small = false) => {
 		const {
 			header, avatar, author, baseUrl, user
 		} = this.props;
 		if (header) {
 			return (
 				<Avatar
-					style={styles.avatar}
+					style={small ? styles.avatarSmall : styles.avatar}
 					text={avatar ? '' : author.username}
-					size={36}
-					borderRadius={4}
+					size={small ? 20 : 36}
+					borderRadius={small ? 2 : 4}
 					avatar={avatar}
 					baseUrl={baseUrl}
 					userId={user.id}
@@ -320,13 +324,13 @@ export default class Message extends PureComponent {
 	}
 
 	renderUrl = () => {
-		const { urls } = this.props;
+		const { urls, user, baseUrl } = this.props;
 		if (urls.length === 0) {
 			return null;
 		}
 
 		return urls.map((url, index) => (
-			<Url url={url} key={url.url} index={index} />
+			<Url url={url} key={url.url} index={index} user={user} baseUrl={baseUrl} />
 		));
 	}
 
@@ -493,28 +497,20 @@ export default class Message extends PureComponent {
 
 		return (
 			<View style={styles.repliedThread} testID={`message-thread-replied-on-${ msg }`}>
-				<CustomIcon name='thread' size={16} style={styles.repliedThreadIcon} />
+				<CustomIcon name='thread' size={20} style={styles.repliedThreadIcon} />
 				<Text style={styles.repliedThreadName} numberOfLines={1}>{msg}</Text>
+				<DisclosureIndicator />
 			</View>
 		);
 	}
 
 	renderInner = () => {
-		const { type, tmid } = this.props;
+		const { type } = this.props;
 		if (type === 'discussion-created') {
 			return (
 				<React.Fragment>
 					{this.renderUsername()}
 					{this.renderDiscussion()}
-				</React.Fragment>
-			);
-		}
-		if (tmid) {
-			return (
-				<React.Fragment>
-					{this.renderUsername()}
-					{this.renderRepliedThread()}
-					{this.renderContent()}
 				</React.Fragment>
 			);
 		}
@@ -531,9 +527,52 @@ export default class Message extends PureComponent {
 		);
 	}
 
+	renderMessage = () => {
+		const { header, isThreadReply, isThreadSequential } = this.props;
+
+		if (isThreadReply || isThreadSequential || this.isInfoMessage()) {
+			const thread = isThreadReply ? this.renderRepliedThread() : null;
+			return (
+				<React.Fragment>
+					{thread}
+					<View style={[styles.flex, sharedStyles.alignItemsCenter]}>
+						{this.renderAvatar(true)}
+						<View
+							style={[
+								styles.messageContent,
+								header && styles.messageContentWithHeader,
+								this.hasError() && header && styles.messageContentWithHeader,
+								this.hasError() && !header && styles.messageContentWithError,
+								this.isTemp() && styles.temp
+							]}
+						>
+							{this.renderContent()}
+						</View>
+					</View>
+				</React.Fragment>
+			);
+		}
+		return (
+			<View style={styles.flex}>
+				{this.renderAvatar()}
+				<View
+					style={[
+						styles.messageContent,
+						header && styles.messageContentWithHeader,
+						this.hasError() && header && styles.messageContentWithHeader,
+						this.hasError() && !header && styles.messageContentWithError,
+						this.isTemp() && styles.temp
+					]}
+				>
+					{this.renderInner()}
+				</View>
+			</View>
+		);
+	}
+
 	render() {
 		const {
-			editing, style, header, reactionsModal, closeReactions, msg, ts, reactions, author, user, timeFormat, customEmojis, baseUrl
+			editing, style, reactionsModal, closeReactions, msg, ts, reactions, author, user, timeFormat, customEmojis, baseUrl
 		} = this.props;
 		const accessibilityLabel = I18n.t('Message_accessibility', { user: author.username, time: moment(ts).format(timeFormat), message: msg });
 
@@ -545,23 +584,10 @@ export default class Message extends PureComponent {
 					onPress={this.onPress}
 				>
 					<View
-						style={[styles.container, header && styles.marginTop, editing && styles.editing, style]}
+						style={[styles.container, editing && styles.editing, style]}
 						accessibilityLabel={accessibilityLabel}
 					>
-						<View style={styles.flex}>
-							{this.renderAvatar()}
-							<View
-								style={[
-									styles.messageContent,
-									header && styles.messageContentWithHeader,
-									this.hasError() && header && styles.messageContentWithHeader,
-									this.hasError() && !header && styles.messageContentWithError,
-									this.isTemp() && styles.temp
-								]}
-							>
-								{this.renderInner()}
-							</View>
-						</View>
+						{this.renderMessage()}
 						{reactionsModal
 							? (
 								<ReactionsModal

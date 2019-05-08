@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
-import { SafeAreaView, NavigationEvents } from 'react-navigation';
+import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 
 import database, { safeAddListener } from '../../lib/realm';
@@ -134,6 +134,8 @@ export default class RoomsListView extends LoggedView {
 			livechat: []
 		};
 		Orientation.unlockAllOrientations();
+		this.didFocusListener = props.navigation.addListener('didFocus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
+		this.willBlurListener = props.navigation.addListener('willBlur', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
 	}
 
 	componentDidMount() {
@@ -210,6 +212,12 @@ export default class RoomsListView extends LoggedView {
 		if (this.updateStateInteraction && this.updateStateInteraction.cancel) {
 			this.updateStateInteraction.cancel();
 		}
+		if (this.didFocusListener && this.didFocusListener.remove) {
+			this.didFocusListener.remove();
+		}
+		if (this.willBlurListener && this.willBlurListener.remove) {
+			this.willBlurListener.remove();
+		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
@@ -271,14 +279,14 @@ export default class RoomsListView extends LoggedView {
 	updateState = debounce(() => {
 		this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
 			this.internalSetState({
-				chats: this.chats,
-				unread: this.unread,
-				favorites: this.favorites,
-				discussions: this.discussions,
-				channels: this.channels,
-				privateGroup: this.privateGroup,
-				direct: this.direct,
-				livechat: this.livechat,
+				chats: this.chats ? this.chats.slice() : [],
+				unread: this.unread ? this.unread.slice() : [],
+				favorites: this.favorites ? this.favorites.slice() : [],
+				discussions: this.discussions ? this.discussions.slice() : [],
+				channels: this.channels ? this.channels.slice() : [],
+				privateGroup: this.privateGroup ? this.privateGroup.slice() : [],
+				direct: this.direct ? this.direct.slice() : [],
+				livechat: this.livechat ? this.livechat.slice() : [],
 				loading: false
 			});
 			this.forceUpdate();
@@ -558,10 +566,6 @@ export default class RoomsListView extends LoggedView {
 					: null
 				}
 				{showServerDropdown ? <ServerDropdown /> : null}
-				<NavigationEvents
-					onDidFocus={() => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)}
-					onWillBlur={() => BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)}
-				/>
 			</SafeAreaView>
 		);
 	}
