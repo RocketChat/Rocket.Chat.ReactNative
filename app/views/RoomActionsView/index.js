@@ -331,8 +331,11 @@ export default class RoomActionsView extends LoggedView {
 		const { user } = this.props;
 
 		try {
-			const member = await RocketChat.getRoomMember(rid, user.id);
-			this.setState({ member: member || {} });
+			const roomUserId = RocketChat.getRoomMemberId(rid, user.id);
+			const result = await RocketChat.getUserInfo(roomUserId);
+			if (result.success) {
+				this.setState({ member: result.user });
+			}
 		} catch (e) {
 			log('RoomActions updateRoomMember', e);
 			this.setState({ member: {} });
@@ -400,7 +403,7 @@ export default class RoomActionsView extends LoggedView {
 					userId={user.id}
 					token={user.token}
 				>
-					{t === 'd' ? <Status style={sharedStyles.status} id={member._id} /> : null }
+					{t === 'd' && member._id ? <Status style={sharedStyles.status} id={member._id} /> : null }
 				</Avatar>,
 				<View key='name' style={styles.roomTitleContainer}>
 					{room.t === 'd'

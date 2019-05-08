@@ -1,7 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, FlatList, InteractionManager } from 'react-native';
 import PropTypes from 'prop-types';
-import { emojify } from 'react-emojione';
 import debounce from 'lodash/debounce';
 
 import styles from './styles';
@@ -30,7 +29,7 @@ export class List extends React.PureComponent {
 				.objects('threadMessages')
 				.filtered('rid = $0', props.tmid)
 				.sorted('ts', true);
-			this.threads = [];
+			this.threads = database.objects('threads').filtered('_id = $0', props.tmid);
 		} else {
 			this.data = database
 				.objects('messages')
@@ -60,14 +59,8 @@ export class List extends React.PureComponent {
 		if (this.updateState && this.updateState.stop) {
 			this.updateState.stop();
 		}
-		if (this.updateThreads && this.updateThreads.stop) {
-			this.updateThreads.stop();
-		}
 		if (this.interactionManagerState && this.interactionManagerState.cancel) {
 			this.interactionManagerState.cancel();
-		}
-		if (this.interactionManagerThreads && this.interactionManagerThreads.cancel) {
-			this.interactionManagerThreads.cancel();
 		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
@@ -75,15 +68,22 @@ export class List extends React.PureComponent {
 	// eslint-disable-next-line react/sort-comp
 	updateState = debounce(() => {
 		this.interactionManagerState = InteractionManager.runAfterInteractions(() => {
+			const { tmid } = this.props;
+			let messages = this.data;
+			if (tmid && this.threads[0]) {
+				const thread = { ...this.threads[0] };
+				thread.tlm = null;
+				messages = [...messages, thread];
+			}
 			this.setState({
-				messages: this.data.slice(),
+				messages: messages.slice(),
 				threads: this.threads.slice(),
 				loading: false
 			});
 		});
 	}, 300, { leading: true });
 
-	onEndReached = async() => {
+	onEndReached = debounce(async() => {
 		const {
 			loading, end, messages
 		} = this.state;
@@ -96,17 +96,18 @@ export class List extends React.PureComponent {
 		try {
 			let result;
 			if (tmid) {
-				result = await RocketChat.loadThreadMessages({ tmid, skip: messages.length });
+				// `offset` is `messages.length - 1` because we append thread start to `messages` obj
+				result = await RocketChat.loadThreadMessages({ tmid, offset: messages.length - 1 });
 			} else {
 				result = await RocketChat.loadMessagesForRoom({ rid, t, latest: messages[messages.length - 1].ts });
 			}
 
-			this.setState({ end: result.length < 50 });
+			this.setState({ end: result.length < 50, loading: false });
 		} catch (e) {
 			this.setState({ loading: false });
 			log('ListView.onEndReached', e);
 		}
-	}
+	}, 300)
 
 	renderFooter = () => {
 		const { loading } = this.state;
@@ -122,10 +123,7 @@ export class List extends React.PureComponent {
 		if (item.tmid) {
 			const thread = threads.find(t => t._id === item.tmid);
 			if (thread) {
-				let tmsg = thread.msg || (thread.attachments && thread.attachments.length && thread.attachments[0].title);
-				if (tmsg) {
-					tmsg = emojify(tmsg, { output: 'unicode' });
-				}
+				const tmsg = thread.msg || (thread.attachments && thread.attachments.length && thread.attachments[0].title);
 				item = { ...item, tmsg };
 			}
 		}
@@ -149,7 +147,7 @@ export class List extends React.PureComponent {
 					style={styles.list}
 					inverted
 					removeClippedSubviews
-					initialNumToRender={1}
+					initialNumToRender={5}
 					onEndReached={this.onEndReached}
 					onEndReachedThreshold={0.5}
 					maxToRenderPerBatch={5}

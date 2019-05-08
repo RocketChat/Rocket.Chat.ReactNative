@@ -102,6 +102,9 @@ export default StyleSheet.create({
 	avatar: {
 		marginTop: 4
 	},
+	avatarSmall: {
+		marginLeft: 16
+	},
 	addReaction: {
 		color: COLOR_PRIMARY
 	},
@@ -216,14 +219,21 @@ export default StyleSheet.create({
 		fontWeight: '300'
 	},
 	repliedThread: {
-		fontSize: 16,
-		marginBottom: 6,
-		...sharedStyles.textColorDescription,
-		...sharedStyles.textRegular
+		flexDirection: 'row',
+		flex: 1,
+		alignItems: 'center',
+		marginTop: 6,
+		marginBottom: 12
+	},
+	repliedThreadIcon: {
+		color: COLOR_PRIMARY,
+		marginRight: 10,
+		marginLeft: 16
 	},
 	repliedThreadName: {
 		fontSize: 16,
+		flex: 1,
 		color: COLOR_PRIMARY,
-		...sharedStyles.textSemibold
+		...sharedStyles.textRegular
 	}
 });

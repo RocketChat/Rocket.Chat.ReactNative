@@ -4,28 +4,31 @@ import { connect } from 'react-redux';
 import { responsive } from 'react-native-responsive-ui';
 import equal from 'deep-equal';
 
-import database from '../../../lib/realm';
+import database, { safeAddListener } from '../../../lib/realm';
 import Header from './Header';
 import RightButtons from './RightButtons';
 
 @responsive
 @connect((state, ownProps) => {
-	let status = '';
+	let status;
+	let userId;
+	let isLoggedUser = false;
 	const { rid, type } = ownProps;
 	if (type === 'd') {
 		if (state.login.user && state.login.user.id) {
 			const { id: loggedUserId } = state.login.user;
-			const userId = rid.replace(loggedUserId, '').trim();
-			if (userId === loggedUserId) {
+			userId = rid.replace(loggedUserId, '').trim();
+			isLoggedUser = userId === loggedUserId;
+			if (isLoggedUser) {
 				status = state.login.user.status; // eslint-disable-line
-			} else {
-				const user = state.activeUsers[userId];
-				status = (user && user.status) || 'offline';
 			}
 		}
 	}
 
 	return {
+		connecting: state.meteor.connecting,
+		userId,
+		isLoggedUser,
 		status
 	};
 })
@@ -38,22 +41,32 @@ export default class RoomHeaderView extends Component {
 		rid: PropTypes.string,
 		window: PropTypes.object,
 		status: PropTypes.string,
-		widthOffset: PropTypes.number
+		connecting: PropTypes.bool,
+		isFetching: PropTypes.bool,
+		widthOffset: PropTypes.number,
+		isLoggedUser: PropTypes.bool,
+		userId: PropTypes.string
 	};
 
 	constructor(props) {
 		super(props);
 		this.usersTyping = database.memoryDatabase.objects('usersTyping').filtered('rid = $0', props.rid);
+		this.user = [];
+		if (props.type === 'd' && !props.isLoggedUser) {
+			this.user = database.memoryDatabase.objects('activeUsers').filtered('id == $0', props.userId);
+			safeAddListener(this.user, this.updateUser);
+		}
 		this.state = {
-			usersTyping: this.usersTyping.slice() || []
+			usersTyping: this.usersTyping.slice() || [],
+			user: this.user[0] || {}
 		};
 		this.usersTyping.addListener(this.updateState);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { usersTyping } = this.state;
+		const { usersTyping, user } = this.state;
 		const {
-			type, title, status, window
+			type, title, status, window, connecting, isFetching
 		} = this.props;
 		if (nextProps.type !== type) {
 			return true;
@@ -62,6 +75,12 @@ export default class RoomHeaderView extends Component {
 			return true;
 		}
 		if (nextProps.status !== status) {
+			return true;
+		}
+		if (nextProps.connecting !== connecting) {
+			return true;
+		}
+		if (nextProps.isFetching !== isFetching) {
 			return true;
 		}
 		if (nextProps.window.width !== window.width) {
@@ -73,27 +92,43 @@ export default class RoomHeaderView extends Component {
 		if (!equal(nextState.usersTyping, usersTyping)) {
 			return true;
 		}
+		if (!equal(nextState.user, user)) {
+			return true;
+		}
 		return false;
 	}
 
-	// componentDidUpdate(prevProps) {
-	// 	if (isIOS) {
-	// 		const { usersTyping } = this.props;
-	// 		if (!equal(prevProps.usersTyping, usersTyping)) {
-	// 			LayoutAnimation.easeInEaseOut();
-	// 		}
-	// 	}
-	// }
+	componentWillUnmount() {
+		this.usersTyping.removeAllListeners();
+		if (this.user && this.user.removeAllListeners) {
+			this.user.removeAllListeners();
+		}
+	}
 
 	updateState = () => {
 		this.setState({ usersTyping: this.usersTyping.slice() });
 	}
 
+	updateUser = () => {
+		if (this.user.length) {
+			this.setState({ user: this.user[0] });
+		}
+	}
+
 	render() {
-		const { usersTyping } = this.state;
+		const { usersTyping, user } = this.state;
 		const {
-			window, title, type, status, prid, tmid, widthOffset
+			window, title, type, prid, tmid, widthOffset, isLoggedUser, status: userStatus, connecting, isFetching
 		} = this.props;
+		let status = 'offline';
+
+		if (type === 'd') {
+			if (isLoggedUser) {
+				status = userStatus;
+			} else {
+				status = user.status || 'offline';
+			}
+		}
 
 		return (
 			<Header
@@ -106,6 +141,8 @@ export default class RoomHeaderView extends Component {
 				height={window.height}
 				usersTyping={usersTyping}
 				widthOffset={widthOffset}
+				connecting={connecting}
+				isFetching={isFetching}
 			/>
 		);
 	}
