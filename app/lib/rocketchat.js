@@ -793,7 +793,7 @@ const RocketChat = {
 		const { user } = reduxStore.getState().login;
 		if (user.id && user.token) {
 			const { server } = reduxStore.getState().server;
-			return attachmentUrl.includes('http') ? attachmentUrl : `${ server }${ attachmentUrl }?rc_uid=${ user.id }&rc_token=${ user.token }`;
+			return encodeURI(attachmentUrl.includes('http') ? attachmentUrl : `${ server }${ attachmentUrl }?rc_uid=${ user.id }&rc_token=${ user.token }`);
 		}
 		return null;
 	}

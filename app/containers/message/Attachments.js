@@ -22,8 +22,7 @@ const Attachments = React.memo(({
 			return <Audio key={file.audio_url} file={file} user={user} baseUrl={baseUrl} />;
 		}
 		if (file.video_url) {
-			// return <Video key={file.video_url} file={file} user={user} baseUrl={baseUrl} />;
-			return null;
+			return <Video key={file.video_url} file={file} user={user} baseUrl={baseUrl} onOpenFileModal={onOpenFileModal} />;
 		}
 
 		// eslint-disable-next-line react/no-array-index-key
@@ -35,7 +34,8 @@ Attachments.propTypes = {
 	attachments: PropTypes.array,
 	timeFormat: PropTypes.string,
 	user: PropTypes.object,
-	baseUrl: PropTypes.string
+	baseUrl: PropTypes.string,
+	onOpenFileModal: PropTypes.func
 };
 Attachments.displayName = 'MessageAttachments';
 

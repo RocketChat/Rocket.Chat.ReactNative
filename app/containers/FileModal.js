@@ -6,12 +6,16 @@ import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import VideoPlayer from 'react-native-video-controls';
 
 import sharedStyles from '../views/Styles';
 import { COLOR_WHITE } from '../constants/colors';
 import RocketChat from '../lib/rocketchat';
 
 const styles = StyleSheet.create({
+	safeArea: {
+		flex: 1
+	},
 	modal: {
 		margin: 0
 	},
@@ -45,7 +49,7 @@ const ModalContent = React.memo(({ attachment, onClose }) => {
 	if (attachment && attachment.image_url) {
 		const url = RocketChat.formatAttachmentUrl(attachment.image_url);
 		return (
-			<SafeAreaView style={{ flex: 1 }}>
+			<SafeAreaView style={styles.safeArea}>
 				<TouchableWithoutFeedback onPress={onClose}>
 					<View style={styles.titleContainer}>
 						<Text style={styles.title}>{attachment.title}</Text>
@@ -53,7 +57,7 @@ const ModalContent = React.memo(({ attachment, onClose }) => {
 					</View>
 				</TouchableWithoutFeedback>
 				<ImageViewer
-					imageUrls={[{ url: encodeURI(url) }]}
+					imageUrls={[{ url }]}
 					onClick={onClose}
 					backgroundColor='transparent'
 					enableSwipeDown
@@ -61,6 +65,18 @@ const ModalContent = React.memo(({ attachment, onClose }) => {
 					renderIndicator={() => null}
 					renderImage={props => <FastImage {...props} />}
 					loadingRender={() => <Indicator />}
+				/>
+			</SafeAreaView>
+		);
+	}
+	if (attachment && attachment.video_url) {
+		const uri = RocketChat.formatAttachmentUrl(attachment.video_url);
+		return (
+			<SafeAreaView style={styles.safeArea}>
+				<VideoPlayer
+					source={{ uri }}
+					onBack={onClose}
+					disableVolume
 				/>
 			</SafeAreaView>
 		);
@@ -80,5 +96,18 @@ const FileModal = React.memo(({ isVisible, onClose, attachment }) => (
 		<ModalContent attachment={attachment} onClose={onClose} />
 	</Modal>
 ), (prevProps, nextProps) => prevProps.isVisible === nextProps.isVisible);
+
+FileModal.propTypes = {
+	isVisible: PropTypes.bool,
+	attachment: PropTypes.object,
+	onClose: PropTypes.func
+};
+FileModal.displayName = 'FileModal';
+
+ModalContent.propTypes = {
+	attachment: PropTypes.object,
+	onClose: PropTypes.func
+};
+ModalContent.displayName = 'FileModalContent';
 
 export default FileModal;
