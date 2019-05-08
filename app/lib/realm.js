@@ -288,13 +288,13 @@ const frequentlyUsedEmojiSchema = {
 
 const slashCommandSchema = {
 	name: 'slashCommand',
-	primaryKey: '_id',
+	primaryKey: 'command',
 	properties: {
 		command: 'string',
 		params: { type: 'string', optional: true },
 		description: { type: 'string', optional: true },
-		clientOnly: { type: 'bool', optionala: true },
-		providesPreview: { type: 'bool', optionala: true }
+		clientOnly: { type: 'bool', optional: true },
+		providesPreview: { type: 'bool', optional: true }
 
 	}
 };

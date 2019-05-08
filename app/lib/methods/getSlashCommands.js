@@ -18,7 +18,7 @@ export default async function() {
 			InteractionManager.runAfterInteractions(() => {
 				database.write(() => commands.forEach((command) => {
 					try {
-						database.create('commands', command, true);
+						database.create('slashCommand', command, true);
 					} catch (e) {
 						log('getCommand create', e);
 					}
