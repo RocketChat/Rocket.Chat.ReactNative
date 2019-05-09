@@ -7,6 +7,7 @@ import { CustomHeaderButtons, Item } from '../../../containers/HeaderButton';
 import database, { safeAddListener } from '../../../lib/realm';
 import RocketChat from '../../../lib/rocketchat';
 import log from '../../../utils/log';
+import { showToast } from '../../../utils/info';
 
 const styles = StyleSheet.create({
 	more: {
@@ -47,6 +48,12 @@ class RightButtonsContainer extends React.PureComponent {
 		};
 	}
 
+	componentWillUnmount() {
+		if (this.thread && this.thread.removeAllListeners) {
+			this.thread.removeAllListeners();
+		}
+	}
+
 	updateThread = () => {
 		const { userId } = this.props;
 		this.setState({
@@ -69,6 +76,7 @@ class RightButtonsContainer extends React.PureComponent {
 		const { tmid } = this.props;
 		try {
 			await RocketChat.toggleFollowMessage(tmid, !isFollowingThread);
+			showToast(isFollowingThread ? 'Unfollowed thread' : 'Following thread');
 		} catch (e) {
 			console.log('TCL: RightButtonsContainer -> toggleFollowThread -> e', e);
 			log('toggleFollowThread', e);
@@ -86,7 +94,7 @@ class RightButtonsContainer extends React.PureComponent {
 				<CustomHeaderButtons>
 					<Item
 						title='bell'
-						iconName={isFollowingThread ? 'Bell-off' : 'bell'}
+						iconName={isFollowingThread ? 'bell' : 'Bell-off'}
 						onPress={this.toggleFollowThread}
 						testID={isFollowingThread ? 'room-view-header-unfollow' : 'room-view-header-follow'}
 					/>

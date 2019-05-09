@@ -9,7 +9,7 @@ async function load({ tmid, offset }) {
 	try {
 		// RC 1.0
 		const result = await this.sdk.get('chat.getThreadMessages', {
-			tmid, count: 50, offset, sort: { ts: -1 }
+			tmid, count: 50, offset, sort: { ts: -1 }, query: { _hidden: { $ne: true } }
 		});
 		if (!result || !result.success) {
 			return [];

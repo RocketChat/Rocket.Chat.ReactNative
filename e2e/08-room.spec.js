@@ -286,8 +286,6 @@ describe('Room screen', () => {
 				await element(by.id('messagebox-send-message')).tap();
 				await waitFor(element(by.id(`message-thread-button-${ thread }`))).toExist().withTimeout(5000);
 				await expect(element(by.id(`message-thread-button-${ thread }`))).toExist();
-				await waitFor(element(by.id(`message-thread-replied-on-${ thread }`))).toExist().withTimeout(5000);
-				await expect(element(by.id(`message-thread-replied-on-${ thread }`))).toExist();
 			});
 
 			it('should navigate to thread from button', async() => {
@@ -313,6 +311,16 @@ describe('Room screen', () => {
 			});
 
 			it('should navigate to thread from thread name', async() => {
+				await mockMessage('dummymessagebetweenthethread');
+				await element(by.text(thread)).longPress();
+				await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
+				await expect(element(by.text('Message actions'))).toBeVisible();
+				await element(by.text('Reply')).tap();
+				await element(by.id('messagebox-input')).typeText('repliedagain');
+				await element(by.id('messagebox-send-message')).tap();
+				await waitFor(element(by.id(`message-thread-replied-on-${ thread }`))).toExist().withTimeout(5000);
+				await expect(element(by.id(`message-thread-replied-on-${ thread }`))).toExist();
+
 				await element(by.id(`message-thread-replied-on-${ thread }`)).tap();
 				await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 				await waitFor(element(by.id(`room-view-title-${ thread }`))).toBeVisible().withTimeout(5000);

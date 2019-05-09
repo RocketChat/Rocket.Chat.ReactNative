@@ -17,6 +17,11 @@ export default function messages(state = initialState, action) {
 				...state,
 				actionMessage: action.actionMessage
 			};
+		case types.MESSAGES.ACTIONS_HIDE:
+			return {
+				...state,
+				actionMessage: null
+			};
 		case types.MESSAGES.ERROR_ACTIONS_SHOW:
 			return {
 				...state,

@@ -59,14 +59,8 @@ export class List extends React.PureComponent {
 		if (this.updateState && this.updateState.stop) {
 			this.updateState.stop();
 		}
-		if (this.updateThreads && this.updateThreads.stop) {
-			this.updateThreads.stop();
-		}
 		if (this.interactionManagerState && this.interactionManagerState.cancel) {
 			this.interactionManagerState.cancel();
-		}
-		if (this.interactionManagerThreads && this.interactionManagerThreads.cancel) {
-			this.interactionManagerThreads.cancel();
 		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
@@ -74,8 +68,15 @@ export class List extends React.PureComponent {
 	// eslint-disable-next-line react/sort-comp
 	updateState = debounce(() => {
 		this.interactionManagerState = InteractionManager.runAfterInteractions(() => {
+			const { tmid } = this.props;
+			let messages = this.data;
+			if (tmid && this.threads[0]) {
+				const thread = { ...this.threads[0] };
+				thread.tlm = null;
+				messages = [...messages, thread];
+			}
 			this.setState({
-				messages: this.data.slice(),
+				messages: messages.slice(),
 				threads: this.threads.slice(),
 				loading: false
 			});
@@ -95,7 +96,8 @@ export class List extends React.PureComponent {
 		try {
 			let result;
 			if (tmid) {
-				result = await RocketChat.loadThreadMessages({ tmid, offset: messages.length });
+				// `offset` is `messages.length - 1` because we append thread start to `messages` obj
+				result = await RocketChat.loadThreadMessages({ tmid, offset: messages.length - 1 });
 			} else {
 				result = await RocketChat.loadMessagesForRoom({ rid, t, latest: messages[messages.length - 1].ts });
 			}
@@ -130,31 +132,22 @@ export class List extends React.PureComponent {
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
-		const { messages, threads } = this.state;
-		const { tmid } = this.props;
-		let data = [];
-		if (tmid) {
-			const thread = { ...threads[0] };
-			thread.tlm = null;
-			data = [...messages, thread];
-		} else {
-			data = messages;
-		}
+		const { messages } = this.state;
 		return (
 			<React.Fragment>
-				<EmptyRoom length={data.length} />
+				<EmptyRoom length={messages.length} />
 				<FlatList
 					testID='room-view-messages'
 					ref={ref => this.list = ref}
 					keyExtractor={item => item._id}
-					data={data}
+					data={messages}
 					extraData={this.state}
 					renderItem={this.renderItem}
 					contentContainerStyle={styles.contentContainer}
 					style={styles.list}
 					inverted
 					removeClippedSubviews
-					initialNumToRender={1}
+					initialNumToRender={5}
 					onEndReached={this.onEndReached}
 					onEndReachedThreshold={0.5}
 					maxToRenderPerBatch={5}

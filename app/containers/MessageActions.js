@@ -67,11 +67,9 @@ const styles = StyleSheet.create({
 		backgroundColor: '#dadada'
 	},
 	backdrop: {
-
 		...StyleSheet.absoluteFill,
 		backgroundColor: '#000000',
-		opacity: 0.1
-
+		opacity: 0
 	}
 });
 
@@ -144,11 +142,11 @@ export default class MessageActions extends React.Component {
 		}
 
 		if (Message_AllowStarring) {
-			this.options.push({ label: I18n.t(props.actionMessage.starred ? 'Unstar' : 'Star'), handler: this.handleStar, icon: 'star' });
+			this.options.push({ label: I18n.t(props.actionMessage && props.actionMessage.starred ? 'Unstar' : 'Star'), handler: this.handleStar, icon: 'star' });
 		}
 
 		if (Message_AllowPinning) {
-			this.options.push({ label: I18n.t(props.actionMessage.pinned ? 'Unpin' : 'Pin'), handler: this.handlePin, icon: 'pin' });
+			this.options.push({ label: I18n.t(props.actionMessage && props.actionMessage.pinned ? 'Unpin' : 'Pin'), handler: this.handlePin, icon: 'pin' });
 		}
 
 		if (!this.isRoomReadOnly() || this.canReactWhenReadOnly()) {
@@ -186,7 +184,7 @@ export default class MessageActions extends React.Component {
 		}
 	}
 
-	isOwn = props => props.actionMessage.u && props.actionMessage.u._id === props.user.id;
+	isOwn = props => props.actionMessage && props.actionMessage.u && props.actionMessage.u._id === props.user.id;
 
 	isRoomReadOnly = () => {
 		const { room } = this.props;
@@ -211,7 +209,7 @@ export default class MessageActions extends React.Component {
 		const blockEditInMinutes = Message_AllowEditing_BlockEditInMinutes;
 		if (blockEditInMinutes) {
 			let msgTs;
-			if (props.actionMessage.ts != null) {
+			if (props.actionMessage && props.actionMessage.ts != null) {
 				msgTs = moment(props.actionMessage.ts);
 			}
 			let currentTsDiff;
@@ -227,6 +225,11 @@ export default class MessageActions extends React.Component {
 		if (this.isRoomReadOnly()) {
 			return false;
 		}
+
+		// Prevent from deleting thread start message when positioned inside the thread
+		if (props.tmid && props.actionMessage && props.tmid === props.actionMessage._id) {
+			return false;
+		}
 		const deleteOwn = this.isOwn(props);
 		const { Message_AllowDeleting: isDeleteAllowed, Message_AllowDeleting_BlockDeleteInMinutes } = this.props;
 		if (!(this.hasDeletePermission || (isDeleteAllowed && deleteOwn) || this.hasForceDeletePermission)) {
@@ -238,7 +241,7 @@ export default class MessageActions extends React.Component {
 		const blockDeleteInMinutes = Message_AllowDeleting_BlockDeleteInMinutes;
 		if (blockDeleteInMinutes != null && blockDeleteInMinutes !== 0) {
 			let msgTs;
-			if (props.actionMessage.ts != null) {
+			if (props.actionMessage && props.actionMessage.ts != null) {
 				msgTs = moment(props.actionMessage.ts);
 			}
 			let currentTsDiff;

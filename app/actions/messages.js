@@ -7,6 +7,12 @@ export function actionsShow(actionMessage) {
 	};
 }
 
+export function actionsHide() {
+	return {
+		type: types.MESSAGES.ACTIONS_HIDE
+	};
+}
+
 export function errorActionsShow(actionMessage) {
 	return {
 		type: types.MESSAGES.ERROR_ACTIONS_SHOW,
