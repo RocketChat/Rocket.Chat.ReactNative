@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import PropTypes from 'prop-types';
-import isEqual from 'deep-equal';
 
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';

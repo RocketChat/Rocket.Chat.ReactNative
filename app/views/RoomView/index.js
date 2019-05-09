@@ -319,13 +319,11 @@ export default class RoomView extends LoggedView {
 	};
 
 	onReactionLongPress = (message) => {
-		console.log('TCL: onReactionLongPress -> message', message);
 		this.setState({ selectedMessage: message, reactionsModalVisible: true });
 		vibrate();
 	}
 
 	onCloseReactionsModal = () => {
-		console.log('onCloseReactionsModal')
 		this.setState({ selectedMessage: {}, reactionsModalVisible: false });
 	}
 

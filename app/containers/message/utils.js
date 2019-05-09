@@ -2,11 +2,10 @@ import moment from 'moment';
 
 import I18n from '../../i18n';
 
-export const formatLastMessage = (lm) => {
-	// const { customThreadTimeFormat } = this.props;
-	// if (customThreadTimeFormat) {
-	// 	return moment(lm).format(customThreadTimeFormat);
-	// }
+export const formatLastMessage = (lm, customFormat) => {
+	if (customFormat) {
+		return moment(lm).format(customFormat);
+	}
 	return lm ? moment(lm).calendar(null, {
 		lastDay: `[${ I18n.t('Yesterday') }]`,
 		sameDay: 'h:mm A',
