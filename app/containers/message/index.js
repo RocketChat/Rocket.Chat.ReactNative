@@ -1,32 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ViewPropTypes } from 'react-native';
-import { connect } from 'react-redux';
-import equal from 'deep-equal';
-import slowlog from 'react-native-slowlog';
+import { KeyboardUtils } from 'react-native-keyboard-input';
 
 import Message from './Message';
-import {
-	errorActionsShow as errorActionsShowAction,
-	toggleReactionPicker as toggleReactionPickerAction,
-	replyBroadcast as replyBroadcastAction
-} from '../../actions/messages';
-import { vibrate } from '../../utils/vibration';
 import debounce from '../../utils/debounce';
 import { SYSTEM_MESSAGES } from './utils';
 import messagesStatus from '../../constants/messagesStatus';
-import { KeyboardUtils } from 'react-native-keyboard-input';
 
-// @connect(state => ({
-// 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-// 	Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
-// 	Message_TimeFormat: state.settings.Message_TimeFormat,
-// 	useRealName: state.settings.UI_Use_Real_Name
-// }), dispatch => ({
-// 	errorActionsShow: actionMessage => dispatch(errorActionsShowAction(actionMessage)),
-// 	replyBroadcast: message => dispatch(replyBroadcastAction(message)),
-// 	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message))
-// }))
 export default class MessageContainer extends React.Component {
 	static propTypes = {
 		item: PropTypes.object.isRequired,
@@ -42,22 +23,20 @@ export default class MessageContainer extends React.Component {
 		broadcast: PropTypes.bool,
 		previousItem: PropTypes.object,
 		_updatedAt: PropTypes.instanceOf(Date),
-		// redux
 		baseUrl: PropTypes.string,
 		Message_GroupingPeriod: PropTypes.number,
 		Message_TimeFormat: PropTypes.string,
 		useRealName: PropTypes.bool,
 		status: PropTypes.number,
 		navigation: PropTypes.object,
-		// methods - props
 		onLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
 		onDiscussionPress: PropTypes.func,
-		// methods - redux
 		errorActionsShow: PropTypes.func,
 		replyBroadcast: PropTypes.func,
 		toggleReactionPicker: PropTypes.func,
-		fetchThreadName: PropTypes.func
+		fetchThreadName: PropTypes.func,
+		onOpenFileModal: PropTypes.func
 	}
 
 	static defaultProps = {
@@ -67,34 +46,14 @@ export default class MessageContainer extends React.Component {
 		broadcast: false
 	}
 
-	// constructor(props) {
-	// 	super(props);
-	// 	// slowlog(this, /.*/)
-	// 	// console.log(`MOUNTING ${ props.item._id }`)
-	// 	this.state = { reactionsModal: false };
-	// 	// this.closeReactions = this.closeReactions.bind(this);
-	// }
-
-	// shouldComponentUpdate() {
-	// 	return false;
-	// }
-
-	shouldComponentUpdate(nextProps, nextState) {
-		// const { reactionsModal } = this.state;
+	shouldComponentUpdate(nextProps) {
 		const {
 			status, item, _updatedAt
 		} = this.props;
 
-		// if (reactionsModal !== nextState.reactionsModal) {
-		// 	return true;
-		// }
 		if (status !== nextProps.status) {
 			return true;
 		}
-		if (item.tmsg !== nextProps.item.tmsg) {
-			return true;
-		}
-
 		if (item.tmsg !== nextProps.item.tmsg) {
 			return true;
 		}
@@ -128,11 +87,6 @@ export default class MessageContainer extends React.Component {
 		const { onReactionPress, item } = this.props;
 		onReactionPress(emoji, item._id);
 	}
-
-	// onReactionLongPress = () => {
-	// 	this.setState({ reactionsModal: true });
-	// 	vibrate();
-	// }
 
 	onDiscussionPress = () => {
 		const { onDiscussionPress, item } = this.props;
@@ -284,7 +238,6 @@ export default class MessageContainer extends React.Component {
 				toggleReactionPicker={this.toggleReactionPicker}
 				onDiscussionPress={this.onDiscussionPress}
 				onOpenFileModal={onOpenFileModal}
-				// onThreadPress={this.onThreadPress}
 			/>
 		);
 	}
