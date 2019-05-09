@@ -200,8 +200,6 @@ configurations.all {
 }
 
 dependencies {
-    implementation project(':react-native-notifications')
-    implementation project(':@remobile_react-native-toast')
     implementation project(':react-native-reanimated')
     implementation project(':react-native-orientation-locker')
     implementation project(':react-native-splash-screen')

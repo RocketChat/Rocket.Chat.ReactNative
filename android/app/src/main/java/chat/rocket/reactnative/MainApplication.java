@@ -3,8 +3,6 @@ package chat.rocket.reactnative;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.wix.reactnativenotifications.RNNotificationsPackage;
-import com.remobile.toast.RCTToastPackage;
 import com.swmansion.reanimated.ReanimatedPackage;
 import org.wonday.orientation.OrientationPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
@@ -55,8 +53,6 @@ public class MainApplication extends Application implements ReactApplication, IN
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNNotificationsPackage(),
-            new RCTToastPackage(),
             new ReanimatedPackage(),
             new OrientationPackage(),
             new SplashScreenReactPackage(),
