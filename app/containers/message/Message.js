@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableWithoutFeedback, Text } from 'react-native';
+import { View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import User from './User';
 import MessageError from './MessageError';
 import styles from './styles';
-// import debounce from '../../utils/debounce';
 import sharedStyles from '../../views/Styles';
 import RepliedThread from './RepliedThread';
 import MessageAvatar from './MessageAvatar';
@@ -45,16 +44,16 @@ const Message = React.memo((props) => {
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo) {
 		const thread = props.isThreadReply ? <RepliedThread isTemp={props.isTemp} {...props} /> : null;
 		return (
-			<View style={[styles.container, props.editing && styles.editing, props.style]}>
+			<View style={[styles.container, props.isEditing && styles.editing, props.style]}>
 				{thread}
 				<View style={[styles.flex, sharedStyles.alignItemsCenter]}>
 					<MessageAvatar small {...props} />
 					<View
 						style={[
 							styles.messageContent,
-							props.header && styles.messageContentWithHeader,
-							props.hasError && props.header && styles.messageContentWithHeader,
-							props.hasError && !props.header && styles.messageContentWithError,
+							props.isHeader && styles.messageContentWithHeader,
+							props.hasError && props.isHeader && styles.messageContentWithHeader,
+							props.hasError && !props.isHeader && styles.messageContentWithError,
 							props.isTemp && styles.temp
 						]}
 					>
@@ -65,15 +64,15 @@ const Message = React.memo((props) => {
 		);
 	}
 	return (
-		<View style={[styles.container, props.editing && styles.editing, props.style]}>
+		<View style={[styles.container, props.isEditing && styles.editing, props.style]}>
 			<View style={styles.flex}>
 				<MessageAvatar {...props} />
 				<View
 					style={[
 						styles.messageContent,
-						props.header && styles.messageContentWithHeader,
-						props.hasError && props.header && styles.messageContentWithHeader,
-						props.hasError && !props.header && styles.messageContentWithError,
+						props.isHeader && styles.messageContentWithHeader,
+						props.hasError && props.isHeader && styles.messageContentWithHeader,
+						props.hasError && !props.isHeader && styles.messageContentWithError,
 						props.isTemp && styles.temp
 					]}
 				>
@@ -106,5 +105,29 @@ const MessageTouchable = React.memo((props) => {
 	);
 });
 MessageTouchable.displayName = 'MessageTouchable';
+
+MessageTouchable.propTypes = {
+	hasError: PropTypes.bool,
+	onLongPress: PropTypes.func,
+	onPress: PropTypes.func
+};
+
+Message.propTypes = {
+	isThreadReply: PropTypes.bool,
+	isThreadSequential: PropTypes.bool,
+	isInfo: PropTypes.bool,
+	isTemp: PropTypes.bool,
+	isHeader: PropTypes.bool,
+	isEditing: PropTypes.bool,
+	hasError: PropTypes.bool,
+	style: PropTypes.any,
+	onLongPress: PropTypes.func,
+	onPress: PropTypes.func
+};
+
+MessageInner.propTypes = {
+	type: PropTypes.string,
+	isTemp: PropTypes.bool
+};
 
 export default MessageTouchable;

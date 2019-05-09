@@ -34,9 +34,9 @@ const styles = StyleSheet.create({
 });
 
 const User = React.memo(({
-	header, useRealName, author, isTemp, alias, ts, timeFormat
+	isHeader, useRealName, author, isTemp, alias, ts, timeFormat
 }) => {
-	if (header) {
+	if (isHeader) {
 		const username = (useRealName && author.name) || author.username;
 		const aliasUsername = alias ? (<Text style={styles.alias}> @{username}</Text>) : null;
 		const time = moment(ts).format(timeFormat);
@@ -57,7 +57,7 @@ const User = React.memo(({
 }, (prevProps, nextProps) => prevProps.isTemp === nextProps.isTemp);
 
 User.propTypes = {
-	header: PropTypes.bool,
+	isHeader: PropTypes.bool,
 	useRealName: PropTypes.bool,
 	author: PropTypes.object,
 	isTemp: PropTypes.bool,

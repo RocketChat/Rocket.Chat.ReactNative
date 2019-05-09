@@ -9,9 +9,9 @@ import DisclosureIndicator from '../DisclosureIndicator';
 import styles from './styles';
 
 const RepliedThread = React.memo(({
-	tmid, tmsg, header, isTemp, fetchThreadName
+	tmid, tmsg, isHeader, isTemp, fetchThreadName
 }) => {
-	if (!tmid || !header || isTemp) {
+	if (!tmid || !isHeader || isTemp) {
 		return null;
 	}
 
@@ -37,7 +37,7 @@ const RepliedThread = React.memo(({
 	if (prevProps.tmsg !== nextProps.tmsg) {
 		return false;
 	}
-	if (prevProps.header !== nextProps.header) {
+	if (prevProps.isHeader !== nextProps.isHeader) {
 		return false;
 	}
 	if (prevProps.isTemp !== nextProps.isTemp) {
@@ -49,7 +49,7 @@ const RepliedThread = React.memo(({
 RepliedThread.propTypes = {
 	tmid: PropTypes.string,
 	tmsg: PropTypes.string,
-	header: PropTypes.bool,
+	isHeader: PropTypes.bool,
 	isTemp: PropTypes.bool,
 	fetchThreadName: PropTypes.func
 };

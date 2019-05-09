@@ -14,7 +14,8 @@ import {
 	toggleReactionPicker as toggleReactionPickerAction,
 	actionsShow as actionsShowAction,
 	editCancel as editCancelAction,
-	replyCancel as replyCancelAction
+	replyCancel as replyCancelAction,
+	replyBroadcast as replyBroadcastAction
 } from '../../actions/messages';
 import LoggedView from '../View';
 import { List } from './List';
@@ -57,7 +58,8 @@ import FileModal from '../../containers/FileModal';
 	editCancel: () => dispatch(editCancelAction()),
 	replyCancel: () => dispatch(replyCancelAction()),
 	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
-	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage))
+	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage)),
+	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 }))
 /** @extends React.Component */
 export default class RoomView extends LoggedView {
@@ -285,6 +287,14 @@ export default class RoomView extends LoggedView {
 		this.setState({ selectedAttachment: {}, photoModalVisible: false });
 	}
 
+	onOpenFileModal = (attachment) => {
+		this.setState({ selectedAttachment: attachment, photoModalVisible: true });
+	}
+
+	onCloseFileModal = () => {
+		this.setState({ selectedAttachment: {}, photoModalVisible: false });
+	}
+
 	onReactionPress = (shortname, messageId) => {
 		const { actionMessage, toggleReactionPicker } = this.props;
 		try {
@@ -304,6 +314,16 @@ export default class RoomView extends LoggedView {
 			rid: item.drid, prid: item.rid, name: item.msg, t: 'p'
 		});
 	}, 1000, true)
+
+	toggleReactionPicker = (message) => {
+		const { toggleReactionPicker } = this.props;
+		toggleReactionPicker(message);
+	}
+
+	replyBroadcast = (message) => {
+		const { replyBroadcast } = this.props;
+		replyBroadcast(message);
+	}
 
 	handleConnected = () => {
 		this.init();
@@ -458,6 +478,8 @@ export default class RoomView extends LoggedView {
 				onLongPress={this.onMessageLongPress}
 				onDiscussionPress={this.onDiscussionPress}
 				onOpenFileModal={this.onOpenFileModal}
+				toggleReactionPicker={this.toggleReactionPicker}
+				replyBroadcast={this.replyBroadcast}
 				baseUrl='https://open.rocket.chat'
 				Message_GroupingPeriod={60000}
 				Message_TimeFormat='LLL'
@@ -555,8 +577,8 @@ export default class RoomView extends LoggedView {
 				<StatusBar />
 				<List rid={rid} t={t} tmid={this.tmid} renderRow={this.renderItem} />
 				{this.renderFooter()}
-				{/* {this.renderActions()}
-				<ReactionPicker onEmojiSelected={this.onReactionPress} /> */}
+				{/* {this.renderActions()} */}
+				<ReactionPicker onEmojiSelected={this.onReactionPress} />
 				<UploadProgress rid={this.rid} />
 				<FileModal
 					attachment={selectedAttachment}

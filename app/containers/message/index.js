@@ -258,10 +258,8 @@ export default class MessageContainer extends React.Component {
 				urls={urls}
 				reactions={reactions}
 				alias={alias}
-				editing={this.isEditing}
 				avatar={avatar}
 				user={user}
-				edited={editedBy && !!editedBy.username}
 				timeFormat={this.timeFormat}
 				customThreadTimeFormat={customThreadTimeFormat}
 				style={style}
@@ -279,7 +277,9 @@ export default class MessageContainer extends React.Component {
 				tlm={tlm}
 				tmsg={tmsg}
 				fetchThreadName={fetchThreadName}
-				header={this.isHeader}
+				isEdited={editedBy && !!editedBy.username}
+				isEditing={this.isEditing}
+				isHeader={this.isHeader}
 				isThreadReply={this.isThreadReply}
 				isThreadSequential={this.isThreadSequential}
 				isInfo={this.isInfo}

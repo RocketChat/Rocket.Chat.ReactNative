@@ -21,7 +21,7 @@ const Content = React.memo((props) => {
 			msg={props.msg}
 			baseUrl={props.baseUrl}
 			username={props.user.username}
-			edited={props.edited}
+			isEdited={props.isEdited}
 			numberOfLines={props.tmid ? 1 : 0}
 		/>
 	);

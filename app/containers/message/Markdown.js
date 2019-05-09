@@ -9,6 +9,7 @@ import styles from './styles';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import MarkdownEmojiPlugin from './MarkdownEmojiPlugin';
 import RocketChat from '../../lib/rocketchat';
+import I18n from '../../i18n';
 
 // Support <http://link|Text>
 const formatText = text => text.replace(
@@ -17,7 +18,7 @@ const formatText = text => text.replace(
 );
 
 const Markdown = React.memo(({
-	msg, style, rules, baseUrl, username, edited, numberOfLines
+	msg, style, rules, baseUrl, username, isEdited, numberOfLines
 }) => {
 	if (!msg) {
 		return null;
@@ -34,10 +35,9 @@ const Markdown = React.memo(({
 		<MarkdownRenderer
 			rules={{
 				paragraph: (node, children) => (
-					// eslint-disable-next-line
 					<Text key={node.key} style={styles.paragraph} numberOfLines={numberOfLines}>
 						{children}
-						{edited ? <Text style={styles.edited}> (edited)</Text> : null}
+						{isEdited ? <Text style={styles.edited}> ({I18n.t('edited')})</Text> : null}
 					</Text>
 				),
 				mention: (node) => {
@@ -108,7 +108,7 @@ Markdown.propTypes = {
 	baseUrl: PropTypes.string.isRequired,
 	style: PropTypes.any,
 	rules: PropTypes.object,
-	edited: PropTypes.bool,
+	isEdited: PropTypes.bool,
 	numberOfLines: PropTypes.number
 };
 Markdown.displayName = 'MessageMarkdown';

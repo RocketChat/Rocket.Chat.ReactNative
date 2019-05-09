@@ -5,9 +5,9 @@ import Avatar from '../Avatar';
 import styles from './styles';
 
 const MessageAvatar = React.memo(({
-	header, avatar, author, baseUrl, user, small
+	isHeader, avatar, author, baseUrl, user, small
 }) => {
-	if (header) {
+	if (isHeader) {
 		return (
 			<Avatar
 				style={small ? styles.avatarSmall : styles.avatar}
@@ -25,7 +25,7 @@ const MessageAvatar = React.memo(({
 }, () => true);
 
 MessageAvatar.propTypes = {
-	header: PropTypes.bool,
+	isHeader: PropTypes.bool,
 	avatar: PropTypes.string,
 	author: PropTypes.obj,
 	baseUrl: PropTypes.string,

@@ -8,6 +8,21 @@ import styles from './styles';
 import Emoji from './Emoji';
 import { BUTTON_HIT_SLOP } from './utils';
 
+const AddReaction = React.memo(({ toggleReactionPicker }) => (
+	<Touchable
+		onPress={toggleReactionPicker}
+		key='message-add-reaction'
+		testID='message-add-reaction'
+		style={styles.reactionButton}
+		background={Touchable.Ripple('#fff')}
+		hitSlop={BUTTON_HIT_SLOP}
+	>
+		<View style={styles.reactionContainer}>
+			<CustomIcon name='add-reaction' size={21} style={styles.addReaction} />
+		</View>
+	</Touchable>
+));
+
 const Reaction = React.memo(({
 	reaction, user, onReactionLongPress, onReactionPress, baseUrl
 }) => {
@@ -33,7 +48,7 @@ const Reaction = React.memo(({
 			</View>
 		</Touchable>
 	);
-});
+}, () => true);
 
 const Reactions = React.memo(({
 	reactions, user, baseUrl, onReactionPress, toggleReactionPicker, onReactionLongPress
@@ -53,21 +68,11 @@ const Reactions = React.memo(({
 					onReactionPress={onReactionPress}
 				/>
 			))}
-			<Touchable
-				onPress={toggleReactionPicker}
-				key='message-add-reaction'
-				testID='message-add-reaction'
-				style={styles.reactionButton}
-				background={Touchable.Ripple('#fff')}
-				hitSlop={BUTTON_HIT_SLOP}
-			>
-				<View style={styles.reactionContainer}>
-					<CustomIcon name='add-reaction' size={21} style={styles.addReaction} />
-				</View>
-			</Touchable>
+			<AddReaction toggleReactionPicker={toggleReactionPicker} />
 		</View>
 	);
 });
+// FIXME: can't compare because it's a Realm object (it may be fixed by JSON.parse(JSON.stringify(reactions)))
 
 Reaction.propTypes = {
 	reaction: PropTypes.object,
@@ -87,5 +92,10 @@ Reactions.propTypes = {
 	onReactionLongPress: PropTypes.func
 };
 Reactions.displayName = 'MessageReactions';
+
+AddReaction.propTypes = {
+	toggleReactionPicker: PropTypes.func
+};
+AddReaction.displayName = 'MessageAddReaction';
 
 export default Reactions;
