@@ -55,10 +55,8 @@ import FileModal from '../../containers/FileModal';
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	useRealName: state.settings.UI_Use_Real_Name,
 	isAuthenticated: state.login.isAuthenticated,
-	// Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
-	// Message_TimeFormat: state.settings.Message_TimeFormat,
-	// editingMessage: state.messages.message,
-	// useRealName: state.settings.UI_Use_Real_Name
+	Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
+	Message_TimeFormat: state.settings.Message_TimeFormat
 }), dispatch => ({
 	editCancel: () => dispatch(editCancelAction()),
 	replyCancel: () => dispatch(replyCancelAction()),
@@ -106,6 +104,8 @@ export default class RoomView extends LoggedView {
 		appState: PropTypes.string,
 		useRealName: PropTypes.bool,
 		isAuthenticated: PropTypes.bool,
+		Message_GroupingPeriod: PropTypes.number,
+		Message_TimeFormat: PropTypes.string,
 		editing: PropTypes.bool,
 		replying: PropTypes.bool,
 		toggleReactionPicker: PropTypes.func.isRequired,
@@ -457,7 +457,7 @@ export default class RoomView extends LoggedView {
 
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen } = this.state;
-		const { user, navigation } = this.props;
+		const { user, navigation, Message_GroupingPeriod, Message_TimeFormat, useRealName } = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
 
@@ -493,9 +493,9 @@ export default class RoomView extends LoggedView {
 				replyBroadcast={this.replyBroadcast}
 				errorActionsShow={this.errorActionsShow}
 				baseUrl='https://open.rocket.chat'
-				Message_GroupingPeriod={60000}
-				Message_TimeFormat='LLL'
-				useRealName={false}
+				Message_GroupingPeriod={Message_GroupingPeriod}
+				Message_TimeFormat={Message_TimeFormat}
+				useRealName={useRealName}
 			/>
 		);
 
