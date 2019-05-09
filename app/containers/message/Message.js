@@ -44,7 +44,7 @@ const Message = React.memo((props) => {
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo) {
 		const thread = props.isThreadReply ? <RepliedThread isTemp={props.isTemp} {...props} /> : null;
 		return (
-			<View style={[styles.container, props.isEditing && styles.editing, props.style]}>
+			<View style={[styles.container, props.style]}>
 				{thread}
 				<View style={[styles.flex, sharedStyles.alignItemsCenter]}>
 					<MessageAvatar small {...props} />
@@ -64,7 +64,7 @@ const Message = React.memo((props) => {
 		);
 	}
 	return (
-		<View style={[styles.container, props.isEditing && styles.editing, props.style]}>
+		<View style={[styles.container, props.style]}>
 			<View style={styles.flex}>
 				<MessageAvatar {...props} />
 				<View
@@ -118,7 +118,6 @@ Message.propTypes = {
 	isInfo: PropTypes.bool,
 	isTemp: PropTypes.bool,
 	isHeader: PropTypes.bool,
-	isEditing: PropTypes.bool,
 	hasError: PropTypes.bool,
 	style: PropTypes.any,
 	onLongPress: PropTypes.func,

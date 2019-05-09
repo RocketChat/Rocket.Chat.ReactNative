@@ -46,9 +46,6 @@ export default StyleSheet.create({
 		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
-	editing: {
-		backgroundColor: '#fff5df'
-	},
 	customEmoji: {
 		width: 20,
 		height: 20

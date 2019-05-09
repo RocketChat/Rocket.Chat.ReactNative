@@ -13,6 +13,7 @@ import EJSON from 'ejson';
 import {
 	toggleReactionPicker as toggleReactionPickerAction,
 	actionsShow as actionsShowAction,
+	errorActionsShow as errorActionsShowAction,
 	editCancel as editCancelAction,
 	replyCancel as replyCancelAction,
 	replyBroadcast as replyBroadcastAction
@@ -53,11 +54,16 @@ import FileModal from '../../containers/FileModal';
 	showErrorActions: state.messages.showErrorActions,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	useRealName: state.settings.UI_Use_Real_Name,
-	isAuthenticated: state.login.isAuthenticated
+	isAuthenticated: state.login.isAuthenticated,
+	// Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
+	// Message_TimeFormat: state.settings.Message_TimeFormat,
+	// editingMessage: state.messages.message,
+	// useRealName: state.settings.UI_Use_Real_Name
 }), dispatch => ({
 	editCancel: () => dispatch(editCancelAction()),
 	replyCancel: () => dispatch(replyCancelAction()),
 	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
+	errorActionsShow: actionMessage => dispatch(errorActionsShowAction(actionMessage)),
 	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage)),
 	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 }))
@@ -325,6 +331,11 @@ export default class RoomView extends LoggedView {
 		replyBroadcast(message);
 	}
 
+	errorActionsShow = (message) => {
+		const { errorActionsShow } = this.props;
+		errorActionsShow(message);
+	}
+
 	handleConnected = () => {
 		this.init();
 		EventEmitter.removeListener('connected', this.handleConnected);
@@ -480,10 +491,10 @@ export default class RoomView extends LoggedView {
 				onOpenFileModal={this.onOpenFileModal}
 				toggleReactionPicker={this.toggleReactionPicker}
 				replyBroadcast={this.replyBroadcast}
+				errorActionsShow={this.errorActionsShow}
 				baseUrl='https://open.rocket.chat'
 				Message_GroupingPeriod={60000}
 				Message_TimeFormat='LLL'
-				editingMessage={{}}
 				useRealName={false}
 			/>
 		);
@@ -577,7 +588,7 @@ export default class RoomView extends LoggedView {
 				<StatusBar />
 				<List rid={rid} t={t} tmid={this.tmid} renderRow={this.renderItem} />
 				{this.renderFooter()}
-				{/* {this.renderActions()} */}
+				{this.renderActions()}
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
 				<UploadProgress rid={this.rid} />
 				<FileModal

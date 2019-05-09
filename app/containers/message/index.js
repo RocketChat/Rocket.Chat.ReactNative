@@ -21,7 +21,6 @@ import { KeyboardUtils } from 'react-native-keyboard-input';
 // 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 // 	Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
 // 	Message_TimeFormat: state.settings.Message_TimeFormat,
-// 	editingMessage: state.messages.message,
 // 	useRealName: state.settings.UI_Use_Real_Name
 // }), dispatch => ({
 // 	errorActionsShow: actionMessage => dispatch(errorActionsShowAction(actionMessage)),
@@ -47,7 +46,6 @@ export default class MessageContainer extends React.Component {
 		baseUrl: PropTypes.string,
 		Message_GroupingPeriod: PropTypes.number,
 		Message_TimeFormat: PropTypes.string,
-		editingMessage: PropTypes.object,
 		useRealName: PropTypes.bool,
 		status: PropTypes.number,
 		navigation: PropTypes.object,
@@ -84,7 +82,7 @@ export default class MessageContainer extends React.Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		// const { reactionsModal } = this.state;
 		const {
-			status, editingMessage, item, _updatedAt, navigation
+			status, item, _updatedAt
 		} = this.props;
 
 		// if (reactionsModal !== nextState.reactionsModal) {
@@ -97,13 +95,10 @@ export default class MessageContainer extends React.Component {
 			return true;
 		}
 
-		if (navigation.isFocused() && !equal(editingMessage, nextProps.editingMessage)) {
-			if (nextProps.editingMessage && nextProps.editingMessage._id === item._id) {
-				return true;
-			} else if (!nextProps.editingMessage._id !== item._id && editingMessage._id === item._id) {
-				return true;
-			}
+		if (item.tmsg !== nextProps.item.tmsg) {
+			return true;
 		}
+
 		return _updatedAt.toISOString() !== nextProps._updatedAt.toISOString();
 	}
 
@@ -218,11 +213,6 @@ export default class MessageContainer extends React.Component {
 		return item.status === messagesStatus.ERROR;
 	}
 
-	get isEditing() {
-		const { item, editingMessage } = this.props;
-		return editingMessage._id === item._id;
-	}
-
 	parseMessage = () => {
 		const { item } = this.props;
 		return JSON.parse(JSON.stringify(item));
@@ -278,7 +268,6 @@ export default class MessageContainer extends React.Component {
 				tmsg={tmsg}
 				fetchThreadName={fetchThreadName}
 				isEdited={editedBy && !!editedBy.username}
-				isEditing={this.isEditing}
 				isHeader={this.isHeader}
 				isThreadReply={this.isThreadReply}
 				isThreadSequential={this.isThreadSequential}
