@@ -111,7 +111,9 @@ export default class RoomView extends LoggedView {
 		toggleReactionPicker: PropTypes.func.isRequired,
 		actionsShow: PropTypes.func,
 		editCancel: PropTypes.func,
-		replyCancel: PropTypes.func
+		replyCancel: PropTypes.func,
+		replyBroadcast: PropTypes.func,
+		errorActionsShow: PropTypes.func
 	};
 
 	constructor(props) {
@@ -157,37 +159,37 @@ export default class RoomView extends LoggedView {
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	const {
-	// 		room, joined, lastOpen
-	// 	} = this.state;
-	// 	const { showActions, showErrorActions, appState } = this.props;
+	shouldComponentUpdate(nextProps, nextState) {
+		const {
+			room, joined, lastOpen
+		} = this.state;
+		const { showActions, showErrorActions, appState } = this.props;
 
-	// 	if (lastOpen !== nextState.lastOpen) {
-	// 		return true;
-	// 	} else if (room.ro !== nextState.room.ro) {
-	// 		return true;
-	// 	} else if (room.f !== nextState.room.f) {
-	// 		return true;
-	// 	} else if (room.blocked !== nextState.room.blocked) {
-	// 		return true;
-	// 	} else if (room.blocker !== nextState.room.blocker) {
-	// 		return true;
-	// 	} else if (room.archived !== nextState.room.archived) {
-	// 		return true;
-	// 	} else if (joined !== nextState.joined) {
-	// 		return true;
-	// 	} else if (showActions !== nextProps.showActions) {
-	// 		return true;
-	// 	} else if (showErrorActions !== nextProps.showErrorActions) {
-	// 		return true;
-	// 	} else if (appState !== nextProps.appState) {
-	// 		return true;
-	// 	} else if (!equal(room.muted, nextState.room.muted)) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
+		if (lastOpen !== nextState.lastOpen) {
+			return true;
+		} else if (room.ro !== nextState.room.ro) {
+			return true;
+		} else if (room.f !== nextState.room.f) {
+			return true;
+		} else if (room.blocked !== nextState.room.blocked) {
+			return true;
+		} else if (room.blocker !== nextState.room.blocker) {
+			return true;
+		} else if (room.archived !== nextState.room.archived) {
+			return true;
+		} else if (joined !== nextState.joined) {
+			return true;
+		} else if (showActions !== nextProps.showActions) {
+			return true;
+		} else if (showErrorActions !== nextProps.showErrorActions) {
+			return true;
+		} else if (appState !== nextProps.appState) {
+			return true;
+		} else if (!equal(room.muted, nextState.room.muted)) {
+			return true;
+		}
+		return false;
+	}
 
 	componentDidUpdate(prevProps) {
 		const { room } = this.state;
@@ -457,7 +459,9 @@ export default class RoomView extends LoggedView {
 
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen } = this.state;
-		const { user, navigation, Message_GroupingPeriod, Message_TimeFormat, useRealName } = this.props;
+		const {
+			user, navigation, Message_GroupingPeriod, Message_TimeFormat, useRealName
+		} = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
 
