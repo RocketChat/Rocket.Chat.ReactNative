@@ -40,6 +40,8 @@ import { COLOR_WHITE } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import FileModal from '../../containers/FileModal';
+import { vibrate } from '../../utils/vibration';
+import ReactionsModal from '../../containers/ReactionsModal';
 
 @connect(state => ({
 	user: {
@@ -56,7 +58,8 @@ import FileModal from '../../containers/FileModal';
 	useRealName: state.settings.UI_Use_Real_Name,
 	isAuthenticated: state.login.isAuthenticated,
 	Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
-	Message_TimeFormat: state.settings.Message_TimeFormat
+	Message_TimeFormat: state.settings.Message_TimeFormat,
+	baseUrl: state.settings.baseUrl || state.server ? state.server.server : ''
 }), dispatch => ({
 	editCancel: () => dispatch(editCancelAction()),
 	replyCancel: () => dispatch(replyCancelAction()),
@@ -108,7 +111,8 @@ export default class RoomView extends LoggedView {
 		Message_TimeFormat: PropTypes.string,
 		editing: PropTypes.bool,
 		replying: PropTypes.bool,
-		toggleReactionPicker: PropTypes.func.isRequired,
+		baseUrl: PropTypes.string,
+		toggleReactionPicker: PropTypes.func,
 		actionsShow: PropTypes.func,
 		editCancel: PropTypes.func,
 		replyCancel: PropTypes.func,
@@ -129,7 +133,9 @@ export default class RoomView extends LoggedView {
 			room: this.rooms[0] || { rid: this.rid, t: this.t },
 			lastOpen: null,
 			photoModalVisible: false,
-			selectedAttachment: {}
+			reactionsModalVisible: false,
+			selectedAttachment: {},
+			selectedMessage: {}
 		};
 		this.beginAnimating = false;
 		this.beginAnimatingTimeout = setTimeout(() => this.beginAnimating = true, 300);
@@ -161,11 +167,15 @@ export default class RoomView extends LoggedView {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			room, joined, lastOpen
+			room, joined, lastOpen, photoModalVisible, reactionsModalVisible
 		} = this.state;
 		const { showActions, showErrorActions, appState } = this.props;
 
 		if (lastOpen !== nextState.lastOpen) {
+			return true;
+		} else if (photoModalVisible !== nextState.photoModalVisible) {
+			return true;
+		} else if (reactionsModalVisible !== nextState.reactionsModalVisible) {
 			return true;
 		} else if (room.ro !== nextState.room.ro) {
 			return true;
@@ -295,14 +305,6 @@ export default class RoomView extends LoggedView {
 		this.setState({ selectedAttachment: {}, photoModalVisible: false });
 	}
 
-	onOpenFileModal = (attachment) => {
-		this.setState({ selectedAttachment: attachment, photoModalVisible: true });
-	}
-
-	onCloseFileModal = () => {
-		this.setState({ selectedAttachment: {}, photoModalVisible: false });
-	}
-
 	onReactionPress = (shortname, messageId) => {
 		const { actionMessage, toggleReactionPicker } = this.props;
 		try {
@@ -315,6 +317,17 @@ export default class RoomView extends LoggedView {
 			log('RoomView.onReactionPress', e);
 		}
 	};
+
+	onReactionLongPress = (message) => {
+		console.log('TCL: onReactionLongPress -> message', message);
+		this.setState({ selectedMessage: message, reactionsModalVisible: true });
+		vibrate();
+	}
+
+	onCloseReactionsModal = () => {
+		console.log('onCloseReactionsModal')
+		this.setState({ selectedMessage: {}, reactionsModalVisible: false });
+	}
 
 	onDiscussionPress = debounce((item) => {
 		const { navigation } = this.props;
@@ -490,6 +503,7 @@ export default class RoomView extends LoggedView {
 				navigation={navigation}
 				fetchThreadName={this.fetchThreadName}
 				onReactionPress={this.onReactionPress}
+				onReactionLongPress={this.onReactionLongPress}
 				onLongPress={this.onMessageLongPress}
 				onDiscussionPress={this.onDiscussionPress}
 				onOpenFileModal={this.onOpenFileModal}
@@ -584,7 +598,10 @@ export default class RoomView extends LoggedView {
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
-		const { room, photoModalVisible, selectedAttachment } = this.state;
+		const {
+			room, photoModalVisible, reactionsModalVisible, selectedAttachment, selectedMessage
+		} = this.state;
+		const { user, baseUrl } = this.props;
 		const { rid, t } = room;
 
 		return (
@@ -599,6 +616,13 @@ export default class RoomView extends LoggedView {
 					attachment={selectedAttachment}
 					isVisible={photoModalVisible}
 					onClose={this.onCloseFileModal}
+				/>
+				<ReactionsModal
+					message={selectedMessage}
+					isVisible={reactionsModalVisible}
+					onClose={this.onCloseReactionsModal}
+					user={user}
+					baseUrl={baseUrl}
 				/>
 			</SafeAreaView>
 		);

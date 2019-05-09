@@ -155,21 +155,13 @@ const url = {
 	}
 };
 
-const messagesReactionsUsernamesSchema = {
-	name: 'messagesReactionsUsernames',
-	primaryKey: 'value',
-	properties: {
-		value: 'string'
-	}
-};
-
 const messagesReactionsSchema = {
 	name: 'messagesReactions',
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
 		emoji: 'string',
-		usernames: { type: 'list', objectType: 'messagesReactionsUsernames' }
+		usernames: 'string[]'
 	}
 };
 
@@ -359,7 +351,6 @@ const schema = [
 	frequentlyUsedEmojiSchema,
 	customEmojisSchema,
 	messagesReactionsSchema,
-	messagesReactionsUsernamesSchema,
 	rolesSchema,
 	userMutedInRoomSchema,
 	uploadsSchema
@@ -431,9 +422,9 @@ class DB {
 		return this.databases.activeDB = new Realm({
 			path: `${ path }.realm`,
 			schema,
-			schemaVersion: 9,
+			schemaVersion: 10,
 			migration: (oldRealm, newRealm) => {
-				if (oldRealm.schemaVersion >= 3 && newRealm.schemaVersion <= 8) {
+				if (oldRealm.schemaVersion >= 3 && newRealm.schemaVersion <= 10) {
 					const newSubs = newRealm.objects('subscriptions');
 
 					// eslint-disable-next-line no-plusplus

@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import PropTypes from 'prop-types';
+import isEqual from 'deep-equal';
 
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
@@ -26,7 +27,7 @@ const AddReaction = React.memo(({ toggleReactionPicker }) => (
 const Reaction = React.memo(({
 	reaction, user, onReactionLongPress, onReactionPress, baseUrl
 }) => {
-	const reacted = reaction.usernames.findIndex(item => item.value === user.username) !== -1;
+	const reacted = reaction.usernames.findIndex(item => item === user.username) !== -1;
 	return (
 		<Touchable
 			onPress={() => onReactionPress(reaction.emoji)}

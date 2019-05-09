@@ -88,6 +88,11 @@ export default class MessageContainer extends React.Component {
 		onReactionPress(emoji, item._id);
 	}
 
+	onReactionLongPress = () => {
+		const { onReactionLongPress, item } = this.props;
+		onReactionLongPress(item);
+	}
+
 	onDiscussionPress = () => {
 		const { onDiscussionPress, item } = this.props;
 		onDiscussionPress(item);
@@ -232,7 +237,7 @@ export default class MessageContainer extends React.Component {
 				onErrorPress={this.onErrorPress}
 				onPress={this.onPress}
 				onLongPress={this.onLongPress}
-				// onReactionLongPress={this.onReactionLongPress}
+				onReactionLongPress={this.onReactionLongPress}
 				onReactionPress={this.onReactionPress}
 				replyBroadcast={this.replyBroadcast}
 				toggleReactionPicker={this.toggleReactionPicker}
