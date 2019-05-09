@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
+import PropTypes from 'prop-types';
 
 import I18n from '../../i18n';
 import styles from './styles';
@@ -15,7 +16,6 @@ const Content = React.memo((props) => {
 		return <Text style={styles.text}>{I18n.t('Sent_an_attachment')}</Text>;
 	}
 
-	// return <Text>{props.msg}</Text>;
 	return (
 		<Markdown
 			msg={props.msg}
@@ -25,7 +25,16 @@ const Content = React.memo((props) => {
 			numberOfLines={props.tmid ? 1 : 0}
 		/>
 	);
-});
+}, (prevProps, nextProps) => prevProps.msg === nextProps.msg);
+
+Content.propTypes = {
+	isInfo: PropTypes.bool,
+	isEdited: PropTypes.bool,
+	tmid: PropTypes.string,
+	msg: PropTypes.string,
+	baseUrl: PropTypes.string,
+	user: PropTypes.object
+};
 Content.displayName = 'MessageContent';
 
 export default Content;

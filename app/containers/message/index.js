@@ -36,7 +36,8 @@ export default class MessageContainer extends React.Component {
 		replyBroadcast: PropTypes.func,
 		toggleReactionPicker: PropTypes.func,
 		fetchThreadName: PropTypes.func,
-		onOpenFileModal: PropTypes.func
+		onOpenFileModal: PropTypes.func,
+		onReactionLongPress: PropTypes.func
 	}
 
 	static defaultProps = {
@@ -117,10 +118,6 @@ export default class MessageContainer extends React.Component {
 		return customTimeFormat || Message_TimeFormat;
 	}
 
-	// closeReactions = () => {
-	// 	this.setState({ reactionsModal: false });
-	// }
-
 	get isHeader() {
 		const {
 			item, previousItem, broadcast, Message_GroupingPeriod
@@ -188,7 +185,6 @@ export default class MessageContainer extends React.Component {
 	}
 
 	render() {
-		// console.log(`RENDERING ${ this.props.item._id }`)
 		const {
 			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal
 		} = this.props;
@@ -215,7 +211,6 @@ export default class MessageContainer extends React.Component {
 				archived={archived}
 				broadcast={broadcast}
 				baseUrl={baseUrl}
-				// reactionsModal={reactionsModal}
 				useRealName={useRealName}
 				role={role}
 				drid={drid}
@@ -233,7 +228,6 @@ export default class MessageContainer extends React.Component {
 				isInfo={this.isInfo}
 				isTemp={this.isTemp}
 				hasError={this.hasError}
-				// closeReactions={this.closeReactions}
 				onErrorPress={this.onErrorPress}
 				onPress={this.onPress}
 				onLongPress={this.onLongPress}
