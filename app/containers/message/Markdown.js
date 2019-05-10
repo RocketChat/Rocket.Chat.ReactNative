@@ -3,7 +3,7 @@ import { Text, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import { emojify } from 'react-emojione';
 import MarkdownRenderer, { PluginContainer } from 'react-native-markdown-renderer';
-import MarkdownFlowdock from 'markdown-it-flowdock';
+import MarkdownHashMention from 'markdown-it-hashmention';
 
 import styles from './styles';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
@@ -94,7 +94,7 @@ const Markdown = React.memo(({
 				...style
 			}}
 			plugins={[
-				// new PluginContainer(MarkdownFlowdock),
+				new PluginContainer(MarkdownHashMention),
 				new PluginContainer(MarkdownEmojiPlugin)
 			]}
 		>{m}
