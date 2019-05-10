@@ -215,22 +215,22 @@ export default class RoomActionsView extends LoggedView {
 				{
 					icon: 'file-generic',
 					name: I18n.t('Files'),
-					route: 'RoomFilesView',
-					params: { rid, t },
+					route: 'MessagesView',
+					params: { rid, t, name: 'Files' },
 					testID: 'room-actions-files'
 				},
 				{
 					icon: 'at',
 					name: I18n.t('Mentions'),
-					route: 'MentionedMessagesView',
-					params: { rid, t },
+					route: 'MessagesView',
+					params: { rid, t, name: 'Mentions' },
 					testID: 'room-actions-mentioned'
 				},
 				{
 					icon: 'star',
 					name: I18n.t('Starred'),
-					route: 'StarredMessagesView',
-					params: { rid, t },
+					route: 'MessagesView',
+					params: { rid, t, name: 'Starred' },
 					testID: 'room-actions-starred'
 				},
 				{
@@ -249,8 +249,8 @@ export default class RoomActionsView extends LoggedView {
 				{
 					icon: 'pin',
 					name: I18n.t('Pinned'),
-					route: 'PinnedMessagesView',
-					params: { rid, t },
+					route: 'MessagesView',
+					params: { rid, t, name: 'Pinned' },
 					testID: 'room-actions-pinned'
 				}
 			],
