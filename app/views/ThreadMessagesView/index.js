@@ -24,12 +24,12 @@ const API_FETCH_COUNT = 50;
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	customEmojis: state.customEmojis,
 	user: {
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token
-	}
+	},
+	useRealName: state.settings.UI_Use_Real_Name
 }))
 /** @extends React.Component */
 export default class ThreadMessagesView extends LoggedView {
@@ -39,7 +39,9 @@ export default class ThreadMessagesView extends LoggedView {
 
 	static propTypes = {
 		user: PropTypes.object,
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		baseUrl: PropTypes.string,
+		useRealName: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -195,7 +197,9 @@ export default class ThreadMessagesView extends LoggedView {
 	)
 
 	renderItem = ({ item }) => {
-		const { user, navigation } = this.props;
+		const {
+			user, navigation, baseUrl, useRealName
+		} = this.props;
 		if (item.isValid && item.isValid()) {
 			return (
 				<Message
@@ -207,10 +211,19 @@ export default class ThreadMessagesView extends LoggedView {
 					status={item.status}
 					_updatedAt={item._updatedAt}
 					navigation={navigation}
-					customTimeFormat='MMM D'
+					timeFormat='MMM D'
 					customThreadTimeFormat='MMM Do YYYY, h:mm:ss a'
 					fetchThreadName={this.fetchThreadName}
 					onDiscussionPress={this.onDiscussionPress}
+					onReactionPress={this.onReactionPress}
+					onReactionLongPress={this.onReactionLongPress}
+					onLongPress={this.onMessageLongPress}
+					onOpenFileModal={this.onOpenFileModal}
+					toggleReactionPicker={this.toggleReactionPicker}
+					replyBroadcast={this.replyBroadcast}
+					errorActionsShow={this.errorActionsShow}
+					baseUrl={baseUrl}
+					useRealName={useRealName}
 				/>
 			);
 		}

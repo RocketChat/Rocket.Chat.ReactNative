@@ -471,7 +471,7 @@ export default class RoomView extends LoggedView {
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen } = this.state;
 		const {
-			user, navigation, Message_GroupingPeriod, Message_TimeFormat, useRealName
+			user, navigation, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl
 		} = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
@@ -508,9 +508,9 @@ export default class RoomView extends LoggedView {
 				toggleReactionPicker={this.toggleReactionPicker}
 				replyBroadcast={this.replyBroadcast}
 				errorActionsShow={this.errorActionsShow}
-				baseUrl='https://open.rocket.chat'
+				baseUrl={baseUrl}
 				Message_GroupingPeriod={Message_GroupingPeriod}
-				Message_TimeFormat={Message_TimeFormat}
+				timeFormat={Message_TimeFormat}
 				useRealName={useRealName}
 			/>
 		);

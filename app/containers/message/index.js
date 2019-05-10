@@ -16,7 +16,7 @@ export default class MessageContainer extends React.Component {
 			username: PropTypes.string.isRequired,
 			token: PropTypes.string.isRequired
 		}),
-		customTimeFormat: PropTypes.string,
+		timeFormat: PropTypes.string,
 		customThreadTimeFormat: PropTypes.string,
 		style: ViewPropTypes.style,
 		archived: PropTypes.bool,
@@ -25,7 +25,6 @@ export default class MessageContainer extends React.Component {
 		_updatedAt: PropTypes.instanceOf(Date),
 		baseUrl: PropTypes.string,
 		Message_GroupingPeriod: PropTypes.number,
-		Message_TimeFormat: PropTypes.string,
 		useRealName: PropTypes.bool,
 		status: PropTypes.number,
 		navigation: PropTypes.object,
@@ -76,27 +75,37 @@ export default class MessageContainer extends React.Component {
 		if (this.isInfo || this.hasError || archived) {
 			return;
 		}
-		onLongPress(this.parseMessage());
+		if (onLongPress) {
+			onLongPress(this.parseMessage());
+		}
 	}
 
 	onErrorPress = () => {
 		const { errorActionsShow } = this.props;
-		errorActionsShow(this.parseMessage());
+		if (errorActionsShow) {
+			errorActionsShow(this.parseMessage());
+		}
 	}
 
 	onReactionPress = (emoji) => {
 		const { onReactionPress, item } = this.props;
-		onReactionPress(emoji, item._id);
+		if (onReactionPress) {
+			onReactionPress(emoji, item._id);
+		}
 	}
 
 	onReactionLongPress = () => {
 		const { onReactionLongPress, item } = this.props;
-		onReactionLongPress(item);
+		if (onReactionLongPress) {
+			onReactionLongPress(item);
+		}
 	}
 
 	onDiscussionPress = () => {
 		const { onDiscussionPress, item } = this.props;
-		onDiscussionPress(item);
+		if (onDiscussionPress) {
+			onDiscussionPress(item);
+		}
 	}
 
 	onThreadPress = debounce(() => {
@@ -112,11 +121,6 @@ export default class MessageContainer extends React.Component {
 			});
 		}
 	}, 1000, true)
-
-	get timeFormat() {
-		const { customTimeFormat, Message_TimeFormat } = this.props;
-		return customTimeFormat || Message_TimeFormat;
-	}
 
 	get isHeader() {
 		const {
@@ -176,21 +180,26 @@ export default class MessageContainer extends React.Component {
 
 	toggleReactionPicker = () => {
 		const { toggleReactionPicker } = this.props;
-		toggleReactionPicker(this.parseMessage());
+		if (toggleReactionPicker) {
+			toggleReactionPicker(this.parseMessage());
+		}
 	}
 
 	replyBroadcast = () => {
 		const { replyBroadcast } = this.props;
-		replyBroadcast(this.parseMessage());
+		if (replyBroadcast) {
+			replyBroadcast(this.parseMessage());
+		}
 	}
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat
 		} = this.props;
 		const {
 			_id, msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg
 		} = item;
+
 		return (
 			<Message
 				id={_id}
@@ -205,7 +214,7 @@ export default class MessageContainer extends React.Component {
 				alias={alias}
 				avatar={avatar}
 				user={user}
-				timeFormat={this.timeFormat}
+				timeFormat={timeFormat}
 				customThreadTimeFormat={customThreadTimeFormat}
 				style={style}
 				archived={archived}
