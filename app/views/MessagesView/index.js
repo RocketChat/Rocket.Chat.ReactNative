@@ -14,6 +14,7 @@ import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
 import getFileUrlFromMessage from '../../lib/methods/helpers/getFileUrlFromMessage';
+import FileModal from '../../containers/FileModal';
 
 const ACTION_INDEX = 0;
 const CANCEL_INDEX = 1;
@@ -44,7 +45,9 @@ export default class MessagesView extends LoggedView {
 		super('MessagesView', props);
 		this.state = {
 			loading: false,
-			messages: []
+			messages: [],
+			selectedAttachment: {},
+			photoModalVisible: false
 		};
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
@@ -56,8 +59,11 @@ export default class MessagesView extends LoggedView {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { loading, messages } = this.state;
+		const { loading, messages, photoModalVisible } = this.state;
 		if (nextState.loading !== loading) {
+			return true;
+		}
+		if (nextState.photoModalVisible !== photoModalVisible) {
 			return true;
 		}
 		if (!equal(nextState.messages, messages)) {
@@ -77,9 +83,10 @@ export default class MessagesView extends LoggedView {
 			author: item.u || item.user,
 			ts: item.ts || item.uploadedAt,
 			timeFormat: 'MMM Do YYYY, h:mm:ss a',
-			edited: !!item.editedAt,
-			header: true,
-			attachments: item.attachments || []
+			isEdited: !!item.editedAt,
+			isHeader: true,
+			attachments: item.attachments || [],
+			onOpenFileModal: this.onOpenFileModal
 		});
 
 		return ({
@@ -190,6 +197,15 @@ export default class MessagesView extends LoggedView {
 		}
 	}
 
+	onOpenFileModal = (attachment) => {
+		console.log('TCL: onOpenFileModal -> attachment', attachment);
+		this.setState({ selectedAttachment: attachment, photoModalVisible: true });
+	}
+
+	onCloseFileModal = () => {
+		this.setState({ selectedAttachment: {}, photoModalVisible: false });
+	}
+
 	onLongPress = (message) => {
 		this.setState({ message });
 		this.showActionSheet();
@@ -232,7 +248,9 @@ export default class MessagesView extends LoggedView {
 	renderItem = ({ item }) => this.content.renderItem(item)
 
 	render() {
-		const { messages, loading } = this.state;
+		const {
+			messages, loading, selectedAttachment, photoModalVisible
+		} = this.state;
 
 		if (!loading && messages.length === 0) {
 			return this.renderEmpty();
@@ -248,6 +266,11 @@ export default class MessagesView extends LoggedView {
 					keyExtractor={item => item._id}
 					onEndReached={this.load}
 					ListFooterComponent={loading ? <RCActivityIndicator /> : null}
+				/>
+				<FileModal
+					attachment={selectedAttachment}
+					isVisible={photoModalVisible}
+					onClose={this.onCloseFileModal}
 				/>
 			</SafeAreaView>
 		);

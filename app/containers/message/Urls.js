@@ -98,7 +98,7 @@ const Url = React.memo(({
 }, (oldProps, newProps) => isEqual(oldProps.url, newProps.url));
 
 const Urls = React.memo(({ urls, user, baseUrl }) => {
-	if (urls.length === 0) {
+	if (!urls || urls.length === 0) {
 		return null;
 	}
 

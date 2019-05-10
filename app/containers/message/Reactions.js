@@ -53,7 +53,7 @@ const Reaction = React.memo(({
 const Reactions = React.memo(({
 	reactions, user, baseUrl, onReactionPress, toggleReactionPicker, onReactionLongPress
 }) => {
-	if (reactions.length === 0) {
+	if (!reactions || reactions.length === 0) {
 		return null;
 	}
 	return (

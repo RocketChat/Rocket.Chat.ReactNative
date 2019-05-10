@@ -10,7 +10,7 @@ import Reply from './Reply';
 const Attachments = React.memo(({
 	attachments, timeFormat, user, baseUrl, onOpenFileModal
 }) => {
-	if (attachments.length === 0) {
+	if (!attachments || attachments.length === 0) {
 		return null;
 	}
 
