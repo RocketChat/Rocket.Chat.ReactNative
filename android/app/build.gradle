@@ -96,7 +96,11 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+
+     compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     defaultConfig {
         applicationId "chat.rocket.reactnative"
@@ -155,6 +159,14 @@ android {
             }
         }
     }
+    packagingOptions {
+       pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+       pickFirst 'lib/x86/libc++_shared.so'
+       pickFirst 'lib/x86_64/libjsc.so'
+       pickFirst 'lib/arm64-v8a/libjsc.so'
+       pickFirst 'lib/arm64-v8a/libc++_shared.so'
+       pickFirst 'lib/x86_64/libc++_shared.so'
+     }
 }
 
 buildscript {
