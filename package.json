@@ -11,7 +11,8 @@
     "ios": "react-native run-ios",
     "log-android": "react-native log-android",
     "android": "react-native run-android",
-    "snyk-protect": "snyk protect"
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "rnpm": {
     "assets": [
@@ -75,7 +76,7 @@
     "remove-markdown": "^0.3.0",
     "rn-fetch-blob": "^0.10.15",
     "semver": "6.0.0",
-    "snyk": "^1.156.0",
+    "snyk": "^1.163.1",
     "strip-ansi": "5.2.0"
   },
   "devDependencies": {
