@@ -11,6 +11,9 @@ import MarkdownEmojiPlugin from './MarkdownEmojiPlugin';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 
+const EmojiPlugin = new PluginContainer(MarkdownEmojiPlugin);
+const MentionsPlugin = new PluginContainer(MarkdownFlowdock);
+
 // Support <http://link|Text>
 const formatText = text => text.replace(
 	new RegExp('(?:<|<)((?:https|http):\\/\\/[^\\|]+)\\|(.+?)(?=>|>)(?:>|>)', 'gm'),
@@ -18,7 +21,7 @@ const formatText = text => text.replace(
 );
 
 const Markdown = React.memo(({
-	msg, style, rules, baseUrl, username, isEdited, numberOfLines
+	msg, style, rules, baseUrl, username, isEdited, numberOfLines, mentions, channels
 }) => {
 	if (!msg) {
 		return null;
@@ -31,6 +34,12 @@ const Markdown = React.memo(({
 	if (numberOfLines > 0) {
 		m = m.replace(/[\n]+/g, '\n').trim();
 	}
+
+	const plugins = [EmojiPlugin];
+	if ((mentions && mentions.length) || (channels && channels.length)) {
+		plugins.push(MentionsPlugin);
+	}
+
 	return (
 		<MarkdownRenderer
 			rules={{
@@ -54,17 +63,26 @@ const Markdown = React.memo(({
 							...styles.mentionLoggedUser
 						};
 					}
-					return (
-						<Text style={mentionStyle} key={key}>
-							&nbsp;{content}&nbsp;
-						</Text>
-					);
+					if (mentions && mentions.length && mentions.findIndex(mention => mention.username === content) !== -1) {
+						return (
+							<Text style={mentionStyle} key={key}>
+								&nbsp;{content}&nbsp;
+							</Text>
+						);
+					}
+					return `@${ content }`;
 				},
-				hashtag: node => (
-					<Text key={node.key} style={styles.mention}>
-						&nbsp;#{node.content}&nbsp;
-					</Text>
-				),
+				hashtag: (node) => {
+					const { content, key } = node;
+					if (channels && channels.length && channels.findIndex(channel => channel.name === content) !== -1) {
+						return (
+							<Text key={key} style={styles.mention}>
+								&nbsp;#{content}&nbsp;
+							</Text>
+						);
+					}
+					return `#${ content }`;
+				},
 				emoji: (node) => {
 					if (node.children && node.children.length && node.children[0].content) {
 						const { content } = node.children[0];
@@ -93,10 +111,7 @@ const Markdown = React.memo(({
 				link: styles.link,
 				...style
 			}}
-			plugins={[
-				new PluginContainer(MarkdownFlowdock),
-				new PluginContainer(MarkdownEmojiPlugin)
-			]}
+			plugins={plugins}
 		>{m}
 		</MarkdownRenderer>
 	);
@@ -104,12 +119,14 @@ const Markdown = React.memo(({
 
 Markdown.propTypes = {
 	msg: PropTypes.string,
-	username: PropTypes.string.isRequired,
-	baseUrl: PropTypes.string.isRequired,
+	username: PropTypes.string,
+	baseUrl: PropTypes.string,
 	style: PropTypes.any,
 	rules: PropTypes.object,
 	isEdited: PropTypes.bool,
-	numberOfLines: PropTypes.number
+	numberOfLines: PropTypes.number,
+	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 };
 Markdown.displayName = 'MessageMarkdown';
 

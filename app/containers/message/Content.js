@@ -22,6 +22,8 @@ const Content = React.memo((props) => {
 			baseUrl={props.baseUrl}
 			username={props.user.username}
 			isEdited={props.isEdited}
+			mentions={props.mentions}
+			channels={props.channels}
 			numberOfLines={props.tmid ? 1 : 0}
 		/>
 	);
@@ -33,7 +35,9 @@ Content.propTypes = {
 	tmid: PropTypes.string,
 	msg: PropTypes.string,
 	baseUrl: PropTypes.string,
-	user: PropTypes.object
+	user: PropTypes.object,
+	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 };
 Content.displayName = 'MessageContent';
 

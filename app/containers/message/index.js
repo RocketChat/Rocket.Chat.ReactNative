@@ -197,7 +197,7 @@ export default class MessageContainer extends React.Component {
 			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat
 		} = this.props;
 		const {
-			_id, msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg
+			_id, msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels
 		} = item;
 
 		return (
@@ -230,6 +230,8 @@ export default class MessageContainer extends React.Component {
 				tlm={tlm}
 				tmsg={tmsg}
 				fetchThreadName={fetchThreadName}
+				mentions={mentions}
+				channels={channels}
 				isEdited={editedBy && !!editedBy.username}
 				isHeader={this.isHeader}
 				isThreadReply={this.isThreadReply}

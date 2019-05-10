@@ -43,6 +43,7 @@ const roomsSchema = {
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
+		name: 'string?',
 		broadcast: { type: 'bool', optional: true }
 	}
 };
@@ -99,8 +100,7 @@ const usersSchema = {
 	properties: {
 		_id: 'string',
 		username: 'string',
-		name: { type: 'string', optional: true },
-		avatarVersion: { type: 'int', optional: true }
+		name: { type: 'string', optional: true }
 	}
 };
 
@@ -203,7 +203,9 @@ const messagesSchema = {
 		tmid: { type: 'string', optional: true },
 		tcount: { type: 'int', optional: true },
 		tlm: { type: 'date', optional: true },
-		replies: 'string[]'
+		replies: 'string[]',
+		mentions: { type: 'list', objectType: 'users' },
+		channels: { type: 'list', objectType: 'rooms' }
 	}
 };
 
