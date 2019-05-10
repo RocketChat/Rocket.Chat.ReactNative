@@ -21,7 +21,6 @@ const CANCEL_INDEX = 1;
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	customEmojis: state.customEmojis,
 	user: {
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
@@ -37,7 +36,6 @@ export default class MessagesView extends LoggedView {
 	static propTypes = {
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
-		customEmojis: PropTypes.object,
 		navigation: PropTypes.object
 	}
 
@@ -74,10 +72,9 @@ export default class MessagesView extends LoggedView {
 
 	defineMessagesViewContent = (name) => {
 		const { messages } = this.state;
-		const { user, baseUrl, customEmojis } = this.props;
+		const { user, baseUrl } = this.props;
 
 		const renderItemCommonProps = item => ({
-			customEmojis,
 			baseUrl,
 			user,
 			author: item.u || item.user,
