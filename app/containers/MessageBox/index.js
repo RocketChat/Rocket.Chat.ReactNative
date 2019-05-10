@@ -35,6 +35,7 @@ import { COLOR_PRIMARY, COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
+const MENTIONS_TRACKING_TYPE_COMMANDS = '/';
 
 const onlyUnique = function onlyUnique(value, index, self) {
 	return self.indexOf(({ _id }) => value._id === _id) === index;
@@ -85,6 +86,7 @@ class MessageBox extends Component {
 				isVisible: false
 			}
 		};
+		this.commands = [];
 		this.users = [];
 		this.rooms = [];
 		this.emojis = [];
@@ -187,7 +189,7 @@ class MessageBox extends Component {
 				const { start, end } = this.component._lastNativeSelection;
 				const cursor = Math.max(start, end);
 				const lastNativeText = this.component._lastNativeText;
-				const regexp = /(#|@|:)([a-z0-9._-]+)$/im;
+				const regexp = /(#|@|:|^\/)([a-z0-9._-]+)$/im;
 				const result = lastNativeText.substr(0, cursor).match(regexp);
 				if (!result) {
 					return this.stopTrackingMention();
@@ -214,7 +216,7 @@ class MessageBox extends Component {
 		const result = msg.substr(0, cursor).replace(regexp, '');
 		const mentionName = trackingType === MENTIONS_TRACKING_TYPE_EMOJIS
 			? `${ item.name || item }:`
-			: (item.username || item.name);
+			: (item.username || item.name || item.command);
 		const text = `${ result }${ mentionName } ${ msg.slice(cursor) }`;
 		this.setInput(text);
 		this.focus();
@@ -452,6 +454,13 @@ class MessageBox extends Component {
 		}
 	}
 
+	getSlashCommands = (keyword) => {
+		if (keyword) {
+			this.commands = database.objects('slashCommand').filtered('command CONTAINS[c] $0', keyword).slice(0, 4);
+			this.setState({ mentions: this.commands });
+		}
+	}
+
 	focus = () => {
 		if (this.component && this.component.focus) {
 			this.component.focus();
@@ -581,7 +590,7 @@ class MessageBox extends Component {
 
 	submit = async() => {
 		const {
-			message: editingMessage, editRequest, onSubmit
+			message: editingMessage, editRequest, onSubmit, rid: roomId
 		} = this.props;
 		const message = this.text;
 
@@ -596,6 +605,22 @@ class MessageBox extends Component {
 			editing, replying
 		} = this.props;
 
+		// Slash command
+
+		if (message[0] === '/') {
+			const command = message.replace(/ .*/, '').slice(1);
+			const slashCommand = database.objects('slashCommand').filtered('command CONTAINS[c] $0', command);
+			if (slashCommand !== null) {
+				try {
+					RocketChat.runSlashCommand(command, roomId, message.substr(message.indexOf(' ') + 1));
+				} catch (e) {
+					log('slashCommand', e);
+				}
+				this.clearInput();
+				onSubmit('');
+				return;
+			}
+		}
 		// Edit
 		if (editing) {
 			const { _id, rid } = editingMessage;
@@ -637,6 +662,8 @@ class MessageBox extends Component {
 			this.getUsers(keyword);
 		} else if (type === MENTIONS_TRACKING_TYPE_EMOJIS) {
 			this.getEmojis(keyword);
+		} else if (type === MENTIONS_TRACKING_TYPE_COMMANDS) {
+			this.getSlashCommands(keyword);
 		} else {
 			this.getRooms(keyword);
 		}
@@ -664,6 +691,7 @@ class MessageBox extends Component {
 		this.rooms = [];
 		this.customEmojis = [];
 		this.emojis = [];
+		this.commands = [];
 	}
 
 	renderFixedMentionItem = item => (
@@ -706,30 +734,55 @@ class MessageBox extends Component {
 		if (item.username === 'all' || item.username === 'here') {
 			return this.renderFixedMentionItem(item);
 		}
+		let testID;
+		switch (trackingType) {
+			case MENTIONS_TRACKING_TYPE_EMOJIS:
+				testID = `mention-item-${ item.name || item }`;
+				break;
+			case MENTIONS_TRACKING_TYPE_COMMANDS:
+				testID = `mention-item-${ item.command || item }`;
+				break;
+			default:
+				testID = `mention-item-${ item.username || item }`;
+		}
+
 		return (
 			<TouchableOpacity
 				style={styles.mentionItem}
 				onPress={() => this.onPressMention(item)}
-				testID={`mention-item-${ trackingType === MENTIONS_TRACKING_TYPE_EMOJIS ? item.name || item : item.username || item.name }`}
+				testID={testID}
 			>
-				{trackingType === MENTIONS_TRACKING_TYPE_EMOJIS
-					? [
-						this.renderMentionEmoji(item),
-						<Text key='mention-item-name' style={styles.mentionText}>:{ item.name || item }:</Text>
-					]
-					: [
-						<Avatar
-							key='mention-item-avatar'
-							style={{ margin: 8 }}
-							text={item.username || item.name}
-							size={30}
-							type={item.username ? 'd' : 'c'}
-							baseUrl={baseUrl}
-							userId={user.id}
-							token={user.token}
-						/>,
-						<Text key='mention-item-name' style={styles.mentionText}>{ item.username || item.name }</Text>
-					]
+
+				{(() => {
+					switch (trackingType) {
+						case MENTIONS_TRACKING_TYPE_EMOJIS:
+							return ([
+								this.renderMentionEmoji(item),
+								<Text key='mention-item-name' style={styles.mentionText}>:{ item.name || item }:</Text>
+							]);
+						case MENTIONS_TRACKING_TYPE_COMMANDS:
+							return (
+								<View style={styles.commandContainer}>
+									<Text key='mention-item-command' style={styles.command}>{`/${ item.command }`}</Text>
+									<Text key='mention-item-param' style={styles.params}>{ item.params}</Text>
+								</View>
+							);
+						default:
+							return ([
+								<Avatar
+									key='mention-item-avatar'
+									style={{ margin: 8 }}
+									text={item.username || item.name}
+									size={30}
+									type={item.username ? 'd' : 'c'}
+									baseUrl={baseUrl}
+									userId={user.id}
+									token={user.token}
+								/>,
+								<Text key='mention-item-name' style={styles.mentionText}>{ item.username || item.name }</Text>
+							]);
+					}
+				})()
 				}
 			</TouchableOpacity>
 		);
@@ -746,7 +799,7 @@ class MessageBox extends Component {
 					style={styles.mentionList}
 					data={mentions}
 					renderItem={({ item }) => this.renderMentionItem(item)}
-					keyExtractor={item => item._id || item.username || item}
+					keyExtractor={item => item._id || item.username || item.command || item}
 					keyboardShouldPersistTaps='always'
 				/>
 			</View>

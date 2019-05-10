@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { isIOS } from '../../utils/deviceInfo';
 import sharedStyles from '../../views/Styles';
 import {
-	COLOR_BORDER, COLOR_SEPARATOR, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE
+	COLOR_BORDER, COLOR_SEPARATOR, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_PRIMARY
 } from '../../constants/colors';
 
 const MENTION_HEIGHT = 50;
@@ -100,5 +100,19 @@ export default StyleSheet.create({
 		bottom: 0,
 		left: 0,
 		right: 0
+	},
+	commandContainer: {
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between'
+	},
+	command: {
+		backgroundColor: COLOR_BORDER,
+		color: COLOR_PRIMARY,
+		padding: 5
+	},
+	params: {
+		textAlign: 'right'
 	}
 });

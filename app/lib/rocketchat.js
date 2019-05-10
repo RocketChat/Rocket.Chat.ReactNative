@@ -25,6 +25,7 @@ import getSettings from './methods/getSettings';
 import getRooms from './methods/getRooms';
 import getPermissions from './methods/getPermissions';
 import getCustomEmoji from './methods/getCustomEmojis';
+import getSlashCommands from './methods/getSlashCommands';
 import getRoles from './methods/getRoles';
 import canOpenRoom from './methods/canOpenRoom';
 
@@ -167,6 +168,7 @@ const RocketChat = {
 		this.getPermissions();
 		this.getCustomEmoji();
 		this.getRoles();
+		this.getSlashCommands();
 		this.registerPushToken().catch(e => console.log(e));
 
 		if (this.activeUsersSubTimeout) {
@@ -461,6 +463,7 @@ const RocketChat = {
 	getSettings,
 	getPermissions,
 	getCustomEmoji,
+	getSlashCommands,
 	getRoles,
 	parseSettings: settings => settings.reduce((ret, item) => {
 		ret[item._id] = item[defaultSettings[item._id].type];
@@ -783,6 +786,11 @@ const RocketChat = {
 		// RC 1.0
 		return this.sdk.get('chat.syncThreadsList', {
 			rid, updatedSince
+		});
+	},
+	runSlashCommand(command, roomId, params) {
+		return this.sdk.post('commands.run', {
+			command, roomId, params
 		});
 	}
 };
