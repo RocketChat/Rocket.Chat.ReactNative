@@ -38,6 +38,8 @@ import Separator from './Separator';
 import { COLOR_WHITE } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
+import { vibrate } from '../../utils/vibration';
+import bottomSheetStatus from '../../constants/bottomSheetStatus';
 
 @connect(state => ({
 	user: {
@@ -277,14 +279,15 @@ export default class RoomView extends LoggedView {
 	onMessageLongPress = (message) => {
 		const { actionsShow } = this.props;
 		actionsShow({ ...message, rid: this.rid });
-		this.bottomSheetRef.current.snapTo(0);
 		Keyboard.dismiss();
+		this.bottomSheetRef.current.snapTo(bottomSheetStatus.DISPLAYED);
+		vibrate();
 	}
 
 	hideActionSheet() {
 		const { actionsHide } = this.props;
 		actionsHide();
-		return this.bottomSheetRef && this.bottomSheetRef.current && this.bottomSheetRef.current.snapTo(2);
+		return this.bottomSheetRef && this.bottomSheetRef.current && this.bottomSheetRef.current.snapTo(bottomSheetStatus.HIDDEN);
 	}
 
 	onReactionPress = (shortname, messageId) => {

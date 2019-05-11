@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Animated from 'react-native-reanimated';
 import Touchable from 'react-native-platform-touchable';
+import { RectButton } from 'react-native-gesture-handler';
 
 import {
 	deleteRequest as deleteRequestAction,
@@ -18,19 +19,20 @@ import {
 	toggleStarRequest as toggleStarRequestAction
 } from '../actions/messages';
 import { showToast } from '../utils/info';
-import { vibrate } from '../utils/vibration';
 import { verticalScale } from '../utils/scaling';
 import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
 import sharedStyles from '../views/Styles';
 import { CustomIcon } from '../lib/Icons';
+import { isIOS } from '../utils/deviceInfo';
+import bottomSheetStatus from '../constants/bottomSheetStatus';
 
 const {
 	block, cond, call, eq, lessThan
 } = Animated;
 
-const hiddenBottomSheet = 2;
 const bottomSheetMaxHeight = 320;
+const bottomSheetInitialHeight = 0;
 const bottomSheetHeaderHeight = 25;
 const buttonPaddingsSize = 30;
 const textSize = 13;
@@ -161,10 +163,6 @@ export default class MessageActions extends React.Component {
 
 		this.value_fall = new Animated.Value(1);
 		this.bottomSheetHeight = verticalScale(this.options.length * buttonPaddingsSize) + this.options.length * textSize + bottomSheetHeaderHeight;
-
-		setTimeout(() => {
-			vibrate();
-		});
 	}
 
 	setPermissions() {
@@ -333,15 +331,32 @@ export default class MessageActions extends React.Component {
 		</View>
 	);
 
+	buttonIcon = icon => (
+		<CustomIcon name={icon} size={18} style={styles.panelButtonIcon} />
+	)
+
+	buttonText = label => (
+		<Text style={sharedStyles.textRegular}>{label}</Text>
+	)
+
 	renderInner = () => (
 		<View style={[styles.panel, { height: this.bottomSheetHeight }]}>
 			{this.options.map(option => (
-				<Touchable onPress={() => { this.hideActionSheet(); option.handler(); }} key={option.label}>
-					<View style={styles.panelButton}>
-						<CustomIcon name={option.icon} size={18} style={styles.panelButtonIcon} />
-						<Text style={sharedStyles.textRegular}>{option.label}</Text>
-					</View>
-				</Touchable>
+				isIOS
+					? (
+						<Touchable onPress={() => { this.hideActionSheet(); option.handler(); }} key={option.label}>
+							<View style={styles.panelButton}>
+								{this.buttonIcon(option.icon)}
+								{this.buttonText(option.label)}
+							</View>
+						</Touchable>
+					)
+					: (
+						<RectButton onPress={() => { this.hideActionSheet(); option.handler(); }} key={option.label} style={styles.panelButton}>
+							{this.buttonIcon(option.icon)}
+							{this.buttonText(option.label)}
+						</RectButton>
+					)
 			))}
 		</View>
 	);
@@ -352,7 +367,7 @@ export default class MessageActions extends React.Component {
 	}
 
 	hideActionSheet() {
-		return this.bottomSheetRef && this.bottomSheetRef.current && this.bottomSheetRef.current.snapTo(hiddenBottomSheet);
+		return this.bottomSheetRef && this.bottomSheetRef.current && this.bottomSheetRef.current.snapTo(bottomSheetStatus.HIDDEN);
 	}
 
 	render() {
@@ -367,8 +382,8 @@ export default class MessageActions extends React.Component {
 				)),
 				<BottomSheet
 					ref={this.bottomSheetRef}
-					initialSnap={hiddenBottomSheet}
-					snapPoints={[bottomSheetMaxHeight, this.bottomSheetHeight + bottomSheetHeaderHeight, 0]}
+					initialSnap={bottomSheetStatus.HIDDEN}
+					snapPoints={[bottomSheetMaxHeight, this.bottomSheetHeight + bottomSheetHeaderHeight, bottomSheetInitialHeight]}
 					renderHeader={this.renderHeader}
 					renderContent={this.renderInner}
 					enabledManualSnapping
