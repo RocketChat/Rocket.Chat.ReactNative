@@ -504,8 +504,8 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	_onRefresh = () => {
-		this.setState({refreshing: true});
-		//TODO refresh the state here
+		this.setState({ refreshing: true });
+		// TODO refresh the state here
 	}
 
 	renderScroll = () => {
@@ -532,12 +532,13 @@ export default class RoomsListView extends LoggedView {
 					keyboardShouldPersistTaps='always'
 					initialNumToRender={9}
 					windowSize={9}
-					refreshControl={
+					refreshControl={(
 						<RefreshControl
-						  refreshing={this.state.refreshing}
-						  onRefresh={this._onRefresh}
+							// eslint-disable-next-line react/destructuring-assignment
+							refreshing={this.state.refreshing}
+							onRefresh={this._onRefresh}
 						/>
-					}
+					)}
 				/>
 			);
 		}
@@ -547,12 +548,13 @@ export default class RoomsListView extends LoggedView {
 				ref={this.getScrollRef}
 				contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
 				keyboardShouldPersistTaps='always'
-				refreshControl={
+				refreshControl={(
 					<RefreshControl
-					  refreshing={this.state.refreshing}
-					  onRefresh={this._onRefresh}
+						// eslint-disable-next-line react/destructuring-assignment
+						refreshing={this.state.refreshing}
+						onRefresh={this._onRefresh}
 					/>
-				}
+				)}
 				testID='rooms-list-view-list'
 			>
 				{this.renderListHeader()}
