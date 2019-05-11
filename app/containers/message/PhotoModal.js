@@ -1,14 +1,15 @@
 import React from 'react';
 import {
-	View, Text, TouchableWithoutFeedback, ActivityIndicator, StyleSheet, Platform, Alert, CameraRoll
+	View, Text, TouchableWithoutFeedback, ActivityIndicator, StyleSheet, Platform, Alert, CameraRoll, PermissionsAndroid
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { responsive } from 'react-native-responsive-ui';
-
 import RNFetchBlob from 'rn-fetch-blob';
+
+import { isAndroid } from '../../utils/deviceInfo';
 
 import sharedStyles from '../../views/Styles';
 import { COLOR_WHITE } from '../../constants/colors';
@@ -53,24 +54,40 @@ export default class PhotoModal extends React.PureComponent {
 		window: PropTypes.object
 	}
 
-	saveToCameraRoll = (image) => {
+	saveToCameraRoll = async(image) => {
 		if (Platform.OS === 'android') {
-			RNFetchBlob
-				.config({
-					fileCache: true,
-					appendExt: 'jpg'
-				})
-				.fetch('GET', image)
-				.then((res) => {
-					CameraRoll.saveToCameraRoll(res.path())
-						.then(() => Alert.alert('Success', 'Photo added to camera roll!'))
-						.catch(err => console.log('err:', err));
-				});
+			if (await this.permission()) {
+				RNFetchBlob
+					.config({
+						fileCache: true,
+						appendExt: 'jpg'
+					})
+					.fetch('GET', image)
+					.then((res) => {
+						CameraRoll.saveToCameraRoll(res.path())
+							.then(() => Alert.alert('Success', 'Photo added to camera roll!'))
+							.catch(err => console.error('err:', err));
+					});
+			}
 		} else {
 			CameraRoll.saveToCameraRoll(image)
 				.then(() => Alert.alert('Success', 'Photo added to camera roll!'))
 				.catch(() => Alert.alert('Error', 'You declined access to camera roll!'));
 		}
+	}
+
+	permission = async() => {
+		if (!isAndroid) {
+			return true;
+		}
+
+		const rationale = {
+			title: 'Rocket.Chat needs permission',
+			message: 'Rocket.Chat needs access to your storage so you can save your photos.'
+		};
+
+		const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE, rationale);
+		return result === true || result === PermissionsAndroid.RESULTS.GRANTED;
 	}
 
 	render() {
