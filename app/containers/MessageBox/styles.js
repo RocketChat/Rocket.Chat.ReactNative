@@ -101,18 +101,26 @@ export default StyleSheet.create({
 		left: 0,
 		right: 0
 	},
-	commandContainer: {
-		flex: 1,
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-between'
+	slash: {
+		color: COLOR_PRIMARY,
+		backgroundColor: COLOR_BORDER,
+		padding: 5,
+		paddingHorizontal: 12,
+		borderRadius: 8
 	},
 	command: {
-		backgroundColor: COLOR_BORDER,
-		color: COLOR_PRIMARY,
-		padding: 5
+		marginLeft: 10
 	},
-	params: {
-		textAlign: 'right'
+	commandPreviewImage: {
+		margin: 3,
+		width: 120,
+		height: 80
+	},
+	commandPreview: {
+		backgroundColor: COLOR_BACKGROUND_CONTAINER,
+		height: 100,
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center'
 	}
 });

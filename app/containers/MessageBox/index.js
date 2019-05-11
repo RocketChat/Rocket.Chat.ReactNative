@@ -9,6 +9,7 @@ import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
+import FastImage from 'react-native-fast-image';
 
 import { userTyping as userTypingAction } from '../../actions/room';
 import {
@@ -84,8 +85,10 @@ class MessageBox extends Component {
 			trackingType: '',
 			file: {
 				isVisible: false
-			}
+			},
+			commandPreview: []
 		};
+		this.showCommandPreview = false;
 		this.commands = [];
 		this.users = [];
 		this.rooms = [];
@@ -135,7 +138,7 @@ class MessageBox extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			showEmojiKeyboard, showFilesAction, showSend, recording, mentions, file
+			showEmojiKeyboard, showFilesAction, showSend, recording, mentions, file, commandPreview
 		} = this.state;
 		const {
 			roomType, replying, editing, isFocused
@@ -167,6 +170,9 @@ class MessageBox extends Component {
 		if (!equal(nextState.mentions, mentions)) {
 			return true;
 		}
+		if (!equal(nextState.commandPreview, commandPreview)) {
+			return true;
+		}
 		if (!equal(nextState.file, file)) {
 			return true;
 		}
@@ -183,6 +189,14 @@ class MessageBox extends Component {
 	// eslint-disable-next-line react/sort-comp
 	debouncedOnChangeText = debounce((text) => {
 		this.setInput(text);
+		const slashCommand = text.match(/^\/([a-z0-9._-]+) (.+)/im);
+		if (slashCommand) {
+			const [, name, params] = slashCommand;
+			const command = database.objects('slashCommand').filtered('command == $0', name);
+			if (command && command[0] && command[0].providesPreview) {
+				return this.setCommandPreview(name, params);
+			}
+		}
 
 		if (this.component) {
 			requestAnimationFrame(() => {
@@ -191,6 +205,7 @@ class MessageBox extends Component {
 				const lastNativeText = this.component._lastNativeText;
 				const regexp = /(#|@|:|^\/)([a-z0-9._-]+)$/im;
 				const result = lastNativeText.substr(0, cursor).match(regexp);
+				this.showCommandPreview = false;
 				if (!result) {
 					return this.stopTrackingMention();
 				}
@@ -218,9 +233,35 @@ class MessageBox extends Component {
 			? `${ item.name || item }:`
 			: (item.username || item.name || item.command);
 		const text = `${ result }${ mentionName } ${ msg.slice(cursor) }`;
+		if ((trackingType === MENTIONS_TRACKING_TYPE_COMMANDS) && item.providesPreview) {
+			this.showCommandPreview = true;
+		}
 		this.setInput(text);
 		this.focus();
 		requestAnimationFrame(() => this.stopTrackingMention());
+	}
+
+	onPressCommandPreview = (item) => {
+		const { rid } = this.props;
+		const { text } = this;
+		const command = text.substr(0, text.indexOf(' ')).slice(1);
+		const params = text.substr(text.indexOf(' ') + 1) || 'params';
+		const msg = {
+			cmd: command,
+			params,
+			msg: {
+				rid
+			}
+		};
+		this.showCommandPreview = false;
+		this.setState({ commandPreview: [] });
+		this.stopTrackingMention();
+		this.clearInput();
+		try {
+			RocketChat.executeCommandPreview(msg, item);
+		} catch (e) {
+			log('onPressCommandPreview', e);
+		}
 	}
 
 	onEmojiSelected = (keyboardId, params) => {
@@ -488,6 +529,22 @@ class MessageBox extends Component {
 		}, 1000);
 	}
 
+	setCommandPreview = (command, params) => {
+		this.showCommandPreview = true;
+		const { rid } = this.props;
+		try	{
+			RocketChat.getCommandPreview(command, rid, params).then((res) => {
+				this.setState({ commandPreview: res.preview.items });
+			}).catch((e) => {
+				this.showCommandPreview = false;
+				log('command Preview', e);
+			});
+		} catch (e) {
+			this.showCommandPreview = false;
+			log('command Preview', e);
+		}
+	}
+
 	setInput = (text) => {
 		this.text = text;
 		if (this.component && this.component.setNativeProps) {
@@ -610,14 +667,13 @@ class MessageBox extends Component {
 		if (message[0] === '/') {
 			const command = message.replace(/ .*/, '').slice(1);
 			const slashCommand = database.objects('slashCommand').filtered('command CONTAINS[c] $0', command);
-			if (slashCommand !== null) {
+			if (slashCommand.length > 0) {
 				try {
 					RocketChat.runSlashCommand(command, roomId, message.substr(message.indexOf(' ') + 1));
 				} catch (e) {
 					log('slashCommand', e);
 				}
 				this.clearInput();
-				onSubmit('');
 				return;
 			}
 		}
@@ -685,7 +741,8 @@ class MessageBox extends Component {
 
 		this.setState({
 			mentions: [],
-			trackingType: ''
+			trackingType: '',
+			commandPreview: []
 		});
 		this.users = [];
 		this.rooms = [];
@@ -761,12 +818,10 @@ class MessageBox extends Component {
 								<Text key='mention-item-name' style={styles.mentionText}>:{ item.name || item }:</Text>
 							]);
 						case MENTIONS_TRACKING_TYPE_COMMANDS:
-							return (
-								<View style={styles.commandContainer}>
-									<Text key='mention-item-command' style={styles.command}>{`/${ item.command }`}</Text>
-									<Text key='mention-item-param' style={styles.params}>{ item.params}</Text>
-								</View>
-							);
+							return ([
+								<Text key='mention-item-command' style={styles.slash}>/</Text>,
+								<Text key='mention-item-param' style={styles.command}>{ item.command}</Text>
+							]);
 						default:
 							return ([
 								<Avatar
@@ -806,6 +861,47 @@ class MessageBox extends Component {
 		);
 	};
 
+	renderCommandPreviewItem = (item) => {
+		if (item.type === 'image') {
+			return (
+				<TouchableOpacity
+					style={styles.commandPreview}
+					onPress={() => this.onPressCommandPreview(item)}
+					testID={`command-preview-item${ item.id }`}
+				>
+					<FastImage
+						style={styles.commandPreviewImage}
+						source={{
+							uri: item.value
+						}}
+						resizeMode={FastImage.resizeMode.cover}
+					/>
+				</TouchableOpacity>
+			);
+		}
+		return null;
+	}
+
+	renderCommandPreview = () => {
+		const { commandPreview } = this.state;
+		if (!this.showCommandPreview) {
+			return null;
+		}
+		return (
+			<View key='commandbox-container' testID='commandbox-container'>
+				<FlatList
+					style={styles.mentionList}
+					data={commandPreview}
+					renderItem={({ item }) => this.renderCommandPreviewItem(item)}
+					keyExtractor={item => item.id}
+					keyboardShouldPersistTaps='always'
+					horizontal
+					showsHorizontalScrollIndicator={false}
+				/>
+			</View>
+		);
+	}
+
 	renderReplyPreview = () => {
 		const {
 			replyMessage, replying, closeReply, user
@@ -841,6 +937,7 @@ class MessageBox extends Component {
 		}
 		return (
 			[
+				this.renderCommandPreview(),
 				this.renderMentions(),
 				<View style={styles.composer} key='messagebox'>
 					{this.renderReplyPreview()}

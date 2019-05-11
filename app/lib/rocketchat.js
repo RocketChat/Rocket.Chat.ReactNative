@@ -792,6 +792,14 @@ const RocketChat = {
 		return this.sdk.post('commands.run', {
 			command, roomId, params
 		});
+	},
+	getCommandPreview(command, roomId, params) {
+		return this.sdk.get('commands.preview', {
+			command, roomId, params
+		});
+	},
+	executeCommandPreview(msg, item) {
+		return this.sdk.methodCall('executeSlashCommandPreview', msg, item);
 	}
 };
 
