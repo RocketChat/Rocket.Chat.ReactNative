@@ -9,8 +9,8 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import { responsive } from 'react-native-responsive-ui';
 import RNFetchBlob from 'rn-fetch-blob';
 
+import I18n from '../../i18n';
 import { isAndroid } from '../../utils/deviceInfo';
-
 import sharedStyles from '../../views/Styles';
 import { COLOR_WHITE } from '../../constants/colors';
 
@@ -65,14 +65,16 @@ export default class PhotoModal extends React.PureComponent {
 					.fetch('GET', image)
 					.then((res) => {
 						CameraRoll.saveToCameraRoll(res.path())
-							.then(() => Alert.alert('Success', 'Photo added to camera roll!'))
+							.then(() => Alert.alert(I18n.t('Save_To_Camera_Success'), I18n.t('Save_To_Camera_Success_Message')))
 							.catch(err => console.error('err:', err));
 					});
+			} else {
+				Alert.alert(I18n.t('Save_To_Camera_Error'), I18n.t('Save_To_Camera_Error_Message'));
 			}
 		} else {
 			CameraRoll.saveToCameraRoll(image)
-				.then(() => Alert.alert('Success', 'Photo added to camera roll!'))
-				.catch(() => Alert.alert('Error', 'You declined access to camera roll!'));
+				.then(() => Alert.alert(I18n.t('Save_To_Camera_Success'), I18n.t('Save_To_Camera_Success_Message')))
+				.catch(() => Alert.alert(I18n.t('Save_To_Camera_Error'), I18n.t('Save_To_Camera_Error_Message')));
 		}
 	}
 
@@ -82,8 +84,8 @@ export default class PhotoModal extends React.PureComponent {
 		}
 
 		const rationale = {
-			title: 'Rocket.Chat needs permission',
-			message: 'Rocket.Chat needs access to your storage so you can save your photos.'
+			title: I18n.t('Write_External_Permission'),
+			message: I18n.t('Write_External_Permission_Message')
 		};
 
 		const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE, rationale);
