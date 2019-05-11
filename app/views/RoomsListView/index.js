@@ -503,13 +503,14 @@ export default class RoomsListView extends LoggedView {
 		);
 	}
 
-	_onRefresh = () => {
+	_onRefresh = async() => {
 		this.setState({ refreshing: true });
 		// TODO refresh the state here
+		this.setState({ refreshing: false });
 	}
 
 	renderScroll = () => {
-		const { loading } = this.state;
+		const { loading, refreshing } = this.state;
 
 		if (loading) {
 			return <ActivityIndicator style={styles.loading} />;
@@ -534,8 +535,7 @@ export default class RoomsListView extends LoggedView {
 					windowSize={9}
 					refreshControl={(
 						<RefreshControl
-							// eslint-disable-next-line react/destructuring-assignment
-							refreshing={this.state.refreshing}
+							refreshing={refreshing}
 							onRefresh={this._onRefresh}
 						/>
 					)}
@@ -550,8 +550,7 @@ export default class RoomsListView extends LoggedView {
 				keyboardShouldPersistTaps='always'
 				refreshControl={(
 					<RefreshControl
-						// eslint-disable-next-line react/destructuring-assignment
-						refreshing={this.state.refreshing}
+						refreshing={refreshing}
 						onRefresh={this._onRefresh}
 					/>
 				)}
