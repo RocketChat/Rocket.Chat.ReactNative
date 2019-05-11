@@ -63,12 +63,13 @@ export default class PhotoModal extends React.PureComponent {
 				.fetch('GET', image)
 				.then((res) => {
 					CameraRoll.saveToCameraRoll(res.path())
-						.then(Alert.alert('Success', 'Photo added to camera roll!'))
+						.then(() => Alert.alert('Success', 'Photo added to camera roll!'))
 						.catch(err => console.log('err:', err));
 				});
 		} else {
 			CameraRoll.saveToCameraRoll(image)
-				.then(Alert.alert('Success', 'Photo added to camera roll!'));
+				.then(() => Alert.alert('Success', 'Photo added to camera roll!'))
+				.catch(() => Alert.alert('Error', 'You declined access to camera roll!'));
 		}
 	}
 
@@ -100,7 +101,7 @@ export default class PhotoModal extends React.PureComponent {
 							backgroundColor='transparent'
 							enableSwipeDown
 							onSwipeDown={onClose}
-							renderIndicator={() => {}}
+							renderIndicator={() => { }}
 							renderImage={props => <FastImage {...props} />}
 							loadingRender={() => (
 								<View style={[styles.indicatorContainer, { width, height }]}>
