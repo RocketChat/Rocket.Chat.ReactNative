@@ -1,12 +1,14 @@
 import React from 'react';
 import {
-	View, Text, TouchableWithoutFeedback, ActivityIndicator, StyleSheet
+	View, Text, TouchableWithoutFeedback, ActivityIndicator, StyleSheet, Platform, Alert, CameraRoll
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { responsive } from 'react-native-responsive-ui';
+
+import RNFetchBlob from 'rn-fetch-blob';
 
 import sharedStyles from '../../views/Styles';
 import { COLOR_WHITE } from '../../constants/colors';
@@ -51,6 +53,25 @@ export default class PhotoModal extends React.PureComponent {
 		window: PropTypes.object
 	}
 
+	saveToCameraRoll = (image) => {
+		if (Platform.OS === 'android') {
+			RNFetchBlob
+				.config({
+					fileCache: true,
+					appendExt: 'jpg'
+				})
+				.fetch('GET', image)
+				.then((res) => {
+					CameraRoll.saveToCameraRoll(res.path())
+						.then(Alert.alert('Success', 'Photo added to camera roll!'))
+						.catch(err => console.log('err:', err));
+				});
+		} else {
+			CameraRoll.saveToCameraRoll(image)
+				.then(Alert.alert('Success', 'Photo added to camera roll!'));
+		}
+	}
+
 	render() {
 		const {
 			image, isVisible, onClose, title, description, window: { width, height }
@@ -75,6 +96,7 @@ export default class PhotoModal extends React.PureComponent {
 						<ImageViewer
 							imageUrls={[{ url: encodeURI(image) }]}
 							onClick={onClose}
+							onSave={() => this.saveToCameraRoll(encodeURI(image))}
 							backgroundColor='transparent'
 							enableSwipeDown
 							onSwipeDown={onClose}
