@@ -7,11 +7,18 @@
     "test": "jest",
     "test-update": "jest --updateSnapshot",
     "lint": "eslint .",
+    "lint-quiet": "eslint . --quiet",
     "ci": "eslint . && jest && codecov",
     "ios": "react-native run-ios",
     "log-android": "react-native log-android",
     "android": "react-native run-android",
     "snyk-protect": "snyk protect"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint-quiet",
+      "pre-push": "npm run lint-quiet"
+    }
   },
   "rnpm": {
     "assets": [
@@ -99,6 +106,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.11.1",
     "eslint-plugin-react-native": "^3.3.0",
+    "husky": "^2.2.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
