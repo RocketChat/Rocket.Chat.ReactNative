@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, FlatList, BackHandler, ActivityIndicator, Text, ScrollView, Keyboard, LayoutAnimation, InteractionManager
+	View, FlatList, BackHandler, ActivityIndicator, Text, ScrollView, RefreshControl, Keyboard, LayoutAnimation, InteractionManager
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
@@ -121,6 +121,7 @@ export default class RoomsListView extends LoggedView {
 
 		this.data = [];
 		this.state = {
+			refreshing: false,
 			searching: false,
 			search: [],
 			loading: true,
@@ -502,6 +503,11 @@ export default class RoomsListView extends LoggedView {
 		);
 	}
 
+	_onRefresh = () => {
+		this.setState({refreshing: true});
+		//TODO refresh the state here
+	}
+
 	renderScroll = () => {
 		const { loading } = this.state;
 
@@ -526,6 +532,12 @@ export default class RoomsListView extends LoggedView {
 					keyboardShouldPersistTaps='always'
 					initialNumToRender={9}
 					windowSize={9}
+					refreshControl={
+						<RefreshControl
+						  refreshing={this.state.refreshing}
+						  onRefresh={this._onRefresh}
+						/>
+					}
 				/>
 			);
 		}
@@ -535,6 +547,12 @@ export default class RoomsListView extends LoggedView {
 				ref={this.getScrollRef}
 				contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
 				keyboardShouldPersistTaps='always'
+				refreshControl={
+					<RefreshControl
+					  refreshing={this.state.refreshing}
+					  onRefresh={this._onRefresh}
+					/>
+				}
 				testID='rooms-list-view-list'
 			>
 				{this.renderListHeader()}
