@@ -873,7 +873,15 @@ class MessageBox extends Component {
 				</TouchableOpacity>
 			);
 		}
-		return null;
+		return (
+			<TouchableOpacity
+				style={styles.commandPreview}
+				onPress={() => this.onPressCommandPreview(item)}
+				testID={`command-preview-item${ item.id }`}
+			>
+				<CustomIcon name='file-generic' size={36} color={COLOR_PRIMARY} />
+			</TouchableOpacity>
+		);
 	}
 
 	renderCommandPreview = () => {
