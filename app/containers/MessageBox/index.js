@@ -37,6 +37,7 @@ import { COLOR_PRIMARY, COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
 const MENTIONS_TRACKING_TYPE_COMMANDS = '/';
+const MENTIONS_COUNT_TO_DISPLAY = 4;
 
 const onlyUnique = function onlyUnique(value, index, self) {
 	return self.indexOf(({ _id }) => value._id === _id) === index;
@@ -488,8 +489,8 @@ class MessageBox extends Component {
 
 	getEmojis = (keyword) => {
 		if (keyword) {
-			this.customEmojis = database.objects('customEmojis').filtered('name CONTAINS[c] $0', keyword).slice(0, 4);
-			this.emojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, 4);
+			this.customEmojis = database.objects('customEmojis').filtered('name CONTAINS[c] $0', keyword).slice(0, MENTIONS_COUNT_TO_DISPLAY);
+			this.emojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
 			const mergedEmojis = [...this.customEmojis, ...this.emojis];
 			this.setState({ mentions: mergedEmojis });
 		}
@@ -497,7 +498,7 @@ class MessageBox extends Component {
 
 	getSlashCommands = (keyword) => {
 		if (keyword) {
-			this.commands = database.objects('slashCommand').filtered('command CONTAINS[c] $0', keyword).slice(0, 4);
+			this.commands = database.objects('slashCommand').filtered('command CONTAINS[c] $0', keyword).slice(0, MENTIONS_COUNT_TO_DISPLAY);
 			this.setState({ mentions: this.commands });
 		}
 	}
@@ -529,16 +530,12 @@ class MessageBox extends Component {
 		}, 1000);
 	}
 
-	setCommandPreview = (command, params) => {
+	setCommandPreview = async(command, params) => {
 		this.showCommandPreview = true;
 		const { rid } = this.props;
 		try	{
-			RocketChat.getCommandPreview(command, rid, params).then((res) => {
-				this.setState({ commandPreview: res.preview.items });
-			}).catch((e) => {
-				this.showCommandPreview = false;
-				log('command Preview', e);
-			});
+			const { preview } = await RocketChat.getCommandPreview(command, rid, params);
+			this.setState({ commandPreview: preview.items });
 		} catch (e) {
 			this.showCommandPreview = false;
 			log('command Preview', e);
@@ -664,12 +661,13 @@ class MessageBox extends Component {
 
 		// Slash command
 
-		if (message[0] === '/') {
+		if (message[0] === MENTIONS_TRACKING_TYPE_COMMANDS) {
 			const command = message.replace(/ .*/, '').slice(1);
 			const slashCommand = database.objects('slashCommand').filtered('command CONTAINS[c] $0', command);
 			if (slashCommand.length > 0) {
 				try {
-					RocketChat.runSlashCommand(command, roomId, message.substr(message.indexOf(' ') + 1));
+					const messageWithoutCommand = message.substr(message.indexOf(' ') + 1);
+					RocketChat.runSlashCommand(command, roomId, messageWithoutCommand);
 				} catch (e) {
 					log('slashCommand', e);
 				}
@@ -791,17 +789,13 @@ class MessageBox extends Component {
 		if (item.username === 'all' || item.username === 'here') {
 			return this.renderFixedMentionItem(item);
 		}
-		let testID;
-		switch (trackingType) {
-			case MENTIONS_TRACKING_TYPE_EMOJIS:
-				testID = `mention-item-${ item.name || item }`;
-				break;
-			case MENTIONS_TRACKING_TYPE_COMMANDS:
-				testID = `mention-item-${ item.command || item }`;
-				break;
-			default:
-				testID = `mention-item-${ item.username || item }`;
-		}
+		const defineTestID = type => ({
+			MENTIONS_TRACKING_TYPE_EMOJIS: `mention-item-${ item.name || item }`,
+			MENTIONS_TRACKING_TYPE_COMMANDS: `mention-item-${ item.command || item }`,
+			MENTIONS_TRACKING_TYPE_USERS: `mention-item-${ item.username || item }`
+		}[type]);
+
+		const testID = defineTestID(trackingType);
 
 		return (
 			<TouchableOpacity
