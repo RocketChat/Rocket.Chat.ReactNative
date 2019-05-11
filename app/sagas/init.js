@@ -9,6 +9,7 @@ import { APP } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import Navigation from '../lib/Navigation';
+import database from '../lib/realm';
 
 const restore = function* restore() {
 	try {
@@ -27,7 +28,8 @@ const restore = function* restore() {
 			]);
 			yield put(actions.appStart('outside'));
 		} else if (server) {
-			yield put(selectServerRequest(server));
+			const serverObj = database.databases.serversDB.objectForPrimaryKey('servers', server);
+			yield put(selectServerRequest(server, serverObj && serverObj.version));
 		}
 
 		yield put(actions.appReady({}));

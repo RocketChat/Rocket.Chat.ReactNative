@@ -102,6 +102,9 @@ export default StyleSheet.create({
 	avatar: {
 		marginTop: 4
 	},
+	avatarSmall: {
+		marginLeft: 16
+	},
 	addReaction: {
 		color: COLOR_PRIMARY
 	},
@@ -121,7 +124,7 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		backgroundColor: COLOR_PRIMARY,
-		borderRadius: 4
+		borderRadius: 2
 	},
 	smallButton: {
 		height: 30
@@ -200,6 +203,13 @@ export default StyleSheet.create({
 		color: COLOR_PRIMARY,
 		...sharedStyles.textRegular
 	},
+	startedDiscussion: {
+		fontStyle: 'italic',
+		fontSize: 16,
+		marginBottom: 6,
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textRegular
+	},
 	time: {
 		fontSize: 12,
 		paddingLeft: 10,
@@ -207,5 +217,23 @@ export default StyleSheet.create({
 		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular,
 		fontWeight: '300'
+	},
+	repliedThread: {
+		flexDirection: 'row',
+		flex: 1,
+		alignItems: 'center',
+		marginTop: 6,
+		marginBottom: 12
+	},
+	repliedThreadIcon: {
+		color: COLOR_PRIMARY,
+		marginRight: 10,
+		marginLeft: 16
+	},
+	repliedThreadName: {
+		fontSize: 16,
+		flex: 1,
+		color: COLOR_PRIMARY,
+		...sharedStyles.textRegular
 	}
 });
