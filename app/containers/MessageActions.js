@@ -31,10 +31,10 @@ const {
 	block, cond, call, eq, lessThan
 } = Animated;
 
-const bottomSheetMaxHeight = 320;
+const bottomSheetMaxHeight = verticalScale(270);
 const bottomSheetInitialHeight = 0;
 const bottomSheetHeaderHeight = 25;
-const buttonPaddingsSize = 30;
+const buttonPaddingsSize = verticalScale(25);
 const textSize = 13;
 
 const styles = StyleSheet.create({
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#f3f3f3'
 	},
 	panelButton: {
-		padding: verticalScale(13),
+		padding: verticalScale(10),
 		backgroundColor: 'transparent',
 		borderBottomWidth: 1,
 		borderBottomColor: '#dadada',
@@ -72,6 +72,10 @@ const styles = StyleSheet.create({
 		...StyleSheet.absoluteFill,
 		backgroundColor: '#000000',
 		opacity: 0
+	},
+	androidButtonView: {
+		borderBottomWidth: 1,
+		borderBottomColor: '#dadada'
 	}
 });
 
@@ -116,7 +120,7 @@ export default class MessageActions extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isBottomSheetOpened: false // eslint-disable-line
+			isBottomSheetVisible: false
 		};
 		this.setPermissions();
 		const { Message_AllowStarring, Message_AllowPinning, setRef } = this.props;
@@ -162,7 +166,7 @@ export default class MessageActions extends React.Component {
 		this.options.reverse(); // reversing to put `cancel` button to the bottom of the list
 
 		this.value_fall = new Animated.Value(1);
-		this.bottomSheetHeight = verticalScale(this.options.length * buttonPaddingsSize) + this.options.length * textSize + bottomSheetHeaderHeight;
+		this.bottomSheetHeight = this.options.length * buttonPaddingsSize + this.options.length * textSize + bottomSheetHeaderHeight;
 	}
 
 	setPermissions() {
@@ -352,10 +356,12 @@ export default class MessageActions extends React.Component {
 						</Touchable>
 					)
 					: (
-						<RectButton onPress={() => { this.hideActionSheet(); option.handler(); }} key={option.label} style={styles.panelButton}>
-							{this.buttonIcon(option.icon)}
-							{this.buttonText(option.label)}
-						</RectButton>
+						<View style={styles.androidButtonView}>
+							<RectButton onPress={() => { this.hideActionSheet(); option.handler(); }} key={option.label} style={styles.panelButton}>
+								{this.buttonIcon(option.icon)}
+								{this.buttonText(option.label)}
+							</RectButton>
+						</View>
 					)
 			))}
 		</View>
@@ -363,7 +369,8 @@ export default class MessageActions extends React.Component {
 
 	bottomSheetCallback = ([value]) => {
 		// 1 is closed; value < 1 && value > 0 is opened
-		this.setState({ isBottomSheetVisible: value <= 1 - (bottomSheetMaxHeight / (this.bottomSheetHeight + bottomSheetHeaderHeight)) });
+		const isBottomSheetVisible = value <= 1 - (bottomSheetMaxHeight / (this.bottomSheetHeight + bottomSheetHeaderHeight));
+		this.setState({ isBottomSheetVisible });
 	}
 
 	hideActionSheet() {
