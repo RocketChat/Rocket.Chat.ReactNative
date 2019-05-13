@@ -197,6 +197,11 @@ export default class MessageActions extends React.Component {
 		if (this.isRoomReadOnly()) {
 			return false;
 		}
+
+		// Prevent from deleting thread start message when positioned inside the thread
+		if (props.tmid && props.tmid === props.actionMessage._id) {
+			return false;
+		}
 		const deleteOwn = this.isOwn(props);
 		const { Message_AllowDeleting: isDeleteAllowed, Message_AllowDeleting_BlockDeleteInMinutes } = this.props;
 		if (!(this.hasDeletePermission || (isDeleteAllowed && deleteOwn) || this.hasForceDeletePermission)) {

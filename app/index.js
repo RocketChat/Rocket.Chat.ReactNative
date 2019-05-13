@@ -24,12 +24,9 @@ import RoomActionsView from './views/RoomActionsView';
 import RoomInfoView from './views/RoomInfoView';
 import RoomInfoEditView from './views/RoomInfoEditView';
 import RoomMembersView from './views/RoomMembersView';
-import RoomFilesView from './views/RoomFilesView';
-import MentionedMessagesView from './views/MentionedMessagesView';
-import StarredMessagesView from './views/StarredMessagesView';
 import SearchMessagesView from './views/SearchMessagesView';
-import PinnedMessagesView from './views/PinnedMessagesView';
 import ThreadMessagesView from './views/ThreadMessagesView';
+import MessagesView from './views/MessagesView';
 import SelectedUsersView from './views/SelectedUsersView';
 import CreateChannelView from './views/CreateChannelView';
 import LegalView from './views/LegalView';
@@ -108,13 +105,10 @@ const ChatsStack = createStackNavigator({
 	RoomInfoView,
 	RoomInfoEditView,
 	RoomMembersView,
-	RoomFilesView,
-	MentionedMessagesView,
-	StarredMessagesView,
 	SearchMessagesView,
-	PinnedMessagesView,
 	SelectedUsersView,
-	ThreadMessagesView
+	ThreadMessagesView,
+	MessagesView
 }, {
 	defaultNavigationOptions: defaultHeader
 });
