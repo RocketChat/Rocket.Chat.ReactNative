@@ -61,17 +61,15 @@ export default class PhotoModal extends React.PureComponent {
 		if (isAndroid) {
 			const isUserGrantedPermissions = await this.permission();
 			if (isUserGrantedPermissions) {
-				try {
-					const res = await RNFetchBlob
-						.config({
-							fileCache: true,
-							appendExt: 'jpg'
-						})
-						.fetch('GET', url);
-					url = res.path();
-				} catch {
-					showErrorAlert(I18n.t('Save_To_Camera_Error'), I18n.t('Save_To_Camera_Error_Message'));
-				}
+				const res = await RNFetchBlob
+					.config({
+						fileCache: true,
+						appendExt: 'jpg'
+					})
+					.fetch('GET', url);
+				url = res.path();
+			} else {
+				showErrorAlert(I18n.t('Save_To_Camera_Error'), I18n.t('Save_To_Camera_Error_Message'));
 			}
 		}
 		try {
