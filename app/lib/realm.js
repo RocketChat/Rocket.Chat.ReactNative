@@ -48,14 +48,6 @@ const roomsSchema = {
 	}
 };
 
-const userMutedInRoomSchema = {
-	name: 'usersMuted',
-	primaryKey: 'value',
-	properties: {
-		value: 'string'
-	}
-};
-
 const subscriptionSchema = {
 	name: 'subscriptions',
 	primaryKey: '_id',
@@ -86,7 +78,7 @@ const subscriptionSchema = {
 		archived: { type: 'bool', optional: true },
 		joinCodeRequired: { type: 'bool', optional: true },
 		notifications: { type: 'bool', optional: true },
-		muted: { type: 'list', objectType: 'usersMuted' },
+		muted: 'string[]',
 		broadcast: { type: 'bool', optional: true },
 		prid: { type: 'string', optional: true },
 		draftMessage: { type: 'string', optional: true },
@@ -354,7 +346,6 @@ const schema = [
 	customEmojisSchema,
 	messagesReactionsSchema,
 	rolesSchema,
-	userMutedInRoomSchema,
 	uploadsSchema
 ];
 

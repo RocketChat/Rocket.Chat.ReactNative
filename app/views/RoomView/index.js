@@ -435,7 +435,7 @@ export default class RoomView extends LoggedView {
 	isMuted = () => {
 		const { room } = this.state;
 		const { user } = this.props;
-		return room && room.muted && !!Array.from(Object.keys(room.muted), i => room.muted[i].value).includes(user.username);
+		return room && room.muted && room.muted.find && !!room.muted.find(m => m === user.username);
 	}
 
 	isReadOnly = () => {
