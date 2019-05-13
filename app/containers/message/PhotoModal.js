@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, Text, TouchableWithoutFeedback, ActivityIndicator, StyleSheet, Platform, Alert, CameraRoll, PermissionsAndroid
+	View, Text, TouchableWithoutFeedback, ActivityIndicator, StyleSheet, CameraRoll, PermissionsAndroid
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
@@ -11,6 +11,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 
 import I18n from '../../i18n';
 import { isAndroid } from '../../utils/deviceInfo';
+import { showToast, showErrorAlert } from '../../utils/info';
 import sharedStyles from '../../views/Styles';
 import { COLOR_WHITE } from '../../constants/colors';
 
@@ -54,42 +55,41 @@ export default class PhotoModal extends React.PureComponent {
 		window: PropTypes.object
 	}
 
-	saveToCameraRoll = async(image) => {
-		if (Platform.OS === 'android') {
-			if (await this.permission()) {
-				RNFetchBlob
-					.config({
-						fileCache: true,
-						appendExt: 'jpg'
-					})
-					.fetch('GET', image)
-					.then((res) => {
-						CameraRoll.saveToCameraRoll(res.path())
-							.then(() => Alert.alert(I18n.t('Save_To_Camera_Success'), I18n.t('Save_To_Camera_Success_Message')))
-							.catch(err => console.error('err:', err));
-					});
-			} else {
-				Alert.alert(I18n.t('Save_To_Camera_Error'), I18n.t('Save_To_Camera_Error_Message'));
+	saveToCameraRoll = async() => {
+		const { image } = this.props;
+		let url = encodeURI(image);
+		if (isAndroid) {
+			const isUserGrantedPermissions = await this.permission();
+			if (isUserGrantedPermissions) {
+				try {
+					const res = await RNFetchBlob
+						.config({
+							fileCache: true,
+							appendExt: 'jpg'
+						})
+						.fetch('GET', url);
+					url = res.path();
+				} catch {
+					showErrorAlert(I18n.t('Save_To_Camera_Error'), I18n.t('Save_To_Camera_Error_Message'));
+				}
 			}
-		} else {
-			CameraRoll.saveToCameraRoll(image)
-				.then(() => Alert.alert(I18n.t('Save_To_Camera_Success'), I18n.t('Save_To_Camera_Success_Message')))
-				.catch(() => Alert.alert(I18n.t('Save_To_Camera_Error'), I18n.t('Save_To_Camera_Error_Message')));
+		}
+		try {
+			await CameraRoll.saveToCameraRoll(url);
+			showToast(I18n.t('Save_To_Camera_Success_Message'));
+		} catch {
+			showErrorAlert(I18n.t('Save_To_Camera_Error'), I18n.t('Save_To_Camera_Error_Message'));
 		}
 	}
 
 	permission = async() => {
-		if (!isAndroid) {
-			return true;
-		}
-
 		const rationale = {
 			title: I18n.t('Write_External_Permission'),
 			message: I18n.t('Write_External_Permission_Message')
 		};
 
 		const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE, rationale);
-		return result === true || result === PermissionsAndroid.RESULTS.GRANTED;
+		return result || result === PermissionsAndroid.RESULTS.GRANTED;
 	}
 
 	render() {
@@ -116,7 +116,7 @@ export default class PhotoModal extends React.PureComponent {
 						<ImageViewer
 							imageUrls={[{ url: encodeURI(image) }]}
 							onClick={onClose}
-							onSave={() => this.saveToCameraRoll(encodeURI(image))}
+							onSave={this.saveToCameraRoll}
 							backgroundColor='transparent'
 							enableSwipeDown
 							onSwipeDown={onClose}

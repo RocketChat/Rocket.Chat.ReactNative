@@ -288,7 +288,6 @@ export default {
 	Save: 'Salvar',
 	Save_To_Camera_Error: 'Erro',
 	Save_To_Camera_Error_Message: 'Você recusou o acesso ao rolo da câmera!',
-	Save_To_Camera_Success: 'Sucesso',
 	Save_To_Camera_Success_Message: 'Foto adicionada ao rolo da câmera!',
 	saving_preferences: 'salvando preferências',
 	saving_profile: 'salvando perfil',

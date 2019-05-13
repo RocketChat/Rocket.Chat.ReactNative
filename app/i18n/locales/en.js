@@ -286,7 +286,6 @@ export default {
 	Save: 'Save',
 	Save_To_Camera_Error: 'Error',
 	Save_To_Camera_Error_Message: 'You declined access to camera roll!',
-	Save_To_Camera_Success: 'Success',
 	Save_To_Camera_Success_Message: 'Photo added to camera roll!',
 	saving_preferences: 'saving preferences',
 	saving_profile: 'saving profile',

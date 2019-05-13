@@ -275,7 +275,6 @@ export default {
 	Save: 'Sauvegarder',
 	Save_To_Camera_Error: 'Erreur',
 	Save_To_Camera_Error_Message: 'Vous avez refusé l\'accès à la pellicule!',
-	Save_To_Camera_Success: 'Succès',
 	Save_To_Camera_Success_Message: 'Photo ajoutée à la pellicule!',
 	saving_preferences: 'sauvegardant les préférences',
 	saving_profile: 'enregistrement du profil',

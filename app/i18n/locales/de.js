@@ -275,7 +275,6 @@ export default {
 	Save: 'sparen',
 	Save_To_Camera_Error: 'Fehler',
 	Save_To_Camera_Error_Message: 'Der Zugriff auf die Kamerarolle wurde abgelehnt!',
-	Save_To_Camera_Success: 'Erfolg',
 	Save_To_Camera_Success_Message: 'Foto zur Kamerarolle hinzugefügt!',
 	saving_preferences: 'Präferenzen speichern',
 	saving_profile: 'Profil speichern',
