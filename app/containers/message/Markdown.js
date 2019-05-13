@@ -86,10 +86,8 @@ const Markdown = React.memo(({
 				emoji: (node) => {
 					if (node.children && node.children.length && node.children[0].content) {
 						const { content } = node.children[0];
-						const emojiExtension = RocketChat.getCustomEmojiFromLocal(content);
-
-						if (emojiExtension) {
-							const emoji = { extension: emojiExtension, content };
+						const emoji = RocketChat.getCustomEmojiFromLocal(content);
+						if (emoji) {
 							return <CustomEmoji key={node.key} baseUrl={baseUrl} style={styles.customEmoji} emoji={emoji} />;
 						}
 						return <Text key={node.key}>:{content}:</Text>;

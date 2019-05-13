@@ -10,9 +10,8 @@ const Emoji = React.memo(({
 	content, standardEmojiStyle, customEmojiStyle, baseUrl
 }) => {
 	const parsedContent = content.replace(/^:|:$/g, '');
-	const emojiExtension = RocketChat.getCustomEmojiFromLocal(parsedContent);
-	if (emojiExtension) {
-		const emoji = { extension: emojiExtension, content: parsedContent };
+	const emoji = RocketChat.getCustomEmojiFromLocal(parsedContent);
+	if (emoji) {
 		return <CustomEmoji key={content} baseUrl={baseUrl} style={customEmojiStyle} emoji={emoji} />;
 	}
 	return <Text style={standardEmojiStyle}>{ emojify(content, { output: 'unicode' }) }</Text>;

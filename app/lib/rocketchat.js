@@ -472,19 +472,6 @@ const RocketChat = {
 			return setting;
 		});
 	},
-	parseEmojis: emojis => emojis.reduce((ret, item) => {
-		ret[item.name] = item.extension;
-		item.aliases.forEach((alias) => {
-			ret[alias.value] = item.extension;
-		});
-		return ret;
-	}, {}),
-	_prepareEmojis(emojis) {
-		emojis.forEach((emoji) => {
-			emoji.aliases = emoji.aliases.map(alias => ({ value: alias }));
-		});
-		return emojis;
-	},
 	deleteMessage(message) {
 		const { _id, rid } = message;
 		// RC 0.48.0
@@ -786,8 +773,22 @@ const RocketChat = {
 		});
 	},
 	getCustomEmojiFromLocal(content) {
-		const { customEmojis } = reduxStore.getState();
-		return customEmojis[content];
+		// search by name
+		const data = database.objects('customEmojis').filtered('name == $0', content);
+		if (data.length) {
+			return data[0];
+		}
+
+		// searches by alias
+		// RealmJS doesn't support IN operator: https://github.com/realm/realm-js/issues/450
+		const emojis = database.objects('customEmojis');
+		const findByAlias = emojis.find((emoji) => {
+			if (emoji.aliases.length && emoji.aliases.findIndex(alias => alias === content) !== -1) {
+				return true;
+			}
+			return false;
+		});
+		return findByAlias;
 	},
 	formatAttachmentUrl(attachmentUrl) {
 		const { user } = reduxStore.getState().login;

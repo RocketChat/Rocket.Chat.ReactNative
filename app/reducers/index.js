@@ -8,7 +8,6 @@ import server from './server';
 import selectedUsers from './selectedUsers';
 import createChannel from './createChannel';
 import app from './app';
-import customEmojis from './customEmojis';
 import sortPreferences from './sortPreferences';
 
 export default combineReducers({
@@ -21,6 +20,5 @@ export default combineReducers({
 	createChannel,
 	app,
 	rooms,
-	customEmojis,
 	sortPreferences
 });
