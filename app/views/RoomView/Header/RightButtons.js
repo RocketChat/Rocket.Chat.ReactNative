@@ -7,7 +7,7 @@ import { CustomHeaderButtons, Item } from '../../../containers/HeaderButton';
 import database, { safeAddListener } from '../../../lib/realm';
 import RocketChat from '../../../lib/rocketchat';
 import log from '../../../utils/log';
-import { showToast } from '../../../utils/info';
+import { Toast } from '../../../utils/info';
 
 const styles = StyleSheet.create({
 	more: {
@@ -76,7 +76,7 @@ class RightButtonsContainer extends React.PureComponent {
 		const { tmid } = this.props;
 		try {
 			await RocketChat.toggleFollowMessage(tmid, !isFollowingThread);
-			showToast(isFollowingThread ? 'Unfollowed thread' : 'Following thread');
+			this.toast.show(isFollowingThread ? 'Unfollowed thread' : 'Following thread');
 		} catch (e) {
 			console.log('TCL: RightButtonsContainer -> toggleFollowThread -> e', e);
 			log('toggleFollowThread', e);
@@ -90,7 +90,7 @@ class RightButtonsContainer extends React.PureComponent {
 			return null;
 		}
 		if (tmid) {
-			return (
+			return ([
 				<CustomHeaderButtons>
 					<Item
 						title='bell'
@@ -98,10 +98,11 @@ class RightButtonsContainer extends React.PureComponent {
 						onPress={this.toggleFollowThread}
 						testID={isFollowingThread ? 'room-view-header-unfollow' : 'room-view-header-follow'}
 					/>
-				</CustomHeaderButtons>
-			);
+				</CustomHeaderButtons>,
+				<Toast ref={toast => this.toast = toast} />
+			]);
 		}
-		return (
+		return ([
 			<CustomHeaderButtons>
 				{threadsEnabled ? (
 					<Item
@@ -119,8 +120,9 @@ class RightButtonsContainer extends React.PureComponent {
 					testID='room-view-header-actions'
 					buttonStyle={styles.more}
 				/>
-			</CustomHeaderButtons>
-		);
+			</CustomHeaderButtons>,
+			<Toast ref={toast => this.toast = toast} />
+		]);
 	}
 }
 
