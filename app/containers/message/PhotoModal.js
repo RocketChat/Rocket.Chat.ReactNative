@@ -118,7 +118,7 @@ export default class PhotoModal extends React.PureComponent {
 							backgroundColor='transparent'
 							enableSwipeDown
 							onSwipeDown={onClose}
-							renderIndicator={() => { }}
+							renderIndicator={() => {}}
 							renderImage={props => <FastImage {...props} />}
 							loadingRender={() => (
 								<View style={[styles.indicatorContainer, { width, height }]}>
