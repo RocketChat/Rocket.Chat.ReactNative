@@ -42,7 +42,6 @@ export default class RoomHeaderView extends Component {
 		window: PropTypes.object,
 		status: PropTypes.string,
 		connecting: PropTypes.bool,
-		isFetching: PropTypes.bool,
 		widthOffset: PropTypes.number,
 		isLoggedUser: PropTypes.bool,
 		userId: PropTypes.string
@@ -66,7 +65,7 @@ export default class RoomHeaderView extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { usersTyping, user } = this.state;
 		const {
-			type, title, status, window, connecting, isFetching
+			type, title, status, window, connecting
 		} = this.props;
 		if (nextProps.type !== type) {
 			return true;
@@ -78,9 +77,6 @@ export default class RoomHeaderView extends Component {
 			return true;
 		}
 		if (nextProps.connecting !== connecting) {
-			return true;
-		}
-		if (nextProps.isFetching !== isFetching) {
 			return true;
 		}
 		if (nextProps.window.width !== window.width) {
@@ -118,7 +114,7 @@ export default class RoomHeaderView extends Component {
 	render() {
 		const { usersTyping, user } = this.state;
 		const {
-			window, title, type, prid, tmid, widthOffset, isLoggedUser, status: userStatus, connecting, isFetching
+			window, title, type, prid, tmid, widthOffset, isLoggedUser, status: userStatus, connecting
 		} = this.props;
 		let status = 'offline';
 
@@ -142,7 +138,6 @@ export default class RoomHeaderView extends Component {
 				usersTyping={usersTyping}
 				widthOffset={widthOffset}
 				connecting={connecting}
-				isFetching={isFetching}
 			/>
 		);
 	}
