@@ -12,6 +12,7 @@ import I18n from '../../i18n';
 
 const EmojiPlugin = new PluginContainer(MarkdownEmojiPlugin);
 const MentionsPlugin = new PluginContainer(MarkdownFlowdock);
+const plugins = [EmojiPlugin, MentionsPlugin];
 
 // Support <http://link|Text>
 const formatText = text => text.replace(
@@ -32,11 +33,6 @@ const Markdown = React.memo(({
 	m = m.replace(/^\[([^\]]*)\]\(([^)]*)\)/, '').trim();
 	if (numberOfLines > 0) {
 		m = m.replace(/[\n]+/g, '\n').trim();
-	}
-
-	const plugins = [EmojiPlugin];
-	if ((mentions && mentions.length) || (channels && channels.length)) {
-		plugins.push(MentionsPlugin);
 	}
 
 	return (
