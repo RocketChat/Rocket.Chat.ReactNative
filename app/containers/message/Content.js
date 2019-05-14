@@ -26,6 +26,7 @@ const Content = React.memo((props) => {
 			channels={props.channels}
 			numberOfLines={props.tmid ? 1 : 0}
 			getCustomEmoji={props.getCustomEmoji}
+			useMarkdown={props.useMarkdown}
 		/>
 	);
 }, (prevProps, nextProps) => prevProps.msg === nextProps.msg);
@@ -33,6 +34,7 @@ const Content = React.memo((props) => {
 Content.propTypes = {
 	isInfo: PropTypes.bool,
 	isEdited: PropTypes.bool,
+	useMarkdown: PropTypes.bool,
 	tmid: PropTypes.string,
 	msg: PropTypes.string,
 	baseUrl: PropTypes.string,

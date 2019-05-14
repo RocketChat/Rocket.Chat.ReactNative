@@ -21,10 +21,13 @@ const formatText = text => text.replace(
 );
 
 const Markdown = React.memo(({
-	msg, style, rules, baseUrl, username, isEdited, numberOfLines, mentions, channels, getCustomEmoji, useMarkdown
+	msg, style, rules, baseUrl, username, isEdited, numberOfLines, mentions, channels, getCustomEmoji, useMarkdown = true
 }) => {
 	if (!msg) {
 		return null;
+	}
+	if (msg === '@all') {
+		console.log(useMarkdown)
 	}
 	let m = formatText(msg);
 	if (m) {
@@ -35,9 +38,9 @@ const Markdown = React.memo(({
 		m = m.replace(/[\n]+/g, '\n').trim();
 	}
 
-	// if (!useMarkdown) {
-	// 	return <Text style={styles.text}>{m}</Text>;
-	// }
+	if (!useMarkdown) {
+		return <Text style={styles.text}>{m}</Text>;
+	}
 
 	return (
 		<MarkdownRenderer

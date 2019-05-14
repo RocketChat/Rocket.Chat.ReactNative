@@ -88,6 +88,7 @@ export default class Audio extends React.Component {
 		file: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
 		user: PropTypes.object.isRequired,
+		useMarkdown: PropTypes.bool,
 		getCustomEmoji: PropTypes.func
 	}
 
@@ -162,7 +163,7 @@ export default class Audio extends React.Component {
 			uri, paused, currentTime, duration
 		} = this.state;
 		const {
-			user, baseUrl, file, getCustomEmoji
+			user, baseUrl, file, getCustomEmoji, useMarkdown
 		} = this.props;
 		const { description } = file;
 
@@ -198,7 +199,7 @@ export default class Audio extends React.Component {
 					/>
 					<Text style={styles.duration}>{this.duration}</Text>
 				</View>
-				<Markdown msg={description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} />
+				<Markdown msg={description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} />
 			</React.Fragment>
 		);
 	}

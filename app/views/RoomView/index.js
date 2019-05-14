@@ -127,6 +127,7 @@ export default class RoomView extends LoggedView {
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
 		this.tmid = props.navigation.getParam('tmid');
+		this.useMarkdown = props.navigation.getParam('useMarkdown', true);
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			joined: this.rooms.length > 0,
@@ -526,6 +527,7 @@ export default class RoomView extends LoggedView {
 				Message_GroupingPeriod={Message_GroupingPeriod}
 				timeFormat={Message_TimeFormat}
 				useRealName={useRealName}
+				useMarkdown={this.useMarkdown}
 			/>
 		);
 

@@ -187,7 +187,7 @@ export default class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown
 		} = this.props;
 		const {
 			_id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels
@@ -221,6 +221,7 @@ export default class MessageContainer extends React.Component {
 				tcount={tcount}
 				tlm={tlm}
 				tmsg={tmsg}
+				useMarkdown={useMarkdown}
 				fetchThreadName={fetchThreadName}
 				mentions={mentions}
 				channels={channels}
