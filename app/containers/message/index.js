@@ -28,10 +28,10 @@ export default class MessageContainer extends React.Component {
 		Message_GroupingPeriod: PropTypes.number,
 		useRealName: PropTypes.bool,
 		status: PropTypes.number,
-		navigation: PropTypes.object,
 		onLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
 		onDiscussionPress: PropTypes.func,
+		onThreadPress: PropTypes.func,
 		errorActionsShow: PropTypes.func,
 		replyBroadcast: PropTypes.func,
 		toggleReactionPicker: PropTypes.func,
@@ -109,19 +109,12 @@ export default class MessageContainer extends React.Component {
 		}
 	}
 
-	onThreadPress = debounce(() => {
-		const { navigation, item } = this.props;
-		if (item.tmid) {
-			navigation.push('RoomView', {
-				rid: item.rid, tmid: item.tmid, name: item.tmsg, t: 'thread'
-			});
-		} else if (item.tlm) {
-			const title = item.msg || (item.attachments && item.attachments.length && item.attachments[0].title);
-			navigation.push('RoomView', {
-				rid: item.rid, tmid: item._id, name: title, t: 'thread'
-			});
+	onThreadPress = () => {
+		const { onThreadPress, item } = this.props;
+		if (onThreadPress) {
+			onThreadPress(item);
 		}
-	}, 1000, true)
+	}
 
 	get isHeader() {
 		const {

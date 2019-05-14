@@ -84,6 +84,7 @@ export default class ThreadMessagesView extends LoggedView {
 		this.setState({ messages: this.messages });
 	}, 300)
 
+	// eslint-disable-next-line react/sort-comp
 	init = () => {
 		const [room] = this.rooms;
 		const lastThreadSync = new Date();
@@ -188,6 +189,20 @@ export default class ThreadMessagesView extends LoggedView {
 		}) : null
 	)
 
+	onThreadPress = debounce((item) => {
+		const { navigation } = this.props;
+		if (item.tmid) {
+			navigation.push('RoomView', {
+				rid: item.rid, tmid: item.tmid, name: item.tmsg, t: 'thread'
+			});
+		} else if (item.tlm) {
+			const title = item.msg || (item.attachments && item.attachments.length && item.attachments[0].title);
+			navigation.push('RoomView', {
+				rid: item.rid, tmid: item._id, name: title, t: 'thread'
+			});
+		}
+	}, 1000, true)
+
 	renderSeparator = () => <Separator />
 
 	renderEmpty = () => (
@@ -213,15 +228,7 @@ export default class ThreadMessagesView extends LoggedView {
 					navigation={navigation}
 					timeFormat='MMM D'
 					customThreadTimeFormat='MMM Do YYYY, h:mm:ss a'
-					fetchThreadName={this.fetchThreadName}
-					onDiscussionPress={this.onDiscussionPress}
-					onReactionPress={this.onReactionPress}
-					onReactionLongPress={this.onReactionLongPress}
-					onLongPress={this.onMessageLongPress}
-					onOpenFileModal={this.onOpenFileModal}
-					toggleReactionPicker={this.toggleReactionPicker}
-					replyBroadcast={this.replyBroadcast}
-					errorActionsShow={this.errorActionsShow}
+					onThreadPress={this.onThreadPress}
 					baseUrl={baseUrl}
 					useRealName={useRealName}
 				/>

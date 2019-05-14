@@ -334,6 +334,20 @@ export default class RoomView extends LoggedView {
 		});
 	}, 1000, true)
 
+	onThreadPress = debounce((item) => {
+		const { navigation } = this.props;
+		if (item.tmid) {
+			navigation.push('RoomView', {
+				rid: item.rid, tmid: item.tmid, name: item.tmsg, t: 'thread'
+			});
+		} else if (item.tlm) {
+			const title = item.msg || (item.attachments && item.attachments.length && item.attachments[0].title);
+			navigation.push('RoomView', {
+				rid: item.rid, tmid: item._id, name: title, t: 'thread'
+			});
+		}
+	}, 1000, true)
+
 	toggleReactionPicker = (message) => {
 		const { toggleReactionPicker } = this.props;
 		toggleReactionPicker(message);
@@ -471,7 +485,7 @@ export default class RoomView extends LoggedView {
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen } = this.state;
 		const {
-			user, navigation, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl
+			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl
 		} = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
@@ -498,12 +512,12 @@ export default class RoomView extends LoggedView {
 				status={item.status}
 				_updatedAt={item._updatedAt}
 				previousItem={previousItem}
-				navigation={navigation}
 				fetchThreadName={this.fetchThreadName}
 				onReactionPress={this.onReactionPress}
 				onReactionLongPress={this.onReactionLongPress}
 				onLongPress={this.onMessageLongPress}
 				onDiscussionPress={this.onDiscussionPress}
+				onThreadPress={this.onThreadPress}
 				onOpenFileModal={this.onOpenFileModal}
 				toggleReactionPicker={this.toggleReactionPicker}
 				replyBroadcast={this.replyBroadcast}
