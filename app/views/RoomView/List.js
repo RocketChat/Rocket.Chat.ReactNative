@@ -151,7 +151,7 @@ export class List extends React.PureComponent {
 					onEndReached={this.onEndReached}
 					onEndReachedThreshold={5}
 					maxToRenderPerBatch={5}
-					windowSize={5}
+					windowSize={10}
 					ListFooterComponent={this.renderFooter}
 					{...scrollPersistTaps}
 				/>
