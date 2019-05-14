@@ -21,7 +21,7 @@ const MessageInner = React.memo((props) => {
 	if (props.type === 'discussion-created') {
 		return (
 			<React.Fragment>
-				<User isTemp={props.isTemp} {...props} />
+				<User {...props} />
 				<Discussion {...props} />
 			</React.Fragment>
 		);
@@ -44,7 +44,7 @@ const Message = React.memo((props) => {
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo) {
 		const thread = props.isThreadReply ? <RepliedThread isTemp={props.isTemp} {...props} /> : null;
 		return (
-			<View style={[styles.container, props.style]}>
+			<View style={[styles.container, props.style, props.isTemp && styles.temp]}>
 				{thread}
 				<View style={[styles.flex, sharedStyles.alignItemsCenter]}>
 					<MessageAvatar small {...props} />
@@ -53,8 +53,7 @@ const Message = React.memo((props) => {
 							styles.messageContent,
 							props.isHeader && styles.messageContentWithHeader,
 							props.hasError && props.isHeader && styles.messageContentWithHeader,
-							props.hasError && !props.isHeader && styles.messageContentWithError,
-							props.isTemp && styles.temp
+							props.hasError && !props.isHeader && styles.messageContentWithError
 						]}
 					>
 						<Content {...props} />
@@ -64,7 +63,7 @@ const Message = React.memo((props) => {
 		);
 	}
 	return (
-		<View style={[styles.container, props.style]}>
+		<View style={[styles.container, props.style, props.isTemp && styles.temp]}>
 			<View style={styles.flex}>
 				<MessageAvatar {...props} />
 				<View
@@ -72,11 +71,10 @@ const Message = React.memo((props) => {
 						styles.messageContent,
 						props.isHeader && styles.messageContentWithHeader,
 						props.hasError && props.isHeader && styles.messageContentWithHeader,
-						props.hasError && !props.isHeader && styles.messageContentWithError,
-						props.isTemp && styles.temp
+						props.hasError && !props.isHeader && styles.messageContentWithError
 					]}
 				>
-					<MessageInner isTemp={props.isTemp} {...props} />
+					<MessageInner {...props} />
 				</View>
 			</View>
 		</View>
@@ -97,7 +95,7 @@ const MessageTouchable = React.memo((props) => {
 		<Touchable
 			onLongPress={props.onLongPress}
 			onPress={props.onPress}
-			disabled={props.isInfo || props.archived}
+			disabled={props.isInfo || props.archived || props.isTemp}
 		>
 			<View>
 				<Message {...props} />
@@ -110,6 +108,7 @@ MessageTouchable.displayName = 'MessageTouchable';
 MessageTouchable.propTypes = {
 	hasError: PropTypes.bool,
 	isInfo: PropTypes.bool,
+	isTemp: PropTypes.bool,
 	archived: PropTypes.bool,
 	onLongPress: PropTypes.func,
 	onPress: PropTypes.func
@@ -128,8 +127,7 @@ Message.propTypes = {
 };
 
 MessageInner.propTypes = {
-	type: PropTypes.string,
-	isTemp: PropTypes.bool
+	type: PropTypes.string
 };
 
 export default MessageTouchable;

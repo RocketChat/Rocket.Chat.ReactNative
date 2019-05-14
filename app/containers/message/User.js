@@ -27,14 +27,11 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
-	},
-	temp: {
-		opacity: 0.3
 	}
 });
 
 const User = React.memo(({
-	isHeader, useRealName, author, isTemp, alias, ts, timeFormat
+	isHeader, useRealName, author, alias, ts, timeFormat
 }) => {
 	if (isHeader) {
 		const username = (useRealName && author.name) || author.username;
@@ -42,7 +39,7 @@ const User = React.memo(({
 		const time = moment(ts).format(timeFormat);
 
 		return (
-			<View style={[styles.container, isTemp && styles.temp]}>
+			<View style={styles.container}>
 				<View style={styles.titleContainer}>
 					<Text style={styles.username} numberOfLines={1}>
 						{alias || username}
@@ -54,15 +51,14 @@ const User = React.memo(({
 		);
 	}
 	return null;
-}, (prevProps, nextProps) => prevProps.isTemp === nextProps.isTemp);
+});
 
 User.propTypes = {
 	isHeader: PropTypes.bool,
 	useRealName: PropTypes.bool,
 	author: PropTypes.object,
-	isTemp: PropTypes.bool,
 	alias: PropTypes.string,
-	ts: PropTypes.string,
+	ts: PropTypes.instanceOf(Date),
 	timeFormat: PropTypes.string
 };
 User.displayName = 'MessageUser';

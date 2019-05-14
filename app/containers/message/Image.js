@@ -7,7 +7,7 @@ import Touchable from 'react-native-platform-touchable';
 
 import Markdown from './Markdown';
 import styles from './styles';
-import RocketChat from '../../lib/rocketchat';
+import { formatAttachmentUrl } from './utils';
 
 const Button = React.memo(({ children, onPress }) => (
 	<Touchable
@@ -30,8 +30,7 @@ const Image = React.memo(({ img }) => (
 const ImageContainer = React.memo(({
 	file, baseUrl, user, onOpenFileModal
 }) => {
-	const img = RocketChat.formatAttachmentUrl(file.image_url);
-
+	const img = formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
 	if (!img) {
 		return null;
 	}

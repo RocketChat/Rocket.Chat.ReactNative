@@ -6,7 +6,7 @@ import { storiesOf } from '@storybook/react-native';
 
 import RoomItem from './RoomItem';
 import Avatar from './Avatar';
-// import Message from './Message';
+import Message from './Message';
 // import RoomViewHeader from './RoomViewHeader';
 
 const reducers = combineReducers({
@@ -26,8 +26,8 @@ storiesOf('Avatar', module)
 storiesOf('RoomItem', module)
 	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
 	.add('list', () => RoomItem);
-// storiesOf('Message', module)
-// 	.add('list', () => Message);
+storiesOf('Message', module)
+	.add('list', () => Message);
 // FIXME: I couldn't make these pass on jest :(
 // storiesOf('RoomViewHeader', module)
 // 	.add('list', () => RoomViewHeader);

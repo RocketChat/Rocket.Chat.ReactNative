@@ -8,7 +8,7 @@ import Markdown from './Markdown';
 import openLink from '../../utils/openLink';
 import { isIOS } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
-import RocketChat from '../../lib/rocketchat';
+import { formatAttachmentUrl } from './utils';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/webm', 'video/3gp', 'video/mkv'])];
 const isTypeSupported = type => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -43,7 +43,7 @@ const Video = React.memo(({
 		if (isTypeSupported(file.video_type)) {
 			return onOpenFileModal(file);
 		}
-		const uri = RocketChat.formatAttachmentUrl(file.video_url);
+		const uri = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl);
 		openLink(uri);
 	};
 

@@ -4,13 +4,12 @@ import PropTypes from 'prop-types';
 import { emojify } from 'react-emojione';
 
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
-import RocketChat from '../../lib/rocketchat';
 
 const Emoji = React.memo(({
-	content, standardEmojiStyle, customEmojiStyle, baseUrl
+	content, standardEmojiStyle, customEmojiStyle, baseUrl, getCustomEmoji
 }) => {
 	const parsedContent = content.replace(/^:|:$/g, '');
-	const emoji = RocketChat.getCustomEmojiFromLocal(parsedContent);
+	const emoji = getCustomEmoji(parsedContent);
 	if (emoji) {
 		return <CustomEmoji key={content} baseUrl={baseUrl} style={customEmojiStyle} emoji={emoji} />;
 	}
@@ -21,7 +20,8 @@ Emoji.propTypes = {
 	content: PropTypes.string,
 	standardEmojiStyle: PropTypes.object,
 	customEmojiStyle: PropTypes.object,
-	baseUrl: PropTypes.string
+	baseUrl: PropTypes.string,
+	getCustomEmoji: PropTypes.func
 };
 Emoji.displayName = 'MessageEmoji';
 

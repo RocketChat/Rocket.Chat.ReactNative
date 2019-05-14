@@ -25,6 +25,7 @@ const Content = React.memo((props) => {
 			mentions={props.mentions}
 			channels={props.channels}
 			numberOfLines={props.tmid ? 1 : 0}
+			getCustomEmoji={props.getCustomEmoji}
 		/>
 	);
 }, (prevProps, nextProps) => prevProps.msg === nextProps.msg);
@@ -37,7 +38,8 @@ Content.propTypes = {
 	baseUrl: PropTypes.string,
 	user: PropTypes.object,
 	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
+	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	getCustomEmoji: PropTypes.func
 };
 Content.displayName = 'MessageContent';
 

@@ -24,7 +24,7 @@ const AddReaction = React.memo(({ toggleReactionPicker }) => (
 ));
 
 const Reaction = React.memo(({
-	reaction, user, onReactionLongPress, onReactionPress, baseUrl
+	reaction, user, onReactionLongPress, onReactionPress, baseUrl, getCustomEmoji
 }) => {
 	const reacted = reaction.usernames.findIndex(item => item === user.username) !== -1;
 	return (
@@ -43,6 +43,7 @@ const Reaction = React.memo(({
 					standardEmojiStyle={styles.reactionEmoji}
 					customEmojiStyle={styles.reactionCustomEmoji}
 					baseUrl={baseUrl}
+					getCustomEmoji={getCustomEmoji}
 				/>
 				<Text style={styles.reactionCount}>{ reaction.usernames.length }</Text>
 			</View>
@@ -51,7 +52,7 @@ const Reaction = React.memo(({
 }, () => true);
 
 const Reactions = React.memo(({
-	reactions, user, baseUrl, onReactionPress, toggleReactionPicker, onReactionLongPress
+	reactions, user, baseUrl, onReactionPress, toggleReactionPicker, onReactionLongPress, getCustomEmoji
 }) => {
 	if (!reactions || reactions.length === 0) {
 		return null;
@@ -66,6 +67,7 @@ const Reactions = React.memo(({
 					baseUrl={baseUrl}
 					onReactionLongPress={onReactionLongPress}
 					onReactionPress={onReactionPress}
+					getCustomEmoji={getCustomEmoji}
 				/>
 			))}
 			<AddReaction toggleReactionPicker={toggleReactionPicker} />
@@ -79,7 +81,8 @@ Reaction.propTypes = {
 	user: PropTypes.object,
 	baseUrl: PropTypes.string,
 	onReactionPress: PropTypes.func,
-	onReactionLongPress: PropTypes.func
+	onReactionLongPress: PropTypes.func,
+	getCustomEmoji: PropTypes.func
 };
 Reaction.displayName = 'MessageReaction';
 
@@ -89,7 +92,8 @@ Reactions.propTypes = {
 	baseUrl: PropTypes.string,
 	onReactionPress: PropTypes.func,
 	toggleReactionPicker: PropTypes.func,
-	onReactionLongPress: PropTypes.func
+	onReactionLongPress: PropTypes.func,
+	getCustomEmoji: PropTypes.func
 };
 Reactions.displayName = 'MessageReactions';
 

@@ -8,7 +8,6 @@ import MarkdownFlowdock from 'markdown-it-flowdock';
 import styles from './styles';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import MarkdownEmojiPlugin from './MarkdownEmojiPlugin';
-import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 
 const EmojiPlugin = new PluginContainer(MarkdownEmojiPlugin);
@@ -21,7 +20,7 @@ const formatText = text => text.replace(
 );
 
 const Markdown = React.memo(({
-	msg, style, rules, baseUrl, username, isEdited, numberOfLines, mentions, channels
+	msg, style, rules, baseUrl, username, isEdited, numberOfLines, mentions, channels, getCustomEmoji
 }) => {
 	if (!msg) {
 		return null;
@@ -86,7 +85,7 @@ const Markdown = React.memo(({
 				emoji: (node) => {
 					if (node.children && node.children.length && node.children[0].content) {
 						const { content } = node.children[0];
-						const emoji = RocketChat.getCustomEmojiFromLocal(content);
+						const emoji = getCustomEmoji(content);
 						if (emoji) {
 							return <CustomEmoji key={node.key} baseUrl={baseUrl} style={styles.customEmoji} emoji={emoji} />;
 						}
@@ -124,7 +123,8 @@ Markdown.propTypes = {
 	isEdited: PropTypes.bool,
 	numberOfLines: PropTypes.number,
 	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
+	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	getCustomEmoji: PropTypes.func
 };
 Markdown.displayName = 'MessageMarkdown';
 

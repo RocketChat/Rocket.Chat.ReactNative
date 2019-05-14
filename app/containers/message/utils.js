@@ -27,6 +27,10 @@ export const formatMessageCount = (count, type) => {
 	return text;
 };
 
+export const formatAttachmentUrl = (attachmentUrl, userId, token, server) => (
+	encodeURI(attachmentUrl.includes('http') ? attachmentUrl : `${ server }${ attachmentUrl }?rc_uid=${ userId }&rc_token=${ token }`)
+);
+
 export const BUTTON_HIT_SLOP = {
 	top: 4, right: 4, bottom: 4, left: 4
 };
