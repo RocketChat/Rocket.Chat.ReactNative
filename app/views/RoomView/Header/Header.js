@@ -66,13 +66,10 @@ Typing.propTypes = {
 };
 
 const HeaderTitle = React.memo(({
-	title, scale, connecting, isFetching
+	title, scale, connecting
 }) => {
 	if (connecting) {
 		title = I18n.t('Connecting');
-	}
-	if (isFetching) {
-		title = I18n.t('Updating');
 	}
 	return (
 		<Text
@@ -87,12 +84,11 @@ const HeaderTitle = React.memo(({
 HeaderTitle.propTypes = {
 	title: PropTypes.string,
 	scale: PropTypes.number,
-	connecting: PropTypes.bool,
-	isFetching: PropTypes.bool
+	connecting: PropTypes.bool
 };
 
 const Header = React.memo(({
-	title, type, status, usersTyping, width, height, prid, tmid, widthOffset, connecting, isFetching
+	title, type, status, usersTyping, width, height, prid, tmid, widthOffset, connecting
 }) => {
 	const portrait = height > width;
 	let scale = 1;
@@ -126,7 +122,6 @@ const Header = React.memo(({
 						title={title}
 						scale={scale}
 						connecting={connecting}
-						isFetching={isFetching}
 					/>
 				</ScrollView>
 			</View>
@@ -145,8 +140,7 @@ Header.propTypes = {
 	status: PropTypes.string,
 	usersTyping: PropTypes.array,
 	widthOffset: PropTypes.number,
-	connecting: PropTypes.bool,
-	isFetching: PropTypes.bool
+	connecting: PropTypes.bool
 };
 
 Header.defaultProps = {
