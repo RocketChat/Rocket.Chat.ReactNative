@@ -21,7 +21,7 @@ const formatText = text => text.replace(
 );
 
 const Markdown = React.memo(({
-	msg, style, rules, baseUrl, username, isEdited, numberOfLines, mentions, channels, getCustomEmoji
+	msg, style, rules, baseUrl, username, isEdited, numberOfLines, mentions, channels, getCustomEmoji, useMarkdown
 }) => {
 	if (!msg) {
 		return null;
@@ -34,6 +34,10 @@ const Markdown = React.memo(({
 	if (numberOfLines > 0) {
 		m = m.replace(/[\n]+/g, '\n').trim();
 	}
+
+	// if (!useMarkdown) {
+	// 	return <Text style={styles.text}>{m}</Text>;
+	// }
 
 	return (
 		<MarkdownRenderer
@@ -81,7 +85,7 @@ const Markdown = React.memo(({
 				emoji: (node) => {
 					if (node.children && node.children.length && node.children[0].content) {
 						const { content } = node.children[0];
-						const emoji = getCustomEmoji(content);
+						const emoji = getCustomEmoji && getCustomEmoji(content);
 						if (emoji) {
 							return <CustomEmoji key={node.key} baseUrl={baseUrl} style={styles.customEmoji} emoji={emoji} />;
 						}

@@ -228,7 +228,7 @@ export default (
 		<Message
 			attachments={[{
 				title: 'This is a title',
-				description: 'This is a description',
+				description: 'This is a description :nyan_rocket:',
 				image_url: '/file-upload/sxLXBzjwuqxMnebyP/Clipboard%20-%2029%20de%20Agosto%20de%202018%20%C3%A0s%2018:10'
 			}]}
 		/>
@@ -237,7 +237,13 @@ export default (
 		<Message
 			attachments={[{
 				title: 'This is a title',
-				description: 'This is a description',
+				description: 'This is a description :nyan_rocket:',
+				video_url: '/file-upload/cqnKqb6kdajky5Rxj/WhatsApp%20Video%202018-08-22%20at%2019.09.55.mp4'
+			}]}
+		/>
+		<Message
+			attachments={[{
+				title: 'This is a title',
 				video_url: '/file-upload/cqnKqb6kdajky5Rxj/WhatsApp%20Video%202018-08-22%20at%2019.09.55.mp4'
 			}]}
 		/>
@@ -246,7 +252,7 @@ export default (
 		<Message
 			attachments={[{
 				title: 'This is a title',
-				description: 'This is a description',
+				description: 'This is a description :nyan_rocket:',
 				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
 			}]}
 		/>
@@ -290,7 +296,7 @@ export default (
 				author_name: 'rocket.cat',
 				ts: date,
 				timeFormat: 'LT',
-				text: 'How are you?'
+				text: 'How are you? :nyan_rocket:'
 			}]}
 		/>
 
@@ -346,7 +352,7 @@ export default (
 			tmsg='Thread with attachment'
 			attachments={[{
 				title: 'This is a title',
-				description: 'This is a description',
+				description: 'This is a description :nyan_rocket:',
 				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
 			}]}
 			isThreadReply
@@ -497,6 +503,22 @@ export default (
 				title: 'Google',
 				description: 'Search the world\'s information, including webpages, images, videos and more. Google has many special features to help you find exactly what you\'re looking for.'
 			}]}
+		/>
+		<Message
+			urls={[{
+				url: 'https://google.com',
+				title: 'Google',
+				description: 'Search the world\'s information, including webpages, images, videos and more. Google has many special features to help you find exactly what you\'re looking for.'
+			}]}
+			msg='Message :nyan_rocket:'
+		/>
+		<Message
+			urls={[{
+				url: 'https://google.com',
+				title: 'Google',
+				description: 'Search the world\'s information, including webpages, images, videos and more. Google has many special features to help you find exactly what you\'re looking for.'
+			}]}
+			isHeader={false}
 		/>
 
 		<Separator title='Custom fields' />

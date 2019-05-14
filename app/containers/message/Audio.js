@@ -87,7 +87,8 @@ export default class Audio extends React.Component {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
-		user: PropTypes.object.isRequired
+		user: PropTypes.object.isRequired,
+		getCustomEmoji: PropTypes.func
 	}
 
 	constructor(props) {
@@ -161,7 +162,7 @@ export default class Audio extends React.Component {
 			uri, paused, currentTime, duration
 		} = this.state;
 		const {
-			user, baseUrl, file
+			user, baseUrl, file, getCustomEmoji
 		} = this.props;
 		const { description } = file;
 
@@ -197,7 +198,7 @@ export default class Audio extends React.Component {
 					/>
 					<Text style={styles.duration}>{this.duration}</Text>
 				</View>
-				<Markdown msg={description} baseUrl={baseUrl} username={user.username} />
+				<Markdown msg={description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} />
 			</React.Fragment>
 		);
 	}

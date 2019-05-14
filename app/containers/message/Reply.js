@@ -84,7 +84,7 @@ const Title = React.memo(({ attachment, timeFormat }) => {
 }, () => true);
 
 const Description = React.memo(({
-	attachment, baseUrl, user
+	attachment, baseUrl, user, getCustomEmoji
 }) => {
 	const text = attachment.text || attachment.title;
 	if (!text) {
@@ -95,6 +95,7 @@ const Description = React.memo(({
 			msg={text}
 			baseUrl={baseUrl}
 			username={user.username}
+			getCustomEmoji={getCustomEmoji}
 		/>
 	);
 }, (prevProps, nextProps) => {
@@ -124,7 +125,7 @@ const Fields = React.memo(({ attachment }) => {
 }, (prevProps, nextProps) => isEqual(prevProps.attachment.fields, nextProps.attachment.fields));
 
 const Reply = React.memo(({
-	attachment, timeFormat, baseUrl, user, index
+	attachment, timeFormat, baseUrl, user, index, getCustomEmoji
 }) => {
 	if (!attachment) {
 		return null;
@@ -154,6 +155,7 @@ const Reply = React.memo(({
 					timeFormat={timeFormat}
 					baseUrl={baseUrl}
 					user={user}
+					getCustomEmoji={getCustomEmoji}
 				/>
 				<Fields attachment={attachment} />
 			</View>
@@ -166,7 +168,8 @@ Reply.propTypes = {
 	timeFormat: PropTypes.string,
 	baseUrl: PropTypes.string,
 	user: PropTypes.object,
-	index: PropTypes.number
+	index: PropTypes.number,
+	getCustomEmoji: PropTypes.func
 };
 Reply.displayName = 'MessageReply';
 
@@ -179,7 +182,8 @@ Title.displayName = 'MessageReplyTitle';
 Description.propTypes = {
 	attachment: PropTypes.object,
 	baseUrl: PropTypes.string,
-	user: PropTypes.object
+	user: PropTypes.object,
+	getCustomEmoji: PropTypes.func
 };
 Description.displayName = 'MessageReplyDescription';
 

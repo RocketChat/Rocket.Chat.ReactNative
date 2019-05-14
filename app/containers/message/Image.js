@@ -28,7 +28,7 @@ const Image = React.memo(({ img }) => (
 ));
 
 const ImageContainer = React.memo(({
-	file, baseUrl, user, onOpenFileModal
+	file, baseUrl, user, onOpenFileModal, getCustomEmoji
 }) => {
 	const img = formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
 	if (!img) {
@@ -42,7 +42,7 @@ const ImageContainer = React.memo(({
 			<Button onPress={onPress}>
 				<View>
 					<Image img={img} />
-					<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} />
+					<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} />
 				</View>
 			</Button>
 		);
@@ -59,7 +59,8 @@ ImageContainer.propTypes = {
 	file: PropTypes.object,
 	baseUrl: PropTypes.string,
 	user: PropTypes.object,
-	onOpenFileModal: PropTypes.func
+	onOpenFileModal: PropTypes.func,
+	getCustomEmoji: PropTypes.func
 };
 ImageContainer.displayName = 'MessageImageContainer';
 
