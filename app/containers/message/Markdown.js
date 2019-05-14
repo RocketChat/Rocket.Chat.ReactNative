@@ -26,9 +26,6 @@ const Markdown = React.memo(({
 	if (!msg) {
 		return null;
 	}
-	if (msg === '@all') {
-		console.log(useMarkdown)
-	}
 	let m = formatText(msg);
 	if (m) {
 		m = emojify(m, { output: 'unicode' });
@@ -125,6 +122,7 @@ Markdown.propTypes = {
 	rules: PropTypes.object,
 	isEdited: PropTypes.bool,
 	numberOfLines: PropTypes.number,
+	useMarkdown: PropTypes.bool,
 	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	getCustomEmoji: PropTypes.func

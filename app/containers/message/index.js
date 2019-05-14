@@ -26,6 +26,7 @@ export default class MessageContainer extends React.Component {
 		baseUrl: PropTypes.string,
 		Message_GroupingPeriod: PropTypes.number,
 		useRealName: PropTypes.bool,
+		useMarkdown: PropTypes.bool,
 		status: PropTypes.number,
 		onLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
