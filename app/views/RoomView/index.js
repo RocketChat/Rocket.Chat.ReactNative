@@ -140,7 +140,6 @@ export default class RoomView extends LoggedView {
 		this.beginAnimating = false;
 		this.beginAnimatingTimeout = setTimeout(() => this.beginAnimating = true, 300);
 		this.messagebox = React.createRef();
-		safeAddListener(this.rooms, this.updateRoom);
 		this.willBlurListener = props.navigation.addListener('willBlur', () => this.mounted = false);
 		this.mounted = false;
 		console.timeEnd(`${ this.constructor.name } init`);
@@ -160,6 +159,7 @@ export default class RoomView extends LoggedView {
 			} else {
 				EventEmitter.addEventListener('connected', this.handleConnected);
 			}
+			safeAddListener(this.rooms, this.updateRoom);
 			this.mounted = true;
 		});
 		console.timeEnd(`${ this.constructor.name } mount`);
