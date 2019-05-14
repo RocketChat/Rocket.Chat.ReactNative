@@ -531,10 +531,10 @@ class MessageBox extends Component {
 	}
 
 	setCommandPreview = async(command, params) => {
-		this.showCommandPreview = true;
 		const { rid } = this.props;
 		try	{
 			const { preview } = await RocketChat.getCommandPreview(command, rid, params);
+			this.showCommandPreview = true;
 			this.setState({ commandPreview: preview.items });
 		} catch (e) {
 			this.showCommandPreview = false;
