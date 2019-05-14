@@ -76,7 +76,6 @@ export default class RoomView extends LoggedView {
 		const title = navigation.getParam('name');
 		const t = navigation.getParam('t');
 		const tmid = navigation.getParam('tmid');
-		const isFetching = navigation.getParam('isFetching', false);
 		return {
 			headerTitleContainerStyle: styles.headerTitleContainerStyle,
 			headerTitle: (
@@ -87,7 +86,6 @@ export default class RoomView extends LoggedView {
 					title={title}
 					type={t}
 					widthOffset={tmid ? 95 : 130}
-					isFetching={isFetching}
 				/>
 			),
 			headerRight: <RightButtons rid={rid} tmid={tmid} t={t} navigation={navigation} />
@@ -402,15 +400,12 @@ export default class RoomView extends LoggedView {
 
 	getMessages = async() => {
 		const { room } = this.state;
-		const { navigation } = this.props;
 		try {
-			navigation.setParams({ isFetching: true });
 			if (room.lastOpen) {
 				await RocketChat.loadMissedMessages(room);
 			} else {
 				await RocketChat.loadMessagesForRoom(room);
 			}
-			navigation.setParams({ isFetching: false });
 			return Promise.resolve();
 		} catch (e) {
 			console.log('TCL: getMessages -> e', e);
