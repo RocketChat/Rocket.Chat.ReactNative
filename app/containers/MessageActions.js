@@ -4,7 +4,6 @@ import { Alert, Clipboard, Share } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-action-sheet';
 import * as moment from 'moment';
-
 import {
 	actionsHide as actionsHideAction,
 	deleteRequest as deleteRequestAction,
@@ -14,7 +13,6 @@ import {
 	toggleReactionPicker as toggleReactionPickerAction,
 	toggleStarRequest as toggleStarRequestAction
 } from '../actions/messages';
-import { showToast } from '../utils/info';
 import { vibrate } from '../utils/vibration';
 import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
@@ -44,6 +42,7 @@ export default class MessageActions extends React.Component {
 		actionsHide: PropTypes.func.isRequired,
 		room: PropTypes.object.isRequired,
 		actionMessage: PropTypes.object,
+		toast: PropTypes.element,
 		// user: PropTypes.object.isRequired,
 		deleteRequest: PropTypes.func.isRequired,
 		editInit: PropTypes.func.isRequired,
@@ -253,9 +252,9 @@ export default class MessageActions extends React.Component {
 	}
 
 	handleCopy = async() => {
-		const { actionMessage } = this.props;
+		const { actionMessage, toast } = this.props;
 		await Clipboard.setString(actionMessage.msg);
-		showToast(I18n.t('Copied_to_clipboard'));
+		toast.show(I18n.t('Copied_to_clipboard'));
 	}
 
 	handleShare = async() => {
@@ -272,10 +271,10 @@ export default class MessageActions extends React.Component {
 	}
 
 	handlePermalink = async() => {
-		const { actionMessage } = this.props;
+		const { actionMessage, toast } = this.props;
 		const permalink = await this.getPermalink(actionMessage);
 		Clipboard.setString(permalink);
-		showToast(I18n.t('Permalink_copied_to_clipboard'));
+		toast.show(I18n.t('Permalink_copied_to_clipboard'));
 	}
 
 	handlePin = () => {
