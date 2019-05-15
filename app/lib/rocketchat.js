@@ -769,9 +769,9 @@ const RocketChat = {
 	toggleFollowMessage(mid, follow) {
 		// RC 1.0
 		if (follow) {
-			return this.sdk.methodCall('followMessage', { mid });
+			return this.sdk.post('chat.followMessage', { mid });
 		}
-		return this.sdk.methodCall('unfollowMessage', { mid });
+		return this.sdk.post('chat.unfollowMessage', { mid });
 	},
 	getThreadsList({ rid, count, offset }) {
 		// RC 1.0
