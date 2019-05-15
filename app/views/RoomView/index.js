@@ -67,6 +67,7 @@ export default class RoomView extends LoggedView {
 		const title = navigation.getParam('name');
 		const t = navigation.getParam('t');
 		const tmid = navigation.getParam('tmid');
+		const toggleFollowThread = navigation.getParam('toggleFollowThread', () => {});
 		return {
 			headerTitleContainerStyle: styles.headerTitleContainerStyle,
 			headerTitle: (
@@ -79,7 +80,15 @@ export default class RoomView extends LoggedView {
 					widthOffset={tmid ? 95 : 130}
 				/>
 			),
-			headerRight: <RightButtons rid={rid} tmid={tmid} t={t} navigation={navigation} />
+			headerRight: (
+				<RightButtons
+					rid={rid}
+					tmid={tmid}
+					t={t}
+					navigation={navigation}
+					toggleFollowThread={toggleFollowThread}
+				/>
+			)
 		};
 	}
 
@@ -133,6 +142,9 @@ export default class RoomView extends LoggedView {
 
 			if (room._id && !this.tmid) {
 				navigation.setParams({ name: this.getRoomTitle(room), t: room.t });
+			}
+			if (this.tmid) {
+				navigation.setParams({ toggleFollowThread: this.toggleFollowThread });
 			}
 
 			if (isAuthenticated) {
@@ -406,6 +418,16 @@ export default class RoomView extends LoggedView {
 			});
 		} catch (error) {
 			console.log('TCL: fetchThreadName -> error', error);
+		}
+	}
+
+	toggleFollowThread = async(isFollowingThread) => {
+		try {
+			await RocketChat.toggleFollowMessage(this.tmid, !isFollowingThread);
+			this.toast.show(isFollowingThread ? 'Unfollowed thread' : 'Following thread');
+		} catch (e) {
+			console.log('TCL: RightButtonsContainer -> toggleFollowThread -> e', e);
+			log('toggleFollowThread', e);
 		}
 	}
 
