@@ -19,7 +19,6 @@
     ]
   },
   "dependencies": {
-    "@remobile/react-native-toast": "^1.0.7",
     "@rocket.chat/sdk": "1.0.0-alpha.28",
     "deep-equal": "^1.0.1",
     "ejson": "^2.1.2",
@@ -38,6 +37,7 @@
     "react-native-console-time-polyfill": "^1.2.1",
     "react-native-device-info": "1.6.1",
     "react-native-dialog": "^5.6.0",
+    "react-native-easy-toast": "^1.2.0",
     "react-native-fabric": "github:corymsmith/react-native-fabric#523a4edab3b2bf55ea9eeea2cf0dde82c5c29dd4",
     "react-native-fast-image": "5.3.0",
     "react-native-gesture-handler": "^1.2.1",
