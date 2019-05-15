@@ -14,7 +14,7 @@ import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { showErrorAlert, showToast } from '../../utils/info';
+import { showErrorAlert, Toast } from '../../utils/info';
 import RocketChat from '../../lib/rocketchat';
 import RCTextInput from '../../containers/TextInput';
 import log from '../../utils/log';
@@ -223,7 +223,7 @@ export default class ProfileView extends LoggedView {
 					setUser({ customFields });
 				}
 				this.setState({ saving: false });
-				showToast(I18n.t('Profile_saved_successfully'));
+				this.toast.show(I18n.t('Profile_saved_successfully'));
 				this.init();
 			}
 		} catch (e) {
@@ -236,7 +236,7 @@ export default class ProfileView extends LoggedView {
 		try {
 			const { user } = this.props;
 			await RocketChat.resetAvatar(user.id);
-			showToast(I18n.t('Avatar_changed_successfully'));
+			this.toast.show(I18n.t('Avatar_changed_successfully'));
 			this.init();
 		} catch (e) {
 			this.handleError(e, 'resetAvatar', 'changing_avatar');
@@ -387,6 +387,7 @@ export default class ProfileView extends LoggedView {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
+				<Toast ref={toast => this.toast = toast} />
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}
 					testID='profile-view-list'
