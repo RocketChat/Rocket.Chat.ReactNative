@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, LayoutAnimation, InteractionManager
+	Text, View, LayoutAnimation, InteractionManager, Platform
 } from 'react-native';
 import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
@@ -69,24 +69,31 @@ export default class RoomView extends LoggedView {
 		const isFetching = navigation.getParam('isFetching', false);
 		const unreadsCount = navigation.getParam('unreadsCount') > 0 ? navigation.getParam('unreadsCount') : null;
 		return {
+			headerLeftContainerStyle: {
+				position: 'relative',
+				backgroundColor: 'red'
+			},
+			headerTitle: (
+				<RoomHeaderView
+					rid={rid}
+					prid={prid}
+					tmid={tmid}
+					title={title}
+					type={t}
+					widthOffset={tmid ? 95 : 130}
+					isFetching={isFetching}
+				/>
+			),
 			headerLeft: (
-				<View style={styles.headerLeftContainerStyle}>
-					<View style={styles.headerBackButton}>
-						<HeaderBackButton
-							title={unreadsCount > 999 ? '+999' : unreadsCount}
-							backTitleVisible
-							onPress={() => navigation.goBack()}
-							tintColor={HEADER_BACK}
-						/>
-					</View>
-					<RoomHeaderView
-						rid={rid}
-						prid={prid}
-						tmid={tmid}
-						title={title}
-						type={t}
-						widthOffset={tmid ? 95 : 130}
-						isFetching={isFetching}
+				<View onLayout={(event) => {
+					console.warn(event.nativeEvent.layout);
+				}}
+				>
+					<HeaderBackButton
+						title={unreadsCount > 999 ? '+999' : unreadsCount}
+						backTitleVisible
+						onPress={() => navigation.goBack()}
+						tintColor={HEADER_BACK}
 					/>
 				</View>
 			),

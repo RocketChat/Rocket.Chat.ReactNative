@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { isIOS } from '../../utils/deviceInfo';
+// import { isIOS } from '../../utils/deviceInfo';
 
 import {
 	COLOR_SEPARATOR, COLOR_PRIMARY, COLOR_WHITE, COLOR_TEXT_DESCRIPTION
@@ -65,11 +65,5 @@ export default StyleSheet.create({
 		fontSize: 16,
 		...sharedStyles.textMedium,
 		...sharedStyles.textColorNormal
-	},
-	headerBackButton: {
-		marginRight: isIOS ? 10 : 0
-	},
-	headerLeftContainerStyle: {
-		flexDirection: 'row'
 	}
 });

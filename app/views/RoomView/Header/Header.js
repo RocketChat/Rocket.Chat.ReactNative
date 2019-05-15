@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, StyleSheet, ScrollView
+	View, Text, StyleSheet, ScrollView, Dimensions
 } from 'react-native';
 import { emojify } from 'react-emojione';
 import removeMarkdown from 'remove-markdown';
