@@ -50,7 +50,6 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		}
 
 		const settings = database.objects('settings');
-		console.log('TCL: handleSelectServer -> settings', settings);
 		yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
 		const emojis = database.objects('customEmojis');
 		yield put(actions.setCustomEmojis(RocketChat.parseEmojis(emojis.slice(0, emojis.length))));

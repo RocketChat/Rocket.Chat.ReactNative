@@ -569,8 +569,4 @@ export default class RoomsListView extends LoggedView {
 			</SafeAreaView>
 		);
 	}
-
-	// render() {
-	// 	return <Text>asd</Text>
-	// }
 }

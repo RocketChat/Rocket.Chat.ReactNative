@@ -17,33 +17,22 @@ const restore = function* restore() {
 			token: AsyncStorage.getItem(RocketChat.TOKEN_KEY),
 			server: AsyncStorage.getItem('currentServer')
 		});
-		console.log(1)
 
 		const sortPreferences = yield RocketChat.getSortPreferences();
 		yield put(setAllPreferences(sortPreferences));
 
-		console.log(2)
-
 		if (!token || !server) {
-			console.log(3)
 			yield all([
 				AsyncStorage.removeItem(RocketChat.TOKEN_KEY),
 				AsyncStorage.removeItem('currentServer')
 			]);
 			yield put(actions.appStart('outside'));
-			console.log(4)
 		} else if (server) {
-			console.log(5)
 			const serverObj = database.databases.serversDB.objectForPrimaryKey('servers', server);
 			yield put(selectServerRequest(server, serverObj && serverObj.version));
-			console.log(6)
 		}
 
-		console.log(7)
-
 		yield put(actions.appReady({}));
-
-		console.log(8)
 	} catch (e) {
 		log('restore', e);
 	}
@@ -51,9 +40,7 @@ const restore = function* restore() {
 
 const start = function* start({ root }) {
 	if (root === 'inside') {
-		console.log(9)
 		yield Navigation.navigate('InsideStack');
-		console.log(10)
 	} else if (root === 'setUsername') {
 		yield Navigation.navigate('SetUsernameView');
 	} else if (root === 'outside') {
