@@ -21,6 +21,12 @@ export default class extends Component {
 
 	state = { modalVisible: false, isPressed: false };
 
+	// Making jest happy: https://github.com/facebook/react-native/issues/22175
+	// eslint-disable-next-line no-useless-constructor
+	constructor(props) {
+		super(props);
+	}
+
 	shouldComponentUpdate(nextProps, nextState) {
 		const { modalVisible, isPressed } = this.state;
 		const { file } = this.props;

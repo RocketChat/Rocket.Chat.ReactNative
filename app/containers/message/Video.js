@@ -42,6 +42,12 @@ export default class Video extends React.PureComponent {
 
 	state = { isVisible: false };
 
+	// Making jest happy: https://github.com/facebook/react-native/issues/22175
+	// eslint-disable-next-line no-useless-constructor
+	constructor(props) {
+		super(props);
+	}
+
 	get uri() {
 		const { baseUrl, user, file } = this.props;
 		const { video_url } = file;

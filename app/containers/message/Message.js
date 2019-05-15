@@ -164,6 +164,12 @@ export default class Message extends PureComponent {
 		onLongPress: () => {}
 	}
 
+	// Making jest happy: https://github.com/facebook/react-native/issues/22175
+	// eslint-disable-next-line no-useless-constructor
+	constructor(props) {
+		super(props);
+	}
+
 	onPress = debounce(() => {
 		KeyboardUtils.dismiss();
 

@@ -1,196 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Storyshots Avatar avatar 1`] = `
-<RCTScrollView>
-  <View>
-    <View
-      style={
-        Array [
-          Object {
-            "borderRadius": 4,
-            "height": 25,
-            "width": 25,
-          },
-          undefined,
-        ]
-      }
-    >
-      <View
-        style={
-          Array [
-            Object {
-              "overflow": "hidden",
-            },
-            Object {
-              "borderRadius": 4,
-              "height": 25,
-              "width": 25,
-            },
-          ]
-        }
-      >
-        <FastImageView
-          resizeMode="cover"
-          source={
-            Object {
-              "priority": "high",
-              "uri": "baseUrl/avatar/test?format=png&width=50&height=50",
-            }
-          }
-          style={
-            Object {
-              "bottom": 0,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            }
-          }
-        />
-      </View>
-    </View>
-    <View
-      style={
-        Array [
-          Object {
-            "borderRadius": 4,
-            "height": 40,
-            "width": 40,
-          },
-          undefined,
-        ]
-      }
-    >
-      <View
-        style={
-          Array [
-            Object {
-              "overflow": "hidden",
-            },
-            Object {
-              "borderRadius": 4,
-              "height": 40,
-              "width": 40,
-            },
-          ]
-        }
-      >
-        <FastImageView
-          resizeMode="cover"
-          source={
-            Object {
-              "priority": "high",
-              "uri": "baseUrl/avatar/aa?format=png&width=50&height=50",
-            }
-          }
-          style={
-            Object {
-              "bottom": 0,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            }
-          }
-        />
-      </View>
-    </View>
-    <View
-      style={
-        Array [
-          Object {
-            "borderRadius": 4,
-            "height": 30,
-            "width": 30,
-          },
-          undefined,
-        ]
-      }
-    >
-      <View
-        style={
-          Array [
-            Object {
-              "overflow": "hidden",
-            },
-            Object {
-              "borderRadius": 4,
-              "height": 30,
-              "width": 30,
-            },
-          ]
-        }
-      >
-        <FastImageView
-          resizeMode="cover"
-          source={
-            Object {
-              "priority": "high",
-              "uri": "baseUrl/avatar/bb?format=png&width=50&height=50",
-            }
-          }
-          style={
-            Object {
-              "bottom": 0,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            }
-          }
-        />
-      </View>
-    </View>
-    <View
-      style={
-        Array [
-          Object {
-            "borderRadius": 2,
-            "height": 25,
-            "width": 25,
-          },
-          undefined,
-        ]
-      }
-    >
-      <View
-        style={
-          Array [
-            Object {
-              "overflow": "hidden",
-            },
-            Object {
-              "borderRadius": 2,
-              "height": 25,
-              "width": 25,
-            },
-          ]
-        }
-      >
-        <FastImageView
-          resizeMode="cover"
-          source={
-            Object {
-              "priority": "high",
-              "uri": "baseUrl/avatar/test?format=png&width=50&height=50",
-            }
-          }
-          style={
-            Object {
-              "bottom": 0,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            }
-          }
-        />
-      </View>
-    </View>
-  </View>
-</RCTScrollView>
-`;
-
 exports[`Storyshots Message list 1`] = `
 <RCTScrollView
   contentContainerStyle={
@@ -231,6 +40,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -437,6 +247,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -643,6 +454,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: ..."
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -831,6 +643,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. at 10:00 AM: Different user"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -1019,6 +832,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: This is the third message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -1107,6 +921,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: This is the second message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -1195,6 +1010,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: This is the first message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -1401,6 +1217,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -1507,6 +1324,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -1709,6 +1527,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. at 10:00 AM: Message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -1929,6 +1748,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -2148,6 +1968,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -2354,6 +2175,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -2560,6 +2382,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: @rocket.cat @diego.mello @all @here #general"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -2850,6 +2673,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: 👊🤙👏"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -3056,6 +2880,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: :react_rocket: :nyan_rocket: :marioparty:"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -3304,6 +3129,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10 November 2017: Testing"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -3510,6 +3336,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Reactions"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -4014,6 +3841,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Multiple Reactions"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -4875,6 +4703,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from rocket.cat at 10:00 AM: Fourth message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -5063,6 +4892,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Third message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -5251,6 +5081,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from rocket.cat at 10:00 AM: Second message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -5439,6 +5270,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: First message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -5645,6 +5477,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from rocket.cat at 10:00 AM: Fourth message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -5898,6 +5731,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Third message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -6133,6 +5967,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from rocket.cat at 10:00 AM: Second message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -6221,6 +6056,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from rocket.cat at 10:00 AM: Second message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -6448,6 +6284,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: First message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -6654,6 +6491,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: [missing {{message}} value]"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -7223,6 +7061,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: [missing {{message}} value]"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -7810,6 +7649,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: [missing {{message}} value]"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -8140,6 +7980,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: [missing {{message}} value]"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -8521,6 +8362,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: First message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -8609,6 +8451,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: [missing {{message}} value]"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -8890,6 +8733,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: [missing {{message}} value]"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -9139,6 +8983,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: [missing {{message}} value]"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -9406,6 +9251,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: I'm fine!"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -9700,6 +9546,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: I'm fine!"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -10012,6 +9859,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: How are you?"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -10293,6 +10141,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: How are you?"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -10574,6 +10423,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: I'm fine!"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -10793,6 +10643,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: I'm fine!"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -11012,6 +10863,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: I'm fine!"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -11231,6 +11083,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: I'm fine!"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -11450,6 +11303,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -11669,6 +11523,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -11888,6 +11743,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: [missing {{message}} value]"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -12105,6 +11961,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: How are you?"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -12386,6 +12243,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: I'm fine!"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -12529,6 +12387,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -12672,6 +12531,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: [missing {{message}} value]"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -12813,6 +12673,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: I'm fine!"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -13032,6 +12893,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Cool!"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -13175,6 +13037,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -13318,6 +13181,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: [missing {{message}} value]"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -13459,6 +13323,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: This is a discussion"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -13732,6 +13597,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: This is a discussion"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -14007,6 +13873,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -14282,6 +14149,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: This is a discussion"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -14575,6 +14443,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: [missing {{message}} value]"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -14907,6 +14776,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -15429,6 +15299,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -16027,6 +15898,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Broadcasted message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -16310,6 +16182,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: This message is inside an archived room"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -16554,6 +16427,7 @@ exports[`Storyshots Message list 1`] = `
         </Text>
       </View>
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: This message has error too"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -16684,6 +16558,7 @@ exports[`Storyshots Message list 1`] = `
         </Text>
       </View>
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: This message has error"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -16894,6 +16769,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Temp message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -17102,6 +16978,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Message being edited"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -17310,6 +17187,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: [missing {{message}} value]"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -17452,6 +17330,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: [missing {{message}} value]"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -17594,6 +17473,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: New name"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -17736,6 +17616,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: New name"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -17878,6 +17759,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: [missing {{message}} value]"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -18020,6 +17902,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: rocket.cat"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -18162,6 +18045,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: rocket.cat"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -18304,6 +18188,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: rocket.cat"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -18446,6 +18331,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: rocket.cat"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -18588,6 +18474,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: rocket.cat"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -18730,6 +18617,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: rocket.cat"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -18872,6 +18760,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: new description"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -19014,6 +18903,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: new announcement"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -19156,6 +19046,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: new topic"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -19298,6 +19189,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: public"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -19440,6 +19332,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Message"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -19651,6 +19544,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Italic with *asterisks* or _underscores_. Bold with **asterisks** or __underscores__. ~~Strikethrough~~"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -19924,6 +19818,12 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: # H1
+## H2
+### H3
+#### H4
+##### H5
+###### H6"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -20275,6 +20175,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Support <http://google.com|Google> [I\`m an inline-style link](https://www.google.com) https://google.com"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -20517,6 +20418,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: ![alt text](https://play.google.com/intl/en_us/badges/images/badge_new.png)"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -20722,6 +20624,10 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: Inline \`code\` has \`back-ticks around\` it.
+\`\`\`
+Code block
+\`\`\`"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -20976,6 +20882,7 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: > Quote"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -21193,6 +21100,10 @@ exports[`Storyshots Message list 1`] = `
       }
     >
       <View
+        accessibilityLabel="Message from diego.mello at 10:00 AM: First Header | Second Header
+------------ | -------------
+Content from cell 1 | Content from cell 2
+Content in the first column | Content in the second column"
         accessible={true}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
