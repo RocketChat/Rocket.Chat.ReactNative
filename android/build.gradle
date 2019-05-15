@@ -32,23 +32,5 @@ allprojects {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
         }
-        // maven {
-        //     // Local Maven repo containing AARs with JSC library built for Android
-        //     url "$rootDir/../node_modules/jsc-android/dist"
-        // }
     }
 }
-
-// subprojects { subproject ->
-//     afterEvaluate {
-//         if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
-//             android {
-//                 compileSdkVersion 28
-//                 buildToolsVersion "28.0.3"
-//                 defaultConfig {
-//                     targetSdkVersion 28
-//                 }
-//             }
-//         }
-//     }
-// }

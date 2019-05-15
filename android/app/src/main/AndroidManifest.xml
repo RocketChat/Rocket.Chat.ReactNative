@@ -3,7 +3,6 @@
 	package="chat.rocket.reactnative">
 
 	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 	<uses-permission android:name="android.permission.CAMERA" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 	<uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -16,10 +15,6 @@
 		android:label="@string/app_name"
 		android:icon="@mipmap/ic_launcher"
 		android:theme="@style/AppTheme"
-		android:resizeableActivity="true"
-		android:usesCleartextTraffic="true"
-		tools:targetApi="28"
-		tools:ignore="GoogleAppIndexingWarning"
 	>
 		<activity
 			android:name=".MainActivity"
