@@ -41,7 +41,7 @@ PODS:
     - React/RCTBlob
   - RNDeviceInfo (1.6.1):
     - React
-  - RNImageCropPicker (0.24.0):
+  - RNImageCropPicker (0.21.1):
     - QBImagePickerController
     - React/Core
     - RSKImageCropper
@@ -109,11 +109,11 @@ SPEC CHECKSUMS:
   react-native-orientation-locker: 132a63bab4dddd2a5709f6f7935ad9676b0af7c5
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   RNDeviceInfo: 958a1ed6f94e04557b865b8ef848cfc83db0ebba
-  RNImageCropPicker: 1f22116cbcee5c66f0dea776eb114269afd91b90
+  RNImageCropPicker: e608efe182652dc8690268cb99cb5a201f2b5ea3
   RNScreens: 720a9e6968beb73e8196239801e887d8401f86ed
   RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
   yoga: 92b2102c3d373d1a790db4ab761d2b0ffc634f64
 
 PODFILE CHECKSUM: 1983a1efc6bdbf36bf677301500e60cd295ff300
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.6.2
