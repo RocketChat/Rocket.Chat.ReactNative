@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, Text, ViewPropTypes, TouchableWithoutFeedback
-} from 'react-native';
+import { View, Text, TouchableWithoutFeedback } from 'react-native';
 import moment from 'moment';
 import { KeyboardUtils } from 'react-native-keyboard-input';
 import Touchable from 'react-native-platform-touchable';
@@ -114,7 +112,7 @@ export default class Message extends PureComponent {
 		status: PropTypes.any,
 		reactions: PropTypes.any,
 		editing: PropTypes.bool,
-		style: ViewPropTypes.style,
+		style: PropTypes.any,
 		archived: PropTypes.bool,
 		broadcast: PropTypes.bool,
 		reactionsModal: PropTypes.bool,

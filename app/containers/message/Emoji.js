@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, ViewPropTypes } from 'react-native';
+import { Text } from 'react-native';
 import PropTypes from 'prop-types';
 import { emojify } from 'react-emojione';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
@@ -9,7 +9,7 @@ export default class Emoji extends React.PureComponent {
 		content: PropTypes.string.isRequired,
 		baseUrl: PropTypes.string.isRequired,
 		standardEmojiStyle: Text.propTypes.style,
-		customEmojiStyle: ViewPropTypes.style,
+		customEmojiStyle: PropTypes.any,
 		customEmojis: PropTypes.oneOfType([
 			PropTypes.array,
 			PropTypes.object

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ViewPropTypes } from 'react-native';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
 
@@ -35,7 +34,7 @@ export default class MessageContainer extends React.Component {
 		}),
 		customTimeFormat: PropTypes.string,
 		customThreadTimeFormat: PropTypes.string,
-		style: ViewPropTypes.style,
+		style: PropTypes.any,
 		archived: PropTypes.bool,
 		broadcast: PropTypes.bool,
 		previousItem: PropTypes.object,

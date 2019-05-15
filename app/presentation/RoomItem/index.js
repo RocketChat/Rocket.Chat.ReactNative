@@ -116,5 +116,6 @@ export default class RoomItem extends React.Component {
 				</View>
 			</RectButton>
 		);
+		// return null;
 	}
 }
