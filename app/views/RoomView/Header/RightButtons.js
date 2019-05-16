@@ -5,9 +5,6 @@ import { connect } from 'react-redux';
 
 import { CustomHeaderButtons, Item } from '../../../containers/HeaderButton';
 import database, { safeAddListener } from '../../../lib/realm';
-import RocketChat from '../../../lib/rocketchat';
-import log from '../../../utils/log';
-import { showToast } from '../../../utils/info';
 
 const styles = StyleSheet.create({
 	more: {
@@ -33,7 +30,8 @@ class RightButtonsContainer extends React.PureComponent {
 		rid: PropTypes.string,
 		t: PropTypes.string,
 		tmid: PropTypes.string,
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		toggleFollowThread: PropTypes.func
 	};
 
 	constructor(props) {
@@ -41,11 +39,14 @@ class RightButtonsContainer extends React.PureComponent {
 		if (props.tmid) {
 			// FIXME: it may be empty if the thread header isn't fetched yet
 			this.thread = database.objectForPrimaryKey('messages', props.tmid);
-			safeAddListener(this.thread, this.updateThread);
 		}
 		this.state = {
 			isFollowingThread: true
 		};
+	}
+
+	componentDidMount() {
+		safeAddListener(this.thread, this.updateThread);
 	}
 
 	componentWillUnmount() {
@@ -71,15 +72,11 @@ class RightButtonsContainer extends React.PureComponent {
 		navigation.navigate('RoomActionsView', { rid, t });
 	}
 
-	toggleFollowThread = async() => {
+	toggleFollowThread = () => {
 		const { isFollowingThread } = this.state;
-		const { tmid } = this.props;
-		try {
-			await RocketChat.toggleFollowMessage(tmid, !isFollowingThread);
-			showToast(isFollowingThread ? 'Unfollowed thread' : 'Following thread');
-		} catch (e) {
-			console.log('TCL: RightButtonsContainer -> toggleFollowThread -> e', e);
-			log('toggleFollowThread', e);
+		const { toggleFollowThread } = this.props;
+		if (toggleFollowThread) {
+			toggleFollowThread(isFollowingThread);
 		}
 	}
 
