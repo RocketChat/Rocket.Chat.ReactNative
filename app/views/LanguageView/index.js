@@ -20,6 +20,29 @@ import { setUser as setUserAction } from '../../actions/login';
 import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 
+const LANGUAGES = [{
+	label: 'English',
+	value: 'en'
+}, {
+	label: 'Português (BR)',
+	value: 'pt-BR'
+}, {
+	label: 'Russian',
+	value: 'ru'
+}, {
+	label: '简体中文',
+	value: 'zh-CN'
+}, {
+	label: 'Français',
+	value: 'fr'
+}, {
+	label: 'Deutsch',
+	value: 'de'
+}, {
+	label: 'Português (PT)',
+	value: 'pt-PT'
+}];
+
 @connect(state => ({
 	userLanguage: state.login.user && state.login.user.language
 }), dispatch => ({
@@ -27,8 +50,7 @@ import StatusBar from '../../containers/StatusBar';
 }))
 /** @extends React.Component */
 export default class LanguageView extends LoggedView {
-	static navigationOptions = ({ navigation }) => ({
-		headerLeft: <DrawerButton navigation={navigation} />,
+	static navigationOptions = () => ({
 		title: I18n.t('Change_Language')
 	})
 
@@ -44,28 +66,7 @@ export default class LanguageView extends LoggedView {
 		this.state = {
 			placeholder: {},
 			language: props.userLanguage ? props.userLanguage : 'en',
-			languages: [{
-				label: 'English',
-				value: 'en'
-			}, {
-				label: 'Português (BR)',
-				value: 'pt-BR'
-			}, {
-				label: 'Russian',
-				value: 'ru'
-			}, {
-				label: '简体中文',
-				value: 'zh-CN'
-			}, {
-				label: 'Français',
-				value: 'fr'
-			}, {
-				label: 'Deutsch',
-				value: 'de'
-			}, {
-				label: 'Português (PT)',
-				value: 'pt-PT'
-			}],
+			languages: LANGUAGES,
 			saving: false
 		};
 	}
@@ -97,18 +98,18 @@ export default class LanguageView extends LoggedView {
 	formIsChanged = () => {
 		const { userLanguage } = this.props;
 		const { language } = this.state;
-		return !(userLanguage === language);
+		return (userLanguage !== language);
 	}
 
 	submit = async() => {
+		if (!this.formIsChanged()) {
+			return;
+		}
+
 		this.setState({ saving: true });
 
 		const { language } = this.state;
 		const { userLanguage, setUser, navigation } = this.props;
-
-		if (!this.formIsChanged()) {
-			return;
-		}
 
 		const params = {};
 
@@ -125,7 +126,7 @@ export default class LanguageView extends LoggedView {
 			setTimeout(() => {
 				showToast(I18n.t('Preferences_saved'));
 				navigation.popToTop();
-				navigation.goBack(null);
+				navigation.push('RoomsListView');
 			}, 300);
 		} catch (e) {
 			this.setState({ saving: false });

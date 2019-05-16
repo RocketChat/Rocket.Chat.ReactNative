@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-	I18nManager, Text, View, StyleSheet, SectionList, Switch
+	Text, View, SectionList, Switch
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -11,59 +11,13 @@ import StatusBar from '../../containers/StatusBar';
 import { showButtomToast } from '../../utils/info';
 import { getReadableVersion } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
-import sharedStyles from '../Styles';
+import styles from './styles';
 import { CustomIcon } from '../../lib/Icons';
-import {
-	COLOR_TEXT_DESCRIPTION, COLOR_SEPARATOR, COLOR_WHITE, COLOR_BORDER, COLOR_TEXT
-} from '../../constants/colors';
-
-const styles = StyleSheet.create({
-	contentContainer: {
-		paddingBottom: 30
-	},
-	container: {
-		flex: 1,
-		backgroundColor: '#F6F7F9'
-	},
-	sectionItemTitle: {
-		alignSelf: 'flex-start',
-		fontSize: 14,
-		marginStart: 20,
-		...sharedStyles.textColorNormal,
-		...sharedStyles.textRegular
-	},
-	sectionItemSubTitle: {
-		alignSelf: 'flex-start',
-		fontSize: 11,
-		marginStart: 20,
-		...sharedStyles.textColorNormal,
-		...sharedStyles.textRegular
-	},
-	sectionItem: {
-		backgroundColor: COLOR_WHITE,
-		paddingVertical: 16,
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
-	sectionItemDisabled: {
-		opacity: 0.3
-	},
-	separator: {
-		height: StyleSheet.hairlineWidth,
-		backgroundColor: COLOR_SEPARATOR
-	},
-	sectionSeparatorBorder: {
-		borderColor: COLOR_BORDER,
-		borderTopWidth: 10
-	},
-	iconStyle: {
-		transform: [{ rotate: I18nManager.isRTL ? '90deg' : '270deg' }],
-		alignSelf: 'baseline',
-		marginEnd: 20
-	}
-});
+import { COLOR_TEXT_DESCRIPTION, COLOR_TEXT } from '../../constants/colors';
 
 const renderSeparator = () => <View style={styles.separator} />;
+const COMING_SOON = 'coming soon';
+
 @connect(state => ({ server: state.server }))
 
 export default class SettingsView extends Component {
@@ -79,87 +33,98 @@ export default class SettingsView extends Component {
 
 	sections() {
 		const { server } =	this.props;
-		const settings = [
+		return [
 			{
 				data: [
 					{
 						withScreen: true,
-						title: 'Contact us',
-						screen: 'comming Soon',
+						title: I18n.t('Contact_us'),
+						screen: COMING_SOON,
 						isDeveloped: false
 					}, {
 						withScreen: true,
-						title: 'Language',
+						title: I18n.t('Language'),
 						screen: 'LanguageView',
 						isDeveloped: true
 					}, {
 						withScreen: true,
-						title: 'Theme',
-						screen: 'comming Soon',
+						title: I18n.t('Theme'),
+						screen: COMING_SOON,
 						isDeveloped: false
 					}, {
 						withScreen: true,
-						title: 'Share this app',
-						screen: 'comming Soon',
+						title: I18n.t('Share_this_app'),
+						screen: COMING_SOON,
 						isDeveloped: false
 					}
 				],
-				renderItem: this.renderNromalSettingItem
+				renderItem: this.renderNormalSettingItem
 			}, {
 				data: [{
 					withScreen: true,
-					title: 'License',
-					screen: 'comming Soon',
+					title: I18n.t('License'),
+					screen: COMING_SOON,
 					subTitle: '',
 					isDeveloped: false
 				}, {
 					withScreen: false,
-					title: `Version: ${ getReadableVersion }`,
+					title: I18n.t('Version_no', { version: getReadableVersion }),
 					subTitle: '',
 					isDeveloped: false
 				}, {
 					withScreen: false,
-					title: `Server version: ${ server.version }`,
+					title: I18n.t('Server_version', { version: server.version }),
 					subTitle: `${ server.server.split('//')[1] }`,
 					isDeveloped: false
 				}
 				],
-				renderItem: this.renderNromalSettingItem
+				renderItem: this.renderNormalSettingItem
 			},
 			{
 				data: [{
-					title: 'Send crash report',
-					screen: 'comming Soon',
+					title: I18n.t('Send_crash_report'),
+					screen: COMING_SOON,
 					isDeveloped: false,
 					withToggleButton: true
 				},
 				{
-					title: 'We never track the content of your chats. The crash report only contains relevant infromation for us in order ',
-					screen: 'comming Soon',
+					title: I18n.t('Crash_report_disclaimer'),
+					screen: COMING_SOON,
 					isDeveloped: false,
 					disable: true
 				}],
 				renderItem: this.renderLastSection
 			}
 		];
-		return settings;
 	}
 
 	renderSectionSeparator = () => <View style={styles.sectionSeparatorBorder} />;
 
-	renderNromalSettingItem = ({ item }) => {
+	renderNormalSettingItem = ({ item }) => {
 		const { navigation } = this.props;
 		const { navigate } = navigation;
+		const onPress = (() => {
+			if (item.withScreen) {
+				if (item.isDeveloped) {
+					return () => (navigate(item.screen, {}));
+				}
+				return () => showButtomToast(COMING_SOON);
+			}
+			return null;
+		})();
 		return (
 			<RectButton
-				onPress={item.withScreen ? (() => (item.isDeveloped ? navigate(item.screen, {}) : showButtomToast('Comming Soon'))) : null}
+				onPress={onPress}
 				activeOpacity={0.9}
 				underlayColor={COLOR_TEXT}
 			>
 				<View style={styles.sectionItem}>
 					<View style={{ flex: 1 }}>
 						<Text style={styles.sectionItemTitle}>{item.title}</Text>
-						<Text style={styles.sectionItemSubTitle}>{item.subTitle}</Text>
+						{item.subTitle
+							? <Text style={styles.sectionItemSubTitle}>{item.subTitle}</Text>
+							: null
+						}
 					</View>
 					{item.withScreen ? <CustomIcon style={styles.iconStyle} name='arrow-down' size={20} color={COLOR_TEXT_DESCRIPTION} /> : null}
 				</View>
