@@ -58,6 +58,7 @@
     "react-native-safari-view": "^2.1.0",
     "react-native-screens": "^1.0.0-alpha.22",
     "react-native-scrollable-tab-view": "0.10.0",
+    "react-native-share-extension": "^2.0.0",
     "react-native-slider": "^0.11.0",
     "react-native-splash-screen": "^3.2.0",
     "react-native-vector-icons": "^6.4.2",
