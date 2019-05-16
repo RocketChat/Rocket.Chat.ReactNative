@@ -8,7 +8,7 @@ import { SafeAreaView } from 'react-navigation';
 import { RectButton } from 'react-native-gesture-handler';
 import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
-import { showButtomToast } from '../../utils/info';
+import { Toast } from '../../utils/info';
 import { getReadableVersion } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import styles from './styles';
@@ -108,7 +108,7 @@ export default class SettingsView extends Component {
 				if (item.isDeveloped) {
 					return () => (navigate(item.screen, {}));
 				}
-				return () => showButtomToast(COMING_SOON);
+				return () => this.toast.show(COMING_SOON);
 			}
 			return null;
 		})();
@@ -154,6 +154,7 @@ export default class SettingsView extends Component {
 					ItemSeparatorComponent={renderSeparator}
 					keyExtractor={item => item.title}
 				/>
+				<Toast ref={toast => this.toast = toast} />
 			</SafeAreaView>
 		);
 	}

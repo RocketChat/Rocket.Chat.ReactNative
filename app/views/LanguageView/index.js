@@ -14,10 +14,9 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Loading from '../../containers/Loading';
-import { showErrorAlert, showToast } from '../../utils/info';
+import { showErrorAlert, Toast } from '../../utils/info';
 import log from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
-import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 
 const LANGUAGES = [{
@@ -124,7 +123,7 @@ export default class LanguageView extends LoggedView {
 
 			this.setState({ saving: false });
 			setTimeout(() => {
-				showToast(I18n.t('Preferences_saved'));
+				this.toast.show(I18n.t('Preferences_saved'));
 				navigation.popToTop();
 				navigation.push('RoomsListView');
 			}, 300);
@@ -181,6 +180,7 @@ export default class LanguageView extends LoggedView {
 						<Loading visible={saving} />
 					</SafeAreaView>
 				</ScrollView>
+				<Toast ref={toast => this.toast = toast} />
 			</KeyboardView>
 		);
 	}
