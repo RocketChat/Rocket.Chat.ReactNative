@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-	Text, View, SectionList, Switch
+	Text, View, SectionList, Switch, Linking
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -9,14 +9,20 @@ import { RectButton } from 'react-native-gesture-handler';
 import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { Toast } from '../../utils/info';
-import { getReadableVersion } from '../../utils/deviceInfo';
+import { getReadableVersion, getDeviceModel } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import styles from './styles';
 import { CustomIcon } from '../../lib/Icons';
 import { COLOR_TEXT_DESCRIPTION, COLOR_TEXT } from '../../constants/colors';
+import openLink from '../../utils/openLink';
 
 const renderSeparator = () => <View style={styles.separator} />;
 const COMING_SOON = 'coming soon';
+const ACTIONS = {
+	SEND_EMAIL: 'send email',
+	OPEN_LINK: 'open link'
+};
+const LICENSE_LINK = 'https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/LICENSE';
 
 @connect(state => ({ server: state.server }))
 
@@ -37,9 +43,9 @@ export default class SettingsView extends Component {
 			{
 				data: [
 					{
-						withScreen: true,
+						withScreen: false,
 						title: I18n.t('Contact_us'),
-						screen: COMING_SOON,
+						action: ACTIONS.SEND_EMAIL,
 						isDeveloped: false
 					}, {
 						withScreen: true,
@@ -61,9 +67,9 @@ export default class SettingsView extends Component {
 				renderItem: this.renderNormalSettingItem
 			}, {
 				data: [{
-					withScreen: true,
+					withScreen: false,
 					title: I18n.t('License'),
-					screen: COMING_SOON,
+					action: ACTIONS.OPEN_LINK,
 					subTitle: '',
 					isDeveloped: false
 				}, {
@@ -109,6 +115,18 @@ export default class SettingsView extends Component {
 					return () => (navigate(item.screen, {}));
 				}
 				return () => this.toast.show(COMING_SOON);
+			}
+			if (item.action === ACTIONS.SEND_EMAIL) {
+				const subject = encodeURI('React Native App Support');
+				const email = encodeURI('support@rocket.chat');
+				const description = encodeURI(`
+					version: ${ getReadableVersion }
+					device: ${ getDeviceModel }
+				`);
+				return () => Linking.openURL(`mailto:${ email }?subject=${ subject }&body=${ description }`);
+			}
+			if (item.action === ACTIONS.OPEN_LINK) {
+				return () => openLink(LICENSE_LINK);
 			}
 			return null;
 		})();

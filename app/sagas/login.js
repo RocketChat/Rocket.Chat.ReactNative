@@ -87,8 +87,16 @@ const handleLogout = function* handleLogout() {
 
 const handleSetUser = function* handleSetUser({ user }) {
 	const server = yield select(getServer);
+	const userStringified = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
 	if (user && user.language) {
-		yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
+		if (userStringified) {
+			const userFromStringified = JSON.parse(userStringified);
+			const newUser = {
+				...userFromStringified,
+				language: user.language
+			};
+			yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(newUser));
+		}
 		I18n.locale = user.language;
 	}
 };

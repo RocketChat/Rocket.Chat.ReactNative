@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, ScrollView } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView, NavigationActions } from 'react-navigation';
 
 import LoggedView from '../View';
 import RocketChat from '../../lib/rocketchat';
@@ -124,7 +124,7 @@ export default class LanguageView extends LoggedView {
 			this.setState({ saving: false });
 			setTimeout(() => {
 				this.toast.show(I18n.t('Preferences_saved'));
-				navigation.popToTop();
+				navigation.reset([NavigationActions.navigate({ routeName: 'SettingsView' })], 0);
 				navigation.push('RoomsListView');
 			}, 300);
 		} catch (e) {
