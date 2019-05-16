@@ -16,6 +16,7 @@ import {
 import { vibrate } from '../utils/vibration';
 import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
+import log from '../utils/log';
 
 @connect(
 	state => ({
@@ -116,6 +117,10 @@ export default class MessageActions extends React.Component {
 			this.options.push(I18n.t('Add_Reaction'));
 			this.REACTION_INDEX = this.options.length - 1;
 		}
+
+		// Report
+		this.options.push(I18n.t('Report'));
+		this.REPORT_INDEX = this.options.length - 1;
 
 		// Delete
 		if (this.allowDelete(props)) {
@@ -297,6 +302,16 @@ export default class MessageActions extends React.Component {
 		toggleReactionPicker(actionMessage);
 	}
 
+	handleReport = async() => {
+		const { actionMessage } = this.props;
+		try {
+			await RocketChat.reportMessage(actionMessage._id);
+			Alert.alert(I18n.t('Message_Reported'));
+		} catch (err) {
+			log('report message', err);
+		}
+	}
+
 	handleActionPress = (actionIndex) => {
 		if (actionIndex) {
 			switch (actionIndex) {
@@ -326,6 +341,9 @@ export default class MessageActions extends React.Component {
 					break;
 				case this.REACTION_INDEX:
 					this.handleReaction();
+					break;
+				case this.REPORT_INDEX:
+					this.handleReport();
 					break;
 				case this.DELETE_INDEX:
 					this.handleDelete();
