@@ -13,7 +13,7 @@ import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { showErrorAlert, showToast } from '../../utils/info';
+import { showErrorAlert, Toast } from '../../utils/info';
 import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RCTextInput from '../../containers/TextInput';
@@ -217,7 +217,7 @@ export default class RoomInfoEditView extends LoggedView {
 			if (error) {
 				showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_settings') }));
 			} else {
-				showToast(I18n.t('Settings_succesfully_changed'));
+				this.toast.show(I18n.t('Settings_succesfully_changed'));
 			}
 		}, 100);
 	}
@@ -430,6 +430,7 @@ export default class RoomInfoEditView extends LoggedView {
 							<Text style={[sharedStyles.button_inverted, styles.colorDanger]} accessibilityTraits='button'>{I18n.t('DELETE')}</Text>
 						</TouchableOpacity>
 						<Loading visible={saving} />
+						<Toast ref={toast => this.toast = toast} />
 					</SafeAreaView>
 				</ScrollView>
 			</KeyboardView>
