@@ -31,7 +31,7 @@ export default StyleSheet.create({
 		marginLeft: 0
 	},
 	flex: {
-		flexDirection: 'row',
+		flexDirection: 'row'
 		// flex: 1
 	},
 	text: {

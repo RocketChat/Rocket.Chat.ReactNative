@@ -243,7 +243,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -257,7 +256,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -451,7 +449,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -465,7 +462,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -659,7 +655,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -673,7 +668,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -849,7 +843,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -863,7 +856,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -1039,7 +1031,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -1053,7 +1044,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -1129,7 +1119,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -1143,7 +1132,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -1219,7 +1207,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -1233,7 +1220,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -1427,7 +1413,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -1441,7 +1426,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -1535,7 +1519,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -1549,7 +1532,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -1739,7 +1721,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -1753,7 +1734,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -1961,7 +1941,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -1975,7 +1954,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -2169,7 +2147,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -2183,7 +2160,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -2377,7 +2353,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -2391,7 +2366,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -2585,7 +2559,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -2599,7 +2572,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -2744,23 +2716,93 @@ exports[`Storyshots Message list 1`] = `
                       }
                     }
                   >
-                    @rocket.cat
+                    <Text
+                      style={
+                        Object {
+                          "backgroundColor": "#E8F2FF",
+                          "color": "#0072FE",
+                          "fontFamily": "System",
+                          "fontWeight": "500",
+                          "padding": 5,
+                        }
+                      }
+                    >
+                       
+                      rocket.cat
+                       
+                    </Text>
                     <Text>
                        
                     </Text>
-                    @diego.mello
+                    <Text
+                      style={
+                        Object {
+                          "backgroundColor": "#1d74f5",
+                          "color": "#fff",
+                          "fontFamily": "System",
+                          "fontWeight": "500",
+                          "padding": 5,
+                        }
+                      }
+                    >
+                       
+                      diego.mello
+                       
+                    </Text>
                     <Text>
                        
                     </Text>
-                    @all
+                    <Text
+                      style={
+                        Object {
+                          "backgroundColor": "#FF5B5A",
+                          "color": "#fff",
+                          "fontFamily": "System",
+                          "fontWeight": "500",
+                          "padding": 5,
+                        }
+                      }
+                    >
+                       
+                      all
+                       
+                    </Text>
                     <Text>
                        
                     </Text>
-                    @here
+                    <Text
+                      style={
+                        Object {
+                          "backgroundColor": "#FF5B5A",
+                          "color": "#fff",
+                          "fontFamily": "System",
+                          "fontWeight": "500",
+                          "padding": 5,
+                        }
+                      }
+                    >
+                       
+                      here
+                       
+                    </Text>
                     <Text>
                        
                     </Text>
-                    #general
+                    <Text
+                      style={
+                        Object {
+                          "backgroundColor": "#E8F2FF",
+                          "color": "#0072FE",
+                          "fontFamily": "System",
+                          "fontWeight": "500",
+                          "padding": 5,
+                        }
+                      }
+                    >
+                       #
+                      general
+                       
+                    </Text>
                   </Text>
                 </Text>
               </View>
@@ -2807,7 +2849,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -2821,7 +2862,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -3015,7 +3055,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -3029,7 +3068,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -3265,7 +3303,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -3279,7 +3316,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -3473,7 +3509,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -3487,7 +3522,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -3973,7 +4007,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -3987,7 +4020,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -4836,7 +4868,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -4850,7 +4881,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -5026,7 +5056,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -5040,7 +5069,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -5216,7 +5244,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -5230,7 +5257,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -5406,7 +5432,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -5420,7 +5445,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -5614,7 +5638,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -5628,7 +5651,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -5869,7 +5891,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -5883,7 +5904,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -6106,7 +6126,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -6120,7 +6139,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -6196,7 +6214,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -6210,7 +6227,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -6425,7 +6441,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -6439,7 +6454,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -6633,7 +6647,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -6647,7 +6660,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -6777,7 +6789,6 @@ exports[`Storyshots Message list 1`] = `
                 style={
                   Object {
                     "borderRadius": 4,
-                    "flex": 1,
                     "flexDirection": "column",
                     "opacity": 1,
                   }
@@ -6878,7 +6889,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -6892,7 +6902,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -7022,7 +7031,6 @@ exports[`Storyshots Message list 1`] = `
                 style={
                   Object {
                     "borderRadius": 4,
-                    "flex": 1,
                     "flexDirection": "column",
                     "opacity": 1,
                   }
@@ -7154,7 +7162,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -7168,7 +7175,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -7401,7 +7407,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -7415,7 +7420,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -7621,7 +7625,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -7635,7 +7638,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -8017,7 +8019,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -8031,7 +8032,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -8107,7 +8107,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -8121,7 +8120,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -8390,7 +8388,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -8404,7 +8401,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -8641,7 +8637,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -8655,7 +8650,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -8910,7 +8904,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -8924,7 +8917,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -9206,7 +9198,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -9220,7 +9211,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -9533,7 +9523,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -9547,7 +9536,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -9804,7 +9792,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -9818,7 +9805,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -10075,7 +10061,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -10090,7 +10075,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Object {
                 "alignItems": "center",
-                "flex": 1,
                 "flexDirection": "row",
                 "marginBottom": 12,
                 "marginTop": 6,
@@ -10166,7 +10150,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -10296,7 +10279,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -10311,7 +10293,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Object {
                 "alignItems": "center",
-                "flex": 1,
                 "flexDirection": "row",
                 "marginBottom": 12,
                 "marginTop": 6,
@@ -10387,7 +10368,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -10517,7 +10497,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -10532,7 +10511,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Object {
                 "alignItems": "center",
-                "flex": 1,
                 "flexDirection": "row",
                 "marginBottom": 12,
                 "marginTop": 6,
@@ -10608,7 +10586,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -10738,7 +10715,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -10753,7 +10729,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Object {
                 "alignItems": "center",
-                "flex": 1,
                 "flexDirection": "row",
                 "marginBottom": 12,
                 "marginTop": 6,
@@ -10829,7 +10804,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -10959,7 +10933,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -10974,7 +10947,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Object {
                 "alignItems": "center",
-                "flex": 1,
                 "flexDirection": "row",
                 "marginBottom": 12,
                 "marginTop": 6,
@@ -11050,7 +11022,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -11180,7 +11151,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -11195,7 +11165,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Object {
                 "alignItems": "center",
-                "flex": 1,
                 "flexDirection": "row",
                 "marginBottom": 12,
                 "marginTop": 6,
@@ -11271,7 +11240,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -11401,7 +11369,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -11416,7 +11383,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Object {
                 "alignItems": "center",
-                "flex": 1,
                 "flexDirection": "row",
                 "marginBottom": 12,
                 "marginTop": 6,
@@ -11492,7 +11458,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -11620,7 +11585,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -11634,7 +11598,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -11891,7 +11854,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -11906,7 +11868,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -12036,7 +11997,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -12051,7 +12011,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -12181,7 +12140,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -12196,7 +12154,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -12324,7 +12281,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -12339,7 +12295,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Object {
                 "alignItems": "center",
-                "flex": 1,
                 "flexDirection": "row",
                 "marginBottom": 12,
                 "marginTop": 6,
@@ -12415,7 +12370,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -12545,7 +12499,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -12560,7 +12513,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -12690,7 +12642,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -12705,7 +12656,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -12835,7 +12785,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -12850,7 +12799,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -12978,7 +12926,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -12992,7 +12939,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -13253,7 +13199,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -13267,7 +13212,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -13530,7 +13474,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -13544,7 +13487,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -13807,7 +13749,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -13821,7 +13762,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -14102,7 +14042,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -14116,7 +14055,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -14418,7 +14356,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -14432,7 +14369,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -14684,7 +14620,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -14698,7 +14633,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -14822,7 +14756,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -14836,7 +14769,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -15346,7 +15278,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -15360,7 +15291,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -15946,7 +15876,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -15960,7 +15889,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -16231,7 +16159,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -16245,7 +16172,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -16468,7 +16394,6 @@ exports[`Storyshots Message list 1`] = `
         style={
           Array [
             Object {
-              "flex": 1,
               "flexDirection": "column",
               "paddingHorizontal": 14,
               "paddingVertical": 4,
@@ -16482,7 +16407,6 @@ exports[`Storyshots Message list 1`] = `
         <View
           style={
             Object {
-              "flex": 1,
               "flexDirection": "row",
             }
           }
@@ -16688,7 +16612,6 @@ exports[`Storyshots Message list 1`] = `
         style={
           Array [
             Object {
-              "flex": 1,
               "flexDirection": "column",
               "paddingHorizontal": 14,
               "paddingVertical": 4,
@@ -16702,7 +16625,6 @@ exports[`Storyshots Message list 1`] = `
         <View
           style={
             Object {
-              "flex": 1,
               "flexDirection": "row",
             }
           }
@@ -16797,7 +16719,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -16813,7 +16734,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -17007,7 +16927,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -17021,7 +16940,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -17215,7 +17133,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -17230,7 +17147,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -17359,7 +17275,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -17374,7 +17289,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -17503,7 +17417,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -17518,7 +17431,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -17647,7 +17559,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -17662,7 +17573,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -17791,7 +17701,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -17806,7 +17715,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -17935,7 +17843,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -17950,7 +17857,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -18079,7 +17985,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -18094,7 +17999,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -18223,7 +18127,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -18238,7 +18141,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -18367,7 +18269,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -18382,7 +18283,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -18511,7 +18411,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -18526,7 +18425,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -18655,7 +18553,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -18670,7 +18567,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -18799,7 +18695,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -18814,7 +18709,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -18943,7 +18837,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -18958,7 +18851,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -19087,7 +18979,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -19102,7 +18993,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -19231,7 +19121,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -19246,7 +19135,6 @@ exports[`Storyshots Message list 1`] = `
             style={
               Array [
                 Object {
-                  "flex": 1,
                   "flexDirection": "row",
                 },
                 Object {
@@ -19375,7 +19263,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -19394,7 +19281,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -19588,7 +19474,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -19602,7 +19487,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -19863,7 +19747,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -19877,7 +19760,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -20216,7 +20098,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -20230,7 +20111,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -20460,7 +20340,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -20474,7 +20353,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -20667,7 +20545,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -20681,7 +20558,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -20923,7 +20799,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -20937,7 +20812,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -21142,7 +21016,6 @@ exports[`Storyshots Message list 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "flexDirection": "column",
                 "paddingHorizontal": 14,
                 "paddingVertical": 4,
@@ -21156,7 +21029,6 @@ exports[`Storyshots Message list 1`] = `
           <View
             style={
               Object {
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
