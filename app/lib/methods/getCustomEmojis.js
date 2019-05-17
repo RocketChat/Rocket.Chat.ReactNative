@@ -16,7 +16,7 @@ const create = (customEmojis) => {
 			try {
 				database.create('customEmojis', emoji, true);
 			} catch (e) {
-				log('getEmojis create', e);
+				// log('getEmojis create', e);
 			}
 		});
 	}
