@@ -18,8 +18,7 @@ export default StyleSheet.create({
 		paddingVertical: 4,
 		width: '100%',
 		paddingHorizontal: 14,
-		flexDirection: 'column',
-		flex: 1
+		flexDirection: 'column'
 	},
 	messageContent: {
 		flex: 1,
@@ -33,7 +32,7 @@ export default StyleSheet.create({
 	},
 	flex: {
 		flexDirection: 'row',
-		flex: 1
+		// flex: 1
 	},
 	text: {
 		fontSize: 16,
@@ -158,7 +157,7 @@ export default StyleSheet.create({
 		justifyContent: 'flex-start'
 	},
 	imageContainer: {
-		flex: 1,
+		// flex: 1,
 		flexDirection: 'column',
 		borderRadius: 4
 	},
@@ -220,7 +219,7 @@ export default StyleSheet.create({
 	},
 	repliedThread: {
 		flexDirection: 'row',
-		flex: 1,
+		// flex: 1,
 		alignItems: 'center',
 		marginTop: 6,
 		marginBottom: 12
