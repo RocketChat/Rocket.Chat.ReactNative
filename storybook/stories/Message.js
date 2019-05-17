@@ -109,7 +109,21 @@ export default (
 		/>
 
 		<Separator title='Mentions' />
-		<Message msg='@rocket.cat @diego.mello @all @here #general' />
+		<Message
+			msg='@rocket.cat @diego.mello @all @here #general'
+			mentions={[{
+				username: 'rocket.cat'
+			}, {
+				username: 'diego.mello'
+			}, {
+				username: 'all'
+			}, {
+				username: 'here'
+			}]}
+			channels={[{
+				name: 'general'
+			}]}
+		/>
 
 		<Separator title='Emojis' />
 		<Message msg='👊🤙👏' />
