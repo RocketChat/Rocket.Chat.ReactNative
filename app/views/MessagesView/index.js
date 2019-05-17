@@ -248,6 +248,7 @@ export default class MessagesView extends LoggedView {
 		const {
 			messages, loading, selectedAttachment, photoModalVisible
 		} = this.state;
+		const { user, baseUrl } = this.props;
 
 		if (!loading && messages.length === 0) {
 			return this.renderEmpty();
@@ -268,6 +269,8 @@ export default class MessagesView extends LoggedView {
 					attachment={selectedAttachment}
 					isVisible={photoModalVisible}
 					onClose={this.onCloseFileModal}
+					user={user}
+					baseUrl={baseUrl}
 				/>
 			</SafeAreaView>
 		);

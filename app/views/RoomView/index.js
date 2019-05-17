@@ -648,6 +648,8 @@ export default class RoomView extends LoggedView {
 					attachment={selectedAttachment}
 					isVisible={photoModalVisible}
 					onClose={this.onCloseFileModal}
+					user={user}
+					baseUrl={baseUrl}
 				/>
 				<ReactionsModal
 					message={selectedMessage}

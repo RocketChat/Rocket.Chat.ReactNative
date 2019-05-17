@@ -10,7 +10,7 @@ import VideoPlayer from 'react-native-video-controls';
 
 import sharedStyles from '../views/Styles';
 import { COLOR_WHITE } from '../constants/colors';
-import RocketChat from '../lib/rocketchat';
+import { formatAttachmentUrl } from '../lib/utils';
 
 const styles = StyleSheet.create({
 	safeArea: {
@@ -45,9 +45,11 @@ const Indicator = React.memo(() => (
 	<ActivityIndicator style={styles.indicator} />
 ));
 
-const ModalContent = React.memo(({ attachment, onClose }) => {
+const ModalContent = React.memo(({
+	attachment, onClose, user, baseUrl
+}) => {
 	if (attachment && attachment.image_url) {
-		const url = RocketChat.formatAttachmentUrl(attachment.image_url);
+		const url = formatAttachmentUrl(attachment.image_url, user.id, user.token, baseUrl);
 		return (
 			<SafeAreaView style={styles.safeArea}>
 				<TouchableWithoutFeedback onPress={onClose}>
@@ -70,7 +72,7 @@ const ModalContent = React.memo(({ attachment, onClose }) => {
 		);
 	}
 	if (attachment && attachment.video_url) {
-		const uri = RocketChat.formatAttachmentUrl(attachment.video_url);
+		const uri = formatAttachmentUrl(attachment.video_url, user.id, user.token, baseUrl);
 		return (
 			<SafeAreaView style={styles.safeArea}>
 				<VideoPlayer
@@ -84,7 +86,9 @@ const ModalContent = React.memo(({ attachment, onClose }) => {
 	return null;
 });
 
-const FileModal = React.memo(({ isVisible, onClose, attachment }) => (
+const FileModal = React.memo(({
+	isVisible, onClose, attachment, user, baseUrl
+}) => (
 	<Modal
 		style={styles.modal}
 		isVisible={isVisible}
@@ -93,19 +97,23 @@ const FileModal = React.memo(({ isVisible, onClose, attachment }) => (
 		onSwipeComplete={onClose}
 		swipeDirection={['up', 'left', 'right', 'down']}
 	>
-		<ModalContent attachment={attachment} onClose={onClose} />
+		<ModalContent attachment={attachment} onClose={onClose} user={user} baseUrl={baseUrl} />
 	</Modal>
 ), (prevProps, nextProps) => prevProps.isVisible === nextProps.isVisible);
 
 FileModal.propTypes = {
 	isVisible: PropTypes.bool,
 	attachment: PropTypes.object,
+	user: PropTypes.object,
+	baseUrl: PropTypes.string,
 	onClose: PropTypes.func
 };
 FileModal.displayName = 'FileModal';
 
 ModalContent.propTypes = {
 	attachment: PropTypes.object,
+	user: PropTypes.object,
+	baseUrl: PropTypes.string,
 	onClose: PropTypes.func
 };
 ModalContent.displayName = 'FileModalContent';

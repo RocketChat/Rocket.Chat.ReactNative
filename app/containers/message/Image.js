@@ -7,7 +7,7 @@ import Touchable from 'react-native-platform-touchable';
 
 import Markdown from './Markdown';
 import styles from './styles';
-import { formatAttachmentUrl } from './utils';
+import { formatAttachmentUrl } from '../../lib/utils';
 
 const Button = React.memo(({ children, onPress }) => (
 	<Touchable
