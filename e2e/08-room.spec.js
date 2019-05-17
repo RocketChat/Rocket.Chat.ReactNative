@@ -170,7 +170,8 @@ describe('Room screen', () => {
 				await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
 				await expect(element(by.text('Message actions'))).toBeVisible();
 				await element(by.text('Permalink')).tap();
-				await expect(element(by.text('Permalink copied to clipboard!'))).toBeVisible();
+				// await expect(element(by.text('Permalink copied to clipboard!'))).toBeVisible();
+				await waitFor(element(by.text('Permalink copied to clipboard!'))).toBeVisible().withTimeout(5000);
 				await waitFor(element(by.text('Permalink copied to clipboard!'))).toBeNotVisible().withTimeout(5000);
 				
 				// TODO: test clipboard
@@ -181,7 +182,8 @@ describe('Room screen', () => {
 				await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
 				await expect(element(by.text('Message actions'))).toBeVisible();
 				await element(by.text('Copy')).tap();
-				await expect(element(by.text('Copied to clipboard!'))).toBeVisible();
+				// await expect(element(by.text('Copied to clipboard!'))).toBeVisible();
+				await waitFor(element(by.text('Copied to clipboard!'))).toBeVisible().withTimeout(5000);
 				await waitFor(element(by.text('Copied to clipboard!'))).toBeNotVisible().withTimeout(5000);
 				// TODO: test clipboard
 			});
