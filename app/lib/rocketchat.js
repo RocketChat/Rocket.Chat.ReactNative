@@ -511,6 +511,9 @@ const RocketChat = {
 		// RC 0.59.0
 		return this.sdk.post('chat.pinMessage', { messageId: message._id });
 	},
+	reportMessage(messageId) {
+		return this.sdk.post('chat.reportMessage', { messageId, description: 'Message reported by user' });
+	},
 	getRoom(rid) {
 		const [result] = database.objects('subscriptions').filtered('rid = $0', rid);
 		if (!result) {
