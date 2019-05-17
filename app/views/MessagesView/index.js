@@ -195,7 +195,6 @@ export default class MessagesView extends LoggedView {
 	}
 
 	onOpenFileModal = (attachment) => {
-		console.log('TCL: onOpenFileModal -> attachment', attachment);
 		this.setState({ selectedAttachment: attachment, photoModalVisible: true });
 	}
 

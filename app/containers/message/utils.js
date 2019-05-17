@@ -2,6 +2,7 @@ import moment from 'moment';
 
 import I18n from '../../i18n';
 import database from '../../lib/realm';
+import { DISCUSSION } from './constants';
 
 export const formatLastMessage = (lm, customFormat) => {
 	if (customFormat) {
@@ -16,7 +17,7 @@ export const formatLastMessage = (lm, customFormat) => {
 };
 
 export const formatMessageCount = (count, type) => {
-	const discussion = type === 'discussion';
+	const discussion = type === DISCUSSION;
 	let text = discussion ? I18n.t('No_messages_yet') : null;
 	if (count === 1) {
 		text = `${ count } ${ discussion ? I18n.t('message') : I18n.t('reply') }`;

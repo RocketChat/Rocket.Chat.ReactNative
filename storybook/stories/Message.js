@@ -28,15 +28,12 @@ const date = new Date(2017, 10, 10, 10);
 const longText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 
 const getCustomEmoji = (content) => {
-	if (content === 'marioparty') {
-		return { name: content, extension: 'gif' };
-	}
-	if (content === 'react_rocket') {
-		return { name: content, extension: 'png' };
-	}
-	if (content === 'nyan_rocket') {
-		return { name: content, extension: 'png' };
-	}
+	const customEmoji = {
+		marioparty: { name: content, extension: 'gif' },
+		react_rocket: { name: content, extension: 'png' },
+		nyan_rocket: { name: content, extension: 'png' }
+	}[content];
+	return customEmoji;
 };
 
 const Message = props => (

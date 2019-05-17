@@ -100,7 +100,6 @@ const ModalContent = React.memo(({ message, onClose, ...props }) => {
 							style={styles.closeButton}
 							name='cross'
 							size={20}
-							// onPress={close}
 						/>
 						<Text style={styles.title}>{I18n.t('Reactions')}</Text>
 					</View>

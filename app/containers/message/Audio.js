@@ -69,11 +69,7 @@ const Button = React.memo(({ paused, onPress }) => (
 		hitSlop={BUTTON_HIT_SLOP}
 		background={Touchable.SelectableBackgroundBorderless()}
 	>
-		{
-			paused
-				? <CustomIcon name='play' size={36} style={styles.playPauseImage} />
-				: <CustomIcon name='pause' size={36} style={styles.playPauseImage} />
-		}
+		<CustomIcon name={paused ? 'play' : 'pause'} size={36} style={styles.playPauseImage} />
 	</Touchable>
 ));
 

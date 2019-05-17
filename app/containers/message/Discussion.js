@@ -7,12 +7,13 @@ import { formatLastMessage, formatMessageCount, BUTTON_HIT_SLOP } from './utils'
 import styles from './styles';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
+import { DISCUSSION } from './constants';
 
 const Discussion = React.memo(({
 	msg, dcount, dlm, onDiscussionPress
 }) => {
 	const time = formatLastMessage(dlm);
-	const buttonText = formatMessageCount(dcount, 'discussion');
+	const buttonText = formatMessageCount(dcount, DISCUSSION);
 	return (
 		<React.Fragment>
 			<Text style={styles.startedDiscussion}>{I18n.t('Started_discussion')}</Text>
@@ -37,7 +38,7 @@ const Discussion = React.memo(({
 	if (prevProps.msg !== nextProps.msg) {
 		return false;
 	}
-	if (prevProps.dount !== nextProps.dount) {
+	if (prevProps.dcount !== nextProps.dcount) {
 		return false;
 	}
 	if (prevProps.dlm !== nextProps.dlm) {

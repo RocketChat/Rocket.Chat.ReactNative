@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { formatLastMessage, formatMessageCount } from './utils';
 import styles from './styles';
 import { CustomIcon } from '../../lib/Icons';
+import { THREAD } from './constants';
 
 const Thread = React.memo(({
 	msg, tcount, tlm, customThreadTimeFormat
@@ -14,7 +15,7 @@ const Thread = React.memo(({
 	}
 
 	const time = formatLastMessage(tlm, customThreadTimeFormat);
-	const buttonText = formatMessageCount(tcount, 'thread');
+	const buttonText = formatMessageCount(tcount, THREAD);
 	return (
 		<View style={styles.buttonContainer}>
 			<View
