@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { WebView } from 'react-native';
+import { WebView } from 'react-native-webview';
 import { connect } from 'react-redux';
 
 import RocketChat from '../lib/rocketchat';
