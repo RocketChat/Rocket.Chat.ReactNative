@@ -9,6 +9,7 @@ export default async function() {
 		const result = await this.sdk.get('commands.list');
 
 		if (!result.success) {
+			log('getCommand fetch');
 			return;
 		}
 

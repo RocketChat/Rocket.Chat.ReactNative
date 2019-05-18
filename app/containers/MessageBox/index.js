@@ -208,6 +208,10 @@ class MessageBox extends Component {
 				const result = lastNativeText.substr(0, cursor).match(regexp);
 				this.showCommandPreview = false;
 				if (!result) {
+					const slash = lastNativeText.match(/^\/$/); // matches only '/' in input
+					if (slash) {
+						return this.identifyMentionKeyword('', MENTIONS_TRACKING_TYPE_COMMANDS);
+					}
 					return this.stopTrackingMention();
 				}
 				const [, lastChar, name] = result;
@@ -247,19 +251,12 @@ class MessageBox extends Component {
 		const { text } = this;
 		const command = text.substr(0, text.indexOf(' ')).slice(1);
 		const params = text.substr(text.indexOf(' ') + 1) || 'params';
-		const msg = {
-			cmd: command,
-			params,
-			msg: {
-				rid
-			}
-		};
 		this.showCommandPreview = false;
 		this.setState({ commandPreview: [] });
 		this.stopTrackingMention();
 		this.clearInput();
 		try {
-			RocketChat.executeCommandPreview(msg, item);
+			RocketChat.executeCommandPreview(command, params, rid, item);
 		} catch (e) {
 			log('onPressCommandPreview', e);
 		}
@@ -497,10 +494,8 @@ class MessageBox extends Component {
 	}
 
 	getSlashCommands = (keyword) => {
-		if (keyword) {
-			this.commands = database.objects('slashCommand').filtered('command CONTAINS[c] $0', keyword).slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			this.setState({ mentions: this.commands });
-		}
+		this.commands = database.objects('slashCommand').filtered('command CONTAINS[c] $0', keyword).slice(0, MENTIONS_COUNT_TO_DISPLAY);
+		this.setState({ mentions: this.commands });
 	}
 
 	focus = () => {
@@ -782,7 +777,7 @@ class MessageBox extends Component {
 		);
 	}
 
-	renderMentionItem = (item) => {
+	renderMentionItem = ({ item }) => {
 		const { trackingType } = this.state;
 		const { baseUrl, user } = this.props;
 
@@ -814,7 +809,7 @@ class MessageBox extends Component {
 						case MENTIONS_TRACKING_TYPE_COMMANDS:
 							return ([
 								<Text key='mention-item-command' style={styles.slash}>/</Text>,
-								<Text key='mention-item-param' style={styles.command}>{ item.command}</Text>
+								<Text key='mention-item-param'>{ item.command}</Text>
 							]);
 						default:
 							return ([
@@ -847,7 +842,7 @@ class MessageBox extends Component {
 				<FlatList
 					style={styles.mentionList}
 					data={mentions}
-					renderItem={({ item }) => this.renderMentionItem(item)}
+					renderItem={this.renderMentionItem}
 					keyExtractor={item => item._id || item.username || item.command || item}
 					keyboardShouldPersistTaps='always'
 				/>
@@ -855,7 +850,7 @@ class MessageBox extends Component {
 		);
 	};
 
-	renderCommandPreviewItem = (item) => {
+	renderCommandPreviewItem = ({ item }) => {
 		if (item.type === 'image') {
 			return (
 				<TouchableOpacity
@@ -865,9 +860,7 @@ class MessageBox extends Component {
 				>
 					<FastImage
 						style={styles.commandPreviewImage}
-						source={{
-							uri: item.value
-						}}
+						source={{ uri: item.value }}
 						resizeMode={FastImage.resizeMode.cover}
 					/>
 				</TouchableOpacity>
@@ -894,7 +887,7 @@ class MessageBox extends Component {
 				<FlatList
 					style={styles.mentionList}
 					data={commandPreview}
-					renderItem={({ item }) => this.renderCommandPreviewItem(item)}
+					renderItem={this.renderCommandPreviewItem}
 					keyExtractor={item => item.id}
 					keyboardShouldPersistTaps='always'
 					horizontal
@@ -938,9 +931,9 @@ class MessageBox extends Component {
 			return (<Recording onFinish={this.finishAudioMessage} />);
 		}
 		return (
-			[
-				this.renderCommandPreview(),
-				this.renderMentions(),
+			<React.Fragment>
+				{this.renderCommandPreview()}
+				{this.renderMentions()}
 				<View style={styles.composer} key='messagebox'>
 					{this.renderReplyPreview()}
 					<View
@@ -965,7 +958,7 @@ class MessageBox extends Component {
 						{this.rightButtons}
 					</View>
 				</View>
-			]
+			</React.Fragment>
 		);
 	}
 

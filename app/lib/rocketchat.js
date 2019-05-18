@@ -798,8 +798,10 @@ const RocketChat = {
 			command, roomId, params
 		});
 	},
-	executeCommandPreview(msg, item) {
-		return this.sdk.methodCall('executeSlashCommandPreview', msg, item);
+	executeCommandPreview(command, params, roomId, previewItem) {
+		return this.sdk.post('commands.preview', {
+			command, params, roomId, previewItem
+		});
 	}
 };
 

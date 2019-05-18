@@ -106,10 +106,8 @@ export default StyleSheet.create({
 		backgroundColor: COLOR_BORDER,
 		padding: 5,
 		paddingHorizontal: 12,
+		marginHorizontal: 10,
 		borderRadius: 8
-	},
-	command: {
-		marginLeft: 10
 	},
 	commandPreviewImage: {
 		margin: 3,
