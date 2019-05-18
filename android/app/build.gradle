@@ -200,6 +200,7 @@ configurations.all {
 }
 
 dependencies {
+    implementation project(':react-native-webview')
     implementation project(':react-native-orientation-locker')
     implementation project(':react-native-splash-screen')
     implementation project(':react-native-screens')
