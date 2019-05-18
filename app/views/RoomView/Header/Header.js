@@ -4,6 +4,7 @@ import {
 	View, Text, StyleSheet, ScrollView
 } from 'react-native';
 import { emojify } from 'react-emojione';
+import removeMarkdown from 'remove-markdown';
 
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
@@ -64,8 +65,30 @@ Typing.propTypes = {
 	usersTyping: PropTypes.array
 };
 
+const HeaderTitle = React.memo(({
+	title, scale, connecting
+}) => {
+	if (connecting) {
+		title = I18n.t('Connecting');
+	}
+	return (
+		<Text
+			style={[styles.title, { fontSize: TITLE_SIZE * scale }]}
+			numberOfLines={1}
+			testID={`room-view-title-${ title }`}
+		>{title}
+		</Text>
+	);
+});
+
+HeaderTitle.propTypes = {
+	title: PropTypes.string,
+	scale: PropTypes.number,
+	connecting: PropTypes.bool
+};
+
 const Header = React.memo(({
-	title, type, status, usersTyping, width, height, prid, tmid, widthOffset
+	title, type, status, usersTyping, width, height, prid, tmid, widthOffset, connecting
 }) => {
 	const portrait = height > width;
 	let scale = 1;
@@ -77,6 +100,9 @@ const Header = React.memo(({
 	}
 	if (title) {
 		title = emojify(title, { output: 'unicode' });
+		if (tmid) {
+			title = removeMarkdown(title);
+		}
 	}
 
 	return (
@@ -89,7 +115,14 @@ const Header = React.memo(({
 					contentContainerStyle={styles.scroll}
 				>
 					<Icon type={prid ? 'discussion' : type} status={status} />
-					<Text style={[styles.title, { fontSize: TITLE_SIZE * scale }]} numberOfLines={1} testID={`room-view-title-${ title }`}>{title}</Text>
+					<HeaderTitle
+						prid={prid}
+						type={type}
+						status={status}
+						title={title}
+						scale={scale}
+						connecting={connecting}
+					/>
 				</ScrollView>
 			</View>
 			{type === 'thread' ? null : <Typing usersTyping={usersTyping} />}
@@ -106,7 +139,8 @@ Header.propTypes = {
 	tmid: PropTypes.string,
 	status: PropTypes.string,
 	usersTyping: PropTypes.array,
-	widthOffset: PropTypes.number
+	widthOffset: PropTypes.number,
+	connecting: PropTypes.bool
 };
 
 Header.defaultProps = {

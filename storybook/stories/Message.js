@@ -263,7 +263,6 @@ export default (
 			header={false}
 		/>
 
-		{/* Legacy thread */}
 		<Separator title='Message with reply' />
 		<Message
 			msg="I'm fine!"
@@ -291,40 +290,110 @@ export default (
 			tlm={date}
 		/>
 		<Message
+			msg='How are you?'
+			tcount={9999}
+			tlm={date}
+		/>
+		<Message
 			msg="I'm fine!"
 			tmid='1'
 			tmsg='How are you?'
+			isThreadReply
 		/>
 		<Message
 			msg="I'm fine!"
 			tmid='1'
 			tmsg='Thread with emoji :) :joy:'
+			isThreadReply
+		/>
+		<Message
+			msg="I'm fine!"
+			tmid='1'
+			tmsg='Markdown: [link](http://www.google.com/) ```block code```'
+			isThreadReply
 		/>
 		<Message
 			msg="I'm fine!"
 			tmid='1'
 			tmsg={longText}
+			isThreadReply
 		/>
 		<Message
 			msg={longText}
 			tmid='1'
 			tmsg='How are you?'
+			isThreadReply
 		/>
 		<Message
 			msg={longText}
 			tmid='1'
 			tmsg={longText}
+			isThreadReply
 		/>
 		<Message
+			tmid='1'
+			tmsg='Thread with attachment'
+			attachments={[{
+				title: 'This is a title',
+				description: 'This is a description',
+				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
+			}]}
+			isThreadReply
+		/>
+
+		<Separator title='Sequential thread messages following thread button' />
+		<Message
 			msg='How are you?'
-			tcount={0}
+			tcount={1}
 			tlm={date}
 		/>
 		<Message
-			msg='How are you?'
-			tcount={9999}
-			tlm={date}
+			msg="I'm fine!"
+			tmid='1'
+			isThreadSequential
 		/>
+		<Message
+			msg={longText}
+			tmid='1'
+			isThreadSequential
+		/>
+		<Message
+			attachments={[{
+				title: 'This is a title',
+				description: 'This is a description',
+				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
+			}]}
+			tmid='1'
+			isThreadSequential
+		/>
+
+		<Separator title='Sequential thread messages following thread reply' />
+		<Message
+			msg="I'm fine!"
+			tmid='1'
+			tmsg='How are you?'
+			isThreadReply
+		/>
+		<Message
+			msg='Cool!'
+			tmid='1'
+			isThreadSequential
+		/>
+		<Message
+			msg={longText}
+			tmid='1'
+			isThreadSequential
+		/>
+		<Message
+			attachments={[{
+				title: 'This is a title',
+				description: 'This is a description',
+				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
+			}]}
+			tmid='1'
+			isThreadSequential
+		/>
+
 		{/* <Message
 			msg='How are you?'
 			tcount={9999}

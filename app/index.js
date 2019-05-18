@@ -25,17 +25,12 @@ import RoomActionsView from './views/RoomActionsView';
 import RoomInfoView from './views/RoomInfoView';
 import RoomInfoEditView from './views/RoomInfoEditView';
 import RoomMembersView from './views/RoomMembersView';
-import RoomFilesView from './views/RoomFilesView';
-import MentionedMessagesView from './views/MentionedMessagesView';
-import StarredMessagesView from './views/StarredMessagesView';
 import SearchMessagesView from './views/SearchMessagesView';
-import PinnedMessagesView from './views/PinnedMessagesView';
 import ThreadMessagesView from './views/ThreadMessagesView';
+import MessagesView from './views/MessagesView';
 import SelectedUsersView from './views/SelectedUsersView';
 import CreateChannelView from './views/CreateChannelView';
 import LegalView from './views/LegalView';
-import TermsServiceView from './views/TermsServiceView';
-import PrivacyPolicyView from './views/PrivacyPolicyView';
 import ForgotPasswordView from './views/ForgotPasswordView';
 import RegisterView from './views/RegisterView';
 import OAuthView from './views/OAuthView';
@@ -82,15 +77,8 @@ const OutsideStack = createStackNavigator({
 	LoginSignupView,
 	LoginView,
 	ForgotPasswordView,
-	RegisterView
-}, {
-	defaultNavigationOptions: defaultHeader
-});
-
-const LegalStack = createStackNavigator({
-	LegalView,
-	TermsServiceView,
-	PrivacyPolicyView
+	RegisterView,
+	LegalView
 }, {
 	defaultNavigationOptions: defaultHeader
 });
@@ -103,7 +91,6 @@ const OAuthStack = createStackNavigator({
 
 const OutsideStackModal = createStackNavigator({
 	OutsideStack,
-	LegalStack,
 	OAuthStack
 },
 {
@@ -119,13 +106,10 @@ const ChatsStack = createStackNavigator({
 	RoomInfoView,
 	RoomInfoEditView,
 	RoomMembersView,
-	RoomFilesView,
-	MentionedMessagesView,
-	StarredMessagesView,
 	SearchMessagesView,
-	PinnedMessagesView,
 	SelectedUsersView,
-	ThreadMessagesView
+	ThreadMessagesView,
+	MessagesView
 }, {
 	defaultNavigationOptions: defaultHeader
 });
@@ -146,7 +130,7 @@ const ProfileStack = createStackNavigator({
 	defaultNavigationOptions: defaultHeader
 });
 
-ProfileView.navigationOptions = ({ navigation }) => {
+ProfileStack.navigationOptions = ({ navigation }) => {
 	let drawerLockMode = 'unlocked';
 	if (navigation.state.index > 0) {
 		drawerLockMode = 'locked-closed';

@@ -5,10 +5,9 @@ import {
 } from 'react-native';
 import moment from 'moment';
 import { KeyboardUtils } from 'react-native-keyboard-input';
-import {
-	BorderlessButton
-} from 'react-native-gesture-handler';
 import Touchable from 'react-native-platform-touchable';
+import { emojify } from 'react-emojione';
+import removeMarkdown from 'remove-markdown';
 
 import Image from './Image';
 import User from './User';
@@ -25,6 +24,9 @@ import I18n from '../../i18n';
 import messagesStatus from '../../constants/messagesStatus';
 import { CustomIcon } from '../../lib/Icons';
 import { COLOR_DANGER } from '../../constants/colors';
+import debounce from '../../utils/debounce';
+import DisclosureIndicator from '../DisclosureIndicator';
+import sharedStyles from '../../views/Styles';
 
 const SYSTEM_MESSAGES = [
 	'r',
@@ -118,6 +120,8 @@ export default class Message extends PureComponent {
 		reactionsModal: PropTypes.bool,
 		type: PropTypes.string,
 		header: PropTypes.bool,
+		isThreadReply: PropTypes.bool,
+		isThreadSequential: PropTypes.bool,
 		avatar: PropTypes.string,
 		alias: PropTypes.string,
 		ts: PropTypes.oneOfType([
@@ -162,9 +166,14 @@ export default class Message extends PureComponent {
 		onLongPress: () => {}
 	}
 
-	onPress = () => {
+	onPress = debounce(() => {
 		KeyboardUtils.dismiss();
-	}
+
+		const { onThreadPress, tlm, tmid } = this.props;
+		if ((tlm || tmid) && onThreadPress) {
+			onThreadPress();
+		}
+	}, 300, true)
 
 	onLongPress = () => {
 		const { archived, onLongPress } = this.props;
@@ -225,17 +234,17 @@ export default class Message extends PureComponent {
 		return status === messagesStatus.ERROR;
 	}
 
-	renderAvatar = () => {
+	renderAvatar = (small = false) => {
 		const {
 			header, avatar, author, baseUrl, user
 		} = this.props;
 		if (header) {
 			return (
 				<Avatar
-					style={styles.avatar}
+					style={small ? styles.avatarSmall : styles.avatar}
 					text={avatar ? '' : author.username}
-					size={36}
-					borderRadius={4}
+					size={small ? 20 : 36}
+					borderRadius={small ? 2 : 4}
 					avatar={avatar}
 					baseUrl={baseUrl}
 					userId={user.id}
@@ -269,10 +278,25 @@ export default class Message extends PureComponent {
 		if (this.isInfoMessage()) {
 			return <Text style={styles.textInfo}>{getInfoMessage({ ...this.props })}</Text>;
 		}
+
 		const {
-			customEmojis, msg, baseUrl, user, edited
+			customEmojis, msg, baseUrl, user, edited, tmid
 		} = this.props;
-		return <Markdown msg={msg} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} edited={edited} />;
+
+		if (tmid && !msg) {
+			return <Text style={styles.text}>{I18n.t('Sent_an_attachment')}</Text>;
+		}
+
+		return (
+			<Markdown
+				msg={msg}
+				customEmojis={customEmojis}
+				baseUrl={baseUrl}
+				username={user.username}
+				edited={edited}
+				numberOfLines={tmid ? 1 : 0}
+			/>
+		);
 	}
 
 	renderAttachment() {
@@ -300,13 +324,13 @@ export default class Message extends PureComponent {
 	}
 
 	renderUrl = () => {
-		const { urls } = this.props;
+		const { urls, user, baseUrl } = this.props;
 		if (urls.length === 0) {
 			return null;
 		}
 
 		return urls.map((url, index) => (
-			<Url url={url} key={url.url} index={index} />
+			<Url url={url} key={url.url} index={index} user={user} baseUrl={baseUrl} />
 		));
 	}
 
@@ -316,9 +340,9 @@ export default class Message extends PureComponent {
 		}
 		const { onErrorPress } = this.props;
 		return (
-			<BorderlessButton onPress={onErrorPress} style={styles.errorButton}>
+			<Touchable onPress={onErrorPress} style={styles.errorButton}>
 				<CustomIcon name='circle-cross' color={COLOR_DANGER} size={20} />
-			</BorderlessButton>
+			</Touchable>
 		);
 	}
 
@@ -457,7 +481,7 @@ export default class Message extends PureComponent {
 
 	renderRepliedThread = () => {
 		const {
-			tmid, tmsg, header, onThreadPress, fetchThreadName
+			tmid, tmsg, header, fetchThreadName
 		} = this.props;
 		if (!tmid || !header || this.isTemp()) {
 			return null;
@@ -468,10 +492,15 @@ export default class Message extends PureComponent {
 			return null;
 		}
 
+		let msg = emojify(tmsg, { output: 'unicode' });
+		msg = removeMarkdown(msg);
+
 		return (
-			<Text style={styles.repliedThread} numberOfLines={3} testID={`message-thread-replied-on-${ tmsg }`}>
-				{I18n.t('Replied_on')} <Text style={styles.repliedThreadName} onPress={onThreadPress}>{tmsg}</Text>
-			</Text>
+			<View style={styles.repliedThread} testID={`message-thread-replied-on-${ msg }`}>
+				<CustomIcon name='thread' size={20} style={styles.repliedThreadIcon} />
+				<Text style={styles.repliedThreadName} numberOfLines={1}>{msg}</Text>
+				<DisclosureIndicator />
+			</View>
 		);
 	}
 
@@ -488,7 +517,6 @@ export default class Message extends PureComponent {
 		return (
 			<React.Fragment>
 				{this.renderUsername()}
-				{this.renderRepliedThread()}
 				{this.renderContent()}
 				{this.renderAttachment()}
 				{this.renderUrl()}
@@ -499,9 +527,52 @@ export default class Message extends PureComponent {
 		);
 	}
 
+	renderMessage = () => {
+		const { header, isThreadReply, isThreadSequential } = this.props;
+
+		if (isThreadReply || isThreadSequential || this.isInfoMessage()) {
+			const thread = isThreadReply ? this.renderRepliedThread() : null;
+			return (
+				<React.Fragment>
+					{thread}
+					<View style={[styles.flex, sharedStyles.alignItemsCenter]}>
+						{this.renderAvatar(true)}
+						<View
+							style={[
+								styles.messageContent,
+								header && styles.messageContentWithHeader,
+								this.hasError() && header && styles.messageContentWithHeader,
+								this.hasError() && !header && styles.messageContentWithError,
+								this.isTemp() && styles.temp
+							]}
+						>
+							{this.renderContent()}
+						</View>
+					</View>
+				</React.Fragment>
+			);
+		}
+		return (
+			<View style={styles.flex}>
+				{this.renderAvatar()}
+				<View
+					style={[
+						styles.messageContent,
+						header && styles.messageContentWithHeader,
+						this.hasError() && header && styles.messageContentWithHeader,
+						this.hasError() && !header && styles.messageContentWithError,
+						this.isTemp() && styles.temp
+					]}
+				>
+					{this.renderInner()}
+				</View>
+			</View>
+		);
+	}
+
 	render() {
 		const {
-			editing, style, header, reactionsModal, closeReactions, msg, ts, reactions, author, user, timeFormat, customEmojis, baseUrl
+			editing, style, reactionsModal, closeReactions, msg, ts, reactions, author, user, timeFormat, customEmojis, baseUrl
 		} = this.props;
 		const accessibilityLabel = I18n.t('Message_accessibility', { user: author.username, time: moment(ts).format(timeFormat), message: msg });
 
@@ -513,23 +584,10 @@ export default class Message extends PureComponent {
 					onPress={this.onPress}
 				>
 					<View
-						style={[styles.container, header && styles.marginTop, editing && styles.editing, style]}
+						style={[styles.container, editing && styles.editing, style]}
 						accessibilityLabel={accessibilityLabel}
 					>
-						<View style={styles.flex}>
-							{this.renderAvatar()}
-							<View
-								style={[
-									styles.messageContent,
-									header && styles.messageContentWithHeader,
-									this.hasError() && header && styles.messageContentWithHeader,
-									this.hasError() && !header && styles.messageContentWithError,
-									this.isTemp() && styles.temp
-								]}
-							>
-								{this.renderInner()}
-							</View>
-						</View>
+						{this.renderMessage()}
 						{reactionsModal
 							? (
 								<ReactionsModal

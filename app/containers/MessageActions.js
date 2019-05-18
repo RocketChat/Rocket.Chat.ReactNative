@@ -4,7 +4,6 @@ import { Alert, Clipboard, Share } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-action-sheet';
 import * as moment from 'moment';
-
 import {
 	actionsHide as actionsHideAction,
 	deleteRequest as deleteRequestAction,
@@ -14,10 +13,10 @@ import {
 	toggleReactionPicker as toggleReactionPickerAction,
 	toggleStarRequest as toggleStarRequestAction
 } from '../actions/messages';
-import { showToast } from '../utils/info';
 import { vibrate } from '../utils/vibration';
 import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
+import log from '../utils/log';
 
 @connect(
 	state => ({
@@ -44,6 +43,7 @@ export default class MessageActions extends React.Component {
 		actionsHide: PropTypes.func.isRequired,
 		room: PropTypes.object.isRequired,
 		actionMessage: PropTypes.object,
+		toast: PropTypes.element,
 		// user: PropTypes.object.isRequired,
 		deleteRequest: PropTypes.func.isRequired,
 		editInit: PropTypes.func.isRequired,
@@ -117,6 +117,10 @@ export default class MessageActions extends React.Component {
 			this.options.push(I18n.t('Add_Reaction'));
 			this.REACTION_INDEX = this.options.length - 1;
 		}
+
+		// Report
+		this.options.push(I18n.t('Report'));
+		this.REPORT_INDEX = this.options.length - 1;
 
 		// Delete
 		if (this.allowDelete(props)) {
@@ -198,6 +202,11 @@ export default class MessageActions extends React.Component {
 		if (this.isRoomReadOnly()) {
 			return false;
 		}
+
+		// Prevent from deleting thread start message when positioned inside the thread
+		if (props.tmid && props.tmid === props.actionMessage._id) {
+			return false;
+		}
 		const deleteOwn = this.isOwn(props);
 		const { Message_AllowDeleting: isDeleteAllowed, Message_AllowDeleting_BlockDeleteInMinutes } = this.props;
 		if (!(this.hasDeletePermission || (isDeleteAllowed && deleteOwn) || this.hasForceDeletePermission)) {
@@ -248,9 +257,9 @@ export default class MessageActions extends React.Component {
 	}
 
 	handleCopy = async() => {
-		const { actionMessage } = this.props;
+		const { actionMessage, toast } = this.props;
 		await Clipboard.setString(actionMessage.msg);
-		showToast(I18n.t('Copied_to_clipboard'));
+		toast.show(I18n.t('Copied_to_clipboard'));
 	}
 
 	handleShare = async() => {
@@ -267,10 +276,10 @@ export default class MessageActions extends React.Component {
 	}
 
 	handlePermalink = async() => {
-		const { actionMessage } = this.props;
+		const { actionMessage, toast } = this.props;
 		const permalink = await this.getPermalink(actionMessage);
 		Clipboard.setString(permalink);
-		showToast(I18n.t('Permalink_copied_to_clipboard'));
+		toast.show(I18n.t('Permalink_copied_to_clipboard'));
 	}
 
 	handlePin = () => {
@@ -291,6 +300,16 @@ export default class MessageActions extends React.Component {
 	handleReaction = () => {
 		const { actionMessage, toggleReactionPicker } = this.props;
 		toggleReactionPicker(actionMessage);
+	}
+
+	handleReport = async() => {
+		const { actionMessage } = this.props;
+		try {
+			await RocketChat.reportMessage(actionMessage._id);
+			Alert.alert(I18n.t('Message_Reported'));
+		} catch (err) {
+			log('report message', err);
+		}
 	}
 
 	handleActionPress = (actionIndex) => {
@@ -322,6 +341,9 @@ export default class MessageActions extends React.Component {
 					break;
 				case this.REACTION_INDEX:
 					this.handleReaction();
+					break;
+				case this.REPORT_INDEX:
+					this.handleReport();
 					break;
 				case this.DELETE_INDEX:
 					this.handleDelete();

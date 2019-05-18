@@ -11,6 +11,7 @@ import Header from './Header';
 	showServerDropdown: state.rooms.showServerDropdown,
 	showSortDropdown: state.rooms.showSortDropdown,
 	showSearchHeader: state.rooms.showSearchHeader,
+	connecting: state.meteor.connecting,
 	isFetching: state.rooms.isFetching,
 	serverName: state.settings.Site_Name
 }), dispatch => ({
@@ -25,6 +26,7 @@ export default class RoomsListHeaderView extends PureComponent {
 		showSortDropdown: PropTypes.bool,
 		showSearchHeader: PropTypes.bool,
 		serverName: PropTypes.string,
+		connecting: PropTypes.bool,
 		isFetching: PropTypes.bool,
 		open: PropTypes.func,
 		close: PropTypes.func,
@@ -68,13 +70,15 @@ export default class RoomsListHeaderView extends PureComponent {
 
 	render() {
 		const {
-			serverName, showServerDropdown, showSearchHeader, isFetching
+			serverName, showServerDropdown, showSearchHeader, connecting, isFetching
 		} = this.props;
+
 		return (
 			<Header
 				serverName={serverName}
 				showServerDropdown={showServerDropdown}
 				showSearchHeader={showSearchHeader}
+				connecting={connecting}
 				isFetching={isFetching}
 				setSearchInputRef={this.setSearchInputRef}
 				onPress={this.onPress}

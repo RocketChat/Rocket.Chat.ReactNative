@@ -147,14 +147,13 @@ export default class Sidebar extends Component {
 	}
 
 	canSeeAdminPanel() {
-		// eslint-disable-next-line react/destructuring-assignment
 		const { user } = this.props;
 		const { roles } = user;
 		if	(roles) {
 			const permissionsFiltered = database.objects('permissions')
 				.filter(permission => permissions.includes(permission._id));
 			return permissionsFiltered.reduce((result, permission) => (
-				result || permission.roles.some(r => roles.includes(r.value))),
+				result || permission.roles.some(r => roles.includes(r))),
 			false);
 		}
 		return false;
