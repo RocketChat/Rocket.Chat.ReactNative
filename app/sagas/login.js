@@ -13,7 +13,6 @@ import I18n from '../i18n';
 import database from '../lib/realm';
 
 const getServer = state => state.server.server;
-const getState = state => state;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
 const loginCall = args => RocketChat.login(args);
 const logoutCall = args => RocketChat.logout(args);
@@ -35,8 +34,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	const adding = yield select(state => state.server.adding);
 	yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
-	const state = yield select(getState);
-	log('state', state);
+
 	const server = yield select(getServer);
 	try {
 		RocketChat.loginSuccess({ user });
