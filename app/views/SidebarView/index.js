@@ -20,10 +20,18 @@ import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import SidebarItem from './SidebarItem';
 import { COLOR_TEXT } from '../../constants/colors';
+import database from '../../lib/realm';
 
 const keyExtractor = item => item.id;
 
 const Separator = React.memo(() => <View style={styles.separator} />);
+
+const permissions = [
+	'view-statistics',
+	'view-room-administration',
+	'view-user-administration',
+	'view-privileged-setting'
+];
 
 @connect(state => ({
 	Site_Name: state.settings.Site_Name,
@@ -32,7 +40,8 @@ const Separator = React.memo(() => <View style={styles.separator} />);
 		language: state.login.user && state.login.user.language,
 		status: state.login.user && state.login.user.status,
 		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token
+		token: state.login.user && state.login.user.token,
+		roles: state.login.user && state.login.user.roles
 	},
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }), dispatch => ({
@@ -137,6 +146,19 @@ export default class Sidebar extends Component {
 		logout();
 	}
 
+	canSeeAdminPanel() {
+		const { user } = this.props;
+		const { roles } = user;
+		if	(roles) {
+			const permissionsFiltered = database.objects('permissions')
+				.filter(permission => permissions.includes(permission._id));
+			return permissionsFiltered.reduce((result, permission) => (
+				result || permission.roles.some(r => roles.includes(r))),
+			false);
+		}
+		return false;
+	}
+
 	renderStatusItem = ({ item }) => {
 		const { user } = this.props;
 		return (
@@ -183,6 +205,15 @@ export default class Sidebar extends Component {
 					testID='sidebar-settings'
 					current={activeItemKey === 'SettingsStack'}
 				/>
+				{this.canSeeAdminPanel() ? (
+					<SidebarItem
+						text={I18n.t('Admin_Panel')}
+						left={<CustomIcon name='shield-alt' size={20} color={COLOR_TEXT} />}
+						onPress={() => this.sidebarNavigate('AdminPanelView')}
+						testID='sidebar-settings'
+						current={activeItemKey === 'AdminPanelStack'}
+					/>
+				) : null}
 				<Separator key='separator-logout' />
 				<SidebarItem
 					text={I18n.t('Logout')}
