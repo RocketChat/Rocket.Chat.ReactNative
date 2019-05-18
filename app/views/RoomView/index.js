@@ -37,6 +37,7 @@ import Separator from './Separator';
 import { COLOR_WHITE } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
+import { Toast } from '../../utils/info';
 
 @connect(state => ({
 	user: {
@@ -66,7 +67,7 @@ export default class RoomView extends LoggedView {
 		const title = navigation.getParam('name');
 		const t = navigation.getParam('t');
 		const tmid = navigation.getParam('tmid');
-		const isFetching = navigation.getParam('isFetching', false);
+		const toggleFollowThread = navigation.getParam('toggleFollowThread', () => {});
 		return {
 			headerTitleContainerStyle: styles.headerTitleContainerStyle,
 			headerTitle: (
@@ -77,10 +78,17 @@ export default class RoomView extends LoggedView {
 					title={title}
 					type={t}
 					widthOffset={tmid ? 95 : 130}
-					isFetching={isFetching}
 				/>
 			),
-			headerRight: <RightButtons rid={rid} tmid={tmid} t={t} navigation={navigation} />
+			headerRight: (
+				<RightButtons
+					rid={rid}
+					tmid={tmid}
+					t={t}
+					navigation={navigation}
+					toggleFollowThread={toggleFollowThread}
+				/>
+			)
 		};
 	}
 
@@ -134,6 +142,9 @@ export default class RoomView extends LoggedView {
 
 			if (room._id && !this.tmid) {
 				navigation.setParams({ name: this.getRoomTitle(room), t: room.t });
+			}
+			if (this.tmid) {
+				navigation.setParams({ toggleFollowThread: this.toggleFollowThread });
 			}
 
 			if (isAuthenticated) {
@@ -332,15 +343,12 @@ export default class RoomView extends LoggedView {
 
 	getMessages = async() => {
 		const { room } = this.state;
-		const { navigation } = this.props;
 		try {
-			navigation.setParams({ isFetching: true });
 			if (room.lastOpen) {
 				await RocketChat.loadMissedMessages(room);
 			} else {
 				await RocketChat.loadMessagesForRoom(room);
 			}
-			navigation.setParams({ isFetching: false });
 			return Promise.resolve();
 		} catch (e) {
 			console.log('TCL: getMessages -> e', e);
@@ -410,6 +418,16 @@ export default class RoomView extends LoggedView {
 			});
 		} catch (error) {
 			console.log('TCL: fetchThreadName -> error', error);
+		}
+	}
+
+	toggleFollowThread = async(isFollowingThread) => {
+		try {
+			await RocketChat.toggleFollowMessage(this.tmid, !isFollowingThread);
+			this.toast.show(isFollowingThread ? 'Unfollowed thread' : 'Following thread');
+		} catch (e) {
+			console.log('TCL: RightButtonsContainer -> toggleFollowThread -> e', e);
+			log('toggleFollowThread', e);
 		}
 	}
 
@@ -520,7 +538,7 @@ export default class RoomView extends LoggedView {
 		return (
 			<React.Fragment>
 				{room._id && showActions
-					? <MessageActions room={room} tmid={this.tmid} user={user} />
+					? <MessageActions room={room} tmid={this.tmid} user={user} toast={this.toast} />
 					: null
 				}
 				{showErrorActions ? <MessageErrorActions /> : null}
@@ -541,6 +559,7 @@ export default class RoomView extends LoggedView {
 				{this.renderActions()}
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
 				<UploadProgress rid={this.rid} />
+				<Toast ref={toast => this.toast = toast} />
 			</SafeAreaView>
 		);
 	}

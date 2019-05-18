@@ -511,6 +511,9 @@ const RocketChat = {
 		// RC 0.59.0
 		return this.sdk.post('chat.pinMessage', { messageId: message._id });
 	},
+	reportMessage(messageId) {
+		return this.sdk.post('chat.reportMessage', { messageId, description: 'Message reported by user' });
+	},
 	getRoom(rid) {
 		const [result] = database.objects('subscriptions').filtered('rid = $0', rid);
 		if (!result) {
@@ -769,9 +772,9 @@ const RocketChat = {
 	toggleFollowMessage(mid, follow) {
 		// RC 1.0
 		if (follow) {
-			return this.sdk.methodCall('followMessage', { mid });
+			return this.sdk.post('chat.followMessage', { mid });
 		}
-		return this.sdk.methodCall('unfollowMessage', { mid });
+		return this.sdk.post('chat.unfollowMessage', { mid });
 	},
 	getThreadsList({ rid, count, offset }) {
 		// RC 1.0
