@@ -200,6 +200,7 @@ configurations.all {
 }
 
 dependencies {
+    implementation project(':react-native-webview')
     implementation project(':react-native-orientation-locker')
     implementation project(':react-native-splash-screen')
     implementation project(':react-native-screens')
@@ -214,7 +215,6 @@ dependencies {
     implementation project(':react-native-video')
     implementation project(':react-native-vector-icons')
     implementation project(':rn-fetch-blob')
-    implementation project(':react-native-toast')
     implementation project(':react-native-fast-image')
     implementation project(':realm')
     implementation project(':reactnativenotifications')

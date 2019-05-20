@@ -1002,11 +1002,6 @@
     react-native-safe-area-view "^0.13.0"
     react-native-screens "^1.0.0 || ^1.0.0-alpha"
 
-"@remobile/react-native-toast@^1.0.7":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@remobile/react-native-toast/-/react-native-toast-1.0.7.tgz#b2e3684cdb13e1c9d9b4ed08e667157d4ad0fab2"
-  integrity sha512-iOD1PRnTSVr9sDWQdesIpfRrwJhHfeEQe5BpalQxC5OhM9thpiE6cu2NlW1KBWl0RJG4ZiJaF1xLlCo9YxU6dA==
-
 "@rocket.chat/sdk@1.0.0-alpha.28":
   version "1.0.0-alpha.28"
   resolved "https://registry.yarnpkg.com/@rocket.chat/sdk/-/sdk-1.0.0-alpha.28.tgz#569f3c578c5c12ed54a9317d36fa8413208ce021"
@@ -6726,7 +6721,7 @@ interpret@^1.0.0, interpret@^1.1.0:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.2.0.tgz#d5061a6224be58e8083985f5014d844359576296"
   integrity sha512-mT34yGKMNceBQUoVn7iCDKDntA7SC6gycMAWzGx1z/CMCTV7b2AAtXlo3nRyHZ1FelRkQbQjprHSYGwzLtkVbw==
 
-invariant@^2.1.0, invariant@^2.2.2, invariant@^2.2.4:
+invariant@2.2.4, invariant@^2.1.0, invariant@^2.2.2, invariant@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
   integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
@@ -10401,6 +10396,13 @@ react-native-dialog@^5.6.0:
     prop-types "^15.7.2"
     react-native-modal "^9.0.0"
 
+react-native-easy-toast@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-easy-toast/-/react-native-easy-toast-1.2.0.tgz#0f70bcb99e3306cda4800c244bfb4a67d42276ed"
+  integrity sha512-UtpxnRn1ME+035Uey4VR+9K0P4aVoTcWNOx5QkioWBe3LBKMPb/kZjrQ1LtvWzOyeGP4TeTUTtMX3IOPWv5MtA==
+  dependencies:
+    prop-types "^15.5.10"
+
 "react-native-fabric@github:corymsmith/react-native-fabric#523a4edab3b2bf55ea9eeea2cf0dde82c5c29dd4":
   version "0.5.2"
   resolved "https://codeload.github.com/corymsmith/react-native-fabric/tar.gz/523a4edab3b2bf55ea9eeea2cf0dde82c5c29dd4"
@@ -10574,6 +10576,11 @@ react-native-slider@^0.11.0:
   dependencies:
     prop-types "^15.5.6"
 
+react-native-slowlog@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-slowlog/-/react-native-slowlog-1.0.2.tgz#5520979e3ef9d5273495d431ff3be34f02e35c89"
+  integrity sha1-VSCXnj751Sc0ldQx/zvjTwLjXIk=
+
 react-native-splash-screen@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/react-native-splash-screen/-/react-native-splash-screen-3.2.0.tgz#d47ec8557b1ba988ee3ea98d01463081b60fff45"
@@ -10622,6 +10629,14 @@ react-native-video@^4.4.1:
     keymirror "^0.1.1"
     prop-types "^15.5.10"
     shaka-player "^2.4.4"
+
+react-native-webview@5.8.1:
+  version "5.8.1"
+  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-5.8.1.tgz#6f5a83dec55bbc02700155b1a16a668870f14de0"
+  integrity sha512-b6pSvmjoiWtcz6YspggW02X+BRXJWuquHwkh37BRx1NMW1iwMZA31SnFQvTpPzWYYIb9WF/mRsy2nGtt9C6NIg==
+  dependencies:
+    escape-string-regexp "1.0.5"
+    invariant "2.2.4"
 
 react-native@0.58.6:
   version "0.58.6"

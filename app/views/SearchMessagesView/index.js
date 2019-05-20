@@ -19,7 +19,6 @@ import StatusBar from '../../containers/StatusBar';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	customEmojis: state.customEmojis,
 	user: {
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
@@ -35,8 +34,7 @@ export default class SearchMessagesView extends LoggedView {
 	static propTypes = {
 		navigation: PropTypes.object,
 		user: PropTypes.object,
-		baseUrl: PropTypes.string,
-		customEmojis: PropTypes.object
+		baseUrl: PropTypes.string
 	}
 
 	constructor(props) {
@@ -96,10 +94,9 @@ export default class SearchMessagesView extends LoggedView {
 	)
 
 	renderItem = ({ item }) => {
-		const { user, customEmojis, baseUrl } = this.props;
+		const { user, baseUrl } = this.props;
 		return (
 			<Message
-				customEmojis={customEmojis}
 				baseUrl={baseUrl}
 				user={user}
 				author={item.u}
@@ -107,8 +104,9 @@ export default class SearchMessagesView extends LoggedView {
 				msg={item.msg}
 				attachments={item.attachments || []}
 				timeFormat='MMM Do YYYY, h:mm:ss a'
-				edited={!!item.editedAt}
-				header
+				isEdited={!!item.editedAt}
+				isHeader
+				onOpenFileModal={() => {}}
 			/>
 		);
 	}
@@ -145,7 +143,7 @@ export default class SearchMessagesView extends LoggedView {
 						placeholder={I18n.t('Search_Messages')}
 						testID='search-message-view-input'
 					/>
-					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} username='' baseUrl='' customEmojis={{}} />
+					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} username='' baseUrl='' />
 					<View style={styles.divider} />
 				</View>
 				{this.renderList()}

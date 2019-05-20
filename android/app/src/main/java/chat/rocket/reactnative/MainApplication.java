@@ -3,6 +3,7 @@ package chat.rocket.reactnative;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.webview.RNCWebViewPackage;
 import org.wonday.orientation.OrientationPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.facebook.react.ReactNativeHost;
@@ -17,7 +18,6 @@ import com.brentvatne.react.ReactVideoPackage;
 import com.crashlytics.android.Crashlytics;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.remobile.toast.RCTToastPackage;
 import com.rnim.rn.audio.ReactNativeAudioPackage;
 import com.smixx.fabric.FabricPackage;
 import com.wix.reactnativekeyboardinput.KeyboardInputPackage;
@@ -52,6 +52,7 @@ public class MainApplication extends Application implements ReactApplication, IN
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNCWebViewPackage(),
             new OrientationPackage(),
             new SplashScreenReactPackage(),
 		  		new RNGestureHandlerPackage(),
@@ -63,7 +64,6 @@ public class MainApplication extends Application implements ReactApplication, IN
 					new RNFetchBlobPackage(),
 					new RealmReactPackage(),
 					new ReactVideoPackage(),
-					new RCTToastPackage(),
 					new ReactNativeAudioPackage(),
 					new KeyboardInputPackage(MainApplication.this),
 					new RocketChatNativePackage(),
