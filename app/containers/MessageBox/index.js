@@ -184,7 +184,7 @@ class MessageBox extends Component {
 
 		if (this.component) {
 			requestAnimationFrame(() => {
-				const { start, end } = this.component._lastNativeSelection;
+				const { start, end } = this.component._lastNativeSelection ? this.component._lastNativeSelection : { start: 0, end: 0 };
 				const cursor = Math.max(start, end);
 				const lastNativeText = this.component._lastNativeText;
 				const regexp = /(#|@|:)([a-z0-9._-]+)$/im;
