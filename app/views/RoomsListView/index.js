@@ -66,6 +66,7 @@ export default class RoomsListView extends LoggedView {
 		const cancelSearchingAndroid = navigation.getParam('cancelSearchingAndroid');
 		const onPressItem = navigation.getParam('onPressItem', () => {});
 		const initSearchingAndroid = navigation.getParam('initSearchingAndroid', () => {});
+		const toggleUseMarkdown = navigation.getParam('toggleUseMarkdown', () => {});
 
 		return {
 			headerLeft: (
@@ -75,7 +76,7 @@ export default class RoomsListView extends LoggedView {
 							<Item title='cancel' iconName='cross' onPress={cancelSearchingAndroid} />
 						</CustomHeaderButtons>
 					)
-					: <DrawerButton navigation={navigation} testID='rooms-list-view-sidebar' />
+					: <DrawerButton navigation={navigation} testID='rooms-list-view-sidebar' onLongPress={toggleUseMarkdown} />
 			),
 			headerTitle: <RoomsListHeaderView />,
 			headerRight: (
@@ -124,6 +125,7 @@ export default class RoomsListView extends LoggedView {
 			searching: false,
 			search: [],
 			loading: true,
+			useMarkdown: true,
 			chats: [],
 			unread: [],
 			favorites: [],
@@ -142,7 +144,10 @@ export default class RoomsListView extends LoggedView {
 		this.getSubscriptions();
 		const { navigation } = this.props;
 		navigation.setParams({
-			onPressItem: this._onPressItem, initSearchingAndroid: this.initSearchingAndroid, cancelSearchingAndroid: this.cancelSearchingAndroid
+			onPressItem: this._onPressItem,
+			initSearchingAndroid: this.initSearchingAndroid,
+			cancelSearchingAndroid: this.cancelSearchingAndroid,
+			toggleUseMarkdown: this.toggleUseMarkdown
 		});
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
@@ -311,6 +316,15 @@ export default class RoomsListView extends LoggedView {
 		}
 	}
 
+	// Just for tests purposes
+	toggleUseMarkdown = () => {
+		this.setState(({ useMarkdown }) => ({ useMarkdown: !useMarkdown }),
+			() => {
+				const { useMarkdown } = this.state;
+				alert(`Markdown ${ useMarkdown ? 'enabled' : 'disabled' }`);
+			});
+	}
+
 	// this is necessary during development (enables Cmd + r)
 	hasActiveDB = () => database && database.databases && database.databases.activeDB;
 
@@ -341,9 +355,10 @@ export default class RoomsListView extends LoggedView {
 
 	goRoom = (item) => {
 		this.cancelSearchingAndroid();
+		const { useMarkdown } = this.state;
 		const { navigation } = this.props;
 		navigation.navigate('RoomView', {
-			rid: item.rid, name: this.getRoomTitle(item), t: item.t, prid: item.prid
+			rid: item.rid, name: this.getRoomTitle(item), t: item.t, prid: item.prid, useMarkdown
 		});
 	}
 
