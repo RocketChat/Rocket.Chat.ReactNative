@@ -341,7 +341,7 @@ class MessageBox extends Component {
 
 	getPermalink = async(message) => {
 		try {
-			return await RocketChat.getPermalink(message);
+			return await RocketChat.getPermalink(message, 'message');
 		} catch (error) {
 			return null;
 		}

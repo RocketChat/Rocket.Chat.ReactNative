@@ -508,10 +508,10 @@ const RocketChat = {
 		}
 		return Promise.resolve(result);
 	},
-	async getPermalink(message) {
+	async getPermalink(obj, type) {
 		let room;
 		try {
-			room = await RocketChat.getRoom(message.rid);
+			room = await RocketChat.getRoom(obj.rid);
 		} catch (e) {
 			log('Rocketchat.getPermalink', e);
 			return null;
@@ -522,7 +522,7 @@ const RocketChat = {
 			c: 'channel',
 			d: 'direct'
 		}[room.t];
-		return `${ server }/${ roomType }/${ room.name }?msg=${ message._id }`;
+		return `${ server }/${ roomType }/${ room.name }${ type === 'message' ? `?msg=${ obj._id }` : '' }`;
 	},
 	subscribe(...args) {
 		return this.sdk.subscribe(...args);
