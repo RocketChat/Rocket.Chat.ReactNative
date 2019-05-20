@@ -39,6 +39,7 @@ import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from './constants/colors
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications, onNotification } from './push';
 import store from './lib/createStore';
+import NotificationBadge from './views/NotificationBadgeView';
 
 useScreens();
 
