@@ -19,7 +19,13 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 		const { subscriptions } = mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
 
 		database.write(() => {
-			subscriptions.forEach(subscription => database.create('subscriptions', subscription, true));
+			subscriptions.forEach((subscription) => {
+				try {
+					database.create('subscriptions', subscription, true);
+				} catch (error) {
+					log('handleRoomsRequest create sub', error);
+				}
+			});
 		});
 		database.databases.serversDB.write(() => {
 			try {

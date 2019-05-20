@@ -4,9 +4,15 @@ import PropTypes from 'prop-types';
 import { emojify } from 'react-emojione';
 import MarkdownRenderer, { PluginContainer } from 'react-native-markdown-renderer';
 import MarkdownFlowdock from 'markdown-it-flowdock';
+
 import styles from './styles';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import MarkdownEmojiPlugin from './MarkdownEmojiPlugin';
+import I18n from '../../i18n';
+
+const EmojiPlugin = new PluginContainer(MarkdownEmojiPlugin);
+const MentionsPlugin = new PluginContainer(MarkdownFlowdock);
+const plugins = [EmojiPlugin, MentionsPlugin];
 
 // Support <http://link|Text>
 const formatText = text => text.replace(
@@ -15,7 +21,7 @@ const formatText = text => text.replace(
 );
 
 const Markdown = React.memo(({
-	msg, customEmojis, style, rules, baseUrl, username, edited, numberOfLines
+	msg, style, rules, baseUrl, username, isEdited, numberOfLines, mentions, channels, getCustomEmoji, useMarkdown = true
 }) => {
 	if (!msg) {
 		return null;
@@ -28,14 +34,18 @@ const Markdown = React.memo(({
 	if (numberOfLines > 0) {
 		m = m.replace(/[\n]+/g, '\n').trim();
 	}
+
+	if (!useMarkdown) {
+		return <Text style={styles.text}>{m}</Text>;
+	}
+
 	return (
 		<MarkdownRenderer
 			rules={{
 				paragraph: (node, children) => (
-					// eslint-disable-next-line
 					<Text key={node.key} style={styles.paragraph} numberOfLines={numberOfLines}>
 						{children}
-						{edited ? <Text style={styles.edited}> (edited)</Text> : null}
+						{isEdited ? <Text style={styles.edited}> ({I18n.t('edited')})</Text> : null}
 					</Text>
 				),
 				mention: (node) => {
@@ -52,23 +62,31 @@ const Markdown = React.memo(({
 							...styles.mentionLoggedUser
 						};
 					}
-					return (
-						<Text style={mentionStyle} key={key}>
-							&nbsp;{content}&nbsp;
-						</Text>
-					);
+					if (mentions && mentions.length && mentions.findIndex(mention => mention.username === content) !== -1) {
+						return (
+							<Text style={mentionStyle} key={key}>
+								&nbsp;{content}&nbsp;
+							</Text>
+						);
+					}
+					return `@${ content }`;
 				},
-				hashtag: node => (
-					<Text key={node.key} style={styles.mention}>
-						&nbsp;#{node.content}&nbsp;
-					</Text>
-				),
+				hashtag: (node) => {
+					const { content, key } = node;
+					if (channels && channels.length && channels.findIndex(channel => channel.name === content) !== -1) {
+						return (
+							<Text key={key} style={styles.mention}>
+								&nbsp;#{content}&nbsp;
+							</Text>
+						);
+					}
+					return `#${ content }`;
+				},
 				emoji: (node) => {
 					if (node.children && node.children.length && node.children[0].content) {
 						const { content } = node.children[0];
-						const emojiExtension = customEmojis[content];
-						if (emojiExtension) {
-							const emoji = { extension: emojiExtension, content };
+						const emoji = getCustomEmoji && getCustomEmoji(content);
+						if (emoji) {
 							return <CustomEmoji key={node.key} baseUrl={baseUrl} style={styles.customEmoji} emoji={emoji} />;
 						}
 						return <Text key={node.key}>:{content}:</Text>;
@@ -90,10 +108,7 @@ const Markdown = React.memo(({
 				link: styles.link,
 				...style
 			}}
-			plugins={[
-				new PluginContainer(MarkdownFlowdock),
-				new PluginContainer(MarkdownEmojiPlugin)
-			]}
+			plugins={plugins}
 		>{m}
 		</MarkdownRenderer>
 	);
@@ -101,13 +116,17 @@ const Markdown = React.memo(({
 
 Markdown.propTypes = {
 	msg: PropTypes.string,
-	username: PropTypes.string.isRequired,
-	baseUrl: PropTypes.string.isRequired,
-	customEmojis: PropTypes.object.isRequired,
+	username: PropTypes.string,
+	baseUrl: PropTypes.string,
 	style: PropTypes.any,
 	rules: PropTypes.object,
-	edited: PropTypes.bool,
-	numberOfLines: PropTypes.number
+	isEdited: PropTypes.bool,
+	numberOfLines: PropTypes.number,
+	useMarkdown: PropTypes.bool,
+	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	getCustomEmoji: PropTypes.func
 };
+Markdown.displayName = 'MessageMarkdown';
 
 export default Markdown;
