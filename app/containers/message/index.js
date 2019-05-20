@@ -49,13 +49,17 @@ export default class MessageContainer extends React.Component {
 
 	shouldComponentUpdate(nextProps) {
 		const {
-			status, item, _updatedAt
+			status, item, _updatedAt, previousItem
 		} = this.props;
 
 		if (status !== nextProps.status) {
 			return true;
 		}
 		if (item.tmsg !== nextProps.item.tmsg) {
+			return true;
+		}
+
+		if (!previousItem && !!nextProps.previousItem) {
 			return true;
 		}
 
