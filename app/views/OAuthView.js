@@ -8,8 +8,9 @@ import { isIOS } from '../utils/deviceInfo';
 import { CloseModalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 
-const userAgentAndroid = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1';
-const userAgent = isIOS ? 'UserAgent' : userAgentAndroid;
+const userAgent = isIOS
+	? 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1'
+	: 'application-name/1.6.7.42 Dalvik/2.1.0 (Linux; U; Android 5.1.1; Android SDK built for x86 Build/LMY48X)';
 
 @connect(state => ({
 	server: state.server.server
@@ -62,6 +63,7 @@ export default class OAuthView extends React.PureComponent {
 			<React.Fragment>
 				<StatusBar />
 				<WebView
+					useWebKit
 					source={{ uri: oAuthUrl }}
 					userAgent={userAgent}
 					onNavigationStateChange={(webViewState) => {
