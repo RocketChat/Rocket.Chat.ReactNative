@@ -158,7 +158,7 @@ export default class RoomMembersView extends LoggedView {
 		const { muted } = room;
 
 		this.actionSheetOptions = [I18n.t('Cancel')];
-		const userIsMuted = !!muted.find(m => m.value === user.username);
+		const userIsMuted = !!muted.find(m => m === user.username);
 		user.muted = userIsMuted;
 		if (userIsMuted) {
 			this.actionSheetOptions.push(I18n.t('Unmute'));

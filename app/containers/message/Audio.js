@@ -56,20 +56,40 @@ const formatTime = seconds => moment.utc(seconds * 1000).format('mm:ss');
 const BUTTON_HIT_SLOP = {
 	top: 12, right: 12, bottom: 12, left: 12
 };
+const sliderAnimationConfig = {
+	duration: 250,
+	easing: Easing.linear,
+	delay: 0
+};
+
+const Button = React.memo(({ paused, onPress }) => (
+	<Touchable
+		style={styles.playPauseButton}
+		onPress={onPress}
+		hitSlop={BUTTON_HIT_SLOP}
+		background={Touchable.SelectableBackgroundBorderless()}
+	>
+		<CustomIcon name={paused ? 'play' : 'pause'} size={36} style={styles.playPauseImage} />
+	</Touchable>
+));
+
+Button.propTypes = {
+	paused: PropTypes.bool,
+	onPress: PropTypes.func
+};
+Button.displayName = 'MessageAudioButton';
 
 export default class Audio extends React.Component {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
 		user: PropTypes.object.isRequired,
-		customEmojis: PropTypes.object.isRequired
+		useMarkdown: PropTypes.bool,
+		getCustomEmoji: PropTypes.func
 	}
 
 	constructor(props) {
 		super(props);
-		this.onLoad = this.onLoad.bind(this);
-		this.onProgress = this.onProgress.bind(this);
-		this.onEnd = this.onEnd.bind(this);
 		const { baseUrl, file, user } = props;
 		this.state = {
 			currentTime: 0,
@@ -120,22 +140,26 @@ export default class Audio extends React.Component {
 		});
 	}
 
-	getDuration = () => {
+	get duration() {
 		const { duration } = this.state;
 		return formatTime(duration);
 	}
+
+	setRef = ref => this.player = ref;
 
 	togglePlayPause = () => {
 		const { paused } = this.state;
 		this.setState({ paused: !paused });
 	}
 
+	onValueChange = value => this.setState({ currentTime: value });
+
 	render() {
 		const {
 			uri, paused, currentTime, duration
 		} = this.state;
 		const {
-			user, baseUrl, customEmojis, file
+			user, baseUrl, file, getCustomEmoji, useMarkdown
 		} = this.props;
 		const { description } = file;
 
@@ -144,12 +168,10 @@ export default class Audio extends React.Component {
 		}
 
 		return (
-			[
-				<View key='audio' style={styles.audioContainer}>
+			<React.Fragment>
+				<View style={styles.audioContainer}>
 					<Video
-						ref={(ref) => {
-							this.player = ref;
-						}}
+						ref={this.setRef}
 						source={{ uri }}
 						onLoad={this.onLoad}
 						onProgress={this.onProgress}
@@ -157,39 +179,24 @@ export default class Audio extends React.Component {
 						paused={paused}
 						repeat={false}
 					/>
-					<Touchable
-						style={styles.playPauseButton}
-						onPress={this.togglePlayPause}
-						hitSlop={BUTTON_HIT_SLOP}
-						background={Touchable.SelectableBackgroundBorderless()}
-					>
-						{
-							paused
-								? <CustomIcon name='play' size={36} style={styles.playPauseImage} />
-								: <CustomIcon name='pause' size={36} style={styles.playPauseImage} />
-						}
-					</Touchable>
+					<Button paused={paused} onPress={this.togglePlayPause} />
 					<Slider
 						style={styles.slider}
 						value={currentTime}
 						maximumValue={duration}
 						minimumValue={0}
 						animateTransitions
-						animationConfig={{
-							duration: 250,
-							easing: Easing.linear,
-							delay: 0
-						}}
+						animationConfig={sliderAnimationConfig}
 						thumbTintColor={COLOR_PRIMARY}
 						minimumTrackTintColor={COLOR_PRIMARY}
-						onValueChange={value => this.setState({ currentTime: value })}
+						onValueChange={this.onValueChange}
 						thumbStyle={styles.thumbStyle}
 						trackStyle={styles.trackStyle}
 					/>
-					<Text style={styles.duration}>{this.getDuration()}</Text>
-				</View>,
-				<Markdown key='description' msg={description} baseUrl={baseUrl} customEmojis={customEmojis} username={user.username} />
-			]
+					<Text style={styles.duration}>{this.duration}</Text>
+				</View>
+				<Markdown msg={description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} />
+			</React.Fragment>
 		);
 	}
 }

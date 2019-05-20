@@ -125,7 +125,7 @@ export default function subscribeRoom({ rid }) {
 
 	const read = debounce(() => {
 		const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
-		if (room._id) {
+		if (room && room._id) {
 			this.readMessages(rid);
 		}
 	}, 300);

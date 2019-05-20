@@ -472,19 +472,6 @@ const RocketChat = {
 			return setting;
 		});
 	},
-	parseEmojis: emojis => emojis.reduce((ret, item) => {
-		ret[item.name] = item.extension;
-		item.aliases.forEach((alias) => {
-			ret[alias.value] = item.extension;
-		});
-		return ret;
-	}, {}),
-	_prepareEmojis(emojis) {
-		emojis.forEach((emoji) => {
-			emoji.aliases = emoji.aliases.map(alias => ({ value: alias }));
-		});
-		return emojis;
-	},
 	deleteMessage(message) {
 		const { _id, rid } = message;
 		// RC 0.48.0
