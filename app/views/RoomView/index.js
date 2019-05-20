@@ -435,7 +435,7 @@ export default class RoomView extends LoggedView {
 		}
 	}
 
-	setLastOpen = lastOpen => this.internalSetState({ lastOpen });
+	setLastOpen = lastOpen => this.setState({ lastOpen });
 
 	joinRoom = async() => {
 		try {
