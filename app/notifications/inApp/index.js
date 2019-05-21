@@ -4,27 +4,28 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import equal from 'deep-equal';
 
 import { CustomIcon } from '../../lib/Icons';
 import { COLOR_TITLE, COLOR_TEXT, COLOR_BACKGROUND_CONTAINER } from '../../constants/colors';
 import Avatar from '../../containers/Avatar';
 import Navigation from '../../lib/Navigation';
-import log from '../../utils/log';
 
 const AVATAR_SIZE = 40;
 const ANIMATION_DURATION = 300;
 const { width } = Dimensions.get('window');
 const MAX_WIDTH_MESSAGE = width - 100;
+let timeout;
 
 const styles = StyleSheet.create({
 	container: {
-		minHeight: 50,
+		minHeight: 60,
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		position: 'absolute',
-		zIndex: -2,
+		zIndex: 2,
 		backgroundColor: COLOR_BACKGROUND_CONTAINER,
 		width: '100%'
 	},
@@ -50,24 +51,28 @@ const styles = StyleSheet.create({
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	token: state.login.user && state.login.user.token
+	token: state.login.user && state.login.user.token,
+	notification: state.notification
 }))
-export default class Badge extends React.Component {
+export default class NotificationBadge extends React.Component {
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		token: PropTypes.string,
 		userId: PropTypes.string,
-		data: PropTypes.object,
-		message: PropTypes.string
+		notification: PropTypes.object
 	}
 
 	constructor(props) {
-		super('Badge', props);
+		super(props);
 		this.animatedValue = new Animated.Value(0);
 	}
 
-	componentDidMount() {
-		this.show();
+	shouldComponentUpdate(nextProps) {
+		const { notification } = this.props;
+		if (equal(nextProps.notification, notification)) {
+			return true;
+		}
+		return false;
 	}
 
 	componentDidUpdate() {
@@ -84,7 +89,10 @@ export default class Badge extends React.Component {
 				useNativeDriver: true
 			},
 		).start(() => {
-			setTimeout(() => {
+			if	(timeout) {
+				clearTimeout(timeout);
+			}
+			timeout = setTimeout(() => {
 				this.hide();
 			}, 10000);
 		});
@@ -103,9 +111,9 @@ export default class Badge extends React.Component {
 	}
 
 	goToRoom = () => {
-		const { data } = this.props;
-		const { rid, type, prid } = data;
-		const name = data === 'p' ? data.name : data.sender.username;
+		const { notification: { payload } } = this.props;
+		const { rid, type, prid } = payload;
+		const name = payload === 'p' ? payload.name : payload.sender.username;
 		Navigation.navigate('RoomView', {
 			rid, name, t: type, prid
 		});
@@ -113,16 +121,18 @@ export default class Badge extends React.Component {
 	}
 
 	render() {
-		log('manu');
 		const {
-			baseUrl, token, userId, data, message
+			baseUrl, token, userId, notification
 		} = this.props;
-		const { type } = data;
-		const name = data === 'p' ? data.name : data.sender.username;
-
+		const { message, payload } = notification;
+		if	(!payload) {
+			return null;
+		}
+		const { type } = payload;
+		const name = payload === 'p' ? payload.name : payload.sender.username;
 		const translateY = this.animatedValue.interpolate({
-			inputRange: [0, 0.001, 1],
-			outputRange: [-50, 0, 50]
+			inputRange: [0, 1],
+			outputRange: [-60, 0]
 		});
 
 		return (

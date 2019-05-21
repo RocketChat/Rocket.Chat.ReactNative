@@ -17,6 +17,7 @@ import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
 
 import subscribeRooms from './methods/subscriptions/rooms';
 import subscribeRoom from './methods/subscriptions/room';
+import notification from './methods/subscriptions/notification';
 
 import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
@@ -35,7 +36,7 @@ import loadThreadMessages from './methods/loadThreadMessages';
 import sendMessage, { getMessage, sendMessageCall } from './methods/sendMessage';
 import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFileMessage';
 
-import { getDeviceToken } from '../push';
+import { getDeviceToken } from '../notifications/push';
 import { roomsRequest } from '../actions/rooms';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
@@ -47,6 +48,7 @@ const RocketChat = {
 	TOKEN_KEY,
 	subscribeRooms,
 	subscribeRoom,
+	notification,
 	canOpenRoom,
 	createChannel({
 		name, users, type, readOnly, broadcast
@@ -163,6 +165,7 @@ const RocketChat = {
 			this.roomsSub.stop();
 		}
 		this.roomsSub = await this.subscribeRooms();
+		this.notificationSub = await this.notification();
 
 		this.getPermissions();
 		this.getCustomEmoji();
@@ -310,6 +313,10 @@ const RocketChat = {
 			this.roomsSub.stop();
 		}
 
+		if (this.notificationSub) {
+			this.notificationSub.stop();
+		}
+		
 		if (this.activeUsersSubTimeout) {
 			clearTimeout(this.activeUsersSubTimeout);
 			this.activeUsersSubTimeout = false;

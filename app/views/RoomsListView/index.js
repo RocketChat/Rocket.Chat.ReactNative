@@ -340,7 +340,6 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	goRoom = (item) => {
-		log('testing', item);
 		this.cancelSearchingAndroid();
 		const { navigation } = this.props;
 		navigation.navigate('RoomView', {

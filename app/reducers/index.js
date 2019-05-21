@@ -10,6 +10,7 @@ import createChannel from './createChannel';
 import app from './app';
 import customEmojis from './customEmojis';
 import sortPreferences from './sortPreferences';
+import notification from './notification';
 
 export default combineReducers({
 	settings,
@@ -22,5 +23,6 @@ export default combineReducers({
 	app,
 	rooms,
 	customEmojis,
-	sortPreferences
+	sortPreferences,
+	notification
 });

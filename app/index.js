@@ -37,9 +37,9 @@ import OAuthView from './views/OAuthView';
 import SetUsernameView from './views/SetUsernameView';
 import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from './constants/colors';
 import parseQuery from './lib/methods/helpers/parseQuery';
-import { initializePushNotifications, onNotification } from './push';
+import { initializePushNotifications, onNotification } from './notifications/push';
 import store from './lib/createStore';
-import NotificationBadge from './views/NotificationBadgeView';
+import NotificationBadge from './notifications/inApp';
 
 useScreens();
 
@@ -246,6 +246,7 @@ export default class Root extends React.Component {
 						Navigation.setTopLevelNavigator(navigatorRef);
 					}}
 				/>
+				<NotificationBadge />
 			</Provider>
 		);
 	}
