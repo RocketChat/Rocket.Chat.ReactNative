@@ -36,7 +36,7 @@ const Markdown = React.memo(({
 	}
 
 	if (!useMarkdown) {
-		return <Text style={styles.text}>{m}</Text>;
+		return <Text style={styles.text} numberOfLines={numberOfLines}>{m}</Text>;
 	}
 
 	return (
