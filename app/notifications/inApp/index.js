@@ -19,7 +19,7 @@ let timeout;
 
 const styles = StyleSheet.create({
 	container: {
-		minHeight: 60,
+		minHeight: 55,
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -30,9 +30,10 @@ const styles = StyleSheet.create({
 		width: '100%'
 	},
 	content: {
+		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'space-around'
+		justifyContent: 'flex-start'
 	},
 	avatar: {
 		marginHorizontal: 10
@@ -68,8 +69,15 @@ export default class NotificationBadge extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		const { notification } = this.props;
-		if (equal(nextProps.notification, notification)) {
+		const { notification: nextNotification } = nextProps;
+		const { notification: { payload, route } } = this.props;
+		if	(!nextNotification.payload) {
+			return false;
+		}
+		if (route && route.name === 'RoomView' && route.params.rid === nextNotification.payload.rid) {
+			return false;
+		}
+		if (!equal(nextNotification.payload, payload)) {
 			return true;
 		}
 		return false;
@@ -94,7 +102,7 @@ export default class NotificationBadge extends React.Component {
 			}
 			timeout = setTimeout(() => {
 				this.hide();
-			}, 10000);
+			}, 5000);
 		});
 	}
 
@@ -132,7 +140,7 @@ export default class NotificationBadge extends React.Component {
 		const name = payload === 'p' ? payload.name : payload.sender.username;
 		const translateY = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [-60, 0]
+			outputRange: [-55, 0]
 		});
 
 		return (

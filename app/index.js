@@ -40,6 +40,7 @@ import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications, onNotification } from './notifications/push';
 import store from './lib/createStore';
 import NotificationBadge from './notifications/inApp';
+import { setCurrentRoute } from './actions/notification';
 
 useScreens();
 
@@ -238,10 +239,33 @@ export default class Root extends React.Component {
 		}
 	}
 
+	getActiveRoute = (navigationState) => {
+		if (!navigationState) {
+			return null;
+		}
+		const route = navigationState.routes[navigationState.index];
+		// dive into nested navigators
+		if (route.routes) {
+			return this.getActiveRoute(route);
+		}
+		return {
+			name: route.routeName,
+			params: route.params
+		};
+	}
+
 	render() {
 		return (
 			<Provider store={store}>
 				<App
+					onNavigationStateChange={(prevState, currentState) => {
+						const currentScreen = this.getActiveRoute(currentState);
+						const prevScreen = this.getActiveRoute(prevState);
+
+						if (prevScreen !== currentScreen) {
+							store.dispatch(setCurrentRoute(currentScreen));
+						}
+					}}
 					ref={(navigatorRef) => {
 						Navigation.setTopLevelNavigator(navigatorRef);
 					}}
