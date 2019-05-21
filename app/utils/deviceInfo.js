@@ -9,11 +9,3 @@ export const isAndroid = !isIOS;
 export const getReadableVersion = DeviceInfo.getReadableVersion();
 export const getBundleId = DeviceInfo.getBundleId();
 export const getDeviceModel = DeviceInfo.getModel();
-
-export default {
-	isNotch,
-	isIOS,
-	isAndroid,
-	getReadableVersion,
-	getBundleId
-};

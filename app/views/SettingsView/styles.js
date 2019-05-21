@@ -48,10 +48,6 @@ export default StyleSheet.create({
 		borderColor: COLOR_BORDER,
 		borderTopWidth: 10
 	},
-	iconStyle: {
-		alignSelf: 'baseline',
-		marginEnd: 20
-	},
 	switch: {
 		marginStart: 5
 	}
