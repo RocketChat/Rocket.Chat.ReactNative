@@ -2,6 +2,9 @@ const REQUEST = 'REQUEST';
 const SUCCESS = 'SUCCESS';
 const FAILURE = 'FAILURE';
 const defaultTypes = [REQUEST, SUCCESS, FAILURE];
+const ACTIONS_SHOW = 'ACTIONS_SHOW';
+const ACTIONS_HIDE = 'ACTIONS_HIDE';
+const actionsTypes = [ACTIONS_SHOW, ACTIONS_HIDE];
 function createRequestTypes(base, types = defaultTypes) {
 	const res = {};
 	types.forEach(type => (res[type] = `${ base }_${ type }`));
@@ -26,12 +29,24 @@ export const ROOMS = createRequestTypes('ROOMS', [
 	'OPEN_SEARCH_HEADER',
 	'CLOSE_SEARCH_HEADER'
 ]);
-export const ROOM = createRequestTypes('ROOM', ['LEAVE', 'ERASE', 'USER_TYPING']);
+export const ROOM = createRequestTypes('ROOM', [
+	...defaultTypes,
+	...actionsTypes,
+	'HIDE',
+	'MARK_AS_UNREAD_REQUEST',
+	'MARK_AS_UNREAD_SUCCESS',
+	'MARK_AS_UNREAD_FAILURE',
+	'TOGGLE_FAVORITE_REQUEST',
+	'TOGGLE_FAVORITE_SUCCESS',
+	'TOGGLE_FAVORITE_FAILURE',
+	'LEAVE',
+	'ERASE',
+	'USER_TYPING'
+]);
 export const APP = createRequestTypes('APP', ['START', 'READY', 'INIT']);
 export const MESSAGES = createRequestTypes('MESSAGES', [
 	...defaultTypes,
-	'ACTIONS_SHOW',
-	'ACTIONS_HIDE',
+	...actionsTypes,
 	'ERROR_ACTIONS_SHOW',
 	'ERROR_ACTIONS_HIDE',
 	'DELETE_REQUEST',
