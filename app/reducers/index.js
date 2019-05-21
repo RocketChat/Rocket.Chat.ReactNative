@@ -10,6 +10,7 @@ import createChannel from './createChannel';
 import app from './app';
 import sortPreferences from './sortPreferences';
 import notification from './notification';
+import markdown from './markdown';
 
 export default combineReducers({
 	settings,
@@ -23,4 +24,5 @@ export default combineReducers({
 	rooms,
 	sortPreferences,
 	notification
+	markdown
 });

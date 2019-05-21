@@ -12,8 +12,7 @@ function createRequestTypes(base, types = defaultTypes) {
 export const LOGIN = createRequestTypes('LOGIN', [
 	...defaultTypes,
 	'SET_SERVICES',
-	'SET_PREFERENCE',
-	'SET_SORT_PREFERENCE'
+	'SET_PREFERENCE'
 ]);
 export const USER = createRequestTypes('USER', ['SET']);
 export const ROOMS = createRequestTypes('ROOMS', [
@@ -68,3 +67,5 @@ export const SNIPPETED_MESSAGES = createRequestTypes('SNIPPETED_MESSAGES', ['OPE
 export const DEEP_LINKING = createRequestTypes('DEEP_LINKING', ['OPEN']);
 export const SORT_PREFERENCES = createRequestTypes('SORT_PREFERENCES', ['SET_ALL', 'SET']);
 export const NOTIFICATION = createRequestTypes('NOTIFICATION', ['RECEIVED', 'SET_ROUTE']);
+export const TOGGLE_MARKDOWN = 'TOGGLE_MARKDOWN';
+

@@ -60,6 +60,7 @@ import { Toast } from '../../utils/info';
 	isAuthenticated: state.login.isAuthenticated,
 	Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
 	Message_TimeFormat: state.settings.Message_TimeFormat,
+	useMarkdown: state.markdown.useMarkdown,
 	baseUrl: state.settings.baseUrl || state.server ? state.server.server : ''
 }), dispatch => ({
 	editCancel: () => dispatch(editCancelAction()),
@@ -120,6 +121,7 @@ export default class RoomView extends LoggedView {
 		editing: PropTypes.bool,
 		replying: PropTypes.bool,
 		baseUrl: PropTypes.string,
+		useMarkdown: PropTypes.bool,
 		toggleReactionPicker: PropTypes.func,
 		actionsShow: PropTypes.func,
 		editCancel: PropTypes.func,
@@ -135,7 +137,6 @@ export default class RoomView extends LoggedView {
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
 		this.tmid = props.navigation.getParam('tmid');
-		this.useMarkdown = props.navigation.getParam('useMarkdown', true);
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
 			joined: this.rooms.length > 0,
@@ -504,7 +505,7 @@ export default class RoomView extends LoggedView {
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen } = this.state;
 		const {
-			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl
+			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, useMarkdown
 		} = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
@@ -545,7 +546,7 @@ export default class RoomView extends LoggedView {
 				Message_GroupingPeriod={Message_GroupingPeriod}
 				timeFormat={Message_TimeFormat}
 				useRealName={useRealName}
-				useMarkdown={this.useMarkdown}
+				useMarkdown={useMarkdown}
 			/>
 		);
 
