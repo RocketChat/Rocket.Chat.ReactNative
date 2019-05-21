@@ -154,6 +154,7 @@ export default {
 	Dont_Have_An_Account: 'Não tem uma conta?',
 	Do_you_really_want_to_key_this_room_question_mark: 'Você quer realmente {{key}} esta sala?',
 	edit: 'editar',
+	edited: 'editado',
 	erasing_room: 'apagando sala',
 	Edit: 'Editar',
 	Email_or_password_field_is_empty: 'Email ou senha estão vazios',
