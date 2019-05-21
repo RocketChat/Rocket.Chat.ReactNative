@@ -40,6 +40,7 @@ import { roomsRequest } from '../actions/rooms';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
+export const MARKDOWN_KEY = 'RC_MARKDOWN_KEY';
 const returnAnArray = obj => obj || [];
 const MIN_ROCKETCHAT_VERSION = '0.70.0';
 
@@ -684,6 +685,13 @@ const RocketChat = {
 	setAvatarFromService({ data, contentType = '', service = null }) {
 		// RC 0.51.0
 		return this.sdk.methodCall('setAvatarFromService', data, contentType, service);
+	},
+	async getUseMarkdown() {
+		const useMarkdown = await AsyncStorage.getItem(MARKDOWN_KEY);
+		if (useMarkdown === null) {
+			return true;
+		}
+		return JSON.parse(useMarkdown);
 	},
 	async getSortPreferences() {
 		const prefs = await AsyncStorage.getItem(SORT_PREFS_KEY);
