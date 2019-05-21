@@ -51,9 +51,7 @@ const Message = React.memo((props) => {
 					<View
 						style={[
 							styles.messageContent,
-							props.isHeader && styles.messageContentWithHeader,
-							props.hasError && props.isHeader && styles.messageContentWithHeader,
-							props.hasError && !props.isHeader && styles.messageContentWithError
+							props.isHeader && styles.messageContentWithHeader
 						]}
 					>
 						<Content {...props} />
@@ -69,9 +67,7 @@ const Message = React.memo((props) => {
 				<View
 					style={[
 						styles.messageContent,
-						props.isHeader && styles.messageContentWithHeader,
-						props.hasError && props.isHeader && styles.messageContentWithHeader,
-						props.hasError && !props.isHeader && styles.messageContentWithError
+						props.isHeader && styles.messageContentWithHeader
 					]}
 				>
 					<MessageInner {...props} />
