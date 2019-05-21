@@ -22,7 +22,7 @@ const MessageAvatar = React.memo(({
 		);
 	}
 	return null;
-}, () => true);
+}, (prevProps, nextProps) => prevProps.isHeader === nextProps.isHeader);
 
 MessageAvatar.propTypes = {
 	isHeader: PropTypes.bool,
