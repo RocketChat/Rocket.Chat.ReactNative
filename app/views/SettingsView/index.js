@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import {
-	Text, View, SectionList, Switch, Linking
+	Text, View, Switch, Linking, ScrollView
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import { RectButton } from 'react-native-gesture-handler';
+
 import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { Toast } from '../../utils/info';
@@ -15,13 +16,9 @@ import styles from './styles';
 import { CustomIcon } from '../../lib/Icons';
 import { COLOR_TEXT_DESCRIPTION, COLOR_TEXT } from '../../constants/colors';
 import openLink from '../../utils/openLink';
+import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import DisclosureIndicator from '../../containers/DisclosureIndicator';
 
-const renderSeparator = () => <View style={styles.separator} />;
-const COMING_SOON = 'coming soon';
-const ACTIONS = {
-	SEND_EMAIL: 'send email',
-	OPEN_LINK: 'open link'
-};
 const LICENSE_LINK = 'https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/LICENSE';
 
 @connect(state => ({ server: state.server }))
@@ -37,7 +34,7 @@ export default class SettingsView extends Component {
 		server:	PropTypes.object
 	}
 
-	sections() {
+	/* sections() {
 		const { server } =	this.props;
 		return [
 			{
@@ -102,77 +99,99 @@ export default class SettingsView extends Component {
 				renderItem: this.renderLastSection
 			}
 		];
+	} */
+	navigateToRoom = (room) => {
+		const { navigation } = this.props;
+		return () => navigation.navigate(room);
 	}
+
+	sendEmail = () => {
+		const subject = encodeURI('React Native App Support');
+		const email = encodeURI('support@rocket.chat');
+		const description = encodeURI(`
+			version: ${ getReadableVersion }
+			device: ${ getDeviceModel }
+		`);
+		Linking.openURL(`mailto:${ email }?subject=${ subject }&body=${ description }`);
+	}
+
+	openLink = link => () => openLink(link)
 
 	renderSectionSeparator = () => <View style={styles.sectionSeparatorBorder} />;
 
-	renderNormalSettingItem = ({ item }) => {
-		const { navigation } = this.props;
-		const { navigate } = navigation;
-		const onPress = (() => {
-			if (item.withScreen) {
-				if (item.isDeveloped) {
-					return () => (navigate(item.screen, {}));
-				}
-				return () => this.toast.show(COMING_SOON);
-			}
-			if (item.action === ACTIONS.SEND_EMAIL) {
-				const subject = encodeURI('React Native App Support');
-				const email = encodeURI('support@rocket.chat');
-				const description = encodeURI(`
-					version: ${ getReadableVersion }
-					device: ${ getDeviceModel }
-				`);
-				return () => Linking.openURL(`mailto:${ email }?subject=${ subject }&body=${ description }`);
-			}
-			if (item.action === ACTIONS.OPEN_LINK) {
-				return () => openLink(LICENSE_LINK);
-			}
-			return null;
-		})();
+	renderSeparator = () => <View style={styles.separator} />;
+
+	renderItem = (item) => {
+		if (!item.onPress) {
+			item.onPress = () => {};
+		}
 		return (
-			<RectButton
-				onPress={onPress}
-				activeOpacity={0.9}
-				underlayColor={COLOR_TEXT}
-			>
-				<View style={styles.sectionItem}>
-					<View style={{ flex: 1 }}>
-						<Text style={styles.sectionItemTitle}>{item.title}</Text>
-						{item.subTitle
-							? <Text style={styles.sectionItemSubTitle}>{item.subTitle}</Text>
-							: null
-						}
+			<React.Fragment>
+				<RectButton
+					onPress={item.onPress}
+					activeOpacity={0.9}
+					underlayColor={COLOR_TEXT}
+				>
+					<View style={[styles.sectionItem, item.disable && styles.sectionItemDisabled]}>
+						<View>
+							<Text style={styles.sectionItemTitle}>{item.title}</Text>
+							{item.subTitle
+								? <Text style={styles.sectionItemSubTitle}>{item.subTitle}</Text>
+								: null
+							}
+						</View>
+						{item.showActionIndicator ? <DisclosureIndicator /> : null}
 					</View>
-					{item.withScreen ? <CustomIcon style={styles.iconStyle} name='arrow-down' size={20} color={COLOR_TEXT_DESCRIPTION} /> : null}
-				</View>
-			</RectButton>
+				</RectButton>
+				{this.renderSeparator()}
+			</React.Fragment>
 		);
 	}
 
-	renderLastSection = ({ item }) => (
-		<View style={[styles.sectionItem, item.disable && styles.sectionItemDisabled]}>
-			<View style={{ flex: 1 }}>
-				<Text style={{ ...styles.sectionItemTitle, marginTop: 5 }}>{item.title}</Text>
+	renderItemSwitch = item => (
+		<React.Fragment>
+			<View style={[styles.sectionItem, item.disable && styles.sectionItemDisabled]}>
+				<View>
+					<Text style={styles.sectionItemTitle}>{item.title}</Text>
+					{item.subTitle
+						? <Text style={styles.sectionItemSubTitle}>{item.subTitle}</Text>
+						: null
+					}
+				</View>
+				<Switch value={false} disabled={item.disable} style={styles.switch} />
 			</View>
-			{item.withToggleButton ? <Switch value={false} style={{ marginStart: 5 }} /> : null}
-		</View>
+			{this.renderSeparator()}
+		</React.Fragment>
 	)
 
 	render() {
+		const { server } = this.props;
 		return (
 			<SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
 				<StatusBar />
-				<SectionList
+				<ScrollView
+					{...scrollPersistTaps}
 					contentContainerStyle={styles.contentContainer}
-					style={styles.container}
-					stickySectionHeadersEnabled={false}
-					sections={this.sections()}
-					SectionSeparatorComponent={this.renderSectionSeparator}
-					ItemSeparatorComponent={renderSeparator}
-					keyExtractor={item => item.title}
-				/>
-				<Toast ref={toast => this.toast = toast} />
+				>
+					{this.renderSectionSeparator()}
+
+					{this.renderItem({ title: I18n.t('Contact_us'), onPress: this.sendEmail, showActionIndicator: true })}
+					{this.renderItem({ title: I18n.t('Language'), onPress: this.navigateToRoom('LanguageView'), showActionIndicator: true })}
+					{this.renderItem({ title: I18n.t('Theme'), showActionIndicator: true, disable: true })}
+					{this.renderItem({ title: I18n.t('Share_this_app'), showActionIndicator: true, disable: true })}
+					{this.renderItem({ title: I18n.t('Theme'), showActionIndicator: true, disable: true })}
+
+					{this.renderSectionSeparator()}
+
+					{this.renderItem({ title: I18n.t('License'), onPress: this.openLink(LICENSE_LINK), showActionIndicator: true })}
+					{this.renderItem({ title: I18n.t('Version_no', { version: getReadableVersion }) })}
+					{this.renderItem({ title: I18n.t('Server_version', { version: server.version }), subTitle: `${ server.server.split('//')[1] }` })}
+
+					{this.renderSectionSeparator()}
+
+					{this.renderItemSwitch({ title: I18n.t('Send_crash_report'), disable: true })}
+					{this.renderItem({ title: I18n.t('Crash_report_disclaimer'), disable: true })}
+				</ScrollView>
 			</SafeAreaView>
 		);
 	}

@@ -1,4 +1,4 @@
-import { StyleSheet, I18nManager } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import {
 	COLOR_SEPARATOR, COLOR_WHITE, COLOR_BORDER
@@ -7,7 +7,8 @@ import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	contentContainer: {
-		paddingBottom: 30
+		backgroundColor: COLOR_WHITE,
+		marginBottom: 30
 	},
 	container: {
 		flex: 1,
@@ -15,22 +16,24 @@ export default StyleSheet.create({
 	},
 	sectionItemTitle: {
 		alignSelf: 'flex-start',
-		fontSize: 14,
+		fontSize: 16,
 		marginStart: 20,
 		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},
 	sectionItemSubTitle: {
 		alignSelf: 'flex-start',
-		fontSize: 11,
+		fontSize: 12,
 		marginStart: 20,
 		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},
 	sectionItem: {
 		backgroundColor: COLOR_WHITE,
-		paddingVertical: 16,
+		flex: 1,
+		paddingVertical: 20,
 		flexDirection: 'row',
+		justifyContent: 'space-between',
 		alignItems: 'center'
 	},
 	sectionItemDisabled: {
@@ -45,8 +48,10 @@ export default StyleSheet.create({
 		borderTopWidth: 10
 	},
 	iconStyle: {
-		transform: [{ rotate: I18nManager.isRTL ? '90deg' : '270deg' }],
 		alignSelf: 'baseline',
 		marginEnd: 20
+	},
+	switch: {
+		marginStart: 5
 	}
 });
