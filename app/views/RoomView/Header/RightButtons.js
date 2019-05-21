@@ -46,7 +46,9 @@ class RightButtonsContainer extends React.PureComponent {
 	}
 
 	componentDidMount() {
-		safeAddListener(this.thread, this.updateThread);
+		if (this.thread) {
+			safeAddListener(this.thread, this.updateThread);
+		}
 	}
 
 	componentWillUnmount() {

@@ -21,6 +21,7 @@ import Sidebar from './views/SidebarView';
 import ProfileView from './views/ProfileView';
 import SettingsView from './views/SettingsView';
 import LanguageView from './views/LanguageView';
+import AdminPanelView from './views/AdminPanelView';
 import RoomActionsView from './views/RoomActionsView';
 import RoomInfoView from './views/RoomInfoView';
 import RoomInfoEditView from './views/RoomInfoEditView';
@@ -147,6 +148,12 @@ const SettingsStack = createStackNavigator({
 	defaultNavigationOptions: defaultHeader
 });
 
+const AdminPanelStack = createStackNavigator({
+	AdminPanelView
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
 SettingsStack.navigationOptions = ({ navigation }) => {
 	let drawerLockMode = 'unlocked';
 	if (navigation.state.index > 0) {
@@ -160,7 +167,8 @@ SettingsStack.navigationOptions = ({ navigation }) => {
 const ChatsDrawer = createDrawerNavigator({
 	ChatsStack,
 	ProfileStack,
-	SettingsStack
+	SettingsStack,
+	AdminPanelStack
 }, {
 	contentComponent: Sidebar
 });

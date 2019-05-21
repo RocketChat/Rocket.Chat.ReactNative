@@ -1,27 +1,33 @@
 import React, { Component } from 'react';
 import {
-	Text, View, Switch, Linking, ScrollView
+	Text, View, Switch, Linking, ScrollView, AsyncStorage
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import { RectButton } from 'react-native-gesture-handler';
+import { Answers } from 'react-native-fabric';
 
 import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
-import { Toast } from '../../utils/info';
-import { getReadableVersion, getDeviceModel } from '../../utils/deviceInfo';
+import { getReadableVersion, getDeviceModel, isAndroid } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
+import { MARKDOWN_KEY } from '../../lib/rocketchat';
 import styles from './styles';
-import { CustomIcon } from '../../lib/Icons';
-import { COLOR_TEXT_DESCRIPTION, COLOR_TEXT } from '../../constants/colors';
+import { COLOR_SUCCESS, COLOR_TEXT, COLOR_DANGER } from '../../constants/colors';
 import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import DisclosureIndicator from '../../containers/DisclosureIndicator';
+import { toggleMarkdown as toggleMarkdownAction } from '../../actions/markdown';
 
 const LICENSE_LINK = 'https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/LICENSE';
 
-@connect(state => ({ server: state.server }))
+@connect(state => ({
+	server: state.server,
+	useMarkdown: state.markdown.useMarkdown
+}), dispatch => ({
+	toggleMarkdown: params => dispatch(toggleMarkdownAction(params))
+}))
 
 export default class SettingsView extends Component {
 	static navigationOptions = ({ navigation }) => ({
@@ -31,75 +37,18 @@ export default class SettingsView extends Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		server:	PropTypes.object
+		server:	PropTypes.object,
+		useMarkdown: PropTypes.bool,
+		toggleMarkdown: PropTypes.func
 	}
 
-	/* sections() {
-		const { server } =	this.props;
-		return [
-			{
-				data: [
-					{
-						withScreen: false,
-						title: I18n.t('Contact_us'),
-						action: ACTIONS.SEND_EMAIL,
-						isDeveloped: false
-					}, {
-						withScreen: true,
-						title: I18n.t('Language'),
-						screen: 'LanguageView',
-						isDeveloped: true
-					}, {
-						withScreen: true,
-						title: I18n.t('Theme'),
-						screen: COMING_SOON,
-						isDeveloped: false
-					}, {
-						withScreen: true,
-						title: I18n.t('Share_this_app'),
-						screen: COMING_SOON,
-						isDeveloped: false
-					}
-				],
-				renderItem: this.renderNormalSettingItem
-			}, {
-				data: [{
-					withScreen: false,
-					title: I18n.t('License'),
-					action: ACTIONS.OPEN_LINK,
-					subTitle: '',
-					isDeveloped: false
-				}, {
-					withScreen: false,
-					title: I18n.t('Version_no', { version: getReadableVersion }),
-					subTitle: '',
-					isDeveloped: false
-				}, {
-					withScreen: false,
-					title: I18n.t('Server_version', { version: server.version }),
-					subTitle: `${ server.server.split('//')[1] }`,
-					isDeveloped: false
-				}
-				],
-				renderItem: this.renderNormalSettingItem
-			},
-			{
-				data: [{
-					title: I18n.t('Send_crash_report'),
-					screen: COMING_SOON,
-					isDeveloped: false,
-					withToggleButton: true
-				},
-				{
-					title: I18n.t('Crash_report_disclaimer'),
-					screen: COMING_SOON,
-					isDeveloped: false,
-					disable: true
-				}],
-				renderItem: this.renderLastSection
-			}
-		];
-	} */
+	toggleMarkdown = (value) => {
+		AsyncStorage.setItem(MARKDOWN_KEY, JSON.stringify(value));
+		const { toggleMarkdown } = this.props;
+		toggleMarkdown(value);
+		Answers.logCustom('toggle_markdown', { value });
+	}
+
 	navigateToRoom = (room) => {
 		const { navigation } = this.props;
 		return () => navigation.navigate(room);
@@ -158,14 +107,23 @@ export default class SettingsView extends Component {
 						: null
 					}
 				</View>
-				<Switch value={false} disabled={item.disable} style={styles.switch} />
+				<Switch
+					value={item.value}
+					disabled={item.disable}
+					style={styles.switch}
+					trackColor={{
+						false: isAndroid ? COLOR_DANGER : null,
+						true: COLOR_SUCCESS
+					}}
+					onValueChange={item.onValueChange}
+				/>
 			</View>
 			{this.renderSeparator()}
 		</React.Fragment>
 	)
 
 	render() {
-		const { server } = this.props;
+		const { server, useMarkdown } = this.props;
 		return (
 			<SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
 				<StatusBar />
@@ -189,6 +147,7 @@ export default class SettingsView extends Component {
 
 					{this.renderSectionSeparator()}
 
+					{this.renderItemSwitch({ title: I18n.t('Enable_markdown'), value: useMarkdown, onValueChange: this.toggleMarkdown })}
 					{this.renderItemSwitch({ title: I18n.t('Send_crash_report'), disable: true })}
 					{this.renderItem({ title: I18n.t('Crash_report_disclaimer'), disable: true })}
 				</ScrollView>
