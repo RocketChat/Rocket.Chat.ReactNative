@@ -130,6 +130,7 @@ export default class SettingsView extends Component {
 				<ScrollView
 					{...scrollPersistTaps}
 					contentContainerStyle={styles.contentContainer}
+					showsVerticalScrollIndicator={false}
 				>
 					{this.renderSectionSeparator()}
 

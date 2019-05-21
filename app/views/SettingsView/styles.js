@@ -41,7 +41,8 @@ export default StyleSheet.create({
 	},
 	separator: {
 		height: StyleSheet.hairlineWidth,
-		backgroundColor: COLOR_SEPARATOR
+		backgroundColor: COLOR_SEPARATOR,
+		marginHorizontal: 10
 	},
 	sectionSeparatorBorder: {
 		borderColor: COLOR_BORDER,
