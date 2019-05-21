@@ -160,6 +160,7 @@ export default {
 	Email_or_password_field_is_empty: 'Email ou senha estão vazios',
 	Email: 'Email',
 	email: 'e-mail',
+	Enable_markdown: 'Habilitar markdown',
 	Enable_notifications: 'Habilitar notificações',
 	Everyone_can_access_this_channel: 'Todos podem acessar este canal',
 	Error_uploading: 'Erro subindo',
