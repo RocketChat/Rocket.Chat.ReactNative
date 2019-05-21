@@ -309,7 +309,6 @@ export default {
 	This_room_is_blocked: 'Cette canal est bloquée',
 	This_room_is_read_only: 'Cette canal est en lecture seule',
 	Timezone: 'Fuseau horaire',
-	Toggle_Drawer: 'Toggle_Drawer',
 	topic: 'sujet',
 	Topic: 'Sujet',
 	Try_again: 'Réessayer',
