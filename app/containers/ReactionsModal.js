@@ -7,6 +7,7 @@ import Modal from 'react-native-modal';
 import Touchable from 'react-native-platform-touchable';
 
 import Emoji from './message/Emoji';
+import { getCustomEmoji } from './message/utils';
 import I18n from '../i18n';
 import { CustomIcon } from '../lib/Icons';
 import sharedStyles from '../views/Styles';
@@ -78,6 +79,7 @@ const Item = React.memo(({ item, user, baseUrl }) => {
 					standardEmojiStyle={standardEmojiStyle}
 					customEmojiStyle={customEmojiStyle}
 					baseUrl={baseUrl}
+					getCustomEmoji={getCustomEmoji}
 				/>
 			</View>
 			<View style={styles.peopleItemContainer}>
