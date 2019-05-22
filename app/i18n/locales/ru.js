@@ -270,7 +270,6 @@ export default {
 	This_room_is_blocked: 'Этот канал заблокирован',
 	This_room_is_read_only: 'Этот канал доступен только для чтения',
 	Timezone: 'Часовой пояс',
-	Toggle_Drawer: 'Toggle_Drawer',
 	topic: 'топик',
 	Topic: 'Топик',
 	Try_again: 'Попробуйте еще раз',

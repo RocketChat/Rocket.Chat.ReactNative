@@ -179,6 +179,7 @@ export default class UploadModal extends Component {
 				animationOut='fadeOut'
 				useNativeDriver
 				hideModalContentWhileAnimating
+				avoidKeyboard
 			>
 				<View style={[styles.container, { width: width - 32 }]}>
 					<View style={styles.titleContainer}>

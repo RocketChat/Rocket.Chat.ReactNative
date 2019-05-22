@@ -13,6 +13,8 @@ PODS:
     - React
   - react-native-splash-screen (3.2.0):
     - React
+  - react-native-webview (5.8.1):
+    - React
   - React/Core (0.59.8):
     - yoga (= 0.59.8.React)
   - React/fishhook (0.59.8)
@@ -56,6 +58,7 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
+  - react-native-webview (from `../node_modules/react-native-webview`)
   - React/Core (from `../node_modules/react-native`)
   - React/RCTActionSheet (from `../node_modules/react-native`)
   - React/RCTAnimation (from `../node_modules/react-native`)
@@ -90,6 +93,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-orientation-locker"
   react-native-splash-screen:
     :path: "../node_modules/react-native-splash-screen"
+  react-native-webview:
+    :path: "../node_modules/react-native-webview"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNImageCropPicker:
@@ -108,12 +113,13 @@ SPEC CHECKSUMS:
   React: 76e6aa2b87d05eb6cccb6926d72685c9a07df152
   react-native-orientation-locker: 132a63bab4dddd2a5709f6f7935ad9676b0af7c5
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
+  react-native-webview: f3e28b48461c78db833f727feec08b13285e7b61
   RNDeviceInfo: 958a1ed6f94e04557b865b8ef848cfc83db0ebba
   RNImageCropPicker: e608efe182652dc8690268cb99cb5a201f2b5ea3
   RNScreens: 720a9e6968beb73e8196239801e887d8401f86ed
   RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
   yoga: 92b2102c3d373d1a790db4ab761d2b0ffc634f64
 
-PODFILE CHECKSUM: 1983a1efc6bdbf36bf677301500e60cd295ff300
+PODFILE CHECKSUM: 644d63bf56349cf8faaa9d1acf44cfc7ee647f3b
 
 COCOAPODS: 1.6.2
