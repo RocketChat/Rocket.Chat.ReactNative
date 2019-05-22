@@ -142,7 +142,9 @@ export default class RoomsListView extends LoggedView {
 		this.getSubscriptions();
 		const { navigation } = this.props;
 		navigation.setParams({
-			onPressItem: this._onPressItem, initSearchingAndroid: this.initSearchingAndroid, cancelSearchingAndroid: this.cancelSearchingAndroid
+			onPressItem: this._onPressItem,
+			initSearchingAndroid: this.initSearchingAndroid,
+			cancelSearchingAndroid: this.cancelSearchingAndroid
 		});
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}

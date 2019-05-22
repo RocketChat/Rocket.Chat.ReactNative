@@ -27,9 +27,8 @@ export const merge = (subscription, room) => {
 		if (!subscription.roles || !subscription.roles.length) {
 			subscription.roles = [];
 		}
-
 		if (room.muted && room.muted.length) {
-			subscription.muted = room.muted.filter(user => user).map(user => ({ value: user }));
+			subscription.muted = room.muted.filter(muted => !!muted);
 		} else {
 			subscription.muted = [];
 		}
