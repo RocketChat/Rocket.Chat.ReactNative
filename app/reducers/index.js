@@ -23,6 +23,6 @@ export default combineReducers({
 	app,
 	rooms,
 	sortPreferences,
-	notification
+	notification,
 	markdown
 });
