@@ -148,7 +148,7 @@ jobs:
           command: |
             cd android
             if [[ $KEYSTORE ]]; then
-              ./gradlew assembleRelease
+              ./gradlew bundle
             else
               ./gradlew assembleDebug
             fi
