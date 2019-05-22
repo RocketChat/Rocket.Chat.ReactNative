@@ -429,9 +429,7 @@ class DB {
 		return this.databases.activeDB = new Realm({
 			path: `${ path }.realm`,
 			schema,
-      
 			schemaVersion: 12,
-
 			migration: (oldRealm, newRealm) => {
 				if (oldRealm.schemaVersion >= 3 && newRealm.schemaVersion <= 11) {
 					const newSubs = newRealm.objects('subscriptions');
@@ -443,9 +441,7 @@ class DB {
 					const newThreadMessages = newRealm.objects('threadMessages');
 					newRealm.delete(newThreadMessages);
 				}
-                                               
 				if (newRealm.schemaVersion === 9) {
-
 					const newEmojis = newRealm.objects('customEmojis');
 					newRealm.delete(newEmojis);
 					const newSettings = newRealm.objects('settings');
