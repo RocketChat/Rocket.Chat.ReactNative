@@ -41,6 +41,7 @@ import { roomsRequest } from '../actions/rooms';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
+export const MARKDOWN_KEY = 'RC_MARKDOWN_KEY';
 const returnAnArray = obj => obj || [];
 const MIN_ROCKETCHAT_VERSION = '0.70.0';
 
@@ -475,19 +476,6 @@ const RocketChat = {
 			return setting;
 		});
 	},
-	parseEmojis: emojis => emojis.reduce((ret, item) => {
-		ret[item.name] = item.extension;
-		item.aliases.forEach((alias) => {
-			ret[alias.value] = item.extension;
-		});
-		return ret;
-	}, {}),
-	_prepareEmojis(emojis) {
-		emojis.forEach((emoji) => {
-			emoji.aliases = emoji.aliases.map(alias => ({ value: alias }));
-		});
-		return emojis;
-	},
 	deleteMessage(message) {
 		const { _id, rid } = message;
 		// RC 0.48.0
@@ -513,6 +501,9 @@ const RocketChat = {
 		}
 		// RC 0.59.0
 		return this.sdk.post('chat.pinMessage', { messageId: message._id });
+	},
+	reportMessage(messageId) {
+		return this.sdk.post('chat.reportMessage', { messageId, description: 'Message reported by user' });
 	},
 	getRoom(rid) {
 		const [result] = database.objects('subscriptions').filtered('rid = $0', rid);
@@ -697,6 +688,13 @@ const RocketChat = {
 	setAvatarFromService({ data, contentType = '', service = null }) {
 		// RC 0.51.0
 		return this.sdk.methodCall('setAvatarFromService', data, contentType, service);
+	},
+	async getUseMarkdown() {
+		const useMarkdown = await AsyncStorage.getItem(MARKDOWN_KEY);
+		if (useMarkdown === null) {
+			return true;
+		}
+		return JSON.parse(useMarkdown);
 	},
 	async getSortPreferences() {
 		const prefs = await AsyncStorage.getItem(SORT_PREFS_KEY);

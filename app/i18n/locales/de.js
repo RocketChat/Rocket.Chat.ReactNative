@@ -308,7 +308,6 @@ export default {
 	This_room_is_blocked: 'Dieser Raum ist gesperrt',
 	This_room_is_read_only: 'Dieser Raum kann nur gelesen werden',
 	Timezone: 'Zeitzone',
-	Toggle_Drawer: 'Toggle_Drawer',
 	topic: 'Thema',
 	Topic: 'Thema',
 	Try_again: 'Versuchen Sie es nochmal',

@@ -305,7 +305,6 @@ export default {
 	This_room_is_blocked: '这个房间被锁了',
 	This_room_is_read_only: '这个房间是只读的',
 	Timezone: '时区',
-	Toggle_Drawer: 'Toggle_Drawer',
 	topic: '主题',
 	Topic: '主题',
 	Try_again: '再试一次',

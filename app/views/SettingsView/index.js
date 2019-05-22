@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView } from 'react-native';
+import {
+	View, ScrollView, Switch, Text, StyleSheet, AsyncStorage
+} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
+import { Answers } from 'react-native-fabric';
 
 import LoggedView from '../View';
-import RocketChat from '../../lib/rocketchat';
+import RocketChat, { MARKDOWN_KEY } from '../../lib/rocketchat';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
 import RCTextInput from '../../containers/TextInput';
@@ -17,13 +20,41 @@ import Loading from '../../containers/Loading';
 import { showErrorAlert, Toast } from '../../utils/info';
 import log from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
+import { toggleMarkdown as toggleMarkdownAction } from '../../actions/markdown';
 import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
+import { isAndroid } from '../../utils/deviceInfo';
+import {
+	COLOR_WHITE, COLOR_SEPARATOR, COLOR_DANGER, COLOR_SUCCESS
+} from '../../constants/colors';
+
+const styles = StyleSheet.create({
+	swithContainer: {
+		backgroundColor: COLOR_WHITE,
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		flexDirection: 'row'
+	},
+	label: {
+		fontSize: 17,
+		flex: 1,
+		...sharedStyles.textMedium,
+		...sharedStyles.textColorNormal
+	},
+	separator: {
+		flex: 1,
+		height: 1,
+		backgroundColor: COLOR_SEPARATOR,
+		marginVertical: 10
+	}
+});
 
 @connect(state => ({
-	userLanguage: state.login.user && state.login.user.language
+	userLanguage: state.login.user && state.login.user.language,
+	useMarkdown: state.markdown.useMarkdown
 }), dispatch => ({
-	setUser: params => dispatch(setUserAction(params))
+	setUser: params => dispatch(setUserAction(params)),
+	toggleMarkdown: params => dispatch(toggleMarkdownAction(params))
 }))
 /** @extends React.Component */
 export default class SettingsView extends LoggedView {
@@ -35,7 +66,9 @@ export default class SettingsView extends LoggedView {
 	static propTypes = {
 		componentId: PropTypes.string,
 		userLanguage: PropTypes.string,
-		setUser: PropTypes.func
+		useMarkdown: PropTypes.bool,
+		setUser: PropTypes.func,
+		toggleMarkdown: PropTypes.func
 	}
 
 	constructor(props) {
@@ -71,11 +104,14 @@ export default class SettingsView extends LoggedView {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { language, saving } = this.state;
-		const { userLanguage } = this.props;
+		const { userLanguage, useMarkdown } = this.props;
 		if (nextState.language !== language) {
 			return true;
 		}
 		if (nextState.saving !== saving) {
+			return true;
+		}
+		if (nextProps.useMarkdown !== useMarkdown) {
 			return true;
 		}
 		if (nextProps.userLanguage !== userLanguage) {
@@ -133,10 +169,18 @@ export default class SettingsView extends LoggedView {
 		}
 	}
 
+	toggleMarkdown = (value) => {
+		AsyncStorage.setItem(MARKDOWN_KEY, JSON.stringify(value));
+		const { toggleMarkdown } = this.props;
+		toggleMarkdown(value);
+		Answers.logCustom('toggle_markdown', { value });
+	}
+
 	render() {
 		const {
 			language, languages, placeholder, saving
 		} = this.state;
+		const { useMarkdown } = this.props;
 		return (
 			<KeyboardView
 				contentContainerStyle={sharedStyles.container}
@@ -172,6 +216,16 @@ export default class SettingsView extends LoggedView {
 								onPress={this.submit}
 								disabled={!this.formIsChanged()}
 								testID='settings-view-button'
+							/>
+						</View>
+						<View style={styles.separator} />
+						<View style={styles.swithContainer}>
+							<Text style={styles.label}>{I18n.t('Enable_markdown')}</Text>
+							<Switch
+								value={useMarkdown}
+								onValueChange={this.toggleMarkdown}
+								onTintColor={COLOR_SUCCESS}
+								tintColor={isAndroid ? COLOR_DANGER : null}
 							/>
 						</View>
 						<Loading visible={saving} />

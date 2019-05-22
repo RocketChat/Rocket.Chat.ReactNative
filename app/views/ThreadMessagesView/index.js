@@ -24,12 +24,12 @@ const API_FETCH_COUNT = 50;
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	customEmojis: state.customEmojis,
 	user: {
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token
-	}
+	},
+	useRealName: state.settings.UI_Use_Real_Name
 }))
 /** @extends React.Component */
 export default class ThreadMessagesView extends LoggedView {
@@ -39,7 +39,9 @@ export default class ThreadMessagesView extends LoggedView {
 
 	static propTypes = {
 		user: PropTypes.object,
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		baseUrl: PropTypes.string,
+		useRealName: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -82,6 +84,7 @@ export default class ThreadMessagesView extends LoggedView {
 		this.setState({ messages: this.messages });
 	}, 300)
 
+	// eslint-disable-next-line react/sort-comp
 	init = () => {
 		const [room] = this.rooms;
 		const lastThreadSync = new Date();
@@ -186,6 +189,20 @@ export default class ThreadMessagesView extends LoggedView {
 		}) : null
 	)
 
+	onThreadPress = debounce((item) => {
+		const { navigation } = this.props;
+		if (item.tmid) {
+			navigation.push('RoomView', {
+				rid: item.rid, tmid: item.tmid, name: item.tmsg, t: 'thread'
+			});
+		} else if (item.tlm) {
+			const title = item.msg || (item.attachments && item.attachments.length && item.attachments[0].title);
+			navigation.push('RoomView', {
+				rid: item.rid, tmid: item._id, name: title, t: 'thread'
+			});
+		}
+	}, 1000, true)
+
 	renderSeparator = () => <Separator />
 
 	renderEmpty = () => (
@@ -195,7 +212,9 @@ export default class ThreadMessagesView extends LoggedView {
 	)
 
 	renderItem = ({ item }) => {
-		const { user, navigation } = this.props;
+		const {
+			user, navigation, baseUrl, useRealName
+		} = this.props;
 		if (item.isValid && item.isValid()) {
 			return (
 				<Message
@@ -207,10 +226,11 @@ export default class ThreadMessagesView extends LoggedView {
 					status={item.status}
 					_updatedAt={item._updatedAt}
 					navigation={navigation}
-					customTimeFormat='MMM D'
+					timeFormat='MMM D'
 					customThreadTimeFormat='MMM Do YYYY, h:mm:ss a'
-					fetchThreadName={this.fetchThreadName}
-					onDiscussionPress={this.onDiscussionPress}
+					onThreadPress={this.onThreadPress}
+					baseUrl={baseUrl}
+					useRealName={useRealName}
 				/>
 			);
 		}
