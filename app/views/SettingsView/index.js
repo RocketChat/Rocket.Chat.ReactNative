@@ -75,51 +75,46 @@ export default class SettingsView extends Component {
 			item.onPress = () => {};
 		}
 		return (
-			<React.Fragment>
-				<RectButton
-					onPress={item.onPress}
-					activeOpacity={0.9}
-					underlayColor={COLOR_TEXT}
-				>
-					<View style={[styles.sectionItem, item.disable && styles.sectionItemDisabled]}>
-						<View>
-							<Text style={styles.sectionItemTitle}>{item.title}</Text>
-							{item.subTitle
-								? <Text style={styles.sectionItemSubTitle}>{item.subTitle}</Text>
-								: null
-							}
-						</View>
-						{item.showActionIndicator ? <DisclosureIndicator /> : null}
+			<RectButton
+				onPress={item.onPress}
+				activeOpacity={0.9}
+				underlayColor={COLOR_TEXT}
+			>
+				<View style={[styles.sectionItem, item.disable && styles.sectionItemDisabled]}>
+					<View>
+						<Text style={styles.sectionItemTitle}>{item.title}</Text>
+						{item.subTitle
+							? <Text style={styles.sectionItemSubTitle}>{item.subTitle}</Text>
+							: null
+						}
 					</View>
-				</RectButton>
-				{this.renderSeparator()}
-			</React.Fragment>
+					{item.showActionIndicator ? <DisclosureIndicator /> : null}
+				</View>
+			</RectButton>
+
 		);
 	}
 
 	renderItemSwitch = item => (
-		<React.Fragment>
-			<View style={[styles.sectionItem, item.disable && styles.sectionItemDisabled]}>
-				<View>
-					<Text style={styles.sectionItemTitle}>{item.title}</Text>
-					{item.subTitle
-						? <Text style={styles.sectionItemSubTitle}>{item.subTitle}</Text>
-						: null
-					}
-				</View>
-				<Switch
-					value={item.value}
-					disabled={item.disable}
-					style={styles.switch}
-					trackColor={{
-						false: isAndroid ? COLOR_DANGER : null,
-						true: COLOR_SUCCESS
-					}}
-					onValueChange={item.onValueChange}
-				/>
+		<View style={[styles.sectionItem, item.disable && styles.sectionItemDisabled]}>
+			<View>
+				<Text style={styles.sectionItemTitle}>{item.title}</Text>
+				{item.subTitle
+					? <Text style={styles.sectionItemSubTitle}>{item.subTitle}</Text>
+					: null
+				}
 			</View>
-			{this.renderSeparator()}
-		</React.Fragment>
+			<Switch
+				value={item.value}
+				disabled={item.disable}
+				style={styles.switch}
+				trackColor={{
+					false: isAndroid ? COLOR_DANGER : null,
+					true: COLOR_SUCCESS
+				}}
+				onValueChange={item.onValueChange}
+			/>
+		</View>
 	)
 
 	render() {
@@ -135,22 +130,32 @@ export default class SettingsView extends Component {
 					{this.renderSectionSeparator()}
 
 					{this.renderItem({ title: I18n.t('Contact_us'), onPress: this.sendEmail, showActionIndicator: true })}
+					{this.renderSeparator()}
 					{this.renderItem({ title: I18n.t('Language'), onPress: this.navigateToRoom('LanguageView'), showActionIndicator: true })}
+					{this.renderSeparator()}
 					{this.renderItem({ title: I18n.t('Theme'), showActionIndicator: true, disable: true })}
+					{this.renderSeparator()}
 					{this.renderItem({ title: I18n.t('Share_this_app'), showActionIndicator: true, disable: true })}
+					{this.renderSeparator()}
 					{this.renderItem({ title: I18n.t('Theme'), showActionIndicator: true, disable: true })}
 
 					{this.renderSectionSeparator()}
 
 					{this.renderItem({ title: I18n.t('License'), onPress: this.openLink(LICENSE_LINK), showActionIndicator: true })}
+					{this.renderSeparator()}
 					{this.renderItem({ title: I18n.t('Version_no', { version: getReadableVersion }) })}
+					{this.renderSeparator()}
 					{this.renderItem({ title: I18n.t('Server_version', { version: server.version }), subTitle: `${ server.server.split('//')[1] }` })}
 
 					{this.renderSectionSeparator()}
 
 					{this.renderItemSwitch({ title: I18n.t('Enable_markdown'), value: useMarkdown, onValueChange: this.toggleMarkdown })}
+					{this.renderSeparator()}
 					{this.renderItemSwitch({ title: I18n.t('Send_crash_report'), disable: true })}
+					{this.renderSeparator()}
 					{this.renderItem({ title: I18n.t('Crash_report_disclaimer'), disable: true })}
+
+					{this.renderSectionSeparator()}
 				</ScrollView>
 			</SafeAreaView>
 		);
