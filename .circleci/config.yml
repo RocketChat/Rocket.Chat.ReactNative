@@ -90,7 +90,7 @@ jobs:
   android-build:
     <<: *defaults
     docker:
-      - image: circleci/android:api-28-node8-alpha
+      - image: circleci/android:api-28-node
 
     environment:
       # GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"
