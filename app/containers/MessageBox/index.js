@@ -171,32 +171,25 @@ class MessageBox extends Component {
 		return false;
 	}
 
-	onChangeText = (text) => {
+	onChangeText = debounce((text) => {
 		const isTextEmpty = text.length === 0;
 		this.setShowSend(!isTextEmpty);
 		this.handleTyping(!isTextEmpty);
-		this.debouncedOnChangeText(text);
-	}
-
-	// eslint-disable-next-line react/sort-comp
-	debouncedOnChangeText = debounce((text) => {
 		this.setInput(text);
 
 		if (this.component) {
-			requestAnimationFrame(() => {
-				const { start, end } = this.component._lastNativeSelection;
-				const cursor = Math.max(start, end);
-				const lastNativeText = this.component._lastNativeText;
-				const regexp = /(#|@|:)([a-z0-9._-]+)$/im;
-				const result = lastNativeText.substr(0, cursor).match(regexp);
-				if (!result) {
-					return this.stopTrackingMention();
-				}
-				const [, lastChar, name] = result;
-				this.identifyMentionKeyword(name, lastChar);
-			});
+			const { start, end } = this.component._lastNativeSelection;
+			const cursor = Math.max(start, end);
+			const lastNativeText = this.component._lastNativeText;
+			const regexp = /(#|@|:)([a-z0-9._-]+)$/im;
+			const result = lastNativeText.substr(0, cursor).match(regexp);
+			if (!result) {
+				return this.stopTrackingMention();
+			}
+			const [, lastChar, name] = result;
+			this.identifyMentionKeyword(name, lastChar);
 		}
-	}, 100);
+	}, 100)
 
 	onKeyboardResigned = () => {
 		this.closeEmoji();
@@ -787,8 +780,8 @@ class MessageBox extends Component {
 			return (<Recording onFinish={this.finishAudioMessage} />);
 		}
 		return (
-			[
-				this.renderMentions(),
+			<React.Fragment>
+				{this.renderMentions()}
 				<View style={styles.composer} key='messagebox'>
 					{this.renderReplyPreview()}
 					<View
@@ -813,14 +806,14 @@ class MessageBox extends Component {
 						{this.rightButtons}
 					</View>
 				</View>
-			]
+			</React.Fragment>
 		);
 	}
 
 	render() {
 		const { showEmojiKeyboard, file } = this.state;
 		return (
-			[
+			<React.Fragment>
 				<KeyboardAccessoryView
 					key='input'
 					renderContent={this.renderContent}
@@ -832,8 +825,8 @@ class MessageBox extends Component {
 					// revealKeyboardInteractive
 					requiresSameParentToManageScrollView
 					addBottomView
-				/>,
-				this.renderFilesActions(),
+				/>
+				{this.renderFilesActions()}
 				<UploadModal
 					key='upload-modal'
 					isVisible={(file && file.isVisible)}
@@ -841,7 +834,7 @@ class MessageBox extends Component {
 					close={() => this.setState({ file: {} })}
 					submit={this.sendImageMessage}
 				/>
-			]
+			</React.Fragment>
 		);
 	}
 }
