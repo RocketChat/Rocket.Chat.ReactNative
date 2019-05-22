@@ -9,6 +9,7 @@ import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
+import ActionSheet from 'react-native-action-sheet';
 
 import { userTyping as userTypingAction } from '../../actions/room';
 import {
@@ -23,7 +24,6 @@ import Avatar from '../Avatar';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import { emojis } from '../../emojis';
 import Recording from './Recording';
-import FilesActions from './FilesActions';
 import UploadModal from './UploadModal';
 import './EmojiKeyboard';
 import log from '../../utils/log';
@@ -47,6 +47,17 @@ const imagePickerConfig = {
 	cropperChooseText: I18n.t('Choose'),
 	cropperCancelText: I18n.t('Cancel')
 };
+
+const fileOptions = [I18n.t('Cancel')];
+const FILE_CANCEL_INDEX = 0;
+
+// Photo
+fileOptions.push(I18n.t('Take_a_photo'));
+const FILE_PHOTO_INDEX = 1;
+
+// Library
+fileOptions.push(I18n.t('Choose_from_library'));
+const FILE_LIBRARY_INDEX = 2;
 
 class MessageBox extends Component {
 	static propTypes = {
@@ -77,7 +88,6 @@ class MessageBox extends Component {
 		this.state = {
 			mentions: [],
 			showEmojiKeyboard: false,
-			showFilesAction: false,
 			showSend: false,
 			recording: false,
 			trackingType: '',
@@ -133,7 +143,7 @@ class MessageBox extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			showEmojiKeyboard, showFilesAction, showSend, recording, mentions, file
+			showEmojiKeyboard, showSend, recording, mentions, file
 		} = this.state;
 		const {
 			roomType, replying, editing, isFocused
@@ -151,9 +161,6 @@ class MessageBox extends Component {
 			return true;
 		}
 		if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
-			return true;
-		}
-		if (nextState.showFilesAction !== showFilesAction) {
 			return true;
 		}
 		if (nextState.showSend !== showSend) {
@@ -320,7 +327,7 @@ class MessageBox extends Component {
 		icons.push(
 			<BorderlessButton
 				key='file-message'
-				onPress={this.toggleFilesActions}
+				onPress={this.showFileActions}
 				style={styles.actionButton}
 				testID='messagebox-actions'
 				accessibilityLabel={I18n.t('Message actions')}
@@ -488,10 +495,6 @@ class MessageBox extends Component {
 		this.setShowSend(false);
 	}
 
-	toggleFilesActions = () => {
-		this.setState(prevState => ({ showFilesAction: !prevState.showFilesAction }));
-	}
-
 	sendImageMessage = async(file) => {
 		const { rid, tmid } = this.props;
 
@@ -531,6 +534,28 @@ class MessageBox extends Component {
 
 	showUploadModal = (file) => {
 		this.setState({ file: { ...file, isVisible: true } });
+	}
+
+	showFileActions = () => {
+		ActionSheet.showActionSheetWithOptions({
+			options: fileOptions,
+			cancelButtonIndex: FILE_CANCEL_INDEX
+		}, (actionIndex) => {
+			this.handleFileActionPress(actionIndex);
+		});
+	}
+
+	handleFileActionPress = (actionIndex) => {
+		switch (actionIndex) {
+			case FILE_PHOTO_INDEX:
+				this.takePhoto();
+				break;
+			case FILE_LIBRARY_INDEX:
+				this.chooseFromLibrary();
+				break;
+			default:
+				break;
+		}
 	}
 
 	editCancel = () => {
@@ -756,22 +781,6 @@ class MessageBox extends Component {
 		return <ReplyPreview key='reply-preview' message={replyMessage} close={closeReply} username={user.username} />;
 	};
 
-	renderFilesActions = () => {
-		const { showFilesAction } = this.state;
-
-		if (!showFilesAction) {
-			return null;
-		}
-		return (
-			<FilesActions
-				key='files-actions'
-				hideActions={this.toggleFilesActions}
-				takePhoto={this.takePhoto}
-				chooseFromLibrary={this.chooseFromLibrary}
-			/>
-		);
-	}
-
 	renderContent = () => {
 		const { recording } = this.state;
 		const { editing } = this.props;
@@ -826,7 +835,6 @@ class MessageBox extends Component {
 					requiresSameParentToManageScrollView
 					addBottomView
 				/>
-				{this.renderFilesActions()}
 				<UploadModal
 					key='upload-modal'
 					isVisible={(file && file.isVisible)}
