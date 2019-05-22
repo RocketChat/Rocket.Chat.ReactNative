@@ -5,7 +5,6 @@ import { createStore, combineReducers } from 'redux';
 import { storiesOf } from '@storybook/react-native';
 
 import RoomItem from './RoomItem';
-import Avatar from './Avatar';
 import Message from './Message';
 // import RoomViewHeader from './RoomViewHeader';
 
@@ -20,9 +19,6 @@ const reducers = combineReducers({
 });
 const store = createStore(reducers);
 
-storiesOf('Avatar', module)
-	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
-	.add('avatar', () => Avatar);
 storiesOf('RoomItem', module)
 	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
 	.add('list', () => RoomItem);
