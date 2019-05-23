@@ -100,7 +100,7 @@ Readme will guide you on how to config.
 | Theming                                                       	| ❌    	|
 | Settings -> Review the App                                    	| ❌    	|
 | Settings -> Default Browser                                   	| ❌    	|
-| Admin panel                                                   	| ❌    	|
+| Admin panel                                                   	| ✅    	|
 | Reply message from notification                               	| ❌    	|
 | Unread counter banner on message list                         	| ✅    	|
 | E2E                                                           	| ❌    	|
