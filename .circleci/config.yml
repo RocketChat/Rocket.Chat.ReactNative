@@ -137,18 +137,18 @@ jobs:
               echo -e "apiSecret=$FABRIC_SECRET" >> ./app/fabric.properties
             fi
 
-      - run:
-          name: Install Android Depedencies
-          command: |
-            cd android
-            ./gradlew androidDependencies
+      # - run:
+      #     name: Install Android Depedencies
+      #     command: |
+      #       cd android
+      #       ./gradlew androidDependencies
 
       - run:
           name: Build Android App
           command: |
             cd android
             if [[ $KEYSTORE ]]; then
-              ./gradlew assembleRelease
+              ./gradlew bundleRelease
             else
               ./gradlew assembleDebug
             fi
