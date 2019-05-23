@@ -95,23 +95,20 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+     compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     defaultConfig {
         applicationId "chat.rocket.reactnative"
-        minSdkVersion 21
-        targetSdkVersion 28
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSIONCODE as Integer
         versionName "1.14.0"
-        ndk {
-            abiFilters "armeabi-v7a", "x86"
-        }
         vectorDrawables.useSupportLibrary = true
-    }
-
-    packagingOptions {
-        pickFirst '**/libjsc.so'
     }
 
     signingConfigs {
@@ -129,14 +126,11 @@ android {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
             universalApk false  // If true, also generate a universal APK
-            include "armeabi-v7a", "x86"
+            include "armeabi-v7a", "x86", "arm64-v8a", "x86-64"
         }
     }
     buildTypes {
         release {
-            // shrinkResources enableProguardInReleaseBuilds
-            // zipAlignEnabled enableProguardInReleaseBuilds
-            // useProguard enableProguardInReleaseBuilds
             minifyEnabled enableProguardInReleaseBuilds
             setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'])
             signingConfig signingConfigs.release
@@ -147,7 +141,7 @@ android {
         variant.outputs.each { output ->
             // For each separate APK per architecture, set a unique version code as described here:
             // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
-            def versionCodes = ["armeabi-v7a":1, "x86":2]
+            def versionCodes = ["armeabi-v7a":1, "x86":2, "arm64-v8a": 3, "x86-64": 4]
             def abi = output.getFilter(OutputFile.ABI)
             if (abi != null) {  // null for the universal-debug, universal-release variants
                 output.versionCodeOverride =
@@ -180,8 +174,6 @@ repositories {
 
 configurations.all {
     resolutionStrategy {
-        force 'org.webkit:android-jsc:r241213'
-
         eachDependency { DependencyResolveDetails details ->
             if (details.requested.name == 'play-services-base') {
                 details.useTarget group: details.requested.group, name: details.requested.name, version: '15.0.1'
@@ -219,11 +211,10 @@ dependencies {
     implementation project(':realm')
     implementation project(':reactnativenotifications')
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation 'org.webkit:android-jsc-cppruntime:+'
-    implementation "com.android.support:appcompat-v7:28.0.0"
-    implementation "com.android.support:support-v4:28.0.0"
-    implementation 'com.android.support:customtabs:28.0.0'
-    implementation 'com.android.support:design:28.0.0'
+    implementation "com.android.support:appcompat-v7:${ rootProject.ext.supportLibVersion }"
+    implementation "com.android.support:support-v4:${ rootProject.ext.supportLibVersion }"
+    implementation "com.android.support:customtabs:${ rootProject.ext.supportLibVersion }"
+    implementation "com.android.support:design:${ rootProject.ext.supportLibVersion }"
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation 'com.facebook.fresco:fresco:1.10.0'
     implementation 'com.facebook.fresco:animated-gif:1.10.0'
