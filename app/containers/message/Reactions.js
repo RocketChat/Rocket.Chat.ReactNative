@@ -49,7 +49,7 @@ const Reaction = React.memo(({
 			</View>
 		</Touchable>
 	);
-}, () => true);
+});
 
 const Reactions = React.memo(({
 	reactions, user, baseUrl, onReactionPress, toggleReactionPicker, onReactionLongPress, getCustomEmoji
