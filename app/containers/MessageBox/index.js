@@ -603,6 +603,7 @@ class MessageBox extends Component {
 		} = this.props;
 		const message = this.text;
 
+		this.clearInput();
 		this.closeEmoji();
 		this.stopTrackingMention();
 		this.handleTyping(false);
@@ -647,7 +648,6 @@ class MessageBox extends Component {
 		} else {
 			onSubmit(message);
 		}
-		this.clearInput();
 	}
 
 	updateMentions = (keyword, type) => {
