@@ -1,36 +1,43 @@
 PODS:
+  - boost-for-react-native (1.63.0)
+  - DoubleConversion (1.1.6)
+  - Folly (2018.10.22.00):
+    - boost-for-react-native
+    - DoubleConversion
+    - glog
+  - glog (0.3.5)
   - QBImagePickerController (3.4.0)
-  - React (0.58.6):
-    - React/Core (= 0.58.6)
+  - React (0.59.8):
+    - React/Core (= 0.59.8)
   - react-native-orientation-locker (1.1.5):
     - React
   - react-native-splash-screen (3.2.0):
     - React
   - react-native-webview (5.8.1):
     - React
-  - React/Core (0.58.6):
-    - yoga (= 0.58.6.React)
-  - React/fishhook (0.58.6)
-  - React/RCTActionSheet (0.58.6):
+  - React/Core (0.59.8):
+    - yoga (= 0.59.8.React)
+  - React/fishhook (0.59.8)
+  - React/RCTActionSheet (0.59.8):
     - React/Core
-  - React/RCTAnimation (0.58.6):
+  - React/RCTAnimation (0.59.8):
     - React/Core
-  - React/RCTBlob (0.58.6):
+  - React/RCTBlob (0.59.8):
     - React/Core
-  - React/RCTImage (0.58.6):
+  - React/RCTImage (0.59.8):
     - React/Core
     - React/RCTNetwork
-  - React/RCTLinkingIOS (0.58.6):
+  - React/RCTLinkingIOS (0.59.8):
     - React/Core
-  - React/RCTNetwork (0.58.6):
+  - React/RCTNetwork (0.59.8):
     - React/Core
-  - React/RCTSettings (0.58.6):
+  - React/RCTSettings (0.59.8):
     - React/Core
-  - React/RCTText (0.58.6):
+  - React/RCTText (0.59.8):
     - React/Core
-  - React/RCTVibration (0.58.6):
+  - React/RCTVibration (0.59.8):
     - React/Core
-  - React/RCTWebSocket (0.58.6):
+  - React/RCTWebSocket (0.59.8):
     - React/Core
     - React/fishhook
     - React/RCTBlob
@@ -43,9 +50,12 @@ PODS:
   - RNScreens (1.0.0-alpha.22):
     - React
   - RSKImageCropper (2.2.1)
-  - yoga (0.58.6.React)
+  - yoga (0.59.8.React)
 
 DEPENDENCIES:
+  - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
+  - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -62,14 +72,21 @@ DEPENDENCIES:
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNScreens (from `../node_modules/react-native-screens`)
-  - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
+  - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - boost-for-react-native
     - QBImagePickerController
     - RSKImageCropper
 
 EXTERNAL SOURCES:
+  DoubleConversion:
+    :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  Folly:
+    :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
+  glog:
+    :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   React:
     :path: "../node_modules/react-native"
   react-native-orientation-locker:
@@ -85,11 +102,15 @@ EXTERNAL SOURCES:
   RNScreens:
     :path: "../node_modules/react-native-screens"
   yoga:
-    :path: "../node_modules/react-native/ReactCommon/yoga/yoga.podspec"
+    :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
+  DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
+  Folly: de497beb10f102453a1afa9edbf8cf8a251890de
+  glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
-  React: 130b87b2d5e2baac646954282cab87be986d98fc
+  React: 76e6aa2b87d05eb6cccb6926d72685c9a07df152
   react-native-orientation-locker: 132a63bab4dddd2a5709f6f7935ad9676b0af7c5
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-webview: f3e28b48461c78db833f727feec08b13285e7b61
@@ -97,8 +118,8 @@ SPEC CHECKSUMS:
   RNImageCropPicker: e608efe182652dc8690268cb99cb5a201f2b5ea3
   RNScreens: 720a9e6968beb73e8196239801e887d8401f86ed
   RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
-  yoga: 32d7ef1081951e9a35a4c72a7be797598b138a48
+  yoga: 92b2102c3d373d1a790db4ab761d2b0ffc634f64
 
-PODFILE CHECKSUM: cfaf85fae8fddbd9a7ea26e0a72d0a2d3852af66
+PODFILE CHECKSUM: 644d63bf56349cf8faaa9d1acf44cfc7ee647f3b
 
 COCOAPODS: 1.6.2
